@@ -1,0 +1,351 @@
+class_name Combat
+extends RefCounted
+## Combat resolution, following the original (function addresses cited per rule
+## docs/original_reference.md "Combat formulas").
+
+var world: GameWorld
+var rng := RandomNumberGenerator.new()
+
+
+## ai.reg [DifficultyLevels] multiplier ("Attack", "Defence", "Absorption"),
+## indexed by the Difficulty Level (: 0 Normal, 1 Novice; arrays
+## [1.0, 0.66] / [1.0, 0.66] / [1.0, 0.33]). Attack / Defence
+## scale every unit that is not "named" (: id
+## [10^9, 2·10^9), the script name ids — heroes, mercenaries, named NPCs) on
+## either side, truncated to ints; Absorption
+## scales the natural armour of units outside a player party (
+## ). A network game always plays at 0.
+func difficulty(u: GameUnit, key: String) -> float:
+	if GameData.difficulty == 0 or (world.session and world.session.online):
+		return 1.0
+	if key == "Absorption":
+		if u.controller >= 0 or u.has_meta("hero"):
+			return 1.0
+	elif named(u):
+		return 1.0
+	return GameData.ai_value("DifficultyLevels", key, 1.0, GameData.difficulty)
+
+
+## a name-hash id (ScriptVM.name_id); remake heroes too (the original
+## names them; the remake gives co-op heroes plain ids).
+static func named(u: GameUnit) -> bool:
+	return (u.uid >= 1000000000 and u.uid < 2000000000) or u.has_meta("hero")
+
+
+## Attack / Defence as the original's attack info gives them (ints, scaled).
+func attack_value(u: GameUnit) -> int:
+	return int(int(u.stats.to_hit) * difficulty(u, "Attack"))
+
+
+func defence_value(u: GameUnit) -> int:
+	return int(int(u.stats.parry) * difficulty(u, "Defence"))
+
+
+func _init(w: GameWorld) -> void:
+	world = w
+	rng.seed = 1
+
+
+## Attack roll of the original: Attack plus a random
+## step 2k - (B + 1), k = 0..B (B = "Tuning To hit Random", 40), minus the aimed
+## strike penalty (head 25, limbs 10), must reach the target's Defence.
+## (The original also subtracts distance / (10 * size) and adds a tiny weapon-speed
+## ratio term; both are under one point in melee and left out.)
+func attack_hits(att: GameUnit, def: GameUnit, penalty := 0.0) -> bool:
+	var b := roundi(float(att.stats.get("hit_random", 40.0)))
+	var roll := float(attack_value(att)) + rng.randi_range(0, b) * 2 - (b + 1) - penalty
+	return maxf(roll, 0.0) >= float(defence_value(def))
+
+
+func hit_chance(att: GameUnit, def: GameUnit) -> float:
+	var b := roundi(float(att.stats.get("hit_random", 40.0)))
+	var need := ceili((float(defence_value(def)) - float(attack_value(att)) + b + 1) / 2.0)
+	return clampf(float(b - clampi(need, 0, b + 1) + 1) / (b + 1), 0.0, 1.0)
+
+
+## Damage of one hit, the original:
+## D = min + random(range); per damage type i the target's natural armour is
+## subtracted (max(0, D * factor_i - armour_i)), then every armour layer worn on
+## the struck body part (GameUnit.hit_part: random location)
+## outer layer first. The remainder comes off that part's health. May be 0 when
+## armour stops the blow.
+## Wear: each worn piece loses the damage that
+## got through it (stops at the layer that stops the blow); the attacker's
+## weapon loses what the layers absorbed. Collected in `last_wear` for
+## apply_wear().
+var last_wear := {}
+## Damage per type of the last roll_damage (after armour), for severing.
+var last_types := PackedFloat32Array()
+
+func roll_damage(att: GameUnit, def: GameUnit, part := "torso") -> float:
+	var dmg := rng.randf_range(float(att.stats.dmg_min), float(att.stats.dmg_max)) * att.damage_mul()
+	var f: PackedFloat32Array = att.stats.get("dmg_types", PackedFloat32Array([0, 0, 1, 0, 0, 0, 0]))
+	return absorb(def, dmg, f, part)
+
+
+##  for damage `dmg` with the type factors `f`.
+func absorb(def: GameUnit, dmg: float, f: PackedFloat32Array, part := "torso") -> float:
+	last_wear = {"armors": {}, "weapon": 0.0}
+	last_types = PackedFloat32Array([0, 0, 0, 0, 0, 0, 0])
+	var armour: PackedFloat32Array = def.stats.get("armor", PackedFloat32Array())
+	var k := difficulty(def, "Absorption")
+	var worn := worn_layers(def.get_meta("hero").get("armors", []), part) if def.has_meta("hero") else []
+	var layer: PackedFloat32Array = def.stats.get("part_armor", {}).get(part, PackedFloat32Array())
+	var total := 0.0
+	for t in 7:
+		var d := dmg * f[t] - (armour[t] * k if t < armour.size() else 0.0)
+		if d <= 0.0:
+			continue
+		var start := d
+		if worn.is_empty():
+			d -= layer[t] if t < layer.size() else 0.0
+		for w: Array in worn:
+			d -= w[1][t]
+			if d > 0.0:
+				last_wear.armors[w[0]] = last_wear.armors.get(w[0], 0.0) + d
+			if d <= 0.0:
+				break
+		last_wear.weapon += start - maxf(d, 0.0)
+		last_types[t] = maxf(d, 0.0)
+		total += maxf(d, 0.0)
+	return total
+
+
+## Worn pieces covering `part`, outer layer first: [index in armors, layer].
+## (the original keeps two item layers per part, slot table.)
+static func worn_layers(armors: Array, part: String) -> Array:
+	var out := []
+	var slots: Array = PART_SLOTS.get(part, [])
+	for si in range(slots.size() - 1, -1, -1):
+		var ps: Array = slots[si]
+		for i in armors.size():
+			if Items.slot(armors[i]) == ps[0] and not Items.is_broken(armors[i]):
+				out.append([i, Items.armor_layer(armors[i], ps[1])])
+	return out
+
+
+## A hit record without an attacker on `def` (through the
+## logic's, e.g. the tornado's): it lands when
+## `to_hit` reaches the target's Defence (the stored roll), deals
+## `dmg` with the type factors `f` (+0..) on body part `part`
+## the armour factor is 1 here.
+func record_hit(def: GameUnit, f: PackedFloat32Array, to_hit: float, dmg: float, part: int) -> void:
+	if def.dead or float(defence_value(def)) > to_hit:
+		return
+	var d := absorb(def, dmg, f, def.part_group(part))
+	apply_wear(null, def)
+	def.take_damage(d, null, part, last_types)
+
+
+## Applies `last_wear` to the defender's armour and the attacker's weapon.
+func apply_wear(att: GameUnit, def: GameUnit) -> void:
+	if def.has_meta("hero"):
+		var armors: Array = def.get_meta("hero").get("armors", [])
+		for i: int in last_wear.get("armors", {}):
+			if i < armors.size():
+				_wear(def, armors, i, last_wear.armors[i], false)
+	if att and att.has_meta("hero") and last_wear.get("weapon", 0.0) > 0.0:
+		var ws: Array = att.get_meta("hero").get("weapons", [])
+		if not ws.is_empty():
+			_wear(att, ws, 0, last_wear.weapon, true)
+
+
+## durability -= amount; below ai.reg "Item Durability Critical"
+## of the maximum the owner warns (ack 0x25 armour / 0x26 weapon), below 1 the
+## item is broken (0x23 / 0x24) and goes to the bag (tutorial it012).
+func _wear(u: GameUnit, list: Array, i: int, amount: float, weapon: bool) -> void:
+	var id := String(list[i])
+	var mx := Items.max_durability(id)
+	if mx <= 0.0 or amount <= 0.0:
+		return
+	var before := Items.durability(id)
+	list[i] = Items.with_wear(id, Items.wear(id) + amount)
+	var after := Items.durability(list[i])
+	var crit := mx * GameData.ai_value("RPG", "Item Durability Critical", 0.3)
+	if Items.is_broken(list[i]):
+		world.item_worn.emit(u, list[i], "broken_weapon" if weapon else "broken_armor")
+	elif before >= crit and after < crit:
+		world.item_worn.emit(u, list[i], "critical_weapon" if weapon else "critical_armor")
+
+
+## The strike's hit record, decided when the strike starts (the original
+## builds it with the backstab flag
+## then rolls the hit into record = ±FLT_MAX
+## the miss goes with the strike's animation command as unit
+## ). The blow uses the stored
+## outcome and rolls only when none is stored.
+## Backstab: a character (hero) striking in melee from within 60 degrees of
+## the target's back always hits; a bow / crossbow in hand
+## clears it.
+func strike_roll(att: GameUnit, def: GameUnit) -> Dictionary:
+	var backstab := false
+	if att.has_meta("hero") and not att.stats.get("ranged", false):
+		var fwd := Vector2.from_angle(def.facing)
+		backstab = fwd.dot((def.pos - att.pos).normalized()) > 0.5
+	return {"backstab": backstab, "hit": backstab or attack_hits(att, def)}
+
+
+## A blow lands with the hit record `roll` from strike_roll
+## (rolled now when empty). A backstab deals ai.reg "BackstabAdd" (3) +
+## backstab perk modifier / 100 times the damage: x3, x5
+## x7.5, x10.
+func melee(att: GameUnit, def: GameUnit, roll := {}) -> void:
+	if roll.is_empty():
+		roll = strike_roll(att, def)
+	var backstab: bool = roll.backstab
+	if not roll.hit:
+		world.on_miss(att, def)
+		return
+	var part := def.hit_part(att.strike_aim)
+	var dmg := roll_damage(att, def, def.part_group(part))
+	if backstab:
+		var mul := GameData.ai_value("RPG", "BackstabAdd", 3.0) + float(att.stats.get("backstab", 0.0)) / 100.0
+		dmg *= mul
+		for t in last_types.size():
+			last_types[t] *= mul
+		world.combat_event.emit("backstab", att, def, dmg)
+	apply_wear(att, def)
+	def.take_damage(dmg, att, part, last_types, 1 if backstab else 0)
+	_weapon_spell(att, def)
+
+
+## Enchanted weapons ("it" rune) cast their spell on some hits.
+func _weapon_spell(att: GameUnit, def: GameUnit) -> void:
+	if def.dead or not att.has_meta("hero"):
+		return
+	var ws: Array = att.get_meta("hero").get("weapons", [])
+	var sp := Items.spell_of(ws[0]) if not ws.is_empty() else ""
+	if sp.is_empty() or rng.randf() > 0.3:
+		return
+	Spells.apply(world, att, sp, def, def.pos)
+	if world.session:
+		world.session.broadcast({"t": "spellfx", "code": Spells.parse(sp).code, "sub": Spells.parse(sp).subtype,
+			"x": def.pos.x, "y": def.pos.y, "a": att.uid, "tu": def.uid, "spell": sp})
+
+
+## Stats for player characters from attributes, experience, skills and
+## equipment (the original, docs/original_reference.md):
+##   HP / stamina: ai.reg HP/MP Val formula with Str / Dex (Skills.base_pool);
+##   Attack = weapon skill + (Dex - 25) + weapon attack (+ weapon perk);
+##   Defence = Melee skill + (Dex - 25) + weapon defence (+ weapon perk), 0 for
+##   bows and crossbows
+##   damage = weapon damage (no attribute bonus); unarmed = prototype damage;
+##   armour = prototype absorption x race def per type, plus worn items per body part.
+## Body build from Strength and Dexterity, the original
+## a = (Str - 15) / 20, b = 1 - (Dex - 15) / 20 (20 = 35 - 15
+## no clamping); muscle = 0.7a + 0.3b, fat = (0.2a + 0.8b) * 0.8
+## + 0.2; height is kept. The original's figure order is (muscle, fat, height); the
+## remake's complexion (map file order) is (fat, muscle, height).
+static func reshape(u: GameUnit, h: Dictionary, s: float, d: float) -> void:
+	var a := (s - 15.0) / 20.0
+	var b := 1.0 - (d - 15.0) / 20.0
+	var old: Vector3 = u.info.get("complexion", Vector3(0.5, 0.5, 0.5))
+	var c := Vector3((a * 0.2 + b * 0.8) * 0.8 + 0.2, a * 0.7 + b * 0.3, old.z)
+	set_complexion(u, h, c)
+
+
+## Gives a hero's unit a new body build (complexion fat, muscle, height) and
+## re-dresses it on every peer.
+static func set_complexion(u: GameUnit, h: Dictionary, c: Vector3) -> void:
+	var old: Vector3 = u.info.get("complexion", Vector3(0.5, 0.5, 0.5))
+	h.complexion = c
+	if old.is_equal_approx(c):
+		return
+	u.info.complexion = c
+	if u.model:
+		u.set_equipment(PackedStringArray(u.info.get("armors", [])), PackedStringArray(u.info.get("weapons", [])))
+	if u.world and u.world.session and u.world.authority:
+		u.world.session.broadcast({"t": "reshape", "uid": u.uid, "complexion": c})
+
+
+static func hero_stats(u: GameUnit, h: Dictionary) -> void:
+	var s := float(h.get("str", 20.0)) + Perks.attr_bonus(h, "str")
+	var d := float(h.get("dex", 20.0)) + Perks.attr_bonus(h, "dex")
+	var i := float(h.get("int", 20.0)) + Perks.attr_bonus(h, "int")
+	var total := float(h.get("exp_total", h.get("exp", 0.0)))
+	# Pools keep their fill fraction (a fresh unit is full: sets the
+	# current values from the new maxima).
+	var hp_frac := u.hp / u.max_hp if u.max_hp > 0.0 and u.hp > 0.0 else 1.0
+	var mp_frac := clampf(u.mana / u.max_mana, 0.0, 1.0) if u.max_mana > 0.0 else 1.0
+	u.max_hp = Skills.base_pool(total, s)
+	u.hp = u.max_hp * hp_frac
+	u.max_mana = Skills.base_pool(total, d, "MP")
+	u.mana = u.max_mana * mp_frac
+	var weapons: Array = h.get("weapons", [])
+	var wtype := ""
+	var w_att := 0.0
+	var w_def := 0.0
+	u.stats.ranged = false
+	u.stats.reach = 1.3
+	u.stats.range = float(u.proto.get("attack_range", 0.0))   # unarmed: (see GameUnit.melee_reach)
+	u.stats.dmg_min = float(u.proto.get("damage_min", 1.0))
+	u.stats.dmg_max = u.stats.dmg_min + float(u.proto.get("damage_max", 1.0))
+	u.stats.dmg_types = u.race_factors("attack", 1.0)
+	u.stats.erase("weapon_actions")
+	if not weapons.is_empty():
+		var dmg := Items.damage(weapons[0])
+		u.stats.dmg_min = dmg.x
+		u.stats.dmg_max = dmg.y
+		u.stats.dmg_types = Items.damage_types(weapons[0])
+		var w := Items.info(weapons[0])
+		wtype = String(w.row.get("type", "")).to_lower()
+		w_att = float(w.row.get("attack", 0.0))
+		w_def = float(w.row.get("defence", 0.0))
+		u.stats.weapon_actions = float(w.row.get("actions", 30.0))
+		u.stats.reach = maxf(1.3, float(w.row.get("range", 0.0)) + 1.3)
+		u.stats.range = float(w.row.get("range", 0.0))
+		u.stats.ranged = wtype in ["bow", "crossbow"]
+		if u.stats.ranged:
+			u.stats.reach = 14.0
+	var skill := Skills.level(h, "archery" if u.stats.ranged else "melee")
+	u.stats.to_hit = maxf(1.0, skill + (d - 25.0) + w_att)
+	u.stats.parry = 0.0 if u.stats.ranged else maxf(1.0, Skills.level(h, "melee") + (d - 25.0) + w_def)
+	u.stats.part_armor = part_armor(h.get("armors", []))
+	var torso: PackedFloat32Array = u.stats.part_armor.get("torso", PackedFloat32Array())
+	var absorb := 0.0
+	for t in 7:
+		absorb += float(u.stats.armor[t]) + (torso[t] if t < torso.size() else 0.0)
+	u.stats.absorption = absorb / 7.0
+	u.stats.str = s
+	u.stats.dex = d
+	u.stats.int = i
+	# No reshape here: (stats -> build) is only used by the
+	# multiplayer hero editor; campaign heroes keep their
+	# prototype / map build.
+	# max load = (1 + lift perk/100) * Str * 12; load = weight of the
+	# equipped weapons, armour and belt items; actions = Dex * 0.2 + 10.
+	u.stats.max_load = s * 12.0
+	var load := 0.0
+	for k in ["weapons", "armors", "quick"]:
+		for it in h.get(k, []):
+			var st := Items.parse_stack(String(it))
+			load += Items.weight(st[0]) * int(st[1])
+	u.stats.load = load
+	u.stats.actions = d * 0.2 + 10.0
+	Perks.apply(u, h, wtype)
+	u.stats.actions *= 1.0 + float(u.stats.get("quick", 0.0)) / 100.0
+
+
+## Worn armour per body part. the original slot -> part table: helm
+## the head; shirt and plate on the torso (their second set on the arms);
+## gloves on the arms; pants, boots and leggings on the legs. Layers add up.
+const PART_SLOTS := {
+	"head": [["helm", 0]],
+	"torso": [["shirt", 0], ["plate", 0]],
+	"arms": [["shirt", 1], ["plate", 1], ["gloves", 0]],
+	"legs": [["pants", 0], ["boots", 0], ["leggings", 0], ["leggins", 0]],
+}
+
+
+static func part_armor(armors: Array) -> Dictionary:
+	var out := {}
+	for part: String in PART_SLOTS:
+		var sum := PackedFloat32Array([0, 0, 0, 0, 0, 0, 0])
+		for a in armors:
+			for ps: Array in PART_SLOTS[part]:
+				if Items.slot(a) == ps[0]:
+					var l := Items.armor_layer(a, ps[1])
+					for t in 7:
+						sum[t] += l[t]
+		out[part] = sum
+	return out

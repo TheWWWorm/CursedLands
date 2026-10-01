@@ -1,0 +1,14 @@
+.godot/
+*.import
+game/.godot/
+builds/
+*.tmp
+*.log
+*.zip
+*.tar.gz
+*.x86_64
+*.exe
+*.pck
+*.dmg
+*.app/
+release/

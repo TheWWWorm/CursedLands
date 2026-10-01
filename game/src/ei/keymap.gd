@@ -1,0 +1,227 @@
+class_name EIKeymap
+extends RefCounted
+## The key bindings of config/keyboard.ini ("<KEY> <action>" per line), as
+## the original keeps them: a 512-entry map scan code → key action id
+## loaded at start-up (lines split on spaces
+## key and action names compared case-insensitively, unknown ones skipped) and
+## written back when the interface manager shuts down
+## one "%s %s\n" line per bound scan code, in scan code order
+## text mode (CRLF). A key has one action; an action may have several keys.
+## Remake: the bindings are written to user://keyboard.ini (read first when it
+## exists; the game folder's config/keyboard.ini stays untouched), at once when
+## the Options screen's ✓ applies them instead of at exit.
+
+## the original key table (72-byte entries: scan code, keyboard.ini name
+## a GetKeyNameText buffer filled at start-up): the keys the
+## game knows. Scan codes ≥ 0x100 are the extended keys.
+const KEYS := [[0x02, "1"], [0x03, "2"], [0x04, "3"], [0x05, "4"], [0x06, "5"], [0x07, "6"],
+	[0x08, "7"], [0x09, "8"], [0x0a, "9"], [0x0b, "0"], [0x0c, "-"], [0x0d, "+"], [0x0f, "TAB"],
+	[0x10, "Q"], [0x11, "W"], [0x12, "E"], [0x13, "R"], [0x14, "T"], [0x15, "Y"], [0x16, "U"],
+	[0x17, "I"], [0x18, "O"], [0x19, "P"], [0x1a, "["], [0x1b, "]"], [0x1e, "A"], [0x1f, "S"],
+	[0x20, "D"], [0x21, "F"], [0x22, "G"], [0x23, "H"], [0x24, "J"], [0x25, "K"], [0x26, "L"],
+	[0x27, ";"], [0x28, "'"], [0x2b, "\\"], [0x2c, "Z"], [0x2d, "X"], [0x2e, "C"], [0x2f, "V"],
+	[0x30, "B"], [0x31, "N"], [0x32, "M"], [0x33, ","], [0x34, "."], [0x35, "/"], [0x37, "KP_STAR"],
+	[0x39, "SPACE"], [0x3a, "CAPSLOCK"], [0x3b, "F1"], [0x3c, "F2"], [0x3d, "F3"], [0x3e, "F4"],
+	[0x3f, "F5"], [0x40, "F6"], [0x41, "F7"], [0x42, "F8"], [0x43, "F9"], [0x44, "F10"],
+	[0x45, "PAUSE"], [0x47, "KP_HOME"], [0x48, "KP_UP"], [0x49, "KP_PGUP"], [0x4a, "KP_MINUS"],
+	[0x4b, "KP_LEFT"], [0x4c, "KP_CENTER"], [0x4d, "KP_RIGHT"], [0x4e, "KP_PLUS"], [0x4f, "KP_END"],
+	[0x50, "KP_DOWN"], [0x51, "KP_PGDN"], [0x52, "KP_INS"], [0x53, "KP_DEL"], [0x57, "F11"],
+	[0x58, "F12"], [0x135, "KP_SLASH"], [0x145, "KP_NUMLOCK"], [0x147, "HOME"], [0x148, "UP"],
+	[0x149, "PGUP"], [0x14b, "LEFT"], [0x14d, "RIGHT"], [0x14f, "END"], [0x150, "DOWN"],
+	[0x151, "PGDN"], [0x152, "INS"], [0x153, "DEL"]]
+
+## keyboard.ini names → Godot keys (US layout; letters, digits and F keys by
+## OS.find_keycode_from_string).
+const NAMES := {"-": KEY_MINUS, "+": KEY_EQUAL, "TAB": KEY_TAB, "[": KEY_BRACKETLEFT,
+	"]": KEY_BRACKETRIGHT, ";": KEY_SEMICOLON, "'": KEY_APOSTROPHE, "\\": KEY_BACKSLASH,
+	",": KEY_COMMA, ".": KEY_PERIOD, "/": KEY_SLASH, "KP_STAR": KEY_KP_MULTIPLY, "SPACE": KEY_SPACE,
+	"CAPSLOCK": KEY_CAPSLOCK, "PAUSE": KEY_PAUSE, "KP_HOME": KEY_KP_7, "KP_UP": KEY_KP_8,
+	"KP_PGUP": KEY_KP_9, "KP_MINUS": KEY_KP_SUBTRACT, "KP_LEFT": KEY_KP_4, "KP_CENTER": KEY_KP_5,
+	"KP_RIGHT": KEY_KP_6, "KP_PLUS": KEY_KP_ADD, "KP_END": KEY_KP_1, "KP_DOWN": KEY_KP_2,
+	"KP_PGDN": KEY_KP_3, "KP_INS": KEY_KP_0, "KP_DEL": KEY_KP_PERIOD, "KP_SLASH": KEY_KP_DIVIDE,
+	"KP_NUMLOCK": KEY_NUMLOCK, "HOME": KEY_HOME, "UP": KEY_UP, "PGUP": KEY_PAGEUP, "LEFT": KEY_LEFT,
+	"RIGHT": KEY_RIGHT, "END": KEY_END, "DOWN": KEY_DOWN, "PGDN": KEY_PAGEDOWN, "INS": KEY_INSERT,
+	"DEL": KEY_DELETE}
+
+## the original key action table: [id, name, options group, row] (the
+## Options screen's key-binding pages,; labels "string action_<name>"
+## tips "tip action_<name>").
+const ACTIONS := [[1, "pause", 3, 4], [2, "decel", 3, 3], [3, "accel", 3, 2], [4, "obj", 3, 6],
+	[5, "camera_up", 6, 1], [6, "camera_down", 6, 2], [7, "camera_left", 6, 3], [8, "camera_right", 6, 4],
+	[9, "camera_zoom_in", 6, 5], [10, "camera_zoom_out", 6, 6], [11, "camera_track", 6, 0],
+	[12, "camera_norm", 6, 8], [13, "camera1", 6, 9], [14, "camera2", 6, 10], [15, "camera3", 6, 11],
+	[16, "camera4", 6, 12], [17, "cs_head", 9, 0], [18, "cs_body", 9, 1], [19, "cs_rleg", 9, 2],
+	[20, "cs_lleg", 9, 3], [21, "cs_rhand", 9, 4], [22, "cs_lhand", 9, 5], [23, "crawl", 5, 7],
+	[24, "sneak", 5, 6], [25, "walk", 5, 5], [26, "run", 5, 4], [27, "swarm", 5, 2], [28, "follow", 5, 0],
+	[29, "use_science", 5, 1], [30, "spell1", 8, 0], [31, "spell2", 8, 1], [32, "spell3", 8, 2],
+	[33, "spell4", 8, 3], [34, "spell5", 8, 4], [35, "spell6", 8, 5], [36, "spell7", 8, 6],
+	[37, "spell8", 8, 7], [38, "weapon1", 7, 0], [39, "weapon2", 7, 1], [40, "weapon3", 7, 2],
+	[41, "weapon4", 7, 3], [42, "item1", 7, 5], [43, "item2", 7, 6], [44, "item3", 7, 7],
+	[45, "item4", 7, 8], [46, "w_info1", 10, 3], [47, "w_info2", 10, 4], [48, "w_info3", 10, 5],
+	[49, "w_info4", 10, 6], [50, "w_text1", 10, 0], [51, "w_text2", 10, 1], [52, "w_minimap", 10, 8],
+	[53, "quicksave", 3, 8], [54, "quickload", 3, 9], [55, "select1", 4, 0], [56, "select2", 4, 1],
+	[57, "select3", 4, 2], [58, "select_all", 4, 4], [59, "tutorial_script", 10, 10],
+	# Remake-only actions (not in the original): the modern camera's turn keys
+	# (CameraRig), in the camera page's free rows 7 and 13.
+	[100, "camera_rotate_left", 6, 7], [101, "camera_rotate_right", 6, 13]]
+## Keys the remake's own actions get when nothing is bound to them and the key
+## is free (Delete / End turn the camera, as in Divinity: Original Sin 2).
+const REMAKE_DEFAULTS := {"camera_rotate_left": "DEL", "camera_rotate_right": "END"}
+
+## Windows key names as GetKeyNameText(scan << 16) gives them on an English
+## system (the US layout's key name tables; the original fills its key table with
+## them, and the Options screen shows them); others as the ini name.
+const DISPLAY_NAMES := {"-": "-", "+": "=", "TAB": "Tab", "KP_STAR": "Num *", "SPACE": "Space",
+	"CAPSLOCK": "Caps Lock", "PAUSE": "Pause", "KP_HOME": "Num 7", "KP_UP": "Num 8",
+	"KP_PGUP": "Num 9", "KP_MINUS": "Num -", "KP_LEFT": "Num 4", "KP_CENTER": "Num 5",
+	"KP_RIGHT": "Num 6", "KP_PLUS": "Num +", "KP_END": "Num 1", "KP_DOWN": "Num 2",
+	"KP_PGDN": "Num 3", "KP_INS": "Num 0", "KP_DEL": "Num Del", "KP_SLASH": "Num /",
+	"KP_NUMLOCK": "Num Lock", "HOME": "Home", "UP": "Up", "PGUP": "Page Up", "LEFT": "Left",
+	"RIGHT": "Right", "END": "End", "DOWN": "Down", "PGDN": "Page Down", "INS": "Insert",
+	"DEL": "Delete"}
+
+const USER_FILE := "user://keyboard.ini"
+
+static var _map := {}       # scan code -> action name
+static var _loaded := false
+static var _by_code := {}   # Godot keycode -> scan code
+static var _names := {}     # scan code -> keyboard.ini name
+static var _code_of := {}   # scan code -> Godot keycode
+
+
+static func _tables() -> void:
+	if not _names.is_empty():
+		return
+	for k: Array in KEYS:
+		var name: String = k[1]
+		_names[int(k[0])] = name
+		var code := int(NAMES.get(name, 0))
+		if code == 0:
+			code = OS.find_keycode_from_string(name)
+		if code != 0:
+			_by_code[code] = int(k[0])
+			_code_of[int(k[0])] = code
+
+
+static func _ensure() -> void:
+	if not _loaded:
+		_loaded = true
+		_load()
+
+
+## The action bound to a Godot key ("" if none).
+static func action(keycode: int) -> String:
+	_ensure()
+	return String(_map.get(scan_code(keycode), ""))
+
+
+## The key table's scan code of a Godot key, −1 when the game does not know it.
+## Whether a key bound to `act` is held (the camera's held keys
+## key-down / key-up through the map).
+static func held(act: String) -> bool:
+	_ensure()
+	for sc: int in _map:
+		if _map[sc] == act and _code_of.has(sc):
+			var code: int = _code_of[sc]
+			if Input.is_key_pressed(code) or Input.is_physical_key_pressed(code):
+				return true
+	return false
+
+
+static func scan_code(keycode: int) -> int:
+	_tables()
+	return int(_by_code.get(keycode, -1))
+
+
+static func ini_name(scan: int) -> String:
+	_tables()
+	return String(_names.get(scan, ""))
+
+
+static func display_name(ini_key: String) -> String:
+	return String(DISPLAY_NAMES.get(ini_key, ini_key))
+
+
+## The keyboard.ini names of the keys bound to `act`, in scan code order.
+static func keys_for(act: String) -> PackedStringArray:
+	_ensure()
+	var out := PackedStringArray()
+	for s: int in _sorted(_map):
+		if _map[s] == act:
+			out.append(ini_name(s))
+	return out
+
+
+static func key_of(act: String) -> String:
+	var k := keys_for(act)
+	return display_name(k[0]) if not k.is_empty() else ""
+
+
+## A copy of the map (scan code → action), for the Options screen.
+static func bindings() -> Dictionary:
+	_ensure()
+	return _map.duplicate()
+
+
+## ✓ of the Options screen (copies its map back): applied and
+## written to user://keyboard.ini.
+static func set_bindings(m: Dictionary) -> void:
+	_ensure()
+	if m == _map:
+		return
+	_map = m.duplicate()
+	save()
+
+
+## "%s %s\n" per bound scan code, ascending.
+static func save() -> void:
+	var f := FileAccess.open(USER_FILE, FileAccess.WRITE)
+	if f == null:
+		return
+	var out := ""
+	for s: int in _sorted(_map):
+		if _names.has(s):
+			out += "%s %s\r\n" % [_names[s], _map[s]]
+	f.store_string(out)
+
+
+static func _sorted(m: Dictionary) -> Array:
+	var keys := m.keys()
+	keys.sort()
+	return keys
+
+
+static func _load() -> void:
+	_tables()
+	_map.clear()
+	var path := USER_FILE
+	if not FileAccess.file_exists(path):
+		path = GameData.root.path_join("config/keyboard.ini")
+	var f := FileAccess.open(path, FileAccess.READ)
+	if f == null:
+		return
+	var known := {}
+	for a: Array in ACTIONS:
+		known[String(a[1]).to_lower()] = a[1]
+	var by_name := {}
+	for s: int in _names:
+		by_name[String(_names[s]).to_lower()] = s
+	for line in f.get_as_text().split("\n"):
+		var parts := line.strip_edges().split(" ", false)
+		if parts.size() < 2:
+			continue
+		var k := String(parts[0]).to_lower()
+		var a := String(parts[1]).to_lower()
+		if by_name.has(k) and known.has(a):
+			_map[by_name[k]] = known[a]
+	_remake_defaults()
+
+
+static func _remake_defaults() -> void:
+	var by_name := {}
+	for sc: int in _names:
+		by_name[_names[sc]] = sc
+	for act: String in REMAKE_DEFAULTS:
+		var sc: int = by_name.get(REMAKE_DEFAULTS[act], -1)
+		if sc >= 0 and not _map.has(sc) and not act in _map.values():
+			_map[sc] = act

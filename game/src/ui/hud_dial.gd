@@ -1,0 +1,244 @@
+class_name HudDial
+extends Control
+## The two corner dials of the battle HUD, drawn from the original atlas
+## textures.res "battle00" with the original's geometry (800×600 layout, scaled):
+## - "move" (bottom left, 0..80 × 520..600): four 22.5° sectors
+##   crawl / sneak / walk / run (tips 10501-10504) cut from the atlas dial
+##   (UV centre 2,254, radius 80), unselected ones at 0.7 brightness
+## the selected one marked by the triangle pointer at radius
+##   73; the inner disc (radius 32) is Aggressive/Defensive (tip 10500):
+##   the atlas disc at centre (2 + du, 254), du (sprite) = 0 sword when
+##   the selected units are all Aggressive, 86 shield when all Defensive, 123
+##   blank when mixed or none.
+## - "clock" (bottom right): the sun / moon ring (UV centre
+##   174,81, radius 65 / 80) with three 30° sectors pause / normal speed /
+##   accelerated speed (tips 10400, 10402, 10403; speed only in single
+##   player; accelerated = 27 ms logic tick instead of 55 ms)
+##   and the inner part for the Quests screen (tip 10401).
+## Atlas V is flipped against EIMmp images (image y = 256 - v).
+## The sky ring turns with the client clock: hour =
+## fmod(ticks · rate + offset, 24), angle (hour + 15) · π/12 clockwise, i.e.
+## game_hud.gd's π/4 + (hour − 12) · π/12 in this UV convention.
+## Clock hands (sprites 2..5, figures.res "in25arrow": one
+## triangle, model base (0.1288, −0.9239) / (−0.1175, −0.9239), apex
+## (0.0057, −0.7106), z −0.204, UV + (57, 36)/256 on the widget atlas): each
+## frame θ += real dt · 0.5 at normal speed, · 1 accelerated, unchanged
+## paused, wrapped below π/6; hand k is turned about +z by
+## a = θ − π/12 − k · π/6 and placed at (800 + 30 sin a, 600 − 30 cos a),
+## depth 8.106086, scale 0.4, projected as does (camera x =
+## (sx · 0.0025 − 1) · 0.48157462 · z) — four teeth crawling clockwise at the
+## sky ring's rim. **Approx.**: the atlas V convention of the figure's UVs is
+## taken as the 2D sprites'.
+
+signal sector_pressed(index: int)
+signal inner_pressed
+
+const R := 80.0
+var kind := "move"
+## Selected sector; on the clock 0 = paused.
+var selected := -1:
+	set(v):
+		selected = v
+		_update_process()
+## Aggressive / Defensive disc: 1 all aggressive, 0 all defensive, else blank.
+var aggression := -1
+var _tex: Texture2D
+var _hover := -2
+var ring_angle := 0.0
+## Quest-disc pulse: set by a quest notification
+## (dial), cleared when the disc is clicked
+## the disc colour is cos(2π·phase)·0.3 + 0.7 with the phase
+## advanced by frame seconds mod 1.
+var pulse := false:
+	set(v):
+		pulse = v
+		_update_process()
+		queue_redraw()
+var _phase := 0.0
+var _last_ms := 0
+var _theta := 0.0   # clock hands
+
+
+func _ready() -> void:
+	_tex = GameData.get_texture("battle00")
+	mouse_filter = Control.MOUSE_FILTER_STOP
+	process_mode = Node.PROCESS_MODE_ALWAYS   # the paused clock keeps blinking
+	_update_process()
+
+
+func _update_process() -> void:
+	var on := pulse or kind == "clock"   # the clock's hands turn every frame
+	if on and not is_processing():
+		_last_ms = Time.get_ticks_msec()
+	set_process(on)
+	queue_redraw()
+
+
+## The phase advances by the frame's real seconds (
+## ms · 0.001, not the game speed) mod 1.
+func _process(_dt: float) -> void:
+	var now := Time.get_ticks_msec()
+	var dt := (now - _last_ms) * 0.001
+	_phase = fmod(_phase + dt, 1.0)
+	_last_ms = now
+	if kind == "clock" and selected != 0:
+		_theta += dt * (1.0 if selected == 2 else 0.5)
+		while _theta > PI / 6.0:
+			_theta -= PI / 6.0
+	queue_redraw()
+
+
+func _scale() -> float:
+	return size.y / R
+
+
+## Sector 0..n-1 counted from the horizontal edge, -1 = inner, -2 = outside.
+func _hit(p: Vector2) -> int:
+	var s := _scale()
+	var o := Vector2(0, size.y) if kind == "move" else size
+	var d := (p - o) / s
+	d.x = absf(d.x)
+	d.y = -d.y
+	var r := d.length()
+	if r > R or d.y < 0:
+		return -2
+	if r < 32.0:
+		return -1
+	var n := 4 if kind == "move" else 3
+	return clampi(int(atan2(d.y, d.x) / (PI * 0.5) * n), 0, n - 1)
+
+
+func _gui_input(e: InputEvent) -> void:
+	if e is InputEventMouseMotion:
+		var h := _hit(e.position)
+		if h != _hover:
+			_hover = h
+			tooltip_text = _tip(h)
+	elif e is InputEventMouseButton and e.pressed and e.button_index == MOUSE_BUTTON_LEFT:
+		var h := _hit(e.position)
+		if h == -1:
+			inner_pressed.emit()
+		elif h >= 0:
+			sector_pressed.emit(h)
+		if h >= -1:
+			accept_event()
+
+
+func _has_point(p: Vector2) -> bool:
+	return _hit(p) >= -1
+
+
+func _tip(h: int) -> String:
+	var id := -1
+	if kind == "move":
+		id = 10500 if h == -1 else 10501 + h if h >= 0 else -1
+	else:
+		id = 10401 if h == -1 else [10400, 10402, 10403][h] if h >= 0 else -1
+	return GameData.text("tip %d" % id).strip_edges() if id >= 0 else ""
+
+
+## Atlas point in original UV space -> normalized image UV.
+func _uv(u: float, v: float) -> Vector2:
+	return Vector2(u / 256.0, (256.0 - v) / 256.0)
+
+
+func _draw() -> void:
+	if _tex == null:
+		return
+	var s := _scale()
+	if kind == "move":
+		var o := Vector2(0, size.y)
+		for i in 4:
+			var a0 := i * PI / 8.0
+			var a1 := (i + 1) * PI / 8.0
+			var c := Color.WHITE if i == selected else Color(0.7, 0.7, 0.7)
+			_tri(o, o + Vector2(cos(a0), -sin(a0)) * R * s, o + Vector2(cos(a1), -sin(a1)) * R * s,
+				_uv(2, 254), _uv(cos(a0) * R + 2, 254 - sin(a0) * R), _uv(cos(a1) * R + 2, 254 - sin(a1) * R), c)
+		var du := 0.0 if aggression == 1 else 86.0 if aggression == 0 else 123.0
+		_disc(o, 32.0 * s, Vector2(2 + du, 254), 32.0, 0.0, PI * 0.5, 0.0)
+		if selected >= 0:
+			var a := (selected * 2 + 1) * PI / 16.0
+			_pointer(o + Vector2(cos(a), -sin(a)) * 73.0 * s, a, s)
+	else:
+		# Bronze speed arc (radius 80), sky ring turned by the time of day
+		# (radius 65), quest scroll in the middle (radius 32), all around
+		# atlas point 174,81.
+		# Paused: the sky ring at 1.4 − f
+		# and the pointer on the pause sector (165°) shown only while the
+		# phase is over 0.5 (a 1 s blink); f = cos(2π·phase)·0.3 + 0.7.
+		var o := size
+		var f := cos(TAU * _phase) * 0.3 + 0.7
+		var paused := selected == 0
+		var g := 1.4 - f if paused else 1.0
+		_disc(o, R * s, Vector2(174, 81), R, PI * 0.5, PI, 0.0)
+		_disc(o, 65.0 * s, Vector2(174, 81), 65.0, PI * 0.5, PI, ring_angle, Color(g, g, g))
+		var q := f if pulse else 1.0
+		_disc(o, 32.0 * s, Vector2(174, 81), 32.0, PI * 0.5, PI, 0.0, Color(q, q, q))
+		for k in 4:
+			_hand(o, _theta - PI / 12.0 - k * PI / 6.0, s)
+		if selected >= 0 and (not paused or _phase > 0.5):
+			var a := PI - (selected * 2 + 1) * PI / 12.0
+			_pointer(o + Vector2(cos(a), -sin(a)) * 73.0 * s, a, s)
+
+
+func _tri(a: Vector2, b: Vector2, c: Vector2, ua: Vector2, ub: Vector2, uc: Vector2, col: Color) -> void:
+	draw_polygon(PackedVector2Array([a, b, c]), PackedColorArray([col, col, col]),
+		PackedVector2Array([ua, ub, uc]), _tex)
+
+
+## Quarter disc fan over screen angles a0..a1 (from +x, upwards), sampling
+## the atlas like the original's round sprites: original UV = centre + (cos, -sin)·r
+## turned by `rot`.
+func _disc(o: Vector2, r: float, uc: Vector2, ur: float, a0: float, a1: float, rot: float,
+		col := Color.WHITE) -> void:
+	var pts := PackedVector2Array([o])
+	var uvs := PackedVector2Array([_uv(uc.x, uc.y)])
+	var n := 16
+	for i in n + 1:
+		var a := lerpf(a0, a1, float(i) / n)
+		pts.append(o + Vector2(cos(a), -sin(a)) * r)
+		uvs.append(_uv(uc.x + cos(a + rot) * ur, uc.y - sin(a + rot) * ur))
+	var cols := PackedColorArray()
+	cols.resize(pts.size())
+	cols.fill(col)
+	draw_polygon(pts, cols, uvs, _tex)
+
+
+## figures.res "in25arrow" as the HUD widgets place it (
+## see the header): the three corners (base, apex, base)
+## 800×600 points for a pivot (sx, sy) at depth z, turned about +z by `a`
+## (the model's up, local −y, goes to screen (sin a, −cos a); the apex points
+## back at the pivot) and scaled by `scale`.
+const ARROW_V := [Vector2(0.1288, -0.9239), Vector2(0.0057, -0.7106), Vector2(-0.1175, -0.9239)]
+## Their atlas points in the original's pixel UVs (model UV + (57, 36)/256).
+const ARROW_UV := [Vector2(253.5, 246.7), Vector2(242.2, 227.1), Vector2(230.9, 246.7)]
+const ARROW_Z := 8.106086
+
+static func arrow(sx: float, sy: float, a: float, scale: float, z := ARROW_Z) -> PackedVector2Array:
+	const K := 0.48157462
+	var cam := Vector2((sx * 0.0025 - 1.0) * K * z, (sy * 0.0025 - 0.75) * K * z)
+	var zv := z - 0.204 * scale
+	var out := PackedVector2Array()
+	for v: Vector2 in ARROW_V:
+		var c := cam + Vector2(v.x * cos(a) - v.y * sin(a), v.x * sin(a) + v.y * cos(a)) * scale
+		out.append(Vector2((c.x / (zv * K) + 1.0) / 0.0025, (c.y / (zv * K) + 0.75) / 0.0025))
+	return out
+
+
+## One clock hand: pivot (800 + 30 sin a, 600 − 30 cos a), scale 0.4.
+func _hand(o: Vector2, a: float, s: float) -> void:
+	var pts := arrow(800.0 + 30.0 * sin(a), 600.0 - 30.0 * cos(a), a, 0.4)
+	var uvs := PackedVector2Array()
+	for i in 3:
+		pts[i] = o + (pts[i] - Vector2(800, 600)) * s
+		uvs.append(_uv(ARROW_UV[i].x, ARROW_UV[i].y))
+	draw_polygon(pts, PackedColorArray([Color.WHITE, Color.WHITE, Color.WHITE]), uvs, _tex)
+
+
+## The triangle pointer sprite (: points (0,0) (17,11) (17,-11)
+## atlas 104,19 / 115,2 / 93,2), its tip towards the dial centre.
+func _pointer(p: Vector2, a: float, s: float) -> void:
+	var fwd := Vector2(cos(a), -sin(a))
+	var side := Vector2(-fwd.y, fwd.x)
+	_tri(p, p + (fwd * 17.0 + side * 11.0) * s, p + (fwd * 17.0 - side * 11.0) * s,
+		_uv(104, 19), _uv(115, 2), _uv(93, 2), Color.WHITE)

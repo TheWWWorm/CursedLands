@@ -1,0 +1,59 @@
+class_name PlayerList
+extends Control
+## Remake-only co-op player list (NetStatus): one line per player — name in
+## the player's chat colour, ping, status (textslmp lmp_status_*) — under the
+## minimap, right-aligned at 800×600 x 795, from y 170, scaled by the window
+## height. Shown only in an online game. (The original shows the players'
+## status only on a network game's village screen, and ping
+## only in the server browser; see NetStatus.)
+
+var game: Game
+var _sig := ""
+
+
+func _ready() -> void:
+	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+
+func _process(_dt: float) -> void:
+	var s := game.session if game else null
+	var on := s != null and s.online
+	visible = on
+	if not on:
+		return
+	var sig := "%s|%s|%s" % [s.players, s.net.status, get_viewport_rect().size]
+	if sig != _sig:
+		_sig = sig
+		queue_redraw()
+
+
+func lines() -> Array:
+	var s := game.session
+	var out := []
+	var pids := s.players.keys()
+	pids.sort_custom(func(a, b): return int(s.players[a].index) < int(s.players[b].index))
+	for pid in pids:
+		var p: Dictionary = s.players[pid]
+		var st: Dictionary = s.net.status.get(pid, {})
+		var ping := "" if int(pid) == 1 else "%d ms" % int(st.get("ping", 0))
+		out.append([String(p.name), NetStatus.colour(int(p.index)), ping, NetStatus.state_text(String(st.get("state", "connect")))])
+	return out
+
+
+func _draw() -> void:
+	var k := get_viewport_rect().size.y / 600.0
+	var right := get_viewport_rect().size.x - 5.0 * k
+	var f := DialogPanel.font()
+	var fs := int(round(12.0 * k))
+	var y := 170.0 * k
+	var rows := lines()
+	if rows.is_empty():
+		return
+	draw_rect(Rect2(right - 185.0 * k, y - 2.0 * k, 185.0 * k, (rows.size() * 15.0 + 4.0) * k), Color(0, 0, 0, 0.45))
+	for r: Array in rows:
+		var base := y + 12.0 * k
+		draw_string(f, Vector2(right - 180.0 * k, base), r[0], HORIZONTAL_ALIGNMENT_LEFT, 75.0 * k, fs, r[1])
+		draw_string(f, Vector2(right - 103.0 * k, base), r[2], HORIZONTAL_ALIGNMENT_RIGHT, 40.0 * k, fs, DialogPanel.TEXT_COLOR)
+		draw_string(f, Vector2(right - 58.0 * k, base), r[3], HORIZONTAL_ALIGNMENT_LEFT, 56.0 * k, fs, DialogPanel.TEXT_COLOR)
+		y += 15.0 * k

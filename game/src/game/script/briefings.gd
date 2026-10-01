@@ -1,0 +1,360 @@
+class_name Briefings
+extends RefCounted
+## Conversations ("briefings") driven by campaign variables:
+##   b.<npc>.<id> = 1   the NPC named <npc> has conversation <id> to tell
+##   b.<zone>.<id> = 1  conversation <id> plays as soon as the party is in <zone>
+## When a conversation ends its variable becomes 2, its rewards from
+## quests.qdb/briefings are applied and #OnBriefingComplete(player, "b.npc.id")
+## runs. Text comes from texts.res ("briefing <id>"), voice from speech.res.
+
+var vm: ScriptVM
+var active := ""          # full variable name of the running conversation
+var _check := 0.0
+
+
+func _init(v: ScriptVM) -> void:
+	vm = v
+
+
+func tick() -> void:
+	if not active.is_empty() or vm.time < _check:
+		return
+	_check = vm.time + 0.5
+	var zone := String(vm.world.zone.get("id", "")).to_lower()
+	SideQuests.check_rewards(vm.session)
+	if not active.is_empty():
+		return
+	var pre := "0:b.%s." % zone
+	for k: String in vm.session.state.vars:
+		if k.begins_with(pre) and is_equal_approx(float(vm.session.state.vars[k]), 1.0):
+			play_named(k.substr(pre.length()), "b.%s.%s" % [zone, k.substr(pre.length())])
+			return
+
+
+## Player clicked a unit: offer its pending conversations. the original
+##  fills the dialog's topic list with every
+## b.<owner>.<id> = 1 of the unit, then one "constr*" entry if the unit has
+## any (the last one found), then "goodbye" (
+## append). Nothing pending -> the dialog does not open (count 0 in
+## ). Each row is the first line of texts.res "briefing <id>"
+## ((.., 1); "constr*" rows use "briefing constr").
+## Picking one: "goodbye" closes, "constr<N>" sets GS var
+## constr.current = N and opens the camp screen with that trader, the
+## variable staying 1; anything else plays the conversation.
+## Approx.: the original lists vars in its hash-table order (sorted only
+## multiplayer); the remake sorts them by id.
+func interact(_unit: GameUnit, target: Object, player: int) -> void:
+	if not active.is_empty() or not (target is GameUnit):
+		return
+	var t: GameUnit = target
+	var options := []
+	var constr := []
+	for e: Array in available_for(t, player):
+		if String(e[1]).to_lower().begins_with("constr"):
+			constr = e
+			continue
+		var text := GameData.text("briefing " + String(e[1]))
+		if text.is_empty():
+			text = vm.session.quest_text("briefing " + String(e[1]))
+		var title := text.get_slice("\n", 0).strip_edges() if text else ""
+		options.append({"var": "b.%s.%s" % e, "title": title if title else String(e[1])})
+	if not constr.is_empty():
+		var title := GameData.text("briefing constr").get_slice("\n", 0).strip_edges()
+		options.append({"var": "b.%s.%s" % constr, "title": title if title else "constr"})
+	if options.is_empty():
+		return
+	vm.session.broadcast({"t": "topics", "player": player, "uid": t.uid, "name": t.display_name, "options": options})
+
+
+## The player picked conversation `var_name` from unit `uid`'s topic list.
+func topic(player: int, var_name: String, uid: int) -> void:
+	var t: GameUnit = vm.world.units.get(uid)
+	if not active.is_empty() or t == null or t.dead:
+		return
+	for e: Array in available_for(t, player):
+		if "b.%s.%s" % e == var_name.to_lower():
+			var id := String(e[1])
+			if id.begins_with("constr"):
+				# atof(id.Mid(7)) -> sets "constr.current"
+				# (5) opens the camp screen (the shop).
+				# Only when finds that record. The host restocks it
+				# here (on opening) and sends the goods with the state.
+				var n := int(float(id.substr(7)))
+				if not Shops.exists(n):
+					return
+				vm.session.state.set_var(0, "constr.current", float(n))
+				vm.session.open_shop(n)
+				vm.session.broadcast({"t": "shop", "player": player, "constr": n})
+				return
+			play_named(id, var_name.to_lower(), player, t)
+			return
+
+
+func available(npc: String) -> Array:
+	var pre := "0:b.%s." % npc
+	var out := []
+	for k: String in vm.session.state.vars:
+		if k.begins_with(pre) and is_equal_approx(float(vm.session.state.vars[k]), 1.0):
+			out.append(k.substr(pre.length()))
+	out.sort_custom(func(a, b): return a.naturalnocasecmp_to(b) < 0)
+	return out
+
+
+## Pending conversations of a unit as [owner name, id]: the original
+## takes every GS var b.<owner>.<id> = 1 whose owner names this unit's id
+## (ScriptVM.name_id) — usually the unit's own name, but e.g. "OrcC" is the
+## unit named Shaivar.
+func available_for(u: GameUnit, player := 0) -> Array:
+	return pending_for(vm.session.state, u, player)
+
+
+## The same from the synced state (clients use it for the village click).
+## `player`'s view: its own mercenary vars over the shared ones
+## (CampaignState.get_pvar).
+static func pending_for(state: CampaignState, u: GameUnit, player := 0) -> Array:
+	var name := String(u.info.get("name", "")).to_lower()
+	var out := []
+	var seen := {}
+	for k: String in state.vars:
+		var pre := k.get_slice(":", 0)
+		if not (pre == "0" or (player != 0 and pre == str(player))):
+			continue
+		var key := k.substr(pre.length() + 1)
+		if not key.begins_with("b.") or seen.has(key):
+			continue
+		seen[key] = true
+		if not is_equal_approx(state.get_pvar(player, key), 1.0):
+			continue
+		var parts := key.split(".")
+		if parts.size() != 3:
+			continue
+		if parts[1] == name or ScriptVM.name_id(parts[1]) == u.uid:
+			out.append([parts[1], parts[2]])
+	out.sort_custom(func(a, b): return a[1].naturalnocasecmp_to(b[1]) < 0)
+	return out
+
+
+## Starts conversation `id` for everyone. `var_name` is reported on completion.
+func play_named(id: String, var_name: String, player := 0, partner: GameUnit = null) -> void:
+	var text := GameData.text("briefing " + id)
+	if text.is_empty():
+		# Quest maps ship their own briefings inside the .mq archive.
+		text = vm.session.quest_text("briefing " + id)
+	if var_name.is_empty():
+		var_name = "b.%s.%s" % [String(vm.world.zone.get("id", "")).to_lower(), id]
+	if text.is_empty():
+		push_warning("missing briefing " + id)
+		complete(0, var_name, true)
+		return
+	active = var_name
+	var b := parse(text)
+	var c := cast(b.actors, partner, player)
+	_face(c)
+	vm.session.broadcast({"t": "dialog", "id": var_name, "brief": id, "title": b.title, "phrases": b.phrases, "cast": c})
+
+
+## Where the conversation's actors stand (the original
+## ): the partner "a" walks to a spot in front of the second actor
+## "b" (usually the hero) at the partner prototype's "dialog cam distance" +
+## 2.5 m along b's facing, then faces b; b turns to it and the third actor to
+## the middle between them. A partner that cannot walk stays and b is placed
+## in front of it instead (the original's branch). Approx.: the original's
+## condition for that branch is not traced (the remake uses "cannot walk").
+func _face(c: Dictionary) -> void:
+	var a: GameUnit = vm.world.units.get(int(c.get("a", -1)))
+	var b: GameUnit = vm.world.units.get(int(c.get("b", -1)))
+	if a == null or b == null:
+		return
+	var d := float(a.proto.get("dialog_cam_distance", 0.0)) + 2.5
+	if a.speed() > 0.01 and a.controller < 0:
+		var spot := b.pos + Vector2.from_angle(b.facing) * d
+		if vm.world.nav.find_path(a.pos, spot, [], [], 0.0, a.move_class()).is_empty():
+			spot = b.pos + (a.pos - b.pos).normalized() * d
+		vm.world.dialog_movers[a] = {"to": spot, "angle": (b.pos - spot).angle()}
+		b.facing = (spot - b.pos).angle()
+	elif b.speed() > 0.01:
+		var spot := a.pos + Vector2.from_angle(a.facing) * d
+		if vm.world.nav.find_path(b.pos, spot, [], [], 0.0, b.move_class()).is_empty():
+			spot = a.pos + (b.pos - a.pos).normalized() * d
+		vm.world.dialog_movers[b] = {"to": spot, "angle": (a.pos - spot).angle()}
+	else:
+		a.facing = (b.pos - a.pos).angle()
+		b.facing = (a.pos - b.pos).angle()
+	var cu: GameUnit = vm.world.units.get(int(c.get("c", -1)))
+	if cu:
+		cu.facing = ((a.pos + b.pos) * 0.5 - cu.pos).angle()
+
+
+func complete(player: int, var_name: String, force := false) -> void:
+	if var_name != active and not force:
+		return   # already finished (another co-op player closed it first)
+	active = ""
+	vm.session.broadcast({"t": "dialog_close", "id": var_name})
+	var key := var_name.to_lower()
+	vm.merc_briefing_done(key, player)   #  runs first
+	vm.session.state.set_pvar(player, key, 2.0)
+	# Rewards go to the talking player's purse (a joiner's own, CoopProgress.with_purse).
+	if key.begins_with("sq."):
+		vm.session.coop.with_purse(player, SideQuests.briefing_done.bind(vm.session, key))
+	else:
+		vm.session.coop.with_purse(player, _rewards.bind(key.get_slice(".", key.get_slice_count(".") - 1), player))
+	vm.fire_event("#OnBriefingComplete", [float(player), var_name])
+
+
+func _rewards(id: String, player := 0) -> void:
+	var row := GameData.db.find("briefings", id)
+	if row.is_empty():
+		return
+	var st := vm.session.state
+	# the original (record read): field 1 (
+	# "unknown" here) is experience for the party, field 2 money.
+	# No text window line: the conversation box shows the rewards at its last
+	# phrase (DialogPanel._reward_lines).
+	var exp := float(row.get("unknown", 0.0))
+	if exp != 0.0:
+		vm.session.give_experience(exp, "talk", player)
+	var money := int(float(row.get("money", 0.0)))
+	if money:
+		st.money += money
+	# give_quests and open_zones are GSSetVarMax(var, 1)
+	# give_quests2 and unknown2 are GSSetVar(var, 2) — objectives
+	# done (Dr22: q.gz9g.q26g.1) and zones closed (K42 z.gz11k, Gl63 z.bz14h,
+	# Gl64 z.gz17h).
+	for field in ["give_quests", "give_quests2", "open_zones", "unknown2"]:
+		var two: bool = field in ["give_quests2", "unknown2"]
+		for q in _list(row.get(field)):
+			if two:
+				st.set_var(0, q, 2.0)
+				vm._on_var_changed(q)
+			elif float(st.get_var(0, q)) < 1.0:
+				st.set_var(0, q, 1.0)
+				vm._on_var_changed(q)
+	for spec in _list(row.get("give_items")):
+		if spec.begins_with("prototype."):
+			continue
+		# Quest items go to the quest list, everything else (weapons, armour,
+		# materials, wands) into the party bag.
+		var it: Array = Items.from_spec(spec)
+		if Items.info(it[0]).table in ["quest_items", ""]:
+			st.quest_items[it[0]] = true
+		else:
+			for k in it[1]:
+				st.items.append(it[0])
+	for spec in _list(row.get("take_items")):
+		var it: Array = Items.from_spec(spec)
+		st.quest_items.erase(it[0])
+		for k in it[1]:
+			st.items.erase(it[0])
+	vm.session.sync_state()
+
+
+static func _list(v) -> PackedStringArray:
+	var out := PackedStringArray()
+	if v == null:
+		return out
+	var items: Array = Array(v) if (v is Array or v is PackedStringArray) else str(v).split(";")
+	for s in items:
+		var t := String(s).strip_edges().to_lower()
+		if t:
+			out.append(t)
+	return out
+
+
+## Parses a briefing text into {title, actors, phrases: [{speaker, actor, n,
+## text, desc, anim, camera, cam_args}]}. As in the original the
+## #animation / #camera lines before a #phrase apply to that phrase only
+## (-1 = none); "#camera N angle distance height" gives a free angle.
+## `actors` lists the #show names in order of appearance; each phrase's
+## `shows` holds the "#show name N" / "#hide name" (N = 0) lines before it
+## in order (quest items are drawn at slot N).
+static func parse(text: String) -> Dictionary:
+	var lines := text.replace("\r", "").split("\n")
+	var out := {"title": lines[0].strip_edges() if lines.size() > 0 else "", "phrases": [], "actors": []}
+	var cur := {}
+	var anim := -1
+	var cam := -1
+	var cam_args := []
+	var shows := []
+	var nolips := false
+	for i in range(1, lines.size()):
+		var l := lines[i].strip_edges()
+		if l.begins_with("#"):
+			var w := l.split(" ", false)
+			match w[0].to_upper():
+				"#PHRASE":
+					cur = {"speaker": w[1] if w.size() > 1 else "", "actor": (w[1] if w.size() > 1 else "").to_lower(),
+						"n": int(w[2]) if w.size() > 2 else 0, "text": "", "desc": "", "anim": anim, "camera": cam,
+						"cam_args": cam_args, "shows": shows, "nolips": nolips}
+					out.phrases.append(cur)
+					nolips = false
+					shows = []
+					anim = -1
+					cam = -1
+					cam_args = []
+				"#NOLIPS":   # the next phrase in grey, no lips
+					nolips = true
+				"#DESC":
+					if not cur.is_empty():
+						cur.desc = l.substr(5).strip_edges()
+				"#ANIMATION":
+					anim = int(w[1]) if w.size() > 1 else -1
+				"#CAMERA":
+					cam = int(w[1]) if w.size() > 1 else -1
+					cam_args = [float(w[2]), float(w[3]), float(w[4])] if w.size() > 4 else []
+				"#SHOW":
+					if w.size() > 1 and not w[1].to_lower() in out.actors:
+						out.actors.append(w[1].to_lower())
+					if w.size() > 2:
+						shows.append([w[1].to_lower(), int(w[2])])
+				"#HIDE":
+					if w.size() > 1:
+						shows.append([w[1].to_lower(), 0])   # 0 = take away
+		elif not cur.is_empty() and l:
+			cur.text += ("\n" if cur.text else "") + l
+	for p: Dictionary in out.phrases:
+		p.speaker = speaker_name(p.speaker)
+	return out
+
+
+## The units playing a conversation's actors (the original): "a" the
+## partner the player talked to, "b" the first other #show actor (usually the
+## hero), "c" the next one; `names` maps actor names to unit ids ("hero" is
+## the talking player's hero).
+func cast(actors: Array, partner: GameUnit, player: int) -> Dictionary:
+	var names := {}
+	for n: String in actors:
+		var u := _actor_unit(n, player)
+		if u:
+			names[n] = u.uid
+	var order: Array = []
+	if partner:
+		order.append(partner.uid)
+	for n: String in actors:
+		if names.has(n) and not int(names[n]) in order:
+			order.append(int(names[n]))
+	var out := {"names": names}
+	for i in mini(order.size(), 3):
+		out[["a", "b", "c"][i]] = order[i]
+	return out
+
+
+func _actor_unit(actor: String, player: int) -> GameUnit:
+	var fallback: GameUnit = null
+	for u: GameUnit in vm.world.units.values():
+		if u.dead:
+			continue
+		if actor == "hero":
+			if u.has_meta("hero") and not u.get_meta("hero").has("merc"):
+				if u.controller == player:
+					return u
+				fallback = u if fallback == null else fallback
+		elif String(u.info.get("name", "")).to_lower() == actor or u.uid == ScriptVM.name_id(actor):
+			return u
+	return fallback
+
+
+static func speaker_name(actor: String) -> String:
+	if actor.to_lower() == "hero":
+		return "Zak"
+	var t := GameData.text("pers " + actor.to_lower())
+	return t.get_slice("\n", 0).strip_edges() if t else actor
