@@ -2,7 +2,10 @@ class_name NotifyLine
 extends Interface800
 ## The save / load notice (quick save
 ##  quick load and the Save / Load screens
-## ): texts.res «notify saving» / «notify loading», font 2, green
+## ): texts.res «string notify_saving» / «string notify_loading»
+## (looks up "string " + the id the callers pass
+## "notify_saving"; the remake once asked for "notify saving", which is not in
+## texts.res, so the line stayed empty), font 2, green
 ## (COLORREF), centred in (0,280)-(800,320) of the 800x600 screen.
 ## The original draws it once and saves or loads while it stands; the remake
 ## saves at once, so it stays HOLD seconds (remake choice) and fades.
@@ -18,12 +21,14 @@ var _last := 0
 
 
 func _ready() -> void:
-	set_anchors_preset(Control.PRESET_FULL_RECT)
+	# Offsets too: anchors alone left it 0×0 under the safe root, so kv() was
+	# 0 and the notice was drawn at zero size (invisible).
+	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	process_mode = Node.PROCESS_MODE_ALWAYS
 
 
-## key: "notify saving" or "notify loading".
+## key: "string notify_saving" or "string notify_loading".
 func notify(key: String) -> void:
 	_text = GameData.text(key).strip_edges()
 	_t = HOLD + FADE

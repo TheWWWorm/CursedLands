@@ -125,7 +125,7 @@ func _strike(top: Vector3, ground: Vector3) -> void:
 		_mixer.play3d("nature\\thunder\\%d.wav" % (randi() % 4 + 1), 0, top, 60.0, 150.0)
 		return
 	var mid := (top + ground) * 0.5
-	_fx.script_cmd("CreatePointLight", [1, mid.x, mid.y, mid.z, 80.0, 255, 255, 255])
+	_fx.script_cmd("CreatePointLight", [1, mid.x, mid.y, mid.z, 80.0, 255, 255, 255, Weather.FLASH_TICKS])
 	_mixer.play3d("nature\\lightning\\%d.wav" % (randi() % 3 + 1), 0, top, 60.0, 150.0)
 	var bolt := [top.x, top.y, top.z, ground.x, ground.y, ground.z, -7]
 	_fx.script_cmd("CreateLightning", [1] + bolt)

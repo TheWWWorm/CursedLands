@@ -28,7 +28,7 @@ func _ready() -> void:
 	var info := Label.new()
 	info.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	info.text = RemakeText.t("Import the data from your own copy of Evil Islands. Your files stay on this device.")
-	info.text += "\n" + (RemakeText.t("Choose the extracted game folder, or a private .eipack made with prepare_game_data.py on your computer.") if OS.has_feature("web") else RemakeText.t("Choose your GOG installer (.exe) or a private .eipack. The installer is unpacked without running it."))
+	info.text += "\n" + (RemakeText.t("Choose your GOG installer (setup_evil_islands_*.exe): the browser unpacks it without running it. The installed game folder or a private .eipack also work.") if OS.has_feature("web") else RemakeText.t("Choose your GOG installer (.exe) or a private .eipack. The installer is unpacked without running it."))
 	box.add_child(info)
 	_import = PrivateDataImport.new()
 	add_child(_import)
@@ -37,7 +37,7 @@ func _ready() -> void:
 	_import.completed.connect(_open)
 	if OS.has_feature("web"):
 		_callback = JavaScriptBridge.create_callback(_browser_result)
-		_add(box, "Choose data pack…", func(): _choose_web(false))
+		_add(box, "Choose installer / data pack…", func(): _choose_web(false))
 		_add(box, "Choose game folder…", func(): _choose_web(true))
 	else:
 		var dialog := FileDialog.new()
@@ -89,10 +89,14 @@ func _busy(value: bool) -> void:
 func _choose_web(folder: bool) -> void:
 	JavaScriptBridge.get_interface("CursedFiles").choose(_callback, folder)
 
+## CursedFiles callbacks: (kind, English text, optional format argument).
 func _browser_result(args: Array) -> void:
 	if args.size() < 2:
 		return
-	_status.text = str(args[1])
+	var message := RemakeText.t(str(args[1]))
+	if args.size() > 2 and args[2] != null and message.contains("%"):
+		message = message % (int(args[2]) if args[2] is float else args[2])
+	_status.text = message
 	_busy(str(args[0]) == "progress")
 	if str(args[0]) == "complete":
 		GameFiles.initialize()

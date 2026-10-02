@@ -1,5 +1,39 @@
 # Changelog
 
+## 0.1.2
+
+- Fixes and changes:
+  - Minimap: units are now small arrowheads that point the way they face, green for selected, red for hostile, yellow for others, shown only inside the circle; zone exits are shown as yellow squares, as in the original.
+  - Spells and belt items work again after loading a game, and spell targeting no longer stays active through a load.
+  - Quick save and quick load show the original green "Saving game..." / "Loading game..." notice again, also on the travel map.
+  - Options: double-clicking a key's name now also starts reassigning it (previously only the action's name worked).
+  - Monsters now come to a packmate's aid: a wolf that hears its packmate fighting walks over and attacks you as soon as it sees you, instead of walking past you.
+  - White wolves are white again, and dark boars and other creature variants (hares, tigers, skeletons, deer, trolls…) use their own colours.
+  - Combat music plays again after loading a save and for joining players: the zone's opening music no longer restarts on every load (it holds off the combat music while it plays), and the zone's calm music starts right away, as in the original.
+  - Wind in foliage: tree stumps, logs and mushrooms no longer sway like trees.
+  - Combat: a blow already started now lands even if the target steps away, as in the original (enemies no longer seem to miss when you move), and monsters already fighting can no longer be backstabbed.
+  - You can leave a village again after hiring a mercenary. As in the original, the village is left as soon as your hero walks into its exit, without the leave box.
+  - The move path's dots and the click marker now lie on stone floors and platforms, and are hidden under water, as in the original (a red marker means the spot can't be reached).
+  - The camera can no longer leave the map: in villages it stays over the village, as in the original, and at the map's edges it slides along them.
+  - Aimed strikes: the touch Aim buttons show the original body-part icons, tapping any unit strikes the chosen part as the numpad keys do, and touch controls no longer stay on screen for mouse players after an accidental touch.
+  - Aimed-strike keys (numpad, as in the original) can be rebound to any key in Options → Combat.
+  - Lightning now lights the scene briefly like the original instead of washing the screen white, and the flash can no longer stay on.
+  - The 3D figure in the unit panel animates smoothly at the game's frame rate (at least 30 fps on mobile and web).
+  - Fire and smoke now draw over characters standing behind a campfire, as in the original.
+  - Party face portraits are seen from the original's slightly raised camera angle and size.
+  - The heat haze over fires is off in the browser and on Android, where it painted the ground over characters.
+  - Fire and spell particles below a water surface are hidden by the water again.
+  - Guarded against occasional white flashes of the whole screen at high frame rates (please report if you still see one).
+  - Browser: fixed "This site can't be reached" when you open the game again; affected browsers recover on their own after one more visit.
+  - Browser: you can press Play while the game is still downloading; it shows the progress and starts as soon as it is ready.
+  - Browser: you can now choose your GOG installer (`setup_evil_islands_*.exe`); it is unpacked on your device without being run, so a data pack is no longer needed.
+  - Fullscreen and borderless fullscreen now always fill the whole monitor (including 4K and Windows display scaling), and windowed mode fits on screen, so the menu is never cut off.
+  - In the browser, Zak takes orders as soon as he has stood up, and the game no longer freezes when the music changes or a sound plays for the first time.
+  - In the browser, the camera scrolls at the screen edges as on PC, and stops when the pointer leaves the page.
+  - In the browser, the game's cursor has its PC size at any browser zoom or display scaling, so it points exactly where you click.
+  - In the browser, the game's cursor no longer flickers to the Windows arrow, also near the screen edges.
+  - In the browser, the music no longer drops out when the track changes.
+
 ## 0.1.1
 
 - New: Android preview (APK on the Releases page), with touch controls for the original interface.

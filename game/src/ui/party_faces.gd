@@ -95,9 +95,13 @@ func _process(_dt: float) -> void:
 	for i in _cells.size():
 		var r := _cell(i)
 		var p: Portrait = _cells[i][1]
-		var face := _r(Rect2(r.position.x + 3, 513, r.size.x - 6, 72))
+		var face_r := Rect2(r.position.x + 3, 513, r.size.x - 6, 72)
+		var face := _r(face_r)
 		p.position = face.position
 		p.size = face.size
+		# the figure at the cell's centre, y 548, depth 7, scale
+		# 0.3 for a cell wider than 49 px (own heroes), else 0.22.
+		p.set_exe_place(face_r, r.get_center().x, 0.3 if r.size.x > 49.0 else 0.22)
 		p.selected = _cells[i][0] in game.selected
 	queue_redraw()
 

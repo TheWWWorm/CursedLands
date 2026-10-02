@@ -66,14 +66,16 @@ func _has_point(p: Vector2) -> bool:
 func _process(_dt: float) -> void:
 	var u: GameUnit = game.selected[0] if game and not game.selected.is_empty() and is_instance_valid(game.selected[0]) else null
 	var q: Array = u.get_meta("hero").get("quick", []) if u and u.has_meta("hero") else []
-	var sig := "%s:%s:%s:%s" % [u.uid if u else -1, ",".join(q), size, game.pending_spell]
+	# The unit's instance, not its uid: after a reload the party is new units
+	# with the same uids (see SpellSlots._process).
+	var sig := "%s:%s:%s:%s" % [u.get_instance_id() if u else 0, ",".join(q), size, game.pending_spell]
 	if sig == _sig:
 		return
 	_sig = sig
 	#  sets the cell it unpicks to scale 1.0; it keeps that until
 	# the belt is refilled (on a selection change, or the list
 	# changing).
-	var refill := "%s:%s" % [u.uid if u else -1, ",".join(q)]
+	var refill := "%s:%s" % [u.get_instance_id() if u else 0, ",".join(q)]
 	if refill != _refill_sig:
 		_refill_sig = refill
 		_unpicked = -1

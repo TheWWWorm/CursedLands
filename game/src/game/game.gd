@@ -447,6 +447,9 @@ func attach_world(w: GameWorld) -> void:
 	world = w
 	w.process_mode = Node.PROCESS_MODE_PAUSABLE   # the Game node itself runs while paused
 	reset_speed()   # a new zone = a new field / village screen
+	# ...so no spell / belt item / Follow target is still being chosen: it
+	# named the old zone's units (a load gives new ones with the same uids).
+	cancel_touch_target()
 	if w.get_parent() == null:
 		add_child(w)
 	rig.terrain = w.terrain
@@ -661,17 +664,17 @@ func open_quests() -> void:
 
 
 func _click(p: Vector2, add: bool) -> void:
-	if touch_aim >= 0:
-		var target := pick_unit(p)
-		var part := touch_aim
-		cancel_touch_target()
-		if target and not target.dead and not selected.is_empty() and world.is_enemy(selected[0], target):
-			issue({"t": "attack", "units": selected.map(func(s: GameUnit): return s.uid), "target": target.uid, "aim": part, "run": _double})
-			marks.unit_ordered(target, true, -1.0, selected)
-		return
+	# The touch Aim / Force buttons stand for a key held through one click:
+	# the click is the held key's (with an aimed flag + i
+	# _forced_click: any living unit attacked with that aim, the ground or a
+	# corpse a 0x3a group move), then the key counts as released.
+	# The issued order keeps its aim for every strike.
 	if _forced_click(p):
+		touch_aim = -1
 		touch_force = ""
 		return
+	if touch_aim >= 0:
+		cancel_touch_target()   # nothing selected: an ordinary click
 	var u := pick_unit(p)
 	# The village screen (the original mode 0): a left click
 	# on any living unit — no side check, so own party members and hired
@@ -858,7 +861,7 @@ func on_event(e: Dictionary) -> void:
 			if tu and int(e.get("to", -1)) == session.my_index:
 				VisionFog.open(world, tu, float(e.get("secs", 10.0)), session.my_index)
 		"music":
-			sound.force_music(String(e.get("name", "")))
+			sound.force_music(String(e.get("name", "")), float(e.get("at", 0.0)))
 		"ack":
 			var who: GameUnit = world.units.get(int(e.get("uid", -1))) if world else null
 			if who == null:
@@ -1051,7 +1054,7 @@ func _apply_options() -> void:
 	Gfx.apply_env(_env)
 	_apply_sky()
 	EIFigure.set_wind(Gfx.on("gfx_wind"))
-	get_tree().set_group(&"gfx_heat_haze", "visible", Gfx.on("gfx_heat_haze"))
+	get_tree().set_group(&"gfx_heat_haze", "visible", Gfx.heat_haze_on())
 	_fit_shadows()
 	if world:
 		_apply_shadows(world)

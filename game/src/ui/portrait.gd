@@ -12,6 +12,23 @@ extends SubViewportContainer
 
 const SIZE := Vector2i(64, 64)
 var view_size := SIZE
+## the original places the interface face in the 800x600 interface
+## camera space (: pixel (px, py) at depth z -> ((px/400 - 1)·K·z
+## (py/400 - 0.75)·K·z, z), K = 0.48157462, perspective): the model's origin at
+## the cell's centre x, y 548, depth 7, scaled (0.3 for a cell
+## wider than 49 px, else 0.22), turned by π about the view x axis (the face
+## model looks up its +z). The faces sit low on the screen, so the view ray
+## comes from above: about 16° for y 548. Set by PartyFaces: the face's
+## 800x600 rect (the viewport) and its centre x; empty = the old ortho framing.
+var exe_rect := Rect2()
+var exe_x := 400.0
+var exe_scale := 0.3
+const EXE_K := 0.48157462
+const EXE_Y := 548.0
+const EXE_DEPTH := 7.0
+var _pivot: Node3D
+var _face_cam: Camera3D
+var _box_cam_size := 0.0
 
 var _key := ""
 var _model: Node3D
@@ -178,12 +195,17 @@ func _infa_face(vp: SubViewport, u: GameUnit) -> bool:
 		var b := mi.get_aabb()
 		box = b if first else box.merge(b)
 		first = false
+	# The model under a pivot that holds the interface placement; its own
+	# rotation is the head motion (_update_head).
+	vp.remove_child(n)
+	_pivot = Node3D.new()
+	vp.add_child(_pivot)
+	_pivot.add_child(n)
 	var cam := Camera3D.new()
-	cam.projection = Camera3D.PROJECTION_ORTHOGONAL
-	cam.size = maxf(box.size.x, box.size.z) * 1.05
-	var ctr := box.get_center()
-	cam.transform = Transform3D(Basis.looking_at(Vector3.DOWN, Vector3.FORWARD), ctr + Vector3(0, box.size.y + 1.0, 0))
+	_face_cam = cam
+	_box_cam_size = maxf(box.size.x, box.size.z) * 1.05
 	vp.add_child(cam)
+	_place_face()
 	var env := WorldEnvironment.new()
 	env.environment = Environment.new()
 	env.environment.background_mode = Environment.BG_CLEAR_COLOR
@@ -197,6 +219,46 @@ func _infa_face(vp: SubViewport, u: GameUnit) -> bool:
 	add_child(_flash)
 	set_process(true)
 	return true
+
+
+## Camera and model placement for exe_rect (see exe_rect above).
+func _place_face() -> void:
+	if not is_instance_valid(_face_cam) or not is_instance_valid(_pivot):
+		return
+	var cam := _face_cam
+	if not exe_rect.has_area():
+		cam.projection = Camera3D.PROJECTION_ORTHOGONAL
+		cam.size = _box_cam_size
+		cam.transform = Transform3D(Basis.looking_at(Vector3.DOWN, Vector3.FORWARD), Vector3(0, 10, 0))
+		_pivot.transform = Transform3D.IDENTITY
+		return
+	# The interface camera through exe_rect (as Paperdoll._ui_camera).
+	var near := 0.1
+	var k := EXE_K * near
+	var c := exe_rect.get_center()
+	cam.keep_aspect = Camera3D.KEEP_HEIGHT
+	cam.set_frustum(exe_rect.size.y * 0.0025 * k,
+		Vector2((c.x * 0.0025 - 1.0) * k, -(c.y * 0.0025 - 0.75) * k), near, 100.0)
+	cam.transform = Transform3D.IDENTITY
+	# EI camera space (x right, y down, z forward) -> Godot camera space; the
+	# model's local axes are EI's mapped by EISpace (x, z, -y).
+	var to_godot := Basis(Vector3(1, 0, 0), Vector3(0, -1, 0), Vector3(0, 0, -1))
+	var ei_local := Basis(Vector3(1, 0, 0), Vector3(0, 0, -1), Vector3(0, 1, 0))
+	var rot := Basis(Vector3(1, 0, 0), PI)
+	var at := Vector3((exe_x * 0.0025 - 1.0) * EXE_K * EXE_DEPTH,
+		(EXE_Y * 0.0025 - 0.75) * EXE_K * EXE_DEPTH, EXE_DEPTH)
+	_pivot.transform = Transform3D((to_godot * rot * ei_local.inverse()).scaled_local(Vector3.ONE * exe_scale),
+		to_godot * at)
+
+
+## PartyFaces: the face's 800x600 rect, its centre x and the cell's scale.
+func set_exe_place(rect: Rect2, x: float, scale: float) -> void:
+	if rect == exe_rect and x == exe_x and scale == exe_scale:
+		return
+	exe_rect = rect
+	exe_x = x
+	exe_scale = scale
+	_place_face()
 
 
 func _update_expression(dt: float) -> void:

@@ -2758,6 +2758,39 @@ func ct_feet(e: FxEmitter, c: Array) -> void:
 
 # ------------------------------------------------- DrawPath
 
+##  (on the global, its plane list): the landscape
+## height, raised to the highest object plane over (x, y). The planes are the
+## upward faces (normal z >= 0.8) of the boxes of the "BASE*"
+## parts (part flag 0x400)
+## i.e. the floors the AI map lays, e.g. the stone platforms
+## of the gz1g ruins. The path dots and the target marks (
+## the same list) sit on them, not on the land below.
+## Remake: the floor cells of the nav grid (0.5 m) stand in for the planes.
+static func plane_ground(e: FxEmitter, x: float, y: float) -> float:
+	var g: float = e.fx.ground(x, y)
+	var w: GameWorld = e.fx.world
+	if w and w.nav.size.x > 0:
+		var p := Vector2(x, y)
+		if w.nav.cell_ground(p) == NavGrid.FLOOR_GROUND:
+			g = maxf(g, w.nav.cell_height(p))
+	return g
+
+
+## The path dots and target marks are depth tested like every particle: the
+## world pass draws the land, the objects, then the
+## liquids (the second texture set) with Z
+## write on (render state 0xe is 1 and only switched off for
+## the sky and the particle block), then, in the 0x400 block, the particles
+##  with Z write off but the Z test on (state 7 untouched; the
+## TLP gives every corner its real depth). So a dot or mark
+## under the water surface is hidden, as is one behind a hill or under an
+## overhang. Godot draws the water without a depth write, so the remake hides
+## a particle of these types whose centre is under the cell's water level.
+static func under_water(e: FxEmitter, x: float, y: float, z: float) -> bool:
+	var w: GameWorld = e.fx.world
+	return w != null and w.terrain != null and w.terrain.water_at(x, y) > z
+
+
 ## one dot per logic tick along the carrier's predicted path
 ## (at tick + idx), up to ticks, skipping repeats. The
 ## original's carrier is a ghost copy of the unit; the remake passes the predicted
@@ -2783,7 +2816,7 @@ func sp_path(e: FxEmitter, p: Array, idx: int) -> bool:
 	cc[8] = q.z
 	p[0] = q.x
 	p[1] = q.y
-	p[2] = e.fx.ground(q.x, q.y) + 0.15
+	p[2] = plane_ground(e, q.x, q.y) + 0.15
 	p[3] = 0.07
 	p[0x11] = 15
 	p[0x14] = -10
@@ -2800,7 +2833,10 @@ func up_path(e: FxEmitter, p: Array) -> bool:
 	p[0x14] -= 1
 	if p[0x14] < 0:
 		return false
-	p[0x16] = alpha(roundi(float(tab(T_PATH_A, p[0x14])) * 255.0), int(p[0x16]) & RGB)
+	var a := roundi(float(tab(T_PATH_A, p[0x14])) * 255.0)
+	if under_water(e, p[0], p[1], p[2]):
+		a = 0
+	p[0x16] = alpha(a, int(p[0x16]) & RGB)
 	return true
 
 
@@ -2851,6 +2887,8 @@ func up_target(e: FxEmitter, p: Array) -> bool:
 	var g: float = e.fx.ground(p[0], p[1]) + 0.1
 	var pl: float = c[3] - ((p[1] - e.wp.y) * c[7] + (p[0] - e.wp.x) * c[6]) * c[8] + 0.1
 	p[2] = maxf(g, pl)
+	if under_water(e, p[0], p[1], p[2]):
+		p[0x16] = int(p[0x16]) & RGB   # hidden under the water (see under_water)
 	p[3] = p[0xb]
 	p[8] *= 1.05
 	p[9] *= 1.05
@@ -2859,15 +2897,20 @@ func up_target(e: FxEmitter, p: Array) -> bool:
 	return true
 
 
-## the ground plane at the target on the first tick (:
-## height and normal, normal z inverted), emitting stops after two ticks.
+## the object plane at the target on the first tick (:
+## the highest plane of the list over the point, see plane_ground
+## height and normal, normal z inverted; none: height 0, normal up, so the
+## marks keep to the ground + 0.1), emitting stops after two ticks.
+## Remake: a floor cell's plane is taken flat.
 func ct_target(e: FxEmitter, c: Array) -> void:
 	if int(c[0xd]) == 0:
 		var x := e.wp.x
 		var y := e.wp.y
-		var h: float = e.fx.ground(x, y)
-		var n := Vector3(e.fx.ground(x - 0.5, y) - e.fx.ground(x + 0.5, y),
-			e.fx.ground(x, y - 0.5) - e.fx.ground(x, y + 0.5), 1.0).normalized()
+		var h := 0.0
+		var n := Vector3(0, 0, 1)
+		var f := plane_ground(e, x, y)
+		if f > e.fx.ground(x, y):
+			h = f
 		c[3] = h
 		c[6] = n.x
 		c[7] = n.y

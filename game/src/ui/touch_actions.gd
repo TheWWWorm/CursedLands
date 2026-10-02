@@ -8,7 +8,16 @@ var _aim: Button
 var _popup: PanelContainer
 var _grid: GridContainer
 var _aim_open := false
+## The aimed-strike cursors' strips (textures.res cursor_attack_hd / bd / lh /
+## rh / ll / rl, the original cursors 16..21, Game.AIM_CURSORS
+## order = aim 0..5), one texture per 32×32 frame. The original has no aim
+## buttons (held numpad keys); its only aim
+## pictures are these cursors, so the touch controls show them: frame 0 on
+## the part buttons, and the armed part's strip animated on the Aim button at
+## the cursor's rate (: one frame per 125 ms).
+var _strips: Array = []
 var _icons: Array[Texture2D] = []
+const PARTS := ["Head", "Body", "L arm", "R arm", "L leg", "R leg"]
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -17,9 +26,15 @@ func _ready() -> void:
 	_menu = _button("≡", func(): _show_menu())
 	_aim = _button("", func(): _show_aim())
 	for cursor in Game.AIM_CURSORS:
-		var frames := GameCursor.frames(cursor)
-		_icons.append(ImageTexture.create_from_image(frames[0]) if not frames.is_empty() else null)
+		var strip: Array[Texture2D] = []
+		for frame: Image in GameCursor.frames(cursor):
+			strip.append(ImageTexture.create_from_image(frame))
+		_strips.append(strip)
+		_icons.append(strip[0] if not strip.is_empty() else null)
 	_aim.icon = _icons[1]
+	_aim.expand_icon = true
+	_aim.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_tight(_aim)
 	_aim.tooltip_text = RemakeText.t("Aim at a body part")
 	add_child(_menu)
 	add_child(_aim)
@@ -45,14 +60,20 @@ func _button(title: String, action: Callable) -> Button:
 	button.pressed.connect(action)
 	button.add_theme_font_override("font", Interface800.font())
 	button.add_theme_color_override("font_color", Interface800.TEXT)
-	for state in ["normal", "hover", "pressed"]:
+	for state in ["normal", "hover", "pressed", "hover_pressed"]:
 		var style := StyleBoxFlat.new()
 		style.bg_color = Color(0.16, 0.13, 0.08, 0.9) if state == "normal" else Color(0.30, 0.24, 0.13)
-		style.border_color = Color(0.47, 0.38, 0.23)
-		style.set_border_width_all(1)
+		# A toggled part button (the armed aim) keeps a bright frame.
+		style.border_color = Color(0.85, 0.7, 0.35) if state.ends_with("pressed") else Color(0.47, 0.38, 0.23)
+		style.set_border_width_all(2 if state.ends_with("pressed") else 1)
 		style.set_content_margin_all(5)
 		button.add_theme_stylebox_override(state, style)
 	return button
+
+## Icon buttons: the 32×32 cursor picture fills the finger-sized cell.
+func _tight(button: Button) -> void:
+	for state in ["normal", "hover", "pressed", "hover_pressed"]:
+		(button.get_theme_stylebox(state) as StyleBoxFlat).set_content_margin_all(2)
 
 func _process(_dt: float) -> void:
 	visible = TouchInput.enabled and is_instance_valid(game) and not game.hud._movie.visible
@@ -68,14 +89,21 @@ func _process(_dt: float) -> void:
 	var party_width := maxf(56.0, game.hud._faces._cells.size() * 56.0) * size.y / 600.0
 	_aim.position = Vector2(size.x * 0.5 - party_width * 0.5 - cell - 8, size.y - cell - 8)
 	_aim.size = Vector2(cell, cell)
-	_aim.icon = _icons[game.touch_aim] if game.touch_aim >= 0 else _icons[1]
+	var armed := game.touch_aim
+	if armed >= 0 and not _strips[armed].is_empty():
+		var strip: Array = _strips[armed]
+		_aim.icon = strip[int(Time.get_ticks_msec() / int(GameCursor.FRAME_SEC * 1000.0)) % strip.size()]
+	else:
+		_aim.icon = _icons[1]
 	_aim.modulate = Color(1.3, 1.15, 0.7) if game.touch_aim >= 0 else Color.WHITE
 	_aim.visible = not game.hud.blocks_camera() and not game.session.shop_available()
 	_menu.visible = not game.hud.blocks_camera()
 	if not _menu.visible:
 		_popup.hide()
 	for child: Button in _grid.get_children():
-		child.custom_minimum_size = Vector2(cell * (1.25 if _aim_open else 1.8), cell)
+		child.custom_minimum_size = Vector2(cell * (1.0 if _aim_open else 1.8), cell)
+		if _aim_open:
+			child.set_pressed_no_signal(child.get_index() == armed)
 		child.add_theme_font_size_override("font_size", maxi(12, int(cell * 0.29)))
 	_popup.position = Vector2(clampf(_aim.position.x + cell * 0.5 - _popup.size.x * 0.5, 0, size.x - _popup.size.x), _aim.position.y - _popup.size.y - 6) if _aim_open else Vector2(x, cell + 12)
 	_menu.add_theme_font_size_override("font_size", int(cell * 0.40))
@@ -105,11 +133,20 @@ func _show_aim() -> void:
 	_aim_open = true
 	_grid.columns = 3
 	for i in 6:
-		_entry(["Head", "Body", "L arm", "R arm", "L leg", "R leg"][i], func():
+		_entry("", func():
 			game.pending_spell = ""
 			game.touch_force = ""
 			game.touch_aim = i
 			game.hud.set_targeting(""))
+		# The part's own aimed-strike cursor; the armed part shows pressed.
+		var b: Button = _grid.get_child(i)
+		b.icon = _icons[i]
+		b.expand_icon = true
+		b.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		b.toggle_mode = true
+		b.set_pressed_no_signal(game.touch_aim == i)
+		b.tooltip_text = RemakeText.t(PARTS[i])
+		_tight(b)
 	_popup.show()
 
 func _show_menu() -> void:

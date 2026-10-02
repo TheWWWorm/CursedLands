@@ -90,9 +90,16 @@ func _send(fade: float) -> void:
 ## the WorldScript string: a point light (id 1, radius 80, white)
 ## the middle, "nature\lightning\1..3" (60 / 150) at the top and two bolts
 ## (ids 1, 2, param −7) one script tick apart.
+## Remake: the strike light's own expiry (ParticleFx._flash_light), past the
+## script's three Sleep(1) ticks.
+const FLASH_TICKS := 6
+
+
 func _strike() -> void:
-	var x := randf() * 508.0 + 2.0
-	var y := randf() * 508.0 + 2.0
+	_strike_at(randf() * 508.0 + 2.0, randf() * 508.0 + 2.0)
+
+
+func _strike_at(x: float, y: float) -> void:
 	var z := world.ground_at(x, y) - 5.0
 	var tx := x + randf() * 4.0 - 2.0
 	var ty := y + randf() * 4.0 - 2.0
@@ -101,7 +108,7 @@ func _strike() -> void:
 		_fx("CreateFX", [tx, ty, tz, 60.0, 150.0, "nature\\thunder\\%d.wav" % (randi() % 4 + 1)])
 		return
 	var mid := [(tx + x) * 0.5, (ty + y) * 0.5, (tz + z) * 0.5]
-	_fx("CreatePointLight", [1, mid[0], mid[1], mid[2], 80.0, 255, 255, 255])
+	_fx("CreatePointLight", [1, mid[0], mid[1], mid[2], 80.0, 255, 255, 255, FLASH_TICKS])
 	_fx("CreateFX", [tx, ty, tz, 60.0, 150.0, "nature\\lightning\\%d.wav" % (randi() % 3 + 1)])
 	_fx("CreateLightning", [1, tx, ty, tz, x, y, z, -7])
 	var tree := world.get_tree() if world.is_inside_tree() else null

@@ -152,6 +152,7 @@ static func _strip_mat(dem: bool) -> StandardMaterial3D:
 		m.depth_draw_mode = BaseMaterial3D.DEPTH_DRAW_DISABLED
 		m.vertex_color_use_as_albedo = true
 		m.texture_repeat = true
+		m.render_priority = ParticleFx.RENDER_PRIORITY + 1   # after the particles
 		m.albedo_texture = GameData.get_texture("demonlightning" if dem else "lightning")
 		_mat_strip[i] = m
 	# Option gfx_bloom: the bolt passes the bloom threshold (ParticleFx.GLOW_BOOST).
@@ -168,6 +169,7 @@ static func _glow_mat() -> StandardMaterial3D:
 		m.blend_mode = BaseMaterial3D.BLEND_MODE_ADD
 		m.cull_mode = BaseMaterial3D.CULL_DISABLED
 		m.depth_draw_mode = BaseMaterial3D.DEPTH_DRAW_DISABLED
+		m.render_priority = ParticleFx.RENDER_PRIORITY + 1
 		m.albedo_texture = GameData.get_texture("smtglight")
 		_mat_glow = m
 	var b := ParticleFx.GLOW_BOOST if Gfx.on("gfx_bloom") else 1.0

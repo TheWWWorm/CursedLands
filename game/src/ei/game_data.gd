@@ -239,6 +239,11 @@ func _ready() -> void:
 			options[key] = Portability.defaults()[key]
 	if OS.has_feature("web") and not GameFiles.manifest.is_empty():
 		root = GameFiles.WEB_ROOT
+	# Browser settings saved before the web build kept edge scrolling hold the
+	# phone's scroll_border 0: back to the desktop default once.
+	if OS.has_feature("web") and int(cfg.get_value("remake", "web_input", 0)) < 1 \
+			and cfg.has_section_key("options", "scroll_border") and int(cfg.get_value("options", "scroll_border")) == 0:
+		options.scroll_border = OPTIONS.filter(func(o): return o[0] == "scroll_border")[0][5]
 	options.difficulty = difficulty
 	options.resolution = maxi(0, resolutions().find(_res_from_string(resolution_size)))
 	var rev := int(cfg.get_value("remake", "gfx", 0))
@@ -395,6 +400,8 @@ func save_settings() -> void:
 	for k in options:
 		cfg.set_value("options", k, options[k])
 	cfg.set_value("remake", "gfx", _gfx_rev)
+	if OS.has_feature("web"):
+		cfg.set_value("remake", "web_input", 1)
 	cfg.set_value("display", "resolution", resolution_size)
 	cfg.save(CONFIG_PATH)
 
@@ -789,24 +796,67 @@ func _apply_window() -> void:
 	if state == _window_state:
 		return
 	_window_state = state
-	var scr := DisplayServer.window_get_current_screen()
+	_place_window(mode, size, ri == 0)
+
+
+var _window_gen := 0
+
+
+## Puts the main window in the display mode, through the root Window so its
+## viewport always follows the window: DisplayServer calls alone leave the
+## viewport at the old size on X11 (a 3840×2160 menu drawn into a 1280×720
+## window, cut off). Sizes are physical pixels on every platform (Windows: the
+## process is system-DPI aware, so 125 % … 200 % scaling changes nothing here).
+## Fullscreen / borderless fullscreen: Godot's own modes, which cover the
+## monitor exactly; the window is not pre-sized to the screen first (a framed
+## window that big hangs over the screen edges until the mode switch lands).
+## Windowed: the window with its frame inside the screen's usable area.
+func _place_window(mode: int, size: Vector2i, native: bool) -> void:
+	_window_gen += 1
+	var gen := _window_gen
+	var w := get_tree().root
 	if mode == 0:
 		if DisplayServer.window_get_mode() != DisplayServer.WINDOW_MODE_WINDOWED:
-			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
-		DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_BORDERLESS, false)
-		var area := DisplayServer.screen_get_usable_rect(scr)
-		var s := Vector2i(mini(size.x, area.size.x), mini(size.y, area.size.y))
-		DisplayServer.window_set_size(s)
-		DisplayServer.window_set_position(area.position + (area.size - s) / 2)
-		if ri == 0:   # native: the whole work area (maximised where a window manager runs)
-			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_MAXIMIZED)
-	else:
-		# Placed over the screen first: without a window manager the
-		# fullscreen state alone does not resize the window.
-		DisplayServer.window_set_position(DisplayServer.screen_get_position(scr))
-		DisplayServer.window_set_size(DisplayServer.screen_get_size(scr))
-		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN if mode == 1
-			else DisplayServer.WINDOW_MODE_FULLSCREEN)
+			w.mode = Window.MODE_WINDOWED
+		w.borderless = false
+		_fit_windowed(size)
+		if native:   # the whole work area (maximised where a window manager runs)
+			w.mode = Window.MODE_MAXIMIZED
+		# The frame is known only once the window is framed again (after
+		# fullscreen) and the window manager has placed it: measure again.
+		for i in 4:
+			await get_tree().process_frame
+		if gen == _window_gen and DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_WINDOWED:
+			_fit_windowed(size)
+		return
+	w.mode = Window.MODE_EXCLUSIVE_FULLSCREEN if mode == 1 else Window.MODE_FULLSCREEN
+	if DisplayServer.get_name() != "X11":   # Windows / macOS / Wayland: the mode itself covers the screen
+		return
+	for i in 10:
+		await get_tree().process_frame
+	if gen != _window_gen:
+		return
+	var scr := DisplayServer.window_get_current_screen()
+	var screen := Rect2i(DisplayServer.screen_get_position(scr), DisplayServer.screen_get_size(scr))
+	if Rect2i(DisplayServer.window_get_position(), DisplayServer.window_get_size()) != screen:
+		# No window manager honours the fullscreen state (a bare X server):
+		# the window made borderless and laid over the whole screen.
+		w.borderless = true
+		w.position = screen.position
+		w.size = screen.size
+
+
+## The windowed size (clamped so the window and its frame fit the usable area,
+## i.e. without the taskbar / panels), centred there.
+func _fit_windowed(size: Vector2i) -> void:
+	var w := get_tree().root
+	var area := DisplayServer.screen_get_usable_rect(DisplayServer.window_get_current_screen())
+	var deco := (DisplayServer.window_get_size_with_decorations() - DisplayServer.window_get_size()).clamp(Vector2i.ZERO, area.size / 4)
+	var s := size.min(area.size - deco).max(Vector2i(320, 240))
+	w.size = s
+	var want := area.position + (area.size - s - deco) / 2   # where the frame's corner goes
+	var inset := (DisplayServer.window_get_position() - DisplayServer.window_get_position_with_decorations()).clamp(Vector2i.ZERO, deco)
+	w.position = want + inset   # a move places the client area (Windows; X11: static gravity)
 
 
 class FpsLabel extends Label:

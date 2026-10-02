@@ -428,7 +428,7 @@ func _lever_states() -> Dictionary:
 # remembered by the host (world meta "replay") so a client that loads the zone
 # later -- a late joiner, a reconnect, or everyone after a load or zone change
 # -- gets them again as the same event types: hidden / removed map objects,
-# script particle sources and lights (fxcmd), the forced music, lasting magic
+# script particle sources and lights (fxcmd), the forced music (only while it still plays on the host), lasting magic
 # effects on units (magicfx) and lasting ground spells (spellfx with "left"),
 # plus the open conversation or global map.
 
@@ -532,8 +532,16 @@ func _replay_events(local := false) -> Array:
 			out.append({"t": "remove_obj", "nid": nid} if v == 2 else {"t": "hide_obj", "nid": nid, "hide": v == 1})
 		for nid in rs.get("moved", {}):
 			out.append({"t": "move_obj", "nid": nid, "p": rs.moved[nid]})
-	if not rs.music.is_empty():
-		out.append(rs.music)
+	# A script PlayMusic only while it still plays on the host, from where the
+	# host is (holds the combat music for the track's length).
+	# Never for the host's own rebuilt world: the original's zone load only sets
+	# the zone music mode, nothing restores a PlayMusic.
+	if not local and not rs.music.is_empty() and GameSound.instance:
+		var fp: Array = GameSound.instance.music.forced_playing()
+		if not fp.is_empty() and String(fp[0]) == String(rs.music.get("name", "")).to_lower().get_file().trim_suffix(".mp3"):
+			var ev: Dictionary = rs.music.duplicate()
+			ev.at = float(fp[1])
+			out.append(ev)
 	for key in rs.fx:
 		out.append_array(rs.fx[key])
 	if local:
@@ -588,15 +596,12 @@ func _send_world_state(pid: int) -> void:
 			_rpc_event.rpc_id(pid, ev)
 
 
-## Host: a stored zone's script particle sources, lights and music come back
-## with it (the zone script that made them does not run again).
+## Host: a stored zone's script particle sources and lights come back with it
+## (the zone script that made them does not run again). Its PlayMusic does
+## not: the original's zone load only sets the zone music mode.
 func _replay_local() -> void:
 	for ev: Dictionary in _replay_events(true):
-		if ev.t == "music":
-			if game:
-				game.on_event(ev)
-		else:
-			ParticleFx.of(world).on_event(ev)
+		ParticleFx.of(world).on_event(ev)
 
 
 ## Extra .mob files merged into the current zone (AddMob, side quest maps).
@@ -668,6 +673,9 @@ func _exit_at(at: Vector2) -> int:
 
 
 func _check_exits() -> void:
+	if String(world.zone.get("type", "")) == "brief":
+		_village_exit_check()
+		return
 	_auto_exit_check()
 	if _leave_armed < 0 or not travel_options.is_empty() or (world.vm and world.vm.briefings.active):
 		return
@@ -710,6 +718,46 @@ func _auto_exit_check() -> void:
 		return
 	_auto_exit = n
 	broadcast({"t": "leave_box", "to": 0, "exit": n})
+
+
+## A village leaves by its own rule (the village screen's update
+## ..): armed from the screen's build (:
+##  = 1, exit = 0), it puts only the party's FIRST record (party
+## the leader) into the unit list and
+## on exit 0; when that unit stands in it (target not "none", GS var
+## "z.<target>" != 1) it leaves at once through — no leave-zone
+## box and no check of the other members, so hired mercenaries (and other
+## heroes) need not be in the exit. Remake: the host's leader (co-op: the host
+## decides, as for field exits); fired once per stay in the rect, so "Stay here"
+## on the global map does not reopen it at once.
+func _village_exit_check() -> void:
+	var exits: Dictionary = world.zone.get("exits", {})
+	var n := -1
+	var inside := false
+	if not exits.is_empty():
+		n = exits.keys()[0]
+		var ex: Dictionary = exits[n]
+		var lead: GameUnit = null
+		var recs: Array = state.heroes.get(0, [])
+		for u: GameUnit in world.units.values():
+			if u.controller == 0 and not u.dead and u.has_meta("hero") and not recs.is_empty() and u.get_meta("hero") == recs[0]:
+				lead = u
+		inside = lead != null and ex.has("remove") and String(ex.get("to", "none")).to_lower() != "none" \
+			and (ex.remove as Rect2).has_point(lead.pos)
+	if _auto_world != world:
+		_auto_world = world
+		_auto_exit = n if inside else -1
+		return
+	if not inside:
+		_auto_exit = -1
+		return
+	if n == _auto_exit or not travel_options.is_empty() or (world.vm and world.vm.briefings.active):
+		return
+	var to := String(exits[n].get("to", "none"))
+	if state.get_var(0, "z." + to.to_lower()) == 1.0:
+		return
+	_auto_exit = n
+	leave_zone(to, int(exits[n].get("to_exit", 1)))
 
 
 ## The open exit (remove rect, target not "none", GS var "z.<target>" != 1)
@@ -2264,12 +2312,12 @@ func save_game(slot: String, save_name := "", frame: Image = null) -> void:
 			SaveInfo.write_shot(slot, get_viewport())
 	# No log line: the original checks the free space first («no_disc_space» box
 	# load_panel) and shows nothing after a save; while it saves it shows
-	# «notify saving» (NotifyLine; after the shot, so the
+	# «string notify_saving» (NotifyLine; after the shot, so the
 	# picture stays clean). Not for the zone autosave.
 	if err != OK:
 		push_error("save %s failed (%d)" % [slot, err])
 	elif slot != "autosave" and game and game.hud:
-		game.hud.notify("notify saving")
+		game.hud.notify("string notify_saving")
 
 
 func _allod_id() -> String:
@@ -2312,7 +2360,7 @@ func load_game(slot: String) -> bool:
 	_restoring = false
 	state.restore_party_positions(world)
 	if game and game.hud:
-		game.hud.notify("notify loading")
+		game.hud.notify("string notify_loading")
 	# attach_world focused the zone's start point before the party was put
 	# back where it was saved: look at the selected hero instead.
 	# The original restores the saved camera record (

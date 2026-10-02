@@ -245,7 +245,7 @@ void fragment() {
 ## (moves x / y only for flagged vertices) is treated like the others.
 const WATER_SHADER := """
 shader_type spatial;
-render_mode cull_disabled, blend_mix, ambient_light_disabled;
+render_mode cull_disabled, blend_mix, ambient_light_disabled, depth_draw_always;
 varying vec3 ei_e;
 varying float ei_k;
 uniform sampler2DArray atlases : source_color, filter_linear_mipmap_anisotropic, repeat_disable;
@@ -320,7 +320,7 @@ void fragment() {
 ## churn instead. Keeps the per-material SetWaterLevel offsets.
 const WATER_FX_SHADER := """
 shader_type spatial;
-render_mode cull_disabled, blend_mix;
+render_mode cull_disabled, blend_mix, depth_draw_always;
 uniform sampler2DArray atlases : source_color, filter_linear_mipmap_anisotropic, repeat_disable;
 uniform float level[64];
 uniform float lava[64];
@@ -800,6 +800,12 @@ func _build(arc: EIResArchive) -> void:
 	_land_mat = land_mat
 	var wmat := ShaderMaterial.new()
 	wmat.shader = _water_shader
+	#  draws the liquids after the figures and
+	# before the effects, with z writes on: particles under the surface stay
+	# hidden. Godot draws units (alpha-to-coverage) in its transparent pass,
+	# so the water goes after them and before ParticleFx.RENDER_PRIORITY,
+	# and writes depth for the particles' depth test.
+	wmat.render_priority = ParticleFx.RENDER_PRIORITY - 1
 	_water_mat = wmat
 	_level.resize(64)
 	_lava.resize(64)

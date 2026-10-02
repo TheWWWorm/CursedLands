@@ -26,11 +26,16 @@ static func group(job: Callable, count: int) -> void:
 static func defaults() -> Dictionary:
 	if not constrained():
 		return {}
-	return {"gfx_hd_textures": 0, "gfx_volumetric": 0, "gfx_ssao": 0,
+	var d := {"gfx_hd_textures": 0, "gfx_volumetric": 0, "gfx_ssao": 0,
 		"gfx_water_reflections": 0, "gfx_heat_haze": 0, "gfx_soft_particles": 0,
 		"gfx_torch_glow": 0, "gfx_far_view": 0, "gfx_materials": 0,
 		"q_aa": 0, "q_shadows": 0, "q_aniso": 1, "fps_limit": 2,
-		"render_scale": 2, "confine_mouse": 0, "scroll_border": 0}
+		"render_scale": 2, "confine_mouse": 0}
+	# A phone has no pointer at the screen edges. A browser keeps the desktop
+	# edge scrolling for its mouse (touch mode turns it off, CameraRig).
+	if handheld():
+		d.scroll_border = 0
+	return d
 
 static var _safe_frame := -1
 static var _safe_insets := Vector4.ZERO
@@ -53,7 +58,7 @@ static func _read_safe_insets() -> void:
 			var a: Variant = JSON.parse_string(str(b.insets()))
 			if a is Array and a.size() == 4:
 				_safe_insets = Vector4(a[0], a[1], a[2], a[3])
-		_phone = bool(JavaScriptBridge.eval("navigator.maxTouchPoints > 0", true))
+		_phone = false   # a browser's touch layout follows TouchInput.enabled (the input in use)
 	elif handheld():
 		var area := DisplayServer.get_display_safe_area()
 		var screen := Vector2(DisplayServer.screen_get_size())

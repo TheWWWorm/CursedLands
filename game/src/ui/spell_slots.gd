@@ -111,7 +111,9 @@ func _process(_dt: float) -> void:
 	var u: GameUnit = game.selected[0] if game and not game.selected.is_empty() and is_instance_valid(game.selected[0]) else null
 	var h: Dictionary = u.get_meta("hero") if u and u.has_meta("hero") else {}
 	var spells: Array = h.get("spells", [])
-	var sig := "%s:%s:%s:%s" % [u.uid if u else -1, ",".join(spells), size, game.pending_spell]
+	# The unit's instance, not its uid: a reload (Session.load_game) builds the
+	# party anew with the same uids, and _unit must not stay the freed one.
+	var sig := "%s:%s:%s:%s" % [u.get_instance_id() if u else 0, ",".join(spells), size, game.pending_spell]
 	if sig == _sig:
 		return
 	_sig = sig

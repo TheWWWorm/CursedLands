@@ -22,6 +22,9 @@ extends Node
 ## 800×600 HUD (height / 600, as party_faces / message_log), smoothly
 ## filtered, hot spot scaled with it; still the OS (hardware) cursor.
 
+## The browser's cursor (web export), by path: no class_name load order.
+const WebCursor := preload("res://src/platform/web_cursor.gd")
+
 ## Godot's custom cursor limit (px per side).
 const MAX_PX := 256
 
@@ -36,9 +39,6 @@ const HOTSPOT := {
 const SCROLL := {Vector2i(0, -1): "cursor_scroll_u", Vector2i(1, -1): "cursor_scroll_ur",
 	Vector2i(1, 0): "cursor_scroll_r", Vector2i(1, 1): "cursor_scroll_dr", Vector2i(0, 1): "cursor_scroll_d",
 	Vector2i(-1, 1): "cursor_scroll_dl", Vector2i(-1, 0): "cursor_scroll_l", Vector2i(-1, -1): "cursor_scroll_ul"}
-## Aimed strike part index (Game.AIM_KEYS) -> cursor.
-const AIM := ["cursor_attack_hd", "cursor_attack_bd", "cursor_attack_rh", "cursor_attack_lh",
-	"cursor_attack_rl", "cursor_attack_ll"]
 
 static var _frames := {}
 ## Scaled frames: "name@px" -> [Image]. Images, not textures: the OS cursor
@@ -82,23 +82,13 @@ static func scaled(name: String, px: int) -> Array:
 		var img: Image = f.duplicate()
 		if px != 32:
 			# Colour bleeds from the opaque neighbours into the keyed-out
-			# pixels first, so the filtered edge does not darken to black.
-			img.premultiply_alpha()
+			# pixels first, so the filtered edge does not darken to black
+			# (natively: a per-pixel script loop stalled a frame per cursor).
+			img.fix_alpha_edges()
 			img.resize(px, px, Image.INTERPOLATE_CUBIC if px > 32 else Image.INTERPOLATE_BILINEAR)
-			_unpremultiply(img)
 		out.append(img)
 	_scaled[key] = out
 	return out
-
-
-static func _unpremultiply(img: Image) -> void:
-	for y in img.get_height():
-		for x in img.get_width():
-			var c := img.get_pixel(x, y)
-			if c.a <= 0.0:
-				img.set_pixel(x, y, Color(0, 0, 0, 0))
-			else:
-				img.set_pixel(x, y, Color(minf(c.r / c.a, 1.0), minf(c.g / c.a, 1.0), minf(c.b / c.a, 1.0), clampf(c.a, 0.0, 1.0)))
 
 
 ## Cursor side in pixels for the current window: 32 × height / 600.
@@ -113,7 +103,10 @@ func set_kind(k: String) -> void:
 	kind = k
 	_shown = -1
 	if k.is_empty():
-		Input.set_custom_mouse_cursor(null)
+		if OS.has_feature("web"):
+			WebCursor.off()
+		else:
+			Input.set_custom_mouse_cursor(null)
 
 
 func _process(dt: float) -> void:
@@ -135,8 +128,14 @@ func _process(dt: float) -> void:
 		_shown = i
 		var hs: Vector2 = HOTSPOT.get(kind, Vector2.ZERO) * (px / 32.0)
 		hs = hs.round().clamp(Vector2.ZERO, Vector2(px - 1, px - 1))
-		Input.set_custom_mouse_cursor(f[i], Input.CURSOR_ARROW, hs)
+		if OS.has_feature("web"):
+			WebCursor.show(kind, i, px, hs)   # a CSS cursor: see WebCursor
+		else:
+			Input.set_custom_mouse_cursor(f[i], Input.CURSOR_ARROW, hs)
 
 
 func _exit_tree() -> void:
-	Input.set_custom_mouse_cursor(null)
+	if OS.has_feature("web"):
+		WebCursor.clear()
+	else:
+		Input.set_custom_mouse_cursor(null)

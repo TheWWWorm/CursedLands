@@ -76,6 +76,11 @@ const MIN_LIMIT := 3.0        # CameraMinLimitDistanceToCarrier, hard
 const SOFT_MAX := 100.0       # CameraMaxDistanceToCarrier
 const MIN_PITCH := 20.0
 const MAX_PITCH := 80.0
+## Village screen (camera flag 0x200, set, cleared):
+## pitch limits settings = 30° / 60°; its
+## distance limits.. equal the field's 4 / 100 / 3 / 80.
+const VILLAGE_MIN_PITCH := 30.0
+const VILLAGE_MAX_PITCH := 60.0
 
 ## Modern style limits (remake). The farthest zoom keeps the look-at point in
 ## front of the night fog (Gfx.FOG_NIGHT 50 m; with the far view option its
@@ -117,6 +122,7 @@ var _ground_s := 0.0
 var _ground_init := false
 var _free := false              # follow mode let go (the player panned away)
 var _follow_unit: Node3D
+var _pointer_inside := true   # NOTIFICATION_WM_MOUSE_ENTER / EXIT
 var _drag_button := 0          # only a gesture begun outside the GUI owns the camera
 var _window_focused := true
 var _fade: CameraFade
@@ -182,7 +188,7 @@ func set_pose(p: Dictionary) -> bool:
 	var at: Array = p.get("at", [])
 	if at.size() != 3:
 		return false
-	position = Vector3(float(at[0]), float(at[1]), float(at[2]))
+	position = clamp_look_at(Vector3(float(at[0]), float(at[1]), float(at[2])))
 	yaw = float(p.get("yaw", yaw))
 	_stop_velocities()
 	if modern():
@@ -193,15 +199,68 @@ func set_pose(p: Dictionary) -> bool:
 		_follow_unit = null   # resolve the selected hero again after loading
 		_snap()
 	else:
-		pitch = clampf(float(p.get("pitch", pitch)), deg_to_rad(-MAX_PITCH), deg_to_rad(-MIN_PITCH))
+		pitch = clampf(float(p.get("pitch", pitch)), -_pitch_max(), -_pitch_min())
 		distance = clampf(float(p.get("distance", distance)), MIN_DISTANCE, MAX_DISTANCE)
 	_apply()
 	return true
 
 
+## The current zone's record when the rig shows it (Game.world), else {}.
+func _zone() -> Dictionary:
+	var g := get_parent() as Game
+	if g and g.world and g.world.terrain == terrain:
+		return g.world.zone
+	return {}
+
+
+## A village (map.txt type "brief"): the original's village screen.
+func in_village() -> bool:
+	return String(_zone().get("type", "")) == "brief"
+
+
+## Pitch limits below the horizon (rad): field 20° .. 80°, village 30° .. 60°.
+func _pitch_min() -> float:
+	return deg_to_rad(VILLAGE_MIN_PITCH if in_village() else MIN_PITCH)
+
+
+func _pitch_max() -> float:
+	return deg_to_rad(VILLAGE_MAX_PITCH if in_village() else MAX_PITCH)
+
+
+## The look-at limit of the original's camera, applied to every way
+## the look-at moves here (keys, edges, drags, touch, minimap, Home, follow,
+## loads, both styles; not the scripted / dialogue views of hold_view). It
+## limits the look-at point (the view centre), not the view:
+## (pan and tracking branches) and the move setters
+## clamp (EI x / y, metres) each to 0.. map − 1
+## (sectors × 32) on its own axis, so at a side or a corner the
+## camera slides along it; distance and pitch play no part. Then, with camera
+## flag 0x100 (only called by the village screen
+## for a zone whose map.txt record has ".restrict x y r", record..
+## read), a look-at farther than r from (x, y) is put back
+## that circle along the line to its centre (it slides round the circle). The
+## village screen's teardown clears flags 0x100 / 0x200.
+## `p` is in Godot space (EI x, ·, −EI y); y is kept.
+func clamp_look_at(p: Vector3) -> Vector3:
+	if terrain == null:
+		return p
+	var s := terrain.size_ei()
+	var x := clampf(p.x, 0.0, s.x - 1.0)
+	var y := clampf(-p.z, 0.0, s.y - 1.0)
+	var r = _zone().get("restrict", null) if in_village() else null
+	if r is Vector3 and r.z > 0.0:
+		var d := Vector2(x - r.x, y - r.y)
+		if d.length_squared() > r.z * r.z:
+			d = d.normalized() * r.z
+			x = r.x + d.x
+			y = r.y + d.y
+	return Vector3(x, p.y, -y)
+
+
 ## Puts the look-at point on `p` at once (zone start, tests).
 func focus(p: Vector3) -> void:
-	position = p
+	position = clamp_look_at(p)
+	p = position
 	if modern():
 		_goal = p
 		_free = true
@@ -215,7 +274,7 @@ func center_on(p: Vector3) -> void:
 	if not modern():
 		focus(p)
 		return
-	_goal = p
+	_goal = clamp_look_at(p)
 	_vel = Vector3.ZERO
 	_free = false
 
@@ -306,6 +365,10 @@ func _notification(what: int) -> void:
 		_suspend_motion()
 	elif what == NOTIFICATION_APPLICATION_FOCUS_IN or what == NOTIFICATION_WM_WINDOW_FOCUS_IN:
 		_window_focused = true
+	elif what == NOTIFICATION_WM_MOUSE_EXIT:
+		_pointer_inside = false
+	elif what == NOTIFICATION_WM_MOUSE_ENTER:
+		_pointer_inside = true
 
 
 func _input_blocked() -> bool:
@@ -358,7 +421,7 @@ func _unhandled_input(e: InputEvent) -> void:
 			var sy := -1.0 if GameData.option("camera_reverse_y") else 1.0
 			var mp := _mouse_power()
 			yaw -= e.relative.x * 0.006 * sx * mp
-			pitch = clampf(pitch - e.relative.y * 0.006 * sy * mp, deg_to_rad(-MAX_PITCH), deg_to_rad(-MIN_PITCH))
+			pitch = clampf(pitch - e.relative.y * 0.006 * sy * mp, -_pitch_max(), -_pitch_min())
 			_apply()
 		elif e.button_mask & MOUSE_BUTTON_MASK_MIDDLE:
 			_pan(Vector2(-e.relative.x, -e.relative.y) * distance * 0.002 * _mouse_power())
@@ -465,7 +528,7 @@ func _process(delta: float) -> void:
 		_pan(_pan_v * pan_factor() * delta)
 	if _yaw_v != 0.0 or _pitch_v != 0.0 or _zoom_v != 0.0 or distance < MIN_DISTANCE:
 		yaw += _yaw_v * delta
-		pitch = clampf(pitch + _pitch_v * delta, deg_to_rad(-MAX_PITCH), deg_to_rad(-MIN_PITCH))
+		pitch = clampf(pitch + _pitch_v * delta, -_pitch_max(), -_pitch_min())
 		distance = _limit_distance(distance + _zoom_v * delta, ticks)
 		_apply()
 
@@ -531,7 +594,9 @@ func _edge_scroll() -> Vector2i:
 		return out
 	var vp := get_viewport()
 	var border := float(GameData.option("scroll_border"))
-	if border >= 1.0 and DisplayServer.window_is_focused() and vp.gui_get_hovered_control() == null:
+	# A pointer that left the window (a browser page, or a desktop window
+	# without "Keep mouse in window") keeps its last position: no scrolling.
+	if border >= 1.0 and _pointer_inside and DisplayServer.window_is_focused() and vp.gui_get_hovered_control() == null:
 		var mp := vp.get_mouse_position()
 		var sz := vp.get_visible_rect().size
 		if Rect2(Vector2.ZERO, sz).has_point(mp):
@@ -589,10 +654,8 @@ func _apply() -> void:
 	if camera:
 		camera.fov = ORIGINAL_FOV
 	if terrain:
-		# the look-at point stays within 0.. map size − 1.
-		var s := terrain.size_ei()
-		position.x = clampf(position.x, 0.0, s.x - 1.0)
-		position.z = clampf(position.z, -(s.y - 1.0), 0.0)
+		# the look-at limit (clamp_look_at).
+		position = clamp_look_at(position)
 		position.y = terrain.height_at(position.x, -position.z)
 	if camera:
 		var b := Basis.from_euler(Vector3(pitch, yaw, 0))
@@ -613,7 +676,7 @@ func _switch_style(m: bool) -> void:
 	else:
 		distance = clampf(_dist_s, MIN_DISTANCE, MAX_DISTANCE)
 		yaw = _yaw_s
-		pitch = clampf(-_modern_pitch(), deg_to_rad(-MAX_PITCH), deg_to_rad(-MIN_PITCH))
+		pitch = clampf(-_modern_pitch(), -_pitch_max(), -_pitch_min())
 		if camera:
 			camera.transform = Transform3D.IDENTITY
 		if _fade:
@@ -782,10 +845,7 @@ func _process_modern(game_dt: float) -> void:
 		distance *= exp(zoom * dt * 1.6 * speed_factor("cam_zoom_speed"))
 	distance = clampf(distance, M_MIN_DISTANCE, _max_distance())
 	_follow(g, dt)
-	if terrain:
-		var s := terrain.size_ei()
-		_goal.x = clampf(_goal.x, 0.0, s.x)
-		_goal.z = clampf(_goal.z, -s.y, 0.0)
+	_goal = clamp_look_at(_goal)
 	# Ease the shown values toward the goals.
 	var k := 1.0 if panning else _ease(10.0, dt)
 	position.x = lerpf(position.x, _goal.x, k)
@@ -883,9 +943,9 @@ func _apply_modern() -> void:
 		return
 	camera.fov = MODERN_FOV
 	if terrain:
-		var s := terrain.size_ei()
-		position.x = clampf(position.x, 0.0, s.x)
-		position.z = clampf(position.z, -s.y, 0.0)
+		# The same look-at limit as the original style (clamp_look_at).
+		_goal = clamp_look_at(_goal)
+		position = clamp_look_at(position)
 		if not _ground_init:
 			position.y = terrain.height_at(position.x, -position.z) + lerpf(M_LIFT_CLOSE, M_LIFT_FAR, _zoom_t(_dist_s))
 	pitch = -_modern_pitch()

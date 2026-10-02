@@ -46,6 +46,9 @@ var _ack_q := {}
 ## Units saying a "say_block" line (unit flag): uid -> true.
 var _blocked := {}
 var _early_music := ""
+## Tests: print each acknowledgement's pick and outcome.
+static var trace_acks := false
+var _early_at := 0.0
 var _early_world: GameWorld = null
 var _bored := {}   # host: unit uid -> [idle counter (creature), gait]
 ## these codes are queued even while another line is pending
@@ -127,7 +130,7 @@ func _zone_start(w: GameWorld) -> void:
 		# gets the host's event, or a joiner its replay, in the frames between
 		# the world's creation and this call) still applies.
 		if _early_music != "" and _early_world == w:
-			music.play_forced(_early_music)
+			music.play_forced(_early_music, _early_at)
 	_early_music = ""
 	_update_listener()
 	ambient = AmbientSound.new(mixer, w, dungeon)
@@ -340,6 +343,8 @@ func on_event(e: Dictionary) -> void:
 		"combat_flag":
 			if game and game.session and int(e.get("p", -1)) == game.session.my_index:
 				combat_flag = int(e.get("v", 0))
+				if MusicSystem.trace:
+					print("music: combat flag %d (track '%s', mode %d, hold %s)" % [combat_flag, music._cur, music.mode, music.hold])
 		"weather":
 			if weather:
 				weather.on_event(e, _ticks + _tick_acc / TICK)
@@ -449,7 +454,7 @@ static func ack(u: GameUnit, code: int) -> void:
 	else:
 		# a random line among those whose chance ≥ rand % 100.
 		l = EIAcks.pick(ls)
-	if SoundMixer.trace:
+	if SoundMixer.trace or trace_acks:
 		print("[ack] %s code 0x%x lines %d -> %s" % [u.display_name, code, ls.size(), l.get("wav", "-")])
 	if l.is_empty():
 		return
@@ -535,7 +540,7 @@ func _ack_queue(u: GameUnit, code: int, wav: String) -> void:
 	_update_block(u, q)
 	if not q.is_empty() and not (code in ACK_URGENT):
 		_ack_q[u.uid] = q
-		if SoundMixer.trace:
+		if SoundMixer.trace or trace_acks:
 			print("[ack] %s 0x%x dropped: a line is pending" % [u.display_name, code])
 		return
 	var e := {"u": u, "wav": wav, "code": code, "counter": 3, "handle": -1, "block": code == 0x2b}
@@ -595,12 +600,18 @@ func _ack_play(e: Dictionary) -> void:
 	var u: GameUnit = e.u
 	var code := int(e.code)
 	if (code == 2 or code == 0x1c) and units and units.attack_playing(u):
+		if trace_acks:
+			print("[ack] %s 0x%x %s skipped: attack sound playing" % [u.display_name, code, e.wav])
 		return
 	var now := Time.get_ticks_msec()
 	var last: Array = _acks.get(u.uid, ["", 0])
 	if String(last[0]) == String(e.wav) and now - int(last[1]) < 5000:
+		if trace_acks:
+			print("[ack] %s 0x%x %s skipped: said within 5 s" % [u.display_name, code, e.wav])
 		return
 	e.handle = mixer.play2d(String(e.wav), 1, 100, 0, false, false, SoundMixer.CAT_SPEECH)
+	if trace_acks:
+		print("[ack] %s 0x%x plays %s (handle %d)" % [u.display_name, code, e.wav, int(e.handle)])
 	_acks[u.uid] = [String(e.wav), now]
 	if (code == 2 or code == 0x1c) and units:
 		units.set_attack(u, int(e.handle))
@@ -731,11 +742,12 @@ func stop_speech() -> void:
 # ------------------------------------------------------------------ music
 
 ## Script PlayMusic.
-func force_music(name: String) -> void:
+func force_music(name: String, at := 0.0) -> void:
 	name = name.to_lower().get_file().trim_suffix(".mp3")
 	var w := game.world if game else null
 	if w != _world:
 		_early_music = name
+		_early_at = at
 		_early_world = w
 		return
-	music.play_forced(name)
+	music.play_forced(name, at)

@@ -171,6 +171,14 @@ var _pose_dirty := true     # part health / figure changed (_set_action's idle s
 var _idle_key := []
 var _anim_acc := 0.0
 var _anim_due := 0.0
+## The figure's animation runs on the game clock (the physics steps that move
+## the unit and count its _anim_lock), not on the frame clock: when frames
+## take longer than the engine catches up with (max_physics_steps_per_frame),
+## the game runs slower than real time, and a clip played by frame time ended
+## on screen while its lock still held the unit's orders (the web build's
+## first zone: Zak stood up, then ignored orders for many seconds).
+var _game_clock := 0.0
+var _anim_clock := -1.0
 var _anim_pos := Vector2.INF
 var _anim_moving := 0.0
 ## Shown in the unit panel, whose figure mirrors this pose: full animation rate.
@@ -1333,11 +1341,13 @@ func _do_attack(dt: float) -> void:
 	# wounds; monsters 15). The strike animation still has to finish.
 	var a_w := float(stats.get("weapon_actions", proto.get("tuning_actions", 50.0)))
 	_attack_cd = maxf(roundf(a_w * 15.0 / actions()) * TICK, len)
-	# The outcome is rolled now, the blow lands later.
+	# The outcome is rolled now, the blow lands later. The hit
+	# record takes this order's aim before the roll (
+	# then reads its).
+	strike_aim = int(order.get("aim", -1))
 	var roll := world.combat.strike_roll(self, t)
 	strike_miss = not roll.hit
 	_pending_hit = {"t": _hit_ticks() * TICK, "target": t, "roll": roll}
-	strike_aim = int(order.get("aim", -1))
 	GameSound.unit(self, "attack")
 	world.on_attack(self, t)
 
@@ -1558,8 +1568,9 @@ static func _clip_frames(tmpl: String, clip: String) -> Vector2i:
 func _resolve_hit(t: GameUnit, roll := {}) -> void:
 	if t == null or not is_instance_valid(t) or t.dead:
 		return
-	if pos.distance_to(t.pos) > (stats.reach if stats.get("ranged", false) else melee_reach(t)) + 1.0:
-		return
+	# No range check: the blow fires at the strike's end tick wherever the
+	# target now stands (case 3
+	# the target's with the stored roll).
 	if stats.get("ranged", false):
 		Projectile.launch(world, self, t, true).roll = roll
 		if world.session:
@@ -1764,10 +1775,17 @@ func _process(dt: float) -> void:
 		for g in _geoms:
 			if is_instance_valid(g):
 				g.layers = OFFSCREEN_LAYER if far else 1
+	var now := _game_clock + Engine.get_physics_interpolation_fraction() * get_physics_process_delta_time()
+	var game_dt := 0.0
+	if _anim_clock < 0.0:
+		_anim_clock = now
+	elif now > _anim_clock:
+		game_dt = now - _anim_clock
+		_anim_clock = now
 	if model == null or model.player == null or not model.player.is_playing() or model.player.speed_scale == 0.0:
 		_anim_acc = 0.0
 		return
-	_anim_acc += dt
+	_anim_acc += game_dt
 	# Walking units keep the full rate everywhere: GroundMarks places their
 	# footprints at the clips' step frames from the posed feet.
 	if pos != _anim_pos:
@@ -2007,6 +2025,7 @@ var _xf := Transform3D()
 
 
 func _physics_process(_dt: float) -> void:
+	_game_clock += _dt
 	_sync_transform()
 	if alert and controller >= 0 and world and world.authority and order.get("type", "") != "attack":
 		alert = false

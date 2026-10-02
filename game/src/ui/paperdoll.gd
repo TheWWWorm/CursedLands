@@ -46,8 +46,18 @@ var _pivot: Node3D
 var _cam: Camera3D
 var _framed := 0
 var _drag := false
+## The original poses the figure for every drawn frame: the unit panel re-renders
+## the unit's own figure at the current game time (calls the
+## object's with the clock, then draws it), the camp screen
+## samples timeGetTime. The remake mirrors the unit's pose by copying its part
+## transforms (cheap) every frame; phones and the web refresh at 30 Hz.
+## Wounds are still compared at 15 Hz.
 const POSE_INTERVAL := 1.0 / 15.0
+const POSE_INTERVAL_CONSTRAINED := 1.0 / 30.0
 var _pose_wait := 0.0
+var _wound_wait := 0.0
+var _pairs: Array = []   # [source part, preview part] in tree order (parents first)
+var _pairs_src: EIUnitModel
 var _pose_clip := ""
 var _pose_time := -1.0
 var _anim_roots: Array[EIAnimPart] = []
@@ -92,6 +102,8 @@ func show_info(info: Dictionary) -> void:
 	_pose_clip = ""
 	_pose_time = -1.0
 	_anim_roots.clear()
+	_pairs.clear()
+	_pairs_src = null
 	_wound_levels.clear()
 	for c in get_children():
 		c.queue_free()
@@ -141,14 +153,17 @@ func _process(dt: float) -> void:
 	if not is_visible_in_tree():
 		_pose_wait = 0.0
 		return
-	# Pose sampling is expensive; camera framing and held-arrow rotation stay
-	# independent of this cadence. Resume hidden previews with an immediate sample.
+	# Every frame on desktop, 30 Hz on phones / web (POSE_INTERVAL_CONSTRAINED).
+	# Resume hidden previews with an immediate sample.
 	_pose_wait = maxf(0.0, _pose_wait - dt)
 	var sample := is_zero_approx(_pose_wait)
-	if sample:
-		_pose_wait = POSE_INTERVAL
+	if sample and Portability.constrained():
+		_pose_wait = POSE_INTERVAL_CONSTRAINED
 	if follow_pose and sample:
-		_sync_pose()
+		_wound_wait = maxf(0.0, _wound_wait - dt)
+		_sync_pose(is_zero_approx(_wound_wait))
+		if is_zero_approx(_wound_wait):
+			_wound_wait = POSE_INTERVAL
 	if camp_frame:
 		if _framed == 0:
 			_ui_camera(CAMP_RECT)
@@ -266,26 +281,34 @@ func _seek_pose(time: float) -> void:
 	_pose_time = time
 
 
-func _sync_pose() -> void:
-	if is_instance_valid(_unit) and _unit.parts.size() >= 6:   # the unit's wound layers too
+func _sync_pose(wounds := true) -> void:
+	if wounds and is_instance_valid(_unit) and _unit.parts.size() >= 6:   # the unit's wound layers too
 		var levels := UnitWounds.levels(_unit)
 		if levels != _wound_levels:
 			UnitWounds.apply(_model, levels, int(_unit.race.get("type_id", 0)) == 0x32)
 			_wound_levels = levels
-	if not is_instance_valid(_unit) or _unit.model == null or _unit.model.player == null or _model.player == null:
+	if not is_instance_valid(_unit) or _unit.model == null:
 		return
 	var src: EIUnitModel = _unit.model
-	var key := src.player.assigned_animation
-	if key.is_empty() or not _model.player.has_animation(key):
-		return
-	var clip := key.trim_prefix("ei/")
-	if clip != _model._current:
-		_model.play(clip, 0.0)
-	if _model.player.assigned_animation == key:
-		_seek_pose(src.player.current_animation_position)
-		# Re-pausing discards AnimationPlayer's track caches, making the next seek expensive.
-		if _model.player.is_playing():
-			_model.player.pause()
+	if src != _pairs_src:
+		_pairs_src = src
+		_pairs.clear()
+		var by_name := {}
+		for n: Node in src.find_children("*", "EIAnimPart", true, false):
+			by_name[n.name] = n
+		for n: Node in _model.find_children("*", "EIAnimPart", true, false):
+			if by_name.has(n.name):
+				_pairs.append([by_name[n.name], n])
+	# The unit's figure as posed this frame, part by part in the model's own
+	# space (both models are built from the same unit spec).
+	var to_src := src.global_transform.affine_inverse()
+	var from_dst := _model.global_transform
+	for pair: Array in _pairs:
+		var a: Node3D = pair[0]
+		if not is_instance_valid(a):
+			_pairs_src = null
+			return
+		(pair[1] as Node3D).global_transform = from_dst * (to_src * a.global_transform)
 
 
 ## Radians around Godot's up axis; CampView supplies the original held-arrow rate.

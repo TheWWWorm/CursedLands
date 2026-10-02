@@ -10,6 +10,8 @@ extends Node
 ## in samples: the stream jumps back to 0 there) or Markers1 (the points where
 ## a "switch at marker" request may cut over).
 
+const WebMusic := preload("res://src/platform/web_music.gd")
+
 enum Mode { NONE, ZONE, BRIEFING, CONSTRUCTOR, MAIN_MENU, CREDITS }
 ##  request modes: 1 at the end of the track, 2 fade out first
 ## 3 at the next Markers1 point, 4 at once.
@@ -21,7 +23,8 @@ const NOW := 4
 const FADE_STEP := 1.0 / 96.0
 const FADE_TICK := 0.1
 
-var player: AudioStreamPlayer
+## AudioStreamPlayer, or in a browser WebMusic (same calls; see there).
+var player: Node
 var mode := Mode.NONE
 var allod := "gipat"
 var dungeon := false
@@ -48,10 +51,12 @@ var _rate := 44100.0
 var _markers1 := PackedInt32Array()
 var _loop_at := -1
 static var _streams := {}
+## Tests: print every track switch and combat change.
+static var trace := false
 
 
 func _ready() -> void:
-	player = AudioStreamPlayer.new()
+	player = WebMusic.new() if WebMusic.available() else AudioStreamPlayer.new()
 	player.bus = "Music"
 	player.finished.connect(_on_end)
 	add_child(player)
@@ -91,6 +96,8 @@ func _random(section: String, key: String) -> String:
 # ------------------------------------------------------------------ modes
 
 ## a zone starts (allod "final" on gz20g; dungeon = world).
+## It = 1, so the first calm track starts as soon as the hold ends
+## (world tick 90), not after the 2–3 minute pause.
 func set_zone(a: String, dun: bool) -> void:
 	_cut()
 	mode = Mode.ZONE
@@ -99,7 +106,7 @@ func set_zone(a: String, dun: bool) -> void:
 	hold = true
 	combat = false
 	_forced_on = false
-	_next_calm = 0
+	_next_calm = 1
 
 
 ## the briefing track at once.
@@ -128,14 +135,25 @@ func back_to_zone() -> void:
 
 
 ## script PlayMusic: only in the zone mode; the track at once
-## then silence at its end.
-func play_forced(track: String) -> void:
-	if mode != Mode.ZONE or EIAudio.music(track) == null:
+## then silence at its end. `at` (seconds, remake co-op): a joining player
+## starts the host's running forced track where the host is.
+func play_forced(track: String, at := 0.0) -> void:
+	if mode != Mode.ZONE or EIAudio.music_path(track).is_empty():
 		return
 	_forced = track
 	_forced_on = true
 	request(track, NOW)
+	if at > 0.0 and _cur == track and player.playing:
+		player.seek(at)
 	request("", AT_END)
+
+
+## The script PlayMusic track still playing (host: what a joiner should hear),
+## as [track, seconds in], or [] once it has ended.
+func forced_playing() -> Array:
+	if mode == Mode.ZONE and _forced_on and _cur == _forced and player.playing:
+		return [_forced, player.get_playback_position()]
+	return []
 
 
 ##  (conversation start / end
@@ -164,6 +182,8 @@ func tick(combat_flag: int) -> void:
 		combat = false
 		_next_calm = now + 120000 + randi() % 60001
 	var c := combat_flag == 2
+	if trace and c != combat:
+		print("music: combat %s (track '%s', forced '%s')" % [c, _cur, _forced if _forced_on else ""])
 	if not combat:
 		if c:
 			if _cur != _last_combat or _last_combat == "":
@@ -246,6 +266,8 @@ func _pos() -> int:
 func _switch() -> void:
 	_has_pending = false
 	var track := _pending
+	if trace:
+		print("music: '%s' -> '%s' (mode %d)" % [_cur, track, _pending_mode])
 	_cur = track
 	_fading = 0
 	_fade = 1.0
@@ -253,12 +275,17 @@ func _switch() -> void:
 	if track == "":
 		player.stop()
 		return
-	var s := EIAudio.music(track)
-	if s == null:
+	var path := EIAudio.music_path(track)
+	if path.is_empty():
 		_cur = ""
 		player.stop()
 		return
-	_rate = _mp3_rate(s.data)
+	var s: AudioStreamMP3 = null
+	if player is AudioStreamPlayer:
+		s = EIAudio.music(track)
+		_rate = _mp3_rate(s.data)
+	else:   # the browser reads and decodes the file itself
+		_rate = _mp3_rate(GameFiles.read(path, 0, mini(GameFiles.length(path), 65536)))
 	var m := markers(track)
 	_markers1 = PackedInt32Array()
 	var m1 = m.get("Markers1", [])
@@ -267,8 +294,11 @@ func _switch() -> void:
 			_markers1.append(int(x))
 	_markers1.sort()
 	_loop_at = int(m.get("Markers2", -1)) if not (m.get("Markers2", -1) is Array) else -1
-	player.stream = s
-	player.play()
+	if s:
+		player.stream = s
+		player.play()
+	else:
+		player.play_path(path)
 
 
 ## The sample rate of the first MPEG audio frame.

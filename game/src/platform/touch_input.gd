@@ -5,6 +5,12 @@ extends Node
 
 signal mode_changed
 var enabled := false
+## Touch mode for good: a phone / tablet, or --touch. Otherwise (a desktop,
+## or a browser on a touch-capable PC) a touch turns the touch controls on
+## and real mouse movement turns them off again.
+var pinned := false
+var _last_touch := -100000
+var _mouse_run := 0.0
 var fingers: Dictionary = {}
 var _primary := -1
 var _start := Vector2.ZERO
@@ -26,9 +32,14 @@ var _hold_owner: Control
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	Input.set_emulate_mouse_from_touch(false)
-	enabled = Portability.handheld() or OS.get_cmdline_user_args().has("--touch")
+	pinned = Portability.handheld() or OS.get_cmdline_user_args().has("--touch")
+	enabled = pinned
 	if OS.has_feature("web"):
-		enabled = bool(JavaScriptBridge.eval("navigator.maxTouchPoints > 0", true))
+		# The first guess only: a page whose primary pointer is a finger (a
+		# phone or tablet). A PC with a touch screen has a fine primary pointer
+		# (mouse or touchpad) and starts with the desktop controls; touches and
+		# mouse movement switch the mode from then on.
+		enabled = bool(JavaScriptBridge.eval("matchMedia('(pointer: coarse)').matches", true))
 	get_tree().auto_accept_quit = not Portability.handheld()
 
 func game() -> Game:
@@ -42,8 +53,12 @@ func target_pixels() -> float:
 	return 48.0 * maxf(1.0, dpi / 160.0) / get_viewport().get_final_transform().get_scale().x
 
 func _input(event: InputEvent) -> void:
+	if event is InputEventMouseMotion and not _emitting and event.device != InputEvent.DEVICE_ID_EMULATION:
+		_mouse_moved(event)
 	if _emitting or not (event is InputEventScreenTouch or event is InputEventScreenDrag):
 		return
+	_last_touch = Time.get_ticks_msec()
+	_mouse_run = 0.0
 	if not enabled:
 		enabled = true
 		mode_changed.emit()
@@ -55,6 +70,17 @@ func _input(event: InputEvent) -> void:
 			_release(event.index, event.position, event.canceled)
 	else:
 		_drag(event.index, event.position)
+
+## A real mouse (not this node's emulation, not a browser's compatibility
+## event right after a touch) moved 40 px: back to the desktop controls.
+func _mouse_moved(event: InputEventMouseMotion) -> void:
+	if pinned or not enabled or Time.get_ticks_msec() - _last_touch < 1000:
+		return
+	_mouse_run += event.relative.length()
+	if _mouse_run >= 40.0:
+		_mouse_run = 0.0
+		enabled = false
+		mode_changed.emit()
 
 func _press(index: int, point: Vector2) -> void:
 	fingers[index] = point
@@ -184,12 +210,14 @@ func _hover(point: Vector2) -> void:
 	# Input.parse_input_event queues events until the next flush. Resolve the
 	# GUI owner synchronously, before deciding whether this is a world gesture.
 	var event := InputEventMouseMotion.new()
+	event.device = InputEvent.DEVICE_ID_EMULATION
 	event.position = point
 	event.global_position = point
 	get_viewport().push_input(event, true)
 
 func motion(point: Vector2, relative: Vector2, mask := 0) -> void:
 	var event := InputEventMouseMotion.new()
+	event.device = InputEvent.DEVICE_ID_EMULATION
 	var transform := get_viewport().get_final_transform()
 	event.position = transform * point
 	event.global_position = event.position
@@ -201,6 +229,7 @@ func motion(point: Vector2, relative: Vector2, mask := 0) -> void:
 
 func button(point: Vector2, pressed: bool, which := MOUSE_BUTTON_LEFT, double := false) -> void:
 	var event := InputEventMouseButton.new()
+	event.device = InputEvent.DEVICE_ID_EMULATION
 	event.position = get_viewport().get_final_transform() * point
 	event.global_position = event.position
 	event.button_index = which

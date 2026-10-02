@@ -56,7 +56,7 @@ static var _pre_stop := false
 ## ("x\\y.wav") or folders (every file directly inside). sfx() takes them
 ## from there; one it needs before the worker got to it is decoded as before.
 static func prefetch(paths: PackedStringArray) -> void:
-	if GameData.root.is_empty() or not Portability.threads():
+	if GameData.root.is_empty():
 		return
 	var files := PackedStringArray()
 	for p in paths:
@@ -69,6 +69,13 @@ static func prefetch(paths: PackedStringArray) -> void:
 				if not _cache.has(f) and not files.has(f):
 					files.append(f)
 	if files.is_empty():
+		return
+	if not Portability.threads():
+		# No worker threads (the web export): the zone start runs behind the
+		# loading screen, so decode them there rather than at the first play,
+		# which stalled the running game (a bridge read and a decode each).
+		for f in files:
+			sfx(f)
 		return
 	_tables()   # filled here, not by two threads at once
 	var left := PackedInt64Array()   # every task is waited for once
@@ -160,8 +167,8 @@ static func speech(id: String, n: int) -> AudioStreamMP3:
 
 
 static func music(name: String) -> AudioStreamMP3:
-	var path := GameData.root.path_join("stream/%s.mp3" % name.to_lower())
-	if not GameFiles.exists(path):
+	var path := music_path(name)
+	if path.is_empty():
 		return null
 	var s := AudioStreamMP3.new()
 	s.data = GameFiles.read(path)
@@ -334,3 +341,9 @@ static func _step(pred: int, idx: int, nib: int) -> Vector2i:
 	pred = clampi(pred - diff if nib & 8 else pred + diff, -32768, 32767)
 	idx = clampi(idx + INDEX_TABLE[nib], 0, 88)
 	return Vector2i(pred, idx)
+
+
+## stream/<name>.mp3 of the installation, or "" when there is none.
+static func music_path(name: String) -> String:
+	var path := GameData.root.path_join("stream/%s.mp3" % name.to_lower())
+	return path if GameFiles.exists(path) else ""

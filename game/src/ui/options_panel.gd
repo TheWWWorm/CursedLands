@@ -474,6 +474,12 @@ func _hit(p: Vector2) -> Array:
 			return ["switch", r]
 		if Rect2(250, _row_y(r), 270, 24).has_point(p):
 			return ["row", r]
+		# Remake: a key row also takes clicks on its key names (530..692, under
+		# the selection bar 250..692); the original's row regions
+		# end at 520 (: (250, y, 520, y + 24)), so a
+		# double click on the key itself did nothing.
+		if row.kind == "keys" and Rect2(520, _row_y(r), 172, 24).has_point(p):
+			return ["row", r]
 	return []
 
 

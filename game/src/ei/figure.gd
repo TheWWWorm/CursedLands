@@ -145,9 +145,11 @@ static func instantiate(template: String, texture: String, complexion: Vector3,
 		return null
 	var root := Node3D.new()
 	root.name = template
-	# "nafl*" figures are the flora (naflbu bushes, nafltr trees).
+	# "nafl*" figures are the flora (naflbu bushes, nafltr trees). Stumps,
+	# logs and mushrooms are nafltr too; they keep the foliage look but no sway.
 	var flora := template.begins_with("nafl") and not morph
-	var mat: Material = foliage_material_for(texture) if flora else (world_material_for(texture) if lit else material_for(texture))
+	var mat: Material = foliage_material_for(texture, sways(template, texture, model)) if flora \
+			else (world_material_for(texture) if lit else material_for(texture))
 	var nodes := {}
 	for link: Array in model.links:
 		var part: String = link[0]
@@ -391,8 +393,8 @@ static func material_for(texture: String) -> StandardMaterial3D:
 
 ## The foliage material of a texture: material_for's look plus wind sway
 ## (falls back to material_for when the texture is missing).
-static func foliage_material_for(texture: String) -> Material:
-	var key := texture + ("#hd" if Gfx.on("gfx_hd_textures") else "")
+static func foliage_material_for(texture: String, sway := true) -> Material:
+	var key := texture + ("#hd" if Gfx.on("gfx_hd_textures") else "") + ("" if sway else "#still")
 	if _foliage.has(key):
 		return _foliage[key]
 	var tex := Gfx.texture_3d(texture) if texture else null
@@ -402,9 +404,63 @@ static func foliage_material_for(texture: String) -> Material:
 	m.shader = _foliage_shader()
 	m.set_shader_parameter("albedo_tex", tex)
 	m.set_shader_parameter("foliage_mask", SurfaceResponse.foliage_mask(texture))
-	m.set_shader_parameter("wind", 1.0 if _wind else 0.0)
+	m.set_shader_parameter("wind", 1.0 if _wind and sway else 0.0)
+	m.set_meta("sway", sway)
 	_foliage[key] = m
 	return m
+
+
+static var _sways := {}
+static var _sway_images := {}
+
+## Whether a flora figure sways in the wind (gfx_wind). The data has no
+## "rigid" flag, so it is read from how the figure samples its texture: leafy
+## figures use alpha-tested cards (texels with alpha < 0.5) or the green leaf
+## texels of the foliage mask; stumps (nafltr21-23, 74, 86), logs (nafltr20,
+## 70, 83) and mushrooms (nafltr77-78) use only opaque bark / cap texels.
+## Thresholds (>= 4 % cut-out samples or >= 10 % leaf samples): the rigid ones
+## reach at most 2.3 % / 4.5 %, the leafy ones at least 6.7 % / 40 %.
+static func sways(template: String, texture: String, model: Dictionary) -> bool:
+	var key := template + "|" + texture.to_lower()
+	if _sways.has(key):
+		return _sways[key]
+	if not _sway_images.has(texture):
+		var albedo := GameData.load_image(texture.to_lower()) if texture else null
+		if albedo:
+			albedo = albedo.duplicate()
+			if albedo.is_compressed():
+				albedo.decompress()
+		var mask_tex := SurfaceResponse.foliage_mask(texture) if albedo else null
+		var leaf_mask: Image = mask_tex.get_image() if mask_tex else null
+		if leaf_mask and leaf_mask.is_compressed():
+			leaf_mask.decompress()
+		_sway_images[texture] = [albedo, leaf_mask]
+	var img: Image = _sway_images[texture][0]
+	var mask: Image = _sway_images[texture][1]
+	if img == null:
+		_sways[key] = true
+		return true
+	var total := 0
+	var cut := 0
+	var leaf := 0
+	for part: String in model.parts:
+		var mesh := build_mesh(model.parts[part], Vector3(0.5, 0.5, 0.5))
+		if mesh.get_surface_count() == 0:
+			continue
+		var arrays := mesh.surface_get_arrays(0)
+		var uv: PackedVector2Array = arrays[Mesh.ARRAY_TEX_UV]
+		var idx: PackedInt32Array = arrays[Mesh.ARRAY_INDEX]
+		for i in range(0, idx.size() - 2, 3):
+			for w: Vector3 in [Vector3(1.0, 1.0, 1.0) / 3.0, Vector3(0.6, 0.2, 0.2), Vector3(0.2, 0.6, 0.2), Vector3(0.2, 0.2, 0.6)]:
+				var u := (uv[idx[i]] * w.x + uv[idx[i + 1]] * w.y + uv[idx[i + 2]] * w.z).posmod(1.0)
+				total += 1
+				if img.get_pixel(int(u.x * img.get_width()) % img.get_width(), int(u.y * img.get_height()) % img.get_height()).a < 0.5:
+					cut += 1
+				if mask and mask.get_pixel(int(u.x * mask.get_width()) % mask.get_width(), int(u.y * mask.get_height()) % mask.get_height()).r > 0.5:
+					leaf += 1
+	var result := total == 0 or cut >= total * 0.04 or leaf >= total * 0.1
+	_sways[key] = result
+	return result
 
 
 static var _fshader: Shader
@@ -421,7 +477,7 @@ static func _foliage_shader() -> Shader:
 static func set_wind(on: bool) -> void:
 	_wind = on
 	for m: ShaderMaterial in _foliage.values():
-		m.set_shader_parameter("wind", 1.0 if on else 0.0)
+		m.set_shader_parameter("wind", 1.0 if on and m.get_meta("sway", true) else 0.0)
 
 
 static func clear_cache() -> void:
@@ -429,5 +485,6 @@ static func clear_cache() -> void:
 	_models.clear()
 	_materials.clear()
 	_foliage.clear()
+	_sway_images.clear()
 	_world.clear()
 	SurfaceResponse.clear_cache()

@@ -18,15 +18,21 @@ Captured in the engine at 3840×2160 with content read from the GOG version.
 
 ## Play in your browser
 
-**[Play now at cursedlands.wwworm.com](https://cursedlands.wwworm.com/)** - nothing to install. Open the page, press **Play** and choose the folder of your installed copy of Evil Islands, or a game data pack (`.eipack`). Your files are never uploaded: the game reads them on your own device and keeps its copy in your browser's local storage, so the next start is quick and works offline.
+**[Play now at cursedlands.wwworm.com](https://cursedlands.wwworm.com/)** - nothing to install. Open the page, press **Play** and choose one of:
 
-On a phone, picking a whole folder is often not possible. Make a single pack file on your computer instead and copy it to the phone. You need Python 3 and the [`tools/prepare_game_data.py`](tools/prepare_game_data.py) script from this repository:
+- the GOG offline installer (`setup_evil_islands_*.exe`). It is **not run**: the browser unpacks the game files from it once and checks each one. This takes a minute or two and needs about 1 GB of browser storage;
+- the folder of your installed copy of Evil Islands;
+- a game data pack (`.eipack`), if you made one.
+
+Your files are never uploaded: the game reads them on your own device and keeps its copy in your browser's local storage, so the next start is quick and works offline.
+
+A data pack is optional. It helps on a phone that has neither the installer nor the game folder: make the pack on your computer and copy it to the phone. You need Python 3 and the [`tools/prepare_game_data.py`](tools/prepare_game_data.py) script from this repository:
 
 ```sh
 python3 prepare_game_data.py "/path/to/Evil Islands" EvilIslands.eipack
 ```
 
-The pack holds your own game files, so keep it to yourself.
+The installer and the pack hold your own game files, so keep them to yourself.
 
 Needs WebGL 2 and a desktop-class browser or a recent phone. Browsers can clear their storage, so keep your game files and use **Export saves** on the Save screen now and then. In the browser, co-op can only join a desktop host that has chosen **WebSocket** in its network settings and is reachable at a secure `wss://` address; for the smoothest experience and for hosting co-op, use a desktop package below.
 

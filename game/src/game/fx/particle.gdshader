@@ -34,6 +34,11 @@ void vertex() {
 	float size = abs(mix(m[2][1], m[3][1], lerp_t)) * SIZE_K;
 	COLOR = mix(vec4(m[0][2], m[1][2], m[2][2], m[3][2]), COLOR, lerp_t);
 	vec4 vc = VIEW_MATRIX * vec4(centre, 1.0);
+	// A non-finite particle collapses behind the eye instead of a huge quad.
+	if (any(isnan(vc.xyz)) || any(isinf(vc.xyz)) || isnan(size) || isinf(size)) {
+		vc = vec4(0.0, 0.0, 1.0, 1.0);
+		size = 0.0;
+	}
 	VERTEX = vc.xyz + vec3(VERTEX.xy * size, 0.0);
 	psize = size;
 	NORMAL = vec3(0.0, 0.0, 1.0);

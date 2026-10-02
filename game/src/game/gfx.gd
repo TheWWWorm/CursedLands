@@ -168,6 +168,12 @@ static func _set_vol_fog(v: bool) -> void:
 ## a = (1 − f) / (1 − g) (ALBEDO, EMISSION, and light() undoes it for the
 ## original's colour factor) and the rest added as emission. Same image as
 ## the FOG path when the volumetric mist is empty.
+## Near Godot's fog end (1 − g → 0, sooner at the screen edges, where its
+## radial distance runs ahead of the original's view depth) the exact factors
+## grow without bound (up to 1000×); they are capped at BLEND_FOG_MAX there,
+## where Godot's own fog hides almost all of X, so a pixel can never reach the
+## glow as a huge HDR value. g is the smoothstep written out (defined for an
+## empty fog range).
 static func _blend_fog(code: String, _lit: bool) -> String:
 	code = code.replace("FOG = ei_fog_of(", "vec4 ei_fogv = ei_fog_of(")
 	var i := code.find("void fragment()")
@@ -188,10 +194,14 @@ static func _blend_fog(code: String, _lit: bool) -> String:
 	if end < 0:
 		return code
 	var tail := """	{
-		float ei_g = smoothstep(ei_fog.x, ei_fog.y, length(VERTEX));
+		const float BLEND_FOG_MAX = 8.0;
+		float ei_g = clamp((length(VERTEX) - ei_fog.x) / max(ei_fog.y - ei_fog.x, 1e-3), 0.0, 1.0);
+		ei_g = ei_g * ei_g * (3.0 - 2.0 * ei_g);
 		float ei_t = max(1.0 - ei_g, 1e-3);
-		float ei_a = (1.0 - ei_fogv.a) / ei_t;
-		vec3 ei_add = (ei_fogv.rgb * ei_fogv.a - ei_lin(ei_fog_col) * ei_g) / ei_t;
+		float ei_a = min((1.0 - ei_fogv.a) / ei_t, BLEND_FOG_MAX);
+		vec3 ei_add = clamp((ei_fogv.rgb * ei_fogv.a - ei_lin(ei_fog_col) * ei_g) / ei_t, vec3(-BLEND_FOG_MAX), vec3(BLEND_FOG_MAX));
+		if (isnan(ei_a) || isinf(ei_a)) { ei_a = 1.0; }
+		if (any(isnan(ei_add)) || any(isinf(ei_add))) { ei_add = vec3(0.0); }
 """
 	# Unshaded: the colour is ALBEDO. Shaded (the EI light() or Godot's):
 	# lit colour scaled, the fog added as emission, light() told the scale.
@@ -794,6 +804,7 @@ static func fit_shadows(sun: DirectionalLight3D, zone_size: Vector2) -> void:
 ## SSAO High at half resolution; volumetric fog froxels (width / height, depth).
 const SSAO_QUALITY := RenderingServer.ENV_SSAO_QUALITY_HIGH
 const VOL_FOG_SIZE := Vector2i(64, 48)
+const GLOW_LUMINANCE_CAP := 8.0
 
 
 ## The play view's environment switches (Options → Graphics).
@@ -805,6 +816,10 @@ static func apply_env(env: Environment) -> void:
 	env.reflected_light_source = Environment.REFLECTION_SOURCE_SKY if on("gfx_water") else Environment.REFLECTION_SOURCE_DISABLED
 	env.ssao_enabled = on("gfx_ssao")
 	env.glow_enabled = on("gfx_bloom")
+	# No pixel feeds the bloom with more than this (Godot's default is 12):
+	# the brightest wanted sources (fire × GLOW_BOOST, lava, bolts) stay
+	# below it, a stray huge HDR value cannot bloom over the screen.
+	env.glow_hdr_luminance_cap = GLOW_LUMINANCE_CAP
 	env.volumetric_fog_enabled = on("gfx_volumetric")
 	_set_vol_fog(on("gfx_volumetric"))
 	if not Portability.compatibility():
@@ -1019,5 +1034,12 @@ static func heat_haze(width: float) -> MeshInstance3D:
 	mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	mi.extra_cull_margin = 2.0
 	mi.add_to_group(&"gfx_heat_haze")
-	mi.visible = on("gfx_heat_haze")
+	mi.visible = heat_haze_on()
 	return mi
+
+
+## gfx_heat_haze, Forward+ / Mobile only. On the Compatibility renderer the
+## haze's screen copy lacks the units (alpha-to-coverage, transparent pass) and
+## it painted the ground over a unit standing behind a fire.
+static func heat_haze_on() -> bool:
+	return on("gfx_heat_haze") and not Portability.compatibility()

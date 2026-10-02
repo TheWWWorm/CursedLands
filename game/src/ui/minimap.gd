@@ -10,8 +10,7 @@ extends Control
 ## open / close spot at 780..800 × 0..30 (tip 10300), a bronze ring round
 ## (700,80) r 66 in 16 segments (strip UV 27,107-91,112) and a
 ## bronze frame (615,−5)-(805,165) 5 wide (strip UV 4,55-90,60).
-## Party members are green, enemies the party sees are red, other units
-## yellow. Two pictures (sizes: map W × H =
+## Markers: see `_draw_marks`. Two pictures (sizes: map W × H =
 ## sectors · 32, L = max(W, H), s = 2 / L, 80 px per unit): the whole square
 ## (620,0)-(780,160) shows the map unzoomed (L across 160 px, colour 0.8,
 ## clipped to the map) over the shade, and a 16-gon of radius 64
@@ -20,9 +19,6 @@ extends Control
 ## remake: the save's camera record "minimap_zoom", Session), "+" held multiplies it by 2.5^dt up to 0.05 L, "−" held
 ## divides it down to 1 (held index; press
 ## plays buttons\battle\click.wav), the held button drawn at 1.0, else 0.5.
-## Unit dots (±0.03 units): at the zoomed point when that is
-## within √0.6 of the centre, else at the unzoomed point when that is outside
-## √0.68 (beyond the ring) and within ±0.97, else hidden.
 ## Open / close (slot): the panel
 ## slides right by 180 px in 0.3 s, p += real dt · dir / 0.3, offset
 ## = trunc(180 · e) with e = 2p² below 0.5, else 1 − 2(1 − p)²
@@ -52,6 +48,10 @@ var _p := 0.0      # slide progress 0 open.. 1 closed
 var _off := 0.0    # slide offset in 800×600 px
 var _tex: Texture2D
 var _atlas: Texture2D
+## The four marker colours (sprite [2] UV table: battle00
+## texels (240,252), (244,252), (248,252), (252,252) — 4×4 swatches at
+## 238..253 × 250..253: green, yellow, red, pink).
+var _mark_col: Array[Color] = []
 var _size := Vector2.ONE   # map W × H in world units
 var _l := 1.0              # L = max(W, H)
 var _zone := ""
@@ -64,6 +64,8 @@ func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	var img := GameData.load_image("battle00") if GameData.is_open() else null
 	if img:
+		for i in 4:   # UVs index the image rows as stored (no V flip)
+			_mark_col.append(img.get_pixel(240 + 4 * i, 252))
 		img.flip_y()
 		_atlas = ImageTexture.create_from_image(img)
 
@@ -283,26 +285,7 @@ func _draw() -> void:
 				pts.append(_pt(q))
 				uvs.append(_from_map(q, c, zoom) / _l)
 			draw_colored_polygon(pts, Color.WHITE, uvs, _tex)
-		var mine := game.my_units()
-		for u: GameUnit in game.world.units.values():
-			if u.dead or not UnitFog.listed(game, u):   #  draws the player's list (UnitFog)
-				continue
-			# the zoomed point inside the inset, else the
-			# unzoomed one beyond the ring and inside the square.
-			var n := (u.pos - c) * 2.0 / _l
-			var sp := Vector2.INF
-			if (n * zoom).length_squared() <= 0.6:
-				sp = MAP.get_center() + n * zoom * 80.0
-			elif n.length_squared() >= 0.68 and absf(n.x) <= 0.97 and absf(n.y) <= 0.97:
-				sp = MAP.get_center() + n * 80.0
-			if sp == Vector2.INF:
-				continue
-			var col := Color(1, 0.9, 0.2)
-			if u.controller >= 0:
-				col = Color(0.2, 1, 0.3)
-			elif not mine.is_empty() and game.world.is_enemy(mine[0], u):
-				col = Color(1, 0.25, 0.2)
-			draw_circle(_pt(sp), (2.5 if u.controller >= 0 else 2.0) * k, col)
+		_draw_marks(c)
 		# Ring: 16 segments round (700,80), r 66.
 		for i in 16:
 			var a0 := TAU * i / 16.0
@@ -330,6 +313,64 @@ func _draw() -> void:
 	if _tex:
 		var h := _heading()
 		_arrow(HudDial.arrow(694 + _off, 84, atan2(h.x, -h.y), 0.8), true)
+
+
+## The markers (one mesh: sprite [2]
+## (700,80), depth 12 — in front of the pictures (14 / 18 / 20), behind the
+## ring (10); 80 px per unit of n = (p − centre) · 2 / L; each vertex takes
+## one colour of `_mark_col`, flat, untextured otherwise), in buffer order:
+## 1. units of the player's list (alive only): a triangle, apex 0.07 along the
+##    unit's facing, base corners 0.04 at ±135° from it (5.6 / 3.2 px), drawn
+##    only at the zoomed point n · zoom when |n · zoom|² ≤ 0.56 (inside the
+##    inset; none outside the ring); colour 0 (green) for a selected unit
+##    (interface), 2 (red) when its hostility masks
+##     & hold the local player's side, else 1 (yellow); the
+##    Curse (id 666666) in gz20g is always 2;
+## 2. quest lights (scene lights; colour 3, pink square
+##    ±0.03) — none in the remake (nothing places quest lights, see the doc);
+## 3. zone exits whose target is not "none" (: centre of record
+## .., `area`): yellow squares ±0.03 (4.8 px), at n · zoom when
+##    |n · zoom|² ≤ 0.6, else at n when |n|² ≥ 0.68 and |n.x|, |n.y| ≤ 0.97;
+## 4. network game only: list (world effects near the camera, map
+## ), green diamonds ±0.04 — not ported.
+func _draw_marks(c: Vector2) -> void:
+	if _mark_col.size() < 4:
+		return
+	var mine := game.my_units()
+	var ending := String(game.world.zone.get("id", "")) == "gz20g"
+	for u: GameUnit in game.world.units.values():
+		if u.dead or not UnitFog.listed(game, u):   # the player's list (UnitFog)
+			continue
+		var n := (u.pos - c) * 2.0 / _l * zoom
+		if n.length_squared() > 0.56:
+			continue
+		var ci := 1
+		if u in game.selected:
+			ci = 0
+		elif (ending and u.uid == 666666) or (not mine.is_empty() and game.world.is_enemy(u, mine[0])):
+			ci = 2
+		var d := Vector2.from_angle(u.facing)   # EI (x, y), as `_to_map` places the units
+		var o := MAP.get_center() + n * 80.0
+		var tri := PackedVector2Array([_pt(o + d * 0.07 * 80.0),
+			_pt(o + d.rotated(-0.75 * PI) * 0.04 * 80.0), _pt(o + d.rotated(0.75 * PI) * 0.04 * 80.0)])
+		draw_colored_polygon(tri, _mark_col[ci])
+		# Remake: a thin antialiased edge (0.5 px plus Godot's 1 px feather) so
+		# the 3–9 px darts keep their shape on small screens instead of
+		# losing their thin tips to the pixel grid.
+		tri.append(tri[0])
+		draw_polyline(tri, _mark_col[ci], 0.5, true)
+	var exits: Dictionary = game.world.zone.get("exits", {})
+	for k in exits:
+		var ex: Dictionary = exits[k]
+		if String(ex.get("to", "none")) == "none" or not ex.has("area"):
+			continue
+		var n := (Rect2(ex.area).get_center() - c) * 2.0 / _l
+		if (n * zoom).length_squared() <= 0.6:
+			n *= zoom
+		elif n.length_squared() < 0.68 or absf(n.x) > 0.97 or absf(n.y) > 0.97:
+			continue
+		var o := MAP.get_center() + n * 80.0
+		draw_rect(Rect2(_pt(o - Vector2(2.4, 2.4)), Vector2(4.8, 4.8) * _k()), _mark_col[1])
 
 
 ## Screen direction on the map opposite the camera's view (

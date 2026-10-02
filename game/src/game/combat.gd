@@ -197,10 +197,14 @@ func _wear(u: GameUnit, list: Array, i: int, amount: float, weapon: bool) -> voi
 ## outcome and rolls only when none is stored.
 ## Backstab: a character (hero) striking in melee from within 60 degrees of
 ## the target's back always hits; a bow / crossbow in hand
-## clears it.
+## clears it. So does the target's combat stance (unit
+## GameUnit.alert: set by its attack command, kept by a unit outside a party,
+## and by the AI's suspicion): zeroes the flag for such a target
+## and resets the record's backstab factor to 1 — an
+## ordinary roll against its Defence, no damage factor.
 func strike_roll(att: GameUnit, def: GameUnit) -> Dictionary:
 	var backstab := false
-	if att.has_meta("hero") and not att.stats.get("ranged", false):
+	if att.has_meta("hero") and not att.stats.get("ranged", false) and not def.alert:
 		var fwd := Vector2.from_angle(def.facing)
 		backstab = fwd.dot((def.pos - att.pos).normalized()) > 0.5
 	return {"backstab": backstab, "hit": backstab or attack_hits(att, def, aim_penalty(att.strike_aim))}

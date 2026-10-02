@@ -434,8 +434,14 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 	var skin := "skin_%02d" % skin_i
 	if not race.is_empty() and int(race.get("type_id", 0)) != 0x32:
 		# Creature figures use named textures (e.g. Wolf00), not redress skins.
+		# The redress is for characters (race
+		# type 0x32) only; a creature keeps its map record's texture (0xB007,
+		# record): WolfWhite* "wolf01", BoarDark* "boar01", though every
+		# wolf / boar prototype has skin 0. Without a record: the race list.
 		var skins: PackedStringArray = race.get("textures", PackedStringArray())
 		skin = skins[skin_i] if skin_i >= 0 and skin_i < skins.size() else (skins[0] if skins.size() else "")
+		if String(unit.get("texture", "")) != "":
+			skin = String(unit.texture)
 	layers.append(skin.to_lower())
 	surfaces.append(SurfaceResponse.SKIN)
 

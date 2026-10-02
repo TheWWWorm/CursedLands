@@ -1197,6 +1197,11 @@ func _investigate(u: GameUnit) -> bool:
 		u.alert = false
 		return false
 	var look: Array = s.look
+	# The walk to the point or a glance under way: still runs the
+	# perception and the motivation choice every tick, so an
+	# Aggression with a newly noticed hostile (above) takes over mid-walk.
+	if u.order.get("susp", false):
+		return true
 	# Idle: -50 while the last order failed (creature).
 	if not s.busy and u.order_failed:
 		s.m = float(s.m) - 50.0
@@ -1209,7 +1214,7 @@ func _investigate(u: GameUnit) -> bool:
 		look.clear()
 	if not look.is_empty():
 		var g: Array = look.pop_front()
-		u.command({"type": "wait", "t": float(g[1]) * GameUnit.TICK, "face": float(g[0])})
+		u.command({"type": "wait", "t": float(g[1]) * GameUnit.TICK, "face": float(g[0]), "calm": true, "susp": true})
 		return true
 	if s.busy:
 		s.busy = false
@@ -1232,7 +1237,9 @@ func _susp_go(u: GameUnit, s: Dictionary, at: Vector2, p: float) -> void:
 	for i in (randi() & 3) + 1:
 		look.append([randf() * TAU, randi_range(10, 40)])
 	s.look = look
-	u.move_to(world.nav.nearest_walkable(at), false)
+	# "calm": the AI keeps thinking during the order (GameUnit), as for the
+	# calm and Fear walks.
+	u.command({"type": "move", "to": world.nav.nearest_walkable(at), "run": false, "calm": true, "susp": true})
 
 
 ## The AI hit hook (from the hit, a spell cast

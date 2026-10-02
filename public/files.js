@@ -1,14 +1,38 @@
 'use strict';
 window.CursedFiles = {
   active: null, busy: false, generation: 0, cache: new Map(), cacheBytes: 0,
-  async initialize() {
+  // Resolves once the service worker holds the engine (onProgress(loaded,
+  // total) follows its download) and the local data store is open.
+  async initialize(onProgress) {
     if (!isSecureContext || !('serviceWorker' in navigator)) throw new Error('Open the game over HTTPS or localhost.');
     if (!crossOriginIsolated || typeof SharedArrayBuffer === 'undefined')
       throw new Error('This host must send Cross-Origin-Opener-Policy: same-origin and Cross-Origin-Embedder-Policy: require-corp. A current browser is required.');
-    await navigator.serviceWorker.register('service-worker.js');
-    await navigator.serviceWorker.ready;
-    if (!navigator.serviceWorker.controller) await new Promise(resolve =>
-      navigator.serviceWorker.addEventListener('controllerchange', resolve, {once: true}));
+    const container = navigator.serviceWorker;
+    container.addEventListener('message', ({data}) => {
+      if (data?.type === 'progress' && onProgress) onProgress(data.loaded, data.total);
+    });
+    container.startMessages();
+    const registration = await container.register('service-worker.js');
+    if (!registration.active) {
+      // First visit: the worker downloads the engine before the game can start.
+      const worker = registration.installing || registration.waiting;
+      if (!worker) throw new Error('The game could not be downloaded. Check your connection and retry.');
+      worker.postMessage('progress');
+      await new Promise((resolve, reject) => {
+        const check = () => {
+          if (worker.state === 'activated') resolve();
+          else if (worker.state === 'redundant') reject(new Error('The game could not be downloaded. Check your connection and retry.'));
+        };
+        worker.addEventListener('statechange', check); check();
+      });
+    }
+    if (!container.controller) {
+      // A forced reload bypasses the worker; the page asks to be controlled
+      // again, and goes on without it rather than waiting forever.
+      registration.active?.postMessage('claim');
+      await Promise.race([new Promise(resolve => container.addEventListener('controllerchange', resolve, {once: true})),
+        new Promise(resolve => setTimeout(resolve, 3000))]);
+    }
     this.active = await getMeta('active');
     if (this.active) validateIndex(this.active.files);
     this.signal = new Int32Array(new SharedArrayBuffer(8));
@@ -64,11 +88,28 @@ window.CursedFiles = {
   choose(callback, folder) {
     if (this.busy) return;
     const input = document.createElement('input'); input.type = 'file';
-    if (folder) { input.webkitdirectory = true; input.multiple = true; } else input.accept = '.eipack';
+    if (folder) { input.webkitdirectory = true; input.multiple = true; }
+    // Phone pickers may grey out unknown extensions; the file is recognised by its contents.
+    else if (!matchMedia('(pointer: coarse)').matches) input.accept = '.exe,.eipack';
     input.onchange = () => this.importFiles(Array.from(input.files), callback);
     input.click();
   },
-  cancel() { this.generation++; },
+  cancel() { this.generation++; if (this.stopUnpack) this.stopUnpack(); },
+  // The GOG installer is unpacked in its own worker (installer-worker.js),
+  // which reads it in bounded ranges and stores each game file under `id`.
+  unpackInstaller(file, id, callback) {
+    const worker = new Worker('installer-worker.js');
+    return new Promise((resolve, reject) => {
+      this.stopUnpack = () => reject(new Error('Import cancelled.'));
+      worker.onmessage = ({data}) => {
+        if (data.type === 'progress') callback('progress', data.key, data.arg);
+        else if (data.type === 'done') resolve(data.files);
+        else reject(Object.assign(new Error(data.key), {arg: data.arg}));
+      };
+      worker.onerror = event => { event.preventDefault(); reject(new Error(event.message || 'The installer could not be unpacked.')); };
+      worker.postMessage({file, id});
+    }).finally(() => { worker.terminate(); this.stopUnpack = null; });
+  },
   async importFiles(selected, callback) {
     if (!selected.length || this.busy) return;
     this.busy = true; const generation = ++this.generation;
@@ -77,15 +118,20 @@ window.CursedFiles = {
     const current = () => { if (generation !== this.generation) throw new Error('Import cancelled.'); };
     try {
       callback('progress', 'Checking your local game files…');
-      let files = {}, pack = false, payload = 0;
-      if (selected.length === 1 && selected[0].name.toLowerCase().endsWith('.eipack')) {
+      let files = {}, pack = false, payload = 0, unpacked = false;
+      const single = selected.length === 1 ? selected[0] : null;
+      const magic = single ? new TextDecoder().decode(await single.slice(0, 8).arrayBuffer()) : '';
+      if (single && magic.startsWith('MZ')) {
+        files = validateIndex(await this.unpackInstaller(single, id, callback)); unpacked = true;
+      } else if (single && magic === 'EIPACK01') {
         const file = selected[0];
         const header = new Uint8Array(await file.slice(0, 12).arrayBuffer());
-        if (header.length !== 12 || new TextDecoder().decode(header.slice(0, 8)) !== 'EIPACK01') throw new Error('Not a Cursed Lands data pack.');
         const size = new DataView(header.buffer).getUint32(8, true);
         if (size < 2 || size > 4 * 1024 * 1024 || size + 12 > file.size) throw new Error('Invalid pack header.');
         payload = 12 + size;
         files = validateIndex(JSON.parse(await file.slice(12, payload).text()), file.size - payload); pack = true;
+      } else if (single && !single.webkitRelativePath) {
+        throw new Error('Choose the GOG installer (.exe), a data pack (.eipack) or the game folder.');
       } else {
         let offset = 0;
         for (const file of selected) {
@@ -99,14 +145,15 @@ window.CursedFiles = {
         validateIndex(files);
       }
       const bytes = pack ? selected[0].size : Object.values(files).reduce((n, f) => n + f.size, 0);
-      const estimate = await navigator.storage?.estimate?.();
+      const estimate = unpacked ? null : await navigator.storage?.estimate?.();
       if (estimate?.quota && estimate.quota - estimate.usage < bytes * 1.05) throw new Error('Not enough browser storage for this import. Free space and try again.');
       current();
-      if (pack) { callback('progress', 'Saving your data pack on this device…'); await putData('files', id + '/pack', selected[0]); }
+      if (unpacked) { /* already stored by the installer worker */ }
+      else if (pack) { callback('progress', 'Saving your data pack on this device…'); await putData('files', id + '/pack', selected[0]); }
       else {
         let done = 0;
         for (const [path, entry] of Object.entries(files)) {
-          current(); callback('progress', 'Importing ' + path + ' (' + Math.round(done / bytes * 100) + '%)');
+          current(); callback('progress', 'Importing %s', path + ' (' + Math.round(done / bytes * 100) + '%)');
           await putData('files', id + '/' + path, entry.source); delete entry.source; done += entry.size;
         }
       }
@@ -123,7 +170,7 @@ window.CursedFiles = {
       await this.cleanup(id).catch(() => {});
     } catch (error) {
       if (!committed) await this.removeGeneration(id).catch(() => {});
-      callback('error', error.name === 'QuotaExceededError' ? 'Browser storage is full. Free space and try again.' : String(error.message || error));
+      callback('error', error.name === 'QuotaExceededError' ? 'Browser storage is full. Free space and try again.' : String(error.message || error), error.arg);
     } finally { this.busy = false; }
   },
   async removeGeneration(id) {

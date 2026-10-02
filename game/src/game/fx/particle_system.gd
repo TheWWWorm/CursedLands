@@ -13,6 +13,15 @@ extends Node3D
 const TICK := 0.055
 const DRAW_DIST := 90.0
 const EFFECT_SHADER := preload("res://src/game/fx/particle.gdshader")
+## The world draw draws the land, the figures and
+## the water first, then, with z writes off (D3D state 0xe = 0), the effects:
+## world, the particle emitters (far to near) and the
+## lightning bolts. Godot draws units (alpha-to-coverage) and
+## foliage in its transparent pass too, sorted by their centres against the
+## emitters' pivots, so a unit behind a camp fire could be drawn over its smoke.
+## A higher material priority keeps every emitter after them; the emitters keep
+## their far-to-near order among themselves (sorting_offset).
+const RENDER_PRIORITY := 10
 ## CEffectParticle one-shot types: deleted 60 ticks after creation.
 const ONE_SHOT := [0x2002, 0x2006, 0x200b, 0x200c, 0x200d, 0x200e, 0x200f, 0x2018, 0x2019,
 	0x201b, 0x201c, 0x201d, 0x201e, 0x201f, 0x2020, 0x2021, 0x2022, 0x2023, 0x2024, 0x2025, 0x2026,
@@ -325,6 +334,24 @@ func add_light(at: Vector3, color: Color, radius: float, secs := -1.0, energy :=
 	return d
 
 
+## A lightning strike's light (Weather / MenuScene
+## WorldScript: CreatePointLight(1, mid, 80, 255, 255, 255), deleted three
+## script ticks later). The original lights the land and figures through the
+## max() model only, so the remake's extras for torches stay off: no halo and
+## no volumetric mist (an 80 m white light lit the whole mist into a white
+## veil on Forward+ that the Compatibility renderer, without mist, never
+## showed). Remake safety: it also expires on its own `ticks` after creation,
+## so a lost delete (zone change, a peer leaving mid-strike) cannot leave it on.
+func _flash_light(d: Dictionary, ticks: int) -> void:
+	var l: OmniLight3D = d.light
+	l.light_volumetric_fog_energy = 0.0
+	l.remove_from_group(&"gfx_torch_glow")
+	for c in l.get_children():
+		c.queue_free()   # the torch halo
+	d.erase("halo")
+	d.until = tick + maxi(1, ticks)
+
+
 func remove_light(d: Dictionary) -> void:
 	if d.is_empty():
 		return
@@ -481,6 +508,7 @@ func _material(tex: String, additive: bool, glow := false, lit := false, fire :=
 	if not _mats.has(key):
 		var m := ShaderMaterial.new()
 		m.shader = _shader(additive)
+		m.render_priority = RENDER_PRIORITY
 		m.set_shader_parameter("tex", GameData.get_texture(tex))
 		m.set_meta("glow", glow or additive)
 		m.set_meta("lit", lit and not additive)
@@ -583,10 +611,18 @@ func _fill_calc(ef: Effect, has_cam: bool, eye: Vector3, fwd: Vector3) -> void:
 	ef.buf = b
 	ef.pre = tick
 	ef.pre_k = k
-	ef.pre_aabb = AABB(lo - Vector3.ONE * big, hi - lo + Vector3.ONE * big * 2.0)
+	# An emitter between spawns has no particle (lo / hi stay ±INF): keep its
+	# last box, a non-finite custom_aabb must never reach the renderer.
+	var box := AABB(lo - Vector3.ONE * big, hi - lo + Vector3.ONE * big * 2.0)
+	if k > 0 and box.position.is_finite() and box.size.is_finite():
+		ef.pre_aabb = box
+	elif not (ef.pre_aabb.position.is_finite() and ef.pre_aabb.size.is_finite()):
+		ef.pre_aabb = AABB()
 	if k > 0:
 		var gw := godot(e.wp)
-		ef.pre_reach = maxf((lo - gw).abs().max((hi - gw).abs()).length() + big, 0.0)
+		var reach := maxf((lo - gw).abs().max((hi - gw).abs()).length() + big, 0.0)
+		if is_finite(reach):
+			ef.pre_reach = reach
 
 
 ## Quad half-extent per unit of particle size (particle.gdshader SIZE_K).
@@ -1148,13 +1184,16 @@ func script_cmd(f: String, a: Array) -> void:
 					ef.e.ofs = Vector3.ZERO
 					ef.e.attach(obj)
 					ef.e.flags |= FxEmitter.F_CARRIER
-		"CreatePointLight":   # (id, x, y, z, radius, r, g, b)
+		"CreatePointLight":   # (id, x, y, z, radius, r, g, b[, flash ticks])
 			if a.size() < 8:
 				return
 			var id := int(a[0])
 			remove_light(script_lights.get(id, {}))
-			script_lights[id] = add_light(Vector3(float(a[1]), float(a[2]), float(a[3])),
+			var d := add_light(Vector3(float(a[1]), float(a[2]), float(a[3])),
 				Color(float(a[5]) / 255.0, float(a[6]) / 255.0, float(a[7]) / 255.0), float(a[4]))
+			script_lights[id] = d
+			if a.size() > 8:
+				_flash_light(d, int(a[8]))
 		"MovePointLight":
 			var d: Dictionary = script_lights.get(int(a[0]), {})
 			if not d.is_empty() and a.size() > 3:
