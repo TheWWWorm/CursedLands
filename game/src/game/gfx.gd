@@ -569,8 +569,8 @@ const BORDER_FOG := 32.0
 ## never copied into it. With B = 0 returns 0xff (no fog), so the
 ## map ends at its edge cliff over the clear colour [sky]. (does
 ## keep the smaller of this alpha and the depth fog.) The remake options
-## gfx_edge_fade (fade the last EDGE_FADE metres, the menu's own 6 m) and
-## gfx_outer_land are not original and default off.
+## gfx_edge_fade (fade the last EDGE_FADE metres, the menu's own 6 m) is not
+## original and defaults off.
 const EDGE_FADE := 6.0
 static var _border_size := Vector2.ZERO
 static var _border_menu := -1.0
@@ -583,20 +583,13 @@ static func set_border(size_ei: Vector2, menu_dist := -1.0) -> void:
 	refresh_border()
 
 
-## Outer landscape (remake option gfx_outer_land, EIOuterLand): in play only,
-## never on the menu screen (which keeps the original 6 m border fog). While it
-## is on the edge fade is off, as the land no longer ends at the map edge.
-static func outer_land_active() -> bool:
-	return _border_menu < 0.0 and on("gfx_outer_land")
-
-
 static func refresh_border() -> void:
 	if not _globals:
 		return
 	var size_ei := _border_size
 	var dist := _border_menu
 	if dist < 0.0:
-		dist = 0.0 if on("gfx_outer_land") else (EDGE_FADE if on("gfx_edge_fade") else 0.0)
+		dist = EDGE_FADE if on("gfx_edge_fade") else 0.0
 	RenderingServer.global_shader_parameter_set(&"ei_border", Vector3(size_ei.x, size_ei.y, dist))
 
 

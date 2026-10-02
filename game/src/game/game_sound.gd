@@ -62,6 +62,8 @@ var combat_flag := 0
 var _sent_flags := {}          # host: player index -> value sent
 var _dialog_was := false
 var _shop_was := false
+## The global map is up (event "travel" until a zone starts or "Stay here").
+var _on_map := false
 
 
 func _ready() -> void:
@@ -103,6 +105,7 @@ func _zone_start(w: GameWorld) -> void:
 	_tick_acc = 0.0
 	combat_flag = 0
 	_sent_flags.clear()
+	_on_map = false
 	if ambient:
 		ambient.stop()
 	ambient = null
@@ -116,16 +119,7 @@ func _zone_start(w: GameWorld) -> void:
 	mixer.sfx_on = false
 	var dungeon := String(w.zone.get("sky", "")) == "cave"
 	mixer.set_reverb(dungeon)
-	var allod := String(w.zone.get("allod", "gipat")).to_lower()
-	if String(w.zone.get("id", "")) == Session.ENDING_ZONE or String(w.zone.get("mpr", "")) == Session.ENDING_ZONE:
-		allod = "final"
-	if allod.is_empty():
-		allod = "gipat"
-	if String(w.zone.get("type", "")) == "brief":
-		music.allod = allod
-		music.set_briefing()
-	else:
-		music.set_zone(allod, dungeon)
+	if _zone_music(w):
 		# A PlayMusic that reached this peer before the zone start (a client
 		# gets the host's event, or a joiner its replay, in the frames between
 		# the world's creation and this call) still applies.
@@ -175,6 +169,24 @@ func _zone_start(w: GameWorld) -> void:
 		_torches.append(t)
 
 
+## The zone's music mode as at its load: a village (briefing
+## zone) plays its Briefing track, any other zone gets
+## SetZoneMode. True for the zone mode.
+func _zone_music(w: GameWorld) -> bool:
+	var dungeon := String(w.zone.get("sky", "")) == "cave"
+	var allod := String(w.zone.get("allod", "gipat")).to_lower()
+	if String(w.zone.get("id", "")) == Session.ENDING_ZONE or String(w.zone.get("mpr", "")) == Session.ENDING_ZONE:
+		allod = "final"
+	if allod.is_empty():
+		allod = "gipat"
+	if String(w.zone.get("type", "")) == "brief":
+		music.allod = allod
+		music.set_briefing()
+		return false
+	music.set_zone(allod, dungeon)
+	return true
+
+
 static func _ei(g: Vector3) -> Vector3:
 	return Vector3(g.x, -g.z, g.y)
 
@@ -217,7 +229,9 @@ func _update_listener() -> void:
 func _process(dt: float) -> void:
 	var w := game.world if game else null
 	on_world(w)
-	if w == null:
+	if w == null or _on_map:
+		# the original clears the world for the global map (
+		# ): no world ticks, no combat flag, no zone music rules.
 		return
 	_update_listener()
 	if units:
@@ -340,7 +354,31 @@ func on_event(e: Dictionary) -> void:
 			var u: GameUnit = _world.units.get(int(e.get("uid", -1))) if _world else null
 			if u and is_instance_valid(u):
 				mixer.play3d(String(e.get("path", "")), 1000, UnitSounds._at(u), 8.0, 40.0)
+		"travel":
+			# The global map opens: no music
+			# and the zone's combat state goes with the zone.
+			on_world(game.world if game else null)
+			_on_map = true
+			combat_flag = 0
+			music.set_none()
+			# ... and no zone sound either (the original clears the world): every
+			# sound stops, the loops wait for "Stay here" (SoundMixer.suspend).
+			mixer.suspend()
+			if MusicSystem.trace:
+				print("music: global map, silence")
+		"travel_close":
+			# "Stay here" (remake-only; the original would load the zone again):
+			# the zone's music mode as at a zone load, the combat flag sent
+			# anew, the zone's loops start again.
+			if _on_map and not e.has("go") and _world:
+				_on_map = false
+				combat_flag = 0
+				_sent_flags.clear()
+				_zone_music(_world)
+				mixer.resume()
 		"combat_flag":
+			if _on_map:
+				return
 			if game and game.session and int(e.get("p", -1)) == game.session.my_index:
 				combat_flag = int(e.get("v", 0))
 				if MusicSystem.trace:

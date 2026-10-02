@@ -60,6 +60,11 @@ static var watch := Callable()
 ## 49.5 s an hour (adds ticks × rate to "gtime"; the client
 ## clock is ticks × rate + offset too).
 const HOUR_SECONDS := 900.0 * 0.055
+## A hero's belt (player list) holds at most four entries: the camp's
+## put-on returns at a fifth (case 0x3006, count > 3) and
+## the zone transfer copies four ((0..3)). The camp's
+## top row shows them in its right four cells.
+const BELT_SLOTS := 4
 
 
 func advance_hours(h: float) -> void:
@@ -195,6 +200,7 @@ func ensure_hero(player: int, prototype: String, player_name := "") -> void:
 	if player > 0:   # remake co-op kit; the campaign hero's belt starts empty
 		for q in Items.split_list(npc.get("quest_items", [])):
 			hero.quick.append(q.to_lower())
+		cap_belt(hero, items)
 	heroes[player] = [hero]
 
 
@@ -392,6 +398,7 @@ func apply_hero(u: GameUnit) -> void:
 	for h: Dictionary in heroes.get(u.controller, []):
 		if String(h.get("unit_name", h.name)) == String(u.info.get("name", "")) or h.prototype == u.proto.get("name", ""):
 			u.display_name = h.name
+			Combat.clear_natural_armor(u)
 			Combat.hero_stats(u, h)
 			# Aggressive / Defensive (unit) is part of the original's unit
 			# save record (restored).
@@ -606,6 +613,34 @@ func save(path: String) -> Error:
 	return OK
 
 
+## Belt entries past BELT_SLOTS go to `bag` (kept, in order), e.g. from
+## saves of builds that allowed eight.
+static func cap_belt(h: Dictionary, bag: Array) -> void:
+	var q = h.get("quick")
+	if not (q is Array or q is PackedStringArray) or q.size() <= BELT_SLOTS:
+		return
+	for it in Array(q).slice(BELT_SLOTS):
+		bag.append(it)
+	h.quick = Array(q).slice(0, BELT_SLOTS)
+
+
+## Every record's belt within BELT_SLOTS, the extras into that roster's bag:
+## the current roster's into the bag, the mercenaries' (who stay with the main
+## roster) and a waiting roster's into theirs.
+func cap_belts() -> void:
+	for k in heroes:
+		for h in heroes[k]:
+			if h is Dictionary:
+				cap_belt(h, items)
+	for m in mercs.values():
+		if m is Dictionary:
+			cap_belt(m, _bag("").items)
+	for p in parties:
+		for h in parties[p]:
+			if h is Dictionary:
+				cap_belt(h, _bag(p).items)
+
+
 static func load_from(path: String) -> CampaignState:
 	var f := FileAccess.open(path, FileAccess.READ)
 	if f == null:
@@ -624,4 +659,5 @@ static func load_from(path: String) -> CampaignState:
 	for k: String in s.vars.keys():
 		if k.get_slice(".", 2).begins_with("constr") and k.contains(":b.") and is_equal_approx(float(s.vars[k]), 2.0):
 			s.vars[k] = 1.0
+	s.cap_belts()   # saves of builds whose belt took eight
 	return s

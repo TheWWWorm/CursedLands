@@ -261,16 +261,9 @@ uniform float waves = 1.0;     // EnableWaterWaves
 uniform sampler2D phase_tex : filter_nearest, repeat_enable;   //  grid
 varying float alpha;
 varying vec3 spec;
-// Outer landscape (EIOuterLand): its liquid has material + 64; while it is on
-// (outer_edge) the map's own liquid is not drawn over the border cliff rows.
-uniform float outer_edge = 0.0;
-varying flat float cut;
-varying vec3 cut_w;
 void vertex() {
 	int mi = int(UV2.y + 0.5);
 	int m = clamp(mi % 64, 0, 63);
-	cut = (outer_edge > 0.5 && mi < 64) ? 1.0 : 0.0;
-	cut_w = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
 	VERTEX.y += level[m];
 	ei_e = mat_e[m];
 	ei_k = 0.0;
@@ -297,12 +290,6 @@ void vertex() {
 	}
 }
 void fragment() {
-	if (cut > 0.5) {
-		vec2 e = vec2(cut_w.x, -cut_w.z);
-		if (e.x < 2.0 || e.y < 2.0 || e.x > ei_border.x - 2.0 || e.y > ei_border.y - 2.0) {
-			discard;
-		}
-	}
 	FOG = ei_fog_of(VERTEX, (INV_VIEW_MATRIX * vec4(VERTEX, 1.0)).xyz);
 	vec4 t = texture(atlases, vec3(UV, UV2.x));
 	EMISSION = ei_lin(spec);   // the vertex specular, added after the texture
@@ -340,14 +327,9 @@ varying vec3 wpos;
 varying float is_lava;
 varying flat float surf_amount;
 varying flat float ripple_amount;
-// Outer landscape (EIOuterLand): its liquid has material + 64; while it is on
-// (outer_edge) the map's own liquid is not drawn over the border cliff rows.
-uniform float outer_edge = 0.0;
-varying flat float cut;
 void vertex() {
 	int mi = int(UV2.y + 0.5);
 	int m = clamp(mi % 64, 0, 63);
-	cut = (outer_edge > 0.5 && mi < 64) ? 1.0 : 0.0;
 	VERTEX.y += level[m];
 	is_lava = lava[m];
 	surf_amount = surf[m];
@@ -436,12 +418,6 @@ vec4 water_ssr(vec3 origin, vec3 normal, mat4 proj, mat4 inv_proj, mat4 inv_view
 	return vec4(0.0);
 }
 void fragment() {
-	if (cut > 0.5) {
-		vec2 e = vec2(wpos.x, -wpos.z);
-		if (e.x < 2.0 || e.y < 2.0 || e.x > ei_border.x - 2.0 || e.y > ei_border.y - 2.0) {
-			discard;
-		}
-	}
 	FOG = ei_fog_of(VERTEX, (INV_VIEW_MATRIX * vec4(VERTEX, 1.0)).xyz);
 	vec3 t = texture(atlases, vec3(UV, UV2.x)).rgb;
 	vec3 gn = normalize((INV_VIEW_MATRIX * vec4(NORMAL, 0.0)).xyz);
@@ -501,8 +477,17 @@ void fragment() {
 		// in the screen copy (black there): blend over them instead.
 		bool missing = max(under.r, max(under.g, under.b)) < 1e-4;
 		if (missing && ruv != SCREEN_UV) {
+			ruv = SCREEN_UV;
+			thick = max(d0 - wd, 0.0);
 			under = textureLod(screen_tex, SCREEN_UV, 0.0).rgb;
 			missing = max(under.r, max(under.g, under.b)) < 1e-4;
+		}
+		// A deep bed is black itself (the original underwater light, ambient
+		// × max(0, 1 − k)): black on the terrain is the bed, not a gap.
+		if (missing) {
+			vec3 bed = (INV_VIEW_MATRIX * vec4(scene_pos(ruv, INV_PROJECTION_MATRIX), 1.0)).xyz;
+			vec2 bed_uv = (vec2(bed.x, -bed.z) + 0.5) / vec2(textureSize(terrain_heights, 0));
+			missing = bed.y > texture(terrain_heights, bed_uv).r + 0.5;
 		}
 		// Actual terrain depth, independent of the view/refraction and of
 		// characters, reeds or bridges intersecting the water surface.
@@ -551,20 +536,22 @@ void fragment() {
 		}
 	}
 }
-// Lambert diffuse as Godot's default, plus a sun / torch glint whose peak is
-// kept below the bloom threshold (Godot's own GGX at roughness 0.04 reached
-// hundreds and bloomed the low sunset sun into a red blob cluster on the
-// sea: bloom is only for fire and magic). The cap is the original's: its water
-// glint is a per-vertex specular of at most 20/255 per channel
-// a larger cap blew wide sunlit stretches out to white (bz5g river at noon).
+// Lambert diffuse as Godot's default, plus a sun / torch glint whose PEAK is
+// the original's water specular: a per-vertex term of at most 20/255 per
+// channel (Godot's own GGX at roughness 0.04 reached hundreds
+// and bloomed the low sunset sun into a red blob cluster on the sea). The
+// lobe is scaled to that peak, not clipped at it: a normalised lobe
+// ((e + 8) / 8 ≈ 110 at the peak) clipped to the cap stayed at the cap over
+// ~11° round the mirror direction, a flat disc that filled 40 % of the screen
+// at the farthest zoom (bog, gz1g); a larger cap blew wide sunlit stretches
+// out to white (bz5g river at noon).
 void light() {
 	float nl = max(dot(NORMAL, LIGHT), 0.0);
 	DIFFUSE_LIGHT += LIGHT_COLOR / PI * nl * ATTENUATION;
 	vec3 h = normalize(LIGHT + VIEW);
 	float e = mix(900.0, 24.0, clamp(ROUGHNESS / 0.6, 0.0, 1.0));
-	float fr = 0.04 + 0.96 * pow(1.0 - max(dot(VIEW, h), 0.0), 5.0);
-	float g = pow(max(dot(NORMAL, h), 0.0), e) * (e + 8.0) / 8.0 * fr * nl * ATTENUATION;
-	SPECULAR_LIGHT += LIGHT_COLOR / PI * min(g, 20.0 / 255.0) * SPECULAR_AMOUNT /*EI_FA*/;
+	float g = pow(max(dot(NORMAL, h), 0.0), e) * nl * ATTENUATION;
+	SPECULAR_LIGHT += LIGHT_COLOR / PI * g * (20.0 / 255.0) * SPECULAR_AMOUNT /*EI_FA*/;
 }
 """
 
@@ -823,17 +810,19 @@ func _build(arc: EIResArchive) -> void:
 			var tex_off := 5 + VERTS * VERTS * 8 * (2 if liquids else 1)
 			var land_tex := _read_u16s(d, tex_off)
 			_record_ground(land_tex, sx, sy)
+			var wverts := []
+			var water_mats := PackedInt32Array()
 			if liquids:
-				land.append(_underwater(land[0], _read_vertices(d, 5 + VERTS * VERTS * 8, sx, sy, false)[0],
-					_read_u16s(d, tex_off + 1024)))
+				water_mats = _read_u16s(d, tex_off + 1024)
+				wverts = _read_vertices(d, 5 + VERTS * VERTS * 8, sx, sy, false)
+				_liquid_xy(wverts[0], land[0], water_mats, sx, sy)
+				land.append(_underwater(land[0], wverts[0], water_mats))
 			var mi := _make_mesh(land, land_tex, PackedInt32Array(), land_mat, Vector2i(sx * TILES, sy * TILES))
 			mi.name = "Sector_%d_%d" % [sx, sy]
 			mi.layers = SHADOW_RECEIVER_LAYER | DECAL_LAYER
 			add_child(mi)
 			if liquids:
-				var wverts := _read_vertices(d, 5 + VERTS * VERTS * 8, sx, sy, false)
 				var water_tex := _read_u16s(d, tex_off + 512)
-				var water_mats := _read_u16s(d, tex_off + 1024)
 				_record_water(wverts[0], water_mats, sx, sy)
 				_record_liquid_ground(water_tex, water_mats, sx, sy)
 				var wm := _make_mesh(wverts, water_tex, water_mats, wmat)
@@ -896,8 +885,6 @@ func _build_surface_data() -> void:
 func apply_gfx() -> void:
 	if _water_mat == null:
 		return
-	# Deferred: the menu screen sets its border after building the map.
-	_update_outer.call_deferred()
 	var fx := GameData.option("gfx_water") != 0
 	_water_mat.shader = _water_fx_shader if fx else _water_shader
 	_water_mat.set_shader_parameter("atlases", _atlases)
@@ -962,21 +949,6 @@ func set_rain_cover(image: Image) -> void:
 		_land_mat.set_shader_parameter("rain_cover", _rain_cover)
 	if _water_mat and _water_mat.shader == _water_fx_shader:
 		_water_mat.set_shader_parameter("rain_cover", _rain_cover)
-
-
-var _outer: EIOuterLand
-
-
-## Remake option gfx_outer_land (Gfx.outer_land_active): the land ring beyond
-## the map edge, built on first use.
-func _update_outer() -> void:
-	var want := Gfx.outer_land_active()
-	if want and _outer == null:
-		_outer = EIOuterLand.build(self, _land_mat, _water_mat)
-		add_child(_outer)
-	elif _outer:
-		_outer.visible = want
-	_water_mat.set_shader_parameter("outer_edge", 1.0 if want else 0.0)
 
 
 func _record_ground(tex: PackedInt32Array, sx: int, sy: int) -> void:
@@ -1265,6 +1237,35 @@ func _read_u16s(d: PackedByteArray, off: int) -> PackedInt32Array:
 	return out
 
 
+## The liquid layer's x / y (second pass): the vertex's
+## material is the liquid tile with the smallest wave in the vertex
+## (tile table as in _underwater, first one on a tie). Material type 4 takes
+## the land vertex's x / y, every other liquid stays on the 1 m grid: the
+## file's x / y bytes of a liquid vertex are not read. (They are not jitter:
+## read as offsets they pushed vertices up to 1 m across their neighbours and
+## folded water triangles over, black back-facing slivers on the surface.)
+func _liquid_xy(pos: PackedVector3Array, land_pos: PackedVector3Array, mats: PackedInt32Array, sx: int, sy: int) -> void:
+	for vi in VERTS * VERTS:
+		var vx := vi % VERTS
+		var vy := vi / VERTS
+		var m := NO_LIQUID
+		for tx in range(vx / 2 - 1 + (vx & 1), vx / 2 + 1):
+			if tx < 0 or tx >= TILES:
+				continue
+			for ty in range(vy / 2 - 1 + (vy & 1), vy / 2 + 1):
+				if ty < 0 or ty >= TILES:
+					continue
+				var mm := mats[ty * TILES + tx]
+				if mm == NO_LIQUID or mm >= materials.size():
+					continue
+				if m == NO_LIQUID or float(materials[mm].get("wave", 0.0)) < float(materials[m].get("wave", 0.0)):
+					m = mm
+		var g := EISpace.pos(sx * SECTOR + vx, sy * SECTOR + vy, 0.0)
+		if m != NO_LIQUID and int(materials[m].type) == 4:
+			g = land_pos[vi]
+		pos[vi] = Vector3(g.x, pos[vi].y, g.z)
+
+
 ## Returns [positions (Godot space), normals] for one 33x33 vertex block.
 func _read_vertices(d: PackedByteArray, off: int, sx: int, sy: int, is_land: bool) -> Array:
 	var pos := PackedVector3Array()
@@ -1274,18 +1275,20 @@ func _read_vertices(d: PackedByteArray, off: int, sx: int, sy: int, is_land: boo
 	var scale := max_altitude / 65535.0
 	for i in VERTS * VERTS:
 		var p := off + i * 8
-		var ox: float = d.decode_s8(p) if is_land else d.decode_u8(p)
-		var oy: float = d.decode_s8(p + 1) if is_land else d.decode_u8(p + 1)
+		# Land: signed x / y jitter, char · 0.5 / 126 m (saved
+		# back). Liquid vertices ignore the bytes: _liquid_xy.
+		var ox: float = d.decode_s8(p) if is_land else 0.0
+		var oy: float = d.decode_s8(p + 1) if is_land else 0.0
 		var z := d.decode_u16(p + 2) * scale
 		var gx := sx * SECTOR + i % VERTS
 		var gy := sy * SECTOR + i / VERTS
-		pos[i] = EISpace.pos(gx + ox / 254.0, gy + oy / 254.0, z)
+		pos[i] = EISpace.pos(gx + ox / 252.0, gy + oy / 252.0, z)
 		var n := d.decode_u32(p + 4)
 		nrm[i] = EISpace.vec(Vector3((((n >> 11) & 0x7FF) - 1000.0) / 1000.0,
 				((n & 0x7FF) - 1000.0) / 1000.0, (n >> 22) / 1000.0)).normalized()
 		if is_land:
 			heights[gy * grid_w + gx] = z
-			land_xy[gy * grid_w + gx] = Vector2(ox, oy) / 254.0
+			land_xy[gy * grid_w + gx] = Vector2(ox, oy) / 252.0
 			land_n[gy * grid_w + gx] = nrm[i]
 	return [pos, nrm]
 

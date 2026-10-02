@@ -297,6 +297,8 @@ static func merge(st: CampaignState, pkg: Dictionary) -> void:
 			var b: Dictionary = st.party_bags.get_or_add("", {"items": [], "money": 0})
 			b.money = money
 			b.items = items
+	if not h.is_empty():
+		CampaignState.cap_belt(h, st._bag("").items)   # the belt's four; extras to its bag
 	var sid := String(pkg.get("sid", ""))
 	if sid:
 		var applied: Dictionary = st.coop.get_or_add("applied", {}) if st.coop.get("applied") is Dictionary else {}
@@ -349,6 +351,7 @@ func _rpc_bring(data: Dictionary) -> void:
 		h.erase(k)
 	_pending[pid] = {"hero": h, "vars": view, "visited": visited, "side_quests": sq, "quest_items": qi, "seq": seq,
 		"purse": {"money": clampi(int(_num(data.get("money", 0), 0.0)), 0, 99999999), "items": _items(data.get("items", []))}}
+	CampaignState.cap_belt(h, _pending[pid].purse.items)   # the belt's four; extras to its own bag
 
 
 ## Host: a player said hello and got slot `idx` (before its hero is made).

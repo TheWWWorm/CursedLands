@@ -4,6 +4,16 @@ extends MeshInstance3D
 ## drawn each frame from the world render
 ## between SetRenderState SRCBLEND = SRCALPHA / DESTBLEND = INVSRCALPHA;
 ## texture "rainsnow", unlit pre-transformed vertices, diffuse white, no fog).
+## It is the last draw of the effects block (after the particles
+## and the lightning), with the depth test on and z writes off
+## (state 0xe = 0): drops nearer than a tree, rock or unit cover it, farther
+## ones are hidden. The drop positions are world points (camera eye = world
+## as for the sky dome), run through the device's own
+## world→clip transform (with the top of the matrix stack, then
+##  to XYZRHW). Godot draws units, foliage and map objects in its
+## transparent pass, sorted by their centres; the mesh's centre is the world
+## origin, so without RENDER_PRIORITY the rain went first and every object
+## was drawn over it.
 ##
 ## Grid: offsets 40, −40, 39, −39 … 1, −1, 0 (81 × 81 cells
 ## 0.5 m, far to near) around the camera's point projected along the fall
@@ -40,6 +50,9 @@ const SNOW_TAB := [5417, 2343, 34456, 12942, 8832, 12234, 45865, 8395, 45321, 88
 	76543, 45396, 12193, 98120, 6798, 79784, 11633, 5710, 54259, 3477, 78118, 1266, 97821, 80949,
 	35786, 8780, 78475, 72235, 34213, 92826]
 const N := 81
+## After the particles (ParticleFx.RENDER_PRIORITY, see-through ones + 2) and
+## the lightning (+ 1): the last effect drawn, as.
+const RENDER_PRIORITY := ParticleFx.RENDER_PRIORITY + 3
 
 const SHADER := """
 shader_type spatial;
@@ -166,6 +179,7 @@ func _init(g: Node) -> void:
 	var sh := Shader.new()
 	sh.code = SHADER
 	_mat.shader = sh
+	_mat.render_priority = RENDER_PRIORITY
 	_mat.set_shader_parameter("tex", GameData.get_texture("rainsnow"))
 	_mat.set_shader_parameter("curves", _curve_texture())
 	material_override = _mat

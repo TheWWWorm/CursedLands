@@ -47,6 +47,7 @@ var _auto_exit := -1        # remake: exit the host party stands in (box shown /
 var _auto_world: GameWorld
 var travel_options: Array = []   # host: destinations currently offered
 var _travel_ev := {}        # host: the open global map event (for joiners)
+var map_open := false       # every peer: the global map is up ("travel" until "travel_close" / a zone)
 var _dialog_ev := {}        # host: the running conversation event (for joiners)
 var coop: CoopProgress
 var net: NetStatus
@@ -195,10 +196,12 @@ func enter_zone(id: String, entrance: int, autosave := true) -> void:
 	_leave_armed = -1
 	_dialog_ev = {}
 	_travel_ev = {}
+	map_open = false
 	zone_id = id
 	_last_snap.clear()
 	z = _zone_variant(z)
 	_movie_on_enter(id)
+	GameData.trace("zone load %s (entrance %d)" % [id, entrance])
 	LoadingScreen.begin(get_tree(), z)
 	_build_world(z, true)
 	# Belt items come into a zone full: the party's units are made anew from
@@ -227,6 +230,7 @@ func enter_zone(id: String, entrance: int, autosave := true) -> void:
 	if autosave and is_host and GameData.option("autosave"):
 		save_game.call_deferred("autosave")
 	LoadingScreen.end()
+	GameData.trace("zone ready %s" % id)
 
 
 ## the original (party deployment) builds a WorldScript for the
@@ -325,7 +329,7 @@ func _deploy_parties(z: Dictionary, entrance: int) -> void:
 			continue   # dead, or waiting while the story uses another party
 		var p := world.nav.nearest_walkable(rect.get_center() + Vector2(slot % 3 - 1, slot / 3) * 1.5)
 		slot += 1
-		_spawn_merc(m, p, view)
+		_spawn_merc(m, p, view, true)
 	for pet: Dictionary in state.pets:
 		if not state.current_party.is_empty():
 			break
@@ -397,6 +401,7 @@ func _rpc_zone(id: String, records: Array, diplo: PackedInt32Array, extra_mobs: 
 	if mpr != "":
 		z = z.duplicate()
 		z.mpr = mpr
+	GameData.trace("zone load %s (from host)" % id)
 	LoadingScreen.begin(get_tree(), z)
 	_build_world(z, false)
 	world.diplomacy = diplo
@@ -411,6 +416,7 @@ func _rpc_zone(id: String, records: Array, diplo: PackedInt32Array, extra_mobs: 
 	_relink_heroes()
 	game.attach_world(world)
 	LoadingScreen.end()
+	GameData.trace("zone ready %s (from host)" % id)
 	net.zone_loaded()
 
 
@@ -962,6 +968,8 @@ func apply_command(cmd: Dictionary, player: int) -> void:
 			if target:
 				for u in mine:
 					if u != target:   # Ctrl / aimed click may pick a party member
+						# Double click: stand up and run unless in reach (case 3).
+						_double_stand(u, cmd, target.pos, float(u.stats.reach) if u.stats.get("ranged", false) else u.melee_reach(target))
 						u.attack(target, false, int(cmd.get("aim", -1)), bool(cmd.get("run", false)))
 		"follow":
 			# Follow order (HUD left strip, the original interaction mode 8): the
@@ -986,7 +994,7 @@ func apply_command(cmd: Dictionary, player: int) -> void:
 					"point": Vector2(float(cmd.get("x", u.pos.x)), float(cmd.get("y", u.pos.y)))})
 		"train":
 			var u := _hero_unit(int(cmd.get("unit", -1)), player)
-			if u and shop_available():   # character management only in towns and camps
+			if u and camp_available():   # character management only in towns and camps
 				var h: Dictionary = u.get_meta("hero")
 				var skill := String(cmd.get("stat", ""))
 				if Skills.raise(h, skill):
@@ -994,10 +1002,10 @@ func apply_command(cmd: Dictionary, player: int) -> void:
 					sync_state()
 		"perk":
 			var u := _hero_unit(int(cmd.get("unit", -1)), player)
-			if u and shop_available() and Perks.learn(u.get_meta("hero"), String(cmd.get("perk", ""))):
+			if u and camp_available() and Perks.learn(u.get_meta("hero"), String(cmd.get("perk", ""))):
 				Combat.hero_stats(u, u.get_meta("hero"))
 				sync_state()
-		"equip", "unequip", "use", "give_quick", "enchant", "enchant_item", "select_weapon", "learn":
+		"equip", "unequip", "use", "give_quick", "take_quick", "enchant", "enchant_item", "select_weapon", "learn":
 			_item_command(cmd, player)
 		"buy", "sell":
 			_trade(cmd, player)
@@ -1051,7 +1059,9 @@ func apply_command(cmd: Dictionary, player: int) -> void:
 
 # ------------------------------------------------------------------ mercenaries
 
-func _spawn_merc(m: Dictionary, p: Vector2, facing := 0.0) -> GameUnit:
+## `deployed`: placed with the party at a zone entry (no natural
+## armour, Combat.clear_natural_armor), not hired inside the zone.
+func _spawn_merc(m: Dictionary, p: Vector2, facing := 0.0, deployed := false) -> GameUnit:
 	if not players_include(int(m.get("controller", 0))):
 		m.controller = _merc_owner()
 	var rec := state.merc_record(m)
@@ -1069,6 +1079,8 @@ func _spawn_merc(m: Dictionary, p: Vector2, facing := 0.0) -> GameUnit:
 		u.facing = facing
 		u.display_name = m.name
 		u.set_meta("hero", m)
+		if deployed:
+			Combat.clear_natural_armor(u)
 		Combat.hero_stats(u, m)
 		u.aggressive = bool(m.get("aggressive", true))
 		u.restore_gait(CampaignState.entry_gait(world, int(m.get("gait", 2))))
@@ -1212,9 +1224,10 @@ func _item_command(cmd: Dictionary, player: int) -> void:
 		return
 	var h: Dictionary = u.get_meta("hero")
 	var item := String(cmd.get("item", "")).to_lower()
-	# Equipment, runes and enchanting are town/camp business in the original;
-	# in the field only the belt can be used.
-	if String(cmd.t) in ["equip", "unequip", "enchant", "enchant_item", "learn"] and not shop_available():
+	# Equipment, runes and enchanting are town/camp business in the original
+	# (camp_available: a village or the global map's camp); in the field only
+	# the belt can be used.
+	if String(cmd.t) in ["equip", "unequip", "take_quick", "enchant", "enchant_item", "learn"] and not camp_available():
 		return
 	match String(cmd.t):
 		"equip":
@@ -1261,10 +1274,22 @@ func _item_command(cmd: Dictionary, player: int) -> void:
 			_refresh_hero(u)
 		"give_quick":
 			var bag_i := state.items.find(item)
-			if bag_i >= 0 and Items.kind(item) == "quick" and h.get("quick", []).size() < 8:
+			# At most four belt entries (CampaignState.BELT_SLOTS).
+			if bag_i >= 0 and Items.kind(item) == "quick" and h.get("quick", []).size() < CampaignState.BELT_SLOTS:
 				state.items.remove_at(bag_i)
 				h.get_or_add("quick", []).append(item)
 				sync_state()
+		"take_quick":
+			# A belt item back to the bag: the camp screen's take-off of a quick
+			# item (case 0x3006: off the player's
+			# list into the bag).
+			var q: Array = h.get("quick", [])
+			var qi := q.find(item)
+			if qi < 0:
+				return
+			q.remove_at(qi)
+			state.items.append(item)
+			sync_state()
 		"enchant_item":
 			# Put a spell on a weapon or armour (bag or worn) with an it/ic rune.
 			# the original's constructor (mode 5, the
@@ -1418,6 +1443,17 @@ func _refresh_hero(u: GameUnit) -> void:
 
 func shop_available() -> bool:
 	return world != null and String(world.zone.get("type", "")) == "brief"
+
+
+## Character management (equipment, belt, skills, abilities, spells): in a
+## village, and at the global map's camp. The map's camp button opens the same
+## camp screen ((5) → with
+## constr.current 0, the dressing screen) whose put-on / take-off handlers
+##  change the hero's player record and touch a
+## world figure only when the hero has one (camp ≠ 0); there is
+## no zone check. In the field only the belt is used.
+func camp_available() -> bool:
+	return shop_available() or map_open
 
 
 ## The trader whose camp screen is open: script var "constr.current" (set by a
@@ -1928,6 +1964,12 @@ func _rpc_event(event: Dictionary) -> void:
 
 func _on_event(event: Dictionary) -> void:
 	var t := String(event.get("t", ""))
+	if t == "travel":
+		map_open = true
+		GameData.trace("travel map open from %s" % zone_id)
+	elif t == "travel_close":
+		map_open = false
+		GameData.trace("travel map closed in %s" % zone_id)
 	# World-state events only need applying on clients; the host already did it.
 	if not is_host and world:
 		match t:
@@ -2093,6 +2135,7 @@ func _relink_heroes() -> void:
 			if String(h.get("unit_name", h.name)) == String(u.info.get("name", "")):
 				u.set_meta("hero", h)
 				u.display_name = h.name
+				Combat.clear_natural_armor(u)   # as on the host (deployed heroes)
 		# Mercenaries a client controls (their units are named after them).
 		for m: Dictionary in state.mercs.values():
 			if int(m.get("controller", -1)) == u.controller and String(m.get("name", "")) == String(u.info.get("name", "")):
@@ -2302,7 +2345,9 @@ func save_game(slot: String, save_name := "", frame: Image = null) -> void:
 	if game and game.hud and game.hud.minimap and not state.camera.is_empty():
 		state.camera["minimap_zoom"] = game.hud.minimap.zoom   #  reads it back
 	coop.before_save()
+	GameData.trace("save %s in %s" % [slot, zone_id])
 	var err := state.save("user://saves/%s.sav" % slot)
+	GameData.trace("save %s done (%d)" % [slot, err])
 	if err == OK:
 		# The Load screen's entry (the original info.sav / shot.sav).
 		SaveInfo.write(slot, state.get_var(0, "gtime"), _allod_id(), zone_id, save_name)
@@ -2343,8 +2388,10 @@ static func latest_save() -> String:
 
 
 func load_game(slot: String) -> bool:
+	GameData.trace("load %s (from %s)" % [slot, zone_id])
 	var s := CampaignState.load_from("user://saves/%s.sav" % slot)
 	if s == null:
+		GameData.trace("load %s failed" % slot)
 		return false
 	coop.before_load(slot, s)
 	# Players connected now who joined after that save was made (co-op class
@@ -2373,4 +2420,5 @@ func load_game(slot: String) -> bool:
 	elif game and not game.selected.is_empty():
 		var p: Vector2 = game.selected[0].pos
 		game.rig.focus(EISpace.pos(p.x, p.y, world.ground_at(p.x, p.y)))
+	GameData.trace("load %s done in %s" % [slot, zone_id])
 	return true

@@ -43,6 +43,8 @@ var exe_px := Vector2(100, 200)
 var _key := ""
 var _model: EIUnitModel
 var _pivot: Node3D
+var _old_pivot: Node3D   # the previous figure, shown until the new one is framed
+var _vp: SubViewport
 var _cam: Camera3D
 var _framed := 0
 var _drag := false
@@ -58,6 +60,7 @@ var _pose_wait := 0.0
 var _wound_wait := 0.0
 var _pairs: Array = []   # [source part, preview part] in tree order (parents first)
 var _pairs_src: EIUnitModel
+var _morph_pairs: Array = []   # [source, preview] "morph" meshes, the same blend shapes
 var _pose_clip := ""
 var _pose_time := -1.0
 var _anim_roots: Array[EIAnimPart] = []
@@ -103,20 +106,32 @@ func show_info(info: Dictionary) -> void:
 	_pose_time = -1.0
 	_anim_roots.clear()
 	_pairs.clear()
+	_morph_pairs.clear()
 	_pairs_src = null
 	_wound_levels.clear()
-	for c in get_children():
-		c.queue_free()
-	var vp := SubViewport.new()
-	vp.size = view_size
-	vp.own_world_3d = true
-	vp.transparent_bg = true
-	add_child(vp)
+	# One SubViewport for the doll's whole life; only the figure is swapped.
+	# A new SubViewport (or a resized one) gets a new render target that the
+	# container draws before anything was rendered into it: one black frame
+	# on D3D12, leftover video memory ("shimmer") on Vulkan, each time the
+	# unit panel switched units on hover.
+	_ensure_view()
+	_cam.fov = fov
+	var old := _pivot
+	if is_instance_valid(_old_pivot):
+		# Changed again before the last figure was framed: that one was never
+		# shown; the one on screen stays until this new one is ready.
+		if is_instance_valid(old):
+			old.queue_free()
+		old = _old_pivot
+	_old_pivot = null
 	_model = EIUnitModel.create(info, true)
 	if _model == null:
+		_pivot = null
+		if is_instance_valid(old):
+			old.queue_free()
 		return
 	_pivot = Node3D.new()
-	vp.add_child(_pivot)
+	_vp.add_child(_pivot)
 	_pivot.add_child(_model)
 	_model.act("idle")
 	for n in _model.get_children():
@@ -125,24 +140,49 @@ func show_info(info: Dictionary) -> void:
 	if camp_frame or follow_pose:
 		_model.set_process(false)
 		_model.player.callback_mode_process = AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_MANUAL
+	# The previous figure stays on screen until the new one is framed and
+	# posed (_swap_in): never a frame with no figure or a wrongly framed one.
+	if is_instance_valid(old):
+		_pivot.visible = false
+		_old_pivot = old
+	_framed = 0
+	set_process(true)
+	if is_visible_in_tree() and (camp_frame or exe_rect.has_area()):
+		_process(0.0)   # framed and posed right away: swapped in this frame
+
+
+func _ensure_view() -> void:
+	if is_instance_valid(_vp):
+		return
+	_vp = SubViewport.new()
+	_vp.size = view_size
+	_vp.own_world_3d = true
+	_vp.transparent_bg = true
+	_vp.msaa_3d = Viewport.MSAA_4X
+	add_child(_vp)
 	_cam = Camera3D.new()
-	_cam.fov = fov
-	vp.add_child(_cam)
-	vp.msaa_3d = Viewport.MSAA_4X
+	_vp.add_child(_cam)
 	# Lit like the game world (the original draws the preview figure with the
 	# scene's sun): a key light from the upper front-left.
 	var light := DirectionalLight3D.new()
 	light.rotation_degrees = Vector3(-30, -35, 0)
 	light.light_energy = 1.25
-	vp.add_child(light)
+	_vp.add_child(light)
 	var env := WorldEnvironment.new()
 	env.environment = Environment.new()
 	env.environment.background_mode = Environment.BG_CLEAR_COLOR
 	env.environment.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
 	env.environment.ambient_light_color = Color(0.42, 0.42, 0.45)
-	vp.add_child(env)
-	_framed = 0
-	set_process(true)
+	_vp.add_child(env)
+
+
+## The new figure is framed (and posed): show it, drop the previous one.
+func _swap_in() -> void:
+	if is_instance_valid(_pivot):
+		_pivot.visible = true
+	if is_instance_valid(_old_pivot):
+		_old_pivot.queue_free()
+	_old_pivot = null
 
 
 ## Frames the whole figure once the idle pose has applied (models face
@@ -171,11 +211,13 @@ func _process(dt: float) -> void:
 			_framed = 3
 		if sample:
 			_sample_camp_pose(Time.get_ticks_msec())
+		_swap_in()
 		return
 	if exe_rect.has_area():
 		if _framed == 0:
 			_exe_frame()
 			_framed = 3
+			_swap_in()
 		if not follow_pose:
 			set_process(false)
 		return
@@ -187,20 +229,31 @@ func _process(dt: float) -> void:
 	var box := AABB()
 	var first := true
 	for mi: MeshInstance3D in _model.find_children("*", "MeshInstance3D", true, false):
-		if not mi.is_visible_in_tree():
+		if not _shown_part(mi):
 			continue
 		var b: AABB = mi.global_transform * mi.get_aabb()
 		box = b if first else box.merge(b)
 		first = false
 	if first:
+		_swap_in()
 		return
 	var c := box.get_center()
 	var dist := box.size.y * 0.5 / tan(deg_to_rad(_cam.fov) * 0.5) * frame_scale
 	c.y += box.size.y * frame_scale * frame_drop
 	_cam.position = Vector3(c.x, c.y + box.size.y * eye_lift, c.z + dist)
 	_cam.look_at(c)
+	_swap_in()
 	if not follow_pose:
 		set_process(false)
+
+
+## A mesh the figure shows (its pivot may still be hidden by show_info).
+func _shown_part(n: Node3D) -> bool:
+	while n != null and n != _pivot:
+		if not n.visible:
+			return false
+		n = n.get_parent() as Node3D
+	return true
 
 
 func _ui_camera(rect: Rect2) -> void:
@@ -293,12 +346,19 @@ func _sync_pose(wounds := true) -> void:
 	if src != _pairs_src:
 		_pairs_src = src
 		_pairs.clear()
+		_morph_pairs.clear()
 		var by_name := {}
 		for n: Node in src.find_children("*", "EIAnimPart", true, false):
 			by_name[n.name] = n
 		for n: Node in _model.find_children("*", "EIAnimPart", true, false):
 			if by_name.has(n.name):
 				_pairs.append([by_name[n.name], n])
+				# Vertex morph keys (wing membranes ...) are blend shapes of a
+				# part's "morph" mesh (EIAnim.morphs), not part transforms.
+				var ma := (by_name[n.name] as Node).get_node_or_null("morph") as MeshInstance3D
+				var mb := n.get_node_or_null("morph") as MeshInstance3D
+				if ma and mb:
+					_morph_pairs.append([ma, mb])
 	# The unit's figure as posed this frame, part by part in the model's own
 	# space (both models are built from the same unit spec).
 	var to_src := src.global_transform.affine_inverse()
@@ -309,6 +369,13 @@ func _sync_pose(wounds := true) -> void:
 			_pairs_src = null
 			return
 		(pair[1] as Node3D).global_transform = from_dst * (to_src * a.global_transform)
+	for pair: Array in _morph_pairs:
+		var ma: MeshInstance3D = pair[0]
+		var mb: MeshInstance3D = pair[1]
+		for i in ma.get_blend_shape_count():
+			var w := ma.get_blend_shape_value(i)
+			if w != mb.get_blend_shape_value(i):
+				mb.set_blend_shape_value(i, w)
 
 
 ## Radians around Godot's up axis; CampView supplies the original held-arrow rate.

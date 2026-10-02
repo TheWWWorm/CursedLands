@@ -109,6 +109,19 @@ func set_zone(a: String, dun: bool) -> void:
 	_next_calm = 1
 
 
+## no music mode (= 0), the stream stops at once
+## ((4)). The global map's build calls it (
+## ECX =): the map is silent, and the zone rules
+## (zone mode only) stop, combat music included.
+func set_none() -> void:
+	_cut()
+	mode = Mode.NONE
+	hold = false
+	combat = false
+	_forced_on = false
+	_next_calm = 0
+
+
 ## the briefing track at once.
 func set_briefing() -> void:
 	_cut()

@@ -190,7 +190,10 @@ static var _campaign: CampaignMap
 
 ## Remake-only preview for a save without a shot (e.g. a co-op progress save
 ## written before any frame): the save zone's minimap picture (map.txt
-## "#minimap").
+## "#minimap"), flipped so north is at the top as on the minimap (row 0 of
+## the picture is EI y 0, the south edge).
+static var _pictures := {}
+
 static func _zone_picture(zone: String) -> Texture2D:
 	if zone.is_empty() or not GameData.is_open():
 		return null
@@ -198,7 +201,14 @@ static func _zone_picture(zone: String) -> Texture2D:
 		_campaign = CampaignMap.load_from(GameData.texts)
 	var z: Dictionary = _campaign.zones.get(zone.to_lower(), {}) if _campaign else {}
 	var name := String(z.get("minimap", "")).to_lower()
-	return GameData.get_texture(name) if name else null
+	if name.is_empty():
+		return null
+	if not _pictures.has(name):
+		var img := GameData.load_image(name)
+		if img:
+			img.flip_y()
+		_pictures[name] = ImageTexture.create_from_image(img) if img else null
+	return _pictures[name]
 
 
 ##  the board placement: y = 700 − (150 | 80) · e, e the

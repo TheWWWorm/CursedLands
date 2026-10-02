@@ -14,6 +14,8 @@ const SurfaceResponse = preload("res://src/game/surface_materials.gd")
 static var _models := {}
 static var _materials := {}
 static var _foliage := {}
+## gl_compatibility: the per-mesh copies of those (part_y is no instance uniform there).
+static var _foliage_local: Array[WeakRef] = []
 static var _wind := true
 
 ## Remake foliage: the original alpha-tested material plus optional wind
@@ -22,6 +24,8 @@ static var _wind := true
 ## The sway grows with the height above the object's root (instance uniform
 ## part_y = the part's offset, + the vertex's own height), gusts travel across
 ## the island along the wind direction, and leaves flutter a little.
+## Cacti (stiff = 1, see CACTUS_PREFIX) bend STIFF_K of that, nothing at the
+## root rising to the full share at STIFF_TOP m, and do not flutter.
 const FOLIAGE_SHADER := """
 shader_type spatial;
 render_mode cull_disabled, ambient_light_disabled;
@@ -31,8 +35,11 @@ uniform sampler2D albedo_tex : source_color, filter_linear_mipmap_anisotropic, r
 uniform sampler2D foliage_mask : hint_default_black, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform float wind = 1.0;
 uniform vec2 wind_dir = vec2(0.8, 0.6);
+uniform float stiff = 0.0;
 instance uniform float part_y = 0.0;
 """ + SurfaceResponse.RELIEF_SHADER + """
+const float STIFF_K = 0.2;
+const float STIFF_TOP = 2.5;
 void vertex() {
 	ei_e = vec3(0.0);
 	ei_k = 0.0;
@@ -42,8 +49,9 @@ void vertex() {
 		float ph = dot(o.xz, wind_dir) * 0.12 + o.x * 0.05;
 		float gust = sin(TIME * 0.9 - ph) * 0.55 + sin(TIME * 2.1 - ph * 1.7) * 0.25 + 0.45;
 		float bend = (0.012 * hgt + 0.0006 * hgt * hgt) * gust * wind;
+		bend *= mix(1.0, STIFF_K * clamp(hgt / STIFF_TOP, 0.0, 1.0), stiff);
 		vec3 w = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
-		float flutter = sin(TIME * 7.0 + dot(w, vec3(1.7, 2.3, 1.1))) * 0.018 * min(hgt, 2.0) * wind;
+		float flutter = sin(TIME * 7.0 + dot(w, vec3(1.7, 2.3, 1.1))) * 0.018 * min(hgt, 2.0) * wind * (1.0 - stiff);
 		vec3 dw = vec3(wind_dir.x * bend, -bend * bend * 0.3 + flutter * 0.5, wind_dir.y * bend) + vec3(flutter, 0.0, -flutter) * 0.6;
 		// world offset into the model's space (objects are scaled 1, rotated)
 		VERTEX += (inverse(mat3(MODEL_MATRIX)) * dw);
@@ -139,7 +147,8 @@ static func world_material_for(texture: String) -> Material:
 ## part node the metas "p0" / "p1" (its position at c.x = 0 / 1). The blend
 ## is linear along one axis, so the blend shape is exact.
 static func instantiate(template: String, texture: String, complexion: Vector3,
-		visible_parts: PackedStringArray = PackedStringArray(), morph := false, lit := false) -> Node3D:
+		visible_parts: PackedStringArray = PackedStringArray(), morph := false, lit := false,
+		obj_name := "") -> Node3D:
 	var model := get_model(template)
 	if model.is_empty():
 		return null
@@ -148,7 +157,8 @@ static func instantiate(template: String, texture: String, complexion: Vector3,
 	# "nafl*" figures are the flora (naflbu bushes, nafltr trees). Stumps,
 	# logs and mushrooms are nafltr too; they keep the foliage look but no sway.
 	var flora := template.begins_with("nafl") and not morph
-	var mat: Material = foliage_material_for(texture, sways(template, texture, model)) if flora \
+	var mat: Material = (foliage_material_for(texture, true, true) if is_cactus(obj_name)
+			else foliage_material_for(texture, sways(template, texture, model))) if flora \
 			else (world_material_for(texture) if lit else material_for(texture))
 	var nodes := {}
 	for link: Array in model.links:
@@ -181,6 +191,7 @@ static func instantiate(template: String, texture: String, complexion: Vector3,
 				var local_mat := mat.duplicate() as ShaderMaterial
 				local_mat.set_shader_parameter("part_y", y)
 				mi.material_override = local_mat
+				_foliage_local.append(weakref(local_mat))   # set_wind reaches the copies too
 			else:
 				mi.set_instance_shader_parameter("part_y", y)
 		if morph:
@@ -322,6 +333,45 @@ static func build_mesh(f: Dictionary, c: Vector3) -> ArrayMesh:
 	return mesh
 
 
+## build_mesh plus one blend shape per animation morph frame (EIAnim.morphs):
+## shape k moves each vertex by frames[k][its vertex index], as the original adds
+## the interpolated offsets to the blended vertices before drawing
+## normals stay those of the rest shape, as there.
+static func build_anim_morph_mesh(f: Dictionary, c: Vector3, names: PackedStringArray,
+		frames: Array) -> ArrayMesh:
+	var base := build_mesh(f, c)
+	var key := "%d|%s|%s|%s|anim" % [f.id, c.x, c.y, c.z]
+	var cached: ArrayMesh = _meshes.get(key)
+	if cached:
+		return cached
+	if base.get_surface_count() == 0:
+		return base
+	var arrays := base.surface_get_arrays(0)
+	var pos: PackedVector3Array = arrays[Mesh.ARRAY_VERTEX]
+	var d: PackedByteArray = f.data
+	var vidx := PackedInt32Array()   # vertex index of each mesh vertex (one per component)
+	for i in f.comps:
+		vidx.append(d.decode_u16(f.c_off + i * 6))
+	var mesh := ArrayMesh.new()
+	mesh.blend_shape_mode = Mesh.BLEND_SHAPE_MODE_NORMALIZED
+	var shapes := []
+	for k in frames.size():
+		var offs: PackedVector3Array = frames[k]
+		var p := pos.duplicate()
+		for j in p.size():
+			if vidx[j] < offs.size():
+				p[j] += offs[vidx[j]]
+		var shape := []
+		shape.resize(Mesh.ARRAY_MAX)
+		shape[Mesh.ARRAY_VERTEX] = p
+		shape[Mesh.ARRAY_NORMAL] = arrays[Mesh.ARRAY_NORMAL]
+		shapes.append(shape)
+		mesh.add_blend_shape(names[k])
+	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays, shapes)
+	_meshes[key] = mesh
+	return mesh
+
+
 static func _build_mesh(f: Dictionary, c: Vector3) -> ArrayMesh:
 	var d: PackedByteArray = f.data
 	var n: int = f.n
@@ -393,8 +443,8 @@ static func material_for(texture: String) -> StandardMaterial3D:
 
 ## The foliage material of a texture: material_for's look plus wind sway
 ## (falls back to material_for when the texture is missing).
-static func foliage_material_for(texture: String, sway := true) -> Material:
-	var key := texture + ("#hd" if Gfx.on("gfx_hd_textures") else "") + ("" if sway else "#still")
+static func foliage_material_for(texture: String, sway := true, stiff := false) -> Material:
+	var key := texture + ("#hd" if Gfx.on("gfx_hd_textures") else "") + ("" if sway else "#still") + ("#stiff" if stiff else "")
 	if _foliage.has(key):
 		return _foliage[key]
 	var tex := Gfx.texture_3d(texture) if texture else null
@@ -405,9 +455,23 @@ static func foliage_material_for(texture: String, sway := true) -> Material:
 	m.set_shader_parameter("albedo_tex", tex)
 	m.set_shader_parameter("foliage_mask", SurfaceResponse.foliage_mask(texture))
 	m.set_shader_parameter("wind", 1.0 if _wind and sway else 0.0)
+	m.set_shader_parameter("stiff", 1.0 if stiff else 0.0)
 	m.set_meta("sway", sway)
 	_foliage[key] = m
 	return m
+
+
+## Cacti sway only a little (remake choice after measurements of saguaros:
+## small vibrations, stiff at the base, no leaves). The data names them: every
+## .mob placement of nafltr71 / nafltr72 (texture tree04) is called
+## "Cactus00*" / "Cactus01*" (1254 / 643 over all maps) and no other figure
+## has a Cactus name; the template alone is not used, so a map placing those
+## figures under another name keeps the tree sway.
+const CACTUS_PREFIX := "cactus"
+
+
+static func is_cactus(obj_name: String) -> bool:
+	return obj_name.to_lower().begins_with(CACTUS_PREFIX)
 
 
 static var _sways := {}
@@ -478,6 +542,13 @@ static func set_wind(on: bool) -> void:
 	_wind = on
 	for m: ShaderMaterial in _foliage.values():
 		m.set_shader_parameter("wind", 1.0 if on and m.get_meta("sway", true) else 0.0)
+	var alive: Array[WeakRef] = []
+	for r: WeakRef in _foliage_local:
+		var m := r.get_ref() as ShaderMaterial
+		if m:
+			m.set_shader_parameter("wind", 1.0 if on and m.get_meta("sway", true) else 0.0)
+			alive.append(r)
+	_foliage_local = alive
 
 
 static func clear_cache() -> void:
@@ -485,6 +556,7 @@ static func clear_cache() -> void:
 	_models.clear()
 	_materials.clear()
 	_foliage.clear()
+	_foliage_local.clear()
 	_sway_images.clear()
 	_world.clear()
 	SurfaceResponse.clear_cache()

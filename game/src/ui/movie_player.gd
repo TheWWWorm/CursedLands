@@ -104,9 +104,25 @@ func _ready() -> void:
 	resized.connect(_layout_skip)
 	_layout_skip()
 
+## Bottom right while a movie plays; while it is being prepared (the
+## progress text in the middle), right under that text (user request).
 func _layout_skip() -> void:
 	var safe := Portability.safe_rect(size)
 	var target := TouchInput.target_pixels() if TouchInput.enabled else 48.0
+	if _state == PREPARING:
+		_skip.anchor_left = 0.5
+		_skip.anchor_right = 0.5
+		_skip.anchor_top = 0.5
+		_skip.anchor_bottom = 0.5
+		_skip.offset_left = -target
+		_skip.offset_right = target
+		_skip.offset_top = 32.0
+		_skip.offset_bottom = 32.0 + target
+		return
+	_skip.anchor_left = 1.0
+	_skip.anchor_right = 1.0
+	_skip.anchor_top = 1.0
+	_skip.anchor_bottom = 1.0
 	_skip.offset_left = -(size.x - safe.end.x) - target * 2 - 16
 	_skip.offset_right = -(size.x - safe.end.x) - 16
 	_skip.offset_top = -(size.y - safe.end.y) - target - 16
@@ -159,6 +175,7 @@ func play(name: String) -> void:
 	_pause()
 	_state = PREPARING
 	_label.text = RemakeText.t("Preparing cutscene...")
+	_layout_skip()
 	visible = true
 
 
@@ -346,6 +363,7 @@ func _begin(frames: int, fps: float, w: int, h: int, pcm: PackedByteArray, rate:
 	_hist.clear()
 	_state = PLAYING
 	_label.text = ""
+	_layout_skip()
 	visible = true
 	_pause()
 	if pcm.size() > 0 and rate > 0 and not silent:

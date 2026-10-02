@@ -412,8 +412,13 @@ static func _flyer(u: GameUnit) -> bool:
 ## the factor x the difficulty's absorption (fire thermal, acid chemical,
 ## lightning electrical), then spreads the rest over the living parts
 ## (`GameUnit.body_damage`), where a character's worn layers come off each
-## part's share (x the factor). **Approx.**: their wear
-##  is not applied for spells.
+## part's share (x the factor). The hit always lands
+## the struck armour spells fire first; when the natural
+## armour stops it all, the struck path still runs without damage
+## (`Combat.blank_hit`: "0" hit number, hostility, AI hit hook); a unit that
+## lives on after damage gets the healing armour spell.
+## **Approx.**: the layers' wear is not applied for spells
+## and a hit the worn layers stop entirely still goes through take_damage.
 static func _spell_damage(world: GameWorld, caster: GameUnit, p: Dictionary, u: GameUnit, owner_only := false) -> void:
 	var power := float(p.effect)
 	var af := 1.0
@@ -429,7 +434,14 @@ static func _spell_damage(world: GameWorld, caster: GameUnit, p: Dictionary, u: 
 			prot = maxf(prot, float(b.get("armor", 0.0)))
 	var arm := (armour[t] if t < armour.size() else 0.0) + prot
 	var dmg := power - arm * af * world.combat.difficulty(u, "Absorption")
+	# the record's roll (= FLT_MAX) always lands; the
+	# struck armour spells fire before the damage ((1)).
+	world.combat.armor_spells(u, true)
+	if u.dead:
+		return
 	if dmg <= 0.0:
+		#  returned 0: the struck path without damage.
+		world.combat.blank_hit(u, caster, owner_only)
 		return
 	# a character's (script-name id, `has_meta("hero")`) worn
 	# layers on each part, outer first, each x the armour factor, on that
@@ -446,6 +458,9 @@ static func _spell_damage(world: GameWorld, caster: GameUnit, p: Dictionary, u: 
 						return 0.0
 				return d
 	u.take_damage(dmg, caster, -1, PackedFloat32Array(), 0, layers, owner_only)
+	# a unit that lives on after the damage (healing armour).
+	if not u.dead:
+		world.combat.armor_spells(u, false)
 
 
 ## Host: a cast without a caster (script CastSpellPoint / CastSpellUnit,

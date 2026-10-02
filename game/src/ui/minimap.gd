@@ -15,7 +15,8 @@ extends Control
 ## (620,0)-(780,160) shows the map unzoomed (L across 160 px, colour 0.8,
 ## clipped to the map) over the shade, and a 16-gon of radius 64
 ## round (700,80) shows it zoomed (colour 1.0); both
-## use uv = world / L. Zoom: 1.0 at the start (the saved value when loading,
+## use uv = world / L, EI +y up (north at the top, the picture's row 0 at the
+## bottom; not turned with the camera — see `_to_map`). Zoom: 1.0 at the start (the saved value when loading,
 ## remake: the save's camera record "minimap_zoom", Session), "+" held multiplies it by 2.5^dt up to 0.05 L, "−" held
 ## divides it down to 1 (held index; press
 ## plays buttons\battle\click.wav), the held button drawn at 1.0, else 0.5.
@@ -31,8 +32,8 @@ extends Control
 ## - camera heading: at (694 + offset, 84), turned about +z by
 ##   atan2(−vx, −vy) of the camera's view axis (
 ## ), i.e. it rides the ring opposite the view with its apex pointing
-##   the way the camera looks. **Approx.**: derived for the remake's map
-##   orientation (`_to_map`) rather than from the original's world axes.
+##   the way the camera looks; v = the EI (x, y) of the Godot camera's
+##   forward axis (the original's own view vector, not traced).
 
 const MAP := Rect2(620, 0, 160, 160)
 const BUTTONS := {"toggle": [Rect2(780, 0, 20, 30), Rect2(), 10300],
@@ -150,13 +151,21 @@ func _center() -> Vector2:
 
 
 ## World position -> the 800×600 point of the unzoomed square (`z` 1) or of
-## the zoomed inset (`z` = zoom): 80 px per unit of (p − c) · 2 / L.
+## the zoomed inset (`z` = zoom): 80 px per unit of n = (p − c) · 2 / L, with
+## EI +y up: place vertices at (n.x, −n.y) and the
+## click takes y = c.y − (py − 80) / 80 / s, so north is the top
+## and the picture's row 0 (v 0, EI y 0) the bottom. `_flip` turns an EI
+## (x, y) offset into the screen's.
 func _to_map(p: Vector2, c: Vector2, z := 1.0) -> Vector2:
-	return MAP.get_center() + (p - c) * (160.0 / _l) * z
+	return MAP.get_center() + _flip(p - c) * (160.0 / _l) * z
 
 
 func _from_map(q: Vector2, c: Vector2, z := 1.0) -> Vector2:
-	return c + (q - MAP.get_center()) * _l / (160.0 * z)
+	return c + _flip(q - MAP.get_center()) * _l / (160.0 * z)
+
+
+static func _flip(v: Vector2) -> Vector2:
+	return Vector2(v.x, -v.y)
 
 
 func _button_at(local: Vector2) -> String:
@@ -264,11 +273,14 @@ func _draw() -> void:
 		draw_rect(map_px, Color(0, 0, 0, 0x50 / 255.0))
 		var wr := Rect2(c - Vector2(_l, _l) * 0.5, Vector2(_l, _l)).intersection(Rect2(Vector2.ZERO, _size))
 		if wr.has_area():
-			var tl := _to_map(wr.position, c)
-			var dst := Rect2(tl, _to_map(wr.end, c) - tl).abs()
-			var ts := _tex.get_size()
-			draw_texture_rect_region(_tex, _r(dst), Rect2(wr.position / _l * ts, wr.size / _l * ts),
-				Color(0.8, 0.8, 0.8))
+			# uv = world / L, EI y up on the screen (`_to_map`).
+			var pts := PackedVector2Array()
+			var uvs := PackedVector2Array()
+			for w in [wr.position, Vector2(wr.end.x, wr.position.y), wr.end, Vector2(wr.position.x, wr.end.y)]:
+				pts.append(_pt(_to_map(w, c)))
+				uvs.append(w / _l)
+			var grey := Color(0.8, 0.8, 0.8)
+			draw_primitive(pts, PackedColorArray([grey, grey, grey, grey]), uvs, _tex)
 		# The zoomed inset (depth 14, colour 1.0): the 16-gon r 64, clipped to the map.
 		var gon := PackedVector2Array()
 		for i in 16:
@@ -311,13 +323,14 @@ func _draw() -> void:
 	else:
 		_arrow(HudDial.arrow(713, 20, PI * 0.5, 0.8), true)
 	if _tex:
-		var h := _heading()
-		_arrow(HudDial.arrow(694 + _off, 84, atan2(h.x, -h.y), 0.8), true)
+		var h := _heading()   # atan2(−vx, −vy) (h = −v)
+		_arrow(HudDial.arrow(694 + _off, 84, atan2(h.x, h.y), 0.8), true)
 
 
 ## The markers (one mesh: sprite [2]
 ## (700,80), depth 12 — in front of the pictures (14 / 18 / 20), behind the
-## ring (10); 80 px per unit of n = (p − centre) · 2 / L; each vertex takes
+## ring (10); 80 px per unit of n = (p − centre) · 2 / L at (n.x, −n.y), EI
+## y up as `_to_map`; each vertex takes
 ## one colour of `_mark_col`, flat, untextured otherwise), in buffer order:
 ## 1. units of the player's list (alive only): a triangle, apex 0.07 along the
 ##    unit's facing, base corners 0.04 at ±135° from it (5.6 / 3.2 px), drawn
@@ -349,8 +362,10 @@ func _draw_marks(c: Vector2) -> void:
 			ci = 0
 		elif (ending and u.uid == 666666) or (not mine.is_empty() and game.world.is_enemy(u, mine[0])):
 			ci = 2
-		var d := Vector2.from_angle(u.facing)   # EI (x, y), as `_to_map` places the units
-		var o := MAP.get_center() + n * 80.0
+		# The apex along the model's −Y (turns +Y; the original takes
+		# (−x, +y) of it in screen space) = the facing, EI y up.
+		var d := _flip(Vector2.from_angle(u.facing))
+		var o := MAP.get_center() + _flip(n) * 80.0
 		var tri := PackedVector2Array([_pt(o + d * 0.07 * 80.0),
 			_pt(o + d.rotated(-0.75 * PI) * 0.04 * 80.0), _pt(o + d.rotated(0.75 * PI) * 0.04 * 80.0)])
 		draw_colored_polygon(tri, _mark_col[ci])
@@ -369,18 +384,18 @@ func _draw_marks(c: Vector2) -> void:
 			n *= zoom
 		elif n.length_squared() < 0.68 or absf(n.x) > 0.97 or absf(n.y) > 0.97:
 			continue
-		var o := MAP.get_center() + n * 80.0
+		var o := MAP.get_center() + _flip(n) * 80.0
 		draw_rect(Rect2(_pt(o - Vector2(2.4, 2.4)), Vector2(4.8, 4.8) * _k()), _mark_col[1])
 
 
-## Screen direction on the map opposite the camera's view (
+## EI (x, y) direction opposite the camera's view (−v for
 ## atan2(−vx, −vy)); (0, 1) when the view is vertical.
 func _heading() -> Vector2:
 	var cam := get_viewport().get_camera_3d()
 	if cam == null:
 		return Vector2(0, 1)
 	var f := -cam.global_basis.z
-	var d := -Vector2(f.x, -f.z)   # Godot (x, −z) = EI (x, y), as _to_map draws them
+	var d := -Vector2(f.x, -f.z)   # Godot (x, −z) = EI (x, y)
 	return d.normalized() if d.length() > 1e-6 else Vector2(0, 1)
 
 

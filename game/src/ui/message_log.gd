@@ -306,9 +306,9 @@ func _draw() -> void:
 	_strip(Vector2(617.5, -5), Vector2(617.5, 100), 5.0, uvf)
 	if _slide < 1.0:
 		_draw_bar(_bars[mode])
-	# Open / Close spot (in25arrow: a triangle pointing up when open).
-	var t := _toggle_rect()
-	draw_rect(t, Color(0, 0, 0, 0xb4 / 255.0))
+	# Open / Close spot (in25arrow: a triangle pointing up when open). Only
+	# the figure stays on screen: slides every sprite (the bar
+	# under it too), so a closed log leaves no black square behind the arrow.
 	if _atlas:
 		var pts := HudDial.arrow(400, -52, PI, 0.8) if open else HudDial.arrow(400, 83, 0.0, 0.8)
 		var uvs := PackedVector2Array()

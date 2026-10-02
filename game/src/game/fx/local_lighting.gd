@@ -19,8 +19,9 @@ const FIRE_ENERGY := 1.7
 # A full-strength coloured billboard turns the fire into a yellow fog ball.
 const FIRE_HALO := 0.24
 const LAVA_COLOR := Color(1.0, 0.25, 0.055)
+# light_cull_mask is left alone (see _light_quality).
 const ORIGINAL_PROPERTIES := [&"light_color", &"light_energy", &"light_specular", &"shadow_enabled",
-	&"light_cull_mask", &"shadow_caster_mask", &"distance_fade_enabled", &"distance_fade_begin",
+	&"shadow_caster_mask", &"distance_fade_enabled", &"distance_fade_begin",
 	&"distance_fade_shadow", &"distance_fade_length", &"shadow_bias", &"shadow_normal_bias", &"shadow_blur"]
 
 var game: Game
@@ -113,8 +114,17 @@ static func apply_particle(d: Dictionary, enabled: bool) -> void:
 			* clampf(l.light_energy / maxf(float(d.energy), 0.001), 0.0, 1.0))
 
 
+## Never touch a light's light_cull_mask while it is in a zone: Godot 4.7
+## pairs lights and meshes by cull mask & layers and unpairs them by the
+## *current* masks (RendererSceneCull::_instance_unpair returns early on no
+## overlap). A light whose mask drops a layer a mesh was paired on (or a mesh
+## that moves to such a layer, GameUnit.OFFSCREEN_LAYER off screen) stays in
+## the mesh's light list after the light is freed, and the next update of that
+## mesh dereferences it: "BUG, indexing did not unpair geometries from light",
+## then an access violation (the 0.1.2 crashes). Off-screen units are kept out
+## of the light's shadow casters only; shadow_caster_mask is read at render
+## time and never pairs.
 static func _light_quality(l: OmniLight3D) -> void:
-	l.light_cull_mask &= ~GameUnit.OFFSCREEN_LAYER
 	l.shadow_caster_mask &= ~GameUnit.OFFSCREEN_LAYER
 	l.shadow_bias = 0.025
 	l.shadow_normal_bias = 0.35

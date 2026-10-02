@@ -4,7 +4,13 @@ extends RefCounted
 ## of per-part tracks (rotation quaternions, translations, optional vertex morphs).
 ## Produces a Godot AnimationLibrary targeting the node layout built by EIUnitModel.
 
-const FPS := 20.0
+## Key frames per second. the original keys the clip time in frames (
+## takes modf(time) as the key index and fraction) and advances it by the
+## render time in 55 ms logic ticks (: + the tick
+## remainder), so a clip plays one
+## key per tick; only the walk / run / crawl clips (animation queue mode 2,
+## ) are scaled, by the unit's rate (GameUnit._anim_rate).
+const FPS := 1000.0 / 55.0
 
 static var _libraries := {}
 static var parent_first := false
@@ -75,7 +81,8 @@ static func _build_library(template: String, paths: Dictionary, root_part: Strin
 		var built := []
 		built.resize(names.size())
 		Portability.group(func(i: int) -> void:
-			built[i] = _build(EIResArchive.from_bytes(data[i]), paths, root_part, root_scale, native_keys), names.size())
+			built[i] = _build(EIResArchive.from_bytes(data[i]), paths, root_part, root_scale, native_keys,
+				names[i]), names.size())
 		for i in names.size():
 			var anim_name: String = names[i]
 			var anim: Animation = built[i]
@@ -86,7 +93,7 @@ static func _build_library(template: String, paths: Dictionary, root_part: Strin
 
 
 static func _build(tracks: EIResArchive, paths: Dictionary, root_part: String, root_scale: float,
-		native_keys := false) -> Animation:
+		native_keys := false, clip := "") -> Animation:
 	if tracks == null:
 		return null
 	var anim := Animation.new()
@@ -173,5 +180,99 @@ static func _build(tracks: EIResArchive, paths: Dictionary, root_part: String, r
 					var p := o + 4 + i * 12
 					anim.position_track_insert_key(pt, i / FPS, EISpace.vec(Vector3(
 						d.decode_float(p), d.decode_float(p + 4), d.decode_float(p + 8))) * root_scale)
+	if native_keys:
+		# Vertex morph keys (see morphs()): frame k is the blend shape
+		# "<clip>_<k>" of the part's "morph" mesh, weight 1 at its key and 0
+		# at the neighbouring keys, so the weights interpolate the offsets
+		# linearly between frames as does (the last frame holds).
+		for part: String in tracks_d:
+			var fc := _morph_count(tracks_d[part])
+			for k in fc:
+				var t := anim.add_track(Animation.TYPE_BLEND_SHAPE)
+				anim.track_set_path(t, NodePath("%s/morph:%s" % [paths[part], morph_shape(clip, k)]))
+				anim.track_set_interpolation_loop_wrap(t, false)
+				for j in range(maxi(k - 1, 0), mini(k + 2, fc)):
+					anim.blend_shape_track_insert_key(t, j / FPS, 1.0 if j == k else 0.0)
+			if fc > 0:
+				length = maxf(length, (fc - 1) / FPS)
 	anim.length = maxf(length, 1.0 / FPS)
 	return anim
+
+
+## Blend shape name of a clip's morph frame.
+static func morph_shape(clip: String, frame: int) -> String:
+	return "%s_%d" % [clip, frame]
+
+
+## Byte offset of a track's morph block: after the rotation keys (16 bytes)
+## and the translation keys (12 bytes), each list led by its count.
+static func _morph_offset(d: PackedByteArray) -> int:
+	var o := 4 + d.decode_u32(0) * 16
+	if d.size() < o + 4:
+		return -1
+	return o + 4 + d.decode_u32(o) * 12
+
+
+## A track's morph frame count, 0 without vertex morphs.
+static func _morph_count(d: PackedByteArray) -> int:
+	var o := _morph_offset(d)
+	if o < 0 or d.size() < o + 8:
+		return 0
+	var fc := d.decode_u32(o)
+	var vc := d.decode_u32(o + 4)
+	if fc == 0 or vc == 0 or d.size() < o + 8 + fc * vc * 12:
+		return 0
+	return fc
+
+
+static var _morphs := {}
+static var _morph_mutex := Mutex.new()
+
+
+## Vertex morph tracks of "<template>.anm" (wing membranes of bats, dragons and
+## succubi, banshee robes, beholder bodies,...). the original reads
+## them after a track's rotation and translation keys: a frame count, a vertex
+## count, then per frame one (x, y, z) per vertex; interpolates
+## two frames linearly, hand the result to the
+## part's figure, and the draw adds offset i to
+## the part's blended vertex i (the vertex blocks' index, lane i & 3).
+## part -> {"names": PackedStringArray, "frames": Array of PackedVector3Array
+## (Godot axes)}, the frames of every clip that has some for the part.
+static func morphs(template: String) -> Dictionary:
+	_morph_mutex.lock()
+	var out: Variant = _morphs.get(template)
+	_morph_mutex.unlock()
+	if out != null:
+		return out
+	var res := {}
+	var arc_bytes := GameData.read_figure(template + ".anm")
+	if EIResArchive.is_archive(arc_bytes):
+		var arc := EIResArchive.from_bytes(arc_bytes)
+		for clip: String in arc.entries:
+			var tracks := EIResArchive.from_bytes(arc.read(clip))
+			if tracks == null:
+				continue
+			for part: String in tracks.entries:
+				var d := tracks.read(part)
+				if d.size() < 8:
+					continue
+				var fc := _morph_count(d)
+				if fc == 0:
+					continue
+				var o := _morph_offset(d)
+				var vc := d.decode_u32(o + 4)
+				var f := d.slice(o + 8, o + 8 + fc * vc * 12).to_float32_array()
+				if not res.has(part):
+					res[part] = {"names": PackedStringArray(), "frames": []}
+				for k in fc:
+					var offs := PackedVector3Array()
+					offs.resize(vc)
+					for i in vc:
+						var p := (k * vc + i) * 3
+						offs[i] = EISpace.vec(Vector3(f[p], f[p + 1], f[p + 2]))
+					res[part].names.append(morph_shape(clip, k))
+					res[part].frames.append(offs)
+	_morph_mutex.lock()
+	_morphs[template] = res
+	_morph_mutex.unlock()
+	return res

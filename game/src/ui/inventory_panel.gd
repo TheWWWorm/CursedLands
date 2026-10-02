@@ -157,7 +157,7 @@ func _sound(t: String) -> void:
 	var wav := ""
 	match t:
 		"equip", "give_quick": wav = "buttons\\camp\\put_on.wav"
-		"unequip": wav = "buttons\\camp\\put_off.wav"
+		"unequip", "take_quick": wav = "buttons\\camp\\put_off.wav"
 		"train", "perk": wav = "buttons\\camp\\perk.wav"
 	if wav and GameSound.instance:
 		GameSound.instance.ui(wav)
@@ -231,7 +231,7 @@ func refresh() -> void:
 			sl.autowrap_mode = TextServer.AUTOWRAP_WORD
 			sl.custom_minimum_size.x = 270
 			_hero_box.add_child(sl)
-		var town := hud.game.session.shop_available()   # management only in towns and camps
+		var town := hud.game.session.camp_available()   # management only in towns and camps (and the map's camp)
 		# The six original skills (0..100); raised with experience in towns and camps.
 		for skill: String in Skills.LIST:
 			var cost := Skills.cost(h, skill)
@@ -325,10 +325,11 @@ func _select(id: String, where: String) -> void:
 	var uid := u.uid if u else -1
 	match where:
 		"bag":
-			var town := hud.game.session.shop_available()
+			var town := hud.game.session.camp_available()   # a village or the map's camp
 			if Items.slot(item) != "" and town:
 				_button(RemakeText.t("Equip"), {"t": "equip", "unit": uid, "item": item})
-			if Items.kind(item) == "quick":
+			var belt_room := u != null and u.has_meta("hero") and Array(u.get_meta("hero").get("quick", [])).size() < CampaignState.BELT_SLOTS
+			if Items.kind(item) == "quick" and belt_room:   # four belt entries
 				_button(RemakeText.t("Put on belt"), {"t": "give_quick", "unit": uid, "item": item})
 			if item.begins_with("spell:") and town:
 				_button(RemakeText.t("Learn"), {"t": "learn", "unit": uid, "item": item})
@@ -371,7 +372,9 @@ func _select(id: String, where: String) -> void:
 		"worn":
 			if id.begins_with("belt:"):
 				_button(RemakeText.t("Use"), {"t": "use", "unit": uid, "item": item})
-			elif hud.game.session.shop_available():
+				if hud.game.session.camp_available():
+					_button(RemakeText.t("Take off belt"), {"t": "take_quick", "unit": uid, "item": item})
+			elif hud.game.session.camp_available():
 				_button(RemakeText.t("Unequip"), {"t": "unequip", "unit": uid, "item": item})
 				if Items.wear(item) > 0.0 and Shops.sells_items(_camp.shop_id):
 					_button(RemakeText.t("Repair (%d)") % Items.repair_price(item), {"t": "repair", "unit": uid, "item": item})

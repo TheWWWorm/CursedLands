@@ -2786,9 +2786,18 @@ static func plane_ground(e: FxEmitter, x: float, y: float) -> float:
 ## under the water surface is hidden, as is one behind a hill or under an
 ## overhang. Godot draws the water without a depth write, so the remake hides
 ## a particle of these types whose centre is under the cell's water level.
+## Remake option path_through (ParticleFx.THROUGH_TYPES, default on): they are
+## drawn over everything instead, a dot or mark under the water at
+## ParticleFx.THROUGH_ALPHA (see through_alpha).
 static func under_water(e: FxEmitter, x: float, y: float, z: float) -> bool:
 	var w: GameWorld = e.fx.world
 	return w != null and w.terrain != null and w.terrain.water_at(x, y) > z
+
+
+## The alpha a dot or mark under the water keeps: 0 (hidden, the original)
+## or, with option path_through, ParticleFx.THROUGH_ALPHA of it.
+static func through_alpha(a: int) -> int:
+	return roundi(a * ParticleFx.THROUGH_ALPHA) if ParticleFx.through_on() else 0
 
 
 ## one dot per logic tick along the carrier's predicted path
@@ -2835,7 +2844,7 @@ func up_path(e: FxEmitter, p: Array) -> bool:
 		return false
 	var a := roundi(float(tab(T_PATH_A, p[0x14])) * 255.0)
 	if under_water(e, p[0], p[1], p[2]):
-		a = 0
+		a = through_alpha(a)
 	p[0x16] = alpha(a, int(p[0x16]) & RGB)
 	return true
 
@@ -2887,8 +2896,8 @@ func up_target(e: FxEmitter, p: Array) -> bool:
 	var g: float = e.fx.ground(p[0], p[1]) + 0.1
 	var pl: float = c[3] - ((p[1] - e.wp.y) * c[7] + (p[0] - e.wp.x) * c[6]) * c[8] + 0.1
 	p[2] = maxf(g, pl)
-	if under_water(e, p[0], p[1], p[2]):
-		p[0x16] = int(p[0x16]) & RGB   # hidden under the water (see under_water)
+	if under_water(e, p[0], p[1], p[2]):   # hidden or faded under the water (see under_water)
+		p[0x16] = alpha(through_alpha(tab(T_TARGET_A, p[0x14])), int(p[0x16]) & RGB)
 	p[3] = p[0xb]
 	p[8] *= 1.05
 	p[9] *= 1.05

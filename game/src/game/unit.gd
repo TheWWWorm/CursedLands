@@ -152,7 +152,7 @@ var _goal := Vector2.INF     # where the current attack path leads (unit-AI)
 ## every frame cost more than everything else in a 200+ unit zone.
 const ANIM_OFFSCREEN_STEP := 0.2
 ## On screen but farther than ANIM_NEAR metres from the camera: 30 poses a
-## second (the clips have 20 keys a second); only the shadow reach in view:
+## second (the clips have 18.2 keys a second); only the shadow reach in view:
 ## 20 a second.
 const ANIM_NEAR := 70.0
 const ANIM_FAR_STEP := 1.0 / 30.0
@@ -181,6 +181,11 @@ var _game_clock := 0.0
 var _anim_clock := -1.0
 var _anim_pos := Vector2.INF
 var _anim_moving := 0.0
+## Ground speed (m/s) over the last physics step, of the drawn position on a
+## co-op client: the walk / run clips' playback rate follows it (_anim_rate).
+var _move_speed := 0.0
+var _speed_from := Vector2.INF
+var _drawn := Vector2.ZERO
 ## Shown in the unit panel, whose figure mirrors this pose: full animation rate.
 var anim_watched := false
 var _anim_roots: Array[EIAnimPart] = []
@@ -197,6 +202,11 @@ func setup(w: GameWorld, record: Dictionary) -> bool:
 	var db := GameData.db
 	proto = db.find("monster_prototypes", record.get("prototype", record.get("parent_template", "")))
 	race = db.find("race_models", proto.get("base_race", ""))
+	# an imported.mob record's own stats over the prototype's.
+	var imported: Variant = Combat.mob_import(record, proto, race)
+	if imported != null:
+		proto = imported[0]
+		race = imported[1]
 	faction = int(record.get("player", 1))
 	display_name = unit_title(String(proto.get("name", "")))
 	if display_name.is_empty():
@@ -223,6 +233,7 @@ func setup(w: GameWorld, record: Dictionary) -> bool:
 	_measure_figure()
 	_anim_lod_setup()
 	_init_stats()
+	Combat.mob_import_pools(self)
 	name = ("U%d" % uid)
 	_sync_transform()
 	return true
@@ -1306,22 +1317,29 @@ func _do_attack(dt: float) -> void:
 	target = t
 	if world.ai.rechoose(self):   # the AI may switch to a spell or another target
 		return
-	# the original (order tick): an order other than types 4 / 5 / 6
-	# (an attack) sets the gait to 2 (walk) while the posture is
-	# not standing — a kneeling or crawling unit stands up to fight (the
-	# change itself is, `change_posture`). Every strike clip
-	# of the human databases is a standing combat-state one (state 2).
-	if stance != STANCE_NONE:
-		gait_run = false
-		change_posture(STANCE_NONE)
 	var ranged: bool = stats.get("ranged", false)
 	var reach: float = stats.reach if ranged else melee_reach(t)
 	var d := pos.distance_to(t.pos)
-	if d > reach or (not ranged and not _strike_clear(t, d)):
+	#  hands the tick to while the strike delay
+	#  runs or the target is out of reach; that one only stands
+	# still next to a target that is not moving — one that
+	# moves is followed (see _approach).
+	if d > reach or (not ranged and not _strike_clear(t, d)) or (_attack_cd > 0.0 and t._moving):
 		_approach(t, d, reach, dt)
 		return
 	_goal = Vector2.INF
 	path = PackedVector2Array()
+	# the original (order tick): only once the strike can be made
+	# (the strike delay passed and finds the target
+	# reach; else keeps closing in at the unit's gait) does an
+	# order other than types 4 / 5 / 6 (an attack) set the gait to 2
+	# (walk) while the posture is not standing — a kneeling or crawling
+	# unit sneaks up and stands up to strike (the change itself is
+	# `change_posture`). Every strike clip of the human
+	# databases is a standing combat-state one (state 2).
+	if stance != STANCE_NONE and _attack_cd <= 0.0:
+		gait_run = false
+		change_posture(STANCE_NONE)
 	if not _turn_to((t.pos - pos).angle(), dt):
 		return
 	if _attack_cd > 0.0:
@@ -1365,6 +1383,25 @@ func _approach(t: GameUnit, d: float, reach: float, dt: float) -> void:
 	# A double-clicked attack runs while standing (run bit 2).
 	running = not sneaking and (gait_run or controller < 0 \
 		or (bool(order.get("run", false)) and stance == STANCE_NONE))
+	# a moving target: w = the ticks
+	# left of the strike delay + 16; while w > 0 and the unit could
+	# reach the spot the target will be at in w ticks within
+	# w ticks — (distance − reach) / v < w, v = 0.5 x
+	# (: the gait speed in 0.5 m cells a tick, no terrain
+	# factor) = metres a tick — it stands (idle
+	# (2)) and lets the target come; otherwise it keeps closing
+	# in, so a fleeing target is chased at a run, not in stop-and-go.
+	if t._moving:
+		var w := roundi(_attack_cd / TICK) + 16
+		if w > 0:
+			var p := path
+			path = PackedVector2Array()
+			var v := speed() * TICK
+			if v > 0.0 and (pos.distance_to(t.pos_ahead(t.speed() * TICK * w)) - reach) / v < w:
+				_goal = Vector2.INF
+				_set_action("idle")
+				return
+			path = p
 	if path.is_empty() or world.time >= _arrive_t - 16.0 * TICK:
 		var tv := t.speed() * TICK if t._moving else 0.0
 		var closing := speed() * TICK + tv * Vector2.from_angle(t.facing).dot((t.pos - pos) / maxf(d, 0.001))
@@ -1785,7 +1822,7 @@ func _process(dt: float) -> void:
 	if model == null or model.player == null or not model.player.is_playing() or model.player.speed_scale == 0.0:
 		_anim_acc = 0.0
 		return
-	_anim_acc += game_dt
+	_anim_acc += game_dt * _anim_rate()
 	# Walking units keep the full rate everywhere: GroundMarks places their
 	# footprints at the clips' step frames from the posed feet.
 	if pos != _anim_pos:
@@ -1816,6 +1853,15 @@ func _process(dt: float) -> void:
 	if _anim_due <= 0.0:
 		_anim_due = maxf(_anim_due + step, 0.0)
 		anim_flush()
+
+
+## The playback factor of the playing clip: a walk / run / crawl clip runs at
+## the unit's ground speed (the original, EIUnitModel.move_rate), so
+## its feet keep to the ground; any other clip at the normal rate.
+func _anim_rate() -> float:
+	if model == null or not action in ["walk", "run", "crawl"]:
+		return 1.0
+	return model.move_rate(_move_speed)
 
 
 ## Cheap pre-test for picking: whether `p` can be on the figure at all (the
@@ -1995,6 +2041,7 @@ func _sync_transform() -> void:
 			and (t == null or t.surface_rev == _xf_rev) and transform == _xf:
 		return
 	var p := pos if world.authority else net_view.step(pos, get_physics_process_delta_time())
+	_drawn = p
 	var xf := Transform3D(Basis(Vector3.UP, facing + MODEL_YAW_OFFSET),
 		EISpace.pos(p.x, p.y, world.ground_at(p.x, p.y)))
 	if transform != xf:
@@ -2027,6 +2074,13 @@ var _xf := Transform3D()
 func _physics_process(_dt: float) -> void:
 	_game_clock += _dt
 	_sync_transform()
+	#  takes the speed along the path spline where the unit is
+	# drawn; here the distance covered in the step (a jump of more than 2 m,
+	# a placement or teleport, counts as standing).
+	var cur := pos if world == null or world.authority else _drawn
+	var moved := cur.distance_to(_speed_from) if _speed_from != Vector2.INF else 0.0
+	_move_speed = moved / _dt if _dt > 0.0 and moved <= 2.0 else 0.0
+	_speed_from = cur
 	if alert and controller >= 0 and world and world.authority and order.get("type", "") != "attack":
 		alert = false
 	_update_pose()

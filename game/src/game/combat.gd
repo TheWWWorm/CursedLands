@@ -33,10 +33,73 @@ static func named(u: GameUnit) -> bool:
 
 ## Attack / Defence as the original's attack info gives them (ints, scaled).
 func attack_value(u: GameUnit) -> int:
+	var nw := named_weapon_ratings(u)
+	if not nw.is_empty():
+		return nw[0]
 	return int(int(u.stats.to_hit) * difficulty(u, "Attack"))
 
 
+## named branch: a unit with a script-name id (not a remake
+## hero, whose hero_stats does the same) holding a weapon item gets
+## Attack = ftol(weapon attack + T), Defence = ftol(weapon defence
+##  + T), T = (weapon type): the type's skill (Melee for
+## types 0-4, Archery for 5 / 6; stats) + (Dex - 25) + the
+## weapon perk rank's modifier (+ type) + the weapon record's skill
+## byte (0 in every weapons.idb row). The stats block comes
+## the npcs record of the prototype's name (dex, skills2
+## perks), else the prototype: Dex = mana / 3, every skill = round(general
+## skills). when the prototype path applies (unnamed / unarmed).
+## Cached per weapon in u.stats.
+static func named_weapon_ratings(u: GameUnit) -> Array:
+	if u.has_meta("hero") or u.uid < 1000000000 or u.uid >= 2000000000:
+		return []
+	var wid := ""
+	for id in Array(u.info.get("weapons", [])):
+		if String(id) != "":
+			wid = String(id)
+			break
+	var cache: Array = u.stats.get("named_weapon", [])
+	if cache.size() == 2 and cache[0] == wid:
+		return cache[1]
+	var out := []
+	var w := Items.info(wid) if wid else {}
+	if not w.is_empty() and w.table == "weapons":
+		var wtype := String(w.row.get("type", "")).to_lower()
+		var tid := int(w.row.get("type_id", -1))
+		var proto_name := String(u.proto.get("name", ""))
+		var npc := GameData.db.find("npcs", proto_name)
+		var h := {}
+		if npc.is_empty():
+			var gs := roundf(float(u.proto.get("general_skills", 0.0)))
+			h = {"skills": {"melee": gs, "archery": gs}, "dex": float(u.proto.get("mana", 0.0)) / 3.0, "perks": []}
+		else:
+			h = {"skills": Skills.from_npc(npc), "dex": float(npc.get("dex", 25.0)),
+				"perks": Array(npc.get("perks", [])).map(func(x): return String(x).to_lower())}
+		var skill := 0.0
+		if tid >= 0 and tid <= 4:
+			skill = Skills.level(h, "melee")
+		elif tid == 5 or tid == 6:
+			skill = Skills.level(h, "archery")
+		var perk := Perks.best(h, Perks.WEAPON_PERK[wtype]) if Perks.WEAPON_PERK.has(wtype) else 0.0
+		var t := skill + float(h.dex) + Perks.attr_bonus(h, "dex") - 25.0 + perk
+		out = [int(float(w.row.get("attack", 0.0)) + t), int(float(w.row.get("defence", 0.0)) + t)]
+	u.stats.named_weapon = [wid, out]
+	return out
+
+
+## Defence is 0 for every unit whose
+## weapon type is a bow (5) or crossbow (6) — the weapon in hand
+## else the prototype's (creature, units.udb "weapon
+## typeID": goblin archers) — monsters and NPCs as well as heroes.
 func defence_value(u: GameUnit) -> int:
+	var wt := GameSound.held_weapon_type(u)
+	if wt < 0:
+		wt = int(u.proto.get("weapon_type_id", -1))
+	if wt == 5 or wt == 6:
+		return 0
+	var nw := named_weapon_ratings(u)
+	if not nw.is_empty():
+		return nw[1]
 	return int(int(u.stats.parry) * difficulty(u, "Defence"))
 
 
@@ -58,6 +121,8 @@ func attack_hits(att: GameUnit, def: GameUnit, penalty := 0.0) -> bool:
 
 func hit_chance(att: GameUnit, def: GameUnit) -> float:
 	var b := roundi(float(att.stats.get("hit_random", 40.0)))
+	if defence_value(def) <= 0:
+		return 1.0   # the roll is kept >= 0, so Defence 0 is always reached
 	var need := ceili((float(defence_value(def)) - float(attack_value(att)) + b + 1) / 2.0)
 	return clampf(float(b - clampi(need, 0, b + 1) + 1) / (b + 1), 0.0, 1.0)
 
@@ -285,6 +350,33 @@ func weapon_spell(att: GameUnit, def: GameUnit) -> void:
 			"x": def.pos.x, "y": def.pos.y, "a": att.uid, "tu": def.uid, "spell": sp})
 
 
+## A hit that lands but whose damage the armour stops entirely (the original
+##  when returns 0): the struck bit 0x10 (unit
+## ) is set before the damage, so the unit's state update
+## still shows a "0" hit number; then (an
+## attacking unit's side into the victim's hostility) and the AI hit hook
+## . is not reached: no hit reaction
+## no healing armour spell, no health change. The struck armour spells
+## ((1)) fire before the damage, at the caller. `owner_only`: a
+## lasting spell's later ticks pass no attacker (see GameUnit.take_damage).
+func blank_hit(def: GameUnit, src: GameUnit, owner_only := false) -> void:
+	if def.dead:
+		return
+	if world.session:
+		world.session.broadcast({"t": "hitnum", "uid": def.uid, "n": 0, "f": 0})
+	if owner_only:
+		return
+	if src and not is_instance_valid(src):
+		src = null
+	if src and src != def and src.faction != def.faction \
+			and world.relation(def.faction, src.faction) != 2:
+		world.ai._hate(def, src.faction)
+	if def.controller < 0:
+		world.ai.on_attacked(def, src)
+	else:
+		world.ai.on_player_attacked(def, src)
+
+
 ## Worn armour with an "it" spell (flag), the original over
 ## the 7 armour slots: `struck` (a blow lands, before the
 ## damage) fires every such spell but Healing (spell 24); after the damage, if
@@ -308,6 +400,103 @@ func armor_spells(u: GameUnit, struck: bool) -> void:
 		if world.session:
 			world.session.mark_dirty()
 		Spells.apply(world, u, sp, u, u.pos)
+
+
+## A.mob unit record's own stats (the original, called for every
+## placed unit after the prototype set-up
+## ). The record's chunk (43 ints, read
+##  into record) replaces the prototype's values only when
+## the record's "need import" byte (chunk -> record) is set
+## and not (== 0.0 and max HP == 0 and == 0.0); 85 of the 7953
+## campaign map units have it. Block layout (s = the ints, f() = as a float):
+##   s0 / s1 HP / max HP, s2 / s3 stamina / max (ints; small block
+## max HP also creature), s4 f tuning move
+##   s5 f actions, s6..s9 f race speeds, s10 f cos(vision
+##   arc / 2), s11 f peripheral skill, s12 f cos 90, s13 f race attack
+##   distance, s14 bytes race ai_stay / ai_lie
+##   s15..s20 f attack range, to-hit, parry, weapon weight, damage min, damage
+##   range (to-hit random
+##    stays the prototype's), s21..s27 f damage type factors
+##   low byte of s28 the absorption (natural armour = byte x race "def", base
+##   and current), s29..s34 f senses, s35..s40 f detection, s41 bytes
+##   steal, steal, tame skill. The prototype and race are returned as
+##   copies with those fields replaced ([proto, race]); `null` when the block
+##   does not apply. Not ported: s5 (the remake's monster actions stay 15) and
+##   the record's own item / spell lists the original adds in the same branch.
+static func mob_import(record: Dictionary, proto: Dictionary, race: Dictionary) -> Variant:
+	if not mob_imports(record):
+		return null
+	var s := PackedInt32Array(record.stats)
+	var p := proto.duplicate()
+	var r := race.duplicate()
+	p.hp = float(s[1])
+	p.mana = float(s[3])
+	p.absorption = float(s[28] & 0xff)
+	p.tuning_move = _bits_f(s[4])
+	p.peripheral_skills = _bits_f(s[11])
+	p.attack_range = _bits_f(s[15])
+	p.to_hit = _bits_f(s[16])
+	p.parry = _bits_f(s[17])
+	p.weapon_weight = _bits_f(s[18])
+	p.damage_min = _bits_f(s[19])
+	p.damage_max = _bits_f(s[20])
+	var senses := []
+	var detection := []
+	for i in 6:
+		senses.append(_bits_f(s[29 + i]))
+		detection.append(_bits_f(s[35 + i]))
+	p.senses = senses
+	p.detection = detection
+	p.steal_skills = float(s[41] & 0xff)
+	p.tame_skills = float((s[41] >> 16) & 0xff)
+	r.speeds = [_bits_f(s[6]), _bits_f(s[7]), _bits_f(s[8]), _bits_f(s[9])]
+	r.vision_arc = rad_to_deg(acos(clampf(_bits_f(s[10]), -1.0, 1.0))) * 2.0
+	r.attack_distance = _bits_f(s[13])
+	r.ai_stay = s[14] & 0xff
+	r.ai_lie = (s[14] >> 8) & 0xff
+	var atk := []
+	for i in 7:
+		atk.append(_bits_f(s[21 + i]))
+	r.attack = atk
+	return [p, r]
+
+
+## the current HP / stamina of an imported record (s0 / s2)
+## after the stats are set up from its maxima.
+static func mob_import_pools(u: GameUnit) -> void:
+	if not mob_imports(u.info):
+		return
+	var s := PackedInt32Array(u.info.stats)
+	u.hp = minf(float(s[0]), u.max_hp)
+	u.mana = minf(float(s[2]), u.max_mana)
+
+
+## Whether applies a record's stats block (see mob_import).
+static func mob_imports(record: Dictionary) -> bool:
+	var s := PackedInt32Array(record.get("stats", PackedInt32Array()))
+	if int(record.get("need_import", 0)) == 0 or s.size() < 42:
+		return false
+	return not (_bits_f(s[4]) == 0.0 and s[1] == 0 and _bits_f(s[5]) == 0.0)
+
+
+static func _bits_f(v: int) -> float:
+	var b := PackedByteArray()
+	b.resize(4)
+	b.encode_s32(0, v)
+	return b.decode_float(0)
+
+
+## A party unit placed into a zone has no natural armour: the party deployment
+##  spawns it from its prototype (
+## "Human Hero" absorption 7 on every type) and then, which
+## zeroes the seven base values (small block..); the party record's
+## block that follows (logic)
+## refolds, which copies base into current. Only worn armour and
+## protection effects stop its damage after that. A unit that joins the party
+## inside a zone (a hired village unit,; script
+## AddUnitUnderControl) keeps its armour until the next deployment.
+static func clear_natural_armor(u: GameUnit) -> void:
+	u.stats.armor = PackedFloat32Array([0, 0, 0, 0, 0, 0, 0])
 
 
 ## Stats for player characters from attributes, experience, skills and

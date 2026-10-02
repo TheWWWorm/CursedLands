@@ -25,6 +25,11 @@ uniform float lerp_t = 1.0;
 // (gfx_bloom).
 uniform vec3 light_tint = vec3(1.0);
 uniform float boost = 1.0;
+// Remake option path_through (ParticleFx.THROUGH_TYPES): the move path dots
+// and target marks are drawn with the depth test off (ParticleFx swaps in
+// depth_test_disabled); where the scene's depth is nearer than the quad the
+// fragment is covered and keeps through_alpha of its alpha. 0: normal.
+uniform float through_alpha = 0.0;
 varying float psize;
 const float SIZE_K = 1.1099162;   // 1 / cos(pi / 7)
 
@@ -48,7 +53,17 @@ void vertex() {
 void fragment() {
 	vec4 t = texture(tex, UV);
 	float soft = 1.0;
-	if (soft_distance > 0.0) {
+	if (through_alpha > 0.0) {
+		float depth = texture(depth_tex, SCREEN_UV).r;
+#if CURRENT_RENDERER == RENDERER_COMPATIBILITY
+		depth = depth * 2.0 - 1.0;
+#endif
+		vec4 v = INV_PROJECTION_MATRIX * vec4(SCREEN_UV * 2.0 - 1.0, depth, 1.0);
+		float scene = -v.z / v.w;
+		// Covered: the opaque scene lies nearer than the quad by more than its
+		// size (a dot on the ground pokes into it a little).
+		soft = scene < -VERTEX.z - max(psize, 0.05) ? through_alpha : 1.0;
+	} else if (soft_distance > 0.0) {
 		float depth = texture(depth_tex, SCREEN_UV).r;
 		#if CURRENT_RENDERER == RENDERER_COMPATIBILITY
 	depth = depth * 2.0 - 1.0;

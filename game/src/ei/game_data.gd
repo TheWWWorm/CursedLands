@@ -55,7 +55,6 @@ const OPTIONS := [
 	["gfx_volumetric", 1, 2, 11, 3, 1], ["gfx_terrain", 1, 2, 11, 4, 1],
 	["gfx_heat_haze", 1, 2, 11, 5, 1], ["gfx_ssao", 1, 2, 11, 6, 1], ["gfx_bloom", 1, 2, 11, 7, 1],
 	["gfx_far_view", 1, 2, 11, 8, 1], ["gfx_edge_fade", 1, 2, 11, 9, 0],
-	["gfx_outer_land", 1, 2, 11, 10, 0],
 	# Second remake graphics page (group 12, "More effects…" from page 11).
 	["gfx_hd_textures", 1, 2, 12, 0, 1], ["gfx_soft_particles", 1, 2, 12, 1, 1],
 	["gfx_lit_particles", 1, 2, 12, 2, 1], ["gfx_contact_shadows", 1, 2, 12, 3, 1],
@@ -96,6 +95,10 @@ const OPTIONS := [
 	# Remake: the network game's unit visibility in single player too
 	# (UnitFog), on the Game page's free row 1; default on (user request).
 	["unit_fog", 1, 2, 3, 1, 1],
+	# Remake: the move path dots and target marks drawn through what covers
+	# them (water, overhangs, rocks); the original depth tests them (see
+	# FxTypes.under_water). Game page free row 10; default on (user request).
+	["path_through", 1, 2, 3, 10, 1], ["sp_full_xp", 1, 2, 3, 5, 0],
 ]
 ## The original's speed / quality switches (the original rows shadow_units
 ## shadow_buildings, shadow_flora) are not offered: always at their best.
@@ -160,13 +163,14 @@ const REMAKE_OPTIONS := {
 	"gfx_ssao": ["Ambient occlusion", "Soft contact shadows (SSAO)."],
 	"gfx_bloom": ["Bloom", "Glow around bright lights."],
 	"gfx_edge_fade": ["Map edge fade", "The last few metres of land at the map edge fade into the sky colour instead of ending in a hard edge."],
-	"gfx_outer_land": ["Outer landscape", "Low-detail land and water continue beyond the map edge and melt into the fog, instead of the map ending over the sky (replaces the edge fade while on)."],
 	"display_mode": ["Display mode", "Windowed, fullscreen, or a borderless window covering the screen."],
 	"resolution": ["Resolution", "Window size when windowed; in fullscreen the 3D view is rendered at this size and scaled to the screen (the interface stays sharp)."],
 	"fps_limit": ["Frame rate limit", "Highest frames per second; Display refresh = the monitor's refresh rate."],
 	"vsync": ["VSync", "Wait for the monitor's refresh (no tearing); adaptive tears only when a frame is late."],
 	"show_fps": ["Show FPS", "A frames-per-second counter in the top right corner."],
 	"confine_mouse": ["Keep mouse in window", "The pointer cannot leave the game window (e.g. onto a second monitor) while the game has focus; it is free again when you switch away."],
+	"sp_full_xp": ["Full experience for companions", "Single player: your hero and every companion (hired mercenaries such as Khador) each get the whole experience of a kill or quest. Off: as the original, which splits it equally among the living party."],
+	"path_through": ["Show the move path through objects", "The dots of a move path and the ring at its target stay visible under water, under arches and behind rocks and walls, faded where something covers them. Off: as the original, which hides them there."],
 	"phys_interp": ["Smooth motion", "Creatures are drawn between the game's 60 steps a second, so they move smoothly on screens faster than 60 Hz. Visual only."],
 	"render_scale": ["Render scale", "Resolution of the 3D view relative to the window: below 100 % faster, above it sharper (supersampling)."],
 	"gfx_far_view": ["Far view", "See 260 m instead of 100 m, with a long soft fade into the fog; off: the original 100 m view with its short fog band."],
@@ -192,13 +196,13 @@ const OPTIONS_APPLIED := ["volume_sfx", "volume_stream", "volume_voice", "power_
 	"show_flying_hp", "show_tutorial", "autosave", "tooltip_time", "switch_filters",
 	"camera_reverse_x", "camera_reverse_y", "reverse_stereo", "difficulty",
 	"gfx_sky", "gfx_water", "gfx_wind", "gfx_volumetric", "gfx_terrain", "gfx_heat_haze",
-	"gfx_ssao", "gfx_bloom", "gfx_far_view", "gfx_edge_fade", "gfx_outer_land",
+	"gfx_ssao", "gfx_bloom", "gfx_far_view", "gfx_edge_fade",
 	"gfx_hd_textures", "gfx_soft_particles", "gfx_lit_particles", "gfx_contact_shadows", "gfx_torch_glow", "gfx_water_reflections",
 	"gfx_firelight", "gfx_materials", "gfx_foliage_light", "gfx_weather_surfaces", "gfx_lava_light",
 	"q_aa", "q_shadows", "q_shadow_fit", "q_aniso", "confine_mouse",
 	"display_mode", "resolution", "fps_limit", "vsync", "show_fps", "render_scale", "phys_interp",
 	"camera_style", "cam_pan_speed", "cam_rotate_speed", "cam_zoom_speed", "cam_follow",
-	"cam_see_through", "cam_wasd", "coop_full_xp", "coop_scale", "net_upnp", "net_websocket", "unit_fog"]
+	"cam_see_through", "cam_wasd", "coop_full_xp", "coop_scale", "net_upnp", "net_websocket", "unit_fog", "path_through", "sp_full_xp"]
 signal options_changed
 const GFX_REV := 4
 ## Option q_aa 5 (FSR 2): the 3D view at most this fraction of the window.
@@ -213,7 +217,7 @@ const GFX_DEFAULTS := {
 	1: {"shadow_buildings": 1, "shadow_flora": 1},
 	2: {"power_kbd": 25, "rubber_select": 2, "brightness": 50, "contrast": 50, "gamma": 50,
 		"tooltip_time": 2},
-	3: {"gfx_edge_fade": 0, "gfx_outer_land": 0},
+	3: {"gfx_edge_fade": 0},
 	4: {"q_shadows": 2, "q_aa": 1},
 }
 var _gfx_rev := GFX_REV
@@ -221,6 +225,23 @@ var options := {}
 
 var _texture_cache := {}
 var _text_cache := {}
+
+
+## Breadcrumbs for crash reports: one line per lifecycle step (zone load /
+## teardown, travel map, save / load, Esc menu) in godot.log, flushed at once
+## (application/run/flush_stdout_on_print), so the last line before a crash
+## tells where it happened. Never per frame.
+static func trace(what: String) -> void:
+	print("[trace %s +%dms] %s" % [Time.get_time_string_from_system(), Time.get_ticks_msec(), what])
+
+
+## Keys whose release went to another window are forgotten once this frame's
+## input has been read (EIKeymap.release_keys).
+func _notification(what: int) -> void:
+	if what in [NOTIFICATION_APPLICATION_FOCUS_IN, NOTIFICATION_APPLICATION_FOCUS_OUT,
+			NOTIFICATION_WM_WINDOW_FOCUS_IN, NOTIFICATION_WM_WINDOW_FOCUS_OUT] and is_inside_tree():
+		if not get_tree().process_frame.is_connected(EIKeymap.release_keys):
+			get_tree().process_frame.connect(EIKeymap.release_keys, CONNECT_ONE_SHOT)
 
 
 func _ready() -> void:
@@ -772,13 +793,23 @@ func _apply_window() -> void:
 	if vp:
 		# Below 100 %: AMD FSR 1.0 (edge-adaptive upscale + sharpening) instead of
 		# a blurry bilinear stretch; above it the bilinear downsample supersamples.
-		vp.scaling_3d_mode = Viewport.SCALING_3D_MODE_FSR if scale < 0.999 and not Portability.compatibility() else Viewport.SCALING_3D_MODE_BILINEAR
+		var smode := Viewport.SCALING_3D_MODE_FSR if scale < 0.999 and not Portability.compatibility() else Viewport.SCALING_3D_MODE_BILINEAR
 		if option("q_aa") == 5 and RenderingServer.get_current_rendering_method() == "forward_plus":   # FSR 2: anti-aliasing and upscaler in one
 			# Its Quality mode (1.5× upscale): at a 100 % render scale it would
 			# only anti-alias at native resolution, dearer than the other modes.
-			vp.scaling_3d_mode = Viewport.SCALING_3D_MODE_FSR2
+			smode = Viewport.SCALING_3D_MODE_FSR2
 			scale = minf(scale, FSR2_SCALE)
-		vp.scaling_3d_scale = clampf(scale, 0.25, 2.0)
+		scale = clampf(scale, 0.25, 2.0)
+		if smode != Viewport.SCALING_3D_MODE_BILINEAR and scale > 1.0:
+			smode = Viewport.SCALING_3D_MODE_BILINEAR   # FSR only upscales
+		# Each setter reconfigures the render buffers at once: going from a
+		# supersampled scale (> 1) to FSR, the mode set before the scale made
+		# Godot warn "FSR ... not designed for downsampling" for that moment.
+		# Bilinear first, then the scale, then the mode.
+		if vp.scaling_3d_mode != smode:
+			vp.scaling_3d_mode = Viewport.SCALING_3D_MODE_BILINEAR
+		vp.scaling_3d_scale = scale
+		vp.scaling_3d_mode = smode
 		Gfx.apply_quality(vp)
 	_show_fps(option("show_fps") != 0)
 	# Physics interpolation (phys_interp): only the units take part

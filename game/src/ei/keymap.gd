@@ -176,6 +176,27 @@ static func held(act: String, profile := -1) -> bool:
 	return false
 
 
+## Remake: forgets keys the engine still counts as held although their release
+## went to another window. On Windows a frame stalled by a load buffers a
+## key-down (Alt of Alt+Tab, Ctrl / Alt of Ctrl+Alt+Del, a camera key) and
+## parses it only after the focus loss has cleared the held keys, so it stays
+## "held": Ctrl / Alt turned A / D into camera turns, W / S into tilts and
+## changed clicks into forced orders. Called a frame after the window gains
+## or loses focus (GameData); a key really held repeats and counts again.
+static func release_keys() -> void:
+	_tables()
+	var codes := [KEY_CTRL, KEY_ALT, KEY_SHIFT, KEY_META]
+	codes.append_array(_code_of.values())
+	for code: int in codes:
+		if Input.is_key_pressed(code) or Input.is_physical_key_pressed(code):
+			var e := InputEventKey.new()
+			e.keycode = code as Key
+			e.physical_keycode = code as Key
+			e.key_label = code as Key
+			e.pressed = false
+			Input.parse_input_event(e)
+
+
 ## The key table's scan code of a Godot key, −1 when the game does not know it.
 static func scan_code(keycode: int) -> int:
 	_tables()

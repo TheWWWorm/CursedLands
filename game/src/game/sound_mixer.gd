@@ -45,6 +45,11 @@ var reverb := false
 ## Random sources (16 slots of 0x38 bytes).
 var _random: Array = []
 var _service := 0.0
+## Remake: the zone's loops set aside while the global map is up (suspend /
+## resume): handle -> sound record, and the random sources.
+var suspended := false
+var _held := {}
+var _held_random: Array = []
 ## Test hook (tools): print every request with its outcome ("[snd] ...").
 static var trace := false
 
@@ -133,6 +138,9 @@ func _start(s: Dictionary) -> int:
 	var h := _next_handle
 	_next_handle += 1
 	s.handle = h
+	if suspended and s.loop:   # starts with the zone's other loops on resume()
+		_held[h] = s
+		return h
 	var ci := _alloc(int(s.prio))
 	# the channel is taken first (a lower
 	# priority sound may lose it), then a one-shot that would be silent is
@@ -232,6 +240,7 @@ func stop(h: int) -> void:
 	if h < 0:
 		return
 	_virtual.erase(h)
+	_held.erase(h)
 	for c in _chans:
 		if c.handle == h:
 			c.player.stop()
@@ -243,6 +252,9 @@ func stop(h: int) -> void:
 func stop_all() -> void:
 	_virtual.clear()
 	_random.clear()
+	suspended = false
+	_held.clear()
+	_held_random.clear()
 	for c in _chans:
 		c.player.stop()
 		c.handle = -1
@@ -253,7 +265,7 @@ func stop_all() -> void:
 func playing(h: int) -> bool:
 	if h < 0:
 		return false
-	if _virtual.has(h):
+	if _virtual.has(h) or _held.has(h):
 		return true
 	for c in _chans:
 		if c.handle == h:
@@ -266,10 +278,73 @@ func _rec(h: int) -> Dictionary:
 		return {}
 	if _virtual.has(h):
 		return _virtual[h]
+	if _held.has(h):
+		return _held[h]
 	for c in _chans:
 		if c.handle == h:
 			return c.snd
 	return {}
+
+
+## Remake: the global map. the original clears the world before the map loads
+## so no zone sound plays on it; the remake
+## keeps the zone frozen for "Stay here". Every sound stops; the looping ones
+## (ambience, rain, torches, .mob sources, spell loops) and the random sources
+## are kept under their handles, so their owners still move / update / stop
+## them, and resume() starts them again from their beginning, as a zone load
+## starts its standing sounds.
+func suspend() -> void:
+	if suspended:
+		return
+	suspended = true
+	for c in _chans:
+		if c.handle < 0:
+			continue
+		if c.snd.get("loop", false):
+			_held[c.handle] = c.snd
+		c.player.stop()
+		c.handle = -1
+		c.snd = {}
+	for h in _virtual:
+		_held[h] = _virtual[h]
+	_virtual.clear()
+	_held_random = _random
+	_random = []
+
+
+func resume() -> void:
+	if not suspended:
+		return
+	suspended = false
+	var now := Time.get_ticks_msec()
+	for h in _held:
+		var v: Dictionary = _held[h]
+		v.at = 0.0
+		_virtual[h] = v
+	_held.clear()
+	for r: Dictionary in _held_random:
+		r.last = now
+	_random.append_array(_held_random)
+	_held_random = []
+	_restore_virtual()
+
+
+## Looping sounds on a channel or waiting for one (tests).
+func loops_playing() -> int:
+	var n := _virtual.size()
+	for c in _chans:
+		if c.handle >= 0 and c.snd.get("loop", false) and c.player.playing:
+			n += 1
+	return n
+
+
+## Any channel sounding (tests).
+func channels_playing() -> int:
+	var n := 0
+	for c in _chans:
+		if c.handle >= 0 and c.player.playing:
+			n += 1
+	return n
 
 
 ## new volume / pan of a 2D sound.

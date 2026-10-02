@@ -43,7 +43,7 @@ static func give(s: Session, amount: float, source := "quest", player := 0) -> v
 	elif s.online and source in ["kill", "quest"]:
 		gains = _network_split(s, amount)
 	else:
-		gains = _party_split(s, amount, player)
+		gains = _party_split(s, amount, player, not s.online and GameData.option("sp_full_xp") != 0)
 	for g: Array in gains:
 		gain(s, g[0], g[1], g[2])
 	# No text window line: the original shows a gain only as each hero's flying
@@ -102,7 +102,8 @@ static func on_kill(s: Session, victim: GameUnit, killer: GameUnit) -> void:
 
 
 ## Branch "player given": equal shares over the player's living party units.
-static func _party_split(s: Session, amount: float, player: int) -> Array:
+## Remake option "sp_full_xp" (`full`): each hero / mercenary gets all of it.
+static func _party_split(s: Session, amount: float, player: int, full := false) -> Array:
 	var members := []
 	for u: GameUnit in s.world.units.values():
 		if not u.dead and party_of(u) == player:
@@ -110,7 +111,7 @@ static func _party_split(s: Session, amount: float, player: int) -> Array:
 	var out := []
 	if members.is_empty():
 		return out
-	var share := amount / members.size()
+	var share := amount if full else amount / members.size()
 	for u: GameUnit in members:
 		if u.has_meta("hero"):
 			out.append([u, u.get_meta("hero"), share])

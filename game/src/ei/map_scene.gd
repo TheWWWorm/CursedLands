@@ -39,7 +39,8 @@ func place_object(o: Dictionary, parent: Node3D) -> Node3D:
 	if o.kind == "UNIT":
 		node = EIUnitModel.create(o)
 	else:
-		node = EIFigure.instantiate(template, o.texture, o.complexion, o.parts, o.kind == "LEVER", true)
+		node = EIFigure.instantiate(template, o.texture, o.complexion, o.parts, o.kind == "LEVER", true,
+				String(o.get("name", "")))
 	if node == null:
 		return null
 	var p: Vector3 = o.position

@@ -210,8 +210,10 @@ const _ACTION_CODE := {"idle": AC_IDLE, "walk": AC_WALK, "run": AC_RUN, "crawl":
 	"attack": AC_ATTACK, "cast": AC_CAST, "hit": AC_SUFFER, "death": AC_DEATH}
 
 static var _adbs := {}
-## [{name, code, weight}] for this template; empty = no database (old name rules).
+## [{name, code, weight, speed}] for this template; empty = no database (old name rules).
 var adb: Array = []
+## The.adb height factor at this unit's height (height_scale).
+var height_k := 1.0
 ## Set by the unit before act(): state bits, walk modifier (limp).
 var pose_state := ST_ATTACK
 var pose_mod := 0
@@ -245,9 +247,43 @@ static func load_adb(tmpl: String) -> Array:
 			if p + 88 > b.size():
 				break
 			out.append({"name": b.slice(p, p + 16).get_string_from_ascii(),
-				"code": b.decode_u32(p + 20), "weight": b.decode_s32(p + 28)})
+				"code": b.decode_u32(p + 20), "weight": b.decode_s32(p + 28),
+				"speed": b.decode_float(p + 0x24)})
 	_adbs[tmpl] = out
 	return out
+
+
+## the original (each drawn frame): the playback
+## rate of a clip of the animation queue's mode 2 (unit, the walk / run
+## starts and cycles), unit in keys per 55 ms tick =
+## |spline tangent| x node speed (cells of 0.5 m a tick, terrain factor
+## included) x 15 / (height factor x clip x 2), i.e.
+## metres a tick x 15 / (H x clip): is the metres a second the
+## clip covers at 15 keys a second at height factor 1. A clip = 0
+## gets (1 for walk / run). Returns the factor on the normal
+## rate (EIAnim.FPS keys a second) for `mps` metres a second, or 1 when the
+## playing clip is not a walk / run clip.
+func move_rate(mps: float) -> float:
+	if not rate_scaling:
+		return 1.0
+	var e: Dictionary = _clip_records().get(_current, {})
+	if e.is_empty() or not int(e.code) & 0x3c0000 in [AC_RUN, AC_WALK] or float(e.speed) == 0.0:
+		return 1.0
+	return mps * 15.0 / (height_k * float(e.speed) * EIAnim.FPS)
+
+
+static var _by_name := {}
+## Test switch (tools/anim_rate_test.gd --no-rate): every clip at the normal rate.
+static var rate_scaling := true
+
+
+func _clip_records() -> Dictionary:
+	if not _by_name.has(template):
+		var d := {}
+		for e: Dictionary in adb:
+			d[e.name] = e
+		_by_name[template] = d
+	return _by_name[template]
 
 
 func weapon_bit() -> int:
@@ -573,6 +609,7 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 
 	# --- node hierarchy (base parts + extras that have meshes)
 	var weld: bool = smooth_joints and bool(unit.get("weld", true))
+	var morphs := EIAnim.morphs(template)
 	var nodes := {}
 	var paths := {}
 	var root_part := ""
@@ -613,11 +650,17 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 		rest_pos[p] = rest_pos.get(par_name, Vector3.ZERO) + n.position if parent != self else n.position
 		if mesh_for.has(p):
 			var fig: Dictionary = parts[mesh_for[p]]
-			var mesh := EIFigure.build_mesh(fig, complexion)
-			if weld and not weapon_parts.has(p) and not helm_parts.has(p):
+			# Parts with vertex morph keys (EIAnim.morphs: wing membranes and
+			# the like) get them as blend shapes of a "morph" mesh.
+			var morph: Dictionary = morphs.get(p, {}) if mesh_for[p] == p else {}
+			var mesh := EIFigure.build_mesh(fig, complexion) if morph.is_empty() \
+					else EIFigure.build_anim_morph_mesh(fig, complexion, morph.names, morph.frames)
+			if weld and morph.is_empty() and not weapon_parts.has(p) and not helm_parts.has(p):
 				welded[p] = [mesh, mat]
 				continue
 			var mi := MeshInstance3D.new()
+			if not morph.is_empty():
+				mi.name = "morph"
 			mi.mesh = mesh
 			mi.material_override = wmat if weapon_parts.has(p) else (hmat if helm_parts.has(p) else mat)
 			n.add_child(mi)
@@ -649,7 +692,8 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 			q = parent_of[q]
 		paths[p] = NodePath("/".join(chain))
 	adb = load_adb(template)
-	player.add_animation_library("ei", EIAnim.library(template, paths, root_part, height_scale(template, complexion.z), true))
+	height_k = height_scale(template, complexion.z)
+	player.add_animation_library("ei", EIAnim.library(template, paths, root_part, height_k, true))
 	neutral = _has_neutral()
 	movement_starts = int(race.get("type_id", 0)) == 0x32
 	pose_state = ST_NEUTRAL if neutral else ST_ATTACK

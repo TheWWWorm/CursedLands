@@ -73,6 +73,7 @@ func _start() -> void:
 func back_to_menu() -> void:
 	if _leaving:
 		return
+	GameData.trace("back to main menu")
 	if session:
 		_leaving = true
 		var s := session

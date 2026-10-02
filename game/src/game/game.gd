@@ -11,6 +11,9 @@ var hud: GameHUD
 var selected: Array[GameUnit] = []
 var _drag_start := Vector2.ZERO
 var _dragging := false
+## The left drag became a selection frame (the original input part, set
+##  and kept until the button is released; ui/selection_frame.gd).
+var _framing := false
 ## The press of the click being handled was a double click: a move order then
 ## runs (texts.res "tutor zt1_text_screen2": "If you double-click on the
 ## point, he will run there"). **Approx.**: the original's handling is not traced.
@@ -41,6 +44,10 @@ func _ready() -> void:
 	hud = GameHUD.new()
 	hud.game = self
 	add_child(hud)
+	var frame := SelectionFrame.new()   # under the HUD widgets, as draws it first
+	frame.game = self
+	hud.add_child(frame)
+	hud.move_child(frame, 0)
 	sound = GameSound.new()
 	sound.game = self
 	add_child(sound)
@@ -197,11 +204,18 @@ func _update_cursor() -> void:
 		cursor.set_kind(forced)
 		return
 	var u := pick_unit(p)
+	#  modes 7 (Follow) / 8 (Science): no fit target shows
+	# cursor 13 "cancel", not the spell's 23 "spellcancel". Follow over a
+	# living unit: 15 "move"; Science over a unit: 24 "steal", or cancel on a
+	# selected one; over no unit an object to use: 4 "use".
 	if pending_spell == FOLLOW:
-		cursor.set_kind("cursor_default" if u and not u.dead else "cursor_spellcancel")
+		cursor.set_kind("cursor_move" if u and not u.dead and not selected.is_empty() else "cursor_cancel")
 		return
 	if pending_spell == SCIENCE:
-		cursor.set_kind("cursor_steal" if u and not u.dead else "cursor_use" if pick_lever(p) >= 0 else "cursor_spellcancel")
+		if u and not u.dead:
+			cursor.set_kind("cursor_cancel" if u in selected else "cursor_steal")
+		else:
+			cursor.set_kind("cursor_use" if pick_lever(p) >= 0 else "cursor_cancel")
 		return
 	if pending_spell:
 		cursor.set_kind("cursor_spell")
@@ -443,6 +457,7 @@ func _apply_sky() -> void:
 ## Called by Session when a zone has been loaded.
 func attach_world(w: GameWorld) -> void:
 	if world and world != w:
+		GameData.trace("zone teardown %s" % world.zone.get("id", ""))
 		world.queue_free()
 	world = w
 	w.process_mode = Node.PROCESS_MODE_PAUSABLE   # the Game node itself runs while paused
@@ -464,7 +479,10 @@ func attach_world(w: GameWorld) -> void:
 	sound.on_world(w)
 	_apply_shadows(w)
 	_fit_shadows()
-	ParticleFx.of(w).setup_zone()   # zone exit stars and torch fires (every peer)
+	var pfx := ParticleFx.of(w)
+	pfx.gs_var = func(k: String) -> float:
+		return session.state.get_var(0, k) if session != null and session.state != null else 0.0
+	pfx.setup_zone()   # zone exit stars and torch fires (every peer)
 	GroundMarks.of(w)   # footprints and blood marks (every peer)
 
 
@@ -518,15 +536,14 @@ func _unhandled_input(e: InputEvent) -> void:
 			_drag_start = e.position
 			_double = e.double_click
 			_dragging = true
+			_framing = false
 		elif _dragging:
 			_dragging = false
-			# Option "rubber_select" (CameraFrameSelectionSensetiveArea = slider
-			# × 10 px): starts the frame once the
-			# pointer is more than that many pixels away on either axis; 0 turns
-			# frame selection off.
-			var area := GameData.option("rubber_select") * 10
-			var d: Vector2 = (e.position - _drag_start).abs()
-			if area >= 1 and (d.x > area or d.y > area):
+			# Left button up: frame selection when the frame was
+			# started, else a click; the flag is cleared.
+			var framed := _framing or _frame_started(e.position)
+			_framing = false
+			if framed:
 				_box_select(Rect2(_drag_start, e.position - _drag_start).abs(), e.shift_pressed)
 			else:
 				_click(e.position, e.shift_pressed)
@@ -738,6 +755,42 @@ func _click(p: Vector2, add: bool) -> void:
 	if g != null:
 		issue({"t": "move", "units": ids, "x": g.x, "y": g.y, "run": _double})
 		marks.move_ordered(g)
+
+
+## Option "rubber_select" (CameraFrameSelectionSensetiveArea = slider × 10 px,
+## ): starts the frame once the pointer is more than
+## that many pixels from the press on either axis; 0 turns frame selection off.
+func _frame_started(pos: Vector2) -> bool:
+	var area := GameData.option("rubber_select") * 10
+	var d: Vector2 = (pos - _drag_start).abs()
+	return area >= 1 and (d.x > area or d.y > area)
+
+
+## The frame to draw (window pixels), empty when none: the press point and the
+## pointer normalized as stores them. A screen
+## pushed over the field (Esc menu, dialog, travel map) drops the frame as the
+## input part's slot 4 clears; a release taken
+## something else shows nothing.
+func frame_rect() -> Rect2:
+	if not _dragging or world == null:
+		return Rect2()
+	if hud.blocks_input():
+		_dragging = false
+		_framing = false
+		return Rect2()
+	if not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+		return Rect2()
+	var p := get_viewport().get_mouse_position()
+	if not _framing and _frame_started(p):
+		_framing = true
+	return Rect2(_drag_start, p - _drag_start).abs() if _framing else Rect2()
+
+
+## Remake: losing the window focus drops a drag in progress (no release comes).
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_APPLICATION_FOCUS_OUT or what == NOTIFICATION_WM_WINDOW_FOCUS_OUT:
+		_dragging = false
+		_framing = false
 
 
 ## Frame selection (the original left button up):
@@ -1084,6 +1137,12 @@ func _on_node_added(n: Node) -> void:
 		# figures 3dfpfpu); Gfx.light_code inverts
 		# Godot's falloff with attenuation 0.
 		(n as OmniLight3D).omni_attenuation = 0.0
+	if n is Light3D and not n is DirectionalLight3D and is_ancestor_of(n):
+		# Units' meshes switch between layer 1 and OFFSCREEN_LAYER: every
+		# local light must light both, or Godot 4.7 leaves freed lights paired
+		# with them and crashes (LocalLighting._light_quality). Set here, before
+		# the light's first pairing at the end of this frame.
+		(n as Light3D).light_cull_mask |= 1 | GameUnit.OFFSCREEN_LAYER
 
 
 func _shadow_for(obj: Variant) -> void:

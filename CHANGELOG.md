@@ -1,5 +1,44 @@
 # Changelog
 
+## 0.1.3
+
+- Fixes and changes:
+  - Fixed random crashes (the game closing without an error) when lights went out while characters were off screen: after spells, deaths, and when changing zones or loading.
+  - Windows: the game now renders through Direct3D 12 by default (Vulkan if D3D12 is unavailable), which stops the occasional whole-screen flash seen on some AMD systems.
+  - Party characters no longer have the built-in natural armour the original removes when they enter a zone; only worn armour and protection spells reduce their damage. Toads' acid now hurts Zak, as in the original.
+  - Walking, running, sneaking and crawling animations now play at the unit's actual speed, so feet no longer slide over the ground (most visible on running ogres and wolves).
+  - All unit animations now play at the original game's speed (one frame per 55 ms tick instead of 20 frames per second).
+  - New option "Full experience for companions" (Game page, off by default): in single player your hero and every hired companion such as Khador each get the whole experience of a kill or quest.
+  - New option "Show the move path through objects" (Game, on by default): the move path dots and target markers stay visible under water, under arches and behind rocks and walls, faded where covered.
+  - Zone exits that are closed for now show red-orange sparkles instead of yellow, as in the original, and change colour when they open or close.
+  - The closed message log no longer leaves a black square behind its arrow at the top of the screen.
+  - Cacti no longer sway like trees in the wind; they now move only slightly, mostly at the top.
+  - Turning the wind effect on or off mid-zone now also reaches plants already placed on the browser and Android renderer.
+  - The in-game Esc menu now animates like the original: the signpost rises into place when opened, and each board tilts while you point at it, even while the game is paused.
+  - Steal (Science) and Follow show the original's cancel cursor where there is nothing to act on, instead of the spell icon; Follow shows the move cursor over a unit it can follow.
+  - Dragging with the left mouse button now shows the selection frame (a thin white outline over a lightly darkened area), as in the original.
+  - Water no longer shows black slivers and triangles on its surface, or dark blotches in deep lakes and rivers next to cliffs.
+  - Water no longer shows a huge pale sun reflection across lakes and bogs when the camera is zoomed far out; the sun now only glints in small sparkles, no brighter than in the original.
+  - Rain and snow now fall in front of trees, rocks and buildings instead of only behind them.
+  - Attacking while sneaking or crawling now keeps Zak crouched or crawling all the way to the target; he stands up only to strike, so you can sneak up for a backstab. Double click still makes him get up and run.
+  - The camera no longer gets stuck turning instead of moving with WASD (or the arrow keys) after loading: Alt or Ctrl pressed while switching windows during a load no longer stays held down.
+  - The "Outer landscape" graphics option is removed.
+  - Monsters chasing a fleeing hero now run after it properly instead of gliding along in their attack stance.
+  - Leaving a zone to the global map while enemies chase you no longer keeps the battle music playing: the map is silent as in the original (no music, ambience, rain or other zone sounds), combat music no longer carries over into the next zone, and Stay here brings the zone's music and ambient sounds back.
+  - On the global map, the camp (inventory) screen can again take weapons, armour and belt items off Zak and hired companions like Khador, or equip them from the bag, and the changes carry into the next zone.
+  - A hero's belt holds four items, as in the original; saves with more move the extra items to the bag.
+  - Minimap: north is at the top again, as in the original. The map picture, the unit and exit markers, the camera arrow and click-to-jump were all mirrored top to bottom (the save screen's zone picture too).
+  - Enemies holding a bow or crossbow (brigand, orc and goblin archers) now have 0 Defence as in the original, so melee blows against them always hit.
+  - Named NPCs and mercenaries waiting to be hired now take their Attack and Defence from their weapon and skills, as in the original, instead of fixed prototype values.
+  - While a cutscene is being prepared, the Skip button sits right under the progress text.
+  - Bats, dragons, succubi, banshees, beholders and other monsters now animate their wing membranes, robes and soft body parts as in the original; bat and dragon wings no longer flap their bones while the skin stays still.
+  - The character view in the top-left corner no longer blinks black (or shimmers) when the shown character changes as you move the mouse between characters.
+  - Spell hits that armour fully absorbs now still count as hits: a "0" appears and the target reacts and turns hostile, as in the original.
+  - Map units with their own stats in the original's map files (some town guards and police, the Hadagan students, the first zone's runners, dragons, the earth elemental block, some villagers) now use those stats instead of their unit type's defaults.
+  - Armour spells on worn items now also trigger when struck by spells.
+  - Crash logs (godot.log) now record what the game was doing just before a crash.
+  - Fixed an FSR warning when switching to a fullscreen resolution below native with render scale above 100%.
+
 ## 0.1.2
 
 - Fixes and changes:

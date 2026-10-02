@@ -73,6 +73,10 @@ var _quad: QuadMesh
 var _bones := {}             # unit instance id -> {name: Node3D}
 var _boxes := {}             # unit instance id -> [tick, AABB] (unit local, Godot space)
 var _zone_set := false
+## Zone exit stars: [Effect, GS var "z.<target>"] per exit (the original's list).
+var _exit_fx: Array = []
+## GS var reader (player 0) set by Game: key -> value.
+var gs_var: Callable
 ## Particles drawn last frame (tools/fx_test.gd reports it).
 var drawn := 0
 
@@ -409,6 +413,7 @@ var _fill_on := false
 
 func _tick(last := true) -> void:
 	tick += 1
+	exit_colours()
 	for m in missiles.duplicate():
 		_missile_tick(m)
 	_par.clear()
@@ -501,14 +506,34 @@ const GLOW_TYPES := [0x2000, 0x2001, 0x2002, 0x2003, 0x200b, 0x200c, 0x2010, 0x2
 const LIT_TYPES := [0x200f, 0x2031, 0x2032, 0x2033, 0x2007, 0x2008, 0x2013]
 const GLOW_BOOST := 1.35
 const SOFT_DISTANCE := 0.6
+## Remake option path_through (default on): the move path dots 0x2039 and the
+## target marks 0x203a / 0x203b are drawn without the depth test, after the
+## water, every particle and the lightning (RENDER_PRIORITY + 2), so they stay
+## visible under water, overhangs and behind rocks; fragments the opaque scene
+## covers (and dots under the water, FxTypes.under_water) keep THROUGH_ALPHA.
+## Off: the original's depth tested drawing (see FxTypes.under_water).
+const THROUGH_TYPES := [0x2039, 0x203a, 0x203b]
+const THROUGH_ALPHA := 0.6
 
 
-func _material(tex: String, additive: bool, glow := false, lit := false, fire := false) -> ShaderMaterial:
-	var key := tex + ("+" if additive else "") + ("*" if glow else "") + ("~" if lit and not additive else "") + ("#fire" if fire else "")
+static func through_on() -> bool:
+	return GameData.option("path_through") == 1
+
+
+## The material of an emitter (by type, texture, blend and option path_through).
+func _material_of(e: FxEmitter) -> ShaderMaterial:
+	return _material(e.texture, e.add == 1, e.type in GLOW_TYPES, e.type in LIT_TYPES, e.type == 0x2001,
+		e.type in THROUGH_TYPES and through_on())
+
+
+func _material(tex: String, additive: bool, glow := false, lit := false, fire := false, through := false) -> ShaderMaterial:
+	var key := tex + ("+" if additive else "") + ("*" if glow else "") + ("~" if lit and not additive else "") + ("#fire" if fire else "") + ("@through" if through else "")
 	if not _mats.has(key):
 		var m := ShaderMaterial.new()
-		m.shader = _shader(additive)
-		m.render_priority = RENDER_PRIORITY
+		m.shader = _shader(additive, through)
+		m.render_priority = RENDER_PRIORITY + 2 if through else RENDER_PRIORITY
+		m.set_shader_parameter("through_alpha", THROUGH_ALPHA if through else 0.0)
+		m.set_meta("through", through)
 		m.set_shader_parameter("tex", GameData.get_texture(tex))
 		m.set_meta("glow", glow or additive)
 		m.set_meta("lit", lit and not additive)
@@ -520,15 +545,20 @@ func _material(tex: String, additive: bool, glow := false, lit := false, fire :=
 static var _shaders := {}
 
 
-static func _shader(additive: bool) -> Shader:
-	if not _shaders.has(additive):
-		if not additive:
-			_shaders[false] = EFFECT_SHADER
+static func _shader(additive: bool, through := false) -> Shader:
+	var key := int(additive) + 2 * int(through)
+	if not _shaders.has(key):
+		if not additive and not through:
+			_shaders[key] = EFFECT_SHADER
 		else:
 			var s := Shader.new()
-			s.code = EFFECT_SHADER.code.replace("blend_mix", "blend_add")
-			_shaders[true] = s
-	return _shaders[additive]
+			s.code = EFFECT_SHADER.code
+			if additive:
+				s.code = s.code.replace("blend_mix", "blend_add")
+			if through:
+				s.code = s.code.replace("depth_draw_never,", "depth_draw_never, depth_test_disabled,")
+			_shaders[key] = s
+	return _shaders[key]
 
 
 ## One effect's particles, previous and current state (the shader lerps):
@@ -687,7 +717,7 @@ func _draw(t: float) -> void:
 			ef.mmi.top_level = true
 			ef.mmi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 			ef.mmi.sorting_use_aabb_center = false
-			ef.mmi.material_override = _material(e.texture, e.add == 1, e.type in GLOW_TYPES, e.type in LIT_TYPES, e.type == 0x2001)
+			ef.mmi.material_override = _material_of(e)
 			var mm := MultiMesh.new()
 			mm.transform_format = MultiMesh.TRANSFORM_3D
 			mm.use_colors = true
@@ -695,6 +725,10 @@ func _draw(t: float) -> void:
 			mm.mesh = _quad
 			ef.mmi.multimesh = mm
 			add_child(ef.mmi)
+		elif e.type in THROUGH_TYPES:
+			var want := _material_of(e)   # option path_through switched meanwhile
+			if ef.mmi.material_override != want:
+				ef.mmi.material_override = want
 		var mm := ef.mmi.multimesh
 		if hidden or n == 0:
 			mm.visible_instance_count = 0
@@ -729,7 +763,7 @@ func _apply_material_options() -> void:
 	var tint := Gfx.particle_tint()
 	var boost := GLOW_BOOST if Gfx.on("gfx_bloom") else 1.0
 	for m: ShaderMaterial in _mats.values():
-		m.set_shader_parameter("soft_distance", soft)
+		m.set_shader_parameter("soft_distance", 0.0 if m.get_meta("through", false) else soft)
 		if m.get_meta("glow", false):
 			# The original campfire atlas already has a bright yellow core.
 			# Extra HDR gain clips its painted detail into a flat yellow shape.
@@ -1123,8 +1157,11 @@ func setup_zone() -> void:
 			continue
 		var r: Rect2 = ex.remove
 		var c := r.get_center()
-		spawn(0x2038, _ground_pt(c.x, c.y), 1.0, null,
+		var ef := spawn(0x2038, _ground_pt(c.x, c.y), 1.0, null,
 			{"k118": r.size.x * 0.5, "k11c": r.size.y * 0.5, "k120": 1.0, "k124": 0.0, "prewarm": 20})
+		if ef:
+			_exit_fx.append([ef, "z." + String(ex.to).to_lower()])
+	exit_colours()   #  ends, after the prewarm
 	for node in world.objects.values():
 		if not is_instance_valid(node) or not node.has_meta("ei"):
 			continue
@@ -1142,6 +1179,19 @@ func setup_zone() -> void:
 		var haze := Gfx.heat_haze(0.6 + s * 0.8)   # remake-only, option gfx_heat_haze
 		haze.position = godot(at) + Vector3(0.0, 0.3, 0.0)
 		add_child(haze)
+
+
+##  (and every drawn frame through
+## ): each exit's emitter = 1.0 when GS var "z.<target>"
+## (prefix) is 1, else 0; the spawn then colours new stars
+##  instead of white (a closed exit: the leave box and the move
+## cursor skip it too). Stars already alive keep their colour.
+func exit_colours() -> void:
+	if not gs_var.is_valid():
+		return
+	for x in _exit_fx:
+		var ef: Effect = x[0]
+		ef.e.v130 = Vector3(1.0 if float(gs_var.call(x[1])) == 1.0 else 0.0, 0.0, 0.0)
 
 
 ## Script builtins (event "fxcmd": f, a), vm.gd and neighbours.
