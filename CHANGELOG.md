@@ -2,6 +2,8 @@
 
 ## 0.1.1
 
+- New: Android preview (APK on the Releases page), with touch controls for the original interface.
+
 - New: play in your browser at [cursedlands.wwworm.com](https://cursedlands.wwworm.com/), with nothing to install. You choose your own game folder or `.eipack`; nothing is uploaded, and the game also starts offline after the first visit.
 
 - New: optional fog of war in single player (Game options, on by default). Enemies beyond your party's sight are hidden, using the original multiplayer sight rule. Villages, conversations and cutscenes are never fogged.

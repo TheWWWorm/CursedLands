@@ -1,6 +1,6 @@
 # Cursed Lands
 
-Play **Evil Islands: Curse of the Lost Soul** («Проклятые земли», Nival, 2000) on a modern engine on Windows, Linux and macOS or in your browser, with the whole campaign playable in **online co-op**.
+Play **Evil Islands: Curse of the Lost Soul** («Проклятые земли», Nival, 2000) on a modern engine on Windows, Linux, macOS and Android or in your browser, with the whole campaign playable in **online co-op**.
 
 This is a separate game engine, built in Godot, in the spirit of OpenMW and fheroes2: it reads the Evil Islands files you already own (maps, models, textures, animations, sounds, music, texts, scripts and game tables) and plays them with natively written rendering, combat, AI, scripting and interface systems that follow the original game's rules.
 
@@ -37,7 +37,9 @@ Download the package for your system from the [Releases](https://github.com/TheW
 - **Windows (x86-64):** extract the ZIP and run `CursedLands.exe`. Windows may warn about an unrecognised app; choose **More info → Run anyway**.
 - **Linux (x86-64):** extract the archive and run `CursedLands.x86_64`. If your file manager dropped the executable permission, run `chmod +x CursedLands.x86_64` first.
 - **macOS (Apple silicon and Intel):** extract the ZIP and open the app. It is not signed or notarized, so macOS may block the first start; allow it under **System Settings → Privacy & Security**.
+- **Android 8+ (ARM64 / x86-64), preview:** install the APK; allow your browser or file manager to install apps when it asks. On first start, choose a game data pack (`.eipack`, see [Play in your browser](#play-in-your-browser)) or the GOG installer (`setup_evil_islands_*.exe`), which is unpacked without being run. Touch controls are explained in the game.
 - **Browser (WebGL 2):** nothing to download; [play the hosted version](https://cursedlands.wwworm.com/), see above.
+  To host the browser version yourself, use `…-web.zip`. It needs HTTPS and the `Cross-Origin-Opener-Policy: same-origin` and `Cross-Origin-Embedder-Policy: require-corp` headers (included in its `_headers` file).
 
 ## Getting started
 
