@@ -165,6 +165,7 @@ func build(t: EITerrain, water_levels: PackedFloat32Array, objects: Array) -> vo
 	_steep.fill(0)
 	_fixed_sets = {}
 	_alt = 511.0 / t.max_altitude if t.max_altitude > 0.0 else 1.0
+	_slope_memo.clear()
 	# Per ground type: cost (CostMul), -1 = impassable.
 	var cost_of := PackedInt32Array()
 	cost_of.resize(32)
@@ -1015,6 +1016,21 @@ func step_factor(p: Vector2, q: Vector2, cls: int) -> float:
 ## up or level round(1024 (1 + sin^2)^2), down round(1024 / (1 + sin^2)); over
 ## 40 deg -1. Class 0: 1024, over 60 deg -1.
 func _slope_div(dh: int, cls: int) -> int:
+	# Remake speed: a pure function of dh, class 0 or not and the map's _alt,
+	# asked for every moving unit every physics step: remembered.
+	var key := dh * 2 + int(cls == 0)
+	var got = _slope_memo.get(key)
+	if got != null:
+		return got
+	var v := _slope_div_calc(dh, cls)
+	_slope_memo[key] = v
+	return v
+
+
+var _slope_memo := {}   # _slope_div results (cleared with _alt in build)
+
+
+func _slope_div_calc(dh: int, cls: int) -> int:
 	var th := rad_to_deg(atan((absf(dh) / _alt) / CELL))
 	if cls == 0:
 		return -1 if th > 60.0 else 1024
@@ -1042,6 +1058,22 @@ func nearest_walkable(p: Vector2, radius := 6.0, cls := WALK_CLASS) -> Vector2:
 					best_d = d
 					best = center(q)
 	return best
+
+
+## `nearest_walkable` for unit `u`'s own move: its own stamp lifted first, as
+## find_path lifts the mover's. Without that the
+## cell a unit stands on counts as closed to itself, and an order to the spot
+## it already holds was moved to a neighbour cell — a script looping SetCP to
+## its own spot (basecam.mob VTriger#0#378, Human4) then paced between the two
+## cells for ever.
+func nearest_walkable_for(u: GameUnit, p: Vector2, radius := 6.0, cls := WALK_CLASS) -> Vector2:
+	var lift := u != null and u._occ_cell.x >= 0
+	if lift:
+		_stamp(u._occ_cell, u._occ_r, -1)
+	var out := nearest_walkable(p, radius, cls)
+	if lift:
+		_stamp(u._occ_cell, u._occ_r, 1)
+	return out
 
 
 ## Path in EI xy from `a` to `b` for movement class `cls`, smoothed by
@@ -1159,6 +1191,53 @@ func cell_slope(p: Vector2) -> float:
 	return best / _alt
 
 
+## the line-of-sight ray from (a, za) to (b, zb) (heights
+## metres): d = |b − a| (3D) / 0.5 m, n = round(d) steps of 1 / d in 16.16
+## fixed point; 1 when d = 0, 0 when the start or end cell is off the map.
+## Each step's height in steps at or below the cell's height (floors
+## included) ends it with 0; every object span of the cell whose
+## [bottom, top] holds the height multiplies the result at the
+## span's class (cell bits 5-6: 0 → 0, 1 → 0.98, 2 → 0.99, 3 → 1; the class
+## is part flags (>> 6) & 0xf, merged like the kind, so CROWN parts (flags
+## 0x95) give class 2 = kind 2 and every other part class 0 = kind 0), and
+## below 0.0001 it returns 0.0001. So walls, fences, cages and tree trunks
+## hide what is behind them; crowns barely do.
+func ray(a: Vector2, za: float, b: Vector2, zb: float) -> float:
+	if size.x == 0:
+		return 1.0
+	var d := Vector3(b.x - a.x, b.y - a.y, zb - za).length() / CELL
+	if d == 0.0:
+		return 1.0
+	var n := roundi(d)
+	var step := (b - a) / d
+	if not _in(cell(a)) or not _in(cell(a + step * n)):
+		return 0.0
+	var h0 := roundi(za * _alt)
+	var dh := float(roundi(zb * _alt) - h0) / d
+	var f := 1.0
+	for k in range(1, n + 1):
+		var c := cell(a + step * k)
+		if not _in(c):
+			return 0.0
+		var i := c.y * size.x + c.x
+		var hs := floori(h0 + dh * k)
+		if hs <= roundi(_h[i] * _alt):
+			return 0.0
+		var spans: Array = _spans.get(i, [])
+		for s: Array in spans:
+			if hs <= int(s[1]) and int(s[0]) <= hs:
+				f *= 0.99 if int(s[2]) == 2 else 0.0
+				if f < 0.0001:
+					return 0.0001
+	return f
+
+
+## The AI map height (m) of the cell under `p` (floors included); 0 off the map.
+func cell_height(p: Vector2) -> float:
+	var c := cell(p)
+	return _h[c.y * size.x + c.x] if _in(c) else 0.0
+
+
 ## the largest height difference (m) between successive cells
 ## on the line a → b, walked in round(|b − a| / 0.5) steps of 16.16 fixed
 ## point cell coordinates; 100 when an end is off the map, 1 for a = b.
@@ -1251,9 +1330,43 @@ func track_unit(u: GameUnit) -> void:
 		u._occ_r = r
 		if standing:
 			_stamp(c, r, 1)
-	var key := -1 if u.dead else _bucket_key(u.pos)
+	rebucket(u)
+
+
+## Puts a unit in the spatial bucket of its position (none while dead or not
+## in GameWorld.units); GameUnit.pos calls it on every change.
+func rebucket(u: GameUnit) -> void:
+	var ak := -1 if u._seq == 0 else _bucket_key(u.pos)
+	# The coarse grids (CBUCKET) serve the wide queries (sight radii).
+	var cak := -1 if u._seq == 0 else _cbucket_key(u.pos)
+	if cak != u._cabucket:
+		if u._cabucket != -1 and _call_buckets.has(u._cabucket):
+			(_call_buckets[u._cabucket] as Array).erase(u)
+		u._cabucket = cak
+		if cak != -1:
+			if not _call_buckets.has(cak):
+				_call_buckets[cak] = []
+			_call_buckets[cak].append(u)
+	var ck := -1 if u.dead or u._seq == 0 else _cbucket_key(u.pos)
+	if ck != u._cbucket:
+		if u._cbucket != -1 and _cbuckets.has(u._cbucket):
+			(_cbuckets[u._cbucket] as Array).erase(u)
+		u._cbucket = ck
+		if ck != -1:
+			if not _cbuckets.has(ck):
+				_cbuckets[ck] = []
+			_cbuckets[ck].append(u)
+	if ak != u._abucket:
+		if u._abucket != -1 and _all_buckets.has(u._abucket):   # (a key of another map's grid: nothing to drop)
+			(_all_buckets[u._abucket] as Array).erase(u)
+		u._abucket = ak
+		if ak != -1:
+			if not _all_buckets.has(ak):
+				_all_buckets[ak] = []
+			_all_buckets[ak].append(u)
+	var key := -1 if u.dead or u._seq == 0 else _bucket_key(u.pos)
 	if key != u._bucket:
-		if u._bucket != -1:
+		if u._bucket != -1 and _buckets.has(u._bucket):
 			(_buckets[u._bucket] as Array).erase(u)
 		u._bucket = key
 		if key != -1:
@@ -1269,23 +1382,70 @@ func untrack_unit(u: GameUnit) -> void:
 	if u._bucket != -1:
 		(_buckets[u._bucket] as Array).erase(u)
 		u._bucket = -1
+	if u._abucket != -1:
+		(_all_buckets[u._abucket] as Array).erase(u)
+		u._abucket = -1
+	if u._cbucket != -1 and _cbuckets.has(u._cbucket):
+		(_cbuckets[u._cbucket] as Array).erase(u)
+	u._cbucket = -1
+	if u._cabucket != -1 and _call_buckets.has(u._cabucket):
+		(_call_buckets[u._cabucket] as Array).erase(u)
+	u._cabucket = -1
+
+
+var _all_buckets := {}   # like _buckets, with the dead units too (units_all_around)
+## Remake (CPU): the same two indexes on a 16 m grid for queries of 6 m and
+## more (a 25 m sight radius reads 16 cells instead of ~170); the result is
+## the same units, sorted the same way.
+const CBUCKET := 16.0
+const WIDE := 6.0
+var _cbuckets := {}
+var _call_buckets := {}
+
+
+## Every unit in GameWorld.units within `r` of `p`, dead ones too, in
+## GameWorld.units order: GameWorld.units_near from the buckets.
+func units_all_around(p: Vector2, r: float) -> Array:
+	var out := []
+	var r2 := r * r
+	var bs := BUCKET if r < WIDE else CBUCKET
+	var grid: Dictionary = _all_buckets if r < WIDE else _call_buckets
+	for by in range(floori((p.y - r) / bs), floori((p.y + r) / bs) + 1):
+		for bx in range(floori((p.x - r) / bs), floori((p.x + r) / bs) + 1):
+			var b = grid.get(bx + by * 4096)
+			if b != null:
+				for u: GameUnit in b:
+					if u.pos.distance_squared_to(p) <= r2:
+						out.append(u)
+	if out.size() > 1:
+		out.sort_custom(func(a: GameUnit, b: GameUnit): return a._seq < b._seq)
+	return out
 
 
 static func _bucket_key(p: Vector2) -> int:
 	return floori(p.x / BUCKET) + floori(p.y / BUCKET) * 4096
 
 
+static func _cbucket_key(p: Vector2) -> int:
+	return floori(p.x / CBUCKET) + floori(p.y / CBUCKET) * 4096
+
+
 ## Live units within `r` of `p` (tracked ones only, i.e. on the host).
 func units_around(p: Vector2, r: float) -> Array:
 	var out := []
 	var r2 := r * r
-	for by in range(floori((p.y - r) / BUCKET), floori((p.y + r) / BUCKET) + 1):
-		for bx in range(floori((p.x - r) / BUCKET), floori((p.x + r) / BUCKET) + 1):
-			var k := bx + by * 4096
-			if _buckets.has(k):
-				for u: GameUnit in _buckets[k]:
+	var bs := BUCKET if r < WIDE else CBUCKET
+	var grid: Dictionary = _buckets if r < WIDE else _cbuckets
+	for by in range(floori((p.y - r) / bs), floori((p.y + r) / bs) + 1):
+		for bx in range(floori((p.x - r) / bs), floori((p.x + r) / bs) + 1):
+			var b = grid.get(bx + by * 4096)
+			if b != null:
+				for u: GameUnit in b:
 					if u.pos.distance_squared_to(p) <= r2:
 						out.append(u)
+	# In GameWorld.units order, as a scan of every unit returns them.
+	if out.size() > 1:
+		out.sort_custom(func(a: GameUnit, b: GameUnit): return a._seq < b._seq)
 	return out
 
 

@@ -1,30 +1,46 @@
 class_name BeltStrip
 extends Control
-## Belt of the selected hero on the right edge (the original
-## ): the quick items
-## (up to eight at unit) as 3D models (ItemView) in 40×40
-## cells at x 760..800 stacked up from y 470..510 of the 800×600 layout;
-## tooltips with the item's spell (texts.res "string infoitem_7 / 18 / 8 ...").
-## A double click uses the item at once (picked when the input's
-##  flag — set on WM_LBUTTONDBLCLK — is ): friendly
-## spells on the holder, offensive ones on the nearest enemy (Session "use").
-## A single click selects it (the cell's figure is scaled 1.15
-## (1.15), and gets =, ItemView.add_color) and the next click in the world picks its target; the same item
-## again cancels.
-## Tooltip (labels "string infoitem_N" for N in 7, 18, 8, 9
-## 10, 11, 12, 13, 21, 22, 26, 27, 28 loaded): the item's
-## name; for an item with a spell then " \n" and
-## two fields per line, "%s %d  " Stamina, "%s %s \n" School; Effect ("%s %s"
-## Constant when the prototype takes no effect runes, else "%s %d")
-## Speed ("%d", or Immediately below 1); Range "%d" + m, Area (π r² "%.1f" +
-## m, or Target for a unit spell, flag); Duration (Immediately
-## below 2 ticks, else ticks / 15 "%.1f" + s), Targets — the camp's spell
-## rows (CampView), here in pairs.
+## The selected hero's belt (quick items) bottom right (the original
+## builds it, fills it): eight 50×50 cells in 520..720 ×
+## 500..600 of the 800×600 layout, the entry (i) — for a hero the
+## player's list (stack count ≥ 1), else unit [0..3] —
+## drawn as its 3D model centred at (695 − 50 i, 575) for i < 4, then
+## (695 − 50 (i − 4), 525): from the bottom right cell leftwards, then the
+## top row, (…, 20) at scale 0.55 (bottom) / 0.85 (top), in the
+## original's perspective (ItemView.screen_at). (The right-edge column holds the spells
+## SpellSlots.)
+## Keys item1–4 (P / O / I / U, cases 0x2a–0x2d):
+## — click.wav; a wand or potion (prototype item_id 5 / 8) is picked (scale
+## 1.15, =, ItemView.add_color) and the next click in the
+## world picks its target (interaction mode 3 / 4); the same cell again
+## cancels. With Ctrl / Alt,: used at once — an offensive spell
+##  on the nearest hostile unit in view (none:
+## nomagic.wav, the item kept), anything else on the holder (Session "use").
+## A click picks, a double click uses at once, as those two.
+## Tooltip: the item's name; for an item with a spell
+## then " \n" and, two fields per line, "%s %d  " Stamina, "%s %s \n" School;
+## Effect ("%s %s" Constant when the prototype takes no effect runes
+## else "%s %d"), Speed ("%d", or Immediately below 1); Range "%d" + m, Area
+## (π r² "%.1f" + m, or Target for a unit spell, flag); Duration
+## (Immediately below 2 ticks, else ticks / 15 "%.1f" + s), Targets — the
+## camp's spell rows (CampView), here in pairs (spell_rows
+## rows, which the spell column shows).
+##  (labels infoitem_7..13, 21, 22, 26..28): a
+## potion shows only Effect and Duration (`potion_rows`); a wand the rows above
+## with "%s %d/%d (%d)" infoitem_7, spell, item (Energy), item
+##  (its charge) in place of Stamina / School.
+##  leaves the cell it unpicks at scale 1.0 until the next refill
+## (selection or belt changes; also refills every frame while the
+## one selected unit is dead, ≠ 0). **Approx.**: charges are kept per item name in the hero record
+## (Session.wand_charge), so two identical wands on one belt share one.
 
 const SLOTS := 8
 var game: Game
 var _items: Array = []
 var _sig := ""
+var _refill_sig := ""
+var _picked := -1     # cell picked at the last refresh
+var _unpicked := -1   # cell left at scale 1.0
 var _views: Array[ItemView] = []
 var _unit: GameUnit
 
@@ -37,8 +53,10 @@ func _ready() -> void:
 		_views.append(v)
 
 
+## from the bottom right cell leftwards, then the top row.
 func _cell_rect(i: int) -> Rect2:
-	return Rect2(Vector2(0, size.y - (i + 1) * size.x), Vector2(size.x, size.x))
+	var c := size / Vector2(4, 2)
+	return Rect2(Vector2((3 - i % 4) * c.x, (1 - i / 4) * c.y), c)
 
 
 func _has_point(p: Vector2) -> bool:
@@ -52,15 +70,34 @@ func _process(_dt: float) -> void:
 	if sig == _sig:
 		return
 	_sig = sig
+	#  sets the cell it unpicks to scale 1.0; it keeps that until
+	# the belt is refilled (on a selection change, or the list
+	# changing).
+	var refill := "%s:%s" % [u.uid if u else -1, ",".join(q)]
+	if refill != _refill_sig:
+		_refill_sig = refill
+		_unpicked = -1
+	elif _picked >= 0:
+		_unpicked = _picked
+	_picked = -1
 	_unit = u
 	_items = q.slice(0, SLOTS)
+	var k := size.y / 100.0   # pixels per 800×600 unit
 	for i in SLOTS:
-		var r := _cell_rect(i).grow(-3)
+		var r := _cell_rect(i)
 		var picked := i < _items.size() and game.pending_spell == "%s%d:%s" % [Game.BELT, u.uid if u else -1, _items[i]]
-		if picked:   # the picked cell is scaled 1.15 and brightened
-			r = r.grow(r.size.x * 0.075)
-		_views[i].position = r.position
-		_views[i].size = r.size
+		# (695 − 50 i, 575 / 525, 20) at scale 0.55
+		# (bottom row) / 0.85 (top row);: the picked one 1.15 and
+		# brightened. Unclipped: the view is twice the cell.
+		if picked:
+			_picked = i
+			if _unpicked == i:
+				_unpicked = -1
+		var sc := 1.15 if picked else (1.0 if i == _unpicked else (0.55 if i < 4 else 0.85))
+		_views[i].position = r.get_center() - r.size
+		_views[i].size = r.size * 2.0
+		_views[i].unit_px = k * 400.0 / ItemView.K * sc / 20.0
+		_views[i].screen_at = Vector3(695.0 - 50.0 * (i % 4), 575.0 if i < 4 else 525.0, 20.0 / sc)
 		_views[i].add_color = Color8(0x40, 0x40, 0x40) if picked else Color(0, 0, 0)
 		_views[i].visible = i < _items.size()
 		_views[i].item = "~"
@@ -77,16 +114,51 @@ func _slot_at(p: Vector2) -> int:
 
 func _get_tooltip(p: Vector2) -> String:
 	var i := _slot_at(p)
-	return tooltip_text(String(_items[i])) if i >= 0 else ""
+	# hotkey 0x2a + slot (item1..4; slots 5..8 carry 0x2e..0x31).
+	if i < 0:
+		return ""
+	var it := String(_items[i])
+	var h: Dictionary = _unit.get_meta("hero") if _unit and _unit.has_meta("hero") else {}
+	return GameData.tip_key(tooltip_text(it, Session.wand_charge(h, it)), 42 + i)
 
 
-static func tooltip_text(item: String) -> String:
+static func tooltip_text(item: String, charge := -1.0) -> String:
 	var t := Items.title(item)
 	var sp := Items.potion_spell(item)
-	if sp.is_empty():
-		sp = Items.spell_of(item)
+	if not sp.is_empty():
+		return potion_rows(t, sp)
+	sp = Items.spell_of(item)
+	var out := spell_rows(t, sp)
+	if Items.is_wand(item) and not sp.is_empty() and GameData.is_open():
+		# "%s %d/%d (%d)" infoitem_7, the spell's stamina
+		# the wand's Energy and its charge, in place
+		# Stamina / School.
+		var e := Items.energy(item)
+		var rows := out.split("\n")
+		rows[1] = "%s %d/%d (%d)" % [_l(7), int(Spells.parse(sp).mana), int(e), int(e if charge < 0.0 else charge)]
+		out = "\n".join(rows)
+	return out
+
+
+##  for a potion (prototype item_id 8): the name, " \n", then
+## Effect ("%s %s" Constant without effect runes, else "%s %d") and
+## Duration (Immediately below 2 ticks, else ticks / 15 "%.1f" + s), one a line.
+static func potion_rows(title: String, sp: String) -> String:
 	if sp.is_empty() or not GameData.is_open():
-		return t
+		return title
+	var pp := Spells.parse(sp)
+	var mods: Array = Array(pp.proto.get("mods", []))
+	var effect := "%s %s" % [_l(8), _l(28)] if mods.size() > 3 and int(mods[3]) == 0 else "%s %d" % [_l(8), int(pp.effect)]
+	var d := float(pp.duration)
+	var dur := "%s %s" % [_l(12), _l(21)] if d < 2.0 else "%s %.1f%s" % [_l(12), d / 15.0, _l(27)]
+	return "%s\n%s\n%s" % [title, effect, dur]
+
+
+## `title`, then the spell rows two per line (empty spell or
+## no game data: the title alone).
+static func spell_rows(title: String, sp: String) -> String:
+	if sp.is_empty() or not GameData.is_open():
+		return title
 	var pp := Spells.parse(sp)
 	var mods: Array = Array(pp.proto.get("mods", []))
 	var effect := "%s %s" % [_l(8), _l(28)] if mods.size() > 3 and int(mods[3]) == 0 else "%s %d" % [_l(8), int(pp.effect)]
@@ -100,7 +172,7 @@ static func tooltip_text(item: String) -> String:
 		"%s  %s %s" % [effect, _l(9), ("%d" % int(spd)) if spd >= 1.0 else _l(21)],
 		"%s %d%s  %s" % [_l(10), int(pp.range), _l(26), area],
 		"%s  %s %d" % [dur, _l(13), int(pp.targets)]]
-	return t + "\n" + "\n".join(lines)
+	return title + "\n" + "\n".join(lines)
 
 
 ## "string school_N", "Unknown" when missing (default).
@@ -116,24 +188,34 @@ static func _l(n: int) -> String:
 func _gui_input(e: InputEvent) -> void:
 	if e is InputEventMouseButton and e.pressed and e.button_index == MOUSE_BUTTON_LEFT:
 		var i := _slot_at(e.position)
-		if i >= 0 and _unit:
-			if e.double_click and _no_target(_items[i]):
-				# an offensive spell item with no hostile unit
-				# view sounds nomagic.wav and is not used.
-				if GameSound.instance:
-					GameSound.instance.ui("buttons\\battle\\nomagic.wav")
-				accept_event()
-				return
-			if GameSound.instance:
-				GameSound.instance.ui("buttons\\battle\\click.wav")
-			if e.double_click:
-				game.pending_spell = ""
-				game.hud.set_targeting("")
-				game.issue({"t": "use", "unit": _unit.uid, "item": _items[i]})
-			else:
-				game.begin_belt(_unit, _items[i])
-			queue_redraw()
-			accept_event()
+		if i >= 0:
+			use(i, e.double_click)
+		accept_event()
+
+
+##  (now = false: pick for targeting, again cancels)
+##  (now = true: use at once) for cell i.
+func use(i: int, now: bool) -> void:
+	_process(0.0)
+	if i < 0 or i >= _items.size() or _unit == null:
+		return
+	game.touch_aim = -1
+	game.touch_force = ""
+	if now and _no_target(_items[i]):
+		# An offensive spell item with no hostile unit in view
+		#  sounds nomagic.wav and is not used.
+		if GameSound.instance:
+			GameSound.instance.ui("buttons\\battle\\nomagic.wav")
+		return
+	if GameSound.instance:
+		GameSound.instance.ui("buttons\\battle\\click.wav")
+	if now:
+		game.pending_spell = ""
+		game.hud.set_targeting("")
+		game.issue({"t": "use", "unit": _unit.uid, "item": _items[i]})
+	else:
+		game.begin_belt(_unit, _items[i])
+	queue_redraw()
 
 
 func _no_target(item: String) -> bool:

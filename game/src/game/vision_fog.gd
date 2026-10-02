@@ -21,8 +21,8 @@ var _next := 0.0
 
 
 static func open(w: GameWorld, t: GameUnit, secs: float, player: int) -> void:
-	var old: VisionFog = _by_player.get(player)
-	if old and is_instance_valid(old):
+	var old = _by_player.get(player)   # untyped: the old fog may be freed already
+	if old != null and is_instance_valid(old):
 		old.queue_free()
 	var f := VisionFog.new()
 	f.world = w

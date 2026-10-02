@@ -172,6 +172,7 @@ func _field(d: PackedByteArray, id: int, p: int, n: int, o: Dictionary) -> void:
 		UNIT_LOGIC_WAIT: o.logic_wait = d.decode_float(p)
 		UNIT_LOGIC_CYCLIC: o.cyclic = d[p]
 		UNIT_LOGIC_ALWAYS_ACTIVE: o.always_active = d[p]
+		0xBBBC000B: o.alarm_cond = d[p]    # descriptor -> AI: when the unit is alerted
 		0xBBBC0006: o.alarm_raise = d[p]   # descriptor: alarm raised when alerted
 		0xBBBC0007: o.alarm_use = d[p]     # descriptor: used when its alarm is raised
 		GUARD_PT_POSITION: o.position = _vec3(d, p)

@@ -65,6 +65,7 @@ func _setup_world() -> void:
 	sun.light_energy = 1.1
 	sun.shadow_enabled = true
 	sun.directional_shadow_max_distance = 200.0
+	Gfx.setup_sun_casters(sun)
 	add_child(sun)
 	_rig = CameraRig.new()
 	add_child(_rig)

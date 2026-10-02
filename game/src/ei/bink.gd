@@ -53,7 +53,7 @@ var _fatal := false
 var chroma_offset := 0  ## 'i' frames: chroma offset stored in the frame
 var chroma_start := 0  ## where the chroma planes really started (checks)
 
-var _f: FileAccess
+var _f: DataReadCursor
 var _offsets := PackedInt64Array()  # frame_count + 1 entries
 var _keys := PackedByteArray()
 
@@ -93,7 +93,7 @@ static var _expand := PackedInt64Array()  # 8-bit mask -> 0xFF bytes
 
 ## Opens a .bik file; false (with `error` set) when it is not Bink 1.
 func open(path: String) -> bool:
-	_f = FileAccess.open(path, FileAccess.READ)
+	_f = DataReadCursor.open(path)
 	if _f == null:
 		error = "cannot open " + path
 		return false

@@ -5,7 +5,7 @@ extends Node
 ## ground ambience (AmbientSound), map and script sound objects, unit voices
 ## and steps from the animation (UnitSounds), weapon impacts, spells and magic
 ## effects (SpellSounds), acknowledgements, briefing voices, UI sounds and the
-## music (MusicSystem). See docs/original_reference.md, "Audio".
+## music (MusicSystem). See.
 
 ## the original logic tick (= 55 ms): the zone-load counters
 ## the ambience and the music rules.
@@ -43,6 +43,11 @@ var _acks := {}                # uid -> [wav, msec] (figure)
 ## Per-unit acknowledgement queues (figure): uid -> [{u, wav, code
 ## counter, handle}],.
 var _ack_q := {}
+## Units saying a "say_block" line (unit flag): uid -> true.
+var _blocked := {}
+var _early_music := ""
+var _early_world: GameWorld = null
+var _bored := {}   # host: unit uid -> [idle counter (creature), gait]
 ## these codes are queued even while another line is pending
 ## any other code is dropped then.
 const ACK_URGENT := [0x1d, 0x1e, 0x1f, 0x23, 0x24, 0x25, 0x26, 0x2a]
@@ -71,6 +76,13 @@ func _exit_tree() -> void:
 
 # ------------------------------------------------------------------ zone
 
+## Attach before the new world's first physics event can reach the audio
+## handlers. Waiting for _process can leave SpellSounds on the freed world.
+func on_world(w: GameWorld) -> void:
+	if w != _world:
+		_zone_start(w)
+
+
 ##  (zone load): all sounds stop, the SFX volume goes to 0 until
 ## world tick 10, the reverb follows the dungeon flag, the music gets
 ## SetZoneMode and the ambience its set.
@@ -82,6 +94,8 @@ func _zone_start(w: GameWorld) -> void:
 	_fx_sources.clear()
 	_fx_auto = -1
 	_ack_q.clear()
+	_blocked.clear()
+	_bored.clear()
 	_ticks = 0
 	_tick_acc = 0.0
 	combat_flag = 0
@@ -109,9 +123,18 @@ func _zone_start(w: GameWorld) -> void:
 		music.set_briefing()
 	else:
 		music.set_zone(allod, dungeon)
+		# A PlayMusic that reached this peer before the zone start (a client
+		# gets the host's event, or a joiner its replay, in the frames between
+		# the world's creation and this call) still applies.
+		if _early_music != "" and _early_world == w:
+			music.play_forced(_early_music)
+	_early_music = ""
 	_update_listener()
 	ambient = AmbientSound.new(mixer, w, dungeon)
 	units = UnitSounds.new(mixer, w)
+	# Remake: the zone's unit and ambient sounds decoded on a worker thread.
+	EIAudio.prefetch(ambient.folders(w.session.state.world_time if w.session and w.session.state else 12.0)
+		+ UnitSounds.zone_folders(w))
 	spells = SpellSounds.new(mixer, w)
 	weather = Weather.new(mixer, w)
 	if w.authority and not w.item_worn.is_connected(_on_item_worn):
@@ -190,8 +213,7 @@ func _update_listener() -> void:
 
 func _process(dt: float) -> void:
 	var w := game.world if game else null
-	if w != _world:
-		_zone_start(w)
+	on_world(w)
 	if w == null:
 		return
 	_update_listener()
@@ -222,6 +244,7 @@ func _world_tick() -> void:
 		weather.host_tick(_ticks)
 	if _world.authority:
 		_send_combat_flags()
+		_bored_tick()
 	music.tick(combat_flag)
 
 
@@ -258,12 +281,17 @@ func _screens() -> void:
 ## attack target. Approx.: the original also counts the units the party knows
 ## (ai lists) and gives 1 for "near but unseen" (not used by music).
 func _send_combat_flags() -> void:
+	# One pass; only units with an attack / cast order can set a flag.
 	var flags := {}
 	for u: GameUnit in _world.units.values():
+		if not is_instance_valid(u):
+			continue
 		if u.controller >= 0 and not flags.has(u.controller):
 			flags[u.controller] = 0
-	for u: GameUnit in _world.units.values():
-		if not is_instance_valid(u) or u.dead:
+		if u.dead:
+			continue
+		var ty = u.order.get("type")
+		if ty != "attack" and ty != "cast":
 			continue
 		if u.controller >= 0 and _hostile_act(u):
 			flags[u.controller] = 2
@@ -401,25 +429,137 @@ static func ack(u: GameUnit, code: int) -> void:
 	elif code == 0x25 or code == 0x26:
 		instance.mixer.play3d("weapons\\timecrash.wav", 0, UnitSounds._at(u), 8.0, 20.0)
 		return
+	# a named unit crawling or kneeling (unit
+	#  < 2) answers quietly: its positive answers (0..5, 7..0xa) use
+	# the 0x27 lines, its refusals (0xb..0x13, 0x1d) the 0x28 lines.
+	if Combat.named(u) and u.stance != GameUnit.STANCE_NONE:
+		if code in [0, 1, 2, 3, 4, 5, 7, 8, 9, 0xa]:
+			code = EIAcks.SHOP_YES
+		elif (code >= 0xb and code <= 0x13) or code == 0x1d:
+			code = EIAcks.SHOP_NO
 	var ls: Array = EIAcks.lines([u.proto.get("name", ""), u.proto.get("base_race", "")], code)
-	if ls.is_empty():
+	var l := {}
+	if code == EIAcks.BORED:
+		# only while the figure's clip is a walk / run / idle one
+		# the line
+		#  with the context.
+		if not (u.action in ["idle", "walk", "run", "crawl"]):
+			return
+		l = EIAcks.pick_masked(ls, instance.bored_context(u))
+	else:
+		# a random line among those whose chance ≥ rand % 100.
+		l = EIAcks.pick(ls)
+	if SoundMixer.trace:
+		print("[ack] %s code 0x%x lines %d -> %s" % [u.display_name, code, ls.size(), l.get("wav", "-")])
+	if l.is_empty():
 		return
-	var l: Dictionary = ls[randi() % ls.size()]
-	if randf() * 100.0 >= float(l.chance):
-		return
-	var q: Array = instance._ack_q.get(u.uid, [])
+	instance._ack_queue(u, code, String(l.wav))
+
+
+## the context a Bored line's mask must hold: the unit's gait
+## (: crawl 8, kneel 4, walk 2, run 1), the allod (world: gipat
+## 0x10, ingos 0x20, suslanger 0x40), the hour (: 6 ≤ h < 22
+## 0x80, else 0x100), outdoors 0x200 / dungeon 0x400, and world
+##  (1 0x800, 2 0x1000, else 0x2000; nothing writes it, so 0x2000).
+func bored_context(u: GameUnit) -> int:
+	var c: int = [8, 4, 2, 1, 0][clampi(u.gait(), 0, 4)]
+	var allod := String(_world.zone.get("allod", "")).to_lower() if _world else ""
+	c |= {"gipat": 0x10, "ingos": 0x20, "suslanger": 0x40}.get(allod, 0)
+	var h: float = _world.session.state.world_time if _world and _world.session and _world.session.state else 12.0
+	c |= 0x80 if h >= 6.0 and h < 22.0 else 0x100
+	c |= 0x400 if _world and String(_world.zone.get("sky", "")) == "cave" else 0x200
+	return c | 0x2000
+
+
+## Host, every logic tick: the creature tick
+## counts up for a unit with a player; past 500, one tick in 1001
+## (table random % 1001 == 0) sends ack 0x29 when the player's combat flag
+##  is 0 and sets 400, or else sets 0. The counter goes to 0 while
+## the unit acts (when runs an order, same tick) and
+## on a gait change. Approx.: "acts" = the remake unit is not
+## idle (an order or a locked animation); the other reset, (net
+## handler, unit), is not identified.
+func _bored_tick() -> void:
+	for u: GameUnit in _world.units.values():
+		if not is_instance_valid(u) or u.dead or u.controller < 0 or not u.has_meta("hero"):
+			continue
+		var g := u.gait()
+		var e: Array = _bored.get(u.uid, [0, g])
+		if int(e[1]) != g:
+			e = [0, g]
+		e[0] = int(e[0]) + 1
+		if int(e[0]) > 500 and randi() % 1001 == 0:
+			if int(_sent_flags.get(u.controller, 0)) == 0:
+				u.ack(EIAcks.BORED)
+				e[0] = 400
+			else:
+				e[0] = 0
+		if not u.is_idle():
+			e[0] = 0
+		_bored[u.uid] = e
+
+
+## Script "say <id> <unit>" / "say_block <id> <unit>" (client string command
+##  field screen = (unit, 0x2a / 0x2b)
+## ): the unit's Scenario line with that id goes into its
+## acknowledgement queue as code 0x2a (queued even behind a pending line),
+## "say_block" as 0x2b (dropped while a line is pending; while it plays the
+## unit takes no orders, unit flag). Returns the line ({} = none).
+static func say(u: GameUnit, id: String, block: bool) -> Dictionary:
+	if instance == null or u == null:
+		return {}
+	# The record is named by the unit's prototype entry (: unit
+	#  in the 0x120-byte table) — "Human Hero" for Zak, but
+	# "Cyclope", "Liz4", "GTDragon"… for map NPCs with their own stats, whose
+	# acks.db records carry the unit's map name. Approx.: that entry's
+	# naming is not traced; the prototype name is tried, then the map name.
+	var l := EIAcks.scenario_line([u.proto.get("name", ""), u.info.get("name", "")], id)
+	if SoundMixer.trace:
+		print("[say] %s %s block %s -> %s (world tick %d)" % [u.display_name, id, block, l.get("wav", "-"), instance._ticks])
+	if not l.is_empty():
+		instance._ack_queue(u, 0x2b if block else EIAcks.SCENARIO, String(l.wav))
+	return l
+
+
+## pending lines that the new code supersedes
+## and finished ones leave the queue; with a line still
+## pending only the ACK_URGENT codes are queued, others dropped. An empty
+## queue plays the line at once, else it waits for its turn (counter 3 ticks
+## once it is first). A "say_block" line (0x2b) blocks the
+## unit's orders from the moment it is queued first until it ends.
+func _ack_queue(u: GameUnit, code: int, wav: String) -> void:
+	var q: Array = _ack_q.get(u.uid, [])
 	var drop: Array = ACK_REPLACES.get(code, [])
 	q = q.filter(func(e): return not (int(e.code) in drop))
-	q = q.filter(func(e): return int(e.handle) < 0 or instance.mixer.playing(int(e.handle)))
+	q = q.filter(func(e): return int(e.handle) < 0 or mixer.playing(int(e.handle)))
+	_update_block(u, q)
 	if not q.is_empty() and not (code in ACK_URGENT):
-		instance._ack_q[u.uid] = q
+		_ack_q[u.uid] = q
+		if SoundMixer.trace:
+			print("[ack] %s 0x%x dropped: a line is pending" % [u.display_name, code])
 		return
-	var e := {"u": u, "wav": String(l.wav), "code": code, "counter": 3, "handle": -1}
+	var e := {"u": u, "wav": wav, "code": code, "counter": 3, "handle": -1, "block": code == 0x2b}
 	if q.is_empty():
 		e.counter = 0
-		instance._ack_play(e)
+		if e.block:
+			_blocked[u.uid] = true
+		_ack_play(e)
 	q.append(e)
-	instance._ack_q[u.uid] = q
+	_ack_q[u.uid] = q
+
+
+## Unit flag follows the queue's say_block lines.
+func _update_block(u: GameUnit, q: Array) -> void:
+	if q.any(func(e): return bool(e.get("block", false)) and int(e.counter) <= 0):
+		_blocked[u.uid] = true
+	else:
+		_blocked.erase(u.uid)
+
+
+## The unit says a "say_block" line (flag): the order handlers
+##  and the topic list skip it.
+static func blocked(u: GameUnit) -> bool:
+	return instance != null and u != null and instance._blocked.has(u.uid)
 
 
 ## each world tick: the first pending line counts down and
@@ -429,13 +569,17 @@ func _ack_tick() -> void:
 		var q: Array = _ack_q[uid]
 		if q.is_empty() or not is_instance_valid(q[0].u):
 			_ack_q.erase(uid)
+			_blocked.erase(uid)
 			continue
 		var e: Dictionary = q[0]
 		e.counter = int(e.counter) - 1
 		if int(e.counter) == 0:
+			if e.block:
+				_blocked[uid] = true
 			_ack_play(e)
 		elif int(e.counter) < 0 and not mixer.playing(int(e.handle)):
 			q.pop_front()
+			_update_block(e.u, q)
 
 
 ## Host: sends a hero's item crossing the durability-critical
@@ -589,4 +733,9 @@ func stop_speech() -> void:
 ## Script PlayMusic.
 func force_music(name: String) -> void:
 	name = name.to_lower().get_file().trim_suffix(".mp3")
+	var w := game.world if game else null
+	if w != _world:
+		_early_music = name
+		_early_world = w
+		return
 	music.play_forced(name)

@@ -19,6 +19,57 @@ const CALM_MODES := ["standard", "sentry", "guard"]
 const AI_MODES := ["standard", "sentry", "guard", "aggression", "follow"]
 
 
+## The AI's motivation list (AI runs the one with the
+## highest priority each tick). adds one after dropping any
+## the same type, and when the new one is a calm motivation (=
+##  true: Guard, Patrol, Sentry, Follow) any other calm one: so a
+## unit has at most one calm motivation (remake `mode`) beside the others
+## (false: Aggression / Revenge, Suspection
+## CorpseWatcher, Fear, Player).
+## The units' starting list comes from the.mob logic (mots)
+## once a script changes the non-calm ones the remake keeps them in meta "um".
+static func um(u: GameUnit) -> Dictionary:
+	return u.get_meta("um", {})
+
+
+## The Fear motivation is current (its priority won this tick), or a legacy
+## "fear" mode.
+static func fearful(u: GameUnit) -> bool:
+	return u.mode == "fear" or u.has_meta("fear_on")
+
+
+## The unit's non-calm motivations: "fight" ("standard", "aggression" = no
+## leash, "revenge", "none"), "susp" (Suspection), "corpse" (CorpseWatcher),
+## "fear" (-1 none, else the Fear flag). gives a map unit, after
+## its calm one, by the descriptor's aggression mode (logic models 0 and 4
+## skip it): 0 Aggression + Suspection +
+## CorpseWatcher + Fear(0); 1 Revenge
+## ((1)) + the same three; 2 CorpseWatcher + Fear(0); 3
+## CorpseWatcher + Fear(1). Models 0 and 4 get none of them (jumps
+## past the list): model 0 has no motivation at all, model 4 the Player
+## motivation (case 4, think runs _player). Heroes whose player
+## left (a remake feature) keep the remake's set.
+func mots(u: GameUnit) -> Dictionary:
+	if u.has_meta("um"):
+		var m: Dictionary = u.get_meta("um")
+		return {"fight": String(m.get("fight", "none")), "susp": bool(m.get("susp", false)),
+			"corpse": bool(m.get("corpse", false)), "fear": int(m.get("fear", -1))}
+	var lg := logic(u)
+	var ag := int(lg.get("aggression", 0))
+	var model := int(lg.get("logic_model", 3))
+	if u.mode == "aggression":
+		return {"fight": "aggression", "susp": true, "corpse": true, "fear": -1}
+	if u.has_meta("hero"):
+		return {"fight": "revenge" if ag == 1 else "standard", "susp": true, "corpse": true, "fear": -1}
+	if model == 0 or model == 4:
+		return {"fight": "none", "susp": false, "corpse": false, "fear": -1}
+	match ag:
+		0: return {"fight": "standard", "susp": true, "corpse": true, "fear": 0}
+		1: return {"fight": "revenge", "susp": true, "corpse": true, "fear": 0}
+		2: return {"fight": "none", "susp": false, "corpse": true, "fear": 0}
+	return {"fight": "none", "susp": false, "corpse": true, "fear": 1}
+
+
 ## The AI tick of a unit with nothing to do. the original runs the AI of every
 ## unit every 55 ms logic tick (creature
 ## no stagger); the remake runs it once
@@ -29,45 +80,73 @@ func think(u: GameUnit) -> void:
 	if now < u.ai_next:
 		return
 	u.ai_next = now + GameUnit.TICK - 0.0001
-	if u.controller >= 0:
+	# Script UMPlayer (builtin 0x31) gives an AI unit the Player motivation
+	#  the player units have.
+	if u.controller >= 0 or u.mode == "player":
 		_player(u)
 		return
-	if u.mode == "fear":
-		var threat := nearest_enemy(u, u.stats.sight)
-		if threat:
-			call_for_help(u, threat.pos)
-			var away := u.pos + (u.pos - threat.pos).normalized() * 8.0
-			u.move_to(world.nav.nearest_walkable(away), true)
-		else:
-			# standing still it may cast a protective buff or
-			# heal (with no enemies, p5 = 1: types 5 and 7).
-			var ch := choose(u, [], true)
-			if not ch.is_empty():
-				_act(u, ch)
+	if u.mode == "standard" and not u.has_meta("um") and not u.has_meta("hero"):
+		# logic model 4 = the Player motivation alone, model 0 =
+		# no motivation (the alarm check still runs).
+		var lm := int(logic(u).get("logic_model", 3))
+		if lm == 0 or lm == 4:
+			_alarm_check(u)
+			if lm == 4:
+				_player(u)
+			return
+	var ms := mots(u)
+	var known: Variant = _alarm_check(u)   # before the motivations
+	var home: Vector2 = u.mode_data.point if u.mode_data.has("point") else _home(u)
+	var lg := logic(u)
+	var fight: String = ms.fight
+	var foes := []
+	var have_foes := false
+	if fight in ["standard", "aggression"]:
+		# No leash: the Aggression evaluation takes every noticed
+		# living hostile not on the ignore list, with no distance
+		# test; only the reachability check of the choice (a path
+		# within 3 d + 10) and the order's own path limit stop a
+		# pursuit.
+		foes = known if known != null else enemies(u)
+		have_foes = true
+	# Fear: 15000 kiting beats Aggression (10000 with a
+	# hostile noticed); 3000 with a hostile noticed beats Suspection and the
+	# calm one; a suspicion's level / 6 beats only the calm one (50, + 100
+	# while current) and only without Suspection.
+	var fp := _fear_priority(u, int(ms.fear), foes if have_foes else known) if int(ms.fear) >= 0 or u.mode == "fear" else -1000
+	var sm := -INF   # the Suspection motivation's level while it runs
+	if ms.susp and u.has_meta("suspect") and u.get_meta("suspect").get("active", false):
+		sm = float(u.get_meta("suspect").m)
+	if fp >= 15000 or fp >= 3000 and foes.is_empty() or fp > 150 and foes.is_empty() and (not ms.susp or fp == 350 and fp > sm):
+		if not u.has_meta("fear_on"):
+			_motivation_alert(u)
+			u.remove_meta("calm")
+		u.set_meta("fear_on", true)
+		_fear_tick(u, int(ms.fear))
 		return
-	if not u.mode in AI_MODES:
+	if u.has_meta("fear_on"):
+		u.remove_meta("fear_on")
+		u.remove_meta("calm")   # the look round was the Fear motivation's
+	if u.mode == "fear":
+		return
+	if not u.mode in AI_MODES and u.mode != "none":
 		return
 	# Aggression (priority 10000 while a hostile is noticed), then Suspection
 	# (its level), then the calm motivation (50 + 100 while current).
-	var home: Vector2 = u.mode_data.point if u.mode_data.has("point") else _home(u)
-	_alarm_check(u)
-	var lg := logic(u)
-	if u.mode == "aggression" or int(lg.get("aggression", 0)) != 1:
-		var leash: float = float(lg.get("guard_radius", 30.0)) + 15.0
-		var foes := enemies(u)
-		if u.mode != "aggression":
-			foes = foes.filter(func(e: GameUnit): return e.pos.distance_to(home) < leash)
+	if true:
 		if not foes.is_empty():
+			# No list-A option (a weapon-type-16 prototype without an attack
+			# spell): no choice, so no attack, as in the original. No
+			# campaign zone has such a unit (counted 2026-10-02).
 			var ch := choose(u, foes)
-			if ch.is_empty() and options(u).a.is_empty():
-				ch = {"opt": {"type": 0, "slot": ""}, "t": foes[0]}   # Approx., see choose()
 			if not ch.is_empty():
 				if u.order.get("type", "") != "attack":
 					_react(u, EIAcks.NPC_AGGRESSION)
+					_motivation_alert(u)
 				u.remove_meta("calm")
 				_act(u, ch)
 				return
-	if _investigate(u):
+	if ms.susp and _investigate(u):
 		u.remove_meta("calm")
 		return
 	if calm_tick(u, true):
@@ -105,6 +184,157 @@ func think(u: GameUnit) -> void:
 					home = _home(u)
 					if u.pos.distance_to(home) > float(lg.get("guard_radius", 10.0)) + 2.0:
 						u.move_to(home, u.get_meta("script_run", false))
+
+
+## The Fear motivation's priority.
+## State (meta "fear"): r = the flee radius (10 m at the start
+## ), j = the flee spread (3 m), spot = a kiting spot
+## (flag), danger = the kept danger point.
+##  - r grows to 1.5 × the distance to the unit's last attacker (AI)
+##    j eases back to 3 each call: j = (2 j + 3) / 3.
+##  - Kiting (15000): the nearest noticed hostile within
+##    ai.reg [Logic] RangedAttackDist (RangedRunDist while Aggression is the
+##    current motivation) of a unit with a ranged weapon, no
+##    spell in slot 0 ((0)), movement class < 6, no leg
+##    below DamageLevelRunLimit ((0)) and a leg wound factor
+##    above 0.6: 15000 at once while it walks (order 1), else when a spot 5 m
+##    straight away ± 3 m (two rand rolls) can be walked to (
+##    the end within 1 m) it is kept for the tick.
+##  - 3000 while a living hostile is noticed (AI).
+##  - 350 while the unit stands in a cell of a lasting area spell (:
+##    a 0.5 m nav cell whose layer type is 3, written for the
+##    magic objects of firewall 6, litnwall 7, acid_fog 8 and campfire 0x27;
+##    `danger_at`), keeping that point, or while the kept point still is
+##    one. The test's other half (movement class == 0 with the race
+##    record's < 0.5) never applies: classes are 1..7.
+##  - Fear(1) (the descriptor's aggression mode 3, UMFear(u, 1)): a noticed
+##    party unit within r -> suspicion 1000, −2 at it.
+##  - A suspicion above 50 while Fear is current or within r of its point:
+##    the level / 6. Else −1000, r eases back to 10: r = (30 r + 10) / 31.
+## "Noticed" is the noticed list (`enemies`), which the hit hook adds the
+## attacker to.
+## `foes`: this think's `enemies(u)` when already taken (the list does not
+## change in between: a second call returns the same units in the same order).
+func _fear_priority(u: GameUnit, flag: int, foes: Variant = null) -> int:
+	var s: Dictionary = u.get_meta("fear", {})
+	if s.is_empty():
+		s = {"r": 10.0, "j": 3.0}
+		u.set_meta("fear", s)
+	s.erase("spot")
+	if u.has_meta("attacker"):
+		var m: Array = u.get_meta("attacker")
+		if is_instance_valid(m[0]) and world.time - float(m[1]) <= GameUnit.TICK + 0.001:
+			s.r = maxf(float(s.r), u.pos.distance_to(m[0].pos) * 1.5)
+	s.j = (2.0 * float(s.j) + 3.0) / 3.0
+	var t := _nearest_noticed(u, foes)
+	if t and _kiter(u):
+		var fighting: bool = u.order.get("ai", false) and u.order.get("type", "") in ["attack", "cast"]
+		var lim := GameData.ai_value("Logic", "RangedRunDist" if fighting else "RangedAttackDist", 7.0)
+		if u.pos.distance_to(t.pos) < lim:
+			if u.order.get("fear", false):
+				return 15000
+			var away := (u.pos - t.pos).normalized() * 5.0
+			var spot := u.pos + away + Vector2(randf_range(-3.0, 3.0), randf_range(-3.0, 3.0))
+			var w := world.nav.nearest_walkable_for(u, spot)
+			if w.distance_to(spot) < 1.0:
+				s.spot = w
+				return 15000
+	if t:
+		return 3000
+	if danger_at(u.pos):
+		s.danger = u.pos
+		return 350
+	if s.has("danger") and danger_at(s.danger):
+		return 350
+	if flag == 1:
+		for o: GameUnit in world.live_units_near(u.pos, float(s.r)):
+			if o.controller >= 0 and not o.dead and can_notice(u, o, u.stats.sight):
+				suspect(u, o.pos, 1000.0, -2.0)
+				break
+	s.erase("danger")
+	if u.has_meta("suspect"):
+		var sp: Dictionary = u.get_meta("suspect")
+		var lv := _susp_level(sp)
+		if lv > 50.0 and (u.has_meta("fear_on") or u.pos.distance_to(sp.pos) < float(s.r)):
+			return int(lv / 6.0)
+	s.r = (float(s.r) * 30.0 + 10.0) / 31.0
+	return -1000
+
+
+## the nearest living hostile of the noticed list.
+func _nearest_noticed(u: GameUnit, foes: Variant = null) -> GameUnit:
+	var l: Array = foes if foes != null else enemies(u)
+	return l[0] if not l.is_empty() else null
+
+
+##  and the other kiting conditions.
+func _kiter(u: GameUnit) -> bool:
+	if not u.stats.get("ranged", false) or u.move_class() >= 6:
+		return false
+	if not Array(u.proto.get("spells", [])).is_empty():
+		return false
+	if u._legs_ratio() < GameData.ai_value("RPG", "DamageLevelRunLimit", 0.5):
+		return false
+	return u.wound_factor(3) > 0.6
+
+
+## The Fear tick. The point fled : with a living hostile
+## noticed (AI) the nearest one, with a call for help
+## it; else the unit's own spot when its cell is dangerous
+## else the kept danger point while it still is one; else the
+## perception point (AI), whose level is cleared unless
+## the flag (Fear(1)) is set and it is above 500. Within r of that point and
+## not walking (creature ≠ 1): the kiting spot, or 5 m
+## straight away ± min(j, 2.5 r) (two rand rolls); with a path (
+## limit 3 d + 10) AI state 1 and the walk at the unit's gait (
+## 1e6); j doubles either way. Idle (AI state 0): a protective buff or heal
+## (with no enemies, p5 = 1: types 5 and 7), else a look round
+## the spot ((spot, bias, −1, 0): glances biased towards the point
+## by (point − spot) / (2 |point − spot|), 10–40 ticks each (stay −1), the AI's held target
+## pointer cleared ((0)), state 2; run = `_calm_busy`).
+func _fear_tick(u: GameUnit, flag := 0) -> void:
+	var s: Dictionary = u.get_meta("fear", {"r": 10.0, "j": 3.0})
+	var pt := Vector2.INF
+	var th := _nearest_noticed(u)
+	if th:
+		pt = th.pos
+		call_for_help(u, th.pos)
+	elif danger_at(u.pos):
+		pt = u.pos
+	elif s.has("danger") and danger_at(s.danger):
+		pt = s.danger
+	elif u.has_meta("suspect"):
+		var sp: Dictionary = u.get_meta("suspect")
+		pt = sp.pos
+		if flag == 0 or _susp_level(sp) < 501.0:
+			u.remove_meta("suspect")
+	var walking: bool = u.order.get("type", "") == "move"
+	if pt != Vector2.INF and u.pos.distance_to(pt) < float(s.r) and not walking:
+		var dest: Vector2
+		if s.has("spot"):
+			dest = s.spot
+			s.erase("spot")
+		else:
+			var j := minf(float(s.j), float(s.r) * 2.5)
+			s.j = j
+			var away := (u.pos - pt).normalized() * 5.0
+			dest = u.pos + away + Vector2(randf_range(-j, j), randf_range(-j, j))
+			dest = world.nav.nearest_walkable_for(u, dest)
+		s.j = float(s.j) * 2.0
+		u.remove_meta("calm")
+		u.command({"type": "move", "to": dest, "run": u.get_meta("script_run", false), "calm": true, "fear": true})
+		return
+	if not u.order.is_empty() or _calm_busy(u):
+		return
+	var ch := choose(u, [], true)
+	if not ch.is_empty():
+		_act(u, ch)
+		return
+	var bias := Vector3.ZERO
+	if pt != Vector2.INF and pt.distance_to(u.pos) > 0.0:
+		var d := pt - u.pos
+		bias = Vector3(d.x, d.y, 0.0) / (2.0 * d.length())
+	_calm_go(u, Vector3(u.pos.x, u.pos.y, 0.0), bias, -1.0, false)
 
 
 ## the first step of every calm motivation tick (
@@ -168,11 +398,12 @@ func on_player_attacked(u: GameUnit, by: GameUnit) -> void:
 ##   order). "Best" (over the unit's attack options):
 ##   the weapon option (type 0) scores a target (
 ##   _target_score); the highest is taken when finds it reachable
-##   else the next. Approx.: only the weapon option is scored (the spell
-##   options, types 1-7, are not modelled); "in Aggression" = an AI unit with an
+##   else the next. Only the weapon option is scored, as in the original: heroes
+##   and hired mercenaries (script-name ids) get no spell options from
+## . Approx.: "in Aggression" = an AI unit with an
 ##   attack order or UMAggression; the cap and the target re-choice while
-##   already fighting (state 3) are left out; the original re-checks every 55 ms
-##   tick, the remake every ~0.65 s.
+##   already fighting (state 3) are left out. Both check on every 55 ms AI
+##   tick (think(): ai_next = now + TICK).
 func _player(u: GameUnit) -> void:
 	var by: GameUnit = null
 	if u.has_meta("attacker"):
@@ -189,13 +420,103 @@ func _player(u: GameUnit) -> void:
 		u.attack(t)
 
 
-func _player_target(u: GameUnit, by: GameUnit) -> GameUnit:
+## The Player motivation in state 2 (= 2: packet 0x3a, a Ctrl or
+## aimed-key click on the ground): calls the engage
+## check on every tick of the walk, not only when idle. That check
+## needs the aggressive flag (== 1) and in state 2 gathers the noticed
+## enemies round the walk's point within (
+## ai.reg [Logic] SwarmRadius, confirmed below) instead of round the unit, then
+## the targets of the player's other fighting units as always.
+##  is ai.reg [Logic] SwarmRadius itself: fills the
+## Logic block (passes ECX), SwarmRadius
+## FollowMaxDist =.
+## Group cohesion (and the state-2 tick
+## motivation = 1.0 walking, 0 waiting): the units of the
+## player whose Player motivation follows this one (the F follow order)
+## are checked; one farther than FollowMaxDist · k + 1 (3D) makes it wait. At
+## the order (k 2) it does not set off; while walking (k 2) it stops with ack
+## 0x21 (WAIT_FOLLOW); while waiting (k 1.4) it walks on once all are near,
+## at a walk (run byte 0). None of it while the player's combat
+## flag is 2 (player). The engage check runs on every
+## tick, waiting or not. Approx.: distance on the ground plane; the combat
+## flag computed as GameSound's (without the unseen-enemy part).
+func swarm_tick(u: GameUnit) -> bool:
+	var waiting: bool = u.order.get("swarm_wait", false)
+	if world.time < u.ai_next:
+		if waiting:
+			u._set_action("idle")
+		return waiting
+	u.ai_next = world.time + GameUnit.TICK - 0.0001
+	if not _player_in_combat(u.controller):
+		if not u.order.has("swarm_wait"):
+			waiting = _follower_far(u, 2.0)
+		elif waiting:
+			if not _follower_far(u, 1.4):
+				waiting = false
+				u.order.run = false
+		elif _follower_far(u, 2.0):
+			waiting = true
+			u.ack(EIAcks.WAIT_FOLLOW)
+	elif waiting:
+		waiting = false
+		u.order.run = false
+	u.order.swarm_wait = waiting
+	if not u.aggressive:
+		if waiting:
+			u._set_action("idle")
+		return waiting
+	var at: Vector2 = u.order.get("swarm", u.pos)
+	var t := _player_target(u, null, at, GameData.ai_value("Logic", "SwarmRadius", 10.0))
+	if t == null:
+		if waiting:
+			u._set_action("idle")
+		return waiting
+	u.ack(EIAcks.DECIDE_TO_ATTACK)
+	u.attack(t)
+	return true
+
+
+## a unit of u's player following u (F order) farther than
+## FollowMaxDist · k + 1.
+func _follower_far(u: GameUnit, k: float) -> bool:
+	var lim := GameData.ai_value("Logic", "FollowMaxDist", 4.0) * k + 1.0
+	for f: GameUnit in world.units.values():
+		if f == u or f.dead or f.controller != u.controller:
+			continue
+		if f.order.get("type", "") == "follow" and f.order.get("target") == u \
+				and not f.order.get("once", false) and f.pos.distance_to(u.pos) > lim:
+			return true
+	return false
+
+
+var _combat_cache := {}
+var _combat_time := -1.0
+
+## The player's combat flag 2 (see GameSound._send_combat_flags).
+func _player_in_combat(p: int) -> bool:
+	if _combat_time != world.time:
+		_combat_time = world.time
+		_combat_cache.clear()
+		for o: GameUnit in world.units.values():
+			if not is_instance_valid(o) or o.dead:
+				continue
+			if o.controller >= 0 and GameSound._hostile_act(o):
+				_combat_cache[o.controller] = true
+			var t := GameSound._act_target(o)
+			if t and t.controller >= 0 and not t.dead and world.is_enemy(o, t):
+				_combat_cache[t.controller] = true
+	return _combat_cache.get(p, false)
+
+
+func _player_target(u: GameUnit, by: GameUnit, around := Vector2.INF, radius := -1.0) -> GameUnit:
 	var cands := []
 	var sight := float(u.stats.sight)
 	for o: GameUnit in world.live_units_near(u.pos, sight * 2.0):
-		if o.dead or o.hidden or o.is_invisible() or o.controller >= 0 or not world.is_enemy(u, o):
+		if o.dead or o.hidden or o.controller >= 0 and u.controller >= 0 or not world.is_enemy(u, o):
 			continue
-		if not (o.mode == "aggression" or o.order.get("type", "") == "attack"):
+		if radius >= 0.0 and o.pos.distance_to(around) > radius:
+			continue
+		if not (o.mode == "aggression" or um(o).get("fight", "") == "aggression" or o.order.get("type", "") == "attack"):
 			continue
 		if u.pos.distance_to(o.pos) > 1.1 * float(o.stats.sight) * o.sight_factor():
 			continue
@@ -203,7 +524,8 @@ func _player_target(u: GameUnit, by: GameUnit) -> GameUnit:
 			cands.append(o)
 	var help := GameData.ai_value("Logic", "PlayerCallForHelp", 16.0)
 	for a: GameUnit in world.live_units_near(u.pos, help):
-		if a == u or a.dead or a.controller != u.controller or a.order.get("type", "") != "attack":
+		if a == u or a.dead or a.controller != u.controller or a.order.get("type", "") != "attack" \
+				or u.controller < 0 and a.faction != u.faction:
 			continue
 		var e: GameUnit = a.order.get("target")
 		if e and is_instance_valid(e) and not e.dead and e.controller != u.controller and world.is_enemy(u, e) \
@@ -223,8 +545,9 @@ func _player_target(u: GameUnit, by: GameUnit) -> GameUnit:
 ## unit's current target - 25 x the distance - 2 x HP / D. The option's damage
 ##  = round((min + max) x the damage type's share), min + max =
 ## the weapon's or the creature's (prototype
-## damage min and max, the remake's dmg_max), scaled (Approx.:
-## its two stat factors, 0x1d / 0x1e, are taken as 0); the armour
+## damage min and max, the remake's dmg_max), scaled: ×
+## (1 + 0.003 strength) / (1 + 0.003 weakness) (magic effects 0x1d / 0x1e,
+## GameUnit.damage_mul), at least 1; the armour
 ##  = natural armour + the torso's worn layers.
 func _target_score(u: GameUnit, o: GameUnit) -> float:
 	return _score(u, o, _weapon_option(u), [o], u.order.get("target"), -INF)
@@ -266,7 +589,10 @@ const NO_SCORE := -1e30
 ## its damage vector = trunc(effect) at the school's damage
 ## type. Units whose id is a script-name hash ([1e9, 2e9),; the
 ## ids gives the heroes and hired mercenaries) get the weapon
-## only. Approx.: that is taken as "a hero or mercenary" (has_meta("hero")).
+## only. Those hashes (: name -> % 1e9 + 1e9) are given only
+## the party records (: heroes, script party members) and the
+## hired mercenaries ("merc_%i"), so the test is
+## has_meta("hero"), which the remake sets on exactly those (traced 2026-10-02).
 func options(u: GameUnit) -> Dictionary:
 	var a := []
 	var b := []
@@ -323,7 +649,7 @@ func _spell_options(u: GameUnit, only16: bool) -> Array:
 
 
 func _weapon_option(u: GameUnit) -> Dictionary:
-	var dsum := maxf(1.0, float(u.stats.get("dmg_max", 1.0)))
+	var dsum := maxf(1.0, float(u.stats.get("dmg_max", 1.0)) * u.damage_mul())
 	var f: PackedFloat32Array = u.stats.get("dmg_types", PackedFloat32Array([0, 0, 1, 0, 0, 0, 0]))
 	var v := PackedInt32Array()
 	for t in 7:
@@ -426,12 +752,33 @@ func enemies(u: GameUnit) -> Array:
 	var out := []
 	var sight: float = u.stats.sight
 	var f := u.faction
+	# The noticed list (AI): drops a living unit only when
+	# it is not hostile or the observer is a party unit, so an
+	# NPC keeps every hostile it has noticed — out of sight, invisible or far
+	# away — until it dies or the perception is reset (: AI init
+	# death). Candidates: noticed, hostile, alive, not ignored.
+	var keep: Dictionary = u.get_meta("noticed", {}) if u.controller < 0 else {}
 	for o: GameUnit in world.live_units_near(u.pos, sight):
-		if o.faction == f or o.dead or o.hidden or not world.is_enemy(u, o) or o.is_invisible():
+		if keep.has(o.get_instance_id()):
 			continue
-		if ignored(u, o) or not can_notice(u, o, sight):
+		if o.faction == f or o.dead or o.hidden or not world.is_enemy(u, o):
+			continue
+		if not can_notice(u, o, sight):
+			continue
+		keep[o.get_instance_id()] = o
+	for k in keep.keys():
+		var o = keep[k]
+		if not is_instance_valid(o) or o.dead or not world.is_enemy(u, o):
+			keep.erase(k)
+			continue
+		if o.hidden or ignored(u, o):
 			continue
 		out.append(o)
+	if u.controller < 0:
+		if keep.is_empty():
+			u.remove_meta("noticed")
+		else:
+			u.set_meta("noticed", keep)
 	if out.size() > 1:
 		out.sort_custom(func(x, y): return u.pos.distance_squared_to(x.pos) < u.pos.distance_squared_to(y.pos))
 	return out
@@ -445,13 +792,26 @@ func enemies(u: GameUnit) -> Array:
 ## ) holds every unit in the 16 m grid cells round the unit, with
 ## no side / visibility test, and is rebuilt when its countdown (AI
 ## -1 per AI tick) falls below 1, then reset to (rand() & 3) + 8 ticks.
-## **Approx.**: the cells are taken as a circle of the unit's sight (the original:
-## max(sight x factor) / 16 m through the cell table
-## whose shape is not decoded).
+## The cells: the unit's cell is
+## (round(2x − 0.5), round(2y − 0.5)) / 32 truncated, i.e. 16 m cells; the
+## table holds the 21 × 21 offsets sorted by the distance
+## D = √(max(|dx| − 1, 0)² + max(|dy| − 1, 0)²) (cells from their nearest
+## edge); (p) — a search on the distinct D keys, comparing the
+## float bits as integers — returns the cells up to the first key ≥ p, with
+## p = max(sight × factor, life sense) × 2 / 32 (`_friend_cells`).
 func _friends(u: GameUnit) -> Array:
 	var near: Array = u.get_meta("ai_near", [])
 	if world.time >= float(u.get_meta("ai_near_t", -1.0)):
-		near = world.live_units_near(u.pos, u.stats.sight).filter(func(o: GameUnit): return o != u)
+		var r := maxf(float(u.stats.sight) * u.sight_factor(), u.sense(2))   # life sense
+		var cells := _friend_cells(r * 2.0 / 32.0)
+		var c0 := Vector2i(int((roundi(u.pos.x * 2.0 - 0.5)) / 32), int((roundi(u.pos.y * 2.0 - 0.5)) / 32))
+		var reach := 0
+		for c: Vector2i in cells:
+			reach = maxi(reach, maxi(absi(c.x), absi(c.y)))
+		near = []
+		for o: GameUnit in world.live_units_near(u.pos, float(reach + 1) * 16.0 * 1.5):
+			if o != u and cells.has(Vector2i(int(roundi(o.pos.x * 2.0 - 0.5) / 32), int(roundi(o.pos.y * 2.0 - 0.5) / 32)) - c0):
+				near.append(o)
 		u.set_meta("ai_near", near)
 		u.set_meta("ai_near_t", world.time + float((randi() & 3) + 8) * GameUnit.TICK)
 	var out := [u]
@@ -459,6 +819,32 @@ func _friends(u: GameUnit) -> Array:
 		if is_instance_valid(o) and not o.dead and not o.hidden and world.relation(u.faction, o.faction) == 0 \
 				and not ignored(u, o):
 			out.append(o)
+	return out
+
+
+## the cell offsets for a radius of `p` cells.
+static var _cell_all: Array = []
+static var _cell_cache := {}
+
+
+static func _friend_cells(p: float) -> Dictionary:
+	if _cell_all.is_empty():
+		for dy in range(-10, 11):
+			for dx in range(-10, 11):
+				var ex := maxi(absi(dx) - 1, 0)
+				var ey := maxi(absi(dy) - 1, 0)
+				_cell_all.append([sqrt(float(ex * ex + ey * ey)), Vector2i(dx, dy)])
+	var k := INF   # the first key >= p (none: the sentinel, every cell)
+	for a in _cell_all:
+		if a[0] >= p:
+			k = minf(k, a[0])
+	if _cell_cache.has(k):
+		return _cell_cache[k]
+	var out := {}
+	for a in _cell_all:
+		if a[0] <= k:
+			out[a[1]] = true
+	_cell_cache[k] = out
 	return out
 
 
@@ -640,12 +1026,18 @@ func _attack(u: GameUnit, t: GameUnit) -> void:
 ## No counter or cooldown. Remake: while an AI attack / cast order runs, once
 ## per logic tick. Returns true when the order changed.
 func rechoose(u: GameUnit) -> bool:
-	if u.controller >= 0 or not u.order.get("ai", false) or u.mode == "fear":
+	if u.controller >= 0 or not u.order.get("ai", false) or fearful(u):
 		return false
 	var now := world.time
 	if now < float(u.get_meta("ai_rechoose", 0.0)):
 		return false
 	u.set_meta("ai_rechoose", now + GameUnit.TICK - 0.0001)
+	# Fear's kiting (15000) beats Aggression mid-fight too.
+	var fear := int(mots(u).fear)
+	if fear >= 0 and _fear_priority(u, fear) >= 15000:
+		u.set_meta("fear_on", true)
+		_fear_tick(u, fear)
+		return true
 	var foes := enemies(u)
 	if foes.is_empty():
 		return false
@@ -664,16 +1056,37 @@ func rechoose(u: GameUnit) -> bool:
 	return true
 
 
+## An AI unit was hit (the hit hook): the attacker becomes AI
+##  and, a unit, is added to the noticed list; the call
+## for help (hit_hook); with the descriptor's alarm condition 1 (
+## AI) the unit is alerted. Nothing in the hook attacks: a unit fights
+## back only through a motivation that fights (Aggression / Revenge, which
+## then sees the noticed attacker) — so a unit without one (aggression modes
+## 2 / 3, logic model 0) does not, and Fear (3000 with a hostile noticed)
+## makes it flee.
 func on_attacked(u: GameUnit, by: GameUnit) -> void:
-	if by == null or u.mode == "fear":
+	if by == null:
+		return
+	u.set_meta("attacker", [by, world.time])
+	if by != u and not by.dead and world.is_enemy(u, by):
+		var keep: Dictionary = u.get_meta("noticed", {})
+		keep[by.get_instance_id()] = by
+		u.set_meta("noticed", keep)
+	hit_hook(u, by)
+	if int(logic(u).get("alarm_cond", 0)) == 1:
+		_alert(u)
+	if fearful(u):
 		return
 	# hit by a unit that is not a diplomacy friend -> suspicion
 	# 1000 (-2 a tick) at the attacker.
 	if world.relation(u.faction, by.faction) != 0:
 		suspect(u, by.pos, 1000.0)
-	if not u.order.get("type", "") in ["attack", "cast"]:
+	var fight := String(mots(u).fight)
+	if u.mode == "standard" and not u.has_meta("um") and not u.has_meta("hero") \
+			and int(logic(u).get("logic_model", 3)) in [0, 4]:
+		fight = "none"   # model 4's Player motivation answers in _player
+	if fight != "none" and not u.order.get("type", "") in ["attack", "cast"]:
 		_attack(u, by)
-	hit_hook(u, by)
 
 
 ## The unit's reaction line (acks.db section 2; state 6 "to
@@ -684,16 +1097,32 @@ func _react(u: GameUnit, code: int) -> void:
 		world.session.broadcast({"t": "ack", "uid": u.uid, "code": code, "near": 30.0})
 
 
-## Idle chatter: every motivation tick of the calm motivations (the original
-## ) posts AI message 1 -> line 0x31
-## when rand % 1001 == 1, and the Aggression motivation's tick (
-## ) message 2 -> line 0x32 the same way. Approx.: one
-## roll per 1/20 s game tick.
+## Idle chatter: the tick of the current calm motivation (the original Follow
+## Guard, Patrol, Sentry) posts AI
+## message 1 -> line 0x31 when rand % 1001 == 1, and the Aggression
+## motivation's tick message 2 -> line 0x32 the
+## same way. ticks only the chosen motivation, once
+## per 55 ms AI tick: none while Suspection or Fear is current, none for the
+## player's units (Player motivation). Rolled here once per 55 ms of world time.
 func chatter(u: GameUnit, dt: float) -> void:
-	if u.controller >= 0 or u.dead or u.has_meta("hero") or u.mode == "fear":
+	if u.controller >= 0 or u.dead or u.has_meta("hero") or u.mode == "player" or fearful(u):
 		return
-	if randf() < dt / GameWorld.TICK / 1001.0:
-		_react(u, EIAcks.NPC_IN_AGGRESSION if u.order.get("type", "") == "attack" else EIAcks.NPC_REST)
+	var n := int(floorf(world.time / GameUnit.TICK) - floorf((world.time - dt) / GameUnit.TICK))
+	if n <= 0:
+		return
+	var code := -1
+	if u.order.get("ai", false) and String(u.order.get("type", "")) in ["attack", "cast"]:
+		code = EIAcks.NPC_IN_AGGRESSION
+	elif u.has_meta("suspect") and u.get_meta("suspect").get("active", false):
+		return
+	elif u.mode in CALM_MODES or u.mode == "follow":
+		code = EIAcks.NPC_REST
+	if code < 0:
+		return
+	for i in n:
+		if randi() % 1001 == 1:
+			_react(u, code)
+			return
 
 
 ## Suspicion (the original "Suspection" motivation,: priority
@@ -741,7 +1170,7 @@ func _susp_level(s: Dictionary) -> float:
 ## Approx.: run on the unit's AI tick while idle with the ticks elapsed; the
 ## spot's path-cost test is left out (see find_spot).
 func _investigate(u: GameUnit) -> bool:
-	if not u.has_meta("suspect") or u.mode in ["fear", "follow"]:
+	if not u.has_meta("suspect") or u.mode in ["fear", "follow"] or fearful(u):
 		return false
 	var s: Dictionary = u.get_meta("suspect")
 	var at: Vector2 = s.pos
@@ -752,6 +1181,7 @@ func _investigate(u: GameUnit) -> bool:
 		s.m = minf(float(s.m), p)
 		if float(s.m) > 150.0:
 			s.active = true
+			_motivation_alert(u)
 			_react(u, EIAcks.NPC_SUSPICION)
 			u.alert = true
 			_susp_go(u, s, at, p)
@@ -869,6 +1299,8 @@ var _tick_n := 0
 ## Per 55 ms logic tick (GameWorld): the step noise, then the delayed sounds
 func tick() -> void:
 	_tick_n += 1
+	if not _alarm_wait.is_empty():
+		_alarm_tick()
 	#  (unit update): when (world tick & unit = 15) == 0
 	# i.e. every 16th tick, makes the step noise:
 	# with loudness = movement noise x hearing detectability
@@ -893,14 +1325,67 @@ func tick() -> void:
 
 ## a unit that had noticed a diplomacy friend that is now dead
 ## ("sees corpse of unit") becomes suspicious (800, -3 a tick) unless its
-## level is 800 or more. Approx.: "had noticed" = notices it at its death
-## (can_notice); the spot is taken as the corpse's.
+## level is 800 or more. That is the CorpseWatcher motivation (
+## ): queues the corpse (AI) and its priority
+##  (always −1000, never current) takes one off the queue and
+## raises the suspicion ((corpse, 800, −3)) — so only units that
+## have it (mots.corpse). Traced 2026-10-02 (= dead): every
+## scan sense-tests the dead friends in the friend cells into
+## the corpse list, and gives 800, −3 for a noticed
+## unit that has died and is a friend; the death itself runs a
+## forced scan for the observers (see `seen_murder`).
+## Approx.: the observers are the friends within 40 m, the sense test
+## can_notice at the death; the spot is the corpse's.
 func on_corpse(dead: GameUnit) -> void:
 	for o: GameUnit in world.live_units_near(dead.pos, 40.0):
-		if o == dead or o.controller >= 0 or world.relation(o.faction, dead.faction) != 0:
+		if o == dead or o.controller >= 0 or world.relation(o.faction, dead.faction) != 0 or not mots(o).corpse:
 			continue
 		if can_notice(o, dead, o.stats.sight):
 			suspect(o, dead.pos, 800.0, -3.0)
+
+
+## "Has seen murder" (twice, for a creature
+## killer): the friends of the dead unit (diplomacy, its side's bit) among
+## the observers of the dead unit and then of the killer get a full scan;
+## one whose noticed list then holds the dead unit (first call) or the killer
+## (second call) takes the killer into that list and (killer
+## observer): unless its hostility mask already has the killer's
+## side it gains it (`World.is_enemy`, meta "hate"), and for a party member
+## every unit of that party does. **Approx.**: the observer lists are
+## the units within 40 m, "in the noticed list after the scan" is can_notice.
+func seen_murder(dead: GameUnit, killer: GameUnit) -> void:
+	if killer == null or not is_instance_valid(killer) or killer == dead:
+		return
+	for o: GameUnit in world.live_units_near(dead.pos, 40.0):
+		if o == dead or o == killer or world.relation(o.faction, dead.faction) != 0:
+			continue
+		if not (can_notice(o, dead, o.stats.sight) or can_notice(o, killer, o.stats.sight)):
+			continue
+		var keep: Dictionary = o.get_meta("noticed", {})
+		keep[killer.get_instance_id()] = killer
+		o.set_meta("noticed", keep)
+		_hate(o, killer.faction)
+
+
+## side `f` into the unit's hostility mask (and its party's).
+func _hate(o: GameUnit, f: int) -> void:
+	if _hates(o, f):
+		return
+	var who: Array = [o]
+	if o.controller >= 0:
+		who = world.units.values().filter(func(x: GameUnit): return x.controller == o.controller)
+	for x: GameUnit in who:
+		if not _hates(x, f):
+			var h: Dictionary = x.get_meta("hate", {})
+			if int(h.get("w", 0)) != world.get_instance_id():
+				h = {"w": world.get_instance_id(), "f": []}
+			(h.f as Array).append(f)
+			x.set_meta("hate", h)
+
+
+func _hates(o: GameUnit, f: int) -> bool:
+	var h: Dictionary = o.get_meta("hate", {})
+	return int(h.get("w", 0)) == world.get_instance_id() and f in h.get("f", [])
 
 
 ## The Sentry tick (motivation) when its state is
@@ -963,7 +1448,9 @@ func _guard(u: GameUnit, point: Vector3, radius: float, stay: float) -> void:
 ## a random time between stay·15 / 4 and stay·15 ticks (40 when stay < 0).
 ## With the rest flag, a unit not in the combat stance whose figure is not a
 ## human ("unhu…") gets one glance of n × that time, resting (
-## the Rest order 0xb). Approx.: the rest pose itself is not shown.
+## the Rest order 0xb: after the glance's turn, posture 4 = the rest
+## animation state 0x8000, case 0xb /; GameUnit.resting
+## until the next order).
 func _calm_go(u: GameUnit, dest: Vector3, bias: Vector3, stay: float, rest: bool, given := []) -> void:
 	var n := (randi() & 3) + 1 if given.is_empty() else 0
 	var at := Vector2(dest.x, dest.y)
@@ -993,7 +1480,7 @@ func _calm_go(u: GameUnit, dest: Vector3, bias: Vector3, stay: float, rest: bool
 	c.look = look
 	c.until = -1.0
 	u.set_meta("calm", c)
-	var to := world.nav.nearest_walkable(at)
+	var to := world.nav.nearest_walkable_for(u, at)
 	if u.pos.distance_to(at) > 0.5 and u.pos.distance_to(to) > 0.5:   # there: the move ends at once
 		u.command({"type": "move", "to": to, "run": u.get_meta("script_run", false), "calm": true})
 
@@ -1025,6 +1512,9 @@ func _calm_busy(u: GameUnit) -> bool:
 			u.command({"type": "rotate", "angle": float(g[0])})
 			return true
 		c.until = world.time + float(g[1]) * GameUnit.TICK
+		if g.size() > 2 and bool(g[2]):
+			u.resting = true   # the Rest order 0xb (until the next order)
+			u._set_action("idle")
 		return true
 	c.busy = false
 	return true
@@ -1132,6 +1622,7 @@ func invoke_alarm(i: int, at: Vector2, force: bool) -> void:
 			u.set_meta("logic_idx", i)
 			u.remove_meta("calm")
 			u.remove_meta("alerted")
+			u.remove_meta("alarm_left")   #  re-inits the countdown
 			u.mode = "standard"
 			u.mode_data = {}
 
@@ -1143,15 +1634,59 @@ func invoke_alarm(i: int, at: Vector2, force: bool) -> void:
 ## The countdown is set to max(1, descriptor) and counted
 ## down once per AI tick while alerted; raising posts AI message 8 ("ALARM
 ## ALARM ALARM",: debug text, no speech line).
-## Approx.: the countdown is taken as reached at once (descriptor is not
-## a.mob field, never writes it; its default is not traced).
-func _alarm_check(u: GameUnit) -> void:
-	var n := int(logic(u).get("alarm_raise", 0))
-	if n == 0 or u.has_meta("alerted"):
+## The countdown default is 75 ticks (`ALARM_COUNT`, `_alarm_tick`).
+## The alert itself (AI) depends on the descriptor's alarm condition
+## (AI): 0 or 2 a noticed living hostile
+## 1 being hit (`on_attacked`), 2 also a newly chosen
+## Suspection / Aggression / CorpseWatcher / Fear motivation (
+## `_motivation_alert`).
+## Returns the `enemies(u)` it took when nothing changed after (no alert
+## raised), for think to reuse; else null.
+func _alarm_check(u: GameUnit) -> Variant:
+	var c := int(logic(u).get("alarm_cond", 0))
+	if (c == 0 or c == 2) and not u.has_meta("alerted"):
+		var foes := enemies(u)
+		if foes.is_empty():
+			return foes
+		_alert(u)
+	return null
+
+
+func _motivation_alert(u: GameUnit) -> void:
+	if int(logic(u).get("alarm_cond", 0)) == 2:
+		_alert(u)
+
+
+func _alert(u: GameUnit) -> void:
+	if u.has_meta("alerted"):
 		return
-	if not enemies(u).is_empty():
-		u.set_meta("alerted", true)
-		invoke_alarm(n, u.pos, false)
+	u.set_meta("alerted", true)
+	if int(logic(u).get("alarm_raise", 0)) != 0 and int(u.get_meta("alarm_left", ALARM_COUNT)) > 0:
+		_alarm_wait[u.get_instance_id()] = u
+
+
+## The alarm countdown AI = max(1, descriptor); the descriptor's
+## constructor = 0x4b and the.mob reader never
+## changes it, so 75 ticks. counts it down at the start of each
+## AI tick while alerted and raises the alarm when it reaches 0 (once: it
+## stays 0 until re-inits the AI, e.g. on InvokeAlarm).
+const ALARM_COUNT := 75
+var _alarm_wait := {}
+
+
+func _alarm_tick() -> void:
+	for id in _alarm_wait.keys():
+		var u: GameUnit = _alarm_wait[id] if is_instance_valid(_alarm_wait[id]) else null
+		if u == null or u.dead or not u.has_meta("alerted"):
+			_alarm_wait.erase(id)
+			continue
+		var n := int(u.get_meta("alarm_left", ALARM_COUNT)) - 1
+		u.set_meta("alarm_left", n)
+		if n <= 0:
+			_alarm_wait.erase(id)
+			var a := int(logic(u).get("alarm_raise", 0))
+			if a != 0:
+				invoke_alarm(a, u.pos, false)
 
 
 ## a random spot within `r` of `at` for a calm or suspicious
@@ -1200,11 +1735,35 @@ func _home(u: GameUnit) -> Vector2:
 	return u.pos
 
 
+## Cells of lasting area spells (layer type 3):
+## marks them when the magic object of firewall (6), litnwall (7), acid_fog (8)
+## or campfire (0x27) is created or loaded and
+## clears them when it ends. Shape 8 / 0x27 is
+## the circle of the effect radius widened by one 0.5 m cell
+## (: (2r + 1)² in cells). Approx.: the walls (shapes 6 / 7, boxes
+## from the effect's figure) are taken as the same circle, and
+## the object's life as the spell's duration + 30 ticks.
+var dangers: Array = []   # [centre, radius, end time]
+
+func add_danger(at: Vector2, radius: float, secs: float) -> void:
+	dangers.append([at, radius + 0.5, world.time + secs])
+
+
+func danger_at(p: Vector2) -> bool:
+	if dangers.is_empty():
+		return false
+	dangers = dangers.filter(func(d: Array): return float(d[2]) > world.time)
+	for d: Array in dangers:
+		if p.distance_squared_to(d[0]) < float(d[1]) * float(d[1]):
+			return true
+	return false
+
+
 func nearest_enemy(u: GameUnit, radius: float) -> GameUnit:
 	var best: GameUnit = null
 	var bd := radius
 	for o: GameUnit in world.live_units_near(u.pos, radius):
-		if o.dead or o.hidden or o.is_invisible() or not world.is_enemy(u, o):
+		if o.dead or o.hidden or not world.is_enemy(u, o):
 			continue
 		var d := u.pos.distance_to(o.pos)
 		if not can_notice(u, o, radius):
@@ -1233,7 +1792,10 @@ func can_notice(u: GameUnit, o: GameUnit, radius: float) -> bool:
 	if d <= r and ang <= deg_to_rad(float(u.race.get("vision_arc", 180.0))) * 0.5 \
 			and d < world.sight_ray(u, o) * r:
 		return true
-	if ang <= PI * 0.5 and d < float(u.proto.get("peripheral_skills", 0.0)) and o.detect(0) > 0.0:
+	# peripheral vision (in front, within) has no
+	# detectability factor, so it still catches an invisible unit; only the
+	# sight test is scaled by the target's sight detectability.
+	if ang <= PI * 0.5 and d < float(u.proto.get("peripheral_skills", 0.0)):
 		return true
 	return d < o.detect(2) * u.sense(2)
 

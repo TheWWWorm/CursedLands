@@ -141,7 +141,7 @@ func on_event(e: Dictionary, now: float) -> void:
 ## ): "nature\tornado\circle.wav" looped at it
 ## (3D, priority 0, min 10 / max 40), moved with it by its step
 ## each tick and stopped when its life runs
-## out. Approx.: its particle 0x200a is not drawn (type not ported).
+## out. Its particle 0x200a is drawn by ParticleFx.tornado from the same event.
 var _tornado := {}   # id -> {p, v, life, t0, h}
 
 func on_tornado(e: Dictionary, now: float) -> void:

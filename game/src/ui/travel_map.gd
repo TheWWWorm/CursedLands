@@ -396,6 +396,12 @@ func _build_extra() -> void:
 	_extra.offset_bottom = -8
 	_extra.alignment = BoxContainer.ALIGNMENT_END
 	add_child(_extra)
+	# Remake-only controls: drawn in the game font (Interface800 middle size)
+	# rather than Godot's default theme font.
+	var th := Theme.new()
+	th.default_font = Interface800.font()
+	_extra.theme = th
+	th.default_font_size = 16
 	# Offered places on another allod (not on this island).
 	for o: Dictionary in options:
 		if String(session.campaign.zone(String(o.zone)).get("allod", "")).to_lower() == allod:
@@ -407,12 +413,12 @@ func _build_extra() -> void:
 		_extra.add_child(b)
 	if leader:
 		var stay := Button.new()
-		stay.text = "Stay here"
+		stay.text = RemakeText.t("Stay here")
 		stay.pressed.connect(func(): cancelled.emit())
 		_extra.add_child(stay)
 	else:
 		var l := Label.new()
-		l.text = "The party leader chooses the destination."
+		l.text = RemakeText.t("The party leader chooses the destination.")
 		l.add_theme_constant_override("outline_size", 4)
 		l.add_theme_color_override("font_outline_color", Color.BLACK)
 		_extra.add_child(l)
@@ -423,6 +429,10 @@ func _build_extra() -> void:
 func _process(dt: float) -> void:
 	if _pivot == null:
 		return
+	if _extra and _extra.theme:
+		var fs := maxi(6, int(round(Interface800.canvas_size(self).x * Interface800.FONT_EM[1])))
+		if _extra.theme.default_font_size != fs:
+			_extra.theme.default_font_size = fs
 	if _turn != 0:
 		angle = fposmod(angle + dt * _turn * PI * 0.25, TAU)
 		_update_pivot()
@@ -627,7 +637,7 @@ func _drag_end() -> void:
 	if not _drag:
 		return
 	_drag = false
-	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	Input.mouse_mode = GameData.free_mouse_mode()
 	Input.warp_mouse(_drag_from)
 
 
@@ -655,10 +665,10 @@ func _unhandled_key_input(e: InputEvent) -> void:
 		return
 	if e.keycode == KEY_ESCAPE:
 		menu.emit()
-	elif EIKeymap.action(e.keycode) == "tutorial_script":
+	elif EIKeymap.event_action(e) == "tutorial_script":
 		help.emit("global_map_nocamp" if _nocamp else "global_map")
-	elif EIKeymap.action(e.keycode) in ["quicksave", "quickload"]:
-		quick.emit(EIKeymap.action(e.keycode))
+	elif EIKeymap.event_action(e) in ["quicksave", "quickload"]:
+		quick.emit(EIKeymap.event_action(e))
 	else:
 		return
 	get_viewport().set_input_as_handled()
@@ -780,6 +790,8 @@ func open_objectives(id: String) -> ZoneObjectives:
 	add_child(objectives)
 	_hover = -1
 	_apply_highlight()
+	# The map's panels stay in the frozen, greyed frame under the screen
+	# (ZoneObjectives' dim layer); the live ones are hidden behind it.
 	_hud.visible = false
 	_extra.visible = false
 	return objectives

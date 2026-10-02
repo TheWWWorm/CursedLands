@@ -41,8 +41,14 @@ func tick() -> void:
 ## Picking one: "goodbye" closes, "constr<N>" sets GS var
 ## constr.current = N and opens the camp screen with that trader, the
 ## variable staying 1; anything else plays the conversation.
+## A conversation without a "briefing <id>" text (bz8k / bz10k / bz11k
+## b.merc5.n5_2, n5_10, merc6 the same) is still listed: leaves
+## the title empty when finds no text, so the row is the topic
+## prefix alone (empty in the shipped texts), a blank row that can be picked.
 ## Approx.: the original lists vars in its hash-table order (sorted only
-## multiplayer); the remake sorts them by id.
+## multiplayer); the remake sorts them by id. That order is a
+## 193+-bucket hash of the case-sensitive var names (h = 5h + c)
+## which the VM lowercases, so it cannot be rebuilt.
 func interact(_unit: GameUnit, target: Object, player: int) -> void:
 	if not active.is_empty() or not (target is GameUnit):
 		return
@@ -57,10 +63,10 @@ func interact(_unit: GameUnit, target: Object, player: int) -> void:
 		if text.is_empty():
 			text = vm.session.quest_text("briefing " + String(e[1]))
 		var title := text.get_slice("\n", 0).strip_edges() if text else ""
-		options.append({"var": "b.%s.%s" % e, "title": title if title else String(e[1])})
+		options.append({"var": "b.%s.%s" % e, "title": title})
 	if not constr.is_empty():
 		var title := GameData.text("briefing constr").get_slice("\n", 0).strip_edges()
-		options.append({"var": "b.%s.%s" % constr, "title": title if title else "constr"})
+		options.append({"var": "b.%s.%s" % constr, "title": title})
 	if options.is_empty():
 		return
 	vm.session.broadcast({"t": "topics", "player": player, "uid": t.uid, "name": t.display_name, "options": options})
@@ -149,6 +155,10 @@ func play_named(id: String, var_name: String, player := 0, partner: GameUnit = n
 	active = var_name
 	var b := parse(text)
 	var c := cast(b.actors, partner, player)
+	vm.world.dialog_actors.clear()
+	for k in ["a", "b", "c"]:
+		if c.has(k):
+			vm.world.dialog_actors[int(c[k])] = true   # held while it runs (GameWorld)
 	_face(c)
 	vm.session.broadcast({"t": "dialog", "id": var_name, "brief": id, "title": b.title, "phrases": b.phrases, "cast": c})
 
@@ -158,31 +168,54 @@ func play_named(id: String, var_name: String, player := 0, partner: GameUnit = n
 ## "b" (usually the hero) at the partner prototype's "dialog cam distance" +
 ## 2.5 m along b's facing, then faces b; b turns to it and the third actor to
 ## the middle between them. A partner that cannot walk stays and b is placed
-## in front of it instead (the original's branch). Approx.: the original's
-## condition for that branch is not traced (the remake uses "cannot walk").
+## in front of it instead (the original's branch). The third actor walks
+## to the corner of a right triangle over a–b. The places are kept in the
+## cast ("at") for the camera. Approx.: the original's condition for the
+## branch is not traced (the remake uses "cannot walk"), and an actor that
+## cannot reach its place stays (the original's sets it there).
 func _face(c: Dictionary) -> void:
 	var a: GameUnit = vm.world.units.get(int(c.get("a", -1)))
 	var b: GameUnit = vm.world.units.get(int(c.get("b", -1)))
 	if a == null or b == null:
 		return
 	var d := float(a.proto.get("dialog_cam_distance", 0.0)) + 2.5
+	var a_at := a.pos
+	var b_at := b.pos
 	if a.speed() > 0.01 and a.controller < 0:
 		var spot := b.pos + Vector2.from_angle(b.facing) * d
 		if vm.world.nav.find_path(a.pos, spot, [], [], 0.0, a.move_class()).is_empty():
 			spot = b.pos + (a.pos - b.pos).normalized() * d
 		vm.world.dialog_movers[a] = {"to": spot, "angle": (b.pos - spot).angle()}
 		b.facing = (spot - b.pos).angle()
+		a_at = spot
 	elif b.speed() > 0.01:
 		var spot := a.pos + Vector2.from_angle(a.facing) * d
 		if vm.world.nav.find_path(b.pos, spot, [], [], 0.0, b.move_class()).is_empty():
 			spot = a.pos + (b.pos - a.pos).normalized() * d
 		vm.world.dialog_movers[b] = {"to": spot, "angle": (a.pos - spot).angle()}
+		b_at = spot
 	else:
 		a.facing = (b.pos - a.pos).angle()
 		b.facing = (a.pos - b.pos).angle()
+	# The third actor's place: the middle of a and b
+	# turned by a right angle — mid + (b.y − mid.y, mid.x − b.x) — then
+	#  walks it there facing the middle.
+	var mid := (a_at + b_at) * 0.5
 	var cu: GameUnit = vm.world.units.get(int(c.get("c", -1)))
+	var c_at := cu.pos if cu else Vector2.ZERO
 	if cu:
-		cu.facing = ((a.pos + b.pos) * 0.5 - cu.pos).angle()
+		var apex := mid + Vector2(b_at.y - mid.y, mid.x - b_at.x)
+		if cu.speed() > 0.01 and cu.controller < 0 \
+				and not vm.world.nav.find_path(cu.pos, apex, [], [], 0.0, cu.move_class()).is_empty():
+			vm.world.dialog_movers[cu] = {"to": apex, "angle": (mid - apex).angle()}
+			c_at = apex
+		else:
+			cu.facing = (mid - cu.pos).angle()
+	# The places the conversation camera works from (the original keeps them
+	#  and never reads the units again; DialogCamera).
+	c["at"] = {"a": [a_at.x, a_at.y], "b": [b_at.x, b_at.y]}
+	if cu:
+		c["at"]["c"] = [c_at.x, c_at.y]
 
 
 func complete(player: int, var_name: String, force := false) -> void:
@@ -355,6 +388,6 @@ func _actor_unit(actor: String, player: int) -> GameUnit:
 
 static func speaker_name(actor: String) -> String:
 	if actor.to_lower() == "hero":
-		return "Zak"
+		return CampaignState.hero_name()
 	var t := GameData.text("pers " + actor.to_lower())
 	return t.get_slice("\n", 0).strip_edges() if t else actor

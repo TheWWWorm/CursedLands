@@ -16,17 +16,24 @@ warnings/check_angle_interpolation_type_conflicting=false
 [application]
 
 config/name="Cursed Lands"
+config/icon="res://icon.svg"
 run/main_scene="res://scenes/main.tscn"
 config/features=PackedStringArray("4.7")
 
 [autoload]
 
 GameData="*res://src/ei/game_data.gd"
+TouchInput="*res://src/platform/touch_input.gd"
 
 [display]
 
 window/size/viewport_width=1600
 window/size/viewport_height=900
+window/handheld/orientation=6
+
+[input_devices]
+
+pointing/emulate_mouse_from_touch=false
 
 [dotnet]
 
@@ -38,16 +45,28 @@ timers/tooltip_delay_sec=1000000.0
 
 [rendering]
 
-anti_aliasing/quality/msaa_3d=2
-anti_aliasing/quality/screen_space_aa=2
-anti_aliasing/quality/use_debanding=true
-textures/default_filters/anisotropic_filtering_level=4
+renderer/rendering_method.mobile="gl_compatibility"
+renderer/rendering_method.web="gl_compatibility"
+limits/opengl/max_lights_per_object.mobile=4
+limits/opengl/max_lights_per_object.web=4
+lights_and_shadows/directional_shadow/size.mobile=1024
+lights_and_shadows/directional_shadow/size.web=1024
+lights_and_shadows/positional_shadow/atlas_size.mobile=1024
+lights_and_shadows/positional_shadow/atlas_size.web=1024
+anti_aliasing/quality/msaa_3d.mobile=0
+anti_aliasing/quality/msaa_3d.web=0
+anti_aliasing/quality/screen_space_aa.mobile=0
+anti_aliasing/quality/screen_space_aa.web=0
 textures/vram_compression/import_etc2_astc=true
 lights_and_shadows/directional_shadow/size=8192
 lights_and_shadows/directional_shadow/soft_shadow_filter_quality=5
 lights_and_shadows/positional_shadow/soft_shadow_filter_quality=5
-lights_and_shadows/positional_shadow/atlas_size=8192
+textures/default_filters/anisotropic_filtering_level=4
 environment/ssao/quality=3
 environment/ssao/half_size=false
+anti_aliasing/quality/msaa_3d=2
+anti_aliasing/quality/use_debanding=true
 environment/volumetric_fog/volume_size=128
 environment/volumetric_fog/volume_depth=96
+anti_aliasing/quality/screen_space_aa=2
+lights_and_shadows/positional_shadow/atlas_size=8192

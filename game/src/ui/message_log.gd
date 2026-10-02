@@ -97,7 +97,7 @@ func _text_box() -> RichTextLabel:
 
 
 func _k() -> float:
-	return get_viewport_rect().size.y / 600.0
+	return Interface800.canvas_size(self).y / 600.0
 
 
 func _off() -> float:
@@ -108,7 +108,7 @@ func _off() -> float:
 ## 800×600 point (window part, slid) -> local.
 func _p(v: Vector2) -> Vector2:
 	var k := _k()
-	return Vector2((v.x - 400.0) * k + get_viewport_rect().size.x * 0.5, (v.y + _off()) * k)
+	return Vector2((v.x - 400.0) * k + Interface800.canvas_size(self).x * 0.5, (v.y + _off()) * k)
 
 
 func _r(r: Rect2) -> Rect2:
@@ -128,7 +128,7 @@ func _toggle_rect() -> Rect2:
 	var k := _k()
 	var r: Rect2 = BUTTONS.toggle[0]
 	var top := maxf(0.0, (r.position.y - SLIDE * _slide))
-	return Rect2(Vector2((r.position.x - 400.0) * k + get_viewport_rect().size.x * 0.5, top * k), r.size * k)
+	return Rect2(Vector2((r.position.x - 400.0) * k + Interface800.canvas_size(self).x * 0.5, top * k), r.size * k)
 
 
 func _has_point(p: Vector2) -> bool:
@@ -141,7 +141,7 @@ func _has_point(p: Vector2) -> bool:
 ## Local -> 800×600 (unslid window part).
 func _to800(local: Vector2) -> Vector2:
 	var k := _k()
-	return Vector2((local.x - get_viewport_rect().size.x * 0.5) / k + 400.0, local.y / k - _off())
+	return Vector2((local.x - Interface800.canvas_size(self).x * 0.5) / k + 400.0, local.y / k - _off())
 
 
 func _gui_input(e: InputEvent) -> void:
@@ -175,7 +175,9 @@ func _gui_input(e: InputEvent) -> void:
 
 func _get_tooltip(at: Vector2) -> String:
 	var b := _button_at(at)
-	return GameData.text("tip %d" % BUTTONS[b][2]).strip_edges() if b else ""
+	# hotkeys w_text1 / w_text2 (0x32 / 0x33) on the two tabs.
+	return GameData.tip_key(GameData.text("tip %d" % BUTTONS[b][2]).strip_edges(),
+			{"messages": 50, "items": 51}.get(b, 0)) if b else ""
 
 
 ## the L / K keys (mode 0 / 1).
@@ -311,8 +313,8 @@ func _draw() -> void:
 		var pts := HudDial.arrow(400, -52, PI, 0.8) if open else HudDial.arrow(400, 83, 0.0, 0.8)
 		var uvs := PackedVector2Array()
 		for i in 3:
-			pts[i] = Vector2((pts[i].x - 400.0) * k + get_viewport_rect().size.x * 0.5, pts[i].y * k)
-			uvs.append(HudDial.ARROW_UV[i] / 256.0)
+			pts[i] = Vector2((pts[i].x - 400.0) * k + Interface800.canvas_size(self).x * 0.5, pts[i].y * k)
+			uvs.append(Vector2(HudDial.ARROW_UV[i].x, 256.0 - HudDial.ARROW_UV[i].y) / 256.0)   # flipped atlas
 		draw_polygon(pts, PackedColorArray([Color.WHITE, Color.WHITE, Color.WHITE]), uvs, _atlas)
 
 

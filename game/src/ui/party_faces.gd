@@ -44,12 +44,12 @@ func _ready() -> void:
 
 
 func _k() -> float:
-	return get_viewport_rect().size.y / 600.0
+	return Interface800.canvas_size(self).y / 600.0
 
 
 ## 800×600 point -> local: the layout is centred horizontally.
 func _p(v: Vector2) -> Vector2:
-	var vs := get_viewport_rect().size
+	var vs := Interface800.canvas_size(self)
 	return Vector2(vs.x * 0.5 + (v.x - 400.0) * _k(), v.y * _k())
 
 
@@ -98,7 +98,20 @@ func _process(_dt: float) -> void:
 		var face := _r(Rect2(r.position.x + 3, 513, r.size.x - 6, 72))
 		p.position = face.position
 		p.size = face.size
+		p.selected = _cells[i][0] in game.selected
 	queue_redraw()
+
+
+func acknowledge(unit: GameUnit, code: int) -> void:
+	for c in _cells:
+		if c[0] == unit and c[2]:
+			(c[1] as Portrait).acknowledge(code)
+
+
+func nod_units(ids: Array) -> void:
+	for c in _cells:
+		if c[2] and is_instance_valid(c[0]) and c[0].uid in ids:
+			(c[1] as Portrait).nod()
 
 
 func _cell(i: int) -> Rect2:
@@ -135,7 +148,14 @@ func _gui_input(e: InputEvent) -> void:
 
 func _get_tooltip(at: Vector2) -> String:
 	var i := _cell_at(at)
-	return _cells[i][0].display_name if i >= 0 and is_instance_valid(_cells[i][0]) else ""
+	if i < 0 or not is_instance_valid(_cells[i][0]):
+		return ""
+	var title: String = _cells[i][0].display_name
+	# select1..3 (action ids 55..57), in single player only. tip_key uses
+	# EIKeymap.key_of_id to show the first current binding, if any.
+	if i < 3 and _cells[i][2] and game and game.session and not game.session.online:
+		return GameData.tip_key(title, 55 + i)
+	return title
 
 
 func _region(dst: Rect2, uv: Rect2, mod := Color.WHITE) -> void:

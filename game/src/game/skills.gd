@@ -3,7 +3,7 @@ extends RefCounted
 ## The original six skills (0..100), bought with experience in towns and camps:
 ## Melee, Archery, Use/Steal ("science"), Elemental, Sense and Astral magic
 ## (perks.pdb "skills" table, texts.res "perk <code>").
-## Sourced rules (docs/original_reference.md):
+## Sourced rules:
 ##   * skill price: see curve (the original), 0 -> 100 costs ~685 000
 ##   * magic knowledge = skill + school perk (max +15) + (Int - 25, max +13), max 128;
 ##   * without modifiers HP = stamina = 13.627 * exp^(1/4.99) (exp = total experience);

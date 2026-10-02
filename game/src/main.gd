@@ -11,9 +11,12 @@ extends Node
 
 var game: Game
 var session: Session
+var _leaving := false   # back_to_menu waiting for a joiner's last package
 
 
 func _ready() -> void:
+	if OS.get_cmdline_user_args().has("--no-movies"):
+		MoviePlayer.enabled = false
 	for a in OS.get_cmdline_user_args():
 		if a.begins_with("--name="):
 			GameData.player_name = a.trim_prefix("--name=")
@@ -23,7 +26,7 @@ func _ready() -> void:
 		printerr("No valid Evil Islands folder. Pass -- --ei-path=/path/to/EvilIslands")
 		get_tree().quit(1)
 	else:
-		var setup := preload("res://src/ui/setup_screen.gd").new()
+		var setup: Control = preload("res://src/ui/portable_setup.gd").new() if Portability.constrained() else preload("res://src/ui/setup_screen.gd").new()
 		setup.opened.connect(_start)
 		add_child(setup)
 
@@ -68,10 +71,17 @@ func _start() -> void:
 
 ## Esc signpost "Exit to main menu": drop the game and the connection.
 func back_to_menu() -> void:
+	if _leaving:
+		return
 	if session:
-		session.coop.flush()   # co-op: the joiners' last progress packages
-		session.net.bye()      # the others see "left the game", not "lost connection"
-		session.multiplayer.multiplayer_peer = OfflineMultiplayerPeer.new()
+		_leaving = true
+		var s := session
+		s.coop.flush()   # co-op: the joiners' last progress packages
+		# The others see "left the game", not "lost connection"; a joiner
+		# first gets its last progress package (NetStatus.leave).
+		await s.net.leave()
+		s.multiplayer.multiplayer_peer = OfflineMultiplayerPeer.new()
+		_leaving = false
 	game = null
 	session = null
 	_clear()
@@ -100,3 +110,5 @@ func start_game(s: Session) -> void:
 func _exit_tree() -> void:
 	MoviePlayer.shutdown()
 	TexUpscale.shutdown()
+	UnitWounds.shutdown()
+	EIAudio.shutdown()

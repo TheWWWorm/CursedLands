@@ -69,9 +69,14 @@ extends Control
 ## description is a ScrollText (at (60,190)-(384,510), speed
 ## 20.0, text 310 wide, its bar at x 374..384 only on overflow): 20 units a
 ## notch over (60,190)-(374,510).
-## **Approx.:** the list's bar sprites and held arrows (16 rows/s) are not
-## drawn; the description keeps Godot's scrollbar (its wheel step is the
-## original's 20, in 800×600 px scaled); in co-op only the
+## Both bars are the dialog box's (DialogPanel.Bar / paint_bar): "Scrollbar"
+## sprites, thumb drag, held arrows at speed · 16 units a second (16 rows /
+## 320 px of 800×600 a second), hidden while nothing scrolls.
+## Every opener (global map, field TAB, clock dial
+## village) pushes it (screen, 1, 1): the frame under
+## it captured, greyed and frozen (Interface800.dim_layer), the map's own
+## panels and buttons included.
+## **Approx.:** the description's units are 800×600 px scaled; in co-op only the
 ## party leader has ✓ (clients browse read-only).
 
 signal confirmed(option: Dictionary)
@@ -119,6 +124,17 @@ var _text := ""
 var _t := 0.0
 var _size := Vector2(1, 1)   # zone size in sectors
 var _tutorial: TutorialPanel
+##  bars (DialogPanel.Bar, "Scrollbar" sprites, hidden while
+## nothing scrolls): the quest list in rows, the description in screen px.
+var _list_bar := DialogPanel.Bar.new(Rect2(60, 30, 324, 120), 1.0)
+var _desc_bar := DialogPanel.Bar.new(Rect2(60, 190, 324, 320), 20.0)
+
+
+func _ready() -> void:
+	var dim := Interface800.dim_layer()   # (screen, 1, 1)
+	add_child(dim)
+	move_child(dim, 0)
+	dim.capture()
 
 
 func setup(s: Session, id: String, opts: Array, is_leader := true, how := "travel") -> void:
@@ -141,6 +157,9 @@ func setup(s: Session, id: String, opts: Array, is_leader := true, how := "trave
 	_desc.add_theme_color_override("font_shadow_color", Interface800.SHADOW)
 	add_child(_desc)
 	_desc.gui_input.connect(_desc_wheel)
+	var vsb := _desc.get_v_scroll_bar()
+	vsb.modulate = Color(1, 1, 1, 0)   # drawn as the original's bar instead
+	vsb.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	# Tutorial (slot 41): "quest_global_map" when
 	# opened from the global map (travel set), else "quest_mission"
 	# the build ends (0) (first visit).
@@ -373,6 +392,22 @@ func _layout() -> void:
 
 func _process(dt: float) -> void:
 	_t += dt
+	_list_bar.max_pos = maxf(0.0, quests.size() - ROWS)
+	if _list_bar.held >= 2:
+		_list_bar.hold(dt)
+	if _list_bar.held:
+		top = int(_list_bar.pos)
+	else:
+		_list_bar.set_pos(top)
+	var sb := _desc.get_v_scroll_bar()
+	_desc_bar.unit = 1.0 / _k()
+	_desc_bar.max_pos = maxf(0.0, sb.max_value - sb.page)
+	if _desc_bar.held >= 2:
+		_desc_bar.hold(dt)
+	if _desc_bar.held:
+		sb.value = _desc_bar.pos
+	else:
+		_desc_bar.set_pos(sb.value)
 	queue_redraw()
 
 
@@ -406,6 +441,8 @@ func _draw() -> void:
 			draw_texture_rect_region(_cross, _r(Rect2(62, y + 1, 17, 22)), Rect2(Vector2(4 + u, 164) * s, Vector2(68, 88) * s))
 		var title := GameData.text("quest " + quests[i]).get_slice("\n", 0).strip_edges()
 		_label(Rect2(86, y + 3, 284, 21), title if title else quests[i], TEXT)
+	DialogPanel.paint_bar(self, _list_bar, _r)
+	DialogPanel.paint_bar(self, _desc_bar, _r)
 	# Zone picture, quest area, entrances.
 	if _pic:
 		var s := _pic.get_size() / 256.0
@@ -522,9 +559,25 @@ func _get_tooltip(at: Vector2) -> String:
 
 
 func _gui_input(e: InputEvent) -> void:
+	var p800: Vector2 = (e.position - _o()) / _k() if e is InputEventMouse else Vector2.ZERO
+	for b: DialogPanel.Bar in [_list_bar, _desc_bar]:
+		if e is InputEventMouseMotion and b.held == 1:
+			b.drag(p800)
+			if b == _desc_bar:
+				_desc.get_v_scroll_bar().value = b.pos
+			else:
+				top = int(b.pos)
+			accept_event()
+			return
+		if e is InputEventMouseButton and not e.pressed and e.button_index == MOUSE_BUTTON_LEFT:
+			b.held = 0
 	if e is InputEventMouseButton and e.pressed:
 		match e.button_index:
 			MOUSE_BUTTON_LEFT:
+				for b: DialogPanel.Bar in [_list_bar, _desc_bar]:
+					if b.max_pos > 0.0 and b.press(p800):
+						accept_event()
+						return
 				press(_hit(e.position))
 			MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_DOWN:
 				if _r(Rect2(60, 30, 314, 120)).has_point(e.position):   #  rect
@@ -587,7 +640,7 @@ func _unhandled_key_input(e: InputEvent) -> void:
 		return
 	if _tutorial.visible:
 		return   # the tutorial window has the keys
-	if not e.echo and EIKeymap.action(e.keycode) == "tutorial_script":
+	if not e.echo and EIKeymap.event_action(e) == "tutorial_script":
 		screen_tutorial(true)   # (1)
 		get_viewport().set_input_as_handled()
 		return
@@ -598,7 +651,7 @@ func _unhandled_key_input(e: InputEvent) -> void:
 			close("tutorial\\ok")
 			get_viewport().set_input_as_handled()
 			return
-		if EIKeymap.action(e.keycode) == "obj":
+		if EIKeymap.event_action(e) == "obj":
 			close("messbox\\ok")
 			get_viewport().set_input_as_handled()
 			return

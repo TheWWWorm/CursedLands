@@ -34,7 +34,7 @@ const SCHEMA := {
 	"units.udb": [
 		["hit_locations", "SffUU", "name,resist,resist2,unknown,unknown2"],
 		["race_models", "SUFFUUFfFUUf222222            SssFSsfUUfUUIUSBFUUUU",
-			"name,type_id,health_regen,mana_regen,language,locomotion,vision_arc,speeds,attack_distance,ai_stay,ai_lie,attack,head,torso,right_arm,left_arm,right_leg,left_leg,mask,textures,textures2,model_shift,sfx_path,steps_path,anim_speeds,idle_sound_p,attack_sound_p,defence,blood_type,cast_type,footprint_type,leg_segment,skin_type,first_step_right,head_height,unknown,unknown2,unknown3,unknown4"],
+			"name,type_id,health_regen,mana_regen,language,locomotion,vision_arc,speeds,attack_distance,ai_stay,ai_lie,attack,head,torso,left_arm,right_arm,left_leg,right_leg,mask,textures,textures2,model_shift,sfx_path,steps_path,anim_speeds,idle_sound_p,attack_sound_p,defence,blood_type,cast_type,footprint_type,leg_segment,skin_type,first_step_right,head_height,unknown,unknown2,unknown3,unknown4"],
 		["monster_prototypes", "SSIUIFFFSFFFFFFFFFUFFFFFFff33sfssSFFFFFUFUSF",
 			"name,base_race,unknown,skin,hair,complexion_x,complexion_y,complexion_z,unknown2,hp,mana,absorption,tuning_actions,tuning_move,attack_range,to_hit,parry,weapon_weight,weapon_type_id,damage_min,damage_max,general_skills,steal_skills,tame_skills,peripheral_skills,senses,detection,loot,rare_loot,items,skills,spells,wears,weapon,info_scale,altitude,random_hit,dialog_cam_distance,dialog_cam_height,real_weapon_type_id,detonation,base_level,second_weapon,experience"],
 		["npcs", "SUFFFFbbssssFUB", "name,unknown,experience,str,dex,int,skills,skills2,perks,weapons,quest_items,spells,exp_to_distribute,money,voice"],
@@ -59,12 +59,13 @@ const SCHEMA := {
 var tables := {}
 
 
-static func load_from(archive: EIResArchive) -> EIDatabase:
+static func load_from(archive: EIResArchive, quiet := false) -> EIDatabase:
 	var db := EIDatabase.new()
 	for file: String in SCHEMA:
 		var d := archive.read(file)
 		if d.is_empty():
-			push_warning("database.res has no %s" % file)
+			if not quiet:
+				push_warning("database.res has no %s" % file)
 			continue
 		db._parse_file(d, SCHEMA[file])
 	return db
@@ -79,6 +80,22 @@ func find(table_name: String, row_name: String) -> Dictionary:
 	var key := row_name.to_lower()
 	var idx: Dictionary = tables.get(table_name + "#index", {})
 	return idx.get(key, {})
+
+
+## Appends `other`'s rows of `table_name` whose name this one lacks.
+func merge_missing(other: EIDatabase, table_name: String) -> int:
+	var rows: Array = tables.get(table_name, [])
+	var idx: Dictionary = tables.get(table_name + "#index", {})
+	var n := 0
+	for row: Dictionary in other.table(table_name):
+		var nm := String(row.get("name", "")).to_lower()
+		if nm and not idx.has(nm):
+			rows.append(row)
+			idx[nm] = row
+			n += 1
+	tables[table_name] = rows
+	tables[table_name + "#index"] = idx
+	return n
 
 
 # ---------------------------------------------------------------- parsing

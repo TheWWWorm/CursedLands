@@ -7,7 +7,7 @@ extends Node
 ## randomized sound sources and the dungeon reverb. Every peer mixes its own
 ## sounds; nothing here is replicated.
 ##
-## Functions (docs/original_reference.md, "Audio"):
+## Functions:
 ##    channel allocation, 3D play, 2D play
 ##    3D volume / pan, 2D update, 3D move
 ##    stop, listener, 100 ms service
@@ -45,6 +45,8 @@ var reverb := false
 ## Random sources (16 slots of 0x38 bytes).
 var _random: Array = []
 var _service := 0.0
+## Test hook (tools): print every request with its outcome ("[snd] ...").
+static var trace := false
 
 
 func _ready() -> void:
@@ -122,6 +124,8 @@ func _start(s: Dictionary) -> int:
 	if not s.has("stream"):
 		var stream := EIAudio.sfx(String(s.path))
 		if stream == null:
+			if trace:
+				print("[snd] %.2f %s -> NO FILE" % [Time.get_ticks_msec() / 1000.0, s.path])
 			return -1
 		if s.loop:
 			stream = _looped(stream)
@@ -130,6 +134,17 @@ func _start(s: Dictionary) -> int:
 	_next_handle += 1
 	s.handle = h
 	var ci := _alloc(int(s.prio))
+	# the channel is taken first (a lower
+	# priority sound may lose it), then a one-shot that would be silent is
+	# not started at all: a 3D one whose Miles volume (: distance
+	# camera height, category volume) is 0, a 2D one asked for at volume 0.
+	# The channel stays free for the next sound.
+	if ci >= 0 and not s.loop and (_miles(s) == 0 if s.is3d else float(s.vol) == 0.0):
+		if trace:
+			print("[snd] %.2f %s prio %d -> SILENT, not started" % [Time.get_ticks_msec() / 1000.0, s.path, int(s.prio)])
+		return -1
+	if trace:
+		_trace(s, ci)
 	if ci < 0:
 		if s.loop:   # a loop with no channel waits as a virtual sound
 			s.at = 0.0
@@ -138,6 +153,22 @@ func _start(s: Dictionary) -> int:
 		return -1
 	_bind(_chans[ci], s, 0.0)
 	return h
+
+
+func _trace(s: Dictionary, ci: int) -> void:
+	var busy := 0
+	for c in _chans:
+		if c.handle >= 0:
+			busy += 1
+	var vol := volume_pan(s).x if s.is3d else float(s.vol)
+	print("[snd] %.2f %s prio %d vol %d cat %d -> %s (busy %d)" % [Time.get_ticks_msec() / 1000.0,
+		String(s.path) if s.path else "<stream>", int(s.prio), int(vol), int(s.cat),
+		("chan %d" % ci) if ci >= 0 else "DROPPED", busy])
+	if ci < 0:
+		for c in _chans:
+			if c.handle >= 0:
+				print("[snd]     holds %s prio %d vol %d loop %s" % [c.snd.path, int(c.snd.prio),
+					int(volume_pan(c.snd).x if c.snd.is3d else float(c.snd.vol)), c.snd.loop])
 
 
 ## Looping copy of a decoded wav (Miles loop count 0 = forever).
@@ -295,6 +326,18 @@ func screen_pan(d: Vector2) -> float:
 		a = PI - a
 	var mag := roundf(100.0 / (PI / 2.0) * a)
 	return -mag if d.dot(right_dir) >= 0.0 else mag
+
+
+##  Miles volume of a 3D sound: round(volume × the
+## category volume (sound manager SFX / speech, the Options
+## volumes; SFX 0 during a zone load) × 0.0127), 0..127.
+func _miles(s: Dictionary) -> int:
+	var cat := 0.0
+	if int(s.cat) == CAT_SPEECH:
+		cat = GameData.option("volume_voice")
+	elif sfx_on:
+		cat = GameData.option("volume_sfx")
+	return clampi(roundi(volume_pan(s).x * cat * 0.0127), 0, 127)
 
 
 func _apply(c: Chan) -> void:

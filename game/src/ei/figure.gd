@@ -8,6 +8,7 @@ extends RefCounted
 ## size variation for trees and props).
 
 const FIG_MAGIC := "FIG"
+const SurfaceResponse = preload("res://src/game/surface_materials.gd")
 
 ## template -> {"parts": {name: Dictionary}, "links": [[name, parent]], "bones": {name: PackedFloat32Array}}
 static var _models := {}
@@ -15,8 +16,9 @@ static var _materials := {}
 static var _foliage := {}
 static var _wind := true
 
-## Remake rendering (option gfx_wind): the original foliage material (Lambert,
-## no specular, alpha-tested texture with alpha-to-coverage) plus wind sway.
+## Remake foliage: the original alpha-tested material plus optional wind
+## (gfx_wind), bark detail (gfx_materials) and masked leaf transmission
+## (gfx_foliage_light). Each switch returns to the corresponding original path.
 ## The sway grows with the height above the object's root (instance uniform
 ## part_y = the part's offset, + the vertex's own height), gusts travel across
 ## the island along the wind direction, and leaves flutter a little.
@@ -26,9 +28,11 @@ render_mode cull_disabled, ambient_light_disabled;
 varying vec3 ei_e;
 varying float ei_k;
 uniform sampler2D albedo_tex : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
+uniform sampler2D foliage_mask : hint_default_black, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform float wind = 1.0;
 uniform vec2 wind_dir = vec2(0.8, 0.6);
 instance uniform float part_y = 0.0;
+""" + SurfaceResponse.RELIEF_SHADER + """
 void vertex() {
 	ei_e = vec3(0.0);
 	ei_k = 0.0;
@@ -54,6 +58,14 @@ void fragment() {
 	ALPHA_ANTIALIASING_EDGE = 0.3;
 	ALPHA_TEXTURE_COORDINATE = UV * vec2(textureSize(albedo_tex, 0));
 	ROUGHNESS = 1.0;
+	vec2 plant = texture(foliage_mask, UV).rg;
+	ei_leaf = plant.r * ei_surface_fx.y * 0.75;
+	if (ei_surface_fx.x > 0.5) {
+		ei_surface = mix(vec3(0.16, 0.86, 0.0), vec3(0.13, 0.82, 0.0), plant.r);
+		if (plant.g > 0.01) {
+			NORMAL = ei_relief_normal(albedo_tex, UV, VERTEX, NORMAL, plant.g * 0.45);
+		}
+	}
 }
 """
 
@@ -68,6 +80,8 @@ varying vec3 ei_e;
 varying float ei_k;
 uniform sampler2D albedo_tex : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform float a2c = 0.0;
+uniform vec4 surface_profile = vec4(0.0, 1.0, 0.0, 0.0);
+""" + SurfaceResponse.RELIEF_SHADER + """
 void vertex() {
 	ei_e = vec3(0.0);
 	ei_k = 0.0;
@@ -83,6 +97,12 @@ void fragment() {
 		ALPHA_TEXTURE_COORDINATE = UV * vec2(textureSize(albedo_tex, 0));
 	}
 	ROUGHNESS = 1.0;
+	if (ei_surface_fx.x > 0.5) {
+		ei_surface = surface_profile.xyz;
+		if (surface_profile.w > 0.0) {
+			NORMAL = ei_relief_normal(albedo_tex, UV, VERTEX, NORMAL, surface_profile.w);
+		}
+	}
 }
 """
 static var _oshader: Shader
@@ -108,6 +128,7 @@ static func world_material_for(texture: String) -> Material:
 	var m := ShaderMaterial.new()
 	m.shader = _oshader_a2c if a2c else _oshader
 	m.set_shader_parameter("albedo_tex", tex)
+	m.set_shader_parameter("surface_profile", SurfaceResponse.object_profile(texture))
 	_world[key] = m
 	return m
 
@@ -154,7 +175,12 @@ static func instantiate(template: String, texture: String, complexion: Vector3,
 			while q and q != root:
 				y += (q as Node3D).position.y
 				q = q.get_parent()
-			mi.set_instance_shader_parameter("part_y", y)
+			if Portability.compatibility():
+				var local_mat := mat.duplicate() as ShaderMaterial
+				local_mat.set_shader_parameter("part_y", y)
+				mi.material_override = local_mat
+			else:
+				mi.set_instance_shader_parameter("part_y", y)
 		if morph:
 			mi.set_blend_shape_value(0, complexion.x)
 	return root
@@ -375,6 +401,7 @@ static func foliage_material_for(texture: String) -> Material:
 	var m := ShaderMaterial.new()
 	m.shader = _foliage_shader()
 	m.set_shader_parameter("albedo_tex", tex)
+	m.set_shader_parameter("foliage_mask", SurfaceResponse.foliage_mask(texture))
 	m.set_shader_parameter("wind", 1.0 if _wind else 0.0)
 	_foliage[key] = m
 	return m
@@ -403,3 +430,4 @@ static func clear_cache() -> void:
 	_materials.clear()
 	_foliage.clear()
 	_world.clear()
+	SurfaceResponse.clear_cache()

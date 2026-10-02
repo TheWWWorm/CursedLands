@@ -1,13 +1,22 @@
 class_name Paperdoll
 extends SubViewportContainer
 ## The inventory screen's hero figure («Переодевание»: the paperdoll on a
-## pedestal in the middle, docs/original_reference.md): the hero's own model
-## with its current armour and weapons, idling. Drag or hold CampView's
-## painted arrows to turn it. Pedestal = backdrop (CampView).
-## The original camp figure's placement and camera are not reproduced.
+## pedestal in the middle): the hero's own model
+## with its current armour and weapons, idling. CampView's painted arrows
+## turn it; other previews support dragging. Pedestal = backdrop (CampView).
 
 const SIZE := Vector2i(220, 300)
 var view_size := SIZE
+## figure at (400,440), UI depth 6, scaled 1.2 about its origin
+## with the six depth-clear regions as a screen-space mask.
+## No info_scale or altitude; UI camera axes are x right, y down, z forward.
+var camp_frame := false
+const CAMP_SCALE := 1.2
+const CAMP_RECT := Rect2(272, 100, 256, 400)
+const CAMP_CLIP := [Rect2(290, 100, 220, 400), Rect2(272, 190, 18, 70),
+	Rect2(272, 340, 18, 70), Rect2(510, 190, 18, 20),
+	Rect2(510, 290, 18, 20), Rect2(510, 390, 18, 20)]
+var camp_angle := 0.0   # signed C fmod; retained when the hero / equipment changes
 ## Framing: view height / figure height, and the figure's centre offset down
 ## the view (fraction of the view height).
 var frame_scale := 1.15
@@ -26,7 +35,7 @@ var _info := {}
 ## y_down = (py/400 - 0.75)*K*z, K = 0.481575); the figure stands at virtual
 ## pixel exe_px, depth EXE_DEPTH, turned by the fixed quaternions (EI camera space: x right,
 ## y down, z forward), scaled 1 / info_scale and lowered by altitude / info_scale.
-const EXE_K := 0.481575
+const EXE_K := 0.48157462
 const EXE_DEPTH := 9.0
 var exe_rect := Rect2()
 var exe_px := Vector2(100, 200)
@@ -37,16 +46,36 @@ var _pivot: Node3D
 var _cam: Camera3D
 var _framed := 0
 var _drag := false
+const POSE_INTERVAL := 1.0 / 15.0
+var _pose_wait := 0.0
+var _pose_clip := ""
+var _pose_time := -1.0
+var _anim_roots: Array[EIAnimPart] = []
+var _wound_levels := PackedByteArray()
 
 
 func _ready() -> void:
 	stretch = true
-	custom_minimum_size = Vector2(view_size)
-	mouse_filter = Control.MOUSE_FILTER_STOP
+	# These previews are explicitly laid out inside an existing frame. Their
+	# render resolution must not force the control to stay 160×220 on a phone.
+	custom_minimum_size = Vector2.ZERO if exe_rect.has_area() or camp_frame else Vector2(view_size)
+	mouse_filter = Control.MOUSE_FILTER_IGNORE if camp_frame else Control.MOUSE_FILTER_STOP
+	if camp_frame:
+		var mat := ShaderMaterial.new()
+		mat.shader = preload("res://src/ui/paperdoll_clip.gdshader")
+		mat.set_shader_parameter("view_rect", Vector4(CAMP_RECT.position.x, CAMP_RECT.position.y,
+			CAMP_RECT.size.x, CAMP_RECT.size.y))
+		var rects := PackedVector4Array()
+		for r: Rect2 in CAMP_CLIP:
+			rects.append(Vector4(r.position.x, r.position.y, r.end.x, r.end.y))
+		mat.set_shader_parameter("clip_rects", rects)
+		material = mat
 
 
 ## Rebuilds only when the look changed (prototype, complexion or equipment).
 func show_unit(u: GameUnit) -> void:
+	if u != _unit:
+		_pose_wait = 0.0
 	_unit = u
 	show_info(u.info)
 
@@ -59,6 +88,11 @@ func show_info(info: Dictionary) -> void:
 		return
 	_key = key
 	_info = info
+	_pose_wait = 0.0
+	_pose_clip = ""
+	_pose_time = -1.0
+	_anim_roots.clear()
+	_wound_levels.clear()
 	for c in get_children():
 		c.queue_free()
 	var vp := SubViewport.new()
@@ -66,13 +100,19 @@ func show_info(info: Dictionary) -> void:
 	vp.own_world_3d = true
 	vp.transparent_bg = true
 	add_child(vp)
-	_model = EIUnitModel.create(info)
+	_model = EIUnitModel.create(info, true)
 	if _model == null:
 		return
 	_pivot = Node3D.new()
 	vp.add_child(_pivot)
 	_pivot.add_child(_model)
 	_model.act("idle")
+	for n in _model.get_children():
+		if n is EIAnimPart and n.animation_parent == null:
+			_anim_roots.append(n)
+	if camp_frame or follow_pose:
+		_model.set_process(false)
+		_model.player.callback_mode_process = AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_MANUAL
 	_cam = Camera3D.new()
 	_cam.fov = fov
 	vp.add_child(_cam)
@@ -95,11 +135,28 @@ func show_info(info: Dictionary) -> void:
 
 ## Frames the whole figure once the idle pose has applied (models face
 ## Godot +Z).
-func _process(_dt: float) -> void:
+func _process(dt: float) -> void:
 	if _model == null or not _model.is_inside_tree():
 		return
-	if follow_pose:
+	if not is_visible_in_tree():
+		_pose_wait = 0.0
+		return
+	# Pose sampling is expensive; camera framing and held-arrow rotation stay
+	# independent of this cadence. Resume hidden previews with an immediate sample.
+	_pose_wait = maxf(0.0, _pose_wait - dt)
+	var sample := is_zero_approx(_pose_wait)
+	if sample:
+		_pose_wait = POSE_INTERVAL
+	if follow_pose and sample:
 		_sync_pose()
+	if camp_frame:
+		if _framed == 0:
+			_ui_camera(CAMP_RECT)
+			_camp_transform()
+			_framed = 3
+		if sample:
+			_sample_camp_pose(Time.get_ticks_msec())
+		return
 	if exe_rect.has_area():
 		if _framed == 0:
 			_exe_frame()
@@ -131,16 +188,20 @@ func _process(_dt: float) -> void:
 		set_process(false)
 
 
-func _exe_frame() -> void:
+func _ui_camera(rect: Rect2) -> void:
 	var n := 0.1
 	var k := EXE_K * n
-	var c := exe_rect.get_center()
+	var c := rect.get_center()
 	_cam.near = n
 	_cam.far = 100.0
 	_cam.keep_aspect = Camera3D.KEEP_HEIGHT
-	_cam.set_frustum(exe_rect.size.y * 0.0025 * k,
+	_cam.set_frustum(rect.size.y * 0.0025 * k,
 		Vector2((c.x * 0.0025 - 1.0) * k, -(c.y * 0.0025 - 0.75) * k), n, 100.0)
 	_cam.transform = Transform3D.IDENTITY
+
+
+func _exe_frame() -> void:
+	_ui_camera(exe_rect)
 	var proto := GameData.db.find("monster_prototypes", str(_info.get("prototype", "")))
 	# panel = prototype (info_scale), =
 	# (altitude); multiplies info_scale by the.adb height ratio
@@ -164,9 +225,53 @@ func _exe_frame() -> void:
 		to_godot * Vector3(x, y, EXE_DEPTH))
 
 
+func _camp_transform() -> void:
+	if not is_instance_valid(_pivot):
+		return
+	var to_godot := Basis(Vector3(1, 0, 0), Vector3(0, -1, 0), Vector3(0, 0, -1))
+	var ei_local := Basis(Vector3(1, 0, 0), Vector3(0, 0, -1), Vector3(0, 1, 0))
+	var rot := Basis(Vector3.UP, camp_angle) * Basis(Vector3.RIGHT, PI * 0.5)
+	_pivot.transform = Transform3D((to_godot * rot * ei_local.inverse()).scaled_local(Vector3.ONE * CAMP_SCALE),
+		to_godot * Vector3(0.0, 1.0113066, 6.0))
+
+
+func turn_camp_by(angle: float) -> void:
+	# Original mode 1 (left arrow) increases the angle: the front turns left.
+	camp_angle = fmod(camp_angle + angle, TAU)
+	_camp_transform()
+
+
+func _sample_camp_pose(clock_ms: float) -> void:
+	# The original supplies animation frame time timeGetTime / 1024 * 15.
+	# EIAnim stores the original keys at 20 frames/s, so convert to its seconds.
+	var length := _model.player.current_animation_length
+	if length > 0.0:
+		_seek_pose(fmod(clock_ms / 1024.0 * 15.0 / EIAnim.FPS, length))
+
+
+func _seek_pose(time: float) -> void:
+	var clip := String(_model.player.assigned_animation)
+	if clip == _pose_clip and time == _pose_time:
+		return   # paused / finished source: the displayed pose is already correct
+	# Store all animation keys before composing the hierarchy once. Otherwise
+	# each written track recursively re-applies its entire subtree.
+	var was_batch := EIAnimPart.batch
+	if not _anim_roots.is_empty():
+		EIAnimPart.batch = true
+	_model.player.seek(time, true)
+	EIAnimPart.batch = was_batch
+	for root in _anim_roots:
+		root._apply_key()
+	_pose_clip = clip
+	_pose_time = time
+
+
 func _sync_pose() -> void:
 	if is_instance_valid(_unit) and _unit.parts.size() >= 6:   # the unit's wound layers too
-		UnitWounds.apply(_model, UnitWounds.levels(_unit), int(_unit.race.get("type_id", 0)) == 0x32)
+		var levels := UnitWounds.levels(_unit)
+		if levels != _wound_levels:
+			UnitWounds.apply(_model, levels, int(_unit.race.get("type_id", 0)) == 0x32)
+			_wound_levels = levels
 	if not is_instance_valid(_unit) or _unit.model == null or _unit.model.player == null or _model.player == null:
 		return
 	var src: EIUnitModel = _unit.model
@@ -177,8 +282,10 @@ func _sync_pose() -> void:
 	if clip != _model._current:
 		_model.play(clip, 0.0)
 	if _model.player.assigned_animation == key:
-		_model.player.seek(src.player.current_animation_position, true)
-		_model.player.pause()
+		_seek_pose(src.player.current_animation_position)
+		# Re-pausing discards AnimationPlayer's track caches, making the next seek expensive.
+		if _model.player.is_playing():
+			_model.player.pause()
 
 
 ## Radians around Godot's up axis; CampView supplies the original held-arrow rate.

@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Cursed Lands">
+<meta name="theme-color" content="#17130e">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>Cursed Lands</title>
+<link id="-gd-engine-icon" rel="icon" type="image/png" href="index.icon.png" />
+<link rel="apple-touch-icon" href="index.apple-touch-icon.png"/>
+
+<style>
+html,body{margin:0;position:fixed;inset:0;overflow:hidden;background:#17130e;color:#e4d7a7;font:16px system-ui;overscroll-behavior:none}
+#canvas{display:block;width:100%;height:100%;touch-action:none;outline:none}
+#start{position:fixed;inset:0;display:grid;place-content:center;text-align:center;padding:24px;gap:16px;background:#17130e;z-index:4;overflow:auto}
+button{font:inherit;color:inherit;background:#372e20;border:1px solid #8a734c;padding:12px 20px;border-radius:5px;min-height:48px}
+#notice{max-width:38em;white-space:pre-wrap}#safe-probe{position:fixed;visibility:hidden;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+#runtime-error{position:fixed;bottom:env(safe-area-inset-bottom);left:10%;right:10%;background:#421e18;color:white;z-index:5}#runtime-error:empty{display:none}
+#rotate{display:none;position:fixed;inset:0;background:#17130eeb;z-index:6;align-content:center;text-align:center;padding:32px}
+#start,#rotate{padding-left:max(24px,env(safe-area-inset-left),env(safe-area-inset-right));padding-right:max(24px,env(safe-area-inset-left),env(safe-area-inset-right));padding-top:max(24px,env(safe-area-inset-top));padding-bottom:max(24px,env(safe-area-inset-bottom))}
+@media(orientation:portrait) and (pointer:coarse){#rotate{display:block}}
+</style></head><body>
+<canvas id="canvas" tabindex="0">This game requires WebGL 2.</canvas>
+<div id="safe-probe"></div><div id="runtime-error" role="alert"></div>
+<div id="rotate">Turn your device sideways to play.<p><button onclick="this.parentElement.parentElement.style.display='none'">Continue upright</button></p></div>
+<div id="start"><h1>Cursed Lands</h1><div id="notice">Preparing local storage…</div><button id="play" disabled>Play</button><button onclick="CursedFiles.fullscreen()">Fullscreen / Home Screen</button></div>
+<script src="storage.js"></script><script src="files.js"></script><script src="index.js"></script>
+<script>
+const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":true,"fileSizes":{"index.pck":1758496,"index.wasm":39509339},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
+const engine = new Engine(GODOT_CONFIG);
+const notice = document.getElementById('notice'), play = document.getElementById('play');
+Promise.all([CursedFiles.initialize(), engine.init(GODOT_CONFIG.executable)]).then(() => {
+  notice.textContent = 'Use your own Evil Islands data. Your files stay on this device.\nOn iPhone or iPad: Share → Add to Home Screen → Open as Web App.'; play.disabled = false;
+}).catch(error => notice.textContent = error.message || String(error));
+play.addEventListener('click', () => {
+  play.disabled = true; notice.textContent = 'Loading…';
+  engine.startGame({onProgress: (current, total) => notice.textContent = total ? 'Loading ' + Math.round(current / total * 100) + '%' : 'Loading…'})
+    .then(() => { document.getElementById('start').remove(); document.getElementById('canvas').focus(); })
+    .catch(error => { notice.textContent = error.message || String(error); play.disabled = false; });
+});
+</script></body></html>
+

@@ -23,7 +23,17 @@ var faction := 0        # diplomacy index (OBJ_PLAYER)
 var controller := -1    # player index controlling this unit, -1 = AI
 var display_name := ""
 
-var pos := Vector2.ZERO
+## Setting it keeps the unit's spatial bucket (NavGrid.rebucket) exact, so
+## nearby-unit queries see a unit moved outside its own tick (scripts,
+## teleports, snapshots, placement) at once, as a scan of every unit would.
+var pos := Vector2.ZERO:
+	set(v):
+		pos = v
+		if _seq != 0:
+			world.nav.rebucket(self)
+## Order of registration in GameWorld.units (0 = not in it): nearby-unit
+## queries return units in this order, the order of a scan of `units`.
+var _seq := 0
 ## Co-op client: where the unit is drawn between the host's snapshots.
 var net_view := NetSmooth.new()
 var facing := 0.0
@@ -53,6 +63,7 @@ var max_mana := 0.0
 var stats := {}         # to_hit, parry, dmg_min, dmg_max, absorption, reach, attack_time
 var dead := false
 var hidden := false
+var fogged := false   # out of this player's sight (UnitFog, client-side only)
 
 # --- orders
 var orders: Array[Dictionary] = []
@@ -105,7 +116,15 @@ var alert := false
 var ai_next := 0.0      # world time of the unit's next AI tick (UnitAI)
 var order_failed := false   # the last order ended unsuccessfully (creature)
 var limp := 0               # walk modifier 0-2 (replicated to clients, which have no body parts)
-var buffs := {}             # name -> {until, dmg_mul?, hp_mul?, actions_add?, regen_mul?, stun?, no_cast?, detect?, sense?, resist?, armor?}
+## The Rest order (the original order 0xb, case 0xb sets
+## the posture to 4, whose animation state is rest 0x8000):
+## a calm glance with the rest flag (UnitAI._calm_busy). Any next order ends it.
+var resting := false:
+	set(v):
+		if v != resting:
+			resting = v
+			_pose_dirty = true
+var buffs := {}             # name -> {until, dmg_mul?, hp_mul?, actions_add?, regen_mul?, no_cast?, detect?, sense?, resist?, armor?}
 
 # --- body and movement (the original unit radius; NavGrid stamps)
 ## 0.9 x the larger horizontal half-extent of the figure's bounding box
@@ -119,6 +138,9 @@ var _moving := false        # stepped this tick (the original)
 var _occ_cell := Vector2i(-1, -1)
 var _occ_r := 0.0
 var _bucket := -1
+var _abucket := -1          # NavGrid._all_buckets key (dead units too)
+var _cbucket := -1          # NavGrid._cbuckets / _call_buckets keys (16 m grid)
+var _cabucket := -1
 var _avoid: GameUnit         # slower mover to path round
 var _arrive_t := 0.0         # estimated arrival at the attack target (unit-AI)
 var _goal := Vector2.INF     # where the current attack path leads (unit-AI)
@@ -135,6 +157,12 @@ const ANIM_OFFSCREEN_STEP := 0.2
 const ANIM_NEAR := 70.0
 const ANIM_FAR_STEP := 1.0 / 30.0
 const ANIM_SHADOW_STEP := 1.0 / 20.0
+## Walking out of view and beyond the unit sounds' reach (UnitSounds.MAX_D
+## + 8 m from the listener): 10 poses a second. Its footprints are still
+## placed at the clips' step frames, from the pose up to 0.1 s later (the
+## planted foot has hardly moved); nearer, steps and voices keep exact timing.
+const ANIM_FAR_MOVE_STEP := 0.1
+const ANIM_HEAR := UnitSounds.MAX_D + 8.0
 var _body: VisibleOnScreenNotifier3D
 var _screen: VisibleOnScreenNotifier3D
 static var _headless := DisplayServer.get_name() == "headless"
@@ -145,6 +173,8 @@ var _anim_acc := 0.0
 var _anim_due := 0.0
 var _anim_pos := Vector2.INF
 var _anim_moving := 0.0
+## Shown in the unit panel, whose figure mirrors this pose: full animation rate.
+var anim_watched := false
 var _anim_roots: Array[EIAnimPart] = []
 ## Render layer of out-of-view figures; the sun's shadow_caster_mask leaves it out.
 const OFFSCREEN_LAYER := 1 << 19
@@ -171,6 +201,12 @@ func setup(w: GameWorld, record: Dictionary) -> bool:
 	if model == null:
 		return false
 	add_child(model)
+	# Physics interpolation (option phys_interp): the unit node moves on the
+	# physics step and is drawn interpolated; its figure is posed every frame
+	# in _process, so it is not interpolated itself (drawn under the unit's
+	# interpolated transform).
+	physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_ON
+	model.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
 	# Measured in the idle pose (Approx.: the pose of the original's box is not known
 	# the rest pose holds the arms out).
 	model.act("idle", 1, 0.0)
@@ -337,7 +373,10 @@ func _init_stats() -> void:
 # so a destroyed head or torso (lethality 1.01) kills
 #   healing is spread over damaged parts by lethality.
 
-const PART_KEYS := ["head", "torso", "right_arm", "left_arm", "right_leg", "left_leg"]
+## the original numbering: 0 head, 1 body, 2 left arm, 3 right arm, 4 left leg
+## 5 right leg (hit-effect node per part: hd, bd, lh2, rh2
+## ll2, rl2; the wound codes hd bd lh rh ll rl).
+const PART_KEYS := ["head", "torso", "left_arm", "right_arm", "left_leg", "right_leg"]
 const PART_TYPES := {"skull": 0, "torso": 1, "arm": 2, "leg": 3}
 ## Random hit location of a strike: 20 slots, head 2, torso 6
 ## every limb 3.
@@ -346,6 +385,7 @@ const HIT_TABLE := [0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5]
 
 func _init_parts() -> void:
 	parts.clear()
+	_limbs.clear()
 	var torso: Array = Array(race.get("torso", []))
 	if torso.size() < 4 or float(torso[2]) <= 0.0:
 		return
@@ -465,8 +505,10 @@ func severed_mask() -> int:
 	return m
 
 
-## Model part chains of head, torso, right / left arm, right / left leg.
-const SEVER_NODES := ["hd", "", "rh1", "lh1", "rl1", "ll1"]
+## Model part chains of head, torso, left / right arm, left / right leg
+## (part order above; node list hd / bd / lh1–3 / rh1–3
+## ll1–3 / rl1–3).
+const SEVER_NODES := ["hd", "", "lh1", "rh1", "ll1", "rl1"]
 var _severed_shown := 0
 
 ## Hides the model's severed limbs (approx.: the original's flying limb and
@@ -517,7 +559,9 @@ func _hurt_part(i: int, dmg: float, types := PackedFloat32Array()) -> void:
 
 ## Whole-body damage (spells, scripts; part 6): split over the
 ## attached parts so the unit loses `amount` health.
-func body_damage(amount: float) -> void:
+## `layers` (optional, spells: on each part's share) maps
+## (part index, amount) to the amount left after that part's worn layers.
+func body_damage(amount: float, layers := Callable()) -> void:
 	if parts.is_empty():
 		_hp -= amount
 		return
@@ -529,7 +573,9 @@ func body_damage(amount: float) -> void:
 		return
 	for i in parts.size():
 		if parts[i].state > 1:
-			_hurt_part(i, amount / (w * _max_hp) * parts[i].max)
+			var a := amount if not layers.is_valid() else float(layers.call(i, amount))
+			if a > 0.0:
+				_hurt_part(i, a / (w * _max_hp) * parts[i].max)
 
 
 ## The part a strike lands on: the aimed part (called shot, 0..5) or a random
@@ -559,23 +605,57 @@ func part_group(i: int) -> String:
 ## Wound factor of the worst limb of a type (legs = 3
 ##  arms = 2): ratio <= DamageLevel2 -> DamageLevel2Value
 ## <= DamageLevel1 -> DamageLevel1Value, else 1 (ai.reg [RPG]).
+## (Remake speed: it runs for every unit several times a physics step, so
+## the parts of each type and the ai.reg levels are looked up once.)
 func wound_factor(type: int) -> float:
 	var r := 1.0
-	for p in parts:
-		if p.state != 0 and p.type == type and p.cur != p.max:
+	for p: Dictionary in _limbs_of(type):
+		if p.state != 0 and p.cur != p.max:
 			r = minf(r, p.cur / p.max)
-	if r <= GameData.ai_value("RPG", "DamageLevel2", 0.0):
-		return GameData.ai_value("RPG", "DamageLevel2Value", 0.33)
-	if r <= GameData.ai_value("RPG", "DamageLevel1", 0.5):
-		return GameData.ai_value("RPG", "DamageLevel1Value", 0.5)
+	var lv := _wound_levels()
+	if r <= lv[0]:
+		return lv[1]
+	if r <= lv[2]:
+		return lv[3]
 	return 1.0
+
+
+var _limbs := {}   # part type -> its part dictionaries (wound_factor; reset by _init_parts)
+
+
+## The parts of one type in `parts` order (remembered until _init_parts).
+func _limbs_of(type: int) -> Array:
+	var of_type = _limbs.get(type)
+	if of_type == null:
+		of_type = []
+		for p in parts:
+			if p.type == type:
+				of_type.append(p)
+		_limbs[type] = of_type
+	return of_type
+
+static var _wl_reg := {}
+static var _wl := PackedFloat64Array()
+
+
+## ai.reg [RPG] DamageLevel2, DamageLevel2Value, DamageLevel1, DamageLevel1Value,
+## DamageLevelRunLimit
+## (re-read when GameData loads another ai.reg).
+static func _wound_levels() -> PackedFloat64Array:
+	if _wl.is_empty() or not is_same(_wl_reg, GameData.ai_reg):
+		_wl_reg = GameData.ai_reg
+		_wl = PackedFloat64Array([GameData.ai_value("RPG", "DamageLevel2", 0.0),
+			GameData.ai_value("RPG", "DamageLevel2Value", 0.33), GameData.ai_value("RPG", "DamageLevel1", 0.5),
+			GameData.ai_value("RPG", "DamageLevel1Value", 0.5),
+			GameData.ai_value("RPG", "DamageLevelRunLimit", 0.5)])
+	return _wl
 
 
 ## Worst leg ratio (blocks running below DamageLevelRunLimit).
 func _legs_ratio() -> float:
 	var r := 1.0
-	for p in parts:
-		if p.state != 0 and p.type == 3:
+	for p: Dictionary in _limbs_of(3):
+		if p.state != 0:
 			r = minf(r, p.cur / p.max)
 	return r
 
@@ -615,8 +695,9 @@ func move_to(p: Vector2, run := true, queue := false) -> void:
 
 
 ## `aim` = body part for an aimed strike (0 head .. 5 left leg), -1 = random.
-func attack(t: GameUnit, queue := false, aim := -1) -> void:
-	command({"type": "attack", "target": t, "aim": aim}, queue)
+## `run`: the double-click flag (see Session._double_stand).
+func attack(t: GameUnit, queue := false, aim := -1, run := false) -> void:
+	command({"type": "attack", "target": t, "aim": aim, "run": run}, queue)
 
 
 func is_idle() -> bool:
@@ -678,7 +759,7 @@ func cannot_run() -> bool:
 func run_refusal() -> int:
 	if float(stats.get("load", 0.0)) > float(stats.get("max_load", INF)):
 		return 2
-	return 1 if _legs_ratio() < GameData.ai_value("RPG", "DamageLevelRunLimit", 0.5) else 0
+	return 1 if _legs_ratio() < _wound_levels()[4] else 0
 
 
 ## The gait value of the original unit: 0 crawl, 1 kneel, 2 walk, 3 run.
@@ -882,9 +963,12 @@ func _tick(dt: float) -> void:
 				buffs.erase(b)
 				if had_hp:
 					refresh_max_hp()
-		if buffs.has("stun"):
-			_set_action("idle")
-			return
+		# Stun (spell 25, magic effect 0x19) does not hold the unit: no game
+		# code reads effect 0x19 — not the stat folds
+		#  (asked for 0x1d–0x1f)
+		# (0x10, 0x20 and the AI's "already has it"), the
+		# command / AI code, nor any effect switch but the visuals
+		# . Like enlarge / shrink it only shows.
 	if not _pending_hit.is_empty():
 		_pending_hit.t -= dt
 		if _pending_hit.t <= 0.0:
@@ -893,6 +977,8 @@ func _tick(dt: float) -> void:
 	if _anim_lock > 0.0:
 		_anim_lock -= dt
 		return
+	if resting and not (order.is_empty() and orders.is_empty()):
+		resting = false   # a new order ends the Rest order (0xb)
 	if order.is_empty():
 		if orders.is_empty():
 			if world.time >= ai_next:
@@ -909,6 +995,8 @@ func _tick(dt: float) -> void:
 			path = PackedVector2Array()
 	elif controller < 0 and world.time >= ai_next and not order.get("ai", false) and world.ai.calm_tick(self):
 		return   #  cast a buff / heal over the calm walk
+	elif controller >= 0 and order.has("swarm") and world.ai.swarm_tick(self):
+		return   # Ctrl / aimed-key ground click (packet 0x3a): engages on the way
 	match order.type:
 		"move": _do_move(dt)
 		"attack": _do_attack(dt)
@@ -929,7 +1017,123 @@ func _tick(dt: float) -> void:
 			if _turn_to(float(order.angle), dt):
 				order = {}
 		"cast": _do_cast(dt)
+		"use": _do_use(dt)
 		_: order = {}
+
+
+## The use action, order type 6 (the original
+##  case 6): `order.sub` is the
+## action sub-code — "science" (0, a lever or switch), "steal" (1)
+## "tame" (2), "loot" (a corpse or chest). The unit first turns to
+## face `order.at`, then plays:
+##   loot, standing: AC_SPECIAL modifier 48 (bow / crossbow 52), no cross;
+##   loot, kneeling / crawling: modifier 53 (bow / crossbow 22), crawling
+##     units cross to kneeling first and back after;
+##   science 21, steal 20, tame 19: no weapon bits; a unit not kneeling
+##     crosses to kneeling first and back after.
+## (Human Hero: uspecial22 / 23 / 24 / 07, uspecial06 / 05 / 04.) The action
+## itself (`order.done`) runs at the clip's hit frame: end tick =
+## start + cross-in length + the clip's hit frame (.adb, at the race's
+## animation speed); the rest of the clip and the cross back still play.
+## Clients see each clip through the snapshot action "anim:<clip>".
+const USE_MOD := {"science": 21, "steal": 20, "tame": 19}
+
+
+func _do_use(dt: float) -> void:
+	var ph := int(order.get("phase", 0))
+	if ph == 0:
+		var at: Vector2 = order.at
+		if at.distance_to(pos) > 0.01 and not _turn_to((at - pos).angle(), dt):
+			_set_action("idle")
+			return
+		var sub := String(order.sub)
+		var bowish := model != null and model.weapon_type in ["bow", "crossbow"]
+		var md := 0
+		var kneel := false
+		if sub == "loot":
+			if stance == STANCE_NONE:
+				md = 52 if bowish else 48
+			else:
+				md = 22 if bowish else 53
+				kneel = stance != STANCE_KNEEL
+		else:
+			md = USE_MOD.get(sub, 21)
+			kneel = stance != STANCE_KNEEL
+		var clip := ""
+		if model and not model.adb.is_empty():
+			var wb := model.weapon_bit() if sub == "loot" else 0
+			clip = model.pick(EIUnitModel.AC_SPECIAL | md * EIUnitModel.MOD_1 | wb)
+		order.clip = clip
+		order.kneel = kneel and clip != ""
+		order.from_st = model.pose_state if model else 0
+		order.phase = 1
+		if order.kneel:
+			var c := _cross_clip(int(order.from_st), EIUnitModel.ST_WARRY)
+			if c != "":
+				_anim_lock = _play_clip(c)
+				action = "anim:" + c
+				return
+		ph = 1
+	if ph == 1:
+		var clip := String(order.clip)
+		order.phase = 2
+		if clip == "":
+			_use_done()
+			order = {}
+			_set_action("idle")
+			return
+		var len := _play_clip(clip)
+		action = "anim:" + clip
+		var hit := _clip_hit_ticks(clip) * TICK
+		if hit < 0.0 or hit > len:
+			hit = len
+		order.rest = len - hit
+		_anim_lock = hit
+		return
+	if ph == 2:
+		_use_done()
+		order.phase = 3
+		_anim_lock = float(order.rest)
+		if _anim_lock > 0.0:
+			return
+		ph = 3
+	if ph == 3:
+		order.phase = 4
+		if order.kneel:
+			var c := _cross_clip(EIUnitModel.ST_WARRY, int(order.from_st))
+			if c != "":
+				_anim_lock = _play_clip(c)
+				action = "anim:" + c
+				return
+	order = {}
+	_pose_dirty = true
+	_set_action("idle")
+
+
+func _use_done() -> void:
+	var cb = order.get("done")
+	order.erase("done")
+	if cb is Callable and (cb as Callable).is_valid():
+		(cb as Callable).call()
+
+
+## The stance change clip from one animation state to another (as
+## EIUnitModel.cross picks it), "" when the database has none.
+func _cross_clip(from_st: int, to_st: int) -> String:
+	if model == null or not EIUnitModel._CROSS_TO.has(to_st):
+		return ""
+	return model.pick(model.weapon_bit() | from_st | EIUnitModel.AC_CROSS | EIUnitModel._CROSS_TO[to_st] * EIUnitModel.MOD_1)
+
+
+## A clip's hit frame in logic ticks (.adb / the race's animation
+## speed, as `_hit_ticks`), -1 when unknown.
+func _clip_hit_ticks(clip: String) -> float:
+	var f := _clip_hit_frame(String(model.template).to_lower() if model else "", clip)
+	if f < 0:
+		return -1.0
+	var sp: Array = Array(race.get("anim_speeds", [1.0]))
+	var k := float(sp[0]) if not sp.is_empty() and float(sp[0]) != 0.0 else 1.0
+	return float(maxi(1, int(float(f) / k)))
 
 
 func _play_clip(clip: String) -> float:
@@ -973,6 +1177,7 @@ func _path_to(to: Vector2, t: GameUnit = null) -> PackedVector2Array:
 ## Units never push each other.
 func _step_along_path(dt: float) -> bool:
 	var budget := speed() * dt
+	var from := pos
 	while budget > 0.0 and not path.is_empty():
 		var tgt := path[0]
 		var d := pos.distance_to(tgt)
@@ -993,6 +1198,8 @@ func _step_along_path(dt: float) -> bool:
 		else:
 			budget = 0.0
 	var arrived := path.is_empty()
+	if arrived and pos.distance_to(from) < 0.01:
+		return true   # already there: no walk clip for an order that ends at once
 	# a party unit asked to run that cannot ((1))
 	# says "overloaded" (ack 0x14) or "injured" (0x15); its run request, the
 	# double-click flag and the run gait are dropped (= walk).
@@ -1045,7 +1252,8 @@ func _turn_to(ang: float, dt: float) -> bool:
 
 func _do_follow(dt: float) -> void:
 	var t: GameUnit = _order_target()
-	if t == null or not is_instance_valid(t) or t.dead:
+	# A loot approach goes to a body (order.corpse, wants it dead).
+	if t == null or not is_instance_valid(t) or t.dead != bool(order.get("corpse", false)):
 		order = {}
 		return
 	var dist := float(order.get("dist", 2.0))
@@ -1062,7 +1270,8 @@ func _do_follow(dt: float) -> void:
 	if controller >= 0:
 		# A party unit goes at its gait on every command, an
 		# interact / loot / steal approach (order type 6) too.
-		running = stance == STANCE_NONE and gait_run
+		# A double-clicked order runs while standing (run bit 2).
+		running = stance == STANCE_NONE and (gait_run or bool(order.get("run", false)))
 	else:
 		running = pos.distance_to(t.pos) > dist + 3.0
 	_step_along_path(dt)
@@ -1089,6 +1298,14 @@ func _do_attack(dt: float) -> void:
 	target = t
 	if world.ai.rechoose(self):   # the AI may switch to a spell or another target
 		return
+	# the original (order tick): an order other than types 4 / 5 / 6
+	# (an attack) sets the gait to 2 (walk) while the posture is
+	# not standing — a kneeling or crawling unit stands up to fight (the
+	# change itself is, `change_posture`). Every strike clip
+	# of the human databases is a standing combat-state one (state 2).
+	if stance != STANCE_NONE:
+		gait_run = false
+		change_posture(STANCE_NONE)
 	var ranged: bool = stats.get("ranged", false)
 	var reach: float = stats.reach if ranged else melee_reach(t)
 	var d := pos.distance_to(t.pos)
@@ -1101,6 +1318,10 @@ func _do_attack(dt: float) -> void:
 		return
 	if _attack_cd > 0.0:
 		_set_action("idle")
+		return
+	# The strike is queried in the combat state (alert)
+	# a unit that was idle in the relaxed state first plays its cross clip.
+	if _update_pose():
 		return
 	var len := model.act("attack", randi_range(1, 3), 0.05)
 	len = maxf(len, 0.6)
@@ -1131,7 +1352,9 @@ func _do_attack(dt: float) -> void:
 func _approach(t: GameUnit, d: float, reach: float, dt: float) -> void:
 	# a party unit approaches at its gait, any other one runs
 	# (its combat flag is set by the attack command); only standing.
-	running = not sneaking and (gait_run or controller < 0)
+	# A double-clicked attack runs while standing (run bit 2).
+	running = not sneaking and (gait_run or controller < 0 \
+		or (bool(order.get("run", false)) and stance == STANCE_NONE))
 	if path.is_empty() or world.time >= _arrive_t - 16.0 * TICK:
 		var tv := t.speed() * TICK if t._moving else 0.0
 		var closing := speed() * TICK + tv * Vector2.from_angle(t.facing).dot((t.pos - pos) / maxf(d, 0.001))
@@ -1341,15 +1564,17 @@ func _resolve_hit(t: GameUnit, roll := {}) -> void:
 		Projectile.launch(world, self, t, true).roll = roll
 		if world.session:
 			world.session.broadcast({"t": "arrow", "a": uid, "b": t.uid})
+		world.combat.weapon_spell(self, t)
 		return
 	world.combat.melee(self, t, roll)
+	world.combat.weapon_spell(self, t)
 	stance = STANCE_NONE
 
 
 ## `part` = body part index struck (hit_part()), -1 = whole body.
 ## `types`: the damage per type after armour (severing).
 ## `hit_flags`: hit-number labels (FlyingHP): 1 backstab.
-func take_damage(amount: float, source: GameUnit, part := -1, types := PackedFloat32Array(), hit_flags := 0) -> void:
+func take_damage(amount: float, source: GameUnit, part := -1, types := PackedFloat32Array(), hit_flags := 0, layers := Callable(), owner_only := false) -> void:
 	if dead:
 		return
 	if source and is_instance_valid(source):
@@ -1364,7 +1589,7 @@ func take_damage(amount: float, source: GameUnit, part := -1, types := PackedFlo
 			world.session.broadcast({"t": "blood", "uid": uid, "part": part,
 				"frac": lost / maxf(float(parts[part].max), 0.001)})
 	else:
-		body_damage(amount)
+		body_damage(amount, layers)
 	GameSound.impact(self, source, part, amount, not types.is_empty())
 	# the hit number = health lost, truncated ("0" for a blow
 	# that takes none); flag 2 for a strike on the head (FlyingHP).
@@ -1379,6 +1604,18 @@ func take_damage(amount: float, source: GameUnit, part := -1, types := PackedFlo
 		_anim_lock = minf(model.act("hit", 1, 0.05), 0.6)
 		action = "hit"
 		GameSound.unit(self, "hit")
+	# `owner_only`: a lasting spell's later ticks pass no attacker, only the
+	# owner (with effect flag bit 0): the
+	# experience still goes to the owner's party (param 3
+	# ), but no hit hook / reaction runs.
+	if owner_only:
+		return
+	# a blow that does not kill: a creature attacker's side goes
+	# into this unit's own hostility mask ((attacker, victim)) unless
+	# the diplomacy already makes it hostile — then the hit hook.
+	if source and is_instance_valid(source) and source != self and source.faction != faction \
+			and world.relation(faction, source.faction) != 2:
+		world.ai._hate(self, source.faction)
 	if controller < 0:
 		world.ai.on_attacked(self, source)
 	else:
@@ -1436,6 +1673,8 @@ func is_frozen() -> bool:
 ## Back to life with full health (respawn, + full HP).
 func revive() -> void:
 	dead = false
+	if _seq != 0:
+		world.nav.rebucket(self)
 	restore_parts()
 	_hp = _max_hp
 	mana = max_mana
@@ -1467,6 +1706,7 @@ func set_equipment(armors: PackedStringArray, weapons: PackedStringArray) -> voi
 	_wounds_dirty = true
 	_pose_dirty = true
 	add_child(model)
+	model.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
 	model.act_with_start("death" if dead else action.get_slice(":", 0) if not action.begins_with("anim:") else "idle", 1, 0.0)
 	_anim_lod_setup()
 	if dead:   # a re-dressed corpse lies as it was, without a second death
@@ -1536,8 +1776,15 @@ func _process(dt: float) -> void:
 	else:
 		_anim_moving -= dt
 	var step := ANIM_OFFSCREEN_STEP
-	if _anim_moving > 0.0:
+	if anim_watched:
 		step = 0.0
+	elif _anim_moving > 0.0:
+		step = 0.0
+		if not _screen.is_on_screen() and not _body.is_on_screen():
+			var gs := GameSound.instance
+			if gs and gs.mixer and Vector2(gs.mixer.listener.x, gs.mixer.listener.y).distance_squared_to(pos) \
+					> ANIM_HEAR * ANIM_HEAR:
+				step = ANIM_FAR_MOVE_STEP
 	elif _body.is_on_screen():
 		var cam := get_viewport().get_camera_3d()
 		step = ANIM_FAR_STEP if cam and global_position.distance_squared_to(cam.global_position) \
@@ -1563,8 +1810,9 @@ func may_cover(cam: Camera3D, p: Vector2) -> bool:
 	var box := AABB(Vector3(-r, -0.5, -r), Vector3(2.0 * r, h + 0.5, 2.0 * r))
 	var lo := Vector2(INF, INF)
 	var hi := Vector2(-INF, -INF)
+	var gx := get_global_transform_interpolated()   # as drawn (phys_interp)
 	for c in 8:
-		var wp := global_transform * box.get_endpoint(c)
+		var wp := gx * box.get_endpoint(c)
 		if cam.is_position_behind(wp):
 			return true
 		var sp := cam.unproject_position(wp)
@@ -1588,7 +1836,7 @@ func screen_rects(cam: Camera3D) -> Array:
 		if mi.mesh == null:
 			continue
 		var box := mi.get_aabb()
-		var xf := mi.global_transform
+		var xf := mi.get_global_transform_interpolated()   # as drawn (phys_interp)
 		var lo := Vector2(INF, INF)
 		var hi := Vector2(-INF, -INF)
 		for c in 8:
@@ -1635,17 +1883,23 @@ func anim_flush() -> void:
 func _set_action(a: String) -> void:
 	# A unit that stays idle asks for the same pose every frame: when nothing
 	# it depends on changed (stance, combat flag, part health, the figure and
-	# its playing clip), the call would change nothing and is skipped.
-	if a == "idle" and action == "idle" and model and model.player and not _pose_dirty:
-		var key := [stance, alert, model.get_instance_id(), model.player.current_animation, model.pose_state, model.pose_mod]
-		if key == _idle_key:
+	# its playing clip), the call would change nothing and is skipped. The
+	# same for a unit that keeps walking / running / crawling (every physics
+	# step of a move; EIUnitModel keeps a repeated cycle request as it is).
+	if a == action and a in _STEADY and model and model.player and not _pose_dirty:
+		if _idle_key.size() == 6 and _idle_key[0] == stance and _idle_key[1] == alert \
+				and _idle_key[2] == model.get_instance_id() and _idle_key[3] == model.player.current_animation \
+				and _idle_key[4] == model.pose_state and _idle_key[5] == model.pose_mod:
 			return
 	_pose_dirty = false
 	action = a
 	if model and not _update_pose():
 		model.act_with_start(a)
 	_idle_key = [stance, alert, model.get_instance_id(), model.player.current_animation, model.pose_state, model.pose_mod] \
-		if a == "idle" and model and model.player else []
+		if a == action and a in _STEADY and model and model.player else []
+
+
+const _STEADY := ["idle", "walk", "run", "crawl"]
 
 
 ## The animation query of the stance: crawl = lie, kneel =
@@ -1662,11 +1916,13 @@ func _update_pose() -> bool:
 		st = EIUnitModel.ST_LIE
 	elif stance == STANCE_KNEEL:
 		st = EIUnitModel.ST_WARRY
+	elif resting and not alert:
+		st = EIUnitModel.ST_REST
 	elif not alert and model.neutral:
 		st = EIUnitModel.ST_NEUTRAL
 	if model.neutral and not parts.is_empty():
 		var f := wound_factor(3)
-		limp = 0 if f >= 1.0 else 2 if is_equal_approx(f, GameData.ai_value("RPG", "DamageLevel2Value", 0.33)) else 1
+		limp = 0 if f >= 1.0 else 2 if is_equal_approx(f, _wound_levels()[1]) else 1
 	var md := EIUnitModel.MOD_1 * limp
 	if st == model.pose_state and md == model.pose_mod:
 		return false
@@ -1706,18 +1962,48 @@ func _update_pose() -> bool:
 ## The posture of an animation state: lying (crawl), kneeling, standing
 ## (neutral and attack are one posture, int).
 static func _posture_of(st: int) -> int:
-	return 0 if st == EIUnitModel.ST_LIE else 1 if st == EIUnitModel.ST_WARRY else 2
+	return 0 if st == EIUnitModel.ST_LIE else 1 if st == EIUnitModel.ST_WARRY else 4 if st == EIUnitModel.ST_REST else 2
 
 
 func _sync_transform() -> void:
 	if world == null:
 		return
 	# Only on change: a moved node re-places its whole part / mesh subtree.
+	# Host: the same position, facing and ground as the last placement (and
+	# the node still there) give the same transform; the ground lookup is
+	# skipped (most units stand still).
+	var t := world.terrain
+	if world.authority and pos == _xf_pos and facing == _xf_facing and (t.get_instance_id() if t else 0) == _xf_tid \
+			and (t == null or t.surface_rev == _xf_rev) and transform == _xf:
+		return
 	var p := pos if world.authority else net_view.step(pos, get_physics_process_delta_time())
 	var xf := Transform3D(Basis(Vector3.UP, facing + MODEL_YAW_OFFSET),
 		EISpace.pos(p.x, p.y, world.ground_at(p.x, p.y)))
 	if transform != xf:
+		# A jump (placement, teleport, revive, a snapshot far off): drawn there
+		# at once, not slid there over a physics step.
+		var jump := transform.origin.distance_squared_to(xf.origin) > 4.0
 		transform = xf
+		if jump:
+			reset_physics_interpolation()
+	if world.authority:
+		_xf_pos = pos
+		_xf_facing = facing
+		_xf_tid = t.get_instance_id() if t else 0
+		_xf_rev = t.surface_rev if t else 0
+		_xf = transform
+	else:
+		_xf_tid = -1
+		_xf_pos = Vector2(INF, INF)
+
+
+# _sync_transform's last host placement (pos, facing, terrain and its surface
+# revision, the transform set).
+var _xf_pos := Vector2(INF, INF)
+var _xf_facing := 0.0
+var _xf_tid := -1   # the terrain's instance id
+var _xf_rev := 0
+var _xf := Transform3D()
 
 
 func _physics_process(_dt: float) -> void:
@@ -1751,7 +2037,7 @@ func snapshot() -> Array:
 		snappedf(hp, 1.0 / 64.0), int(dead) | (int(hidden) << 1) | (severed_mask() << 2)
 		| (int(alert) << 8) | (stance << 9) | (limp << 11) | (int(not aggressive) << 13)
 		| (clampi(faction, 0, 31) << 14) | (clampi(controller + 1, 0, 15) << 19) | (int(gait_run) << 23)
-		| (int(strike_miss) << 24), snappedf(mana, 1.0 / 16.0), ph,
+		| (int(strike_miss) << 24) | (int(resting) << 25), snappedf(mana, 1.0 / 16.0), ph,
 		snappedf(_max_hp, 1.0 / 16.0), snappedf(max_mana, 1.0 / 16.0), _buff_snapshot()]
 
 
@@ -1794,7 +2080,7 @@ func apply_snapshot(s: Array, quiet := false) -> void:
 	elif not (flags & 1) and dead:
 		revive()
 	hidden = bool(flags & 2)
-	visible = not hidden
+	visible = not hidden and not fogged
 	_show_severed((flags >> 2) & 63)
 	if s.size() > 8:
 		mana = s[7]
@@ -1811,6 +2097,7 @@ func apply_snapshot(s: Array, quiet := false) -> void:
 	controller = ((flags >> 19) & 15) - 1
 	gait_run = bool(flags & (1 << 23))
 	strike_miss = bool(flags & (1 << 24))
+	resting = bool(flags & (1 << 25))
 	if s.size() > 11:
 		buffs.clear()
 		for b: Array in s[11]:
@@ -1825,6 +2112,7 @@ func apply_snapshot(s: Array, quiet := false) -> void:
 		if a.begins_with("anim:"):
 			model.play(a.substr(5), 0.1)
 		elif a == "attack":
+			_update_pose()   # the snapshot's combat flag / posture first
 			model.act("attack", randi_range(1, 3), 0.05)
 			GameSound.unit(self, "attack")
 		else:

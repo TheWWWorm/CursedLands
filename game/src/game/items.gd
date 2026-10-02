@@ -51,8 +51,9 @@ static func info(id: String) -> Dictionary:
 ## "<code>_%02d.%d" texture (texture1, texture2), a potion / wand blueprint
 ## the quick item's look, a keystone (spell) "initqi1item" with
 ## "prototype%04d" and a rune "initqi1item" with "modifier%04d" (modifier
-## index). Approx.: the keystone's picture is the prototype's texture_type
-## (the original reads prototype field).
+## index). The keystone's picture is the prototype's texture_type: the original
+## reads prototype, which the record reader fills
+## field 0x12 = texture_type (the 19th spell_prototypes column).
 static func look(id: String) -> Dictionary:
 	if id.begins_with("spell:") or id.begins_with("rune:"):
 		var n := -1
@@ -249,9 +250,9 @@ static func title(id: String) -> String:
 	if "|" in id:
 		return "%s [%s]" % [title(plain(id)), Spells.title(spell_of(id)).get_slice(" (", 0)]
 	if id.begins_with("spell:"):
-		return "Spell: " + Spells.title(id.substr(6))
+		return RemakeText.t("Spell: ") + Spells.title(id.substr(6))
 	if id.begins_with("rune:"):
-		return "Rune: " + Spells.mod_title(id.substr(5))
+		return RemakeText.t("Rune: ") + Spells.mod_title(id.substr(5))
 	if id.begins_with("bp:"):
 		return "%s: %s" % [blueprint_kind(id), title(id.substr(3))]
 	var i := info(id)
@@ -259,12 +260,14 @@ static func title(id: String) -> String:
 	var key_mat := String(i.material).replace(" ", "_")
 	var prefix: String = {"weapons": "weapon", "armors": "armor", "quick_items": "qitem", "quest_items": "questitem",
 		"loot_items": "litem"}.get(i.table, "")
-	for key in ["%s %s %s" % [prefix, key_base, key_mat], "%s %s" % [prefix, key_base]]:
-		var t := GameData.text(key)
-		if t:
-			return t.get_slice("\n", 0).strip_edges()
+	# A material (loot class 0x3007, = 1) is named by texts «material
+	# <name>» alone, not the loot prototype's «litem material».
 	if i.base == "material" and i.material:
 		var t := GameData.text("material " + key_mat)
+		if t:
+			return t.get_slice("\n", 0).strip_edges()
+	for key in ["%s %s %s" % [prefix, key_base, key_mat], "%s %s" % [prefix, key_base]]:
+		var t := GameData.text(key)
 		if t:
 			return t.get_slice("\n", 0).strip_edges()
 	var name := String(i.base).capitalize()
@@ -303,7 +306,17 @@ static func type_text(id: String) -> String:
 	match kind(id):
 		"weapon": key = "item_weapon"
 		"armor": key = "item_armor_upper" if slot(id) in ["helm", "plate", "leggins"] else "item_armor_lower"
-		"quick": key = "item_wand" if "wand" in String(info(id).base) else "item_potion"
+		"quick":
+			#  0x3006: a prototype whose material_type is
+			# "none" is a potion; one with a material is a wand only for
+			# item_id 5 and has no type line otherwise.
+			var r: Dictionary = info(id).row
+			if String(r.get("material_type", "none")).strip_edges().to_lower() == "none":
+				key = "item_potion"
+			elif int(r.get("item_id", 0)) == 5:
+				key = "item_wand"
+			else:
+				return ""
 		"material": key = "item_material"
 		"loot": key = "item_loot"
 		"quest": key = "item_quest"
@@ -322,13 +335,34 @@ static func type_text(id: String) -> String:
 ## own trailing line break is left to the caller.
 static func log_text(id: String, count := 1) -> String:
 	var kind_t := type_text(id)
-	var name := title(id)
+	var name := log_name(id)
 	if not GameData.texts:
 		return name
 	var fmt := GameData.text("string " + ("format_item2" if count > 1 else "format_item1")).strip_edges()
 	if fmt.count("%s") != 2:
 		return name
 	return fmt % ([kind_t, name, count] if count > 1 else [kind_t, name])
+
+
+## The name gives an item (the first line of its texts entry
+## ): weapons «weapon …», armour «armor …», quick «qitem …», quest
+## «questitem …», loot «litem <prototype>» (`title`, without the remake's
+## enchantment suffix); materials «material <name>»; blueprints «instr
+## <prototype>» (the type line says which kind); spell scrolls (0x3008) and
+## keystones (loot 2/3) «spell <prototype>», the base spell only; runes (loot
+## 2/4) «modifier <name>». Money is not an item (own line).
+static func log_name(id: String) -> String:
+	id = unworn(id)
+	if id.begins_with("spell:"):
+		var t := GameData.text("spell " + String(Spells.parse(id.substr(6)).code)) if GameData.texts else ""
+		return t.get_slice("\n", 0).strip_edges() if t else Spells.title(id.substr(6))
+	if id.begins_with("rune:"):
+		return Spells.mod_title(id.substr(5))
+	if id.begins_with("bp:"):
+		var b := info(id.substr(3))
+		var t := GameData.text("instr " + String(b.base).replace(" ", "_")) if GameData.texts else ""
+		return t.get_slice("\n", 0).strip_edges() if t else title(id.substr(3))
+	return title(plain(id))
 
 
 ## "Weapon blueprint" etc. (texts string item_*_shape); heavy armour is the
@@ -394,8 +428,10 @@ static func repair_price(id: String) -> int:
 ## (plus the buy price of pieces taken from the shop); taking a deconstructable
 ## weapon, armour or wand (quick item whose material type is not "none",
 ## ) apart costs coef[7] x its price and gives the pieces back.
-## Approx.: a blueprint's price is its prototype's price, so blueprint +
-## materials cost what the ready item costs (price sum).
+## A blueprint (CItemLoot kind 2) is priced by its
+## as its prototype record's price, a material piece as the
+## material's price, so blueprint + materials cost what the ready
+## item costs (price sum).
 
 static func blueprint(id: String) -> String:
 	return "bp:" + String(info(id).base)
@@ -515,6 +551,22 @@ static func price(id: String) -> int:
 		# the original item builder: prototype price + components x material price.
 		p = p + float(i.row.get("components", 0)) * float(i.mat.get("price", 0.0))
 	return maxi(1, int(p))
+
+
+## A wand: a quick item with a material whose prototype item_id
+## is 5 (a potion has material "none" and item_id 8).
+static func is_wand(id: String) -> bool:
+	var i := info(id)
+	return i.table == "quick_items" and int(i.row.get("item_id", 0)) == 5 \
+		and String(i.row.get("material_type", "none")).strip_edges().to_lower() != "none"
+
+
+## A wand's Energy, its full charge: the item setter sets both
+##  (max) and (current) from the built record's = prototype
+## mana + material mana.
+static func energy(id: String) -> float:
+	var i := info(id)
+	return _f32(float(i.row.get("mana", 0.0)) + (float(i.mat.get("mana", 0.0)) if not i.mat.is_empty() else 0.0))
 
 
 ## The spell a quick item casts on its user ("healing{e1}"), "" if none.

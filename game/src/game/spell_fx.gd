@@ -17,6 +17,7 @@ var light_energy := 1.0
 const MISSILE_LIT := ["arrow", "acid_ray", "fireball"]
 var _t := 0.0
 var _light: OmniLight3D
+var _local_light := {}
 
 
 ## `proto`: the spells.sdb row. Its red / green / blue / light_radius are the
@@ -41,15 +42,20 @@ static func spawn(w: GameWorld, at: Vector2, subtype: String, r: float, hold := 
 		# 0.8 grey, radius = fire size × 10, ParticleFx.setup_zone).
 		fx.light_color = lc
 		fx.light_radius = float(proto.get("light_radius", 1.0))
+		# Clairvoyance (case 0x14) passes the cast's effect radius
+		# instead of the row's light_radius.
+		if String(proto.get("code", "")).to_lower() == "clairvoyence":
+			fx.light_radius = r
 		fx.light_energy = 1.0
-	w.add_child(fx)
 	fx.position = EISpace.pos(at.x, at.y, w.ground_at(at.x, at.y) + 0.8)
+	w.add_child(fx)
 
 
 func _ready() -> void:
 	# The visual is the particle effect (ParticleFx.spell_cast); this node is
 	# only the spell's light.
 	_light = OmniLight3D.new()
+	_light.add_to_group(Gfx.POINT_LIGHT_GROUP)
 	_light.light_color = light_color
 	_light.omni_range = maxf(light_radius, 0.1)
 	_light.light_energy = light_energy
@@ -61,7 +67,16 @@ func _ready() -> void:
 	_light.add_to_group(&"gfx_torch_glow")
 	add_child(_light)
 	if light_radius > 0.0:
-		_light.add_child(Gfx.torch_halo(light_radius, light_color))
+		var halo := Gfx.torch_halo(light_radius, light_color)
+		_light.add_child(halo)
+		# Share optional local shading and the shadow budget with torch and
+		# missile lights; this node still owns its established lifetime/fade.
+		_local_light = {"light": _light, "kind": "spell", "until": -1,
+			"pos": global_position, "energy": light_energy, "external_energy": true,
+			"halo": halo.material_override}
+		LocalLighting.prepare_particle(_local_light)
+		_light.set_meta(&"ei_local_light", _local_light)
+		_light.add_to_group(&"ei_local_spell")
 	if light_radius <= 0.0:
 		queue_free()
 
@@ -75,5 +90,13 @@ func _process(dt: float) -> void:
 			queue_free()
 		else:
 			_light.light_energy = light_energy * 0.67 * (1.0 - h * h)
+		_update_halo()
 		return
 	_light.light_energy = light_energy * (1.0 - k) if hold <= 0.0 else light_energy
+	_update_halo()
+
+
+func _update_halo() -> void:
+	if _local_light.get("enhanced", false):
+		_local_light.halo.set_shader_parameter("strength", float(_local_light.halo_strength)
+			* clampf(_light.light_energy / maxf(light_energy, 0.001), 0.0, 1.0))

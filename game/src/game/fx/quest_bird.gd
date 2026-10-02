@@ -19,8 +19,11 @@ extends Node3D
 ## The target height is kept ≥ ground + 0.5; one frame's step
 ## is at most (⁴√(distance to the hero)·0.03 + 0.3)·dt; the figure faces its
 ## step and the clip advances by dt.
-## Approx.: the 0x203c "Bag" swarm attached to it (size 0.5) is not drawn
-## (particle type not ported); object surfaces are left out.
+##  also creates the 0x203c "Bag" swarm, scales
+## it by 0.5 and attaches it to the figure: the
+## glowing midges and their trail (FxTypes.sp_bag); a reset
+## stops the old swarm.
+## Approx.: object surfaces are left out.
 
 const TICK := GameUnit.TICK
 const HALF_PI := PI * 0.5   #  (FLD π, FMUL 0.5)
@@ -57,6 +60,7 @@ static func visit(w: GameWorld, u: GameUnit) -> void:
 	bird.visible = true
 	bird.set_process(true)
 	bird._place(Vector3.ZERO)
+	bird._start_swarm()
 
 
 func _build() -> bool:
@@ -87,19 +91,26 @@ static func _hero_pos(w: GameWorld, u: GameUnit) -> Vector3:
 
 ## a random direction, radius 50 and 30 m up; while the terrain
 ## ray from the hero (+1.5 m) is blocked (≤ 0.5): height + 3, radius − 5
-## (at least 4).
+## (at least 4). The original's hero z (object) stands on floors; the
+## remake's figure z is the terrain, so the ray starts at the AI map's stand
+## height, as `GameWorld.sight_ray` does (else a hero on a floor, gz19h's
+## teleporter at (456.6, 61), has the ray start under the floor and every try
+## fails). **Remake guard**: the original loop has no limit; after 200 tries (600 m
+## up) the last point is taken so a roofed hero cannot hang the game.
 func _start_point(h: Vector3) -> Vector3:
 	var up := 30.0
 	var r := 50.0
-	while true:
+	var z0 := maxf(h.z, world._stand_z(Vector2(h.x, h.y)))
+	var q := h
+	for _try in 200:
 		r = maxf(r, 4.0)
 		var a := randf() * TAU
-		var q := Vector3(cos(a) * r + h.x, sin(a) * r + h.y, h.z + up)
-		if world.terrain_ray(Vector2(h.x, h.y), h.z + 1.5, Vector2(q.x, q.y), q.z) > 0.5:
+		q = Vector3(cos(a) * r + h.x, sin(a) * r + h.y, h.z + up)
+		if world.terrain_ray(Vector2(h.x, h.y), z0 + 1.5, Vector2(q.x, q.y), q.z) > 0.5:
 			return q
 		up += 3.0
 		r -= 5.0
-	return h
+	return q
 
 
 func _process(_dt: float) -> void:
@@ -170,3 +181,23 @@ func _place(dir: Vector3) -> void:
 func _stop() -> void:
 	visible = false
 	set_process(false)
+	_end_swarm()
+
+
+var _swarm = null   # ParticleFx.Effect of the 0x203c swarm
+
+
+func _start_swarm() -> void:
+	_end_swarm()
+	if world:
+		_swarm = ParticleFx.of(world).spawn(0x203c, Vector3.ZERO, 0.5, self)
+
+
+##  on the swarm; detached, its midges end (control −13) and the
+## trail fades.
+func _end_swarm() -> void:
+	if _swarm != null and is_instance_valid(world):
+		var e: FxEmitter = _swarm.e
+		e.stop()
+		e.attach(null)
+	_swarm = null

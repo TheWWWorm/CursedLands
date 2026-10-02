@@ -28,6 +28,14 @@ static func sfx(path: String) -> AudioStreamWAV:
 	path = path.to_lower().replace("\\", "/")
 	if _cache.has(path):
 		return _cache[path]
+	_pre_lock.lock()
+	var pre: bool = _pre.has(path)
+	var ps: AudioStreamWAV = _pre.get(path)
+	_pre.erase(path)
+	_pre_lock.unlock()
+	if pre:
+		_cache[path] = ps
+		return ps
 	if _sfx == null:
 		_sfx = _archive("sfx.res")
 	var s: AudioStreamWAV = null
@@ -35,6 +43,80 @@ static func sfx(path: String) -> AudioStreamWAV:
 		s = decode_wav(_sfx.read(path))
 	_cache[path] = s
 	return s
+
+
+static var _pre_lock := Mutex.new()
+static var _pre := {}   # path -> AudioStreamWAV decoded by prefetch(), not yet in _cache
+static var _pre_tasks := PackedInt64Array()
+static var _pre_stop := false
+
+
+## Decodes sfx.res files on a worker thread so their first play does not
+## stall a frame (decoding takes ~1-50 ms a file): `paths` are files
+## ("x\\y.wav") or folders (every file directly inside). sfx() takes them
+## from there; one it needs before the worker got to it is decoded as before.
+static func prefetch(paths: PackedStringArray) -> void:
+	if GameData.root.is_empty() or not Portability.threads():
+		return
+	var files := PackedStringArray()
+	for p in paths:
+		if p.to_lower().ends_with(".wav"):
+			var f := p.to_lower().replace("\\", "/")
+			if not _cache.has(f) and not files.has(f):
+				files.append(f)
+		else:
+			for f in sfx_dir(p):
+				if not _cache.has(f) and not files.has(f):
+					files.append(f)
+	if files.is_empty():
+		return
+	_tables()   # filled here, not by two threads at once
+	var left := PackedInt64Array()   # every task is waited for once
+	for t in _pre_tasks:
+		if WorkerThreadPool.is_task_completed(t):
+			WorkerThreadPool.wait_for_task_completion(t)
+		else:
+			left.append(t)
+	_pre_tasks = left
+	# A few workers, each taking every n-th file in list order.
+	var n := clampi(OS.get_processor_count() / 2, 1, 4)
+	for k in n:
+		var part := PackedStringArray()
+		for i in range(k, files.size(), n):
+			part.append(files[i])
+		_pre_tasks.append(WorkerThreadPool.add_task(_prefetch_job.bind(GameData.res_path("sfx.res"), part), false, "sfx prefetch"))
+
+
+## At quit (Main._exit_tree): stops and waits for the prefetch workers and
+## drops the decoded streams while the engine's servers are still up.
+static func shutdown() -> void:
+	_pre_stop = true
+	for t in _pre_tasks:
+		WorkerThreadPool.wait_for_task_completion(t)
+	_pre_tasks.clear()
+	_pre_lock.lock()
+	_pre.clear()
+	_pre_lock.unlock()
+	_cache.clear()
+	_pre_stop = false
+
+
+static func _prefetch_job(arc_path: String, files: PackedStringArray) -> void:
+	var arc := EIResArchive.open_path(arc_path)   # its own file handle
+	if arc == null:
+		return
+	for f in files:
+		if _pre_stop:
+			return
+		_pre_lock.lock()
+		var have := _pre.has(f)
+		_pre_lock.unlock()
+		if have or not arc.has(f):
+			continue
+		var s := decode_wav(arc.read(f))
+		_pre_lock.lock()
+		_pre[f] = s
+		_pre_lock.unlock()
 
 
 ## All sfx.res files directly inside `dir` ("animals\\wolf\\attack").
@@ -79,17 +161,17 @@ static func speech(id: String, n: int) -> AudioStreamMP3:
 
 static func music(name: String) -> AudioStreamMP3:
 	var path := GameData.root.path_join("stream/%s.mp3" % name.to_lower())
-	if not FileAccess.file_exists(path):
+	if not GameFiles.exists(path):
 		return null
 	var s := AudioStreamMP3.new()
-	s.data = FileAccess.get_file_as_bytes(path)
+	s.data = GameFiles.read(path)
 	return s
 
 
 ## music.reg: {allod: {Briefing, CalmOpen, CalmDungeon, Combat, Constructor}}.
 static func music_table() -> Dictionary:
 	if _music_reg.is_empty() and GameData.root:
-		_music_reg = EIRegFile.parse(FileAccess.get_file_as_bytes(GameData.root.path_join("res/music.reg")))
+		_music_reg = EIRegFile.parse(GameFiles.read(GameData.root.path_join("res/music.reg")))
 	return _music_reg
 
 
@@ -134,55 +216,110 @@ static func decode_wav(d: PackedByteArray) -> AudioStreamWAV:
 
 
 ## Microsoft IMA ADPCM (blocks with a per-channel header) to 16-bit PCM.
+## Written for speed (a first sound used to stall a frame for ~20 ms, up to
+## 300 ms for long loops): the step is a table lookup by (index, nibble)
+## (_tables, the same arithmetic as _step) and the samples go straight into
+## the output bytes.
 static func _ima_decode(src: PackedByteArray, align: int, channels: int) -> PackedByteArray:
-	var out := PackedInt32Array()
 	if align <= 4 * channels:
 		return PackedByteArray()
+	_tables()
+	var dtab := _diff_tab
+	var ntab := _next_tab
+	var hdr := 4 * channels
+	# Output size: each block gives its header samples plus two per mono body
+	# byte, or eight per channel per 4-byte group in stereo.
+	var total := 0
 	var pos := 0
-	while pos + 4 * channels <= src.size():
-		var block := src.slice(pos, mini(src.size(), pos + align))
+	while pos + hdr <= src.size():
+		var blen := mini(src.size(), pos + align) - pos
 		pos += align
-		var pred := []
-		var idx := []
-		for c in channels:
-			pred.append(block.decode_s16(c * 4))
-			idx.append(clampi(block[c * 4 + 2], 0, 88))
-		var start := out.size()
-		for c in channels:
-			out.append(pred[c])
-		var body := block.slice(4 * channels)
-		if channels == 1:
-			for b in body:
-				for nib in [b & 0x0f, b >> 4]:
-					var r := _step(pred[0], idx[0], nib)
-					pred[0] = r.x
-					idx[0] = r.y
-					out.append(r.x)
-		else:
-			# Stereo: 4 bytes (8 samples) per channel, interleaved.
-			var groups := body.size() / (4 * channels)
-			for g in groups:
-				var chans := []
-				for c in channels:
-					var samples := []
-					for k in 4:
-						var b := body[g * 4 * channels + c * 4 + k]
-						for nib in [b & 0x0f, b >> 4]:
-							var r := _step(pred[c], idx[c], nib)
-							pred[c] = r.x
-							idx[c] = r.y
-							samples.append(r.x)
-					chans.append(samples)
-				for k in 8:
-					for c in channels:
-						out.append(chans[c][k])
-		if start == out.size():
-			break
+		var body := blen - hdr
+		total += channels + (body * 2 if channels == 1 else (body / (4 * channels)) * 8 * channels)
 	var bytes := PackedByteArray()
-	bytes.resize(out.size() * 2)
-	for i in out.size():
-		bytes.encode_s16(i * 2, out[i])
+	bytes.resize(total * 2)
+	var o := 0
+	pos = 0
+	while pos + hdr <= src.size():
+		var bend := mini(src.size(), pos + align)
+		var start := o
+		if channels == 1:
+			var pred := src.decode_s16(pos)
+			var idx := clampi(src[pos + 2], 0, 88)
+			bytes.encode_s16(o, pred)
+			o += 2
+			for i in range(pos + 4, bend):
+				var b := src[i]
+				var k := (idx << 4) | (b & 0x0f)
+				pred = clampi(pred + dtab[k], -32768, 32767)
+				idx = ntab[k]
+				bytes.encode_s16(o, pred)
+				k = (idx << 4) | (b >> 4)
+				pred = clampi(pred + dtab[k], -32768, 32767)
+				idx = ntab[k]
+				bytes.encode_s16(o + 2, pred)
+				o += 4
+		else:
+			var pred := PackedInt32Array()
+			var idx := PackedInt32Array()
+			pred.resize(channels)
+			idx.resize(channels)
+			for c in channels:
+				pred[c] = src.decode_s16(pos + c * 4)
+				idx[c] = clampi(src[pos + c * 4 + 2], 0, 88)
+				bytes.encode_s16(o, pred[c])
+				o += 2
+			# Stereo: 4 bytes (8 samples) per channel, interleaved.
+			var body := pos + hdr
+			var groups := (bend - body) / (4 * channels)
+			for g in groups:
+				for c in channels:
+					var p := pred[c]
+					var x := idx[c]
+					var at := o + c * 2
+					for kk in 4:
+						var b := src[body + g * 4 * channels + c * 4 + kk]
+						var k := (x << 4) | (b & 0x0f)
+						p = clampi(p + dtab[k], -32768, 32767)
+						x = ntab[k]
+						bytes.encode_s16(at, p)
+						at += channels * 2
+						k = (x << 4) | (b >> 4)
+						p = clampi(p + dtab[k], -32768, 32767)
+						x = ntab[k]
+						bytes.encode_s16(at, p)
+						at += channels * 2
+					pred[c] = p
+					idx[c] = x
+				o += 16 * channels
+		pos += align
+		if start == o:
+			break
 	return bytes
+
+
+static var _diff_tab := PackedInt32Array()
+static var _next_tab := PackedInt32Array()
+
+
+## Signed predictor change and next step index for every (index, nibble).
+static func _tables() -> void:
+	if not _diff_tab.is_empty():
+		return
+	_diff_tab.resize(89 * 16)
+	_next_tab.resize(89 * 16)
+	for idx in 89:
+		for nib in 16:
+			var step: int = STEP_TABLE[idx]
+			var diff := step >> 3
+			if nib & 4:
+				diff += step
+			if nib & 2:
+				diff += step >> 1
+			if nib & 1:
+				diff += step >> 2
+			_diff_tab[(idx << 4) | nib] = -diff if nib & 8 else diff
+			_next_tab[(idx << 4) | nib] = clampi(idx + INDEX_TABLE[nib], 0, 88)
 
 
 static func _step(pred: int, idx: int, nib: int) -> Vector2i:

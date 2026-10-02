@@ -32,7 +32,10 @@ const MOVIES := ["progres", "progres1", "progres2", "progres3", "progres4"]
 
 static func begin(tree: SceneTree, zone: Dictionary) -> void:
 	end()
-	if DisplayServer.get_name() == "headless":
+	# A browser presents only after the current JS callback returns. Forced
+	# nested draws during a load cannot animate this screen and can block
+	# WebGL when a network/input callback replaces the current scene.
+	if DisplayServer.get_name() == "headless" or OS.has_feature("web"):
 		return
 	if Engine.get_process_frames() == 0:
 		return   # called from a _ready during scene setup: the root is busy adding children

@@ -10,6 +10,8 @@ extends RefCounted
 ## Remake: the bindings are written to user://keyboard.ini (read first when it
 ## exists; the game folder's config/keyboard.ini stays untouched), at once when
 ## the Options screen's ✓ applies them instead of at exit.
+## The modern WASD layout has a separate user://keyboard_wasd.ini; dispatch,
+## held keys, Options and HUD tips all read the same active map.
 
 ## the original key table (72-byte entries: scan code, keyboard.ini name
 ## a GetKeyNameText buffer filled at start-up): the keys the
@@ -81,8 +83,16 @@ const DISPLAY_NAMES := {"-": "-", "+": "=", "TAB": "Tab", "KP_STAR": "Num *", "S
 	"DEL": "Delete"}
 
 const USER_FILE := "user://keyboard.ini"
+const WASD_FILE := "user://keyboard_wasd.ini"
+## Separate, editable layout: switching back never rewrites the classic keys.
+const WASD_DEFAULTS := {"W": "camera_up", "S": "camera_down", "A": "camera_left",
+	"D": "camera_right", "Q": "camera_rotate_left", "E": "camera_rotate_right",
+	"9": "weapon1", "0": "weapon2", "-": "weapon3", "+": "weapon4",
+	"R": "swarm", "T": "use_science"}
 
 static var _map := {}       # scan code -> action name
+static var _wasd_map := {}
+static var _wasd_loaded := false
 static var _loaded := false
 static var _by_code := {}   # Godot keycode -> scan code
 static var _names := {}     # scan code -> keyboard.ini name
@@ -111,23 +121,62 @@ static func _ensure() -> void:
 
 ## The action bound to a Godot key ("" if none).
 static func action(keycode: int) -> String:
+	return String(_active_map().get(scan_code(keycode), ""))
+
+
+static func event_action(e: InputEventKey) -> String:
+	return action(e.physical_keycode if e.physical_keycode else e.keycode)
+
+
+static func wasd_active() -> bool:
+	return GameData.option("camera_style") == 1 and GameData.option("cam_wasd") == 1
+
+
+static func _active_map(profile := -1) -> Dictionary:
 	_ensure()
-	return String(_map.get(scan_code(keycode), ""))
+	if profile == 1 or (profile == -1 and wasd_active()):
+		if not _wasd_loaded:
+			_wasd_loaded = true
+			_wasd_map = _read_map(WASD_FILE) if FileAccess.file_exists(WASD_FILE) else wasd_defaults(_map)
+		return _wasd_map
+	return _map
 
 
-## The key table's scan code of a Godot key, −1 when the game does not know it.
+## Keep all existing actions reachable, including custom actions displaced by
+## the preset. Spare keys exclude the remake's inventory / journal / quests.
+static func wasd_defaults(base: Dictionary) -> Dictionary:
+	_tables()
+	var out := base.duplicate()
+	for sc: int in out.keys():
+		if out[sc] in ["weapon1", "weapon2", "weapon3", "weapon4", "swarm", "use_science"]:
+			out.erase(sc)
+	for name: String in WASD_DEFAULTS:
+		var code := int(NAMES.get(name, OS.find_keycode_from_string(name)))
+		out[scan_code(code)] = WASD_DEFAULTS[name]
+	for sc: int in _sorted(base):
+		var act: String = base[sc]
+		if act in out.values():
+			continue
+		for key: Array in KEYS:
+			if not out.has(int(key[0])) and not key[1] in ["B", "J", "G"]:
+				out[int(key[0])] = act
+				break
+	return out
+
+
 ## Whether a key bound to `act` is held (the camera's held keys
 ## key-down / key-up through the map).
-static func held(act: String) -> bool:
-	_ensure()
-	for sc: int in _map:
-		if _map[sc] == act and _code_of.has(sc):
+static func held(act: String, profile := -1) -> bool:
+	var map := _active_map(profile)
+	for sc: int in map:
+		if map[sc] == act and _code_of.has(sc):
 			var code: int = _code_of[sc]
-			if Input.is_key_pressed(code) or Input.is_physical_key_pressed(code):
+			if Input.is_physical_key_pressed(code):
 				return true
 	return false
 
 
+## The key table's scan code of a Godot key, −1 when the game does not know it.
 static func scan_code(keycode: int) -> int:
 	_tables()
 	return int(_by_code.get(keycode, -1))
@@ -144,10 +193,10 @@ static func display_name(ini_key: String) -> String:
 
 ## The keyboard.ini names of the keys bound to `act`, in scan code order.
 static func keys_for(act: String) -> PackedStringArray:
-	_ensure()
+	var map := _active_map()
 	var out := PackedStringArray()
-	for s: int in _sorted(_map):
-		if _map[s] == act:
+	for s: int in _sorted(map):
+		if map[s] == act:
 			out.append(ini_name(s))
 	return out
 
@@ -157,31 +206,44 @@ static func key_of(act: String) -> String:
 	return display_name(k[0]) if not k.is_empty() else ""
 
 
+## The key name of action number `id` (the ACTIONS ids), as finds
+## it for a tooltip: the first scan code bound to it; "" when none.
+static func key_of_id(id: int) -> String:
+	for a: Array in ACTIONS:
+		if a[0] == id:
+			return key_of(a[1])
+	return ""
+
+
 ## A copy of the map (scan code → action), for the Options screen.
-static func bindings() -> Dictionary:
-	_ensure()
-	return _map.duplicate()
+static func bindings(profile := -1) -> Dictionary:
+	return _active_map(profile).duplicate()
 
 
 ## ✓ of the Options screen (copies its map back): applied and
-## written to user://keyboard.ini.
-static func set_bindings(m: Dictionary) -> void:
-	_ensure()
-	if m == _map:
+## written to the chosen layout's user file.
+static func set_bindings(m: Dictionary, profile := -1) -> void:
+	var active := _active_map(profile)
+	if m == active:
+		if (profile == 1 or (profile == -1 and wasd_active())) and not FileAccess.file_exists(WASD_FILE):
+			save(profile)
 		return
-	_map = m.duplicate()
-	save()
+	active.clear()
+	active.merge(m)
+	save(profile)
 
 
 ## "%s %s\n" per bound scan code, ascending.
-static func save() -> void:
-	var f := FileAccess.open(USER_FILE, FileAccess.WRITE)
+static func save(profile := -1) -> void:
+	var map := _active_map(profile)
+	var wasd := profile == 1 or (profile == -1 and wasd_active())
+	var f := FileAccess.open(WASD_FILE if wasd else USER_FILE, FileAccess.WRITE)
 	if f == null:
 		return
 	var out := ""
-	for s: int in _sorted(_map):
+	for s: int in _sorted(map):
 		if _names.has(s):
-			out += "%s %s\r\n" % [_names[s], _map[s]]
+			out += "%s %s\r\n" % [_names[s], map[s]]
 	f.store_string(out)
 
 
@@ -193,28 +255,33 @@ static func _sorted(m: Dictionary) -> Array:
 
 static func _load() -> void:
 	_tables()
-	_map.clear()
 	var path := USER_FILE
 	if not FileAccess.file_exists(path):
 		path = GameData.root.path_join("config/keyboard.ini")
-	var f := FileAccess.open(path, FileAccess.READ)
-	if f == null:
-		return
+	_map = _read_map(path)
+	_remake_defaults()
+
+
+static func _read_map(path: String) -> Dictionary:
+	var map := {}
+	if not GameFiles.exists(path):
+		return map
+	var data := GameFiles.text(path)
 	var known := {}
 	for a: Array in ACTIONS:
 		known[String(a[1]).to_lower()] = a[1]
 	var by_name := {}
 	for s: int in _names:
 		by_name[String(_names[s]).to_lower()] = s
-	for line in f.get_as_text().split("\n"):
+	for line in data.split("\n"):
 		var parts := line.strip_edges().split(" ", false)
 		if parts.size() < 2:
 			continue
 		var k := String(parts[0]).to_lower()
 		var a := String(parts[1]).to_lower()
 		if by_name.has(k) and known.has(a):
-			_map[by_name[k]] = known[a]
-	_remake_defaults()
+			map[by_name[k]] = known[a]
+	return map
 
 
 static func _remake_defaults() -> void:

@@ -61,8 +61,8 @@ func _ready() -> void:
 static func markers(track: String) -> Dictionary:
 	if _streams.is_empty() and GameData.root:
 		var p := GameData.root.path_join("res/streamsn.reg")
-		if FileAccess.file_exists(p):
-			_streams = EIRegFile.parse(FileAccess.get_file_as_bytes(p))
+		if GameFiles.exists(p):
+			_streams = EIRegFile.parse(GameFiles.read(p))
 	for k in _streams:
 		if String(k).to_lower() == track.to_lower() + ".mp3":
 			return _streams[k]

@@ -36,6 +36,13 @@ class Effect:
 	var filled := -1         # tick of the buffer's state (-1: not filled)
 	var filled_n := 0
 	var stop_at := -1        # tick at which emission stops (tornado)
+	var ok := true           # update()'s result this tick
+	# A buffer filled on a worker during the tick (_fill_calc), applied by _draw.
+	var cap := 0             # the MultiMesh's instance_count
+	var pre := -1            # tick of the pending buffer (-1: none)
+	var pre_k := 0
+	var pre_aabb := AABB()
+	var pre_reach := -1.0
 
 
 var world: GameWorld
@@ -77,6 +84,10 @@ func _init() -> void:
 	_rng.seed = 0x55aa1234
 	_quad = QuadMesh.new()
 	_quad.size = Vector2(2, 2)   # vertices at +-1: the shader scales by the particle size
+
+
+func _ready() -> void:
+	GameData.options_changed.connect(_apply_material_options)
 
 
 # ------------------------------------------------------------------ helpers used by the emitters
@@ -288,7 +299,7 @@ func delete(ef: Effect) -> void:
 		ef.e.stop()
 
 
-func add_light(at: Vector3, color: Color, radius: float, secs := -1.0, energy := 1.0, spell := false) -> Dictionary:
+func add_light(at: Vector3, color: Color, radius: float, secs := -1.0, energy := 1.0, spell := false, kind := "") -> Dictionary:
 	var l := OmniLight3D.new()
 	if spell:   # spell lights carry flag 0x840: additive (Gfx.light_code)
 		Gfx.mark_additive(l)
@@ -298,11 +309,18 @@ func add_light(at: Vector3, color: Color, radius: float, secs := -1.0, energy :=
 	l.shadow_enabled = false
 	l.light_volumetric_fog_energy = Gfx.torch_fog_energy()   # option gfx_torch_glow
 	l.add_to_group(&"gfx_torch_glow")
+	l.add_to_group(Gfx.POINT_LIGHT_GROUP)
 	add_child(l)
-	l.add_child(Gfx.torch_halo(absf(radius), color))
+	var halo := Gfx.torch_halo(absf(radius), color)
+	l.add_child(halo)
 	l.global_position = godot(at)
 	var d := {"light": l, "until": -1 if secs < 0.0 else tick + roundi(secs / TICK), "pos": at,
-		"step": Vector3.ZERO, "ticks": 0, "energy": energy, "age": 0}
+		"step": Vector3.ZERO, "ticks": 0, "energy": energy, "age": 0,
+		"duration_ticks": -1 if secs < 0.0 else maxi(1, roundi(secs / TICK)),
+		"kind": kind if kind == "fire" else ("spell" if spell else ""), "halo": halo.material_override}
+	# Only identified torches and spell lights enter the optional remake
+	# lighting path. Script point lights keep the original max() behaviour.
+	LocalLighting.prepare_particle(d)
 	lights.append(d)
 	return d
 
@@ -339,20 +357,37 @@ func _process(dt: float) -> void:
 	var n := 0
 	while acc >= TICK and n < 8:
 		acc -= TICK
-		_tick()
 		n += 1
+	for k in n:
+		_tick(k == n - 1)
 	if acc >= TICK:
 		acc = fmod(acc, TICK)
 	_draw(acc / TICK)
 
 
-func _tick() -> void:
+## Remake (CPU): the emitters are independent, so the tick runs in three
+## passes with the same result as the original's one loop: the bookkeeping and
+## the carrier point on the main thread (update_pre), the particles of the
+## `par` emitters on WorkerThreadPool (update_sim, each with its own random
+## stream; on the frame's last tick also the instance buffer of each emitter
+## drawn last frame, _fill_calc) while the main thread runs the others, then
+## the removals in list order. MultiMeshes are only touched in _draw.
+const PAR_MIN_PARTS := 400   # fewer particles in all: no worker round trip
+var _par: Array[Effect] = []
+var _fill_eye := Vector3.ZERO
+var _fill_fwd := Vector3.ZERO
+var _fill_cam := false
+var _fill_on := false
+
+
+func _tick(last := true) -> void:
 	tick += 1
 	for m in missiles.duplicate():
 		_missile_tick(m)
-	var i := 0
-	while i < effects.size():
-		var ef := effects[i]
+	_par.clear()
+	var serial: Array[Effect] = []
+	var parts := 0
+	for ef in effects:
 		if not ef.deleted:
 			if ef.until >= 0 and tick >= ef.until:
 				delete(ef)
@@ -365,8 +400,35 @@ func _tick() -> void:
 		if ef.stop_at >= 0 and tick >= ef.stop_at:
 			ef.stop_at = -1
 			ef.e.stop()
-		var ok := ef.e.update()
-		if ef.deleted and not ok:
+		ef.ok = true
+		ef.pre = -1
+		if ef.e.update_pre():
+			if ef.e.par:
+				_par.append(ef)
+				parts += ef.e.parts.size()
+			else:
+				serial.append(ef)
+	_fill_on = last
+	if last:
+		var cam := get_viewport().get_camera_3d() if is_inside_tree() else null
+		_fill_cam = cam != null
+		_fill_eye = ei(cam.global_position) if cam else Vector3.ZERO
+		_fill_fwd = view_dir()
+	if Portability.threads() and _par.size() > 1 and parts >= PAR_MIN_PARTS:
+		var gid := WorkerThreadPool.add_group_task(_sim_job, _par.size(), -1, true, "ParticleFx")
+		for ef in serial:
+			ef.ok = ef.e.update_sim()
+		WorkerThreadPool.wait_for_group_task_completion(gid)
+	else:
+		for ef in _par:
+			_sim_job_ef(ef)
+		for ef in serial:
+			ef.ok = ef.e.update_sim()
+	_par.clear()
+	var i := 0
+	while i < effects.size():
+		var ef := effects[i]
+		if ef.deleted and not ef.ok:
 			effects.remove_at(i)
 			if ef.mmi:
 				ef.mmi.queue_free()
@@ -414,14 +476,15 @@ const GLOW_BOOST := 1.35
 const SOFT_DISTANCE := 0.6
 
 
-func _material(tex: String, additive: bool, glow := false, lit := false) -> ShaderMaterial:
-	var key := tex + ("+" if additive else "") + ("*" if glow else "") + ("~" if lit and not additive else "")
+func _material(tex: String, additive: bool, glow := false, lit := false, fire := false) -> ShaderMaterial:
+	var key := tex + ("+" if additive else "") + ("*" if glow else "") + ("~" if lit and not additive else "") + ("#fire" if fire else "")
 	if not _mats.has(key):
 		var m := ShaderMaterial.new()
 		m.shader = _shader(additive)
 		m.set_shader_parameter("tex", GameData.get_texture(tex))
 		m.set_meta("glow", glow or additive)
 		m.set_meta("lit", lit and not additive)
+		m.set_meta("fire", fire)
 		_mats[key] = m
 	return _mats[key]
 
@@ -444,21 +507,51 @@ static func _shader(additive: bool) -> Shader:
 ## per instance the 3x4 "transform" holds the previous centre, the current
 ## centre, the previous and current size and the previous colour (see
 ## particle.gdshader), COLOR the current colour, CUSTOM the atlas rect.
+func _sim_job(i: int) -> void:
+	_sim_job_ef(_par[i])
+
+
+func _sim_job_ef(ef: Effect) -> void:
+	ef.ok = ef.e.update_sim()
+	# Drawn last frame: most likely drawn this one too.
+	if _fill_on and ef.filled >= 0 and ef.mmi != null and not ef.e.parts.is_empty():
+		_fill_calc(ef, _fill_cam, _fill_eye, _fill_fwd)
+
+
 func _fill(ef: Effect, mm: MultiMesh) -> void:
+	var cam := get_viewport().get_camera_3d() if is_inside_tree() else null
+	_fill_calc(ef, cam != null, ei(cam.global_position) if cam else Vector3.ZERO, view_dir() if cam else Vector3.ZERO)
+	_fill_apply(ef, mm)
+
+
+func _fill_apply(ef: Effect, mm: MultiMesh) -> void:
+	ef.filled = tick
+	ef.filled_n = ef.e.parts.size()
+	if mm.instance_count != ef.cap:
+		mm.instance_count = ef.cap
+	mm.buffer = ef.buf
+	mm.visible_instance_count = ef.pre_k
+	mm.custom_aabb = ef.pre_aabb
+	if ef.pre_k > 0:
+		ef.reach = ef.pre_reach
+	ef.pre = -1
+
+
+## The instance buffer of the emitter's particles (no Godot object touched:
+## safe on a worker); _fill_apply hands it to the MultiMesh.
+func _fill_calc(ef: Effect, has_cam: bool, eye: Vector3, fwd: Vector3) -> void:
 	var e := ef.e
 	var n := e.parts.size()
-	ef.filled = tick
-	ef.filled_n = n
-	if mm.instance_count < n:
-		mm.instance_count = maxi(n, mini(e.d8, 64) if n <= 64 else n * 2)
-		ef.buf.resize(mm.instance_count * 20)
+	if ef.cap < n:
+		ef.cap = maxi(n, mini(e.d8, 64) if n <= 64 else n * 2)
+		ef.buf.resize(ef.cap * 20)
 		ef.buf.fill(0.0)
 	var b := ef.buf
 	var lo := Vector3(INF, INF, INF)
 	var hi := -lo
 	var big := 0.0
 	var k := 0
-	for p: Array in e.parts:
+	for p: Array in _draw_order(e, has_cam, eye, fwd):
 		var c0: int = int(p[0x17])
 		var c1: int = int(p[0x16])
 		var f: int = int(p[0x12]) & 15
@@ -485,14 +578,42 @@ func _fill(ef: Effect, mm: MultiMesh) -> void:
 		b[col + 19] = 1.0 - (ry * 0.25 + 0.001953125)
 		lo = lo.min(gp0).min(gp1)
 		hi = hi.max(gp0).max(gp1)
-		big = maxf(big, maxf(absf(p[3]), absf(p[7])))
+		big = maxf(big, maxf(absf(p[3]), absf(p[7])) * SIZE_K)
 		k += 1
-	mm.buffer = b
-	mm.visible_instance_count = k
-	mm.custom_aabb = AABB(lo - Vector3.ONE * big, hi - lo + Vector3.ONE * big * 2.0)
+	ef.buf = b
+	ef.pre = tick
+	ef.pre_k = k
+	ef.pre_aabb = AABB(lo - Vector3.ONE * big, hi - lo + Vector3.ONE * big * 2.0)
 	if k > 0:
 		var gw := godot(e.wp)
-		ef.reach = maxf((lo - gw).abs().max((hi - gw).abs()).length() + big, 0.0)
+		ef.pre_reach = maxf((lo - gw).abs().max((hi - gw).abs()).length() + big, 0.0)
+
+
+## Quad half-extent per unit of particle size (particle.gdshader SIZE_K).
+const SIZE_K := 1.1099162
+
+
+##  draws an emitter's particles far to near: it sorts them
+## their projected depth (merge passes / radix
+## larger first). Only the blended emitters are sorted here; additive ones
+## look the same in any order.
+func _draw_order(e: FxEmitter, has_cam: bool, eye: Vector3, fwd: Vector3) -> Array:
+	if e.add == 1 or e.parts.size() < 2:
+		return e.parts
+	if not has_cam:
+		return e.parts
+	var keys: Array[Vector2] = []
+	keys.resize(e.parts.size())
+	var i := 0
+	for p: Array in e.parts:
+		keys[i] = Vector2(-(Vector3(p[0], p[1], p[2]) - eye).dot(fwd), i)
+		i += 1
+	keys.sort()
+	var out := []
+	out.resize(keys.size())
+	for j in keys.size():
+		out[j] = e.parts[int(keys[j].y)]
+	return out
 
 
 ## previous -> current lerp; the UV rect is the previous frame's.
@@ -507,21 +628,30 @@ func _draw(t: float) -> void:
 		var e := ef.e
 		var hidden: bool = is_instance_valid(e.carrier) and e.carrier is GameUnit \
 			and (not e.carrier.visible or e.carrier.hidden)
+		var unseen := false
 		if cam and e.wp.distance_squared_to(eye) > DRAW_DIST * DRAW_DIST:
-			hidden = true   # far off screen: not refilled (a remake saving)
+			unseen = true   # far off screen: not refilled (a remake saving)
 		elif ef.reach >= 0.0 and not hidden:
 			var gw := godot(e.wp)
 			var r := ef.reach * 1.5 + 3.0
 			for pl in planes:
 				if pl.distance_to(gw) > r:
-					hidden = true
+					unseen = true
 					break
+		# an emitter with particles counts the frames its box is
+		# out of view (reset when in view); FxEmitter.update skips the
+		# F_SKIP ones (0x2038) after 0x38 such frames. A hidden carrier's
+		# emitter is not drawn at all (the count stays).
+		if not e.parts.is_empty() and not hidden:
+			e.e8 = e.e8 + 1 if unseen else 0
+		hidden = hidden or unseen
 		var n := e.parts.size()
 		if ef.mmi == null:
 			ef.mmi = MultiMeshInstance3D.new()
 			ef.mmi.top_level = true
 			ef.mmi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-			ef.mmi.material_override = _material(e.texture, e.add == 1, e.type in GLOW_TYPES, e.type in LIT_TYPES)
+			ef.mmi.sorting_use_aabb_center = false
+			ef.mmi.material_override = _material(e.texture, e.add == 1, e.type in GLOW_TYPES, e.type in LIT_TYPES, e.type == 0x2001)
 			var mm := MultiMesh.new()
 			mm.transform_format = MultiMesh.TRANSFORM_3D
 			mm.use_colors = true
@@ -534,24 +664,44 @@ func _draw(t: float) -> void:
 			mm.visible_instance_count = 0
 			ef.filled = -1
 			continue
-		if ef.filled != tick or ef.filled_n != n:
+		if ef.pre == tick:
+			_fill_apply(ef, mm)
+		elif ef.filled != tick or ef.filled_n != n:
 			_fill(ef, mm)
 		drawn += mm.visible_instance_count
+		#  draws the emitters in order of the dot product of their
+		# position with the camera direction, larger first (introsort
+		# descending): far to near along the view axis. Godot
+		# sorts transparent instances by their pivot's depth along the view
+		# axis minus sorting_offset; the pivot is the top-level origin (0), so
+		# this offset makes the depth fwd · (wp - eye) as in the original.
+		if cam:
+			var so := cam.global_basis.z.dot(godot(e.wp))
+			if absf(so - ef.mmi.sorting_offset) > 0.01:
+				ef.mmi.sorting_offset = so
 	# The previous -> current lerp runs in the shader (lerp_t), so the
 	# buffers are only refilled once per tick.
+	for m: ShaderMaterial in _mats.values():
+		m.set_shader_parameter("lerp_t", t)
+	_apply_material_options()
+	for l: FxLightning in bolts:
+		l.draw(t)
+
+
+func _apply_material_options() -> void:
 	var soft := SOFT_DISTANCE if Gfx.on("gfx_soft_particles") else 0.0
 	var tint := Gfx.particle_tint()
 	var boost := GLOW_BOOST if Gfx.on("gfx_bloom") else 1.0
 	for m: ShaderMaterial in _mats.values():
-		m.set_shader_parameter("lerp_t", t)
 		m.set_shader_parameter("soft_distance", soft)
 		if m.get_meta("glow", false):
-			m.set_shader_parameter("boost", boost)
+			# The original campfire atlas already has a bright yellow core.
+			# Extra HDR gain clips its painted detail into a flat yellow shape.
+			var gain := 1.0 if m.get_meta("fire", false) and Gfx.on("gfx_firelight") else boost
+			m.set_shader_parameter("boost", gain)
 		else:
 			var lt := tint if m.get_meta("lit", false) else Color.WHITE
 			m.set_shader_parameter("light_tint", Vector3(lt.r, lt.g, lt.b))
-	for l: FxLightning in bolts:
-		l.draw(t)
 
 
 # ------------------------------------------------------------------ game events
@@ -714,7 +864,10 @@ func _victims(sp: Dictionary, target: GameUnit, at: Vector2) -> Array:
 
 
 ## the fireball flies level (ground + 1) toward the point
-## range x 0.0667 m per tick, then FireBlast.
+## range x 0.0667 m per tick, then FireBlast. No homing: case 3
+## fixes the velocity and the tick count (= round(d / range × 15) − 2)
+## toward, the target's position at the cast, and the
+## blast (case 3) is at that point.
 func _fireball(from: Vector3, to: Vector3, s: float, sp: Dictionary) -> void:
 	var rng := maxf(float(sp.range), 1.0)
 	var d := Vector2(to.x - from.x, to.y - from.y)
@@ -758,12 +911,15 @@ func _spell_light(sp: Dictionary) -> Dictionary:
 
 ## the hit of Firearrow (case 0), Acidray (2) and Fireball (3):
 ## the travelling light is replaced by a new light at the hit
-## point with the row's colour and light_radius × 1.5; the hit lasts
-## 0x23 = 35 ticks before the effect is released.
+## point with the row's colour and light_radius × 1.5. The hit sets
+##  = 0x23 and state 2; (cases 0 / 2 / 3) counts it down
+## each tick and sets state 3 once it passes 0 (36 ticks), and the next
+## update (state 3) releases the particles and the light
+##  with the effect: the light lives 37 ticks.
 func _hit_light(at: Vector3, sp: Dictionary) -> void:
 	var lc := _spell_light(sp)
 	if lc.radius > 0.0:
-		add_light(at, lc.color, lc.radius * 1.5, 35 * TICK, lc.energy, true)
+		add_light(at, lc.color, lc.radius * 1.5, 37 * TICK, lc.energy, true)
 
 
 ## CEffectArrow: a spell missile homing on the
@@ -849,6 +1005,12 @@ func magic_fx(ev: Dictionary) -> void:
 	if old.has(code) and old[code] is Effect:
 		delete(old[code])
 	match code:
+		"invisibility":
+			# Remake-only: the original draws an invisible unit as usual (
+			# flag only matters to game mode 3), so a
+			# player's own invisible units get a faint translucent shimmer.
+			if u.controller >= 0:
+				_shimmer(u, secs)
 		"lichdom":
 			spawn(0x2018, Vector3.ZERO, k, u)
 			_later(secs, func(): spawn(0x2018, Vector3.ZERO, -k, u) if is_instance_valid(u) and u.is_inside_tree() else null)
@@ -860,6 +1022,34 @@ func magic_fx(ev: Dictionary) -> void:
 			if MAGIC_TYPES.has(code):
 				old[code] = spawn(MAGIC_TYPES[code], Vector3.ZERO, k, u, {"secs": secs})
 				u.set_meta("fx_magic", old)
+
+
+## Remake extra: the unit's meshes pulse between 35 and 55 % transparency for
+## `secs` (GeometryInstance3D.transparency; the materials are left alone).
+func _shimmer(u: GameUnit, secs: float) -> void:
+	var old: Tween = u.get_meta("fx_shimmer") if u.has_meta("fx_shimmer") else null
+	if old and old.is_valid():
+		old.kill()
+	var geos: Array = u.find_children("*", "GeometryInstance3D", true, false)
+	var set_t := func(v: float) -> void:
+		for g in geos:
+			if is_instance_valid(g):
+				g.transparency = v
+	var tw := u.create_tween().set_loops(maxi(1, ceili(secs / 1.6)))
+	tw.tween_method(set_t, 0.35, 0.55, 0.8).set_trans(Tween.TRANS_SINE)
+	tw.tween_method(set_t, 0.55, 0.35, 0.8).set_trans(Tween.TRANS_SINE)
+	tw.finished.connect(func():
+		for g in geos:
+			if is_instance_valid(g):
+				g.transparency = 0.0)
+	u.set_meta("fx_shimmer", tw)
+	_later(secs, func():
+		if is_instance_valid(u) and u.get_meta("fx_shimmer", null) == tw:
+			tw.kill()
+			for g in geos:
+				if is_instance_valid(g):
+					g.transparency = 0.0
+			u.remove_meta("fx_shimmer"))
 
 
 func _later(secs: float, f: Callable) -> void:
@@ -912,7 +1102,7 @@ func setup_zone() -> void:
 		#  (TORCH record): particle 0x2001 of the fire size and a
 		# light at the fire, colour (0.8, 0.8, 0.8), radius = size × 10.
 		spawn(0x2001, at, s)
-		add_light(at, Color(0.8, 0.8, 0.8), s * 10.0, -1.0, 1.0)
+		add_light(at, Color(0.8, 0.8, 0.8), s * 10.0, -1.0, 1.0, false, "fire")
 		var haze := Gfx.heat_haze(0.6 + s * 0.8)   # remake-only, option gfx_heat_haze
 		haze.position = godot(at) + Vector3(0.0, 0.3, 0.0)
 		add_child(haze)

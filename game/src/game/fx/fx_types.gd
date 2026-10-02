@@ -3,7 +3,7 @@ extends RefCounted
 ## Per-type setup and callbacks of the original particle types, ported from
 ## the original: Create (jump table) and the spawn / update
 ## control callbacks it installs (addresses in the comments). Values and
-## tables are the original's; docs/particles_research.md §2 summarises them.
+## tables are the original's; summarises them.
 ## Callbacks take the emitter `e` and a particle `p` (FxEmitter layout) or a
 ## control point `c`. Frames are ints, colours ARGB ints.
 
@@ -61,15 +61,15 @@ const T_ORBIT_A := [0, 0, 32, 64, 112, 160, 208, 255]
 # ------------------------------------------------------------------ helpers
 
 static func rnd(e: FxEmitter) -> int:
-	return e.fx.rnd()
+	return e.rnd()
 
 
 static func u01(e: FxEmitter) -> float:
-	return float(e.fx.rnd()) * 2.3283064e-10
+	return float(e.rnd()) * 2.3283064e-10
 
 
 static func u2(e: FxEmitter) -> float:
-	return float(e.fx.rnd()) * 4.656613e-10 - 1.0
+	return float(e.rnd()) * 4.656613e-10 - 1.0
 
 
 ## uniform in [a, b].
@@ -132,6 +132,7 @@ static func carrier_size(e: FxEmitter) -> Vector2:
 static func create(fx, type: int) -> FxEmitter:
 	var e := FxEmitter.new()
 	e.fx = fx
+	e.rng.seed = fx.rnd()
 	e.type = type
 	#  defaults, then the Create base values.
 	e.e0 = 4
@@ -170,7 +171,7 @@ static func create(fx, type: int) -> FxEmitter:
 					if l < 1.0:
 						break
 				d = d / maxf(sqrt(l), 0.0001)
-				var k := float(e.fx.rnd()) * 9.313226e-11 + 0.8
+				var k := float(e.rnd()) * 9.313226e-11 + 0.8
 				c[3] = d.x * k * 0.8
 				c[4] = d.y * k * 0.8
 				c[5] = d.z * k * 0.8
@@ -178,8 +179,8 @@ static func create(fx, type: int) -> FxEmitter:
 				c[6] = 0.0
 				c[7] = 0.4
 				c[8] = 0.7
-				c[9] = float(e.fx.rnd() % 6)
-				c[0xa] = float(e.fx.rnd() & 1)
+				c[9] = float(e.rnd() % 6)
+				c[0xa] = float(e.rnd() & 1)
 		0x2006:
 			e.add = 1; e.flags |= 3; e.d0 = 0x7fffffff; e.ec = 8; e.e4 = 1; e.s = 0.5
 			e.spawn_fn = T.sp_healing; e.upd_fn = T.up_healing; e.ctl_fn = T.ct_healing
@@ -219,6 +220,13 @@ static func create(fx, type: int) -> FxEmitter:
 			e.set_controls(1)
 			e.spawn_fn = T.sp_nuke; e.upd_fn = T.up_nuke; e.ctl_fn = T.ct_nuke
 			e.texture = "acidray"
+		0x200e, 0x2052:
+			# The original's texture test (type == 0x2002 -> Explosion) never holds here.
+			e.d0 = 10; e.d8 = 4000; e.ec = -1; e.e4 = 1; e.a110 = 1.0
+			e.set_controls(1)
+			e.cp[0][0xc] = -1   # the control is made by the first spawn
+			e.spawn_fn = T.sp_mushroom; e.upd_fn = T.up_mushroom; e.ctl_fn = T.ct_mushroom
+			e.texture = "changehero"
 		0x200f, 0x2031, 0x2032, 0x2033:
 			e.bone = 7; e.flags |= 0x13; e.vmin = Vector3(-0.2, -0.2, -0.2); e.vmax = Vector3(0.2, 0.2, 0.2)
 			e.d0 = 10; e.d8 = 300; e.ec = 6; e.e4 = 0xf
@@ -306,6 +314,11 @@ static func create(fx, type: int) -> FxEmitter:
 			e.cp[0][0xc] = 0x40ff40 if type == 0x203a else 0xff4040
 			e.spawn_fn = T.sp_target; e.upd_fn = T.up_target; e.ctl_fn = T.ct_target
 			e.texture = "shapechange"
+		0x203c:   # "Bag": the swarm of the quest messenger (CEffectMoshka)
+			e.d0 = 100; e.d8 = 800; e.flags |= 3
+			e.set_controls(80)
+			e.spawn_fn = T.sp_bag; e.upd_fn = T.up_bag; e.ctl_fn = T.ct_bag
+			e.texture = "bag"
 		0x203d:
 			e.d0 = 1; e.d8 = 1
 			e.spawn_fn = T.sp_pstar; e.upd_fn = T.up_pstar
@@ -355,7 +368,17 @@ static func create(fx, type: int) -> FxEmitter:
 			e.texture = "zoneexit"
 		_:
 			return null
+	e.par = not (SERIAL.has(e.spawn_fn.get_method()) or SERIAL.has(e.upd_fn.get_method()) \
+		or SERIAL.has(e.ctl_fn.get_method()))
 	return e
+
+
+## Remake: the callbacks that read units, bones, the camera or a shared
+## table (directly or through a helper); an emitter using one is updated on
+## the main thread (FxEmitter.par).
+const SERIAL := {&"_sphere_base": 1, &"carrier_size": 1, &"ct_feet": 1, &"sp_bag": 1, &"sp_castel": 1,
+	&"sp_casting": 1, &"sp_healing": 1, &"sp_modifier": 1, &"sp_orbit": 1, &"sp_sphere": 1, &"sp_stench": 1,
+	&"up_bag": 1, &"up_silence": 1}
 
 
 # ------------------------------------------------------ 2000 FireBall
@@ -418,7 +441,7 @@ func sp_fire(e: FxEmitter, p: Array, _idx: int) -> bool:
 	p[0x11] = 8 if e.type == 0x2004 else 0
 	p[0x13] = e.e4
 	p[3] = e.s
-	if e.fx.rnd() % 100 + 1 <= 40:
+	if e.rnd() % 100 + 1 <= 40:
 		p[3] = e.s * 0.5
 		k = e.s * 0.3
 	var vx := rr(e, e.vmin.x - k, e.vmax.x + k)
@@ -447,7 +470,7 @@ func up_fire(e: FxEmitter, p: Array) -> bool:
 			if e.type == 0x2003 or e.type == 0x2010:
 				return false
 			p[0x13] = e.e4 << 2
-			if (e.fx.rnd() & 3) == 0:
+			if (e.rnd() & 3) == 0:
 				return false
 		if p[0x11] == 8:
 			p[0x10] = p[0x10] * 0.5
@@ -598,7 +621,7 @@ func ct_firewall(e: FxEmitter, _c: Array) -> void:
 # ------------------------------------------------------ 2002 FireBlast
 
 func sp_blast(e: FxEmitter, p: Array, _idx: int) -> bool:
-	var k := int(e.fx.rnd() % 0x1d) - 0xe
+	var k := int(e.rnd() % 0x1d) - 0xe
 	p[0x16] = W
 	if e.live() == 0 and int(e.cp[0][0xc]) == 1:
 		p[0x15] = -1
@@ -608,7 +631,7 @@ func sp_blast(e: FxEmitter, p: Array, _idx: int) -> bool:
 		return true
 	if k >= 0:
 		var c: Array = e.cp[k]
-		p[0x11] = e.fx.rnd() % 3
+		p[0x11] = e.rnd() % 3
 		if c[9] == 0.0:
 			p[0x11] = 8
 		var f := u01(e)
@@ -616,13 +639,13 @@ func sp_blast(e: FxEmitter, p: Array, _idx: int) -> bool:
 		p[0] = base.x
 		p[1] = base.y
 		p[2] = base.z - f * c[5] * e.s
-		p[3] = (float(c[6]) * 0.14285715 + 0.3) * (0.3 - f * 0.15) * (float(e.fx.rnd()) * 1.8626451e-10 + 0.7)
+		p[3] = (float(c[6]) * 0.14285715 + 0.3) * (0.3 - f * 0.15) * (float(e.rnd()) * 1.8626451e-10 + 0.7)
 		p[3] = p[3] * float(c[0xa] + 1.0) * e.s
 		setv(p, 8, Vector3(rr(e, e.vmin.x, e.vmax.x), rr(e, e.vmin.y, e.vmax.y), rr(e, e.vmin.z, e.vmax.z)))
 		p[0x15] = -2
 		p[0xb] = p[3]
 		p[0xc] = float(p[0x11])
-		p[0xd] = float(e.fx.rnd()) * 8.149072e-11 + 0.35
+		p[0xd] = float(e.rnd()) * 8.149072e-11 + 0.35
 		return true
 	p[0x14] = 0
 	var v := ball(e)
@@ -634,14 +657,14 @@ func sp_blast(e: FxEmitter, p: Array, _idx: int) -> bool:
 	p[0x15] = -2
 	if q < lim:
 		p[0x11] = 8
-		p[0xb] = e.s * (float(e.fx.rnd()) * 9.313226e-11 + 0.8) * 0.6
+		p[0xb] = e.s * (float(e.rnd()) * 9.313226e-11 + 0.8) * 0.6
 		p[0xc] = float(p[0x11])
-		p[0xd] = float(e.fx.rnd()) * 8.149072e-11 + 0.35
+		p[0xd] = float(e.rnd()) * 8.149072e-11 + 0.35
 		return true
-	p[0x11] = e.fx.rnd() % 3
-	p[0xb] = e.s * (float(e.fx.rnd()) * 9.313226e-11 + 0.8) * 0.6
+	p[0x11] = e.rnd() % 3
+	p[0xb] = e.s * (float(e.rnd()) * 9.313226e-11 + 0.8) * 0.6
 	p[0xc] = float(p[0x11])
-	p[0xd] = (q * 0.35) / lim + float(e.fx.rnd()) * 8.149072e-11 * 0.5 + 0.175
+	p[0xd] = (q * 0.35) / lim + float(e.rnd()) * 8.149072e-11 * 0.5 + 0.175
 	return true
 
 
@@ -729,7 +752,7 @@ func sp_healing(e: FxEmitter, p: Array, _idx: int) -> bool:
 	var n := e.cp.size()
 	if n < e.c12c:
 		# sparkle next to a random stream head
-		var c: Array = e.cp[e.fx.rnd() % n]
+		var c: Array = e.cp[e.rnd() % n]
 		p[0x16] = W
 		p[0x11] = 8
 		p[0x14] = 8
@@ -821,11 +844,11 @@ func sp_fog(e: FxEmitter, _p: Array, _idx: int) -> bool:
 			var q := FxEmitter.new_particle()
 			q[0] = x + e.ofs.x
 			q[1] = y + e.ofs.y
-			q[3] = float(e.fx.rnd()) * 1.1641532e-10 + 1.0 - 0.25
+			q[3] = float(e.rnd()) * 1.1641532e-10 + 1.0 - 0.25
 			q[2] = e.fx.ground(q[0], q[1]) + q[3]
 			q[0x16] = W if e.type == 0x2008 else alpha(mini(255, roundi(e.k118 * 160.0)))
 			q[0x14] = e.ec
-			q[0x11] = e.fx.rnd() % e.dc
+			q[0x11] = e.rnd() % e.dc
 			q[0x13] = e.e4
 			e.push(q)
 	return false
@@ -850,7 +873,7 @@ func up_fog(e: FxEmitter, p: Array) -> bool:
 # ------------------------------------------------------ 2009 Fireworks (Geyser)
 
 func sp_fireworks(e: FxEmitter, p: Array, _idx: int) -> bool:
-	var ci := e.fx.rnd() % e.cp.size()
+	var ci := e.rnd() % e.cp.size()
 	p[0x16] = W
 	setp(p, e.wp)
 	if e.live() == 0:
@@ -860,14 +883,14 @@ func sp_fireworks(e: FxEmitter, p: Array, _idx: int) -> bool:
 		return true
 	p[0x15] = 0
 	var c: Array = e.cp[ci]
-	p[0x11] = e.fx.rnd() % 12
+	p[0x11] = e.rnd() % 12
 	var sz := e.s * 0.2
 	p[0x14] = 20
 	if int(c[0xd]) > 0:
 		p[0x14] = 0x7fffffff
-		var yaw: float = DEG * (float(e.fx.rnd()) * 9.313226e-09 - 20.0) + c[0]
-		var pitch: float = DEG * (float(e.fx.rnd()) * 4.656613e-09 - 10.0) + c[1]
-		var sp: float = float(e.fx.rnd()) * 4.656613e-11 + c[2] - 0.1
+		var yaw: float = DEG * (float(e.rnd()) * 9.313226e-09 - 20.0) + c[0]
+		var pitch: float = DEG * (float(e.rnd()) * 4.656613e-09 - 10.0) + c[1]
+		var sp: float = float(e.rnd()) * 4.656613e-11 + c[2] - 0.1
 		p[0xe] = sin(yaw) * sin(pitch) * sp * e.a110
 		p[0xf] = cos(yaw) * sin(pitch) * sp * e.a110
 		p[0x10] = cos(pitch) * sp * e.a110
@@ -892,7 +915,7 @@ func up_fireworks(e: FxEmitter, p: Array) -> bool:
 		if (e.flags & FxEmitter.F_EMIT) == 0:
 			p[3] = 0.0
 			return false
-		p[3] = (float(e.fx.rnd()) * 6.2864277e-11 + 0.03) * e.s
+		p[3] = (float(e.rnd()) * 6.2864277e-11 + 0.03) * e.s
 		return true
 	if a_of(p) < 10:
 		return false
@@ -915,14 +938,14 @@ func ct_fireworks(e: FxEmitter, c: Array) -> void:
 	if int(c[0xd]) < 1:
 		c[0xc] = int(c[0xc]) - 1
 		if int(c[0xc]) < 1:
-			c[0xd] = e.fx.rnd() % 7 + 1
-			c[0] = DEG * float(e.fx.rnd()) * 8.381903e-08
-			c[1] = DEG * float(e.fx.rnd()) * 2.3283064e-09
-			c[2] = float(e.fx.rnd()) * 1.3969838e-10 + 0.4
+			c[0xd] = e.rnd() % 7 + 1
+			c[0] = DEG * float(e.rnd()) * 8.381903e-08
+			c[1] = DEG * float(e.rnd()) * 2.3283064e-09
+			c[2] = float(e.rnd()) * 1.3969838e-10 + 0.4
 	else:
 		c[0xd] = int(c[0xd]) - 1
 		if c[0xd] == 0:
-			c[0xc] = e.fx.rnd() % 0x22 + 3
+			c[0xc] = e.rnd() % 0x22 + 3
 
 
 # ------------------------------------------------------ 200b Casting
@@ -987,7 +1010,7 @@ func sp_casting(e: FxEmitter, p: Array, _idx: int) -> bool:
 		p[0x11] = 1
 		p[0x13] = 1
 		p[0x15] = -1
-		p[0x14] = e.fx.rnd() % 4 + k + 1
+		p[0x14] = e.rnd() % 4 + k + 1
 		var lo := (rad - e.a110 * 20.0) * 0.5 + rad
 		var rr_ := rr(e, lo, rad)
 		p[0] = e.wp.x + c0[0] + sin(ang) * rr_
@@ -995,7 +1018,7 @@ func sp_casting(e: FxEmitter, p: Array, _idx: int) -> bool:
 		p[2] = e.wp.z + c0[2]
 		p[3] = e.s * 0.1
 		return true
-	var c: Array = e.cp[e.fx.rnd() % n]
+	var c: Array = e.cp[e.rnd() % n]
 	p[0x11] = 1
 	p[0x14] = 7
 	p[0x13] = 1
@@ -1108,6 +1131,99 @@ func ct_nuke(e: FxEmitter, c: Array) -> void:
 		e.flags &= ~FxEmitter.F_EMIT
 
 
+# ------------------------------------------- 200e Mushroom / 2052 Transform
+
+## . The first spawn makes the one control: radius 0 (ln 1), rise 0
+## centre = the emitter position. Each particle starts at (0.8..1)·radius
+## along a random direction (x, y in −1..1, z 0.1..1, normalised, z + 0.12),
+## moves 0.06·s along it, lives 16..19 ticks, size (k·0.008 + 0.1)·s, frame
+## max(0, k / 10 + rand % 3 − 1), colour (k = the control count).
+func sp_mushroom(e: FxEmitter, p: Array, _idx: int) -> bool:
+	var c: Array = e.cp[0]
+	if int(c[0xc]) < 0:
+		c[0xc] = 0
+		c[0xd] = 0
+		c[0] = 0.0
+		c[2] = 0.0
+		c[6] = e.wp.x
+		c[7] = e.wp.y
+		c[8] = e.wp.z
+	var r := (float(e.rnd()) * 9.313226e-11 + 0.8) * float(c[0])
+	var x := u2(e)
+	var y := u2(e)
+	var z := float(e.rnd()) * 2.0954757e-10 + 0.1
+	var inv := 1.0 / sqrt(x * x + y * y + z * z)
+	x *= inv
+	y *= inv
+	z = z * inv + 0.12
+	var k := int(c[0xd])
+	p[0] = x * r + e.wp.x
+	p[1] = y * r + e.wp.y
+	p[2] = z * r + e.wp.z + float(c[2])
+	p[0xe] = x * e.s * 0.06
+	p[0xf] = y * e.s * 0.06
+	p[0x10] = z * e.s * 0.06
+	p[3] = (k * 0.008 + 0.1) * e.s
+	p[0x14] = (e.rnd() & 3) + 0x10
+	p[0x13] = 2
+	p[0x11] = maxi(0, k / 10 + e.rnd() % 3 - 1)
+	p[0x16] = alpha(0x40)
+	return true
+
+
+## frames step every tick up to 14 (size × 1.1 below frame 8)
+## alpha a tick (max 0xff), −0x40 in the last four ticks (a byte add
+## that wraps, so the last tick is opaque again); velocity × 0.7; below the
+## control's rise the particle is pulled 0.02·s toward the centre axis.
+func up_mushroom(e: FxEmitter, p: Array) -> bool:
+	p[0x14] = int(p[0x14]) - 1
+	if p[0x14] == 0:
+		return false
+	if int(p[0x11]) < 0xe:
+		p[0x13] = int(p[0x13]) - 1
+		if p[0x13] == 0:
+			p[0x13] = 1
+			p[0x11] = int(p[0x11]) + 1
+		if int(p[0x11]) < 8:
+			p[3] = p[3] * 1.1
+	var a := a_of(p)
+	if int(p[0x14]) < 5:
+		a = (a + 0xc0) & 0xff
+	else:
+		a = mini(a + 0x40, 0xff)
+	p[0x16] = alpha(a)
+	p[0] += p[0xe]
+	p[1] += p[0xf]
+	p[2] += p[0x10]
+	p[0xe] *= 0.7
+	p[0xf] *= 0.7
+	p[0x10] *= 0.7
+	var c: Array = e.cp[0]
+	var dx: float = p[0] - float(c[6])
+	var dy: float = p[1] - float(c[7])
+	var d := sqrt(dx * dx + dy * dy)
+	if p[2] - float(c[8]) < float(c[2]) and d > 0.0:
+		p[0xe] -= dx * e.s * 0.02 / d
+		p[0xf] -= dy * e.s * 0.02 / d
+	return true
+
+
+## 0x200e shakes the camera on its first control tick
+## ((position, 5, s, 0.25)); the radius is ln(k + 2)·0.2·s and the
+## cloud rises 0.12·s a tick; emission ends after 30 ticks.
+func ct_mushroom(e: FxEmitter, c: Array) -> void:
+	if int(c[0xc]) < 0:
+		return
+	var k := int(c[0xd])
+	if e.type == 0x200e and k == 0:
+		CameraRig.shake_at(e.fx, Vector2(e.wp.x, e.wp.y), 5.0, e.s, 0.25)
+	c[0xd] = k + 1
+	c[0] = log(float(k + 2)) * e.s * 0.2
+	c[2] = float(c[2]) + e.s * 0.12
+	if k + 1 == 30:
+		e.flags &= ~FxEmitter.F_EMIT
+
+
 # ------------------------------------------------------ 200f / 2031..2033 blood
 
 ## a burst in random directions from the struck bone.
@@ -1131,14 +1247,14 @@ func sp_blood(e: FxEmitter, p: Array, _idx: int) -> bool:
 	p[0x16] = W
 	p[0x14] = e.ec
 	p[0x11] = c0[0xd]
-	var c: Array = e.cp[e.fx.rnd() % e.cp.size()]
+	var c: Array = e.cp[e.rnd() % e.cp.size()]
 	setp(p, e.wp)
 	p[3] = e.k11c
-	var d := Vector3(e.s * (float(e.fx.rnd()) * 1.3969838e-11 - 0.03 + c[0]),
-		e.s * (float(e.fx.rnd()) * 1.3969838e-11 - 0.03 + c[1]),
-		e.s * (float(e.fx.rnd()) * 1.3969838e-11 - 0.03 + c[2]))
+	var d := Vector3(e.s * (float(e.rnd()) * 1.3969838e-11 - 0.03 + c[0]),
+		e.s * (float(e.rnd()) * 1.3969838e-11 - 0.03 + c[1]),
+		e.s * (float(e.rnd()) * 1.3969838e-11 - 0.03 + c[2]))
 	var k := (1.0 / maxf(d.length(), 0.0001)) * e.s * 0.16666667
-	if (e.fx.rnd() & 7) == 0:
+	if (e.rnd() & 7) == 0:
 		k *= 1.5
 	setv(p, 0xe, d * k)
 	p[8] = 0.9
@@ -1185,9 +1301,9 @@ func sp_arrow(e: FxEmitter, p: Array, idx: int) -> bool:
 		p[3] = e.s * 0.2
 		t = u01(e) - 1.0
 		p[0x15] = 0
-		if e.fx.rnd() % 100 > 0x46:
+		if e.rnd() % 100 > 0x46:
 			p[0x15] = 1
-		p[0x11] = (e.fx.rnd() & 1) + 2
+		p[0x11] = (e.rnd() & 1) + 2
 	if e.moved <= 1e-5:
 		setv(p, 8, Vector3.ZERO)
 		return true
@@ -1204,7 +1320,7 @@ func sp_arrow(e: FxEmitter, p: Array, idx: int) -> bool:
 func up_arrow(e: FxEmitter, p: Array) -> bool:
 	if p[0x15] == 2:
 		setp(p, e.dl + e.wp)
-		p[0x11] = e.fx.rnd() % 3
+		p[0x11] = e.rnd() % 3
 		return (e.flags & FxEmitter.F_EMIT) != 0
 	p[0x14] -= 1
 	if p[0x14] == 0:
@@ -1238,7 +1354,7 @@ func sp_acidray(e: FxEmitter, p: Array, _idx: int) -> bool:
 	p[3] = 1.0
 	var t := u01(e) - 1.0
 	p[0x15] = 0
-	p[0x11] = e.fx.rnd() & 1
+	p[0x11] = e.rnd() & 1
 	if e.moved <= 1e-5:
 		setv(p, 8, Vector3.ZERO)
 	else:
@@ -1348,7 +1464,7 @@ func sp_link(e: FxEmitter, p: Array, _idx: int) -> bool:
 	var r := sqrt(x * x + y * y)
 	p[0xb] = cos(r * 0.2)
 	p[0xc] = sin(r * 0.2)
-	if (e.fx.rnd() & 3) != 0 or r >= 0.5:
+	if (e.rnd() & 3) != 0 or r >= 0.5:
 		p[0xf] = rr(e, 0.17, 0.25)
 		p[0x10] = rr(e, 0.1, 0.12) * e.s
 	else:
@@ -1356,7 +1472,7 @@ func sp_link(e: FxEmitter, p: Array, _idx: int) -> bool:
 		p[0x10] = rr(e, 0.1, 0.125) * e.s
 	p[0xe] = 0.0
 	p[3] = p[0x10]
-	p[0x11] = e.fx.rnd() % (e.dc + 1)
+	p[0x11] = e.rnd() % (e.dc + 1)
 	setp(p, e.wp)
 	return true
 
@@ -1449,16 +1565,16 @@ func sp_sphere(e: FxEmitter, p: Array, idx: int) -> bool:
 		return false
 	var rad: float = e.cp[0][6]
 	var k: float
-	if e.fx.rnd() % 11 == 0:
+	if e.rnd() % 11 == 0:
 		k = u01(e) + (2.5 if e.type == 0x201a else 3.5 if e.type == 0x2016 else 1.5)
 	else:
-		k = float(e.fx.rnd()) * 1.3969838e-10 + 0.7
+		k = float(e.rnd()) * 1.3969838e-10 + 0.7
 	p[0xe] = k
 	var v := ball(e)
 	v = v * ((rad * 0.65) / maxf(v.length(), 0.0001))
 	setv(p, 8, v)
 	p[0x16] = W
-	p[0x11] = e.fx.rnd() % 11
+	p[0x11] = e.rnd() % 11
 	p[0x14] = e.ec
 	p[0x13] = 1
 	setp(p, e.wp + Vector3(0, 0, e.cp[0][2]) + _sphere_squash(e, v))
@@ -1496,15 +1612,15 @@ func sp_clay(e: FxEmitter, p: Array, idx: int) -> bool:
 		p[0x11] = 0
 		p[0x15] = idx
 		return true
-	var c: Array = e.cp[e.fx.rnd() % e.cp.size()]
+	var c: Array = e.cp[e.rnd() % e.cp.size()]
 	p[0x14] = 5
 	var t := u01(e)
 	var cur := Vector3(c[0], c[1], c[2])
 	var prev := Vector3(c[3], c[4], c[5])
 	setv(p, 8, cur * t + prev * (1.0 - t))
-	p[0xb] = float(e.fx.rnd()) * 4.656613e-11 - 0.1
-	p[0xc] = float(e.fx.rnd()) * 4.656613e-11 - 0.1
-	p[0xd] = float(e.fx.rnd()) * 4.656613e-11 - 0.1
+	p[0xb] = float(e.rnd()) * 4.656613e-11 - 0.1
+	p[0xc] = float(e.rnd()) * 4.656613e-11 - 0.1
+	p[0xd] = float(e.rnd()) * 4.656613e-11 - 0.1
 	setp(p, getv(p, 8))
 	p[3] = 0.1
 	p[0x15] = -1
@@ -1576,16 +1692,16 @@ func sp_teleport(e: FxEmitter, p: Array, _idx: int) -> bool:
 	p[0x13] = e.e4
 	var sz := absf(e.s)
 	var f := (u01(e) + 1.0) * u01(e) * 0.5
-	var a := float(e.fx.rnd()) * 1.4629215e-09
+	var a := float(e.rnd()) * 1.4629215e-09
 	p[0] = sz * f * sin(a) + e.wp.x
 	p[1] = sz * f * cos(a) + e.wp.y
 	p[3] = 0.0
-	p[2] = (float(e.fx.rnd()) * 4.656613e-11 - 0.4) * sz + e.wp.z
+	p[2] = (float(e.rnd()) * 4.656613e-11 - 0.4) * sz + e.wp.z
 	p[0xb] = (2.0 - f) * 0.2
 	if u01(e) <= f:
-		p[0x11] = e.fx.rnd() & 3
+		p[0x11] = e.rnd() & 3
 	else:
-		p[0x11] = e.fx.rnd() % 12 + 4
+		p[0x11] = e.rnd() % 12 + 4
 	if e.s <= 0.0:
 		p[0x16] = RGB
 		p[8] = 0.8333333
@@ -1673,17 +1789,17 @@ func sp_modifier(e: FxEmitter, p: Array, idx: int) -> bool:
 		setp(p, Vector3(c[0], c[1], c[2]))
 		p[3] = 0.125 if e.s >= 0.0 else 0.2
 		return true
-	var c: Array = e.cp[e.fx.rnd() % e.cp.size()]
+	var c: Array = e.cp[e.rnd() % e.cp.size()]
 	var t := u01(e)
 	var cur := Vector3(c[0], c[1], c[2])
 	var prev := Vector3(c[3], c[4], c[5])
 	setv(p, 8, cur * t + prev * (1.0 - t))
-	p[0xb] = float(e.fx.rnd()) * 1.8626451e-11 - 0.04
-	p[0xc] = float(e.fx.rnd()) * 1.8626451e-11 - 0.04
-	p[0xd] = float(e.fx.rnd()) * 1.8626451e-11 - 0.04
+	p[0xb] = float(e.rnd()) * 1.8626451e-11 - 0.04
+	p[0xc] = float(e.rnd()) * 1.8626451e-11 - 0.04
+	p[0xd] = float(e.rnd()) * 1.8626451e-11 - 0.04
 	setp(p, getv(p, 8))
 	p[3] = 0.06
-	p[0x11] = 12 + (e.fx.rnd() & 3)
+	p[0x11] = 12 + (e.rnd() & 3)
 	p[0x15] = -1
 	return true
 
@@ -1789,7 +1905,7 @@ func sp_castel(e: FxEmitter, p: Array, _idx: int) -> bool:
 		var l := v.length_squared()
 		if l <= 1.0 and l > 0.0:
 			break
-	var k := e.fx.rnd() % (e.e4 * e.ec + 1)
+	var k := e.rnd() % (e.e4 * e.ec + 1)
 	if k > 0:
 		var c: Array = e.cp[(k - 1) % e.ec + 1]
 		v += Vector3(c[6], c[7], c[8])
@@ -1800,7 +1916,7 @@ func sp_castel(e: FxEmitter, p: Array, _idx: int) -> bool:
 	p[0xc] = rad * (0.03846154 if e.type == 0x202a else 0.07692308)
 	p[0xd] = c0[3]
 	setp(p, e.wp + v * rad)
-	p[3] = (float(e.fx.rnd()) * 1.862645e-10 + 0.6) * c0[7] * rad
+	p[3] = (float(e.rnd()) * 1.862645e-10 + 0.6) * c0[7] * rad
 	return true
 
 
@@ -1810,7 +1926,7 @@ func up_castel(e: FxEmitter, p: Array) -> bool:
 		return false
 	if p[0x15] != 0:
 		setp(p, e.wp)
-		p[3] = (float(e.fx.rnd()) * 6.984918e-11 + 0.85) * c0[6] * 0.3
+		p[3] = (float(e.rnd()) * 6.984918e-11 + 0.85) * c0[6] * 0.3
 		p[0x16] = alpha(int(c0[0xc]))
 		return true
 	p[0x14] -= 1
@@ -1849,7 +1965,7 @@ func ct_castel(e: FxEmitter, c: Array) -> void:
 ## orbiters around the caster leave trails.
 func sp_orbit(e: FxEmitter, p: Array, _idx: int) -> bool:
 	if e.cp.size() >= e.ec:
-		var ci := e.fx.rnd() % e.ec
+		var ci := e.rnd() % e.ec
 		var o: Array = e.cp[ci]
 		p[0x16] = W
 		p[0x11] = 12
@@ -1858,13 +1974,13 @@ func sp_orbit(e: FxEmitter, p: Array, _idx: int) -> bool:
 		p[0x15] = ci
 		var f := u01(e)
 		p[0xc] = 1.03
-		p[0xd] = (float(e.fx.rnd()) * 8.149073e-11 + 0.85) * float(o[5]) * 0.03
+		p[0xd] = (float(e.rnd()) * 8.149073e-11 + 0.85) * float(o[5]) * 0.03
 		var v := Vector3(rr(e, e.vmin.x, e.vmax.x), rr(e, e.vmin.y, e.vmax.y), rr(e, e.vmin.z, e.vmax.z))
 		var prev := Vector3(o[9], o[0xa], o[0xb])
 		var cur := Vector3(o[0], o[1], o[2])
 		setp(p, prev + v)
 		setv(p, 8, cur * (1.0 - f) + prev * f + v)
-		p[3] = (float(e.fx.rnd()) * 1.862645e-10 + 0.6) * e.s * 0.2
+		p[3] = (float(e.rnd()) * 1.862645e-10 + 0.6) * e.s * 0.2
 		return true
 	if e.carrier == null:
 		return false
@@ -1913,7 +2029,7 @@ func up_orbit(e: FxEmitter, p: Array) -> bool:
 	if p[0x15] < 0:
 		var o: Array = e.cp[-1 - int(p[0x15])]
 		setp(p, Vector3(o[0], o[1], o[2]))
-		p[3] = (float(e.fx.rnd()) * 9.313226e-11 + 0.8) * e.s * 0.4
+		p[3] = (float(e.rnd()) * 9.313226e-11 + 0.8) * e.s * 0.4
 		if (e.flags & FxEmitter.F_EMIT) == 0 or e.carrier == null:
 			if p[0x14] < 0:
 				return false
@@ -1989,8 +2105,8 @@ func sp_lblast(e: FxEmitter, p: Array, _idx: int) -> bool:
 		p[0xb] = 0.1
 		c0[0xc] = int(c0[0xc]) + 1
 		if p[0x13] != 0:
-			p[0xb] = (float(e.fx.rnd()) * 2.0954757e-10 + 0.5) * e.s * 0.2
-			p[0x11] = (e.fx.rnd() & 3) + 0xc
+			p[0xb] = (float(e.rnd()) * 2.0954757e-10 + 0.5) * e.s * 0.2
+			p[0x11] = (e.rnd() & 3) + 0xc
 		else:
 			p[0xb] = e.s * 0.4
 		p[3] = p[0xb]
@@ -2001,7 +2117,7 @@ func sp_lblast(e: FxEmitter, p: Array, _idx: int) -> bool:
 		p[0x16] = alpha(0x3f)
 		p[0x11] = 8
 		var f := 1.0 - u01(e) * u01(e)
-		var a := float(e.fx.rnd()) * 1.4621765e-09
+		var a := float(e.rnd()) * 1.4621765e-09
 		setv(p, 0xe, Vector3(cos(a) * f, sin(a) * f, 0.0) * (e.s * 0.3))
 		p[0] = e.cp[0][0] + p[0xe]
 		p[1] = e.cp[0][1] + p[0xf]
@@ -2009,14 +2125,14 @@ func sp_lblast(e: FxEmitter, p: Array, _idx: int) -> bool:
 		p[3] = 0.0
 		p[0x13] = 0
 		p[0x14] = roundi(9.0 - f * 3.0)
-		p[0xb] = (2.0 - f) * (float(e.fx.rnd()) * 9.313226e-12 + 0.1) * e.s
+		p[0xb] = (2.0 - f) * (float(e.rnd()) * 9.313226e-12 + 0.1) * e.s
 		return true
 	# a spark along a falling bolt segment
-	var c: Array = e.cp[e.fx.rnd() % n]
+	var c: Array = e.cp[e.rnd() % n]
 	p[0x11] = 1
 	p[0x14] = 6
 	p[0x13] = 1
-	p[0xb] = float(e.fx.rnd()) * 2.3283064e-12 * 3.0 + 0.06
+	p[0xb] = float(e.rnd()) * 2.3283064e-12 * 3.0 + 0.06
 	var f := u01(e)
 	setp(p, Vector3(c[0], c[1], c[2]))
 	p[3] = 0.0
@@ -2078,7 +2194,7 @@ func sp_exit(e: FxEmitter, p: Array, _idx: int) -> bool:
 	e.d0 = mini(40, roundi(e.k118 * e.k11c))
 	p[0x16] = W if e.v130.x == 0.0 else 0x00ff6060
 	p[0x14] = 15
-	p[0x11] = e.fx.rnd() & 15
+	p[0x11] = e.rnd() & 15
 	p[0x13] = 1
 	p[0x15] = 0
 	var x := u2(e)
@@ -2089,7 +2205,7 @@ func sp_exit(e: FxEmitter, p: Array, _idx: int) -> bool:
 	p[1] = py
 	p[3] = 0.0
 	p[2] = e.fx.ground(px, py) + 0.1
-	p[0xb] = (float(e.fx.rnd()) * 1.3969838e-10 + 0.7) * ((1.9 - x * x) - y * y) * 0.05
+	p[0xb] = (float(e.rnd()) * 1.3969838e-10 + 0.7) * ((1.9 - x * x) - y * y) * 0.05
 	return true
 
 
@@ -2117,7 +2233,7 @@ func sp_trans(e: FxEmitter, p: Array, _idx: int) -> bool:
 	else:
 		p[0x14] = 15
 		p[0x15] = 0
-		p[0x11] = e.fx.rnd() % 12
+		p[0x11] = e.rnd() % 12
 		var v := ball(e).normalized()
 		setv(p, 8, v * e.s)
 		setp(p, e.wp + getv(p, 8))
@@ -2151,7 +2267,7 @@ func up_trans(e: FxEmitter, p: Array) -> bool:
 		return true
 	setp(p, e.wp)
 	p[0x16] = W
-	p[3] = (float(e.fx.rnd()) * 9.313226e-11 + 0.8) * float(e.cp[0][6])
+	p[3] = (float(e.rnd()) * 9.313226e-11 + 0.8) * float(e.cp[0][6])
 	return true
 
 
@@ -2164,6 +2280,109 @@ func ct_trans(e: FxEmitter, c: Array) -> void:
 	c[6] = e.s * 0.02 + c[6]
 	c[7] = c[7] + 0.4
 	e.d0 = mini(8, roundi(c[7]))
+
+
+# ------------------------------------------------------ 203c Bag
+
+## colour per control step (r, g, b), yellow through pink to violet.
+const T_BAG_RGB := [0xfbfe8f, 0xfce395, 0xfcc99a, 0xffb09a, 0xff9ba3, 0xfc98b0, 0xfa96c3, 0xf795d4,
+	0xf393ed, 0xef90f9, 0xef90f9, 0xef90f9]
+## alpha by remaining life.
+const T_BAG_A := [0, 64, 112, 255, 255, 255, 255, 255, 255, 255]
+## size per control step, filled by the first spawn: 1.0 × 0.93^i.
+static var _bag_size := []
+
+
+static func _bag_t(i: int) -> float:
+	if _bag_size.is_empty():
+		var v := 1.0
+		for k in 12:
+			_bag_size.append(v)
+			v *= 0.93
+	return _bag_size[clampi(i, 0, 11)]
+
+
+## . The first 80 particles are the midges, one per control point
+## (= its index); beyond that each spawn is a trail mote on a random
+## midge's last step (pos + u·step, u in [−1, 0]), its colour, frame 4 and a
+## life of min(steps left + 1, 5).
+func sp_bag(e: FxEmitter, p: Array, _idx: int) -> bool:
+	_bag_t(0)
+	if e.live() < 80:
+		p[0x11] = rnd(e) & 3
+		p[0x15] = e.live()
+		p[0x16] = RGB
+		p[0x14] = 15
+		setp(p, e.wp)
+		p[3] = 0.0
+		return true
+	var c: Array = e.cp[rnd(e) % 80]
+	var ci := int(c[0xc])
+	p[0x16] = tab(T_BAG_RGB, ci)
+	p[0x14] = mini(int(c[0xd]) + 1, 5)
+	p[0x11] = 4
+	p[0x15] = -1
+	var f := u01(e) - 1.0
+	setp(p, getv(c, 0) + getv(c, 3) * f)
+	p[3] = _bag_t(ci) * e.s * 0.1
+	return true
+
+
+## . Trail motes fade out by T_BAG_A over their life; a midge sits
+## on its control point (size 0.15, colour of its step) and dies with it.
+func up_bag(e: FxEmitter, p: Array) -> bool:
+	if int(p[0x15]) < 0:
+		p[0x14] = int(p[0x14]) - 1
+		if int(p[0x14]) <= 0:
+			return false
+		p[0x11] = int(p[0x11]) + 1
+		p[0x16] = alpha(tab(T_BAG_A, int(p[0x14])), int(p[0x16]) & RGB)
+		return true
+	var c: Array = e.cp[int(p[0x15])]
+	if int(c[0xd]) == -13:
+		return false
+	p[0x11] = (int(p[0x11]) + 1) & 3
+	setp(p, getv(c, 0))
+	p[3] = _bag_t(int(c[0xc])) * e.s * 0.15
+	p[0x16] = alpha(tab(T_BAG_A, mini(int(p[0x14]), 9)), tab(T_BAG_RGB, int(c[0xc])))
+	if getv(c, 3) == Vector3.ZERO:   # a fresh midge: no interpolation from the old spot
+		p[4] = p[0]
+		p[5] = p[1]
+		p[6] = p[2]
+		p[7] = p[3]
+		p[0x17] = p[0x16]
+		p[3] = e.s * 0.15
+	return true
+
+
+## per control point each tick: counts the steps left. At
+## its end the midge restarts within ±0.2·size of the carrier with colour
+## step rand % 3, a random velocity ball · size · 0.2 and 7..9 steps (no
+## carrier: −13, the midge dies). Each step: colour step + 1, one time in six
+## a kick ball · size · 0.05, position += velocity, = the step.
+func ct_bag(e: FxEmitter, c: Array) -> void:
+	c[0xd] = int(c[0xd]) - 1
+	if int(c[0xd]) < 0:
+		if e.carrier == null:
+			c[0xd] = -13
+			return
+		c[0xc] = rnd(e) % 3
+		var a := e.s * 0.2
+		var b := e.s * -0.2
+		var q := e.wp
+		q.x += u01(e) * (a - b) + b
+		q.y += u01(e) * (a - b) + b
+		q.z += u01(e) * (a - b) + b
+		setv(c, 0, q)
+		setv(c, 6, ball(e) * e.s * 0.2)
+		c[0xd] = rnd(e) % 3 + 7
+		setv(c, 3, Vector3.ZERO)
+		return
+	c[0xc] = int(c[0xc]) + 1
+	if rnd(e) % 6 == 0:
+		setv(c, 6, getv(c, 6) + ball(e) * e.s * 0.05)
+	setv(c, 0, getv(c, 0) + getv(c, 6))
+	setv(c, 3, getv(c, 6))
 
 
 # ------------------------------------------------------ 203d PortalStar
@@ -2181,7 +2400,7 @@ func up_pstar(e: FxEmitter, p: Array) -> bool:
 	if (e.flags & FxEmitter.F_EMIT) == 0:
 		return false
 	p[0x16] = W
-	p[3] = (float(e.fx.rnd()) * 9.313226e-11 + 0.8) * e.s
+	p[3] = (float(e.rnd()) * 9.313226e-11 + 0.8) * e.s
 	setp(p, e.wp)
 	return true
 
@@ -2203,7 +2422,7 @@ func sp_portal(e: FxEmitter, p: Array, _idx: int) -> bool:
 	p[0x14] = e.ec
 	p[0x13] = e.e4
 	var f := (u01(e) + 1.0) * u01(e) * 0.5
-	var a := float(e.fx.rnd()) * 1.4629215e-09
+	var a := float(e.rnd()) * 1.4629215e-09
 	var r := f * 2.5 * absf(e.s)
 	p[0] = sin(a) * r + e.wp.x
 	p[1] = cos(a) * r + e.wp.y
@@ -2212,10 +2431,10 @@ func sp_portal(e: FxEmitter, p: Array, _idx: int) -> bool:
 	p[0xd] = (2.0 - f) * 0.3
 	var turn: float
 	if u01(e) <= f:
-		p[0x11] = e.fx.rnd() & 3
+		p[0x11] = e.rnd() & 3
 		turn = -0.1
 	else:
-		p[0x11] = e.fx.rnd() % 11 + 4
+		p[0x11] = e.rnd() % 11 + 4
 		turn = 0.1
 	p[8] = cos(turn)
 	p[9] = sin(turn)
@@ -2259,7 +2478,7 @@ func up_portal(e: FxEmitter, p: Array) -> bool:
 	if (e.flags & FxEmitter.F_EMIT) == 0:
 		return false
 	if e.s >= 1.0:
-		p[3] = float(e.fx.rnd()) * 9.313226e-11 * 1.5 + 1.2
+		p[3] = float(e.rnd()) * 9.313226e-11 * 1.5 + 1.2
 	else:
 		p[3] = 0.0
 	return true
@@ -2303,15 +2522,15 @@ func sp_sparks(e: FxEmitter, p: Array, _idx: int) -> bool:
 		return true
 	e.flags &= ~FxEmitter.F_EMIT
 	p[0x16] = W
-	var k := float(e.fx.rnd()) * 1.3969838e-10 + 0.8
+	var k := float(e.rnd()) * 1.3969838e-10 + 0.8
 	var v := ball(e).normalized()
 	var sp := k * e.s * k * 0.2
 	setv(p, 0xe, v * sp)
 	setp(p, e.wp + getv(p, 0xe) * u01(e))
-	p[3] = (float(e.fx.rnd()) * 9.313226e-11 + 0.8) * e.s * 0.2
+	p[3] = (float(e.rnd()) * 9.313226e-11 + 0.8) * e.s * 0.2
 	p[0x14] = 6
 	p[0x15] = 0
-	p[0x11] = e.fx.rnd() % 3 + 1
+	p[0x11] = e.rnd() % 3 + 1
 	return true
 
 
@@ -2327,7 +2546,7 @@ func up_sparks(e: FxEmitter, p: Array) -> bool:
 		p[0x11] += 1
 		return p[0x11] < 16
 	if p[3] == 0.0:
-		p[3] = (float(e.fx.rnd()) * 9.313226e-11 + 0.8) * e.s * 0.55
+		p[3] = (float(e.rnd()) * 9.313226e-11 + 0.8) * e.s * 0.55
 		return true
 	p[3] = 0.0
 	return false
@@ -2365,7 +2584,7 @@ func up_vstar(e: FxEmitter, p: Array) -> bool:
 		setp(p, getp(p) + getv(p, 8))
 	if e.type == 0x204c:
 		p[2] = p[2] + 0.7
-	var s2 := sz * 0.95 + (float(e.fx.rnd()) * 4.1909515e-10 + 0.1) * e.s * k * 0.05
+	var s2 := sz * 0.95 + (float(e.rnd()) * 4.1909515e-10 + 0.1) * e.s * k * 0.05
 	if (e.flags & FxEmitter.F_EMIT) == 0 or e.carrier == null:
 		s2 = s2 * 0.95
 		e.s = 0.0
@@ -2395,7 +2614,7 @@ func sp_silence(e: FxEmitter, p: Array, _idx: int) -> bool:
 		p[0xd] = 1.0
 		p[0x15] = 1
 		return true
-	var o: Array = e.parts[e.fx.rnd() & 1]
+	var o: Array = e.parts[e.rnd() & 1]
 	var f := u01(e)
 	var v := ball(e)
 	var r: float = o[3]
@@ -2405,7 +2624,7 @@ func sp_silence(e: FxEmitter, p: Array, _idx: int) -> bool:
 	p[0x11] = 6
 	p[0x15] = 0
 	p[0x14] = 7
-	p[8] = (float(e.fx.rnd()) * 9.313226e-11 + 0.8) * e.s * 0.08
+	p[8] = (float(e.rnd()) * 9.313226e-11 + 0.8) * e.s * 0.08
 	return true
 
 
@@ -2430,7 +2649,7 @@ func up_silence(e: FxEmitter, p: Array) -> bool:
 		p[0x16] = W
 		p[8] = p[9] + p[8]
 		p[0xb] = p[0xc] + p[0xb]
-		p[3] = (float(e.fx.rnd()) * 4.656614e-11 + 0.9) * e.s * 0.22
+		p[3] = (float(e.rnd()) * 4.656614e-11 + 0.9) * e.s * 0.22
 		return true
 	p[0x14] -= 1
 	if p[0x14] < 1:
@@ -2446,14 +2665,14 @@ func up_silence(e: FxEmitter, p: Array) -> bool:
 func sp_feeble(e: FxEmitter, p: Array, _idx: int) -> bool:
 	e.d0 = roundi(e.s + e.s)
 	p[0x16] = RGB
-	p[0x11] = e.fx.rnd() & 0xf
+	p[0x11] = e.rnd() & 0xf
 	setp(p, e.wp)
 	p[3] = 0.0
 	p[0x14] = 20
 	var a := u01(e) * 6.2831855
 	setv(p, 8, Vector3(cos(a) * 0.05, sin(a) * 0.05, 0.0))
 	setp(p, getp(p) + getv(p, 8))
-	p[0xd] = (float(e.fx.rnd()) * 4.656614e-11 + 0.9) * e.s * 0.035
+	p[0xd] = (float(e.rnd()) * 4.656614e-11 + 0.9) * e.s * 0.035
 	return true
 
 
@@ -2481,8 +2700,8 @@ func up_feeble(_e: FxEmitter, p: Array) -> bool:
 func sp_feet(e: FxEmitter, p: Array, _idx: int) -> bool:
 	e.d0 = roundi(e.s * 8.0)
 	p[0x16] = RGB
-	p[0x11] = e.fx.rnd() & 0xf
-	var ci := e.fx.rnd() & 1
+	p[0x11] = e.rnd() & 0xf
+	var ci := e.rnd() & 1
 	var c: Array = e.cp[ci]
 	if int(c[0xc]) < 0:
 		setp(p, e.wp)

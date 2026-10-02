@@ -27,8 +27,7 @@ extends Control
 ## a = θ − π/12 − k · π/6 and placed at (800 + 30 sin a, 600 − 30 cos a),
 ## depth 8.106086, scale 0.4, projected as does (camera x =
 ## (sx · 0.0025 − 1) · 0.48157462 · z) — four teeth crawling clockwise at the
-## sky ring's rim. **Approx.**: the atlas V convention of the figure's UVs is
-## taken as the 2D sprites'.
+## sky ring's rim.
 
 signal sector_pressed(index: int)
 signal inner_pressed
@@ -134,7 +133,14 @@ func _tip(h: int) -> String:
 		id = 10500 if h == -1 else 10501 + h if h >= 0 else -1
 	else:
 		id = 10401 if h == -1 else [10400, 10402, 10403][h] if h >= 0 else -1
-	return GameData.text("tip %d" % id).strip_edges() if id >= 0 else ""
+	# Hotkeys: swarm (0x1b) on the inner disc, crawl..run (0x17..0x1a)
+	#  pause / decel / accel (1..3), obj (4) on the centre.
+	var key := 0
+	if id >= 10500:
+		key = 27 if id == 10500 else 22 + id - 10500
+	elif id >= 0:
+		key = {10400: 1, 10401: 4, 10402: 2, 10403: 3}[id]
+	return GameData.tip_key(GameData.text("tip %d" % id).strip_edges(), key) if id >= 0 else ""
 
 
 ## Atlas point in original UV space -> normalized image UV.
@@ -210,7 +216,9 @@ func _disc(o: Vector2, r: float, uc: Vector2, ur: float, a0: float, a1: float, r
 ## (the model's up, local −y, goes to screen (sin a, −cos a); the apex points
 ## back at the pivot) and scaled by `scale`.
 const ARROW_V := [Vector2(0.1288, -0.9239), Vector2(0.0057, -0.7106), Vector2(-0.1175, -0.9239)]
-## Their atlas points in the original's pixel UVs (model UV + (57, 36)/256).
+## Their atlas points in the original's pixel UVs (model UV + (57, 36)/256); unlike
+## the 2D sprites' they address the image rows unflipped (the gold triangle at
+## battle00 x 231..254, y 227..247).
 const ARROW_UV := [Vector2(253.5, 246.7), Vector2(242.2, 227.1), Vector2(230.9, 246.7)]
 const ARROW_Z := 8.106086
 
@@ -231,7 +239,7 @@ func _hand(o: Vector2, a: float, s: float) -> void:
 	var uvs := PackedVector2Array()
 	for i in 3:
 		pts[i] = o + (pts[i] - Vector2(800, 600)) * s
-		uvs.append(_uv(ARROW_UV[i].x, ARROW_UV[i].y))
+		uvs.append(ARROW_UV[i] / 256.0)   # image rows as they are (no V flip)
 	draw_polygon(pts, PackedColorArray([Color.WHITE, Color.WHITE, Color.WHITE]), uvs, _tex)
 
 

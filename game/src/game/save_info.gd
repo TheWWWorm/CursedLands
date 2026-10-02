@@ -196,7 +196,7 @@ static func _tz_bias() -> int:
 ## «allod <id>», else "Unknown".
 func allod_text() -> String:
 	var a := _t("allod " + allod, "") if allod else ""
-	return a.get_slice("\n", 0).strip_edges() if a else "Unknown"
+	return a.get_slice("\n", 0).strip_edges() if a else RemakeText.t("Unknown")
 
 
 func zone_text() -> String:

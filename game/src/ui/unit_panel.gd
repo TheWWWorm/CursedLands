@@ -48,12 +48,14 @@ extends Control
 ## ). The figure's placement is
 ##  (Paperdoll._exe_frame); the panel's start state (UI manager
 ## ) is open, general.
-## Armour (attributes view): a party unit's type t is
+## Armour (attributes view): for a named unit (:
+## id in 1e9..2e9, Combat.named — heroes and named NPCs) type t is
 ## Σ w · part armour[t] / Σ w + its own armour[t], w from the table
-## by part type (head 10, torso 30, arm 15, leg 15).
+## by part type (head 10, torso 30, arm 15, leg 15); any other unit shows its
+## own armour × the Absorption factor
+## (Combat.difficulty, 1 in a network game), no parts.
 ## Approx.: the original counts only parts whose record > 1 (meaning not
-## traced) and gives other units armour × the difficulty factor
-##  (here their own armour); the remaining time
+## traced); the remaining time
 ## counts 55 ms ticks (record +4's countdown is not traced). The name is centred
 ## (flag 2; centred in the original's screenshots) and the figure is drawn
 ## straight over the game view, as in the original.
@@ -66,8 +68,9 @@ const TABS := {"toggle": [Rect2(0, 0, 20, 30), Rect2(), 10100],
 const FIG := Rect2(20, 0, 160, 220)
 const TEXT := Color(0xe4 / 255.0, 0xd7 / 255.0, 0xa7 / 255.0)
 const LOST := Color(1, 0, 0)
-## Part positions in GameUnit.PART_KEYS order (head, torso, right arm, left
-## arm, right leg, left leg).
+## Part positions in GameUnit.PART_KEYS order (head, torso, left arm, right
+## arm, left leg, right leg; the figure faces the viewer, so its left arm is
+## drawn on the right).
 const PART_POS := [Vector2(50, 35), Vector2(50, 105), Vector2(95, 70), Vector2(5, 70),
 	Vector2(95, 140), Vector2(5, 140)]
 const PART_TEXT := {0: "string hl_skull", 1: "string hl_torso", 2: "string hl_arm", 3: "string hl_leg"}
@@ -83,8 +86,8 @@ var _t := 0.0
 var _sp := 0.0    # slide progress 0 open.. 1 closed
 var _off := 0.0   # slide in 800×600 px
 ## Part weights of the table by part type.
-const PART_WEIGHT := {"head": 10.0, "torso": 30.0, "right_arm": 15.0, "left_arm": 15.0,
-	"right_leg": 15.0, "left_leg": 15.0}
+const PART_WEIGHT := {"head": 10.0, "torso": 30.0, "left_arm": 15.0, "right_arm": 15.0,
+	"left_leg": 15.0, "right_leg": 15.0}
 
 
 func _ready() -> void:
@@ -108,7 +111,7 @@ func _ready() -> void:
 
 
 func _k() -> float:
-	return get_viewport_rect().size.y / 600.0
+	return Interface800.canvas_size(self).y / 600.0
 
 
 func _p(v: Vector2, fixed := false) -> Vector2:
@@ -137,8 +140,16 @@ func _process(dt: float) -> void:
 	_t -= dt
 	if _t <= 0.0:
 		_t = 0.1
+		var was := _unit
 		_unit = _pick()
 		_doll.visible = _off < 180.0 and _unit != null and mode != "attributes"
+		# The panel's figure mirrors the unit's pose: keep that unit animating
+		# at the full rate even when it is off screen (GameUnit anim LOD).
+		var watched: GameUnit = _unit if _doll.visible else null
+		if is_instance_valid(was) and was != watched:
+			was.anim_watched = false
+		if watched:
+			watched.anim_watched = true
 		# A hidden figure needn't follow the unit's pose every frame.
 		_doll.process_mode = Node.PROCESS_MODE_INHERIT if _doll.visible else Node.PROCESS_MODE_DISABLED
 		if _doll.visible:
@@ -190,9 +201,31 @@ func _gui_input(e: InputEvent) -> void:
 	accept_event()
 
 
+## keyboard.ini w_info1–4 (. / ', the original cases 0x2e–0x31
+## views = 0 general, 1 hit locations, 2 attributes, 3 spell effects):
+## closed (= 1) → opens on that view; open on another view → that view
+## silently; open on the same view → closes. Opening / closing sound
+## buttons\battle\sling.wav, then marks the tabs.
+const KEY_VIEWS := ["general", "parts", "attributes", "effects"]
+
+func key_view(i: int) -> void:
+	var t: String = KEY_VIEWS[clampi(i, 0, 3)]
+	if open and mode != t:
+		mode = t
+	else:
+		open = not open
+		mode = t
+		if GameSound.instance:
+			GameSound.instance.ui("buttons\\battle\\sling.wav")
+	_t = 0.0
+	queue_redraw()
+
+
 func _get_tooltip(at: Vector2) -> String:
 	var t := _tab_at(at)
-	return GameData.text("tip %d" % TABS[t][2]).strip_edges() if t else ""
+	# hotkeys w_info1..4 (0x2e..0x31) on the four view tabs.
+	return GameData.tip_key(GameData.text("tip %d" % TABS[t][2]).strip_edges(),
+			{"general": 46, "parts": 47, "attributes": 48, "effects": 49}.get(t, 0)) if t else ""
 
 
 func _has_point(point: Vector2) -> bool:
@@ -230,7 +263,7 @@ func _draw() -> void:
 		var uvs := PackedVector2Array()
 		for i in 3:
 			pts[i] = _p(pts[i], true)
-			uvs.append(HudDial.ARROW_UV[i] / 256.0)
+			uvs.append(Vector2(HudDial.ARROW_UV[i].x, 256.0 - HudDial.ARROW_UV[i].y) / 256.0)   # flipped atlas
 		draw_polygon(pts, PackedColorArray([Color.WHITE, Color.WHITE, Color.WHITE]), uvs, _atlas)
 
 
@@ -313,6 +346,11 @@ func _draw_parts(c: CanvasItem, u: GameUnit) -> void:
 func _armor(u: GameUnit) -> PackedFloat32Array:
 	var out := PackedFloat32Array([0, 0, 0, 0, 0, 0, 0])
 	var nat: PackedFloat32Array = u.stats.get("armor", PackedFloat32Array())
+	if not Combat.named(u):   #  param 3 = 0
+		var f := game.world.combat.difficulty(u, "Absorption") if game and game.world else 1.0
+		for t in 7:
+			out[t] = (nat[t] if t < nat.size() else 0.0) * f
+		return out
 	var pa: Dictionary = u.stats.get("part_armor", {})
 	for t in 7:
 		var s := 0.0

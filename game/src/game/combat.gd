@@ -1,7 +1,6 @@
 class_name Combat
 extends RefCounted
 ## Combat resolution, following the original (function addresses cited per rule
-## docs/original_reference.md "Combat formulas").
 
 var world: GameWorld
 var rng := RandomNumberGenerator.new()
@@ -53,8 +52,8 @@ func _init(w: GameWorld) -> void:
 ## ratio term; both are under one point in melee and left out.)
 func attack_hits(att: GameUnit, def: GameUnit, penalty := 0.0) -> bool:
 	var b := roundi(float(att.stats.get("hit_random", 40.0)))
-	var roll := float(attack_value(att)) + rng.randi_range(0, b) * 2 - (b + 1) - penalty
-	return maxf(roll, 0.0) >= float(defence_value(def))
+	var roll := maxf(float(attack_value(att)) + rng.randi_range(0, b) * 2 - (b + 1), 0.0)
+	return maxf(roll - penalty, 0.0) >= float(defence_value(def))
 
 
 func hit_chance(att: GameUnit, def: GameUnit) -> float:
@@ -78,7 +77,8 @@ var last_wear := {}
 var last_types := PackedFloat32Array()
 
 func roll_damage(att: GameUnit, def: GameUnit, part := "torso") -> float:
-	var dmg := rng.randf_range(float(att.stats.dmg_min), float(att.stats.dmg_max)) * att.damage_mul()
+	# × (1 + 0.003 strength) / (1 + 0.003 weakness), at least 1.
+	var dmg := maxf(1.0, rng.randf_range(float(att.stats.dmg_min), float(att.stats.dmg_max)) * att.damage_mul())
 	var f: PackedFloat32Array = att.stats.get("dmg_types", PackedFloat32Array([0, 0, 1, 0, 0, 0, 0]))
 	return absorb(def, dmg, f, part)
 
@@ -90,19 +90,16 @@ func absorb(def: GameUnit, dmg: float, f: PackedFloat32Array, part := "torso") -
 	var armour: PackedFloat32Array = def.stats.get("armor", PackedFloat32Array())
 	var k := difficulty(def, "Absorption")
 	var worn := worn_layers(def.get_meta("hero").get("armors", []), part) if def.has_meta("hero") else []
-	var layer: PackedFloat32Array = def.stats.get("part_armor", {}).get(part, PackedFloat32Array())
 	var total := 0.0
 	for t in 7:
 		var d := dmg * f[t] - (armour[t] * k if t < armour.size() else 0.0)
 		if d <= 0.0:
 			continue
 		var start := d
-		if worn.is_empty():
-			d -= layer[t] if t < layer.size() else 0.0
 		for w: Array in worn:
 			d -= w[1][t]
-			if d > 0.0:
-				last_wear.armors[w[0]] = last_wear.armors.get(w[0], 0.0) + d
+			for i: int in w[0]:
+				last_wear.armors[i] = last_wear.armors.get(i, 0.0) + maxf(d, 0.0)
 			if d <= 0.0:
 				break
 		last_wear.weapon += start - maxf(d, 0.0)
@@ -111,17 +108,41 @@ func absorb(def: GameUnit, dmg: float, f: PackedFloat32Array, part := "torso") -
 	return total
 
 
-## Worn pieces covering `part`, outer layer first: [index in armors, layer].
-## (the original keeps two item layers per part, slot table.)
+## The armour layers worn on `part`, outer first: [[indices in armors], sum].
+##  walks a character's three part layers from 2 down to 0 and
+## subtracts each (× the hit record's, 1 for a strike) while damage is
+## left; names the items of a layer through the table
+## (item type ids helm 0, plate 1, leggings 2, shirt 3, pants 4, boots 5,
+## gloves 6): head layer 2 helm; torso 2 plate, 1 shirt; arms 2 plate, 1 shirt
+## + gloves; legs 2 leggings, 1 pants + boots; layer 0 has no item. Two items
+## of one layer are subtracted together and both wear by the damage left
+## after it. Only characters (script-name ids)
+## have layers; other units take the natural armour alone. Broken pieces are
+## off the body (they go to the inventory).
 static func worn_layers(armors: Array, part: String) -> Array:
 	var out := []
-	var slots: Array = PART_SLOTS.get(part, [])
-	for si in range(slots.size() - 1, -1, -1):
-		var ps: Array = slots[si]
-		for i in armors.size():
-			if Items.slot(armors[i]) == ps[0] and not Items.is_broken(armors[i]):
-				out.append([i, Items.armor_layer(armors[i], ps[1])])
+	for layer: Array in PART_LAYERS.get(part, []):
+		var idx := []
+		var sum := PackedFloat32Array([0, 0, 0, 0, 0, 0, 0])
+		for ps: Array in layer:
+			for i in armors.size():
+				if Items.slot(armors[i]) == ps[0] and not Items.is_broken(armors[i]):
+					idx.append(i)
+					var l := Items.armor_layer(armors[i], ps[1])
+					for t in 7:
+						sum[t] += l[t]
+		if not idx.is_empty():
+			out.append([idx, sum])
 	return out
+
+
+## Part layers, outer (layer 2) first, as [slot, absorption set] lists.
+const PART_LAYERS := {
+	"head": [[["helm", 0]]],
+	"torso": [[["plate", 0]], [["shirt", 0]]],
+	"arms": [[["plate", 1]], [["shirt", 1], ["gloves", 0]]],
+	"legs": [[["leggings", 0], ["leggins", 0]], [["pants", 0], ["boots", 0]]],
+}
 
 
 ## A hit record without an attacker on `def` (through the
@@ -182,7 +203,21 @@ func strike_roll(att: GameUnit, def: GameUnit) -> Dictionary:
 	if att.has_meta("hero") and not att.stats.get("ranged", false):
 		var fwd := Vector2.from_angle(def.facing)
 		backstab = fwd.dot((def.pos - att.pos).normalized()) > 0.5
-	return {"backstab": backstab, "hit": backstab or attack_hits(att, def)}
+	return {"backstab": backstab, "hit": backstab or attack_hits(att, def, aim_penalty(att.strike_aim))}
+
+
+## an aimed strike (hit record set, from the attack
+## order's aim, keyboard.ini cs_* held at the click) lowers the attack
+## roll by 25 at the head (part 0), not at the body (part 1), by 10 at a limb,
+## the roll kept ≥ 0. The part is the aimed one as it stands:
+## takes the order's aim 0..5 as the record's part without the
+## neighbour search, which only the random location (aim 6) and
+## an out-of-range aim (→ the body) go through.
+static func aim_penalty(aim: int) -> float:
+	match aim:
+		0: return 25.0
+		2, 3, 4, 5: return 10.0
+	return 0.0
 
 
 ## A blow lands with the hit record `roll` from strike_roll
@@ -196,7 +231,14 @@ func melee(att: GameUnit, def: GameUnit, roll := {}) -> void:
 	if not roll.hit:
 		world.on_miss(att, def)
 		return
-	var part := def.hit_part(att.strike_aim)
+	armor_spells(def, true)
+	# an aimed strike (0..5) lands on that part even when it is
+	# gone; then deals nothing (part state < 2: severed or
+	# absent) — no damage, no wear, no hit number.
+	var aim := att.strike_aim
+	var part := aim if aim >= 0 and aim < 6 and not def.parts.is_empty() else def.hit_part(-1)
+	if not def.parts.is_empty() and int(def.parts[part].state) < 2:
+		return
 	var dmg := roll_damage(att, def, def.part_group(part))
 	if backstab:
 		var mul := GameData.ai_value("RPG", "BackstabAdd", 3.0) + float(att.stats.get("backstab", 0.0)) / 100.0
@@ -206,25 +248,66 @@ func melee(att: GameUnit, def: GameUnit, roll := {}) -> void:
 		world.combat_event.emit("backstab", att, def, dmg)
 	apply_wear(att, def)
 	def.take_damage(dmg, att, part, last_types, 1 if backstab else 0)
-	_weapon_spell(att, def)
+	# a unit that lives on after the damage.
+	if not def.dead:
+		armor_spells(def, false)
 
 
-## Enchanted weapons ("it" rune) cast their spell on some hits.
-func _weapon_spell(att: GameUnit, def: GameUnit) -> void:
-	if def.dead or not att.has_meta("hero"):
+## An enchanted weapon ("it" rune, spell flag) in hand, the original
+## called by the strike after the blow is dealt
+## or the missile launched, hit or miss, no chance roll. When the weapon's
+## charge holds the spell's stamina it loses that
+##  and the spell is cast at the target; short
+## it nothing happens. A target the blow killed still gets the cast (the
+## direct path has no life test): the charge is spent and the
+## spell shown; an area spell still reaches the living round it. Approx.: the
+## effect itself is not put on the corpse.
+func weapon_spell(att: GameUnit, def: GameUnit) -> void:
+	if not att.has_meta("hero"):
 		return
-	var ws: Array = att.get_meta("hero").get("weapons", [])
+	var h: Dictionary = att.get_meta("hero")
+	var ws: Array = h.get("weapons", [])
 	var sp := Items.spell_of(ws[0]) if not ws.is_empty() else ""
-	if sp.is_empty() or rng.randf() > 0.3:
+	if sp.is_empty() or not int(Spells.parse(sp).flags) & 0x10000:
 		return
-	Spells.apply(world, att, sp, def, def.pos)
+	if not Session.spend_charge(h, ws[0], float(Spells.parse(sp).mana)):
+		return
+	if world.session:
+		world.session.mark_dirty()
+	if not def.dead or float(Spells.parse(sp).radius) > 0.2:
+		Spells.apply(world, att, sp, def, def.pos)
 	if world.session:
 		world.session.broadcast({"t": "spellfx", "code": Spells.parse(sp).code, "sub": Spells.parse(sp).subtype,
 			"x": def.pos.x, "y": def.pos.y, "a": att.uid, "tu": def.uid, "spell": sp})
 
 
+## Worn armour with an "it" spell (flag), the original over
+## the 7 armour slots: `struck` (a blow lands, before the
+## damage) fires every such spell but Healing (spell 24); after the damage, if
+## the unit lives, only Healing fires. Each needs its charge to
+## hold the stamina cost, which it loses; the spell is cast at the wearer.
+func armor_spells(u: GameUnit, struck: bool) -> void:
+	if not u.has_meta("hero"):
+		return
+	var h: Dictionary = u.get_meta("hero")
+	for a: String in h.get("armors", []):
+		var sp := Items.spell_of(a)
+		if sp.is_empty():
+			continue
+		var p := Spells.parse(sp)
+		if not int(p.flags) & 0x10000:
+			continue
+		if (GameData.db.table("spell_prototypes").find(p.proto) == 24) == struck:
+			continue
+		if not Session.spend_charge(h, a, float(p.mana)):
+			continue
+		if world.session:
+			world.session.mark_dirty()
+		Spells.apply(world, u, sp, u, u.pos)
+
+
 ## Stats for player characters from attributes, experience, skills and
-## equipment (the original, docs/original_reference.md):
+## equipment (the original):
 ##   HP / stamina: ai.reg HP/MP Val formula with Str / Dex (Skills.base_pool);
 ##   Attack = weapon skill + (Dex - 25) + weapon attack (+ weapon perk);
 ##   Defence = Melee skill + (Dex - 25) + weapon defence (+ weapon perk), 0 for

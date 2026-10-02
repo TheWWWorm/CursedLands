@@ -44,8 +44,8 @@ extends Control
 ## In a network game Enter opens the chat line
 ## (ui/chat_line.gd) instead of skipping.
 ## **Approx.**: the ScrollText units are taken as 800×600 pixels (scaled);
-## a font found on the system (no fonts shipped); Backspace's chat clear in a
-## network game is not ported (see ChatLine).
+## a font found on the system (no fonts shipped). Backspace in a network game
+## clears the chat list (`GameHUD.clear_chat`).
 
 const NAME_COLOR := Color8(0xff, 0xb3, 0x31)
 const TEXT_COLOR := Color8(0xe4, 0xd7, 0xa7)
@@ -80,8 +80,11 @@ var _voiced := false
 ## Quest items the conversation shows ("#show <item> N", the original
 ## ): slot (N-1) % 7 is centred at 800×600 point (x, y)
 ## tables; slots 0-6 get a translucent black 120×120
-## square (colour) in a 130×130 frame, higher ones none. An item
-## stays until "#hide", the conversation's end or its next "#show".
+## square (colour) in a 130×130 saveload frame, higher ones none
+## and from slot 8 on the figure is translucent (drawn as
+## the view's alpha). The figure is figures.res initqu<N>item with skin
+## quitem%04d, (x, y, 12), turned π about x. An item stays
+## until "#hide", the conversation's end or its next "#show".
 const SHOW_X := [300, 500, 200, 400, 600, 75, 725]
 const SHOW_Y := [300, 300, 300, 300, 300, 500, 500]
 var _shows_layer: Control
@@ -130,6 +133,7 @@ func _ready() -> void:
 	_shows_layer.set_anchors_preset(Control.PRESET_FULL_RECT)
 	visibility_changed.connect(func(): if not visible: _clear_shows())
 	_shows_layer.resized.connect(_layout_shows)
+	_shows_layer.draw.connect(_draw_shows)
 	resized.connect(_relayout)
 
 
@@ -269,7 +273,9 @@ func _show(quick := false) -> void:
 	_voiced = false
 	if GameSound.instance:
 		GameSound.instance.stop_speech()
-		if not quick:
+		#  stops the speech at each phrase
+		# the skip (param 1) jumps past the mp3 start, the last phrase included.
+		if not quick and not _skipping:
 			_voiced = GameSound.instance.speech(_brief, int(p.get("n", _i + 1)))
 
 
@@ -283,7 +289,8 @@ func _next() -> void:
 	_show()
 
 
-## Enter / Esc: (1) until the last phrase.
+## Enter / Esc: (1) until the last phrase: the
+## voice playing stops and the skipped phrases, the last one too, are silent.
 func _skip() -> void:
 	if _mode != PLAYING:
 		return
@@ -523,9 +530,13 @@ func _draw() -> void:
 
 ## four mitred strips, the texture's v 254 on the outer edge and
 ## 249 on the inner one, u 2..180 along each side.
-func _frame(r: Rect2, w := 5.0) -> void:
+func _frame(r: Rect2, w := 5.0, ci: CanvasItem = null, kv := Vector2.ZERO) -> void:
+	if ci == null:
+		ci = self
+	if kv == Vector2.ZERO:
+		kv = _kv()
 	if _ui == null:
-		draw_rect(_r(r).grow(-w * 0.5 * _kv().y), Color(0.55, 0.5, 0.4), false, w * _kv().y)
+		ci.draw_rect(Rect2(r.position * kv, r.size * kv).grow(-w * 0.5 * kv.y), Color(0.55, 0.5, 0.4), false, w * kv.y)
 		return
 	var o := [r.position, Vector2(r.end.x, r.position.y), r.end, Vector2(r.position.x, r.end.y)]
 	var ii := [o[0] + Vector2(w, w), o[1] + Vector2(-w, w), o[2] - Vector2(w, w), o[3] + Vector2(w, -w)]
@@ -538,8 +549,8 @@ func _frame(r: Rect2, w := 5.0) -> void:
 	for side in 4:
 		var a: int = side
 		var b: int = (side + 1) % 4
-		var pts := PackedVector2Array([_p(o[a]), _p(o[b]), _p(ii[b]), _p(ii[a])])
-		draw_polygon(pts, white, PackedVector2Array([uo0, uo1, ui1, ui0]), _ui)
+		var pts := PackedVector2Array([o[a] * kv, o[b] * kv, ii[b] * kv, ii[a] * kv])
+		ci.draw_polygon(pts, white, PackedVector2Array([uo0, uo1, ui1, ui0]), _ui)
 
 
 ##  sprites of texture "Scrollbar" (UVs in 256ths of the 64² map):
@@ -548,18 +559,25 @@ func _frame(r: Rect2, w := 5.0) -> void:
 ## 40,128-80,176; thumb 10×28 UV 40,8-80,120 centred at (x2−5, y1 + 26 + pos ·
 ## (h − 52) / max). Hidden while nothing scrolls.
 func _draw_bar(b: Bar) -> void:
+	paint_bar(self, b, _r)
+
+
+## The same on another canvas item, `to_px` mapping an 800×600 Rect2.
+static func paint_bar(ci: CanvasItem, b: Bar, to_px: Callable) -> void:
 	if b.max_pos <= 0.0:
 		return
+	if _sb == null and GameData.is_open():
+		_sb = _flipped("Scrollbar")
 	if _sb == null:
-		draw_rect(_r(b.track_rect()), Color(0.45, 0.32, 0.15))
-		draw_rect(_r(b.thumb_rect()), Color(0.9, 0.6, 0.2))
+		ci.draw_rect(to_px.call(b.track_rect()), Color(0.45, 0.32, 0.15))
+		ci.draw_rect(to_px.call(b.thumb_rect()), Color(0.9, 0.6, 0.2))
 		return
 	var q := _sb.get_size().x / 256.0
-	draw_texture_rect_region(_sb, _r(b.track_rect()), Rect2(Vector2(8, 4) * q, Vector2(24, 248) * q))
-	var up := _r(b.up_rect())
-	draw_texture_rect_region(_sb, Rect2(up.position, Vector2(up.size.x, -up.size.y)), Rect2(Vector2(40, 128) * q, Vector2(40, 48) * q))
-	draw_texture_rect_region(_sb, _r(b.down_rect()), Rect2(Vector2(40, 128) * q, Vector2(40, 48) * q))
-	draw_texture_rect_region(_sb, _r(b.thumb_rect()), Rect2(Vector2(40, 8) * q, Vector2(40, 112) * q))
+	ci.draw_texture_rect_region(_sb, to_px.call(b.track_rect()), Rect2(Vector2(8, 4) * q, Vector2(24, 248) * q))
+	var up: Rect2 = to_px.call(b.up_rect())
+	ci.draw_texture_rect_region(_sb, Rect2(up.position, Vector2(up.size.x, -up.size.y)), Rect2(Vector2(40, 128) * q, Vector2(40, 48) * q))
+	ci.draw_texture_rect_region(_sb, to_px.call(b.down_rect()), Rect2(Vector2(40, 128) * q, Vector2(40, 48) * q))
+	ci.draw_texture_rect_region(_sb, to_px.call(b.thumb_rect()), Rect2(Vector2(40, 8) * q, Vector2(40, 112) * q))
 
 
 # ------------------------------------------------------------------ input
@@ -631,6 +649,10 @@ func _unhandled_input(e: InputEvent) -> void:
 				_topics = {}
 				_topic_list.visible = false
 				visible = false
+		KEY_BACKSPACE:   # network only: clears the chat list
+			if not hud.game.session.online:
+				return
+			hud.clear_chat()
 		_:
 			return
 	get_viewport().set_input_as_handled()
@@ -798,6 +820,7 @@ func _clear_shows() -> void:
 	for n in _shown:
 		_shown[n][1].queue_free()
 	_shown.clear()
+	_shows_layer.queue_redraw()
 
 
 func _show_items(shows: Array) -> void:
@@ -809,34 +832,45 @@ func _show_items(shows: Array) -> void:
 			_shown.erase(name)
 		if slot < 0 or Items.info(name).table != "quest_items" or Items.look(name).is_empty():
 			continue
-		var box := PanelContainer.new()
-		box.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		var sb := StyleBoxFlat.new()
-		if slot < 7:
-			sb.bg_color = Color(0, 0, 0, 160.0 / 255.0)
-			sb.border_color = Color(0.55, 0.5, 0.4)
-			sb.set_border_width_all(5)
-		else:
-			sb.bg_color = Color(0, 0, 0, 0)
-		box.add_theme_stylebox_override("panel", sb)
 		var v := ItemView.new()
-		box.add_child(v)
-		_shows_layer.add_child(box)
-		_shown[name] = [slot % 7, box]
-		v.call_deferred("show_item", name)
+		v.quest = true
+		if slot > 7:
+			v.modulate = Color(1, 1, 1, 0x82 / 255.0)
+		_shows_layer.add_child(v)
+		_shown[name] = [slot, v]
 	_layout_shows()
 
 
+## slots 0–6 get a black square (x ± 60, y ± 60, colour
+## ) and a saveload frame (x ± 65, 5 wide
+##  with the dialog box's UVs) under the figure.
+func _draw_shows() -> void:
+	var kv := _shows_layer.size / Vector2(800.0, 600.0)
+	for n in _shown:
+		var slot: int = _shown[n][0]
+		if slot >= 7:
+			continue
+		var c := Vector2(SHOW_X[slot], SHOW_Y[slot])
+		_shows_layer.draw_rect(Rect2((c - Vector2(60, 60)) * kv, Vector2(120, 120) * kv), Color(0, 0, 0, 0xa0 / 255.0))
+		_frame(Rect2(c - Vector2(65, 65), Vector2(130, 130)), 5.0, _shows_layer, kv)
+
+
+## The figure: (x, y, 12) at scale 1, turned π about x, in the
+## original's perspective (ItemView.screen_at); the view is not clipped.
 func _layout_shows() -> void:
 	var vs := _shows_layer.size
 	var kv := vs / Vector2(800.0, 600.0)   # stretched like every interface rect
 	for n in _shown:
 		var slot: int = _shown[n][0]
-		var c := Vector2(SHOW_X[slot], SHOW_Y[slot]) * kv
-		var box: Control = _shown[n][1]
-		box.size = Vector2(130, 130) * kv
-		box.position = c - box.size * 0.5
-		box.get_child(0).custom_minimum_size = Vector2(120, 120) * kv
+		var c := Vector2(SHOW_X[slot % 7], SHOW_Y[slot % 7])
+		var v: ItemView = _shown[n][1]
+		v.size = Vector2(240, 240) * kv
+		v.position = c * kv - v.size * 0.5
+		v.unit_px = kv.y * 400.0 / ItemView.K / 12.0
+		v.screen_at = Vector3(c.x, c.y, 12.0)
+		v.item = "~"
+		v.show_item(n)
+	_shows_layer.queue_redraw()
 
 
 # ------------------------------------------------------------------ camera / HUD
@@ -877,8 +911,15 @@ func _show_units() -> void:
 
 func _hide_hud(on: bool) -> void:
 	if on:
-		for c in hud.get_children():
-			if c != self and c != _shows_layer and c != _topic_list and c is CanvasItem and c.visible and not c is MoviePlayer:
+		# HUD controls live inside SafeArea. Hide the surrounding widgets,
+		# never a container that also contains this conversation.
+		var siblings := get_parent().get_children()
+		if get_parent() != hud:
+			siblings.append_array(hud.get_children())
+		for c in siblings:
+			if c == self or c == _shows_layer or c == _topic_list or c.is_ancestor_of(self):
+				continue
+			if c is CanvasItem and c.visible and not c is MoviePlayer:
 				c.visible = false
 				_hidden_hud.append(c)
 	else:

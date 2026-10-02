@@ -5,9 +5,14 @@ shader_type spatial;
 // (prev x, prev y, prev z, cur x), (cur y, cur z, prev size, cur size) and
 // the previous colour; COLOR is the current colour, INSTANCE_CUSTOM the atlas
 // rect (u0, v_top, u1, v_bottom).
-// Approximations (the 2000 renderer's details are unknown): camera-facing
-// billboard, no depth write, and soft particles fading near opaque geometry.
-// ParticleFx swaps blend_mix for blend_add (D3D SRCALPHA / ONE) per emitter.
+// The 2000 renderer (display =
+// 3dfpfpu.dll TLP =) projects each centre and expands a
+// screen-aligned square of half-size size / w pixels-per-unit (x scale for
+// both axes), w = sin(fov / 2) * depth, whose x scale is
+// cos(fov / 2): in view space a camera-facing square of half-extent
+// size / cos(pi / 7) (SIZE_K). Z write off (state 0xe = 0 before
+// the particles). ParticleFx swaps blend_mix for blend_add (D3D SRCALPHA /
+// ONE) per emitter. Remake addition: soft particles near opaque geometry.
 render_mode unshaded, blend_mix, depth_draw_never, cull_disabled, skip_vertex_transform, shadows_disabled;
 
 uniform sampler2D tex : source_color, filter_linear_mipmap, repeat_disable;
@@ -21,11 +26,12 @@ uniform float lerp_t = 1.0;
 uniform vec3 light_tint = vec3(1.0);
 uniform float boost = 1.0;
 varying float psize;
+const float SIZE_K = 1.1099162;   // 1 / cos(pi / 7)
 
 void vertex() {
 	mat4 m = MODEL_MATRIX;
 	vec3 centre = mix(vec3(m[0][0], m[1][0], m[2][0]), vec3(m[3][0], m[0][1], m[1][1]), lerp_t);
-	float size = abs(mix(m[2][1], m[3][1], lerp_t));
+	float size = abs(mix(m[2][1], m[3][1], lerp_t)) * SIZE_K;
 	COLOR = mix(vec4(m[0][2], m[1][2], m[2][2], m[3][2]), COLOR, lerp_t);
 	vec4 vc = VIEW_MATRIX * vec4(centre, 1.0);
 	VERTEX = vc.xyz + vec3(VERTEX.xy * size, 0.0);
@@ -39,7 +45,10 @@ void fragment() {
 	float soft = 1.0;
 	if (soft_distance > 0.0) {
 		float depth = texture(depth_tex, SCREEN_UV).r;
-		vec4 v = INV_PROJECTION_MATRIX * vec4(SCREEN_UV * 2.0 - 1.0, depth, 1.0);
+		#if CURRENT_RENDERER == RENDERER_COMPATIBILITY
+	depth = depth * 2.0 - 1.0;
+#endif
+	vec4 v = INV_PROJECTION_MATRIX * vec4(SCREEN_UV * 2.0 - 1.0, depth, 1.0);
 		float scene = -v.z / v.w;
 		// Fade range at most the particle's own half-size: small sprites
 		// sitting on the ground (zone exit stars, path dots) stay visible.

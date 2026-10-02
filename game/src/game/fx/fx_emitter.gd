@@ -4,7 +4,7 @@ extends RefCounted
 ## Created by FxTypes.create (Create), updated once per 55 ms logic
 ## tick by update, drawn by ParticleFx with the previous
 ## current state interpolated. All positions are in EI space
-## (x, y, z up). docs/particles_research.md has the field map.
+## (x, y, z up). has the field map.
 ##
 ## A particle is an Array laid out like the original's 100-byte record, index =
 ## byte offset / 4, so the per-type callbacks port one to one:
@@ -65,6 +65,18 @@ var spawn_fn: Callable     #  spawn(p, idx) -> bool
 var upd_fn: Callable       #  update(p) -> bool
 var ctl_fn: Callable       #  per control point
 var alive := true
+## Remake: the emitter's own random stream, seeded from ParticleFx's at
+## creation (the original draws every emitter from the one CRT rand); with it
+## the particles of one emitter can be simulated on a worker thread.
+var rng := RandomNumberGenerator.new()
+## Remake: the callbacks touch nothing outside the emitter but the terrain
+## heights, so update_sim may run on a worker (FxTypes.SERIAL lists those
+## that read units, bones or the camera; they stay on the main thread).
+var par := true
+
+
+func rnd() -> int:
+	return rng.randi()
 
 
 static func new_particle() -> Array:
@@ -124,8 +136,16 @@ func live() -> int:
 
 ## . Returns false when the emitter is finished.
 func update() -> bool:
-	if e8 > 0x38 and (flags & F_SKIP):
+	if not update_pre():
 		return true
+	return update_sim()
+
+
+## first part (main thread: reads the carrier): false = the
+## emitter is skipped this tick (unseen F_SKIP).
+func update_pre() -> bool:
+	if e8 > 0x38 and (flags & F_SKIP):
+		return false
 	wind = fx.wind
 	wind_s = fx.wind_s
 	if carrier != null and not fx.carrier_valid(carrier):
@@ -147,6 +167,13 @@ func update() -> bool:
 			sd = Vector3(dl.y - dl.z, -dl.x, dl.x)
 		sd = sd.normalized()
 		upv = dl.cross(sd).normalized()
+	return true
+
+
+## the rest: control points, particles, spawning. Touches only
+## this emitter (and the terrain heights) when `par`; returns false when the
+## emitter is finished.
+func update_sim() -> bool:
 	if ctl_fn.is_valid():
 		for c in cp:
 			ctl_fn.call(self, c)
@@ -182,7 +209,7 @@ func update() -> bool:
 		while tries < n:
 			if parts.size() >= d8:
 				break
-			if int(fx.rnd() % 100) < cc:
+			if int(rnd() % 100) < cc:
 				var idx := spawned
 				spawned += 1
 				_spawn(idx)

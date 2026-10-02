@@ -25,7 +25,58 @@ const WEAPON_MESH := {"sword": "rh3.sword%02d", "axe": "rh3.axe%02d", "dagger": 
 	"spear": "rh3.pike%02d", "hammer": "rh3.club%02d", "crossbow": "rh3.crbow%02dmain"}
 
 static var _textures := {}
+static var _surface_textures := {}
 const AnimatedPart = preload("res://src/ei/anim_part.gd")
+const SurfaceResponse = preload("res://src/game/surface_materials.gd")
+
+## One shader for all world units, using the world's hourly light uniforms,
+## point lights, shadow darkening and view-depth fog. Figure emissive is added
+## after max(ambient, sun, point lights), before the shadow (TLP 1000d910).
+const UNIT_SHADER := """
+shader_type spatial;
+render_mode cull_back, ambient_light_disabled, alpha_to_coverage;
+#define EI_FIGURE_LIGHT
+varying vec3 ei_e;
+varying float ei_k;
+uniform sampler2D albedo_tex : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
+uniform sampler2D surface_tex : hint_default_black, filter_linear_mipmap_anisotropic, repeat_enable;
+uniform vec3 unit_emission = vec3(0.0);
+void vertex() {
+	ei_e = unit_emission;
+	ei_k = 0.0;
+}
+void fragment() {
+	FOG = ei_fog_of(VERTEX, (INV_VIEW_MATRIX * vec4(VERTEX, 1.0)).xyz);
+	vec4 t = texture(albedo_tex, UV);
+	ALBEDO = t.rgb;
+	ALPHA = t.a;
+	ALPHA_SCISSOR_THRESHOLD = 0.5;
+	ALPHA_ANTIALIASING_EDGE = 0.3;
+	ALPHA_TEXTURE_COORDINATE = UV * vec2(textureSize(albedo_tex, 0));
+	ROUGHNESS = 1.0;
+	SPECULAR = 0.0;
+	if (ei_surface_fx.x > 0.5) {
+		ei_surface = texture(surface_tex, UV).rgb;
+	}
+}
+"""
+static var _unit_shader: Shader
+
+
+## Keep texture changes (redress / wounds) on the material that owns them.
+## Its albedo property is also used by the existing UI material path.
+class LitMaterial extends ShaderMaterial:
+	@export var albedo_texture: Texture2D:
+		get:
+			return get_shader_parameter("albedo_tex")
+		set(value):
+			set_shader_parameter("albedo_tex", value)
+
+	func _init() -> void:
+		if EIUnitModel._unit_shader == null:
+			EIUnitModel._unit_shader = Gfx.make_shader(EIUnitModel.UNIT_SHADER)
+		shader = EIUnitModel._unit_shader
+
 
 ## Optional experiment, disabled by default to preserve the original shapes.
 ## the original draws every part rigidly with one matrix. Enabling
@@ -41,7 +92,7 @@ var _current := ""
 
 ## `unit` is a map object dictionary from EIMob (or a synthetic one with
 ## prototype/complexion/armors/weapons).
-static func create(unit: Dictionary) -> EIUnitModel:
+static func create(unit: Dictionary, ui_preview := false) -> EIUnitModel:
 	var db := GameData.db
 	var proto := db.find("monster_prototypes", unit.get("prototype", unit.get("parent_template", "")))
 	var race := db.find("race_models", proto.get("base_race", ""))
@@ -54,7 +105,7 @@ static func create(unit: Dictionary) -> EIUnitModel:
 	var m := EIUnitModel.new()
 	m.template = tmpl
 	m.name = tmpl
-	m._build(model, unit, proto, race)
+	m._build(model, unit, proto, race, ui_preview)
 	return m
 
 
@@ -355,7 +406,7 @@ func anim_names() -> PackedStringArray:
 	return out
 
 
-func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictionary) -> void:
+func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictionary, ui_preview := false) -> void:
 	var db := GameData.db
 	var complexion: Vector3 = unit.get("complexion", Vector3.ZERO)
 	if complexion == Vector3.ZERO:   # spawned without a map record: the prototype's build
@@ -375,13 +426,22 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 		if p in body_parts or (body_parts.is_empty() and _is_body_part(p, model)):
 			mesh_for[p] = p
 	var layers: Array[String] = []
-	var skins: PackedStringArray = race.get("textures", PackedStringArray())
+	var surfaces: Array[Vector3] = []
+	#  formats the prototype's skin index directly. The race's
+	# texture list is incomplete (e.g. unhuma has 29 entries but skins 0..36).
+	# An absent prototype alone uses skin 00.
 	var skin_i: int = proto.get("skin", 0)
-	var skin := skins[skin_i] if skin_i >= 0 and skin_i < skins.size() else (skins[0] if skins.size() else "")
+	var skin := "skin_%02d" % skin_i
+	if not race.is_empty() and int(race.get("type_id", 0)) != 0x32:
+		# Creature figures use named textures (e.g. Wolf00), not redress skins.
+		var skins: PackedStringArray = race.get("textures", PackedStringArray())
+		skin = skins[skin_i] if skin_i >= 0 and skin_i < skins.size() else (skins[0] if skins.size() else "")
 	layers.append(skin.to_lower())
+	surfaces.append(SurfaceResponse.SKIN)
 
 	# Hair is a variant under the head ("hr.00".."hr.02" = prototype hair
-	# 0..2); there is no base "hr" part. A helmet hides it.
+	# 0..2); there is no base "hr" part. A helmet selects its armoured variant
+	# if present, otherwise hides the hair.
 	var hair_part := "hr.%02d" % int(unit.get("hair", proto.get("hair", 0)))
 	if not parts.has(hair_part):
 		hair_part = ""
@@ -390,6 +450,9 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 	if not unit.has("armors"):
 		wears = Array(proto.get("wears", PackedStringArray()))
 	var armors := []
+	var helm_layer := ""
+	var helm_surface := SurfaceResponse.DULL
+	var helm_parts := {}
 	for w: String in wears:
 		var nm := w.get_slice("@", 0).get_slice("|", 0).split(".")
 		var a := db.find("armors", nm[0])
@@ -402,17 +465,34 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 		var t1: int = a.get("texture1", -1)
 		if t1 < 0 or not ARMOR_PREFIX.has(a.type):
 			continue
-		layers.append("%s_%02d.%s.%d" % [ARMOR_PREFIX[a.type], t1, am[1].get("code", ""), a.get("texture2", 0)])
+		var layer := "%s_%02d.%s.%d" % [ARMOR_PREFIX[a.type], t1, am[1].get("code", ""), a.get("texture2", 0)]
+		if a.type == "helm":
+			# The 128 px helm atlas is separate from the 256 px body atlas
+			# . Stretching it over the body paints the arms / face.
+			helm_layer = layer
+			helm_surface = SurfaceResponse.equipment(am[1])
+			#  ("hr", "hd" row 2): the helmet is
+			# added under the head, preserving the face. Hair is replaced by
+			# its armoured variant, or removed when the figure has none.
+			var helm := "hd.armor%02d" % t1
+			if parts.has(helm):
+				mesh_for[helm] = helm
+				helm_parts[helm] = true
+			if hair_part:
+				var armored_hair := hair_part + ".armor%02d" % t1
+				hair_part = armored_hair if parts.has(armored_hair) else ""
+			continue
+		layers.append(layer)
+		surfaces.append(SurfaceResponse.equipment(am[1]))
 		for p: String in ARMOR_PARTS.get(a.type, []):
 			var v := "%s.armor%02d" % [p, t1]
 			if parts.has(v):
 				mesh_for[p] = v
-		if a.type == "helm":
-			mesh_for.erase("hr")
 
 	# The weapon's redress layer shares the body's UV space but overlaps the
 	# face and torso, so only the weapon meshes get it (on top of the rest).
 	var weapon_layer := ""
+	var weapon_surface := SurfaceResponse.DULL
 	var before := mesh_for.duplicate()
 	# Weapon meshes ("rh3.dagger01", "lh3.bwpartb01") are the weapon alone:
 	# the original draws them in addition to the hand (its fist grips the
@@ -429,6 +509,7 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 		weapon_type = wd.type
 		var t1: int = wd.get("texture1", 1)
 		var mat := db.find("materials", nm[1] if nm.size() > 1 else "")
+		weapon_surface = SurfaceResponse.equipment(mat)
 		if WEAPON_PREFIX.has(wd.type):
 			weapon_layer = ("%s_%02d.%s.%d" % [WEAPON_PREFIX[wd.type], t1, mat.get("code", ""), wd.get("texture2", 0)])
 		if WEAPON_MESH.has(wd.type):
@@ -462,25 +543,27 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 		mesh_for[held[p]] = held[p]
 		weapon_parts[held[p]] = true
 
-	var mat := StandardMaterial3D.new()
-	mat.cull_mode = BaseMaterial3D.CULL_BACK   # the original render state
-	mat.roughness = 1.0
-	# D3D fixed-function lighting is Lambert (Godot defaults to Burley, which
-	# darkens grazing faces and shows the low-poly facets).
-	mat.diffuse_mode = BaseMaterial3D.DIFFUSE_LAMBERT
-	mat.specular_mode = BaseMaterial3D.SPECULAR_DISABLED
-	mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA_SCISSOR
-	mat.alpha_scissor_threshold = 0.5
-	mat.alpha_antialiasing_mode = BaseMaterial3D.ALPHA_ANTIALIASING_ALPHA_TO_COVERAGE
-	mat.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS_ANISOTROPIC
+	var mat = _material(ui_preview)
 	mat.albedo_texture = _compose(mask, layers)
+	if mat is LitMaterial:
+		mat.set_shader_parameter("surface_tex", _compose_surface(mask, layers, surfaces))
 	set_meta("layers", [mask, layers])
-	var wmat := mat
+	var wmat = mat
 	if weapon_layer:
 		wmat = mat.duplicate()
 		var wl: Array[String] = layers.duplicate()
 		wl.append(weapon_layer)
 		wmat.albedo_texture = _compose(mask, wl)
+		if wmat is LitMaterial:
+			var ws: Array[Vector3] = surfaces.duplicate()
+			ws.append(weapon_surface)
+			wmat.set_shader_parameter("surface_tex", _compose_surface(mask, wl, ws))
+	var hmat = mat
+	if helm_layer:
+		hmat = mat.duplicate()
+		hmat.albedo_texture = _compose(mask, [helm_layer])
+		if hmat is LitMaterial:
+			hmat.set_shader_parameter("surface_tex", _compose_surface(mask, [helm_layer], [helm_surface]))
 
 	# --- node hierarchy (base parts + extras that have meshes)
 	var weld: bool = smooth_joints and bool(unit.get("weld", true))
@@ -525,12 +608,12 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 		if mesh_for.has(p):
 			var fig: Dictionary = parts[mesh_for[p]]
 			var mesh := EIFigure.build_mesh(fig, complexion)
-			if weld and not weapon_parts.has(p):
+			if weld and not weapon_parts.has(p) and not helm_parts.has(p):
 				welded[p] = [mesh, mat]
 				continue
 			var mi := MeshInstance3D.new()
 			mi.mesh = mesh
-			mi.material_override = wmat if weapon_parts.has(p) else mat
+			mi.material_override = wmat if weapon_parts.has(p) else (hmat if helm_parts.has(p) else mat)
 			n.add_child(mi)
 	if weld:
 		_weld(nodes, rest_pos, parent_of_node, welded)
@@ -565,6 +648,23 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 	movement_starts = int(race.get("type_id", 0)) == 0x32
 	pose_state = ST_NEUTRAL if neutral else ST_ATTACK
 	act("idle", 1, 0.0)
+
+
+## UI previews have their own light and camera, and must not inherit the
+## loaded map's depth / border fog. World figures share the cached Gfx shader.
+static func _material(ui_preview: bool) -> Material:
+	if not ui_preview:
+		return LitMaterial.new()
+	var mat := StandardMaterial3D.new()
+	mat.cull_mode = BaseMaterial3D.CULL_BACK   # the original render state
+	mat.roughness = 1.0
+	mat.diffuse_mode = BaseMaterial3D.DIFFUSE_LAMBERT
+	mat.specular_mode = BaseMaterial3D.SPECULAR_DISABLED
+	mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA_SCISSOR
+	mat.alpha_scissor_threshold = 0.5
+	mat.alpha_antialiasing_mode = BaseMaterial3D.ALPHA_ANTIALIASING_ALPHA_TO_COVERAGE
+	mat.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS_ANISOTROPIC
+	return mat
 
 
 ## Builds the skinned body (see `smooth_joints`): a flat Skeleton3D with one
@@ -729,3 +829,28 @@ static func _load_layer(mask: String, layer: String) -> Image:
 	if d.is_empty():
 		d = GameData.textures.read(layer + ".mmp")
 	return EIMmp.decode(d) if not d.is_empty() else null
+
+
+## Independent texture ownership is intentional: UnitWounds changes albedo,
+## and OrderMarks duplicates the material, without replacing its redress mask.
+## Profiles are part of the key because bone and bronze both use code "br".
+static func _compose_surface(mask: String, layers: Array[String], profiles: Array[Vector3]) -> Texture2D:
+	var key := mask + "|" + "|".join(layers) + "|" + str(profiles)
+	if _surface_textures.has(key):
+		return _surface_textures[key]
+	var base: Image = null
+	for i in layers.size():
+		var layer := _load_layer(mask, layers[i])
+		if layer == null:
+			continue
+		if base == null:
+			base = Image.create(layer.get_width(), layer.get_height(), false, Image.FORMAT_RGBA8)
+			base.fill(Color(SurfaceResponse.SKIN.x, SurfaceResponse.SKIN.y, SurfaceResponse.SKIN.z))
+		var profile: Vector3 = profiles[i] if i < profiles.size() else SurfaceResponse.DULL
+		SurfaceResponse.blend_layer(base, layer, profile)
+	var texture: Texture2D = null
+	if base:
+		base.generate_mipmaps()
+		texture = ImageTexture.create_from_image(base)
+	_surface_textures[key] = texture
+	return texture

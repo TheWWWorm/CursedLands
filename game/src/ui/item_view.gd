@@ -4,7 +4,21 @@ extends SubViewportContainer
 ## the figure (Items.look) in the fixed orientation
 ## q = rot(z, -0.157) · rot(y, -1.047) · rot(z, 2.356) (EI space), seen from
 ## above. Weapon / armour models are skinned with their unit redress layer.
-## Approx.: the orthographic camera, framing and light.
+## No light (CI3DFigure::Draw → renderer
+## with flag 0x100, set by the weapon bar and the camp
+## ): every vertex colour = (white here) and specular =
+## so the pixels are texture × white (+ add_color) — unshaded.
+## Projection: the game's one perspective (fov 2π/7, no view
+## matrix); (sx, sy, z) places the figure, so on screen a model
+## unit is 400 / K · scale / z pixels of 800×600 (`unit_px`): weapon bar
+## 1.2ⁿ / (24·1.2ⁿ) = 34.6, the active weapon 0.65 / 12 = 45.0.
+## Camp uses scale = slot width · K · z · 0.0009375, so the
+## 100-wide slots show 37.5 px/model unit. Dialog quest items instead use
+## scale 1, depth 12 (69.2 px/model unit).
+## With `screen_at` it is drawn in that perspective: camera
+## at the origin, frustum near 1, the figure at the placed point, so a figure
+## left of / below the screen centre is seen slightly from the side.
+## `unit_px` 0 is the box-fitted fallback (camp side info previews).
 ## Camp slots (`camp = true`) follow the camp's item draw
 ## instead. Both draws set the orientation of the same UI 3D object
 ## so the original's q is used as is: the HUD dagger
@@ -28,6 +42,8 @@ const PULSE := [Color(1, 0, 0), Color(0, 1, 1), Color(0, 1, 0), Color(1, 1, 0), 
 
 var item := ""
 var camp := false
+## A dialog's shown quest item: turned π about x.
+var quest := false
 ## The UI figure's colour (default):
 ##  write it as every vertex's specular colour (with flag 0x100
 ## or as the specular base handed to the figure lighting), which the 2000
@@ -41,6 +57,13 @@ var add_color := Color(0, 0, 0):
 		_apply_add()
 static var _add_shader: Shader
 var spin := false
+## Screen pixels per model unit, 0 = fit the model's box (see the header).
+var unit_px := 0.0
+## With `unit_px`: (sx, sy) of the 800×600 screen and d = z / scale of the
+## figure's placement — drawn in the original's perspective, the view
+## centred on (sx, sy). d 0 = orthographic.
+var screen_at := Vector3.ZERO
+const K := 0.48157462
 var _vp: SubViewport
 var _model: Node3D
 var _base := Quaternion.IDENTITY
@@ -127,7 +150,9 @@ func show_item(id: String) -> void:
 	_axis = Vector3.ZERO
 	_angle = 0.0
 	_speed = 0.0
-	if camp:
+	if quest:
+		q = Quaternion(Vector3(1, 0, 0), PI)
+	elif camp:
 		var k := Items.kind(id)
 		if id.begins_with("spell:") or k == "rune":
 			q = Quaternion(Vector3(0, 0, 1), PI)
@@ -152,24 +177,50 @@ func show_item(id: String) -> void:
 		var b: AABB = m.transform * mi.transform * mi.get_aabb()
 		box = b if first else box.merge(b)
 		first = false
+	# Unlit: flag 0x100 colours (see the header).
+	for mi: MeshInstance3D in m.find_children("*", "MeshInstance3D", true, false):
+		if mi.material_override:
+			mi.material_override = _unlit(mi.material_override)
+		elif mi.mesh:
+			for si in mi.mesh.get_surface_count():
+				var sm := mi.get_active_material(si)
+				if sm:
+					mi.set_surface_override_material(si, _unlit(sm))
 	var cam := Camera3D.new()
 	cam.projection = Camera3D.PROJECTION_ORTHOGONAL
 	var aspect := size.x / maxf(size.y, 1.0) if size.y > 0 else 1.0
 	# Looking down the EI z axis (screen up = EI -y), where the original's
 	# orientation stands the bottles up.
-	cam.size = maxf(box.size.z, box.size.x / aspect) * 1.1
 	cam.rotation_degrees = Vector3(-90, 180, 0)
-	cam.position = box.get_center() + Vector3(0, box.size.length() + 2.0, 0)
+	if unit_px > 0.0 and screen_at.z > 0.0:
+		# The original's perspective (see the header): camera at the origin, the
+		# figure at ((sx/400 − 1)·K·d, (sy/400 − 0.75)·K·d, d) with y down;
+		# the view shows the part of that frustum around (sx, sy).
+		var f := 400.0 / K
+		var d := screen_at.z
+		var lx := (screen_at.x - 400.0) / f * d
+		var ly := -(screen_at.y - 300.0) / f * d
+		var b := Basis.from_euler(cam.rotation)
+		cam.position = b.z * d - b.x * lx - b.y * ly
+		var n := 1.0
+		cam.set_frustum(maxf(size.y, 1.0) * n / (unit_px * d), Vector2(lx, ly) / d * n, n, d + 50.0)
+	elif unit_px > 0.0:
+		cam.size = maxf(size.y, 1.0) / unit_px
+		cam.position = Vector3(0, maxf(box.end.y, 0.0) + 2.0, 0)
+		cam.far = cam.position.y - minf(box.position.y, 0.0) + 2.0
+	else:
+		cam.size = maxf(box.size.z, box.size.x / aspect) * 1.1
+		cam.position = box.get_center() + Vector3(0, box.size.length() + 2.0, 0)
 	_vp.add_child(cam)
-	var light := DirectionalLight3D.new()
-	light.rotation_degrees = Vector3(-60, 20, 0)
-	_vp.add_child(light)
-	var env := WorldEnvironment.new()
-	env.environment = Environment.new()
-	env.environment.background_mode = Environment.BG_CLEAR_COLOR
-	env.environment.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
-	env.environment.ambient_light_color = Color(0.6, 0.6, 0.6)
-	_vp.add_child(env)
+
+
+static func _unlit(mat: Material) -> Material:
+	var b := mat as BaseMaterial3D
+	if b == null or b.shading_mode == BaseMaterial3D.SHADING_MODE_UNSHADED:
+		return mat
+	b = b.duplicate()
+	b.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	return b
 
 
 func _process(dt: float) -> void:

@@ -135,6 +135,15 @@ void sky() {
 		}
 	}
 	COLOR = to_linear(col);
+	#if CURRENT_RENDERER == RENDERER_COMPATIBILITY
+	// GLES3 draws the background sky without the linear → sRGB output step
+	// the other renderers apply (measured: Compatibility showed exactly
+	// to_linear() of the Forward+ colour), so give it the sRGB colour. The
+	// radiance cubemap stays linear for reflections.
+	if (!AT_CUBEMAP_PASS) {
+		COLOR = col;
+	}
+	#endif
 }
 """
 

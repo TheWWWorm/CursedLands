@@ -14,6 +14,7 @@ var _vp: SubViewport
 var _cam: Camera3D
 var _post: Node3D
 var _boards := {}
+var _board_meshes := {}
 var _framed := false
 
 
@@ -40,6 +41,12 @@ func _ready() -> void:
 		var n := _post.find_child(part, true, false) as Node3D
 		if n:
 			_boards[part] = n
+			_board_meshes[part] = n.find_children("*", "MeshInstance3D", true, false)
+			# The caption is a sibling mesh filling the carved board's hole.
+			# Include it so tapping the visible text activates the same board.
+			var label := _post.find_child(part + "label", true, false)
+			if label:
+				_board_meshes[part].append_array(label.find_children("*", "MeshInstance3D", true, false))
 	var paths := {}
 	for n: Node in _post.find_children("*", "Node3D", true, false):
 		if not n is MeshInstance3D:
@@ -51,6 +58,10 @@ func _ready() -> void:
 	if player.has_animation("ei/cidle"):
 		player.play("ei/cidle")
 	_cam = Camera3D.new()
+	# This UI camera is positioned outside physics ticks, including while the
+	# game is paused. Picking must use that same pose rather than an old
+	# interpolated transform cached by the SubViewport.
+	_cam.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
 	_cam.fov = 40.0
 	_vp.add_child(_cam)
 	var light := DirectionalLight3D.new()
@@ -108,21 +119,33 @@ func _sfx(path: String) -> void:
 	click.finished.connect(click.queue_free)
 
 
+## The board under a point: the nearest board triangle on the camera ray.
+## The original hit-tests menus.reg [EscMenu] rectangles (800×600)
+## against its own view of the signpost; the remake frames the signpost
+## itself (see _process), so it picks the boards' geometry instead
+## (**Approx.**; the earlier screen-box test let neighbouring boards' boxes
+## overlap).
 func board_at(p: Vector2) -> String:
 	var scale := Vector2(_vp.size) / size if size.x > 0 else Vector2.ONE
 	p *= scale
+	if _cam == null:
+		return ""
+	var o := _cam.project_ray_origin(p)
+	var d := _cam.project_ray_normal(p)
+	var best := ""
+	var bt := INF
 	for part: String in _boards:
-		var r := Rect2()
-		var first := true
-		for mi: MeshInstance3D in (_boards[part] as Node3D).find_children("*", "MeshInstance3D", false, false):
-			var b: AABB = mi.global_transform * mi.get_aabb()
-			for i in 8:
-				var sp := _cam.unproject_position(b.get_endpoint(i))
-				r = Rect2(sp, Vector2.ZERO) if first else r.expand(sp)
-				first = false
-		if r.has_point(p):
-			return part
-	return ""
+		for mi: MeshInstance3D in _board_meshes[part]:
+			if mi.mesh == null:
+				continue
+			var f := mi.mesh.get_faces()
+			var xf := mi.global_transform
+			for i in range(0, f.size() - 2, 3):
+				var hit = Geometry3D.ray_intersects_triangle(o, d, xf * f[i], xf * f[i + 1], xf * f[i + 2])
+				if hit != null and o.distance_to(hit) < bt:
+					bt = o.distance_to(hit)
+					best = part
+	return best
 
 
 func _unhandled_key_input(e: InputEvent) -> void:

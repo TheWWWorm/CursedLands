@@ -17,8 +17,18 @@ extends Node3D
 ## "scroll_border" (CameraBorderScrollArea): scrolls when
 ## the pointer is within that many pixels of a screen edge (0 = off), at unit
 ## speed — twice the default keyboard speed, not scaled by either power.
-## Approx.: the absolute speeds are the remake's (the default keyboard power
-## keeps its earlier tuning); only the ratios follow the original.
+## The original's camera eases per 55 ms tick: rates
+## 1/3 (yaw, pitch, zoom) and 0.1333 (pan), its only writer
+## key targets 0.5 a tick at the defaults (see docs, "Camera speeds").
+## The original style eases its key / edge velocities that way (_ease_v): the
+## pan ramps up and down (τ ≈ 0.4 s), turn and tilt start at once and stop
+## eased, the zoom eases both ways (τ ≈ 140 ms). The wheel and mouse drags act
+## at once (**Approx.**: when the original's controller clears those targets is
+## not traced, and the drag rates are the remake's). Key / edge speeds are the
+## original's (2026-10-02): per tick, pan keyboard power (0.5) m, edges 1 m, both
+## × f = (d − 4) / 108 + 0.2; zoom keys 0.5 m; Ctrl / Alt turn 0.5 rad and tilt
+## 0.5 × 50 rad (it reaches a pitch limit at once); the wheel × 1.05 a notch.
+## Distance 4.. 80 m (3.. 4 springs back), pitch 20°.. 80°.
 ## Camera shake (list camera): (pos, p2, amp, decay) adds
 ## {t 0, duration p2 · 30 ticks, amp, decay} when the camera's look-at point
 ## is within 20 m of pos (amp × (1 − (d − 8) / 12) beyond 8 m); each frame
@@ -28,13 +38,13 @@ extends Node3D
 ## prototype detonation, 0.25). No option gates it.
 ##
 ## **Modern** (index 1, the default; remake-only, not in the original), after
-## Divinity: Original Sin 2 and similar games: eased, inertial panning (camera
-## keys, optional WASD, screen edges), smooth wheel / key zoom whose pitch
+## Divinity: Original Sin 2 / Baldur's Gate 3: responsive panning (camera
+## keys, optional WASD layout, screen edges), smooth wheel / key zoom whose pitch
 ## follows the zoom (close = low and cinematic, far = nearly top-down), smooth
-## turning (middle or right drag, the bindable camera_rotate_left / right keys,
-## Delete / End by default, or Ctrl / Alt + Left / Right), an optional
-## follow-the-selected-hero mode that lets go while you pan and comes back when
-## the hero starts moving, Home / a portrait double-click glide to the hero,
+## turning (middle drag; Alt + middle or right drag also tilts; Shift + middle
+## drags the ground), bindable turn keys (Delete / End, Q / E in WASD mode),
+## optional hero follow that stays detached after panning until Home, F1–F3 or
+## a portrait double-click glides to the hero,
 ## a terrain-aware height and pitch (never inside a hill, the hero never behind
 ## one) and fading of the map objects between the camera and the party
 ## (CameraFade). Speeds: options cam_pan_speed / cam_rotate_speed /
@@ -45,11 +55,10 @@ extends Node3D
 ## Registry defaults of the settings object (constructor
 ## read): CameraDefaultDistanceToCarrier 30
 ## CameraMin / MaxDistanceToCarrier 4 / 100
-## CameraDefaultMin / MaxPitch 20° / 80°. **Approx.**: the
-## camera controller that applies them is not traced, so the
-## distance is taken as the eye's distance from the look-at point and the
-## pitch as the angle below the horizon; the default pitch (50°) is the
-## remake's.
+## CameraMin / MaxLimitDistanceToCarrier 3 / 80
+## CameraDefaultMin / MaxPitch 20° / 80°; the camera tick
+##  applies them to its distance and pitch (radians
+## π/180 × the degrees). **Approx.**: the default pitch (50°) is the remake's.
 ## Field of view: the renderer builds one projection at start-up
 ## ((fov, aspect 4/3, near, far)) from the camera
 ## settings (settings, NearClip, FarClip, π · 2/7) (
@@ -61,8 +70,10 @@ extends Node3D
 const ORIGINAL_FOV := 39.7175
 const MODERN_FOV := 55.0
 const DEFAULT_DISTANCE := 30.0
-const MIN_DISTANCE := 4.0
-const MAX_DISTANCE := 100.0
+const MIN_DISTANCE := 4.0     # CameraMinDistanceToCarrier, soft
+const MAX_DISTANCE := 80.0    # CameraMaxLimitDistanceToCarrier, hard
+const MIN_LIMIT := 3.0        # CameraMinLimitDistanceToCarrier, hard
+const SOFT_MAX := 100.0       # CameraMaxDistanceToCarrier
 const MIN_PITCH := 20.0
 const MAX_PITCH := 80.0
 
@@ -106,9 +117,17 @@ var _ground_s := 0.0
 var _ground_init := false
 var _free := false              # follow mode let go (the player panned away)
 var _follow_unit: Node3D
-var _follow_last := Vector3.INF
-var _follow_still := 0.0        # seconds the followed hero has stood
+var _drag_button := 0          # only a gesture begun outside the GUI owns the camera
+var _window_focused := true
 var _fade: CameraFade
+## Original style: the original camera's velocities, eased per tick.
+const TICK := 0.055
+const PAN_RATE := 0.1333    # camera
+const TURN_RATE := 1.0 / 3.0   # yaw, pitch, zoom
+var _pan_v := Vector2.ZERO
+var _yaw_v := 0.0
+var _pitch_v := 0.0
+var _zoom_v := 0.0
 
 
 func _ready() -> void:
@@ -140,6 +159,46 @@ func turn_north() -> void:
 	_apply()
 
 
+## The view for a save (the original camera record: look-
+## .., turn, pitch, distance, velocities).
+## The velocities are not kept: a loaded view stands still. The modern style
+## (remake-only) keeps its equivalent: the look-at goal, yaw and zoom goals,
+## the player's tilt and whether follow mode had let go (`free`).
+func pose() -> Dictionary:
+	var m := modern()
+	var at := _goal if m else position
+	var p := {"at": [at.x, position.y, at.z], "yaw": yaw, "pitch": -_modern_pitch() if m else pitch,
+		"distance": distance, "style": 1 if m else 0}
+	if m:
+		p["tilt"] = _pitch_ofs
+		p["free"] = _free
+	return p
+
+
+## A saved view back (on load; the original then does not refocus).
+## Modern: the view is shown at once; without a saved `free` (an original-
+## style save) follow mode stays let go, so the saved view is kept.
+func set_pose(p: Dictionary) -> bool:
+	var at: Array = p.get("at", [])
+	if at.size() != 3:
+		return false
+	position = Vector3(float(at[0]), float(at[1]), float(at[2]))
+	yaw = float(p.get("yaw", yaw))
+	_stop_velocities()
+	if modern():
+		_goal = position
+		distance = float(p.get("distance", distance))
+		_pitch_ofs = clampf(float(p.get("tilt", 0.0)), deg_to_rad(-M_PITCH_OFS), deg_to_rad(M_PITCH_OFS))
+		_free = bool(p.get("free", true))
+		_follow_unit = null   # resolve the selected hero again after loading
+		_snap()
+	else:
+		pitch = clampf(float(p.get("pitch", pitch)), deg_to_rad(-MAX_PITCH), deg_to_rad(-MIN_PITCH))
+		distance = clampf(float(p.get("distance", distance)), MIN_DISTANCE, MAX_DISTANCE)
+	_apply()
+	return true
+
+
 ## Puts the look-at point on `p` at once (zone start, tests).
 func focus(p: Vector3) -> void:
 	position = p
@@ -163,6 +222,7 @@ func center_on(p: Vector3) -> void:
 
 ## Puts the camera at `eye` looking at `target` (Godot space) until release().
 func hold_view(eye: Vector3, target: Vector3) -> void:
+	_suspend_motion()
 	held = true
 	if _fade:
 		_fade.clear()
@@ -177,26 +237,119 @@ func release() -> void:
 		_apply()
 
 
-## Remake option cam_wasd (modern only): W / A / S / D pan the camera and do
-## not reach their keyboard.ini actions (Game asks before dispatching a key).
-func claims_key(e: InputEventKey) -> bool:
-	return modern() and GameData.option("cam_wasd") == 1 \
-		and e.physical_keycode in [KEY_W, KEY_A, KEY_S, KEY_D] \
-		and not (e.ctrl_pressed or e.alt_pressed or e.meta_pressed)
+## keyboard.ini camera1–4 (F9–F12; the in-game camera's keys):
+## a plain key recalls slot i (: distance and pitch
+## only — the stored turn is not applied — and the pan / rotate / pitch / zoom
+## velocities stopped), Ctrl or Alt stores the view in it (:
+## distance, turn, pitch). Start values: copies
+## the settings object's four "CameraShortcut %d" entries (0x18 each:
+## Distance, AxisX / Y / Z, Angle, Pitch) whose defaults are
+## Distance = CameraDefaultDistanceToCarrier 30, axis (0, 0, 1), angle 0,
+## Pitch 45.0 — copied raw, which the camera reads as radians
+## (rotates by −(π/2 + pitch)), so an unstored slot shows the
+## pitch 45 rad ≡ 58.31° below the horizon (the clamp to Min / MaxPitch only
+## runs while the pitch is moving). The slots are not part of a save: the
+## camera save chunk holds only slots 4–7 (the
+## internal ones, 6 / 7 filled before saving); after a store
+## copies slots 0–3 back to the settings and writes them to the
+## registry ("Camera Settings") at exit. Remake: user://camera_shortcuts.cfg,
+## written on each store. Modern style (remake-only): the zoom goal and the
+## player's tilt, defaults 30 m and no tilt.
+const SHORTCUTS_PATH := "user://camera_shortcuts.cfg"
+const SHORTCUT_PITCH_RAW := 45.0
+var _view_slots := {}
+var _view_slots_loaded := false
+
+func _load_view_slots() -> void:
+	_view_slots_loaded = true
+	var cfg := ConfigFile.new()
+	if cfg.load(SHORTCUTS_PATH) != OK:
+		return
+	for key in cfg.get_section_keys("slots") if cfg.has_section("slots") else []:
+		var v = cfg.get_value("slots", key)
+		if v is Array and v.size() == 2:
+			_view_slots[key] = [float(v[0]), float(v[1])]
+
+
+func view_slot(i: int, store: bool) -> void:
+	if held:
+		return
+	if not _view_slots_loaded:
+		_load_view_slots()
+	var key := ("modern%d" if modern() else "orig%d") % i
+	if store:
+		_view_slots[key] = [distance, _pitch_ofs if modern() else pitch]
+		var cfg := ConfigFile.new()
+		for k in _view_slots:
+			cfg.set_value("slots", k, _view_slots[k])
+		cfg.save(SHORTCUTS_PATH)
+		return
+	var slot: Array = _view_slots.get(key, [DEFAULT_DISTANCE,
+		0.0 if modern() else -fposmod(SHORTCUT_PITCH_RAW, TAU)])
+	distance = slot[0]
+	if modern():
+		_pitch_ofs = slot[1]
+		_vel = Vector3.ZERO
+		_yaw_vel = 0.0
+	else:
+		pitch = slot[1]
+		_pan_v = Vector2.ZERO
+		_yaw_v = 0.0
+		_pitch_v = 0.0
+		_zoom_v = 0.0
+	_apply()
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_APPLICATION_FOCUS_OUT or what == NOTIFICATION_WM_WINDOW_FOCUS_OUT:
+		_window_focused = false
+		_suspend_motion()
+	elif what == NOTIFICATION_APPLICATION_FOCUS_IN or what == NOTIFICATION_WM_WINDOW_FOCUS_IN:
+		_window_focused = true
+
+
+func _input_blocked() -> bool:
+	if held or not _window_focused:
+		return true
+	var focus := get_viewport().gui_get_focus_owner()
+	if focus is LineEdit or focus is TextEdit:
+		return true
+	var g := get_parent() as Game
+	return g != null and g.hud != null and g.hud.blocks_camera()
+
+
+## A gesture keeps its ownership across UI boundaries. Releases are seen
+## even when the GUI consumes them; a drag begun on a panel is never ours.
+func _input(e: InputEvent) -> void:
+	if not modern() or _drag_button == 0:
+		return
+	if _input_blocked():
+		_suspend_motion()
+		return
+	if e is InputEventMouseButton and not e.pressed and e.button_index == _drag_button:
+		_drag_button = 0
+	elif e is InputEventMouseMotion:
+		if e.button_mask & (1 << (_drag_button - 1)):
+			_input_modern(e)
+			get_viewport().set_input_as_handled()
+		else:
+			_drag_button = 0
 
 
 func _unhandled_input(e: InputEvent) -> void:
-	if held:
+	if _input_blocked():
 		return
 	if modern():
 		_input_modern(e)
 		return
 	if e is InputEventMouseButton and e.pressed:
 		var mp := _mouse_power()
+		# distance × 1.05^(−notches × mouse
+		# zoom power × speed), clamped to 4 .. 100 (then 80 by the tick).
 		if e.button_index == MOUSE_BUTTON_WHEEL_UP:
-			distance = maxf(MIN_DISTANCE, distance * pow(0.88, mp))
+			distance = clampf(distance * pow(1.05, -mp), MIN_DISTANCE, MAX_DISTANCE)
 		elif e.button_index == MOUSE_BUTTON_WHEEL_DOWN:
-			distance = minf(MAX_DISTANCE, distance * pow(1.14, mp))
+			distance = clampf(distance * pow(1.05, mp), MIN_DISTANCE, MAX_DISTANCE)
 		_apply()
 	elif e is InputEventMouseMotion:
 		if e.button_mask & MOUSE_BUTTON_MASK_RIGHT:
@@ -262,7 +415,9 @@ func _process(delta: float) -> void:
 		_process_modern(delta)
 		return
 	_shake_tick(delta, true)
-	if held:
+	if _input_blocked():
+		_stop_velocities()
+		edge = Vector2i.ZERO
 		return
 	# Camera keys through the key map (CInterface3D's camera controller,
 	# built; key-down
@@ -274,34 +429,106 @@ func _process(delta: float) -> void:
 	# left / right rotate × rotate power, up / down pitch × pitch power and
 	# the zoom keys still zoom. All four powers are the one "power_kbd" slider.
 	if get_viewport().gui_get_focus_owner() is LineEdit:
+		_stop_velocities()
 		return
 	var v := Vector2(
-		float(EIKeymap.held("camera_right")) - float(EIKeymap.held("camera_left")),
-		float(EIKeymap.held("camera_down")) - float(EIKeymap.held("camera_up")))
+		float(EIKeymap.held("camera_right", 0)) - float(EIKeymap.held("camera_left", 0)),
+		float(EIKeymap.held("camera_down", 0)) - float(EIKeymap.held("camera_up", 0)))
 	var mod := Input.is_key_pressed(KEY_CTRL) or Input.is_key_pressed(KEY_ALT)
+	# The keys and the screen edges set target velocities; eases
+	# the camera's velocities to them per 55 ms tick (see the header) and moves
+	# by them. The original's targets are per tick (keyboard power × speed 1.0):
+	# pan in metres (× the zoom factor below), yaw in radians, pitch in
+	# radians × 50 (key-down), zoom in metres; here per second.
+	var pan_t := Vector2.ZERO
+	var yaw_t := 0.0
+	var pitch_t := 0.0
+	var kp := _kbd_power()
 	if v != Vector2.ZERO:
 		if not mod:
-			_pan(v * delta * distance * _kbd_power() * 2.0)   # ×2: slider 25 = the remake's base speed
+			pan_t = v * kp / TICK
 		else:
-			# **Approx.**: the turn / tilt rates and their directions on screen
-			# are the remake's (the original's camera setters
-			#  are not traced to angles).
-			yaw -= v.x * delta * 1.5 * _kbd_power() * 2.0
-			pitch = clampf(pitch + v.y * delta * 1.0 * _kbd_power() * 2.0, deg_to_rad(-MAX_PITCH), deg_to_rad(-MIN_PITCH))
-			_apply()
-	# Edge scrolling (the original's scroll_u..scroll_ul cursors), see above.
+			yaw_t = -v.x * kp / TICK
+			pitch_t = v.y * kp * 50.0 / TICK
+	# Edge scrolling: ±1 m a tick on top of the keys.
 	edge = _edge_scroll()
 	if edge != Vector2i.ZERO:
-		_pan(Vector2(edge) * delta * distance * 2.0)
-	var z := float(EIKeymap.held("camera_zoom_out")) - float(EIKeymap.held("camera_zoom_in"))
-	if z:
-		distance = clampf(distance * (1.0 + z * delta * 1.5 * _kbd_power() * 2.0), MIN_DISTANCE, MAX_DISTANCE)
+		pan_t += Vector2(edge) / TICK
+	var zoom_t := (float(EIKeymap.held("camera_zoom_out", 0)) - float(EIKeymap.held("camera_zoom_in", 0))) \
+		* kp / TICK
+	var ticks := delta / TICK
+	_pan_v = Vector2(_ease_v(_pan_v.x, pan_t.x, PAN_RATE, ticks, false), _ease_v(_pan_v.y, pan_t.y, PAN_RATE, ticks, false))
+	_yaw_v = _ease_v(_yaw_v, yaw_t, TURN_RATE, ticks, true)
+	_pitch_v = _ease_v(_pitch_v, pitch_t, TURN_RATE, ticks, true)
+	_zoom_v = _ease_v(_zoom_v, zoom_t, TURN_RATE, ticks, false)
+	if _pan_v != Vector2.ZERO:
+		_pan(_pan_v * pan_factor() * delta)
+	if _yaw_v != 0.0 or _pitch_v != 0.0 or _zoom_v != 0.0 or distance < MIN_DISTANCE:
+		yaw += _yaw_v * delta
+		pitch = clampf(pitch + _pitch_v * delta, deg_to_rad(-MAX_PITCH), deg_to_rad(-MIN_PITCH))
+		distance = _limit_distance(distance + _zoom_v * delta, ticks)
 		_apply()
+
+
+## the pan moves the look-at point by the velocity × f
+## f = (distance − 4) / ((100 − 4) × 1.125) + 0.2 — slow close, faster far.
+func pan_factor() -> float:
+	return (distance - MIN_DISTANCE) / ((SOFT_MAX - MIN_DISTANCE) * 1.125) + 0.2
+
+
+##  distance limits: below 3 m → 3; from 4 m , above 80 → 80
+## (the soft maximum 100 lies beyond it); between 3 and 4 it is pulled back
+## toward 4 by 1.1 × ticks × (4 − d) / (4 − 3).
+static func _limit_distance(d: float, ticks: float) -> float:
+	if d < MIN_LIMIT:
+		return MIN_LIMIT
+	if d >= MIN_DISTANCE:
+		return minf(d, MAX_DISTANCE)
+	return minf(MIN_DISTANCE, d + (MIN_DISTANCE - d) * ticks * 1.1 / (MIN_DISTANCE - MIN_LIMIT))
+
+
+func _stop_velocities() -> void:
+	_pan_v = Vector2.ZERO
+	_yaw_v = 0.0
+	_pitch_v = 0.0
+	_zoom_v = 0.0
+	_vel = Vector3.ZERO
+	_yaw_vel = 0.0
+
+
+func _suspend_motion() -> void:
+	_stop_velocities()
+	_drag_button = 0
+	edge = Vector2i.ZERO
+	if _was_modern:
+		_goal = position
+		yaw = _yaw_s
+		distance = _dist_s
+		_pitch_ofs = _pitch_ofs_s
+
+
+##  easing of one camera velocity toward its target:
+## v += (target − v) · rate · dt, dt in 55 ms ticks, snapped to the target
+## when the step would overshoot or the gap is < 0.001. `instant_up`: the yaw
+## pitch setters set v = target at once when
+## |target| > |v| (instant start, eased stop).
+static func _ease_v(v: float, t: float, rate: float, ticks: float, instant_up: bool) -> float:
+	if instant_up and absf(t) > absf(v):
+		return t
+	var k := rate * ticks
+	if k >= 1.0 or absf(t - v) < 0.001:
+		return t
+	return v + (t - v) * k
 
 
 ## The screen edge the pointer scrolls at (option scroll_border, pixels; 0 off).
 func _edge_scroll() -> Vector2i:
 	var out := Vector2i.ZERO
+	if TouchInput.enabled:
+		return out
+	if _drag_button != 0 or Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) \
+			or Input.is_mouse_button_pressed(MOUSE_BUTTON_MIDDLE) or Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
+		return out
 	var vp := get_viewport()
 	var border := float(GameData.option("scroll_border"))
 	if border >= 1.0 and DisplayServer.window_is_focused() and vp.gui_get_hovered_control() == null:
@@ -330,6 +557,29 @@ func _pan(v: Vector2) -> void:
 	_apply()
 
 
+func touch_gesture(before: PackedVector2Array, after: PackedVector2Array) -> void:
+	if _input_blocked() or before.size() != 2 or after.size() != 2:
+		return
+	var old_mid := (before[0] + before[1]) * 0.5
+	var new_mid := (after[0] + after[1]) * 0.5
+	var old_vector := before[1] - before[0]
+	var new_vector := after[1] - after[0]
+	var plane := Plane(Vector3.UP, global_position.y)
+	var old_ground: Variant = plane.intersects_ray(camera.project_ray_origin(old_mid), camera.project_ray_normal(old_mid))
+	var new_ground: Variant = plane.intersects_ray(camera.project_ray_origin(new_mid), camera.project_ray_normal(new_mid))
+	_stop_velocities()
+	if modern():
+		_detach()
+	if old_ground is Vector3 and new_ground is Vector3:
+		position += old_ground - new_ground
+		_goal = position
+	if old_vector.length() > 16.0 and new_vector.length() > 16.0:
+		distance = clampf(distance * old_vector.length() / new_vector.length(), M_MIN_DISTANCE if modern() else MIN_DISTANCE, _max_distance() if modern() else MAX_DISTANCE)
+		yaw -= old_vector.angle_to(new_vector)
+		_yaw_s = yaw
+	_apply()
+
+
 func _apply() -> void:
 	if held:
 		return
@@ -339,9 +589,10 @@ func _apply() -> void:
 	if camera:
 		camera.fov = ORIGINAL_FOV
 	if terrain:
+		# the look-at point stays within 0.. map size − 1.
 		var s := terrain.size_ei()
-		position.x = clampf(position.x, 0.0, s.x)
-		position.z = clampf(position.z, -s.y, 0.0)
+		position.x = clampf(position.x, 0.0, s.x - 1.0)
+		position.z = clampf(position.z, -(s.y - 1.0), 0.0)
 		position.y = terrain.height_at(position.x, -position.z)
 	if camera:
 		var b := Basis.from_euler(Vector3(pitch, yaw, 0))
@@ -352,6 +603,8 @@ func _apply() -> void:
 
 ## Option switch between the styles: the new one starts from the view shown.
 func _switch_style(m: bool) -> void:
+	_stop_velocities()
+	_drag_button = 0
 	_was_modern = m
 	if m:
 		distance = clampf(distance, M_MIN_DISTANCE, _max_distance())
@@ -409,22 +662,56 @@ func _input_modern(e: InputEvent) -> void:
 	var sx := -1.0 if GameData.option("camera_reverse_x") else 1.0
 	var sy := -1.0 if GameData.option("camera_reverse_y") else 1.0
 	if e is InputEventMouseButton and e.pressed:
+		if e.button_index in [MOUSE_BUTTON_MIDDLE, MOUSE_BUTTON_RIGHT]:
+			_drag_button = e.button_index
+			_yaw_vel = 0.0
+			# Right click still reaches the game's cancel-target action.
+			if e.button_index == MOUSE_BUTTON_MIDDLE:
+				get_viewport().set_input_as_handled()
+			return
 		var zs := speed_factor("cam_zoom_speed")
+		var amount: float = e.factor if e.factor > 0.0 else 1.0
 		if e.button_index == MOUSE_BUTTON_WHEEL_UP:
-			distance = maxf(M_MIN_DISTANCE, distance * pow(0.85, zs * maxf(e.factor, 1.0)))
+			distance = maxf(M_MIN_DISTANCE, distance * pow(0.85, zs * amount))
 		elif e.button_index == MOUSE_BUTTON_WHEEL_DOWN:
-			distance = minf(_max_distance(), distance * pow(1.0 / 0.85, zs * maxf(e.factor, 1.0)))
-	elif e is InputEventMouseMotion and e.button_mask & (MOUSE_BUTTON_MASK_MIDDLE | MOUSE_BUTTON_MASK_RIGHT):
-		if e.button_mask & MOUSE_BUTTON_MASK_MIDDLE and e.shift_pressed:
-			# Shift + middle drag: grab the ground and drag it.
-			_free = true
-			_goal += _screen_to_ground(Vector2(-e.relative.x, -e.relative.y) * _dist_s * 0.0018)
-			_vel = Vector3.ZERO
+			distance = minf(_max_distance(), distance * pow(1.0 / 0.85, zs * amount))
+		else:
+			return
+		get_viewport().set_input_as_handled()
+	elif e is InputEventMouseMotion and _drag_button != 0:
+		if _drag_button == MOUSE_BUTTON_MIDDLE and e.shift_pressed:
+			# Project onto the look-at plane: the grabbed point stays under
+			# the pointer at any resolution, zoom, pitch and heading.
+			var plane := Plane(Vector3.UP, global_position.y)
+			var before = plane.intersects_ray(camera.project_ray_origin(e.position - e.relative),
+				camera.project_ray_normal(e.position - e.relative))
+			var after = plane.intersects_ray(camera.project_ray_origin(e.position),
+				camera.project_ray_normal(e.position))
+			if before is Vector3 and after is Vector3:
+				_detach()
+				_goal += before - after
+				position.x = _goal.x
+				position.z = _goal.z
+				_vel = Vector3.ZERO
+				_apply_modern()
 			return
 		var rs := speed_factor("cam_rotate_speed")
 		yaw -= e.relative.x * 0.006 * sx * rs
-		_pitch_ofs = clampf(_pitch_ofs + e.relative.y * 0.004 * sy * rs,
-			deg_to_rad(-M_PITCH_OFS), deg_to_rad(M_PITCH_OFS))
+		_yaw_s = yaw   # mouse rotation is direct; keyboard / recenter are eased
+		_yaw_vel = 0.0
+		# Normal middle drag only orbits: no accidental pitch changes.
+		if e.alt_pressed or _drag_button == MOUSE_BUTTON_RIGHT:
+			_pitch_ofs = clampf(_pitch_ofs + e.relative.y * 0.004 * sy * rs,
+				deg_to_rad(-M_PITCH_OFS), deg_to_rad(M_PITCH_OFS))
+			_pitch_ofs_s = _pitch_ofs
+		_apply_modern()
+
+
+func _detach() -> void:
+	# Cancel any unfinished recenter glide before taking manual control.
+	if not _free or _vel == Vector3.ZERO:
+		_goal = position
+	_free = true
 
 
 func _screen_to_ground(v: Vector2) -> Vector3:
@@ -443,16 +730,17 @@ func _process_modern(game_dt: float) -> void:
 	# or accelerated (Engine.time_scale).
 	var dt := minf(game_dt / maxf(Engine.time_scale, 0.001), 0.1)
 	_shake_tick(game_dt, false)
-	if held:
+	if _input_blocked():
+		_suspend_motion()
 		return
 	var g := get_parent() as Game
-	var typing := get_viewport().gui_get_focus_owner() is LineEdit
 	var mod := Input.is_key_pressed(KEY_CTRL) or Input.is_key_pressed(KEY_ALT)
+	var meta := Input.is_key_pressed(KEY_META)
 	var v := Vector2.ZERO
 	var turn := 0.0
 	var tilt := 0.0
 	var zoom := 0.0
-	if not typing:
+	if not meta:
 		var k := Vector2(
 			float(EIKeymap.held("camera_right")) - float(EIKeymap.held("camera_left")),
 			float(EIKeymap.held("camera_down")) - float(EIKeymap.held("camera_up")))
@@ -461,38 +749,37 @@ func _process_modern(game_dt: float) -> void:
 			tilt = k.y
 		else:
 			v = k
-			if GameData.option("cam_wasd") == 1:
-				v += Vector2(
-					float(Input.is_physical_key_pressed(KEY_D)) - float(Input.is_physical_key_pressed(KEY_A)),
-					float(Input.is_physical_key_pressed(KEY_S)) - float(Input.is_physical_key_pressed(KEY_W)))
 		turn += float(EIKeymap.held("camera_rotate_right")) - float(EIKeymap.held("camera_rotate_left"))
 		zoom = float(EIKeymap.held("camera_zoom_out")) - float(EIKeymap.held("camera_zoom_in"))
 	edge = _edge_scroll()
-	v += Vector2(edge)
-	if v.length() > 1.0:
-		v = v.normalized()
-	# Pan: velocity eases toward the input (quick start, a short glide out).
+	v = (v + Vector2(edge)).limit_length()
+	# One velocity filter, with a quick stop. Manual panning does not pass
+	# through the separate follow-position filter a second time.
 	var ps := speed_factor("cam_pan_speed")
 	var want := _screen_to_ground(v) * (5.0 + _dist_s * 0.9) * ps
-	_vel = _vel.lerp(want, _ease(9.0 if v != Vector2.ZERO else 6.0, dt))
 	if v != Vector2.ZERO:
-		_free = true
-	if _vel.length_squared() > 1e-4:
+		_detach()
+	_vel = _vel.lerp(want, _ease(18.0 if v != Vector2.ZERO else 32.0, dt))
+	var panning := _vel.length_squared() > 0.0025
+	if panning:
 		_goal += _vel * dt
 	else:
 		_vel = Vector3.ZERO
-	# Turn: keys accelerate a turn rate; drags set the goal directly.
+	# Turn keys get a short acceleration and a firm stop; mouse orbit above
+	# is direct, without queued rotation after the mouse stops.
 	var rs := speed_factor("cam_rotate_speed")
 	var sx := -1.0 if GameData.option("camera_reverse_x") else 1.0
-	_yaw_vel = lerpf(_yaw_vel, -turn * 2.0 * rs * sx, _ease(8.0, dt))
-	if absf(_yaw_vel) > 1e-4:
+	_yaw_vel = lerpf(_yaw_vel, -turn * 2.0 * rs * sx, _ease(18.0 if turn else 32.0, dt))
+	if absf(_yaw_vel) > 0.001:
 		yaw += _yaw_vel * dt
+	else:
+		_yaw_vel = 0.0
 	if tilt:
 		var sy := -1.0 if GameData.option("camera_reverse_y") else 1.0
 		_pitch_ofs = clampf(_pitch_ofs + tilt * dt * 0.8 * rs * sy,
 			deg_to_rad(-M_PITCH_OFS), deg_to_rad(M_PITCH_OFS))
 	if zoom:
-		distance *= 1.0 + zoom * dt * 1.6 * speed_factor("cam_zoom_speed")
+		distance *= exp(zoom * dt * 1.6 * speed_factor("cam_zoom_speed"))
 	distance = clampf(distance, M_MIN_DISTANCE, _max_distance())
 	_follow(g, dt)
 	if terrain:
@@ -500,11 +787,11 @@ func _process_modern(game_dt: float) -> void:
 		_goal.x = clampf(_goal.x, 0.0, s.x)
 		_goal.z = clampf(_goal.z, -s.y, 0.0)
 	# Ease the shown values toward the goals.
-	var k := _ease(10.0, dt)
+	var k := 1.0 if panning else _ease(10.0, dt)
 	position.x = lerpf(position.x, _goal.x, k)
 	position.z = lerpf(position.z, _goal.z, k)
 	_yaw_s = _unwrap(_yaw_s, yaw)
-	_yaw_s = lerpf(_yaw_s, yaw, _ease(12.0, dt))
+	_yaw_s = lerpf(_yaw_s, yaw, _ease(24.0, dt))
 	_dist_s = exp(lerpf(log(_dist_s), log(distance), _ease(9.0, dt)))
 	_pitch_ofs_s = lerpf(_pitch_ofs_s, _pitch_ofs, _ease(10.0, dt))
 	# Terrain: the look-at height eases over bumps; the pitch rises quickly
@@ -526,38 +813,18 @@ static func _unwrap(a: float, ref: float) -> float:
 	return ref + wrapf(a - ref, -PI, PI)
 
 
-## Follow mode (option cam_follow): the goal tracks the first selected hero;
-## panning lets go (_free) until the hero next starts moving (or another hero
-## is selected), when the camera glides back.
-func _follow(g: Game, dt: float) -> void:
-	var u: Node3D = null
+## Follow only while attached. Movement and selection never override a
+## manual pan; Home, a hero hotkey or a portrait double-click reattaches.
+func _follow(g: Game, _dt: float) -> void:
+	_follow_unit = null
 	if g and not g.selected.is_empty() and is_instance_valid(g.selected[0]) \
 			and not g.selected[0].dead and g.selected[0].world == g.world:
-		u = g.selected[0]
-	if u != _follow_unit:
-		# Another hero selected (not the zone's first): glide to it.
-		if u and is_instance_valid(_follow_unit) and GameData.option("cam_follow") == 1:
-			_free = false
-		_follow_unit = u
-		_follow_last = Vector3.INF
-		_follow_still = 0.0
+		_follow_unit = g.selected[0]
+	if _follow_unit == null or _free or GameData.option("cam_follow") != 1:
 		return
-	if u == null:
-		return
-	var p := u.global_position
-	if _follow_last != Vector3.INF:
-		var step := Vector2(p.x - _follow_last.x, p.z - _follow_last.z).length()
-		if step > 0.01:
-			# Starts moving after standing a moment: snap back.
-			if _follow_still > 0.25:
-				_free = false
-			_follow_still = 0.0
-		else:
-			_follow_still += dt
-	_follow_last = p
-	if GameData.option("cam_follow") == 1 and not _free:
-		_goal.x = p.x
-		_goal.z = p.z
+	var p := _follow_unit.get_global_transform_interpolated().origin
+	_goal.x = p.x
+	_goal.z = p.z
 
 
 ## Look-at height: the ground averaged over a few metres (or the followed
@@ -572,7 +839,7 @@ func _update_ground(g: Game, dt: float) -> void:
 	for o: Vector2 in [Vector2(3, 0), Vector2(-3, 0), Vector2(0, 3), Vector2(0, -3)]:
 		h += terrain.height_at(x + o.x, y + o.y) * 0.15
 	if _follow_unit and is_instance_valid(_follow_unit):
-		var p := _follow_unit.global_position
+		var p := _follow_unit.get_global_transform_interpolated().origin
 		if Vector2(p.x - position.x, p.z - position.z).length() < 4.0:
 			h = maxf(h, p.y)
 	if not _ground_init:

@@ -7,6 +7,14 @@ extends RefCounted
 ## columns) from `dist` metres in front of it, turned by `angle`, `h` metres
 ## higher. A two-shot looks at the middle between a and b from the side at a
 ## multiple of their distance.
+## Positions: the original stages the actors at the conversation's
+## start and keeps their places (b, a, c) and the
+## directions b→a, a→b and c→middle (z 0
+## normalised); reads only these, never the moving units, so a
+## partner still walking to its place does not drag the camera along. The
+## remake's places are the cast's "at" (Briefings._face); a unit's own
+## position only when "at" is missing. Heights: the ground under the place.
+## No obstacle test (the original has none: sets eye and target).
 
 ## preset -> [who, angle (rad), distance (x a-b distance for "two"), height]
 const PRESETS := {
@@ -34,45 +42,56 @@ static func shot(w: GameWorld, cast: Dictionary, phrase: Dictionary, first: bool
 	if not args.is_empty():
 		# "#camera N angle distance height": N 2 / 3 / 4 = a / b / c, else the two-shot.
 		var who := {2: "a", 3: "b", 4: "c"}.get(n, "two") as String
-		return _place(w, a, b, c, who, deg_to_rad(float(args[0])), float(args[1]), float(args[2]), false) + [[]]
+		return _place(w, a, b, c, who, deg_to_rad(float(args[0])), float(args[1]), float(args[2]), false, cast.get("at", {})) + [[]]
 	if n < 1:
 		n = 1 if first else 2 if speaker == a.uid else 4 if c and speaker == c.uid else 3
 	var p: Array = PRESETS.get(n, PRESETS[1])
-	var out := _place(w, a, b, c, p[0], p[1], p[2], p[3], p[0] == "two")
+	var out := _place(w, a, b, c, p[0], p[1], p[2], p[3], p[0] == "two", cast.get("at", {}))
 	out.append(HIDE.get(n, []))
 	return out
 
 
 static func _place(w: GameWorld, a: GameUnit, b: GameUnit, c: GameUnit, who: String, angle: float,
-		dist: float, h: float, relative: bool) -> Array:
+		dist: float, h: float, relative: bool, at := {}) -> Array:
+	var pa: Vector2 = _at(at, "a", a)
+	var pb: Vector2 = _at(at, "b", b) if b else Vector2.ZERO
+	var pc: Vector2 = _at(at, "c", c) if c else Vector2.ZERO
 	var target: Vector3
 	var dir: Vector2
 	if who == "two" or (who == "b" and b == null) or (who == "c" and c == null):
 		if b == null:
 			who = "a"
 		else:
-			var mid := (a.pos + b.pos) * 0.5
-			target = Vector3(mid.x, mid.y, (w.ground_at(a.pos.x, a.pos.y) + w.ground_at(b.pos.x, b.pos.y)) * 0.5)
-			dir = Vector2(a.pos.y - b.pos.y, b.pos.x - a.pos.x)
+			var mid := (pa + pb) * 0.5
+			target = Vector3(mid.x, mid.y, (w.ground_at(pa.x, pa.y) + w.ground_at(pb.x, pb.y)) * 0.5)
+			dir = Vector2(pa.y - pb.y, pb.x - pa.x)
 			if relative:
-				dist *= a.pos.distance_to(b.pos)
+				dist *= pa.distance_to(pb)
 	if who != "two":
 		var u: GameUnit = {"a": a, "b": b, "c": c}[who]
 		if u == null:
 			u = a
+		var pu := pa
 		if u == a and b:
-			dir = b.pos - a.pos
+			dir = pb - pa
 		elif u == b:
-			dir = a.pos - b.pos
+			pu = pb
+			dir = pa - pb
 		elif u == c:
-			dir = (a.pos + b.pos) * 0.5 - c.pos
+			pu = pc
+			dir = (pa + pb) * 0.5 - pc
 		else:
 			dir = Vector2.from_angle(u.facing)
 		dir = dir.normalized()
-		var p := u.pos + dir * float(u.proto.get("dialog_cam_distance", 0.0))
-		target = Vector3(p.x, p.y, w.ground_at(u.pos.x, u.pos.y) + float(u.proto.get("dialog_cam_height", 1.5)))
+		var p := pu + dir * float(u.proto.get("dialog_cam_distance", 0.0))
+		target = Vector3(p.x, p.y, w.ground_at(pu.x, pu.y) + float(u.proto.get("dialog_cam_height", 1.5)))
 	dir = dir.normalized()
 	var cs := cos(angle)
 	var sn := sin(angle)
 	var off := Vector2(dir.x * cs + dir.y * sn, dir.y * cs - dir.x * sn) * dist
 	return [Vector3(target.x + off.x, target.y + off.y, target.z + h), target]
+
+
+static func _at(at: Dictionary, k: String, u: GameUnit) -> Vector2:
+	var v: Array = at.get(k, [])
+	return Vector2(float(v[0]), float(v[1])) if v.size() == 2 else u.pos

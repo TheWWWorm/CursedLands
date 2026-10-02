@@ -43,8 +43,8 @@ extends Control
 ##   spell at (350,350) and up to 8 materials at x 450 / 550
 ##   y 150..450 (four per column). Blueprint + material build
 ##   the item (Session._construct, missing pieces bought from the trader); a
-##   ready item alone is taken apart (Session._deconstruct). Approx.: the
-##   spell slot is drawn but not used (wands are built without a spell).
+##   ready item alone is taken apart (Session._deconstruct). An optional spell
+##   is attached to the built weapon / armour and consumed.
 ## - "spellconstr" (draw): the centre
 ##   "constrspell1".."constrspell4" as the item constructor; the ready spell
 ##   at (250,300) (CItemSpell), its keystone at (350,300)
@@ -108,7 +108,7 @@ extends Control
 ##   constructor 13 / 14 / 16 / 15, spell constructor 19 / 20
 ##   21 and the limit lines 26 / 27, repair 25
 ## Approx.:
-## - item info: see _item_info; the enchanted items' pulsing colour;
+## - item info: see _item_info (the enchanted items' pulse is ItemView's);
 ## - the remake's action buttons (equip, put on the belt, learn, enchant…)
 ##   sit at the bottom of the right widget for the clicked item;
 ## - no drag and drop: a click selects an item, and in the trade screens it
@@ -205,9 +205,10 @@ var shop_scroll := 0
 var buy_pile: Array = []
 var sell_pile: Array = []
 var repair_pile: Array = []
-var c_bp := ""       # item constructor: blueprint, material name, ready item
+var c_bp := ""       # item constructor: blueprint, material name, ready item, spell
 var c_mat := ""
 var c_ready := ""
+var c_spell: String = ""   # "spell:<id>", from the bag or the hero's known spells
 var s_spell := ""    # spell constructor: the hero's spell and runes to add
 var s_runes: Array = []
 var selected_id := ""
@@ -215,8 +216,9 @@ var selected_where := ""
 
 var _tex := {}
 var _doll: Paperdoll
-var _turn_dir := 0   # Godot Y: left -1, right +1 (the original's camera Y points down).
+var _turn_dir := 0   # Original angle: area 2 adds, area 3 subtracts; screen direction unverified.
 var _views := {}   # slot key -> ItemView
+var _pile_clip: Control   # trade / repair depth mask, shared by their item views
 ## The left / right info widgets' models: draws the shown item
 ##  at (x + 100, y + 200), depth 3, size 120, mode 9 — the
 ## item at vertex colour 0.5, unturned, under the info text.
@@ -263,11 +265,19 @@ func _ready() -> void:
 			img.flip_y()
 			_tex[n] = ImageTexture.create_from_image(img)
 	_doll = Paperdoll.new()
+	_doll.camp_frame = true
 	add_child(_doll)
+	_pile_clip = Control.new()
+	_pile_clip.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_pile_clip.clip_contents = true
+	add_child(_pile_clip)
 	for k in _slot_keys():
 		var v := ItemView.new()
 		v.camp = true
-		add_child(v)
+		if k.begins_with("buy") or k.begins_with("sell") or k.begins_with("rep"):
+			_pile_clip.add_child(v)
+		else:
+			add_child(v)
 		_views[k] = v
 	# The info widgets' item models (mode 9).
 	for x0 in [0, 600]:
@@ -375,6 +385,7 @@ func first_mode() -> String:
 
 
 func set_mode(m: String) -> void:
+	_touch_spell_info = false
 	var changed := m != mode
 	if changed:
 		_turn_dir = 0
@@ -437,16 +448,74 @@ func _key_shown(k: String) -> bool:
 
 
 ## Screen scale and origin of the 800×600 layout.
+var _touch_zoom := 1.0
+var _touch_pan := Vector2.ZERO
+var _touch_spell_info := false
+
 func _s() -> float:
-	return minf(size.x / 800.0, size.y / 600.0)
+	return minf(size.x / 800.0, size.y / 600.0) * _touch_zoom
 
 
 func _o() -> Vector2:
-	return (size - Vector2(800, 600) * _s()) * 0.5
+	return (size - Vector2(800, 600) * _s()) * 0.5 + _touch_pan
 
 
 func _r(r: Rect2) -> Rect2:
 	return Rect2(_o() + r.position * _s(), r.size * _s())
+
+
+func touch_hold(point: Vector2) -> void:
+	var p := (point - _o()) / _s()
+	_update_hover(p)
+	# Hold the equipped weapon to make it active, without first unequipping it.
+	if mode == "weapons" and _unit:
+		for i in TURN_RECTS.size():
+			if TURN_RECTS[i].has_point(p):
+				_turn_dir = 1 if i == 0 else -1
+				return
+		var weapons: Array = _unit.get_meta("hero", {}).get("weapons", [])
+		for i in mini(4, weapons.size()):
+			if _slot_rect("top%d" % i).has_point(p):
+				construct.emit({"t": "select_weapon", "unit": _unit.uid, "item": weapons[i]})
+				return
+	# Holding either existing info column toggles the Ctrl-only spell view.
+	if p.y >= 100 and p.y < 500 and (p.x < 200 or p.x >= 600):
+		_touch_spell_info = not _touch_spell_info
+	queue_redraw()
+
+
+func touch_release() -> void:
+	_turn_dir = 0
+	_hold_cmd = {}
+
+
+func touch_scroll(point: Vector2, delta: Vector2) -> void:
+	var p := (get_global_transform_with_canvas().affine_inverse() * point - _o()) / _s()
+	if absf(delta.x) > absf(delta.y):
+		var step := -1 if delta.x > 0 else 1
+		if p.y < 100 and shop_row():
+			shop_scroll = maxi(0, shop_scroll + step)
+		elif p.y > 500:
+			scroll = maxi(0, scroll + step)
+	elif mode == "spells":
+		if p.x < 200:
+			_perk_scroll = maxi(0, _perk_scroll + (-1 if delta.y > 0 else 1))
+		else:
+			_avail_scroll = maxi(0, _avail_scroll + (-1 if delta.y > 0 else 1))
+	queue_redraw()
+
+
+func touch_transform(before: PackedVector2Array, after: PackedVector2Array) -> void:
+	var inverse := get_global_transform_with_canvas().affine_inverse()
+	var old_mid := inverse * ((before[0] + before[1]) * 0.5)
+	var mid := inverse * ((after[0] + after[1]) * 0.5)
+	var anchor := (old_mid - _o()) / _s()
+	_touch_zoom = clampf(_touch_zoom * after[0].distance_to(after[1]) / maxf(16.0, before[0].distance_to(before[1])), 1.0, 2.5)
+	_touch_pan = mid - anchor * _s() - (size - Vector2(800, 600) * _s()) * 0.5
+	var limit := (Vector2(800, 600) * _s() - size).max(Vector2.ZERO) * 0.5
+	_touch_pan = _touch_pan.clamp(-limit, limit)
+	_layout()
+	queue_redraw()
 
 
 func _slot_rect(k: String) -> Rect2:
@@ -480,24 +549,38 @@ func _slot_rect(k: String) -> Rect2:
 
 func _layout() -> void:
 	var s := _s()
+	#  00627c50 clear depth over the whole pile panel, not
+	# separately per cell. Items may extend across cell boundaries.
+	var pile_rect := _r(Rect2(200, 100, 400, 400))
+	_pile_clip.position = pile_rect.position
+	_pile_clip.size = pile_rect.size
 	for k in _views:
-		var r := _r(_slot_rect(k)).grow(-14 * s)
-		if k.begins_with("buy") or k.begins_with("sell") or k.begins_with("rep") or k.begins_with("c") \
-				or k in ["sready", "skey"] or k.begins_with("srune"):
-			r = _r(_slot_rect(k)).grow(-20 * s)
-			r.position.y -= 8 * s   # room for the price
-		_views[k].position = r.position
-		_views[k].size = r.size
-		_views[k].item = "~"
+		var c := _slot_rect(k).get_center()
+		var v: ItemView = _views[k]
+		# All slot builders pass width 100 to. Its scale is
+		# 100 * K * z * 0.0009375, hence 37.5 px per model unit regardless
+		# of z. Reuse the UI perspective with equivalent depth z / scale.
+		v.unit_px = 37.5 * s
+		v.screen_at = Vector3(c.x, c.y, 400.0 / ItemView.K / 37.5)
+		#  masks worn armour to centre ±35; does
+		# the same for its ready item and blueprint. Other slots are not
+		# individually clipped. Leave room for the whole rotating figure.
+		var extent := 70.0 if k.begins_with("armor") or k in ["cready", "cbp"] else 240.0
+		v.size = Vector2.ONE * extent * s
+		v.position = _o() + c * s - v.size * 0.5
+		if v.get_parent() == _pile_clip:
+			v.position -= _pile_clip.position
+		v.item = "~"
 	for i in _info_views.size():
 		var x0 := 0.0 if i == 0 else 600.0
 		_info_views[i].position = _r(Rect2(x0 + 40, 240, 120, 120)).position
 		_info_views[i].size = Vector2(120, 120) * s
 		_info_views[i].item = "~"
-	_doll.view_size = Vector2i(maxi(64, int(190 * s)), maxi(64, int(300 * s)))
+	var figure_rect := _r(Paperdoll.CAMP_RECT)
+	_doll.view_size = Vector2i(figure_rect.size.round())
 	_doll.custom_minimum_size = Vector2(_doll.view_size)
-	_doll.position = _o() + Vector2(305, 130) * s
-	_doll.size = Vector2(190, 300) * s
+	_doll.position = figure_rect.position
+	_doll.size = figure_rect.size
 	var r := _r(Rect2(612, 300, 176, 90))
 	right_panel.position = r.position
 	right_panel.size = r.size
@@ -510,12 +593,12 @@ func _layout() -> void:
 func bag_items() -> Array:
 	var st := hud.game.session.state
 	var out := []
-	if mode == "spellconstr":
+	if mode in ["spellconstr", "itemconstr"]:
 		for sp: String in hero_spells():
-			if sp != s_spell and _passes("spell:" + sp, false, FILTER_SETS.bag[2][filter]):
+			if sp != s_spell and "spell:" + sp != c_spell and _passes("spell:" + sp, false, FILTER_SETS.bag[2][filter]):
 				out.append("spell:" + sp)
 	for it: String in _unique(st.items + st.quest_items.keys()):
-		if bag_count(it) > 0 and _passes(it, it in st.quest_items, FILTER_SETS.bag[2][filter]):
+		if not it in out and bag_count(it) > 0 and _passes(it, it in st.quest_items, FILTER_SETS.bag[2][filter]):
 			out.append(it)
 	return out
 
@@ -646,7 +729,7 @@ func _bag_received(it: String) -> void:
 
 func bag_count(it: String) -> int:
 	if it.begins_with("spell:"):
-		return 0 if it.substr(6) == s_spell else 1
+		return 0 if it.substr(6) == s_spell or it == c_spell else 1
 	var st := hud.game.session.state
 	var n := st.items.count(it) + (1 if st.quest_items.has(it) else 0)
 	var used := 1 if it == c_ready or it == c_bp else 0
@@ -698,14 +781,14 @@ func deal_info() -> Array:
 				for it in repair_pile:
 					total += Items.repair_price(it)
 		"itemconstr":
-			cancel = c_ready != "" or c_bp != "" or c_mat != ""
+			cancel = c_ready != "" or c_bp != "" or c_mat != "" or c_spell != ""
 			if c_ready != "":
 				label = "camp_item_deconstr"
 				can = true
 				total = constr_cost()
 			elif c_bp != "" and c_mat != "":
 				label = "camp_item_constr"
-				can = true
+				can = c_spell == "" or Items.can_enchant("%s.%s" % [c_bp.substr(3), c_mat], c_spell.trim_prefix("spell:"))
 				total = constr_cost()
 		"spellconstr":
 			cancel = s_spell != ""
@@ -762,6 +845,7 @@ func _clear_constr() -> void:
 	c_bp = ""
 	c_mat = ""
 	c_ready = ""
+	c_spell = ""
 
 
 ## What the constructor's Yes costs: taking apart (deal mode 7), or building
@@ -803,7 +887,11 @@ func _on_yes() -> void:
 		if c_ready != "":
 			construct.emit({"t": "deconstruct", "item": c_ready})
 		elif c_bp != "" and c_mat != "":
-			construct.emit({"t": "construct", "bp": c_bp, "mat": c_mat})
+			# Prefer the bag copy when the hero also knows this spell. The
+			# host consumes "spell:<id>" from the bag, a bare id from the hero.
+			var sp := c_spell if c_spell in hud.game.session.state.items else c_spell.trim_prefix("spell:")
+			construct.emit({"t": "construct", "bp": c_bp, "mat": c_mat, "spell": sp,
+				"unit": _unit.uid if _unit else -1})
 		_clear_constr()
 		_sig = ""
 		_update_total()
@@ -843,11 +931,11 @@ func refresh(u: GameUnit) -> void:
 func _process(_dt: float) -> void:
 	if _turn_dir != 0:
 		if not is_visible_in_tree() or mode != "weapons" or tutorial_visible() \
-				or not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+				or not (Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) or TouchInput.holding(self)):
 			_turn_dir = 0
 		else:
-			_doll.turn_by(_turn_dir * TURN_SPEED * _dt)
-	var ctrl := Input.is_key_pressed(KEY_CTRL)
+			_doll.turn_camp_by(_turn_dir * TURN_SPEED * _dt)
+	var ctrl := Input.is_key_pressed(KEY_CTRL) or _touch_spell_info
 	if ctrl != _ctrl:
 		_ctrl = ctrl
 		queue_redraw()
@@ -871,7 +959,7 @@ func _process(_dt: float) -> void:
 	var shop := shop_items() if shop_row() else []
 	shop_scroll = clampi(shop_scroll, 0, maxi(0, shop.size() - BAG_CELLS))
 	var sig := "%s|%s|%s|%s|%s|%d|%d|%s|%s|%s|%s|%d|%d|%d" % [u.uid if u else -1, h.get("weapons", []), h.get("armors", []),
-		[h.get("quick", []), h.get("spells", []), h.get("perks", []), h.get("exp", 0), h.get("skills", {})], bag, filter, scroll, size, mode, shop, buy_pile + ["/"] + sell_pile + ["/"] + repair_pile + [c_bp, c_mat, c_ready, s_spell] + s_runes + hero_spells(), shop_filter, shop_scroll,
+		[h.get("quick", []), h.get("spells", []), h.get("perks", []), h.get("exp", 0), h.get("skills", {})], bag, filter, scroll, size, mode, shop, buy_pile + ["/"] + sell_pile + ["/"] + repair_pile + [c_bp, c_mat, c_ready, c_spell, s_spell] + s_runes + hero_spells(), shop_filter, shop_scroll,
 		hud.game.session.state.money] + str(hash(hud.game.session.state.shops.get(shop_id, {})))
 	if sig == _sig:
 		return
@@ -907,9 +995,11 @@ func _process(_dt: float) -> void:
 			bp = Items.blueprint(Items.plain(c_ready))
 			mat = String(Items.info(c_ready).material)
 		var result := c_ready if c_ready != "" else ("%s.%s" % [bp.substr(3), mat] if bp != "" and mat != "" else "")
+		if c_ready == "" and c_spell != "" and Items.can_enchant(result, c_spell.trim_prefix("spell:")):
+			result += "|" + c_spell.trim_prefix("spell:")
 		_content["cready"] = [result, "cready"]
 		_content["cbp"] = [bp, "cbp"]
-		_content["cspell"] = ["", "cspell"]
+		_content["cspell"] = [c_spell, "cspell"]
 		var n := Items.components(bp) if bp != "" else (1 if mat != "" else 0)
 		for i in PILE_CELLS:
 			_content["cmat%d" % i] = [Items.material_unit(mat) if mat != "" and i < n else "", "cmat"]
@@ -965,6 +1055,17 @@ func _side_at(p: Vector2) -> String:
 	for b: String in side_buttons():
 		if (SIDE_BUTTONS[b][0] as Rect2).has_point(p):
 			return b
+	if TouchInput.enabled:
+		var nearest := ""
+		var distance := INF
+		for b: String in side_buttons():
+			var rect: Rect2 = SIDE_BUTTONS[b][0]
+			var radius := maxf(0.0, (TouchInput.target_pixels() / _s() - rect.size.x) * 0.5)
+			var d := p.distance_to(rect.get_center())
+			if rect.grow(radius).has_point(p) and d < distance:
+				nearest = b
+				distance = d
+		return nearest
 	return ""
 
 
@@ -993,9 +1094,9 @@ func _row_hit(p: Vector2, y0: float) -> int:
 	for i in FILTER_RECTS.size():
 		if Rect2(FILTER_RECTS[i].position + Vector2(0, y0), FILTER_RECTS[i].size).has_point(p):
 			return i
-	if Rect2(30, y0 + 35, 20, 30).has_point(p):
+	if Rect2(15 if TouchInput.enabled else 30, y0 + 25 if TouchInput.enabled else y0 + 35, 35 if TouchInput.enabled else 20, 50 if TouchInput.enabled else 30).has_point(p):
 		return 10
-	if Rect2(750, y0 + 35, 20, 30).has_point(p):
+	if Rect2(750, y0 + 25 if TouchInput.enabled else y0 + 35, 35 if TouchInput.enabled else 20, 50 if TouchInput.enabled else 30).has_point(p):
 		return 11
 	return -1
 
@@ -1020,13 +1121,29 @@ func _gui_input(e: InputEvent) -> void:
 	if e is InputEventMouseButton and not e.pressed and e.button_index == MOUSE_BUTTON_LEFT:
 		_hold_cmd = {}
 		_turn_dir = 0
+	# The top row's right-button handler (widget
+	# input = WM_RBUTTONDOWN):
+	# a cell index below the hero's weapon count and below 4 plays
+	# buttons\camp\change.wav and makes that weapon the current one (
+	# shown by the hero widget), then the screen
+	# refreshes. Remake: Session "select_weapon".
+	if e is InputEventMouseButton and e.pressed and e.button_index == MOUSE_BUTTON_RIGHT and mode == "weapons" and _unit:
+		var rp: Vector2 = (e.position - _o()) / _s()
+		var weapons: Array = _unit.get_meta("hero", {}).get("weapons", [])
+		for i in mini(4, weapons.size()):
+			if _slot_rect("top%d" % i).has_point(rp):
+				if GameSound.instance:
+					GameSound.instance.ui("buttons\\camp\\change.wav")
+				construct.emit({"t": "select_weapon", "unit": _unit.uid, "item": weapons[i]})
+				accept_event()
+				return
 	if not (e is InputEventMouseButton and e.pressed and e.button_index == MOUSE_BUTTON_LEFT):
 		return
 	var p: Vector2 = (e.position - _o()) / _s()
 	if mode == "weapons":
 		for i in TURN_RECTS.size():
 			if TURN_RECTS[i].has_point(p):
-				_turn_dir = -1 if i == 0 else 1
+				_turn_dir = 1 if i == 0 else -1
 				if GameSound.instance:
 					GameSound.instance.ui("buttons\\camp\\move.wav")
 				accept_event()
@@ -1036,12 +1153,14 @@ func _gui_input(e: InputEvent) -> void:
 		_press_side(side)
 		accept_event()
 		return
-	# The hero widget's arrows (modes 0 / 1).
+	# The hero widget's arrows (modes 0 / 1): plays
+	# buttons\camp\hero.wav and steps the hero
+	# (widget).
 	if mode in ["weapons", "spells"]:
 		for a in [[Rect2(0, 125, 30, 20), -1], [Rect2(170, 125, 30, 20), 1]]:
 			if (a[0] as Rect2).has_point(p):
 				if GameSound.instance:
-					GameSound.instance.ui("buttons\\camp\\scroll.wav")
+					GameSound.instance.ui("buttons\\camp\\hero.wav")
 				hero_step.emit(a[1])
 				accept_event()
 				return
@@ -1234,6 +1353,8 @@ func _move(id: String, where: String) -> void:
 			var m := id.trim_prefix("material.")
 			if c_bp == "" or _mat_fits(c_bp, m):
 				c_mat = m
+		elif id.begins_with("spell:") and c_bp != "" and c_spell == "":
+			c_spell = id
 		elif where == "bag" and Items.can_deconstruct(id):
 			_clear_constr()
 			c_ready = id
@@ -1261,6 +1382,8 @@ func _move(id: String, where: String) -> void:
 		"cmat":
 			c_mat = ""
 			c_ready = ""
+		"cspell":
+			c_spell = ""
 		"bag":
 			if mode == "repair":
 				if Items.wear(id) > 0.0 and repair_pile.size() < REPAIR_CELLS and bag_count(id) > 0:
@@ -1279,7 +1402,7 @@ func _move(id: String, where: String) -> void:
 ##  (camp) for the item rows' prices: whether the
 ## screen takes the item now (from the trader's goods row, or the bag).
 ## Approx.: the spell constructor's knowledge / stamina limits for a keystone
-## and the item constructor's spell slot are left out.
+## are left out.
 func _row_accepts(it: String, goods: bool) -> bool:
 	var k := Items.kind(it)
 	var spellish := it.begins_with("spell:") or k == "rune"
@@ -1299,6 +1422,8 @@ func _row_accepts(it: String, goods: bool) -> bool:
 		"itemconstr":
 			if not goods:
 				return false
+			if it.begins_with("spell:"):
+				return c_bp != "" and c_spell == ""
 			var empty := c_bp == "" and c_mat == "" and c_ready == ""
 			if k == "blueprint" or Items.can_deconstruct(it):
 				return empty
@@ -1383,7 +1508,9 @@ func _draw_row(y0: float, tex: String, fset: Array, sel: int) -> void:
 
 
 func _draw() -> void:
-	draw_rect(Rect2(Vector2.ZERO, size), Color.BLACK)
+	# Only the controls are inset. Keep the original black backdrop across
+	# the whole window, including the phone's reserved cutout margins.
+	draw_rect(get_global_transform_with_canvas().affine_inverse() * get_viewport_rect(), Color.BLACK)
 	var s := _s()
 	_draw_backdrop()
 	if mode == "spells":
@@ -1511,7 +1638,11 @@ func _draw_backdrop() -> void:
 
 
 func _fpx(fi: int) -> int:
-	return maxi(6, int(round(800.0 * _s() * Interface800.FONT_EM[fi])))
+	#  truncates the point size; CreatePointFont
+	# then truncates DPI * tenths / 720. At 96 DPI, font 0 is 13 px at 800
+	# wide and 24 px in the 1440-wide camp at 1920×1080, not 14 / 25.
+	var tenths := int(_s() * [104, 112, 144][fi])
+	return maxi(6, int(tenths * 96.0 / 720.0))
 
 
 ## One font line in 800×600 units.
@@ -1519,14 +1650,17 @@ func _lh(fi: int) -> float:
 	return Interface800.font().get_height(_fpx(fi)) / _s()
 
 
-## one line from the rect's top (800 units), 1 px
-## shadow; left text is cut with "...", right text spills left.
+## unwrapped text from the rect's top (800 units), with a
+##  shadow. Approx.: overflow gets "..." on the left or spills left
+## on the right; the original DrawText uses only the alignment flags.
 func _t(r: Rect2, txt: String, fi := 0, col := Interface800.TEXT, align := HORIZONTAL_ALIGNMENT_LEFT) -> void:
 	if txt.is_empty():
 		return
 	var f := Interface800.font()
 	var fs := _fpx(fi)
 	var rr := _r(r)
+	#  adds two physical pixels after scaling the text rect.
+	rr.size += Vector2(2, 2)
 	var w := rr.size.x
 	if align == HORIZONTAL_ALIGNMENT_LEFT and f.get_string_size(txt, align, -1, fs).x > w:
 		while txt.length() > 1 and f.get_string_size(txt + "...", align, -1, fs).x > w:

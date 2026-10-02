@@ -1,0 +1,16 @@
+# Serves the prepared Web export in public/ as Workers static assets.
+# Cloudflare deploys it from this repository on every push; public/ is the
+# committed, already built export. worker.js streams engine files that were
+# split to stay under the asset size limit (see parts.json) and adds the
+# headers the engine needs.
+name = "cursedlands"
+main = "worker.js"
+compatibility_date = "2026-10-02"
+workers_dev = false
+routes = [{ pattern = "cursedlands.wwworm.com", custom_domain = true }]
+
+[assets]
+directory = "./public"
+binding = "ASSETS"
+run_worker_first = true
+not_found_handling = "none"

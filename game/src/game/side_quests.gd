@@ -15,7 +15,7 @@ static func all() -> Array:
 	if not _all.is_empty() or GameData.root.is_empty():
 		return _all
 	var dir := GameData.root.path_join("maps")
-	for f in DirAccess.get_files_at(dir):
+	for f in GameFiles.files(dir):
 		if not f.to_lower().ends_with(".mq"):
 			continue
 		var arc := EIResArchive.open_path(dir.path_join(f))

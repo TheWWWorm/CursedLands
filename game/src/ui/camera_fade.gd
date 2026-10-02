@@ -134,6 +134,8 @@ func _find(g: Game, eye: Vector3) -> void:
 ## wall itself, which made whole fence rings fade).
 func _hides(i: int, eye: Vector3, t: Vector3) -> bool:
 	for gi in _meshes[i]:
+		if not is_instance_valid(gi):
+			continue
 		var g3 := gi as MeshInstance3D
 		if g3 == null or not is_instance_valid(g3) or g3.mesh == null:
 			continue
@@ -160,15 +162,19 @@ func _set_alpha(i: int, a: float) -> void:
 			if g3.has_meta("cam_fade_mat"):
 				g3.material_override = g3.get_meta("cam_fade_mat")
 				g3.remove_meta("cam_fade_mat")
-				g3.set_instance_shader_parameter("cam_fade", 0.0)
+				if not Portability.compatibility():
+					g3.set_instance_shader_parameter("cam_fade", 0.0)
 			continue
 		if not g3.has_meta("cam_fade_mat"):
 			var m := _dither_material(g3.material_override)
 			if m == null:
 				continue
 			g3.set_meta("cam_fade_mat", g3.material_override)
-			g3.material_override = m
-		g3.set_instance_shader_parameter("cam_fade", a)
+			g3.material_override = m.duplicate() if Portability.compatibility() else m
+		if Portability.compatibility():
+			(g3.material_override as ShaderMaterial).set_shader_parameter("cam_fade", a)
+		else:
+			g3.set_instance_shader_parameter("cam_fade", a)
 
 
 ## The object's material with the dither added (shared per material).
@@ -186,6 +192,8 @@ static func _dither_material(orig: Material) -> ShaderMaterial:
 			if b >= 0:
 				sh = Shader.new()
 				sh.code = code.substr(0, f) + DITHER + code.substr(f, b + 1 - f) + DITHER_FRAG + code.substr(b + 1)
+				if Portability.compatibility():
+					sh.code = sh.code.replace("instance uniform", "uniform")
 			_shaders[sm.shader] = sh
 		if sh:
 			out = ShaderMaterial.new()

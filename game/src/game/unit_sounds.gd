@@ -26,6 +26,7 @@ var mixer: SoundMixer
 var world: GameWorld
 var _adb := {}            # template -> {clip: record}
 var _units := {}          # instance id -> {clip, frame, idle, attack}
+var _stamp := 0
 var _steps := {}          # steps path -> file count
 static var _dbres: EIResArchive
 
@@ -38,19 +39,45 @@ func _init(m: SoundMixer, w: GameWorld) -> void:
 func tick() -> void:
 	if world == null:
 		return
-	var seen := {}
+	# Every frame over every unit: no per-frame allocations (the clip name is
+	# only rebuilt when the player's animation changes, units not seen this
+	# frame are found by a stamp instead of a set).
+	# A unit farther than MAX_D (2D) from the listener is skipped: each of its
+	# sounds would get volume 0 and a silent one-shot is never started
+	# (see SoundMixer._start); it re-syncs without a sound when
+	# it comes back in range.
+	_stamp += 1
+	var n := 0
+	var lis := Vector2(mixer.listener.x, mixer.listener.y)
 	for u: GameUnit in world.units.values():
-		if not is_instance_valid(u) or u.model == null or u.model.player == null:
+		if not is_instance_valid(u):
 			continue
 		var key := u.get_instance_id()
-		seen[key] = true
-		var pl := u.model.player
-		var clip := String(pl.current_animation).trim_prefix("ei/")
-		var cur := pl.current_animation_position * EIAnim.FPS
 		var st: Dictionary = _units.get(key, {})
-		if st.is_empty():   # first sight (a joiner's corpse, a new model): no sound
-			_units[key] = {"clip": clip, "frame": cur, "idle": -1, "attack": -1}
+		if u.pos.distance_squared_to(lis) > MAX_D * MAX_D:
+			if not st.is_empty():
+				n += 1
+				st.seen = _stamp
+				st.far = true
 			continue
+		if u.model == null or u.model.player == null:
+			continue
+		n += 1
+		var pl := u.model.player
+		var anim: StringName = pl.current_animation
+		var cur := pl.current_animation_position * EIAnim.FPS
+		if st.is_empty() or st.get("far", false):   # first sight (a joiner's corpse, a new model) / back in range: no sound
+			var c := String(anim).trim_prefix("ei/")
+			if st.is_empty():
+				_units[key] = {"clip": c, "anim": anim, "name": c, "frame": cur, "idle": -1, "attack": -1, "seen": _stamp}
+			else:
+				st.merge({"clip": c, "anim": anim, "name": c, "frame": cur, "seen": _stamp, "far": false}, true)
+			continue
+		st.seen = _stamp
+		if anim != st.anim:
+			st.anim = anim
+			st.name = String(anim).trim_prefix("ei/")
+		var clip: String = st.get("name", st.clip)
 		if clip == "":
 			continue
 		var prev: float = st.frame
@@ -65,9 +92,9 @@ func tick() -> void:
 		var rec: Dictionary = _clips(u.model.template).get(clip, {})
 		if not rec.is_empty():
 			_frame(u, st, rec, prev, cur)
-	if _units.size() > seen.size():
+	if _units.size() > n:
 		for k in _units.keys():
-			if not seen.has(k):
+			if int(_units[k].seen) != _stamp:
 				_units.erase(k)
 
 
@@ -175,6 +202,31 @@ func _voice(u: GameUnit, st: Dictionary, rec: Dictionary, prev: float, cur: floa
 	var h := mixer.play3d(path, prio, _at(u), MIN_D, MAX_D)
 	if act == ACT_IDLE:
 		st.idle = h
+
+
+## The sound folders the zone's units can play from (steps of every ground,
+## crawling, the voice folders, bow / crossbow shots), for
+## EIAudio.prefetch at the zone start (remake: no first-play stall).
+static func zone_folders(w: GameWorld) -> PackedStringArray:
+	var out := PackedStringArray(["steps\\human\\crawl", "weapons"])
+	var seen := {}
+	for u: GameUnit in w.units.values():
+		var key := "%s|%s" % [u.race.get("sfx_path", ""), u.proto.get("unknown2", "")]
+		if seen.has(key):
+			continue
+		seen[key] = true
+		var paths = u.race.get("steps_path", [])
+		if paths is Array or paths is PackedStringArray:
+			for p in paths:
+				if String(p) and not out.has(String(p)):
+					out.append(String(p))
+		var dir := String(u.proto.get("unknown2", ""))
+		if dir.is_empty():
+			dir = String(u.race.get("sfx_path", ""))
+		if dir:
+			for sub in ["idle", "attack", "death", "hit"]:
+				out.append("%s\\%s" % [dir, sub])
+	return out
 
 
 ## the step file for the ground under the unit

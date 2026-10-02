@@ -40,8 +40,8 @@ func _ready() -> void:
 
 
 func _physics_process(dt: float) -> void:
-	if target == null or not is_instance_valid(target):
-		queue_free()
+	if target == null or not is_instance_valid(target) or not target.is_inside_tree():
+		queue_free()   # the target left the world (zone change, removed body)
 		return
 	var goal := target.global_position + Vector3.UP * 1.0
 	var d := goal - global_position

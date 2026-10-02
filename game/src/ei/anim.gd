@@ -33,9 +33,8 @@ static func library(template: String, paths: Dictionary, root_part: String, root
 		out.resize(names.size())
 		# The clips are copied on the worker threads (each task writes its own
 		# slot; the base clips are only read).
-		var task := WorkerThreadPool.add_group_task(func(i: int) -> void:
+		Portability.group(func(i: int) -> void:
 			out[i] = _scaled(base.get_animation(names[i]), root_scale), names.size())
-		WorkerThreadPool.wait_for_group_task_completion(task)
 		for i in names.size():
 			lib.add_animation(names[i], out[i])
 	_libraries[key] = lib
@@ -75,9 +74,8 @@ static func _build_library(template: String, paths: Dictionary, root_part: Strin
 		# Decoded on the worker threads (_build only reads its arguments).
 		var built := []
 		built.resize(names.size())
-		var task := WorkerThreadPool.add_group_task(func(i: int) -> void:
+		Portability.group(func(i: int) -> void:
 			built[i] = _build(EIResArchive.from_bytes(data[i]), paths, root_part, root_scale, native_keys), names.size())
-		WorkerThreadPool.wait_for_group_task_completion(task)
 		for i in names.size():
 			var anim_name: String = names[i]
 			var anim: Animation = built[i]

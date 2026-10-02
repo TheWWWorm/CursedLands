@@ -13,7 +13,9 @@ extends Interface800
 ##   700 − 80e (Save); the main menu opens Load without it, at y 550;
 ## - panels in 5 px saveload frames: list (100,100)-(390,500)
 ##   preview (410,100)-(700,320), info (410,340)-(700,500);
-## - 16 rows (108,108+24k)-(370,132+24k): name (112,111+24k)-(290,132+24k) left,
+## - 16 rows (108,108+24k)-(370,132+24k): name (112,111+24k)-(290,132+24k) left
+##   (flags 0x800 DT_NOPREFIX: one line clipped
+##   the column's edge, no ellipsis; the date DT_RIGHT),
 ##   date «%d/%m, %H:%M» (290,..)-(365,..) right, font 1; the selected
 ##   row's bar; scroll bar (108,108)-(384,492), speed 1, range
 ##   n − 16, moving the view only;
@@ -58,7 +60,8 @@ extends Interface800
 ##  closes the screen without saving; Esc only closes
 ## the box. Remake: the drive of user://saves and the size of the campaign
 ## state the save would write (CampaignState.to_dict serialised) stand in.
-## Remake: saves are SaveInfo slots (user://saves/<slot>.sav + .info.sav +
+## Remake: a save without a shot shows its zone's minimap picture instead
+## (remake-only). Saves are SaveInfo slots (user://saves/<slot>.sav + .info.sav +
 ## .shot.png).
 
 signal load_requested(slot: String)
@@ -115,6 +118,9 @@ func _ready() -> void:
 		add_child(b)
 		_boards[save] = b
 	resized.connect(queue_redraw)
+	var transfer := SaveTransfer.new()
+	transfer.imported.connect(func(): _refresh_list())
+	add_child(transfer)
 
 
 ## Load (`save` false) or Save. `frame`: the frame captured when the game
@@ -175,7 +181,24 @@ func _select(i: int) -> void:
 		_edit = (saves[sel] as SaveInfo).display_name()
 		_caret = _edit.length()
 	_shot = (saves[sel] as SaveInfo).shot() if sel >= 0 and not saves[sel].error else null
+	if _shot == null and sel >= 0 and not saves[sel].error:
+		_shot = _zone_picture((saves[sel] as SaveInfo).zone)
 	queue_redraw()
+
+
+static var _campaign: CampaignMap
+
+## Remake-only preview for a save without a shot (e.g. a co-op progress save
+## written before any frame): the save zone's minimap picture (map.txt
+## "#minimap").
+static func _zone_picture(zone: String) -> Texture2D:
+	if zone.is_empty() or not GameData.is_open():
+		return null
+	if _campaign == null:
+		_campaign = CampaignMap.load_from(GameData.texts)
+	var z: Dictionary = _campaign.zones.get(zone.to_lower(), {}) if _campaign else {}
+	var name := String(z.get("minimap", "")).to_lower()
+	return GameData.get_texture(name) if name else null
 
 
 ##  the board placement: y = 700 − (150 | 80) · e, e the
@@ -208,7 +231,7 @@ func _draw() -> void:
 		var s: SaveInfo = saves[i]
 		var row_y := 111.0 + 24 * k
 		var name := _edit if i == sel and save_mode and _edited else s.display_name()
-		text(Rect2(NAME_X, row_y, NAME_W, 21), name, 1)
+		text(Rect2(NAME_X, row_y, NAME_W, 21), name, 1, TEXT, HORIZONTAL_ALIGNMENT_LEFT, true)
 		if i == sel and _editable() and not hide_text:
 			_draw_caret(row_y)
 		if not s.fresh:
@@ -324,7 +347,7 @@ func _disk_ok() -> bool:
 
 
 func _current_bytes() -> int:
-	var hud := get_parent()
+	var hud := get_canvas_layer_node()
 	var g: Variant = hud.get("game") if hud else null
 	var ses: Variant = g.get("session") if g is Object else null
 	var st: Variant = ses.get("state") if ses is Object else null
@@ -400,7 +423,14 @@ func _gui_input(e: InputEvent) -> void:
 					sound("save\\select")
 				if h[1] != sel:
 					_select(h[1])
-				if e.double_click:
+				if TouchInput.enabled and save_mode and _editable():
+					_first_edit(false)
+					TouchTextEdit.open(self, _edit, NAME_MAX, func(value):
+						_edit = value
+						_caret = value.length()
+						_edited = true
+						queue_redraw(), "Save name")
+				elif e.double_click:
 					_accept()
 			"bar":
 				match h[1]:

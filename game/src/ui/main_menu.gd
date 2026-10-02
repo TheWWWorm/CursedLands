@@ -89,17 +89,17 @@ func _ready() -> void:
 	box.add_theme_constant_override("separation", 10)
 	panel.add_child(box)
 	var title := Label.new()
-	title.text = "Evil Islands"
+	title.text = RemakeText.t("Evil Islands")
 	title.add_theme_font_size_override("font_size", 40)
 	box.add_child(title)
 	_name = LineEdit.new()
-	_name.placeholder_text = "Your name"
+	_name.placeholder_text = RemakeText.t("Your name")
 	_name.text = GameData.player_name
 	box.add_child(_name)
 	var hero_row := HBoxContainer.new()
 	box.add_child(hero_row)
 	var hl := Label.new()
-	hl.text = "Co-op hero: "
+	hl.text = RemakeText.t("Co-op hero: ")
 	hero_row.add_child(hl)
 	_hero = OptionButton.new()
 	for proto: String in Session.COOP_CLASSES:
@@ -108,30 +108,30 @@ func _ready() -> void:
 		_hero.set_item_metadata(_hero.item_count - 1, proto)
 		if proto == GameData.hero_class:
 			_hero.select(_hero.item_count - 1)
-	_hero.tooltip_text = "The hero you play when you join someone's campaign (the host plays Zak)."
+	_hero.tooltip_text = RemakeText.t("The hero you play when you join someone's campaign (the host plays Zak).")
 	hero_row.add_child(_hero)
-	_button(box, "New campaign (single player)", _single)
+	_button(box, RemakeText.t("New campaign (single player)"), _single)
 	if Session.latest_save():
-		_button(box, "Continue (last save)", _continue)
-	_button(box, "Options", func(): _options.open())
-	_button(box, "Credits", _credits)
+		_button(box, RemakeText.t("Continue (last save)"), _continue)
+	_button(box, RemakeText.t("Options"), func(): _options.open())
+	_button(box, RemakeText.t("Credits"), _credits)
 	box.add_child(HSeparator.new())
-	_button(box, "Host co-op campaign", func(): _host(Session.MAX_PLAYERS))
+	_button(box, RemakeText.t("Host co-op campaign"), func(): _host(Session.MAX_PLAYERS))
 	var row := HBoxContainer.new()
 	box.add_child(row)
 	_addr = LineEdit.new()
 	_addr.text = _addr_default
 	_addr.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	row.add_child(_addr)
-	_button(row, "Join", func(): _join(_addr.text.strip_edges()))
+	_button(row, RemakeText.t("Join"), func(): _join(_addr.text.strip_edges()))
 	_lobby = ItemList.new()
 	_lobby.custom_minimum_size.y = 90
 	_lobby.visible = false
 	box.add_child(_lobby)
-	_start = _button(box, "Start co-op campaign", _start_coop)
+	_start = _button(box, RemakeText.t("Start co-op campaign"), _start_coop)
 	_start.visible = false
 	box.add_child(HSeparator.new())
-	_button(box, "Map viewer", func(): get_parent().open_viewer())
+	_button(box, RemakeText.t("Map viewer"), func(): get_parent().open_viewer())
 	_status = Label.new()
 	_status.autowrap_mode = TextServer.AUTOWRAP_WORD
 	box.add_child(_status)
@@ -144,7 +144,7 @@ func _ready() -> void:
 
 func _add_viewer_link() -> void:
 	var viewer := LinkButton.new()
-	viewer.text = "Map viewer (remake)"
+	viewer.text = RemakeText.t("Map viewer (remake)")
 	viewer.underline = LinkButton.UNDERLINE_MODE_ON_HOVER
 	viewer.add_theme_color_override("font_color", Color(0.75, 0.7, 0.6, 0.8))
 	viewer.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT)
@@ -237,9 +237,10 @@ func _host(max_players := Session.MAX_PLAYERS) -> void:
 	var port := _port()
 	var err := s.host(port, max_players)
 	if err != OK:
-		_set_status("Could not host on port %d (error %d)." % [port, err])
+		_set_status(RemakeText.t("Could not host on port %d (error %d).") % [port, err])
 		return
-	_set_status("Hosting on port %d. Waiting for players... (✓ starts)" % port)
+	# The co-op screen's hint line says what to do next; the status only where.
+	_set_status((RemakeText.t("Hosting on port %d.") if _net else RemakeText.t("Hosting on port %d. Waiting for players... (✓ starts)")) % port)
 	if s.upnp.busy and _net:   # remake option net_upnp: the router result (and the address to share)
 		_net.upnp_text = s.upnp.status
 		s.upnp.finished.connect(func(_ok, t):
@@ -248,6 +249,8 @@ func _host(max_players := Session.MAX_PLAYERS) -> void:
 				_net.queue_redraw())
 	if _net:
 		_net.hosting = true
+		_net.host_port = port   # remake: the addresses to share (NetworkPanel)
+		_net.upnp = s.upnp
 	else:
 		_lobby.visible = true
 		_start.visible = true
@@ -259,24 +262,51 @@ func _join(address := "") -> void:
 		return
 	if address.is_empty():   # --join=<ip> on the command line
 		address = _addr_default
-	var s := _make_session()
-	# Remake: "address:port" joins a host on another port (one ':' only, so
-	# an IPv6 address stays whole).
-	var port := _port()
-	if address.count(":") == 1 and address.get_slice(":", 1).is_valid_int():
-		port = address.get_slice(":", 1).to_int()
-		address = address.get_slice(":", 0)
-	var err := s.join(address, port)
-	if err != OK:
-		_set_status("Could not connect (error %d)." % err)
+	if OS.has_feature("web") and not (address.begins_with("ws://") or address.begins_with("wss://")):
+		_set_status("Enter a wss:// server address (ws:// for local testing).")
 		return
-	_set_status("Connecting to %s... the host starts the campaign." % address)
+	var s := _make_session()
+	# Remake: "address:port" joins a host on another port; IPv6 as
+	# "[address]:port" or bare (Session.parse_address).
+	var hp := Session.parse_address(address, _port())
+	var typed := address
+	address = hp[0]
+	var err := s.join(address, hp[1])
+	if err != OK:
+		_set_status(RemakeText.t("Could not connect (error %d).") % err)
+		return
+	if _net:
+		_set_status(RemakeText.t("Connecting to %s...") % typed)
+		s.multiplayer.connected_to_server.connect(func(): _set_status(RemakeText.t("Connected to %s.") % typed), CONNECT_ONE_SHOT)
+	else:
+		_set_status(RemakeText.t("Connecting to %s... the host starts the campaign.") % address)
 	if _net:
 		_net.joining = true
 	else:
 		_lobby.visible = true
 	# Clients enter the game view when the host sends the first zone.
 	s.zone_received.connect(func(): start_game.emit(s), CONNECT_ONE_SHOT)
+	s.net.refused.connect(_join_refused)
+
+
+## The host turned the join down (NetStatus.refuse): the original's message box
+## (with the reason, ✓ only), then back to the co-op screen.
+func _join_refused(title: String, text: String) -> void:
+	_set_status(title)
+	var b := MessageBox.new()
+	b.title = title
+	b.message = text
+	b.ok_only = true
+	add_child(b)
+	b.answered.connect(func(_yes):
+		if _session and _session.online:
+			_session.multiplayer.multiplayer_peer = OfflineMultiplayerPeer.new()
+			_session.online = false
+			_session.queue_free()
+			_session = null
+		if _net:
+			_net.joining = false
+			_net.queue_redraw(), CONNECT_ONE_SHOT)
 
 
 ## The co-op port: Session.PORT, or --port=N on the command line (remake).
@@ -301,6 +331,7 @@ func _leave_net() -> void:
 		_session = null
 	_net.hosting = false
 	_net.joining = false
+	_net.upnp = null
 	_net.upnp_text = ""   # the session's UpnpPort removed the forwarding as it left
 	_net.lobby = []
 	_net.status = ""
@@ -312,8 +343,16 @@ func _refresh_lobby() -> void:
 		return
 	if _net:
 		var names := []
+		var me := _session.multiplayer.get_unique_id() if _session.online else 1
 		for pid in _session.players:
-			names.append("%d. %s" % [_session.players[pid].index + 1, _session.players[pid].name])
+			# Remake: who is who when names repeat (everyone starts as "Player").
+			var tags := PackedStringArray()
+			if int(pid) == 1:
+				tags.append(RemakeText.t("host"))
+			if int(pid) == me:
+				tags.append(RemakeText.t("you"))
+			names.append("%d. %s%s" % [_session.players[pid].index + 1, _session.players[pid].name,
+				" (%s)" % ", ".join(tags) if not tags.is_empty() else ""])
 		_net.lobby = names
 		_net.queue_redraw()
 		return

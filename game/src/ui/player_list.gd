@@ -18,11 +18,12 @@ func _ready() -> void:
 
 func _process(_dt: float) -> void:
 	var s := game.session if game else null
-	var on := s != null and s.online
+	# Not over a movie (the co-op intro plays once the first zone is built).
+	var on := s != null and s.online and not (game.hud and game.hud._movie and game.hud._movie.visible)
 	visible = on
 	if not on:
 		return
-	var sig := "%s|%s|%s" % [s.players, s.net.status, get_viewport_rect().size]
+	var sig := "%s|%s|%s" % [s.players, s.net.status, Interface800.canvas_size(self)]
 	if sig != _sig:
 		_sig = sig
 		queue_redraw()
@@ -36,24 +37,30 @@ func lines() -> Array:
 	for pid in pids:
 		var p: Dictionary = s.players[pid]
 		var st: Dictionary = s.net.status.get(pid, {})
-		var ping := "" if int(pid) == 1 else "%d ms" % int(st.get("ping", 0))
+		var ping := "" if int(pid) == 1 or String(st.get("state", "connect")) == "connect" else "%d ms" % int(st.get("ping", 0))
 		out.append([String(p.name), NetStatus.colour(int(p.index)), ping, NetStatus.state_text(String(st.get("state", "connect")))])
 	return out
 
 
 func _draw() -> void:
-	var k := get_viewport_rect().size.y / 600.0
-	var right := get_viewport_rect().size.x - 5.0 * k
+	var k := Interface800.canvas_size(self).y / 600.0
+	var right := Interface800.canvas_size(self).x - 5.0 * k
 	var f := DialogPanel.font()
 	var fs := int(round(12.0 * k))
 	var y := 170.0 * k
 	var rows := lines()
 	if rows.is_empty():
 		return
-	draw_rect(Rect2(right - 185.0 * k, y - 2.0 * k, 185.0 * k, (rows.size() * 15.0 + 4.0) * k), Color(0, 0, 0, 0.45))
+	# The status column takes its longest text ("Connection problems"), the
+	# list growing leftwards from the 185-unit minimum.
+	var sw := 56.0 * k
+	for r: Array in rows:
+		sw = maxf(sw, f.get_string_size(r[3], HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x + 2.0 * k)
+	var extra := sw - 56.0 * k
+	draw_rect(Rect2(right - 185.0 * k - extra, y - 2.0 * k, 185.0 * k + extra, (rows.size() * 15.0 + 4.0) * k), Color(0, 0, 0, 0.45))
 	for r: Array in rows:
 		var base := y + 12.0 * k
-		draw_string(f, Vector2(right - 180.0 * k, base), r[0], HORIZONTAL_ALIGNMENT_LEFT, 75.0 * k, fs, r[1])
-		draw_string(f, Vector2(right - 103.0 * k, base), r[2], HORIZONTAL_ALIGNMENT_RIGHT, 40.0 * k, fs, DialogPanel.TEXT_COLOR)
-		draw_string(f, Vector2(right - 58.0 * k, base), r[3], HORIZONTAL_ALIGNMENT_LEFT, 56.0 * k, fs, DialogPanel.TEXT_COLOR)
+		draw_string(f, Vector2(right - 180.0 * k - extra, base), r[0], HORIZONTAL_ALIGNMENT_LEFT, 75.0 * k, fs, r[1])
+		draw_string(f, Vector2(right - 103.0 * k - extra, base), r[2], HORIZONTAL_ALIGNMENT_RIGHT, 40.0 * k, fs, DialogPanel.TEXT_COLOR)
+		draw_string(f, Vector2(right - 58.0 * k - extra, base), r[3], HORIZONTAL_ALIGNMENT_LEFT, sw, fs, DialogPanel.TEXT_COLOR)
 		y += 15.0 * k

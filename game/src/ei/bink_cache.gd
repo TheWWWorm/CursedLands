@@ -41,6 +41,7 @@ var _pcm := PackedByteArray()
 var _audio_ready := false
 var _thread: Thread
 var _started := 0
+var _serial_running := false
 
 
 ## Starts converting `src` into `dst` on a background thread.
@@ -48,12 +49,69 @@ func start(src: String, dst: String) -> void:
 	EIBink.init_tables()
 	path = dst
 	_started = Time.get_ticks_msec()
+	if not Portability.threads():
+		_serial_running = true
+		_serial.call_deferred(src, dst)
+		return
 	_thread = Thread.new()
 	_thread.start(convert.bind(src, dst), Thread.PRIORITY_LOW)
 
 
 func is_running() -> bool:
-	return _thread != null and _thread.is_alive()
+	return _serial_running or (_thread != null and _thread.is_alive())
+
+
+func _serial(src: String, dst: String) -> void:
+	# Yield between frames on the single-thread Web export. No hidden workers,
+	# and only the requested movie is converted. The skip control stays live.
+	var decoder := EIBink.new()
+	if not decoder.open(src):
+		failed = true
+		_serial_running = false
+		return
+	width = decoder.width
+	height = decoder.height
+	frame_count = decoder.frame_count
+	fps_num = decoder.fps_num
+	fps_den = decoder.fps_den
+	cum_cost = PackedInt64Array([0])
+	for i in frame_count: cum_cost.append(cum_cost[i] + decoder.frame_size(i) + 2000)
+	var audio: EIBinkAudio
+	if not decoder.audio_tracks.is_empty() and not decoder.audio_tracks[0].get("dct", false):
+		audio = EIBinkAudio.new(decoder.audio_tracks[0], decoder.revision)
+		audio_rate = decoder.audio_tracks[0].rate
+		audio_channels = decoder.audio_tracks[0].channels
+	DirAccess.make_dir_recursive_absolute(dst.get_base_dir())
+	var file := FileAccess.open(dst, FileAccess.WRITE)
+	if file == null:
+		failed = true
+		_serial_running = false
+		return
+	_write_header(file, false, 0, 0, 0)
+	_offsets = PackedInt64Array([HEADER])
+	for i in frame_count:
+		if cancel: break
+		var data := decoder.frame_data(i)
+		if audio: _pcm.append_array(audio.decode_packet(decoder.audio_packet(data)))
+		decoder.decode_frame(data, EIBink.PLANES_ALL)
+		file.store_buffer(decoder.yuv_image(null).save_jpg_to_buffer(JPG_QUALITY))
+		if file.get_error() != OK:
+			failed = true
+			break
+		_offsets.append(file.get_position())
+		_done = i + 1
+		await (Engine.get_main_loop() as SceneTree).process_frame
+	if not cancel and not failed:
+		var audio_offset := file.get_position()
+		file.store_buffer(_pcm)
+		var index_offset := file.get_position()
+		for offset in _offsets: file.store_64(offset)
+		_write_header(file, true, audio_offset, _pcm.size(), index_offset)
+		ok = file.get_error() == OK
+		failed = not ok
+		_audio_ready = true
+	file.close()
+	_serial_running = false
 
 
 ## Waits for the conversion thread (call after cancel, or when it finished).

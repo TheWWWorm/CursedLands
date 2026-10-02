@@ -51,25 +51,25 @@ static func open(file: String) -> EIInnoSetup:
 func _read_header() -> String:
 	var f := FileAccess.open(path, FileAccess.READ)
 	if f == null:
-		return "Cannot open the installer."
+		return RemakeText.t("Cannot open the installer.")
 	# The offset table sits in the loader, within its first few megabytes.
 	var head := f.get_buffer(mini(f.get_length(), 8 << 20))
 	var at := _find(head, OFFSET_MAGIC)
 	if at < 0:
-		return "Not an Inno Setup installer (no offset table)."
+		return RemakeText.t("Not an Inno Setup installer (no offset table).")
 	var t := at + 12
 	if head.decode_u32(t) != 1:
-		return "Unsupported installer loader."
+		return RemakeText.t("Unsupported installer loader.")
 	var offset0 := head.decode_u32(t + 20)
 	offset1 = head.decode_u32(t + 24)
 	f.seek(offset0)
 	version = f.get_buffer(64).get_string_from_ascii()
 	if not version.begins_with("Inno Setup Setup Data (5.5"):
-		return "Unsupported installer version: %s" % version
+		return RemakeText.t("Unsupported installer version: %s") % version
 	var header := _block(f)
 	var data := _block(f)
 	if header.is_empty() or data.is_empty():
-		return "Could not read the installer header."
+		return RemakeText.t("Could not read the installer header.")
 	for i in data.size() / DATA_ENTRY:
 		var e := i * DATA_ENTRY
 		chunks.append({"start": data.decode_u32(e + 8), "sub": data.decode_u64(e + 12),
@@ -77,11 +77,11 @@ func _read_header() -> String:
 			"sha1": data.slice(e + 36, e + 56), "flags": data.decode_u16(e + 72)})
 	_find_files(header)
 	if files.is_empty():
-		return "No game files found in the installer."
+		return RemakeText.t("No game files found in the installer.")
 	var names := files.map(func(x): return x.name.to_lower())
 	for rel: String in GameData.REQUIRED:
 		if not rel.to_lower() in names:
-			return "The installer does not contain %s." % rel
+			return RemakeText.t("The installer does not contain %s.") % rel
 	return ""
 
 
@@ -206,7 +206,7 @@ func extract(dest: String) -> void:
 	_total = 0
 	for c in _queue:
 		_total += int(chunks[c].size)
-	for i in clampi(OS.get_processor_count() - 1, 1, 8):
+	for i in clampi(OS.get_processor_count() - 1, 1, 2 if Portability.handheld() else 8):
 		var t := Thread.new()
 		t.start(_work)
 		_threads.append(t)
@@ -226,10 +226,15 @@ func finished() -> bool:
 	for t: Thread in _threads:
 		if t.is_alive():
 			return false
+	wait_to_finish()
+	return true
+
+
+## Join all extraction workers. Call cancel() first when closing the importer.
+func wait_to_finish() -> void:
 	for t: Thread in _threads:
 		t.wait_to_finish()
 	_threads.clear()
-	return true
 
 
 func failure() -> String:
@@ -264,7 +269,7 @@ func _unpack(f: FileAccess, c: int) -> String:
 	f.seek(offset1 + int(ch.start))
 	var magic := f.get_buffer(4)
 	if Array(magic) != CHUNK_MAGIC:
-		return "Bad data chunk %d in the installer." % c
+		return RemakeText.t("Bad data chunk %d in the installer.") % c
 	var packed := f.get_buffer(int(ch.packed))
 	var out: PackedByteArray
 	var size := int(ch.sub) + int(ch.size)
@@ -290,7 +295,7 @@ func _unpack(f: FileAccess, c: int) -> String:
 	sha.start(HashingContext.HASH_SHA1)
 	sha.update(out)
 	if sha.finish() != ch.sha1:
-		return "Checksum mismatch in the installer (chunk %d)." % c
+		return RemakeText.t("Checksum mismatch in the installer (chunk %d).") % c
 	for fl: Dictionary in files:
 		if fl.chunk != c:
 			continue
@@ -298,6 +303,6 @@ func _unpack(f: FileAccess, c: int) -> String:
 		DirAccess.make_dir_recursive_absolute(target.get_base_dir())
 		var w := FileAccess.open(target, FileAccess.WRITE)
 		if w == null:
-			return "Cannot write %s." % target
+			return RemakeText.t("Cannot write %s.") % target
 		w.store_buffer(out)
 	return ""

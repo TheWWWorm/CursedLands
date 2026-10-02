@@ -83,15 +83,16 @@ func spell(ev: Dictionary) -> void:
 	if replay:
 		dur = float(ev.get("left", dur))
 	match code:
-		"arrow", "acid_ray":
-			var dir := "Firearrow" if code == "arrow" else "Acidray"
+		"arrow", "acid_ray", "rick_magic":
+			# rick_magic (0x28) shares Firearrow's case.
+			var dir := "Acidray" if code == "acid_ray" else "Firearrow"
 			if replay:
 				return
 			_one("magic\\%s\\start.wav" % dir, origin)
 			var h := mixer.play3d("magic\\%s\\circle.wav" % dir, PRIO, origin, MIN_D, MAX_D, true)
 			_movers.append({"h": h, "pos": origin + Vector3(0, 0, 1), "target": target, "point": point + Vector3(0, 0, 1),
 				"kind": "missile", "end": "magic\\%s\\end.wav" % dir, "ticks": 0, "acc": 0.0})
-		"lightning":
+		"lightning", "curse_magic":   # curse_magic (0x29) shares lightning's case
 			if not replay:
 				_one("magic\\lightning\\start.wav", origin)
 		"fireball":

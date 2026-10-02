@@ -38,6 +38,7 @@ var _side_quests: SideQuestPanel
 var _tutorial: TutorialPanel
 var _movie: MoviePlayer
 var _target_label: Label
+var _notify: NotifyLine
 var _spell_owner: GameUnit
 var _faces: PartyFaces
 var _world: GameWorld
@@ -47,10 +48,18 @@ var _weapons: WeaponBar
 var _slots: SpellSlots
 var _actions: ActionStrip
 var _belt: BeltStrip
+var unit_panel: UnitPanel
 var chat_line: ChatLine
+var touch_actions: TouchActions
+var _safe_root: Control
 
 
 func _ready() -> void:
+	_safe_root = Control.new()
+	_safe_root.name = "SafeArea"
+	_safe_root.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(_safe_root)
+	_layout_safe_area()
 	# CInterface3D (the original, slot 25 of the field screen's
 	# ): the widgets below exist only on the field screen. The village
 	# screen (case 3, build) builds
@@ -59,7 +68,7 @@ func _ready() -> void:
 	_field.name = "Field"
 	_field.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_field.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	add_child(_field)
+	_add_ui(_field)
 	# Top centre as the original's message log widget (ui/message_log.gd).
 	text_window = MessageLog.new()
 	_field.add_child(text_window)
@@ -70,13 +79,13 @@ func _ready() -> void:
 	top_left.anchor_top = 235.0 / 600.0
 	top_left.offset_left = 6
 	top_left.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	add_child(top_left)
+	_add_ui(top_left)
 	var panel := PanelContainer.new()
 	panel.visible = false   # nothing left in it (see _rebuild_party)
 	top_left.add_child(panel)
 	_party = VBoxContainer.new()
 	panel.add_child(_party)
-	var unit_panel := UnitPanel.new()
+	unit_panel = UnitPanel.new()
 	unit_panel.game = game
 	_field.add_child(unit_panel)
 
@@ -127,7 +136,7 @@ func _ready() -> void:
 	_travel.visible = false
 	_travel.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_travel.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	add_child(_travel)
+	_add_ui(_travel)
 
 	# The Esc menu opens as a modal screen over the game ((menu
 	# 1, 1) from the Esc key, e.g.): the frame is captured once
@@ -136,16 +145,16 @@ func _ready() -> void:
 	_esc_bg = Interface800.dim_layer()
 	_esc_bg.show_behind_parent = false
 	_esc_bg.visible = false
-	add_child(_esc_bg)
+	_add_ui(_esc_bg)
 	_menu = EscSignpost.new()
 	_menu.visible = false
 	_menu.pressed.connect(_on_signpost)
-	add_child(_menu)
+	_add_ui(_menu)
 	_options = OptionsPanel.new()
-	add_child(_options)
+	_add_ui(_options)
 	_options.closed.connect(_close_menu)
 	_save_load = LoadPanel.new()
-	add_child(_save_load)
+	_add_ui(_save_load)
 	_save_load.closed.connect(func():
 		if _game_over_load:   # → the main menu; a load goes
 			_game_over_load = false
@@ -157,7 +166,7 @@ func _ready() -> void:
 		game.session.save_game(slot, save_name, frame))
 	_save_load.load_requested.connect(func(slot: String):
 		if not game.session.load_game(slot):
-			log_msg("Load failed."))
+			log_msg(RemakeText.t("Load failed.")))
 
 	_target_label = Label.new()
 	_target_label.anchor_left = 0.5
@@ -168,33 +177,45 @@ func _ready() -> void:
 	_target_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_target_label.add_theme_constant_override("outline_size", 4)
 	_target_label.add_theme_color_override("font_outline_color", Color.BLACK)
-	add_child(_target_label)
+	_add_ui(_target_label)
+	_notify = NotifyLine.new()
+	_add_ui(_notify)
 
 	_inventory = InventoryPanel.new()
 	_inventory.hud = self
-	add_child(_inventory)
+	_add_ui(_inventory)
 	_journal = JournalPanel.new()
 	_journal.hud = self
-	add_child(_journal)
+	_add_ui(_journal)
 	_side_quests = SideQuestPanel.new()
 	_side_quests.hud = self
-	add_child(_side_quests)
+	_add_ui(_side_quests)
 	_tutorial = TutorialPanel.new()
-	add_child(_tutorial)
+	_add_ui(_tutorial)
 	_movie = MoviePlayer.new()
 	_movie.hud = self
-	add_child(_movie)
+	_add_ui(_movie)
 
+	# The village screen's name under the cursor (VillageName).
+	var vname := VillageName.new()
+	vname.game = game
+	_add_ui(vname)
+	_safe_root.move_child(vname, _movie.get_index())
 	_dialog = DialogPanel.new()
 	_dialog.hud = self
-	add_child(_dialog)
+	_add_ui(_dialog)
 	# Co-op: player list and chat input (remake; NetStatus).
 	var players := PlayerList.new()
 	players.game = game
-	add_child(players)
+	_add_ui(players)
 	chat_line = ChatLine.new()
 	chat_line.game = game
-	add_child(chat_line)
+	_add_ui(chat_line)
+	_chat = ChatOverlay.new()
+	_add_ui(_chat)
+	touch_actions = TouchActions.new()
+	touch_actions.game = game
+	_add_ui(touch_actions)
 
 
 func on_world(w: GameWorld) -> void:
@@ -247,7 +268,9 @@ func _dial(kind: String, corner: Vector2) -> HudDial:
 
 
 func _layout_dials() -> void:
-	var s := roundf(get_viewport().get_visible_rect().size.y * 80.0 / 600.0)
+	var s := roundf(ui_size().y * 80.0 / 600.0)
+	if TouchInput.enabled:
+		s = maxf(s, TouchInput.target_pixels() * 1.25 / minf(transform.get_scale().x, transform.get_scale().y))
 	_move_dial.offset_left = 0
 	_move_dial.offset_right = s
 	_move_dial.offset_top = -s
@@ -265,14 +288,24 @@ func _layout_dials() -> void:
 	_actions.offset_right = s * 40.0 / 80.0
 	_actions.offset_top = -s * 350.0 / 80.0
 	_actions.offset_bottom = -s * 90.0 / 80.0
-	_belt.offset_left = -s * 40.0 / 80.0
-	_belt.offset_right = 0
-	_belt.offset_top = -s * 410.0 / 80.0
-	_belt.offset_bottom = -s * 90.0 / 80.0
-	_slots.offset_left = -s * 280.0 / 80.0
-	_slots.offset_right = -s
-	_slots.offset_top = -s * 100.0 / 80.0
-	_slots.offset_bottom = 0
+	# Spells in the right-edge column (760,190)-(800,510), the
+	# belt's quick items in 520..720 × 500..600.
+	_slots.offset_left = -s * 40.0 / 80.0
+	_slots.offset_right = 0
+	_slots.offset_top = -s * 410.0 / 80.0
+	_slots.offset_bottom = -s * 90.0 / 80.0
+	_belt.offset_left = -s * 280.0 / 80.0
+	_belt.offset_right = -s
+	_belt.offset_top = -s * 100.0 / 80.0
+	_belt.offset_bottom = 0
+	if TouchInput.enabled:
+		# Enlarge the original item cells; keep their artwork, arrangement and
+		# corner anchors. A short phone scrolls the existing spell column.
+		var cell := Vector2.ONE * TouchInput.target_pixels() / transform.get_scale()
+		_belt.offset_left = -s - maxf(s * 2.5, cell.x * 4)
+		_belt.offset_top = -maxf(s * 1.25, cell.y * 2)
+		_slots.offset_left = -maxf(s * 0.5, cell.x)
+		_slots.offset_top = _slots.offset_bottom - minf(-_slots.offset_left * 8, ui_size().y * 0.55)
 	# The targeting hint (remake-only) under the text window (0..100).
 	_target_label.offset_top = s * 104.0 / 80.0
 	var sel := _selected_gait()
@@ -306,14 +339,21 @@ func _bar(color: Color) -> ProgressBar:
 	return b
 
 
+## The save / load notice (NotifyLine).
+func notify(key: String) -> void:
+	if _notify:
+		_notify.notify(key)
+
+
 func set_targeting(spell_title: String) -> void:
-	_target_label.text = "" if spell_title.is_empty() else "Cast %s: click a target (right click cancels)" % spell_title
+	_target_label.text = "" if spell_title.is_empty() else RemakeText.t("Cast %s: click a target (right click cancels)") % spell_title
 
 
 ## The unit under the mouse is shown by the unit panel (shows
 ## the hovered unit, else the selected one); the original draws no name label
 ## the cursor, so the remake's earlier one is gone.
 func _process(_dt: float) -> void:
+	_layout_safe_area()
 	_layout_dials()
 	# Village ("brief" zone) = the village screen without CInterface3D.
 	var field: bool = game == null or game.session == null or not game.session.shop_available()
@@ -330,13 +370,19 @@ func _on_combat(_kind: String, _a: GameUnit, _b: GameUnit, _amount: float) -> vo
 
 
 ## A co-op chat line (NetStatus): the name in the player's colour, then ": text".
+## A chat message (NetStatus "chat"): the original's chat object's overlay lines
+## (ChatOverlay), not the text window.
 func log_chat(idx: int, player_name: String, text: String) -> void:
-	if _dialog and _dialog.visible:
-		_dialog.note("%s: %s" % [player_name, text])
-	_log.push_color(NetStatus.colour(idx))
-	_log.add_text(player_name)
-	_log.pop()
-	_log.add_text(": " + text + "\n")
+	_chat.add(idx, player_name, text)
+
+
+var _chat: ChatOverlay
+
+
+## Backspace in a network game: the chat list is
+## emptied.
+func clear_chat() -> void:
+	_chat.clear()
 
 
 func log_msg(text: String, color := Color.WHITE) -> void:
@@ -403,8 +449,8 @@ func _quest_note(key: String, value: float) -> void:
 ## (stricmp) the var name after its second dot gets
 ## . For units that is: particle 0x2043 (sparks) on the
 ## unit (carrier, bone = 7), size = the unit's radius, =
-## 10, whatever the value. Approx.: the figure's 4-tick white flash (
-## ) is not drawn; the other classes' (the
+## 10, whatever the value, and the figure's 4-tick white flash ((4)
+## OrderMarks.flash). Approx.: the other classes' (the
 ##  model) is not ported.
 func _quest_flash(key: String) -> void:
 	var w: GameWorld = game.session.world if game and game.session else null
@@ -417,6 +463,8 @@ func _quest_flash(key: String) -> void:
 	for u: GameUnit in w.units.values():
 		if is_instance_valid(u) and String(u.info.get("quest_info", "")).to_lower() == name:
 			fx.spawn(0x2043, Vector3.ZERO, fx.carrier_size(u).y, u, {"k118": 10.0, "bone": 7})
+			if game.marks:
+				game.marks.flash(u, 4)
 
 
 ## a whole quest at 2 sends the messenger bird to the local
@@ -509,7 +557,7 @@ func _show_ending() -> void:
 	var layer := CanvasLayer.new()
 	layer.layer = 100
 	layer.process_mode = Node.PROCESS_MODE_ALWAYS
-	add_child(layer)
+	_add_ui(layer)
 	var c := CreditsPanel.new()
 	c.name = "Credits"
 	c.screen_name = "Crdt"
@@ -618,7 +666,7 @@ func _travel_quick(action: String) -> void:
 	elif game.session.load_game("quick"):
 		_close_travel()
 	else:
-		log_msg("No quick save.")
+		log_msg(RemakeText.t("No quick save."))
 
 
 func _close_travel() -> void:
@@ -651,7 +699,7 @@ func open_quests(how: String, zone: String) -> void:
 	quests_screen.back.connect(func():
 		quests_screen.queue_free()
 		quests_screen = null)
-	add_child(quests_screen)
+	_add_ui(quests_screen)
 
 
 func toggle_side_quests() -> void:
@@ -805,13 +853,13 @@ func _on_esc_board(action: String) -> void:
 			_options.open(_esc_frame, true)
 		"save":
 			if not game.session.is_host:
-				log_msg("Only the host can save")
+				log_msg(RemakeText.t("Only the host can save"))
 				return
 			_menu.visible = false
 			_save_load.open(true, _esc_frame, true, game.session.fresh_save_entry(_esc_frame))
 		"load":
 			if not game.session.is_host:
-				log_msg("Only the host can load")
+				log_msg(RemakeText.t("Only the host can load"))
 				return
 			_menu.visible = false
 			_save_load.open(false, _esc_frame, true)
@@ -825,4 +873,38 @@ func _on_esc_board(action: String) -> void:
 
 
 func blocks_input() -> bool:
-	return _esc_open or _menu.visible or _dialog.visible or _travel.visible
+	return _esc_open or _menu.visible or _dialog.visible or _travel.visible or (TouchInput.enabled and _panel_open())
+
+
+## Polling the keyboard bypasses GUI event consumption, so the camera must
+## explicitly stop behind panels, including co-op panels that do not pause.
+func blocks_camera() -> bool:
+	return blocks_input() or _panel_open()
+
+
+func _panel_open() -> bool:
+	if quests_screen != null:
+		return true
+	for panel in [_inventory, _journal, _side_quests, _tutorial, _movie, _options, _save_load,
+			_game_over_box, _quit_box]:
+		if is_instance_valid(panel) and panel.visible:
+			return true
+	return false
+
+
+func _add_ui(child: Node) -> void:
+	if child is Control:
+		_safe_root.add_child(child)
+	else:
+		add_child(child)
+
+func ui_size() -> Vector2:
+	return _safe_root.size if is_instance_valid(_safe_root) else get_viewport().get_visible_rect().size
+
+func _layout_safe_area() -> void:
+	var screen := get_viewport().get_visible_rect().size
+	var safe := Portability.safe_rect(screen) if TouchInput.enabled else Rect2(Vector2.ZERO, screen)
+	# Reanchor the original HUD inside the usable rectangle without stretching
+	# its artwork or its 3D previews in either direction.
+	_safe_root.position = safe.position
+	_safe_root.size = safe.size

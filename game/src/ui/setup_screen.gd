@@ -32,48 +32,48 @@ func _ready() -> void:
 	center.add_child(box)
 
 	var title := Label.new()
-	title.text = "Evil Islands - Remake"
+	title.text = RemakeText.t("Evil Islands - Remake")
 	title.add_theme_font_size_override("font_size", 32)
 	box.add_child(title)
 	var info := Label.new()
 	info.autowrap_mode = TextServer.AUTOWRAP_WORD
-	info.text = "This remake uses the data files of your own copy of Evil Islands (GOG / original CD). Select the game's install folder - the one containing game.exe, res/ and maps/ - or the GOG installer (setup_evil_islands_*.exe) to unpack its files once."
+	info.text = RemakeText.t("This remake uses the data files of your own copy of Evil Islands (GOG / original CD). Select the game's install folder - the one containing game.exe, res/ and maps/ - or the GOG installer (setup_evil_islands_*.exe) to unpack its files once.")
 	box.add_child(info)
 
 	var row := HBoxContainer.new()
 	box.add_child(row)
 	_path = LineEdit.new()
 	_path.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_path.placeholder_text = "/path/to/Evil Islands"
+	_path.placeholder_text = RemakeText.t("/path/to/Evil Islands")
 	_path.text = GameData.root
 	row.add_child(_path)
 	var browse := Button.new()
-	browse.text = "Browse..."
+	browse.text = RemakeText.t("Browse...")
 	browse.pressed.connect(func(): _dialog.popup_centered_ratio(0.7))
 	row.add_child(browse)
 
 	var go := Button.new()
-	go.text = "Use this folder"
+	go.text = RemakeText.t("Use this folder")
 	go.pressed.connect(_try_open)
 	box.add_child(go)
 	_buttons += [browse, go]
 
 	var or_label := Label.new()
-	or_label.text = "- or -"
+	or_label.text = RemakeText.t("- or -")
 	or_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	box.add_child(or_label)
 	var row2 := HBoxContainer.new()
 	box.add_child(row2)
 	_exe = LineEdit.new()
 	_exe.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_exe.placeholder_text = "/path/to/setup_evil_islands_2.0.0.5.exe"
+	_exe.placeholder_text = RemakeText.t("/path/to/setup_evil_islands_2.0.0.5.exe")
 	row2.add_child(_exe)
 	var browse_exe := Button.new()
-	browse_exe.text = "Browse..."
+	browse_exe.text = RemakeText.t("Browse...")
 	browse_exe.pressed.connect(func(): _exe_dialog.popup_centered_ratio(0.7))
 	row2.add_child(browse_exe)
 	var imp := Button.new()
-	imp.text = "Import from installer"
+	imp.text = RemakeText.t("Import from installer")
 	imp.pressed.connect(_try_import)
 	box.add_child(imp)
 	_buttons += [browse_exe, imp]
@@ -95,7 +95,7 @@ func _ready() -> void:
 	_exe_dialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
 	_exe_dialog.access = FileDialog.ACCESS_FILESYSTEM
 	_exe_dialog.use_native_dialog = true
-	_exe_dialog.filters = PackedStringArray(["*.exe ; Installer"])
+	_exe_dialog.filters = PackedStringArray(["*.exe ; " + RemakeText.t("Installer")])
 	_exe_dialog.file_selected.connect(func(f: String): _exe.text = f; _try_import())
 	add_child(_exe_dialog)
 	set_process(false)
@@ -118,7 +118,7 @@ func _try_import() -> void:
 		return
 	_dest = OS.get_user_data_dir().path_join("game")
 	_status.modulate = Color(0.85, 0.85, 0.8)
-	_status.text = "Unpacking %d files into %s ... (a few minutes, once)" % [_setup.files.size(), _dest]
+	_status.text = RemakeText.t("Unpacking %d files into %s ... (a few minutes, once)") % [_setup.files.size(), _dest]
 	for b: Button in _buttons:
 		b.disabled = true
 	_bar.visible = true

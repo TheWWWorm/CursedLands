@@ -7,8 +7,10 @@ class_name Shops
 ## 2 spells only (bz2g witch), 3 and 4 both (bz8k Shopper, bz14h Kuzn), 5 both
 ## with every deal coefficient 0 (only zone19's commented-out Rick). The other
 ## records' coefficients are Items.COEF. The network-game table (ids 1, 3, 4, 5,
-## all selling items and spells) belongs to the original's own multiplayer maps; the
-## remake's co-op plays the single-player campaign and uses this table (Approx.).
+## all selling items and spells) belongs to the original's own multiplayer maps and has
+## no record 2 (the campaign's bz2g witch); the remake's co-op plays the
+## single-player campaign, so it uses this table (a remake decision: the original
+## has no co-op campaign).
 ##
 ## Goods (lists, generated when the
 ## camp screen opens and the record's restock flag is set):

@@ -4,10 +4,16 @@ extends RefCounted
 ## setup, geometry, noise
 ##  draw). Noise tables come from gfx.res/lightning.dat
 ## (32 x 400 floats: 0-15 coarse, 16-31 fine). Points are in EI space.
-## Approximations: the strip is a camera-facing ribbon, half-width
-## = width x 0.05 m (the original's width units are unknown), additive.
+## The strip (display =) is built
+## screen space: each point is offset across the projected segment by
+## width * 15 * rhw pixels, the first and last points get diffuse alpha 0
+## (the bolt fades out over its end segments), tu runs along the bolt
+## (fixed 0.875 when the V repeat is 0, i.e. param < 0), tv across.
+## The pixel width does not scale with the resolution; the remake takes the
+## 800 x 600 view (viewport half-width 400, x scale cos(pi / 7)): half-width
+## = width * 15 / (400 * cos(pi / 7)) m in view space. Additive.
 
-const WIDTH_SCALE := 0.05
+const WIDTH_SCALE := 0.0416218
 const BRANCH_F := [0.2, 0.3, 0.5, 0.8, 0.9, 0.9]
 
 static var _tables: Array = []   # 32 PackedFloat32Array(400)
@@ -197,9 +203,10 @@ func draw(frac: float) -> void:
 				var s0 := vrep * float(i - 1) / float(n - 1)
 				var s1 := vrep * float(i) / float(n - 1)
 				if param < 0.0:
-					s0 = float(i - 1) / float(n - 1)
-					s1 = float(i) / float(n - 1)
-				_quad(prev_l, prev_r, l, r, Vector2(s0, u0), Vector2(s0, u0 + 0.25), Vector2(s1, u0), Vector2(s1, u0 + 0.25))
+					s0 = 0.875
+					s1 = 0.875
+				_quad(prev_l, prev_r, l, r, Vector2(s0, u0), Vector2(s0, u0 + 0.25), Vector2(s1, u0), Vector2(s1, u0 + 0.25),
+					0.0 if i == 1 else 1.0, 0.0 if i == n - 1 else 1.0)
 			prev_l = l
 			prev_r = r
 	_mesh.surface_end()
@@ -223,8 +230,9 @@ func draw(frac: float) -> void:
 
 
 ## Two triangles: a-b is one edge, c-d the next (uv per corner).
-func _quad(pa: Vector3, pb: Vector3, pc: Vector3, pd: Vector3, ua: Vector2, ub: Vector2, uc: Vector2, ud: Vector2) -> void:
-	for v in [[pa, ua], [pb, ub], [pc, uc], [pb, ub], [pd, ud], [pc, uc]]:
-		_mesh.surface_set_color(Color.WHITE)
+## a0 / a1: vertex alpha of the a-b and c-d edges.
+func _quad(pa: Vector3, pb: Vector3, pc: Vector3, pd: Vector3, ua: Vector2, ub: Vector2, uc: Vector2, ud: Vector2, a0 := 1.0, a1 := 1.0) -> void:
+	for v in [[pa, ua, a0], [pb, ub, a0], [pc, uc, a1], [pb, ub, a0], [pd, ud, a1], [pc, uc, a1]]:
+		_mesh.surface_set_color(Color(1, 1, 1, v[2]))
 		_mesh.surface_set_uv(v[1])
 		_mesh.surface_add_vertex(v[0])

@@ -21,8 +21,14 @@ const BAR := Color8(0xa0, 0x68, 0x00, 0xc8)  # the selection bar
 const FONT_EM := [0.01733, 0.01867, 0.024]   # × screen width
 const FONT_NAMES := ["Times New Roman", "Liberation Serif", "DejaVu Serif", "serif"]
 
-static var _font: SystemFont
+static var _font: Font
 static var _tex := {}
+
+static func canvas_size(control: CanvasItem) -> Vector2:
+	var layer := control.get_canvas_layer_node()
+	if layer and layer.has_method("ui_size"):
+		return layer.call("ui_size")
+	return control.get_viewport_rect().size
 
 ## The screen's text widget hidden: (0) on its first widget
 ## ([0], the GDI text surface over (100,100)-(700,500))
@@ -33,8 +39,12 @@ var hide_text := false
 
 static func font() -> Font:
 	if _font == null:
-		_font = SystemFont.new()
-		_font.font_names = PackedStringArray(FONT_NAMES)
+		if Portability.constrained():
+			_font = load("res://fonts/LiberationSerif-Regular.ttf")
+		else:
+			var system_font := SystemFont.new()
+			system_font.font_names = PackedStringArray(FONT_NAMES)
+			_font = system_font
 	return _font
 
 
@@ -63,24 +73,37 @@ static func colorref(c: int) -> Color:
 
 # ------------------------------------------------------------------ mapping
 
+var _touch_zoom := 1.0
+var _touch_pan := Vector2.ZERO
+
+func _safe() -> Rect2:
+	# HUD screens are already inside the safe-area root. Standalone menus
+	# apply the same symmetric safe area themselves.
+	var layer := get_canvas_layer_node()
+	return Rect2(Vector2.ZERO, size) if layer and layer.has_method("ui_size") else Portability.safe_rect(size)
+
+func _origin() -> Vector2:
+	var safe := _safe()
+	return safe.position + (safe.size - safe.size * _touch_zoom) * 0.5 + _touch_pan
+
 func kv() -> Vector2:
-	return size / Vector2(800.0, 600.0)
+	return _safe().size * _touch_zoom / Vector2(800.0, 600.0)
 
 
 func p8(v: Vector2) -> Vector2:
-	return v * kv()
+	return _origin() + v * kv()
 
 
 func r8(r: Rect2) -> Rect2:
-	return Rect2(r.position * kv(), r.size * kv())
+	return Rect2(p8(r.position), r.size * kv())
 
 
 func to800(p: Vector2) -> Vector2:
-	return p / kv()
+	return (p - _origin()) / kv()
 
 
 func font_px(i: int) -> int:
-	return maxi(6, int(round(size.x * FONT_EM[i])))
+	return maxi(6, int(round(_safe().size.x * _touch_zoom * FONT_EM[i])))
 
 
 # ------------------------------------------------------------------ drawing
@@ -130,7 +153,10 @@ func panel(bg: Rect2) -> void:
 
 ## one line from the rect's top (DrawText without DT_VCENTER)
 ## 1 px shadow.
-func text(r: Rect2, s: String, font_i := 1, col := TEXT, align := HORIZONTAL_ALIGNMENT_LEFT) -> void:
+## `clip`: DrawText without DT_END_ELLIPSIS (e.g. flags 0x800 DT_NOPREFIX):
+## the line is cut at the rect's right edge (here at the last whole
+## character that fits) instead of ending in "...".
+func text(r: Rect2, s: String, font_i := 1, col := TEXT, align := HORIZONTAL_ALIGNMENT_LEFT, clip := false) -> void:
 	if s.is_empty() or hide_text:
 		return
 	var f := font()
@@ -140,7 +166,10 @@ func text(r: Rect2, s: String, font_i := 1, col := TEXT, align := HORIZONTAL_ALI
 	var sh := maxf(1.0, round(kv().y))
 	var w := rr.size.x
 	# DT_END_ELLIPSIS-like clipping for left-aligned text that does not fit.
-	if align == HORIZONTAL_ALIGNMENT_LEFT and f.get_string_size(s, align, -1, fs).x > w:
+	if clip and align == HORIZONTAL_ALIGNMENT_LEFT:
+		while s.length() > 0 and f.get_string_size(s, align, -1, fs).x > w:
+			s = s.substr(0, s.length() - 1)
+	elif align == HORIZONTAL_ALIGNMENT_LEFT and f.get_string_size(s, align, -1, fs).x > w:
 		while s.length() > 1 and f.get_string_size(s + "...", align, -1, fs).x > w:
 			s = s.substr(0, s.length() - 1)
 		s += "..."
@@ -341,6 +370,14 @@ void fragment() {
 
 
 class Backdrop extends TextureRect:
+	func _process(_dt: float) -> void:
+		# The modal's artwork is inset; its captured world background remains
+		# full bleed, including behind the cutouts and home indicator.
+		if TouchInput.enabled:
+			set_anchors_preset(Control.PRESET_TOP_LEFT)
+			global_position = Vector2.ZERO
+			size = get_viewport_rect().size
+
 	## The frame as it is now (the modal itself is not drawn yet).
 	func capture() -> void:
 		if DisplayServer.get_name() == "headless":
@@ -352,3 +389,28 @@ class Backdrop extends TextureRect:
 	## no new capture and keeps the frozen picture of the game.
 	func use(img: Image) -> void:
 		texture = ImageTexture.create_from_image(img) if img and not img.is_empty() else null
+
+
+func touch_transform(before: PackedVector2Array, after: PackedVector2Array) -> void:
+	var inverse := get_global_transform_with_canvas().affine_inverse()
+	var old_mid := inverse * ((before[0] + before[1]) * 0.5)
+	var mid := inverse * ((after[0] + after[1]) * 0.5)
+	var anchor := to800(old_mid)
+	_touch_zoom = clampf(_touch_zoom * after[0].distance_to(after[1]) / maxf(16.0, before[0].distance_to(before[1])), 1.0, 2.5)
+	var safe := _safe()
+	_touch_pan = mid - anchor * kv() - safe.position - (safe.size - safe.size * _touch_zoom) * 0.5
+	var limit := safe.size * (_touch_zoom - 1.0) * 0.5
+	_touch_pan = _touch_pan.clamp(-limit, limit)
+	queue_redraw()
+
+func touch_scroll(point: Vector2, delta: Vector2) -> void:
+	TouchInput.button(point, true, MOUSE_BUTTON_WHEEL_UP if delta.y > 0 else MOUSE_BUTTON_WHEEL_DOWN)
+	TouchInput.button(point, false, MOUSE_BUTTON_WHEEL_UP if delta.y > 0 else MOUSE_BUTTON_WHEEL_DOWN)
+
+func touch_draggable(point: Vector2) -> bool:
+	# Preserve the original thumb dragging instead of turning it into a list
+	# scroll. The screen-specific hit test already knows its sliders and bars.
+	if not has_method("_hit"):
+		return false
+	var hit: Array = call("_hit", to800(get_global_transform_with_canvas().affine_inverse() * point))
+	return not hit.is_empty() and str(hit[0]) in ["slider", "bar", "scroll", "max"]

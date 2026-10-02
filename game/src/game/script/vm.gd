@@ -11,8 +11,13 @@ extends RefCounted
 ## * `#OnBriefingComplete` is spawned for every finished conversation.
 ## Campaign variables (GSGetVar/GSSetVar) are shared by the whole co-op party.
 
-const POLL := 0.1          # seconds between condition checks
-const SLEEP_UNIT := 0.1    # Sleep() argument unit (1/10 s, the engine tick)
+## the original runs every script thread once per server logic tick
+## (55 ms):
+## an idle thread tests its conditions each tick, and Sleep(n) (dispatcher
+## case 7) waits until the thread's own run counter (+8, one per run) is n
+## past the count at which the Sleep began — n logic ticks.
+const POLL := 0.055        # seconds between condition checks (one logic tick)
+const SLEEP_UNIT := 0.055  # Sleep() argument unit (one logic tick)
 const MAX_STEPS := 2000    # statements per thread per tick (runaway guard)
 const P = preload("res://src/game/script/script_parser.gd")
 
@@ -132,24 +137,39 @@ static func _regex_escape(s: String) -> String:
 # ================================================================ scheduling
 
 func tick(dt: float) -> void:
+	_seen_memo.clear()
+	_in_tick = true
+	_tick(dt)
+	_in_tick = false
+	_seen_memo.clear()
+
+
+func _tick(dt: float) -> void:
 	time += dt
 	if not time_fixed:
-		session.state.advance_hours(dt / 60.0)
+		session.state.advance_hours(dt / CampaignState.HOUR_SECONDS)
 	_refresh_heroes()
 	_check_interactions()
 	if not qobjs.is_empty() and time >= _q_check:
 		_q_check = time + 0.5
 		_check_quest_objectives()
 	briefings.tick()
-	if briefings.active:
-		return   # the world is paused during conversations
-	# Only the threads that existed when the tick began run in it: a thread
-	# started during the tick (a script call, `spawn`) first runs in the next
-	# one. Approx.: the original's thread list order is not traced, but running new
+	# Script threads keep running during a conversation: the world tick
+	#  calls the thread runner every tick, gated only
+	# by the pause byte (world), and the conversation path
+	# ("briefing" -> village screen slot 0x88
+	# ) never touches the VM.
+	# the original walks the thread list (VM) from its head
+	# taking each node's next before running it, and a script call adds the new
+	# thread at the head: newest first, and a
+	# thread started during the tick first runs in the next one. (Running new
 	# threads at once never ends in scripts that restart each other through an
-	# always-true block (bz8k VCheck#0#108 -> VTriger#0#138 -> VCheck#0#108 at
-	# night), which the original plays through.
-	for inst: Instance in instances.duplicate():
+	# always-true block, bz8k VCheck#0#108 -> VTriger#0#138 -> VCheck#0#108 at
+	# night.) `instances` is kept oldest first.
+	_seen_memo.clear()   # the steps above may have changed what units notice
+	var cur := instances.duplicate()
+	cur.reverse()
+	for inst: Instance in cur:
 		_run(inst)
 	instances = instances.filter(func(x: Instance): return not (x.killed and x.frames.is_empty()))
 	if not _pending_zone.is_empty():
@@ -179,8 +199,7 @@ func _run(inst: Instance) -> void:
 			return
 		inst.wait_cond = []
 	if inst.wait_unit != null:
-		if is_instance_valid(inst.wait_unit) and inst.wait_unit is GameUnit and not inst.wait_unit.is_idle() \
-				and not inst.wait_unit.dead:
+		if is_instance_valid(inst.wait_unit) and inst.wait_unit is GameUnit and ai_busy(inst.wait_unit):
 			return
 		inst.wait_unit = null
 	var steps := 0
@@ -358,7 +377,7 @@ func _stmt_call(name: String, a: Array, inst: Instance) -> bool:
 			return true
 		"SleepUntilIdle":
 			var u := _unit(_eval(a[0], inst))
-			if u and not u.is_idle():
+			if u and ai_busy(u):
 				inst.wait_unit = u
 				inst.wait_until = time + 0.05
 				return true
@@ -376,6 +395,8 @@ func _stmt_call(name: String, a: Array, inst: Instance) -> bool:
 # ================================================================ builtins
 
 func _call(name: String, a: Array, inst: Instance):
+	if not PURE_CALLS.has(name):
+		_seen_memo.clear()
 	# Special forms with lazily evaluated arguments.
 	match name:
 		"Any", "Every":
@@ -439,26 +460,52 @@ func _call(name: String, a: Array, inst: Instance):
 			return _group(v[0]).filter(func(x): return b.has(x))
 		"UnitSee": return _sees([_unit(v[0])])
 		"GroupSee": return _sees(_group(v[0]))
-		"PlayerSee": return _sees(heroes())
+		# Builtin 0xa5 PlayerSee(player): the player's visible
+		# set (player, rebuilt from the player's units
+		# and what each one notices, AI) plus the player's units
+		# and their noticed lists again. UnitSee / GroupSee (0x5d / 0x5e): the
+		# unit's noticed list (AI; UnitAI.can_notice).
+		"PlayerSee": return _player_visible()
+		# Builtin 0xb4 GetUnitOfPlayer(player, k): the unit
+		# the player's k-th party record (0x784 bytes each: the hero
+		# first, then the mercenaries), dead or hidden alike; none past the end.
 		"GetUnitOfPlayer":
-			var hs := heroes()
+			var hs := _party_records()
 			var k := int(_num(v[1]))
-			return hs[k] if k < hs.size() else null
+			return hs[k] if k >= 0 and k < hs.size() else null
 		"GetLeader":
 			var hs := heroes()
 			return hs[0] if not hs.is_empty() else null
-		"GetMercsNumber": return float(maxi(0, heroes().size() - _player_count()))
+		# Builtin 0xd1 GetMercsNumber(player) ->: the party records
+		# whose unit exists and lives, minus one (the hero). Co-op: minus one
+		# per player.
+		"GetMercsNumber":
+			var alive := _party_records().filter(func(u: GameUnit): return not u.dead).size()
+			return float(maxi(0, alive - _player_count()))
 		# ---- unit queries
 		"GetX": return _xy(v[0]).x
 		"GetY": return _xy(v[0]).y
 		"GetZ":
 			var p := _xy(v[0])
 			return world.ground_at(p.x, p.y)
+		# Builtins 0xbf / 0xc0 GetFutureX / Y(unit, ticks): the
+		# unit's position at logic tick now + ticks (round), its
+		# (the point reached along its path). 0 for no unit. Remake: along the
+		# path at the current speed, 55 ms ticks.
 		"GetFutureX", "GetFutureY":
 			var u := _unit(v[0])
+			if u == null and not (v[0] is Node3D and is_instance_valid(v[0])):
+				return 0.0
 			var p := _xy(v[0])
 			if u and not u.path.is_empty():
-				p += (u.path[0] - u.pos).normalized() * u.speed() * _num(v[1])
+				var left := u.speed() * roundf(_num(v[1])) * GameUnit.TICK
+				for q: Vector2 in u.path:
+					var d := p.distance_to(q)
+					if d >= left:
+						p += (q - p) * (left / maxf(d, 0.0001))
+						break
+					p = q
+					left -= d
 			return p.x if name == "GetFutureX" else p.y
 		"DistanceUnitUnit":
 			if v[0] == null or v[1] == null:
@@ -480,7 +527,11 @@ func _call(name: String, a: Array, inst: Instance):
 		"IsEnemy":
 			var u := _unit(v[0])
 			return 1.0 if u and world.relation(u.faction, int(_num(v[1]))) == 2 else 0.0
+		# Builtin 0xb1 IsPlayerInDanger(player): the player's combat flag
+		# (player == 2,; UnitAI._player_in_combat).
 		"IsPlayerInDanger": return 1.0 if _in_danger() else 0.0
+		# Builtin 0xe5 IsUnitVisible(unit): in player 0's visible list.
+		"IsUnitVisible": return 1.0 if v[0] != null and _player_visible().has(v[0]) else 0.0
 		"WasLooted":   # builtin 0xe3: the object's flag +8 &
 			var u = v[0]
 			if typeof(u) == TYPE_OBJECT and not is_instance_valid(u):
@@ -492,27 +543,49 @@ func _call(name: String, a: Array, inst: Instance):
 			var u := _unit(v[0])
 			if u:
 				u.set_meta("script_run", name == "Run")
-		"SetCP", "MoveToPoint":
+		# Builtin 0x2 MoveToPoint(unit, x, y) ->: AI state 1 and a
+		# move order to the point.
+		"MoveToPoint":
 			var u := _unit(v[0])
 			if u and not u.dead:
-				var to := world.nav.nearest_walkable(Vector2(_num(v[1]), _num(v[2])))
-				u.move_to(to, u.get_meta("script_run", false) or name == "MoveToPoint" and u.running, name == "SetCP")
-				u.mode_data["point"] = to
-		"SetCPFast":
+				var to := world.nav.nearest_walkable_for(u, Vector2(_num(v[1]), _num(v[2])))
+				u.move_to(to, u.get_meta("script_run", false) or u.running)
+				u.set_meta("ai_state", 1)
+		# Builtins 0x8e SetCP / 0xad SetCPFast(object, x, y, z) put the object
+		# there at once (: position.., world grid
+		# re-link); a unit then drops what it was doing and stands
+		# (creature: order 9, actions reset). SetCPFast first
+		# clears object byte +2; SetCP marks a height change ((2)).
+		# No walk: the villagers' schedules (basecam.mob) put them on their
+		# spots this way. The motivations (Sentry point etc.) are left as
+		# they are.
+		"SetCP", "SetCPFast":
 			var u := _unit(v[0])
 			if u:
-				u.command({"type": "wait", "t": 0.0})
+				u.orders.clear()
+				u.order = {}
+				u.path = PackedVector2Array()
+				u.target = null
+				u._set_action("idle")
 				u.pos = Vector2(_num(v[1]), _num(v[2]))
-				u.mode_data["point"] = u.pos
+			elif v[0] is Node3D and is_instance_valid(v[0]) and n >= 3:
+				var nid := _obj_id(v[0])
+				var p3 := Vector3(_num(v[1]), _num(v[2]), _num(v[3]) if n > 3 else 0.0)
+				world.move_object(nid, p3)
+				session.broadcast({"t": "move_obj", "nid": nid, "p": [p3.x, p3.y, p3.z]})
+		# Builtin 0x34 Idle(unit): the AI's motivations are dropped
+		# (as UMClear) and its state / script command reset
+		# an order under way runs .
 		"Idle":
-			var u := _unit(v[0])
-			if u:
-				u.command({"type": "wait", "t": randf_range(2.0, 5.0)}, true)
+			_um_clear(v[0], "none")
+			if _unit(v[0]):
+				_unit(v[0]).remove_meta("ai_state")
 		"RotateTo":
 			var u := _unit(v[0])
 			if u:
 				var d := Vector2(_num(v[1]), _num(v[2])) - u.pos
 				u.command({"type": "rotate", "angle": atan2(d.y, d.x)}, true)
+				u.set_meta("ai_state", 1)
 		"PlayAnimation":
 			var u := _unit(v[0])
 			if u:
@@ -539,25 +612,47 @@ func _call(name: String, a: Array, inst: Instance):
 			var u := _unit(v[0])
 			if u and not u.dead:
 				u.take_damage(_num(v[1]), null)
-		"UMClear":
-			var u := _unit(v[0])
-			if u:
-				u.command({"type": "wait", "t": 0.0})
-				u.orders.clear()
-		"UMStandard": _mode(v[0], "standard", {})
-		"UMAggression", "UMRevenge": _mode(v[0], "aggression", {})
-		"UMFear": _mode(v[0], "fear" if n < 2 or _truthy(v[1]) else "standard", {})
+		# Builtin 0x24 UMClear(unit) ->: every motivation of the
+		# unit's AI is dropped (no order is stopped); the unit then does
+		# nothing of its own until a UM* call gives it one.
+		"UMClear": _um_clear(v[0], "none")
+		# Builtin 0x2c UMStandard: Aggression, Suspection
+		#  and CorpseWatcher are added beside the
+		# calm motivation, which stays (UnitAI.um).
+		"UMStandard": _um_add(v[0], {"fight": "standard", "susp": true, "corpse": true})
+		# 0x2d UMAggression / 0x2e UMRevenge ((1)
+		# the same class): added beside the calm motivation.
+		"UMAggression": _um_add(v[0], {"fight": "aggression"})
+		"UMRevenge": _um_add(v[0], {"fight": "revenge"})
+		# 0xc7 UMFear(unit, flag) -> (flag != 0), added beside the
+		# others (UnitAI._fear_priority).
+		"UMFear": _um_add(v[0], {"fear": 1 if n < 2 or _truthy(v[1]) else 0})
 		"UMSentry", "Sentry": _mode(v[0], "sentry", {"point": Vector2(_num(v[1]), _num(v[2]))})
 		# Builtins 0x26 UMGuard / 0x33 Guard (unit, x, y, radius)
 		#  with stay −1; 0x27 UMGuardEx (unit, x, y, radius, stay).
 		# A negative radius / stay takes ai.reg GuardRadius / GuardStayTime.
 		"UMGuard", "Guard", "UMGuardEx": _mode(v[0], "guard", {"point": Vector2(_num(v[1]), _num(v[2])),
 			"radius": _num(v[3]) if n > 3 else -1.0, "stay": _num(v[4]) if name == "UMGuardEx" and n > 4 else -1.0})
-		"UMFollow", "Follow": _mode(v[0], "follow", {"target": _unit(v[1])})
+		"UMFollow": _mode(v[0], "follow", {"target": _unit(v[1])})
+		# Builtin 0x3b Follow(unit, target) ->: AI state 6 with the
+		# target, keeps it near until the target is gone.
+		# It is no motivation (the calm one stays). Remake: a follow order.
+		"Follow":
+			var fu := _unit(v[0])
+			var ft := _unit(v[1])
+			if fu and ft and fu != ft and not fu.dead:
+				fu.set_meta("ai_state", 6)
+				fu.set_meta("ai_target", ft)
+				fu.command({"type": "follow", "target": ft, "dist": 2.0})
+		# Builtin 0x31 UMPlayer(unit): motivations dropped, the
+		# Player motivation added (type 6: the player units' one —
+		# engage noticed enemies when aggressive, no calm walk; UnitAI._player)
+		# and the AI state reset.
 		"UMPlayer":
 			var u := _unit(v[0])
 			if u and not u.has_meta("hero"):
-				u.mode = "standard"
+				_um_clear(u, "player")
+				u.remove_meta("ai_state")
 		"SetPlayer":
 			var u := _unit(v[0])
 			if u:
@@ -817,8 +912,8 @@ func _call(name: String, a: Array, inst: Instance):
 			time_fixed = false
 			if not v.is_empty():
 				session.state.world_time = fmod(_num(v[0]), 24.0)
-		"LeaveToZone":
-			_pending_zone = [str(v[1]).to_lower(), int(_num(v[2]))]
+		"LeaveToZone":   # the entrance is the original's 0-based exit index (map.txt "#exit" = index + 1)
+			_pending_zone = [str(v[1]).to_lower(), int(_num(v[2])) + 1]
 		"AddMob":
 			_add_mob(str(v[0]))
 		_:
@@ -850,29 +945,75 @@ func _check_interactions() -> void:
 		var t = it[0]
 		if u.dead or not is_instance_valid(t) or u.order.get("type", "") not in ["follow", "move", ""]:
 			u.remove_meta("interact")
-		elif u.pos.distance_to(_xy(t)) < 3.0:
+		elif u.pos.distance_to(_xy(t)) < _interact_reach(u, t, it[2] if it.size() > 2 else ""):
 			u.remove_meta("interact")
+			# Steal, loot and lever use are the use action (order type 6): the
+			# unit turns, plays its clip and the action runs at the clip's hit
+			# frame (GameUnit._do_use).
 			if it.size() > 2 and it[2] == "steal":
 				if t is GameUnit and not t.dead:
-					session.coop.with_purse(u.controller, session.steal.bind(u, t))   # a joiner's own bag
+					u.command({"type": "use", "sub": "steal", "at": t.pos, "done": func():
+						if is_instance_valid(u) and not u.dead and is_instance_valid(t) and not t.dead:
+							session.coop.with_purse(u.controller, session.steal.bind(u, t))})   # a joiner's own bag
 			elif t is GameUnit and Session.lootable(t) and world.units.has(t.uid):
-				session.coop.with_purse(u.controller, session.take_loot.bind(u, t))
+				u.command({"type": "use", "sub": "loot", "at": t.pos, "done": func():
+					if is_instance_valid(u) and not u.dead and is_instance_valid(t) and world.units.has(t.uid):
+						session.coop.with_purse(u.controller, session.take_loot.bind(u, t))})
 			elif not (t is GameUnit):
 				var nid := _obj_id(t)
 				if world.lever_sys.usable(nid):
-					var h: Dictionary = u.get_meta("hero", {})
-					var use := float(u.stats.get("dex", 25.0)) - 25.0 + Skills.level(h, "science")
-					var quest := session.state.items.filter(func(x): return Items.kind(String(x)) == "quest")
-					# Quest items given by conversations / scripts / loot live in
-					# state.quest_items (HaveItem); they open levers too.
-					quest.append_array(session.state.quest_items.keys())
-					if world.lever_sys.science_ok(nid, use, quest):
-						var time := world.lever_sys.set_state(nid, -1)
-						session.broadcast({"t": "lever", "nid": nid, "state": world.levers[nid].state, "time": time})
-					else:
-						u.ack(EIAcks.SCIENCE_FAILED)   # ack 0x11
+					u.command({"type": "use", "sub": "science", "at": _xy(t), "done": func():
+						if is_instance_valid(u) and not u.dead and world.lever_sys.usable(nid):
+							_use_lever(u, nid)})
 			else:
 				briefings.interact(u, t, it[1])
+
+
+## Reach of an interaction, the original (order type 6 = the use
+## action; own radius = unit = = 0.9 × the
+## figure's larger half extent + 0.05):
+##  * loot (sub-code): own radius + 0.3 × the body's radius
+##  * a living unit (steal; == 0x50): both units'
+##    (`GameUnit.body_radius`) + 0.6;
+##  * a map object (lever, chest; sub-code 0): own radius + the object's
+##    radius (`GameWorld.object_radius`) − 0.1.
+## A talk has no reach in the original: the village click opens the topic list
+## once and a field click on a non-hostile unit
+## is a move to it. **Approx.**: the remake's
+## walk-and-talk keeps 3 m. The remake's 0.5 m nav grid is coarser than the
+## original's passability, so an object's or body's reach also covers its nearest
+## walkable cell (+ 0.375 m) — gz17h DeadS (r 0.95) lies 1.42 m from its
+## nearest open cell, past the original reach of 1.35 m.
+func _interact_reach(u: GameUnit, t, kind := "") -> float:
+	if not (t is Node3D):
+		return 3.0
+	var r: float
+	if kind == "steal" and t is GameUnit:
+		return u.body_radius() + t.body_radius() + 0.6
+	elif t is GameUnit and t.dead:
+		r = u.figure_radius + 0.05 + 0.3 * (t.figure_radius + 0.05)
+	elif t is GameUnit:
+		return 3.0
+	else:
+		r = u.figure_radius + 0.05 + world.object_radius(t) - 0.1
+	var p := _xy(t)
+	return maxf(r, world.nav.nearest_walkable(p, 3).distance_to(p) + NavGrid.CELL * 0.75)
+
+
+## A lever / switch used by `u` (sub-code 0): its science
+## check against the unit's science (Dex - 25 + skill) and the party's quest items.
+func _use_lever(u: GameUnit, nid: int) -> void:
+	var h: Dictionary = u.get_meta("hero", {})
+	var use := float(u.stats.get("dex", 25.0)) - 25.0 + Skills.level(h, "science")
+	var quest := session.state.items.filter(func(x): return Items.kind(String(x)) == "quest")
+	# Quest items given by conversations / scripts / loot live in
+	# state.quest_items (HaveItem); they open levers too.
+	quest.append_array(session.state.quest_items.keys())
+	if world.lever_sys.science_ok(nid, use, quest):
+		var time := world.lever_sys.set_state(nid, -1)
+		session.broadcast({"t": "lever", "nid": nid, "state": world.levers[nid].state, "time": time})
+	else:
+		u.ack(EIAcks.SCIENCE_FAILED)   # ack 0x11
 
 
 func _player_count() -> int:
@@ -922,22 +1063,126 @@ func _by_name(n: String):
 
 func _sees(watchers: Array) -> Array:
 	var out := []
+	var have := {}
 	for w in watchers:
 		if w == null or not is_instance_valid(w) or w.dead:
 			continue
-		var r := float(w.stats.get("sight", 15.0))
-		for u in world.units_near(w.pos, r):
-			if u != w and not out.has(u) and world.ai.can_notice(w, u, r):
+		for u in _noticed(w):
+			if not have.has(u):
+				have[u] = true
 				out.append(u)
 	return out
 
 
+## Remake speed (UnitSee / GroupSee / PlayerSee are polled by many script
+## conditions every tick): one watcher's noticed units, in GameWorld.units
+## order, remembered while nothing can have changed them — only during
+## ScriptVM.tick and until a builtin that is not a pure query runs
+## (_call, PURE_CALLS); cleared at the start and end of every tick.
+var _seen_memo := {}
+var _in_tick := false
+
+
+func _noticed(w: GameUnit) -> Array:
+	if _in_tick and _seen_memo.has(w):
+		return _seen_memo[w]
+	var r := float(w.stats.get("sight", 15.0))
+	var out := []
+	for u in _units_within(w.pos, r):
+		if u != w and world.ai.can_notice(w, u, r):
+			out.append(u)
+	if _in_tick:
+		_seen_memo[w] = out
+	return out
+
+
+## GameWorld.units_near(p, r) (every unit within r, dead ones too, in
+## GameWorld.units order) from the host's unit buckets.
+func _units_within(p: Vector2, r: float) -> Array:
+	if not (world.authority and world.nav and world.nav.size.x > 0):
+		return world.units_near(p, r)
+	return world.nav.units_all_around(p, r)
+
+
+## Builtins that only read (no world, unit, group or campaign change).
+const PURE_CALLS := {"Not": 1, "IsEqual": 1, "IsLess": 1, "IsGreater": 1, "IsEqualString": 1, "Add": 1,
+	"Sub": 1, "Mul": 1, "Random": 1, "GSGetVar": 1, "GetObject": 1, "GetObjectByID": 1, "GetObjectByName": 1,
+	"GetObjectID": 1, "GroupSize": 1, "GroupHas": 1, "GroupCross": 1, "UnitSee": 1, "GroupSee": 1,
+	"PlayerSee": 1, "GetUnitOfPlayer": 1, "GetLeader": 1, "GetMercsNumber": 1, "GetX": 1, "GetY": 1,
+	"GetZ": 1, "GetFutureX": 1, "GetFutureY": 1, "DistanceUnitUnit": 1, "DistanceUnitPoint": 1,
+	"UnitInSquare": 1, "IsDead": 1, "IsAlive": 1, "IsEnemy": 1, "IsPlayerInDanger": 1, "IsUnitVisible": 1,
+	"WasLooted": 1, "IsUnitBlocked": 1, "GetDiplomacy": 1, "IsInArea": 1, "GetLeverState": 1,
+	"HaveItem": 1, "GetWorldTime": 1, "Any": 1, "Every": 1}
+
+
 func _in_danger() -> bool:
-	for h in heroes():
-		for u in world.units_near(h.pos, 15.0):
-			if not u.dead and world.is_enemy(u, h) and u.order.get("type", "") == "attack":
+	var seen := {}
+	for h: GameUnit in _own_units():
+		if not seen.has(h.controller):
+			seen[h.controller] = true
+			if world.ai._player_in_combat(h.controller):
 				return true
 	return false
+
+
+## The script's player 0 = every human player in co-op: their living units.
+func _own_units() -> Array:
+	var out := []
+	for u: GameUnit in world.units.values():
+		if is_instance_valid(u) and u.controller >= 0 and not u.dead and not u.hidden:
+			out.append(u)
+	return out
+
+
+func _player_visible() -> Array:
+	if _in_tick and _seen_memo.has(&"player"):
+		return (_seen_memo[&"player"] as Array).duplicate()
+	var own := _own_units()
+	var out := own.duplicate()
+	var have := {}
+	for x in own:
+		have[x] = true
+	for x in _sees(own):
+		if not have.has(x):
+			have[x] = true
+			out.append(x)
+	if _in_tick:
+		_seen_memo[&"player"] = out.duplicate()
+	return out
+
+
+## The party records' units (heroes() without the dead / hidden filter).
+func _party_records() -> Array:
+	var out := []
+	for u: GameUnit in world.units.values():
+		if is_instance_valid(u) and u.has_meta("hero"):
+			out.append(u)
+	out.sort_custom(func(a, b): return a.controller < b.controller if a.controller != b.controller else a.uid < b.uid)
+	return out
+
+
+## UMClear / Idle and UMPlayer: the whole motivation list goes
+## `calm` "none" or "player" (the Player motivation, UnitAI._player).
+func _um_clear(o, calm: String) -> void:
+	_mode(o, calm, {})
+	var u := _unit(o)
+	if u and not (u.has_meta("hero") and u.controller >= 0):
+		u.set_meta("um", {"fight": "none", "susp": false, "corpse": false, "fear": -1})
+
+
+## A non-calm motivation added: the calm one stays. A unit
+## still on its spawn list first gets that list written out (UnitAI.think).
+func _um_add(o, add: Dictionary) -> void:
+	var u := _unit(o)
+	if u == null or u.has_meta("hero") and u.controller >= 0:
+		return
+	var m: Dictionary = world.ai.mots(u)
+	if u.mode == "fear":
+		m.fear = 1
+	if u.mode in ["aggression", "fear"]:
+		u.mode = "standard"
+	m.merge(add, true)
+	u.set_meta("um", m)
 
 
 func _mode(o, mode: String, data: Dictionary) -> void:
@@ -950,7 +1195,41 @@ func _mode(o, mode: String, data: Dictionary) -> void:
 	if mode == "sentry" or mode == "guard":
 		# The unit keeps its gait: Walk / Run (builtins 0x40 / 0x41 ->
 		# (2 / 3), unit) apply to every later move.
-		u.move_to(world.nav.nearest_walkable(data.point), u.get_meta("script_run", false))
+		u.move_to(world.nav.nearest_walkable_for(u, data.point), u.get_meta("script_run", false))
+
+
+## SleepUntilIdle (builtin 0xb9) sleeps while the unit's AI state (AI +4,
+## creature) is not 0. The script commands set it (MoveToPoint
+## MoveToObject / RotateTo 1, Attack 3, Cast 4, Follow 6; Idle / UMPlayer clear
+## it) and the AI tick ends it: 1 once the
+## creature's current and next order are neither a move (1)
+## nor a turn (2); 3 once the target is gone or no longer the attack / cast
+## target; 4 once no cast order (4 / 5) is left; 6 when the
+## target is gone. A unit with no motivation (UMClear / Idle:
+## remake mode "none") has it reset on every tick. Computed here when asked.
+static func ai_busy(u: GameUnit) -> bool:
+	if not is_instance_valid(u) or u.dead:
+		return false
+	var s := int(u.get_meta("ai_state", 0))
+	var busy := false
+	if s != 0 and u.mode == "none":
+		busy = true   # the reset comes with the next AI tick: one more sleep
+		s = 0
+	elif s != 0:
+		var kinds := [String(u.order.get("type", ""))]
+		for o: Dictionary in u.orders:   # the remake queues RotateTo behind clips
+			kinds.append(String(o.get("type", "")))
+		var t = u.get_meta("ai_target") if u.has_meta("ai_target") else null
+		var alive: bool = t is GameUnit and is_instance_valid(t) and not t.dead
+		match s:
+			1: busy = "move" in kinds or "rotate" in kinds
+			3: busy = alive and (u.order.get("target") == t or "cast" in kinds)
+			4: busy = "cast" in kinds
+			6: busy = alive
+	if not busy or s == 0:
+		u.remove_meta("ai_state")
+		u.remove_meta("ai_target")
+	return busy
 
 
 func _hide(o, hide: bool) -> void:
@@ -1029,11 +1308,18 @@ func _string_event(s: String) -> void:
 		"briefing":
 			briefings.play_named(s.get_slice(" ", 1).to_lower(), "")
 		"say", "say_block":
-			var id := s.get_slice(" ", 1).to_lower()
-			var who := s.get_slice(" ", 2)
-			var text := GameData.text("say " + id)
-			if text:
-				session.broadcast({"t": "say", "who": who, "text": text, "voice": "say\\%s" % id})
+			# "say <id> [<unit name>]" → the field screen's
+			# (name id (<unit name>) or 0, 0x2a for
+			# "say" / 0x2b for "say_block") on every client: the unit speaks
+			# its acks.db Scenario line <id> (GameSound.say) and, if found,
+			# the text window shows "<name>:" and texts.res "say <id>".
+			# The remake's heroes have plain ids, so the host resolves the
+			# name as the scripts' other name lookups do ("Hero" = the main
+			# hero) and sends the unit's uid.
+			var parts := s.split(" ", false)
+			var o = _by_name(parts[2]) if parts.size() > 2 else null
+			if parts.size() >= 2 and o is GameUnit:
+				session.broadcast({"t": "say", "id": parts[1], "uid": o.uid, "block": cmd == "say_block"})
 		"tutorial":
 			session.broadcast({"t": "tutorial", "id": s.get_slice(" ", 1).to_lower()})
 		"endofgame":   # the end-of-game message box (game_hud._show_end_of_game)
@@ -1279,29 +1565,59 @@ func _check_quest_objectives() -> void:
 		if d.get("finished", false) or d.objs.is_empty() or q == _q_recording:
 			continue
 		d.defined = true
-		var all_done := true
-		for o: Array in d.objs:
-			if not o[3]:
-				o[3] = _objective_met(o, d)
-			all_done = all_done and o[3]
-		if all_done:
+		# QFinish compiles the recorded objectives into a chain
+		# of scripts Su0 .. SuN: Su<i> waits for objective i's condition, then
+		# runs Su<i+1>, sets GS var q.<id>.<id>.<i+1> = 2 and (but for the last)
+		# q.<id>.<id>.<i+2> = 1; SuN: QuestComplete(0, id), q.<id>.<id> = 2.
+		# So the objectives are met one after the other, in order.
+		var cur := int(d.get("cur", 0))
+		while cur < d.objs.size() and d.objs[cur][3]:   # saves from before the chain
+			cur += 1
+		if cur < d.objs.size() and _objective_met(d.objs[cur], d):
+			d.objs[cur][3] = true
+			d.cur = cur + 1
+			var base := "q.%s.%s" % [q, q]
+			_set_quest_var("%s.%d" % [base, cur + 1], 2.0)
+			if cur + 1 < d.objs.size():
+				_set_quest_var("%s.%d" % [base, cur + 2], 1.0)
+		elif cur >= d.objs.size():
 			d.finished = true
 			SideQuests.finish(session, q)
+			_set_quest_var("q.%s.%s" % [q, q], 2.0)
 
 
+func _set_quest_var(key: String, val: float) -> void:
+	if session.state.get_var(0, key) != val:
+		session.state.set_var(0, key, val)
+		_on_var_changed(key)
+
+
+## The conditions QFinish writes (the original strings..):
+## QObjArea "any( i, Heroes, IsInArea( %f, GetX(i), GetY(i) ) )", QObjSeeObject
+## "any( i, Heroes, IsLess( DistanceUnitUnit( i, %s ), 7 ) )", QObjSeeUnit
+## "IsUnitVisible( %s )", QObjKillUnit "Not( IsAlive( %s ) )", QObjKillGroup
+## "Not( any( i, %s, IsAlive(i) ) )", QObjUse "IsEqual( GetLeverState(%s), %f )",
+## QObjGetItem "HaveItem( 0, %f )".
 func _objective_met(o: Array, d: Dictionary) -> bool:
 	var target = _objective_target(String(o[1]))
 	match String(o[0]):
 		"QObjArea":
-			return true   # meaning unknown; the other objectives carry the quest
-		"QObjSeeUnit", "QObjSeeObject":
+			var id := int(String(o[1]).to_float())
+			for h: GameUnit in heroes():
+				for s in areas.get(id, []):
+					if (s is Rect2 and s.has_point(h.pos)) or (s is Vector3 and h.pos.distance_to(Vector2(s.x, s.y)) <= s.z):
+						return true
+			return false
+		"QObjSeeObject":
 			if target == null:
-				return true
+				return false   # DistanceUnitUnit with no unit: 99999
 			var p: Vector2 = target.pos if target is GameUnit else _obj_pos(target)
 			for h: GameUnit in heroes():
-				if h.pos.distance_to(p) < 14.0:
+				if h.pos.distance_to(p) < 7.0:
 					return true
 			return false
+		"QObjSeeUnit":
+			return target != null and _player_visible().has(target)
 		"QObjKillUnit":
 			return target == null or (target is GameUnit and target.dead)
 		"QObjKillGroup":
@@ -1310,7 +1626,7 @@ func _objective_met(o: Array, d: Dictionary) -> bool:
 					return false
 			return true
 		"QObjGetItem":
-			return session.state.quest_items.size() > int(d.get("items", 0))
+			return session.state.quest_items.has(_quest_item_name(String(o[1]).to_float()))
 		"QObjUse":
 			var id := _obj_id(target) if target != null else -1
 			return world.levers.has(id) and int(world.levers[id].state) == int(o[2])

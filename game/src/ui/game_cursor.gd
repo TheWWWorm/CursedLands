@@ -41,7 +41,9 @@ const AIM := ["cursor_attack_hd", "cursor_attack_bd", "cursor_attack_rh", "curso
 	"cursor_attack_rl", "cursor_attack_ll"]
 
 static var _frames := {}
-## Scaled frames: "name@px" -> [ImageTexture].
+## Scaled frames: "name@px" -> [Image]. Images, not textures: the OS cursor
+## is built from an Image, and a texture would be read back from the GPU
+## (a render-thread sync) on every frame change, 8 times a second.
 static var _scaled := {}
 var kind := ""
 var _t := 0.0
@@ -70,7 +72,7 @@ static func frames(name: String) -> Array:
 	return out
 
 
-## The frames of `name` as `px`×`px` textures (32 = the original size).
+## The frames of `name` as `px`×`px` images (32 = the original size).
 static func scaled(name: String, px: int) -> Array:
 	var key := "%s@%d" % [name, px]
 	if _scaled.has(key):
@@ -84,7 +86,7 @@ static func scaled(name: String, px: int) -> Array:
 			img.premultiply_alpha()
 			img.resize(px, px, Image.INTERPOLATE_CUBIC if px > 32 else Image.INTERPOLATE_BILINEAR)
 			_unpremultiply(img)
-		out.append(ImageTexture.create_from_image(img))
+		out.append(img)
 	_scaled[key] = out
 	return out
 

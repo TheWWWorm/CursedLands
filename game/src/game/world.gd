@@ -37,9 +37,11 @@ var tornadoes: Tornadoes
 var _trap_t := 0.0
 var diplomacy := PackedInt32Array()
 var time := 0.0
-## Conversation actors still walking to their spot (ticked while the
-## conversation pauses everything else).
+## Conversation actors still walking to their spot.
 var dialog_movers := {}   # GameUnit -> {to: Vector2, angle: float}
+## Unit ids of the running conversation's actors a / b / c (Briefings.cast),
+## held while it runs; the rest of the world goes on.
+var dialog_actors := {}
 var authority := true
 var session: Session
 ## SetWaterLevel state, the original's list at server (adds
@@ -47,6 +49,7 @@ var session: Session
 var water_levels := {}
 var _water_t := 0.0
 var _next_uid := 1_500_000_000
+var _seq_n := 0   # GameUnit._seq of the last unit put in `units`
 
 
 func _init() -> void:
@@ -66,6 +69,27 @@ func _register_object(node: Node3D) -> void:
 		traps.add(o)
 	if "bridge" in String(o.get("parent_template", "")).to_lower():
 		terrain.add_surface(node)
+
+
+## A map object's radius (the original object, computed when
+## the figure is built or a lever changes state): the half
+## diagonal of the box round all its parts (part offset + part box) about
+## the box centre; the object's returns it (CLeverObject
+## ). Here: the node-local box of its meshes.
+func object_radius(node: Node3D) -> float:
+	if node == null or not is_instance_valid(node):
+		return 0.0
+	var box := AABB()
+	var first := true
+	var inv := node.global_transform.affine_inverse()
+	for mi in node.find_children("*", "MeshInstance3D", true, false):
+		var m := mi as MeshInstance3D
+		if m.mesh == null:
+			continue
+		var b := (inv * m.global_transform) * m.get_aabb()
+		box = b if first else box.merge(b)
+		first = false
+	return 0.0 if first else box.size.length() * 0.5
 
 
 ## Places the non-unit objects of an extra .mob (quest maps, AddMob) into the
@@ -88,6 +112,22 @@ func add_mob_objects(file: String) -> void:
 		nav.add_object(node)
 		if lever_sys and levers.has(nid):
 			lever_sys.add(nid)
+
+
+## Script SetCP / SetCPFast on a map object (builtins 0x8e / 0xad →
+## ): the object is put at (x, y, z) and re-linked in the world
+## grid. z as the .mob's (above the ground, as the placement above).
+func move_object(nid: int, p: Vector3) -> void:
+	var node = objects.get(nid)
+	if node == null or not is_instance_valid(node):
+		return
+	var o: Dictionary = node.get_meta("ei")
+	if not node.has_meta("moved_from"):
+		node.set_meta("moved_from", o.position)
+	o.position = p
+	node.position = EISpace.pos(p.x, p.y, terrain.height_at(p.x, p.y) + p.z)
+	nav.remove_object(nid)
+	nav.add_object(node)
 
 
 ## A magic trap whose figure (efcu0, an editor marker) has no model still is a
@@ -124,18 +164,22 @@ func load_map(mpr: String, mob_name := "", with_units := true) -> bool:
 				if marker:
 					_register_object(marker)
 	LoadingScreen.tick()
+	NetStatus.keep_alive()
 	# The original's AI map takes the water from the.sec files and is
 	# not rebuilt by SetWaterLevel.
 	nav.build(terrain, terrain.water_base, map.object_nodes)
 	LoadingScreen.tick()
+	NetStatus.keep_alive()
 	lever_sys = LeverSystem.new(self)
 	if with_units:
 		for r in map.unit_records:
 			LoadingScreen.tick()
+			NetStatus.keep_alive()
 			spawn_unit(r)
 		# The nav grids of the units' standing classes, built while loading
 		# rather than on a unit's first path (NavGrid.layer).
 		for u: GameUnit in units.values():
+			NetStatus.keep_alive()
 			nav.layer(u._classes[2])
 	return true
 
@@ -148,6 +192,9 @@ func spawn_unit(record: Dictionary) -> GameUnit:
 		u.free()
 		return null
 	units[u.uid] = u
+	_seq_n += 1
+	u._seq = _seq_n
+	nav.rebucket(u)
 	add_child(u)
 	unit_spawned.emit(u)
 	return u
@@ -159,6 +206,7 @@ func new_uid() -> int:
 
 
 func remove_unit(u: GameUnit) -> void:
+	u._seq = 0
 	nav.untrack_unit(u)
 	units.erase(u.uid)
 	u.queue_free()
@@ -167,6 +215,7 @@ func remove_unit(u: GameUnit) -> void:
 ## A looted corpse leaves the world (the original)
 ## but is kept, out of the tree, for the script VM's WasLooted.
 func remove_looted(u: GameUnit) -> void:
+	u._seq = 0
 	nav.untrack_unit(u)
 	units.erase(u.uid)
 	u.set_meta("looted", true)
@@ -187,31 +236,22 @@ func ground_at(x: float, y: float) -> float:
 	return terrain.ground_at(x, y) if terrain else 0.0
 
 
-## Line of sight between two units' eyes, the original: the segment
-## is walked in 0.5 m steps and is blocked (0) where it runs at or below the
-## ground; else 1. Approx.: eyes at ground + 1.5 m x race "head height"; the
-## original's objects in the cells (factors 0 / 0.98 / 0.99 / 1 per cell kind) are
-## not modelled.
+## Line of sight between two units' eyes, the original
+## (`NavGrid.ray`: ground and object spans, 0 .. 1). Approx.: eyes at the
+## ground (or floor) + 1.5 m x race "head height".
 func sight_ray(a: GameUnit, b: GameUnit) -> float:
-	if terrain == null:
-		return 1.0
-	var za := ground_at(a.pos.x, a.pos.y) + 1.5 * float(a.race.get("head_height", 1.0))
-	var zb := ground_at(b.pos.x, b.pos.y) + 1.5 * float(b.race.get("head_height", 1.0))
-	var d := Vector3(b.pos.x - a.pos.x, b.pos.y - a.pos.y, zb - za).length()
-	var n := roundi(d / 0.5)
-	for i in range(1, n):
-		var t := float(i) / n
-		var p := a.pos.lerp(b.pos, t)
-		if lerpf(za, zb, t) <= ground_at(p.x, p.y):
-			return 0.0
-	return 1.0
+	return terrain_ray(a.pos, _stand_z(a.pos) + 1.5 * float(a.race.get("head_height", 1.0)),
+		b.pos, _stand_z(b.pos) + 1.5 * float(b.race.get("head_height", 1.0)))
 
 
-##  between two given points (x, y, height): 0 where the segment
-## walked in 0.5 m steps, runs at or below the ground; else 1.
+##  between two given points (x, y, height in m): 0 where the
+## segment, walked in 0.5 m steps, runs at or below the ground, else the
+## product of the object spans' factors it passes (`NavGrid.ray`).
 func terrain_ray(a: Vector2, za: float, b: Vector2, zb: float) -> float:
 	if terrain == null:
 		return 1.0
+	if nav.size.x > 0:
+		return nav.ray(a, za, b, zb)
 	var n := roundi(Vector3(b.x - a.x, b.y - a.y, zb - za).length() / 0.5)
 	for i in range(1, n):
 		var t := float(i) / n
@@ -221,19 +261,16 @@ func terrain_ray(a: Vector2, za: float, b: Vector2, zb: float) -> float:
 	return 1.0
 
 
-## Terrain ray from a unit's eyes to a point 1 m above the ground (vision fog).
+## The ray from a unit's eyes to a point 1 m above the ground (vision fog).
 func sight_ray_point(a: GameUnit, p: Vector2) -> float:
-	if terrain == null:
-		return 1.0
-	var za := ground_at(a.pos.x, a.pos.y) + 1.5 * float(a.race.get("head_height", 1.0))
-	var zb := ground_at(p.x, p.y) + 1.0
-	var n := roundi(a.pos.distance_to(p) / 0.5)
-	for i in range(1, n):
-		var t := float(i) / n
-		var q := a.pos.lerp(p, t)
-		if lerpf(za, zb, t) <= ground_at(q.x, q.y):
-			return 0.0
-	return 1.0
+	return terrain_ray(a.pos, _stand_z(a.pos) + 1.5 * float(a.race.get("head_height", 1.0)),
+		p, _stand_z(p) + 1.0)
+
+
+## The height a unit stands at: the ground, or a floor over it.
+func _stand_z(p: Vector2) -> float:
+	var g := ground_at(p.x, p.y)
+	return maxf(g, nav.cell_height(p)) if nav.size.x > 0 else g
 
 
 func units_near(p: Vector2, r: float) -> Array:
@@ -249,7 +286,11 @@ func units_near(p: Vector2, r: float) -> Array:
 ## host (NavGrid.units_around), else a scan of every unit.
 func live_units_near(p: Vector2, r: float) -> Array:
 	if authority and nav and nav.size.x > 0:
-		return nav.units_around(p, r)
+		var out := []
+		for u: GameUnit in nav.units_around(p, r):
+			if not u.dead:
+				out.append(u)
+		return out
 	return units_near(p, r).filter(func(u: GameUnit): return not u.dead)
 
 
@@ -278,6 +319,13 @@ func daylight() -> float:
 
 
 func is_enemy(a: GameUnit, b: GameUnit) -> bool:
+	#  sets a side's bit in a unit's own hostility mask:
+	# the unit is then hostile to that side whatever the diplomacy (meta "hate").
+	# Kept per zone world: the sides are the zone's (a hero carries no hate on).
+	if a.has_meta("hate"):
+		var hate: Dictionary = a.get_meta("hate")
+		if int(hate.get("w", 0)) == get_instance_id() and b.faction in hate.get("f", []):
+			return true
 	# A partly tamed unit keeps the peace with its tamer's side (Spells.tame).
 	if relation(a.faction, b.faction) != 2:
 		return false
@@ -289,40 +337,30 @@ func _physics_process(dt: float) -> void:
 	_tick_water(dt)
 	if not authority:
 		return
+	# A conversation does not stop the world: the original pauses it only under a
+	# modal screen in single player ((1)); the
+	# village screen is entered through, which unpauses
+	# ((0)), and its dialog pauses
+	# nothing — the partner even walks to its spot through an ordinary AI walk
+	# order that only a running world carries out.
+	# So the other units keep walking, fighting and thinking. Remake
+	# (**approx.**): the conversation's actors are held; held actors stand
+	# instead of keeping a walk clip going. The script VM runs on (ScriptVM._tick).
+	var talking := false
 	if vm:
 		vm.tick(dt)
-		if vm.briefings.active:
-			# Conversations pause the world, except the partner walking to its spot.
-			# Their scripts keep running, so the walk is re-issued until done.
-			for u: GameUnit in dialog_movers.keys():
-				var m: Dictionary = dialog_movers[u]
-				if u.dead:
-					dialog_movers.erase(u)
-					continue
-				# Arrived, or stopped short of a blocked spot for half a second.
-				var left := u.pos.distance_to(m.to)
-				if left < float(m.get("best", INF)) - 0.02:
-					m.best = left
-					m.still = 0.0
-				else:
-					m.still = float(m.get("still", 0.0)) + dt
-				if left > 0.3 and float(m.still) < 0.5:
-					if String(u.order.get("type", "")) != "move" or u.order.get("to") != m.to:
-						u.command({"type": "move", "to": m.to, "run": false})
-						u._anim_lock = 0.0   # an idle / scripted animation gives way
-				elif absf(angle_difference(u.facing, m.angle)) > 0.05:
-					if String(u.order.get("type", "")) != "rotate":
-						u.command({"type": "rotate", "angle": m.angle})
-						u._anim_lock = 0.0
-				else:
-					u.command({"type": "wait", "t": 0.1})
-					dialog_movers.erase(u)
-					continue
-				u.tick(dt)
-			return
-		dialog_movers.clear()
+		talking = not vm.briefings.active.is_empty()
+		if talking:
+			_tick_dialog_movers(dt)
+		else:
+			dialog_movers.clear()
+			dialog_actors.clear()
 	time += dt
 	for u: GameUnit in units.values():
+		if talking and (dialog_movers.has(u) or dialog_actors.has(u.uid)):
+			if not dialog_movers.has(u) and u.action in ["walk", "run", "crawl"]:
+				u._set_action("idle")
+			continue
 		u.tick(dt)
 		ai.chatter(u, dt)
 	# Magic traps update on the 55 ms server tick.
@@ -334,6 +372,37 @@ func _physics_process(dt: float) -> void:
 		if tornadoes == null:
 			tornadoes = Tornadoes.new(self)
 		tornadoes.tick()
+
+
+## The conversation partner walking to its spot (Briefings._face). The
+## script VM is held during the conversation, so the walk is re-issued until
+## done; the mover is ticked here, apart from the other units.
+func _tick_dialog_movers(dt: float) -> void:
+	for u: GameUnit in dialog_movers.keys():
+		var m: Dictionary = dialog_movers[u]
+		if u.dead:
+			dialog_movers.erase(u)
+			continue
+		# Arrived, or stopped short of a blocked spot for half a second.
+		var left := u.pos.distance_to(m.to)
+		if left < float(m.get("best", INF)) - 0.02:
+			m.best = left
+			m.still = 0.0
+		else:
+			m.still = float(m.get("still", 0.0)) + dt
+		if left > 0.3 and float(m.still) < 0.5:
+			if String(u.order.get("type", "")) != "move" or u.order.get("to") != m.to:
+				u.command({"type": "move", "to": m.to, "run": false})
+				u._anim_lock = 0.0   # an idle / scripted animation gives way
+		elif absf(angle_difference(u.facing, m.angle)) > 0.05:
+			if String(u.order.get("type", "")) != "rotate":
+				u.command({"type": "rotate", "angle": m.angle})
+				u._anim_lock = 0.0
+		else:
+			u.command({"type": "wait", "t": 0.1})
+			dialog_movers.erase(u)
+			continue
+		u.tick(dt)
 
 
 # ---------------------------------------------------------------- water
@@ -399,9 +468,15 @@ func on_death(u: GameUnit, killer: GameUnit) -> void:
 	# its friends that noticed it see the corpse.
 	ai.hit_hook(u, killer)
 	ai.on_corpse(u)
-	# an AI killer says its kill line (acks.db NPC reaction 0x30).
+	ai.seen_murder(u, killer)   #  "has seen murder"
+	# an AI killer says its kill line (acks.db NPC reaction 0x30)
+	# a killer of a player's party (with a player) gets
+	# ack 0x30 sent to its player: the Kill line of its record
+	# and the portrait's smile.
 	if killer and is_instance_valid(killer) and killer.controller < 0 and not killer.has_meta("hero"):
 		ai._react(killer, EIAcks.NPC_KILL)
+	elif killer and is_instance_valid(killer) and killer != u:
+		killer.ack(EIAcks.NPC_KILL)
 	if u.has_meta("hero") and not u.get_meta("hero").has("merc"):
 		session.hero_died(u)
 	if u.has_meta("hero") and u.get_meta("hero").has("merc"):

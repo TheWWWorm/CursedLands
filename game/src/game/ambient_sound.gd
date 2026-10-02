@@ -34,6 +34,20 @@ func _init(m: SoundMixer, w: GameWorld, dungeon: bool) -> void:
 	set_name = "Dungeon" if dungeon else "Ingos" if allod == "ingos" else "Suslanger" if allod == "suslanger" else "Gipat"
 
 
+## Its folders for EIAudio.prefetch: every type's loop and day sounds (the
+## counts, _count) and the sounds of the hour's time of day.
+func folders(hour: float) -> PackedStringArray:
+	var out := PackedStringArray()
+	for t: Array in TYPES:
+		if String(t[0]):
+			var d := "ambient\\%s\\%s" % [set_name, t[0]]
+			out.append(d)
+			out.append(d + "\\day")
+			if daytime(hour) != "day":
+				out.append(d + "\\" + daytime(hour))
+	return out
+
+
 func stop() -> void:
 	for s: Dictionary in _slots:
 		mixer.stop(int(s.handle))

@@ -28,7 +28,7 @@ func _ready() -> void:
 	var top := HBoxContainer.new()
 	box.add_child(top)
 	var title := Label.new()
-	title.text = "Journal"
+	title.text = RemakeText.t("Journal")
 	title.add_theme_font_override("font", Interface800.font())
 	title.add_theme_font_size_override("font_size", 22)
 	title.add_theme_color_override("font_color", Interface800.TEXT)
@@ -36,7 +36,7 @@ func _ready() -> void:
 	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	top.add_child(title)
 	var close := Button.new()
-	close.text = "Close"
+	close.text = RemakeText.t("Close")
 	close.pressed.connect(func(): visible = false)
 	top.add_child(close)
 	_text = RichTextLabel.new()
@@ -53,7 +53,7 @@ func _ready() -> void:
 
 func open() -> void:
 	visible = true
-	var fs := maxi(10, int(round(get_viewport_rect().size.x * Interface800.FONT_EM[1])))
+	var fs := maxi(10, int(round(Interface800.canvas_size(self).x * Interface800.FONT_EM[1])))
 	for f in ["normal_font_size", "bold_font_size", "italics_font_size"]:
 		_text.add_theme_font_size_override(f, fs)
 	refresh()
@@ -79,10 +79,10 @@ func refresh() -> void:
 	for q in active:
 		out += _quest(q, objectives.get(q, {}), false)
 	if not done.is_empty():
-		out += "\n[color=#888888][b]Completed[/b][/color]\n"
+		out += "\n[color=#888888][b]%s[/b][/color]\n" % RemakeText.t("Completed")
 		for q in done:
 			out += "[color=#888888]%s[/color]\n" % _parse(q).title
-	_text.text = out if out else "No quests yet."
+	_text.text = out if out else RemakeText.t("No quests yet.")
 
 
 func _quest(q: String, objs: Dictionary, _done: bool) -> String:

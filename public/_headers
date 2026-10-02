@@ -1,0 +1,21 @@
+# Served by static hosts that read _headers (Cloudflare Workers assets, Pages, Netlify).
+# The archive bridge needs SharedArrayBuffer, so every page must be cross-origin isolated.
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: no-referrer
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Embedder-Policy: require-corp
+  Cross-Origin-Resource-Policy: same-origin
+
+/*.wasm
+  Content-Type: application/wasm
+
+# The shell and the service worker must be revalidated, so a new export is picked up.
+/
+  Cache-Control: no-cache
+
+/index.html
+  Cache-Control: no-cache
+
+/service-worker.js
+  Cache-Control: no-cache

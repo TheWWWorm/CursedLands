@@ -2,7 +2,8 @@ class_name Spells
 extends RefCounted
 ## Spells from spells.sdb. A spell is "<code>{mod;mod;...}" (e.g.
 ## "acid_ray{e1;e1}"): a prototype plus modifiers that scale range, area,
-## effect, duration and mana. The effect formulas approximate the original.
+## effect, duration and mana (builder); the effects follow the
+## dispatcher and the stat fold (see apply).
 
 const TARGET_POINT := 116
 const DAMAGE_TYPES := ["fire", "lightning", "acid"]
@@ -170,7 +171,7 @@ static func is_hostile(spell: String) -> bool:
 
 
 ## Host: apply a spell cast by `caster` at a unit or ground point.
-static func apply(world: GameWorld, caster: GameUnit, spell: String, target: GameUnit, point: Vector2) -> void:
+static func apply(world: GameWorld, caster: GameUnit, spell: String, target: GameUnit, point: Vector2, from := Vector2(INF, INF)) -> void:
 	var p := parse(spell)
 	var at := target.pos if target else point
 	# Spell power comes from its runes [allods.gipat.ru FAQ]; skills and school
@@ -188,15 +189,17 @@ static func apply(world: GameWorld, caster: GameUnit, spell: String, target: Gam
 	# ticks). Lasting effects are "magic effects" whose type is the
 	# spell index; fold them into stats.
 	var secs: float = float(p.duration) * GameUnit.TICK
+	if p.code in ["firewall", "litnwall", "acid_fog", "campfire"] and world.ai:
+		# the effect's cells become dangerous
+		# (the Fear motivation's 350, UnitAI.danger_at).
+		world.ai.add_danger(at, maxf(radius, 0.0), secs + 30.0 * GameUnit.TICK)
 	if p.code == "fireworks":
-		#  case 0x12: every tick of its duration, the units within
-		# the effect radius (the light reaches 5 m further) suspect the
-		# point at trunc(counter / duration x 250 + 50), -1 a tick, replacing
-		# lower levels. Approx.: once at the cast (300, -1)
-		# the same while the duration is at most 250 ticks, as the decayed
-		# level then stays above the later ones, for units already there.
-		for u: GameUnit in world.units_near(at, maxf(radius, 0.0)):
-			world.ai.suspect(u, at, 300.0, -1.0)
+		#  case 0x12: every logic tick of its duration (counter
+		#  from duration - 1 down to 0), the units within the effect
+		# radius (the light reaches 5 m further) suspect the point
+		# trunc(counter / duration x 250 + 50), -1 a tick, replacing only a
+		# lower level.
+		_fireworks_tick(world, at, maxf(radius, 0.0), int(p.duration), int(p.duration) - 1)
 	# Lasting spells show a magic effect on each unit (visual only).
 	# Every lasting effect is sent, also those with no particles (their
 	# start / end sounds, SpellSounds.EFFECT_DIRS).
@@ -233,7 +236,7 @@ static func apply(world: GameWorld, caster: GameUnit, spell: String, target: Gam
 				_buff(u, "antimagic", secs, {"resist": "all", "armor": power})
 		"stun":
 			for u: GameUnit in victims:
-				_buff(u, "stun", secs, {"stun": true})
+				_buff(u, "stun", secs, {})   # effect 0x19: shown, read by nothing (see GameUnit)
 		"feeblemind":   # a flag that refuses spell-casting orders
 			for u: GameUnit in victims:
 				_buff(u, "feeblemind", secs, {"no_cast": true})
@@ -277,19 +280,172 @@ static func apply(world: GameWorld, caster: GameUnit, spell: String, target: Gam
 				_buff(u, p.code, secs, {"sense": [["eagle_sight", "infravision", "detect_life"].find(p.code), power]})
 		_:
 			if p.subtype in DAMAGE_TYPES:
-				for u: GameUnit in victims:
-					# Same per-type armour as weapons: fire is
-					# thermal, acid chemical, lightning electrical.
-					var t := int(DAMAGE_TYPE_INDEX.get(p.subtype, 6))
-					var armour: PackedFloat32Array = u.stats.get("armor", PackedFloat32Array())
-					var dmg := power - (armour[t] * world.combat.difficulty(u, "Absorption") if t < armour.size() else 0.0)
-					var prot := 0.0
-					for b in u.buffs.values():
-						if b.get("resist", "") in [p.subtype, "all"]:
-							prot = maxf(prot, float(b.get("armor", 0.0)))
-					dmg -= prot
-					if dmg > 0.0:
-						u.take_damage(dmg, caster)
+				_damage_spell(world, caster, p, target, at, from)
+
+
+## Damage spells, the original (cast) / (effect tick)
+##  (missile hit). Each hit is the damage struct:
+## value = effect, x 4 / duration when the duration is over 1, all of the
+## school's type (fire 3, acid 4, lightning 5), dealt through the unit's
+## damage method (armour per type) after the filter
+##  when there is a caster. Area hits take every
+## unit within the radius — the caster too — but flyers
+## (: move class = 0 and altitude >= 0.5):
+##   arrow / acid_ray / rick_magic: a missile homing on the target unit at
+##     0.6667 m a tick (CEffectArrow; the sdb speed is unused)
+##     hitting only that unit on arrival;
+##   lightning / curse_magic: the target unit at once;
+##   fireball: flies n = max(1, round(d / range x 15) - 2) ticks to the
+##     target's cast-time position, then the area
+##   inv_lit: the area at once; acid_column: the area once, 15 ticks after
+##     the cast (counter 30, hit at 15);
+##   firewall / litnwall: counter = duration, -1 a tick; while it is >= 0,
+##     every tick with counter & 3 = 0 the strip — units within
+##     the radius of the centre and 0.5 m of the wall line (the wall runs
+##     across the cast direction, 2 x radius long), flyers excepted;
+##   acid_fog: the same ticks, the whole area;
+##   campfire: counter = duration, +1 a tick, the area every tick with
+##     counter & 3 = 0 while the effect lives (duration + 30 ticks).
+static func _damage_spell(world: GameWorld, caster: GameUnit, p: Dictionary, target: GameUnit, at: Vector2, from: Vector2) -> void:
+	var src := caster.pos if caster else from
+	var dur := int(p.duration)
+	match String(p.code):
+		"arrow", "acid_ray", "rick_magic":
+			if src.x == INF:
+				_hit(world, caster, p, target)
+			else:
+				_missile_tick(world, caster, p, target, src, at, 0)
+		"fireball":
+			if src.x == INF:
+				_area_hit(world, caster, p, at)
+			else:
+				var n := maxi(1, roundi(src.distance_to(at) / maxf(float(p.range), 1.0) * 15.0) - 2)
+				_later(world, n, func(): _area_hit(world, caster, p, at))
+		"inv_lit":
+			_area_hit(world, caster, p, at)
+		"acid_column":
+			_later(world, 15, func(): _area_hit(world, caster, p, at))
+		"firewall", "litnwall":
+			var dir := Vector2(1, 0)
+			if caster:
+				dir = (at - caster.pos).normalized() if at.distance_to(caster.pos) > 0.01 else Vector2.from_angle(caster.facing)
+			elif src.x != INF and at.distance_to(src) > 0.01:
+				dir = (at - src).normalized()
+			_lasting_tick(world, caster, p, at, dir, dur, -1)
+		"acid_fog":
+			_lasting_tick(world, caster, p, at, Vector2.ZERO, dur, -1)
+		"campfire":
+			_lasting_tick(world, caster, p, at, Vector2.ZERO, dur, dur + 30)
+		_:   # lightning, curse_magic
+			_hit(world, caster, p, target)
+
+
+static func _later(world: GameWorld, ticks: int, f: Callable) -> void:
+	world.get_tree().create_timer(float(ticks) * GameUnit.TICK, false).timeout.connect(func():
+		if is_instance_valid(world):
+			f.call())
+
+
+## One tick of a lasting damage effect: `left` < 0 counts the wall / fog
+## counter down to 0; otherwise (campfire) the counter counts up and the
+## effect has `left` ticks to live.
+static func _lasting_tick(world: GameWorld, caster, p: Dictionary, at: Vector2, dir: Vector2, counter: int, left: int, hit := false) -> void:
+	if not is_instance_valid(world) or (left < 0 and counter < 0) or left == 0:
+		return
+	if counter & 3 == 0:
+		# Walls and fog set the effect's flag bit 0 after their first
+		# hit; from then passes no attacker (campfire never).
+		_area_hit(world, caster, p, at, dir, hit)
+		hit = left < 0
+	var next := counter + 1 if left > 0 else counter - 1
+	world.get_tree().create_timer(GameUnit.TICK, false).timeout.connect(func():
+		_lasting_tick(world, caster, p, at, dir, next, left - 1 if left > 0 else -1, hit))
+
+
+## CEffectArrow: steps 0.6667 m a tick toward the target unit (or the point),
+## arriving within one step or after 400 ticks (as `ParticleFx._missile_tick`).
+static func _missile_tick(world: GameWorld, caster, p: Dictionary, target, pos: Vector2, point: Vector2, ticks: int) -> void:
+	if not is_instance_valid(world):
+		return
+	var t: GameUnit = target if target != null and is_instance_valid(target) else null
+	var dest := t.pos if t else point
+	if pos.distance_to(dest) < 0.6667 or ticks + 1 > 400:
+		_hit(world, caster, p, t)
+		return
+	pos += (dest - pos).normalized() * 0.6667
+	world.get_tree().create_timer(GameUnit.TICK, false).timeout.connect(func():
+		_missile_tick(world, caster, p, t, pos, point, ticks + 1))
+
+
+## one unit, after the filter when there is a caster.
+static func _hit(world: GameWorld, caster, p: Dictionary, u) -> void:
+	if u == null or not is_instance_valid(u) or u.dead:
+		return
+	var c: GameUnit = caster if caster != null and is_instance_valid(caster) else null
+	if c and not passes_filter(world, c, u, int(p.get("filter", 0))):
+		return
+	_spell_damage(world, c, p, u)
+
+
+## The area hits (with a wall
+## direction `dir`).
+static func _area_hit(world: GameWorld, caster, p: Dictionary, at: Vector2, dir := Vector2.ZERO, owner_only := false) -> void:
+	var c: GameUnit = caster if caster != null and is_instance_valid(caster) else null
+	for u: GameUnit in world.units_near(at, maxf(float(p.radius), 0.0)):
+		if u.dead or _flyer(u):
+			continue
+		if dir != Vector2.ZERO and absf((u.pos - at).dot(dir)) > 0.5:
+			continue
+		if c and not passes_filter(world, c, u, int(p.get("filter", 0))):
+			continue
+		_spell_damage(world, c, p, u, owner_only)
+
+
+## a unit of move class 0 whose altitude is 0.5 m or more.
+static func _flyer(u: GameUnit) -> bool:
+	return u.has_meta("flying") or (u.move_class() == 0 and float(u.proto.get("altitude", 0.0)) >= 0.5)
+
+
+## The hit record: value = effect and armour factor
+## = 1, both x 4 / duration when the duration is over 1; body part = 6
+## (the whole body). subtracts the natural armour of the type x
+## the factor x the difficulty's absorption (fire thermal, acid chemical,
+## lightning electrical), then spreads the rest over the living parts
+## (`GameUnit.body_damage`), where a character's worn layers come off each
+## part's share (x the factor). **Approx.**: their wear
+##  is not applied for spells.
+static func _spell_damage(world: GameWorld, caster: GameUnit, p: Dictionary, u: GameUnit, owner_only := false) -> void:
+	var power := float(p.effect)
+	var af := 1.0
+	if int(p.duration) > 1:
+		af = 4.0 / float(p.duration)
+		power *= af
+	var t := int(DAMAGE_TYPE_INDEX.get(p.subtype, 6))
+	var armour: PackedFloat32Array = u.stats.get("armor", PackedFloat32Array())
+	# Protection effects are folded into that armour.
+	var prot := 0.0
+	for b in u.buffs.values():
+		if b.get("resist", "") in [p.subtype, "all"]:
+			prot = maxf(prot, float(b.get("armor", 0.0)))
+	var arm := (armour[t] if t < armour.size() else 0.0) + prot
+	var dmg := power - arm * af * world.combat.difficulty(u, "Absorption")
+	if dmg <= 0.0:
+		return
+	# a character's (script-name id, `has_meta("hero")`) worn
+	# layers on each part, outer first, each x the armour factor, on that
+	# part's share (`GameUnit.body_damage`).
+	var layers := Callable()
+	if u.has_meta("hero"):
+		var armors: Array = u.get_meta("hero").get("armors", [])
+		if not armors.is_empty():
+			layers = func(i: int, amount: float) -> float:
+				var d := amount
+				for l: Array in Combat.worn_layers(armors, u.part_group(i)):
+					d -= float((l[1] as PackedFloat32Array)[t]) * af
+					if d <= 0.0:
+						return 0.0
+				return d
+	u.take_damage(dmg, caster, -1, PackedFloat32Array(), 0, layers, owner_only)
 
 
 ## Host: a cast without a caster (script CastSpellPoint / CastSpellUnit,
@@ -344,7 +500,7 @@ static func cast_from(world: GameWorld, spell: String, from: Vector2, target: Ga
 
 
 static func _cast_one(world: GameWorld, spell: String, p: Dictionary, from: Vector2, tu: GameUnit, at: Vector2) -> void:
-	apply(world, null, spell, tu, at)
+	apply(world, null, spell, tu, at, from)
 	if world.session:
 		world.session.broadcast({"t": "spellfx", "code": p.code, "sub": p.subtype, "x": at.x, "y": at.y,
 			"a": -1, "tu": tu.uid if tu else -1, "spell": spell, "fx": from.x, "fy": from.y,
@@ -415,6 +571,16 @@ static func passes_filter(world: GameWorld, caster: GameUnit, u: GameUnit, mask:
 
 
 const RACE_FIGURES := {4: ["unhuma", "unhufe"], 8: ["unmogo"], 0x10: ["unorma", "unorfe"], 0x20: ["unmoli"]}
+
+
+static func _fireworks_tick(world: GameWorld, at: Vector2, radius: float, duration: int, counter: int) -> void:
+	if counter < 0 or duration <= 0 or not is_instance_valid(world) or world.ai == null:
+		return
+	var level := floorf(float(counter) / float(duration) * 250.0 + 50.0)
+	for u: GameUnit in world.units_near(at, radius):
+		world.ai.suspect(u, at, level, -1.0)
+	world.get_tree().create_timer(GameUnit.TICK, false).timeout.connect(func():
+		_fireworks_tick(world, at, radius, duration, counter - 1))
 
 
 static func _buff(u: GameUnit, name: String, secs: float, data: Dictionary) -> void:

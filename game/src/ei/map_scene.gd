@@ -24,7 +24,7 @@ static func load_map(map_name: String, mob_name := "", spawn_units := true) -> E
 	s.add_child(s.terrain)
 	var t1 := Time.get_ticks_msec()
 	var mob_path := "maps/%s.mob" % mob_name
-	if FileAccess.file_exists(GameData.root.path_join(mob_path)):
+	if GameFiles.exists(GameData.root.path_join(mob_path)):
 		s.mob = EIMob.load_bytes(GameData.read_file(mob_path))
 		s._place_objects()
 	s.stats.terrain_ms = t1 - t0
@@ -60,6 +60,7 @@ func _place_objects() -> void:
 	var missing := {}
 	for o: Dictionary in mob.objects:
 		LoadingScreen.tick()
+		NetStatus.keep_alive()
 		var template: String = o.template
 		if template.is_empty():
 			continue

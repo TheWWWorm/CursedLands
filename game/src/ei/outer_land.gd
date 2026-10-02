@@ -132,7 +132,7 @@ func _build(t: EITerrain, land_mat: Material, water_mat: Material) -> void:
 			# texture tile corners: half a tile on 1 m cells, else the whole tile
 			var u := _tile_span(x0, x1)
 			var v := _tile_span(y0, y1)
-			land.quad(t, p, z, n, t.land_tile[ti], 0, lc, u, v)
+			land.quad(t, p, z, n, t.land_tile[ti], ti, lc, u, v)
 			var wf := t.water_tile[ti]
 			if wf < 0:
 				continue
@@ -148,6 +148,7 @@ func _build(t: EITerrain, land_mat: Material, water_mat: Material) -> void:
 	var lm := land.mesh(land_mat)
 	if lm:
 		lm.name = "Land"
+		lm.layers = EITerrain.SHADOW_RECEIVER_LAYER | EITerrain.DECAL_LAYER
 		lm.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		add_child(lm)
 	var wm := water.mesh(water_mat)

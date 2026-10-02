@@ -37,6 +37,8 @@ extends Interface800
 ## FPS counter; render scale on the sub-page): multiple-choice rows stepped by
 ## a click / Enter (forward) or Left / Right, applied at once like the volumes
 ## and restored by ✗.
+## Remake: the Game page's free row 13 "Co-op (remake)…" opens the co-op host
+## settings (COOP_GROUP) under the Game tab; its row 13 leads back.
 ## There is no language choice (the original has none: the texts and voices
 ## are those of the edition supplied). Behind it the frozen,
 ## greyed frame (Interface800.dim_layer).
@@ -63,7 +65,14 @@ signal closed
 
 const REMAKE_GROUP := 11   # GameData.OPTION_GROUPS index of the remake sub-page
 const REMAKE_GROUP2 := 12  # its second page ("More effects…", row 13)
-const MORE_LINK := ["More effects…", "HD textures, soft and lit particles, contact shadows, torch glow."]
+const COOP_GROUP := 13     # the remake's co-op page, from the Game page's row 13
+const SURFACE_GROUP := 14  # lighting and surfaces, from More effects row 10
+## The remake sub-pages and the original tab each belongs to (lit while it is up).
+const SUB_PAGES := {REMAKE_GROUP: 0, REMAKE_GROUP2: 0, COOP_GROUP: 3, SURFACE_GROUP: 0}
+const COOP_LINK := ["Co-op (remake)…",
+	"Co-op host settings: full experience for every party member, monsters scaled to the player count, opening the port on the router."]
+const MORE_LINK := ["More effects…", "HD textures, soft and lit particles, contact shadows, torch glow; anti-aliasing, shadow quality, texture filtering."]
+const SURFACE_LINK := ["Lighting and surfaces…", "Dynamic firelight, surface materials, leaf backlighting, rain on surfaces and lava lighting."]
 const TABS := 11           # the original's group buttons
 const LINK_ROW := 13
 const LIVE := ["volume_sfx", "volume_stream", "volume_voice", "brightness", "contrast", "gamma", "reverse_stereo",
@@ -85,6 +94,7 @@ var _hold_acc := 0.0
 var _slide := 1.0       # slide-in time, 0..1
 var _kmap := {}         # scan code -> action (the screen's copy)
 var _klist := {}        # action -> scan codes listed on its row
+var _key_profiles := {} # pending Classic / WASD maps; neither changes until ✓
 var _waiting := false   # the selected key row waits for a key
 var _box: MessageBox
 var _tutorial: TutorialPanel
@@ -157,26 +167,26 @@ func _group_count() -> int:
 
 ## The tab lit for the page: the remake sub-page belongs to Graphics (0).
 func _tab() -> int:
-	return 0 if _group >= REMAKE_GROUP else _group
+	return int(SUB_PAGES.get(_group, _group))
 
 
 func _group_label(g: int) -> String:
 	var key: String = GameData.OPTION_GROUPS[g]
 	if GameData.REMAKE_OPTIONS.has(key):
-		return "%s: %s" % [_group_label(0), GameData.REMAKE_OPTIONS[key][0]]
+		return "%s: %s" % [_group_label(int(SUB_PAGES.get(g, 0))), RemakeText.t(GameData.REMAKE_OPTIONS[key][0])]
 	return _t("string option_group_" + key, key.capitalize())
 
 
 func _group_tip(g: int) -> String:
 	var key: String = GameData.OPTION_GROUPS[g]
 	if GameData.REMAKE_OPTIONS.has(key):
-		return "%s\nThe remake's own settings; not part of the original game." % GameData.REMAKE_OPTIONS[key][0]
+		return RemakeText.t("%s\nThe remake's own settings; not part of the original game.") % RemakeText.t(GameData.REMAKE_OPTIONS[key][0])
 	return GameData.text("tip option_group_" + key).strip_edges()
 
 
 ## the page's rows; the first row with a control is selected.
 func _show_group(g: int) -> void:
-	_group = g if g == REMAKE_GROUP or g == REMAKE_GROUP2 else clampi(g, 0, TABS - 1)
+	_group = g if SUB_PAGES.has(g) else clampi(g, 0, TABS - 1)
 	_rows.clear()
 	for o: Array in GameData.OPTIONS:
 		if int(o[3]) != _group:
@@ -185,8 +195,8 @@ func _show_group(g: int) -> void:
 		var label := _t("string option_" + name, name.capitalize()).trim_suffix(":").strip_edges()
 		var tip := GameData.text("tip option_" + name).strip_edges()
 		if GameData.REMAKE_OPTIONS.has(name):
-			label = GameData.REMAKE_OPTIONS[name][0]
-			tip = "%s\n%s\n(Remake option.)" % [label, GameData.REMAKE_OPTIONS[name][1]]
+			label = RemakeText.t(GameData.REMAKE_OPTIONS[name][0])
+			tip = RemakeText.t("%s\n%s\n(Remake option.)") % [label, RemakeText.t(GameData.REMAKE_OPTIONS[name][1])]
 		var choices := GameData.option_choices(name)
 		_rows[int(o[4])] = {"kind": "slider" if int(o[1]) == 0 else "switch", "name": name,
 			"max": choices.size() if not choices.is_empty() else int(o[2]), "label": label, "tip": tip,
@@ -197,22 +207,35 @@ func _show_group(g: int) -> void:
 		var name: String = a[1]
 		_rows[int(a[3])] = {"kind": "keys", "name": name,
 			"label": _action_label(name),
-			"tip": "%s\n%s\n(Remake option.)" % GameData.REMAKE_OPTIONS[name] if GameData.REMAKE_OPTIONS.has(name)
+			"tip": RemakeText.t("%s\n%s\n(Remake option.)") % RemakeText.tl(GameData.REMAKE_OPTIONS[name]) if GameData.REMAKE_OPTIONS.has(name)
 				else GameData.text("tip action_" + name).strip_edges(),
 			"keys": _keys_text(name)}
 	if _group == 0:
 		_rows[LINK_ROW] = {"kind": "link", "name": "", "to": REMAKE_GROUP,
-			"label": REMAKE_LINK[0], "tip": "%s\n%s\n(Remake option.)" % REMAKE_LINK}
+			"label": RemakeText.t(REMAKE_LINK[0]), "tip": RemakeText.t("%s\n%s\n(Remake option.)") % RemakeText.tl(REMAKE_LINK)}
 	elif _group == REMAKE_GROUP:
 		_rows[LINK_ROW] = {"kind": "link", "name": "", "to": REMAKE_GROUP2,
-			"label": MORE_LINK[0], "tip": "%s\n%s\n(Remake option.)" % MORE_LINK}
+			"label": RemakeText.t(MORE_LINK[0]), "tip": RemakeText.t("%s\n%s\n(Remake option.)") % RemakeText.tl(MORE_LINK)}
 		_rows[PRESET_ROW] = {"kind": "link", "name": "", "preset": true,
-			"label": ORIGINAL_LOOK[0], "tip": "%s\n%s\n(Remake option.)" % ORIGINAL_LOOK}
+			"label": RemakeText.t(ORIGINAL_LOOK[0]), "tip": RemakeText.t("%s\n%s\n(Remake option.)") % RemakeText.tl(ORIGINAL_LOOK)}
+	elif _group == 3:   # remake: the Game page's free row 13
+		_rows[LINK_ROW] = {"kind": "link", "name": "", "to": COOP_GROUP,
+			"label": RemakeText.t(COOP_LINK[0]), "tip": RemakeText.t("%s\n%s\n(Remake option.)") % RemakeText.tl(COOP_LINK)}
+	elif _group == COOP_GROUP:
+		_rows[LINK_ROW] = {"kind": "link", "name": "", "to": 3,
+			"label": "« " + _group_label(3), "tip": ""}
 	elif _group == REMAKE_GROUP2:
+		_rows[10] = {"kind": "link", "name": "", "to": SURFACE_GROUP,
+			"label": RemakeText.t(SURFACE_LINK[0]), "tip": RemakeText.t("%s\n%s\n(Remake option.)") % RemakeText.tl(SURFACE_LINK)}
 		_rows[LINK_ROW] = {"kind": "link", "name": "", "to": REMAKE_GROUP,
-			"label": "« " + GameData.REMAKE_OPTIONS.graphics[0].capitalize(), "tip": ""}
+			"label": "« " + RemakeText.t(GameData.REMAKE_OPTIONS.graphics[0]).capitalize(), "tip": ""}
 		_rows[PRESET_ROW] = {"kind": "link", "name": "", "preset": true,
-			"label": ORIGINAL_LOOK[0], "tip": "%s\n%s\n(Remake option.)" % ORIGINAL_LOOK}
+			"label": RemakeText.t(ORIGINAL_LOOK[0]), "tip": RemakeText.t("%s\n%s\n(Remake option.)") % RemakeText.tl(ORIGINAL_LOOK)}
+	elif _group == SURFACE_GROUP:
+		_rows[LINK_ROW] = {"kind": "link", "name": "", "to": REMAKE_GROUP2,
+			"label": "« " + RemakeText.t(GameData.REMAKE_OPTIONS.graphics2[0]).capitalize(), "tip": ""}
+		_rows[PRESET_ROW] = {"kind": "link", "name": "", "preset": true,
+			"label": RemakeText.t(ORIGINAL_LOOK[0]), "tip": RemakeText.t("%s\n%s\n(Remake option.)") % RemakeText.tl(ORIGINAL_LOOK)}
 	_sel = -1
 	_waiting = false   # = 0
 	for r in 14:
@@ -224,11 +247,16 @@ func _show_group(g: int) -> void:
 
 # ------------------------------------------------------------------ keys
 
-## the map copied, each action listing the
-## first key bound to it (scan codes 0..0x1ff in order, the list taking a key
-## only while empty).
+## editable copies of the bindings. The remake
+## lists all aliases so the WASD layout's arrows / Delete / End are visible.
 func _load_keys() -> void:
-	_kmap = EIKeymap.bindings()
+	_key_profiles = {0: EIKeymap.bindings(0), 1: EIKeymap.bindings(1)}
+	_select_key_profile()
+
+
+func _select_key_profile() -> void:
+	var profile := 1 if int(_values.get("camera_style", 1)) == 1 and int(_values.get("cam_wasd", 0)) == 1 else 0
+	_kmap = _key_profiles[profile]
 	_klist.clear()
 	for a: Array in EIKeymap.ACTIONS:
 		_klist[a[1]] = []
@@ -236,7 +264,7 @@ func _load_keys() -> void:
 	scans.sort()
 	for sc: int in scans:
 		var act: String = _kmap[sc]
-		if _klist.has(act) and (_klist[act] as Array).is_empty():
+		if _klist.has(act):
 			_klist[act].append(sc)
 
 
@@ -250,7 +278,7 @@ func _keys_text(act: String) -> String:
 
 func _action_label(act: String) -> String:
 	if GameData.REMAKE_OPTIONS.has(act):   # the remake's own key actions (EIKeymap)
-		return GameData.REMAKE_OPTIONS[act][0]
+		return RemakeText.t(GameData.REMAKE_OPTIONS[act][0])
 	return _t("string action_" + act, act.capitalize())
 
 
@@ -269,7 +297,7 @@ func _key_pressed(e: InputEventKey) -> void:
 		_waiting = false
 		queue_redraw()
 		return
-	var sc := EIKeymap.scan_code(e.keycode)
+	var sc := EIKeymap.scan_code(e.physical_keycode if e.physical_keycode else e.keycode)
 	if sc < 0:
 		sound("messbox\\cancel")
 		return
@@ -316,7 +344,7 @@ const REMAKE_LINK := ["Remake options: graphics…",
 ## always-on quality settings in project.godot keep their colours).
 const PRESET_ROW := 12
 const ORIGINAL_LOOK := ["Original look: all effects off",
-	"Switches every remake graphics effect on both remake pages off, leaving the original 2000 look (confirm with ✓)."]
+	"Switches every remake graphics effect off, leaving the original 2000 look (confirm with ✓)."]
 
 
 func _switch_text(row: Dictionary) -> String:
@@ -332,6 +360,9 @@ func _switch_text(row: Dictionary) -> String:
 
 func _set_value(name: String, v: int) -> void:
 	_values[name] = v
+	if name in ["camera_style", "cam_wasd"]:
+		_select_key_profile()
+		_refresh_keys()
 	if name in LIVE:   # volumes, gamma ramp, stereo at once
 		GameData.set_option(name, v)
 	queue_redraw()
@@ -360,7 +391,8 @@ func _toggle(r: int) -> void:
 ## map copied back.
 func _accept() -> void:
 	sound("messbox\\ok")
-	EIKeymap.set_bindings(_kmap)
+	for profile: int in _key_profiles:
+		EIKeymap.set_bindings(_key_profiles[profile], profile)
 	for n in _values:
 		if int(_values[n]) != GameData.option(n):
 			GameData.set_option(n, int(_values[n]))
@@ -573,7 +605,7 @@ func _unhandled_key_input(e: InputEvent) -> void:
 		_:
 			# a key the screen leaves alone that maps to
 			# tutorial_script shows the screen's tutorial ((1)).
-			if EIKeymap.action(e.keycode) == "tutorial_script" and not e.echo:
+			if EIKeymap.event_action(e) == "tutorial_script" and not e.echo:
 				_tutorial.show_screen("options", true)
 			else:
 				return

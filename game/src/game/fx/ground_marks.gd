@@ -427,7 +427,9 @@ func _step_frames(u: GameUnit, st: Dictionary) -> void:
 	if rec.is_empty():
 		return
 	if int(rec.act) == 2:   # clip flags: the shake at record
-		if _passed(prev, cur, float(rec.hit)):
+		# Skipped while the client's world mode is 3 (
+		# set from world): the village screen.
+		if _passed(prev, cur, float(rec.hit)) and String(world.zone.get("type", "")) != "brief":
 			_step_shake(u)
 		return
 	if not u.visible or u.stance == GameUnit.STANCE_CRAWL:   # unit = 0: no prints
@@ -505,8 +507,11 @@ func _part(u: GameUnit, name: String) -> Node3D:
 	return u.model.find_child(name, true, false) as Node3D if u.model else null
 
 
-## Part half-extents across / along: half the part mesh's
-## bounds in its own EI x / y (approx.).
+## Part half-extents across / along: the part box's max x / y
+## (box min.., max.., unions them into the unit box
+## ), from the.fig header's per-variant centred min / max.
+## That header box equals half the vertex bounds (checked on unhuma rl3, ll3,
+## bd, hd, lh2), so half the part mesh's bounds in its own EI x / y is it.
 func _extent(u: GameUnit, name: String, n: Node3D, kind := "") -> Vector2:
 	var key := "%d:%s" % [u.get_instance_id(), name]
 	if _ext.has(key):
@@ -526,7 +531,8 @@ func _extent(u: GameUnit, name: String, n: Node3D, kind := "") -> Vector2:
 	return e
 
 
-## Unit size max: the larger horizontal half-extent of its bounds.
+## Unit size max: half-extents of the union
+## the part boxes (at their posed positions) — the figure bounds.
 func _unit_size(u: GameUnit) -> float:
 	var b := ParticleFx.of(world)._box(u)
 	return maxf(b.size.x, b.size.z) * 0.5

@@ -43,11 +43,23 @@ var day := 1
 ## credit tracking at this save; "applied" = progress packages already merged
 ## into this save (package id -> {seq, money, items}).
 var coop := {}
+## The host's camera at the save (the original scenario.sav: the camera's own
+## record, — look-at point, turn, pitch
+## distance and velocities; restored as saved, no refocus): CameraRig.pose().
+var camera := {}
 
 
 ## Remake co-op (CoopProgress): called as watch(state, player, key, old, new)
 ## after a var changed, to credit joining players' own campaigns.
 static var watch := Callable()
+
+
+## Real seconds per game hour. the original: clock rate =
+## 1 / registry "DefaultTimeScale" (60, settings =
+## ) × 1 / 15 hours per logic tick, so 900 ticks of 55 ms =
+## 49.5 s an hour (adds ticks × rate to "gtime"; the client
+## clock is ticks × rate + offset too).
+const HOUR_SECONDS := 900.0 * 0.055
 
 
 func advance_hours(h: float) -> void:
@@ -156,7 +168,7 @@ func ensure_hero(player: int, prototype: String, player_name := "") -> void:
 		weapons = Items.split_list(npc.get("weapons", []))
 	var hero := {
 		"prototype": prototype,
-		"name": "Zak" if player == 0 else GameUnit.unit_title(prototype),
+		"name": hero_name() if player == 0 else GameUnit.unit_title(prototype),
 		"level": 1,
 		"exp": 0.0,
 		"exp_total": float(npc.get("experience", 0.0)),
@@ -191,13 +203,20 @@ func ensure_hero(player: int, prototype: String, player_name := "") -> void:
 # disguise, Zak polymorphed into a Jun, ...). The inactive main roster waits in
 # parties[""]; mercenaries stay with it.
 
+## The main hero's name in the edition's language: texts.res "unit human_hero"
+## (Zak / Зак / Kiran), as the unit name the original shows for the Human Hero prototype.
+static func hero_name() -> String:
+	var t := GameUnit.unit_title("human_hero")
+	return t if t else "Zak"
+
+
 func add_party_unit(party: String, unit_name: String, prototype: String) -> void:
 	var proto := GameData.db.find("monster_prototypes", prototype)
 	var npc := GameData.db.find("npcs", prototype)
 	var title := GameUnit.unit_title(prototype)
 	var h := {
 		"prototype": prototype, "unit_name": unit_name,
-		"name": "Zak" if unit_name.to_lower() == "hero" else (title if title else unit_name),
+		"name": hero_name() if unit_name.to_lower() == "hero" else (title if title else unit_name),
 		"level": 1, "exp": 0.0, "hp": -1.0,
 		"exp_total": float(npc.get("experience", 0.0)), "skills": Skills.from_npc(npc),
 		"perks": Array(npc.get("perks", [])).map(func(x): return String(x).to_lower()),
@@ -377,12 +396,27 @@ func apply_hero(u: GameUnit) -> void:
 			# Aggressive / Defensive (unit) is part of the original's unit
 			# save record (restored).
 			u.aggressive = bool(h.get("aggressive", true))
-			# So are posture and gait.
-			u.restore_gait(int(h.get("gait", 2)))
+			# So is the gait, but only outside villages (entry_gait).
+			u.restore_gait(entry_gait(u.world, int(h.get("gait", 2))))
 			if float(h.hp) > 0.0:
 				u.hp = minf(float(h.hp), u.max_hp)
 			u.set_meta("hero", h)
 			return
+
+
+## The gait a party unit enters a zone with (the original, party
+## deployment): the unit is made new (: posture = 2 and
+## gait = 2, walk) and its record's gait is put back only when
+## the world mode is 1 — a game zone (: zone type 0 → 1
+## the global map 1 → 4, a village 2 → 3) — and not on the campaign start
+## spot of zone1. So a village is always entered walking and standing, with
+## no orders (the units are new). (A per-unit spot record of the
+## deployment, second argument, sets it with the posture
+##  in any mode; the remake's save loading restores it so.)
+static func entry_gait(world: GameWorld, g: int) -> int:
+	if world and String(world.zone.get("type", "game")) == "brief":
+		return 2
+	return g
 
 
 func store_party_positions(world: GameWorld) -> void:
@@ -470,6 +504,7 @@ func store_zone(id: String, world: GameWorld) -> void:
 	if world.has_meta("replay"):
 		var rs: Dictionary = world.get_meta("replay")
 		z.objs = rs.objs.duplicate()
+		z.moved = rs.get("moved", {}).duplicate(true)
 		z.fx = rs.fx.duplicate(true)
 		z.music = rs.music.duplicate()
 	zones[id] = z
@@ -527,7 +562,11 @@ func restore_zone(id: String, world: GameWorld) -> void:
 				world.lever_sys.apply(int(nid), false)
 	if z.has("objs") or z.has("fx"):
 		world.set_meta("replay", {"objs": z.get("objs", {}).duplicate(), "fx": z.get("fx", {}).duplicate(true),
-			"magic": {}, "spells": [], "music": z.get("music", {}).duplicate(), "weather": {}, "tornado": {}})
+			"magic": {}, "spells": [], "music": z.get("music", {}).duplicate(), "weather": {}, "tornado": {},
+			"moved": z.get("moved", {}).duplicate(true)})
+		for nid in z.get("moved", {}):   # script SetCP on objects
+			var mp: Array = z.moved[nid]
+			world.move_object(int(nid), Vector3(mp[0], mp[1], mp[2]))
 		for nid in z.get("objs", {}):
 			var o = world.objects.get(int(nid))
 			if o and is_instance_valid(o):
@@ -555,7 +594,7 @@ func to_dict() -> Dictionary:
 	return {"version": 1, "vars": vars, "heroes": heroes, "zones": zones, "visited": visited,
 		"quests": quests, "money": money, "items": items, "quest_items": quest_items,
 		"parties": parties, "current_party": current_party, "party_bags": party_bags, "experience": experience, "mercs": mercs, "pets": pets, "side_quests": side_quests, "shops": shops, "current_zone": current_zone,
-		"world_time": world_time, "day": day, "coop": coop}
+		"world_time": world_time, "day": day, "coop": coop, "camera": camera}
 
 
 func save(path: String) -> Error:
@@ -571,7 +610,10 @@ static func load_from(path: String) -> CampaignState:
 	var f := FileAccess.open(path, FileAccess.READ)
 	if f == null:
 		return null
-	var d: Dictionary = f.get_var()
+	var value: Variant = f.get_var(false)
+	if not value is Dictionary or not value.get("heroes", {}) is Dictionary:
+		return null
+	var d: Dictionary = value
 	var s := CampaignState.new()
 	for k in d:
 		if k != "version" and k in s:

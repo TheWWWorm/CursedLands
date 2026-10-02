@@ -12,3 +12,7 @@ builds/
 *.dmg
 *.app/
 release/
+# Local Cloudflare deployment settings.
+.wrangler/
+# The exported Web build is committed for static hosting.
+!public/**

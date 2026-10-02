@@ -61,7 +61,7 @@ func _process(dt: float) -> void:
 	_weather_tick(dt)
 	# The clock runs at the game's rate: sets it
 	# as the game start does.
-	set_hour(fmod(hour + dt / 60.0, 24.0))
+	set_hour(fmod(hour + dt / CampaignState.HOUR_SECONDS, 24.0))
 
 
 func _setup_weather() -> void:
@@ -224,6 +224,7 @@ func _setup_view(map: EIMapScene) -> void:
 	_env = env
 	_sun = DirectionalLight3D.new()
 	_sun.shadow_enabled = true
+	Gfx.setup_sun_casters(_sun)
 	add_child(_sun)
 	var t := Time.get_datetime_dict_from_system()
 	set_hour(float(t.hour) + float(t.minute) / 60.0)
@@ -250,10 +251,9 @@ func _setup_view(map: EIMapScene) -> void:
 ## [time f32, u32, pos x y z f32, quat w x y z f32] (EI coordinates). The camera
 ## looks along its local +z with -y up and +x to the right.
 func _cam_pose(rel: String) -> Transform3D:
-	var f := FileAccess.open(GameData.root.path_join(rel), FileAccess.READ)
-	if f == null or f.get_length() < 36:
+	var b := GameFiles.read(GameData.root.path_join(rel), 0, 36)
+	if b.size() < 36:
 		return Transform3D.IDENTITY
-	var b := f.get_buffer(36)
 	var q := EISpace.quat(b.decode_float(20), b.decode_float(24), b.decode_float(28), b.decode_float(32))
 	var right := q * EISpace.vec(Vector3(1, 0, 0))
 	var up := q * EISpace.vec(Vector3(0, -1, 0))
@@ -262,18 +262,60 @@ func _cam_pose(rel: String) -> Transform3D:
 		EISpace.pos(b.decode_float(8), b.decode_float(12), b.decode_float(16)))
 
 
-## Board under a screen point, "" if none.
+## The boards' hit rectangles (the original reads menus.reg
+## [MainMenu] in this order; the menu init adds them
+## as click areas, so index is this order) and the
+## animation plays for each index (uspecial 1, 3, 5, 7, 11, 9).
+const REG := [["NewGame", "button01_new_game", 1], ["LoadGame", "button02_load_game", 3],
+	["ExitGame", "button08_exit", 5], ["Options", "button04_options", 7],
+	["Credits", "button06_credits", 11], ["Multiplayer", "button03_multiplayer", 9]]
+static var _reg_rects: Array = []
+
+
+## menus.reg [MainMenu] rectangles (800×600, left / top / right / bottom),
+## in REG order; empty when the file is missing.
+static func reg_rects() -> Array:
+	if _reg_rects.is_empty() and GameData.menus and GameData.menus.has("menus.reg"):
+		var mm: Dictionary = EIRegFile.parse(GameData.menus.read("menus.reg")).get("MainMenu", {})
+		for e: Array in REG:
+			var v: Array = mm.get(e[0], [])
+			_reg_rects.append(Rect2(v[0], v[1], v[2] - v[0], v[3] - v[1]) if v.size() == 4 else Rect2())
+	return _reg_rects
+
+
+## A window point in the original's 800×600 menu space. The original drew the menu
+## 4:3 with the rectangles stretched per axis; the remake's view keeps the
+## height (CameraRig.ORIGINAL_FOV vertical), so x is taken from the centre at
+## the height's scale — the same as stretching at 4:3; at 16:9 / 16:10 the
+## view widens (remake rule) and the rects stay on the boards.
+func to_800(p: Vector2) -> Vector2:
+	var vs := get_viewport().get_visible_rect().size
+	var k := 600.0 / maxf(vs.y, 1.0)
+	return Vector2(400.0 + (p.x - vs.x * 0.5) * k, p.y * k)
+
+
+## Board under a screen point, "" if none: the first menus.reg rectangle
+## (PtInRect) holding it.
 func board_at(p: Vector2) -> String:
-	var best := ""
-	var bd := INF
-	for part: String in _boards:
-		var r := _screen_rect(_boards[part])
-		if r.grow(4.0).has_point(p):
-			var d := r.get_center().distance_to(p)
-			if d < bd:
-				bd = d
-				best = part
-	return best
+	var q := to_800(p)
+	var rr := reg_rects()
+	for i in rr.size():
+		var r: Rect2 = rr[i]
+		if q.x >= r.position.x and q.y >= r.position.y and q.x < r.end.x and q.y < r.end.y:
+			return REG[i][1]
+	return ""
+
+
+## A board's hit rectangle in window pixels (tools / tests).
+func board_rect(part: String) -> Rect2:
+	var rr := reg_rects()
+	for i in rr.size():
+		if REG[i][1] == part:
+			var vs := get_viewport().get_visible_rect().size
+			var k := vs.y / 600.0
+			var r: Rect2 = rr[i]
+			return Rect2(Vector2(vs.x * 0.5 + (r.position.x - 400.0) * k, r.position.y * k), r.size * k)
+	return Rect2()
 
 
 func _screen_rect(n: Node3D) -> Rect2:
@@ -318,8 +360,11 @@ func _set_hover(part: String) -> void:
 	_hover = part
 	_ui_sound("buttons\\menu\\stone.wav")   # the hovered board changed
 	if part:
-		var idx := BOARDS.keys().find(part)
-		var anim := "ei/uspecial%02d" % (idx * 2 + 1)
+		var n := 1
+		for e: Array in REG:
+			if e[1] == part:
+				n = e[2]
+		var anim := "ei/uspecial%02d" % n
 		if _player.has_animation(anim):
 			_player.play(anim)
 			_player.queue("ei/cidle")

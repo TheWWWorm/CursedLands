@@ -18,29 +18,52 @@ var _model: Node3D
 var _cam: Camera3D
 var _framed := 0
 # Expressions: the face texture gets suffix
-# "c" for 2 s when health drops (with a red flash fading over 1 s), "b"
-# while health is under 25 %, otherwise none. ("a", a smile, has a setter
-#  that nothing calls.)
+# "c" for 2 s when health drops, "a" for 4 s on kill ack 0x30, otherwise
+# "b" below 25 % stamina. The independent 1 s red flash uses trunc(t * 200).
 var _unit: GameUnit
 var _mats: Array[StandardMaterial3D] = []
 var _tex := ""
 var _expr := -1
-var _hit_t := 0.0
+var _expression := ""
+var _expression_t := 0.0
+var _flash_t := 0.0
 var _last_hp := -1.0
 var _flash: ColorRect
+var selected := false
+var _head_motion := 0   # 1 nod, 2 shake, 3 idle look
+var _motion_t := 0.0
+var _look_q := Quaternion.IDENTITY
+var _look_speed := 1.0
+var _selection_q := Quaternion.IDENTITY
+var _rng := RandomNumberGenerator.new()
+
+
+func _ready() -> void:
+	_rng.randomize()
 
 
 ## Rebuilds only when the unit's look changed (equipment swap).
 func show_unit(u: GameUnit) -> void:
-	var key := "%s|%s|%s" % [u.info.get("prototype", ""), u.info.get("armors", []), u.info.get("weapons", [])]
+	if u != _unit:
+		_expression = ""
+		_expression_t = 0.0
+		_flash_t = 0.0
+		_last_hp = u.hp
+		_head_motion = 0
+		_selection_q = Quaternion.IDENTITY
+	_unit = u
+	var key := "%s|%s|%s|%s|%s" % [u.get_instance_id(), u.info.get("prototype", ""),
+		u.info.get("complexion", Vector3.ZERO), u.info.get("armors", []), u.info.get("weapons", [])]
 	if key == _key:
 		return
 	_key = key
 	for c in get_children():
 		c.queue_free()
 	_mats.clear()
+	_model = null
+	_flash = null
 	stretch = true
-	custom_minimum_size = Vector2(view_size)
+	custom_minimum_size = Vector2.ZERO
 	var vp := SubViewport.new()
 	vp.size = view_size
 	vp.own_world_3d = true
@@ -50,7 +73,7 @@ func show_unit(u: GameUnit) -> void:
 		return
 	var info: Dictionary = u.info.duplicate()
 	info.weld = false   # the head needs its own mesh here
-	var m := EIUnitModel.create(info)
+	var m := EIUnitModel.create(info, true)
 	if m == null:
 		return
 	vp.add_child(m)
@@ -76,7 +99,10 @@ func show_unit(u: GameUnit) -> void:
 ## bounds, seen from the front (models face EI -Y, which is Godot +Z).
 func _process(dt: float) -> void:
 	if not _mats.is_empty():
+		if get_tree().paused:
+			dt = 0.0   #  uses zero UI delta while paused.
 		_update_expression(dt)
+		_update_head(dt)
 		return
 	if _model == null or not _model.is_inside_tree():
 		return
@@ -132,6 +158,7 @@ func _infa_face(vp: SubViewport, u: GameUnit) -> bool:
 	if n == null:
 		return false
 	vp.add_child(n)
+	_model = n
 	var box := AABB()
 	var first := true
 	for mi: MeshInstance3D in n.find_children("*", "MeshInstance3D", true, false):
@@ -161,10 +188,8 @@ func _infa_face(vp: SubViewport, u: GameUnit) -> bool:
 	env.environment = Environment.new()
 	env.environment.background_mode = Environment.BG_CLEAR_COLOR
 	vp.add_child(env)
-	_unit = u
 	_tex = names[1]
 	_expr = -1
-	_last_hp = u.hp
 	_flash = ColorRect.new()
 	_flash.color = Color(1, 0, 0, 0)
 	_flash.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -177,18 +202,22 @@ func _infa_face(vp: SubViewport, u: GameUnit) -> bool:
 func _update_expression(dt: float) -> void:
 	if not is_instance_valid(_unit):
 		return
-	if _unit.hp < _last_hp - 0.01:
-		_hit_t = 2.0
-		_flash.color.a = 0.5
+	if _unit.hp < _last_hp:
+		_expression = "c"
+		_expression_t = 0.0
+		_flash_t = 1.0
+	else:
+		_flash_t = maxf(0.0, _flash_t - dt)
 	_last_hp = _unit.hp
-	_hit_t = maxf(0.0, _hit_t - dt)
-	_flash.color.a = maxf(0.0, _flash.color.a - dt * 0.5)
-	var e := ""
-	if _hit_t > 0.0:
-		e = "c"
-	elif _unit.max_hp <= 0.0 or _unit.hp / _unit.max_hp < 0.25:
+	_flash.color.a = int(_flash_t * 200.0) / 255.0
+	if not _expression.is_empty():
+		_expression_t += dt
+		if _expression_t > (4.0 if _expression == "a" else 2.0):
+			_expression = ""
+	var e := _expression
+	if e.is_empty() and (_unit.max_mana <= 0.0 or _unit.mana / _unit.max_mana < 0.25):
 		e = "b"
-	var code := "_bc".find(e) if e else 0
+	var code := "_abc".find(e) if e else 0
 	if code == _expr:
 		return
 	_expr = code
@@ -197,3 +226,51 @@ func _update_expression(dt: float) -> void:
 		tex = GameData.get_texture(_tex)   # no such variant: the base face
 	for m in _mats:
 		m.albedo_texture = tex
+
+
+##  updates the face even when the acknowledgement is silent.
+func acknowledge(code: int) -> void:
+	if code == 0x30:
+		_expression = "a"
+		_expression_t = 0.0
+	elif code >= 0x0b and code <= 0x15:
+		_begin_motion(2)
+
+
+## each party member given a world order nods after 0..0.3 s.
+func nod() -> void:
+	_begin_motion(1)
+
+
+func _begin_motion(kind: int) -> void:
+	_head_motion = kind
+	_motion_t = -_rng.randf_range(0.0, 0.3)
+	if kind == 3:
+		_look_q = Quaternion(Vector3.UP, _rng.randf_range(-PI / 24.0, PI / 24.0)) \
+			* Quaternion(Vector3.RIGHT, _rng.randf_range(-PI / 24.0, PI / 24.0))
+		_look_speed = _rng.randf_range(1.0, 3.0)
+
+
+func _update_head(dt: float) -> void:
+	if not is_instance_valid(_model):
+		return
+	if _head_motion == 0 and dt > 0.0 and _rng.randf() < dt / 3.0:
+		_begin_motion(3)
+	var motion := Quaternion.IDENTITY
+	if _head_motion != 0:
+		_motion_t += dt
+		if _motion_t >= 0.0:
+			var duration := PI / 5.0 if _head_motion == 1 else TAU / 5.0
+			if _head_motion == 3:
+				duration = TAU / _look_speed
+			if _motion_t >= duration:
+				_head_motion = 0
+			elif _head_motion == 3:
+				motion = Quaternion.IDENTITY.slerp(_look_q, 0.5 - 0.5 * cos(_motion_t * _look_speed))
+			else:
+				var axis := Vector3.RIGHT if _head_motion == 1 else Vector3.UP
+				motion = Quaternion(axis, PI * 0.5 * 0.1 * sin(5.0 * _motion_t))
+	var target := Quaternion(Vector3.LEFT, PI / 14.0) if selected else Quaternion.IDENTITY
+	_selection_q = _selection_q.slerp(target, minf(1.0, 2.0 * dt))
+	var q := _selection_q * motion
+	_model.quaternion = EISpace.quat(q.w, q.x, q.y, q.z)

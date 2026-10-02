@@ -10,8 +10,10 @@ extends Control
 ## the scroll ends when the offset passes the text's end + 1000
 ## twips + the box height. **Approx.**: twips → pixels at 96 DPI (15 twips a
 ## pixel, the original asks GetDeviceCaps), in 800×600 pixels scaled with the
-## window like the remake's text (the original's RTF is not scaled); the original's
-## per-frame truncation of the offset is not copied.
+## window like the remake's text (the original's RTF is not scaled). Per frame the
+## offset (int twips) becomes __ftol(offset + (now − last) · speed)
+## (: truncated toward zero, so it creeps while negative and loses the
+## fraction once positive — about 28 px/s at 60 fps), last = now.
 ## the original credits screens (init, update) are named
 ## "Titles" (the main menu board) or "Crdt" (screen 8, the end
 ## the campaign): opening plays config/movie.ini ["<name>fin"], the scroll runs
@@ -30,6 +32,7 @@ var _text: RichTextLabel
 var _clip: Control
 var _speed := 25.0   # twips per 55 ms tick
 var _y := 0.0
+var _off := 0       # scroll offset in twips
 var _started := false
 var _music: AudioStreamPlayer
 
@@ -99,9 +102,11 @@ func _process(dt: float) -> void:
 	if not _started:
 		_started = true
 		_layout()
-		_y = _clip.size.y   # offset −(box height): the text starts below the box
+		# offset −(box height): the text starts below the box
+		_off = -int(BOX.size.y * TWIPS_PX)
 	var k := size.y / 600.0
-	_y -= _speed / GameUnit.TICK / TWIPS_PX * dt * k
+	_off = int(float(_off) + dt / GameUnit.TICK * _speed)   # int(): toward zero, as __ftol
+	_y = -float(_off) / TWIPS_PX * k
 	_text.position.y = _y
 	if _y < -h - (1000.0 / TWIPS_PX) * k - _clip.size.y:
 		_close()

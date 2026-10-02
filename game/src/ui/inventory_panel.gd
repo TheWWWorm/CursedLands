@@ -36,14 +36,14 @@ func _ready() -> void:
 	var top := HBoxContainer.new()
 	root.add_child(top)
 	var title := Label.new()
-	title.text = "Inventory"
+	title.text = RemakeText.t("Inventory")
 	title.add_theme_font_size_override("font_size", 22)
 	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	top.add_child(title)
 	_money = Label.new()
 	top.add_child(_money)
 	var close := Button.new()
-	close.text = "Close"
+	close.text = RemakeText.t("Close")
 	close.pressed.connect(func(): visible = false)
 	top.add_child(close)
 
@@ -68,7 +68,7 @@ func _ready() -> void:
 	mid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	cols.add_child(mid)
 	var bl := Label.new()
-	bl.text = "Party bag"
+	bl.text = RemakeText.t("Party bag")
 	mid.add_child(bl)
 	_bag = ItemList.new()
 	_bag.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -136,7 +136,7 @@ func _unhandled_key_input(e: InputEvent) -> void:
 	elif e.keycode in [KEY_ENTER, KEY_KP_ENTER] and hud.game.session.online:
 		hud.chat_line.open()
 		get_viewport().set_input_as_handled()
-	elif _camp.visible and EIKeymap.action(e.keycode) == "tutorial_script":
+	elif _camp.visible and EIKeymap.event_action(e) == "tutorial_script":
 		_camp.screen_tutorial(true)   # (1)
 		get_viewport().set_input_as_handled()
 
@@ -206,7 +206,7 @@ func refresh() -> void:
 	if not visible:
 		return
 	var st := hud.game.session.state
-	_money.text = "Gold: %d   " % st.money
+	_money.text = RemakeText.t("Gold: %d   ") % st.money
 	for c in _hero_box.get_children():
 		c.queue_free()
 	var u := _hero()
@@ -217,7 +217,7 @@ func refresh() -> void:
 	if u and u.has_meta("hero"):
 		var h: Dictionary = u.get_meta("hero")
 		var l := Label.new()
-		l.text = "%s\nHealth %d/%d   Stamina %d/%d\nStr %d  Dex %d  Int %d\nAttack %d  Defense %d\nDamage %.0f-%.0f   Armor %.1f\nLoad %d/%d\nExperience %d (free %d)" % [
+		l.text = RemakeText.t("%s\nHealth %d/%d   Stamina %d/%d\nStr %d  Dex %d  Int %d\nAttack %d  Defense %d\nDamage %.0f-%.0f   Armor %.1f\nLoad %d/%d\nExperience %d (free %d)") % [
 			u.display_name, u.hp, u.max_hp, u.mana, u.max_mana, h.get("str", 0), h.get("dex", 0), h.get("int", 0),
 			u.stats.get("to_hit", 0), u.stats.get("parry", 0),
 			u.stats.get("dmg_min", 0), u.stats.get("dmg_max", 0), u.stats.get("absorption", 0),
@@ -227,7 +227,7 @@ func refresh() -> void:
 		var spells: Array = h.get("spells", [])
 		if not spells.is_empty():
 			var sl := Label.new()
-			sl.text = "Spells: " + ", ".join(spells.map(func(x): return Spells.title(x)))
+			sl.text = RemakeText.t("Spells: ") + ", ".join(spells.map(func(x): return Spells.title(x)))
 			sl.autowrap_mode = TextServer.AUTOWRAP_WORD
 			sl.custom_minimum_size.x = 270
 			_hero_box.add_child(sl)
@@ -243,19 +243,19 @@ func refresh() -> void:
 		var known: Array = h.get("perks", [])
 		if not known.is_empty():
 			var pl := Label.new()
-			pl.text = "Abilities: " + ", ".join(known.map(func(x): return Perks.title(x)))
+			pl.text = RemakeText.t("Abilities: ") + ", ".join(known.map(func(x): return Perks.title(x)))
 			pl.autowrap_mode = TextServer.AUTOWRAP_WORD
 			pl.custom_minimum_size.x = 270
 			_hero_box.add_child(pl)
 		var perk_btn := MenuButton.new()
 		perk_btn.visible = town
-		perk_btn.text = "Learn an ability..."
+		perk_btn.text = RemakeText.t("Learn an ability...")
 		perk_btn.flat = false
 		var pm := perk_btn.get_popup()
 		var avail := Perks.available(h)
 		for i in avail.size():
 			var c := Perks.cost(avail[i], h)
-			pm.add_item("%s  (%d exp)" % [Perks.title(avail[i]), c], i)
+			pm.add_item(RemakeText.t("%s  (%d exp)") % [Perks.title(avail[i]), c], i)
 			pm.set_item_disabled(i, float(h.get("exp", 0.0)) < c)
 		pm.id_pressed.connect(func(i): _issue({"t": "perk", "unit": u.uid, "perk": avail[i]}))
 		perk_btn.disabled = u.controller != hud.game.session.my_index or avail.is_empty()
@@ -271,19 +271,19 @@ func refresh() -> void:
 	_right.clear()
 	_right_ids.clear()
 	if shop_mode:
-		_right_title.text = "Shop"
+		_right_title.text = RemakeText.t("Shop")
 		for it: String in hud.game.session.shop_stock({"shop": _camp.shop_id}):
-			_right.add_item("%s  -  %d gold" % [Items.title(it), Items.buy_price(it)])
+			_right.add_item(RemakeText.t("%s  -  %d gold") % [Items.title(it), Items.buy_price(it)])
 			_right_ids.append(it)
 	else:
-		_right_title.text = "Equipped / belt"
+		_right_title.text = RemakeText.t("Equipped / belt")
 		if u and u.has_meta("hero"):
 			var h: Dictionary = u.get_meta("hero")
 			for it in h.get("weapons", []) + h.get("armors", []):
 				_right.add_item("[%s] %s" % [Items.slot(it), Items.title(it)])
 				_right_ids.append(it)
 			for it in h.get("quick", []):
-				_right.add_item("[belt] %s" % Items.title(it))
+				_right.add_item(RemakeText.t("[belt] %s") % Items.title(it))
 				_right_ids.append("belt:" + it)
 	_info.text = ""
 	for c in _buttons.get_children():
@@ -327,45 +327,56 @@ func _select(id: String, where: String) -> void:
 		"bag":
 			var town := hud.game.session.shop_available()
 			if Items.slot(item) != "" and town:
-				_button("Equip", {"t": "equip", "unit": uid, "item": item})
+				_button(RemakeText.t("Equip"), {"t": "equip", "unit": uid, "item": item})
 			if Items.kind(item) == "quick":
-				_button("Put on belt", {"t": "give_quick", "unit": uid, "item": item})
+				_button(RemakeText.t("Put on belt"), {"t": "give_quick", "unit": uid, "item": item})
 			if item.begins_with("spell:") and town:
-				_button("Learn", {"t": "learn", "unit": uid, "item": item})
+				_button(RemakeText.t("Learn"), {"t": "learn", "unit": uid, "item": item})
 			if Items.kind(item) == "rune" and u and u.has_meta("hero") and town:
 				var hh: Dictionary = u.get_meta("hero")
 				for sp in hh.get("spells", []):
 					if Spells.can_add(sp, item.substr(5)):
-						_button("Into %s" % Spells.title(sp), {"t": "enchant", "unit": uid, "item": item, "spell": sp})
+						_button(RemakeText.t("Into %s") % Spells.title(sp), {"t": "enchant", "unit": uid, "item": item, "spell": sp})
 				# Item runes: put a known spell on a worn or carried weapon / armour.
 				var shown := {}
 				for tgt: String in hh.get("weapons", []) + hh.get("armors", []) + hud.game.session.state.items:
 					if shown.has(tgt) or item != "rune:" + Items.enchant_rune(tgt):
 						continue
 					shown[tgt] = true
-					for sp in hh.get("spells", []):
-						if Items.can_enchant(tgt, sp):
-							_button("%s on %s" % [Spells.title(sp).get_slice(" (", 0), Items.title(tgt)],
+					# The spell is used up (the original's constructor): a known one
+					# or a spell item from the bag ("spell:<id>"; a bag copy is
+					# offered before the hero's own).
+					var sps: Array = []
+					for b: String in hud.game.session.state.items:
+						if b.begins_with("spell:") and not sps.has(b):
+							sps.append(b)
+					for k: String in hh.get("spells", []):
+						if not sps.has("spell:" + k):
+							sps.append(k)
+					for sp: String in sps:
+						var spid := sp.trim_prefix("spell:")
+						if Items.can_enchant(tgt, spid):
+							_button(RemakeText.t("%s on %s") % [Spells.title(spid).get_slice(" (", 0), Items.title(tgt)],
 								{"t": "enchant_item", "unit": uid, "item": item, "target": tgt, "spell": sp})
 			if shop_mode and Items.kind(item) != "quest":
-				_button("Sell (%d)" % Items.sell_price(item), {"t": "sell", "item": item})
+				_button(RemakeText.t("Sell (%d)") % Items.sell_price(item), {"t": "sell", "item": item})
 			# Repair and the constructor belong to a trader's item group (Shops).
 			var smith := Shops.sells_items(_camp.shop_id)
 			if smith and Items.wear(item) > 0.0:
-				_button("Repair (%d)" % Items.repair_price(item), {"t": "repair", "item": item})
+				_button(RemakeText.t("Repair (%d)") % Items.repair_price(item), {"t": "repair", "item": item})
 			if smith and Items.can_deconstruct(item):
-				_button("Deconstruct (%d)" % Items.deconstruct_price(item), {"t": "deconstruct", "item": item})
+				_button(RemakeText.t("Deconstruct (%d)") % Items.deconstruct_price(item), {"t": "deconstruct", "item": item})
 			if smith and Items.kind(item) == "blueprint":
 				_construct_buttons(item)
 		"worn":
 			if id.begins_with("belt:"):
-				_button("Use", {"t": "use", "unit": uid, "item": item})
+				_button(RemakeText.t("Use"), {"t": "use", "unit": uid, "item": item})
 			elif hud.game.session.shop_available():
-				_button("Unequip", {"t": "unequip", "unit": uid, "item": item})
+				_button(RemakeText.t("Unequip"), {"t": "unequip", "unit": uid, "item": item})
 				if Items.wear(item) > 0.0 and Shops.sells_items(_camp.shop_id):
-					_button("Repair (%d)" % Items.repair_price(item), {"t": "repair", "unit": uid, "item": item})
+					_button(RemakeText.t("Repair (%d)") % Items.repair_price(item), {"t": "repair", "unit": uid, "item": item})
 		"shop":
-			_button("Buy (%d)" % Items.buy_price(item), {"t": "buy", "item": item, "unit": uid})
+			_button(RemakeText.t("Buy (%d)") % Items.buy_price(item), {"t": "buy", "item": item, "unit": uid})
 			if Items.kind(item) == "blueprint":
 				_construct_buttons(item)
 
@@ -383,7 +394,7 @@ func _construct_buttons(bp: String) -> void:
 		var cost := Items.construct_price(bp, String(m.name).to_lower()) + maxi(0, n - have) * Items.buy_price(unit)
 		if not bp in s.state.items:
 			cost += Items.buy_price(bp)
-		_button("Build with %s (%d)" % [Items.title(unit), cost], {"t": "construct", "bp": bp, "mat": String(m.name).to_lower()})
+		_button(RemakeText.t("Build with %s (%d)") % [Items.title(unit), cost], {"t": "construct", "bp": bp, "mat": String(m.name).to_lower()})
 
 
 func _button(text: String, cmd: Dictionary) -> void:

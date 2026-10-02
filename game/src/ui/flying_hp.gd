@@ -31,10 +31,8 @@ extends Control
 ##   while the server applies a hit: 1 when the backstab
 ##   multiplier (record) is not 1.0, 2 when the struck
 ##   part (record) is 0, the head; 4 (electrical damage) is not drawn.
-## **Approx.**: the anchor is the first of the "hd" / "bd" / "hp" parts'
-## origin (takes the centre of that part's screen rectangle, or
-## of the figure's when the part has none; how those rectangles are filled is
-## not traced); a unit with none of the parts gets no number, as in the original.
+## Anchor rects: see `_anchor` (a unit with none of the parts gets no
+## number, as in the original).
 ## The original's flag entry (yellow "!!!", 32 x 10 px, no motion
 ## deleted after one draw) has no known source and is not used.
 
@@ -107,10 +105,10 @@ func _draw() -> void:
 		var u: GameUnit = game.world.units.get(int(it.uid))
 		if u == null or not is_instance_valid(u) or not u.visible or u.hidden or u.model == null:
 			continue
-		var at: Variant = _anchor(u)
-		if at == null or cam.is_position_behind(at):
+		var at: Variant = _anchor(u, cam)
+		if at == null:
 			continue
-		var c := cam.unproject_position(at) + Vector2(120.0 * t, -100.0 * t) * k
+		var c: Vector2 = at + Vector2(120.0 * t, -100.0 * t) * k
 		var text := str(int(it.n))
 		var f := int(it.f)
 		var labels := []
@@ -139,9 +137,81 @@ func _draw() -> void:
 			y += 10.0 * k
 
 
-func _anchor(u: GameUnit) -> Variant:
+##  anchor in screen pixels: the first of the parts "hd"
+## "bd" / "hp" (none → null, no number)
+## the centre of that part's screen rect when it was drawn (part flag 0x40),
+## else of the figure's rect, the union of its drawn parts' rects (
+## figure, UnionRect of each part with 0x40 and a non-empty rect).
+## A part's rect is copied from the renderer's after its
+## mesh is drawn (0x40 set unless the draw
+## returned 2, everything clipped): the screen extents of its transformed
+## vertices, which the transform module fills. Remake: the bounds of the
+## part's own mesh vertices (not its child parts) projected by the camera.
+func _anchor(u: GameUnit, cam: Camera3D) -> Variant:
+	var n: Node3D = null
 	for part in ["hd", "bd", "hp"]:
-		var n := u.model.find_child(part, true, false) as Node3D
+		n = u.model.find_child(part, true, false) as Node3D
 		if n:
-			return n.global_position
-	return null
+			break
+	if n == null:
+		return null
+	var r := _part_rect(n, cam)
+	if r.size == Vector2.ZERO:
+		r = Rect2()
+		var first := true
+		for mi: Node in u.model.find_children("*", "MeshInstance3D", true, false):
+			var pr := _mesh_rect(mi as MeshInstance3D, cam)
+			if pr.size != Vector2.ZERO:
+				r = pr if first else r.merge(pr)
+				first = false
+		if first:
+			return null
+	return r.get_center()
+
+
+## The drawn rect of part node `n`: its own MeshInstance3D children.
+func _part_rect(n: Node3D, cam: Camera3D) -> Rect2:
+	var r := Rect2()
+	var first := true
+	for c in n.get_children():
+		if c is MeshInstance3D:
+			var pr := _mesh_rect(c, cam)
+			if pr.size != Vector2.ZERO:
+				r = pr if first else r.merge(pr)
+				first = false
+	return r
+
+
+var _verts := {}   # Mesh -> PackedVector3Array (all surfaces)
+
+
+## Screen bounds of a mesh's vertices in front of the camera; empty when it
+## is hidden, has none in front, or lies wholly off the screen (the original's
+## draw result 2). **Approx.**: vertices behind the camera are skipped
+## rather than clipped.
+func _mesh_rect(mi: MeshInstance3D, cam: Camera3D) -> Rect2:
+	if mi.mesh == null or not mi.is_visible_in_tree():
+		return Rect2()
+	var vs: PackedVector3Array = _verts.get(mi.mesh, PackedVector3Array())
+	if vs.is_empty():
+		if _verts.size() > 256:
+			_verts.clear()   # meshes of earlier zones
+		for i in mi.mesh.get_surface_count():
+			vs.append_array(mi.mesh.surface_get_arrays(i)[Mesh.ARRAY_VERTEX])
+		_verts[mi.mesh] = vs
+	var xf := mi.get_global_transform_interpolated()   # as drawn (phys_interp)
+	var lo := Vector2(INF, INF)
+	var hi := Vector2(-INF, -INF)
+	for v in vs:
+		var w := xf * v
+		if cam.is_position_behind(w):
+			continue
+		var p := cam.unproject_position(w)
+		lo = lo.min(p)
+		hi = hi.max(p)
+	if lo.x > hi.x:
+		return Rect2()
+	var r := Rect2(lo.floor(), (hi - lo.floor()).ceil())
+	if not r.intersects(get_viewport_rect()):
+		return Rect2()
+	return r

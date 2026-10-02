@@ -91,6 +91,10 @@ func _ready() -> void:
 		img.flip_y()
 		_atlas = ImageTexture.create_from_image(img)
 	visibility_changed.connect(_on_visibility)
+	resized.connect(func():   # the wrap is measured at the drawn font size
+		if visible and not _pages.is_empty():
+			_layout()
+			queue_redraw())
 
 
 ## texts.res "tutorial <id>" -> [{head, text, position, rects}], title in "title".
@@ -252,13 +256,13 @@ func _show() -> void:
 # ------------------------------------------------------------------ layout
 
 func _k() -> float:
-	return get_viewport_rect().size.y / 600.0
+	return Interface800.canvas_size(self).y / 600.0
 
 
 ## Exe point -> screen, centred horizontally.
 func _p(v: Vector2) -> Vector2:
 	var k := _k()
-	return Vector2((v.x - 400.0) * k + get_viewport_rect().size.x * 0.5, v.y * k)
+	return Vector2((v.x - 400.0) * k + Interface800.canvas_size(self).x * 0.5, v.y * k)
 
 
 func _r(r: Rect2) -> Rect2:
@@ -268,7 +272,7 @@ func _r(r: Rect2) -> Rect2:
 ## A HUD rectangle: left / right widgets stay at their screen edge.
 func _hud_rect(r: Rect2) -> Rect2:
 	var k := _k()
-	var w := get_viewport_rect().size.x
+	var w := Interface800.canvas_size(self).x
 	var c := r.get_center().x
 	var x := r.position.x * k if c < 200.0 else w - (800.0 - r.position.x) * k if c > 600.0 else _p(r.position).x
 	return Rect2(x, r.position.y * k, r.size.x * k, r.size.y * k)
@@ -305,10 +309,12 @@ func _layout() -> void:
 	_win = Rect2(x1, y1, w, y2 - y1)
 
 
-## Word wrap in original pixels (the font measured at k = 1).
+## Word wrap in original pixels, measured at the drawn size (round(FONT · k)).
 func _wrap(t: String, width: float) -> PackedStringArray:
 	var out := PackedStringArray()
 	var f := _font()
+	var k := _k()
+	var fs := int(round(FONT * k))
 	for para in t.split("\n"):
 		var line := ""
 		var lead := para.length() - para.lstrip(" ").length()
@@ -317,7 +323,7 @@ func _wrap(t: String, width: float) -> PackedStringArray:
 		var first := true
 		for wd in words:
 			var cand := line + ("" if first else " ") + wd
-			if not first and f.get_string_size(cand, HORIZONTAL_ALIGNMENT_LEFT, -1, FONT).x > width:
+			if not first and f.get_string_size(cand, HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x > width * k:
 				out.append(line)
 				line = wd
 			else:
@@ -405,7 +411,7 @@ func close_point() -> Vector2:
 
 
 func _online() -> bool:
-	var hud := get_parent() as GameHUD
+	var hud := get_canvas_layer_node() as GameHUD
 	return hud == null or hud.game == null or hud.game.session == null or hud.game.session.online
 
 

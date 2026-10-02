@@ -10,15 +10,12 @@ var sections := {}   # name -> Array[Color] (24)
 
 static func load_for(allod: String, cave: bool) -> EILights:
 	var path := GameData.root.path_join("config/Lights%s%s.ini" % ["Cave" if cave else "", allod])
-	var f := FileAccess.open(path, FileAccess.READ)
-	if f == null:
-		# The GOG files are lower case.
-		f = FileAccess.open(GameData.root.path_join(("config/lights%s%s.ini" % ["cave" if cave else "", allod]).to_lower()), FileAccess.READ)
-	if f == null:
+	var data := GameFiles.read(path) if GameFiles.exists(path) else GameData.read_file(("config/lights%s%s.ini" % ["cave" if cave else "", allod]).to_lower())
+	if data.is_empty():
 		return null
 	var out := EILights.new()
 	var cur := ""
-	for line in f.get_as_text().split("\n"):
+	for line in data.get_string_from_utf8().split("\n"):
 		line = line.strip_edges()
 		if line.begins_with("["):
 			cur = line.trim_prefix("[").trim_suffix("]").to_lower()

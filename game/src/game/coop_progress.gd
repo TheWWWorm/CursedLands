@@ -2,7 +2,7 @@ class_name CoopProgress
 extends Node
 ## Remake-only co-op feature: bring your own hero, shared progression.
 ## (Not in the original: the original network game played separate LMP maps with
-## network characters; see docs/original_reference.md "Remake co-op".)
+## network characters;.)
 ##
 ## Joining: the client picks one of its own saves (or a new campaign hero).
 ## Its main hero (attributes, skills, perks, experience, worn items, weapons,
@@ -42,7 +42,8 @@ extends Node
 ## zone change, host save, after quest steps and every 15 s while something
 ## changed (and when the host leaves to the menu). The client merges it into a
 ## copy of the save it brought and writes the slot "coop_<host>_<date>", named
-## "Co-op with <host> – <date>"; the save it brought is never touched.
+## "Co-op: <host>" (the Load screen's date column has the date; the name
+## column is 178 px and clips); the save it brought is never touched.
 ##
 ## Host saves keep the entries (CampaignState.coop "host"), so a later session
 ## of the save goes on with the same players; packages carry a tally id and
@@ -80,6 +81,7 @@ var _merged_slot := ""
 var _merged_name := ""
 ## Client: the last merged save written (tests read it).
 var last_merged := ""
+var merged_count := 0    # packages merged so far (NetStatus.leave waits for one more)
 
 
 func _ready() -> void:
@@ -133,7 +135,7 @@ func client_hello() -> void:
 		return
 	var st := _load_origin()
 	if st == null:
-		session.message.emit("Save '%s' not found: joining with a co-op hero." % bring_slot)
+		session.message.emit(RemakeText.t("Save '%s' not found: joining with a co-op hero.") % bring_slot)
 		return
 	_origin_slot = "" if bring_slot == NEW else bring_slot
 	_origin_new = bring_slot == NEW
@@ -198,18 +200,28 @@ func _rpc_package(pkg: Dictionary) -> void:
 		var host := String(pkg.get("host", "host"))
 		var safe := host.to_lower().validate_filename().replace(" ", "_").left(16)
 		_merged_slot = "coop_%s_%04d%02d%02d_%02d%02d%02d" % [safe, d.year, d.month, d.day, d.hour, d.minute, d.second]
-		_merged_name = "Co-op with %s – %04d-%02d-%02d %02d:%02d" % [host, d.year, d.month, d.day, d.hour, d.minute]
+		_merged_name = RemakeText.t("Co-op: %s") % host
 	var err := st.save(SaveInfo.path(_merged_slot))
 	if err != OK:
-		session.message.emit("Co-op progress could not be saved (%d)." % err)
+		session.message.emit(RemakeText.t("Co-op progress could not be saved (%d).") % err)
 		return
 	var allod := ""
 	if session.campaign:
 		allod = String(session.campaign.zones.get(st.current_zone, {}).get("allod", "")).to_lower()
 	SaveInfo.write(_merged_slot, st.get_var(0, "gtime"), allod, st.current_zone, _merged_name)
+	# The Load screen's preview: this client's view of the shared game (the
+	# host's zone) at the latest package; LoadPanel falls back to the zone's
+	# minimap picture while there is none.
+	SaveInfo.write_shot(_merged_slot, session.get_viewport())
 	if last_merged.is_empty():
-		session.message.emit("Your progress is saved as \"%s\"." % _merged_name)
+		session.message.emit(RemakeText.t("Your progress is saved as \"%s\".") % _merged_name)
 	last_merged = _merged_slot
+	merged_count += 1
+
+
+## Client: brought its own hero (progress packages come back to it).
+func brings() -> bool:
+	return _origin_slot != "" or _origin_new
 
 
 ## Applies a progress package to the client's own campaign state.
@@ -392,7 +404,7 @@ func on_hello(pid: int, idx: int, player_name: String) -> void:
 		_drop_old_units(idx)
 		e.in_sync = _reached(e, session.zone_id)
 	session.state.heroes[idx] = [(e.hero_in as Dictionary).duplicate(true)]
-	session.message.emit("%s brings their own hero." % player_name)
+	session.message.emit(RemakeText.t("%s brings their own hero.") % player_name)
 
 
 func _drop_old_units(idx: int) -> void:
@@ -768,7 +780,7 @@ static func sanitize_hero(d) -> Dictionary:
 	var npc := GameData.db.find("npcs", proto)
 	var h := {"prototype": proto, "level": 1, "hp": -1.0}
 	var nm := String(d.get("name", "")) if d.get("name") is String else ""
-	h.name = nm.strip_edges().left(32) if nm.strip_edges() else "Zak"
+	h.name = nm.strip_edges().left(32) if nm.strip_edges() else CampaignState.hero_name()
 	for k in ["exp", "exp_total", "exp_debt"]:
 		h[k] = clampf(_num(d.get(k), 0.0), 0.0, 1.0e9)
 	for k in ["str", "dex", "int"]:

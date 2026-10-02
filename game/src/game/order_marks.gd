@@ -30,6 +30,17 @@ const SEL_TRIS := [0, 4, 3, 0, 1, 4, 1, 5, 4, 1, 2, 5, 2, 3, 5, 2, 0, 3]
 const SEL_SIZE := 0.5   # CornerSize, settings
 var _lit := {}   # GameUnit -> model it lightened (select_type 0)
 var _bright := {}   # unit material -> its lightened copy
+var _flash := {}    # GameUnit -> seconds of white flash left (figure ticks)
+## The emissive (1) pushes (RGB 1.0).
+const WHITE := 1.0
+
+
+## (n): the figure's white-flash counter = max(n)
+## pushing white when it was 0; the world tick counts it down and
+## pops the colour ((0)) when it reaches 0. Quest vars flash 4.
+func flash(u: GameUnit, ticks: int) -> void:
+	if ticks > 0 and is_instance_valid(u):
+		_flash[u] = maxf(float(_flash.get(u, 0.0)), ticks * GameUnit.TICK)
 
 
 func _ready() -> void:
@@ -135,13 +146,17 @@ func first_mine() -> Array:
 
 
 ## The selected units of this peer's player that would take an order
-## (Session.apply_command's filter, in its order).
+## (Session.apply_command's filter, in its order). A unit saying a
+## "say_block" line (flag) is left out: the server's order handlers
+##  skip it (Game.issue drops it too), so no path
+## message 0x0e comes for it and draws nothing.
 func _mine() -> Array:
 	var out := []
 	if game == null or game.world == null or game.session == null:
 		return out
 	for u: GameUnit in game.selected:
-		if is_instance_valid(u) and not u.dead and u.world != null and u.controller == game.session.my_index:
+		if is_instance_valid(u) and not u.dead and u.world != null and u.controller == game.session.my_index \
+				and not GameSound.blocked(u):
 			out.append(u)
 	return out
 
@@ -183,15 +198,22 @@ static func _ticks(from: Vector2, path: PackedVector2Array, step: float) -> Pack
 	return out
 
 
-## select_type 0: the selected figures drawn in white. The
-## unit's own materials are swapped for lightened copies (their texture added
-## as emission); a second overlay pass z-fought with the model and flickered.
+## Figures drawn in white: select_type 0's selected units and
+## the quest-var flash. Both push white onto the figure parts'
+## colour stack ((1)): each part's D3D material emissive
+## (.., the material at part: diffuse alpha, specular
+##  zeroed) set to 1.0, and the TL pipeline
+## adds it to the lighting, clamped to 1. The unit's own materials are swapped
+## for copies with that emissive; a second overlay pass z-fought and flickered.
 func _update_lit() -> void:
 	var want := {}
 	if game and GameData.option("select_type") == 0:
 		for u: GameUnit in game.selected:
 			if is_instance_valid(u) and not u.dead and u.model:
 				want[u] = u.model
+	for u in _flash:
+		if is_instance_valid(u) and u.model:
+			want[u] = u.model
 	for u in _lit.keys():
 		if not want.has(u) or want[u] != _lit[u]:
 			if is_instance_valid(_lit[u]):
@@ -234,13 +256,22 @@ func _lighten(root: Node, on: bool) -> void:
 
 ## A lightened copy of a unit material (cached).
 func _bright_of(base: Material) -> Material:
+	if base is EIUnitModel.LitMaterial:
+		if not _bright.has(base):
+			var lit := base.duplicate() as EIUnitModel.LitMaterial
+			lit.set_shader_parameter("unit_emission", Vector3.ONE * WHITE)
+			_bright[base] = lit
+		var lit: EIUnitModel.LitMaterial = _bright[base]
+		if lit.albedo_texture != base.albedo_texture:
+			lit.albedo_texture = base.albedo_texture
+		return lit
 	var sm := base as StandardMaterial3D
 	if sm == null:
 		return base
 	if not _bright.has(sm):
 		var m := sm.duplicate() as StandardMaterial3D
 		m.emission_enabled = true
-		m.emission = Color(0.25, 0.25, 0.25)
+		m.emission = Color(WHITE, WHITE, WHITE)
 		m.emission_texture = sm.albedo_texture
 		m.emission_operator = BaseMaterial3D.EMISSION_OP_MULTIPLY
 		_bright[sm] = m
@@ -251,8 +282,12 @@ func _bright_of(base: Material) -> Material:
 	return b
 
 
-func _process(_dt: float) -> void:
+func _process(dt: float) -> void:
 	_im.clear_surfaces()
+	for u in _flash.keys():
+		_flash[u] -= dt
+		if _flash[u] <= 0.0 or not is_instance_valid(u):
+			_flash.erase(u)
 	_update_lit()
 	if game == null or game.world == null:
 		return

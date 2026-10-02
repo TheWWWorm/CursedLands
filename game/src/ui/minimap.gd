@@ -11,7 +11,18 @@ extends Control
 ## (700,80) r 66 in 16 segments (strip UV 27,107-91,112) and a
 ## bronze frame (615,−5)-(805,165) 5 wide (strip UV 4,55-90,60).
 ## Party members are green, enemies the party sees are red, other units
-## yellow. The picture covers 32 px per sector of the larger map side.
+## yellow. Two pictures (sizes: map W × H =
+## sectors · 32, L = max(W, H), s = 2 / L, 80 px per unit): the whole square
+## (620,0)-(780,160) shows the map unzoomed (L across 160 px, colour 0.8,
+## clipped to the map) over the shade, and a 16-gon of radius 64
+## round (700,80) shows it zoomed (colour 1.0); both
+## use uv = world / L. Zoom: 1.0 at the start (the saved value when loading,
+## remake: the save's camera record "minimap_zoom", Session), "+" held multiplies it by 2.5^dt up to 0.05 L, "−" held
+## divides it down to 1 (held index; press
+## plays buttons\battle\click.wav), the held button drawn at 1.0, else 0.5.
+## Unit dots (±0.03 units): at the zoomed point when that is
+## within √0.6 of the centre, else at the unzoomed point when that is outside
+## √0.68 (beyond the ring) and within ±0.97, else hidden.
 ## Open / close (slot): the panel
 ## slides right by 180 px in 0.3 s, p += real dt · dir / 0.3, offset
 ## = trunc(180 · e) with e = 2p² below 0.5, else 1 − 2(1 − p)²
@@ -34,21 +45,17 @@ const BUTTONS := {"toggle": [Rect2(780, 0, 20, 30), Rect2(), 10300],
 	"out": [Rect2(780, 130, 20, 30), Rect2(3, 62, 20, 30), 10302]}
 
 var game: Game
-var zoom := 1.5
+var zoom := 1.0
+var _held := ""    # "in" / "out" while a zoom button is held
 var open := true   # slide direction: −1 open(ing), +1 clos(ed/ing)
 var _p := 0.0      # slide progress 0 open.. 1 closed
 var _off := 0.0    # slide offset in 800×600 px
 var _tex: Texture2D
 var _atlas: Texture2D
-var _scale := 1.0   # texture pixels per world unit
+var _size := Vector2.ONE   # map W × H in world units
+var _l := 1.0              # L = max(W, H)
 var _zone := ""
 var _north_lit := 0.0   # seconds the N button stays lit
-## Enemy uid -> seen by the party, refreshed every SEEN_REFRESH seconds (the
-## sight test walks the ground between the units; every enemy every frame
-## cost ~2 ms in a 200-unit zone).
-const SEEN_REFRESH := 100   # ms
-var _seen := {}
-var _seen_at := 0
 
 
 func _ready() -> void:
@@ -62,7 +69,7 @@ func _ready() -> void:
 
 
 func _k() -> float:
-	return get_viewport_rect().size.y / 600.0
+	return Interface800.canvas_size(self).y / 600.0
 
 
 ## 800×600 point -> local (the panel's left edge is x 615), shifted by the
@@ -83,8 +90,10 @@ func _load() -> void:
 		return
 	_tex = GameData.get_texture(name)
 	var t := game.world.terrain
-	if _tex and t:
-		_scale = float(_tex.get_width()) / (maxi(t.sectors_x, t.sectors_y) * EITerrain.SECTOR)
+	if t:
+		_size = Vector2(t.sectors_x, t.sectors_y) * EITerrain.SECTOR
+		_l = maxf(_size.x, _size.y)
+	zoom = clampf(zoom, 1.0, maxf(1.0, 0.05 * _l))
 
 
 var _redraw_t := 0.0
@@ -92,6 +101,12 @@ var _drawn_key := []
 
 func _process(_dt: float) -> void:
 	_north_lit = maxf(_north_lit - _dt, 0.0)
+	if _held == "in":
+		zoom = minf(zoom * pow(2.5, _dt), maxf(1.0, 0.05 * _l))
+	elif _held == "out":
+		zoom = maxf(zoom / pow(2.5, _dt), 1.0)
+	if _held != "" and not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+		_held = ""   # the release (set)
 	var goal := 1.0 if not open else 0.0
 	if _p != goal:
 		_p = clampf(_p + _dt * (1.0 if not open else -1.0) / 0.3, 0.0, 1.0)
@@ -112,23 +127,34 @@ func _process(_dt: float) -> void:
 	# Redrawn at the 55 ms logic rate (the unit dots move per tick) or when
 	# the view changes; every frame cost a pass over all units.
 	_redraw_t -= _dt
-	var key := [open, zoom, _north_lit > 0.0, k, _off, _heading()]
+	var key := [open, zoom, _north_lit > 0.0, k, _off, _heading(), _held]
 	if _redraw_t <= 0.0 or key != _drawn_key:
 		_redraw_t = GameUnit.TICK
 		_drawn_key = key
 		queue_redraw()
 
 
+## The view's centre: the camera's look-at point (copies the
+## camera object's / 37c, the point
+## sets on a map click), else the selected hero.
 func _center() -> Vector2:
+	if game.rig:
+		var at: Array = game.rig.pose()["at"]
+		return Vector2(at[0], -at[2])   # Godot (x, −z) = EI (x, y)
 	if not game.selected.is_empty() and is_instance_valid(game.selected[0]):
 		return game.selected[0].pos
 	var mine := game.my_units()
 	return mine[0].pos if not mine.is_empty() else Vector2.ZERO
 
 
-## World position -> 800×600 point inside the map square.
-func _to_map(p: Vector2, c: Vector2) -> Vector2:
-	return MAP.get_center() + (p - c) * _scale * zoom * 160.0 / 190.0
+## World position -> the 800×600 point of the unzoomed square (`z` 1) or of
+## the zoomed inset (`z` = zoom): 80 px per unit of (p − c) · 2 / L.
+func _to_map(p: Vector2, c: Vector2, z := 1.0) -> Vector2:
+	return MAP.get_center() + (p - c) * (160.0 / _l) * z
+
+
+func _from_map(q: Vector2, c: Vector2, z := 1.0) -> Vector2:
+	return c + (q - MAP.get_center()) * _l / (160.0 * z)
 
 
 func _button_at(local: Vector2) -> String:
@@ -149,10 +175,45 @@ func _gui_input(e: InputEvent) -> void:
 				GameSound.instance.ui("buttons\\battle\\sling.wav")
 			open = not open
 		"north": north()
-		"in": zoom = clampf(zoom * 1.4, 0.6, 5.0)
-		"out": zoom = clampf(zoom / 1.4, 0.6, 5.0)
-		_: return
+		"in", "out":   # held index 1 / 2, click.wav
+			if GameSound.instance:
+				GameSound.instance.ui("buttons\\battle\\click.wav")
+			_held = _button_at(e.position)
+		_:
+			if not _goto(e.position):
+				return
 	accept_event()
+
+
+## keyboard.ini w_minimap (M, case 0x34): buttons\battle\sling.wav
+## and the slide direction flipped (= 1), as the Open/Close spot.
+func key_toggle() -> void:
+	if GameSound.instance:
+		GameSound.instance.ui("buttons\\battle\\sling.wav")
+	open = not open
+
+
+##  cases 1 / 2: area 1 is the 16-gon (700 − 65 sin a, 80 + 65 cos a)
+## a = iπ/8 (..98), area 2 the map square
+## (620,0)-(780,160); the clicked point → world (px − 700, py − 80) / 80 / s
+## (÷ zoom in area 1, unzoomed in area 2) about the centre, and
+## when it lies on the map (0..W, 0..H) the camera's look-at jumps there
+##  and stops following ((−1), &= ~8)
+## no sound.
+func _goto(local: Vector2) -> bool:
+	if _tex == null or _off >= 180.0 or game == null or game.rig == null:
+		return false
+	var p := local / _k() + Vector2(615 - _off, 0)
+	if not MAP.has_point(p):
+		return false
+	var ring := PackedVector2Array()
+	for i in 16:
+		ring.append(Vector2(700.0 - 65.0 * sin(i * PI / 8.0), 80.0 + 65.0 * cos(i * PI / 8.0)))
+	var w := _from_map(p, _center(), zoom if Geometry2D.is_point_in_polygon(p, ring) else 1.0)
+	if w.x <= 0.0 or w.y <= 0.0 or w.x >= _size.x or w.y >= _size.y:
+		return false
+	game.rig.focus(EISpace.pos(w.x, w.y, game.world.ground_at(w.x, w.y)))
+	return true
 
 
 ## The N button and key camera_norm (case 5
@@ -168,7 +229,9 @@ func north() -> void:
 
 func _get_tooltip(at: Vector2) -> String:
 	var b := _button_at(at)
-	return GameData.text("tip %d" % BUTTONS[b][2]).strip_edges() if b else ""
+	# hotkeys w_minimap (0x34) on the toggle, camera_norm (0xc) on "N".
+	return GameData.tip_key(GameData.text("tip %d" % BUTTONS[b][2]).strip_edges(),
+			{"toggle": 52, "north": 12}.get(b, 0)) if b else ""
 
 
 func _has_point(point: Vector2) -> bool:
@@ -194,36 +257,50 @@ func _draw() -> void:
 	if _off < 180.0 and _tex:
 		var c := _center()
 		var map_px := _r(MAP)
-		# The picture, clipped to the map square.
-		var tl := _to_map(Vector2.ZERO, c)
-		var sz := _tex.get_size() * zoom * 160.0 / 190.0
-		var src := Rect2(Vector2.ZERO, _tex.get_size())
-		var dst := Rect2(tl, sz)
-		var clip := dst.intersection(MAP)
-		if clip.has_area():
-			var f := _tex.get_size() / sz
-			draw_texture_rect_region(_tex, _r(clip), Rect2((clip.position - tl) * f, clip.size * f),
-				Color(0.8, 0.8, 0.8))
+		# The shade (depth 20) under the unzoomed picture (18, colour 0.8),
+		# clipped to the square and the map.
 		draw_rect(map_px, Color(0, 0, 0, 0x50 / 255.0))
+		var wr := Rect2(c - Vector2(_l, _l) * 0.5, Vector2(_l, _l)).intersection(Rect2(Vector2.ZERO, _size))
+		if wr.has_area():
+			var tl := _to_map(wr.position, c)
+			var dst := Rect2(tl, _to_map(wr.end, c) - tl).abs()
+			var ts := _tex.get_size()
+			draw_texture_rect_region(_tex, _r(dst), Rect2(wr.position / _l * ts, wr.size / _l * ts),
+				Color(0.8, 0.8, 0.8))
+		# The zoomed inset (depth 14, colour 1.0): the 16-gon r 64, clipped to the map.
+		var gon := PackedVector2Array()
+		for i in 16:
+			gon.append(MAP.get_center() + Vector2.from_angle(TAU * i / 16.0) * 64.0)
+		var a := _to_map(Vector2.ZERO, c, zoom)
+		var b := _to_map(_size, c, zoom)
+		var mr := PackedVector2Array([a, Vector2(b.x, a.y), b, Vector2(a.x, b.y)])
+		if not Geometry2D.is_polygon_clockwise(mr) == Geometry2D.is_polygon_clockwise(gon):
+			mr.reverse()
+		for poly: PackedVector2Array in Geometry2D.intersect_polygons(gon, mr):
+			var pts := PackedVector2Array()
+			var uvs := PackedVector2Array()
+			for q in poly:
+				pts.append(_pt(q))
+				uvs.append(_from_map(q, c, zoom) / _l)
+			draw_colored_polygon(pts, Color.WHITE, uvs, _tex)
 		var mine := game.my_units()
-		var now := Time.get_ticks_msec()
-		if now - _seen_at >= SEEN_REFRESH or now < _seen_at:
-			_seen.clear()
-			_seen_at = now
 		for u: GameUnit in game.world.units.values():
-			if u.dead or u.hidden or not u.visible:
+			if u.dead or not UnitFog.listed(game, u):   #  draws the player's list (UnitFog)
 				continue
-			var sp := _to_map(u.pos, c)
-			if not MAP.has_point(sp):
+			# the zoomed point inside the inset, else the
+			# unzoomed one beyond the ring and inside the square.
+			var n := (u.pos - c) * 2.0 / _l
+			var sp := Vector2.INF
+			if (n * zoom).length_squared() <= 0.6:
+				sp = MAP.get_center() + n * zoom * 80.0
+			elif n.length_squared() >= 0.68 and absf(n.x) <= 0.97 and absf(n.y) <= 0.97:
+				sp = MAP.get_center() + n * 80.0
+			if sp == Vector2.INF:
 				continue
 			var col := Color(1, 0.9, 0.2)
 			if u.controller >= 0:
 				col = Color(0.2, 1, 0.3)
 			elif not mine.is_empty() and game.world.is_enemy(mine[0], u):
-				if not _seen.has(u.uid):
-					_seen[u.uid] = mine.any(func(m): return is_instance_valid(m) and game.world.ai.can_notice(m, u, float(m.stats.get("sight", 15.0))))
-				if not _seen[u.uid]:
-					continue   # only enemies the party can see
 				col = Color(1, 0.25, 0.2)
 			draw_circle(_pt(sp), (2.5 if u.controller >= 0 else 2.0) * k, col)
 		# Ring: 16 segments round (700,80), r 66.
@@ -237,7 +314,8 @@ func _draw() -> void:
 	for b in BUTTONS:
 		var uv: Rect2 = BUTTONS[b][1]
 		if uv.has_area() and _atlas:
-			var c := 1.0 if b != "north" or _north_lit > 0.0 else 0.5
+			# N lit while runs, + / − while held.
+			var c := 1.0 if (_north_lit > 0.0 if b == "north" else _held == b) else 0.5
 			draw_texture_rect_region(_atlas, _r(BUTTONS[b][0]), uv, Color(c, c, c))
 	# Frame: (615,−5)-(805,165), 5 wide, sliding with the panel.
 	var uvf := Rect2(4, 55, 86, 5)
@@ -272,5 +350,5 @@ func _arrow(pts: PackedVector2Array, fixed: bool) -> void:
 	var uvs := PackedVector2Array()
 	for i in 3:
 		pts[i] = _pt(pts[i], fixed)
-		uvs.append(HudDial.ARROW_UV[i] / 256.0)
+		uvs.append(Vector2(HudDial.ARROW_UV[i].x, 256.0 - HudDial.ARROW_UV[i].y) / 256.0)   # flipped atlas
 	draw_polygon(pts, PackedColorArray([Color.WHITE, Color.WHITE, Color.WHITE]), uvs, _atlas)

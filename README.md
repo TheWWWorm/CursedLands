@@ -1,6 +1,6 @@
 # Cursed Lands
 
-Play **Evil Islands: Curse of the Lost Soul** («Проклятые земли», Nival, 2000) on a modern engine on Windows, Linux and macOS, with the whole campaign playable in **online co-op**.
+Play **Evil Islands: Curse of the Lost Soul** («Проклятые земли», Nival, 2000) on a modern engine on Windows, Linux and macOS or in your browser, with the whole campaign playable in **online co-op**.
 
 This is a separate game engine, built in Godot, in the spirit of OpenMW and fheroes2: it reads the Evil Islands files you already own (maps, models, textures, animations, sounds, music, texts, scripts and game tables) and plays them with natively written rendering, combat, AI, scripting and interface systems that follow the original game's rules.
 
@@ -16,6 +16,20 @@ Captured in the engine at 3840×2160 with content read from the GOG version.
 ![Ruins on the coast](docs/screenshots/ruins.jpg)
 ![Snowy hills of Ingos](docs/screenshots/snow.jpg)
 
+## Play in your browser
+
+**[Play now at cursedlands.wwworm.com](https://cursedlands.wwworm.com/)** - nothing to install. Open the page, press **Play** and choose the folder of your installed copy of Evil Islands, or a game data pack (`.eipack`). Your files are never uploaded: the game reads them on your own device and keeps its copy in your browser's local storage, so the next start is quick and works offline.
+
+On a phone, picking a whole folder is often not possible. Make a single pack file on your computer instead and copy it to the phone. You need Python 3 and the [`tools/prepare_game_data.py`](tools/prepare_game_data.py) script from this repository:
+
+```sh
+python3 prepare_game_data.py "/path/to/Evil Islands" EvilIslands.eipack
+```
+
+The pack holds your own game files, so keep it to yourself.
+
+Needs WebGL 2 and a desktop-class browser or a recent phone. Browsers can clear their storage, so keep your game files and use **Export saves** on the Save screen now and then. In the browser, co-op can only join a desktop host that has chosen **WebSocket** in its network settings and is reachable at a secure `wss://` address; for the smoothest experience and for hosting co-op, use a desktop package below.
+
 ## Download and install
 
 Download the package for your system from the [Releases](https://github.com/TheWWWorm/CursedLands/releases) page.
@@ -23,6 +37,7 @@ Download the package for your system from the [Releases](https://github.com/TheW
 - **Windows (x86-64):** extract the ZIP and run `CursedLands.exe`. Windows may warn about an unrecognised app; choose **More info → Run anyway**.
 - **Linux (x86-64):** extract the archive and run `CursedLands.x86_64`. If your file manager dropped the executable permission, run `chmod +x CursedLands.x86_64` first.
 - **macOS (Apple silicon and Intel):** extract the ZIP and open the app. It is not signed or notarized, so macOS may block the first start; allow it under **System Settings → Privacy & Security**.
+- **Browser (WebGL 2):** nothing to download; [play the hosted version](https://cursedlands.wwworm.com/), see above.
 
 ## Getting started
 
@@ -43,24 +58,42 @@ The whole campaign can be played together. One player chooses **Multiplayer** an
 - **Router setup.** The host needs incoming connections on **UDP port 27015**. When the router supports it (UPnP), the port is opened automatically and the address to give friends is shown; otherwise forward the port by hand.
 - **In game.** Press **Enter** to chat. A player list under the minimap shows each player's ping.
 - **Options.** Every party member can get the full experience for a kill, instead of a share (on by default). Monsters can be made stronger with the number of players.
-- Players can join a game already in progress. Only the host can save. Single-player pauses while menus are open; co-op never pauses.
+- **Internet play.** If the router can't open the port automatically, forward UDP 27015 by hand, or use a virtual LAN such as Tailscale, ZeroTier or Radmin VPN and join with its address. IPv6 addresses work too, written as `[address]:port`.
+- Up to 6 players. Everyone needs the same edition of the game (Russian and English editions can play together; the German edition plays with German only). Players can join a game already in progress. Only the host can save. Single-player pauses while menus are open; co-op never pauses.
 
 ## Controls
 
-Keys are read from the game's own `keyboard.ini` and can be changed in **Options → Controls**. The defaults are the original's:
+Keys are read from the game's own `keyboard.ini`. To change one, open **Options**, double-click its row and press the new key. The defaults are the original's:
 
 | Input | Action |
 |---|---|
 | Left click on a hero / drag a frame | select heroes |
-| Left click elsewhere | move, attack, talk, loot or use (double click on the ground: run) |
-| Spell bar | cast a spell, then click a target (right click cancels) |
-| Numpad 8 / 5 / 4 / 6 / 1 / 3 | aimed strike at head / body / arms / legs |
+| Left click elsewhere | move, attack, talk, loot or use; a double click does it running |
+| 1–8 or the spell column (right edge) | pick a spell, then click a target (the same key again or right click cancels); Ctrl / Alt + key or a double click casts at once |
+| P / O / I / U or the belt (bottom right) | pick quick item 1–4, then click a target; Ctrl / Alt + key or a double click uses it at once |
+| Q / W / E / R | take weapon 1–4 |
+| Ctrl + click | attack the clicked unit, whoever it is; on the ground: move there and attack enemies near that spot |
+| Alt + click | move to the clicked spot without attacking or talking |
+| hold Numpad 8 / 5 / 4 / 6 / 1 / 3 + click | aimed strike at the head / body / right arm / left arm / right leg / left leg (harder to hit) |
+| A | aggressive / defensive stance |
+| S / F | use or steal / follow, then click the unit |
 | Z / X / C / V | run / walk / sneak / crawl |
+| F1–F3, F4 | select hero 1–3 (with Ctrl / Alt: and centre the camera on them), select all |
+| , / . / / / ' | hero panel: general / body parts / attributes / spell effects |
+| L / K | text window: messages / collected items |
+| M | minimap on / off (hold its + / − buttons to zoom) |
 | Tab | quests of the current zone |
-| F5 / F8 | quick save / quick load |
-| Space | pause |
+| Numpad + / − | fast / normal game speed (single player) |
+| F9–F12 | camera views: Ctrl / Alt + key stores zoom and tilt, the key alone recalls them |
+| F5 / F8 | quick save / quick load (host) |
+| Space | pause (single player); orders can still be given while paused |
+| H | show the last tutorial again |
+| Home / N | centre the camera on the selected hero / turn it to face north |
+| Arrows, screen edges, PgUp / PgDn, wheel | move and zoom the camera |
+| Right drag, Ctrl / Alt + arrows | turn and tilt the camera; middle drag moves it (Modern style: middle drag also turns, Shift + middle drag moves, Delete / End turn, W / A / S / D can move it if enabled in Options) |
+| B / J | inventory / journal |
 | Esc | game menu: save, load, options, exit |
-| Arrows, screen edges, wheel, middle or right drag | camera (rotate: Delete / End) |
+| Enter / Backspace | co-op: type a chat message / clear the chat |
 
 ## What is there
 
@@ -80,6 +113,7 @@ Saves and settings are kept in the engine's user folder:
 - **Windows:** `%APPDATA%\Godot\app_userdata\Cursed Lands`
 - **Linux:** `~/.local/share/godot/app_userdata/Cursed Lands`
 - **macOS:** `~/Library/Application Support/Godot/app_userdata/Cursed Lands`
+- **Browser:** in the browser's storage for cursedlands.wwworm.com. Clearing the site's data removes them; **Export saves** on the Save screen keeps a backup file.
 
 ## Building from source
 

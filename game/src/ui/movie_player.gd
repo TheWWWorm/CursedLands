@@ -41,6 +41,7 @@ var _paused_tree := false
 var _view: TextureRect
 var _label: Label
 var _audio: AudioStreamPlayer
+var _skip: Button
 var _mat: ShaderMaterial
 var _tex: Array[ImageTexture] = [null, null, null]
 var _state := IDLE
@@ -89,6 +90,27 @@ func _ready() -> void:
 	if AudioServer.get_bus_index("Music") >= 0:
 		_audio.bus = "Music"
 	add_child(_audio)
+	var skip := Button.new()
+	_skip = skip
+	skip.text = RemakeText.t("Skip")
+	skip.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_RIGHT)
+	skip.offset_left = -100
+	skip.offset_right = -16
+	skip.offset_top = -64
+	skip.offset_bottom = -16
+	skip.pressed.connect(stop)
+	skip.visible = not loop
+	add_child(skip)
+	resized.connect(_layout_skip)
+	_layout_skip()
+
+func _layout_skip() -> void:
+	var safe := Portability.safe_rect(size)
+	var target := TouchInput.target_pixels() if TouchInput.enabled else 48.0
+	_skip.offset_left = -(size.x - safe.end.x) - target * 2 - 16
+	_skip.offset_right = -(size.x - safe.end.x) - 16
+	_skip.offset_top = -(size.y - safe.end.y) - target - 16
+	_skip.offset_bottom = -(size.y - safe.end.y) - 16
 
 
 ## Called once when the game quits (main.gd): stops the background
@@ -128,7 +150,7 @@ func play(name: String) -> void:
 			_start_cache(c)
 			return
 		var src := GameData.root.path_join("movies/%s.bik" % name)
-		if GameData.root.is_empty() or not FileAccess.file_exists(src):
+		if GameData.root.is_empty() or not GameFiles.exists(src):
 			return
 		conv = EIBinkCache.new()
 		conv.start(src, cached)
@@ -136,7 +158,7 @@ func play(name: String) -> void:
 	_conv = conv
 	_pause()
 	_state = PREPARING
-	_label.text = "Preparing cutscene..."
+	_label.text = RemakeText.t("Preparing cutscene...")
 	visible = true
 
 
@@ -145,11 +167,11 @@ func play(name: String) -> void:
 ## each from Movies\.
 static func ini_movies(section: String) -> PackedStringArray:
 	var out := PackedStringArray()
-	var f := FileAccess.open(GameData.root.path_join("config/movie.ini"), FileAccess.READ)
-	if f == null:
+	var data := GameData.read_file("config/movie.ini")
+	if data.is_empty():
 		return out
 	var cur := ""
-	for line in f.get_as_text().split("\n"):
+	for line in data.get_string_from_utf8().split("\n"):
 		line = line.strip_edges()
 		if line.begins_with("[") and line.ends_with("]"):
 			cur = line.substr(1, line.length() - 2)
@@ -183,13 +205,15 @@ func step(delta: float) -> void:
 ## Converts movies in the background ahead of use (loading screens, intro) if
 ## they are not cached yet.
 static func preconvert(names: Array) -> void:
+	if not Portability.threads():
+		return
 	for n: String in names:
 		n = n.to_lower()
 		var cached := ProjectSettings.globalize_path("user://movies/%s.eiv" % n)
 		if _converters.has(n) or not EIBinkCache.open_cache(cached).is_empty():
 			continue
 		var src := GameData.root.path_join("movies/%s.bik" % n)
-		if GameData.root.is_empty() or not FileAccess.file_exists(src):
+		if GameData.root.is_empty() or not GameFiles.exists(src):
 			continue
 		var conv := EIBinkCache.new()
 		conv.start(src, cached)
@@ -197,6 +221,9 @@ static func preconvert(names: Array) -> void:
 
 
 func stop() -> void:
+	if not Portability.threads() and _conv and _conv.is_running():
+		_conv.cancel = true
+		_converters.erase(_name)
 	var was := _state != IDLE
 	if _paused_tree and is_inside_tree():
 		get_tree().paused = false
@@ -215,6 +242,10 @@ func stop() -> void:
 
 
 func _process(delta: float) -> void:
+	if hud and TouchInput.enabled:
+		set_anchors_preset(Control.PRESET_TOP_LEFT)
+		global_position = Vector2.ZERO
+		size = get_viewport_rect().size
 	if _state == PREPARING:
 		_prepare()
 	elif _state == PLAYING:
@@ -250,7 +281,7 @@ func _prepare() -> void:
 		_offsets = PackedInt64Array()
 		_begin(total, fps, c.width, c.height, c.audio_pcm(), c.audio_rate, c.audio_channels)
 		return
-	_label.text = "Preparing cutscene... %d%%" % clampi(done * 100 / total, 0, 99)
+	_label.text = RemakeText.t("Preparing cutscene... %d%%") % clampi(done * 100 / total, 0, 99)
 
 
 ## Frames converted so far; also records the recent conversion speed.
