@@ -294,28 +294,62 @@ void fragment() {
 	vec4 t = texture(atlases, vec3(UV, UV2.x));
 	EMISSION = ei_lin(spec);   // the vertex specular, added after the texture
 	ALBEDO = t.rgb;
-	ALPHA = clamp(alpha * t.a, 0.0, 1.0);
+	// Stage 0 (state block): colour = texture ×
+	// diffuse, alpha = SELECTARG1 diffuse: the texture's alpha is not used.
+	ALPHA = clamp(alpha, 0.0, 1.0);
 	ROUGHNESS = 1.0;
 }
 """
 
-## Remake water (option gfx_water): the original colour and texture mix as the
-## water's body colour, two drifting procedural normal maps, refraction of the
-## ground below (screen texture), absorption by depth toward the body colour,
-## surf on explicitly identified coasts, sky reflection and optional custom
-## screen-space reflections. Lava materials (liquid tiles of ground type 13) glow and
-## churn instead. Keeps the per-material SetWaterLevel offsets.
+## Remake water (option gfx_water), built on the original water above: the
+## same per-vertex material, vertex light (texture × the EI light model),
+## material alpha over the land (whose underwater vertices the land shader
+## already darkens by depth), vertex waves and vertex specular. On top, drawn
+## so that the original colour stays the base:
+## - where two liquid textures meet (bog and river tiles), the 2 × 2 m tile
+##   textures are cross-faded along a noise-wobbled line instead of the
+##   original's hard stair-stepped tile edge;
+## - drifting procedural ripple normals (and rain rings) drive only the
+##   reflection and glints, not the diffuse light;
+## - Fresnel reflection of the sky colour and, with gfx_water_reflections,
+##   screen-space reflections of the scene (Mirror: a stronger mix, capped);
+## - sun glints whose peak is the original's vertex specular cap of 20/255;
+## - a soft shore: the alpha fades over the last 0.25 m of depth;
+## - breaking surf on explicitly identified sea coasts;
+## - lava (liquid tiles of ground type 13) churns and glows.
+## The reflection and glints replace / add light as alpha-blended colour:
+## out = (1 − w) · (a · lit + (1 − a) · behind) + w · R + G. Keeps the
+## per-material SetWaterLevel offsets. (Until 2026-10-03 this was a separate
+## look: the material's rgb (in the original only E = self_illum × rgb, 0 for water
+## and bog, and the wave specular) mixed in as a flat body colour per tile, Godot's own lighting with sky
+## ambient and a screen refraction whose clarity grew with the view path: a
+## milky, fog-like surface showing the dark seabed, hard blue / teal blocks
+## where two materials meet, and Mirror's 60 % screen-space reflection put
+## white bank streaks on rivers.)
 const WATER_FX_SHADER := """
 shader_type spatial;
-render_mode cull_disabled, blend_mix, depth_draw_always;
+render_mode cull_disabled, blend_mix, ambient_light_disabled, depth_draw_always;
+varying vec3 ei_e;
+varying float ei_k;
 uniform sampler2DArray atlases : source_color, filter_linear_mipmap_anisotropic, repeat_disable;
 uniform float level[64];
+uniform vec3 mat_e[64];
+uniform float mat_a[64];
+uniform float mat_wave[64];
+uniform vec3 mat_rgb[64];
+uniform float wind = 0.4;      // DefaultWindForce
+uniform float waves = 1.0;     // EnableWaterWaves
+uniform sampler2D phase_tex : filter_nearest, repeat_enable;   //  grid
 uniform float lava[64];
 uniform float surf[64];
 uniform float ripple[64];
 uniform bool reflections = true;
-uniform float mirror = 1.0; // art-directed clarity; Natural mode uses 0
-uniform sampler2D terrain_heights : filter_linear, repeat_disable;
+uniform float mirror = 1.0; // Mirror style; Natural uses 0
+uniform bool blend_tiles = true;
+// Liquid tile code per 2 x 2 m tile of the map (-1: none), as land_tile.
+uniform sampler2D water_tiles : filter_nearest, repeat_disable;
+uniform float tiles_per_axis = 8.0;
+uniform float source_texel = 0.001953125;
 uniform sampler2D terrain_cells : filter_nearest, repeat_disable;
 uniform sampler2D rain_cover : filter_nearest, repeat_disable;
 uniform sampler2D depth_tex : hint_depth_texture, filter_nearest, repeat_disable;
@@ -323,18 +357,97 @@ uniform sampler2D screen_tex : hint_screen_texture, filter_linear_mipmap;
 uniform sampler2D wave_a : hint_normal, filter_linear_mipmap, repeat_enable;
 uniform sampler2D wave_b : hint_normal, filter_linear_mipmap, repeat_enable;
 uniform sampler2D foam_tex : filter_linear_mipmap, repeat_enable;
+varying float alpha;
+varying vec3 spec;
 varying vec3 wpos;
+varying vec2 tgrid;
 varying float is_lava;
-varying flat float surf_amount;
-varying flat float ripple_amount;
+varying float surf_amount;
+varying float ripple_amount;
 void vertex() {
-	int mi = int(UV2.y + 0.5);
-	int m = clamp(mi % 64, 0, 63);
+	int m = clamp(int(UV2.y + 0.5) % 64, 0, 63);
 	VERTEX.y += level[m];
+	// The tile grid position before the waves sway the vertex: the texture
+	// rides on the vertices as with the original UVs.
+	vec3 w0 = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
+	tgrid = vec2(w0.x, -w0.z) * 0.5;
+	ei_e = mat_e[m];
+	ei_k = 0.0;
+	alpha = mat_a[m];
+	spec = vec3(0.0);
 	is_lava = lava[m];
 	surf_amount = surf[m];
 	ripple_amount = ripple[m];
+	if (waves > 0.5) {
+		float ticks = TIME / 0.055;
+		vec2 cr = mod(floor(vec2(w0.x, -w0.z) + 0.5), 32.0);
+		float p = texelFetch(phase_tex, ivec2(cr), 0).r;
+		float wv = mat_wave[m];
+		float a = 0.3 * wind * wv;
+		float T = 6.2831853 - 3.1415927 / 21.0 * wind * ticks;
+		float s = sin(T * wv + p);
+		float t2 = 0.05 * ticks;
+		VERTEX.y += s * a * 0.25;
+		VERTEX.x += sin(cr.x * 0.7853981 + t2) * a * 3.0;
+		VERTEX.z -= sin(cr.y * 0.7853981 + t2) * a * 3.0;
+		if (s > 0.0) {
+			spec = min(s * wind * wv * 50.0 * mat_rgb[m] / 255.0, vec3(1.0));
+		}
+	}
 	wpos = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
+}
+vec2 tile_turn(vec2 p, int rotation) {
+	if (rotation == 1) { return vec2(-p.y, p.x); }
+	if (rotation == 2) { return -p; }
+	if (rotation == 3) { return vec2(p.y, -p.x); }
+	return p;
+}
+// A tile of the atlases at p (0..1 over the tile, EI x / y), as _tile_uv
+// maps it: the 8-texel border left out, the rotation code applied.
+vec3 tile_sample(int code, vec2 p, vec2 dx, vec2 dy) {
+	int tile = code & 63;
+	int rotation = (code >> 14) & 3;
+	int per_row = int(tiles_per_axis);
+	float border = 8.0 * source_texel * tiles_per_axis;
+	float interior = 1.0 - 2.0 * border;
+	vec2 local = vec2(border) + (vec2(0.5) + tile_turn(p - 0.5, rotation)) * interior;
+	local = clamp(vec2(local.x, 1.0 - local.y), vec2(0.0), vec2(1.0));
+	vec2 origin = vec2(float(tile % per_row), float(per_row - 1 - tile / per_row));
+	vec2 uv = (origin + local) / tiles_per_axis;
+	vec2 gx = tile_turn(dx, rotation) * interior / tiles_per_axis;
+	vec2 gy = tile_turn(dy, rotation) * interior / tiles_per_axis;
+	return textureGrad(atlases, vec3(uv, float((code >> 6) & 255)), gx * vec2(1.0, -1.0), gy * vec2(1.0, -1.0)).rgb;
+}
+int tile_code(ivec2 c, int fallback) {
+	float v = texelFetch(water_tiles, clamp(c, ivec2(0), textureSize(water_tiles, 0) - 1), 0).r;
+	return v < 0.0 ? fallback : int(v + 0.5);
+}
+// The liquid texture with different neighbouring liquid tiles cross-faded
+// over a wobbly line (the original changes texture at the tile edge).
+// dx / dy: the tile grid's screen derivatives, taken in uniform control flow.
+vec3 water_texture(vec3 own, vec2 dx, vec2 dy) {
+	if (!blend_tiles) { return own; }
+	vec2 g = tgrid;
+	ivec2 home = ivec2(floor(g));
+	int code = tile_code(home, -1);
+	if (code < 0) { return own; }
+	vec2 wob = vec2(textureLod(foam_tex, g * 0.23, 0.0).r, textureLod(foam_tex, g * 0.23 + vec2(0.37, 0.61), 0.0).r) - 0.5;
+	vec2 gs = g + wob * 0.9;
+	ivec2 c = ivec2(floor(gs));
+	vec2 q = gs - vec2(c);
+	ivec2 st = ivec2(q.x < 0.5 ? -1 : 1, q.y < 0.5 ? -1 : 1);
+	int c0 = tile_code(c, code);
+	int cx = tile_code(c + ivec2(st.x, 0), c0);
+	int cy = tile_code(c + ivec2(0, st.y), c0);
+	int cxy = tile_code(c + st, c0);
+	if (c0 == code && cx == code && cy == code && cxy == code) { return own; }
+	vec2 w = 0.5 * (1.0 - smoothstep(vec2(0.0), vec2(0.5), min(q, 1.0 - q)));
+	vec2 p = fract(g);
+	vec3 a = c0 == code ? own : tile_sample(c0, p, dx, dy);
+	vec3 b = cx == c0 ? a : tile_sample(cx, p, dx, dy);
+	vec3 d = cy == c0 ? a : tile_sample(cy, p, dx, dy);
+	vec3 e = cxy == c0 ? a : tile_sample(cxy, p, dx, dy);
+	return mix(mix(a, b, w.x), mix(d, e, w.x), w.y);
 }
 vec3 scene_pos(vec2 uv, mat4 inv_proj) {
 	float z = textureLod(depth_tex, uv, 0.0).r;
@@ -346,7 +459,6 @@ vec3 scene_pos(vec2 uv, mat4 inv_proj) {
 }
 // One short-lived expanding ring per 0.8 m cell. Its full radius fits in
 // the 3 x 3 neighbourhood, so seams are continuous with exactly nine taps.
-// There are no particles, normal-map allocations or per-drop CPU updates.
 vec2 rain_rings(vec2 p, float now) {
 	vec2 grid = p * 1.25;
 	vec2 base = floor(grid);
@@ -360,24 +472,22 @@ vec2 rain_rings(vec2 p, float now) {
 			vec2 delta = grid - cell - (0.2 + h.xy * 0.6);
 			float distance = length(delta);
 			float ring = distance - age * 0.80;
-			float width = 0.075;
-			float envelope = (1.0 - smoothstep(0.0, width, abs(ring))) * smoothstep(0.02, 0.10, age) * (1.0 - age) * (1.0 - age);
+			float envelope = (1.0 - smoothstep(0.0, 0.075, abs(ring))) * smoothstep(0.02, 0.10, age) * (1.0 - age) * (1.0 - age);
 			sum += delta / max(distance, 0.001) * sin(ring * 41.89) * envelope;
 		}
 	}
 	return sum;
 }
-// The built-in SSR pass runs before refractive water. Trace its opaque
-// screen/depth buffers here instead. No second camera or scene render.
-// Returned alpha is confidence, faded at the screen edge and ray limit.
+// Screen-space reflection traced through the opaque depth / colour copy
+// (Godot's own SSR pass runs before transparent water). Alpha = confidence,
+// faded at the screen edge and the ray limit.
 vec4 water_ssr(vec3 origin, vec3 normal, mat4 proj, mat4 inv_proj, mat4 inv_view) {
 	vec3 ray = reflect(normalize(origin), normal);
 	vec3 start = origin + normal * 0.08;
 	float previous = 0.0;
 	const float reach = 45.0;
-	int steps = mirror > 0.5 ? 64 : 40;
-	for (int i = 0; i < 64; i++) {
-		if (i >= steps) { break; }
+	const int steps = 40;
+	for (int i = 0; i < steps; i++) {
 		float f = float(i + 1) / float(steps);
 		float travel = 0.15 + reach * f * f;
 		vec3 p = start + ray * travel;
@@ -386,10 +496,7 @@ vec4 water_ssr(vec3 origin, vec3 normal, mat4 proj, mat4 inv_proj, mat4 inv_view
 		vec2 uv = clip.xy / clip.w * 0.5 + 0.5;
 		if (any(lessThanEqual(uv, vec2(0.001))) || any(greaterThanEqual(uv, vec2(0.999)))) { break; }
 		vec3 hit = scene_pos(uv, inv_proj);
-		float gap = hit.z - p.z;
-		if (gap > 0.0) {
-			// Refine the first depth crossing, then reject disocclusions and
-			// submerged geometry instead of reflecting the bottom as a bank.
+		if (hit.z - p.z > 0.0) {
 			float lo = previous;
 			float hi = travel;
 			for (int j = 0; j < 6; j++) {
@@ -403,15 +510,16 @@ vec4 water_ssr(vec3 origin, vec3 normal, mat4 proj, mat4 inv_proj, mat4 inv_view
 			clip = proj * vec4(p, 1.0);
 			uv = clip.xy / clip.w * 0.5 + 0.5;
 			hit = scene_pos(uv, inv_proj);
-			gap = hit.z - p.z;
+			float gap = hit.z - p.z;
 			float tolerance = 0.18 + hi * 0.012;
 			vec3 world_hit = (inv_view * vec4(hit, 1.0)).xyz;
+			// Not the bed or the banks under the surface.
 			if (gap < 0.0 || gap > tolerance || world_hit.y < wpos.y + 0.03) { return vec4(0.0); }
 			vec2 edge = min(uv, vec2(1.0) - uv);
 			float confidence = smoothstep(0.0, 0.08, min(edge.x, edge.y));
 			confidence *= 1.0 - smoothstep(30.0, reach, hi);
 			confidence *= 1.0 - smoothstep(tolerance * 0.5, tolerance, gap);
-			return vec4(textureLod(screen_tex, uv, mix(0.65, 0.0, mirror)).rgb, confidence);
+			return vec4(textureLod(screen_tex, uv, 0.0).rgb, confidence);
 		}
 		previous = travel;
 	}
@@ -419,32 +527,25 @@ vec4 water_ssr(vec3 origin, vec3 normal, mat4 proj, mat4 inv_proj, mat4 inv_view
 }
 void fragment() {
 	FOG = ei_fog_of(VERTEX, (INV_VIEW_MATRIX * vec4(VERTEX, 1.0)).xyz);
-	vec3 t = texture(atlases, vec3(UV, UV2.x)).rgb;
+	vec4 own = texture(atlases, vec3(UV, UV2.x));
+	vec3 t = water_texture(own.rgb, dFdx(tgrid), dFdy(tgrid));
 	vec3 gn = normalize((INV_VIEW_MATRIX * vec4(NORMAL, 0.0)).xyz);
+	vec2 q = wpos.xz;
 	if (is_lava > 0.5) {
-		vec2 q = wpos.xz;
 		float n1 = texture(foam_tex, q * 0.045 + TIME * vec2(0.006, 0.004)).r;
 		float n2 = texture(foam_tex, q * 0.11 - TIME * vec2(0.004, 0.009)).r;
 		float heat = smoothstep(0.35, 0.85, n1 * 0.6 + n2 * 0.6 - 0.1);
-		vec3 crust = t * 0.35;
-		vec3 wn = normalize(gn + vec3(n1 - 0.5, 0.0, n2 - 0.5) * 0.5);
-		NORMAL = normalize((VIEW_MATRIX * vec4(wn, 0.0)).xyz);
-		ALBEDO = crust;
+		ALBEDO = t * 0.35;
 		EMISSION = t * (0.6 + 2.2 * heat) * vec3(1.0, 0.75, 0.55) + vec3(1.0, 0.35, 0.05) * heat * heat * 0.8;
-		ROUGHNESS = 0.7;
-		SPECULAR = 0.2;
 		ALPHA = 1.0;
 	} else {
-		vec3 body = mix(COLOR.rgb, t, 0.4);
 		vec2 cells_uv = vec2(wpos.x, -wpos.z) / vec2(textureSize(terrain_cells, 0));
 		bool swamp = int(texture(terrain_cells, cells_uv).b + 0.5) == 14;
-		// waves: two normal maps drifting across each other, in world space
-		vec2 q = wpos.xz;
+		// Ripples: two normal maps drifting across each other (world space).
 		vec3 na = texture(wave_a, q * 0.055 + TIME * vec2(0.010, 0.006)).rgb * 2.0 - 1.0;
 		vec3 nb = texture(wave_b, q * 0.13 + TIME * vec2(-0.008, 0.012)).rgb * 2.0 - 1.0;
-		vec2 slope = (na.xy * 0.6 + nb.xy * 0.4) * (swamp ? 0.18 : ripple_amount);
-		// Raindrops disturb only open water, including calm rivers and bogs.
-		// Fade subpixel rings with distance to keep the far water stable.
+		vec2 slope = (na.xy * 0.6 + nb.xy * 0.4) * (swamp ? 0.18 : ripple_amount) * 0.35;
+		// Raindrops on open water; subpixel rings fade out with distance.
 		vec2 rain_slope = vec2(0.0);
 		float rain = ei_surface_fx.z * ei_weather.y;
 		if (rain > 0.001) {
@@ -454,106 +555,65 @@ void fragment() {
 				rain_slope = rain_rings(q, TIME) * rain * exposed * near * 0.28;
 			}
 		}
-		float mirror_style = reflections ? mirror : 0.0;
-		// Refraction keeps its ripples; reflected silhouettes get a smoother
-		// surface in Mirror mode so trees and cliffs remain recognisable.
-		vec2 normal_slope = slope * mix(0.35, 0.065, mirror_style) + rain_slope;
-		vec3 wn = normalize(gn + vec3(normal_slope.x, 0.0, normal_slope.y));
-		NORMAL = normalize((VIEW_MATRIX * vec4(wn, 0.0)).xyz);
-		float wd = length(VERTEX);
-		float d0 = length(scene_pos(SCREEN_UV, INV_PROJECTION_MATRIX));
-		float thick = max(d0 - wd, 0.0);
-		// refraction, damped in the shallows; not where the offset lands on
-		// something in front of the water
-		vec2 ruv = clamp(SCREEN_UV + (slope + rain_slope) * 0.035 * clamp(thick * 0.5, 0.0, 1.0), vec2(0.001), vec2(0.999));
-		float d1 = length(scene_pos(ruv, INV_PROJECTION_MATRIX));
-		if (d1 < wd) {
-			ruv = SCREEN_UV;
-			d1 = d0;
-		}
-		thick = max(d1 - wd, 0.0);
-		vec3 under = textureLod(screen_tex, ruv, 0.0).rgb;
-		// Transparent-pass objects (alpha-to-coverage foliage, units) are not
-		// in the screen copy (black there): blend over them instead.
-		bool missing = max(under.r, max(under.g, under.b)) < 1e-4;
-		if (missing && ruv != SCREEN_UV) {
-			ruv = SCREEN_UV;
-			thick = max(d0 - wd, 0.0);
-			under = textureLod(screen_tex, SCREEN_UV, 0.0).rgb;
-			missing = max(under.r, max(under.g, under.b)) < 1e-4;
-		}
-		// A deep bed is black itself (the original underwater light, ambient
-		// × max(0, 1 − k)): black on the terrain is the bed, not a gap.
-		if (missing) {
-			vec3 bed = (INV_VIEW_MATRIX * vec4(scene_pos(ruv, INV_PROJECTION_MATRIX), 1.0)).xyz;
-			vec2 bed_uv = (vec2(bed.x, -bed.z) + 0.5) / vec2(textureSize(terrain_heights, 0));
-			missing = bed.y > texture(terrain_heights, bed_uv).r + 0.5;
-		}
-		// Actual terrain depth, independent of the view/refraction and of
-		// characters, reeds or bridges intersecting the water surface.
-		vec2 height_uv = (vec2(wpos.x, -wpos.z) + 0.5) / vec2(textureSize(terrain_heights, 0));
-		float vdepth = max(wpos.y - texture(terrain_heights, height_uv).r, 0.0);
-		float dens = mix(0.18, 0.55, COLOR.a);
-		vec3 trans = exp(-thick * dens * (vec3(1.15) - body) * 1.6);
-		float clarity = exp(-thick * dens * 0.55);
-		vec3 seen = under * trans;
+		vec3 wn = normalize(gn + vec3(slope.x + rain_slope.x, 0.0, slope.y + rain_slope.y));
+		vec3 rn = normalize((VIEW_MATRIX * vec4(wn, 0.0)).xyz);
+		// Depth below the surface along the vertical (opaque depth copy):
+		// the soft shore and the surf band.
+		vec3 vdir = normalize(VERTEX);
+		float thick = max(length(scene_pos(SCREEN_UV, INV_PROJECTION_MATRIX)) - length(VERTEX), 0.0);
+		float vdepth = thick * abs((INV_VIEW_MATRIX * vec4(vdir, 0.0)).y);
+		float shore = smoothstep(0.0, 0.25, vdepth);
+		float a = clamp(alpha, 0.0, 1.0) * shore;   // vertex alpha only, as the original
 		float foam = 0.0;
-		float shore = 1.0 - smoothstep(0.0, 0.45, vdepth);
-		float fn = texture(foam_tex, q * 0.32 + TIME * vec2(0.015, -0.01)).r;
-		float fn2 = texture(foam_tex, q * 0.7 - TIME * vec2(0.01, 0.02)).r;
-		foam = smoothstep(0.55, 0.75, fn * 0.6 + fn2 * 0.5 + shore * 0.45 - 0.25) * shore;
-		foam *= smoothstep(0.0, 0.06, vdepth) * (swamp ? 0.0 : surf_amount);
-		ALBEDO = mix(body * (1.0 - clarity) * 0.9, vec3(0.92), foam * 0.7);
-		EMISSION = seen * clarity * (1.0 - foam * 0.7);
-		ROUGHNESS = mix(mix(0.04, 0.015, mirror_style), 0.6, foam);
-		SPECULAR = mix(0.35, 0.65, mirror_style);
-		ALPHA = 1.0;
-		if (missing) {
-			ALBEDO = body;
-			EMISSION = vec3(0.0);
-			ALPHA = clamp(COLOR.a * 0.8, 0.0, 1.0);
+		if (surf_amount > 0.0 && !swamp) {
+			float band = 1.0 - smoothstep(0.0, 0.45, vdepth);
+			float fn = texture(foam_tex, q * 0.32 + TIME * vec2(0.015, -0.01)).r;
+			float fn2 = texture(foam_tex, q * 0.7 - TIME * vec2(0.01, 0.02)).r;
+			foam = smoothstep(0.55, 0.75, fn * 0.6 + fn2 * 0.5 + band * 0.45 - 0.25) * band * surf_amount;
+			foam *= smoothstep(0.0, 0.06, vdepth);
+			t = mix(t, vec3(0.85), foam * 0.7);
+			a = mix(a, 0.9, foam * 0.7);
 		}
-		if (!missing) {
-			// Both sky and SSR replace transmitted light at grazing angles,
-			// rather than adding a bright reflection on top of it.
-			float f0 = mix(0.02, 0.0676, mirror_style);
-			float fresnel = f0 + (1.0 - f0) * pow(1.0 - max(dot(NORMAL, VIEW), 0.0), 5.0);
-			float weight = (1.0 - foam) * fresnel;
-			ALBEDO *= 1.0 - weight;
-			EMISSION *= 1.0 - weight;
-			if (reflections) {
-				vec4 reflected = water_ssr(VERTEX, NORMAL, PROJECTION_MATRIX, INV_PROJECTION_MATRIX, INV_VIEW_MATRIX);
-				// Intentional artistic boost: Mirror makes visible scenery
-				// legible even from the game's high camera. Replace some of
-				// the remaining transmission, never add brightness on top.
-				float clear_weight = mirror_style * 0.60 * reflected.a * (1.0 - foam);
-				ALBEDO *= 1.0 - clear_weight;
-				EMISSION = EMISSION * (1.0 - clear_weight) + reflected.rgb * clear_weight * (1.0 - fresnel);
-				// Godot applies the reflection BRDF/Fresnel once, through
-				// RADIANCE. Alpha zero leaves its live sky fallback in place.
-				RADIANCE = vec4(reflected.rgb, reflected.a * (1.0 - foam));
-			}
+		// Reflection weight: Schlick's Fresnel term without its 2 % floor,
+		// so the game's steep view keeps the original colour (2 % of the
+		// bright [sky] colour turned the dark bog cyan) and the reflection
+		// grows only toward grazing views; rain rings catch more of the sky.
+		// Mirror strengthens the scene reflection, capped so the water's
+		// own colour always stays.
+		float fres = pow(1.0 - clamp(dot(rn, VIEW), 0.0, 1.0), 5.0);
+		vec3 R = ei_lin(ei_sky);
+		float w = fres + min(length(rain_slope) * 0.6, 0.18);
+		if (reflections) {
+			// Mirror: a calmer surface for the traced ray, so reflected
+			// trees and cliffs stay recognisable.
+			vec3 sn = normalize(gn + vec3(slope.x * mix(1.0, 0.25, mirror) + rain_slope.x, 0.0, slope.y * mix(1.0, 0.25, mirror) + rain_slope.y));
+			vec4 r = water_ssr(VERTEX, normalize((VIEW_MATRIX * vec4(sn, 0.0)).xyz), PROJECTION_MATRIX, INV_PROJECTION_MATRIX, INV_VIEW_MATRIX);
+			float wm = min(fres * mix(2.0, 6.0, mirror), mix(0.2, 0.35, mirror));
+			R = mix(R, r.rgb, r.a);
+			w = mix(w, max(w, wm), r.a);
 		}
+		w *= (1.0 - foam) * shore;
+		// Sun glint, peak 20/255 of the sun colour like the original vertex
+		// specular, so it never reaches the bloom threshold.
+		// The original adds it to the sRGB colour; × 0.4 is that step on the dark
+		// water (sRGB ≈ 0.2) in linear light.
+		vec3 L = ei_sun_dir;
+		vec3 G = vec3(0.0);
+		// No glint on the bog: its liquid texture is a duckweed-green mat.
+		if (dot(L, L) > 0.5 && L.y > 0.0 && !swamp) {
+			vec3 V = normalize(CAMERA_POSITION_WORLD - wpos);
+			vec3 H = normalize(L + V);
+			G = ei_lin(min(ei_sun, vec3(1.0))) * (0.4 * 20.0 / 255.0) * pow(max(dot(wn, H), 0.0), 900.0) * (1.0 - foam) * shore;
+		}
+		float A = 1.0 - (1.0 - a) * (1.0 - w);
+		float k = (1.0 - w) * a / max(A, 1e-3);
+		ALBEDO = t * k;
+		EMISSION = ei_lin(spec) * k + (w * R + G) / max(A, 1e-3);
+		ALPHA = A;
 	}
 }
-// Lambert diffuse as Godot's default, plus a sun / torch glint whose PEAK is
-// the original's water specular: a per-vertex term of at most 20/255 per
-// channel (Godot's own GGX at roughness 0.04 reached hundreds
-// and bloomed the low sunset sun into a red blob cluster on the sea). The
-// lobe is scaled to that peak, not clipped at it: a normalised lobe
-// ((e + 8) / 8 ≈ 110 at the peak) clipped to the cap stayed at the cap over
-// ~11° round the mirror direction, a flat disc that filled 40 % of the screen
-// at the farthest zoom (bog, gz1g); a larger cap blew wide sunlit stretches
-// out to white (bz5g river at noon).
-void light() {
-	float nl = max(dot(NORMAL, LIGHT), 0.0);
-	DIFFUSE_LIGHT += LIGHT_COLOR / PI * nl * ATTENUATION;
-	vec3 h = normalize(LIGHT + VIEW);
-	float e = mix(900.0, 24.0, clamp(ROUGHNESS / 0.6, 0.0, 1.0));
-	float g = pow(max(dot(NORMAL, h), 0.0), e) * nl * ATTENUATION;
-	SPECULAR_LIGHT += LIGHT_COLOR / PI * g * (20.0 / 255.0) * SPECULAR_AMOUNT /*EI_FA*/;
-}
 """
+
 
 var map_name := ""
 var max_altitude := 0.0
@@ -609,6 +669,7 @@ var _ripple := PackedFloat32Array()
 var _height_tex: ImageTexture
 var _cell_tex: ImageTexture
 var _tile_tex: ImageTexture
+var _water_tile_tex: ImageTexture
 var _rain_cover: ImageTexture
 static var _land_shader: Shader
 static var _water_shader: Shader
@@ -779,7 +840,7 @@ func _build(arc: EIResArchive) -> void:
 		Gfx.ensure_globals()
 		_land_shader = Gfx.make_shader(TERRAIN_SHADER, true, true)
 		_water_shader = Gfx.make_shader(WATER_SHADER, true, true)
-		_water_fx_shader = Gfx.make_shader(WATER_FX_SHADER, false)
+		_water_fx_shader = Gfx.make_shader(WATER_FX_SHADER, true, true)
 	Gfx.set_border(size_ei())
 	var land_mat := ShaderMaterial.new()
 	land_mat.shader = _land_shader
@@ -812,11 +873,13 @@ func _build(arc: EIResArchive) -> void:
 			_record_ground(land_tex, sx, sy)
 			var wverts := []
 			var water_mats := PackedInt32Array()
+			var vert_mats := PackedInt32Array()
 			if liquids:
 				water_mats = _read_u16s(d, tex_off + 1024)
+				vert_mats = _vertex_materials(water_mats)
 				wverts = _read_vertices(d, 5 + VERTS * VERTS * 8, sx, sy, false)
 				_liquid_xy(wverts[0], land[0], water_mats, sx, sy)
-				land.append(_underwater(land[0], wverts[0], water_mats))
+				land.append(_underwater(land[0], wverts[0], vert_mats))
 			var mi := _make_mesh(land, land_tex, PackedInt32Array(), land_mat, Vector2i(sx * TILES, sy * TILES))
 			mi.name = "Sector_%d_%d" % [sx, sy]
 			mi.layers = SHADOW_RECEIVER_LAYER | DECAL_LAYER
@@ -825,7 +888,7 @@ func _build(arc: EIResArchive) -> void:
 				var water_tex := _read_u16s(d, tex_off + 512)
 				_record_water(wverts[0], water_mats, sx, sy)
 				_record_liquid_ground(water_tex, water_mats, sx, sy)
-				var wm := _make_mesh(wverts, water_tex, water_mats, wmat)
+				var wm := _make_mesh(wverts, water_tex, water_mats, wmat, Vector2i.ZERO, vert_mats)
 				if wm:
 					wm.name = "Water_%d_%d" % [sx, sy]
 					wm.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
@@ -852,6 +915,12 @@ func _build_surface_data() -> void:
 		tiles[i * 4 + 1] = tile_types[type_id] if type_id < tile_types.size() else 0
 	_tile_tex = ImageTexture.create_from_image(Image.create_from_data(sectors_x * TILES,
 		sectors_y * TILES, false, Image.FORMAT_RGBAF, tiles.to_byte_array()))
+	var wtiles := PackedFloat32Array()
+	wtiles.resize(water_tile.size())
+	for i in water_tile.size():
+		wtiles[i] = water_tile[i]
+	_water_tile_tex = ImageTexture.create_from_image(Image.create_from_data(sectors_x * TILES,
+		sectors_y * TILES, false, Image.FORMAT_RF, wtiles.to_byte_array()))
 	_height_tex = ImageTexture.create_from_image(Image.create_from_data(
 		grid_w, sectors_y * SECTOR + 1, false, Image.FORMAT_RF, heights.to_byte_array()))
 	var cells := PackedFloat32Array()
@@ -893,33 +962,34 @@ func apply_gfx() -> void:
 	_land_mat.set_shader_parameter("terrain_cells", _cell_tex)
 	_land_mat.set_shader_parameter("terrain_tiles", _tile_tex)
 	_land_mat.set_shader_parameter("rain_cover", _rain_cover)
-	if not fx:
-		var me := PackedVector3Array()
-		var ma := PackedFloat32Array()
-		me.resize(64)
-		ma.resize(64)
-		for i in mini(materials.size(), 64):
-			var e := material_e(i)
-			me[i] = Vector3(e.r, e.g, e.b)
-			ma[i] = (materials[i].color as Color).a
-		_water_mat.set_shader_parameter("mat_e", me)
-		_water_mat.set_shader_parameter("mat_a", ma)
-		var mw := PackedFloat32Array()
-		var mc := PackedVector3Array()
-		mw.resize(64)
-		mc.resize(64)
-		for i in mini(materials.size(), 64):
-			mw[i] = float(materials[i].get("wave", 0.0))
-			var c: Color = materials[i].color
-			mc[i] = Vector3(c.r, c.g, c.b)
-		_water_mat.set_shader_parameter("mat_wave", mw)
-		_water_mat.set_shader_parameter("mat_rgb", mc)
-		_water_mat.set_shader_parameter("phase_tex", wave_phase_texture())
+	# The original water's terms (also the base of the remake water).
+	var me := PackedVector3Array()
+	var ma := PackedFloat32Array()
+	var mw := PackedFloat32Array()
+	var mc := PackedVector3Array()
+	me.resize(64)
+	ma.resize(64)
+	mw.resize(64)
+	mc.resize(64)
+	for i in mini(materials.size(), 64):
+		var e := material_e(i)
+		me[i] = Vector3(e.r, e.g, e.b)
+		var c: Color = materials[i].color
+		ma[i] = c.a
+		mw[i] = float(materials[i].get("wave", 0.0))
+		mc[i] = Vector3(c.r, c.g, c.b)
+	_water_mat.set_shader_parameter("mat_e", me)
+	_water_mat.set_shader_parameter("mat_a", ma)
+	_water_mat.set_shader_parameter("mat_wave", mw)
+	_water_mat.set_shader_parameter("mat_rgb", mc)
+	_water_mat.set_shader_parameter("phase_tex", wave_phase_texture())
 	if fx:
 		_water_mat.set_shader_parameter("lava", _lava)
 		_water_mat.set_shader_parameter("surf", _surf)
 		_water_mat.set_shader_parameter("ripple", _ripple)
-		_water_mat.set_shader_parameter("terrain_heights", _height_tex)
+		_water_mat.set_shader_parameter("water_tiles", _water_tile_tex)
+		_water_mat.set_shader_parameter("tiles_per_axis", float(texture_size) / tile_size)
+		_water_mat.set_shader_parameter("source_texel", 1.0 / texture_size)
 		_water_mat.set_shader_parameter("terrain_cells", _cell_tex)
 		_water_mat.set_shader_parameter("rain_cover", _rain_cover)
 		_water_mat.set_shader_parameter("reflections", Gfx.on("gfx_water_reflections"))
@@ -1194,15 +1264,39 @@ func material_e(i: int) -> Color:
 ## k = depth² / (15 · (1 − alpha)) (= 1 / 15, material =
 ## 1 / (1 − alpha)); the ambient becomes ambient · max(0, 1 − k), the sun
 ## sun · max(0, 1 − Lz² k). Returns per-vertex Color(E, k / 4).
-## The vertex's material: the first liquid tile of the vertex → tile table
-## (map, built; 20-byte entries {n, tile[4]}): column
-## x/2 − 1 then x/2 for an even x, x/2 for an odd one, column outer, rows the
-## same way, tiles outside 0..15 left out (takes the first with a
-## liquid material, map ≠ −1).
-func _underwater(land_pos: PackedVector3Array, water_pos: PackedVector3Array, mats: PackedInt32Array) -> PackedColorArray:
+## `vert_mats`: the vertex materials of _vertex_materials.
+func _underwater(land_pos: PackedVector3Array, water_pos: PackedVector3Array, vert_mats: PackedInt32Array) -> PackedColorArray:
 	var out := PackedColorArray()
 	out.resize(VERTS * VERTS)
 	out.fill(Color(0, 0, 0, 0))
+	for vi in VERTS * VERTS:
+		var m := vert_mats[vi]
+		if m == NO_LIQUID:
+			continue
+		var depth := water_pos[vi].y - land_pos[vi].y
+		if depth < 0.0:
+			continue
+		var a: float = (materials[m].color as Color).a
+		var k := depth * depth / (15.0 * maxf(1.0 - a, 1e-3))
+		var e := material_e(m)
+		out[vi] = Color(e.r, e.g, e.b, minf(k * 0.25, 1.0))   # k / 4 (8-bit vertex colour)
+	return out
+
+
+## The material of each of a sector's 33 × 33 liquid vertices (vertex
+## ): the first liquid tile of the vertex → tile table (map
+## built; 20-byte entries {n, tile[4]}): column
+## x/2 − 1 then x/2 for an even x, x/2 for an odd one, column outer, rows the
+## same way, tiles outside 0..15 left out; the first with a liquid material
+## (map ≠ −1) wins, NO_LIQUID if none. The original keeps one vertex
+## grid point, so tiles of two materials share their edge vertices: the
+## vertex alpha (material) and E, the wave (reads
+##  material) and SetWaterLevel's shift (moves the
+## vertices whose is the material) all follow this one material.
+func _vertex_materials(mats: PackedInt32Array) -> PackedInt32Array:
+	var out := PackedInt32Array()
+	out.resize(VERTS * VERTS)
+	out.fill(NO_LIQUID)
 	for vi in VERTS * VERTS:
 		var vx := vi % VERTS
 		var vy := vi / VERTS
@@ -1217,15 +1311,7 @@ func _underwater(land_pos: PackedVector3Array, water_pos: PackedVector3Array, ma
 				if mm != NO_LIQUID and mm < materials.size():
 					m = mm
 					break
-		if m == NO_LIQUID:
-			continue
-		var depth := water_pos[vi].y - land_pos[vi].y
-		if depth < 0.0:
-			continue
-		var a: float = (materials[m].color as Color).a
-		var k := depth * depth / (15.0 * maxf(1.0 - a, 1e-3))
-		var e := material_e(m)
-		out[vi] = Color(e.r, e.g, e.b, minf(k * 0.25, 1.0))   # k / 4 (8-bit vertex colour)
+		out[vi] = m
 	return out
 
 
@@ -1295,9 +1381,10 @@ func _read_vertices(d: PackedByteArray, off: int, sx: int, sy: int, is_land: boo
 
 ## Builds a mesh with 9 unique vertices per 2x2-quad tile so each tile gets its own UVs.
 ## If `tile_mats` is given, tiles marked NO_LIQUID are skipped and vertex colors
-## come from the map materials (used for water). UV2.y carries the water material,
-## or the global land-tile address for seamless map-neighbour sampling.
-func _make_mesh(verts: Array, tex: PackedInt32Array, tile_mats: PackedInt32Array, mat: Material, tile_origin := Vector2i.ZERO) -> MeshInstance3D:
+## come from the map materials (used for water). UV2.y carries the water material
+## (per vertex from `vert_mats`, _vertex_materials, else the tile's), or the
+## global land-tile address for seamless map-neighbour sampling.
+func _make_mesh(verts: Array, tex: PackedInt32Array, tile_mats: PackedInt32Array, mat: Material, tile_origin := Vector2i.ZERO, vert_mats := PackedInt32Array()) -> MeshInstance3D:
 	var src_pos: PackedVector3Array = verts[0]
 	var src_nrm: PackedVector3Array = verts[1]
 	var pos := PackedVector3Array()
@@ -1327,7 +1414,11 @@ func _make_mesh(verts: Array, tex: PackedInt32Array, tile_mats: PackedInt32Array
 					var tuv: Array = _tile_uv(tex[t], dx, dy)
 					uv.append(tuv[0])
 					var tile_id := (tile_origin.y + ty) * sectors_x * TILES + tile_origin.x + tx
-					uv2.append(Vector2(tuv[1], tile_mats[t] if water else tile_id))
+					var vm := tile_mats[t] if water else tile_id
+					if water and not vert_mats.is_empty() and vert_mats[vi] != NO_LIQUID:
+						vm = vert_mats[vi]
+						color = materials[vm].color
+					uv2.append(Vector2(tuv[1], vm))
 					col.append(color)
 			for qy in 2:
 				for qx in 2:

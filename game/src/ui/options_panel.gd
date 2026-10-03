@@ -28,6 +28,7 @@ extends Interface800
 ## slider arrows scroll 16 units / s while held, the thumb drags. Volumes,
 ## brightness / contrast / gamma and reverse stereo apply at once
 ## the rest on ✓ (messbox\ok.wav); ✗ / Esc restores them (messbox\cancel.wav).
+## Remake: ✗ / Esc after a change first asks whether to save it (`_cancel`).
 ## Remake: the Graphics (video) page ends with a row "Remake graphics…" (row
 ## 13, free in the original's table) opening a sub-page under the same tab with the
 ## remake's own switches (GameData.REMAKE_OPTIONS), all marked as the remake's.
@@ -37,8 +38,9 @@ extends Interface800
 ## FPS counter; render scale on the sub-page): multiple-choice rows stepped by
 ## a click / Enter (forward) or Left / Right, applied at once like the volumes
 ## and restored by ✗.
-## Remake: the Game page's free row 13 "Co-op (remake)…" opens the co-op host
-## settings (COOP_GROUP) under the Game tab; its row 13 leads back.
+## Remake: the Game page's free row 13 "Remake extras…" opens the co-op host
+## settings and the single-player game-over notice switch (COOP_GROUP) under
+## the Game tab; its row 13 leads back.
 ## There is no language choice (the original has none: the texts and voices
 ## are those of the edition supplied). Behind it the frozen,
 ## greyed frame (Interface800.dim_layer).
@@ -69,8 +71,8 @@ const COOP_GROUP := 13     # the remake's co-op page, from the Game page's row 1
 const SURFACE_GROUP := 14  # lighting and surfaces, from More effects row 10
 ## The remake sub-pages and the original tab each belongs to (lit while it is up).
 const SUB_PAGES := {REMAKE_GROUP: 0, REMAKE_GROUP2: 0, COOP_GROUP: 3, SURFACE_GROUP: 0}
-const COOP_LINK := ["Co-op (remake)…",
-	"Co-op host settings: full experience for every party member, monsters scaled to the player count, opening the port on the router."]
+const COOP_LINK := ["Remake extras…",
+	"Co-op host settings: full experience for every party member, monsters scaled to the player count, opening the port on the router. Single player: the game-over notice at the hero's death."]
 const MORE_LINK := ["More effects…", "HD textures, soft and lit particles, contact shadows, torch glow; anti-aliasing, shadow quality, texture filtering."]
 const SURFACE_LINK := ["Lighting and surfaces…", "Dynamic firelight, surface materials, leaf backlighting, rain on surfaces and lava lighting."]
 const TABS := 11           # the original's group buttons
@@ -391,21 +393,73 @@ func _toggle(r: int) -> void:
 ## map copied back.
 func _accept() -> void:
 	sound("messbox\\ok")
+	_apply()
+	_close()
+
+
+func _apply() -> void:
 	for profile: int in _key_profiles:
 		EIKeymap.set_bindings(_key_profiles[profile], profile)
 	for n in _values:
 		if int(_values[n]) != GameData.option(n):
 			GameData.set_option(n, int(_values[n]))
-	_close()
 
 
 ## ✗ / Esc (case 1): the live rows go back.
+## Remake: with a row or key changed since the screen opened, a message box
+## (MessageBox, ✓ / ✗) asks first whether to save them: ✓ applies them as the
+## ✓ button does, ✗ drops them; either way the screen closes. Esc on the box
+## (unlike the original's boxes, where it answers ✗) closes it and stays on the
+## screen with the changes kept.
 func _cancel() -> void:
+	if _changed():
+		_ask_unsaved()
+		return
 	sound("messbox\\cancel")
+	_restore()
+	_close()
+
+
+func _restore() -> void:
 	for n in LIVE:
 		if GameData.option(n) != int(_snapshot.get(n, 0)):
 			GameData.set_option(n, int(_snapshot[n]))
-	_close()
+
+
+## Any row's value or the key map differs from what the screen opened with.
+func _changed() -> bool:
+	for n in _values:
+		if int(_values[n]) != int(_snapshot.get(n, 0)):
+			return true
+	for profile: int in _key_profiles:
+		if _key_profiles[profile] != EIKeymap.bindings(profile):
+			return true
+	return false
+
+
+func _ask_unsaved() -> void:
+	_waiting = false
+	_drag = -1
+	_hold = -1
+	_box = MessageBox.new()
+	_box.title = RemakeText.t("Options")
+	_box.message = RemakeText.t("Some settings were changed but not applied. Save them?")
+	_box.esc_closes = true
+	add_child(_box)
+	_box.dismissed.connect(func():
+		_box = null
+		_board.visible = true
+		queue_redraw())
+	_box.answered.connect(func(yes: bool):
+		_box = null
+		_board.visible = true
+		if yes:
+			_apply()
+		else:
+			_restore()
+		_close())
+	_board.visible = false
+	queue_redraw()
 
 
 # ------------------------------------------------------------------ drawing

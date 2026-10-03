@@ -39,7 +39,7 @@ extends MeshInstance3D
 ## a triangle offset in clip space by (∓0.1, −0.06) / (0, +0.14) (× w, so a
 ## fixed size in the world, ~0.1 m), UV row v 0.5 (base) → 0.74 (tip).
 ## The wind is only set by a SetWind network message
-## (FUN_00669...); nothing sends it at zone
+## nothing sends it at zone
 ## start, so it is 0 here. **Approx.**: the curves come from Godot's RNG, not
 ## the original's rand sequence; drops partly outside the view are clipped, not
 ## dropped.

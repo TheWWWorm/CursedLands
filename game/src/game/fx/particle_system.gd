@@ -346,7 +346,12 @@ func add_light(at: Vector3, color: Color, radius: float, secs := -1.0, energy :=
 ## veil on Forward+ that the Compatibility renderer, without mist, never
 ## showed). Remake safety: it also expires on its own `ticks` after creation,
 ## so a lost delete (zone change, a peer leaving mid-strike) cannot leave it on.
+## Time of the last one (FlashLog context: a storm's lightning strike).
+static var last_flash_light_msec := -1
+
+
 func _flash_light(d: Dictionary, ticks: int) -> void:
+	last_flash_light_msec = Time.get_ticks_msec()
 	var l: OmniLight3D = d.light
 	l.light_volumetric_fog_energy = 0.0
 	l.remove_from_group(&"gfx_torch_glow")

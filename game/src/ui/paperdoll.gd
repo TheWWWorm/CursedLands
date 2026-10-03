@@ -17,6 +17,10 @@ const CAMP_CLIP := [Rect2(290, 100, 220, 400), Rect2(272, 190, 18, 70),
 	Rect2(272, 340, 18, 70), Rect2(510, 190, 18, 20),
 	Rect2(510, 290, 18, 20), Rect2(510, 390, 18, 20)]
 var camp_angle := 0.0   # signed C fmod; retained when the hero / equipment changes
+##  px (400 in the camp) and clip mode 0's rect (empty = the
+## camp's clip mode 1): see set_camp_place.
+var camp_px := 400.0
+var camp_clip := Rect2()
 ## Framing: view height / figure height, and the figure's centre offset down
 ## the view (fraction of the view height).
 var frame_scale := 1.15
@@ -74,15 +78,39 @@ func _ready() -> void:
 	custom_minimum_size = Vector2.ZERO if exe_rect.has_area() or camp_frame else Vector2(view_size)
 	mouse_filter = Control.MOUSE_FILTER_IGNORE if camp_frame else Control.MOUSE_FILTER_STOP
 	if camp_frame:
-		var mat := ShaderMaterial.new()
-		mat.shader = preload("res://src/ui/paperdoll_clip.gdshader")
-		mat.set_shader_parameter("view_rect", Vector4(CAMP_RECT.position.x, CAMP_RECT.position.y,
-			CAMP_RECT.size.x, CAMP_RECT.size.y))
-		var rects := PackedVector4Array()
-		for r: Rect2 in CAMP_CLIP:
-			rects.append(Vector4(r.position.x, r.position.y, r.end.x, r.end.y))
-		mat.set_shader_parameter("clip_rects", rects)
-		material = mat
+		_camp_material()
+
+
+##  clip mode 1 (the camp's six rects) or, with `camp_clip` set
+## mode 0's single rect (the network character screen).
+func _camp_material() -> void:
+	var mat := ShaderMaterial.new()
+	mat.shader = preload("res://src/ui/paperdoll_clip.gdshader")
+	var vr := camp_rect()
+	mat.set_shader_parameter("view_rect", Vector4(vr.position.x, vr.position.y, vr.size.x, vr.size.y))
+	var rects := PackedVector4Array()
+	for r: Rect2 in ([camp_clip] if camp_clip.has_area() else CAMP_CLIP):
+		rects.append(Vector4(r.position.x, r.position.y, r.end.x, r.end.y))
+	while rects.size() < 6:
+		rects.append(Vector4.ZERO)
+	mat.set_shader_parameter("clip_rects", rects)
+	material = mat
+
+
+## The 800×600 rect the camp-style figure view covers (CAMP_RECT moved to
+## `camp_px`).
+func camp_rect() -> Rect2:
+	return Rect2(CAMP_RECT.position + Vector2(camp_px - 400.0, 0.0), CAMP_RECT.size)
+
+
+## The network character screen ((.., px, clip 0)):
+## the figure at pixel (px, 440), clipped to one rect; px > 400 also tilts it.
+func set_camp_place(px: float, clip: Rect2) -> void:
+	camp_px = px
+	camp_clip = clip
+	if is_inside_tree():
+		_camp_material()
+	_framed = 0
 
 
 ## Rebuilds only when the look changed (prototype, complexion or equipment).
@@ -206,7 +234,7 @@ func _process(dt: float) -> void:
 			_wound_wait = POSE_INTERVAL
 	if camp_frame:
 		if _framed == 0:
-			_ui_camera(CAMP_RECT)
+			_ui_camera(camp_rect())
 			_camp_transform()
 			_framed = 3
 		if sample:
@@ -299,8 +327,10 @@ func _camp_transform() -> void:
 	var to_godot := Basis(Vector3(1, 0, 0), Vector3(0, -1, 0), Vector3(0, 0, -1))
 	var ei_local := Basis(Vector3(1, 0, 0), Vector3(0, 0, -1), Vector3(0, 1, 0))
 	var rot := Basis(Vector3.UP, camp_angle) * Basis(Vector3.RIGHT, PI * 0.5)
+	if camp_px > 400.0:   # · q((0,0,−1), 0.15·π/2) when px > 400
+		rot = rot * Basis(Vector3(0, 0, -1), 0.15 * PI * 0.5)
 	_pivot.transform = Transform3D((to_godot * rot * ei_local.inverse()).scaled_local(Vector3.ONE * CAMP_SCALE),
-		to_godot * Vector3(0.0, 1.0113066, 6.0))
+		to_godot * Vector3((camp_px * 0.0025 - 1.0) * EXE_K * 6.0, 1.0113066, 6.0))
 
 
 func turn_camp_by(angle: float) -> void:

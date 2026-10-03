@@ -88,6 +88,9 @@ var template := ""
 var player: AnimationPlayer
 var weapon_type := ""
 var _current := ""
+## Vertex morph parts: [MeshInstance3D "morph", {clip: [first shape, frame
+## count]}, [shape indices set last]] (_apply_morphs).
+var _morph_parts: Array = []
 
 
 ## `unit` is a map object dictionary from EIMob (or a synthetic one with
@@ -179,6 +182,20 @@ func _act(action: String, variant: int, blend: float, with_start: bool) -> float
 			return player.get_animation("ei/" + start).length
 	_play(clip, blend, not cyc and clip == _current)
 	return player.get_animation("ei/" + clip).length
+
+
+## The clip act(action) would play for a one-shot (not cycle) action, without
+## playing it; "" when the figure has none.
+func action_clip(action: String, variant := 1) -> String:
+	var clip := ""
+	if not adb.is_empty() and _ACTION_CODE.has(action):
+		var code := code_for(action)
+		clip = pick(code, true, true)
+		if clip == "" and code & 0x3fc00000:
+			clip = pick(code & ~0x3fc00000, true, true)
+	if clip.is_empty():
+		clip = resolve(action, variant)
+	return clip
 
 
 var _resolved := {}
@@ -662,6 +679,7 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 			var mi := MeshInstance3D.new()
 			if not morph.is_empty():
 				mi.name = "morph"
+				_morph_parts.append([mi, _morph_ranges(morph.names), PackedInt32Array()])
 			mi.mesh = mesh
 			mi.material_override = wmat if weapon_parts.has(p) else (hmat if helm_parts.has(p) else mat)
 			n.add_child(mi)
@@ -684,6 +702,8 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 	player.name = "AnimationPlayer"
 	add_child(player)
 	player.root_node = NodePath("..")
+	if not _morph_parts.is_empty():
+		player.mixer_applied.connect(_apply_morphs)
 	# Track paths follow the full part hierarchy so one library fits every unit of this template.
 	for p: String in parent_of:
 		var chain := PackedStringArray([p.replace(".", "_")])
@@ -699,6 +719,56 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 	movement_starts = int(race.get("type_id", 0)) == 0x32
 	pose_state = ST_NEUTRAL if neutral else ST_ATTACK
 	act("idle", 1, 0.0)
+
+
+## clip -> [first blend shape, frame count] of a morph mesh's shapes
+## (EIAnim.morphs appends a clip's frames in order, named "<clip>_<k>").
+static func _morph_ranges(names: PackedStringArray) -> Dictionary:
+	var out := {}
+	for i in names.size():
+		var clip := names[i].substr(0, names[i].rfind("_"))
+		if out.has(clip):
+			out[clip][1] += 1
+		else:
+			out[clip] = [i, 1]
+	return out
+
+
+## The vertex morph of the playing clip, after every mixer pass: as the original
+##  keys the frame by modf(clip time in keys), offsets of frames
+## k and k + 1 blend by the fraction (the last frame holds), and only the
+## current clip's track gives the part its offsets (copies the
+##  track's buffer; drops them for a track with none).
+## Every other shape is 0, so offsets never add up across clips.
+func _apply_morphs() -> void:
+	var anim := String(player.assigned_animation)
+	var clip := anim.substr(anim.find("/") + 1)
+	var f := 0.0
+	if anim != "":
+		f = maxf(player.current_animation_position * EIAnim.FPS, 0.0)
+	for mp: Array in _morph_parts:
+		var mi: MeshInstance3D = mp[0]
+		var set_last: PackedInt32Array = mp[2]
+		var now := PackedInt32Array()
+		var w := PackedFloat32Array()
+		var r: Array = mp[1].get(clip, [])
+		if not r.is_empty():
+			var first: int = r[0]
+			var count: int = r[1]
+			var k := int(f)
+			if k + 1 < count:
+				var t := f - k
+				now.append_array([first + k, first + k + 1])
+				w.append_array([1.0 - t, t])
+			else:
+				now.append(first + count - 1)
+				w.append(1.0)
+		for i in set_last:
+			if not now.has(i):
+				mi.set_blend_shape_value(i, 0.0)
+		for j in now.size():
+			mi.set_blend_shape_value(now[j], w[j])
+		mp[2] = now
 
 
 ## UI previews have their own light and camera, and must not inherit the

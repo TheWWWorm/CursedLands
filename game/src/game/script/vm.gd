@@ -952,7 +952,10 @@ func _check_interactions() -> void:
 			# Steal, loot and lever use are the use action (order type 6): the
 			# unit turns, plays its clip and the action runs at the clip's hit
 			# frame (GameUnit._do_use).
-			if it.size() > 2 and it[2] == "steal":
+			if it.size() > 2 and it[2] == "revive":   # remake option (Revive)
+				if t is GameUnit:
+					Revive.begin(session, u, t)
+			elif it.size() > 2 and it[2] == "steal":
 				if t is GameUnit and not t.dead:
 					u.command({"type": "use", "sub": "steal", "at": t.pos, "done": func():
 						if is_instance_valid(u) and not u.dead and is_instance_valid(t) and not t.dead:

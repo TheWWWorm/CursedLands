@@ -186,6 +186,14 @@ var _anim_due := 0.0
 ## first zone: Zak stood up, then ignored orders for many seconds).
 var _game_clock := 0.0
 var _anim_clock := -1.0
+## The cast clip's hold (_cast_anim): clip "ei/<name>", stopped at _hold_pos
+## seconds into it for _hold_left more seconds of game time; a flier's cast
+## clip waits _pre_left seconds instead.
+var _hold_clip := ""
+var _hold_pos := 0.0
+var _hold_left := 0.0
+var _pre_left := 0.0
+var _pre_clip := ""
 var _anim_pos := Vector2.INF
 var _anim_moving := 0.0
 ## Ground speed (m/s) over the last physics step, of the drawn position on a
@@ -928,7 +936,7 @@ func detect(i: int) -> float:
 ## 0.75, x1.5 while casting.
 func vis_factor() -> float:
 	var f := 0.5 if stance == STANCE_CRAWL else 0.75 if stance == STANCE_KNEEL else 1.0
-	return f * (1.5 if action == "cast" else 1.0)
+	return f * (1.5 if action.begins_with("cast") else 1.0)
 
 
 ## Noise of the own movement: 0 standing, crawling 0.4, kneeling 0.2
@@ -1125,6 +1133,29 @@ func _do_use(dt: float) -> void:
 				action = "anim:" + c
 				return
 		ph = 1
+	if ph == 1 and order.has("hold"):
+		# Remake option "revive" (Revive.begin): the clip is held (replayed)
+		# for `hold` seconds and the action runs at the end, not at the hit
+		# frame; the action string carries the progress to every peer.
+		order.phase = 5
+		order.t0 = world.time
+		ph = 5
+	if ph == 5:
+		var chk = order.get("check")
+		if chk is Callable and (chk as Callable).is_valid() and not bool((chk as Callable).call()):
+			order = {}
+			_pose_dirty = true
+			_set_action("idle")
+			return
+		var hold := float(order.hold)
+		var el := world.time - float(order.t0)
+		if el < hold:
+			var clip := String(order.clip)
+			_keep_clip(clip)
+			action = "revive:%s:%d" % [clip, int(el / hold * Revive.PROGRESS_STEPS)]
+			return
+		_use_done()
+		ph = 3
 	if ph == 1:
 		var clip := String(order.clip)
 		order.phase = 2
@@ -1159,6 +1190,13 @@ func _do_use(dt: float) -> void:
 	order = {}
 	_pose_dirty = true
 	_set_action("idle")
+
+
+## Keeps `clip` playing: started again once it has ended or something else
+## (a hit) took over (Revive's held use action; co-op clients alike).
+func _keep_clip(clip: String) -> void:
+	if clip != "" and model and model.player and model.player.current_animation != "ei/" + clip:
+		model.play(clip, 0.1, true)
 
 
 func _use_done() -> void:
@@ -1707,18 +1745,22 @@ func _do_cast(dt: float) -> void:
 		return
 	else:
 		mana -= _spell_cost(sp)
-	var len := model.act("cast", 1, 0.05)
-	if len <= 0.0:
-		len = model.act("attack", 1, 0.05)
-	len = maxf(len, 0.6)
-	action = "cast"
-	var cast_t := _cast_ticks(sp) * TICK
-	_anim_lock = maxf(len, cast_t)
+	var clip := _cast_clip()
+	var plan := _cast_plan(sp, clip)
+	var hold := int(plan.hold)
+	var len := maxf(_cast_anim(clip, hold), 0.6)
+	# Clients replay the hold from the action ("cast:<hold ticks>").
+	action = "cast" if hold == 0 else "cast:%d" % hold
+	var cast_t := float(plan.fire) * TICK
+	_anim_lock = maxf(len + hold * TICK, cast_t)
 	var spell: String = order.spell
 	order = order.get("then", {})   # monsters go back to fighting
 	GameSound.spell(Spells.parse(spell).code, global_position, "start")
-	if world.session:   # casting particles by school, visual only
-		world.session.broadcast({"t": "castfx", "uid": uid, "spell": spell, "secs": len})
+	# Casting particles by school (visual only): made at the
+	# action's start tick, removed at its end tick (the spell's effect
+	#  is 5 for the whole action).
+	if world.session:
+		world.session.broadcast({"t": "castfx", "uid": uid, "spell": spell, "secs": cast_t})
 	var tref: WeakRef = weakref(t) if t else null   # the target may leave the world first
 	get_tree().create_timer(cast_t).timeout.connect(func():
 		if not dead and is_instance_valid(world):
@@ -1734,23 +1776,76 @@ func _do_cast(dt: float) -> void:
 					"hold": Spells.light_time(spell)}))
 
 
-## When a cast takes effect (the original): the cast
-## time C = round(spell actions (sdb field 14, prototype -> spell)
-## x 15 / the caster's actions); with the clip's length L = trunc(.adb
-##  speed) and hit frame H = trunc(speed), the effect
-## comes at H + (C - L) ticks when L < C (the clip holds C - L ticks), else at H.
-func _cast_ticks(sp: Dictionary) -> float:
-	var clip := String(model.player.current_animation).trim_prefix("ei/") if model and model.player else ""
+## The cast clip (query, cast action), else an attack
+## clip for a figure without one.
+func _cast_clip() -> String:
+	if model == null:
+		return ""
+	var clip := model.action_clip("cast")
+	return clip if clip != "" else model.action_clip("attack")
+
+
+## When a cast takes effect and how its clip is held (the original
+## ): the cast time C = round(spell actions (sdb field 14
+## prototype -> spell) x 15 / the caster's actions (worse
+## with wounded arms)); the clip's length L = trunc(.adb
+## speed) and hit frame H = trunc(speed), speed = the race's cast
+## animation speed (creature; 1 for every race).
+## C <= L: the clip alone, the effect at H. L < C: the action
+## lasts C ticks and the effect comes at H + (C - L) — the clip stops on its
+## hit frame for the C - L ticks between (hold, see _cast_anim). Returns
+## {fire: effect ticks, hold: C - L or 0}.
+func _cast_plan(sp: Dictionary, clip: String) -> Dictionary:
 	var fr := _clip_frames(String(model.template).to_lower() if model else "", clip)
 	var c := roundi(float(sp.proto.get("actions", 0)) * 15.0 / actions())
 	if fr.y < 0:
-		var len := model.player.current_animation_length if model and model.player and clip != "" else 1.2
-		return maxf(1.0, roundf(len * 0.5 / TICK))
-	var spd: Array = Array(race.get("anim_speeds", [1.0]))
-	var k := float(spd[0]) if not spd.is_empty() and float(spd[0]) != 0.0 else 1.0
+		var len := model.player.get_animation("ei/" + clip).length if model and model.has_anim(clip) else 1.2
+		return {"fire": maxf(1.0, roundf(len * 0.5 / TICK)), "hold": 0}
+	var k := _cast_anim_speed()
 	var l := int(float(fr.x) / k)
 	var h := int(float(fr.y) / k)
-	return float(maxi(1, h + c - l if l < c else h))
+	if l < c:
+		return {"fire": float(maxi(1, h + c - l)), "hold": c - l}
+	return {"fire": float(maxi(1, h)), "hold": 0}
+
+
+## The race's cast animation speed (units.udb "anm cast speed", creature
+## for a clip of action).
+func _cast_anim_speed() -> float:
+	var spd: Array = Array(race.get("anim_speeds", [1.0]))
+	var k := float(spd[1]) if spd.size() > 1 else float(spd[0]) if not spd.is_empty() else 1.0
+	return k if k != 0.0 else 1.0
+
+
+## Plays the cast clip with its hold of `hold` ticks, as the original's segment
+## queue does (builds it, copies it to the unit's
+## queue at the start tick, step it each
+## tick): a walking unit (logic = units.udb race "locomotion" 1) gets
+## [clip for H ticks][no clip, C - L ticks, flag 1][no clip, L - H ticks]:
+## a "no clip" entry keeps the clip, and the flag puts the figure's mode
+##  to 1, in which does not advance its
+## animation (skipped) — the clip stands on its hit frame until
+## the spell goes off, then plays to its end. A flier (locomotion 2) gets
+## [no clip, C - L ticks][clip, L ticks]: the clip that was playing goes on
+## and the cast clip starts C - L ticks late. Returns the clip's length.
+func _cast_anim(clip: String, hold: int) -> float:
+	_hold_left = 0.0
+	_pre_left = 0.0
+	_hold_clip = ""
+	if model == null or not model.has_anim(clip):
+		return 0.0
+	var len := model.player.get_animation("ei/" + clip).length
+	if hold > 0 and int(race.get("locomotion", 1)) == 2:
+		_pre_left = hold * TICK
+		_pre_clip = clip
+		return len
+	model.play(clip, 0.05, true)
+	if hold > 0:
+		var f := _clip_hit_frame(String(model.template).to_lower(), clip)
+		_hold_clip = "ei/" + clip
+		_hold_pos = float(f) / EIAnim.FPS if f >= 0 else len * 0.5
+		_hold_left = hold * TICK
+	return len
 
 
 ## When the blow lands: the strike action ends local_14 ticks
@@ -1817,6 +1912,18 @@ func _resolve_hit(t: GameUnit, roll := {}) -> void:
 	stance = STANCE_NONE
 
 
+## the original death rule. After a blow refolds the stats
+## (: HP = max − Σ max × lethality × part damage fraction
+## ) and, which kills when the stats
+##   = says so: FISTP of the current HP (stats
+## x87 round to nearest, ties to even) as a short, ≤ 0. So a unit dies
+## below 0.5 HP (0.5 itself rounds to 0). There is no separate vital-part
+## test: a destroyed head or torso (lethality 1.01) alone takes more than the
+## whole maximum.
+static func is_dying_hp(v: float) -> bool:
+	return v <= 0.5
+
+
 ## `part` = body part index struck (hit_part()), -1 = whole body.
 ## `types`: the damage per type after armour (severing).
 ## `hit_flags`: hit-number labels (FlyingHP): 1 backstab.
@@ -1843,7 +1950,7 @@ func take_damage(amount: float, source: GameUnit, part := -1, types := PackedFlo
 		world.session.broadcast({"t": "hitnum", "uid": uid, "n": int(maxf(hp_before - hp, 0.0)),
 			"f": hit_flags | (2 if part == 0 else 0)})
 	world.on_damage(self, amount, source)
-	if hp <= 0.0:
+	if is_dying_hp(hp):
 		die(source)
 		return
 	if _anim_lock <= 0.0 and randf() < 0.5:
@@ -1937,6 +2044,65 @@ func revive() -> void:
 	action = "idle"
 
 
+## A unit put back dead from a save (CampaignState.restore_party_positions):
+## its parts as they were, the death clip's last frame, no death sound.
+func lie_dead() -> void:
+	dead = true
+	orders.clear()
+	order = {}
+	path = PackedVector2Array()
+	action = "death"
+	if model:
+		model.act("death", 1, 0.0)
+		freeze_pose(true)
+
+
+## Remake option "revive" (Revive): back to life with `total` health. Every
+## attached part gets the same damage fraction, so the unit's health
+## (`_get_hp`: max − Σ max × lethality × fraction) is `total`; destroyed parts
+## work again (state 3, a small positive health) and severed ones are put back
+## the same way, as the only resurrection of the original does (the
+## network respawn) — a severed head alone would otherwise keep the unit dead.
+## Effects end and orders are dropped as at death; stamina stays as it was.
+## The body gets up with the crawl-to-stand change clip when the figure has
+## one (AC_CROSS from ST_LIE to ST_NEUTRAL), else it returns to its idle pose.
+func rise(total := 1.0) -> void:
+	dead = false
+	if _seq != 0:
+		world.nav.rebucket(self)
+	orders.clear()
+	order = {}
+	path = PackedVector2Array()
+	buffs.clear()
+	refresh_max_hp()
+	_anim_lock = 0.0
+	total = minf(total, _max_hp)
+	_hp = total
+	if not parts.is_empty():
+		var l := 0.0
+		for p in parts:
+			if p.state > 0:
+				l += float(p.lethal)
+		var f := clampf((_max_hp - total) / (_max_hp * l), 0.0, 0.999) if l > 0.0 and _max_hp > 0.0 else 0.0
+		for p in parts:
+			if p.state > 0:
+				p.state = 3
+				p.cur = float(p.max) * (1.0 - f)
+		_wounds_dirty = true
+		_pose_dirty = true
+		_show_severed(0)
+	action = "idle"
+	if model:
+		if model.player:
+			model.player.speed_scale = 1.0
+		var c := _cross_clip(EIUnitModel.ST_LIE, EIUnitModel.ST_NEUTRAL)
+		if c != "":
+			_anim_lock = _play_clip(c)
+			action = "anim:" + c
+		else:
+			model.act("idle", 1, 0.2)
+
+
 ## Rebuilds the model with new armor/weapons (appearance follows equipment).
 func set_equipment(armors: PackedStringArray, weapons: PackedStringArray) -> void:
 	info.armors = armors
@@ -2017,10 +2183,11 @@ func _process(dt: float) -> void:
 	elif now > _anim_clock:
 		game_dt = now - _anim_clock
 		_anim_clock = now
+	game_dt = _pre_cast(game_dt)
 	if model == null or model.player == null or not model.player.is_playing() or model.player.speed_scale == 0.0:
 		_anim_acc = 0.0
 		return
-	_anim_acc += game_dt * _anim_rate()
+	_anim_acc += _held(game_dt * _anim_rate())
 	# Walking units keep the full rate everywhere: GroundMarks places their
 	# footprints at the clips' step frames from the posed feet.
 	if pos != _anim_pos:
@@ -2060,6 +2227,43 @@ func _anim_rate() -> float:
 	if model == null or not action in ["walk", "run", "crawl"]:
 		return 1.0
 	return model.move_rate(_move_speed)
+
+
+## The cast clip's hold (_cast_anim): of `adv` seconds of clip time, the part
+## that would carry the clip past its hold position is eaten by the hold
+## until it is used up (the original skips the figure's advance
+## while is 1).
+func _held(adv: float) -> float:
+	if _hold_left <= 0.0:
+		return adv
+	if String(model.player.current_animation) != _hold_clip:
+		_hold_left = 0.0   # another clip took over (death, a new order)
+		return adv
+	var before := maxf(0.0, _hold_pos - (model.player.current_animation_position + _anim_acc))
+	if adv <= before:
+		return adv
+	var eat := minf(adv - before, _hold_left)
+	_hold_left -= eat
+	return adv - eat
+
+
+## A flier's cast clip starts after its hold (_cast_anim); the clip time
+## past the start is returned.
+func _pre_cast(game_dt: float) -> float:
+	if _pre_left <= 0.0:
+		return game_dt
+	if not action.begins_with("cast") or dead:
+		_pre_left = 0.0
+		return game_dt
+	_pre_left -= game_dt
+	if _pre_left > 0.0:
+		return game_dt
+	var over := -_pre_left
+	_pre_left = 0.0
+	if model and model.has_anim(_pre_clip):
+		model.play(_pre_clip, 0.05, true)
+		_anim_acc = 0.0
+	return over
 
 
 ## Cheap pre-test for picking: whether `p` can be on the figure at all (the
@@ -2389,6 +2593,11 @@ func apply_snapshot(s: Array, quiet := false) -> void:
 		action = a
 		if a.begins_with("anim:"):
 			model.play(a.substr(5), 0.1)
+		elif a.begins_with("revive:"):   # remake option "revive" (Revive): the held clip
+			_keep_clip(a.get_slice(":", 1))
+		elif a.begins_with("cast"):
+			_update_pose()   # the snapshot's combat flag / posture first
+			_cast_anim(_cast_clip(), int(a.get_slice(":", 1)) if a.contains(":") else 0)
 		elif a == "attack":
 			_update_pose()   # the snapshot's combat flag / posture first
 			model.act("attack", randi_range(1, 3), 0.05)

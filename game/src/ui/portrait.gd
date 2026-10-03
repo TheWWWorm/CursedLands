@@ -155,22 +155,56 @@ func _process(dt: float) -> void:
 
 ## Interface face name and texture for a unit ("" when it has none).
 static func face_names(u: GameUnit) -> PackedStringArray:
-	var model := String(u.race.get("mask", "")).to_lower()
 	var c: Vector3 = u.info.get("complexion", Vector3.ZERO)
+	return proto_face_names(u.proto, u.race, c)
+
+
+## The same for a prototype and race record (complexion zero = the prototype's).
+static func proto_face_names(proto: Dictionary, race: Dictionary, c: Vector3) -> PackedStringArray:
+	var model := String(race.get("mask", "")).to_lower()
 	if c == Vector3.ZERO:
-		c = GameUnit.proto_complexion(u.proto)
+		c = GameUnit.proto_complexion(proto)
 	var build := "th" if c.x < 0.2 else ("fa" if c.x > 0.8 else "me")
-	var fig := "infa%s%s%dface" % [model, build, int(u.proto.get("hair", 0)) + 1]
+	var fig := "infa%s%s%dface" % [model, build, int(proto.get("hair", 0)) + 1]
 	var sex: String = {"unhuma": "m", "unhufe": "f"}.get(model, "")
-	var tex := "face%s%02d" % [sex, int(u.proto.get("skin", 0))]
+	var tex := "face%s%02d" % [sex, int(proto.get("skin", 0))]
 	return PackedStringArray([fig, tex])
 
 
+## A face without a unit (the network character screen's face strips,
+## "infa%sme%dface" of the prototype's race
+## model and hair, texture "face%s%02d" of its skin).
+func show_proto(proto_name: String, c := Vector3.ZERO) -> void:
+	var key := "proto|%s|%s" % [proto_name, c]
+	if key == _key:
+		return
+	_key = key
+	_unit = null
+	for ch in get_children():
+		ch.queue_free()
+	_mats.clear()
+	_model = null
+	_flash = null
+	stretch = true
+	custom_minimum_size = Vector2.ZERO
+	var vp := SubViewport.new()
+	vp.size = view_size
+	vp.own_world_3d = true
+	vp.transparent_bg = true
+	add_child(vp)
+	var proto := GameData.db.find("monster_prototypes", proto_name)
+	var race := GameData.db.find("race_models", String(proto.get("base_race", "")))
+	_build_face(vp, proto_face_names(proto, race, c), c if c != Vector3.ZERO else GameUnit.proto_complexion(proto))
+	set_process(false)
+
+
 func _infa_face(vp: SubViewport, u: GameUnit) -> bool:
-	var names := face_names(u)
+	return _build_face(vp, face_names(u), u.info.get("complexion", Vector3.ZERO))
+
+
+func _build_face(vp: SubViewport, names: PackedStringArray, c: Vector3) -> bool:
 	if EIFigure.get_model(names[0]).is_empty() or GameData.get_texture(names[1]) == null:
 		return false
-	var c: Vector3 = u.info.get("complexion", Vector3.ZERO)
 	var n := EIFigure.instantiate(names[0], names[1], c)
 	if n == null:
 		return false

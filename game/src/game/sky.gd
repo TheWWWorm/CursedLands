@@ -107,6 +107,9 @@ void sky() {
 	for (int i = 0; i < 6; i++) {
 		float zi = ZZ[i] - EYE;
 		float den = (RR[i + 1] - RR[i]) * e.z - (ZZ[i + 1] - ZZ[i]) * rho;
+		if (abs(den) < 1e-7) {
+			continue;   // ray parallel to the ring band: no hit (avoids 0 / 0 = NaN)
+		}
 		float s = (zi * rho - RR[i] * e.z) / den;
 		if (s >= 0.0 && s <= 1.0 && (RR[i] + s * (RR[i + 1] - RR[i])) * rho + (zi + s * (ZZ[i + 1] - ZZ[i])) * e.z > 0.0) {
 			col = dome(i, s, cs, u, l);

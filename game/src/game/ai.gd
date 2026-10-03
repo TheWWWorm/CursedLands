@@ -1102,7 +1102,7 @@ func on_attacked(u: GameUnit, by: GameUnit) -> void:
 ## Aggression" -> (0x2e)), heard by the players the original finds
 ## the unit visible to (approx.: a hero of theirs within 30 m).
 func _react(u: GameUnit, code: int) -> void:
-	if world.session and not EIAcks.lines([u.proto.get("name", ""), u.proto.get("base_race", "")], code).is_empty():
+	if world.session and not EIAcks.lines([u.info.get("voice", ""), u.proto.get("name", ""), u.proto.get("base_race", "")], code).is_empty():
 		world.session.broadcast({"t": "ack", "uid": u.uid, "code": code, "near": 30.0})
 
 

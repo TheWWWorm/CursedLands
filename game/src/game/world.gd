@@ -482,7 +482,8 @@ func on_death(u: GameUnit, killer: GameUnit) -> void:
 	if u.has_meta("hero") and u.get_meta("hero").has("merc"):
 		var n := int(u.get_meta("hero").merc)
 		session.state.set_var(0, "adeadn%d" % n, 1.0)
-		session.state.mercs.erase(n)
+		if not Revive.keep_fallen(session, u):   # remake option "revive": the record waits
+			session.state.mercs.erase(n)
 		session.broadcast({"t": "party"})
 	if not u.has_meta("hero"):
 		# What was not stolen stays in its pockets.

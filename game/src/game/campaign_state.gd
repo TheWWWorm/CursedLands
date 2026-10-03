@@ -367,6 +367,8 @@ func party_records(player: int) -> Array:
 			"complexion": h.complexion, "player": 0, "kind": "UNIT", "type": 50}
 		rec.armors = PackedStringArray(h.get("armors", []))
 		rec.weapons = PackedStringArray(h.get("weapons", []))
+		if String(h.get("voice", "")) != "":
+			rec.voice = String(h.voice)   # a network character's chosen voice (MpCharacter)
 		out.append(rec)
 	return out
 
@@ -491,6 +493,12 @@ func store_party_positions(world: GameWorld) -> void:
 			h.pos = u.pos
 			h.gait = u.gait()
 			h.body = body_state(u)
+			# A party member lying dead stays so in a save (the original saves every
+			# unit whole), put back by restore_party_positions.
+			if u.dead:
+				h.dead = true
+			else:
+				h.erase("dead")
 
 
 ## Refreshes `pets` from the tamed party members in `world`.
@@ -529,6 +537,10 @@ func restore_party_positions(world: GameWorld) -> void:
 				u.restore_gait(int(h.gait))
 			if h.get("body") is Dictionary:
 				apply_body(u, h.body)
+			if h.get("dead", false) and not u.dead:
+				u.lie_dead()
+				if world.session and not h.has("merc"):
+					world.session.hero_died(u)   # the co-op respawn / the death notice
 	replay_restored(world)
 
 

@@ -227,6 +227,9 @@ func _update_cursor() -> void:
 	# selected → 4; else a zone exit under the point (target not
 	# "none", the area Session._exit_at tests) whose GS var "z.<target>" is
 	# not 1 → 15 (move); plain ground stays 0.
+	if revive_target(u) != null:   # remake option "revive": the use cursor over a party body
+		cursor.set_kind("cursor_use")
+		return
 	var k := "cursor_default"
 	var me: GameUnit = selected[0] if not selected.is_empty() and is_instance_valid(selected[0]) else null
 	if session.shop_available():
@@ -253,6 +256,17 @@ func _update_cursor() -> void:
 	cursor.set_kind(k)
 
 
+## Remake option "revive" (Revive): `u` when it is a fallen party member that
+## a selected living hero or mercenary can help up, else null.
+func revive_target(u: GameUnit) -> GameUnit:
+	if u == null or not u.dead or not Revive.revivable(session, u):
+		return null
+	for s in selected:
+		if is_instance_valid(s) and Revive.can_help(s, u):
+			return u
+	return null
+
+
 ##  exit test: the ground point under `p` lies in a zone exit
 ## whose target is not "none" and whose GS var "z.<target>" is not 1.
 var _exit_hover_p := Vector2.INF
@@ -271,8 +285,14 @@ func _over_open_exit(p: Vector2) -> bool:
 	return session.state.get_var(0, "z." + to.to_lower()) != 1.0
 
 
-## The aimed strike key held (index into AIM_ORDER), −1 none.
-var touch_aim := -1
+## The aim armed for the next click (index into AIM_ORDER), −1 none: by the
+## touch Aim button, or by an aimed-strike key with the remake option
+## aim_press_once (then aim_by_key is set; any other assignment clears it).
+var touch_aim := -1:
+	set(v):
+		touch_aim = v
+		aim_by_key = false
+var aim_by_key := false
 var touch_force := ""
 
 func cancel_touch_target() -> void:
@@ -284,6 +304,8 @@ func cancel_touch_target() -> void:
 func held_aim() -> int:
 	if touch_aim >= 0:
 		return touch_aim
+	if GameData.option("aim_press_once") == 1:
+		return -1   # the keys arm touch_aim instead (_key_action)
 	for i in AIM_ORDER.size():
 		if EIKeymap.held(AIM_ORDER[i]):
 			return i
@@ -649,7 +671,21 @@ func _key_action(act: String) -> void:
 				pending_spell = SCIENCE
 				hud.set_targeting(Skills.title("science"))
 		"cs_head", "cs_body", "cs_rhand", "cs_lhand", "cs_rleg", "cs_lleg":
-			pass   # held keys, read by held_aim at the click
+			# Original: held keys, read by held_aim at the click (
+			# sets the flag on key-down, clears it on key-up).
+			# Remake option aim_press_once: one press arms the aim until the
+			# next click (_click / right click / Esc); the same key again
+			# cancels it, another aim key switches.
+			if GameData.option("aim_press_once") == 1:
+				var i := AIM_ORDER.find(act)
+				if touch_aim == i:
+					touch_aim = -1
+				elif not selected.is_empty():
+					pending_spell = ""
+					touch_force = ""
+					hud.set_targeting("")
+					touch_aim = i
+					aim_by_key = true
 		"obj":
 			open_quests()
 		"tutorial_script":
@@ -686,6 +722,13 @@ func _click(p: Vector2, add: bool) -> void:
 	# _forced_click: any living unit attacked with that aim, the ground or a
 	# corpse a 0x3a group move), then the key counts as released.
 	# The issued order keeps its aim for every strike.
+	# An aim armed by a key press (option aim_press_once) is used only on a
+	# living unit; a click anywhere else just cancels it.
+	if touch_aim >= 0 and aim_by_key and not selected.is_empty():
+		var t := pick_unit(p)
+		if t == null or t.dead:
+			cancel_touch_target()
+			return
 	if _forced_click(p):
 		touch_aim = -1
 		touch_force = ""
@@ -693,6 +736,13 @@ func _click(p: Vector2, add: bool) -> void:
 	if touch_aim >= 0:
 		cancel_touch_target()   # nothing selected: an ordinary click
 	var u := pick_unit(p)
+	# Remake option "revive": a click on a fallen party member's body sends a
+	# selected living hero or mercenary to help it up (Revive).
+	if not add and revive_target(u) != null:
+		var helpers := selected.filter(func(s): return is_instance_valid(s) and Revive.can_help(s, u))
+		issue({"t": "revive", "units": helpers.map(func(s): return s.uid), "target": u.uid, "run": _double})
+		marks.unit_ordered(u, false, Session.LOOT_REACH, marks.first_mine())
+		return
 	# The village screen (the original mode 0): a left click
 	# on any living unit — no side check, so own party members and hired
 	# mercenaries too — opens its topic list when it has pending
@@ -932,7 +982,7 @@ func on_event(e: Dictionary) -> void:
 ## Order acknowledgements (acks.db), spoken by the first unit given the order.
 const ORDER_ACKS := {"move": EIAcks.MOVE, "attack": EIAcks.ATTACK, "cast": EIAcks.CAST, "loot": EIAcks.LOOT,
 	"interact": EIAcks.USE_OBJECT, "use_lever": EIAcks.USE_OBJECT, "steal": EIAcks.STEAL, "use": EIAcks.USE_POTION,
-	"follow": EIAcks.FOLLOW}
+	"follow": EIAcks.FOLLOW, "revive": EIAcks.USE_OBJECT}
 
 ## Whether unit flag (GameUnit.blocked) refuses this command. The
 ## server's order handlers (

@@ -153,6 +153,15 @@ var _pieces: Array = []
 var _briefs: Array = []
 var _highlight := Color(0, 1, 0)
 var _link := false        # Gipat: pieces linked to their village (0x278)
+## Remake option "start_zones": starting areas shown as their own piece, never
+## linked to a village (the host's list, Session.start_zones_shown). gz1g's
+## piece (ingm101) is the island's west tip, and the village figure (bz1g's
+## #position, inside that piece) stands on it: there the village is hit only
+## on its own model (`_figure_at`), not its screen box, so the rest of the
+## piece picks the ruins; and the piece is drawn at full brightness with its
+## outline (as an explored piece, state 1) rather than dimmed as done (2),
+## so it shows as a place of its own.
+var start_zones: Array = []
 var _tex_map: Texture2D
 var _tex_grey: Texture2D
 var _hover := -1
@@ -170,8 +179,9 @@ var _drag_from := Vector2.ZERO
 var objectives: ZoneObjectives
 
 
-func setup(s: Session, opts: Array, is_leader := true, from := "") -> void:
+func setup(s: Session, opts: Array, is_leader := true, from := "", start: Array = []) -> void:
 	session = s
+	start_zones = start
 	options = opts
 	leader = is_leader
 	# The current zone of the map is the edge the party walked into.
@@ -277,7 +287,7 @@ func _build_scene() -> void:
 				continue
 			if not is_equal_approx(session.state.get_var(0, "z." + to), 2.0):
 				continue
-			if _pieces[pi].state == 2:
+			if _pieces[pi].state == 2 and not start_zones.has(_pieces[pi].id):
 				_pieces[pi].link = _briefs.size()
 			var mats := []
 			var n := _add_figure(String(bz.figure).to_lower(), sys, bz.get("position", Vector3.ZERO), 0.3, mats)
@@ -557,8 +567,27 @@ func _button_at(p: Vector2) -> int:
 			return i
 	for i in _briefs.size():
 		if _screen_rect(_briefs[i].node).has_point(p):
+			if start_zones.has(_pieces[_briefs[i].zone].id) and not _figure_at(_briefs[i].node, p):
+				continue   # beside the village model: the starting area's piece
 			return i + 3
 	return -1
+
+
+## True when the ray through screen point `p` hits a figure's own triangles.
+func _figure_at(n: Node3D, p: Vector2) -> bool:
+	var s := Vector2(_vp.size) / size if size.x > 0 else Vector2.ONE
+	var from := _cam.project_ray_origin(p * s)
+	var dir := _cam.project_ray_normal(p * s)
+	for mi: MeshInstance3D in n.find_children("*", "MeshInstance3D", true, false):
+		var inv := mi.global_transform.affine_inverse()
+		var o := inv * from
+		var d := inv.basis * dir
+		var f: PackedVector3Array = mi.get_meta("faces") if mi.has_meta("faces") else mi.mesh.get_faces()
+		mi.set_meta("faces", f)
+		for t in range(0, f.size(), 3):
+			if Geometry3D.ray_intersects_triangle(o, d, f[t], f[t + 1], f[t + 2]) != null:
+				return true
+	return false
 
 
 ## Screen bounding box of a figure.
@@ -710,7 +739,7 @@ func _apply_highlight() -> void:
 	if _hover >= 0:
 		if _hover_brief:
 			hb = _hover
-			if _link:
+			if _link and not start_zones.has(_pieces[_briefs[_hover].zone].id):
 				hz = _briefs[_hover].zone
 		else:
 			hz = _hover
@@ -725,7 +754,7 @@ func _apply_highlight() -> void:
 			continue
 		m.albedo_texture = _tex_map
 		var c := _highlight if i == hz else Color.WHITE
-		if pc.state == 2:
+		if pc.state == 2 and not start_zones.has(pc.id):
 			c = Color(c.r * 0.5, c.g * 0.5, c.b * 0.5)
 		m.albedo_color = c
 	for i in _briefs.size():

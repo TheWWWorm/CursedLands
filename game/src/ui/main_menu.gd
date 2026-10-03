@@ -18,6 +18,7 @@ var _addr_default := "127.0.0.1"
 var _scene: MenuScene
 var _panel: Control          # the co-op screen (NetworkPanel), or the fallback menu
 var _net: NetworkPanel
+var _chars: MpCharPanel      # the network character screens (the original)
 var _options: OptionsPanel
 var _difficulty: DifficultyPanel
 var _load: LoadPanel
@@ -59,6 +60,20 @@ func _ready() -> void:
 		_net.join_requested.connect(_join)
 		_net.start_requested.connect(_start_coop)
 		_net.back_requested.connect(_leave_net)
+		_net.stop_requested.connect(_stop_net)
+		_net.lobby_changed.connect(func(m: Dictionary):
+			if _session and _session.online and _session.is_host:
+				_session.set_lobby_mode(m))
+		_chars = MpCharPanel.new()
+		add_child(_chars)
+		_net.characters_requested.connect(func():
+			_net.visible = false
+			_chars.open(false)
+			_chars._dim.use(_net._dim.texture.get_image() if _net._dim.texture else null))
+		_chars.closed.connect(func(_ok):
+			_net.visible = true
+			_net.grab_focus()
+			_net.queue_redraw())
 		# Remake tool: the map viewer link only in a debug run (`-- --debug`).
 		if OS.get_cmdline_user_args().has("--debug"):
 			_add_viewer_link()
@@ -154,7 +169,8 @@ func _add_viewer_link() -> void:
 	move_child(viewer, _net.get_index())
 
 func _on_board(action: String) -> void:
-	if _panel.visible or _options.visible or has_node("Credits") or _difficulty.visible or _load.visible:
+	if _panel.visible or _options.visible or has_node("Credits") or _difficulty.visible or _load.visible \
+			or (_chars and _chars.visible):
 		return
 	match action:
 		"new": _difficulty.open()   #  case 0: the difficulty box first
@@ -251,6 +267,7 @@ func _host(max_players := Session.MAX_PLAYERS) -> void:
 		_net.hosting = true
 		_net.host_port = port   # remake: the addresses to share (NetworkPanel)
 		_net.upnp = s.upnp
+		s.set_lobby_mode(_net.lobby_mode())   # what joiners are told they join
 	else:
 		_lobby.visible = true
 		_start.visible = true
@@ -263,7 +280,7 @@ func _join(address := "") -> void:
 	if address.is_empty():   # --join=<ip> on the command line
 		address = _addr_default
 	if OS.has_feature("web") and not (address.begins_with("ws://") or address.begins_with("wss://")):
-		_set_status("Enter a wss:// server address (ws:// for local testing).")
+		_set_status(RemakeText.t("Enter a wss:// server address (ws:// for local testing)."))
 		return
 	var s := _make_session()
 	# Remake: "address:port" joins a host on another port; IPv6 as
@@ -278,6 +295,14 @@ func _join(address := "") -> void:
 	if _net:
 		_set_status(RemakeText.t("Connecting to %s...") % typed)
 		s.multiplayer.connected_to_server.connect(func(): _set_status(RemakeText.t("Connected to %s.") % typed), CONNECT_ONE_SHOT)
+		s.multiplayer.connection_failed.connect(func():
+			if _session == s:
+				_close_session()
+				_set_status(RemakeText.t("Could not reach %s. Check the address, and that the host has started hosting.") % typed), CONNECT_ONE_SHOT)
+		s.multiplayer.server_disconnected.connect(func():
+			if _session == s and _net.visible and _net.joining:   # still in the lobby
+				_close_session()
+				_set_status(RemakeText.t("The host closed the game.")), CONNECT_ONE_SHOT)
 	else:
 		_set_status(RemakeText.t("Connecting to %s... the host starts the campaign.") % address)
 	if _net:
@@ -299,22 +324,13 @@ func _join_refused(title: String, text: String) -> void:
 	b.ok_only = true
 	add_child(b)
 	b.answered.connect(func(_yes):
-		if _session and _session.online:
-			_session.multiplayer.multiplayer_peer = OfflineMultiplayerPeer.new()
-			_session.online = false
-			_session.queue_free()
-			_session = null
-		if _net:
-			_net.joining = false
-			_net.queue_redraw(), CONNECT_ONE_SHOT)
+		_close_session()
+		_set_status(title), CONNECT_ONE_SHOT)
 
 
 ## The co-op port: Session.PORT, or --port=N on the command line (remake).
 static func _port() -> int:
-	for a in OS.get_cmdline_user_args():
-		if a.begins_with("--port=") and a.trim_prefix("--port=").is_valid_int():
-			return a.trim_prefix("--port=").to_int()
-	return Session.PORT
+	return NetworkPanel.cli_port()
 
 
 func _start_coop() -> void:
@@ -322,23 +338,39 @@ func _start_coop() -> void:
 	if _net and _net.lmp_base:   # the original's own multiplayer game (LmpMode)
 		_session.new_lmp_game(_net.lmp_base)
 		return
+	if _net and _net.start_slot and _session.load_game(_net.start_slot):   # the host's save, continued
+		return
 	_session.new_campaign()
 
 
-## ✗ on the co-op screen: back to the signpost; an open host / connection is closed.
+## Back on the Multiplayer screen's first page: to the signpost; an open
+## host / connection is closed.
 func _leave_net() -> void:
+	_close_session()
+	_net.visible = false
+
+
+## Stop hosting / disconnect, staying on the Multiplayer screen.
+func _stop_net() -> void:
+	_close_session()
+	_set_status("")
+
+
+func _close_session() -> void:
 	if _session and _session.online:
 		_session.multiplayer.multiplayer_peer = OfflineMultiplayerPeer.new()
 		_session.online = false
 		_session.queue_free()
 		_session = null
+	if _net == null:
+		return
 	_net.hosting = false
 	_net.joining = false
 	_net.upnp = null
 	_net.upnp_text = ""   # the session's UpnpPort removed the forwarding as it left
 	_net.lobby = []
+	_net.host_mode = {}
 	_net.status = ""
-	_net.visible = false
 
 
 func _refresh_lobby() -> void:
@@ -357,6 +389,7 @@ func _refresh_lobby() -> void:
 			names.append("%d. %s%s" % [_session.players[pid].index + 1, _session.players[pid].name,
 				" (%s)" % ", ".join(tags) if not tags.is_empty() else ""])
 		_net.lobby = names
+		_net.host_mode = _session.lobby_mode if not _session.is_host else {}
 		_net.queue_redraw()
 		return
 	if _lobby == null:

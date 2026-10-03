@@ -477,7 +477,7 @@ static func ack(u: GameUnit, code: int) -> void:
 			code = EIAcks.SHOP_YES
 		elif (code >= 0xb and code <= 0x13) or code == 0x1d:
 			code = EIAcks.SHOP_NO
-	var ls: Array = EIAcks.lines([u.proto.get("name", ""), u.proto.get("base_race", "")], code)
+	var ls: Array = EIAcks.lines([u.info.get("voice", ""), u.proto.get("name", ""), u.proto.get("base_race", "")], code)
 	var l := {}
 	if code == EIAcks.BORED:
 		# only while the figure's clip is a walk / run / idle one

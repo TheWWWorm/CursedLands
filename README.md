@@ -59,7 +59,7 @@ Download the package for your system from the [Releases](https://github.com/TheW
 
 ## Co-op
 
-The whole campaign can be played together. One player chooses **Multiplayer** and creates a game; the others join it by address (add `:port` for a game hosted on another port). The host's machine runs the world, and every player controls their own hero and the mercenaries they hire.
+The whole campaign can be played together. In **Multiplayer**, one player chooses **Host co-op campaign** (a new game or one of their saves); the others choose **Join co-op campaign** and enter the host's address (add `:port` for a game hosted on another port). The host's machine runs the world, and every player controls their own hero and the mercenaries they hire.
 
 - **Bring your own hero.** A joining player can bring the hero from their own single-player save, with their own gold and bag. Anything they earn, loot or buy is kept when they leave.
 - **Shared progress.** Quests the host completes count for a joining player too, if that player has reached the same point in the story. A player who is further ahead simply helps. A player who is behind gets no credit for quests they have not reached yet. When they leave, the progress they made is merged into a new save of their own, so two players can finish the whole campaign together.
@@ -67,7 +67,7 @@ The whole campaign can be played together. One player chooses **Multiplayer** an
 - **In game.** Press **Enter** to chat. A player list under the minimap shows each player's ping.
 - **Options.** Every party member can get the full experience for a kill, instead of a share (on by default). Monsters can be made stronger with the number of players.
 - **Internet play.** If the router can't open the port automatically, forward UDP 27015 by hand, or use a virtual LAN such as Tailscale, ZeroTier or Radmin VPN and join with its address. IPv6 addresses work too, written as `[address]:port`.
-- **Original multiplayer mode.** Instead of the campaign, the host can pick one of the original game's four multiplayer bases (Gipath, Ingos, Suslanger or the Cave). Take quests from the base's quest giver and play the original multiplayer quest zones. Each player has their own gold and bag, and there is no saving, as in the original.
+- **Original multiplayer mode.** Instead of the campaign, the host can choose **Host multiplayer game** and pick one of the original game's four multiplayer bases (Gipath, Ingos, Suslanger or the Cave); the others choose **Join multiplayer game** and bring their network character. Take quests from the base's quest giver and play the original multiplayer quest zones. Each player has their own gold and bag, and there is no saving, as in the original.
 - Up to 6 players. Everyone needs the same edition of the game (Russian and English editions can play together; the German edition plays with German only). Players can join a game already in progress. Only the host can save. Single-player pauses while menus are open; co-op never pauses.
 
 ## Controls
@@ -83,7 +83,7 @@ Keys are read from the game's own `keyboard.ini`. To change one, open **Options*
 | Q / W / E / R | take weapon 1–4 |
 | Ctrl + click | attack the clicked unit, whoever it is; on the ground: move there and attack enemies near that spot |
 | Alt + click | move to the clicked spot without attacking or talking |
-| hold Numpad 8 / 5 / 4 / 6 / 1 / 3 + click | aimed strike at the head / body / right arm / left arm / right leg / left leg (harder to hit) |
+| Numpad 8 / 5 / 4 / 6 / 1 / 3, then click | aimed strike at the head / body / right arm / left arm / right leg / left leg (harder to hit); the aim stays until the next click (hold the key instead with "Aim keys: press once" off) |
 | A | aggressive / defensive stance |
 | S / F | use or steal / follow, then click the unit |
 | Z / X / C / V | run / walk / sneak / crawl |

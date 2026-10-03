@@ -29,6 +29,7 @@ var _esc_frame: Image
 var _quit_box: MessageBox
 var _game_over_box: MessageBox
 var _game_over_load := false   # the Load screen came from the game-over box
+var _death_notice: GameOverNotice   # remake option "sp_death_notice"
 var _pause_before: Variant = null   # interface manager: the pause state to restore
 var _dialog: DialogPanel
 var _travel: Control
@@ -201,6 +202,11 @@ func _ready() -> void:
 	vname.game = game
 	_add_ui(vname)
 	_safe_root.move_child(vname, _movie.get_index())
+	# Remake option "revive": "Help … up" under the cursor, the work's progress.
+	var rv := ReviveOverlay.new()
+	rv.game = game
+	_add_ui(rv)
+	_safe_root.move_child(rv, _movie.get_index())
 	_dialog = DialogPanel.new()
 	_dialog.hud = self
 	_add_ui(_dialog)
@@ -505,7 +511,7 @@ func on_event(e: Dictionary) -> void:
 		"inventory":
 			_inventory.refresh()
 			_rebuild_party()
-		"travel": _show_travel(e.options, String(e.get("from", "")))
+		"travel": _show_travel(e.options, String(e.get("from", "")), e.get("start", []))
 		"travel_close": _close_travel()
 		"tutorial": _tutorial.show_tutorial(String(e.id))
 		"movie":
@@ -513,6 +519,8 @@ func on_event(e: Dictionary) -> void:
 			_movie.play(String(e.get("name", "")))
 		"party": _rebuild_party()
 		"game_over": _show_game_over()
+		"death_notice":   # remake option "revive": the hint that a companion can help
+			show_death_notice(RemakeText.t(ReviveOverlay.NOTICE_HINT) if e.get("revive", false) else "")
 		"ending": _show_ending()
 		"end_of_game": _show_end_of_game()
 		"leave_box":
@@ -580,6 +588,7 @@ func _show_ending() -> void:
 func _show_game_over() -> void:
 	if MessageBox.is_up(_game_over_box) or _game_over_load:
 		return
+	dismiss_death_notice()
 	GameSound.instance.ui("buttons\\gameover.wav")
 	if not _esc_open:
 		_open_menu()
@@ -593,6 +602,45 @@ func _show_game_over() -> void:
 			_save_load.open(false, _esc_frame, false)
 		else:
 			_on_esc_board("exit"))
+
+
+## Remake option "sp_death_notice" (Session.hero_died, single player only): at
+## the main hero's death the game-over box's sound (buttons\gameover.wav) and
+## a small notice at the top (GameOverNotice) with the box's choices — Load
+## (✓) and Main menu (✗) — and Hide. No pause; the zone change still opens the
+## box (`_show_game_over`, which hides the notice). `hint`: an extra line
+## under the message (e.g. that a companion can still revive the hero).
+## The notice also hides itself once the main hero lives again (a revival, a
+## load: GameOverNotice.still_dead); `dismiss_death_notice` hides it at once.
+func show_death_notice(hint := "") -> void:
+	if game.session.online or MessageBox.is_up(_game_over_box) or _game_over_load:
+		return
+	GameSound.instance.ui("buttons\\gameover.wav")
+	if _death_notice == null:
+		_death_notice = GameOverNotice.new()
+		_death_notice.name = "DeathNotice"
+		_death_notice.still_dead = game.session.sp_main_hero_dead
+		_death_notice.chosen.connect(_on_death_notice)
+		_field.add_child(_death_notice)
+	_death_notice.hint = hint
+	_death_notice.visible = true
+	_death_notice.queue_redraw()
+
+
+func dismiss_death_notice() -> void:
+	if _death_notice:
+		_death_notice.visible = false
+
+
+func _on_death_notice(what: String) -> void:
+	_death_notice.visible = what == "load"   # a load hides it (still_dead)
+	match what:
+		"load":   # the Esc menu's Load screen: closing it goes back to the game
+			if not _esc_open:
+				_open_menu()
+			_on_esc_board("load")
+		"menu":
+			_on_esc_board("exit")
 
 
 ## The "endofgame" string command (the top screen's slot 31
@@ -641,12 +689,12 @@ func _show_leave_box(exit: int) -> void:
 var _leave_box: MessageBox
 
 
-func _show_travel(options: Array, from := "") -> void:
+func _show_travel(options: Array, from := "", start: Array = []) -> void:
 	_close_travel()
 	# Who chooses is unchanged: the party leader (player 0), see Session "travel".
 	var leader := game.session.my_index == 0
 	var map := TravelMap.new()
-	map.setup(game.session, options, leader, from)
+	map.setup(game.session, options, leader, from, start)
 	if leader:
 		map.picked.connect(func(o): game.issue({"t": "travel", "zone": o.zone, "entrance": o.entrance}))
 		map.cancelled.connect(func(): game.issue({"t": "travel_cancel"}))

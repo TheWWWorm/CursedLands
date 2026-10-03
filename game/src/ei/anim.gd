@@ -93,7 +93,7 @@ static func _build_library(template: String, paths: Dictionary, root_part: Strin
 
 
 static func _build(tracks: EIResArchive, paths: Dictionary, root_part: String, root_scale: float,
-		native_keys := false, clip := "") -> Animation:
+		native_keys := false, _clip := "") -> Animation:
 	if tracks == null:
 		return null
 	var anim := Animation.new()
@@ -181,18 +181,15 @@ static func _build(tracks: EIResArchive, paths: Dictionary, root_part: String, r
 					anim.position_track_insert_key(pt, i / FPS, EISpace.vec(Vector3(
 						d.decode_float(p), d.decode_float(p + 4), d.decode_float(p + 8))) * root_scale)
 	if native_keys:
-		# Vertex morph keys (see morphs()): frame k is the blend shape
-		# "<clip>_<k>" of the part's "morph" mesh, weight 1 at its key and 0
-		# at the neighbouring keys, so the weights interpolate the offsets
-		# linearly between frames as does (the last frame holds).
+		# Vertex morph keys (see morphs()) count towards the clip's length;
+		# their blend shapes ("<clip>_<k>" of the part's "morph" mesh) are not
+		# animation tracks: EIUnitModel sets them from the playing clip's time
+		# (EIUnitModel._apply_morphs). As blend shape tracks, a clip that was
+		# left kept its last frame's weight (AnimationMixer only writes the
+		# tracks of the clips it plays), so every clip played added its offsets
+		# on top: the banshee's scythe climbed 0.55 per clip.
 		for part: String in tracks_d:
 			var fc := _morph_count(tracks_d[part])
-			for k in fc:
-				var t := anim.add_track(Animation.TYPE_BLEND_SHAPE)
-				anim.track_set_path(t, NodePath("%s/morph:%s" % [paths[part], morph_shape(clip, k)]))
-				anim.track_set_interpolation_loop_wrap(t, false)
-				for j in range(maxi(k - 1, 0), mini(k + 2, fc)):
-					anim.blend_shape_track_insert_key(t, j / FPS, 1.0 if j == k else 0.0)
 			if fc > 0:
 				length = maxf(length, (fc - 1) / FPS)
 	anim.length = maxf(length, 1.0 / FPS)

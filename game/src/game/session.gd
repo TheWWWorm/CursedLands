@@ -9,6 +9,8 @@ signal players_changed
 signal message(text: String)
 ## Client: the host sent a zone (the game view must exist before it loads).
 signal zone_received
+## A network character was written to its file (MpCharacter; tests).
+signal mp_saved(rec: Dictionary)
 
 const PORT := 27015
 ## the original: the network screen's Max Players slider 0..5 + 1 (
@@ -57,6 +59,11 @@ var upnp: UpnpPort
 var lmp := {}
 ## LMP: the entrance the party came into the current zone by (respawn spot).
 var _lmp_entrance := 1
+## Remake: what the host's Multiplayer screen is about to start — {"mode":
+## "coop"} or {"mode": "lmp", "base": <base>} — told to joiners waiting in
+## the lobby (a "lobby" event), so a joiner who picked the other kind of game
+## is shown what the host runs. Empty until known.
+var lobby_mode := {}
 
 
 func _ready() -> void:
@@ -84,6 +91,7 @@ func _ready() -> void:
 	multiplayer.connected_to_server.connect(func():
 		_relax_timeout(1)   # the client's own zone builds stall as long as the host's
 		coop.client_hello()
+		_send_mp_char()
 		_rpc_hello.rpc_id(1, GameData.player_name, GameData.hero_class, NetStatus.PROTOCOL, NetStatus.world_hash()))
 	multiplayer.server_disconnected.connect(func():
 		var t := net.server_lost_text()
@@ -118,6 +126,14 @@ func host(port := PORT, limit := MAX_PLAYERS) -> Error:
 	my_index = 0
 	players = {1: {"index": 0, "name": GameData.player_name}}
 	return OK
+
+
+## Host, before the game starts: what it is about to start (lobby_mode),
+## told to every joiner already connected.
+func set_lobby_mode(mode: Dictionary) -> void:
+	lobby_mode = mode
+	if online and is_host and world == null:
+		_rpc_event.rpc({"t": "lobby", "mode": mode})
 
 
 ## Remake: a typed address to [host, port]: "host", "host:port", an IPv6
@@ -193,6 +209,7 @@ func new_lmp_game(base: String, quest := "", pk := 0) -> bool:
 		message.emit(RemakeText.t("Unknown zone ") + base)
 		return false
 	lmp = {"base": base, "quest": "", "last": "", "topics": [], "pk": pk}
+	mp_file = MpCharacter.selected_file()   # the host plays its own selected character
 	coop.joiners.clear()   # brought campaign heroes have no part in it
 	coop.lmp_purses.clear()
 	if online:
@@ -219,17 +236,128 @@ func _pid_of(idx: int) -> int:
 	return 0
 
 
-## LMP: a player's network hero. **Approx.** (the network character screens,
-## are not ported): databaseLMP.res "Human Hero"
-## (prototype kit, NPC row attributes / skills / experience) named after the
-## player.
+## LMP: a player's network hero — its network character (MpCharacter: the
+## host's own selected one, a client's sent on connecting, `_rpc_mp_char`)
+## with its money and bag in the player's purse (runs inside
+## CoopProgress.with_purse). The server takes the character as the original's
+## message 8 handler does: exactly one hero record, nothing else
+## checked (MpCharacter.accept, which also makes the record safe for the
+## remake). Without a character (none selected, or refused) **approx.**:
+## databaseLMP.res "Human Hero" (prototype kit, NPC row attributes / skills /
+## experience) named after the player, an empty purse.
 func _ensure_lmp_hero(idx: int, player_name: String) -> void:
 	if state.heroes.has(idx):
 		return
+	var pid := _pid_of(idx) if idx > 0 else 1
+	var sent: Dictionary = MpCharacter.current() if idx == 0 else _mp_pending.get(pid, {})
+	var rec := MpCharacter.accept(sent) if not sent.is_empty() else {}
+	if not rec.is_empty():
+		state.heroes[idx] = [rec.heroes[0]]
+		state.money = int(rec.money)
+		state.items.clear()
+		state.items.append_array(rec.items)
+		CampaignState.cap_belt(rec.heroes[0], state.items)
+		_mp_resend[idx] = _mp_resend_delay()
+		_mp_camp[idx] = 0.0   # the login reply's 0x80
+		return
+	if not sent.is_empty():
+		message.emit(RemakeText.t("%s's network character was refused (it must have exactly one hero).") % player_name)
 	state.ensure_hero(idx, "Human Hero", player_name)
 	var h: Dictionary = state.heroes[idx][0]
 	if player_name.strip_edges():
 		h.name = player_name.strip_edges()
+
+
+# ---------------------------------------------------------------- network characters
+# the original: the client sends its character with message 8 on connecting
+# (: the local party); the server keeps it by the
+# player's key and sends the party back (message 0x80
+# ) at the login reply, every zone change
+# after a respawn, on entering a trader
+# (message 4) and every 900 + rand % 901 ticks while the player
+# is on the map out of danger (about 50–99 s)
+# the client writes each one to its file (
+# ), and again when it leaves a trader. The server
+# never writes a file.
+
+## Commands of the camp / trader screens: the party goes back to its client
+## shortly after (**approx.** of message 4, the remake has no
+## trader state of the player).
+const MP_CAMP_CMDS := ["buy", "sell", "repair", "construct", "deconstruct", "spell_constr", "train", "perk",
+	"equip", "unequip", "give_quick", "take_quick", "learn", "unlearn"]
+const MP_CAMP_DELAY := 1.0
+var _mp_pending := {}   # host: peer id -> the character it sent (checked when used)
+var _mp_resend := {}    # host: player slot -> seconds to the periodic resend
+var _mp_camp := {}      # host: player slot -> seconds to a pending send
+## Client / host: the file of the character this player plays ("" none).
+var mp_file := ""
+
+
+static func _mp_resend_delay() -> float:
+	return 50.0 + randf() * 50.0   # 900 + rand % 901 ticks
+
+
+## Client, on connecting: its selected network character (message 8).
+func _send_mp_char() -> void:
+	mp_file = MpCharacter.selected_file()
+	var data := MpCharacter.current()
+	if not data.is_empty():
+		_rpc_mp_char.rpc_id(1, data)
+
+
+@rpc("any_peer", "call_remote", "reliable")
+func _rpc_mp_char(data: Dictionary) -> void:
+	if not is_host:
+		return
+	if var_to_bytes(data).size() > 262144:
+		return
+	_mp_pending[multiplayer.get_remote_sender_id()] = data
+
+
+## Host: player `idx`'s party (its hero and purse) to its client (0x80); the
+## host's own straight to its file.
+func _mp_send(idx: int) -> void:
+	if lmp.is_empty() or not state.heroes.has(idx) or (state.heroes[idx] as Array).is_empty():
+		return
+	var h: Dictionary = state.heroes[idx][0]
+	var e := coop.purse_entry(idx)
+	var rec := MpCharacter.record(h, int(e.purse.money) if not e.is_empty() else state.money,
+		e.purse.get("items", []) if not e.is_empty() else state.items)
+	if idx == 0:
+		_mp_save(rec)
+		return
+	var pid := _pid_of(idx)
+	if pid > 0 and online:
+		_rpc_mp_party.rpc_id(pid, rec)
+
+
+## Client: the server's copy of its party, written to its character's file
+@rpc("authority", "call_remote", "reliable")
+func _rpc_mp_party(rec: Dictionary) -> void:
+	_mp_save(rec)
+
+
+func _mp_save(rec: Dictionary) -> void:
+	if mp_file.is_empty() or lmp.is_empty() or not MpCharacter.one_hero(rec):
+		return
+	MpCharacter.save_file(mp_file, rec)
+	mp_saved.emit(rec)
+
+
+## Host, every frame: pending and periodic sends.
+func _mp_tick(dt: float) -> void:
+	if lmp.is_empty() or world == null or coop.purse_active():
+		return
+	for idx in _mp_camp.keys():
+		_mp_camp[idx] = float(_mp_camp[idx]) - dt
+		if float(_mp_camp[idx]) <= 0.0:
+			_mp_camp.erase(idx)
+			_mp_send(int(idx))
+	for idx in _mp_resend.keys():
+		_mp_resend[idx] = float(_mp_resend[idx]) - dt
+		if float(_mp_resend[idx]) <= 0.0:
+			_mp_resend[idx] = _mp_resend_delay()
+			_mp_send(int(idx))
 
 
 ## Every peer: the multiplayer game's settings; a client switches to the
@@ -268,9 +396,11 @@ func enter_zone(id: String, entrance: int, autosave := true) -> void:
 	if z.is_empty() or not z.has("mpr") or not zone_exists(id):
 		message.emit(RemakeText.t("Unknown zone ") + id)
 		return
-	if world and zone_id and not lmp.is_empty():
+	if world and zone_id and (not lmp.is_empty() or (online and Revive.enabled(self))):
 		# a player whose hero is dead (or gone) when it is sent to
 		# another zone is respawned first (player =).
+		# Remake co-op with the option "revive" (no timed respawn, hero_died):
+		# the same at a zone change.
 		for u: GameUnit in world.units.values().duplicate():
 			if u.dead and u.controller >= 0 and u.has_meta("hero") and not u.get_meta("hero").has("merc"):
 				coop.with_purse(u.controller, respawn.bind(u))   # its own purse and bag
@@ -307,6 +437,7 @@ func enter_zone(id: String, entrance: int, autosave := true) -> void:
 	if lmp.is_empty():
 		coop.zone_entered(id)
 	world.vm = ScriptVM.create(world, self)
+	_start_zone_revisit(id)
 	_start_pose(z, entrance)
 	_replay_local()
 	if online:
@@ -320,6 +451,11 @@ func enter_zone(id: String, entrance: int, autosave := true) -> void:
 		save_game.call_deferred("autosave")
 	ShaderWarmup.run(game)
 	LoadingScreen.end()
+	if not lmp.is_empty():
+		#  (mode 2): every player's party goes to its client
+		# (message 0x80), which saves it.
+		for k in state.heroes:
+			_mp_send(int(k))
 	GameData.trace("zone ready %s" % id)
 
 
@@ -416,9 +552,15 @@ func _deploy_parties(z: Dictionary, entrance: int) -> void:
 				u.facing = view
 				state.apply_hero(u)
 			slot += 1
-	for n in state.mercs:
+	for n in state.mercs.keys():
 		var m: Dictionary = state.mercs[n]
-		if state.get_var(0, "adeadn%d" % n) >= 1.0 or not state.current_party.is_empty():
+		if m.get("fallen", false) and not _restoring:
+			# Remake option "revive": a mercenary that died in the zone left
+			# behind is gone, as in the original (GameWorld.on_death). A loaded
+			# save brings its body back (CampaignState.restore_party_positions).
+			state.mercs.erase(n)
+			continue
+		if (state.get_var(0, "adeadn%d" % n) >= 1.0 and not m.get("fallen", false)) or not state.current_party.is_empty():
 			continue   # dead, or waiting while the story uses another party
 		var p := world.nav.nearest_walkable(rect.get_center() + Vector2(slot % 3 - 1, slot / 3) * 1.5)
 		slot += 1
@@ -923,8 +1065,36 @@ func _party_exit() -> int:
 	return n
 
 
+## Single player, the original (a zone change: the leave box's ✓
+## the global map, the script's LeaveToZone — every caller of leave_zone /
+## _travel here): when the main hero (player record) is gone or
+## dead (unit =, unit, set at death
+## ), it calls player =, which outside a
+## network game sends client message 9 (handler → the
+## screen's slot 31: gameover.wav and the «game_over» box) and returns
+## without the zone change. True when that happened.
+func sp_game_over() -> bool:
+	if not sp_main_hero_dead():
+		return false
+	travel_options = []
+	broadcast({"t": "game_over"})
+	return true
+
+
+## Single player: the main hero (not a mercenary) is dead or gone.
+func sp_main_hero_dead() -> bool:
+	if online or not lmp.is_empty() or world == null:
+		return false
+	for u: GameUnit in world.units.values():
+		if u.controller == 0 and u.has_meta("hero") and not u.get_meta("hero").has("merc") and not u.dead:
+			return false
+	return true
+
+
 ## Host: go to `target` (a game/brief zone, or an edge = choice on the island map).
 func leave_zone(target: String, entrance: int) -> void:
+	if sp_game_over():
+		return
 	# the original: the pseudo-zone "endofgame" loads nothing and sets
 	# world mode 8, which sends every player to screen 8, the "Crdt" credits
 	# . zone20's script leaves there once the Curse is dead
@@ -947,10 +1117,58 @@ func leave_zone(target: String, entrance: int) -> void:
 		travel_options = _route_options(target)
 		if travel_options.is_empty():
 			travel_options = _edge_options(target, {zone_id: true, target: true})
+		# The original's map never lets the party pick a starting area (its
+		# piece leads to the village, TravelMap); the remake option offers it.
+		var shown := start_zones_shown()
+		travel_options = travel_options.filter(func(o): return not START_ZONES.has(String(o.zone)) or shown.has(String(o.zone)))
 	if travel_options.is_empty():
 		push_warning("leave_zone: no route from " + target)
 		return
-	broadcast({"t": "travel", "options": travel_options, "from": target})
+	# "start": the starting areas the map shows as their own piece — the
+	# host's option, so every peer's map agrees.
+	broadcast({"t": "travel", "options": travel_options, "from": target, "start": start_zones_shown()})
+
+
+## Remake option "start_zones" (Starting areas on the travel map). The
+## campaign starts in gz1g (the original: zone "gz1g", entrance 0 =
+## its "#exit 1", a one-way "none" exit). The original never lets the party
+## back: map.txt routes reach it (edge gz1g_bz1g's "#exit 1" → "gz1g 2", its
+## path to the village), but on Gipat the global map links a done piece
+## ("z.<zone>" = 2, set by zone1's script) to the village its exits lead to
+## (byte for "gipat" only), and a click on a linked piece
+## travels to that village. With the option , once the zone
+## has been visited, its piece is a destination like the others (objectives
+## screen, its one entrance with a deploy rect: "#exit 2", 184..190 × 101..108);
+## off, it is also kept out of the travel options. The other allods' starting
+## areas (gz11k "FAKE DEPLOY", gz15h "First Deploy") need nothing: their
+## edges lead back into them and nothing links them.
+const START_ZONES := ["gz1g"]
+
+
+## Host: the starting areas the travel map offers (option on, visited and
+## not the zone being left: gz1g's exit to bz1g opens the map with the village
+## alone, where its piece stays linked).
+func start_zones_shown() -> Array:
+	if not GameData.option("start_zones") or not lmp.is_empty():
+		return []
+	return START_ZONES.filter(func(id: String) -> bool: return id != zone_id and state.visited.has(id) and zone_exists(id))
+
+
+## Host: a revisit of a starting area runs on from the level script saved
+## with the zone (CampaignState.store_zone "vm"), whose intro threads have all
+## ended (zone1: Said1 guards Zak's wake-up line R1, FirstComing / q.gz1g.q0g
+## the village briefing). A zone state without one (a save from before the
+## script was kept) would start zone1's WorldScript afresh, and its
+## VTriger#0#205 closes the edges z.gz1g_gz2g / z.gz2g_gz3g again (only
+## basecam's one-time b.smith.m6 reopens them) and VCheck#0#1 replays the
+## villagers' flight: then the level script is not started.
+func _start_zone_revisit(id: String) -> void:
+	if not START_ZONES.has(id) or not state.zones.has(id) or not world or not world.vm:
+		return
+	if not Dictionary(state.zones[id].get("vm", {})).is_empty():
+		return
+	world.vm.instances = world.vm.instances.filter(func(i) -> bool: return i.sname != "WorldScript")
+	GameData.trace("start zone %s revisited without a saved script: level script not started" % id)
 
 
 ## LMP: the base's exit names the pseudo-zone "MPGame1" — the zone of the
@@ -1038,6 +1256,8 @@ func zone_title(id: String) -> String:
 
 
 func _travel(zone: String, entrance: int) -> void:
+	if sp_game_over():   #  message 6
+		return
 	for o: Dictionary in travel_options:
 		if o.zone == zone and int(o.entrance) == entrance:
 			travel_options = []
@@ -1091,6 +1311,8 @@ static func group_offset(i: int) -> Vector2:
 func apply_command(cmd: Dictionary, player: int) -> void:
 	if world == null:
 		return
+	if not lmp.is_empty() and String(cmd.get("t", "")) in MP_CAMP_CMDS:
+		_mp_camp[player] = MP_CAMP_DELAY
 	var mine: Array[GameUnit] = []
 	for id in cmd.get("units", []):
 		var u: GameUnit = world.units.get(int(id))
@@ -1211,6 +1433,9 @@ func apply_command(cmd: Dictionary, player: int) -> void:
 				_double_stand(mine[0], cmd, target.pos, lr)
 				mine[0].command({"type": "follow", "target": target, "dist": lr, "once": true, "corpse": true, "run": bool(cmd.get("run", false))})
 				mine[0].set_meta("interact", [target, player])
+		"revive":   # remake option "revive": any player's unit, any party body (Revive)
+			if target:
+				Revive.order(self, mine, target, player, bool(cmd.get("run", false)))
 		"stop":
 			for u in mine:
 				u.command({"type": "wait", "t": 0.1})
@@ -2168,6 +2393,8 @@ func _ic_spells() -> void:
 
 
 func _physics_process(dt: float) -> void:
+	if is_host:
+		_mp_tick(dt)
 	if is_host and world and world.authority:
 		_exit_t -= dt
 		if _exit_t <= 0.0:
@@ -2237,19 +2464,32 @@ func _rpc_snap(snaps: Array, t: float) -> void:
 const RESPAWN_DELAY := 5.0
 
 
-## Host: a player's own hero died. Single player: "Your main character is dead!"
-## (texts.res game_over_msg) -> load or leave. Co-op: the original multiplayer
+## Host: a player's own hero died. Single player: nothing yet — the original shows
+## "Your main character is dead!" (texts.res game_over_msg) only when the
+## player next changes zone (`sp_game_over`). Co-op: the original multiplayer
 ## ("LMP", the -lmp campaign maps) rules bring it back.
 func hero_died(u: GameUnit) -> void:
 	if not is_host:
+		return
+	# Single player: the death itself opens no box. (player
+	# the only sender of client message 9 = game over) is called
+	# only by the zone change, and that only from the leave box's
+	# ✓ (message 3), the global map (message 6) and the script's LeaveToZone;
+	# no timer, no death hook reaches it. The party plays on with
+	# the companions; leaving the zone ends the game (`sp_game_over`).
+	# Remake option "sp_death_notice": the game-over sound and a small notice
+	# (GameHUD) at once, without pausing; the zone change rule is unchanged.
+	if not online and lmp.is_empty():
+		if GameData.option("sp_death_notice") == 1 and sp_main_hero_dead():
+			# Remake option "revive": the notice says a companion can help.
+			broadcast({"t": "death_notice", "revive": Revive.helper_present(self, u)})
 		return
 	var alive := false
 	for o: GameUnit in world.units.values():
 		if o.has_meta("hero") and not o.get_meta("hero").has("merc") and not o.dead and o.controller >= 0:
 			alive = true
-	# only a single-player game ends (client message 9); in a
-	# network game a dead hero always comes back, even with everyone dead.
-	if (not online or not alive) and lmp.is_empty():
+	# Remake co-op (not LMP): the game ends when every player's hero is dead.
+	if not alive and lmp.is_empty():
 		broadcast({"t": "game_over"})
 		return
 	if not lmp.is_empty():
@@ -2262,6 +2502,8 @@ func hero_died(u: GameUnit) -> void:
 		# changes zone (enter_zone respawns it first).
 		_lmp_all_dead_check()
 		return
+	if Revive.enabled(self):
+		return   # remake option "revive": the hero waits for a companion (or the next zone, enter_zone)
 	# Weak references: the zone (and the unit with it) may go before the timer.
 	var ur: WeakRef = weakref(u)
 	var wr: WeakRef = weakref(world)
@@ -2273,12 +2515,16 @@ func hero_died(u: GameUnit) -> void:
 
 ## money - round(money x [LMP] "Lost Money"), experience debt +=
 ## "Lost XP" x experience (paid off by later gains), all body parts
-## restored. The hero rises next to a living party member.
+## restored. The hero rises next to a living party member. In the multiplayer
+## game the experience is the original's (lmp_toll_base); the remake's co-op
+## campaign (no original counterpart: single-player branch is the
+## game-over message) keeps "Lost XP" x the total experience.
 func respawn(u: GameUnit) -> void:
 	var h: Dictionary = u.get_meta("hero")
 	var lost := int(round(state.money * GameData.ai_value("LMP", "Lost Money", 0.05)))
 	state.money -= lost
-	h.exp_debt = float(h.get("exp_debt", 0.0)) + GameData.ai_value("LMP", "Lost XP", 0.05) * float(h.get("exp_total", h.get("exp", 0.0)))
+	var base := lmp_toll_base(h) if not lmp.is_empty() else float(h.get("exp_total", h.get("exp", 0.0)))
+	h.exp_debt = float(h.get("exp_debt", 0.0)) + GameData.ai_value("LMP", "Lost XP", 0.05) * base
 	if not lmp.is_empty():
 		_lmp_respawn(u, lost)
 		return
@@ -2289,6 +2535,21 @@ func respawn(u: GameUnit) -> void:
 	u.revive()
 	broadcast({"t": "party"})
 	sync_state()
+
+
+##  (network branch,..): the experience the
+## death toll is taken from — the hero's total experience (stats +4) plus its
+## (negative) debt, less the starting experience of the hero's NPC row
+## ((prototype) = exp_to_distribute, 500 for every network
+## face; the same field gives a new character), floored at 0, so
+## the starting experience is never lost. With no NPC row the sum is taken as
+## it is (no floor).
+static func lmp_toll_base(h: Dictionary) -> float:
+	var x := float(h.get("exp_total", h.get("exp", 0.0))) - float(h.get("exp_debt", 0.0))
+	var npc := GameData.db.find("npcs", String(h.get("prototype", ""))) if GameData.db else {}
+	if not npc.is_empty():
+		x = maxf(0.0, x - float(npc.get("exp_to_distribute", 0.0)))
+	return x
 
 
 ## LMP (the original, network branch): the dead hero's body stays
@@ -2334,6 +2595,7 @@ func _lmp_respawn(u: GameUnit, lost: int) -> void:
 	u.revive()
 	broadcast({"t": "party"})
 	sync_state()
+	_mp_camp[u.controller] = 0.0   #  sends the party after the toll (sent outside the purse swap)
 
 
 ## An order failure shown to the player controlling `u`: texts.res "string
@@ -2410,6 +2672,7 @@ func _on_event(event: Dictionary) -> void:
 				if a and b:
 					Projectile.launch(world, a, b, false)
 			"state":
+				set_meta("host_revive", int(event.get("revive", 0)))
 				state.money = event.money
 				state.quests = event.quests
 				state.quest_items = event.quest_items
@@ -2462,6 +2725,10 @@ func _on_event(event: Dictionary) -> void:
 			if int(event.get("to", my_index)) == my_index:
 				message.emit(String(event.text))
 		"say": _say(event)
+		"lobby":   # the host's choice of game, while in the lobby (remake)
+			if not is_host:
+				lobby_mode = event.get("mode", {}) if event.get("mode") is Dictionary else {}
+				players_changed.emit()
 		_:
 			if game:
 				game.on_event(event)
@@ -2514,7 +2781,8 @@ func sync_state() -> void:
 	if online and is_host:
 		var ev := {"t": "state", "money": state.money, "quests": state.quests, "quest_items": state.quest_items,
 			"items": state.items, "heroes": state.heroes, "mercs": state.mercs, "side_quests": state.side_quests, "shops": state.shops, "visited": state.visited,
-			"vars": state.vars, "last_quest": state.last_quest, "world_time": state.world_time, "day": state.day}
+			"vars": state.vars, "last_quest": state.last_quest, "world_time": state.world_time, "day": state.day,
+			"revive": GameData.option(Revive.OPTION)}   # the host's remake option counts (Revive.enabled)
 		# Each peer sees its own purse and bag (CoopProgress.state_for).
 		for pid in multiplayer.get_peers():
 			if CoopProgress.peer_alive(multiplayer, pid):
@@ -2571,6 +2839,8 @@ func _rpc_hello(player_name: String, hero_class: String, protocol := 0, maps_md5
 	players[pid] = {"index": idx, "name": player_name, "hero": hero_class}
 	_rpc_players.rpc(players)
 	_rpc_welcome.rpc_id(pid, idx)
+	if not in_game and not lobby_mode.is_empty():
+		_rpc_event.rpc_id(pid, {"t": "lobby", "mode": lobby_mode})
 	broadcast({"t": "msg", "text": net.joined_text(player_name)})
 	if not lmp.is_empty():
 		# The multiplayer game: its database first, then a network hero (no

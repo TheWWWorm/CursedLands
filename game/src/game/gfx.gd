@@ -444,7 +444,7 @@ void light() {
 				for (int i = 0; i < 4; i++) {
 					if (pls[i].w <= 0.0 || plc[i].w > 0.5) { continue; }
 					vec3 lv = (VIEW_MATRIX * vec4(pls[i].xyz, 1.0)).xyz - ei_vpos;
-					if (dot(normalize(lv), LIGHT) > 0.99999 && abs(length(lv) / pls[i].w - sqrt(max(1.0 - a, 0.0))) < 0.01) {
+					if (dot(lv / max(length(lv), 1e-6), LIGHT) > 0.99999 && abs(length(lv) / pls[i].w - sqrt(max(1.0 - a, 0.0))) < 0.01) {
 						in_sun_pass = true;
 					}
 				}
@@ -469,7 +469,10 @@ void light() {
 	// A bounded lobe suits the painted assets and linear output without
 	// producing HDR sparkles or turning every surface into polished plastic.
 	if (ei_surface.x > 0.001 && (LIGHT_IS_DIRECTIONAL || SPECULAR_AMOUNT > 0.0)) {
-		vec3 h = normalize(LIGHT + VIEW);
+		// safe normalize: LIGHT = −VIEW gives a zero vector, and a NaN here
+		// (× a zero n·L is still NaN) would reach the bloom and spread
+		vec3 hv = LIGHT + VIEW;
+		vec3 h = hv * inversesqrt(max(dot(hv, hv), 1e-12));
 		float r = clamp(ei_surface.y, 0.2, 1.0);
 		float power = mix(128.0, 10.0, r * r);
 		float highlight = pow(max(dot(NORMAL, h), 0.0), power) * max(dot(NORMAL, LIGHT), 0.0);
@@ -987,7 +990,8 @@ void vertex() {
 	// cylindrical billboard: faces the camera, stays upright
 	vec3 up = MODEL_MATRIX[1].xyz;
 	vec3 to_cam = INV_VIEW_MATRIX[3].xyz - MODEL_MATRIX[3].xyz;
-	vec3 right = normalize(cross(up, to_cam)) * length(MODEL_MATRIX[0].xyz);
+	vec3 side = cross(up, to_cam);   // zero when seen straight from above: no NaN quad
+	vec3 right = side * inversesqrt(max(dot(side, side), 1e-12)) * length(MODEL_MATRIX[0].xyz);
 	vec3 w = MODEL_MATRIX[3].xyz + right * VERTEX.x + up * VERTEX.y;
 	POSITION = PROJECTION_MATRIX * VIEW_MATRIX * vec4(w, 1.0);
 }

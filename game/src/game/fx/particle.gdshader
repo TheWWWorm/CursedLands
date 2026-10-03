@@ -76,6 +76,8 @@ void fragment() {
 		soft = clamp((scene - (-VERTEX.z)) / range, 0.0, 1.0);
 		soft = soft * soft * (3.0 - 2.0 * soft);
 	}
-	ALBEDO = t.rgb * COLOR.rgb * light_tint * boost;
-	ALPHA = t.a * COLOR.a * soft;
+	// Never negative, alpha within 0..1: blend_mix with alpha outside it
+	// would write a negative colour into the HDR buffer (bloom, TAA).
+	ALBEDO = max(t.rgb * COLOR.rgb * light_tint * boost, vec3(0.0));
+	ALPHA = clamp(t.a * COLOR.a * soft, 0.0, 1.0);
 }

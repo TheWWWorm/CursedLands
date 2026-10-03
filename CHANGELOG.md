@@ -1,5 +1,30 @@
 # Changelog
 
+## 0.1.5
+
+- Fixes and changes:
+  - Multiplayer: a new, clearer menu in the game's own style. Choose "Host / Join co-op campaign" or "Host / Join multiplayer game", and each page shows only what that game needs, with the addresses to give your friends and the router status in plain words.
+  - Multiplayer: a host can now continue one of their saves with friends. Joining a host that runs the other kind of game switches to the right page and tells you what the host runs. WebSocket now sits under Connection settings with a note on when it's needed (only for friends playing in the browser).
+  - Water and swamps now follow the original game's rules: the colour comes from the original water textures, lit like the original, with the original transparency. No more milky, fog-like surface, and the sea bed only shows in the shallows.
+  - Where a river runs into a bog, the two waters now blend along a soft, natural line instead of blue and teal blocks with stair-stepped edges.
+  - Rivers no longer show white streaks or bright floating shapes; reflections are subtle from the normal camera and stronger only at low viewing angles. Shores have a soft edge, rain rings catch the sky, and sun glints stay as gentle as the original's.
+  - When your main hero dies, the game-over sound now plays at once and a small notice at the top of the screen offers Load, Main menu or Hide while your companions fight on (Options → Game → Remake extras). With the option off it works as in the original: the fight goes on and the "Game over" box appears only when the party tries to leave the zone.
+  - A unit now dies when its health drops below 0.5, as in the original, instead of only at 0.
+  - When a wounded or severed arm slows a spell, the caster now freezes mid-cast (on the cast animation's hit frame) until the spell goes off, as in the original, instead of finishing the animation early and standing idle.
+  - Aimed-strike keys (Num 8 head, Num 5 body …) can now be pressed once instead of held: the aim cursor stays until your next click, and pressing the key again, Esc or a right click cancels it. Turn off "Aim keys: press once" in Options → Combat keys for the original hold-to-aim.
+  - New option "Companions can revive the hero" (Options → Game → Remake extras, off by default): select a living hero or companion and click a fallen party member ("Help Zak up") to get them back on their feet with 1 health after 5 seconds of tending. Works in co-op too.
+  - New option "Starting areas on the travel map" (on by default): after you leave the ruins where the campaign begins, they show up on the Gipat travel map as their own outlined area around the village, so you can travel back; what you killed or took there stays that way, and the opening scenes don't play again.
+  - Fixed the banshee's scythe floating away from her hands, and bat, dragon and other monsters' wings and robes stretching out of shape, after the monster had played a few different animations.
+  - Options: leaving the options screen with ✗ or Esc after changing settings or keys now asks whether to save them; Esc on that box returns to the options.
+  - New: network characters for the original multiplayer game. Create a hero on the original screens (name, face, voice, attributes, height, starting weapon / potion / spell, first skills), then rename its clan, view or delete it. Choose or create one on the "Host / Join multiplayer game" pages.
+  - Network characters are kept on your computer, one file each, travel with you to any server, and are saved automatically as you play: on joining, on every zone change, after respawning, after trading and every minute or so.
+  - Heroes now speak with the voice chosen for them.
+  - Multiplayer mode: a hero who dies no longer loses any of their starting experience, as in the original; the 5 % death penalty only applies to experience earned since then.
+  - Fixed rare cases where a water, lighting, sky or particle calculation could produce an invalid pixel that bloom spreads into a full-screen flash, and added a `--flash-log` start option that records any sudden screen flash in godot.log.
+  - A dead hero or companion is now saved and loaded lying dead, as in the original.
+  - macOS: the Anti-aliasing choice "FSR 2" becomes Apple's MetalFX upscaler, and a render scale below 100 % uses MetalFX instead of FSR.
+  - Checked that the whole single-player campaign can be finished, from the arrival on Gipat to the end credits: every main quest of Gipat, Ingos and Suslanger completes.
+
 ## 0.1.4
 
 - Fixes and changes:

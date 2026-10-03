@@ -98,8 +98,8 @@ const OPTIONS := [
 	["camera_style", 1, 2, 2, 5, 1], ["cam_pan_speed", 0, 100, 2, 8, 50],
 	["cam_rotate_speed", 0, 100, 2, 9, 50], ["cam_zoom_speed", 0, 100, 2, 10, 50],
 	["cam_follow", 1, 2, 2, 11, 1], ["cam_see_through", 1, 2, 2, 12, 1], ["cam_wasd", 1, 2, 2, 13, 0],
-	# Remake co-op host settings on their own sub-page (group 13, "Co-op…" in
-	# the Game page's free row 13; the Game page's rows 2..4 are the key
+	# Remake co-op host settings on their own sub-page (group 13, "Remake
+	# extras…" in the Game page's free row 13; the Game page's rows 2..4 are the key
 	# actions accel / decel / pause): full experience for every party member
 	# (XpRules), monster scaling to the player count (MobScaling: Off / Light /
 	# Normal / Strong), the host opening its port on the router (UpnpPort).
@@ -112,6 +112,28 @@ const OPTIONS := [
 	# them (water, overhangs, rocks); the original depth tests them (see
 	# FxTypes.under_water). Game page free row 10; default on (user request).
 	["path_through", 1, 2, 3, 10, 1], ["sp_full_xp", 1, 2, 3, 5, 0],
+	# Remake: the campaign's starting area (gz1g) as its own travel map piece
+	# once it has been left (Session.start_zones_shown); off = the original,
+	# where the Gipat map links the done piece to its village.
+	# Game page free row 7 (keys use 2..4, 6, 8, 9); default on (user request).
+	["start_zones", 1, 2, 3, 7, 1],
+	# Remake: an aimed-strike key (cs_*) pressed once arms the aim until the
+	# next click (Game._key_action, held_aim); off = the original, where the
+	# aim lasts only while the key is held (sets the flag
+	#  clears it on key-up). Combat key page (group 9), free row 7
+	# under the six cs_* key rows 0..5; default on (user request).
+	["aim_press_once", 1, 2, 9, 7, 1],
+	# Remake: in single player the hero's death plays the game-over sound and
+	# shows a small notice at once (GameOverNotice: load, main menu, hide; no
+	# pause). Off = the original, where nothing shows until the party tries to
+	# leave the zone (Session.sp_game_over). On the Game page's remake extras
+	# (group 13) row 5, under the co-op rows; default on (user request).
+	["sp_death_notice", 1, 2, 13, 5, 1],
+	# Remake: a living party member can help a fallen hero or mercenary up
+	# (Revive: a click on the body, 5 s of work, 1 HP); not in the
+	# multiplayer (LMP) game. Off = the original, which has no revival.
+	# Remake extras page (group 13) row 6; default off.
+	["revive", 1, 2, 13, 6, 0],
 ]
 ## The original's speed / quality switches (the original rows shadow_units
 ## shadow_buildings, shadow_flora) are not offered: always at their best.
@@ -156,18 +178,18 @@ const REMAKE_OPTIONS := {
 	"gfx_foliage_light": ["Leaf backlighting", "Sunlight shines softly through leaves while trunks remain solid."],
 	"gfx_weather_surfaces": ["Rain on surfaces", "Rain gradually darkens exposed ground and adds wet highlights and water ripples. Surfaces dry after the rain; caves, snow and lava stay unchanged."],
 	"gfx_lava_light": ["Lava lighting", "Lava casts a warm glow onto nearby banks, buildings and creatures. A limited number of nearby lights follows the view."],
-	"coop": ["co-op (remake)", ""],
+	"coop": ["remake extras", ""],
 	"gfx_hd_textures": ["HD textures", "The original ground and object textures upscaled 2x once at load (edge-preserving Lanczos on the GPU): sharper up close, same colours. Applies from the next zone load."],
 	"gfx_soft_particles": ["Soft particles", "Smoke, fire and magic fade softly where they meet the ground and walls instead of cutting through them with a hard line."],
 	"gfx_lit_particles": ["Lit smoke and dust", "Smoke, dust and blood take the scene's light: unchanged in daylight, darker at night and in caves instead of glowing."],
 	"gfx_contact_shadows": ["Contact shadows", "A soft shadow on the ground under every creature, so figures sit on the ground also in shade, at night and in caves."],
-	"q_aa": ["Anti-aliasing", "Smooths jagged edges. SMAA (default): cheap and clean. MSAA 4× + SMAA: sharpest, but costly at high resolutions. TAA and FSR 2 smooth foliage and thin lines best but soften textures slightly and can ghost on fast motion. FSR 2 draws the 3D view at 67 % (its Quality mode) and upscales it, faster than native; a lower Render scale goes further."],
+	"q_aa": ["Anti-aliasing", "Smooths jagged edges. SMAA (default): cheap and clean. MSAA 4× + SMAA: sharpest, but costly at high resolutions. TAA and FSR 2 smooth foliage and thin lines best but soften textures slightly and can ghost on fast motion. FSR 2 draws the 3D view at 67 % (its Quality mode) and upscales it, faster than native; a lower Render scale goes further. On a Mac, Apple's MetalFX takes the place of FSR."],
 	"q_shadows": ["Shadow quality", "Softness and resolution of sun and torch shadows (Ultra: widest soft filter, largest shadow maps)."],
 	"q_shadow_fit": ["Shadows fitted to the view", "The sun's shadow cascades span only the visible distance and the zone's size, so near shadows get sharper; off: a fixed 220 m."],
 	"q_aniso": ["Texture filtering", "Anisotropic filtering: ground textures stay sharp at grazing angles."],
 	"gfx_torch_glow": ["Torch and fire glow", "Torches, camp fires and spell lights glow in the night mist (needs Volumetric fog)."],
 	"gfx_sky": ["Atmospheric sky", "Sun disc, moon and stars at night over the original sky dome, and the open top of the dome faded into the sky colour; off: the original dome only."],
-	"gfx_water": ["Water and lava effects", "Animated ripples, refraction, depth colour and sun glints; breaking surf on sea coasts, calmer rivers and bogs; glowing, churning lava. Off: the plain blended water."],
+	"gfx_water": ["Water and lava effects", "The original water with soft shores, blended bog and river edges, ripples and rain rings catching the sky, sun glints and reflections; breaking surf on sea coasts; glowing, churning lava. Off: the original water."],
 	"gfx_water_reflections": ["Water reflections (SSR)", "Natural: subtle, rippled reflections. Mirror: stronger, sharper scenery with gentler distortion (default). Off keeps sky reflections. Needs Water and lava effects. Off-screen and transparent objects may be absent; Mirror costs more GPU time."],
 	"gfx_wind": ["Wind in foliage", "Trees and bushes sway in the wind."],
 	"gfx_volumetric": ["Volumetric fog / light shafts", "Light mist lit by the sun (shafts through the trees at dawn and dusk) and the torches."],
@@ -183,7 +205,11 @@ const REMAKE_OPTIONS := {
 	"vsync": ["VSync", "Wait for the monitor's refresh (no tearing); adaptive tears only when a frame is late."],
 	"show_fps": ["Show FPS", "A frames-per-second counter in the top right corner."],
 	"confine_mouse": ["Keep mouse in window", "The pointer cannot leave the game window (e.g. onto a second monitor) while the game has focus; it is free again when you switch away."],
+	"sp_death_notice": ["Game-over notice at the hero's death", "Single player: when your main hero dies, the game-over sound plays at once and a small notice appears at the top of the screen, with Load, Main menu and Hide. The game is not paused and your companions fight on; leaving the area still ends the game. Off: as the original, nothing appears until the party tries to leave the area."],
+	"revive": ["Companions can revive the hero", "Select a living hero or companion and click a fallen party member (your hero, another player's hero or a hired companion): they walk to the body and tend it for 5 seconds, and it gets up with 1 health. Another order stops it; there is no other limit, but it is slow in a fight. Party bodies stay where they fell. Co-op: fallen heroes wait for help instead of rising after 5 seconds; changing the area still brings them back. Off: as the original, the dead stay dead."],
 	"sp_full_xp": ["Full experience for companions", "Single player: your hero and every companion (hired mercenaries such as Khador) each get the whole experience of a kill or quest. Off: as the original, which splits it equally among the living party."],
+	"start_zones": ["Starting areas on the travel map", "The area where the campaign begins (the ruins where Zak wakes up) becomes a place on the travel map once you have left it, so the party can go back. You arrive at its path from the village; what was killed or taken there stays so, and the opening scenes do not play again. Co-op: the host's setting counts. Off: as the original, where its piece only leads to the village."],
+	"aim_press_once": ["Aim keys: press once", "Press an aimed-strike key (Num 8 head, Num 5 body …) once: its cursor stays until the next click. A click on a creature attacks it at that part; a click elsewhere, a right click, Esc or the same key again cancels it; another aim key switches. Off: as the original, the key must be held while clicking."],
 	"path_through": ["Show the move path through objects", "The dots of a move path and the ring at its target stay visible under water, under arches and behind rocks and walls, faded where something covers them. Off: as the original, which hides them there."],
 	"phys_interp": ["Smooth motion", "Creatures are drawn between the game's 60 steps a second, so they move smoothly on screens faster than 60 Hz. Visual only."],
 	"render_scale": ["Render scale", "Resolution of the 3D view relative to the window: below 100 % faster, above it sharper (supersampling)."],
@@ -216,7 +242,7 @@ const OPTIONS_APPLIED := ["volume_sfx", "volume_stream", "volume_voice", "power_
 	"q_aa", "q_shadows", "q_shadow_fit", "q_aniso", "confine_mouse",
 	"display_mode", "resolution", "fps_limit", "vsync", "show_fps", "render_scale", "phys_interp",
 	"camera_style", "cam_pan_speed", "cam_rotate_speed", "cam_zoom_speed", "cam_follow",
-	"cam_see_through", "cam_wasd", "coop_full_xp", "coop_scale", "net_upnp", "net_websocket", "unit_fog", "path_through", "sp_full_xp"]
+	"cam_see_through", "cam_wasd", "coop_full_xp", "coop_scale", "net_upnp", "net_websocket", "unit_fog", "path_through", "sp_full_xp", "aim_press_once", "start_zones", "sp_death_notice", "revive"]
 signal options_changed
 const GFX_REV := 4
 ## Option q_aa 5 (FSR 2): the 3D view at most this fraction of the window.
@@ -295,6 +321,9 @@ func _ready() -> void:
 	_setup_display()
 	_apply_display()
 	_apply_window_late.call_deferred()
+	var flash := FlashLog.requested()   # diagnostic, off by default (FlashLog)
+	if flash > 0.0:
+		add_child(FlashLog.new(flash))
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--ei-path="):
 			root = arg.trim_prefix("--ei-path=")
@@ -464,6 +493,10 @@ func save_settings() -> void:
 	if OS.has_feature("web"):
 		cfg.set_value("remake", "web_input", 1)
 	cfg.set_value("display", "resolution", resolution_size)
+	var old := ConfigFile.new()   # hand-edited [debug] keys survive (FlashLog)
+	if old.load(CONFIG_PATH) == OK and old.has_section("debug"):
+		for k in old.get_section_keys("debug"):
+			cfg.set_value("debug", k, old.get_value("debug", k))
 	cfg.save(CONFIG_PATH)
 
 
@@ -759,7 +792,16 @@ func option_choices(name: String) -> Array:
 			var v: Vector2i = resolutions()[i]
 			out.append((RemakeText.t("Native (%d × %d)") if i == 0 else "%d × %d") % [v.x, v.y])
 		return out
-	return RemakeText.tl(DISPLAY_CHOICES.get(name, []))
+	var out: Array = RemakeText.tl(DISPLAY_CHOICES.get(name, []))
+	if name == "q_aa" and metalfx():
+		out[5] = "MetalFX"   # the same row: Apple's temporal upscaler stands in for FSR 2
+	return out
+
+
+## macOS on the Metal driver: Apple's MetalFX upscalers replace AMD FSR
+## (render scale below 100 %: MetalFX spatial; anti-aliasing row 5: MetalFX temporal).
+static func metalfx() -> bool:
+	return OS.get_name() == "macOS" and RenderingServer.get_current_rendering_driver_name() == "metal"
 
 
 ## The monitor's size first ("native"), then the common sizes that fit it,
@@ -837,11 +879,13 @@ func _apply_window() -> void:
 		if option("q_aa") == 5 and RenderingServer.get_current_rendering_method() == "forward_plus":   # FSR 2: anti-aliasing and upscaler in one
 			# Its Quality mode (1.5× upscale): at a 100 % render scale it would
 			# only anti-alias at native resolution, dearer than the other modes.
-			smode = Viewport.SCALING_3D_MODE_FSR2
+			smode = Viewport.SCALING_3D_MODE_METALFX_TEMPORAL if metalfx() else Viewport.SCALING_3D_MODE_FSR2
 			scale = minf(scale, FSR2_SCALE)
+		elif smode == Viewport.SCALING_3D_MODE_FSR and metalfx():
+			smode = Viewport.SCALING_3D_MODE_METALFX_SPATIAL
 		scale = clampf(scale, 0.25, 2.0)
 		if smode != Viewport.SCALING_3D_MODE_BILINEAR and scale > 1.0:
-			smode = Viewport.SCALING_3D_MODE_BILINEAR   # FSR only upscales
+			smode = Viewport.SCALING_3D_MODE_BILINEAR   # FSR and MetalFX only upscale
 		# Each setter reconfigures the render buffers at once: going from a
 		# supersampled scale (> 1) to FSR, the mode set before the scale made
 		# Godot warn "FSR ... not designed for downsampling" for that moment.

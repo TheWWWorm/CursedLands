@@ -22,10 +22,13 @@ extends Interface800
 ## hides itself while `MessageBox.is_up(box)`.
 
 signal answered(yes: bool)
+## Remake: with `esc_closes`, Esc closes the box without an answer.
+signal dismissed
 
 var title := ""
 var message := ""
 var ok_only := false   # flags 1
+var esc_closes := false   # remake: Esc dismisses instead of answering ✗
 
 
 static func ask(parent: Node, title_key: String, message_key: String, args: Array = [], ok_alone := false) -> MessageBox:
@@ -105,6 +108,12 @@ func _unhandled_key_input(e: InputEvent) -> void:
 		return
 	match e.keycode:
 		KEY_ENTER, KEY_KP_ENTER: _answer(true)
-		KEY_ESCAPE: _answer(false)
+		KEY_ESCAPE:
+			if esc_closes:
+				sound("messbox\\cancel")
+				dismissed.emit()
+				queue_free()
+			else:
+				_answer(false)
 		_: return
 	get_viewport().set_input_as_handled()
