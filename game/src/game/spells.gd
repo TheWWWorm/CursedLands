@@ -152,6 +152,59 @@ static func can_add(spell: String, code: String) -> bool:
 	return type < allowed.size() and int(allowed[type]) == 1
 
 
+## The spell constructor's rune check (camp mode 3, the spell
+## builder): fewer than 8 runes so far, and a rune of type 0..4
+## (range, targets, area, effect, duration) only where the keystone allows that
+## type (prototype..); mana, filter and other runes always fit.
+## Unlike can_add, a filter rune is not limited to area spells here.
+static func constr_rune_fits(key: String, n_runes: int, code: String) -> bool:
+	var row := mod_row(code)
+	if row.is_empty() or n_runes >= MAX_MODS:
+		return false
+	var type := int(row.get("type", 9))
+	if type >= 5:
+		return true
+	var allowed = parse(key).proto.get("mods", [])
+	return type < allowed.size() and int(allowed[type]) == 1
+
+
+## The spell constructor's pile sums (mode 3, the limit lines
+## ): x = the keystone's complexity + each rune's
+## y = the keystone's stamina + each rune's.
+static func constr_sums(key: String, runes: Array) -> Vector2:
+	var proto: Dictionary = parse(key.get_slice("{", 0)).proto
+	var c := float(int(proto.get("complex", 0)))
+	var m := float(proto.get("mana", 0.0))
+	for r: String in runes:
+		var row := mod_row(r.trim_prefix("rune:"))
+		c += float(int(row.get("complex", 0)))
+		m += float(row.get("mana", 0.0))
+	return Vector2(c, m)
+
+
+## The spell constructor's limits (camp): over the
+## party's members, the best round(knowledge) of `subtype`'s school
+##  and the best whole stamina (__ftol of the max stamina
+## ); both start at 0.
+static func party_limits(units: Array, subtype: String) -> Vector2i:
+	var k := 0
+	var s := 0
+	for u: GameUnit in units:
+		if u == null or not u.has_meta("hero"):
+			continue
+		k = maxi(k, roundi(Skills.knowledge(u.get_meta("hero"), subtype)))
+		s = maxi(s, int(u.max_mana))
+	return Vector2i(k, s)
+
+
+##  check of the built spell: party knowledge ≥ its complexity
+##  and party stamina ≥ __ftol(its stamina cost).
+static func constr_buildable(units: Array, spell: String) -> bool:
+	var p := parse(spell)
+	var lim := party_limits(units, String(p.subtype))
+	return float(lim.x) >= complexity(spell) and lim.y >= int(p.mana)
+
+
 static func with_mod(spell: String, code: String) -> String:
 	var mods := mods_of(spell)
 	mods.append(code.to_lower())
@@ -269,12 +322,15 @@ static func apply(world: GameWorld, caster: GameUnit, spell: String, target: Gam
 			# point) and at the caster; the effect lives duration + 30 ticks, then
 			# the caster arrives (the move at the effect's end is inferred).
 			var dest := world.nav.nearest_walkable(at)
-			world.get_tree().create_timer((float(p.duration) + 30.0) * GameUnit.TICK).timeout.connect(func():
-				if is_instance_valid(caster) and not caster.dead:
-					caster.pos = dest
-					caster.path = PackedVector2Array()
-					caster.order = {}
-					caster.orders.clear())
+			var cw = _ref(caster)
+			var arrive := func():
+				var c = _deref(cw)
+				if c and not c.dead:
+					c.pos = dest
+					c.path = PackedVector2Array()
+					c.order = {}
+					c.orders.clear()
+			_after(world, (float(p.duration) + 30.0) * GameUnit.TICK, arrive, true)
 		"eagle_sight", "infravision", "detect_life":   # effect added to sight / night sight / life sense
 			for u: GameUnit in victims:
 				_buff(u, p.code, secs, {"sense": [["eagle_sight", "infravision", "detect_life"].find(p.code), power]})
@@ -320,11 +376,13 @@ static func _damage_spell(world: GameWorld, caster: GameUnit, p: Dictionary, tar
 				_area_hit(world, caster, p, at)
 			else:
 				var n := maxi(1, roundi(src.distance_to(at) / maxf(float(p.range), 1.0) * 15.0) - 2)
-				_later(world, n, func(): _area_hit(world, caster, p, at))
+				var cw = _ref(caster)
+				_later(world, n, func(): _area_hit(world, _deref(cw), p, at))
 		"inv_lit":
 			_area_hit(world, caster, p, at)
 		"acid_column":
-			_later(world, 15, func(): _area_hit(world, caster, p, at))
+			var cw = _ref(caster)
+			_later(world, 15, func(): _area_hit(world, _deref(cw), p, at))
 		"firewall", "litnwall":
 			var dir := Vector2(1, 0)
 			if caster:
@@ -341,16 +399,49 @@ static func _damage_spell(world: GameWorld, caster: GameUnit, p: Dictionary, tar
 
 
 static func _later(world: GameWorld, ticks: int, f: Callable) -> void:
-	world.get_tree().create_timer(float(ticks) * GameUnit.TICK, false).timeout.connect(func():
-		if is_instance_valid(world):
-			f.call())
+	_after(world, float(ticks) * GameUnit.TICK, f)
+
+
+## The world's spell timers (delayed hits, lasting effects, missiles) are
+## connected through a child node of the world, so a timer still pending when
+## the world goes (zone change, load, return to the menu) never fires: the
+## connection ends with the node. The callbacks hold the world (which then
+## outlives them) and weak references to units, which can leave the world
+## first (RemoveObject, summons) — so no callback meets a freed capture.
+class WorldTimers extends Node:
+	func fire(f: Callable) -> void:
+		if is_inside_tree():
+			f.call()
+
+
+static func _after(world: GameWorld, secs: float, f: Callable, always := false) -> void:
+	if not is_instance_valid(world) or not world.is_inside_tree():
+		return
+	var n = world.get_node_or_null("SpellTimers")
+	if n == null:
+		n = WorldTimers.new()
+		n.name = "SpellTimers"
+		world.add_child(n)
+	world.get_tree().create_timer(secs, always).timeout.connect(n.fire.bind(f))
+
+
+static func _ref(o) -> WeakRef:
+	return weakref(o) if o is Object and is_instance_valid(o) else null
+
+
+static func _deref(r: WeakRef):
+	return r.get_ref() if r else null
 
 
 ## One tick of a lasting damage effect: `left` < 0 counts the wall / fog
 ## counter down to 0; otherwise (campfire) the counter counts up and the
 ## effect has `left` ticks to live.
-static func _lasting_tick(world: GameWorld, caster, p: Dictionary, at: Vector2, dir: Vector2, counter: int, left: int, hit := false) -> void:
-	if not is_instance_valid(world) or (left < 0 and counter < 0) or left == 0:
+## `id`: its entry in the world's running lasting effects (save_lasting).
+static func _lasting_tick(world: GameWorld, caster, p: Dictionary, at: Vector2, dir: Vector2, counter: int, left: int, hit := false, id := -1) -> void:
+	if not is_instance_valid(world):
+		return
+	if (left < 0 and counter < 0) or left == 0:
+		_lasting(world).erase(id)
 		return
 	if counter & 3 == 0:
 		# Walls and fog set the effect's flag bit 0 after their first
@@ -358,8 +449,92 @@ static func _lasting_tick(world: GameWorld, caster, p: Dictionary, at: Vector2, 
 		_area_hit(world, caster, p, at, dir, hit)
 		hit = left < 0
 	var next := counter + 1 if left > 0 else counter - 1
-	world.get_tree().create_timer(GameUnit.TICK, false).timeout.connect(func():
-		_lasting_tick(world, caster, p, at, dir, next, left - 1 if left > 0 else -1, hit))
+	var nleft := left - 1 if left > 0 else -1
+	id = _keep_lasting(world, id, {"k": "tick", "spell": String(p.id), "caster": _caster_ref(caster),
+		"at": [at.x, at.y], "dir": [dir.x, dir.y], "counter": next, "left": nleft, "hit": hit})
+	var cw = _ref(caster)
+	_after(world, GameUnit.TICK, func():
+		_lasting_tick(world, _deref(cw), p, at, dir, next, nleft, hit, id))
+
+
+## The lasting ground effects running in `world` (walls, fog, camp fire,
+## fireworks): id -> the arguments of their next tick. the original keeps them as
+## spell objects in the world's list and writes each one with the
+## world (: point, caster and target ids, target
+## point, the spell record, counter, state), so a save game or a
+## zone left and entered again finds them where they were.
+static func _lasting(world: GameWorld) -> Dictionary:
+	if not world.has_meta("lasting_spells"):
+		world.set_meta("lasting_spells", {})
+	return world.get_meta("lasting_spells")
+
+
+static func _keep_lasting(world: GameWorld, id: int, rec: Dictionary) -> int:
+	var l := _lasting(world)
+	if id < 0:
+		id = int(world.get_meta("lasting_next", 1))
+		world.set_meta("lasting_next", id + 1)
+	l[id] = rec
+	return id
+
+
+## A caster as the save keeps it: a party unit by its record's name and
+## player (party units get new ids when they are deployed), others by id.
+static func _caster_ref(caster) -> Array:
+	if caster == null or not is_instance_valid(caster) or not (caster is GameUnit):
+		return []
+	var u: GameUnit = caster
+	if u.has_meta("hero"):
+		var h: Dictionary = u.get_meta("hero")
+		return ["hero", String(h.get("unit_name", h.get("name", ""))), u.controller]
+	return ["uid", u.uid]
+
+
+static func _caster_of(world: GameWorld, ref: Array) -> GameUnit:
+	if ref.size() >= 2 and ref[0] == "uid":
+		return world.units.get(int(ref[1]))
+	if ref.size() >= 3 and ref[0] == "hero":
+		for u: GameUnit in world.units.values():
+			if u.has_meta("hero") and u.controller == int(ref[2]):
+				var h: Dictionary = u.get_meta("hero")
+				if String(h.get("unit_name", h.get("name", ""))) == String(ref[1]):
+					return u
+	return null
+
+
+## For CampaignState.store_zone.
+static func save_lasting(world: GameWorld) -> Array:
+	if world == null or not world.has_meta("lasting_spells"):
+		return []
+	return _lasting(world).values().duplicate(true)
+
+
+## Host (CampaignState.replay_restored): saved lasting effects run on from
+## their next tick.
+static func restore_lasting(world: GameWorld, list: Array) -> void:
+	for r in list:
+		if not r is Dictionary:
+			continue
+		var rec: Dictionary = r
+		var at := Vector2(float(rec.at[0]), float(rec.at[1]))
+		var cw = _ref(_caster_of(world, rec.get("caster", [])))
+		var id := _keep_lasting(world, -1, rec.duplicate(true))
+		var counter := int(rec.counter)
+		match String(rec.get("k", "")):
+			"tick":
+				var p := parse(String(rec.spell))
+				var dir := Vector2(float(rec.dir[0]), float(rec.dir[1]))
+				var left := int(rec.left)
+				var hit := bool(rec.hit)
+				_after(world, GameUnit.TICK, func():
+					_lasting_tick(world, _deref(cw), p, at, dir, counter, left, hit, id))
+			"fireworks":
+				var radius := float(rec.radius)
+				var duration := int(rec.duration)
+				_after(world, GameUnit.TICK, func():
+					_fireworks_tick(world, at, radius, duration, counter, id))
+			_:
+				_lasting(world).erase(id)
 
 
 ## CEffectArrow: steps 0.6667 m a tick toward the target unit (or the point),
@@ -373,8 +548,10 @@ static func _missile_tick(world: GameWorld, caster, p: Dictionary, target, pos: 
 		_hit(world, caster, p, t)
 		return
 	pos += (dest - pos).normalized() * 0.6667
-	world.get_tree().create_timer(GameUnit.TICK, false).timeout.connect(func():
-		_missile_tick(world, caster, p, t, pos, point, ticks + 1))
+	var cw = _ref(caster)
+	var tw = _ref(t)
+	_after(world, GameUnit.TICK, func():
+		_missile_tick(world, _deref(cw), p, _deref(tw), pos, point, ticks + 1))
 
 
 ## one unit, after the filter when there is a caster.
@@ -417,8 +594,14 @@ static func _flyer(u: GameUnit) -> bool:
 ## armour stops it all, the struck path still runs without damage
 ## (`Combat.blank_hit`: "0" hit number, hostility, AI hit hook); a unit that
 ## lives on after damage gets the healing armour spell.
-## **Approx.**: the layers' wear is not applied for spells
-## and a hit the worn layers stop entirely still goes through take_damage.
+## Layer wear as for a strike:
+## the items of each layer lose what is left after it, on that part's record.
+##  whole-body loop gives part i the value
+## D · r_i and the armour factor af · r_i, r_i = part max / (Σ living
+## parts' lethality × max HP) — `body_damage`'s split — so the left
+## damage, and the wear, is r_i × (D − af × layers so far). When every part's
+## layers stop it all, returns 0: the blank struck path. The
+## caster's weapon in hand wears by what the armour absorbed, as a striker's.
 static func _spell_damage(world: GameWorld, caster: GameUnit, p: Dictionary, u: GameUnit, owner_only := false) -> void:
 	var power := float(p.effect)
 	var af := 1.0
@@ -439,25 +622,66 @@ static func _spell_damage(world: GameWorld, caster: GameUnit, p: Dictionary, u: 
 	world.combat.armor_spells(u, true)
 	if u.dead:
 		return
+	#  passes the attacker's weapon in hand ((attacker
+	# )) to as param_4; names the caster as the
+	# attacker except on a lasting spell's later ticks (`owner_only`). That
+	# weapon loses what the natural armour absorbed (first loop) and
+	# per part, what the layers absorbed — (…, 0x24, 0x26).
+	var att_ws: Array = caster.get_meta("hero").get("weapons", []) \
+		if is_instance_valid(caster) and caster.has_meta("hero") and not owner_only else []
+	var absorbed := [power - maxf(dmg, 0.0)]
+	var wear_weapon := func() -> void:
+		if not att_ws.is_empty() and absorbed[0] > 0.0:
+			world.combat.wear_item(caster, att_ws, 0, absorbed[0], true)
 	if dmg <= 0.0:
 		#  returned 0: the struck path without damage.
+		wear_weapon.call()
 		world.combat.blank_hit(u, caster, owner_only)
 		return
 	# a character's (script-name id, `has_meta("hero")`) worn
 	# layers on each part, outer first, each x the armour factor, on that
 	# part's share (`GameUnit.body_damage`).
 	var layers := Callable()
-	if u.has_meta("hero"):
+	if u.has_meta("hero") and not u.parts.is_empty():
 		var armors: Array = u.get_meta("hero").get("armors", [])
 		if not armors.is_empty():
-			layers = func(i: int, amount: float) -> float:
+			var lethal := 0.0
+			for pt: Dictionary in u.parts:
+				if int(pt.state) > 1:
+					lethal += float(pt.lethal)
+			# `wear`: false = only what is left (the test for a blank hit).
+			var walk := func(i: int, amount: float, wear: bool) -> float:
+				var r := float(u.parts[i].max) / maxf(lethal * u.max_hp, 0.0001)
 				var d := amount
 				for l: Array in Combat.worn_layers(armors, u.part_group(i)):
 					d -= float((l[1] as PackedFloat32Array)[t]) * af
+					if wear:
+						for it in (l[0] as Array).map(func(j: int) -> String: return armors[j]):
+							var j := armors.find(it)   # a broken piece left the list
+							if j >= 0:
+								world.combat.wear_item(u, armors, j, maxf(d, 0.0) * r, false)
 					if d <= 0.0:
-						return 0.0
+						d = 0.0
+						break
+				if wear:
+					absorbed[0] += (amount - d) * r
 				return d
+			var full := dmg * float(caster.get_meta("coop_dmg_mul", 1.0)) if is_instance_valid(caster) else dmg
+			var stopped := true
+			for i in u.parts.size():
+				if int(u.parts[i].state) > 1 and float(walk.call(i, full, false)) > 0.0:
+					stopped = false
+			if stopped and lethal > 0.0:
+				for i in u.parts.size():
+					if int(u.parts[i].state) > 1:
+						walk.call(i, full, true)
+				wear_weapon.call()
+				world.combat.blank_hit(u, caster, owner_only)
+				return
+			layers = func(i: int, amount: float) -> float:
+				return walk.call(i, amount, true)
 	u.take_damage(dmg, caster, -1, PackedFloat32Array(), 0, layers, owner_only)
+	wear_weapon.call()
 	# a unit that lives on after the damage (healing armour).
 	if not u.dead:
 		world.combat.armor_spells(u, false)
@@ -588,14 +812,19 @@ static func passes_filter(world: GameWorld, caster: GameUnit, u: GameUnit, mask:
 const RACE_FIGURES := {4: ["unhuma", "unhufe"], 8: ["unmogo"], 0x10: ["unorma", "unorfe"], 0x20: ["unmoli"]}
 
 
-static func _fireworks_tick(world: GameWorld, at: Vector2, radius: float, duration: int, counter: int) -> void:
-	if counter < 0 or duration <= 0 or not is_instance_valid(world) or world.ai == null:
+static func _fireworks_tick(world: GameWorld, at: Vector2, radius: float, duration: int, counter: int, id := -1) -> void:
+	if not is_instance_valid(world):
+		return
+	if counter < 0 or duration <= 0 or world.ai == null:
+		_lasting(world).erase(id)
 		return
 	var level := floorf(float(counter) / float(duration) * 250.0 + 50.0)
 	for u: GameUnit in world.units_near(at, radius):
 		world.ai.suspect(u, at, level, -1.0)
-	world.get_tree().create_timer(GameUnit.TICK, false).timeout.connect(func():
-		_fireworks_tick(world, at, radius, duration, counter - 1))
+	id = _keep_lasting(world, id, {"k": "fireworks", "at": [at.x, at.y], "radius": radius,
+		"duration": duration, "counter": counter - 1})
+	_after(world, GameUnit.TICK, func():
+		_fireworks_tick(world, at, radius, duration, counter - 1, id))
 
 
 static func _buff(u: GameUnit, name: String, secs: float, data: Dictionary) -> void:

@@ -227,10 +227,14 @@ func complete(player: int, var_name: String, force := false) -> void:
 	vm.merc_briefing_done(key, player)   #  runs first
 	vm.session.state.set_pvar(player, key, 2.0)
 	# Rewards go to the talking player's purse (a joiner's own, CoopProgress.with_purse).
+	var id := key.get_slice(".", key.get_slice_count(".") - 1)
 	if key.begins_with("sq."):
 		vm.session.coop.with_purse(player, SideQuests.briefing_done.bind(vm.session, key))
+	elif not vm.session.lmp.is_empty() and key.begins_with("b.") \
+			and SideQuests.lmp_briefing(vm.session, id, player):
+		pass   # the multiplayer quest giver's take / cancel / complete
 	else:
-		vm.session.coop.with_purse(player, _rewards.bind(key.get_slice(".", key.get_slice_count(".") - 1), player))
+		vm.session.coop.with_purse(player, _rewards.bind(id, player))
 	vm.fire_event("#OnBriefingComplete", [float(player), var_name])
 
 

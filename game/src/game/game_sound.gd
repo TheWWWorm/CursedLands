@@ -43,8 +43,6 @@ var _acks := {}                # uid -> [wav, msec] (figure)
 ## Per-unit acknowledgement queues (figure): uid -> [{u, wav, code
 ## counter, handle}],.
 var _ack_q := {}
-## Units saying a "say_block" line (unit flag): uid -> true.
-var _blocked := {}
 var _early_music := ""
 ## Tests: print each acknowledgement's pick and outcome.
 static var trace_acks := false
@@ -99,7 +97,6 @@ func _zone_start(w: GameWorld) -> void:
 	_fx_sources.clear()
 	_fx_auto = -1
 	_ack_q.clear()
-	_blocked.clear()
 	_bored.clear()
 	_ticks = 0
 	_tick_acc = 0.0
@@ -574,8 +571,11 @@ func _ack_queue(u: GameUnit, code: int, wav: String) -> void:
 	var q: Array = _ack_q.get(u.uid, [])
 	var drop: Array = ACK_REPLACES.get(code, [])
 	q = q.filter(func(e): return not (int(e.code) in drop))
+	# a finished say_block line clears the flag as it leaves.
+	for e in q:
+		if bool(e.block) and int(e.handle) >= 0 and not mixer.playing(int(e.handle)):
+			u.blocked = false
 	q = q.filter(func(e): return int(e.handle) < 0 or mixer.playing(int(e.handle)))
-	_update_block(u, q)
 	if not q.is_empty() and not (code in ACK_URGENT):
 		_ack_q[u.uid] = q
 		if SoundMixer.trace or trace_acks:
@@ -585,24 +585,17 @@ func _ack_queue(u: GameUnit, code: int, wav: String) -> void:
 	if q.is_empty():
 		e.counter = 0
 		if e.block:
-			_blocked[u.uid] = true
+			u.blocked = true
 		_ack_play(e)
 	q.append(e)
 	_ack_q[u.uid] = q
 
 
-## Unit flag follows the queue's say_block lines.
-func _update_block(u: GameUnit, q: Array) -> void:
-	if q.any(func(e): return bool(e.get("block", false)) and int(e.counter) <= 0):
-		_blocked[u.uid] = true
-	else:
-		_blocked.erase(u.uid)
-
-
-## The unit says a "say_block" line (flag): the order handlers
-##  and the topic list skip it.
+## Unit flag (GameUnit.blocked: a say_block line or script
+## BlockUnit): the order handlers (
+## ) and the topic list skip the unit.
 static func blocked(u: GameUnit) -> bool:
-	return instance != null and u != null and instance._blocked.has(u.uid)
+	return u != null and is_instance_valid(u) and u.blocked
 
 
 ## each world tick: the first pending line counts down and
@@ -612,17 +605,18 @@ func _ack_tick() -> void:
 		var q: Array = _ack_q[uid]
 		if q.is_empty() or not is_instance_valid(q[0].u):
 			_ack_q.erase(uid)
-			_blocked.erase(uid)
 			continue
 		var e: Dictionary = q[0]
 		e.counter = int(e.counter) - 1
 		if int(e.counter) == 0:
 			if e.block:
-				_blocked[uid] = true
+				e.u.blocked = true
 			_ack_play(e)
 		elif int(e.counter) < 0 and not mixer.playing(int(e.handle)):
+			# The flag goes with the line, whoever set it (one bit).
+			if e.block:
+				e.u.blocked = false
 			q.pop_front()
-			_update_block(e.u, q)
 
 
 ## Host: sends a hero's item crossing the durability-critical

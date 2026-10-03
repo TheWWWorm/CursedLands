@@ -1,5 +1,57 @@
 # Changelog
 
+## 0.1.4
+
+- Fixes and changes:
+  - Fixed: clicking an enemy again during a fight could stop your character from ever striking (he kept switching between combat and relaxed stance) while the enemy kept attacking.
+  - New: play the original game's multiplayer mode. On the co-op screen, the host picks a Base (Gipath, Ingos, Suslanger or the Cave), and the party starts at that base. It uses the original multiplayer maps, monsters and item stats; the base's exit leads to the quest's zone and back.
+  - Multiplayer mode: each player has their own gold and bag. When your hero dies, your body keeps the lost gold and everything in your bag, and only you can loot it back.
+  - Multiplayer mode: the base's quest giver offers one quest per area. Talk to them to take a quest, talk again to give it back, and return when it's done to collect the reward; the base exit stays closed until a quest is taken.
+  - Multiplayer mode: each base's trader has the multiplayer stock, selling both items and spells, and each player pays from their own gold. Each base has its trader and intro conversations from the start.
+  - Multiplayer mode: a fallen hero comes back when the party changes zone, as in the original. Their body, with the lost gold and the bag, stays where they fell, even after the party leaves and returns.
+  - Multiplayer mode: when the host's hero is dead, the next player with a living hero leads the party through exits. When every hero is dead, the party returns to its base and all heroes rise; their bodies stay where they fell.
+  - Web and Android: shaders for spells, fires, lightning, rain, move markers and lit terrain, objects and units are now prepared while the zone loads, so their first use no longer freezes the game.
+  - Clicking a character to talk with several party members selected no longer makes the others trail the speaker; as in the original, only one goes, and companions you haven't ordered stay where they are.
+  - Fixed party members sometimes freezing next to a large monster (such as the tutorial ogre) while still holding a move order; they now walk around it or give up the order.
+  - Saving and loading now keeps body-part wounds (severed and crippled limbs) and active magic effects, with their remaining time, for heroes, mercenaries, pets and the NPCs of visited zones.
+  - Restored magic effects reappear already running, without the start burst or sound.
+  - Fire walls, lightning walls, acid fog, camp fires and fireworks still burning when you save or leave a zone now continue when you load or come back.
+  - Enchanted weapons, armour and wands now keep their own charge. Wear, repair, trading and saving no longer refill it, and two identical wands no longer share a charge.
+  - Older saves keep the charges they had.
+  - Enchanting now works as in the original: only in a trader's item constructor, by building blueprint + material together with a spell that fits. A weapon or armour needs a spell containing an "it" or "ic" rune; wands take any spell. The spell must also fit the item's spell slots and Energy, and it is charged like any other piece (a fifth of its price).
+  - Spell constructor: building from a spell in the bag now works; before, confirming silently did nothing.
+  - Following a unit now works as in the original: followers stop about 2 m away, stay put while the leader is 2–4 m off, chase a walking leader by aiming slightly ahead of it, and step aside when the leader walks into them.
+  - On the main menu, a hovered signpost board now stays turned while the mouse is on it, instead of springing back after a moment.
+  - Hiring Merc1 no longer duplicates the stone short bow. Mercenaries carry their original kit, and nothing is copied into the party bag.
+  - Co-op starting kits no longer put the carried weapons into the bag a second time. Party characters also get their prototype's second weapon, as in the original.
+  - Scripted scenes that hold a character in place now stop the player from giving that character move, attack and use orders, including in co-op. The scene's own movement still works, and a character held by a scene can still talk to people in a village.
+  - "Is this character blocked?" checks in scripts now also count a character who is speaking a scene line, as in the original.
+  - Fixed error messages and stray spell effects that could appear after changing zone, loading a game or returning to the main menu while a lasting spell (camp fire, fire wall, poison cloud, fireworks) or a flying spell was still active.
+  - Spell hits now wear the armour they hit, as strikes do, and also the caster's weapon in hand.
+  - A spell your armour stops completely now counts as a hit that deals no damage.
+  - Repairs and full-durability restores no longer refill an enchanted item's charge.
+  - Weapons now also wear when a monster's natural armour absorbs a blow, as in the original; for bows and crossbows, the bow or crossbow wears.
+  - An arrow or bolt whose shooter dies in flight now still lands with the damage of the shot, as in the original, instead of vanishing.
+  - Fixed co-op clients showing natural armour on a mercenary who had lost it on joining a new zone; the armour now matches the host's.
+  - Spell constructor: building costs 20% of the keystone and rune prices, and pieces taken from the trader cost their full price, as in the original.
+  - Spell constructor: a spell with runes can now be taken apart for 10% of its price, giving back its keystone and runes.
+  - Spell constructor: knowledge and stamina limits use the party's best values, as in the original.
+  - Spell constructor: in co-op the host checks and settles each build or take-apart as one step, so a failure can't leave runes half-applied.
+  - Runes can no longer be put into a known spell for free from the bag; use a trader's spell constructor.
+  - New remake option "Severed limbs fly off" (Remake graphics page, on by default): a severed head, arm or leg is cut from the figure, flies off, lands, lies on the ground for 30 seconds, then sinks away. With it off, the cut part stays on the body, bloodied, as in the original; the "Original look" preset turns it off.
+  - Camp: in the dressing and skills screens one click (or tap) now acts straight away, as in the original. Clicking an item in the bag puts it on, puts it on the belt, or learns the spell. Clicking an item the hero wears or knows puts it back in the bag. Spells can now be taken off a hero too.
+  - Camp: a refused click plays the original cancel sound. Putting on and taking off play the original sounds, and a full weapon, belt or spell list takes nothing more.
+  - Camp: removed the remake's Equip / Unequip / Put on belt / Take off belt / Learn / Use / Sell / Buy / Repair / Deconstruct / Build buttons.
+  - Items keep their wear and charge when put on or taken off.
+  - Removed the remake-only "<spell> on <item>" buttons that enchanted a ready item from the bag.
+  - Units now choose routes the way the original does: climbing costs more than descending, steps over 40° are avoided, and swamp and water are priced from the game's ground table.
+  - Path costs now include the original's turn penalties. Guards and wandering monsters skip spots that are too costly to reach, such as across a swamp.
+  - Ranged monsters now check for a real path before choosing where to back away from their enemies.
+  - Deep water now blocks according to the original's depth rules, and crawling units can't enter any water. Units standing in water, and units closing in on an attack target, plan by distance only, as in the original.
+  - Shallow lava can now be walked across, as in the original. Units and monsters may cut across it, and it does no damage, also as in the original. Only lava deeper than a unit's height blocks the way.
+  - Long paths are planned faster than before, removing the worst stalls on big zones.
+  - Options: "Smooth motion" moved to the Lighting and surfaces page; it no longer shares a row with the "Original look" button.
+
 ## 0.1.3
 
 - Fixes and changes:

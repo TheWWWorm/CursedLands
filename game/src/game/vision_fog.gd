@@ -38,16 +38,21 @@ func _ready() -> void:
 	mm.transform_format = MultiMesh.TRANSFORM_3D
 	var q := PlaneMesh.new()
 	q.size = Vector2(CELL, CELL) * 0.92
+	q.material = material()
+	mm.mesh = q
+	_mm.multimesh = mm
+	_mm.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	add_child(_mm)
+
+
+## The overlay's material (also drawn by ShaderWarmup).
+static func material() -> StandardMaterial3D:
 	var mat := StandardMaterial3D.new()
 	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 	mat.albedo_color = Color(0.45, 0.75, 1.0, 0.28)
 	mat.no_depth_test = false
-	q.material = mat
-	mm.mesh = q
-	_mm.multimesh = mm
-	_mm.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	add_child(_mm)
+	return mat
 
 
 func _process(_dt: float) -> void:

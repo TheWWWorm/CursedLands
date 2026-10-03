@@ -73,6 +73,10 @@ var _send_t := SEND_EVERY
 var _scale_t := 0.0
 var _sent_hash := {}
 var _swap := {}         # with_purse: the campaign's purse while a joiner's stands in
+## LMP (Session.lmp): player slot -> {idx, purse: {money, items}} — in the original's
+## network game every player has its own money and bag; the
+## host's own (slot 0) are the state's.
+var lmp_purses := {}
 
 # ---------------------------------------------------------------- client state
 var _origin_slot := ""   # the save brought ("" = new hero)
@@ -117,7 +121,8 @@ func _physics_process(dt: float) -> void:
 	_scale_t -= dt
 	if _scale_t <= 0.0:
 		_scale_t = SCALE_EVERY
-		MobScaling.apply(session.world, session.players.size())
+		# The original multiplayer game (Session.lmp) scales nothing: its LMP maps bring their own monsters.
+		MobScaling.apply(session.world, session.players.size() if session.lmp.is_empty() else 1)
 	if joiners.is_empty():
 		return
 	_send_t -= dt
@@ -533,6 +538,8 @@ func _on_peer_gone(pid: int) -> void:
 func purse_entry(player: int) -> Dictionary:
 	if player <= 0:
 		return {}
+	if session and not session.lmp.is_empty():
+		return lmp_purses.get_or_add(player, {"idx": player, "purse": {"money": 0, "items": []}})
 	for e: Dictionary in joiners.values():
 		if int(e.idx) == player and e.get("purse") is Dictionary:
 			return e

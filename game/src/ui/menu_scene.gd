@@ -364,7 +364,13 @@ func _set_hover(part: String) -> void:
 		for e: Array in REG:
 			if e[1] == part:
 				n = e[2]
+		#   plays the
+		# board's uspecial with nothing queued; unmoco2.adb gives every uspecial
+		# stage 0 ("unique", code bits 30-31), so clamps its time
+		# to the clip's end and the board stays turned while hovered.
 		var anim := "ei/uspecial%02d" % n
 		if _player.has_animation(anim):
 			_player.play(anim)
-			_player.queue("ei/cidle")
+	elif _player.has_animation("ei/cidle"):
+		# Off every board: (code), the looping cidle.
+		_player.play("ei/cidle")

@@ -229,7 +229,18 @@ const CoopDb := preload("res://src/game/coop_db.gd")
 func _ready() -> void:
 	_start_world_hash()
 	# Remake (CoopDb): a joiner takes the host's database numbers.
-	multiplayer.connected_to_server.connect(func(): _rpc_db_digests.rpc_id(1, CoopDb.digests()))
+	multiplayer.connected_to_server.connect(send_db_digests)
+
+
+## Joiner: its table digests to the host (on connecting, and again after it
+## switched to the multiplayer database, Session._rpc_lmp). "#lmp" says which
+## database they are of; the host answers only digests of the one it plays.
+func send_db_digests() -> void:
+	if session.is_host or not session.online:
+		return
+	var d := CoopDb.digests()
+	d["#lmp"] = GameData.lmp_db
+	_rpc_db_digests.rpc_id(1, d)
 
 
 func _exit_tree() -> void:
@@ -244,8 +255,9 @@ func _exit_tree() -> void:
 
 @rpc("any_peer", "call_remote", "reliable")
 func _rpc_db_digests(theirs: Dictionary) -> void:
-	if not session.is_host:
-		return
+	if not session.is_host or bool(theirs.get("#lmp", false)) != GameData.lmp_db:
+		return   # of the other database: it sends them again once it switched
+	theirs.erase("#lmp")
 	var rows: Dictionary = CoopDb.rows_for(theirs)
 	if not rows.is_empty():
 		print("NetStatus: host database tables sent to %d: %s" % [multiplayer.get_remote_sender_id(), rows.keys()])

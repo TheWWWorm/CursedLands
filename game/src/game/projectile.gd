@@ -9,8 +9,14 @@ var world: GameWorld
 var source: GameUnit
 var target: GameUnit
 var apply_hit := true
-## The strike's hit record (Combat.strike_roll), decided at the strike's start.
-var roll := {}
+## The strike's hit record (Combat.strike_roll), decided at the strike's
+## start, with the damage part (Combat.strike_record) added at the launch: the
+## missile carries its copy (object).
+var roll := {}:
+	set(v):
+		roll = v.duplicate()
+		if not roll.is_empty() and is_instance_valid(source) and world:
+			roll.merge(world.combat.strike_record(source))
 var _mesh: MeshInstance3D
 
 
@@ -25,15 +31,20 @@ static func launch(w: GameWorld, a: GameUnit, b: GameUnit, hit: bool) -> Project
 	return p
 
 
+## The shaft's material (also drawn by ShaderWarmup).
+static func material() -> StandardMaterial3D:
+	var mat := StandardMaterial3D.new()
+	mat.albedo_color = Color(0.45, 0.3, 0.15)
+	return mat
+
+
 func _ready() -> void:
 	_mesh = MeshInstance3D.new()
 	var m := CylinderMesh.new()
 	m.top_radius = 0.015
 	m.bottom_radius = 0.015
 	m.height = 0.9
-	var mat := StandardMaterial3D.new()
-	mat.albedo_color = Color(0.45, 0.3, 0.15)
-	m.material = mat
+	m.material = material()
 	_mesh.mesh = m
 	_mesh.rotation_degrees = Vector3(90, 0, 0)
 	add_child(_mesh)
@@ -47,8 +58,11 @@ func _physics_process(dt: float) -> void:
 	var d := goal - global_position
 	var step := SPEED * dt
 	if d.length() <= step:
-		if apply_hit and is_instance_valid(source) and not target.dead:
-			world.combat.melee(source, target, roll)
+		# the target's with the shooter looked up by id
+		# (); a shooter gone by now is 0, and the carried
+		# record still hits (Combat.melee with no attacker).
+		if apply_hit and not target.dead:
+			world.combat.melee(source if is_instance_valid(source) else null, target, roll)
 		queue_free()
 		return
 	look_at(goal, Vector3.UP)

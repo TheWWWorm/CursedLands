@@ -26,23 +26,40 @@ const RECORDS := {
 	4: {"items": true, "spells": true},
 	5: {"items": true, "spells": true, "free": true},
 }
+## (1) (the original's own network game):
+## records 1, 3, 4, 5, each 1 and 1 (items and spells) and the
+## usual coefficients (record 5 too: 1, 0.5, 0.2, 0.1, 1, 0.5, 0.2, 0.1, 0.2).
+## The bases' traders: bz1mpg smith 1, bz2mpg Shopper 3, bz3mpg Kuzn 4,
+## bz4mpg golem 5.
+const NET_RECORDS := {
+	1: {"items": true, "spells": true},
+	3: {"items": true, "spells": true},
+	4: {"items": true, "spells": true},
+	5: {"items": true, "spells": true},
+}
+## The original multiplayer game (Session.lmp) uses NET_RECORDS.
+static var network := false
+
+
+static func records() -> Dictionary:
+	return NET_RECORDS if network else RECORDS
 
 
 static func exists(id: int) -> bool:
-	return RECORDS.has(id)
+	return records().has(id)
 
 
 static func sells_items(id: int) -> bool:
-	return bool(RECORDS.get(id, {}).get("items", false))
+	return bool(records().get(id, {}).get("items", false))
 
 
 static func sells_spells(id: int) -> bool:
-	return bool(RECORDS.get(id, {}).get("spells", false))
+	return bool(records().get(id, {}).get("spells", false))
 
 
 ## Deal coefficients copied into the camp screen (record..).
 static func coef(id: int) -> Array:
-	if bool(RECORDS.get(id, {}).get("free", false)):
+	if bool(records().get(id, {}).get("free", false)):
 		return [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 	return Items.COEF
 

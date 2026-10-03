@@ -1071,6 +1071,10 @@ func magic_fx(ev: Dictionary) -> void:
 	var code := String(ev.get("code", ""))
 	var k := float(ev.get("s", 1.0))
 	var secs := float(ev.get("secs", 10.0))
+	# Already running (a loaded save, or a co-op joiner's replay):
+	# with its load flag gives the lasting emitter 30 prewarm updates and
+	# skips the one-shot start bursts (lichdom, strength, weakness).
+	var replay := bool(ev.get("replay", false))
 	var old: Dictionary = u.get_meta("fx_magic", {})
 	if old.has(code) and old[code] is Effect:
 		delete(old[code])
@@ -1082,15 +1086,19 @@ func magic_fx(ev: Dictionary) -> void:
 			if u.controller >= 0:
 				_shimmer(u, secs)
 		"lichdom":
-			spawn(0x2018, Vector3.ZERO, k, u)
-			_later(secs, func(): spawn(0x2018, Vector3.ZERO, -k, u) if is_instance_valid(u) and u.is_inside_tree() else null)
+			if not replay:
+				spawn(0x2018, Vector3.ZERO, k, u)
+			var ur: WeakRef = weakref(u)
+			_later(secs, func(): _spawn_on(ur, 0x2018, -k))
 		"strength", "weak":
 			var sg := 1.0 if code == "strength" else -1.0
-			spawn(0x201b, Vector3.ZERO, k * sg, u)
-			_later(secs, func(): spawn(0x201b, Vector3.ZERO, -k * sg, u) if is_instance_valid(u) and u.is_inside_tree() else null)
+			if not replay:
+				spawn(0x201b, Vector3.ZERO, k * sg, u)
+			var ur: WeakRef = weakref(u)
+			_later(secs, func(): _spawn_on(ur, 0x201b, -k * sg))
 		_:
 			if MAGIC_TYPES.has(code):
-				old[code] = spawn(MAGIC_TYPES[code], Vector3.ZERO, k, u, {"secs": secs})
+				old[code] = spawn(MAGIC_TYPES[code], Vector3.ZERO, k, u, {"secs": secs, "prewarm": 30 if replay else 0})
 				u.set_meta("fx_magic", old)
 
 
@@ -1113,13 +1121,22 @@ func _shimmer(u: GameUnit, secs: float) -> void:
 			if is_instance_valid(g):
 				g.transparency = 0.0)
 	u.set_meta("fx_shimmer", tw)
+	var ur: WeakRef = weakref(u)
 	_later(secs, func():
-		if is_instance_valid(u) and u.get_meta("fx_shimmer", null) == tw:
+		var u2 = ur.get_ref()
+		if u2 and u2.get_meta("fx_shimmer", null) == tw:
 			tw.kill()
 			for g in geos:
 				if is_instance_valid(g):
 					g.transparency = 0.0
-			u.remove_meta("fx_shimmer"))
+			u2.remove_meta("fx_shimmer"))
+
+
+## A unit's effect end (held weakly: the unit may leave the world first).
+func _spawn_on(ur: WeakRef, type: int, k: float) -> void:
+	var u = ur.get_ref()
+	if u and u.is_inside_tree():
+		spawn(type, Vector3.ZERO, k, u)
 
 
 func _later(secs: float, f: Callable) -> void:

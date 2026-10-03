@@ -657,6 +657,7 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 					else EIFigure.build_anim_morph_mesh(fig, complexion, morph.names, morph.frames)
 			if weld and morph.is_empty() and not weapon_parts.has(p) and not helm_parts.has(p):
 				welded[p] = [mesh, mat]
+				n.set_meta("weld_mesh", welded[p])   # SeveredLimb: the part's own mesh
 				continue
 			var mi := MeshInstance3D.new()
 			if not morph.is_empty():

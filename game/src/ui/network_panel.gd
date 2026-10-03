@@ -72,6 +72,13 @@ var sel := 0
 var top := 0
 var lobby: Array = []        # player names once hosting / joined
 var hosting := false
+## The game hosted: "" the remake's co-op campaign, else one of the original's
+## multiplayer bases (LmpMode.BASES). The original's server panel has «Base:»
+## (lmp_connection_3); its own base choice control is not traced, so it is a
+## click-to-cycle row here. «Quest:» (lmp_connection_4) is the server's
+## current quest, chosen in the game at the base's quest giver (
+## offers on a new server, takes one), so it is no choice here.
+var lmp_base := ""
 var joining := false
 var _focus := ""             # "name" / "addr": the edit box with the caret
 var _caret_t := 0.0
@@ -247,9 +254,12 @@ func _draw() -> void:
 	line.position.y += 24
 	# Remake co-op: host settings / the joiner's own hero (CoopProgress).
 	if sel == 0:
-		text(Rect2(440, line.position.y, 250, 24), RemakeText.t("Full XP for all: ") + RemakeText.t("On" if XpRules.full_experience() else "Off"), 1, TEXT)
+		text(Rect2(440, line.position.y, 250, 24), RemakeText.t("Full XP for all: ") + RemakeText.t("On" if XpRules.full_experience() else "Off"), 1, TEXT if lmp_base.is_empty() else GREY)
 		line.position.y += 24
-		text(Rect2(440, line.position.y, 250, 24), RemakeText.t("Scale monsters: ") + RemakeText.t(MobScaling.CHOICES[clampi(GameData.option("coop_scale"), 0, 3)]), 1, TEXT)
+		text(Rect2(440, line.position.y, 250, 24), RemakeText.t("Scale monsters: ") + RemakeText.t(MobScaling.CHOICES[clampi(GameData.option("coop_scale"), 0, 3)]), 1, TEXT if lmp_base.is_empty() else GREY)
+		line.position.y += 24
+		# Original multiplayer game (LmpMode): its base.
+		text(Rect2(440, line.position.y, 250, 24), "%s %s" % [_lmp(3, "Base:"), LmpMode.base_title(lmp_base) if lmp_base else RemakeText.t("campaign (remake co-op)")], 1, TEXT)
 		line.position.y += 24
 	else:
 		text(Rect2(440, line.position.y, 250, 24), RemakeText.t("Bring: ") + _bring_title(), 1, TEXT)
@@ -355,6 +365,8 @@ func _hit(p: Vector2) -> Array:
 			return ["fullxp"]
 		if Rect2(440, 264, 250, 24).has_point(p):
 			return ["scale"]
+		if Rect2(440, 288, 250, 24).has_point(p):
+			return ["base"]
 	else:
 		if Rect2(ADDR_EDIT.position.x, 168, ADDR_EDIT.size.x, 16).grow(4).has_point(p):
 			return ["addr"]
@@ -408,6 +420,7 @@ func _get_tooltip(at: Vector2) -> String:
 		"fullxp": return RemakeText.t("Full experience for every party member (remake, host)\n%s\nClick to change; also in Options, Game.") % RemakeText.t(GameData.REMAKE_OPTIONS.coop_full_xp[1])
 		"scale": return RemakeText.t("Scale monsters to player count (remake, host)\n%s\nClick to change; also in Options, Game.") % RemakeText.t(GameData.REMAKE_OPTIONS.coop_scale[1])
 		"bring": return RemakeText.t("Your hero (remake)\nBring the Zak of one of your saves (or a new one): you play the host's world, and what you achieve there that your own game has not done yet comes back as a new save \"Co-op: <host>\"; your old save is kept. Click to change.")
+		"base": return RemakeText.t("Base (host)\nThe campaign (remake co-op), or one of the original multiplayer bases: the party starts there and its exit leads to the quest's zone. Click to change.")
 		"name": return RemakeText.t("Your name in the co-op game.")
 		"addr": return RemakeText.t("Server IP address (port %d).") % Session.PORT
 		"max": return RemakeText.t("Max players")
@@ -463,6 +476,11 @@ func _gui_input(e: InputEvent) -> void:
 				"fullxp":
 					sound("messbox\\ok")
 					GameData.set_option("coop_full_xp", 0 if XpRules.full_experience() else 1)
+				"base":
+					if not joining and LmpMode.available():
+						sound("messbox\\ok")
+						var bases := [""] + LmpMode.BASES
+						lmp_base = bases[(bases.find(lmp_base) + 1) % bases.size()]
 				"scale":
 					sound("messbox\\ok")
 					GameData.set_option("coop_scale", (GameData.option("coop_scale") + 1) % MobScaling.CHOICES.size())

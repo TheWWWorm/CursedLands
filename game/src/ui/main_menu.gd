@@ -319,6 +319,9 @@ static func _port() -> int:
 
 func _start_coop() -> void:
 	start_game.emit(_session)
+	if _net and _net.lmp_base:   # the original's own multiplayer game (LmpMode)
+		_session.new_lmp_game(_net.lmp_base)
+		return
 	_session.new_campaign()
 
 

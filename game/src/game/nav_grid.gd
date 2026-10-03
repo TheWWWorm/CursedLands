@@ -7,9 +7,11 @@ extends RefCounted
 ##
 ## Passability and path cost of a cell, one 4-bit value per movement class
 ## (the class of a unit: GameUnit.move_class
-##   cost = tiledesc.reg CostMul, + 30 when wading deeper than half the class
-##   height; speed = 1024, 880 in shallow water, 800 wading; impassable when the
-##   water is as deep as the class height or cost > 70
+##   cost = tiledesc.reg CostMul (of the liquid's tile type under a type 2 / 3
+##   liquid, so lava costs 1 and is closed only by depth), + 30 when wading
+##   deeper than half the class height; speed = 1024, 880 in shallow water, 800
+##   wading; in height steps closed at depth >= class height - 1 (
+##   class 1 in any water) or cost > 70;
 ##   each object span (below) the class's body [ground, ground + class height]
 ##   overlaps by a share f adds round(290 f) to the cost and takes the speed
 ##   x 0.6^(7 f) (object kind 0; kind 1: 20, 0.6^(2 f); kind 2 nothing);
@@ -37,14 +39,26 @@ extends RefCounted
 ## diamond round it class 7. The 3 border cells are blocked.
 ## Each class has its own A* grid, built when a unit of that class first asks.
 ## Standing units block the cells around them (see track_unit).
+## Path search: the original's step cost (
+## ) = ((slope factor x cell cost) >> 10) x step >> 10, step 0x400
+## straight / 0x5a8 diagonal, cell cost = the step cost table by the cell value
+## (or the flat 0x400 table while unit is set), slope factor = the class's
+##  entry for the height step to the cell (uphill x (1 + sin^2)^2
+## downhill / (1 + sin^2)); unit stamps close a cell for the mover whose value
+## there is over round(16 (2 - its radius)) and not below its own cell's (
+## ). A goal under 25 cells (octile) and within the 32 x 32 window
+## is searched in that window, else along the block route.
+## The turn pass adds 600 per 45 deg turn past the first and the
+## end term for a diagonal last step (path_cost).
 ## Approx.: heights are kept in metres (the original's are 1/ steps, =
-## 511 / the map's max altitude; spans are clamped to 0..1020 steps as there);
-## the slope step factor of the original's cost (:
-## uphill x (1 + sin^2 a)^2, downhill / (1 + sin^2 a)) and the turn penalty
-##  are left out; paths are global A* (the original searches 4 m
-## blocks, then 16 m windows) and line-of-sight
-## smoothed; a goal cut off from the start moves to the nearest cell of the
-## start's region.
+## 511 / the map's max altitude; spans are clamped to 0..1020 steps as there,
+## and the cost rounds them per cell); the block route is the native A* over the
+## cell weights (4 m blocks are not built), refined by the exact
+## cost search in a band of BAND cells round it instead of the original's 32 x 32
+## windows, and the turn penalty prices the path but does not steer the search;
+## the path is line-of-sight smoothed where that costs at most SMOOTH_SLACK more
+## (the original walks a spline through the cells); a goal cut off from the start
+## moves to the nearest cell of the start's region.
 
 const CELL := 0.5
 ## tan(40 deg) x CELL: the largest height step to a 4-neighbour
@@ -75,6 +89,32 @@ const VALUE := [
 ##  (map): step cost by cell value, 1024 = one cell.
 const STEP_COST := [-1, 0x6400, 0x77ec, 0x8bd8, 0x2ff8, 0x37f0, 0x3ffc, 0xdfc, 0xfff,
 	0x11fd, 0x1400, 0x666, 0x732, 0x800, 0x400, 0x4cc]
+##  (map): the flat table, 0x400 for every open value; the
+## search takes it instead while unit is set:
+## attack approaches and moves ordered while the
+## unit stands in water.
+const FLAT_COST := 0x400
+## step lengths of the 8 neighbours (1024 = one cell).
+const STEP_STRAIGHT := 0x400
+const STEP_DIAG := 0x5a8
+## a turn of k 45-degree steps between two path
+## steps (or from the unit's heading to the first) costs
+## round(max(0, k - 1) * 10.0 * 60) (the 10.0 is of the pass's block
+## set).
+const TURN_COST := 600
+## the 8 directions of the path passes (1..8), cell offsets.
+const DIR_X := [0, 0, -1, -1, -1, 0, 1, 1, 1]
+const DIR_Y := [0, -1, -1, 0, 1, 1, 1, 0, -1]
+## the direct search's window (32 x 32 cells inside a 34 x 34
+## node block) and limit for it: octile distance under 25 cells.
+const WINDOW := 32
+const DIRECT_CELLS := 25
+## The half width (cells) of the band round the A* route the exact search
+## of a longer path runs in (the original's windows: 16).
+const BAND := 8
+## a spot is refused when its path costs more than
+## d * 2 * 5000 (d = the 3D distance in metres).
+const COST_PER_M := 10000.0
 ##  by object kind: the cost added for the share f
 ## of the body an object span overlaps, and k in the speed factor 0.6^(k f)
 ## (: exp(k f), that float = ln 0.6, set
@@ -108,6 +148,13 @@ class Layer:
 	var raw := PackedByteArray()
 	var land := PackedByteArray()
 	var comp := PackedInt32Array()   # connected region of each open cell, 0 = closed
+	## A lower bound of the step cost table entries per 8 x 8 block (BLOCK):
+	## the commonest entry or the smallest of the block's other entries
+	## (_block_cmin; only ever lowered when cells change).
+	var bmin := PackedInt32Array()
+	## The step cost table entry of every cell: the A*
+	## weight x 1024 (closed cells keep a stale entry; L.land closes them).
+	var cost := PackedInt32Array()
 
 
 ## The class-3 grid (kept for tools and callers that do not name a class).
@@ -120,8 +167,11 @@ var _h0 := PackedFloat32Array()  # terrain cell heights
 var _cost0 := PackedInt32Array() # tiledesc cost of the terrain, -1 = impassable
 var _depth0 := PackedFloat32Array()  # water depth over the terrain
 var _h := PackedFloat32Array()   # cell heights (floors raise them)
+var _hq0 := PackedInt32Array()   # terrain cell heights steps
+var _hq := PackedInt32Array()    # cell heights steps (the AI map's ushort)
 var _cost := PackedInt32Array()  # tiledesc cost before water, -1 = impassable
 var _depth := PackedFloat32Array()  # water depth over the cell's floor
+var _liq := PackedByteArray()      # ground type of the liquid over the terrain, 255 = none
 var _floor_cost := 1             # tiledesc cost of FLOOR_GROUND
 var _alt := 1.0                  # height steps per metre
 var _steep := PackedByteArray()  # 1 = step over 40 deg to a 4-neighbour, 2 = over 60 deg
@@ -158,6 +208,7 @@ func build(t: EITerrain, water_levels: PackedFloat32Array, objects: Array) -> vo
 	_occ.resize(n)
 	_occ.fill(0)
 	_h0.resize(n)
+	_hq0.resize(n)
 	_cost0.resize(n)
 	_depth0.resize(n)
 	_depth0.fill(0.0)
@@ -166,18 +217,31 @@ func build(t: EITerrain, water_levels: PackedFloat32Array, objects: Array) -> vo
 	_fixed_sets = {}
 	_alt = 511.0 / t.max_altitude if t.max_altitude > 0.0 else 1.0
 	_slope_memo.clear()
-	# Per ground type: cost (CostMul), -1 = impassable.
+	_build_slope_tabs()
+	# Per ground type: cost (tiledesc CostMul, ground
+	# defaults it to 1). Speed (lava -1) takes no part in the AI map:
+	# lava cells are priced like any other ground (CostMul 1) and closed only
+	# by their depth.
 	var cost_of := PackedInt32Array()
 	cost_of.resize(32)
 	for g in 32:
-		var c := int(EITerrain.ground_value(g, "CostMul", 2.0))
-		# Approx.: lava (Speed -1) is impassable; the original's lava rule was not traced.
-		cost_of[g] = -1 if g == EITerrain.LAVA or EITerrain.ground_value(g, "Speed", 1024.0) < 0.0 else c
+		cost_of[g] = int(EITerrain.ground_value(g, "CostMul", 1.0))
 	_floor_cost = cost_of[FLOOR_GROUND]
 	var w := t.grid_w
 	var hs := t.heights
 	var has_ground := not t.ground.is_empty()
 	var has_water := not water_levels.is_empty()
+	# Liquids of map material type 2 / 3 put their tile's ground type on the
+	# cells they cover (depth byte bit 0x80).
+	var liq_ok := PackedByteArray()
+	liq_ok.resize(256)
+	for m in t.materials.size():
+		var ty := int(t.materials[m].get("type", -1))
+		liq_ok[m] = 1 if ty == 2 or ty == 3 else 0
+	var has_liq := has_water and t.liquid_ground.size() == water_levels.size() \
+		and t.water_mat.size() == water_levels.size()
+	_liq.resize(n)
+	_liq.fill(255)
 	for cy in size.y:
 		var qy := cy >> 1
 		var ny := 0 if (cy & 1) == 0 else w   # row of the nearest quad corner
@@ -190,11 +254,20 @@ func build(t: EITerrain, water_levels: PackedFloat32Array, objects: Array) -> vo
 			var gz := hs[vi + ny + nx] * 0.5 + (hs[vi + ny + (1 - nx)] + hs[vi + (w - ny) + nx]) * 0.25
 			var i := cy * size.x + cx
 			_h0[i] = gz
+			_hq0[i] = roundi(gz * _alt)
 			var q := qy * qw + qx
 			_cost0[i] = cost_of[int(t.ground[q]) & 31] if has_ground else 2
 			if has_water:
-				_depth0[i] = maxf(0.0, water_levels[q] - gz)
+				# the depth in height steps, 6 bits (63 = deeper)
+				# a cell is under water when it rounds to 1 or more.
+				var dep := maxf(0.0, water_levels[q] - gz)
+				if roundi(dep * _alt) >= 1:
+					_depth0[i] = dep
+					if has_liq and t.liquid_ground[q] != 255 and liq_ok[t.water_mat[q]] == 1:
+						_liq[i] = t.liquid_ground[q] & 31
+						_cost0[i] = cost_of[_liq[i]]
 	_h = _h0.duplicate()
+	_hq = _hq0.duplicate()
 	_cost = _cost0.duplicate()
 	_depth = _depth0.duplicate()
 	# Object footprints, then the floors they lay.
@@ -238,7 +311,7 @@ func _steep_at(i: int) -> int:
 func _dry_cell(i: int) -> void:
 	_dry_raw[i] = 0
 	_dry_weight[i] = 1.0
-	if (_depth[i] > 0.0 and _cost[i] >= 0) or _spans.has(i):
+	if _depth[i] > 0.0 or _spans.has(i):
 		_special[i] = 1
 		return
 	_special[i] = 0
@@ -300,20 +373,28 @@ func _cell_weight(i: int, cls: int) -> float:
 ## The cell value (0..15, 0 = closed) of a wet cell or a cell under object
 ## spans for class `cls`.
 func _cell_value(i: int, cls: int) -> int:
-	var cost := _cost[i]
+	# Class 0 ignores the ground's cost and the water (cost 1, speed 1024).
+	var cost := 1 if cls == 0 else _cost[i]
 	if cost < 0:
 		return 0
 	var speed := 1024
 	var depth := _depth[i]
 	var wade: float = CLASS_HEIGHT[cls]
-	if depth > 0.0:
-		if depth >= wade:
+	if depth > 0.0 and cls != 0:
+		# In height steps: the depth dq (6 bits) against the class height hq
+		# (x, 0 for class 1): closed at dq = 63 or
+		# dq >= hq - 1; below hq 1024, deeper than hq / 2 wades (800, cost
+		# + 30), else 880.
+		var dq := mini(63, roundi(depth * _alt))
+		var hq := 0 if cls == 1 else roundi(wade * _alt)
+		if dq == 63 or hq - 1 <= dq:
 			return 0
-		elif depth > wade * 0.5:
-			speed = 800
-			cost += 30
-		else:
-			speed = 880
+		if hq < 1024:
+			if hq / 2 < dq:
+				speed = 800
+				cost += 30
+			else:
+				speed = 880
 	var spans: Array = _spans.get(i, [])
 	if not spans.is_empty():
 		# The body: from the floor (class 0: the water surface) up by the class height.
@@ -389,12 +470,24 @@ func _build_layer(cls: int) -> Layer:
 	# the closed cells (walking only those keeps a layer's build short).
 	var A := L.astar
 	A.fill_weight_scale_region(A.region, _mode_w)
+	L.cost.resize(n)
+	L.cost.fill(roundi(_mode_w * 1024.0))
+	var bw := (size.x + BLOCK - 1) / BLOCK
+	L.bmin.resize(bw * ((size.y + BLOCK - 1) / BLOCK))
+	L.bmin.fill(roundi(_mode_w * 1024.0))
 	for i in _dry_diff:
 		A.set_point_weight_scale(Vector2i(i % size.x, i / size.x), _dry_weight[i])
+		L.cost[i] = roundi(_dry_weight[i] * 1024.0)
+		var bi := (i / size.x / BLOCK) * bw + (i % size.x) / BLOCK
+		L.bmin[bi] = mini(L.bmin[bi], L.cost[i])
 	for k in _special_cells.size():
 		if weight[k] > 0.0:
 			var i := _special_cells[k]
 			A.set_point_weight_scale(Vector2i(i % size.x, i / size.x), weight[k])
+			L.cost[i] = roundi(weight[k] * 1024.0)
+			var bi := (i / size.x / BLOCK) * bw + (i % size.x) / BLOCK
+			L.bmin[bi] = mini(L.bmin[bi], L.cost[i])
+
 	var i0 := land.find(1)
 	while i0 >= 0:
 		A.set_point_solid(Vector2i(i0 % size.x, i0 / size.x))
@@ -684,6 +777,7 @@ func _apply_floor(i: int) -> void:
 	var fl: Array = _floors.get(i, [])
 	if fl.is_empty():
 		_h[i] = _h0[i]
+		_hq[i] = _hq0[i]
 		_depth[i] = _depth0[i]
 		_cost[i] = _cost0[i]
 		return
@@ -691,6 +785,7 @@ func _apply_floor(i: int) -> void:
 	for e: Array in fl:
 		top = maxi(top, e[0])
 	_h[i] = maxf(_h0[i], top / _alt)
+	_hq[i] = roundi(_h[i] * _alt)
 	_depth[i] = 0.0
 	_cost[i] = _floor_cost
 
@@ -811,6 +906,7 @@ func _update_region(r: Rect2i) -> void:
 		for y in range(g.position.y, g.end.y):
 			for x in range(g.position.x, g.end.x):
 				fs[y * size.x + x] = _closed_at(Vector2i(x, y), key, _dry_raw)
+	var bw := (size.x + BLOCK - 1) / BLOCK
 	for L: Layer in _layers.values():
 		for y in range(r.position.y, r.end.y):
 			for x in range(r.position.x, r.end.x):
@@ -819,6 +915,9 @@ func _update_region(r: Rect2i) -> void:
 				L.raw[i] = 1 if wv <= 0.0 else 0
 				if wv > 0.0:
 					L.astar.set_point_weight_scale(Vector2i(x, y), wv)
+					L.cost[i] = roundi(wv * 1024.0)
+					var bi := (y / BLOCK) * bw + x / BLOCK
+					L.bmin[bi] = mini(L.bmin[bi], L.cost[i])
 		var key := _group(L.cls)
 		for y in range(g.position.y, g.end.y):
 			for x in range(g.position.x, g.end.x):
@@ -1040,6 +1139,98 @@ func _slope_div_calc(dh: int, cls: int) -> int:
 	return roundi(1024.0 * pow(1.0 + s2, 2)) if dh >= 0 else roundi(1024.0 / (1.0 + s2))
 
 
+## The slope tables of the path search as arrays by dh + SLOPE_MID: [0] for
+## class 0, [1] for the other classes; the smallest entry
+## each (the steepest allowed descent) bounds the search's estimate.
+const SLOPE_MID := 1023
+var _slope_tab: Array[PackedInt32Array] = [PackedInt32Array(), PackedInt32Array()]
+var _slope_min := PackedInt32Array([1024, 1024])
+
+
+func _build_slope_tabs() -> void:
+	for k in 2:
+		var t := PackedInt32Array()
+		t.resize(SLOPE_MID * 2 + 1)
+		var lo := 1024
+		for i in t.size():
+			var v := _slope_div_calc(i - SLOPE_MID, k)
+			t[i] = v
+			if v > 0:
+				lo = mini(lo, v)
+		_slope_tab[k] = t
+		_slope_min[k] = lo
+		# The search's estimate (remake): every allowed step of length s (1 or
+		# 1.414 cells) and height step dh has slope factor f with
+		# s f >= s (1 - mu) + lam dh, so a path's cost from height H to the
+		# goal's Hg over octile distance o is at least c_min ((1 - mu) o +
+		# lam (Hg - H)); lam is picked for the smallest mu.
+		var best_mu := 1.0
+		var best_lam := 0.0
+		for li in 41:
+			var lam := li * 0.005
+			var mu := 0.0
+			for i in t.size():
+				if t[i] <= 0:
+					continue
+				var f := t[i] / 1024.0
+				var dh := float(i - SLOPE_MID)
+				for sl: float in [1.0, STEP_DIAG / 1024.0]:
+					mu = maxf(mu, -(sl * (f - 1.0) - lam * dh) / sl)
+			if mu < best_mu:
+				best_mu = mu
+				best_lam = lam
+		_bound_mu[k] = best_mu
+		_bound_lam[k] = best_lam
+
+
+var _bound_mu := PackedFloat64Array([0.0, 0.0])
+var _bound_lam := PackedFloat64Array([0.0, 0.0])
+## Block size of Layer.bmin (cells).
+const BLOCK := 8
+
+
+## A lower bound of the step cost table entries of the layer's cells in `r`
+## (the smallest Layer.bmin of the blocks it touches).
+func _block_cmin(L: Layer, r: Rect2i) -> int:
+	var bw := (size.x + BLOCK - 1) / BLOCK
+	var best := 0x7fffffff
+	for by in range(r.position.y / BLOCK, (r.end.y - 1) / BLOCK + 1):
+		for bx in range(r.position.x / BLOCK, (r.end.x - 1) / BLOCK + 1):
+			best = mini(best, L.bmin[by * bw + bx])
+	return best
+
+
+##  without its stamp test: the cost of the step from cell `i` to
+## its neighbour `j` (flat indices) for a layer, -1 when the step is refused:
+## ((slope[dh] * cost[value]) >> 10) * step >> 10, dh = the height step in
+##  units (to - ), cost the step cost table (FLAT_COST with
+## `flat`), step 0x400 or 0x5a8.
+func _step_cost(L: Layer, i: int, j: int, flat: bool) -> int:
+	if L.land[j] != 0:
+		return -1
+	var c := FLAT_COST if flat else _cell_cost(L, j)
+	if c < 0:
+		return -1
+	var dh := _hq[j] - _hq[i]
+	if dh < -SLOPE_MID or dh > SLOPE_MID:
+		return -1
+	var d: int = _slope_tab[0 if L.cls == 0 else 1][dh + SLOPE_MID]
+	if d < 0:
+		return -1
+	var dx := absi(j % size.x - i % size.x)
+	var dy := absi(j / size.x - i / size.x)
+	return ((d * c >> 10) * (STEP_DIAG if dx != 0 and dy != 0 else STEP_STRAIGHT)) >> 10
+
+
+## The step cost table entry of cell `j` for the layer
+## -1 when closed: the layer's A* weight x 1024 (the weights are exactly
+## STEP_COST[value] / 1024).
+func _cell_cost(L: Layer, j: int) -> int:
+	if L.land[j] != 0:
+		return -1
+	return L.cost[j]
+
+
 ## The nearest open cell centre within `radius` metres of `p` (`p` itself when open).
 func nearest_walkable(p: Vector2, radius := 6.0, cls := WALK_CLASS) -> Vector2:
 	var A := layer(cls).astar
@@ -1080,35 +1271,180 @@ func nearest_walkable_for(u: GameUnit, p: Vector2, radius := 6.0, cls := WALK_CL
 ## line-of-sight. Empty if unreachable.
 ## The stamps of the `ignore` units are lifted for the search (the mover and,
 ## for an attack, its target: take them out with
-## ), and so are those of units standing over the start cell (the
-## original lets a unit step from a stamped cell to a cell of no higher value
 ## ). `avoid` units are stamped once more, as if standing, with
 ## their radius + `extra` (: a faster mover going round a slower
 ## one; `extra` = the mover's radius over R_REF, as the grid is stamped for R_REF).
+## A start cell closed by unit stamps is left the original's way (: a
+## stamped cell is entered only when its value is below that of the cell the
+## search comes from): `_stamp_descent` leads out first, the search goes on from
+## there; no way out is no path.
+## The exact search (_cost_search) takes the mover (`ignore`'s first unit) for
+## its stamp threshold and costs the steps with the step cost table, or with
+## the flat one when `flat` (unit, see FLAT_COST).
 func find_path(a: Vector2, b: Vector2, ignore: Array = [], avoid: Array = [], extra := 0.0,
-		cls := WALK_CLASS) -> PackedVector2Array:
+		cls := WALK_CLASS, flat := false) -> PackedVector2Array:
 	var L := layer(cls)
+	var mover: GameUnit = ignore[0] if not ignore.is_empty() and ignore[0] is GameUnit else null
+	_ctx_thr = maxi(0, roundi((2.0 - (mover.body_radius() if mover else R_REF)) * 16.0))
+	_ctx_lifted = ignore
+	_ctx_avoid = avoid
+	_ctx_flat = flat
+	last_flat = flat
+	last_cls = L.cls
+	last_cells = PackedInt32Array()
 	var lifted := []
 	for u: GameUnit in ignore:
 		if u and u._occ_cell.x >= 0:
 			lifted.append(u)
-	var sc := cell(a)
-	if _in(sc) and _occ[sc.y * size.x + sc.x] != 0:
-		for u: GameUnit in units_around(a, 5.0):
-			if u._occ_cell.x >= 0 and not u in lifted and _stamp_covers(u, sc):
-				lifted.append(u)
 	for u: GameUnit in lifted:
 		_stamp(u._occ_cell, u._occ_r, -1)
-	var stamped := []
+	var stamped := []   # [cell, radius] stamped for this search only
 	for u: GameUnit in avoid:
 		if not u.dead and not u in ignore:
-			stamped.append(u)
-			_stamp(cell(u.pos), u.body_radius() + extra, 1)
-	var out := _find_path(L, a, b)
-	for u: GameUnit in stamped:
-		_stamp(cell(u.pos), u.body_radius() + extra, -1)
+			stamped.append([cell(u.pos), u.body_radius() + extra])
+	# A new plan round a blocker is searched with the mover's own
+	# threshold round(16 (2 - r)); the grid holds the
+	# stamps for R_REF, so the standing units near the start are stamped
+	# again with `extra` like the blocker (**approx.**: only there).
+	if not stamped.is_empty() and extra > 0.0:
+		for u: GameUnit in units_around(a, 8.0):
+			if u._occ_cell.x >= 0 and not u in lifted and not u in avoid:
+				stamped.append([u._occ_cell, u._occ_r + extra])
+	for e: Array in stamped:
+		_stamp(e[0], e[1], 1)
+	var sc := cell(a)
+	var out := PackedVector2Array()
+	if _in(sc) and L.land[sc.y * size.x + sc.x] == 0 and _occ[sc.y * size.x + sc.x] != 0:
+		var lead := _stamp_descent(L, a, b, lifted, stamped)
+		if not lead.is_empty():
+			var rest := _find_path(L, lead[-1], b)
+			if not rest.is_empty():
+				out = lead
+				out.append_array(rest)
+				var lc := PackedInt32Array([sc.y * size.x + sc.x])
+				for p in lead.slice(0, lead.size() - 1):
+					var c := cell(p)
+					lc.append(c.y * size.x + c.x)
+				lc.append_array(last_cells)
+				last_cells = lc
+	else:
+		out = _find_path(L, a, b)
+	# The smoothing samples its lines every 25 cm: the first leg from the unit's
+	# spot may graze the corner of a closed cell, which the movement tick then
+	# refuses. Such a leg starts at the centre of the unit's cell.
+	if not out.is_empty() and _in(sc) and not _leg_clear(L, a, out[0]):
+		out.insert(0, center(sc))
+	for e: Array in stamped:
+		_stamp(e[0], e[1], -1)
 	for u: GameUnit in lifted:
 		_stamp(u._occ_cell, u._occ_r, 1)
+	_ctx_lifted = []
+	_ctx_avoid = []
+	if out.is_empty():
+		last_cells = PackedInt32Array()
+	return out
+
+
+## No closed cell (the A* grid) on the straight line from `a` to `b` but their own.
+func _leg_clear(L: Layer, a: Vector2, b: Vector2) -> bool:
+	var ca := cell(a)
+	var cb := cell(b)
+	var steps := int(a.distance_to(b) * 64.0) + 1
+	for i in range(1, steps):
+		var c := cell(a.lerp(b, float(i) / steps))
+		if c != ca and c != cb and (not _in(c) or L.astar.is_point_solid(c)):
+			return false
+	return true
+
+
+## Every cell the straight step from `a` to `b` (ending in cell `q`) crosses
+## before `q` is under `thr` or no higher than `v0` (the step test).
+func _descent_line_ok(a: Vector2, b: Vector2, q: Vector2i, v0: int, thr: int, val: Callable) -> bool:
+	var steps := int(a.distance_to(b) * 64.0) + 1   # ~1.5 cm, finer than a frame's step
+	for i in range(1, steps):
+		var c := cell(a.lerp(b, float(i) / steps))
+		if c == q or c == cell(a):
+			continue
+		var v: int = val.call(c)
+		if v > thr and v > v0:
+			return false
+	return true
+
+
+## The way out of the unit stamps over the start cell `sc` (the
+## step cost of the path search): a cell whose standing-layer value
+## (the stamps max-combined) is over round(16 (2 - R)) is entered
+## only from a cell of a higher value, so the search can only go down the
+## stamps; the movement tick allows the same steps (: no higher
+## than the unit's own cell). Cell centres from the first step to the open cell
+## reached at the least cost plus straight distance to `b` (**approx.**: the
+## original's single search picks the exit with the whole path), empty when the
+## stamps leave no way down.
+func _stamp_descent(L: Layer, a: Vector2, b: Vector2, lifted: Array, stamped: Array) -> PackedVector2Array:
+	var sc := cell(a)
+	var thr := roundi((2.0 - R_REF) * 16.0)
+	var st := []   # [cell, k] of every stamp on the grid near the start
+	for u: GameUnit in units_around(center(sc), 9.0):
+		if u._occ_cell.x >= 0 and not u in lifted:
+			st.append([u._occ_cell, roundi(u._occ_r * 10.0 + 1.0)])
+	for e: Array in stamped:
+		st.append([e[0], roundi(float(e[1]) * 10.0 + 1.0)])
+	var val := func(c: Vector2i) -> int:
+		var v := 0
+		for e: Array in st:
+			var o: Vector2i = c - e[0]
+			v = maxi(v, stamp_value(e[1], o.x, o.y))
+		return v
+	var cost := {sc: 0.0}
+	var prev := {}
+	var vals := {sc: val.call(sc)}
+	var open := [sc]
+	var best := Vector2i(-1, -1)
+	var best_f := INF
+	while not open.is_empty():
+		var bi := 0
+		for i in open.size():
+			if cost[open[i]] < cost[open[bi]]:
+				bi = i
+		var c: Vector2i = open[bi]
+		open.remove_at(bi)
+		var vc: int = vals[c]
+		if c != sc and vc <= thr:
+			var f: float = cost[c] * CELL + center(c).distance_to(b)
+			if f < best_f:
+				best_f = f
+				best = c
+			continue
+		for dy in range(-1, 2):
+			for dx in range(-1, 2):
+				var q := c + Vector2i(dx, dy)
+				if (dx == 0 and dy == 0) or not _in(q) or absi(q.x - sc.x) > 16 or absi(q.y - sc.y) > 16:
+					continue
+				if L.land[q.y * size.x + q.x] != 0:
+					continue
+				if not vals.has(q):
+					vals[q] = val.call(q)
+				var vq: int = vals[q]
+				if vq > thr and vq >= vc:
+					continue
+				# The first step goes from the unit's spot, not the cell centre: no
+				# cell it crosses on the way may rise above the start.
+				if c == sc and not _descent_line_ok(a, center(q), q, vc, thr, val):
+					continue
+				var nc: float = cost[c] + (1.41421356 if dx != 0 and dy != 0 else 1.0)
+				if nc < float(cost.get(q, INF)):
+					if not cost.has(q):
+						open.append(q)
+					cost[q] = nc
+					prev[q] = c
+	var out := PackedVector2Array()
+	if best.x < 0:
+		return out
+	var c := best
+	while c != sc:
+		out.append(center(c))
+		c = prev[c]
+	out.reverse()
 	return out
 
 
@@ -1131,20 +1467,401 @@ func _find_path(L: Layer, a: Vector2, b: Vector2) -> PackedVector2Array:
 		var g := _nearest_in(L, b, comp, 32.0)
 		if g.x >= 0:
 			goal = g
-	# Partial path when the goal is cut off: the original's search also ends at the
-	# reachable cell nearest the goal (callers then compare the end with the goal).
-	var cells := A.get_id_path(start, goal, true)
+	var cells := PackedInt32Array()
+	_search_pre = PackedInt32Array()
+	if not exact_search:
+		var rt := A.get_id_path(start, goal, true)
+		if rt.is_empty():
+			return PackedVector2Array()
+		var ps := PackedVector2Array()
+		for c in rt:
+			ps.append(center(c))
+			cells.append(c.y * size.x + c.x)
+		if is_walkable(b, L.cls) and cell(b) == rt[-1]:
+			ps[-1] = b
+		last_cells = cells
+		last_end = b
+		return _smooth_los(L, a, ps)
+	# a goal under 25 cells away (octile, 0x5a8 / 1024 a diagonal)
+	# is searched in one 32 x 32 window round both (
+	# ); else, or when that fails, the block route.
+	var dc := (goal - start).abs()
+	if maxi(dc.x, dc.y) - mini(dc.x, dc.y) + ((mini(dc.x, dc.y) * STEP_DIAG) >> 10) < DIRECT_CELLS \
+			and dc.x < WINDOW and dc.y < WINDOW:
+		var x0 := mini((start.x + goal.x) / 2 - WINDOW / 2, mini(start.x, goal.x) - 1)
+		var y0 := mini((start.y + goal.y) / 2 - WINDOW / 2, mini(start.y, goal.y) - 1)
+		var r := Rect2i(x0 + 1, y0 + 1, WINDOW, WINDOW).intersection(Rect2i(Vector2i.ZERO, size))
+		cells = _cost_search(L, start, goal, r)
 	if cells.is_empty():
-		return PackedVector2Array()
+		# Partial path when the goal is cut off: the original's search also ends at the
+		# reachable cell nearest the goal (callers then compare the end with the goal).
+		# **Approx.**: the block route (8-cell blocks, and its 32 x 32
+		# windows) is the A* route over the cell weights; the exact
+		# cost search then runs in the band of cells within 16 of it.
+		var route := A.get_id_path(start, goal, true)
+		if route.is_empty():
+			return PackedVector2Array()
+		cells = _band_search(L, route)
+		if cells.is_empty():
+			_search_pre = PackedInt32Array()
+		if cells.is_empty():
+			for c in route:
+				cells.append(c.y * size.x + c.x)
 	var pts := PackedVector2Array()
-	for c in cells:
-		pts.append(center(c))
-	if is_walkable(b, L.cls) and cell(b) == cells[-1]:
+	for i in cells:
+		pts.append(center(Vector2i(i % size.x, i / size.x)))
+	var last := Vector2i(cells[-1] % size.x, cells[-1] / size.x)
+	if is_walkable(b, L.cls) and cell(b) == last:
 		pts[-1] = b
-	return _smooth(L, a, pts)
+	last_cells = cells
+	last_end = b
+	return _smooth(L, a, pts, cells)
 
 
-func _smooth(L: Layer, a: Vector2, pts: PackedVector2Array) -> PackedVector2Array:
+## The exact cost search along the A*
+## route `route`: the cells within BAND of a route cell, from its first cell
+## to its last.
+func _band_search(L: Layer, route: Array[Vector2i]) -> PackedInt32Array:
+	const M := BAND
+	var lo := route[0]
+	var hi := route[0]
+	for c in route:
+		lo = Vector2i(mini(lo.x, c.x), mini(lo.y, c.y))
+		hi = Vector2i(maxi(hi.x, c.x), maxi(hi.y, c.y))
+	var r := Rect2i(lo - Vector2i(M, M), hi - lo + Vector2i(2 * M + 1, 2 * M + 1)).intersection(Rect2i(Vector2i.ZERO, size))
+	# Per row of the window the column spans within M of a route cell
+	# (relative to the window, merged: [lo, hi, lo, hi, ...]).
+	var x0 := r.position.x
+	var y0 := r.position.y
+	var h := r.size.y
+	var spans: Array[PackedInt32Array] = []
+	spans.resize(h)
+	for y in h:
+		spans[y] = PackedInt32Array()
+	for c in route:
+		var cl := c.x - M - x0
+		var ch := c.x + M - x0
+		for y in range(maxi(0, c.y - M - y0), mini(h - 1, c.y + M - y0) + 1):
+			var sp := spans[y]
+			var k := sp.size()
+			if k > 0 and cl <= sp[k - 1] + 1 and ch >= sp[k - 2] - 1:
+				sp[k - 2] = mini(sp[k - 2], cl)
+				sp[k - 1] = maxi(sp[k - 1], ch)
+			else:
+				sp.append(cl)
+				sp.append(ch)
+			spans[y] = sp
+	for y in h:
+		var sp := spans[y]
+		if sp.size() > 2:
+			# A row the route comes back to: sort and merge its spans.
+			var pr: Array[Vector2i] = []
+			for k in range(0, sp.size(), 2):
+				pr.append(Vector2i(sp[k], sp[k + 1]))
+			pr.sort()
+			var m := PackedInt32Array([pr[0].x, pr[0].y])
+			for k in range(1, pr.size()):
+				if pr[k].x <= m[m.size() - 1] + 1:
+					m[m.size() - 1] = maxi(m[m.size() - 1], pr[k].y)
+				else:
+					m.append(pr[k].x)
+					m.append(pr[k].y)
+			spans[y] = m
+	return _cost_search(L, route[0], route[-1], r, spans)
+
+
+## Search context set by find_path: the mover's stamp threshold
+## round(16 (2 - r)), the units lifted from the stamps
+## (the mover, an attack's target), the units stamped once more as standing
+## and the cost table (flat:).
+var _ctx_thr := roundi((2.0 - R_REF) * 16.0)
+var _ctx_lifted: Array = []
+var _ctx_avoid: Array = []
+var _ctx_flat := false
+## The last path's cells (flat indices, start to end) and goal point, for
+## path_cost (runs on the search's cell path).
+var last_cells := PackedInt32Array()
+var last_end := Vector2.ZERO
+var last_flat := false
+var last_cls := WALK_CLASS
+var _stamp_k := {}   # k * 1024 + thr -> [dx, dy, value, ...] of stamp_value(k, dx, dy) > thr
+
+
+## The standing-unit stamps (max-combined as on the AI map's
+## byte 8) over window `r`, without the lifted units and with
+## the avoided ones; empty when no stamp reaches the window.
+func _stamp_window(r: Rect2i) -> PackedInt32Array:
+	var out := PackedInt32Array()
+	var mid := (Vector2(r.position) + Vector2(r.size) * 0.5) * CELL
+	var rad := Vector2(r.size).length() * CELL * 0.5 + 4.5
+	var list := []
+	for u: GameUnit in units_around(mid, rad):
+		if u._occ_cell.x >= 0 and not u in _ctx_lifted and not u in _ctx_avoid:
+			list.append([u._occ_cell, u._occ_r])
+	for u: GameUnit in _ctx_avoid:
+		if is_instance_valid(u) and not u.dead and not u in _ctx_lifted:
+			list.append([cell(u.pos), u.body_radius()])
+	for e: Array in list:
+		var c: Vector2i = e[0]
+		if c.x + 8 < r.position.x or c.y + 8 < r.position.y or c.x - 8 >= r.end.x or c.y - 8 >= r.end.y:
+			continue
+		if out.is_empty():
+			out.resize(r.size.x * r.size.y)
+			out.fill(0)
+		var k := roundi(float(e[1]) * 10.0 + 1.0)
+		# Only the values over the mover's threshold can close a cell (the
+		# test is v > thr and v >= the value of the cell stepped from), so
+		# the rest stay 0: per (k, thr) the offsets and values over it.
+		var key := k * 1024 + _ctx_thr
+		var st: PackedInt32Array = _stamp_k.get(key, PackedInt32Array())
+		if st.is_empty():
+			for dy in range(-8, 8):
+				for dx in range(-8, 8):
+					var v := stamp_value(k, dx, dy)
+					if v > _ctx_thr:
+						st.append(dx)
+						st.append(dy)
+						st.append(v)
+			if st.is_empty():
+				st.append(0)
+			_stamp_k[key] = st
+		for m in range(0, st.size() - 2, 3):
+			var y := c.y + st[m + 1] - r.position.y
+			var x := c.x + st[m] - r.position.x
+			if x < 0 or y < 0 or x >= r.size.x or y >= r.size.y:
+				continue
+			var o := y * r.size.x + x
+			if st[m + 2] > out[o]:
+				out[o] = st[m + 2]
+	return out
+
+
+## The search proper (the step cost) from cell `s`
+## to `g` over the cells of window `r` (and, when `spans` is given, per window
+## row only its column spans): a cell is entered at
+## ((slope[dh] * cost[value]) >> 10) * step >> 10 (see _step_cost); a cell whose
+## stamp is over the threshold only from a cell of a higher stamp. The original's
+## Dijkstra (4 sorted lists by x & 3) is an A* here with a
+## consistent estimate that never overrates (see _build_slope_tabs: the
+## smallest step cost entry of the window's blocks x the octile distance,
+## less the most a slope can take off, plus what the height to the goal
+## must add), so the cost found is the same; ties may pick another of the
+## equal paths. Cells from
+## `s` to `g`, empty when `g` is not reached.
+func _cost_search(L: Layer, s: Vector2i, g: Vector2i, r: Rect2i,
+		spans: Array[PackedInt32Array] = []) -> PackedInt32Array:
+	var out := PackedInt32Array()
+	if not r.has_point(s) or not r.has_point(g):
+		return out
+	# Local grid: the window plus a one-cell frame that is never entered.
+	var W := r.size.x + 2
+	var H := r.size.y + 2
+	var x0 := r.position.x - 1
+	var y0 := r.position.y - 1
+	var n := W * H
+	var sw := size.x
+	# done: 1 = settled or not to be entered (frame, outside the band, closed
+	# for the class: the static closures of the layer, L.land).
+	var done := PackedByteArray()
+	var zeros := PackedByteArray()
+	zeros.resize(W)
+	var ones := PackedByteArray()
+	ones.resize(W)
+	ones.fill(1)
+	done.append_array(ones)
+	var land := L.land
+	for y in range(1, H - 1):
+		var gy := y0 + y
+		var row := land.slice(gy * sw + x0 + 1, gy * sw + x0 + W - 1)
+		if not spans.is_empty():
+			# Outside the band: closed too.
+			var sp := spans[y - 1]
+			var m := PackedByteArray()
+			var at := 0
+			for k in range(0, sp.size(), 2):
+				var lo := clampi(sp[k], 0, W - 2)
+				var hi := clampi(sp[k + 1], -1, W - 3)
+				if hi < lo:
+					continue
+				m.append_array(ones.slice(0, lo - at))
+				m.append_array(row.slice(lo, hi + 1))
+				at = hi + 1
+			m.append_array(ones.slice(0, W - 2 - at))
+			row = m
+		done.append(1)
+		done.append_array(row)
+		done.append(1)
+	done.append_array(ones)
+	var gs := PackedInt32Array()
+	gs.resize(n)
+	gs.fill(0x7fffffff)
+	var par := PackedByteArray()   # direction (1..8) the cell was entered by
+	par.resize(n)
+	var st := _stamp_window(Rect2i(x0, y0, W, H))
+	var stamps := not st.is_empty()
+	var thr := _ctx_thr
+	var flat := _ctx_flat
+	var lc := L.cost
+	var hqa := _hq
+	var slope: PackedInt32Array = _slope_tab[0 if L.cls == 0 else 1]
+	# The estimate (remake, see _build_slope_tabs): 0.995 c_min ((1 - mu) o +
+	# lam (Hg - H)), o the octile distance in cells; the 0.995 covers the
+	# integer steps' truncation, so it stays a lower bound and consistent.
+	var kc := L.cls == 0
+	var cmin := FLAT_COST if flat else _block_cmin(L, r)
+	var e1 := 0.995 * cmin * (1.0 - _bound_mu[0 if kc else 1])
+	var e2 := 0.995 * cmin * _bound_lam[0 if kc else 1]
+	var ed := e1 * STEP_DIAG / 1024.0
+	var sl := (s.y - y0) * W + s.x - x0
+	var gl := (g.y - y0) * W + g.x - x0
+	var gx := g.x - x0
+	var gy := g.y - y0
+	done[sl] = 0
+	done[gl] = 0 if land[g.y * sw + g.x] == 0 else 1
+	var hg := hqa[g.y * sw + g.x]
+	gs[sl] = 0
+	# Neighbour offsets in the local grid and on the map, step lengths.
+	var dq := PackedInt32Array()
+	var dg := PackedInt32Array()
+	var ln := PackedInt32Array()
+	dq.resize(9)
+	dg.resize(9)
+	ln.resize(9)
+	for k in range(1, 9):
+		dq[k] = DIR_Y[k] * W + DIR_X[k]
+		dg[k] = DIR_Y[k] * sw + DIR_X[k]
+		ln[k] = STEP_DIAG if (k & 1) == 0 else STEP_STRAIGHT
+	# The open list: the negated keys in ascending order (the native bsearch /
+	# insert keep it sorted), so the smallest key is the last element.
+	# key: (g + estimate) << 36 | (0xffff - g >> 11) << 20 | local index.
+	var heap := PackedInt64Array()
+	heap.append(-sl)
+	var found := false
+	while not heap.is_empty():
+		var top := -heap[heap.size() - 1]
+		heap.resize(heap.size() - 1)
+		var c := int(top & 0xfffff)
+		if done[c]:
+			continue
+		done[c] = 1
+		if c == gl:
+			found = true
+			break
+		var gc := gs[c]
+		var cgi := (c / W + y0) * sw + c % W + x0
+		var hc := hqa[cgi]
+		var vc := st[c] if stamps else 0
+		for k in range(1, 9):
+			var q := c + dq[k]
+			if done[q]:
+				continue
+			if stamps:
+				var vq := st[q]
+				if vq > thr and vq >= vc:
+					continue
+			var gi := cgi + dg[k]
+			var h := hqa[gi]
+			var dh := h - hc + SLOPE_MID
+			if dh < 0 or dh > SLOPE_MID * 2:
+				continue
+			var d := slope[dh]
+			if d < 0:
+				continue
+			var ng := gc + (((d * (FLAT_COST if flat else lc[gi]) >> 10) * ln[k]) >> 10)
+			if ng < gs[q]:
+				gs[q] = ng
+				par[q] = k
+				var ex := absi(gx - q % W)
+				var ey := absi(gy - q / W)
+				var est := maxi(0, int((maxi(ex, ey) - mini(ex, ey)) * e1 + mini(ex, ey) * ed + (hg - h) * e2))
+				# Ties of the estimate go to the cell reached at the larger cost
+				# (nearer the goal): fewer cells are settled, the cost is the same.
+				var key := (mini(ng + est, 0x7ffffff) << 36) | ((0xffff - mini(0xffff, ng >> 11)) << 20) | q
+				heap.insert(heap.bsearch(-key), -key)
+	if not found:
+		return out
+	_search_g = gs[gl]
+	_search_pre = PackedInt32Array()
+	var c := gl
+	while c != sl:
+		out.append((c / W + y0) * sw + c % W + x0)
+		_search_pre.append(gs[c])
+		c -= dq[par[c]]
+	out.append(s.y * sw + s.x)
+	_search_pre.append(0)
+	out.reverse()
+	_search_pre.reverse()
+	return out
+
+
+var _search_g := 0   # the cost of the last search's path (its goal's g)
+var _search_pre := PackedInt32Array()   # its cost up to each of its cells
+
+
+##  cost of the last path found (stores it
+## result): its steps as the search costs them (_step_cost), plus a turn
+## penalty (TURN_COST per 45 degrees beyond the first) between successive
+## steps and from the unit's heading `facing` (radians, the octant of the
+## facing as) to the first step, plus round((1 - f) * 2048)
+## when the last step is diagonal, f = 2 |X - round(X)| with X the goal's x in
+## cells (takes the goal's x twice). 0 for paths of under 3 cells.
+## **Approx.**: the original's pass also tries, by dynamic programming over move
+## templates (tables), to move the
+## path by a cell where that is cheaper and returns the least cost it found;
+## here only the path itself is costed (an upper bound of the original's value).
+func path_cost(facing: float) -> int:
+	return cells_cost(last_cells, facing, last_end, last_cls, last_flat)
+
+
+func cells_cost(cells: PackedInt32Array, facing: float, end: Vector2, cls: int, flat: bool) -> int:
+	if cells.size() < 3:
+		return 0
+	var L := layer(cls)
+	var oct := posmod(roundi(facing / (PI / 4.0)), 8)   # 0 = +x, counter-clockwise
+	var prev: int = [7, 6, 5, 4, 3, 2, 1, 8][oct]       #  numbering
+	var total := 0
+	for m in range(1, cells.size()):
+		var i := cells[m - 1]
+		var j := cells[m]
+		var c := _step_cost(L, i, j, flat)
+		if c < 0:
+			c = 0
+		var k := _dir_of(j % size.x - i % size.x, j / size.x - i / size.x)
+		var t := absi(k - prev)
+		if t > 4:
+			t = 8 - t
+		total += c + maxi(0, t - 1) * TURN_COST
+		prev = k
+	if (prev & 1) == 0:
+		var x := end.x / CELL
+		var f := 2.0 * absf(x - roundf(x))
+		total += roundi((1.0 - f) * 2048.0)
+	return total
+
+
+##  direction number (1..8) of a step by (dx, dy).
+static func _dir_of(dx: int, dy: int) -> int:
+	for k in range(1, 9):
+		if DIR_X[k] == dx and DIR_Y[k] == dy:
+			return k
+	return 0
+
+
+## Line-of-sight smoothing of the cell path (**approx.**: the original walks a
+## spline through the cell centres): from each point the
+## farthest later point whose straight line is clear (line_clear) and costs,
+## stepped cell by cell with the search's cost (_line_cost), at most
+## SMOOTH_SLACK more than the cells it replaces, so the line does not undo a
+## way round a slope or swamp the search chose. The farthest point is found by
+## doubling the reach, then halving between the last good and first bad one.
+const SMOOTH_SLACK := 1.0 / 16.0
+## Remake switch for comparisons (tools/nav_cost_test.gd): false = the A*
+## route over the cell weights with plain line-of-sight smoothing (the
+## remake's earlier search, no slope factor).
+static var exact_search := true
+
+
+func _smooth_los(L: Layer, a: Vector2, pts: PackedVector2Array) -> PackedVector2Array:
 	var out := PackedVector2Array()
 	var from := a
 	var i := 0
@@ -1158,6 +1875,94 @@ func _smooth(L: Layer, a: Vector2, pts: PackedVector2Array) -> PackedVector2Arra
 	return out
 
 
+func _smooth(L: Layer, a: Vector2, pts: PackedVector2Array, cells: PackedInt32Array) -> PackedVector2Array:
+	var out := PackedVector2Array()
+	var n := pts.size()
+	var flat := _ctx_flat
+	var pre := _search_pre   # cost of the cell path up to each cell
+	if pre.size() != n:
+		pre = PackedInt32Array()
+		pre.resize(n)
+		for m in range(1, n):
+			pre[m] = pre[m - 1] + maxi(0, _step_cost(L, cells[m - 1], cells[m], flat))
+	var from := a
+	var fi := 0   # the cell index `from` stands for
+	var i := 0
+	while i < n:
+		var good := i
+		var bad := n
+		var step := 1
+		while good < n - 1:
+			var j := mini(good + step, n - 1)
+			if _shortcut_ok(L, from, pts[j], pre[j] - pre[fi], flat):
+				good = j
+				step *= 2
+			else:
+				bad = j
+				break
+		while bad - good > 1:
+			var mid := (good + bad) / 2
+			if _shortcut_ok(L, from, pts[mid], pre[mid] - pre[fi], flat):
+				good = mid
+			else:
+				bad = mid
+		out.append(pts[good])
+		from = pts[good]
+		fi = good
+		i = good + 1
+	return out
+
+
+func _shortcut_ok(L: Layer, a: Vector2, b: Vector2, along: int, flat: bool) -> bool:
+	var lc := _line_cost(L, a, b, flat)
+	return lc >= 0 and float(lc) <= float(along) * (1.0 + SMOOTH_SLACK)
+
+
+## The cost of walking the straight line from `a` to `b` (sampled every 25 cm,
+## like line_clear) cell by cell with _step_cost; -1 when a cell on it is
+## closed on the A* grid or a step is refused.
+func _line_cost(L: Layer, a: Vector2, b: Vector2, flat: bool) -> int:
+	var A := L.astar
+	var steps := int(a.distance_to(b) * 4.0) + 1
+	var px := floori(a.x / CELL)
+	var py := floori(a.y / CELL)
+	var sx := size.x
+	if px < 0 or py < 0 or px >= sx or py >= size.y:
+		return -1
+	var lc := L.cost
+	var hqa := _hq
+	var land := L.land
+	var slope: PackedInt32Array = _slope_tab[0 if L.cls == 0 else 1]
+	var total := 0
+	for s in range(1, steps + 1):
+		var p := a.lerp(b, float(s) / steps)
+		var cx := floori(p.x / CELL)
+		var cy := floori(p.y / CELL)
+		if cx == px and cy == py:
+			continue
+		if cx < 0 or cy < 0 or cx >= sx or cy >= size.y or A.is_point_solid(Vector2i(cx, cy)):
+			return -1
+		var ax := absi(cx - px)
+		var ay := absi(cy - py)
+		if ax > 1 or ay > 1:
+			return -1
+		# _step_cost inlined.
+		var i := py * sx + px
+		var j := cy * sx + cx
+		if land[j] != 0:
+			return -1
+		var dh := hqa[j] - hqa[i]
+		if dh < -SLOPE_MID or dh > SLOPE_MID:
+			return -1
+		var f := slope[dh + SLOPE_MID]
+		if f < 0:
+			return -1
+		total += ((f * (FLAT_COST if flat else lc[j]) >> 10) * (STEP_DIAG if ax != 0 and ay != 0 else STEP_STRAIGHT)) >> 10
+		px = cx
+		py = cy
+	return total
+
+
 ## the ground type (tiledesc index, the low 5 bits of the AI
 ## map cell, map) under `p`: a floor cell's is 7
 ## -1 off the map.
@@ -1165,8 +1970,11 @@ func cell_ground(p: Vector2) -> int:
 	var c := cell(p)
 	if not _in(c):
 		return -1
-	if _floors.has(c.y * size.x + c.x):
+	var i := c.y * size.x + c.x
+	if _floors.has(i):
 		return FLOOR_GROUND
+	if _liq[i] != 255:
+		return _liq[i]
 	return terrain.ground_type(p.x, p.y) if terrain else 0
 
 
@@ -1310,10 +2118,6 @@ func _stamp(c: Vector2i, r: float, add: int) -> void:
 			_occ[i] += add
 			if _occ[i] == (1 if add > 0 else 0):
 				_refresh(q)
-
-
-func _stamp_covers(u: GameUnit, c: Vector2i) -> bool:
-	return (c - u._occ_cell) in _stamp_offsets(u._occ_r)
 
 
 ## Keeps a unit's stamp (standing units only: the original puts moving units on a

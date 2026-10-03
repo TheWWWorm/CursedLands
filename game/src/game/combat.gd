@@ -135,17 +135,30 @@ func hit_chance(att: GameUnit, def: GameUnit) -> float:
 ## armour stops the blow.
 ## Wear: each worn piece loses the damage that
 ## got through it (stops at the layer that stops the blow); the attacker's
-## weapon loses what the layers absorbed. Collected in `last_wear` for
+## weapon in hand at the blow ((attacker); for a bow or
+## crossbow the shooter's at the arrow's arrival) loses what
+## the natural armour and the layers absorbed. Collected in `last_wear` for
 ## apply_wear().
 var last_wear := {}
 ## Damage per type of the last roll_damage (after armour), for severing.
 var last_types := PackedFloat32Array()
 
 func roll_damage(att: GameUnit, def: GameUnit, part := "torso") -> float:
-	# × (1 + 0.003 strength) / (1 + 0.003 weakness), at least 1.
-	var dmg := maxf(1.0, rng.randf_range(float(att.stats.dmg_min), float(att.stats.dmg_max)) * att.damage_mul())
-	var f: PackedFloat32Array = att.stats.get("dmg_types", PackedFloat32Array([0, 0, 1, 0, 0, 0, 0]))
-	return absorb(def, dmg, f, part)
+	var rec := strike_record(att)
+	return absorb(def, float(rec.dmg), rec.types, part)
+
+
+## The strike's own part of the hit record (at the strike's
+## start): value = min + random(range), × (1 + 0.003 strength)
+## (1 + 0.003 weakness), at least 1; the type factors +0..
+## the aimed part (order); the backstab factor (ai.reg
+## "BackstabAdd" + the backstab perk / 100). A missile carries
+## its copy to the target.
+func strike_record(att: GameUnit) -> Dictionary:
+	return {"dmg": maxf(1.0, rng.randf_range(float(att.stats.dmg_min), float(att.stats.dmg_max)) * att.damage_mul()),
+		"types": att.stats.get("dmg_types", PackedFloat32Array([0, 0, 1, 0, 0, 0, 0])),
+		"aim": att.strike_aim,
+		"bs_mul": GameData.ai_value("RPG", "BackstabAdd", 3.0) + float(att.stats.get("backstab", 0.0)) / 100.0}
 
 
 ##  for damage `dmg` with the type factors `f`.
@@ -157,17 +170,22 @@ func absorb(def: GameUnit, dmg: float, f: PackedFloat32Array, part := "torso") -
 	var worn := worn_layers(def.get_meta("hero").get("armors", []), part) if def.has_meta("hero") else []
 	var total := 0.0
 	for t in 7:
-		var d := dmg * f[t] - (armour[t] * k if t < armour.size() else 0.0)
+		# The attacker's weapon (param_4) loses, per type, what
+		# the natural armour absorbed (first loop,:
+		# (D·f − max(D·f − armour, 0)), ECX = param_4) and then what
+		# the layers absorbed: D·f − max(left, 0) in all.
+		var raw := dmg * f[t]
+		var d := raw - (armour[t] * k if t < armour.size() else 0.0)
 		if d <= 0.0:
+			last_wear.weapon += maxf(raw, 0.0)
 			continue
-		var start := d
 		for w: Array in worn:
 			d -= w[1][t]
 			for i: int in w[0]:
 				last_wear.armors[i] = last_wear.armors.get(i, 0.0) + maxf(d, 0.0)
 			if d <= 0.0:
 				break
-		last_wear.weapon += start - maxf(d, 0.0)
+		last_wear.weapon += raw - maxf(d, 0.0)
 		last_types[t] = maxf(d, 0.0)
 		total += maxf(d, 0.0)
 	return total
@@ -229,17 +247,17 @@ func apply_wear(att: GameUnit, def: GameUnit) -> void:
 		var armors: Array = def.get_meta("hero").get("armors", [])
 		for i: int in last_wear.get("armors", {}):
 			if i < armors.size():
-				_wear(def, armors, i, last_wear.armors[i], false)
+				wear_item(def, armors, i, last_wear.armors[i], false)
 	if att and att.has_meta("hero") and last_wear.get("weapon", 0.0) > 0.0:
 		var ws: Array = att.get_meta("hero").get("weapons", [])
 		if not ws.is_empty():
-			_wear(att, ws, 0, last_wear.weapon, true)
+			wear_item(att, ws, 0, last_wear.weapon, true)
 
 
 ## durability -= amount; below ai.reg "Item Durability Critical"
 ## of the maximum the owner warns (ack 0x25 armour / 0x26 weapon), below 1 the
 ## item is broken (0x23 / 0x24) and goes to the bag (tutorial it012).
-func _wear(u: GameUnit, list: Array, i: int, amount: float, weapon: bool) -> void:
+func wear_item(u: GameUnit, list: Array, i: int, amount: float, weapon: bool) -> void:
 	var id := String(list[i])
 	var mx := Items.max_durability(id)
 	if mx <= 0.0 or amount <= 0.0:
@@ -293,8 +311,17 @@ static func aim_penalty(aim: int) -> float:
 ## (rolled now when empty). A backstab deals ai.reg "BackstabAdd" (3) +
 ## backstab perk modifier / 100 times the damage: x3, x5
 ## x7.5, x10.
+## `att` null: a missile whose shooter is gone (passes
+##  0): the hit record it carries (`roll` with strike_record's
+## fields) decides it all — does not roll again (already
+## ±FLT_MAX), and with no attacker no weapon wears (param_4 = 0), no
+## hostility, the hit hook gets none.
 func melee(att: GameUnit, def: GameUnit, roll := {}) -> void:
+	if att != null and not is_instance_valid(att):
+		att = null
 	if roll.is_empty():
+		if att == null:
+			return
 		roll = strike_roll(att, def)
 	var backstab: bool = roll.backstab
 	if not roll.hit:
@@ -304,13 +331,15 @@ func melee(att: GameUnit, def: GameUnit, roll := {}) -> void:
 	# an aimed strike (0..5) lands on that part even when it is
 	# gone; then deals nothing (part state < 2: severed or
 	# absent) — no damage, no wear, no hit number.
-	var aim := att.strike_aim
+	var rec: Dictionary = roll if roll.has("dmg") else {}
+	var aim: int = int(rec.aim) if rec else att.strike_aim
 	var part := aim if aim >= 0 and aim < 6 and not def.parts.is_empty() else def.hit_part(-1)
 	if not def.parts.is_empty() and int(def.parts[part].state) < 2:
 		return
-	var dmg := roll_damage(att, def, def.part_group(part))
+	var dmg := absorb(def, float(rec.dmg), rec.types, def.part_group(part)) if rec \
+		else roll_damage(att, def, def.part_group(part))
 	if backstab:
-		var mul := GameData.ai_value("RPG", "BackstabAdd", 3.0) + float(att.stats.get("backstab", 0.0)) / 100.0
+		var mul: float = float(rec.bs_mul) if rec else GameData.ai_value("RPG", "BackstabAdd", 3.0) + float(att.stats.get("backstab", 0.0)) / 100.0
 		dmg *= mul
 		for t in last_types.size():
 			last_types[t] *= mul
@@ -339,7 +368,7 @@ func weapon_spell(att: GameUnit, def: GameUnit) -> void:
 	var sp := Items.spell_of(ws[0]) if not ws.is_empty() else ""
 	if sp.is_empty() or not int(Spells.parse(sp).flags) & 0x10000:
 		return
-	if not Session.spend_charge(h, ws[0], float(Spells.parse(sp).mana)):
+	if not Session.spend_charge(ws, 0, float(Spells.parse(sp).mana)):
 		return
 	if world.session:
 		world.session.mark_dirty()
@@ -386,7 +415,11 @@ func armor_spells(u: GameUnit, struck: bool) -> void:
 	if not u.has_meta("hero"):
 		return
 	var h: Dictionary = u.get_meta("hero")
-	for a: String in h.get("armors", []):
+	var armors: Array = h.get("armors", [])
+	for ai in armors.size():
+		if ai >= armors.size():
+			break
+		var a := String(armors[ai])
 		var sp := Items.spell_of(a)
 		if sp.is_empty():
 			continue
@@ -395,7 +428,7 @@ func armor_spells(u: GameUnit, struck: bool) -> void:
 			continue
 		if (GameData.db.table("spell_prototypes").find(p.proto) == 24) == struck:
 			continue
-		if not Session.spend_charge(h, a, float(p.mana)):
+		if not Session.spend_charge(armors, ai, float(p.mana)):
 			continue
 		if world.session:
 			world.session.mark_dirty()
@@ -495,8 +528,24 @@ static func _bits_f(v: int) -> float:
 ## protection effects stop its damage after that. A unit that joins the party
 ## inside a zone (a hired village unit,; script
 ## AddUnitUnderControl) keeps its armour until the next deployment.
-static func clear_natural_armor(u: GameUnit) -> void:
+## `h`: the unit's hero / mercenary record, marked "no_natural_armor" so that
+## co-op clients, which get the records with the state sync, do the same
+## (`sync_natural_armor`).
+static func clear_natural_armor(u: GameUnit, h := {}) -> void:
 	u.stats.armor = PackedFloat32Array([0, 0, 0, 0, 0, 0, 0])
+	if h is Dictionary and not h.is_empty():
+		h.no_natural_armor = true
+
+
+## Co-op client: a party unit's natural armour as the host has it — cleared
+## for a unit deployed at a zone entry (its record marked by
+## `clear_natural_armor`), the prototype's for one that joined inside the zone
+##  and was not deployed since.
+static func sync_natural_armor(u: GameUnit, h: Dictionary) -> void:
+	if h.get("no_natural_armor", false):
+		u.stats.armor = PackedFloat32Array([0, 0, 0, 0, 0, 0, 0])
+	else:
+		u.stats.armor = u.race_factors("defence", float(u.proto.get("absorption", 0.0)))
 
 
 ## Stats for player characters from attributes, experience, skills and

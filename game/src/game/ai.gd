@@ -198,8 +198,12 @@ func think(u: GameUnit) -> void:
 ##    spell in slot 0 ((0)), movement class < 6, no leg
 ##    below DamageLevelRunLimit ((0)) and a leg wound factor
 ##    above 0.6: 15000 at once while it walks (order 1), else when a spot 5 m
-##    straight away ± 3 m (two rand rolls) can be walked to (
-##    the end within 1 m) it is kept for the tick.
+##    straight away ± 3 m (two rand() rolls, height 0) can be walked to it is
+##    kept for the tick: a path (limit 3 d + 10, d = the 3D
+##    distance to the spot) costing at most d · 10000 (2 d · 5000) and ending
+##    within 1 m of the spot. Approx.: the remake keeps the path's end, the
+##    flat pricing is taken from the unit's cell (wet), and the end's
+##    reach test (with the held option) is not applied.
 ##  - 3000 while a living hostile is noticed (AI).
 ##  - 350 while the unit stands in a cell of a lasting area spell (:
 ##    a 0.5 m nav cell whose layer type is 3, written for the
@@ -235,9 +239,12 @@ func _fear_priority(u: GameUnit, flag: int, foes: Variant = null) -> int:
 				return 15000
 			var away := (u.pos - t.pos).normalized() * 5.0
 			var spot := u.pos + away + Vector2(randf_range(-3.0, 3.0), randf_range(-3.0, 3.0))
-			var w := world.nav.nearest_walkable_for(u, spot)
-			if w.distance_to(spot) < 1.0:
-				s.spot = w
+			var d := Vector3(spot.x - u.pos.x, spot.y - u.pos.y, -world.ground_at(u.pos.x, u.pos.y)).length()
+			var path := world.nav.find_path(u.pos, spot, [u], [], 0.0, u.move_class(), world.nav.cell_wet(u.pos))
+			if not path.is_empty() and u.path_fits(path, spot, d * 3.0 + 10.0) \
+					and world.nav.path_cost(u.facing) <= d * NavGrid.COST_PER_M \
+					and path[-1].distance_to(spot) < 1.0:
+				s.spot = path[-1]
 				return 15000
 	if t:
 		return 3000
@@ -556,12 +563,14 @@ func _target_score(u: GameUnit, o: GameUnit) -> float:
 ## a path to the target (its search limited to 3 min(d, 10) +
 ## 10 for a party unit, with unit flag that
 ##  sets around the choice) must end where the option reaches it
-## a failed search counts from the unit's own spot.
+## a failed search counts from the unit's own spot. The
+## search prices cells flat, as for the attack approach it stands for (unit
+## see GameUnit._path_to).
 func _reachable(u: GameUnit, o: GameUnit) -> bool:
 	var reach: float = u.stats.reach if u.stats.get("ranged", false) else u.melee_reach(o)
 	if u.pos.distance_to(o.pos) <= reach:
 		return true
-	var path := world.nav.find_path(u.pos, o.pos, [u, o], [], 0.0, u.move_class())
+	var path := world.nav.find_path(u.pos, o.pos, [u, o], [], 0.0, u.move_class(), true)
 	var d := u.dist3(o)
 	var limit := 3.0 * d + 10.0 if u.controller < 0 else 3.0 * minf(d, 10.0) + 10.0
 	var end := path[-1] if not path.is_empty() and u.path_fits(path, o.pos, limit) else u.pos
@@ -999,7 +1008,7 @@ func _reach_option(u: GameUnit, opt: Dictionary, t: GameUnit) -> bool:
 	var reach := float(opt.range)
 	if t == u or u.pos.distance_to(t.pos) <= reach:
 		return true
-	var path := world.nav.find_path(u.pos, t.pos, [u, t], [], 0.0, u.move_class())
+	var path := world.nav.find_path(u.pos, t.pos, [u, t], [], 0.0, u.move_class(), true)
 	var limit := 3.0 * u.dist3(t) + 10.0
 	var end := path[-1] if not path.is_empty() and u.path_fits(path, t.pos, limit) else u.pos
 	return end.distance_to(t.pos) <= reach
@@ -1704,8 +1713,10 @@ func _alarm_tick() -> void:
 ## where a diplomacy friend (the unit itself too) stands
 ## within 2.5 × the unit's radius, or where no path within
 ## 3 · d + 10 leads (d = the 3D distance from the unit to the
-## spot taken at height 0) — then the cooldown is min(10, round(d / 3)).
-## Approx.: the path cost test (cost > d · 10000) is left out.
+## spot taken at height 0) or the path costs more than d · 10000 (2 d · 5000,
+## the search's cost with turns, NavGrid.path_cost) — then the cooldown is
+## min(10, round(d / 3)). Approx.: the flat pricing (unit) is taken
+## from the unit's cell (wet), not kept from its last order.
 func find_spot(u: GameUnit, at: Vector2, r: float) -> Vector2:
 	var cool := int(u.get_meta("spot_cool", 0))
 	if cool > 0:
@@ -1724,8 +1735,9 @@ func find_spot(u: GameUnit, at: Vector2, r: float) -> Vector2:
 		if o.pos.distance_squared_to(spot) < fr * fr and (o == u or world.relation(o.faction, u.faction) == 0):
 			return Vector2.INF
 	var d := Vector3(spot.x - u.pos.x, spot.y - u.pos.y, -world.ground_at(u.pos.x, u.pos.y)).length()
-	var path := world.nav.find_path(u.pos, spot, [u], [], 0.0, u.move_class())
-	if path.is_empty() or not u.path_fits(path, spot, d * 3.0 + 10.0):
+	var path := world.nav.find_path(u.pos, spot, [u], [], 0.0, u.move_class(), world.nav.cell_wet(u.pos))
+	if path.is_empty() or not u.path_fits(path, spot, d * 3.0 + 10.0) \
+			or world.nav.path_cost(u.facing) > d * NavGrid.COST_PER_M:
 		u.set_meta("spot_cool", mini(10, roundi(d / 3.0)))
 		return Vector2.INF
 	return spot

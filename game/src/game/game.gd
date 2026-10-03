@@ -735,7 +735,7 @@ func _click(p: Vector2, add: bool) -> void:
 	# the input byte to the attack / loot / use / move senders
 	# ): the order
 	# then runs (Session "run", GameUnit.order.run).
-	if u and u.dead and Session.lootable(u):
+	if u and u.dead and Session.lootable(u, session.my_index, multiplayer.get_unique_id() if session.online else 0):
 		issue({"t": "loot", "units": ids, "target": u.uid, "run": _double})
 		marks.unit_ordered(u, false, Session.LOOT_REACH, marks.first_mine())
 		return
@@ -934,11 +934,22 @@ const ORDER_ACKS := {"move": EIAcks.MOVE, "attack": EIAcks.ATTACK, "cast": EIAck
 	"interact": EIAcks.USE_OBJECT, "use_lever": EIAcks.USE_OBJECT, "steal": EIAcks.STEAL, "use": EIAcks.USE_POTION,
 	"follow": EIAcks.FOLLOW}
 
+## Whether unit flag (GameUnit.blocked) refuses this command. The
+## server's order handlers (
+## ) skip flagged units; a village click on an NPC is no order
+## (opens the topic list at once), so the remake's
+## walk-and-talk "interact" stays open there — basecam's first arrival needs
+## the blocked Zak to talk to the elder (b.elder.s1 → FrTP → unblock).
+static func block_refuses(t: String, village: bool) -> bool:
+	return ORDER_ACKS.has(t) and not (village and t == "interact")
+
+
 func issue(cmd: Dictionary) -> void:
 	var t := String(cmd.get("t", ""))
-	# A unit saying a script "say_block" line (flag) is left out
-	# the order (skip it).
-	if cmd.has("units") and world and ORDER_ACKS.has(t):
+	# A unit with flag (script BlockUnit, or saying a "say_block"
+	# line) is left out of the order (skip it; the
+	# host enforces it again in Session.apply_command).
+	if cmd.has("units") and world and block_refuses(t, session.shop_available()):
 		var ids: Array = cmd.units.filter(func(id): return not GameSound.blocked(world.units.get(int(id))))
 		if ids.size() != cmd.units.size():
 			if ids.is_empty():

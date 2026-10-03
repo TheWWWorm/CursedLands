@@ -31,8 +31,8 @@ extends Control
 ##  (its charge) in place of Stamina / School.
 ##  leaves the cell it unpicks at scale 1.0 until the next refill
 ## (selection or belt changes; also refills every frame while the
-## one selected unit is dead, ≠ 0). **Approx.**: charges are kept per item name in the hero record
-## (Session.wand_charge), so two identical wands on one belt share one.
+## one selected unit is dead, ≠ 0). Each wand's charge rides
+## its item string (`Items.charge`), so two identical wands keep their own.
 
 const SLOTS := 8
 var game: Game
@@ -120,8 +120,7 @@ func _get_tooltip(p: Vector2) -> String:
 	if i < 0:
 		return ""
 	var it := String(_items[i])
-	var h: Dictionary = _unit.get_meta("hero") if _unit and _unit.has_meta("hero") else {}
-	return GameData.tip_key(tooltip_text(it, Session.wand_charge(h, it)), 42 + i)
+	return GameData.tip_key(tooltip_text(it), 42 + i)
 
 
 static func tooltip_text(item: String, charge := -1.0) -> String:
@@ -137,7 +136,7 @@ static func tooltip_text(item: String, charge := -1.0) -> String:
 		# Stamina / School.
 		var e := Items.energy(item)
 		var rows := out.split("\n")
-		rows[1] = "%s %d/%d (%d)" % [_l(7), int(Spells.parse(sp).mana), int(e), int(e if charge < 0.0 else charge)]
+		rows[1] = "%s %d/%d (%d)" % [_l(7), int(Spells.parse(sp).mana), int(e), int(Items.charge(item) if charge < 0.0 else charge)]
 		out = "\n".join(rows)
 	return out
 

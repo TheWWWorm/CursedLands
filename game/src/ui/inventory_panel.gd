@@ -143,29 +143,27 @@ func _unhandled_key_input(e: InputEvent) -> void:
 
 ## Shop commands name the trader of this camp screen (Session.shop_id).
 func _issue(cmd: Dictionary) -> void:
-	if cmd.get("t", "") in ["buy", "sell", "repair", "construct", "deconstruct"]:
+	if cmd.get("t", "") in ["buy", "sell", "repair", "construct", "deconstruct", "spell_constr"]:
 		cmd["shop"] = _camp.shop_id
 	_sound(String(cmd.get("t", "")))
 	hud.game.issue(cmd)
 
 
-## Dressing / hero screen sounds (2D): an item put on the hero
-## or its belt "buttons\camp\put_on.wav", taken
-## off "put_off.wav"; a skill raised or an ability learnt
-## "perk.wav".
+## Hero screen sounds (2D): a skill raised or an ability
+## learnt "perk.wav". The put-on / take-off sounds (put_on.wav
+## put_off.wav) and a refusal's cancel.wav are
+## the camp press's (CampView._press).
 func _sound(t: String) -> void:
 	var wav := ""
 	match t:
-		"equip", "give_quick": wav = "buttons\\camp\\put_on.wav"
-		"unequip", "take_quick": wav = "buttons\\camp\\put_off.wav"
 		"train", "perk": wav = "buttons\\camp\\perk.wav"
 	if wav and GameSound.instance:
 		GameSound.instance.ui(wav)
 
 
 ## Camp screen: full window in the original's look (CampView draws the hero,
-## item info and deal widgets); the remake's action buttons sit at the bottom
-## of its right info widget. Off: the old list layout.
+## item info and deal widgets); the old layout's buttons sit at the bottom of its
+## right info widget (none are left in the camp). Off: the old list layout.
 func _set_camp(on: bool) -> void:
 	if on:
 		set_anchors_preset(Control.PRESET_FULL_RECT)
@@ -315,93 +313,8 @@ func _on_deal(buy: Array, sell: Array) -> void:
 		_issue({"t": "buy", "item": it, "unit": u.uid if u else -1})
 
 
-func _select(id: String, where: String) -> void:
+## An item pressed in the camp (CampView: every screen acts on the press
+## itself) or picked in the old list layout: its info.
+func _select(id: String, _where: String) -> void:
 	_clear_buttons()
-	var item := id.trim_prefix("belt:")
-	_info.text = _camp.item_info_text(item)   # the camp info widget's text
-	if where == "info":
-		return
-	var u := _hero()
-	var uid := u.uid if u else -1
-	match where:
-		"bag":
-			var town := hud.game.session.camp_available()   # a village or the map's camp
-			if Items.slot(item) != "" and town:
-				_button(RemakeText.t("Equip"), {"t": "equip", "unit": uid, "item": item})
-			var belt_room := u != null and u.has_meta("hero") and Array(u.get_meta("hero").get("quick", [])).size() < CampaignState.BELT_SLOTS
-			if Items.kind(item) == "quick" and belt_room:   # four belt entries
-				_button(RemakeText.t("Put on belt"), {"t": "give_quick", "unit": uid, "item": item})
-			if item.begins_with("spell:") and town:
-				_button(RemakeText.t("Learn"), {"t": "learn", "unit": uid, "item": item})
-			if Items.kind(item) == "rune" and u and u.has_meta("hero") and town:
-				var hh: Dictionary = u.get_meta("hero")
-				for sp in hh.get("spells", []):
-					if Spells.can_add(sp, item.substr(5)):
-						_button(RemakeText.t("Into %s") % Spells.title(sp), {"t": "enchant", "unit": uid, "item": item, "spell": sp})
-				# Item runes: put a known spell on a worn or carried weapon / armour.
-				var shown := {}
-				for tgt: String in hh.get("weapons", []) + hh.get("armors", []) + hud.game.session.state.items:
-					if shown.has(tgt) or item != "rune:" + Items.enchant_rune(tgt):
-						continue
-					shown[tgt] = true
-					# The spell is used up (the original's constructor): a known one
-					# or a spell item from the bag ("spell:<id>"; a bag copy is
-					# offered before the hero's own).
-					var sps: Array = []
-					for b: String in hud.game.session.state.items:
-						if b.begins_with("spell:") and not sps.has(b):
-							sps.append(b)
-					for k: String in hh.get("spells", []):
-						if not sps.has("spell:" + k):
-							sps.append(k)
-					for sp: String in sps:
-						var spid := sp.trim_prefix("spell:")
-						if Items.can_enchant(tgt, spid):
-							_button(RemakeText.t("%s on %s") % [Spells.title(spid).get_slice(" (", 0), Items.title(tgt)],
-								{"t": "enchant_item", "unit": uid, "item": item, "target": tgt, "spell": sp})
-			if shop_mode and Items.kind(item) != "quest":
-				_button(RemakeText.t("Sell (%d)") % Items.sell_price(item), {"t": "sell", "item": item})
-			# Repair and the constructor belong to a trader's item group (Shops).
-			var smith := Shops.sells_items(_camp.shop_id)
-			if smith and Items.wear(item) > 0.0:
-				_button(RemakeText.t("Repair (%d)") % Items.repair_price(item), {"t": "repair", "item": item})
-			if smith and Items.can_deconstruct(item):
-				_button(RemakeText.t("Deconstruct (%d)") % Items.deconstruct_price(item), {"t": "deconstruct", "item": item})
-			if smith and Items.kind(item) == "blueprint":
-				_construct_buttons(item)
-		"worn":
-			if id.begins_with("belt:"):
-				_button(RemakeText.t("Use"), {"t": "use", "unit": uid, "item": item})
-				if hud.game.session.camp_available():
-					_button(RemakeText.t("Take off belt"), {"t": "take_quick", "unit": uid, "item": item})
-			elif hud.game.session.camp_available():
-				_button(RemakeText.t("Unequip"), {"t": "unequip", "unit": uid, "item": item})
-				if Items.wear(item) > 0.0 and Shops.sells_items(_camp.shop_id):
-					_button(RemakeText.t("Repair (%d)") % Items.repair_price(item), {"t": "repair", "unit": uid, "item": item})
-		"shop":
-			_button(RemakeText.t("Buy (%d)") % Items.buy_price(item), {"t": "buy", "item": item, "unit": uid})
-			if Items.kind(item) == "blueprint":
-				_construct_buttons(item)
-
-
-## One button per material the blueprint takes; missing pieces are bought from
-## the shop in the same deal (Session._construct).
-func _construct_buttons(bp: String) -> void:
-	var s: Session = hud.game.session
-	var n := Items.components(bp)
-	for m: Dictionary in Items.materials_for(bp):
-		var unit := Items.material_unit(String(m.name).to_lower())
-		var have := s.state.items.count(unit)
-		if have < n and s.shop_count(unit, {"shop": _camp.shop_id}) < n - have:
-			continue
-		var cost := Items.construct_price(bp, String(m.name).to_lower()) + maxi(0, n - have) * Items.buy_price(unit)
-		if not bp in s.state.items:
-			cost += Items.buy_price(bp)
-		_button(RemakeText.t("Build with %s (%d)") % [Items.title(unit), cost], {"t": "construct", "bp": bp, "mat": String(m.name).to_lower()})
-
-
-func _button(text: String, cmd: Dictionary) -> void:
-	var b := Button.new()
-	b.text = text
-	b.pressed.connect(func(): _issue(cmd))
-	_buttons.add_child(b)
+	_info.text = _camp.item_info_text(id.trim_prefix("belt:"))   # the camp info widget's text

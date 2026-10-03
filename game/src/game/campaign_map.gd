@@ -15,6 +15,13 @@ var quest_areas := {}
 ## allod -> its global map figures (map.txt "#allod"): [arrow, pointball,
 ## quest marker, island ("down"), armor] (the original allod record +4..).
 var allods := {}
+## The original multiplayer mode's zones (the original LMP, kept apart so the
+## campaign's travel map and routes never see them): textsLmp.res
+## "map-LMP.txt" (the four bases bz1mpg..bz4mpg, picks it over
+## map.txt in a network game) and each quest map's maps/<q>.mq "<q>/map.txt"
+## (the quest zone, its exit back to the base). Same record format as `zones`,
+## plus "lmp": true.
+var lmp_zones := {}
 
 
 static func load_from(texts: EIResArchive) -> CampaignMap:
@@ -24,7 +31,32 @@ static func load_from(texts: EIResArchive) -> CampaignMap:
 
 
 func zone(id: String) -> Dictionary:
-	return zones.get(id.to_lower(), {})
+	id = id.to_lower()
+	return zones.get(id, lmp_zones.get(id, {}))
+
+
+## Parses the multiplayer maps (`lmp_zones`): map-LMP.txt from textsLmp.res
+## and the quest maps' map.txt. Called once by Session.
+func load_lmp() -> void:
+	if not lmp_zones.is_empty() or GameData.texts_lmp == null:
+		return
+	var keep := zones
+	var keep_q := quests
+	zones = {}
+	quests = {}
+	_parse(EIText.ansi(GameData.texts_lmp.read("map-lmp.txt")))
+	var dir := GameData.root.path_join("maps")
+	for f in GameFiles.files(dir):
+		if f.to_lower().ends_with(".mq"):
+			var arc := EIResArchive.open_path(dir.path_join(f))
+			var id := f.get_basename().to_lower()
+			if arc and arc.has(id + "/map.txt"):
+				_parse(EIText.ansi(arc.read(id + "/map.txt")))
+	for z: Dictionary in zones.values():
+		z.lmp = true
+	lmp_zones = zones
+	zones = keep
+	quests = keep_q
 
 
 ## Finds the zone whose .mpr is `mpr` (e.g. "zone1" -> gz1g).

@@ -123,23 +123,58 @@ static func plain(id: String) -> String:
 	return unworn(id).get_slice("|", 0)
 
 
-## --- Wear. Worn items carry the durability they have lost: "<item>[|spell]@<lost>".
-## the original: durability -= amount / stack count; at ai.reg [RPG]
-## "Item Durability Critical" (0.3) of the maximum the owner is warned, at 0 the
-## item is unusable (tutorial it012: it moves to the inventory).
+## --- Item state. the original keeps durability (max) and charge
+## (Energy) on each item object: the item save record (write
+## shared by the weapon / armour stream slots
+## ) stores,...
+## per item, and the world's item copy (zone entry, write-back)
+## builds a new item and carries over. A remake item is its string, so
+## that state rides on it after "@": "<item>[|spell]@<lost>[~<spent>]" —
+## the durability lost and the charge spent (Energy −). A fresh item has
+## neither; two copies are the same item only while their state matches, and
+## whatever moves the string (equip, bag, belt, trade, loot, co-op sync, saves)
+## moves the state with it.
+## Wear: the original: durability -= amount / stack count; at ai.reg
+## [RPG] "Item Durability Critical" (0.3) of the maximum the owner is warned, at
+## 0 the item is unusable (tutorial it012: it moves to the inventory).
 
 static func unworn(id: String) -> String:
 	return id.get_slice("@", 0)
 
 
 static func wear(id: String) -> float:
-	return float(id.get_slice("@", 1)) if "@" in id else 0.0
+	return float(id.get_slice("@", 1).get_slice("~", 0)) if "@" in id else 0.0
 
 
+## Charge spent (Energy − charge), 0 for a full item.
+static func spent(id: String) -> float:
+	var st := id.get_slice("@", 1) if "@" in id else ""
+	return float(st.get_slice("~", 1)) if "~" in st else 0.0
+
+
+## The item's charge: Energy less what its spells have spent.
+static func charge(id: String) -> float:
+	return maxf(0.0, energy(id) - spent(id))
+
+
+static func _with_state(base: String, lost: float, used: float) -> String:
+	if used <= 0.0:
+		return base if lost <= 0.0 else "%s@%s" % [base, str(lost)]
+	return "%s@%s~%s" % [base, str(lost) if lost > 0.0 else "0", str(used)]
+
+
+## The item with `lost` durability lost; its charge is kept (repair,
+## and script FixItems restore only).
 static func with_wear(id: String, lost: float) -> String:
 	var base := unworn(id)
-	lost = snappedf(clampf(lost, 0.0, max_durability(base)), 0.1)
-	return base if lost <= 0.0 else "%s@%s" % [base, str(lost)]
+	lost = snappedf(clampf(lost, 0.0, max_durability(base)), 0.001)
+	return _with_state(base, lost, spent(id))
+
+
+## The item with charge `c`, its wear kept; at Energy the mark goes.
+static func with_charge(id: String, c: float) -> String:
+	var e := energy(id)
+	return _with_state(unworn(id), wear(id), e - clampf(c, 0.0, e) if c < e else 0.0)
 
 
 ## Maximum durability: prototype durability x material durability (item builder).
@@ -164,24 +199,33 @@ static func is_broken(id: String) -> bool:
 	return max_durability(id) > 0.0 and roundi(durability(id)) < 1
 
 
-## Rune code needed to enchant this item ("it" weapons trigger on hit, "ic"
-## armour works while worn), "" if it cannot hold a spell.
-static func enchant_rune(id: String) -> String:
-	if spell_of(id) != "" or id.begins_with("rune:") or id.begins_with("spell:"):
-		return ""
-	match kind(id):
-		"weapon": return "it"
-		"armor": return "ic"
-	return ""
-
-
-## Whether spell (a known spell id) can be put on item with its rune. The original's
-## item constructor takes whatever spell lies in its spell slot
-##  and attaches it unchecked; the
-## weapon / armour spell templates of spells.sdb are only read by the shops
-## and the German edition has none.
+## The item constructor's spell check (mode 5, a spell container
+##  put into the pile): only once a blueprint and its material make
+## an item (camp), only one spell, and only a spell that
+## fits that item: a quick item (0x3006) takes any spell, a weapon or
+## armour one with an "ic" / "it" rune (walks the spell's runes
+## for those codes); the spell's complexity within the item's slots
+## (= prototype + material "slots") and
+## its stamina cost within the item's Energy (`energy`).
+##  then attaches it. There is no other way to put
+## a spell on an item.
 static func can_enchant(id: String, spell: String) -> bool:
-	return not enchant_rune(id).is_empty() and not Spells.parse(spell).proto.is_empty()
+	var p := Spells.parse(spell)
+	if p.proto.is_empty() or spell_of(id) != "" or id.begins_with("spell:") or id.begins_with("rune:"):
+		return false
+	var k := kind(id)
+	if not k in ["weapon", "armor", "quick"]:
+		return false
+	if k != "quick" and not Array(Spells.mods_of(spell)).any(func(m): return m in ["ic", "it"]):
+		return false
+	return int(Spells.complexity(spell)) <= slots(id) and float(p.mana) <= energy(id)
+
+
+## Spell slots of a built item: prototype "slots" + material "slots"
+## (record, copied).
+static func slots(id: String) -> int:
+	var i := info(id)
+	return int(i.row.get("slots", 0)) + (int(i.mat.get("slots", 0)) if not i.mat.is_empty() else 0)
 
 
 ## Splits "material.thick [2]" into ["material.thick", 2].
@@ -470,6 +514,12 @@ static func can_deconstruct(id: String) -> bool:
 	if i.table in ["weapons", "armors"]:
 		return true
 	return i.table == "quick_items" and String(i.row.get("material_type", "none")).to_lower() != "none"
+
+
+## One constructor pile piece ((piece, 6)): trunc(price × the
+## constructor coefficient).
+static func constr_piece_price(id: String) -> int:
+	return int(price(id) * float(coef[Deal.CONSTR]))
 
 
 static func construct_price(bp: String, mat: String) -> int:

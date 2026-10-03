@@ -116,6 +116,11 @@ var alert := false
 var ai_next := 0.0      # world time of the unit's next AI tick (UnitAI)
 var order_failed := false   # the last order ended unsuccessfully (creature)
 var limp := 0               # walk modifier 0-2 (replicated to clients, which have no body parts)
+## Unit flag (unit +8): set / cleared by script BlockUnit and by a
+## "say_block" line (GameSound), read by IsUnitBlocked; player orders skip the
+## unit, script
+## orders and the AI do not look at it. Not saved (clears it on load).
+var blocked := false
 ## The Rest order (the original order 0xb, case 0xb sets
 ## the posture to 4, whose animation state is rest 0x8000):
 ## a calm glance with the rest flag (UnitAI._calm_busy). Any next order ends it.
@@ -142,8 +147,10 @@ var _abucket := -1          # NavGrid._all_buckets key (dead units too)
 var _cbucket := -1          # NavGrid._cbuckets / _call_buckets keys (16 m grid)
 var _cabucket := -1
 var _avoid: GameUnit         # slower mover to path round
+var _fresh_path := false     # a path planned round a blocker (_avoid), no step taken on it yet
 var _arrive_t := 0.0         # estimated arrival at the attack target (unit-AI)
 var _goal := Vector2.INF     # where the current attack path leads (unit-AI)
+var _follow_n := 0           # Follow check counter (AI; 0 at AI init)
 
 # --- animation level of detail (remake rendering only, no game state)
 ## Units standing still out of view advance their animation in steps of this
@@ -529,17 +536,42 @@ func severed_mask() -> int:
 ## ll1–3 / rl1–3).
 const SEVER_NODES := ["hd", "", "lh1", "rh1", "ll1", "rl1"]
 var _severed_shown := 0
+var _severed_want := 0
 
-## Hides the model's severed limbs (approx.: the original's flying limb and
-## blood are not reproduced).
-func _show_severed(mask: int) -> void:
-	if mask == _severed_shown or model == null:
+## Severed limbs on the model. the original keeps a severed part on the figure:
+## no client code reads the part state to hide or remove a node (the figure's
+## part add / remove serve armour and weapons
+## only), there is no limb object, and figures.res has no limb meshes. At the
+## blow the client shows what any big health drop shows:
+##  blood (its intensity, the part's health-fraction drop
+## clamped to 1 since the part falls to −5 × max), the impact sound and the
+## ground blood mark, and the part takes wound level 3 (
+## fraction ≤ 1 / max). See.md "Severed limbs".
+## Remake option gfx_severed_limbs (default on): the chain is hidden and,
+## when it happens in view (`fly`), a copy of it is thrown off
+## (`SeveredLimb`); off = the original. `mask` is the true severed mask.
+func _show_severed(mask: int, fly := false) -> void:
+	_severed_want = mask
+	if mask != 0:
+		add_to_group(&"severed_units")
+	elif is_in_group(&"severed_units"):
+		remove_from_group(&"severed_units")
+	var show := mask if Gfx.on("gfx_severed_limbs") else 0
+	if show == _severed_shown or model == null:
 		return
-	_severed_shown = mask
+	var added := show & ~_severed_shown
+	_severed_shown = show
 	for i in SEVER_NODES.size():
 		if SEVER_NODES[i] == "":
 			continue
-		model.set_part_visible(SEVER_NODES[i], not (mask & (1 << i)))
+		if fly and added & (1 << i) and visible and is_inside_tree():
+			SeveredLimb.throw(self, SEVER_NODES[i])
+		model.set_part_visible(SEVER_NODES[i], not (show & (1 << i)))
+
+
+## Option gfx_severed_limbs switched (Gfx.apply): show or restore the chains.
+func refresh_severed() -> void:
+	_show_severed(_severed_want)
 
 
 ## Host: the unit's player hears it say ack `code` (acks.db
@@ -569,7 +601,7 @@ func _hurt_part(i: int, dmg: float, types := PackedFloat32Array()) -> void:
 	if sever:
 		p.state = 1
 		p.cur = -5.0 * p.max
-		_show_severed(severed_mask())
+		_show_severed(severed_mask(), true)
 		if p.type in [2, 3]:
 			ack(EIAcks.ARM_CRIPPLED if p.type == 2 else EIAcks.LEG_CRIPPLED)
 	elif p.cur <= 0.0:
@@ -1169,21 +1201,28 @@ func _do_move(dt: float) -> void:
 	else:
 		running = bool(order.get("run", true))
 	if path.is_empty():
+		var replan := _avoid != null and is_instance_valid(_avoid)
 		path = _path_to(order.to)
 		if path.is_empty():
 			_fail_order(EIAcks.NO_PATH)
 			return
+		_fresh_path = replan
 	if _step_along_path(dt):
 		order = {}
 
 
 ## A path to `to` for this unit: its own stamp and that of `t` (an attack
 ## target) lifted, and a unit it bumped into stamped (see NavGrid.find_path).
+## The search prices every open cell alike (the flat table, unit) for
+## an attack approach and for a unit standing
+## in water.
+## Approx.: is worked out per search, not kept from the last order.
 func _path_to(to: Vector2, t: GameUnit = null) -> PackedVector2Array:
 	var avoid := [_avoid] if _avoid and is_instance_valid(_avoid) else []
 	_avoid = null
 	return world.nav.find_path(pos, to, [self, t] if t else [self], avoid,
-		maxf(0.0, body_radius() - NavGrid.R_REF), move_class())
+		maxf(0.0, body_radius() - NavGrid.R_REF), move_class(),
+		t != null or world.nav.cell_wet(pos))
 
 
 ## Returns true when the path end is reached. Every step is first checked
@@ -1210,6 +1249,7 @@ func _step_along_path(dt: float) -> bool:
 			_blocked_by(b, bool(res.standing))
 			return false
 		_moving = true
+		_fresh_path = false
 		pos = q
 		if d <= budget:
 			budget -= d
@@ -1238,6 +1278,24 @@ func _step_along_path(dt: float) -> bool:
 
 func _blocked_by(b: GameUnit, standing: bool) -> void:
 	var t: GameUnit = _order_target() if order.get("type", "") == "attack" else null
+	# a step blocked by a standing unit plans anew
+	# no path ends the order (stops the unit, move mode 6). The
+	# original's search only enters cells its step test accepts, so a path it finds
+	# can be walked; a remake path planned round the blocker (a coarser grid)
+	# whose very first step is refused again counts as no path — the unit used
+	# to stand for ever with a live order, planning the same path each tick.
+	# **Approx.**
+	if standing and _fresh_path and order.get("type", "") in ["move", "attack"]:
+		_fresh_path = false
+		path = PackedVector2Array()
+		if order.type == "move":
+			_fail_order(EIAcks.NO_PATH)
+		else:
+			_fail_order(EIAcks.NO_WAY_TO_ATTACK)
+			target = null
+			_goal = Vector2.INF
+		_set_action("idle")
+		return
 	var queue: bool = t != null and b.order.get("type", "") == "attack" and b.order.get("target") == t \
 		and b.faction == faction and pos.distance_squared_to(t.pos) > 60.0
 	if not queue and (standing or speed() > b.speed()):
@@ -1275,6 +1333,9 @@ func _do_follow(dt: float) -> void:
 	if t == null or not is_instance_valid(t) or t.dead != bool(order.get("corpse", false)):
 		order = {}
 		return
+	if not order.get("once", false):
+		_follow_order(t, dt)
+		return
 	var dist := float(order.get("dist", 2.0))
 	if pos.distance_to(t.pos) <= dist:
 		path = PackedVector2Array()
@@ -1294,6 +1355,141 @@ func _do_follow(dt: float) -> void:
 	else:
 		running = pos.distance_to(t.pos) > dist + 3.0
 	_step_along_path(dt)
+
+
+## The F / Follow order (Player motivation state 6, its tick run
+##  on every 55 ms AI tick). The check itself is
+## `_follow_tick`; what it starts is a plain move, kept here as
+## order.walk (the unit's move goal) and walked until reached or
+## replaced. Nothing else moves the follower: between checks it stands.
+func _follow_order(t: GameUnit, dt: float) -> void:
+	order.acc = float(order.get("acc", 0.0)) + dt
+	while float(order.acc) >= TICK:
+		order.acc = float(order.acc) - TICK
+		_follow_tick(t)
+	if not order.has("walk"):
+		path = PackedVector2Array()
+		_set_action("idle")
+		return
+	if controller >= 0:
+		# A party unit goes at its gait on every command.
+		running = stance == STANCE_NONE and gait_run
+	else:
+		running = false   #  run byte 0
+	if path.is_empty():
+		path = _path_to(order.walk)
+		if path.is_empty():
+			order.erase("walk")
+			_set_action("idle")
+			return
+	if _step_along_path(dt):
+		order.erase("walk")
+		path = PackedVector2Array()
+
+
+## one AI tick of the Follow state. The counter counts
+## every call; the check runs only once it was 8 or more, and a move it starts
+## sets it to 6 (checked again 2 ticks later) or 0 (8 ticks later). Target dead
+## the state ends ((0), AI +4 = 0; `_do_follow`). d = 3D distance
+## to the target, Min / Max = ai.reg [Logic] FollowMinDist / FollowMaxDist
+## (2 / 4), goal = the follower's move goal or its
+## own position when it has none.
+## - Target walking (its current or next command is 1, a move):
+##   P5 = its position 5 ticks ahead, e = |self − P5|² (ground
+##   plane). If e ≥ d² (the target walks away) or e ≥ Min²: move to P5 when P5 is
+##   more than Max from the goal (search limit 3d + 10; counter 6). Else (it comes
+##   towards the follower, the prediction within Min) its predicted spots at
+##   ticks 6..99 are scanned while they keep getting closer: one within
+##   sqrt(1.3) m means it would walk into the follower, which steps aside — to
+##   the point 1.365 m from its spot 40 ticks ahead (P40), square to its heading
+##   (target → P40) on the follower's side; when the path search (limit 10)
+##   cannot end within sqrt(0.1) m of that point, to P40 itself (limit 20)
+##   unless the goal is already within sqrt(0.5) m of it (counter 6).
+## - Target standing: d < Min → stop; else when the goal is more
+##   than Max from the target, move to the target's position (limit 3d + 10;
+##   counter 0). So a follower stops within 2 m and sets off again only once the
+##   target is more than 4 m from where it stands.
+## Approx.: the search limit is only applied to the step-aside point (path_fits);
+## the original compares the search's end cell (× 0.5 m) with the point.
+func _follow_tick(t: GameUnit) -> void:
+	var n := _follow_n
+	_follow_n += 1
+	if n < 8:
+		return
+	var lo := float(GameData.ai_value("Logic", "FollowMinDist", 2.0))
+	var hi := float(GameData.ai_value("Logic", "FollowMaxDist", 4.0))
+	var d := dist3(t)
+	var goal: Vector2 = order.get("walk", pos)
+	if t.follow_walking():
+		var p5 := t.future_pos(5)
+		var e := pos.distance_squared_to(p5)
+		if e >= d * d or e >= lo * lo:
+			if p5.distance_squared_to(goal) > hi * hi:
+				_follow_walk(p5)
+				_follow_n = 6
+			return
+		var prev := e
+		for i in range(6, 100):
+			var q := t.future_pos(i)
+			var di := pos.distance_squared_to(q)
+			if di > prev:
+				return
+			if di < 1.3:
+				_follow_step_aside(t, goal)
+				return
+			prev = di
+		return
+	if d * d < lo * lo:
+		order.erase("walk")
+		path = PackedVector2Array()
+		return
+	if goal.distance_squared_to(t.pos) > hi * hi:
+		_follow_walk(t.pos)
+		_follow_n = 0
+
+
+##  step aside from a target walking into the follower.
+func _follow_step_aside(t: GameUnit, goal: Vector2) -> void:
+	var p40 := t.future_pos(40)
+	var dv := p40 - t.pos
+	var l2 := dv.length_squared()
+	if l2 <= 0.0:
+		return
+	var side := Vector2(-dv.y, dv.x) * (1.365 / sqrt(l2))
+	if (pos - t.pos).dot(side) < 0.0:
+		side = -side
+	var c := p40 + side
+	var p := _path_to(c)   # (unit, c, …, 10)
+	if not p.is_empty() and p[-1].distance_squared_to(c) < 0.1 and path_fits(p, c, 10.0):
+		_follow_walk(c, p)
+	elif goal.distance_squared_to(p40) > 0.5:
+		_follow_walk(p40)
+	else:
+		return
+	_follow_n = 6
+
+
+## The follower's move: a new goal, planned afresh.
+func _follow_walk(to: Vector2, p := PackedVector2Array()) -> void:
+	order.walk = to
+	path = p
+
+
+## Whether the unit's current or next command is a move (== 1)
+## as asks of the followed unit: a move order, or a follower's
+## own move.
+func follow_walking() -> bool:
+	if order.get("type", "") == "move" or (order.get("type", "") == "follow" and order.has("walk")):
+		return true
+	return not orders.is_empty() and orders[0].get("type", "") == "move"
+
+
+## The unit's position `ticks` logic ticks ahead: along its path
+## at its current speed; where it stands when it has none.
+func future_pos(ticks: int) -> Vector2:
+	if path.is_empty():
+		return pos
+	return pos_ahead(speed() * ticks * TICK)
 
 
 func _do_attack(dt: float) -> void:
@@ -1408,6 +1604,7 @@ func _approach(t: GameUnit, d: float, reach: float, dt: float) -> void:
 		var ticks := clampi(roundi((d - reach) / maxf(closing, 0.1)), 2, 64)
 		var at := t.pos_ahead(tv * ticks)
 		if path.is_empty() or _goal.distance_to(at) >= (d + 1.0) * 0.1:
+			_fresh_path = _avoid != null and is_instance_valid(_avoid)
 			path = _path_to(at, t)
 			_goal = at
 			_arrive_t = world.time + ticks * TICK
@@ -1522,9 +1719,10 @@ func _do_cast(dt: float) -> void:
 	GameSound.spell(Spells.parse(spell).code, global_position, "start")
 	if world.session:   # casting particles by school, visual only
 		world.session.broadcast({"t": "castfx", "uid": uid, "spell": spell, "secs": len})
+	var tref: WeakRef = weakref(t) if t else null   # the target may leave the world first
 	get_tree().create_timer(cast_t).timeout.connect(func():
 		if not dead and is_instance_valid(world):
-			var tu: GameUnit = t if t and is_instance_valid(t) else null
+			var tu: GameUnit = tref.get_ref() if tref else null
 			Spells.apply(world, self, spell, tu, at)
 			# the cast is heard (the caster's hearing
 			# detectability × 2, 26 ticks) unless the spell record's is 1.
@@ -2081,7 +2279,14 @@ func _physics_process(_dt: float) -> void:
 	var moved := cur.distance_to(_speed_from) if _speed_from != Vector2.INF else 0.0
 	_move_speed = moved / _dt if _dt > 0.0 and moved <= 2.0 else 0.0
 	_speed_from = cur
-	if alert and controller >= 0 and world and world.authority and order.get("type", "") != "attack":
+	#  sets / clears the combat flag by the command
+	# force (== 3). A new command replaces the old one at once there
+	# here it waits in `orders` while a clip runs (`order` empty), and an
+	# attack waiting so is the command in force: clearing the flag in that
+	# gap played the attack -> neutral cross clip and back on every repeated
+	# attack click, and clicks a second apart kept the strike from starting.
+	var cmd := order if not order.is_empty() or orders.is_empty() else orders[0]
+	if alert and controller >= 0 and world and world.authority and cmd.get("type", "") != "attack":
 		alert = false
 	_update_pose()
 	if not dead:
@@ -2154,7 +2359,7 @@ func apply_snapshot(s: Array, quiet := false) -> void:
 		revive()
 	hidden = bool(flags & 2)
 	visible = not hidden and not fogged
-	_show_severed((flags >> 2) & 63)
+	_show_severed((flags >> 2) & 63, not quiet)
 	if s.size() > 8:
 		mana = s[7]
 		var ph: PackedByteArray = s[8]

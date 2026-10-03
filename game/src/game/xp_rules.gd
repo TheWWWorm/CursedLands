@@ -38,7 +38,7 @@ static func give(s: Session, amount: float, source := "quest", player := 0) -> v
 	if amount == 0.0 or s.world == null:
 		return
 	var gains := []   # [unit, record, share]
-	if s.online and full_experience():
+	if s.online and full_experience() and s.lmp.is_empty():   # remake option: not in the original multiplayer game
 		gains = _full(s, amount)
 	elif s.online and source in ["kill", "quest"]:
 		gains = _network_split(s, amount)

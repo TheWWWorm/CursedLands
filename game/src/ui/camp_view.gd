@@ -50,10 +50,16 @@ extends Control
 ##   at (250,300) (CItemSpell), its keystone at (350,300)
 ##   (loot kind 2 / 3) and up to 8 runes at x 450 / 550, y
 ##   150..450 (kind 2 / 4); the draw sums the complexity and
-##   stamina it shows. The remake's heroes keep their spells outside the bag,
-##   so here the bag row also lists the hero's known spells (the original's
-##   spell items); runes put in are added one by one with the "enchant"
-##   command. Approx.: runes already in a spell cannot be taken out again.
+##   stamina it shows. The pile takes (mode 3, from the bag or
+##   the trader's goods) a ready spell alone, or a keystone and then up to 8
+##   fitting runes within the party's knowledge / stamina; ✓ takes a ready
+##   spell apart (keystone + runes stay in the pile) or builds the keystone and
+##   runes into a spell (which stays in the pile); see Session._spell_constr,
+##   one "spell_constr" command answered by "constr_result". A rune clicked in
+##   the pile goes back where it came from, the keystone / ready spell takes
+##   the whole pile with it (case 6). The remake's heroes keep
+##   their spells outside the bag, so here the bag row also lists the hero's
+##   known spells (the original's spell items, put into the bag first).
 ## - "spells" (Skills/Spells, tip 20101, tutorial camp_skills): the top row
 ##   holds the hero's spells (camphelp 1, up to eight), the left widget the
 ##   attributes (mode 1) and the centre the skills widget (
@@ -109,10 +115,12 @@ extends Control
 ##   21 and the limit lines 26 / 27, repair 25
 ## Approx.:
 ## - item info: see _item_info (the enchanted items' pulse is ItemView's);
-## - the remake's action buttons (equip, put on the belt, learn, enchant…)
-##   sit at the bottom of the right widget for the clicked item;
-## - no drag and drop: a click selects an item, and in the trade screens it
-##   also moves the item between the goods / bag and its pile;
+## - one left press moves an item at once, as the original's item widgets do
+##   (their button-up and move
+##   handlers are empty, so there is no drag and drop): in the dressing and
+##   skills screens a bag item goes on the hero, a hero's item into the bag
+##   (_press), in the other screens between the goods / bag and the pile
+##   (_move); a refused press plays messbox\cancel.wav;
 ## - which filter button is lit when a screen opens is not traced (the bag
 ##   starts on "all", the trader's row on "ready-made" or else the first
 ##   filter with goods).
@@ -209,10 +217,16 @@ var c_bp := ""       # item constructor: blueprint, material name, ready item, s
 var c_mat := ""
 var c_ready := ""
 var c_spell: String = ""   # "spell:<id>", from the bag or the hero's known spells
-var s_spell := ""    # spell constructor: the hero's spell and runes to add
-var s_runes: Array = []
+var s_spell := ""    # spell constructor pile: a keystone or a ready spell (no "spell:")
+var s_from := ""     # where it came from: "bag", "known" (a hero's spell) or "shop"
+var s_runes: Array = []        # the pile's runes ("rune:<code>")
+var s_rune_from: Array = []    # "bag" / "shop" per rune
+var s_wait := false  # ✓ sent, the host's "constr_result" not in yet
+var _s_req := 0
 var selected_id := ""
 var selected_where := ""
+## The last sounds of _press (file names), read by tools/camp_test.gd.
+var press_sounds: Array = []
 
 var _tex := {}
 var _doll: Paperdoll
@@ -595,7 +609,7 @@ func bag_items() -> Array:
 	var out := []
 	if mode in ["spellconstr", "itemconstr"]:
 		for sp: String in hero_spells():
-			if sp != s_spell and "spell:" + sp != c_spell and _passes("spell:" + sp, false, FILTER_SETS.bag[2][filter]):
+			if bag_count("spell:" + sp) > 0 and _passes("spell:" + sp, false, FILTER_SETS.bag[2][filter]):
 				out.append("spell:" + sp)
 	for it: String in _unique(st.items + st.quest_items.keys()):
 		if not it in out and bag_count(it) > 0 and _passes(it, it in st.quest_items, FILTER_SETS.bag[2][filter]):
@@ -625,6 +639,17 @@ func shop_left(it: String) -> int:
 			n -= 1
 		if c_mat != "" and it == Items.material_unit(c_mat):
 			n -= maxi(0, Items.components(c_bp) - st.items.count(it))
+	if mode == "spellconstr":
+		n -= _s_used(it, "shop")
+	return n
+
+
+## Spell constructor pile pieces `it` taken from `from` ("bag", "shop", "known").
+func _s_used(it: String, from: String) -> int:
+	var n := 1 if s_spell != "" and "spell:" + s_spell == it and s_from == from else 0
+	for i in s_runes.size():
+		if s_runes[i] == it and s_rune_from[i] == from:
+			n += 1
 	return n
 
 
@@ -677,12 +702,84 @@ func hero_spells() -> Array:
 	return h.get("spells", [])
 
 
-## The spell the constructor would make: the chosen spell plus the new runes.
+## The spell the constructor would make: the keystone plus the pile's runes
+## (a ready spell in the pile is itself).
 func spell_preview() -> String:
 	var sp := s_spell
 	for r: String in s_runes:
 		sp = Spells.with_mod(sp, r.substr(5))
 	return sp
+
+
+## A ready spell (one with runes) lies in the pile: ✓ takes it apart.
+func s_ready() -> bool:
+	return s_spell != "" and Spells.mods_of(s_spell).size() > 0
+
+
+## The party's best knowledge of the pile's school and best stamina
+## (camp).
+func _s_limits(spell: String) -> Vector2i:
+	if hud == null:
+		return Vector2i.ZERO
+	var ss := hud.game.session
+	return Spells.party_limits(ss.party_units(ss.my_index), String(Spells.parse(spell).subtype))
+
+
+##  mode 3 (from the bag, param 1, or the trader's goods, 2): a
+## ready spell only into an empty pile; a keystone into an empty pile when
+## the party's knowledge ≥ its complexity and stamina ≥ its cost
+## a rune only next to a keystone (no ready spell), fewer than 8
+## runes, of a type the keystone allows, and with the pile's sums plus its own
+## complexity / stamina within the party's limits.
+func _spell_accepts(it: String) -> bool:
+	if s_wait:
+		return false
+	if it.begins_with("spell:"):
+		if s_spell != "":
+			return false
+		var sp := it.substr(6)
+		if Spells.mods_of(sp).size() > 0:
+			return true
+		var need := Spells.constr_sums(sp, [])
+		var lim := _s_limits(sp)
+		return int(need.y) <= lim.y and int(need.x) <= lim.x
+	if Items.kind(it) != "rune" or s_spell == "" or s_ready():
+		return false
+	if not Spells.constr_rune_fits(s_spell, s_runes.size(), it.substr(5)):
+		return false
+	var need := Spells.constr_sums(s_spell, s_runes + [it])
+	var lim := _s_limits(s_spell)
+	return int(need.x) <= lim.x and int(need.y) <= lim.y
+
+
+##  mode 3: [label, total, ✓ possible]. A ready spell: take
+## apart, trunc(price × 0.1) (deal mode 3); a keystone + runes: build,
+## Σ trunc(piece × 0.2) (mode 2) when accepts it (else no label
+## and 0). A piece from the trader adds its buy price (mode 0).
+func _spell_deal() -> Array:
+	if s_spell == "":
+		return ["", 0, false]
+	var ready := s_ready()
+	var total := 0
+	var ok := true
+	var pieces: Array = ["spell:" + s_spell] + s_runes
+	var froms: Array = [s_from] + s_rune_from
+	for i in pieces.size():
+		if not ready:
+			total += Items.deal_price(pieces[i], Items.Deal.SPELL_CONSTR)
+		if froms[i] == "shop":
+			total += Items.deal_price(pieces[i], Items.Deal.SPELL_BUY)
+			ok = ok and shop_left(pieces[i]) >= 0
+		else:
+			ok = ok and bag_count(pieces[i]) >= 0
+	if ready:
+		total += Items.deal_price(pieces[0], Items.Deal.SPELL_DECONSTR)
+		return ["camp_spell_deconstr", total, ok]
+	# Approx.: the remake's keystone is the rune-less spell, so a build needs a rune.
+	if s_runes.is_empty() or not Spells.constr_buildable(
+			hud.game.session.party_units(hud.game.session.my_index), spell_preview()):
+		return ["", 0, false]
+	return ["camp_spell_constr", total, ok]
 
 
 ## Bag count less what waits in the sell pile.
@@ -728,14 +825,21 @@ func _bag_received(it: String) -> void:
 
 
 func bag_count(it: String) -> int:
-	if it.begins_with("spell:"):
-		return 0 if it.substr(6) == s_spell or it == c_spell else 1
+	if it.begins_with("spell:") and mode == "itemconstr":
+		return 0 if it == c_spell else 1
 	var st := hud.game.session.state
+	if it.begins_with("spell:"):
+		# The bag's copies, plus a hero's known spell in the spell constructor
+		# (listed in the bag row there), less what lies in the pile.
+		var ns := st.items.count(it) - sell_pile.count(it)
+		if mode == "spellconstr":
+			ns += (1 if it.substr(6) in hero_spells() else 0) - _s_used(it, "bag") - _s_used(it, "known")
+		return ns
 	var n := st.items.count(it) + (1 if st.quest_items.has(it) else 0)
 	var used := 1 if it == c_ready or it == c_bp else 0
 	if c_mat != "" and it == Items.material_unit(c_mat) and c_bp != "":
 		used = mini(Items.components(c_bp), n)
-	return n - sell_pile.count(it) - repair_pile.count(it) - used - s_runes.count(it)
+	return n - sell_pile.count(it) - repair_pile.count(it) - used - _s_used(it, "bag")
 
 
 func count_in_bag(it: String) -> int:
@@ -792,10 +896,10 @@ func deal_info() -> Array:
 				total = constr_cost()
 		"spellconstr":
 			cancel = s_spell != ""
-			if s_spell != "" and not s_runes.is_empty():
-				label = "camp_spell_constr"
-				can = _unit != null and _unit.has_meta("hero") \
-					and Spells.usable_by(_unit.get_meta("hero"), _unit.max_mana, spell_preview())
+			var sd := _spell_deal()
+			label = sd[0]
+			total = sd[1]
+			can = sd[2] and not s_wait
 	if mode != "spells" and total > money:
 		can = false
 	return [label, total, can, cancel]
@@ -841,7 +945,10 @@ func _update_total() -> void:
 
 func _clear_constr() -> void:
 	s_spell = ""
+	s_from = ""
 	s_runes.clear()
+	s_rune_from.clear()
+	s_wait = false
 	c_bp = ""
 	c_mat = ""
 	c_ready = ""
@@ -861,6 +968,8 @@ func constr_cost() -> int:
 	cost += maxi(0, n - st.items.count(Items.material_unit(c_mat))) * Items.buy_price(Items.material_unit(c_mat))
 	if not c_bp in st.items:
 		cost += Items.buy_price(c_bp)
+	if c_spell != "":
+		cost += Items.constr_piece_price("spell:" + c_spell.trim_prefix("spell:"))   # (piece, 6)
 	return cost
 
 
@@ -874,13 +983,15 @@ func _on_yes() -> void:
 				construct.emit({"t": "repair", "unit": _unit.uid, "item": it})
 		return
 	if mode == "spellconstr":
-		var sp := s_spell
-		for r: String in s_runes:
-			construct.emit({"t": "enchant", "unit": _unit.uid if _unit else -1, "item": r, "spell": sp})
-			sp = Spells.with_mod(sp, r.substr(5))
-		s_spell = ""
-		s_runes.clear()
+		# One host transaction (Session._spell_constr); the pile stays until
+		# its answer (constr_result).
+		var pile := [["spell:" + s_spell, s_from]]
+		for i in s_runes.size():
+			pile.append([s_runes[i], s_rune_from[i]])
+		_s_req += 1
+		s_wait = true
 		_sig = ""
+		construct.emit({"t": "spell_constr", "unit": _unit.uid if _unit else -1, "pile": pile, "req": _s_req})
 		_update_total()
 		return
 	if mode == "itemconstr":
@@ -908,6 +1019,28 @@ func _on_yes() -> void:
 	deal.emit(buy_pile.duplicate(), sell_pile.duplicate())
 	buy_pile.clear()
 	sell_pile.clear()
+	_sig = ""
+	_update_total()
+
+
+## The host's answer to this screen's "spell_constr" (mode 3):
+## taken apart, the keystone and runes take the spell's place in the pile
+## built, the new spell does. A refusal changes
+## nothing and leaves the pile as it was.
+func constr_result(e: Dictionary) -> void:
+	if not s_wait or int(e.get("req", -1)) != _s_req:
+		return
+	s_wait = false
+	var items: Array = e.get("items", [])
+	if bool(e.get("ok", false)) and not items.is_empty():
+		s_runes.clear()
+		s_rune_from.clear()
+		s_spell = String(items[0]).substr(6)
+		s_from = "known" if String(e.get("where", "")) == "known" else "bag"
+		if String(e.get("op", "")) == "take_apart":
+			for i in range(1, items.size()):
+				s_runes.append(String(items[i]))
+				s_rune_from.append("bag")
 	_sig = ""
 	_update_total()
 
@@ -959,7 +1092,7 @@ func _process(_dt: float) -> void:
 	var shop := shop_items() if shop_row() else []
 	shop_scroll = clampi(shop_scroll, 0, maxi(0, shop.size() - BAG_CELLS))
 	var sig := "%s|%s|%s|%s|%s|%d|%d|%s|%s|%s|%s|%d|%d|%d" % [u.uid if u else -1, h.get("weapons", []), h.get("armors", []),
-		[h.get("quick", []), h.get("spells", []), h.get("perks", []), h.get("exp", 0), h.get("skills", {})], bag, filter, scroll, size, mode, shop, buy_pile + ["/"] + sell_pile + ["/"] + repair_pile + [c_bp, c_mat, c_ready, c_spell, s_spell] + s_runes + hero_spells(), shop_filter, shop_scroll,
+		[h.get("quick", []), h.get("spells", []), h.get("perks", []), h.get("exp", 0), h.get("skills", {})], bag, filter, scroll, size, mode, shop, buy_pile + ["/"] + sell_pile + ["/"] + repair_pile + [c_bp, c_mat, c_ready, c_spell, s_spell, s_from, s_wait] + s_runes + s_rune_from + hero_spells(), shop_filter, shop_scroll,
 		hud.game.session.state.money] + str(hash(hud.game.session.state.shops.get(shop_id, {})))
 	if sig == _sig:
 		return
@@ -979,14 +1112,13 @@ func _process(_dt: float) -> void:
 		for i in REPAIR_CELLS:
 			_content["rep%d" % i] = [repair_pile[i] if i < repair_pile.size() else "", "rep"]
 	elif mode == "spellconstr":
-		var sp := spell_preview()
-		_content["sready"] = ["spell:" + sp if sp != "" else "", "sready"]
-		_content["skey"] = ["spell:" + sp.get_slice("{", 0) if sp != "" else "", "skey"]
-		var runes: Array = Array(Spells.mods_of(s_spell)).map(func(c): return "rune:" + c) if s_spell != "" else []
-		var n_old := runes.size()
-		runes += s_runes
+		# a ready spell at (250,300), a keystone at (350,300)
+		# the runes four per column from (450,150).
+		var ready := s_ready()
+		_content["sready"] = ["spell:" + s_spell if ready else "", "sready"]
+		_content["skey"] = ["spell:" + s_spell if s_spell != "" and not ready else "", "skey"]
 		for i in PILE_CELLS:
-			_content["srune%d" % i] = [runes[i] if i < runes.size() else "", "srune" if i >= n_old else "srune_old"]
+			_content["srune%d" % i] = [s_runes[i] if i < s_runes.size() else "", "srune"]
 	elif mode == "itemconstr":
 		# A ready item shows its parts; a blueprint + material the result.
 		var bp := c_bp
@@ -1215,13 +1347,87 @@ func _gui_input(e: InputEvent) -> void:
 		selected_id = id
 		selected_where = where
 		if mode in ["weapons", "spells"]:
-			picked.emit(id, where if where != "known" else "info")
+			_press(id, where)
+			picked.emit(id, where if where == "bag" else "info")
 		else:
 			_move(id, where)
 			picked.emit(id, "info")
 		queue_redraw()
 		accept_event()
 		return
+
+
+##  in the dressing (mode 0) and skills (mode 1) screens: the
+## press acts at once. refuses with buttons\messbox\cancel.wav
+## a bag item (area 1) goes on the hero through
+## (put_on.wav first, then nothing when the list is full: weapons > 3, belt
+## > 3, spells > 7; armour displaces the worn piece of its slot through
+## put_off.wav), a hero's item (area 0: weapons, belt, armour
+## spells) into the bag through (put_off.wav). The host commands
+## check again (Session._item_command). Remake: away from a village and the
+## map's camp (Session.camp_available) the press is refused the same way.
+func _press(id: String, where: String) -> void:
+	if _unit == null or not _unit.has_meta("hero"):
+		return
+	var h: Dictionary = _unit.get_meta("hero")
+	var from_bag := where == "bag"
+	if not _press_accepts(id, from_bag, h) or not hud.game.session.camp_available():
+		_ui_sound("buttons\\messbox\\cancel.wav")
+		return
+	var cmd := {"unit": _unit.uid, "item": id}
+	if from_bag:
+		_ui_sound("buttons\\camp\\put_on.wav")
+		var k := Items.kind(id)
+		if id.begins_with("spell:"):
+			if hero_spells().size() > 7:
+				return
+			cmd["t"] = "learn"
+		elif k == "weapon":
+			if Array(h.get("weapons", [])).size() > 3:
+				return
+			cmd["t"] = "equip"
+		elif k == "armor":
+			if Array(h.get("armors", [])).any(func(a): return Items.slot(a) == Items.slot(id)):
+				_ui_sound("buttons\\camp\\put_off.wav")
+			cmd["t"] = "equip"
+		else:
+			if Array(h.get("quick", [])).size() >= CampaignState.BELT_SLOTS:
+				return
+			cmd["t"] = "give_quick"
+	else:
+		_ui_sound("buttons\\camp\\put_off.wav")
+		match where:
+			"belt": cmd["t"] = "take_quick"
+			"known": cmd["t"] = "unlearn"
+			_: cmd["t"] = "unequip"
+	construct.emit(cmd)
+
+
+##  modes 0 / 1 (area 1 = the bag, else the hero): the dressing
+## screen takes weapons, armour and quick items, but no broken weapon or
+## armour from the bag (round(durability) < 1); the skills screen takes from
+## the bag only a spell the hero can learn (complexity within round(knowledge),
+## stamina), from the hero anything. Remake: a spell the hero
+## already knows is refused too (the remake's spell list holds each once).
+func _press_accepts(id: String, from_bag: bool, h: Dictionary) -> bool:
+	var k := Items.kind(id)
+	if mode == "weapons":
+		if from_bag and k in ["weapon", "armor"] and Items.is_broken(id):
+			return false
+		return k in ["weapon", "armor", "quick"]
+	if not from_bag:
+		return true
+	if not id.begins_with("spell:") or id.substr(6) in hero_spells():
+		return false
+	return Spells.usable_by(h, _unit.max_mana, id.substr(6))
+
+
+func _ui_sound(wav: String) -> void:
+	press_sounds.append(wav.get_file())
+	if press_sounds.size() > 16:
+		press_sounds.remove_at(0)
+	if GameSound.instance:
+		GameSound.instance.ui(wav)
 
 
 ## What the right info widget shows for the point (the camp's mouse move
@@ -1328,16 +1534,29 @@ func _row_sound(hit: int) -> void:
 ## Trade screens: goods -> buy pile, bag -> sell pile, a pile -> back.
 func _move(id: String, where: String) -> void:
 	if mode == "spellconstr":
-		if where == "bag" and id.begins_with("spell:"):
-			s_spell = id.substr(6)
-			s_runes.clear()
-		elif where == "bag" and id.begins_with("rune:") and s_spell != "" and bag_count(id) > 0 \
-				and Spells.can_add(spell_preview(), id.substr(5)):
-			s_runes.append(id)
+		if s_wait:
+			return
+		var have := shop_left(id) if where == "shop" else bag_count(id)
+		if where in ["bag", "shop"] and have > 0 and _spell_accepts(id):
+			var from := where
+			if where == "bag" and id.begins_with("spell:"):
+				# A bag copy first, else the hero's known spell.
+				var st := hud.game.session.state
+				from = "bag" if st.items.count(id) - _s_used(id, "bag") > 0 else "known"
+			if id.begins_with("spell:"):
+				s_spell = id.substr(6)
+				s_from = from
+			else:
+				s_runes.append(id)
+				s_rune_from.append(from)
 		elif where == "srune":
-			s_runes.erase(id)
+			#  case 6: a rune goes back where it came .
+			var i := s_runes.rfind(id)
+			if i >= 0:
+				s_runes.remove_at(i)
+				s_rune_from.remove_at(i)
 		elif where in ["sready", "skey"]:
-			_clear_constr()
+			_clear_constr()   # the keystone / ready spell: the whole pile goes back
 		_sig = ""
 		_update_total()
 		return
@@ -1353,7 +1572,7 @@ func _move(id: String, where: String) -> void:
 			var m := id.trim_prefix("material.")
 			if c_bp == "" or _mat_fits(c_bp, m):
 				c_mat = m
-		elif id.begins_with("spell:") and c_bp != "" and c_spell == "":
+		elif id.begins_with("spell:") and _spell_fits(id):
 			c_spell = id
 		elif where == "bag" and Items.can_deconstruct(id):
 			_clear_constr()
@@ -1401,8 +1620,6 @@ func _move(id: String, where: String) -> void:
 
 ##  (camp) for the item rows' prices: whether the
 ## screen takes the item now (from the trader's goods row, or the bag).
-## Approx.: the spell constructor's knowledge / stamina limits for a keystone
-## are left out.
 func _row_accepts(it: String, goods: bool) -> bool:
 	var k := Items.kind(it)
 	var spellish := it.begins_with("spell:") or k == "rune"
@@ -1412,18 +1629,12 @@ func _row_accepts(it: String, goods: bool) -> bool:
 		"itemtrade":
 			return not spellish and k != "quest"
 		"spellconstr":
-			if not goods:
-				return false
-			if it.begins_with("spell:"):
-				return s_spell == ""
-			if k == "rune":
-				return s_spell != "" and s_runes.size() < 8 and Spells.can_add(spell_preview(), it.substr(5))
-			return false
+			return _spell_accepts(it)   # the same check for the bag and the goods
 		"itemconstr":
 			if not goods:
 				return false
 			if it.begins_with("spell:"):
-				return c_bp != "" and c_spell == ""
+				return _spell_fits(it)
 			var empty := c_bp == "" and c_mat == "" and c_ready == ""
 			if k == "blueprint" or Items.can_deconstruct(it):
 				return empty
@@ -1433,6 +1644,15 @@ func _row_accepts(it: String, goods: bool) -> bool:
 		"repair":
 			return goods and k in ["weapon", "armor"] and Items.wear(it) > 0.0
 	return false
+
+
+##  mode 5 for a spell: a blueprint and its material lie in the
+## pile (the item makes), no spell yet, and the spell fits that
+## item (Items.can_enchant).
+func _spell_fits(spell: String) -> bool:
+	if c_bp == "" or c_mat == "" or c_spell != "" or c_ready != "":
+		return false
+	return Items.can_enchant("%s.%s" % [c_bp.substr(3), c_mat], spell.trim_prefix("spell:"))
 
 
 func _mat_fits(bp: String, mat: String) -> bool:
@@ -1710,22 +1930,24 @@ func _tb(r: Rect2, txt: String, fi: int, col: Color, max_lines: int,
 ##  text surface (approx.: placed at 200,450, where
 ## puts the hot areas 200,450-400,470 (camphelp 26) and 200,470-400,490
 ## (camphelp 27)): font 1, at (10,0)-(200,20) and (10,20)-(200,40):
-## "infoitem_35" / "infoitem_36" alone, or with a spell set
-## "%s %d (%d)": the hero's limit (camp) and the spell's
+## "infoitem_35" / "infoitem_36" alone, or with a keystone in the pile
+## "%s %d (%d)": the party's limit (camp) and the pile's
 ## complexity / stamina.
 func _draw_constr_limits() -> void:
 	var r1 := Rect2(210, 450, 190, 20)
 	var r2 := Rect2(210, 470, 190, 20)
-	if s_spell == "" or _unit == null or not _unit.has_meta("hero"):
+	# the numbers only with a keystone in the pile — the party's
+	# best knowledge with the summed complexity, the best
+	# stamina with __ftol(max(summed cost, the keystone's)).
+	if s_spell == "" or s_ready():
 		_t(r1, _lbl(35), 1, Interface800.TEXT)
 		_t(r2, _lbl(36), 1, Interface800.TEXT)
 		return
-	var sp := spell_preview()
-	var h: Dictionary = _unit.get_meta("hero")
-	var pp := Spells.parse(sp)
-	_t(r1, "%s %d (%d)" % [_lbl(35), int(Skills.knowledge(h, String(pp.subtype))), int(Spells.complexity(sp))], 1,
-		Interface800.TEXT)
-	_t(r2, "%s %d (%d)" % [_lbl(36), int(_unit.max_mana), int(pp.mana)], 1, Interface800.TEXT)
+	var need := Spells.constr_sums(s_spell, s_runes)
+	var lim := _s_limits(s_spell)
+	var key_mana := float(Spells.parse(s_spell).proto.get("mana", 0.0))
+	_t(r1, "%s %d (%d)" % [_lbl(35), lim.x, int(need.x)], 1, Interface800.TEXT)
+	_t(r2, "%s %d (%d)" % [_lbl(36), lim.y, int(maxf(need.y, key_mana))], 1, Interface800.TEXT)
 
 
 ## The items the left / right info widgets show ("" for none).
@@ -1779,7 +2001,9 @@ func _result_item() -> String:
 	if mode == "itemconstr":
 		return String(_content.get("cready", [""])[0])
 	if mode == "spellconstr":
-		return String(_content.get("sready", [""])[0])
+		#  mode 3 →: the ready spell, else the spell
+		# the builder makes of the keystone and runes.
+		return "spell:" + spell_preview() if s_spell != "" else ""
 	return ""
 
 

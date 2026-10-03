@@ -28,7 +28,6 @@ var briefings: Briefings
 var globals := {}
 var instances: Array = []
 var areas := {}            # area id -> Array of Rect2 / Vector3(x, y, r)
-var blocked := {}          # uid -> true (BlockUnit)
 var time := 0.0
 var time_fixed := false
 var _uid_counter := 0
@@ -537,7 +536,11 @@ func _call(name: String, a: Array, inst: Instance):
 			if typeof(u) == TYPE_OBJECT and not is_instance_valid(u):
 				return 0.0
 			return 1.0 if u is GameUnit and u.get_meta("looted", false) else 0.0
-		"IsUnitBlocked": return 1.0 if blocked.has(_obj_id(v[0])) else 0.0
+		# builtin 0xe6: the object's flag — BlockUnit or a
+		# "say_block" line playing (GameUnit.blocked).
+		"IsUnitBlocked":
+			var bu := _unit(v[0])
+			return 1.0 if bu and bu.blocked else 0.0
 		# ---- unit control
 		"Walk", "Run":
 			var u := _unit(v[0])
@@ -657,15 +660,12 @@ func _call(name: String, a: Array, inst: Instance):
 			var u := _unit(v[0])
 			if u:
 				u.faction = int(_num(v[1]))
+		# builtin 0x32: sets / clears the creature's flag
+		# and nothing else (no order); player orders then skip the unit.
 		"BlockUnit":
-			var id := _obj_id(v[0])
-			if _truthy(v[1]):
-				blocked[id] = true
-				var u := _unit(v[0])
-				if u:
-					u.command({"type": "wait", "t": 0.0})
-			else:
-				blocked.erase(id)
+			var u := _unit(v[0])
+			if u:
+				u.blocked = _truthy(v[1])
 		"ResetTarget":
 			var u := _unit(v[0])
 			if u:
@@ -804,8 +804,10 @@ func _call(name: String, a: Array, inst: Instance):
 				_quest_complete(str(v[1]))
 			else:
 				SideQuests.finish(session, str(v[1]))
-			# Single player: flags every trader for a restock.
-			session.restock_shops()
+			# Single player: flags every trader for a restock
+			# the network game's branch does not.
+			if session.lmp.is_empty():
+				session.restock_shops()
 		# Builtins 0x92 GiveQuestItem / 0xa6 GiveItem (one case):
 		# the item made from the name goes into the player's
 		# items through, like a conversation reward. Its client

@@ -166,11 +166,11 @@ func ensure_hero(player: int, prototype: String, player_name := "") -> void:
 	# read only for attributes, skills, experience and perks; its
 	# weapons / quest items / spells describe a later-game Zak and are not used,
 	# and nothing goes on the belt. Co-op mercenaries use their own kit.
-	var weapons := PackedStringArray()
-	if String(proto.get("weapon", "")) != "":
-		weapons.append(String(proto.weapon))
-	elif player > 0:
+	var weapons := proto_weapons(proto)
+	var extra := []   # remake co-op fallback kit beyond the four weapon slots
+	if weapons.is_empty() and player > 0:
 		weapons = Items.split_list(npc.get("weapons", []))
+		extra = Array(weapons).slice(4)
 	var hero := {
 		"prototype": prototype,
 		"name": hero_name() if player == 0 else GameUnit.unit_title(prototype),
@@ -194,9 +194,10 @@ func ensure_hero(player: int, prototype: String, player_name := "") -> void:
 		hero.name = player_name.strip_edges()   # co-op heroes carry their player's name
 	if String(hero.name).is_empty():
 		hero.name = "Mercenary"
-	# The rest of the starting kit goes to the shared bag.
-	for w in weapons.slice(1):
-		items.append(w.to_lower())
+	# Only what does not fit the four weapon slots goes to the shared bag (the
+	# carried weapons are not copied there too).
+	for w in extra:
+		items.append(String(w).to_lower())
 	if player > 0:   # remake co-op kit; the campaign hero's belt starts empty
 		for q in Items.split_list(npc.get("quest_items", [])):
 			hero.quick.append(q.to_lower())
@@ -229,10 +230,24 @@ func add_party_unit(party: String, unit_name: String, prototype: String) -> void
 		"str": float(npc.get("str", 25.0)), "dex": float(npc.get("dex", 25.0)), "int": float(npc.get("int", 20.0)),
 		"complexion": GameUnit.proto_complexion(proto),
 		"armors": Array(Items.split_list(proto.get("wears", []))).map(func(x): return String(x).to_lower()),
-		"weapons": [String(proto.weapon).to_lower()] if String(proto.get("weapon", "")) != "" else [],
+		"weapons": Array(proto_weapons(proto)).map(func(x): return String(x).to_lower()),
 		"quick": [], "spells": [],
 	}
 	parties.get_or_add(party, []).append(h)
+
+
+## A party record's weapons as the original makes them (
+## new game, script party units, hiring): the prototype's
+## weapon and second weapon, each added when its name is
+## not empty or "none" (hands both over), into the record's
+## weapon list. Nothing goes to the bag.
+static func proto_weapons(proto: Dictionary) -> PackedStringArray:
+	var out := PackedStringArray()
+	for k in ["weapon", "second_weapon"]:
+		var w := String(proto.get(k, "")).strip_edges()
+		if w != "" and w.to_lower() != "none":
+			out.append(w)
+	return out
 
 
 ## "Hero" (the main hero, wherever he is) or "Party::Unit".
@@ -325,12 +340,13 @@ func move_loot(from: String, to: String, copy: bool) -> void:
 		money = int(b.money)
 
 
-## Script FixItems: every item back to full durability (the wear suffix gone).
+## Script FixItems: every item back to full durability (only; the
+## charge it carries stays).
 func fix_items() -> void:
 	var fix := func(l: Array) -> void:
 		for i in l.size():
 			if l[i] is String:
-				l[i] = Items.unworn(l[i])
+				l[i] = Items.with_wear(l[i], 0.0)
 	fix.call(items)
 	for bag: Dictionary in party_bags.values():
 		fix.call(bag.items)
@@ -360,7 +376,7 @@ func make_merc(n: int, rec: Dictionary) -> Dictionary:
 	var proto_name := String(rec.get("prototype", rec.get("parent_template", "")))
 	var proto := GameData.db.find("monster_prototypes", proto_name)
 	var npc := GameData.db.find("npcs", proto_name)
-	var weapons: Array = Array(rec.get("weapons", [])).map(func(x): return String(x).to_lower())
+	var kit := merc_kit(rec, proto)
 	var m := {
 		"prototype": proto_name, "merc": n,
 		"name": GameUnit.unit_title(proto_name) if String(rec.get("name", "")).to_lower().begins_with("merc") else String(rec.get("name", "")),
@@ -370,18 +386,58 @@ func make_merc(n: int, rec: Dictionary) -> Dictionary:
 		"str": float(npc.get("str", 22.0)), "dex": float(npc.get("dex", 22.0)), "int": float(npc.get("int", 18.0)),
 		"hp": -1.0,
 		"complexion": rec.get("complexion", GameUnit.proto_complexion(proto)),
-		"armors": Array(rec.get("armors", Items.split_list(proto.get("wears", [])))).map(func(x): return String(x).to_lower()),
-		"weapons": weapons.slice(0, 4),
-		"quick": [],
-		"spells": Array(rec.get("spells", Items.split_list(npc.get("spells", [])))).map(func(x): return String(x).to_lower()),
+		"armors": kit.armors,
+		"weapons": kit.weapons,
+		"quick": kit.quick,
+		"spells": kit.spells,
 		"controller": 0,
 	}
-	for w in weapons.slice(1):
-		items.append(w)
 	if String(m.name).is_empty():
 		m.name = "Mercenary %d" % n
 	mercs[n] = m
 	return m
+
+
+## What a hired mercenary carries. the original (hire, n1 / n3) does
+## not make a new unit: appends a party record for
+## the village unit "merc<N>", and that unit keeps the items it was given when
+## the map loaded (the record takes them from the unit when the party leaves
+## the zone). The map load gives the unit:
+## the prototype's wears, weapon
+##      and second weapon into the four weapon slots
+##      and its spells
+## the record's belt items (UNIT_QUICK_ITEMS
+##     four slots) always; only for a record whose "need import" stats apply
+##     (Combat.mob_imports) also its spells, armours (each replacing the worn
+##     item of its slot) and weapons (appended to the weapon
+##     slots; returns -1 and the item is lost once all four are
+##     taken).
+## Nothing goes to the party bag. Every original mercenary record has need
+## import 0, so a mercenary carries its prototype's kit; Merc1 (basecam.mob,
+## Human Mercenary Warrior) the stone axe and the stone short bow once each.
+static func merc_kit(rec: Dictionary, proto: Dictionary) -> Dictionary:
+	var low := func(x): return String(x).to_lower()
+	var imports := Combat.mob_imports(rec)
+	var weapons: Array = Array(proto_weapons(proto)).map(low)
+	var armors: Array = Array(Items.split_list(proto.get("wears", []))).map(low)
+	var spells: Array = Array(Items.split_list(proto.get("spells", []))).map(low)
+	if imports:
+		for a in Array(rec.get("armors", [])).map(low):
+			var s := Items.slot(a)
+			var at := -1
+			for i in armors.size():
+				if s != "" and Items.slot(armors[i]) == s:
+					at = i
+			if at >= 0:
+				armors[at] = a
+			else:
+				armors.append(a)
+		for w in Array(rec.get("weapons", [])).map(low):
+			if weapons.size() < 4:
+				weapons.append(w)
+		spells.append_array(Array(rec.get("spells", [])).map(low))
+	var quick: Array = Array(rec.get("quick_items", [])).map(low).slice(0, BELT_SLOTS)
+	return {"weapons": weapons.slice(0, 4), "armors": armors, "spells": spells, "quick": quick}
 
 
 ## The hired mercenary keeps its map name "merc<N>" (its display name is
@@ -398,7 +454,7 @@ func apply_hero(u: GameUnit) -> void:
 	for h: Dictionary in heroes.get(u.controller, []):
 		if String(h.get("unit_name", h.name)) == String(u.info.get("name", "")) or h.prototype == u.proto.get("name", ""):
 			u.display_name = h.name
-			Combat.clear_natural_armor(u)
+			Combat.clear_natural_armor(u, h)
 			Combat.hero_stats(u, h)
 			# Aggressive / Defensive (unit) is part of the original's unit
 			# save record (restored).
@@ -434,6 +490,7 @@ func store_party_positions(world: GameWorld) -> void:
 			h.mana = u.mana
 			h.pos = u.pos
 			h.gait = u.gait()
+			h.body = body_state(u)
 
 
 ## Refreshes `pets` from the tamed party members in `world`.
@@ -443,7 +500,7 @@ func collect_pets(world: GameWorld) -> void:
 		if is_pet(u):
 			var rec := u.info.duplicate()
 			rec.erase("nid")
-			var pet := {"rec": rec, "hp": u.hp, "controller": u.controller, "pos": u.pos}
+			var pet := {"rec": rec, "hp": u.hp, "controller": u.controller, "pos": u.pos, "body": body_state(u)}
 			u.set_meta("pet", pet)
 			pets.append(pet)
 
@@ -452,10 +509,14 @@ static func is_pet(u: GameUnit) -> bool:
 	return not u.dead and not u.has_meta("hero") and int(u.get_meta("tame_stage", 0)) >= 3
 
 
+## After a load (Session.load_game), once the party units are deployed with
+## their stats and equipment rebuilt (apply_hero / _spawn_merc / _spawn_pet).
 func restore_party_positions(world: GameWorld) -> void:
 	for u: GameUnit in world.units.values():
 		if u.has_meta("pet") and u.get_meta("pet").has("pos"):
 			u.pos = u.get_meta("pet").pos
+		if u.has_meta("pet") and u.get_meta("pet").get("body") is Dictionary:
+			apply_body(u, u.get_meta("pet").body)
 		if u.has_meta("hero"):
 			var h: Dictionary = u.get_meta("hero")
 			if h.has("pos"):
@@ -466,6 +527,116 @@ func restore_party_positions(world: GameWorld) -> void:
 				u.mana = minf(float(h.mana), u.max_mana)
 			if h.has("gait"):
 				u.restore_gait(int(h.gait))
+			if h.get("body") is Dictionary:
+				apply_body(u, h.body)
+	replay_restored(world)
+
+
+# ---------------------------------------------------------------- unit body / magic
+# the original saves every unit whole (world save
+# unit =; read back =), both
+# in a save game (scenario.sav) and in the zone's state when the
+# party leaves it (saves\current). Of that record the remake
+# keeps what it models:
+#   - the unit logic's stats block, written raw (
+#     0x704 bytes), which holds the six body parts (0xf4 each: health
+#     and state 3 intact / 2 destroyed / 1 severed / 0 none);
+#   - the magic effects (map-object base: count, then
+#      per 0x14-byte entry: type byte, strength byte, ticks left
+#     +4 — the unit panel shows +4 / 15, — value +8 and
+#     read back). On load the effect visuals
+#     are made again with 30 prewarm updates and without the one-shot start
+#     bursts (with its load flag).
+# Leaving a zone does not carry them over to the next one: the hero records
+# take only stats and items, and
+# then makes every part of the record intact and full; the effects stay with
+# the unit object.
+
+## The magic effect's visual code of a buff (Spells._buff names it otherwise).
+const _FX_CODE := {"invisible": "invisibility"}
+
+
+## A unit's body parts ([health / max, state] each) and live magic effects
+## ([name, seconds left, effect data, visual strength or -1, visual code]).
+static func body_state(u: GameUnit) -> Dictionary:
+	var parts := []
+	for p: Dictionary in u.parts:
+		var m := float(p.get("max", 0.0))
+		parts.append([float(p.get("cur", 0.0)) / m if m > 0.0 else 1.0, int(p.get("state", 0))])
+	var magic := []
+	var now := u.world.time if u.world else 0.0
+	var rs: Dictionary = u.world.get_meta("replay", {}) if u.world else {}
+	var shown: Dictionary = rs.get("magic", {})
+	for k: String in u.buffs:
+		var b: Dictionary = Dictionary(u.buffs[k]).duplicate(true)
+		var left := float(b.get("until", 0.0)) - now
+		if left <= 0.0:
+			continue
+		b.erase("until")
+		var code: String = _FX_CODE.get(k, k)
+		var ev = shown.get("%d:%s" % [u.uid, code])
+		var s := float(ev[0].get("s", 1.0)) if ev is Array and not ev.is_empty() and ev[0] is Dictionary else -1.0
+		magic.append([k, left, b, s, code])
+	return {"parts": parts, "magic": magic}
+
+
+## Puts back body_state(u): the effects first (strength / weakness change the
+## maximum HP), then the parts, so `hp` follows from them. The effect visuals
+## wait in the world meta "restored_magic" for replay_restored.
+static func apply_body(u: GameUnit, st: Dictionary) -> void:
+	if u.dead or st.is_empty():
+		return
+	var now := u.world.time if u.world else 0.0
+	var fx := []
+	for e in st.get("magic", []):
+		if not e is Array or e.size() < 3:
+			continue
+		var b: Dictionary = Dictionary(e[2]).duplicate(true)
+		b.until = now + float(e[1])
+		u.buffs[String(e[0])] = b
+		if e.size() > 4 and float(e[3]) >= 0.0:
+			fx.append({"t": "magicfx", "uid": u.uid, "code": String(e[4]), "secs": float(e[1]),
+				"s": float(e[3]), "replay": true})
+	u.refresh_max_hp()
+	var ps: Array = st.get("parts", [])
+	if not ps.is_empty() and ps.size() == u.parts.size():
+		for i in ps.size():
+			var p: Dictionary = u.parts[i]
+			if int(p.state) == 0 or not ps[i] is Array:
+				continue
+			p.state = int(ps[i][1])
+			p.cur = float(ps[i][0]) * float(p.max)
+		u._wounds_dirty = true
+		u._pose_dirty = true
+		u._show_severed(u.severed_mask())
+	if not fx.is_empty() and u.world:
+		var q: Array = u.world.get_meta("restored_magic", [])
+		q.append_array(fx)
+		u.world.set_meta("restored_magic", q)
+
+
+## Host, once `world` is the session's world and in the tree: the restored
+## units' effect visuals and the zone's lasting ground spells run again
+## (sent to the co-op clients too, as already running: no start sound).
+func replay_restored(world: GameWorld) -> void:
+	if world == null or world.session == null:
+		return
+	var q: Array = world.get_meta("restored_magic", [])
+	world.remove_meta("restored_magic")
+	for ev: Dictionary in q:
+		if world.units.has(int(ev.uid)):
+			world.session.broadcast(ev)
+	var lasting: Array = world.get_meta("restored_lasting", [])
+	world.remove_meta("restored_lasting")
+	Spells.restore_lasting(world, lasting)
+	var shown: Array = world.get_meta("restored_spellfx", [])
+	world.remove_meta("restored_spellfx")
+	for e in shown:
+		var ev: Dictionary = Dictionary(e[0]).duplicate()
+		ev.left = float(e[1])
+		ev.replay = true
+		ev.erase("a")   # unit ids change with the deployment; dx / dy keep the wall's direction
+		world.session.broadcast(ev)
 
 
 # ---------------------------------------------------------------- zones
@@ -479,13 +650,22 @@ func store_zone(id: String, world: GameWorld) -> void:
 	for u: GameUnit in world.units.values():
 		if u.has_meta("hero") or is_pet(u):
 			continue   # pets leave with the party (collect_pets)
+		if u.has_meta("lmp_owner"):
+			# A multiplayer hero's body (Session._lmp_respawn) is no map unit:
+			# it stays in the zone with its record (world list).
+			var rec: Dictionary = u.info.duplicate(true)
+			rec.nid = u.uid
+			rec.position = Vector3(u.pos.x, u.pos.y, 0)
+			z.get_or_add("bodies", []).append({"rec": rec, "facing": u.facing, "loot": u.get_meta("loot", []),
+				"owner": int(u.get_meta("lmp_owner")), "conn": int(u.get_meta("lmp_conn", 0))})
+			continue
 		present[u.uid] = true
 		if u.dead:
 			z.dead.append(u.uid)
 			if u.has_meta("loot"):
 				z.loot[u.uid] = u.get_meta("loot")
 		else:
-			z.units[u.uid] = [u.pos.x, u.pos.y, u.hp, u.faction, u.hidden]
+			z.units[u.uid] = [u.pos.x, u.pos.y, u.hp, u.faction, u.hidden, body_state(u)]
 	# Looted corpses (Session.take_loot) are off the world but WasLooted still
 	# sees them (GameWorld.looted).
 	z.looted = world.looted.keys()
@@ -514,6 +694,22 @@ func store_zone(id: String, world: GameWorld) -> void:
 		z.moved = rs.get("moved", {}).duplicate(true)
 		z.fx = rs.fx.duplicate(true)
 		z.music = rs.music.duplicate()
+		# Their visuals (Session._track "spellfx"), with the time they have left.
+		var shown := []
+		for e in rs.get("spells", []):
+			var left := float(e[1]) - world.time
+			if left > 0.5:
+				shown.append([e[0], left])
+		if not shown.is_empty():
+			z.spellfx = shown
+	# Lasting ground spells still running (fire / lightning wall, acid fog,
+	# camp fire, fireworks): the original saves every live spell object with the
+	# world (: point, caster / target ids, target
+	# point, the spell, counter, state), in save games and zone
+	# states alike.
+	var lasting := Spells.save_lasting(world)
+	if not lasting.is_empty():
+		z.lasting = lasting
 	zones[id] = z
 
 
@@ -538,6 +734,19 @@ func restore_zone(id: String, world: GameWorld) -> void:
 			world.remove_looted(u)
 		elif u:
 			world.remove_unit(u)
+	for b: Dictionary in z.get("bodies", []):
+		var bu := world.spawn_unit(b.rec)
+		if bu:
+			bu.controller = -1
+			bu.facing = float(b.facing)
+			bu.dead = true
+			bu.hp = 0
+			bu.model.act("death", 1, 0.0)
+			bu.freeze_pose(true)
+			bu.set_meta("lmp_owner", int(b.owner))
+			bu.set_meta("lmp_conn", int(b.conn))
+			if not (b.loot as Array).is_empty():
+				bu.set_meta("loot", b.loot)
 	for nid in z.dead:
 		var u: GameUnit = world.units.get(int(nid))
 		if u:
@@ -557,6 +766,8 @@ func restore_zone(id: String, world: GameWorld) -> void:
 				u.faction = int(s[3])
 				u.hidden = bool(s[4])
 				u.visible = not u.hidden
+			if s.size() > 5 and s[5] is Dictionary:   # body parts and magic effects
+				apply_body(u, s[5])
 	for nid in z.levers:
 		if world.levers.has(int(nid)):
 			var v = z.levers[nid]
@@ -591,6 +802,11 @@ func restore_zone(id: String, world: GameWorld) -> void:
 	world.set_water_state(z.get("water", {}))
 	world.traps.restore_state(z.get("traps", {}))
 	world.set_meta("restored_vm", z.get("vm", {}))
+	# Started by replay_restored once the world runs (Session.enter_zone).
+	if not z.get("lasting", []).is_empty():
+		world.set_meta("restored_lasting", z.lasting.duplicate(true))
+	if not z.get("spellfx", []).is_empty():
+		world.set_meta("restored_spellfx", z.spellfx.duplicate(true))
 	if not z.get("tornado", []).is_empty():
 		world.set_meta("restored_tornado", z.tornado)
 
@@ -659,5 +875,29 @@ static func load_from(path: String) -> CampaignState:
 	for k: String in s.vars.keys():
 		if k.get_slice(".", 2).begins_with("constr") and k.contains(":b.") and is_equal_approx(float(s.vars[k]), 2.0):
 			s.vars[k] = 1.0
+	s.migrate_charges()
 	s.cap_belts()   # saves of builds whose belt took eight
 	return s
+
+
+## Saves of builds that kept charges in the hero record ("charges": item
+## string → charge, shared by identical items): each of the record's items
+## named there gets that charge on its own string (Items.with_charge), and
+## the table goes. Items already in a bag keep a full charge.
+func migrate_charges() -> void:
+	var records: Array = mercs.values()
+	for roster in heroes.values() + parties.values():
+		if roster is Array:
+			records.append_array(roster)
+	for h in records:
+		if not h is Dictionary or not h.get("charges") is Dictionary:
+			continue
+		var ch: Dictionary = h.charges
+		for k in ["quick", "weapons", "armors"]:
+			var l = h.get(k)
+			if not l is Array:
+				continue
+			for i in l.size():
+				if l[i] is String and ch.has(l[i]):
+					l[i] = Items.with_charge(l[i], float(ch[l[i]]))
+		h.erase("charges")

@@ -52,11 +52,17 @@ var _dialog_ev := {}        # host: the running conversation event (for joiners)
 var coop: CoopProgress
 var net: NetStatus
 var upnp: UpnpPort
+## the original's own multiplayer game (LmpMode): {"base": bz1mpg.., "quest": <q>
+## "pk": 0|1}; empty in the campaign (single player or the remake's co-op).
+var lmp := {}
+## LMP: the entrance the party came into the current zone by (respawn spot).
+var _lmp_entrance := 1
 
 
 func _ready() -> void:
 	name = "Session"
 	campaign = CampaignMap.load_from(GameData.texts)
+	campaign.load_lmp()   # the original multiplayer maps (LmpMode)
 	state = CampaignState.new()
 	multiplayer.peer_connected.connect(_on_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
@@ -171,6 +177,80 @@ func new_campaign(intro := true) -> void:
 		broadcast({"t": "movie", "name": "intro"})
 
 
+## Host: starts the original's own multiplayer game (LmpMode) on `base`: every
+## peer switches to res/databaseLMP.res, each player gets a network hero with
+## its own purse and bag (CoopProgress.lmp_purses) and the party starts in the
+## base at its entrance 1, where the quest giver offers the base's quests
+## (SideQuests.lmp_offer, as a new server's). `quest` (tests)
+## takes that quest straight away.
+func new_lmp_game(base: String, quest := "", pk := 0) -> bool:
+	base = base.to_lower()
+	quest = quest.to_lower()
+	if not base in LmpMode.BASES or (quest and not LmpMode.quests_of(campaign, base).has(quest)):
+		message.emit(RemakeText.t("Unknown zone ") + base + "/" + quest)
+		return false
+	if not GameData.use_lmp_database(true):
+		message.emit(RemakeText.t("Unknown zone ") + base)
+		return false
+	lmp = {"base": base, "quest": "", "last": "", "topics": [], "pk": pk}
+	coop.joiners.clear()   # brought campaign heroes have no part in it
+	coop.lmp_purses.clear()
+	if online:
+		_rpc_lmp.rpc(lmp)
+	Shops.network = true   # the network shop table
+	state = CampaignState.new()
+	for pid in players:
+		var idx := int(players[pid].index)
+		coop.with_purse(idx, _ensure_lmp_hero.bind(idx, String(players[pid].name)))
+	LmpMode.base_vars(state, base)
+	enter_zone(base, 1)
+	if quest:
+		SideQuests.take_lmp(self, quest)
+	else:
+		SideQuests.lmp_offer(self)
+	return true
+
+
+## The connection (peer id) of player slot `idx` now, 0 = none.
+func _pid_of(idx: int) -> int:
+	for pid in players:
+		if int(players[pid].index) == idx:
+			return int(pid)
+	return 0
+
+
+## LMP: a player's network hero. **Approx.** (the network character screens,
+## are not ported): databaseLMP.res "Human Hero"
+## (prototype kit, NPC row attributes / skills / experience) named after the
+## player.
+func _ensure_lmp_hero(idx: int, player_name: String) -> void:
+	if state.heroes.has(idx):
+		return
+	state.ensure_hero(idx, "Human Hero", player_name)
+	var h: Dictionary = state.heroes[idx][0]
+	if player_name.strip_edges():
+		h.name = player_name.strip_edges()
+
+
+## Every peer: the multiplayer game's settings; a client switches to the
+## multiplayer database before the first zone comes (same channel, in order)
+## and sends its table digests again (CoopDb, NetStatus).
+@rpc("authority", "call_remote", "reliable")
+func _rpc_lmp(settings: Dictionary) -> void:
+	lmp = settings
+	GameData.use_lmp_database(not lmp.is_empty())
+	Shops.network = not lmp.is_empty()
+	net.send_db_digests()
+
+
+## Leaving the multiplayer game (back to the menu): the campaign database again.
+func _exit_tree() -> void:
+	if not lmp.is_empty():
+		lmp = {}
+		GameData.use_lmp_database(false)
+		Shops.network = false
+
+
 func _hero_proto(index: int) -> String:
 	if index == 0:
 		return "Human Hero"
@@ -188,6 +268,12 @@ func enter_zone(id: String, entrance: int, autosave := true) -> void:
 	if z.is_empty() or not z.has("mpr") or not zone_exists(id):
 		message.emit(RemakeText.t("Unknown zone ") + id)
 		return
+	if world and zone_id and not lmp.is_empty():
+		# a player whose hero is dead (or gone) when it is sent to
+		# another zone is respawned first (player =).
+		for u: GameUnit in world.units.values().duplicate():
+			if u.dead and u.controller >= 0 and u.has_meta("hero") and not u.get_meta("hero").has("merc"):
+				coop.with_purse(u.controller, respawn.bind(u))   # its own purse and bag
 	if world and zone_id:
 		state.store_party_positions(world)
 		state.collect_pets(world)
@@ -212,23 +298,27 @@ func enter_zone(id: String, entrance: int, autosave := true) -> void:
 	# their charge carries over and never refills.
 	for k in state.heroes:
 		for h: Dictionary in state.heroes[k]:
-			for it in h.get("quick", []):
-				if h.has("charges"):
-					h.charges.erase(it)
+			var q = h.get("quick", [])
+			for qi in q.size():
+				q[qi] = Items.with_charge(q[qi], Items.energy(q[qi]))
 	_deploy_parties(z, entrance)
 	state.visited[id] = true
-	coop.zone_entered(id)
+	_lmp_entrance = entrance
+	if lmp.is_empty():
+		coop.zone_entered(id)
 	world.vm = ScriptVM.create(world, self)
 	_start_pose(z, entrance)
 	_replay_local()
 	if online:
 		_rpc_zone.rpc(id, _unit_records(), world.diplomacy, _extra_mobs(), z.mpr, _lever_states())
 		_send_world_state(0)
+	state.replay_restored(world)   # restored units' effect visuals, lasting ground spells
 	sync_state()
 	# the original runs the "autosave" command shortly after a zone has
 	# loaded (10th frame); the Autosave option switches it off.
-	if autosave and is_host and GameData.option("autosave"):
+	if autosave and is_host and GameData.option("autosave") and lmp.is_empty():
 		save_game.call_deferred("autosave")
+	ShaderWarmup.run(game)
 	LoadingScreen.end()
 	GameData.trace("zone ready %s" % id)
 
@@ -267,7 +357,10 @@ func _build_world(z: Dictionary, authority: bool) -> void:
 		MoviePlayer.preconvert(Array(MoviePlayer.ini_movies("Crdtfin")) + ["crdt"]
 			+ Array(MoviePlayer.ini_movies("Crdtfout")))
 	if authority:
-		var sq := SideQuests.active_in(self, zone_id)
+		# LMP: a quest zone is the zone's .mpr with its -LMP .mob plus the
+		# quest map's own <q>.mob (units, objects and script merged).
+		var sq := (zone_id if bool(z.get("lmp", false)) and z.get("type", "") == "game" else "") \
+			if not lmp.is_empty() else SideQuests.active_in(self, zone_id)
 		if sq:
 			SideQuests.spawn_units(w, sq)
 		state.restore_zone(zone_id, w)
@@ -284,7 +377,7 @@ const ENDING_ZONE := "gz20g"
 const ENDING_UNIT := 666666
 
 
-## Host: an equipped item broke (Combat._wear): the hero says so (ack 0x23
+## Host: an equipped item broke (Combat.wear_item): the hero says so (ack 0x23
 ## armour / 0x24 weapon) and the item goes to the bag, where it waits for a
 ## repair in camp (tutorial it012). Crossing the critical level (codes 0x25 /
 ## 0x26) is acked by GameSound: no voice lines in acks.db, the
@@ -375,6 +468,9 @@ func _unit_record(u: GameUnit) -> Dictionary:
 	r.snap = u.snapshot()
 	if u.has_meta("loot"):
 		r.loot = true
+	if u.has_meta("lmp_owner"):
+		r.lmp_owner = int(u.get_meta("lmp_owner"))
+		r.lmp_conn = int(u.get_meta("lmp_conn", 0))
 	return r
 
 
@@ -389,6 +485,9 @@ func _spawn_record(r: Dictionary) -> GameUnit:
 			u.apply_snapshot(r.snap, true)
 		if r.get("loot", false):
 			u.set_meta("loot", [])
+		if r.has("lmp_owner"):
+			u.set_meta("lmp_owner", int(r.lmp_owner))
+			u.set_meta("lmp_conn", int(r.get("lmp_conn", 0)))
 	return u
 
 
@@ -415,6 +514,7 @@ func _rpc_zone(id: String, records: Array, diplo: PackedInt32Array, extra_mobs: 
 		_spawn_record(r)
 	_relink_heroes()
 	game.attach_world(world)
+	ShaderWarmup.run(game)
 	LoadingScreen.end()
 	GameData.trace("zone ready %s (from host)" % id)
 	net.zone_loaded()
@@ -520,7 +620,9 @@ func _track(event: Dictionary) -> void:
 						ev.dx = d2.normalized().x
 						ev.dy = d2.normalized().y
 				var spells: Array = _replay_state().spells
-				spells.append([ev, world.time + maxf(float(sp.duration), 1.0) * GameUnit.TICK])
+				# (A restored one, CampaignState.replay_restored, has only "left".)
+				spells.append([ev, world.time + (float(event.left) if event.has("left")
+					else maxf(float(sp.duration), 1.0) * GameUnit.TICK)])
 				while spells.size() > 16:
 					spells.pop_front()
 
@@ -640,6 +742,43 @@ func _extra_mobs() -> Array:
 
 # ------------------------------------------------------------------ travel
 
+## The player whose leave-zone box moves the party (co-op: the host, 0). The
+## multiplayer game: in the original every player leaves by its own living units
+## (counts only living ones, so a player whose hero is dead gets
+## no box and cannot leave). **Approx.**: the remake moves the party together,
+## so the box goes to the host while its hero lives, else to the lowest
+## player slot with a living hero.
+func leave_player() -> int:
+	if lmp.is_empty() or world == null:
+		return 0
+	var best := -1
+	for h: GameUnit in party_heroes():
+		if h.controller >= 0 and not h.get_meta("hero").has("merc") and (best < 0 or h.controller < best):
+			best = h.controller
+	return maxi(best, 0)
+
+
+## LMP, a player's hero died: when no player has a living hero left in a game
+## zone, nobody could open the leave box (needs a living unit)
+## and the original has no other way out for them. **Approx.** (remake rule): the
+## host sends the party to the base, where a player leaving the game zone
+## always goes (names the base); the zone change
+## respawns every dead hero first.
+func _lmp_all_dead_check() -> void:
+	if world == null or String(world.zone.get("type", "")) == "brief":
+		return
+	for h: GameUnit in world.units.values():
+		if h.controller >= 0 and h.has_meta("hero") and not h.get_meta("hero").has("merc") and not h.dead:
+			return
+	var base := String(lmp.get("base", ""))
+	var entrance := 1
+	for n in world.zone.get("exits", {}):
+		if String(world.zone.exits[n].get("to", "")).to_lower() == base:
+			entrance = int(world.zone.exits[n].get("to_exit", 1))
+	GameData.trace("lmp: every hero is dead, the party goes to " + base)
+	_lmp_leave(base, entrance)
+
+
 func party_heroes() -> Array:
 	var out := []
 	for u: GameUnit in world.units.values():
@@ -657,7 +796,7 @@ func party_heroes() -> Array:
 ## once, disarming; ✓ leaves through it
 ## ✗ only closes. Co-op: the host's party decides (the box goes to player 0).
 func _arm_exit(player: int, at: Vector2, has_units: bool) -> void:
-	if player != 0:
+	if player != leave_player():
 		return
 	_leave_armed = -1
 	if not has_units or world == null:
@@ -691,14 +830,15 @@ func _check_exits() -> void:
 		return
 	var r: Rect2 = ex.remove
 	var any := false
+	var lp := leave_player()
 	for h: GameUnit in party_heroes():
-		if h.controller != 0 or h.dead:
+		if h.controller != lp or h.dead:
 			continue
 		any = true
 		if not r.has_point(h.pos):
 			return
 	if any:
-		broadcast({"t": "leave_box", "to": 0, "exit": _leave_armed})
+		broadcast({"t": "leave_box", "to": lp, "exit": _leave_armed})
 		_auto_exit = _leave_armed
 		_leave_armed = -1
 
@@ -723,7 +863,7 @@ func _auto_exit_check() -> void:
 			or (world.vm and world.vm.briefings.active):
 		return
 	_auto_exit = n
-	broadcast({"t": "leave_box", "to": 0, "exit": n})
+	broadcast({"t": "leave_box", "to": leave_player(), "exit": n})
 
 
 ## A village leaves by its own rule (the village screen's update
@@ -770,8 +910,9 @@ func _village_exit_check() -> void:
 ## holding every living hero of the host's party, else -1.
 func _party_exit() -> int:
 	var n := -1
+	var lp := leave_player()
 	for h: GameUnit in party_heroes():
-		if h.controller != 0 or h.dead:
+		if h.controller != lp or h.dead:
 			continue
 		var e := _exit_at(h.pos)
 		if e < 0 or (n >= 0 and e != n):
@@ -791,6 +932,9 @@ func leave_zone(target: String, entrance: int) -> void:
 	if target.to_lower() == "endofgame":
 		broadcast({"t": "ending"})
 		return
+	if not lmp.is_empty():
+		_lmp_leave(target, entrance)
+		return
 	var z := campaign.zone(target)
 	if z.is_empty():
 		message.emit(RemakeText.t("Unknown destination ") + target)
@@ -807,6 +951,26 @@ func leave_zone(target: String, entrance: int) -> void:
 		push_warning("leave_zone: no route from " + target)
 		return
 	broadcast({"t": "travel", "options": travel_options, "from": target})
+
+
+## LMP: the base's exit names the pseudo-zone "MPGame1" — the zone of the
+## quest taken (LmpMode.GAME_ZONE); a quest zone's exit names its base. The
+## party goes there straight away (map-LMP.txt has no "#exit" to an edge and
+## the bases' "#position" is "for single player only").
+func _lmp_leave(target: String, entrance: int) -> void:
+	target = target.to_lower()
+	if target == LmpMode.GAME_ZONE:
+		target = String(lmp.get("quest", ""))
+		if target.is_empty():
+			# No quest taken: GS var z.MPGame1 = 1 closes the exit (it never
+			# arms, LmpMode.zone_var); a direct call stays as well.
+			return
+	if campaign.zone(target).is_empty() or not zone_exists(target):
+		message.emit(RemakeText.t("Unknown destination ") + target)
+		return
+	travel_options = []
+	broadcast({"t": "travel_close", "go": target})
+	call_deferred("enter_zone", target, entrance)
 
 
 ## Every entrance a route reaches, one option each; "hours" = the route's
@@ -930,7 +1094,10 @@ func apply_command(cmd: Dictionary, player: int) -> void:
 	var mine: Array[GameUnit] = []
 	for id in cmd.get("units", []):
 		var u: GameUnit = world.units.get(int(id))
-		if u and u.controller == player and not u.dead:
+		# The server's order handlers (
+		# ) leave out units with flag (BlockUnit, say_block).
+		if u and u.controller == player and not u.dead \
+				and not (u.blocked and Game.block_refuses(String(cmd.get("t", "")), shop_available())):
 			mine.append(u)
 	var target: GameUnit = world.units.get(int(cmd.get("target", -1)))
 	match String(cmd.t):
@@ -949,7 +1116,7 @@ func apply_command(cmd: Dictionary, player: int) -> void:
 				mine[i].command(mo)
 		"leave_exit":   # the leave-zone box's ✓
 			var lx: Dictionary = world.zone.get("exits", {}).get(int(cmd.get("exit", -1)), {})
-			if player == 0 and not lx.is_empty():
+			if player == leave_player() and not lx.is_empty():
 				leave_zone(String(lx.to), int(lx.get("to_exit", 1)))
 		"gait":
 			# HUD dial / movement keys: net message 0x35 per selected unit
@@ -973,18 +1140,22 @@ func apply_command(cmd: Dictionary, player: int) -> void:
 						u.attack(target, false, int(cmd.get("aim", -1)), bool(cmd.get("run", false)))
 		"follow":
 			# Follow order (HUD left strip, the original interaction mode 8): the
-			# selected units keep following the clicked unit.
+			# selected units keep following the clicked unit (Player motivation
+			# state 6,; see GameUnit._follow_tick).
 			if target and not target.dead:
 				for u in mine:
 					if u != target:
-						u.command({"type": "follow", "target": target, "dist": 2.5})
+						u.command({"type": "follow", "target": target})
 		"interact":
 			if target and not mine.is_empty():
 				_double_stand(mine[0], cmd, target.pos, TALK_REACH)
 				mine[0].command({"type": "follow", "target": target, "dist": TALK_REACH, "once": true, "run": bool(cmd.get("run", false))})
 				mine[0].set_meta("interact", [target, player])
-				for u in mine.slice(1):
-					u.command({"type": "follow", "target": mine[0], "dist": 2.5, "once": true})
+				# The other selected units get no order: the server's handler of
+				# the use / talk packet 0x36 orders one unit only
+				# (the nearest one whose path reaches the target)
+				# and leaves the rest where they are. **Approx.**: the remake's
+				# talker is the first selected unit, not the nearest.
 		"cast":
 			var u := _hero_unit(int(cmd.get("unit", -1)), player)
 			var spell := String(cmd.get("spell", "")).to_lower()
@@ -1005,7 +1176,7 @@ func apply_command(cmd: Dictionary, player: int) -> void:
 			if u and camp_available() and Perks.learn(u.get_meta("hero"), String(cmd.get("perk", ""))):
 				Combat.hero_stats(u, u.get_meta("hero"))
 				sync_state()
-		"equip", "unequip", "use", "give_quick", "take_quick", "enchant", "enchant_item", "select_weapon", "learn":
+		"equip", "unequip", "use", "give_quick", "take_quick", "select_weapon", "learn", "unlearn":
 			_item_command(cmd, player)
 		"buy", "sell":
 			_trade(cmd, player)
@@ -1015,6 +1186,8 @@ func apply_command(cmd: Dictionary, player: int) -> void:
 			_construct(cmd, player)
 		"deconstruct":
 			_deconstruct(cmd)
+		"spell_constr":
+			_spell_constr(cmd, player)
 		"use_lever":
 			var obj = world.objects.get(int(cmd.get("target", -1)))
 			if obj and world.lever_sys.usable(int(cmd.target)) and not mine.is_empty():
@@ -1025,14 +1198,14 @@ func apply_command(cmd: Dictionary, player: int) -> void:
 				mine[0].set_meta("interact", [obj, player])
 		"steal":
 			var thief: GameUnit = world.units.get(int(cmd.get("unit", -1)))
-			if thief and thief.controller == player and thief.has_meta("hero") and target and not target.dead:
+			if thief and thief.controller == player and thief.has_meta("hero") and not thief.blocked and target and not target.dead:
 				# Approach to just inside the steal reach (ScriptVM._interact_reach).
 				var sr := maxf(0.3, world.vm._interact_reach(thief, target, "steal") - 0.1)
 				_double_stand(thief, cmd, target.pos, sr)
 				thief.command({"type": "follow", "target": target, "dist": sr, "once": true, "run": bool(cmd.get("run", false))})
 				thief.set_meta("interact", [target, player, "steal"])
 		"loot":   # any dead unit (checks only = dead)
-			if target and target.dead and lootable(target) and not mine.is_empty():
+			if target and target.dead and lootable(target, player, _pid_of(player)) and not mine.is_empty():
 				# Approach to just inside the loot reach (ScriptVM._interact_reach).
 				var lr := maxf(0.3, world.vm._interact_reach(mine[0], target) - 0.1)
 				_double_stand(mine[0], cmd, target.pos, lr)
@@ -1080,7 +1253,7 @@ func _spawn_merc(m: Dictionary, p: Vector2, facing := 0.0, deployed := false) ->
 		u.display_name = m.name
 		u.set_meta("hero", m)
 		if deployed:
-			Combat.clear_natural_armor(u)
+			Combat.clear_natural_armor(u, m)
 		Combat.hero_stats(u, m)
 		u.aggressive = bool(m.get("aggressive", true))
 		u.restore_gait(CampaignState.entry_gait(world, int(m.get("gait", 2))))
@@ -1227,13 +1400,15 @@ func _item_command(cmd: Dictionary, player: int) -> void:
 	# Equipment, runes and enchanting are town/camp business in the original
 	# (camp_available: a village or the global map's camp); in the field only
 	# the belt can be used.
-	if String(cmd.t) in ["equip", "unequip", "take_quick", "enchant", "enchant_item", "learn"] and not camp_available():
+	if String(cmd.t) in ["equip", "unequip", "take_quick", "learn", "unlearn"] and not camp_available():
 		return
 	match String(cmd.t):
 		"equip":
-			var bag_i := state.items.find(item)
+			# The bag entry itself, with its wear / charge suffix (find_item).
+			var bag_i := find_item(state.items, item)
 			if bag_i < 0:
 				return
+			item = state.items[bag_i]
 			var sl := Items.slot(item)
 			if sl.is_empty() or Items.is_broken(item):
 				return
@@ -1264,18 +1439,23 @@ func _item_command(cmd: Dictionary, player: int) -> void:
 			h.weapons.insert(0, item)
 			_refresh_hero(u)
 		"unequip":
-			if item in h.weapons:
-				h.weapons.erase(item)
-			elif item in h.armors:
-				h.armors.erase(item)
+			var wi := find_item(h.weapons, item)
+			var ai := find_item(h.armors, item) if wi < 0 else -1
+			if wi >= 0:
+				item = h.weapons[wi]
+				h.weapons.remove_at(wi)
+			elif ai >= 0:
+				item = h.armors[ai]
+				h.armors.remove_at(ai)
 			else:
 				return
 			state.items.append(item)
 			_refresh_hero(u)
 		"give_quick":
-			var bag_i := state.items.find(item)
+			var bag_i := find_item(state.items, item)
 			# At most four belt entries (CampaignState.BELT_SLOTS).
 			if bag_i >= 0 and Items.kind(item) == "quick" and h.get("quick", []).size() < CampaignState.BELT_SLOTS:
+				item = state.items[bag_i]
 				state.items.remove_at(bag_i)
 				h.get_or_add("quick", []).append(item)
 				sync_state()
@@ -1284,40 +1464,13 @@ func _item_command(cmd: Dictionary, player: int) -> void:
 			# item (case 0x3006: off the player's
 			# list into the bag).
 			var q: Array = h.get("quick", [])
-			var qi := q.find(item)
+			var qi := find_item(q, item)
 			if qi < 0:
 				return
+			item = q[qi]
 			q.remove_at(qi)
 			state.items.append(item)
 			sync_state()
-		"enchant_item":
-			# Put a spell on a weapon or armour (bag or worn) with an it/ic rune.
-			# the original's constructor (mode 5, the
-			# spell lying in the pile, attaches it)
-			# uses the spell up like the rune: "spell" is a known spell (taken
-			# out of the hero's book) or "spell:<id>" (a spell item from the bag).
-			var tgt := String(cmd.get("target", "")).to_lower()
-			var spell := String(cmd.get("spell", "")).to_lower()
-			var from_bag := spell.begins_with("spell:")
-			if from_bag:
-				spell = spell.substr(6)
-			var known: Array = h.get_or_add("spells", [])
-			var rune_i := state.items.find(item)
-			var sp_i := state.items.find("spell:" + spell) if from_bag else known.find(spell)
-			if rune_i < 0 or sp_i < 0 or not Items.can_enchant(tgt, spell) \
-					or item != "rune:" + Items.enchant_rune(tgt):
-				return
-			var done := Items.with_wear(Items.unworn(tgt) + "|" + spell, Items.wear(tgt))
-			var where: Array = h.weapons if tgt in h.weapons else (h.armors if tgt in h.armors else state.items)
-			if where.find(tgt) < 0:
-				return
-			where[where.find(tgt)] = done
-			state.items.erase(item)
-			if from_bag:
-				state.items.erase("spell:" + spell)
-			else:
-				known.remove_at(sp_i)
-			_refresh_hero(u)
 		"learn":
 			# A spell container from the bag into the hero's spells (the camp's
 			# drop checks: the spell's complexity
@@ -1334,22 +1487,21 @@ func _item_command(cmd: Dictionary, player: int) -> void:
 			state.items.remove_at(bag_i)
 			known.append(item.substr(6))
 			sync_state()
-		"enchant":
-			# Put a modifier rune from the bag into one of the hero's spells.
-			var spell := String(cmd.get("spell", "")).to_lower()
+		"unlearn":
+			# The skills screen's take-off of a spell (area 0
+			#  case 0x3008: off the player's list
+			#  into the bag as a spell container).
 			var known: Array = h.get("spells", [])
-			var si := known.find(spell)
-			var bag_i := state.items.find(item)
-			if si < 0 or bag_i < 0 or not item.begins_with("rune:") or not Spells.can_add(spell, item.substr(5)):
+			var sp := item.trim_prefix("spell:")
+			var ki := known.find(sp)
+			if ki < 0:
 				return
-			if not Spells.usable_by(h, u.max_mana, Spells.with_mod(spell, item.substr(5))):
-				return
-			state.items.remove_at(bag_i)
-			known[si] = Spells.with_mod(spell, item.substr(5))
+			known.remove_at(ki)
+			state.items.append("spell:" + sp)
 			sync_state()
 		"use":
 			var q: Array = h.get("quick", [])
-			var qi := q.find(item)
+			var qi := find_item(q, item)
 			if qi < 0 or u.dead:
 				return
 			# Potions / scrolls are spells in items.idb ("healing {e1}"), wands
@@ -1376,7 +1528,7 @@ func _item_command(cmd: Dictionary, player: int) -> void:
 				if tgt == null:
 					return
 			if Items.is_wand(item):
-				if not use_charge(h, item):
+				if not use_charge(q, qi):
 					return
 			else:
 				q.remove_at(qi)
@@ -1391,45 +1543,52 @@ func consume_quick(u: GameUnit, item: String) -> bool:
 		return false
 	var h: Dictionary = u.get_meta("hero")
 	var q: Array = h.get("quick", [])
-	var qi := q.find(item)
+	var qi := find_item(q, item)
 	if qi < 0:
 		return false
-	if Items.is_wand(item):
-		return use_charge(h, item)
+	if Items.is_wand(q[qi]):
+		return use_charge(q, qi)
 	q.remove_at(qi)
 	sync_state()
 	return true
 
 
-## A wand's current charge (item) in hero record `h` ("charges"
-## item → value; missing = full, Items.energy).
-static func wand_charge(h: Dictionary, item: String) -> float:
-	return float(h.get("charges", {}).get(item, Items.energy(item)))
+## Index of `item` in `list`: that very string, else (a command sent before
+## the item's state last changed) the first entry that is the same item
+## whatever its wear / charge; -1 if none.
+static func find_item(list: Array, item: String) -> int:
+	var i := list.find(item)
+	if i >= 0:
+		return i
+	var base := Items.unworn(item)
+	for j in list.size():
+		if list[j] is String and Items.unworn(list[j]) == base:
+			return j
+	return -1
 
 
 ## A wand use: the original allows it only while the spell's stamina
 ##  ≤ the charge; subtracts it, the wand stays (also
 ## 0), and queues the item for the clients (here the hero record
 ## in the synced state).
-func use_charge(h: Dictionary, item: String) -> bool:
-	var sp := Items.spell_of(item)
-	if not spend_charge(h, item, float(Spells.parse(sp).mana) if not sp.is_empty() else 0.0):
+func use_charge(list: Array, i: int) -> bool:
+	var sp := Items.spell_of(list[i])
+	if not spend_charge(list, i, float(Spells.parse(sp).mana) if not sp.is_empty() else 0.0):
 		return false
 	sync_state()
 	return true
 
 
-##  for any charged item (wand, enchanted weapon or armour): the
-## charge loses `cost` when it holds at least that much (more than
-## that with `strict`, the periodic check); false = nothing
-## spent. Charges are keyed by item name (approx.: the original's are per item).
-static func spend_charge(h: Dictionary, item: String, cost: float, strict := false) -> bool:
-	var cur := wand_charge(h, item)
+##  for any charged item (wand, enchanted weapon or armour)
+## `list[i]`: its charge (`Items.charge`, carried on the item string)
+## loses `cost` when it holds at least that much (more than that with
+## `strict`, the periodic check); false = nothing spent.
+static func spend_charge(list: Array, i: int, cost: float, strict := false) -> bool:
+	var it := String(list[i])
+	var cur := Items.charge(it)
 	if cur < cost or strict and cur <= cost:
 		return false
-	if not h.has("charges"):
-		h["charges"] = {}
-	h.charges[item] = cur - cost
+	list[i] = Items.with_charge(it, cur - cost)
 	return true
 
 
@@ -1498,7 +1657,7 @@ func open_shop(id: int) -> void:
 ## Script QuestComplete in single player: every
 ## trader restocks the next time its screen opens.
 func restock_shops() -> void:
-	for id: int in Shops.RECORDS:
+	for id: int in Shops.records():
 		shop_record(id).restock = true
 
 
@@ -1568,7 +1727,8 @@ func _sold_to(rec: Dictionary, item: String) -> void:
 	var plain := Items.unworn(item)
 	if Items.kind(plain) == "loot":
 		return
-	rec.goods[plain] = int(rec.goods.get(plain, 0)) + 1
+	var kept := Items.with_wear(item, 0.0)   # the charge stays
+	rec.goods[kept] = int(rec.goods.get(kept, 0)) + 1
 	var table := ""
 	var key := ""
 	if plain.begins_with("spell:"):
@@ -1615,7 +1775,10 @@ func _construct(cmd: Dictionary, player: int = 0) -> void:
 			cost += missing * Items.buy_price(piece)
 	# Optional spell slot (: the spell lying in the pile
 	# goes onto the item and is used up): "spell:<id>" from the
-	# bag, or a known spell of hero "unit".
+	# bag, or a known spell of hero "unit". It must fit the item (
+	# mode 5, Items.can_enchant) and, as every pile piece, adds trunc(its price
+	# × the constructor coefficient) to the deal (mode 5
+	# (piece, 6)).
 	var item := "%s.%s" % [bp.substr(3), mat]
 	var spell := String(cmd.get("spell", "")).to_lower()
 	var known: Array = []
@@ -1631,6 +1794,7 @@ func _construct(cmd: Dictionary, player: int = 0) -> void:
 			return
 		if not Items.can_enchant(item, spell.trim_prefix("spell:")):
 			return
+		cost += Items.constr_piece_price("spell:" + spell.trim_prefix("spell:"))
 	if state.money < cost:
 		return
 	state.money -= cost
@@ -1676,6 +1840,166 @@ func _deconstruct(cmd: Dictionary) -> void:
 	sync_state()
 
 
+## The party whose best knowledge / stamina the spell constructor uses
+## (walks the player's party): the
+## heroes and mercenaries `player` controls.
+func party_units(player: int) -> Array:
+	var out := []
+	if world:
+		for u: GameUnit in world.units.values():
+			if u.controller == player and u.has_meta("hero"):
+				out.append(u)
+	return out
+
+
+## The spell group of trader `sid` with the camp's GS overrides (:
+## record, i.offspellconstr / i.onspellconstr, i.noconstr hides the
+## constructor).
+func spell_constr_offered(sid: int) -> bool:
+	if sid == 0 or is_equal_approx(state.get_var(0, "i.noconstr"), 1.0):
+		return false
+	if is_equal_approx(state.get_var(0, "i.onspellconstr"), 1.0):
+		return true
+	return Shops.sells_spells(sid) and not is_equal_approx(state.get_var(0, "i.offspellconstr"), 1.0)
+
+
+## Host: the spell constructor's ✓ (mode 3, the deal
+##  mode 3) as one transaction; the answer goes back to the
+## player's camp screen ("constr_result": ok, op, the resulting items and
+## where the built spell went). Nothing is changed unless everything passes.
+## cmd.pile = [[id, from], ...]: first the spell ("spell:<id>"), then the
+## runes ("rune:<code>"); from = "bag", "shop" (the trader's goods
+## marks such a piece) or "known" (one of hero "unit"'s spells:
+## the remake lists them in the bag row; in the original the hero puts the
+## spell into the bag first).
+## - A spell with runes alone = take apart: costs trunc(price ×
+##   0.1) (mode 3); it is replaced by its keystone ("Prototype", = the
+##   spell's prototype) and one rune per modifier byte, in that order.
+## - A keystone + runes = build: the builder takes the keystone
+##    and each rune (per type), and
+##   the built spell must fit the party's best knowledge (≥ its complexity
+## ) and stamina (≥ __ftol of its cost). Costs
+##   Σ trunc(piece price × 0.2) (mode 2). The pile is emptied and the new spell
+##   container takes its place.
+## Each piece from the trader also costs its buy price (mode 0) and leaves the
+## goods. Money: party −= the total; ✓ is dimmed when it is short.
+## The pile is the remake's camp screen; its pieces leave the pile for the bag
+## (case 6: party pieces and the constructor's own results go to
+## the party), so the host puts the results in the bag; a spell built from a
+## hero's known spell goes back on that hero when he could learn it there
+## (the learn check, Spells.usable_by), else into the bag.
+## Approx.: a keystone and a rune-less spell are the same "spell:<code>" in
+## the remake, so a build needs at least one rune and only a spell with runes
+## is taken apart.
+func _spell_constr(cmd: Dictionary, player: int) -> void:
+	var res := _spell_constr_apply(cmd, player)
+	broadcast({"t": "constr_result", "to": player, "req": int(cmd.get("req", 0)), "ok": not res.is_empty(),
+		"op": String(res.get("op", "")), "items": res.get("items", []), "where": String(res.get("where", ""))})
+
+
+func _spell_constr_apply(cmd: Dictionary, player: int) -> Dictionary:
+	var sid := shop_id(cmd)
+	if not spell_constr_offered(sid):
+		return {}
+	var pile: Array = cmd.get("pile", [])
+	if pile.is_empty() or pile.size() > 1 + Spells.MAX_MODS:
+		return {}
+	var ids: Array[String] = []
+	var froms: Array[String] = []
+	for e in pile:
+		if not (e is Array and e.size() == 2):
+			return {}
+		ids.append(String(e[0]).to_lower())
+		froms.append(String(e[1]))
+	if not ids[0].begins_with("spell:") or not froms[0] in ["bag", "shop", "known"]:
+		return {}
+	for i in range(1, ids.size()):
+		if not ids[i].begins_with("rune:") or not froms[i] in ["bag", "shop"]:
+			return {}
+	var spell := ids[0].substr(6)
+	if Spells.parse(spell).proto.is_empty():
+		return {}
+	var take_apart := Spells.mods_of(spell).size() > 0
+	#  mode 3: a ready spell takes the pile alone; runes need a keystone.
+	if take_apart and ids.size() > 1 or not take_apart and ids.size() < 2:
+		return {}
+	# The pieces must be there: bag / trader counts, or the hero's spell.
+	var hu := _hero_unit(int(cmd.get("unit", -1)), player)
+	var known: Array = hu.get_meta("hero").get_or_add("spells", []) if hu else []
+	var need := {"bag": {}, "shop": {}}
+	for i in ids.size():
+		if froms[i] == "known":
+			if hu == null or not spell in known:
+				return {}
+		else:
+			need[froms[i]][ids[i]] = int(need[froms[i]].get(ids[i], 0)) + 1
+	for id: String in need.bag:
+		if _count_unworn(state.items, id) < int(need.bag[id]):
+			return {}
+	if not need.shop.is_empty() and not Shops.sells_spells(sid):
+		return {}
+	for id: String in need.shop:
+		if shop_count(id, cmd) < int(need.shop[id]):
+			return {}
+	# The deal (mode 3, prices with the record's coef).
+	var coef := Shops.coef(sid)
+	var cost := 0
+	if take_apart:
+		cost = int(float(Items.price(ids[0])) * float(coef[Items.Deal.SPELL_DECONSTR]))
+	else:
+		for id in ids:
+			cost += int(float(Items.price(id)) * float(coef[Items.Deal.SPELL_CONSTR]))
+	for i in ids.size():
+		if froms[i] == "shop":
+			cost += int(float(Items.price(ids[i])) * float(coef[Items.Deal.SPELL_BUY]))
+	var built := spell
+	if not take_apart:
+		for i in range(1, ids.size()):
+			var code := ids[i].substr(5)
+			if not Spells.constr_rune_fits(spell, i - 1, code):
+				return {}
+			built = Spells.with_mod(built, code)
+		if not Spells.constr_buildable(party_units(player), built):
+			return {}
+	if state.money < cost:
+		return {}
+	# Settle money and pieces together.
+	state.money -= cost
+	for id: String in need.bag:
+		for k in int(need.bag[id]):
+			state.items.remove_at(find_item(state.items, id))
+	for id: String in need.shop:
+		_take_goods(shop_record(sid).goods, id, int(need.shop[id]))
+	var ki := known.find(spell) if froms[0] == "known" else -1
+	if ki >= 0:
+		known.remove_at(ki)
+	var out := {"op": "take_apart" if take_apart else "build", "items": [], "where": "bag"}
+	if take_apart:
+		out.items.append("spell:" + String(Spells.parse(spell).code))
+		for m in Spells.mods_of(spell):
+			out.items.append("rune:" + m)
+		state.items.append_array(out.items)
+	else:
+		out.items.append("spell:" + built)
+		if ki >= 0 and Spells.usable_by(hu.get_meta("hero"), hu.max_mana, built):
+			known.insert(ki, built)
+			out.where = "known"
+		else:
+			state.items.append("spell:" + built)
+	sync_state()
+	return out
+
+
+## How many entries of `list` are `id` whatever their per-instance state.
+static func _count_unworn(list: Array, id: String) -> int:
+	var n := 0
+	var base := Items.unworn(id)
+	for x in list:
+		if x is String and (x == id or Items.unworn(x) == base):
+			n += 1
+	return n
+
+
 ## Host: repair in a settlement (the original shop mode 8): the
 ## worn part of the price, back to full durability (tutorial it012).
 func _repair(cmd: Dictionary, player: int) -> void:
@@ -1695,7 +2019,7 @@ func _repair(cmd: Dictionary, player: int) -> void:
 		if p > state.money:
 			return
 		state.money -= p
-		l[i] = Items.unworn(item)
+		l[i] = Items.with_wear(item, 0.0)   # only, the charge stays
 		if u and l != state.items:
 			_refresh_hero(u)
 		else:
@@ -1735,7 +2059,12 @@ func steal(u: GameUnit, t: GameUnit) -> void:
 ## exception: heroes and mercenaries (their bodies come back with respawn /
 ## the party; the original's own player corpses, flag
 ## carry a drop record instead, not ported).
-static func lootable(u: GameUnit) -> bool:
+## `conn`: the asking player's connection (peer id, 0 = not checked).
+static func lootable(u: GameUnit, player := -1, conn := 0) -> bool:
+	if u.has_meta("lmp_owner"):   # LMP hero body: its owner's connection only
+		var owner_conn := int(u.get_meta("lmp_conn", 0))
+		return u.dead and (player < 0 or (player == int(u.get_meta("lmp_owner")) \
+			and (conn == 0 or owner_conn == 0 or conn == owner_conn)))
 	return u.dead and not u.has_meta("hero")
 
 
@@ -1756,6 +2085,10 @@ func take_loot(u: GameUnit, corpse: GameUnit) -> void:
 	var got := []
 	var money := 0
 	for it: String in loot:
+		if it.begins_with("bag:"):   # an LMP body's bag item, whole (_lmp_respawn)
+			state.items.append(it.substr(4))
+			got.append(it.substr(4))
+			continue
 		var st := Items.parse_stack(it)
 		if st[0] == "money":
 			state.money += st[1]
@@ -1798,7 +2131,8 @@ func _ic_spells() -> void:
 		if u.dead or not u.has_meta("hero"):
 			continue
 		var h: Dictionary = u.get_meta("hero")
-		var items: Array = h.get("armors", []).duplicate()
+		var armors: Array = h.get("armors", [])
+		var items: Array = armors.duplicate()
 		var ws: Array = h.get("weapons", [])
 		if not ws.is_empty():
 			items.append(ws[0])
@@ -1810,7 +2144,8 @@ func _ic_spells() -> void:
 			var sp := Items.spell_of(it)
 			if sp.is_empty() or not int(Spells.parse(sp).flags) & 0x20000:
 				continue
-			var key := "%d:%s" % [i, it]
+			# The entry is the item, whatever its wear / charge (both on the string).
+			var key := "%d:%s" % [i, Items.unworn(it)]
 			var n := int(old.get(key, 0))
 			if n >= 1:
 				cd[key] = n - 1
@@ -1819,7 +2154,8 @@ func _ic_spells() -> void:
 			var p := Spells.parse(sp)
 			if protos.find(p.proto) == 24 and (healed or u.hp == u.max_hp):
 				continue
-			if not spend_charge(h, it, float(p.mana), true):
+			if not (spend_charge(armors, i, float(p.mana), true) if i < armors.size()
+					else spend_charge(ws, 0, float(p.mana), true)):
 				continue
 			if protos.find(p.proto) == 24:
 				healed = true
@@ -1911,13 +2247,28 @@ func hero_died(u: GameUnit) -> void:
 	for o: GameUnit in world.units.values():
 		if o.has_meta("hero") and not o.get_meta("hero").has("merc") and not o.dead and o.controller >= 0:
 			alive = true
-	if not online or not alive:
+	# only a single-player game ends (client message 9); in a
+	# network game a dead hero always comes back, even with everyone dead.
+	if (not online or not alive) and lmp.is_empty():
 		broadcast({"t": "game_over"})
 		return
-	var w := world
+	if not lmp.is_empty():
+		# The multiplayer game: runs only from the zone change
+		#  (player; no other caller, no timer). Its
+		# callers are the client's leave-zone request (message 3
+		# from the leave box), a zone by name
+		# (message 6,) and the
+		# script's LeaveToZone (0x8a): the hero stays dead until its player
+		# changes zone (enter_zone respawns it first).
+		_lmp_all_dead_check()
+		return
+	# Weak references: the zone (and the unit with it) may go before the timer.
+	var ur: WeakRef = weakref(u)
+	var wr: WeakRef = weakref(world)
 	get_tree().create_timer(RESPAWN_DELAY).timeout.connect(func():
-		if is_instance_valid(u) and u.dead and world == w:
-			coop.with_purse(u.controller, respawn.bind(u)))   # the death toll from its owner's purse
+		var du = ur.get_ref()
+		if du and du.dead and world != null and world == wr.get_ref():
+			coop.with_purse(du.controller, respawn.bind(du)))   # the death toll from its owner's purse
 
 
 ## money - round(money x [LMP] "Lost Money"), experience debt +=
@@ -1928,10 +2279,58 @@ func respawn(u: GameUnit) -> void:
 	var lost := int(round(state.money * GameData.ai_value("LMP", "Lost Money", 0.05)))
 	state.money -= lost
 	h.exp_debt = float(h.get("exp_debt", 0.0)) + GameData.ai_value("LMP", "Lost XP", 0.05) * float(h.get("exp_total", h.get("exp", 0.0)))
+	if not lmp.is_empty():
+		_lmp_respawn(u, lost)
+		return
 	for o: GameUnit in world.units.values():
 		if o != u and o.has_meta("hero") and not o.dead and o.controller >= 0:
 			u.pos = o.pos + Vector2(1.0, 0.0)
 			break
+	u.revive()
+	broadcast({"t": "party"})
+	sync_state()
+
+
+## LMP (the original, network branch): the dead hero's body stays
+## where it fell and the hero rises as a new unit (id + 250000)
+## through the party deployment (player, 0, 1), i.e. at the centre
+## of the deploy rect of the entrance its player came into the zone by (player
+## record zone / entrance, exit record +4..), facing as that
+## entrance's "#view". The money lost goes with the body: adds a
+## record {body id, owner connection, money, the player's item list
+## } to the world's list, and lets only that
+## connection (or −1 = anyone) loot the body. Remake: the body
+## is a dead copy of the hero carrying the lost money, lootable by its player
+## only ("lmp_owner"; "lmp_conn" its connection, so a player who has left
+## and come back cannot, as in the original) and carrying the lost money and the
+## whole bag: copies the player's item list into the record and
+##  empties it (runs in the player's purse, CoopProgress.with_purse)
+## the hero unit itself is moved and revived (same uid). Equipment and belt
+## stay on the hero. It runs at the zone change (hero_died), so the body is
+## left in the zone the player leaves (CampaignState.store_zone "bodies").
+func _lmp_respawn(u: GameUnit, lost: int) -> void:
+	var rec: Dictionary = u.info.duplicate(true)
+	rec.nid = world.new_uid()
+	rec.position = Vector3(u.pos.x, u.pos.y, 0)
+	var body := world.spawn_unit(rec)
+	if body:
+		body.controller = -1
+		body.facing = u.facing
+		var snap := body.snapshot()
+		snap[6] = int(snap[6]) | 1
+		body.apply_snapshot(snap, true)
+		body.set_meta("lmp_owner", u.controller)
+		body.set_meta("lmp_conn", _pid_of(u.controller))
+		var loot: Array = ["money[%d]" % lost] if lost > 0 else []
+		for it in state.items:
+			loot.append("bag:" + str(it))   # kept as they are (take_loot)
+		body.set_meta("loot", loot)
+		state.items.clear()
+		announce_unit(body)
+	var ex: Dictionary = world.zone.get("exits", {}).get(_lmp_entrance, {})
+	var rect: Rect2 = ex.get("deploy", Rect2(u.pos, Vector2.ZERO))
+	u.pos = world.nav.nearest_walkable(rect.get_center())
+	u.facing = deg_to_rad(float(ex.get("view", 0.0))) if ex.has("view") else u.facing
 	u.revive()
 	broadcast({"t": "party"})
 	sync_state()
@@ -2135,12 +2534,13 @@ func _relink_heroes() -> void:
 			if String(h.get("unit_name", h.name)) == String(u.info.get("name", "")):
 				u.set_meta("hero", h)
 				u.display_name = h.name
-				Combat.clear_natural_armor(u)   # as on the host (deployed heroes)
-		# Mercenaries a client controls (their units are named after them).
+				Combat.sync_natural_armor(u, h)   # as on the host (cleared when deployed)
+		# Mercenaries (their units keep the map name "merc<N>", CampaignState.merc_record).
 		for m: Dictionary in state.mercs.values():
-			if int(m.get("controller", -1)) == u.controller and String(m.get("name", "")) == String(u.info.get("name", "")):
+			if int(m.get("controller", -1)) == u.controller and String(state.merc_record(m).name) == String(u.info.get("name", "")):
 				u.set_meta("hero", m)
 				u.display_name = m.name
+				Combat.sync_natural_armor(u, m)
 
 
 ## Text from the current quest map's .mq archive (random quest zones).
@@ -2172,6 +2572,15 @@ func _rpc_hello(player_name: String, hero_class: String, protocol := 0, maps_md5
 	_rpc_players.rpc(players)
 	_rpc_welcome.rpc_id(pid, idx)
 	broadcast({"t": "msg", "text": net.joined_text(player_name)})
+	if not lmp.is_empty():
+		# The multiplayer game: its database first, then a network hero (no
+		# brought campaign hero, CoopProgress is the co-op campaign's).
+		_rpc_lmp.rpc_id(pid, lmp)
+		if in_game:
+			coop.with_purse(idx, _ensure_lmp_hero.bind(idx, player_name))
+			_spawn_late_joiner(idx, pid)
+		players_changed.emit()
+		return
 	coop.on_hello(pid, idx, player_name)
 	if in_game:
 		state.ensure_hero(idx, _hero_proto(idx), player_name)
@@ -2334,6 +2743,8 @@ func save_game(slot: String, save_name := "", frame: Image = null) -> void:
 	if not is_host:
 		message.emit(RemakeText.t("Only the host can save."))
 		return
+	if not lmp.is_empty():
+		return   # the multiplayer game has no saves (its network heroes keep themselves)
 	if coop.purse_active():   # mid-command of a joiner (its purse in state): right after
 		save_game.call_deferred(slot, save_name, frame)
 		return

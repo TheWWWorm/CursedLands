@@ -521,6 +521,9 @@ func on_event(e: Dictionary) -> void:
 		"got":
 			if int(e.get("to", -1)) in [-1, game.session.my_index]:
 				_got_items(e)
+		"constr_result":   # Session._spell_constr's answer to this player's camp screen
+			if int(e.get("to", -1)) == game.session.my_index:
+				_inventory._camp.constr_result(e)
 
 
 ## Client message 6 (handler: the items join the player's bag

@@ -15,6 +15,14 @@ var redress: EIResArchive
 var menus: EIResArchive
 var db: EIDatabase
 var texts: EIResArchive
+## res/textsLmp.res: the original loads it next to texts.res at start (:
+## both go through into the one text table), so `text` falls back
+## to it — the multiplayer names (unit lmp_*, allod names, base briefings).
+var texts_lmp: EIResArchive
+## The campaign database (res/database.res) while `db` is the multiplayer one.
+var _db_main: EIDatabase
+## True while `db` is res/databaseLMP.res (use_lmp_database).
+var lmp_db := false
 ## config/ai.reg: the original RPG / AI tuning constants ({section: {key: value}}).
 var ai_reg := {}
 ## aiinfo.res tiledesc.reg by ground type: {Name, Speed (/1024, -1 = impassable),
@@ -55,6 +63,9 @@ const OPTIONS := [
 	["gfx_volumetric", 1, 2, 11, 3, 1], ["gfx_terrain", 1, 2, 11, 4, 1],
 	["gfx_heat_haze", 1, 2, 11, 5, 1], ["gfx_ssao", 1, 2, 11, 6, 1], ["gfx_bloom", 1, 2, 11, 7, 1],
 	["gfx_far_view", 1, 2, 11, 8, 1], ["gfx_edge_fade", 1, 2, 11, 9, 0],
+	# Remake-only: severed limbs hidden and thrown off (SeveredLimb); off = the
+	# original, which keeps the part on the figure (GameUnit._show_severed).
+	["gfx_severed_limbs", 1, 2, 11, 10, 1],
 	# Second remake graphics page (group 12, "More effects…" from page 11).
 	["gfx_hd_textures", 1, 2, 12, 0, 1], ["gfx_soft_particles", 1, 2, 12, 1, 1],
 	["gfx_lit_particles", 1, 2, 12, 2, 1], ["gfx_contact_shadows", 1, 2, 12, 3, 1],
@@ -76,9 +87,11 @@ const OPTIONS := [
 	# FIXED_OPTIONS) and the free rows 3 and 9; render scale on the remake page.
 	["display_mode", 1, 3, 0, 0, 1], ["resolution", 1, 1, 0, 1, 0], ["fps_limit", 1, 8, 0, 2, 0],
 	["vsync", 1, 3, 0, 3, 1], ["show_fps", 1, 2, 0, 9, 0], ["render_scale", 1, 8, 11, 11, 4],
-	# Remake: units drawn between their 60 Hz physics steps (row 12 of the
-	# remake page; default on). Visual only: the game state is unchanged.
-	["phys_interp", 1, 2, 11, 12, 1],
+	# Remake: units drawn between their 60 Hz physics steps (row 5 of the
+	# Lighting and surfaces page, group 14 — the remake page's row 12 is its
+	# "Original look" preset; default on). Visual only: the game state is
+	# unchanged; not gfx_*, so the preset leaves it.
+	["phys_interp", 1, 2, 14, 5, 1],
 	# Remake camera rows (CameraRig, CameraFade) on the Sensitivity page, in its
 	# free row 5 and rows 8..13: style (0 original, 1 modern), the modern
 	# camera's pan / turn / zoom speeds (50 = ×1), follow, see-through, WASD.
@@ -162,6 +175,7 @@ const REMAKE_OPTIONS := {
 	"gfx_heat_haze": ["Heat haze", "Air shimmering above torches and camp fires."],
 	"gfx_ssao": ["Ambient occlusion", "Soft contact shadows (SSAO)."],
 	"gfx_bloom": ["Bloom", "Glow around bright lights."],
+	"gfx_severed_limbs": ["Severed limbs fly off", "A severed head, arm or leg is cut from the figure and thrown to the ground, where it lies for a while. Off: as the original, the part stays on the body, bloodied."],
 	"gfx_edge_fade": ["Map edge fade", "The last few metres of land at the map edge fade into the sky colour instead of ending in a hard edge."],
 	"display_mode": ["Display mode", "Windowed, fullscreen, or a borderless window covering the screen."],
 	"resolution": ["Resolution", "Window size when windowed; in fullscreen the 3D view is rendered at this size and scaled to the screen (the interface stays sharp)."],
@@ -196,7 +210,7 @@ const OPTIONS_APPLIED := ["volume_sfx", "volume_stream", "volume_voice", "power_
 	"show_flying_hp", "show_tutorial", "autosave", "tooltip_time", "switch_filters",
 	"camera_reverse_x", "camera_reverse_y", "reverse_stereo", "difficulty",
 	"gfx_sky", "gfx_water", "gfx_wind", "gfx_volumetric", "gfx_terrain", "gfx_heat_haze",
-	"gfx_ssao", "gfx_bloom", "gfx_far_view", "gfx_edge_fade",
+	"gfx_ssao", "gfx_bloom", "gfx_far_view", "gfx_edge_fade", "gfx_severed_limbs",
 	"gfx_hd_textures", "gfx_soft_particles", "gfx_lit_particles", "gfx_contact_shadows", "gfx_torch_glow", "gfx_water_reflections",
 	"gfx_firelight", "gfx_materials", "gfx_foliage_light", "gfx_weather_surfaces", "gfx_lava_light",
 	"q_aa", "q_shadows", "q_shadow_fit", "q_aniso", "confine_mouse",
@@ -344,6 +358,7 @@ func res_path(name: String) -> String:
 
 func _open_text_archives() -> void:
 	texts = EIResArchive.open_path(res_path("texts.res"))
+	texts_lmp = EIResArchive.open_path(res_path("textslmp.res"))
 	menus = EIResArchive.open_path(res_path("menus.res"))
 	EIText.code_page = EIText.detect_code_page(texts)
 	RemakeText.lang = RemakeText.detect(texts)   # the remake's own texts follow the edition
@@ -403,11 +418,36 @@ func get_texture(name: String) -> Texture2D:
 	return _texture_cache[name]
 
 
+## the original: a multiplayer game loads
+## res/databaseLMP.res in place of res/database.res (a whole database of its
+## own: the lmp_* monsters, other item / spell numbers, 117 NPC rows). `on`
+## switches GameData.db to it, off back to the campaign's. Returns false when
+## the installation has no databaseLMP.res.
+func use_lmp_database(on: bool) -> bool:
+	if on == lmp_db:
+		return true
+	if on:
+		var arc := EIResArchive.open_path(res_path("databaselmp.res"))
+		if arc == null:
+			return false
+		_db_main = db
+		db = EIDatabase.load_from(arc, true)
+	else:
+		db = _db_main if _db_main else db
+		_db_main = null
+	lmp_db = on
+	Items._cache.clear()
+	Spells._cache.clear()
+	return true
+
+
 ## A text entry from texts.res (e.g. "quest q0g", "briefing z1"), decoded; "" if missing.
 func text(key: String) -> String:
 	key = key.to_lower()
 	if not _text_cache.has(key):
 		var b := texts.read(key) if texts else PackedByteArray()
+		if b.is_empty() and texts_lmp:
+			b = texts_lmp.read(key)
 		_text_cache[key] = EIText.ansi(b).replace("\r", "") if not b.is_empty() else ""
 	return _text_cache[key]
 

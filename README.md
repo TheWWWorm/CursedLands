@@ -67,6 +67,7 @@ The whole campaign can be played together. One player chooses **Multiplayer** an
 - **In game.** Press **Enter** to chat. A player list under the minimap shows each player's ping.
 - **Options.** Every party member can get the full experience for a kill, instead of a share (on by default). Monsters can be made stronger with the number of players.
 - **Internet play.** If the router can't open the port automatically, forward UDP 27015 by hand, or use a virtual LAN such as Tailscale, ZeroTier or Radmin VPN and join with its address. IPv6 addresses work too, written as `[address]:port`.
+- **Original multiplayer mode.** Instead of the campaign, the host can pick one of the original game's four multiplayer bases (Gipath, Ingos, Suslanger or the Cave). Take quests from the base's quest giver and play the original multiplayer quest zones. Each player has their own gold and bag, and there is no saving, as in the original.
 - Up to 6 players. Everyone needs the same edition of the game (Russian and English editions can play together; the German edition plays with German only). Players can join a game already in progress. Only the host can save. Single-player pauses while menus are open; co-op never pauses.
 
 ## Controls

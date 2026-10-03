@@ -831,6 +831,8 @@ static func apply_env(env: Environment) -> void:
 			(v as Node3D).visible = on("gfx_torch_glow")
 		for d: Node in tree.get_nodes_in_group(&"gfx_contact_shadows"):
 			(d as Node3D).visible = on("gfx_contact_shadows")
+		for u: Node in tree.get_nodes_in_group(&"severed_units"):   # option gfx_severed_limbs
+			u.call(&"refresh_severed")
 
 
 ## Option gfx_torch_glow: fire and spell lights scatter strongly in the
