@@ -16,6 +16,8 @@ const PORT := 27015
 ## the original: the network screen's Max Players slider 0..5 + 1 (
 ## default 6; hosts with it); the host counts as one.
 const MAX_PLAYERS := 6
+## the original: the password field is 20 bytes.
+const PASSWORD_MAX := 20
 const SNAP_RATE := 0.1
 const SNAP_CHUNK := 8
 const SNAP_BYTES := 1100    # payload budget of one snapshot packet (MTU 1392)
@@ -64,6 +66,17 @@ var _lmp_entrance := 1
 ## the lobby (a "lobby" event), so a joiner who picked the other kind of game
 ## is shown what the host runs. Empty until known.
 var lobby_mode := {}
+## Host: the game's password ("" none; the original keeps at most 20
+## characters, refused joins get «lmp_wrong_password», NetStatus.refuse).
+var password := ""
+## Joiner: the password it joins with (the join page's Password row).
+var join_password := ""
+## Host: the port it hosts on (the LAN game list tells joiners).
+var host_port := PORT
+## Host: answers the LAN game list's queries (LanDiscovery).
+var lan: LanDiscovery
+## The original multiplayer game's player swap (PlayerSwap; also the remake's co-op).
+var swap: PlayerSwap
 
 
 func _ready() -> void:
@@ -88,11 +101,19 @@ func _ready() -> void:
 	upnp.name = "UpnpPort"
 	add_child(upnp)
 	upnp.finished.connect(func(_ok, text): message.emit(text))
+	lan = LanDiscovery.new()
+	lan.name = "LanDiscovery"
+	lan.session = self
+	add_child(lan)
+	swap = PlayerSwap.new()
+	swap.name = "PlayerSwap"
+	swap.session = self
+	add_child(swap)
 	multiplayer.connected_to_server.connect(func():
 		_relax_timeout(1)   # the client's own zone builds stall as long as the host's
 		coop.client_hello()
 		_send_mp_char()
-		_rpc_hello.rpc_id(1, GameData.player_name, GameData.hero_class, NetStatus.PROTOCOL, NetStatus.world_hash()))
+		_rpc_hello.rpc_id(1, GameData.player_name, GameData.hero_class, NetStatus.PROTOCOL, NetStatus.world_hash(), join_password))
 	multiplayer.server_disconnected.connect(func():
 		var t := net.server_lost_text()
 		if t:
@@ -125,7 +146,21 @@ func host(port := PORT, limit := MAX_PLAYERS) -> Error:
 		upnp.open(port)
 	my_index = 0
 	players = {1: {"index": 0, "name": GameData.player_name}}
+	host_port = port
+	password = password.left(PASSWORD_MAX)
+	lan.listen()   # the LAN game list (LanDiscovery)
 	return OK
+
+
+## Host: what the LAN game list shows of this game (LanDiscovery; the original's
+## server record: name, base, quest, players, max, password).
+func lan_info() -> Dictionary:
+	var mode := "lmp" if not lmp.is_empty() or String(lobby_mode.get("mode", "")) == "lmp" else "coop"
+	return {"name": String(players.get(1, {}).get("name", GameData.player_name)), "mode": mode,
+		"base": String(lmp.get("base", lobby_mode.get("base", ""))) if mode == "lmp" else "",
+		"quest": String(lmp.get("quest", "")), "players": players.size(), "max": max_players,
+		"pw": password != "", "ws": multiplayer.multiplayer_peer is WebSocketMultiplayerPeer,
+		"port": host_port, "in_game": world != null}
 
 
 ## Host, before the game starts: what it is about to start (lobby_mode),
@@ -405,6 +440,8 @@ func enter_zone(id: String, entrance: int, autosave := true) -> void:
 			if u.dead and u.controller >= 0 and u.has_meta("hero") and not u.get_meta("hero").has("merc"):
 				coop.with_purse(u.controller, respawn.bind(u))   # its own purse and bag
 	if world and zone_id:
+		if String(world.zone.get("type", "game")) != "brief":
+			state.store_follow(world)   # record, game zones only
 		state.store_party_positions(world)
 		state.collect_pets(world)
 		state.store_zone(zone_id, world)
@@ -434,6 +471,8 @@ func enter_zone(id: String, entrance: int, autosave := true) -> void:
 			for qi in q.size():
 				q[qi] = Items.with_charge(q[qi], Items.energy(q[qi]))
 	_deploy_parties(z, entrance)
+	if not _restoring and String(z.get("type", "game")) != "brief":
+		state.apply_follow(world)   # the records' follow targets, mode 1 only
 	LoadingScreen.step(8)
 	state.visited[id] = true
 	_lmp_entrance = entrance
@@ -1471,8 +1510,16 @@ func apply_command(cmd: Dictionary, player: int) -> void:
 ## `deployed`: placed with the party at a zone entry (no natural
 ## armour, Combat.clear_natural_armor), not hired inside the zone.
 func _spawn_merc(m: Dictionary, p: Vector2, facing := 0.0, deployed := false) -> GameUnit:
-	if not players_include(int(m.get("controller", 0))):
-		m.controller = _merc_owner()
+	# Co-op (remake): a joiner's mercenary whose player is away (a save loaded
+	# before it rejoined) is held by a present player until it comes back
+	# (_spawn_late_joiner); the record keeps its owner, so saves keep it too.
+	var owner_idx := int(m.get("controller", 0))
+	var lent := -1
+	if not players_include(owner_idx):
+		if owner_idx > 0 and state.heroes.has(owner_idx):
+			lent = owner_idx
+		else:
+			m.controller = _merc_owner()
 	var rec := state.merc_record(m)
 	rec.position = Vector3(p.x, p.y, 0)
 	# The mercenary keeps the id of its name (the original
@@ -1482,7 +1529,9 @@ func _spawn_merc(m: Dictionary, p: Vector2, facing := 0.0, deployed := false) ->
 		rec.nid = world.new_uid()
 	var u := world.spawn_unit(rec)
 	if u:
-		u.controller = int(m.controller)
+		u.controller = int(m.controller) if lent < 0 else _merc_owner()
+		if lent >= 0:
+			u.set_meta("lent_of", lent)
 		u.faction = 0
 		u.mode = "player"
 		u.facing = facing
@@ -2839,14 +2888,18 @@ func quest_text(key: String) -> String:
 # ------------------------------------------------------------------ players
 
 @rpc("any_peer", "call_remote", "reliable")
-func _rpc_hello(player_name: String, hero_class: String, protocol := 0, maps_md5 := "") -> void:
+func _rpc_hello(player_name: String, hero_class: String, protocol := 0, maps_md5 := "", pw := "") -> void:
 	if not is_host:
 		return
 	var pid := multiplayer.get_remote_sender_id()
 	if not CoopProgress.peer_alive(multiplayer, pid):
 		return   # dropped again before its hello was handled (it will say hello anew)
+	# A wrong password is refused before a stale connection of the same name
+	# is dropped (it must not push the real player out).
+	if password != "" and pw.left(PASSWORD_MAX) != password and net.refuse(pid, protocol, maps_md5, player_name, pw):
+		return
 	_drop_stale_peer(pid, player_name)
-	if net.refuse(pid, protocol, maps_md5, player_name):
+	if net.refuse(pid, protocol, maps_md5, player_name, pw):
 		return
 	var idx := _player_slot(player_name)
 	var in_game := world != null
@@ -2923,6 +2976,10 @@ func _spawn_late_joiner(idx: int, pid: int) -> void:
 			break
 	var reclaimed := false
 	for u: GameUnit in world.units.values():
+		if int(u.get_meta("lent_of", -1)) == idx:   # its mercenary, held while it was away (_spawn_merc)
+			u.remove_meta("lent_of")
+			u.controller = idx
+			u.command({"type": "wait", "t": 0.1})
 		if int(u.get_meta("orphan_of", -1)) == idx and u.controller < 0:
 			u.remove_meta("orphan_of")
 			u.controller = idx
@@ -2944,6 +3001,10 @@ func _spawn_late_joiner(idx: int, pid: int) -> void:
 			u.mode = "player"
 			state.apply_hero(u)
 			fresh.append(u)
+	# A hero not deployed when the save was loaded (its player was away)
+	# takes up the follow order the save kept for it.
+	if not fresh.is_empty():
+		state.apply_follow(world, "follow_live", fresh)
 	_rpc_zone.rpc_id(pid, zone_id, _unit_records(), world.diplomacy, _extra_mobs(),
 		String(world.zone.get("mpr", "")), _lever_states())
 	_send_world_state(pid)
@@ -3036,6 +3097,7 @@ func save_game(slot: String, save_name := "", frame: Image = null) -> void:
 	state.store_zone(zone_id, world)
 	state.current_zone = zone_id
 	state.store_party_positions(world)
+	state.store_follow(world, "follow_live")
 	state.camera = game.rig.pose() if game and game.rig else {}   # scenario.sav camera record
 	if game and game.hud and game.hud.minimap and not state.camera.is_empty():
 		state.camera["minimap_zoom"] = game.hud.minimap.zoom   #  reads it back
@@ -3101,6 +3163,7 @@ func load_game(slot: String) -> bool:
 	enter_zone(s.current_zone, 1, false)
 	_restoring = false
 	state.restore_party_positions(world)
+	state.apply_follow(world, "follow_live")
 	# Every unit drawn where it now stands: the zone state and the party's
 	# saved spots moved them after they were made (at their map / deploy
 	# spots), so each is placed at once with no interpolation from there.

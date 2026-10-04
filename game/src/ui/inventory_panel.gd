@@ -103,11 +103,39 @@ func _ready() -> void:
 	add_child(_camp)
 	_camp.exit_pressed.connect(func(): visible = false)   # Exit (tip 20107)
 	_camp.hero_step.connect(_step_hero)
+	_camp.swap_cmd.connect(func(cmd): hud.game.session.swap.send(cmd))
+
+
+## The player swap's screen (the original screen 9, CampView mode "swap"): open
+## while this player's offer and its partner's point at each other (the base
+## strip's draw opens it, (9)); it closes by itself
+## once that pairing is gone (: committed, withdrawn by either
+## side, or the partner gone). It waits while another screen is up.
+func _process(_dt: float) -> void:
+	if hud == null or hud.game == null or hud.game.session == null or hud.game.session.swap == null:
+		return
+	var paired := hud.game.session.swap.partner() >= 0
+	var in_swap := visible and _camp.visible and _camp.mode == "swap"
+	if paired and not visible and hud.game.world != null:
+		open_swap()
+	elif in_swap and not paired:
+		visible = false
+
+
+func open_swap() -> void:
+	_camp.shop_id = 0
+	shop_mode = true
+	_set_camp(true)
+	_camp.swap_open()
+	visible = true
+	refresh()
 
 
 ## `constr`: the trader picked from the topic list ("constr<N>", Shops); 0 opens
 ## the dressing screen alone (the global map's camp button, constr.current 0).
 func open(shop: bool, constr := 0) -> void:
+	if visible and _camp.mode == "swap" and hud.game.session.swap.partner() >= 0:
+		return   # the swap screen stays until the swap ends
 	_camp.shop_id = constr if shop else 0
 	Items.coef = Shops.coef(_camp.shop_id)
 	shop_mode = _camp.shop_id != 0
@@ -130,6 +158,16 @@ func _unhandled_key_input(e: InputEvent) -> void:
 		return
 	if _camp.visible and _camp.tutorial_visible():
 		return   # the tutorial window has the keys
+	if _camp.visible and _camp.mode == "swap":
+		# Esc withdraws the offer (the screen closes with the
+		# pairing); the money field takes digits and Backspace first.
+		if e.keycode == KEY_ESCAPE:
+			hud.game.session.swap.send({"t": "withdraw"})
+			get_viewport().set_input_as_handled()
+			return
+		if _camp.swap_type(e):
+			get_viewport().set_input_as_handled()
+			return
 	if e.keycode == KEY_ESCAPE:
 		visible = false
 		get_viewport().set_input_as_handled()

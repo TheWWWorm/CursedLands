@@ -1,5 +1,27 @@
 # Changelog
 
+## 0.1.7
+
+- Multiplayer:
+  - Games on your local network now appear in a list on the Multiplayer screen with their name, players, island and ping, as in the original. Click one to pick it, double-click to join.
+  - Hosts can set an optional password. A wrong password is refused with the original "Incorrect password" message.
+  - Original multiplayer game: the player strip on the base screen shows each player's face and status (On map, On Base, Trading, Enters).
+  - Player swap, as in the original: click a player on the base strip to offer a swap; it opens when they click you back. Trade bag items and money; both players confirm, and any change resets the confirmation.
+- Co-op:
+  - A hero told to follow (F) another keeps following after a zone change, as in the original: it waits in villages, picks up again in the next zone, and saves keep it.
+  - A mercenary hired by a friend no longer becomes the host's for good when the host loads a save before the friend rejoins. The host holds it until the friend is back.
+  - Heroes with their own bags can swap items and money the same way in villages.
+  - The player list no longer covers the camp screen's info panel.
+- Gamepad:
+  - Hold R3 to show names over nearby people, bodies, levers, chests, doors and exits.
+  - Camera views 1–4 on the RT wheel's Camera page (LT + pick stores the current view).
+  - In the Esc menu, Y quick saves and holding X quick loads.
+  - The Multiplayer screen, network characters and the co-op player list work with the D-pad, A, B and Y. A talks to villagers and hires or dismisses mercenaries.
+  - The DualSense and DualShock 4 light bar shows the leader's health (option "Light bar shows health").
+  - Confirming a wheel pick with A no longer also casts it at once, and potions and heals can target your own hero.
+- Fixes:
+  - Magic arrows, fireballs, acid columns, teleports and bow shots that are in flight when you save now carry on after loading instead of vanishing.
+
 ## 0.1.6
 
 - Fixes and changes:

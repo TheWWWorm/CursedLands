@@ -457,6 +457,7 @@ func tutorial_key(key_action: String) -> String:
 		"select_all": return "%s (%s)" % [label("UP"), RemakeText.t("hold")]
 		"quicksave", "quickload", "w_minimap", "w_text1", "w_text2", "tutorial_script": return rt
 		"w_info1", "w_info2", "w_info3", "w_info4": return "%s+%s" % [lt, label("DPAD_LR")]
+		"camera1", "camera2", "camera3", "camera4": return rt
 	if key_action.begins_with("spell"):
 		return lb
 	if key_action.begins_with("weapon") or key_action.begins_with("item"):
@@ -466,6 +467,35 @@ func tutorial_key(key_action: String) -> String:
 
 func glyph_of(a: String) -> Texture2D:
 	return glyph(button_of(a))
+
+
+# ------------------------------------------------------------------ light bar
+
+var _light := Color(-1, -1, -1)
+var _light_device := -1
+
+## The driving controller's light bar (DualSense / DualShock 4 and others
+## with a light, Input.has_joy_light), option pad_light (0 off). Only a
+## change is sent.
+func light(c: Color) -> void:
+	if device < 0 or not enabled() or GameData.option("pad_light") == 0 or not Input.has_joy_light(device):
+		return
+	if device == _light_device and c.is_equal_approx(_light):
+		return
+	_light = c
+	_light_device = device
+	Input.set_joy_light(device, c)
+
+
+## The light bar colour of a hero's health share: green, through yellow, to
+## red; a fallen leader dims it.
+static func health_colour(share: float) -> Color:
+	share = clampf(share, 0.0, 1.0)
+	if share <= 0.0:
+		return Color(0.15, 0.0, 0.0)
+	var c := Color(1.0, 0.1, 0.05).lerp(Color(1.0, 0.75, 0.05), clampf(share * 2.0, 0.0, 1.0)) if share < 0.5 \
+		else Color(1.0, 0.75, 0.05).lerp(Color(0.1, 0.9, 0.15), (share - 0.5) * 2.0)
+	return Color(snappedf(c.r, 0.05), snappedf(c.g, 0.05), snappedf(c.b, 0.05))
 
 
 # ------------------------------------------------------------------ rumble

@@ -321,16 +321,7 @@ static func apply(world: GameWorld, caster: GameUnit, spell: String, target: Gam
 			#  case 0x1c: effects at the destination (the target unit or
 			# point) and at the caster; the effect lives duration + 30 ticks, then
 			# the caster arrives (the move at the effect's end is inferred).
-			var dest := world.nav.nearest_walkable(at)
-			var cw = _ref(caster)
-			var arrive := func():
-				var c = _deref(cw)
-				if c and not c.dead:
-					c.pos = dest
-					c.path = PackedVector2Array()
-					c.order = {}
-					c.orders.clear()
-			_after(world, (float(p.duration) + 30.0) * GameUnit.TICK, arrive, true)
+			_teleport_later(world, caster, world.nav.nearest_walkable(at), int(p.duration) + 30)
 		"eagle_sight", "infravision", "detect_life":   # effect added to sight / night sight / life sense
 			for u: GameUnit in victims:
 				_buff(u, p.code, secs, {"sense": [["eagle_sight", "infravision", "detect_life"].find(p.code), power]})
@@ -376,13 +367,11 @@ static func _damage_spell(world: GameWorld, caster: GameUnit, p: Dictionary, tar
 				_area_hit(world, caster, p, at)
 			else:
 				var n := maxi(1, roundi(src.distance_to(at) / maxf(float(p.range), 1.0) * 15.0) - 2)
-				var cw = _ref(caster)
-				_later(world, n, func(): _area_hit(world, _deref(cw), p, at))
+				_area_later(world, caster, p, at, n)
 		"inv_lit":
 			_area_hit(world, caster, p, at)
 		"acid_column":
-			var cw = _ref(caster)
-			_later(world, 15, func(): _area_hit(world, _deref(cw), p, at))
+			_area_later(world, caster, p, at, 15)
 		"firewall", "litnwall":
 			var dir := Vector2(1, 0)
 			if caster:
@@ -396,10 +385,6 @@ static func _damage_spell(world: GameWorld, caster: GameUnit, p: Dictionary, tar
 			_lasting_tick(world, caster, p, at, Vector2.ZERO, dur, dur + 30)
 		_:   # lightning, curse_magic
 			_hit(world, caster, p, target)
-
-
-static func _later(world: GameWorld, ticks: int, f: Callable) -> void:
-	_after(world, float(ticks) * GameUnit.TICK, f)
 
 
 ## The world's spell timers (delayed hits, lasting effects, missiles) are
@@ -502,11 +487,21 @@ static func _caster_of(world: GameWorld, ref: Array) -> GameUnit:
 	return null
 
 
-## For CampaignState.store_zone.
+## For CampaignState.store_zone. Arrows and bolts in flight (Projectile, the
+## host's: they carry their strike) go with them: the original keeps a missile as
+## a world object with its hit record, written with
+## the world like the spell objects.
 static func save_lasting(world: GameWorld) -> Array:
-	if world == null or not world.has_meta("lasting_spells"):
+	if world == null:
 		return []
-	return _lasting(world).values().duplicate(true)
+	var out: Array = _lasting(world).values().duplicate(true) if world.has_meta("lasting_spells") else []
+	for c in world.get_children():
+		if c is Projectile and c.apply_hit and not c.is_queued_for_deletion() and is_instance_valid(c.target) \
+				and not c.target.dead:
+			var gp: Vector3 = c.global_position
+			out.append({"k": "shot", "source": _caster_ref(c.source), "target": _caster_ref(c.target),
+				"pos": [gp.x, gp.y, gp.z], "roll": c.roll.duplicate(true), "at": [0.0, 0.0], "counter": 0})
+	return out
 
 
 ## Host (CampaignState.replay_restored): saved lasting effects run on from
@@ -533,25 +528,98 @@ static func restore_lasting(world: GameWorld, list: Array) -> void:
 				var duration := int(rec.duration)
 				_after(world, GameUnit.TICK, func():
 					_fireworks_tick(world, at, radius, duration, counter, id))
+			"missile":   # a magic arrow / acid ray in flight: on from where it was
+				var p := parse(String(rec.spell))
+				var tw = _ref(_caster_of(world, rec.get("target", [])))
+				var pos := Vector2(float(rec.pos[0]), float(rec.pos[1]))
+				_after(world, GameUnit.TICK, func():
+					_missile_tick(world, _deref(cw), p, _deref(tw), pos, at, counter, id))
+				var tu: GameUnit = _deref(tw)
+				if world.session:   # its visual from there (no cast sound / flash)
+					world.session.broadcast({"t": "spellfx", "code": String(p.code), "spell": String(p.id), "sub": "",
+						"x": at.x, "y": at.y, "fx": pos.x, "fy": pos.y, "tu": tu.uid if tu else -1, "replay": true})
+			"area":   # a fireball on its way / an acid column rising
+				var p := parse(String(rec.spell))
+				_after(world, GameUnit.TICK, func():
+					_area_later(world, _deref(cw), p, at, counter - 1, id))
+				if world.session and String(p.code) == "fireball":
+					world.session.broadcast({"t": "spellfx", "code": "fireball", "spell": String(p.id), "sub": "",
+						"x": at.x, "y": at.y, "fx": at.x, "fy": at.y, "replay": true})
+			"teleport":
+				_after(world, GameUnit.TICK, func():
+					_teleport_later(world, _deref(cw), at, counter - 1, id), true)
+			"shot":   # an arrow / bolt in flight (save_lasting): on from where it was
+				_lasting(world).erase(id)
+				var tu := _caster_of(world, rec.get("target", []))
+				if tu and not tu.dead:
+					var pr := Projectile.new()
+					pr.world = world
+					pr.target = tu
+					pr.roll = Dictionary(rec.get("roll", {}))   # (before the shooter: kept as it was)
+					pr.source = _caster_of(world, rec.get("source", []))
+					world.add_child(pr)
+					pr.global_position = Vector3(float(rec.pos[0]), float(rec.pos[1]), float(rec.pos[2]))
+					if pr.source and world.session:
+						world.session.broadcast({"t": "arrow", "a": pr.source.uid, "b": tu.uid})
 			_:
 				_lasting(world).erase(id)
 
 
 ## CEffectArrow: steps 0.6667 m a tick toward the target unit (or the point),
 ## arriving within one step or after 400 ticks (as `ParticleFx._missile_tick`).
-static func _missile_tick(world: GameWorld, caster, p: Dictionary, target, pos: Vector2, point: Vector2, ticks: int) -> void:
+## `id`: its entry in the world's running spells (save_lasting).
+static func _missile_tick(world: GameWorld, caster, p: Dictionary, target, pos: Vector2, point: Vector2, ticks: int, id := -1) -> void:
 	if not is_instance_valid(world):
 		return
 	var t: GameUnit = target if target != null and is_instance_valid(target) else null
 	var dest := t.pos if t else point
 	if pos.distance_to(dest) < 0.6667 or ticks + 1 > 400:
+		_lasting(world).erase(id)
 		_hit(world, caster, p, t)
 		return
 	pos += (dest - pos).normalized() * 0.6667
+	id = _keep_lasting(world, id, {"k": "missile", "spell": String(p.id), "caster": _caster_ref(caster),
+		"target": _caster_ref(t), "pos": [pos.x, pos.y], "at": [point.x, point.y], "counter": ticks + 1})
 	var cw = _ref(caster)
 	var tw = _ref(t)
 	_after(world, GameUnit.TICK, func():
-		_missile_tick(world, _deref(cw), p, _deref(tw), pos, point, ticks + 1))
+		_missile_tick(world, _deref(cw), p, _deref(tw), pos, point, ticks + 1, id))
+
+
+## A delayed area hit (fireball on arrival, acid column at its 15th tick)
+## `ticks` logic ticks from now, kept with the world's running spells.
+static func _area_later(world: GameWorld, caster, p: Dictionary, at: Vector2, ticks: int, id := -1) -> void:
+	if not is_instance_valid(world):
+		return
+	if ticks <= 0:
+		_lasting(world).erase(id)
+		_area_hit(world, caster, p, at)
+		return
+	id = _keep_lasting(world, id, {"k": "area", "spell": String(p.id), "caster": _caster_ref(caster),
+		"at": [at.x, at.y], "counter": ticks})
+	var cw = _ref(caster)
+	_after(world, GameUnit.TICK, func():
+		_area_later(world, _deref(cw), p, at, ticks - 1, id))
+
+
+## Teleport (case 0x1c): the caster arrives at `dest` when the
+## effect ends, `ticks` logic ticks from now (also while paused).
+static func _teleport_later(world: GameWorld, caster, dest: Vector2, ticks: int, id := -1) -> void:
+	if not is_instance_valid(world):
+		return
+	if ticks <= 0:
+		_lasting(world).erase(id)
+		var c: GameUnit = caster if caster != null and is_instance_valid(caster) else null
+		if c and not c.dead:
+			c.pos = dest
+			c.path = PackedVector2Array()
+			c.order = {}
+			c.orders.clear()
+		return
+	id = _keep_lasting(world, id, {"k": "teleport", "caster": _caster_ref(caster), "at": [dest.x, dest.y], "counter": ticks})
+	var cw = _ref(caster)
+	_after(world, GameUnit.TICK, func():
+		_teleport_later(world, _deref(cw), dest, ticks - 1, id), true)
 
 
 ## one unit, after the filter when there is a caster.

@@ -241,7 +241,7 @@ func _on_action(a: String, phase: String) -> void:
 			var targets := _targets(panel)
 			if pointer_on or not targets.is_empty():
 				if not targets.is_empty() and not pointer_on:
-					_snap(targets, "")
+					_snap(targets, "", panel)
 				click(true)
 			else:
 				var k := _key_for(panel, a, KEY_ENTER)
@@ -298,17 +298,28 @@ func _nav(dir: String, panel: Node) -> void:
 		_canvas.queue_redraw()
 		key(_key_for(panel, dir, ARROWS[dir]))
 		return
-	_snap(targets, dir)
+	_snap(targets, dir, panel)
 
 
 ## The next snap target in `dir` from the focused one (spatial navigation:
 ## within ±60° of the direction, nearest by distance plus twice the sideways
-## offset); "" focuses the target nearest the pointer.
-func _snap(targets: Array, dir: String) -> void:
+## offset; when nothing lies there, anything ahead within ±89°); "" focuses
+## the target nearest the pointer. With nothing focused yet, a panel may name
+## where to start (`pad_focus() -> id`, e.g. its selected row): the first
+## press lands there.
+func _snap(targets: Array, dir: String, panel: Node = null) -> void:
 	var cur: Dictionary = {}
 	for t: Dictionary in targets:
 		if _focus_id != null and t.get("id") == _focus_id:
 			cur = t
+	if cur.is_empty() and panel != null and panel.has_method("pad_focus"):
+		var want: Variant = panel.call("pad_focus")
+		for t: Dictionary in targets:
+			if want != null and t.get("id") == want:
+				_focus_id = want
+				pointer_on = true
+				set_pointer((t.rect as Rect2).get_center())
+				return
 	var from := pointer if pointer.x >= 0.0 else _view_size() * 0.5
 	var best: Dictionary = {}
 	if cur.is_empty() or dir == "":
@@ -323,20 +334,23 @@ func _snap(targets: Array, dir: String) -> void:
 	else:
 		from = (cur.rect as Rect2).get_center()
 		var dv: Vector2 = DIRS[dir]
-		var bs := INF
-		for t: Dictionary in targets:
-			if t == cur:
-				continue
-			var off := (t.rect as Rect2).get_center() - from
-			if off.length() < 1.0:
-				continue
-			var along := off.dot(dv)
-			if along <= 0.0 or absf(off.angle_to(dv)) > deg_to_rad(60.0):
-				continue
-			var score := along + 2.0 * absf(off.cross(dv))
-			if score < bs:
-				bs = score
-				best = t
+		for cone in [60.0, 89.0]:
+			var bs := INF
+			for t: Dictionary in targets:
+				if t == cur:
+					continue
+				var off := (t.rect as Rect2).get_center() - from
+				if off.length() < 1.0:
+					continue
+				var along := off.dot(dv)
+				if along <= 0.0 or absf(off.angle_to(dv)) > deg_to_rad(cone):
+					continue
+				var score := along + 2.0 * absf(off.cross(dv))
+				if score < bs:
+					bs = score
+					best = t
+			if not best.is_empty():
+				break
 		if best.is_empty():
 			best = cur
 	if best.is_empty():
@@ -344,6 +358,14 @@ func _snap(targets: Array, dir: String) -> void:
 	_focus_id = best.get("id")
 	pointer_on = true
 	set_pointer((best.rect as Rect2).get_center())
+
+
+## A panel moves the focus itself (a list scrolled by the D-pad): the target
+## `id` at `rect` (viewport pixels).
+func focus_target(id: Variant, rect: Rect2) -> void:
+	_focus_id = id
+	pointer_on = true
+	set_pointer(rect.get_center())
 
 
 ## The id of the focused snap target (tests, panels).

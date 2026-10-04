@@ -102,6 +102,11 @@ func to800(p: Vector2) -> Vector2:
 	return (p - _origin()) / kv()
 
 
+## Remake (gamepad, PadUI snap targets): an 800×600 rect in viewport pixels.
+func pad_rect(r: Rect2) -> Rect2:
+	return get_global_transform_with_canvas() * r8(r)
+
+
 func font_px(i: int) -> int:
 	return maxi(6, int(round(_safe().size.x * _touch_zoom * FONT_EM[i])))
 

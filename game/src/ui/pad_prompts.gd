@@ -42,14 +42,17 @@ func _draw() -> void:
 		var head: Vector2 = mark.head
 		var col: Color = mark.get("color", PadWheel.BRONZE_HI)
 		_ring(feet, 16.0 * k, col, k)
-		var kind := String(mark.get("cursor", ""))
+		# R3 held: the world labels name everything; the ring alone marks
+		# the target, so its cursor and name do not cover a label.
+		var info := bool(field.get("world_info"))
+		var kind := "" if info else String(mark.get("cursor", ""))
 		if kind != "":
 			var n := GameCursor.frames(kind).size()
 			var tex := _cursor_tex(kind, int(_t / 0.125) % maxi(1, n))
 			if tex:
 				var s := 26.0 * k
 				draw_texture_rect(tex, Rect2(head + Vector2(-s * 0.5, -s - 4.0 * k), Vector2(s, s)), false)
-		var name := String(mark.get("name", ""))
+		var name := "" if info else String(mark.get("name", ""))
 		if name != "":
 			var font := Interface800.font()
 			var fs := int(12.0 * k)

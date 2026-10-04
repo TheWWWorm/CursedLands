@@ -159,6 +159,7 @@ const OPTIONS := [
 	["pad_deadzone", 0, 40, 15, 2, 13], ["pad_cursor_speed", 0, 100, 15, 3, 50],
 	["pad_target_radius", 0, 26, 15, 4, 6], ["pad_wheel_pause", 1, 2, 15, 5, 1],
 	["pad_glyphs", 1, 5, 15, 6, 0], ["pad_swap_sticks", 1, 2, 15, 7, 0],
+	["pad_light", 1, 2, 15, 8, 1],
 ]
 ## The original's speed / quality switches (the original rows shadow_units
 ## shadow_buildings, shadow_flora) are not offered: always at their best.
@@ -218,6 +219,7 @@ const REMAKE_OPTIONS := {
 	"pad_wheel_pause": ["Pause while a wheel is open", "Single player: the game pauses while a controller wheel (spells, items, actions, the target ring) is open. Network games never pause."],
 	"pad_glyphs": ["Button pictures", "Which controller's button pictures the prompts show. Automatic follows the controller in use."],
 	"pad_swap_sticks": ["Swap sticks", "The right stick moves the hero and the left stick turns the camera."],
+	"pad_light": ["Light bar shows health", "Controllers with a light bar (DualSense, DualShock 4): its colour follows the leader's health, from green to red."],
 	"gfx_hd_textures": ["HD textures", "The original ground and object textures upscaled 2x once at load (edge-preserving Lanczos on the GPU): sharper up close, same colours. Applies from the next zone load."],
 	"gfx_soft_particles": ["Soft particles", "Smoke, fire and magic fade softly where they meet the ground and walls instead of cutting through them with a hard line."],
 	"gfx_lit_particles": ["Lit smoke and dust", "Smoke, dust and blood take the scene's light: unchanged in daylight, darker at night and in caves instead of glowing."],
@@ -284,7 +286,7 @@ const OPTIONS_APPLIED := ["volume_sfx", "volume_stream", "volume_voice", "power_
 	"display_mode", "resolution", "fps_limit", "vsync", "show_fps", "render_scale", "phys_interp",
 	"camera_style", "cam_pan_speed", "cam_rotate_speed", "cam_zoom_speed", "cam_follow",
 	"cam_see_through", "cam_wasd", "coop_full_xp", "coop_scale", "net_upnp", "net_websocket", "unit_fog", "path_through", "sp_full_xp", "aim_press_once", "start_zones", "sp_death_notice", "revive", "coop_player_names", "coop_share_loot",
-	"pad_enabled", "pad_rumble", "pad_deadzone", "pad_cursor_speed", "pad_target_radius", "pad_wheel_pause", "pad_glyphs", "pad_swap_sticks", "auto_graphics"]
+	"pad_enabled", "pad_rumble", "pad_deadzone", "pad_cursor_speed", "pad_target_radius", "pad_wheel_pause", "pad_glyphs", "pad_swap_sticks", "pad_light", "auto_graphics"]
 signal options_changed
 const GFX_REV := 4
 ## Option q_aa 5 (FSR 2): the 3D view at most this fraction of the window.

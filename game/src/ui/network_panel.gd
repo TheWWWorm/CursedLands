@@ -85,6 +85,16 @@ var upnp: UpnpPort
 var host_mode := {}
 ## Screenshots / tests: lay the screen out as the browser build does.
 var simulate_web := false
+## Host: the game's password ("" none; Session.password, the original's Password
+## switch case 5); joiner: the one it joins with
+## (Session.join_password, the original's «Enter password» box).
+var password := ""
+var join_password := ""
+## Join pages: the local network's games (LanDiscovery, the original's server
+## list); not in the browser build.
+var lan: LanDiscovery
+var _lan_sel := -1          # the selected LAN game (index into _lan_list)
+var _lan_list: Array = []   # the LAN games as drawn last (LanDiscovery.list)
 
 var _dim: Interface800.Backdrop
 var _board: InterfaceBoard
@@ -117,6 +127,10 @@ func _ready() -> void:
 	add_child(_board)
 	resized.connect(queue_redraw)
 	_load_book()
+	lan = LanDiscovery.new()
+	lan.name = "LanDiscovery"
+	add_child(lan)
+	add_to_group("pad_panel")   # remake: gamepad snap targets (pad_targets, pad_press)
 
 
 ## The co-op port: Session.PORT, or --port=N on the command line (remake).
@@ -148,6 +162,7 @@ func show_page(p: int) -> void:
 	_focus = ""
 	_hover = ""
 	_book_sel = -1
+	_lan_sel = -1
 	if p == HOST_COOP:
 		lmp_base = ""
 	elif p == HOST_LMP and not lmp_base in LmpMode.BASES:
@@ -290,9 +305,13 @@ func _rows() -> Array:
 		JOIN_COOP, JOIN_LMP:
 			out.append({"id": "addr", "kind": "edit", "label": RemakeText.t("Host's address"), "value": address, "on": not joining,
 				"hint": _addr_hint()})
+			out.append({"id": "password", "kind": "edit", "label": pw_label(), "value": join_password, "on": not joining,
+				"hint": _pw_hint(false)})
 	if page in [HOST_COOP, HOST_LMP]:
 		out.append({"id": "players", "kind": "slider", "label": RemakeText.t("Players"), "value": str(max_players), "on": not hosting,
 			"hint": RemakeText.t("At most, you included.")})
+		out.append({"id": "password", "kind": "edit", "label": pw_label(), "value": password, "on": not hosting,
+			"hint": _pw_hint(true)})
 	if page == HOST_COOP:
 		out.append({"id": "fullxp", "kind": "switch", "label": RemakeText.t(GameData.REMAKE_OPTIONS.coop_full_xp[0]),
 			"value": _on_off(XpRules.full_experience()), "on": true,
@@ -337,6 +356,21 @@ func _addr_hint() -> String:
 	return RemakeText.t("The address your friend's screen shows: an IP address, IP:port, or [IPv6]:port. Without a port, %d is used.") % Session.PORT
 
 
+## «Password» (textslmp lmp_connection_17, the server screen's switch).
+static func pw_label() -> String:
+	return NetStatus.lmp_text("lmp_connection_17", "", RemakeText.t("Password"))
+
+
+func _pw_hint(host: bool) -> String:
+	if host:
+		# the original tip 40613 «Password / Create a password protected server».
+		var tip := GameData.text("tip 40613").strip_edges().replace("\r", "").split("\n")
+		var t := String(tip[1]).strip_edges() if tip.size() > 1 else ""
+		return (t + ". " if t else "") + RemakeText.t("Friends must type it to join; leave it empty for a game anyone can join.")
+	return RemakeText.t("Only if the host set one (the list shows “%s”); otherwise leave it empty.") \
+		% NetStatus.lmp_text("lmp_connection_21", "", RemakeText.t("Password required"))
+
+
 func _bring_hint() -> String:
 	match CoopProgress.bring_slot:
 		"": return RemakeText.t("A hero of the class below, made for this game; nothing is kept afterwards.")
@@ -373,6 +407,7 @@ func _draw() -> void:
 	else:
 		_draw_page()
 	_draw_buttons()
+	_draw_pad_glyphs()
 
 
 func _draw_modes() -> void:
@@ -434,18 +469,27 @@ func _draw_page() -> void:
 
 
 func _row_rect(r: int) -> Rect2:
-	return Rect2(110, ROW0 + 24.0 * r, 580, 24)
+	return Rect2(110, ROW0 + _row_h() * r, 580, _row_h())
+
+
+## 24 units a row, less when the page has more rows than the upper panel
+## holds at 24 (host co-op with the password: 8).
+func _row_h() -> float:
+	var n := _rows().size() if page != MODES else 0
+	return minf(24.0, floorf((TOP.end.y - ROW0) / maxf(1.0, n)))
 
 
 func _draw_row(r: int, row: Dictionary) -> void:
 	var rr := _row_rect(r)
 	var y := rr.position.y
+	var h := rr.size.y
+	var m := (h - 18.0) * 0.5   # an edit field's or plate's margin
 	var id := "row:" + String(row.id)
 	_targets[id] = rr
 	var on: bool = row.on
 	if r == _sel:   # one band: the pointer moves the selection
 		draw_rect(r8(rr), BAR)
-	text_vc(Rect2(120, y, 275, 24), String(row.label), 1, TEXT if on else GREY)
+	text_vc(Rect2(120, y, 275, h), String(row.label), 1, TEXT if on else GREY)
 	var col := TEXT if on else GREY
 	match String(row.kind):
 		"edit":
@@ -453,26 +497,28 @@ func _draw_row(r: int, row: Dictionary) -> void:
 			var ph := ""
 			if row.id == "addr":
 				ph = RemakeText.t("e.g. wss://example.org/game") if _web() else RemakeText.t("e.g. 192.168.1.20 or 203.0.113.7:27015")
-			_edit(Rect2(400, y + 3, w, 18), String(row.value), _focus == row.id and on, on, ph)
+			elif row.id == "password":
+				ph = RemakeText.t("none")
+			_edit(Rect2(400, y + m, w, 18), String(row.value), _focus == row.id and on, on, ph)
 			if row.id == "addr":
-				_plate("paste", Rect2(613, y + 3, 74, 19), RemakeText.t("Paste"), on)
+				_plate("paste", Rect2(613, y + m, 74, 19), RemakeText.t("Paste"), on)
 		"choice":
-			_arrow(Vector2(408, y + 12), true, on)
-			_arrow(Vector2(682, y + 12), false, on)
-			text_vc(Rect2(418, y, 254, 24), String(row.value), 1, col, HORIZONTAL_ALIGNMENT_CENTER)
+			_arrow(Vector2(408, y + h * 0.5), true, on)
+			_arrow(Vector2(682, y + h * 0.5), false, on)
+			text_vc(Rect2(418, y, 254, h), String(row.value), 1, col, HORIZONTAL_ALIGNMENT_CENTER)
 		"switch":
-			text_vc(Rect2(400, y, 285, 24), String(row.value), 1, col)
+			text_vc(Rect2(400, y, 285, h), String(row.value), 1, col)
 		"slider":
 			if on:
 				hslider(_slider_rect(r), float(max_players - 1), float(Session.MAX_PLAYERS - 1))
-			text_vc(Rect2(590 if on else 400, y, 95, 24), String(row.value), 1, col)
+			text_vc(Rect2(590 if on else 400, y, 95, h), String(row.value), 1, col)
 		"link":
-			text_vc(Rect2(400, y, 180, 24), String(row.value), 1, col)
-			_plate("char", Rect2(585, y + 3, 102, 19), RemakeText.t("Choose…"), on)
+			text_vc(Rect2(400, y, 180, h), String(row.value), 1, col)
+			_plate("char", Rect2(585, y + m, 102, 19), RemakeText.t("Choose…"), on)
 
 
 func _slider_rect(r: int) -> Rect2:
-	return Rect2(400, ROW0 + 24.0 * r + 7, 180, 10)
+	return Rect2(400, ROW0 + _row_h() * r + _row_h() * 0.5 - 5.0, 180, 10)
 
 
 ## The scroll bar's arrow (Interface800.hslider) as a choice's step button.
@@ -577,29 +623,56 @@ func _book_rect() -> Rect2:
 func _draw_join_low() -> void:
 	var x0 := LOW.position.x + 10
 	var y := LOW.position.y + 6
-	# Left: the recent addresses, as the Load screen's list.
-	text(Rect2(x0, y, 340, 20), RemakeText.t("Recent addresses"), 1, ORANGE)
+	# Left: the local network's games and the recent addresses in one list,
+	# as the original's server list (: Name / # / Island / Ping, the
+	# address book's rows yellow, the others); in the
+	# browser only the recent addresses.
 	var br := _book_rect()
-	_book_top = clampi(_book_top, 0, maxi(0, addresses.size() - BOOK_ROWS))
-	if addresses.is_empty():
-		text(Rect2(x0, br.position.y + 2, 330, 18), RemakeText.t("none"), 0, GREY)
+	var items := _items()
+	var lan_on := _lan_on()
+	if lan_on:
+		for c: Array in _columns():
+			text(Rect2(c[0], y, c[1], 20), String(c[2]), 1, ORANGE, c[3])
+		var ly := br.position.y - 3
+		draw_line(p8(Vector2(br.position.x, ly)), p8(Vector2(br.end.x - 14, ly)), Color(ORANGE, 0.6), maxf(1.0, round(kv().y)))
+	else:
+		text(Rect2(x0, y, 340, 20), RemakeText.t("Recent addresses"), 1, ORANGE)
+	_book_top = clampi(_book_top, 0, maxi(0, items.size() - BOOK_ROWS))
+	if items.is_empty():
+		text(Rect2(x0, br.position.y + 2, 330, 18), RemakeText.t("Looking for games on your network…") if lan_on and not joining else RemakeText.t("none"), 0, GREY)
 	for k in BOOK_ROWS:
-		var i := _book_top + k
-		if i >= addresses.size():
+		var n := _book_top + k
+		if n >= items.size():
 			break
+		var it: Dictionary = items[n]
+		var id := "%s:%d" % [it.kind, it.i]
 		var rr := Rect2(br.position.x, br.position.y + 22 * k, br.size.x - 14, 22)
-		_targets["book:%d" % i] = rr
-		if i == _book_sel:
+		_targets[id] = rr
+		if (it.kind == "book" and it.i == _book_sel) or (it.kind == "lan" and it.i == _lan_sel):
 			draw_rect(r8(rr), BAR)
-		elif _hover == "book:%d" % i and not joining:
+		elif _hover == id and not joining:
 			draw_rect(r8(rr), HOVER_BAR)
-		text_vc(Rect2(rr.position.x + 4, rr.position.y, rr.size.x - 8, rr.size.y), addresses[i], 1, YELLOW if not joining else GREY, HORIZONTAL_ALIGNMENT_LEFT, true)
-	vbar(Rect2(br.position.x, br.position.y, br.size.x, br.size.y), float(_book_top), float(addresses.size() - BOOK_ROWS))
+		var col := GREY if joining else (YELLOW if it.kind == "book" else TEXT)
+		var g: Dictionary = it.g
+		if g.is_empty():
+			text_vc(Rect2(rr.position.x + 4, rr.position.y, rr.size.x - 8, rr.size.y), String(it.address), 1, col, HORIZONTAL_ALIGNMENT_LEFT, true)
+			continue
+		var cells := [String(g.name) if String(g.name) else String(it.address), "%d/%d" % [g.players, g.max], _island(g), str(g.ping)]
+		var cs := _columns()
+		for c in cs.size():
+			var cr := Rect2(cs[c][0], rr.position.y, cs[c][1], rr.size.y)
+			text_vc(cr, cells[c], 1 if c == 0 else 0, col, cs[c][3], true)
+	vbar(Rect2(br.position.x, br.position.y, br.size.x, br.size.y), float(_book_top), float(items.size() - BOOK_ROWS))
 	_plate("remove", Rect2(x0, LOW.end.y - 26, 110, 19), RemakeText.t("Remove"), _book_sel >= 0 and not joining)
-	# Right: the address formats, or the connection.
+	# Right: the selected game's details (right panel), the
+	# address formats, or the connection.
 	var rx := 460.0
 	var ry := LOW.position.y + 6
 	if not joining:
+		var sel := _selected_game()
+		if not sel.is_empty():
+			_draw_details(rx, ry, sel)
+			return
 		text(Rect2(rx, ry, 230, 20), RemakeText.t("Host's address"), 1, ORANGE)
 		_block(Rect2(rx, ry + 22, 230, 140), _addr_hint(), 0, TEXT, 8)
 		return
@@ -616,6 +689,95 @@ func _draw_join_low() -> void:
 			break
 		text(Rect2(rx + 10, ry, 220, 18), nm, 0, ORANGE)
 		ry += 16
+
+
+func _lan_on() -> bool:
+	return LanDiscovery.available() and not _web()
+
+
+## The list's columns [x, width, title, align]: textslmp lmp_connection_12..15
+## (Name / # / Island / Ping; the original x 120 / 250 / 278 / 348 over 270 px).
+func _columns() -> Array:
+	var x := _book_rect().position.x + 4
+	return [[x, 140.0, NetStatus.lmp_text("lmp_connection_12", "", RemakeText.t("Name")), HORIZONTAL_ALIGNMENT_LEFT],
+		[x + 142, 40.0, NetStatus.lmp_text("lmp_connection_13", "", "#"), HORIZONTAL_ALIGNMENT_CENTER],
+		[x + 184, 92.0, NetStatus.lmp_text("lmp_connection_14", "", RemakeText.t("Island")), HORIZONTAL_ALIGNMENT_LEFT],
+		[x + 278, 44.0, NetStatus.lmp_text("lmp_connection_15", "", RemakeText.t("Ping")), HORIZONTAL_ALIGNMENT_RIGHT]]
+
+
+## A game's "Island": the multiplayer game's base (lmp_allod_name_<n>), the
+## remake's co-op campaign by name.
+func _island(g: Dictionary) -> String:
+	if String(g.get("mode", "")) == "lmp":
+		return LmpMode.base_title(String(g.get("base", ""))) if String(g.get("base", "")) else "—"
+	return RemakeText.t("Co-op campaign")
+
+
+## [host, port] of an address-book entry ("ws://" kept off the host).
+static func _host_port(a: String) -> Array:
+	var t := a.strip_edges().trim_prefix("ws://").trim_prefix("wss://")
+	if t.contains("/"):
+		t = t.get_slice("/", 0)
+	return Session.parse_address(t, Session.PORT)
+
+
+## The game answering from an address-book entry's host, {} none.
+func _book_game(a: String) -> Dictionary:
+	if not _lan_on():
+		return {}
+	var hp := _host_port(a)
+	return lan.game_at(String(hp[0]), int(hp[1]))
+
+
+## The join list: the LAN games that are not in the address book, then the
+## book's entries, each {kind "lan" / "book", i, address, g (what its host
+## answered, {} none)}.
+func _items() -> Array:
+	var out := []
+	_lan_list = lan.list() if _lan_on() else []
+	var booked := {}
+	for i in addresses.size():
+		var g := _book_game(addresses[i])
+		if not g.is_empty():
+			booked[String(g.address)] = true
+		out.append({"kind": "book", "i": i, "address": addresses[i], "g": g})
+	var lans := []
+	for k in _lan_list.size():
+		if not booked.has(String(_lan_list[k].address)):
+			lans.append({"kind": "lan", "i": k, "address": String(_lan_list[k].address), "g": _lan_list[k]})
+	return lans + out
+
+
+## The game of the selected row, {} none (or a book entry nobody answered).
+func _selected_game() -> Dictionary:
+	if _lan_sel >= 0 and _lan_sel < _lan_list.size():
+		return _lan_list[_lan_sel]
+	if _book_sel >= 0 and _book_sel < addresses.size():
+		return _book_game(addresses[_book_sel])
+	return {}
+
+
+## the original details of a server: Server name / Players / Base
+## Quest / IP / Ping (textslmp lmp_connection_0, 1, 3, 4, 5, 6), and «Password
+## required» (lmp_connection_21) when the server has one.
+func _draw_details(rx: float, ry: float, g: Dictionary) -> void:
+	var lines := [
+		[NetStatus.lmp_text("lmp_connection_0", "", RemakeText.t("Server name:")), String(g.name)],
+		[NetStatus.lmp_text("lmp_connection_1", "", RemakeText.t("Players:")), "%d / %d" % [g.players, g.max]],
+		[NetStatus.lmp_text("lmp_connection_3", "", RemakeText.t("Base:")), _island(g)],
+	]
+	if String(g.get("quest", "")):
+		lines.append([NetStatus.lmp_text("lmp_connection_4", "", RemakeText.t("Quest:")), LmpMode.quest_title(String(g.quest))])
+	lines.append([NetStatus.lmp_text("lmp_connection_5", "", "IP:"), String(g.address)])
+	lines.append([NetStatus.lmp_text("lmp_connection_6", "", RemakeText.t("Ping:")), str(g.ping)])
+	for l: Array in lines:
+		text(Rect2(rx, ry, 230, 20), "%s %s" % l, 1, TEXT, HORIZONTAL_ALIGNMENT_LEFT, true)
+		ry += 20
+	if bool(g.get("pw", false)):
+		text(Rect2(rx, ry, 230, 20), NetStatus.lmp_text("lmp_connection_21", "", RemakeText.t("Password required")), 1, ORANGE)
+		ry += 20
+	if int(g.get("protocol", 0)) != NetStatus.PROTOCOL:
+		_block(Rect2(rx, ry, 230, LOW.end.y - ry - 4), NetStatus.lmp_text("lmp_wrong_protocol_msg", "", RemakeText.t("Wrong communication protocol version")), 0, ORANGE, 2)
 
 
 ## ✓ and ✗ (Options / Load positions), each with what it does now under it.
@@ -756,12 +918,17 @@ func _bring_title(slot: String, with_class := false) -> String:
 func _activate(id: String, dir := 0) -> void:
 	var step := -1 if dir < 0 else 1
 	match id:
-		"name", "addr":
+		"name", "addr", "password":
 			_focus = id
 			_caret_t = 0.0
 			if TouchInput.enabled:
 				if id == "name":
 					TouchTextEdit.open(self, player_name, NAME_MAX, func(v): player_name = v; queue_redraw(), "Player name")
+				elif id == "password":
+					if page in [HOST_COOP, HOST_LMP]:
+						TouchTextEdit.open(self, password, Session.PASSWORD_MAX, func(v): password = v; queue_redraw(), pw_label())
+					else:
+						TouchTextEdit.open(self, join_password, Session.PASSWORD_MAX, func(v): join_password = v; queue_redraw(), pw_label())
 				else:
 					TouchTextEdit.open(self, address, 256, func(v): address = v; queue_redraw(), "Server address")
 			return
@@ -822,6 +989,14 @@ func _paste() -> void:
 	queue_redraw()
 
 
+## A game with a password (the original: the «Enter password» box on ✓
+## ): the caret goes to the Password row when it is empty.
+func _ask_password(g: Dictionary) -> void:
+	if bool(g.get("pw", false)) and join_password.is_empty() and _row_on("password"):
+		_focus = "password"
+		_caret_t = 0.0
+
+
 ## ✓.
 func _primary() -> void:
 	match page:
@@ -844,6 +1019,12 @@ func _primary() -> void:
 			if a.is_empty() or a in ["ws://", "wss://"]:
 				status = RemakeText.t("Type the host's address first.")
 				_focus = "addr"
+				return
+			# the original: a listed server of another protocol is
+			# refused with «lmp_wrong_protocol» before connecting.
+			var g := _selected_game()
+			if not g.is_empty() and String(g.address) == a and int(g.get("protocol", 0)) != NetStatus.PROTOCOL:
+				status = NetStatus.lmp_text("lmp_wrong_protocol_msg", "", RemakeText.t("Wrong communication protocol version"))
 				return
 			sound("messbox\\ok")
 			_focus = ""
@@ -888,7 +1069,7 @@ func _gui_input(e: InputEvent) -> void:
 				if rows[r].id == "players":
 					max_players = hslider_value(_slider_rect(r), Session.MAX_PLAYERS - 1, p.x) + 1
 		elif _book_drag:
-			_book_top = vbar_value(_book_rect(), float(addresses.size() - BOOK_ROWS), p.y)
+			_book_top = vbar_value(_book_rect(), float(_items().size() - BOOK_ROWS), p.y)
 		var h := _hit(p)
 		if h != _hover:
 			_hover = h
@@ -902,7 +1083,7 @@ func _gui_input(e: InputEvent) -> void:
 		return
 	if e is InputEventMouseButton and e.pressed and e.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_DOWN]:
 		if page in [JOIN_COOP, JOIN_LMP] and _book_rect().has_point(to800(e.position)):
-			_book_top = clampi(_book_top + (-1 if e.button_index == MOUSE_BUTTON_WHEEL_UP else 1), 0, maxi(0, addresses.size() - BOOK_ROWS))
+			_book_top = clampi(_book_top + (-1 if e.button_index == MOUSE_BUTTON_WHEEL_UP else 1), 0, maxi(0, _items().size() - BOOK_ROWS))
 			queue_redraw()
 		accept_event()
 		return
@@ -914,12 +1095,13 @@ func _gui_input(e: InputEvent) -> void:
 	var h := _hit(p)
 	_focus = ""
 	if page in [JOIN_COOP, JOIN_LMP]:
-		var part := vbar_hit(_book_rect(), float(_book_top), float(addresses.size() - BOOK_ROWS), p)
-		if part and addresses.size() > BOOK_ROWS:
+		var n_items := _items().size()
+		var part := vbar_hit(_book_rect(), float(_book_top), float(n_items - BOOK_ROWS), p)
+		if part and n_items > BOOK_ROWS:
 			if part == "thumb":
 				_book_drag = true
 			elif part in ["up", "down"]:
-				_book_top = clampi(_book_top + (-1 if part == "up" else 1), 0, addresses.size() - BOOK_ROWS)
+				_book_top = clampi(_book_top + (-1 if part == "up" else 1), 0, n_items - BOOK_ROWS)
 			queue_redraw()
 			return
 	if h.is_empty():
@@ -945,9 +1127,22 @@ func _gui_input(e: InputEvent) -> void:
 			var i := h.trim_prefix("book:").to_int()
 			sound("save\\select")
 			_book_sel = i
+			_lan_sel = -1
 			address = addresses[i]
+			_ask_password(_book_game(address))
 			if e.double_click:
 				_primary()
+	elif h.begins_with("lan:"):
+		if not joining:
+			var k := h.trim_prefix("lan:").to_int()
+			if k < _lan_list.size():
+				sound("save\\select")
+				_lan_sel = k
+				_book_sel = -1
+				address = String(_lan_list[k].address)
+				_ask_password(_lan_list[k])
+				if e.double_click:
+					_primary()
 	elif h == "paste":
 		if not joining:
 			_paste()
@@ -991,7 +1186,7 @@ func _unhandled_key_input(e: InputEvent) -> void:
 		return
 	var k := e as InputEventKey
 	if k.keycode == KEY_V and (k.ctrl_pressed or k.meta_pressed):
-		if _focus == "name":
+		if _focus in ["name", "password"]:
 			for ch in DisplayServer.clipboard_get().strip_edges().get_slice("\n", 0):
 				_type(ch)
 		else:
@@ -1058,9 +1253,26 @@ func _type(c: String, back := false) -> void:
 		player_name = player_name.substr(0, player_name.length() - 1) if back else (player_name + c).substr(0, NAME_MAX)
 	elif _focus == "addr" and _row_on("addr"):
 		address = address.substr(0, address.length() - 1) if back else (address + c).substr(0, 256)
+		_lan_sel = -1
+	elif _focus == "password" and _row_on("password"):
+		# the original: a 20-byte field.
+		if page in [HOST_COOP, HOST_LMP]:
+			password = password.substr(0, password.length() - 1) if back else (password + c).substr(0, Session.PASSWORD_MAX)
+		else:
+			join_password = join_password.substr(0, join_password.length() - 1) if back else (join_password + c).substr(0, Session.PASSWORD_MAX)
 
 
 func _process(dt: float) -> void:
+	# The LAN game list asks while a join page is open (asks
+	# while the server screen is up), the address book's hosts directly.
+	var scan := visible and page in [JOIN_COOP, JOIN_LMP] and not joining and _lan_on()
+	if lan:
+		if scan:
+			var hosts := PackedStringArray()
+			for a in addresses:
+				hosts.append(String(_host_port(a)[0]))
+			lan.direct = hosts
+		lan.scan(scan)
 	if not visible:
 		return
 	_caret_t += dt
@@ -1078,3 +1290,90 @@ func _process(dt: float) -> void:
 	elif not joining and _switched_from >= 0:
 		_switched_from = -1
 	queue_redraw()
+
+
+# ------------------------------------------------------------------ gamepad
+
+## Remake (gamepad, PadUI; docs/gamepad_design.md §7): everything drawn as a
+## target is a snap target for the D-pad (the choices of game, the rows, the
+## plates, the recent addresses, ✓ / ✗). A on a row works it as Enter does
+## (a choice steps on, a switch flips, the name / address field takes the
+## keyboard, the character row opens its screen); D-pad ← / → on a choice or
+## the players slider changes it; Y is ✓; B is Esc (the key bridge). Other
+## targets are clicked at their centre, as the mouse does.
+func pad_targets() -> Array:
+	var out: Array = []
+	for id: String in _targets:
+		if id == "ok" and _ok_label().is_empty():
+			continue
+		out.append({"rect": pad_rect(_targets[id]), "id": id})
+	return out
+
+
+## Where the D-pad starts: the selected choice or row.
+func pad_focus() -> Variant:
+	if page == MODES:
+		return "mode:" + PAGE_NAMES[_sel + 1] if _sel >= 0 else null
+	var rows := _rows()
+	if rows.is_empty():
+		return null
+	return "row:" + String(rows[clampi(_sel, 0, rows.size() - 1)].id)
+
+
+## The row the gamepad's focus is on: {i, row}, {} when none.
+func _pad_row() -> Dictionary:
+	var ui: PadUI = PadInput.ui
+	var f: Variant = ui.focus_id() if ui else null
+	if page == MODES or not (f is String) or not String(f).begins_with("row:") or not ui.pointer_on:
+		return {}
+	var rows := _rows()
+	for r in rows.size():
+		if "row:" + String(rows[r].id) == f:
+			return {"i": r, "row": rows[r]}
+	return {}
+
+
+func pad_press(action: String, phase: String) -> bool:
+	if not phase in ["down", "repeat"]:
+		return false
+	match action:
+		"pause":   # Y = ✓
+			if phase == "down" and _ok_enabled():
+				_focus = ""
+				_primary()
+			return true
+		"up", "down":
+			_focus = ""   # the D-pad leaves a text field
+		"left", "right":
+			var h := _pad_row()
+			if h.is_empty() or not h.row.on or not String(h.row.kind) in ["choice", "slider"]:
+				_focus = ""
+				return false
+			_sel = h.i
+			_activate(String(h.row.id), -1 if action == "left" else 1)
+			return true
+		"interact":
+			var h := _pad_row()
+			if phase != "down" or h.is_empty():
+				return false
+			_sel = h.i
+			if h.row.on:
+				_activate(String(h.row.id))
+			queue_redraw()
+			return true
+	return false
+
+
+## The controller's buttons beside ✓ (Y) and ✗ (B) while it drives.
+func _draw_pad_glyphs() -> void:
+	if PadInput.active != "pad":
+		return
+	var gs := Vector2(22, 22)
+	if not _ok_label().is_empty():
+		var y := PadInput.glyph(PadInput.button_of("pause"))
+		if y:
+			draw_texture_rect(y, r8(Rect2(OK_RECT.position + Vector2(-26, 13), gs)), false,
+				Color.WHITE if _ok_enabled() else Color(0.5, 0.5, 0.5))
+	var b := PadInput.glyph(PadInput.button_of("cancel"))
+	if b:
+		draw_texture_rect(b, r8(Rect2(CANCEL_RECT.position + Vector2(-26, 13), gs)), false)

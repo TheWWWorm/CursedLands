@@ -50,6 +50,10 @@ var _last_sent := {}
 var _host_left := false
 var _rtt := {}          # host: pid -> smoothed round trip of _rpc_ping (ms)
 var _loaded_at := {}    # host: pid -> when it reported its zone built (ticks ms)
+## Host: pids whose trader screen is open (the original player state 2 «Trading»
+## lmp_status_camp: message 4 enters a trader, leaves).
+var _trading := {}
+var _trading_me := false   # this peer's own trader screen, as last told
 
 static var _lmp: EIResArchive
 static var _lmp_tried := false
@@ -242,6 +246,7 @@ func is_banned(pid: int, player_name: String) -> bool:
 
 func forget(pid: int) -> void:
 	status.erase(pid)
+	_trading.erase(pid)
 	_rtt.erase(pid)
 	_loaded.erase(pid)
 	_said.erase(pid)
@@ -309,6 +314,7 @@ func _ready() -> void:
 	_start_world_hash()
 	# Remake (CoopDb): a joiner takes the host's database numbers.
 	multiplayer.connected_to_server.connect(send_db_digests)
+	multiplayer.connected_to_server.connect(func(): _refused = false)   # joined again (another password)
 
 
 ## Joiner: its table digests to the host (on connecting, and again after it
@@ -390,13 +396,17 @@ static func _hash_maps(dir: String) -> String:
 
 ## Host: true when the joiner `pid` is turned down (its box is sent, the
 ## connection dropped a moment later).
-func refuse(pid: int, protocol: int, world: String, player_name := "") -> bool:
+func refuse(pid: int, protocol: int, world: String, player_name := "", pw := "") -> bool:
 	var why: Array = []
 	if is_banned(pid, player_name):   # remake: kick with ban (the original's refusal texts)
 		why = [lmp_text("lmp_you_are_banned", "", "You've been disconnected from the game."),
 			lmp_text("lmp_you_are_banned_msg", "", "Your computer's IP address has been disconnected from the game currently being played on this server.")]
 	elif session.players.size() >= session.max_players:
 		why = [lmp_text("lmp_server_full", "", "Server is full"), lmp_text("lmp_server_full_msg", "", "There is no room for another player in this game.")]
+	elif session.password != "" and pw.left(Session.PASSWORD_MAX) != session.password:
+		# the original: connect reply reason 3 «lmp_wrong_password».
+		why = [lmp_text("lmp_wrong_password", "", "Incorrect password"),
+			lmp_text("lmp_wrong_password_msg", "", "Connection is impossible. Please type correct password.")]
 	elif protocol != PROTOCOL:
 		why = [lmp_text("lmp_wrong_protocol", "", "Wrong communication protocol version"),
 			lmp_text("lmp_wrong_protocol_msg", "", "Wrong communication protocol version")]
@@ -408,6 +418,8 @@ func refuse(pid: int, protocol: int, world: String, player_name := "") -> bool:
 	print("NetStatus: join refused (%s)" % why[0])
 	_rpc_refused.rpc_id(pid, why[0], why[1])
 	get_tree().create_timer(1.0).timeout.connect(func():
+		if not multiplayer.get_peers().has(pid):
+			return   # already gone (the joiner closed, e.g. to try another password)
 		var enet := NetSim.enet_of(multiplayer)
 		if enet and enet.get_peer(pid):
 			enet.get_peer(pid).peer_disconnect_later()
@@ -447,6 +459,24 @@ static func keep_alive() -> void:
 			or mp.multiplayer_peer.get_connection_status() == MultiplayerPeer.CONNECTION_DISCONNECTED:
 		return
 	mp.multiplayer_peer.poll()
+
+
+## This peer's trader screen opened / closed (BaseStrip watches it): the
+## host shows the player as «Trading» on the base strip.
+func set_trading(on: bool) -> void:
+	if on == _trading_me or session == null or not session.online:
+		return
+	_trading_me = on
+	if session.is_host:
+		_trading[1] = on
+	else:
+		_rpc_trading.rpc_id(1, on)
+
+
+@rpc("any_peer", "call_remote", "reliable")
+func _rpc_trading(on: bool) -> void:
+	if session.is_host:
+		_trading[multiplayer.get_remote_sender_id()] = on
 
 
 ## Client, after building a zone the host sent.
@@ -491,6 +521,8 @@ func _physics_process(dt: float) -> void:
 				state = "lag"
 		elif session.world == null:
 			state = "connect"
+		if state == "base" and bool(_trading.get(pid, false)):
+			state = "camp"
 		out[pid] = {"ping": ping, "state": state}
 	status = out
 	status_changed.emit()
@@ -530,6 +562,7 @@ static func state_text(state: String) -> String:
 	match state:
 		"zone": return lmp_text("lmp_status_zone", "", "In zone")
 		"base": return lmp_text("lmp_status_base", "", "In base")
+		"camp": return lmp_text("lmp_status_camp", "", "Trading")
 		"connect": return lmp_text("lmp_status_connect", "", "Enters")
 		"lag": return RemakeText.t("Connection problems")
 	return state

@@ -113,6 +113,27 @@ extends Control
 ## piles 11 / 12 and 17 / 18, item
 ##   constructor 13 / 14 / 16 / 15, spell constructor 19 / 20
 ##   21 and the limit lines 26 / 27, repair 25
+## - "swap" (the original multiplayer game's player swap, screen 9:
+## build, draw, per frame
+##   press, commit; input, mouse
+## keys): an empty name row at the top
+##   (on "InventoryM01", its filter buttons hidden), the item
+##   trade's centre with two piles — the upper the partner's offer («Swap:
+##   receive», camphelp 28), the lower this player's (camphelp 29) —, the bag
+##   row (area 1) and the right info widget (600,100). Left (text surfaces
+## font 1, centred): with the partner's offer present its
+##   reply heading xch_remote_header at 20,110-180,130 (white, two lines)
+##   over xch_remote_ok / xch_remote_cancel at 0,150-200,170, the
+##   heading xch_money_remote at 20,210-180,230 over the partner's money at
+##   0,250-200,270; the divider (300); xch_money_offer
+##   20,310-180,330 over the money field (at 0,350-200,366
+##   centred font 1 white, caret, 9 characters, atoi); "%s %d"
+##   xch_current_money at 0,410-200,430 and xch_accept at 0,430-200,450. ✓
+##   (12,450, tip 41000) lit while not agreed, ✗ (148,450, tip 41001) while
+##   agreed, Exit (740,460, tip 41003) at 0.5. A press on a bag item puts it
+##   into the offer pile (put_on.wav), on one of the own pile back
+##   (put_off.wav), on the partner's pile nothing (its
+##    takes every item). See PlayerSwap.
 ## Approx.:
 ## - item info: see _item_info (the enchanted items' pulse is ItemView's);
 ## - one left press moves an item at once, as the original's item widgets do
@@ -137,6 +158,9 @@ signal construct(cmd: Dictionary)
 ## 170,125-200,145): -1 / +1 through the party.
 signal hero_step(dir: int)
 signal mode_changed(mode: String)
+## The swap screen's command for PlayerSwap.send ("set", "agree", "disagree",
+## "withdraw").
+signal swap_cmd(cmd: Dictionary)
 
 const MODES := ["weapons", "spells", "spelltrade", "spellconstr", "itemtrade", "itemconstr", "repair"]
 ## Mode titles (the strings array by mode index).
@@ -194,6 +218,8 @@ const SIDE_BUTTONS := {
 	"accept": [Rect2(12, 450, 40, 40), Rect2(165, 172, 40, 40), 20200],
 	"cancel": [Rect2(148, 450, 40, 40), Rect2(165, 214, 40, 40), 20201],
 }
+## The swap screen's tips for ✓ / ✗ / Exit (: 41000, 41001, 41003).
+const SWAP_TIPS := {"accept": 41000, "cancel": 41001, "exit": 41003}
 
 ## The Exit button (tip 20107) was pressed.
 signal exit_pressed
@@ -256,6 +282,10 @@ var _perk_scroll := 0    # known abilities
 var _avail_scroll := 0   # available abilities
 var _hold_cmd := {}      # the held skill row's command
 var _hold_t := 0.0
+## Swap screen: the money field's text and when this player last changed
+## its offer (the host's table wins again after a quiet moment).
+var swap_money := ""
+var _swap_sent_t := -10.0
 
 ## The camp screen's tutorial ids (slot 41,:
 ## the mode — 0 camp_weapons, 1 camp_skills, 2 camp_spell_trade, 3
@@ -274,7 +304,7 @@ func _ready() -> void:
 	for n in ["campslots", "camp1", "camp2", "camp3", "camp4", "inventory01", "inventory02",
 			"trade1", "trade2", "trade3", "trade4", "repair1", "repair2", "repair3", "repair4",
 			"constritem1", "constritem2", "constritem3", "constritem4",
-			"constrspell1", "constrspell2", "constrspell3", "constrspell4", "campinfo"]:
+			"constrspell1", "constrspell2", "constrspell3", "constrspell4", "campinfo", "inventorym01"]:
 		var img := GameData.load_image(n) if GameData.is_open() else null
 		if img:
 			img.flip_y()
@@ -348,7 +378,7 @@ func trading() -> bool:
 ## Screens with the trader's goods row at the top (the item shop group's row
 ## 0x7c is created with its trade, constructor and repair screens).
 func shop_row() -> bool:
-	return not mode in ["weapons", "spells"]
+	return not mode in ["weapons", "spells", "swap"]
 
 
 ## The spell group's screens (flag): their goods row is the spell shop's.
@@ -449,6 +479,8 @@ func tutorial_visible() -> bool:
 func _key_shown(k: String) -> bool:
 	if k.begins_with("bag"):
 		return true
+	if mode == "swap":
+		return k.begins_with("buy") or k.begins_with("sell")
 	if trading():
 		return k.begins_with("shop") or k.begins_with("buy") or k.begins_with("sell")
 	if mode == "repair":
@@ -612,7 +644,7 @@ func bag_items() -> Array:
 		for sp: String in hero_spells():
 			if bag_count("spell:" + sp) > 0 and _passes("spell:" + sp, false, FILTER_SETS.bag[2][filter]):
 				out.append("spell:" + sp)
-	for it: String in _unique(st.items + st.quest_items.keys()):
+	for it: String in _unique(st.items + ([] if mode == "swap" else st.quest_items.keys())):
 		if not it in out and bag_count(it) > 0 and _passes(it, it in st.quest_items, FILTER_SETS.bag[2][filter]):
 			out.append(it)
 	return out
@@ -829,6 +861,8 @@ func bag_count(it: String) -> int:
 	if it.begins_with("spell:") and mode == "itemconstr":
 		return 0 if it == c_spell else 1
 	var st := hud.game.session.state
+	if mode == "swap":   # the player's own bag less the offer pile (no quest items)
+		return st.items.count(it) - sell_pile.count(it)
 	if it.begins_with("spell:"):
 		# The bag's copies, plus a hero's known spell in the spell constructor
 		# (listed in the bag row there), less what lies in the pile.
@@ -1085,6 +1119,8 @@ func _process(_dt: float) -> void:
 	if not visible or hud == null:
 		_bag_prev = null
 		return
+	if mode == "swap":
+		_swap_sync()
 	_track_bag()
 	var u := _unit
 	var h: Dictionary = u.get_meta("hero") if u and u.has_meta("hero") else {}
@@ -1094,7 +1130,7 @@ func _process(_dt: float) -> void:
 	shop_scroll = clampi(shop_scroll, 0, maxi(0, shop.size() - BAG_CELLS))
 	var sig := "%s|%s|%s|%s|%s|%d|%d|%s|%s|%s|%s|%d|%d|%d" % [u.uid if u else -1, h.get("weapons", []), h.get("armors", []),
 		[h.get("quick", []), h.get("spells", []), h.get("perks", []), h.get("exp", 0), h.get("skills", {})], bag, filter, scroll, size, mode, shop, buy_pile + ["/"] + sell_pile + ["/"] + repair_pile + [c_bp, c_mat, c_ready, c_spell, s_spell, s_from, s_wait] + s_runes + s_rune_from + hero_spells(), shop_filter, shop_scroll,
-		hud.game.session.state.money] + str(hash(hud.game.session.state.shops.get(shop_id, {})))
+		hud.game.session.state.money] + str(hash(hud.game.session.state.shops.get(shop_id, {}))) + _swap_view()
 	if sig == _sig:
 		return
 	_sig = sig
@@ -1105,7 +1141,7 @@ func _process(_dt: float) -> void:
 		for i in BAG_CELLS:
 			var j := shop_scroll + i
 			_content["shop%d" % i] = [shop[j] if j < shop.size() else "", "shop"]
-	if trading():
+	if trading() or mode == "swap":
 		for i in PILE_CELLS:
 			_content["buy%d" % i] = [buy_pile[i] if i < buy_pile.size() else "", "buy"]
 			_content["sell%d" % i] = [sell_pile[i] if i < sell_pile.size() else "", "sell"]
@@ -1169,6 +1205,8 @@ func _process(_dt: float) -> void:
 
 ## Side buttons shown now (see SIDE_BUTTONS).
 func side_buttons() -> Array:
+	if mode == "swap":
+		return ["accept", "cancel", "exit"]
 	var out := []
 	for b: String in SIDE_BUTTONS:
 		match b:
@@ -1203,6 +1241,10 @@ func _side_at(p: Vector2) -> String:
 
 
 func _press_side(b: String) -> void:
+	if mode == "swap":
+		_swap_side(b)
+		queue_redraw()
+		return
 	# the original: a new mode button "buttons\camp\slot.wav", exit
 	# (mode 7) "buttons\globalmap\transit.wav"; accept
 	# "buttons\camp\buy.wav"; cancel "buttons\messbox\cancel.wav".
@@ -1517,9 +1559,9 @@ func _area_help(k: String) -> int:
 	if k.begins_with("shop"):
 		return 24 if spells else 23
 	if k.begins_with("buy"):
-		return 17 if spells else 11
+		return 28 if mode == "swap" else (17 if spells else 11)   #  flag
 	if k.begins_with("sell"):
-		return 18 if spells else 12
+		return 29 if mode == "swap" else (18 if spells else 12)
 	if k.begins_with("rep"):
 		return 25
 	if k.begins_with("cmat"):
@@ -1562,6 +1604,9 @@ func _row_sound(hit: int) -> void:
 
 ## Trade screens: goods -> buy pile, bag -> sell pile, a pile -> back.
 func _move(id: String, where: String) -> void:
+	if mode == "swap":
+		_swap_move(id, where)
+		return
 	if mode == "spellconstr":
 		if s_wait:
 			return
@@ -1698,7 +1743,8 @@ func _get_tooltip(pos: Vector2) -> String:
 	var p := (pos - _o()) / _s()
 	var side := _side_at(p)
 	if side:
-		return GameData.text("tip %d" % SIDE_BUTTONS[side][2]).strip_edges()
+		var tip: int = SWAP_TIPS[side] if mode == "swap" else SIDE_BUTTONS[side][2]
+		return GameData.text("tip %d" % tip).strip_edges()
 	for y0 in ([500.0, 0.0] if shop_row() else [500.0]):
 		var hit := _row_hit(p, y0)
 		if hit >= 0 and hit < 10:
@@ -1743,6 +1789,8 @@ func _draw_row(y0: float, tex: String, fset: Array, sel: int) -> void:
 		_region(tex, Rect2(50 + i * 100, y0, 100, 100), Rect2(14, 14, 100, 100))
 	_region(tex, Rect2(0, y0, 50, 100), Rect2(192, 14, -50, 100))
 	_region(tex, Rect2(750, y0, 50, 100), Rect2(142, 14, 50, 100))
+	if fset.is_empty():
+		return   # the swap screen's name row (hides the filters)
 	for i in FILTER_RECTS.size():
 		var r: Rect2 = FILTER_RECTS[i]
 		var uv: Rect2 = FILTER_UV[i]
@@ -1768,7 +1816,10 @@ func _draw() -> void:
 		for i in 8:
 			_region("campslots", Rect2(i * 100, 0, 100, 100), Rect2(14, 142, 100, 100))
 	elif mode != "weapons":
-		_draw_row(0, "inventory02", _filter_set(0), shop_filter)
+		if mode == "swap":
+			_draw_row(0, "inventorym01", [], -1)
+		else:
+			_draw_row(0, "inventory02", _filter_set(0), shop_filter)
 		# Centre: 100×100 cells, UV origin alternating 28 / 128 (
 		var base := "repair" if mode == "repair" else "trade"
 		if mode in ["itemconstr", "spellconstr"]:
@@ -1792,7 +1843,11 @@ func _draw() -> void:
 		# the mode buttons (and Exit) at 0.5, the current one
 		# 1.0;: ✓ / ✗ at 0.5 unless the deal can be made / undone.
 		var lit: bool = b == mode
-		if b == "accept":
+		if mode == "swap":
+			# ✓ lit while this player has not agreed, ✗ once it has.
+			var agreed := bool(_swap().mine().get("agreed", false))
+			lit = (b == "accept" and not agreed) or (b == "cancel" and agreed)
+		elif b == "accept":
 			lit = d[2]
 		elif b == "cancel":
 			lit = d[3]
@@ -1859,6 +1914,152 @@ func _draw_row_texts() -> void:
 			var price := Items.repair_price(it) if pile == "rep" else _price(it, pile == "buy")
 			_t(Rect2(r.position.x + 15, r.position.y + 65, 70, 20), str(price), 1, Interface800.TEXT,
 				HORIZONTAL_ALIGNMENT_CENTER)
+
+
+# ------------------------------------------------------------ swap screen
+
+func _swap() -> PlayerSwap:
+	return hud.game.session.swap
+
+
+func _now() -> float:
+	return Time.get_ticks_msec() * 0.001
+
+
+## The swap screen opens (: both piles empty, the money field "").
+func swap_open() -> void:
+	set_mode("swap")
+	sell_pile = (_swap().mine().get("items", []) as Array).duplicate()
+	buy_pile = (_swap().partner_offer().get("items", []) as Array).duplicate()
+	swap_money = ""
+	_swap_sent_t = -10.0
+	_sig = ""
+
+
+## Per frame: the partner's pile is its offer
+## as the host has it; this player's own pile and money follow the host's
+## table too once it has not changed them for a moment (a refused change).
+func _swap_sync() -> void:
+	var sw := _swap()
+	buy_pile = (sw.partner_offer().get("items", []) as Array).duplicate()
+	var m := sw.mine()
+	if m.is_empty() or _now() - _swap_sent_t < 0.75:
+		return
+	if m.items != sell_pile:
+		sell_pile = (m.items as Array).duplicate()
+	if int(m.money) != _swap_money_value():
+		swap_money = str(m.money) if int(m.money) > 0 else ""
+
+
+func _swap_money_value() -> int:
+	return clampi(int(swap_money) if swap_money.is_valid_int() else 0, 0, PlayerSwap.MONEY_MAX)
+
+
+## What the left side shows (the redraw signature).
+func _swap_view() -> String:
+	if mode != "swap" or hud == null:
+		return ""
+	var sw := _swap()
+	return "%s|%s|%s" % [sw.mine(), sw.partner_offer(), swap_money]
+
+
+## this player's offer as it is now.
+func _swap_publish() -> void:
+	_swap_sent_t = _now()
+	swap_cmd.emit({"t": "set", "items": sell_pile.duplicate(), "money": _swap_money_value()})
+	_sig = ""
+	queue_redraw()
+
+
+## The money field: digits and Backspace; each change is a new
+## offer (reads the field's changed flag, atoi). True if used.
+func swap_type(e: InputEventKey) -> bool:
+	if mode != "swap":
+		return false
+	if e.keycode == KEY_BACKSPACE:
+		if swap_money.is_empty():
+			return false
+		swap_money = swap_money.left(-1)
+	elif e.unicode >= 48 and e.unicode <= 57:
+		if swap_money.length() >= PlayerSwap.MONEY_DIGITS:
+			return true
+		swap_money += char(e.unicode)
+	else:
+		return false
+	_swap_publish()
+	return true
+
+
+## ✓ agrees (buy.wav) when this player's offer is not agreed
+## yet and its money covers the amount offered, else cancel.wav; ✗ takes the
+## agreement back (cancel.wav); Exit withdraws the offer (transit.wav).
+func _swap_side(b: String) -> void:
+	var m := _swap().mine()
+	match b:
+		"accept":
+			var st := hud.game.session.state
+			if not m.is_empty() and not bool(m.agreed) and _swap_money_value() <= st.money \
+					and not _swap().partner_offer().is_empty():
+				_ui_sound("buttons\\camp\\buy.wav")
+				swap_cmd.emit({"t": "agree", "rev": int(_swap().partner_offer().rev)})
+			else:
+				_ui_sound("buttons\\messbox\\cancel.wav")
+		"cancel":
+			if not m.is_empty() and bool(m.agreed):
+				_ui_sound("buttons\\messbox\\cancel.wav")
+				swap_cmd.emit({"t": "disagree"})
+		"exit":
+			_ui_sound("buttons\\globalmap\\transit.wav")
+			swap_cmd.emit({"t": "withdraw"})
+
+
+## a bag item into the offer pile (put_on.wav), an item of the
+## own pile back to the bag (put_off.wav); the partner's pile takes no press.
+## The remake's pile holds what its 8 cells show (cancel.wav when full).
+func _swap_move(id: String, where: String) -> void:
+	match where:
+		"bag":
+			if sell_pile.size() >= PILE_CELLS or bag_count(id) <= 0:
+				_ui_sound("buttons\\messbox\\cancel.wav")
+				return
+			_ui_sound("buttons\\camp\\put_on.wav")
+			sell_pile.append(id)
+			_swap_publish()
+		"sell":
+			if sell_pile.has(id):
+				_ui_sound("buttons\\camp\\put_off.wav")
+				sell_pile.erase(id)
+				_swap_publish()
+
+
+##  text surfaces (see the header) and (300).
+func _draw_swap_side() -> void:
+	var sw := _swap()
+	var po := sw.partner_offer()
+	if not po.is_empty():
+		_tb(Rect2(20, 110, 160, 20), _lmp("xch_remote_header", "Your partner's response to proposed swap:"), 1, Color.WHITE, 2)
+		_t(Rect2(0, 150, 200, 20), _lmp("xch_remote_ok", "Agreed") if bool(po.agreed) else _lmp("xch_remote_cancel", "Do not agree"),
+			1, Interface800.TEXT, HORIZONTAL_ALIGNMENT_CENTER)
+		_tb(Rect2(20, 210, 160, 20), _lmp("xch_money_remote", "Amount you are offered for a swap:"), 1, Color.WHITE, 2)
+		_t(Rect2(0, 250, 200, 20), str(int(po.money)), 1, Color.WHITE, HORIZONTAL_ALIGNMENT_CENTER)
+	_region("campinfo", Rect2(0, 280, 100, 40), Rect2(254, 34, -100, 40))
+	_region("campinfo", Rect2(100, 280, 100, 40), Rect2(154, 34, 100, 40))
+	_tb(Rect2(20, 310, 160, 20), _lmp("xch_money_offer", "Amount you offered for a swap:"), 1, Color.WHITE, 2)
+	_t(Rect2(0, 350, 200, 16), swap_money, 1, Color.WHITE, HORIZONTAL_ALIGNMENT_CENTER)
+	# The field's caret after the text (colour).
+	var f := Interface800.font()
+	var w := f.get_string_size(swap_money, HORIZONTAL_ALIGNMENT_LEFT, -1, _fpx(1)).x / _s()
+	if int(_now() * 2.0) % 2 == 0:
+		draw_rect(_r(Rect2(100 + w * 0.5 + 1, 351, 1.5, 14)), Color8(0xff, 0xb3, 0x31))
+	var money: int = hud.game.session.state.money
+	_t(Rect2(0, 410, 200, 20), "%s %d" % [_lmp("xch_current_money", "Your money:"), money], 1, Color.WHITE, HORIZONTAL_ALIGNMENT_CENTER)
+	_t(Rect2(0, 430, 200, 20), _lmp("xch_accept", "Confirm swap"), 1, Color.WHITE, HORIZONTAL_ALIGNMENT_CENTER)
+
+
+## A textslmp "string <key>" (GameData.text falls back to textsLmp.res).
+static func _lmp(key: String, fallback: String) -> String:
+	var t := _str(key) if GameData.is_open() else ""
+	return fallback if t.is_empty() or t == key else t
 
 
 # ------------------------------------------------------------ side widgets
@@ -2012,6 +2213,9 @@ func _draw_side() -> void:
 	_overlay.queue_redraw()
 	if mode == "spellconstr":
 		_draw_constr_limits()
+	if mode == "swap":
+		_draw_swap_side()
+		return
 	# Deal widget.
 	var d := deal_info()
 	_t(Rect2(0, 410, 200, 20), _money_line(), 1, Color.WHITE, HORIZONTAL_ALIGNMENT_CENTER)

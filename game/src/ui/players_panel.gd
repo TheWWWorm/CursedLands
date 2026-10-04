@@ -37,6 +37,7 @@ func _ready() -> void:
 	tooltip_text = " "
 	visible = false
 	resized.connect(queue_redraw)
+	add_to_group("pad_panel")   # remake: gamepad snap targets on the buttons
 
 
 func open() -> void:
@@ -188,6 +189,24 @@ func press(b: String) -> void:
 		if yes and session and session.players.has(pid):
 			session.net.kick(pid, ban)
 		queue_redraw())
+
+
+## Remake (gamepad, PadUI): Kick / Ban / Close as snap targets; while a box
+## asks, its keys (A = ✓, B = ✗) take the pad.
+func pad_active() -> bool:
+	return not MessageBox.is_up(_box)
+
+
+func pad_targets() -> Array:
+	var out: Array = []
+	var btn: Dictionary = _layout().btn
+	for b: String in btn:
+		out.append({"rect": pad_rect(btn[b]), "id": b})
+	return out
+
+
+func pad_focus() -> Variant:
+	return "close"
 
 
 ## The box being asked (tools answer it).

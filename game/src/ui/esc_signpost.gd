@@ -201,6 +201,26 @@ func _unhandled_key_input(e: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 
 
+## Remake (gamepad, BG3's menu shortcuts): Y = quick save, X held = quick
+## load (`pressed` "quicksave" / "quickload", GameHUD._on_esc_board).
+func pad_press(action: String, phase: String) -> bool:
+	match action:
+		"pause":
+			if phase == "down":
+				pressed.emit("quicksave")
+			return true
+		"context":
+			if phase == "hold":
+				pressed.emit("quickload")
+			return true
+	return false
+
+
+## Extra snap targets beside the signpost (the co-op host's Players button),
+## set by GameHUD: [{rect, id}] in viewport pixels.
+var pad_extra: Callable
+
+
 ## Remake (gamepad, PadUI): each board's screen rectangle, from its meshes
 ## projected through the signpost's camera.
 func pad_targets() -> Array:
@@ -223,4 +243,6 @@ func pad_targets() -> Array:
 				first = false
 		if not first:
 			out.append({"rect": r, "id": BOARDS[part]})
+	if pad_extra.is_valid():
+		out.append_array(pad_extra.call())
 	return out

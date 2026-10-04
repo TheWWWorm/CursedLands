@@ -23,7 +23,11 @@ const AIM_ACTIONS := ["cs_head", "cs_body", "cs_lhand", "cs_rhand", "cs_lleg", "
 var game: Game
 var wheel: PadWheel
 var prompts: PadPrompts
+var labels: WorldLabels
 var cursor_mode := false
+## R3 held (the recentre button's hold): world information labels on the
+## units, bodies, levers and exits around the party (WorldLabels).
+var world_info := false
 ## The soft target: {} none, else {unit: GameUnit} or {lever: nid, at: Vector2 (EI)}.
 var target := {}
 var reticle: Variant = null   # EI ground point while a pending spell aims at the ground
@@ -34,7 +38,7 @@ var _flicked := false
 var _wheel_paused: Variant = null
 var _ring_target := {}
 var _ring_ground: Variant = null
-var _page := {"actions": 0, "items": 0}
+var _page := {"actions": 0, "items": 0, "system": 0}
 var _moving := false
 var _move_dir := Vector2.ZERO
 var _move_t := 0.0
@@ -46,9 +50,15 @@ var _last_dead := {}
 var _last_shakes := 0
 var _last_level := -1
 var _log_mode := 0
+var _in_wheel := {}   # actions whose current press began in an open wheel
 
 const LB_PAGES := ["spells", "actions"]
 const RB_PAGES := ["belt", "weapons"]
+## The RT wheel's pages, turned with LB / RB: the game's screens and the
+## camera views 1–4 (keyboard.ini camera1–4, F9–F12).
+const RT_PAGES := ["game", "camera"]
+## Camera views in the camera page: view i at degrees clockwise from up.
+const VIEW_ANGLES := [0.0, 90.0, 180.0, 270.0]
 
 
 func _init(g: Game = null) -> void:
@@ -67,6 +77,14 @@ func _ready() -> void:
 	game.hud._add_ui(prompts)
 	wheel = PadWheel.new()
 	game.hud._add_ui(wheel)
+	# Below the HUD, as the co-op name tags (PlayerNames).
+	var layer := CanvasLayer.new()
+	layer.name = "WorldLabelsLayer"
+	layer.layer = -1
+	labels = WorldLabels.new()
+	labels.field = self
+	layer.add_child(labels)
+	game.add_child(layer)
 
 
 func _exit_tree() -> void:
@@ -99,6 +117,7 @@ func leader() -> GameUnit:
 func _on_mode() -> void:
 	if PadInput.active != "pad":
 		_set_cursor_mode(false)
+		world_info = false
 		game.hud.unit_panel.ignore_hover = false
 		game.hud.unit_panel.examine = null
 		game.rig.pad_no_edge = false
@@ -113,12 +132,15 @@ func _process(dt: float) -> void:
 	var pad := PadInput.active == "pad"
 	game.rig.pad_no_edge = pad and not cursor_mode
 	game.hud.unit_panel.ignore_hover = pad and not cursor_mode
+	if world_info and not PadInput.held("recentre"):
+		world_info = false   # the release went to a menu, or the pad was unplugged
 	if not takes_input():
 		if _wheel_kind != "":
 			close_wheel()
 		_stop_moving()
 		return
 	_rumble_poll()
+	_light_poll()
 	var ls := PadInput.stick(true)
 	var rs := PadInput.stick(false)
 	if _wheel_kind != "":
@@ -253,7 +275,11 @@ func _candidates(stick: Vector2) -> Array:
 	var out: Array = []
 	if u == null:
 		return out
-	var r := _radius()
+	# The village screen (no fights): every unit to talk to is a candidate,
+	# own party members too when they have topics (a mercenary's dismissal,
+	# Game.order_on's village rule).
+	var village := game.session.shop_available()
+	var r := _radius() if not village else VILLAGE_RADIUS
 	var me := game.session.my_index
 	var pend := game.pending_spell
 	var offensive := false
@@ -268,8 +294,12 @@ func _candidates(stick: Vector2) -> Array:
 		offensive = sp != "" and Spells.offensive(sp)
 		friendly = not offensive
 	var dir := _ground_dir(stick) if stick != Vector2.ZERO else Vector2.ZERO
-	var conn := multiplayer.get_unique_id() if game.session.online else 0
+	var conn := conn_id(self, game.session.online)
 	var any_enemy := false
+	if friendly and pend != Game.FOLLOW:
+		# A heal or a potion may go to the leader itself (BG3 lets the
+		# character target itself); others in need come first by distance.
+		out.append({"unit": u, "score": 1.5})
 	for o: GameUnit in game.world.units.values():
 		if o == u or o.hidden or not o.visible or o.fogged:
 			continue
@@ -283,7 +313,9 @@ func _candidates(stick: Vector2) -> Array:
 				continue
 			score += 1.5
 		elif o.controller == me:
-			if pend == Game.SCIENCE or (pend == "" or (offensive and pend != Game.FOLLOW)):
+			if village and pend == "" and _has_topics(o):
+				score -= 1.0
+			elif pend == Game.SCIENCE or (pend == "" or (offensive and pend != Game.FOLLOW)):
 				continue   # own living party members are reached with D-pad ↑ / the ring
 			if o in game.selected and pend == Game.FOLLOW:
 				continue
@@ -292,6 +324,8 @@ func _candidates(stick: Vector2) -> Array:
 		elif enemy:
 			any_enemy = true
 			score -= 3.0 if not friendly else -2.0
+		elif village and pend == "" and _has_topics(o):
+			score -= 3.0
 		if dir != Vector2.ZERO:
 			score += (1.0 - dir.dot((o.pos - u.pos).normalized())) * 4.0
 		out.append({"unit": o, "score": score})
@@ -311,6 +345,13 @@ func _candidates(stick: Vector2) -> Array:
 				score += (1.0 - dir.dot((at - u.pos).normalized())) * 4.0
 			out.append({"lever": nid, "at": at, "score": score})
 	return out
+
+
+const VILLAGE_RADIUS := 80.0
+
+
+func _has_topics(u: GameUnit) -> bool:
+	return not Briefings.pending_for(game.session.state, u, game.session.my_index).is_empty()
 
 
 func _same(a: Dictionary, b: Dictionary) -> bool:
@@ -459,7 +500,15 @@ func _on_action(a: String, phase: String) -> void:
 		return
 	var mod := PadInput.held("mod") and a != "mod"
 	if _wheel_kind != "":
+		if phase == "down":
+			_in_wheel[a] = true
 		_wheel_action(a, phase)
+		return
+	# The rest of a press that a wheel took (A confirming a pick closes the
+	# wheel; its release and tap must not act on the field as well).
+	if phase == "down":
+		_in_wheel.erase(a)
+	elif _in_wheel.has(a):
 		return
 	if cursor_mode and _cursor_action(a, phase, mod):
 		return
@@ -522,6 +571,11 @@ func _on_action(a: String, phase: String) -> void:
 				game.hud.minimap.north()
 			else:
 				game._key_action("camera_track")
+		["recentre", "hold"]:
+			if not mod:
+				world_info = true   # BG3's "world information" (R3 hold)
+		["recentre", "up"]:
+			world_info = false
 		["view", "tap"]:
 			if mod:
 				_log_mode = (_log_mode + 1) % 2
@@ -725,8 +779,14 @@ func _fill_wheel() -> void:
 			wheel.hints.append([LB + "+" + RB, RemakeText.t("Page")])
 			wheel.hints.append([PadInput.button_of("mod"), RemakeText.t("Use at once")])
 		"system":
-			wheel.title = RemakeText.t("Game")
-			entries = _system_entries()
+			var page: String = RT_PAGES[_page.system]
+			wheel.pages = PackedStringArray(RT_PAGES.map(func(p): return _page_title(p)))
+			wheel.page = _page.system
+			wheel.title = _page_title(page)
+			entries = _system_entries() if page == "game" else _camera_entries()
+			wheel.hints.append([LB + "+" + RB, RemakeText.t("Page")])
+			if page == "camera":
+				wheel.hints.append([PadInput.button_of("mod"), RemakeText.t("Store view")])
 		"ring":
 			var r := _ring_entries()
 			entries = r[0]
@@ -741,6 +801,8 @@ func _page_title(p: String) -> String:
 		"actions": return RemakeText.t("Actions")
 		"belt": return RemakeText.t("Belt")
 		"weapons": return RemakeText.t("Weapons")
+		"game": return RemakeText.t("Game")
+		"camera": return RemakeText.t("Camera")
 	return p
 
 
@@ -811,6 +873,18 @@ func _system_entries() -> Array:
 	return out
 
 
+## The RT wheel's camera page: views 1–4 (keyboard.ini camera1–4, F9–F12):
+## a pick recalls the view, with LT held (EI's Ctrl / Alt) it stores the
+## current one there (CameraRig.view_slot).
+func _camera_entries() -> Array:
+	var out: Array = []
+	var tip := RemakeText.t("Recalls this camera view; with %s held, stores the current view in it.") % PadInput.label(PadInput.button_of("mod"))
+	for i in 4:
+		out.append({"id": ["cam", i], "label": _orig("action_camera%d" % (i + 1), "Camera view %d" % (i + 1)),
+			"short": str(i + 1), "angle": VIEW_ANGLES[i], "tip": tip})
+	return out
+
+
 ## The context ring (X) on the target: [entries, preselected, title].
 func _ring_entries() -> Array:
 	var out: Array = []
@@ -844,13 +918,15 @@ func _ring_entries() -> Array:
 			out.append({"id": ["examine"], "label": RemakeText.t("Examine"), "short": "?"})
 			pre = 0
 	elif u and not u.dead:
+		if game.session.shop_available() and _has_topics(u):
+			out.append({"id": ["interact"], "label": RemakeText.t("Talk"), "icon": _cursor("cursor_talk")})
 		out.append({"id": ["select"], "label": RemakeText.t("Select"), "short": RemakeText.t("Select")})
 		out.append({"id": ["add"], "label": RemakeText.t("Add to selection"), "short": "+"})
 		out.append({"id": ["follow"], "label": RemakeText.t("Follow"), "icon": _cursor("cursor_move")})
 		out.append({"id": ["examine"], "label": RemakeText.t("Examine"), "short": "?"})
 		pre = 0
 	elif u:
-		if Session.lootable(u, game.session.my_index, multiplayer.get_unique_id() if game.session.online else 0):
+		if Session.lootable(u, game.session.my_index, conn_id(self, game.session.online)):
 			out.append({"id": ["loot"], "label": RemakeText.t("Loot"), "icon": _cursor("cursor_use")})
 		if game.revive_target(u) != null:
 			out.append({"id": ["revive"], "label": RemakeText.t("Revive"), "icon": _cursor("cursor_use")})
@@ -923,6 +999,12 @@ func _wheel_action(a: String, phase: String) -> void:
 		["actions", "down"], ["items", "down"]:
 			if _wheel_kind in ["actions", "items"]:
 				_turn_page(-1 if a == "actions" else 1)
+			elif _wheel_kind == "system":
+				_page.system = posmod(_page.system + (-1 if a == "actions" else 1), RT_PAGES.size())
+				_wheel_button = ""
+				if GameSound.instance:
+					GameSound.instance.ui("buttons\\save\\select.wav")
+				_fill_wheel()
 			else:
 				close_wheel()
 				open_wheel(a, a)
@@ -973,6 +1055,10 @@ func _confirm() -> void:
 			var i := UnitPanel.KEY_VIEWS.find(game.hud.unit_panel.mode)
 			game.hud.unit_panel.key_view((i + 1) % UnitPanel.KEY_VIEWS.size())
 		"sys": _system(String(id[1]))
+		"cam":
+			game.rig.view_slot(int(id[1]), mod)
+			if mod and GameSound.instance:
+				GameSound.instance.ui("buttons\\save\\select.wav")
 		_: _ring_pick(id)
 	if kind != "ring" and game.pending_spell != "":
 		reticle = null
@@ -1057,6 +1143,18 @@ func _on_connection(dev: int, connected: bool) -> void:
 		game.set_speed(0)
 
 
+## The light bar (option pad_light, controllers that have one): the
+## leader's health, green to red (PadInput.health_colour); without a leader
+## the dim bronze of the HUD.
+func _light_poll() -> void:
+	if PadInput.device < 0:
+		return
+	var u := leader()
+	if u == null and not game.selected.is_empty() and is_instance_valid(game.selected[0]):
+		u = game.selected[0]
+	PadInput.light(PadInput.health_colour(u.hp / maxf(u.max_hp, 1.0)) if u else Color(0.45, 0.3, 0.1))
+
+
 ## Rumble (option pad_rumble): the leader hit (∝ the share of its health
 ## lost), a party member falling, a camera shake near the view, a level-up.
 func _rumble_poll() -> void:
@@ -1082,3 +1180,15 @@ func _rumble_poll() -> void:
 		var amp := float(game.rig._shakes[-1][2])
 		PadInput.rumble(clampf(amp, 0.1, 1.0), clampf(amp * 0.7, 0.0, 1.0), 0.3)
 	_last_shakes = shakes
+
+
+## This peer's id for Session.lootable: 0 offline and while the connection is
+## still being set up (a password retry), when get_unique_id() would complain.
+static func conn_id(n: Node, online: bool) -> int:
+	if not online or not n.is_inside_tree():
+		return 0
+	var mp := n.multiplayer
+	if mp == null or not mp.has_multiplayer_peer() \
+			or mp.multiplayer_peer.get_connection_status() != MultiplayerPeer.CONNECTION_CONNECTED:
+		return 0
+	return mp.get_unique_id()

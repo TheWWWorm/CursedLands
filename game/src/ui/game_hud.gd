@@ -31,6 +31,7 @@ var _game_over_box: MessageBox
 var _game_over_load := false   # the Load screen came from the game-over box
 var _death_notice: GameOverNotice   # remake option "sp_death_notice"
 var _players_btn: PlayersPanel.EscButton   # remake: the co-op host's player list
+var _esc_hints: Control   # remake: the gamepad prompts under the Esc signpost
 var _players_panel: PlayersPanel
 var _pause_before: Variant = null   # interface manager: the pause state to restore
 var _dialog: DialogPanel
@@ -158,6 +159,16 @@ func _ready() -> void:
 	_players_btn = PlayersPanel.EscButton.new()
 	_players_btn.pressed.connect(open_players)
 	_add_ui(_players_btn)
+	_menu.pad_extra = func() -> Array:
+		return [{"rect": _players_btn.pad_rect(PlayersPanel.EscButton.R), "id": "players"}] if _players_btn.visible else []
+	# Remake: the gamepad's prompts under the signpost (A / B, Y quick save,
+	# X held quick load), shown while the controller drives.
+	_esc_hints = Control.new()
+	_esc_hints.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_esc_hints.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_esc_hints.draw.connect(_draw_esc_hints)
+	_esc_hints.visible = false
+	_add_ui(_esc_hints)
 	_players_panel = PlayersPanel.new()
 	_players_panel.session = game.session
 	_players_panel.closed.connect(_close_menu)
@@ -225,6 +236,10 @@ func _ready() -> void:
 	var players := PlayerList.new()
 	players.game = game
 	_add_ui(players)
+	# The original multiplayer game's player strip on the base.
+	var strip := BaseStrip.new()
+	strip.game = game
+	_add_ui(strip)
 	chat_line = ChatLine.new()
 	chat_line.game = game
 	_add_ui(chat_line)
@@ -417,6 +432,11 @@ func _process(_dt: float) -> void:
 	var host_online: bool = game != null and game.session != null and game.session.online and game.session.is_host
 	if _players_btn.visible != (_menu.visible and host_online):
 		_players_btn.visible = _menu.visible and host_online
+	var hints: bool = _menu.visible and PadInput.active == "pad"
+	if _esc_hints.visible != hints:
+		_esc_hints.visible = hints
+	if hints:
+		_esc_hints.queue_redraw()
 	# Village ("brief" zone) = the village screen without CInterface3D.
 	var field: bool = game == null or game.session == null or not game.session.shop_available()
 	if field != _field_on or (not field and _field.visible):
@@ -968,6 +988,19 @@ func _on_esc_board(action: String) -> void:
 	match action:
 		"resume":
 			_close_menu()
+		"quicksave", "quickload":
+			# Remake (gamepad, Y / X held in the Esc menu): the quick save
+			# keys' actions (Game._key_action), the menu closed first; the
+			# save's picture is the frame under the menu.
+			if not _quick_ok():
+				log_msg(RemakeText.t("Only the host can save") if action == "quicksave" else RemakeText.t("Only the host can load"))
+				return
+			var frame := _esc_frame
+			_close_menu()
+			if action == "quicksave":
+				game.session.save_game("quick", "", frame)
+			elif not game.session.load_game("quick"):
+				log_msg(RemakeText.t("No quick save."))
 		"options":
 			_menu.visible = false
 			_options.open(_esc_frame, true)
@@ -990,6 +1023,21 @@ func _on_esc_board(action: String) -> void:
 				main.call_deferred("back_to_menu")
 			else:
 				get_tree().quit()
+
+
+## Quick save / load from the Esc menu: the host of a game with saves.
+func _quick_ok() -> bool:
+	return game.session.is_host and game.session.lmp.is_empty()
+
+
+func _draw_esc_hints() -> void:
+	var k := _esc_hints.size.y / 600.0
+	var A := PadInput.button_of("interact")
+	var on := _quick_ok()
+	PadPrompts.draw_hints(_esc_hints, [[A, RemakeText.t("Select")], [PadInput.button_of("cancel"), RemakeText.t("Resume")],
+		[PadInput.button_of("pause"), OptionsPanel._t("string action_quicksave", "Quick save"), on],
+		[PadInput.button_of("context"), "%s (%s)" % [OptionsPanel._t("string action_quickload", "Quick load"), RemakeText.t("hold")], on]],
+		Vector2(_esc_hints.size.x * 0.5, _esc_hints.size.y - 14.0 * k), k)
 
 
 func blocks_input() -> bool:

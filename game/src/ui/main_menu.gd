@@ -259,6 +259,7 @@ func _host(max_players := Session.MAX_PLAYERS) -> void:
 		return
 	var s := _make_session()
 	var port := _port()
+	s.password = _net.password.strip_edges() if _net else ""
 	var err := s.host(port, max_players)
 	if err != OK:
 		_set_status(RemakeText.t("Could not host on port %d (error %d).") % [port, err])
@@ -296,6 +297,7 @@ func _join(address := "") -> void:
 	var hp := Session.parse_address(address, _port())
 	var typed := address
 	address = hp[0]
+	s.join_password = _net.join_password.strip_edges() if _net else ""
 	var err := s.join(address, hp[1])
 	if err != OK:
 		_set_status(RemakeText.t("Could not connect (error %d).") % err)

@@ -124,6 +124,7 @@ func _ready() -> void:
 	_doll.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(_doll)
 	resized.connect(_layout)
+	add_to_group("pad_panel")   # remake: gamepad snap targets (pad_targets, pad_press)
 
 
 ## Opens on the selection (state 9). `capture` false keeps the frozen
@@ -306,6 +307,7 @@ func _draw() -> void:
 		SEL: _draw_select()
 		CREATE: _draw_create()
 		_: _draw_kit()
+	_draw_pad_glyphs()
 
 
 func _draw_select() -> void:
@@ -991,3 +993,139 @@ func _process(dt: float) -> void:
 		_box = null
 		_layout()
 		queue_redraw()
+
+
+# ------------------------------------------------------------------ gamepad
+
+## Remake (gamepad, PadUI; docs/gamepad_design.md §7): the screen's buttons,
+## list rows, faces, "−" / "+", voices, kit cells and skill rows are snap
+## targets clicked at their centre (A held holds the mouse button, so the
+## turn arrows and "−" / "+" repeat as under the mouse). In the character
+## and voice lists D-pad ↑ / ↓ moves the selection as the arrow keys do,
+## scrolling the list. Y is ✓ / Next; B is Esc (the key bridge). While the
+## clan box or a message box is up the keys go to it (pad_active false).
+func pad_active() -> bool:
+	return not MessageBox.is_up(_box) and not renaming
+
+
+func pad_targets() -> Array:
+	var t := {}
+	match state:
+		SEL:
+			t["ok"] = OK_RECT
+			t["back"] = CANCEL_RECT
+			t["turn:1"] = Rect2(455, 470, 30, 30)
+			t["turn:2"] = Rect2(625, 470, 30, 30)
+			for i in 4:
+				t[["new", "clan", "delete", "view"][i]] = Rect2(180, 112 + 24 * i, 130, 24)
+			for k in ROWS:
+				if top + k < chars.size():
+					t["row:%d" % (top + k)] = Rect2(110, 250 + 24 * k, 260, 24)
+		CREATE:
+			t["back"] = BACK_RECT
+			t["reset"] = RESET_RECT
+			t["next"] = NEXT_RECT
+			t["turn:1"] = Rect2(300, 470, 30, 30)
+			t["turn:2"] = Rect2(470, 470, 30, 30)
+			for g in 2:
+				var y0 := 0.0 if g == 0 else 500.0
+				t["face_scroll:%d:-1" % g] = Rect2(30, y0 + 35, 20, 30)
+				t["face_scroll:%d:1" % g] = Rect2(750, y0 + 35, 20, 30)
+				for k in CELLS:
+					if face_top[g] + k < (faces[g] as Array).size():
+						t["face:%d:%d" % [g, face_top[g] + k]] = Rect2(50 + 100 * k, y0, 100, 100)
+			for a: Array in ATTR_ROWS:
+				t["attr:%s:-1" % a[0]] = Rect2(140, a[2], 20, 15)
+				t["attr:%s:1" % a[0]] = Rect2(160, a[2], 20, 15)
+			t["height:-1"] = Rect2(140, 240, 20, 15)
+			t["height:1"] = Rect2(160, 240, 20, 15)
+			t["name"] = NAME_EDIT
+			for i in VOICE_ROWS:
+				if voice_top + i < (voices[voice_list] as Array).size():
+					t["voice:%d" % (voice_top + i)] = Rect2(10, 325 + 15 * i, 170, 15)
+		_:
+			t["back"] = BACK_RECT
+			t["reset"] = RESET_RECT
+			t["next"] = NEXT_RECT
+			var cells := _item_cells()
+			for i in cells.size():
+				t["item:%d" % i] = cells[i][1]
+			for i in _skill_rows.size():
+				t["train:%d" % i] = _skill_rows[i][0]
+	var out: Array = []
+	for id: String in t:
+		out.append({"rect": pad_rect(t[id]), "id": id})
+	return out
+
+
+func pad_focus() -> Variant:
+	match state:
+		SEL: return "row:%d" % sel if sel >= 0 else "new"
+		CREATE: return "next"
+	return "next"
+
+
+func pad_press(action: String, phase: String) -> bool:
+	var ui: PadUI = PadInput.ui
+	var f := String(ui.focus_id()) if ui and ui.focus_id() != null and ui.pointer_on else ""
+	match action:
+		"pause":   # Y = ✓ (the selection) / Next
+			if phase == "down":
+				_press(["ok"] if state == SEL else ["next"])
+			return true
+		"up", "down":
+			if not phase in ["down", "repeat"]:
+				return false
+			var d := -1 if action == "up" else 1
+			# Inside a list the arrow keys' rule: the selection
+			# moves and stays in view, the focus follows it.
+			if state == SEL and f.begins_with("row:") and sel + d >= 0 and sel + d < chars.size():
+				_list_key(KEY_UP if d < 0 else KEY_DOWN)
+				_pad_focus_on("row:%d" % sel)
+				return true
+			if state == CREATE and f.begins_with("voice:") and voice_sel + d >= 0 \
+					and voice_sel + d < (voices[voice_list] as Array).size():
+				_list_key(KEY_UP if d < 0 else KEY_DOWN)
+				_pad_focus_on("voice:%d" % voice_sel)
+				return true
+		"interact":
+			# No keyboard: A on the empty name field puts the player's name in
+			# (it can still be typed over).
+			if phase == "down" and state == CREATE and f == "name":
+				var hero := _hero()
+				if String(hero.get("name", "")).is_empty():
+					hero.name = _filter(GameData.player_name)
+					queue_redraw()
+	return false
+
+
+func _list_key(code: Key) -> void:
+	var e := InputEventKey.new()
+	e.keycode = code
+	e.pressed = true
+	_key(e)
+
+
+func _pad_focus_on(id: String) -> void:
+	for t: Dictionary in pad_targets():
+		if t.id == id:
+			PadInput.ui.focus_target(id, t.rect)
+			return
+
+
+## The controller's buttons beside ✓ / Next (Y) and ✗ / Back (B) while it drives.
+func _draw_pad_glyphs() -> void:
+	if PadInput.active != "pad":
+		return
+	var y := PadInput.glyph(PadInput.button_of("pause"))
+	var b := PadInput.glyph(PadInput.button_of("cancel"))
+	if state == SEL:
+		if y:
+			draw_texture_rect(y, r8(Rect2(OK_RECT.position + Vector2(-26, 13), Vector2(22, 22))), false)
+		if b:
+			draw_texture_rect(b, r8(Rect2(CANCEL_RECT.position + Vector2(-26, 13), Vector2(22, 22))), false)
+	else:
+		if y:
+			draw_texture_rect(y, r8(Rect2(NEXT_RECT.position + Vector2(9, 42), Vector2(22, 22))), false)
+		if b:
+			draw_texture_rect(b, r8(Rect2(BACK_RECT.position + Vector2(9, 42), Vector2(22, 22))), false)

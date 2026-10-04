@@ -501,6 +501,81 @@ func store_party_positions(world: GameWorld) -> void:
 				h.erase("dead")
 
 
+## The F / Follow order across zones. the original (the party
+## leaves a zone while the world mode is 1, a game zone) writes each
+## party record's = its unit's follow target (the Player motivation's
+## -1 when the unit has none), and the party deployment
+##  gives it back in a game zone only (mode 1, not a village):
+##  on the unit found by that id. Party units keep
+## their ids there; the remake gives them new ones, so the target is kept as
+## its party record (a hero by name and player, a mercenary by number) and
+## only party members are found again. A village leaves the records as they
+## are, so a follow given before a village comes back in the next game zone.
+## `key` "follow_live" (remake): the order as it stands, for a save game (the
+## original saves every unit whole); = none.
+func store_follow(world: GameWorld, key := "follow") -> void:
+	for u: GameUnit in world.units.values():
+		if not u.has_meta("hero"):
+			continue
+		var h: Dictionary = u.get_meta("hero")
+		var ref := party_ref(follow_target(u))
+		if not ref.is_empty() or key == "follow_live":
+			h[key] = ref
+		else:
+			h.erase(key)
+
+
+## `key` as store_follow wrote it, given back to the party units in `world`
+## ("follow_live" is used up: a later deployment goes by "follow").
+func apply_follow(world: GameWorld, key := "follow", units: Array = []) -> void:
+	for u: GameUnit in (units if not units.is_empty() else world.units.values()):
+		if not u.has_meta("hero") or u.dead:
+			continue
+		var h: Dictionary = u.get_meta("hero")
+		if not h.has(key):
+			continue
+		var ref: Array = h[key] if h[key] is Array else []
+		if key == "follow_live":
+			h.erase(key)
+		var t := party_unit(world, ref)
+		if t and t != u and not t.dead:
+			u.command({"type": "follow", "target": t})
+
+
+## The unit `u` follows (a lasting F order, not a talk / loot approach).
+static func follow_target(u: GameUnit) -> GameUnit:
+	var o: Dictionary = u.order if String(u.order.get("type", "")) != "" else (u.orders[-1] if not u.orders.is_empty() else {})
+	if String(o.get("type", "")) != "follow" or o.get("once", false):
+		return null
+	var t = o.get("target")
+	return t if t is GameUnit and is_instance_valid(t) and not t.dead else null
+
+
+## A party unit as its record: ["merc", n] / ["hero", name, player]; [] for others.
+static func party_ref(u: GameUnit) -> Array:
+	if u == null or not u.has_meta("hero"):
+		return []
+	var h: Dictionary = u.get_meta("hero")
+	if h.has("merc"):
+		return ["merc", h.merc]
+	return ["hero", String(h.get("unit_name", h.get("name", ""))), u.controller]
+
+
+static func party_unit(world: GameWorld, ref: Array) -> GameUnit:
+	if ref.size() < 2:
+		return null
+	for u: GameUnit in world.units.values():
+		if not u.has_meta("hero"):
+			continue
+		var h: Dictionary = u.get_meta("hero")
+		if ref[0] == "merc" and h.has("merc") and str(h.merc) == str(ref[1]):
+			return u
+		if ref[0] == "hero" and ref.size() >= 3 and not h.has("merc") and u.controller == int(ref[2]) \
+				and String(h.get("unit_name", h.get("name", ""))) == String(ref[1]):
+			return u
+	return null
+
+
 ## Refreshes `pets` from the tamed party members in `world`.
 func collect_pets(world: GameWorld) -> void:
 	pets = []
