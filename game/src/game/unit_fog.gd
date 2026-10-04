@@ -73,6 +73,9 @@ func _process(dt: float) -> void:
 		u.fogged = on and not talk and not sees(eyes, u)
 		var want := not u.hidden and not u.fogged
 		if u.visible != want:
+			# Shown: drawn where it stands now, not where it was last drawn
+			# before it was hidden (GameUnit.resync_drawn, on the visibility
+			# change).
 			u.visible = want
 
 

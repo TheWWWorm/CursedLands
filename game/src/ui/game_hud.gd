@@ -30,6 +30,8 @@ var _quit_box: MessageBox
 var _game_over_box: MessageBox
 var _game_over_load := false   # the Load screen came from the game-over box
 var _death_notice: GameOverNotice   # remake option "sp_death_notice"
+var _players_btn: PlayersPanel.EscButton   # remake: the co-op host's player list
+var _players_panel: PlayersPanel
 var _pause_before: Variant = null   # interface manager: the pause state to restore
 var _dialog: DialogPanel
 var _travel: Control
@@ -151,6 +153,15 @@ func _ready() -> void:
 	_menu.visible = false
 	_menu.pressed.connect(_on_signpost)
 	_add_ui(_menu)
+	# Remake: the co-op host's "Players" button beside the signpost and its
+	# player list with Kick / Ban (PlayersPanel).
+	_players_btn = PlayersPanel.EscButton.new()
+	_players_btn.pressed.connect(open_players)
+	_add_ui(_players_btn)
+	_players_panel = PlayersPanel.new()
+	_players_panel.session = game.session
+	_players_panel.closed.connect(_close_menu)
+	_add_ui(_players_panel)
 	_options = OptionsPanel.new()
 	_add_ui(_options)
 	_options.closed.connect(_close_menu)
@@ -231,6 +242,7 @@ func on_world(w: GameWorld) -> void:
 		w.unit_died.connect(_on_died)
 		if not game.session.message.is_connected(log_msg):
 			game.session.message.connect(log_msg)
+		PlayerNames.of(game)   # remake: co-op players' names over their heroes
 		if not game.session.net.chat.is_connected(log_chat):
 			game.session.net.chat.connect(log_chat)
 		# No zone-entry line: the original adds nothing to the message log on a zone
@@ -312,8 +324,14 @@ func _layout_dials() -> void:
 		_belt.offset_top = -maxf(s * 1.25, cell.y * 2)
 		_slots.offset_left = -maxf(s * 0.5, cell.x)
 		_slots.offset_top = _slots.offset_bottom - minf(-_slots.offset_left * 8, ui_size().y * 0.55)
+	if portrait():
+		# The side columns start under the moved message log (the spells scroll).
+		var top := top_bottom() + 8.0 - ui_size().y
+		_slots.offset_top = maxf(_slots.offset_top, top)
+		_actions.offset_top = maxf(_actions.offset_top, top)
+		_layout_portrait_bottom(s)
 	# The targeting hint (remake-only) under the text window (0..100).
-	_target_label.offset_top = s * 104.0 / 80.0
+	_target_label.offset_top = top_bottom() + 4.0 if portrait() else s * 104.0 / 80.0
 	var sel := _selected_gait()
 	var clock := 0 if game.get_tree().paused else 1 + game.speed
 	var aggr := _selected_aggression()
@@ -329,6 +347,41 @@ func _layout_dials() -> void:
 	if absf(ang - _clock_dial.ring_angle) > 0.002:
 		_clock_dial.ring_angle = ang
 		_clock_dial.queue_redraw()
+
+
+## Portrait: the dials leave no room beside the party faces for the weapon
+## bar (80..240) and the belt (520..720), so both stand above the faces
+## between the left action strip (and the touch aim button over the move
+## dial, TouchActions) and the spell column: the weapons right over the
+## faces, the belt over them; their cells keep the original arrangement.
+func _layout_portrait_bottom(s: float) -> void:
+	var vs := ui_size()
+	var touch := TouchInput.target_pixels() / minf(transform.get_scale().x, transform.get_scale().y) if TouchInput.enabled else 0.0
+	var left := s * 0.5 + 6.0   # the action strip's right edge
+	if TouchInput.enabled:
+		left = portrait_aim_x(s, touch) + touch + 6.0
+	var right := vs.x + _slots.offset_left - 6.0
+	var c := minf(maxf(touch, s * 0.5), (right - left) / 4.0)
+	var x := left + maxf(0.0, (right - left - c * 4.0) * 0.5)
+	# Over the faces (y 510) and the film-camera marker above them (478..498,
+	# PartyFaces).
+	var bottom := vs.y * 478.0 / 600.0 - 4.0
+	_weapons.offset_left = x
+	_weapons.offset_right = x + c * 4.0
+	_weapons.offset_top = bottom - c * 2.0 - vs.y
+	_weapons.offset_bottom = bottom - vs.y
+	# Room for the active weapon, drawn a quarter of the cell higher.
+	bottom -= c * 2.5 + 6.0
+	_belt.offset_left = x - vs.x
+	_belt.offset_right = x + c * 4.0 - vs.x
+	_belt.offset_top = bottom - c * 2.0 - vs.y
+	_belt.offset_bottom = bottom - vs.y
+
+
+## Portrait: the touch aim button's left edge, over the move dial's right
+## part and clear of the action strip (TouchActions).
+func portrait_aim_x(s: float, cell: float) -> float:
+	return maxf(s - cell, s * 0.5 + 4.0)
 
 
 func _bar(color: Color) -> ProgressBar:
@@ -361,6 +414,9 @@ func set_targeting(spell_title: String) -> void:
 func _process(_dt: float) -> void:
 	_layout_safe_area()
 	_layout_dials()
+	var host_online: bool = game != null and game.session != null and game.session.online and game.session.is_host
+	if _players_btn.visible != (_menu.visible and host_online):
+		_players_btn.visible = _menu.visible and host_online
 	# Village ("brief" zone) = the village screen without CInterface3D.
 	var field: bool = game == null or game.session == null or not game.session.shop_available()
 	if field != _field_on or (not field and _field.visible):
@@ -831,6 +887,18 @@ func toggle_aggression() -> void:
 		u.aggressive = on   # shown at once; the host's snapshots confirm it
 
 
+## Remake: the co-op host's player list (PlayersPanel) over the Esc menu's
+## frozen frame, as the Options screen; closing it closes the Esc menu.
+func open_players() -> void:
+	if game.session == null or not game.session.online or not game.session.is_host:
+		return
+	if not _esc_open:
+		_open_menu()
+	_menu.visible = false
+	_players_panel.session = game.session
+	_players_panel.open()
+
+
 func toggle_menu() -> void:
 	if _esc_open:
 		_close_menu()
@@ -866,6 +934,7 @@ func _close_menu() -> void:
 	_esc_frame = null
 	if is_instance_valid(_quit_box):
 		_quit_box.queue_free()
+	_players_panel.close()
 	if _pause_before != null:
 		get_tree().paused = bool(_pause_before)
 		_pause_before = null
@@ -937,7 +1006,7 @@ func _panel_open() -> bool:
 	if quests_screen != null:
 		return true
 	for panel in [_inventory, _journal, _side_quests, _tutorial, _movie, _options, _save_load,
-			_game_over_box, _quit_box]:
+			_game_over_box, _quit_box, _players_panel]:
 		if is_instance_valid(panel) and panel.visible:
 			return true
 	return false
@@ -951,6 +1020,48 @@ func _add_ui(child: Node) -> void:
 
 func ui_size() -> Vector2:
 	return _safe_root.size if is_instance_valid(_safe_root) else get_viewport().get_visible_rect().size
+
+
+## Remake (a phone held upright): the original's top strip (unit panel
+## 0..185, message log 180..620, minimap 615..800 of the 800×600 layout, all
+## scaled by the height) is far wider than a portrait screen. There the unit
+## panel and the minimap share the top row at the scale that fits the width
+## (with a gap for the touch menu button under the minimap), the message log
+## goes under them at its own width-fitting scale, and the side columns start
+## below it. Any other shape keeps the original layout (scale = height / 600).
+func portrait() -> bool:
+	var vs := ui_size()
+	return vs.x < vs.y
+
+
+## Unit panel and minimap scale (screen px per 800×600 unit).
+func top_scale() -> float:
+	var vs := ui_size()
+	var k := vs.y / 600.0
+	return minf(k, vs.x / (185.0 * 2.0 + 10.0)) if vs.x < vs.y else k
+
+
+## Message log scale: its frame (175..625) across the width.
+func log_scale() -> float:
+	var vs := ui_size()
+	var k := vs.y / 600.0
+	return minf(k, vs.x / 452.0) if vs.x < vs.y else k
+
+
+## Where the message log's y 0 sits (0 in the original layout).
+func log_top() -> float:
+	if not portrait():
+		return 0.0
+	var kt := top_scale()
+	var under_map := 165.0 * kt
+	if TouchInput.enabled:   # TouchActions puts its menu button under the minimap
+		under_map += TouchInput.target_pixels() / minf(transform.get_scale().x, transform.get_scale().y) + 12.0
+	return ceilf(maxf(225.0 * kt, under_map) + 7.0 * log_scale())
+
+
+## The bottom of the top widgets (unit panel, minimap, message log frame).
+func top_bottom() -> float:
+	return log_top() + 100.0 * log_scale() if portrait() else 225.0 * top_scale()
 
 func _layout_safe_area() -> void:
 	var screen := get_viewport().get_visible_rect().size

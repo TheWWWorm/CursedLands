@@ -110,8 +110,10 @@ func _ready() -> void:
 	add_child(_over)
 
 
+## Screen px per 800×600 unit: the height's, or GameHUD.top_scale (portrait).
 func _k() -> float:
-	return Interface800.canvas_size(self).y / 600.0
+	var hud := get_canvas_layer_node() as GameHUD
+	return hud.top_scale() if hud else Interface800.canvas_size(self).y / 600.0
 
 
 func _p(v: Vector2, fixed := false) -> Vector2:
@@ -160,12 +162,20 @@ func _process(dt: float) -> void:
 	_over.queue_redraw()
 
 
+## Remake (gamepad, PadField): the examined unit shown instead of the hovered
+## or selected one; `ignore_hover` while the pad drives without a pointer.
+var examine: GameUnit
+var ignore_hover := false
+
+
 func _pick() -> GameUnit:
 	if game == null or game.world == null:
 		return null
+	if is_instance_valid(examine) and not examine.dead and examine.world == game.world:
+		return examine
 	var u: GameUnit = null
 	var vp := get_viewport()
-	if vp.gui_get_hovered_control() == null:
+	if vp.gui_get_hovered_control() == null and not ignore_hover:
 		u = game.pick_unit(vp.get_mouse_position())
 		#  hands the panel living objects only.
 		if u != null and u.dead:

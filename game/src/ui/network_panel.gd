@@ -392,19 +392,22 @@ func _draw_modes() -> void:
 			var off := _mode_off(p)
 			var id: String = "mode:" + PAGE_NAMES[p]
 			_targets[id] = r
+			# One band: the selection (the pointer moves it, see _gui_input).
 			if i == _sel:
 				draw_rect(r8(r), BAR)
-			elif _hover == id and off.is_empty():
-				draw_rect(r8(r), HOVER_BAR)
-			var plate := Rect2(120, y + 6, 190, 21)
+			# The plate and the description centred on the row, the caption
+			# on the plate.
+			var plate := Rect2(120, r.get_center().y - 10.5, 190, 21)
 			sprite(ui, plate, PLATE_UV, Color.WHITE if off.is_empty() else Color(0.5, 0.5, 0.5))
 			var title := _mode_title(p)
 			var f := 1 if text_width(title, 1) <= plate.size.x - 12 else 0   # long translations
-			text(Rect2(plate.position.x, plate.position.y + (2 if f == 1 else 3), plate.size.x, 20), title, f,
-				GREY if off else (Color.WHITE if _hover == id or i == _sel else TEXT), HORIZONTAL_ALIGNMENT_CENTER)
-			var h := _block(Rect2(322, y + 5, 362, 48), _mode_desc(p), 0, GREY if off else TEXT, 3 if off.is_empty() else 2)
+			text_vc(plate, title, f, GREY if off else (Color.WHITE if i == _sel else TEXT), HORIZONTAL_ALIGNMENT_CENTER)
+			var dn := mini(wrap_text(_mode_desc(p), 362, 0).size(), 3 if off.is_empty() else 2)
+			var offn := mini(wrap_text(off, 362, 0).size(), 2) if off else 0
+			var dy := r.get_center().y - (dn + offn) * line_h(0) * 0.5
+			var h := _block(Rect2(322, dy, 362, 48), _mode_desc(p), 0, GREY if off else TEXT, 3 if off.is_empty() else 2)
 			if off:
-				_block(Rect2(322, y + 5 + h, 362, 32), off, 0, ORANGE, 2)
+				_block(Rect2(322, dy + h, 362, 32), off, 0, ORANGE, 2)
 			y += 60
 		y += 8
 
@@ -440,11 +443,9 @@ func _draw_row(r: int, row: Dictionary) -> void:
 	var id := "row:" + String(row.id)
 	_targets[id] = rr
 	var on: bool = row.on
-	if r == _sel:
+	if r == _sel:   # one band: the pointer moves the selection
 		draw_rect(r8(rr), BAR)
-	elif _hover == id and on:
-		draw_rect(r8(rr), HOVER_BAR)
-	text(Rect2(120, y + 4, 275, 20), String(row.label), 1, TEXT if on else GREY)
+	text_vc(Rect2(120, y, 275, 24), String(row.label), 1, TEXT if on else GREY)
 	var col := TEXT if on else GREY
 	match String(row.kind):
 		"edit":
@@ -458,15 +459,15 @@ func _draw_row(r: int, row: Dictionary) -> void:
 		"choice":
 			_arrow(Vector2(408, y + 12), true, on)
 			_arrow(Vector2(682, y + 12), false, on)
-			text(Rect2(418, y + 4, 254, 20), String(row.value), 1, col, HORIZONTAL_ALIGNMENT_CENTER)
+			text_vc(Rect2(418, y, 254, 24), String(row.value), 1, col, HORIZONTAL_ALIGNMENT_CENTER)
 		"switch":
-			text(Rect2(400, y + 4, 285, 20), String(row.value), 1, col)
+			text_vc(Rect2(400, y, 285, 24), String(row.value), 1, col)
 		"slider":
 			if on:
 				hslider(_slider_rect(r), float(max_players - 1), float(Session.MAX_PLAYERS - 1))
-			text(Rect2(590 if on else 400, y + 4, 95, 20), String(row.value), 1, col)
+			text_vc(Rect2(590 if on else 400, y, 95, 24), String(row.value), 1, col)
 		"link":
-			text(Rect2(400, y + 4, 180, 20), String(row.value), 1, col)
+			text_vc(Rect2(400, y, 180, 24), String(row.value), 1, col)
 			_plate("char", Rect2(585, y + 3, 102, 19), RemakeText.t("Choose…"), on)
 
 
@@ -490,7 +491,7 @@ func _plate(id: String, r: Rect2, label: String, on := true) -> void:
 	_targets[id] = r
 	sprite(tex("saveload"), r, PLATE_UV, Color.WHITE if on else Color(0.5, 0.5, 0.5))
 	var col := (Color.WHITE if _hover == id else TEXT) if on else GREY
-	text(Rect2(r.position.x, r.position.y + 1, r.size.x, 20), label, 1 if text_width(label, 1) <= r.size.x - 6 else 0,
+	text_vc(r, label, 1 if text_width(label, 1) <= r.size.x - 6 else 0,
 		col, HORIZONTAL_ALIGNMENT_CENTER)
 
 
@@ -499,15 +500,15 @@ func _plate(id: String, r: Rect2, label: String, on := true) -> void:
 func _edit(r: Rect2, s: String, focused: bool, on: bool, placeholder := "") -> void:
 	draw_rect(r8(r), Color(0, 0, 0, 0.55))
 	draw_rect(r8(r), Color(ORANGE, 0.8) if focused else Color(GREY, 0.45), false, maxf(1.0, round(kv().y)))
-	var tr := Rect2(r.position.x + 4, r.position.y + 1, r.size.x - 8, 20)
+	var tr := Rect2(r.position.x + 4, r.position.y, r.size.x - 8, r.size.y)
 	if s.is_empty() and not focused and placeholder:
-		text(tr, placeholder, 0, Color(GREY, 0.7))
+		text_vc(tr, placeholder, 0, Color(GREY, 0.7))
 	else:
 		# The end of a long text stays in view.
 		var shown := s
 		while shown.length() > 1 and text_width(shown, 1) > tr.size.x - 4:
 			shown = shown.substr(1)
-		text(tr, shown, 1, Color.WHITE if on else GREY, HORIZONTAL_ALIGNMENT_LEFT, true)
+		text_vc(tr, shown, 1, Color.WHITE if on else GREY, HORIZONTAL_ALIGNMENT_LEFT, true)
 		if focused and fmod(_caret_t, 1.0) < 0.5:
 			var x := r8(tr).position.x + font().get_string_size(shown, HORIZONTAL_ALIGNMENT_LEFT, -1, font_px(1)).x + 1
 			var rr := r8(r)
@@ -592,7 +593,7 @@ func _draw_join_low() -> void:
 			draw_rect(r8(rr), BAR)
 		elif _hover == "book:%d" % i and not joining:
 			draw_rect(r8(rr), HOVER_BAR)
-		text(Rect2(rr.position.x + 4, rr.position.y + 2, rr.size.x - 8, 20), addresses[i], 1, YELLOW if not joining else GREY, HORIZONTAL_ALIGNMENT_LEFT, true)
+		text_vc(Rect2(rr.position.x + 4, rr.position.y, rr.size.x - 8, rr.size.y), addresses[i], 1, YELLOW if not joining else GREY, HORIZONTAL_ALIGNMENT_LEFT, true)
 	vbar(Rect2(br.position.x, br.position.y, br.size.x, br.size.y), float(_book_top), float(addresses.size() - BOOK_ROWS))
 	_plate("remove", Rect2(x0, LOW.end.y - 26, 110, 19), RemakeText.t("Remove"), _book_sel >= 0 and not joining)
 	# Right: the address formats, or the connection.
@@ -862,6 +863,20 @@ func _hit(p: Vector2) -> String:
 	return ""
 
 
+## The pointer on a row takes the selection, so the keys go on from there and
+## only one row has the band.
+func _follow_hover() -> void:
+	if _hover.begins_with("mode:") and page == MODES:
+		var pg := PAGE_NAMES.find(_hover.trim_prefix("mode:"))
+		if pg > 0 and _mode_off(pg).is_empty():
+			_sel = pg - 1
+	elif _hover.begins_with("row:") and page != MODES:
+		var rows := _rows()
+		for r in rows.size():
+			if "row:" + String(rows[r].id) == _hover:
+				_sel = r
+
+
 func _gui_input(e: InputEvent) -> void:
 	if not visible:
 		return
@@ -877,6 +892,7 @@ func _gui_input(e: InputEvent) -> void:
 		var h := _hit(p)
 		if h != _hover:
 			_hover = h
+			_follow_hover()
 			queue_redraw()
 		return
 	if e is InputEventMouseButton and not e.pressed and e.button_index == MOUSE_BUTTON_LEFT:
@@ -1000,6 +1016,7 @@ func _unhandled_key_input(e: InputEvent) -> void:
 					_primary()
 		KEY_UP, KEY_DOWN:
 			_focus = ""
+			_hover = ""   # the keys take over the selection from the pointer
 			var d := -1 if k.keycode == KEY_UP else 1
 			if page == MODES:
 				var s := _sel

@@ -29,6 +29,9 @@ signal chat(player_index: int, player_name: String, text: String)
 signal status_changed
 ## Client: the host turned this join down (title, text); the connection closes.
 signal refused(title: String, text: String)
+## Client (remake): the host removed this player (`banned`: for the rest of
+## its hosting session); the connection closes.
+signal kicked(banned: bool)
 
 const CHAT_MAX := 200   # under 200 characters
 const STATUS_EVERY := 1.0
@@ -53,6 +56,12 @@ static var _lmp_tried := false
 static var _world_hash := ""
 static var _hash_task := -1
 var _refused := false
+var _kicked := {}       # host: pid -> banned, players being removed (kick)
+var _was_kicked := false   # client: the host removed this player
+## Host (remake): names (lower case) and addresses refused for the rest of
+## this hosting session (kick with ban).
+var banned_names := {}
+var banned_addresses := {}
 
 
 ## textslmp.res "string <key>" with %s = `arg`, or `fallback` without that file.
@@ -85,6 +94,12 @@ func joined_text(player_name: String) -> String:
 
 ## Host: the line for a peer that is gone (said goodbye = left, else lost).
 func gone_text(pid: int, player_name: String) -> String:
+	if _kicked.has(pid):
+		var banned: bool = _kicked[pid]
+		_kicked.erase(pid)
+		_leaving.erase(pid)
+		return lmp_text("lmp_player_banned", player_name, "Player %s is forbidden to join the game") if banned \
+			else lmp_text("lmp_player_kicked", player_name, "Player %s has been expelled from the game")
 	if _leaving.has(pid):
 		_leaving.erase(pid)
 		return lmp_text("lmp_player_disconnected", player_name, "Player %s left the game")
@@ -94,7 +109,7 @@ func gone_text(pid: int, player_name: String) -> String:
 ## "" when the host said it was leaving (its own line came already) or
 ## turned the join down (its own box came already).
 func server_lost_text() -> String:
-	if _host_left or _refused:
+	if _host_left or _refused or _was_kicked:
 		return ""
 	return lmp_text("disconnect_msg", "", "Game interrupted: either the server is switched off or you are experiencing connection problems")
 
@@ -159,6 +174,70 @@ func _rpc_bye_all() -> void:
 		if int(p.index) == 0:
 			host_name = String(p.name)
 	session.message.emit(lmp_text("lmp_player_disconnected", host_name, "Player %s left the game"))
+
+
+# ================================================================ kick / ban
+
+## Host (remake, PlayersPanel): removes player `pid` — never the host itself.
+## Its last progress package goes out, the player is told (`kicked`, then it
+## goes to the main menu with a notice), everyone gets textslmp's
+## «lmp_player_kicked» / «lmp_player_banned» line, and the connection is
+## dropped a moment later; its heroes stay with the party under AI control
+## as after a lost connection (Session._on_peer_disconnected). `ban` refuses
+## the same name or address for the rest of this hosting session
+## (`refuse`, «lmp_you_are_banned»). False when there is nobody to remove.
+func kick(pid: int, ban := false) -> bool:
+	if session == null or not session.online or not session.is_host or pid == 1 \
+			or not session.players.has(pid) or _kicked.has(pid):
+		return false
+	var player_name := String(session.players[pid].name)
+	print("NetStatus: %s player %d «%s»" % ["banning" if ban else "kicking", pid, player_name])
+	_kicked[pid] = ban
+	if ban:
+		banned_names[player_name.strip_edges().to_lower()] = true
+		var addr := _address(pid)
+		if addr != "" and not _local_address(addr):
+			banned_addresses[addr] = true
+	if CoopProgress.peer_alive(multiplayer, pid):
+		_rpc_kicked.rpc_id(pid, ban)
+	session.coop._sent_hash.clear()
+	session.coop.send_all()
+	get_tree().create_timer(KICK_DROP).timeout.connect(func():
+		if not is_inside_tree() or not session.players.has(pid):
+			return   # gone already (the player left on its own)
+		if multiplayer.has_multiplayer_peer() and pid in multiplayer.get_peers():
+			(multiplayer as SceneMultiplayer).disconnect_peer(pid)
+		session.coop._on_peer_gone(pid)
+		session._on_peer_disconnected(pid))
+	return true
+
+const KICK_DROP := 1.0   # seconds before a removed player's connection is dropped
+
+
+@rpc("authority", "call_remote", "reliable")
+func _rpc_kicked(banned: bool) -> void:
+	_was_kicked = true
+	kicked.emit(banned)
+
+
+## Host: the remote address of peer `pid` ("" when unknown, e.g. WebSocket).
+func _address(pid: int) -> String:
+	var enet := NetSim.enet_of(multiplayer)
+	if enet and enet.get_peer(pid):
+		return enet.get_peer(pid).get_remote_address()
+	return ""
+
+
+## Loopback addresses are not banned (players on the host's own computer).
+static func _local_address(addr: String) -> bool:
+	return addr.begins_with("127.") or addr == "::1" or addr.begins_with("::ffff:127.")
+
+
+func is_banned(pid: int, player_name: String) -> bool:
+	if banned_names.has(player_name.strip_edges().to_lower()):
+		return true
+	var addr := _address(pid)
+	return addr != "" and banned_addresses.has(addr)
 
 
 func forget(pid: int) -> void:
@@ -311,9 +390,12 @@ static func _hash_maps(dir: String) -> String:
 
 ## Host: true when the joiner `pid` is turned down (its box is sent, the
 ## connection dropped a moment later).
-func refuse(pid: int, protocol: int, world: String) -> bool:
+func refuse(pid: int, protocol: int, world: String, player_name := "") -> bool:
 	var why: Array = []
-	if session.players.size() >= session.max_players:
+	if is_banned(pid, player_name):   # remake: kick with ban (the original's refusal texts)
+		why = [lmp_text("lmp_you_are_banned", "", "You've been disconnected from the game."),
+			lmp_text("lmp_you_are_banned_msg", "", "Your computer's IP address has been disconnected from the game currently being played on this server.")]
+	elif session.players.size() >= session.max_players:
 		why = [lmp_text("lmp_server_full", "", "Server is full"), lmp_text("lmp_server_full_msg", "", "There is no room for another player in this game.")]
 	elif protocol != PROTOCOL:
 		why = [lmp_text("lmp_wrong_protocol", "", "Wrong communication protocol version"),
@@ -342,13 +424,11 @@ func _rpc_refused(title: String, text: String) -> void:
 
 # ================================================================ status
 
-## Remake (the original loads zones on a thread, only plays the
-## progress movie): the remake builds a zone on the main thread, which stops
+## Remake: the remake builds a zone on the main thread, which stops
 ## the network for as long as the build takes - over a minute on a first run
 ## while shaders and caches are made. The other side's ENet then times the
 ## connection out (Session.PEER_TIMEOUT_MS) and a joiner waiting for the first
-## zone never gets it. The build calls this between its steps (next to
-## LoadingScreen.tick) so ENet keeps acknowledging and sending; what arrives
+## zone never gets it. The build calls this between its steps so ENet keeps acknowledging and sending; what arrives
 ## only queues up and is handled after the build as usual (the RPCs are run
 ## by SceneMultiplayer's own poll). A peer dropping meanwhile is handled once
 ## the build is over (Session._on_peer_disconnected).

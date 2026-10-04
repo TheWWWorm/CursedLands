@@ -1,6 +1,6 @@
 class_name Revive
 extends RefCounted
-## Remake option "revive" (off by default; the original has no way back for a
+## Remake option "revive" (on by default, user request; the original has no way back for a
 ## dead party member in single player — no spell, scroll or script builtin
 ## raises the dead; only the network game's respawn at a zone change,
 ## makes a dead hero whole again).

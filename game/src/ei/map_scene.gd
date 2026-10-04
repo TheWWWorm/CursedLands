@@ -22,6 +22,7 @@ static func load_map(map_name: String, mob_name := "", spawn_units := true) -> E
 	if s.terrain == null:
 		return null
 	s.add_child(s.terrain)
+	LoadingScreen.map_read()
 	var t1 := Time.get_ticks_msec()
 	var mob_path := "maps/%s.mob" % mob_name
 	if GameFiles.exists(GameData.root.path_join(mob_path)):
@@ -59,14 +60,16 @@ func _place_objects() -> void:
 	add_child(root)
 	var placed := 0
 	var missing := {}
+	# Units left for GameWorld count as they are made (counts all).
+	LoadingScreen.objects(mob.objects.size())
 	for o: Dictionary in mob.objects:
-		LoadingScreen.tick()
 		NetStatus.keep_alive()
 		var template: String = o.template
-		if template.is_empty():
-			continue
-		if o.kind == "UNIT" and not _spawn_units:
+		if o.kind == "UNIT" and not _spawn_units and not template.is_empty():
 			unit_records.append(o)
+			continue
+		LoadingScreen.object_done()
+		if template.is_empty():
 			continue
 		var node := place_object(o, root)
 		if node == null:

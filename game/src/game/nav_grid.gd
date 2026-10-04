@@ -190,12 +190,16 @@ var _fp := {}                    # object key -> {"spans": {cell: [b, t, k]}, "f
 var _fp_nodes := {}              # object key -> Node3D
 var _next_key := -1
 var _occ := PackedByteArray()    # standing units whose stamp closes the cell (count)
+## Counts the changes of the map's cells (build, objects, levers; not the
+## unit stamps): a path planned on an older one is not reused (GameUnit._kept).
+var map_rev := 0
 var _stamps := {}                # quantised radius x 10 -> Array[Vector2i]
 var _buckets := {}               # key -> Array[GameUnit]
 
 
 func build(t: EITerrain, water_levels: PackedFloat32Array, objects: Array) -> void:
 	terrain = t
+	map_rev += 1
 	_layers = {}
 	_spans = {}
 	_floors = {}
@@ -888,6 +892,7 @@ func _fp_rect(fp: Dictionary) -> Rect2i:
 func _update_region(r: Rect2i) -> void:
 	if r.size == Vector2i.ZERO:
 		return
+	map_rev += 1
 	var full := Rect2i(Vector2i.ZERO, size)
 	r = r.intersection(full)
 	for y in range(r.position.y, r.end.y):
@@ -1307,7 +1312,7 @@ func find_path(a: Vector2, b: Vector2, ignore: Array = [], avoid: Array = [], ex
 	# stamps for R_REF, so the standing units near the start are stamped
 	# again with `extra` like the blocker (**approx.**: only there).
 	if not stamped.is_empty() and extra > 0.0:
-		for u: GameUnit in units_around(a, 8.0):
+		for u: GameUnit in units_around(a, 8.0, false):
 			if u._occ_cell.x >= 0 and not u in lifted and not u in avoid:
 				stamped.append([u._occ_cell, u._occ_r + extra])
 	for e: Array in stamped:
@@ -1384,7 +1389,7 @@ func _stamp_descent(L: Layer, a: Vector2, b: Vector2, lifted: Array, stamped: Ar
 	var sc := cell(a)
 	var thr := roundi((2.0 - R_REF) * 16.0)
 	var st := []   # [cell, k] of every stamp on the grid near the start
-	for u: GameUnit in units_around(center(sc), 9.0):
+	for u: GameUnit in units_around(center(sc), 9.0, false):
 		if u._occ_cell.x >= 0 and not u in lifted:
 			st.append([u._occ_cell, roundi(u._occ_r * 10.0 + 1.0)])
 	for e: Array in stamped:
@@ -1498,7 +1503,7 @@ func _find_path(L: Layer, a: Vector2, b: Vector2) -> PackedVector2Array:
 		# **Approx.**: the block route (8-cell blocks, and its 32 x 32
 		# windows) is the A* route over the cell weights; the exact
 		# cost search then runs in the band of cells within 16 of it.
-		var route := A.get_id_path(start, goal, true)
+		var route := _route(L, start, goal)
 		if route.is_empty():
 			return PackedVector2Array()
 		cells = _band_search(L, route)
@@ -1516,6 +1521,111 @@ func _find_path(L: Layer, a: Vector2, b: Vector2) -> PackedVector2Array:
 	last_cells = cells
 	last_end = b
 	return _smooth(L, a, pts, cells)
+
+
+## The A* route the band search follows: `A.get_id_path(start, goal, true)`,
+## the route to the goal or, when it cannot be reached, to the reachable cell
+## AStarGrid2D settles as nearest it (least estimate to the goal, octile in
+## cells, then least route cost). Remake speed: a goal shut in by the units
+## standing round it (a target in a crowd) made that search settle every cell
+## of the start's region — most of the map, a few hundred ms per attacker. A
+## goal whose open cells close round it within POCKET_MAX cells without the
+## start is unreachable; the nearest cell is then looked for ring by ring
+## outside that pocket, each candidate tested the same way (its own closed
+## pocket, another region), and the route searched to it. The cell and the
+## route cost found are the native search's; between cells of equal estimate
+## and equal cost the choice may differ.
+const POCKET_MAX := 256
+const POCKET_RINGS := 48
+const POCKET_TRIES := 24
+
+
+func _route(L: Layer, start: Vector2i, goal: Vector2i) -> Array[Vector2i]:
+	var A := L.astar
+	var pocket := _pocket(A, goal, start)
+	if pocket.is_empty():
+		return A.get_id_path(start, goal, true)
+	var comp := L.comp[start.y * size.x + start.x]
+	var shut := pocket   # cells known unreachable from the start
+	var pending := []    # [estimate, cell] of untested candidates
+	var best_h := INF
+	var best: Array[Vector2i] = []
+	var best_g := INF
+	var tried := 0
+	for k in range(1, POCKET_RINGS + 1):
+		if float(k) > best_h + 0.0001:
+			break   # every cell of ring k on is estimated at k or more
+		for dy in range(-k, k + 1):
+			var step := 1 if absi(dy) == k else 2 * k
+			for dx in range(-k, k + 1, step):
+				var q := goal + Vector2i(dx, dy)
+				if _in(q) and not A.is_point_solid(q):
+					pending.append([_octile(absi(dx), absi(dy)), q])
+		pending.sort_custom(func(x, y): return x[0] < y[0])
+		# Candidates estimated under k + 1 are complete (the outer rings
+		# are estimated at k + 1 or more).
+		while not pending.is_empty() and float(pending[0][0]) < float(k + 1):
+			var e: Array = pending.pop_front()
+			var h: float = e[0]
+			if h > best_h + 0.0001:
+				pending.clear()
+				break
+			var q: Vector2i = e[1]
+			var qi := q.y * size.x + q.x
+			if shut.has(qi) or (comp != 0 and L.comp[qi] != comp):
+				continue
+			var other := _pocket(A, q, start)
+			if not other.is_empty():
+				shut.merge(other)
+				continue
+			tried += 1
+			if tried > POCKET_TRIES:
+				return A.get_id_path(start, goal, true)
+			var r := A.get_id_path(start, q, false)
+			if r.is_empty():
+				# Shut in by more than POCKET_MAX cells: the native search
+				# (which has just settled the start's region) does it.
+				return A.get_id_path(start, goal, true)
+			var g := 0.0
+			for m in range(1, r.size()):
+				var dd := (r[m] - r[m - 1]).abs()
+				g += (1.41421356 if dd.x != 0 and dd.y != 0 else 1.0) * A.get_point_weight_scale(r[m])
+			if best.is_empty() or g < best_g - 0.0001:
+				best = r
+				best_g = g
+				best_h = h
+	if best.is_empty():
+		return A.get_id_path(start, goal, true)
+	return best
+
+
+## AStarGrid2D's octile estimate over cell offsets (dx, dy >= 0).
+static func _octile(dx: int, dy: int) -> float:
+	const F := 0.41421356
+	return F * dx + dy if dx < dy else F * dy + dx
+
+
+## The open cells (8-connected over the A* grid, as AStarGrid2D steps) round
+## `c` as {flat index: true} when they close within POCKET_MAX cells and do
+## not hold `other`; else empty.
+func _pocket(A: AStarGrid2D, c: Vector2i, other: Vector2i) -> Dictionary:
+	var seen := {c.y * size.x + c.x: true}
+	var todo: Array[Vector2i] = [c]
+	while not todo.is_empty():
+		var p: Vector2i = todo.pop_back()
+		for dy in range(-1, 2):
+			for dx in range(-1, 2):
+				var q := p + Vector2i(dx, dy)
+				if (dx == 0 and dy == 0) or not _in(q):
+					continue
+				var qi := q.y * size.x + q.x
+				if seen.has(qi) or A.is_point_solid(q):
+					continue
+				if q == other or seen.size() >= POCKET_MAX:
+					return {}
+				seen[qi] = true
+				todo.append(q)
+	return seen
 
 
 ## The exact cost search along the A*
@@ -1594,21 +1704,33 @@ func _stamp_window(r: Rect2i) -> PackedInt32Array:
 	var out := PackedInt32Array()
 	var mid := (Vector2(r.position) + Vector2(r.size) * 0.5) * CELL
 	var rad := Vector2(r.size).length() * CELL * 0.5 + 4.5
-	var list := []
-	for u: GameUnit in units_around(mid, rad):
-		if u._occ_cell.x >= 0 and not u in _ctx_lifted and not u in _ctx_avoid:
-			list.append([u._occ_cell, u._occ_r])
+	# (Remake speed: the stamps out of reach of the window are dropped before
+	# anything else is looked at, and painted straight into the window.)
+	var cs: Array[Vector2i] = []
+	var rs := PackedFloat64Array()
+	for u: GameUnit in units_around(mid, rad, false):
+		var c := u._occ_cell
+		if c.x < 0 or c.x + 8 < r.position.x or c.y + 8 < r.position.y or c.x - 8 >= r.end.x or c.y - 8 >= r.end.y:
+			continue
+		if not u in _ctx_lifted and not u in _ctx_avoid:
+			cs.append(c)
+			rs.append(u._occ_r)
 	for u: GameUnit in _ctx_avoid:
 		if is_instance_valid(u) and not u.dead and not u in _ctx_lifted:
-			list.append([cell(u.pos), u.body_radius()])
-	for e: Array in list:
-		var c: Vector2i = e[0]
-		if c.x + 8 < r.position.x or c.y + 8 < r.position.y or c.x - 8 >= r.end.x or c.y - 8 >= r.end.y:
-			continue
-		if out.is_empty():
-			out.resize(r.size.x * r.size.y)
-			out.fill(0)
-		var k := roundi(float(e[1]) * 10.0 + 1.0)
+			var c := cell(u.pos)
+			if c.x + 8 < r.position.x or c.y + 8 < r.position.y or c.x - 8 >= r.end.x or c.y - 8 >= r.end.y:
+				continue
+			cs.append(c)
+			rs.append(u.body_radius())
+	if cs.is_empty():
+		return out
+	out.resize(r.size.x * r.size.y)
+	out.fill(0)
+	var w := r.size.x
+	var h := r.size.y
+	for n in cs.size():
+		var c := cs[n]
+		var k := roundi(rs[n] * 10.0 + 1.0)
 		# Only the values over the mover's threshold can close a cell (the
 		# test is v > thr and v >= the value of the cell stepped from), so
 		# the rest stay 0: per (k, thr) the offsets and values over it.
@@ -1625,12 +1747,15 @@ func _stamp_window(r: Rect2i) -> PackedInt32Array:
 			if st.is_empty():
 				st.append(0)
 			_stamp_k[key] = st
+		var cx := c.x - r.position.x
+		var cy := c.y - r.position.y
+		var inside := cx >= 8 and cy >= 8 and cx + 8 <= w and cy + 8 <= h
 		for m in range(0, st.size() - 2, 3):
-			var y := c.y + st[m + 1] - r.position.y
-			var x := c.x + st[m] - r.position.x
-			if x < 0 or y < 0 or x >= r.size.x or y >= r.size.y:
+			var y := cy + st[m + 1]
+			var x := cx + st[m]
+			if not inside and (x < 0 or y < 0 or x >= w or y >= h):
 				continue
-			var o := y * r.size.x + x
+			var o := y * w + x
 			if st[m + 2] > out[o]:
 				out[o] = st[m + 2]
 	return out
@@ -2125,8 +2250,16 @@ func _stamp(c: Vector2i, r: float, add: int) -> void:
 ## and its spatial hash entry up to date. Called after each unit tick.
 func track_unit(u: GameUnit) -> void:
 	var standing := not u.dead and not u._moving and size.x > 0
-	var c := cell(u.pos) if standing else Vector2i(-1, -1)
 	var r := u.body_radius()
+	# Remake speed (every unit, every physics step): nothing to do when the
+	# position, state, radius and registration are those of the last call.
+	var key := (u._seq << 2) | (2 if u.dead else 0) | (1 if standing else 0)
+	if u.pos == u._trk_pos and key == u._trk_key and r == u._trk_r:
+		return
+	u._trk_pos = u.pos
+	u._trk_key = key
+	u._trk_r = r
+	var c := cell(u.pos) if standing else Vector2i(-1, -1)
 	if c != u._occ_cell or (standing and r != u._occ_r):
 		if u._occ_cell.x >= 0:
 			_stamp(u._occ_cell, u._occ_r, -1)
@@ -2140,9 +2273,14 @@ func track_unit(u: GameUnit) -> void:
 ## Puts a unit in the spatial bucket of its position (none while dead or not
 ## in GameWorld.units); GameUnit.pos calls it on every change.
 func rebucket(u: GameUnit) -> void:
-	var ak := -1 if u._seq == 0 else _bucket_key(u.pos)
+	var bk := _bucket_key(u.pos)
+	var cbk := _cbucket_key(u.pos)
+	var ak := -1 if u._seq == 0 else bk
 	# The coarse grids (CBUCKET) serve the wide queries (sight radii).
-	var cak := -1 if u._seq == 0 else _cbucket_key(u.pos)
+	var cak := -1 if u._seq == 0 else cbk
+	if ak == u._abucket and cak == u._cabucket and (-1 if u.dead else ak) == u._bucket \
+			and (-1 if u.dead else cak) == u._cbucket:
+		return   # (remake speed: the usual case, a step within the same buckets)
 	if cak != u._cabucket:
 		if u._cabucket != -1 and _call_buckets.has(u._cabucket):
 			(_call_buckets[u._cabucket] as Array).erase(u)
@@ -2151,7 +2289,7 @@ func rebucket(u: GameUnit) -> void:
 			if not _call_buckets.has(cak):
 				_call_buckets[cak] = []
 			_call_buckets[cak].append(u)
-	var ck := -1 if u.dead or u._seq == 0 else _cbucket_key(u.pos)
+	var ck := -1 if u.dead or u._seq == 0 else cbk
 	if ck != u._cbucket:
 		if u._cbucket != -1 and _cbuckets.has(u._cbucket):
 			(_cbuckets[u._cbucket] as Array).erase(u)
@@ -2168,7 +2306,7 @@ func rebucket(u: GameUnit) -> void:
 			if not _all_buckets.has(ak):
 				_all_buckets[ak] = []
 			_all_buckets[ak].append(u)
-	var key := -1 if u.dead or u._seq == 0 else _bucket_key(u.pos)
+	var key := -1 if u.dead or u._seq == 0 else bk
 	if key != u._bucket:
 		if u._bucket != -1 and _buckets.has(u._bucket):
 			(_buckets[u._bucket] as Array).erase(u)
@@ -2180,6 +2318,7 @@ func rebucket(u: GameUnit) -> void:
 
 
 func untrack_unit(u: GameUnit) -> void:
+	u._trk_key = -1
 	if u._occ_cell.x >= 0:
 		_stamp(u._occ_cell, u._occ_r, -1)
 		u._occ_cell = Vector2i(-1, -1)
@@ -2221,8 +2360,25 @@ func units_all_around(p: Vector2, r: float) -> Array:
 				for u: GameUnit in b:
 					if u.pos.distance_squared_to(p) <= r2:
 						out.append(u)
-	if out.size() > 1:
-		out.sort_custom(func(a: GameUnit, b: GameUnit): return a._seq < b._seq)
+	return _in_seq_order(out)
+
+
+## `list` in GameWorld.units order (GameUnit._seq, unique per unit). Remake
+## speed: the keys are sorted natively (a crowd's query sorted with a script
+## comparator cost more than the query itself); the order is the same.
+static func _in_seq_order(list: Array) -> Array:
+	var n := list.size()
+	if n < 2:
+		return list
+	var keys := PackedInt64Array()
+	keys.resize(n)
+	for i in n:
+		keys[i] = ((list[i] as GameUnit)._seq << 20) | i
+	keys.sort()
+	var out := []
+	out.resize(n)
+	for i in n:
+		out[i] = list[keys[i] & 0xfffff]
 	return out
 
 
@@ -2235,7 +2391,9 @@ static func _cbucket_key(p: Vector2) -> int:
 
 
 ## Live units within `r` of `p` (tracked ones only, i.e. on the host).
-func units_around(p: Vector2, r: float) -> Array:
+## `ordered` false: in no particular order, for callers that only combine
+## them (stamp maxima, an any-test).
+func units_around(p: Vector2, r: float, ordered := true) -> Array:
 	var out := []
 	var r2 := r * r
 	var bs := BUCKET if r < WIDE else CBUCKET
@@ -2248,9 +2406,7 @@ func units_around(p: Vector2, r: float) -> Array:
 					if u.pos.distance_squared_to(p) <= r2:
 						out.append(u)
 	# In GameWorld.units order, as a scan of every unit returns them.
-	if out.size() > 1:
-		out.sort_custom(func(a: GameUnit, b: GameUnit): return a._seq < b._seq)
-	return out
+	return _in_seq_order(out) if ordered else out
 
 
 ## The unit that stops `u` stepping to `q` (

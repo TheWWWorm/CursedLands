@@ -27,9 +27,9 @@ var _music: AudioStreamPlayer
 
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	# Loading screens and the intro need their movies converted (MoviePlayer);
+	# The intro and the credits need their movies converted (MoviePlayer);
 	# small ones first.
-	MoviePlayer.preconvert(LoadingScreen.MOVIES + ["ttlsfin", "titles", "ttlsfout", "intro"])
+	MoviePlayer.preconvert(["ttlsfin", "titles", "ttlsfout", "intro"])
 	mouse_filter = Control.MOUSE_FILTER_IGNORE   # clicks reach the signpost
 	# The original menu: the signpost in its 3D scene (menus.res + zonemainmenunew).
 	_scene = MenuScene.create() if GameData.root else null
@@ -86,6 +86,9 @@ func _ready() -> void:
 		add_child(_load)
 		_load.load_requested.connect(_load_slot)
 		add_child(_options)
+		# Remake: the graphics test on the first start or a new GPU (GfxDetect),
+		# over this island once the startup screen is gone.
+		GfxDetect.auto_start.call_deferred()
 		return
 	var c := CenterContainer.new()
 	c.set_anchors_preset(Control.PRESET_FULL_RECT)
@@ -169,8 +172,7 @@ func _add_viewer_link() -> void:
 	move_child(viewer, _net.get_index())
 
 func _on_board(action: String) -> void:
-	if _panel.visible or _options.visible or has_node("Credits") or _difficulty.visible or _load.visible \
-			or (_chars and _chars.visible):
+	if not pad_menu_free():
 		return
 	match action:
 		"new": _difficulty.open()   #  case 0: the difficulty box first
@@ -179,6 +181,12 @@ func _on_board(action: String) -> void:
 		"options": _options.open()
 		"credits": _credits()
 		"exit": get_tree().quit()
+
+
+## No screen over the signpost (its boards take clicks and the gamepad).
+func pad_menu_free() -> bool:
+	return not (_panel.visible or _options.visible or has_node("Credits") or _difficulty.visible or _load.visible \
+			or (_chars and _chars.visible))
 
 
 ## The "Authors" board: the scrolling credits over their own music.

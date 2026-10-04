@@ -374,3 +374,23 @@ func _set_hover(part: String) -> void:
 	elif _player.has_animation("ei/cidle"):
 		# Off every board: (code), the looping cidle.
 		_player.play("ei/cidle")
+
+
+## Remake (gamepad, PadUI): the boards as snap targets, while the main menu
+## shows no screen over them (MainMenu.pad_menu_free).
+func _enter_tree() -> void:
+	add_to_group("pad_panel")
+
+
+func pad_active() -> bool:
+	var p := get_parent()
+	return p == null or not p.has_method("pad_menu_free") or p.call("pad_menu_free")
+
+
+func pad_targets() -> Array:
+	var out: Array = []
+	for e: Array in REG:
+		var r := board_rect(e[1])
+		if r.size != Vector2.ZERO:
+			out.append({"rect": r, "id": BOARDS[e[1]]})
+	return out

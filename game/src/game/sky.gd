@@ -40,6 +40,7 @@ uniform vec3 light_dir = vec3(-0.5, 0.0, -0.866);  // EI space, as the light tra
 uniform float spin = 0.0;
 uniform float fancy = 0.0;   // remake option gfx_sky
 uniform float night = 0.0;
+global uniform vec3 ei_flash;   // remake: lightning sky brighten (Gfx.set_lightning_flash)
 
 // nask0sky.fig rings: radius, height (dome origin = eye − 16 m), v, fog factor, normal z
 const float RR[7] = float[](39.891, 39.109, 37.605, 34.610, 30.084, 24.531, 17.961);
@@ -136,6 +137,8 @@ void sky() {
 			col += stars(EYEDIR) * up * (1.0 - smoothstep(0.0, 0.4, dot(col, vec3(0.33))));
 			col += vec3(0.95, 0.97, 1.0) * smoothstep(0.99955, 0.99975, mu) * 1.4 * up;   // moon
 		}
+		// remake: a lightning strike lights the clouds (soft flash, ParticleFx)
+		col = mix(col, vec3(0.78, 0.82, 0.9), ei_flash.x);
 	}
 	COLOR = to_linear(col);
 	#if CURRENT_RENDERER == RENDERER_COMPATIBILITY
@@ -155,6 +158,7 @@ const SPIN_PER_SECOND := 0.00033333333 / 0.055
 
 
 static func material(cave: bool) -> ShaderMaterial:
+	Gfx.ensure_globals()   # ei_flash
 	var m := ShaderMaterial.new()
 	m.shader = Shader.new()
 	m.shader.code = SHADER

@@ -80,7 +80,7 @@ func move_ordered(p: Vector2) -> void:
 			_show(u, to, 3, 1, PackedVector3Array(), 0.0)
 			continue
 		var far := u.pos.distance_squared_to(to) * 0.01 <= path[-1].distance_squared_to(to)
-		var ticks := _ticks(u.pos, path, u.speed() * GameUnit.TICK)
+		var ticks := _ghost_ticks(u, path)
 		_show(u, to, 0, 1 if far else 0, ticks, 1e6)
 
 
@@ -127,16 +127,18 @@ func _approach(u: GameUnit, t: GameUnit, at: Vector2, r: float, a: int) -> void:
 	if path.is_empty():
 		_show(u, at, 3, 1, PackedVector3Array(), 0.0)
 		return
-	var ticks := _ticks(u.pos, path, u.speed() * GameUnit.TICK)
-	var f := ticks.size() - 1
+	# F counts the unit's own ticks (on the unit's path record
+	# at its speed); the dots are the ghost's ticks up to F.
+	var real := _ticks(u.pos, path, func(_c: Vector2, _q: Vector2) -> float: return u.speed() * GameUnit.TICK)
+	var f := real.size() - 1
 	var k := 0
-	while k < ticks.size():
-		if Vector2(ticks[k].x, ticks[k].y).distance_to(at) <= r:
+	while k < real.size():
+		if Vector2(real[k].x, real[k].y).distance_to(at) <= r:
 			f = k
 			break
 		k += 5
-	var out := Vector2(ticks[-1].x, ticks[-1].y).distance_to(at) > r
-	_show(u, at, a, 1 if out else 0, ticks, float(f))
+	var out := Vector2(real[-1].x, real[-1].y).distance_to(at) > r
+	_show(u, at, a, 1 if out else 0, _ghost_ticks(u, path), float(f))
 
 
 ## The first unit an interact / loot order goes to (Session: mine[0]).
@@ -178,17 +180,46 @@ func _show(u: GameUnit, at: Vector2, a: int, b: int, ticks: PackedVector3Array, 
 	fx.spawn(0x203b if b != 0 else 0x203a, Vector3(at.x, at.y, w.ground_at(at.x, at.y)), 1.0, null, {"secs": 0.6})
 
 
-## Positions at every logic tick walking `path` from `from` at `step` per tick.
-static func _ticks(from: Vector2, path: PackedVector2Array, step: float) -> PackedVector3Array:
+## The ghost's speed: (= 0.5
+##  = 1e10) on the ghost before the dots are made, which sets its
+## motion base (= unit) to 0.5 and its turn rate
+## to 1e10 and rebuilds the spline: each node's speed is the
+## node's cell value (sent in the message) x 0.5 / 512 cells
+## 0.5 m a tick. So the dots are 0.5 x 0.5 m = 0.25 m apart
+## on level ground (x the terrain factor), whether the unit walks or runs
+## (human run 0.24 m, walk 0.08 m a tick).
+const GHOST_BASE := 0.5
+
+
+## The ghost's position at every logic tick along `path` (
+## tick + idx): GHOST_BASE cells a tick x the step's terrain factor for the
+## unit's movement class (the node values are the unit's). **Approx.**: the
+## remake's path polyline instead of the cell spline, the factor sampled at
+## the start of each tick.
+func _ghost_ticks(u: GameUnit, path: PackedVector2Array) -> PackedVector3Array:
+	var nav: NavGrid = game.world.nav if game and game.world else null
+	var cls := u.move_class()
+	var flying := u.has_meta("flying")
+	return _ticks(u.pos, path, func(cur: Vector2, q: Vector2) -> float:
+		var f := 1.0
+		if nav and not flying and cur.distance_to(q) > 0.001:
+			f = nav.step_factor(cur, cur + (q - cur).normalized() * NavGrid.CELL, cls)
+		return GHOST_BASE * NavGrid.CELL * f)
+
+
+## Positions at every logic tick walking `path` from `from`, `step_at(cur,
+## next node)` metres a tick.
+static func _ticks(from: Vector2, path: PackedVector2Array, step_at: Callable) -> PackedVector3Array:
 	var out := PackedVector3Array([Vector3(from.x, from.y, 0.0)])
-	step = maxf(step, 0.01)
 	var cur := from
-	var left := step
+	var left := -1.0
 	for q in path:
+		if left < 0.0:
+			left = maxf(float(step_at.call(cur, q)), 0.01)
 		while cur.distance_to(q) >= left:
 			cur = cur.move_toward(q, left)
 			out.append(Vector3(cur.x, cur.y, 0.0))
-			left = step
+			left = maxf(float(step_at.call(cur, q)), 0.01)
 			if out.size() >= 2500:
 				return out
 		left -= cur.distance_to(q)

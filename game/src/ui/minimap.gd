@@ -71,8 +71,10 @@ func _ready() -> void:
 		_atlas = ImageTexture.create_from_image(img)
 
 
+## Screen px per 800×600 unit: the height's, or GameHUD.top_scale (portrait).
 func _k() -> float:
-	return Interface800.canvas_size(self).y / 600.0
+	var hud := get_canvas_layer_node() as GameHUD
+	return hud.top_scale() if hud else Interface800.canvas_size(self).y / 600.0
 
 
 ## 800×600 point -> local (the panel's left edge is x 615), shifted by the

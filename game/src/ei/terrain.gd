@@ -859,7 +859,6 @@ func _build(arc: EIResArchive) -> void:
 	_lava.resize(64)
 
 	for sy in sectors_y:
-		LoadingScreen.tick()
 		NetStatus.keep_alive()
 		for sx in sectors_x:
 			var d := arc.read("%s%03d%03d.sec" % [map_name, sx, sy])

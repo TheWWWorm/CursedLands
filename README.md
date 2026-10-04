@@ -64,8 +64,9 @@ The whole campaign can be played together. In **Multiplayer**, one player choose
 - **Bring your own hero.** A joining player can bring the hero from their own single-player save, with their own gold and bag. Anything they earn, loot or buy is kept when they leave.
 - **Shared progress.** Quests the host completes count for a joining player too, if that player has reached the same point in the story. A player who is further ahead simply helps. A player who is behind gets no credit for quests they have not reached yet. When they leave, the progress they made is merged into a new save of their own, so two players can finish the whole campaign together.
 - **Router setup.** The host needs incoming connections on **UDP port 27015**. When the router supports it (UPnP), the port is opened automatically and the address to give friends is shown; otherwise forward the port by hand.
-- **In game.** Press **Enter** to chat. A player list under the minimap shows each player's ping.
-- **Options.** Every party member can get the full experience for a kill, instead of a share (on by default). Monsters can be made stronger with the number of players.
+- **In game.** Press **Enter** to chat. A player list under the minimap shows each player's ping, and each player's name appears above their hero in their colour.
+- **Host tools.** The **Players** list in the Esc menu can kick or ban a player; a banned player can't rejoin until the host stops hosting.
+- **Options.** Every party member can get the full experience for a kill, instead of a share (on by default). With **Shared loot** (on by default), whatever one player finds, every other player gets a copy of too. Monsters can be made stronger with the number of players.
 - **Internet play.** If the router can't open the port automatically, forward UDP 27015 by hand, or use a virtual LAN such as Tailscale, ZeroTier or Radmin VPN and join with its address. IPv6 addresses work too, written as `[address]:port`.
 - **Original multiplayer mode.** Instead of the campaign, the host can choose **Host multiplayer game** and pick one of the original game's four multiplayer bases (Gipath, Ingos, Suslanger or the Cave); the others choose **Join multiplayer game** and bring their network character. Take quests from the base's quest giver and play the original multiplayer quest zones. Each player has their own gold and bag, and there is no saving, as in the original.
 - Up to 6 players. Everyone needs the same edition of the game (Russian and English editions can play together; the German edition plays with German only). Players can join a game already in progress. Only the host can save. Single-player pauses while menus are open; co-op never pauses.
@@ -104,6 +105,10 @@ Keys are read from the game's own `keyboard.ini`. To change one, open **Options*
 | Esc | game menu: save, load, options, exit |
 | Enter / Backspace | co-op: type a chat message / clear the chat |
 
+### Gamepad
+
+A controller works out of the box (a remake extra; the original has none). The left stick moves your hero (half tilt walks, full tilt runs), the right stick turns and zooms the camera, **A** acts on the highlighted target, **B** cancels and **Y** pauses (hold it for fast speed). **LB** opens the spells and actions wheel, **RB** the belt and weapons, **RT** the inventory, journal, quests, minimap and quick save / load; **X** opens a target ring with the aimed strikes. Menus and dialogues work with the D-pad and **A** / **B**, and **L3** turns on a pointer for anything else. Vibration, dead zone, button pictures and rebinding are under **Options → Controls → Gamepad…**.
+
 ## What is there
 
 - **The full campaign**: all islands, villages, quests, conversations, traders, mercenaries, crafting and scripted scenes, played from the start to the ending, with the original intro and story videos.
@@ -111,6 +116,8 @@ Keys are read from the game's own `keyboard.ini`. To change one, open **Options*
 - **Original interface**: the HUD, inventory, trading, spell crafting, journal, dialogues, Load and Save screens and Options use the game's own art and texts and its 800×600 layouts, scaled to your screen.
 - **Modern camera**: a free camera that pans, rotates and zooms smoothly and fades walls and roofs out of the way, in the style of modern isometric RPGs. The original fixed camera can be chosen under **Options**.
 - **Modern display**: any resolution, windowed or fullscreen, a frame rate limit, a sharper mouse cursor at high resolutions, and optional graphics improvements (better water and terrain detail, sky with sun, moon and stars, swaying vegetation, bloom, ambient occlusion, volumetric fog and heat haze) under **Options → Graphics**.
+- **Automatic graphics settings**: on first start, a short test over the main menu picks settings your device runs smoothly. It never overrides settings you chose yourself and can be run again from the Options.
+- **Gamepad support**: play with a controller (Xbox, PlayStation, Nintendo or Steam Deck button pictures), with radial wheels for spells, belt, weapons and screens, a target ring for aimed strikes, and D-pad control of the menus. See [Gamepad](#gamepad).
 - **Language**: the game plays in the language of your copy (the English, German and Russian GOG versions are supported).
 
 The engine is still in development. The campaign can be played through, but not every quest variant and co-op situation has been tested. Please report problems on the [Issues](https://github.com/TheWWWorm/CursedLands/issues) page.

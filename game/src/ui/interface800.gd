@@ -183,6 +183,15 @@ func text(r: Rect2, s: String, font_i := 1, col := TEXT, align := HORIZONTAL_ALI
 	draw_string(f, Vector2(rr.position.x, y), s, align, w, fs, col)
 
 
+## One line centred vertically on `r` (DT_VCENTER): the font's line box
+## (ascent + descent at the size actually drawn) centred on the rect's middle.
+## The fonts follow the window's width and the rects its height, so a fixed
+## offset from the top drifts with the aspect, the font and the language.
+func text_vc(r: Rect2, s: String, font_i := 1, col := TEXT, align := HORIZONTAL_ALIGNMENT_LEFT, clip := false) -> void:
+	var h := line_h(font_i)
+	text(Rect2(r.position.x, r.get_center().y - h * 0.5, r.size.x, h), s, font_i, col, align, clip)
+
+
 ## DrawText with DT_WORDBREAK: `s` broken into lines that fit `width` (800
 ## units) in font `font_i`; "\n" ends a line.
 func wrap_text(s: String, width: float, font_i := 1) -> PackedStringArray:

@@ -46,6 +46,8 @@ const GLOBALS := {
 	&"ei_surface_fx": Color(1.0, 1.0, 1.0),   # materials, leaf backlight, rain surfaces
 	&"ei_weather": Color(0.0, 0.0, 0.0),   # wetness, current rain intensity, reserved
 	&"ei_sun_pass": Color(0.0, 0.0, 0.0),   # 1: the sun is drawn in its own additive pass (GLES3, shadowed)
+	&"ei_unit_sharp": Color(1.0, -0.5, 0.0),   # gfx_sharp_units: on, mip bias (EIUnitModel.SHARP_FETCH)
+	&"ei_flash": Color(0.0, 0.0, 0.0),   # x: remake lightning sky brighten (ParticleFx soft flash, EISky)
 }
 ## GLES3 (Compatibility) only: the original point lights nearest the view
 ## (update_pass_lights), so a shadowed local light's own pass can rebuild the
@@ -512,10 +514,28 @@ static func ensure_globals() -> void:
 
 static func apply_surface_options() -> void:
 	ensure_globals()
+	apply_unit_sharpness()
 	RenderingServer.global_shader_parameter_set(&"ei_surface_fx", Vector3(
 		float(on("gfx_materials")), float(on("gfx_foliage_light")), float(on("gfx_weather_surfaces"))))
 	if not on("gfx_weather_surfaces"):
 		set_surface_weather(0.0, 0.0)
+
+
+## Option gfx_sharp_units: the unit texture fetch (EIUnitModel.SHARP_FETCH),
+## world figures and UI previews alike; a uniform, so no shader rebuilds.
+static func apply_unit_sharpness() -> void:
+	if not _globals:
+		return   # ensure_globals sets it
+	var on_ := on("gfx_sharp_units")
+	RenderingServer.global_shader_parameter_set(&"ei_unit_sharp",
+		Vector3(1.0 if on_ else 0.0, EIUnitModel.SHARP_MIP_BIAS if on_ else 0.0, 0.0))
+
+
+## Remake (gfx_sky): how much a lightning strike brightens the sky dome now
+## (ParticleFx._update_flashes; 0 = none).
+static func set_lightning_flash(v: float) -> void:
+	ensure_globals()
+	RenderingServer.global_shader_parameter_set(&"ei_flash", Vector3(clampf(v, 0.0, 1.0), 0.0, 0.0))
 
 
 static func set_surface_weather(wetness: float, rain: float) -> void:
@@ -767,6 +787,7 @@ static func apply_quality(vp: Viewport) -> void:
 	vp.screen_space_aa = Viewport.SCREEN_SPACE_AA_SMAA if (aa == 1 or aa == 3) and not Portability.compatibility() else Viewport.SCREEN_SPACE_AA_DISABLED
 	vp.use_taa = aa == 4 and RenderingServer.get_current_rendering_method() == "forward_plus"
 	vp.anisotropic_filtering_level = clampi(GameData.option("q_aniso"), 0, 4) as Viewport.AnisotropicFiltering
+	apply_unit_sharpness()
 	var q := clampi(GameData.option("q_shadows"), 0, 3)
 	var filt: Array[RenderingServer.ShadowQuality] = [RenderingServer.SHADOW_QUALITY_SOFT_LOW,
 		RenderingServer.SHADOW_QUALITY_SOFT_MEDIUM, RenderingServer.SHADOW_QUALITY_SOFT_HIGH,
@@ -836,6 +857,8 @@ static func apply_env(env: Environment) -> void:
 			(d as Node3D).visible = on("gfx_contact_shadows")
 		for u: Node in tree.get_nodes_in_group(&"severed_units"):   # option gfx_severed_limbs
 			u.call(&"refresh_severed")
+		for m: Node in tree.get_nodes_in_group(&"detailed_heads"):   # option gfx_detailed_heads
+			m.call(&"refresh_detailed_head")
 
 
 ## Option gfx_torch_glow: fire and spell lights scatter strongly in the

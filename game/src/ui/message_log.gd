@@ -61,6 +61,7 @@ var _atlas: Texture2D
 var _clip: Control
 var _bars: Array[DialogPanel.Bar] = [DialogPanel.Bar.new(TEXT, 20.0), DialogPanel.Bar.new(TEXT, 20.0)]
 var _content_h := [-1.0, -1.0]
+var _y0 := 0.0     # local y of the layout's y 0 (> 0 when clipped, portrait)
 
 
 func _ready() -> void:
@@ -96,8 +97,10 @@ func _text_box() -> RichTextLabel:
 	return t
 
 
+## Screen px per 800×600 unit: the height's, or GameHUD.log_scale (portrait).
 func _k() -> float:
-	return Interface800.canvas_size(self).y / 600.0
+	var hud := get_canvas_layer_node() as GameHUD
+	return hud.log_scale() if hud else Interface800.canvas_size(self).y / 600.0
 
 
 func _off() -> float:
@@ -108,7 +111,7 @@ func _off() -> float:
 ## 800×600 point (window part, slid) -> local.
 func _p(v: Vector2) -> Vector2:
 	var k := _k()
-	return Vector2((v.x - 400.0) * k + Interface800.canvas_size(self).x * 0.5, (v.y + _off()) * k)
+	return Vector2((v.x - 400.0) * k + Interface800.canvas_size(self).x * 0.5, (v.y + _off()) * k + _y0)
 
 
 func _r(r: Rect2) -> Rect2:
@@ -128,7 +131,7 @@ func _toggle_rect() -> Rect2:
 	var k := _k()
 	var r: Rect2 = BUTTONS.toggle[0]
 	var top := maxf(0.0, (r.position.y - SLIDE * _slide))
-	return Rect2(Vector2((r.position.x - 400.0) * k + Interface800.canvas_size(self).x * 0.5, top * k), r.size * k)
+	return Rect2(Vector2((r.position.x - 400.0) * k + Interface800.canvas_size(self).x * 0.5, top * k + _y0), r.size * k)
 
 
 func _has_point(p: Vector2) -> bool:
@@ -141,7 +144,7 @@ func _has_point(p: Vector2) -> bool:
 ## Local -> 800×600 (unslid window part).
 func _to800(local: Vector2) -> Vector2:
 	var k := _k()
-	return Vector2((local.x - Interface800.canvas_size(self).x * 0.5) / k + 400.0, local.y / k - _off())
+	return Vector2((local.x - Interface800.canvas_size(self).x * 0.5) / k + 400.0, (local.y - _y0) / k - _off())
 
 
 func _gui_input(e: InputEvent) -> void:
@@ -231,6 +234,14 @@ func _sound(path: String) -> void:
 
 
 func _process(dt: float) -> void:
+	# On a portrait phone the window hangs under the unit panel and the
+	# minimap (GameHUD.log_top), clipped there so its slide never covers them.
+	# Its top frame (y −5) stays inside the clip.
+	var hud := get_canvas_layer_node() as GameHUD
+	var top := hud.log_top() if hud else 0.0
+	_y0 = ceilf(6.0 * _k()) if top > 0.0 else 0.0
+	offset_top = top - _y0
+	clip_contents = top > 0.0
 	var target := 0.0 if open else 1.0
 	_slide = move_toward(_slide, target, dt / SLIDE_SECS)
 	var bar := _bars[mode]
@@ -313,7 +324,7 @@ func _draw() -> void:
 		var pts := HudDial.arrow(400, -52, PI, 0.8) if open else HudDial.arrow(400, 83, 0.0, 0.8)
 		var uvs := PackedVector2Array()
 		for i in 3:
-			pts[i] = Vector2((pts[i].x - 400.0) * k + Interface800.canvas_size(self).x * 0.5, pts[i].y * k)
+			pts[i] = Vector2((pts[i].x - 400.0) * k + Interface800.canvas_size(self).x * 0.5, pts[i].y * k + _y0)
 			uvs.append(Vector2(HudDial.ARROW_UV[i].x, 256.0 - HudDial.ARROW_UV[i].y) / 256.0)   # flipped atlas
 		draw_polygon(pts, PackedColorArray([Color.WHITE, Color.WHITE, Color.WHITE]), uvs, _atlas)
 

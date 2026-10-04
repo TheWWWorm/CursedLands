@@ -10,11 +10,16 @@ extends Node
 ## Turn on with either:
 ##   the command line: "Evil Islands.original" --flash-log (or --flash-log=0.15)
 ##   settings.cfg:      [debug] flash_log=true   (or a threshold, e.g. 0.15)
-## Threshold: mean sRGB luma change, 0..1 (default 0.2).
+## Threshold: mean sRGB luma change, 0..1 (default 0.08).
+## Also logged: every frame whose mean luma rises above BRIGHT (a light-grey
+## pop) with how many frames it lasted, and every lightning strike's light
+## (ParticleFx._flash_light) with its time, place and distance from the camera,
+## so a blink can be matched to a strike.
 
 const W := 32
 const H := 18
-const DEFAULT_THRESHOLD := 0.2
+const DEFAULT_THRESHOLD := 0.08
+const BRIGHT := 0.6
 ## Frames compared against; frames a jump may last and still count as a flash.
 const BASE_FRAMES := 8
 const FLASH_FRAMES := 30
@@ -51,6 +56,8 @@ var _min := 1.0
 var _max := 0.0
 var _cam_bad := false
 var _last_sample_frame := -1
+var _bright := {}           # open bright run: {frame, msec, peak}
+static var _inst: FlashLog
 
 
 ## The threshold asked for by the command line or settings.cfg, or < 0: off.
@@ -99,8 +106,24 @@ func _ready() -> void:
 	_vp.add_child(r)
 	add_child(_vp)
 	_rd = RenderingServer.get_rendering_device()
+	_inst = self
 	_last_heartbeat = Time.get_ticks_msec()
 	_log("on, threshold %.2f. %s" % [threshold, _system()])
+
+
+func _exit_tree() -> void:
+	if _inst == self:
+		_inst = null
+
+
+## A lightning strike's light was created (ParticleFx._flash_light): `at` in
+## Godot space, `dist` from the camera (m, < 0 unknown), `soft` the remake's
+## ramped flash (gfx_sky) or the original hard light.
+static func note_strike(at: Vector3, dist: float, soft: bool) -> void:
+	if _inst == null:
+		return
+	_inst._log("lightning strike: light at %s, %.0f m from the camera, %s, frame %d" % [at.snapped(Vector3.ONE * 0.1),
+		dist, "soft (remake)" if soft else "hard (original)", Engine.get_frames_drawn()])
 
 
 func _process(_dt: float) -> void:
@@ -170,6 +193,17 @@ func _measure(data: PackedByteArray, frame: int, ms: int) -> void:
 	_max = maxf(_max, luma)
 	if bad > 0:
 		_log("frame %d: %d of %d cells NaN/Inf. %s" % [frame, bad, n, _context()])
+	if luma > BRIGHT:
+		if _bright.is_empty():
+			_bright = {"frame": frame, "msec": ms, "peak": luma}
+			_log("BRIGHT frame %d: luma %.3f, colour (%.2f, %.2f, %.2f), cells %.2f..%.2f. %s" % [
+				frame, luma, rgb.x, rgb.y, rgb.z, lo, hi, _context()])
+		else:
+			_bright.peak = maxf(float(_bright.peak), luma)
+	elif not _bright.is_empty():
+		_log("BRIGHT over after %d frames (%d ms), peak %.3f, now %.3f" % [frame - int(_bright.frame),
+			ms - int(_bright.msec), _bright.peak, luma])
+		_bright = {}
 	if _history.size() >= BASE_FRAMES:
 		var base := 0.0
 		for v in _history:
@@ -232,6 +266,16 @@ func _context() -> String:
 	var w3 := vp.find_world_3d()
 	var env := w3.environment if w3 else null
 	if env:
+		# Whose environment it is (during a load the menu's may still be the
+		# world's: no glow / SSAO / volumetric fog there).
+		var owner_name := "?"
+		for we: Node in vp.find_children("*", "WorldEnvironment", true, false):
+			if (we as WorldEnvironment).environment == env:
+				var par := we.get_parent()
+				var sc := par.get_script() as Script if par else null
+				owner_name = String(sc.get_global_name()) if sc and sc.get_global_name() != &"" else (String(par.name) if par else "-")
+				break
+		parts.append("env of %s" % owner_name)
 		parts.append("glow %s ssao %s volfog %s (%.4f) fog %s sky %s refl %d" % [env.glow_enabled, env.ssao_enabled,
 			env.volumetric_fog_enabled, env.volumetric_fog_density, env.fog_enabled,
 			env.background_mode == Environment.BG_SKY, env.reflected_light_source])

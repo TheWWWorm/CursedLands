@@ -11,7 +11,7 @@ extends Interface800
 ## - title (215,top+15)-(585,..) font 2 centred, COLORREF
 ## - checkboxes (400−w,R)-(421−w,R+21) easy and (400−w,R+24)-(421−w,R+45) hard,
 ##   saveload UV 209,55-230,76 (checked: u − 23), labels «string difficulty_easy /
-##   _hard» at (430−w, R / R+24) font 2, w = ((width easy + width hard) / 2 + 30) / 2;
+##   _hard» at (430−w, R / R+24) font 2 (the remake centres them on the box), w = ((width easy + width hard) / 2 + 30) / 2;
 ## - the tip text from (215, top+T+93), font 1, left, wordbreak
 ## - ✓ (263,bottom+26)-(337,bottom+74) UV 81,2-155,50 tip 50100, ✗ (463,..)-(537,..)
 ##   UV 160,2-234,50 tip 50101.
@@ -72,7 +72,11 @@ func _draw() -> void:
 		var on := (level == 1) == (i == 0)
 		var du := -23 if on else 0
 		sprite(ui, box, [209 + du, 55, 230 + du, 76])
-		text(Rect2(430 - L.w, box.position.y, 200, 24), L.easy if i == 0 else L.hard, 2)
+		# The original draws from the box's top (no DT_VCENTER), which centres the
+		# 19 px Times line on the 21 px box only at 4:3; the remake's fonts
+		# follow the width and the boxes the height, so the label is centred
+		# on the box by its own line box instead.
+		text_vc(Rect2(430 - L.w, box.position.y, 200, box.size.y), L.easy if i == 0 else L.hard, 2)
 	if L.desc:
 		text_block(Rect2(215, L.top + L.t + 93, 370, 300), L.desc, 1)
 	sprite(ui, L.ok, [81, 2, 155, 50])

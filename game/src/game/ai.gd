@@ -767,12 +767,13 @@ func enemies(u: GameUnit) -> Array:
 	# away — until it dies or the perception is reset (: AI init
 	# death). Candidates: noticed, hostile, alive, not ignored.
 	var keep: Dictionary = u.get_meta("noticed", {}) if u.controller < 0 else {}
-	for o: GameUnit in world.live_units_near(u.pos, sight):
+	var terms := PackedFloat64Array()
+	for o: GameUnit in _hostiles_near(u, sight):
 		if keep.has(o.get_instance_id()):
 			continue
-		if o.faction == f or o.dead or o.hidden or not world.is_enemy(u, o):
-			continue
-		if not can_notice(u, o, sight):
+		if terms.is_empty():
+			terms = notice_terms(u, sight)
+		if not can_notice_with(u, o, terms):
 			continue
 		keep[o.get_instance_id()] = o
 	for k in keep.keys():
@@ -791,6 +792,23 @@ func enemies(u: GameUnit) -> Array:
 	if out.size() > 1:
 		out.sort_custom(func(x, y): return u.pos.distance_squared_to(x.pos) < u.pos.distance_squared_to(y.pos))
 	return out
+
+
+## world.live_units_near(u.pos, r) without u's side, the dead, the hidden and
+## the units it is not hostile to, in the same (GameWorld.units) order. Remake
+## speed: on the host the buckets are read unsorted and only these few are
+## put in order (a town's query is mostly its own side).
+func _hostiles_near(u: GameUnit, r: float) -> Array:
+	var f := u.faction
+	if not (world.authority and world.nav and world.nav.size.x > 0):
+		return world.live_units_near(u.pos, r).filter(func(o: GameUnit):
+			return not (o.faction == f or o.dead or o.hidden or not world.is_enemy(u, o)))
+	var out := []
+	for o: GameUnit in world.nav.units_around(u.pos, r, false):
+		if o.faction == f or o.dead or o.hidden or not world.is_enemy(u, o):
+			continue
+		out.append(o)
+	return NavGrid._in_seq_order(out)
 
 
 ## The caster and the allies list B is tried on (
@@ -1803,18 +1821,32 @@ func nearest_enemy(u: GameUnit, radius: float) -> GameUnit:
 ## Hearing is not part of it: steps and casts are noise events (noise_event,
 ## ) that make the listener suspicious after their delay.
 func can_notice(u: GameUnit, o: GameUnit, radius: float) -> bool:
+	return can_notice_with(u, o, notice_terms(u, radius))
+
+
+## The observer's own terms of can_notice for a sight `radius` (remake speed:
+## worked out once for a scan of many units, `can_notice_with`): radius +
+## the sight bonus, the sight factor, half the vision arc (rad), the
+## peripheral range, the life sense.
+func notice_terms(u: GameUnit, radius: float) -> PackedFloat64Array:
+	return PackedFloat64Array([radius + u.sense_bonus(0), u.sight_factor(),
+		deg_to_rad(float(u.race.get("vision_arc", 180.0))) * 0.5,
+		float(u.proto.get("peripheral_skills", 0.0)), u.sense(2)])
+
+
+func can_notice_with(u: GameUnit, o: GameUnit, k: PackedFloat64Array) -> bool:
 	if o.hidden:
 		return false
 	var d := u.pos.distance_to(o.pos)
-	var ang := absf(wrapf((o.pos - u.pos).angle() - u.facing, -PI, PI))
-	var r := (radius + u.sense_bonus(0)) * o.vis_factor() * u.sight_factor() * o.detect(0)
-	if d <= r and ang <= deg_to_rad(float(u.race.get("vision_arc", 180.0))) * 0.5 \
-			and d < world.sight_ray(u, o) * r:
-		return true
-	# peripheral vision (in front, within) has no
-	# detectability factor, so it still catches an invisible unit; only the
-	# sight test is scaled by the target's sight detectability.
-	if ang <= PI * 0.5 and d < float(u.proto.get("peripheral_skills", 0.0)):
-		return true
-	return d < o.detect(2) * u.sense(2)
+	var r := k[0] * o.vis_factor() * k[1] * o.detect(0)
+	if d <= r or d < k[3]:
+		var ang := absf(wrapf((o.pos - u.pos).angle() - u.facing, -PI, PI))
+		if d <= r and ang <= k[2] and d < world.sight_ray(u, o) * r:
+			return true
+		# peripheral vision (in front, within) has no
+		# detectability factor, so it still catches an invisible unit; only the
+		# sight test is scaled by the target's sight detectability.
+		if ang <= PI * 0.5 and d < k[3]:
+			return true
+	return d < o.detect(2) * k[4]
 

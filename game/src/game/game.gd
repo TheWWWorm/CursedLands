@@ -61,6 +61,7 @@ func _ready() -> void:
 	marks = OrderMarks.new()
 	marks.game = self
 	add_child(marks)
+	add_child(PadField.new(self))   # remake: the gamepad in the field (PadInput)
 	GameData.options_changed.connect(_apply_options)
 	get_tree().node_added.connect(_on_node_added)
 	_apply_options()
@@ -363,26 +364,34 @@ func _forced_click(p: Vector2) -> bool:
 	var m := _forced_mode()
 	if m == "":
 		return false
-	var ids := selected.map(func(s: GameUnit): return s.uid)
 	var u := pick_unit(p)
+	var g: Variant = null
+	if (m == "alt" and u == null) or (m != "alt" and not (u and not u.dead)):
+		g = pick_ground(p)
+	forced_on(m, u, g)
+	return true
+
+
+## The forced order `m` ("alt" / "aim" / "ctrl") on a unit or a ground point
+## (EI xy or null); the gamepad's LT layer and context ring use it too.
+func forced_on(m: String, u: GameUnit, g: Variant) -> void:
+	var ids := selected.map(func(s: GameUnit): return s.uid)
 	if m == "alt":
-		var to: Variant = u.pos if u else pick_ground(p)
+		var to: Variant = u.pos if u else g
 		if to != null:
 			issue({"t": "move", "units": ids, "x": to.x, "y": to.y, "run": _double})
 			marks.move_ordered(to)
-		return true
+		return
 	if u and not u.dead:
 		var cmd := {"t": "attack", "units": ids, "target": u.uid, "run": _double}
 		if m == "aim":
 			cmd.aim = held_aim()
 		issue(cmd)
 		marks.unit_ordered(u, true, -1.0, selected)
-		return true
-	var g = pick_ground(p)
+		return
 	if g != null:
 		issue({"t": "move", "units": ids, "x": g.x, "y": g.y, "run": _double, "swarm": true})
 		marks.move_ordered(g)
-	return true
 
 
 ## Day / night from the campaign clock (world_time, hours), as the daylight
@@ -735,7 +744,14 @@ func _click(p: Vector2, add: bool) -> void:
 		return
 	if touch_aim >= 0:
 		cancel_touch_target()   # nothing selected: an ordinary click
-	var u := pick_unit(p)
+	order_on(pick_unit(p), add, p)
+
+
+## The click rules on a known target: the mouse passes the unit under the
+## pointer and the screen point `p` (for the lever and ground picks); the
+## gamepad (PadField) its highlighted unit, or `lever` / `ground` (EI xy)
+## with `p` null.
+func order_on(u: GameUnit, add: bool, p: Variant = null, lever := -1, ground: Variant = null) -> void:
 	# Remake option "revive": a click on a fallen party member's body sends a
 	# selected living hero or mercenary to help it up (Revive).
 	if not add and revive_target(u) != null:
@@ -797,11 +813,11 @@ func _click(p: Vector2, add: bool) -> void:
 		issue({"t": "interact", "units": ids, "target": u.uid, "run": _double})
 		marks.unit_ordered(u, false, Session.TALK_REACH, marks.first_mine())
 		return
-	var lv := pick_lever(p)
+	var lv := pick_lever(p) if p != null else lever
 	if lv >= 0:
 		issue({"t": "use_lever", "units": ids, "target": lv, "run": _double})
 		return
-	var g = pick_ground(p)
+	var g = pick_ground(p) if p != null else ground
 	if g != null:
 		issue({"t": "move", "units": ids, "x": g.x, "y": g.y, "run": _double})
 		marks.move_ordered(g)
@@ -901,14 +917,21 @@ func begin_cast(i: int) -> void:
 func _cast_at(p: Vector2) -> void:
 	if selected.is_empty():
 		return
+	cast_on(pick_unit(p), p)
+
+
+## The pending spell / belt item / Follow / Use-Steal on a unit, or the
+## ground: the screen point `p`, or (gamepad) `ground` (EI xy) / `lever`.
+func cast_on(u: GameUnit, p: Variant = null, ground: Variant = null, lever := -1) -> void:
+	if selected.is_empty():
+		return
 	var caster: GameUnit = selected[0]
-	var u := pick_unit(p)
 	if pending_spell.begins_with(BELT):
 		var cmd := {"t": "use", "unit": int(pending_spell.get_slice(":", 1)), "item": pending_spell.split(":", true, 2)[2]}
 		if u and not u.dead:
 			cmd.target = u.uid
 		else:
-			var g = pick_ground(p)
+			var g = pick_ground(p) if p != null else ground
 			if g == null:
 				return
 			cmd.x = g.x
@@ -923,7 +946,7 @@ func _cast_at(p: Vector2) -> void:
 		if u and not u.dead and u.controller != session.my_index:
 			issue({"t": "steal", "unit": caster.uid, "target": u.uid, "run": _double})
 		else:
-			var lv := pick_lever(p)
+			var lv := pick_lever(p) if p != null else lever
 			if lv >= 0:
 				issue({"t": "use_lever", "units": [caster.uid], "target": lv, "run": _double})
 		return
@@ -931,7 +954,7 @@ func _cast_at(p: Vector2) -> void:
 	if u and not u.dead:
 		cmd.target = u.uid
 	else:
-		var g = pick_ground(p)
+		var g = pick_ground(p) if p != null else ground
 		if g == null:
 			return
 		cmd.x = g.x

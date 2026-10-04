@@ -6,14 +6,38 @@ extends Control
 ## height. Shown only in an online game. (The original shows the players'
 ## status only on a network game's village screen, and ping
 ## only in the server browser; see NetStatus.)
+## The co-op host can click it to open its player list with Kick / Ban
+## (PlayersPanel, remake).
 
 var game: Game
 var _sig := ""
 
 
+var _box := Rect2()   # the drawn list (host: a click opens PlayersPanel)
+
+
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	mouse_filter = Control.MOUSE_FILTER_IGNORE
+	mouse_filter = Control.MOUSE_FILTER_STOP
+	tooltip_text = " "
+
+
+func _host() -> bool:
+	return game != null and game.session != null and game.session.online and game.session.is_host
+
+
+func _has_point(point: Vector2) -> bool:
+	return visible and _host() and _box.has_point(point)
+
+
+func _get_tooltip(_at: Vector2) -> String:
+	return RemakeText.t("The players in this game; remove a player.")
+
+
+func _gui_input(e: InputEvent) -> void:
+	if e is InputEventMouseButton and e.pressed and e.button_index == MOUSE_BUTTON_LEFT:
+		accept_event()
+		game.hud.open_players()
 
 
 func _process(_dt: float) -> void:
@@ -57,7 +81,8 @@ func _draw() -> void:
 	for r: Array in rows:
 		sw = maxf(sw, f.get_string_size(r[3], HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x + 2.0 * k)
 	var extra := sw - 56.0 * k
-	draw_rect(Rect2(right - 185.0 * k - extra, y - 2.0 * k, 185.0 * k + extra, (rows.size() * 15.0 + 4.0) * k), Color(0, 0, 0, 0.45))
+	_box = Rect2(right - 185.0 * k - extra, y - 2.0 * k, 185.0 * k + extra, (rows.size() * 15.0 + 4.0) * k)
+	draw_rect(_box, Color(0, 0, 0, 0.45))
 	for r: Array in rows:
 		var base := y + 12.0 * k
 		draw_string(f, Vector2(right - 180.0 * k - extra, base), r[0], HORIZONTAL_ALIGNMENT_LEFT, 75.0 * k, fs, r[1])

@@ -1,19 +1,51 @@
 class_name LoadingScreen
 extends CanvasLayer
-## Zone loading screen: the original picks Movies\progres*.bik by the
-## zone's allod (progres2 Gipat, progres3 Ingos, progres4 Suslanger, else
-## progres; progres1 for gz1g and bz7g) and plays it on its own
-## thread, looping at 15 fps, letterboxed, until the load is done. The remake
-## builds zones on the main thread, so the build calls `tick()` between steps;
-## each tick shows the frame due and draws the screen at most every 1/15 s.
-## Approx.: the movie shows only once its conversion is cached (converted in
-## the background from the main menu); before that the screen stays black.
+## Zone / save loading screen. the original picks Movies\progres*.bik
+## by the zone's allod (progres2 Gipat, progres3 Ingos, progres4 Suslanger,
+## else progres; progres1 for gz1g and bz7g). The movie is a 12-frame progress
+## picture (800×600, all five files): it is not played but stepped. Each load
+## stage (n), which opens the movie on its first call, decodes
+## forward up to frame min(n, frames − 1) (never back: a smaller n shows the
+## frame already there), blits it to the window and flips once; nothing redraws
+## between two calls. closes it at the end of the client's map
+## load. The steps (the 14 call sites):
+##   server, new zone (CWorldServer::LoadMap): 0, objects 2..5, 6, 7
+##   server, saved zone (CWorldServer::LoadSave): 0, 1, objects 2..5, 5, 6, 7
+##     (loads a zone already in saves\current with LoadSave, as a
+##     save game does:)
+##   objects (the.mob loop): after object i of N, when
+##     i % (N / 5 + 1) == 0, frame i / (N / 5 + 1) + 1, so 2..5
+##   client (net message handler): 8, 9, 10, 11, close
+##     a joining peer runs only this part, so its screen starts at frame 8.
+## Remake stages (see `step` calls in Session, EIMapScene, GameWorld): the
+## remake builds the zone once for server and client, on the main thread, and
+## draws each new frame with RenderingServer + force_draw (no Control redraw is
+## flushed mid-build). **Approx.** mapping where the stages differ:
+##   0 load start · 1 terrain read (saved zone only; LoadSave reads the .mpr
+##   before it) · 2..5 map objects and units as the original counts them · 5 objects
+##   done (saved zone) · 6 zone state restored · 7 world built · 8 parties
+##   deployed · 9 zone scripts started · 10 before the shader warm-up · 11 at the
+##   end. The original's client terrain load (between 10 and 11) is part of the
+##   remake's terrain step. A joiner: 8 at the start, 9 world built, 10 units
+##   received, 11 at the end.
+## The frames are decoded with EIBink (12 frames, ~0.5 s in all), so no
+## converted movie is needed. Not shown headless or on the web (a browser
+## presents only after the current JS callback returns; forced nested draws
+## cannot show it and can block WebGL when a network/input callback replaces
+## the current scene).
 
-const FRAME := 1.0 / 15.0
+enum {NEW_ZONE, SAVED_ZONE, CLIENT}
 
 static var _current: LoadingScreen
-var _player: MoviePlayer
-var _last := 0
+## Tools: called with the frame number after each new frame is drawn.
+static var on_frame := Callable()
+var _kind := NEW_ZONE
+var _bink: EIBink
+var _decoded := -1   # last decoded frame
+var _objects := 0    # object count N and the count so far
+var _object_i := 0
+var _mat: ShaderMaterial
+var _tex: Array[ImageTexture] = [null, null, null]
 var _canvas: RID
 var _item: RID    # black backdrop
 var _frame: RID   # the movie frame (YUV shader)
@@ -27,29 +59,27 @@ static func movie_for(zone: Dictionary) -> String:
 		String(zone.get("allod", "")).to_lower(), "progres")
 
 
-const MOVIES := ["progres", "progres1", "progres2", "progres3", "progres4"]
-
-
-static func begin(tree: SceneTree, zone: Dictionary) -> void:
+## Opens the screen for a zone load and shows its first frame (0, a joiner 8).
+static func begin(tree: SceneTree, zone: Dictionary, kind := NEW_ZONE) -> void:
 	end()
-	# A browser presents only after the current JS callback returns. Forced
-	# nested draws during a load cannot animate this screen and can block
-	# WebGL when a network/input callback replaces the current scene.
 	if DisplayServer.get_name() == "headless" or OS.has_feature("web"):
 		return
 	if Engine.get_process_frames() == 0:
 		return   # called from a _ready during scene setup: the root is busy adding children
+	if GameData.root.is_empty():
+		return
+	var src := GameData.root.path_join("movies/%s.bik" % movie_for(zone))
+	var bink := EIBink.new()
+	if not GameFiles.exists(src) or not bink.open(src):
+		return   #  only logs "Can't open video file" and draws nothing
 	var ls := LoadingScreen.new()
 	ls.visible = false   # drawn through the RenderingServer below
+	ls._kind = kind
+	ls._bink = bink
 	tree.root.add_child(ls)
-	# The MoviePlayer only decodes here: while the main thread builds the zone
-	# no Control redraw is flushed, so the frame is drawn with RenderingServer
-	# calls, which take effect at the next force_draw.
-	ls._player = MoviePlayer.new()
-	ls._player.loop = true
-	ls._player.silent = true
-	ls.add_child(ls._player)
-	ls._player.play_cached(movie_for(zone))
+	ls._mat = ShaderMaterial.new()
+	ls._mat.shader = Shader.new()
+	ls._mat.shader.code = MoviePlayer.SHADER
 	var rs := RenderingServer
 	ls._canvas = rs.canvas_create()
 	var vp := tree.root.get_viewport_rid()
@@ -59,28 +89,53 @@ static func begin(tree: SceneTree, zone: Dictionary) -> void:
 	rs.canvas_item_set_parent(ls._item, ls._canvas)
 	ls._frame = rs.canvas_item_create()
 	rs.canvas_item_set_parent(ls._frame, ls._item)
-	rs.canvas_item_set_material(ls._frame, ls._player._mat.get_rid())
+	rs.canvas_item_set_material(ls._frame, ls._mat.get_rid())
 	_current = ls
-	ls._last = Time.get_ticks_msec()
-	ls._draw_frame()
+	ls._show(8 if kind == CLIENT else 0)
 
 
-## Called by the zone build between steps.
-static func tick() -> void:
+## (n) at a load stage. A joiner starts at frame 8, so the server
+## part's frames (1..7) change nothing there.
+static func step(frame: int) -> void:
+	if _current:
+		_current._show(frame)
+
+
+## The .mpr has been read: LoadSave shows frame 1 here.
+static func map_read() -> void:
+	if _current and _current._kind == SAVED_ZONE:
+		_current._show(1)
+
+
+## the.mob objects (units included) about to be made.
+static func objects(count: int) -> void:
+	if _current:
+		_current._objects = count
+		_current._object_i = 0
+
+
+## one object made.
+static func object_done() -> void:
 	var ls := _current
 	if ls == null:
 		return
-	var now := Time.get_ticks_msec()
-	var dt := (now - ls._last) / 1000.0
-	if dt < FRAME:
-		return
-	ls._last = now
-	ls._player.step(dt)
-	ls._draw_frame()
+	ls._object_i += 1
+	var per := ls._objects / 5 + 1
+	if ls._object_i % per == 0:
+		ls._show(ls._object_i / per + 1)
 
 
+## All objects made: LoadSave shows frame 5 after reading their saved state.
+static func objects_done() -> void:
+	if _current and _current._kind == SAVED_ZONE:
+		_current._show(5)
+
+
+## Last frame (11), then the screen goes.
 static func end() -> void:
 	var ls := _current
+	if ls and is_instance_valid(ls):
+		ls._show(11)
 	_current = null
 	if ls and is_instance_valid(ls):
 		RenderingServer.free_rid(ls._frame)
@@ -89,17 +144,37 @@ static func end() -> void:
 		ls.queue_free()
 
 
-## Black screen with the current frame letterboxed (aspect kept), then a draw.
+## Decodes forward to `frame` (clamped to the last one) and draws it; an
+## earlier frame keeps the one shown.
+func _show(frame: int) -> void:
+	frame = mini(frame, _bink.frame_count - 1)
+	if frame <= _decoded:
+		return
+	while _decoded < frame:
+		_decoded += 1
+		if not _bink.decode_frame(_bink.frame_data(_decoded)):
+			return
+	var planes := StartupScreen.planes(_bink)
+	for i in 3:
+		if _tex[i] and Vector2i(_tex[i].get_size()) == planes[i].get_size():
+			_tex[i].update(planes[i])
+		else:
+			_tex[i] = ImageTexture.create_from_image(planes[i])
+	_mat.set_shader_parameter("u_tex", _tex[1])
+	_mat.set_shader_parameter("v_tex", _tex[2])
+	_draw_frame()
+	if on_frame.is_valid():
+		on_frame.call(_decoded)
+
+
+## Black screen with the frame letterboxed (aspect kept), then a draw.
 func _draw_frame() -> void:
 	var rs := RenderingServer
 	var screen := get_viewport().get_visible_rect().size
 	rs.canvas_item_clear(_item)
 	rs.canvas_item_clear(_frame)
 	rs.canvas_item_add_rect(_item, Rect2(Vector2.ZERO, screen), Color.BLACK)
-	var tex: Texture2D = _player._tex[0]
-	if tex and _player._tex[1] and _player._tex[2]:
-		var ts := Vector2(tex.get_size())
-		var k := minf(screen.x / ts.x, screen.y / ts.y)
-		var r := Rect2((screen - ts * k) * 0.5, ts * k)
-		rs.canvas_item_add_texture_rect(_frame, r, tex.get_rid())
+	var ts := Vector2(_tex[0].get_size())
+	var k := minf(screen.x / ts.x, screen.y / ts.y)
+	rs.canvas_item_add_texture_rect(_frame, Rect2((screen - ts * k) * 0.5, ts * k), _tex[0].get_rid())
 	rs.force_draw(true, 0.0)

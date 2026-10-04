@@ -41,6 +41,10 @@ var sciences := {}
 ## Builtins called by the script that the VM does not know (tools/quest_test.gd).
 var unknown_calls := {}
 var _fx_auto := -1   # the next CreateFXSource(-1) id
+## WorldScript bodies by source ("" the zone's .mob, "q:<quest mob>" a side
+## quest's, "m:<file>" an AddMob file's): a saved WorldScript thread names its
+## source (save_state), so a load resumes it where it was.
+var world_bodies := {}
 
 
 class Instance:
@@ -54,6 +58,7 @@ class Instance:
 	var wait_cond: Array = []
 	var wait_unit: Object = null
 	var block_index := -1
+	var src := ""   # WorldScript: its body's source (ScriptVM.world_bodies)
 
 
 static func create(w: GameWorld, s: Session) -> ScriptVM:
@@ -71,24 +76,29 @@ static func create(w: GameWorld, s: Session) -> ScriptVM:
 	var quest_world: Array = vm._merge_quest_script(w)
 	# Scripts of .mob files AddMob loaded earlier: their running instances
 	# are part of the restored state.
+	vm.world_bodies[""] = vm.ast.world
+	var quest_src := "q:" + String(w.get_meta("quest_mob", "")) if w.has_meta("quest_mob") else "q:"
+	if not quest_world.is_empty():
+		vm.world_bodies[quest_src] = quest_world
 	if not restored.is_empty():
 		for file: String in w.get_meta("added_mobs", []):
 			var extra := EIMob.load_bytes(GameData.read_file("maps/" + file))
 			if extra and not extra.script_text.is_empty():
-				vm._merge_script(extra.script_text, file.get_basename().to_lower())
+				vm.world_bodies["m:" + file.to_lower()] = vm._merge_script(extra.script_text, file.get_basename().to_lower())
 	if restored.is_empty():
 		vm._start_world(vm.ast.world)
 	else:
 		vm._restore(restored)
 	if not quest_world.is_empty() and String(restored.get("quest", "")) != String(w.get_meta("quest_mob", "")):
-		vm._start_world(quest_world)
+		vm._start_world(quest_world, quest_src)
 	vm.recalc_merc_briefings()   #  (party deployed)
 	return vm
 
 
-func _start_world(body: Array) -> void:
+func _start_world(body: Array, src := "") -> void:
 	var inst := Instance.new()
 	inst.sname = "WorldScript"
+	inst.src = src
 	inst.killed = true
 	inst.frames = [{"body": body, "i": 0}]
 	instances.append(inst)
@@ -187,6 +197,7 @@ func _run(inst: Instance) -> void:
 			if _all(b.conds, inst):
 				inst.block_index = bi
 				inst.frames = [{"body": b.body, "i": 0}]
+				_once_per_world(inst)
 				break
 		if inst.frames.is_empty():
 			return
@@ -413,6 +424,20 @@ func _call(name: String, a: Array, inst: Instance):
 		"KillScript":
 			inst.killed = true
 			return null
+		"GroupHas", "GroupCross":
+			# GroupHas(UnitSee / GroupSee(..), x), GroupCross(g, UnitSee /
+			# GroupSee(..)): remake speed, the same answer without listing
+			# everything the watchers notice (a big group in a crowd: ~10 ms
+			# per test) — each unit asked about is tested against them.
+			var k := 0 if name == "GroupHas" else 1
+			if a.size() == 2 and a[k] is Array and a[k][0] == P.N_CALL and String(a[k][1]) in ["UnitSee", "GroupSee"] \
+					and (a[k][2] as Array).size() == 1:
+				var other = _eval(a[0], inst) if k == 1 else null
+				var src = _eval(a[k][2][0], inst)
+				var watchers := [_unit(src)] if String(a[k][1]) == "UnitSee" else _group(src)
+				if k == 0:
+					return 1.0 if _sees_has(watchers, _eval(a[1], inst)) else 0.0
+				return _group(other).filter(func(x): return _sees_has(watchers, x))
 	var v := _args(a, inst)
 	var n := v.size()
 	match name:
@@ -818,8 +843,10 @@ func _call(name: String, a: Array, inst: Instance):
 		# quest item list (the remake's store of the bag's quest items, read by
 		# HaveItem / EraseQuestItem / levers), anything else in the bag. The
 		# party's bag is shared, so every player sees the line (to -1).
+		# Co-op: a find from the world, copied to the other players' bags with
+		# the remake option coop_share_loot (CoopProgress.share_found).
 		"GiveQuestItem", "GiveItem":
-			session.state.add_item(str(v[1]))
+			session.coop.with_purse(-1, session.state.add_item.bind(str(v[1])), true)
 			session.notify_got(-1, [str(v[1])])
 		"GiveUnitQuestItem":
 			var u := _unit(v[0])
@@ -835,8 +862,9 @@ func _call(name: String, a: Array, inst: Instance):
 			session.state.quest_items.erase(qi)
 		"HaveItem": return 1.0 if session.state.quest_items.has(_quest_item_name(v[1])) else 0.0
 		"GiveMoney":
-			session.state.money += int(_num(v[1]))
-			session.notify_got(-1, [], int(_num(v[1])))
+			var money := int(_num(v[1]))
+			session.coop.with_purse(-1, func() -> void: session.state.money += money, true)
+			session.notify_got(-1, [], money)
 		"QStart":
 			_q_recording = str(v[0]).to_lower()
 			if not qobjs.has(_q_recording):
@@ -959,11 +987,11 @@ func _check_interactions() -> void:
 				if t is GameUnit and not t.dead:
 					u.command({"type": "use", "sub": "steal", "at": t.pos, "done": func():
 						if is_instance_valid(u) and not u.dead and is_instance_valid(t) and not t.dead:
-							session.coop.with_purse(u.controller, session.steal.bind(u, t))})   # a joiner's own bag
+							session.coop.with_purse(u.controller, session.steal.bind(u, t), true)})   # a joiner's own bag
 			elif t is GameUnit and Session.lootable(t) and world.units.has(t.uid):
 				u.command({"type": "use", "sub": "loot", "at": t.pos, "done": func():
 					if is_instance_valid(u) and not u.dead and is_instance_valid(t) and world.units.has(t.uid):
-						session.coop.with_purse(u.controller, session.take_loot.bind(u, t))})
+						session.coop.with_purse(u.controller, session.take_loot.bind(u, t), true)})
 			elif not (t is GameUnit):
 				var nid := _obj_id(t)
 				if world.lever_sys.usable(nid):
@@ -1079,6 +1107,24 @@ func _sees(watchers: Array) -> Array:
 	return out
 
 
+## Whether `x` is in `_sees(watchers)` (tested per watcher as _noticed lists).
+func _sees_has(watchers: Array, x) -> bool:
+	if not is_instance_valid(x) or not x is GameUnit or (x as GameUnit)._seq == 0:
+		return false
+	var xu: GameUnit = x
+	for w in watchers:
+		if w == null or not is_instance_valid(w) or w.dead or w == xu:
+			continue
+		if _in_tick and _seen_memo.has(w):
+			if (_seen_memo[w] as Array).has(xu):
+				return true
+			continue
+		var r := float(w.stats.get("sight", 15.0))
+		if xu.pos.distance_squared_to(w.pos) <= r * r and world.ai.can_notice(w, xu, r):
+			return true
+	return false
+
+
 ## Remake speed (UnitSee / GroupSee / PlayerSee are polled by many script
 ## conditions every tick): one watcher's noticed units, in GameWorld.units
 ## order, remembered while nothing can have changed them — only during
@@ -1093,8 +1139,9 @@ func _noticed(w: GameUnit) -> Array:
 		return _seen_memo[w]
 	var r := float(w.stats.get("sight", 15.0))
 	var out := []
+	var terms := world.ai.notice_terms(w, r)
 	for u in _units_within(w.pos, r):
-		if u != w and world.ai.can_notice(w, u, r):
+		if u != w and world.ai.can_notice_with(w, u, terms):
 			out.append(u)
 	if _in_tick:
 		_seen_memo[w] = out
@@ -1360,7 +1407,9 @@ func _add_mob(file: String) -> void:
 	# e.g. Zone3ObrVoev.mob completes q23g when the voivode dies, Zone7Zasada
 	# q13g, Zone6Flower q24g, Zone8Demon q41g.
 	if not extra.script_text.is_empty():
-		_start_world(_merge_script(extra.script_text, file.get_basename().to_lower()))
+		var src := "m:" + file.to_lower()
+		world_bodies[src] = _merge_script(extra.script_text, file.get_basename().to_lower())
+		_start_world(world_bodies[src], src)
 
 
 # ================================================================ mercenary briefings
@@ -1466,6 +1515,16 @@ func merc_briefing_done(var_name: String, player := 0) -> void:
 
 # ================================================================ persistence
 
+## the original's world save writes the whole script machine (
+## ): the globals, the areas and every thread of the list
+## (VM, count, one record each: its script, locals
+## and run state) — the level's WorldScript too while it still runs, e.g.
+## zone1's sleeping in its first Sleep(2) when the zone autosave is made. So
+## each thread is kept whole: its frames (the running block, or the
+## WorldScript body by source, and the For loops inside it with their items
+## and position), what it waits for (Sleep time left, SleepUntil condition,
+## SleepUntilIdle unit) and the next condition poll. "b" / "i" (the running
+## block and its statement) stay for older builds' saves.
 func save_state() -> Dictionary:
 	var g := {}
 	for k in globals:
@@ -1476,9 +1535,25 @@ func save_state() -> Dictionary:
 		var loc := {}
 		for k in inst.locals:
 			loc[k] = _ser(inst.locals[k])
-		insts.append({"s": inst.sname, "l": loc, "k": inst.killed, "b": inst.block_index if not top.is_empty() else -1,
-			"i": top.get("i", 0), "w": maxf(0.0, inst.wait_until - time)})
+		var fr := []
+		for f: Dictionary in inst.frames:
+			var e := {"i": int(f.i)}
+			if f.has("items"):
+				e.v = f.for_var
+				e.it = _ser(f.items)
+				e.k = int(f.k)
+			fr.append(e)
+		var d := {"s": inst.sname, "l": loc, "k": inst.killed, "b": inst.block_index if not top.is_empty() else -1,
+			"i": top.get("i", 0), "w": maxf(0.0, inst.wait_until - time), "f": fr, "p": maxf(0.0, inst.poll - time)}
+		if inst.sname == "WorldScript":
+			d.src = inst.src
+		if not inst.wait_cond.is_empty():
+			d.wc = inst.wait_cond.duplicate(true)
+		if inst.wait_unit != null and is_instance_valid(inst.wait_unit):
+			d.wu = _ser(inst.wait_unit)
+		insts.append(d)
 	return {"globals": g, "instances": insts, "areas": areas, "alarms": _alarm_save(), "qobjs": qobjs, "sciences": sciences,
+		"fx_auto": _fx_auto,   # the replayed CreateFXSource(-1) sources keep their ids (zone "fx")
 		"quest": String(world.get_meta("quest_mob", "")) if world.has_meta("quest_mob") else ""}
 
 
@@ -1517,33 +1592,88 @@ func _restore(d: Dictionary) -> void:
 	_alarm_load(d.get("alarms", []))
 	qobjs = d.get("qobjs", {})
 	sciences = d.get("sciences", {})
+	_fx_auto = mini(_fx_auto, int(d.get("fx_auto", -1)))
 	for nid in sciences:
 		if world.levers.has(int(nid)):
 			world.levers[int(nid)].science = sciences[nid]
+	var legacy_world := 0
 	for s: Dictionary in d.get("instances", []):
-		if s.s == "WorldScript":
-			continue
-		var def: Dictionary = ast.scripts.get(s.s, {})
-		if def.is_empty():
-			continue
 		var inst := Instance.new()
 		inst.sname = s.s
-		inst.blocks = def.blocks
+		var body: Array = []
+		if s.s == "WorldScript":
+			# Older saves name no source: their first WorldScript is the zone's.
+			var src := String(s.get("src", "" if legacy_world == 0 else "?"))
+			if not s.has("src"):
+				legacy_world += 1
+			if not world_bodies.has(src):
+				continue
+			inst.src = src
+			body = world_bodies[src]
+		else:
+			var def: Dictionary = ast.scripts.get(s.s, {})
+			if def.is_empty():
+				continue
+			inst.blocks = def.blocks
+			if int(s.b) >= 0 and int(s.b) < def.blocks.size():
+				inst.block_index = s.b
+				body = def.blocks[s.b].body
 		inst.killed = s.k
 		for k in s.l:
 			inst.locals[k] = _deser(s.l[k])
-		if int(s.b) >= 0 and int(s.b) < def.blocks.size():
-			inst.block_index = s.b
-			inst.frames = [{"body": def.blocks[s.b].body, "i": s.i}]
-			inst.wait_until = time + float(s.w)
+		if not body.is_empty():
+			inst.frames = _restore_frames(body, s)
+		if s.s == "WorldScript" and inst.frames.is_empty():
+			continue   # a finished one is gone (tick drops it)
+		inst.wait_until = time + float(s.get("w", 0.0))
+		inst.poll = time + float(s.get("p", 0.0))
+		var wc = s.get("wc", [])
+		if wc is Array and not wc.is_empty():
+			inst.wait_cond = wc
+		if s.has("wu"):
+			var wu = _deser(s.wu)
+			inst.wait_unit = wu if wu is GameUnit else null
 		instances.append(inst)
+
+
+## A saved thread's frames: the first runs `body`, each further one the For
+## loop of the statement before its parent's position. Frames that no longer
+## fit (another build's script) are dropped from there on.
+func _restore_frames(body: Array, s: Dictionary) -> Array:
+	var saved = s.get("f")
+	if not saved is Array or saved.is_empty():
+		return [{"body": body, "i": int(s.get("i", 0))}]
+	var out := []
+	var cur := body
+	for e in saved:
+		if not e is Dictionary:
+			break
+		if not out.is_empty():
+			var parent: Dictionary = out[-1]
+			var at := int(parent.i) - 1
+			if at < 0 or at >= parent.body.size() or parent.body[at][0] != P.S_FOR:
+				break
+			cur = parent.body[at][3]
+		var f := {"body": cur, "i": clampi(int(e.get("i", 0)), 0, cur.size())}
+		if e.has("it"):
+			# Kept whole (a unit gone since is null): k counts in this list.
+			var items: Array = _deser(e.it) if e.it is Array else []
+			var k := int(e.get("k", 0))
+			if k >= items.size():
+				break
+			f.for_var = String(e.get("v", ""))
+			f.items = items
+			f.k = k
+		out.append(f)
+	return out
 
 
 func _ser(v):
 	if typeof(v) == TYPE_OBJECT and not is_instance_valid(v):
 		return null   # a unit the script removed (RemoveUnitFromServer)
 	if v is GameUnit:
-		return {"u": v.uid} if is_instance_valid(v) else null
+		var key := _hero_key(v)
+		return {"u": v.uid, "h": key} if not key.is_empty() else {"u": v.uid}
 	if v is Node3D:
 		return {"o": _obj_id(v)} if is_instance_valid(v) else null
 	if v is Array:
@@ -1553,6 +1683,10 @@ func _ser(v):
 
 func _deser(v):
 	if v is Dictionary:
+		if v.has("h"):
+			var hu := _hero_by_key(v.h)
+			if hu:
+				return hu
 		if v.has("u"):   # a looted corpse taken off the world stays known (WasLooted)
 			return world.units.get(int(v.u), world.looted.get(int(v.u)))
 		if v.has("o"):
@@ -1560,6 +1694,139 @@ func _deser(v):
 	if v is Array:
 		return v.map(_deser)
 	return v
+
+
+## A hero's unit is made anew with a fresh id at every deployment
+## (Session._deploy_parties, in the order of the players present), while
+## the original keeps every unit's id in the save: a script value
+## naming a hero (e.g. zone1's VCheck#0#1 `this`, one thread per hero) keeps
+## the hero by [player, roster index] so a load finds the same hero again.
+## Mercenaries keep their name's id (Session._spawn_merc) and need none.
+func _hero_key(u: GameUnit) -> Array:
+	if not u.has_meta("hero") or u.get_meta("hero").has("merc") or session == null or session.state == null:
+		return []
+	var roster: Array = session.state.heroes.get(u.controller, [])
+	for i in roster.size():
+		if is_same(roster[i], u.get_meta("hero")):
+			return [u.controller, i]
+	return []
+
+
+func _hero_by_key(key) -> GameUnit:
+	if not key is Array or key.size() < 2 or session == null or session.state == null:
+		return null
+	var roster: Array = session.state.heroes.get(int(key[0]), [])
+	if int(key[1]) < 0 or int(key[1]) >= roster.size():
+		return null
+	for u: GameUnit in world.units.values():
+		if u.controller == int(key[0]) and u.has_meta("hero") and is_same(u.get_meta("hero"), roster[int(key[1])]):
+			return u
+	return null
+
+
+# ================================================================ co-op: story events once per world
+
+## The campaign scripts check many story triggers once per party unit: the
+## level editor's per-unit checks compile to `For( VSS#i#val, Heroes ) (
+## VCheck#..( VSS#i#val ) )`, one thread per unit with `this` = that unit, each
+## ending itself with KillScript when it fires (zone1 VCheck#0#1: a unit near
+## DgunDragon → VTriger#0#15 → #44 → the villagers' flight). the original fills
+## Heroes with every unit of the party it deploys (appends
+## "AddObject(Heroes, GetObjectByID(%d))" per unit, resets
+## the group) and a script call always adds a new thread (case 8
+## no check for a running copy), so nothing stops a second
+## unit from firing the same trigger. The campaign was single player: one
+## player's party, which usually arrives together. The original multiplayer
+## maps (*-lmp.mob, the z*q* quest maps) have no such per-unit checks.
+## Remake co-op: when a one-shot check (every block ends the thread with
+## KillScript) fires for a hero of one player, the idle copies of that check
+## for the other players' units end too — a story event (flight, talk,
+## cutscene, quest step) happens once per world. Checks whose trigger acts on
+## the unit itself (`this` used in an action: InflictDamage traps, SetCP
+## teleports, fireballs, Follow, a global set to it, further checks on it)
+## stay per unit, and the same player's units keep the original behaviour, so
+## single player is unchanged.
+var _world_event_memo := {}
+
+
+func _once_per_world(inst: Instance) -> void:
+	var def: Dictionary = ast.scripts.get(inst.sname, {})
+	var params: Array = def.get("params", [])
+	if params.is_empty() or not inst.locals.has(params[0]):
+		return
+	var me = inst.locals[params[0]]
+	if typeof(me) != TYPE_OBJECT or not is_instance_valid(me) or not me is GameUnit or not me.has_meta("hero"):
+		return
+	if not _world_event(inst.sname):
+		return
+	for o: Instance in instances:
+		if o == inst or o.sname != inst.sname or o.killed or not o.frames.is_empty():
+			continue
+		var other = o.locals.get(params[0])
+		if typeof(other) == TYPE_OBJECT and is_instance_valid(other) and other is GameUnit \
+				and other.has_meta("hero") and other.controller != me.controller:
+			o.killed = true   # idle: dropped at the end of this tick, never runs
+
+
+## Script `sname` is a one-shot check whose trigger does not act on its unit.
+func _world_event(sname: String) -> bool:
+	if _world_event_memo.has(sname):
+		return _world_event_memo[sname]
+	var def: Dictionary = ast.scripts.get(sname, {})
+	var blocks: Array = def.get("blocks", [])
+	var params: Array = def.get("params", [])
+	var ok := not blocks.is_empty() and not params.is_empty()
+	for b: Dictionary in blocks:
+		if ok and not b.body.any(func(st: Array): return st[0] == P.S_CALL and st[1] == "KillScript"):
+			ok = false
+	var seen := {}
+	for b: Dictionary in blocks:
+		if ok and _acts_on(b.body, String(params[0]), seen):
+			ok = false
+	_world_event_memo[sname] = ok
+	return ok
+
+
+## Statements `body` use variable `v` in an action (scripts called with it are followed).
+func _acts_on(body: Array, v: String, seen: Dictionary) -> bool:
+	for st: Array in body:
+		match st[0]:
+			P.S_SET:
+				if _refs(st[2], v):
+					return true
+			P.S_FOR:
+				if _refs(st[2], v) or _acts_on(st[3], v, seen):
+					return true
+			P.S_CALL:
+				var called: Dictionary = ast.scripts.get(st[1], {})
+				for k in (st[2] as Array).size():
+					var a: Array = st[2][k]
+					if called.is_empty() or not (a[0] == P.N_VAR and a[1] == v):
+						if _refs(a, v):
+							return true
+						continue
+					var cp: Array = called.params
+					if k >= cp.size():
+						continue
+					var key := "%s#%s" % [st[1], cp[k]]
+					if seen.has(key):
+						continue
+					seen[key] = true
+					for b: Dictionary in called.blocks:
+						if b.conds.any(func(c): return _refs(c, cp[k])) or _acts_on(b.body, cp[k], seen):
+							return true
+	return false
+
+
+func _refs(e: Array, v: String) -> bool:
+	match e[0]:
+		P.N_VAR:
+			return e[1] == v
+		P.N_CALL:
+			for a: Array in e[2]:
+				if _refs(a, v):
+					return true
+	return false
 
 
 # ================================================================ side-quest objectives

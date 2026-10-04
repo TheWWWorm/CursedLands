@@ -207,13 +207,15 @@ static func _materials(model: Node) -> Array:
 	var out := []
 	for n: Node in model.find_children("*", "MeshInstance3D", true, false):
 		var mi := n as MeshInstance3D
+		if mi.has_meta("detailed_head"):
+			continue   # DetailedHead: its own face texture, not the body atlas
 		var cands := [mi.material_override, mi.get_meta("unlit") if mi.has_meta("unlit") else null]
 		if mi.mesh:
 			for i in mi.mesh.get_surface_count():
 				cands.append(mi.get_surface_override_material(i))
 				cands.append(mi.get_meta("unlit%d" % i) if mi.has_meta("unlit%d" % i) else null)
 		for c in cands:
-			if (c is StandardMaterial3D or c is EIUnitModel.LitMaterial) and not out.has(c):
+			if (c is StandardMaterial3D or c is EIUnitModel.LitMaterial or c is EIUnitModel.PreviewMaterial) and not out.has(c):
 				out.append(c)
 	return out
 

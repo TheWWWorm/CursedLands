@@ -29,6 +29,71 @@ static var _surface_textures := {}
 const AnimatedPart = preload("res://src/ei/anim_part.gd")
 const SurfaceResponse = preload("res://src/game/surface_materials.gd")
 
+## Remake option gfx_sharp_units ("Sharp character textures"; default on,
+## off under "Original look"): the unit texture fetch of every unit material
+## (bodies, armour, held weapons, DetailedHead faces, the Paperdoll /
+## unit-panel figure). Global uniform ei_unit_sharp (Gfx.apply_unit_sharpness):
+## x 1 = on, y the mip LOD bias. Off it is exactly texture(tex, uv).
+##  - Magnified texels (the close camera: Zak's head at the 3 m modern zoom
+##    is drawn ~2.6× its texture at 1080p, LOD p50 −1.4; 89 % of his pixels
+##    are magnified): Catmull-Rom bicubic (5 bilinear taps) instead of plain
+##    bilinear, faded in from LOD 0 to −0.5 and clamped to the 2×2 texels
+##    bilinear reads, so UV island borders in the 256² atlas grow no seams
+##    and edges no halos (4 texel fetches).
+##  - Minified texels (mid / far camera): mip LOD bias −0.5. Against a 2×2
+##    supersampled frame of the same view the mean error on unit pixels fell
+##    2.26 → 1.70 (10 m) and 4.75 → 3.78 (24 m); −0.75 / −1.0 were no better
+##    at 24 m and shimmered more (temporal second difference +6 % / +9 % of
+##    the reference, −0.5 +4 %). The mip chain stays the box-filtered full
+##    chain: Lanczos-resampled mips gained less than the bias at 24 m.
+## Same image path on Forward+ and Compatibility (no new shader variant: the
+## switch is a uniform branch, see ShaderWarmup).
+const SHARP_FETCH := """
+global uniform vec3 ei_unit_sharp;
+vec4 ei_unit_tex(sampler2D tex, vec2 uv) {
+	vec4 lin = texture(tex, uv, ei_unit_sharp.y);
+	if (ei_unit_sharp.x < 0.5) {
+		return lin;
+	}
+	ivec2 isz = textureSize(tex, 0);
+	vec2 size = vec2(isz);
+	vec2 p = uv * size;
+	vec2 dx = dFdx(p);
+	vec2 dy = dFdy(p);
+	float k = clamp(-log2(max(dot(dx, dx), dot(dy, dy))), 0.0, 1.0);
+	if (k <= 0.0) {
+		return lin;
+	}
+	vec2 tc = floor(p - 0.5) + 0.5;
+	vec2 f = p - tc;
+	vec2 w0 = f * (-0.5 + f * (1.0 - 0.5 * f));
+	vec2 w1 = 1.0 + f * f * (-2.5 + 1.5 * f);
+	vec2 w2 = f * (0.5 + f * (2.0 - 1.5 * f));
+	vec2 w3 = f * f * (-0.5 + 0.5 * f);
+	vec2 w12 = w1 + w2;
+	vec2 t0 = (tc - 1.0) / size;
+	vec2 t3 = (tc + 2.0) / size;
+	vec2 t12 = (tc + w2 / w12) / size;
+	vec3 c = textureLod(tex, vec2(t12.x, t0.y), 0.0).rgb * (w12.x * w0.y)
+		+ textureLod(tex, vec2(t0.x, t12.y), 0.0).rgb * (w0.x * w12.y)
+		+ textureLod(tex, t12, 0.0).rgb * (w12.x * w12.y)
+		+ textureLod(tex, vec2(t3.x, t12.y), 0.0).rgb * (w3.x * w12.y)
+		+ textureLod(tex, vec2(t12.x, t3.y), 0.0).rgb * (w12.x * w3.y);
+	c /= w12.x * w0.y + w0.x * w12.y + w12.x * w12.y + w3.x * w12.y + w12.x * w3.y;
+	ivec2 i0 = ivec2(floor(tc));
+	ivec2 i1 = ((i0 + 1) % isz + isz) % isz;
+	i0 = (i0 % isz + isz) % isz;
+	vec3 a = texelFetch(tex, i0, 0).rgb;
+	vec3 b = texelFetch(tex, ivec2(i1.x, i0.y), 0).rgb;
+	vec3 d = texelFetch(tex, ivec2(i0.x, i1.y), 0).rgb;
+	vec3 e = texelFetch(tex, i1, 0).rgb;
+	c = clamp(c, min(min(a, b), min(d, e)), max(max(a, b), max(d, e)));
+	return vec4(mix(lin.rgb, c, k), lin.a);
+}
+"""
+## Bias of option gfx_sharp_units (see SHARP_FETCH).
+const SHARP_MIP_BIAS := -0.5
+
 ## One shader for all world units, using the world's hourly light uniforms,
 ## point lights, shadow darkening and view-depth fog. Figure emissive is added
 ## after max(ambient, sun, point lights), before the shadow (TLP 1000d910).
@@ -41,13 +106,14 @@ varying float ei_k;
 uniform sampler2D albedo_tex : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform sampler2D surface_tex : hint_default_black, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform vec3 unit_emission = vec3(0.0);
+""" + SHARP_FETCH + """
 void vertex() {
 	ei_e = unit_emission;
 	ei_k = 0.0;
 }
 void fragment() {
 	FOG = ei_fog_of(VERTEX, (INV_VIEW_MATRIX * vec4(VERTEX, 1.0)).xyz);
-	vec4 t = texture(albedo_tex, UV);
+	vec4 t = ei_unit_tex(albedo_tex, UV);
 	ALBEDO = t.rgb;
 	ALPHA = t.a;
 	ALPHA_SCISSOR_THRESHOLD = 0.5;
@@ -78,6 +144,44 @@ class LitMaterial extends ShaderMaterial:
 		shader = EIUnitModel._unit_shader
 
 
+## UI previews (Paperdoll, the portrait's world-model fallback): what a
+## StandardMaterial3D with Lambert diffuse, roughness 1, no specular, alpha
+## scissor 0.5 and alpha to coverage draws, lit by the preview's own light,
+## with the unit texture fetch of option gfx_sharp_units (off: the same image).
+const PREVIEW_SHADER := """
+shader_type spatial;
+render_mode cull_back, diffuse_lambert, specular_disabled, alpha_to_coverage;
+uniform sampler2D albedo_tex : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
+""" + SHARP_FETCH + """
+void fragment() {
+	vec4 t = ei_unit_tex(albedo_tex, UV);
+	ALBEDO = t.rgb;
+	ALPHA = t.a;
+	ALPHA_SCISSOR_THRESHOLD = 0.5;
+	ALPHA_ANTIALIASING_EDGE = 0.3;
+	ALPHA_TEXTURE_COORDINATE = UV * vec2(textureSize(albedo_tex, 0));
+	ROUGHNESS = 1.0;
+	METALLIC = 0.0;
+}
+"""
+static var _preview_shader: Shader
+
+
+class PreviewMaterial extends ShaderMaterial:
+	@export var albedo_texture: Texture2D:
+		get:
+			return get_shader_parameter("albedo_tex")
+		set(value):
+			set_shader_parameter("albedo_tex", value)
+
+	func _init() -> void:
+		if EIUnitModel._preview_shader == null:
+			Gfx.ensure_globals()
+			EIUnitModel._preview_shader = Shader.new()
+			EIUnitModel._preview_shader.code = EIUnitModel.PREVIEW_SHADER
+		shader = EIUnitModel._preview_shader
+
+
 ## Optional experiment, disabled by default to preserve the original shapes.
 ## the original draws every part rigidly with one matrix. Enabling
 ## this merges body meshes and blends the matrices near joints; it reduces
@@ -91,6 +195,10 @@ var _current := ""
 ## Vertex morph parts: [MeshInstance3D "morph", {clip: [first shape, frame
 ## count]}, [shape indices set last]] (_apply_morphs).
 var _morph_parts: Array = []
+## Option gfx_detailed_heads: the fitted HUD face under "hd" (DetailedHead)
+## and the original head mesh and hair node it replaces.
+var _detail: MeshInstance3D
+var _plain_head: Array[Node3D] = []
 
 
 ## `unit` is a map object dictionary from EIMob (or a synthetic one with
@@ -698,6 +806,26 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 		hm.material_override = mat
 		hn.add_child(hm)
 
+	# Remake option gfx_detailed_heads: the HUD face model on the body
+	# (DetailedHead; not with a helmet or the welded body).
+	if not weld and helm_layer == "" and nodes.has("hd") and mesh_for.get("hd", "") == "hd":
+		var face := DetailedHead.face_names(proto, race, complexion,
+			int(unit.get("hair", proto.get("hair", 0))))
+		var head_mi: MeshInstance3D = null
+		for c in (nodes["hd"] as Node3D).get_children():
+			if c is MeshInstance3D:
+				head_mi = c
+				break
+		if not face.is_empty() and head_mi:
+			_detail = DetailedHead.attach(nodes["hd"], face, model, mask, hair_part, head_mi.mesh, ui_preview)
+			if _detail:
+				_plain_head = [head_mi]
+				var hr := (nodes["hd"] as Node3D).get_node_or_null("hr")
+				if hr:
+					_plain_head.append(hr)
+				add_to_group(&"detailed_heads")
+				set_detailed_head(GameData.option("gfx_detailed_heads") != 0)
+
 	player = AnimationPlayer.new()
 	player.name = "AnimationPlayer"
 	add_child(player)
@@ -773,19 +901,9 @@ func _apply_morphs() -> void:
 
 ## UI previews have their own light and camera, and must not inherit the
 ## loaded map's depth / border fog. World figures share the cached Gfx shader.
+## PreviewMaterial culls back faces as the original's render state.
 static func _material(ui_preview: bool) -> Material:
-	if not ui_preview:
-		return LitMaterial.new()
-	var mat := StandardMaterial3D.new()
-	mat.cull_mode = BaseMaterial3D.CULL_BACK   # the original render state
-	mat.roughness = 1.0
-	mat.diffuse_mode = BaseMaterial3D.DIFFUSE_LAMBERT
-	mat.specular_mode = BaseMaterial3D.SPECULAR_DISABLED
-	mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA_SCISSOR
-	mat.alpha_scissor_threshold = 0.5
-	mat.alpha_antialiasing_mode = BaseMaterial3D.ALPHA_ANTIALIASING_ALPHA_TO_COVERAGE
-	mat.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS_ANISOTROPIC
-	return mat
+	return PreviewMaterial.new() if ui_preview else LitMaterial.new()
 
 
 ## Builds the skinned body (see `smooth_joints`): a flat Skeleton3D with one
@@ -903,6 +1021,29 @@ func _weld(nodes: Dictionary, rest_pos: Dictionary, parent_of: Dictionary, welde
 	skel.add_child(mi)
 	mi.skin = skin
 	mi.skeleton = NodePath("..")
+
+
+## Option gfx_detailed_heads: the HUD face model in place of the original
+## head and hair (only figures DetailedHead could fit one to).
+func set_detailed_head(on: bool) -> void:
+	if _detail == null:
+		return
+	_detail.visible = on
+	for n in _plain_head:
+		n.visible = not on
+
+
+func has_detailed_head() -> bool:
+	return _detail != null
+
+
+func detailed_head_shown() -> bool:
+	return _detail != null and _detail.visible
+
+
+## Gfx.apply_env (group "detailed_heads"): follows the option.
+func refresh_detailed_head() -> void:
+	set_detailed_head(GameData.option("gfx_detailed_heads") != 0)
 
 
 ## Shows or hides a part and everything below it (severed limbs). The welded

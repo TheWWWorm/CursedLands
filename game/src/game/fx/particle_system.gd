@@ -339,15 +339,32 @@ func add_light(at: Vector3, color: Color, radius: float, secs := -1.0, energy :=
 
 
 ## A lightning strike's light (Weather / MenuScene
-## WorldScript: CreatePointLight(1, mid, 80, 255, 255, 255), deleted three
-## script ticks later). The original lights the land and figures through the
-## max() model only, so the remake's extras for torches stay off: no halo and
-## no volumetric mist (an 80 m white light lit the whole mist into a white
-## veil on Forward+ that the Compatibility renderer, without mist, never
-## showed). Remake safety: it also expires on its own `ticks` after creation,
-## so a lost delete (zone change, a peer leaving mid-strike) cannot leave it on.
+## WorldScript: CreatePointLight(1, mid, 80, 255, 255, 255), deleted
+## three script ticks later). the original (CEffectPointLight 0x4b
+## ): full colour at once, no fade, script light flags 0 (maxed
+## not added), the land relit at creation and deletion (
+## ); the figures per frame. So the original is a
+## hard ~165 ms on / off light through the max() model only (no overlay).
+## The remake's extras for torches stay off: no halo and no volumetric mist
+## (an 80 m white light lit the whole mist into a white veil on Forward+).
+## Remake safety: it also expires on its own `ticks` after creation, so a
+## lost delete (zone change, a peer leaving mid-strike) cannot leave it on.
+##
+## Remake (option gfx_sky ; Original look keeps the original's hard light): the
+## light ramps up over FLASH_ATTACK, holds at FLASH_PEAK (sRGB light level,
+## the original's 1.0 read as a full-screen pop in play), and after the script's
+## DeletePointLight decays with FLASH_DECAY instead of switching off; the sky
+## dome brightens with it (EISky ei_flash, weaker for far strikes).
+const FLASH_PEAK := 0.55
+const FLASH_ATTACK := 0.05
+const FLASH_DECAY := 0.12
+const FLASH_MAX_SECS := 2.0
+## Sky brighten at the peak for a strike at the camera / far away (≥ 300 m).
+const FLASH_SKY_NEAR := 0.4
+const FLASH_SKY_FAR := 0.12
 ## Time of the last one (FlashLog context: a storm's lightning strike).
 static var last_flash_light_msec := -1
+var _flashes: Array = []   # soft flash lights: {d, t0, rel, sky}
 
 
 func _flash_light(d: Dictionary, ticks: int) -> void:
@@ -358,12 +375,70 @@ func _flash_light(d: Dictionary, ticks: int) -> void:
 	for c in l.get_children():
 		c.queue_free()   # the torch halo
 	d.erase("halo")
-	d.until = tick + maxi(1, ticks)
+	var soft := Gfx.on("gfx_sky")
+	var cam := get_viewport().get_camera_3d() if is_inside_tree() else null
+	var dist := cam.global_position.distance_to(l.global_position) if cam else -1.0
+	FlashLog.note_strike(godot(d.pos), dist, soft)
+	if not soft:
+		d.until = tick + maxi(1, ticks)
+		return
+	var near := 1.0 - smoothstep(40.0, 300.0, dist) if dist >= 0.0 else 0.0
+	d.until = -1
+	d.flash = {"t0": Time.get_ticks_msec() / 1000.0, "rel": -1.0, "life": maxi(1, ticks) * TICK,
+		"sky": lerpf(FLASH_SKY_FAR, FLASH_SKY_NEAR, near)}
+	l.light_energy = 0.0
+	_flashes.append(d)
+
+
+func _exit_tree() -> void:
+	if not _flashes.is_empty():
+		_flashes.clear()
+		Gfx.set_lightning_flash(0.0)
+
+
+## Soft flash: the script's delete starts the decay (the light is no longer
+## the script's id, a new strike makes its own).
+func _release_flash(d: Dictionary) -> bool:
+	if not d.has("flash") or not _flashes.has(d):
+		return false
+	if float(d.flash.rel) < 0.0:
+		d.flash.rel = Time.get_ticks_msec() / 1000.0
+	return true
+
+
+## Per frame: the soft flash envelope (light energy, sky brighten).
+func _update_flashes() -> void:
+	if _flashes.is_empty():
+		return
+	var now := Time.get_ticks_msec() / 1000.0
+	var sky := 0.0
+	for d: Dictionary in _flashes.duplicate():
+		var f: Dictionary = d.flash
+		var t := now - float(f.t0)
+		if float(f.rel) < 0.0 and t >= float(f.life):
+			f.rel = float(f.t0) + float(f.life)   # lost delete: the light's own expiry
+		var k := smoothstep(0.0, FLASH_ATTACK, t)
+		if float(f.rel) >= 0.0:
+			k *= exp(-maxf(now - float(f.rel), 0.0) / FLASH_DECAY)
+		if (float(f.rel) >= 0.0 and k < 0.02) or t > FLASH_MAX_SECS or not is_instance_valid(d.get("light")):
+			_flashes.erase(d)
+			remove_light(d)
+			continue
+		# The light shader's colour is srgb(LIGHT_COLOR / π) (Gfx.light_code):
+		# energy = linear(level) gives the level in the original's sRGB units.
+		var lv := FLASH_PEAK * k
+		(d.light as OmniLight3D).light_energy = Color(lv, lv, lv).srgb_to_linear().r
+		sky = maxf(sky, float(f.sky) * k)
+	Gfx.set_lightning_flash(sky)
 
 
 func remove_light(d: Dictionary) -> void:
 	if d.is_empty():
 		return
+	if _flashes.has(d):
+		_flashes.erase(d)
+		if _flashes.is_empty():
+			Gfx.set_lightning_flash(0.0)
 	if is_instance_valid(d.get("light")):
 		d.light.queue_free()
 	lights.erase(d)
@@ -398,6 +473,7 @@ func _process(dt: float) -> void:
 		_tick(k == n - 1)
 	if acc >= TICK:
 		acc = fmod(acc, TICK)
+	_update_flashes()
 	_draw(acc / TICK)
 
 
@@ -1272,7 +1348,9 @@ func script_cmd(f: String, a: Array) -> void:
 				d.pos = Vector3(float(a[1]), float(a[2]), float(a[3]))
 				d.light.global_position = godot(d.pos)
 		"DeletePointLight":
-			remove_light(script_lights.get(int(a[0]), {}))
+			var d: Dictionary = script_lights.get(int(a[0]), {})
+			if not _release_flash(d):
+				remove_light(d)
 			script_lights.erase(int(a[0]))
 		"CreateLightning":   # (id, x1, y1, z1, x2, y2, z2, param) or with objects
 			if a.size() < 8:

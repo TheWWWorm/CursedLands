@@ -118,7 +118,9 @@ var _dist_s := M_DEFAULT_DISTANCE
 var _pitch_ofs := 0.0           # player tilt on top of the zoom curve, rad
 var _pitch_ofs_s := 0.0
 var _terrain_pitch := 0.0       # extra pitch keeping the eye line over hills, rad
+var _terrain_pitch_v := 0.0     # its rate (rad/s), see _smooth_damp
 var _ground_s := 0.0
+var _ground_v := 0.0
 var _ground_init := false
 var _free := false              # follow mode let go (the player panned away)
 var _follow_unit: Node3D
@@ -126,6 +128,12 @@ var _pointer_inside := true   # NOTIFICATION_WM_MOUSE_ENTER / EXIT
 var _drag_button := 0          # only a gesture begun outside the GUI owns the camera
 var _window_focused := true
 var _fade: CameraFade
+## Gamepad right stick (PadField, real-time values −1..1, cleared each frame
+## by it): turn and zoom; `pad_no_edge` stops edge scrolling at a resting,
+## hidden mouse pointer while the pad drives.
+var pad_turn := 0.0
+var pad_zoom := 0.0
+var pad_no_edge := false
 ## Original style: the original camera's velocities, eased per tick.
 const TICK := 0.055
 const PAN_RATE := 0.1333    # camera
@@ -517,8 +525,10 @@ func _process(delta: float) -> void:
 	edge = _edge_scroll()
 	if edge != Vector2i.ZERO:
 		pan_t += Vector2(edge) / TICK
-	var zoom_t := (float(EIKeymap.held("camera_zoom_out", 0)) - float(EIKeymap.held("camera_zoom_in", 0))) \
+	var zoom_t := (float(EIKeymap.held("camera_zoom_out", 0)) - float(EIKeymap.held("camera_zoom_in", 0)) + pad_zoom) \
 		* kp / TICK
+	if pad_turn != 0.0:   # gamepad right stick (PadField, camera_reverse_x applied there)
+		yaw_t -= pad_turn * kp / TICK
 	var ticks := delta / TICK
 	_pan_v = Vector2(_ease_v(_pan_v.x, pan_t.x, PAN_RATE, ticks, false), _ease_v(_pan_v.y, pan_t.y, PAN_RATE, ticks, false))
 	_yaw_v = _ease_v(_yaw_v, yaw_t, TURN_RATE, ticks, true)
@@ -587,7 +597,7 @@ static func _ease_v(v: float, t: float, rate: float, ticks: float, instant_up: b
 ## The screen edge the pointer scrolls at (option scroll_border, pixels; 0 off).
 func _edge_scroll() -> Vector2i:
 	var out := Vector2i.ZERO
-	if TouchInput.enabled:
+	if TouchInput.enabled or pad_no_edge:
 		return out
 	if _drag_button != 0 or Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) \
 			or Input.is_mouse_button_pressed(MOUSE_BUTTON_MIDDLE) or Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
@@ -695,7 +705,9 @@ func _snap() -> void:
 	position.x = _goal.x
 	position.z = _goal.z
 	_ground_init = false
+	_ground_v = 0.0
 	_terrain_pitch = _needed_terrain_pitch()
+	_terrain_pitch_v = 0.0
 
 
 ## A speed option (slider 0..100, 50 = ×1) as a factor ×0.25 .. ×4.
@@ -788,6 +800,19 @@ static func _ease(rate: float, dt: float) -> float:
 	return 1.0 - exp(-rate * dt)
 
 
+## A critically damped spring toward `target` (smooth time `t` s), stable at
+## any dt: [value, rate]. Unlike _ease its rate never jumps when the target
+## does, so a stepping target (the ground under a strafing view, the terrain
+## pitch) still moves the picture evenly frame to frame.
+static func _smooth_damp(cur: float, target: float, vel: float, t: float, dt: float) -> Vector2:
+	var omega := 2.0 / maxf(t, 0.0001)
+	var x := omega * dt
+	var e := 1.0 / (1.0 + x + 0.48 * x * x + 0.235 * x * x * x)
+	var change := cur - target
+	var temp := (vel + omega * change) * dt
+	return Vector2(target + (change + temp) * e, (vel - omega * temp) * e)
+
+
 func _process_modern(game_dt: float) -> void:
 	# Real time: the camera moves at the same speed when the game is paused
 	# or accelerated (Engine.time_scale).
@@ -814,6 +839,8 @@ func _process_modern(game_dt: float) -> void:
 			v = k
 		turn += float(EIKeymap.held("camera_rotate_right")) - float(EIKeymap.held("camera_rotate_left"))
 		zoom = float(EIKeymap.held("camera_zoom_out")) - float(EIKeymap.held("camera_zoom_in"))
+	turn = clampf(turn + pad_turn, -1.0, 1.0)
+	zoom = clampf(zoom + pad_zoom, -1.0, 1.0)
 	edge = _edge_scroll()
 	v = (v + Vector2(edge)).limit_length()
 	# One velocity filter, with a quick stop. Manual panning does not pass
@@ -855,9 +882,13 @@ func _process_modern(game_dt: float) -> void:
 	_dist_s = exp(lerpf(log(_dist_s), log(distance), _ease(9.0, dt)))
 	_pitch_ofs_s = lerpf(_pitch_ofs_s, _pitch_ofs, _ease(10.0, dt))
 	# Terrain: the look-at height eases over bumps; the pitch rises quickly
-	# when a hill would cut the eye line and settles back slowly.
+	# when a hill would cut the eye line and settles back slowly. Both through
+	# springs: while strafing the targets change in steps, which a first-order
+	# ease turned into sudden vertical jerks across the sideways motion.
 	var need := _needed_terrain_pitch()
-	_terrain_pitch = lerpf(_terrain_pitch, need, _ease(10.0 if need > _terrain_pitch else 2.0, dt))
+	var tp := _smooth_damp(_terrain_pitch, need, _terrain_pitch_v, 0.12 if need > _terrain_pitch else 0.5, dt)
+	_terrain_pitch = tp.x
+	_terrain_pitch_v = tp.y
 	_update_ground(g, dt)
 	_apply_modern()
 	if g and GameData.option("cam_see_through") == 1:
@@ -899,13 +930,17 @@ func _update_ground(g: Game, dt: float) -> void:
 	for o: Vector2 in [Vector2(3, 0), Vector2(-3, 0), Vector2(0, 3), Vector2(0, -3)]:
 		h += terrain.height_at(x + o.x, y + o.y) * 0.15
 	if _follow_unit and is_instance_valid(_follow_unit):
+		# Blended out from 2 to 4 m (no step when the view leaves the hero).
 		var p := _follow_unit.get_global_transform_interpolated().origin
-		if Vector2(p.x - position.x, p.z - position.z).length() < 4.0:
-			h = maxf(h, p.y)
+		var w := smoothstep(4.0, 2.0, Vector2(p.x - position.x, p.z - position.z).length())
+		h = lerpf(h, maxf(h, p.y), w)
 	if not _ground_init:
 		_ground_init = true
 		_ground_s = h
-	_ground_s = lerpf(_ground_s, h, _ease(6.0, dt))
+		_ground_v = 0.0
+	var gs := _smooth_damp(_ground_s, h, _ground_v, 0.2, dt)
+	_ground_s = gs.x
+	_ground_v = gs.y
 	position.y = _ground_s + lerpf(M_LIFT_CLOSE, M_LIFT_FAR, _zoom_t(_dist_s))
 
 
@@ -922,20 +957,32 @@ func _needed_terrain_pitch() -> float:
 	var dir := Vector2(sin(_yaw_s), cos(_yaw_s))   # ground direction look-at → eye (Godot x, z)
 	var extra := 0.0
 	while extra < deg_to_rad(60.0):
-		var p := minf(p0 + extra, deg_to_rad(86.0))
-		var ok := true
-		for i in range(1, 9):
-			var f := float(i) / 8.0
-			var r := _dist_s * f * cos(p)
-			var gx := position.x + dir.x * r
-			var gz := position.z + dir.y * r
-			if ty + _dist_s * f * sin(p) < terrain.height_at(gx, -gz) + M_CLEARANCE:
-				ok = false
-				break
-		if ok:
+		if _eye_line_clear(p0 + extra, ty, dir):
 			break
 		extra += deg_to_rad(3.0)
+	# Refine the 3° step (to ~0.1°), so the need follows the terrain
+	# continuously instead of in 3° steps.
+	if extra > 0.0 and extra < deg_to_rad(60.0):
+		var lo := extra - deg_to_rad(3.0)
+		for i in 5:
+			var mid := (lo + extra) * 0.5
+			if _eye_line_clear(p0 + mid, ty, dir):
+				extra = mid
+			else:
+				lo = mid
 	return extra
+
+
+func _eye_line_clear(p: float, ty: float, dir: Vector2) -> bool:
+	p = minf(p, deg_to_rad(86.0))
+	for i in range(1, 9):
+		var f := float(i) / 8.0
+		var r := _dist_s * f * cos(p)
+		var gx := position.x + dir.x * r
+		var gz := position.z + dir.y * r
+		if ty + _dist_s * f * sin(p) < terrain.height_at(gx, -gz) + M_CLEARANCE:
+			return false
+	return true
 
 
 func _apply_modern() -> void:

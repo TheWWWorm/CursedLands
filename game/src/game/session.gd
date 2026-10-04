@@ -418,7 +418,9 @@ func enter_zone(id: String, entrance: int, autosave := true) -> void:
 	z = _zone_variant(z)
 	_movie_on_enter(id)
 	GameData.trace("zone load %s (entrance %d)" % [id, entrance])
-	LoadingScreen.begin(get_tree(), z)
+	# A zone already in the campaign state loads like a save (
+	# LoadSave): its loading screen also shows frames 1 and 5.
+	LoadingScreen.begin(get_tree(), z, LoadingScreen.SAVED_ZONE if state.zones.has(id) else LoadingScreen.NEW_ZONE)
 	_build_world(z, true)
 	# Belt items come into a zone full: the party's units are made anew from
 	# the hero records with each belt item's = (the
@@ -432,11 +434,13 @@ func enter_zone(id: String, entrance: int, autosave := true) -> void:
 			for qi in q.size():
 				q[qi] = Items.with_charge(q[qi], Items.energy(q[qi]))
 	_deploy_parties(z, entrance)
+	LoadingScreen.step(8)
 	state.visited[id] = true
 	_lmp_entrance = entrance
 	if lmp.is_empty():
 		coop.zone_entered(id)
 	world.vm = ScriptVM.create(world, self)
+	LoadingScreen.step(9)
 	_start_zone_revisit(id)
 	_start_pose(z, entrance)
 	_replay_local()
@@ -449,6 +453,7 @@ func enter_zone(id: String, entrance: int, autosave := true) -> void:
 	# loaded (10th frame); the Autosave option switches it off.
 	if autosave and is_host and GameData.option("autosave") and lmp.is_empty():
 		save_game.call_deferred("autosave")
+	LoadingScreen.step(10)
 	ShaderWarmup.run(game)
 	LoadingScreen.end()
 	if not lmp.is_empty():
@@ -501,8 +506,10 @@ func _build_world(z: Dictionary, authority: bool) -> void:
 			SideQuests.spawn_units(w, sq)
 		state.restore_zone(zone_id, w)
 		w.item_worn.connect(_on_item_worn)
+	LoadingScreen.step(6)
 	world = w
 	game.attach_world(w)
+	LoadingScreen.step(7)
 	_building = false
 
 
@@ -643,8 +650,9 @@ func _rpc_zone(id: String, records: Array, diplo: PackedInt32Array, extra_mobs: 
 		z = z.duplicate()
 		z.mpr = mpr
 	GameData.trace("zone load %s (from host)" % id)
-	LoadingScreen.begin(get_tree(), z)
+	LoadingScreen.begin(get_tree(), z, LoadingScreen.CLIENT)
 	_build_world(z, false)
+	LoadingScreen.step(9)
 	world.diplomacy = diplo
 	for f: String in extra_mobs:
 		world.add_mob_objects(f)
@@ -655,6 +663,7 @@ func _rpc_zone(id: String, records: Array, diplo: PackedInt32Array, extra_mobs: 
 	for r: Dictionary in records:
 		_spawn_record(r)
 	_relink_heroes()
+	LoadingScreen.step(10)
 	game.attach_world(world)
 	ShaderWarmup.run(game)
 	LoadingScreen.end()
@@ -1331,6 +1340,8 @@ func apply_command(cmd: Dictionary, player: int) -> void:
 				# The unit's own gait decides run / walk (the original unit)
 				# "run" is the double-click flag (command).
 				var mo := {"type": "move", "to": c + off, "gait": true, "run": bool(cmd.get("run", false))}
+				if cmd.get("walk", false):
+					mo.slow = true   # remake: a gamepad stick tilted halfway walks
 				if cmd.get("swarm", false):
 					# Ctrl / aimed key on the ground: packet 0x3a, the Player
 					# motivation's state 2 (UnitAI.swarm_tick), round the point.
@@ -2725,6 +2736,9 @@ func _on_event(event: Dictionary) -> void:
 			if int(event.get("to", my_index)) == my_index:
 				message.emit(String(event.text))
 		"say": _say(event)
+		"loot_copy":   # remake option coop_share_loot (CoopProgress.share_found)
+			if int(event.get("to", -1)) == my_index:
+				message.emit(CoopProgress.copy_text(event))
 		"lobby":   # the host's choice of game, while in the lobby (remake)
 			if not is_host:
 				lobby_mode = event.get("mode", {}) if event.get("mode") is Dictionary else {}
@@ -2832,7 +2846,7 @@ func _rpc_hello(player_name: String, hero_class: String, protocol := 0, maps_md5
 	if not CoopProgress.peer_alive(multiplayer, pid):
 		return   # dropped again before its hello was handled (it will say hello anew)
 	_drop_stale_peer(pid, player_name)
-	if net.refuse(pid, protocol, maps_md5):
+	if net.refuse(pid, protocol, maps_md5, player_name):
 		return
 	var idx := _player_slot(player_name)
 	var in_game := world != null
@@ -3087,6 +3101,11 @@ func load_game(slot: String) -> bool:
 	enter_zone(s.current_zone, 1, false)
 	_restoring = false
 	state.restore_party_positions(world)
+	# Every unit drawn where it now stands: the zone state and the party's
+	# saved spots moved them after they were made (at their map / deploy
+	# spots), so each is placed at once with no interpolation from there.
+	for u: GameUnit in world.units.values():
+		u.resync_drawn()
 	if game and game.hud:
 		game.hud.notify("string notify_loading")
 	# attach_world focused the zone's start point before the party was put

@@ -69,8 +69,28 @@ const REMAKE_GROUP := 11   # GameData.OPTION_GROUPS index of the remake sub-page
 const REMAKE_GROUP2 := 12  # its second page ("More effects…", row 13)
 const COOP_GROUP := 13     # the remake's co-op page, from the Game page's row 13
 const SURFACE_GROUP := 14  # lighting and surfaces, from More effects row 10
+const PAD_GROUP := 15      # remake: gamepad settings, from the Actions key page's row 13
+const PAD_BUTTONS_GROUP := 16   # remake: the gamepad's button layout, from PAD_GROUP row 12
 ## The remake sub-pages and the original tab each belongs to (lit while it is up).
-const SUB_PAGES := {REMAKE_GROUP: 0, REMAKE_GROUP2: 0, COOP_GROUP: 3, SURFACE_GROUP: 0}
+const SUB_PAGES := {REMAKE_GROUP: 0, REMAKE_GROUP2: 0, COOP_GROUP: 3, SURFACE_GROUP: 0, PAD_GROUP: 5, PAD_BUTTONS_GROUP: 5}
+const PAD_LINK := ["Gamepad…", "Controller settings (vibration, stick dead zone, pointer speed, target range, button pictures) and the button layout."]
+const PAD_BUTTONS_LINK := ["Buttons…", "Choose which controller button does what. The D-pad and the sticks keep their roles."]
+const PAD_DEFAULTS := ["Default buttons", "Restores the default button layout (confirm with ✓)."]
+## The rebindable gamepad actions' labels and tips (PadInput.ACTIONS order).
+const PAD_ACTIONS := {
+	"interact": ["Act / confirm", "Acts on the highlighted target as a left click on it would: attack, loot, talk, use; confirms a spell's target. Held: forced attack."],
+	"cancel": ["Cancel / back", "Cancels a spell, item or aim being targeted, else stops the selected characters. Closes wheels and menus."],
+	"context": ["Target ring", "More actions for the highlighted target: aimed strikes, steal, follow, examine; on open ground: move, run, forced move."],
+	"pause": ["Pause", "Pauses or resumes the game (single player). Held: normal or fast speed."],
+	"actions": ["Spells and actions wheel", "Spells, stance, gait, Use/Steal and Follow. In an open wheel: the previous page."],
+	"items": ["Items wheel", "The belt and the weapons. In an open wheel: the next page."],
+	"mod": ["Modifier", "Held, it changes other buttons, as Ctrl / Alt on the keyboard: forced attack, forced move, use or cast at once, the unit panel's views."],
+	"system": ["Game wheel", "Inventory, journal, quests, minimap, message log, quick save and load, tutorial."],
+	"cursor": ["Pointer", "Switches the pointer on or off: the left stick moves it and A / B click as the mouse buttons."],
+	"recentre": ["Centre the camera", "Centres the camera on the leader and follows again."],
+	"view": ["Quests", "The quests screen. Held: the journal."],
+	"menu": ["Menu", "The game menu: save, load, options, exit."],
+}
 const COOP_LINK := ["Remake extras…",
 	"Co-op host settings: full experience for every party member, monsters scaled to the player count, opening the port on the router. Single player: the game-over notice at the hero's death."]
 const MORE_LINK := ["More effects…", "HD textures, soft and lit particles, contact shadows, torch glow; anti-aliasing, shadow quality, texture filtering."]
@@ -100,10 +120,12 @@ var _key_profiles := {} # pending Classic / WASD maps; neither changes until ✓
 var _waiting := false   # the selected key row waits for a key
 var _box: MessageBox
 var _tutorial: TutorialPanel
+var _pad_map := {}      # remake: the gamepad layout being edited (button -> action)
 
 
 func _ready() -> void:
 	visible = false
+	add_to_group("pad_panel")   # remake: Y = ✓ and the button rows (pad_press, pad_capture)
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	tooltip_text = " "   # tips come from _get_tooltip (GameData.TipLayer)
@@ -135,6 +157,7 @@ func open(frame: Image = null, slide := false) -> void:
 	hide_text = slide
 	_place_board()
 	_load_keys()
+	_pad_map = PadInput.bindings.duplicate()
 	_waiting = false
 	visible = true
 	_show_group(0)
@@ -151,6 +174,7 @@ func _place_board() -> void:
 func _close() -> void:
 	visible = false
 	_waiting = false
+	_stop_pad_wait()
 	if is_instance_valid(_box):
 		_box.queue_free()
 	_box = null
@@ -220,6 +244,23 @@ func _show_group(g: int) -> void:
 			"label": RemakeText.t(MORE_LINK[0]), "tip": RemakeText.t("%s\n%s\n(Remake option.)") % RemakeText.tl(MORE_LINK)}
 		_rows[PRESET_ROW] = {"kind": "link", "name": "", "preset": true,
 			"label": RemakeText.t(ORIGINAL_LOOK[0]), "tip": RemakeText.t("%s\n%s\n(Remake option.)") % RemakeText.tl(ORIGINAL_LOOK)}
+	elif _group == 5:   # remake: the Actions key page's free row 13
+		_rows[LINK_ROW] = {"kind": "link", "name": "", "to": PAD_GROUP,
+			"label": RemakeText.t(PAD_LINK[0]), "tip": RemakeText.t("%s\n%s\n(Remake option.)") % RemakeText.tl(PAD_LINK)}
+	elif _group == PAD_GROUP:
+		_rows[12] = {"kind": "link", "name": "", "to": PAD_BUTTONS_GROUP,
+			"label": RemakeText.t(PAD_BUTTONS_LINK[0]), "tip": RemakeText.t("%s\n%s\n(Remake option.)") % RemakeText.tl(PAD_BUTTONS_LINK)}
+		_rows[LINK_ROW] = {"kind": "link", "name": "", "to": 5, "label": "« " + _group_label(5), "tip": ""}
+	elif _group == PAD_BUTTONS_GROUP:
+		for i in PadInput.ACTIONS.size():
+			var act: String = PadInput.ACTIONS[i]
+			_rows[i] = {"kind": "padbtn", "name": act, "label": RemakeText.t(PAD_ACTIONS[act][0]),
+				"tip": RemakeText.t("%s\n%s\n(Remake option.)") % RemakeText.tl(PAD_ACTIONS[act]), "keys": ""}
+		_rows[12] = {"kind": "link", "name": "", "pad_defaults": true,
+			"label": RemakeText.t(PAD_DEFAULTS[0]), "tip": RemakeText.t("%s\n%s\n(Remake option.)") % RemakeText.tl(PAD_DEFAULTS)}
+		_rows[LINK_ROW] = {"kind": "link", "name": "", "to": PAD_GROUP,
+			"label": "« " + _group_label(PAD_GROUP), "tip": ""}
+		_refresh_pad()
 	elif _group == 3:   # remake: the Game page's free row 13
 		_rows[LINK_ROW] = {"kind": "link", "name": "", "to": COOP_GROUP,
 			"label": RemakeText.t(COOP_LINK[0]), "tip": RemakeText.t("%s\n%s\n(Remake option.)") % RemakeText.tl(COOP_LINK)}
@@ -234,6 +275,8 @@ func _show_group(g: int) -> void:
 		_rows[PRESET_ROW] = {"kind": "link", "name": "", "preset": true,
 			"label": RemakeText.t(ORIGINAL_LOOK[0]), "tip": RemakeText.t("%s\n%s\n(Remake option.)") % RemakeText.tl(ORIGINAL_LOOK)}
 	elif _group == SURFACE_GROUP:
+		_rows[DETECT_ROW] = {"kind": "link", "name": "", "detect": true,
+			"label": RemakeText.t(DETECT_LINK[0]), "tip": RemakeText.t("%s\n%s\n(Remake option.)") % RemakeText.tl(DETECT_LINK)}
 		_rows[LINK_ROW] = {"kind": "link", "name": "", "to": REMAKE_GROUP2,
 			"label": "« " + RemakeText.t(GameData.REMAKE_OPTIONS.graphics2[0]).capitalize(), "tip": ""}
 		_rows[PRESET_ROW] = {"kind": "link", "name": "", "preset": true,
@@ -297,6 +340,7 @@ func _refresh_keys() -> void:
 func _key_pressed(e: InputEventKey) -> void:
 	if e.keycode == KEY_ESCAPE:
 		_waiting = false
+		_stop_pad_wait()
 		queue_redraw()
 		return
 	var sc := EIKeymap.scan_code(e.physical_keycode if e.physical_keycode else e.keycode)
@@ -345,6 +389,11 @@ const REMAKE_LINK := ["Remake options: graphics…",
 ## Remake page row 12: every gfx_* switch off (the 2000 renderer's look; the
 ## always-on quality settings in project.godot keep their colours).
 const PRESET_ROW := 12
+## Lighting and surfaces row 9 (under auto_graphics): the graphics test now
+## (GfxDetect); the screen closes with its changes applied first.
+const DETECT_ROW := 9
+const DETECT_LINK := ["Detect best settings",
+	"Runs a short graphics test (a few seconds) and picks the settings this device runs smoothly. Replaces the current graphics settings."]
 const ORIGINAL_LOOK := ["Original look: all effects off",
 	"Switches every remake graphics effect off, leaving the original 2000 look (confirm with ✓)."]
 
@@ -380,7 +429,14 @@ func _toggle(r: int) -> void:
 			_set_value(row.name, (int(_values.get(row.name, 0)) + 1) % int(row.max))
 		"link":
 			sound("save\\select")
-			if row.get("preset", false):
+			if row.get("detect", false):
+				_apply()
+				_close()
+				GfxDetect.start(true)
+			elif row.get("pad_defaults", false):
+				_pad_map = PadInput.DEFAULTS.duplicate()
+				_refresh_pad()
+			elif row.get("preset", false):
 				for o: Array in GameData.OPTIONS:
 					if String(o[0]).begins_with("gfx_"):
 						_set_value(o[0], 0)
@@ -400,6 +456,8 @@ func _accept() -> void:
 func _apply() -> void:
 	for profile: int in _key_profiles:
 		EIKeymap.set_bindings(_key_profiles[profile], profile)
+	if not _pad_map.is_empty() and _pad_map != PadInput.bindings:
+		PadInput.save_bindings(_pad_map)
 	for n in _values:
 		if int(_values[n]) != GameData.option(n):
 			GameData.set_option(n, int(_values[n]))
@@ -434,7 +492,7 @@ func _changed() -> bool:
 	for profile: int in _key_profiles:
 		if _key_profiles[profile] != EIKeymap.bindings(profile):
 			return true
-	return false
+	return not _pad_map.is_empty() and _pad_map != PadInput.bindings
 
 
 func _ask_unsaved() -> void:
@@ -491,8 +549,8 @@ func _draw() -> void:
 	for r: int in _rows:
 		var row: Dictionary = _rows[r]
 		var y := _row_y(r)
-		var col := TEXT if row.kind in ["keys", "link"] or row.name in GameData.OPTIONS_APPLIED else GREY
-		if row.kind == "keys" and r == _sel and _waiting:
+		var col := TEXT if row.kind in ["keys", "link", "padbtn"] or row.name in GameData.OPTIONS_APPLIED else GREY
+		if row.kind in ["keys", "padbtn"] and r == _sel and _waiting:
 			col = Color8(0xff, 0, 0)   # COLORREF 0xff while waiting
 		text(Rect2(260, y + 4, 260 if row.kind != "link" else 430, 20), row.label, 1, col)
 		match row.kind:
@@ -502,6 +560,8 @@ func _draw() -> void:
 				text(Rect2(530, y + 4, 160, 16), _switch_text(row), 1, TEXT)
 			"keys":
 				text(Rect2(530, y + 4, 160, 20), row["keys"], 1, col)
+			"padbtn":
+				_draw_pad_buttons(r, y, col)
 	# ✓ / ✗.
 	sprite(ui, OK_RECT, [81, 2, 155, 50])
 	sprite(ui, CANCEL_RECT, [160, 2, 234, 50])
@@ -532,7 +592,7 @@ func _hit(p: Vector2) -> Array:
 		# the selection bar 250..692); the original's row regions
 		# end at 520 (: (250, y, 520, y + 24)), so a
 		# double click on the key itself did nothing.
-		if row.kind == "keys" and Rect2(520, _row_y(r), 172, 24).has_point(p):
+		if row.kind in ["keys", "padbtn"] and Rect2(520, _row_y(r), 172, 24).has_point(p):
 			return ["row", r]
 	return []
 
@@ -571,6 +631,10 @@ func _gui_input(e: InputEvent) -> void:
 				"row":
 					if _rows[h[1]].kind == "link":
 						_toggle(h[1])
+					elif e.double_click and _rows[h[1]].kind == "padbtn":
+						sound("save\\select")
+						_sel = h[1]
+						_start_pad_wait()
 					elif e.double_click and _rows[h[1]].kind == "keys":
 						# select.wav, the row waits for a key.
 						sound("save\\select")
@@ -632,7 +696,10 @@ func _unhandled_key_input(e: InputEvent) -> void:
 		KEY_ESCAPE:
 			_cancel()
 		KEY_ENTER, KEY_KP_ENTER:
-			if _rows.has(_sel) and _rows[_sel].kind == "keys":   # case 0xd
+			if _rows.has(_sel) and _rows[_sel].kind == "padbtn":   # remake: wait for a controller button
+				sound("messbox\\ok")
+				_start_pad_wait()
+			elif _rows.has(_sel) and _rows[_sel].kind == "keys":   # case 0xd
 				_waiting = true
 				sound("messbox\\ok")
 				queue_redraw()
@@ -680,3 +747,84 @@ static func _t(key: String, fallback: String) -> String:
 		return fallback
 	var t := GameData.text(key).strip_edges()
 	return t if t else key.trim_prefix("string ")
+
+
+# ------------------------------------------------------------------ gamepad
+
+## Remake: the button rows' text, from the edited layout.
+func _refresh_pad() -> void:
+	for r: int in _rows:
+		if _rows[r].kind == "padbtn":
+			var names: Array = []
+			for b: String in ["A", "B", "X", "Y", "LB", "RB", "LT", "RT", "L3", "R3", "VIEW", "MENU", "TOUCHPAD", "SHARE"]:
+				if b in ["TOUCHPAD", "SHARE"] and PadInput.family() != "ps":
+					continue   # PlayStation's extra buttons
+				if _pad_map.get(b, "") == _rows[r].name:
+					names.append(b)
+			_rows[r]["buttons"] = names
+			_rows[r]["keys"] = "  |  ".join(names.map(func(b): return PadInput.label(b)))
+	queue_redraw()
+
+
+func _draw_pad_buttons(r: int, y: float, col: Color) -> void:
+	var x := 530.0
+	for b: String in _rows[r].get("buttons", []):
+		var tex := PadInput.glyph(b)
+		if tex:
+			draw_texture_rect(tex, r8(Rect2(x, y + 2, 20, 20)), false)
+			x += 24.0
+		else:
+			text(Rect2(x, y + 4, 60, 20), PadInput.label(b), 1, col)
+			x += 40.0
+
+
+func _start_pad_wait() -> void:
+	_waiting = true
+	PadInput.capture = self
+	queue_redraw()
+
+
+func _stop_pad_wait() -> void:
+	if PadInput.capture == self:
+		PadInput.capture = null
+
+
+## PadInput while a button row waits: the pressed button takes the row's
+## action; the action that had it gets this row's old button (a swap, so no
+## action is left without a button). Menu stops waiting.
+func pad_capture(button: String) -> bool:
+	if not visible or not _waiting or not _rows.has(_sel) or _rows[_sel].kind != "padbtn":
+		_stop_pad_wait()
+		return false
+	_waiting = false
+	_stop_pad_wait()
+	if button == "MENU":
+		sound("messbox\\cancel")
+		queue_redraw()
+		return true
+	var act: String = _rows[_sel].name
+	var other := String(_pad_map.get(button, ""))
+	var old := ""
+	for b: String in _pad_map:
+		if _pad_map[b] == act and b != button and old == "":
+			old = b
+	if old != "":
+		_pad_map.erase(old)
+	_pad_map[button] = act
+	if other != "" and other != act and old != "":
+		_pad_map[old] = other
+	sound("messbox\\ok")
+	_refresh_pad()
+	return true
+
+
+## PadUI: Y is ✓ (the keys reach the rest through the key bridge).
+func pad_press(action: String, phase: String) -> bool:
+	if action == "pause" and phase == "down" and visible and not _waiting and not MessageBox.is_up(_box) and not _tutorial.visible:
+		_accept()
+		return true
+	return false
+
+
+func pad_targets() -> Array:
+	return []

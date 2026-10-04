@@ -270,6 +270,7 @@ const TUTORIALS := {"weapons": "camp_weapons", "spells": "camp_skills", "spelltr
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_STOP
+	add_to_group("pad_panel")   # remake: gamepad snap targets (pad_targets)
 	for n in ["campslots", "camp1", "camp2", "camp3", "camp4", "inventory01", "inventory02",
 			"trade1", "trade2", "trade3", "trade4", "repair1", "repair2", "repair3", "repair4",
 			"constritem1", "constritem2", "constritem3", "constritem4",
@@ -1219,6 +1220,34 @@ func _press_side(b: String) -> void:
 		"cancel": _on_cancel()
 		_: set_mode(b)
 	queue_redraw()
+
+
+## Remake, the gamepad (PadUI): the cells, mode buttons, filters and row
+## arrows on show as snap targets, in viewport pixels; the D-pad moves between
+## them and A clicks as the mouse does.
+func pad_targets() -> Array:
+	var out: Array = []
+	var xf := get_global_transform_with_canvas()
+	var add := func(r800: Rect2, id: String):
+		out.append({"rect": xf * _r(r800), "id": id})
+	for k: String in _slot_keys():
+		if _key_shown(k):
+			add.call(_slot_rect(k), k)
+	for b: String in side_buttons():
+		add.call(SIDE_BUTTONS[b][0], "side:" + b)
+	var rows := [500.0]
+	if _key_shown("shop0"):
+		rows.append(0.0)
+	for y0: float in rows:
+		for i in FILTER_RECTS.size():
+			add.call(Rect2(FILTER_RECTS[i].position + Vector2(0, y0), FILTER_RECTS[i].size), "filter%d:%d" % [y0, i])
+		add.call(Rect2(30, y0 + 35, 20, 30), "left:%d" % y0)
+		add.call(Rect2(750, y0 + 35, 20, 30), "right:%d" % y0)
+	return out
+
+
+func pad_active() -> bool:
+	return not tutorial_visible()
 
 
 func _row_hit(p: Vector2, y0: float) -> int:

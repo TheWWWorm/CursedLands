@@ -92,13 +92,14 @@ func _k() -> float:
 	return size.x / 40.0
 
 
-## 800×600 point -> local (the widget's top is y 250).
+## 800×600 point -> local (the widget's bottom is y 510; its top, y 250 in
+## the original layout, is lower on a portrait phone, GameHUD._layout_dials).
 func _p(v: Vector2) -> Vector2:
-	return (v - Vector2(0, 250)) * _k()
+	return (v - Vector2(0, 510)) * _k() + Vector2(0, size.y)
 
 
 func _cell_at(p: Vector2) -> int:
-	var q := p / _k() + Vector2(0, 250)
+	var q := (p - Vector2(0, size.y)) / _k() + Vector2(0, 510)
 	if q.x < 0.0 or q.x >= 40.0:
 		return -1
 	var i := int(floor((510.0 - q.y) / 40.0))

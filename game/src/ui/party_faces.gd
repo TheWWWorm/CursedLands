@@ -12,6 +12,13 @@ extends Control
 ##     fraction f from the left.
 ## In a network game the other players' heroes follow in 40 px
 ## cells, the face greyed (0.5) and without bars.
+## Remake (co-op, user request): those cells are shorter (y 522..600) with a
+## smaller face (scale 0.2, centred at y 557, under the own heroes' 0.3 at
+## 548) and the same health / stamina bars as the own cells, so a partner's
+## state is seen at a glance. When the strip is wider than the room between
+## the weapon bar and the belt (or between the corner dials on a phone held
+## upright, GameHUD.portrait), the whole strip is scaled down about its
+## bottom centre (`_fit`).
 ## A 20×20 film-camera marker (element 0, UV 34,150-54,170) sits 60 px above
 ## the face (y 548 − 60) of the unit (seen above Zak's face
 ## the original's screenshots).
@@ -27,6 +34,9 @@ extends Control
 
 const CELL := 56.0
 const OTHER := 40.0
+const OTHER_TOP := 522.0     # remake: the other players' shorter cells
+const OTHER_FACE_Y := 557.0
+const OTHER_SCALE := 0.2
 
 var game: Game
 var _atlas: Texture2D
@@ -43,14 +53,40 @@ func _ready() -> void:
 		_atlas = ImageTexture.create_from_image(img)
 
 
+var _fit := 1.0   # remake: the strip's scale-down to fit its room (see above)
+
+
 func _k() -> float:
-	return Interface800.canvas_size(self).y / 600.0
+	return Interface800.canvas_size(self).y / 600.0 * _fit
 
 
-## 800×600 point -> local: the layout is centred horizontally.
+## 800×600 point -> local: the layout is centred horizontally, its bottom on
+## the screen's bottom.
 func _p(v: Vector2) -> Vector2:
 	var vs := Interface800.canvas_size(self)
-	return Vector2(vs.x * 0.5 + (v.x - 400.0) * _k(), v.y * _k())
+	return Vector2(vs.x * 0.5 + (v.x - 400.0) * _k(), vs.y - (600.0 - v.y) * _k())
+
+
+## Remake: the scale-down for a strip wider than its room: between the weapon
+## bar and the belt, or on a phone held upright (where those stand above the
+## faces) between the two corner dials.
+func _update_fit() -> void:
+	_fit = 1.0
+	var hud := game.hud if game else null
+	if hud == null or _cells.is_empty():
+		return
+	var vs := Interface800.canvas_size(self)
+	var k := vs.y / 600.0
+	var left: Control = hud._move_dial if hud.portrait() else hud._weapons
+	var right: Control = hud._clock_dial if hud.portrait() else hud._belt
+	if not is_instance_valid(left) or not is_instance_valid(right):
+		return
+	var x0 := left.get_global_rect().end.x - get_global_rect().position.x + 4.0
+	var x1 := right.get_global_rect().position.x - get_global_rect().position.x - 4.0
+	var room := minf(vs.x * 0.5 - x0, x1 - vs.x * 0.5) * 2.0
+	var w := _cell(_cells.size() - 1).end.x - _cell(0).position.x
+	if room > 0.0 and w * k > room:
+		_fit = maxf(room / (w * k), 0.4)
 
 
 func _r(r: Rect2) -> Rect2:
@@ -92,16 +128,22 @@ func _process(_dt: float) -> void:
 			if not e[1]:
 				p.modulate = Color(0.5, 0.5, 0.5)
 			_cells.append([e[0], p, e[1]])
+	_update_fit()
 	for i in _cells.size():
 		var r := _cell(i)
 		var p: Portrait = _cells[i][1]
-		var face_r := Rect2(r.position.x + 3, 513, r.size.x - 6, 72)
+		var own: bool = _cells[i][2]
+		var face_r := Rect2(r.position.x + 3, r.position.y + 3, r.size.x - 6, 587 - r.position.y - 5)
 		var face := _r(face_r)
 		p.position = face.position
 		p.size = face.size
 		# the figure at the cell's centre, y 548, depth 7, scale
-		# 0.3 for a cell wider than 49 px (own heroes), else 0.22.
-		p.set_exe_place(face_r, r.get_center().x, 0.3 if r.size.x > 49.0 else 0.22)
+		# 0.3 for a cell wider than 49 px (own heroes), else 0.22 (the remake's
+		# smaller co-op faces: OTHER_SCALE, lower).
+		if own:
+			p.set_exe_place(face_r, r.get_center().x, 0.3)
+		else:
+			p.set_exe_place(face_r, r.get_center().x, OTHER_SCALE, OTHER_FACE_Y)
 		p.selected = _cells[i][0] in game.selected
 	queue_redraw()
 
@@ -126,7 +168,9 @@ func _cell(i: int) -> Rect2:
 	var x := 400.0 - total * 0.5
 	for j in i:
 		x += CELL if _cells[j][2] else OTHER
-	return Rect2(x, 510, CELL if _cells[i][2] else OTHER, 90)
+	if _cells[i][2]:
+		return Rect2(x, 510, CELL, 90)
+	return Rect2(x, OTHER_TOP, OTHER, 600.0 - OTHER_TOP)
 
 
 func _cell_at(local: Vector2) -> int:
@@ -159,6 +203,10 @@ func _get_tooltip(at: Vector2) -> String:
 	# EIKeymap.key_of_id to show the first current binding, if any.
 	if i < 3 and _cells[i][2] and game and game.session and not game.session.online:
 		return GameData.tip_key(title, 55 + i)
+	if not _cells[i][2] and game and game.session:   # remake: whose hero it is
+		var who := PlayerNames.player_name(game.session, (_cells[i][0] as GameUnit).controller)
+		if who and who != title:
+			return "%s (%s)" % [title, who]
 	return title
 
 
@@ -177,14 +225,15 @@ func _draw() -> void:
 			continue
 		var r := _cell(i)
 		draw_rect(_r(r), Color(0, 0, 0, 0.35))
-		if _cells[i][2]:
-			var w := r.size.x - 6
-			var f := clampf(u.hp / maxf(u.max_hp, 0.01), 0.0, 1.0)
-			if f > 0.0:
-				_region(Rect2(r.position.x + 3, 587, w * f, 5), Rect2(9, 9, 64 * f, 13))
-			f = clampf(u.mana / u.max_mana, 0.0, 1.0) if u.max_mana > 0 else 0.0
-			if f > 0.0:
-				_region(Rect2(r.position.x + 3, 592, w * f, 5), Rect2(9, 35, 64 * f, 13))
+		# Health and stamina bars (the remake draws them in the other
+		# players' cells too).
+		var w := r.size.x - 6
+		var f := clampf(u.hp / maxf(u.max_hp, 0.01), 0.0, 1.0)
+		if f > 0.0:
+			_region(Rect2(r.position.x + 3, 587, w * f, 5), Rect2(9, 9, 64 * f, 13))
+		f = clampf(u.mana / u.max_mana, 0.0, 1.0) if u.max_mana > 0 else 0.0
+		if f > 0.0:
+			_region(Rect2(r.position.x + 3, 592, w * f, 5), Rect2(9, 35, 64 * f, 13))
 		if u in game.selected:
 			# Frame: four 3 px strips inside the cell, selected members only.
 			var a := r.position + Vector2(1.5, 1.5)

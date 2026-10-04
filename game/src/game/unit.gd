@@ -146,6 +146,9 @@ var _bucket := -1
 var _abucket := -1          # NavGrid._all_buckets key (dead units too)
 var _cbucket := -1          # NavGrid._cbuckets / _call_buckets keys (16 m grid)
 var _cabucket := -1
+var _trk_pos := Vector2.INF  # NavGrid.track_unit's last call: position, (_seq, dead, standing), radius
+var _trk_key := -1
+var _trk_r := 0.0
 var _avoid: GameUnit         # slower mover to path round
 var _fresh_path := false     # a path planned round a blocker (_avoid), no step taken on it yet
 var _arrive_t := 0.0         # estimated arrival at the attack target (unit-AI)
@@ -251,6 +254,7 @@ func setup(w: GameWorld, record: Dictionary) -> bool:
 	Combat.mob_import_pools(self)
 	name = ("U%d" % uid)
 	_sync_transform()
+	visibility_changed.connect(_on_visibility_changed)
 	return true
 
 
@@ -725,6 +729,7 @@ func command(o: Dictionary, queue := false) -> void:
 	if dead:
 		return
 	if not queue:
+		_keep_path(o)
 		orders.clear()
 		order = {}
 		path = PackedVector2Array()
@@ -1235,18 +1240,57 @@ func _do_move(dt: float) -> void:
 	# or its double-click flag (standing only); script / AI moves
 	# carry their own run flag.
 	if order.get("gait", false):
-		running = stance == STANCE_NONE and (gait_run or bool(order.get("run", false)))
+		running = stance == STANCE_NONE and not order.get("slow", false) and (gait_run or bool(order.get("run", false)))
 	else:
 		running = bool(order.get("run", true))
 	if path.is_empty():
 		var replan := _avoid != null and is_instance_valid(_avoid)
-		path = _path_to(order.to)
+		path = _kept_path(order.to)
+		if path.is_empty():
+			path = _path_to(order.to)
 		if path.is_empty():
 			_fail_order(EIAcks.NO_PATH)
 			return
 		_fresh_path = replan
 	if _step_along_path(dt):
 		order = {}
+
+
+## A move order given again while the unit walks the same one (a script
+## re-issuing UMSentry / MoveToPoint to the spot every few ticks — gz19h's
+## guards march 200 m that way) keeps the path being walked instead of
+## searching the map anew: the original plans again (
+## ), but from a spot on an optimal path to the same goal that
+## search finds the rest of the same path. **Approx.** (remake speed: such a
+## search costs ~0.1 s here): kept only while the AI map is unchanged
+## (NavGrid.map_rev), for the same movement class and water state, not after
+## a blocked step (a plan round a blocker is searched as before); units that
+## came to stand on it since block the walk and make it plan then.
+var _kept := {}
+
+
+func _keep_path(o: Dictionary) -> void:
+	# The same order given more than once before the unit ticks (several
+	# script threads): the path kept by the first stays kept.
+	if not _kept.is_empty() and order.is_empty() and orders.size() == 1 and String(o.get("type", "")) == "move" \
+			and String(orders[0].get("type", "")) == "move" and orders[0].get("to") == o.get("to") and _kept.to == o.get("to"):
+		return
+	_kept = {}
+	if path.is_empty() or _fresh_path or world == null or not world.authority or world.nav == null \
+			or String(o.get("type", "")) != "move" or String(order.get("type", "")) != "move" \
+			or order.get("to") != o.get("to") or (_avoid != null and is_instance_valid(_avoid)):
+		return
+	_kept = {"to": o.to, "path": path, "pos": pos, "rev": world.nav.map_rev, "cls": move_class(),
+		"wet": world.nav.cell_wet(pos)}
+
+
+func _kept_path(to: Vector2) -> PackedVector2Array:
+	var k := _kept
+	_kept = {}
+	if k.is_empty() or k.to != to or k.pos != pos or (_avoid != null and is_instance_valid(_avoid)) \
+			or int(k.rev) != world.nav.map_rev or int(k.cls) != move_class() or bool(k.wet) != world.nav.cell_wet(pos):
+		return PackedVector2Array()
+	return k.path
 
 
 ## A path to `to` for this unit: its own stamp and that of `t` (an attack
@@ -1694,7 +1738,7 @@ func _strike_clear(t: GameUnit, d: float) -> bool:
 	if d < 0.01:
 		return true
 	var dir := (t.pos - pos) / d
-	for o: GameUnit in world.nav.units_around(pos.lerp(t.pos, 0.5), d * 0.5 + 0.5):
+	for o: GameUnit in world.nav.units_around(pos.lerp(t.pos, 0.5), d * 0.5 + 0.5, false):
 		if o == self or o == t or o.dead:
 			continue
 		var rel := o.pos - pos
@@ -2431,6 +2475,34 @@ static func _posture_of(st: int) -> int:
 	return 0 if st == EIUnitModel.ST_LIE else 1 if st == EIUnitModel.ST_WARRY else 4 if st == EIUnitModel.ST_REST else 2
 
 
+## Shown again (UnitFog, a script's Hide / Show, a co-op snapshot, its world
+## shown): the figure is re-placed where the unit stands now. While hidden,
+## Godot's physics interpolation (SceneTreeFTI, Godot 4.7) does not carry the
+## unit node's moves on to the figure's mesh nodes (interpolation off under
+## the unit's on): their drawn transforms stayed where the unit was last
+## shown, also after reset_physics_interpolation(), until the unit moved again.
+## A boar that wandered in the fog was drawn at its old spot, an attack path
+## led to where it really was, and it jumped there when it set off (user
+## report, Retroid Pocket 5). Touching the figure's transform marks the whole
+## subtree changed, so every mesh is drawn at the unit's current placement.
+## (A signal, not _notification: that would be a script call per unit for
+## every process / physics notification, in big fights too.)
+func _on_visibility_changed() -> void:
+	if is_inside_tree() and is_visible_in_tree():
+		resync_drawn()
+
+
+## The figure drawn where the unit stands, at once (no interpolation from an
+## older placement): after a hide, a load, a placement.
+func resync_drawn() -> void:
+	if world and world.authority:   # (a co-op client's NetSmooth glide is left alone)
+		_xf_pos = Vector2(INF, INF)   # _sync_transform's cache: place it again
+		_sync_transform()
+	if model:
+		model.transform = model.transform   # re-places every part / mesh below
+	reset_physics_interpolation()
+
+
 func _sync_transform() -> void:
 	if world == null:
 		return
@@ -2444,7 +2516,9 @@ func _sync_transform() -> void:
 		return
 	var p := pos if world.authority else net_view.step(pos, get_physics_process_delta_time())
 	_drawn = p
-	var xf := Transform3D(Basis(Vector3.UP, facing + MODEL_YAW_OFFSET),
+	# Co-op client: the facing too is drawn turning between snapshots (NetSmooth).
+	var yaw := facing if world.authority else net_view.step_yaw(facing, get_physics_process_delta_time())
+	var xf := Transform3D(Basis(Vector3.UP, yaw + MODEL_YAW_OFFSET),
 		EISpace.pos(p.x, p.y, world.ground_at(p.x, p.y)))
 	if transform != xf:
 		# A jump (placement, teleport, revive, a snapshot far off): drawn there
@@ -2542,8 +2616,8 @@ func apply_snapshot(s: Array, quiet := false) -> void:
 			_set_max_hp(s[9])
 		max_mana = s[10]
 	pos = Vector2(s[1], s[2])
-	net_view.got(pos, quiet)   # co-op client: drawn gliding between snapshots (NetSmooth)
 	facing = s[3]
+	net_view.got(pos, quiet, facing)   # co-op client: drawn gliding / turning between snapshots (NetSmooth)
 	if s[5] < hp - 0.01 and not quiet:
 		GameSound.impact(self)
 		if world:   # clients see hits only as health drops

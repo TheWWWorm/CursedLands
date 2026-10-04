@@ -56,9 +56,7 @@ func _start() -> void:
 		MoviePlayer.preconvert(Array(MoviePlayer.ini_movies("Start")))
 		var seq := MovieSequence.start(self, MoviePlayer.ini_movies("Start"))
 		await seq.done
-	var menu := preload("res://src/ui/main_menu.gd").new()
-	menu.start_game.connect(start_game)
-	add_child(menu)
+	var menu: Control = await open_menu()
 	for a in args:
 		if a == "--play":
 			menu.call_deferred("_single")
@@ -67,6 +65,21 @@ func _start() -> void:
 		elif a.begins_with("--join="):
 			menu._addr_default = a.trim_prefix("--join=")
 			menu.call_deferred("_join")
+
+
+## The first main menu: the original shows frame 0
+## Movies\Progres.bik after the startup movies while the databases and the
+## menu load (StartupScreen); tools/startup_shot.gd calls this too.
+func open_menu() -> Control:
+	var splash := StartupScreen.open(self)
+	if splash:
+		await splash.presented()
+	var menu := preload("res://src/ui/main_menu.gd").new()
+	menu.start_game.connect(start_game)
+	add_child(menu)
+	if splash:
+		splash.finish()
+	return menu
 
 
 ## Esc signpost "Exit to main menu": drop the game and the connection.
@@ -106,6 +119,22 @@ func start_game(s: Session) -> void:
 	game.session = s
 	s.game = game
 	add_child(game)
+	if not s.net.kicked.is_connected(_on_kicked):
+		s.net.kicked.connect(_on_kicked)
+
+
+## Remake: the co-op host removed this player (NetStatus.kick): back to the
+## main menu, where a message box (✓ only) says so.
+func _on_kicked(banned: bool) -> void:
+	await back_to_menu()
+	var b := MessageBox.new()
+	b.title = RemakeText.t("Removed from the game")
+	b.message = RemakeText.t("You were removed from the game by the host.")
+	if banned:
+		b.message += "\n" + RemakeText.t("You cannot join this game again.")
+	b.ok_only = true
+	b.name = "KickedBox"
+	add_child(b)
 
 
 func _exit_tree() -> void:

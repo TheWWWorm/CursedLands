@@ -82,6 +82,14 @@ const OPTIONS := [
 	["gfx_firelight", 1, 2, 14, 0, 1], ["gfx_materials", 1, 2, 14, 1, 1],
 	["gfx_foliage_light", 1, 2, 14, 2, 1], ["gfx_weather_surfaces", 1, 2, 14, 3, 1],
 	["gfx_lava_light", 1, 2, 14, 4, 1],
+	# Remake: characters wear their HUD face model (DetailedHead), row 6.
+	["gfx_detailed_heads", 1, 2, 14, 6, 1],
+	# Remake: sharper unit texture filtering (EIUnitModel.SHARP_FETCH), row 7.
+	["gfx_sharp_units", 1, 2, 14, 7, 1],
+	# Remake: the graphics test on the first start / a new GPU (GfxDetect),
+	# row 8 of the same page (row 9: "Detect best settings"). Not gfx_*: the
+	# Original look preset leaves it.
+	["auto_graphics", 1, 2, 14, 8, 1],
 	# Remake display rows (DISPLAY_CHOICES): on the Graphics page in the rows
 	# of the original's three shadow switches (0..2, now fixed on, see
 	# FIXED_OPTIONS) and the free rows 3 and 9; render scale on the remake page.
@@ -94,10 +102,10 @@ const OPTIONS := [
 	["phys_interp", 1, 2, 14, 5, 1],
 	# Remake camera rows (CameraRig, CameraFade) on the Sensitivity page, in its
 	# free row 5 and rows 8..13: style (0 original, 1 modern), the modern
-	# camera's pan / turn / zoom speeds (50 = ×1), follow, see-through, WASD.
+	# camera's pan / turn / zoom speeds (50 = ×1), follow, see-through, WASD (default on: user request).
 	["camera_style", 1, 2, 2, 5, 1], ["cam_pan_speed", 0, 100, 2, 8, 50],
 	["cam_rotate_speed", 0, 100, 2, 9, 50], ["cam_zoom_speed", 0, 100, 2, 10, 50],
-	["cam_follow", 1, 2, 2, 11, 1], ["cam_see_through", 1, 2, 2, 12, 1], ["cam_wasd", 1, 2, 2, 13, 0],
+	["cam_follow", 1, 2, 2, 11, 1], ["cam_see_through", 1, 2, 2, 12, 1], ["cam_wasd", 1, 2, 2, 13, 1],
 	# Remake co-op host settings on their own sub-page (group 13, "Remake
 	# extras…" in the Game page's free row 13; the Game page's rows 2..4 are the key
 	# actions accel / decel / pause): full experience for every party member
@@ -132,8 +140,25 @@ const OPTIONS := [
 	# Remake: a living party member can help a fallen hero or mercenary up
 	# (Revive: a click on the body, 5 s of work, 1 HP); not in the
 	# multiplayer (LMP) game. Off = the original, which has no revival.
-	# Remake extras page (group 13) row 6; default off.
-	["revive", 1, 2, 13, 6, 0],
+	# Remake extras page (group 13) row 6; default on (user request).
+	["revive", 1, 2, 13, 6, 1],
+	# Remake: co-op players' names above their heroes' heads (PlayerNames);
+	# off = the original, no names. Remake extras page (group 13) row 4,
+	# under the co-op rows; default on (user request).
+	["coop_player_names", 1, 2, 13, 4, 1],
+	# Remake: co-op shared loot (CoopProgress.share_found): a find from the
+	# world reaches every other player's purse and bag as an identical copy;
+	# off = the original network rule, a find is only its taker's. Remake
+	# extras page (group 13) row 7; default on (user request).
+	["coop_share_loot", 1, 2, 13, 7, 1],
+	# Remake: gamepad settings (PadInput, PadField; docs/gamepad_design.md
+	# §8.8), their own page (group 15) reached from the Actions key page's
+	# free row 13; the button layout is group 16. On by default: without a
+	# controller nothing changes.
+	["pad_enabled", 1, 2, 15, 0, 1], ["pad_rumble", 0, 100, 15, 1, 70],
+	["pad_deadzone", 0, 40, 15, 2, 13], ["pad_cursor_speed", 0, 100, 15, 3, 50],
+	["pad_target_radius", 0, 26, 15, 4, 6], ["pad_wheel_pause", 1, 2, 15, 5, 1],
+	["pad_glyphs", 1, 5, 15, 6, 0], ["pad_swap_sticks", 1, 2, 15, 7, 0],
 ]
 ## The original's speed / quality switches (the original rows shadow_units
 ## shadow_buildings, shadow_flora) are not offered: always at their best.
@@ -151,6 +176,7 @@ const DISPLAY_CHOICES := {
 	"q_aniso": ["Off", "2×", "4×", "8×", "16×"],
 	"gfx_water_reflections": ["Off", "Natural", "Mirror"],
 	"coop_scale": ["Off", "Light", "Normal", "Strong"],
+	"pad_glyphs": ["Automatic", "Xbox", "PlayStation", "Nintendo", "Steam Deck"],
 }
 const FPS_LIMITS := [0, 30, 60, 120, 144, 165, 240, -1]
 const RENDER_SCALES := [0.5, 0.67, 0.75, 0.85, 1.0, 1.25, 1.5, 2.0]
@@ -166,7 +192,7 @@ var resolution_size := "native"
 ## (EIKeymap.ACTIONS); "graphics" / "graphics2" / "graphics3" (11, 12, 14)
 ## are the remake's own sub-pages of video, "coop" (13) its sub-page of game.
 const OPTION_GROUPS := ["video", "sound", "sens", "game", "select", "actions", "camera", "items",
-	"spells", "cshots", "windows", "graphics", "graphics2", "coop", "graphics3"]
+	"spells", "cshots", "windows", "graphics", "graphics2", "coop", "graphics3", "gamepad", "gamepad_buttons"]
 ## Labels and tips of the remake's own option rows (texts.res has none).
 const REMAKE_OPTIONS := {
 	"net_websocket": ["Browser-compatible host", "Host with WebSocket over TCP. Native and browser clients join using ws://host:27015, or wss:// through an HTTPS reverse proxy. Off uses native ENet over UDP. Set before hosting."],
@@ -177,8 +203,21 @@ const REMAKE_OPTIONS := {
 	"gfx_materials": ["Surface materials", "Metal equipment catches the light; wood and stone have subtle surface relief. Uses the original textures and equipment materials."],
 	"gfx_foliage_light": ["Leaf backlighting", "Sunlight shines softly through leaves while trunks remain solid."],
 	"gfx_weather_surfaces": ["Rain on surfaces", "Rain gradually darkens exposed ground and adds wet highlights and water ripples. Surfaces dry after the rain; caves, snow and lava stay unchanged."],
+	"gfx_detailed_heads": ["Portrait heads", "People with a face portrait (Zak, the mercenaries, most men and some women) wear the portrait's own head model and face painting instead of the figure's head. A worn helmet keeps the original head."],
+	"gfx_sharp_units": ["Sharp character textures", "Faces, clothes, armour and weapons of the characters stay crisp up close (sharper filtering of the original textures), without shimmer at a distance; same colours. Also the figures in the inventory and the unit panel."],
+	"auto_graphics": ["Detect graphics automatically", "On the first start and after a change of graphics card, a short test picks the graphics settings this device runs smoothly. It never changes settings you have set yourself."],
 	"gfx_lava_light": ["Lava lighting", "Lava casts a warm glow onto nearby banks, buildings and creatures. A limited number of nearby lights follows the view."],
 	"coop": ["remake extras", ""],
+	"gamepad": ["gamepad", ""],
+	"gamepad_buttons": ["gamepad buttons", ""],
+	"pad_enabled": ["Gamepad", "Play with a controller (Xbox, PlayStation, Nintendo, Steam Deck and others). Left stick: move the hero; right stick: turn and zoom the camera; A: act on the highlighted target; X: more actions for it, including aimed strikes; LB / RB: spells and items; Y: pause. Without a controller nothing changes."],
+	"pad_rumble": ["Vibration", "Strength of the controller's vibration when your hero is hit, a party member falls or the ground shakes. 0 turns it off."],
+	"pad_deadzone": ["Stick dead zone", "How far a stick must move before it counts. Raise it if your hero or the camera drifts by itself."],
+	"pad_cursor_speed": ["Pointer speed", "Speed of the controller's pointer (left stick click in the field, and the menus)."],
+	"pad_target_radius": ["Target range", "How far around the leader the controller looks for a target to highlight (4 to 30 m)."],
+	"pad_wheel_pause": ["Pause while a wheel is open", "Single player: the game pauses while a controller wheel (spells, items, actions, the target ring) is open. Network games never pause."],
+	"pad_glyphs": ["Button pictures", "Which controller's button pictures the prompts show. Automatic follows the controller in use."],
+	"pad_swap_sticks": ["Swap sticks", "The right stick moves the hero and the left stick turns the camera."],
 	"gfx_hd_textures": ["HD textures", "The original ground and object textures upscaled 2x once at load (edge-preserving Lanczos on the GPU): sharper up close, same colours. Applies from the next zone load."],
 	"gfx_soft_particles": ["Soft particles", "Smoke, fire and magic fade softly where they meet the ground and walls instead of cutting through them with a hard line."],
 	"gfx_lit_particles": ["Lit smoke and dust", "Smoke, dust and blood take the scene's light: unchanged in daylight, darker at night and in caves instead of glowing."],
@@ -188,7 +227,7 @@ const REMAKE_OPTIONS := {
 	"q_shadow_fit": ["Shadows fitted to the view", "The sun's shadow cascades span only the visible distance and the zone's size, so near shadows get sharper; off: a fixed 220 m."],
 	"q_aniso": ["Texture filtering", "Anisotropic filtering: ground textures stay sharp at grazing angles."],
 	"gfx_torch_glow": ["Torch and fire glow", "Torches, camp fires and spell lights glow in the night mist (needs Volumetric fog)."],
-	"gfx_sky": ["Atmospheric sky", "Sun disc, moon and stars at night over the original sky dome, and the open top of the dome faded into the sky colour; off: the original dome only."],
+	"gfx_sky": ["Atmospheric sky", "Sun disc, moon and stars at night over the original sky dome, and the open top of the dome faded into the sky colour; lightning lights up the clouds and its flash on the ground rises and fades softly. Off: the original dome and the original hard lightning flash."],
 	"gfx_water": ["Water and lava effects", "The original water with soft shores, blended bog and river edges, ripples and rain rings catching the sky, sun glints and reflections; breaking surf on sea coasts; glowing, churning lava. Off: the original water."],
 	"gfx_water_reflections": ["Water reflections (SSR)", "Natural: subtle, rippled reflections. Mirror: stronger, sharper scenery with gentler distortion (default). Off keeps sky reflections. Needs Water and lava effects. Off-screen and transparent objects may be absent; Mirror costs more GPU time."],
 	"gfx_wind": ["Wind in foliage", "Trees and bushes sway in the wind."],
@@ -207,6 +246,7 @@ const REMAKE_OPTIONS := {
 	"confine_mouse": ["Keep mouse in window", "The pointer cannot leave the game window (e.g. onto a second monitor) while the game has focus; it is free again when you switch away."],
 	"sp_death_notice": ["Game-over notice at the hero's death", "Single player: when your main hero dies, the game-over sound plays at once and a small notice appears at the top of the screen, with Load, Main menu and Hide. The game is not paused and your companions fight on; leaving the area still ends the game. Off: as the original, nothing appears until the party tries to leave the area."],
 	"revive": ["Companions can revive the hero", "Select a living hero or companion and click a fallen party member (your hero, another player's hero or a hired companion): they walk to the body and tend it for 5 seconds, and it gets up with 1 health. Another order stops it; there is no other limit, but it is slow in a fight. Party bodies stay where they fell. Co-op: fallen heroes wait for help instead of rising after 5 seconds; changing the area still brings them back. Off: as the original, the dead stay dead."],
+	"coop_player_names": ["Player names above heroes", "Co-op: each player's name, in their colour, above their hero's head, so the heroes are easy to tell apart. Hidden while the hero cannot be seen. Single player is not affected. Off: as the original, no names."],
 	"sp_full_xp": ["Full experience for companions", "Single player: your hero and every companion (hired mercenaries such as Khador) each get the whole experience of a kill or quest. Off: as the original, which splits it equally among the living party."],
 	"start_zones": ["Starting areas on the travel map", "The area where the campaign begins (the ruins where Zak wakes up) becomes a place on the travel map once you have left it, so the party can go back. You arrive at its path from the village; what was killed or taken there stays so, and the opening scenes do not play again. Co-op: the host's setting counts. Off: as the original, where its piece only leads to the village."],
 	"aim_press_once": ["Aim keys: press once", "Press an aimed-strike key (Num 8 head, Num 5 body …) once: its cursor stays until the next click. A click on a creature attacks it at that part; a click elsewhere, a right click, Esc or the same key again cancels it; another aim key switches. Off: as the original, the key must be held while clicking."],
@@ -222,6 +262,7 @@ const REMAKE_OPTIONS := {
 	"cam_see_through": ["See-through objects", "Modern camera: trees, houses and rocks that hide your heroes fade to see-through."],
 	"unit_fog": ["Fog of war (single player)", "Enemies and other people are only seen within reach of your party's eyes: 2 × the larger of sight and life sense + 5 m around each party member, as the original's network game does. Off: the original single player, everyone on the map is drawn."],
 	"coop_full_xp": ["Full experience for every party member", "Co-op host: every player's hero and every mercenary gets the whole experience of a kill or quest. Off: the original network rule (shared among the players' heroes by experience, mercenaries get none). Single player is not affected."],
+	"coop_share_loot": ["Shared loot", "Co-op host: whatever a player finds — loot from bodies and chests, a theft, the money and items of a conversation or quest reward — every other player gets an identical copy of in their own bag, and the same money. Trades and items passed between players are not copied; quest items count for the whole party anyway. Off: as the original, a find belongs to whoever takes it."],
 	"coop_scale": ["Scale monsters to player count", "Co-op host: monsters get more health and hit harder for each player beyond the first (Light +25 % health / +12.5 % damage, Normal +50 % / +25 %, Strong +100 % / +50 % per extra player). Off: as the original."],
 	"net_upnp": ["Open the port on the router", "Co-op host: asks your router to forward UDP port 27015 to this computer so friends can join over the internet (UPnP, else NAT-PMP / PCP), and shows your external IP address to give them. The forwarding is removed when you stop hosting. Off: forward the port by hand."],
 	"cam_wasd": ["WASD camera controls", "WASD: move camera; Q/E: turn; 9/0/-/=: weapons 1-4; R: Aggressive/Defensive; T: Use/Steal. Other keys stay available. Each layout has its own editable bindings on the key pages. Classic restores your previous keys. Original camera always uses Classic."],
@@ -238,11 +279,12 @@ const OPTIONS_APPLIED := ["volume_sfx", "volume_stream", "volume_voice", "power_
 	"gfx_sky", "gfx_water", "gfx_wind", "gfx_volumetric", "gfx_terrain", "gfx_heat_haze",
 	"gfx_ssao", "gfx_bloom", "gfx_far_view", "gfx_edge_fade", "gfx_severed_limbs",
 	"gfx_hd_textures", "gfx_soft_particles", "gfx_lit_particles", "gfx_contact_shadows", "gfx_torch_glow", "gfx_water_reflections",
-	"gfx_firelight", "gfx_materials", "gfx_foliage_light", "gfx_weather_surfaces", "gfx_lava_light",
-	"q_aa", "q_shadows", "q_shadow_fit", "q_aniso", "confine_mouse",
+	"gfx_firelight", "gfx_materials", "gfx_foliage_light", "gfx_weather_surfaces", "gfx_lava_light", "gfx_detailed_heads",
+	"gfx_sharp_units", "q_aa", "q_shadows", "q_shadow_fit", "q_aniso", "confine_mouse",
 	"display_mode", "resolution", "fps_limit", "vsync", "show_fps", "render_scale", "phys_interp",
 	"camera_style", "cam_pan_speed", "cam_rotate_speed", "cam_zoom_speed", "cam_follow",
-	"cam_see_through", "cam_wasd", "coop_full_xp", "coop_scale", "net_upnp", "net_websocket", "unit_fog", "path_through", "sp_full_xp", "aim_press_once", "start_zones", "sp_death_notice", "revive"]
+	"cam_see_through", "cam_wasd", "coop_full_xp", "coop_scale", "net_upnp", "net_websocket", "unit_fog", "path_through", "sp_full_xp", "aim_press_once", "start_zones", "sp_death_notice", "revive", "coop_player_names", "coop_share_loot",
+	"pad_enabled", "pad_rumble", "pad_deadzone", "pad_cursor_speed", "pad_target_radius", "pad_wheel_pause", "pad_glyphs", "pad_swap_sticks", "auto_graphics"]
 signal options_changed
 const GFX_REV := 4
 ## Option q_aa 5 (FSR 2): the 3D view at most this fraction of the window.
@@ -493,10 +535,12 @@ func save_settings() -> void:
 	if OS.has_feature("web"):
 		cfg.set_value("remake", "web_input", 1)
 	cfg.set_value("display", "resolution", resolution_size)
-	var old := ConfigFile.new()   # hand-edited [debug] keys survive (FlashLog)
-	if old.load(CONFIG_PATH) == OK and old.has_section("debug"):
-		for k in old.get_section_keys("debug"):
-			cfg.set_value("debug", k, old.get_value("debug", k))
+	var old := ConfigFile.new()   # hand-edited [debug] keys (FlashLog) and GfxDetect's record survive
+	if old.load(CONFIG_PATH) == OK:
+		for sec in ["debug", "gfx_detect"]:   # GfxDetect.SECTION
+			if old.has_section(sec):
+				for k in old.get_section_keys(sec):
+					cfg.set_value(sec, k, old.get_value(sec, k))
 	cfg.save(CONFIG_PATH)
 
 

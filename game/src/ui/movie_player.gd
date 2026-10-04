@@ -29,8 +29,8 @@ enum { IDLE, PREPARING, PLAYING }
 signal finished
 
 var hud: GameHUD
-## Loading-screen use (LoadingScreen): start over at the end instead of
-## stopping, no sound, no skipping.
+## Background use (CreditsPanel): start over at the end instead of stopping,
+## no sound, no skipping.
 var loop := false
 var silent := false
 ## the original plays a movie in a modal loop, so the game stands
@@ -130,7 +130,7 @@ func _layout_skip() -> void:
 
 
 ## Called once when the game quits (main.gd): stops the background
-## conversions, which are shared by every player (HUD, loading screens) and
+## conversions, which are shared by every player (HUD, menus) and
 ## outlive them.
 static func shutdown() -> void:
 	# unfinished conversions stop (their cache file stays incomplete and is
@@ -198,28 +198,7 @@ static func ini_movies(section: String) -> PackedStringArray:
 	return out
 
 
-## Plays `name` only if its conversion is already cached (the loading screen
-## cannot wait for one). True when it started.
-func play_cached(name: String) -> bool:
-	stop()
-	if not enabled:
-		return false
-	var c := EIBinkCache.open_cache(ProjectSettings.globalize_path("user://movies/%s.eiv" % name.to_lower()))
-	if c.is_empty():
-		return false
-	_name = name.to_lower()
-	_start_cache(c)
-	return true
-
-
-## Advances playback by `delta` seconds outside _process (the loading screen
-## steps it while the main thread is busy building a zone).
-func step(delta: float) -> void:
-	if _state == PLAYING:
-		_advance(delta)
-
-
-## Converts movies in the background ahead of use (loading screens, intro) if
+## Converts movies in the background ahead of use (intro, credits) if
 ## they are not cached yet.
 static func preconvert(names: Array) -> void:
 	if not Portability.threads():

@@ -120,6 +120,7 @@ func _ready() -> void:
 	visible = false
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	mouse_filter = Control.MOUSE_FILTER_STOP
+	add_to_group("pad_panel")   # remake: the gamepad (pad_press)
 	if _ui == null and GameData.is_open():
 		_ui = _flipped("saveload")
 		_sb = _flipped("Scrollbar")
@@ -613,6 +614,61 @@ func _gui_input(e: InputEvent) -> void:
 		b.drag(_to800(e.position))
 		_after_scroll()
 		accept_event()
+
+
+## Remake, the gamepad (PadUI): in the topic list the D-pad moves the lit
+## row (scrolling the five shown) and A picks it; during the talk A is the
+## click / Space (next phrase) and Y Enter's skip; B is Esc (the key bridge).
+func pad_press(action: String, phase: String) -> bool:
+	if _mode == TOPICS and _topic_list and _topic_list.visible:
+		if action in ["up", "down"] and phase in ["down", "repeat"]:
+			var n := _topic_list.rows.size()
+			var h := _topic_list.hover
+			h = 0 if h < 0 else clampi(h + (1 if action == "down" else -1), 0, n - 1)
+			_topic_list.hover = h
+			if h < _topic_list.top:
+				_set_topic_top(h)
+			elif h >= _topic_list.top + 5:
+				_set_topic_top(h - 4)
+			_topic_bar.set_pos(_topic_list.top)
+			_topic_list.queue_redraw()
+			queue_redraw()
+			return true
+		if action == "interact":
+			if phase == "down" and _topic_list.hover >= 0:
+				_on_topic(_topic_list.hover)
+			elif phase == "down":
+				_topic_list.hover = 0
+				_topic_list.queue_redraw()
+			return true
+		return false
+	if action == "interact" and (_mode == PLAYING or _mode == LAST):
+		if phase == "down":
+			_click_sound()
+			_next()
+		return true
+	if action == "pause" and phase == "down":
+		if _mode == PLAYING:
+			_click_sound()
+			_skip()
+		elif _mode == LAST:
+			_click_sound()
+			_finish()
+		return true
+	return false
+
+
+func pad_right_stick(v: Vector2, dt: float) -> bool:
+	if _mode == TOPICS or absf(v.y) < 0.3:
+		return true
+	_bar.set_pos(_bar.pos + v.y * 300.0 * dt / _bar.unit)
+	_view.queue_redraw()
+	queue_redraw()
+	return true
+
+
+func pad_targets() -> Array:
+	return []
 
 
 func _set_topic_top(t: int) -> void:

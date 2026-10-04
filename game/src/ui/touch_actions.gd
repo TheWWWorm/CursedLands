@@ -84,10 +84,21 @@ func _process(_dt: float) -> void:
 	# The aim button belongs beside the party faces, as in the touch sketch.
 	# Keep the small menu access beside the original top-left unit panel.
 	var x := minf(size.y * 195.0 / 600.0, safe.end.x - cell - 12)
-	_menu.position = Vector2(x, safe.position.y + 6)
+	var y := safe.position.y + 6
+	var hud: GameHUD = game.hud
+	if hud.portrait():
+		# The minimap takes that place; the button goes under it, right side.
+		x = safe.end.x - cell - 6
+		y = 165.0 * hud.top_scale() + 6
+	_menu.position = Vector2(x, y)
 	_menu.size = Vector2(cell, cell)
 	var party_width := maxf(56.0, game.hud._faces._cells.size() * 56.0) * size.y / 600.0
 	_aim.position = Vector2(size.x * 0.5 - party_width * 0.5 - cell - 8, size.y - cell - 8)
+	var dial := hud._move_dial.size.x
+	if _aim.position.x < dial + 4:
+		# No room between the move dial and the faces (portrait): above the
+		# dial's right part, clear of the left action strip.
+		_aim.position = Vector2(hud.portrait_aim_x(dial, cell), size.y - dial - cell - 6)
 	_aim.size = Vector2(cell, cell)
 	var armed := game.touch_aim
 	if armed >= 0 and not _strips[armed].is_empty():
@@ -105,7 +116,7 @@ func _process(_dt: float) -> void:
 		if _aim_open:
 			child.set_pressed_no_signal(child.get_index() == armed)
 		child.add_theme_font_size_override("font_size", maxi(12, int(cell * 0.29)))
-	_popup.position = Vector2(clampf(_aim.position.x + cell * 0.5 - _popup.size.x * 0.5, 0, size.x - _popup.size.x), _aim.position.y - _popup.size.y - 6) if _aim_open else Vector2(x, cell + 12)
+	_popup.position = Vector2(clampf(_aim.position.x + cell * 0.5 - _popup.size.x * 0.5, 0, size.x - _popup.size.x), _aim.position.y - _popup.size.y - 6) if _aim_open else Vector2(clampf(x, 0, size.x - _popup.size.x), y + cell + 6)
 	_menu.add_theme_font_size_override("font_size", int(cell * 0.40))
 	_aim.add_theme_font_size_override("font_size", int(cell * 0.30))
 

@@ -1,5 +1,35 @@
 # Changelog
 
+## 0.1.6
+
+- Fixes and changes:
+  - Gamepad support (a remake extra; the original has none): the left stick moves (half tilt walks, full tilt runs, the party follows), the right stick turns and zooms the camera, A acts on the highlighted target, B cancels, Y pauses (hold it for fast speed).
+  - Gamepad: controller wheels in the original's bronze style. LB opens spells and actions, RB the belt and weapons (LB / RB turn their pages), RT the inventory, journal, quests, minimap and quick save / load. The wheels pause single player while open.
+  - Gamepad: X opens a target ring with the six aimed strikes, steal, follow and examine; X then A repeats the last aimed strike.
+  - Gamepad: menus, Options, Load, dialogue, camp and trade screens and the travel map work with the D-pad and A / B; L3 turns on a pointer for anything else.
+  - Gamepad: Options → Controls → Gamepad… sets vibration, dead zone, pointer speed, target range, button pictures (Xbox, PlayStation, Nintendo, Steam Deck), stick swap and button rebinding.
+  - Gamepad: on-screen prompts and tutorial key names switch to controller buttons while you use one; unplugging the controller pauses single player.
+  - Graphics: on first start, a few-second test over the main menu picks settings your device runs smoothly, stepping down from High through Low to "Original look" and, if needed, a lower resolution; phones fall back to a steady 30 FPS. It runs again after a graphics card change but never overrides settings you chose yourself. Options → Lighting and surfaces has "Detect graphics automatically" and "Detect best settings".
+  - Graphics: if the game runs well below its target frame rate for about 20 seconds, a small notice offers to lower the graphics one step.
+  - New graphics option "Portrait heads" (on by default): people with a face portrait wear its head model on their figure; helmets keep the original head, and "Original look" turns it off.
+  - New graphics option "Sharp character textures" (on by default, off under "Original look"): faces, clothes, armour and weapons stay crisp up close, also on the inventory and unit panel figures.
+  - Lightning in rain no longer makes the screen pop: the strike's light rises and fades softly and lights the clouds ("Original look" keeps the original hard flash). `--flash-log` now records every strike.
+  - Co-op host: a new "Players" list in the Esc menu with Kick and Ban. A removed player returns to the main menu with a notice; a banned player can't rejoin until you stop hosting.
+  - Co-op: new host option "Shared loot" (on by default): whatever one player finds or is given, every other player gets an identical copy of, plus the same money. Trades and shop buys are never copied; quest items stay shared by the party.
+  - Co-op: story events (the villagers fleeing, conversations, quest steps) now happen once for the whole party instead of once per hero; traps still hit each hero.
+  - Co-op: each player's name appears above their hero in their colour (option "Player names above heroes", on by default), and the other players' portraits are smaller and show health and stamina bars.
+  - Co-op: heroes and creatures now turn smoothly on a joined player's screen too.
+  - Big battles run much more smoothly: units no longer stall the game when closing in on an enemy in a crowd, and large patrols no longer cause periodic slowdowns.
+  - Fixed creatures (such as a boar) being drawn where they were last seen after wandering in the fog of war, so attack paths led elsewhere and they jumped to their real spot once they moved.
+  - Loading a save resumes that save's level scripts exactly as they were, so events like the praying villagers fleeing in the first level happen again after you load an earlier save.
+  - After the intro movies, the original "Please wait... loading" screen now shows while the main menu loads, and loading screens fill their stone progress bar step by step as the zone loads, as in the original, instead of looping the movie.
+  - Move-path dots are spaced like the original (0.25 m apart), no longer three times denser for a walking hero.
+  - Modern camera: panning sideways with A / D or the screen edge no longer jerks up and down over uneven ground.
+  - WASD camera controls and "Companions can revive the hero" are now on by default for new players.
+  - Tutorial texts name the keys of your active layout (for example 9 / 0 / - / = for weapons with WASD controls) instead of always the classic keys.
+  - Upright phones: the unit panel and minimap share the top row with the message log below them, and the weapon bar and belt stand above the party faces, so nothing on the HUD overlaps in portrait.
+  - Multiplayer menu: only one row is highlighted at a time, and captions, descriptions and difficulty labels are centred at any window size or language.
+
 ## 0.1.5
 
 - Fixes and changes:

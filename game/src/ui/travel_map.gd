@@ -656,6 +656,50 @@ func _gui_input(e: InputEvent) -> void:
 
 ## a right drag hides the cursor and turns the island; the
 ## release shows it again where it was.
+# ------------------------------------------------------------------ gamepad
+
+func _enter_tree() -> void:
+	add_to_group("pad_panel")   # remake: gamepad snap targets (PadUI)
+
+
+## Remake, the gamepad (PadUI): the turn and camp buttons, the brief figures
+## and the island pieces (at their centre, when the piece is there) as snap
+## targets in viewport pixels; A clicks, the right stick turns the island.
+func pad_targets() -> Array:
+	var out: Array = []
+	if _cam == null or _vp == null:
+		return out
+	var xf := get_global_transform_with_canvas()
+	for i in 3:
+		if i == 2 and _nocamp:
+			continue
+		out.append({"rect": xf * _r([BTN_RIGHT, BTN_LEFT, BTN_CAMP][i][0]), "id": "btn%d" % i})
+	for i in _briefs.size():
+		var n: Node3D = _briefs[i].node
+		if is_instance_valid(n) and n.is_visible_in_tree():
+			var c := _screen_rect(n).get_center()
+			out.append({"rect": xf * Rect2(c - Vector2(12, 12), Vector2(24, 24)), "id": "brief%d" % i})
+	for i in _pieces.size():
+		var n: Node3D = _pieces[i].get("node")
+		if n == null or not is_instance_valid(n) or not n.is_visible_in_tree():
+			continue
+		var c := _screen_rect(n).get_center()
+		if _piece_at(c) == i and _button_at(c) < 0:
+			out.append({"rect": xf * Rect2(c - Vector2(12, 12), Vector2(24, 24)), "id": "piece%d" % i})
+	return out
+
+
+func pad_right_stick(v: Vector2, dt: float) -> bool:
+	if absf(v.x) > 0.2:
+		angle = fposmod(angle + dt * v.x * PI * 0.5, TAU)
+		_update_pivot()
+	return true
+
+
+func pad_keys() -> Dictionary:
+	return {"menu": KEY_ESCAPE, "cancel": KEY_ESCAPE}
+
+
 func _drag_start() -> void:
 	_drag = true
 	_drag_from = get_viewport().get_mouse_position()

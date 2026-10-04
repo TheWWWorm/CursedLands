@@ -2802,7 +2802,8 @@ static func through_alpha(a: int) -> int:
 
 ## one dot per logic tick along the carrier's predicted path
 ## (at tick + idx), up to ticks, skipping repeats. The
-## original's carrier is a ghost copy of the unit; the remake passes the predicted
+## original's carrier is a ghost character moving at base 0.5 (0.25 m a tick
+## level ground, OrderMarks.GHOST_BASE); the remake passes its predicted
 ## per-tick positions as the emitter's "path" meta. The colour:
 ## 0, 1, 2 → (kept in the control point).
 func sp_path(e: FxEmitter, p: Array, idx: int) -> bool:

@@ -552,22 +552,151 @@ func purse_entry(player: int) -> Dictionary:
 ## bag (the original: money and bag are per player in a network game, player
 ## LMP loot goes to whoever takes it). Nothing of it reaches the
 ## host's purse or save (only its joiner entry).
-func with_purse(player: int, f: Callable) -> Variant:
+## `found`: what `f` adds to the purse and bag is a find from the world
+## (loot, theft, a conversation's or a script's reward): with the option
+## "coop_share_loot" the other players get a copy (share_found).
+func with_purse(player: int, f: Callable, found := false) -> Variant:
 	var e := purse_entry(player) if _swap.is_empty() else {}
 	if e.is_empty():
-		return f.call()
+		if not found or not sharing():
+			return f.call()
+		var before := _purse_now(player)
+		var r0 = f.call()
+		_found(before)
+		return r0
 	var st := session.state
 	_swap = {"e": e, "money": st.money, "items": st.items}
 	st.money = int(e.purse.get("money", 0))
 	st.items = e.purse.get_or_add("items", [])
+	var before := _purse_now(player) if found and sharing() else {}
 	var r = f.call()
+	if not before.is_empty():
+		_found(before)
 	e.purse.money = st.money
 	e.purse.items = st.items
 	st.money = int(_swap.money)
 	st.items = _swap.items
 	_swap = {}
 	session.mark_dirty()
+	_flush_shared()
 	return r
+
+
+# ---------------------------------------------------------------- shared loot
+
+## Remake co-op option "coop_share_loot" (host, default ; not in the original
+## whose network game gives a find to whoever takes it, to that
+## player only): a find from the world — a body or chest looted, a theft, the
+## money and items of a conversation's or a script's reward — reaches every
+## other connected player's own purse and bag as an identical copy (the same
+## item strings, so the same wear, charge and enchantment; the same money).
+## Players who share a bag (the host and co-op class heroes use the
+## campaign's) get one copy between them, none when it is the finder's own.
+## Not copied: trades, the belt and equipment moves, broken items, anything
+## a player had already. Quest items are not copied either: they go to the
+## campaign's one quest item list (CampaignState.add_item), which every
+## player has and which HaveItem / EraseQuestItem / levers read, so a quest
+## goes on whoever holds it. Copies land in the host's state and the joiners'
+## entries, so saves and the joiners' progress packages keep them. Not in
+## the original multiplayer game (Session.lmp).
+const SHARE_OPTION := "coop_share_loot"
+var _share_queue: Array = []   # finds waiting for a purse swap to end
+
+
+func sharing() -> bool:
+	return _host_online() and session.lmp.is_empty() and session.players.size() > 1 \
+		and GameData.option(SHARE_OPTION) != 0
+
+
+## The purse in session.state right now, for a find by `player` (-1: the
+## party, a script's reward).
+func _purse_now(player: int) -> Dictionary:
+	var key := "campaign"
+	if not _swap.is_empty():
+		key = "p%d" % int(_swap.e.idx)
+	elif not purse_entry(player).is_empty():
+		key = "p%d" % player
+	return {"player": player, "key": key, "money": session.state.money, "items": session.state.items.duplicate()}
+
+
+## What came into the purse since `before` (as a multiset), queued for sharing.
+func _found(before: Dictionary) -> void:
+	var left := {}
+	for x in before.items:
+		left[x] = int(left.get(x, 0)) + 1
+	var got := []
+	for x in session.state.items:
+		if int(left.get(x, 0)) > 0:
+			left[x] -= 1
+		else:
+			got.append(x)
+	var money := maxi(0, session.state.money - int(before.money))
+	if not got.is_empty() or money > 0:
+		share_found(int(before.player), got, money, String(before.key))
+
+
+## Host: player `player` (-1 the party) found `items` and `money`, which went
+## to the purse `key` ("campaign" or "p<slot>"); the others get copies.
+func share_found(player: int, items: Array, money: int, key := "") -> void:
+	if not sharing():
+		return
+	if key.is_empty():
+		key = "campaign" if purse_entry(player).is_empty() else "p%d" % player
+	_share_queue.append({"player": player, "items": items.duplicate(), "money": money, "key": key})
+	if _swap.is_empty():
+		_flush_shared()
+
+
+func _flush_shared() -> void:
+	if _share_queue.is_empty() or not _swap.is_empty():
+		return
+	var q := _share_queue
+	_share_queue = []
+	for f: Dictionary in q:
+		_give_copies(f)
+	session.sync_state()
+
+
+func _give_copies(f: Dictionary) -> void:
+	var given := {String(f.key): true}
+	var who := ""
+	for p: Dictionary in session.players.values():
+		if int(p.index) == int(f.player):
+			who = String(p.name)
+	for p: Dictionary in session.players.values():
+		var idx := int(p.index)
+		if idx == int(f.player):
+			continue
+		var e := purse_entry(idx)
+		var key := "campaign" if e.is_empty() else "p%d" % idx
+		if key == String(f.key):
+			continue   # the finder's own bag (shared with it)
+		if not given.has(key):
+			given[key] = true
+			if e.is_empty():
+				session.state.items.append_array(f.items)
+				session.state.money += int(f.money)
+			else:
+				(e.purse.get_or_add("items", []) as Array).append_array(f.items)
+				e.purse.money = int(e.purse.get("money", 0)) + int(f.money)
+		session.broadcast({"t": "loot_copy", "to": idx, "who": who, "items": f.items, "money": f.money})
+	session.mark_dirty()
+
+
+## Player's line for a copy it got (Session._on_event "loot_copy").
+static func copy_text(event: Dictionary) -> String:
+	var parts := []
+	for it in event.get("items", []):
+		parts.append(Items.log_text(String(it)))
+	var money := int(event.get("money", 0))
+	if money > 0:
+		var fmt := GameData.text("string format_money").strip_edges()
+		parts.append(fmt % money if "%d" in fmt else "%s (%d)" % [fmt, money])
+	var what := ", ".join(parts)
+	var who := String(event.get("who", ""))
+	if who.is_empty():
+		return RemakeText.t("The party got %s — you get a copy too.") % what
+	return RemakeText.t("%s found %s — you get a copy too.") % [who, what]
 
 
 ## A purse is standing in for the campaign's right now (Session.sync_state waits).

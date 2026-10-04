@@ -266,6 +266,10 @@ func _notification(what: int) -> void:
 			g.session.save_game("autosave")
 			g.hud.toggle_menu()
 	elif what == NOTIFICATION_WM_GO_BACK_REQUEST:
+		# Android also reports a controller's B as Back: the pad layer has
+		# already taken that press (PadInput.last_cancel_ms), so it acts once.
+		if Time.get_ticks_msec() - PadInput.last_cancel_ms < 250:
+			return
 		var event := InputEventKey.new()
 		event.keycode = KEY_ESCAPE
 		event.pressed = true

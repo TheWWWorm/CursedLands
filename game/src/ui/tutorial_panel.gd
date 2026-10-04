@@ -298,7 +298,7 @@ func _layout() -> void:
 	if x2 - x1 < 300:
 		x2 = x1 + 300
 	var w := x2 - x1
-	_lines = _wrap(String(p.get("text", "")), w - 30.0)
+	_lines = _wrap(EIKeymap.tutorial_text(String(p.get("text", ""))), w - 30.0)   # remake: current keys
 	var y2: float
 	if rows >= 0:
 		y2 = y1 + rows * LINE + 110

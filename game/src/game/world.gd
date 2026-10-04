@@ -163,24 +163,23 @@ func load_map(mpr: String, mob_name := "", with_units := true) -> bool:
 				var marker := _trap_marker(o, root if root else map)
 				if marker:
 					_register_object(marker)
-	LoadingScreen.tick()
 	NetStatus.keep_alive()
 	# The original's AI map takes the water from the.sec files and is
 	# not rebuilt by SetWaterLevel.
 	nav.build(terrain, terrain.water_base, map.object_nodes)
-	LoadingScreen.tick()
 	NetStatus.keep_alive()
 	lever_sys = LeverSystem.new(self)
 	if with_units:
 		for r in map.unit_records:
-			LoadingScreen.tick()
 			NetStatus.keep_alive()
 			spawn_unit(r)
+			LoadingScreen.object_done()
 		# The nav grids of the units' standing classes, built while loading
 		# rather than on a unit's first path (NavGrid.layer).
 		for u: GameUnit in units.values():
 			NetStatus.keep_alive()
 			nav.layer(u._classes[2])
+	LoadingScreen.objects_done()
 	return true
 
 
@@ -356,13 +355,17 @@ func _physics_process(dt: float) -> void:
 			dialog_movers.clear()
 			dialog_actors.clear()
 	time += dt
+	# The chatter roll runs once per logic tick begun in this step (UnitAI.chatter):
+	# none begun, it is not asked for at all (remake speed).
+	var chat := floorf(time / GameUnit.TICK) > floorf((time - dt) / GameUnit.TICK)
 	for u: GameUnit in units.values():
 		if talking and (dialog_movers.has(u) or dialog_actors.has(u.uid)):
 			if not dialog_movers.has(u) and u.action in ["walk", "run", "crawl"]:
 				u._set_action("idle")
 			continue
 		u.tick(dt)
-		ai.chatter(u, dt)
+		if chat:
+			ai.chatter(u, dt)
 	# Magic traps update on the 55 ms server tick.
 	_trap_t += dt
 	while _trap_t >= GameUnit.TICK:

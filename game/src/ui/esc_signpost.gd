@@ -32,6 +32,7 @@ func _ready() -> void:
 	# The game is paused under the Esc menu (single player): the signpost, its
 	# SubViewport and AnimationPlayer keep running.
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	add_to_group("pad_panel")   # remake: gamepad snap targets (PadUI)
 	visibility_changed.connect(func():
 		if visible:
 			_on_open())
@@ -198,3 +199,28 @@ func _unhandled_key_input(e: InputEvent) -> void:
 		_sfx("buttons\\menu\\ok.wav")   # Esc (0x1b) plays ok.wav and closes
 		pressed.emit("resume")
 		get_viewport().set_input_as_handled()
+
+
+## Remake (gamepad, PadUI): each board's screen rectangle, from its meshes
+## projected through the signpost's camera.
+func pad_targets() -> Array:
+	var out: Array = []
+	if _cam == null or _vp == null or size.x <= 0.0:
+		return out
+	var to_ctrl := size / Vector2(_vp.size)
+	var xf := get_global_transform_with_canvas()
+	for part: String in _boards:
+		var r := Rect2()
+		var first := true
+		for mi: MeshInstance3D in _board_meshes[part]:
+			var b: AABB = mi.global_transform * mi.get_aabb()
+			for i in 8:
+				var c := b.get_endpoint(i)
+				if _cam.is_position_behind(c):
+					continue
+				var sp := xf * (_cam.unproject_position(c) * to_ctrl)
+				r = Rect2(sp, Vector2.ZERO) if first else r.expand(sp)
+				first = false
+		if not first:
+			out.append({"rect": r, "id": BOARDS[part]})
+	return out

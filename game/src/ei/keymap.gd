@@ -313,3 +313,49 @@ static func _remake_defaults() -> void:
 		var sc: int = by_name.get(REMAKE_DEFAULTS[act], -1)
 		if sc >= 0 and not _map.has(sc) and not act in _map.values():
 			_map[sc] = act
+
+
+## Remake: the tutorial texts (texts.res "tutor …") name the original
+## keyboard.ini's keys in angle brackets ("<Q>", "<S>", "<A>"…). A key the
+## active map no longer binds to that action (the WASD layout's 9 / 0 / - / =
+## weapons, R stance, T Use/Steal, or the player's own rebinding) is replaced
+## by the action's current key; keys still bound as shipped, and names that
+## are not an action key of the original file (<CTRL>, <+> of the speed
+## panel…), stay as written.
+static var _orig_map := {}
+static var _orig_loaded := false
+
+static func tutorial_text(t: String) -> String:
+	if not "<" in t:
+		return t
+	_tables()
+	if not _orig_loaded:
+		_orig_loaded = true
+		_orig_map = _read_map(GameData.root.path_join("config/keyboard.ini"))
+	var by_name := {}
+	for sc: int in _names:
+		by_name[String(_names[sc]).to_upper()] = sc
+	var map := _active_map()
+	# Remake: with the gamepad driving, the controller's buttons (PadInput).
+	var ml := Engine.get_main_loop() as SceneTree
+	var pad: Node = ml.root.get_node_or_null("PadInput") if ml else null
+	if pad and String(pad.get("active")) != "pad":
+		pad = null
+	var re := RegEx.create_from_string("<([^<>\\s]{1,12})>")
+	var out := ""
+	var at := 0
+	for m: RegExMatch in re.search_all(t):
+		var sc: int = by_name.get(m.get_string(1).to_upper(), -1)
+		var act := String(_orig_map.get(sc, ""))
+		if act != "" and pad:
+			var b := String(pad.call("tutorial_key", act))
+			if b != "":
+				out += t.substr(at, m.get_start() - at) + "<%s>" % b
+				at = m.get_end()
+			continue
+		if act != "" and map.get(sc, "") != act:
+			var k := key_of(act)
+			if k != "":
+				out += t.substr(at, m.get_start() - at) + "<%s>" % k
+				at = m.get_end()
+	return out + t.substr(at)
