@@ -1362,6 +1362,34 @@ func _leg_clear(L: Layer, a: Vector2, b: Vector2) -> bool:
 	return true
 
 
+## The gamepad stick's straight walk (remake, no original counterpart: a move
+## order with "line", PadField._direct_move): whether unit `u` may walk the
+## straight line from where it stands to `b` as it is, without a path
+## search. Every cell the line crosses (sampled finer than a frame's step,
+## as _leg_clear) is open on its movement class's A* grid — walls, cliffs,
+## deep water and the stamps of standing units are closed there, its own
+## stamp is lifted as find_path lifts it — and every step between them is
+## one the search itself may take (_line_cost: no refused slope step).
+## The search's smoothing keeps a staircase of cell centres off the 45°
+## lines (SMOOTH_SLACK); a stick re-aimed five times a second walked each
+## new staircase from its first step and wiggled from side to side.
+func direct_line(u: GameUnit, b: Vector2) -> bool:
+	var L := layer(u.move_class())
+	var a := u.pos
+	var ca := cell(a)
+	var cb := cell(b)
+	if not _in(ca) or not _in(cb):
+		return false
+	var lift := u._occ_cell.x >= 0
+	if lift:
+		_stamp(u._occ_cell, u._occ_r, -1)
+	var ok := not L.astar.is_point_solid(ca) and not L.astar.is_point_solid(cb) and _leg_clear(L, a, b) \
+		and _line_cost(L, a, b, false) >= 0
+	if lift:
+		_stamp(u._occ_cell, u._occ_r, 1)
+	return ok
+
+
 ## Every cell the straight step from `a` to `b` (ending in cell `q`) crosses
 ## before `q` is under `thr` or no higher than `v0` (the step test).
 func _descent_line_ok(a: Vector2, b: Vector2, q: Vector2i, v0: int, thr: int, val: Callable) -> bool:

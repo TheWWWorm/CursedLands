@@ -12,8 +12,9 @@ const OFFSET_MAGIC = [0x72, 0x44, 0x6c, 0x50, 0x74, 0x53, 0xcd, 0xe6, 0xd7, 0x7b
 const CHUNK_MAGIC = [0x7a, 0x6c, 0x62, 0x1a];   // "zlb\x1a"
 const DATA_ENTRY = 74;
 const FLAG_CALL_FILTER = 1 << 4, FLAG_COMPRESSED = 1 << 7;
-// The browser keeps what a folder import keeps (see files.js).
-const DATA_DIRS = ['res', 'maps', 'config', 'stream', 'movies'];
+// The browser keeps what a folder import keeps (see files.js); camera/ holds
+// the main menu's view (mainmenu.cam).
+const DATA_DIRS = ['res', 'maps', 'config', 'stream', 'movies', 'camera'];
 const reader = new FileReaderSync();
 
 class ImportError extends Error {

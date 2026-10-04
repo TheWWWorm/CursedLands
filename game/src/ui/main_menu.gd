@@ -52,6 +52,8 @@ func _ready() -> void:
 	if music.stream:
 		music.play()
 	_options = OptionsPanel.new()
+	_options.game_files = true   # remake: "Game files…" (Remake row 11)
+	_options.game_files_requested.connect(_game_files)
 	if _scene:
 		_net = NetworkPanel.new()
 		_panel = _net
@@ -158,6 +160,24 @@ func _ready() -> void:
 
 ## Options ✓ with another text / voice language: the menu (signpost labels,
 ## texts) is built again from the new archives, Options reopened on its page.
+## Remake: Options › Remake › "Game files…": the setup screen over the
+## hidden menu (main.gd change_game_files); its Back returns to that page.
+func _game_files() -> void:
+	visible = false
+	process_mode = Node.PROCESS_MODE_DISABLED
+	get_parent().change_game_files(_back_from_game_files)
+
+
+func _back_from_game_files() -> void:
+	visible = true
+	process_mode = Node.PROCESS_MODE_INHERIT
+	await get_tree().process_frame
+	await get_tree().process_frame   # the options capture the menu, not the setup screen
+	_options.open()
+	_options._show_group(OptionsPanel.FILES_GROUP)
+	_options._sel = OptionsPanel.FILES_ROW
+
+
 ## Signpost boards (MenuScene).
 
 func _add_viewer_link() -> void:
@@ -234,7 +254,7 @@ func _single() -> void:
 func _continue() -> void:
 	var s := _make_session()
 	start_game.emit(s)
-	if not s.load_game(Session.latest_save()):
+	if not await s.load_game_shown(Session.latest_save()):
 		s.new_campaign()
 
 
@@ -242,7 +262,7 @@ func _continue() -> void:
 func _load_slot(slot: String) -> void:
 	var s := _make_session()
 	start_game.emit(s)
-	if not s.load_game(slot):
+	if not await s.load_game_shown(slot):
 		s.new_campaign()
 
 
@@ -346,9 +366,10 @@ static func _port() -> int:
 func _start_coop() -> void:
 	start_game.emit(_session)
 	if _net and _net.lmp_base:   # the original's own multiplayer game (LmpMode)
+		await _session.hold_loading(_net.lmp_base.to_lower())
 		_session.new_lmp_game(_net.lmp_base)
 		return
-	if _net and _net.start_slot and _session.load_game(_net.start_slot):   # the host's save, continued
+	if _net and _net.start_slot and await _session.load_game_shown(_net.start_slot):   # the host's save, continued
 		return
 	_session.new_campaign()
 

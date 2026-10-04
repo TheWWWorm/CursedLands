@@ -188,7 +188,7 @@ func _ready() -> void:
 	_save_load.save_requested.connect(func(slot: String, save_name: String, frame: Image):
 		game.session.save_game(slot, save_name, frame))
 	_save_load.load_requested.connect(func(slot: String):
-		if not game.session.load_game(slot):
+		if not await game.session.load_game_shown(slot):
 			log_msg(RemakeText.t("Load failed.")))
 
 	_target_label = Label.new()
@@ -258,6 +258,7 @@ func on_world(w: GameWorld) -> void:
 		if not game.session.message.is_connected(log_msg):
 			game.session.message.connect(log_msg)
 		PlayerNames.of(game)   # remake: co-op players' names over their heroes
+		EnemyBars.of(game)     # remake: health bars over enemies (option enemy_hp_bars)
 		if not game.session.net.chat.is_connected(log_chat):
 			game.session.net.chat.connect(log_chat)
 		# No zone-entry line: the original adds nothing to the message log on a zone
@@ -790,7 +791,7 @@ func _travel_quick(action: String) -> void:
 		return
 	if action == "quicksave":
 		game.session.save_game("quick")
-	elif game.session.load_game("quick"):
+	elif await game.session.load_game_shown("quick"):
 		_close_travel()
 	else:
 		log_msg(RemakeText.t("No quick save."))
@@ -999,7 +1000,7 @@ func _on_esc_board(action: String) -> void:
 			_close_menu()
 			if action == "quicksave":
 				game.session.save_game("quick", "", frame)
-			elif not game.session.load_game("quick"):
+			elif not await game.session.load_game_shown("quick"):
 				log_msg(RemakeText.t("No quick save."))
 		"options":
 			_menu.visible = false
@@ -1050,6 +1051,18 @@ func blocks_camera() -> bool:
 	return blocks_input() or _panel_open()
 
 
+## The 3D view cannot be seen: an opaque or frozen-frame screen covers it
+## (Game._aim_sun re-aims the sun's shadow then). The journal and the
+## village quest offers are translucent over the live view, so not listed.
+func world_hidden() -> bool:
+	if _esc_open or _dialog.visible or _travel.visible or quests_screen != null:
+		return true
+	for panel in [_inventory, _movie, _options, _save_load]:
+		if is_instance_valid(panel) and panel.visible:
+			return true
+	return false
+
+
 func _panel_open() -> bool:
 	if quests_screen != null:
 		return true
@@ -1057,6 +1070,10 @@ func _panel_open() -> bool:
 			_game_over_box, _quit_box, _players_panel]:
 		if is_instance_valid(panel) and panel.visible:
 			return true
+	# Remake (gamepad): the game-over notice takes the pad (PadUI snaps to its
+	# buttons); with a mouse the field around it plays on.
+	if is_instance_valid(_death_notice) and _death_notice.visible and PadInput.active == "pad":
+		return true
 	return false
 
 

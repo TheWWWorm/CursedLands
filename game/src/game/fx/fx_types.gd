@@ -121,7 +121,7 @@ static func tab(t: Array, i: int) -> Variant:
 
 ## the carrier's centre offset (z) and radius.
 static func carrier_size(e: FxEmitter) -> Vector2:
-	if e.carrier == null:
+	if not e.has_carrier:
 		return Vector2(0.0, 0.1)
 	return e.fx.carrier_size(e.carrier)
 
@@ -373,12 +373,14 @@ static func create(fx, type: int) -> FxEmitter:
 	return e
 
 
-## Remake: the callbacks that read units, bones, the camera or a shared
-## table (directly or through a helper); an emitter using one is updated on
-## the main thread (FxEmitter.par).
+## Remake: the callbacks that read units, bones, the camera, a shared
+## table, the nav grid, the water levels or an option (directly or through
+## a helper: plane_ground, under_water, through_alpha); an emitter using one
+## is updated on the main thread (FxEmitter.par). The others may only touch
+## their emitter, its particles and control points, and FxEmitter.ground.
 const SERIAL := {&"_sphere_base": 1, &"carrier_size": 1, &"ct_feet": 1, &"sp_bag": 1, &"sp_castel": 1,
 	&"sp_casting": 1, &"sp_healing": 1, &"sp_modifier": 1, &"sp_orbit": 1, &"sp_sphere": 1, &"sp_stench": 1,
-	&"up_bag": 1, &"up_silence": 1}
+	&"up_bag": 1, &"up_silence": 1, &"sp_path": 1, &"up_path": 1, &"up_target": 1, &"ct_target": 1}
 
 
 # ------------------------------------------------------ 2000 FireBall
@@ -495,7 +497,7 @@ func sp_firewall(e: FxEmitter, p: Array, idx: int) -> bool:
 	p[0] = t * e.v130.x + p[0]
 	var y: float = t * e.v130.y + p[1]
 	p[1] = y
-	p[2] = p[2] - e.wp.z + e.fx.ground(p[0], y)
+	p[2] = p[2] - e.wp.z + e.ground(p[0], y)
 	return true
 
 
@@ -584,7 +586,7 @@ func ct_tornado(e: FxEmitter, c: Array) -> void:
 	if not is_same(c, e.cp[0]):
 		return
 	var n := e.cp.size()
-	var g := e.fx.ground(e.wp.x, e.wp.y)
+	var g := e.ground(e.wp.x, e.wp.y)
 	if float(c[0xa]) == 0.0:
 		var d := Vector3(c[0], c[1], c[2]) - e.dl
 		for i in n:
@@ -608,7 +610,7 @@ func ct_tornado(e: FxEmitter, c: Array) -> void:
 			e.cp[i][0] = (v.x + base.x) * w
 			e.cp[i][1] = (v.y + base.y) * w
 			e.cp[i][2] = (v.z + base.z) * w
-	if e.carrier == null and float(e.cp[0][0xa]) == 0.0 and not e.parts.is_empty():
+	if not e.has_carrier and float(e.cp[0][0xa]) == 0.0 and not e.parts.is_empty():
 		e.flags &= ~(FxEmitter.F_EMIT | FxEmitter.F_KEEP)
 
 
@@ -717,7 +719,7 @@ func ct_blast(e: FxEmitter, c: Array) -> void:
 ## streams on a spiral around the carrier, heads then sparkles.
 func sp_healing(e: FxEmitter, p: Array, _idx: int) -> bool:
 	if e.cp.is_empty():
-		if e.carrier == null:
+		if not e.has_carrier:
 			return false
 		var n := roundi(e.s * 6.0 + 2.0)
 		e.d0 = n
@@ -845,7 +847,7 @@ func sp_fog(e: FxEmitter, _p: Array, _idx: int) -> bool:
 			q[0] = x + e.ofs.x
 			q[1] = y + e.ofs.y
 			q[3] = float(e.rnd()) * 1.1641532e-10 + 1.0 - 0.25
-			q[2] = e.fx.ground(q[0], q[1]) + q[3]
+			q[2] = e.ground(q[0], q[1]) + q[3]
 			q[0x16] = W if e.type == 0x2008 else alpha(mini(255, roundi(e.k118 * 160.0)))
 			q[0x14] = e.ec
 			q[0x11] = e.rnd() % e.dc
@@ -953,7 +955,7 @@ func ct_fireworks(e: FxEmitter, c: Array) -> void:
 ## three spiral streams for 45 ticks, then a ring burst.
 func sp_casting(e: FxEmitter, p: Array, _idx: int) -> bool:
 	if e.cp.is_empty():
-		if e.carrier == null:
+		if not e.has_carrier:
 			return false
 		e.d0 = 3
 		e.set_controls(3)
@@ -1216,7 +1218,8 @@ func ct_mushroom(e: FxEmitter, c: Array) -> void:
 		return
 	var k := int(c[0xd])
 	if e.type == 0x200e and k == 0:
-		CameraRig.shake_at(e.fx, Vector2(e.wp.x, e.wp.y), 5.0, e.s, 0.25)
+		# Remake: may run on a worker; ParticleFx starts it after the tick.
+		e.shakes.append([Vector2(e.wp.x, e.wp.y), 5.0, e.s, 0.25])
 	c[0xd] = k + 1
 	c[0] = log(float(k + 2)) * e.s * 0.2
 	c[2] = float(c[2]) + e.s * 0.12
@@ -1387,7 +1390,7 @@ func up_acidray(e: FxEmitter, p: Array) -> bool:
 
 func sp_stench(e: FxEmitter, p: Array, _idx: int) -> bool:
 	if e.cp.is_empty():
-		if e.carrier == null:
+		if not e.has_carrier:
 			return false
 		var cs := carrier_size(e)
 		e.set_controls(1)
@@ -1558,7 +1561,7 @@ func _sphere_size(e: FxEmitter, p: Array) -> void:
 
 func sp_sphere(e: FxEmitter, p: Array, idx: int) -> bool:
 	if idx == 0:
-		if e.carrier == null:
+		if not e.has_carrier:
 			return false
 		_sphere_base(e)
 	if e.cp.is_empty():
@@ -1673,7 +1676,7 @@ func ct_clay(e: FxEmitter, c: Array) -> void:
 	var sz := absf(e.s)
 	c[0] = sz * c[6] * f + e.wp.x
 	c[1] = sz * c[7] * f + e.wp.y
-	c[2] = e.fx.ground(c[0], c[1]) + 1.0
+	c[2] = e.ground(c[0], c[1]) + 1.0
 	var x: float = c[6]
 	c[6] = c[7] * 0.31225 + c[6] * 0.95
 	c[7] = c[7] * 0.95 - x * 0.31225
@@ -1749,7 +1752,7 @@ func sp_modifier(e: FxEmitter, p: Array, idx: int) -> bool:
 	p[0x14] = e.ec
 	p[0x13] = e.e4
 	if e.cp.is_empty():
-		if e.carrier == null:
+		if not e.has_carrier:
 			return false
 		var n := maxi(1, int(absf(e.s)))
 		e.set_controls(n)
@@ -1858,7 +1861,7 @@ func ct_modifier(e: FxEmitter, c: Array) -> void:
 ## particles fall in on the caster from a sphere around it.
 func sp_castel(e: FxEmitter, p: Array, _idx: int) -> bool:
 	if e.cp.is_empty():
-		if e.carrier == null:
+		if not e.has_carrier:
 			return false
 		var h: float = e.fx.carrier_height(e.carrier)
 		var rad := (h * 2.0 if e.type == 0x202a else h * 3.0) * 0.8
@@ -1954,7 +1957,7 @@ func ct_castel(e: FxEmitter, c: Array) -> void:
 		c[9] = (c[9] * 0.95 + u01(e) * 0.2 - 0.1) - c[6] * 0.0005
 		c[0xa] = (c[0xa] * 0.95 + u01(e) * 0.2 - 0.1) - c[7] * 0.0005
 		c[0xb] = (c[0xb] * 0.95 + u01(e) * 0.2 - 0.1) - c[8] * 0.0005
-	elif (e.flags & FxEmitter.F_EMIT) == 0 or e.carrier == null:
+	elif (e.flags & FxEmitter.F_EMIT) == 0 or not e.has_carrier:
 		if int(c[0xd]) > 0:
 			c[0xd] = int(c[0xd]) - 1
 		c[0xc] = tab(T_CAST_CTL, int(c[0xd]))
@@ -1982,7 +1985,7 @@ func sp_orbit(e: FxEmitter, p: Array, _idx: int) -> bool:
 		setv(p, 8, cur * (1.0 - f) + prev * f + v)
 		p[3] = (float(e.rnd()) * 1.862645e-10 + 0.6) * e.s * 0.2
 		return true
-	if e.carrier == null:
+	if not e.has_carrier:
 		return false
 	var cs := carrier_size(e)
 	var rad := cs.y * 0.5
@@ -2030,7 +2033,7 @@ func up_orbit(e: FxEmitter, p: Array) -> bool:
 		var o: Array = e.cp[-1 - int(p[0x15])]
 		setp(p, Vector3(o[0], o[1], o[2]))
 		p[3] = (float(e.rnd()) * 9.313226e-11 + 0.8) * e.s * 0.4
-		if (e.flags & FxEmitter.F_EMIT) == 0 or e.carrier == null:
+		if (e.flags & FxEmitter.F_EMIT) == 0 or not e.has_carrier:
 			if p[0x14] < 0:
 				return false
 			p[0x16] = alpha(tab(T_ORBIT_A, p[0x14] + 1))
@@ -2074,7 +2077,7 @@ func sp_lblast(e: FxEmitter, p: Array, _idx: int) -> bool:
 			var a := rr(e, 0.0, 6.2831855)
 			var v := Vector3(sin(a) * r, cos(a) * r, 0.0) * e.s
 			var q := e.wp + v * 0.3
-			q.z = e.fx.ground(q.x, q.y)
+			q.z = e.ground(q.x, q.y)
 			var d := Vector3(v.x, v.y, 0.5)
 			d = d / sqrt(v.x * v.x + v.y * v.y + 0.25)
 			c[0] = q.x
@@ -2204,7 +2207,7 @@ func sp_exit(e: FxEmitter, p: Array, _idx: int) -> bool:
 	p[0] = px
 	p[1] = py
 	p[3] = 0.0
-	p[2] = e.fx.ground(px, py) + 0.1
+	p[2] = e.ground(px, py) + 0.1
 	p[0xb] = (float(e.rnd()) * 1.3969838e-10 + 0.7) * ((1.9 - x * x) - y * y) * 0.05
 	return true
 
@@ -2250,7 +2253,7 @@ func up_trans(e: FxEmitter, p: Array) -> bool:
 		p[0x14] -= 1
 		if p[0x14] < 0:
 			return false
-		if e.carrier == null and p[0x14] > 3:
+		if not e.has_carrier and p[0x14] > 3:
 			p[0x14] = 4
 		var f: int = p[0x11]
 		p[0x11] = ((f + 1) & 3) | (f & ~3)
@@ -2258,7 +2261,7 @@ func up_trans(e: FxEmitter, p: Array) -> bool:
 		p[3] = p[0xb]
 		p[0x16] = alpha(tab(T_EXIT_A, p[0x14]))
 		return true
-	if e.carrier == null:
+	if not e.has_carrier:
 		p[0x14] -= 1
 		if p[0x14] < 0:
 			return false
@@ -2363,7 +2366,7 @@ func up_bag(e: FxEmitter, p: Array) -> bool:
 func ct_bag(e: FxEmitter, c: Array) -> void:
 	c[0xd] = int(c[0xd]) - 1
 	if int(c[0xd]) < 0:
-		if e.carrier == null:
+		if not e.has_carrier:
 			c[0xd] = -13
 			return
 		c[0xc] = rnd(e) % 3
@@ -2585,7 +2588,7 @@ func up_vstar(e: FxEmitter, p: Array) -> bool:
 	if e.type == 0x204c:
 		p[2] = p[2] + 0.7
 	var s2 := sz * 0.95 + (float(e.rnd()) * 4.1909515e-10 + 0.1) * e.s * k * 0.05
-	if (e.flags & FxEmitter.F_EMIT) == 0 or e.carrier == null:
+	if (e.flags & FxEmitter.F_EMIT) == 0 or not e.has_carrier:
 		s2 = s2 * 0.95
 		e.s = 0.0
 		if s2 < 0.03:
@@ -2629,7 +2632,7 @@ func sp_silence(e: FxEmitter, p: Array, _idx: int) -> bool:
 
 
 func up_silence(e: FxEmitter, p: Array) -> bool:
-	if (e.flags & FxEmitter.F_EMIT) == 0 or e.carrier == null:
+	if (e.flags & FxEmitter.F_EMIT) == 0 or not e.has_carrier:
 		if p[0x15] != 0:
 			e.s = e.s * 0.85
 		if e.s < 0.02:
@@ -2729,7 +2732,7 @@ func up_feet(e: FxEmitter, p: Array) -> bool:
 	p[0x14] -= 1
 	if p[0x14] < 0:
 		return false
-	if ((e.flags & FxEmitter.F_EMIT) == 0 or e.carrier == null) and p[0x14] > 8:
+	if ((e.flags & FxEmitter.F_EMIT) == 0 or not e.has_carrier) and p[0x14] > 8:
 		p[0x14] = 8
 	p[0x16] = (int(tab(T_FADE_IN, p[0x14])) << 24) | (e.ec & RGB)
 	p[0xb] = p[0xe] + p[0xb]
@@ -2767,7 +2770,7 @@ func ct_feet(e: FxEmitter, c: Array) -> void:
 ## the same list) sit on them, not on the land below.
 ## Remake: the floor cells of the nav grid (0.5 m) stand in for the planes.
 static func plane_ground(e: FxEmitter, x: float, y: float) -> float:
-	var g: float = e.fx.ground(x, y)
+	var g: float = e.ground(x, y)
 	var w: GameWorld = e.fx.world
 	if w and w.nav.size.x > 0:
 		var p := Vector2(x, y)
@@ -2894,7 +2897,7 @@ func up_target(e: FxEmitter, p: Array) -> bool:
 	p[1] += p[9]
 	p[2] += p[10]
 	var c: Array = e.cp[0]
-	var g: float = e.fx.ground(p[0], p[1]) + 0.1
+	var g: float = e.ground(p[0], p[1]) + 0.1
 	var pl: float = c[3] - ((p[1] - e.wp.y) * c[7] + (p[0] - e.wp.x) * c[6]) * c[8] + 0.1
 	p[2] = maxf(g, pl)
 	if under_water(e, p[0], p[1], p[2]):   # hidden or faded under the water (see under_water)
@@ -2919,7 +2922,7 @@ func ct_target(e: FxEmitter, c: Array) -> void:
 		var h := 0.0
 		var n := Vector3(0, 0, 1)
 		var f := plane_ground(e, x, y)
-		if f > e.fx.ground(x, y):
+		if f > e.ground(x, y):
 			h = f
 		c[3] = h
 		c[6] = n.x

@@ -38,8 +38,9 @@ var _model: Node3D
 var _cam: Camera3D
 var _framed := 0
 # Expressions: the face texture gets suffix
-# "c" for 2 s when health drops, "a" for 4 s on kill ack 0x30, otherwise
-# "b" below 25 % stamina. The independent 1 s red flash uses trunc(t * 200).
+# "c" for 2 s when health drops, "a" for 4 s on kill ack 0x30 (and, remake
+# option "smile_faces", the moments of SmileFaces), otherwise "b" below 25 %
+# stamina. The independent 1 s red flash uses trunc(t * 200).
 var _unit: GameUnit
 var _mats: Array[StandardMaterial3D] = []
 var _tex := ""
@@ -56,10 +57,28 @@ var _look_q := Quaternion.IDENTITY
 var _look_speed := 1.0
 var _selection_q := Quaternion.IDENTITY
 var _rng := RandomNumberGenerator.new()
+## Remake: the live portrait of each unit (instance id -> Portrait).
+## PartyFaces.rebuild (on every "inventory" event: a kill's experience, loot,
+## a state sync) frees the cells and makes new portraits; the new one takes
+## over the old one's expression, red flash and last health. Before this the
+## kill's smile (ack 0x30, with the kill's experience right after it) and
+## often the pain face were dropped at once and never seen.
+static var _live := {}
+## A live portrait freed before its successor was made (the rebuild came from
+## a callback after this frame's PartyFaces._process, e.g. a theft or loot at
+## the end of the use clip): its state, taken over by the next portrait of the
+## unit (instance id -> [expression, its time, flash, last health]).
+static var _left := {}
 
 
 func _ready() -> void:
 	_rng.randomize()
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_PREDELETE and is_instance_valid(_unit) and _live.get(_unit.get_instance_id()) == self:
+		_live.erase(_unit.get_instance_id())
+		_left[_unit.get_instance_id()] = [_expression, _expression_t, _flash_t, _last_hp]
 
 
 ## Rebuilds only when the unit's look changed (equipment swap).
@@ -71,6 +90,20 @@ func show_unit(u: GameUnit) -> void:
 		_last_hp = u.hp
 		_head_motion = 0
 		_selection_q = Quaternion.IDENTITY
+		var old = _live.get(u.get_instance_id())
+		if is_instance_valid(old) and old is Portrait and old != self and old.is_queued_for_deletion() and old._unit == u:
+			_expression = old._expression
+			_expression_t = old._expression_t
+			_flash_t = old._flash_t
+			_last_hp = old._last_hp
+		elif _left.has(u.get_instance_id()):
+			var st: Array = _left[u.get_instance_id()]
+			_expression = st[0]
+			_expression_t = st[1]
+			_flash_t = st[2]
+			_last_hp = st[3]
+		_left.erase(u.get_instance_id())
+		_live[u.get_instance_id()] = self
 	_unit = u
 	var key := "%s|%s|%s|%s|%s" % [u.get_instance_id(), u.info.get("prototype", ""),
 		u.info.get("complexion", Vector3.ZERO), u.info.get("armors", []), u.info.get("weapons", [])]

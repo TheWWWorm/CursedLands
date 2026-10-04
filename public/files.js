@@ -136,7 +136,7 @@ window.CursedFiles = {
         let offset = 0;
         for (const file of selected) {
           const parts = (file.webkitRelativePath || file.name).replaceAll('\\', '/').split('/');
-          const start = parts.findIndex(p => ['res', 'maps', 'config', 'stream', 'movies'].includes(p.toLowerCase()));
+          const start = parts.findIndex(p => ['res', 'maps', 'config', 'stream', 'movies', 'camera'].includes(p.toLowerCase()));
           if (start < 0) continue;
           const path = cleanPath(parts.slice(start).join('/'));
           if (files[path]) throw new Error('Duplicate data file: ' + path);
@@ -172,6 +172,23 @@ window.CursedFiles = {
       if (!committed) await this.removeGeneration(id).catch(() => {});
       callback('error', error.name === 'QuotaExceededError' ? 'Browser storage is full. Free space and try again.' : String(error.message || error), error.arg);
     } finally { this.busy = false; }
+  },
+  // "Delete imported data" (Options): the active install and every stored
+  // generation go; saves live in Godot's own storage and are kept. The page
+  // then reloads into the setup screen (after the deletion, never during it).
+  async forget() {
+    if (this.busy) return;
+    this.busy = true;
+    try {
+      const db = await openData();
+      await new Promise((resolve, reject) => {
+        const tx = db.transaction(['meta', 'files'], 'readwrite');
+        tx.objectStore('meta').delete('active');
+        tx.objectStore('files').clear();
+        tx.oncomplete = resolve; tx.onabort = () => reject(tx.error);
+      }); db.close();
+      this.active = null; this.cache.clear(); this.cacheBytes = 0;
+    } finally { this.busy = false; location.reload(); }
   },
   async removeGeneration(id) {
     const db = await openData();

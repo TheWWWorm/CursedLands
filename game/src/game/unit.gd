@@ -114,6 +114,7 @@ var action := "idle"        # replicated visual state
 ## units outside a party keep it once set.
 var alert := false
 var ai_next := 0.0      # world time of the unit's next AI tick (UnitAI)
+var _perceive_next := 0.0   # next noticed-list update of a Player-motivation unit
 var order_failed := false   # the last order ended unsuccessfully (creature)
 var limp := 0               # walk modifier 0-2 (replicated to clients, which have no body parts)
 ## Unit flag (unit +8): set / cleared by script BlockUnit and by a
@@ -832,10 +833,13 @@ func gait() -> int:
 
 
 ## Posture and gait from a save record (: set
-## directly, no acknowledgement).
+## directly, no acknowledgement). The figure is put straight into the held
+## posture (then, see `_pose_snap`), not crossed into it.
 func restore_gait(g: int) -> void:
 	stance = STANCE_CRAWL if g == 0 else STANCE_KNEEL if g == 1 else STANCE_NONE
 	gait_run = g == 3
+	_pose_snap = true
+	_update_pose()
 
 
 ## Host: the HUD dial / movement keys for this unit (net message 0x35, server
@@ -1038,6 +1042,12 @@ func _tick(dt: float) -> void:
 		if _pending_hit.t <= 0.0:
 			_resolve_hit(_pending_hit.target, _pending_hit.get("roll", {}))
 			_pending_hit = {}
+	# The perception of a Player-motivation unit runs on every AI tick, busy,
+	# walking or in a clip: the noticed list the
+	# engage check reads (UnitAI.player_perceive).
+	if (controller >= 0 or mode == "player") and world.time >= _perceive_next:
+		_perceive_next = world.time + TICK - 0.0001
+		world.ai.player_perceive(self)
 	if _anim_lock > 0.0:
 		_anim_lock -= dt
 		return
@@ -1061,6 +1071,9 @@ func _tick(dt: float) -> void:
 		return   #  cast a buff / heal over the calm walk
 	elif controller >= 0 and order.has("swarm") and world.ai.swarm_tick(self):
 		return   # Ctrl / aimed-key ground click (packet 0x3a): engages on the way
+	elif controller >= 0 and order.get("type", "") == "follow" and not order.get("once", false) \
+			and world.ai.follow_engage(self):
+		return   # F order (Player motivation state 6): engages while following
 	match order.type:
 		"move": _do_move(dt)
 		"attack": _do_attack(dt)
@@ -1240,12 +1253,18 @@ func _do_move(dt: float) -> void:
 	# or its double-click flag (standing only); script / AI moves
 	# carry their own run flag.
 	if order.get("gait", false):
-		running = stance == STANCE_NONE and not order.get("slow", false) and (gait_run or bool(order.get("run", false)))
+		running = stance == STANCE_NONE and (gait_run or bool(order.get("run", false)))
 	else:
 		running = bool(order.get("run", true))
 	if path.is_empty():
 		var replan := _avoid != null and is_instance_valid(_avoid)
-		path = _kept_path(order.to)
+		# The stick's moves ("line", remake): the straight line when it can
+		# be walked as it is (NavGrid.direct_line), else the path search.
+		if order.get("line", false) and not replan and world.nav.direct_line(self, order.to):
+			path = PackedVector2Array([order.to])
+			_kept = {}
+		else:
+			path = _kept_path(order.to)
 		if path.is_empty():
 			path = _path_to(order.to)
 		if path.is_empty():
@@ -2410,6 +2429,9 @@ func _set_action(a: String) -> void:
 
 
 const _STEADY := ["idle", "walk", "run", "crawl"]
+## The next `_update_pose` puts the figure straight into its posture (no
+## cross clip): a new unit, `restore_gait`, a quiet (joining) snapshot.
+var _pose_snap := true
 
 
 ## The animation query of the stance: crawl = lie, kneel =
@@ -2434,6 +2456,21 @@ func _update_pose() -> bool:
 		var f := wound_factor(3)
 		limp = 0 if f >= 1.0 else 2 if is_equal_approx(f, _wound_levels()[1]) else 1
 	var md := EIUnitModel.MOD_1 * limp
+	if _pose_snap:
+		# A fresh figure, a load or zone entry, a late joiner's view: the
+		# held posture's clip at once, no cross or movement start (the original
+		#  sets the AI's posture and request
+		# the unit's, so sees no change, and
+		# plays the state's idle itself).
+		_pose_snap = false
+		if st != model.pose_state or md != model.pose_mod:
+			model.pose_state = st
+			model.pose_mod = md
+			if not dead and action in _STEADY:
+				model.act(action, 1, 0.0)
+				if model.player:   # posed now, not at the figure's next (staggered) step
+					model.player.advance(0.0)
+		return false
 	if st == model.pose_state and md == model.pose_mod:
 		return false
 	var old := model.pose_state
@@ -2647,6 +2684,8 @@ func apply_snapshot(s: Array, quiet := false) -> void:
 		_pose_dirty = true
 	alert = bool(flags & 256)
 	stance = (flags >> 9) & 3
+	if quiet:   # found already in its posture (a joiner, a spawn record)
+		_pose_snap = true
 	limp = (flags >> 11) & 3
 	aggressive = not (flags & 8192)
 	faction = (flags >> 14) & 31

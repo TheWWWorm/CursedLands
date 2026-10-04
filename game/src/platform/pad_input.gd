@@ -38,13 +38,16 @@ const REPEAT_SEC := 0.09
 const TRIGGER_ON := 0.5
 const TRIGGER_OFF := 0.35
 const FILE := "user://gamepad.ini"
+## gamepad.ini's layout version ("version <n>" line): 2 since the movement-mode
+## ring moved to L3 and the pointer to R3 (2026-10).
+const FILE_VERSION := 2
 
 ## Logical actions bound to buttons, in the Options page's row order.
 const ACTIONS := ["interact", "cancel", "context", "pause", "actions", "items", "mod", "system",
-	"cursor", "recentre", "view", "menu"]
+	"cursor", "gait", "view", "menu"]
 ## The default layout (docs/gamepad_design.md §3.1).
 const DEFAULTS := {"A": "interact", "B": "cancel", "X": "context", "Y": "pause", "LB": "actions",
-	"RB": "items", "LT": "mod", "RT": "system", "L3": "cursor", "R3": "recentre", "VIEW": "view",
+	"RB": "items", "LT": "mod", "RT": "system", "L3": "gait", "R3": "cursor", "VIEW": "view",
 	"MENU": "menu", "TOUCHPAD": "view", "SHARE": "view"}
 ## Rebindable button names → Godot buttons (positional: A is the bottom face
 ## button on every pad). LT / RT are the trigger axes.
@@ -217,6 +220,12 @@ func _named(button_name: String, pressed: bool) -> void:
 	var a := String(bindings.get(button_name, ""))
 	if a == "":
 		return
+	# A window in the "pad_dismiss" group (the tutorial) takes a press it
+	# answers: it never reaches the field or the pointer, nor does its release.
+	if pressed and not _down.has(a):
+		for n in get_tree().get_nodes_in_group("pad_dismiss"):
+			if n.is_visible_in_tree() and n.call("pad_dismiss", a):
+				return
 	if pressed:
 		_press(a)
 	else:
@@ -353,8 +362,14 @@ func load_bindings() -> void:
 	if not FileAccess.file_exists(FILE):
 		return
 	var read := {}
+	var version := 1
 	for line in FileAccess.get_file_as_string(FILE).split("\n"):
 		var parts := line.strip_edges().split(" ", false)
+		if parts.size() >= 2 and parts[0] == "version":
+			version = int(parts[1])
+			continue
+		if parts.size() >= 2 and parts[1] == "recentre":
+			parts[1] = "gait"   # the R3 action before the movement-mode ring (2026-10)
 		if parts.size() >= 2 and (BUTTONS.has(parts[0]) or TRIGGERS.has(parts[0])) and String(parts[1]) in ACTIONS:
 			read[String(parts[0])] = String(parts[1])
 	if not read.is_empty():
@@ -362,9 +377,16 @@ func load_bindings() -> void:
 		for extra in ["TOUCHPAD", "SHARE"]:   # the PS extras follow View unless bound
 			if not bindings.has(extra) and "view" in bindings.values():
 				bindings[extra] = "view"
+		# Version 1's defaults had the pointer on L3 and the ring on R3: swap
+		# them once; the version line keeps a later deliberate rebind.
+		if version < 2 and bindings.get("L3", "") == "cursor" and bindings.get("R3", "") == "gait":
+			bindings.L3 = "gait"
+			bindings.R3 = "cursor"
+			save_bindings(bindings)
 
 
-## user://gamepad.ini, one "<BUTTON> <action>" line per button (keyboard.ini's form).
+## user://gamepad.ini, one "<BUTTON> <action>" line per button (keyboard.ini's form)
+## after a "version <n>" line.
 func save_bindings(m: Dictionary) -> void:
 	bindings = m.duplicate()
 	var f := FileAccess.open(FILE, FileAccess.WRITE)
@@ -372,7 +394,7 @@ func save_bindings(m: Dictionary) -> void:
 		return
 	var names := m.keys()
 	names.sort()
-	var out := ""
+	var out := "version %d\r\n" % FILE_VERSION
 	for n in names:
 		out += "%s %s\r\n" % [n, m[n]]
 	f.store_string(out)
@@ -447,12 +469,14 @@ func tutorial_key(key_action: String) -> String:
 		"pause": return label(button_of("pause"))
 		"accel", "decel": return "%s (%s)" % [label(button_of("pause")), RemakeText.t("hold")]
 		"obj": return label(button_of("view"))
-		"camera_track", "camera_norm": return label(button_of("recentre"))
+		"camera_track": return rt
+		"camera_norm": return "%s+%s" % [lt, label(button_of("gait"))]
 		"camera_up", "camera_down", "camera_left", "camera_right", "camera_zoom_in", "camera_zoom_out", \
 				"camera_rotate_left", "camera_rotate_right":
 			return label("RS")
 		"cs_head", "cs_body", "cs_rleg", "cs_lleg", "cs_rhand", "cs_lhand": return x
-		"crawl", "sneak", "walk", "run", "swarm", "follow", "use_science": return lb
+		"crawl", "sneak", "walk", "run": return label(button_of("gait"))
+		"swarm", "follow", "use_science": return lb
 		"select1", "select2", "select3": return label("UP")
 		"select_all": return "%s (%s)" % [label("UP"), RemakeText.t("hold")]
 		"quicksave", "quickload", "w_minimap", "w_text1", "w_text2", "tutorial_script": return rt

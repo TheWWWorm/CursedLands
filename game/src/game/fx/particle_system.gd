@@ -52,6 +52,24 @@ class Effect:
 	var pre_k := 0
 	var pre_aabb := AABB()
 	var pre_reach := -1.0
+	var want_fill := false   # set by _tick: refill the buffer with the tick (drawn last frame)
+
+
+## Remake: one tick's worker round, plain data only. The workers run
+## run(i) for efs[i]: the emitter's update_sim (its own particles, control
+## points, random stream and FxEmitter.ground_src) and, on the frame's last
+## tick, the instance buffer (_fill_calc, the Effect's own fields). Nothing
+## of the ParticleFx node, the scene tree or another effect is touched; the
+## main thread waits for the round before it changes or frees any of it.
+class SimJob:
+	var efs: Array[Effect] = []
+	var tick := 0
+	var has_cam := false
+	var eye := Vector3.ZERO
+	var fwd := Vector3.ZERO
+
+	func run(i: int) -> void:
+		ParticleFx._sim_ef(efs[i], self)
 
 
 var world: GameWorld
@@ -111,6 +129,28 @@ func rnd() -> int:
 
 func ground(x: float, y: float) -> float:
 	return world.ground_at(x, y) if world else 0.0
+
+
+## The ground the emitters read (FxEmitter.ground_src, set in update_pre):
+## one snapshot per tick; outside a tick (prewarm updates) a fresh one.
+var _ground: FxGround
+var _in_tick := false
+
+
+func ground_snapshot() -> FxGround:
+	if _in_tick and _ground:
+		return _ground
+	return FxGround.of(world)
+
+
+## Camera shakes the emitters asked for (FxEmitter.shakes; ct_mushroom's
+##  may run on a worker): started here, on the main thread.
+func _flush_shakes(e: FxEmitter) -> void:
+	if e.shakes.is_empty():
+		return
+	for sh: Array in e.shakes:
+		CameraRig.shake_at(self, sh[0], sh[1], sh[2], sh[3])
+	e.shakes.clear()
 
 
 static func ei(v: Vector3) -> Vector3:
@@ -243,8 +283,17 @@ func view_dir() -> Vector3:
 
 ## CEffectParticle create: type at `at` (EI
 ## space; the offset when attached), size s -> (s).
-## opt: k118, k11c, v130 (wall vector), prewarm (updates run now), secs.
+## opt: k118, k11c, v130 (wall vector), prewarm (updates run now), secs,
+## age (ticks since the server made it: an effect already running when this
+## peer makes it — a loaded save, a co-op joiner's replay). runs
+## `age` − 1 updates at once for the one-shot types (ONE_SHOT: the effect is
+## exactly as old as on the server and ends when it would have) and
+## min(age, 30) − 1 for the others (their own life is given by `secs`).
 func spawn(type: int, at: Vector3, size: float, carrier: Object = null, opt := {}) -> Effect:
+	var age := int(opt.get("age", 0))
+	var life := (120 if type == 0x2019 else 60) if type in ONE_SHOT else -1
+	if age > 0 and life > 0 and age >= life:
+		return null   # already gone on the server
 	var e := FxTypes.create(self, type)
 	if e == null or GameData.get_texture(e.texture) == null:
 		return null
@@ -269,13 +318,17 @@ func spawn(type: int, at: Vector3, size: float, carrier: Object = null, opt := {
 	var ef := Effect.new()
 	ef.e = e
 	ef.created = tick
-	if type in ONE_SHOT:
-		ef.until = tick + (120 if type == 0x2019 else 60)
+	if life > 0:
+		ef.until = tick + life - maxi(age, 0)
 	if opt.has("secs"):
 		ef.until = tick + maxi(1, roundi(float(opt.secs) / TICK))
 	effects.append(ef)
-	for i in int(opt.get("prewarm", 0)):
+	var pre := int(opt.get("prewarm", 0))
+	if age > 1:
+		pre = maxi(pre, age - 1 if life > 0 else mini(age, 30) - 1)
+	for i in pre:
 		e.update()
+	_flush_shakes(e)
 	_ground_marks(type, e, size)
 	return ef
 
@@ -479,17 +532,14 @@ func _process(dt: float) -> void:
 
 ## Remake (CPU): the emitters are independent, so the tick runs in three
 ## passes with the same result as the original's one loop: the bookkeeping and
-## the carrier point on the main thread (update_pre), the particles of the
-## `par` emitters on WorkerThreadPool (update_sim, each with its own random
+## the carrier point on the main thread (update_pre, which also hands each
+## emitter the tick's ground snapshot), the particles of the `par` emitters
+## on WorkerThreadPool (a SimJob: update_sim, each with its own random
 ## stream; on the frame's last tick also the instance buffer of each emitter
 ## drawn last frame, _fill_calc) while the main thread runs the others, then
-## the removals in list order. MultiMeshes are only touched in _draw.
+## — after the wait, the round's sync point — the camera shakes they asked
+## for and the removals in list order. MultiMeshes are only touched in _draw.
 const PAR_MIN_PARTS := 400   # fewer particles in all: no worker round trip
-var _par: Array[Effect] = []
-var _fill_eye := Vector3.ZERO
-var _fill_fwd := Vector3.ZERO
-var _fill_cam := false
-var _fill_on := false
 
 
 func _tick(last := true) -> void:
@@ -497,7 +547,10 @@ func _tick(last := true) -> void:
 	exit_colours()
 	for m in missiles.duplicate():
 		_missile_tick(m)
-	_par.clear()
+	_in_tick = true
+	_ground = FxGround.of(world)
+	var job := SimJob.new()
+	job.tick = tick
 	var serial: Array[Effect] = []
 	var parts := 0
 	for ef in effects:
@@ -515,29 +568,33 @@ func _tick(last := true) -> void:
 			ef.e.stop()
 		ef.ok = true
 		ef.pre = -1
+		ef.want_fill = false
 		if ef.e.update_pre():
 			if ef.e.par:
-				_par.append(ef)
+				ef.want_fill = last and ef.filled >= 0 and ef.mmi != null
+				job.efs.append(ef)
 				parts += ef.e.parts.size()
 			else:
 				serial.append(ef)
-	_fill_on = last
 	if last:
 		var cam := get_viewport().get_camera_3d() if is_inside_tree() else null
-		_fill_cam = cam != null
-		_fill_eye = ei(cam.global_position) if cam else Vector3.ZERO
-		_fill_fwd = view_dir()
-	if Portability.threads() and _par.size() > 1 and parts >= PAR_MIN_PARTS:
-		var gid := WorkerThreadPool.add_group_task(_sim_job, _par.size(), -1, true, "ParticleFx")
+		job.has_cam = cam != null
+		job.eye = ei(cam.global_position) if cam else Vector3.ZERO
+		job.fwd = view_dir()
+	if Portability.threads() and job.efs.size() > 1 and parts >= PAR_MIN_PARTS:
+		var gid := WorkerThreadPool.add_group_task(job.run, job.efs.size(), -1, true, "ParticleFx")
+		# The serial emitters meanwhile: they read nodes, the workers do not.
 		for ef in serial:
 			ef.ok = ef.e.update_sim()
 		WorkerThreadPool.wait_for_group_task_completion(gid)
 	else:
-		for ef in _par:
-			_sim_job_ef(ef)
+		for k in job.efs.size():
+			job.run(k)
 		for ef in serial:
 			ef.ok = ef.e.update_sim()
-	_par.clear()
+	_in_tick = false
+	for ef in effects:
+		_flush_shakes(ef.e)
 	var i := 0
 	while i < effects.size():
 		var ef := effects[i]
@@ -646,20 +703,16 @@ static func _shader(additive: bool, through := false) -> Shader:
 ## per instance the 3x4 "transform" holds the previous centre, the current
 ## centre, the previous and current size and the previous colour (see
 ## particle.gdshader), COLOR the current colour, CUSTOM the atlas rect.
-func _sim_job(i: int) -> void:
-	_sim_job_ef(_par[i])
-
-
-func _sim_job_ef(ef: Effect) -> void:
+static func _sim_ef(ef: Effect, job: SimJob) -> void:
 	ef.ok = ef.e.update_sim()
 	# Drawn last frame: most likely drawn this one too.
-	if _fill_on and ef.filled >= 0 and ef.mmi != null and not ef.e.parts.is_empty():
-		_fill_calc(ef, _fill_cam, _fill_eye, _fill_fwd)
+	if ef.want_fill and not ef.e.parts.is_empty():
+		_fill_calc(ef, job.has_cam, job.eye, job.fwd, job.tick)
 
 
 func _fill(ef: Effect, mm: MultiMesh) -> void:
 	var cam := get_viewport().get_camera_3d() if is_inside_tree() else null
-	_fill_calc(ef, cam != null, ei(cam.global_position) if cam else Vector3.ZERO, view_dir() if cam else Vector3.ZERO)
+	_fill_calc(ef, cam != null, ei(cam.global_position) if cam else Vector3.ZERO, view_dir() if cam else Vector3.ZERO, tick)
 	_fill_apply(ef, mm)
 
 
@@ -676,16 +729,19 @@ func _fill_apply(ef: Effect, mm: MultiMesh) -> void:
 	ef.pre = -1
 
 
-## The instance buffer of the emitter's particles (no Godot object touched:
-## safe on a worker); _fill_apply hands it to the MultiMesh.
-func _fill_calc(ef: Effect, has_cam: bool, eye: Vector3, fwd: Vector3) -> void:
+## The instance buffer of the emitter's particles (the Effect's own data, no
+## node: safe on a worker); _fill_apply hands it to the MultiMesh at tick t.
+static func _fill_calc(ef: Effect, has_cam: bool, eye: Vector3, fwd: Vector3, t: int) -> void:
 	var e := ef.e
 	var n := e.parts.size()
+	# Taken out of the Effect while it is written: the only reference, so the
+	# writes go in place (no copy-on-write of the whole buffer each tick).
+	var b := ef.buf
+	ef.buf = PackedFloat32Array()
 	if ef.cap < n:
 		ef.cap = maxi(n, mini(e.d8, 64) if n <= 64 else n * 2)
-		ef.buf.resize(ef.cap * 20)
-		ef.buf.fill(0.0)
-	var b := ef.buf
+		b.resize(ef.cap * 20)
+		b.fill(0.0)
 	var lo := Vector3(INF, INF, INF)
 	var hi := -lo
 	var big := 0.0
@@ -720,7 +776,7 @@ func _fill_calc(ef: Effect, has_cam: bool, eye: Vector3, fwd: Vector3) -> void:
 		big = maxf(big, maxf(absf(p[3]), absf(p[7])) * SIZE_K)
 		k += 1
 	ef.buf = b
-	ef.pre = tick
+	ef.pre = t
 	ef.pre_k = k
 	# An emitter between spawns has no particle (lo / hi stay ±INF): keep its
 	# last box, a non-finite custom_aabb must never reach the renderer.
@@ -744,7 +800,7 @@ const SIZE_K := 1.1099162
 ## their projected depth (merge passes / radix
 ## larger first). Only the blended emitters are sorted here; additive ones
 ## look the same in any order.
-func _draw_order(e: FxEmitter, has_cam: bool, eye: Vector3, fwd: Vector3) -> Array:
+static func _draw_order(e: FxEmitter, has_cam: bool, eye: Vector3, fwd: Vector3) -> Array:
 	if e.add == 1 or e.parts.size() < 2:
 		return e.parts
 	if not has_cam:
@@ -932,6 +988,10 @@ func spell_cast(ev: Dictionary) -> void:
 	var cast_dir := Vector2(float(ev.get("dx", 0.0)), float(ev.get("dy", 0.0)))
 	if left > 0.0:
 		ticks = left / TICK
+	# How long ago it was cast (ticks; Session._track "age"): its particles
+	# catch up as does for an effect made after its creation
+	# tick (spawn "age"), so a replayed spell resumes instead of restarting.
+	var age := maxi(int(ev.get("age", 0)), 0)
 	# A cast without a caster (script CastSpellPoint / CastSpellUnit, magic
 	# traps: with caster 0) starts at its source point "fx", "fy".
 	var src := Vector3.ZERO
@@ -950,16 +1010,18 @@ func spell_cast(ev: Dictionary) -> void:
 				add_bolt(src, b, s * 5.0, maxf(ticks, 10.0) * TICK, caster, target)
 		"fireball":
 			if has_src:
-				_fireball(ei(caster.global_position) if caster else src, gp, s, sp)
+				_fireball(ei(caster.global_position) if caster else src, gp, s, sp, age)
 		"inv_lit":
 			var top := Vector3(at.x, at.y, gp.z - 3.0 + 30.0)
 			var bot := Vector3(at.x, at.y, gp.z - 3.0)
-			add_bolt(top, bot, -7.0 * s, 5 * TICK)
-			var tw := get_tree().create_timer(5 * TICK, false)
-			tw.timeout.connect(func(): if is_instance_valid(self): add_bolt(top, bot, -7.0 * s, 5 * TICK))
-			spawn(0x2030, gp, maxf(float(sp.radius), 0.5), null, {"k118": s})
+			if age < 5:
+				add_bolt(top, bot, -7.0 * s, (5 - age) * TICK)
+			if age < 10:
+				var tw := get_tree().create_timer(maxi(5 - age, 0) * TICK, false)
+				tw.timeout.connect(func(): if is_instance_valid(self): add_bolt(top, bot, -7.0 * s, mini(5, 10 - age) * TICK))
+			spawn(0x2030, gp, maxf(float(sp.radius), 0.5), null, {"k118": s, "age": age})
 		"acid_column":
-			spawn(0x200c, gp, 1.0)
+			spawn(0x200c, gp, 1.0, null, {"age": age})
 		"firewall":
 			var dir := Vector2(1, 0)
 			if cast_dir != Vector2.ZERO:
@@ -969,7 +1031,7 @@ func spell_cast(ev: Dictionary) -> void:
 			elif has_src and at.distance_to(Vector2(src.x, src.y)) > 0.01:
 				dir = (at - Vector2(src.x, src.y)).normalized()
 			var half := Vector3(-dir.y, dir.x, 0.0) * maxf(float(sp.radius), 0.5)
-			spawn(0x2010, gp, s, null, {"k118": s, "v130": half, "secs": maxf(ticks, 1.0) * TICK})
+			spawn(0x2010, gp, s, null, {"k118": s, "v130": half, "secs": maxf(ticks, 1.0) * TICK, "age": age})
 		"litnwall":
 			var dir2 := Vector2(1, 0)
 			if cast_dir != Vector2.ZERO:
@@ -985,12 +1047,12 @@ func spell_cast(ev: Dictionary) -> void:
 			b2.z = ground(b2.x, b2.y) + 1.0
 			add_bolt(a2, b2, 0.0, maxf(ticks, 10.0) * TICK)
 		"acid_fog":
-			spawn(0x2007, gp, maxf(float(sp.radius), 1.0), null, {"k118": s, "secs": maxf(ticks, 1.0) * TICK})
+			spawn(0x2007, gp, maxf(float(sp.radius), 1.0), null, {"k118": s, "secs": maxf(ticks, 1.0) * TICK, "age": age})
 		"fireworks":
-			spawn(0x2009, gp, s, null, {"secs": maxf(ticks, 1.0) * TICK})
+			spawn(0x2009, gp, s, null, {"secs": maxf(ticks, 1.0) * TICK, "age": age})
 		"clairvoyence":
 			var r := maxf(float(sp.radius), 1.0)
-			spawn(0x2018, gp, r)
+			spawn(0x2018, gp, r, null, {"age": age})
 			var tm := get_tree().create_timer(maxf(ticks - 10.0, 0.0) * TICK, false)
 			tm.timeout.connect(func(): if is_instance_valid(self): spawn(0x2018, gp, -r))
 		"healing":
@@ -1003,8 +1065,10 @@ func spell_cast(ev: Dictionary) -> void:
 		"teleport":
 			if caster:
 				var cp := ei(caster.global_position)
-				spawn(0x2019, cp + Vector3(0, 0, carrier_height(caster)), 1.0)
-			spawn(0x2019, gp - Vector3(0, 0, 0.2), -1.0)
+				spawn(0x2019, cp + Vector3(0, 0, carrier_height(caster)), 1.0, null, {"age": age})
+			elif ev.has("fx"):   # replayed: where the caster stood at the cast (Session._track)
+				spawn(0x2019, _ground_pt(float(ev.fx), float(ev.fy), float(ev.get("fz", 1.0))), 1.0, null, {"age": age})
+			spawn(0x2019, gp - Vector3(0, 0, 0.2), -1.0, null, {"age": age})
 
 
 ## The units a spell lands on (the same choice as Spells.apply, for visuals).
@@ -1019,16 +1083,10 @@ func _victims(sp: Dictionary, target: GameUnit, at: Vector2) -> Array:
 ## fixes the velocity and the tick count (= round(d / range × 15) − 2)
 ## toward, the target's position at the cast, and the
 ## blast (case 3) is at that point.
-func _fireball(from: Vector3, to: Vector3, s: float, sp: Dictionary) -> void:
+func _fireball(from: Vector3, to: Vector3, s: float, sp: Dictionary, age := 0) -> void:
 	var rng := maxf(float(sp.range), 1.0)
 	var d := Vector2(to.x - from.x, to.y - from.y)
 	var n := maxi(1, roundi(d.length() / rng * 15.0) - 2)
-	var ef := spawn(0x2000, Vector3(from.x, from.y, ground(from.x, from.y) + 1.0), s * 0.3)
-	if ef == null:
-		return
-	ef.move_ticks = n
-	var step := d / float(n)
-	ef.move_step = Vector3(step.x, step.y, 0.0)
 	var r := float(sp.radius)
 	var sa := s
 	if r > 0.0:
@@ -1036,12 +1094,29 @@ func _fireball(from: Vector3, to: Vector3, s: float, sp: Dictionary) -> void:
 		var ratio := (r * r * PI) / pa if pa > 0.0 else 1.0
 		sa = pow(clampf(ratio, 1.0, 8.0), 0.33) - 0.2
 	var sz := minf(s, sa)
+	var step := d / float(n)
+	if age >= n:
+		# Replayed after the ball arrived: only the blast, as old as it is.
+		var hit0 := _ground_pt(to.x, to.y, 1.0)
+		spawn(0x2002, hit0, sz, null, {"age": age - n})
+		var lc0 := _spell_light(sp)
+		if lc0.radius > 0.0 and age - n < 37:
+			add_light(hit0, lc0.color, lc0.radius * 1.5, (37 - (age - n)) * TICK, lc0.energy, true)
+		return
+	# Replayed in flight: on from where the ball is now, for the ticks it has left.
+	var at := Vector2(from.x, from.y) + step * float(age)
+	var left := n - age
+	var ef := spawn(0x2000, Vector3(at.x, at.y, ground(at.x, at.y) + 1.0), s * 0.3, null, {"age": age})
+	if ef == null:
+		return
+	ef.move_ticks = left
+	ef.move_step = Vector3(step.x, step.y, 0.0)
 	var lc := _spell_light(sp)
-	var light := add_light(Vector3(from.x, from.y, ground(from.x, from.y) + 1.0), lc.color, lc.radius, n * TICK, lc.energy, true) if lc.radius > 0.0 else {}
+	var light := add_light(Vector3(at.x, at.y, ground(at.x, at.y) + 1.0), lc.color, lc.radius, left * TICK, lc.energy, true) if lc.radius > 0.0 else {}
 	if not light.is_empty():
 		light.step = ef.move_step
-		light.ticks = n
-	get_tree().create_timer(n * TICK, false).timeout.connect(func():
+		light.ticks = left
+	get_tree().create_timer(left * TICK, false).timeout.connect(func():
 		if not is_instance_valid(self):
 			return
 		delete(ef)
@@ -1088,10 +1163,13 @@ func _missile(code: String, start: Vector3, target: GameUnit, point: Vector3, s:
 
 
 func _missile_tick(m: Dictionary) -> void:
-	var t: GameUnit = m.target if is_instance_valid(m.target) else null
+	# A target taken off the world on the way (a body looted, RemoveObject):
+	# on to where it was last.
+	var t: GameUnit = m.target if is_instance_valid(m.target) and m.target.is_inside_tree() else null
 	var dest: Vector3 = m.point
 	if t:
 		dest = ei(t.global_position) + Vector3(0, 0, carrier_height(t) * 0.5)
+		m.point = dest
 	var pos: Vector3 = m.pos
 	var d := dest - pos
 	m.ticks += 1

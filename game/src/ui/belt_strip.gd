@@ -17,6 +17,16 @@ extends Control
 ##  on the nearest hostile unit in view (none:
 ## nomagic.wav, the item kept), anything else on the holder (Session "use").
 ## A click picks, a double click uses at once, as those two.
+## The HUD's item cells act on the button's release, not the press (traced
+## 2026-10-04, input s weapons / belt
+## spells / actions): the press on a filled cell only captures the
+## mouse (the
+## double click's handler the same); the release (
+## ) hit-tests its own point and acts on the cell
+## *there*: released over another cell of the same strip, that cell acts;
+## released off the strip, nothing happens. The double click's flag
+## (manager) holds until that release. No item follows
+## the cursor (there is no drag and drop, see the reference doc).
 ## Tooltip: the item's name; for an item with a spell
 ## then " \n" and, two fields per line, "%s %d  " Stamina, "%s %s \n" School;
 ## Effect ("%s %s" Constant when the prototype takes no effect runes
@@ -43,6 +53,8 @@ var _picked := -1     # cell picked at the last refresh
 var _unpicked := -1   # cell left at scale 1.0
 var _views: Array[ItemView] = []
 var _unit: GameUnit
+var _held := -1          # cell the press captured the mouse
+var _held_double := false  # that press was a double click (manager)
 
 
 func _ready() -> void:
@@ -187,10 +199,17 @@ static func _l(n: int) -> String:
 
 
 func _gui_input(e: InputEvent) -> void:
-	if e is InputEventMouseButton and e.pressed and e.button_index == MOUSE_BUTTON_LEFT:
-		var i := _slot_at(e.position)
-		if i >= 0:
-			use(i, e.double_click)
+	if e is InputEventMouseButton and e.button_index == MOUSE_BUTTON_LEFT:
+		if e.pressed:
+			# a filled cell captures the mouse.
+			_held = _slot_at(e.position)
+			_held_double = e.double_click
+		elif _held >= 0:
+			# the cell under the release acts.
+			_held = -1
+			var i := _slot_at(e.position)
+			if i >= 0:
+				use(i, _held_double)
 		accept_event()
 
 

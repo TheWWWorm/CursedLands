@@ -86,6 +86,7 @@ func _ready() -> void:
 	visible = false
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	mouse_filter = Control.MOUSE_FILTER_STOP
+	add_to_group("pad_dismiss")
 	var img := GameData.load_image("saveload") if GameData.is_open() else null
 	if img:
 		img.flip_y()
@@ -398,6 +399,14 @@ func _unhandled_key_input(e: InputEvent) -> void:
 	if visible and e is InputEventKey and e.pressed and not e.echo and e.keycode == KEY_ESCAPE:
 		close()
 		get_viewport().set_input_as_handled()
+
+
+## Remake (gamepad): A (the interact button) closes the window at once.
+func pad_dismiss(a: String) -> bool:
+	if a != "interact" or _pages.is_empty():
+		return false
+	close()
+	return true
 
 
 func _get_tooltip(at: Vector2) -> String:

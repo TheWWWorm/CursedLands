@@ -20,12 +20,20 @@ config/icon="res://icon.svg"
 run/main_scene="res://scenes/main.tscn"
 run/flush_stdout_on_print=true
 config/features=PackedStringArray("4.7")
+config/version="1.0.0"
+config/project_settings_override.android="user://renderer.cfg"
 
 [autoload]
 
 GameData="*res://src/ei/game_data.gd"
 TouchInput="*res://src/platform/touch_input.gd"
 PadInput="*res://src/platform/pad_input.gd"
+
+[debug]
+
+file_logging/enable_file_logging=true
+file_logging/enable_file_logging.web=false
+file_logging/max_log_files=10
 
 [display]
 
@@ -51,6 +59,7 @@ timers/tooltip_delay_sec=1000000.0
 renderer/rendering_method.mobile="gl_compatibility"
 renderer/rendering_method.web="gl_compatibility"
 rendering_device/driver.windows="d3d12"
+rendering_device/fallback_to_opengl3=true
 limits/opengl/max_lights_per_object.mobile=4
 limits/opengl/max_lights_per_object.web=4
 lights_and_shadows/directional_shadow/size.mobile=1024

@@ -19,7 +19,7 @@ def prepare(source, output):
         if not path.is_file() or path.is_symlink():
             continue
         name = path.relative_to(source).as_posix().lower()
-        if name.split('/')[0] not in {'res', 'maps', 'config', 'stream', 'movies'}:
+        if name.split('/')[0] not in {'res', 'maps', 'config', 'stream', 'movies', 'camera'}:
             continue
         if name in index:
             raise ValueError('Duplicate case-insensitive filename: ' + name)

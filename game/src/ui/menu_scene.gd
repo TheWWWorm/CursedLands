@@ -20,6 +20,7 @@ var _sky: ShaderMaterial
 var _sky_spin := 0.0
 var _env: Environment
 var _sun: DirectionalLight3D
+var _held_sun := Vector3.ZERO
 var _lights: EILights
 ## World time of the menu island (hours). loads the island and
 ## sets the world clock to the computer's local time (GetLocalTime: wHour +
@@ -151,8 +152,18 @@ func set_hour(h: float) -> void:
 		return
 	var ld := EISky.light_dir_ei(h)
 	var gd := EISpace.vec(ld).normalized()
-	_sun.basis = Basis.looking_at(gd, Vector3.FORWARD if absf(gd.y) > 0.99 else Vector3.UP)
+	if not Portability.held_sun():
+		_sun.basis = Basis.looking_at(gd, Vector3.FORWARD if absf(gd.y) > 0.99 else Vector3.UP)
+		Gfx.update_original(_env, _sun, _lights, h, false)
+		EISky.update(_sky, _lights, h, false, Gfx.on("gfx_sky"))
+		return
+	# Phones / web: the shadow map is aimed along a held direction, re-aimed
+	# after Game.SUN_MAX_LAG_DEG (Game._aim_sun); the light keeps the clock.
+	if _held_sun == Vector3.ZERO or rad_to_deg(_held_sun.angle_to(gd)) >= Game.SUN_MAX_LAG_DEG:
+		_held_sun = gd
+	_sun.basis = Game.sun_basis(_held_sun)
 	Gfx.update_original(_env, _sun, _lights, h, false)
+	RenderingServer.global_shader_parameter_set(&"ei_sun_dir", -gd)
 	EISky.update(_sky, _lights, h, false, Gfx.on("gfx_sky"))
 
 
@@ -162,6 +173,10 @@ static func create() -> MenuScene:
 		return null
 	var s := MenuScene.new()
 	s.add_child(map)
+	# The terrain follows Options' gfx_terrain / gfx_water here too (as
+	# Game._apply_options in a zone), not only the values it was built with.
+	if map.terrain:
+		GameData.options_changed.connect(map.terrain.apply_gfx)
 	for n: Node3D in map.object_nodes:
 		var info: Dictionary = n.get_meta("ei", {})
 		if String(info.get("template", "")) == "unmoco2":
@@ -223,6 +238,8 @@ func _setup_view(map: EIMapScene) -> void:
 	add_child(we)
 	_env = env
 	_sun = DirectionalLight3D.new()
+	if Portability.held_sun():
+		_sun.light_specular = Gfx.SUN_MARK   # light() reads ei_sun_dir for it (set_hour)
 	_sun.shadow_enabled = true
 	Gfx.setup_sun_casters(_sun)
 	add_child(_sun)
@@ -235,16 +252,14 @@ func _setup_view(map: EIMapScene) -> void:
 	camera.far = Gfx.far_clip()
 	add_child(camera)
 	camera.transform = _cam_pose("camera/mainmenu.cam")
-	if camera.transform == Transform3D.IDENTITY:
-		# No camera file: stand behind the signpost looking at the ogre's camp.
-		var info: Dictionary = _column.get_meta("ei", {})
-		var cp: Vector3 = info.get("position", Vector3.ZERO)
-		var col := Vector2(cp.x, cp.y)
-		var view := Vector2(11.3, 30.2)
-		var eye2 := col + (col - view).normalized() * 4.3
-		var ground := map.terrain.height_at(col.x, col.y)
-		var eye := EISpace.pos(eye2.x, eye2.y, ground + 2.4)
-		camera.transform = Transform3D(Basis.looking_at(EISpace.pos(view.x, view.y, ground + 1.6) - eye), eye)
+
+
+## camera/mainmenu.cam's pose (all its keyframes hold it; the Russian and
+## English editions agree), for game files without the camera folder (earlier
+## browser imports left it out): a view of the remake's own stood too close,
+## the signpost did not fit and its click areas (menus.reg) missed the boards.
+const MENU_CAM_POS := Vector3(49.740936, 35.580876, 10.341418)
+const MENU_CAM_QUAT := Quaternion(0.517857, 0.621320, -0.451716, -0.376496)   # x y z w
 
 
 ## First keyframe of an original .cam file: 36-byte records of
@@ -252,14 +267,16 @@ func _setup_view(map: EIMapScene) -> void:
 ## looks along its local +z with -y up and +x to the right.
 func _cam_pose(rel: String) -> Transform3D:
 	var b := GameFiles.read(GameData.root.path_join(rel), 0, 36)
-	if b.size() < 36:
-		return Transform3D.IDENTITY
-	var q := EISpace.quat(b.decode_float(20), b.decode_float(24), b.decode_float(28), b.decode_float(32))
+	var pos := MENU_CAM_POS
+	var rot := MENU_CAM_QUAT
+	if b.size() >= 36:
+		pos = Vector3(b.decode_float(8), b.decode_float(12), b.decode_float(16))
+		rot = Quaternion(b.decode_float(24), b.decode_float(28), b.decode_float(32), b.decode_float(20))
+	var q := EISpace.quat(rot.w, rot.x, rot.y, rot.z)
 	var right := q * EISpace.vec(Vector3(1, 0, 0))
 	var up := q * EISpace.vec(Vector3(0, -1, 0))
 	var back := q * EISpace.vec(Vector3(0, 0, -1))
-	return Transform3D(Basis(right, up, back).orthonormalized(),
-		EISpace.pos(b.decode_float(8), b.decode_float(12), b.decode_float(16)))
+	return Transform3D(Basis(right, up, back).orthonormalized(), EISpace.pos(pos.x, pos.y, pos.z))
 
 
 ## The boards' hit rectangles (the original reads menus.reg

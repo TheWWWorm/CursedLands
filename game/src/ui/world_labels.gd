@@ -1,6 +1,6 @@
 class_name WorldLabels
 extends Control
-## Remake (gamepad, docs/gamepad_design.md §3.1): while R3 is held
+## Remake (gamepad, docs/gamepad_design.md §3.1): while L3 is held
 ## (PadField.world_info, BG3's "world information"), a name label over
 ## everything around the party that can be acted on: living units (enemies
 ## in red, the others in the interface's text colour), bodies that can be

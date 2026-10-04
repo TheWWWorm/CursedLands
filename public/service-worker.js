@@ -2,26 +2,26 @@
 // Replaced with content hashes and engine-only files by tools/export_mobile.py.
 // The "2" marks the cache layout that stores the shell under the scope URL;
 // older caches stored a redirected copy of index.html and are deleted below.
-const ENGINE_CACHE = 'cursed-engine-2-0c3b5947f2de21fe3b93';
+const ENGINE_CACHE = 'cursed-engine-2-bb586618161d5836ca73';
 // Hosts may redirect /index.html to / (Cloudflare Workers assets do). A
 // redirected response must never answer a navigation (the browser fails it
 // with ERR_FAILED), so the shell is fetched and stored as "./".
 const SHELL = new URL('./', self.registration.scope).href;
 const HASHES = {
 "data-worker.js": "c3ac5770784bcee8b2dc61e6e3c32552c702596486947fa80d0c230f13352f66",
-"files.js": "834c378560f6fc52104a078a6b70988f4894a5c4a8624dd8f48f49c9466387f2",
+"files.js": "9b90328e39a0ec807c8a8c2ffd6cd72a69b7aa8165e78bfd604d90e3c41fd7bb",
 "icon-192.png": "ce18b6621f58d2b24ef49ec182bf4f021f5992b2e46e666918764c47d92a1a0a",
 "icon-512.png": "33d17b00001bf55448c56919e7f9a9d56be7089231be189704d72a13d00363d4",
 "index.apple-touch-icon.png": "a8079e5f32d35cabbc12bb9f66f4b7c49a73b84d7fc1e8e4dde15914f9bc50eb",
 "index.audio.position.worklet.js": "be33985bc7160d6bf9646f259cd86b259cd67b02ccb297ee5c44f8ac84327bc8",
 "index.audio.worklet.js": "5b476a9c9ce642c0ee4256436d1bc31d9c38f868aca0f9a8e2a57c18d2dec2a3",
-"index.html": "addf02faf636aaf55bad4851108bd3128094edfeb5567281b2db09a312a4bdbb",
+"index.html": "3b8a60b7d27f96aa1351d259cf2ba24b13de17411ab85df8665951ff4e75c172",
 "index.icon.png": "490c9afe17f218360ceb84d41dd95d0409dfe0349c00a97c40cf3d8e04cf0b45",
 "index.js": "68586d6daafc93c6e697b3fb258976874aa7459b8931165ebb1dc3c9614cc42c",
-"index.pck": "ca4a4f314b19c57e4e0f15068da6c17464e4e7091e5755d34390386d7bf2f483",
+"index.pck": "d0065269c225d1c2cd4ac925a67d05bc82f03b4c75e86a9d4b18a58424394189",
 "index.png": "3cb4495c0b98dfbe4b663cbf2b6836473572339beb66d902367893162a70be0e",
 "index.wasm": "7eda98958eb09135a1acb54a4323a00b1a55af1997f15fa1cdc2b93e3df46656",
-"installer-worker.js": "9c4f5158058b6a7710aed4c6909b4131417ea698b029168c610d13af8383ec75",
+"installer-worker.js": "d6afa8f57a10faef5edb0f1ce10ef2ec52a9e7ed690771ba0b97b431e9e24708",
 "manifest.webmanifest": "959d316f9bd45b8d4c6cfd621aced7f55336f459e9472c3f5ce53fb9c7990ab5",
 "storage.js": "ecc67a7e33c69abc6a51a2e3a77fd7ea319fcad1e0fefe71f9e2d06f353b7121"
 };   // file name → SHA-256

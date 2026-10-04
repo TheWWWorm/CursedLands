@@ -5,7 +5,7 @@ extends CanvasLayer
 ## Runs over the main menu's 3D island on the first start (no detection record
 ## and the graphics still at the platform defaults), after a graphics card /
 ## renderer change if the settings detection chose were not touched since,
-## and from Options (Lighting and surfaces: "Detect best settings"). Option
+## and from Options (Graphics: "Detect best settings"). Option
 ## auto_graphics off: never on its own.
 ##
 ## The test steps down a ladder of tiers (TIER_NAMES, tier_values): each
@@ -129,9 +129,11 @@ static func device_kind() -> String:
 
 
 ## The first tier tried. Desktop: High. Phones: by GPU family and generation,
-## one lower for a large screen (> 2.6 Mpx) or a weak CPU (≤ 4 cores); then
+## one lower for a large screen (> 2.6 Mpx), a weak CPU (≤ 4 cores) or the
+## Forward+ renderer (Android's Vulkan choice, RendererChoice); then
 ## verified by measuring. Unknown mobile GPUs start at Low.
-static func start_tier(kind: String, adapter: String, screen: Vector2i, cpus: int) -> int:
+static func start_tier(kind: String, adapter: String, screen: Vector2i, cpus: int,
+		method: String = RenderingServer.get_current_rendering_method()) -> int:
 	if kind == "desktop":
 		return 0
 	var a := adapter.to_lower()
@@ -165,6 +167,8 @@ static func start_tier(kind: String, adapter: String, screen: Vector2i, cpus: in
 		t += 1
 	if cpus > 0 and cpus <= 4:
 		t += 1
+	if kind == "handheld" and method == "forward_plus":
+		t += 1   # Forward+ on a phone GPU (RendererChoice): the desktop renderer's fixed cost
 	return clampi(t, 0, ORIGINAL)
 
 
@@ -342,6 +346,64 @@ static func auto_reason(rec: Dictionary, current: Dictionary, base: Dictionary, 
 static func untouched(rec: Dictionary, current: Dictionary) -> bool:
 	var vals: Dictionary = rec.get("values", {})
 	return int(rec.get("tier", -1)) >= 0 and not vals.is_empty() and _matches(current, vals)
+
+
+# ------------------------------------------------------------------ Original look
+
+## Options' "Original look" toggle (OptionsPanel, the PRESET_ROW of the three
+## remake graphics pages): on while every gfx_* switch is off. It touches
+## only the gfx_* switches (render quality, render scale and the frame-rate
+## cap stay as they are).
+static func original_look_on(values: Dictionary) -> bool:
+	for k in keys():
+		if k.begins_with("gfx_") and int(values.get(k, 0)) != 0:
+			return false
+	return true
+
+
+## The tier to come back to when Original look is switched on now over
+## `current`: the detection's tier while its settings are still in force
+## (untouched) and it has effects on (below ORIGINAL), else -1.
+static func original_look_from(rec: Dictionary, current: Dictionary) -> int:
+	if untouched(rec, current) and int(rec.tier) < ORIGINAL:
+		return int(rec.tier)
+	return -1
+
+
+## The gfx_* values the toggle sets. On: all off. Off: those of the detected
+## tier `from` (the record's values, as the test stored them) when Original
+## look was switched on over the detection's settings, else the platform's
+## defaults (a fresh install's values here, `base`).
+static func original_look_values(on: bool, rec: Dictionary, from: int, base: Dictionary = base_values()) -> Dictionary:
+	var src := base
+	var vals: Dictionary = rec.get("values", {}) if rec.get("values") is Dictionary else {}
+	if not on and from >= 0 and from < ORIGINAL and int(rec.get("tier", -1)) == from and not vals.is_empty():
+		src = vals
+	var out := {}
+	for k in keys():
+		if k.begins_with("gfx_"):
+			out[k] = 0 if on else int(src.get(k, base.get(k, 0)))
+	return out
+
+
+## The record after the player switched Original look on or off (Options ✓):
+## a choice of the player's, so the detection treats it as one. On over the
+## detection's settings: "original_look_from" keeps the tier to restore; the
+## settings no longer match the record's values, so the low-FPS watchdog and
+## the new-GPU re-test leave them alone (`untouched` false). Off: the key goes;
+## restored to the detected tier the settings match its values again (the
+## watchdog may offer a step down as before), restored to the defaults they
+## stay the player's own. No record yet (no test ever ran): the "manual"
+## record, so the first-start test does not replace the choice.
+static func original_look_record(rec: Dictionary, on: bool, from: int) -> Dictionary:
+	var r := rec.duplicate(true)
+	if r.is_empty():
+		r = {"version": VERSION, "fingerprint": fingerprint(), "tier": -1, "manual": 1}
+	if on and from >= 0:
+		r.original_look_from = from
+	else:
+		r.erase("original_look_from")
+	return r
 
 
 # ------------------------------------------------------------------ running

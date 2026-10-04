@@ -52,7 +52,8 @@ Download the package for your system from the [Releases](https://github.com/TheW
 1. Start the engine.
 2. When asked, choose either:
    - the folder of an installed copy of Evil Islands (the one containing `res`, `maps` and `config`), or
-   - the GOG offline installer itself (`setup_evil_islands_*.exe`). It is **not run**: the engine unpacks the game files from it once into its own user folder and checks each file. This takes a few minutes, and nothing needs to be installed on Linux or macOS.
+   - the GOG offline installer itself (`setup_evil_islands_*.exe`). It is **not run**: the engine unpacks the game files from it once into its own user folder and checks each file. This takes a few minutes, and nothing needs to be installed on Linux or macOS, or
+   - a game data pack (`.eipack`, see [Play in your browser](#play-in-your-browser)).
 3. The chosen folder is remembered. The original intro videos play, then the main menu opens.
 
 **New Game** asks for the difficulty first, as the original does. It can be changed at any time in **Options → Game**.
@@ -107,7 +108,7 @@ Keys are read from the game's own `keyboard.ini`. To change one, open **Options*
 
 ### Gamepad
 
-A controller works out of the box (a remake extra; the original has none). The left stick moves your hero (half tilt walks, full tilt runs), the right stick turns and zooms the camera, **A** acts on the highlighted target, **B** cancels and **Y** pauses (hold it for fast speed). **LB** opens the spells and actions wheel, **RB** the belt and weapons, **RT** the inventory, journal, quests, minimap and quick save / load; **X** opens a target ring with the aimed strikes. Menus and dialogues work with the D-pad and **A** / **B**, and **L3** turns on a pointer for anything else. Hold **R3** to show names over nearby people, bodies, levers, chests, doors and exits. The **RT** wheel's Camera page holds camera views 1–4, and in the Esc menu **Y** quick saves and holding **X** quick loads. The Multiplayer screens and network characters work with the D-pad as well. On a DualSense or DualShock 4, the light bar shows the leader's health. Vibration, dead zone, button pictures, the light bar and rebinding are under **Options → Controls → Gamepad…**.
+A controller works out of the box (a remake extra; the original has none). The left stick moves your hero in a straight line in the current movement mode (tap **L3** for the movement-mode ring), the right stick turns and zooms the camera, **A** acts on the highlighted target, **B** cancels and **Y** pauses (hold it for fast speed). **LB** opens the spells and actions wheel, **RB** the belt and weapons, **RT** the inventory, journal, quests, minimap and quick save / load; **X** opens a target ring with the aimed strikes. Menus and dialogues work with the D-pad and **A** / **B**, and **R3** turns on a pointer for anything else. Hold **L3** to show names over nearby people, bodies, levers, chests, doors and exits. The **RT** wheel's Camera page holds camera views 1–4, and in the Esc menu **Y** quick saves and holding **X** quick loads. The Multiplayer screens and network characters work with the D-pad as well. On a DualSense or DualShock 4, the light bar shows the leader's health. Vibration, dead zone, button pictures, the light bar and rebinding are under **Options → Remake → Gamepad…**.
 
 ## What is there
 
@@ -115,7 +116,7 @@ A controller works out of the box (a remake extra; the original has none). The l
 - **Original rules**: combat with aimed strikes, wounds and stealth, monster AI and spell choice, pathfinding, traps, levers and gates, day and night, follow the original game's behaviour and tables.
 - **Original interface**: the HUD, inventory, trading, spell crafting, journal, dialogues, Load and Save screens and Options use the game's own art and texts and its 800×600 layouts, scaled to your screen.
 - **Modern camera**: a free camera that pans, rotates and zooms smoothly and fades walls and roofs out of the way, in the style of modern isometric RPGs. The original fixed camera can be chosen under **Options**.
-- **Modern display**: any resolution, windowed or fullscreen, a frame rate limit, a sharper mouse cursor at high resolutions, and optional graphics improvements (better water and terrain detail, sky with sun, moon and stars, swaying vegetation, bloom, ambient occlusion, volumetric fog and heat haze) under **Options → Graphics**.
+- **Modern display**: any resolution, windowed or fullscreen, a frame rate limit, a sharper mouse cursor at high resolutions, and optional graphics improvements (better water and terrain detail, sky with sun, moon and stars, swaying vegetation, bloom, ambient occlusion, volumetric fog and heat haze). Display settings are under **Options → Screen**; the extra graphics pages open from **Options → Graphics** and **Options → Remake**, and **Original look** on the Graphics page turns all of them off.
 - **Automatic graphics settings**: on first start, a short test over the main menu picks settings your device runs smoothly. It never overrides settings you chose yourself and can be run again from the Options.
 - **Gamepad support**: play with a controller (Xbox, PlayStation, Nintendo or Steam Deck button pictures), with radial wheels for spells, belt, weapons and screens, a target ring for aimed strikes, and D-pad control of the menus. See [Gamepad](#gamepad).
 - **Language**: the game plays in the language of your copy (the English, German and Russian GOG versions are supported).

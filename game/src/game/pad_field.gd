@@ -5,10 +5,11 @@ extends Node
 ## cast_on, issue, or Session.submit for the stick's repeated moves), so co-op
 ## stays host-authoritative and the mouse and keyboard rules are unchanged.
 ## Modes: DIRECT (the left stick walks the leader, the others Follow it; a
-## soft target is highlighted for A), CURSOR (L3: the stick moves PadUI's
+## soft target is highlighted for A), CURSOR (R3: the left stick moves PadUI's
 ## pointer and A / B are mouse clicks), TARGETING (a spell / belt item /
 ## Use-Steal / Follow waits for its target: the highlight keeps to fit
-## targets, the stick moves a ground reticle) and WHEEL (an open PadWheel).
+## targets, the stick moves a ground reticle) and WHEEL (an open PadWheel,
+## the L3 movement-mode ring among them).
 
 const MOVE_AHEAD := 3.0
 const REISSUE_SEC := 0.2
@@ -25,14 +26,14 @@ var wheel: PadWheel
 var prompts: PadPrompts
 var labels: WorldLabels
 var cursor_mode := false
-## R3 held (the recentre button's hold): world information labels on the
+## L3 held (the gait button's hold): world information labels on the
 ## units, bodies, levers and exits around the party (WorldLabels).
 var world_info := false
 ## The soft target: {} none, else {unit: GameUnit} or {lever: nid, at: Vector2 (EI)}.
 var target := {}
 var reticle: Variant = null   # EI ground point while a pending spell aims at the ground
 var last_aim := 0             # the ring's last aimed part (AIM_ORDER index)
-var _wheel_kind := ""         # "", "actions", "items", "system", "ring"
+var _wheel_kind := ""         # "", "actions", "items", "system", "ring", "gait"
 var _wheel_button := ""       # the action that opened it (release with a flick confirms)
 var _flicked := false
 var _wheel_paused: Variant = null
@@ -43,6 +44,7 @@ var _moving := false
 var _move_dir := Vector2.ZERO
 var _move_t := 0.0
 var _goal := Vector2.INF
+var _side := 1.0   # the side (+1 left, -1 right) of the last turned stick goal
 var _target_t := 0.0
 var _manual_until := 0
 var _last_hp := -1.0
@@ -51,14 +53,20 @@ var _last_shakes := 0
 var _last_level := -1
 var _log_mode := 0
 var _in_wheel := {}   # actions whose current press began in an open wheel
+var _ls_wait := false  # a wheel closed with the left stick tilted: no walking until it is let go
 
 const LB_PAGES := ["spells", "actions"]
 const RB_PAGES := ["belt", "weapons"]
 ## The RT wheel's pages, turned with LB / RB: the game's screens and the
 ## camera views 1–4 (keyboard.ini camera1–4, F9–F12).
 const RT_PAGES := ["game", "camera"]
-## Camera views in the camera page: view i at degrees clockwise from up.
+## Camera views in the camera page: view i at degrees clockwise from up;
+## the centring on the leader between views 1 and 2.
 const VIEW_ANGLES := [0.0, 90.0, 180.0, 270.0]
+const CENTRE_ANGLE := 45.0
+## The movement-mode ring (L3): [keyboard.ini action, gait (unit)]
+## clockwise from up.
+const GAIT_RING := [["run", 3], ["walk", 2], ["sneak", 1], ["crawl", 0]]
 
 
 func _init(g: Game = null) -> void:
@@ -132,7 +140,7 @@ func _process(dt: float) -> void:
 	var pad := PadInput.active == "pad"
 	game.rig.pad_no_edge = pad and not cursor_mode
 	game.hud.unit_panel.ignore_hover = pad and not cursor_mode
-	if world_info and not PadInput.held("recentre"):
+	if world_info and not PadInput.held("gait"):
 		world_info = false   # the release went to a menu, or the pad was unplugged
 	if not takes_input():
 		if _wheel_kind != "":
@@ -147,6 +155,10 @@ func _process(dt: float) -> void:
 		if wheel.flick(ls if ls.length() >= rs.length() else rs):
 			_flicked = true
 		return
+	if _ls_wait:
+		if ls == Vector2.ZERO:
+			_ls_wait = false
+		ls = Vector2.ZERO
 	var sx := -1.0 if GameData.option("camera_reverse_x") else 1.0
 	game.rig.pad_turn = rs.x * sx
 	game.rig.pad_zoom = rs.y
@@ -201,29 +213,46 @@ func _direct_move(v: Vector2, real: float) -> void:
 		_move_t = REISSUE_SEC
 		_move_dir = d
 		_goal = _walk_goal(u, d)
-		# Half a tilt walks, a full tilt runs; between them the unit's gait.
-		var tilt := v.length()
-		_submit_move(u, _goal, tilt >= 0.9, tilt < 0.6)
+		# The tilt only steers: the unit goes at its own movement mode
+		# (run / walk / sneak / crawl, the HUD dial and the L3 ring), as
+		# a single click's move order does.
+		_submit_move(u, _goal, true)
 
 
+## The stick's goal MOVE_AHEAD along `d`: the first point the leader can
+## walk to in a straight line (NavGrid.direct_line, the way the order then
+## walks it), nearer or turned ±25° / ±50° when the ground ahead is shut
+## (a wall to slide along), else the first walkable one for the path search.
+## The turned points are tried on the side last taken first, so the goal
+## does not flip from one side of an obstacle to the other each re-issue.
 func _walk_goal(u: GameUnit, d: Vector2) -> Vector2:
 	var nav: NavGrid = game.world.nav
-	for l in [MOVE_AHEAD, 2.0, 1.2]:
-		for a in [0.0, 25.0, -25.0, 50.0, -50.0]:
-			var p := u.pos + d.rotated(deg_to_rad(a)) * float(l)
-			if nav == null or nav.is_walkable(p):
-				return p
+	if nav == null:
+		return u.pos + d * MOVE_AHEAD
+	var turns := [0.0, 25.0 * _side, -25.0 * _side, 50.0 * _side, -50.0 * _side]
+	for direct in [true, false]:
+		for l in [MOVE_AHEAD, 2.0, 1.2]:
+			for a: float in turns:
+				var p := u.pos + d.rotated(deg_to_rad(a)) * float(l)
+				var ok := nav.direct_line(u, p) if direct else nav.is_walkable(p)
+				if ok:
+					if a != 0.0:
+						_side = signf(a)
+					return p
 	return u.pos + d * MOVE_AHEAD
 
 
 ## The stick's moves go straight to Session.submit (Game.issue's path without
-## its spoken acknowledgement and order marks, five times a second).
-func _submit_move(u: GameUnit, to: Vector2, run: bool, slow: bool) -> void:
+## its spoken acknowledgement and order marks, five times a second). `line`:
+## the unit walks the straight line to `to` when it can (the host checks it,
+## GameUnit._do_move), not the search's path of cell centres; a host without
+## the field searches as before.
+func _submit_move(u: GameUnit, to: Vector2, line := false) -> void:
 	if GameSound.blocked(u):
 		return
-	var cmd := {"t": "move", "units": [u.uid], "x": to.x, "y": to.y, "run": run}
-	if slow:
-		cmd.walk = true
+	var cmd := {"t": "move", "units": [u.uid], "x": to.x, "y": to.y, "run": false}
+	if line:
+		cmd.line = true
 	game.session.submit(cmd)
 
 
@@ -235,7 +264,7 @@ func _stop_moving() -> void:
 	_goal = Vector2.INF
 	var u := leader()
 	if u and game.world:
-		_submit_move(u, u.pos, false, false)
+		_submit_move(u, u.pos)
 
 
 func _move_reticle(v: Vector2, real: float) -> void:
@@ -440,7 +469,9 @@ func marker() -> Dictionary:
 		if u == null:
 			return {}
 		feet3 = u.global_position
-		head3 = u.global_position + Vector3.UP * (0.6 if u.dead else 2.0)
+		# The measured head top (EnemyBars.head_top), so a boar's mark is not
+		# drawn a man's height over it.
+		head3 = u.global_position + Vector3.UP * (0.6 if u.dead or u.model == null else EnemyBars.head_top(u))
 		name = u.display_name
 	else:
 		var obj = game.world.objects.get(int(target.lever))
@@ -451,7 +482,7 @@ func marker() -> Dictionary:
 	if cam.is_position_behind(feet3):
 		return {}
 	var v := _verb(target)
-	return {"feet": cam.unproject_position(feet3), "head": cam.unproject_position(head3), "cursor": v[0], "name": name,
+	return {"feet": cam.unproject_position(feet3), "head": cam.unproject_position(head3), "unit": target.has("unit"), "cursor": v[0], "name": name,
 		"color": Color8(255, 120, 90) if v[0] == "cursor_attack" else PadWheel.BRONZE_HI}
 
 
@@ -486,6 +517,7 @@ func hints() -> Array:
 		out.append(["DPAD_LR", RemakeText.t("Target")])
 	else:
 		out.append([X, RemakeText.t("Move")])
+	out.append([PadInput.button_of("gait"), RemakeText.t("Movement")])
 	out.append([PadInput.button_of("actions"), RemakeText.t("Spells")])
 	out.append([PadInput.button_of("items"), RemakeText.t("Items")])
 	out.append([PadInput.button_of("pause"), RemakeText.t("Resume") if get_tree().paused else RemakeText.t("Pause"),
@@ -566,15 +598,15 @@ func _on_action(a: String, phase: String) -> void:
 				game.hud.set_move_mode("walk" if game.hud._selected_gait() == 1 else "sneak")
 		["cursor", "tap"]:
 			_set_cursor_mode(not cursor_mode)
-		["recentre", "tap"]:
+		["gait", "tap"]:
 			if mod:
 				game.hud.minimap.north()
 			else:
-				game._key_action("camera_track")
-		["recentre", "hold"]:
+				open_gait()
+		["gait", "hold"]:
 			if not mod:
-				world_info = true   # BG3's "world information" (R3 hold)
-		["recentre", "up"]:
+				world_info = true   # BG3's "world information" (L3 hold)
+		["gait", "up"]:
 			world_info = false
 		["view", "tap"]:
 			if mod:
@@ -588,7 +620,7 @@ func _on_action(a: String, phase: String) -> void:
 			game.hud.toggle_menu()
 
 
-## Cursor mode (L3): A / B are the mouse's buttons at the pointer; X opens the
+## Cursor mode (R3): A / B are the mouse's buttons at the pointer; X opens the
 ## ring on the unit under it. Returns whether the action was taken.
 func _cursor_action(a: String, phase: String, mod: bool) -> bool:
 	var ui: PadUI = PadInput.ui
@@ -712,7 +744,7 @@ func cancel() -> void:
 	_moving = false
 	for s: GameUnit in game.selected:
 		if is_instance_valid(s) and not s.dead:
-			_submit_move(s, s.pos, false, false)
+			_submit_move(s, s.pos)
 
 
 ## D-pad ↓: the unit panel shows the target; again: its next view.
@@ -792,6 +824,11 @@ func _fill_wheel() -> void:
 			entries = r[0]
 			pre = r[1]
 			wheel.title = r[2]
+		"gait":
+			var r := _gait_entries()
+			entries = r[0]
+			pre = r[1]
+			wheel.title = RemakeText.t("Movement mode")
 	wheel.open(entries, pre)
 
 
@@ -840,10 +877,7 @@ func _page_entries(page: String) -> Array:
 				"enabled": u != null and u.has_meta("hero")})
 			out.append({"id": ["key", "follow"], "label": RemakeText.t("Follow"), "short": RemakeText.t("Follow"),
 				"tip": GameData.text("tip 10510").strip_edges()})
-			var gait := game.hud._selected_gait()
-			for g in [["run", 3], ["walk", 2], ["sneak", 1], ["crawl", 0]]:
-				var l := _orig("action_" + String(g[0]), String(g[0]).capitalize())
-				out.append({"id": ["gait", g[0]], "label": l, "short": l, "on": gait == int(g[1])})
+			# The movement modes have their own ring on L3 (open_gait).
 			var l := RemakeText.t("Unit panel view")
 			out.append({"id": ["view"], "label": l, "short": RemakeText.t("View")})
 	if out.is_empty():
@@ -875,14 +909,54 @@ func _system_entries() -> Array:
 
 ## The RT wheel's camera page: views 1–4 (keyboard.ini camera1–4, F9–F12):
 ## a pick recalls the view, with LT held (EI's Ctrl / Alt) it stores the
-## current one there (CameraRig.view_slot).
+## current one there (CameraRig.view_slot); up-right, the centring on the
+## leader (camera_track, Home).
 func _camera_entries() -> Array:
 	var out: Array = []
 	var tip := RemakeText.t("Recalls this camera view; with %s held, stores the current view in it.") % PadInput.label(PadInput.button_of("mod"))
 	for i in 4:
 		out.append({"id": ["cam", i], "label": _orig("action_camera%d" % (i + 1), "Camera view %d" % (i + 1)),
 			"short": str(i + 1), "angle": VIEW_ANGLES[i], "tip": tip})
+	out.append({"id": ["key", "camera_track"], "label": RemakeText.t("Centre the camera"), "short": RemakeText.t("Centre"),
+		"angle": CENTRE_ANGLE, "tip": RemakeText.t("Centres the camera on the leader and follows again.")})
 	return out
+
+
+## The movement-mode ring (L3 tap): the move dial's four gaits with its own
+## figures (HudDial.gait_icon) and tips 10501–10504, from run at the top
+## clockwise down to crawl; the selection's mode (the leader's when they
+## differ) preselected. A pick is the dial's click (GameHUD.set_move_mode):
+## the gait for every selected unit. [entries, preselected].
+func _gait_entries() -> Array:
+	var cur := game.hud._selected_gait()
+	var u := leader()
+	if cur < 0 and u:
+		cur = u.gait()
+	var out: Array = []
+	var pre := -1
+	for i in GAIT_RING.size():
+		var g: int = GAIT_RING[i][1]
+		var name: String = GAIT_RING[i][0]
+		var l := _orig("action_" + name, name.capitalize())
+		out.append({"id": ["gait", name], "label": l, "short": l, "icon": HudDial.gait_icon(g), "angle": 90.0 * i,
+			"tip": GameData.text("tip %d" % (10501 + g)).strip_edges(), "on": g == cur})
+		if g == cur:
+			pre = i
+	return [out, pre]
+
+
+## L3 tap: the movement-mode ring for the selection; the left stick (or the
+## right) picks.
+func open_gait() -> void:
+	if game.hud._first_selected() == null:
+		return
+	_stop_moving()
+	_wheel_kind = "gait"
+	_wheel_button = "gait"
+	_flicked = false
+	wheel.pages = PackedStringArray()
+	_fill_wheel()
+	_hold_pause(true)
 
 
 ## The context ring (X) on the target: [entries, preselected, title].
@@ -970,6 +1044,7 @@ func open_ring(ground: Variant = null) -> void:
 func close_wheel() -> void:
 	wheel.close()
 	_wheel_kind = ""
+	_ls_wait = PadInput.stick(true) != Vector2.ZERO
 	_wheel_button = ""
 	_hold_pause(false)
 
@@ -1011,6 +1086,9 @@ func _wheel_action(a: String, phase: String) -> void:
 		[_, "up"]:
 			if a == _wheel_button and _flicked and wheel.selected >= 0:
 				_confirm()
+		["gait", "tap"]:
+			if _wheel_kind == "gait":
+				close_wheel()   # L3 again without a flick
 		["system", "down"]:
 			if _wheel_kind == "system":
 				close_wheel()

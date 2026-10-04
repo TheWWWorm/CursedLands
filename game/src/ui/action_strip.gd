@@ -46,6 +46,7 @@ const TRIS := [0, 1, 2, 3, 2, 1, 4, 0, 5, 2, 5, 0, 6, 4, 7, 5, 7, 4, 1, 6, 3, 7,
 var game: Game
 var _cells: Array = []   # "follow" / "science", bottom up
 var _sel := ""
+var _held := -1   # cell the press captured the mouse
 var _glow: Control       # the selected cell's add (blend add)
 
 
@@ -123,10 +124,21 @@ func _get_tooltip(p: Vector2) -> String:
 		GameData.text("tip 10511").strip_edges()], 29)   #  hotkey 0x1d
 
 
+## Acts on the release over a cell, as BeltStrip: captures
+##  for the cell under the release.
 func _gui_input(e: InputEvent) -> void:
-	if e is InputEventMouseButton and e.pressed and e.button_index == MOUSE_BUTTON_LEFT:
+	if e is InputEventMouseButton and e.button_index == MOUSE_BUTTON_LEFT:
+		if e.pressed:
+			_held = _cell_at(e.position)
+			if _held >= 0:
+				accept_event()
+			return
+		if _held < 0:
+			return
+		_held = -1
 		var i := _cell_at(e.position)
 		if i < 0:
+			accept_event()
 			return
 		if GameSound.instance:
 			GameSound.instance.ui("buttons\\battle\\click.wav")

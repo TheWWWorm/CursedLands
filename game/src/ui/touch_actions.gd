@@ -172,7 +172,7 @@ func _show_menu() -> void:
 	_entry("Menu", game.hud.toggle_menu)
 	_entry("Select all", func(): game.selected.assign(game.my_units()))
 	_entry("Centre", func():
-		if not game.selected.is_empty(): game.rig.center_on(game.selected[0].global_position))
+		if not game.selected.is_empty(): game.rig.follow(game.selected[0]))   # camera_track
 	_entry("Cancel action", game.cancel_touch_target)
 	_entry("Force move", func(): game.cancel_touch_target(); game.touch_force = "alt")
 	_entry("Force attack", func(): game.cancel_touch_target(); game.touch_force = "ctrl")

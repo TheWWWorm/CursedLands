@@ -19,6 +19,7 @@ var _control: Control
 var _cancelled := false
 var _dragging := false
 var _held := false
+var _panning := false
 var _elapsed := 0.0
 var _pair := PackedVector2Array()
 var _tap_time := -1000
@@ -91,6 +92,7 @@ func _press(index: int, point: Vector2) -> void:
 		_cancelled = false
 		_dragging = false
 		_held = false
+		_panning = false
 		_elapsed = 0.0
 		_wheel_acc = 0.0
 		_scroll_owner = null
@@ -99,6 +101,7 @@ func _press(index: int, point: Vector2) -> void:
 		# A full-screen touch overlay ignores its blank area.
 	else:
 		_cancelled = true
+		_panning = false
 		_release_hold()
 		_hover(point)
 		var next_control := get_viewport().gui_get_hovered_control()
@@ -132,6 +135,10 @@ func _drag(index: int, point: Vector2) -> void:
 		_last = point
 		_scroll(point, delta)
 		return
+	if index == _primary and _panning and not _cancelled:
+		_pan_world(_last, point)
+		_last = point
+		return
 	if index != _primary or _cancelled or _held:
 		return
 	var relative := point - _last
@@ -139,8 +146,10 @@ func _drag(index: int, point: Vector2) -> void:
 	if point.distance_to(_start) < target_pixels() * 0.22 and not _dragging:
 		return
 	if not is_instance_valid(_control):
-		# A one-finger world drag is not a move order. Two fingers pan.
-		_cancelled = true
+		# A one-finger world drag is not a move order: it moves the map under
+		# the finger (the PC's WASD); two fingers turn and zoom.
+		_panning = true
+		_pan_world(_start, point)   # from the touch-down: the ground stays under the finger
 		return
 	var owner := _control
 	while owner and not owner.has_method("touch_scroll") and not owner is ScrollContainer:
@@ -157,6 +166,11 @@ func _drag(index: int, point: Vector2) -> void:
 		_dragging = true
 		button(_start, true)
 	motion(point, relative, MOUSE_BUTTON_MASK_LEFT)
+
+func _pan_world(from: Vector2, to: Vector2) -> void:
+	var g := game()
+	if g and not g.hud.blocks_camera():
+		g.rig.touch_drag(from, to)
 
 func _scroll(point: Vector2, delta: Vector2) -> void:
 	if _scroll_owner is ScrollContainer:
@@ -175,7 +189,7 @@ func _release(index: int, point: Vector2, cancelled: bool) -> void:
 		_release_hold()
 		if _dragging:
 			button(point, false)
-		elif not _cancelled and not _held and not cancelled:
+		elif not _cancelled and not _held and not _panning and not cancelled:
 			var now := Time.get_ticks_msec()
 			var double := now - _tap_time < 330 and point.distance_to(_tap_position) < target_pixels() * 0.4 and _control == _tap_control
 			_tap_time = -1000 if double else now
@@ -185,12 +199,13 @@ func _release(index: int, point: Vector2, cancelled: bool) -> void:
 			button(point, false, MOUSE_BUTTON_LEFT, double)
 		_primary = -1
 		_dragging = false
+		_panning = false
 	if fingers.is_empty():
 		_pair.clear()
 		_control = null
 
 func _process(dt: float) -> void:
-	if _primary < 0 or _cancelled or _dragging or _held or fingers.size() != 1:
+	if _primary < 0 or _cancelled or _dragging or _held or _panning or fingers.size() != 1:
 		return
 	_elapsed += dt
 	if _elapsed < 0.5:
@@ -241,6 +256,7 @@ func button(point: Vector2, pressed: bool, which := MOUSE_BUTTON_LEFT, double :=
 
 func cancel_gesture() -> void:
 	_release_hold()
+	_panning = false
 	if _dragging:
 		button(_last, false)
 	fingers.clear()

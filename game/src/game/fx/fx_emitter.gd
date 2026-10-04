@@ -69,10 +69,19 @@ var alive := true
 ## creation (the original draws every emitter from the one CRT rand); with it
 ## the particles of one emitter can be simulated on a worker thread.
 var rng := RandomNumberGenerator.new()
-## Remake: the callbacks touch nothing outside the emitter but the terrain
-## heights, so update_sim may run on a worker (FxTypes.SERIAL lists those
-## that read units, bones or the camera; they stay on the main thread).
+## Remake: the callbacks touch nothing outside the emitter but the ground
+## snapshot, so update_sim may run on a worker (FxTypes.SERIAL lists those
+## that read units, bones, the camera, the nav grid or the options; they
+## stay on the main thread).
 var par := true
+## Remake, the data update_sim may read besides its own, set by update_pre
+## on the main thread: the tick's ground (FxGround, plain arrays) and
+## whether the carrier is there (the callbacks test it instead of the node).
+var ground_src: FxGround
+var has_carrier := false
+## Remake: camera shakes a callback asked for ([at, p2, amp, decay], EI
+## metres); ParticleFx starts them on the main thread after the tick.
+var shakes: Array = []
 
 
 func rnd() -> int:
@@ -123,6 +132,12 @@ func attach(obj: Object) -> void:
 	if obj == null and carrier != null:
 		ofs = wp   # released where it is (the effect object keeps its position)
 	carrier = obj
+	has_carrier = obj != null
+
+
+## The ground height (EI z) at x, y: the tick's snapshot (worker safe).
+func ground(x: float, y: float) -> float:
+	return ground_src.at(x, y) if ground_src else 0.0
 
 
 ## stop emitting; the emitter goes when its particles are gone.
@@ -148,8 +163,10 @@ func update_pre() -> bool:
 		return false
 	wind = fx.wind
 	wind_s = fx.wind_s
+	ground_src = fx.ground_snapshot()
 	if carrier != null and not fx.carrier_valid(carrier):
 		carrier = null
+	has_carrier = carrier != null
 	var np: Vector3
 	if carrier == null:
 		np = ofs
@@ -171,8 +188,8 @@ func update_pre() -> bool:
 
 
 ## the rest: control points, particles, spawning. Touches only
-## this emitter (and the terrain heights) when `par`; returns false when the
-## emitter is finished.
+## this emitter (and its ground snapshot) when `par`, no node or other
+## object; returns false when the emitter is finished.
 func update_sim() -> bool:
 	if ctl_fn.is_valid():
 		for c in cp:
@@ -203,7 +220,7 @@ func update_sim() -> bool:
 	var n := roundi(moved / d4) if d4 != 0.0 else 0
 	if n <= d0:
 		n = d0
-	if (flags & F_EMIT) and ((flags & F_CARRIER) == 0 or carrier != null):
+	if (flags & F_EMIT) and ((flags & F_CARRIER) == 0 or has_carrier):
 		var spawned := 0
 		var tries := 0
 		while tries < n:
@@ -216,7 +233,7 @@ func update_sim() -> bool:
 			tries += 1
 		if spawned == 0 and cc > 50 and n > 0 and parts.size() < d8:
 			_spawn(0)
-	if carrier == null:
+	if not has_carrier:
 		if (flags & F_KEEP) == 0:
 			return parts.size() != 0
 	elif (flags & F_EMIT) == 0 and parts.is_empty():

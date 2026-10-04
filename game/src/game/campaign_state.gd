@@ -715,12 +715,21 @@ func replay_restored(world: GameWorld) -> void:
 			world.session.broadcast(ev)
 	var lasting: Array = world.get_meta("restored_lasting", [])
 	world.remove_meta("restored_lasting")
-	Spells.restore_lasting(world, lasting)
 	var shown: Array = world.get_meta("restored_spellfx", [])
 	world.remove_meta("restored_spellfx")
+	# A save that kept the fireballs' visuals (with their age: newer saves,
+	# Session._track) brings them back itself; the running spells then do not
+	# start one of their own (Spells.restore_lasting, older saves).
+	var seen := {}
+	for e in shown:
+		var e0: Dictionary = e[0]
+		if e0.has("age") and Spells.parse(String(e0.get("spell", e0.get("code", "")))).code == "fireball":
+			seen.fireball = true
+	Spells.restore_lasting(world, lasting, seen)
 	for e in shown:
 		var ev: Dictionary = Dictionary(e[0]).duplicate()
-		ev.left = float(e[1])
+		if Spells.parse(String(ev.get("spell", ev.get("code", "")))).code in Session.LASTING_SPELLFX:
+			ev.left = float(e[1])
 		ev.replay = true
 		ev.erase("a")   # unit ids change with the deployment; dx / dy keep the wall's direction
 		world.session.broadcast(ev)
@@ -786,7 +795,10 @@ func store_zone(id: String, world: GameWorld) -> void:
 		for e in rs.get("spells", []):
 			var left := float(e[1]) - world.time
 			if left > 0.5:
-				shown.append([e[0], left])
+				var ev: Dictionary = Dictionary(e[0]).duplicate()
+				if e.size() > 2:   # its age in ticks (Session._track: the cast time)
+					ev.age = roundi((world.time - float(e[2])) / GameUnit.TICK)
+				shown.append([ev, left])
 		if not shown.is_empty():
 			z.spellfx = shown
 	# Lasting ground spells still running (fire / lightning wall, acid fog,

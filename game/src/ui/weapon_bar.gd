@@ -28,6 +28,7 @@ var _sig := ""
 var _views: Array[ItemView] = []
 var _active := 0
 var _order := {}   # unit uid -> the cell order (item ids) last shown
+var _held := -1    # cell the press captured the mouse
 
 
 func _ready() -> void:
@@ -105,15 +106,34 @@ func _get_tooltip(p: Vector2) -> String:
 	return GameData.tip_key("\n".join(lines), 38 + i)   # 0x26 + slot
 
 
+## Acts on the release over a cell, as BeltStrip: (also the
+## double click's) captures on a weapon cell
+##  selects the weapon under the release.
 func _gui_input(e: InputEvent) -> void:
-	if e is InputEventMouseButton and e.pressed and e.button_index == MOUSE_BUTTON_LEFT:
-		var i := int(e.position.x / _cell().x)
+	if e is InputEventMouseButton and e.button_index == MOUSE_BUTTON_LEFT:
+		if e.pressed:
+			_held = _cell_at(e.position)
+			accept_event()
+			return
+		if _held < 0:
+			accept_event()
+			return
+		_held = -1
+		var i := _cell_at(e.position)
 		var u: GameUnit = game.selected[0] if not game.selected.is_empty() else null
-		if i != _active and i < _items.size() and u:
+		if i >= 0 and i != _active and u:
 			game.issue({"t": "select_weapon", "unit": u.uid, "item": _items[i]})
 			if GameSound.instance:
 				GameSound.instance.ui("buttons\\battle\\weapon.wav")
 		accept_event()
+
+
+## The weapon cell under p (−1 off the bar or past the last weapon).
+func _cell_at(p: Vector2) -> int:
+	if not Rect2(Vector2.ZERO, size).has_point(p):
+		return -1
+	var i := int(p.x / _cell().x)
+	return i if i >= 0 and i < _items.size() else -1
 
 
 ## keyboard.ini weapon1–4 (Q / W / E / R, cases 0x26–0x29): with

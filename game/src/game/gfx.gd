@@ -286,6 +286,12 @@ static func mark_additive(l: Light3D) -> void:
 	l.light_specular = ADDITIVE_SPECULAR
 
 
+## The game's sun is marked by this specular amount (its own light() does
+## not use the specular amount for the sun): light() then takes the sun's
+## direction from ei_sun_dir instead of the shadow light's (Game._aim_sun).
+const SUN_MARK := 0.371
+
+
 ## light() of the original model. Needs varyings `ei_e` (vec3) and `ei_k` (float).
 static func light_code(wrap: bool) -> String:
 	return ("""
@@ -318,7 +324,14 @@ void light() {
 	vec3 ei_alb = ALBEDO;
 	vec3 c = vec3(0.0);
 	bool add = false;
-	float lz = (INV_VIEW_MATRIX * vec4(LIGHT, 0.0)).y;   // world up component
+	// The game's sun (marked by its specular amount, Gfx.SUN_MARK) casts its
+	// shadow along a held direction (Game._aim_sun); its light keeps the
+	// clock's direction, ei_sun_dir.
+	vec3 ei_light_dir = LIGHT;
+	if (LIGHT_IS_DIRECTIONAL && abs(SPECULAR_AMOUNT - SUN_MARK_VALUE) < 0.002 && dot(ei_sun_dir, ei_sun_dir) > 0.5) {
+		ei_light_dir = normalize((VIEW_MATRIX * vec4(ei_sun_dir, 0.0)).xyz);
+	}
+	float lz = (INV_VIEW_MATRIX * vec4(ei_light_dir, 0.0)).y;   // world up component
 	float uw = max(1.0 - lz * lz * ei_k, 0.0);   // under water
 	vec3 amb = ei_ambient * max(1.0 - ei_k, 0.0);
 	bool local_light = !LIGHT_IS_DIRECTIONAL && SPECULAR_AMOUNT > 0.02 && SPECULAR_AMOUNT < 0.03;
@@ -366,7 +379,7 @@ void light() {
 		// texture laid over the lit ground with vertex colour
 		// i.e. the lit colour
 		// halved where the shadow falls.
-		float d = max(dot(NORMAL, LIGHT), 0.0);
+		float d = max(dot(NORMAL, ei_light_dir), 0.0);
 		#ifdef EI_TERRAIN_LIGHT
 		// Land: the sun's map holds only figures (the land casts nothing,
 		// Gfx.setup_sun_casters: no self-shadowing in the original), and
@@ -473,20 +486,20 @@ void light() {
 	if (ei_surface.x > 0.001 && (LIGHT_IS_DIRECTIONAL || SPECULAR_AMOUNT > 0.0)) {
 		// safe normalize: LIGHT = −VIEW gives a zero vector, and a NaN here
 		// (× a zero n·L is still NaN) would reach the bloom and spread
-		vec3 hv = LIGHT + VIEW;
+		vec3 hv = ei_light_dir + VIEW;
 		vec3 h = hv * inversesqrt(max(dot(hv, hv), 1e-12));
 		float r = clamp(ei_surface.y, 0.2, 1.0);
 		float power = mix(128.0, 10.0, r * r);
-		float highlight = pow(max(dot(NORMAL, h), 0.0), power) * max(dot(NORMAL, LIGHT), 0.0);
+		float highlight = pow(max(dot(NORMAL, h), 0.0), power) * max(dot(NORMAL, ei_light_dir), 0.0);
 		vec3 tint = mix(vec3(0.4), clamp(ei_alb * 1.8, vec3(0.06), vec3(0.9)), ei_surface.z);
 		SPECULAR_LIGHT += min(LIGHT_COLOR / PI, vec3(1.5)) * tint * highlight * ATTENUATION * ei_surface.x * 0.22 /*EI_FA*/;
 	}
 	if (ei_leaf > 0.001) {
-		float transmission = pow(max(dot(-NORMAL, LIGHT), 0.0), 1.5);
+		float transmission = pow(max(dot(-NORMAL, ei_light_dir), 0.0), 1.5);
 		SPECULAR_LIGHT += ei_alb * LIGHT_COLOR / PI * transmission * ATTENUATION * ei_leaf * 0.22 /*EI_FA*/;
 	}
 }
-""" % [_wrap_term(wrap)]).replace("WRAP_TERM", _wrap_term(wrap))
+""" % [_wrap_term(wrap)]).replace("WRAP_TERM", _wrap_term(wrap)).replace("SUN_MARK_VALUE", "%.3f" % SUN_MARK)
 
 
 ## The point-light facing term f(k), k = n · l: terrain wraps round the back
@@ -752,6 +765,8 @@ static func noise(key: String, size := 256, freq := 0.012, octaves := 4, normal 
 static func on(name: String) -> bool:
 	if name == "gfx_volumetric" and RenderingServer.get_current_rendering_method() != "forward_plus":
 		return false
+	if name == "gfx_ssao" and RenderingServer.get_current_rendering_method() == "mobile":
+		return false   # Android's Mobile (Vulkan) renderer has no SSAO (RendererChoice)
 	return GameData.option(name) != 0
 
 
@@ -794,7 +809,11 @@ static func apply_quality(vp: Viewport) -> void:
 		RenderingServer.SHADOW_QUALITY_SOFT_ULTRA]
 	RenderingServer.directional_soft_shadow_filter_set_quality(filt[q])
 	RenderingServer.positional_soft_shadow_filter_set_quality(filt[q])
-	var atlas: int = [1024, 2048, 2048, 4096][q] if Portability.constrained() else [2048, 4096, 8192, 8192][q]
+	var atlas: int = [2048, 4096, 8192, 8192][q]
+	if Portability.constrained():
+		# Phones / web, any renderer: the sun is held there (Game._aim_sun),
+		# and the atlas size made no difference to the crawl it fixed.
+		atlas = [1024, 2048, 2048, 4096][q]
 	RenderingServer.directional_shadow_atlas_set_size(atlas, true)
 	vp.positional_shadow_atlas_size = atlas
 

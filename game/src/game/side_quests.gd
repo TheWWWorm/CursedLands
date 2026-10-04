@@ -210,6 +210,7 @@ static func _lmp_complete(s: Session, id: String) -> void:
 		return
 	lmp_say(s, "quest_completed", q.id)
 	s.state.side_quests[q.id] = "rewarded"
+	SmileFaces.party(s)   # remake option "smile_faces": a quest done
 	var key := "q.%s.%s" % [q.id, q.id]
 	s.state.set_var(0, key, 2.0)
 	s.state.quests[q.id] = 2
@@ -260,6 +261,7 @@ static func briefing_done(s: Session, var_name: String) -> void:
 				s.state.quest_items[it.to_lower()] = true
 		"3":
 			s.state.side_quests[q.id] = "rewarded"
+			SmileFaces.party(s)   # remake option "smile_faces": a quest reward
 			s.state.money += int(q.money)
 			s.give_experience(float(q.exp), "side", 0)   # the original: player 0
 			var key := "q.%s.%s" % [q.id, q.id]

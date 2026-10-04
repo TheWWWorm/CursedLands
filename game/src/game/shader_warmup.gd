@@ -83,7 +83,7 @@ static func run(game: Game) -> void:
 	w.position = Vector3(0, 0, -maxf(DIST, cam.near * 4.0))
 	w._make_groups()
 	# Under the loading screen: draw batch by batch, stop at the budget.
-	var forced := LoadingScreen._current != null and not OS.has_feature("web")
+	var forced := LoadingScreen._current != null and not (OS.has_feature("web") or LoadingScreen.force_deferred)
 	if forced:
 		# The zone's first picture, under the loading screen: its programs
 		# were built on the first frame of play before; not counted.

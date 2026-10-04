@@ -64,8 +64,8 @@ const ACTIONS := [[1, "pause", 3, 4], [2, "decel", 3, 3], [3, "accel", 3, 2], [4
 	[53, "quicksave", 3, 8], [54, "quickload", 3, 9], [55, "select1", 4, 0], [56, "select2", 4, 1],
 	[57, "select3", 4, 2], [58, "select_all", 4, 4], [59, "tutorial_script", 10, 10],
 	# Remake-only actions (not in the original): the modern camera's turn keys
-	# (CameraRig), in the camera page's free rows 7 and 13.
-	[100, "camera_rotate_left", 6, 7], [101, "camera_rotate_right", 6, 13]]
+	# (CameraRig), on the Remake › Camera page (group 16) rows 8 and 9.
+	[100, "camera_rotate_left", 16, 8], [101, "camera_rotate_right", 16, 9]]
 ## Keys the remake's own actions get when nothing is bound to them and the key
 ## is free (Delete / End turn the camera, as in Divinity: Original Sin 2).
 const REMAKE_DEFAULTS := {"camera_rotate_left": "DEL", "camera_rotate_right": "END"}

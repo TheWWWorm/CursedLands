@@ -173,16 +173,22 @@ func convert(src: String, dst: String) -> bool:
 	var cum := PackedInt64Array([0])
 	for i in a.frame_count:
 		cum.append(cum[i] + a.frame_size(i) + 2000)
+	var has_audio: bool = not a.audio_tracks.is_empty() and not a.audio_tracks[0].get("dct", false)
+	# Published under the mutex: the movie player reads these from the main
+	# thread (frame_count > 0 first, then cum_cost after frames_done()).
+	_mutex.lock()
 	cum_cost = cum
 	width = a.width
 	height = a.height
-	frame_count = a.frame_count
 	fps_num = a.fps_num
 	fps_den = a.fps_den
-	var audio_task := -1
-	if not a.audio_tracks.is_empty() and not a.audio_tracks[0].get("dct", false):
+	if has_audio:
 		audio_rate = a.audio_tracks[0].rate
 		audio_channels = a.audio_tracks[0].channels
+	frame_count = a.frame_count
+	_mutex.unlock()
+	var audio_task := -1
+	if has_audio:
 		audio_task = WorkerThreadPool.add_task(_decode_audio.bind(src), false, "bink audio")
 	else:
 		_mutex.lock()

@@ -376,13 +376,28 @@ func calm_tick(u: GameUnit, idle := false) -> bool:
 
 ## A player's unit was hit: the AI keeps its last attacker (unit AI
 ##  from the damage handlers; cleared at the end of every AI
-## tick and when that unit goes away), which counts as noticed
-## the next Player tick sees it once.
+## tick and when that unit goes away) and puts a creature
+## attacker in the noticed list (see player_perceive), where
+## it stays while it keeps attacking: that is what the
+## engage check sees, also when the attacker is behind the unit.
 func on_player_attacked(u: GameUnit, by: GameUnit) -> void:
 	if by == null or by == u:
 		return
 	u.set_meta("attacker", [by, world.time])
 	hit_hook(u, by)
+	if not by.dead:
+		var keep: Dictionary = u.get_meta("noticed", {})
+		var id := by.get_instance_id()
+		# added when not in the list yet and either the attacker
+		# is fighting this unit (its AI state 3 / 4 with this target, AI
+		# ) or it is beyond one of the two notice distances
+		# (sight, life sense; nearer, the scan decides).
+		if not keep.has(id):
+			var k := notice_terms(u, float(u.stats.sight))
+			var d := u.pos.distance_to(by.pos)
+			if _fights(by, u) or d >= _sight_dist(by, k) or d >= by.detect(2) * k[4]:
+				keep[id] = by
+				u.set_meta("noticed", keep)
 	#  (every tick, busy or not): defensive + AI -> ack 0x20
 	# once per hit as lasts one tick.
 	if not u.aggressive:
@@ -396,8 +411,10 @@ func on_player_attacked(u: GameUnit, by: GameUnit) -> void:
 ##   for ack 0x20 "attacked in defence" and does nothing else - no retaliation,
 ##   no engaging.
 ## - Aggressive (only when the unit is idle): candidates are
-##    the enemies the unit notices that are themselves in the
-##   Aggression motivation and no farther than 1.1 x their own sight
+##    the enemies in the unit's noticed list (player_perceive:
+##   an attacker stays in it while it fights the unit, wherever the unit
+##   looks) that are themselves in the Aggression motivation (_in_aggression)
+##   and no farther than 1.1 x their own sight
 ##   (min(x)), plus the units that the
 ##   player's own units within ai.reg [Logic] PlayerCallForHelp (16 m) are
 ##   fighting; the best one is attacked with ack 0x1c
@@ -407,21 +424,17 @@ func on_player_attacked(u: GameUnit, by: GameUnit) -> void:
 ##   _target_score); the highest is taken when finds it reachable
 ##   else the next. Only the weapon option is scored, as in the original: heroes
 ##   and hired mercenaries (script-name ids) get no spell options from
-## . Approx.: "in Aggression" = an AI unit with an
-##   attack order or UMAggression; the cap and the target re-choice while
+## . Approx.: see _in_aggression; the cap and the
+##   target re-choice while
 ##   already fighting (state 3) are left out. Both check on every 55 ms AI
 ##   tick (think(): ai_next = now + TICK).
 func _player(u: GameUnit) -> void:
-	var by: GameUnit = null
-	if u.has_meta("attacker"):
-		# AI holds the attacker for one AI tick (cleared at its end).
-		var m: Array = u.get_meta("attacker")
-		u.remove_meta("attacker")
-		if is_instance_valid(m[0]) and not m[0].dead and world.time - float(m[1]) <= GameUnit.TICK + 0.001:
-			by = m[0]
+	# AI holds the attacker for one AI tick (cleared at its end); the
+	# engage check does not read it (the attacker is in the noticed list).
+	u.remove_meta("attacker")
 	if not u.aggressive:
 		return
-	var t := _player_target(u, by)
+	var t := _player_target(u)
 	if t:
 		u.ack(EIAcks.DECIDE_TO_ATTACK)
 		u.attack(t)
@@ -473,13 +486,42 @@ func swarm_tick(u: GameUnit) -> bool:
 			u._set_action("idle")
 		return waiting
 	var at: Vector2 = u.order.get("swarm", u.pos)
-	var t := _player_target(u, null, at, GameData.ai_value("Logic", "SwarmRadius", 10.0))
+	var t := _player_target(u, at, GameData.ai_value("Logic", "SwarmRadius", 10.0))
 	if t == null:
 		if waiting:
 			u._set_action("idle")
 		return waiting
 	u.ack(EIAcks.DECIDE_TO_ATTACK)
 	u.attack(t)
+	return true
+
+
+## The Player motivation following a unit (the F order, follow target
+## AI state 6): runs the engage check on every tick
+## of it too, unless the followed unit's own Player motivation is in state 1
+## (a plain move order, packet 0x30) — its motivation list is searched for
+## type 6; a unit without one (an NPC) does not stop it. The follow target is
+## kept through the fight (command 6 replaces only the AI
+## state), so the remake queues the follow order again after the attack.
+## Returns true when it attacked.
+func follow_engage(u: GameUnit) -> bool:
+	if world.time < u.ai_next:
+		return false
+	u.ai_next = world.time + GameUnit.TICK - 0.0001
+	u.remove_meta("attacker")   # AI lasts one AI tick
+	if not u.aggressive:
+		return false
+	var lead = u.order.get("target")
+	if lead is GameUnit and is_instance_valid(lead) and lead.controller >= 0 \
+			and String(lead.order.get("type", "")) == "move" and not lead.order.has("swarm"):
+		return false
+	var t := _player_target(u)
+	if t == null:
+		return false
+	var f := u.order
+	u.ack(EIAcks.DECIDE_TO_ATTACK)
+	u.attack(t)
+	u.orders.append(f)
 	return true
 
 
@@ -515,20 +557,23 @@ func _player_in_combat(p: int) -> bool:
 	return _combat_cache.get(p, false)
 
 
-func _player_target(u: GameUnit, by: GameUnit, around := Vector2.INF, radius := -1.0) -> GameUnit:
+## The candidates (over the noticed list, see player_perceive):
+## living hostiles not on the ignore list; in state 2 (`radius` >= 0) the ones
+## within `radius` of the walk's point as they are, the others (and every one
+## outside state 2) only while in Aggression (_in_aggression); then
+##  drops those farther (ground plane) than 1.1 x their own sight.
+func _player_target(u: GameUnit, around := Vector2.INF, radius := -1.0) -> GameUnit:
 	var cands := []
-	var sight := float(u.stats.sight)
-	for o: GameUnit in world.live_units_near(u.pos, sight * 2.0):
-		if o.dead or o.hidden or o.controller >= 0 and u.controller >= 0 or not world.is_enemy(u, o):
+	var keep: Dictionary = player_perceive(u)
+	for o: GameUnit in keep.values():
+		if not is_instance_valid(o) or o.dead or o.hidden or o.controller >= 0 and u.controller >= 0 \
+				or not world.is_enemy(u, o) or ignored(u, o):
 			continue
-		if radius >= 0.0 and o.pos.distance_to(around) > radius:
-			continue
-		if not (o.mode == "aggression" or um(o).get("fight", "") == "aggression" or o.order.get("type", "") == "attack"):
+		if not (radius >= 0.0 and o.pos.distance_to(around) < radius) and not _in_aggression(o, u):
 			continue
 		if u.pos.distance_to(o.pos) > 1.1 * float(o.stats.sight) * o.sight_factor():
 			continue
-		if o == by or can_notice(u, o, sight):
-			cands.append(o)
+		cands.append(o)
 	var help := GameData.ai_value("Logic", "PlayerCallForHelp", 16.0)
 	for a: GameUnit in world.live_units_near(u.pos, help):
 		if a == u or a.dead or a.controller != u.controller or a.order.get("type", "") != "attack" \
@@ -546,6 +591,91 @@ func _player_target(u: GameUnit, by: GameUnit, around := Vector2.INF, radius := 
 		if _reachable(u, e[1]):
 			return e[1]
 	return null
+
+
+## The noticed list (AI) of a unit with the Player motivation, brought
+## up to date once per AI tick, busy or not (
+## every creature tick; GameUnit._tick): first the drop pass, then the scan
+##  (can_notice: the sight cone, peripheral vision, life sense).
+##  drops a living unit only when all : it is not hostile or the
+## observer is a party unit (always so here), it is not fighting the observer
+## (combat stance with the observer as its target), it is
+## beyond both notice distances (sight: its sight detectability x the
+## observer's sight range and factor; life: its life detectability x the
+## observer's life sense; x 1.0 for a party unit, 1.05 else), and
+## it is not the observer's Aggression target (none for these units). The
+## vision cone is not part of it: a hostile once noticed (seen, or hitting
+## the unit) stays noticed while near or while it fights the
+## unit, also behind it. Dead units leave the list (the corpse business of
+##  is the AI units'). Returns the list (meta "noticed").
+## Approx.: "fighting the observer" = an attack or cast order on it.
+func player_perceive(u: GameUnit) -> Dictionary:
+	if u.has_meta("perceived") and float(u.get_meta("perceived")) == world.time:
+		return u.get_meta("noticed", {})
+	u.set_meta("perceived", world.time)
+	var keep: Dictionary = u.get_meta("noticed", {})
+	var sight := float(u.stats.sight)
+	var k := notice_terms(u, sight)
+	var f := 1.0 if u.controller >= 0 else 1.05
+	for id in keep.keys():
+		var o = keep[id]
+		if not is_instance_valid(o) or o.dead:
+			keep.erase(id)
+			continue
+		if u.controller < 0 and world.is_enemy(u, o) or _fights(o, u):
+			continue
+		var d := u.pos.distance_to(o.pos)
+		if d >= _sight_dist(o, k) * f and d >= o.detect(2) * k[4] * f:
+			keep.erase(id)
+	for o: GameUnit in _hostiles_near(u, sight):
+		var id := o.get_instance_id()
+		if not keep.has(id) and can_notice_with(u, o, k):
+			keep[id] = o
+	if keep.is_empty():
+		u.remove_meta("noticed")
+	else:
+		u.set_meta("noticed", keep)
+	return keep
+
+
+## The sight notice distance of `o` for an observer's notice_terms `k`
+## (: o x observer x o x
+## observer).
+func _sight_dist(o: GameUnit, k: PackedFloat64Array) -> float:
+	return k[0] * o.vis_factor() * k[1] * o.detect(0)
+
+
+## `o` is fighting `u`: its AI state 3 / 4 (attack / cast) with `u` as the
+## target (AI). Remake: an attack or cast order on u.
+func _fights(o: GameUnit, u: GameUnit) -> bool:
+	return String(o.order.get("type", "")) in ["attack", "cast"] and o.order.get("target") == u
+
+
+##  test of a noticed unit `o` for the engage check of `u`: it
+## has the Aggression motivation (type 4, current or not
+## Revenge, set, only with its target), its current Aggression
+## target is none or a diplomacy friend of u (u's own side
+## included), and it has noticed a living hostile (AI). Remake: the
+## motivation from mots() ("standard" / "aggression" / "revenge"), the
+## target and from its attack / cast order or its noticed list.
+func _in_aggression(o: GameUnit, u: GameUnit) -> bool:
+	if o.controller >= 0 or o.mode == "player":
+		return false   # the Player motivation, no Aggression
+	var fight := String(mots(o).fight)
+	if fight == "none":
+		return false
+	var busy := String(o.order.get("type", "")) in ["attack", "cast"]
+	if fight == "revenge" and not busy:
+		return false
+	var t = o.order.get("target") if busy else null
+	if t is GameUnit and is_instance_valid(t):
+		if world.relation(u.faction, t.faction) != 0:
+			return false
+		return true
+	for x in (o.get_meta("noticed", {}) as Dictionary).values():
+		if is_instance_valid(x) and not x.dead and world.is_enemy(o, x):
+			return true
+	return false
 
 
 ##  for the weapon option (type 0), see _score: D + 10 for the
@@ -1311,7 +1441,7 @@ var _help := []   # delayed sounds: [unit, spot, ticks left]
 ##  — the same delayed suspicion as a call for help
 ## (: 900, −3). Callers: a cast (: loudness = the
 ## caster's hearing detectability × 2, 26 ticks, unless the spell's
-## record is 1).
+## record is 1); looting a body (sub-code: × 1.5).
 func noise_event(src: GameUnit, loud: float, ticks := 26) -> void:
 	var at := src.pos
 	var z := world.ground_at(at.x, at.y)

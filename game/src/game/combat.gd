@@ -326,6 +326,7 @@ func melee(att: GameUnit, def: GameUnit, roll := {}) -> void:
 	var backstab: bool = roll.backstab
 	if not roll.hit:
 		world.on_miss(att, def)
+		missed(def, att)
 		return
 	armor_spells(def, true)
 	# an aimed strike (0..5) lands on that part even when it is
@@ -399,6 +400,23 @@ func blank_hit(def: GameUnit, src: GameUnit, owner_only := false) -> void:
 		src = null
 	if src and src != def and src.faction != def.faction \
 			and world.relation(def.faction, src.faction) != 2:
+		world.ai._hate(def, src.faction)
+	if def.controller < 0:
+		world.ai.on_attacked(def, src)
+	else:
+		world.ai.on_player_attacked(def, src)
+
+
+## A blow that misses (after the roll fails): no
+## struck bit, no hit number, no damage, but the end of the routine still
+## runs: a creature attacker's side into the victim's hostility
+##  and the AI hit hook (the
+## attacker kept, noticed, the call for help). So a missed unit notices its
+## attacker as a hit one does.
+func missed(def: GameUnit, src: GameUnit) -> void:
+	if def.dead or src == null or not is_instance_valid(src) or src == def:
+		return
+	if src.faction != def.faction and world.relation(def.faction, src.faction) != 2:
 		world.ai._hate(def, src.faction)
 	if def.controller < 0:
 		world.ai.on_attacked(def, src)

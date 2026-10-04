@@ -13,6 +13,9 @@ extends Interface800
 ##   122,108-252,127, label font 1; 0.6 at rest, 1.0 under the pointer):
 ##   Load, Main menu (the original box's ✓ / ✗) and Hide.
 ## Only the panel takes the mouse; the field around it plays on.
+## Remake (gamepad): a "pad_panel" (PadUI): the D-pad snaps to the buttons,
+## A presses one, B hides the notice; while it shows, the field does not take
+## the pad (GameHUD._panel_open).
 
 signal chosen(what: String)   # "load", "menu" or "hide"
 
@@ -38,6 +41,7 @@ var _hover := ""
 
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	add_to_group("pad_panel")
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	tooltip_text = " "
 	title = GameData.text("string game_over").strip_edges()
@@ -126,6 +130,22 @@ func _gui_input(e: InputEvent) -> void:
 			if b != "":
 				sound("messbox\\cancel" if b == "hide" else "messbox\\ok")
 				chosen.emit(b)
+
+
+func pad_targets() -> Array:
+	var l := _layout()
+	var out: Array = []
+	for b: String in BUTTONS:
+		out.append({"rect": pad_rect(l.btn[b]), "id": b})
+	return out
+
+
+func pad_press(a: String, phase: String) -> bool:
+	if a == "cancel" and phase == "down":
+		sound("messbox\\cancel")
+		chosen.emit("hide")
+		return true
+	return false
 
 
 func _process(_dt: float) -> void:

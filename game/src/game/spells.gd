@@ -506,7 +506,9 @@ static func save_lasting(world: GameWorld) -> Array:
 
 ## Host (CampaignState.replay_restored): saved lasting effects run on from
 ## their next tick.
-static func restore_lasting(world: GameWorld, list: Array) -> void:
+## `shown` "fireball": the fireballs' visuals come back on their own (a save
+## that kept them with their age, CampaignState.replay_restored).
+static func restore_lasting(world: GameWorld, list: Array, shown := {}) -> void:
 	for r in list:
 		if not r is Dictionary:
 			continue
@@ -542,7 +544,7 @@ static func restore_lasting(world: GameWorld, list: Array) -> void:
 				var p := parse(String(rec.spell))
 				_after(world, GameUnit.TICK, func():
 					_area_later(world, _deref(cw), p, at, counter - 1, id))
-				if world.session and String(p.code) == "fireball":
+				if world.session and String(p.code) == "fireball" and not shown.has("fireball"):
 					world.session.broadcast({"t": "spellfx", "code": "fireball", "spell": String(p.id), "sub": "",
 						"x": at.x, "y": at.y, "fx": at.x, "fy": at.y, "replay": true})
 			"teleport":

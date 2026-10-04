@@ -35,6 +35,16 @@ render_mode cull_disabled, ambient_light_disabled;
 varying vec3 ei_e;
 varying float ei_k;
 uniform sampler2DArray atlases : source_color, filter_linear_mipmap_anisotropic, repeat_disable;
+// The original tile lookup. Vulkan (Forward+ / Mobile): explicit gradients
+// and a whole layer number. On an Adreno 650 (Retroid Pocket 5) the implicit-
+// LOD array lookup on the varying layer drew the land as one flat colour with
+// black blocks, while gfx_terrain's textureGrad lookup drew correctly. The
+// same texels and filtering as texture() everywhere else.
+#if CURRENT_RENDERER == RENDERER_COMPATIBILITY
+#define EI_ATLAS(uv, layer) texture(atlases, vec3(uv, layer))
+#else
+#define EI_ATLAS(uv, layer) textureGrad(atlases, vec3(uv, floor(layer + 0.5)), dFdx(uv), dFdy(uv))
+#endif
 // Remake rendering (option gfx_terrain): padded tile filtering, restrained
 // sharpening and relief derived from the painted texture, with finer noise.
 uniform float detail = 0.0;
@@ -209,7 +219,7 @@ void fragment() {
 		if (int(cell.b + 0.5) == 13 || ground == 9 || ground == 10 || ground == 12) { wet = 0.0; }
 		c *= 1.0 - wet * detail * mix(0.20, 0.08, grass);
 	} else {
-		c = texture(atlases, vec3(UV, UV2.x)).rgb;
+		c = EI_ATLAS(UV, UV2.x).rgb;
 	}
 	// Rain affects exposed ground independently of the terrain-detail option.
 	// Snow, ice, lava and ground under water retain their own appearance.
@@ -249,6 +259,12 @@ render_mode cull_disabled, blend_mix, ambient_light_disabled, depth_draw_always;
 varying vec3 ei_e;
 varying float ei_k;
 uniform sampler2DArray atlases : source_color, filter_linear_mipmap_anisotropic, repeat_disable;
+// The original tile lookup, as TERRAIN_SHADER's EI_ATLAS.
+#if CURRENT_RENDERER == RENDERER_COMPATIBILITY
+#define EI_ATLAS(uv, layer) texture(atlases, vec3(uv, layer))
+#else
+#define EI_ATLAS(uv, layer) textureGrad(atlases, vec3(uv, floor(layer + 0.5)), dFdx(uv), dFdy(uv))
+#endif
 // SetWaterLevel offsets per map material (UV2.y = the tile's material), as the
 // original shifts the water vertices of a material.
 uniform float level[64];
@@ -291,7 +307,7 @@ void vertex() {
 }
 void fragment() {
 	FOG = ei_fog_of(VERTEX, (INV_VIEW_MATRIX * vec4(VERTEX, 1.0)).xyz);
-	vec4 t = texture(atlases, vec3(UV, UV2.x));
+	vec4 t = EI_ATLAS(UV, UV2.x);
 	EMISSION = ei_lin(spec);   // the vertex specular, added after the texture
 	ALBEDO = t.rgb;
 	// Stage 0 (state block): colour = texture ×
@@ -332,6 +348,12 @@ render_mode cull_disabled, blend_mix, ambient_light_disabled, depth_draw_always;
 varying vec3 ei_e;
 varying float ei_k;
 uniform sampler2DArray atlases : source_color, filter_linear_mipmap_anisotropic, repeat_disable;
+// The original tile lookup, as TERRAIN_SHADER's EI_ATLAS.
+#if CURRENT_RENDERER == RENDERER_COMPATIBILITY
+#define EI_ATLAS(uv, layer) texture(atlases, vec3(uv, layer))
+#else
+#define EI_ATLAS(uv, layer) textureGrad(atlases, vec3(uv, floor(layer + 0.5)), dFdx(uv), dFdy(uv))
+#endif
 uniform float level[64];
 uniform vec3 mat_e[64];
 uniform float mat_a[64];
@@ -527,7 +549,7 @@ vec4 water_ssr(vec3 origin, vec3 normal, mat4 proj, mat4 inv_proj, mat4 inv_view
 }
 void fragment() {
 	FOG = ei_fog_of(VERTEX, (INV_VIEW_MATRIX * vec4(VERTEX, 1.0)).xyz);
-	vec4 own = texture(atlases, vec3(UV, UV2.x));
+	vec4 own = EI_ATLAS(UV, UV2.x);
 	vec3 t = water_texture(own.rgb, dFdx(tgrid), dFdy(tgrid));
 	vec3 gn = normalize((INV_VIEW_MATRIX * vec4(NORMAL, 0.0)).xyz);
 	vec2 q = wpos.xz;
@@ -1122,6 +1144,26 @@ func ground_at(x: float, y: float) -> float:
 	var cy := int(y)
 	if cx >= 0 and cy >= 0 and cx < sectors_x * SECTOR and cy < sectors_y * SECTOR:
 		h = maxf(h, surface[cy * sectors_x * SECTOR + cx])
+	return h
+
+
+## ground_at over given arrays, the same sums (height_at, then the surface
+## cell): ParticleFx's per-tick snapshot FxGround samples the ground with it
+## on worker threads, without touching this node.
+static func ground_in(hs: PackedFloat32Array, surf: PackedFloat32Array, gw: int, cw: int, ch: int,
+		x: float, y: float) -> float:
+	var xc := clampf(x, 0.0, gw - 1.001)
+	var yc := clampf(y, 0.0, ch + 1 - 1.001)
+	var ix := int(xc)
+	var iy := int(yc)
+	var fx := xc - ix
+	var fy := yc - iy
+	var i := iy * gw + ix
+	var h := lerpf(lerpf(hs[i], hs[i + 1], fx), lerpf(hs[i + gw], hs[i + gw + 1], fx), fy)
+	var cx := int(x)
+	var cy := int(y)
+	if cx >= 0 and cy >= 0 and cx < cw and cy < ch:
+		h = maxf(h, surf[cy * cw + cx])
 	return h
 
 

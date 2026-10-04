@@ -40,9 +40,11 @@ func _draw() -> void:
 	if not mark.is_empty():
 		var feet: Vector2 = mark.feet
 		var head: Vector2 = mark.head
+		if mark.get("unit", false):
+			head.y -= EnemyBars.stack_px(get_viewport_rect().size)   # over the HP bar
 		var col: Color = mark.get("color", PadWheel.BRONZE_HI)
 		_ring(feet, 16.0 * k, col, k)
-		# R3 held: the world labels name everything; the ring alone marks
+		# L3 held: the world labels name everything; the ring alone marks
 		# the target, so its cursor and name do not cover a label.
 		var info := bool(field.get("world_info"))
 		var kind := "" if info else String(mark.get("cursor", ""))

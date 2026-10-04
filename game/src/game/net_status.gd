@@ -369,7 +369,9 @@ static func world_hash() -> String:
 
 
 static func _start_world_hash() -> void:
-	if _world_hash != "" or _hash_task >= 0 or not GameData.is_open():
+	# The task first: while it runs its worker writes _world_hash (read it
+	# only after wait_for_task_completion, world_hash()).
+	if _hash_task >= 0 or _world_hash != "" or not GameData.is_open():
 		return
 	var dir := GameData.root.path_join("maps")
 	if Portability.threads():

@@ -1,5 +1,16 @@
 extends Control
+## First-run screen on Android / web: the player's own game data is imported
+## into the app's storage (PrivateDataImport, web/files.js).
+## Remake: Options › Remake › "Game files…" shows it again
+## (`back_text` set) with the current data, a button back (`cancelled`) and
+## "Delete imported data" (confirmed in a message box). A new import is
+## staged apart from the current data (user://import-<n>, a new IndexedDB
+## generation on the web) and replaces it only through DataSwitch.switch_to.
 signal opened
+signal cancelled
+signal deleted
+## Re-import from the options: the label of the button that goes back.
+var back_text := ""
 var _status: Label
 var _buttons: Array[Button] = []
 var _cancel: Button
@@ -30,6 +41,13 @@ func _ready() -> void:
 	info.text = RemakeText.t("Import the data from your own copy of Evil Islands. Your files stay on this device.")
 	info.text += "\n" + (RemakeText.t("Choose your GOG installer (setup_evil_islands_*.exe): the browser unpacks it without running it. The installed game folder or a private .eipack also work.") if OS.has_feature("web") else RemakeText.t("Choose your GOG installer (.exe) or a private .eipack. The installer is unpacked without running it."))
 	box.add_child(info)
+	if back_text:
+		var current := Label.new()
+		current.name = "Current"
+		current.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		current.modulate = Color(0.75, 0.85, 0.95)
+		current.text = RemakeText.t("Current game files: %s") % DataSwitch.describe()
+		box.add_child(current)
 	_import = PrivateDataImport.new()
 	add_child(_import)
 	_import.progress.connect(func(message): _status.text = message)
@@ -56,6 +74,10 @@ func _ready() -> void:
 		_import.cancelled = true
 		if OS.has_feature("web"): JavaScriptBridge.get_interface("CursedFiles").cancel())
 	box.add_child(_cancel)
+	if back_text:
+		if DataSwitch.imported():
+			_add(box, "Delete imported data", _ask_delete)
+		_add(box, back_text, func(): cancelled.emit())
 	_status = Label.new()
 	_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	box.add_child(_status)
@@ -104,9 +126,27 @@ func _browser_result(args: Array) -> void:
 
 func _open(folder: String) -> void:
 	_status.text = RemakeText.t("Opening game data…")
-	var error := GameData.open(folder)
+	var error := DataSwitch.switch_to(folder)
 	if error:
 		_busy(false)
 		_status.text = RemakeText.t(error)
+		if DataSwitch.managed(folder) and folder != GameData.root:
+			DataSwitch.discard(folder)   # the staged import; the old data stays
 	else:
 		opened.emit()
+
+## "Delete imported data": ✓ deletes it (DataSwitch.forget), ✗ keeps it.
+func _ask_delete() -> void:
+	var box := MessageBox.new()
+	box.name = "DeleteBox"
+	box.title = RemakeText.t("Delete imported data")
+	box.message = RemakeText.t("The imported game files and the converted movies are deleted from this device (%s). Your saves and settings are kept. The game then asks for the game files again.") % DataSwitch.describe("", false)
+	box.esc_closes = true
+	add_child(box)
+	_scroll.visible = false   # the box alone over the background
+	box.dismissed.connect(func(): _scroll.visible = true)
+	box.answered.connect(func(yes: bool):   # the box frees itself
+		_scroll.visible = true
+		if yes:
+			DataSwitch.forget()
+			deleted.emit())

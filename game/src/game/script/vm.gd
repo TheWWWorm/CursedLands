@@ -825,6 +825,7 @@ func _call(name: String, a: Array, inst: Instance):
 			pass
 		# ---- quests, items, money
 		"QuestComplete":
+			SmileFaces.party(session)   # remake option "smile_faces"
 			if SideQuests.get_quest(str(v[1])).is_empty():
 				_quest_complete(str(v[1]))
 			else:
@@ -987,11 +988,11 @@ func _check_interactions() -> void:
 				if t is GameUnit and not t.dead:
 					u.command({"type": "use", "sub": "steal", "at": t.pos, "done": func():
 						if is_instance_valid(u) and not u.dead and is_instance_valid(t) and not t.dead:
-							session.coop.with_purse(u.controller, session.steal.bind(u, t), true)})   # a joiner's own bag
+							session.coop.with_purse(Session.loot_player(u), session.steal.bind(u, t), true)})   # a joiner's own bag
 			elif t is GameUnit and Session.lootable(t) and world.units.has(t.uid):
 				u.command({"type": "use", "sub": "loot", "at": t.pos, "done": func():
 					if is_instance_valid(u) and not u.dead and is_instance_valid(t) and world.units.has(t.uid):
-						session.coop.with_purse(u.controller, session.take_loot.bind(u, t), true)})
+						session.coop.with_purse(Session.loot_player(u), session.take_loot.bind(u, t), true)})
 			elif not (t is GameUnit):
 				var nid := _obj_id(t)
 				if world.lever_sys.usable(nid):
@@ -1342,6 +1343,8 @@ func _on_var_changed(key: String) -> void:
 			var val := session.state.get_var(0, key)
 			if parts.size() == 3:
 				if is_equal_approx(val, 2.0):
+					if int(session.state.quests.get(q, 0)) != 2:
+						SmileFaces.party(session)   # remake option "smile_faces": a quest done
 					session.state.quests[q] = 2
 				elif val >= 3:
 					if session.state.quests.get(q, 0) != 2:

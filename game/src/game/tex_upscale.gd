@@ -100,7 +100,14 @@ static func _init_gpu() -> bool:
 		_rd = null
 		return false
 	_shader = _rd.shader_create_from_spirv(spirv)
-	_pipeline = _rd.compute_pipeline_create(_shader)
+	_pipeline = _rd.compute_pipeline_create(_shader) if _shader.is_valid() else RID()
+	if not _pipeline.is_valid():
+		# A driver that cannot build it (some phone Vulkan drivers fail
+		# Godot's own compute pipelines): the CPU Lanczos path instead.
+		push_warning("TexUpscale: no compute pipeline, upscaling on the CPU")
+		shutdown()
+		_tried = true
+		return false
 	return true
 
 

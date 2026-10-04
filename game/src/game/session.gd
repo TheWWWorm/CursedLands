@@ -223,7 +223,7 @@ func new_campaign(intro := true) -> void:
 	coop.campaign_started()
 	for pid in players:
 		state.ensure_hero(players[pid].index, _hero_proto(players[pid].index), String(players[pid].name))
-	enter_zone("gz1g", 1)
+	await enter_zone("gz1g", 1)
 	if intro:
 		broadcast({"t": "movie", "name": "intro"})
 
@@ -255,7 +255,7 @@ func new_lmp_game(base: String, quest := "", pk := 0) -> bool:
 		var idx := int(players[pid].index)
 		coop.with_purse(idx, _ensure_lmp_hero.bind(idx, String(players[pid].name)))
 	LmpMode.base_vars(state, base)
-	enter_zone(base, 1)
+	_enter_zone(base, 1)   # (web / mobile: the menu holds the loading screen first)
 	if quest:
 		SideQuests.take_lmp(self, quest)
 	else:
@@ -425,17 +425,29 @@ func _hero_proto(index: int) -> String:
 
 # ------------------------------------------------------------------ zones
 
-## Host: load a zone and deploy all players' parties at an entrance.
+## Host: load a zone and deploy all players' parties at an entrance. Web /
+## mobile: the loading screen is put on screen first (LoadingScreen.hold),
+## before anything changes; elsewhere it returns with the zone loaded.
 func enter_zone(id: String, entrance: int, autosave := true) -> void:
+	if LoadingScreen.deferred() and zone_exists(id):
+		await LoadingScreen.hold(get_tree(), campaign.zone(id), LoadingScreen.SAVED_ZONE if state.zones.has(id) else LoadingScreen.NEW_ZONE)
+	_enter_zone(id, entrance, autosave)
+
+
+## Host: enter_zone without waiting for the loading screen (callers that need
+## the zone at once; on web / mobile they hold it first themselves).
+func _enter_zone(id: String, entrance: int, autosave := true) -> void:
 	var z := campaign.zone(id)
 	if z.is_empty() or not z.has("mpr") or not zone_exists(id):
 		message.emit(RemakeText.t("Unknown zone ") + id)
 		return
-	if world and zone_id and (not lmp.is_empty() or (online and Revive.enabled(self))):
+	if world and zone_id and (not lmp.is_empty() or online):
 		# a player whose hero is dead (or gone) when it is sent to
 		# another zone is respawned first (player =).
-		# Remake co-op with the option "revive" (no timed respawn, hero_died):
-		# the same at a zone change.
+		# Remake co-op: the same at a zone change, with the option "revive"
+		# (no timed respawn, hero_died) and without it (the 5 s respawn timer
+		# still pending belongs to the zone left: before, such a hero entered
+		# the next zone standing, at full health and without the toll).
 		for u: GameUnit in world.units.values().duplicate():
 			if u.dead and u.controller >= 0 and u.has_meta("hero") and not u.get_meta("hero").has("merc"):
 				coop.with_purse(u.controller, respawn.bind(u))   # its own purse and bag
@@ -681,8 +693,17 @@ func _spawn_record(r: Dictionary) -> GameUnit:
 
 @rpc("authority", "call_remote", "reliable")
 func _rpc_zone(id: String, records: Array, diplo: PackedInt32Array, extra_mobs: Array, mpr := "", levers := {}) -> void:
+	if _zone_holding:
+		_zone_held.append(_rpc_zone.bind(id, records, diplo, extra_mobs, mpr, levers))
+		return
 	if game == null:
 		zone_received.emit()
+	if LoadingScreen.deferred():
+		# Web / mobile: the screen (frame 8) is presented before the build;
+		# the host's messages meanwhile wait for the new world, in order.
+		_zone_holding = true
+		await LoadingScreen.hold(get_tree(), campaign.zone(id), LoadingScreen.CLIENT)
+		_zone_holding = false
 	zone_id = id
 	var z := campaign.zone(id)
 	if mpr != "":
@@ -708,6 +729,18 @@ func _rpc_zone(id: String, records: Array, diplo: PackedInt32Array, extra_mobs: 
 	LoadingScreen.end()
 	GameData.trace("zone ready %s (from host)" % id)
 	net.zone_loaded()
+	var held := _zone_held
+	_zone_held = []
+	if not held.is_empty():
+		GameData.trace("%d host messages held during the loading screen" % held.size())
+	for c: Callable in held:
+		c.call()   # a further zone holds again: the rest waits for it
+
+
+## Client, web / mobile: host messages that came while _rpc_zone waited for
+## its loading screen to be presented (LoadingScreen.hold).
+var _zone_holding := false
+var _zone_held: Array[Callable] = []
 
 
 ## nid -> [state, figure t, enabled] for the zone message (levers already
@@ -729,7 +762,13 @@ func _lever_states() -> Dictionary:
 # plus the open conversation or global map.
 
 ## Ground spells whose effect lasts for the spell's duration.
-const LASTING_SPELLFX := ["firewall", "litnwall", "acid_fog", "fireworks"]
+const LASTING_SPELLFX := ["firewall", "litnwall", "acid_fog", "fireworks", "clairvoyence"]
+## Spells whose visuals outlive the cast by a fixed number of ticks (one-shot
+## particles, ParticleFx.ONE_SHOT: 60 ticks, Teleport's 120; the fireball
+## flies first, _replay_life): replayed with their age, so they resume where
+## they are (the original saves and sends its particle objects with their creation
+## tick, and catches a late one up).
+const SHORT_SPELLFX := ["fireball", "acid_column", "teleport", "inv_lit"]
 
 func _replay_state() -> Dictionary:
 	if not world.has_meta("replay"):
@@ -796,25 +835,60 @@ func _track(event: Dictionary) -> void:
 			_replay_state().magic["%d:%s" % [int(event.uid), String(event.code)]] = [event, world.time + float(event.get("secs", 0.0))]
 		"spellfx":
 			var sp := Spells.parse(String(event.get("spell", event.get("code", ""))))
-			if String(sp.code) in LASTING_SPELLFX:
-				var ev := event.duplicate()
-				var caster: GameUnit = world.units.get(int(event.get("a", -1)))
-				if caster:   # the wall's direction as cast (the caster moves on)
-					var d := Vector2(float(event.x), float(event.y)) - caster.pos
-					d = d.normalized() if d.length() > 0.01 else Vector2.from_angle(caster.facing)
-					ev.dx = d.x
-					ev.dy = d.y
-				elif event.has("fx"):   # cast without a caster: from its source point
-					var d2 := Vector2(float(event.x) - float(event.fx), float(event.y) - float(event.fy))
-					if d2.length() > 0.01:
-						ev.dx = d2.normalized().x
-						ev.dy = d2.normalized().y
-				var spells: Array = _replay_state().spells
+			var code := String(sp.code)
+			if not (code in LASTING_SPELLFX or code in SHORT_SPELLFX):
+				return
+			var ev := event.duplicate()
+			var caster: GameUnit = world.units.get(int(event.get("a", -1)))
+			if code in SHORT_SPELLFX:
+				# Where it was cast from: the caster moves on (and a teleport's
+				# caster is gone from there), unit ids change with a load.
+				if caster:
+					ev.fx = caster.pos.x
+					ev.fy = caster.pos.y
+					if code == "teleport":
+						ev.fz = ParticleFx.of(world).carrier_height(caster)
+				ev.erase("a")
+				ev.erase("hold")
+			elif caster:   # the wall's direction as cast (the caster moves on)
+				var d := Vector2(float(event.x), float(event.y)) - caster.pos
+				d = d.normalized() if d.length() > 0.01 else Vector2.from_angle(caster.facing)
+				ev.dx = d.x
+				ev.dy = d.y
+			elif event.has("fx"):   # cast without a caster: from its source point
+				var d2 := Vector2(float(event.x) - float(event.fx), float(event.y) - float(event.fy))
+				if d2.length() > 0.01:
+					ev.dx = d2.normalized().x
+					ev.dy = d2.normalized().y
+			# The cast time (a replayed one carries its age in ticks).
+			var t0 := world.time - float(event.get("age", 0)) * GameUnit.TICK
+			ev.erase("age")
+			ev.erase("left")
+			ev.erase("replay")
+			var end := t0 + _replay_life(ev, sp) * GameUnit.TICK
+			if code in LASTING_SPELLFX:
 				# (A restored one, CampaignState.replay_restored, has only "left".)
-				spells.append([ev, world.time + (float(event.left) if event.has("left")
-					else maxf(float(sp.duration), 1.0) * GameUnit.TICK)])
-				while spells.size() > 16:
-					spells.pop_front()
+				end = world.time + (float(event.left) if event.has("left")
+					else maxf(float(sp.duration), 1.0) * GameUnit.TICK)
+			var spells: Array = _replay_state().spells
+			spells.append([ev, end, t0])
+			while spells.size() > 16:
+				spells.pop_front()
+
+
+## Ticks a SHORT_SPELLFX cast stays visible: the one-shot particle's life
+## (ParticleFx.spawn), after the fireball's flight (ParticleFx._fireball: n
+## ticks, then the 60-tick FireBlast); otherwise the spell's duration.
+static func _replay_life(ev: Dictionary, sp: Dictionary) -> float:
+	match String(sp.code):
+		"fireball":
+			var d := Vector2(float(ev.x) - float(ev.get("fx", ev.x)), float(ev.y) - float(ev.get("fy", ev.y)))
+			return maxi(1, roundi(d.length() / maxf(float(sp.range), 1.0) * 15.0) - 2) + 60.0
+		"teleport":
+			return 120.0
+		"acid_column", "inv_lit":
+			return 60.0
+	return maxf(float(sp.duration), 1.0)
 
 
 ## The remembered world events as a list of events (`local`: for the host's
@@ -871,7 +945,10 @@ func _replay_events(local := false) -> Array:
 		var left := float(e[1]) - world.time
 		if left > 0.5:
 			var ev: Dictionary = e[0].duplicate()
-			ev.left = left
+			if Spells.parse(String(ev.get("spell", ev.get("code", "")))).code in LASTING_SPELLFX:
+				ev.left = left
+			if e.size() > 2:   # as old as it is: the client's particles catch up (ParticleFx.spawn)
+				ev.age = roundi((world.time - float(e[2])) / GameUnit.TICK)
 			ev.replay = true
 			out.append(ev)
 	return out
@@ -1012,6 +1089,7 @@ func _check_exits() -> void:
 		_village_exit_check()
 		return
 	_auto_exit_check()
+	_alone_exit_check()
 	if _leave_armed < 0 or not travel_options.is_empty() or (world.vm and world.vm.briefings.active):
 		return
 	var ex: Dictionary = world.zone.get("exits", {}).get(_leave_armed, {})
@@ -1054,6 +1132,54 @@ func _auto_exit_check() -> void:
 		return
 	_auto_exit = n
 	broadcast({"t": "leave_box", "to": leave_player(), "exit": n})
+
+
+## Co-op (remake): a player other than the one whose party decides the exit
+## (leave_player) has all its living units standing in an open exit while
+## that party is not there: the leave box does not open for it (the original
+##  only asks when every living unit of the
+## deciding party stands in the exit, and says nothing otherwise), so it gets
+## the original's line texts.res «string no_way» "- We can't leave anyone
+## here!" (in the data but shown by no code of the original 1.06) in its message
+## window, once per stay in that exit.
+var _alone_exit := {}        # player slot -> exit it was told about
+var _alone_world: GameWorld
+
+
+func _alone_exit_check() -> void:
+	if not online or not is_host:
+		return
+	if _alone_world != world:
+		_alone_world = world
+		_alone_exit = {}
+	var lp := leave_player()
+	var lp_exit := _party_exit()
+	for p: Dictionary in players.values():
+		var idx := int(p.index)
+		if idx == lp:
+			continue
+		var n := -1
+		var any := false
+		for h: GameUnit in party_heroes():
+			if h.controller != idx:
+				continue
+			var e := _exit_at(h.pos)
+			if e < 0 or (any and e != n):
+				n = -1
+				break
+			n = e
+			any = true
+		if n >= 0 and state.get_var(0, "z." + String(world.zone.exits[n].get("to", "none")).to_lower()) == 1.0:
+			n = -1
+		if n < 0 or n == lp_exit:
+			_alone_exit.erase(idx)
+			continue
+		if int(_alone_exit.get(idx, -1)) == n:
+			continue
+		_alone_exit[idx] = n
+		var text := GameData.text("string no_way").strip_edges()
+		if text:
+			broadcast({"t": "msg", "text": text, "to": idx})
 
 
 ## A village leaves by its own rule (the village screen's update
@@ -1379,8 +1505,10 @@ func apply_command(cmd: Dictionary, player: int) -> void:
 				# The unit's own gait decides run / walk (the original unit)
 				# "run" is the double-click flag (command).
 				var mo := {"type": "move", "to": c + off, "gait": true, "run": bool(cmd.get("run", false))}
-				if cmd.get("walk", false):
-					mo.slow = true   # remake: a gamepad stick tilted halfway walks
+				if cmd.get("line", false):
+					# The gamepad stick's moves (PadField): straight where the
+					# line can be walked (GameUnit._do_move, NavGrid.direct_line).
+					mo.line = true
 				if cmd.get("swarm", false):
 					# Ctrl / aimed key on the ground: packet 0x3a, the Player
 					# motivation's state 2 (UnitAI.swarm_tick), round the point.
@@ -2312,32 +2440,72 @@ func _repair(cmd: Dictionary, player: int) -> void:
 		return
 
 
-## Host: Use/Steal on a living unit, the original. The thief's value
-## (Dex - 25 + Use/Steal skill,; belt modifiers are 0 in items.idb)
-## must beat the target's (characters the same, others the prototype's "general
-## skills"); there is no random roll. Success takes the first thing in the
-## target's pockets; failure alerts the target.
+## Host: Use/Steal on a living unit, the original (sub-code 1).
+## No random roll and no facing, light or awareness term: the theft works
+## when the thief's value is above the target's (`steal_value`). Otherwise
+## (thief, target): the thief's side goes into the target's own
+## hostility mask (no hit hook, no line on screen) and nothing is taken. A
+## unit of a player gives nothing. Success takes, one per theft, the
+## first item of the target's bag (: unit, filled from the
+## .mob UNIT_QUEST_ITEMS and GiveUnitQuestItem); with the bag
+## empty it takes the rest at once like looting a body (
+## the prototype's items, its loot and rare-loot money rolls, the
+## belt), and the unit counts as looted (flag, WasLooted: a later
+## theft and its corpse give nothing). Both go to the player's message window
+## (message 6); nothing to take → the thief's ack 0x22 (StealEmp).
+## Remake: the target's "pockets" are its rolled loot (Items.roll_loot).
 func steal(u: GameUnit, t: GameUnit) -> void:
-	var h: Dictionary = u.get_meta("hero")
-	var mine := float(u.stats.get("dex", 25.0)) - 25.0 + Skills.level(h, "science")
-	var theirs := float(t.proto.get("general_skills", 0.0))
-	if t.has_meta("hero"):
-		theirs = float(t.stats.get("dex", 25.0)) - 25.0 + Skills.level(t.get_meta("hero"), "science")
-	if mine <= theirs:
-		world.ai.on_attacked(t, u)
+	if steal_value(u) <= steal_value(t):
+		if t.faction != u.faction and world.relation(t.faction, u.faction) != 2:
+			world.ai._hate(t, u.faction)
+		return
+	if t.controller >= 0:
 		return
 	if not t.has_meta("pockets"):
 		t.set_meta("pockets", Items.roll_loot(t.proto, t.info, world.combat.rng))
 	var pockets: Array = t.get_meta("pockets")
-	if pockets.is_empty():
+	var bag := Array(t.info.get("quest_items", [])).map(func(x): return String(x).to_lower())
+	var take := []
+	for i in pockets.size():
+		if bag.has(String(pockets[i])):
+			take.append(pockets.pop_at(i))
+			break
+	if take.is_empty() and not t.get_meta("looted", false):
+		take = pockets.duplicate()
+		pockets.clear()
+		t.set_meta("looted", true)
+	var got := []
+	var money := 0
+	for it: String in take:
+		var st := Items.parse_stack(it)
+		if st[0] == "money":
+			state.money += st[1]
+			money += st[1]
+		else:
+			state.add_item(st[0], st[1])
+			got.append(st[0])
+	if got.is_empty() and money <= 0:
+		u.ack(EIAcks.STEAL_EMPTY)
 		return
-	var st := Items.parse_stack(String(pockets.pop_front()))
-	if st[0] == "money":
-		state.money += st[1]
-	else:
-		state.add_item(st[0], st[1])
-	notify_got(u.controller, [] if st[0] == "money" else [st[0]], st[1] if st[0] == "money" else 0)
+	notify_got(loot_player(u), got, money)
+	SmileFaces.unit(self, u)   # remake option "smile_faces": a successful theft
 	sync_state()
+
+
+## The Use/Steal value (index 0, used by both Use and Steal):
+## a character (unit id in [1e9, 2e9)) Dex − 25 + its Use/Steal skill (+ the
+## best belt item modifier, all 0 in items.idb); any other unit its stats
+## byte = round of the prototype's "steal skills" (
+## an imported .mob record's s41 low byte, Combat.mob_import) — not its
+## "general skills" (the combat skills..).
+static func steal_value(u: GameUnit) -> float:
+	if u.has_meta("hero"):
+		return float(u.stats.get("dex", 25.0)) - 25.0 + Skills.level(u.get_meta("hero"), "science")
+	if u.uid >= 1000000000 and u.uid < 2000000000:
+		var npc := GameData.db.find("npcs", String(u.proto.get("name", "")))
+		if not npc.is_empty():
+			return float(npc.get("dex", 25.0)) - 25.0 + float(Skills.from_npc(npc).get("science", 0))
+	return roundf(float(u.proto.get("steal_skills", 0.0)))
 
 
 ## A corpse the party may loot: every dead unit in the original. **Remake-only**
@@ -2359,7 +2527,7 @@ static func lootable(u: GameUnit, player := -1, conn := 0) -> bool:
 ## player and sets its looted flag +8 |= (WasLooted), then
 ##  = RemoveObjectFromServer removes it at once, whether or not
 ## it carried anything; no fade, the clients get net message 0x42 = the
-## remake's "remove").
+## remake's "remove"), then the noise (× 1.5).
 func take_loot(u: GameUnit, corpse: GameUnit) -> void:
 	var loot: Array = corpse.get_meta("loot", []) if not corpse.get_meta("looted", false) else []
 	corpse.remove_meta("loot")
@@ -2367,6 +2535,9 @@ func take_loot(u: GameUnit, corpse: GameUnit) -> void:
 	broadcast({"t": "loot", "uid": corpse.uid, "has": false})
 	world.remove_looted(corpse)
 	broadcast({"t": "remove", "uid": corpse.uid})
+	# after the body is gone: the looting is heard
+	# (: the looter's hearing detectability × 1.5, 26 ticks).
+	world.ai.noise_event(u, u.detect(3) * 1.5)
 	var got := []
 	var money := 0
 	for it: String in loot:
@@ -2381,8 +2552,22 @@ func take_loot(u: GameUnit, corpse: GameUnit) -> void:
 		else:
 			state.add_item(st[0], st[1])
 			got.append(st[0])
-	notify_got(u.controller, got, money)
+	notify_got(loot_player(u), got, money)
+	if not got.is_empty() or money > 0:
+		SmileFaces.unit(self, u)   # remake option "smile_faces"
 	sync_state()
+
+
+## The player whose purse and bag a unit's loot and theft go to: the original
+##  hands the body's money and items and a stolen
+## item to the unit's owning player (unit), not to
+## whoever gave the order. A co-op joiner's mercenary held by another player
+## while its own is away (_spawn_merc "lent_of") still belongs to its player's
+## party (its record keeps the owner), so its finds go to that player's own
+## purse and bag (the joiner entry, CoopProgress.purse_entry), which it gets
+## back when it rejoins; with shared loot the present players get copies.
+static func loot_player(u: GameUnit) -> int:
+	return int(u.get_meta("lent_of", u.controller))
 
 
 ## Host: items / money that reached a player's bag (the original
@@ -2460,6 +2645,7 @@ func _physics_process(dt: float) -> void:
 		if _exit_t <= 0.0:
 			_exit_t = 0.25
 			_check_exits()
+			SmileFaces.battle_tick(self)   # remake option "smile_faces": a won fight
 		_ic_t += dt
 		while _ic_t >= GameUnit.TICK:
 			_ic_t -= GameUnit.TICK
@@ -2510,7 +2696,7 @@ func _physics_process(dt: float) -> void:
 
 @rpc("authority", "call_remote", "unreliable_ordered")
 func _rpc_snap(snaps: Array, t: float) -> void:
-	if world == null:
+	if world == null or _zone_holding:
 		return
 	world.time = t
 	for s: Array in snaps:
@@ -2680,6 +2866,9 @@ func broadcast(event: Dictionary) -> void:
 
 @rpc("authority", "call_remote", "reliable")
 func _rpc_event(event: Dictionary) -> void:
+	if _zone_holding:
+		_zone_held.append(_on_event.bind(event))
+		return
 	_on_event(event)
 
 
@@ -2788,6 +2977,7 @@ func _on_event(event: Dictionary) -> void:
 		"loot_copy":   # remake option coop_share_loot (CoopProgress.share_found)
 			if int(event.get("to", -1)) == my_index:
 				message.emit(CoopProgress.copy_text(event))
+				SmileFaces.copy(game)   # remake option "smile_faces"
 		"lobby":   # the host's choice of game, while in the lobby (remake)
 			if not is_host:
 				lobby_mode = event.get("mode", {}) if event.get("mode") is Dictionary else {}
@@ -3145,11 +3335,37 @@ static func latest_save() -> String:
 
 
 func load_game(slot: String) -> bool:
+	var s := _read_save(slot)
+	return s != null and _load_state(slot, s)
+
+
+## The menus' load: load_game with the loading screen put on screen first on
+## web / mobile (LoadingScreen.hold), before anything changes.
+func load_game_shown(slot: String) -> bool:
+	var s := _read_save(slot)
+	if s == null:
+		return false
+	if LoadingScreen.deferred() and zone_exists(s.current_zone):
+		await LoadingScreen.hold(get_tree(), campaign.zone(s.current_zone), LoadingScreen.SAVED_ZONE)
+	return _load_state(slot, s)
+
+
+## Web / mobile, the menus: the loading screen for zone `id` on screen before
+## a synchronous start (new_lmp_game).
+func hold_loading(id: String) -> void:
+	if LoadingScreen.deferred() and zone_exists(id):
+		await LoadingScreen.hold(get_tree(), campaign.zone(id), LoadingScreen.NEW_ZONE)
+
+
+func _read_save(slot: String) -> CampaignState:
 	GameData.trace("load %s (from %s)" % [slot, zone_id])
 	var s := CampaignState.load_from("user://saves/%s.sav" % slot)
 	if s == null:
 		GameData.trace("load %s failed" % slot)
-		return false
+	return s
+
+
+func _load_state(slot: String, s: CampaignState) -> bool:
 	coop.before_load(slot, s)
 	# Players connected now who joined after that save was made (co-op class
 	# heroes; brought heroes come from before_load) still get a hero.
@@ -3160,7 +3376,7 @@ func load_game(slot: String) -> bool:
 	state = s
 	zone_id = ""
 	_restoring = true
-	enter_zone(s.current_zone, 1, false)
+	_enter_zone(s.current_zone, 1, false)
 	_restoring = false
 	state.restore_party_positions(world)
 	state.apply_follow(world, "follow_live")

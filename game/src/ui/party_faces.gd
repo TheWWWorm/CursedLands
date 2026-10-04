@@ -20,15 +20,19 @@ extends Control
 ## upright, GameHUD.portrait), the whole strip is scaled down about its
 ## bottom centre (`_fit`).
 ## A 20×20 film-camera marker (element 0, UV 34,150-54,170) sits 60 px above
-## the face (y 548 − 60) of the unit (seen above Zak's face
-## the original's screenshots).
+## the face (y 548 − 60) of the unit the camera follows:
+## compares each face's unit id, which is field
+##  of the static camera object (no direct writer because it is
+## only written through the camera's `this`:
+## see CameraRig.follow). So it shows only while
+## the camera follows a unit — after Home, a double click (touch: a tap) on a face or own
+## unit, F1–F3 with Ctrl / Alt or at the zone start (party member 0, usually
+## Zak) — and goes when a pan or the minimap ends following. Modern camera:
+## over the hero it is attached to (CameraRig.followed).
 ## The frame is built hidden and shown
 ## only for selected members (show it
 ##  hides it), with no colour change.
-## **Approx.**: has no writer in the original (one read
-## against unit;.data value 0), so the original would show
-## the marker only for a unit with id 0; the remake keeps it over the first
-## selected party member, as the screenshots show it. The face animation
+## The face animation
 ## (hit flash, expressions, nods / shakes / idle looks) is
 ## ui/portrait.gd's.
 
@@ -188,9 +192,15 @@ func _gui_input(e: InputEvent) -> void:
 	if e is InputEventMouseButton and e.pressed and e.button_index == MOUSE_BUTTON_LEFT:
 		var i := _cell_at(e.position)
 		if i >= 0 and _cells[i][2] and is_instance_valid(_cells[i][0]):
-			game.selected = [_cells[i][0]]
-			if e.double_click and game.rig.modern():   # remake: centre the modern camera
-				game.rig.center_on(_cells[i][0].position)
+			# a click selects, a double click
+			# makes the camera follow the unit.
+			# Remake (touch): one tap does both — a double tap is awkward there.
+			if e.double_click:
+				game.rig.follow(_cells[i][0])
+			else:
+				game.selected = [_cells[i][0]]
+				if TouchInput.enabled:
+					game.rig.follow(_cells[i][0])
 			accept_event()
 
 
@@ -219,6 +229,7 @@ func _region(dst: Rect2, uv: Rect2, mod := Color.WHITE) -> void:
 
 func _draw() -> void:
 	var uvf := Rect2(27, 96, 63, 5)
+	var followed := marker_unit()
 	for i in _cells.size():
 		var u: GameUnit = _cells[i][0]
 		if not is_instance_valid(u):
@@ -242,9 +253,21 @@ func _draw() -> void:
 			_strip(Vector2(r.position.x, b.y), Vector2(r.end.x, b.y), uvf, Color.WHITE)
 			_strip(Vector2(a.x, r.position.y), Vector2(a.x, r.end.y), uvf, Color.WHITE)
 			_strip(Vector2(b.x, r.position.y), Vector2(b.x, r.end.y), uvf, Color.WHITE)
-		if _cells[i][2] and not game.selected.is_empty() and game.selected[0] == u:
+		if u == followed:
 			var cx := r.get_center().x
 			_region(Rect2(cx - 10, 478, 20, 20), Rect2(34, 150, 20, 20))
+
+
+## The face the film-camera marker stands over: the unit the camera follows
+## (CameraRig.followed, the original), when it has a cell; else null.
+func marker_unit() -> GameUnit:
+	var f: Node3D = game.rig.followed() if game and game.rig else null
+	if f == null:
+		return null
+	for c in _cells:
+		if is_instance_valid(c[0]) and c[0] == f:
+			return c[0]
+	return null
 
 
 ## A 3 px textured strip along from -> to (800×600 points).

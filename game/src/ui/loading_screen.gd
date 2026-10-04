@@ -29,16 +29,29 @@ extends CanvasLayer
 ##   remake's terrain step. A joiner: 8 at the start, 9 world built, 10 units
 ##   received, 11 at the end.
 ## The frames are decoded with EIBink (12 frames, ~0.5 s in all), so no
-## converted movie is needed. Not shown headless or on the web (a browser
-## presents only after the current JS callback returns; forced nested draws
-## cannot show it and can block WebGL when a network/input callback replaces
-## the current scene).
+## converted movie is needed. Not shown headless.
+## Remake, web and Android / iOS (`deferred`): a forced draw is never put on
+## screen there (a browser presents only after the current JS callback
+## returns, and forced nested draws can block WebGL; Android's GLSurfaceView
+## swaps once after the engine's whole iteration), so a load first shows its
+## screen as a plain canvas and lets two ordinary frames be presented (`hold`,
+## awaited by Session before it changes anything); the page / surface keeps
+## that picture (frame 0, a joiner's 8) while the zone builds on the main
+## thread. The later frames are still decoded at their stages but only the
+## last (11) reaches the screen, for one frame after `end` (the zone's first
+## frame, its shader warm-up, drawn under it). --loading-deferred (after --)
+## takes that path on a desktop, for tests.
 
 enum {NEW_ZONE, SAVED_ZONE, CLIENT}
 
 static var _current: LoadingScreen
 ## Tools: called with the frame number after each new frame is drawn.
 static var on_frame := Callable()
+## Tools: called with the frame number each time a frame of the deferred path
+## has been drawn by an ordinary frame of the main loop.
+static var on_presented := Callable()
+## --loading-deferred: the web / mobile path on any platform (tests).
+static var force_deferred := OS.get_cmdline_user_args().has("--loading-deferred")
 var _kind := NEW_ZONE
 var _bink: EIBink
 var _decoded := -1   # last decoded frame
@@ -49,6 +62,47 @@ var _tex: Array[ImageTexture] = [null, null, null]
 var _canvas: RID
 var _item: RID    # black backdrop
 var _frame: RID   # the movie frame (YUV shader)
+var _deferred := false   # drawn by the main loop's own frames (`deferred`)
+var _early := false      # shown by `hold` ahead of the load's own `begin`
+var _holding := false    # `hold` waiting for its frames to be presented
+var _idle := 0           # main-loop frames with the screen up outside a hold
+
+
+## True where a forced draw does not reach the screen (see the header): the
+## screen is shown with `hold` before a load and drawn by ordinary frames.
+static func deferred() -> bool:
+	return force_deferred or OS.has_feature("web") or Portability.handheld()
+
+
+## Remake, `deferred` platforms: shows the screen for a load about to start
+## and waits until two frames with it have been presented (on other platforms
+## returns at once). The load's own `begin` then keeps this screen. Awaited
+## before the load changes any state, so the old zone (if any) just runs two
+## more frames, as if the load had been asked for that much later.
+static func hold(tree: SceneTree, zone: Dictionary, kind := NEW_ZONE) -> void:
+	if not deferred() or DisplayServer.get_name() == "headless":
+		return
+	while _current and is_instance_valid(_current) and _current._holding:
+		await tree.process_frame   # another load's screen on its way: that load goes first
+	if _current and is_instance_valid(_current) and _current._early:
+		return   # already shown and presented (Session.load_game, then enter_zone)
+	begin(tree, zone, kind)
+	var ls := _current
+	if ls == null:
+		return
+	ls._early = true
+	ls._holding = true
+	# Two frames drawn, then a new main-loop iteration (a browser / the
+	# GLSurfaceView presents a frame once its iteration has returned). A
+	# process_frame count would not do: a load asked for from a deferred call
+	# or the physics step can see process_frame before its first draw.
+	for i in 2:
+		await RenderingServer.frame_post_draw
+	await tree.process_frame
+	if is_instance_valid(ls):
+		ls._holding = false
+		ls._idle = 0
+		GameData.trace("loading screen presented (frame %d)" % ls._decoded)
 
 
 static func movie_for(zone: Dictionary) -> String:
@@ -61,8 +115,13 @@ static func movie_for(zone: Dictionary) -> String:
 
 ## Opens the screen for a zone load and shows its first frame (0, a joiner 8).
 static func begin(tree: SceneTree, zone: Dictionary, kind := NEW_ZONE) -> void:
+	if _current and is_instance_valid(_current) and _current._early and not _current._holding:
+		_current._early = false   # shown by `hold` for this load: kept
+		_current._kind = kind
+		_current._idle = 0
+		return
 	end()
-	if DisplayServer.get_name() == "headless" or OS.has_feature("web"):
+	if DisplayServer.get_name() == "headless":
 		return
 	if Engine.get_process_frames() == 0:
 		return   # called from a _ready during scene setup: the root is busy adding children
@@ -76,6 +135,8 @@ static func begin(tree: SceneTree, zone: Dictionary, kind := NEW_ZONE) -> void:
 	ls.visible = false   # drawn through the RenderingServer below
 	ls._kind = kind
 	ls._bink = bink
+	ls._deferred = deferred()
+	ls.process_mode = Node.PROCESS_MODE_ALWAYS
 	tree.root.add_child(ls)
 	ls._mat = ShaderMaterial.new()
 	ls._mat.shader = Shader.new()
@@ -90,6 +151,8 @@ static func begin(tree: SceneTree, zone: Dictionary, kind := NEW_ZONE) -> void:
 	ls._frame = rs.canvas_item_create()
 	rs.canvas_item_set_parent(ls._frame, ls._item)
 	rs.canvas_item_set_material(ls._frame, ls._mat.get_rid())
+	if ls._deferred:
+		rs.frame_post_draw.connect(ls._posted)
 	_current = ls
 	ls._show(8 if kind == CLIENT else 0)
 
@@ -138,10 +201,53 @@ static func end() -> void:
 		ls._show(11)
 	_current = null
 	if ls and is_instance_valid(ls):
-		RenderingServer.free_rid(ls._frame)
-		RenderingServer.free_rid(ls._item)
-		RenderingServer.free_rid(ls._canvas)
-		ls.queue_free()
+		if ls._deferred and not ls.is_queued_for_deletion():
+			ls._remove_after_draw()   # frame 11 over the zone's first frame
+		else:
+			ls._remove()
+
+
+## Deferred path: one more ordinary frame with the screen (the last frame
+## drawn), then it goes.
+func _remove_after_draw() -> void:
+	set_process(false)
+	await RenderingServer.frame_post_draw
+	_remove()
+
+
+func _remove() -> void:
+	if is_queued_for_deletion():
+		return
+	if RenderingServer.frame_post_draw.is_connected(_posted):
+		RenderingServer.frame_post_draw.disconnect(_posted)
+	RenderingServer.free_rid(_frame)
+	RenderingServer.free_rid(_item)
+	RenderingServer.free_rid(_canvas)
+	queue_free()
+
+
+## A load builds synchronously between `begin` (after `hold`) and `end`, so
+## the main loop never runs a frame in between: a screen still up two frames
+## later belongs to a load that stopped on an error, and goes.
+func _process(_dt: float) -> void:
+	if _current != self or _holding:
+		return
+	_idle += 1
+	if _idle >= 2:
+		push_warning("loading screen left up by an unfinished load: removed")
+		end()
+
+
+## The deferred screen takes all input while it is up (the old zone runs on
+## behind it during `hold`).
+func _input(_e: InputEvent) -> void:
+	if _current == self and _deferred:
+		get_viewport().set_input_as_handled()
+
+
+func _posted() -> void:
+	if on_presented.is_valid():
+		on_presented.call(_decoded)
 
 
 ## Decodes forward to `frame` (clamped to the last one) and draws it; an
@@ -177,4 +283,5 @@ func _draw_frame() -> void:
 	var ts := Vector2(_tex[0].get_size())
 	var k := minf(screen.x / ts.x, screen.y / ts.y)
 	rs.canvas_item_add_texture_rect(_frame, Rect2((screen - ts * k) * 0.5, ts * k), _tex[0].get_rid())
-	rs.force_draw(true, 0.0)
+	if not _deferred:
+		rs.force_draw(true, 0.0)

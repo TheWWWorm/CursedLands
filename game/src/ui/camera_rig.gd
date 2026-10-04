@@ -124,6 +124,9 @@ var _ground_v := 0.0
 var _ground_init := false
 var _free := false              # follow mode let go (the player panned away)
 var _follow_unit: Node3D
+## Original style: the unit the camera follows (the original camera, the
+## global =), null for the original's −1. See follow.
+var _track: Node3D
 var _pointer_inside := true   # NOTIFICATION_WM_MOUSE_ENTER / EXIT
 var _drag_button := 0          # only a gesture begun outside the GUI owns the camera
 var _window_focused := true
@@ -186,6 +189,8 @@ func pose() -> Dictionary:
 	if m:
 		p["tilt"] = _pitch_ofs
 		p["free"] = _free
+	elif is_instance_valid(_track) and _track is GameUnit:
+		p["track"] = (_track as GameUnit).uid   # the camera record keeps
 	return p
 
 
@@ -209,6 +214,11 @@ func set_pose(p: Dictionary) -> bool:
 	else:
 		pitch = clampf(float(p.get("pitch", pitch)), -_pitch_max(), -_pitch_min())
 		distance = clampf(float(p.get("distance", distance)), MIN_DISTANCE, MAX_DISTANCE)
+		#  reads the followed unit id back.
+		var g := get_parent() as Game
+		_track = null
+		if p.has("track") and g and g.world:
+			_track = g.world.units.get(int(p["track"]))
 	_apply()
 	return true
 
@@ -266,7 +276,9 @@ func clamp_look_at(p: Vector3) -> Vector3:
 
 
 ## Puts the look-at point on `p` at once (zone start, tests).
+## Original style: following stops (the minimap's (−1)).
 func focus(p: Vector3) -> void:
+	_track = null
 	position = clamp_look_at(p)
 	p = position
 	if modern():
@@ -276,8 +288,8 @@ func focus(p: Vector3) -> void:
 	_apply()
 
 
-## Home (camera_track) and, modern only, a double-click on a party portrait:
-## the modern camera glides to `p` and follows again; the original jumps.
+## The modern camera glides to `p` and follows again (follow() and the
+## remake's pad / touch recentring); the original style jumps (focus).
 func center_on(p: Vector3) -> void:
 	if not modern():
 		focus(p)
@@ -285,6 +297,45 @@ func center_on(p: Vector3) -> void:
 	_goal = clamp_look_at(p)
 	_vel = Vector3.ZERO
 	_free = false
+
+
+## the original's camera follow (camera, unit id, read as
+## ). Setters: (unit) stores unit (the id; 0
+## −1) and zeroes the pan velocity and its target
+## (id) the same by id. Callers: Home (case 0xb: the
+## first selected party member, none → −1), F1–F3 with Ctrl / Alt (cases
+## 0x37–0x39), a double click on an own unit in the field or on its face
+## (via the faces widget's; a single click only
+## selects), the field screen's first activation (: party member
+## 0), the own hero changing in a network game, the minimap
+## ((−1)) and the zone teardown (: −1). The camera
+## tick resolves the id and moves the look-
+##  a fifth of the way to the unit per call (not scaled by dt)
+## clamped to the map; whenever the pan velocity is non-zero (keys
+## screen edges) it = −1. The save's camera record keeps it
+## . The faces strip marks the followed unit.
+## Modern style: the glide and attachment of center_on (it follows the
+## first selected hero while attached and option cam_follow is on).
+func follow(u: Node3D) -> void:
+	if modern():
+		if u:
+			center_on(u.position)
+		return
+	_track = u
+	_pan_v = Vector2.ZERO
+
+
+## The unit the camera follows now, or null: original style the original's
+##  unit; modern the hero it is attached to (not panned away, option
+## cam_follow on).
+func followed() -> Node3D:
+	if modern():
+		if _free or GameData.option("cam_follow") != 1 or not is_instance_valid(_follow_unit):
+			return null
+		return _follow_unit
+	if not is_instance_valid(_track):
+		_track = null
+	return _track
 
 
 ## Puts the camera at `eye` looking at `target` (Godot space) until release().
@@ -432,6 +483,7 @@ func _unhandled_input(e: InputEvent) -> void:
 			pitch = clampf(pitch - e.relative.y * 0.006 * sy * mp, -_pitch_max(), -_pitch_min())
 			_apply()
 		elif e.button_mask & MOUSE_BUTTON_MASK_MIDDLE:
+			_track = null   # a manual pan, as the keys' velocity
 			_pan(Vector2(-e.relative.x, -e.relative.y) * distance * 0.002 * _mouse_power())
 
 
@@ -486,6 +538,7 @@ func _process(delta: float) -> void:
 		_process_modern(delta)
 		return
 	_shake_tick(delta, true)
+	_track_step()
 	if _input_blocked():
 		_stop_velocities()
 		edge = Vector2i.ZERO
@@ -535,12 +588,28 @@ func _process(delta: float) -> void:
 	_pitch_v = _ease_v(_pitch_v, pitch_t, TURN_RATE, ticks, true)
 	_zoom_v = _ease_v(_zoom_v, zoom_t, TURN_RATE, ticks, false)
 	if _pan_v != Vector2.ZERO:
+		_track = null   # a pan velocity ends following (= −1)
 		_pan(_pan_v * pan_factor() * delta)
 	if _yaw_v != 0.0 or _pitch_v != 0.0 or _zoom_v != 0.0 or distance < MIN_DISTANCE:
 		yaw += _yaw_v * delta
 		pitch = clampf(pitch + _pitch_v * delta, -_pitch_max(), -_pitch_min())
 		distance = _limit_distance(distance + _zoom_v * delta, ticks)
 		_apply()
+
+
+## Original style, follow branch: look-at += (unit − look-)
+## × 0.2 on x / y each call (once a frame), then the map clamp (_apply).
+func _track_step() -> void:
+	var u := followed()
+	if u == null or held:
+		return
+	if not u.is_inside_tree():
+		_track = null
+		return
+	var p := u.get_global_transform_interpolated().origin
+	position.x += (p.x - position.x) * 0.2
+	position.z += (p.z - position.z) * 0.2
+	_apply()
 
 
 ## the pan moves the look-at point by the velocity × f
@@ -632,6 +701,14 @@ func _pan(v: Vector2) -> void:
 	_apply()
 
 
+## Remake (touch): one finger dragged over the world moves the map under it
+## (the keyboard pan's job on a PC); two fingers stay rotate / zoom / pan.
+func touch_drag(before: Vector2, after: Vector2) -> void:
+	if _input_blocked():
+		return
+	touch_gesture(PackedVector2Array([before, before]), PackedVector2Array([after, after]))
+
+
 func touch_gesture(before: PackedVector2Array, after: PackedVector2Array) -> void:
 	if _input_blocked() or before.size() != 2 or after.size() != 2:
 		return
@@ -645,6 +722,8 @@ func touch_gesture(before: PackedVector2Array, after: PackedVector2Array) -> voi
 	_stop_velocities()
 	if modern():
 		_detach()
+	else:
+		_track = null
 	if old_ground is Vector3 and new_ground is Vector3:
 		position += old_ground - new_ground
 		_goal = position
@@ -682,8 +761,13 @@ func _switch_style(m: bool) -> void:
 	if m:
 		distance = clampf(distance, M_MIN_DISTANCE, _max_distance())
 		_goal = position
+		_free = _track == null   # following carries over (attached to the hero)
+		_track = null
 		_snap()
 	else:
+		_track = null
+		if not _free and GameData.option("cam_follow") == 1 and is_instance_valid(_follow_unit):
+			_track = _follow_unit
 		distance = clampf(_dist_s, MIN_DISTANCE, MAX_DISTANCE)
 		yaw = _yaw_s
 		pitch = clampf(-_modern_pitch(), -_pitch_max(), -_pitch_min())

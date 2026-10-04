@@ -1,9 +1,19 @@
 extends Control
 ## First-run screen: the player points the remake at their own Evil Islands,
 ## either an installed game folder or the GOG installer (setup_*.original), whose
-## files are unpacked once into the user data folder (EIInnoSetup).
+## files are unpacked once into the user data folder (EIInnoSetup), or a
+## private .eipack (PrivateDataImport, as on Android / web).
+## Remake: Options › Remake › "Game files…" shows it again
+## (`back_text` set): the current files on top and a button back to where
+## it came from (`cancelled`); the old files stay in use until the new ones
+## pass DataSwitch.switch_to, and an installer is unpacked into a new folder
+## that is removed again when the import fails or is cancelled.
 
 signal opened
+signal cancelled
+
+## Re-import from the options: the label of the button that goes back.
+var back_text := ""
 
 var _path: LineEdit
 var _status: Label
@@ -14,6 +24,9 @@ var _bar: ProgressBar
 var _buttons: Array = []
 var _setup: EIInnoSetup
 var _dest := ""
+var _cancel: Button
+var _cancelled := false
+var _pack: PrivateDataImport
 
 
 func _ready() -> void:
@@ -37,8 +50,15 @@ func _ready() -> void:
 	box.add_child(title)
 	var info := Label.new()
 	info.autowrap_mode = TextServer.AUTOWRAP_WORD
-	info.text = RemakeText.t("This remake uses the data files of your own copy of Evil Islands (GOG / original CD). Select the game's install folder - the one containing game.exe, res/ and maps/ - or the GOG installer (setup_evil_islands_*.exe) to unpack its files once.")
+	info.text = RemakeText.t("This remake uses the data files of your own copy of Evil Islands (GOG / original CD). Select the game's install folder - the one containing game.exe, res/ and maps/ - or the GOG installer (setup_evil_islands_*.exe) to unpack its files once.") + "\n" + RemakeText.t("A private data pack (.eipack) also works.")
 	box.add_child(info)
+	if back_text:
+		var current := Label.new()
+		current.name = "Current"
+		current.autowrap_mode = TextServer.AUTOWRAP_WORD
+		current.modulate = Color(0.75, 0.85, 0.95)
+		current.text = RemakeText.t("Current game files: %s") % DataSwitch.describe()
+		box.add_child(current)
 
 	var row := HBoxContainer.new()
 	box.add_child(row)
@@ -66,20 +86,37 @@ func _ready() -> void:
 	box.add_child(row2)
 	_exe = LineEdit.new()
 	_exe.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_exe.placeholder_text = RemakeText.t("/path/to/setup_evil_islands_2.0.0.5.exe")
+	_exe.placeholder_text = RemakeText.t("/path/to/setup_evil_islands_2.0.0.5.exe or .eipack")
 	row2.add_child(_exe)
 	var browse_exe := Button.new()
 	browse_exe.text = RemakeText.t("Browse...")
 	browse_exe.pressed.connect(func(): _exe_dialog.popup_centered_ratio(0.7))
 	row2.add_child(browse_exe)
 	var imp := Button.new()
-	imp.text = RemakeText.t("Import from installer")
+	imp.text = RemakeText.t("Import from installer or data pack")
 	imp.pressed.connect(_try_import)
 	box.add_child(imp)
 	_buttons += [browse_exe, imp]
 	_bar = ProgressBar.new()
 	_bar.visible = false
 	box.add_child(_bar)
+	_cancel = Button.new()
+	_cancel.text = RemakeText.t("Cancel import")
+	_cancel.visible = false
+	_cancel.pressed.connect(func():
+		if _setup:
+			_cancelled = true
+			_setup.cancel()
+		if _pack and _pack.busy:
+			_pack.cancelled = true)
+	box.add_child(_cancel)
+	if back_text:
+		var back := Button.new()
+		back.name = "Back"
+		back.text = back_text
+		back.pressed.connect(func(): cancelled.emit())
+		box.add_child(back)
+		_buttons.append(back)
 	_status = Label.new()
 	_status.autowrap_mode = TextServer.AUTOWRAP_WORD
 	_status.modulate = Color(1, 0.6, 0.5)
@@ -95,34 +132,43 @@ func _ready() -> void:
 	_exe_dialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
 	_exe_dialog.access = FileDialog.ACCESS_FILESYSTEM
 	_exe_dialog.use_native_dialog = true
-	_exe_dialog.filters = PackedStringArray(["*.exe ; " + RemakeText.t("Installer")])
+	_exe_dialog.filters = PackedStringArray(["*.exe,*.eipack ; " + RemakeText.t("Evil Islands installer or data pack")])
 	_exe_dialog.file_selected.connect(func(f: String): _exe.text = f; _try_import())
 	add_child(_exe_dialog)
 	set_process(false)
 
 
 func _try_open() -> void:
-	var err := GameData.open(_path.text.strip_edges())
+	var err := DataSwitch.switch_to(_path.text.strip_edges())
 	_status.text = err
 	if err.is_empty():
 		opened.emit()
 
 
-## Unpacks the installer into the user data folder ("game"), then opens it.
+## Unpacks the installer into a new folder in the user data folder
+## ("game-<n>", DataSwitch.new_import_dir), then opens it.
 func _try_import() -> void:
 	var file := _exe.text.strip_edges()
+	var head := FileAccess.open(file, FileAccess.READ)
+	if head and head.get_length() >= 8 and head.get_buffer(8).get_string_from_ascii() == "EIPACK01":
+		head.close()
+		_import_pack(file)
+		return
+	head = null
 	_setup = EIInnoSetup.open(file)
 	if _setup.error:
 		_status.text = _setup.error
 		_setup = null
 		return
-	_dest = OS.get_user_data_dir().path_join("game")
+	_dest = DataSwitch.new_import_dir()
+	_cancelled = false
 	_status.modulate = Color(0.85, 0.85, 0.8)
 	_status.text = RemakeText.t("Unpacking %d files into %s ... (a few minutes, once)") % [_setup.files.size(), _dest]
 	for b: Button in _buttons:
 		b.disabled = true
 	_bar.visible = true
 	_bar.value = 0
+	_cancel.visible = true
 	_setup.extract(_dest)
 	set_process(true)
 
@@ -135,16 +181,55 @@ func _process(_dt: float) -> void:
 		return
 	set_process(false)
 	var err := _setup.failure()
+	if _cancelled:
+		err = RemakeText.t("Import cancelled.")
 	_setup = null
 	_bar.visible = false
+	_cancel.visible = false
 	for b: Button in _buttons:
 		b.disabled = false
 	_status.modulate = Color(1, 0.6, 0.5)
+	if err.is_empty():
+		err = DataSwitch.switch_to(_dest)
+	if err:
+		_status.text = err
+		DataSwitch.discard(_dest)   # the old files stay as they were
+		return
+	_path.text = _dest
+	opened.emit()
+
+
+## A private .eipack: unpacked by PrivateDataImport into its own managed
+## "import-<n>" folder, which is removed again when it fails or is cancelled.
+func _import_pack(file: String) -> void:
+	if _pack == null:
+		_pack = PrivateDataImport.new()
+		add_child(_pack)
+		_pack.progress.connect(func(t: String): _status.text = t)
+		_pack.failed.connect(func(message: String): _pack_done("", RemakeText.t(message)))
+		_pack.completed.connect(func(folder: String): _pack_done(folder, ""))
+	_status.modulate = Color(0.85, 0.85, 0.8)
+	_status.text = RemakeText.t("Importing %s") % file.get_file()
+	for b: Button in _buttons:
+		b.disabled = true
+	_cancel.visible = true
+	_pack.import_file(file)
+
+
+func _pack_done(folder: String, err: String) -> void:
+	_cancel.visible = false
+	for b: Button in _buttons:
+		b.disabled = false
+	_status.modulate = Color(1, 0.6, 0.5)
+	if err.is_empty():
+		err = DataSwitch.switch_to(folder)
+		if err:
+			DataSwitch.discard(folder)   # the old files stay as they were
 	if err:
 		_status.text = err
 		return
-	_path.text = _dest
-	_try_open()
+	_path.text = folder
+	opened.emit()
 
 
 func _exit_tree() -> void:
@@ -152,3 +237,5 @@ func _exit_tree() -> void:
 		_setup.cancel()
 		while not _setup.finished():
 			OS.delay_msec(50)
+		_setup = null
+		DataSwitch.discard(_dest)

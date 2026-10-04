@@ -1,5 +1,50 @@
 # Changelog
 
+## 1.0.0
+
+- Options:
+  - A new Remake tab holds all of the remake's own settings, sorted into World and textures, Lighting and shadows, Water and effects, Camera, Interface and controls, Gamepad, Gameplay and Network and co-op. The original pages show only the original game's options again. Your saved settings are kept.
+  - A new Screen tab gathers display mode, resolution, scaling, anti-aliasing, frame rate, VSync, brightness, contrast and gamma.
+  - Graphics starts at the top and holds the "Original look" switch, graphics detection and links to the extra graphics pages.
+  - "Original look" is now an on/off switch; switching it off brings the graphics effects back to this device's defaults, or to the settings the graphics test chose. The low-FPS notice and the new-graphics-card test respect this choice.
+  - On a controller, B steps back one page, and the lists and tabs wrap around.
+  - Remake › Game files… (from the main menu): choose another Evil Islands folder or installer, or import the game data again. The new files are checked in full before they replace the old ones; saves and settings are kept. On Android and in the browser the same entry re-imports or deletes the imported data (saves are kept).
+  - Installer imports unpack into a new folder and can be cancelled; a failed or cancelled import leaves the current game files untouched.
+  - Crash reports: the game keeps a log on every platform, including Android. If it closed unexpectedly last time, it offers to save the report to your Download folder or copy it; Remake › Export log… does the same at any time.
+- Gameplay (closer to the original):
+  - Stealing follows the original: success is decided by Use/Steal against the target's own steal skill, with no random roll and no facing check, so the tutorial ogre can be robbed. A failed theft only makes the target hostile. A theft takes a quest item, or else everything the unit carries.
+  - Aggressive mode: heroes and companions always fight back when attacked, even from behind, after a missed blow, right after walking or an action, or while following someone. Defensive mode still never fights back.
+  - Looting a body now makes noise.
+  - Loading a save or entering a zone no longer replays the lie-down / kneel animation.
+  - The camera icon above a party face marks the hero the camera is following; in the Original camera style, Home keeps following the hero.
+  - The belt, spell, weapon and action buttons act when you let go of the mouse button over them; dragging off a button cancels the click.
+  - The party portrait's smile after a kill is shown again. New option "Smiling portraits" (on by default) also smiles after a won fight, looting and finished quests.
+  - New option "Enemy health bars" (Off / Auto / Always, default Auto): small bars over nearby visible enemies when you play with a controller or by touch.
+- Co-op:
+  - Spells already in progress (fireball, acid column, teleport, invoke lightning, clairvoyance, fire and lightning walls, acid fog, fireworks) continue where they were for a player who joins and after loading a save.
+  - A mercenary kept for a player who is away puts what it loots or steals into that player's own purse and bag, as in the original; with shared loot on, the others still get their copies.
+  - A hero who is dead when the party changes zone with Revive off rises at the zone change and pays the usual death penalty.
+  - A player whose characters stand in an exit while the rest of the party is elsewhere sees the original line "We can't leave anyone here!".
+- Gamepad:
+  - Holding the left stick walks in a straight line instead of wiggling from side to side; the stick moves in the hero's current movement mode at any tilt.
+  - Tap L3 for the movement-mode ring (pick with the left stick); hold L3 for names over people and objects; the pointer is on R3. Saved layouts with the old defaults are switched over once. Camera centring is on the RT wheel's Camera page.
+  - A (Cross) closes a tutorial window at once.
+  - The game-over notice after the hero's death works with the pad.
+  - The target's attack mark and name sit just above the unit's real height; enemy health bars sit a little higher.
+- Touch:
+  - Dragging one finger over the world moves the map; two fingers still turn and zoom.
+  - One tap on a party face selects the character and makes the camera follow them.
+- Android and browser:
+  - The loading screen shows right away when loading a save or starting a game, instead of a frozen picture.
+  - Android: fixed the crash after a few minutes of play (looping sounds read past their end).
+  - Android: new Screen setting "Renderer": Compatibility (default), Mobile (Vulkan) or Forward+ (Vulkan, experimental), applied after a restart, with an automatic fallback if Vulkan fails. Fixed flat cyan terrain with black blocks on Vulkan.
+  - Sun shadows no longer flicker as the time of day passes.
+  - Closing the Android app from recent apps is no longer reported as a crash.
+  - Browser: sound effects no longer cut out after a while or stay silent from the start; the main menu signpost fits the screen again after importing; imports keep the game's camera files.
+- Fixes:
+  - A rare crash in the particle effects' background threads; two smaller thread races in the co-op world check and in background movie conversion.
+  - A spell missile whose target's body is looted while it is still flying no longer causes errors.
+
 ## 0.1.7
 
 - Multiplayer:

@@ -29,7 +29,29 @@ var _sky_mat: ProceduralSkyMaterial
 ## (cave or not). Option gfx_sky adds the remake's sun / moon / stars.
 var _sky_shader: ShaderMaterial
 var _sky_cave := false
+const ShadowDiag := preload("res://src/game/shadow_diag.gd")
 var _sky_spin := 0.0
+## Compatibility only (Android, web; _setup_env): the sun's shadow map rolled
+## with the ground (sun_basis). Desktop keeps 0.1.7's Basis.looking_at.
+var sun_grid_lock := false
+## The sun's shadow direction (_aim_sun): 0 held, re-aimed while the view is
+## hidden or after SUN_MAX_LAG (Compatibility); 1 every frame (desktop, as
+## 0.1.7); 2 never re-aimed after the zone load (ShadowDiag "freeze").
+var sun_aim_mode := 1
+## Direction the sun's shadow map is aimed along (Godot space, as the light
+## travels); ZERO = not aimed yet. Visual only, never saved or sent.
+var _held_sun := Vector3.ZERO
+## Compatibility: the clock's direction towards the sun sent as ei_sun_dir.
+var sun_light_dir := Vector3.ZERO
+var _sun_cam := Vector3.INF
+## Re-aims so far and why the last one happened (probe / ShadowDiag).
+var sun_reaims := 0
+var sun_reaim_reason := ""
+var _sun_state := ""
+## The forced re-aim: the sun's shadow lags the clock by at most this angle.
+const SUN_MAX_LAG_DEG := 10.0
+## A camera jump at least this long in one frame is a cut (re-aim).
+const SUN_CUT_METRES := 6.0
 var _lights: EILights
 var _lights_zone := "?"
 var cursor: GameCursor
@@ -58,6 +80,9 @@ func _ready() -> void:
 	cursor = GameCursor.new()
 	add_child(cursor)
 	add_child(UnitFog.new(self))   # units out of the party's range are not drawn (online)
+	var diag := ShadowDiag.requested()
+	if diag != "":
+		add_child(ShadowDiag.new(self, diag))   # on-device sun-shadow diagnostic (off by default)
 	marks = OrderMarks.new()
 	marks.game = self
 	add_child(marks)
@@ -111,6 +136,13 @@ func _setup_env() -> void:
 	# Direction and colour are set per frame (_update_daylight).
 	sun.rotation_degrees = Vector3(-55, 60, 0)
 	sun.light_energy = 1.0
+	# Desktop (Forward+) shadows were steady: the sun stays as in 0.1.7 there.
+	# On phones / web (any renderer) and Compatibility its shadow is held and
+	# rolled (_aim_sun) and marked so light() reads the clock's direction.
+	if Portability.held_sun():
+		sun_aim_mode = 0
+		sun_grid_lock = true
+		sun.light_specular = Gfx.SUN_MARK
 	sun.shadow_enabled = true
 	# Out-of-view figures cast nothing, and neither does the land
 	# (Gfx.setup_sun_casters, below).
@@ -123,7 +155,11 @@ func _setup_env() -> void:
 	sun.directional_shadow_blend_splits = true
 	sun.shadow_blur = 1.5
 	sun.shadow_bias = 0.04
-	sun.shadow_normal_bias = 1.2
+	# Compatibility (GLES3, phones / web): at 1.2 sun-facing stone (ruin
+	# floors, pillars) showed striped self-shadow acne that crawled as the
+	# sun turned (Forward+ is clean there); 2.0 clears it
+	# (tools/shadow_shimmer_probe.gd). Phones on Vulkan go with the held sun.
+	sun.shadow_normal_bias = 2.0 if Portability.held_sun() else 1.2
 	add_child(sun)
 	Gfx.setup_sun_casters(sun)
 
@@ -400,7 +436,8 @@ func forced_on(m: String, u: GameUnit, g: Variant) -> void:
 ## fog start; the far plane is FarClipDistance (Gfx).
 func _update_daylight() -> void:
 	var zid := String(world.zone.get("id", ""))
-	if zid != _lights_zone:
+	var new_zone := zid != _lights_zone
+	if new_zone:
 		_lights_zone = zid
 		var allod := String(world.zone.get("allod", "")).capitalize()
 		_sky_cave = String(world.zone.get("sky", "")) == "cave"
@@ -412,7 +449,7 @@ func _update_daylight() -> void:
 	# (0.5, 0.5, −0.7071).
 	var ld := Vector3(0.5, 0.5, -0.70710677) if _sky_cave else EISky.light_dir_ei(hour)
 	var gd := EISpace.vec(ld).normalized()
-	_sun.basis = Basis.looking_at(gd, Vector3.FORWARD if absf(gd.y) > 0.99 else Vector3.UP)
+	_aim_sun(gd, new_zone)
 	if not get_tree().paused:
 		_sky_spin += get_process_delta_time() * EISky.SPIN_PER_SECOND
 	if not _sky_cave:
@@ -426,6 +463,11 @@ func _update_daylight() -> void:
 	if _lights == null:
 		return
 	Gfx.update_original(_env, _sun, _lights, hour, _sky_cave)
+	# Lighting keeps the clock: the land's vertex light and the EI materials'
+	# sun term read ei_sun_dir, not the held light's direction (_aim_sun).
+	if sun_aim_mode != 1:
+		sun_light_dir = -gd
+		RenderingServer.global_shader_parameter_set(&"ei_sun_dir", sun_light_dir)
 	var sky := _env.fog_light_color
 	_sky_mat.sky_top_color = sky
 	_sky_mat.sky_horizon_color = sky
@@ -435,6 +477,79 @@ func _update_daylight() -> void:
 		EISky.update(_sky_shader, _lights, hour, _sky_cave, Gfx.on("gfx_sky"))
 		Gfx.update_volumetric(_env, _sun.light_color, _sky_cave)
 		_env.volumetric_fog_albedo = sky.lerp(Color.WHITE, 0.5)
+
+
+## remake, phones / web on any renderer and Compatibility (Portability.held_sun; sun_aim_mode 0): the sun's
+## shadow map is aimed along a held direction instead of the clock's. Desktop
+## (sun_aim_mode 1) turns it every frame with Basis.looking_at, as 0.1.7. Turning it with the sun (15° per game hour, ≈ 0.3° a second)
+## swept the map's texel grid over the land, since Godot snaps the cascades
+## to whole texels counted from the world origin: every shadow edge and the
+## objects' self-shadowing flickered, worst with the 1024 atlas on phones and
+## in browsers (an orthographic map along a changing direction cannot keep
+## the ground on fixed texels; rolling it, sun_basis, only slows the sweep).
+## It is re-aimed where no one sees the jump: on a zone load, while the 3D
+## view is hidden (GameHUD.world_hidden: map, inventory / trade, dialogue,
+## Esc and its screens, objectives, movies) and on a camera cut; and, so the
+## shadows never lag far behind the light, once the clock has turned the sun
+## SUN_MAX_LAG_DEG away (≈ 40 game minutes, 33 s of daytime play). Lighting
+## keeps the exact direction (ei_sun_dir; the EI materials' light() reads it
+## for the marked sun, Gfx.SUN_MARK). Visual only: nothing is saved or sent.
+func _aim_sun(gd: Vector3, new_zone: bool) -> void:
+	var reason := ""
+	var cam := rig.camera.global_position if rig and rig.camera and rig.camera.is_inside_tree() else Vector3.INF
+	if _held_sun == Vector3.ZERO:
+		reason = "start"
+	elif new_zone:
+		reason = "zone"
+	elif sun_aim_mode == 1:
+		reason = "continuous"
+	elif sun_aim_mode == 2:
+		reason = ""
+	elif hud and hud.world_hidden():
+		reason = "view"
+	elif cam != Vector3.INF and _sun_cam != Vector3.INF and cam.distance_to(_sun_cam) >= SUN_CUT_METRES:
+		reason = "cut"
+	elif rad_to_deg(_held_sun.angle_to(gd)) >= SUN_MAX_LAG_DEG:
+		reason = "cap"
+	_sun_cam = cam
+	if sun_aim_mode == 1:
+		_held_sun = gd   # exactly the clock's (desktop, as 0.1.7)
+	if reason != "" and not _held_sun.is_equal_approx(gd):
+		# a hidden view or the continuous mode re-aims every frame: count once
+		if reason != _sun_state or (reason != "view" and reason != "continuous"):
+			sun_reaims += 1
+			sun_reaim_reason = reason
+		_held_sun = gd
+	_sun_state = reason
+	_sun.basis = sun_basis(_held_sun) if sun_grid_lock else Basis.looking_at(_held_sun, Vector3.FORWARD if absf(_held_sun.y) > 0.99 else Vector3.UP)
+
+
+## Forces a re-aim on the next frame (tools; ShadowDiag preset changes).
+func reaim_sun() -> void:
+	_held_sun = Vector3.ZERO
+
+
+## The sun's basis for light direction `d` (Godot space, as the light
+## travels), rolled about the light axis so that the shadow map's X axis
+## falls on the world X axis on the ground. Lighting does not depend on the
+## roll, only the shadow map's orientation does. Basis.looking_at keeps the
+## map's X axis level and square to the sun's azimuth, so the map turned
+## with the sun (15° per game hour, ≈ 0.3° a second) and its texel grid
+## swept over the land: every shadow edge's texel stairs and the self-
+## shadowing on objects crawled each frame (worst on phones / web with
+## the 1024 atlas). Rolled, the grid's X axis stays on world X and only its
+## scale drifts slowly with the sun's height and azimuth (Godot already
+## snaps the cascades to whole texels as the camera moves).
+static func sun_basis(d: Vector3) -> Basis:
+	var b0 := Basis.looking_at(d, Vector3.FORWARD if absf(d.y) > 0.99 else Vector3.UP)
+	var a := b0.x
+	var b := b0.y
+	var al := atan2(-a.z, b.z)
+	if cos(al) * a.x + sin(al) * b.x < 0.0:
+		al += PI
+	var xv := a * cos(al) + b * sin(al)
+	var yv := b * cos(al) - a * sin(al)
+	return Basis(xv, yv, b0.z)
 
 
 ## Hero light: every unit a player controls carries a point light (the original
@@ -504,8 +619,9 @@ func attach_world(w: GameWorld) -> void:
 	if not mine.is_empty():
 		selected = [mine[0]]
 		rig.focus(mine[0].position)
-		if rig.modern():
-			rig.center_on(mine[0].position)
+		# The field screen's first activation follows party
+		# member 0; modern: the glide and attachment.
+		rig.follow(mine[0])
 	hud.on_world(w)
 	sound.on_world(w)
 	_apply_shadows(w)
@@ -643,7 +759,7 @@ func _key_action(act: String) -> void:
 			selected = [mine[n]]
 			GameSound.ack(mine[n], EIAcks.SELECTED)
 			if mod or rig.modern():
-				rig.center_on(mine[n].position)
+				rig.follow(mine[n])
 		return
 	match act:
 		"select_all":   # case 0x3a, not in a network game
@@ -667,7 +783,7 @@ func _key_action(act: String) -> void:
 		"quicksave":
 			session.save_game("quick")
 		"quickload":
-			if session.is_host and not session.load_game("quick"):
+			if session.is_host and not await session.load_game_shown("quick"):
 				hud.log_msg(RemakeText.t("No quick save."))
 		"follow":   # HUD Follow: the next click picks the unit to follow
 			if not selected.is_empty():
@@ -703,9 +819,8 @@ func _key_action(act: String) -> void:
 			hud.text_window.key_mode(0 if act == "w_text1" else 1)
 		"camera_norm":   # key N: case 0xc, same as the minimap's N button
 			hud.minimap.north()
-		"camera_track":   # HOME (the modern camera glides there and follows again)
-			if not selected.is_empty():
-				rig.center_on(selected[0].position)
+		"camera_track":   # HOME, case 0xb: follow the first selected, none → stop (−1)
+			rig.follow(null if selected.is_empty() else selected[0])
 
 
 ## Keyboard.ini "obj" (TAB) and the clock dial's inner disc: the quests
@@ -781,6 +896,11 @@ func order_on(u: GameUnit, add: bool, p: Variant = null, lever := -1, ground: Va
 		# says "Selected" (field screen = (unit, 0)
 		# client side).
 		sound.ui("buttons\\battle\\on_off.wav")
+		if _double:
+			# The input's double-click byte:, the camera
+			# follows the unit (the first click selected it).
+			rig.follow(u)
+			return
 		if add:
 			# Toggle (with the modifier); the remake keeps the
 			# last unit selected, see _keep_selection.
@@ -999,6 +1119,8 @@ func on_event(e: Dictionary) -> void:
 			elif int(e.get("to", -1)) == session.my_index:
 				hud._faces.acknowledge(who, int(e.get("code", -1)))
 				GameSound.ack(who, int(e.get("code", -1)))
+		"smile":   # remake option "smile_faces" (SmileFaces)
+			SmileFaces.show(self, e)
 	hud.on_event(e)
 
 

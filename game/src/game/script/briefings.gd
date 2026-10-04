@@ -252,6 +252,8 @@ func _rewards(id: String, player := 0) -> void:
 	if exp != 0.0:
 		vm.session.give_experience(exp, "talk", player)
 	var money := int(float(row.get("money", 0.0)))
+	if exp > 0.0 or money > 0 or not _list(row.get("give_items")).is_empty():
+		SmileFaces.party(vm.session, player)   # remake option "smile_faces": a reward
 	if money:
 		st.money += money
 	# give_quests and open_zones are GSSetVarMax(var, 1)

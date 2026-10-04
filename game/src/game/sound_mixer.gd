@@ -60,9 +60,7 @@ func _ready() -> void:
 		c.bus = "EISample%d" % i
 		var bi := AudioServer.get_bus_index(c.bus)
 		if bi < 0:
-			AudioServer.add_bus()
-			bi = AudioServer.bus_count - 1
-			AudioServer.set_bus_name(bi, c.bus)
+			bi = GameData.add_bus(c.bus)   # not AudioServer.add_bus (web, see there)
 			AudioServer.add_bus_effect(bi, AudioEffectPanner.new())
 			var rv := AudioEffectReverb.new()
 			AudioServer.add_bus_effect(bi, rv)
@@ -188,7 +186,11 @@ func _looped(st: AudioStreamWAV) -> AudioStreamWAV:
 	l.loop_mode = AudioStreamWAV.LOOP_FORWARD
 	l.loop_begin = 0
 	var frame := (2 if l.format == AudioStreamWAV.FORMAT_16_BITS else 1) * (2 if l.stereo else 1)
-	l.loop_end = l.data.size() / frame
+	# Godot 4.7's mixer reads frame `loop_end` itself (inclusive) and the data
+	# has no padding: the frame count here read one frame past the buffer, a
+	# SIGSEGV on the audio thread whenever it ended on a page boundary (the
+	# Android "crash after a few minutes").
+	l.loop_end = maxi(0, l.data.size() / frame - 1)
 	st.set_meta(key, l)
 	return l
 

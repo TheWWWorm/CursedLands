@@ -31,6 +31,8 @@ var game: Game
 var _entries: Array = []   # [spell id, index]
 var _sig := ""
 var _unit: GameUnit
+var _held := -1          # cell the press captured the mouse
+var _held_double := false  # that press was a double click (manager)
 var _first := 0
 
 
@@ -143,11 +145,18 @@ func _get_tooltip(p: Vector2) -> String:
 	return GameData.tip_key(BeltStrip.spell_rows(t if t else String(sp.name), _entries[i][0]), 30 + i)
 
 
+## Acts on the release over a cell, as BeltStrip (
+## capture, acts on the cell under the release).
 func _gui_input(ev: InputEvent) -> void:
-	if ev is InputEventMouseButton and ev.pressed and ev.button_index == MOUSE_BUTTON_LEFT:
-		var i := _slot_at(ev.position)
-		if i >= 0:
-			use(i, ev.double_click)
+	if ev is InputEventMouseButton and ev.button_index == MOUSE_BUTTON_LEFT:
+		if ev.pressed:
+			_held = _slot_at(ev.position)
+			_held_double = ev.double_click
+		elif _held >= 0:
+			_held = -1
+			var i := _slot_at(ev.position)
+			if i >= 0:
+				use(i, _held_double)
 		accept_event()
 
 

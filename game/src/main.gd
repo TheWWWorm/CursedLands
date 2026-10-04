@@ -8,6 +8,7 @@ extends Node
 ##   --host / --join=ADDR   start or join a co-op game right away
 ##   --name=NAME            player name
 ##   --debug                debug run: the main menu shows the map viewer link
+##   --loading-deferred     loading screen as on the web / mobile (LoadingScreen.hold)
 
 var game: Game
 var session: Session
@@ -57,6 +58,9 @@ func _start() -> void:
 		var seq := MovieSequence.start(self, MoviePlayer.ini_movies("Start"))
 		await seq.done
 	var menu: Control = await open_menu()
+	if not direct:
+		var crash_box := CrashReportBox.offer(menu)   # the previous session ended unexpectedly
+		RendererChoice.offer(menu, crash_box)   # a Vulkan renderer that did not start / crashed
 	for a in args:
 		if a == "--play":
 			menu.call_deferred("_single")
@@ -80,6 +84,25 @@ func open_menu() -> Control:
 	if splash:
 		splash.finish()
 	return menu
+
+
+## Remake: Options › Remake › "Game files…" (main menu): the first-run
+## screen again, over the menu (DataSwitch). Once other files are in use the
+## game starts again into the main menu (DataSwitch.restart); "Delete
+## imported data" (Android / web) starts it again into the setup screen.
+## Back calls `back` with the old files untouched.
+func change_game_files(back: Callable) -> Control:
+	var setup: Control = preload("res://src/ui/portable_setup.gd").new() if Portability.constrained() else preload("res://src/ui/setup_screen.gd").new()
+	setup.name = "GameFilesSetup"
+	setup.back_text = RemakeText.t("Back to options")
+	setup.opened.connect(func(): DataSwitch.restart(get_tree()))
+	if setup.has_signal("deleted"):
+		setup.deleted.connect(func(): DataSwitch.restart(get_tree()))
+	setup.cancelled.connect(func():
+		setup.queue_free()
+		back.call())
+	add_child(setup)
+	return setup
 
 
 ## Esc signpost "Exit to main menu": drop the game and the connection.

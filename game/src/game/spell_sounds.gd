@@ -243,10 +243,12 @@ func _move(m: Dictionary) -> void:
 			_movers.erase(m)
 		return
 	# A homing spell missile: 0.6667 m per tick (CEffectArrow).
-	var t: GameUnit = m.target if is_instance_valid(m.target) else null
+	# (A target taken off the world on the way: on to where it was last.)
+	var t: GameUnit = m.target if is_instance_valid(m.target) and m.target.is_inside_tree() else null
 	var dest: Vector3 = m.point
 	if t:
 		dest = _at(t) + Vector3(0, 0, 0.5)
+		m.point = dest
 	var d := dest - pos
 	m.ticks = int(m.ticks) + 1
 	var arrived: bool = Vector2(d.x, d.y).length() < 0.6667 or int(m.ticks) > 400

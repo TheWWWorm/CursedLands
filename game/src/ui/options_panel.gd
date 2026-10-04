@@ -29,18 +29,33 @@ extends Interface800
 ## brightness / contrast / gamma and reverse stereo apply at once
 ## the rest on ✓ (messbox\ok.wav); ✗ / Esc restores them (messbox\cancel.wav).
 ## Remake: ✗ / Esc after a change first asks whether to save it (`_cancel`).
-## Remake: the Graphics (video) page ends with a row "Remake graphics…" (row
-## 13, free in the original's table) opening a sub-page under the same tab with the
-## remake's own switches (GameData.REMAKE_OPTIONS), all marked as the remake's.
-## The original's three shadow switches (Graphics rows 0..2) are not offered (always
-## on, GameData.FIXED_OPTIONS); their rows and the free rows 3 / 9 hold the
-## remake's display rows (display mode, resolution, frame-rate limit, VSync,
-## FPS counter; render scale on the sub-page): multiple-choice rows stepped by
-## a click / Enter (forward) or Left / Right, applied at once like the volumes
-## and restored by ✗.
-## Remake: the Game page's free row 13 "Remake extras…" opens the co-op host
-## settings and the single-player game-over notice switch (COOP_GROUP) under
-## the Game tab; its row 13 leads back.
+## Remake (user requests 2026-10-04): 13 group buttons (TAB_ORDER, the
+## column (100,156)-(250,468), same sprite and font): the original's 11 with the
+## remake's "Screen" after Graphics and "Remake" last. The original's pages hold
+## only its rows (its free rows empty), but Graphics starts at the top (no
+## rows for the original's three shadow switches, always : FIXED_OPTIONS) and
+## its brightness / contrast / gamma are on Screen. Screen (SCREEN_GROUP):
+## display mode, resolution, render scale, anti-aliasing, frame-rate limit,
+## VSync, smooth motion, FPS counter, brightness / contrast / gamma and (Android
+## only) the renderer — multiple-choice rows stepped by a click / Enter
+## (forward) or Left / Right, applied at once like the volumes, restored by ✗;
+## the renderer row asks first when stepped to Forward+ (experimental on
+## phones, ✗ puts it back) and ✓ with it changed offers a restart. Graphics
+## rows 6..8: detect graphics automatically, "Detect best settings" (the
+## graphics test now), "Original look" (PRESET_ROW); rows 10..12 link to the
+## remake's graphics sections. Remake: its sections as link rows (SECTIONS,
+## rows 0..7: World and textures, Lighting and shadows, Water and effects,
+## Camera, Interface and controls, Gamepad, Gameplay, Network and co-op), row
+## 11 "Game files…" (main menu only: the first-run setup screen again,
+## DataSwitch), row 12 "Export log…" (CrashReportBox). A section page is
+## titled "<button> › <section>" with that button lit and row 13 "« <button>"
+## (PARENT; a graphics section opened from Graphics belongs to Graphics, from
+## Remake to Remake: `_parent`); Gamepad row 12 "Buttons…" opens "Remake ›
+## Gamepad › Buttons" (row 13 « Gamepad). Esc (the pad's B) on a sub-page goes
+## back one level, elsewhere it is ✗ as in the original; the pad's Menu is ✗
+## any page, Y is ✓. Up / Down wrap around (top ↔ bottom, past empty and grey
+## rows), PgUp / PgDn (LB / RB) step through the 13 buttons and wrap. Labels
+## and tips: GameData.REMAKE_OPTIONS (every remake row's tip marks it).
 ## There is no language choice (the original has none: the texts and voices
 ## are those of the edition supplied). Behind it the frozen,
 ## greyed frame (Interface800.dim_layer).
@@ -64,16 +79,44 @@ extends Interface800
 ## the screen is not drawn (MessageBox).
 
 signal closed
+## Remake: the "Game files…" row (Remake row 11) was chosen; the main
+## menu shows the setup screen again (main.gd change_game_files).
+signal game_files_requested
 
-const REMAKE_GROUP := 11   # GameData.OPTION_GROUPS index of the remake sub-page
-const REMAKE_GROUP2 := 12  # its second page ("More effects…", row 13)
-const COOP_GROUP := 13     # the remake's co-op page, from the Game page's row 13
-const SURFACE_GROUP := 14  # lighting and surfaces, from More effects row 10
-const PAD_GROUP := 15      # remake: gamepad settings, from the Actions key page's row 13
-const PAD_BUTTONS_GROUP := 16   # remake: the gamepad's button layout, from PAD_GROUP row 12
-## The remake sub-pages and the original tab each belongs to (lit while it is up).
-const SUB_PAGES := {REMAKE_GROUP: 0, REMAKE_GROUP2: 0, COOP_GROUP: 3, SURFACE_GROUP: 0, PAD_GROUP: 5, PAD_BUTTONS_GROUP: 5}
-const PAD_LINK := ["Gamepad…", "Controller settings (vibration, stick dead zone, pointer speed, target range, button pictures) and the button layout."]
+const REMAKE_GROUP := 11   # GameData.OPTION_GROUPS index of the Remake tab (its sections' links)
+const SCREEN_GROUP := 12   # the remake's Screen tab
+const WORLD_GROUP := 13    # Remake › World and textures (also Graphics › …)
+const LIGHT_GROUP := 14    # Remake › Lighting and shadows (also Graphics › …)
+const EFFECTS_GROUP := 15  # Remake › Water and effects (also Graphics › …)
+const CAMERA_GROUP := 16   # Remake › Camera
+const INTERFACE_GROUP := 17   # Remake › Interface and controls
+const GAMEPLAY_GROUP := 18 # Remake › Gameplay
+const COOP_GROUP := 19     # Remake › Network and co-op
+const PAD_GROUP := 20      # Remake › Gamepad
+const PAD_BUTTONS_GROUP := 21   # Remake › Gamepad › Buttons (PAD_GROUP row 12)
+## The group buttons top to bottom: the original's 11 with the remake's Screen
+## after Graphics, and Remake last.
+const TAB_ORDER := [0, SCREEN_GROUP, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, REMAKE_GROUP]
+const TABS := 13           # TAB_ORDER.size()
+## The Remake page's link rows (row = index).
+const SECTIONS := [WORLD_GROUP, LIGHT_GROUP, EFFECTS_GROUP, CAMERA_GROUP,
+	INTERFACE_GROUP, PAD_GROUP, GAMEPLAY_GROUP, COOP_GROUP]
+## The remake pages and the page their « row (and Esc / B) leads back to; the
+## parent's button is lit while one is up. The graphics sections also hang
+## under Graphics (GRAPHICS_LINKS) when opened from there (`_came_from`).
+const PARENT := {WORLD_GROUP: REMAKE_GROUP, LIGHT_GROUP: REMAKE_GROUP,
+	EFFECTS_GROUP: REMAKE_GROUP, CAMERA_GROUP: REMAKE_GROUP, INTERFACE_GROUP: REMAKE_GROUP,
+	GAMEPLAY_GROUP: REMAKE_GROUP, COOP_GROUP: REMAKE_GROUP, PAD_GROUP: REMAKE_GROUP,
+	PAD_BUTTONS_GROUP: PAD_GROUP}
+## The Graphics page's links to the remake's graphics sections, rows 10..12.
+const GRAPHICS_LINKS := [WORLD_GROUP, LIGHT_GROUP, EFFECTS_GROUP]
+const GRAPHICS_LINK_ROW := 10
+## The pages with the Original look toggle in row 12 (PRESET_ROW); on the
+## Graphics page it is row 8 (GFX_LOOK_ROW).
+const LOOK_PAGES := [WORLD_GROUP, LIGHT_GROUP, EFFECTS_GROUP]
+const GFX_LOOK_ROW := 8
+const BACK_ROW := 13       # a remake page's « row
+const BUTTONS_ROW := 12    # Gamepad › "Buttons…"; Buttons › "Default buttons"
 const PAD_BUTTONS_LINK := ["Buttons…", "Choose which controller button does what. The D-pad and the sticks keep their roles."]
 const PAD_DEFAULTS := ["Default buttons", "Restores the default button layout (confirm with ✓)."]
 ## The rebindable gamepad actions' labels and tips (PadInput.ACTIONS order).
@@ -82,21 +125,24 @@ const PAD_ACTIONS := {
 	"cancel": ["Cancel / back", "Cancels a spell, item or aim being targeted, else stops the selected characters. Closes wheels and menus."],
 	"context": ["Target ring", "More actions for the highlighted target: aimed strikes, steal, follow, examine; on open ground: move, run, forced move."],
 	"pause": ["Pause", "Pauses or resumes the game (single player). Held: normal or fast speed."],
-	"actions": ["Spells and actions wheel", "Spells, stance, gait, Use/Steal and Follow. In an open wheel: the previous page."],
+	"actions": ["Spells and actions wheel", "Spells, stance, Use/Steal and Follow. In an open wheel: the previous page."],
 	"items": ["Items wheel", "The belt and the weapons. In an open wheel: the next page."],
 	"mod": ["Modifier", "Held, it changes other buttons, as Ctrl / Alt on the keyboard: forced attack, forced move, use or cast at once, the unit panel's views."],
-	"system": ["Game wheel", "Inventory, journal, quests, minimap, message log, quick save and load, tutorial."],
+	"system": ["Game wheel", "Inventory, journal, quests, minimap, message log, quick save and load, tutorial. Its camera page: centre on the leader, camera views 1–4."],
 	"cursor": ["Pointer", "Switches the pointer on or off: the left stick moves it and A / B click as the mouse buttons."],
-	"recentre": ["Centre the camera", "Centres the camera on the leader and follows again."],
+	"gait": ["Movement mode", "Tap: the ring of the movement modes (run, walk, sneak, crawl) for the selected characters, picked with either stick; the left stick moves in the chosen one. Held: names over the people, bodies, levers and exits around."],
 	"view": ["Quests", "The quests screen. Held: the journal."],
 	"menu": ["Menu", "The game menu: save, load, options, exit."],
 }
-const COOP_LINK := ["Remake extras…",
-	"Co-op host settings: full experience for every party member, monsters scaled to the player count, opening the port on the router. Single player: the game-over notice at the hero's death."]
-const MORE_LINK := ["More effects…", "HD textures, soft and lit particles, contact shadows, torch glow; anti-aliasing, shadow quality, texture filtering."]
-const SURFACE_LINK := ["Lighting and surfaces…", "Dynamic firelight, surface materials, leaf backlighting, rain on surfaces and lava lighting."]
-const TABS := 11           # the original's group buttons
-const LINK_ROW := 13
+## Remake row 11: the original game files (DataSwitch). Only from the main
+## menu (`game_files`); in a game the row is grey and says so.
+const FILES_GROUP := REMAKE_GROUP
+const FILES_ROW := 11
+const FILES_LINK := ["Game files…", "Choose another Evil Islands folder or installer, or import the game data again. Saves and settings are kept."]
+## Remake row 12: the log and system information saved or copied
+## (CrashReportBox), from the main menu and in a game.
+const LOG_ROW := 12
+const LOG_LINK := ["Export log…", "Saves the game's log with the system information to a folder you can open, or copies it, to send it with a bug report."]
 const LIVE := ["volume_sfx", "volume_stream", "volume_voice", "brightness", "contrast", "gamma", "reverse_stereo",
 	"display_mode", "resolution", "fps_limit", "vsync", "show_fps", "render_scale"]
 const OK_RECT := Rect2(213, 526, 74, 48)
@@ -121,6 +167,10 @@ var _waiting := false   # the selected key row waits for a key
 var _box: MessageBox
 var _tutorial: TutorialPanel
 var _pad_map := {}      # remake: the gamepad layout being edited (button -> action)
+var _look_from := -2    # remake: Original look switched on here over this detected tier (-1 none, -2 not here)
+var _came_from := 0     # remake: the group button whose page was shown last (a sub-page's way back)
+## Remake: the "Game files…" row can be used (opened from the main menu).
+var game_files := false
 
 
 func _ready() -> void:
@@ -158,6 +208,7 @@ func open(frame: Image = null, slide := false) -> void:
 	_place_board()
 	_load_keys()
 	_pad_map = PadInput.bindings.duplicate()
+	_look_from = -2
 	_waiting = false
 	visible = true
 	_show_group(0)
@@ -188,41 +239,87 @@ func _close() -> void:
 # ------------------------------------------------------------------ pages
 
 func _group_count() -> int:
-	return TABS
+	return TAB_ORDER.size()
 
 
-## The tab lit for the page: the remake sub-page belongs to Graphics (0).
+## The page a remake sub-page leads back to (-1: a group button's own page).
+## A graphics section opened from Graphics goes back there.
+func _parent(g: int) -> int:
+	if g in GRAPHICS_LINKS and _came_from == 0:
+		return 0
+	return int(PARENT.get(g, -1))
+
+
+## The group button lit for the page: the page's own, or the one it hangs under.
 func _tab() -> int:
-	return int(SUB_PAGES.get(_group, _group))
+	var g := _group
+	while _parent(g) >= 0:
+		g = _parent(g)
+	return g
 
 
-func _group_label(g: int) -> String:
+## A remake page's own name ("Display"); the original's pages: their button label.
+func _section_label(g: int) -> String:
 	var key: String = GameData.OPTION_GROUPS[g]
 	if GameData.REMAKE_OPTIONS.has(key):
-		return "%s: %s" % [_group_label(int(SUB_PAGES.get(g, 0))), RemakeText.t(GameData.REMAKE_OPTIONS[key][0])]
+		return RemakeText.t(GameData.REMAKE_OPTIONS[key][0])
 	return _t("string option_group_" + key, key.capitalize())
+
+
+## The group button's label, or for a remake page its path as the title
+## ("Remake › Gamepad › Buttons", "Graphics › Water and effects").
+func _group_label(g: int) -> String:
+	if _parent(g) >= 0:
+		return "%s › %s" % [_group_label(_parent(g)), _section_label(g)]
+	return _section_label(g)
 
 
 func _group_tip(g: int) -> String:
 	var key: String = GameData.OPTION_GROUPS[g]
+	if g == SCREEN_GROUP:   # the remake's rows with three of the original's
+		return _section_label(g) + "\n" + RemakeText.t(GameData.REMAKE_OPTIONS[key][1])
 	if GameData.REMAKE_OPTIONS.has(key):
-		return RemakeText.t("%s\nThe remake's own settings; not part of the original game.") % RemakeText.t(GameData.REMAKE_OPTIONS[key][0])
+		return RemakeText.t("%s\nThe remake's own settings; not part of the original game.") % _section_label(g) \
+			+ "\n" + RemakeText.t(GameData.REMAKE_OPTIONS[key][1])
 	return GameData.text("tip option_group_" + key).strip_edges()
+
+
+## Remake: from a sub-page to its parent, on the row that leads back to it.
+func _go_back() -> void:
+	var from := _group
+	_show_group(_parent(from))
+	for r: int in _rows:
+		if _rows[r].get("to", -1) == from:
+			_sel = r
+
+
+func _section_link(g: int) -> Dictionary:
+	var label := _section_label(g) + "…"
+	return {"kind": "link", "name": "", "to": g, "label": label,
+		"tip": _remake_tip([label, GameData.REMAKE_OPTIONS[GameData.OPTION_GROUPS[g]][1]])}
+
+
+static func _remake_tip(pair: Array) -> String:
+	return RemakeText.t("%s\n%s\n(Remake option.)") % RemakeText.tl(pair)
 
 
 ## the page's rows; the first row with a control is selected.
 func _show_group(g: int) -> void:
-	_group = g if SUB_PAGES.has(g) else clampi(g, 0, TABS - 1)
+	_group = g if PARENT.has(g) or g in TAB_ORDER else 0
+	if _group in TAB_ORDER:
+		_came_from = _group
 	_rows.clear()
 	for o: Array in GameData.OPTIONS:
 		if int(o[3]) != _group:
 			continue
 		var name: String = o[0]
+		if name == "renderer" and not RendererChoice.available():
+			continue   # Android only (desktop Forward+, web Compatibility)
 		var label := _t("string option_" + name, name.capitalize()).trim_suffix(":").strip_edges()
 		var tip := GameData.text("tip option_" + name).strip_edges()
 		if GameData.REMAKE_OPTIONS.has(name):
 			label = RemakeText.t(GameData.REMAKE_OPTIONS[name][0])
-			tip = RemakeText.t("%s\n%s\n(Remake option.)") % [label, RemakeText.t(GameData.REMAKE_OPTIONS[name][1])]
+			tip = _remake_tip(GameData.REMAKE_OPTIONS[name])
 		var choices := GameData.option_choices(name)
 		_rows[int(o[4])] = {"kind": "slider" if int(o[1]) == 0 else "switch", "name": name,
 			"max": choices.size() if not choices.is_empty() else int(o[2]), "label": label, "tip": tip,
@@ -233,54 +330,41 @@ func _show_group(g: int) -> void:
 		var name: String = a[1]
 		_rows[int(a[3])] = {"kind": "keys", "name": name,
 			"label": _action_label(name),
-			"tip": RemakeText.t("%s\n%s\n(Remake option.)") % RemakeText.tl(GameData.REMAKE_OPTIONS[name]) if GameData.REMAKE_OPTIONS.has(name)
+			"tip": _remake_tip(GameData.REMAKE_OPTIONS[name]) if GameData.REMAKE_OPTIONS.has(name)
 				else GameData.text("tip action_" + name).strip_edges(),
 			"keys": _keys_text(name)}
-	if _group == 0:
-		_rows[LINK_ROW] = {"kind": "link", "name": "", "to": REMAKE_GROUP,
-			"label": RemakeText.t(REMAKE_LINK[0]), "tip": RemakeText.t("%s\n%s\n(Remake option.)") % RemakeText.tl(REMAKE_LINK)}
-	elif _group == REMAKE_GROUP:
-		_rows[LINK_ROW] = {"kind": "link", "name": "", "to": REMAKE_GROUP2,
-			"label": RemakeText.t(MORE_LINK[0]), "tip": RemakeText.t("%s\n%s\n(Remake option.)") % RemakeText.tl(MORE_LINK)}
-		_rows[PRESET_ROW] = {"kind": "link", "name": "", "preset": true,
-			"label": RemakeText.t(ORIGINAL_LOOK[0]), "tip": RemakeText.t("%s\n%s\n(Remake option.)") % RemakeText.tl(ORIGINAL_LOOK)}
-	elif _group == 5:   # remake: the Actions key page's free row 13
-		_rows[LINK_ROW] = {"kind": "link", "name": "", "to": PAD_GROUP,
-			"label": RemakeText.t(PAD_LINK[0]), "tip": RemakeText.t("%s\n%s\n(Remake option.)") % RemakeText.tl(PAD_LINK)}
-	elif _group == PAD_GROUP:
-		_rows[12] = {"kind": "link", "name": "", "to": PAD_BUTTONS_GROUP,
-			"label": RemakeText.t(PAD_BUTTONS_LINK[0]), "tip": RemakeText.t("%s\n%s\n(Remake option.)") % RemakeText.tl(PAD_BUTTONS_LINK)}
-		_rows[LINK_ROW] = {"kind": "link", "name": "", "to": 5, "label": "« " + _group_label(5), "tip": ""}
-	elif _group == PAD_BUTTONS_GROUP:
-		for i in PadInput.ACTIONS.size():
-			var act: String = PadInput.ACTIONS[i]
-			_rows[i] = {"kind": "padbtn", "name": act, "label": RemakeText.t(PAD_ACTIONS[act][0]),
-				"tip": RemakeText.t("%s\n%s\n(Remake option.)") % RemakeText.tl(PAD_ACTIONS[act]), "keys": ""}
-		_rows[12] = {"kind": "link", "name": "", "pad_defaults": true,
-			"label": RemakeText.t(PAD_DEFAULTS[0]), "tip": RemakeText.t("%s\n%s\n(Remake option.)") % RemakeText.tl(PAD_DEFAULTS)}
-		_rows[LINK_ROW] = {"kind": "link", "name": "", "to": PAD_GROUP,
-			"label": "« " + _group_label(PAD_GROUP), "tip": ""}
-		_refresh_pad()
-	elif _group == 3:   # remake: the Game page's free row 13
-		_rows[LINK_ROW] = {"kind": "link", "name": "", "to": COOP_GROUP,
-			"label": RemakeText.t(COOP_LINK[0]), "tip": RemakeText.t("%s\n%s\n(Remake option.)") % RemakeText.tl(COOP_LINK)}
-	elif _group == COOP_GROUP:
-		_rows[LINK_ROW] = {"kind": "link", "name": "", "to": 3,
-			"label": "« " + _group_label(3), "tip": ""}
-	elif _group == REMAKE_GROUP2:
-		_rows[10] = {"kind": "link", "name": "", "to": SURFACE_GROUP,
-			"label": RemakeText.t(SURFACE_LINK[0]), "tip": RemakeText.t("%s\n%s\n(Remake option.)") % RemakeText.tl(SURFACE_LINK)}
-		_rows[LINK_ROW] = {"kind": "link", "name": "", "to": REMAKE_GROUP,
-			"label": "« " + RemakeText.t(GameData.REMAKE_OPTIONS.graphics[0]).capitalize(), "tip": ""}
-		_rows[PRESET_ROW] = {"kind": "link", "name": "", "preset": true,
-			"label": RemakeText.t(ORIGINAL_LOOK[0]), "tip": RemakeText.t("%s\n%s\n(Remake option.)") % RemakeText.tl(ORIGINAL_LOOK)}
-	elif _group == SURFACE_GROUP:
+	if _group == REMAKE_GROUP:   # the sections, then the game data rows
+		for i in SECTIONS.size():
+			_rows[i] = _section_link(SECTIONS[i])
+		_rows[FILES_ROW] = {"kind": "link", "name": "", "files": true, "disabled": not game_files,
+			"label": RemakeText.t(FILES_LINK[0]),
+			"tip": _remake_tip(FILES_LINK) + "\n" + RemakeText.t("Current game files: %s") % DataSwitch.describe()
+				+ ("" if game_files else "\n" + RemakeText.t("Available from the main menu."))}
+		if CrashReport.enabled:
+			_rows[LOG_ROW] = {"kind": "link", "name": "", "export_log": true, "label": RemakeText.t(LOG_LINK[0]),
+				"tip": _remake_tip(LOG_LINK)}
+	elif _group == 0:   # Graphics: the graphics test, Original look, the graphics sections
 		_rows[DETECT_ROW] = {"kind": "link", "name": "", "detect": true,
-			"label": RemakeText.t(DETECT_LINK[0]), "tip": RemakeText.t("%s\n%s\n(Remake option.)") % RemakeText.tl(DETECT_LINK)}
-		_rows[LINK_ROW] = {"kind": "link", "name": "", "to": REMAKE_GROUP2,
-			"label": "« " + RemakeText.t(GameData.REMAKE_OPTIONS.graphics2[0]).capitalize(), "tip": ""}
-		_rows[PRESET_ROW] = {"kind": "link", "name": "", "preset": true,
-			"label": RemakeText.t(ORIGINAL_LOOK[0]), "tip": RemakeText.t("%s\n%s\n(Remake option.)") % RemakeText.tl(ORIGINAL_LOOK)}
+			"label": RemakeText.t(DETECT_LINK[0]), "tip": _remake_tip(DETECT_LINK)}
+		_rows[GFX_LOOK_ROW] = _look_row()
+		for i in GRAPHICS_LINKS.size():
+			_rows[GRAPHICS_LINK_ROW + i] = _section_link(GRAPHICS_LINKS[i])
+	elif _parent(_group) >= 0:
+		_rows[BACK_ROW] = {"kind": "link", "name": "", "to": _parent(_group),
+			"label": "« " + _section_label(_parent(_group)), "tip": ""}
+		if _group in LOOK_PAGES:
+			_rows[PRESET_ROW] = _look_row()
+		if _group == PAD_GROUP:
+			_rows[BUTTONS_ROW] = {"kind": "link", "name": "", "to": PAD_BUTTONS_GROUP,
+				"label": RemakeText.t(PAD_BUTTONS_LINK[0]), "tip": _remake_tip(PAD_BUTTONS_LINK)}
+		elif _group == PAD_BUTTONS_GROUP:
+			for i in PadInput.ACTIONS.size():
+				var act: String = PadInput.ACTIONS[i]
+				_rows[i] = {"kind": "padbtn", "name": act, "label": RemakeText.t(PAD_ACTIONS[act][0]),
+					"tip": _remake_tip(PAD_ACTIONS[act]), "keys": ""}
+			_rows[BUTTONS_ROW] = {"kind": "link", "name": "", "pad_defaults": true,
+				"label": RemakeText.t(PAD_DEFAULTS[0]), "tip": _remake_tip(PAD_DEFAULTS)}
+			_refresh_pad()
 	_sel = -1
 	_waiting = false   # = 0
 	for r in 14:
@@ -384,18 +468,41 @@ func _assign(act: String, sc: int) -> void:
 	_refresh_keys()
 
 
-const REMAKE_LINK := ["Remake options: graphics…",
-	"The remake's own graphics switches (sky, water, fog, bloom…)."]
-## Remake page row 12: every gfx_* switch off (the 2000 renderer's look; the
-## always-on quality settings in project.godot keep their colours).
+## Row 12 of the three remake graphics pages (LOOK_PAGES) and Graphics row 8: the "Original look" toggle
+## (GfxDetect.original_look_*). Checked while every gfx_* switch is off (the
+## 2000 renderer's look; the always-on quality settings in project.godot keep
+## their colours). A press while unchecked switches them all off; a press
+## while checked brings them back as a fresh install has them on this
+## platform, or as the graphics test chose them when its settings were in
+## force before Original look was switched on. Pending until ✓ like the
+## other rows; the box is the original's checkbox (saveload UV 209,55-230,76,
+## checked u − 23, as the New Game difficulty box) with the switches' On / Off.
 const PRESET_ROW := 12
-## Lighting and surfaces row 9 (under auto_graphics): the graphics test now
-## (GfxDetect); the screen closes with its changes applied first.
-const DETECT_ROW := 9
+## Graphics row 7 (under auto_graphics): the graphics test now (GfxDetect);
+## the screen closes with its changes applied first.
+const DETECT_ROW := 7
 const DETECT_LINK := ["Detect best settings",
 	"Runs a short graphics test (a few seconds) and picks the settings this device runs smoothly. Replaces the current graphics settings."]
-const ORIGINAL_LOOK := ["Original look: all effects off",
-	"Switches every remake graphics effect off, leaving the original 2000 look (confirm with ✓)."]
+const ORIGINAL_LOOK := ["Original look",
+	"On: every remake graphics effect is off, leaving the original 2000 look. Off again: the effects come back as a new installation has them on this device, or as the graphics test chose them if its settings were in force before (confirm with ✓)."]
+
+
+func _look_row() -> Dictionary:
+	return {"kind": "link", "name": "", "preset": true, "label": RemakeText.t(ORIGINAL_LOOK[0]),
+		"tip": RemakeText.t("%s\n%s\n(Remake option.)") % RemakeText.tl(ORIGINAL_LOOK)}
+
+
+## The Original look toggle (PRESET_ROW): the gfx_* rows' pending values.
+func _toggle_original_look() -> void:
+	var rec := GfxDetect.load_record()
+	var on := not GfxDetect.original_look_on(_values)
+	if on:
+		_look_from = GfxDetect.original_look_from(rec, _values)
+	var from := _look_from if _look_from != -2 else int(rec.get("original_look_from", -1))
+	var vals := GfxDetect.original_look_values(on, rec, from)
+	for k: String in vals:
+		_set_value(k, int(vals[k]))
+	queue_redraw()
 
 
 func _switch_text(row: Dictionary) -> String:
@@ -410,7 +517,10 @@ func _switch_text(row: Dictionary) -> String:
 
 
 func _set_value(name: String, v: int) -> void:
+	var was := int(_values.get(name, 0))
 	_values[name] = v
+	if name == "renderer" and v == RendererChoice.FORWARD_PLUS and was != v and RendererChoice.available():
+		_ask_experimental(was)
 	if name in ["camera_style", "cam_wasd"]:
 		_select_key_profile()
 		_refresh_keys()
@@ -428,7 +538,7 @@ func _toggle(r: int) -> void:
 			sound("messbox\\ok")
 			_set_value(row.name, (int(_values.get(row.name, 0)) + 1) % int(row.max))
 		"link":
-			sound("save\\select")
+			sound("messbox\\ok" if row.get("preset", false) else "save\\select")   # Original look: a switch's sound
 			if row.get("detect", false):
 				_apply()
 				_close()
@@ -437,10 +547,24 @@ func _toggle(r: int) -> void:
 				_pad_map = PadInput.DEFAULTS.duplicate()
 				_refresh_pad()
 			elif row.get("preset", false):
-				for o: Array in GameData.OPTIONS:
-					if String(o[0]).begins_with("gfx_"):
-						_set_value(o[0], 0)
+				_toggle_original_look()
+			elif row.get("export_log", false):
+				_box = CrashReportBox.open(self, {})
+				_box.answered.connect(func(_yes):
+					_box = null
+					_board.visible = true
+					queue_redraw())
+				_board.visible = false
 				queue_redraw()
+			elif row.get("files", false):
+				if row.get("disabled", false):
+					return
+				if _changed():   # pending rows as ✓; nothing written otherwise
+					_apply()
+				_close()
+				game_files_requested.emit()
+			elif int(row.to) == _parent(_group):
+				_go_back()
 			else:
 				_show_group(row.to)
 
@@ -458,9 +582,19 @@ func _apply() -> void:
 		EIKeymap.set_bindings(_key_profiles[profile], profile)
 	if not _pad_map.is_empty() and _pad_map != PadInput.bindings:
 		PadInput.save_bindings(_pad_map)
+	# Original look switched (by its row or the switches one by one): the
+	# player's choice, noted in the detection record (GfxDetect).
+	var look := GfxDetect.original_look_on(_values)
+	if look != GfxDetect.original_look_on(_snapshot):
+		var rec := GfxDetect.load_record()
+		var from := _look_from if _look_from != -2 else GfxDetect.original_look_from(rec, _snapshot)
+		GfxDetect.save_record(GfxDetect.original_look_record(rec, look, from))
+	var renderer := int(_values.get("renderer", 0)) != GameData.option("renderer")
 	for n in _values:
 		if int(_values[n]) != GameData.option(n):
 			GameData.set_option(n, int(_values[n]))
+	if renderer and get_parent():
+		RendererChoice.ask_restart(get_parent(), game_files)   # applies at the next start
 
 
 ## ✗ / Esc (case 1): the live rows go back.
@@ -520,6 +654,22 @@ func _ask_unsaved() -> void:
 	queue_redraw()
 
 
+## The renderer row stepped to Forward+ (RendererChoice.EXPERIMENTAL): ✓
+## keeps it, ✗ / Esc puts the row back to `was`.
+func _ask_experimental(was: int) -> void:
+	_waiting = false
+	_drag = -1
+	_hold = -1
+	_box = RendererChoice.ask_experimental(self)
+	_box.answered.connect(func(yes: bool):
+		_box = null
+		_board.visible = true
+		if not yes:
+			_values.renderer = was
+		queue_redraw())
+	_board.visible = false
+
+
 # ------------------------------------------------------------------ drawing
 
 static func _row_y(r: int) -> float:
@@ -537,8 +687,9 @@ func _draw() -> void:
 	panel(Rect2(100, 100, 600, 400))
 	text(Rect2(100, 110, 600, 24), _group_label(_group), 2, TEXT, HORIZONTAL_ALIGNMENT_CENTER)
 	# Group buttons.
-	for g in _group_count():
-		var y := _row_y(g)
+	for i in _group_count():
+		var g: int = TAB_ORDER[i]
+		var y := _row_y(i)
 		var cur := g == _tab()
 		sprite(ui, Rect2(110, y + 2, 130, 19), [122, 108, 252, 127], Color(1, 1, 1) if cur else Color(0.5, 0.5, 0.5))
 		text(Rect2(110, y + 4, 130, 20), _group_label(g), 1, TEXT if cur else GREY, HORIZONTAL_ALIGNMENT_CENTER)   #  (10,60)-(140,80) + 24i
@@ -550,9 +701,15 @@ func _draw() -> void:
 		var row: Dictionary = _rows[r]
 		var y := _row_y(r)
 		var col := TEXT if row.kind in ["keys", "link", "padbtn"] or row.name in GameData.OPTIONS_APPLIED else GREY
+		if row.get("disabled", false):
+			col = GREY
 		if row.kind in ["keys", "padbtn"] and r == _sel and _waiting:
 			col = Color8(0xff, 0, 0)   # COLORREF 0xff while waiting
-		text(Rect2(260, y + 4, 260 if row.kind != "link" else 430, 20), row.label, 1, col)
+		text(Rect2(260, y + 4, 260 if row.kind != "link" or row.get("preset", false) else 430, 20), row.label, 1, col)
+		if row.get("preset", false):   # Original look: the checkbox and On / Off
+			var on := GfxDetect.original_look_on(_values)
+			sprite(ui, Rect2(530, y + 1.5, 21, 21), [186, 55, 207, 76] if on else [209, 55, 230, 76])
+			text(Rect2(558, y + 4, 132, 16), _t("string option_on", "On") if on else _t("string option_off", "Off"), 1, TEXT)
 		match row.kind:
 			"slider":
 				hslider(_slider_rect(r), float(_values.get(row.name, 0)), float(row.max))
@@ -575,9 +732,9 @@ func _hit(p: Vector2) -> Array:
 		return ["ok"]
 	if CANCEL_RECT.has_point(p):
 		return ["cancel"]
-	for g in _group_count():
-		if Rect2(100, _row_y(g), 150, 24).has_point(p):
-			return ["group", g]
+	for i in _group_count():
+		if Rect2(100, _row_y(i), 150, 24).has_point(p):
+			return ["group", TAB_ORDER[i]]
 	for r: int in _rows:
 		var row: Dictionary = _rows[r]
 		if row.kind == "slider":
@@ -592,7 +749,7 @@ func _hit(p: Vector2) -> Array:
 		# the selection bar 250..692); the original's row regions
 		# end at 520 (: (250, y, 520, y + 24)), so a
 		# double click on the key itself did nothing.
-		if row.kind in ["keys", "padbtn"] and Rect2(520, _row_y(r), 172, 24).has_point(p):
+		if (row.kind in ["keys", "padbtn"] or row.get("preset", false)) and Rect2(520, _row_y(r), 172, 24).has_point(p):
 			return ["row", r]
 	return []
 
@@ -694,7 +851,11 @@ func _unhandled_key_input(e: InputEvent) -> void:
 		return
 	match e.keycode:
 		KEY_ESCAPE:
-			_cancel()
+			if _parent(_group) >= 0:   # remake: a sub-page goes back one level (B too)
+				sound("save\\select")
+				_go_back()
+			else:
+				_cancel()
 		KEY_ENTER, KEY_KP_ENTER:
 			if _rows.has(_sel) and _rows[_sel].kind == "padbtn":   # remake: wait for a controller button
 				sound("messbox\\ok")
@@ -706,8 +867,9 @@ func _unhandled_key_input(e: InputEvent) -> void:
 			else:
 				_toggle(_sel)
 		KEY_PAGEUP, KEY_PAGEDOWN:
-			sound("save\\select")
-			_show_group(clampi(_tab() + (-1 if e.keycode == KEY_PAGEUP else 1), 0, TABS - 1))
+			sound("save\\select")   # remake: the buttons wrap around (first ↔ last)
+			var i := TAB_ORDER.find(_tab()) + (-1 if e.keycode == KEY_PAGEUP else 1)
+			_show_group(TAB_ORDER[posmod(i, TAB_ORDER.size())])
 		KEY_LEFT, KEY_RIGHT:
 			if _rows.has(_sel) and _rows[_sel].kind == "slider":
 				var row: Dictionary = _rows[_sel]
@@ -722,12 +884,12 @@ func _unhandled_key_input(e: InputEvent) -> void:
 		KEY_UP, KEY_DOWN:
 			sound("save\\select")
 			var d := -1 if e.keycode == KEY_UP else 1
-			var r := _sel + d
-			while r >= 0 and r < 14:
-				if _rows.has(r):
+			var r := _sel
+			for i in 14:   # remake: wraps around (top ↔ bottom), past empty and grey rows
+				r = posmod(r + d, 14)
+				if _rows.has(r) and not _rows[r].get("disabled", false):
 					_sel = r
 					break
-				r += d
 			queue_redraw()
 		_:
 			# a key the screen leaves alone that maps to
@@ -818,10 +980,16 @@ func pad_capture(button: String) -> bool:
 	return true
 
 
-## PadUI: Y is ✓ (the keys reach the rest through the key bridge).
+## PadUI: Y is ✓; Menu closes from any page as ✗ (B, the key bridge's Esc,
+## goes back one level on a sub-page). The rest through the key bridge.
 func pad_press(action: String, phase: String) -> bool:
-	if action == "pause" and phase == "down" and visible and not _waiting and not MessageBox.is_up(_box) and not _tutorial.visible:
+	if phase != "down" or not visible or _waiting or MessageBox.is_up(_box) or _tutorial.visible:
+		return false
+	if action == "pause":
 		_accept()
+		return true
+	if action == "menu":
+		_cancel()
 		return true
 	return false
 
