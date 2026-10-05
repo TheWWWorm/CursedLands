@@ -164,6 +164,7 @@ func _process(dt: float) -> void:
 	game.rig.pad_zoom = rs.y
 	if cursor_mode:
 		PadInput.ui.move_pointer(ls, real, 0.45 if _over_something() else 1.0)
+		PadInput.ui.move_gyro(real)
 		return
 	if game.pending_spell != "" and ls != Vector2.ZERO:
 		_move_reticle(ls, real)
@@ -337,6 +338,10 @@ func _candidates(stick: Vector2) -> Array:
 			continue
 		var score := dist
 		var enemy := not o.dead and game.world.is_enemy(u, o)
+		# Teammates are targets only when explicitly healing / using an item
+		# or choosing Follow. Pointer mode still permits deliberate targeting.
+		if not o.dead and o.controller >= 0 and o.controller != me and not (friendly or pend == Game.FOLLOW):
+			continue
 		if o.dead:
 			if pend != "" or not (Session.lootable(o, me, conn) or game.revive_target(o) != null):
 				continue
@@ -521,11 +526,15 @@ func hints() -> Array:
 	out.append([PadInput.button_of("actions"), RemakeText.t("Spells")])
 	out.append([PadInput.button_of("items"), RemakeText.t("Items")])
 	out.append([PadInput.button_of("pause"), RemakeText.t("Resume") if get_tree().paused else RemakeText.t("Pause"),
-		not game.session.online])
+		_can_change_speed()])
 	return out
 
 
 # ------------------------------------------------------------------ actions
+
+func _can_change_speed() -> bool:
+	return not game.session.online or (game.session.is_host and game.session.coop_clock_enabled())
+
 
 func _on_action(a: String, phase: String) -> void:
 	if PadInput.route_of(a) != "field" or not takes_input():
@@ -566,9 +575,9 @@ func _on_action(a: String, phase: String) -> void:
 			if mod:
 				game.hud.toggle_aggression()
 			else:
-				game.set_speed(0)   # single player only (set_speed refuses online)
+				game.set_speed(0)
 		["pause", "hold"]:
-			if not mod and not get_tree().paused and not game.session.online:
+			if not mod and not get_tree().paused and _can_change_speed():
 				game.set_speed(2 if game.speed == 0 else 1)
 		["actions", "down"]:
 			open_wheel("actions", a)

@@ -53,9 +53,10 @@ extends Control
 ## Σ w · part armour[t] / Σ w + its own armour[t], w from the table
 ## by part type (head 10, torso 30, arm 15, leg 15); any other unit shows its
 ## own armour × the Absorption factor
-## (Combat.difficulty, 1 in a network game), no parts.
-## Approx.: the original counts only parts whose record > 1 (meaning not
-## traced); the remaining time
+## (the global difficulty index, 0 in a network game), no parts.
+## Part record is the state copied: 0 absent, 1
+## severed, 2 destroyed but attached, 3 healthy. Armour counts states 2/3.
+## Approx.: the remaining time
 ## counts 55 ms ticks (record +4's countdown is not traced). The name is centred
 ## (flag 2; centred in the original's screenshots) and the figure is drawn
 ## straight over the game view, as in the original.
@@ -85,9 +86,9 @@ var _unit: GameUnit
 var _t := 0.0
 var _sp := 0.0    # slide progress 0 open.. 1 closed
 var _off := 0.0   # slide in 800×600 px
-## Part weights of the table by part type.
-const PART_WEIGHT := {"head": 10.0, "torso": 30.0, "left_arm": 15.0, "right_arm": 15.0,
-	"left_leg": 15.0, "right_leg": 15.0}
+## First four part-type weights.
+const PART_WEIGHT := [10.0, 30.0, 15.0, 15.0]
+const PART_ARMOR := ["head", "torso", "arms", "legs"]
 
 
 func _ready() -> void:
@@ -356,21 +357,39 @@ func _draw_parts(c: CanvasItem, u: GameUnit) -> void:
 func _armor(u: GameUnit) -> PackedFloat32Array:
 	var out := PackedFloat32Array([0, 0, 0, 0, 0, 0, 0])
 	var nat: PackedFloat32Array = u.stats.get("armor", PackedFloat32Array())
+	for t in 7:
+		out[t] = _fistp(nat[t] if t < nat.size() else 0.0) & 65535
 	if not Combat.named(u):   #  param 3 = 0
-		var f := game.world.combat.difficulty(u, "Absorption") if game and game.world else 1.0
+		# This panel uses the global multiplier for every unnamed unit. The
+		# combat calculation's separate party exception does not apply here.
+		var level := 0 if game and game.session and game.session.online else GameData.difficulty
+		var f := GameData.ai_value("DifficultyLevels", "Absorption", 1.0, level)
 		for t in 7:
-			out[t] = (nat[t] if t < nat.size() else 0.0) * f
+			out[t] *= f
 		return out
 	var pa: Dictionary = u.stats.get("part_armor", {})
+	var sums := PackedFloat32Array([0, 0, 0, 0, 0, 0, 0])
+	var ws := 0.0
+	for i in mini(u.parts.size(), 6):
+		var part: Dictionary = u.parts[i]
+		# Snapshots carry severance in the existing mask; a client's local
+		# part records otherwise keep their prototype state.
+		if int(part.get("state", 0)) <= 1 or (u._severed_want >> i) & 1:
+			continue
+		var type := int(part.get("type", -1))
+		if type < 0 or type >= PART_WEIGHT.size():
+			continue
+		var w: float = PART_WEIGHT[type]
+		var layer: PackedFloat32Array = pa.get(PART_ARMOR[type], PackedFloat32Array())
+		for t in 7:
+			var a := _fistp(layer[t] if t < layer.size() else 0.0) & 65535
+			sums[t] += w * a
+		ws += w
+	#  keeps the reciprocal on the x87 stack (53-bit precision
+	# after the shipped TLP startup), rounding only the final value to float.
+	var inverse := 1.0 / ws if ws > 0.0 else 0.0
 	for t in 7:
-		var s := 0.0
-		var ws := 0.0
-		for part in pa:
-			var l: PackedFloat32Array = pa[part]
-			var w: float = PART_WEIGHT.get(part, 0.0)
-			s += w * (l[t] if t < l.size() else 0.0)
-			ws += w
-		out[t] = (nat[t] if t < nat.size() else 0.0) + (s / ws if ws > 0.0 else 0.0)
+		out[t] += sums[t] * inverse
 	return out
 
 

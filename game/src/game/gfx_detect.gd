@@ -20,14 +20,14 @@ extends CanvasLayer
 ##    the driver reports it, else the scene is drawn twice per frame (a
 ##    second view of the same world, `_stress`) and the frame time halved, so
 ##    a refresh-bound frame still shows its headroom.
-## The 75th percentile of a step's frames, × ZONE_FACTOR (the menu island is
+## The 75th percentile of a step's frames, × the adapter's zone margin (the menu island is
 ## lighter than a zone), must fit the frame budget × headroom (choose). The
 ## result and the device fingerprint go to settings.cfg [gfx_detect]; a short
 ## message names the tier. Esc during the test keeps the previous settings.
 ## A low-FPS watchdog (Watchdog) later offers, never forces, one step down.
 
 const SECTION := "gfx_detect"
-const VERSION := 1
+const VERSION := 3
 const ORIGINAL := 5   # the tier equal to Options' "Original look" (every gfx_* off)
 const LAST := 7
 const TIER_NAMES := ["High", "Medium-high", "Medium", "Low", "Very low", "Original look",
@@ -35,6 +35,11 @@ const TIER_NAMES := ["High", "Medium-high", "Medium", "Low", "Very low", "Origin
 ## The menu island is lighter than a play zone (fewer objects, units and
 ## lights, a 64 m map): measured costs are scaled by this before the budget.
 const ZONE_FACTOR := 1.4
+## Retroid Pocket 5 / Compatibility: 65 actual-device menu / zone samples
+## measured Original-resolution scene costs up to 6.4 times the menu cost.
+## This includes shared drawing CPU work, never divided by the two views;
+## live AI / movement is a separate limit that graphics settings cannot fix.
+const ADRENO_650_ZONE_FACTOR := 6.5
 ## Share of the frame budget a tier may use: thermal throttling on phones and
 ## handhelds, browsers' own work on the web.
 const HEADROOM := {"desktop": 0.9, "handheld": 0.8, "web": 0.85}
@@ -85,11 +90,11 @@ static func tier_values(tier: int, base: Dictionary) -> Dictionary:
 		v.q_shadows = mini(v.q_shadows, 1)
 		v.q_aa = mini(v.q_aa, 1)   # MSAA / TAA / FSR 2 → SMAA
 	if tier >= 2:
-		for k in ["gfx_ssao", "gfx_water_reflections", "gfx_heat_haze", "gfx_soft_particles", "gfx_far_view"]:
+		for k in ["gfx_ssao", "gfx_water_reflections", "gfx_heat_haze", "gfx_soft_particles", "gfx_far_view", "gfx_grass"]:
 			v[k] = 0
 	if tier >= 3:
 		for k in ["gfx_firelight", "gfx_lava_light", "gfx_bloom", "gfx_hd_textures", "gfx_materials",
-				"gfx_weather_surfaces", "gfx_contact_shadows"]:
+				"gfx_weather_surfaces", "gfx_contact_shadows", "gfx_soft_ground"]:
 			v[k] = 0
 		v.q_shadows = 0
 		v.q_aniso = mini(v.q_aniso, 2)
@@ -126,6 +131,17 @@ static func device_kind() -> String:
 	if OS.has_feature("web"):
 		return "web"
 	return "handheld" if Portability.handheld() else "desktop"
+
+
+## Use the measured margin only for the tested GPU / renderer combination.
+## Other adapters retain the existing estimate until measured on hardware.
+static func zone_factor(kind: String, adapter: String,
+		method: String = RenderingServer.get_current_rendering_method()) -> float:
+	var a := adapter.to_lower()
+	if kind == "handheld" and method == "gl_compatibility" \
+			and a.contains("adreno") and _model_number(a) == 650:
+		return ADRENO_650_ZONE_FACTOR
+	return ZONE_FACTOR
 
 
 ## The first tier tried. Desktop: High. Phones: by GPU family and generation,
@@ -203,8 +219,11 @@ static func fits(cost_ms: float, fps: float, headroom: float, zone: float) -> bo
 ## The ladder search. `measure(tier) -> float` gives a tier's frame cost (ms,
 ## on the test scene). cfg: tiers (all_tiers), target (fps), handheld (bool),
 ## headroom, zone, max_steps. Goes down from `start` to the first tier that
-## fits; ORIGINAL is accepted without the zone margin (the full resolution
-## matters more than headroom there). Identical tiers (e.g. effects a phone's
+## fits; unless cfg.original_at_target is false, ORIGINAL is accepted without
+## the zone margin (the full resolution matters more than headroom there).
+## A calibrated handheld still prefers Original resolution at the 30 FPS
+## fallback, where lowering resolution cannot fix shared drawing / AI CPU.
+## Identical tiers (e.g. effects a phone's
 ## defaults already have off) are not measured again. Out of steps: one tier
 ## below the last that failed. Phones / handhelds: if 60 needs the lowest
 ## resolution or cannot be had at all, the best measured tier that holds 30 at
@@ -221,6 +240,7 @@ static func choose(start: int, measure: Callable, cfg: Dictionary) -> Dictionary
 	var zone: float = cfg.get("zone", ZONE_FACTOR)
 	var max_steps: int = cfg.get("max_steps", 6)
 	var hand: bool = cfg.get("handheld", false)
+	var original_at_target: bool = cfg.get("original_at_target", true)
 	var costs := {}
 	var steps := 0
 	var t := clampi(start, 0, LAST)
@@ -243,7 +263,7 @@ static func choose(start: int, measure: Callable, cfg: Dictionary) -> Dictionary
 		costs[t] = c
 		last_t = t
 		last_cost = c
-		if fits(c, target, head, zone) or (t == ORIGINAL and fits(c, target, head, 1.0)):
+		if fits(c, target, head, zone) or (original_at_target and t == ORIGINAL and fits(c, target, head, 1.0)):
 			found = t
 			break
 		if not hand and steps >= 3 and first_cost <= min_cost * FLAT:
@@ -325,7 +345,7 @@ static func _matches(current: Dictionary, values: Dictionary) -> bool:
 	return true
 
 
-## Why the test should run by itself now ("first", "device"), or "" (also
+## Why the test should run by itself now ("first", "device", "version"), or "" (also
 ## "manual": the record to write so a hand-made choice is not asked again).
 ## First start: no record and the graphics as the platform defaults; another
 ## GPU / renderer: only while the settings are still those detection chose.
@@ -334,11 +354,12 @@ static func auto_reason(rec: Dictionary, current: Dictionary, base: Dictionary, 
 		return ""
 	if rec.is_empty():
 		return "first" if _matches(current, base) else "manual"
-	if String(rec.get("fingerprint", "")) == fp:
-		return ""
 	var vals: Dictionary = rec.get("values", {})
 	if int(rec.get("tier", -1)) >= 0 and not vals.is_empty() and _matches(current, vals):
-		return "device"
+		if String(rec.get("fingerprint", "")) != fp:
+			return "device"
+		if int(rec.get("version", 0)) < VERSION:
+			return "version"
 	return ""
 
 
@@ -485,8 +506,10 @@ func _run() -> void:
 	_prepare()
 	var screen := DisplayServer.screen_get_size()
 	var start := start_tier(kind, RenderingServer.get_video_adapter_name(), screen, OS.get_processor_count())
+	var margin := zone_factor(kind, RenderingServer.get_video_adapter_name())
 	var cfg := {"tiers": _tiers, "target": target_fps(DisplayServer.screen_get_refresh_rate()),
-		"handheld": kind != "desktop", "headroom": HEADROOM[kind], "zone": ZONE_FACTOR,
+		"handheld": kind != "desktop", "headroom": HEADROOM[kind], "zone": margin,
+		"original_at_target": margin == ZONE_FACTOR,
 		"max_steps": MAX_STEPS[kind]}
 	GameData.trace("graphics detection: %s, %s, start tier %d, target %.0f FPS" % [kind, RenderingServer.get_video_adapter_name(), start, cfg.target])
 	_overlay.status = RemakeText.t("Testing graphics for this device…")
@@ -511,6 +534,7 @@ func _run() -> void:
 	_restore_env()
 	save_record({"version": VERSION, "fingerprint": fingerprint(), "tier": int(res.tier),
 		"fps": int(res.fps), "values": vals, "start": start, "mode": _mode,
+		"zone_factor": margin,
 		"costs": res.costs, "date": Time.get_datetime_string_from_system()})
 	GameData.trace("graphics detection: tier %d (%s), fps cap %d, mode %s, costs %s" % [res.tier, TIER_NAMES[res.tier], res.fps, _mode, res.costs])
 	_overlay.visible = false
@@ -651,29 +675,56 @@ func _cost(s: Dictionary, p: float) -> float:
 		"gpu":
 			return maxf(_pct(s.gpu, p), _pct(s.cpu, p))
 		"stress":
-			return _pct(s.wall, p) / STRESS
+			# Script/physics and shared frame setup run once for both views.
+			# Halving that work can mistake a CPU-bound scene for GPU headroom.
+			return maxf(_pct(s.wall, p) / STRESS, _pct(s.cpu, p))
 	return _pct(s.wall, p)
 
 
 ## Frames for at least `secs` and `min_n` frames (at most 3 s): wall-clock,
 ## GPU and CPU times in ms.
 func _frames(secs: float, min_n: int) -> Dictionary:
-	var out := {"wall": PackedFloat32Array(), "gpu": PackedFloat32Array(), "cpu": PackedFloat32Array()}
+	var out := {"wall": PackedFloat32Array(), "gpu": PackedFloat32Array(), "cpu": PackedFloat32Array(),
+		"process": PackedFloat32Array(), "physics": PackedFloat32Array(), "setup": PackedFloat32Array(),
+		"view_cpu": PackedFloat32Array()}
 	var rid := get_viewport().get_viewport_rid()
+	var tree := get_tree()
+	# The monitor is a one-second maximum of a single physics tick. Measure
+	# this frame's whole physics phase, including multiple catch-up ticks.
+	var physics_start := [-1]
+	var mark_physics := func() -> void:
+		if physics_start[0] < 0:
+			physics_start[0] = Time.get_ticks_usec()
+	tree.physics_frame.connect(mark_physics)
 	var t0 := Time.get_ticks_usec()
 	var last := t0
 	while not _cancelled:
-		await get_tree().process_frame
+		await tree.process_frame
+		var process_start := Time.get_ticks_usec()
+		var physics_ms := (process_start - int(physics_start[0])) / 1000.0 if physics_start[0] >= 0 else 0.0
+		physics_start[0] = -1
 		_sync_stress()
+		# TIME_PROCESS also includes RenderingServer.draw and is a one-second
+		# maximum, so adding viewport CPU time to it counts rendering twice.
+		# Measure the node-processing phase before draw instead.
+		if DisplayServer.get_name() != "headless":
+			await RenderingServer.frame_pre_draw
 		var now := Time.get_ticks_usec()
 		out.wall.append((now - last) / 1000.0)
 		last = now
 		out.gpu.append(RenderingServer.viewport_get_measured_render_time_gpu(rid))
-		out.cpu.append(RenderingServer.viewport_get_measured_render_time_cpu(rid) + RenderingServer.get_frame_setup_time_cpu()
-			+ (Performance.get_monitor(Performance.TIME_PROCESS) + Performance.get_monitor(Performance.TIME_PHYSICS_PROCESS)) * 1000.0)
+		var process_ms := (now - process_start) / 1000.0
+		var setup_ms := RenderingServer.get_frame_setup_time_cpu()
+		var view_ms := RenderingServer.viewport_get_measured_render_time_cpu(rid)
+		out.process.append(process_ms)
+		out.physics.append(physics_ms)
+		out.setup.append(setup_ms)
+		out.view_cpu.append(view_ms)
+		out.cpu.append(process_ms + physics_ms + setup_ms + view_ms)
 		var el := (now - t0) / 1.0e6
 		if (el >= secs and out.wall.size() >= min_n) or el >= 3.0:
 			break
+	tree.physics_frame.disconnect(mark_physics)
 	return out
 
 

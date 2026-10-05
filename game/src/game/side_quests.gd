@@ -171,15 +171,18 @@ static func take_lmp(s: Session, id: String) -> void:
 	LmpMode.zone_var(s.state, q.id)
 	s.state.side_quests[q.id] = "active"
 	s.state.zones.erase(q.id)
+	if s.lmp_travel:
+		s.lmp_travel.quest_taken(q.id)
 	_lmp_topics(s, [q.id + "_2"])
 	lmp_say(s, "quest_taken", q.id)
 	lmp_say(s, "zone_enabled", q.id)   #  (line 8)
 	for v in _list(q.reg.get("briefing receive", {}).get("give quests", [])):
-		s.state.set_var(0, v.to_lower(), 1.0)
+		s.state.set_var(0, v, 1.0)
 		if s.world and s.world.vm:
-			s.world.vm._on_var_changed(v.to_lower())
+			s.world.vm._on_var_changed(v)
 	for it in _list(q.reg.get("briefing receive", {}).get("give items", "")):
-		s.state.add_item(it.to_lower())
+		var item := Items.from_spec(it)
+		s.add_item(String(item[0]), int(item[1]))
 	s.sync_state()
 
 
@@ -192,7 +195,7 @@ static func _lmp_cancel(s: Session, id: String) -> void:
 		return
 	lmp_say(s, "quest_canceled", q.id)
 	for v in _list(q.reg.get("briefing receive", {}).get("give quests", [])):
-		s.state.set_var(0, v.to_lower(), 0.0)
+		s.state.set_var(0, v, 0.0)
 	s.state.side_quests.erase(q.id)
 	s.lmp.quest = ""
 	LmpMode.zone_var(s.state, "")
@@ -232,7 +235,7 @@ static func _lmp_complete(s: Session, id: String) -> void:
 static func lmp_say(s: Session, what: String, id := "") -> void:
 	var t := GameData.text("string lmp_" + what).strip_edges()
 	if t:
-		s.broadcast({"t": "msg", "text": t.replace("%s", LmpMode.quest_title(id))})
+		s.broadcast({"t": "msg", "text": t.replace("%s", LmpMode.quest_title(id)), "global": true})
 
 
 ## Host: the party accepts a quest; its offer briefing plays for everyone.
@@ -255,8 +258,8 @@ static func briefing_done(s: Session, var_name: String) -> void:
 	match parts[2]:
 		"1":
 			for v in _list(q.reg.get("briefing receive", {}).get("give quests", [])):
-				s.state.set_var(0, v.to_lower(), 1.0)
-				s.world.vm._on_var_changed(v.to_lower())
+				s.state.set_var(0, v, 1.0)
+				s.world.vm._on_var_changed(v)
 			for it in _list(q.reg.get("briefing receive", {}).get("give items", "")):
 				s.state.quest_items[it.to_lower()] = true
 		"3":

@@ -61,6 +61,7 @@ func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	for i in SLOTS:
 		var v := ItemView.new()
+		v.belt = true
 		add_child(v)
 		_views.append(v)
 
@@ -243,7 +244,7 @@ func _no_target(item: String) -> bool:
 	if sp.is_empty():
 		sp = Items.spell_of(item)
 	return not sp.is_empty() and Spells.offensive(sp) and game.world \
-		and game.world.ai.nearest_enemy(_unit, Session.BELT_TARGET_RANGE) == null
+		and game.session.belt_enemy(_unit) == null
 
 
 ## No cell frames: only makes the hit rectangles; the items are

@@ -3,6 +3,8 @@ extends Node3D
 ## Builds terrain and water from a map's .mpr archive (header .mp + sector .sec files)
 ## and its tile atlases "<map>NNN.mmp" in textures.res.
 
+const WaveState := preload("res://src/ei/water_waves.gd")
+
 const MP_MAGIC := 0xCE4AF672
 const SEC_MAGIC := 0xCF4BF774
 const SECTOR := 32          # quads per sector side
@@ -60,10 +62,26 @@ uniform sampler2D terrain_cells : filter_nearest, repeat_disable;
 // Highest solid cover per metre, rasterized from existing placed meshes.
 // Rain cannot wet terrain or water underneath a roof / bridge deck.
 uniform sampler2D rain_cover : filter_nearest, repeat_disable;
+// Optional dense snow/sand tiles. R depresses, G raises a shallow rim; all
+// collision heights and the original undeformed sector meshes stay intact.
+uniform bool soft_tracks = false;
+uniform sampler2D soft_track_texture : filter_linear, repeat_disable;
+uniform vec2 soft_track_origin;
 uniform float level[64];
 varying vec3 wpos;
 void vertex() {
 	wpos = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
+	if (soft_tracks) {
+		int width = textureSize(terrain_tiles, 0).x;
+		int id = int(UV2.y + 0.5);
+		int g = int(texelFetch(terrain_tiles, ivec2(id % width, id / width), 0).g + 0.5);
+		if (g == 3 || g == 9 || g == 12) {
+			vec2 track_uv = (vec2(wpos.x, -wpos.z) - soft_track_origin) / 32.0;
+			vec2 track = textureLod(soft_track_texture, track_uv, 0.0).rg;
+			VERTEX.y += (track.g - track.r) * 0.04;
+			wpos = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
+		}
+	}
 	ei_e = COLOR.rgb;
 	ei_k = COLOR.a * 4.0;
 }
@@ -233,6 +251,25 @@ void fragment() {
 		c *= 1.0 - wet * mix(0.23, 0.08, grass);
 		ei_surface = vec3(wet * mix(0.65, 0.15, grass), mix(0.35, 0.65, grass), 0.0);
 	}
+	if (soft_tracks && (ground == 3 || ground == 9 || ground == 12)) {
+		vec2 uv = (vec2(wpos.x, -wpos.z) - soft_track_origin) / 32.0;
+		vec2 step_uv = vec2(1.0 / 512.0, 0.0);
+		vec2 a = texture(soft_track_texture, uv - step_uv).rg;
+		vec2 b = texture(soft_track_texture, uv + step_uv).rg;
+		vec2 d = texture(soft_track_texture, uv - step_uv.yx).rg;
+		vec2 e = texture(soft_track_texture, uv + step_uv.yx).rg;
+		vec2 slope = vec2((b.g - b.r) - (a.g - a.r), (e.g - e.r) - (d.g - d.r)) * 0.32;
+		vec3 wn = normalize((INV_VIEW_MATRIX * vec4(NORMAL, 0.0)).xyz);
+		vec3 track_normal = normalize(wn + vec3(-slope.x, 0.0, slope.y));
+		// The original vertex-lit look has no per-pixel normal response.
+		// Keep tracks legible when this independent option alone is enabled.
+		if (ei_surface_fx.x < 0.5 && dot(ei_sun_dir, ei_sun_dir) > 0.5) {
+			float relief = dot(track_normal - wn, normalize(ei_sun_dir));
+			c *= clamp(1.0 + relief * 0.75, 0.65, 1.18);
+		}
+		wn = track_normal;
+		NORMAL = normalize((VIEW_MATRIX * vec4(wn, 0.0)).xyz);
+	}
 	ALBEDO = c;
 	ROUGHNESS = 1.0;
 }
@@ -251,10 +288,13 @@ void fragment() {
 ## 3A in x and sin(row · π/4 + 0.05 · ticks) · 3A in y, and for s > 0 its
 ## specular colour is s · w · wave · 50 · rgb (bytes, added after the texture).
 ## The wind direction defaults to vertical (0, 0, 1), so no travelling phase.
-## **Approx.**: the bump grid is not the original's rand sequence; material type 4
-## (moves x / y only for flagged vertices) is treated like the others.
+## The CRT grid and sine-table lookup use the executed native float stores.
+## Shared startup RNG history and explicit post-tick relight ordering remain
+## distinct; wave time belongs to the map and stops with its paused world.
 const WATER_SHADER := """
 shader_type spatial;
+#define EI_TERRAIN_LIGHT
+#define EI_WATER_WAVES
 render_mode cull_disabled, blend_mix, ambient_light_disabled, depth_draw_always;
 varying vec3 ei_e;
 varying float ei_k;
@@ -272,11 +312,29 @@ uniform vec3 mat_e[64];
 uniform float mat_a[64];
 uniform float mat_wave[64];
 uniform vec3 mat_rgb[64];
+uniform int mat_type[64];
+uniform float wave_phase = 6.2831854820251465;
+uniform float wave_ticks = 0.0;
+uniform float wave_amplitude = 0.12;
+uniform vec2 wave_gradient = vec2(0.0);
+uniform sampler2D sine_tex : filter_nearest, repeat_enable;
 uniform float wind = 0.4;      // DefaultWindForce
 uniform float waves = 1.0;     // EnableWaterWaves
 uniform sampler2D phase_tex : filter_nearest, repeat_enable;   //  grid
 varying float alpha;
 varying vec3 spec;
+float wave_sine(float angle) {
+	int index = int(roundEven(angle * 81.48733086305042)) & 511;
+	return texelFetch(sine_tex, ivec2(index, 0), 0).r;
+}
+float wave_fmod(float value) {
+	return value - trunc(value / 6.2831854820251465) * 6.2831854820251465;
+}
+vec3 wave_specular(float sine_value, float wave, vec3 colour) {
+	// Native FISTP writes bytes; do not replace the lookup with continuous sin.
+	vec3 magnitude = roundEven(sine_value * (wind * wave * 50.0 * colour));
+	return mod(magnitude, vec3(256.0)) / 255.0;
+}
 void vertex() {
 	int mi = int(UV2.y + 0.5);
 	int m = clamp(mi % 64, 0, 63);
@@ -286,29 +344,37 @@ void vertex() {
 	alpha = mat_a[m];
 	spec = vec3(0.0);
 	if (waves > 0.5) {
-		float ticks = TIME / 0.055;
 		vec3 wp = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
 		vec2 ei = vec2(wp.x, -wp.z);
-		vec2 cr = mod(floor(ei + 0.5), 32.0);   // column, row in the sector
+		vec2 cr = mod(floor(ei + 0.5), 32.0);
 		float p = texelFetch(phase_tex, ivec2(cr), 0).r;
 		float wv = mat_wave[m];
-		float a = 0.3 * wind * wv;
-		float T = 6.2831853 - 3.1415927 / 21.0 * wind * ticks;
-		float s = sin(T * wv + p);
-		float t2 = 0.05 * ticks;
-		// EI (x, y, z) = Godot (x, −z, y)
-		VERTEX.y += s * a * 0.25;
-		VERTEX.x += sin(cr.x * 0.7853981 + t2) * a * 3.0;
-		VERTEX.z -= sin(cr.y * 0.7853981 + t2) * a * 3.0;
-		if (s > 0.0) {
-			spec = min(s * wind * wv * 50.0 * mat_rgb[m] / 255.0, vec3(1.0));
+		float a = wave_amplitude * wv;
+		float travelling = wave_fmod(6.2831854820251465 + dot(ei, wave_gradient));
+		float temporal = wave_fmod(wave_phase * wv);
+		float s = wave_sine(travelling + temporal + p);
+		float t2 = 0.05 * wave_ticks;
+		if (mat_type[m] == 4) {
+			// The original water record's sign bit is separate
+			// land depth. Fresh records initialize it to zero (6c4ed0).
+			if (mi >= 64) {
+				VERTEX.x += s * a;
+				VERTEX.z -= s * a;
+			}
+		} else {
+			// EI (x, y, z) = Godot (x, -z, y).
+			VERTEX.y += s * a * 0.25;
+			VERTEX.x += wave_sine(cr.x * 0.7853981 + t2) * a * 3.0;
+			VERTEX.z -= wave_sine(cr.y * 0.7853981 + t2) * a * 3.0;
+		}
+		if (s >= 0.0) {
+			spec = wave_specular(s, wv, mat_rgb[m]);
 		}
 	}
 }
 void fragment() {
 	FOG = ei_fog_of(VERTEX, (INV_VIEW_MATRIX * vec4(VERTEX, 1.0)).xyz);
 	vec4 t = EI_ATLAS(UV, UV2.x);
-	EMISSION = ei_lin(spec);   // the vertex specular, added after the texture
 	ALBEDO = t.rgb;
 	// Stage 0 (state block): colour = texture ×
 	// diffuse, alpha = SELECTARG1 diffuse: the texture's alpha is not used.
@@ -344,6 +410,9 @@ void fragment() {
 ## white bank streaks on rivers.)
 const WATER_FX_SHADER := """
 shader_type spatial;
+#define EI_TERRAIN_LIGHT
+#define EI_WATER_WAVES
+#define EI_WATER_FX
 render_mode cull_disabled, blend_mix, ambient_light_disabled, depth_draw_always;
 varying vec3 ei_e;
 varying float ei_k;
@@ -359,6 +428,12 @@ uniform vec3 mat_e[64];
 uniform float mat_a[64];
 uniform float mat_wave[64];
 uniform vec3 mat_rgb[64];
+uniform int mat_type[64];
+uniform float wave_phase = 6.2831854820251465;
+uniform float wave_ticks = 0.0;
+uniform float wave_amplitude = 0.12;
+uniform vec2 wave_gradient = vec2(0.0);
+uniform sampler2D sine_tex : filter_nearest, repeat_enable;
 uniform float wind = 0.4;      // DefaultWindForce
 uniform float waves = 1.0;     // EnableWaterWaves
 uniform sampler2D phase_tex : filter_nearest, repeat_enable;   //  grid
@@ -381,13 +456,27 @@ uniform sampler2D wave_b : hint_normal, filter_linear_mipmap, repeat_enable;
 uniform sampler2D foam_tex : filter_linear_mipmap, repeat_enable;
 varying float alpha;
 varying vec3 spec;
+varying float ei_wave_scale;
 varying vec3 wpos;
 varying vec2 tgrid;
 varying float is_lava;
 varying float surf_amount;
 varying float ripple_amount;
+float wave_sine(float angle) {
+	int index = int(roundEven(angle * 81.48733086305042)) & 511;
+	return texelFetch(sine_tex, ivec2(index, 0), 0).r;
+}
+float wave_fmod(float value) {
+	return value - trunc(value / 6.2831854820251465) * 6.2831854820251465;
+}
+vec3 wave_specular(float sine_value, float wave, vec3 colour) {
+	// Native FISTP writes bytes; do not replace the lookup with continuous sin.
+	vec3 magnitude = roundEven(sine_value * (wind * wave * 50.0 * colour));
+	return mod(magnitude, vec3(256.0)) / 255.0;
+}
 void vertex() {
-	int m = clamp(int(UV2.y + 0.5) % 64, 0, 63);
+	int mi = int(UV2.y + 0.5);
+	int m = clamp(mi % 64, 0, 63);
 	VERTEX.y += level[m];
 	// The tile grid position before the waves sway the vertex: the texture
 	// rides on the vertices as with the original UVs.
@@ -401,19 +490,31 @@ void vertex() {
 	surf_amount = surf[m];
 	ripple_amount = ripple[m];
 	if (waves > 0.5) {
-		float ticks = TIME / 0.055;
-		vec2 cr = mod(floor(vec2(w0.x, -w0.z) + 0.5), 32.0);
+		vec3 wp = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
+		vec2 ei = vec2(wp.x, -wp.z);
+		vec2 cr = mod(floor(ei + 0.5), 32.0);
 		float p = texelFetch(phase_tex, ivec2(cr), 0).r;
 		float wv = mat_wave[m];
-		float a = 0.3 * wind * wv;
-		float T = 6.2831853 - 3.1415927 / 21.0 * wind * ticks;
-		float s = sin(T * wv + p);
-		float t2 = 0.05 * ticks;
-		VERTEX.y += s * a * 0.25;
-		VERTEX.x += sin(cr.x * 0.7853981 + t2) * a * 3.0;
-		VERTEX.z -= sin(cr.y * 0.7853981 + t2) * a * 3.0;
-		if (s > 0.0) {
-			spec = min(s * wind * wv * 50.0 * mat_rgb[m] / 255.0, vec3(1.0));
+		float a = wave_amplitude * wv;
+		float travelling = wave_fmod(6.2831854820251465 + dot(ei, wave_gradient));
+		float temporal = wave_fmod(wave_phase * wv);
+		float s = wave_sine(travelling + temporal + p);
+		float t2 = 0.05 * wave_ticks;
+		if (mat_type[m] == 4) {
+			// The original water record's sign bit is separate
+			// land depth. Fresh records initialize it to zero (6c4ed0).
+			if (mi >= 64) {
+				VERTEX.x += s * a;
+				VERTEX.z -= s * a;
+			}
+		} else {
+			// EI (x, y, z) = Godot (x, -z, y).
+			VERTEX.y += s * a * 0.25;
+			VERTEX.x += wave_sine(cr.x * 0.7853981 + t2) * a * 3.0;
+			VERTEX.z -= wave_sine(cr.y * 0.7853981 + t2) * a * 3.0;
+		}
+		if (s >= 0.0) {
+			spec = wave_specular(s, wv, mat_rgb[m]);
 		}
 	}
 	wpos = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
@@ -548,6 +649,7 @@ vec4 water_ssr(vec3 origin, vec3 normal, mat4 proj, mat4 inv_proj, mat4 inv_view
 	return vec4(0.0);
 }
 void fragment() {
+	ei_wave_scale = 1.0;
 	FOG = ei_fog_of(VERTEX, (INV_VIEW_MATRIX * vec4(VERTEX, 1.0)).xyz);
 	vec4 own = EI_ATLAS(UV, UV2.x);
 	vec3 t = water_texture(own.rgb, dFdx(tgrid), dFdy(tgrid));
@@ -630,7 +732,8 @@ void fragment() {
 		float A = 1.0 - (1.0 - a) * (1.0 - w);
 		float k = (1.0 - w) * a / max(A, 1e-3);
 		ALBEDO = t * k;
-		EMISSION = ei_lin(spec) * k + (w * R + G) / max(A, 1e-3);
+		ei_wave_scale = k;
+		EMISSION = (w * R + G) / max(A, 1e-3);
 		ALPHA = A;
 	}
 }
@@ -683,6 +786,7 @@ var _detail_atlases: Texture2DArray
 var _atlas_hd := false
 const TERRAIN_GUTTER := 8
 var _water_mat: ShaderMaterial
+var _waves := WaveState.new()
 var _land_mat: ShaderMaterial
 var _level := PackedFloat32Array()
 var _lava := PackedFloat32Array()
@@ -693,6 +797,7 @@ var _cell_tex: ImageTexture
 var _tile_tex: ImageTexture
 var _water_tile_tex: ImageTexture
 var _rain_cover: ImageTexture
+var details: TerrainDetails
 static var _land_shader: Shader
 static var _water_shader: Shader
 static var _water_fx_shader: Shader
@@ -988,10 +1093,12 @@ func apply_gfx() -> void:
 	var ma := PackedFloat32Array()
 	var mw := PackedFloat32Array()
 	var mc := PackedVector3Array()
+	var mt := PackedInt32Array()
 	me.resize(64)
 	ma.resize(64)
 	mw.resize(64)
 	mc.resize(64)
+	mt.resize(64)
 	for i in mini(materials.size(), 64):
 		var e := material_e(i)
 		me[i] = Vector3(e.r, e.g, e.b)
@@ -999,10 +1106,14 @@ func apply_gfx() -> void:
 		ma[i] = c.a
 		mw[i] = float(materials[i].get("wave", 0.0))
 		mc[i] = Vector3(c.r, c.g, c.b)
+		mt[i] = int(materials[i].get("type", 0))
 	_water_mat.set_shader_parameter("mat_e", me)
 	_water_mat.set_shader_parameter("mat_a", ma)
 	_water_mat.set_shader_parameter("mat_wave", mw)
 	_water_mat.set_shader_parameter("mat_rgb", mc)
+	_water_mat.set_shader_parameter("mat_type", mt)
+	_water_mat.set_shader_parameter("sine_tex", wave_sine_texture())
+	_update_wave_parameters()
 	_water_mat.set_shader_parameter("phase_tex", wave_phase_texture())
 	if fx:
 		_water_mat.set_shader_parameter("lava", _lava)
@@ -1028,6 +1139,10 @@ func apply_gfx() -> void:
 	_land_mat.set_shader_parameter("tiles_per_axis", float(texture_size) / tile_size)
 	_land_mat.set_shader_parameter("atlas_padding", float(TERRAIN_GUTTER) / tile_size if det else 0.0)
 	_land_mat.set_shader_parameter("source_texel", 1.0 / texture_size)
+	if not is_instance_valid(details) and (Gfx.on("gfx_grass") or Gfx.on("gfx_soft_ground")):
+		details = TerrainDetails.create(self)
+	elif is_instance_valid(details):
+		details.apply_options()
 
 
 ## SurfaceWeather's static cover map affects rendering only. Keep it across
@@ -1040,6 +1155,8 @@ func set_rain_cover(image: Image) -> void:
 		_land_mat.set_shader_parameter("rain_cover", _rain_cover)
 	if _water_mat and _water_mat.shader == _water_fx_shader:
 		_water_mat.set_shader_parameter("rain_cover", _rain_cover)
+	if is_instance_valid(details) and is_instance_valid(details.soft_ground):
+		details.soft_ground.refresh_rain_cover()
 
 
 func _record_ground(tex: PackedInt32Array, sx: int, sy: int) -> void:
@@ -1194,6 +1311,8 @@ func set_water_offset(mat: int, offset: float) -> Rect2i:
 			hi = hi.max(c)
 	if hi.x < 0:
 		return Rect2i()
+	if is_instance_valid(details):
+		details.water_changed()
 	return Rect2i(lo, hi - lo + Vector2i.ONE)
 
 
@@ -1250,45 +1369,46 @@ static func _bary(p: Vector2, t: PackedVector2Array) -> Vector3:
 	return Vector3(1.0 - v - w, v, w)
 
 
-## The per-sector wave phase grid: 33 × 33 values, 40 random
-## bumps of radius² (1..5)² each adding (1 − d² / r²) · π / 2, then the last
-## row / column averaged with the first so sectors tile (cached; here 32 × 32
-## repeating). **Approx.**: a fixed seed, not the original's rand sequence.
+## Native per-sector CRT phase grid. Shared original startup call history is
+## not reconstructed; both weather and water own explicit local CRT states.
 static var _phase_tex: ImageTexture
-
+static var _sine_tex: ImageTexture
 
 static func wave_phase_texture() -> ImageTexture:
 	if _phase_tex:
 		return _phase_tex
-	var g := PackedFloat32Array()
-	g.resize(33 * 33)
-	var rng := RandomNumberGenerator.new()
-	rng.seed = 1
-	for i in 40:
-		var cx := float(rng.randi() % 33)
-		var cy := float(rng.randi() % 33)
-		var r2 := float(rng.randi() % 5 + 1)
-		r2 *= r2
-		for y in 33:
-			for x in 33:
-				var d2 := (x - cx) * (x - cx) + (y - cy) * (y - cy)
-				if d2 < r2:
-					g[y * 33 + x] += (1.0 - d2 / r2) * PI * 0.5
-	for i in range(1, 32):
-		var a := (g[i] + g[32 * 33 + i]) * 0.5
-		g[i] = a
-		g[32 * 33 + i] = a
-		var b := (g[i * 33] + g[i * 33 + 32]) * 0.5
-		g[i * 33] = b
-		g[i * 33 + 32] = b
-	var c := (g[0] + g[32] + g[32 * 33] + g[32 * 33 + 32]) * 0.25
-	g[0] = c
-	var img := Image.create(32, 32, false, Image.FORMAT_RF)
+	var grid := WaveState.phase_grid()
+	var data := PackedFloat32Array()
+	data.resize(32*32)
 	for y in 32:
 		for x in 32:
-			img.set_pixel(x, y, Color(g[y * 33 + x], 0, 0))
-	_phase_tex = ImageTexture.create_from_image(img)
+			data[y*32+x] = grid[y*33+x]
+	_phase_tex = ImageTexture.create_from_image(Image.create_from_data(
+		32,32,false,Image.FORMAT_RF,data.to_byte_array()))
 	return _phase_tex
+
+static func wave_sine_texture() -> ImageTexture:
+	if _sine_tex == null:
+		_sine_tex = ImageTexture.create_from_image(Image.create_from_data(
+			512,1,false,Image.FORMAT_RF,WaveState.sine_table().to_byte_array()))
+	return _sine_tex
+
+func _process(dt: float) -> void:
+	var world := get_parent() as GameWorld
+	if world and world.session and world.session.lmp_travel \
+			and not world.session.lmp_travel.can_tick(world):
+		return
+	_waves.advance(dt)
+	_update_wave_parameters()
+
+func _update_wave_parameters() -> void:
+	if _water_mat == null:
+		return
+	_water_mat.set_shader_parameter("wave_phase",_waves.phase)
+	_water_mat.set_shader_parameter("wave_ticks",_waves.time_ticks())
+	_water_mat.set_shader_parameter("wave_amplitude",_waves.amplitude)
+	_water_mat.set_shader_parameter("wave_gradient",_waves.gradient)
+	_water_mat.set_shader_parameter("wind",_waves.force)
 
 
 ## E of a map material: min(1, self-illumination × colour) (

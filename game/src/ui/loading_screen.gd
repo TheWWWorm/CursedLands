@@ -66,6 +66,7 @@ var _deferred := false   # drawn by the main loop's own frames (`deferred`)
 var _early := false      # shown by `hold` ahead of the load's own `begin`
 var _holding := false    # `hold` waiting for its frames to be presented
 var _idle := 0           # main-loop frames with the screen up outside a hold
+var _waiting_remote := false   # co-op host is rebuilding, no local stages yet
 
 
 ## True where a forced draw does not reach the screen (see the header): the
@@ -103,6 +104,26 @@ static func hold(tree: SceneTree, zone: Dictionary, kind := NEW_ZONE) -> void:
 		ls._holding = false
 		ls._idle = 0
 		GameData.trace("loading screen presented (frame %d)" % ls._decoded)
+
+
+## Remake co-op load barrier: keep the client picture up while the host
+## rebuilds. The later local begin reuses it, and reliable load-end removes
+## it only after the host's state / zone have both arrived.
+static func wait_remote(tree: SceneTree, zone: Dictionary) -> void:
+	begin(tree, zone, CLIENT)
+	var ls := _current
+	if ls == null:
+		return
+	ls._waiting_remote = true
+	ls._early = true
+	if deferred():
+		ls._holding = true
+		for i in 2:
+			await RenderingServer.frame_post_draw
+		await tree.process_frame
+		if is_instance_valid(ls):
+			ls._holding = false
+			ls._idle = 0
 
 
 static func movie_for(zone: Dictionary) -> String:
@@ -230,7 +251,7 @@ func _remove() -> void:
 ## the main loop never runs a frame in between: a screen still up two frames
 ## later belongs to a load that stopped on an error, and goes.
 func _process(_dt: float) -> void:
-	if _current != self or _holding:
+	if _current != self or _holding or _waiting_remote:
 		return
 	_idle += 1
 	if _idle >= 2:
@@ -241,7 +262,7 @@ func _process(_dt: float) -> void:
 ## The deferred screen takes all input while it is up (the old zone runs on
 ## behind it during `hold`).
 func _input(_e: InputEvent) -> void:
-	if _current == self and _deferred:
+	if _current == self and (_deferred or _waiting_remote):
 		get_viewport().set_input_as_handled()
 
 
@@ -255,6 +276,9 @@ func _posted() -> void:
 func _show(frame: int) -> void:
 	frame = mini(frame, _bink.frame_count - 1)
 	if frame <= _decoded:
+		#  still blits/flips the retained picture at every call.
+		if _decoded >= 0:
+			_draw_frame()
 		return
 	while _decoded < frame:
 		_decoded += 1

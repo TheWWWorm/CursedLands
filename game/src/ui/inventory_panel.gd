@@ -126,6 +126,7 @@ func open_swap() -> void:
 	_camp.shop_id = 0
 	shop_mode = true
 	_set_camp(true)
+	_camp.reset_filters()
 	_camp.swap_open()
 	visible = true
 	refresh()
@@ -140,6 +141,7 @@ func open(shop: bool, constr := 0) -> void:
 	Items.coef = Shops.coef(_camp.shop_id)
 	shop_mode = _camp.shop_id != 0
 	_set_camp(true)
+	_camp.reset_filters()
 	_camp.set_mode(_camp.first_mode())
 	visible = true
 	refresh()
@@ -152,7 +154,7 @@ func open(shop: bool, constr := 0) -> void:
 ## full-screen camp. The camp's key handler: Esc → (7)
 ## (mode button 7, Exit); Enter in a network game opens the chat line
 ## (ui/chat_line.gd); Backspace in a network game clears the chat
-## list (not ported, see ChatLine); other keys.
+## list (GameHUD.clear_chat); other keys.
 func _unhandled_key_input(e: InputEvent) -> void:
 	if not (visible and e is InputEventKey and e.pressed and not e.echo):
 		return
@@ -173,6 +175,9 @@ func _unhandled_key_input(e: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 	elif e.keycode in [KEY_ENTER, KEY_KP_ENTER] and hud.game.session.online:
 		hud.chat_line.open()
+		get_viewport().set_input_as_handled()
+	elif e.keycode == KEY_BACKSPACE and hud.game.session.online:
+		hud.clear_chat()
 		get_viewport().set_input_as_handled()
 	elif _camp.visible and EIKeymap.event_action(e) == "tutorial_script":
 		_camp.screen_tutorial(true)   # (1)

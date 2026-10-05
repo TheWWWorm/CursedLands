@@ -34,8 +34,13 @@ var world: GameWorld
 var _later: Array = []
 ## Moving loops: {h, pos, target (GameUnit|null), point, step, ticks, kind, acc, end}.
 var _movers: Array = []
-## Effects on units: "uid:code" -> {u, code, until, loop, next_stench, warn}.
+## Effects on units: "uid:code" -> {u, code, until, loop, next_stench}.
 var _effects := {}
+##  logic: one end-warning handle per named unit.
+var _warns := {}
+## Class 99's five-wave Firework compound, serviced on the 55 ms world tick.
+var _firework_lists: Array = []
+var _list_acc := 0.0
 var _clock := 0.0
 
 
@@ -53,8 +58,8 @@ func _ground(x: float, y: float) -> Vector3:
 
 
 func _unit(id) -> GameUnit:
-	var u: GameUnit = world.units.get(int(id)) if id != null else null
-	return u if u and is_instance_valid(u) else null
+	var u = world.units.get(int(id)) if id != null else null
+	return u if is_instance_valid(u) and u is GameUnit else null
 
 
 static func _at(u: GameUnit) -> Vector3:
@@ -127,10 +132,16 @@ func spell(ev: Dictionary) -> void:
 				if code != "litnwall":
 					_one("magic\\%s\\end.wav" % dir, point))
 		"fireworks":
-			# A list of five loops (order not traced: played in turn).
-			var st := {"i": 0, "h": -1, "until": _clock + dur, "p": point}
+			#  chooses callback without a start wave:
+			# every completed wave is followed by a fresh rand % 5 choice.
+			var st := {"h": -1, "p": point, "active": true}
 			_fireworks(st)
-			_after(dur, func(): _one("magic\\Firework\\end.wav", point))
+			_firework_lists.append(st)
+			_after(dur + (0.0 if replay else TICK), func():
+				st.active = false
+				mixer.stop(int(st.h))
+				_firework_lists.erase(st)
+				_one("magic\\Firework\\end.wav", point))
 		"clairvoyence":
 			if not replay:
 				_one("magic\\Clairvoyence\\start.wav", point)
@@ -140,7 +151,7 @@ func spell(ev: Dictionary) -> void:
 				_one("magic\\%s\\start.wav" % ("Possession" if code == "possession" else "VisionFog"), _at(target))
 		"healing":
 			if not replay:
-				_one("magic\\Healing\\start.wav", _at(target) if target else point)
+				_target_starts(ev, "Healing", target, point)
 		"link":
 			if caster and not replay:
 				_one("magic\\Link\\start.wav", origin)
@@ -152,17 +163,29 @@ func spell(ev: Dictionary) -> void:
 			if not replay:
 				_one("magic\\Teleport\\start.wav", point)
 		"charm":
-			if not replay and target:
-				_one("magic\\Charm\\start.wav", _at(target))
+			if not replay:
+				_target_starts(ev, "Charm", target, point)
+
+
+## The host sends post-application outcomes, since a client's snapshot may
+## still hold the target's old health / party when the spell event arrives.
+func _target_starts(ev: Dictionary, dir: String, target: GameUnit, point: Vector3) -> void:
+	if ev.has("sound_units"):
+		for id in ev.sound_units:
+			var u := _unit(id)
+			if u:
+				_one("magic\\%s\\start.wav" % dir, _at(u))
+	elif target or dir == "Healing":
+		_one("magic\\%s\\start.wav" % dir, _at(target) if target else point)
 
 
 func _fireworks(st: Dictionary) -> void:
-	if _clock >= float(st.until):
+	if not st.active:
 		return
-	st.i = int(st.i) % 5 + 1
-	st.h = mixer.play3d("magic\\Firework\\%d.wav" % int(st.i), PRIO, st.p, MIN_D, MAX_D)
-	var s := EIAudio.sfx("magic\\Firework\\%d.wav" % int(st.i))
-	_after(s.get_length() if s else 1.0, func(): _fireworks(st))
+	st.h = mixer.play3d("magic\\Firework\\%d.wav" % (randi() % 5 + 1), PRIO, st.p, MIN_D, MAX_D)
+	#  failure frees the compound; it does not retry a lost wave.
+	if int(st.h) < 0:
+		st.active = false
 
 
 ## Event "magicfx": uid, code, secs.
@@ -176,7 +199,7 @@ func effect(ev: Dictionary) -> void:
 	if not old.is_empty():
 		mixer.stop(int(old.get("loop", -1)))
 	var e := {"u": u, "code": code, "until": _clock + float(ev.get("secs", 0.0)), "loop": -1,
-		"stench": _clock, "warn": -1}
+		"stench": _clock, "warn": bool(ev.get("warn", true))}
 	if code == "stench":
 		_effects[key] = e
 		return
@@ -198,6 +221,12 @@ func tick(dt: float) -> void:
 			_later = _later.filter(func(l): return float(l.at) > _clock)
 			for l: Dictionary in due:
 				(l.f as Callable).call()
+	_list_acc += dt
+	while _list_acc >= TICK:
+		_list_acc -= TICK
+		for st: Dictionary in _firework_lists:
+			if st.active and not mixer.playing(int(st.h)):
+				_fireworks(st)
 	for m: Dictionary in _movers.duplicate():
 		m.acc = float(m.acc) + dt
 		while float(m.acc) >= TICK and _movers.has(m):
@@ -226,9 +255,16 @@ func tick(dt: float) -> void:
 		if e.code == "stench" and _clock >= float(e.stench):
 			e.stench = float(e.stench) + 16.0 * TICK
 			mixer.play3d("magic\\Stench\\%d.wav" % (randi() % 3 + 1), 0, p, MIN_D, MAX_D)
-		# The end warning at a party unit (approx. for "named units").
-		if float(e.until) - _clock < 30.0 * TICK and u.controller >= 0 and not mixer.playing(int(e.warn)):
-			e.warn = mixer.play3d("magic\\end1.wav", 0, p, 8.0, 20.0)
+		# Spell object is copied to magic record: periodic
+		# charged-item effects suppress this warning.
+		if e.warn and float(e.until) - _clock < 30.0 * TICK and Combat.named(u) \
+				and not mixer.playing(int(_warns.get(u.uid, -1))):
+			_warns[u.uid] = mixer.play3d("magic\\end1.wav", 0, p, 8.0, 20.0)
+	# The warning itself may finish after the last effect; keep its handle
+	# until then, and drop records belonging to units removed from the world.
+	for uid in _warns.keys():
+		if _unit(uid) == null or not mixer.playing(int(_warns[uid])):
+			_warns.erase(uid)
 
 
 func _move(m: Dictionary) -> void:

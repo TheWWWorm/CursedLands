@@ -224,28 +224,29 @@ static func is_hostile(spell: String) -> bool:
 
 
 ## Host: apply a spell cast by `caster` at a unit or ground point.
-static func apply(world: GameWorld, caster: GameUnit, spell: String, target: GameUnit, point: Vector2, from := Vector2(INF, INF)) -> void:
+static func apply(world: GameWorld, caster: GameUnit, spell: String, target: GameUnit, point: Vector2, from := Vector2(INF, INF), auto_heal := false) -> Dictionary:
 	var p := parse(spell)
+	var audio := {}
 	var at := target.pos if target else point
 	# Spell power comes from its runes [allods.gipat.ru FAQ]; skills and school
 	# perks only raise the allowed complexity.
 	var power: float = p.effect
 	var radius: float = p.radius
-	var victims: Array = []
-	if radius > 0.2:
-		var filter := int(p.get("filter", 0))
-		victims = world.units_near(at, radius).filter(func(u): return not u.dead and u != caster \
-			and (u == target or caster == null or passes_filter(world, caster, u, filter)))
-	elif target:
-		victims = [target]
-	# Durations count 55 ms logic ticks (the effect object lives max(duration, n) + 30
-	# ticks). Lasting effects are "magic effects" whose type is the
+	#  applies each non-area effect to this spell object's
+	# target. creates any additional target objects; radius
+	# belongs to area damage and never substitutes for the target count.
+	var victims: Array = [target] if target else []
+	# Durations count 55 ms logic ticks; each effect has its own cleanup
+	# counter. Lasting effects are "magic effects" whose type is the
 	# spell index; fold them into stats.
 	var secs: float = float(p.duration) * GameUnit.TICK
-	if p.code in ["firewall", "litnwall", "acid_fog", "campfire"] and world.ai:
+	if p.code in ["firewall", "litnwall", "acid_fog"] and world.ai:
 		# the effect's cells become dangerous
-		# (the Fear motivation's 350, UnitAI.danger_at).
-		world.ai.add_danger(at, maxf(radius, 0.0), secs + 30.0 * GameUnit.TICK)
+		# until counter-1 at duration+2. Campfire creates no figure, so it
+		# never registers a danger layer despite the helper's type0x27 case.
+		var wall: bool = p.code in ["firewall", "litnwall"]
+		var span := _wall_span(world, caster, at, radius, from, p.code == "litnwall") if wall else Vector3.ZERO
+		world.ai.add_danger(at, maxf(radius, 0.0), secs + 2.0 * GameUnit.TICK, span, wall)
 	if p.code == "fireworks":
 		#  case 0x12: every logic tick of its duration (counter
 		#  from duration - 1 down to 0), the units within the effect
@@ -260,11 +261,17 @@ static func apply(world: GameWorld, caster: GameUnit, spell: String, target: Gam
 			"invisibility", "stun", "enlarge", "shrink"]):
 		for u: GameUnit in victims:
 			world.session.broadcast({"t": "magicfx", "uid": u.uid, "code": p.code, "secs": secs,
-				"s": ParticleFx.strength(p)})
+				"s": ParticleFx.strength(p), "warn": not auto_heal})
 	match String(p.code):
 		"healing":   # Heal(effect)
+			audio.sound_units = []
 			for u: GameUnit in victims:
 				u.heal(power)
+				# Spell object is set only by the periodic charged-item
+				# check: a heal that fills HP is silent there.
+				# The two packed HP shorts use CRT __ftol.
+				if not auto_heal or int(u.hp) != int(u.max_hp):
+					audio.sound_units.append(u.uid)
 		"regeneration":   # health regeneration x effect
 			for u: GameUnit in victims:
 				_buff(u, "regeneration", secs, {"regen_mul": power})
@@ -307,27 +314,93 @@ static func apply(world: GameWorld, caster: GameUnit, spell: String, target: Gam
 			for u: GameUnit in victims:
 				_buff(u, "stench", secs, {"detect": [4, power]})
 		"charm":   #  case 0x24: repeated until the target is on the caster's side
+			audio.sound_units = []
 			for u: GameUnit in victims:
+				if caster == null:
+					continue
 				var ok := true
 				#  is the owning side: for a hero, its player's party.
 				while ok and (u.faction != caster.faction or u.controller != caster.controller):
 					ok = tame(world, caster, u, power)
 				if not ok and world.session:
 					world.session.failed(caster, 7)   # "Can't charm"
+				elif ok:
+					audio.sound_units.append(u.uid)
 		"vision_fog":   #  case 0x17: needs a caster and a target unit
 			if target and caster and world.session:
-				world.session.broadcast({"t": "vision_fog", "uid": target.uid, "to": caster.controller, "secs": secs})
+				world.session.broadcast({"t": "vision_fog", "uid": target.uid, "caster": caster.uid,
+					"to": caster.controller, "secs": secs})
 		"teleport":
-			#  case 0x1c: effects at the destination (the target unit or
-			# point) and at the caster; the effect lives duration + 30 ticks, then
-			# the caster arrives (the move at the effect's end is inferred).
-			_teleport_later(world, caster, world.nav.nearest_walkable(at), int(p.duration) + 30)
+			# 67f830/682610: the destination is tested and the caster moves on
+			# tick30. The duration counter continues after that move.
+			audio.light_id = _teleport_later(world, caster, at, maxi(int(p.duration), 1) + 30,
+				-1, maxi(int(p.duration), 1))
 		"eagle_sight", "infravision", "detect_life":   # effect added to sight / night sight / life sense
 			for u: GameUnit in victims:
 				_buff(u, p.code, secs, {"sense": [["eagle_sight", "infravision", "detect_life"].find(p.code), power]})
 		_:
 			if p.subtype in DAMAGE_TYPES:
 				_damage_spell(world, caster, p, target, at, from)
+	return audio
+
+
+##  for a unit caster (manual, belt and charged equipment).
+## Its single unfiltered path is deliberately direct, even for a corpse.
+## Filter / multi-target casts use the player's noticed list (not the
+## render relevance radius), then terrain / spell filters, and only a
+## successful dispatch spends one of the target count.
+static func cast_unit(world: GameWorld, caster: GameUnit, spell: String, target: GameUnit,
+		point: Vector2, auto_heal := false) -> void:
+	var p := parse(spell)
+	if caster == null or not is_instance_valid(caster) or p.proto.is_empty() \
+			or p.code in ["possession", "link", "charm"]:
+		return
+	if (world.session and world.session.shop_available()) or (not world.session and bool(world.zone.get("village", false))):
+		return
+	var n := int(p.targets)
+	var flags := int(p.flags)
+	if int(p.filter) == 0 and n < 2:
+		_cast_unit_one(world, caster, spell, p, target, point, auto_heal)
+		return
+	if flags & 0x20000000 and not flags & 0x20000:
+		n -= 1
+		_cast_unit_one(world, caster, spell, p, target, point, auto_heal)
+	var pool: Array = world.units_near(caster.pos, float(p.range))
+	if target:
+		pool.erase(target)
+		pool.push_front(target)
+	var noticed := {}
+	if caster.controller >= 0 and world.session:
+		for u: GameUnit in UnitFog.noticed_for(world.session, caster.controller):
+			noticed[u.uid] = true
+	var point_z := world.ground_at(target.pos.x, target.pos.y) if target else 0.0
+	while n > 0:
+		var pick := _cast_pick(world, pool, target, point, point_z)
+		if pick == null:
+			break
+		pool.erase(pick)
+		var known := noticed.has(pick.uid) if caster.controller >= 0 and world.session else \
+				pick.uid in (caster.get_meta("noticed", {}) as Dictionary) \
+				or world.relation(pick.faction, caster.faction) == 0
+		if known and _trace_ok(world, p, caster.pos, caster.eye_z(), pick) \
+				and passes_filter(world, caster, pick, int(p.filter)):
+			_cast_unit_one(world, caster, spell, p, pick, pick.pos, auto_heal)
+			n -= 1
+
+
+static func _cast_unit_one(world: GameWorld, caster: GameUnit, spell: String, p: Dictionary,
+		target: GameUnit, point: Vector2, auto_heal: bool) -> void:
+	#  clears the spell object's target for a point spell
+	# the target's current coordinates still supply its fixed destination.
+	var at := target.pos if target else point
+	var tu: GameUnit = null if int(p.flags) & 0x20000000 else target
+	var audio := apply(world, caster, spell, tu, at, Vector2.INF, auto_heal)
+	if world.session:
+		var fx := {"t": "spellfx", "code": p.code, "sub": p.subtype, "spell": spell,
+			"x": at.x, "y": at.y, "a": caster.uid, "tu": tu.uid if tu else -1,
+			"hold": light_time(spell)}
+		fx.merge(audio)
+		world.session.broadcast(fx)
 
 
 ## Damage spells, the original (cast) / (effect tick)
@@ -342,8 +415,9 @@ static func apply(world: GameWorld, caster: GameUnit, spell: String, target: Gam
 ##     0.6667 m a tick (CEffectArrow; the sdb speed is unused)
 ##     hitting only that unit on arrival;
 ##   lightning / curse_magic: the target unit at once;
-##   fireball: flies n = max(1, round(d / range x 15) - 2) ticks to the
-##     target's cast-time position, then the area
+##   fireball: creation counter round(d / range x 15) - 2, but the wrapper
+##     decrements then tests the old negative value: damage at
+##     max(1, round(d / range x 15))
 ##   inv_lit: the area at once; acid_column: the area once, 15 ticks after
 ##     the cast (counter 30, hit at 15);
 ##   firewall / litnwall: counter = duration, -1 a tick; while it is >= 0,
@@ -352,7 +426,7 @@ static func apply(world: GameWorld, caster: GameUnit, spell: String, target: Gam
 ##     across the cast direction, 2 x radius long), flyers excepted;
 ##   acid_fog: the same ticks, the whole area;
 ##   campfire: counter = duration, +1 a tick, the area every tick with
-##     counter & 3 = 0 while the effect lives (duration + 30 ticks).
+##     counter & 3 = 0; it never ends through this counter.
 static func _damage_spell(world: GameWorld, caster: GameUnit, p: Dictionary, target: GameUnit, at: Vector2, from: Vector2) -> void:
 	var src := caster.pos if caster else from
 	var dur := int(p.duration)
@@ -366,25 +440,59 @@ static func _damage_spell(world: GameWorld, caster: GameUnit, p: Dictionary, tar
 			if src.x == INF:
 				_area_hit(world, caster, p, at)
 			else:
-				var n := maxi(1, roundi(src.distance_to(at) / maxf(float(p.range), 1.0) * 15.0) - 2)
-				_area_later(world, caster, p, at, n)
+				_area_later(world, caster, p, at, fireball_ticks(src, at, float(p.range)))
 		"inv_lit":
 			_area_hit(world, caster, p, at)
 		"acid_column":
 			_area_later(world, caster, p, at, 15)
 		"firewall", "litnwall":
-			var dir := Vector2(1, 0)
-			if caster:
-				dir = (at - caster.pos).normalized() if at.distance_to(caster.pos) > 0.01 else Vector2.from_angle(caster.facing)
-			elif src.x != INF and at.distance_to(src) > 0.01:
-				dir = (at - src).normalized()
-			_lasting_tick(world, caster, p, at, dir, dur, -1)
+			_start_lasting(world, caster, p, at, _wall_direction(caster, at, from), dur, -1)
 		"acid_fog":
-			_lasting_tick(world, caster, p, at, Vector2.ZERO, dur, -1)
+			_start_lasting(world, caster, p, at, Vector2.ZERO, dur, -1)
 		"campfire":
-			_lasting_tick(world, caster, p, at, Vector2.ZERO, dur, dur + 30)
+			_start_lasting(world, caster, p, at, Vector2.ZERO, dur, -2)
 		_:   # lightning, curse_magic
 			_hit(world, caster, p, target)
+
+
+##  stores both the XY distance and the tick ratio in float32
+## then FISTP uses the default nearest-even mode. A nonpositive range is5m.
+static func fireball_ticks(from: Vector2, at: Vector2, range: float) -> int:
+	var d := float(PackedFloat32Array([from.distance_to(at)])[0])
+	var r := float(PackedFloat32Array([range])[0])
+	var v := float(PackedFloat32Array([d / (r if r > 0.0 else 5.0) * 15.0])[0])
+	var lower := floori(v)
+	var fraction := v - float(lower)
+	var ticks := lower if fraction < 0.5 or (fraction == 0.5 and lower % 2 == 0) else lower + 1
+	return maxi(1, ticks)
+
+
+static func _wall_direction(caster: GameUnit, at: Vector2, from: Vector2) -> Vector2:
+	var source := caster.pos if is_instance_valid(caster) else from
+	var delta := at - source if source.x != INF else Vector2.ZERO
+	#  uses the east axis when both horizontal components are0.
+	return delta.normalized() if delta != Vector2.ZERO else Vector2.RIGHT
+
+
+static func _wall_span(world: GameWorld, caster: GameUnit, at: Vector2, radius: float, from: Vector2, lightning: bool) -> Vector3:
+	var dir := _wall_direction(caster, at, from)
+	var half := Vector2(-dir.y, dir.x) * radius
+	var z := 0.0
+	if lightning:
+		#  stores ground+1 at both ends; takes
+		# their half difference, including terrain slope in the outer circle.
+		z = (world.ground_at(at.x + half.x, at.y + half.y) - world.ground_at(at.x - half.x, at.y - half.y)) * 0.5
+	return Vector3(half.x, half.y, z)
+
+
+## Creation registers the effect; its first damage update is the next
+## server tick, not the creation call (state0 -> state2).
+static func _start_lasting(world: GameWorld, caster, p: Dictionary, at: Vector2, dir: Vector2, counter: int, left: int) -> void:
+	var id := _keep_lasting(world, -1, {"k": "tick", "spell": String(p.id), "caster": _caster_ref(caster),
+		"at": [at.x, at.y], "dir": [dir.x, dir.y], "counter": counter, "left": left, "hit": false})
+	var cw = _ref(caster)
+	_after(world, GameUnit.TICK, func():
+		_lasting_tick(world, _deref(cw), p, at, dir, counter, left, false, id))
 
 
 ## The world's spell timers (delayed hits, lasting effects, missiles) are
@@ -394,9 +502,32 @@ static func _damage_spell(world: GameWorld, caster: GameUnit, p: Dictionary, tar
 ## outlives them) and weak references to units, which can leave the world
 ## first (RemoveObject, summons) — so no callback meets a freed capture.
 class WorldTimers extends Node:
+	var pending: Array[Dictionary] = []
+	func queue(secs: float, f: Callable) -> void:
+		var w := get_parent() as GameWorld
+		pending.append({"left": secs, "f": f, "created_step": w._logic_step if w else -1})
+	func _tick(dt: float, world_step := false) -> void:
+		# One authoritative world can be hidden or temporarily unoccupied.
+		# Its delays consume only that world's running time, never base time.
+		var w := get_parent() as GameWorld
+		for p: Dictionary in pending.duplicate():
+			# A wrapper created by an object in this very tick first enters
+			# its running state on the next completed server tick. A callback
+			# queued by another callback also waits for the next iteration.
+			if world_step and w and int(p.get("created_step", -1)) >= w._logic_step:
+				continue
+			p.left = float(p.left) - dt
+			if float(p.left) <= 0.000000001:
+				pending.erase(p)
+				_timed_fire(p.f)
 	func fire(f: Callable) -> void:
 		if is_inside_tree():
-			f.call()
+			_timed_fire(f)
+	func _timed_fire(f: Callable) -> void:
+		var w := get_parent() as GameWorld
+		var started := Time.get_ticks_usec() if w and w.profile_simulation else 0
+		f.call()
+		if is_instance_valid(w): w.profile_record("spell_callback",started)
 
 
 static func _after(world: GameWorld, secs: float, f: Callable, always := false) -> void:
@@ -407,6 +538,9 @@ static func _after(world: GameWorld, secs: float, f: Callable, always := false) 
 		n = WorldTimers.new()
 		n.name = "SpellTimers"
 		world.add_child(n)
+	if world.authority:
+		n.queue(secs, f)
+		return
 	world.get_tree().create_timer(secs, always).timeout.connect(n.fire.bind(f))
 
 
@@ -419,22 +553,22 @@ static func _deref(r: WeakRef):
 
 
 ## One tick of a lasting damage effect: `left` < 0 counts the wall / fog
-## counter down to 0; otherwise (campfire) the counter counts up and the
-## effect has `left` ticks to live.
+## counter down to0; -2 is campfire's indefinite count-up. Positive left
+## retains compatibility with older saves that gave campfire a finite life.
 ## `id`: its entry in the world's running lasting effects (save_lasting).
 static func _lasting_tick(world: GameWorld, caster, p: Dictionary, at: Vector2, dir: Vector2, counter: int, left: int, hit := false, id := -1) -> void:
 	if not is_instance_valid(world):
 		return
-	if (left < 0 and counter < 0) or left == 0:
+	if (left == -1 and counter < 0) or left == 0:
 		_lasting(world).erase(id)
 		return
 	if counter & 3 == 0:
 		# Walls and fog set the effect's flag bit 0 after their first
 		# hit; from then passes no attacker (campfire never).
 		_area_hit(world, caster, p, at, dir, hit)
-		hit = left < 0
-	var next := counter + 1 if left > 0 else counter - 1
-	var nleft := left - 1 if left > 0 else -1
+		hit = left == -1
+	var next := counter - 1 if left == -1 else counter + 1
+	var nleft := left - 1 if left > 0 else left
 	id = _keep_lasting(world, id, {"k": "tick", "spell": String(p.id), "caster": _caster_ref(caster),
 		"at": [at.x, at.y], "dir": [dir.x, dir.y], "counter": next, "left": nleft, "hit": hit})
 	var cw = _ref(caster)
@@ -495,6 +629,8 @@ static func save_lasting(world: GameWorld) -> Array:
 	if world == null:
 		return []
 	var out: Array = _lasting(world).values().duplicate(true) if world.has_meta("lasting_spells") else []
+	if world.ai:
+		out.append_array(world.ai.save_dangers())
 	for c in world.get_children():
 		if c is Projectile and c.apply_hit and not c.is_queued_for_deletion() and is_instance_valid(c.target) \
 				and not c.target.dead:
@@ -509,10 +645,15 @@ static func save_lasting(world: GameWorld) -> Array:
 ## `shown` "fireball": the fireballs' visuals come back on their own (a save
 ## that kept them with their age, CampaignState.replay_restored).
 static func restore_lasting(world: GameWorld, list: Array, shown := {}) -> void:
+	var has_dangers := list.any(func(r): return r is Dictionary and String(r.get("k", "")) == "danger")
 	for r in list:
 		if not r is Dictionary:
 			continue
 		var rec: Dictionary = r
+		if String(rec.get("k", "")) == "danger":
+			if world.ai:
+				world.ai.restore_danger(rec)
+			continue
 		var at := Vector2(float(rec.at[0]), float(rec.at[1]))
 		var cw = _ref(_caster_of(world, rec.get("caster", [])))
 		var id := _keep_lasting(world, -1, rec.duplicate(true))
@@ -523,6 +664,13 @@ static func restore_lasting(world: GameWorld, list: Array, shown := {}) -> void:
 				var dir := Vector2(float(rec.dir[0]), float(rec.dir[1]))
 				var left := int(rec.left)
 				var hit := bool(rec.hit)
+				if not has_dangers and world.ai and p.code in ["firewall", "litnwall", "acid_fog"] and counter >= -1:
+					# Old saves lack separate danger records. Their saved next
+					# damage counter still determines the remaining registration.
+					var wall: bool = p.code != "acid_fog"
+					var half := Vector2(-dir.y, dir.x) * float(p.radius)
+					var z := (world.ground_at(at.x + half.x, at.y + half.y) - world.ground_at(at.x - half.x, at.y - half.y)) * 0.5 if p.code == "litnwall" else 0.0
+					world.ai.add_danger(at, float(p.radius), float(counter + 2) * GameUnit.TICK, Vector3(half.x, half.y, z), wall)
 				_after(world, GameUnit.TICK, func():
 					_lasting_tick(world, _deref(cw), p, at, dir, counter, left, hit, id))
 			"fireworks":
@@ -548,8 +696,10 @@ static func restore_lasting(world: GameWorld, list: Array, shown := {}) -> void:
 					world.session.broadcast({"t": "spellfx", "code": "fireball", "spell": String(p.id), "sub": "",
 						"x": at.x, "y": at.y, "fx": at.x, "fy": at.y, "replay": true})
 			"teleport":
+				var duration := maxi(int(rec.get("duration", maxi(counter - 30, 1))), 1)
+				var light_id := String(rec.get("light_id", ""))
 				_after(world, GameUnit.TICK, func():
-					_teleport_later(world, _deref(cw), at, counter - 1, id), true)
+					_teleport_later(world, _deref(cw), at, counter - 1, id, duration, light_id))
 			"shot":   # an arrow / bolt in flight (save_lasting): on from where it was
 				_lasting(world).erase(id)
 				var tu := _caster_of(world, rec.get("target", []))
@@ -604,24 +754,50 @@ static func _area_later(world: GameWorld, caster, p: Dictionary, at: Vector2, ti
 		_area_later(world, _deref(cw), p, at, ticks - 1, id))
 
 
-## Teleport (case 0x1c): the caster arrives at `dest` when the
-## effect ends, `ticks` logic ticks from now (also while paused).
-static func _teleport_later(world: GameWorld, caster, dest: Vector2, ticks: int, id := -1) -> void:
+## Teleport's current counter, not its arrival delay (67f830/682610).
+## Old saves omitted duration; their remaining counter is migrated below.
+static func _teleport_later(world: GameWorld, caster, dest: Vector2, ticks: int,
+		id := -1, duration := -1, light_id := "") -> String:
 	if not is_instance_valid(world):
-		return
-	if ticks <= 0:
+		return light_id
+	if duration < 0:
+		duration = maxi(ticks - 30, 1)
+	if ticks <= -3:
 		_lasting(world).erase(id)
-		var c: GameUnit = caster if caster != null and is_instance_valid(caster) else null
-		if c and not c.dead:
+		return light_id
+	var c: GameUnit = caster if caster != null and is_instance_valid(caster) else null
+	if id >= 0 and (c == null or c.dead):
+		_lasting(world).erase(id)
+		if world.session:
+			world.session.broadcast({"t": "spell_light", "id": light_id, "ok": false, "cancel": true})
+		return light_id
+	if id >= 0 and ticks == duration and c:
+		# Native5b7a40 lifts the mover's stamp and tests the exact destination;
+		# a blocked point fails, rather than snapping to another nearby point.
+		var lifted := c._occ_cell.x >= 0
+		if lifted:
+			world.nav._stamp(c._occ_cell, c._occ_r, -1)
+		var ok := world.nav.is_walkable(dest, c.move_class())
+		if lifted:
+			world.nav._stamp(c._occ_cell, c._occ_r, 1)
+		if ok:
 			c.pos = dest
 			c.path = PackedVector2Array()
 			c.order = {}
 			c.orders.clear()
-		return
-	id = _keep_lasting(world, id, {"k": "teleport", "caster": _caster_ref(caster), "at": [dest.x, dest.y], "counter": ticks})
+		elif world.session:
+			world.session.failed(c, 16)   # native 552780(0x10)
+		if world.session:
+			world.session.broadcast({"t": "spell_light", "id": light_id, "ok": ok})
+	id = _keep_lasting(world, id, {"k": "teleport", "caster": _caster_ref(caster),
+		"at": [dest.x, dest.y], "counter": ticks, "duration": duration, "light_id": light_id})
+	if light_id == "":
+		light_id = "%d:%d" % [world.get_instance_id(), id]
+		_lasting(world)[id].light_id = light_id
 	var cw = _ref(caster)
 	_after(world, GameUnit.TICK, func():
-		_teleport_later(world, _deref(cw), dest, ticks - 1, id), true)
+		_teleport_later(world, _deref(cw), dest, ticks - 1, id, duration, light_id))
+	return light_id
 
 
 ## one unit, after the filter when there is a caster.
@@ -679,6 +855,9 @@ static func _spell_damage(world: GameWorld, caster: GameUnit, p: Dictionary, u: 
 		af = 4.0 / float(p.duration)
 		power *= af
 	var t := int(DAMAGE_TYPE_INDEX.get(p.subtype, 6))
+	# Native record electric type factor sets bit4 before absorption
+	# zero-damage struck hits retain the electrical flash.
+	var hit_flags := 4 if t == 5 else 0
 	var armour: PackedFloat32Array = u.stats.get("armor", PackedFloat32Array())
 	# Protection effects are folded into that armour.
 	var prot := 0.0
@@ -706,7 +885,7 @@ static func _spell_damage(world: GameWorld, caster: GameUnit, p: Dictionary, u: 
 	if dmg <= 0.0:
 		#  returned 0: the struck path without damage.
 		wear_weapon.call()
-		world.combat.blank_hit(u, caster, owner_only)
+		world.combat.blank_hit(u, caster, owner_only, hit_flags)
 		return
 	# a character's (script-name id, `has_meta("hero")`) worn
 	# layers on each part, outer first, each x the armour factor, on that
@@ -746,11 +925,11 @@ static func _spell_damage(world: GameWorld, caster: GameUnit, p: Dictionary, u: 
 					if int(u.parts[i].state) > 1:
 						walk.call(i, full, true)
 				wear_weapon.call()
-				world.combat.blank_hit(u, caster, owner_only)
+				world.combat.blank_hit(u, caster, owner_only, hit_flags)
 				return
 			layers = func(i: int, amount: float) -> float:
 				return walk.call(i, amount, true)
-	u.take_damage(dmg, caster, -1, PackedFloat32Array(), 0, layers, owner_only)
+	u.take_damage(dmg, caster, -1, PackedFloat32Array(), hit_flags, layers, owner_only)
 	wear_weapon.call()
 	# a unit that lives on after the damage (healing armour).
 	if not u.dead:
@@ -768,7 +947,9 @@ static func _spell_damage(world: GameWorld, caster: GameUnit, p: Dictionary, u: 
 ## take the target unit if it lives, else the living unit nearest the
 ## point (dead ones are dropped), remove it, and cast at it when it passes the
 ## trace check (`_trace_ok`) and the filter; only
-## those casts count. `from_z` is the source height (scripts pass 0).
+## those casts count. Ranking uses the full 3D point: a unit's feet, or z=0
+## for CastSpellPoint / a trap's point target. The range pool itself is 2D.
+## `from_z` is the source height (scripts pass 0).
 static func cast_from(world: GameWorld, spell: String, from: Vector2, target: GameUnit, point: Vector2, from_z := 0.0) -> void:
 	var p := parse(spell)
 	if p.proto.is_empty() or p.code in ["possession", "link", "charm"]:
@@ -786,20 +967,9 @@ static func cast_from(world: GameWorld, spell: String, from: Vector2, target: Ga
 	if target:
 		pool.erase(target)
 		pool.push_front(target)
+	var point_z := world.ground_at(target.pos.x, target.pos.y) if target else 0.0
 	while n > 0:
-		var pick: GameUnit = null
-		var best := INF
-		for u: GameUnit in pool.duplicate():
-			if u.dead:
-				pool.erase(u)
-				continue
-			if u == target:
-				pick = u
-				break
-			var d := u.pos.distance_squared_to(point)
-			if d < best:
-				best = d
-				pick = u
+		var pick := _cast_pick(world, pool, target, point, point_z)
 		if pick == null:
 			break
 		pool.erase(pick)
@@ -808,12 +978,38 @@ static func cast_from(world: GameWorld, spell: String, from: Vector2, target: Ga
 			n -= 1
 
 
+## ..: dead nodes leave the pool; an explicit
+## living target wins, otherwise strict 3D squared-distance order. Each best
+## value is stored as a float32, and unordered x87 comparisons also select.
+static func _cast_pick(world: GameWorld, pool: Array, target: GameUnit, point: Vector2, point_z: float) -> GameUnit:
+	var pick: GameUnit = null
+	var best := float(PackedFloat32Array([1.0e38])[0])
+	for u: GameUnit in pool.duplicate():
+		if u.dead:
+			pool.erase(u)
+			continue
+		if u == target:
+			return u
+		# Use authoritative ground height; Node3D.position may still hold the
+		# preceding rendered pose after a script moved the simulation unit.
+		var dx := float(point.x) - float(u.pos.x)
+		var dy := float(point.y) - float(u.pos.y)
+		var dz := point_z - world.ground_at(u.pos.x, u.pos.y)
+		var d := dx * dx + dy * dy + dz * dz
+		if is_nan(d) or is_nan(best) or d < best:
+			best = float(PackedFloat32Array([d])[0])
+			pick = u
+	return pick
+
+
 static func _cast_one(world: GameWorld, spell: String, p: Dictionary, from: Vector2, tu: GameUnit, at: Vector2) -> void:
-	apply(world, null, spell, tu, at, from)
+	var audio := apply(world, null, spell, tu, at, from)
 	if world.session:
-		world.session.broadcast({"t": "spellfx", "code": p.code, "sub": p.subtype, "x": at.x, "y": at.y,
+		var fx := {"t": "spellfx", "code": p.code, "sub": p.subtype, "x": at.x, "y": at.y,
 			"a": -1, "tu": tu.uid if tu else -1, "spell": spell, "fx": from.x, "fy": from.y,
-			"hold": light_time(spell)})
+			"hold": light_time(spell)}
+		fx.merge(audio)
+		world.session.broadcast(fx)
 
 
 ##  with no caster: a spell whose prototype needs a trace

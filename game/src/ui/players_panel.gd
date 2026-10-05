@@ -85,7 +85,7 @@ func rows() -> Array:
 		var st: Dictionary = session.net.status.get(pid, {})
 		var ping := RemakeText.t("host") if int(pid) == 1 else (NetStatus.state_text("connect")
 			if String(st.get("state", "connect")) == "connect" else "%d ms" % int(st.get("ping", 0)))
-		out.append([int(pid), String(p.name), NetStatus.colour(int(p.index)), ping])
+		out.append([int(pid), String(p.name), NetStatus.colour(int(p.index), session.players), ping])
 	return out
 
 

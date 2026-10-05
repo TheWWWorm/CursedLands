@@ -76,8 +76,9 @@ extends Control
 ## village) pushes it (screen, 1, 1): the frame under
 ## it captured, greyed and frozen (Interface800.dim_layer), the map's own
 ## panels and buttons included.
-## **Approx.:** the description's units are 800×600 px scaled; in co-op only the
-## party leader has ✓ (clients browse read-only).
+## Layout uses the native independently stretched 800×600 axes and font 1
+## scales with window width. In remake co-op only the party leader has ✓
+## (clients browse read-only).
 
 signal confirmed(option: Dictionary)
 signal back
@@ -371,16 +372,16 @@ func _k() -> float:
 	return size.y / 600.0
 
 
-func _o() -> Vector2:
-	return Vector2((size.x - 800.0 * _k()) * 0.5, 0)
+func _kv() -> Vector2:
+	return size / Vector2(800, 600)
 
 
 func _r(r: Rect2) -> Rect2:
-	return Rect2(_o() + r.position * _k(), r.size * _k())
+	return Rect2(r.position * _kv(), r.size * _kv())
 
 
 func _p(p: Vector2) -> Vector2:
-	return _o() + p * _k()
+	return p * _kv()
 
 
 func _layout() -> void:
@@ -504,19 +505,18 @@ func _panel(bg: Rect2, frame: Rect2) -> void:
 ## one line with a 1 px shadow, vertically centred.
 func _label(r: Rect2, s: String, col: Color, align := HORIZONTAL_ALIGNMENT_LEFT) -> void:
 	var font := Interface800.font()
-	var k := _k()
 	var fs := _font_px()
 	var rr := _r(r)
 	var y := rr.position.y + (rr.size.y + font.get_ascent(fs) - font.get_descent(fs)) * 0.5
-	draw_string(font, Vector2(rr.position.x + k, y + k), s, align, rr.size.x, fs, Interface800.SHADOW)
+	draw_string(font, Vector2(rr.position.x + 1, y + 1), s, align, rr.size.x, fs, Interface800.SHADOW)
 	draw_string(font, Vector2(rr.position.x, y), s, align, rr.size.x, fs, col)
 
 
 ## The screen's texts are all CInterface3D font 1 (the draws
 ##  and the ScrollText): Times New Roman
-## 0.01867 × width em, here of the 800×600 layout scaled by the height.
+## 0.01867 × window width em.
 func _font_px() -> int:
-	return maxi(6, int(round(800.0 * Interface800.FONT_EM[1] * _k())))
+	return maxi(6, int(round(size.x * Interface800.FONT_EM[1])))
 
 
 # ------------------------------------------------------------------ input
@@ -559,7 +559,7 @@ func _get_tooltip(at: Vector2) -> String:
 
 
 func _gui_input(e: InputEvent) -> void:
-	var p800: Vector2 = (e.position - _o()) / _k() if e is InputEventMouse else Vector2.ZERO
+	var p800: Vector2 = e.position / _kv() if e is InputEventMouse else Vector2.ZERO
 	for b: DialogPanel.Bar in [_list_bar, _desc_bar]:
 		if e is InputEventMouseMotion and b.held == 1:
 			b.drag(p800)

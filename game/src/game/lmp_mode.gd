@@ -12,6 +12,9 @@ extends RefCounted
 
 ## The pseudo-zone a base's exit names (map-LMP.txt "#exit 1 / MPGame1 1").
 const GAME_ZONE := "mpgame1"
+## Fixed native GS spelling (57f190, literal), independent
+## the archive/map identifiers which use lowercase lookup keys.
+const GAME_ZONE_VAR := "z.MPGame1"
 ## The four bases in textsLmp.res «lmp_allod_name_0..3» order.
 const BASES := ["bz1mpg", "bz2mpg", "bz3mpg", "bz4mpg"]
 
@@ -71,7 +74,7 @@ static func giver(q: String) -> String:
 ##  by the base index — b.smith.constr_1 / b.Shopper.constr_3
 ## / b.kuzn.constr_4 / b.golem.constr_5 = 1, and the conversations intro_<n>q /
 ## intro_<n>k as b.<speaker>.<name> raised to at least 1.
-const TRADERS := {"bz1mpg": "b.smith.constr_1", "bz2mpg": "b.shopper.constr_3",
+const TRADERS := {"bz1mpg": "b.smith.constr_1", "bz2mpg": "b.Shopper.constr_3",
 	"bz3mpg": "b.kuzn.constr_4", "bz4mpg": "b.golem.constr_5"}
 
 
@@ -93,9 +96,13 @@ static func base_vars(st: CampaignState, base: String) -> void:
 ## taken.
 static func zone_var(st: CampaignState, quest: String) -> void:
 	if quest.is_empty():
-		st.set_var(0, "z." + GAME_ZONE, 1.0)
+		st.set_var(0, GAME_ZONE_VAR, 1.0)
 	else:
-		st.vars.erase("0:z." + GAME_ZONE)
+		st.del_var(0, GAME_ZONE_VAR)
+
+
+static func exit_var(target: String) -> String:
+	return GAME_ZONE_VAR if target.to_lower() == GAME_ZONE else "z." + target
 
 
 ## The speaker of a conversation: its first "#show" actor other than "Hero"
@@ -106,8 +113,10 @@ static func speaker(text_key: String) -> String:
 		t = SideQuests.text(text_key)
 	for l in t.split("\n"):
 		var w := l.strip_edges().split(" ", false)
-		if w.size() > 1 and w[0].to_lower() == "#show" and w[1] != "Hero":
-			return w[1].to_lower()
+		if w.size() > 1 and w[0].to_lower() == "#show" and w[1].nocasecmp_to("Hero") != 0:
+			# 57fc90 / 4dfcb0 copy the original token; 57fde0 concatenates
+			# it into the case-sensitive GS key without normalizing it.
+			return w[1]
 	return "elder"
 
 

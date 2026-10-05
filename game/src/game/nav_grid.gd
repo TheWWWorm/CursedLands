@@ -34,8 +34,8 @@ extends RefCounted
 ## 0-4 the 4-neighbour cross, 5-6 the 13-cell diamond, 7 the 5 x 5 square + the
 ## four cells 3 away on the axes (29). Then slopes (with the
 ##  tables): a cell whose height differs from a 4-neighbour
-## by more than tan 40 deg x 0.5 m keeps only class 0, by more than tan 60 deg x
-## 0.5 m none; its 4 neighbours lose classes 5-6 and the 13-cell
+## beyond the last allowed quantized step of the 40 deg table keeps only class
+## 0, beyond the 60 deg table none; its 4 neighbours lose classes 5-6 and the 13-cell
 ## diamond round it class 7. The 3 border cells are blocked.
 ## Each class has its own A* grid, built when a unit of that class first asks.
 ## Standing units block the cells around them (see track_unit).
@@ -48,21 +48,24 @@ extends RefCounted
 ## there is over round(16 (2 - its radius)) and not below its own cell's (
 ## ). A goal under 25 cells (octile) and within the 32 x 32 window
 ## is searched in that window, else along the block route.
-## The turn pass adds 600 per 45 deg turn past the first and the
-## end term for a diagonal last step (path_cost).
-## Approx.: heights are kept in metres (the original's are 1/ steps, =
-## 511 / the map's max altitude; spans are clamped to 0..1020 steps as there,
-## and the cost rounds them per cell); the block route is the native A* over the
-## cell weights (4 m blocks are not built), refined by the exact
-## cost search in a band of BAND cells round it instead of the original's 32 x 32
-## windows, and the turn penalty prices the path but does not steer the search;
-## the path is line-of-sight smoothed where that costs at most SMOOTH_SLACK more
-## (the original walks a spline through the cells); a goal cut off from the start
-## moves to the nearest cell of the start's region.
+## The turn pass (NavTurn) shifts nearby cells, prices the bend's
+## effective length, adds 600 per 45 deg turn past the first and the end term
+## for a diagonal last step, then repeats while the cost decreases.
+## Heights for passability and costs are in the original's 1/ steps (=
+## 511 / the map's max altitude; spans clamped to 0..1020 steps).
+## Native 4 m representatives and signed symmetric edge costs choose the
+## block route (NavBlocks); a moving 32x32 frontier retains overlap and
+## parent directions. Goal relocation uses the native eight-ray/component
+## search. The complete cell route is retained for the native timed spline.
+## The earlier A* and LOS path is available only through exact_search=false
+## for the existing comparison tools.
 
 const CELL := 0.5
-## tan(40 deg) x CELL: the largest height step to a 4-neighbour
-## tan(60 deg) x CELL closes the cell to every class.
+const TurnPass = preload("res://src/game/nav_turn.gd")
+const BlockGraph = preload("res://src/game/nav_blocks.gd")
+const FigureGeometry = preload("res://src/ei/figure_geometry.gd")
+## Nominal metre-space cutoffs for diagnostic tools; passability uses the
+## quantized heights and slope tables.
 const MAX_STEP := 0.41955
 const MAX_STEP_ALL := 0.86603
 const BORDER := 3
@@ -138,6 +141,11 @@ const FACE_NORMAL := [Vector3(0, 0, -1), Vector3(-1, 0, 0), Vector3(0, 1, 0), Ve
 ## grid uses the default radius 0.5 for R.
 const R_REF := 0.5
 const BUCKET := 4.0            # spatial hash for unit queries (m)
+## A completed native query can be repeated without changing its inputs.
+## Keep a bounded set of results, validated against every painted stamp
+## window actually consumed by the search and turn pass.
+const PATH_MEMO_MAX := 64
+const PATH_MEMO_INTS := 1048576
 
 
 ## One movement class's passability: its A* grid, the cells closed for the
@@ -163,6 +171,8 @@ var astar: AStarGrid2D:
 var size := Vector2i.ZERO
 var terrain: EITerrain
 var _layers := {}                # class -> Layer
+var _native_graphs := {}
+var _graphs_rev := -1
 var _h0 := PackedFloat32Array()  # terrain cell heights
 var _cost0 := PackedInt32Array() # tiledesc cost of the terrain, -1 = impassable
 var _depth0 := PackedFloat32Array()  # water depth over the terrain
@@ -188,6 +198,7 @@ var _spans := {}                 # cell -> Array of [bottom, top, kind, key] (he
 var _floors := {}                # cell -> Array of [top, key]
 var _fp := {}                    # object key -> {"spans": {cell: [b, t, k]}, "floors": {cell: top}}
 var _fp_nodes := {}              # object key -> Node3D
+var _face_buckets := {}          # 4m square -> [object key, native BASE face]
 var _next_key := -1
 var _occ := PackedByteArray()    # standing units whose stamp closes the cell (count)
 ## Counts the changes of the map's cells (build, objects, levers; not the
@@ -195,6 +206,19 @@ var _occ := PackedByteArray()    # standing units whose stamp closes the cell (c
 var map_rev := 0
 var _stamps := {}                # quantised radius x 10 -> Array[Vector2i]
 var _buckets := {}               # key -> Array[GameUnit]
+var registry_world: GameWorld
+var registered_units := {}       # instance id -> currently tracked unit
+var registry_rev := 0            # membership only, not ordinary movement
+var path_memo := true
+var _path_memo := {}
+var _path_memo_order: Array = []
+var _path_memo_ints := 0
+var _path_memo_rev := -1
+var _memo_capture := false
+var _memo_windows := {}
+var _memo_capture_ints := 0
+var _memo_complete := true
+var _memo_end_written := false
 
 
 func build(t: EITerrain, water_levels: PackedFloat32Array, objects: Array) -> void:
@@ -205,6 +229,7 @@ func build(t: EITerrain, water_levels: PackedFloat32Array, objects: Array) -> vo
 	_floors = {}
 	_fp = {}
 	_fp_nodes = {}
+	_face_buckets = {}
 	var qw := t.sectors_x * EITerrain.SECTOR
 	var qh := t.sectors_y * EITerrain.SECTOR
 	size = Vector2i(qw * 2, qh * 2)
@@ -304,10 +329,14 @@ func _steep_at(i: int) -> int:
 	var y := i / size.x
 	if x < 1 or y < 1 or x >= size.x - 1 or y >= size.y - 1:
 		return 0
-	var z := _h[i]
-	var d := maxf(maxf(absf(_h[i - 1] - z), absf(_h[i + 1] - z)),
-		maxf(absf(_h[i - size.x] - z), absf(_h[i + size.x] - z)))
-	return 2 if d > MAX_STEP_ALL else (1 if d > MAX_STEP else 0)
+	var z := _hq[i]
+	var d := maxi(maxi(absi(_hq[i - 1] - z), absi(_hq[i + 1] - z)),
+		maxi(absi(_hq[i - size.x] - z), absi(_hq[i + size.x] - z)))
+	#  uses the last nonnegative entries of the slope tables
+	# compared with the cells' ushort heights, not metre-space thresholds.
+	if d > SLOPE_MID or _slope_tab[0][d + SLOPE_MID] < 0:
+		return 2
+	return 1 if _slope_tab[1][d + SLOPE_MID] < 0 else 0
 
 
 ## The class-independent state of a cell: whether the layers work it out
@@ -401,8 +430,8 @@ func _cell_value(i: int, cls: int) -> int:
 				speed = 880
 	var spans: Array = _spans.get(i, [])
 	if not spans.is_empty():
-		# The body: from the floor (class 0: the water surface) up by the class height.
-		var bb := roundi((_h[i] + (depth if cls == 0 else 0.0)) * _alt)
+		# The body: quantized floor (class 0 adds capped depth), up by class height.
+		var bb := _hq[i] + (mini(63, roundi(depth * _alt)) if cls == 0 else 0)
 		var bt := bb + roundi(wade * _alt)
 		for s: Array in spans:
 			var k: int = s[2]
@@ -473,15 +502,17 @@ func _build_layer(cls: int) -> Layer:
 	# The A* grid: the commonest weight everywhere, then the other weights and
 	# the closed cells (walking only those keeps a layer's build short).
 	var A := L.astar
-	A.fill_weight_scale_region(A.region, _mode_w)
+	var mode_weight := 1.0 if cls == 0 else _mode_w
+	A.fill_weight_scale_region(A.region, mode_weight)
 	L.cost.resize(n)
-	L.cost.fill(roundi(_mode_w * 1024.0))
+	L.cost.fill(roundi(mode_weight * 1024.0))
 	var bw := (size.x + BLOCK - 1) / BLOCK
 	L.bmin.resize(bw * ((size.y + BLOCK - 1) / BLOCK))
-	L.bmin.fill(roundi(_mode_w * 1024.0))
+	L.bmin.fill(roundi(mode_weight * 1024.0))
 	for i in _dry_diff:
-		A.set_point_weight_scale(Vector2i(i % size.x, i / size.x), _dry_weight[i])
-		L.cost[i] = roundi(_dry_weight[i] * 1024.0)
+		var weight_here := 1.0 if cls == 0 else _dry_weight[i]
+		A.set_point_weight_scale(Vector2i(i % size.x, i / size.x), weight_here)
+		L.cost[i] = roundi(weight_here * 1024.0)
 		var bi := (i / size.x / BLOCK) * bw + (i % size.x) / BLOCK
 		L.bmin[bi] = mini(L.bmin[bi], L.cost[i])
 	for k in _special_cells.size():
@@ -608,7 +639,7 @@ func _in(c: Vector2i) -> bool:
 ## axis at `t` (levers; < 0 = the record's): {"spans": {cell: [bottom, top,
 ## kind]}, "floors": {cell: top}} in height steps.
 func _footprint(o: Node3D, t := -1.0) -> Dictionary:
-	var out := {"spans": {}, "floors": {}}
+	var out := {"spans": {}, "floors": {}, "radius": 0.0, "faces": []}
 	var info: Dictionary = o.get_meta("ei", {})
 	if String(info.get("kind", "")) == "UNIT":
 		return out
@@ -636,8 +667,9 @@ func _footprint(o: Node3D, t := -1.0) -> Dictionary:
 	var pos: Vector3 = info.get("position", Vector3.ZERO)
 	# On the ground of the object's cell (the terrain's, also under a floor:
 	var oc := cell(Vector2(pos.x, pos.y))
-	var base := Vector3(pos.x, pos.y, pos.z + (_h0[oc.y * size.x + oc.x] if _in(oc) else 0.0))
+	var base := Vector3(pos.x, pos.y, pos.z + (_hq0[oc.y * size.x + oc.x] / _alt if _in(oc) else 0.0))
 	var lists := [{}, {}]   # spans, floors: cell -> [bottom, top, kind]
+	var bounds: Array = []
 	for nm in names:
 		var part := String(nm).to_lower()
 		var f: Dictionary = model.parts.get(part, {})
@@ -652,22 +684,23 @@ func _footprint(o: Node3D, t := -1.0) -> Dictionary:
 			flags |= 0x90
 		if part.begins_with("empty"):
 			flags |= 0x890
+		var geometry: Dictionary = FigureGeometry.from_figure(f, c)
+		if geometry.is_empty():
+			continue
+		bounds.append({"position": offs[part], "geometry": geometry})
 		if flags & 0x800:
 			continue
-		var hdr: PackedFloat32Array = f.get("hdr", PackedFloat32Array())
-		if hdr.is_empty():
-			hdr = (f.data as PackedByteArray).slice(40, 40 + int(f.n) * 40).to_float32_array()
-			f.hdr = hdr
-		if hdr.size() < 80:
-			continue
-		# The .fig header: 8 centres, mins, maxes (the box around the centre).
-		var ctr := Vector3(EIFigure.blend(hdr, 0, 3, c), EIFigure.blend(hdr, 1, 3, c), EIFigure.blend(hdr, 2, 3, c))
-		var mn := Vector3(EIFigure.blend(hdr, 24, 3, c), EIFigure.blend(hdr, 25, 3, c), EIFigure.blend(hdr, 26, 3, c))
-		var mx := Vector3(EIFigure.blend(hdr, 48, 3, c), EIFigure.blend(hdr, 49, 3, c), EIFigure.blend(hdr, 50, 3, c))
+		var ctr: Vector3 = geometry.centre
+		var mn: Vector3 = geometry.min
+		var mx: Vector3 = geometry.max
 		if mn.x > mx.x or mn.y > mx.y or mn.z > mx.z:
 			continue
 		var o0: Vector3 = offs[part] + ctr
 		_raster_box(o0 + mn, o0 + mx, rot, base, (flags >> 3) & 7, lists[1 if flags & 0x400 else 0])
+		if flags & 0x400:
+			out.faces.append_array(_box_faces(o0 + mn,o0 + mx,rot,base,rot * o0 + base,float(geometry.radius)))
+	if not bounds.is_empty():
+		out.radius = FigureGeometry.combine(bounds).radius
 	#  keep the spans with bottom < top.
 	for i: int in lists[0]:
 		var s: Array = lists[0][i]
@@ -684,6 +717,66 @@ func _footprint(o: Node3D, t := -1.0) -> Dictionary:
 static func _ei_rot(q: Quaternion, v: Vector3) -> Vector3:
 	var g := q * Vector3(v.x, v.z, -v.y)
 	return Vector3(g.x, -g.z, g.y)
+
+
+##  560650: the six authored box rectangles. Only normals
+## whose z is at least0.8 join the scene's ground-plane list.
+static func _box_faces(lo: Vector3,hi: Vector3,rot: Basis,base: Vector3,centre: Vector3,radius: float) -> Array:
+	var points: Array[Vector3] = []
+	for k: Vector3i in BOX_CORNERS:
+		points.append(rot * Vector3(hi.x if k.x else lo.x,hi.y if k.y else lo.y,hi.z if k.z else lo.z) + base)
+	var faces := []
+	for k in 6:
+		var normal: Vector3 = rot * FACE_NORMAL[k]
+		if normal.z < 0.800000011920929:
+			continue
+		var origin := points[k+1]
+		var a := points[k] - origin
+		var b := points[k+2] - origin
+		var al := float(a.length())
+		var bl := float(b.length())
+		if al == 0.0 or bl == 0.0:
+			continue
+		faces.append({"centre":centre,"radius":radius,"origin":origin,"a":a/al,"b":b/bl,
+			"normal":normal,"length_a":al,"length_b":bl})
+	return faces
+
+
+static func _face_rect(face: Dictionary) -> Rect2i:
+	var c: Vector3 = face.centre
+	var radius: float = face.radius
+	return Rect2i(Vector2i(floori((c.x-radius)/BUCKET),floori((c.y-radius)/BUCKET)),
+		Vector2i(floori((c.x+radius)/BUCKET),floori((c.y+radius)/BUCKET))-
+		Vector2i(floori((c.x-radius)/BUCKET),floori((c.y-radius)/BUCKET))+Vector2i.ONE)
+
+
+##  (ground baseline) / 561150 (zero baseline, winning normal).
+## Project onto the eligible authored rectangle, including its native.5m
+## edge padding and separate centre/radius gate. Newer planes win equal heights.
+func plane_at(p: Vector2,ground := 0.0) -> Dictionary:
+	var height := ground
+	var normal := Vector3(0,0,1)
+	var candidates: Array = _face_buckets.get(Vector2i(floori(p.x/BUCKET),floori(p.y/BUCKET)),[])
+	for i in range(candidates.size()-1,-1,-1):
+		var face: Dictionary = candidates[i][1]
+		var centre: Vector3 = face.centre
+		if (p-Vector2(centre.x,centre.y)).length_squared() > float(face.radius)*float(face.radius):
+			continue
+		var origin: Vector3 = face.origin
+		var n: Vector3 = face.normal
+		var d := Vector3(p.x-origin.x,p.y-origin.y,0)
+		d.z = -(float(n.x)*d.x+float(n.y)*d.y)/n.z
+		var a: Vector3 = face.a
+		var b: Vector3 = face.b
+		var ax: float = PackedFloat32Array([float(a.x)*d.x+float(a.y)*d.y+float(a.z)*d.z])[0]
+		var bx: float = PackedFloat32Array([float(b.x)*d.x+float(b.y)*d.y+float(b.z)*d.z])[0]
+		if ax < -.5 or bx < -.5 or ax > float(face.length_a)+.5 or bx > float(face.length_b)+.5:
+			continue
+		var h: float = PackedFloat32Array([float(a.z)*ax+float(b.z)*bx+origin.z])[0]
+		if h > height:
+			height = h
+			normal = n
+	return {"height":height,"normal":normal}
 
 
 ##  sampling of one box: its corners turned by `rot` and moved
@@ -746,6 +839,13 @@ func _add_footprint(o: Node3D, fp: Dictionary) -> int:
 
 
 func _put(key: int, fp: Dictionary) -> void:
+	for face: Dictionary in fp.get("faces",[]):
+		var r := _face_rect(face)
+		for y in range(r.position.y,r.end.y):
+			for x in range(r.position.x,r.end.x):
+				var bucket := Vector2i(x,y)
+				if not _face_buckets.has(bucket): _face_buckets[bucket] = []
+				_face_buckets[bucket].append([key,face])
 	for i: int in fp.spans:
 		var s: Array = fp.spans[i]
 		if not _spans.has(i):
@@ -758,6 +858,15 @@ func _put(key: int, fp: Dictionary) -> void:
 
 
 func _take(key: int, fp: Dictionary) -> void:
+	for face: Dictionary in fp.get("faces",[]):
+		var r := _face_rect(face)
+		for y in range(r.position.y,r.end.y):
+			for x in range(r.position.x,r.end.x):
+				var bucket := Vector2i(x,y)
+				var entries: Array = _face_buckets.get(bucket,[])
+				for i in range(entries.size()-1,-1,-1):
+					if int(entries[i][0]) == key: entries.remove_at(i)
+				if entries.is_empty(): _face_buckets.erase(bucket)
 	for i: int in fp.spans:
 		var a: Array = _spans.get(i, [])
 		for k in range(a.size() - 1, -1, -1):
@@ -821,9 +930,20 @@ func set_object_t(nid: int, t: float) -> void:
 	if o == null or not is_instance_valid(o):
 		return
 	var old: Dictionary = _fp[nid]
+	var p: Vector3 = o.get_meta("ei", {}).get("position", Vector3.ZERO)
+	var radius := float(old.get("radius", 0.0)) + 0.5
+	var near: Array = []
+	for u: GameUnit in units_all_around(Vector2(p.x, p.y), radius):
+		if u.pos.distance_squared_to(Vector2(p.x, p.y)) < radius * radius:
+			near.append(u)
 	var fp := _footprint(o, t)
 	if fp.hash() == old.hash():
 		return
+	for u: GameUnit in near:
+		if u._occ_cell.x >= 0:
+			_stamp(u._occ_cell, u._occ_r, -1)
+			u._occ_cell = Vector2i(-1, -1)
+			u._trk_key = -1
 	_take(nid, old)
 	_fp[nid] = fp
 	_put(nid, fp)
@@ -831,46 +951,28 @@ func set_object_t(nid: int, t: float) -> void:
 	var r2 := _fp_rect(fp)
 	var region := r2 if r.size == Vector2i.ZERO else (r if r2.size == Vector2i.ZERO else r.merge(r2))
 	_update_region(region)
-	_relocate(region)
+	_relocate(near)
 
 
-##  after re-placing the object: each unit around it whose cell
-## and its eight neighbours are all closed to its class is
-## put on the nearest open cell. Approx.: "around" = within
-## the changed cells (the original: the object's radius + 0.5 m); the nearest
-## open cell within 6 m stands in for the original's spiral search that also
-## keeps the unit's connected area.
-func _relocate(region: Rect2i) -> void:
-	if region.size == Vector2i.ZERO:
-		return
-	var c0 := center(region.get_center())
-	var rad := Vector2(region.size).length() * CELL * 0.5 + 1.0
-	for u: GameUnit in units_around(c0, rad):
-		if u.dead:
-			continue
-		var L := layer(u.move_class())
-		var c := cell(u.pos)
-		var open := false
-		for dy in range(-1, 2):
-			for dx in range(-1, 2):
-				var q := c + Vector2i(dx, dy)
-				if _in(q) and L.land[q.y * size.x + q.x] == 0:
-					open = true
-		if open:
-			continue
-		var best := u.pos
-		var best_d := INF
-		var rr := ceili(6.0 / CELL)
-		for dy in range(-rr, rr + 1):
-			for dx in range(-rr, rr + 1):
-				var q := c + Vector2i(dx, dy)
-				if _in(q) and L.land[q.y * size.x + q.x] == 0 and center(q).distance_squared_to(u.pos) < best_d:
-					best_d = center(q).distance_squared_to(u.pos)
-					best = center(q)
-		if best_d < INF:
-			u.pos = best
+##  lifts all nearby unit stamps before the target-state map is
+## made. Each unit is then tested / placed and restored in the query order;
+## later placements see earlier ones, while still-unprocessed units stay lifted.
+func _relocate(near: Array) -> void:
+	var lifted := near.duplicate()
+	for u: GameUnit in near:
+		if not cell_or_neighbour_open(u.pos, u.move_class()):
+			var placement := place_unit(u.pos, u.pos, u.move_class(), u.body_radius(), lifted)
+			u.pos = placement.point
+			u.orders.clear()
+			u.order = {}
 			u.path = PackedVector2Array()
-			track_unit(u)
+			u.target = null
+			u._motion = null
+			u._kept = {}
+			u._move_speed = 0.0
+			u._set_action("idle")
+		lifted.erase(u)
+		track_unit(u)
 
 
 func _fp_rect(fp: Dictionary) -> Rect2i:
@@ -916,7 +1018,8 @@ func _update_region(r: Rect2i) -> void:
 		for y in range(r.position.y, r.end.y):
 			for x in range(r.position.x, r.end.x):
 				var i := y * size.x + x
-				var wv := _cell_weight(i, L.cls) if _special[i] else (0.0 if _dry_raw[i] else _dry_weight[i])
+				var wv := _cell_weight(i, L.cls) if _special[i] else \
+					(0.0 if _dry_raw[i] else (1.0 if L.cls == 0 else _dry_weight[i]))
 				L.raw[i] = 1 if wv <= 0.0 else 0
 				if wv > 0.0:
 					L.astar.set_point_weight_scale(Vector2i(x, y), wv)
@@ -1043,7 +1146,14 @@ func _refresh(c: Vector2i) -> void:
 
 
 static func cell(p: Vector2) -> Vector2i:
-	return Vector2i(floori(p.x / CELL), floori(p.y / CELL))
+	return Vector2i(round_even(p.x/CELL-0.5),round_even(p.y/CELL-0.5))
+
+## ROUND in the original x87 nearest mode. Cell-boundary ties alternate
+## between adjacent cells, unlike floor or Godot's away-from-zero roundi.
+static func round_even(v: float) -> int:
+	var lo := floori(v)
+	var part := v-float(lo)
+	return lo+1 if part > 0.5 or part == 0.5 and (lo&1) != 0 else lo
 
 
 static func center(c: Vector2i) -> Vector2:
@@ -1072,14 +1182,15 @@ func cell_or_neighbour_open(p: Vector2, cls: int) -> bool:
 	if not _in(c):
 		return false
 	var L := layer(cls)
-	var z := _h[c.y * size.x + c.x]
-	var lim := MAX_STEP_ALL if cls == 0 else MAX_STEP
+	var z := _hq[c.y * size.x + c.x]
+	var slope: PackedInt32Array = _slope_tab[0 if cls == 0 else 1]
 	for o: Vector2i in [Vector2i(0, 0), Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1),
 			Vector2i(1, 1), Vector2i(1, -1), Vector2i(-1, 1), Vector2i(-1, -1)]:
 		var q := c + o
 		if _in(q):
 			var i := q.y * size.x + q.x
-			if L.land[i] == 0 and absf(_h[i] - z) <= lim:
+			var dh := _hq[i] - z + SLOPE_MID
+			if L.land[i] == 0 and dh >= 0 and dh <= SLOPE_MID * 2 and slope[dh] > 0:
 				return true
 	return false
 
@@ -1108,7 +1219,7 @@ func step_factor(p: Vector2, q: Vector2, cls: int) -> float:
 	var sp: int = SPEED_BY_VALUE[v]
 	if sp < 0:
 		sp = 1024
-	var dh := roundi(_h[i] * _alt) - roundi(_h[c.y * size.x + c.x] * _alt)
+	var dh := _hq[i] - _hq[c.y * size.x + c.x]
 	var d := _slope_div(dh, cls)
 	if d <= 0:
 		return 1.0
@@ -1256,6 +1367,56 @@ func nearest_walkable(p: Vector2, radius := 6.0, cls := WALK_CLASS) -> Vector2:
 	return best
 
 
+## The two native unit-stamp maps for physical placement / stepping. The
+## path search's temporary moving-window copy is deliberately separate.
+func _placement_layers(r: Rect2i, lifted: Array = []) -> Array[PackedInt32Array]:
+	var out: Array[PackedInt32Array] = [PackedInt32Array(), PackedInt32Array()]
+	for k in 2:
+		out[k].resize(r.size.x * r.size.y)
+	var mid := center(r.position) + Vector2(r.size - Vector2i.ONE) * CELL * 0.5
+	var reach := Vector2(r.size).length() * CELL * 0.5 + 6.0
+	for u: GameUnit in units_around(mid, reach, false):
+		if u.dead or u in lifted:
+			continue
+		var c := cell(u.pos)
+		var key := stamp_key(u.body_radius())
+		if key == 0:
+			continue
+		var index := int(u._moving)
+		for y in range(maxi(r.position.y, c.y - 8), mini(r.end.y, c.y + 8)):
+			for x in range(maxi(r.position.x, c.x - 8), mini(r.end.x, c.x + 8)):
+				var i := (y - r.position.y) * r.size.x + x - r.position.x
+				out[index][i] = maxi(out[index][i], stamp_value(key, x - c.x, y - c.y))
+	return out
+
+
+## ordered441 offsets within5m, native representative-area
+## identity, standing unsigned / moving signed stamp eligibility. Failure
+## preserves the requested point, as the engine's in/out point argument does.
+func place_unit(start: Vector2, goal: Vector2, cls: int, radius: float, lifted: Array = []) -> Dictionary:
+	var source := cell(start)
+	if source.x <= 0 or source.y <= 0 or source.x >= size.x - 1 or source.y >= size.y - 1:
+		return {"ok": false, "point": goal}
+	var target := cell(goal)
+	var movement_layer := layer(cls)
+	var graph = native_graph(movement_layer)
+	var wanted: int = graph.component_of(source)
+	var rect := Rect2i(target - Vector2i(10, 10), Vector2i(21, 21))
+	var stamps := _placement_layers(rect, lifted)
+	var threshold := stamp_threshold(radius) & 255
+	for k in range(0, BlockGraph.NEAR_OFFSETS.size(), 2):
+		var q := target + Vector2i(BlockGraph.NEAR_OFFSETS[k], BlockGraph.NEAR_OFFSETS[k + 1])
+		if not _in(q) or movement_layer.land[q.y * size.x + q.x] != 0:
+			continue
+		var i := (q.y - rect.position.y) * rect.size.x + q.x - rect.position.x
+		if stamps[0][i] > threshold or signed_stamp(stamps[1][i]) > threshold:
+			continue
+		if wanted != 0 and graph.component_of(q) != wanted:
+			continue
+		return {"ok": true, "point": goal if k == 0 else center(q)}
+	return {"ok": false, "point": goal}
+
+
 ## `nearest_walkable` for unit `u`'s own move: its own stamp lifted first, as
 ## find_path lifts the mover's. Without that the
 ## cell a unit stands on counts as closed to itself, and an order to the spot
@@ -1272,8 +1433,8 @@ func nearest_walkable_for(u: GameUnit, p: Vector2, radius := 6.0, cls := WALK_CL
 	return out
 
 
-## Path in EI xy from `a` to `b` for movement class `cls`, smoothed by
-## line-of-sight. Empty if unreachable.
+## The original cell path in EI xy, with its actual final point. GameUnit
+## builds the native spline from these cells; diagnostics may opt into LOS.
 ## The stamps of the `ignore` units are lifted for the search (the mover and,
 ## for an attack, its target: take them out with
 ## ). `avoid` units are stamped once more, as if standing, with
@@ -1287,16 +1448,68 @@ func nearest_walkable_for(u: GameUnit, p: Vector2, radius := 6.0, cls := WALK_CL
 ## its stamp threshold and costs the steps with the step cost table, or with
 ## the flat one when `flat` (unit, see FLAT_COST).
 func find_path(a: Vector2, b: Vector2, ignore: Array = [], avoid: Array = [], extra := 0.0,
-		cls := WALK_CLASS, flat := false) -> PackedVector2Array:
+		cls := WALK_CLASS, flat := false, facing := NAN, limit := 1e6,
+		min_radius := 0.0, retry := false,moving_at := Vector2.INF) -> PackedVector2Array:
+	var started := Time.get_ticks_usec() if profile_paths else 0
 	var L := layer(cls)
 	var mover: GameUnit = ignore[0] if not ignore.is_empty() and ignore[0] is GameUnit else null
-	_ctx_thr = maxi(0, roundi((2.0 - (mover.body_radius() if mover else R_REF)) * 16.0))
+	_ctx_thr = stamp_threshold(mover.body_radius() if mover else R_REF)
 	_ctx_lifted = ignore
 	_ctx_avoid = avoid
 	_ctx_flat = flat
+	_ctx_facing = mover.facing if mover else facing
+	_ctx_limit = limit
+	_ctx_min_radius = min_radius
+	_ctx_retry = retry
+	_ctx_moving_rect = Rect2i()
+	if moving_at != Vector2.INF:
+		#  copies the secondary grid into a temporary primary
+		# stamp: 14x14 cells around the attempted position, truncated xy.
+		var c := Vector2i(int(moving_at.x*2.0),int(moving_at.y*2.0))
+		var lo := (c-Vector2i(7,7)).max(Vector2i.ZERO)
+		var hi := (c+Vector2i(7,7)).min(size-Vector2i.ONE)
+		_ctx_moving_rect = Rect2i(lo,(hi-lo).max(Vector2i.ZERO))
+	last_block_count = 0
 	last_flat = flat
 	last_cls = L.cls
 	last_cells = PackedInt32Array()
+	last_turn_cost = -1
+	last_facing = NAN
+	_memo_end_written = false
+	var memo_key: Array = []
+	_memo_capture = false
+	_memo_windows.clear()
+	_memo_capture_ints = 0
+	_memo_complete = true
+	if exact_search and path_memo:
+		if _path_memo_rev != map_rev:
+			_path_memo.clear()
+			_path_memo_order.clear()
+			_path_memo_ints = 0
+			_path_memo_rev = map_rev
+		memo_key = [a,b,cls,flat,"none" if is_nan(_ctx_facing) else _ctx_facing,
+			_ctx_thr,mover.body_radius() if mover else R_REF,extra,min_radius,retry,_ctx_moving_rect]
+		var saved: Dictionary = _path_memo.get(memo_key,{})
+		# A successful query never took the carrier's maximum-block rejection.
+		# Raising that limit cannot change any of its branches or native ties.
+		# Failure, smaller limits and limits outside the native integer range
+		# still require their own original search.
+		var compatible_limit: bool = not saved.is_empty() and (limit == saved.limit \
+			or not (saved.path as PackedVector2Array).is_empty() and limit >= float(saved.limit) \
+			and limit <= 0x1fffffff and float(saved.limit) >= -0x1fffffff)
+		if compatible_limit and _memo_valid(saved):
+			last_path = (saved.path as PackedVector2Array).duplicate()
+			last_cells = (saved.cells as PackedInt32Array).duplicate()
+			last_block_count = int(saved.blocks)
+			last_turn_cost = int(saved.turn_cost)
+			last_facing = float(saved.facing)
+			if saved.end_written: last_end = saved.end
+			_ctx_lifted = []
+			_ctx_avoid = []
+			_ctx_moving_rect = Rect2i()
+			_path_profile(started,Time.get_ticks_usec(),a,b,cls,limit,mover,last_path,true)
+			return last_path.duplicate()
+		_memo_capture = true
 	var lifted := []
 	for u: GameUnit in ignore:
 		if u and u._occ_cell.x >= 0:
@@ -1319,7 +1532,7 @@ func find_path(a: Vector2, b: Vector2, ignore: Array = [], avoid: Array = [], ex
 		_stamp(e[0], e[1], 1)
 	var sc := cell(a)
 	var out := PackedVector2Array()
-	if _in(sc) and L.land[sc.y * size.x + sc.x] == 0 and _occ[sc.y * size.x + sc.x] != 0:
+	if not exact_search and _in(sc) and L.land[sc.y * size.x + sc.x] == 0 and _occ[sc.y * size.x + sc.x] != 0:
 		var lead := _stamp_descent(L, a, b, lifted, stamped)
 		if not lead.is_empty():
 			var rest := _find_path(L, lead[-1], b)
@@ -1334,10 +1547,28 @@ func find_path(a: Vector2, b: Vector2, ignore: Array = [], avoid: Array = [], ex
 				last_cells = lc
 	else:
 		out = _find_path(L, a, b)
+	var searched := Time.get_ticks_usec() if profile_paths else 0
+	# The original improves the complete cell route before making its spline.
+	# A caller without a unit may supply `facing`; without either, the cell
+	# search remains available on its own (tools and navigation diagnostics).
+	if not out.is_empty() and not is_nan(_ctx_facing):
+		var improved := TurnPass.refine(self, L, last_cells, _ctx_facing, last_end, flat)
+		last_turn_cost = improved.cost
+		last_facing = _ctx_facing
+		if last_turn_cost < TurnPass.LIMIT:
+			last_cells = improved.cells
+			_search_pre = PackedInt32Array()
+			var pts := PackedVector2Array()
+			for i in last_cells:
+				pts.append(center(Vector2i(i % size.x, i / size.x)))
+			pts[-1] = last_end
+			out = pts if exact_search else _smooth(L, a, pts, last_cells)
+		else:
+			out = PackedVector2Array()
 	# The smoothing samples its lines every 25 cm: the first leg from the unit's
 	# spot may graze the corner of a closed cell, which the movement tick then
 	# refuses. Such a leg starts at the centre of the unit's cell.
-	if not out.is_empty() and _in(sc) and not _leg_clear(L, a, out[0]):
+	if not exact_search and not out.is_empty() and _in(sc) and not _leg_clear(L, a, out[0]):
 		out.insert(0, center(sc))
 	for e: Array in stamped:
 		_stamp(e[0], e[1], -1)
@@ -1345,9 +1576,66 @@ func find_path(a: Vector2, b: Vector2, ignore: Array = [], avoid: Array = [], ex
 		_stamp(u._occ_cell, u._occ_r, 1)
 	_ctx_lifted = []
 	_ctx_avoid = []
+	_ctx_moving_rect = Rect2i()
+	last_path = out
 	if out.is_empty():
 		last_cells = PackedInt32Array()
+	_memo_capture = false
+	if not memo_key.is_empty() and _memo_complete: _memo_store(memo_key,out)
+	_path_profile(started,searched,a,b,cls,limit,mover,out,false)
 	return out
+
+
+func _path_profile(started: int,searched: int,a: Vector2,b: Vector2,cls: int,
+		limit: float,mover: GameUnit,out: PackedVector2Array,hit: bool) -> void:
+	if not profile_paths: return
+	var done := Time.get_ticks_usec()
+	profile_last = {"search_us":searched-started,"turn_us":done-searched,"memo":hit}
+	profile_totals.queries = int(profile_totals.get("queries",0))+1
+	profile_totals.search_us = int(profile_totals.get("search_us",0))+searched-started
+	profile_totals.turn_us = int(profile_totals.get("turn_us",0))+done-searched
+	profile_totals.max_us = maxi(int(profile_totals.get("max_us",0)),done-started)
+	profile_totals.failed = int(profile_totals.get("failed",0))+int(out.is_empty())
+	profile_totals.memo_hits = int(profile_totals.get("memo_hits",0))+int(hit)
+	if done-started > 20000:
+		profile_slow.append({"us":done-started,"search_us":searched-started,"turn_us":done-searched,
+			"from":a,"to":b,"cls":cls,"limit":limit,"uid":mover.uid if mover else 0,
+			"cells":last_cells.size(),"blocks":last_block_count,"memo":hit})
+		if profile_slow.size() > 32: profile_slow.pop_front()
+
+
+func _memo_valid(saved: Dictionary) -> bool:
+	for r: Rect2i in saved.windows:
+		if _paint_stamp_window(r) != saved.windows[r]: return false
+	return true
+
+
+func _memo_store(key: Array,out: PackedVector2Array) -> void:
+	var count := last_cells.size()+out.size()*2
+	for values: PackedInt32Array in _memo_windows.values(): count += values.size()
+	if _path_memo.has(key): _memo_erase(key)
+	if count > PATH_MEMO_INTS:
+		_memo_windows.clear()
+		return
+	while not _path_memo_order.is_empty() and (_path_memo_order.size() >= PATH_MEMO_MAX 			or _path_memo_ints+count > PATH_MEMO_INTS):
+		_memo_erase(_path_memo_order[0])
+	# Copies keep this entry independent of the public last_* arrays and the
+	# caller's returned path. Packed arrays also copy each saved window.
+	var windows := {}
+	for r: Rect2i in _memo_windows: windows[r] = (_memo_windows[r] as PackedInt32Array).duplicate()
+	var saved_key := key.duplicate(true)
+	_path_memo[saved_key] = {"path":out.duplicate(),"cells":last_cells.duplicate(),
+		"blocks":last_block_count,"turn_cost":last_turn_cost,"facing":last_facing,
+		"end":last_end,"end_written":_memo_end_written,"windows":windows,"ints":count,"limit":_ctx_limit}
+	_path_memo_order.append(saved_key)
+	_path_memo_ints += count
+	_memo_windows.clear()
+
+
+func _memo_erase(key: Array) -> void:
+	_path_memo_ints -= int(_path_memo[key].ints)
+	_path_memo.erase(key)
+	_path_memo_order.erase(key)
 
 
 ## No closed cell (the A* grid) on the straight line from `a` to `b` but their own.
@@ -1388,6 +1676,31 @@ func direct_line(u: GameUnit, b: Vector2) -> bool:
 	if lift:
 		_stamp(u._occ_cell, u._occ_r, 1)
 	return ok
+
+
+## A complete native motion record: cell coordinates and
+## ushort factor on each outgoing node. The final value is512. Dense paths
+## already supply adjacent cells; legacy/manual polylines expand their legs.
+func motion_record(from: Vector2, path: PackedVector2Array, cls: int, _flying := false) -> Dictionary:
+	var cells: Array[Vector2i] = []
+	var values := PackedInt32Array()
+	if path.is_empty():
+		return {"cells": cells, "values": values}
+	var current := cell(from)
+	cells.append(current)
+	for p in path:
+		var goal := cell(p)
+		var delta := goal - current
+		var length := maxi(absi(delta.x), absi(delta.y))
+		for i in range(1, length + 1):
+			var c := current + Vector2i(roundi(float(delta.x) * i / length), roundi(float(delta.y) * i / length))
+			if c != cells[-1]:
+				cells.append(c)
+		current = goal
+	for i in cells.size() - 1:
+		values.append(roundi(step_factor(center(cells[i]), center(cells[i + 1]), cls) * 512.0) & 65535)
+	values.append(512)
+	return {"cells": cells, "values": values}
 
 
 ## Every cell the straight step from `a` to `b` (ending in cell `q`) crosses
@@ -1482,6 +1795,7 @@ func _stamp_descent(L: Layer, a: Vector2, b: Vector2, lifted: Array, stamped: Ar
 
 
 func _find_path(L: Layer, a: Vector2, b: Vector2) -> PackedVector2Array:
+	if exact_search: return _find_native(L,a,b)
 	var A := L.astar
 	var start := cell(a)
 	if not _in(start):
@@ -1502,53 +1816,67 @@ func _find_path(L: Layer, a: Vector2, b: Vector2) -> PackedVector2Array:
 			goal = g
 	var cells := PackedInt32Array()
 	_search_pre = PackedInt32Array()
-	if not exact_search:
-		var rt := A.get_id_path(start, goal, true)
-		if rt.is_empty():
-			return PackedVector2Array()
-		var ps := PackedVector2Array()
-		for c in rt:
-			ps.append(center(c))
-			cells.append(c.y * size.x + c.x)
-		if is_walkable(b, L.cls) and cell(b) == rt[-1]:
-			ps[-1] = b
-		last_cells = cells
-		last_end = b
-		return _smooth_los(L, a, ps)
-	# a goal under 25 cells away (octile, 0x5a8 / 1024 a diagonal)
-	# is searched in one 32 x 32 window round both (
-	# ); else, or when that fails, the block route.
-	var dc := (goal - start).abs()
-	if maxi(dc.x, dc.y) - mini(dc.x, dc.y) + ((mini(dc.x, dc.y) * STEP_DIAG) >> 10) < DIRECT_CELLS \
-			and dc.x < WINDOW and dc.y < WINDOW:
-		var x0 := mini((start.x + goal.x) / 2 - WINDOW / 2, mini(start.x, goal.x) - 1)
-		var y0 := mini((start.y + goal.y) / 2 - WINDOW / 2, mini(start.y, goal.y) - 1)
-		var r := Rect2i(x0 + 1, y0 + 1, WINDOW, WINDOW).intersection(Rect2i(Vector2i.ZERO, size))
-		cells = _cost_search(L, start, goal, r)
-	if cells.is_empty():
-		# Partial path when the goal is cut off: the original's search also ends at the
-		# reachable cell nearest the goal (callers then compare the end with the goal).
-		# **Approx.**: the block route (8-cell blocks, and its 32 x 32
-		# windows) is the A* route over the cell weights; the exact
-		# cost search then runs in the band of cells within 16 of it.
-		var route := _route(L, start, goal)
-		if route.is_empty():
-			return PackedVector2Array()
-		cells = _band_search(L, route)
-		if cells.is_empty():
-			_search_pre = PackedInt32Array()
-		if cells.is_empty():
-			for c in route:
-				cells.append(c.y * size.x + c.x)
-	var pts := PackedVector2Array()
-	for i in cells:
-		pts.append(center(Vector2i(i % size.x, i / size.x)))
-	var last := Vector2i(cells[-1] % size.x, cells[-1] / size.x)
-	if is_walkable(b, L.cls) and cell(b) == last:
-		pts[-1] = b
+	var rt := A.get_id_path(start, goal, true)
+	if rt.is_empty():
+		return PackedVector2Array()
+	var ps := PackedVector2Array()
+	for c in rt:
+		ps.append(center(c))
+		cells.append(c.y * size.x + c.x)
+	if is_walkable(b, L.cls) and cell(b) == rt[-1]:
+		ps[-1] = b
 	last_cells = cells
-	last_end = b
-	return _smooth(L, a, pts, cells)
+	last_end = ps[-1]
+	return _smooth_los(L, a, ps)
+
+
+func native_graph(L: Layer):
+	if _graphs_rev != map_rev:
+		_native_graphs.clear()
+		_graphs_rev = map_rev
+	if not _native_graphs.has(L.cls): _native_graphs[L.cls] = BlockGraph.new(self,L)
+	_native_graphs[L.cls].profile = profile_paths
+	return _native_graphs[L.cls]
+
+## native relocation, direct bidirectional windows, then the
+## static block route and its overlapping dynamic windows.
+func _find_native(L: Layer,a: Vector2,b: Vector2) -> PackedVector2Array:
+	var start := cell(a)
+	if not _in(start): return PackedVector2Array()
+	var graph = native_graph(L)
+	var adjusted: Dictionary = graph.relocate(a,b,false,_ctx_min_radius)
+	if adjusted.is_empty() or (a*2.0).distance_squared_to(adjusted.point) < 0.001: return PackedVector2Array()
+	var goal: Vector2i = adjusted.cell
+	var result := {}
+	if start == goal:
+		result = {"cells":PackedInt32Array([start.y*size.x+start.x]),"blocks":[]}
+	elif BlockGraph._octile((goal-start).abs()) < DIRECT_CELLS:
+		result = graph.direct(start,goal)
+	if result.is_empty():
+		# Every native carrier starts with5b0af0's source representatives. If
+		# there are none, no relocated destination can make its route succeed;
+		# avoid a whole goal-component scan after the direct window has failed.
+		if graph._topology_seeds(start,false).is_empty(): return PackedVector2Array()
+		var proved_route: Array[Vector2i] = graph.connected_route(start,goal)
+		if proved_route.is_empty():
+			adjusted = graph.relocate(a,b,true,_ctx_min_radius)
+			if adjusted.is_empty(): return PackedVector2Array()
+			goal = adjusted.cell
+		if start == goal:
+			result = {"cells":PackedInt32Array([start.y*size.x+start.x]),"blocks":[]}
+		else:
+			var excluded: Array[Vector2i] = []
+			result = graph.carrier(start,goal,round_even(_ctx_limit*2.0-0.5),excluded,_ctx_retry,proved_route)
+			if result.is_empty(): return PackedVector2Array()
+			if result.partial: adjusted.point = result.end
+	last_cells = result.cells
+	last_block_count = (result.blocks as Array).size()
+	last_end = adjusted.point*CELL
+	_memo_end_written = true
+	var points := PackedVector2Array()
+	for i in last_cells: points.append(center(Vector2i(i%size.x,i/size.x)))
+	points[-1] = last_end
+	return points
 
 
 ## The A* route the band search follows: `A.get_id_path(start, goal, true)`,
@@ -1716,19 +2044,50 @@ var _ctx_thr := roundi((2.0 - R_REF) * 16.0)
 var _ctx_lifted: Array = []
 var _ctx_avoid: Array = []
 var _ctx_flat := false
+var _ctx_facing := NAN
+var _ctx_limit := 1e6
+var _ctx_min_radius := 0.0
+var _ctx_retry := false
+var _ctx_moving_rect := Rect2i()
+var last_block_count := 0
+var last_path := PackedVector2Array()
+var profile_paths := false
+var profile_last := {}
+var profile_totals := {}
+var profile_slow: Array[Dictionary] = []
 ## The last path's cells (flat indices, start to end) and goal point, for
 ## path_cost (runs on the search's cell path).
 var last_cells := PackedInt32Array()
 var last_end := Vector2.ZERO
 var last_flat := false
 var last_cls := WALK_CLASS
+var last_turn_cost := -1
+var last_facing := NAN
 var _stamp_k := {}   # k * 1024 + thr -> [dx, dy, value, ...] of stamp_value(k, dx, dy) > thr
+
+
+## Only the most recent completed query is available to immediate AI
+## callers; GameUnit captures this count when it adopts a path.
+func path_blocks(p: PackedVector2Array) -> int:
+	return last_block_count if p == last_path else -1
 
 
 ## The standing-unit stamps (max-combined as on the AI map's
 ## byte 8) over window `r`, without the lifted units and with
 ## the avoided ones; empty when no stamp reaches the window.
 func _stamp_window(r: Rect2i) -> PackedInt32Array:
+	var out := _paint_stamp_window(r)
+	if _memo_capture and not _memo_windows.has(r):
+		_memo_capture_ints += out.size()
+		if _memo_capture_ints > PATH_MEMO_INTS:
+			_memo_windows.clear()
+			_memo_capture = false
+			_memo_complete = false
+		else: _memo_windows[r] = out.duplicate()
+	return out
+
+
+func _paint_stamp_window(r: Rect2i) -> PackedInt32Array:
 	var out := PackedInt32Array()
 	var mid := (Vector2(r.position) + Vector2(r.size) * 0.5) * CELL
 	var rad := Vector2(r.size).length() * CELL * 0.5 + 4.5
@@ -1736,13 +2095,19 @@ func _stamp_window(r: Rect2i) -> PackedInt32Array:
 	# anything else is looked at, and painted straight into the window.)
 	var cs: Array[Vector2i] = []
 	var rs := PackedFloat64Array()
+	var clips: Array[Rect2i] = []
 	for u: GameUnit in units_around(mid, rad, false):
 		var c := u._occ_cell
+		if not _ctx_moving_rect.has_area() or not u._moving:
+			if c.x < 0: continue
+		else:
+			c = cell(u.pos)
 		if c.x < 0 or c.x + 8 < r.position.x or c.y + 8 < r.position.y or c.x - 8 >= r.end.x or c.y - 8 >= r.end.y:
 			continue
 		if not u in _ctx_lifted and not u in _ctx_avoid:
 			cs.append(c)
-			rs.append(u._occ_r)
+			rs.append(u.body_radius() if u._moving else u._occ_r)
+			clips.append(r.intersection(_ctx_moving_rect) if u._moving else r)
 	for u: GameUnit in _ctx_avoid:
 		if is_instance_valid(u) and not u.dead and not u in _ctx_lifted:
 			var c := cell(u.pos)
@@ -1750,6 +2115,7 @@ func _stamp_window(r: Rect2i) -> PackedInt32Array:
 				continue
 			cs.append(c)
 			rs.append(u.body_radius())
+			clips.append(r)
 	if cs.is_empty():
 		return out
 	out.resize(r.size.x * r.size.y)
@@ -1758,7 +2124,8 @@ func _stamp_window(r: Rect2i) -> PackedInt32Array:
 	var h := r.size.y
 	for n in cs.size():
 		var c := cs[n]
-		var k := roundi(rs[n] * 10.0 + 1.0)
+		var k := stamp_key(rs[n])
+		if k == 0: continue
 		# Only the values over the mover's threshold can close a cell (the
 		# test is v > thr and v >= the value of the cell stepped from), so
 		# the rest stay 0: per (k, thr) the offsets and values over it.
@@ -1782,6 +2149,8 @@ func _stamp_window(r: Rect2i) -> PackedInt32Array:
 			var y := cy + st[m + 1]
 			var x := cx + st[m]
 			if not inside and (x < 0 or y < 0 or x >= w or y >= h):
+				continue
+			if not clips[n].has_point(r.position + Vector2i(x, y)):
 				continue
 			var o := y * w + x
 			if st[m + 2] > out[o]:
@@ -1951,45 +2320,17 @@ var _search_g := 0   # the cost of the last search's path (its goal's g)
 var _search_pre := PackedInt32Array()   # its cost up to each of its cells
 
 
-##  cost of the last path found (stores it
-## result): its steps as the search costs them (_step_cost), plus a turn
-## penalty (TURN_COST per 45 degrees beyond the first) between successive
-## steps and from the unit's heading `facing` (radians, the octant of the
-## facing as) to the first step, plus round((1 - f) * 2048)
-## when the last step is diagonal, f = 2 |X - round(X)| with X the goal's x in
-## cells (takes the goal's x twice). 0 for paths of under 3 cells.
-## **Approx.**: the original's pass also tries, by dynamic programming over move
-## templates (tables), to move the
-## path by a cell where that is cheaper and returns the least cost it found;
-## here only the path itself is costed (an upper bound of the original's value).
+##  least cost from its local turn pass (result).
+## find_path ran it with the mover's heading while its own stamp was lifted.
 func path_cost(facing: float) -> int:
+	if last_turn_cost >= 0 and not is_nan(last_facing) \
+			and absf(wrapf(facing - last_facing, -PI, PI)) < 0.000001:
+		return last_turn_cost
 	return cells_cost(last_cells, facing, last_end, last_cls, last_flat)
 
 
 func cells_cost(cells: PackedInt32Array, facing: float, end: Vector2, cls: int, flat: bool) -> int:
-	if cells.size() < 3:
-		return 0
-	var L := layer(cls)
-	var oct := posmod(roundi(facing / (PI / 4.0)), 8)   # 0 = +x, counter-clockwise
-	var prev: int = [7, 6, 5, 4, 3, 2, 1, 8][oct]       #  numbering
-	var total := 0
-	for m in range(1, cells.size()):
-		var i := cells[m - 1]
-		var j := cells[m]
-		var c := _step_cost(L, i, j, flat)
-		if c < 0:
-			c = 0
-		var k := _dir_of(j % size.x - i % size.x, j / size.x - i / size.x)
-		var t := absi(k - prev)
-		if t > 4:
-			t = 8 - t
-		total += c + maxi(0, t - 1) * TURN_COST
-		prev = k
-	if (prev & 1) == 0:
-		var x := end.x / CELL
-		var f := 2.0 * absf(x - roundf(x))
-		total += roundi((1.0 - f) * 2048.0)
-	return total
+	return TurnPass.refine(self, layer(cls), cells, facing, end, flat).cost
 
 
 ##  direction number (1..8) of a step by (dx, dy).
@@ -2145,10 +2486,10 @@ func cell_slope(p: Vector2) -> float:
 	if c.x <= 0 or c.y <= 0 or c.x > size.x - 2 or c.y > size.y - 2:
 		return 0.0
 	var i := c.y * size.x + c.x
-	var h0 := roundi(_h[i] * _alt)
+	var h0 := _hq[i]
 	var best := 0
 	for j in [i + size.x, i - size.x, i + 1, i - 1]:
-		best = maxi(best, absi(roundi(_h[j] * _alt) - h0))
+		best = maxi(best, absi(_hq[j] - h0))
 	return best / _alt
 
 
@@ -2243,7 +2584,8 @@ func line_clear(a: Vector2, b: Vector2, cls := WALK_CLASS) -> bool:
 
 ## Cell offsets a standing unit of radius `r` closes on the path grid.
 func _stamp_offsets(r: float) -> Array:
-	var k := roundi(r * 10.0 + 1.0)
+	var k := stamp_key(r)
+	if k == 0: return []
 	if _stamps.has(k):
 		return _stamps[k]
 	var out := []
@@ -2257,10 +2599,56 @@ func _stamp_offsets(r: float) -> Array:
 
 
 ## Value of the stamp of a unit (radius r' = k / 10) at a cell offset.
+## The original builds this 16x16 byte table once for each quantized radius;
+## movement only reads it. Keep the identical F32/FISTP arithmetic on a miss.
+const STAMP_CACHE_MAX := 64
+static var _stamp_bytes := {}
+static var _stamp_byte_order: Array[int] = []
+
 static func stamp_value(k: int, dx: int, dy: int) -> int:
-	if dx < -8 or dy < -8 or dx > 7 or dy > 7:
+	if k == 0 or dx < -8 or dy < -8 or dx > 7 or dy > 7:
 		return 0
-	return maxi(0, roundi((k * 0.1 + 2.0 - sqrt(dx * dx + dy * dy) * 0.5) * 16.0))
+	var index := (dy + 8) * 16 + dx + 8
+	if _stamp_bytes.has(k):
+		return (_stamp_bytes[k] as PackedByteArray)[index]
+	var table := PackedByteArray()
+	table.resize(256)
+	var radius: float = PackedFloat32Array([k * 0.1])[0]
+	for y in range(-8, 8):
+		for x in range(-8, 8):
+			var value := round_even(PackedFloat32Array([(radius + 2.0 - sqrt(x * x + y * y) * 0.5) * 16.0])[0])
+			table[(y + 8) * 16 + x + 8] = value & 255 if value > 0 else 0
+	if _stamp_byte_order.size() >= STAMP_CACHE_MAX:
+		_stamp_bytes.erase(_stamp_byte_order.pop_front())
+	_stamp_byte_order.append(k)
+	_stamp_bytes[k] = table
+	return table[index]
+
+
+##  5b7b70 store the float before nearest-even FISTP.
+## Radii at most0.2 have no stamp object (including high flying units).
+static func stamp_key(r: float) -> int:
+	return 0 if r <= 0.20000000298023224 else round_even(PackedFloat32Array([r*10.0+1.0])[0])
+
+
+static func stamp_threshold(r: float) -> int:
+	return maxi(0,round_even(PackedFloat32Array([(2.0-r)*16.0])[0]))
+
+
+static func signed_stamp(value: int) -> int:
+	return value - 256 if value & 128 else value
+
+
+## primary bytes are unsigned; moving-layer bytes are signed.
+## The threshold is a byte even for unusually large or negative radii.
+## Returns0 for a free step,1 standing,2 moving.
+static func stamp_step_layer(primary_now: int, primary_next: int, moving_now: int, moving_next: int, radius: float) -> int:
+	var threshold := stamp_threshold(radius) & 255
+	if primary_next > threshold and primary_next > primary_now:
+		return 1
+	if signed_stamp(moving_next) > threshold and signed_stamp(moving_next) > signed_stamp(moving_now):
+		return 2
+	return 0
 
 
 func _stamp(c: Vector2i, r: float, add: int) -> void:
@@ -2301,6 +2689,13 @@ func track_unit(u: GameUnit) -> void:
 ## Puts a unit in the spatial bucket of its position (none while dead or not
 ## in GameWorld.units); GameUnit.pos calls it on every change.
 func rebucket(u: GameUnit) -> void:
+	var id := u.get_instance_id()
+	if u._seq != 0:
+		if registered_units.get(id) != u:
+			registered_units[id] = u
+			registry_rev += 1
+	elif registered_units.erase(id):
+		registry_rev += 1
 	var bk := _bucket_key(u.pos)
 	var cbk := _cbucket_key(u.pos)
 	var ak := -1 if u._seq == 0 else bk
@@ -2346,6 +2741,8 @@ func rebucket(u: GameUnit) -> void:
 
 
 func untrack_unit(u: GameUnit) -> void:
+	if registered_units.erase(u.get_instance_id()):
+		registry_rev += 1
 	u._trk_key = -1
 	if u._occ_cell.x >= 0:
 		_stamp(u._occ_cell, u._occ_r, -1)
@@ -2376,19 +2773,41 @@ var _call_buckets := {}
 
 ## Every unit in GameWorld.units within `r` of `p`, dead ones too, in
 ## GameWorld.units order: GameWorld.units_near from the buckets.
-func units_all_around(p: Vector2, r: float) -> Array:
+func units_all_around(p: Vector2, r: float, ordered := true) -> Array:
 	var out := []
 	var r2 := r * r
 	var bs := BUCKET if r < WIDE else CBUCKET
 	var grid: Dictionary = _all_buckets if r < WIDE else _call_buckets
-	for by in range(floori((p.y - r) / bs), floori((p.y + r) / bs) + 1):
-		for bx in range(floori((p.x - r) / bs), floori((p.x + r) / bs) + 1):
-			var b = grid.get(bx + by * 4096)
-			if b != null:
-				for u: GameUnit in b:
-					if u.pos.distance_squared_to(p) <= r2:
-						out.append(u)
-	return _in_seq_order(out)
+	if not local_bucket_query(p, r):
+		for u: GameUnit in registered_units.values():
+			if is_instance_valid(u) and u.pos.distance_squared_to(p) <= r2:
+				out.append(u)
+	else:
+		for by in range(floori((p.y - r) / bs), floori((p.y + r) / bs) + 1):
+			for bx in range(floori((p.x - r) / bs), floori((p.x + r) / bs) + 1):
+				var b = grid.get(bx + by * 4096)
+				if b != null:
+					for u: GameUnit in b:
+						if is_instance_valid(u) and u.pos.distance_squared_to(p) <= r2:
+							out.append(u)
+	return _ordered_units(out) if ordered else out
+
+
+## Huge/nonfinite searches should visit the registered units once rather
+## than enumerate mostly empty buckets. Exact distance filtering is shared.
+func local_bucket_query(p: Vector2, r: float) -> bool:
+	if not is_finite(r) or r < 0.0 or not is_finite(p.x) or not is_finite(p.y) \
+			or p.x - r < 0.0 or p.y - r < 0.0:
+		return false
+	var bs := BUCKET if r < WIDE else CBUCKET
+	var width := floori((p.x + r) / bs) - floori((p.x - r) / bs) + 1
+	var height := floori((p.y + r) / bs) - floori((p.y - r) / bs) + 1
+	return width > 0 and height > 0 and width < 4096 and height < 4096 \
+		and width * height <= maxi(16, registered_units.size() * 4)
+
+
+func _ordered_units(list: Array) -> Array:
+	return registry_world.order_near_units(list) if is_instance_valid(registry_world) else _in_seq_order(list)
 
 
 ## `list` in GameWorld.units order (GameUnit._seq, unique per unit). Remake
@@ -2425,16 +2844,23 @@ func units_around(p: Vector2, r: float, ordered := true) -> Array:
 	var out := []
 	var r2 := r * r
 	var bs := BUCKET if r < WIDE else CBUCKET
-	var grid: Dictionary = _buckets if r < WIDE else _cbuckets
-	for by in range(floori((p.y - r) / bs), floori((p.y + r) / bs) + 1):
-		for bx in range(floori((p.x - r) / bs), floori((p.x + r) / bs) + 1):
-			var b = grid.get(bx + by * 4096)
-			if b != null:
-				for u: GameUnit in b:
-					if u.pos.distance_squared_to(p) <= r2:
-						out.append(u)
+	# The all-unit index plus the current flag also sees direct dead/revive
+	# state changes before their ordinary bucket housekeeping completes.
+	var grid: Dictionary = _all_buckets if r < WIDE else _call_buckets
+	if not local_bucket_query(p, r):
+		for u: GameUnit in registered_units.values():
+			if is_instance_valid(u) and not u.dead and u.pos.distance_squared_to(p) <= r2:
+				out.append(u)
+	else:
+		for by in range(floori((p.y - r) / bs), floori((p.y + r) / bs) + 1):
+			for bx in range(floori((p.x - r) / bs), floori((p.x + r) / bs) + 1):
+				var b = grid.get(bx + by * 4096)
+				if b != null:
+					for u: GameUnit in b:
+						if is_instance_valid(u) and not u.dead and u.pos.distance_squared_to(p) <= r2:
+							out.append(u)
 	# In GameWorld.units order, as a scan of every unit returns them.
-	return _in_seq_order(out) if ordered else out
+	return _ordered_units(out) if ordered else out
 
 
 ## The unit that stops `u` stepping to `q` (
@@ -2444,36 +2870,39 @@ func units_around(p: Vector2, r: float, ordered := true) -> Array:
 ## stands on. Otherwise the blocker is a unit whose centre is closer to `q`
 ## than the two radii and whose stamp at the mover's cell reaches the
 ## threshold; none found lets the step through. `standing` reports the layer.
-func step_blocker(u: GameUnit, q: Vector2, result: Dictionary) -> GameUnit:
-	var cq := cell(q)
+## The spline walker passes its next node's cell (
+## ). Re-quantizing the interpolated point can increase a stamp
+## before the node's descending step, trapping overlapping party members.
+## Point-only callers, including straight stick movement, keep their cell.
+func step_blocker(u: GameUnit, q: Vector2, result: Dictionary, next_cell := Vector2i(-1, -1)) -> GameUnit:
+	var cq := next_cell if next_cell.x >= 0 else cell(q)
 	var c0 := cell(u.pos)
 	if cq == c0:
 		return null
 	var r_me := u.body_radius()
-	var thr := roundi((2.0 - r_me) * 16.0)
-	var near := units_around(q, 4.5)
+	var near := units_around(q, 10.0)
 	var vq := [0, 0]
 	var v0 := [0, 0]
 	for o: GameUnit in near:
 		if o == u or o.dead:
 			continue
-		var k := roundi(o.body_radius() * 10.0 + 1.0)
+		var k := stamp_key(o.body_radius())
 		var oc := cell(o.pos)
 		var layer := 1 if o._moving else 0
 		vq[layer] = maxi(vq[layer], stamp_value(k, cq.x - oc.x, cq.y - oc.y))
 		v0[layer] = maxi(v0[layer], stamp_value(k, c0.x - oc.x, c0.y - oc.y))
-	var layer := -1
-	if vq[0] > thr and vq[0] > v0[0]:
-		layer = 0
-	elif vq[1] > thr and vq[1] > v0[1]:
-		layer = 1
-	if layer < 0:
+	var layer := stamp_step_layer(v0[0], vq[0], v0[1], vq[1], r_me)
+	if layer == 0:
 		return null
+	var thr := stamp_threshold(r_me) & 255
 	for o: GameUnit in near:
 		if o == u or o.dead or q.distance_to(o.pos) >= r_me + o.body_radius():
 			continue
 		var oc := cell(o.pos)
-		if stamp_value(roundi(o.body_radius() * 10.0 + 1.0), c0.x - oc.x, c0.y - oc.y) >= thr:
-			result.standing = layer == 0
+		var offset := c0 - oc
+		var key := stamp_key(o.body_radius())
+		if key == 0 or offset.x < -8 or offset.y < -8 or offset.x > 7 or offset.y > 7 \
+				or signed_stamp(stamp_value(key, offset.x, offset.y)) >= thr:
+			result.standing = layer == 1
 			return o
 	return null

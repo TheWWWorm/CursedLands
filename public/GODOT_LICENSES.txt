@@ -20,6 +20,1782 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 
+{
+	"name": "Godot Engine",
+	"parts": [
+		{
+			"copyright": [
+				"2014-present, Godot Engine contributors",
+				"2007-2014, Juan Linietsky, Ariel Manzur"
+			],
+			"files": [
+				"*"
+			],
+			"license": "Expat"
+		}
+	]
+}
+
+
+{
+	"name": "Bullet Continuous Collision Detection and Physics Library",
+	"parts": [
+		{
+			"copyright": [
+				"2011, Ole Kniemeyer, MAXON, www.maxon.net",
+				"2014-present, Godot Engine contributors",
+				"2007-2014, Juan Linietsky, Ariel Manzur"
+			],
+			"files": [
+				"core/math/convex_hull.cpp",
+				"core/math/convex_hull.h"
+			],
+			"license": "Expat and Zlib"
+		},
+		{
+			"copyright": [
+				"2003-2008, Erwin Coumans",
+				"2014-present, Godot Engine contributors",
+				"2007-2014, Juan Linietsky, Ariel Manzur"
+			],
+			"files": [
+				"modules/godot_physics_3d/gjk_epa.cpp",
+				"modules/godot_physics_3d/joints/godot_generic_6dof_joint_3d.cpp",
+				"modules/godot_physics_3d/joints/godot_generic_6dof_joint_3d.h",
+				"modules/godot_physics_3d/joints/godot_hinge_joint_3d.cpp",
+				"modules/godot_physics_3d/joints/godot_hinge_joint_3d.h",
+				"modules/godot_physics_3d/joints/godot_jacobian_entry_3d.h",
+				"modules/godot_physics_3d/joints/godot_pin_joint_3d.cpp",
+				"modules/godot_physics_3d/joints/godot_pin_joint_3d.h",
+				"modules/godot_physics_3d/joints/godot_slider_joint_3d.cpp",
+				"modules/godot_physics_3d/joints/godot_slider_joint_3d.h",
+				"modules/godot_physics_3d/godot_soft_body_3d.cpp",
+				"modules/godot_physics_3d/godot_soft_body_3d.h",
+				"modules/godot_physics_3d/godot_shape_3d.cpp",
+				"modules/godot_physics_3d/godot_shape_3d.h"
+			],
+			"license": "Expat and Zlib"
+		},
+		{
+			"copyright": [
+				"2007, Starbreeze Studios",
+				"2014-present, Godot Engine contributors",
+				"2007-2014, Juan Linietsky, Ariel Manzur"
+			],
+			"files": [
+				"modules/godot_physics_3d/joints/godot_cone_twist_joint_3d.cpp",
+				"modules/godot_physics_3d/joints/godot_cone_twist_joint_3d.h"
+			],
+			"license": "Expat and Zlib"
+		}
+	]
+}
+
+
+{
+	"name": "Linux AppStream Metadata File",
+	"parts": [
+		{
+			"copyright": [
+				"2017-2022, Rémi Verschelde"
+			],
+			"files": [
+				"misc/dist/linux/org.godotengine.Godot.appdata.xml"
+			],
+			"license": "CC0-1.0"
+		}
+	]
+}
+
+
+{
+	"name": "Godot Engine logo",
+	"parts": [
+		{
+			"copyright": [
+				"2017, Andrea Calabró"
+			],
+			"files": [
+				"misc/logo/*"
+			],
+			"license": "CC-BY-4.0"
+		}
+	]
+}
+
+
+{
+	"name": "Betsy",
+	"parts": [
+		{
+			"copyright": [
+				"2020-2022, Matias N. Goldberg"
+			],
+			"files": [
+				"modules/betsy/alpha_stitch.glsl",
+				"modules/betsy/bc1.glsl",
+				"modules/betsy/bc4.glsl",
+				"modules/betsy/bc6h.glsl"
+			],
+			"license": "Expat"
+		}
+	]
+}
+
+
+{
+	"name": "Chipmunk2D Joint Constraints",
+	"parts": [
+		{
+			"copyright": [
+				"2007, Scott Lembcke"
+			],
+			"files": [
+				"modules/godot_physics_2d/godot_joints_2d.cpp"
+			],
+			"license": "Expat"
+		}
+	]
+}
+
+
+{
+	"name": "Open Dynamics Engine",
+	"parts": [
+		{
+			"copyright": [
+				"2001-2003, Russell L. Smith, Alen Ladavac, Nguyen Binh"
+			],
+			"files": [
+				"modules/godot_physics_3d/godot_collision_solver_3d_sat.cpp"
+			],
+			"license": "BSD-3-clause"
+		}
+	]
+}
+
+
+{
+	"name": "Jolt Physics",
+	"parts": [
+		{
+			"copyright": [
+				"2021, Jorrit Rouwe",
+				"2014-present, Godot Engine contributors",
+				"2007-2014, Juan Linietsky, Ariel Manzur"
+			],
+			"files": [
+				"modules/jolt_physics/spaces/jolt_temp_allocator.cpp"
+			],
+			"license": "Expat"
+		},
+		{
+			"copyright": [
+				"2021, Jorrit Rouwe"
+			],
+			"files": [
+				"thirdparty/jolt_physics/*"
+			],
+			"license": "Expat"
+		}
+	]
+}
+
+
+{
+	"name": "Joint Non-Local Means (JNLM) denoiser",
+	"parts": [
+		{
+			"copyright": [
+				"2020, Manuel Prandini",
+				"2014-present, Godot Engine contributors",
+				"2007-2014, Juan Linietsky, Ariel Manzur"
+			],
+			"files": [
+				"modules/lightmapper_rd/lm_compute.glsl"
+			],
+			"license": "Expat"
+		}
+	]
+}
+
+
+{
+	"name": "The Android Open Source Project",
+	"parts": [
+		{
+			"copyright": [
+				"2008-2016, The Android Open Source Project",
+				"2002, Google, Inc."
+			],
+			"files": [
+				"platform/android/java/editor/src/main/java/com/android/*",
+				"platform/android/java/lib/src/main/aidl/com/android/*",
+				"platform/android/java/lib/src/main/res/layout/status_bar_ongoing_event_progress_bar.xml",
+				"platform/android/java/lib/src/main/java/com/google/android/*"
+			],
+			"license": "Apache-2.0"
+		}
+	]
+}
+
+
+{
+	"name": "ProcessPhoenix",
+	"parts": [
+		{
+			"copyright": [
+				"2015, Jake Wharton"
+			],
+			"files": [
+				"platform/android/java/lib/src/main/java/org/godotengine/godot/utils/ProcessPhoenix.java"
+			],
+			"license": "Apache-2.0"
+		}
+	]
+}
+
+
+{
+	"name": "Robert Penner's Easing Functions",
+	"parts": [
+		{
+			"copyright": [
+				"2001, Robert Penner",
+				"2014-present, Godot Engine contributors",
+				"2007-2014, Juan Linietsky, Ariel Manzur"
+			],
+			"files": [
+				"scene/animation/easing_equations.h"
+			],
+			"license": "Expat"
+		}
+	]
+}
+
+
+{
+	"name": "NVidia's FXAA 3.11, simplified by Simon Rodriguez",
+	"parts": [
+		{
+			"copyright": [
+				"2014-2015, NVIDIA CORPORATION",
+				"2017 Simon Rodriguez"
+			],
+			"files": [
+				"servers/rendering/renderer_rd/shaders/effects/tonemap.glsl"
+			],
+			"license": "BSD-3-clause and Expat"
+		}
+	]
+}
+
+
+{
+	"name": "Intel ASSAO and related files",
+	"parts": [
+		{
+			"copyright": [
+				"2016, Intel Corporation"
+			],
+			"files": [
+				"servers/rendering/renderer_rd/shaders/effects/ss_effects_downsample.glsl",
+				"servers/rendering/renderer_rd/shaders/effects/ssao_blur.glsl",
+				"servers/rendering/renderer_rd/shaders/effects/ssao_importance_map.glsl",
+				"servers/rendering/renderer_rd/shaders/effects/ssao_interleave.glsl",
+				"servers/rendering/renderer_rd/shaders/effects/ssao.glsl",
+				"servers/rendering/renderer_rd/shaders/effects/ssil_blur.glsl",
+				"servers/rendering/renderer_rd/shaders/effects/ssil_importance_map.glsl",
+				"servers/rendering/renderer_rd/shaders/effects/ssil_interleave.glsl",
+				"servers/rendering/renderer_rd/shaders/effects/ssil.glsl"
+			],
+			"license": "Expat"
+		}
+	]
+}
+
+
+{
+	"name": "Temporal Anti-Aliasing resolve implementation",
+	"parts": [
+		{
+			"copyright": [
+				"2016, Panos Karabelas"
+			],
+			"files": [
+				"servers/rendering/renderer_rd/shaders/effects/taa_resolve.glsl"
+			],
+			"license": "Expat"
+		}
+	]
+}
+
+
+{
+	"name": "Subpixel Morphological Antialiasing",
+	"parts": [
+		{
+			"copyright": [
+				"2013, Jorge Jimenez",
+				"2013, Jose I. Echevarria",
+				"2013, Belen Masia",
+				"2013, Fernando Navarro",
+				"2013, Diego Gutierrez"
+			],
+			"files": [
+				"servers/rendering/renderer_rd/shaders/effects/smaa_blending.glsl",
+				"servers/rendering/renderer_rd/shaders/effects/smaa_weight_calculation.glsl",
+				"servers/rendering/renderer_rd/shaders/effects/smaa_edge_detection.glsl",
+				"thirdparty/smaa/*"
+			],
+			"license": "Expat"
+		}
+	]
+}
+
+
+{
+	"name": "AccessKit",
+	"parts": [
+		{
+			"copyright": [
+				"2023, The AccessKit Authors."
+			],
+			"files": [
+				"thirdparty/accesskit/*"
+			],
+			"license": "Expat"
+		}
+	]
+}
+
+
+{
+	"name": "AMD FidelityFX Super Resolution",
+	"parts": [
+		{
+			"copyright": [
+				"2021, Advanced Micro Devices, Inc."
+			],
+			"files": [
+				"thirdparty/amd-fsr/*"
+			],
+			"license": "Expat"
+		}
+	]
+}
+
+
+{
+	"name": "AMD FidelityFX Super Resolution 2",
+	"parts": [
+		{
+			"copyright": [
+				"2022-2023, Advanced Micro Devices, Inc."
+			],
+			"files": [
+				"thirdparty/amd-fsr2/*"
+			],
+			"license": "Expat"
+		}
+	]
+}
+
+
+{
+	"name": "ANGLE",
+	"parts": [
+		{
+			"copyright": [
+				"2018, The ANGLE Project Authors."
+			],
+			"files": [
+				"thirdparty/angle/*"
+			],
+			"license": "BSD-3-clause"
+		}
+	]
+}
+
+
+{
+	"name": "Arm ASTC Encoder",
+	"parts": [
+		{
+			"copyright": [
+				"2011-2025, Arm Limited"
+			],
+			"files": [
+				"thirdparty/astcenc/*"
+			],
+			"license": "Apache-2.0"
+		}
+	]
+}
+
+
+{
+	"name": "Basis Universal",
+	"parts": [
+		{
+			"copyright": [
+				"2019-2025, Binomial LLC."
+			],
+			"files": [
+				"thirdparty/basis_universal/*"
+			],
+			"license": "Apache-2.0"
+		}
+	]
+}
+
+
+{
+	"name": "Brotli",
+	"parts": [
+		{
+			"copyright": [
+				"2009, 2010, 2013-2016 by the Brotli Authors."
+			],
+			"files": [
+				"thirdparty/brotli/*"
+			],
+			"license": "Expat"
+		}
+	]
+}
+
+
+{
+	"name": "CA certificates",
+	"parts": [
+		{
+			"copyright": [
+				"Mozilla Contributors"
+			],
+			"files": [
+				"thirdparty/certs/ca-bundle.crt"
+			],
+			"license": "MPL-2.0"
+		}
+	]
+}
+
+
+{
+	"name": "Clipper2",
+	"parts": [
+		{
+			"copyright": [
+				"2010-2025, Angus Johnson"
+			],
+			"files": [
+				"thirdparty/clipper2/*"
+			],
+			"license": "BSL-1.0"
+		}
+	]
+}
+
+
+{
+	"name": "Convection Texture Tools Stand-Alone Kernels",
+	"parts": [
+		{
+			"copyright": [
+				"2018, Eric Lasota",
+				"2018, Microsoft Corp."
+			],
+			"files": [
+				"thirdparty/cvtt/*"
+			],
+			"license": "Expat"
+		}
+	]
+}
+
+
+{
+	"name": "D3D12 Memory Allocator",
+	"parts": [
+		{
+			"copyright": [
+				"2019-2022 Advanced Micro Devices, Inc."
+			],
+			"files": [
+				"thirdparty/d3d12ma/*"
+			],
+			"license": "Expat"
+		}
+	]
+}
+
+
+{
+	"name": "DirectX Headers",
+	"parts": [
+		{
+			"copyright": [
+				"Microsoft Corporation"
+			],
+			"files": [
+				"thirdparty/directx_headers/*"
+			],
+			"license": "Expat"
+		}
+	]
+}
+
+
+{
+	"name": "doctest",
+	"parts": [
+		{
+			"copyright": [
+				"2016-2023, Viktor Kirilov"
+			],
+			"files": [
+				"thirdparty/doctest/*"
+			],
+			"license": "Expat"
+		}
+	]
+}
+
+
+{
+	"name": "dr_libs",
+	"parts": [
+		{
+			"copyright": [
+				"2020, David Reid"
+			],
+			"files": [
+				"thirdparty/dr_libs/*"
+			],
+			"license": "Unlicense or MIT-0"
+		}
+	]
+}
+
+
+{
+	"name": "Embree",
+	"parts": [
+		{
+			"copyright": [
+				"2009-2021 Intel Corporation"
+			],
+			"files": [
+				"thirdparty/embree/*"
+			],
+			"license": "Apache-2.0"
+		}
+	]
+}
+
+
+{
+	"name": "ENet",
+	"parts": [
+		{
+			"copyright": [
+				"2002-2024, Lee Salzman"
+			],
+			"files": [
+				"thirdparty/enet/*"
+			],
+			"license": "Expat"
+		}
+	]
+}
+
+
+{
+	"name": "etcpak",
+	"parts": [
+		{
+			"copyright": [
+				"2013-2022, Bartosz Taudul"
+			],
+			"files": [
+				"thirdparty/etcpak/*"
+			],
+			"license": "BSD-3-clause"
+		}
+	]
+}
+
+
+{
+	"name": "DroidSans font",
+	"parts": [
+		{
+			"copyright": [
+				"2008, The Android Open Source Project"
+			],
+			"files": [
+				"thirdparty/fonts/DroidSans*.woff2"
+			],
+			"license": "Apache-2.0"
+		}
+	]
+}
+
+
+{
+	"name": "Inter font",
+	"parts": [
+		{
+			"copyright": [
+				"2016, The Inter Project Authors"
+			],
+			"files": [
+				"thirdparty/fonts/Inter*.woff2"
+			],
+			"license": "OFL-1.1"
+		}
+	]
+}
+
+
+{
+	"name": "JetBrains Mono font",
+	"parts": [
+		{
+			"copyright": [
+				"2020, JetBrains s.r.o."
+			],
+			"files": [
+				"thirdparty/fonts/JetBrainsMono_Regular.woff2"
+			],
+			"license": "OFL-1.1"
+		}
+	]
+}
+
+
+{
+	"name": "Noto Sans font",
+	"parts": [
+		{
+			"copyright": [
+				"2012, Google Inc."
+			],
+			"files": [
+				"thirdparty/fonts/NotoSans*.woff2"
+			],
+			"license": "OFL-1.1"
+		}
+	]
+}
+
+
+{
+	"name": "Open Sans font",
+	"parts": [
+		{
+			"copyright": [
+				"2020, The Open Sans Project Authors"
+			],
+			"files": [
+				"thirdparty/fonts/OpenSans*.woff2"
+			],
+			"license": "OFL-1.1"
+		}
+	]
+}
+
+
+{
+	"name": "Vazirmatn font",
+	"parts": [
+		{
+			"copyright": [
+				"2015, The Vazirmatn Project Authors."
+			],
+			"files": [
+				"thirdparty/fonts/Vazirmatn*.woff2"
+			],
+			"license": "OFL-1.1"
+		}
+	]
+}
+
+
+{
+	"name": "The FreeType Project",
+	"parts": [
+		{
+			"copyright": [
+				"1996-2025, David Turner, Robert Wilhelm, and Werner Lemberg."
+			],
+			"files": [
+				"thirdparty/freetype/*"
+			],
+			"license": "FTL"
+		}
+	]
+}
+
+
+{
+	"name": "GamepadMotionHelpers",
+	"parts": [
+		{
+			"copyright": [
+				"2020-2023, Julian \"Jibb\" Smart"
+			],
+			"files": [
+				"thirdparty/gamepadmotionhelpers/*"
+			],
+			"license": "Expat"
+		}
+	]
+}
+
+
+{
+	"name": "glad",
+	"parts": [
+		{
+			"copyright": [
+				"2013-2022, David Herberth",
+				"2013-2020, The Khronos Group Inc."
+			],
+			"files": [
+				"thirdparty/glad/*"
+			],
+			"license": "CC0-1.0 and Apache-2.0"
+		}
+	]
+}
+
+
+{
+	"name": "glslang",
+	"parts": [
+		{
+			"copyright": [
+				"2015-2020, Google, Inc.",
+				"2014-2020, The Khronos Group Inc",
+				"2002, NVIDIA Corporation."
+			],
+			"files": [
+				"thirdparty/glslang/*"
+			],
+			"license": "glslang"
+		}
+	]
+}
+
+
+{
+	"name": "Graphite engine",
+	"parts": [
+		{
+			"copyright": [
+				"2010, SIL International"
+			],
+			"files": [
+				"thirdparty/graphite/*"
+			],
+			"license": "Expat"
+		}
+	]
+}
+
+
+{
+	"name": "Grisu2 float serialization algorithm",
+	"parts": [
+		{
+			"copyright": [
+				"2009, Florian Loitsch",
+				"2018-2023, The simdjson authors"
+			],
+			"files": [
+				"thirdparty/grisu2/*"
+			],
+			"license": "Expat and Apache-2.0"
+		}
+	]
+}
+
+
+{
+	"name": "HarfBuzz text shaping library",
+	"parts": [
+		{
+			"copyright": [
+				"2010-2022, Google, Inc.",
+				"2015-2020, Ebrahim Byagowi",
+				"2019,2020, Facebook, Inc.",
+				"2012, 2015, Mozilla Foundation",
+				"2011, Codethink Limited",
+				"2008, 2010, Nokia Corporation and/or its subsidiary(-ies)",
+				"2009, Keith Stribley",
+				"2011, Martin Hosken and SIL International",
+				"2007, Chris Wilson",
+				"2005-2006, 2020-2023, Behdad Esfahbod",
+				"2004, 2007-2010, 2013, 2021-2023, Red Hat, Inc.",
+				"1998-2005, David Turner and Werner Lemberg",
+				"2016, Igalia, S.L.",
+				"2022, Matthias Clasen",
+				"2018, 2021, Khaled Hosny",
+				"2018-2020, Adobe, Inc.",
+				"2013-2015, Alexei Podtelezhnikov"
+			],
+			"files": [
+				"thirdparty/harfbuzz/*"
+			],
+			"license": "HarfBuzz"
+		}
+	]
+}
+
+
+{
+	"name": "International Components for Unicode",
+	"parts": [
+		{
+			"copyright": [
+				"2016-2024, Unicode, Inc."
+			],
+			"files": [
+				"thirdparty/icu4c/*"
+			],
+			"license": "Unicode"
+		}
+	]
+}
+
+
+{
+	"name": "libbacktrace",
+	"parts": [
+		{
+			"copyright": [
+				"2012-2021, Free Software Foundation, Inc."
+			],
+			"files": [
+				"thirdparty/libbacktrace/*"
+			],
+			"license": "BSD-3-clause"
+		}
+	]
+}
+
+
+{
+	"name": "libjpeg-turbo",
+	"parts": [
+		{
+			"copyright": [
+				"2009-2025, D. R. Commander",
+				"2015, Viktor Szathmáry.",
+				"1991-2020, Thomas G. Lane, Guido Vollbeding"
+			],
+			"files": [
+				"thirdparty/libjpeg-turbo/*"
+			],
+			"license": "BSD-3-clause and IJG"
+		}
+	]
+}
+
+
+{
+	"name": "KTX",
+	"parts": [
+		{
+			"copyright": [
+				"2013-2020, Mark Callow",
+				"2010-2020 The Khronos Group, Inc."
+			],
+			"files": [
+				"thirdparty/libktx/*"
+			],
+			"license": "Apache-2.0"
+		}
+	]
+}
+
+
+{
+	"name": "OggVorbis",
+	"parts": [
+		{
+			"copyright": [
+				"2002, Xiph.org Foundation"
+			],
+			"files": [
+				"thirdparty/libogg/*"
+			],
+			"license": "BSD-3-clause"
+		},
+		{
+			"copyright": [
+				"2002-2015, Xiph.org Foundation"
+			],
+			"files": [
+				"thirdparty/libvorbis/*"
+			],
+			"license": "BSD-3-clause"
+		}
+	]
+}
+
+
+{
+	"name": "libpng",
+	"parts": [
+		{
+			"copyright": [
+				"1995-2026, The PNG Reference Library Authors.",
+				"2018-2026, Cosmin Truta.",
+				"2000-2002, 2004, 2006-2018 Glenn Randers-Pehrson.",
+				"1996-1997, Andreas Dilger.",
+				"1995-1996, Guy Eric Schalnat, Group 42, Inc."
+			],
+			"files": [
+				"thirdparty/libpng/*"
+			],
+			"license": "Zlib"
+		}
+	]
+}
+
+
+{
+	"name": "OggTheora",
+	"parts": [
+		{
+			"copyright": [
+				"2002-2009, Xiph.org Foundation"
+			],
+			"files": [
+				"thirdparty/libtheora/*"
+			],
+			"license": "BSD-3-clause"
+		}
+	]
+}
+
+
+{
+	"name": "WebP codec",
+	"parts": [
+		{
+			"copyright": [
+				"2010, Google Inc."
+			],
+			"files": [
+				"thirdparty/libwebp/*"
+			],
+			"license": "BSD-3-clause"
+		}
+	]
+}
+
+
+{
+	"name": "Manifold",
+	"parts": [
+		{
+			"copyright": [
+				"2020-2025, The Manifold Authors"
+			],
+			"files": [
+				"thirdparty/manifold/*"
+			],
+			"license": "Apache-2.0"
+		}
+	]
+}
+
+
+{
+	"name": "Mbed TLS",
+	"parts": [
+		{
+			"copyright": [
+				"The Mbed TLS Contributors"
+			],
+			"files": [
+				"thirdparty/mbedtls/*"
+			],
+			"license": "Apache-2.0"
+		}
+	]
+}
+
+
+{
+	"name": "meshoptimizer",
+	"parts": [
+		{
+			"copyright": [
+				"2016-2026, Arseny Kapoulkine"
+			],
+			"files": [
+				"thirdparty/meshoptimizer/*"
+			],
+			"license": "Expat"
+		}
+	]
+}
+
+
+{
+	"name": "metal-cpp",
+	"parts": [
+		{
+			"copyright": [
+				"2024, Apple Inc."
+			],
+			"files": [
+				"thirdparty/metal-cpp/*"
+			],
+			"license": "Apache-2.0"
+		}
+	]
+}
+
+
+{
+	"name": "mingw-std-threads",
+	"parts": [
+		{
+			"copyright": [
+				"2016, Mega Limited"
+			],
+			"files": [
+				"thirdparty/mingw-std-threads/*"
+			],
+			"license": "BSD-2-clause"
+		}
+	]
+}
+
+
+{
+	"name": "MiniUPnP Project",
+	"parts": [
+		{
+			"copyright": [
+				"2005-2025, Thomas Bernard"
+			],
+			"files": [
+				"thirdparty/miniupnpc/*"
+			],
+			"license": "BSD-3-clause"
+		}
+	]
+}
+
+
+{
+	"name": "MiniZip",
+	"parts": [
+		{
+			"copyright": [
+				"1998-2026, Gilles Vollant",
+				"2007-2008, Even Rouault",
+				"2009-2010, Mathias Svensson"
+			],
+			"files": [
+				"thirdparty/minizip/*"
+			],
+			"license": "Zlib"
+		}
+	]
+}
+
+
+{
+	"name": "bcdec",
+	"parts": [
+		{
+			"copyright": [
+				"2022, Sergii Kudlai"
+			],
+			"files": [
+				"thirdparty/misc/bcdec.h"
+			],
+			"license": "Expat"
+		}
+	]
+}
+
+
+{
+	"name": "Fast Filtering of Reflection Probes",
+	"parts": [
+		{
+			"copyright": [
+				"2016, Activision Publishing, Inc."
+			],
+			"files": [
+				"thirdparty/misc/cubemap_coeffs.h"
+			],
+			"license": "Expat"
+		}
+	]
+}
+
+
+{
+	"name": "FastLZ",
+	"parts": [
+		{
+			"copyright": [
+				"2005-2020, Ariya Hidayat"
+			],
+			"files": [
+				"thirdparty/misc/fastlz.c",
+				"thirdparty/misc/fastlz.h"
+			],
+			"license": "Expat"
+		}
+	]
+}
+
+
+{
+	"name": "FastNoise Lite",
+	"parts": [
+		{
+			"copyright": [
+				"2023, Jordan Peck and contributors"
+			],
+			"files": [
+				"thirdparty/misc/FastNoiseLite.h"
+			],
+			"license": "Expat"
+		}
+	]
+}
+
+
+{
+	"name": "libjingle",
+	"parts": [
+		{
+			"copyright": [
+				"2012-2013, Google Inc."
+			],
+			"files": [
+				"thirdparty/misc/ifaddrs-android.cc",
+				"thirdparty/misc/ifaddrs-android.h"
+			],
+			"license": "BSD-3-clause"
+		}
+	]
+}
+
+
+{
+	"name": "Tangent Space Normal Maps implementation",
+	"parts": [
+		{
+			"copyright": [
+				"2011, Morten S. Mikkelsen"
+			],
+			"files": [
+				"thirdparty/misc/mikktspace.c",
+				"thirdparty/misc/mikktspace.h"
+			],
+			"license": "Zlib"
+		}
+	]
+}
+
+
+{
+	"name": "NVIDIA NVAPI (minimal excerpt)",
+	"parts": [
+		{
+			"copyright": [
+				"2019-2022, NVIDIA Corporation"
+			],
+			"files": [
+				"thirdparty/misc/nvapi_minimal.h"
+			],
+			"license": "Expat"
+		}
+	]
+}
+
+
+{
+	"name": "OK Lab color space",
+	"parts": [
+		{
+			"copyright": [
+				"2021, Björn Ottosson"
+			],
+			"files": [
+				"thirdparty/misc/ok_color.h",
+				"thirdparty/misc/ok_color_shader.h"
+			],
+			"license": "Expat"
+		}
+	]
+}
+
+
+{
+	"name": "Minimal PCG32 implementation",
+	"parts": [
+		{
+			"copyright": [
+				"2014, M.E. O'Neill"
+			],
+			"files": [
+				"thirdparty/misc/pcg.cpp",
+				"thirdparty/misc/pcg.h"
+			],
+			"license": "Apache-2.0"
+		}
+	]
+}
+
+
+{
+	"name": "PolyPartition / Triangulator",
+	"parts": [
+		{
+			"copyright": [
+				"2011-2021, Ivan Fratric and contributors"
+			],
+			"files": [
+				"thirdparty/misc/polypartition.cpp",
+				"thirdparty/misc/polypartition.h"
+			],
+			"license": "Expat"
+		}
+	]
+}
+
+
+{
+	"name": "Quite OK Audio Format",
+	"parts": [
+		{
+			"copyright": [
+				"2023, Dominic Szablewski"
+			],
+			"files": [
+				"thirdparty/misc/qoa.h"
+			],
+			"license": "Expat"
+		}
+	]
+}
+
+
+{
+	"name": "r128 library",
+	"parts": [
+		{
+			"copyright": [
+				"Alan Hickman"
+			],
+			"files": [
+				"thirdparty/misc/r128.c",
+				"thirdparty/misc/r128.h"
+			],
+			"license": "Unlicense"
+		}
+	]
+}
+
+
+{
+	"name": "SMAZ",
+	"parts": [
+		{
+			"copyright": [
+				"2006-2009, Salvatore Sanfilippo"
+			],
+			"files": [
+				"thirdparty/misc/smaz.c",
+				"thirdparty/misc/smaz.h"
+			],
+			"license": "BSD-3-clause"
+		}
+	]
+}
+
+
+{
+	"name": "SMOL-V",
+	"parts": [
+		{
+			"copyright": [
+				"2016-2024, Aras Pranckevicius"
+			],
+			"files": [
+				"thirdparty/misc/smolv.cpp",
+				"thirdparty/misc/smolv.h"
+			],
+			"license": "Unlicense or Expat"
+		}
+	]
+}
+
+
+{
+	"name": "stb libraries",
+	"parts": [
+		{
+			"copyright": [
+				"Sean Barrett"
+			],
+			"files": [
+				"thirdparty/misc/stb_rect_pack.h"
+			],
+			"license": "Unlicense or Expat"
+		}
+	]
+}
+
+
+{
+	"name": "YUV2RGB",
+	"parts": [
+		{
+			"copyright": [
+				"2008-2011, Robin Watts"
+			],
+			"files": [
+				"thirdparty/misc/yuv2rgb.h"
+			],
+			"license": "BSD-2-clause"
+		}
+	]
+}
+
+
+{
+	"name": "Multi-channel signed distance field generator",
+	"parts": [
+		{
+			"copyright": [
+				"2014-2025, Viktor Chlumsky"
+			],
+			"files": [
+				"thirdparty/msdfgen/*"
+			],
+			"license": "Expat"
+		}
+	]
+}
+
+
+{
+	"name": "OpenXR Loader",
+	"parts": [
+		{
+			"copyright": [
+				"2020-2025, The Khronos Group Inc."
+			],
+			"files": [
+				"thirdparty/openxr/*"
+			],
+			"license": "Apache-2.0"
+		}
+	]
+}
+
+
+{
+	"name": "PCRE2",
+	"parts": [
+		{
+			"copyright": [
+				"1997-2024, University of Cambridge",
+				"2009-2024, Zoltan Herczeg"
+			],
+			"files": [
+				"thirdparty/pcre2/*"
+			],
+			"license": "BSD-3-clause"
+		}
+	]
+}
+
+
+{
+	"name": "Recast",
+	"parts": [
+		{
+			"copyright": [
+				"2009, Mikko Mononen"
+			],
+			"files": [
+				"thirdparty/recastnavigation/*"
+			],
+			"license": "Zlib"
+		}
+	]
+}
+
+
+{
+	"name": "RVO2",
+	"parts": [
+		{
+			"copyright": [
+				"2016, University of North Carolina at Chapel Hill"
+			],
+			"files": [
+				"thirdparty/rvo2/*"
+			],
+			"license": "Apache-2.0"
+		}
+	]
+}
+
+
+{
+	"name": "SDL",
+	"parts": [
+		{
+			"copyright": [
+				"1997-2025, Sam Lantinga"
+			],
+			"files": [
+				"thirdparty/sdl/*"
+			],
+			"license": "Zlib"
+		}
+	]
+}
+
+
+{
+	"name": "hidapi",
+	"parts": [
+		{
+			"copyright": [
+				"2010, Alan Ott, Signal 11 Software"
+			],
+			"files": [
+				"thirdparty/sdl/hidapi/*"
+			],
+			"license": "BSD-3-clause"
+		}
+	]
+}
+
+
+{
+	"name": "SPIRV-Cross",
+	"parts": [
+		{
+			"copyright": [
+				"2015-2021, Arm Limited"
+			],
+			"files": [
+				"thirdparty/spirv-cross/*"
+			],
+			"license": "Apache-2.0 or Expat"
+		}
+	]
+}
+
+
+{
+	"name": "SPIRV-Headers",
+	"parts": [
+		{
+			"copyright": [
+				"2015-2024, The Khronos Group Inc."
+			],
+			"files": [
+				"thirdparty/spirv-headers/*"
+			],
+			"license": "Expat"
+		}
+	]
+}
+
+
+{
+	"name": "SPIRV-Reflect",
+	"parts": [
+		{
+			"copyright": [
+				"2017-2022, Google Inc."
+			],
+			"files": [
+				"thirdparty/spirv-reflect/*"
+			],
+			"license": "Apache-2.0"
+		}
+	]
+}
+
+
+{
+	"name": "Swappy",
+	"parts": [
+		{
+			"copyright": [
+				"2019, The Android Open Source Project"
+			],
+			"files": [
+				"thirdparty/swappy-frame-pacing/*"
+			],
+			"license": "Apache-2.0"
+		}
+	]
+}
+
+
+{
+	"name": "ThorVG",
+	"parts": [
+		{
+			"copyright": [
+				"2020-2026, The ThorVG Project"
+			],
+			"files": [
+				"thirdparty/thorvg/*"
+			],
+			"license": "Expat"
+		}
+	]
+}
+
+
+{
+	"name": "TinyEXR",
+	"parts": [
+		{
+			"copyright": [
+				"2014-2021, Syoyo Fujita",
+				"2002, Industrial Light & Magic, a division of Lucas Digital Ltd. LLC"
+			],
+			"files": [
+				"thirdparty/tinyexr/*"
+			],
+			"license": "BSD-3-clause"
+		}
+	]
+}
+
+
+{
+	"name": "ufbx",
+	"parts": [
+		{
+			"copyright": [
+				"2020, Samuli Raivio"
+			],
+			"files": [
+				"thirdparty/ufbx/*"
+			],
+			"license": "Expat"
+		}
+	]
+}
+
+
+{
+	"name": "V-HACD",
+	"parts": [
+		{
+			"copyright": [
+				"2011, Khaled Mamou",
+				"2003-2009, Erwin Coumans"
+			],
+			"files": [
+				"thirdparty/vhacd/*"
+			],
+			"license": "BSD-3-clause"
+		}
+	]
+}
+
+
+{
+	"name": "volk",
+	"parts": [
+		{
+			"copyright": [
+				"2018-2025, Arseny Kapoulkine"
+			],
+			"files": [
+				"thirdparty/volk/*"
+			],
+			"license": "Expat"
+		}
+	]
+}
+
+
+{
+	"name": "Vulkan Headers",
+	"parts": [
+		{
+			"copyright": [
+				"2015-2025, The Khronos Group Inc.",
+				"2015-2025, Valve Corporation",
+				"2015-2025, LunarG, Inc."
+			],
+			"files": [
+				"thirdparty/vulkan/*"
+			],
+			"license": "Apache-2.0"
+		}
+	]
+}
+
+
+{
+	"name": "Vulkan Memory Allocator",
+	"parts": [
+		{
+			"copyright": [
+				"2017-2025, Advanced Micro Devices, Inc."
+			],
+			"files": [
+				"thirdparty/vulkan/vk_mem_alloc.h"
+			],
+			"license": "Expat"
+		}
+	]
+}
+
+
+{
+	"name": "Wayland core protocol",
+	"parts": [
+		{
+			"copyright": [
+				"2008-2012, Kristian Høgsberg",
+				"2010-2012, Intel Corporation",
+				"2011, Benjamin Franzke",
+				"2012, Collabora, Ltd."
+			],
+			"files": [
+				"thirdparty/wayland/*"
+			],
+			"license": "Expat"
+		}
+	]
+}
+
+
+{
+	"name": "Wayland protocols",
+	"parts": [
+		{
+			"copyright": [
+				"2008-2013, Kristian Høgsberg",
+				"2010-2013, Intel Corporation",
+				"2013, Rafael Antognolli",
+				"2013, Jasper St. Pierre",
+				"2014, Jonas Ådahl",
+				"2014, Jason Ekstrand",
+				"2014-2015, Collabora, Ltd.",
+				"2015, Red Hat Inc."
+			],
+			"files": [
+				"thirdparty/wayland-protocols/*"
+			],
+			"license": "Expat"
+		}
+	]
+}
+
+
+{
+	"name": "Mesa Wayland protocols",
+	"parts": [
+		{
+			"copyright": [
+				"2008-2011, Kristian Høgsberg",
+				"2010-2011, Intel Corporation"
+			],
+			"files": [
+				"thirdparty/wayland-protocols/mesa/wayland-drm.xml"
+			],
+			"license": "X11"
+		}
+	]
+}
+
+
+{
+	"name": "Wslay",
+	"parts": [
+		{
+			"copyright": [
+				"2011, 2012, 2015, Tatsuhiro Tsujikawa"
+			],
+			"files": [
+				"thirdparty/wslay/*"
+			],
+			"license": "Expat"
+		}
+	]
+}
+
+
+{
+	"name": "xatlas",
+	"parts": [
+		{
+			"copyright": [
+				"2018-2020, Jonathan Young",
+				"2013, Thekla, Inc",
+				"2006, NVIDIA Corporation, Ignacio Castano"
+			],
+			"files": [
+				"thirdparty/xatlas/*"
+			],
+			"license": "Expat"
+		}
+	]
+}
+
+
+{
+	"name": "zlib",
+	"parts": [
+		{
+			"copyright": [
+				"1995-2026, Jean-loup Gailly and Mark Adler"
+			],
+			"files": [
+				"thirdparty/zlib/*"
+			],
+			"license": "Zlib"
+		}
+	]
+}
+
+
+{
+	"name": "Zstandard",
+	"parts": [
+		{
+			"copyright": [
+				"Meta Platforms, Inc. and affiliates."
+			],
+			"files": [
+				"thirdparty/zstd/*"
+			],
+			"license": "BSD-3-clause"
+		}
+	]
+}
+
+
 Apache-2.0
 Apache License
 Version 2.0, January 2004

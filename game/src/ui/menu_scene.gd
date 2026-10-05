@@ -39,8 +39,9 @@ var hour := 12.0
 ## (top x = r·20, y = r·60, z 17; ground x ± 2, y ± 2, z 1).
 ## Drawn and heard by the game's own pieces: Weather (client state, the rain
 ## loop), FxRainSnow (reads `sound.weather`), ParticleFx script lights and
-## bolts. **Approx.**: the 3D listener is the menu camera's eye (the original's
-## listener in the menu is not traced).
+## bolts. The 3D listener is the menu camera's eye: sets
+## camera flag 0x40, 0040f1b0 set the first MainMenu.cam
+## view without clearing it, and sends the eye to 006b9710.
 class MenuSound extends RefCounted:
 	var weather: Weather
 	var _ticks := 0
@@ -52,6 +53,12 @@ var _mixer: SoundMixer
 var _fx: ParticleFx
 var _last_hour := -1
 var _strike_ms := 0
+
+
+func _ready() -> void:
+	# create() lights its detached island before the caller adds it. Refresh
+	# view-owned point uniforms only after the camera has entered the tree.
+	set_hour(hour)
 
 
 func _process(dt: float) -> void:
@@ -150,6 +157,9 @@ func set_hour(h: float) -> void:
 	hour = h
 	if _env == null:
 		return
+	# The uniforms belong to the current view, including a menu after a game.
+	if is_inside_tree():
+		Gfx.update_pass_lights(get_tree(), camera.global_position if camera else global_position)
 	var ld := EISky.light_dir_ei(h)
 	var gd := EISpace.vec(ld).normalized()
 	if not Portability.held_sun():

@@ -95,6 +95,8 @@ var join_password := ""
 var lan: LanDiscovery
 var _lan_sel := -1          # the selected LAN game (index into _lan_list)
 var _lan_list: Array = []   # the LAN games as drawn last (LanDiscovery.list)
+var _sort_column := 0       # Name / players / base id / ping (native modes1..8)
+var _sort_descending := false
 
 var _dim: Interface800.Backdrop
 var _board: InterfaceBoard
@@ -112,6 +114,7 @@ var _book_sel := -1
 var _book_top := 0
 var _book_drag := false
 var _targets := {}           # id -> Rect2 (800 units) of what was drawn last
+var _internet: Control
 
 
 func _ready() -> void:
@@ -130,6 +133,14 @@ func _ready() -> void:
 	lan = LanDiscovery.new()
 	lan.name = "LanDiscovery"
 	add_child(lan)
+	_internet = preload("res://src/ui/internet_panel.gd").new()
+	add_child(_internet)
+	_internet.chosen.connect(func(g: Dictionary):
+		address = String(g.address)
+		_lan_sel = -1
+		_book_sel = -1
+		_ask_password(g))
+	_internet.closed.connect(func(): grab_focus(); queue_redraw())
 	add_to_group("pad_panel")   # remake: gamepad snap targets (pad_targets, pad_press)
 
 
@@ -398,6 +409,8 @@ func _start_title() -> String:
 
 func _draw() -> void:
 	_targets.clear()
+	if _internet and _internet.visible:
+		return
 	# The last connection message (the original's status rect, the screen's width).
 	text(Rect2(0, 0, 800, 20), status, 2, TEXT)
 	if upnp_text and hosting and page in [HOST_COOP, HOST_LMP]:
@@ -407,6 +420,8 @@ func _draw() -> void:
 	else:
 		_draw_page()
 	_draw_buttons()
+	if page in [HOST_COOP, HOST_LMP, JOIN_COOP, JOIN_LMP]:
+		_plate("internet", Rect2(620, 506, 120, 19), RemakeText.t("Internet games"), not joining)
 	_draw_pad_glyphs()
 
 
@@ -631,7 +646,12 @@ func _draw_join_low() -> void:
 	var items := _items()
 	var lan_on := _lan_on()
 	if lan_on:
-		for c: Array in _columns():
+		var columns := _columns()
+		for i in columns.size():
+			var c: Array = columns[i]
+			_targets["sort:%d" % i] = Rect2(c[0], y, c[1], 20)
+			if _hover == "sort:%d" % i and not joining:
+				draw_rect(r8(_targets["sort:%d" % i]), HOVER_BAR)
 			text(Rect2(c[0], y, c[1], 20), String(c[2]), 1, ORANGE, c[3])
 		var ly := br.position.y - 3
 		draw_line(p8(Vector2(br.position.x, ly)), p8(Vector2(br.end.x - 14, ly)), Color(ORANGE, 0.6), maxf(1.0, round(kv().y)))
@@ -745,7 +765,54 @@ func _items() -> Array:
 	for k in _lan_list.size():
 		if not booked.has(String(_lan_list[k].address)):
 			lans.append({"kind": "lan", "i": k, "address": String(_lan_list[k].address), "g": _lan_list[k]})
-	return lans + out
+	var items := lans + out
+	items.sort_custom(_sort_before)
+	return items
+
+
+## FUN61c6c0 cases6..9 toggle native modes1/2,3/4,5/6,7/8.
+## The comparator (FUN61f080 / 61f8f0) uses case-sensitive name, player
+## count, numeric base id, or ping. Offline recent addresses stay below the
+## responding games in the remake's combined list.
+func _sort_before(a: Dictionary, b: Dictionary) -> bool:
+	var ga: Dictionary = a.g
+	var gb: Dictionary = b.g
+	if ga.is_empty() != gb.is_empty():
+		return not ga.is_empty()
+	if ga.is_empty():
+		return int(a.i) < int(b.i)
+	var av: Variant
+	var bv: Variant
+	match _sort_column:
+		0:
+			av = String(ga.name)
+			bv = String(gb.name)
+		1:
+			av = int(ga.players)
+			bv = int(gb.players)
+		2:
+			av = _base_number(ga)
+			bv = _base_number(gb)
+		_:
+			av = int(ga.ping)
+			bv = int(gb.ping)
+	if av == bv:
+		return String(a.address) < String(b.address)
+	return av > bv if _sort_descending else av < bv
+
+
+func _base_number(g: Dictionary) -> int:
+	var i := LmpMode.BASES.find(String(g.get("base", ""))) if String(g.get("mode", "")) == "lmp" else -1
+	return i if i >= 0 else 4   # native unknown base; campaign is a remake addition
+
+
+func _sort_by(column: int) -> void:
+	if column < 0 or column > 3 or joining:
+		return
+	_sort_descending = not _sort_descending if column == _sort_column else false
+	_sort_column = column
+	_book_top = 0
+	queue_redraw()
 
 
 ## The game of the selected row, {} none (or a book entry nobody answered).
@@ -833,7 +900,10 @@ func _router_text() -> Array:
 	if upnp and upnp.busy:
 		return [RemakeText.t("Asking your router to open UDP port %d for friends on the internet…") % port, TEXT]
 	if upnp and upnp.mapped:
-		return [RemakeText.t("Your router opened the port: friends on the internet use the internet address."), GREEN]
+		if not UpnpPort.public_address(upnp.external_ip):
+			return [RemakeText.t("The router reports a private external address. Direct internet hosting needs a public address from your provider or a VPN such as ZeroTier."), ORANGE] if upnp.external_ip \
+				else [RemakeText.t("No public Internet address") + ". " + RemakeText.t("Local addresses work on the same network or VPN. Friends elsewhere need the Internet address."), ORANGE]
+		return [RemakeText.t("Local addresses work on the same network or VPN. Friends elsewhere need the Internet address."), GREEN]
 	if GameData.option("net_upnp") != 1 or upnp == null or upnp.status.is_empty():
 		return [RemakeText.t("Friends on your home network use the LAN address. For the internet, forward UDP port %d on your router to this device by hand (automatic router setup is off).") % port, TEXT]
 	return [RemakeText.t("Your router did not open the port. Friends on your home network can still join with the LAN address; for the internet, forward UDP port %d on your router by hand, or try the IPv6 address.") % port, ORANGE]
@@ -861,18 +931,17 @@ func _switch_text() -> String:
 		+ " " + RemakeText.t("To choose another, disconnect, choose it here and join again.")
 
 
-## Remake: [address, kind] pairs to give friends while hosting — the first
-## private IPv4 LAN address, the router's external one (UPnP / NAT-PMP / PCP,
-## with the port it gave) and a global IPv6 address, with the port.
+## [address, kind] pairs. Public router address first: the LAN address is
+## only reachable on that LAN / VPN and must not be suggested for Internet play.
 func _share_addresses() -> Array:
 	var port := host_port if host_port > 0 else Session.PORT
 	var out := []
-	var lan := UpnpPort.lan_ipv4()
-	if lan:
-		out.append(["%s:%d" % [lan, port], RemakeText.t("LAN")])
-	if upnp and upnp.mapped and upnp.external_ip:
+	if upnp and upnp.mapped and UpnpPort.public_address(upnp.external_ip):
 		out.append([UpnpPort._join_text(upnp.external_ip, upnp.external_port if upnp.external_port > 0 else port),
 			RemakeText.t("Internet")])
+	var lan := UpnpPort.lan_ipv4()
+	if lan:
+		out.append(["%s:%d" % [lan, port], RemakeText.t("LAN / VPN")])
 	var v6 := UpnpPort.global_ipv6()
 	if v6:
 		out.append(["[%s]:%d" % [v6, port], "IPv6"])
@@ -1059,7 +1128,7 @@ func _follow_hover() -> void:
 
 
 func _gui_input(e: InputEvent) -> void:
-	if not visible:
+	if not visible or (_internet and _internet.visible):
 		return
 	if e is InputEventMouseMotion:
 		var p := to800(e.position)
@@ -1112,6 +1181,10 @@ func _gui_input(e: InputEvent) -> void:
 			_primary()
 	elif h == "cancel":
 		go_back()
+	elif h == "internet" and not joining:
+		_internet.open(page in [HOST_COOP, HOST_LMP], _web(), _dim.texture.get_image() if _dim.texture else null)
+	elif h.begins_with("sort:"):
+		_sort_by(h.trim_prefix("sort:").to_int())
 	elif h.begins_with("mode:"):
 		var pg := PAGE_NAMES.find(h.trim_prefix("mode:"))
 		if _mode_off(pg).is_empty():
@@ -1182,7 +1255,7 @@ func _gui_input(e: InputEvent) -> void:
 
 
 func _unhandled_key_input(e: InputEvent) -> void:
-	if not is_visible_in_tree() or not (e is InputEventKey) or not e.pressed:
+	if not is_visible_in_tree() or (_internet and _internet.visible) or not (e is InputEventKey) or not e.pressed:
 		return
 	var k := e as InputEventKey
 	if k.keycode == KEY_V and (k.ctrl_pressed or k.meta_pressed):

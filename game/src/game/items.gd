@@ -55,16 +55,16 @@ static func info(id: String) -> Dictionary:
 ## reads prototype, which the record reader fills
 ## field 0x12 = texture_type (the 19th spell_prototypes column).
 static func look(id: String) -> Dictionary:
-	if id.begins_with("spell:") or id.begins_with("rune:"):
+	if is_spell_piece(id):
 		var n := -1
-		if id.begins_with("spell:"):
-			n = int(Spells.parse(id.substr(6)).proto.get("texture_type", -1))
+		if is_spell_container(id) or is_keystone(id):
+			n = int(Spells.parse(spell_code(id)).proto.get("texture_type", -1))
 		else:
 			var mods := GameData.db.table("spell_modifiers")
 			for k in mods.size():
 				if String(mods[k].get("code", "")).to_lower() == id.substr(5):
 					n = k
-		var tex := ("prototype%04d" if id.begins_with("spell:") else "modifier%04d") % n
+		var tex := ("modifier%04d" if id.begins_with("rune:") else "prototype%04d") % n
 		return {"model": "initqi1item", "texture": tex} if n >= 0 and GameData.has_figure("initqi1item.fig") else {}
 	if id.begins_with("bp:"):
 		var r := blueprint_row(id)
@@ -76,7 +76,10 @@ static func look(id: String) -> Dictionary:
 				else ["hl", "pl", "lg", "sh", "pt", "bt", "gl"]
 			var t := "%s_%02d.%d" % [codes[int(r.row.get("type_id", 0))], int(r.row.get("texture1", 0)),
 				int(r.row.get("texture2", 0))]
-			return {"model": l.model, "texture": t} if GameData.textures.has(t + ".mmp") else l
+			#  always selects the authored plain prototype skin
+			# a missing skin is not a ready-item redress layer. The native UI
+			# refuses a figure whose explicit texture cannot be loaded.
+			return {"model": l.model, "texture": t}
 		return look(id.substr(3))
 	var i := info(plain(id))
 	if i.base == "material" and not i.mat.is_empty():
@@ -211,7 +214,7 @@ static func is_broken(id: String) -> bool:
 ## a spell on an item.
 static func can_enchant(id: String, spell: String) -> bool:
 	var p := Spells.parse(spell)
-	if p.proto.is_empty() or spell_of(id) != "" or id.begins_with("spell:") or id.begins_with("rune:"):
+	if p.proto.is_empty() or spell_of(id) != "" or is_spell_piece(id):
 		return false
 	var k := kind(id)
 	if not k in ["weapon", "armor", "quick"]:
@@ -236,15 +239,22 @@ static func from_spec(s: String) -> Array:
 	s = s.strip_edges().to_lower()
 	var b := s.find("[")
 	if b < 0:
-		return [s, 1]
+		return [_native_spell_item(s), 1]
 	var inner := s.substr(b + 1).trim_suffix("]").strip_edges()
 	var base := s.substr(0, b).strip_edges()
+	#  creates a3008 container from its bracketed spell code.
+	if base == "spell container":
+		return ["spell:" + inner.replace(" ", ""), 1]
 	if inner.is_valid_int():
-		return [base, maxi(1, inner.to_int())]
+		return [_native_spell_item(base), maxi(1, inner.to_int())]
 	return [base + "|" + inner.replace(" ", ""), 1]
 
 
 static func parse_stack(s: String) -> Array:
+	var native := s.strip_edges().to_lower()
+	if native.begins_with("prototype.") or native.begins_with("modifier.") \
+			or native.begins_with("spell container[") or native.begins_with("spell container ["):
+		return from_spec(s)
 	s = s.strip_edges()
 	var n := 1
 	var b := s.find("[")
@@ -252,6 +262,33 @@ static func parse_stack(s: String) -> Array:
 		n = maxi(1, s.substr(b + 1).to_int())
 		s = s.substr(0, b).strip_edges()
 	return [s.to_lower(), n]
+
+
+## Native loot3007/2/3 and ready spell3008 remain distinct even with no runes.
+## Legacy spell: IDs always keep their container semantics.
+static func is_keystone(id: String) -> bool:
+	return id.begins_with("keystone:")
+
+
+static func is_spell_container(id: String) -> bool:
+	return id.begins_with("spell:")
+
+
+static func is_spell_piece(id: String) -> bool:
+	return is_spell_container(id) or is_keystone(id) or id.begins_with("rune:")
+
+
+static func spell_code(id: String) -> String:
+	return id.substr(9) if is_keystone(id) else id.substr(6) if is_spell_container(id) else ""
+
+
+static func _native_spell_item(id: String) -> String:
+	#  dot fields select the Prototype/Modifier loot subtype.
+	if id.begins_with("prototype."):
+		return "keystone:" + id.substr(10)
+	if id.begins_with("modifier."):
+		return "rune:" + id.substr(9)
+	return id
 
 
 static func split_list(v) -> PackedStringArray:
@@ -265,6 +302,10 @@ static func split_list(v) -> PackedStringArray:
 
 
 static func kind(id: String) -> String:
+	if is_spell_container(id):
+		return "spell"
+	if is_keystone(id):
+		return "keystone"
 	if id.begins_with("rune:"):
 		return "rune"
 	if id.begins_with("bp:"):
@@ -293,8 +334,8 @@ static func title(id: String) -> String:
 		return title(unworn(id))
 	if "|" in id:
 		return "%s [%s]" % [title(plain(id)), Spells.title(spell_of(id)).get_slice(" (", 0)]
-	if id.begins_with("spell:"):
-		return RemakeText.t("Spell: ") + Spells.title(id.substr(6))
+	if is_spell_container(id) or is_keystone(id):
+		return RemakeText.t("Spell: ") + Spells.title(spell_code(id))
 	if id.begins_with("rune:"):
 		return RemakeText.t("Rune: ") + Spells.mod_title(id.substr(5))
 	if id.begins_with("bp:"):
@@ -325,7 +366,16 @@ static func title(id: String) -> String:
 ##  takes the first line as the name, the rest).
 static func flavor(id: String) -> String:
 	id = plain(unworn(id))
-	if id.begins_with("spell:") or id.begins_with("rune:") or id.begins_with("bp:"):
+	if id.begins_with("bp:"):
+		#  loot mode 2 uses "instr <prototype>", including
+		# its description, rather than the completed item's material text.
+		var bp := info(id.substr(3))
+		var text := GameData.text("instr " + String(bp.base).replace(" ", "_"))
+		var lines := Array(text.split("\n")).map(func(x): return String(x).strip_edges())
+		if not lines.is_empty():
+			lines.pop_front()
+		return " ".join(lines.filter(func(x): return x != "")).strip_edges()
+	if is_spell_piece(id):
 		return ""
 	var i := info(id)
 	var key_base := String(i.base).replace(" ", "_")
@@ -365,6 +415,7 @@ static func type_text(id: String) -> String:
 		"loot": key = "item_loot"
 		"quest": key = "item_quest"
 		"rune": key = "item_modifier"
+		"keystone": key = "item_prototype"
 		"blueprint": return blueprint_kind(id)
 	if id.begins_with("spell:"):
 		key = "item_spell"
@@ -397,9 +448,9 @@ static func log_text(id: String, count := 1) -> String:
 ## 2/4) «modifier <name>». Money is not an item (own line).
 static func log_name(id: String) -> String:
 	id = unworn(id)
-	if id.begins_with("spell:"):
-		var t := GameData.text("spell " + String(Spells.parse(id.substr(6)).code)) if GameData.texts else ""
-		return t.get_slice("\n", 0).strip_edges() if t else Spells.title(id.substr(6))
+	if is_spell_container(id) or is_keystone(id):
+		var t := GameData.text("spell " + String(Spells.parse(spell_code(id)).code)) if GameData.texts else ""
+		return t.get_slice("\n", 0).strip_edges() if t else Spells.title(spell_code(id))
 	if id.begins_with("rune:"):
 		return Spells.mod_title(id.substr(5))
 	if id.begins_with("bp:"):
@@ -449,7 +500,7 @@ static func deal_price(id: String, mode: int) -> int:
 
 
 static func _spellish(id: String) -> bool:
-	return id.begins_with("spell:") or id.begins_with("rune:")
+	return is_spell_piece(id)
 
 
 static func buy_price(id: String) -> int:
@@ -584,9 +635,9 @@ static func weight(id: String) -> float:
 static func price(id: String) -> int:
 	if "@" in id:
 		return price(unworn(id))
-	if id.begins_with("spell:"):
+	if is_spell_container(id) or is_keystone(id):
 		# The spell builder adds every rune's price to the keystone's.
-		return maxi(1, int(float(Spells.parse(id.substr(6)).price)))
+		return maxi(1, int(float(Spells.parse(spell_code(id)).price)))
 	if id.begins_with("rune:"):
 		return maxi(1, int(float(Spells.mod_row(id.substr(5)).get("price", 100.0))))
 	if id.begins_with("bp:"):

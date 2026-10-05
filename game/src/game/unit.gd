@@ -7,12 +7,14 @@ signal died(unit: GameUnit)
 
 ## Models face EI -Y at rest; facing angle 0 means looking along EI +X.
 const MODEL_YAW_OFFSET := PI * 0.5
-const TURN_SPEED := 9.0         # rad/s
 const TICK := 0.055            # the original logic tick, seconds (= 55 ms)
+const ROTATE_SPEED_MULT := 100.0 # ai.reg RotateSpeedMult
+const MotionSpline = preload("res://src/game/nav_spline.gd")
 ## Path node speeds are in 0.5 m AI cells per logic tick (: one
 ## tick advances v cells), so a speed value v is v x 0.5 / TICK metres per second.
 const SPEED_SCALE := 0.5 / TICK
 const ARRIVE := 0.15
+const MeshScreenRect = preload("res://src/ui/mesh_screen_rect.gd")
 
 var world: GameWorld
 var uid := 0
@@ -69,6 +71,27 @@ var fogged := false   # out of this player's sight (UnitFog, client-side only)
 var orders: Array[Dictionary] = []
 var order := {}
 var path := PackedVector2Array()
+## The active motion consumes at most32 cells. The last cell
+## is the first of the next chunk; the full remaining record stays available
+## for future-position queries and the owner's path notification.
+var _planned_motion := {}
+var _motion_public_first := -1  # unchanged immutable remaining-cell suffix
+var _motion_public_view := PackedVector2Array()
+var _motion: MotionSpline
+var _motion_cells: Array[Vector2i] = []
+var _motion_values := PackedInt32Array()
+var _motion_path := PackedVector2Array()
+var _motion_goal := Vector2.ZERO
+var _motion_offset := 0
+var _motion_tick := 0.0
+var _motion_base := 0.0
+var _motion_turn := 0.0
+var _motion_count := 0
+## Draw-only use of the motion most recently accepted by the logic walker.
+## A blocked / stopped unit cannot be extrapolated along its old path.
+var _draw_motion_active := false
+var _draw_line_goal := Vector2.INF
+var _remote_move_speed := false
 var running := true
 ## Gait run, the original unit == 3 (0 crawl, 1 kneel, 2 walk, 3 run; the
 ## crawl / kneel values are `stance`). Per unit: the HUD dial and keys send it
@@ -102,6 +125,12 @@ var strike_miss := false
 var _attack_cd := 0.0
 var _repath := 0.0
 var _anim_lock := 0.0
+## Native village talk checks the creature's current command
+## (Stop 0 or Rest 11) and posted command (empty 9),.
+## This is independent of the AI motivation, held Follow and stance clips.
+var _talk_command := 0
+var _talk_posted := 9
+var _talk_remote_ready := true
 var _pending_hit := {}
 var _step_dist := 0.0
 var _last_pos := Vector2.ZERO
@@ -130,12 +159,15 @@ var resting := false:
 		if v != resting:
 			resting = v
 			_pose_dirty = true
+			if resting and _talk_command == 0 and order.is_empty():
+				_talk_command = 11
 var buffs := {}             # name -> {until, dmg_mul?, hp_mul?, actions_add?, regen_mul?, no_cast?, detect?, sense?, resist?, armor?}
 
 # --- body and movement (the original unit radius; NavGrid stamps)
 ## 0.9 x the larger horizontal half-extent of the figure's bounding box
 ## (over figure, set).
 var figure_radius := 0.5
+var _radius_base := 0.5
 ## Half the figure's z extent (figure; idle pose).
 var figure_half_z := 0.9
 ## Movement classes crawling / kneeling / standing (figure).
@@ -151,10 +183,22 @@ var _trk_pos := Vector2.INF  # NavGrid.track_unit's last call: position, (_seq, 
 var _trk_key := -1
 var _trk_r := 0.0
 var _avoid: GameUnit         # slower mover to path round
+var _path_limit := 1000000.0
+var _plan_blocks := -1
+var _plan_path := PackedVector2Array()
+var _avoid_at := Vector2.INF
 var _fresh_path := false     # a path planned round a blocker (_avoid), no step taken on it yet
+var _wait_on: WeakRef        # creature, shared-target blocker
+var _order_started_tick := -1000000 # last installed command, creature
 var _arrive_t := 0.0         # estimated arrival at the attack target (unit-AI)
 var _goal := Vector2.INF     # where the current attack path leads (unit-AI)
 var _follow_n := 0           # Follow check counter (AI; 0 at AI init)
+## Navigation's flat cost table (unit, initially 0).
+## A move samples its starting water cell once; an attack
+## approach sets it. Replans and AI spot tests keep that value.
+## Preliminary move / interaction searches temporarily override it without
+## changing the last order's value.
+var path_flat_cost := false
 
 # --- animation level of detail (remake rendering only, no game state)
 ## Units standing still out of view advance their animation in steps of this
@@ -182,14 +226,14 @@ var _pose_dirty := true     # part health / figure changed (_set_action's idle s
 var _idle_key := []
 var _anim_acc := 0.0
 var _anim_due := 0.0
-## The figure's animation runs on the game clock (the physics steps that move
-## the unit and count its _anim_lock), not on the frame clock: when frames
-## take longer than the engine catches up with (max_physics_steps_per_frame),
-## the game runs slower than real time, and a clip played by frame time ended
-## on screen while its lock still held the unit's orders (the web build's
-## first zone: Zak stood up, then ignored orders for many seconds).
+## The figure and its action lock share the completed game clock. Real-time
+## authority draws at the world's native tick+fraction; deterministic tools
+## and snapshot clients retain their physics clock. Raw frame delta would
+## let a clip finish on screen while its authoritative lock still held orders.
 var _game_clock := 0.0
 var _anim_clock := -1.0
+var _frame_drawing := false
+var _frame_priority_set := false
 ## The cast clip's hold (_cast_anim): clip "ei/<name>", stopped at _hold_pos
 ## seconds into it for _hold_left more seconds of game time; a flier's cast
 ## clip waits _pre_left seconds instead.
@@ -200,9 +244,10 @@ var _pre_left := 0.0
 var _pre_clip := ""
 var _anim_pos := Vector2.INF
 var _anim_moving := 0.0
-## Ground speed (m/s) over the last physics step, of the drawn position on a
-## co-op client: the walk / run clips' playback rate follows it (_anim_rate).
+## The native spline's tangent length × node speed, in m/s. Clients receive
+## this scalar; older snapshots retain their drawn-displacement fallback.
 var _move_speed := 0.0
+var _draw_move_speed := 0.0
 var _speed_from := Vector2.INF
 var _drawn := Vector2.ZERO
 ## Shown in the unit panel, whose figure mirrors this pose: full animation rate.
@@ -259,54 +304,36 @@ func setup(w: GameWorld, record: Dictionary) -> bool:
 	return true
 
 
-## The figure's box (figure..) and what the original
-## derives from it: the radius (: 0.9 x the larger horizontal
-## half-extent) and the three movement classes. A character
-## (race type 0x32) gets the horizontal half-extents 0.5 / 0.5 whatever its
-## parts, so its radius is 0.45. Approx.: the box is measured
-## over the meshes in the idle pose (the original sums the parts' boxes and offsets
-## as loaded; the pose is not known; the rest pose holds the arms out).
+##  5304a0 / 552fb0: use the authored FIG boxes at the
+## loaded part origins. Render vertices, empty parts and part rotation do
+## not replace the header geometry used by native movement classes.
 func _measure_figure() -> void:
-	var box := AABB()
-	var first := true
-	for mi: MeshInstance3D in model.find_children("*", "MeshInstance3D", true, false):
-		if mi.mesh == null or not mi.visible:
-			continue
-		var b := NavGrid._local_xf(mi, model) * mi.mesh.get_aabb()
-		box = b if first else box.merge(b)
-		first = false
-	var character := int(race.get("type_id", 0)) == 0x32
-	if character:
-		figure_radius = 0.45
-	else:
-		figure_radius = 0.5 if first else maxf(box.size.x, box.size.z) * 0.5 * 0.9
-	# width = |(x, y)| of the max corner of the "bd" (else
-	# "chest") part's box, x 2 for the spider (type 0x33
-	# "unmosp"); height = the figure box's height x race field 0x2e (
-	# the database's "head_height"), at most 1.89 for characters.
+	var raw := EIFigureGeometry.of(model)
+	var character := int(race.get("type_id",0)) == 0x32
+	if raw.is_empty():
+		figure_radius = 0.45 if character else 0.5
+		_radius_base = figure_radius
+		figure_half_z = 0.9
+		_classes = [1,2,3]
+		return
+	_radius_base = (0.5 if character else maxf(raw.max.x,raw.max.y))*0.8999999761581421
+	figure_radius = PackedFloat32Array([_radius_base])[0]
+	figure_half_z = float(raw.max.z)
+	if int(race.get("locomotion",1)) == 2:
+		_classes = [0,0,0]
+		return
 	var width := 0.0
-	var part: Node3D = model.find_child("bd", true, false)
-	if part == null:
-		part = model.find_child("chest", true, false)
-	if part:
-		var pb := AABB()
-		var pfirst := true
-		for mi: MeshInstance3D in part.find_children("*", "MeshInstance3D", false, false):
-			if mi.mesh == null:
-				continue
-			var b := mi.transform * mi.mesh.get_aabb()
-			pb = b if pfirst else pb.merge(b)
-			pfirst = false
-		if not pfirst:
-			# EI x = Godot x, EI y = -Godot z: the max corner is (end.x, -position.z).
-			width = Vector2(pb.end.x, -pb.position.z).length()
-			if int(race.get("type_id", 0)) == 0x33 and model.template.to_lower() == "unmosp":
-				width *= 2.0
-	figure_half_z = box.size.y * 0.5 if not first else 0.9
-	var height := (box.size.y if not first else 1.8) * float(race.get("head_height", 1.0))
-	if character:
-		height = minf(height, 1.89)
-	_classes = [_class_of(width, height * 0.2), _class_of(width, height * 0.6), _class_of(width, height)]
+	var part: Node3D = model.find_child("bd",true,false)
+	if part == null: part = model.find_child("chest",true,false)
+	if part and part.has_meta(EIFigureGeometry.META):
+		var g: Dictionary = part.get_meta(EIFigureGeometry.META)
+		var hi: Vector3 = g.max
+		width = sqrt(float(hi.x)*hi.x+float(hi.y)*hi.y)
+		if int(race.get("type_id",0)) == 0x33 and model.template == "unmosp": width *= 2.0
+	width = PackedFloat32Array([width])[0]
+	var height := figure_half_z*2.0*float(race.get("head_height",1.0))
+	if character: height = minf(PackedFloat32Array([height])[0],1.8899999856948853)
+	_classes = [_class_of(width,height*0.20000000298023224),_class_of(width,height*0.6000000238418579),_class_of(width,height)]
 
 
 ## Movement class of a body: width <= 0.85: height < 0.6 -> 1
@@ -315,13 +342,13 @@ func _measure_figure() -> void:
 static func _class_of(width: float, height: float) -> int:
 	if width > 1.5:
 		return 7
-	if width > 0.85:
-		return 5 if height <= 1.7 else 6
-	if height < 0.6:
+	if width > 0.8500000238418579:
+		return 5 if height <= 1.7000000476837158 else 6
+	if height < 0.6000000238418579:
 		return 1
-	if height < 1.2:
+	if height < 1.2000000476837158:
 		return 2
-	return 3 if height < 1.9 else 4
+	return 3 if height < 1.8999999761581421 else 4
 
 
 ## The unit's movement class, unit: by posture
@@ -341,8 +368,28 @@ func _order_target() -> GameUnit:
 ## Body radius, the original unit: the figure radius, + 0.2
 ## for a player's unit (set), at most 2. Units keep the centres
 ## others this far plus their own radius apart (NavGrid.step_blocker).
+var _radius_cached_base := NAN
+var _radius_cached_party := false
+var _radius_cached_high := false
+var _radius_cached_value := 0.0
+
 func body_radius() -> float:
-	return minf(2.0, figure_radius + (0.2 if controller >= 0 else 0.0))
+	var party_unit := controller >= 0
+	var high := move_class() == 0 and float(proto.get("altitude",0.0)) > 1.5
+	if _radius_cached_base == _radius_base and _radius_cached_party == party_unit and _radius_cached_high == high:
+		return _radius_cached_value
+	_radius_cached_base = _radius_base
+	_radius_cached_party = party_unit
+	_radius_cached_high = high
+	_radius_cached_value = 0.009999999776482582 if high else \
+		float(PackedFloat32Array([minf(2.0, _radius_base + (0.20000000298023224 if party_unit else 0.0))])[0])
+	return _radius_cached_value
+
+
+##  stores the use radius separately from the
+## movement radius; the party's extra0.2 does not enter it.
+func use_radius() -> float:
+	return PackedFloat32Array([figure_radius + 0.05000000074505806])[0]
 
 
 ## Melee striking distance to `t`, centre to centre in the ground plane
@@ -731,11 +778,14 @@ func command(o: Dictionary, queue := false) -> void:
 		return
 	if not queue:
 		_keep_path(o)
+		_wait_on = null
 		orders.clear()
 		order = {}
 		path = PackedVector2Array()
 	if o.get("type", "") != "wait":
 		order_failed = false   # cleared by a new order
+	if orders.is_empty():
+		_talk_posted = _talk_order_command(o)
 	orders.append(o)
 
 
@@ -761,12 +811,33 @@ func move_to(p: Vector2, run := true, queue := false) -> void:
 
 ## `aim` = body part for an aimed strike (0 head .. 5 left leg), -1 = random.
 ## `run`: the double-click flag (see Session._double_stand).
-func attack(t: GameUnit, queue := false, aim := -1, run := false) -> void:
-	command({"type": "attack", "target": t, "aim": aim, "run": run}, queue)
+func attack(t: GameUnit, queue := false, aim := -1, run := false, path_notice := false) -> void:
+	command({"type": "attack", "target": t, "aim": aim, "run": run, "path_notice": path_notice}, queue)
 
 
 func is_idle() -> bool:
 	return order.is_empty() and orders.is_empty() and _anim_lock <= 0.0
+
+
+## The original village dialogue gate, not the simulation's is_idle().
+## A scripted animation is command 10; an idle stance-cross remains Stop.
+func village_talk_ready() -> bool:
+	if world != null and not world.authority:
+		return _talk_remote_ready
+	return _talk_command in [0, 11] and _talk_posted == 9
+
+
+static func _talk_order_command(o: Dictionary) -> int:
+	match String(o.get("type", "")):
+		"move": return 1
+		"rotate": return 2
+		"attack": return 3
+		"cast": return 4
+		"use": return 6
+		"anim": return 10
+		"wait": return 2 if o.has("face") else 0
+		"follow": return 1 if o.get("once", false) else 0
+	return 0
 
 
 ## Metres per second (moves along the path spline at the node
@@ -776,25 +847,33 @@ func is_idle() -> bool:
 ##  25.5, the bytes packed (race speed x 255/2
 ## tuning_move x the legs' wound factor x 25.5). The terrain
 ## factor: NavGrid.step_factor into the next cell. No spell
-## enters it. Approx.: sampled each frame from the unit's cell to the next
-## along its heading (the original stores one value per path node); the turning
-## cap (rate scale unknown) is not applied.
+## enters it. Motion keeps one terrain / slope factor per native path node.
 func speed() -> float:
+	return _move_base() * SPEED_SCALE
+
+
+##  packs the gait and legs' wound multiplier into bytes. Walk
+## postures use the running base for rotation, while their translation walks.
+func _move_base(for_turn := false) -> float:
+	if not world or not world.profile_simulation: return _move_base_profile_body(for_turn)
+	var started := Time.get_ticks_usec()
+	var result := _move_base_profile_body(for_turn)
+	world.profile_record("unit_move_base",started,uid)
+	return result
+
+
+func _move_base_profile_body(for_turn := false) -> float:
 	var s: Array = race.get("speeds", [0.4, 0.16])
 	# race speeds: run, walk, sneak, crawl
 	# no running while carrying more than the maximum load.
 	var v: float = s[0] if running and not cannot_run() else s[1]
 	if stance != STANCE_NONE and s.size() >= 4:
 		v = s[2] if stance == STANCE_KNEEL else s[3]
+	elif for_turn:
+		v = float(s[0])
 	var sb := mini(255, _fistp(v * 255.0 / 2.0))
 	var fb := mini(255, _fistp(float(proto.get("tuning_move", 1.0)) * wound_factor(3) * 25.5))
-	var base := sb * 2.0 / 255.0 * fb / 25.5
-	var mul := 1.0
-	if world and world.nav and not has_meta("flying") and not path.is_empty():
-		var d := path[0] - pos
-		if d.length() > 0.001:
-			mul = world.nav.step_factor(pos, pos + d.normalized() * NavGrid.CELL, move_class())
-	return base * SPEED_SCALE * mul
+	return sb * 2.0 / 255.0 * fb / 25.5
 
 
 ## x87 FISTP in its default mode: to the nearest integer, ties to even.
@@ -912,6 +991,21 @@ func damage_mul() -> float:
 # sight (%), 2 life, 3 hearing, 4 smell, 5 unused here. Magic effects fold in
 # per type (the strongest effect of each type counts).
 
+## The normal figure's eye point: half its
+## height x 1.8, then posture. Native stores each intermediate as float32.
+## Flying eye placement still uses the previous altitude approximation.
+func eye_z(posture := true) -> float:
+	var ground := world._stand_z(pos) if world else 0.0
+	if has_meta("flying") or (move_class() == 0 and float(proto.get("altitude", 0.0)) >= 0.5):
+		return ground + 1.5 * float(race.get("head_height", 1.0))
+	var half_z := float(PackedFloat32Array([figure_half_z])[0])
+	var offset := float(PackedFloat32Array([half_z * 1.7999999523162842])[0])
+	if posture and (dead or stance == STANCE_CRAWL):
+		offset = float(PackedFloat32Array([offset * 0.20000000298023224])[0])
+	elif posture and stance == STANCE_KNEEL:
+		offset = float(PackedFloat32Array([offset * 0.699999988079071])[0])
+	return float(PackedFloat32Array([ground + offset])[0])
+
 func sense(i: int) -> float:
 	var src: Array = Array(proto.get("senses", []))
 	var v := float(src[i]) if i < src.size() else (15.0 if i == 0 else 100.0 if i == 1 else 0.0)
@@ -971,8 +1065,10 @@ func hear_factor() -> float:
 ## Own sight factor: 1 - dark + dark x night sight / 100, where dark is
 ## the world's darkness (0 by day). Units with night sight 100 see as by day.
 func sight_factor() -> float:
-	var dark := 1.0 - world.daylight() if world else 0.0
-	return 1.0 - dark + dark * sense(1) / 100.0
+	var dark := world.darkness() if world else 0.0
+	var weather := world.weather_sight_factor() if world else 1.0
+	# The native crawling multiplier is exactly 1.0.
+	return float(PackedFloat32Array([(1.0 - dark + dark * sense(1) * 0.009999999776482582) * weather])[0])
 
 
 ## Feeblemind refuses spell-casting orders.
@@ -999,13 +1095,21 @@ func actions() -> float:
 # ------------------------------------------------------------------ simulation
 
 func tick(dt: float) -> void:
+	var started := Time.get_ticks_usec() if world.profile_simulation else 0
 	_moving = false
+	_move_speed = 0.0
+	_draw_motion_active = false
+	_draw_line_goal = Vector2.INF
 	if not dead:
 		_tick(dt)
+	world.profile_record("unit_logic",started,uid)
+	started = Time.get_ticks_usec() if world.profile_simulation else 0
 	world.nav.track_unit(self)
+	world.profile_record("unit_stamp",started,uid)
 
 
 func _tick(dt: float) -> void:
+	var started := Time.get_ticks_usec() if world.profile_simulation else 0
 	# the original runs its logic in 55 ms ticks. Every 15 ticks
 	#  health gains max x race "health regen" x (1 + vitality/100)
 	# and stamina max x race "mana regen" x (1 + spirit/100), stamina only while
@@ -1024,6 +1128,11 @@ func _tick(dt: float) -> void:
 	if has_meta("hero") and action == "run":
 		mana = maxf(0.0, mana - max_mana / 150.0 * dt / TICK)
 	_attack_cd -= dt
+	# Native54d960 compares integer ticks, including equality. Do not let
+	# repeated55ms subtraction retain a positive floating-point remainder.
+	# Negative elapsed deadlines remain negative for attack prediction.
+	if absf(_attack_cd) <= 0.000000001:
+		_attack_cd = 0.0
 	if not buffs.is_empty():
 		for b in buffs.keys():
 			if world.time >= float(buffs[b].until):
@@ -1039,9 +1148,13 @@ func _tick(dt: float) -> void:
 		# . Like enlarge / shrink it only shows.
 	if not _pending_hit.is_empty():
 		_pending_hit.t -= dt
-		if _pending_hit.t <= 0.0:
-			_resolve_hit(_pending_hit.target, _pending_hit.get("roll", {}))
+		# Native549160 completes when the integer end counter is reached.
+		if _pending_hit.t <= 0.000000001:
+			var hit_target = _pending_hit.get("target")
+			if is_instance_valid(hit_target) and hit_target is GameUnit:
+				_resolve_hit(hit_target, _pending_hit.get("roll", {}))
 			_pending_hit = {}
+	world.profile_record("unit_housekeeping",started,uid)
 	# The perception of a Player-motivation unit runs on every AI tick, busy,
 	# walking or in a clip: the noticed list the
 	# engage check reads (UnitAI.player_perceive).
@@ -1051,21 +1164,29 @@ func _tick(dt: float) -> void:
 	if _anim_lock > 0.0:
 		_anim_lock -= dt
 		return
+	if _talk_command == 10 and order.is_empty():
+		_talk_command = 11 if resting else 0
 	if resting and not (order.is_empty() and orders.is_empty()):
 		resting = false   # a new order ends the Rest order (0xb)
 	if order.is_empty():
 		if orders.is_empty():
+			_talk_command = 11 if resting else 0
+			_talk_posted = 9
 			if world.time >= ai_next:
 				world.ai.think(self)
 			if orders.is_empty():
 				_set_action("idle")
 				return
 		order = orders.pop_front()
+		_order_started_tick = roundi(world.time / TICK)
+		_wait_on = null
 		path = PackedVector2Array()
 	elif controller < 0 and world.time >= ai_next and order.get("calm", false):
 		world.ai.think(self)   # a calm motivation's walk: the AI keeps choosing
 		if order.is_empty() and not orders.is_empty():
 			order = orders.pop_front()
+			_order_started_tick = roundi(world.time / TICK)
+			_wait_on = null
 			path = PackedVector2Array()
 	elif controller < 0 and world.time >= ai_next and not order.get("ai", false) and world.ai.calm_tick(self):
 		return   #  cast a buff / heal over the calm walk
@@ -1074,14 +1195,20 @@ func _tick(dt: float) -> void:
 	elif controller >= 0 and order.get("type", "") == "follow" and not order.get("once", false) \
 			and world.ai.follow_engage(self):
 		return   # F order (Player motivation state 6): engages while following
+	_talk_command = _talk_order_command(order)
+	_talk_posted = 9
 	match order.type:
 		"move": _do_move(dt)
 		"attack": _do_attack(dt)
-		"follow": _do_follow(dt)
+		"follow":
+			_do_follow(dt)
+			# Follow is an AI state: only its actual move is command 1.
+			_talk_command = 1 if order.get("once", false) or order.has("walk") else 0
 		"wait":
 			_set_action("idle")
 			if order.has("face") and not _turn_to(float(order.face), dt):
 				return
+			_talk_command = 0
 			order.t = float(order.get("t", 1.0)) - dt
 			if order.t <= 0.0:
 				order = {}
@@ -1091,11 +1218,15 @@ func _tick(dt: float) -> void:
 			action = "anim:" + String(order.name)
 			order = {}
 		"rotate":
-			if _turn_to(float(order.angle), dt):
+			if _turn_to(float(order.angle), dt, float(order.get("turn_speed", 0.0))):
 				order = {}
 		"cast": _do_cast(dt)
 		"use": _do_use(dt)
 		_: order = {}
+	if order.is_empty() and _anim_lock <= 0.0:
+		_talk_command = 11 if resting else 0
+	if not orders.is_empty():
+		_talk_posted = _talk_order_command(orders[0])
 
 
 ## The use action, order type 6 (the original
@@ -1249,6 +1380,18 @@ func _play_clip(clip: String) -> float:
 
 
 func _do_move(dt: float) -> void:
+	if not world or not world.profile_simulation:
+		_do_move_profile_body(dt)
+		return
+	var started := Time.get_ticks_usec()
+	_do_move_profile_body(dt)
+	world.profile_record("unit_do_move",started,uid)
+
+
+func _do_move_profile_body(dt: float) -> void:
+	if not order.has("cost_started"):
+		path_flat_cost = world.nav.cell_wet(pos)
+		order.cost_started = true
 	# A player's move order runs by the unit's gait (: == 3)
 	# or its double-click flag (standing only); script / AI moves
 	# carry their own run flag.
@@ -1267,6 +1410,7 @@ func _do_move(dt: float) -> void:
 			path = _kept_path(order.to)
 		if path.is_empty():
 			path = _path_to(order.to)
+		motion_notice(order.to, 0)
 		if path.is_empty():
 			_fail_order(EIAcks.NO_PATH)
 			return
@@ -1282,7 +1426,7 @@ func _do_move(dt: float) -> void:
 ## ), but from a spot on an optimal path to the same goal that
 ## search finds the rest of the same path. **Approx.** (remake speed: such a
 ## search costs ~0.1 s here): kept only while the AI map is unchanged
-## (NavGrid.map_rev), for the same movement class and water state, not after
+## (NavGrid.map_rev), for the same movement class and stored cost table, not after
 ## a blocked step (a plan round a blocker is searched as before); units that
 ## came to stand on it since block the walk and make it plan then.
 var _kept := {}
@@ -1300,30 +1444,181 @@ func _keep_path(o: Dictionary) -> void:
 			or order.get("to") != o.get("to") or (_avoid != null and is_instance_valid(_avoid)):
 		return
 	_kept = {"to": o.to, "path": path, "pos": pos, "rev": world.nav.map_rev, "cls": move_class(),
-		"wet": world.nav.cell_wet(pos)}
+		"flat": path_flat_cost}
 
 
 func _kept_path(to: Vector2) -> PackedVector2Array:
 	var k := _kept
 	_kept = {}
 	if k.is_empty() or k.to != to or k.pos != pos or (_avoid != null and is_instance_valid(_avoid)) \
-			or int(k.rev) != world.nav.map_rev or int(k.cls) != move_class() or bool(k.wet) != world.nav.cell_wet(pos):
+			or int(k.rev) != world.nav.map_rev or int(k.cls) != move_class() or bool(k.flat) != path_flat_cost:
 		return PackedVector2Array()
 	return k.path
 
 
 ## A path to `to` for this unit: its own stamp and that of `t` (an attack
 ## target) lifted, and a unit it bumped into stamped (see NavGrid.find_path).
-## The search prices every open cell alike (the flat table, unit) for
-## an attack approach and for a unit standing
-## in water.
-## Approx.: is worked out per search, not kept from the last order.
-func _path_to(to: Vector2, t: GameUnit = null) -> PackedVector2Array:
-	var avoid := [_avoid] if _avoid and is_instance_valid(_avoid) else []
-	_avoid = null
-	return world.nav.find_path(pos, to, [self, t] if t else [self], avoid,
-		maxf(0.0, body_radius() - NavGrid.R_REF), move_class(),
-		t != null or world.nav.cell_wet(pos))
+## Unit-target interaction searches temporarily use the flat table; a plain
+## search keeps the last order's table. `flat_override` is for a preliminary
+## move search: the current wet cell, restored after the query.
+func _path_to(to: Vector2, t: GameUnit = null, flat_override := -1, limit := 1e6) -> PackedVector2Array:
+	var moving_at := _avoid_at
+	_avoid = null;_avoid_at = Vector2.INF
+	var found := world.nav.find_path(pos, to, [self, t] if t else [self], [], 0.0, move_class(),
+		bool(flat_override) if flat_override >= 0 else (t != null or path_flat_cost),NAN,limit,0.0,controller < 0,moving_at)
+	_path_limit = limit
+	_plan_blocks = world.nav.last_block_count
+	_plan_path = found
+	_planned_motion = world.nav.motion_record(pos, found, move_class(), has_meta("flying"))
+	_planned_motion.path = found
+	_planned_motion.from = pos
+	return found
+
+
+func _ensure_motion() -> bool:
+	if not world or not world.profile_simulation: return _ensure_motion_profile_body()
+	var started := Time.get_ticks_usec()
+	var result := _ensure_motion_profile_body()
+	world.profile_record("unit_ensure_motion",started,uid)
+	return result
+
+
+func _ensure_motion_profile_body() -> bool:
+	if path.is_empty():
+		_motion = null
+		return false
+	var base := _move_base()
+	var turn := _move_base(true) * ROTATE_SPEED_MULT
+	# A successful query resets the active record even when its remaining
+	# cells match (native5bb190 ->5c7d50/5c7b00). Its physical start and
+	# heading may have changed since this spline was built.
+	if _planned_motion.is_empty() and _motion != null and _motion_path == path \
+			and _motion_base == base and _motion_turn == turn:
+		return true
+	var record := _planned_motion
+	_planned_motion = {}
+	if record.is_empty() or record.get("path") != path or record.get("from") != pos:
+		record = world.nav.motion_record(pos, path, move_class(), has_meta("flying"))
+	_motion_cells.assign(record.get("cells", []))
+	_motion_values = record.get("values", PackedInt32Array())
+	_motion_goal = path[-1]
+	_motion_path = path
+	_motion_public_first = -1
+	_motion_public_view = PackedVector2Array()
+	_motion_offset = 0
+	_motion_base = base
+	_motion_turn = turn
+	_build_motion(pos, facing)
+	return _motion != null
+
+
+func _build_motion(from: Vector2, angle: float) -> void:
+	_motion_count = mini(32, _motion_cells.size() - _motion_offset)
+	_motion_tick = 0.0
+	if _motion_count <= 0:
+		_motion = null
+		return
+	var cells: Array[Vector2i] = []
+	cells.assign(_motion_cells.slice(_motion_offset, _motion_offset + _motion_count))
+	var end := _motion_goal if _motion_offset + _motion_count == _motion_cells.size() \
+		else NavGrid.center(cells[-1])
+	_motion = MotionSpline.new()
+	_motion.build(from, end, cells, _motion_values.slice(_motion_offset, _motion_offset + _motion_count),
+		_motion_base, _motion_turn, angle)
+
+
+## Full original cell record, as the ghost / future-position query receives
+## it. Internal full_path orders preserve the native1e6 ghost cutoff.
+func motion_notice(at: Vector2, mode: int, reach := -1.0, full_path := false) -> void:
+	if not order.get("path_notice", false) or world == null or world.session == null:
+		return
+	order.erase("path_notice")
+	var record := world.nav.motion_record(pos, path, move_class(), has_meta("flying"))
+	var cells: Array = []
+	for c: Vector2i in record.cells:
+		cells.append([c.x, c.y])
+	var failed := path.is_empty()
+	var ray := _ghost_ray(at,full_path)
+	var already := reach >= 0.0 and _ghost_in_range(pos,at,reach,ray)
+	var ring := 0
+	var f := 1000000.0
+	if reach < 0.0:
+		if not failed:
+			ring = int(path[-1].distance_squared_to(at) >= pos.distance_squared_to(at) * 0.01)
+	elif already:
+		mode = 3
+		cells.clear()
+	elif failed:
+		mode = 3
+		ring = 1
+	else:
+		ring = int(not _ghost_in_range(path[-1],at,reach,ray))
+		# Native54e600 calls54e250 only for an endpoint that can perform
+		# the action. A failed endpoint and restored full-path order keep1e6.
+		if ring == 0 and not full_path:
+			f = _ghost_cutoff(record,at,reach,ray)
+	if failed and not already:
+		mode = 3
+		ring = 1
+	world.session.broadcast({"t": "order_path", "to": controller, "uid": uid,
+		"start": [pos.x, pos.y], "target": [at.x, at.y], "end": [path[-1].x, path[-1].y] if not failed else [pos.x, pos.y],
+		"heading": facing, "mode": mode, "cross": ring, "cells": cells, "values": Array(record.values), "ticks": f})
+
+
+## Native54bcb0: attack/use rays to a creature allow the10m² overlap;
+## traced spells require their prototype flag, with summed body radii+0.3.
+## Point spells trace to ground+1. The ghost carries no independent pose.
+func _ghost_ray(at: Vector2,full_path: bool) -> Dictionary:
+	if full_path: return {}
+	var target := _order_target()
+	var casting: bool = order.get("type","") == "cast"
+	if casting and int(Spells.parse(String(order.get("spell",""))).proto.get("require_trace",0)) == 0:
+		return {}
+	if target == null and not casting: return {}
+	var overlap := 0.0
+	var point := at
+	var z := float(PackedFloat32Array([world.ground_at(at.x,at.y)+1.0])[0])
+	if target:
+		point = target.pos
+		z = target.eye_z()
+		if casting:
+			var radius := float(PackedFloat32Array([body_radius()+target.body_radius()+0.3])[0])
+			overlap = float(PackedFloat32Array([radius*radius])[0])
+		else:
+			overlap = 10.0
+	return {"point":point,"z":z,"overlap":overlap,"eye":_ghost_eye_offset()}
+
+
+## Native530370 uses authored bounds, without crouch/death eye scaling.
+func _ghost_eye_offset() -> float:
+	var raw := EIFigureGeometry.of(model)
+	if raw.is_empty():
+		return float(PackedFloat32Array([figure_half_z*1.7999999523162842])[0])
+	return float(PackedFloat32Array([float(raw.max.z)*1.7999999523162842 if int(raw.flags)&2 else float(raw.radius)*0.7+raw.centre.z])[0])
+
+
+func _ghost_in_range(point: Vector2,at: Vector2,reach: float,ray: Dictionary) -> bool:
+	var range2 := float(PackedFloat32Array([reach*reach])[0])
+	if point.distance_squared_to(at) > range2: return false
+	if ray.is_empty() or point.distance_squared_to(ray.point) < float(ray.overlap): return true
+	var z := float(PackedFloat32Array([world._stand_z(point)+float(ray.eye)])[0])
+	return world.terrain_ray(point,z,ray.point,float(ray.z)) >= 0.1
+
+
+## Complete54e250: the native0.5-base spline sampled every five ticks,
+## stopping only at a repeated position or a feasible in-range sample.
+func _ghost_cutoff(record: Dictionary,at: Vector2,reach: float,ray: Dictionary) -> float:
+	if record.cells.is_empty(): return 0.0
+	var spline := MotionSpline.new()
+	spline.build(pos,path[-1],record.cells,record.values,0.5,1e10,facing)
+	var f := 0.0
+	var previous := Vector2.INF
+	while true:
+		var current: Vector2 = spline.sample(f).p
+		if current == previous or _ghost_in_range(current,at,reach,ray): return f
+		previous = current
+		f += 5.0
+	return f
 
 
 ## Returns true when the path end is reached. Every step is first checked
@@ -1335,6 +1630,84 @@ func _path_to(to: Vector2, t: GameUnit = null) -> PackedVector2Array:
 ## than sqrt(60) m from it, queue instead (unit-AI).
 ## Units never push each other.
 func _step_along_path(dt: float) -> bool:
+	if not world or not world.profile_simulation: return _step_along_path_profile_body(dt)
+	var started := Time.get_ticks_usec()
+	var result := _step_along_path_profile_body(dt)
+	world.profile_record("unit_step_along_path",started,uid)
+	return result
+
+
+func _step_along_path_profile_body(dt: float) -> bool:
+	# Straight stick movement is an explicit remake input mode. Ordinary
+	# commands use the original cell spline, including its initial turn hold.
+	if order.get("line", false) and path.size() == 1:
+		return _step_line_path(dt)
+	if not _ensure_motion():
+		return true
+	_draw_motion_active = true
+	var from := pos
+	var left := maxf(0.0, dt / TICK)
+	var sample: Dictionary = _motion.sample(_motion_tick)
+	while left > 0.0:
+		var remaining := maxf(0.0, _motion.duration - _motion_tick)
+		var step := minf(left, remaining)
+		var next := _motion.sample(_motion_tick + step)
+		var q: Vector2 = next.p
+		if q.distance_squared_to(pos) > 0.00000001:
+			var res := {}
+			var b := world.nav.step_blocker(self, q, res, next.cell)
+			if b:
+				_blocked_by(b, bool(res.standing),q)
+				_move_speed = 0.0
+				_draw_motion_active = false
+				return false
+			_moving = true
+			_fresh_path = false
+			pos = q
+		var tangent: Vector2 = next.d
+		if tangent != Vector2.ZERO:
+			facing = tangent.angle()
+		_motion_tick += step
+		left -= step
+		sample = next
+		if _motion_tick + 0.0000001 < _motion.duration:
+			break
+		if _motion_offset + _motion_count == _motion_cells.size():
+			path = PackedVector2Array()
+			_motion_path = path
+			_motion = null
+			_move_speed = 0.0
+			break
+		_motion_offset += _motion_count - 1
+		_build_motion(pos, facing)
+		sample = _motion.sample(0.0)
+	# Remaining public cells are kept for command reach checks and save/debug
+	# tools. An in-place public edit is restored as by the scalar rebuild;
+	# replacing the path invalidates _ensure_motion's active record.
+	if _motion != null:
+		var first := _motion_offset + maxi(0, int(sample.index) - 1)
+		# Most ticks stay on the same node. Its remaining public cells are
+		# immutable until that index changes; fresh motion always invalidates
+		# this view, including a replan to the same cells from another point.
+		if first != _motion_public_first or path != _motion_public_view:
+			path = PackedVector2Array()
+			for c: Vector2i in _motion_cells.slice(first):
+				path.append(NavGrid.center(c))
+			path[-1] = _motion_goal
+			_motion_path = path
+			_motion_public_first = first
+			_motion_public_view = path.duplicate()
+		_move_speed = (sample.d as Vector2).length() * float(sample.v) * SPEED_SCALE
+	var arrived := path.is_empty()
+	if not _moving or arrived and pos.distance_to(from) < 0.01:
+		if not arrived:
+			_set_action("idle")
+		return arrived
+	_walk_action()
+	return arrived
+
+
+func _step_line_path(dt: float) -> bool:
 	var budget := speed() * dt
 	var from := pos
 	while budget > 0.0 and not path.is_empty():
@@ -1347,7 +1720,7 @@ func _step_along_path(dt: float) -> bool:
 		var res := {}
 		var b := world.nav.step_blocker(self, q, res)
 		if b:
-			_blocked_by(b, bool(res.standing))
+			_blocked_by(b, bool(res.standing),q)
 			return false
 		_moving = true
 		_fresh_path = false
@@ -1358,8 +1731,15 @@ func _step_along_path(dt: float) -> bool:
 		else:
 			budget = 0.0
 	var arrived := path.is_empty()
+	_move_speed = speed() if _moving and not arrived else 0.0
+	_draw_line_goal = path[0] if path.size() == 1 and _moving else Vector2.INF
 	if arrived and pos.distance_to(from) < 0.01:
 		return true   # already there: no walk clip for an order that ends at once
+	_walk_action()
+	return arrived
+
+
+func _walk_action() -> void:
 	# a party unit asked to run that cannot ((1))
 	# says "overloaded" (ack 0x14) or "injured" (0x15); its run request, the
 	# double-click flag and the run gait are dropped (= walk).
@@ -1374,40 +1754,77 @@ func _step_along_path(dt: float) -> bool:
 		_set_action("crawl")
 	else:
 		_set_action("run" if running and not cannot_run() else "walk")
-	return arrived
 
 
-func _blocked_by(b: GameUnit, standing: bool) -> void:
-	var t: GameUnit = _order_target() if order.get("type", "") == "attack" else null
-	# a step blocked by a standing unit plans anew
-	# no path ends the order (stops the unit, move mode 6). The
-	# original's search only enters cells its step test accepts, so a path it finds
-	# can be walked; a remake path planned round the blocker (a coarser grid)
-	# whose very first step is refused again counts as no path — the unit used
-	# to stand for ever with a live order, planning the same path each tick.
-	# **Approx.**
-	if standing and _fresh_path and order.get("type", "") in ["move", "attack"]:
-		_fresh_path = false
-		path = PackedVector2Array()
-		if order.type == "move":
-			_fail_order(EIAcks.NO_PATH)
-		else:
-			_fail_order(EIAcks.NO_WAY_TO_ATTACK)
-			target = null
-			_goal = Vector2.INF
+func _blocked_by(b: GameUnit, standing: bool, next := Vector2.INF) -> void:
+	var kind: String = order.get("type","")
+	var t: GameUnit = _order_target() if kind in ["attack","cast"] else null
+	var party := XpRules.party_of(self)
+	#  first lets a newly commanded leader wait for its own
+	# follower. The followed unit is looked up on the BLOCKER's Player AI.
+	if party >= 0 and XpRules.party_of(b) == party and b._held_follow_target() == self \
+			and _order_started_tick + 2 > roundi(world.time / TICK):
 		_set_action("idle")
 		return
-	var queue: bool = t != null and b.order.get("type", "") == "attack" and b.order.get("target") == t \
-		and b.faction == faction and pos.distance_squared_to(t.pos) > 60.0
-	if not queue and (standing or speed() > b.speed()):
+	if _waiting_for() == b:
+		_set_action("idle")
+		return
+	var queue: bool = t != null \
+		and b.order.get("type","") in ["attack","cast"] and b.order.get("target") == t \
+		and b.faction == faction and b.move_class() == move_class() and dist3(t)*dist3(t) > 60.0 \
+		and not (b.action == "attack" and b._anim_lock > 0.0)
+	var temporary_moving := false
+	if queue:
+		var cursor: GameUnit = b
+		var visited := {}
+		while cursor != null and not visited.has(cursor):
+			visited[cursor] = true
+			cursor = cursor._waiting_for()
+			if cursor == self:
+				# Cancel both ends before rebuilding around the moving layer.
+				b._wait_on = null
+				_wait_on = null
+				temporary_moving = true
+				break
+		if not temporary_moving:
+			_wait_on = weakref(b)
+			_set_action("idle")
+			return
+	if temporary_moving or standing or speed() > b.speed():
+		var goal: Vector2 = path[-1] if not path.is_empty() else order.get("to",pos)
 		_avoid = b
-		path = PackedVector2Array()
-		_arrive_t = 0.0
+		_avoid_at = next if temporary_moving or not standing else Vector2.INF
+		path = _path_to(goal,_order_target() if kind in ["attack","cast","follow"] else null,-1,_path_limit)
+		if path.is_empty():
+			_fail_order(EIAcks.NO_WAY_TO_ATTACK if kind == "attack" else EIAcks.NO_PATH)
+			if kind == "attack": target = null;_goal = Vector2.INF
 	_set_action("idle")
+
+
+func _waiting_for() -> GameUnit:
+	var unit = _wait_on.get_ref() if _wait_on else null
+	return unit if is_instance_valid(unit) and unit is GameUnit and not unit.dead else null
+
+
+## a queued type6 motivation is preferred, then current
+## Player Follow state6. The follow target survives an intervening attack.
+func _held_follow_target() -> GameUnit:
+	if controller < 0 and mode != "player":
+		return null
+	for o: Dictionary in orders:
+		if o.get("type","") == "follow" and not o.get("once",false):
+			var unit = o.get("target")
+			if is_instance_valid(unit) and unit is GameUnit:
+				return unit
+	if order.get("type","") == "follow" and not order.get("once",false):
+		return _order_target()
+	return null
 
 
 ## Where the unit will be `dist` metres further along its path.
 func pos_ahead(dist: float) -> Vector2:
+	if not path.is_empty() and not order.get("line", false) and _ensure_motion():
+		return _motion_future(maxf(dist, 0.0) / maxf(speed() * TICK, 0.000001))
 	var p := pos
 	for q in path:
 		var l := p.distance_to(q)
@@ -1418,10 +1835,10 @@ func pos_ahead(dist: float) -> Vector2:
 	return p
 
 
-func _turn_to(ang: float, dt: float) -> bool:
+func _turn_to(ang: float, dt: float, turn_speed := 0.0) -> bool:
 	var diff := wrapf(ang - facing, -PI, PI)
-	var step := TURN_SPEED * dt
-	if absf(diff) <= step:
+	var step := (_move_base(true) * ROTATE_SPEED_MULT / TICK if turn_speed == 0.0 else turn_speed) * dt
+	if absf(diff) < step or turn_speed == 0.0 and absf(diff) == step:
 		facing = ang
 		return true
 	facing += signf(diff) * step
@@ -1439,6 +1856,7 @@ func _do_follow(dt: float) -> void:
 		return
 	var dist := float(order.get("dist", 2.0))
 	if pos.distance_to(t.pos) <= dist:
+		motion_notice(t.pos, 1, dist, bool(order.get("full_path", false)))
 		path = PackedVector2Array()
 		_set_action("idle")
 		if order.get("once", false):
@@ -1448,6 +1866,10 @@ func _do_follow(dt: float) -> void:
 	if path.is_empty() or _repath <= 0.0:
 		path = _path_to(t.pos, t)
 		_repath = 0.5
+		motion_notice(t.pos, 1, dist, bool(order.get("full_path", false)))
+		if path.is_empty():
+			_fail_order(EIAcks.NO_PATH)
+			return
 	if controller >= 0:
 		# A party unit goes at its gait on every command, an
 		# interact / loot / steal approach (order type 6) too.
@@ -1478,8 +1900,9 @@ func _follow_order(t: GameUnit, dt: float) -> void:
 	else:
 		running = false   #  run byte 0
 	if path.is_empty():
-		path = _path_to(order.walk)
-		if path.is_empty():
+		path = _path_to(order.walk,null,-1,float(order.get("walk_limit",1000000.0)))
+		if path.is_empty() or not path_fits(path, order.walk, float(order.get("walk_limit", 1000000.0))):
+			path = PackedVector2Array()
 			order.erase("walk")
 			_set_action("idle")
 			return
@@ -1510,8 +1933,8 @@ func _follow_order(t: GameUnit, dt: float) -> void:
 ##   than Max from the target, move to the target's position (limit 3d + 10;
 ##   counter 0). So a follower stops within 2 m and sets off again only once the
 ##   target is more than 4 m from where it stands.
-## Approx.: the search limit is only applied to the step-aside point (path_fits);
-## the original compares the search's end cell (× 0.5 m) with the point.
+## The move keeps its search limit for every replan. The preliminary aside
+## test compares result (float cell-space goal) × 0.5 with c.
 func _follow_tick(t: GameUnit) -> void:
 	var n := _follow_n
 	_follow_n += 1
@@ -1526,7 +1949,7 @@ func _follow_tick(t: GameUnit) -> void:
 		var e := pos.distance_squared_to(p5)
 		if e >= d * d or e >= lo * lo:
 			if p5.distance_squared_to(goal) > hi * hi:
-				_follow_walk(p5)
+				_follow_walk(p5, 3.0 * d + 10.0)
 				_follow_n = 6
 			return
 		var prev := e
@@ -1545,7 +1968,7 @@ func _follow_tick(t: GameUnit) -> void:
 		path = PackedVector2Array()
 		return
 	if goal.distance_squared_to(t.pos) > hi * hi:
-		_follow_walk(t.pos)
+		_follow_walk(t.pos, 3.0 * d + 10.0)
 		_follow_n = 0
 
 
@@ -1560,19 +1983,21 @@ func _follow_step_aside(t: GameUnit, goal: Vector2) -> void:
 	if (pos - t.pos).dot(side) < 0.0:
 		side = -side
 	var c := p40 + side
-	var p := _path_to(c)   # (unit, c, …, 10)
+	var p := _path_to(c, null, int(world.nav.cell_wet(pos)),10.0)   # preliminary move
 	if not p.is_empty() and p[-1].distance_squared_to(c) < 0.1 and path_fits(p, c, 10.0):
-		_follow_walk(c, p)
+		_follow_walk(c, 10.0, p)
 	elif goal.distance_squared_to(p40) > 0.5:
-		_follow_walk(p40)
+		_follow_walk(p40, 20.0)
 	else:
 		return
 	_follow_n = 6
 
 
 ## The follower's move: a new goal, planned afresh.
-func _follow_walk(to: Vector2, p := PackedVector2Array()) -> void:
+func _follow_walk(to: Vector2, limit := 1000000.0, p := PackedVector2Array()) -> void:
 	order.walk = to
+	order.walk_limit = limit
+	path_flat_cost = world.nav.cell_wet(pos)
 	path = p
 
 
@@ -1590,7 +2015,56 @@ func follow_walking() -> bool:
 func future_pos(ticks: int) -> Vector2:
 	if path.is_empty():
 		return pos
-	return pos_ahead(speed() * ticks * TICK)
+	if not order.get("line", false) and _ensure_motion():
+		return _motion_future(maxi(0, ticks))
+	return pos_ahead(speed() * maxi(0, ticks) * TICK)
+
+
+func _motion_future(ticks: float) -> Vector2:
+	return _motion_future_sample(ticks).p
+
+
+## Pure coefficient sampling. In particular the render caller neither
+## calls _ensure_motion nor consumes public path cells or changes stamps.
+func _motion_future_sample(ticks: float) -> Dictionary:
+	if _motion == null:
+		return {"p": pos, "d": Vector2.from_angle(facing), "v": 0.0}
+	var spline := _motion
+	var at := _motion_tick + ticks
+	var offset := _motion_offset
+	var count := _motion_count
+	while offset + count < _motion_cells.size() and at > spline.duration:
+		at -= spline.duration
+		var end := spline.sample(spline.duration + 0.000001)
+		offset += count - 1
+		count = mini(32, _motion_cells.size() - offset)
+		var cells: Array[Vector2i] = []
+		cells.assign(_motion_cells.slice(offset, offset + count))
+		spline = MotionSpline.new()
+		spline.build(end.p, _motion_goal if offset + count == _motion_cells.size() else NavGrid.center(cells[-1]),
+			cells, _motion_values.slice(offset, offset + count), _motion_base, _motion_turn, (end.d as Vector2).angle())
+	return spline.sample(at)
+
+
+func _draw_motion_sample(fraction: float) -> Dictionary:
+	if _draw_motion_active and _motion != null and not path.is_empty() and _motion_path == path:
+		return _motion_future_sample(fraction)
+	if _draw_line_goal != Vector2.INF and path.size() == 1 and path[0] == _draw_line_goal \
+			and order.get("line", false):
+		var direction := (_draw_line_goal - pos).normalized()
+		return {"p": pos.move_toward(_draw_line_goal, _move_speed * TICK * fraction),
+			"d": direction, "v": _move_speed / SPEED_SCALE}
+	return {}
+
+
+## both intermediate values are stored as float32, then
+## FISTP rounds the result nearest-even. Unarmed tuning first uses __ftol.
+static func _strike_delay_ticks(base: float, act: float, armed := true) -> int:
+	var factor := float(PackedFloat32Array([act])[0])
+	if factor != 0.0:
+		factor = float(PackedFloat32Array([15.0 / factor])[0])
+	var value := int(base) if armed else int(PackedFloat32Array([base])[0])
+	return _fistp(float(PackedFloat32Array([float(value) * factor])[0]))
 
 
 func _do_attack(dt: float) -> void:
@@ -1617,6 +2091,8 @@ func _do_attack(dt: float) -> void:
 	var ranged: bool = stats.get("ranged", false)
 	var reach: float = stats.reach if ranged else melee_reach(t)
 	var d := pos.distance_to(t.pos)
+	if d <= reach:
+		motion_notice(t.pos, 2, reach, bool(order.get("full_path", false)))
 	#  hands the tick to while the strike delay
 	#  runs or the target is out of reach; that one only stands
 	# still next to a target that is not moving — one that
@@ -1655,7 +2131,7 @@ func _do_attack(dt: float) -> void:
 	# "tuning actions", inferred), actions = Dex * 0.2 + 10 (x quickness, x arm
 	# wounds; monsters 15). The strike animation still has to finish.
 	var a_w := float(stats.get("weapon_actions", proto.get("tuning_actions", 50.0)))
-	_attack_cd = maxf(roundf(a_w * 15.0 / actions()) * TICK, len)
+	_attack_cd = maxf(_strike_delay_ticks(a_w, actions(), stats.has("weapon_actions")) * TICK, len)
 	# The outcome is rolled now, the blow lands later. The hit
 	# record takes this order's aim before the roll (
 	# then reads its).
@@ -1675,6 +2151,7 @@ func _do_attack(dt: float) -> void:
 ## (d + 1) x 0.1 m of the new spot. A path ending farther than the reach from
 ## it means no way to the target (ack NoWayAtt, the order ends).
 func _approach(t: GameUnit, d: float, reach: float, dt: float) -> void:
+	path_flat_cost = true   # even while waiting for a target coming closer
 	# a party unit approaches at its gait, any other one runs
 	# (its combat flag is set by the attack command); only standing.
 	# A double-clicked attack runs while standing (run bit 2).
@@ -1694,7 +2171,7 @@ func _approach(t: GameUnit, d: float, reach: float, dt: float) -> void:
 			var p := path
 			path = PackedVector2Array()
 			var v := speed() * TICK
-			if v > 0.0 and (pos.distance_to(t.pos_ahead(t.speed() * TICK * w)) - reach) / v < w:
+			if v > 0.0 and (pos.distance_to(t.future_pos(w)) - reach) / v < w:
 				_goal = Vector2.INF
 				_set_action("idle")
 				return
@@ -1703,10 +2180,11 @@ func _approach(t: GameUnit, d: float, reach: float, dt: float) -> void:
 		var tv := t.speed() * TICK if t._moving else 0.0
 		var closing := speed() * TICK + tv * Vector2.from_angle(t.facing).dot((t.pos - pos) / maxf(d, 0.001))
 		var ticks := clampi(roundi((d - reach) / maxf(closing, 0.1)), 2, 64)
-		var at := t.pos_ahead(tv * ticks)
+		var at := t.future_pos(ticks)
 		if path.is_empty() or _goal.distance_to(at) >= (d + 1.0) * 0.1:
 			_fresh_path = _avoid != null and is_instance_valid(_avoid)
-			path = _path_to(at, t)
+			path = _path_to(at,t,-1,3.0*dist3(t)+15.0 if controller < 0 else 1000000.0)
+			motion_notice(at, 2, reach, bool(order.get("full_path", false)))
 			_goal = at
 			_arrive_t = world.time + ticks * TICK
 			if path.is_empty() or path[-1].distance_to(at) > reach or _path_too_long(t):
@@ -1734,21 +2212,13 @@ func dist3(o: GameUnit) -> float:
 		world.ground_at(o.pos.x, o.pos.y) - world.ground_at(pos.x, pos.y)).length()
 
 
-## Whether a path from here to `to` keeps within a search length limit
-## a goal under 25 cells away (octile) is searched directly
-##  without it; else the block route (8-cell
-## blocks) must be at most round(2 limit - 0.5) cells long. Approx.: the
-## remake counts its own path's length in whole 4 m blocks.
-func path_fits(p: PackedVector2Array, to: Vector2, limit: float) -> bool:
-	var dc := (NavGrid.cell(to) - NavGrid.cell(pos)).abs()
-	if maxi(dc.x, dc.y) - mini(dc.x, dc.y) + ((mini(dc.x, dc.y) * 0x5a8) >> 10) < 25:
-		return true
-	var length := 0.0
-	var q0 := pos
-	for q in p:
-		length += q0.distance_to(q)
-		q0 = q
-	return ceili(length / 4.0) * 8 <= roundi(limit * 2.0 - 0.5)
+##  compares the static block route count times8 with the
+## nearest-even cell limit before dynamic windows or turn refinement. Direct
+## routes have no block count; no polyline-length estimate is substituted.
+func path_fits(p: PackedVector2Array, _to: Vector2, limit: float) -> bool:
+	if p.is_empty(): return false
+	var blocks := _plan_blocks if p == _plan_path else world.nav.path_blocks(p)
+	return blocks >= 0 and blocks*8 <= NavGrid.round_even(limit*2.0-0.5)
 
 
 ## Nothing stands in a melee strike's way: no other unit
@@ -1769,25 +2239,37 @@ func _strike_clear(t: GameUnit, d: float) -> bool:
 
 ## The stamina a cast costs. Only the players' units pay it or need it
 ## (test unit, the owning party): AI
-## units cast for free.
+## units cast for free. The server's float Intelligence factor is 25/Int
+## the UI uses the quantized byte instead.
 func _spell_cost(sp: Dictionary) -> float:
-	return float(sp.mana) if controller >= 0 else 0.0
+	if controller < 0:
+		return 0.0
+	var intelligence := float(stats.get("int", 0.0))
+	return float(sp.mana) * 25.0 / intelligence if intelligence > 0.0 else INF
 
 
 func _do_cast(dt: float) -> void:
 	var t: GameUnit = _order_target()
-	if (t != null and (not is_instance_valid(t) or t.dead)) or cannot_cast():
-		if cannot_cast() and world.session:
+	#  execute quick potion kind 8 before
+	# checking the cannot-cast bit. Wands and known spells still refuse it.
+	var potion := order.has("item") and int(Items.info(String(order.item)).get("row", {}).get("item_id", -1)) == 8
+	var refused := cannot_cast() and not potion
+	if (t != null and (not is_instance_valid(t) or t.dead)) or refused:
+		if refused and world.session:
 			world.session.failed(self, 9)   # "Can't cast spells"
-		order = order.get("then", {}) if cannot_cast() else {}
+		order = order.get("then", {}) if refused else {}
 		return
 	var at: Vector2 = t.pos if t else order.point
 	var sp := Spells.parse(order.spell)
+	var notice_mode := 2 if int(sp.proto.get("type_id", 0)) == 0 else 1
+	if pos.distance_to(at) <= float(order.get("range", sp.range)):
+		motion_notice(at, notice_mode, float(order.get("range", sp.range)), bool(order.get("full_path", false)))
 	# An AI cast reaches its option's range (the prototype's attack range on
 	# a weapon-type-16 unit).
 	if pos.distance_to(at) > float(order.get("range", sp.range)):
 		if path.is_empty():
 			path = _path_to(at, t)
+			motion_notice(at, notice_mode, float(order.get("range", sp.range)), bool(order.get("full_path", false)))
 			if path.is_empty():
 				_fail_order(EIAcks.NO_PATH)
 				return
@@ -1825,18 +2307,15 @@ func _do_cast(dt: float) -> void:
 	if world.session:
 		world.session.broadcast({"t": "castfx", "uid": uid, "spell": spell, "secs": cast_t})
 	var tref: WeakRef = weakref(t) if t else null   # the target may leave the world first
-	get_tree().create_timer(cast_t).timeout.connect(func():
+	Spells._after(world, cast_t, func():
 		if not dead and is_instance_valid(world):
 			var tu: GameUnit = tref.get_ref() if tref else null
-			Spells.apply(world, self, spell, tu, at)
+			Spells.cast_unit(world, self, spell, tu, at)
 			# the cast is heard (the caster's hearing
 			# detectability × 2, 26 ticks) unless the spell record's is 1.
 			if int(Spells.parse(spell).proto.get("type_id", 0)) != 1:
 				world.ai.noise_event(self, detect(3) * 2.0)
-			if world.session:
-				world.session.broadcast({"t": "spellfx", "code": Spells.parse(spell).code, "sub": Spells.parse(spell).subtype,
-					"x": at.x, "y": at.y, "a": uid, "tu": tu.uid if tu else -1, "spell": spell,
-					"hold": Spells.light_time(spell)}))
+	)
 
 
 ## The cast clip (query, cast action), else an attack
@@ -1989,7 +2468,9 @@ static func is_dying_hp(v: float) -> bool:
 
 ## `part` = body part index struck (hit_part()), -1 = whole body.
 ## `types`: the damage per type after armour (severing).
-## `hit_flags`: hit-number labels (FlyingHP): 1 backstab.
+## `hit_flags`: native hit flags: 1 backstab, 4 electrical flash. Callers
+## preserve bit4 from the pre-armour record; `types` here
+## normally contains only what armour left for body-part severance.
 func take_damage(amount: float, source: GameUnit, part := -1, types := PackedFloat32Array(), hit_flags := 0, layers := Callable(), owner_only := false) -> void:
 	if dead:
 		return
@@ -2016,21 +2497,26 @@ func take_damage(amount: float, source: GameUnit, part := -1, types := PackedFlo
 	if is_dying_hp(hp):
 		die(source)
 		return
+	# `owner_only`: a lasting spell's later ticks pass no attacker, only the
+	# owner (with effect flag bit 0): the
+	# experience still goes to the owner's party (param 3
+	# ). Native (NULL) calls for help at this unit
+	# it names no aggressor. Do not restart the remake's movement-stopping
+	# hit lock on each wall tick (native moving reactions continue the walk,
+	#  with param4=1).
+	if owner_only:
+		remove_meta("attacker")
+		world.ai.hit_hook(self, null)
+		return
 	if _anim_lock <= 0.0 and randf() < 0.5:
 		_anim_lock = minf(model.act("hit", 1, 0.05), 0.6)
 		action = "hit"
 		GameSound.unit(self, "hit")
-	# `owner_only`: a lasting spell's later ticks pass no attacker, only the
-	# owner (with effect flag bit 0): the
-	# experience still goes to the owner's party (param 3
-	# ), but no hit hook / reaction runs.
-	if owner_only:
-		return
 	# a blow that does not kill: a creature attacker's side goes
 	# into this unit's own hostility mask ((attacker, victim)) unless
-	# the diplomacy already makes it hostile — then the hit hook.
-	if source and is_instance_valid(source) and source != self and source.faction != faction \
-			and world.relation(faction, source.faction) != 2:
+	# the diplomacy makes it a friend — then the hit hook.
+	if source and is_instance_valid(source) and source != self \
+			and world.relation(faction, source.faction) != 0:
 		world.ai._hate(self, source.faction)
 	if controller < 0:
 		world.ai.on_attacked(self, source)
@@ -2041,6 +2527,9 @@ func take_damage(amount: float, source: GameUnit, part := -1, types := PackedFlo
 func die(killer: GameUnit = null) -> void:
 	if dead:
 		return
+	#  forces witness scans before the unit becomes a corpse.
+	if world and world.authority and world.ai:
+		world.ai.seen_murder(self, killer)
 	dead = true
 	orders.clear()
 	order = {}
@@ -2224,6 +2713,19 @@ func _anim_lod_setup() -> void:
 func _process(dt: float) -> void:
 	if _screen == null:
 		return
+	if world and world.frame_clock_enabled():
+		if not _frame_drawing:
+			# The native spline already supplies the rendered fraction. Godot's
+			# physics interpolation here would add a second, older placement.
+			_frame_drawing = true
+			_anim_clock = -1.0
+			if process_priority == 0:
+				process_priority = -1   # native transform before camera / UI
+				_frame_priority_set = true
+			physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
+			reset_physics_interpolation()
+		_game_clock = world.draw_time()
+		_draw_step(0.0)
 	# Wound layers from part health (every peer), redone when part health,
 	# armour or the figure changed (_wounds_dirty).
 	if _wounds_dirty:
@@ -2239,7 +2741,9 @@ func _process(dt: float) -> void:
 		for g in _geoms:
 			if is_instance_valid(g):
 				g.layers = OFFSCREEN_LAYER if far else 1
-	var now := _game_clock + Engine.get_physics_interpolation_fraction() * get_physics_process_delta_time()
+	var now := _game_clock
+	if not _frame_drawing:
+		now += Engine.get_physics_interpolation_fraction() * get_physics_process_delta_time()
 	var game_dt := 0.0
 	if _anim_clock < 0.0:
 		_anim_clock = now
@@ -2289,7 +2793,7 @@ func _process(dt: float) -> void:
 func _anim_rate() -> float:
 	if model == null or not action in ["walk", "run", "crawl"]:
 		return 1.0
-	return model.move_rate(_move_speed)
+	return model.move_rate(_draw_move_speed if world and world.authority else _move_speed)
 
 
 ## The cast clip's hold (_cast_anim): of `adv` seconds of clip time, the part
@@ -2352,11 +2856,12 @@ func may_cover(cam: Camera3D, p: Vector2) -> bool:
 
 ## Screen rectangles of the figure as drawn (the original
 ## Game.pick_unit): [union, part 1, part 2, ...], integer pixels; empty when
-## nothing is drawn or a part is behind the camera.
+## nothing is drawn. Each part clips its actual posed vertices to the frustum.
 func screen_rects(cam: Camera3D) -> Array:
 	var out: Array = []
 	if model == null or cam == null:
 		return out
+	var view := MeshScreenRect.camera_context(cam)
 	var union := Rect2i()
 	for g in _geoms:
 		if not is_instance_valid(g) or not (g is MeshInstance3D) or not g.is_visible_in_tree():
@@ -2364,19 +2869,7 @@ func screen_rects(cam: Camera3D) -> Array:
 		var mi: MeshInstance3D = g
 		if mi.mesh == null:
 			continue
-		var box := mi.get_aabb()
-		var xf := mi.get_global_transform_interpolated()   # as drawn (phys_interp)
-		var lo := Vector2(INF, INF)
-		var hi := Vector2(-INF, -INF)
-		for c in 8:
-			var wp := xf * box.get_endpoint(c)
-			if cam.is_position_behind(wp):
-				return []
-			var sp := cam.unproject_position(wp)
-			lo = lo.min(sp)
-			hi = hi.max(sp)
-		# __ftol truncation of the min / max (SetRect).
-		var r := Rect2i(Vector2i(int(lo.x), int(lo.y)), Vector2i(int(hi.x) - int(lo.x), int(hi.y) - int(lo.y)))
+		var r := MeshScreenRect.of_context(mi, cam, view)
 		if r.size.x <= 0 or r.size.y <= 0:
 			continue   # UnionRect skips empty rectangles
 		out.append(r)
@@ -2410,6 +2903,15 @@ func anim_flush() -> void:
 
 
 func _set_action(a: String) -> void:
+	if not world or not world.profile_simulation:
+		_set_action_profile_body(a)
+		return
+	var started := Time.get_ticks_usec()
+	_set_action_profile_body(a)
+	world.profile_record("unit_set_action",started,uid)
+
+
+func _set_action_profile_body(a: String) -> void:
 	# A unit that stays idle asks for the same pose every frame: when nothing
 	# it depends on changed (stance, combat flag, part health, the figure and
 	# its playing clip), the call would change nothing and is skipped. The
@@ -2548,13 +3050,26 @@ func _sync_transform() -> void:
 	# the node still there) give the same transform; the ground lookup is
 	# skipped (most units stand still).
 	var t := world.terrain
-	if world.authority and pos == _xf_pos and facing == _xf_facing and (t.get_instance_id() if t else 0) == _xf_tid \
+	var p := pos
+	var yaw := facing
+	_draw_move_speed = _move_speed
+	if world.authority:
+		#  evaluates the existing path at integer server time
+		# plus the draw-clock remainder.
+		var sample := _draw_motion_sample(world.logic_fraction())
+		if not sample.is_empty():
+			p = sample.p
+			var direction: Vector2 = sample.d
+			if direction != Vector2.ZERO:
+				yaw = direction.angle()
+			_draw_move_speed = direction.length() * float(sample.v) * SPEED_SCALE
+	if world.authority and p == _xf_pos and yaw == _xf_facing and (t.get_instance_id() if t else 0) == _xf_tid \
 			and (t == null or t.surface_rev == _xf_rev) and transform == _xf:
 		return
-	var p := pos if world.authority else net_view.step(pos, get_physics_process_delta_time())
+	if not world.authority:
+		p = net_view.step(pos, get_physics_process_delta_time())
+		yaw = net_view.step_yaw(facing, get_physics_process_delta_time())
 	_drawn = p
-	# Co-op client: the facing too is drawn turning between snapshots (NetSmooth).
-	var yaw := facing if world.authority else net_view.step_yaw(facing, get_physics_process_delta_time())
 	var xf := Transform3D(Basis(Vector3.UP, yaw + MODEL_YAW_OFFSET),
 		EISpace.pos(p.x, p.y, world.ground_at(p.x, p.y)))
 	if transform != xf:
@@ -2565,8 +3080,8 @@ func _sync_transform() -> void:
 		if jump:
 			reset_physics_interpolation()
 	if world.authority:
-		_xf_pos = pos
-		_xf_facing = facing
+		_xf_pos = p
+		_xf_facing = yaw
 		_xf_tid = t.get_instance_id() if t else 0
 		_xf_rev = t.surface_rev if t else 0
 		_xf = transform
@@ -2585,14 +3100,29 @@ var _xf := Transform3D()
 
 
 func _physics_process(_dt: float) -> void:
+	if world and world.frame_clock_enabled():
+		return
+	if _frame_drawing:
+		_frame_drawing = false
+		_anim_clock = -1.0
+		if _frame_priority_set and process_priority == -1:
+			process_priority = 0
+		_frame_priority_set = false
+		physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_ON
+		reset_physics_interpolation()
 	_game_clock += _dt
+	_draw_step(_dt)
+
+
+func _draw_step(_dt: float) -> void:
 	_sync_transform()
 	#  takes the speed along the path spline where the unit is
 	# drawn; here the distance covered in the step (a jump of more than 2 m,
 	# a placement or teleport, counts as standing).
 	var cur := pos if world == null or world.authority else _drawn
 	var moved := cur.distance_to(_speed_from) if _speed_from != Vector2.INF else 0.0
-	_move_speed = moved / _dt if _dt > 0.0 and moved <= 2.0 else 0.0
+	if world != null and not world.authority and not _remote_move_speed:
+		_move_speed = moved / _dt if _dt > 0.0 and moved <= 2.0 else 0.0
 	_speed_from = cur
 	#  sets / clears the combat flag by the command
 	# force (== 3). A new command replaces the old one at once there
@@ -2617,9 +3147,14 @@ func _physics_process(_dt: float) -> void:
 ## HP and mana (clients build units from the prototype, without the host's
 ## hero stats and effects). Flags bits 14-18 carry the diplomacy faction
 ## (script SetPlayer), bits 19-22 the controlling player + 1 (orphaned heroes
-## of a player who left are AI, -1), bit 23 the run gait, bit 24 the strike's miss. Element 11 lists the magic effects
+## of a player who left are AI, -1), bit 23 the run gait, bit 24 the strike's
+## miss, bit 25 resting, bit 26 BlockUnit / say_block (+8)
+## bit 27 the authoritative village dialogue gate (creature commands).
+## Element 11 lists the magic effects
 ## (buffs) as [name, until] or [name, until, sense, detect]: the unit panel's
 ## effect list and the client's own vision (eagle eye) need them. Remake-only
+## Element 12 optionally carries this party member's noticed and seen-corpse
+## ids, so clients use the host's retained perception in this world.
 ## wire format.
 func snapshot() -> Array:
 	var ph := PackedByteArray()
@@ -2630,15 +3165,47 @@ func snapshot() -> Array:
 		snappedf(hp, 1.0 / 64.0), int(dead) | (int(hidden) << 1) | (severed_mask() << 2)
 		| (int(alert) << 8) | (stance << 9) | (limp << 11) | (int(not aggressive) << 13)
 		| (clampi(faction, 0, 31) << 14) | (clampi(controller + 1, 0, 15) << 19) | (int(gait_run) << 23)
-		| (int(strike_miss) << 24) | (int(resting) << 25), snappedf(mana, 1.0 / 16.0), ph,
-		snappedf(_max_hp, 1.0 / 16.0), snappedf(max_mana, 1.0 / 16.0), _buff_snapshot()]
+		| (int(strike_miss) << 24) | (int(resting) << 25) | (int(blocked) << 26)
+		| (int(village_talk_ready()) << 27), snappedf(mana, 1.0 / 16.0), ph,
+		snappedf(_max_hp, 1.0 / 16.0), snappedf(max_mana, 1.0 / 16.0), _buff_snapshot(), _perception_snapshot(),
+		snappedf(_move_speed, 1.0 / 256.0)]
+
+
+func _perception_snapshot() -> Array:
+	var out := [[], []]
+	if controller < 0 or world == null:
+		return out
+	var slot := 0
+	for key in ["noticed", "seen_corpses"]:
+		for o in (get_meta(key, {}) as Dictionary).values():
+			if is_instance_valid(o) and o is GameUnit and world.units.get(o.uid) == o:
+				out[slot].append(o.uid)
+		slot += 1
+	return out
+
+
+func _apply_perception_snapshot(row) -> void:
+	var ids := []
+	if row is Array and row.size() == 2 and world != null:
+		for list in row:
+			if list is Array or list is PackedInt32Array or list is PackedInt64Array:
+				for id in list:
+					if (id is int or id is float) and is_finite(float(id)) and float(id) == float(int(id)) \
+							and int(id) > 0 and world.units.has(int(id)):
+						ids.append(int(id))
+	set_meta("net_noticed", ids)
 
 
 func _buff_snapshot() -> Array:
 	var out := []
 	for k in buffs:
 		var b: Dictionary = buffs[k]
-		if b.has("sense") or b.has("detect"):
+		var extra := b.duplicate(true)
+		for key in ["until", "sense", "detect"]:
+			extra.erase(key)
+		if not extra.is_empty():
+			out.append([String(k), snappedf(float(b.get("until", 0.0)), 0.1), b.get("sense", 0), b.get("detect", 0), extra])
+		elif b.has("sense") or b.has("detect"):
 			out.append([String(k), snappedf(float(b.get("until", 0.0)), 0.1), b.get("sense", 0), b.get("detect", 0)])
 		else:
 			out.append([String(k), snappedf(float(b.get("until", 0.0)), 0.1)])
@@ -2692,7 +3259,14 @@ func apply_snapshot(s: Array, quiet := false) -> void:
 	controller = ((flags >> 19) & 15) - 1
 	gait_run = bool(flags & (1 << 23))
 	strike_miss = bool(flags & (1 << 24))
+	blocked = bool(flags & (1 << 26))
 	resting = bool(flags & (1 << 25))
+	_talk_remote_ready = bool(flags & (1 << 27))
+	_apply_perception_snapshot(s[12] if s.size() > 12 else null)
+	_remote_move_speed = s.size() > 13 and (s[13] is int or s[13] is float) \
+		and is_finite(float(s[13])) and float(s[13]) >= 0.0
+	if _remote_move_speed:
+		_move_speed = float(s[13])
 	if s.size() > 11:
 		buffs.clear()
 		for b: Array in s[11]:
@@ -2700,6 +3274,8 @@ func apply_snapshot(s: Array, quiet := false) -> void:
 			if b.size() > 3:
 				if b[2] is Array: d.sense = b[2]
 				if b[3] is Array: d.detect = b[3]
+			if b.size() > 4 and b[4] is Dictionary:
+				d.merge(b[4], true)
 			buffs[String(b[0])] = d
 	var a: String = s[4]
 	if a != action and not dead:

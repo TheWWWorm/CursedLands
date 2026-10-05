@@ -5,7 +5,7 @@ extends RefCounted
 ## briefings and traders), "edge" (a path between zones shown on the island map).
 
 ## zone id -> {id, allod, type, mpr, mob, size: Vector2i, minimap, objtex, figure,
-## position: Vector3, weather, sky, camera, restrict, exits: {n: {to, to_exit, deploy: Rect2, remove: Rect2, area: Rect2 (record, the last of the two in file order), view, passtime}}}
+## position: Vector3, weather, sky, camera, cage, restrict, exits: {n: {to, to_exit, deploy: Rect2, remove: Rect2, area: Rect2 (record, the last of the two in file order), view, passtime}}}
 var zones := {}
 ## quest id -> global map position (map.txt "#quest": first line)
 var quests := {}
@@ -90,6 +90,10 @@ func _parse(text: String) -> void:
 				"exit":
 					exit = {}
 					cur.exits[int(w[1])] = exit
+				"cage":
+					# zone record; the village screen
+					# copies it to to choose dialog actor placement.
+					cur.cage = true
 				"quest":
 					quests[w[1].to_lower()] = Vector3.ZERO
 					quest_areas[w[1].to_lower()] = PackedVector2Array()

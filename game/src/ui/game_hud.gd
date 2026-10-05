@@ -253,8 +253,10 @@ func _ready() -> void:
 func on_world(w: GameWorld) -> void:
 	if w != _world:
 		_world = w
-		w.combat_event.connect(_on_combat)
-		w.unit_died.connect(_on_died)
+		if not w.combat_event.is_connected(_on_combat):
+			w.combat_event.connect(_on_combat)
+		if not w.unit_died.is_connected(_on_died):
+			w.unit_died.connect(_on_died)
 		if not game.session.message.is_connected(log_msg):
 			game.session.message.connect(log_msg)
 		PlayerNames.of(game)   # remake: co-op players' names over their heroes
@@ -456,7 +458,7 @@ func _on_combat(_kind: String, _a: GameUnit, _b: GameUnit, _amount: float) -> vo
 ## A chat message (NetStatus "chat"): the original's chat object's overlay lines
 ## (ChatOverlay), not the text window.
 func log_chat(idx: int, player_name: String, text: String) -> void:
-	_chat.add(idx, player_name, text)
+	_chat.add(idx, player_name, text, game.session.players)
 
 
 var _chat: ChatOverlay
@@ -487,11 +489,10 @@ func log_msg(text: String, color := Color.WHITE) -> void:
 ## own var is 0. The sound priority = max(its value
 ## 3 for a completed quest, else the var's value, 1 for a failed one) picks
 ## one sound per frame in the field update: 1 buttons\quest.wav
-## 2 buttons\subcomplete.wav, 3 buttons\complete.wav. **Not ported**: the
-## quest-scroll disc's 1 s pulse until the objectives are opened (dial
-## ) and the messenger bird of a completed quest.
-## **Approx.**: "another screen on top" = the remake's village mode or an open
-## dialog / inventory / journal / side quest / travel / Esc panel.
+## 2 buttons\subcomplete.wav, 3 buttons\complete.wav. The quest-scroll disc
+## pulses until objectives open (dial); a completed quest
+## sends the messenger bird. Field notices use the native
+## top-screen and message/collected-tab gates.
 var _quest_sound := 0
 
 
@@ -499,7 +500,7 @@ func _quest_note(key: String, value: float) -> void:
 	var parts := key.split(".")
 	if parts.size() < 3 or parts.size() > 4:
 		return
-	_quest_flash(key)
+	_quest_flash(key, value)
 	if parts.size() == 3 and value == 2.0:
 		_send_bird()
 	var v := int(value)
@@ -507,47 +508,46 @@ func _quest_note(key: String, value: float) -> void:
 	if sub and not game.session.online \
 			and game.session.state.get_var(0, "q.%s.%s" % [parts[1], parts[2]]) == 0.0:
 		return
+	if not _quest_field_top():
+		return
 	if _clock_dial:
 		_clock_dial.pulse = true   # dial = 1
-	if not _field_on or _esc_open or (_dialog and _dialog.visible) or _inventory.visible \
-			or _journal.visible or _side_quests.visible or _travel.visible:
-		return
 	var what := "subobj" if sub else "quest"
-	var kind := "complete" if v == 2 else "failed" if v == 3 else "get"
+	var kind := "complete" if value == 2.0 else "failed" if value == 3.0 else "get"
 	var doc := JournalPanel._parse(parts[2])
 	var title: String = doc.title
 	if sub:
 		var n := parts[3].to_int()
 		title = String(doc.subs[n].title) if doc.subs.has(n) else ""
 	var label := GameData.text("string combat_%s_%s" % [kind, what]).strip_edges()
-	log_msg("%s %s" % [label, title], Color8(0xff, 0xb3, 0x31) if sub else Color8(0xee, 0xe3, 0x31))
-	var prio := 3 if (not sub and v == 2) else (1 if v == 3 else v)
+	# The collected-items tab discards this line but keeps pulse/priority.
+	if text_window == null or text_window.mode == 0:
+		log_msg("%s %s" % [label, title], Color8(0xff, 0xb3, 0x31) if sub else Color8(0xee, 0xe3, 0x31))
+	var prio := 3 if (not sub and value == 2.0) else (1 if value == 3.0 else v)
 	if prio > _quest_sound:
 		if _quest_sound == 0:
 			_play_quest_sound.call_deferred()
 		_quest_sound = prio
 
 
-## every client object whose.mob OBJ_QUEST_INFO equals
-## (stricmp) the var name after its second dot gets
-## . For units that is: particle 0x2043 (sparks) on the
-## unit (carrier, bone = 7), size = the unit's radius, =
-## 10, whatever the value, and the figure's 4-tick white flash ((4)
-## OrderMarks.flash). Approx.: the other classes' (the
-##  model) is not ported.
-func _quest_flash(key: String) -> void:
-	var w: GameWorld = game.session.world if game and game.session else null
-	var i1 := key.find(".")
-	var i2 := key.find(".", i1 + 1) if i1 >= 0 else -1
-	if w == null or i2 < 0:
-		return
-	var name := key.substr(i2 + 1).to_lower()
-	var fx := ParticleFx.of(w)
-	for u: GameUnit in w.units.values():
-		if is_instance_valid(u) and String(u.info.get("quest_info", "")).to_lower() == name:
-			fx.spawn(0x2043, Vector3.ZERO, fx.carrier_size(u).y, u, {"k118": 10.0, "bone": 7})
-			if game.marks:
-				game.marks.flash(u, 4)
+##  dispatches only to the top screen; every pushed modal's
+## slot84 is the empty handler rather than the field's.
+func _quest_field_top() -> bool:
+	if not _field_on or _esc_open or game.session.loading_game or quests_screen != null:
+		return false
+	for panel in [_menu, _dialog, _inventory, _journal, _side_quests, _travel,
+			_options, _save_load, _movie, _tutorial, _game_over_box, _quit_box,
+			_players_panel, _death_notice]:
+		if is_instance_valid(panel) and panel.visible:
+			return false
+	return true
+
+
+## outer units and map objects forward to their
+## class47 logic's sustained quest light. Initial dispatch is QuestLights'.
+func _quest_flash(key: String, value := 0.0) -> void:
+	if game and game.quest_lights:
+		game.quest_lights.quest_changed(key, value)
 
 
 ## a whole quest at 2 sends the messenger bird to the local
@@ -588,6 +588,13 @@ func on_event(e: Dictionary) -> void:
 		"inventory":
 			_inventory.refresh()
 			_rebuild_party()
+		"saved":
+			notify("string notify_saving")
+		"load_begin":
+			_close_for_host_load()
+		"load_end":
+			if game.session.online and not game.session.is_host:
+				notify("string notify_loading")
 		"travel": _show_travel(e.options, String(e.get("from", "")), e.get("start", []))
 		"travel_close": _close_travel()
 		"tutorial": _tutorial.show_tutorial(String(e.id))
@@ -663,6 +670,9 @@ func _show_ending() -> void:
 ## Load screen closed without loading), go to the main menu (manager = 1
 ## ). Loading a save needs no result.
 func _show_game_over() -> void:
+	if game.session.online and game.session.lmp.is_empty():
+		_show_coop_game_over()
+		return
 	if MessageBox.is_up(_game_over_box) or _game_over_load:
 		return
 	dismiss_death_notice()
@@ -679,6 +689,43 @@ func _show_game_over() -> void:
 			_save_load.open(false, _esc_frame, false)
 		else:
 			_on_esc_board("exit"))
+
+
+## Remake co-op has one save owner. A dead party can wait, hide this notice,
+## or leave; only the host gets Load. A host load always dismisses it.
+func _show_coop_game_over() -> void:
+	if is_instance_valid(_death_notice) and _death_notice.visible:
+		return
+	GameSound.instance.ui("buttons\\gameover.wav")
+	if _death_notice == null:
+		_death_notice = GameOverNotice.new()
+		_death_notice.name = "DeathNotice"
+		_death_notice.chosen.connect(_on_death_notice)
+		_add_ui(_death_notice)
+	_death_notice.allow_load = game.session.is_host
+	_death_notice.still_dead = game.session.all_party_heroes_dead
+	_death_notice.hint = "" if game.session.is_host else RemakeText.t("Waiting for the host to load the game.")
+	_death_notice.visible = true
+	_death_notice.queue_redraw()
+
+
+func _close_for_host_load() -> void:
+	dismiss_death_notice()
+	_game_over_load = false
+	if is_instance_valid(_game_over_box):
+		_game_over_box.queue_free()
+	_game_over_box = null
+	if _save_load.visible:
+		_save_load.loading = false
+		_save_load._close()
+	_close_menu()
+	for p in [_dialog, _inventory, _journal, _side_quests, _tutorial, _movie, _options]:
+		if is_instance_valid(p):
+			p.visible = false
+	if quests_screen:
+		quests_screen.queue_free()
+		quests_screen = null
+	_close_travel()
 
 
 ## Remake option "sp_death_notice" (Session.hero_died, single player only): at
@@ -710,7 +757,7 @@ func dismiss_death_notice() -> void:
 
 
 func _on_death_notice(what: String) -> void:
-	_death_notice.visible = what == "load"   # a load hides it (still_dead)
+	_death_notice.visible = false
 	match what:
 		"load":   # the Esc menu's Load screen: closing it goes back to the game
 			if not _esc_open:
@@ -1042,7 +1089,7 @@ func _draw_esc_hints() -> void:
 
 
 func blocks_input() -> bool:
-	return _esc_open or _menu.visible or _dialog.visible or _travel.visible or (TouchInput.enabled and _panel_open())
+	return game.session.loading_game or _esc_open or _menu.visible or _dialog.visible or _travel.visible or (TouchInput.enabled and _panel_open())
 
 
 ## Polling the keyboard bypasses GUI event consumption, so the camera must
@@ -1064,6 +1111,8 @@ func world_hidden() -> bool:
 
 
 func _panel_open() -> bool:
+	if game.session.loading_game:
+		return true
 	if quests_screen != null:
 		return true
 	for panel in [_inventory, _journal, _side_quests, _tutorial, _movie, _options, _save_load,

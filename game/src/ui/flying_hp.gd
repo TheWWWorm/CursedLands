@@ -21,11 +21,12 @@ extends Control
 ##   label), height 12 + 10 per label) is centred on the anchor + (120 t,
 ##   −100 t) px, colour alpha 255 (1 − t): for experience
 ##   over a party unit (unit), else. Drawn only when the whole
-##   block is on screen and the unit is shown (flags 0x20, not 0x40).
+##   block is on screen and the unit is shown (0x20 and set, 0x40 clear).
 ## - Anchor: the screen rectangle centre of the unit's "hd" part (else "bd",
 ##   "hp") when that part has its own rectangle (flag 0x40), else of the unit.
-## Remake: pixel sizes are of the 800 x 600 layout, scaled by the window
-## height / 600. Hits come from the host as "hitnum" events (GameUnit.
+## The original draw uses fixed device pixels, integer anchor/motion and
+## FTOL alpha bytes, independently of the 800 x 600 interface layout.
+## Hits come from the host as "hitnum" events (GameUnit.
 ## take_damage, Session.give_experience), so co-op clients show them too.
 ## - Flags: unit (packed byte, from server stats) is set
 ##   while the server applies a hit: 1 when the backstab
@@ -34,10 +35,12 @@ extends Control
 ## Anchor rects: see `_anchor` (a unit with none of the parts gets no
 ## number, as in the original).
 ## The original's flag entry (yellow "!!!", 32 x 10 px, no motion
-## deleted after one draw) has no known source and is not used.
+## deleted after one draw) is drawn too; its original caller is unidentified.
 
 const LIFE := 3.0
+const MeshScreenRect = preload("res://src/ui/mesh_screen_rect.gd")
 const EXP_DELAY := 0.5
+const AGE_FACTOR := 0.00033333332976326346   # native float32 1 / 3000
 const GREEN := Color8(0x40, 0xff, 0x40)
 const RED := Color8(0xff, 0x40, 0x40)
 const CYAN := Color8(0x40, 0xff, 0xff)
@@ -80,61 +83,82 @@ func add(e: Dictionary) -> void:
 		return
 	var f := int(e.get("f", 0))
 	_items.append({"uid": int(e.uid), "n": maxi(int(e.get("n", 0)), 0), "f": f,
-		"t0": Time.get_ticks_msec() / 1000.0 + (EXP_DELAY if f & 8 else 0.0)})
+		"t0": Time.get_ticks_msec() + (500 if f & 8 else 0)})
 
 
 func _process(_dt: float) -> void:
-	var now := Time.get_ticks_msec() / 1000.0
-	_items = _items.filter(func(it): return now - float(it.t0) <= LIFE)
+	var now := Time.get_ticks_msec()
+	_items = _items.filter(func(it): return now - int(it.t0) <= 3000)
 	queue_redraw()
 
 
 func _draw() -> void:
 	if _tex == null or game == null or game.world == null:
 		return
+	if not GameData.option("show_flying_hp"):
+		return
 	var cam := get_viewport().get_camera_3d()
 	if cam == null:
 		return
 	var vs := get_viewport_rect().size
-	var k := vs.y / 600.0
-	var now := Time.get_ticks_msec() / 1000.0
+	var now := Time.get_ticks_msec()
 	for it: Dictionary in _items:
-		var t := (now - float(it.t0)) / LIFE
-		if t < 0.0 or t > 1.0:
-			continue
 		var u: GameUnit = game.world.units.get(int(it.uid))
 		if u == null or not is_instance_valid(u) or not u.visible or u.hidden or u.model == null:
 			continue
 		var at: Variant = _anchor(u, cam)
 		if at == null:
 			continue
-		var c: Vector2 = at + Vector2(120.0 * t, -100.0 * t) * k
-		var text := str(int(it.n))
-		var f := int(it.f)
-		var labels := []
-		for l: Array in LABELS:
-			if f & int(l[0]):
-				labels.append(l)
-		var w := text.length() * 8.0
-		if not labels.is_empty():
-			w = maxf(w, 64.0)
-		var h := 12.0 + 10.0 * labels.size()
-		var top_left := c - Vector2(w, h) * 0.5 * k
-		if top_left.x < 0.0 or top_left.y < 0.0 or top_left.x + w * k > vs.x or top_left.y + h * k > vs.y:
-			continue
-		var col: Color = CYAN if f & 8 else (RED if u.controller >= 0 else GREEN)
-		col.a = 1.0 - t
-		var x := top_left.x + (w - text.length() * 8.0) * 0.5 * k
-		for ch in text:
-			var d := ch.unicode_at(0) - 0x30
-			draw_texture_rect_region(_tex, Rect2(x, top_left.y, 8.0 * k, 12.0 * k),
-				Rect2((d & 3) * 16.0, (d >> 2) * 20.0, 16.0, 20.0), col)
-			x += 8.0 * k
-		var y := top_left.y + 12.0 * k
-		for l: Array in labels:
-			draw_texture_rect_region(_tex, Rect2(top_left.x + (w - 64.0) * 0.5 * k, y, 64.0 * k, 10.0 * k),
-				Rect2(0.0, float(l[1]), 128.0, float(l[2]) - float(l[1])), col)
-			y += 10.0 * k
+		for glyph: Dictionary in _layout(at, int(it.n), int(it.f), u.controller >= 0, now - int(it.t0), vs):
+			draw_texture_rect_region(_tex, glyph.rect, glyph.source, glyph.colour)
+	# Native removes every one-draw warning after this enabled draw pass,
+	# including a warning whose carrier or whole block could not be shown.
+	_items = _items.filter(func(it): return (int(it.f) & 0x80000000) == 0)
+
+
+## Complete glyph placement device submit. The renderer
+## adds 0.25 texel to u and subtracts it from bottom-up v; the warning uses
+## 0.5 texel. Both become positive x/y offsets in the flipped Godot image.
+static func _layout(at: Vector2, number: int, flags: int, party: bool, age_ms: int, viewport: Vector2) -> Array[Dictionary]:
+	var out: Array[Dictionary] = []
+	var t: float = PackedFloat32Array([age_ms * AGE_FACTOR])[0]
+	if t < 0.0 or t > 1.0:
+		return out
+	var c := Vector2(int(at.x), int(at.y))
+	if flags & 0x80000000:
+		var warning := Rect2(c + Vector2(-16, -25), Vector2(32, 10))
+		if _on_screen(warning, viewport):
+			out.append({"rect": warning, "source": Rect2(64.5, 0.5, 64, 20), "colour": Color8(255, 255, 0)})
+		return out
+	c += Vector2(int(120.0 * t), int(-100.0 * t))
+	var text := str(number)
+	var labels := []
+	for l: Array in LABELS:
+		if flags & int(l[0]):
+			labels.append(l)
+	var w := maxf(text.length() * 8.0, 64.0 if not labels.is_empty() else 0.0)
+	var h := 12.0 + labels.size() * 10.0
+	var block := Rect2(c - Vector2(w, h) * 0.5, Vector2(w, h))
+	if not _on_screen(block, viewport):
+		return out
+	var colour := CYAN if flags & 8 else (RED if party else GREEN)
+	colour.a = int((1.0 - t) * 255.0) / 255.0
+	var x := block.position.x + (w - text.length() * 8.0) * 0.5
+	for ch in text:
+		var d := ch.unicode_at(0) - 0x30
+		out.append({"rect": Rect2(x, block.position.y, 8, 12),
+			"source": Rect2((d & 3) * 16.0 + 0.25, (d >> 2) * 20.0 + 0.25, 16, 20), "colour": colour})
+		x += 8.0
+	var y := block.position.y + 12.0
+	for l: Array in labels:
+		out.append({"rect": Rect2(block.position.x + (w - 64.0) * 0.5, y, 64, 10),
+			"source": Rect2(0.25, float(l[1]) + 0.25, 128, float(l[2]) - float(l[1])), "colour": colour})
+		y += 10.0
+	return out
+
+
+static func _on_screen(rect: Rect2, viewport: Vector2) -> bool:
+	return rect.position.x >= 0.0 and rect.position.y >= 0.0 and rect.end.x <= viewport.x and rect.end.y <= viewport.y
 
 
 ##  anchor in screen pixels: the first of the parts "hd"
@@ -182,36 +206,7 @@ func _part_rect(n: Node3D, cam: Camera3D) -> Rect2:
 	return r
 
 
-var _verts := {}   # Mesh -> PackedVector3Array (all surfaces)
-
-
-## Screen bounds of a mesh's vertices in front of the camera; empty when it
-## is hidden, has none in front, or lies wholly off the screen (the original's
-## draw result 2). **Approx.**: vertices behind the camera are skipped
-## rather than clipped.
+## Uses the same clipped, current-pose bounds as figure picking. Hidden or
+## wholly clipped parts have no rectangle (the native draw result 2).
 func _mesh_rect(mi: MeshInstance3D, cam: Camera3D) -> Rect2:
-	if mi.mesh == null or not mi.is_visible_in_tree():
-		return Rect2()
-	var vs: PackedVector3Array = _verts.get(mi.mesh, PackedVector3Array())
-	if vs.is_empty():
-		if _verts.size() > 256:
-			_verts.clear()   # meshes of earlier zones
-		for i in mi.mesh.get_surface_count():
-			vs.append_array(mi.mesh.surface_get_arrays(i)[Mesh.ARRAY_VERTEX])
-		_verts[mi.mesh] = vs
-	var xf := mi.get_global_transform_interpolated()   # as drawn (phys_interp)
-	var lo := Vector2(INF, INF)
-	var hi := Vector2(-INF, -INF)
-	for v in vs:
-		var w := xf * v
-		if cam.is_position_behind(w):
-			continue
-		var p := cam.unproject_position(w)
-		lo = lo.min(p)
-		hi = hi.max(p)
-	if lo.x > hi.x:
-		return Rect2()
-	var r := Rect2(lo.floor(), (hi - lo.floor()).ceil())
-	if not r.intersects(get_viewport_rect()):
-		return Rect2()
-	return r
+	return Rect2(MeshScreenRect.of(mi, cam))

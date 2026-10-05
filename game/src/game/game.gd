@@ -30,6 +30,7 @@ var _sky_mat: ProceduralSkyMaterial
 var _sky_shader: ShaderMaterial
 var _sky_cave := false
 const ShadowDiag := preload("res://src/game/shadow_diag.gd")
+const QuestLights := preload("res://src/game/fx/quest_lights.gd")
 var _sky_spin := 0.0
 ## Compatibility only (Android, web; _setup_env): the sun's shadow map rolled
 ## with the ground (sun_basis). Desktop keeps 0.1.7's Basis.looking_at.
@@ -55,6 +56,7 @@ const SUN_CUT_METRES := 6.0
 var _lights: EILights
 var _lights_zone := "?"
 var cursor: GameCursor
+var quest_lights: QuestLights
 var speed := 0   # 0 normal, 1 accelerated (clock dial)
 
 
@@ -86,6 +88,8 @@ func _ready() -> void:
 	marks = OrderMarks.new()
 	marks.game = self
 	add_child(marks)
+	quest_lights = QuestLights.new(self)
+	add_child(quest_lights)
 	add_child(PadField.new(self))   # remake: the gamepad in the field (PadInput)
 	GameData.options_changed.connect(_apply_options)
 	get_tree().node_added.connect(_on_node_added)
@@ -167,38 +171,35 @@ func _setup_env() -> void:
 func _process(dt: float) -> void:
 	if world == null:
 		return
-	if not session.is_host:
+	if not session.is_host and not get_tree().paused and not session.loading_game:
 		session.state.world_time = fmod(session.state.world_time + dt / CampaignState.HOUR_SECONDS, 24.0)   # same pace as the host VM
 	_update_daylight()
 	_keep_selection()
 	_update_cursor()
 
 
-## The selection never stays empty: units that died or left the player's
-## control drop out, and when none is left the player's main hero (Zak in
-## single player) is selected again, so the unit panel and orders always have
-## a unit. **Approx.** (user report): the original can empty the list
-## (toggle) and then shows no unit in the panel.
+## Remove units that died or left the player's control. The command selection
+## may stay empty: can toggle the last unit off, and
+## clears its command widgets. The unit panel can still show a hovered unit
+## (prefers over the selected).
 func _keep_selection() -> void:
 	var keep := selected.filter(func(s): return is_instance_valid(s) and not s.dead \
 			and s.controller == session.my_index)
 	if keep.size() != selected.size():
 		selected.assign(keep)
-	if selected.is_empty():
-		var mine := my_units()
-		for u in mine:
-			if u.has_meta("hero"):
-				selected = [u]
-				return
-		if not mine.is_empty():
-			selected = [mine[0]]
 
 
 ## Clock dial sectors: 0 pause on/off, 1 normal speed, 2
 ## accelerated speed. The original's logic tick is 55 ms normally and 27 ms
-## accelerated; speed and pause only in single player.
+## accelerated. Remake option coop_clock lets the co-op host
+## control a shared pause and exact 2x rate; clients receive that choice.
 func set_speed(sector: int) -> void:
 	if session.online:
+		if session.coop_clock_enabled() and not session.is_host:
+			session.message.emit(RemakeText.t("Only the host can change game speed."))
+		elif session.coop_clock_enabled():
+			sound.ui("buttons\\battle\\clock.wav")
+			session.set_coop_clock(sector)
 		return
 	sound.ui("buttons\\battle\\clock.wav")
 	if sector == 0:
@@ -221,13 +222,20 @@ func set_speed(sector: int) -> void:
 func reset_speed() -> void:
 	speed = 0
 	Engine.time_scale = 1.0
+	if session and session.online:
+		session.reset_coop_clock()
 
 
 ## Cursor by what is under the mouse (the original cursor set, GameCursor).
 func _update_cursor() -> void:
+	if cursor.camera_drag_active():
+		cursor.set_kind("cursor_camera")
+		return
 	var vp := get_viewport()
 	if hud.blocks_input() or vp.gui_get_hovered_control() != null:
-		cursor.set_kind("cursor_default")
+		var portrait: GameUnit = hud._faces.unit_at_screen(vp.get_mouse_position()) if not hud.blocks_input() \
+				and vp.gui_get_hovered_control() == hud._faces else null
+		cursor.set_kind(pending_cursor(portrait) if portrait and has_spell_target() else "cursor_default")
 		return
 	if Input.get_mouse_button_mask() & (MOUSE_BUTTON_MASK_RIGHT | MOUSE_BUTTON_MASK_MIDDLE):
 		cursor.set_kind("cursor_camera")
@@ -255,7 +263,7 @@ func _update_cursor() -> void:
 			cursor.set_kind("cursor_use" if pick_lever(p) >= 0 else "cursor_cancel")
 		return
 	if pending_spell:
-		cursor.set_kind("cursor_spell")
+		cursor.set_kind(pending_cursor(u, pick_ground(p)))
 		return
 	#  sets cursor 0 (default) first; (normal mode
 	#  == 0) then needs a selected unit and picks: a dead unit → 4 (use)
@@ -276,7 +284,7 @@ func _update_cursor() -> void:
 		# living unit under the point, 15 (move) over an open zone exit as in
 		# the field. Its name label is VillageName's.
 		if u and not u.dead:
-			if not Briefings.pending_for(session.state, u, session.my_index).is_empty():
+			if u.village_talk_ready() and not Briefings.pending_for(session.state, u, session.my_index).is_empty():
 				k = "cursor_talk"
 		elif _over_open_exit(p):
 			k = "cursor_move"
@@ -319,7 +327,8 @@ func _over_open_exit(p: Vector2) -> bool:
 	if _exit_hover_n < 0:
 		return false
 	var to := String(session.world.zone.exits[_exit_hover_n].get("to", "none"))
-	return session.state.get_var(0, "z." + to.to_lower()) != 1.0
+	var key := LmpMode.exit_var(to) if not session.lmp.is_empty() else "z." + to.to_lower()
+	return session.state.get_var(0, key) != 1.0
 
 
 ## The aim armed for the next click (index into AIM_ORDER), −1 none: by the
@@ -603,9 +612,15 @@ func _apply_sky() -> void:
 ## Called by Session when a zone has been loaded.
 func attach_world(w: GameWorld) -> void:
 	if world and world != w:
-		GameData.trace("zone teardown %s" % world.zone.get("id", ""))
-		world.queue_free()
+		if session.lmp_travel and session.lmp_travel.contains(world):
+			# The host's base view and quest view are independent of its server:
+			# other registered quest owners keep this hidden world running.
+			world.visible = false
+		else:
+			GameData.trace("zone teardown %s" % world.zone.get("id", ""))
+			world.queue_free()
 	world = w
+	w.visible = true
 	w.process_mode = Node.PROCESS_MODE_PAUSABLE   # the Game node itself runs while paused
 	reset_speed()   # a new zone = a new field / village screen
 	# ...so no spell / belt item / Follow target is still being chosen: it
@@ -631,6 +646,7 @@ func attach_world(w: GameWorld) -> void:
 		return session.state.get_var(0, k) if session != null and session.state != null else 0.0
 	pfx.setup_zone()   # zone exit stars and torch fires (every peer)
 	GroundMarks.of(w)   # footprints and blood marks (every peer)
+	quest_lights.on_world(w)   # existing OBJ_QUEST_INFO, including a late join
 
 
 func my_units() -> Array[GameUnit]:
@@ -770,7 +786,7 @@ func _key_action(act: String) -> void:
 			# Cases 3 / 2 (KP_PLUS / KP_MINUS): neither paused nor a network
 			# game — clock.wav, speed = 1 / 0, tick 27
 			# 55 ms (the clock dial's sectors, set_speed).
-			if not get_tree().paused and not session.online:
+			if not get_tree().paused and (not session.online or session.coop_clock_enabled()):
 				set_speed(2 if act == "accel" else 1)
 		"w_minimap":   # case 0x34
 			hud.minimap.key_toggle()
@@ -791,7 +807,7 @@ func _key_action(act: String) -> void:
 				pending_spell = FOLLOW
 				hud.set_targeting(GameData.text("tip 10510").strip_edges())
 		"use_science":   # Use/Steal: the next click picks the target
-			if not selected.is_empty() and selected[0].has_meta("hero"):
+			if selected.size() == 1 and is_instance_valid(selected[0]) and not selected[0].dead:
 				cancel_touch_target()
 				pending_spell = SCIENCE
 				hud.set_targeting(Skills.title("science"))
@@ -874,22 +890,22 @@ func order_on(u: GameUnit, add: bool, p: Variant = null, lever := -1, ground: Va
 		issue({"t": "revive", "units": helpers.map(func(s): return s.uid), "target": u.uid, "run": _double})
 		marks.unit_ordered(u, false, Session.LOOT_REACH, marks.first_mine())
 		return
-	# The village screen (the original mode 0): a left click
-	# on any living unit — no side check, so own party members and hired
-	# mercenaries too — opens its topic list when it has pending
-	# conversations; that is how a merc is dismissed (b.mercN.n2_N, offered in
-	# its home village) or says farewell (n10_N). The talker is
-	# the rest of the selection, else another own hero. **Approx.**: the
-	# original village has no unit selection, so a party unit without topics
-	# is selected here as in the field.
-	if u and u.controller == session.my_index and not add and not u.dead and session.shop_available() \
-			and not Briefings.pending_for(session.state, u, session.my_index).is_empty():
-		var talkers := selected.filter(func(s: GameUnit): return s != u)
-		if talkers.is_empty():
-			talkers = my_units().filter(func(s: GameUnit): return s != u and s.has_meta("hero"))
-		if not talkers.is_empty():
-			issue({"t": "interact", "units": talkers.map(func(s: GameUnit): return s.uid), "target": u.uid})
+	# villages have immediate topics and a
+	# single party leader's ground movement, without field selection. The
+	# creature must be in Stop/Rest with no posted primitive; a completed
+	# stationary Follow may qualify. Briefings also enforces merc ownership.
+	if session.shop_available():
+		var party := my_units()
+		if party.is_empty():
 			return
+		if u and not u.dead:
+			if u.village_talk_ready() and not Briefings.pending_for(session.state, u, session.my_index).is_empty():
+				issue({"t": "interact", "units": [party[0].uid], "target": u.uid})
+			return
+		var at = pick_ground(p) if p != null else ground
+		if at != null:
+			issue({"t": "move", "units": [party[0].uid], "x": at.x, "y": at.y, "run": _double})
+		return
 	if u and u.controller == session.my_index:
 		# on_off.wav for any click on an own unit, then
 		#  selects it; the clicked unit, when it ends up selected
@@ -902,11 +918,9 @@ func order_on(u: GameUnit, add: bool, p: Variant = null, lever := -1, ground: Va
 			rig.follow(u)
 			return
 		if add:
-			# Toggle (with the modifier); the remake keeps the
-			# last unit selected, see _keep_selection.
+			# Toggle (with the modifier), including the last unit.
 			if u in selected:
-				if selected.size() > 1:
-					selected.erase(u)
+				selected.erase(u)
 			else:
 				selected.append(u)
 				GameSound.ack(u, EIAcks.SELECTED)
@@ -929,15 +943,11 @@ func order_on(u: GameUnit, add: bool, p: Variant = null, lever := -1, ground: Va
 		issue({"t": "attack", "units": ids, "target": u.uid, "run": _double})
 		marks.unit_ordered(u, true, -1.0, selected)
 		return
-	if u and not u.dead:
-		issue({"t": "interact", "units": ids, "target": u.uid, "run": _double})
-		marks.unit_ordered(u, false, Session.TALK_REACH, marks.first_mine())
-		return
 	var lv := pick_lever(p) if p != null else lever
 	if lv >= 0:
 		issue({"t": "use_lever", "units": ids, "target": lv, "run": _double})
 		return
-	var g = pick_ground(p) if p != null else ground
+	var g = pick_ground(p) if p != null else ground if ground != null else u.pos if u and not u.dead else null
 	if g != null:
 		issue({"t": "move", "units": ids, "x": g.x, "y": g.y, "run": _double})
 		marks.move_ordered(g)
@@ -947,6 +957,8 @@ func order_on(u: GameUnit, add: bool, p: Variant = null, lever := -1, ground: Va
 ## ): starts the frame once the pointer is more than
 ## that many pixels from the press on either axis; 0 turns frame selection off.
 func _frame_started(pos: Vector2) -> bool:
+	if session and not session.lmp.is_empty():
+		return false   # a native network game has no selection frame
 	var area := GameData.option("rubber_select") * 10
 	var d: Vector2 = (pos - _drag_start).abs()
 	return area >= 1 and (d.x > area or d.y > area)
@@ -1027,7 +1039,7 @@ func begin_cast(i: int) -> void:
 	if selected.is_empty() or not selected[0].has_meta("hero"):
 		return
 	var spells: Array = selected[0].get_meta("hero").get("spells", [])
-	if i < 0 or i >= spells.size():
+	if i < 0 or i >= mini(8, spells.size()):
 		return
 	cancel_touch_target()
 	pending_spell = spells[i]
@@ -1040,24 +1052,95 @@ func _cast_at(p: Vector2) -> void:
 	cast_on(pick_unit(p), p)
 
 
+## Remake: a party portrait can supply a living target for a pending spell
+## or belt item without changing the selected caster.
+func has_spell_target() -> bool:
+	return not pending_spell.is_empty() and not pending_spell in [FOLLOW, SCIENCE]
+
+
+##  use the client's byte Intelligence and
+## unsigned-short stamina. The server pays from the unquantized floats.
+static func spell_ui_cost(u: GameUnit, sp: Dictionary) -> float:
+	# 522ce0 packs the effective attribute with FISTP into one byte.
+	var intelligence := GameUnit._fistp(float(u.stats.get("int", 0.0))) & 255
+	return float(sp.mana) * 25.0 / intelligence if intelligence > 0 else INF
+
+
+##  modes 1..4: unit / point spells and unit / point belt items.
+## A potion's unit target is its holder; a point potion accepts ground or
+## another living unit's feet. Wands use charge instead of stamina. Their
+## cursor check (52f8b0) does not test cannot-cast, unlike execution.
+func pending_target(u: GameUnit, ground: Variant = null) -> Dictionary:
+	if not has_spell_target() or selected.is_empty():
+		return {}
+	var caster: GameUnit = selected[0]
+	if not is_instance_valid(caster) or caster.dead:
+		return {}
+	var item := ""
+	var spell := String(pending_spell)
+	var wand := false
+	if pending_spell.begins_with(BELT):
+		caster = world.units.get(int(pending_spell.get_slice(":", 1))) if world else null
+		if not is_instance_valid(caster) or caster.dead or not caster.has_meta("hero"):
+			return {}
+		var quick: Array = caster.get_meta("hero").get("quick", [])
+		var i := Session.find_item(quick, pending_spell.split(":", true, 2)[2])
+		if i < 0:
+			return {}
+		item = String(quick[i])
+		wand = Items.is_wand(item)
+		if not wand and int(Items.info(item).get("row", {}).get("item_id", -1)) != 8:
+			return {}
+		spell = Items.spell_of(item) if wand else Items.potion_spell(item)
+	else:
+		if not caster.has_meta("hero") or caster.cannot_cast():
+			return {}
+		var i: int = caster.get_meta("hero").get("spells", []).find(spell)
+		if i < 0 or i >= 8:
+			return {}
+	if spell.is_empty():
+		return {}
+	var sp := Spells.parse(spell)
+	if item.is_empty():
+		if float(int(caster.mana) & 65535) < spell_ui_cost(caster, sp):
+			return {}
+	elif wand and Items.charge(item) < float(sp.mana):
+		return {}
+	var living := is_instance_valid(u) and not u.dead
+	if not bool(sp.point):
+		if not living or (not item.is_empty() and not wand and u != caster):
+			return {}
+		return {"caster": caster, "spell": spell, "item": item, "target": u, "point": false}
+	var at: Variant = u.pos if living else ground
+	if at == null or at == Vector2.ZERO:
+		return {}
+	return {"caster": caster, "spell": spell, "item": item, "target": null, "point": true, "at": at}
+
+
+func pending_cursor(u: GameUnit, ground: Variant = null) -> String:
+	return "cursor_spell" if not pending_target(u, ground).is_empty() else "cursor_spellcancel"
+
+
+func can_cast_portrait(u: GameUnit) -> bool:
+	return is_instance_valid(u) and not u.dead and not pending_target(u).is_empty()
+
+
+func cast_portrait(u: GameUnit) -> bool:
+	if not can_cast_portrait(u):
+		return false
+	# A portrait supplies only the target, including a co-op partner.
+	# Keep the caster selected and use the normal host-authoritative order.
+	cast_on(u)
+	cancel_touch_target()
+	return true
+
+
 ## The pending spell / belt item / Follow / Use-Steal on a unit, or the
 ## ground: the screen point `p`, or (gamepad) `ground` (EI xy) / `lever`.
 func cast_on(u: GameUnit, p: Variant = null, ground: Variant = null, lever := -1) -> void:
 	if selected.is_empty():
 		return
 	var caster: GameUnit = selected[0]
-	if pending_spell.begins_with(BELT):
-		var cmd := {"t": "use", "unit": int(pending_spell.get_slice(":", 1)), "item": pending_spell.split(":", true, 2)[2]}
-		if u and not u.dead:
-			cmd.target = u.uid
-		else:
-			var g = pick_ground(p) if p != null else ground
-			if g == null:
-				return
-			cmd.x = g.x
-			cmd.y = g.y
-		issue(cmd)
-		return
 	if pending_spell == FOLLOW:
 		if u and not u.dead:
 			issue({"t": "follow", "units": selected.map(func(s: GameUnit): return s.uid), "target": u.uid})
@@ -1070,24 +1153,45 @@ func cast_on(u: GameUnit, p: Variant = null, ground: Variant = null, lever := -1
 			if lv >= 0:
 				issue({"t": "use_lever", "units": [caster.uid], "target": lv, "run": _double})
 		return
-	var cmd := {"t": "cast", "unit": caster.uid, "spell": pending_spell}
-	if u and not u.dead:
-		cmd.target = u.uid
+	var target_info := pending_target(u, pick_ground(p) if p != null else ground)
+	if target_info.is_empty():
+		return
+	caster = target_info.caster
+	var cmd := {"t": "cast", "unit": caster.uid, "spell": target_info.spell}
+	if not String(target_info.item).is_empty():
+		cmd.t = "use"
+		cmd.item = target_info.item
+	if not target_info.point:
+		cmd.target = target_info.target.uid
 	else:
-		var g = pick_ground(p) if p != null else ground
-		if g == null:
-			return
-		cmd.x = g.x
-		cmd.y = g.y
+		cmd.x = target_info.at.x
+		cmd.y = target_info.at.y
 	issue(cmd)
-	marks.cast_ordered(caster, String(pending_spell), u if u and not u.dead else null,
-		Vector2(float(cmd.get("x", 0.0)), float(cmd.get("y", 0.0))))
+	if cmd.t == "cast":
+		marks.cast_ordered(caster, String(target_info.spell), target_info.target,
+			Vector2(float(cmd.get("x", 0.0)), float(cmd.get("y", 0.0))))
+
+
+##  hit flag4 dispatches the creature controller
+## independently of outer-object quest lights. The reliable
+## hitnum event reaches this on both host and clients, including a struck
+## hit wholly absorbed by armour.
+func electrical_hit(e: Dictionary) -> void:
+	var u: GameUnit = world.units.get(int(e.get("uid", -1))) if world else null
+	if u == null or not is_instance_valid(u) or u.model == null:
+		return
+	var fx := ParticleFx.of(world)
+	fx.spawn(0x2043, Vector3.ZERO, fx.carrier_size(u).y, u, {"bone": 7, "k118": 10.0})
+	marks.flash(u, 4)
 
 
 ## UI-level events from the host (see Session.broadcast).
 func on_event(e: Dictionary) -> void:
 	sound.on_event(e)   # sounds of broadcast events (GameSound)
 	match String(e.get("t", "")):
+		"order_path":
+			if int(e.get("to", -1)) == session.my_index:
+				marks.on_path(e)
 		"travel":
 			# Leaving the zone closes the field screen (: normal speed)
 			# and, in the original, the zone itself: the global map is a world mode
@@ -1104,8 +1208,9 @@ func on_event(e: Dictionary) -> void:
 				world.process_mode = Node.PROCESS_MODE_PAUSABLE
 		"vision_fog":
 			var tu: GameUnit = world.units.get(int(e.get("uid", -1))) if world else null
-			if tu and int(e.get("to", -1)) == session.my_index:
-				VisionFog.open(world, tu, float(e.get("secs", 10.0)), session.my_index)
+			var cu: GameUnit = world.units.get(int(e.get("caster", -1))) if world else null
+			if tu and int(e.get("to", -1)) == session.my_index and (not e.has("caster") or cu):
+				VisionFog.open(world, tu, float(e.get("secs", 10.0)), session.my_index, cu)
 		"music":
 			sound.force_music(String(e.get("name", "")), float(e.get("at", 0.0)))
 		"ack":
@@ -1136,7 +1241,8 @@ const ORDER_ACKS := {"move": EIAcks.MOVE, "attack": EIAcks.ATTACK, "cast": EIAck
 ## walk-and-talk "interact" stays open there — basecam's first arrival needs
 ## the blocked Zak to talk to the elder (b.elder.s1 → FrTP → unblock).
 static func block_refuses(t: String, village: bool) -> bool:
-	return ORDER_ACKS.has(t) and not (village and t == "interact")
+	# Follow's separate message handler does not read the bit.
+	return ORDER_ACKS.has(t) and t != "follow" and not (village and t == "interact")
 
 
 func issue(cmd: Dictionary) -> void:
@@ -1245,8 +1351,8 @@ func pick_lever(p: Vector2) -> int:
 ## point; only when it finds no unit, pass 2 (
 ## ) tests the union rectangle. The hits are sorted living units
 ## first (= dead), then by view depth of the unit's origin
-## nearest first. No pixel margin. **Approx.**: a part's rectangle is its
-## mesh box's projected corners, not every vertex.
+## nearest first. No pixel margin. Parts use their actual posed vertices and
+## clipped triangles; picking and floating hit numbers share those bounds.
 var _pick_key := []
 var _pick_hit: GameUnit
 

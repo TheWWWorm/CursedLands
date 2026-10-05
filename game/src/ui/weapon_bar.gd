@@ -16,10 +16,9 @@ extends Control
 ## Slots: a hero's weapons are the player list (count
 ## ) in their own order, other units [0..3]; the active one is an
 ## index, so selecting a weapon does not reorder the cells. The
-## remake's hero keeps the active weapon first (Session "select_weapon"), so
-## the bar remembers each unit's cell order and only marks the active cell.
-## **Approx.**: that order is the one first shown (after a load: the saved
-## list's, active first).
+## remake's hero keeps the active weapon first for combat, and separately
+## saves weapon_slots in native cell order. Selecting a weapon changes only
+## the active cell; the order survives saving, loading and peer state sync.
 
 const SLOTS := 4
 var game: Game
@@ -27,7 +26,6 @@ var _items: Array = []
 var _sig := ""
 var _views: Array[ItemView] = []
 var _active := 0
-var _order := {}   # unit uid -> the cell order (item ids) last shown
 var _held := -1    # cell the press captured the mouse
 
 
@@ -69,19 +67,12 @@ func _place_views() -> void:
 func _process(_dt: float) -> void:
 	var u: GameUnit = game.selected[0] if game and not game.selected.is_empty() and is_instance_valid(game.selected[0]) else null
 	var w: Array = u.get_meta("hero").get("weapons", []) if u and u.has_meta("hero") else []
-	var sig := "%s:%s" % [u.uid if u else -1, ",".join(w)]
+	var slots: Array = Session.weapon_slots(u.get_meta("hero")) if u and u.has_meta("hero") else []
+	var sig := "%s:%s:%s" % [u.get_instance_id() if u else 0, ",".join(w), ",".join(slots)]
 	if sig == _sig:
 		return
 	_sig = sig
-	var now := w.slice(0, SLOTS)
-	var prev: Array = _order.get(u.uid, []) if u else []
-	var a := now.duplicate()
-	var b := prev.duplicate()
-	a.sort()
-	b.sort()
-	_items = prev if a == b and not prev.is_empty() else now
-	if u:
-		_order[u.uid] = _items
+	_items = slots
 	_active = maxi(0, _items.find(w[0])) if not w.is_empty() else 0
 	_place_views()
 	_sig = sig

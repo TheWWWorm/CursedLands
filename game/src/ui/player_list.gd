@@ -64,7 +64,7 @@ func lines() -> Array:
 		var p: Dictionary = s.players[pid]
 		var st: Dictionary = s.net.status.get(pid, {})
 		var ping := "" if int(pid) == 1 or String(st.get("state", "connect")) == "connect" else "%d ms" % int(st.get("ping", 0))
-		out.append([String(p.name), NetStatus.colour(int(p.index)), ping, NetStatus.state_text(String(st.get("state", "connect")))])
+		out.append([String(p.name), NetStatus.colour(int(p.index), s.players), ping, NetStatus.state_text(String(st.get("state", "connect")))])
 	return out
 
 

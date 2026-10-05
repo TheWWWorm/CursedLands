@@ -9,7 +9,7 @@ extends Interface800
 ## Text: font 1 with a shadow, the ^0–^7 codes as RGB bits (bit 0
 ## red, 1 green, 2 blue): the name in the player's colour, ": text" after ^7
 ## white. Backspace in a network game empties the list (
-## `clear`). The remake keeps the player colours of NetStatus.colour.
+## `clear`). NetStatus.colour decodes the host's independent colour code.
 
 const MAX_LINES := 12
 const LIFE_MS := 20000
@@ -23,9 +23,9 @@ func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 
 
-func add(idx: int, player_name: String, text: String) -> void:
+func add(idx: int, player_name: String, text: String, players: Dictionary = {}) -> void:
 	var now := Time.get_ticks_msec()
-	var col := NetStatus.colour(idx)
+	var col := NetStatus.colour(idx, players)
 	var rows := wrap_text("%s: %s" % [player_name, text], WRAP, 1)
 	var left := player_name.length()
 	for r in rows:

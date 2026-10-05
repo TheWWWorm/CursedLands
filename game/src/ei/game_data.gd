@@ -89,6 +89,7 @@ const OPTIONS := [
 	["gfx_sharp_units", 1, 2, 13, 3, 1], ["gfx_detailed_heads", 1, 2, 13, 4, 1],
 	["gfx_sky", 1, 2, 13, 5, 1], ["gfx_far_view", 1, 2, 13, 6, 1], ["gfx_edge_fade", 1, 2, 13, 7, 0],
 	["gfx_wind", 1, 2, 13, 8, 1], ["q_aniso", 1, 5, 13, 9, 4],
+	["gfx_grass", 1, 2, 13, 10, 1], ["gfx_soft_ground", 1, 2, 13, 11, 1],
 	# Lighting and shadows (group 14). Each effect is independent and defaults
 	# on for new and existing settings files.
 	["gfx_firelight", 1, 2, 14, 0, 1], ["gfx_torch_glow", 1, 2, 14, 1, 1],
@@ -111,6 +112,7 @@ const OPTIONS := [
 	["camera_style", 1, 2, 16, 0, 1], ["cam_follow", 1, 2, 16, 1, 1], ["cam_see_through", 1, 2, 16, 2, 1],
 	["cam_pan_speed", 0, 100, 16, 3, 50], ["cam_rotate_speed", 0, 100, 16, 4, 50],
 	["cam_zoom_speed", 0, 100, 16, 5, 50], ["cam_wasd", 1, 2, 16, 7, 1],
+	["village_start_view", 1, 2, 16, 6, 0],
 	# Interface and controls (group 17).
 	# Small health bars over visible hostile units (EnemyBars): 0 off (the
 	# original, which shows a unit's health only in the unit panel), 1 auto
@@ -131,6 +133,7 @@ const OPTIONS := [
 	["aim_press_once", 1, 2, 17, 3, 1],
 	# Keep the pointer inside the game window (Input.MOUSE_MODE_CONFINED).
 	["confine_mouse", 1, 2, 17, 4, 1],
+	["item_icon_fit", 1, 2, 17, 5, 1], ["ui_active_buttons", 1, 2, 17, 6, 1],
 	# Gameplay (group 18).
 	# The network game's unit visibility in single player too (UnitFog);
 	# default on (user request).
@@ -150,6 +153,7 @@ const OPTIONS := [
 	# Off = the original, where nothing shows until the party tries to leave
 	# the zone (Session.sp_game_over). Default on (user request).
 	["sp_death_notice", 1, 2, 18, 4, 1],
+	["merc_travel", 1, 2, 18, 5, 0],
 	# Network and co-op (group 19): the co-op host's rules — full experience
 	# for every party member (XpRules), monster scaling to the player count
 	# (MobScaling: Off / Light / Normal / Strong), shared loot
@@ -160,6 +164,7 @@ const OPTIONS := [
 	["coop_full_xp", 1, 2, 19, 0, 1], ["coop_scale", 1, 4, 19, 1, 2],
 	["coop_share_loot", 1, 2, 19, 2, 1], ["coop_player_names", 1, 2, 19, 3, 1],
 	["net_upnp", 1, 2, 19, 5, 1], ["net_websocket", 1, 2, 19, 6, 0],
+	["coop_clock", 1, 2, 19, 7, 1],
 	# Gamepad (group 20; PadInput, PadField; docs/gamepad_design.md §8.8);
 	# the button layout is group 21 (row 12 "Buttons…"). On by default:
 	# without a controller nothing changes.
@@ -168,6 +173,7 @@ const OPTIONS := [
 	["pad_target_radius", 0, 26, 20, 4, 6], ["pad_wheel_pause", 1, 2, 20, 5, 1],
 	["pad_glyphs", 1, 5, 20, 6, 0], ["pad_swap_sticks", 1, 2, 20, 7, 0],
 	["pad_light", 1, 2, 20, 8, 1],
+	["pad_gyro", 1, 2, 20, 9, 0], ["pad_gyro_sensitivity", 0, 100, 20, 10, 50],
 ]
 ## The original's speed / quality switches (the original rows shadow_units
 ## shadow_buildings, shadow_flora) are not offered: always at their best.
@@ -208,6 +214,10 @@ const OPTION_GROUPS := ["video", "sound", "sens", "game", "select", "actions", "
 	"r_camera", "r_interface", "r_game", "r_coop", "gamepad", "gamepad_buttons"]
 ## Labels and tips of the remake's own option rows (texts.res has none).
 const REMAKE_OPTIONS := {
+	"item_icon_fit": ["Fit items inside icons", "Keeps long inventory and shop items inside their icon cells while they turn. Off: the original fixed model scale."],
+	"ui_active_buttons": ["Bright usable camp buttons", "Available camp modes and Exit are bright. Accept and Cancel still show whether the current deal can be made or undone. Off: the original tint highlights only the selected mode."],
+	"coop_clock": ["Shared pause and speed", "Co-op host: pause the game or switch to 2x speed for everyone. Clients follow the host's speed. Off: co-op always runs at normal speed."],
+	"merc_travel": ["Mercenaries travel between regions", "Hired companions stay with their owner when the party travels to another allod or region. The host's setting applies in co-op. Off: the original regional companion rule."],
 	"net_websocket": ["Browser-compatible host", "Host with WebSocket over TCP. Native and browser clients join using ws://host:27015, or wss:// through an HTTPS reverse proxy. Off uses native ENet over UDP. Set before hosting."],
 	# The Remake tab and its sections (OptionsPanel.SECTIONS: the link rows).
 	"remake": ["Remake", "Graphics, camera, interface, gamepad, gameplay and co-op settings of the remake; the game files and the log."],
@@ -233,12 +243,14 @@ const REMAKE_OPTIONS := {
 	"pad_enabled": ["Gamepad", "Play with a controller (Xbox, PlayStation, Nintendo, Steam Deck and others). Left stick: move the hero; right stick: turn and zoom the camera; A: act on the highlighted target; X: more actions for it, including aimed strikes; LB / RB: spells and items; Y: pause. Without a controller nothing changes."],
 	"pad_rumble": ["Vibration", "Strength of the controller's vibration when your hero is hit, a party member falls or the ground shakes. 0 turns it off."],
 	"pad_deadzone": ["Stick dead zone", "How far a stick must move before it counts. Raise it if your hero or the camera drifts by itself."],
-	"pad_cursor_speed": ["Pointer speed", "Speed of the controller's pointer (left stick click in the field, and the menus)."],
+	"pad_cursor_speed": ["Pointer speed", "Speed of the controller's pointer in cursor mode and the menus."],
 	"pad_target_radius": ["Target range", "How far around the leader the controller looks for a target to highlight (4 to 30 m)."],
 	"pad_wheel_pause": ["Pause while a wheel is open", "Single player: the game pauses while a controller wheel (spells, items, actions, the target ring) is open. Network games never pause."],
 	"pad_glyphs": ["Button pictures", "Which controller's button pictures the prompts show. Automatic follows the controller in use."],
 	"pad_swap_sticks": ["Swap sticks", "The right stick moves the hero and the left stick turns the camera."],
 	"pad_light": ["Light bar shows health", "Controllers with a light bar (DualSense, DualShock 4): its colour follows the leader's health, from green to red."],
+	"pad_gyro": ["Gyro pointer", "Tilt a controller with a gyroscope to move the pointer in cursor mode and the menus. On Android, tilt the handheld itself. Keep it still briefly when first enabled."],
+	"pad_gyro_sensitivity": ["Gyro sensitivity", "How far the pointer moves when you tilt the controller or handheld."],
 	"gfx_hd_textures": ["HD textures", "The original ground and object textures upscaled 2x once at load (edge-preserving Lanczos on the GPU): sharper up close, same colours. Applies from the next zone load."],
 	"gfx_soft_particles": ["Soft particles", "Smoke, fire and magic fade softly where they meet the ground and walls instead of cutting through them with a hard line."],
 	"gfx_lit_particles": ["Lit smoke and dust", "Smoke, dust and blood take the scene's light: unchanged in daylight, darker at night and in caves instead of glowing."],
@@ -254,6 +266,8 @@ const REMAKE_OPTIONS := {
 	"gfx_wind": ["Wind in foliage", "Trees and bushes sway in the wind."],
 	"gfx_volumetric": ["Volumetric fog / light shafts", "Light mist lit by the sun (shafts through the trees at dawn and dusk) and the torches."],
 	"gfx_terrain": ["Terrain detail", "Sharper original ground textures with fewer tile seams; relief follows painted rock and path patterns, with softer sand and snow, fine grass and damp banks."],
+	"gfx_grass": ["Grass blades", "Adds grass blades on green ground, with wind and shadows when shadow quality is enabled. Automatic settings enable this on capable desktops; off by default on Android."],
+	"gfx_soft_ground": ["Snow and sand deformation", "Footsteps leave shallow depressions and raised edges in snow and sand. Tracks gradually disappear; off by default on Android."],
 	"gfx_heat_haze": ["Heat haze", "Air shimmering above torches and camp fires."],
 	"gfx_ssao": ["Ambient occlusion", "Soft contact shadows (SSAO)."],
 	"gfx_bloom": ["Bloom", "Glow around bright lights."],
@@ -289,6 +303,7 @@ const REMAKE_OPTIONS := {
 	"coop_scale": ["Scale monsters to player count", "Co-op host: monsters get more health and hit harder for each player beyond the first (Light +25 % health / +12.5 % damage, Normal +50 % / +25 %, Strong +100 % / +50 % per extra player). Off: as the original."],
 	"net_upnp": ["Open the port on the router", "Co-op host: asks your router to forward UDP port 27015 to this computer so friends can join over the internet (UPnP, else NAT-PMP / PCP), and shows your external IP address to give them. The forwarding is removed when you stop hosting. Off: forward the port by hand."],
 	"cam_wasd": ["WASD camera controls", "WASD: move camera; Q/E: turn; 9/0/-/=: weapons 1-4; R: Aggressive/Defensive; T: Use/Steal. Other keys stay available. Each layout has its own editable bindings on the key pages. Classic restores your previous keys. Original camera always uses Classic."],
+	"village_start_view": ["Village opening view", "Use the village's authored camera view when you enter. Moving the camera returns to your chosen camera style. Off: start at your hero."],
 	"camera_rotate_left": ["Turn camera left", "Modern camera: turns the camera (Divinity: Original Sin 2 uses Delete)."],
 	"camera_rotate_right": ["Turn camera right", "Modern camera: turns the camera (Divinity: Original Sin 2 uses End)."],
 }
@@ -296,18 +311,20 @@ const REMAKE_OPTIONS := {
 ## screen). "marks" = EnableBloodprints and "footprints" = EnableFootprints
 ## switch the ground marks (GroundMarks).
 const OPTIONS_APPLIED := ["volume_sfx", "volume_stream", "volume_voice", "power_kbd",
+	"item_icon_fit", "ui_active_buttons", "coop_clock", "merc_travel",
 	"power_mouse", "scroll_border", "rubber_select", "marks", "footprints", "select_type", "show_path", "brightness", "contrast", "gamma",
 	"show_flying_hp", "show_tutorial", "autosave", "tooltip_time", "switch_filters",
 	"camera_reverse_x", "camera_reverse_y", "reverse_stereo", "difficulty",
 	"gfx_sky", "gfx_water", "gfx_wind", "gfx_volumetric", "gfx_terrain", "gfx_heat_haze",
+	"gfx_grass", "gfx_soft_ground",
 	"gfx_ssao", "gfx_bloom", "gfx_far_view", "gfx_edge_fade", "gfx_severed_limbs",
 	"gfx_hd_textures", "gfx_soft_particles", "gfx_lit_particles", "gfx_contact_shadows", "gfx_torch_glow", "gfx_water_reflections",
 	"gfx_firelight", "gfx_materials", "gfx_foliage_light", "gfx_weather_surfaces", "gfx_lava_light", "gfx_detailed_heads",
 	"gfx_sharp_units", "q_aa", "q_shadows", "q_shadow_fit", "q_aniso", "confine_mouse",
 	"display_mode", "resolution", "fps_limit", "vsync", "show_fps", "render_scale", "phys_interp",
-	"camera_style", "cam_pan_speed", "cam_rotate_speed", "cam_zoom_speed", "cam_follow",
+	"camera_style", "cam_pan_speed", "cam_rotate_speed", "cam_zoom_speed", "cam_follow", "village_start_view",
 	"cam_see_through", "cam_wasd", "coop_full_xp", "coop_scale", "net_upnp", "net_websocket", "unit_fog", "path_through", "sp_full_xp", "aim_press_once", "start_zones", "sp_death_notice", "revive", "coop_player_names", "coop_share_loot", "enemy_hp_bars", "smile_faces",
-	"pad_enabled", "pad_rumble", "pad_deadzone", "pad_cursor_speed", "pad_target_radius", "pad_wheel_pause", "pad_glyphs", "pad_swap_sticks", "pad_light", "auto_graphics", "renderer"]
+	"pad_enabled", "pad_rumble", "pad_deadzone", "pad_cursor_speed", "pad_target_radius", "pad_wheel_pause", "pad_glyphs", "pad_swap_sticks", "pad_light", "pad_gyro", "pad_gyro_sensitivity", "auto_graphics", "renderer"]
 signal options_changed
 const GFX_REV := 4
 ## Option q_aa 5 (FSR 2): the 3D view at most this fraction of the window.
@@ -350,6 +367,32 @@ func _notification(what: int) -> void:
 			get_tree().process_frame.connect(EIKeymap.release_keys, CONNECT_ONE_SHOT)
 
 
+## Missing new ground options follow platform defaults and the player's
+## existing Original look / untouched automatic tier. Saved choices win.
+static func ground_effect_defaults(cfg: ConfigFile, platform: Dictionary = {}) -> Dictionary:
+	var values := {"gfx_grass": int(platform.get("gfx_grass", 1)),
+		"gfx_soft_ground": int(platform.get("gfx_soft_ground", 1))}
+	var seen := false
+	var original := true
+	if cfg.has_section("options"):
+		for key: String in cfg.get_section_keys("options"):
+			if key.begins_with("gfx_") and not values.has(key):
+				seen = true
+				original = original and int(cfg.get_value("options", key)) == 0
+	var tier := int(cfg.get_value(GfxDetect.SECTION, "tier", -1))
+	var recorded: Dictionary = cfg.get_value(GfxDetect.SECTION, "values", {})
+	var untouched := tier >= 0 and not recorded.is_empty() and int(cfg.get_value(GfxDetect.SECTION, "manual", 0)) == 0
+	for key: String in recorded:
+		if not values.has(key) and cfg.has_section_key("options", key):
+			untouched = untouched and int(cfg.get_value("options", key)) == int(recorded[key])
+	for key: String in values:
+		if cfg.has_section_key("options", key):
+			values[key] = int(cfg.get_value("options", key))
+		elif (seen and original) or (untouched and tier >= (2 if key == "gfx_grass" else 3)):
+			values[key] = 0
+	return values
+
+
 func _ready() -> void:
 	GameFiles.initialize()
 	var cfg := ConfigFile.new()
@@ -364,6 +407,7 @@ func _ready() -> void:
 	for key: String in Portability.defaults():
 		if not cfg.has_section_key("options", key):
 			options[key] = Portability.defaults()[key]
+	options.merge(ground_effect_defaults(cfg, Portability.defaults()), true)
 	if OS.has_feature("web") and not GameFiles.manifest.is_empty():
 		root = GameFiles.WEB_ROOT
 	# Browser settings saved before the web build kept edge scrolling hold the
@@ -683,8 +727,9 @@ var _tips: TipLayer
 ##   frame (FrameRect), lines at (6, 4) one under the other, no shadow, the
 ##   first (title, = 1 at nearly every
 ##   call) orange, the rest.
-## **Approx.**: the tip font is taken as CInterface3D font 0 and the 800×600
-## units are scaled by the window height.
+##  uses CInterface font 0, whose pixel height scales with the
+## screen width. Geometry uses each screen axis separately (
+## converts the measured pixels back to 800×600 logical coordinates).
 ## A tooltip whose widget the original gave a hotkey (
 ## third argument, tip): appends " (" + the key name
 ## (the current binding) + ")" to the first
@@ -725,11 +770,11 @@ class TipLayer extends CanvasLayer:
 			_hide()
 			_since = Time.get_ticks_msec()
 
-	func _k() -> float:
-		return get_viewport().get_visible_rect().size.y / 600.0
+	func _kv() -> Vector2:
+		return get_viewport().get_visible_rect().size / Vector2(800, 600)
 
 	func _fs() -> int:
-		return maxi(6, int(round(800.0 * Interface800.FONT_EM[0] * _k())))
+		return maxi(6, int(round(get_viewport().get_visible_rect().size.x * Interface800.FONT_EM[0])))
 
 	func _line_h(f: Font, fs: int, s: String) -> float:
 		return f.get_string_size(s if s != "" else "w", HORIZONTAL_ALIGNMENT_LEFT, -1, fs).y
@@ -756,16 +801,16 @@ class TipLayer extends CanvasLayer:
 			_text = t
 			var f := Interface800.font()
 			var fs := _fs()
-			var k := _k()
+			var kv := _kv()
 			_lines = _wrap(t.split("\n"), f, fs, vp.get_visible_rect().size.x * 0.45)
 			var w := 0.0
 			var h := 0.0
 			for s in _lines:
 				w = maxf(w, f.get_string_size(s, HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x)
 				h += _line_h(f, fs, s)
-			var sz := Vector2(w + 12.0 * k, h + 8.0 * k)
+			var sz := Vector2(w + 12.0 * kv.x, h + 8.0 * kv.y)
 			var area := vp.get_visible_rect().size
-			var r := Rect2(mp + Vector2(24, 24) * k, sz)
+			var r := Rect2(mp + Vector2(24, 24) * kv, sz)
 			if r.end.x > area.x:
 				r.position.x = maxf(0.0, area.x - sz.x)
 			if r.end.y > area.y:
@@ -798,14 +843,14 @@ class TipLayer extends CanvasLayer:
 	func _draw_tip() -> void:
 		var f := Interface800.font()
 		var fs := _fs()
-		var k := _k()
+		var kv := _kv()
 		var r := Rect2(Vector2.ZERO, _panel.size)
 		_panel.draw_rect(r, FILL)
 		_panel.draw_rect(r.grow(-0.5), TITLE, false, 1.0)
-		var y := 4.0 * k
+		var y := 4.0 * kv.y
 		for i in _lines.size():
 			var s := _lines[i]
-			_panel.draw_string(f, Vector2(6.0 * k, y + f.get_ascent(fs)), s, HORIZONTAL_ALIGNMENT_LEFT, -1, fs,
+			_panel.draw_string(f, Vector2(6.0 * kv.x, y + f.get_ascent(fs)), s, HORIZONTAL_ALIGNMENT_LEFT, -1, fs,
 				TITLE if i < _title_lines else BODY)
 			y += _line_h(f, fs, s)
 

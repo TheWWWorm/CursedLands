@@ -45,6 +45,9 @@ var _fx_auto := -1   # the next CreateFXSource(-1) id
 ## quest's, "m:<file>" an AddMob file's): a saved WorldScript thread names its
 ## source (save_state), so a load resumes it where it was.
 var world_bodies := {}
+## Remake campaign co-op: eligible global one-shot script -> first player's
+## controller. A later chained copy must see the same winner after save/load.
+var _world_done := {}
 
 
 class Instance:
@@ -184,7 +187,11 @@ func _tick(dt: float) -> void:
 	if not _pending_zone.is_empty():
 		var z = _pending_zone
 		_pending_zone = []
-		session.call_deferred("leave_zone", z[0], z[1])
+		if z.size() >= 3:
+			var generation: int = session.lmp_travel.generation_of(int(z[2])) if session.lmp_travel else 0
+			session.call_deferred("leave_zone", z[0], z[1], z[2], String(world.zone.get("id", "")), generation)
+		else:
+			session.call_deferred("leave_zone", z[0], z[1])
 
 
 func _run(inst: Instance) -> void:
@@ -197,7 +204,8 @@ func _run(inst: Instance) -> void:
 			if _all(b.conds, inst):
 				inst.block_index = bi
 				inst.frames = [{"body": b.body, "i": 0}]
-				_once_per_world(inst)
+				if not _once_per_world(inst):
+					return
 				break
 		if inst.frames.is_empty():
 			return
@@ -452,9 +460,9 @@ func _call(name: String, a: Array, inst: Instance):
 		"Mul": return _num(v[0]) * _num(v[1])
 		"Random": return float(randi() % maxi(1, int(_num(v[0]))))
 		# ---- campaign variables
-		"GSGetVar": return session.state.get_var(0, str(v[1]).to_lower())
+		"GSGetVar": return session.state.get_var(0, str(v[1]))
 		"GSSetVar":
-			var key := str(v[1]).to_lower()
+			var key := str(v[1])
 			var had: bool = session.state.vars.has("0:%s" % key)
 			var old := session.state.get_var(0, key)
 			session.state.set_var(0, key, _num(v[2]))
@@ -463,11 +471,11 @@ func _call(name: String, a: Array, inst: Instance):
 			if not had or not is_equal_approx(old, _num(v[2])):
 				_on_var_changed(key)
 		"GSSetVarMax":
-			var key := str(v[1]).to_lower()
+			var key := str(v[1])
 			if _num(v[2]) > session.state.get_var(0, key):
 				session.state.set_var(0, key, _num(v[2]))
 				_on_var_changed(key)
-		"GSDelVar": session.state.del_var(0, str(v[1]).to_lower())
+		"GSDelVar": session.state.del_var(0, str(v[1]))
 		# ---- object lookup and groups
 		"GetObject": return _get_object(int(_num(v[0])))
 		"GetObjectByID": return _get_object(str(v[0]).to_int())
@@ -576,7 +584,7 @@ func _call(name: String, a: Array, inst: Instance):
 		"MoveToPoint":
 			var u := _unit(v[0])
 			if u and not u.dead:
-				var to := world.nav.nearest_walkable_for(u, Vector2(_num(v[1]), _num(v[2])))
+				var to := Vector2(_num(v[1]), _num(v[2]))
 				u.move_to(to, u.get_meta("script_run", false) or u.running)
 				u.set_meta("ai_state", 1)
 		# Builtins 0x8e SetCP / 0xad SetCPFast(object, x, y, z) put the object
@@ -804,7 +812,6 @@ func _call(name: String, a: Array, inst: Instance):
 		"SetWaterLevel":
 			if n >= 3:
 				world.set_water_level(int(_num(v[0])), _num(v[1]), int(_num(v[2])))
-				session.broadcast({"t": "water", "l": world.water_levels.duplicate(true)})
 		# Builtin 0xdf FixItems(): every item the server holds (list at server
 		# ) gets its durability back to the maximum.
 		"FixItems":
@@ -840,15 +847,16 @@ func _call(name: String, a: Array, inst: Instance):
 		# message 6 shows "You picked up: <item>" (Session.notify_got).
 		# Builtin 0xa7 GiveMoney: player += n, then the same (empty) item
 		# send: "You picked up: Money (n)".
-		# Both go through CampaignState.add_item: a quest-table item lands in the
-		# quest item list (the remake's store of the bag's quest items, read by
-		# HaveItem / EraseQuestItem / levers), anything else in the bag. The
-		# party's bag is shared, so every player sees the line (to -1).
-		# Co-op: a find from the world, copied to the other players' bags with
-		# the remake option coop_share_loot (CoopProgress.share_found).
+		# Native LMP names the owner in the first argument; campaign co-op
+		# retains its shared story-item policy and remake loot-copy option.
 		"GiveQuestItem", "GiveItem":
-			session.coop.with_purse(-1, session.state.add_item.bind(str(v[1])), true)
-			session.notify_got(-1, [str(v[1])])
+			var player := int(_num(v[0])) if not session.lmp.is_empty() else -1
+			var item := Items.from_spec(str(v[1]))
+			session.give_item(player, String(item[0]), int(item[1]))
+			var got: Array = []
+			for k in int(item[1]):
+				got.append(String(item[0]))
+			session.notify_got(player, got)
 		"GiveUnitQuestItem":
 			var u := _unit(v[0])
 			if u:
@@ -860,12 +868,14 @@ func _call(name: String, a: Array, inst: Instance):
 						u.get_meta(m).append(qi)
 		"EraseQuestItem", "RemoveQuestItem":
 			var qi := _quest_item_name(v[1])
-			session.state.quest_items.erase(qi)
-		"HaveItem": return 1.0 if session.state.quest_items.has(_quest_item_name(v[1])) else 0.0
+			session.erase_quest_item(int(_num(v[0])), qi)
+		"HaveItem": return 1.0 if session.have_quest_item(int(_num(v[0])), _quest_item_name(v[1])) else 0.0
 		"GiveMoney":
 			var money := int(_num(v[1]))
-			session.coop.with_purse(-1, func() -> void: session.state.money += money, true)
-			session.notify_got(-1, [], money)
+			var player := int(_num(v[0])) if not session.lmp.is_empty() else -1
+			if session.lmp.is_empty() or session.players_include(player):
+				session.coop.with_purse(player, func() -> void: session.state.money += money, true)
+				session.notify_got(player, [], money)
 		"QStart":
 			_q_recording = str(v[0]).to_lower()
 			if not qobjs.has(_q_recording):
@@ -945,6 +955,8 @@ func _call(name: String, a: Array, inst: Instance):
 				session.state.world_time = fmod(_num(v[0]), 24.0)
 		"LeaveToZone":   # the entrance is the original's 0-based exit index (map.txt "#exit" = index + 1)
 			_pending_zone = [str(v[1]).to_lower(), int(_num(v[2])) + 1]
+			if not session.lmp.is_empty():
+				_pending_zone.append(int(_num(v[0])))
 		"AddMob":
 			_add_mob(str(v[0]))
 		_:
@@ -1011,38 +1023,40 @@ func _check_interactions() -> void:
 ##    (`GameUnit.body_radius`) + 0.6;
 ##  * a map object (lever, chest; sub-code 0): own radius + the object's
 ##    radius (`GameWorld.object_radius`) − 0.1.
+## The use reach is independent of navigation and unit stamps. Padding it
+## with nearest_walkable changed it between posting and arrival: a freshly
+## killed body's old stamp disappeared, the follow stopped at its earlier
+## inflated reach, and the use action waited forever. Both grids are0.5m.
 ## A talk has no reach in the original: the village click opens the topic list
 ## once and a field click on a non-hostile unit
 ## is a move to it. **Approx.**: the remake's
-## walk-and-talk keeps 3 m. The remake's 0.5 m nav grid is coarser than the
-## original's passability, so an object's or body's reach also covers its nearest
-## walkable cell (+ 0.375 m) — gz17h DeadS (r 0.95) lies 1.42 m from its
-## nearest open cell, past the original reach of 1.35 m.
+## walk-and-talk keeps3m.
 func _interact_reach(u: GameUnit, t, kind := "") -> float:
 	if not (t is Node3D):
 		return 3.0
 	var r: float
 	if kind == "steal" and t is GameUnit:
-		return u.body_radius() + t.body_radius() + 0.6
+		r = u.body_radius() + t.body_radius() + 0.6000000238418579
 	elif t is GameUnit and t.dead:
-		r = u.figure_radius + 0.05 + 0.3 * (t.figure_radius + 0.05)
+		var target_radius := float(PackedFloat32Array([t.use_radius() * 0.30000001192092896])[0])
+		r = u.use_radius() + target_radius
 	elif t is GameUnit:
 		return 3.0
 	else:
-		r = u.figure_radius + 0.05 + world.object_radius(t) - 0.1
-	var p := _xy(t)
-	return maxf(r, world.nav.nearest_walkable(p, 3).distance_to(p) + NavGrid.CELL * 0.75)
+		r = u.use_radius() + world.object_radius(t) - 0.10000000149011612
+	return float(PackedFloat32Array([r])[0])
 
 
 ## A lever / switch used by `u` (sub-code 0): its science
-## check against the unit's science (Dex - 25 + skill) and the party's quest items.
+## check against the unit's Use/Steal value and the party's quest items.
 func _use_lever(u: GameUnit, nid: int) -> void:
-	var h: Dictionary = u.get_meta("hero", {})
-	var use := float(u.stats.get("dex", 25.0)) - 25.0 + Skills.level(h, "science")
-	var quest := session.state.items.filter(func(x): return Items.kind(String(x)) == "quest")
+	var use := Session.steal_value(u)
+	var bag := session.state.items if session.lmp.is_empty() else session.coop.owner_bag(u.controller)
+	var quest := bag.filter(func(x): return Items.kind(String(x)) == "quest")
 	# Quest items given by conversations / scripts / loot live in
 	# state.quest_items (HaveItem); they open levers too.
-	quest.append_array(session.state.quest_items.keys())
+	if session.lmp.is_empty():
+		quest.append_array(session.state.quest_items.keys())
 	if world.lever_sys.science_ok(nid, use, quest):
 		var time := world.lever_sys.set_state(nid, -1)
 		session.broadcast({"t": "lever", "nid": nid, "state": world.levers[nid].state, "time": time})
@@ -1248,7 +1262,7 @@ func _mode(o, mode: String, data: Dictionary) -> void:
 	if mode == "sentry" or mode == "guard":
 		# The unit keeps its gait: Walk / Run (builtins 0x40 / 0x41 ->
 		# (2 / 3), unit) apply to every later move.
-		u.move_to(world.nav.nearest_walkable_for(u, data.point), u.get_meta("script_run", false))
+		u.move_to(data.point, u.get_meta("script_run", false))
 
 
 ## SleepUntilIdle (builtin 0xb9) sleeps while the unit's AI state (AI +4,
@@ -1361,7 +1375,8 @@ func _string_event(s: String) -> void:
 		"#output", "#otput":
 			session.broadcast({"t": "journal"})
 		"briefing":
-			briefings.play_named(s.get_slice(" ", 1).to_lower(), "")
+			# Village slot (1,1).
+			briefings.play_named(s.get_slice(" ", 1).to_lower(), "", 0, null, true)
 		"say", "say_block":
 			# "say <id> [<unit name>]" → the field screen's
 			# (name id (<unit name>) or 0, 0x2a for
@@ -1420,6 +1435,7 @@ func _add_mob(file: String) -> void:
 ## Home village of mercenary N (the original pointer table): only there
 ## does a hired mercenary offer the "dismiss" conversation.
 const MERC_HOME := ["", "bz1g", "bz1g", "bz2g", "bz6g", "bz8k", "bz8k", "bz14h", "bz14h", "bz9k", "bz14h"]
+const MERC_TRAVEL := "merc_travel"
 
 
 ## the original (script builtin RecalcMercBriefings, also run when
@@ -1455,7 +1471,13 @@ func recalc_merc_briefings() -> void:
 			var setv := func(k: String, v: float) -> void: st.set_pvar(p, k, v)
 			var amerc := "amerc_%d" % i
 			setv.call(b.call(11), 0.0)
-			if _merc_of(i, p):
+			if st.mercs.has(i) and (not _merc_of(i, p) or st.mercs[i].get("travel_waiting", false)):
+				# In the remake's shared world the mercenary cannot be hired
+				# twice. The other player's party member has no hire / dismiss
+				# topics in this player's view, even outside its home village.
+				for k in [8, 1, 2, 3, 9, 10]:
+					setv.call(b.call(k), 0.0)
+			elif _merc_of(i, p):
 				setv.call(b.call(8), 0.0)
 				setv.call(b.call(1), 0.0)
 				setv.call(b.call(3), 0.0)
@@ -1503,6 +1525,10 @@ func merc_briefing_done(var_name: String, player := 0) -> void:
 	var key := var_name.to_lower()
 	var re := RegEx.create_from_string("^b\\.merc(\\d+)\\.n(\\d+)_(\\d+)$")
 	var m := re.search(key)
+	# The story also uses n<i>_10 (bz7g / bz11k), with removal in its
+	# OnBriefingComplete body instead of the engine's standard n10_<i>.
+	if m and m.get_string(1) == m.get_string(2) and int(m.get_string(3)) == 10:
+		_keep_travelling_merc(int(m.get_string(1)), player)
 	if m and m.get_string(1) == m.get_string(3):
 		var i := m.get_string(1).to_int()
 		match m.get_string(2).to_int():
@@ -1511,9 +1537,37 @@ func merc_briefing_done(var_name: String, player := 0) -> void:
 			1, 3:
 				session.state.set_pvar(player, "amerc_%d" % i, 2.0)
 				session.merc_changed(i, true, player)
-			2, 10:
-				session.merc_changed(i, false)
+			2:
+				if _merc_of(i, player):
+					session.merc_changed(i, false, player)
+			10:
+				if _merc_of(i, player) and not _keep_travelling_merc(i, player):
+					session.merc_changed(i, false, player)
 	recalc_merc_briefings()
+
+
+## Remake option: a story farewell still removes the live member, satisfying
+## GetMercsNumber()==0, but retains its recruited record for the next region.
+## Scripted disguise / lone-hero parties still leave the main party waiting.
+## Manual dismissal and actual death keep their original behavior.
+func _keep_travelling_merc(n: int, player: int) -> bool:
+	if GameData.option(MERC_TRAVEL) != 1 or not _merc_of(n, player):
+		return false
+	var m: Dictionary = session.state.mercs[n]
+	if m.get("travel_waiting", false):
+		return true
+	for u: GameUnit in world.units.values():
+		if u.has_meta("hero") and is_same(u.get_meta("hero"), m) and not u.dead:
+			session.state.store_party_positions(world)
+			session.state.store_follow(world)
+			m.travel_waiting = true
+			m.travel_waiting_zone = String(world.zone.get("id", "")).to_lower()
+			world.remove_unit(u)
+			session.broadcast({"t": "remove", "uid": u.uid})
+			session.broadcast({"t": "party"})
+			session.sync_state()
+			return true
+	return false
 
 
 # ================================================================ persistence
@@ -1556,6 +1610,7 @@ func save_state() -> Dictionary:
 			d.wu = _ser(inst.wait_unit)
 		insts.append(d)
 	return {"globals": g, "instances": insts, "areas": areas, "alarms": _alarm_save(), "qobjs": qobjs, "sciences": sciences,
+		"world_done": _world_done.duplicate(),
 		"fx_auto": _fx_auto,   # the replayed CreateFXSource(-1) sources keep their ids (zone "fx")
 		"quest": String(world.get_meta("quest_mob", "")) if world.has_meta("quest_mob") else ""}
 
@@ -1589,6 +1644,12 @@ func _alarm_load(al) -> void:
 
 
 func _restore(d: Dictionary) -> void:
+	_world_done.clear()
+	var done = d.get("world_done", {})
+	if done is Dictionary:
+		for name in done:
+			if done[name] is int or done[name] is float:
+				_world_done[String(name)] = int(done[name])
 	for k in d.get("globals", {}):
 		globals[k] = _deser(d.globals[k])
 	areas = d.get("areas", {})
@@ -1743,7 +1804,8 @@ func _hero_by_key(key) -> GameUnit:
 ## maps (*-lmp.mob, the z*q* quest maps) have no such per-unit checks.
 ## Remake co-op: when a one-shot check (every block ends the thread with
 ## KillScript) fires for a hero of one player, the idle copies of that check
-## for the other players' units end too — a story event (flight, talk,
+## for the other players' units end too. The winning controller is retained
+## for later chained copies and saved with the VM — a story event (flight, talk,
 ## cutscene, quest step) happens once per world. Checks whose trigger acts on
 ## the unit itself (`this` used in an action: InflictDamage traps, SetCP
 ## teleports, fireballs, Follow, a global set to it, further checks on it)
@@ -1752,16 +1814,23 @@ func _hero_by_key(key) -> GameUnit:
 var _world_event_memo := {}
 
 
-func _once_per_world(inst: Instance) -> void:
+func _once_per_world(inst: Instance) -> bool:
+	if session == null or not session.online or not session.lmp.is_empty():
+		return true
 	var def: Dictionary = ast.scripts.get(inst.sname, {})
 	var params: Array = def.get("params", [])
 	if params.is_empty() or not inst.locals.has(params[0]):
-		return
+		return true
 	var me = inst.locals[params[0]]
 	if typeof(me) != TYPE_OBJECT or not is_instance_valid(me) or not me is GameUnit or not me.has_meta("hero"):
-		return
+		return true
 	if not _world_event(inst.sname):
-		return
+		return true
+	if _world_done.has(inst.sname) and int(_world_done[inst.sname]) != me.controller:
+		inst.killed = true
+		inst.frames.clear()
+		return false
+	_world_done[inst.sname] = me.controller
 	for o: Instance in instances:
 		if o == inst or o.sname != inst.sname or o.killed or not o.frames.is_empty():
 			continue
@@ -1769,6 +1838,7 @@ func _once_per_world(inst: Instance) -> void:
 		if typeof(other) == TYPE_OBJECT and is_instance_valid(other) and other is GameUnit \
 				and other.has_meta("hero") and other.controller != me.controller:
 			o.killed = true   # idle: dropped at the end of this tick, never runs
+	return true
 
 
 ## Script `sname` is a one-shot check whose trigger does not act on its unit.
@@ -1901,7 +1971,7 @@ func _objective_met(o: Array, d: Dictionary) -> bool:
 					return false
 			return true
 		"QObjGetItem":
-			return session.state.quest_items.has(_quest_item_name(String(o[1]).to_float()))
+			return session.have_quest_item(0, _quest_item_name(String(o[1]).to_float()))
 		"QObjUse":
 			var id := _obj_id(target) if target != null else -1
 			return world.levers.has(id) and int(world.levers[id].state) == int(o[2])

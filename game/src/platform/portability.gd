@@ -36,6 +36,7 @@ static func defaults() -> Dictionary:
 	var d := {"gfx_hd_textures": 0, "gfx_volumetric": 0, "gfx_ssao": 0,
 		"gfx_water_reflections": 0, "gfx_heat_haze": 0, "gfx_soft_particles": 0,
 		"gfx_torch_glow": 0, "gfx_far_view": 0, "gfx_materials": 0,
+		"gfx_grass": 0, "gfx_soft_ground": 0,
 		"q_aa": 0, "q_shadows": 0, "q_aniso": 1, "fps_limit": 2,
 		"render_scale": 2, "confine_mouse": 0}
 	# A phone has no pointer at the screen edges. A browser keeps the desktop

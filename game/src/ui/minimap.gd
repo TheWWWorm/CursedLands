@@ -33,7 +33,9 @@ extends Control
 ##   atan2(−vx, −vy) of the camera's view axis (
 ## ), i.e. it rides the ring opposite the view with its apex pointing
 ##   the way the camera looks; v = the EI (x, y) of the Godot camera's
-##   forward axis (the original's own view vector, not traced).
+##   forward axis. rotates EI +z by the native quaternion
+##   the renderer's camera maps that to its forward axis. A squared horizontal
+##   length below 1e-6 stores v = (0, 1); no camera retains the preceding v.
 
 const MAP := Rect2(620, 0, 160, 160)
 const BUTTONS := {"toggle": [Rect2(780, 0, 20, 30), Rect2(), 10300],
@@ -57,6 +59,7 @@ var _size := Vector2.ONE   # map W × H in world units
 var _l := 1.0              # L = max(W, H)
 var _zone := ""
 var _north_lit := 0.0   # seconds the N button stays lit
+var _view_xy := Vector2(0, 1)
 
 
 func _ready() -> void:
@@ -342,7 +345,7 @@ func _draw() -> void:
 ##     & hold the local player's side, else 1 (yellow); the
 ##    Curse (id 666666) in gz20g is always 2;
 ## 2. quest lights (scene lights; colour 3, pink square
-##    ±0.03) — none in the remake (nothing places quest lights, see the doc);
+##    ±0.03), placed by QuestLights on map-object quest-info state 1;
 ## 3. zone exits whose target is not "none" (: centre of record
 ## .., `area`): yellow squares ±0.03 (4.8 px), at n · zoom when
 ##    |n · zoom|² ≤ 0.6, else at n when |n|² ≥ 0.68 and |n.x|, |n.y| ≤ 0.97;
@@ -376,6 +379,15 @@ func _draw_marks(c: Vector2) -> void:
 		# losing their thin tips to the pixel grid.
 		tri.append(tri[0])
 		draw_polyline(tri, _mark_col[ci], 0.5, true)
+	if game.quest_lights:
+		for p: Vector2 in game.quest_lights.positions():
+			var n := (p - c) * 2.0 / _l
+			if (n * zoom).length_squared() <= 0.6:
+				n *= zoom
+			elif n.length_squared() < 0.68 or absf(n.x) > 0.97 or absf(n.y) > 0.97:
+				continue
+			var o := MAP.get_center() + _flip(n) * 80.0
+			draw_rect(Rect2(_pt(o - Vector2(2.4, 2.4)), Vector2(4.8, 4.8) * _k()), _mark_col[3])
 	var exits: Dictionary = game.world.zone.get("exits", {})
 	for k in exits:
 		var ex: Dictionary = exits[k]
@@ -391,14 +403,15 @@ func _draw_marks(c: Vector2) -> void:
 
 
 ## EI (x, y) direction opposite the camera's view (−v for
-## atan2(−vx, −vy)); (0, 1) when the view is vertical.
+## atan2(−vx, −vy)); (0, −1) when the view is vertical. The native update
+## retains its last view axis while the global camera is absent.
 func _heading() -> Vector2:
 	var cam := get_viewport().get_camera_3d()
-	if cam == null:
-		return Vector2(0, 1)
-	var f := -cam.global_basis.z
-	var d := -Vector2(f.x, -f.z)   # Godot (x, −z) = EI (x, y)
-	return d.normalized() if d.length() > 1e-6 else Vector2(0, 1)
+	if cam != null:
+		var f := -cam.global_basis.z
+		_view_xy = Vector2(f.x, -f.z)   # Godot (x, −z) = EI (x, y)
+	_view_xy = _view_xy.normalized() if _view_xy.length_squared() >= 1e-6 else Vector2(0, 1)
+	return -_view_xy
 
 
 ## One in25arrow (800×600 points, unshifted) on the battle00 atlas.

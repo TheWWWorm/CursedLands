@@ -11,6 +11,7 @@ extends RefCounted
 ##   * each point of Dexterity above/below 25 adds/removes one Attack and Defence.
 
 const LIST := ["melee", "archery", "science", "elemental", "sense", "astral"]
+const TrainingRefund := preload("res://src/game/training_refund.gd")
 ## npcs.skills2 slot of each skill. the original GiveSkill (case 0xcd):
 ## 0 melee, 1 archery, 2 backstab, 3 elemental, 4 sense, 5 astral, 6 stealth,
 ## 7 awareness; "science" (Use/Steal) has its own setter, read here
@@ -29,6 +30,17 @@ static func title(skill: String) -> String:
 
 static func level(h: Dictionary, skill: String) -> int:
 	return int(h.get("skills", {}).get(skill, 0))
+
+
+## HUD skill byte: party characters have their current hero record;
+## another character has the NPC's initial skills. Other creatures have 0.
+static func unit_level(u: GameUnit, skill: String) -> int:
+	if u.has_meta("hero"):
+		return level(u.get_meta("hero"), skill)
+	if u.uid >= 1000000000 and u.uid < 2000000000:
+		var npc := GameData.db.find("npcs", String(u.proto.get("name", "")))
+		return int(from_npc(npc).get(skill, 0))
+	return 0
 
 
 ## Experience curve of the original: v1 * 1.61 ^ (level / v2) with
@@ -54,6 +66,7 @@ static func raise(h: Dictionary, skill: String) -> bool:
 	var c := cost(h, skill)
 	if c <= 0 or float(h.get("exp", 0.0)) < c:
 		return false
+	TrainingRefund.record_skill(h, skill, c)
 	h.exp = float(h.exp) - c
 	var s: Dictionary = h.get_or_add("skills", {})
 	s[skill] = level(h, skill) + 1

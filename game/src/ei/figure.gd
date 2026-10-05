@@ -9,6 +9,7 @@ extends RefCounted
 
 const FIG_MAGIC := "FIG"
 const SurfaceResponse = preload("res://src/game/surface_materials.gd")
+const FigureMaterial = preload("res://src/ei/figure_material.gd")
 
 ## template -> {"parts": {name: Dictionary}, "links": [[name, parent]], "bones": {name: PackedFloat32Array}}
 static var _models := {}
@@ -41,7 +42,7 @@ instance uniform float part_y = 0.0;
 const float STIFF_K = 0.2;
 const float STIFF_TOP = 2.5;
 void vertex() {
-	ei_e = vec3(0.0);
+	ei_e = ei_material_emissive;
 	ei_k = 0.0;
 	float hgt = max(part_y + VERTEX.y, 0.0);
 	if (wind > 0.0 && hgt > 0.05) {
@@ -61,7 +62,7 @@ void fragment() {
 	FOG = ei_fog_of(VERTEX, (INV_VIEW_MATRIX * vec4(VERTEX, 1.0)).xyz);
 	vec4 t = texture(albedo_tex, UV);
 	ALBEDO = t.rgb;
-	ALPHA = t.a;
+	ALPHA = t.a * ei_material_diffuse.a;
 	ALPHA_SCISSOR_THRESHOLD = 0.5;
 	ALPHA_ANTIALIASING_EDGE = 0.3;
 	ALPHA_TEXTURE_COORDINATE = UV * vec2(textureSize(albedo_tex, 0));
@@ -79,8 +80,8 @@ void fragment() {
 
 
 ## Map objects in the original light model (Gfx.light_code: the 3dfpfpu.dll
-## pipeline's max(ambient, sun · n·L, point lights), material emissive 0,
-## diffuse 1, ObjectsLightingCoeff 1). Alpha-tested like material_for.
+## pipeline's max(ambient, sun · n·L, point lights), per-part material
+## diffuse/emissive, ObjectsLightingCoeff default 1). Alpha-tested.
 const OBJECT_SHADER := """
 shader_type spatial;
 render_mode cull_disabled, ambient_light_disabled;
@@ -91,14 +92,14 @@ uniform float a2c = 0.0;
 uniform vec4 surface_profile = vec4(0.0, 1.0, 0.0, 0.0);
 """ + SurfaceResponse.RELIEF_SHADER + """
 void vertex() {
-	ei_e = vec3(0.0);
+	ei_e = ei_material_emissive;
 	ei_k = 0.0;
 }
 void fragment() {
 	FOG = ei_fog_of(VERTEX, (INV_VIEW_MATRIX * vec4(VERTEX, 1.0)).xyz);
 	vec4 t = texture(albedo_tex, UV);
 	ALBEDO = t.rgb;
-	ALPHA = t.a;
+	ALPHA = t.a * ei_material_diffuse.a;
 	ALPHA_SCISSOR_THRESHOLD = 0.5;
 	if (a2c > 0.5) {
 		ALPHA_ANTIALIASING_EDGE = 0.3;
@@ -119,8 +120,8 @@ static var _world := {}
 
 
 ## The map-object material of a texture (falls back to material_for).
-static func world_material_for(texture: String) -> Material:
-	var key := texture + ("#hd" if Gfx.on("gfx_hd_textures") else "")   # option gfx_hd_textures (TexUpscale)
+static func world_material_for(texture: String, material_id := 0) -> Material:
+	var key := "%s#%d%s" % [texture, material_id, "#hd" if Gfx.on("gfx_hd_textures") else ""]
 	if _world.has(key):
 		return _world[key]
 	var tex := Gfx.texture_3d(texture) if texture else null
@@ -137,6 +138,7 @@ static func world_material_for(texture: String) -> Material:
 	m.shader = _oshader_a2c if a2c else _oshader
 	m.set_shader_parameter("albedo_tex", tex)
 	m.set_shader_parameter("surface_profile", SurfaceResponse.object_profile(texture))
+	FigureMaterial.apply(m, material_id)
 	_world[key] = m
 	return m
 
@@ -157,10 +159,10 @@ static func instantiate(template: String, texture: String, complexion: Vector3,
 	# "nafl*" figures are the flora (naflbu bushes, nafltr trees). Stumps,
 	# logs and mushrooms are nafltr too; they keep the foliage look but no sway.
 	var flora := template.begins_with("nafl") and not morph
-	var mat: Material = (foliage_material_for(texture, true, true) if is_cactus(obj_name)
-			else foliage_material_for(texture, sways(template, texture, model))) if flora \
-			else (world_material_for(texture) if lit else material_for(texture))
+	var sway := sways(template, texture, model) if flora else false
 	var nodes := {}
+	var geometry_parts: Array[WeakRef] = []
+	root.set_meta(EIFigureGeometry.PARTS, geometry_parts)
 	for link: Array in model.links:
 		var part: String = link[0]
 		var node := Node3D.new()
@@ -177,8 +179,13 @@ static func instantiate(template: String, texture: String, complexion: Vector3,
 		var fig: Dictionary = model.parts.get(part, {})
 		if fig.is_empty() or (not visible_parts.is_empty() and not part in visible_parts):
 			continue
+		EIFigureGeometry.attach(node, fig, complexion, geometry_parts)
 		var mi := MeshInstance3D.new()
 		mi.mesh = build_morph_mesh(fig, complexion) if morph else build_mesh(fig, complexion)
+		var material_id: int = fig.get("material", 0)
+		var mat: Material = (foliage_material_for(texture, true, true, material_id) if is_cactus(obj_name)
+				else foliage_material_for(texture, sway, false, material_id)) if flora \
+				else (world_material_for(texture, material_id) if lit else material_for(texture))
 		mi.material_override = mat
 		node.add_child(mi)
 		if flora and mat is ShaderMaterial:
@@ -280,6 +287,7 @@ static func _parse_fig(d: PackedByteArray) -> Dictionary:
 		"n": n,
 		"vblocks": d.decode_u32(4), "nblocks": d.decode_u32(8), "uvs": d.decode_u32(12),
 		"indices": d.decode_u32(16), "comps": d.decode_u32(20),
+		"material": d.decode_u32(32), "texture_group": d.decode_u32(36),
 	}
 	var p := 40 + n * 40  # skip center/min/max/radius per variant
 	f.v_off = p
@@ -443,8 +451,8 @@ static func material_for(texture: String) -> StandardMaterial3D:
 
 ## The foliage material of a texture: material_for's look plus wind sway
 ## (falls back to material_for when the texture is missing).
-static func foliage_material_for(texture: String, sway := true, stiff := false) -> Material:
-	var key := texture + ("#hd" if Gfx.on("gfx_hd_textures") else "") + ("" if sway else "#still") + ("#stiff" if stiff else "")
+static func foliage_material_for(texture: String, sway := true, stiff := false, material_id := 0) -> Material:
+	var key := "%s#%d%s%s%s" % [texture, material_id, "#hd" if Gfx.on("gfx_hd_textures") else "", "" if sway else "#still", "#stiff" if stiff else ""]
 	if _foliage.has(key):
 		return _foliage[key]
 	var tex := Gfx.texture_3d(texture) if texture else null
@@ -456,6 +464,7 @@ static func foliage_material_for(texture: String, sway := true, stiff := false) 
 	m.set_shader_parameter("foliage_mask", SurfaceResponse.foliage_mask(texture))
 	m.set_shader_parameter("wind", 1.0 if _wind and sway else 0.0)
 	m.set_shader_parameter("stiff", 1.0 if stiff else 0.0)
+	FigureMaterial.apply(m, material_id)
 	m.set_meta("sway", sway)
 	_foliage[key] = m
 	return m

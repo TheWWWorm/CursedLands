@@ -70,7 +70,7 @@ func entries() -> Array:
 			continue
 		var n := player_name(game.session, u.controller)
 		if n:
-			out.append([u, n, NetStatus.colour(u.controller)])
+			out.append([u, n, NetStatus.colour(u.controller, game.session.players)])
 	return out
 
 

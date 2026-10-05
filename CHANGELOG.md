@@ -1,5 +1,59 @@
 # Changelog
 
+## 1.0.1
+
+- Co-op:
+  - The host can pause and choose 2× speed for everyone. Campaign parties share vision.
+  - Clients receive correct equipped and trained character stats, a notice when the host saves, and a loading screen that blocks actions while the host loads.
+  - Character imports preserve supplied starting and trained skill levels. Levels already lost by an older import cannot be recovered automatically.
+  - Clients cannot load a local save during a session. Death notices can be dismissed and clear after a host load; loading time no longer inflates the displayed ping.
+  - Mercenaries respect their owner in conversations. An optional setting keeps hired companions across regions.
+  - Late-join checks compare controller records while both players remain connected.
+- Multiplayer and Internet:
+  - The host screen suggests the public Internet address before LAN and VPN routes, preserves the external port and explains private router addresses.
+  - Added an optional community directory browser and opt-in host listings.
+  - Original multiplayer players can travel independently between the base and retained quest map. Character saves, respawn penalties, rewards, body loot and trade refunds stay with their owner.
+  - Trades retain offered items until completion and refund them on cancellation, travel or disconnect. Joining requires a valid selected network character.
+- Controls and interface:
+  - The camp skills screen has a Refund all points button. It returns experience paid for skills and attribute or other perk upgrades, keeping starting allocations, quest gifts and earned experience intact.
+  - Gamepad combat targeting skips teammates. Spells and belt items can target party portraits.
+  - Added optional gyro pointer controls, sensitivity and calibration. Android Back works before the first controller event; controller B and Android Back produce one action in either order.
+  - Fixed inventory and shop arrow hit areas, localized skill descriptions, active-button appearance and menu cursor ownership. Optional icon fitting keeps large item models inside their frames.
+  - Item previews, camp filters, returned trade stacks, character armour summaries, perk help and floating hit numbers follow the original layouts and rules more closely.
+- Gameplay:
+  - Repeated fire-wall damage allows movement to escape. Removed combat targets, looted quest actors and surface-weather objects are handled safely.
+  - Corrected native movement costs, turn improvements, block routes, local search windows and walking splines. Route checks no longer accept paths rejected by slopes or unit clearance.
+  - Route searches avoid unnecessary whole-map work for connected and unreachable source blocks, reducing AI stalls.
+  - Recruited companions can escape overlaps at village exits; fresh routes start from their current position.
+  - Script variables retain case and iteration order through saves and multiplayer synchronization.
+  - Living NPCs retain script-granted quest items and emptied pockets through saving, loading and revisiting a region. Older saves keep their available inventory; items omitted by older saves cannot be recovered automatically.
+  - Keystones remain distinct from ready spells; zero-rune construction and dismantling retain the correct components. Equipped spells can contain duplicates below the original limit.
+  - Corrected experience sharing and debt arithmetic for ordinary gains. Living tamed animals keep their experience and derived health and stamina through saving, travel and co-op updates.
+- Performance:
+  - World logic runs at the original completed 55 ms ticks, with smooth fractional drawing and correct elapsed time during slow frames.
+  - Reuse exact animated mesh bounds and camera projection data, with bounded caches and cleanup when scenes close. Animation updates batch unchanged hierarchy work.
+  - Navigation reuses exact successful searches and resolves connected regions with less work. Two matched Retroid Pocket 5 comparisons per region reduced total benchmark time by about 7% in a crowded region and 2% in snow, with identical world state and random sequences. These are controlled benchmark gains, not ordinary gameplay frame rates.
+  - Retroid Pocket 5 graphics detection is calibrated from 65 menu and region measurements with simulation paused. Adreno 650 on Compatibility uses a conservative 30 FPS fallback with Original look, verified on the device. Manual settings remain intact. This graphics target and the navigation gains do not resolve dense-region CPU latency.
+- Appearance, camera and audio:
+  - Added grass blades with varied clumps, growth patches, colour, wind and sun shadows, plus shallow snow and sand tracks. Grass keeps clear of walls, rocks, pillars and tree trunks. Both options follow desktop graphics capability and default off on Android.
+  - Corrected Original water wave grids and material rules, and rain and snow curves and clipping.
+  - Figure materials and terrain lighting use the original vertex colors and light-channel rules; overlapping mapped lights receive the complete ground-shadow factor.
+  - Repeated loading stages redraw the retained picture, and detached menu construction avoids invalid scene access.
+  - Quest actors retain their sustained quest light and white figure. Electrical hit flashes, including absorbed strikes, reach both players.
+  - Corrected fireball, lightning, healing, invoke and stationary spell-light timing, geometry and save replay. Tornado replay retains its creation age.
+  - Original camera saves retain internal views and turning, pitch and zoom motion. Original right-drag restores the pointer correctly; optional village opening views use authored camera files.
+  - Corrected door and lever timing, equipment textures and layering, footprint and blood dimensions, and minimap heading.
+  - Camp music continues on the travel map. Corrected ambient sounds, weapon and animation sounds, acknowledgements and spell outcomes.
+- Validation:
+  - Checked the complete legal campaign script route through the ending in single player and on a real co-op pair, with matching quest state. Ordinary combat progression remains a separate ongoing check.
+  - Fresh-profile save-list checks and repeated tutorial and reload checks now use reliable fixtures and state-based waits.
+  - Reviewed the 22 reported issues and feature requests separately from the 134-entry fidelity audit. The audit retains 61 partial entries; review completion does not establish full original-engine parity.
+- Remaining limits:
+  - Complete ordinary combat playthroughs in single player and co-op remain unverified. Direct public-IP play still needs a two-player retry across routers; the corrected address display and local/VPN checks do not prove that connection.
+  - Dense regions remain slow on the Retroid Pocket 5 with extra graphics disabled. Physical gyro aiming feel has limited hardware coverage.
+  - Some cooldowns for identical item instances, combat prediction and animation, dialogue staging, script update order, visibility/weather, spell randomness and replay, and renderer/audio details still differ from the original. This includes damaging tornado trajectories, not only cosmetic randomness. Older saves cannot recover metadata that was never stored. Android and browser loading presents the start and end frames while construction blocks intermediate frames.
+
+
 ## 1.0.0
 
 - Options:

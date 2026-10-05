@@ -12,12 +12,10 @@ extends Node
 ## - Chat: the LMP server relays a player's text to everyone as
 ##   "^<colour>" + name + "^7: " + text (format; the
 ##   colour index is the player record's). Here the name is drawn in the
-##   player's colour (Quake colour codes 1..4 by player slot, **approx.**: the
-##   original's colour assignment is not traced) and ": text" in the text window's
-##   default colour; the lines go to the HUD text window. **Approx.**: the
-##   original's receiver keeps its own chat list
-##   at most 12 lines, wrapped at 0x30c px, ^0..^7 as RGB bits; that overlay is
-##   not ported. The input line is (ui/chat_line.gd).
+##   player's colour: assigns the smallest unused positive code
+##   independently of its party owner index. decodes ^0..^7 as
+##   RGB bits, then ^7 makes ": text" white. The receiver keeps at most 12
+##   lines wrapped at 0x30c px (ui/chat_overlay.gd); the input is ui/chat_line.gd.
 ## - Status: the village screen of a network game has a player strip
 ##   ((464,0)-(800,160)): 56 px cells right to left, the status
 ##   line «lmp_status_zone / _base / _camp / _connect». Ping
@@ -35,9 +33,6 @@ signal kicked(banned: bool)
 
 const CHAT_MAX := 200   # under 200 characters
 const STATUS_EVERY := 1.0
-## Quake colour codes (^1 red ^2 green ^3 yellow ^4 blue ^5 cyan ^6 magenta ^7 white).
-const COLOURS := [Color(1, 0.3, 0.3), Color(0.35, 1, 0.35), Color(1, 1, 0.35), Color(0.45, 0.6, 1),
-	Color(0.35, 1, 1), Color(1, 0.4, 1), Color(1, 1, 1)]
 
 var session: Session
 ## pid -> {"ping": ms, "state": "connect" | "zone" | "base" | "lag"} (host fills, clients receive).
@@ -50,6 +45,7 @@ var _last_sent := {}
 var _host_left := false
 var _rtt := {}          # host: pid -> smoothed round trip of _rpc_ping (ms)
 var _loaded_at := {}    # host: pid -> when it reported its zone built (ticks ms)
+var _load_epoch := {}   # host: pid -> save-load serial; stale same-zone reports do not count
 ## Host: pids whose trader screen is open (the original player state 2 «Trading»
 ## lmp_status_camp: message 4 enters a trader, leaves).
 var _trading := {}
@@ -86,8 +82,29 @@ static func lmp_text(key: String, arg := "", fallback := "") -> String:
 	return t.replace("%s", arg) if t.contains("%s") else t
 
 
-static func colour(player_index: int) -> Color:
-	return COLOURS[clampi(player_index, 0, Session.MAX_PLAYERS - 1)]
+## colours are reused after a disconnect; a preserved campaign
+## hero's owner slot does not reserve a colour while its player is absent.
+static func free_colour(players: Dictionary) -> int:
+	var used := []
+	for p: Dictionary in players.values():
+		used.append(int(p.get("colour", int(p.index) + 1)))
+	var code := 1
+	while code in used:
+		code += 1
+	return code
+
+
+## bits 0/1/2 are red/green/blue (^5 magenta, ^6 cyan).
+## The optional table keeps the connected player's colour distinct from the
+## remake's persistent party owner index. A fixture without a table uses the
+## initial sequential allocation.
+static func colour(player_index: int, players: Dictionary = {}) -> Color:
+	var code := player_index + 1
+	for p: Dictionary in players.values():
+		if int(p.index) == player_index:
+			code = int(p.get("colour", code))
+			break
+	return Color(float((code & 1) != 0), float((code & 2) != 0), float((code & 4) != 0))
 
 
 # ================================================================ join / leave
@@ -154,6 +171,8 @@ func _rpc_bye() -> void:
 	if session.is_host:
 		var pid := multiplayer.get_remote_sender_id()
 		_leaving[pid] = true
+		if session.players.has(pid):
+			session.swap.command({"t": "withdraw"}, int(session.players[pid].index))
 		# Its last progress package (the joiner waits for it, leave()), then
 		# the connection goes after a moment even if the game just closed.
 		session.coop._sent_hash.clear()
@@ -204,6 +223,7 @@ func kick(pid: int, ban := false) -> bool:
 			banned_addresses[addr] = true
 	if CoopProgress.peer_alive(multiplayer, pid):
 		_rpc_kicked.rpc_id(pid, ban)
+	session.swap.command({"t": "withdraw"}, int(session.players[pid].index))
 	session.coop._sent_hash.clear()
 	session.coop.send_all()
 	get_tree().create_timer(KICK_DROP).timeout.connect(func():
@@ -249,6 +269,8 @@ func forget(pid: int) -> void:
 	_trading.erase(pid)
 	_rtt.erase(pid)
 	_loaded.erase(pid)
+	_loaded_at.erase(pid)
+	_load_epoch.erase(pid)
 	_said.erase(pid)
 
 
@@ -306,7 +328,7 @@ func _rpc_chat(idx: int, player_name: String, text: String) -> void:
 # drops the connection.
 
 ## Remake co-op protocol; raise it when the messages change incompatibly.
-const PROTOCOL := 2
+const PROTOCOL := 3
 const CoopDb := preload("res://src/game/coop_db.gd")
 
 
@@ -417,8 +439,20 @@ func refuse(pid: int, protocol: int, world: String, player_name := "", pw := "")
 			RemakeText.t("The host's Evil Islands maps differ from yours: another edition of the game. Both players need an edition with the same maps (the English and Russian ones have them; the German one does not).")]
 	if why.is_empty():
 		return false
-	print("NetStatus: join refused (%s)" % why[0])
-	_rpc_refused.rpc_id(pid, why[0], why[1])
+	_reject(pid, why[0], why[1])
+	return true
+
+
+## no selected character cannot enter an LMP game. The host
+## enforces the same rule for a late joiner or a differently chosen lobby.
+func refuse_character(pid: int) -> void:
+	_reject(pid, lmp_text("lmp_no_pers", "", "No character selected"),
+		lmp_text("lmp_no_pers_msg", "", "Please select a network character before joining."))
+
+
+func _reject(pid: int, title: String, text: String) -> void:
+	print("NetStatus: join refused (%s)" % title)
+	_rpc_refused.rpc_id(pid, title, text)
 	get_tree().create_timer(1.0).timeout.connect(func():
 		if not multiplayer.get_peers().has(pid):
 			return   # already gone (the joiner closed, e.g. to try another password)
@@ -427,7 +461,6 @@ func refuse(pid: int, protocol: int, world: String, player_name := "", pw := "")
 			enet.get_peer(pid).peer_disconnect_later()
 		elif multiplayer.multiplayer_peer:
 			multiplayer.multiplayer_peer.disconnect_peer(pid))
-	return true
 
 
 @rpc("authority", "call_remote", "reliable")
@@ -470,28 +503,63 @@ func set_trading(on: bool) -> void:
 		return
 	_trading_me = on
 	if session.is_host:
-		_trading[1] = on
+		_set_trading(1, on)
 	else:
-		_rpc_trading.rpc_id(1, on)
+		_rpc_trading.rpc_id(1, on, session.zone_id if not session.lmp.is_empty() else "",
+			session.lmp_generation if not session.lmp.is_empty() else 0)
 
 
 @rpc("any_peer", "call_remote", "reliable")
-func _rpc_trading(on: bool) -> void:
+func _rpc_trading(on: bool, zone := "", generation := 0) -> void:
 	if session.is_host:
-		_trading[multiplayer.get_remote_sender_id()] = on
+		var pid := multiplayer.get_remote_sender_id()
+		if session.lmp_travel and (not session.players.has(pid) or not session.lmp_travel.accepts(
+				int(session.players[pid].index), zone, generation)):
+			return
+		_set_trading(pid, on)
+
+
+func _set_trading(pid: int, on: bool) -> void:
+	if not session.players.has(pid) or bool(_trading.get(pid, false)) == on:
+		return
+	_trading[pid] = on
+	# Native message 4 returns the authoritative party on entering a trader;
+	# message 5 saves it on leaving. Reliable camp commands arrive before
+	# this close, so the client writes the host's final record, not a stale
+	# local copy. Campaign co-op keeps its own progress-package policy.
+	if not session.lmp.is_empty():
+		session._mp_send(int(session.players[pid].index))
+	status_changed.emit()
 
 
 ## Client, after building a zone the host sent.
 func zone_loaded() -> void:
 	if session.online and not session.is_host:
-		_rpc_loaded.rpc_id(1, session.zone_id)
+		_rpc_loaded.rpc_id(1, session.zone_id, session.lmp_generation if not session.lmp.is_empty() else session._load_serial)
+
+
+## A same-zone reload is still a new timing epoch: pings queued during its
+## build measure load time, not the internet connection.
+func loading_started(pid: int, epoch: int) -> void:
+	_load_epoch[pid] = epoch
+	_loaded.erase(pid)
+	_loaded_at.erase(pid)
+	_rtt.erase(pid)
+	status[pid] = {"ping": 0, "state": "connect"}
+	status_changed.emit()
 
 
 @rpc("any_peer", "call_remote", "reliable")
-func _rpc_loaded(zone: String) -> void:
+func _rpc_loaded(zone: String, epoch := 0) -> void:
 	if session.is_host:
-		_loaded[multiplayer.get_remote_sender_id()] = zone.left(32)
-		_loaded_at[multiplayer.get_remote_sender_id()] = Time.get_ticks_msec()
+		var pid := multiplayer.get_remote_sender_id()
+		if not session.players.has(pid) or epoch != int(_load_epoch.get(pid, 0)):
+			return
+		if session.lmp_travel and not session.lmp_travel.loaded(pid, zone, epoch):
+			return
+		_loaded[pid] = zone.left(32)
+		_loaded_at[pid] = Time.get_ticks_msec()
+		_rtt.erase(pid)
 
 
 func _physics_process(dt: float) -> void:
@@ -502,26 +570,32 @@ func _physics_process(dt: float) -> void:
 		return
 	_t = STATUS_EVERY
 	var enet := NetSim.enet_of(multiplayer)
-	var brief := session.zone_id != "" and session.campaign != null \
-		and String(session.campaign.zone(session.zone_id).get("type", "")) == "brief"
-	var here := "base" if brief else "zone"
 	var out := {}
 	for pid in session.players:
+		var zone := session.player_zone(int(session.players[pid].index))
+		var brief := zone != "" and session.campaign != null \
+			and String(session.campaign.zone(zone).get("type", "")) == "brief"
 		var ping := 0
-		var state := here
+		var state := "base" if brief else "zone"
 		if int(pid) != 1:
+			# A reliable player table can outlive an ENet peer at disconnect.
+			# get_peer logs an error for a missing id before it returns null.
+			if enet and not int(pid) in multiplayer.get_peers():
+				continue
 			var p := enet.get_peer(int(pid)) if enet else null
 			if p == null and enet != null:
 				continue
 			# The round trip of our own ping (what the game's messages see,
 			# queues included); ENet's own estimate until the first answer.
 			ping = int(_rtt.get(pid, p.get_statistic(ENetPacketPeer.PEER_ROUND_TRIP_TIME) if p else 0))
-			_rpc_ping.rpc_id(int(pid), Time.get_ticks_msec())
-			if String(_loaded.get(pid, "")) != session.zone_id or session.world == null:
+			if String(_loaded.get(pid, "")) != zone or session.world == null:
 				state = "connect"
-			elif ping > 1000:
-				state = "lag"
-		elif session.world == null:
+				ping = 0
+			else:
+				_rpc_ping.rpc_id(int(pid), Time.get_ticks_msec())
+				if ping > 1000:
+					state = "lag"
+		elif session.world == null or session.loading_game:
 			state = "connect"
 		if state == "base" and bool(_trading.get(pid, false)):
 			state = "camp"
@@ -548,7 +622,8 @@ func _rpc_pong(t: int) -> void:
 		return
 	# A ping that waited out the peer's zone build measures the build, not
 	# the connection: only pings sent after it reported the current zone count.
-	if String(_loaded.get(pid, "")) != session.zone_id or t < int(_loaded_at.get(pid, 0)):
+	var zone := session.player_zone(int(session.players.get(pid, {}).get("index", -1)))
+	if String(_loaded.get(pid, "")) != zone or t < int(_loaded_at.get(pid, 0)):
 		return
 	_rtt[pid] = ms if not _rtt.has(pid) else lerpf(float(_rtt[pid]), ms, 0.3)
 

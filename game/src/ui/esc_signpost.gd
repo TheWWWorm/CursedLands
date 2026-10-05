@@ -1,5 +1,5 @@
 class_name EscSignpost
-extends SubViewportContainer
+extends InterfaceBoard
 ## The original in-game Esc menu: the small carved signpost (menus.res
 ## "unmoco1", textures escmenu00 / escmenu00labels) drawn over the game.
 ## Its boards are the buttons; clicking one emits `pressed` (click handler
@@ -18,14 +18,14 @@ const BOARDS := {"save": "save", "load": "load", "options": "options", "return2g
 ## menus.reg [EscMenu] index: 0 SaveGame 2, 1 LoadGame 3, 2 ResumeGame 5,
 ## 3 ExitMM 6, 4 Options 4.
 const HOVER_ANIM := {"save": 2, "load": 3, "return2game": 5, "exit2mainmenu": 6, "options": 4}
+const REG := [["SaveGame", "save"], ["LoadGame", "load"], ["ResumeGame", "return2game"],
+	["ExitMM", "exit2mainmenu"], ["Options", "options"]]
 
-var _vp: SubViewport
-var _cam: Camera3D
 var _post: Node3D
 var _player: AnimationPlayer
 var _boards := {}
 var _board_meshes := {}
-var _framed := false
+var _rects: Array[Rect2] = []
 
 
 func _ready() -> void:
@@ -36,21 +36,17 @@ func _ready() -> void:
 	visibility_changed.connect(func():
 		if visible:
 			_on_open())
-	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	stretch = true
+	# the same CI3DFigure projection as the other interface
+	# screens, X-axis turn PI/2, screen position (400,700), depth 4.8.
+	_build("unmoco1", "escmenu00", "escmenu00labels", PackedStringArray(), PI * 0.5, Vector3(400, 700, 4.8))
 	mouse_filter = Control.MOUSE_FILTER_STOP
-	_vp = SubViewport.new()
-	_vp.own_world_3d = true
-	_vp.transparent_bg = true
-	add_child(_vp)
-	_post = EIFigure.instantiate("unmoco1", "escmenu00", Vector3(0.5, 0.5, 0.5))
+	_post = _fig
 	if _post == null:
 		return
-	_vp.add_child(_post)
-	var labels := EIFigure.material_for("escmenu00labels")
-	for mi: MeshInstance3D in _post.find_children("*", "MeshInstance3D", true, false):
-		if String(mi.get_parent().name).ends_with("label"):
-			mi.material_override = labels
+	var reg: Dictionary = EIRegFile.parse(GameData.menus.read("menus.reg")).get("EscMenu", {})
+	for e: Array in REG:
+		var r: Array = reg.get(e[0], [])
+		_rects.append(Rect2(r[0], r[1], r[2] - r[0], r[3] - r[1]) if r.size() == 4 else Rect2())
 	for part: String in BOARDS:
 		var n := _post.find_child(part, true, false) as Node3D
 		if n:
@@ -72,44 +68,16 @@ func _ready() -> void:
 	# translation keys move it, which is the open slide.
 	_player.add_animation_library("ei", EIAnim.library("unmoco1", paths, "escmenu00"))
 	_play("cidle")
-	_cam = Camera3D.new()
 	# This UI camera is positioned outside physics ticks, including while the
 	# game is paused. Picking must use that same pose rather than an old
 	# interpolated transform cached by the SubViewport.
 	_cam.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
-	_cam.fov = 40.0
-	_vp.add_child(_cam)
-	var light := DirectionalLight3D.new()
-	light.rotation_degrees = Vector3(-30, 20, 0)
-	_vp.add_child(light)
-	var env := WorldEnvironment.new()
-	env.environment = Environment.new()
-	env.environment.background_mode = Environment.BG_CLEAR_COLOR
-	env.environment.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
-	env.environment.ambient_light_color = Color(0.7, 0.7, 0.7)
-	_vp.add_child(env)
 	_frame()
 
 
-func _process(_dt: float) -> void:
-	_frame()
-
-
-## Frames the signpost once, at its rest pose (before any opening slide).
+## Native placement; animation keys move only the figure's root part.
 func _frame() -> void:
-	if _framed or _post == null or _cam == null or not _post.is_inside_tree():
-		return
-	_framed = true
-	var box := AABB()
-	var first := true
-	for mi: MeshInstance3D in _post.find_children("*", "MeshInstance3D", true, false):
-		var b: AABB = mi.global_transform * mi.get_aabb()
-		box = b if first else box.merge(b)
-		first = false
-	var c := box.get_center()
-	var r := box.size.y * 0.5
-	var eye := c + Vector3(0, 0, r / tan(deg_to_rad(20.0)) * 1.15)
-	_cam.transform = Transform3D(Basis.looking_at(c - eye), eye)
+	place(Vector3(400, 700, 4.8))
 
 
 func _gui_input(e: InputEvent) -> void:
@@ -165,33 +133,16 @@ func _sfx(path: String) -> void:
 	click.finished.connect(click.queue_free)
 
 
-## The board under a point: the nearest board triangle on the camera ray.
-## The original hit-tests menus.reg [EscMenu] rectangles (800×600)
-## against its own view of the signpost; the remake frames the signpost
-## itself (see _process), so it picks the boards' geometry instead
-## (**Approx.**; the earlier screen-box test let neighbouring boards' boxes
-## overlap).
+## first menus.reg [EscMenu] rectangle containing the point
+## with half-open right/bottom edges, in the stretched 800x600 interface.
 func board_at(p: Vector2) -> String:
-	var scale := Vector2(_vp.size) / size if size.x > 0 else Vector2.ONE
-	p *= scale
-	if _cam == null:
+	if size.x <= 0.0 or size.y <= 0.0:
 		return ""
-	var o := _cam.project_ray_origin(p)
-	var d := _cam.project_ray_normal(p)
-	var best := ""
-	var bt := INF
-	for part: String in _boards:
-		for mi: MeshInstance3D in _board_meshes[part]:
-			if mi.mesh == null:
-				continue
-			var f := mi.mesh.get_faces()
-			var xf := mi.global_transform
-			for i in range(0, f.size() - 2, 3):
-				var hit = Geometry3D.ray_intersects_triangle(o, d, xf * f[i], xf * f[i + 1], xf * f[i + 2])
-				if hit != null and o.distance_to(hit) < bt:
-					bt = o.distance_to(hit)
-					best = part
-	return best
+	var q := p * Vector2(800, 600) / size
+	for i in _rects.size():
+		if _rects[i].has_point(q):
+			return REG[i][1]
+	return ""
 
 
 func _unhandled_key_input(e: InputEvent) -> void:
@@ -221,28 +172,17 @@ func pad_press(action: String, phase: String) -> bool:
 var pad_extra: Callable
 
 
-## Remake (gamepad, PadUI): each board's screen rectangle, from its meshes
-## projected through the signpost's camera.
+## Gamepad snap targets use the same native hit rectangles as the pointer.
 func pad_targets() -> Array:
 	var out: Array = []
-	if _cam == null or _vp == null or size.x <= 0.0:
+	if size.x <= 0.0 or size.y <= 0.0:
 		return out
-	var to_ctrl := size / Vector2(_vp.size)
+	var to_ctrl := size / Vector2(800, 600)
 	var xf := get_global_transform_with_canvas()
-	for part: String in _boards:
-		var r := Rect2()
-		var first := true
-		for mi: MeshInstance3D in _board_meshes[part]:
-			var b: AABB = mi.global_transform * mi.get_aabb()
-			for i in 8:
-				var c := b.get_endpoint(i)
-				if _cam.is_position_behind(c):
-					continue
-				var sp := xf * (_cam.unproject_position(c) * to_ctrl)
-				r = Rect2(sp, Vector2.ZERO) if first else r.expand(sp)
-				first = false
-		if not first:
-			out.append({"rect": r, "id": BOARDS[part]})
+	for i in _rects.size():
+		var r := _rects[i]
+		if r.size != Vector2.ZERO:
+			out.append({"rect": Rect2(xf * (r.position * to_ctrl), r.size * to_ctrl), "id": BOARDS[REG[i][1]]})
 	if pad_extra.is_valid():
 		out.append_array(pad_extra.call())
 	return out

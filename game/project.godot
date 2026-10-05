@@ -20,7 +20,7 @@ config/icon="res://icon.svg"
 run/main_scene="res://scenes/main.tscn"
 run/flush_stdout_on_print=true
 config/features=PackedStringArray("4.7")
-config/version="1.0.0"
+config/version="1.0.1"
 config/project_settings_override.android="user://renderer.cfg"
 
 [autoload]
@@ -42,6 +42,8 @@ window/size/viewport_height=900
 window/handheld/orientation=6
 
 [input_devices]
+
+sensors/enable_gyroscope=true
 
 pointing/emulate_mouse_from_touch=false
 joypads/ignore_joypad_on_unfocused_application=true

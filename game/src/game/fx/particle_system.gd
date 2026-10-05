@@ -27,7 +27,8 @@ const ONE_SHOT := [0x2002, 0x2006, 0x200b, 0x200c, 0x200d, 0x200e, 0x200f, 0x201
 	0x201b, 0x201c, 0x201d, 0x201e, 0x201f, 0x2020, 0x2021, 0x2022, 0x2023, 0x2024, 0x2025, 0x2026,
 	0x2030, 0x2031, 0x2032, 0x2033, 0x203f, 0x2040, 0x2041, 0x2042, 0x2043]
 ## Bone selector -> figure part.
-const BONES := {1: "hd", 2: "hd", 3: "lh2", 4: "rh2", 5: "ll2", 6: "rl2", 7: "bd"}
+const BONES := {1: "hd", 2: "hd", 3: "lh2", 4: "rh2", 5: "ll2", 6: "rl2", 7: "bd",
+	8: "body00", 9: "body01", 10: "body02", 11: "body03", 12: "body04"}
 
 ## One CEffectParticle (or the particle part of a CEffectWall / CEffectArrow).
 class Effect:
@@ -80,6 +81,8 @@ var tick := 0
 var acc := 0.0
 var effects: Array[Effect] = []
 var bolts: Array = []        # FxLightning
+var _pending_bolts: Array[Dictionary] = []   # native invoke's second flash, by simulation tick
+var _pending_fireballs: Array[Dictionary] = []
 var lights: Array = []       # {light: OmniLight3D, until, id, step, ticks, pos}
 var missiles: Array = []     # CEffectArrow
 var script_fx := {}          # script id -> Effect
@@ -88,7 +91,7 @@ var script_lights := {}      # script id -> light dict
 var _rng := RandomNumberGenerator.new()
 var _mats := {}
 var _quad: QuadMesh
-var _bones := {}             # unit instance id -> {name: Node3D}
+var _bones := {}             # unit instance id -> {model: instance id, parts: {name: Node3D}}
 var _boxes := {}             # unit instance id -> [tick, AABB] (unit local, Godot space)
 var _zone_set := false
 ## Zone exit stars: [Effect, GS var "z.<target>"] per exit (the original's list).
@@ -169,19 +172,26 @@ func carrier_valid(obj: Object) -> bool:
 
 
 func _bone(u: GameUnit, name: String) -> Node3D:
-	if u.model == null:
+	if not is_instance_valid(u.model):
 		return null
 	var key := u.get_instance_id()
-	var m: Dictionary = _bones.get(key, {})
-	if not m.has(name):
+	var cached: Dictionary = _bones.get(key, {})
+	if int(cached.get("model", 0)) != u.model.get_instance_id():
+		cached = {"model": u.model.get_instance_id(), "parts": {}}
+		_bones[key] = cached
+	var m: Dictionary = cached.parts
+	if not m.has(name) or not is_instance_valid(m[name]):
 		m[name] = u.model.find_child(name, true, false)
-		_bones[key] = m
 	var n = m[name]
 	return n if is_instance_valid(n) else null
 
 
-## Unit bounds in its own (Godot) space, from the figure's meshes.
+## Authored FIG bounds at current part origins. Mesh bounds remain a fallback
+## for custom carriers without original figure metadata.
 func _box(u: GameUnit) -> AABB:
+	var geometry := EIFigureGeometry.of(u.model)
+	if not geometry.is_empty():
+		return EIFigureGeometry.box(geometry)
 	var key := u.get_instance_id()
 	# Re-measured now and then: a figure only settles after its first frames.
 	if _boxes.has(key) and tick - int(_boxes[key][0]) < 20:
@@ -208,17 +218,29 @@ func _box(u: GameUnit) -> AABB:
 	return box
 
 
-## (height offset of the centre, radius = half the bbox diagonal).
+## centre height and native union radius; the FIG's individual
+## part radius is a separate value (blood uses it below).
 func carrier_size(obj: Object) -> Vector2:
 	if obj is GameUnit:
+		var geometry := EIFigureGeometry.of(obj.model)
+		if not geometry.is_empty():
+			return EIFigureGeometry.carrier(geometry)
 		var b := _box(obj)
 		return Vector2(b.get_center().y, b.size.length() * 0.5)
-	return Vector2(0.5, 0.5)
+	if obj is Node3D:
+		var geometry := EIFigureGeometry.of(obj)
+		if not geometry.is_empty():
+			return EIFigureGeometry.carrier(geometry)
+	return EIFigureGeometry.carrier({})
 
 
 func carrier_height(obj: Object) -> float:
 	if obj is GameUnit:
 		return _box(obj).size.y
+	if obj is Node3D:
+		var geometry := EIFigureGeometry.of(obj)
+		if not geometry.is_empty():
+			return float(geometry.max.z) - float(geometry.min.z)
 	return 1.0
 
 
@@ -234,13 +256,20 @@ func carrier_point(e: FxEmitter, obj: Object) -> Vector3:
 	return e.ofs
 
 
-## A unit point by bone selector: 0 the centre, 1..7 bones.
+## . Character selector0 uses the current right
+## hand. Creature baseline weapon nodes are still represented by the raw
+## centre fallback until that animation-manager cache is ported.
 func unit_point(u: GameUnit, sel: int) -> Vector3:
 	if sel == 0:
+		if int(u.race.get("type_id", -1)) == 0x32:
+			var hand := _bone(u, "rh3")
+			if hand:
+				return ei(hand.global_position)
+		var geometry := EIFigureGeometry.of(u.model)
+		if not geometry.is_empty():
+			return ei(u.global_position) + geometry.centre
 		var b := _box(u)
 		return ei(u.global_position) + Vector3(0, 0, b.get_center().y)
-	if sel >= 8:
-		sel = 7
 	var n := _bone(u, BONES.get(sel, "bd"))
 	if n == null:
 		n = _bone(u, "bd")
@@ -248,7 +277,9 @@ func unit_point(u: GameUnit, sel: int) -> Vector3:
 	if n:
 		p = ei(n.global_position)
 	else:
-		p = ei(u.global_position) + Vector3(0, 0, _box(u).size.y)
+		var geometry := EIFigureGeometry.of(u.model)
+		var z := float(geometry.max.z) if not geometry.is_empty() else _box(u).size.y
+		p = ei(u.global_position) + Vector3(0, 0, z)
 	if sel == 2:
 		p.z += 1.0
 	return p
@@ -259,17 +290,13 @@ func bone_point(u: GameUnit, name: String) -> Vector3:
 	return ei(n.global_position) if n else ei(u.global_position)
 
 
-## Unit bone size: half the part's mesh extent (approx.).
+## the authored part radius. No blood emitter is
+## created when the hit's requested part is absent.
 func bone_size(u: GameUnit, sel: int) -> float:
 	var n := _bone(u, BONES.get(sel, "bd"))
-	if n == null:
-		return 0.15
-	for mi: MeshInstance3D in n.find_children("*", "MeshInstance3D", false, false):
-		if mi.mesh:
-			return clampf(mi.mesh.get_aabb().size.length() * 0.25, 0.05, 0.5)
-	if n is MeshInstance3D and (n as MeshInstance3D).mesh:
-		return clampf((n as MeshInstance3D).mesh.get_aabb().size.length() * 0.25, 0.05, 0.5)
-	return 0.15
+	if n and n.has_meta(EIFigureGeometry.META):
+		return float(n.get_meta(EIFigureGeometry.META).radius)
+	return 0.0
 
 
 func view_dir() -> Vector3:
@@ -544,9 +571,19 @@ const PAR_MIN_PARTS := 400   # fewer particles in all: no worker round trip
 
 func _tick(last := true) -> void:
 	tick += 1
+	var existing_lights := lights.duplicate()
+	for pending: Dictionary in _pending_bolts.duplicate():
+		if tick >= int(pending.at):
+			add_bolt(pending.a, pending.b, float(pending.param), TICK)
+			_pending_bolts.erase(pending)
 	exit_colours()
 	for m in missiles.duplicate():
 		_missile_tick(m)
+	for fireball: Dictionary in _pending_fireballs:
+		var ef: Effect = fireball.ef
+		if ef and not ef.deleted:
+			fireball.pos = _fireball_step(fireball.pos, fireball.to, float(fireball.speed))
+			ef.e.ofs = fireball.pos
 	_in_tick = true
 	_ground = FxGround.of(world)
 	var job := SimJob.new()
@@ -616,7 +653,9 @@ func _tick(last := true) -> void:
 			remove_bolt(l)
 		else:
 			l.update_tick()
-	for d: Dictionary in lights.duplicate():
+	for d: Dictionary in existing_lights:
+		if not lights.has(d):
+			continue
 		d.age += 1
 		if d.ticks > 0:
 			d.ticks -= 1
@@ -624,6 +663,19 @@ func _tick(last := true) -> void:
 			d.light.global_position = godot(d.pos)
 		if d.until >= 0 and tick >= d.until:
 			remove_light(d)
+	#58dcd0 advances existing scene objects before67e690 updates wrappers.
+	# A blast born here first updates its particles/light on the next tick.
+	for fireball: Dictionary in _pending_fireballs.duplicate():
+		if tick >= int(fireball.impact):
+			_pending_fireballs.erase(fireball)
+			delete(fireball.ef)
+			remove_light(fireball.light)
+			spawn(0x2002, fireball.to, float(fireball.size))
+			_hit_light(fireball.to, fireball.sp, 38)
+		elif tick >= int(fireball.impact) - 1:
+			#681b70 drops the flight particle when its decremented counter
+			# becomes negative, one tick before the actual area hit.
+			delete(fireball.ef)
 
 
 # ------------------------------------------------------------------ drawing
@@ -826,7 +878,9 @@ func _draw(t: float) -> void:
 	var eye := ei(cam.global_position) if cam else Vector3.ZERO
 	# Out of view effects are not refilled either (a remake saving; filling
 	# the quads of a few thousand particles each frame costs milliseconds).
-	var planes: Array[Plane] = cam.get_frustum() if cam else [] as Array[Plane]
+	var planes: Array[Plane] = []
+	if cam:
+		planes = cam.get_frustum()
 	for ef in effects:
 		var e := ef.e
 		var hidden: bool = is_instance_valid(e.carrier) and e.carrier is GameUnit \
@@ -930,9 +984,9 @@ func on_event(ev: Dictionary) -> void:
 ## ): 0x200a, size 1, at the tornado (z 0: the control callback
 ## lifts the funnel to the ground), moved by its step every tick, emission
 ## stopped once life < 111 (0x6f) ticks, deleted when life runs out. A
-## tornado already running when the event comes (a joiner's replay, the zone
-## just started here) catches up min(gone, 30) − 1 updates; the remake does
-## not know "gone" and takes the full 29 then.
+## tornado already running when the event comes catches up min(age,30)-1
+## updates. Save/replay carries the native creation interval independently
+## of this peer's current zone tick.
 var _tornadoes := {}   # id -> Effect
 
 
@@ -943,7 +997,7 @@ func tornado(ev: Dictionary) -> void:
 		delete(old)
 	var life := int(ev.get("life", 0))
 	var ef := spawn(0x200a, Vector3(float(ev.x), float(ev.y), 0.0), 1.0, null,
-		{"prewarm": 29 if tick < 5 else 0})
+		{"age": maxi(int(ev.get("age", 0)), 0)})   # 67ded0: min(age,30)-1
 	if ef == null:
 		return
 	ef.move_step = Vector3(float(ev.vx), float(ev.vy), 0.0)
@@ -955,8 +1009,10 @@ func tornado(ev: Dictionary) -> void:
 ## s(e): clamp(effect / proto effect, 1, 8)^0.33 - 0.2.
 static func strength(sp: Dictionary) -> float:
 	var base := float(sp.proto.get("effect", 0.0))
-	var r := float(sp.effect) / base if base > 0.0 else 1.0
-	return pow(clampf(r, 1.0, 8.0), 0.33) - 0.2
+	if base == 0.0:
+		return 1.0
+	var r := float(sp.effect) / base
+	return float(PackedFloat32Array([pow(clampf(r, 1.0, 8.0), 0.33000001311302185) - 0.20000000298023224])[0])
 
 
 func _unit(uid) -> GameUnit:
@@ -973,6 +1029,8 @@ func _ground_pt(x: float, y: float, dz := 0.0) -> Vector3:
 ## Spell cast visuals, (event "spellfx": code, x, y, a = caster
 ## uid, tu = target uid, spell = the full spell id).
 func spell_cast(ev: Dictionary) -> void:
+	if ev.get("light_only", false):
+		return
 	var sp := Spells.parse(String(ev.get("spell", ev.get("code", ""))))
 	var code := String(sp.code)
 	var s := strength(sp)
@@ -999,27 +1057,32 @@ func spell_cast(ev: Dictionary) -> void:
 	if caster:
 		src = unit_point(caster, 0)
 	elif has_src:
-		src = _ground_pt(float(ev.fx), float(ev.fy), 1.0)
+		src = Vector3(float(ev.fx), float(ev.fy), float(ev.fz)) if ev.has("fz") else _ground_pt(float(ev.fx), float(ev.fy), 1.0)
 	match code:
 		"arrow", "rick_magic", "acid_ray":
 			if has_src:
 				_missile(code, src, target, gp + Vector3(0, 0, 1), s, sp)
 		"lightning", "curse_magic":
-			if has_src:
-				var b := unit_point(target, 0) if target else gp + Vector3(0, 0, 1)
-				add_bolt(src, b, s * 5.0, maxf(ticks, 10.0) * TICK, caster, target)
+			if has_src and age < 8:
+				var b := unit_point(target, 0) if target else Vector3(float(ev.tx), float(ev.ty), float(ev.tz)) if ev.has("tz") else gp + Vector3(0, 0, 1)
+				var bolt := add_bolt(src, b, s * 5.0, (8 - age) * TICK, caster, target)
+				bolt.demon = code == "curse_magic"
+				bolt._tick = age
 		"fireball":
 			if has_src:
-				_fireball(ei(caster.global_position) if caster else src, gp, s, sp, age)
+				var origin: Array = ev.get("flight_from", [])
+				var start := Vector3(float(origin[0]), float(origin[1]), float(origin[2])) if origin.size() == 3 else src
+				_fireball(ei(caster.global_position) if caster else src, gp, s, sp, age, start)
 		"inv_lit":
 			var top := Vector3(at.x, at.y, gp.z - 3.0 + 30.0)
 			var bot := Vector3(at.x, at.y, gp.z - 3.0)
-			if age < 5:
-				add_bolt(top, bot, -7.0 * s, (5 - age) * TICK)
-			if age < 10:
-				var tw := get_tree().create_timer(maxi(5 - age, 0) * TICK, false)
-				tw.timeout.connect(func(): if is_instance_valid(self): add_bolt(top, bot, -7.0 * s, mini(5, 10 - age) * TICK))
-			spawn(0x2030, gp, maxf(float(sp.radius), 0.5), null, {"k118": s, "age": age})
+			if age < 1:
+				add_bolt(top, bot, -7.0 * s, TICK)
+			if age < 3:
+				_pending_bolts.append({"at": tick + 3 - age, "a": top, "b": bot, "param": -7.0})
+			elif age == 3:
+				add_bolt(top, bot, -7.0, TICK)
+			spawn(0x2030, bot, float(sp.radius), null, {"k118": s, "age": age})
 		"acid_column":
 			spawn(0x200c, gp, 1.0, null, {"age": age})
 		"firewall":
@@ -1040,12 +1103,15 @@ func spell_cast(ev: Dictionary) -> void:
 				dir2 = (at - caster.pos).normalized() if at.distance_to(caster.pos) > 0.01 else Vector2.from_angle(caster.facing)
 			elif has_src and at.distance_to(Vector2(src.x, src.y)) > 0.01:
 				dir2 = (at - Vector2(src.x, src.y)).normalized()
-			var h := Vector3(-dir2.y, dir2.x, 0.0) * maxf(float(sp.radius), 0.5)
-			var a2 := gp + h
-			var b2 := gp - h
+			var h := Vector3(-dir2.y, dir2.x, 0.0) * float(sp.radius)
+			var a2 := gp - h
+			var b2 := gp + h
 			a2.z = ground(a2.x, a2.y) + 1.0
 			b2.z = ground(b2.x, b2.y) + 1.0
-			add_bolt(a2, b2, 0.0, maxf(ticks, 10.0) * TICK)
+			var bolt_ticks := maxi(roundi(float(sp.duration)) + 2 - age, 0)
+			if bolt_ticks > 0:
+				var bolt := add_bolt(a2, b2, 0.0, bolt_ticks * TICK)
+				bolt._tick = age
 		"acid_fog":
 			spawn(0x2007, gp, maxf(float(sp.radius), 1.0), null, {"k118": s, "secs": maxf(ticks, 1.0) * TICK, "age": age})
 		"fireworks":
@@ -1057,7 +1123,7 @@ func spell_cast(ev: Dictionary) -> void:
 			tm.timeout.connect(func(): if is_instance_valid(self): spawn(0x2018, gp, -r))
 		"healing":
 			for u in _victims(sp, target, at):
-				spawn(0x2006, Vector3.ZERO, s, u)
+				spawn(0x2006, Vector3.ZERO, s, u, {"age": age})
 		"link":
 			if caster and target:
 				var a3 := unit_point(caster, 0)
@@ -1078,51 +1144,63 @@ func _victims(sp: Dictionary, target: GameUnit, at: Vector2) -> Array:
 	return [target] if target else []
 
 
-## the fireball flies level (ground + 1) toward the point
-## range x 0.0667 m per tick, then FireBlast. No homing: case 3
-## fixes the velocity and the tick count (= round(d / range × 15) − 2)
-## toward, the target's position at the cast, and the
-## blast (case 3) is at that point.
-func _fireball(from: Vector3, to: Vector3, s: float, sp: Dictionary, age := 0) -> void:
-	var rng := maxf(float(sp.range), 1.0)
+##67f830 measures flight time from the caster's feet, but creates the
+## particle/light at its attachment point.679580 moves the particle toward
+## the fixed ground+1 target and clamps its height to that terrain offset;
+##678170 moves the light by the original horizontal velocity instead.
+func _fireball(from: Vector3, to: Vector3, s: float, sp: Dictionary, age := 0, start := Vector3(INF, 0, 0)) -> void:
+	var rng := float(sp.range) if float(sp.range) > 0.0 else 5.0
 	var d := Vector2(to.x - from.x, to.y - from.y)
-	var n := maxi(1, roundi(d.length() / rng * 15.0) - 2)
-	var r := float(sp.radius)
-	var sa := s
-	if r > 0.0:
-		var pa := float(sp.proto.get("area", 0.0))
-		var ratio := (r * r * PI) / pa if pa > 0.0 else 1.0
-		sa = pow(clampf(ratio, 1.0, 8.0), 0.33) - 0.2
-	var sz := minf(s, sa)
-	var step := d / float(n)
+	var n := Spells.fireball_ticks(Vector2(from.x, from.y), Vector2(to.x, to.y), rng)
+	var sz := fireball_size(sp, s)
+	var hit := Vector3(to.x, to.y, ground(to.x, to.y) + 1.0)
 	if age >= n:
-		# Replayed after the ball arrived: only the blast, as old as it is.
-		var hit0 := _ground_pt(to.x, to.y, 1.0)
-		spawn(0x2002, hit0, sz, null, {"age": age - n})
-		var lc0 := _spell_light(sp)
-		if lc0.radius > 0.0 and age - n < 37:
-			add_light(hit0, lc0.color, lc0.radius * 1.5, (37 - (age - n)) * TICK, lc0.energy, true)
+		spawn(0x2002, hit, sz, null, {"age": age - n})
+		_hit_light(hit, sp, 38, age - n)
 		return
-	# Replayed in flight: on from where the ball is now, for the ticks it has left.
-	var at := Vector2(from.x, from.y) + step * float(age)
+	var initial := start if start.x != INF else from
+	# Native zero-distance creation divides by zero. Keep a finite stationary
+	# flight in that degenerate case; the one-tick blast is unchanged.
+	var scale := float(PackedFloat32Array([rng * 0.06666667014360428 / d.length()])[0]) if d != Vector2.ZERO else 0.0
+	var step := Vector3(d.x * scale, d.y * scale, 0.0)
+	var speed := step.length()
+	var at := initial
+	var light_at := initial
+	for k in age:
+		if k < maxi(1, n - 1):
+			at = _fireball_step(at, hit, speed)
+		light_at += step
 	var left := n - age
-	var ef := spawn(0x2000, Vector3(at.x, at.y, ground(at.x, at.y) + 1.0), s * 0.3, null, {"age": age})
-	if ef == null:
-		return
-	ef.move_ticks = left
-	ef.move_step = Vector3(step.x, step.y, 0.0)
+	var ef := spawn(0x2000, at, s * 0.3, null, {"age": age}) if age < maxi(1, n - 1) else null
 	var lc := _spell_light(sp)
-	var light := add_light(Vector3(at.x, at.y, ground(at.x, at.y) + 1.0), lc.color, lc.radius, left * TICK, lc.energy, true) if lc.radius > 0.0 else {}
+	var light := add_light(light_at, lc.color, lc.radius, left * TICK, lc.energy, true) if lc.radius > 0.0 else {}
 	if not light.is_empty():
-		light.step = ef.move_step
+		light.step = step
 		light.ticks = left
-	get_tree().create_timer(left * TICK, false).timeout.connect(func():
-		if not is_instance_valid(self):
-			return
-		delete(ef)
-		var hit := _ground_pt(to.x, to.y, 1.0)
-		spawn(0x2002, hit, sz)
-		_hit_light(hit, sp))
+	_pending_fireballs.append({"ef": ef, "pos": at, "to": hit, "speed": speed,
+		"impact": tick + left, "light": light, "size": sz, "sp": sp})
+
+
+static func fireball_size(sp: Dictionary, effect_size: float) -> float:
+	var r := float(sp.radius)
+	var pa := float(sp.proto.get("area", 0.0))
+	var ratio := float(PackedFloat32Array([r * r * 3.1415927410125732 / pa])[0]) if pa != 0.0 else (INF if r != 0.0 else 1.0)
+	var area_size := float(PackedFloat32Array([pow(clampf(ratio, 1.0, 8.0), 0.33000001311302185) - 0.20000000298023224])[0])
+	return maxf(effect_size, area_size)
+
+
+func _fireball_step(pos: Vector3, to: Vector3, speed: float) -> Vector3:
+	var dx := float(to.x - pos.x)
+	var dy := float(to.y - pos.y)
+	var distance := Vector2(dx, dy).length()
+	if distance <= 0.0:
+		return pos
+	var fraction := float(PackedFloat32Array([speed / maxf(distance, speed)])[0])
+	var at := Vector3(float(pos.x) + dx * fraction, float(pos.y) + dy * fraction,
+		float(pos.z) + float(to.z - pos.z) * fraction)
+	var offset := float(PackedFloat32Array([float(to.z) - ground(to.x, to.y)])[0])
+	at.z = maxf(at.z, ground(at.x, at.y) + offset)
+	return at
 
 
 func _spell_light(sp: Dictionary) -> Dictionary:
@@ -1141,11 +1219,19 @@ func _spell_light(sp: Dictionary) -> Dictionary:
 ##  = 0x23 and state 2; (cases 0 / 2 / 3) counts it down
 ## each tick and sets state 3 once it passes 0 (36 ticks), and the next
 ## update (state 3) releases the particles and the light
-##  with the effect: the light lives 37 ticks.
-func _hit_light(at: Vector3, sp: Dictionary) -> void:
+##  with the effect. Arrow/acid-ray decrement on the hit tick and
+## keep37 ticks; fireball starts its countdown on the next tick and keeps38.
+func _hit_light(at: Vector3, sp: Dictionary, life := 37, age := 0) -> void:
+	if age >= life:
+		return
 	var lc := _spell_light(sp)
 	if lc.radius > 0.0:
-		add_light(at, lc.color, lc.radius * 1.5, 37 * TICK, lc.energy, true)
+		var v := float(PackedFloat32Array([float(sp.proto.get("light_radius", 0.0)) / maxf(float(sp.proto.get("fadeout", 1.0)), 1.0) * 1.5])[0])
+		for k in age:
+			at.z = float(PackedFloat32Array([float(at.z) + v])[0])
+		var light := add_light(at, lc.color, lc.radius * 1.5, (life - age) * TICK, lc.energy, true)
+		light.step = Vector3(0, 0, v)
+		light.ticks = life - age
 
 
 ## CEffectArrow: a spell missile homing on the
@@ -1315,7 +1401,10 @@ func blood(ev: Dictionary) -> void:
 	if type == 0:
 		return
 	var sel: int = PART_BONES[clampi(int(ev.get("part", 1)), 0, 5)]
-	spawn(type, Vector3(0, 0, 0.1), bone_size(u, sel) * 2.5, u,
+	var radius := bone_size(u, sel)
+	if radius <= 0.0:
+		return
+	spawn(type, Vector3(0, 0, 0.1), radius * 2.5, u,
 		{"bone": sel, "k11c": 1.0 / 30.0, "k118": clampf(float(ev.get("frac", 0.1)), 0.1, 1.0)})
 
 

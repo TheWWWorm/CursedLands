@@ -40,9 +40,10 @@ extends MeshInstance3D
 ## fixed size in the world, ~0.1 m), UV row v 0.5 (base) → 0.74 (tip).
 ## The wind is only set by a SetWind network message
 ## nothing sends it at zone
-## start, so it is 0 here. **Approx.**: the curves come from Godot's RNG, not
-## the original's rand sequence; drops partly outside the view are clipped, not
-## dropped.
+## start, so it is0 here. The startup curves use the native CRT stream,
+## smoothing, float stores and stored Hermite coefficients. Rain requires
+## all three projected corners inside the frustum; snow tests its centre
+## before expanding the flake (which may then straddle the screen edge).
 
 const RAIN_TAB := [17, 43, 456, 942, 32, 234, 865, 95, 321, 47, 909, 284, 543, 396, 193, 120,
 	98, 784, 633, 10, 259, 77, 118, 66, 921, 849, 356, 80, 475, 235, 213, 826]
@@ -50,6 +51,7 @@ const SNOW_TAB := [5417, 2343, 34456, 12942, 8832, 12234, 45865, 8395, 45321, 88
 	76543, 45396, 12193, 98120, 6798, 79784, 11633, 5710, 54259, 3477, 78118, 1266, 97821, 80949,
 	35786, 8780, 78475, 72235, 34213, 92826]
 const N := 81
+const CRT := preload("res://src/ei/crt_random.gd")
 ## After the particles (ParticleFx.RENDER_PRIORITY, see-through ones + 2) and
 ## the lightning (+ 1): the last effect drawn, as.
 const RENDER_PRIORITY := ParticleFx.RENDER_PRIORITY + 3
@@ -58,7 +60,7 @@ const SHADER := """
 shader_type spatial;
 render_mode unshaded, cull_disabled, depth_draw_never, blend_mix, fog_disabled, shadows_disabled;
 uniform sampler2D tex : source_color, filter_linear_mipmap;
-uniform sampler2D curves : filter_nearest;   // 128 x 5, R = value
+uniform sampler2D curves : filter_nearest;   // 128 x 5, RGBA = native coefficients
 uniform int mode = 1;          // 1 rain, 2 snow
 uniform int density = 0;
 uniform float t_now = 0.0;     // world ticks + fraction
@@ -73,20 +75,21 @@ float curve(int row, float a) {
 		return 0.0;
 	}
 	float f = a - float(i);
-	float p0 = texelFetch(curves, ivec2(max(i - 1, 0), row), 0).r;
-	float p1 = texelFetch(curves, ivec2(i, row), 0).r;
-	float p2 = texelFetch(curves, ivec2(i + 1, row), 0).r;
-	float p3 = texelFetch(curves, ivec2(min(i + 2, 127), row), 0).r;
-	float m1 = i == 0 ? p2 - p1 : (p2 - p0) * 0.5;
-	float m2 = (p3 - p1) * 0.5;
-	float d = (p2 - p1 - m1) * 2.0;
-	float c3 = (m2 - m1) - d;
-	float c2 = (d - 2.0 * c3) * 0.5;
-	return ((c3 * f + c2) * f + m1) * f + p1;
+	vec4 c = texelFetch(curves, ivec2(i, row), 0);
+	return ((c.w * f + c.z) * f + c.y) * f + c.x;
 }
 
 vec3 godot_pos(vec3 e) {
 	return vec3(e.x, e.z, -e.y);
+}
+
+bool inside_clip(vec4 p) {
+#if CURRENT_RENDERER == RENDERER_COMPATIBILITY
+	bool depth = p.z >= -p.w && p.z <= p.w;
+#else
+	bool depth = p.z >= 0.0 && p.z <= p.w;
+#endif
+	return p.w > 0.0 && abs(p.x) <= p.w && abs(p.y) <= p.w && depth;
 }
 
 void vertex() {
@@ -120,30 +123,41 @@ void vertex() {
 	z += float(((u * -0x7f) & 0xff) - 0x80) * 10.0 * 0.0078125;
 	vec4 clip;
 	if (rain) {
-		vec3 p = vec3(x, y, z);
-		vec3 c = (VIEW_MATRIX * vec4(godot_pos(p), 1.0)).xyz;
+		vec3 p0 = vec3(x, y, z);
+		vec3 p1 = p0;
+		//4e4240 chooses the base order from the signed cell offset.
+		if (abs(oy) < abs(ox)) {
+			float s = ox < 0 ? -0.033 : 0.033;
+			p0.y += s;
+			p1.y -= s;
+		} else {
+			float s = oy < 1 ? 0.033 : -0.033;
+			p0.x += s;
+			p1.x -= s;
+		}
+		float wl = length(vec3(wind_ei.xy, vz));
+		vec3 p2 = vec3(x - wind_ei.x / wl, y - wind_ei.y / wl, z + 1.0);
+		vec4 c0 = PROJECTION_MATRIX * VIEW_MATRIX * vec4(godot_pos(p0), 1.0);
+		vec4 c1 = PROJECTION_MATRIX * VIEW_MATRIX * vec4(godot_pos(p1), 1.0);
+		vec4 c2 = PROJECTION_MATRIX * VIEW_MATRIX * vec4(godot_pos(p2), 1.0);
+		on = on && inside_clip(c0) && inside_clip(c1) && inside_clip(c2);
+		vec3 c = (VIEW_MATRIX * vec4(godot_pos(p0), 1.0)).xyz;
 		if (-c.z < 4.0) {
 			on = false;
 		}
 		if (k == 2) {
-			float wl = length(vec3(wind_ei.xy, vz));
-			p = vec3(x - wind_ei.x / wl, y - wind_ei.y / wl, z + 1.0);
+			clip = c2;
 			uv = vec2(fr + 0.125, 1.0);
 		} else {
-			float s = k == 0 ? -0.033 : 0.033;
-			if (abs(oy) < abs(ox)) {
-				p.y += s;
-			} else {
-				p.x += s;
-			}
+			clip = k == 0 ? c0 : c1;
 			uv = vec2(fr + (k == 0 ? 0.0 : 0.25), 0.75);
 		}
-		clip = PROJECTION_MATRIX * VIEW_MATRIX * vec4(godot_pos(p), 1.0);
 	} else {
 		float sx = x + curve(0, z) + curve(1, mod(x + 1000.0, 50.0));
 		float sy = y + curve(2, z) + curve(3, mod(y + 1000.0, 50.0));
 		float sz = z + curve(4, z);
 		clip = PROJECTION_MATRIX * VIEW_MATRIX * vec4(godot_pos(vec3(sx, sy, sz)), 1.0);
+		on = on && inside_clip(clip);
 		if (k == 2) {
 			clip.y += 0.2 * 0.7;
 			uv = vec2(fr + 0.125, 0.74);
@@ -243,18 +257,30 @@ static func _grid_mesh() -> ArrayMesh:
 static func _curve_texture() -> ImageTexture:
 	if _curves:
 		return _curves
-	var img := Image.create(128, 5, false, Image.FORMAT_RF)
-	var rng := RandomNumberGenerator.new()
-	rng.seed = 1
-	for row in 5:
+	var data := PackedByteArray()
+	for coefficients: PackedFloat32Array in curve_coefficients():
+		data.append_array(coefficients.to_byte_array())
+	_curves = ImageTexture.create_from_image(Image.create_from_data(128, 5, false, Image.FORMAT_RGBAF, data))
+	return _curves
+
+
+## Full4e3b20 initializer order is Xheight,Yheight,Xhorizontal,Yhorizontal,Z.
+##4e3980's reverse pass reads the zeroed coefficient slot after sample127.
+## Arithmetic stays double until its native float stores, including the
+## intermediate polynomial difference before the final coefficients.
+static func curve_coefficients(seed_value := 1) -> Array[PackedFloat32Array]:
+	var rng := CRT.new(seed_value)
+	var rows: Array[PackedFloat32Array] = [PackedFloat32Array(),PackedFloat32Array(),PackedFloat32Array(),PackedFloat32Array(),PackedFloat32Array()]
+	var blend := _f32(0.3)
+	for row in [0,2,1,3,4]:
 		var a := PackedFloat32Array()
-		a.resize(128)
+		a.resize(129)
 		for i in 128:
-			a[i] = float(rng.randi_range(0, 0x7fff) - 0x3fff)
+			a[i] = float(rng.next_int() - 0x3fff)
 		for i in range(1, 128):
-			a[i] = a[i] * 0.3 + a[i - 1] * 0.7
+			a[i] = a[i] * blend + a[i - 1] * (1.0 - blend)
 		for i in range(127, 1, -1):
-			a[i] = a[i] * 0.3 + a[i + 1] * 0.7 if i < 127 else a[i]
+			a[i] = a[i] * blend + a[i + 1] * (1.0 - blend)
 		for i in 0x6c:
 			a[i] = a[i + 0x14]
 		var ss := 0.0
@@ -262,6 +288,21 @@ static func _curve_texture() -> ImageTexture:
 			ss += a[i] * a[i]
 		var k := 0.5 / sqrt(ss / 128.0)
 		for i in 128:
-			img.set_pixel(i, row, Color(a[i] * k, 0, 0))
-	_curves = ImageTexture.create_from_image(img)
-	return _curves
+			a[i] *= k
+		var coefficients := PackedFloat32Array()
+		coefficients.resize(128 * 4)
+		for i in 127:
+			var m1: float = a[1] - a[0] if i == 0 else (a[i + 1] - a[i - 1]) * 0.5
+			var m2: float = a[127] - a[126] if i == 126 else (a[i + 2] - a[i]) * 0.5
+			var d := _f32((a[i + 1] - a[i] - m1) * 2.0)
+			var c3 := m2 - m1 - d
+			coefficients[i * 4] = a[i]
+			coefficients[i * 4 + 1] = m1
+			coefficients[i * 4 + 2] = (d - c3 * 2.0) * 0.5
+			coefficients[i * 4 + 3] = c3
+		rows[row] = coefficients
+	return rows
+
+
+static func _f32(value: float) -> float:
+	return PackedFloat32Array([value])[0]

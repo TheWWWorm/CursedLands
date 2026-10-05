@@ -9,6 +9,7 @@ extends RefCounted
 
 var vm: ScriptVM
 var active := ""          # full variable name of the running conversation
+var active_player := -1   # initiator; another peer may close the shared dialog
 var _check := 0.0
 
 
@@ -24,10 +25,11 @@ func tick() -> void:
 	SideQuests.check_rewards(vm.session)
 	if not active.is_empty():
 		return
-	var pre := "0:b.%s." % zone
-	for k: String in vm.session.state.vars:
-		if k.begins_with(pre) and is_equal_approx(float(vm.session.state.vars[k]), 1.0):
-			play_named(k.substr(pre.length()), "b.%s.%s" % [zone, k.substr(pre.length())])
+	var pre := "b.%s." % zone
+	for k: String in vm.session.state.gs_keys(0, "b.", true):
+		if k.begins_with(pre) and vm.session.state.get_var(0, k) == 1.0:
+			#  starts automatic zone briefings with (1, 1).
+			play_named(k.substr(pre.length()), "b.%s.%s" % [zone, k.substr(pre.length())], 0, null, true)
 			return
 
 
@@ -45,10 +47,9 @@ func tick() -> void:
 ## b.merc5.n5_2, n5_10, merc6 the same) is still listed: leaves
 ## the title empty when finds no text, so the row is the topic
 ## prefix alone (empty in the shipped texts), a blank row that can be picked.
-## Approx.: the original lists vars in its hash-table order (sorted only
-## multiplayer); the remake sorts them by id. That order is a
-## 193+-bucket hash of the case-sensitive var names (h = 5h + c)
-## which the VM lowercases, so it cannot be rebuilt.
+## 607320 scans a temporary copy of the raw GS hash (460ee0), sorted only
+## online by byte _stricmp. Old saves can only reconstruct their discarded
+## spelling/insertion order from the dictionary they still contain.
 func interact(_unit: GameUnit, target: Object, player: int) -> void:
 	if not active.is_empty() or not (target is GameUnit):
 		return
@@ -78,9 +79,9 @@ func topic(player: int, var_name: String, uid: int) -> void:
 	if not active.is_empty() or t == null or t.dead:
 		return
 	for e: Array in available_for(t, player):
-		if "b.%s.%s" % e == var_name.to_lower():
+		if "b.%s.%s" % e == var_name:
 			var id := String(e[1])
-			if id.begins_with("constr"):
+			if id.to_lower().begins_with("constr"):
 				# atof(id.Mid(7)) -> sets "constr.current"
 				# (5) opens the camp screen (the shop).
 				# Only when finds that record. The host restocks it
@@ -92,17 +93,16 @@ func topic(player: int, var_name: String, uid: int) -> void:
 				vm.session.open_shop(n)
 				vm.session.broadcast({"t": "shop", "player": player, "constr": n})
 				return
-			play_named(id, var_name.to_lower(), player, t)
+			play_named(id, var_name, player, t)
 			return
 
 
 func available(npc: String) -> Array:
-	var pre := "0:b.%s." % npc
+	var pre := "b.%s." % npc
 	var out := []
-	for k: String in vm.session.state.vars:
-		if k.begins_with(pre) and is_equal_approx(float(vm.session.state.vars[k]), 1.0):
+	for k: String in vm.session.state.gs_keys(0, "b.", true):
+		if k.begins_with(pre) and vm.session.state.get_var(0, k) == 1.0:
 			out.append(k.substr(pre.length()))
-	out.sort_custom(func(a, b): return a.naturalnocasecmp_to(b) < 0)
 	return out
 
 
@@ -119,29 +119,56 @@ func available_for(u: GameUnit, player := 0) -> Array:
 ## (CampaignState.get_pvar).
 static func pending_for(state: CampaignState, u: GameUnit, player := 0) -> Array:
 	var name := String(u.info.get("name", "")).to_lower()
+	# A recruited mercenary is one shared-world unit, owned by its hirer.
+	# Other players cannot treat it as an available village NPC or dismiss it.
+	if name.begins_with("merc") and name.substr(4).is_valid_int():
+		var m: Dictionary = state.mercs.get(name.substr(4).to_int(), {})
+		if not m.is_empty() and (int(m.get("controller", 0)) != player or m.get("travel_waiting", false)):
+			return []
 	var out := []
 	var seen := {}
-	for k: String in state.vars:
-		var pre := k.get_slice(":", 0)
-		if not (pre == "0" or (player != 0 and pre == str(player))):
-			continue
-		var key := k.substr(pre.length() + 1)
-		if not key.begins_with("b.") or seen.has(key):
+	var constr := []
+	var keys := state.gs_keys(0, "b.", true)
+	if player != 0:
+		keys.append_array(state.gs_keys(player, "b.", true))
+	for key: String in keys:
+		if seen.has(key):
 			continue
 		seen[key] = true
-		if not is_equal_approx(state.get_pvar(player, key), 1.0):
+		if state.get_pvar(player, key) != 1.0:
 			continue
 		var parts := key.split(".")
 		if parts.size() != 3:
 			continue
 		if parts[1] == name or ScriptVM.name_id(parts[1]) == u.uid:
-			out.append([parts[1], parts[2]])
-	out.sort_custom(func(a, b): return a[1].naturalnocasecmp_to(b[1]) < 0)
+			if parts[2].to_lower().begins_with("constr"):
+				constr = [parts[1], parts[2]]   # last found before online sorting
+			else:
+				out.append([parts[1], parts[2]])
+	if u.world and u.world.session and u.world.session.online:
+		# Native network60b2f0 ->6f21f0 uses _stricmp, so n10 precedes
+		# n2. GS identifiers are bytes; only ASCII uppercase folds here.
+		out.sort_custom(func(a, b): return _topic_compare(a[1], b[1]) < 0)
+	if not constr.is_empty():
+		out.append(constr)
 	return out
 
 
+static func _topic_compare(a: String, b: String) -> int:
+	for i in mini(a.length(), b.length()):
+		var x := a.unicode_at(i) & 0xff
+		var y := b.unicode_at(i) & 0xff
+		if x >= 65 and x <= 90:
+			x += 32
+		if y >= 65 and y <= 90:
+			y += 32
+		if x != y:
+			return -1 if x < y else 1
+	return signi(a.length() - b.length())
+
+
 ## Starts conversation `id` for everyone. `var_name` is reported on completion.
-func play_named(id: String, var_name: String, player := 0, partner: GameUnit = null) -> void:
+func play_named(id: String, var_name: String, player := 0, partner: GameUnit = null, instant := false) -> void:
 	var text := GameData.text("briefing " + id)
 	if text.is_empty():
 		# Quest maps ship their own briefings inside the .mq archive.
@@ -150,53 +177,44 @@ func play_named(id: String, var_name: String, player := 0, partner: GameUnit = n
 		var_name = "b.%s.%s" % [String(vm.world.zone.get("id", "")).to_lower(), id]
 	if text.is_empty():
 		push_warning("missing briefing " + id)
-		complete(0, var_name, true)
+		complete(player, var_name, true)
 		return
 	active = var_name
+	active_player = player
 	var b := parse(text)
 	var c := cast(b.actors, partner, player)
 	vm.world.dialog_actors.clear()
 	for k in ["a", "b", "c"]:
 		if c.has(k):
-			vm.world.dialog_actors[int(c[k])] = true   # held while it runs (GameWorld)
-	_face(c)
+			vm.world.dialog_actors[int(c[k])] = true
+	_face(c, instant)
 	vm.session.broadcast({"t": "dialog", "id": var_name, "brief": id, "title": b.title, "phrases": b.phrases, "cast": c})
 
 
 ## Where the conversation's actors stand (the original
 ## ): the partner "a" walks to a spot in front of the second actor
-## "b" (usually the hero) at the partner prototype's "dialog cam distance" +
-## 2.5 m along b's facing, then faces b; b turns to it and the third actor to
-## the middle between them. A partner that cannot walk stays and b is placed
-## in front of it instead (the original's branch). The third actor walks
-## to the corner of a right triangle over a–b. The places are kept in the
-## cast ("at") for the camera. Approx.: the original's condition for the
-## branch is not traced (the remake uses "cannot walk"), and an actor that
-## cannot reach its place stays (the original's sets it there).
-func _face(c: Dictionary) -> void:
+## "b" (usually the hero) at b's prototype "dialog cam distance" + 2.5 m.
+## In a #cage zone (map record -> screen), a stays and b moves
+## in front of a instead. The third actor goes to the triangle's corner.
+## Topic clicks use walking (: 0,1); automatic briefings and
+## the script briefing command use instant placement (1,1).
+## The intended places are kept in the cast ("at") for the camera.
+## Approx.: instant placement collision uses our class grid / body circles,
+## not object footprint check; walking uses our path.
+func _face(c: Dictionary, instant := false) -> void:
 	var a: GameUnit = vm.world.units.get(int(c.get("a", -1)))
 	var b: GameUnit = vm.world.units.get(int(c.get("b", -1)))
 	if a == null or b == null:
 		return
-	var d := float(a.proto.get("dialog_cam_distance", 0.0)) + 2.5
+	var d := float(b.proto.get("dialog_cam_distance", 0.0)) + 2.5
 	var a_at := a.pos
 	var b_at := b.pos
-	if a.speed() > 0.01 and a.controller < 0:
-		var spot := b.pos + Vector2.from_angle(b.facing) * d
-		if vm.world.nav.find_path(a.pos, spot, [], [], 0.0, a.move_class()).is_empty():
-			spot = b.pos + (a.pos - b.pos).normalized() * d
-		vm.world.dialog_movers[a] = {"to": spot, "angle": (b.pos - spot).angle()}
-		b.facing = (spot - b.pos).angle()
-		a_at = spot
-	elif b.speed() > 0.01:
-		var spot := a.pos + Vector2.from_angle(a.facing) * d
-		if vm.world.nav.find_path(b.pos, spot, [], [], 0.0, b.move_class()).is_empty():
-			spot = a.pos + (b.pos - a.pos).normalized() * d
-		vm.world.dialog_movers[b] = {"to": spot, "angle": (a.pos - spot).angle()}
-		b_at = spot
+	var cage := bool(vm.world.zone.get("cage", false))
+	if cage:
+		b_at = a.pos + Vector2.from_angle(a.facing) * d
 	else:
-		a.facing = (b.pos - a.pos).angle()
-		b.facing = (a.pos - b.pos).angle()
+		a_at = b.pos + Vector2.from_angle(b.facing) * d
+		_stage(a, a_at, (b_at - a_at).angle(), instant)
 	# The third actor's place: the middle of a and b
 	# turned by a right angle — mid + (b.y − mid.y, mid.x − b.x) — then
 	#  walks it there facing the middle.
@@ -204,13 +222,10 @@ func _face(c: Dictionary) -> void:
 	var cu: GameUnit = vm.world.units.get(int(c.get("c", -1)))
 	var c_at := cu.pos if cu else Vector2.ZERO
 	if cu:
-		var apex := mid + Vector2(b_at.y - mid.y, mid.x - b_at.x)
-		if cu.speed() > 0.01 and cu.controller < 0 \
-				and not vm.world.nav.find_path(cu.pos, apex, [], [], 0.0, cu.move_class()).is_empty():
-			vm.world.dialog_movers[cu] = {"to": apex, "angle": (mid - apex).angle()}
-			c_at = apex
-		else:
-			cu.facing = (mid - cu.pos).angle()
+		c_at = mid + Vector2(b_at.y - mid.y, mid.x - b_at.x)
+		_stage(cu, c_at, (mid - c_at).angle(), instant)
+	if cage:
+		_stage(b, b_at, (a_at - b_at).angle(), instant)
 	# The places the conversation camera works from (the original keeps them
 	#  and never reads the units again; DialogCamera).
 	c["at"] = {"a": [a_at.x, a_at.y], "b": [b_at.x, b_at.y]}
@@ -218,12 +233,25 @@ func _face(c: Dictionary) -> void:
 		c["at"]["c"] = [c_at.x, c_at.y]
 
 
+func _stage(u: GameUnit, point: Vector2, angle: float, instant: bool) -> void:
+	if instant:
+		#  tries placement, then applies the facing and clears
+		# the AI order even when the footprint prevents that placement.
+		vm.world.dialog_place(u, point, angle)
+	elif not u.blocked:   #  refuses a walk under flag.
+		vm.world.dialog_movers[u] = {"to": point, "angle": angle, "state": 1, "elapsed": 0.0}
+		u.command({"type": "move", "to": point, "run": false})
+
+
 func complete(player: int, var_name: String, force := false) -> void:
 	if var_name != active and not force:
 		return   # already finished (another co-op player closed it first)
+	if not force and active_player >= 0:
+		player = active_player   # credit the speaker even when its peer closes it
 	active = ""
+	active_player = -1
 	vm.session.broadcast({"t": "dialog_close", "id": var_name})
-	var key := var_name.to_lower()
+	var key := var_name
 	vm.merc_briefing_done(key, player)   #  runs first
 	vm.session.state.set_pvar(player, key, 2.0)
 	# Rewards go to the talking player's purse (a joiner's own, CoopProgress.with_purse);
@@ -262,7 +290,7 @@ func _rewards(id: String, player := 0) -> void:
 	# Gl64 z.gz17h).
 	for field in ["give_quests", "give_quests2", "open_zones", "unknown2"]:
 		var two: bool = field in ["give_quests2", "unknown2"]
-		for q in _list(row.get(field)):
+		for q in _list(row.get(field), false):
 			if two:
 				st.set_var(0, q, 2.0)
 				vm._on_var_changed(q)
@@ -270,31 +298,34 @@ func _rewards(id: String, player := 0) -> void:
 				st.set_var(0, q, 1.0)
 				vm._on_var_changed(q)
 	for spec in _list(row.get("give_items")):
-		if spec.begins_with("prototype."):
-			continue
 		# Quest items go to the quest list, everything else (weapons, armour,
 		# materials, wands) into the party bag.
 		var it: Array = Items.from_spec(spec)
-		if Items.info(it[0]).table in ["quest_items", ""]:
+		if not vm.session.lmp.is_empty():
+			vm.session.add_item(String(it[0]), int(it[1]))
+		elif not Items.is_spell_piece(String(it[0])) and Items.info(it[0]).table in ["quest_items", ""]:
 			st.quest_items[it[0]] = true
 		else:
 			for k in it[1]:
 				st.items.append(it[0])
 	for spec in _list(row.get("take_items")):
 		var it: Array = Items.from_spec(spec)
-		st.quest_items.erase(it[0])
+		if vm.session.lmp.is_empty():
+			st.quest_items.erase(it[0])
 		for k in it[1]:
 			st.items.erase(it[0])
 	vm.session.sync_state()
 
 
-static func _list(v) -> PackedStringArray:
+static func _list(v, normalize := true) -> PackedStringArray:
 	var out := PackedStringArray()
 	if v == null:
 		return out
 	var items: Array = Array(v) if (v is Array or v is PackedStringArray) else str(v).split(";")
 	for s in items:
-		var t := String(s).strip_edges().to_lower()
+		var t := String(s).strip_edges()
+		if normalize:
+			t = t.to_lower()
 		if t:
 			out.append(t)
 	return out

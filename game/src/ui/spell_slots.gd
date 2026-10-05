@@ -171,7 +171,7 @@ func use(i: int, now: bool) -> void:
 	if now:
 		var t: GameUnit = _unit
 		if Spells.offensive(sp):
-			t = game.world.ai.nearest_enemy(_unit, Session.BELT_TARGET_RANGE) if game.world else null
+			t = game.session.belt_enemy(_unit) if game.world else null
 			if t == null:
 				_sound("buttons\\battle\\nomagic.wav")
 				return

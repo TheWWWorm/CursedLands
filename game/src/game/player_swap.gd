@@ -29,13 +29,11 @@ extends Node
 ## clicks as commands (`send`). The original moves the items on each client
 ## the snapshot it took when agreeing (: bag =
 ## snapshot + received, money = money − offered + received); here the host
-## checks both bags and purses at the commit and moves the items and money of
-## both players at once — anything missing (a bag changed after agreeing)
-## cancels the swap instead. Offered items stay in the bag until the commit
-## (the swap screen shows them in the offer pile, not in the bag row).
-## **Approx.**: a player leaving the game, or the zone changing, cancels its
-## offers (the original's handling of a lost player's offer object is not traced)
-## quest items are not offered (the remake keeps them in one list for the
+## moves items from the bag into the offer as each pile changes, and commits
+## both offers at once. A withdrawn offer returns its items to the same bag,
+## including after a lost connection or a zone change. Money is checked on
+## agreement and commit; it stays in the purse until the trade commits.
+## Campaign quest items are not offered (the remake keeps them in one list for the
 ## whole party, not in a player's bag).
 ## Co-op campaign (remake): the same between two players whose bags differ (a
 ## joiner who brought its hero has its own, CoopProgress.purse_entry; the host
@@ -57,6 +55,9 @@ var offers := {}
 ## player slot -> its bag's key ("campaign" or "p<slot>"), from the host.
 var keys := {}
 var _zone := ""
+## Host-only bag references: an offer returns to its original purse even if
+## the player disconnects or the campaign state is about to change.
+var _escrow_bags := {}
 
 
 func _ready() -> void:
@@ -111,12 +112,23 @@ func place_ok() -> bool:
 	if session.world == null or not session.online:
 		return false
 	if not session.lmp.is_empty():
+		if session.lmp_travel:
+			var w: GameWorld = session.lmp_travel.owner_world(session.my_index)
+			return w != null and String(w.zone.get("type", "")) == "brief"
 		return session.shop_available()
 	return session.camp_available()
 
 
+func _place_for(player: int) -> bool:
+	if session.lmp_travel:
+		var w: GameWorld = session.lmp_travel.owner_world(player)
+		return w != null and String(w.zone.get("type", "")) == "brief"
+	return place_ok()
+
+
 func can_swap_with(idx: int) -> bool:
-	return place_ok() and session.players_include(idx) and separate_bags(session.my_index, idx)
+	return place_ok() and session.players_include(idx) and session.players_same_zone(session.my_index, idx) \
+		and separate_bags(session.my_index, idx)
 
 
 # ---------------------------------------------------------------- commands
@@ -124,6 +136,10 @@ func can_swap_with(idx: int) -> bool:
 ## This peer's command: "request" {to}, "withdraw", "set" {items, money},
 ## "agree" {rev}, "disagree".
 func send(cmd: Dictionary) -> void:
+	if not session.lmp.is_empty():
+		cmd = cmd.duplicate()
+		cmd._zone = session.zone_id
+		cmd._generation = session.lmp_generation
 	if session.is_host:
 		command(cmd, session.my_index)
 	else:
@@ -136,6 +152,9 @@ func _rpc_cmd(cmd: Dictionary) -> void:
 		return
 	var pid := multiplayer.get_remote_sender_id()
 	if session.players.has(pid):
+		if session.lmp_travel and not session.lmp_travel.accepts(int(session.players[pid].index),
+				String(cmd.get("_zone", "")), int(cmd.get("_generation", 0))):
+			return
 		command(cmd, int(session.players[pid].index))
 
 
@@ -166,7 +185,7 @@ func command(cmd: Dictionary, player: int) -> void:
 ## else withdrawn), then the server's.
 func _request(player: int, to: int) -> void:
 	if to == player or not session.players_include(to) or not session.players_include(player) \
-			or not place_ok() or not _separate_on_host(player, to):
+			or not _place_for(player) or not session.players_same_zone(player, to) or not _separate_on_host(player, to):
 		return
 	var old: Dictionary = offers.get(player, {})
 	if not old.is_empty():
@@ -197,11 +216,23 @@ func _set_offer(player: int, cmd: Dictionary) -> void:
 				items.append(it)
 	var mv = cmd.get("money", 0)
 	var money := clampi(int(mv) if mv is int or mv is float else 0, 0, MONEY_MAX)
-	if not _has_items(_bag(player), items):
+	var bag := _bag(player)
+	var available := bag.duplicate()
+	available.append_array(o.items)
+	if not _has_items(available, items):
 		_publish()   # refused: the client's piles follow the host's table again
 		return
 	if items == o.items and money == int(o.money):
 		return
+	if items != o.items:
+		# these copies are in the offer box, unavailable for
+		# equipping, selling or another command while the offer is open.
+		bag.append_array(o.items)
+		for it in items:
+			bag.remove_at(bag.find(it))
+		_escrow_bags[player] = bag
+		session.mark_dirty()
+		session.sync_state()
 	o.items = items
 	o.money = money
 	o.rev = int(o.rev) + 1
@@ -239,20 +270,21 @@ func _commit(a: int, b: int) -> void:
 	var ob: Dictionary = offers[b]
 	var bag_a := _bag(a)
 	var bag_b := _bag(b)
-	var ok := _has_items(bag_a, oa.items) and _has_items(bag_b, ob.items) \
-		and int(oa.money) <= _money(a) and int(ob.money) <= _money(b) and not is_same(bag_a, bag_b)
+	var ok := int(oa.money) <= _money(a) and int(ob.money) <= _money(b) and not is_same(bag_a, bag_b)
+	if not ok:
+		_return_items(a, oa)
+		_return_items(b, ob)
 	offers.erase(a)
 	offers.erase(b)
+	_escrow_bags.erase(a)
+	_escrow_bags.erase(b)
 	if not ok:
 		var t := RemakeText.t("The swap was cancelled.")
 		_note_text(a, t)
 		_note_text(b, t)
+		session.sync_state()
 		_publish()
 		return
-	for it in oa.items:
-		bag_a.remove_at(bag_a.find(it))
-	for it in ob.items:
-		bag_b.remove_at(bag_b.find(it))
 	bag_a.append_array(ob.items)
 	bag_b.append_array(oa.items)
 	var ma := _money(a)
@@ -271,15 +303,54 @@ func _remove(player: int) -> void:
 	var o: Dictionary = offers.get(player, {})
 	if o.is_empty():
 		return
+	_return_items(player, o)
 	offers.erase(player)
 	var to := int(o.to)
 	if not bool(o.paired):
 		if session.players_include(to) and session.players_include(player):
 			_note(to, "lmp_trade_canceled", _name(player))
+		session.sync_state()
 		return
 	var back: Dictionary = offers.get(to, {})
 	if not back.is_empty() and int(back.to) == player:
+		_return_items(to, back)
 		offers.erase(to)
+	session.sync_state()
+
+
+func _return_items(player: int, offer: Dictionary) -> void:
+	var bag: Array = _escrow_bags.get(player, _bag(player))
+	bag.append_array(offer.get("items", []))
+	_escrow_bags.erase(player)
+	session.mark_dirty()
+
+
+## A zone change, save or load ends open offers before any purse is captured
+## or replaced. Returning the original copies cannot duplicate a committed
+## trade: that trade has already removed both offers and escrow references.
+func cancel_all() -> void:
+	if not session.is_host or offers.is_empty():
+		return
+	for idx in offers:
+		_return_items(int(idx), offers[idx])
+	offers.clear()
+	session.sync_state()
+	_publish()
+
+
+## Independent LMP departure cancels only this owner's exchange. A third
+## player trading with someone else in the base keeps its own offer.
+func cancel_player(player: int) -> void:
+	if not session.is_host:
+		return
+	var changed := false
+	for idx in offers.keys():
+		var offer: Dictionary = offers.get(idx, {})
+		if not offer.is_empty() and (int(idx) == player or int(offer.to) == player):
+			_remove(int(idx))
+			changed = true
+	if changed:
+		_publish()
 
 
 ## Host: offers of players who left, or to them, go; a zone change ends all.
@@ -301,11 +372,11 @@ func _on_players_changed() -> void:
 func _process(_dt: float) -> void:
 	if session == null or not session.is_host:
 		return
+	if session.lmp_travel:
+		return   # the coordinator cancels only the departing owner's exchange
 	if session.zone_id != _zone:
 		_zone = session.zone_id
-		if not offers.is_empty():
-			offers.clear()
-			_publish()
+		cancel_all()
 
 
 # ---------------------------------------------------------------- host purses

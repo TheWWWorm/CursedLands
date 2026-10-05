@@ -77,6 +77,17 @@ func move_pointer(v: Vector2, dt: float, slow := 1.0) -> void:
 	_focus_id = null
 
 
+func move_gyro(dt: float) -> void:
+	var d := PadInput.gyro_delta(dt, _view_size().y)
+	if d == Vector2.ZERO:
+		return
+	pointer_on = true
+	if pointer.x < 0.0:
+		pointer = _view_size() * 0.5
+	set_pointer(pointer + d)
+	_focus_id = null
+
+
 func set_pointer(p: Vector2) -> void:
 	p = p.clamp(Vector2.ZERO, _view_size() - Vector2.ONE)
 	var rel := p - pointer if pointer.x >= 0.0 else Vector2.ZERO
@@ -146,6 +157,7 @@ func _process(dt: float) -> void:
 			move_pointer(ls, real)
 	else:
 		_speed_t = 0.0
+	move_gyro(real)
 	var rs := PadInput.stick(false)
 	var panel := top_panel()
 	if rs != Vector2.ZERO and panel and panel.has_method("pad_right_stick") and panel.call("pad_right_stick", rs, real):

@@ -236,7 +236,7 @@ static func _gen_spells(goods: Dictionary, l: Dictionary, runes: Dictionary, sch
 	for sp: String in ready:
 		_add(goods, "spell:" + sp, 1)
 	for row: Dictionary in l.spell_prototypes:
-		_add(goods, "spell:" + _lc(row.code), _rand(rng, 1, 3))
+		_add(goods, "keystone:" + _lc(row.code), _rand(rng, 1, 3))
 	for row: Dictionary in l.spell_modifiers:
 		_add(goods, "rune:" + _lc(row.code), _rand(rng, 20, 50))
 

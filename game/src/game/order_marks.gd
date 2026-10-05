@@ -19,6 +19,7 @@ extends MeshInstance3D
 ## (**approx.**: the figures' normal colour, and so how much brighter white
 ## is, was not traced).
 
+const MotionSpline = preload("res://src/game/nav_spline.gd")
 var game: Game
 var _im := ImmediateMesh.new()
 var _sel_mat := StandardMaterial3D.new()
@@ -37,7 +38,7 @@ const WHITE := 1.0
 
 ## (n): the figure's white-flash counter = max(n)
 ## pushing white when it was 0; the world tick counts it down and
-## pops the colour ((0)) when it reaches 0. Quest vars flash 4.
+## pops the colour ((0)) when it reaches 0. Electrical hits flash 4.
 func flash(u: GameUnit, ticks: int) -> void:
 	if ticks > 0 and is_instance_valid(u):
 		_flash[u] = maxf(float(_flash.get(u, 0.0)), ticks * GameUnit.TICK)
@@ -52,93 +53,35 @@ func _ready() -> void:
 	cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 
 
-## Path display (option "show_path", DrawPath, read only by the receiver):
-## the server sends the owner of a party unit message 0x0e (:
-## mode A, flag B, target x / y, unit id, length F in ticks, the path unless
-## A = 3); its handler makes particle 0x2039 on a ghost of the
-## unit = 1.0 / 0 / 2.0 for A = 0 / 1 / 2 (green / grey
-##  orange dots, one per tick of the path up to F) and
-## 0x203a (B = 0, ring) or 0x203b (B != 0, cross) at the target.
-## A move to a point (from the move order): no path
-## -> A 3, B 1; a path whose end is farther from the target than a tenth of
-## the unit's distance to it (|unit - target|^2 x 0.01 <= |end - target|^2)
-## -> A 0, B 1; else A 0, B 0; F = 1e6 (the whole path). One message per
-## unit, each at its own target. The walk tick calls
-##  only while the order's flag is set and clears it: once
-## per order, on its first tick (the flag is only ever cleared or copied with
-## the order), so a re-plan shows nothing.
-## **Approx.**: shown on the clicking peer when the order is given; the path
-## is the remake's nav grid prediction.
-func move_ordered(p: Vector2) -> void:
-	var mine := _mine()
-	for i in mine.size():
-		var u: GameUnit = mine[i]
-		var to := p + Session.group_offset(i)
-		var w := game.world
-		var path := w.nav.find_path(u.pos, to, [u], [], maxf(0.0, u.body_radius() - NavGrid.R_REF), u.move_class())
-		if path.is_empty():
-			_show(u, to, 3, 1, PackedVector3Array(), 0.0)
-			continue
-		var far := u.pos.distance_squared_to(to) * 0.01 <= path[-1].distance_squared_to(to)
-		var ticks := _ghost_ticks(u, path)
-		_show(u, to, 0, 1 if far else 0, ticks, 1e6)
+## The original owner-only path message.
+## Input handlers retain these call sites, but only the authoritative first
+## command tick supplies the path, mode, ring/cross and ghost cutoff.
+func move_ordered(_p: Vector2) -> void:
+	pass
 
 
-## An order at unit `t` (the approach of order types 3 attack
-## 4 / 5 casts, 6 interact / loot / steal; sent for party units only):
-## no path -> A 3, B 1; already within `reach` -> A 3, B 0; else A = 2
-## (orange) for an attack, 1 (grey) for the others, B = 1 when the path's end
-## is still out of reach; F = the ticks until the unit is within reach,
-## counted in steps of 5. `units`: the units given the order.
-## **Approx.**: returns that count only for a path record
-## type 2 (else 0), and the order byte keeps F = 1e6 — neither was
-## traced, so the count is always used.
-func unit_ordered(t: GameUnit, attack: bool, reach: float, units: Array) -> void:
-	if t == null or not is_instance_valid(t):
+func unit_ordered(_t: GameUnit, _attack: bool, _reach: float, _units: Array) -> void:
+	pass
+
+
+func cast_ordered(_u: GameUnit, _spell: String, _t: GameUnit, _at: Vector2) -> void:
+	pass
+
+
+func on_path(e: Dictionary) -> void:
+	if game == null or game.world == null:
 		return
-	for u: GameUnit in _mine():
-		if not u in units:
-			continue
-		var r := u.melee_reach(t) if attack and reach < 0.0 else reach
-		if attack and u.stats.get("ranged", false):
-			r = float(u.stats.get("reach", r))
-		_approach(u, t, t.pos, r, 2 if attack else 1)
-
-
-## A cast order (types 4 / 5 through, the
-## point casts): A = 2 (orange) when the spell's prototype (spells.sdb
-## type_id, the school: 0 the elemental spells) is 0, else 1 (grey); reach =
-## the spell's range centre to centre. `t` null: a cast at the
-## point `at`.
-func cast_ordered(u: GameUnit, spell: String, t: GameUnit, at: Vector2) -> void:
-	if u == null or not u in _mine():
+	var u: GameUnit = game.world.units.get(int(e.get("uid", -1)))
+	if u == null:
 		return
-	var sp := Spells.parse(spell)
-	var a := 2 if int(sp.proto.get("type_id", 0)) == 0 else 1
-	_approach(u, t, t.pos if t else at, float(sp.range), a)
+	var start := _point(e.get("start", []), u.pos)
+	var at := _point(e.get("target", []), u.pos)
+	_show(u, at, clampi(int(e.get("mode", 3)), 0, 3), int(e.get("cross", 0)),
+		_ghost_ticks(e), float(e.get("ticks", 0.0)), start)
 
 
-func _approach(u: GameUnit, t: GameUnit, at: Vector2, r: float, a: int) -> void:
-	var w := game.world
-	if u.pos.distance_to(at) <= r:
-		_show(u, at, 3, 0, PackedVector3Array(), 0.0)
-		return
-	var path := w.nav.find_path(u.pos, at, [u, t] if t else [u], [], maxf(0.0, u.body_radius() - NavGrid.R_REF), u.move_class())
-	if path.is_empty():
-		_show(u, at, 3, 1, PackedVector3Array(), 0.0)
-		return
-	# F counts the unit's own ticks (on the unit's path record
-	# at its speed); the dots are the ghost's ticks up to F.
-	var real := _ticks(u.pos, path, func(_c: Vector2, _q: Vector2) -> float: return u.speed() * GameUnit.TICK)
-	var f := real.size() - 1
-	var k := 0
-	while k < real.size():
-		if Vector2(real[k].x, real[k].y).distance_to(at) <= r:
-			f = k
-			break
-		k += 5
-	var out := Vector2(real[-1].x, real[-1].y).distance_to(at) > r
-	_show(u, at, a, 1 if out else 0, _ghost_ticks(u, path), float(f))
+static func _point(row, fallback: Vector2) -> Vector2:
+	return Vector2(float(row[0]), float(row[1])) if row is Array and row.size() == 2 else fallback
 
 
 ## The first unit an interact / loot order goes to (Session: mine[0]).
@@ -164,16 +107,18 @@ func _mine() -> Array:
 
 
 ##  for one message: dots unless A = 3, then ring / cross.
-func _show(u: GameUnit, at: Vector2, a: int, b: int, ticks: PackedVector3Array, f: float) -> void:
+func _show(u: GameUnit, at: Vector2, a: int, b: int, ticks: PackedVector3Array, f: float, start := Vector2.INF) -> void:
 	if not GameData.option("show_path"):
 		return
 	var w := game.world
 	var fx := ParticleFx.of(w)
 	if fx == null:
 		return
+	if start == Vector2.INF:
+		start = u.pos
 	if a != 3 and ticks.size() > 0:
 		var k118: float = [1.0, 0.0, 2.0][a]
-		var ef := fx.spawn(0x2039, Vector3(u.pos.x, u.pos.y, w.ground_at(u.pos.x, u.pos.y)), 1.0, null,
+		var ef := fx.spawn(0x2039, Vector3(start.x, start.y, w.ground_at(start.x, start.y)), 1.0, null,
 			{"k118": k118, "k11c": minf(f, float(ticks.size() - 1)), "secs": 1.5})
 		if ef:
 			ef.e.set_meta("path", ticks)
@@ -191,46 +136,29 @@ func _show(u: GameUnit, at: Vector2, a: int, b: int, ticks: PackedVector3Array, 
 const GHOST_BASE := 0.5
 
 
-## The ghost's position at every logic tick along `path` (
-## tick + idx): GHOST_BASE cells a tick x the step's terrain factor for the
-## unit's movement class (the node values are the unit's). **Approx.**: the
-## remake's path polyline instead of the cell spline, the factor sampled at
-## the start of each tick.
-func _ghost_ticks(u: GameUnit, path: PackedVector2Array) -> PackedVector3Array:
-	var nav: NavGrid = game.world.nav if game and game.world else null
-	var cls := u.move_class()
-	var flying := u.has_meta("flying")
-	return _ticks(u.pos, path, func(cur: Vector2, q: Vector2) -> float:
-		var f := 1.0
-		if nav and not flying and cur.distance_to(q) > 0.001:
-			f = nav.step_factor(cur, cur + (q - cur).normalized() * NavGrid.CELL, cls)
-		return GHOST_BASE * NavGrid.CELL * f)
-
-
-## Positions at every logic tick walking `path` from `from`, `step_at(cur,
-## next node)` metres a tick.
-static func _ticks(from: Vector2, path: PackedVector2Array, step_at: Callable) -> PackedVector3Array:
-	var out := PackedVector3Array([Vector3(from.x, from.y, 0.0)])
-	var cur := from
-	var left := -1.0
-	for q in path:
-		if left < 0.0:
-			left = maxf(float(step_at.call(cur, q)), 0.01)
-		while cur.distance_to(q) >= left:
-			cur = cur.move_toward(q, left)
-			out.append(Vector3(cur.x, cur.y, 0.0))
-			left = maxf(float(step_at.call(cur, q)), 0.01)
-			if out.size() >= 2500:
-				return out
-		left -= cur.distance_to(q)
-		cur = q
-	if Vector2(out[-1].x, out[-1].y) != cur:
-		out.append(Vector3(cur.x, cur.y, 0.0))
+## Native ghost base0.5 and turn1e10 rebuild the complete transmitted cell
+## spline, independent of the hero's gait and the current client's map.
+func _ghost_ticks(e: Dictionary) -> PackedVector3Array:
+	var out := PackedVector3Array()
+	var cells: Array[Vector2i] = []
+	for row in e.get("cells", []):
+		if row is Array and row.size() == 2:
+			cells.append(Vector2i(int(row[0]), int(row[1])))
+	if cells.is_empty():
+		return out
+	var spline := MotionSpline.new()
+	spline.build(_point(e.get("start", []), Vector2.ZERO), _point(e.get("end", []), Vector2.ZERO),
+		cells, PackedInt32Array(e.get("values", [])), GHOST_BASE, 1e10, float(e.get("heading", 0.0)))
+	var ticks := mini(int(ceil(spline.duration)), 2499) if is_finite(spline.duration) else 0
+	for tick in ticks + 1:
+		var p: Vector2 = spline.sample(tick).p
+		out.append(Vector3(p.x, p.y, 0.0))
 	return out
 
 
 ## Figures drawn in white: select_type 0's selected units and
-## the quest-var flash. Both push white onto the figure parts'
+## the electrical-hit flash and active quest lights
+## . These push white onto the figure parts'
 ## colour stack ((1)): each part's D3D material emissive
 ## (.., the material at part: diffuse alpha, specular
 ##  zeroed) set to 1.0, and the TL pipeline
@@ -244,6 +172,9 @@ func _update_lit() -> void:
 				want[u] = u.model
 	for u in _flash:
 		if is_instance_valid(u) and u.model:
+			want[u] = u.model
+	if game and game.quest_lights:
+		for u: GameUnit in game.quest_lights.white_units():
 			want[u] = u.model
 	for u in _lit.keys():
 		if not want.has(u) or want[u] != _lit[u]:
@@ -348,4 +279,3 @@ func _process(dt: float) -> void:
 		for v in vs:
 			_im.surface_add_vertex(v)
 		_im.surface_end()
-

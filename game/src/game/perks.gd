@@ -1,5 +1,6 @@
 class_name Perks
 extends RefCounted
+const TrainingRefund := preload("res://src/game/training_refund.gd")
 ## The original skill tree (perks.pdb): weapon and school specialisations,
 ## health, mana, regeneration, quickness, backstab and attribute perks.
 ## Heroes buy perks with experience; each needs the previous rank.
@@ -18,12 +19,17 @@ static func get_perk(code: String) -> Dictionary:
 
 static func title(code: String) -> String:
 	var r := get_perk(code)
-	var t := EIText.ansi(GameData.texts.read("perk " + code)) if GameData.texts else ""
+	var t := GameData.text("perk " + code)
 	# texts.res: "<rank>\n<full name>"; some entries only repeat the rank.
 	var short := t.get_slice("\n", 0).strip_edges()
 	var full := t.get_slice("\n", 1).strip_edges() if t.count("\n") >= 1 else ""
 	if full and full != short:
 		return full
+	# Russian ranks often repeat just their rank. Use the localized family
+	# rather than falling back to the English name stored in the database.
+	var family := GameData.text("perk " + code.rstrip("0123456789") + "0").get_slice("\n", 0).strip_edges()
+	if family:
+		return "%s (%s)" % [family, short] if short else family
 	return String(r.get("name", code))
 
 
@@ -74,6 +80,7 @@ static func learn(h: Dictionary, code: String) -> bool:
 	var c := cost(code, h)
 	if float(h.get("exp", 0.0)) < c:
 		return false
+	TrainingRefund.record_perk(h, code, c)
 	h.exp = float(h.get("exp", 0.0)) - c
 	var list: Array = h.get("perks", [])
 	list.append(code)

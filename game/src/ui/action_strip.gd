@@ -24,10 +24,9 @@ extends Control
 ## Unlit, confirmed: the cell build = and flag 0x100
 ## so writes white to every
 ## vertex — texture × white.
-## Vtable is the unit's dead test (0 = alive; and the
+##  is the unit's dead test (0 = alive; and the
 ## other callers), so the unit cells need exactly one selected living unit.
-## **Approx.**: the remake also requires it to be a hero (its science level
-## comes from the hero record; summoned units have none).
+## No hero restriction: a selected living creature gets Use/Steal too.
 
 const FIG_OUT := 0.8922
 const FIG_IN := 0.8456
@@ -67,7 +66,7 @@ func _ready() -> void:
 func _process(_dt: float) -> void:
 	var units: Array = game.selected.filter(func(x): return is_instance_valid(x)) if game else []
 	var cells := []
-	if units.size() == 1 and (units[0] as GameUnit).has_meta("hero"):
+	if units.size() == 1 and not (units[0] as GameUnit).dead:
 		cells = ["follow", "science"]
 	elif not units.is_empty():
 		cells = ["follow"]
@@ -85,7 +84,7 @@ func _hero() -> GameUnit:
 	if game == null or game.selected.is_empty() or not is_instance_valid(game.selected[0]):
 		return null
 	var u: GameUnit = game.selected[0]
-	return u if u.has_meta("hero") and not u.dead else null
+	return u if not u.dead else null
 
 
 ## Local pixels per 800×600 unit (the widget is 40 wide).
@@ -120,7 +119,7 @@ func _get_tooltip(p: Vector2) -> String:
 	var u := _hero()
 	if u == null:
 		return ""
-	return GameData.tip_key("%s %d\n%s" % [Skills.title("science"), Skills.level(u.get_meta("hero"), "science"),
+	return GameData.tip_key("%s %d\n%s" % [Skills.title("science"), Skills.unit_level(u, "science"),
 		GameData.text("tip 10511").strip_edges()], 29)   #  hotkey 0x1d
 
 

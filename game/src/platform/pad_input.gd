@@ -99,6 +99,11 @@ var _mouse_run := 0.0
 var ignore_mouse_until := 0   # ms: pointer warps are not mouse use
 ## The last cancel (B) press, ms: Android's Back from the same press is not a second Esc.
 var last_cancel_ms := -100000
+const BACK_DUPLICATE_MS := 250
+var _back_pending_ms := -1
+var _last_back_button_ms := -100000
+var gyro := PadGyro.new()
+var _focused := true
 var _glyphs := {}
 
 
@@ -175,6 +180,7 @@ func _owns(e: InputEvent) -> bool:
 	if e is InputEventJoypadButton and not e.pressed:
 		return false
 	release_all()
+	gyro.stop()
 	device = e.device
 	return true
 
@@ -199,6 +205,9 @@ func _motion(e: InputEventJoypadMotion) -> void:
 
 func _button(e: InputEventJoypadButton) -> void:
 	if e.pressed:
+		if e.button_index == JOY_BUTTON_B:
+			_last_back_button_ms = Time.get_ticks_msec()
+			_back_pending_ms = -1
 		_set_active("pad")
 	if DPAD.has(e.button_index):
 		var a: String = DPAD[e.button_index]
@@ -277,6 +286,10 @@ func release_all() -> void:
 func _process(dt: float) -> void:
 	var real := dt / maxf(Engine.time_scale, 0.001)
 	var now := Time.get_ticks_msec()
+	gyro.update(device, gyro_pointer_wanted(), minf(real, 0.1))
+	if _back_pending_ms >= 0 and now - _back_pending_ms >= BACK_DUPLICATE_MS:
+		_back_pending_ms = -1
+		PadUI.key(KEY_ESCAPE)
 	for a: String in _down.keys():
 		if not _down.has(a):
 			continue
@@ -292,12 +305,41 @@ func _process(dt: float) -> void:
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_APPLICATION_FOCUS_OUT:
+		_focused = false
+		_back_pending_ms = -1
+		gyro.stop()
 		release_all()
+	elif what == NOTIFICATION_APPLICATION_FOCUS_IN:
+		_focused = true
+
+
+func gyro_pointer_wanted() -> bool:
+	if not _focused or active != "pad" or not enabled() or GameData.option("pad_gyro") == 0:
+		return false
+	return _route_now() == "ui" or (field.cursor_mode and field._wheel_kind == "")
+
+
+func gyro_delta(dt: float, height: float) -> Vector2:
+	if not gyro_pointer_wanted():
+		return Vector2.ZERO
+	return gyro.delta(dt, height, GameData.option("pad_gyro_sensitivity"))
+
+
+## Android may report controller B as a Back notification before OR after its
+## joypad event. Defer an unmatched Back briefly so that either order acts once;
+## a physical Back without a controller event still sends a complete Esc tap.
+func android_back_request() -> void:
+	var now := Time.get_ticks_msec()
+	if now - maxi(last_cancel_ms, _last_back_button_ms) < BACK_DUPLICATE_MS:
+		return
+	if _back_pending_ms < 0:
+		_back_pending_ms = now
 
 
 func _on_connection(dev: int, connected: bool) -> void:
 	if not connected and dev == device:
 		release_all()
+		gyro.stop()
 		device = -1
 	connection_changed.emit(dev, connected)
 

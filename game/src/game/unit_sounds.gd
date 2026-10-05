@@ -84,8 +84,8 @@ func tick() -> void:
 		if clip != st.clip:   # a new clip record: the previous frame restarts at 0
 			st.clip = clip
 			prev = 0.0
-		elif cur < prev:      # the clip looped (the remake replays it in place)
-			prev = 0.0
+		#  resets the previous frame only for a different clip
+		# record. A wrap in the same record crosses no sound frame that tick.
 		st.frame = cur
 		if cur == prev or not u.visible:
 			continue
@@ -109,6 +109,14 @@ func set_attack(u: GameUnit, h: int) -> void:
 	var st: Dictionary = _units.get(u.get_instance_id(), {})
 	if not st.is_empty():
 		st.attack = h
+
+
+## The native clip action bits, used Bored eligibility.
+func current_clip_action(u: GameUnit) -> int:
+	if u.model == null or u.model.player == null:
+		return -1
+	var clip := String(u.model.player.current_animation).trim_prefix("ei/")
+	return int(_clips(u.model.template).get(clip, {}).get("act", -1))
 
 
 func _frame(u: GameUnit, st: Dictionary, rec: Dictionary, prev: float, cur: float) -> void:
@@ -162,14 +170,17 @@ func _voice(u: GameUnit, st: Dictionary, rec: Dictionary, prev: float, cur: floa
 	var n := nums[randi() % nums.size()]
 	var act: int = rec.act
 	var path := ""
+	var source := _voice_source(u)
+	var voice_proto: Dictionary = source[0]
+	var voice_race: Dictionary = source[1]
 	# The prototype's sound folder (monster_prototypes field 9, proto)
 	# replaces the race's sfx path (race) when set.
-	var dir := String(u.proto.get("unknown2", ""))
+	var dir := String(voice_proto.get("unknown2", ""))
 	if dir.is_empty():
-		dir = String(u.race.get("sfx_path", ""))
+		dir = String(voice_race.get("sfx_path", ""))
 	match act:
 		ACT_IDLE:
-			if randi() % 100 >= int(u.race.get("idle_sound_p", 0)):
+			if randi() % 100 >= int(voice_race.get("idle_sound_p", 0)):
 				return
 			path = "%s\\idle\\%d.wav" % [dir, n]
 		ACT_SPECIAL:
@@ -184,7 +195,7 @@ func _voice(u: GameUnit, st: Dictionary, rec: Dictionary, prev: float, cur: floa
 			var wt := GameSound.held_weapon_type(u)
 			if int(u.race.get("type_id", 0)) == 0x32 and (wt == 5 or wt == 6):
 				path = "weapons\\%d.wav" % n
-			elif randi() % 100 >= int(u.race.get("attack_sound_p", 0)):
+			elif randi() % 100 >= int(voice_race.get("attack_sound_p", 0)):
 				return
 			else:
 				path = "%s\\attack\\%d.wav" % [dir, n]
@@ -204,6 +215,20 @@ func _voice(u: GameUnit, st: Dictionary, rec: Dictionary, prev: float, cur: floa
 		st.idle = h
 
 
+## Creation 616d54 stores the voice prototype at hero; deployment
+## 58ef20 / 566f70 installs it with 5308d0. Both acknowledgement 6d83f0 and
+## animation voice 534760 read that prototype through 5309e0. The face's
+## animation and step sounds keep their own race; only voices change.
+static func _voice_source(u: GameUnit) -> Array:
+	var voice := String(u.info.get("voice", ""))
+	if voice and GameData.db:
+		var proto := GameData.db.find("monster_prototypes", voice)
+		if not proto.is_empty():
+			var race := GameData.db.find("race_models", String(proto.get("base_race", "")))
+			return [proto, race]
+	return [u.proto, u.race]
+
+
 ## The sound folders the zone's units can play from (steps of every ground,
 ## crawling, the voice folders, bow / crossbow shots), for
 ## EIAudio.prefetch at the zone start (remake: no first-play stall).
@@ -211,7 +236,10 @@ static func zone_folders(w: GameWorld) -> PackedStringArray:
 	var out := PackedStringArray(["steps\\human\\crawl", "weapons"])
 	var seen := {}
 	for u: GameUnit in w.units.values():
-		var key := "%s|%s" % [u.race.get("sfx_path", ""), u.proto.get("unknown2", "")]
+		var source := _voice_source(u)
+		var voice_proto: Dictionary = source[0]
+		var voice_race: Dictionary = source[1]
+		var key := "%s|%s|%s" % [u.race.get("steps_path", []), voice_race.get("sfx_path", ""), voice_proto.get("unknown2", "")]
 		if seen.has(key):
 			continue
 		seen[key] = true
@@ -220,9 +248,9 @@ static func zone_folders(w: GameWorld) -> PackedStringArray:
 			for p in paths:
 				if String(p) and not out.has(String(p)):
 					out.append(String(p))
-		var dir := String(u.proto.get("unknown2", ""))
+		var dir := String(voice_proto.get("unknown2", ""))
 		if dir.is_empty():
-			dir = String(u.race.get("sfx_path", ""))
+			dir = String(voice_race.get("sfx_path", ""))
 		if dir:
 			for sub in ["idle", "attack", "death", "hit"]:
 				out.append("%s\\%s" % [dir, sub])

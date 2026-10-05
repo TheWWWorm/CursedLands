@@ -12,7 +12,7 @@ const SCHEMA := {
 	"items.idb": [
 		["materials", "SSSIFFFIFIFfIX", "name,type,code,id,price,weight,mana,slots,durability,skill,damage,resist,unknown,shops"],
 		["weapons", "SSISIIIFFFFIFIXB     IHFFFfHHFF", "name,type,type_id,material_type,unknown,texture1,texture2,price,weight,size,mana,slots,durability,components,shops,deconstructable,actions,unknown2,range,min_damage,max_damage,damage,unknown3,unknown4,attack,defence"],
-		["armors", "SSISIIIFFFFIFIXB     ffBiHH", "name,type,type_id,material_type,unknown,texture1,texture2,price,weight,size,mana,slots,durability,components,shops,deconstructable,absorption,absorption2,apply_wounds,wear_order,unknown2,unknown3"],
+		["armors", "SSISIIIFFFFIFIXB     ffBUHH", "name,type,type_id,material_type,unknown,texture1,texture2,price,weight,size,mana,slots,durability,components,shops,deconstructable,absorption,absorption2,apply_wounds,layer_order,unknown2,unknown3"],
 		["quick_items", "SSISIIIFFFFIFIXB     IIFFSbH", "name,type,unknown,material_type,unknown2,texture1,texture2,price,weight,size,mana,slots,durability,components,shops,deconstructable,item_id,graphics_level,damage,unknown3,spell,modifiers,unknown4"],
 		["quest_items", "SSISIIIFFFFIFIXB     Is", "name,type,unknown,material_type,unknown2,texture1,texture2,price,weight,size,mana,slots,durability,components,shops,deconstructable,script_id,zones"],
 		["loot_items", "SSISIIIFFFFIFIXB     IHI", "name,type,unknown,material_type,unknown2,texture1,texture2,price,weight,size,mana,slots,durability,components,shops,deconstructable,type_id,unknown3,unknown4"],

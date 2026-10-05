@@ -48,7 +48,7 @@ var _early_music := ""
 static var trace_acks := false
 var _early_at := 0.0
 var _early_world: GameWorld = null
-var _bored := {}   # host: unit uid -> [idle counter (creature), gait]
+var _bored := {}   # host: unit uid -> [idle counter (creature), gait, held item]
 ## these codes are queued even while another line is pending
 ## any other code is dropped then.
 const ACK_URGENT := [0x1d, 0x1e, 0x1f, 0x23, 0x24, 0x25, 0x26, 0x2a]
@@ -58,6 +58,7 @@ const ACK_REPLACES := {0xd: [9], 0xe: [1], 0xf: [3], 0x10: [3], 0x11: [5, 6], 0x
 ## server's message 0x60).
 var combat_flag := 0
 var _sent_flags := {}          # host: player index -> value sent
+var _combat_near := {}         # uid -> {until, units}, native creature
 var _dialog_was := false
 var _shop_was := false
 ## The global map is up (event "travel" until a zone starts or "Stay here").
@@ -102,6 +103,7 @@ func _zone_start(w: GameWorld) -> void:
 	_tick_acc = 0.0
 	combat_flag = 0
 	_sent_flags.clear()
+	_combat_near.clear()
 	_on_map = false
 	if ambient:
 		ambient.stop()
@@ -226,6 +228,9 @@ func _update_listener() -> void:
 func _process(dt: float) -> void:
 	var w := game.world if game else null
 	on_world(w)
+	# Camp / trade has its own stream mode even over the global map, whose
+	# suspended world deliberately has no zone ticks or ambient sounds.
+	_screens()
 	if w == null or _on_map:
 		# the original clears the world for the global map (
 		# ): no world ticks, no combat flag, no zone music rules.
@@ -237,7 +242,6 @@ func _process(dt: float) -> void:
 		spells.tick(dt)
 	if weather:
 		weather.tick(_ticks + _tick_acc / TICK)
-	_screens()
 	_tick_acc += dt
 	while _tick_acc >= TICK:
 		_tick_acc -= TICK
@@ -268,11 +272,14 @@ func _screens() -> void:
 	var hud := game.hud if game else null
 	if hud == null:
 		return
-	var shop: bool = hud._inventory != null and hud._inventory.visible and hud._inventory.shop_mode
+	var shop: bool = hud._inventory != null and hud._inventory.visible \
+		and hud._inventory._camp != null and hud._inventory._camp.visible
 	if shop != _shop_was:
 		_shop_was = shop
 		if shop:
 			music.set_constructor()
+		elif _on_map:
+			music.set_none()
 		else:
 			music.back_to_zone()
 	# Only a running conversation (the dialog box's modes 3 / 4), not its
@@ -290,33 +297,110 @@ func _screens() -> void:
 # ------------------------------------------------------------------ combat flag
 
 ## Host, every tick: the combat flag of each player (sent as
-## message 0x60). 2 when one of the player's units attacks or casts a hostile
-## spell, or a unit hostile to it has one of its units as its
-## attack target. Approx.: the original also counts the units the party knows
-## (ai lists) and gives 1 for "near but unseen" (not used by music).
+## message 0x60). Every living unit on the player's relevant-object list can
+## set 2 by attacking / casting a hostile spell. A nearby
+## attacker hostile to the player's side can also set 2 by targeting one of
+## those listed units. The player's own units' detection ratios set 1 when
+## any is <= 2; music itself only treats 2 as combat.
+## Approx.: the native current Attack motivation is represented
+## by an attack order. The relevant-list and eye-height residuals are those
+## documented in UnitFog / GameWorld.sight_ray.
 func _send_combat_flags() -> void:
-	# One pass; only units with an attack / cast order can set a flag.
-	var flags := {}
+	if _world == null or _world.session == null:
+		return
+	var s := _world.session
+	var parties := {}
+	for p in s.state.heroes if s.state else {}:
+		parties[int(p)] = true
 	for u: GameUnit in _world.units.values():
-		if not is_instance_valid(u):
+		if not is_instance_valid(u) or u.controller < 0:
 			continue
-		if u.controller >= 0 and not flags.has(u.controller):
-			flags[u.controller] = 0
-		if u.dead:
+		parties[u.controller] = true
+	for p in parties:
+		var flag := player_combat_flag(int(p))
+		if int(_sent_flags.get(p, -1)) != flag:
+			_sent_flags[p] = flag
+			s.broadcast({"t": "combat_flag", "p": p, "v": flag})
+	for uid in _combat_near.keys():
+		if not _world.units.has(uid):
+			_combat_near.erase(uid)
+
+
+## The server's native danger flag also gates its periodic network-character
+## save. Reading it must work without an audio mixer.
+func player_combat_flag(player: int) -> int:
+	if _world == null or _world.session == null:
+		return 0
+	var own: Array[GameUnit] = []
+	for u: GameUnit in _world.units.values():
+		if is_instance_valid(u) and u.controller == player and not u.dead and not u.hidden:
+			own.append(u)
+	var flag := 0
+	for u: GameUnit in own:
+		for ratio in _near_ratios(u):
+			if ratio <= 2.0:
+				flag = 1
+	for u in UnitFog.relevant_for(_world.session, player):
+		if not is_instance_valid(u) or u.dead:
 			continue
-		var ty = u.order.get("type")
-		if ty != "attack" and ty != "cast":
+		if _hostile_act(u):
+			return 2
+		for a in _near_units(u):
+			if not is_instance_valid(a) or a.dead or own.is_empty():
+				continue
+			if String(a.order.get("type", "")) == "attack" and _act_target(a) == u \
+					and _world.is_enemy(a, own[0]):
+				return 2
+	return flag
+
+
+## the perception candidate list, rebuilt every 8..11 logic
+## ticks, from the same native 16 m cells used by UnitAI's nearby friends.
+## It has no visibility or diplomacy test; those are applied by the reader.
+func _near_units(u: GameUnit) -> Array:
+	var row: Dictionary = _combat_near.get(u.uid, {})
+	if row.is_empty() or _world.time >= float(row.until):
+		var r := maxf((float(u.stats.get("sight", 15.0)) + u.sense_bonus(0)) * u.sight_factor(), u.sense(2))
+		var cells := UnitAI._friend_cells(r * 2.0 / 32.0)
+		var c0 := Vector2i(int(GameUnit._fistp(u.pos.x * 2.0 - 0.5) / 32), int(GameUnit._fistp(u.pos.y * 2.0 - 0.5) / 32))
+		var reach := 0
+		for c: Vector2i in cells:
+			reach = maxi(reach, maxi(absi(c.x), absi(c.y)))
+		var near := []
+		for o: GameUnit in _world.live_units_near(u.pos, float(reach + 1) * 16.0 * 1.5):
+			var oc := Vector2i(int(GameUnit._fistp(o.pos.x * 2.0 - 0.5) / 32), int(GameUnit._fistp(o.pos.y * 2.0 - 0.5) / 32))
+			if o != u and cells.has(oc - c0):
+				near.append(o)
+		row = {"until": _world.time + float((randi() & 3) + 8) * TICK, "units": near}
+		_combat_near[u.uid] = row
+	# A connection can leave this live world between native cache refreshes.
+	# Test validity before a typed local: Godot throws when assigning a freed
+	# object even when the loop body starts with an is_instance_valid guard.
+	row.units = row.units.filter(func(o): return is_instance_valid(o) and _world.units.get(o.uid) == o)
+	return row.units
+
+
+## how readily enemies near a party member detect that member
+## not the member's own detection of them. Sight first requires distance <
+## the unoccluded range; hearing, smell and life sense are capped at 3.
+func _near_ratios(u: GameUnit) -> PackedFloat32Array:
+	var out := PackedFloat32Array([3.0, 3.0, 3.0, 3.0, 3.0])
+	for o in _near_units(u):
+		if not is_instance_valid(o) or o.dead or not _world.is_enemy(u, o):
 			continue
-		if u.controller >= 0 and _hostile_act(u):
-			flags[u.controller] = 2
-		var t := _act_target(u)
-		if t and t.controller >= 0 and not t.dead and _world.is_enemy(u, t):
-			flags[t.controller] = 2
-	for p in flags:
-		if int(_sent_flags.get(p, -1)) != int(flags[p]):
-			_sent_flags[p] = flags[p]
-			if _world.session:
-				_world.session.broadcast({"t": "combat_flag", "p": p, "v": flags[p]})
+		var d := Vector3(o.pos.x - u.pos.x, o.pos.y - u.pos.y,
+			_world.ground_at(o.pos.x, o.pos.y) - _world.ground_at(u.pos.x, u.pos.y)).length()
+		var sight: float = o.sight_factor() * u.vis_factor() * (float(o.stats.get("sight", 15.0)) + o.sense_bonus(0)) * u.detect(0)
+		if d < sight:
+			out[0] = minf(out[0], _sense_ratio(d, _world.sight_ray(u, o) * sight))
+		out[4] = minf(out[4], _sense_ratio(d, o.sense(2) * u.detect(2)))
+		out[1] = minf(out[1], _sense_ratio(d, o.sense(4) * u.detect(4)))
+		out[2] = minf(out[2], _sense_ratio(d, o.hear_factor() * u.noise() * o.sense(3) * u.detect(3)))
+	return out
+
+
+static func _sense_ratio(distance: float, denominator: float) -> float:
+	return minf(3.0, distance / denominator) if denominator != 0.0 else 3.0
 
 
 static func _act_target(u: GameUnit) -> GameUnit:
@@ -324,13 +408,13 @@ static func _act_target(u: GameUnit) -> GameUnit:
 	if ty != "attack" and ty != "cast":
 		return null
 	var t = u.order.get("target")
-	return t if t is GameUnit and is_instance_valid(t) else null
+	return t if is_instance_valid(t) and t is GameUnit else null
 
 
 static func _hostile_act(u: GameUnit) -> bool:
 	match String(u.order.get("type", "")):
 		"attack":
-			return _act_target(u) != null
+			return true   # native command 3, including the approach to a target
 		"cast":
 			return String(Spells.parse(String(u.order.get("spell", ""))).code) in HOSTILE_SPELLS
 	return false
@@ -477,13 +561,13 @@ static func ack(u: GameUnit, code: int) -> void:
 			code = EIAcks.SHOP_YES
 		elif (code >= 0xb and code <= 0x13) or code == 0x1d:
 			code = EIAcks.SHOP_NO
-	var ls: Array = EIAcks.lines([u.info.get("voice", ""), u.proto.get("name", ""), u.proto.get("base_race", "")], code)
+	var ls: Array = EIAcks.lines([voice_name(u)], code)
 	var l := {}
 	if code == EIAcks.BORED:
 		# only while the figure's clip is a walk / run / idle one
 		# the line
 		#  with the context.
-		if not (u.action in ["idle", "walk", "run", "crawl"]):
+		if instance.units == null or not instance.units.current_clip_action(u) in [UnitSounds.ACT_WALK, UnitSounds.ACT_RUN, UnitSounds.ACT_IDLE]:
 			return
 		l = EIAcks.pick_masked(ls, instance.bored_context(u))
 	else:
@@ -516,17 +600,20 @@ func bored_context(u: GameUnit) -> int:
 ## (table random % 1001 == 0) sends ack 0x29 when the player's combat flag
 ##  is 0 and sets 400, or else sets 0. The counter goes to 0 while
 ## the unit acts (when runs an order, same tick) and
-## on a gait change. Approx.: "acts" = the remake unit is not
-## idle (an order or a locked animation); the other reset, (net
-## handler, unit), is not identified.
+## on a gait change or weapon-in-hand change (
+## net handler, unit). Approx.: "acts" = the remake unit is
+## not idle, rather than the native post-action dispatcher's return value.
 func _bored_tick() -> void:
 	for u: GameUnit in _world.units.values():
 		if not is_instance_valid(u) or u.dead or u.controller < 0 or not u.has_meta("hero"):
 			continue
 		var g := u.gait()
-		var e: Array = _bored.get(u.uid, [0, g])
-		if int(e[1]) != g:
-			e = [0, g]
+		var h: Dictionary = u.get_meta("hero")
+		var ws: Array = h.get("weapons", [])
+		var held := Items.unworn(String(ws[0])) if not ws.is_empty() else ""
+		var e: Array = _bored.get(u.uid, [0, g, held])
+		if int(e[1]) != g or String(e[2]) != held:
+			e = [0, g, held]
 		e[0] = int(e[0]) + 1
 		if int(e[0]) > 500 and randi() % 1001 == 0:
 			if int(_sent_flags.get(u.controller, 0)) == 0:
@@ -548,17 +635,23 @@ func _bored_tick() -> void:
 static func say(u: GameUnit, id: String, block: bool) -> Dictionary:
 	if instance == null or u == null:
 		return {}
-	# The record is named by the unit's prototype entry (: unit
-	#  in the 0x120-byte table) — "Human Hero" for Zak, but
-	# "Cyclope", "Liz4", "GTDragon"… for map NPCs with their own stats, whose
-	# acks.db records carry the unit's map name. Approx.: that entry's
-	# naming is not traced; the prototype name is tried, then the map name.
-	var l := EIAcks.scenario_line([u.proto.get("name", ""), u.info.get("name", "")], id)
+	#  uses only prototype name.
+	# A map record's display name / imported stats never replace that index.
+	var l := EIAcks.scenario_line([voice_name(u)], id)
 	if SoundMixer.trace:
 		print("[say] %s %s block %s -> %s (world tick %d)" % [u.display_name, id, block, l.get("wav", "-"), instance._ticks])
 	if not l.is_empty():
 		instance._ack_queue(u, 0x2b if block else EIAcks.SCENARIO, String(l.wav))
 	return l
+
+
+##  selects the map unit's actual prototype
+## network hero deployment
+## selects its chosen voice prototype instead. Neither falls back to race
+## or map display names when acks.db has no matching record.
+static func voice_name(u: GameUnit) -> String:
+	var voice := String(u.info.get("voice", ""))
+	return voice if not voice.is_empty() else String(u.proto.get("name", ""))
 
 
 ## pending lines that the new code supersedes
@@ -731,22 +824,12 @@ static func impact_path(target: GameUnit, source: GameUnit, part: int) -> String
 	return "weapons\\%s\\%s\\1.wav" % [kind, mat]
 
 
-## The prototype byte of a non-character attacker. Inferred (not
-## traced): 9 + the index of the race's attack type (race_models "attack",
-## one-hot over 7), mapping the 7 attack kinds onto the switch's codes 9..0xf
-## (hands1, pierce, crash, hands4, slash, hands6, hands7; no race uses the
-## 7th, whose folder sfx.res lacks).
+##  reads units.udb prototype field 39. A
+## non-character strike stores its prototype index in the victim
+## resolves it and switches on this low byte.
+## In particular, type 16 is silent, regardless of the race's attack type.
 static func natural_weapon_type(u: GameUnit) -> int:
-	var a = u.race.get("attack", [])
-	if not (a is Array or a is PackedFloat32Array) or a.is_empty():
-		return -1
-	var best := -1
-	var bv := 0.0
-	for i in a.size():
-		if float(a[i]) > bv:
-			bv = float(a[i])
-			best = i
-	return 9 + best if best >= 0 else -1
+	return int(u.proto.get("real_weapon_type_id", 7)) & 0xff
 
 
 # ------------------------------------------------------------------ speech

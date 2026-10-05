@@ -12,14 +12,8 @@ extends CanvasLayer
 ## Remake: the frame is decoded with EIBink (no cached conversion needed) and
 ## drawn letterboxed (aspect kept) on black like the other movies; it is shown
 ## for two frames before the menu is built, and removed once the menu has drawn.
-## **Approx.**: the remake builds the menu much faster than the original loaded
-## its databases, so the screen stays at least MIN_TIME seconds (no original
-## evidence for a minimum; it only avoids a flicker).
 
 const MOVIE := "progres"
-const MIN_TIME := 1.0
-
-var _shown_at := 0
 var _y: ImageTexture
 
 
@@ -89,22 +83,17 @@ func _build(planes: Array) -> void:
 ## Waits until the screen has been presented (call before a long build).
 func presented() -> void:
 	await RenderingServer.frame_post_draw
-	_shown_at = Time.get_ticks_msec()
 	await RenderingServer.frame_post_draw
 
 
-## Removes the screen once what was built under it has drawn a frame and the
-## minimum time is over (connections, so freeing it earlier is safe).
+## Removes the screen once what was built under it has drawn a frame
+## (a connection, so freeing it earlier is safe).
 func finish() -> void:
 	RenderingServer.frame_post_draw.connect(_after_draw, CONNECT_ONE_SHOT)
 
 
 func _after_draw() -> void:
-	var left := MIN_TIME - (Time.get_ticks_msec() - _shown_at) / 1000.0
-	if left > 0.0 and is_inside_tree():
-		get_tree().create_timer(left, true, false, true).timeout.connect(queue_free)
-	else:
-		queue_free()
+	queue_free()
 
 
 func _input(e: InputEvent) -> void:

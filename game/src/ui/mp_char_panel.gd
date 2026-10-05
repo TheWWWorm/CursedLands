@@ -48,8 +48,8 @@ extends Interface800
 ## dresses it and spends its experience) shows state 11's layout with the
 ## character's own kit and its skills widget; the spell row of state 11 sits
 ## at the bottom (y 500, the original's position is not traced); seven
-## face cells (50..750) per strip with the remake's cell highlight; faces
-## and voices in table order (the original sorts them, comparator not traced).
+## face cells (50..750) per strip with the remake's cell highlight. Faces
+## follow the native byte sort (female reversed); voices retain table order.
 
 signal closed(accepted: bool)
 
@@ -483,18 +483,29 @@ func _draw_kit() -> void:
 	_draw_help()
 
 
-## The info panel's rows in the experience step: Strength, Dexterity,
-## Intelligence, a gap, Health, Stamina, Experience (mode 1
-## Actions and Encumbrance need a unit and are left out here).
+##  mode 11: effective attributes, a gap, Health / Stamina
+## Actions / Experience / Encumbrance. These are the same derived hero
+## values as Combat.hero_stats; the editor has no simulated world unit.
 func _info_rows(h: Dictionary) -> Array:
 	var tot := float(h.get("exp_total", 0.0))
 	var out := []
 	for a: Array in ATTR_ROWS:
-		out.append([_perk(a[1])[0], "%d" % int(h.get(a[0], 25))])
+		out.append([_perk(a[1])[0], "%d" % int(float(h.get(a[0], 25)) + Perks.attr_bonus(h, a[0]))])
+	var strength := float(h.get("str", 25)) + Perks.attr_bonus(h, "str")
+	var dexterity := float(h.get("dex", 25)) + Perks.attr_bonus(h, "dex")
 	out.append(["", ""])
-	out.append([_perk("health")[0], "%d" % int(Skills.base_pool(tot, float(h.str)))])
-	out.append([_perk("mana")[0], "%d" % int(Skills.base_pool(tot, float(h.dex), "MP"))])
+	out.append([_perk("health")[0], "%d" % int(Skills.base_pool(tot, strength) * (1.0 + Perks.best(h, "health") / 100.0))])
+	out.append([_perk("mana")[0], "%d" % int(Skills.base_pool(tot, dexterity, "MP") * (1.0 + Perks.best(h, "mana") / 100.0))])
+	out.append([_perk("actions")[0], "%d" % int((dexterity * 0.2 + 10.0) * (1.0 + Perks.best(h, "quickness") / 100.0))])
 	out.append([_perk("experience")[0], "%d" % int(tot)])
+	var weight := 0.0
+	for k in ["weapons", "armors", "quick"]:
+		for it in h.get(k, []):
+			var st := Items.parse_stack(String(it))
+			weight += Items.weight(st[0]) * int(st[1])
+	var limit := strength * 12.0 * (1.0 + Perks.best(h, "lift") / 100.0)
+	out.append([_perk("encumbrance")[0], "%d/%d" % [int(weight), int(limit)]])
+	out.append(["", CampView._str("infounit_17") if weight > limit else ""])
 	return out
 
 

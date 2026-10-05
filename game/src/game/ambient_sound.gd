@@ -78,8 +78,9 @@ static func daytime(hour: float) -> String:
 	return "night"
 
 
-## Sector tile-type counts (sector). The remake's ground grid has
-## 1 m cells (4 per 2 m tile), which scales every count alike.
+##  builds sector from the 16 x 16 land tiles AND every
+## present liquid tile. Water does not replace the land beneath it. Counting
+## the 1 m ground grid missed the second vote on sectors containing liquids.
 func _sector(s: Vector2i) -> PackedFloat32Array:
 	if _hist.has(s):
 		return _hist[s]
@@ -87,11 +88,17 @@ func _sector(s: Vector2i) -> PackedFloat32Array:
 	var out := PackedFloat32Array()
 	if t and s.x >= 0 and s.y >= 0 and s.x < t.sectors_x and s.y < t.sectors_y:
 		out.resize(16)
-		for y in int(SECTOR):
-			for x in int(SECTOR):
-				var g := t.ground_type(s.x * SECTOR + x + 0.5, s.y * SECTOR + y + 0.5)
-				if g >= 0 and g < 16:
-					out[g] += 1.0
+		var width := t.sectors_x * EITerrain.TILES
+		for y in EITerrain.TILES:
+			for x in EITerrain.TILES:
+				var i := (s.y * EITerrain.TILES + y) * width + s.x * EITerrain.TILES + x
+				for tiles in [t.land_tile, t.water_tile]:
+					if i >= tiles.size() or int(tiles[i]) < 0:
+						continue
+					var code := int(tiles[i]) & 0x3fff
+					var g: int = t.tile_types[code] if code < t.tile_types.size() else 15
+					if g >= 0 and g < 16:
+						out[g] += 1.0
 	_hist[s] = out
 	return out
 

@@ -33,6 +33,9 @@ var title := ""
 var message := ""
 ## An optional line under the message (GameHUD.show_death_notice).
 var hint := ""
+## Co-op clients wait for the host's load; they can dismiss the notice or
+## leave, but never enter a local save loader.
+var allow_load := true
 ## True while the notice still applies (the main hero dead); a load or a
 ## revival hides it.
 var still_dead: Callable
@@ -72,11 +75,16 @@ func _layout() -> Dictionary:
 	var hh := wrap_text(hint, W - 20.0, 1).size() * line_h(1) + 2.0 if hint != "" else 0.0
 	mh += hh
 	var by := TOP + 6.0 + th + 2.0 + mh + 6.0
-	var gap := (W - 20.0 - BTN_W * BUTTONS.size()) / (BUTTONS.size() - 1)
+	var buttons := _buttons()
+	var gap := (W - 20.0 - BTN_W * buttons.size()) / (buttons.size() - 1)
 	var btn := {}
-	for i in BUTTONS.size():
-		btn[BUTTONS[i]] = Rect2(X + 10.0 + i * (BTN_W + gap), by, BTN_W, BTN_H)
+	for i in buttons.size():
+		btn[buttons[i]] = Rect2(X + 10.0 + i * (BTN_W + gap), by, BTN_W, BTN_H)
 	return {"th": th, "hh": hh, "hint_y": by - 6.0 - hh + 2.0, "panel": Rect2(X, TOP, W, by + BTN_H + 7.0 - TOP), "btn": btn}
+
+
+func _buttons() -> Array:
+	return BUTTONS if allow_load else ["menu", "hide"]
 
 
 func _draw() -> void:
@@ -87,7 +95,7 @@ func _draw() -> void:
 	text_block(Rect2(X + 10.0, TOP + 8.0 + l.th, W - 20.0, 200.0), message, 1, TEXT, HORIZONTAL_ALIGNMENT_CENTER)
 	if hint != "":
 		text_block(Rect2(X + 10.0, l.hint_y, W - 20.0, l.hh), hint, 1, Interface800.colorref(0x31b3ff), HORIZONTAL_ALIGNMENT_CENTER)
-	for b: String in BUTTONS:
+	for b: String in _buttons():
 		var r: Rect2 = l.btn[b]
 		var on := b == _hover
 		if ui:
@@ -101,7 +109,7 @@ func _draw() -> void:
 func _button_at(at: Vector2) -> String:
 	var p := to800(at)
 	var l := _layout()
-	for b: String in BUTTONS:
+	for b: String in _buttons():
 		if (l.btn[b] as Rect2).has_point(p):
 			return b
 	return ""
@@ -135,7 +143,7 @@ func _gui_input(e: InputEvent) -> void:
 func pad_targets() -> Array:
 	var l := _layout()
 	var out: Array = []
-	for b: String in BUTTONS:
+	for b: String in _buttons():
 		out.append({"rect": pad_rect(l.btn[b]), "id": b})
 	return out
 

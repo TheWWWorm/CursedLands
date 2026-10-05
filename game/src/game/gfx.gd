@@ -28,10 +28,13 @@ static var _noise_cache := {}
 ##    every point light col · coeff · a · n·L), + material emissive, clamped;
 ##    coeff = registry ObjectsLightingCoeff (default 1.0) ×
 ##    material diffuse.
-## The shaders get ambient and sun as global uniforms (sRGB values) and do this
-## in light(): max(ambient, sun · n·L, each omni light), followed by shadow
-## darkening. The result is turned into the linear
-## factor that reproduces tex_srgb × c after Godot's sRGB output.
+## The shaders pack diffuse/specular colours at vertices, then interpolate
+## those stored sRGB values as the original fixed-function draw does. Terrain
+## flag-0x40 lights use a second per-channel maximum, copied into diffuse too;
+## the draw is texture × diffuse + specular, before silhouette darkening.
+## Figures treat the same flag as an ordinary diffuse light. The mapped
+## original lights share the sun's draw so their overlap and shadow are exact;
+## lights beyond PASS_LIGHTS retain an explicitly approximate extra-pass path.
 ## Units use the same path with EI_FIGURE_LIGHT (emissive after the max).
 ## The menu signpost and UI previews keep Godot's own Lambert lighting.
 
@@ -49,10 +52,9 @@ const GLOBALS := {
 	&"ei_unit_sharp": Color(1.0, -0.5, 0.0),   # gfx_sharp_units: on, mip bias (EIUnitModel.SHARP_FETCH)
 	&"ei_flash": Color(0.0, 0.0, 0.0),   # x: remake lightning sky brighten (ParticleFx soft flash, EISky)
 }
-## GLES3 (Compatibility) only: the original point lights nearest the view
-## (update_pass_lights), so a shadowed local light's own pass can rebuild the
-## colour already drawn under it. xyz world position, w radius (0 = unused);
-## colour: sRGB light colour, w 1 = additive (flag 0x40).
+## Original point lights nearest the view. xyz world position, w radius
+## (0 = unused); colour in stored sRGB, w = native flag 0x40. The original
+## list grows beyond four; the remaining Godot light passes are approximate.
 const PASS_LIGHTS := 4
 
 ## Shader code shared by the terrain, water and map-object shaders. `WRAP`
@@ -77,6 +79,8 @@ global uniform vec4 ei_plc2;
 global uniform vec4 ei_plc3;
 global uniform vec3 ei_surface_fx;
 global uniform vec3 ei_weather;
+uniform vec4 ei_material_diffuse = vec4(1.0);
+uniform vec3 ei_material_emissive = vec3(0.0);
 vec3 ei_lin(vec3 c) {
 	c = clamp(c, 0.0, 1.0);
 	return mix(c / 12.92, pow((c + 0.055) / 1.055, vec3(2.4)), step(0.04045, c));
@@ -113,6 +117,77 @@ vec3 ei_factor(vec3 albedo, vec3 c) {
 }
 """
 
+## Packed native vertex colours. Round-to-nearest-even diffuse (the TLP's
+## FISTP and terrain float-to-int helper), truncating terrain specular. Both
+## are converted to bytes before interpolation, not evaluated per pixel.
+const VERTEX_LIGHT := """
+varying vec3 ei_vertex_diffuse;
+varying vec3 ei_vertex_specular;
+vec3 ei_diffuse_byte(vec3 c) {
+	vec3 q = clamp(c, 0.0, 1.0) * 255.0;
+	vec3 b = floor(q);
+	vec3 r = q - b;
+	vec3 v = mix(b, b + 1.0, greaterThan(r, vec3(0.5)));
+	return mix(v, b + mod(b, vec3(2.0)), equal(r, vec3(0.5))) / 255.0;
+}
+vec3 ei_light_value(vec3 ambient, vec3 contribution, vec3 emissive) {
+#ifdef EI_FIGURE_LIGHT
+	return min(max(ambient, contribution) + emissive, vec3(1.0));
+#else
+	return max(ambient, min(emissive + contribution, vec3(1.0)));
+#endif
+}
+// The sector's actual vertex list contains a light only inside its sphere
+// . A light outside the sphere cannot contribute its E term.
+vec4 ei_vertex_point(vec4 pl, vec4 plc, vec3 p, vec3 n, float kw) {
+	if (pl.w <= 0.0) { return vec4(0.0); }
+	vec3 lv = pl.xyz - p;
+	float d2 = dot(lv, lv);
+	float a = 1.0 - d2 / (pl.w * pl.w);
+	if (a <= 0.0) { return vec4(0.0); }
+	vec3 l = lv * inversesqrt(max(d2, 1e-12));
+	float k = dot(n, l);
+	float f = WRAP_TERM;
+	float uw = max(1.0 - l.y * l.y * kw, 0.0);
+	return vec4(plc.rgb * a * f * uw, 1.0);
+}
+void ei_vertex_colours(vec3 p, vec3 n, vec3 e, float kw, out vec3 d, out vec3 s) {
+	d = ei_ambient * max(1.0 - kw, 0.0);
+	s = vec3(0.0);
+	if (dot(ei_sun_dir, ei_sun_dir) > 0.5) {
+		float uw = max(1.0 - ei_sun_dir.y * ei_sun_dir.y * kw, 0.0);
+		vec3 sun = ei_sun * max(dot(n, ei_sun_dir), 0.0) * uw;
+#ifdef EI_FIGURE_LIGHT
+		d = max(d, sun * ei_material_diffuse.rgb);
+#else
+		d = ei_light_value(d, sun, e);
+#endif
+	}
+	vec4 pls[4] = vec4[4](ei_pl0, ei_pl1, ei_pl2, ei_pl3);
+	vec4 plc[4] = vec4[4](ei_plc0, ei_plc1, ei_plc2, ei_plc3);
+	for (int i = 0; i < 4; i++) {
+		vec4 v = ei_vertex_point(pls[i], plc[i], p, n, kw);
+		if (v.w <= 0.0) { continue; }
+#ifdef EI_FIGURE_LIGHT
+		// The TLP receives every point light; flag 0x40 has no branch here.
+		d = max(d, v.rgb * ei_material_diffuse.rgb);
+#else
+		vec3 c = min(e + v.rgb, vec3(1.0));
+		if (plc[i].w > 0.5) { s = max(s, c); }
+		else { d = max(d, c); }
+#endif
+	}
+#ifdef EI_FIGURE_LIGHT
+	d = min(d + e, vec3(1.0));
+#else
+	//  includes the unquantized specular maximum in diffuse.
+	d = max(d, s);
+#endif
+	d = ei_diffuse_byte(d);
+	s = floor(clamp(s, 0.0, 1.0) * 255.0) / 255.0;
+}
+"""
+
 ## A spatial shader with LIGHT_COMMON put before its first function (so the
 ## fragment can use ei_fog_of) and, if `lit`, light_code(wrap) appended.
 ## With gfx_volumetric on, the fragment's `FOG = ei_fog_of(…)` becomes the
@@ -120,15 +195,37 @@ vec3 ei_factor(vec3 albedo, vec3 c) {
 ## and the map objects too.
 static func compose(code: String, lit := true, wrap := false) -> String:
 	ensure_globals()
+	if lit and not wrap and not code.contains("#define EI_FIGURE_LIGHT"):
+		code = code.replace("shader_type spatial;", "shader_type spatial;\n#define EI_FIGURE_LIGHT")
 	var i := code.find("\nvoid ")
 	var extra := "varying vec3 ei_surface;\nvarying float ei_leaf;\nvarying vec3 ei_vpos;\n" if lit else ""
+	if lit:
+		extra += VERTEX_LIGHT.replace("WRAP_TERM", _wrap_term(wrap))
 	code = code.substr(0, i + 1) + LIGHT_COMMON + extra + code.substr(i + 1)
 	if lit:
+		code = _vertex_tail(code, "\n\tvec3 ei_d; vec3 ei_s;\n\tei_vertex_colours((MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz, normalize(MODEL_NORMAL_MATRIX * NORMAL), ei_e, ei_k, ei_d, ei_s);\n\tei_vertex_diffuse = ei_d; ei_vertex_specular = ei_s;\n")
 		# Fragment-to-light varyings: absent profiles keep the exact original
 		# diffuse response. x = highlight strength, y = roughness, z = metal.
 		code = code.replace("void fragment() {", "void fragment() {\n\tei_surface = vec3(0.0, 1.0, 0.0);\n\tei_leaf = 0.0;\n\tei_vpos = VERTEX;")
-	code = code + light_code(wrap) if lit else code
+	code = code + light_code(wrap, code.contains("#define EI_GRASS_LIGHT")) if lit else code
 	return _blend_fog(code, lit) if _vol_fog else code
+
+
+## Wind, lever morphs and water displacement precede the native light pass.
+static func _vertex_tail(code: String, tail: String) -> String:
+	var i := code.find("void vertex()")
+	if i < 0:
+		return code
+	i = code.find("{", i)
+	var depth := 0
+	for k in range(i, code.length()):
+		if code[k] == "{":
+			depth += 1
+		elif code[k] == "}":
+			depth -= 1
+			if depth == 0:
+				return code.substr(0, k) + tail + code.substr(k)
+	return code
 
 
 ## Shaders made by make_shader, recomposed when gfx_volumetric switches
@@ -223,14 +320,12 @@ static func _blend_fog(code: String, _lit: bool) -> String:
 		code = code.replace("vec3 ei_lin(vec3 c) {", "varying float ei_fa;\nvec3 ei_lin(vec3 c) {")
 		code = code.replace("/*EI_FA*/", "* ei_fa")
 		code = code.replace("vec3 ei_alb = ALBEDO;", "vec3 ei_alb = ALBEDO / max(ei_fa, 1e-4);")
-		code = code.replace("SPECULAR_LIGHT += ei_lin(min(col * a * f * uw, vec3(1.0))) * dim;",
-			"SPECULAR_LIGHT += ei_lin(min(col * a * f * uw, vec3(1.0))) * dim * ei_fa;")
 	return code
 
 
 ## Point lights with this light_specular (a marker: Godot passes nothing else
-## per light to light()) are the original's flag-0x40 lights, added on top
-## instead of max()ed in; hero (0) and other lights (0.5) are not.
+## per light to light()) are the original's flag-0x40 lights. Terrain keeps
+## their maximum in both vertex channels; figures use ordinary diffuse.
 const ADDITIVE_SPECULAR := 0.002
 ## Separate from original spell flag 0x40. LocalLighting marks only opted-in
 ## fires/spells/lava; their diffuse light accumulates without the old max().
@@ -250,12 +345,10 @@ static func set_local_shadow(l: Light3D, enabled: bool) -> void:
 		l.light_specular = LOCAL_SPECULAR_PASS if enabled and Portability.compatibility() else LOCAL_SPECULAR
 
 
-## GLES3 only, once per frame: the PASS_LIGHTS original (max()ed or additive)
-## point lights that reach nearest to `focus`, for light_code's local-light
-## pass correction. Enhanced (local) lights are left out.
+## Once per frame: the PASS_LIGHTS original point lights that reach nearest
+## to `focus`, shared by the vertex evaluator on every renderer. Enhanced
+## local lights are left out and keep their optional accumulating response.
 static func update_pass_lights(tree: SceneTree, focus: Vector3) -> void:
-	if not Portability.compatibility():
-		return
 	ensure_globals()
 	var found: Array = []
 	for n: Node in tree.get_nodes_in_group(POINT_LIGHT_GROUP):
@@ -293,199 +386,116 @@ const SUN_MARK := 0.371
 
 
 ## light() of the original model. Needs varyings `ei_e` (vec3) and `ei_k` (float).
-static func light_code(wrap: bool) -> String:
-	return ("""
-vec3 ei_light_value(vec3 ambient, vec3 contribution, vec3 emissive) {
-#ifdef EI_FIGURE_LIGHT
-	// Figure TLP 1000d910: emissive is added after the per-channel maximum.
-	return min(max(ambient, contribution) + emissive, vec3(1.0));
-#else
-	// Terrain: the material E term belongs inside the maximum (0068d2d0).
-	return max(ambient, min(emissive + contribution, vec3(1.0)));
-#endif
+static func light_code(wrap: bool, grass := false) -> String:
+	var code := """
+// D3D adds the packed specular after texture modulation, in stored sRGB.
+// Clamping precedes the silhouette overlay; its alpha halves this whole draw.
+vec3 ei_draw_colour(vec3 albedo, vec3 d, vec3 s) {
+	return clamp(ei_srgb(albedo) * d + s, 0.0, 1.0);
 }
-// GLES3 only: one of the original point lights near the view (Gfx.
-// update_pass_lights) as the point-light branch below evaluates it, in sRGB
-// units; w = 1 where it reaches. `vpos` view-space position, `n` normal.
-vec4 ei_pass_light(vec4 pl, vec4 plc, vec3 n, vec3 vpos, mat4 view, mat4 inv_view, float kw) {
-	if (pl.w <= 0.0) { return vec4(0.0); }
-	vec3 lv = (view * vec4(pl.xyz, 1.0)).xyz - vpos;
-	float dist = length(lv);
-	float pa = max(1.0 - dist * dist / (pl.w * pl.w), 0.0);
-	if (pa <= 0.0) { return vec4(0.0); }
-	vec3 ld = lv / max(dist, 1e-4);
-	float k = dot(n, ld);
-	float f = WRAP_TERM;
-	float plz = (inv_view * vec4(ld, 0.0)).y;
-	float puw = max(1.0 - plz * plz * kw, 0.0);
-	return vec4(min(plc.rgb * pa * f * puw, vec3(1.0)), 1.0);
+vec3 ei_draw_factor(vec3 albedo, vec3 d, vec3 s, float shadow) {
+	return ei_lin(ei_draw_colour(albedo, d, s) * shadow) / max(albedo, vec3(1e-4));
+}
+bool ei_mapped_light(vec3 direction, float falloff, vec3 vpos, mat4 view) {
+	vec4 pls[4] = vec4[4](ei_pl0, ei_pl1, ei_pl2, ei_pl3);
+	for (int i = 0; i < 4; i++) {
+		if (pls[i].w <= 0.0) { continue; }
+		vec3 v = (view * vec4(pls[i].xyz, 1.0)).xyz - vpos;
+		float d = length(v);
+		if (dot(v / max(d, 1e-6), direction) > 0.99999 && abs(d / pls[i].w - sqrt(max(1.0 - falloff, 0.0))) < 0.01) { return true; }
+	}
+	return false;
 }
 void light() {
 	vec3 ei_alb = ALBEDO;
-	vec3 c = vec3(0.0);
-	bool add = false;
-	// The game's sun (marked by its specular amount, Gfx.SUN_MARK) casts its
-	// shadow along a held direction (Game._aim_sun); its light keeps the
-	// clock's direction, ei_sun_dir.
+	vec3 d = ei_vertex_diffuse;
+	vec3 s = ei_vertex_specular;
 	vec3 ei_light_dir = LIGHT;
 	if (LIGHT_IS_DIRECTIONAL && abs(SPECULAR_AMOUNT - SUN_MARK_VALUE) < 0.002 && dot(ei_sun_dir, ei_sun_dir) > 0.5) {
 		ei_light_dir = normalize((VIEW_MATRIX * vec4(ei_sun_dir, 0.0)).xyz);
 	}
-	float lz = (INV_VIEW_MATRIX * vec4(ei_light_dir, 0.0)).y;   // world up component
-	float uw = max(1.0 - lz * lz * ei_k, 0.0);   // under water
-	vec3 amb = ei_ambient * max(1.0 - ei_k, 0.0);
+	// Relief normals are a remake option. Original look always interpolates
+	// the packed vertex colours rather than evaluating falloff at each pixel.
+	if (ei_surface_fx.x > 0.5) {
+		ei_vertex_colours((INV_VIEW_MATRIX * vec4(ei_vpos, 1.0)).xyz,
+			normalize((INV_VIEW_MATRIX * vec4(NORMAL, 0.0)).xyz), ei_e, ei_k, d, s);
+	}
+#ifdef EI_WATER_WAVES
+	// The normal native tick relights D/S, then the wave step overwrites
+	// packed S. Its point-light contribution remains in the cached D.
+	if (waves > 0.5) {
+		s = spec;
+#ifdef EI_WATER_FX
+		s *= ei_wave_scale;
+#endif
+	}
+#endif
 	bool local_light = !LIGHT_IS_DIRECTIONAL && SPECULAR_AMOUNT > 0.02 && SPECULAR_AMOUNT < 0.03;
 	if (local_light) {
-		// ATTENUATION includes the shadow map. Do not invert it as the old
-		// unshadowed point lights do. Accumulate in the post-texture channel
-		// so later original max() passes cannot erase this contribution.
 		float nl = max(dot(NORMAL, LIGHT), 0.0);
 		vec3 loc = ei_alb * LIGHT_COLOR / PI * nl * ATTENUATION * 0.75 /*EI_FA*/;
 		if (SPECULAR_AMOUNT > 0.0245) {
-			// Gfx.LOCAL_SPECULAR_PASS: a shadowed light that GLES3 draws in
-			// its own additive pass. The passes are summed as stored (sRGB-
-			// encoded) colours, which made the light pool wider and flatter
-			// than on the other renderers. Rebuild the colour already drawn
-			// here (the original model: sun and the nearest original point
-			// lights, Gfx.update_pass_lights) and write only the sRGB step
-			// that adding the light in linear space makes (approx.: the sun's
-			// figure shadow and other local lights are not known here).
-			vec3 v = ei_light_value(amb, vec3(0.0), ei_e);
-			if (dot(ei_sun_dir, ei_sun_dir) > 0.5) {
-				vec3 sl = (VIEW_MATRIX * vec4(ei_sun_dir, 0.0)).xyz;
-				float uws = max(1.0 - ei_sun_dir.y * ei_sun_dir.y * ei_k, 0.0);
-				v = ei_light_value(amb, ei_sun * max(dot(NORMAL, sl), 0.0) * uws, ei_e);
-			}
-			vec3 extra = vec3(0.0);
-			vec4 pls[4] = vec4[4](ei_pl0, ei_pl1, ei_pl2, ei_pl3);
-			vec4 plc[4] = vec4[4](ei_plc0, ei_plc1, ei_plc2, ei_plc3);
-			for (int i = 0; i < 4; i++) {
-				vec4 pv = ei_pass_light(pls[i], plc[i], NORMAL, ei_vpos, VIEW_MATRIX, INV_VIEW_MATRIX, ei_k);
-				if (pv.w <= 0.0) { continue; }
-				if (plc[i].w > 0.5) {
-					extra += ei_lin(pv.rgb);
-				} else {
-					v = max(v, ei_light_value(amb, pv.rgb, ei_e));
-				}
-			}
-			vec3 base = ei_lin(ei_srgb(ei_alb) * min(v, vec3(1.0))) + extra;
-			loc = ei_lin(max(min(ei_srgb(base + loc), vec3(1.0)) - ei_srgb(base), vec3(0.0)));
+			// Compatibility sums its separate passes in stored sRGB. Write
+			// the encoded difference of this optional linear-light addition.
+			// Other local lights / the figure's sun shadow remain unknown here.
+			vec3 base = ei_lin(ei_draw_colour(ei_alb, d, s));
+			loc = ei_lin(max(ei_srgb(base + loc) - ei_srgb(base), vec3(0.0)));
 		}
 		SPECULAR_LIGHT += loc;
-		add = true;
 	} else if (LIGHT_IS_DIRECTIONAL) {
-		// Vertex light without shadow, then
-		// the figure shadows as the 2000 renderer draws them: a silhouette
-		// texture laid over the lit ground with vertex colour
-		// i.e. the lit colour
-		// halved where the shadow falls.
-		float d = max(dot(NORMAL, ei_light_dir), 0.0);
-		#ifdef EI_TERRAIN_LIGHT
-		// Land: the sun's map holds only figures (the land casts nothing,
-		// Gfx.setup_sun_casters: no self-shadowing in the original), and
-		// the original lays a figure's silhouette over every ground triangle
-		// under its projected rectangle whichever way it faces (
-		// gathers them with no facing test): halved on sun-facing and
-		// averted slopes alike, on every renderer.
-		float sh = mix(0.5, 1.0, ATTENUATION);
-		#else
-		// Figures and objects: Godot also shadows them, which the original
-		// does not. Faces turned from the sun (n · L < 0.15) already show
-		// only ambient and are not darkened again.
-		float sh = mix(1.0, mix(0.5, 1.0, ATTENUATION), smoothstep(0.0, 0.15, d));
-		#endif
-		vec3 v = ei_light_value(amb, ei_sun * d * uw, ei_e);
-		if (ei_sun_pass.x > 0.5) {
-			// GLES3 draws this shadowed sun in its own pass, the only one
-			// that knows the figure shadow. The nearest original point
-			// lights are max()ed in here (and left out of their own pass,
-			// below), so the shadow halves them as in the original.
-			vec4 pls[4] = vec4[4](ei_pl0, ei_pl1, ei_pl2, ei_pl3);
-			vec4 plc[4] = vec4[4](ei_plc0, ei_plc1, ei_plc2, ei_plc3);
-			for (int i = 0; i < 4; i++) {
-				if (plc[i].w > 0.5) { continue; }
-				vec4 pv = ei_pass_light(pls[i], plc[i], NORMAL, ei_vpos, VIEW_MATRIX, INV_VIEW_MATRIX, ei_k);
-				if (pv.w > 0.0) {
-					v = max(v, ei_light_value(amb, pv.rgb, ei_e));
-				}
-			}
-		}
-		c = v * sh;
+		float facing = max(dot(NORMAL, ei_light_dir), 0.0);
+#ifdef EI_TERRAIN_LIGHT
+		float shadow = mix(0.5, 1.0, ATTENUATION);
+#else
+		// Godot also shadows figures, unlike the native ground overlay.
+		// Retain the existing facing guard for this separate approximation.
+		float shadow = mix(1.0, mix(0.5, 1.0, ATTENUATION), smoothstep(0.0, 0.15, facing));
+#endif
+		DIFFUSE_LIGHT = max(DIFFUSE_LIGHT, ei_draw_factor(ei_alb, d, s, shadow) /*EI_FA*/);
 	} else {
-		float k = dot(NORMAL, LIGHT);
-		float f = %s;
-		// Godot's omni falloff with attenuation 0 is (1 − (d/r)^4)²: back to 1 − (d/r)²
+		// Godot's attenuation0 falloff: (1 - (distance/radius)^4)^2.
 		float a = 1.0 - sqrt(max(1.0 - sqrt(clamp(ATTENUATION, 0.0, 1.0)), 0.0));
-		vec3 col = min(ei_srgb(LIGHT_COLOR / PI), vec3(1.0));
-		// Point lights are max()ed into the vertex colour before the shadow
-		// is laid over it, so they are halved in a shadow
-		// too. Godot shadows only the sun pass, which runs first: the
-		// shadow factor is the shadowed / unshadowed sun value so far
-		// (approx. where two point lights overlap in a shadow).
-		float dim = 1.0;
-		vec3 v_un = ei_light_value(amb, vec3(0.0), ei_e);
-		bool sun_in_diffuse = ei_sun_pass.x < 0.5;   // else it has its own pass (below)
-		if (dot(ei_sun_dir, ei_sun_dir) > 0.5) {
-			vec3 sl = (VIEW_MATRIX * vec4(ei_sun_dir, 0.0)).xyz;
-			float uws = max(1.0 - ei_sun_dir.y * ei_sun_dir.y * ei_k, 0.0);
-			v_un = ei_light_value(amb, ei_sun * max(dot(NORMAL, sl), 0.0) * uws, ei_e);
-			vec3 sa = ei_srgb(ei_alb);
-			const vec3 W = vec3(0.299, 0.587, 0.114);
-			if (sun_in_diffuse && dot(sa, W) > 0.02 && dot(v_un, W) > 0.01) {
-				vec3 v_now = ei_srgb(DIFFUSE_LIGHT * ei_alb) / max(sa, vec3(1e-3));
-				dim = clamp(dot(v_now, W) / dot(v_un, W), 0.5, 1.0);
-			}
-		}
-		if (SPECULAR_AMOUNT > 0.0 && SPECULAR_AMOUNT < 0.01) {
-			// flag 0x40 lights (spells 0x840, quest light): into the vertex
-			// specular colour, which D3D adds after the texture
-			SPECULAR_LIGHT += ei_lin(min(col * a * f * uw, vec3(1.0))) * dim;
-			add = true;
-		} else {
-			c = max(v_un, ei_light_value(amb, col * a * f * uw, ei_e)) * dim;
-			// GLES3 draws the shadowed sun in its own additive pass after
-			// this one, so the sun is not in DIFFUSE_LIGHT here (dim would
-			// read 0.5) and would be added a second time on top of v_un
-			// (blown-out white blocks around the hero light). Write only what
-			// the point light adds over the unshadowed sun value; with the
-			// sun pass this sums to max(sun, point light) in the light
-			// (approx. in a figure shadow: half the sun plus the excess,
-			// where the original halves both).
-			bool in_sun_pass = false;
-			if (!sun_in_diffuse) {
-				// One of the lights the sun pass already max()es in?
-				vec4 pls[4] = vec4[4](ei_pl0, ei_pl1, ei_pl2, ei_pl3);
-				vec4 plc[4] = vec4[4](ei_plc0, ei_plc1, ei_plc2, ei_plc3);
-				for (int i = 0; i < 4; i++) {
-					if (pls[i].w <= 0.0 || plc[i].w > 0.5) { continue; }
-					vec3 lv = (VIEW_MATRIX * vec4(pls[i].xyz, 1.0)).xyz - ei_vpos;
-					if (dot(lv / max(length(lv), 1e-6), LIGHT) > 0.99999 && abs(length(lv) / pls[i].w - sqrt(max(1.0 - a, 0.0))) < 0.01) {
-						in_sun_pass = true;
-					}
+		bool mapped = ei_mapped_light(LIGHT, a, ei_vpos, VIEW_MATRIX);
+		bool have_sun = dot(ei_sun_dir, ei_sun_dir) > 0.5;
+		if (mapped && !have_sun) {
+			DIFFUSE_LIGHT = max(DIFFUSE_LIGHT, ei_draw_factor(ei_alb, d, s, 1.0) /*EI_FA*/);
+		} else if (!mapped) {
+			// The native list has no four-light limit. These remaining Godot
+			// passes cannot recover its full vertex max/shadow, so retain a
+			// bounded fallback while using the traced two-channel operation.
+			float k = dot(NORMAL, LIGHT);
+			float f = WRAP_TERM;
+			float lz = (INV_VIEW_MATRIX * vec4(LIGHT, 0.0)).y;
+			float uw = max(1.0 - lz * lz * ei_k, 0.0);
+			vec3 col = min(ei_srgb(LIGHT_COLOR / PI), vec3(1.0)) * a * f * uw;
+			vec3 nd = d;
+			vec3 ns = s;
+#ifdef EI_FIGURE_LIGHT
+			nd = max(nd, ei_diffuse_byte(min(col * ei_material_diffuse.rgb + ei_e, vec3(1.0))));
+#else
+			vec3 v = min(ei_e + col, vec3(1.0));
+			if (SPECULAR_AMOUNT > 0.0 && SPECULAR_AMOUNT < 0.01) {
+				ns = max(ns, floor(v * 255.0) / 255.0);
+				nd = max(nd, ei_diffuse_byte(v));
+			} else { nd = max(nd, ei_diffuse_byte(v)); }
+#endif
+			if (ei_sun_pass.x > 0.5 && have_sun) {
+				vec3 over = max(ei_draw_colour(ei_alb, nd, ns) - ei_draw_colour(ei_alb, d, s), vec3(0.0));
+				DIFFUSE_LIGHT = max(DIFFUSE_LIGHT, ei_lin(over) / max(ei_alb, vec3(1e-4)) /*EI_FA*/);
+			} else {
+				float shadow = 1.0;
+				if (have_sun) {
+					const vec3 W = vec3(0.299, 0.587, 0.114);
+					float base = dot(ei_draw_colour(ei_alb, d, s), W);
+					if (base > 0.01) { shadow = clamp(dot(ei_srgb(DIFFUSE_LIGHT * ei_alb), W) / base, 0.5, 1.0); }
 				}
-			}
-			if (in_sun_pass) {
-				add = true;
-			} else if (!sun_in_diffuse && dot(ei_sun_dir, ei_sun_dir) > 0.5) {
-				// The passes are summed as stored (sRGB-encoded) colours,
-				// so the excess is taken in sRGB: texture × (max − sun).
-				vec3 mx = max(v_un, ei_light_value(amb, col * a * f * uw, ei_e));
-				vec3 over = ei_lin(ei_srgb(ei_alb) * max(min(mx, vec3(1.0)) - min(v_un, vec3(1.0)), vec3(0.0)))
-					/ max(ei_alb, vec3(1e-4));
-				DIFFUSE_LIGHT = max(DIFFUSE_LIGHT, over);
-				add = true;
+				DIFFUSE_LIGHT = max(DIFFUSE_LIGHT, ei_draw_factor(ei_alb, nd, ns, shadow) /*EI_FA*/);
 			}
 		}
 	}
-	if (!add) {
-		DIFFUSE_LIGHT = max(DIFFUSE_LIGHT, ei_factor(ei_alb, c));
-	}
-	// Optional material response, shared by objects, equipment and wet land.
-	// A bounded lobe suits the painted assets and linear output without
-	// producing HDR sparkles or turning every surface into polished plastic.
+	// Optional material highlights and leaf transmission retain Godot's
+	// individual light/shadow response above the native diffuse draw.
 	if (ei_surface.x > 0.001 && (LIGHT_IS_DIRECTIONAL || SPECULAR_AMOUNT > 0.0)) {
-		// safe normalize: LIGHT = −VIEW gives a zero vector, and a NaN here
-		// (× a zero n·L is still NaN) would reach the bloom and spread
 		vec3 hv = ei_light_dir + VIEW;
 		vec3 h = hv * inversesqrt(max(dot(hv, hv), 1e-12));
 		float r = clamp(ei_surface.y, 0.2, 1.0);
@@ -499,7 +509,13 @@ void light() {
 		SPECULAR_LIGHT += ei_alb * LIGHT_COLOR / PI * transmission * ATTENUATION * ei_leaf * 0.22 /*EI_FA*/;
 	}
 }
-""" % [_wrap_term(wrap)]).replace("WRAP_TERM", _wrap_term(wrap)).replace("SUN_MARK_VALUE", "%.3f" % SUN_MARK)
+""".replace("WRAP_TERM", _wrap_term(wrap)).replace("SUN_MARK_VALUE", "%.3f" % SUN_MARK)
+	# New grass keeps its baked ground/upward diffuse. Its real leaf normal
+	# still drives transmission and shadows. Other shader text is unchanged.
+	if grass:
+		code = code.replace("\tif (ei_surface_fx.x > 0.5) {", "#ifndef EI_GRASS_LIGHT\n\tif (ei_surface_fx.x > 0.5) {")
+		code = code.replace("\n#ifdef EI_WATER_WAVES", "\n#endif\n#ifdef EI_WATER_WAVES")
+	return code
 
 
 ## The point-light facing term f(k), k = n · l: terrain wraps round the back

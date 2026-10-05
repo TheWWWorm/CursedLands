@@ -51,6 +51,14 @@ func _ready() -> void:
 
 
 func _physics_process(dt: float) -> void:
+	if world and world.session and world.session.lmp_travel:
+		if world.session.lmp_travel.can_tick(world):
+			world.session.lmp_travel.with_world(world, _tick.bind(dt))
+		return
+	_tick(dt)
+
+
+func _tick(dt: float) -> void:
 	if target == null or not is_instance_valid(target) or not target.is_inside_tree():
 		queue_free()   # the target left the world (zone change, removed body)
 		return

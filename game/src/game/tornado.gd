@@ -41,7 +41,7 @@ var world: GameWorld
 var on := false
 var _tick := 0
 var _next_id := 1
-## id -> {p: Vector3, v: Vector3, life: int}
+## id -> {p: Vector3, v: Vector3, life: int, age: int}
 var list := {}
 
 
@@ -50,15 +50,19 @@ func _init(w: GameWorld) -> void:
 	on = String(w.zone.get("weather", "")).to_lower() == "tornado" if w.zone else false
 	if w.has_meta("restored_tornado"):
 		for r: Array in w.get_meta("restored_tornado"):
-			_add(Vector3(r[0], r[1], 0.0), Vector3(r[2], r[3], 0.0), int(r[4]))
+			if r.size() >= 5:
+				_add(Vector3(r[0], r[1], 0.0), Vector3(r[2], r[3], 0.0), int(r[4]),
+					maxi(int(r[5]), 0) if r.size() > 5 else 0)
 		w.remove_meta("restored_tornado")
 
 
-## [x, y, vx, vy, life] per running tornado.
+## [x, y, vx, vy, life, age] per running tornado. Native saves
+## start tick; relative age preserves that interval when a zone clock resets.
+## Older five-field remake saves did not retain it and restart at age zero.
 func save_state() -> Array:
 	var out := []
 	for t: Dictionary in list.values():
-		out.append([t.p.x, t.p.y, t.v.x, t.v.y, t.life])
+		out.append([t.p.x, t.p.y, t.v.x, t.v.y, t.life, t.age])
 	return out
 
 
@@ -72,6 +76,7 @@ func tick() -> void:
 	for id in list.keys():
 		var t: Dictionary = list[id]
 		t.p += t.v
+		t.age += 1
 		if t.life > 20 and (t.life & 7) == 0:
 			_hit(Vector2(t.p.x, t.p.y))
 		t.life -= 1
@@ -97,14 +102,14 @@ func _spawn() -> void:
 	_add(Vector3(p.x, p.y, 0.0), Vector3(d.x, d.y, 0.0) * (speed / dist), maxi(roundi(dist / speed), 0))
 
 
-func _add(p: Vector3, v: Vector3, life: int) -> void:
-	var t := {"p": p, "v": v, "life": life}
+func _add(p: Vector3, v: Vector3, life: int, age := 0) -> void:
+	var t := {"p": p, "v": v, "life": life, "age": maxi(age, 0)}
 	var id := _next_id
 	_next_id += 1
 	list[id] = t
 	if world.session:
 		world.session.broadcast({"t": "tornado", "id": id, "x": t.p.x, "y": t.p.y,
-			"vx": t.v.x, "vy": t.v.y, "life": t.life})
+			"vx": t.v.x, "vy": t.v.y, "life": t.life, "age": t.age})
 
 
 func _hit(at: Vector2) -> void:

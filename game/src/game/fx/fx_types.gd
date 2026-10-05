@@ -2768,14 +2768,11 @@ func ct_feet(e: FxEmitter, c: Array) -> void:
 ## i.e. the floors the AI map lays, e.g. the stone platforms
 ## of the gz1g ruins. The path dots and the target marks (
 ## the same list) sit on them, not on the land below.
-## Remake: the floor cells of the nav grid (0.5 m) stand in for the planes.
 static func plane_ground(e: FxEmitter, x: float, y: float) -> float:
 	var g: float = e.ground(x, y)
 	var w: GameWorld = e.fx.world
-	if w and w.nav.size.x > 0:
-		var p := Vector2(x, y)
-		if w.nav.cell_ground(p) == NavGrid.FLOOR_GROUND:
-			g = maxf(g, w.nav.cell_height(p))
+	if w and w.nav:
+		g = float(w.nav.plane_at(Vector2(x,y),g).height)
 	return g
 
 
@@ -2914,16 +2911,17 @@ func up_target(e: FxEmitter, p: Array) -> bool:
 ## the highest plane of the list over the point, see plane_ground
 ## height and normal, normal z inverted; none: height 0, normal up, so the
 ## marks keep to the ground + 0.1), emitting stops after two ticks.
-## Remake: a floor cell's plane is taken flat.
 func ct_target(e: FxEmitter, c: Array) -> void:
 	if int(c[0xd]) == 0:
 		var x := e.wp.x
 		var y := e.wp.y
 		var h := 0.0
 		var n := Vector3(0, 0, 1)
-		var f := plane_ground(e, x, y)
-		if f > e.ground(x, y):
-			h = f
+		var world: GameWorld = e.fx.world
+		if world and world.nav:
+			var plane := world.nav.plane_at(Vector2(x,y))
+			h = float(plane.height)
+			n = plane.normal
 		c[3] = h
 		c[6] = n.x
 		c[7] = n.y

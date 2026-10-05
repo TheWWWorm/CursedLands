@@ -32,8 +32,7 @@ extends Control
 ## strip in a village while another player keeps their own bag and purse
 ## (PlayerSwap.can_swap_with: a hero brought from a single-player save); a
 ## press on a cell whose player shares this computer's bag does nothing.
-## **Approx.**: the face is turned by π (the original adds 0.157 rad)
-## other branch (manager = 1 / 2: the server's kick / ban by face
+## **Approx.**: other branch (manager = 1 / 2: the server's kick / ban by face
 ##  commands 4 / 5) is not ported.
 
 const CELL := 56.0
@@ -217,7 +216,8 @@ func _process(_dt: float) -> void:
 		var face := Rect2(r.position.x, 0, CELL, TEXT_Y)
 		p.position = _p(face.position)
 		p.size = face.size * _k()
-		p.set_exe_place(face, r.get_center().x, FACE_SCALE, FACE_Y)
+		# FUN608f50: x-axis angle, distinct from HUD faces' PI.
+		p.set_exe_place(face, r.get_center().x, FACE_SCALE, FACE_Y, 3.2986721992492676)
 	queue_redraw()
 
 

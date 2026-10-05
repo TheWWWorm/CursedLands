@@ -12,7 +12,6 @@ const ARMOR_PREFIX := {"helm": "hl", "plate": "pl", "leggings": "lg", "shirt": "
 ## skin, then the slots shirt, pants, boots, gloves, then plate / leggings
 ## sorted by the armour record's field, a tie keeping plate first — so
 ## the pants' leather waist wrap lies over the shirt).
-## Approx.: plate and leggings keep a fixed order instead of the sort.
 const ARMOR_ORDER := ["shirt", "pants", "boots", "gloves", "plate", "leggings", "helm"]
 const ARMOR_PARTS := {
 	"plate": ["bd", "lh1", "lh2", "lh3", "rh1", "rh2", "rh3", "l_shell", "r_shell"],
@@ -28,6 +27,7 @@ static var _textures := {}
 static var _surface_textures := {}
 const AnimatedPart = preload("res://src/ei/anim_part.gd")
 const SurfaceResponse = preload("res://src/game/surface_materials.gd")
+const FigureMaterial = preload("res://src/ei/figure_material.gd")
 
 ## Remake option gfx_sharp_units ("Sharp character textures"; default on,
 ## off under "Original look"): the unit texture fetch of every unit material
@@ -108,14 +108,14 @@ uniform sampler2D surface_tex : hint_default_black, filter_linear_mipmap_anisotr
 uniform vec3 unit_emission = vec3(0.0);
 """ + SHARP_FETCH + """
 void vertex() {
-	ei_e = unit_emission;
+	ei_e = max(unit_emission, ei_material_emissive);
 	ei_k = 0.0;
 }
 void fragment() {
 	FOG = ei_fog_of(VERTEX, (INV_VIEW_MATRIX * vec4(VERTEX, 1.0)).xyz);
 	vec4 t = ei_unit_tex(albedo_tex, UV);
 	ALBEDO = t.rgb;
-	ALPHA = t.a;
+	ALPHA = t.a * ei_material_diffuse.a;
 	ALPHA_SCISSOR_THRESHOLD = 0.5;
 	ALPHA_ANTIALIASING_EDGE = 0.3;
 	ALPHA_TEXTURE_COORDINATE = UV * vec2(textureSize(albedo_tex, 0));
@@ -192,6 +192,7 @@ var template := ""
 var player: AnimationPlayer
 var weapon_type := ""
 var _current := ""
+var _animation_roots: Array[EIAnimPart] = []
 ## Vertex morph parts: [MeshInstance3D "morph", {clip: [first shape, frame
 ## count]}, [shape indices set last]] (_apply_morphs).
 var _morph_parts: Array = []
@@ -240,7 +241,15 @@ func _play(anim: String, blend: float, restart := false) -> void:
 		player.play(key, blend)
 		_current = anim
 		if restart:
+			# Store the exact native keys during seek, then compose each
+			# hierarchy once. Nested mixer callbacks retain an outer batch.
+			var already_batching := EIAnimPart.batch
+			EIAnimPart.batch = true
 			player.seek(0.0, true)
+			EIAnimPart.batch = already_batching
+			if not already_batching:
+				for root: EIAnimPart in _animation_roots:
+					root._apply_key()
 
 
 ## Plays a logical action: idle, walk, run, crawl, attack, hit, death, cast...
@@ -626,7 +635,17 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 		if a.is_empty():
 			continue
 		armors.append([a, db.find("materials", nm[1] if nm.size() > 1 else "")])
-	armors.sort_custom(func(x, y): return ARMOR_ORDER.find(x[0].type) < ARMOR_ORDER.find(y[0].type))
+	armors.sort_custom(func(x, y):
+		var xi := ARMOR_ORDER.find(x[0].type)
+		var yi := ARMOR_ORDER.find(y[0].type)
+		if xi in [4, 5] and yi in [4, 5]:
+			#  field 0x18 -> record
+			# returns a uint and compares it with JAE.
+			var xp := int(x[0].get("layer_order", 0))
+			var yp := int(y[0].get("layer_order", 0))
+			if xp != yp:
+				return xp < yp
+		return xi < yi)
 	for am: Array in armors:
 		var a: Dictionary = am[0]
 		var t1: int = a.get("texture1", -1)
@@ -656,8 +675,8 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 			if parts.has(v):
 				mesh_for[p] = v
 
-	# The weapon's redress layer shares the body's UV space but overlaps the
-	# face and torso, so only the weapon meshes get it (on top of the rest).
+	#  secondary 128 px atlas contains the helmet, then the
+	# active weapon, with no skin or clothing from the 256 px body atlas.
 	var weapon_layer := ""
 	var weapon_surface := SurfaceResponse.DULL
 	var before := mesh_for.duplicate()
@@ -715,32 +734,35 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 	if mat is LitMaterial:
 		mat.set_shader_parameter("surface_tex", _compose_surface(mask, layers, surfaces))
 	set_meta("layers", [mask, layers])
-	var wmat = mat
-	if weapon_layer:
-		wmat = mat.duplicate()
-		var wl: Array[String] = layers.duplicate()
-		wl.append(weapon_layer)
-		wmat.albedo_texture = _compose(mask, wl)
-		if wmat is LitMaterial:
-			var ws: Array[Vector3] = surfaces.duplicate()
-			ws.append(weapon_surface)
-			wmat.set_shader_parameter("surface_tex", _compose_surface(mask, wl, ws))
-	var hmat = mat
+	var secondary: Array[String] = []
+	var secondary_surfaces: Array[Vector3] = []
 	if helm_layer:
-		hmat = mat.duplicate()
-		hmat.albedo_texture = _compose(mask, [helm_layer])
-		if hmat is LitMaterial:
-			hmat.set_shader_parameter("surface_tex", _compose_surface(mask, [helm_layer], [helm_surface]))
+		secondary.append(helm_layer)
+		secondary_surfaces.append(helm_surface)
+	if weapon_layer:
+		secondary.append(weapon_layer)
+		secondary_surfaces.append(weapon_surface)
+	var wmat = mat
+	var hmat = mat
+	if not secondary.is_empty():
+		wmat = mat.duplicate()
+		wmat.albedo_texture = _compose(mask, secondary)
+		if wmat is LitMaterial:
+			wmat.set_shader_parameter("surface_tex", _compose_surface(mask, secondary, secondary_surfaces))
+		hmat = wmat.duplicate()
 
 	# --- node hierarchy (base parts + extras that have meshes)
 	var weld: bool = smooth_joints and bool(unit.get("weld", true))
 	var morphs := EIAnim.morphs(template)
 	var nodes := {}
+	var geometry_parts: Array[WeakRef] = []
+	set_meta(EIFigureGeometry.PARTS, geometry_parts)
 	var paths := {}
 	var root_part := ""
 	var rest_pos := {}      # part -> position in the model at rest (no rotations)
 	var parent_of_node := {}
 	var welded := {}        # part -> ArrayMesh in part space
+	var lighting_parts := {}   # per-build native material variants
 	var parent_of := {}
 	var needed := {}
 	for link: Array in model.links:
@@ -765,6 +787,7 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 		var parent: Node3D = nodes.get(par_name, self)
 		if parent == self:
 			root_part = p
+			_animation_roots.append(n)
 		else:
 			parent_of_node[p] = par_name
 			n.animation_parent = parent as EIAnimPart
@@ -775,13 +798,17 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 		rest_pos[p] = rest_pos.get(par_name, Vector3.ZERO) + n.position if parent != self else n.position
 		if mesh_for.has(p):
 			var fig: Dictionary = parts[mesh_for[p]]
+			EIFigureGeometry.attach(n, fig, complexion, geometry_parts)
 			# Parts with vertex morph keys (EIAnim.morphs: wing membranes and
 			# the like) get them as blend shapes of a "morph" mesh.
 			var morph: Dictionary = morphs.get(p, {}) if mesh_for[p] == p else {}
 			var mesh := EIFigure.build_mesh(fig, complexion) if morph.is_empty() \
 					else EIFigure.build_anim_morph_mesh(fig, complexion, morph.names, morph.frames)
+			var part_mat: Material = wmat if weapon_parts.has(p) else (hmat if helm_parts.has(p) else mat)
+			if not ui_preview:
+				part_mat = FigureMaterial.part_material(part_mat, fig.get("material", 0), lighting_parts)
 			if weld and morph.is_empty() and not weapon_parts.has(p) and not helm_parts.has(p):
-				welded[p] = [mesh, mat]
+				welded[p] = [mesh, part_mat]
 				n.set_meta("weld_mesh", welded[p])   # SeveredLimb: the part's own mesh
 				continue
 			var mi := MeshInstance3D.new()
@@ -789,7 +816,7 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 				mi.name = "morph"
 				_morph_parts.append([mi, _morph_ranges(morph.names), PackedInt32Array()])
 			mi.mesh = mesh
-			mi.material_override = wmat if weapon_parts.has(p) else (hmat if helm_parts.has(p) else mat)
+			mi.material_override = part_mat
 			n.add_child(mi)
 	if weld:
 		_weld(nodes, rest_pos, parent_of_node, welded)
@@ -801,9 +828,12 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 		if hb.size() >= 24:
 			hn.position = EISpace.vec(EIFigure.bone_pos(hb, complexion))
 		nodes["hd"].add_child(hn)
+		EIFigureGeometry.attach(hn, parts[hair_part], complexion, geometry_parts)
 		var hm := MeshInstance3D.new()
 		hm.mesh = EIFigure.build_mesh(parts[hair_part], complexion)
-		hm.material_override = mat
+		hm.material_override = hmat if helm_layer else mat
+		if not ui_preview:
+			hm.material_override = FigureMaterial.part_material(hm.material_override, parts[hair_part].get("material", 0), lighting_parts)
 		hn.add_child(hm)
 
 	# Remake option gfx_detailed_heads: the HUD face model on the body

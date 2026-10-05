@@ -120,7 +120,7 @@ func entries() -> Array:
 			continue   # the own party: the faces and the selection show it
 		if u.controller >= 0:
 			if not names_shown:
-				out.append([u.global_position + up, unit_name(u), NetStatus.colour(u.controller), ""])
+				out.append([u.global_position + up, unit_name(u), NetStatus.colour(u.controller, s.players), ""])
 			continue
 		var enemy := lead != null and w.is_enemy(lead, u)
 		var talk := s.shop_available() and not Briefings.pending_for(s.state, u, me).is_empty()

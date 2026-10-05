@@ -45,12 +45,30 @@ static var _frames := {}
 ## is built from an Image, and a texture would be read back from the GPU
 ## (a render-thread sync) on every frame change, 8 times a second.
 static var _scaled := {}
+## Only the newest screen owns the cursor. An outgoing screen may leave
+## the tree after its replacement has already set the new cursor.
+static var _owner: GameCursor
 var kind := ""
 var _t := 0.0
 ## Frame index per cursor (the strip's), kept across switches.
 var _frame := {}
 var _shown := -1
 var _px := 32
+## Original camera drag (5ead50): screen position freezes
+## while raw deltas continue past the window edges; release restores it.
+var _camera_drag := false
+var _camera_at := Vector2.ZERO
+var _mouse_before := Input.MOUSE_MODE_VISIBLE
+var _camera_layer: CanvasLayer
+var _camera_sprite: TextureRect
+static var _camera_textures := {}
+
+
+func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
+	if is_instance_valid(_owner):
+		_owner.end_camera_drag(false)
+	_owner = self
 
 
 static func frames(name: String) -> Array:
@@ -102,39 +120,100 @@ func set_kind(k: String) -> void:
 		return
 	kind = k
 	_shown = -1
-	if k.is_empty():
+	if k.is_empty() and _owner == self:
 		if OS.has_feature("web"):
 			WebCursor.off()
 		else:
 			Input.set_custom_mouse_cursor(null)
 
 
-func _process(dt: float) -> void:
-	if kind.is_empty():
+func camera_drag_active() -> bool:
+	return _camera_drag
+
+
+func pointer_position() -> Vector2:
+	return _camera_at if _camera_drag else get_viewport().get_mouse_position()
+
+
+func begin_camera_drag(at: Vector2) -> void:
+	if _owner != self or _camera_drag or TouchInput.enabled or DisplayServer.get_name() == "headless":
 		return
+	_mouse_before = Input.get_mouse_mode()
+	_camera_at = at
+	_camera_drag = true
+	if _camera_layer == null:
+		_camera_layer = CanvasLayer.new()
+		_camera_layer.layer = 126
+		add_child(_camera_layer)
+		_camera_sprite = TextureRect.new()
+		_camera_sprite.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		_camera_sprite.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		_camera_layer.add_child(_camera_sprite)
+	_camera_sprite.visible = true
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	set_kind("cursor_camera")
+	_shown = -1
+	_process(0.0)
+
+
+func end_camera_drag(restore := true) -> void:
+	if not _camera_drag:
+		return
+	_camera_drag = false
+	_camera_sprite.visible = false
+	if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
+		Input.set_mouse_mode(_mouse_before)
+		if restore:
+			# The press and painted sprite use viewport coordinates. Input's
+			# warp takes physical window pixels, which differ under stretch.
+			get_viewport().warp_mouse(_camera_at)
+	_shown = -1
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_APPLICATION_FOCUS_OUT or what == NOTIFICATION_WM_WINDOW_FOCUS_OUT:
+		end_camera_drag(false)
+
+
+func _process(dt: float) -> void:
+	if kind.is_empty() or _owner != self:
+		return
+	var k := "cursor_camera" if _camera_drag else kind
 	var px := size_px()
 	if px != _px:
 		_px = px
 		_shown = -1
-	var f := scaled(kind, px)
+	var f := scaled(k, px)
 	if f.is_empty():
 		return
 	_t += dt
 	var steps := int(_t / FRAME_SEC)
 	_t -= steps * FRAME_SEC
-	var i: int = (int(_frame.get(kind, 0)) + steps) % f.size()
-	_frame[kind] = i
+	var i: int = (int(_frame.get(k, 0)) + steps) % f.size()
+	_frame[k] = i
 	if i != _shown:
 		_shown = i
-		var hs: Vector2 = HOTSPOT.get(kind, Vector2.ZERO) * (px / 32.0)
+		var hs: Vector2 = HOTSPOT.get(k, Vector2.ZERO) * (px / 32.0)
 		hs = hs.round().clamp(Vector2.ZERO, Vector2(px - 1, px - 1))
-		if OS.has_feature("web"):
-			WebCursor.show(kind, i, px, hs)   # a CSS cursor: see WebCursor
+		if _camera_drag:
+			var key := "%s@%d:%d" % [k, px, i]
+			if not _camera_textures.has(key):
+				_camera_textures[key] = ImageTexture.create_from_image(f[i])
+			_camera_sprite.texture = _camera_textures[key]
+			var scale := get_viewport().get_final_transform().get_scale().abs()
+			_camera_sprite.position = _camera_at - hs / scale
+			_camera_sprite.size = Vector2(px, px) / scale
+		elif OS.has_feature("web"):
+			WebCursor.show(k, i, px, hs)   # a CSS cursor: see WebCursor
 		else:
 			Input.set_custom_mouse_cursor(f[i], Input.CURSOR_ARROW, hs)
 
 
 func _exit_tree() -> void:
+	end_camera_drag()
+	if _owner != self:
+		return
+	_owner = null
 	if OS.has_feature("web"):
 		WebCursor.clear()
 	else:

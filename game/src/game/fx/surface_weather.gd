@@ -119,9 +119,12 @@ func _step_cover(terrain: EITerrain) -> void:
 	var end := mini(_cover_cursor + COVER_BATCH, _cover_queue.size())
 	var start := Time.get_ticks_usec()
 	while _cover_cursor < end:
-		var node: Node3D = _cover_queue[_cover_cursor]
+		# Removal may free an object after the incremental queue was made.
+		# Validate its Variant before a typed assignment (freed Nodes cannot
+		# be assigned to Node3D, even if the next line checks validity).
+		var node = _cover_queue[_cover_cursor]
 		_cover_cursor += 1
-		if is_instance_valid(node):
+		if is_instance_valid(node) and node is Node3D:
 			rasterize_cover(node, terrain, _cover_heights)
 		if Time.get_ticks_usec() - start >= COVER_BUDGET_US:
 			break

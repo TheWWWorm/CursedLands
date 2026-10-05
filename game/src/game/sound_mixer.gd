@@ -10,14 +10,16 @@ extends Node
 ## Functions:
 ##    channel allocation, 3D play, 2D play
 ##    3D volume / pan, 2D update, 3D move
-##    stop, listener, 100 ms service
-##   (random sources, virtual sounds), reverb parameters.
+##    stop, listener, world-tick service
+##   (virtual sounds; random sources separately at 100 ms), reverb.
 
 const CHANNELS := 15
 const CAT_SFX := 0
 const CAT_SPEECH := 1
-##  runs the random sources and restores virtual loops every 100 ms.
-const SERVICE := 0.1
+##   each 55 ms tick. Only its random-source
+## branch is gated by GetTickCount() - previous > 99.
+const SERVICE := 0.055
+const RANDOM_SERVICE := 0.1
 
 class Chan:
 	var player: AudioStreamPlayer
@@ -45,6 +47,7 @@ var reverb := false
 ## Random sources (16 slots of 0x38 bytes).
 var _random: Array = []
 var _service := 0.0
+var _random_service := 0.0
 ## Remake: the zone's loops set aside while the global map is up (suspend /
 ## resume): handle -> sound record, and the random sources.
 var suspended := false
@@ -385,7 +388,7 @@ func volume_pan(s: Dictionary) -> Vector2:
 		return Vector2.ZERO
 	var v := 100.0
 	if dist >= float(s.min) and float(s.max) > float(s.min):
-		v = 100.0 - roundf((dist - float(s.min)) / (float(s.max) - float(s.min)) * 100.0)
+		v = 100.0 - GameUnit._fistp((dist - float(s.min)) / (float(s.max) - float(s.min)) * 100.0)
 	v *= _cam_fade()
 	return Vector2(v, screen_pan(d))
 
@@ -401,7 +404,7 @@ func screen_pan(d: Vector2) -> float:
 	var a := acos(clampf(d.dot(view_dir) / dist, -1.0, 1.0))
 	if a > PI / 2.0:
 		a = PI - a
-	var mag := roundf(100.0 / (PI / 2.0) * a)
+	var mag := float(GameUnit._fistp(100.0 / (PI / 2.0) * a))
 	return -mag if d.dot(right_dir) >= 0.0 else mag
 
 
@@ -414,7 +417,13 @@ func _miles(s: Dictionary) -> int:
 		cat = GameData.option("volume_voice")
 	elif sfx_on:
 		cat = GameData.option("volume_sfx")
-	return clampi(roundi(volume_pan(s).x * cat * 0.0127), 0, 127)
+	return clampi(GameUnit._fistp(volume_pan(s).x * cat * 0.0127), 0, 127)
+
+
+## Integer requests made to Miles, before its own DSP volume / panning law.
+static func miles_controls(volume: float, pan: float, category: float) -> Vector2i:
+	return Vector2i(clampi(GameUnit._fistp(volume * category * 0.0127), 0, 127),
+		clampi(int((-pan + 100.0) * 127.0 / 200.0), 0, 127))
 
 
 func _apply(c: Chan) -> void:
@@ -430,12 +439,15 @@ func _apply(c: Chan) -> void:
 		pan = float(s.pan)
 	if int(s.cat) == CAT_SFX and not sfx_on:
 		v = 0.0
-	# Miles volume 0..127 = round(v × category volume × 0.0127); the category
-	# volume is the SFX / Voice bus. Approx.: Miles' volume is taken as linear.
-	c.player.volume_db = linear_to_db(maxf(roundf(v * 1.27) / 127.0, 0.00001))
-	# Miles pan = (−pan + 100) × 127 / 200; reverse stereo is the SFX bus's
-	# channel swap (GameData._apply_audio). Approx.: Godot's panner law.
-	c.panner.pan = clampf(-pan / 100.0, -1.0, 1.0)
+	var category: float = GameData.option("volume_voice" if int(s.cat) == CAT_SPEECH else "volume_sfx")
+	var controls := miles_controls(v, pan, category)
+	# Quantize after category multiplication as the original does. The category
+	# bus applies its factor afterwards, so compensate it in the channel.
+	# Approx.: Miles' DSP volume is treated as linear, Godot supplies panning.
+	var gain := float(controls.x) / 127.0 * 100.0 / category if category > 0.0 else 0.0
+	c.player.volume_db = linear_to_db(maxf(gain, 0.00001))
+	# Reverse stereo is the category bus's channel swap (GameData._apply_audio).
+	c.panner.pan = float(controls.y) * 2.0 / 127.0 - 1.0
 
 
 # ------------------------------------------------------------------ per frame
@@ -453,13 +465,16 @@ func _process(dt: float) -> void:
 		if c.handle >= 0:
 			_apply(c)
 	_service -= dt
+	_random_service -= dt
 	if _service > 0.0:
 		return
 	_service += SERVICE
 	if _service < 0.0:
 		_service = SERVICE
 	_restore_virtual()
-	_random_tick()
+	if _random_service <= 0.0:
+		_random_service = RANDOM_SERVICE
+		_random_tick()
 
 
 ## virtual loops get the free channels back, highest priority

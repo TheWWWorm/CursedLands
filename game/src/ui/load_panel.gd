@@ -59,7 +59,7 @@ extends Interface800
 ## «no_disc_space» / «no_disc_space_msg» (base, ✓ only), and ✓ / Enter
 ##  closes the screen without saving; Esc only closes
 ## the box. Remake: the drive of user://saves and the size of the campaign
-## state the save would write (CampaignState.to_dict serialised) stand in.
+## current live state the save would write (including its length prefix).
 ## Remake: a save without a shot shows its zone's minimap picture instead
 ## (remake-only). Saves are SaveInfo slots (user://saves/<slot>.sav + .info.sav +
 ## .shot.png).
@@ -360,9 +360,8 @@ func _current_bytes() -> int:
 	var hud := get_canvas_layer_node()
 	var g: Variant = hud.get("game") if hud else null
 	var ses: Variant = g.get("session") if g is Object else null
-	var st: Variant = ses.get("state") if ses is Object else null
-	if st is Object and st.has_method("to_dict"):
-		return var_to_bytes(st.to_dict()).size()
+	if ses is Session:
+		return ses.save_bytes_needed()
 	return 0
 
 

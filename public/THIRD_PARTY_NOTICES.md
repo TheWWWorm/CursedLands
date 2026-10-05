@@ -14,7 +14,7 @@
 
 ## Liberation Serif font
 
-`game/fonts/LiberationSerif-Regular.ttf` (Liberation Fonts, Red Hat) is licensed under the SIL Open Font License 1.1; see [`game/fonts/LICENSE.txt`](game/fonts/LICENSE.txt). It stands in for Times New Roman, which the original uses for its text, because it has the same letter widths.
+`game/fonts/LiberationSerif-Regular.ttf` (Liberation Fonts, Red Hat) is licensed under the SIL Open Font License 1.1; see [`FONT_LICENSE.txt`](FONT_LICENSE.txt). It stands in for Times New Roman, which the original uses for its text, because it has the same letter widths.
 
 ## Godot Engine
 

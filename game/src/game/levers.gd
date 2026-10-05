@@ -70,12 +70,16 @@ func usable(nid: int) -> bool:
 ## item with script id N, [5, 0, 22] a Use value of 22.
 ## Approx.: the original takes the tool from the unit; the remake tries the
 ## plain key and then each quest item in the party bag, as [8, script id, 0]
-## (the item's own triple method was not located; the ids match the levers).
+## (the quest item's native getter returns [8, script id, 0]).
 func science_ok(nid: int, use_value: float, quest_items: Array) -> bool:
 	var l: Array = world.levers.get(nid, {}).get("science", [1, 0, 0])
 	if l.size() < 3:
 		return true
-	var v := roundi(use_value)
+	#  stores the value as float32 before nearest-even FISTP.
+	var value := float(PackedFloat32Array([use_value])[0])
+	var lower := floori(value)
+	var fraction := value - float(lower)
+	var v := lower if fraction < 0.5 or (fraction == 0.5 and lower % 2 == 0) else lower + 1
 	var keys := [[1, 0, v]]
 	for it in quest_items:
 		var sid := int(Items.info(String(it)).row.get("script_id", 0))
@@ -123,10 +127,11 @@ func toggle(nid: int) -> void:
 	set_state(nid, -1)
 
 
-## Shows the state: the figure morphs to t = state / (states − 1) over `time`
-## seconds (: t = target − (target − start)·(end − now)/time with
-## end = start time + time + 1; **approx.**: taken as one second at the start
-## value, then linear), plays the switch sound and updates navigation.
+## `time` is in 55 ms ticks, as levers.ldb's T field and SwitchLeverStateEx.
+## end = now + time + 1; uses the fractional
+## render tick, t = target − (target − start)·(end − now)/time.
+## Thus the first whole tick shows start, and time + 1 shows target. Before
+## the first tick it extrapolates slightly away from target, as the original does.
 func apply(nid: int, animate: bool, time := -1.0) -> void:
 	var node: Node3D = world.objects.get(nid)
 	if node == null or not is_instance_valid(node):
@@ -141,8 +146,9 @@ func apply(nid: int, animate: bool, time := -1.0) -> void:
 		time = switch_time(nid)
 	if animate and time > 0.0 and not m.is_empty() and not is_equal_approx(float(m.t), target):
 		var tw := node.create_tween()
-		tw.tween_interval(1.0)
-		tw.tween_method(func(v: float): _set_t(nid, v), float(m.t), target, time)
+		var start := float(m.t)
+		tw.tween_method(func(v: float): _set_t(nid, v), start - (target - start) / time,
+			target, (time + 1.0) * GameUnit.TICK)
 		_tweens[nid] = tw
 	else:
 		_set_t(nid, target)

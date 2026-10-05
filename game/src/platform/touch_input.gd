@@ -42,6 +42,9 @@ func _ready() -> void:
 		# mouse movement switch the mode from then on.
 		enabled = bool(JavaScriptBridge.eval("matchMedia('(pointer: coarse)').matches", true))
 	get_tree().auto_accept_quit = not Portability.handheld()
+	# SceneTree handles Android Back separately from window close requests.
+	# Let our deferred controller/Back guard emit the single Escape action.
+	get_tree().quit_on_go_back = false
 
 func game() -> Game:
 	var main := get_tree().current_scene
@@ -282,11 +285,4 @@ func _notification(what: int) -> void:
 			g.session.save_game("autosave")
 			g.hud.toggle_menu()
 	elif what == NOTIFICATION_WM_GO_BACK_REQUEST:
-		# Android also reports a controller's B as Back: the pad layer has
-		# already taken that press (PadInput.last_cancel_ms), so it acts once.
-		if Time.get_ticks_msec() - PadInput.last_cancel_ms < 250:
-			return
-		var event := InputEventKey.new()
-		event.keycode = KEY_ESCAPE
-		event.pressed = true
-		Input.parse_input_event(event)
+		PadInput.android_back_request()

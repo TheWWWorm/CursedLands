@@ -5,6 +5,13 @@ extends RefCounted
 ## Global script variables (GSGetVar/GSSetVar). Index 0 is the shared campaign
 ## state used by all original scripts; in co-op it is the party's shared progress.
 var vars := {}
+## Per-player native GS bucket capacity/head chains. Values stay in vars;
+## these names preserve insertion, zero erase and rehash order across saves.
+const GSTable := preload("res://src/game/script/gs_table.gd")
+const TrainingRefund := preload("res://src/game/training_refund.gd")
+var gs_tables := {}
+## Older saves discarded the raw spelling/order before this metadata existed.
+var gs_reconstructed := false
 ## player index -> Array of hero records (prototype, name, stats, items...)
 var heroes := {}
 ## zone id -> {dead: [nid], removed: [nid], looted: [nid], hidden: [nid], levers: {nid: state}, units: {nid: [x, y, hp]}}
@@ -72,6 +79,7 @@ func advance_hours(h: float) -> void:
 	while world_time >= 24.0:
 		world_time -= 24.0
 		day += 1
+	_gs_clock()
 
 
 ## GS var "gtime" is the campaign clock in hours since the start of day 1
@@ -86,13 +94,26 @@ func get_var(player: int, key: String) -> float:
 
 
 func set_var(player: int, key: String, v: float) -> void:
+	if key.is_empty():
+		return
+	v = PackedFloat32Array([v])[0]   # native stores a float32
+	var table := _gs_table(player)
 	if key == "gtime":
 		day = int(v / 24.0) + 1
 		world_time = fposmod(v, 24.0)
+		if v == 0.0:
+			GSTable.erase(table, key)
+		else:
+			GSTable.put(table, key)
 		return
 	var k := "%d:%s" % [player, key]
 	var old := float(vars.get(k, 0.0))
-	vars[k] = v
+	if v == 0.0:
+		vars.erase(k)
+		GSTable.erase(table, key)
+	else:
+		GSTable.put(table, key)
+		vars[k] = v
 	if watch.is_valid() and old != v:
 		watch.call(self, player, key, old, v)
 	# a "q." var set to 1 with
@@ -105,6 +126,7 @@ func del_var(player: int, key: String) -> void:
 	var k := "%d:%s" % [player, key]
 	var old := float(vars.get(k, 0.0))
 	vars.erase(k)
+	GSTable.erase(_gs_table(player), key)
 	if watch.is_valid() and old != 0.0:
 		watch.call(self, player, key, old, 0.0)
 
@@ -135,9 +157,88 @@ func get_pvar(player: int, key: String) -> float:
 
 func set_pvar(player: int, key: String, v: float) -> void:
 	if player != 0 and is_player_var(key):
-		vars["%d:%s" % [player, key]] = v
+		set_var(player, key, v)
+		if v == 0.0:
+			# A remake shared-world mercenary overlay needs an explicit zero
+			# mask over the shared store. It is not a native GS hash entry.
+			vars["%d:%s" % [player, key]] = 0.0
 	else:
 		set_var(0, key, v)
+
+
+func _gs_table(player: int) -> Dictionary:
+	if gs_tables.has(player):
+		return gs_tables[player]
+	var table := GSTable.create()
+	gs_tables[player] = table
+	if player == 0 and get_var(0, "gtime") != 0.0:
+		GSTable.put(table, "gtime")
+	var pre := "%d:" % player
+	for k: String in vars:
+		if k.begins_with(pre) and float(vars[k]) != 0.0:
+			GSTable.put(table, k.substr(pre.length()))
+			gs_reconstructed = true
+	return table
+
+
+func _gs_clock() -> void:
+	var table := _gs_table(0)
+	if get_var(0, "gtime") == 0.0:
+		GSTable.erase(table, "gtime")
+	else:
+		GSTable.put(table, "gtime")
+
+
+## Reconcile old saves and external whole-dictionary replacements only when
+## iterating/saving. Existing native chains remain intact; missing names can
+## only be rebuilt from the stored dictionary order, never recovered exactly.
+func _reconcile_gs() -> void:
+	var wanted := {0: {}}
+	if get_var(0, "gtime") != 0.0:
+		wanted[0]["gtime"] = true
+	for k: String in vars:
+		if float(vars[k]) == 0.0 or k.get_slice_count(":") < 2:
+			continue
+		var p := int(k.get_slice(":", 0))
+		if not wanted.has(p):
+			wanted[p] = {}
+		wanted[p][k.substr(k.find(":") + 1)] = true
+	for p in gs_tables:
+		if not wanted.has(p):
+			wanted[p] = {}
+	for p in wanted:
+		if gs_tables.has(p) and (not gs_tables[p] is Dictionary or not GSTable.valid(gs_tables[p])):
+			gs_tables.erase(p)
+			gs_reconstructed = true
+		var table := _gs_table(int(p))
+		for key in GSTable.keys(table):
+			if not wanted[p].has(key):
+				GSTable.erase(table, key)
+				gs_reconstructed = true
+		for key: String in wanted[p]:
+			if not GSTable.has(table, key):
+				GSTable.put(table, key)
+				gs_reconstructed = true
+
+
+func gs_metadata() -> Dictionary:
+	_reconcile_gs()
+	return gs_tables.duplicate(true)
+
+
+## The native UI uses a filtered temporary copy, whose chain order differs
+## from the source. Remake co-op's private mercenary overlay is merged by its
+## caller; the individual stores retain their own native hash order.
+func gs_keys(player := 0, prefix := "", clone := false) -> Array[String]:
+	_reconcile_gs()
+	var table := _gs_table(player)
+	if clone:
+		return GSTable.keys(GSTable.filtered(table, prefix))
+	var out: Array[String] = []
+	for key in GSTable.keys(table):
+		if key.begins_with(prefix):
+			out.append(key)
+	return out
 
 
 ## Adds looted / stolen items: quest items (items.idb "quest_items", e.g. a
@@ -202,6 +303,7 @@ func ensure_hero(player: int, prototype: String, player_name := "") -> void:
 		for q in Items.split_list(npc.get("quest_items", [])):
 			hero.quick.append(q.to_lower())
 		cap_belt(hero, items)
+	TrainingRefund.start(hero)
 	heroes[player] = [hero]
 
 
@@ -233,6 +335,7 @@ func add_party_unit(party: String, unit_name: String, prototype: String) -> void
 		"weapons": Array(proto_weapons(proto)).map(func(x): return String(x).to_lower()),
 		"quick": [], "spells": [],
 	}
+	TrainingRefund.start(h)
 	parties.get_or_add(party, []).append(h)
 
 
@@ -253,7 +356,9 @@ static func proto_weapons(proto: Dictionary) -> PackedStringArray:
 ## "Hero" (the main hero, wherever he is) or "Party::Unit".
 func party_member(ref: String) -> Dictionary:
 	if "::" in ref:
-		for h: Dictionary in parties.get(ref.get_slice("::", 0), []):
+		var party := ref.get_slice("::", 0)
+		var roster: Array = heroes.get(0, []) if party == current_party else parties.get(party, [])
+		for h: Dictionary in roster:
 			if String(h.get("unit_name", h.name)).to_lower() == ref.get_slice("::", 1).to_lower():
 				return h
 		return {}
@@ -267,10 +372,14 @@ func copy_stats(from: String, to: String) -> void:
 	if a.is_empty() or b.is_empty() or a == b:
 		return
 	for k: String in a:
-		if k in ["str", "dex", "int", "exp", "exp_total", "level", "perks"]:
+		if k in ["str", "dex", "int", "exp", "exp_total", "level"]:
 			b[k] = a[k]
+		elif k == "perks":
+			b[k] = Array(a[k]).duplicate()
 		elif k == "skills":
 			b[k] = Dictionary(a[k]).duplicate()
+		elif k == TrainingRefund.KEY:
+			b[k] = Dictionary(a[k]).duplicate(true)
 	b.spells = Array(a.get("spells", [])).duplicate()
 	if not "::" in from:
 		b.name = a.name   # the main hero in another shape keeps his name
@@ -283,6 +392,8 @@ func copy_items(from: String, to: String) -> void:
 		return
 	for k in ["armors", "weapons", "quick"]:
 		b[k] = Array(a.get(k, [])).duplicate()
+	# The active-first combat list and native weapon cell order travel together.
+	b.weapon_slots = Session.weapon_slots(a)
 
 
 ## Returns false when nothing changed. The bag goes with the party.
@@ -396,6 +507,7 @@ func make_merc(n: int, rec: Dictionary) -> Dictionary:
 	}
 	if String(m.name).is_empty():
 		m.name = "Mercenary %d" % n
+	TrainingRefund.start(m)
 	mercs[n] = m
 	return m
 
@@ -584,6 +696,9 @@ func collect_pets(world: GameWorld) -> void:
 			var rec := u.info.duplicate()
 			rec.erase("nid")
 			var pet := {"rec": rec, "hp": u.hp, "controller": u.controller, "pos": u.pos, "body": body_state(u)}
+			if u.has_meta("xp_stats") and u.get_meta("xp_stats") is Dictionary:
+				pet.xp_stats = u.get_meta("xp_stats").duplicate(true)
+				pet.mana = u.mana
 			u.set_meta("pet", pet)
 			pets.append(pet)
 
@@ -728,7 +843,9 @@ func replay_restored(world: GameWorld) -> void:
 	Spells.restore_lasting(world, lasting, seen)
 	for e in shown:
 		var ev: Dictionary = Dictionary(e[0]).duplicate()
-		if Spells.parse(String(ev.get("spell", ev.get("code", "")))).code in Session.LASTING_SPELLFX:
+		if ev.has("age"):
+			ev = Session.replay_spell(ev, int(ev.age))
+		elif Spells.parse(String(ev.get("spell", ev.get("code", "")))).code in Session.LASTING_SPELLFX:
 			ev.left = float(e[1])
 		ev.replay = true
 		ev.erase("a")   # unit ids change with the deployment; dx / dy keep the wall's direction
@@ -740,7 +857,7 @@ func replay_restored(world: GameWorld) -> void:
 func store_zone(id: String, world: GameWorld) -> void:
 	if world == null or id.is_empty():
 		return
-	var z := {"dead": [], "removed": [], "units": {}, "levers": {}, "vm": {}, "loot": {},
+	var z := {"dead": [], "removed": [], "units": {}, "levers": {}, "vm": {}, "loot": {}, "carried": {},
 		"added": world.get_meta("added_mobs", [])}
 	var present := {}
 	for u: GameUnit in world.units.values():
@@ -756,6 +873,14 @@ func store_zone(id: String, world: GameWorld) -> void:
 				"owner": int(u.get_meta("lmp_owner")), "conn": int(u.get_meta("lmp_conn", 0))})
 			continue
 		present[u.uid] = true
+		# Original unit saves keep the mutable carried bag, including script
+		# gifts, partially stolen loot and an explicitly empty bag.
+		var carried := {"quest_items": Array(u.info.get("quest_items", [])).duplicate()}
+		if u.has_meta("pockets"):
+			carried.pockets = Array(u.get_meta("pockets")).duplicate()
+		if u.has_meta("looted"):
+			carried.looted = bool(u.get_meta("looted"))
+		z.carried[u.uid] = carried
 		if u.dead:
 			z.dead.append(u.uid)
 			if u.has_meta("loot"):
@@ -794,10 +919,10 @@ func store_zone(id: String, world: GameWorld) -> void:
 		var shown := []
 		for e in rs.get("spells", []):
 			var left := float(e[1]) - world.time
-			if left > 0.5:
+			if left > 0.0:
 				var ev: Dictionary = Dictionary(e[0]).duplicate()
 				if e.size() > 2:   # its age in ticks (Session._track: the cast time)
-					ev.age = roundi((world.time - float(e[2])) / GameUnit.TICK)
+					ev.age = maxi(floori((world.time - float(e[2])) / GameUnit.TICK + 0.000001), 0)
 				shown.append([ev, left])
 		if not shown.is_empty():
 			z.spellfx = shown
@@ -846,6 +971,28 @@ func restore_zone(id: String, world: GameWorld) -> void:
 			bu.set_meta("lmp_conn", int(b.conn))
 			if not (b.loot as Array).is_empty():
 				bu.set_meta("loot", b.loot)
+	# Older saves have no carried snapshot: keep the authored map contents.
+	var carried: Variant = z.get("carried")
+	if carried is Dictionary:
+		for nid: Variant in carried:
+			if not (nid is int or ((nid is String or nid is StringName) and str(nid).is_valid_int())):
+				continue
+			var uid: int = int(nid) if nid is int else str(nid).to_int()
+			var u: GameUnit = world.units.get(uid)
+			var row: Variant = carried[nid]
+			if not u or not row is Dictionary:
+				continue
+			for key: String in ["quest_items", "pockets"]:
+				var items: Variant = row.get(key)
+				if items is Array or items is PackedStringArray:
+					var bag := Array(items)
+					if bag.all(func(item: Variant) -> bool: return item is String or item is StringName):
+						if key == "quest_items":
+							u.info[key] = bag.duplicate()
+						else:
+							u.set_meta(key, bag.duplicate())
+			if row.get("looted") is bool:
+				u.set_meta("looted", row.looted)
 	for nid in z.dead:
 		var u: GameUnit = world.units.get(int(nid))
 		if u:
@@ -913,7 +1060,8 @@ func restore_zone(id: String, world: GameWorld) -> void:
 # ---------------------------------------------------------------- files
 
 func to_dict() -> Dictionary:
-	return {"version": 1, "vars": vars, "heroes": heroes, "zones": zones, "visited": visited,
+	var tables := gs_metadata()
+	return {"version": 1, "vars": vars, "gs_tables": tables, "gs_reconstructed": gs_reconstructed, "heroes": heroes, "zones": zones, "visited": visited,
 		"quests": quests, "money": money, "items": items, "quest_items": quest_items,
 		"parties": parties, "current_party": current_party, "party_bags": party_bags, "experience": experience, "mercs": mercs, "pets": pets, "side_quests": side_quests, "shops": shops, "current_zone": current_zone,
 		"world_time": world_time, "day": day, "coop": coop, "camera": camera}
@@ -968,6 +1116,9 @@ static func load_from(path: String) -> CampaignState:
 	for k in d:
 		if k != "version" and k in s:
 			s.set(k, d[k])
+	if not d.has("gs_tables"):
+		s.gs_reconstructed = true
+	s._reconcile_gs()
 	# Older remake builds marked "b.<npc>.constr*" told (2) when a topic list
 	# opened; the original never ends them (opens the shop instead), so
 	# they are pending (1) again.
@@ -976,6 +1127,7 @@ static func load_from(path: String) -> CampaignState:
 			s.vars[k] = 1.0
 	s.migrate_charges()
 	s.cap_belts()   # saves of builds whose belt took eight
+	TrainingRefund.migrate_state(s)
 	return s
 
 

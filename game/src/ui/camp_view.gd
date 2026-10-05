@@ -1,5 +1,7 @@
 class_name CampView
 extends Control
+const TrainingRefund := preload("res://src/game/training_refund.gd")
+const REFUND_RECT := Rect2(20, 355, 160, 28)
 ## The camp / settlement screen in the original's stone-frame look (the original
 ## ), drawn at the original's 800×600 coordinates scaled to the window.
 ## Modes (the original's screen widgets):
@@ -142,9 +144,10 @@ extends Control
 ##   skills screens a bag item goes on the hero, a hero's item into the bag
 ##   (_press), in the other screens between the goods / bag and the pile
 ##   (_move); a refused press plays messbox\cancel.wav;
-## - which filter button is lit when a screen opens is not traced (the bag
-##   starts on "all", the trader's row on "ready-made" or else the first
-##   filter with goods).
+## Rows start on filter 5: "all" for the bag
+## "ready-made" for items and spells, even when that category is empty.
+##  builds separate item and spell rows; shows
+## those existing rows when switching modes, retaining each row's filter.
 
 signal picked(id: String, where: String)
 ## Yes pressed in a trade screen: items to buy from the trader, items to sell.
@@ -236,6 +239,9 @@ var filter := 5
 var scroll := 0
 var shop_filter := 5
 var shop_scroll := 0
+var _bag_scrolls := [0, 0, 0, 0, 0, 0]
+var _shop_rows := {"items": {"filter": 5, "scroll": 0, "scrolls": [0, 0, 0, 0, 0, 0]},
+	"spells": {"filter": 5, "scroll": 0, "scrolls": [0, 0, 0, 0, 0, 0]}}
 var buy_pile: Array = []
 var sell_pile: Array = []
 var repair_pile: Array = []
@@ -243,7 +249,8 @@ var c_bp := ""       # item constructor: blueprint, material name, ready item, s
 var c_mat := ""
 var c_ready := ""
 var c_spell: String = ""   # "spell:<id>", from the bag or the hero's known spells
-var s_spell := ""    # spell constructor pile: a keystone or a ready spell (no "spell:")
+var s_spell := ""    # spell constructor pile: code of a keystone or ready spell
+var s_kind := "keystone"   # native loot3007/2/3 versus ready container3008
 var s_from := ""     # where it came from: "bag", "known" (a hero's spell) or "shop"
 var s_runes: Array = []        # the pile's runes ("rune:<code>")
 var s_rune_from: Array = []    # "bag" / "shop" per rune
@@ -328,7 +335,8 @@ func _ready() -> void:
 	for x0 in [0, 600]:
 		var v := ItemView.new()
 		v.camp = true
-		v.modulate = Color(0.5, 0.5, 0.5)
+		v.info = true
+		v.modulate = Color8(127, 127, 127)
 		add_child(v)
 		_info_views.append(v)
 	# The item rows' counts and prices go over the item views (the original's text
@@ -344,9 +352,16 @@ func _ready() -> void:
 	right_panel.clip_contents = true
 	_ready_done = true
 	resized.connect(_layout)
+	GameData.options_changed.connect(_options_changed)
 	_tutorial = TutorialPanel.new()
 	add_child(_tutorial)
 	set_mode(mode)
+
+
+func _options_changed() -> void:
+	_layout()
+	_sig = ""
+	queue_redraw()
 
 
 func _slot_keys() -> Array:
@@ -429,23 +444,39 @@ func first_mode() -> String:
 	return "weapons"
 
 
+## The original rebuilds the rows on opening the camp.
+func reset_filters() -> void:
+	_row_arrivals.clear()
+	filter = 5
+	scroll = 0
+	shop_filter = 5
+	shop_scroll = 0
+	_bag_scrolls.fill(0)
+	_shop_rows = {"items": {"filter": 5, "scroll": 0, "scrolls": [0, 0, 0, 0, 0, 0]},
+		"spells": {"filter": 5, "scroll": 0, "scrolls": [0, 0, 0, 0, 0, 0]}}
+
+
 func set_mode(m: String) -> void:
 	_touch_spell_info = false
 	var changed := m != mode
 	if changed:
-		_turn_dir = 0
+		var rows := _row_counts()
 		buy_pile.clear()
 		sell_pile.clear()
 		repair_pile.clear()
 		_clear_constr()
-		shop_scroll = 0
+		_rows_returned(rows)
+		if shop_row():
+			var old_row: Dictionary = _shop_rows["spells" if spell_shop() else "items"]
+			old_row.filter = shop_filter
+			old_row.scroll = shop_scroll
+			old_row.scrolls[shop_filter] = shop_scroll
+		_turn_dir = 0
 	mode = m
-	if changed and shop_row() and hud:
-		# Start on the first filter with goods ("ready-made" when there are any).
-		for f in [5, 0, 1, 2, 3, 4]:
-			shop_filter = f
-			if not shop_items().is_empty():
-				break
+	if changed and shop_row():
+		var row: Dictionary = _shop_rows["spells" if spell_shop() else "items"]
+		shop_filter = int(row.filter)
+		shop_scroll = int(row.scroll)
 	_doll.visible = mode == "weapons"
 	for k in _views:
 		_views[k].visible = _key_shown(k)
@@ -520,7 +551,7 @@ func touch_hold(point: Vector2) -> void:
 			if TURN_RECTS[i].has_point(p):
 				_turn_dir = 1 if i == 0 else -1
 				return
-		var weapons: Array = _unit.get_meta("hero", {}).get("weapons", [])
+		var weapons := Session.weapon_slots(_unit.get_meta("hero", {}))
 		for i in mini(4, weapons.size()):
 			if _slot_rect("top%d" % i).has_point(p):
 				construct.emit({"t": "select_weapon", "unit": _unit.uid, "item": weapons[i]})
@@ -604,6 +635,7 @@ func _layout() -> void:
 	for k in _views:
 		var c := _slot_rect(k).get_center()
 		var v: ItemView = _views[k]
+		v.fit_slot = GameData.option("item_icon_fit") != 0
 		# All slot builders pass width 100 to. Its scale is
 		# 100 * K * z * 0.0009375, hence 37.5 px per model unit regardless
 		# of z. Reuse the UI perspective with equivalent depth z / scale.
@@ -613,6 +645,8 @@ func _layout() -> void:
 		# the same for its ready item and blueprint. Other slots are not
 		# individually clipped. Leave room for the whole rotating figure.
 		var extent := 70.0 if k.begins_with("armor") or k in ["cready", "cbp"] else 240.0
+		if v.fit_slot:
+			extent = minf(extent, 80.0)
 		v.size = Vector2.ONE * extent * s
 		v.position = _o() + c * s - v.size * 0.5
 		if v.get_parent() == _pile_clip:
@@ -620,8 +654,9 @@ func _layout() -> void:
 		v.item = "~"
 	for i in _info_views.size():
 		var x0 := 0.0 if i == 0 else 600.0
-		_info_views[i].position = _r(Rect2(x0 + 40, 240, 120, 120)).position
-		_info_views[i].size = Vector2(120, 120) * s
+		_info_views[i].position = _r(Rect2(x0, 100, 200, 300)).position
+		_info_views[i].size = Vector2(200, 300) * s
+		_info_views[i].screen_at = Vector3(x0 + 100, 300, 0)
 		_info_views[i].item = "~"
 	var figure_rect := _r(Paperdoll.CAMP_RECT)
 	_doll.view_size = Vector2i(figure_rect.size.round())
@@ -655,7 +690,7 @@ func shop_items() -> Array:
 	var set: Array = FILTER_SETS["spells" if spell_shop() else "items"][2]
 	var out := []
 	for it: String in hud.game.session.shop_stock({"shop": shop_id}):
-		var spellish := it.begins_with("spell:") or it.begins_with("rune:")
+		var spellish := Items.is_spell_piece(it)
 		if spellish == spell_shop() and shop_left(it) > 0 and _passes(it, false, set[shop_filter]):
 			out.append(it)
 	return out
@@ -679,7 +714,7 @@ func shop_left(it: String) -> int:
 
 ## Spell constructor pile pieces `it` taken from `from` ("bag", "shop", "known").
 func _s_used(it: String, from: String) -> int:
-	var n := 1 if s_spell != "" and "spell:" + s_spell == it and s_from == from else 0
+	var n := 1 if s_spell != "" and _s_item() == it and s_from == from else 0
 	for i in s_runes.size():
 		if s_runes[i] == it and s_rune_from[i] == from:
 			n += 1
@@ -717,16 +752,16 @@ func _passes(it: String, quest: bool, f: String) -> bool:
 			return r.table == "quick_items"
 		"materials": return k == "material"
 		"elemental", "sense", "astral":
-			if not it.begins_with("spell:") or Spells.mods_of(it.substr(6)).size() > 0:
+			if not Items.is_keystone(it):
 				return false
-			var sub := String(Spells.parse(it.substr(6)).get("subtype", ""))
+			var sub := String(Spells.parse(Items.spell_code(it)).get("subtype", ""))
 			return String(Skills.SCHOOL.get(sub, sub)) == f
 		"rune_basic", "rune_special":
 			if k != "rune":
 				return false
 			var special := int(Spells.mod_row(it.substr(5)).get("type", 0)) == 6
 			return special == (f == "rune_special")
-		"ready_spell": return it.begins_with("spell:") and Spells.mods_of(it.substr(6)).size() > 0
+		"ready_spell": return Items.is_spell_container(it)
 	return true
 
 
@@ -744,9 +779,13 @@ func spell_preview() -> String:
 	return sp
 
 
-## A ready spell (one with runes) lies in the pile: ✓ takes it apart.
+## A ready container lies in the pile: ✓ takes it apart, even without runes.
 func s_ready() -> bool:
-	return s_spell != "" and Spells.mods_of(s_spell).size() > 0
+	return s_spell != "" and s_kind == "spell"
+
+
+func _s_item() -> String:
+	return ("spell:" if s_ready() else "keystone:") + s_spell if s_spell != "" else ""
 
 
 ## The party's best knowledge of the pile's school and best stamina
@@ -767,12 +806,14 @@ func _s_limits(spell: String) -> Vector2i:
 func _spell_accepts(it: String) -> bool:
 	if s_wait:
 		return false
-	if it.begins_with("spell:"):
+	if Items.is_spell_container(it) or Items.is_keystone(it):
 		if s_spell != "":
 			return false
-		var sp := it.substr(6)
-		if Spells.mods_of(sp).size() > 0:
+		var sp := Items.spell_code(it)
+		if Items.is_spell_container(it):
 			return true
+		if not Spells.mods_of(sp).is_empty():
+			return false
 		var need := Spells.constr_sums(sp, [])
 		var lim := _s_limits(sp)
 		return int(need.y) <= lim.y and int(need.x) <= lim.x
@@ -795,7 +836,7 @@ func _spell_deal() -> Array:
 	var ready := s_ready()
 	var total := 0
 	var ok := true
-	var pieces: Array = ["spell:" + s_spell] + s_runes
+	var pieces: Array = [_s_item()] + s_runes
 	var froms: Array = [s_from] + s_rune_from
 	for i in pieces.size():
 		if not ready:
@@ -808,36 +849,76 @@ func _spell_deal() -> Array:
 	if ready:
 		total += Items.deal_price(pieces[0], Items.Deal.SPELL_DECONSTR)
 		return ["camp_spell_deconstr", total, ok]
-	# Approx.: the remake's keystone is the rune-less spell, so a build needs a rune.
-	if s_runes.is_empty() or not Spells.constr_buildable(
+	if not Spells.constr_buildable(
 			hud.game.session.party_units(hud.game.session.my_index), spell_preview()):
 		return ["", 0, false]
 	return ["camp_spell_constr", total, ok]
 
 
-## Bag count less what waits in the sell pile.
 ## Option "switch_filters" (SwitchFilters, settings): when an item
 ## comes into a row (called by the camp screens' drops) and the
 ## row does not show everything, the row switches to the item's filter
 ## then it scrolls so the item is in view (scroll = index − 6
 ## when that is further right, index when the item is left of the view).
-## Approx.: the remake notices items arriving in the bag by their counts (any
-## command that adds one), and the trader's row is not switched.
-var _bag_prev: Variant = null
+## Only row drops/returns and accepted camp transactions trigger this:
+##  006111e0 / 00611720 / 0062d0c0, not arbitrary pickups.
+## Remote commands wait for their named result to arrive in the row.
+var _row_arrivals: Array[Dictionary] = []
 
 
-func _track_bag() -> void:
+func _row_counts() -> Dictionary:
+	var out := {"bag": {}, "shop": {}}
+	if hud == null:
+		return out
 	var st := hud.game.session.state
-	var now := {}
-	for it: String in _unique(st.items + st.quest_items.keys()):
-		var n := bag_count(it)
-		if n > 0:
-			now[it] = n
-	if _bag_prev is Dictionary:
-		for it: String in now:
-			if now[it] > int(_bag_prev.get(it, 0)):
-				_bag_received(it)
-	_bag_prev = now
+	var items: Array = st.items + st.quest_items.keys()
+	if mode == "spellconstr":
+		items += hero_spells().map(func(sp): return "spell:" + sp)
+	for it: String in _unique(items):
+		out.bag[it] = bag_count(it)
+	for it: String in hud.game.session.shop_stock({"shop": shop_id}):
+		out.shop[it] = shop_left(it)
+	return out
+
+
+func _rows_returned(before: Dictionary) -> void:
+	var after := _row_counts()
+	for row: String in ["bag", "shop"]:
+		for it: String in after[row]:
+			if int(after[row][it]) > int(before[row].get(it, 0)):
+				_row_received(row, it)
+
+
+func _arrival_count(row: String, it: String) -> int:
+	if row == "shop":
+		return hud.game.session.shop_count(it, {"shop": shop_id})
+	return hud.game.session.state.items.count(it)
+
+
+func _expect_received(row: String, it: String) -> void:
+	if it.is_empty() or hud == null:
+		return
+	_row_arrivals.append({"row": row, "item": it, "count": _arrival_count(row, it),
+		"shop": shop_id, "until": Time.get_ticks_msec() + 10000})
+
+
+func _track_arrivals() -> void:
+	var pending: Array[Dictionary] = []
+	for r: Dictionary in _row_arrivals:
+		if int(r.shop) != shop_id or Time.get_ticks_msec() >= int(r.until):
+			continue
+		if _arrival_count(r.row, r.item) > int(r.count):
+			_row_received(r.row, r.item)
+		else:
+			pending.append(r)
+	_row_arrivals = pending
+
+
+func _row_received(row: String, it: String) -> void:
+	if row == "bag":
+		_bag_received(it)
+	else:
+		_shop_received(it)
 
 
 func _bag_received(it: String) -> void:
@@ -846,7 +927,7 @@ func _bag_received(it: String) -> void:
 	if kinds[filter] != "all" and GameData.option("switch_filters") and not _passes(it, quest, kinds[filter]):
 		for f in kinds.size():
 			if kinds[f] != "all" and _passes(it, quest, kinds[f]):
-				filter = f
+				_set_bag_filter(f)
 				break
 	var idx := bag_items().find(it)
 	if idx < 0:
@@ -857,12 +938,60 @@ func _bag_received(it: String) -> void:
 		scroll = idx
 
 
+## The original keeps its separate item/spell goods rows even while hidden.
+func _shop_received(it: String) -> void:
+	var spellish := Items.is_spell_piece(it)
+	var name := "spells" if spellish else "items"
+	var shown := shop_row() and spell_shop() == spellish
+	var row: Dictionary = _shop_rows[name].duplicate(true)
+	if shown:
+		row.filter = shop_filter
+		row.scroll = shop_scroll
+	var kinds: Array = FILTER_SETS[name][2]
+	if GameData.option("switch_filters") and not _passes(it, false, kinds[int(row.filter)]):
+		for f in kinds.size():
+			if _passes(it, false, kinds[f]):
+				row.scrolls[int(row.filter)] = int(row.scroll)
+				row.filter = f
+				row.scroll = int(row.scrolls[f])
+				break
+	var items := []
+	for id: String in hud.game.session.shop_stock({"shop": shop_id}):
+		var sp := Items.is_spell_piece(id)
+		if sp == spellish and shop_left(id) > 0 and _passes(id, false, kinds[int(row.filter)]):
+			items.append(id)
+	var idx := items.find(it)
+	if idx >= 0:
+		if idx - 6 > int(row.scroll):
+			row.scroll = idx - 6
+		elif idx < int(row.scroll):
+			row.scroll = idx
+	_shop_rows[name] = row
+	if shown:
+		shop_filter = int(row.filter)
+		shop_scroll = int(row.scroll)
+
+
+##  keeps a scroll offset for every filter.
+func _set_bag_filter(f: int) -> void:
+	_bag_scrolls[filter] = scroll
+	filter = f
+	scroll = int(_bag_scrolls[f])
+
+
+func _set_shop_filter(f: int) -> void:
+	var row: Dictionary = _shop_rows["spells" if spell_shop() else "items"]
+	row.scrolls[shop_filter] = shop_scroll
+	shop_filter = f
+	shop_scroll = int(row.scrolls[f])
+
+
 func bag_count(it: String) -> int:
 	if it.begins_with("spell:") and mode == "itemconstr":
 		return 0 if it == c_spell else 1
 	var st := hud.game.session.state
-	if mode == "swap":   # the player's own bag less the offer pile (no quest items)
-		return st.items.count(it) - sell_pile.count(it)
+	if mode == "swap":   # offered copies are already in PlayerSwap's native escrow
+		return st.items.count(it)
 	if it.begins_with("spell:"):
 		# The bag's copies, plus a hero's known spell in the spell constructor
 		# (listed in the bag row there), less what lies in the pile.
@@ -980,6 +1109,7 @@ func _update_total() -> void:
 
 func _clear_constr() -> void:
 	s_spell = ""
+	s_kind = "keystone"
 	s_from = ""
 	s_runes.clear()
 	s_rune_from.clear()
@@ -1020,7 +1150,7 @@ func _on_yes() -> void:
 	if mode == "spellconstr":
 		# One host transaction (Session._spell_constr); the pile stays until
 		# its answer (constr_result).
-		var pile := [["spell:" + s_spell, s_from]]
+		var pile := [[_s_item(), s_from]]
 		for i in s_runes.size():
 			pile.append([s_runes[i], s_rune_from[i]])
 		_s_req += 1
@@ -1031,11 +1161,20 @@ func _on_yes() -> void:
 		return
 	if mode == "itemconstr":
 		if c_ready != "":
+			var inf := Items.info(c_ready)
+			_expect_received("bag", "bp:" + String(inf.base))
+			_expect_received("bag", Items.material_unit(String(inf.material)))
+			if Items.spell_of(c_ready) != "":
+				_expect_received("bag", "spell:" + Items.spell_of(c_ready))
 			construct.emit({"t": "deconstruct", "item": c_ready})
 		elif c_bp != "" and c_mat != "":
 			# Prefer the bag copy when the hero also knows this spell. The
 			# host consumes "spell:<id>" from the bag, a bare id from the hero.
 			var sp := c_spell if c_spell in hud.game.session.state.items else c_spell.trim_prefix("spell:")
+			var result := "%s.%s" % [c_bp.substr(3), c_mat]
+			if sp != "":
+				result += "|" + sp.trim_prefix("spell:")
+			_expect_received("bag", result)
 			construct.emit({"t": "construct", "bp": c_bp, "mat": c_mat, "spell": sp,
 				"unit": _unit.uid if _unit else -1})
 		_clear_constr()
@@ -1044,6 +1183,8 @@ func _on_yes() -> void:
 		return
 	if mode == "repair":
 		if not repair_pile.is_empty():
+			for it: String in repair_pile:
+				_expect_received("bag", Items.with_wear(it, 0.0))
 			repair.emit(repair_pile.duplicate())
 		repair_pile.clear()
 		_sig = ""
@@ -1051,6 +1192,11 @@ func _on_yes() -> void:
 		return
 	if buy_pile.is_empty() and sell_pile.is_empty():
 		return
+	for it: String in buy_pile:
+		_expect_received("bag", it)
+	for it: String in sell_pile:
+		if Items.kind(it) != "loot":
+			_expect_received("shop", Items.with_wear(it, 0.0))
 	deal.emit(buy_pile.duplicate(), sell_pile.duplicate())
 	buy_pile.clear()
 	sell_pile.clear()
@@ -1070,7 +1216,8 @@ func constr_result(e: Dictionary) -> void:
 	if bool(e.get("ok", false)) and not items.is_empty():
 		s_runes.clear()
 		s_rune_from.clear()
-		s_spell = String(items[0]).substr(6)
+		s_spell = Items.spell_code(String(items[0]))
+		s_kind = Items.kind(String(items[0]))
 		s_from = "known" if String(e.get("where", "")) == "known" else "bag"
 		if String(e.get("op", "")) == "take_apart":
 			for i in range(1, items.size()):
@@ -1081,10 +1228,28 @@ func constr_result(e: Dictionary) -> void:
 
 
 func _on_cancel() -> void:
+	var rows := _row_counts()
+	var returns: Array[Array] = []
+	if mode in ["itemtrade", "spelltrade"]:
+		#   for each whole pile, then
+		#  once with that transfer's last inserted/merged item.
+		# The goods return precedes the bag return; current inventory order
+		# cannot recover the pile order after clearing the staged entries.
+		if not buy_pile.is_empty():
+			returns.append(["shop", String(buy_pile.back())])
+		if not sell_pile.is_empty():
+			returns.append(["bag", String(sell_pile.back())])
+	elif mode == "repair" and not repair_pile.is_empty():
+		returns.append(["bag", String(repair_pile.back())])
 	_clear_constr()
 	repair_pile.clear()
 	buy_pile.clear()
 	sell_pile.clear()
+	if mode in ["itemtrade", "spelltrade", "repair"]:
+		for r: Array in returns:
+			_row_received(r[0], r[1])
+	else:
+		_rows_returned(rows)   # construction pieces retain their separate return path
 	_sig = ""
 	_update_total()
 
@@ -1117,11 +1282,11 @@ func _process(_dt: float) -> void:
 			if _hold_t >= 0.25:
 				construct.emit(_hold_cmd)
 	if not visible or hud == null:
-		_bag_prev = null
+		_row_arrivals.clear()
 		return
 	if mode == "swap":
 		_swap_sync()
-	_track_bag()
+	_track_arrivals()
 	var u := _unit
 	var h: Dictionary = u.get_meta("hero") if u and u.has_meta("hero") else {}
 	var bag := bag_items()
@@ -1129,7 +1294,7 @@ func _process(_dt: float) -> void:
 	var shop := shop_items() if shop_row() else []
 	shop_scroll = clampi(shop_scroll, 0, maxi(0, shop.size() - BAG_CELLS))
 	var sig := "%s|%s|%s|%s|%s|%d|%d|%s|%s|%s|%s|%d|%d|%d" % [u.uid if u else -1, h.get("weapons", []), h.get("armors", []),
-		[h.get("quick", []), h.get("spells", []), h.get("perks", []), h.get("exp", 0), h.get("skills", {})], bag, filter, scroll, size, mode, shop, buy_pile + ["/"] + sell_pile + ["/"] + repair_pile + [c_bp, c_mat, c_ready, c_spell, s_spell, s_from, s_wait] + s_runes + s_rune_from + hero_spells(), shop_filter, shop_scroll,
+		[h.get("quick", []), h.get("spells", []), h.get("perks", []), h.get("exp", 0), h.get("skills", {})], bag, filter, scroll, size, mode, shop, buy_pile + ["/"] + sell_pile + ["/"] + repair_pile + [c_bp, c_mat, c_ready, c_spell, s_spell, s_kind, s_from, s_wait] + s_runes + s_rune_from + hero_spells(), shop_filter, shop_scroll,
 		hud.game.session.state.money] + str(hash(hud.game.session.state.shops.get(shop_id, {}))) + _swap_view()
 	if sig == _sig:
 		return
@@ -1152,8 +1317,8 @@ func _process(_dt: float) -> void:
 		# a ready spell at (250,300), a keystone at (350,300)
 		# the runes four per column from (450,150).
 		var ready := s_ready()
-		_content["sready"] = ["spell:" + s_spell if ready else "", "sready"]
-		_content["skey"] = ["spell:" + s_spell if s_spell != "" and not ready else "", "skey"]
+		_content["sready"] = [_s_item() if ready else "", "sready"]
+		_content["skey"] = [_s_item() if not ready else "", "skey"]
 		for i in PILE_CELLS:
 			_content["srune%d" % i] = [s_runes[i] if i < s_runes.size() else "", "srune"]
 	elif mode == "itemconstr":
@@ -1186,7 +1351,7 @@ func _process(_dt: float) -> void:
 		# the hero's weapons (hero) from the
 		# left cell rightwards and its belt (hero)
 		# the right cell leftwards.
-		var weapons: Array = h.get("weapons", [])
+		var weapons := Session.weapon_slots(h)
 		var quick: Array = h.get("quick", [])
 		for i in 8:
 			var id := ""
@@ -1277,14 +1442,16 @@ func pad_targets() -> Array:
 			add.call(_slot_rect(k), k)
 	for b: String in side_buttons():
 		add.call(SIDE_BUTTONS[b][0], "side:" + b)
+	if mode == "spells" and _unit and _unit.has_meta("hero"):
+		add.call(REFUND_RECT, "refund_training")
 	var rows := [500.0]
 	if _key_shown("shop0"):
 		rows.append(0.0)
 	for y0: float in rows:
 		for i in FILTER_RECTS.size():
 			add.call(Rect2(FILTER_RECTS[i].position + Vector2(0, y0), FILTER_RECTS[i].size), "filter%d:%d" % [y0, i])
-		add.call(Rect2(30, y0 + 35, 20, 30), "left:%d" % y0)
-		add.call(Rect2(750, y0 + 35, 20, 30), "right:%d" % y0)
+		add.call(_row_arrow_rect(y0, false), "left:%d" % y0)
+		add.call(_row_arrow_rect(y0, true), "right:%d" % y0)
 	return out
 
 
@@ -1292,15 +1459,23 @@ func pad_active() -> bool:
 	return not tutorial_visible()
 
 
+static func _row_arrow_rect(y0: float, right: bool) -> Rect2:
+	# Include the whole painted triangle: x 46..62 / 738..754. Item
+	# cells overlap the tip, so arrow hit tests run before item hit tests.
+	return Rect2(738 if right else 30, y0 + 35, 32, 30)
+
+
 func _row_hit(p: Vector2, y0: float) -> int:
 	# Filter buttons: 0..5; scroll left / right: 10 / 11; -1 none.
+	for right in [false, true]:
+		var rect := _row_arrow_rect(y0, right)
+		if TouchInput.enabled:
+			rect = rect.grow_individual(0, 10, 0, 10)
+		if rect.has_point(p):
+			return 11 if right else 10
 	for i in FILTER_RECTS.size():
 		if Rect2(FILTER_RECTS[i].position + Vector2(0, y0), FILTER_RECTS[i].size).has_point(p):
 			return i
-	if Rect2(15 if TouchInput.enabled else 30, y0 + 25 if TouchInput.enabled else y0 + 35, 35 if TouchInput.enabled else 20, 50 if TouchInput.enabled else 30).has_point(p):
-		return 10
-	if Rect2(750, y0 + 25 if TouchInput.enabled else y0 + 35, 35 if TouchInput.enabled else 20, 50 if TouchInput.enabled else 30).has_point(p):
-		return 11
 	return -1
 
 
@@ -1332,7 +1507,7 @@ func _gui_input(e: InputEvent) -> void:
 	# refreshes. Remake: Session "select_weapon".
 	if e is InputEventMouseButton and e.pressed and e.button_index == MOUSE_BUTTON_RIGHT and mode == "weapons" and _unit:
 		var rp: Vector2 = (e.position - _o()) / _s()
-		var weapons: Array = _unit.get_meta("hero", {}).get("weapons", [])
+		var weapons := Session.weapon_slots(_unit.get_meta("hero", {}))
 		for i in mini(4, weapons.size()):
 			if _slot_rect("top%d" % i).has_point(rp):
 				if GameSound.instance:
@@ -1393,8 +1568,7 @@ func _gui_input(e: InputEvent) -> void:
 	if hit >= 0:
 		_row_sound(hit)
 		if hit < 10:
-			filter = hit
-			scroll = 0
+			_set_bag_filter(hit)
 		else:
 			scroll += -1 if hit == 10 else 1
 		accept_event()
@@ -1404,8 +1578,7 @@ func _gui_input(e: InputEvent) -> void:
 		if hit >= 0:
 			_row_sound(hit)
 			if hit < 10:
-				shop_filter = hit
-				shop_scroll = 0
+				_set_shop_filter(hit)
 			else:
 				shop_scroll += -1 if hit == 10 else 1
 			accept_event()
@@ -1460,6 +1633,9 @@ func _press(id: String, where: String) -> void:
 		elif k == "armor":
 			if Array(h.get("armors", [])).any(func(a): return Items.slot(a) == Items.slot(id)):
 				_ui_sound("buttons\\camp\\put_off.wav")
+				for old: String in h.get("armors", []):
+					if Items.slot(old) == Items.slot(id):
+						_expect_received("bag", old)
 			cmd["t"] = "equip"
 		else:
 			if Array(h.get("quick", [])).size() >= CampaignState.BELT_SLOTS:
@@ -1467,6 +1643,7 @@ func _press(id: String, where: String) -> void:
 			cmd["t"] = "give_quick"
 	else:
 		_ui_sound("buttons\\camp\\put_off.wav")
+		_expect_received("bag", id)
 		match where:
 			"belt": cmd["t"] = "take_quick"
 			"known": cmd["t"] = "unlearn"
@@ -1478,8 +1655,8 @@ func _press(id: String, where: String) -> void:
 ## screen takes weapons, armour and quick items, but no broken weapon or
 ## armour from the bag (round(durability) < 1); the skills screen takes from
 ## the bag only a spell the hero can learn (complexity within round(knowledge),
-## stamina), from the hero anything. Remake: a spell the hero
-## already knows is refused too (the remake's spell list holds each once).
+## stamina), from the hero anything. Duplicate spell objects
+## are accepted too; the eight-object cap is enforced by the put-on handler.
 func _press_accepts(id: String, from_bag: bool, h: Dictionary) -> bool:
 	var k := Items.kind(id)
 	if mode == "weapons":
@@ -1488,7 +1665,7 @@ func _press_accepts(id: String, from_bag: bool, h: Dictionary) -> bool:
 		return k in ["weapon", "armor", "quick"]
 	if not from_bag:
 		return true
-	if not id.begins_with("spell:") or id.substr(6) in hero_spells():
+	if not id.begins_with("spell:"):
 		return false
 	return Spells.usable_by(h, _unit.max_mana, id.substr(6))
 
@@ -1604,6 +1781,12 @@ func _row_sound(hit: int) -> void:
 
 ## Trade screens: goods -> buy pile, bag -> sell pile, a pile -> back.
 func _move(id: String, where: String) -> void:
+	var rows := _row_counts()
+	_move_now(id, where)
+	_rows_returned(rows)
+
+
+func _move_now(id: String, where: String) -> void:
 	if mode == "swap":
 		_swap_move(id, where)
 		return
@@ -1617,8 +1800,9 @@ func _move(id: String, where: String) -> void:
 				# A bag copy first, else the hero's known spell.
 				var st := hud.game.session.state
 				from = "bag" if st.items.count(id) - _s_used(id, "bag") > 0 else "known"
-			if id.begins_with("spell:"):
-				s_spell = id.substr(6)
+			if Items.is_spell_container(id) or Items.is_keystone(id):
+				s_spell = Items.spell_code(id)
+				s_kind = Items.kind(id)
 				s_from = from
 			else:
 				s_runes.append(id)
@@ -1696,7 +1880,7 @@ func _move(id: String, where: String) -> void:
 ## screen takes the item now (from the trader's goods row, or the bag).
 func _row_accepts(it: String, goods: bool) -> bool:
 	var k := Items.kind(it)
-	var spellish := it.begins_with("spell:") or k == "rune"
+	var spellish := Items.is_spell_piece(it)
 	match mode:
 		"spelltrade":
 			return spellish
@@ -1842,7 +2026,7 @@ func _draw() -> void:
 	for b: String in side_buttons():
 		# the mode buttons (and Exit) at 0.5, the current one
 		# 1.0;: ✓ / ✗ at 0.5 unless the deal can be made / undone.
-		var lit: bool = b == mode
+		var lit := side_lit(b, d)
 		if mode == "swap":
 			# ✓ lit while this player has not agreed, ✗ once it has.
 			var agreed := bool(_swap().mine().get("agreed", false))
@@ -2028,6 +2212,7 @@ func _swap_move(id: String, where: String) -> void:
 		"sell":
 			if sell_pile.has(id):
 				_ui_sound("buttons\\camp\\put_off.wav")
+				_expect_received("bag", id)
 				sell_pile.erase(id)
 				_swap_publish()
 
@@ -2208,8 +2393,13 @@ func _draw_side() -> void:
 		if _hover_help >= 0:
 			_draw_help(600, _hover_help)
 		elif not _hover_desc.is_empty():
-			_tb(Rect2(615, 110, 170, 15), String(_hover_desc[0]), 0, Color.WHITE, 2)
-			_tb(Rect2(615, 140, 170, 15), String(_hover_desc[1]), 0, Interface800.TEXT, 16)
+			if _hover_desc.size() > 2 and _hover_desc[2] is Dictionary and _hover_desc[2].get("t") == "perk":
+				_draw_perk_desc(_hover_desc)
+			elif _hover_desc.size() > 2 and _hover_desc[2] is Dictionary and _hover_desc[2].get("t") == "skill":
+				_draw_skill_desc(_hover_desc)
+			else:
+				_tb(Rect2(615, 110, 170, 15), String(_hover_desc[0]), 0, Color.WHITE, 2)
+				_tb(Rect2(615, 140, 170, 15), String(_hover_desc[1]), 0, Interface800.TEXT, 16)
 	_overlay.queue_redraw()
 	if mode == "spellconstr":
 		_draw_constr_limits()
@@ -2316,8 +2506,8 @@ func _draw_item_info(x0: float, id: String) -> void:
 ## - materials: Type, Class (mattype_), Weight, Energy
 ##   Complexity, Durability, Damage "%.1f", Armor and Vulnerability of the
 ##   material's resists.
-## Approx.: a keystone (loot 2/3) is shown as a spell; the
-## blueprint's description is its item's.
+## A keystone uses the spell rows; a blueprint's name and
+## description come from "instr <prototype>" (loot mode 2).
 func _item_info(id: String) -> Dictionary:
 	var out := {"name": Items.title(id), "rows": PackedStringArray(), "gap": 15.0, "desc": "", "lines": 4,
 		"tail_at": 0.0, "tail": PackedStringArray()}
@@ -2325,8 +2515,8 @@ func _item_info(id: String) -> Dictionary:
 	var tt := Items.type_text(id)
 	rows.append("%s %s" % [_lbl(37), tt])
 	var k := Items.kind(id)
-	if id.begins_with("spell:"):
-		var sp := id.substr(6)
+	if Items.is_spell_container(id) or Items.is_keystone(id):
+		var sp := Items.spell_code(id)
 		var pp := Spells.parse(sp)
 		out.name = Spells.title(String(pp.code))
 		rows.append("%s %d" % [_lbl(7), int(pp.mana)])
@@ -2360,6 +2550,7 @@ func _item_info(id: String) -> Dictionary:
 		out.lines = 8
 		return out
 	if k == "blueprint":
+		out.name = Items.log_name(id)
 		var r := Items.blueprint_row(id)
 		var row: Dictionary = r.row
 		var mt := String(row.get("material_type", "")).to_lower()
@@ -2379,7 +2570,7 @@ func _item_info(id: String) -> Dictionary:
 				for t in 7:
 					l[t] = float(a[1 + t]) * float(a[0]) * 10.0
 			_armor_rows(rows, l)
-		out.desc = Items.flavor(id.substr(3))
+		out.desc = Items.flavor(id)
 		return out
 	if k == "material":
 		var i := Items.info(id)
@@ -2420,7 +2611,7 @@ func _item_info(id: String) -> Dictionary:
 		rows.append("%s %d" % [_lbl(0), int(Items.weight(id))])
 	var sp := Items.spell_of(id)
 	if k in ["weapon", "armor"] or wand:
-		rows.append("%s %d" % [_lbl(2), int(float(i.row.get("mana", 0.0)) + float(i.mat.get("mana", 0.0)))])
+		rows.append("%s %d" % [_lbl(2), int(Items.energy(id))])
 		var cx := int(Spells.complexity(sp)) if sp else 0
 		rows.append("%s %d/%d" % [_lbl(14), cx, int(i.row.get("slots", 0)) + int(i.mat.get("slots", 0))])
 	if k in ["weapon", "armor"]:
@@ -2615,8 +2806,8 @@ func _draw_hero() -> void:
 ## - a click raises a skill or learns / upgrades an ability at once
 ##   (buttons\\camp\\perk.wav); a held skill keeps rising every frame from
 ##   0.75 s .
-## Approx.: the hover descriptions in the right widget (the widget's hit test
-##  is not traced).
+## Skill and perk hover panes follow numeric
+## skill rows and three-rank table; platform font/wrap metrics are separate.
 func _draw_skills() -> void:
 	_skill_rows.clear()
 	if _unit == null or not _unit.has_meta("hero"):
@@ -2624,6 +2815,23 @@ func _draw_skills() -> void:
 	var h: Dictionary = _unit.get_meta("hero")
 	var xp := float(h.get("exp", 0.0))
 	var mine := hud != null and _unit.controller == hud.game.session.my_index
+	var at_camp := mine and hud.game.session.camp_available()
+	var refundable := at_camp and not _unit.dead and TrainingRefund.amount(h) > 0.0
+	_region("campinfo", REFUND_RECT, Rect2(124, 138, 40, 15))
+	_t(Rect2(REFUND_RECT.position + Vector2(2, 6), REFUND_RECT.size - Vector2(4, 8)),
+		RemakeText.t("Refund all points"), 0, Interface800.TEXT if refundable else DIM, HORIZONTAL_ALIGNMENT_CENTER)
+	var refund_help := TrainingRefund.reason(h)
+	if refund_help.is_empty():
+		if not mine:
+			refund_help = "You can only refund your own character's points."
+		elif _unit.dead:
+			refund_help = "A dead character cannot refund points."
+		elif not at_camp:
+			refund_help = "Points can be refunded in a village or camp."
+		else:
+			refund_help = "Returns all XP spent on skills and purchased abilities, including attribute upgrades. Starting allocations and quest gifts stay; equipment and earned XP stay."
+	_skill_rows.append([REFUND_RECT, {"t": "refund_training", "unit": _unit.uid} if refundable else {},
+		[RemakeText.t("Refund all points"), RemakeText.t(refund_help)], "refund"])
 	var o := Vector2(200, 100)
 	_t(Rect2(o + Vector2(0, 10), Vector2(200, 15)), _str("skills"), 0, Color.WHITE, HORIZONTAL_ALIGNMENT_CENTER)
 	_t(Rect2(o + Vector2(0, 205), Vector2(200, 15)), _str("perks"), 0, Color.WHITE, HORIZONTAL_ALIGNMENT_CENTER)
@@ -2642,11 +2850,8 @@ func _draw_skills() -> void:
 		if lv < 100:
 			_region("campinfo", Rect2(350, r.position.y, 40, 15), plate)
 			_t(r, _cost_text(c), 0, cost_col.call(c), HORIZONTAL_ALIGNMENT_RIGHT)
-		var t := GameData.text("perk " + sk) if GameData.is_open() else ""
-		var ls := Array(t.split("\n"))
-		var ttl := String(ls.pop_front()).strip_edges() if not ls.is_empty() else sk
 		_skill_rows.append([r, {"t": "train", "unit": _unit.uid, "stat": sk} if mine and lv < 100 and xp >= c else {},
-			[ttl, " ".join(ls.map(func(x): return String(x).strip_edges())).strip_edges()], "skill"])
+			_skill_desc(sk, _unit), "skill"])
 	# Known abilities: the highest rank of each family.
 	var known := []
 	var fams := {}
@@ -2674,7 +2879,7 @@ func _draw_skills() -> void:
 			_t(r, _cost_text(c), 0, cost_col.call(c), HORIZONTAL_ALIGNMENT_RIGHT)
 			if mine and xp >= c:
 				cmd = {"t": "perk", "unit": _unit.uid, "perk": nxt}
-		_skill_rows.append([r, cmd, _perk_desc("%s%d" % [fam, n]), "perk"])
+		_skill_rows.append([r, cmd, _perk_desc("%s%d" % [fam, n], n, h), "perk"])
 		y += 15.0
 	# Available abilities: families not begun.
 	var avail := Perks.available(h).filter(func(code): return String(code).ends_with("1"))
@@ -2688,7 +2893,7 @@ func _draw_skills() -> void:
 		_region("campinfo", Rect2(550, y, 40, 15), plate)
 		_t(r, _cost_text(c), 0, cost_col.call(c), HORIZONTAL_ALIGNMENT_RIGHT)
 		_skill_rows.append([r, {"t": "perk", "unit": _unit.uid, "perk": code} if mine and xp >= c else {},
-			_perk_desc(code), "perk"])
+			_perk_desc(code, 0, h), "perk"])
 		y += 15.0
 	# Scroll arrows.
 	var up := Rect2(130, 3, 20, 10)
@@ -2727,8 +2932,110 @@ static func _perk_family(fam: String) -> String:
 	return first if first else fam
 
 
-func _perk_desc(code: String) -> Array:
-	var t := GameData.text("perk " + code) if GameData.is_open() else ""
+## Native info-widget cases1/2: raw skill level, then effective combat/use
+## value for the relevant skills. These display rows do not train a skill.
+static func _skill_desc(skill: String, u: GameUnit) -> Array:
+	var t := GameData.text("perk " + skill) if GameData.is_open() else ""
 	var ls := Array(t.split("\n"))
-	ls.pop_front()
-	return [Perks.title(code), " ".join(ls.map(func(x): return String(x).strip_edges())).strip_edges()]
+	var title := String(ls.pop_front()).strip_edges() if not ls.is_empty() else skill
+	var body := " ".join(ls.map(func(x): return String(x).strip_edges())).strip_edges()
+	var h: Dictionary = u.get_meta("hero", {})
+	var level := Skills.level(h, skill)
+	var numeric := ["%s %d" % [_str("infoskill_5"), level]]
+	if skill in ["melee", "archery", "science"]:
+		#  read the current float Dexterity
+		# including temporary modifiers. Client runtime stats carry it too.
+		var dex := float(PackedFloat32Array([float(u.stats.get("dex",
+			float(h.get("dex", 20.0)) + Perks.attr_bonus(h, "dex")))])[0])
+		numeric.append("%s %d" % [_str("infoskill_9" if skill == "science" else "infoskill_6"),
+			int(level + dex - 25.0)])
+	elif skill == "backstab":
+		#  multiplies the unsigned perk modifier by a float32
+		# 0.01, adds BackstabAdd and the pane truncates its percentage. Keep
+		# that coefficient: native rank2 displays749%, not a rounded750%.
+		var base := float(PackedFloat32Array([GameData.ai_value("RPG", "BackstabAdd", 3.0)])[0])
+		var factor := float(PackedFloat32Array([0.01])[0])
+		numeric.append("%s %d%%" % [_str("infoskill_7"), int((base + Perks.best(h, "bs") * factor) * 100.0)])
+	return [title, body, {"t": "skill", "numeric": numeric}]
+
+
+func _draw_skill_desc(desc: Array) -> void:
+	_tb(Rect2(615, 110, 170, 15), String(desc[0]), 0, Color.WHITE, 2)
+	var y := 140.0
+	for line: String in desc[2].numeric:
+		_t(Rect2(615, y, 170, 15), line)
+		y += 15.0
+	_tb(Rect2(615, y + 15, 170, 15), String(desc[1]), 0, Interface800.TEXT, 13)
+
+
+static func _perk_desc(code: String, known := 0, h: Dictionary = {}) -> Array:
+	#  strips the rank before loads "perk
+	# <family>0": its first field is the title, the rest the description.
+	var fam := code.rstrip("0123456789")
+	var t := GameData.text("perk " + fam + "0") if GameData.is_open() else ""
+	var ls := Array(t.split("\n"))
+	var title := String(ls.pop_front()).strip_edges() if not ls.is_empty() else fam
+	var body := " ".join(ls.map(func(x): return String(x).strip_edges())).strip_edges()
+	var ranks := []
+	var table := GameData.db.table("perks") if GameData.is_open() else []
+	var first := table.find(Perks.get_perk(fam + "1"))
+	if first >= 0:
+		var group := first / 3
+		for i in 3:
+			if first + i >= table.size():
+				break
+			var row: Dictionary = table[first + i]
+			var rank_code := String(row.get("code", ""))
+			var rank := GameData.text("perk " + rank_code).get_slice("\n", 0).strip_edges()
+			var effect := _perk_help_effect(group, int(row.get("modifier", 0)))
+			var cost := Perks.cost(rank_code, h)
+			ranks.append({"code": rank_code, "title": rank, "effect": effect,
+				"cost": 2147483647 if cost < 0 else cost, "known": i < known})
+	return [title if title else Perks.title(code), body, {"t": "perk", "ranks": ranks}]
+
+
+##  perk-family switch: the label comes from infoskill_N.
+## Values are the native display modifiers, separate from combat formulas.
+static func _perk_help_effect(group: int, modifier: int) -> String:
+	var key := -1
+	var value := modifier
+	var percent := false
+	if group < 7:
+		key = 10
+	elif group < 15:
+		key = 11
+	elif group in [15, 16, 17, 18, 19, 20, 21, 22]:
+		key = {15: 12, 16: 14, 17: 15, 18: 16, 19: 17, 20: 3, 21: 1, 22: 22}[group]
+		value = (modifier + 100) >> 1 if group == 15 else modifier + (300 if group == 22 else 100)
+		percent = true
+	elif group < 26:
+		key = 23
+	if key < 0:
+		return ""
+	return "     %s %d%s" % [_str("infoskill_%d" % key), value, "%" if percent else ""]
+
+
+## Native info-widget case3: a fixed two-line title, three rank blocks,
+## learned mark aligned right, then at most six lines of family prose.
+func _draw_perk_desc(desc: Array) -> void:
+	_tb(Rect2(615, 110, 170, 15), String(desc[0]), 0, Color.WHITE, 2)
+	var y := 140.0
+	for row: Dictionary in desc[2].ranks:
+		_t(Rect2(615, y, 170, 15), String(row.title))
+		if row.known:
+			_t(Rect2(615, y, 170, 15), _str("infoskill_21"), 0, Interface800.TEXT, HORIZONTAL_ALIGNMENT_RIGHT)
+		_t(Rect2(615, y + 15, 170, 15), String(row.effect))
+		_t(Rect2(615, y + 30, 185, 15), "     %s %d" % [_str("infoskill_18"), int(row.cost)])
+		y += 45.0
+	_tb(Rect2(615, 290, 170, 15), String(desc[1]), 0, Interface800.TEXT, 6)
+
+
+func side_lit(button: String, deal_state: Array = []) -> bool:
+	var d := deal_info() if deal_state.is_empty() else deal_state
+	if button == "accept":
+		return bool(d[2])
+	if button == "cancel":
+		return bool(d[3])
+	# User-requested availability feedback. Off preserves the original
+	# mode-selection tint, where usable inactive buttons also look dim.
+	return button == mode or (GameData.option("ui_active_buttons") != 0 and button in side_buttons())

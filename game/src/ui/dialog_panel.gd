@@ -994,6 +994,12 @@ func _end_view() -> void:
 
 
 func _notification(what: int) -> void:
+	if what == NOTIFICATION_PREDELETE:
+		# Before the first conversation this layer has no parent to own it.
+		# Once attached beside the dialog, its normal scene parent owns it.
+		if is_instance_valid(_shows_layer) and _shows_layer.get_parent() == null:
+			_shows_layer.free()
+		return
 	if what == NOTIFICATION_VISIBILITY_CHANGED and not visible and hud:
 		_mode = HIDDEN
 		if _topic_list:

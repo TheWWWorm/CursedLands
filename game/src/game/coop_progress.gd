@@ -1,5 +1,6 @@
 class_name CoopProgress
 extends Node
+const TrainingRefund := preload("res://src/game/training_refund.gd")
 ## Remake-only co-op feature: bring your own hero, shared progression.
 ## (Not in the original: the original network game played separate LMP maps with
 ## network characters;.)
@@ -116,7 +117,7 @@ func _host_online() -> bool:
 
 
 func _physics_process(dt: float) -> void:
-	if not _host_online() or session.world == null:
+	if not _host_online() or session.world == null or session.loading_game or get_tree().paused:
 		return
 	_scale_t -= dt
 	if _scale_t <= 0.0:
@@ -237,10 +238,7 @@ static func merge(st: CampaignState, pkg: Dictionary) -> void:
 	for k in cv:
 		var key := String(k)
 		var v := _num(cv[k], 0.0)
-		if v == 0.0:
-			st.vars.erase("0:" + key)
-		else:
-			st.vars["0:" + key] = v
+		st.set_var(0, key, v)
 		var parts := key.split(".")
 		if parts.size() == 3 and parts[0] == "q":
 			var q := parts[2]
@@ -710,6 +708,26 @@ func bag_of(player: int) -> Array:
 	return e.purse.get_or_add("items", []) if not e.is_empty() else session.state.items
 
 
+## Explicit owner lookup, even during another player's temporary purse swap.
+## Native LMP script builtins name the player; they cannot read or erase an
+## item from whichever purse happens to stand in for state.items at that time.
+func owner_bag(player: int) -> Array:
+	if not session.is_host:
+		# state_for sends this peer's bag as state.items; remote purses are
+		# host-only records and are not populated on a client.
+		return session.state.items if player == session.my_index else []
+	#  resolves the exact player number and returns null for an
+	# absent owner; do not create a purse or alias -1 to the host's bag.
+	if not session.lmp.is_empty() and not session.players_include(player):
+		return []
+	if not _swap.is_empty() and int(_swap.e.get("idx", -1)) == player:
+		return session.state.items
+	var e := purse_entry(player)
+	if not e.is_empty():
+		return e.purse.get_or_add("items", [])
+	return _swap.items if not _swap.is_empty() else session.state.items
+
+
 ## Host: the "state" event for peer `pid` with its own purse and bag in place
 ## of the party's (or `ev` itself).
 func state_for(pid: int, ev: Dictionary) -> Dictionary:
@@ -927,8 +945,10 @@ static func sanitize_hero(d) -> Dictionary:
 	var skills := {}
 	if d.get("skills") is Dictionary:
 		for k in d.skills:
-			if k is String and k.length() <= 32:
-				skills[k] = clampf(_num(d.skills[k], 0.0), 0.0, 1000.0)
+			# Native starting Science uses a StringName dictionary key. Binary
+			# saves/RPC preserve it; retain that allocation with canonical keys.
+			if (k is String or k is StringName) and String(k).length() <= 32:
+				skills[String(k)] = clampf(_num(d.skills[k], 0.0), 0.0, 1000.0)
 	h.skills = skills if not skills.is_empty() else Skills.from_npc(npc)
 	h.perks = _strings(d.get("perks"), 256, 64)
 	h.armors = _strings(d.get("armors"), 16).filter(func(x): return Items.kind(x) == "armor")
@@ -945,4 +965,8 @@ static func sanitize_hero(d) -> Dictionary:
 		h.mana = maxf(0.0, d.mana)
 	if d.get("unit_name") is String:
 		h.unit_name = String(d.unit_name).left(32)
+	if d.has(TrainingRefund.KEY):
+		h[TrainingRefund.KEY] = TrainingRefund.sanitize(h, d[TrainingRefund.KEY])
+	else:
+		TrainingRefund.prepare(h)
 	return h

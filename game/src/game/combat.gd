@@ -238,7 +238,7 @@ func record_hit(def: GameUnit, f: PackedFloat32Array, to_hit: float, dmg: float,
 		return
 	var d := absorb(def, dmg, f, def.part_group(part))
 	apply_wear(null, def)
-	def.take_damage(d, null, part, last_types)
+	def.take_damage(d, null, part, last_types, 4 if f.size() > 5 and f[5] != 0.0 else 0)
 
 
 ## Applies `last_wear` to the defender's armour and the attacker's weapon.
@@ -339,6 +339,10 @@ func melee(att: GameUnit, def: GameUnit, roll := {}) -> void:
 		return
 	var dmg := absorb(def, float(rec.dmg), rec.types, def.part_group(part)) if rec \
 		else roll_damage(att, def, def.part_group(part))
+	#  sets electrical bit4 from the original type factor
+	# before armour can absorb it; a fully stopped struck hit still flashes.
+	var types: PackedFloat32Array = rec.types if rec else att.stats.get("dmg_types", PackedFloat32Array())
+	var hit_flags := (1 if backstab else 0) | (4 if types.size() > 5 and types[5] != 0.0 else 0)
 	if backstab:
 		var mul: float = float(rec.bs_mul) if rec else GameData.ai_value("RPG", "BackstabAdd", 3.0) + float(att.stats.get("backstab", 0.0)) / 100.0
 		dmg *= mul
@@ -346,7 +350,7 @@ func melee(att: GameUnit, def: GameUnit, roll := {}) -> void:
 			last_types[t] *= mul
 		world.combat_event.emit("backstab", att, def, dmg)
 	apply_wear(att, def)
-	def.take_damage(dmg, att, part, last_types, 1 if backstab else 0)
+	def.take_damage(dmg, att, part, last_types, hit_flags)
 	# a unit that lives on after the damage.
 	if not def.dead:
 		armor_spells(def, false)
@@ -359,8 +363,7 @@ func melee(att: GameUnit, def: GameUnit, roll := {}) -> void:
 ##  and the spell is cast at the target; short
 ## it nothing happens. A target the blow killed still gets the cast (the
 ## direct path has no life test): the charge is spent and the
-## spell shown; an area spell still reaches the living round it. Approx.: the
-## effect itself is not put on the corpse.
+## spell shown; an area spell still reaches the living round it.
 func weapon_spell(att: GameUnit, def: GameUnit) -> void:
 	if not att.has_meta("hero"):
 		return
@@ -373,11 +376,7 @@ func weapon_spell(att: GameUnit, def: GameUnit) -> void:
 		return
 	if world.session:
 		world.session.mark_dirty()
-	if not def.dead or float(Spells.parse(sp).radius) > 0.2:
-		Spells.apply(world, att, sp, def, def.pos)
-	if world.session:
-		world.session.broadcast({"t": "spellfx", "code": Spells.parse(sp).code, "sub": Spells.parse(sp).subtype,
-			"x": def.pos.x, "y": def.pos.y, "a": att.uid, "tu": def.uid, "spell": sp})
+	Spells.cast_unit(world, att, sp, def, def.pos)
 
 
 ## A hit that lands but whose damage the armour stops entirely (the original
@@ -385,21 +384,23 @@ func weapon_spell(att: GameUnit, def: GameUnit) -> void:
 ## ) is set before the damage, so the unit's state update
 ## still shows a "0" hit number; then (an
 ## attacking unit's side into the victim's hostility) and the AI hit hook
-## . is not reached: no hit reaction
+## . is not reached: no new hit-clip request
 ## no healing armour spell, no health change. The struck armour spells
 ## ((1)) fire before the damage, at the caller. `owner_only`: a
 ## lasting spell's later ticks pass no attacker (see GameUnit.take_damage).
-func blank_hit(def: GameUnit, src: GameUnit, owner_only := false) -> void:
+func blank_hit(def: GameUnit, src: GameUnit, owner_only := false, hit_flags := 0) -> void:
 	if def.dead:
 		return
 	if world.session:
-		world.session.broadcast({"t": "hitnum", "uid": def.uid, "n": 0, "f": 0})
+		world.session.broadcast({"t": "hitnum", "uid": def.uid, "n": 0, "f": hit_flags})
 	if owner_only:
+		def.remove_meta("attacker")
+		world.ai.hit_hook(def, null)   # (NULL): help at the victim
 		return
 	if src and not is_instance_valid(src):
 		src = null
-	if src and src != def and src.faction != def.faction \
-			and world.relation(def.faction, src.faction) != 2:
+	if src and src != def \
+			and world.relation(def.faction, src.faction) != 0:
 		world.ai._hate(def, src.faction)
 	if def.controller < 0:
 		world.ai.on_attacked(def, src)
@@ -416,7 +417,7 @@ func blank_hit(def: GameUnit, src: GameUnit, owner_only := false) -> void:
 func missed(def: GameUnit, src: GameUnit) -> void:
 	if def.dead or src == null or not is_instance_valid(src) or src == def:
 		return
-	if src.faction != def.faction and world.relation(def.faction, src.faction) != 2:
+	if world.relation(def.faction, src.faction) != 0:
 		world.ai._hate(def, src.faction)
 	if def.controller < 0:
 		world.ai.on_attacked(def, src)
@@ -450,7 +451,9 @@ func armor_spells(u: GameUnit, struck: bool) -> void:
 			continue
 		if world.session:
 			world.session.mark_dirty()
-		Spells.apply(world, u, sp, u, u.pos)
+		#  creates the same spell object and start sound as a
+		# manual cast; its healing suppression flag is zero.
+		Spells.cast_unit(world, u, sp, u, u.pos)
 
 
 ## A.mob unit record's own stats (the original, called for every

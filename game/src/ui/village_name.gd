@@ -2,7 +2,7 @@ class_name VillageName
 extends Interface800
 ## The village screen's name under the cursor (the original hover
 ## the screen's input object): over a living unit whose controller is
-## idle (none, or AI state 0 / 11 9) — and, in a
+## idle (creature controller command 0 / 11, post 9) — and, in a
 ## network game, not the unit whose topic list is open — the talk cursor
 ## when it has topics (Game._update_cursor), then the name kept for its id
 ## (unit) in the map (screen), drawn
@@ -16,7 +16,6 @@ extends Interface800
 ## (: (.., 0, 0, 250, 30, 5, 1)); the empty rect
 ## draws into the whole surface, so the name is centred in 250 units, top
 ## aligned, the surface's top 20 units above the pointer.
-## **Approx.**: the controller-idle test is not modelled.
 
 var game: Game
 var _name := ""
@@ -51,7 +50,7 @@ func _process(_dt: float) -> void:
 			and get_viewport().gui_get_hovered_control() == null:
 		var p := get_viewport().get_mouse_position()
 		var u := game.pick_unit(p)
-		if u and not u.dead:
+		if u and not u.dead and u.village_talk_ready():
 			s = title_of(u)
 			at = (p - global_position) / kv()
 	if s != _name or (s and at != _at):

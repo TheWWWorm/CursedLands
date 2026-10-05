@@ -188,9 +188,21 @@ func _has_point(point: Vector2) -> bool:
 	return _cell_at(point) >= 0
 
 
+func unit_at_screen(point: Vector2) -> GameUnit:
+	var i := _cell_at(get_global_transform_with_canvas().affine_inverse() * point)
+	return _cells[i][0] if i >= 0 and is_instance_valid(_cells[i][0]) else null
+
+
 func _gui_input(e: InputEvent) -> void:
 	if e is InputEventMouseButton and e.pressed and e.button_index == MOUSE_BUTTON_LEFT:
 		var i := _cell_at(e.position)
+		if i >= 0 and game.has_spell_target():
+			if is_instance_valid(_cells[i][0]):
+				game.cast_portrait(_cells[i][0])
+			# An invalid target consumes the click too: it must not select a
+			# different caster while the spell/item is still armed.
+			accept_event()
+			return
 		if i >= 0 and _cells[i][2] and is_instance_valid(_cells[i][0]):
 			# a click selects, a double click
 			# makes the camera follow the unit.

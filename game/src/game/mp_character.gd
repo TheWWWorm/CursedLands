@@ -19,6 +19,7 @@ extends RefCounted
 const DIR := "user://mp/"
 const MAGIC := "EIMP"
 const VERSION := 1
+const TrainingRefund := preload("res://src/game/training_refund.gd")
 ## Str + Dex + Int must be 75 to go ; each 15..35
 const ATTR_SUM := 75
 const ATTR_MIN := 15
@@ -190,9 +191,9 @@ static func name_char_ok(c: String) -> bool:
 
 ## The faces to choose : every NPC row of databaseLMP.res
 ## whose prototype's race model is "unhuma" (male) or "unhufe"
-## (female), in table order. [[male protos], [female protos]]
-## Approx.: the original sorts both lists (comparator not traced) and reverses the
-## female one; the remake keeps the table order.
+## (female). [[male protos], [female protos]]
+##  sort the prototype names with the byte-wise
+## strcmp reverses the sorted female vector.
 static func faces() -> Array:
 	var male := []
 	var female := []
@@ -205,12 +206,17 @@ static func faces() -> Array:
 			male.append(String(npc.name))
 		elif model == "unhufe":
 			female.append(String(npc.name))
+	male.sort()
+	female.sort()
+	female.reverse()
 	return [male, female]
 
 
 ## The voices: every NPC row with its voice flag, into
 ## the male or female list by its race model, shown "%s %d" with
-## «lmp_male_voice» / «lmp_female_voice», numbered from 1. [[male], [female]]
+## «lmp_male_voice» / «lmp_female_voice», numbered from 1. These distinct
+## vectors retain NPC table order; only faces are sorted.
+## [[male], [female]]
 static func voices() -> Array:
 	var out := [[], []]
 	for npc: Dictionary in _rows("npcs"):
@@ -258,6 +264,7 @@ static func create(proto_name: String) -> Dictionary:
 	}
 	var v := voices()
 	h.voice = String(v[1][0] if is_female(proto_name) and not v[1].is_empty() else (v[0][0] if not v[0].is_empty() else ""))
+	TrainingRefund.start(h)
 	reshape(h)
 	return {"heroes": [h], "money": int(npc.get("money", 0)), "items": []}
 

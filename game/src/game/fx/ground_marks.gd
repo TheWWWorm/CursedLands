@@ -348,7 +348,7 @@ func hit(ev: Dictionary) -> void:
 
 
 ##  (unit controller): a pool of (w + h) / 2 of the
-## body ("bd"; else 0.75 × the unit size at its position) growing to 3×, cell
+## body ("bd"; else 0.75 × the smaller horizontal unit extent) growing to 3×, cell
 ## 2 + rand(2). Remake: made when a unit's death clip has played.
 func pool(u: GameUnit) -> void:
 	var bt := int(u.race.get("blood_type", 0))
@@ -362,7 +362,7 @@ func pool(u: GameUnit) -> void:
 		r = (ext.x + ext.y) * 0.5
 		p = ParticleFx.ei(n.global_position)
 	else:
-		r = _unit_size(u) * 0.75
+		r = _unit_size(u, true) * 0.75
 		p = ParticleFx.ei(u.global_position)
 	add_blood(p.x, p.y, r, r * 3.0, (_rng.randi() % 2 + 2) | ((bt - 1) << 16), false)
 
@@ -483,6 +483,8 @@ func _step(u: GameUnit, i: int, st: Dictionary) -> void:
 	var ang := PI - acos(clampf(dir.y, -1.0, 1.0))
 	if dir.x < 0.0:
 		ang = -ang
+	if is_instance_valid(world.terrain.details):
+		world.terrain.details.add_step(p.x - ext.x * dir.x * 0.5, p.y - ext.y * dir.y * 0.5, ext.x, ext.y, ang)
 	var found := add_footprint(p.x - ext.x * dir.x * 0.5, p.y - ext.y * dir.y * 0.5, ext.x, ext.y, ang,
 		(int(left) << 16) | fp, int(st.bloody))
 	if int(st.left) < 1:
@@ -510,10 +512,15 @@ func _part(u: GameUnit, name: String) -> Node3D:
 ## Part half-extents across / along: the part box's max x / y
 ## (box min.., max.., unions them into the unit box
 ## ), from the.fig header's per-variant centred min / max.
-## That header box equals half the vertex bounds (checked on unhuma rl3, ll3,
-## bd, hd, lh2), so half the part mesh's bounds in its own EI x / y is it.
+## Authored FIG max is independent of the rendered vertex bounds. Read it
+## on each call, so complexion/redressing cannot retain an old part's size.
+## Mesh bounds below are only the fallback for custom parts without FIG data.
 func _extent(u: GameUnit, name: String, n: Node3D, kind := "") -> Vector2:
-	var key := "%d:%s" % [u.get_instance_id(), name]
+	if n.has_meta(EIFigureGeometry.META):
+		var g: Dictionary = n.get_meta(EIFigureGeometry.META)
+		var maximum: Vector3 = g.max
+		return Vector2(maximum.x, maximum.y)
+	var key := "%d:%s:%d" % [u.get_instance_id(), name, n.get_instance_id()]
 	if _ext.has(key):
 		return _ext[key]
 	var box := AABB()
@@ -531,11 +538,12 @@ func _extent(u: GameUnit, name: String, n: Node3D, kind := "") -> Vector2:
 	return e
 
 
-## Unit size max: half-extents of the union
-## the part boxes (at their posed positions) — the figure bounds.
-func _unit_size(u: GameUnit) -> float:
+## The hit-jitter radius takes max; the body-less pool takes
+## min of the same extents (executed, despite its misleading
+## ). Both use the raw unrotated FIG union.
+func _unit_size(u: GameUnit, smaller := false) -> float:
 	var b := ParticleFx.of(world)._box(u)
-	return maxf(b.size.x, b.size.z) * 0.5
+	return (minf(b.size.x, b.size.z) if smaller else maxf(b.size.x, b.size.z)) * 0.5
 
 
 ## Step frames (record.., frame + 1; 1 ends the list) of the walk

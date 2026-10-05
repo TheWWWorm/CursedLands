@@ -26,6 +26,7 @@ var exe_scale := 0.3
 ## The face centre's y (800x600): EXE_Y, or lower for the remake's smaller
 ## co-op faces (PartyFaces).
 var exe_y := EXE_Y
+var exe_angle := PI
 const EXE_K := 0.48157462
 const EXE_Y := 548.0
 const EXE_DEPTH := 7.0
@@ -314,7 +315,7 @@ func _place_face() -> void:
 	# model's local axes are EI's mapped by EISpace (x, z, -y).
 	var to_godot := Basis(Vector3(1, 0, 0), Vector3(0, -1, 0), Vector3(0, 0, -1))
 	var ei_local := Basis(Vector3(1, 0, 0), Vector3(0, 0, -1), Vector3(0, 1, 0))
-	var rot := Basis(Vector3(1, 0, 0), PI)
+	var rot := Basis(Vector3(1, 0, 0), exe_angle)
 	var at := Vector3((exe_x * 0.0025 - 1.0) * EXE_K * EXE_DEPTH,
 		(exe_y * 0.0025 - 0.75) * EXE_K * EXE_DEPTH, EXE_DEPTH)
 	_pivot.transform = Transform3D((to_godot * rot * ei_local.inverse()).scaled_local(Vector3.ONE * exe_scale),
@@ -323,13 +324,14 @@ func _place_face() -> void:
 
 ## PartyFaces: the face's 800x600 rect, its centre x and the cell's scale
 ## (and its centre y, EXE_Y in the original).
-func set_exe_place(rect: Rect2, x: float, scale: float, y := EXE_Y) -> void:
-	if rect == exe_rect and x == exe_x and scale == exe_scale and y == exe_y:
+func set_exe_place(rect: Rect2, x: float, scale: float, y := EXE_Y, angle := PI) -> void:
+	if rect == exe_rect and x == exe_x and scale == exe_scale and y == exe_y and angle == exe_angle:
 		return
 	exe_rect = rect
 	exe_x = x
 	exe_scale = scale
 	exe_y = y
+	exe_angle = angle
 	_place_face()
 
 

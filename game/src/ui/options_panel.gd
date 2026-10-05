@@ -119,12 +119,13 @@ const BACK_ROW := 13       # a remake page's « row
 const BUTTONS_ROW := 12    # Gamepad › "Buttons…"; Buttons › "Default buttons"
 const PAD_BUTTONS_LINK := ["Buttons…", "Choose which controller button does what. The D-pad and the sticks keep their roles."]
 const PAD_DEFAULTS := ["Default buttons", "Restores the default button layout (confirm with ✓)."]
+const PAD_GYRO_CALIBRATE := ["Calibrate gyro", "Keep the controller or handheld still for two seconds. Use this if the pointer drifts."]
 ## The rebindable gamepad actions' labels and tips (PadInput.ACTIONS order).
 const PAD_ACTIONS := {
 	"interact": ["Act / confirm", "Acts on the highlighted target as a left click on it would: attack, loot, talk, use; confirms a spell's target. Held: forced attack."],
 	"cancel": ["Cancel / back", "Cancels a spell, item or aim being targeted, else stops the selected characters. Closes wheels and menus."],
 	"context": ["Target ring", "More actions for the highlighted target: aimed strikes, steal, follow, examine; on open ground: move, run, forced move."],
-	"pause": ["Pause", "Pauses or resumes the game (single player). Held: normal or fast speed."],
+	"pause": ["Pause", "Pauses or resumes the game. In co-op only the host changes the shared speed. Held: normal or fast speed."],
 	"actions": ["Spells and actions wheel", "Spells, stance, Use/Steal and Follow. In an open wheel: the previous page."],
 	"items": ["Items wheel", "The belt and the weapons. In an open wheel: the next page."],
 	"mod": ["Modifier", "Held, it changes other buttons, as Ctrl / Alt on the keyboard: forced attack, forced move, use or cast at once, the unit panel's views."],
@@ -355,6 +356,8 @@ func _show_group(g: int) -> void:
 		if _group in LOOK_PAGES:
 			_rows[PRESET_ROW] = _look_row()
 		if _group == PAD_GROUP:
+			_rows[11] = {"kind": "link", "name": "", "gyro_calibrate": true,
+				"label": RemakeText.t(PAD_GYRO_CALIBRATE[0]), "tip": _remake_tip(PAD_GYRO_CALIBRATE)}
 			_rows[BUTTONS_ROW] = {"kind": "link", "name": "", "to": PAD_BUTTONS_GROUP,
 				"label": RemakeText.t(PAD_BUTTONS_LINK[0]), "tip": _remake_tip(PAD_BUTTONS_LINK)}
 		elif _group == PAD_BUTTONS_GROUP:
@@ -543,6 +546,11 @@ func _toggle(r: int) -> void:
 				_apply()
 				_close()
 				GfxDetect.start(true)
+			elif row.get("gyro_calibrate", false):
+				if not PadInput.gyro.calibrate(PadInput.device):
+					_rows[r].tip = "<messbox>" + RemakeText.t("No gyroscope is available.") + "</messbox>"
+					_sel = r
+					queue_redraw()
 			elif row.get("pad_defaults", false):
 				_pad_map = PadInput.DEFAULTS.duplicate()
 				_refresh_pad()
@@ -672,6 +680,28 @@ func _ask_experimental(was: int) -> void:
 
 # ------------------------------------------------------------------ drawing
 
+func group_font_px(g: int) -> int:
+	var fs := font_px(1)
+	var label := _group_label(g)
+	var width := r8(Rect2(0, 0, 122, 20)).size.x
+	while fs > 6 and font().get_string_size(label, HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x > width:
+		fs -= 1
+	return fs
+
+
+func _draw_group_label(r: Rect2, group: int, col: Color) -> void:
+	if hide_text:
+		return
+	var f := font()
+	var fs := group_font_px(group)
+	var rr := r8(r)
+	var y := rr.position.y + f.get_ascent(fs)
+	var sh := maxf(1.0, round(kv().y))
+	var label := _group_label(group)
+	draw_string(f, Vector2(rr.position.x + sh, y + sh), label, HORIZONTAL_ALIGNMENT_CENTER, rr.size.x, fs, SHADOW)
+	draw_string(f, Vector2(rr.position.x, y), label, HORIZONTAL_ALIGNMENT_CENTER, rr.size.x, fs, col)
+
+
 static func _row_y(r: int) -> float:
 	return 156.0 + 24.0 * r
 
@@ -692,7 +722,7 @@ func _draw() -> void:
 		var y := _row_y(i)
 		var cur := g == _tab()
 		sprite(ui, Rect2(110, y + 2, 130, 19), [122, 108, 252, 127], Color(1, 1, 1) if cur else Color(0.5, 0.5, 0.5))
-		text(Rect2(110, y + 4, 130, 20), _group_label(g), 1, TEXT if cur else GREY, HORIZONTAL_ALIGNMENT_CENTER)   #  (10,60)-(140,80) + 24i
+		_draw_group_label(Rect2(110, y + 4, 130, 20), g, TEXT if cur else GREY)
 	# Selection bar.
 	if _sel >= 0:
 		draw_rect(r8(Rect2(250, _row_y(_sel), 442, 24)), BAR)

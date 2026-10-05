@@ -75,7 +75,7 @@ func _work() -> void:
 			else:
 				ok = true
 				var ip := u.query_external_address()
-				text = RemakeText.t("UPnP: UDP port %d is open. Your address for friends: %s") % [port, ip if ip else RemakeText.t("(unknown)")]
+				text = _mapping_status("UPnP", ip, port)
 				_done_map.call_deferred("UPnP", ip, port)
 		_upnp = u if ok else null
 	else:
@@ -84,8 +84,7 @@ func _work() -> void:
 		var r := _pmp_map(LIFETIME)   # [method or "", external ip, external port, why]
 		if r[0] != "":
 			ok = true
-			var share := _join_text(r[1], r[2]) if r[1] else RemakeText.t("(unknown)")
-			text = RemakeText.t("%s: UDP port %d is open. Your address for friends: %s") % [r[0], port, share]
+			text = _mapping_status(r[0], r[1], r[2])
 			_done_map.call_deferred(r[0], r[1], r[2])
 		else:
 			text = RemakeText.t("The router opened no port (UPnP: %s; NAT-PMP/PCP: %s). Forward UDP port %d by hand to play over the internet.") % [upnp_why, r[3], port]
@@ -126,6 +125,37 @@ static func _why(err: int) -> String:
 ## "ip:port", or "[ip]:port" for an IPv6 address.
 static func _join_text(ip: String, p: int) -> String:
 	return ("[%s]:%d" if ip.contains(":") else "%s:%d") % [ip, p]
+
+
+## Router acknowledgement does not test the path from a remote computer.
+static func _mapping_status(protocol: String, ip: String, p: int) -> String:
+	var text := "%s: %s. %s" % [protocol, RemakeText.t("Forwarded UDP port %d") % p,
+		RemakeText.t("Router forwarding is set; an internet connection has not been verified.")]
+	if ip.is_empty():
+		return text + " " + RemakeText.t("No public Internet address")
+	if not public_address(ip):
+		return text + " " + RemakeText.t("The router reports a private external address. Direct internet hosting needs a public address from your provider or a VPN such as ZeroTier.")
+	return text
+
+
+## A router can acknowledge forwarding while its WAN is behind another
+## private network / carrier NAT. Such an address is not an Internet join IP.
+static func public_address(ip: String) -> bool:
+	if not ip.is_valid_ip_address():
+		return false
+	var lower := ip.to_lower()
+	if lower.begins_with("::ffff:"):
+		return public_address(lower.trim_prefix("::ffff:"))
+	if ip.contains(":"):
+		return (lower.begins_with("2") or lower.begins_with("3")) and not lower.begins_with("2001:db8:")
+	var p := ip.split(".")
+	var a := int(p[0])
+	var b := int(p[1])
+	return a > 0 and a < 224 and a != 10 and a != 127 \
+		and not (a == 100 and b >= 64 and b <= 127) \
+		and not (a == 169 and b == 254) \
+		and not (a == 172 and b >= 16 and b <= 31) \
+		and not (a == 192 and b == 168)
 
 
 # ------------------------------------------------------------------ PCP / NAT-PMP

@@ -23,10 +23,14 @@ var _options: OptionsPanel
 var _difficulty: DifficultyPanel
 var _load: LoadPanel
 var _music: AudioStreamPlayer
+var _cursor: GameCursor
 
 
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_cursor = GameCursor.new()
+	add_child(_cursor)
+	_cursor.set_kind("cursor_default")
 	# The intro and the credits need their movies converted (MoviePlayer);
 	# small ones first.
 	MoviePlayer.preconvert(["ttlsfin", "titles", "ttlsfout", "intro"])
@@ -364,6 +368,8 @@ static func _port() -> int:
 
 
 func _start_coop() -> void:
+	if _net and _net.lmp_base and not _session.lmp_characters_ready():
+		return
 	start_game.emit(_session)
 	if _net and _net.lmp_base:   # the original's own multiplayer game (LmpMode)
 		await _session.hold_loading(_net.lmp_base.to_lower())

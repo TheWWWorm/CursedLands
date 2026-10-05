@@ -2,8 +2,8 @@ class_name ItemView
 extends SubViewportContainer
 ## One item's 3D model in a HUD slot, as the original shows weapons:
 ## the figure (Items.look) in the fixed orientation
-## q = rot(z, -0.157) · rot(y, -1.047) · rot(z, 2.356) (EI space), seen from
-## above. Weapon / armour models are skinned with their unit redress layer.
+## q = rot(z, -π/20) · rot(y, -π/3) · rot(z, 3π/4) (EI space).
+## Weapon / armour models are skinned with their unit redress layer.
 ## No light (CI3DFigure::Draw → renderer
 ## with flag 0x100, set by the weapon bar and the camp
 ## ): every vertex colour = (white here) and specular =
@@ -18,13 +18,13 @@ extends SubViewportContainer
 ## With `screen_at` it is drawn in that perspective: camera
 ## at the origin, frustum near 1, the figure at the placed point, so a figure
 ## left of / below the screen centre is seen slightly from the side.
-## `unit_px` 0 is the box-fitted fallback (camp side info previews).
+## Camp side info (mode 9) uses its authored FIG centre/extents and the
+## same perspective, at width 120/depth 3, with fixed orientation and tint.
+## `unit_px` 0 is the box-fitted fallback for an unavailable authored box.
 ## Camp slots (`camp = true`) follow the camp's item draw
 ## instead. Both draws set the orientation of the same UI 3D object
-## so the original's q is used as is: the HUD dagger
-## with q unchanged matches the original's screenshots (tip leaning right),
-## while rot(y, π) · q mirrors it (checked 2026-10-01; the camp's earlier
-## rot(y, π) frame turn is gone):
+## so the original's q is used as is. The native
+## Draw/TLP projection maps EI x right, y down and z forward for all callers:
 ## - spells, keystones and runes (0x3008, loot 2/3, 2/4): q = rot(z, π);
 ## - blueprints (loot 2/0..2): q = rot(x, π);
 ## - weapons (0x3004): q = rot(x, π) · rot((1,1,0), a), everything else
@@ -42,6 +42,12 @@ const PULSE := [Color(1, 0, 0), Color(0, 1, 1), Color(0, 1, 0), Color(1, 1, 0), 
 
 var item := ""
 var camp := false
+## quick items and wands use rot(x, π).
+var belt := false
+##  mode 9: fixed item behind the info widget's text.
+var info := false
+## Remake: keep a camp item inside its icon cell throughout its spin.
+var fit_slot := false
 ## A dialog's shown quest item: turned π about x.
 var quest := false
 ## The UI figure's colour (default):
@@ -114,6 +120,11 @@ func show_item(id: String) -> void:
 	var look := Items.look(id) if id else {}
 	if look.is_empty():
 		return
+	#  returns before drawing if either its figure cache or
+	# explicit texture cache is empty. Keep that refusal for unused database
+	# rows whose authored picture is absent, rather than painting a fallback.
+	if look.has("texture") and GameData.get_texture(String(look.texture)) == null:
+		return
 	var m := EIFigure.instantiate(look.model, look.get("texture", ""), Vector3.ZERO)
 	if m == null:
 		return
@@ -145,24 +156,27 @@ func show_item(id: String) -> void:
 			sm.uv1_offset = Vector3(0, 1.0 - k, 0)
 			mi.material_override = sm
 	_vp.add_child(m)
-	var q := Quaternion(Vector3(0, 0, 1), -0.157) * Quaternion(Vector3(0, 1, 0), -1.047) \
-		* Quaternion(Vector3(0, 0, 1), 2.356)
+	# Exact original float constants.
+	var q := Quaternion(Vector3(0, 0, 1), -0.1570796371) * Quaternion(Vector3(0, 1, 0), -1.04719758) \
+		* Quaternion(Vector3(0, 0, 1), 2.35619449)
 	_axis = Vector3.ZERO
 	_angle = 0.0
 	_speed = 0.0
 	if quest:
 		q = Quaternion(Vector3(1, 0, 0), PI)
+	elif belt:
+		q = Quaternion(Vector3(1, 0, 0), PI)
 	elif camp:
 		var k := Items.kind(id)
-		if id.begins_with("spell:") or k == "rune":
+		if id.begins_with("spell:") or k in ["keystone", "rune"]:
 			q = Quaternion(Vector3(0, 0, 1), PI)
 		else:
 			q = Quaternion(Vector3(1, 0, 0), PI)
-			if k != "blueprint":
+			if not info and k != "blueprint":
 				_axis = Vector3(1, 1, 0).normalized() if k == "weapon" else Vector3(0, 1, 0)
 	_pulse = -1
 	_phase = 0.0
-	if camp and Items.kind(id) in ["weapon", "armor"] and not Items.spell_of(id).is_empty():
+	if camp and not info and Items.kind(id) in ["weapon", "armor"] and not Items.spell_of(id).is_empty():
 		var st := int(Spells.parse(Items.spell_of(id)).proto.get("subtype_id", 8))
 		if st >= 0 and st < 8:
 			_pulse = st
@@ -173,8 +187,14 @@ func show_item(id: String) -> void:
 	m.quaternion = EISpace.quat(q.w, q.x, q.y, q.z)
 	var box := AABB()
 	var first := true
+	var radius := 0.0
 	for mi: MeshInstance3D in m.find_children("*", "MeshInstance3D", true, false):
-		var b: AABB = m.transform * mi.transform * mi.get_aabb()
+		var local_xf := m.global_transform.affine_inverse() * mi.global_transform
+		var raw_box := mi.get_aabb()
+		for corner in 8:
+			var p := raw_box.position + raw_box.size * Vector3(1 if corner & 1 else 0, 1 if corner & 2 else 0, 1 if corner & 4 else 0)
+			radius = maxf(radius, (local_xf * p).length())
+		var b: AABB = m.transform * local_xf * raw_box
 		box = b if first else box.merge(b)
 		first = false
 	# Unlit: flag 0x100 colours (see the header).
@@ -189,29 +209,73 @@ func show_item(id: String) -> void:
 	var cam := Camera3D.new()
 	cam.projection = Camera3D.PROJECTION_ORTHOGONAL
 	var aspect := size.x / maxf(size.y, 1.0) if size.y > 0 else 1.0
-	# Looking down the EI z axis (screen up = EI -y), where the original's
-	# orientation stands the bottles up.
-	cam.rotation_degrees = Vector3(-90, 180, 0)
-	if unit_px > 0.0 and screen_at.z > 0.0:
+	var at := screen_at
+	var crop_at := Vector2(at.x, at.y)
+	var px := unit_px
+	if info:
+		# The info widget clips its complete 200x300 area. The placed figure
+		# point is 50 below that area's centre (5ee440 / 5ee5c0).
+		crop_at.y -= 50.0
+		var fit := info_placement(look.model, Vector2(at.x, at.y))
+		if not fit.is_empty():
+			# Keep the model at unit scale; moving the camera by z/scale gives
+			# the native perspective, including its off-centre view direction.
+			var d: float = fit.depth / fit.scale
+			at = Vector3(fit.screen.x, fit.screen.y, d)
+			px = 400.0 / K / d * size.x / 200.0
+	# CI3DFigure::Draw and the shipped TLP project all UI item callers with
+	# the same right/down/forward basis, including camp, belt and weapons.
+	cam.rotation_degrees = Vector3(90, 0, 0)
+	if fit_slot:
+		# A sphere around the figure origin contains every possible hovered
+		# orientation, so a long hammer cannot spill into another icon.
+		cam.size = maxf(radius * 2.1, 0.1) * maxf(1.0, 1.0 / aspect)
+		cam.position = Vector3(0, -radius - 2.0, 0)
+		cam.far = radius * 2.0 + 4.0
+	elif px > 0.0 and at.z > 0.0:
 		# The original's perspective (see the header): camera at the origin, the
 		# figure at ((sx/400 − 1)·K·d, (sy/400 − 0.75)·K·d, d) with y down;
 		# the view shows the part of that frustum around (sx, sy).
 		var f := 400.0 / K
-		var d := screen_at.z
-		var lx := (screen_at.x - 400.0) / f * d
-		var ly := -(screen_at.y - 300.0) / f * d
+		var d := at.z
+		var lx := (at.x - 400.0) / f * d
+		var ly := -(at.y - 300.0) / f * d
 		var b := Basis.from_euler(cam.rotation)
 		cam.position = b.z * d - b.x * lx - b.y * ly
 		var n := 1.0
-		cam.set_frustum(maxf(size.y, 1.0) * n / (unit_px * d), Vector2(lx, ly) / d * n, n, d + 50.0)
+		var offset := Vector2(crop_at.x - 400.0, -(crop_at.y - 300.0)) / f * n
+		cam.set_frustum(maxf(size.y, 1.0) * n / (px * d), offset, n, d + 50.0)
 	elif unit_px > 0.0:
 		cam.size = maxf(size.y, 1.0) / unit_px
-		cam.position = Vector3(0, maxf(box.end.y, 0.0) + 2.0, 0)
-		cam.far = cam.position.y - minf(box.position.y, 0.0) + 2.0
+		var distance := maxf(-box.position.y, 0.0) + 2.0
+		cam.position = Vector3(0, -distance, 0)
+		cam.far = distance + maxf(box.end.y, 0.0) + 2.0
 	else:
 		cam.size = maxf(box.size.z, box.size.x / aspect) * 1.1
-		cam.position = box.get_center() + Vector3(0, box.size.length() + 2.0, 0)
+		cam.position = box.get_center() + Vector3(0, -box.size.length() - 2.0, 0)
 	_vp.add_child(cam)
+
+
+##  loads the authored centre and relative min/max at complexion
+## zero. Mode 9 uses +18c/+190 to offset the placed screen point and divides
+## by max(+1a8,+1ac), without rotating/refitting the box to actual vertices.
+static func info_placement(template: String, screen: Vector2, width := 120.0, depth := 3.0) -> Dictionary:
+	var model := EIFigure.get_model(template)
+	if model.is_empty() or model.parts.size() != 1:
+		return {}
+	var fig: Dictionary = model.parts.values()[0]
+	var data: PackedByteArray = fig.data
+	var n := int(fig.n)
+	if n <= 0 or data.size() < 40 + n * 40:
+		return {}
+	var centre := Vector2(data.decode_float(40), data.decode_float(44))
+	var extent := maxf(data.decode_float(40 + n * 24), data.decode_float(44 + n * 24))
+	if extent <= 0.0:
+		return {}
+	var at := screen + Vector2(-centre.x, centre.y) * width * 0.5
+	return {"screen": at, "depth": depth,
+		"position": Vector3((at.x * 0.0025 - 1.0) * K * depth, (at.y * 0.0025 - 0.75) * K * depth, depth),
+		"scale": width * K * depth * 0.00125 / extent}
 
 
 static func _unlit(mat: Material) -> Material:

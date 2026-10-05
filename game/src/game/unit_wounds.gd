@@ -23,13 +23,17 @@ extends RefCounted
 ## texture (same result as the original's second alpha-blended stage where the skin
 ## is opaque); the levels come from the part health, which co-op clients get
 ## in the unit snapshots, so every peer shows them. The unit panel figure
-## (Paperdoll) gets the same layer. **Approx.**: the per-layer blend of the
-## original's composer (renderer) is taken as alpha-over.
+## (Paperdoll) gets the same layer. The composer (renderer
+##  = 2dintmmx.dll) adds source bytes to destination bytes
+## multiplied by (255 − source alpha) / 256, saturating at 255. Its PNT3
+## block skips are retained, then the result is truncated to ARGB4444
+## (renderer +8 =) before the skin-stage blend.
 
 const HUMAN_CODES := ["hd", "bd", "lh", "rh", "ll", "rl"]
 const OTHER_CODES := ["hd", "bd", "h", "h", "l", "l"]
 
 static var _images := {}      # layer file -> Image (or null)
+static var _layer_data := {}  # layer file -> original bytes, including PNT3 block skips
 static var _composites := {}  # "base instance id|mask|levels" -> Texture2D
 ## Base texture instance id -> its RGBA8 image without mipmaps: get_image()
 ## reads the texture back from the GPU (a RenderingServer sync), so once per
@@ -195,6 +199,7 @@ static func shutdown() -> void:
 	_composites.clear()
 	_bases.clear()
 	_images.clear()
+	_layer_data.clear()
 	var tree := Engine.get_main_loop() as SceneTree
 	if _polling and tree and tree.process_frame.is_connected(_poll):
 		tree.process_frame.disconnect(_poll)
@@ -238,11 +243,13 @@ static func _wounded(base: Texture2D, mask: String, lv: PackedByteArray, human: 
 		if lv[i] == 0:
 			continue
 		var name := "%s%sw%d" % [mask, codes[i], lv[i]]
+		if not _layer_data.has(name):
+			_layer_data[name] = _layer_bytes(name)
+		var d: PackedByteArray = _layer_data[name]
 		if _images.has(name):
-			layers.append([name, _images[name], PackedByteArray()])
+			layers.append([name, _images[name], d])
 			any = any or _images[name] != null
 		else:
-			var d := _layer_bytes(name)
 			layers.append([name, null, d])
 			any = any or not d.is_empty()
 	if not any:
@@ -271,7 +278,8 @@ static func _wounded(base: Texture2D, mask: String, lv: PackedByteArray, human: 
 ## Worker: decodes the new layers, composes them and blends
 ## the result over the base image. Touches only the job's own images.
 static func _build(job: Dictionary) -> void:
-	var comp: Image = null
+	var pixels := PackedByteArray()
+	var dims := Vector2i.ZERO
 	for l: Array in job.layers:
 		var img: Image = l[1]
 		if img == null and not (l[2] as PackedByteArray).is_empty():
@@ -281,20 +289,62 @@ static func _build(job: Dictionary) -> void:
 			job.decoded[l[0]] = null
 		if img == null:
 			continue
-		if comp == null:
-			comp = Image.create(img.get_width(), img.get_height(), false, Image.FORMAT_RGBA8)
-		elif img.get_size() != comp.get_size():
+		if pixels.is_empty():
+			dims = img.get_size()
+			pixels.resize(dims.x * dims.y * 4)
+		elif img.get_size() != dims:
 			continue   # "dimensions are incorrect"
-		comp.blend_rect(img, Rect2i(Vector2i.ZERO, img.get_size()), Vector2i.ZERO)
+		var d: PackedByteArray = l[2]
+		var pnt3 := d.size() >= EIMmp.DATA_OFFSET and d.decode_u32(16) == 0x33544e50
+		pixels = _blend_native(pixels, d.slice(EIMmp.DATA_OFFSET) if pnt3 else img.get_data(), pnt3, pnt3)
 	var src: Image = job.src
-	if comp == null or src == null:
+	if pixels.is_empty() or src == null:
 		return
+	pixels = _argb4444(pixels)
+	var comp := Image.create_from_data(dims.x, dims.y, false, Image.FORMAT_RGBA8, pixels)
 	var out := src.duplicate() as Image
 	if comp.get_size() != out.get_size():
 		comp.resize(out.get_width(), out.get_height(), Image.INTERPOLATE_BILINEAR)
 	out.blend_rect(comp, Rect2i(Vector2i.ZERO, comp.get_size()), Vector2i.ZERO)
 	out.generate_mipmaps()
 	job.out = out
+
+
+## Native MMX composer. Both branches work in four-pixel blocks. PNT3
+## holds BGRA bytes, with a nonzero alpha-0 dword skipping that many bytes;
+## a zero dword at the block start leaves just that first pixel untouched.
+## The unpacked branch uses the second pixel's alpha for the first pixel,
+## exactly as the DLL does. All shipped wound layers use the PNT3 branch.
+static func _blend_native(dst: PackedByteArray, src: PackedByteArray, pnt3 := true, bgra := true) -> PackedByteArray:
+	var at := 0
+	var sp := 0
+	while at + 16 <= dst.size() and sp + 4 <= src.size():
+		if pnt3 and src[sp + 3] == 0:
+			var skip := src.decode_u32(sp)
+			if skip != 0:
+				at += skip
+				sp += 4
+				continue
+		if sp + 16 > src.size():
+			break
+		for pixel in 4:
+			if pnt3 and pixel == 0 and src[sp + 3] == 0:
+				continue
+			var from := sp + pixel * 4
+			var to := at + pixel * 4
+			var alpha := int(src[sp + 7] if not pnt3 and pixel == 0 else src[from + 3])
+			for c in 4:
+				var channel := 2 - c if bgra and c < 3 else c
+				dst[to + c] = mini(255, int(src[from + channel]) + ((int(dst[to + c]) * (255 - alpha)) >> 8))
+		at += 16
+		sp += 16
+	return dst
+
+
+static func _argb4444(pixels: PackedByteArray) -> PackedByteArray:
+	for i in pixels.size():
+		pixels[i] = (int(pixels[i]) >> 4) * 17
+	return pixels
 
 
 static func _layer_bytes(name: String) -> PackedByteArray:
