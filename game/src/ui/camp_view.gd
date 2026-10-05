@@ -1377,6 +1377,10 @@ func side_buttons() -> Array:
 		match b:
 			"exit": out.append(b)
 			"accept", "cancel":
+				# Training applies on each skill/perk click; this screen has
+				# no pending deal for these controls to accept or cancel.
+				if mode == "spells" and GameData.option("ui_active_buttons") != 0:
+					continue
 				if not (mode == "weapons" and (not item_group() or _noconstr())):
 					out.append(b)
 			"weapons", "spells":
@@ -1460,8 +1464,8 @@ func pad_active() -> bool:
 
 
 static func _row_arrow_rect(y0: float, right: bool) -> Rect2:
-	# Include the whole painted triangle: x 46..62 / 738..754. Item
-	# cells overlap the tip, so arrow hit tests run before item hit tests.
+	# Keep the corrected target, including the adjacent cell's edge;
+	# arrow hit tests run before item hit tests.
 	return Rect2(738 if right else 30, y0 + 35, 32, 30)
 
 
@@ -1968,11 +1972,21 @@ func _region(tex: String, dest: Rect2, uv: Rect2, mod := Color.WHITE) -> void:
 
 ## An item row (bag at y 500 on Inventory01, trader's goods at y 0 on
 ## Inventory02): cells, end caps (the left one mirrored), filters, arrows.
+static func _row_end_uv(pos: float, count: int, right: bool) -> Rect2:
+	# the original shaded arrow is in the next 50-pixel
+	# atlas strip. Figure shifts U by 50/256 while scrolling is possible.
+	var show_arrow := pos < count - BAG_CELLS if right else pos > 0.0
+	var u := (142 if right else 192) + (50 if show_arrow else 0)
+	return Rect2(u, 14, 50 if right else -50, 100)
+
+
 func _draw_row(y0: float, tex: String, fset: Array, sel: int) -> void:
 	for i in BAG_CELLS:
 		_region(tex, Rect2(50 + i * 100, y0, 100, 100), Rect2(14, 14, 100, 100))
-	_region(tex, Rect2(0, y0, 50, 100), Rect2(192, 14, -50, 100))
-	_region(tex, Rect2(750, y0, 50, 100), Rect2(142, 14, 50, 100))
+	var pos := 0 if fset.is_empty() else (shop_scroll if y0 == 0 else scroll)
+	var count := 0 if fset.is_empty() else (shop_items().size() if y0 == 0 else bag_items().size())
+	_region(tex, Rect2(0, y0, 50, 100), _row_end_uv(pos, count, false))
+	_region(tex, Rect2(750, y0, 50, 100), _row_end_uv(pos, count, true))
 	if fset.is_empty():
 		return   # the swap screen's name row (hides the filters)
 	for i in FILTER_RECTS.size():
@@ -1980,12 +1994,6 @@ func _draw_row(y0: float, tex: String, fset: Array, sel: int) -> void:
 		var uv: Rect2 = FILTER_UV[i]
 		uv.position.x += fset[0]
 		_region(tex, Rect2(r.position + Vector2(0, y0), r.size), uv, Color.WHITE if i == sel else Color(0.6, 0.6, 0.6))
-	var s := _s()
-	for side in [[Vector2(48, y0 + 50), -1.0], [Vector2(752, y0 + 50), 1.0]]:
-		var c: Vector2 = _o() + side[0] * s
-		var d: float = side[1]
-		draw_colored_polygon(PackedVector2Array([c + Vector2(d * 2, 0) * s, c + Vector2(-d * 14, -12) * s,
-			c + Vector2(-d * 14, 12) * s]), Color(0.85, 0.7, 0.35))
 
 
 func _draw() -> void:
@@ -2416,6 +2424,9 @@ func _draw_side() -> void:
 	# Mode title.
 	_t(Rect2(600, 410, 200, 20), _str(MODE_TITLES.get(mode, "")), 1, Color.WHITE, HORIZONTAL_ALIGNMENT_CENTER)
 	if mode == "spells":
+		if GameData.option("ui_active_buttons") != 0:
+			_tb(Rect2(12, 450, 176, 15), RemakeText.t("Changes apply immediately."),
+				0, Interface800.TEXT, 3)
 		_draw_skills()
 
 

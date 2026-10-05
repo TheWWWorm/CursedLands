@@ -69,6 +69,10 @@ var _pose_clip := ""
 var _pose_time := -1.0
 var _anim_roots: Array[EIAnimPart] = []
 var _wound_levels := PackedByteArray()
+var _preview_pending := false
+var _preview_drawn := false
+var _preview_alpha := 1.0
+var _preview_update := SubViewport.UPDATE_WHEN_VISIBLE
 
 
 func _ready() -> void:
@@ -79,6 +83,16 @@ func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE if camp_frame else Control.MOUSE_FILTER_STOP
 	if camp_frame:
 		_camp_material()
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_EXIT_TREE:
+		_disconnect_preview_draw()
+	elif what == NOTIFICATION_ENTER_TREE or what == NOTIFICATION_VISIBILITY_CHANGED:
+		if _preview_pending and is_visible_in_tree():
+			_arm_preview_draw()
+		elif not is_visible_in_tree():
+			_disconnect_preview_draw()
 
 
 ##  clip mode 1 (the camp's six rects) or, with `camp_clip` set
@@ -188,6 +202,8 @@ func _ensure_view() -> void:
 	_vp.transparent_bg = true
 	_vp.msaa_3d = Viewport.MSAA_4X
 	add_child(_vp)
+	_vp.size_changed.connect(_wait_for_draw)
+	_wait_for_draw()
 	_cam = Camera3D.new()
 	_vp.add_child(_cam)
 	# Lit like the game world (the original draws the preview figure with the
@@ -202,6 +218,59 @@ func _ensure_view() -> void:
 	env.environment.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
 	env.environment.ambient_light_color = Color(0.42, 0.42, 0.45)
 	_vp.add_child(env)
+
+
+## Initial allocation and resize invalidate the image even when the same
+## viewport is retained. Present it only after a draw with the figure framed.
+func _wait_for_draw() -> void:
+	if not _preview_pending:
+		_preview_alpha = self_modulate.a
+		# The container itself disables viewports under a hidden parent. A
+		# hidden resize must retain the visible policy rather than that pause.
+		if is_visible_in_tree() or _vp.render_target_update_mode != SubViewport.UPDATE_DISABLED:
+			_preview_update = _vp.render_target_update_mode
+	_preview_pending = true
+	_preview_drawn = false
+	self_modulate.a = 0.0
+	if is_inside_tree() and is_visible_in_tree():
+		_arm_preview_draw()
+
+
+func _arm_preview_draw() -> void:
+	if not is_instance_valid(_vp):
+		return
+	_vp.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+	if not RenderingServer.frame_pre_draw.is_connected(_before_preview_draw):
+		RenderingServer.frame_pre_draw.connect(_before_preview_draw)
+	if not RenderingServer.frame_post_draw.is_connected(_after_preview_draw):
+		RenderingServer.frame_post_draw.connect(_after_preview_draw)
+
+
+func _before_preview_draw() -> void:
+	_preview_drawn = is_visible_in_tree() and is_instance_valid(_vp) and _vp.is_inside_tree() \
+		and _vp.size.x > 1 and _vp.size.y > 1 \
+		and (not is_instance_valid(_model) or _framed >= 3)
+	if _preview_drawn:
+		_vp.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+
+
+func _after_preview_draw() -> void:
+	if not _preview_drawn:
+		return
+	_preview_pending = false
+	self_modulate.a = _preview_alpha
+	_vp.render_target_update_mode = _preview_update
+	_disconnect_preview_draw()
+
+
+func _disconnect_preview_draw() -> void:
+	_preview_drawn = false
+	if _preview_pending and is_instance_valid(_vp):
+		_vp.render_target_update_mode = SubViewport.UPDATE_DISABLED
+	if RenderingServer.frame_pre_draw.is_connected(_before_preview_draw):
+		RenderingServer.frame_pre_draw.disconnect(_before_preview_draw)
+	if RenderingServer.frame_post_draw.is_connected(_after_preview_draw):
+		RenderingServer.frame_post_draw.disconnect(_after_preview_draw)
 
 
 ## The new figure is framed (and posed): show it, drop the previous one.

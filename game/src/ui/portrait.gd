@@ -38,6 +38,11 @@ var _key := ""
 var _model: Node3D
 var _cam: Camera3D
 var _framed := 0
+var _vp: SubViewport
+var _preview_pending := false
+var _preview_drawn := false
+var _preview_alpha := 1.0
+var _preview_update := SubViewport.UPDATE_WHEN_VISIBLE
 # Expressions: the face texture gets suffix
 # "c" for 2 s when health drops, "a" for 4 s on kill ack 0x30 (and, remake
 # option "smile_faces", the moments of SmileFaces), otherwise "b" below 25 %
@@ -77,6 +82,13 @@ func _ready() -> void:
 
 
 func _notification(what: int) -> void:
+	if what == NOTIFICATION_EXIT_TREE:
+		_disconnect_preview_draw()
+	elif what == NOTIFICATION_ENTER_TREE or what == NOTIFICATION_VISIBILITY_CHANGED:
+		if _preview_pending and is_visible_in_tree():
+			_arm_preview_draw()
+		elif not is_visible_in_tree():
+			_disconnect_preview_draw()
 	if what == NOTIFICATION_PREDELETE and is_instance_valid(_unit) and _live.get(_unit.get_instance_id()) == self:
 		_live.erase(_unit.get_instance_id())
 		_left[_unit.get_instance_id()] = [_expression, _expression_t, _flash_t, _last_hp]
@@ -111,6 +123,8 @@ func show_unit(u: GameUnit) -> void:
 	if key == _key:
 		return
 	_key = key
+	if is_instance_valid(_vp) and _vp.size_changed.is_connected(_wait_for_draw):
+		_vp.size_changed.disconnect(_wait_for_draw)
 	for c in get_children():
 		c.queue_free()
 	_mats.clear()
@@ -123,6 +137,9 @@ func show_unit(u: GameUnit) -> void:
 	vp.own_world_3d = true
 	vp.transparent_bg = true
 	add_child(vp)
+	_vp = vp
+	_vp.size_changed.connect(_wait_for_draw)
+	_wait_for_draw()
 	if _infa_face(vp, u):
 		return
 	var info: Dictionary = u.info.duplicate()
@@ -217,6 +234,8 @@ func show_proto(proto_name: String, c := Vector3.ZERO) -> void:
 		return
 	_key = key
 	_unit = null
+	if is_instance_valid(_vp) and _vp.size_changed.is_connected(_wait_for_draw):
+		_vp.size_changed.disconnect(_wait_for_draw)
 	for ch in get_children():
 		ch.queue_free()
 	_mats.clear()
@@ -229,10 +248,67 @@ func show_proto(proto_name: String, c := Vector3.ZERO) -> void:
 	vp.own_world_3d = true
 	vp.transparent_bg = true
 	add_child(vp)
+	_vp = vp
+	_vp.size_changed.connect(_wait_for_draw)
+	_wait_for_draw()
 	var proto := GameData.db.find("monster_prototypes", proto_name)
 	var race := GameData.db.find("race_models", String(proto.get("base_race", "")))
 	_build_face(vp, proto_face_names(proto, race, c), c if c != Vector3.ZERO else GameUnit.proto_complexion(proto))
 	set_process(false)
+
+
+## Allocated and resized render targets have no image until their first
+## draw. Keep only this container's texture transparent while the viewport
+## clears/renders; the parent's tint and the damage flash remain independent.
+func _wait_for_draw() -> void:
+	if not _preview_pending:
+		_preview_alpha = self_modulate.a
+		# The container itself disables viewports under a hidden parent. A
+		# hidden resize must retain the visible policy rather than that pause.
+		if is_visible_in_tree() or _vp.render_target_update_mode != SubViewport.UPDATE_DISABLED:
+			_preview_update = _vp.render_target_update_mode
+	_preview_pending = true
+	_preview_drawn = false
+	self_modulate.a = 0.0
+	if is_inside_tree() and is_visible_in_tree():
+		_arm_preview_draw()
+
+
+func _arm_preview_draw() -> void:
+	if not is_instance_valid(_vp):
+		return
+	_vp.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+	if not RenderingServer.frame_pre_draw.is_connected(_before_preview_draw):
+		RenderingServer.frame_pre_draw.connect(_before_preview_draw)
+	if not RenderingServer.frame_post_draw.is_connected(_after_preview_draw):
+		RenderingServer.frame_post_draw.connect(_after_preview_draw)
+
+
+func _before_preview_draw() -> void:
+	_preview_drawn = is_visible_in_tree() and is_instance_valid(_vp) and _vp.is_inside_tree() \
+		and _vp.size.x > 1 and _vp.size.y > 1 \
+		and (not is_instance_valid(_model) or not _mats.is_empty() or _framed >= 2)
+	if _preview_drawn:
+		_vp.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+
+
+func _after_preview_draw() -> void:
+	if not _preview_drawn:
+		return
+	_preview_pending = false
+	self_modulate.a = _preview_alpha
+	_vp.render_target_update_mode = _preview_update
+	_disconnect_preview_draw()
+
+
+func _disconnect_preview_draw() -> void:
+	_preview_drawn = false
+	if _preview_pending and is_instance_valid(_vp):
+		_vp.render_target_update_mode = SubViewport.UPDATE_DISABLED
+	if RenderingServer.frame_pre_draw.is_connected(_before_preview_draw):
+		RenderingServer.frame_pre_draw.disconnect(_before_preview_draw)
+	if RenderingServer.frame_post_draw.is_connected(_after_preview_draw):
+		RenderingServer.frame_post_draw.disconnect(_after_preview_draw)
 
 
 func _infa_face(vp: SubViewport, u: GameUnit) -> bool:

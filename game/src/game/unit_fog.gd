@@ -22,10 +22,13 @@ extends Node
 ## i.e. a conversation; the original's SetCameraPosition / SetCameraOrientation
 ## PlayCamera are called by no shipped .mob script)
 ## nothing is fogged, so story scenes never show empty spots.
-## Always listed: the player's own units, its noticed / seen-corpse list
+## Native server relevance always includes the player's own units and its
+## noticed / seen-corpse list
 ## and map units with script names (server
 ## ). The temporary player list is not yet reproduced
-## only units are hidden, map objects never.
+## only units are hidden, map objects never. Remake party sight (single
+## player option / campaign co-op) does not reveal script-named units merely
+## because they need to remain available to the server's scripts.
 
 const REFRESH := 0.1
 const CAMERA_RANGE := 100.0   # single player: list radius round the camera
@@ -61,7 +64,8 @@ func _process(dt: float) -> void:
 		return
 	_t = REFRESH
 	var on := active()
-	_always = always_for(game.session, game.session.my_index)
+	_always = sight_list_for(game.session, game.session.my_index) if on and game.session.lmp.is_empty() \
+		else always_for(game.session, game.session.my_index)
 	if not on and not _was_on:
 		return
 	_was_on = on
@@ -106,7 +110,7 @@ static func party_eyes_for(w: GameWorld, player: int, shared := false) -> Array:
 
 ## Player, used by NPC reaction acknowledgements.
 ## It includes retained perception, not every unit inside a camera radius.
-static func noticed_for(s: Session, player: int) -> Array[GameUnit]:
+static func noticed_for(s: Session, player: int, living_sources_only := false) -> Array[GameUnit]:
 	var out: Array[GameUnit] = []
 	if s == null or s.world == null:
 		return out
@@ -117,6 +121,8 @@ static func noticed_for(s: Session, player: int) -> Array[GameUnit]:
 		if not is_instance_valid(m) or m.controller < 0 or (not shared and m.controller != player):
 			continue
 		ids[m.uid] = true
+		if living_sources_only and (m.dead or m.hidden):
+			continue
 		if not w.authority:
 			for id: int in m.get_meta("net_noticed", []):
 				if w.units.has(id):
@@ -132,6 +138,16 @@ static func noticed_for(s: Session, player: int) -> Array[GameUnit]:
 	for u: GameUnit in w.units.values():
 		if is_instance_valid(u) and not u.hidden and ids.has(u.uid):
 			out.append(u)
+	return out
+
+
+## Rendering under remake party sight uses actual party perception, never
+## the native server's script-name registration. Dead / hidden sources may
+## retain native perception for scripts, but cannot reveal distant enemies.
+static func sight_list_for(s: Session, player: int) -> Dictionary:
+	var out := {}
+	for u: GameUnit in noticed_for(s, player, true):
+		out[u.uid] = true
 	return out
 
 

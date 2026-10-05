@@ -52,3 +52,4 @@ func _apply_key() -> void:
 		_has_applied = true
 	for child in animation_children:
 		child._apply_key()
+

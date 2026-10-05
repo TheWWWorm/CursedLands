@@ -60,6 +60,8 @@ Download the package for your system from the [Releases](https://github.com/TheW
 
 In a camp's skills screen, **Refund all points** returns the experience spent on training for redistribution. Starting skills and attributes, free quest rewards and total earned experience are kept. Older characters are supported when their paid training can be reconstructed safely.
 
+Training purchases apply immediately. The default interface hides the unused Accept/Cancel controls on the skills screen and explains this; trade controls still reflect the current transaction.
+
 ## Co-op
 
 In **Multiplayer**, one player chooses **Host co-op campaign** (a new game or one of their saves); the others choose **Join co-op campaign** and pick the game from the list of games on the local network, or enter the host's address (add `:port` for a game hosted on another port). The host's machine runs the world, and every player controls their own hero and the mercenaries they hire.

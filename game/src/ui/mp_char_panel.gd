@@ -444,8 +444,30 @@ func _pm(y: float, minus_ok: bool, plus_ok: bool) -> void:
 func _draw_help() -> void:
 	if _hover_help.is_empty():
 		return
+	if _hover_help.size() > 2 and _hover_help[2] is Dictionary and _hover_help[2].get("t") == "perk":
+		# The same native info-widget as the camp: a family title/prose
+		# and three rank blocks, rather than a rank's short label as prose.
+		_help_block(Rect2(615, 110, 170, 15), String(_hover_help[0]), Color.WHITE, 2)
+		var y := 140.0
+		for row: Dictionary in _hover_help[2].ranks:
+			text(Rect2(615, y, 170, 15), String(row.title), 0, TEXT)
+			if row.known:
+				text(Rect2(615, y, 170, 15), CampView._str("infoskill_21"), 0, TEXT, HORIZONTAL_ALIGNMENT_RIGHT)
+			text(Rect2(615, y + 15, 170, 15), String(row.effect), 0, TEXT)
+			text(Rect2(615, y + 30, 185, 15), "     %s %d" % [CampView._str("infoskill_18"), int(row.cost)], 0, TEXT)
+			y += 45.0
+		_help_block(Rect2(615, 290, 170, 15), String(_hover_help[1]), TEXT, 6)
+		return
 	text_block(Rect2(615, 110, 170, 30), String(_hover_help[0]), 0, Color.WHITE, HORIZONTAL_ALIGNMENT_CENTER)
 	text_block(Rect2(615, 140, 170, 340), String(_hover_help[1]), 0, TEXT, HORIZONTAL_ALIGNMENT_CENTER)
+
+
+func _help_block(rect: Rect2, value: String, colour: Color, max_lines: int) -> void:
+	var lines := wrap_text(value, rect.size.x, 0)
+	var height := line_h(0)
+	for i in mini(lines.size(), max_lines):
+		text(Rect2(rect.position + Vector2(0, height * i), Vector2(rect.size.x, height)),
+			lines[i], 0, colour, HORIZONTAL_ALIGNMENT_CENTER)
 
 
 ## The edit box: text and, while editing, the caret.
@@ -530,11 +552,21 @@ func _draw_skills(h: Dictionary) -> void:
 			sprite(t, Rect2(350, r.position.y, 40, 15), [124, 138, 164, 153])
 			text(r, CampView._cost_text(c), 0, TEXT if xp >= c else DIMMED, HORIZONTAL_ALIGNMENT_RIGHT)
 		_skill_rows.append([r, "skill", sk, _perk(sk)])
-	var y := 230.0
+	var learned := {}
+	for code: String in h.get("perks", []):
+		var family := code.rstrip("0123456789")
+		var rank := int(code.substr(family.length())) if code.length() > family.length() else 1
+		learned[family] = maxi(int(learned.get(family, 0)), rank)
+	#  known list starts 230 below the widget's y100
+	# origin, after its heading at305; y230 overlaps the Astral skill.
+	var y := 330.0
 	for code: String in h.get("perks", []):
 		if y > 470.0:
 			break
-		text(Rect2(215, y, 165, 15), Perks.title(code), 0, TEXT)
+		var rect := Rect2(215, y, 165, 15)
+		text(rect, Perks.title(code), 0, TEXT)
+		_skill_rows.append([rect, "perk_help", code,
+			CampView._perk_desc(code, int(learned[code.rstrip("0123456789")]), h)])
 		y += 15.0
 	var avail := Perks.available(h).filter(func(code): return String(code).ends_with("1"))
 	y = 135.0
@@ -545,7 +577,7 @@ func _draw_skills(h: Dictionary) -> void:
 		text(r, CampView._perk_family(code.rstrip("0123456789")), 0, TEXT)
 		sprite(t, Rect2(550, y, 40, 15), [124, 138, 164, 153])
 		text(r, CampView._cost_text(c), 0, TEXT if xp >= c else DIMMED, HORIZONTAL_ALIGNMENT_RIGHT)
-		_skill_rows.append([r, "perk", code, [Perks.title(code), _perk(code)[1]]])
+		_skill_rows.append([r, "perk", code, CampView._perk_desc(code, 0, h)])
 		y += 15.0
 
 
@@ -606,6 +638,8 @@ func _hit(p: Vector2) -> Array:
 					return ["item", c[2], c[3]]
 			for r: Array in _skill_rows:
 				if (r[0] as Rect2).has_point(p):
+					if r[1] == "perk_help":
+						return ["perk_help", r[3]]
 					return ["train", r[1], r[2], r[3]]
 	return []
 
@@ -662,6 +696,7 @@ func _update_help(h: Array) -> void:
 			"help": help = [_txt(h[1], ""), _desc(String(h[1]) + "_desc")]
 			"voice": help = [_txt("string lmp_select_voice", ""), _desc("string lmp_select_voice_desc")]
 			"train": help = h[3]
+			"perk_help": help = h[1]
 			"item": help = [Items.title(("spell:" + String(h[2])) if h[1] == "spell" else String(h[2])), ""]
 	if help != _hover_help:
 		_hover_help = help

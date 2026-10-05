@@ -20,7 +20,7 @@ config/icon="res://icon.svg"
 run/main_scene="res://scenes/main.tscn"
 run/flush_stdout_on_print=true
 config/features=PackedStringArray("4.7")
-config/version="1.0.1"
+config/version="1.0.2"
 config/project_settings_override.android="user://renderer.cfg"
 
 [autoload]

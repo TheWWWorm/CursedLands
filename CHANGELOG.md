@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.0.2
+
+- Visibility:
+  - Fixed distant enemies appearing in the world and minimap merely because campaign scripts give them names. Applies to fresh games and loaded saves; co-op still shares sight through living party members.
+- Co-op:
+  - Client movement-mode controls now play the live posture transition instead of using the instant pose restoration intended for loading saves.
+- Interface:
+  - Restored full original ability descriptions and rank details in the multiplayer character screen, including hover help for learned abilities. Corrected learned-row placement so the rows no longer overlap skill controls.
+  - Training applies each purchase immediately. The default interface now explains this and hides the unused Accept/Cancel controls on that screen; transaction controls retain their actual enabled states.
+  - Inventory and shop scrolling now use the original shaded arrow artwork and scrolling states, while keeping the corrected click targets.
+- Loading:
+  - Keep newly created or resized portrait and character previews transparent until their first rendered image is ready. Hidden previews suspend rendering and retain their previous update policy.
+
 ## 1.0.1
 
 - Co-op:

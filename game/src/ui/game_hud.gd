@@ -925,7 +925,11 @@ func set_move_mode(mode: String) -> void:
 	if not game.session.is_host:
 		for u: GameUnit in game.selected:
 			if is_instance_valid(u):
-				u.restore_gait(g)   # shown at once; the host's snapshots confirm it
+				# Predict the live posture without the quiet save/load snap.
+				# Acknowledgements and passability remain host-authoritative.
+				u.stance = GameUnit.STANCE_CRAWL if g == 0 else GameUnit.STANCE_KNEEL if g == 1 else GameUnit.STANCE_NONE
+				u.gait_run = g == 3
+				u._update_pose()
 	_rebuild_party()
 
 
