@@ -95,6 +95,9 @@ var host_clock := false
 ## and present their loading screen before the host rebuilds the world.
 var loading_game := false
 var _load_serial := 0
+## Pool events need the host's epoch even for a join after a finished load.
+## This wire fence is separate from the client's local load transaction.
+var _pool_epoch := -1
 var _load_waiting := {}
 var _remote_loading := false
 var _remote_load_end_serial := -1
@@ -239,6 +242,7 @@ func join(address: String, port := PORT) -> Error:
 	online = true
 	is_host = false
 	_water_received = -1
+	_pool_epoch = -1
 	return OK
 
 
@@ -769,7 +773,7 @@ func _publish_zone() -> void:
 			lmp_travel.publish()
 			return
 		_rpc_zone.rpc(zone_id, _unit_records(), world.diplomacy, _extra_mobs(),
-			String(world.zone.get("mpr", "")), _lever_states())
+			String(world.zone.get("mpr", "")), _lever_states(), _load_serial)
 		_send_world_state(0)
 
 
@@ -973,9 +977,10 @@ func _spawn_record(r: Dictionary) -> GameUnit:
 
 
 @rpc("authority", "call_remote", "reliable")
-func _rpc_zone(id: String, records: Array, diplo: PackedInt32Array, extra_mobs: Array, mpr := "", levers := {}) -> void:
+func _rpc_zone(id: String, records: Array, diplo: PackedInt32Array, extra_mobs: Array, mpr := "", levers := {}, pool_epoch := 0) -> void:
+	_pool_epoch = maxi(_pool_epoch, int(pool_epoch))
 	if _zone_holding:
-		_zone_held.append(_rpc_zone.bind(id, records, diplo, extra_mobs, mpr, levers))
+		_zone_held.append(_rpc_zone.bind(id, records, diplo, extra_mobs, mpr, levers, pool_epoch))
 		return
 	if game == null:
 		zone_received.emit()
@@ -3647,6 +3652,18 @@ func _on_event(event: Dictionary) -> void:
 		ParticleFx.of(world).on_event(event)
 	if world and t == "blood":   # the hit's blood mark (visual only, every peer)
 		GroundMarks.of(world).hit(event)
+	if world and t == "blood_pool":
+		if String(event.get("zone", "")) != String(world.zone.get("id", "")):
+			return
+		if lmp.is_empty() and event.get("pool_epoch") != (_load_serial if is_host else _pool_epoch):
+			return
+		var uid: Variant = event.get("uid")
+		if not (uid is int or uid is float) or not is_finite(float(uid)) \
+				or float(uid) <= 0.0 or float(uid) > 0xffffffff or float(uid) != float(int(uid)):
+			return
+		var u: Variant = world.units.get(int(uid))
+		if typeof(u) == TYPE_OBJECT and is_instance_valid(u) and u is GameUnit and not u.is_queued_for_deletion():
+			GroundMarks.of(world).pool(u)
 	if t == "hitnum":   # floating hit / experience number (every peer)
 		if world and event.get("xp_stats") is Dictionary:
 			var xp_unit: GameUnit = world.units.get(int(event.get("uid", -1)))
@@ -3944,7 +3961,7 @@ func _spawn_late_joiner(idx: int, pid: int) -> void:
 	if not fresh.is_empty():
 		state.apply_follow(world, "follow_live", fresh)
 	_rpc_zone.rpc_id(pid, zone_id, _unit_records(), world.diplomacy, _extra_mobs(),
-		String(world.zone.get("mpr", "")), _lever_states())
+		String(world.zone.get("mpr", "")), _lever_states(), _load_serial)
 	_send_world_state(pid)
 	for u in fresh:
 		announce_unit(u, pid)
@@ -3974,8 +3991,8 @@ func _on_peer_connected(pid: int) -> void:
 
 func _relax_timeout(pid: int) -> void:
 	var enet := NetSim.enet_of(multiplayer)
-	if enet == null:
-		return
+	if enet == null or (not is_host and pid != 1):
+		return   # clients have a direct ENet transport only to their server
 	var p := enet.get_peer(pid)
 	if p:
 		p.set_timeout(0, PEER_TIMEOUT_MS, PEER_TIMEOUT_MS)
@@ -4196,6 +4213,7 @@ func _wait_load_clients() -> void:
 
 @rpc("authority", "call_remote", "reliable")
 func _rpc_load_prepare(serial: int, id: String) -> void:
+	_pool_epoch = maxi(_pool_epoch, serial)
 	if serial <= _load_serial:
 		return
 	_load_serial = serial

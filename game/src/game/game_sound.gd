@@ -390,16 +390,8 @@ func _near_units(u: GameUnit) -> Array:
 		var r := maxf((float(u.stats.get("sight", 15.0)) + u.sense_bonus(0)) * u.sight_factor(), u.sense(2))
 		var grid := UnitAI._friend_grid(r * 2.0 / 32.0)
 		var cells: Dictionary = grid.cells
-		var c0 := _combat_cell(u)
-		var near := []
 		var radius := float(int(grid.reach) + 1) * 16.0 * 1.5
-		if _unit_query:
-			near = _unit_query.in_cells(_world.units_near(u.pos, radius), u, u.pos, cells, true)
-		else:
-			for o: GameUnit in _world.live_units_near(u.pos, radius):
-				var oc := _combat_cell(o)
-				if o != u and cells.has(oc - c0):
-					near.append(o)
+		var near := _world.notice_units_near(u, radius, cells, true, false)
 		row = {"until": _world.time + float((randi() & 3) + 8) * TICK, "units": near}
 		_combat_near[u.uid] = row
 	# A connection can leave this live world between native cache refreshes.

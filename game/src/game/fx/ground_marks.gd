@@ -6,8 +6,9 @@ extends Node3D
 ## (list, registry EnableFireprints). One per GameWorld
 ## on every peer and visual only: footprints come from each unit's walk / run
 ## clip step frames as this peer animates it, blood marks from the broadcast
-## "blood" hit event and from deaths seen here, scorch marks from the effects
-## ParticleFx creates here; nothing is replicated. The original does not keep marks
+## "blood" hit event and the authoritative "blood_pool" UID event, scorch
+## marks from the effects ParticleFx creates here. Only creation events are
+## replicated. The original does not keep marks
 ## in a savegame (loading empties the three lists), nor does the
 ## remake. The heavy-monster step shake is
 ## made here too, from the same step frames.
@@ -349,7 +350,7 @@ func hit(ev: Dictionary) -> void:
 
 ##  (unit controller): a pool of (w + h) / 2 of the
 ## body ("bd"; else 0.75 × the smaller horizontal unit extent) growing to 3×, cell
-## 2 + rand(2). Remake: made when a unit's death clip has played.
+## 2 + rand(2). Called by the authoritative death-queue UID event.
 func pool(u: GameUnit) -> void:
 	var bt := int(u.race.get("blood_type", 0))
 	if bt < 1 or bt > 4:
@@ -367,8 +368,7 @@ func pool(u: GameUnit) -> void:
 	add_blood(p.x, p.y, r, r * 3.0, (_rng.randi() % 2 + 2) | ((bt - 1) << 16), false)
 
 
-## Units each frame: the step frames of the walk / run clip and
-## deaths.
+## Units each frame: the step frames of the walk / run clip.
 func _scan_units() -> void:
 	if world == null or world.terrain == null:
 		return
@@ -380,21 +380,10 @@ func _scan_units() -> void:
 		seen[key] = true
 		var st: Dictionary = _units.get(key, {})
 		if st.is_empty():
-			st = {"clip": "", "frame": 0.0, "bloody": -1, "left": 0, "dead": u.dead, "dead_at": -1, "wait": 0}
+			st = {"clip": "", "frame": 0.0, "bloody": -1, "left": 0, "wait": 0}
 			_units[key] = st
 		if u.dead:
-			if not st.dead:   # died here: the pool once the death clip has played
-				st.dead = true
-				var pl := u.model.player
-				var len := pl.current_animation_length if pl.current_animation != "" else 1.0
-				st.dead_at = tick + roundi(len / TICK)
-			elif st.dead_at >= 0 and tick >= st.dead_at:
-				st.dead_at = -1
-				if u.visible:
-					pool(u)
 			continue
-		st.dead = false
-		st.dead_at = -1
 		_step_frames(u, st)
 	if _units.size() > seen.size():
 		for k in _units.keys():
@@ -512,6 +501,8 @@ func _unit(uid) -> GameUnit:
 
 
 func _part(u: GameUnit, name: String) -> Node3D:
+	if u.model:
+		u.model.flush_pending_pose()
 	return u.model.find_child(name, true, false) as Node3D if u.model else null
 
 

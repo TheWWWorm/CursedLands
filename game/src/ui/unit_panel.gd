@@ -10,7 +10,8 @@ extends Control
 ##     3,94, tip 10103), spell effects (190..220, UV 233,112, tip 10104);
 ##   * the unit's 3D figure in (20,0)-(180,220), greyed under the
 ##     hit locations, not drawn under the attributes;
-##   * bronze divider x 20..25 (UV 85,2-90,42), frame
+##   * mode0 height ruler x 20..25 (1×20 repeated UV
+##     85,2-90,42; bottom anchored at220 and Y scale15/effective info_scale), frame
 ##     (−5,−5)-(185,225) 5 wide (UV 4,55-90,60), small icon
 ##     (164,204)-(180,220) (UV 211,2-227,18);
 ##   * name word-wrapped in (5,5)-(155,20) of the figure area.
@@ -86,7 +87,10 @@ var _unit: GameUnit
 var _t := 0.0
 var _sp := 0.0    # slide progress 0 open.. 1 closed
 var _off := 0.0   # slide in 800×600 px
+var _height_key: Array = []
+var _base_height_factor := 1.0
 ## First four part-type weights.
+const HEIGHT_RULER_UV := Rect2(85.5, 2.5, 5, 40)
 const PART_WEIGHT := [10.0, 30.0, 15.0, 15.0]
 const PART_ARMOR := ["head", "torso", "arms", "legs"]
 
@@ -258,7 +262,12 @@ func _strip(ci: CanvasItem, from: Vector2, to: Vector2, width: float, uv: Rect2)
 
 func _region(ci: CanvasItem, dst: Rect2, uv: Rect2, mod := Color.WHITE) -> void:
 	if _atlas:
-		ci.draw_texture_rect_region(_atlas, _r(dst), uv, mod)
+		if uv == HEIGHT_RULER_UV:
+			# These native endpoints already include half a texel. A second
+			# region clamp would inset the repeated ruler again.
+			ci.draw_texture_rect_region(_atlas, _r(dst), uv, mod, false, false)
+		else:
+			ci.draw_texture_rect_region(_atlas, _r(dst), uv, mod)
 
 
 ## Below the figure: the dark strip, the figure's backdrop and the tabs.
@@ -292,13 +301,45 @@ func _draw_over() -> void:
 					_draw_general(c, _unit)
 				"attributes": _draw_attributes(c, _unit)
 				"effects": _draw_effects(c, _unit)
-		_region(c, Rect2(164, 204, 16, 16), Rect2(211, 2, 16, 16))
-		_region(c, Rect2(20, 0, 5, 220), Rect2(85, 2, 5, 40))
+		#  clears element 9 every frame; enables
+		# it only when the effects list exceeds its six displayed entries.
+		if _unit and mode == "effects" and _unit.buffs.size() > 6:
+			_region(c, Rect2(164, 204, 16, 16), Rect2(211, 2, 16, 16))
+		if _unit and mode == "general":
+			_draw_height_ruler(c, _unit)
 		_strip(c, Vector2(-5, -2.5), Vector2(185, -2.5), 5.0, uvf)
 		_strip(c, Vector2(-5, 222.5), Vector2(185, 222.5), 5.0, uvf)
 		_strip(c, Vector2(182.5, -5), Vector2(182.5, 225), 5.0, uvf)
 	else:
 		_strip(c, Vector2(182.5, -5), Vector2(182.5, 225), 5.0, uvf)   # the frame's right edge stays
+
+
+##  element8 is a bottom-anchored 1×20 grid, not a full-height
+## divider. Each segment repeats the entire battle00 bronze tile. The
+## prototype's info_scale is the native preview scale, not metres.
+func _draw_height_ruler(c: CanvasItem, u: GameUnit) -> void:
+	var height := float(u.proto.get("info_scale", 1.0))
+	if is_instance_valid(u.model):
+		var base: Vector3 = u.info.get("complexion", Vector3.ZERO)
+		if base == Vector3.ZERO:
+			base = GameUnit.proto_complexion(u.proto)
+		var key := [u.get_instance_id(), u.model.get_instance_id(), u.model.template, base.z]
+		if key != _height_key:
+			_height_key = key
+			# effective.adb height / float32(base.adb height).
+			_base_height_factor = float(PackedFloat32Array([
+				EIUnitModel.height_scale(u.model.template, base.z)])[0])
+		if _base_height_factor != 0.0:
+			height *= u.model.height_k / _base_height_factor
+	height = float(PackedFloat32Array([height])[0])
+	if height <= 0.0 or not is_finite(height):
+		return   # a missing/malformed preview scale cannot form finite geometry
+	var s := float(PackedFloat32Array([15.0 / height])[0])
+	var top := float(PackedFloat32Array([220.0 - s * 220.0])[0])
+	for i in 20:
+		# Native constructor adds half a texel at both U/V endpoints. Each
+		# quad reuses all four UVs; Canvas/window clipping trims the tall grid.
+		_region(c, Rect2(20, top + i * 11.0 * s, 5, 11.0 * s), HEIGHT_RULER_UV)
 
 
 ## Text in a figure-area rect (x + 20) with the 1 px shadow
@@ -494,7 +535,6 @@ func _draw_attributes(c: CanvasItem, u: GameUnit) -> void:
 
 func _draw_effects(c: CanvasItem, u: GameUnit) -> void:
 	var names := u.buffs.keys()
-	var now: float = game.world.time if game and game.world else 0.0
 	for i in mini(names.size(), 6):
 		var code := String(names[i])
 		var sp := Spells.parse(code)
@@ -503,5 +543,4 @@ func _draw_effects(c: CanvasItem, u: GameUnit) -> void:
 		if tex:
 			c.draw_texture_rect(tex, _r(Rect2(28, 38 + 30 * i, 24, 24)), false)
 		_text(c, Rect2(40, 35 + 30 * i, 115, 15), Spells.title(code))
-		var left := maxf(float(u.buffs[code].get("until", now)) - now, 0.0)
-		_text(c, Rect2(40, 50 + 30 * i, 115, 15), str(int(left / GameUnit.TICK / 15.0)))
+		_text(c, Rect2(40, 50 + 30 * i, 115, 15), str(int(float(u.effect_ticks(code)) / 15.0)))

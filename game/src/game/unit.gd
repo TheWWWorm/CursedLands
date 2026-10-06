@@ -156,6 +156,12 @@ var _talk_command := 0
 var _talk_posted := 9
 var _talk_remote_ready := true
 var _pending_hit := {}
+## Authoritative death-queue ticks and the pool message's once flag. A
+## corpse restored without this optional state remains quiet.
+var _pool_left := -1
+var _pool_sent := true
+var _pool_step := -1
+var _pool_checked_step := -1
 var _step_dist := 0.0
 var _last_pos := Vector2.ZERO
 var action := "idle"        # replicated visual state
@@ -185,7 +191,14 @@ var resting := false:
 			_pose_dirty = true
 			if resting and _talk_command == 0 and order.is_empty():
 				_talk_command = 11
-var buffs := {}             # name -> {until, dmg_mul?, hp_mul?, actions_add?, regen_mul?, no_cast?, detect?, sense?, resist?, armor?}
+var buffs := {}             # name -> {until, _effect_ticks?, dmg_mul?, hp_mul?, actions_add?, regen_mul?, no_cast?, detect?, sense?, resist?, armor?}
+const EFFECT_TICKS := "_effect_ticks"
+## Old packet rows carried only an absolute deadline. Age their display from
+## the received clock at this unit's last list replacement, not from later
+## unrelated snapshot chunks. Canonical counts need neither anchor.
+var _legacy_effect_at := 0.0
+var _legacy_effect_step := 0
+var _legacy_effect_received := false
 
 # --- body and movement (the original unit radius; NavGrid stamps)
 ## 0.9 x the larger horizontal half-extent of the figure's bounding box
@@ -900,7 +913,6 @@ func command(o: Dictionary, queue := false) -> void:
 	if dead:
 		return
 	if not queue:
-		_keep_path(o)
 		_wait_on = null
 		orders.clear()
 		order = {}
@@ -1217,6 +1229,68 @@ func actions() -> float:
 
 # ------------------------------------------------------------------ simulation
 
+## Effect record+4 is a signed32-bit counter (688560/688510). Reject an
+## optional malformed field without interpreting a float/bool/string as one.
+static func valid_effect_ticks(value: Variant) -> bool:
+	return value is int and value >= -0x80000000 and value <= 0x7fffffff
+
+
+## Only old saved seconds very close to a complete tick can reconstruct an
+## integer count. This is legacy migration, not recovery of an old packet's
+## discarded0.1s precision or a replacement for the native update phase.
+static func legacy_effect_ticks(seconds: float) -> int:
+	if not is_finite(seconds) or seconds < 0.0 or seconds > float(0x7fffffff) * TICK:
+		return -1
+	var n := roundi(seconds / TICK)
+	return n if absf(seconds - float(n) * TICK) <= maxf(0.0000001, absf(seconds) * 0.000000000001) else -1
+
+
+## 646b50 reads record+4 directly. The client keeps zero until the host
+## replaces its list. Unannotated old rows retain an explicit approximate
+## deadline fallback, aged locally after their receipt.
+func effect_ticks(code: String) -> int:
+	var b: Dictionary = buffs.get(code, {})
+	if valid_effect_ticks(b.get(EFFECT_TICKS)):
+		return int(b[EFFECT_TICKS])
+	var now := world.time if world else 0.0
+	if world and not world.authority and _legacy_effect_received:
+		now = _legacy_effect_at + float(world._client_effect_step - _legacy_effect_step) * TICK
+	var left := maxf(float(b.get("until", now)) - now, 0.0)
+	return int(left / TICK) if is_finite(left) else 0
+
+
+## 52f7d0: the creature controller runs first; the attached model515820
+## then decrements every record once, even on a dead unit.6884f0 is signed
+## DWORD subtraction, and authority removes/refreshes a nonpositive result.
+func _tick_effects() -> void:
+	if world == null or not world.authority:
+		return
+	for code: String in buffs.keys():
+		var b: Dictionary = buffs[code]
+		if not valid_effect_ticks(b.get(EFFECT_TICKS)):
+			continue
+		var left := (int(b[EFFECT_TICKS]) - 1) & 0xffffffff
+		if left > 0x7fffffff:
+			left -= 0x100000000
+		if left <= 0:
+			buffs.erase(code)
+			refresh_max_hp()
+		else:
+			b[EFFECT_TICKS] = left
+			# Compatibility for existing absolute-deadline visual/save readers.
+			# Applying before this unit phase consumes a tick immediately;
+			# applying after it does not. No absolute clock snap defines phase.
+			b.until = world.time + float(left) * TICK
+
+
+## 510890: client presentation only. It decrements positive counters and
+## retains zero records/stats until the authoritative list changes.
+func client_tick_effects() -> void:
+	for b: Dictionary in buffs.values():
+		if valid_effect_ticks(b.get(EFFECT_TICKS)) and int(b[EFFECT_TICKS]) > 0:
+			b[EFFECT_TICKS] = int(b[EFFECT_TICKS]) - 1
+
+
 func tick(dt: float) -> void:
 	var started := Time.get_ticks_usec() if world.profile_simulation else 0
 	_moving = false
@@ -1225,6 +1299,9 @@ func tick(dt: float) -> void:
 	_draw_line_goal = Vector2.INF
 	if not dead:
 		_tick(dt)
+	else:
+		_tick_blood_pool()
+	_tick_effects()
 	world.profile_record("unit_logic",started,uid)
 	started = Time.get_ticks_usec() if world.profile_simulation else 0
 	world.nav.track_unit(self)
@@ -1258,7 +1335,9 @@ func _tick(dt: float) -> void:
 		_attack_cd = 0.0
 	if not buffs.is_empty():
 		for b in buffs.keys():
-			if world.time >= float(buffs[b].until):
+			# Unannotated custom/ambiguous old deadlines keep their old path.
+			# Native integer effects expire in the model phase AFTER commands.
+			if not valid_effect_ticks(buffs[b].get(EFFECT_TICKS)) and world.time >= float(buffs[b].until):
 				var had_hp: bool = buffs[b].has("hp_mul")
 				buffs.erase(b)
 				if had_hp:
@@ -1533,10 +1612,9 @@ func _do_move_profile_body(dt: float) -> void:
 		# be walked as it is (NavGrid.direct_line), else the path search.
 		if order.get("line", false) and not replan and world.nav.direct_line(self, order.to):
 			path = PackedVector2Array([order.to])
-			_kept = {}
-		else:
-			path = _kept_path(order.to)
 		if path.is_empty():
+			# Native554830 plans every new move. The nav memo validates standing
+			# stamps; even identical cells need a fresh physical motion anchor.
 			path = _path_to(order.to)
 		if use_target:
 			motion_notice(order.to, 1, world.vm._interact_reach(self, use_target))
@@ -1552,41 +1630,9 @@ func _do_move_profile_body(dt: float) -> void:
 		order = {}
 
 
-## A move order given again while the unit walks the same one (a script
-## re-issuing UMSentry / MoveToPoint to the spot every few ticks — gz19h's
-## guards march 200 m that way) keeps the path being walked instead of
-## searching the map anew: the original plans again (
-## ), but from a spot on an optimal path to the same goal that
-## search finds the rest of the same path. **Approx.** (remake speed: such a
-## search costs ~0.1 s here): kept only while the AI map is unchanged
-## (NavGrid.map_rev), for the same movement class and stored cost table, not after
-## a blocked step (a plan round a blocker is searched as before); units that
-## came to stand on it since block the walk and make it plan then.
+## Empty compatibility slot cleared by NavGrid._relocate after object changes.
+## New move commands use the nav memo rather than retaining a unit-local suffix.
 var _kept := {}
-
-
-func _keep_path(o: Dictionary) -> void:
-	# The same order given more than once before the unit ticks (several
-	# script threads): the path kept by the first stays kept.
-	if not _kept.is_empty() and order.is_empty() and orders.size() == 1 and String(o.get("type", "")) == "move" \
-			and String(orders[0].get("type", "")) == "move" and orders[0].get("to") == o.get("to") and _kept.to == o.get("to"):
-		return
-	_kept = {}
-	if path.is_empty() or _fresh_path or world == null or not world.authority or world.nav == null \
-			or String(o.get("type", "")) != "move" or String(order.get("type", "")) != "move" \
-			or order.get("to") != o.get("to") or (_avoid != null and is_instance_valid(_avoid)):
-		return
-	_kept = {"to": o.to, "path": path, "pos": pos, "rev": world.nav.map_rev, "cls": move_class(),
-		"flat": path_flat_cost}
-
-
-func _kept_path(to: Vector2) -> PackedVector2Array:
-	var k := _kept
-	_kept = {}
-	if k.is_empty() or k.to != to or k.pos != pos or (_avoid != null and is_instance_valid(_avoid)) \
-			or int(k.rev) != world.nav.map_rev or int(k.cls) != move_class() or bool(k.flat) != path_flat_cost:
-		return PackedVector2Array()
-	return k.path
 
 
 ## A path to `to` for this unit: its own stamp and that of `t` (an attack
@@ -2232,17 +2278,33 @@ func _do_attack(dt: float) -> void:
 	var ranged: bool = stats.get("ranged", false)
 	var reach: float = stats.reach if ranged else melee_reach(t)
 	var d := pos.distance_to(t.pos)
+	# A party unit's aligned, standing melee query can test the selected clip's
+	# impact tick directly. Do not reject this branch against
+	# today's blocker positions before it reaches that query. Outside the
+	# native10m² ray overlap, or for flying bodies, keep the current gate:
+	# full turn search / relative height / optional ray remain separate work.
+	var impact_query: bool = controller >= 0 and not ranged and stance == STANCE_NONE and _attack_cd <= 0.0 \
+		and not bool(order.get("full_path", false)) \
+		and pos.distance_squared_to(t.pos) < 10.0 \
+		and absf(float(PackedFloat32Array([wrapf((t.pos - pos).angle() - facing, -PI, PI)])[0])) <= 0.009999999776482582 \
+		and not world.ai._flying(self) and not world.ai._flying(t)
 	if d <= reach:
 		motion_notice(t.pos, 2, reach, bool(order.get("full_path", false)))
 	#  hands the tick to while the strike delay
 	#  runs or the target is out of reach; that one only stands
 	# still next to a target that is not moving — one that
 	# moves is followed (see _approach).
-	if d > reach or (not ranged and not _strike_clear(t, d)) or (_attack_cd > 0.0 and t._moving):
+	# Native54ca40 can admit an incoming target at the selected impact tick.
+	# Its first sample needs no queued turn in this already-aligned subset.
+	# Keep all waiting-turn scheduling on the existing path for now.
+	if (d > reach and not (impact_query and t._moving)) \
+			or (not ranged and not impact_query and not _strike_clear(t, d)) \
+			or (_attack_cd > 0.0 and t._moving):
 		_approach(t, d, reach, dt)
 		return
-	_goal = Vector2.INF
-	path = PackedVector2Array()
+	if not impact_query:
+		_goal = Vector2.INF
+		path = PackedVector2Array()
 	# the original (order tick): only once the strike can be made
 	# (the strike delay passed and finds the target
 	# reach; else keeps closing in at the unit's gait) does an
@@ -2263,7 +2325,45 @@ func _do_attack(dt: float) -> void:
 	# a unit that was idle in the relaxed state first plays its cross clip.
 	if _update_pose():
 		return
-	var len := model.act("attack", randi_range(1, 3), 0.05)
+	var variant := randi_range(1, 3)
+	var clip := ""
+	var hit_ticks := -1.0
+	if impact_query:
+		# Query once: the same clip supplies both the blocker horizon and the
+		# played strike. act() here would select again and consume another roll.
+		clip = model.action_clip("attack", variant)
+		if clip != "" and model.has_anim(clip):
+			hit_ticks = _clip_hit_ticks(clip)
+		# No authored hit record: preserve the existing current-position gate
+		# and half-clip fallback instead of inventing an impact deadline.
+		var clear := false
+		if hit_ticks >= 1.0:
+			var at := t.pos
+			var admitted := true
+			if d > reach:
+				at = t.future_pos(int(hit_ticks))
+				var delta := at - pos
+				var distance2 := float(PackedFloat32Array([float(delta.x) * delta.x + float(delta.y) * delta.y])[0])
+				var radius := float(PackedFloat32Array([reach])[0])
+				var radius2 := float(PackedFloat32Array([radius * radius])[0])
+				var angle := absf(float(PackedFloat32Array([delta.angle() - float(PackedFloat32Array([facing])[0])])[0]))
+				if angle > 3.1415927410125732:
+					angle = 6.2831854820251465 - angle
+				admitted = distance2 <= radius2 and angle <= 0.009999999776482582
+			clear = admitted and _strike_clear_at(t, int(hit_ticks), at)
+		else:
+			clear = d <= reach and _strike_clear(t, d)
+		if not clear:
+			_approach(t, d, reach, dt)
+			return
+		_goal = Vector2.INF
+		path = PackedVector2Array()
+	var len := 0.0
+	if clip != "" and model.has_anim(clip):
+		model.play(clip, 0.05, clip == model._current)
+		len = model.player.get_animation("ei/" + clip).length
+	else:
+		len = model.act("attack", variant, 0.05)
 	len = maxf(len, 0.6)
 	action = "attack"
 	_anim_lock = len
@@ -2279,7 +2379,7 @@ func _do_attack(dt: float) -> void:
 	strike_aim = int(order.get("aim", -1))
 	var roll := world.combat.strike_roll(self, t)
 	strike_miss = not roll.hit
-	_pending_hit = {"t": _hit_ticks() * TICK, "target": t, "roll": roll}
+	_pending_hit = {"t": (hit_ticks if hit_ticks >= 1.0 else _hit_ticks()) * TICK, "target": t, "roll": roll}
 	GameSound.unit(self, "attack")
 	world.on_attack(self, t)
 
@@ -2374,6 +2474,41 @@ func _strike_clear(t: GameUnit, d: float) -> bool:
 		var rel := o.pos - pos
 		var along := rel.dot(dir) / d
 		if along > 0.1 and along < 0.9 and absf(rel.cross(dir)) < 0.3:
+			return false
+	return true
+
+
+## The aligned grounded melee part, at the chosen hit tick.
+## logic+a78 is the AI sector-candidate cache (ai_near), not noticed. Consume
+## that cache without refreshing it here; its8–11tick producer keeps its
+## own cadence and RNG. For the ordinary zero-relativeZ case,52fcc0 retains
+## unit+24. Use XY without substituting different ground heights.
+func _strike_clear_at(t: GameUnit, ticks: int, point := Vector2.INF) -> bool:
+	if order.get("full_path", false) or float(stats.get("range", 0.0)) >= 3.0 \
+			or GameSound.held_weapon_type(self) in [5, 6]:
+		return true
+	var delta := (t.pos if point == Vector2.INF else point) - pos
+	var length2 := float(delta.x) * delta.x + float(delta.y) * delta.y
+	if length2 <= 0.0:
+		return true
+	# Native stores both normalized vectors and their dot products as float32.
+	var along := Vector2(delta.x / length2, delta.y / length2)
+	var side_length := float(PackedFloat32Array([sqrt(float(along.x) * along.x + float(along.y) * along.y)])[0])
+	var side := Vector2(along.y / side_length, -along.x / side_length)
+	var candidates: Array = get_meta("ai_near", [])
+	for value in candidates:
+		if not is_instance_valid(value) or not value is GameUnit:
+			continue
+		var o := value as GameUnit
+		if o == self or o == t or o.dead or o.world != world:
+			continue
+		var at := o.future_pos(ticks)
+		var x := float(at.x) - pos.x
+		var y := float(at.y) - pos.y
+		var a := float(PackedFloat32Array([x * along.x + y * along.y])[0])
+		var c := float(PackedFloat32Array([x * side.x + y * side.y])[0])
+		if a > 0.10000000149011612 and a < 0.8999999761581421 \
+				and c > -0.30000001192092896 and c < 0.30000001192092896:
 			return false
 	return true
 
@@ -2578,6 +2713,12 @@ static func _clip_frames(tmpl: String, clip: String) -> Vector2i:
 	return _hit_frames[tmpl][clip]
 
 
+## Death needs the clip duration even if that clip has no strike frame.
+static func _clip_duration(tmpl: String, clip: String) -> int:
+	_clip_hit_frame(tmpl, clip)
+	return _hit_frames.get(tmpl, {}).get(clip, Vector2i(-1, -1)).x
+
+
 func _resolve_hit(t: GameUnit, roll := {}) -> void:
 	if t == null or not is_instance_valid(t) or t.dead:
 		return
@@ -2676,6 +2817,7 @@ func die(killer: GameUnit = null) -> void:
 	order = {}
 	path = PackedVector2Array()
 	var len := model.act("death", 1, 0.05)
+	_queue_blood_pool(model._current if len > 0.0 else "")
 	action = "death"
 	GameSound.unit(self, "death")
 	if len > 0.0:
@@ -2685,6 +2827,56 @@ func die(killer: GameUnit = null) -> void:
 				freeze_pose())
 	died.emit(self)
 	world.on_death(self, killer)
+
+
+func _queue_blood_pool(clip: String) -> void:
+	restore_blood_pool(null)
+	if world == null or not world.authority:
+		return
+	var frames := _clip_duration(String(model.template).to_lower() if model else "", clip)
+	var rates: Array = Array(race.get("anim_speeds", []))
+	var rate := float(PackedFloat32Array([float(rates[3]) if rates.size() > 3 else 1.0])[0])
+	# Invalid custom rates retain a finite compatibility fallback. Supplied
+	# races have a positive death rate; native duration division truncates.
+	if not is_finite(rate) or rate <= 0.0:
+		rate = 1.0
+	var duration := float(PackedFloat32Array([float(maxi(frames, 0))])[0]) / rate
+	_pool_left = maxi(int(duration), 0) if is_finite(duration) and duration < 2147483648.0 else 0
+	_pool_sent = false
+	_pool_step = world._logic_step
+
+
+func _tick_blood_pool() -> void:
+	if world == null or not world.authority or _pool_sent or _pool_checked_step == world._logic_step:
+		return
+	_pool_checked_step = world._logic_step
+	# Native tests an empty queue before expiring its animation row. A death
+	# earlier in this very step must not age a positive-duration row yet.
+	if _pool_left == 0:
+		_pool_sent = true
+		_pool_left = -1
+		world.corpse_pools.emit_pool(self)
+	elif _pool_left > 0:
+		_pool_left = maxi(_pool_left - maxi(world._logic_step - _pool_step, 0), 0)
+		_pool_step = world._logic_step
+
+
+func blood_pool_state() -> Dictionary:
+	return {"left": _pool_left, "sent": _pool_sent}
+
+
+func restore_blood_pool(value: Variant) -> void:
+	_pool_left = -1
+	_pool_sent = true
+	_pool_step = world._logic_step if world else -1
+	_pool_checked_step = -1
+	if not (value is Dictionary) or not (value.get("sent") is bool) or not (value.get("left") is int):
+		return
+	var left: int = value.left
+	if left < -1 or left > 0x7fffffff or (not value.sent and left < 0):
+		return
+	_pool_left = left
+	_pool_sent = value.sent
 
 
 ## Holds a corpse in its current (death) pose. The clip stays the player's
@@ -2719,6 +2911,7 @@ func is_frozen() -> bool:
 ## Back to life with full health (respawn, + full HP).
 func revive() -> void:
 	dead = false
+	restore_blood_pool(null)
 	if _seq != 0:
 		world.nav.rebucket(self)
 	restore_parts()
@@ -2741,6 +2934,7 @@ func revive() -> void:
 ## its parts as they were, the death clip's last frame, no death sound.
 func lie_dead() -> void:
 	dead = true
+	restore_blood_pool(null)
 	orders.clear()
 	order = {}
 	path = PackedVector2Array()
@@ -2761,6 +2955,7 @@ func lie_dead() -> void:
 ## one (AC_CROSS from ST_LIE to ST_NEUTRAL), else it returns to its idle pose.
 func rise(total := 1.0) -> void:
 	dead = false
+	restore_blood_pool(null)
 	if _seq != 0:
 		world.nav.rebucket(self)
 	orders.clear()
@@ -2851,6 +3046,9 @@ func _anim_lod_setup() -> void:
 		add_child(_body)
 
 
+static var defer_hidden_pose := true
+
+
 func _process(dt: float) -> void:
 	if _screen == null:
 		return
@@ -2920,12 +3118,12 @@ func _process(dt: float) -> void:
 	elif _screen.is_on_screen():
 		step = ANIM_SHADOW_STEP
 	if step == 0.0:
-		anim_flush()
+		anim_flush(defer_hidden_pose and not visible and not anim_watched)
 		return
 	_anim_due -= dt
 	if _anim_due <= 0.0:
 		_anim_due = maxf(_anim_due + step, 0.0)
-		anim_flush()
+		anim_flush(defer_hidden_pose and not visible and not anim_watched)
 
 
 ## The playback factor of the playing clip: a walk / run / crawl clip runs at
@@ -3042,19 +3240,30 @@ func near_screen() -> bool:
 
 
 ## Applies the animation time not shown yet (before a pose is frozen).
-func anim_flush() -> void:
+static var native_unobserved_pose := ClassDB.class_has_method("AnimationPlayer", "advance_unobserved_pose")
+
+func anim_flush(defer_pose := false) -> void:
 	if _anim_acc > 0.0 and model and model.player:
 		var a := _anim_acc
 		_anim_acc = 0.0
 		if _anim_roots.is_empty():
 			model.player.advance(a)
+			model._timeline_pending = false
 			return
 		EIAnimPart.batch = true
-		model.player.advance(a)
+		if defer_pose and native_unobserved_pose:
+			model._timeline_pending = bool(model.player.call("advance_unobserved_pose", a))
+		else:
+			model.player.advance(a)
+			model._timeline_pending = false
 		EIAnimPart.batch = false
-		for r: EIAnimPart in _anim_roots:
-			if is_instance_valid(r):
-				r._apply_key()
+		model._pose_pending = defer_pose
+		if not defer_pose:
+			for r: EIAnimPart in _anim_roots:
+				if is_instance_valid(r):
+					r._apply_key()
+	elif not defer_pose and model and model._pose_pending:
+		model.flush_pending_pose()
 
 
 func _set_action(a: String) -> void:
@@ -3193,6 +3402,7 @@ func resync_drawn() -> void:
 		_xf_pos = Vector2(INF, INF)   # _sync_transform's cache: place it again
 		_sync_transform()
 	if model:
+		model.flush_pending_pose()
 		model.transform = model.transform   # re-places every part / mesh below
 	reset_physics_interpolation()
 
@@ -3360,6 +3570,11 @@ func _buff_snapshot() -> Array:
 		var extra := b.duplicate(true)
 		for key in ["until", "sense", "detect"]:
 			extra.erase(key)
+		if valid_effect_ticks(extra.get(EFFECT_TICKS)):
+			# 50eaf0 sends two raw bytes;50ec30 zero-extends them into DWORD.
+			extra[EFFECT_TICKS] = int(extra[EFFECT_TICKS]) & 0xffff
+		else:
+			extra.erase(EFFECT_TICKS)
 		if not extra.is_empty():
 			out.append([String(k), snappedf(float(b.get("until", 0.0)), 0.1), b.get("sense", 0), b.get("detect", 0), extra])
 		elif b.has("sense") or b.has("detect"):
@@ -3426,6 +3641,9 @@ func apply_snapshot(s: Array, quiet := false) -> void:
 		_move_speed = float(s[13])
 	if s.size() > 11:
 		buffs.clear()
+		_legacy_effect_at = world.time if world else 0.0
+		_legacy_effect_step = world._client_effect_step if world else 0
+		_legacy_effect_received = true
 		for b: Array in s[11]:
 			var d := {"until": float(b[1])}
 			if b.size() > 3:
@@ -3433,6 +3651,8 @@ func apply_snapshot(s: Array, quiet := false) -> void:
 				if b[3] is Array: d.detect = b[3]
 			if b.size() > 4 and b[4] is Dictionary:
 				d.merge(b[4], true)
+			if not valid_effect_ticks(d.get(EFFECT_TICKS)):
+				d.erase(EFFECT_TICKS)
 			buffs[String(b[0])] = d
 		refresh_figure()
 	var a: String = s[4]

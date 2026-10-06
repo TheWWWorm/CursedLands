@@ -64,7 +64,7 @@ const TOPIC_FRAME := Rect2(195, 425, 410, 150)
 const TOPIC_BAR := Rect2(584, 440, 10, 120)   #  (584,440)-(594,560)
 const FRAME_UV := [2.0, 180.0, 254.0, 249.0]   # u0, u1, v outer, v inner (saveload)
 
-enum { HIDDEN, TOPICS = 1, PLAYING = 3, LAST = 4 }
+enum { HIDDEN, TOPICS = 1, STAGING = 2, PLAYING = 3, LAST = 4 }
 
 var hud: GameHUD
 var _mode := HIDDEN
@@ -196,6 +196,12 @@ func show_briefing(e: Dictionary) -> void:
 	if _phrases.is_empty():
 		_finish()
 		return
+	if bool(e.get("staging", false)):
+		_mode = STAGING
+		_aimed = {}
+		_show_units()
+		queue_redraw()
+		return
 	_show()
 
 
@@ -281,8 +287,8 @@ func _show(quick := false) -> void:
 
 
 func _next() -> void:
-	if not _topics.is_empty() or _mode == TOPICS:
-		return   # pick a topic (or Goodbye)
+	if _mode != PLAYING and _mode != LAST:
+		return   # topics and staging have no phrase-advance control
 	if _i >= _phrases.size() - 1:
 		_finish()
 		return
@@ -480,7 +486,7 @@ func _font_size() -> int:
 ## words placed with the justified gap ((width − words) / (n − 1)
 ## integer) or a plain space, each with a 1 px shadow.
 func _draw_text() -> void:
-	if _mode == TOPICS or _lines.is_empty():
+	if _mode not in [PLAYING, LAST] or _lines.is_empty():
 		return
 	var f := font()
 	var fs := _font_size()
@@ -523,7 +529,7 @@ func _draw() -> void:
 			_topic_bar.max_pos = maxf(0.0, _topic_list.rows.size() - 5)
 			_topic_bar.pos = _topic_list.top
 			_draw_bar(_topic_bar)
-	elif _mode != HIDDEN:
+	elif _mode == PLAYING or _mode == LAST:
 		draw_rect(_r(BOX), Color(0, 0, 0, 0xa0 / 255.0))
 		_frame(BOX_FRAME)
 		_draw_bar(_bar)

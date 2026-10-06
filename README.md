@@ -42,7 +42,7 @@ Needs WebGL 2 and a desktop-class browser or a recent phone. Browsers can clear 
 
 Download the package for your system from the [Releases](https://github.com/TheWWWorm/CursedLands/releases) page.
 
-- **Windows (x86-64):** extract the ZIP and run `CursedLands.exe`. Windows may warn about an unrecognised app; choose **More info → Run anyway**.
+- **Windows (x86-64):** extract the ZIP and run `CursedLands.exe`. The EXE and native DLL are unsigned. SmartScreen may offer **More info → Run anyway**. Smart App Control is a separate policy: if it blocks the native DLL with `0xC0E90002`, the game shows a notice with an **Open Windows Security** button. You can manually turn Smart App Control Off under **App & browser control → Smart App Control**, then restart the game. This changes protection for all apps; older Windows versions may require a Windows reset to re-enable it. Native acceleration remains required on Windows.
 - **Linux (x86-64):** extract the archive and run `CursedLands.x86_64`. If your file manager dropped the executable permission, run `chmod +x CursedLands.x86_64` first.
 - **macOS (Apple silicon and Intel):** extract the ZIP and open the app. It is not signed or notarized, so macOS may block the first start; allow it under **System Settings → Privacy & Security**.
 - **Android 8+ (ARM64 / x86-64), preview:** install the APK; allow your browser or file manager to install apps when it asks. On first start, choose a game data pack (`.eipack`, see [Play in your browser](#play-in-your-browser)) or the GOG installer (`setup_evil_islands_*.exe`), which is unpacked without being run. Touch controls are explained in the game.
@@ -150,7 +150,7 @@ Saves and settings are kept in the engine's user folder:
 
 ## Building from source
 
-Open the `game` folder in [Godot 4.7](https://godotengine.org/) and export with the included presets.
+Open the `game` folder in [Godot 4.7](https://godotengine.org/) and export with the included presets. The Windows and Linux release packages use the [patched desktop templates](engine_patches/godot-4.7/README.md).
 
 ## License
 

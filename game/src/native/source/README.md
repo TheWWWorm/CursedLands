@@ -1,4 +1,4 @@
-# Optional compiled hot loops
+# Optional compiled hot paths
 
 The `TerrainSearchKernel` extension accelerates integer terrain distances,
 component labels, block routes, moving search windows, and obstacle-stamp
@@ -10,6 +10,29 @@ The script implementation remains available when the extension is absent and
 with the `-- --ei-script-nav` diagnostic launch option. Android, Web, and macOS
 export presets exclude the desktop extension and use that implementation.
 The current packaged targets are Windows x86-64 and Linux x86-64.
+
+
+`UnitQueryKernel` accelerates ordered cell filtering and nearby-unit list
+validation. Every combat query samples the actual live registry, including
+changed IDs and same-count replacements, before reusing a pruned list. Its
+perception rows store only faction/controller/dead/hidden fields; field edits
+invalidate them, and a unit-owned `UnitNoticeLifetime` token invalidates them
+on destruction or script replacement. The token must remain owned solely by
+its unit. Caches are capped at 1,024 observers and a conservative 8 MiB.
+Diplomacy, positions, native refresh timing and random draws retain their
+existing sampling points. `-- --ei-script-units` selects the script path.
+
+For fully registered local perception queries at positive coordinates,
+the helper filters the existing coarse buckets by the exact notice-cell mask
+before reading and ordering their units. Radius and final cell checks remain
+unchanged. Queries crossing zero, very large queries, unregistered worlds,
+and platforms without the helper retain the existing two-pass path.
+
+`ScreenRectKernel` calculates bounds from the same posed vertices, frustum
+clipping and nearest-even pixel rounding used by `MeshScreenRect`. It does
+not substitute boxes for exact mesh geometry or retain scene references.
+`-- --ei-script-picking` selects the script path. The script implementations
+also remain active automatically on platforms without the extension.
 
 ## Build
 
@@ -49,21 +72,7 @@ through the same number of native simulation ticks.
 Performance measurements must compare equal simulation work in release builds.
 Headless fixed-step throughput is CPU cost, not a measurement of player FPS.
 
-## Perception and picking
-
-`UnitQueryKernel` also accelerates ordered cell filtering and nearby-list
-validation. It samples current registry membership for each synchronous combat
-query; perception rows are bounded and invalidated by unit state changes and
-script-instance lifetimes. `UnitNoticeLifetime` provides deletion invalidation
-without a per-frame script notification callback. The unit/AI/sound scripts
-retain their fallbacks (`-- --ei-script-units`).
-
-`ScreenRectKernel` clips the same posed mesh vertices and triangles against the
-camera frustum and returns the same rounded pixel bounds. The script fallback
-is selectable with `-- --ei-script-picking`. The extension does not approximate
-picking by a mesh bounding box or change animation, simulation, or sound timing.
-
-The focused differential suites cover object deletion/script replacement,
-registry edits and ordering, cell rounding, camera clipping and vertex morphs.
-ASan/UBSan checks use private instrumented libraries; only normal release
-libraries belong in distributable packages.
+The unit-query tests also cover registry mutation, freed nodes, script
+replacement and exact cell boundaries/order. Geometry comparisons cover
+clipping, projection modes, morphs and cache reuse. Run the native helper
+suites under address/undefined-behavior sanitizers in a private test build.

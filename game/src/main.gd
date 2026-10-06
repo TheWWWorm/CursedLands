@@ -16,6 +16,16 @@ var _leaving := false   # back_to_menu waiting for a joiner's last package
 
 
 func _ready() -> void:
+	# The exported Windows build requires its native helper. A blocked DLL
+	# must be explained before a campaign can quietly start without it.
+	var native_startup := preload("res://src/platform/windows_native_startup.gd")
+	if native_startup.required():
+		if DisplayServer.get_name() == "headless":
+			printerr(native_startup.instructions())
+			get_tree().quit(1)
+		else:
+			add_child(native_startup.new())
+		return
 	if OS.get_cmdline_user_args().has("--no-movies"):
 		MoviePlayer.enabled = false
 	for a in OS.get_cmdline_user_args():

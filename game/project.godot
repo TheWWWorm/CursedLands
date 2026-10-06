@@ -20,7 +20,7 @@ config/icon="res://icon.svg"
 run/main_scene="res://scenes/main.tscn"
 run/flush_stdout_on_print=true
 config/features=PackedStringArray("4.7")
-config/version="1.0.2"
+config/version="1.0.3"
 config/project_settings_override.android="user://renderer.cfg"
 
 [autoload]
@@ -57,6 +57,9 @@ project/assembly_name="Evil Islands Remake (PoC)"
 timers/tooltip_delay_sec=1000000.0
 
 [rendering]
+
+; Keep figure parameters resident across zone transitions.
+limits/global_shader_variables/buffer_size=262144
 
 renderer/rendering_method.mobile="gl_compatibility"
 renderer/rendering_method.web="gl_compatibility"

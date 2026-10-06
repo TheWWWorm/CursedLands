@@ -13,7 +13,8 @@ extends RefCounted
 ## normalised); reads only these, never the moving units, so a
 ## partner still walking to its place does not drag the camera along. The
 ## remake's places are the cast's "at" (Briefings._face); a unit's own
-## position only when "at" is missing. Heights: the ground under the place.
+## position only when "at" is missing. Optional "at_z" retains the original
+## full3D stage height; older casts use the ground under the place.
 ## No obstacle test (the original has none: sets eye and target).
 
 ## preset -> [who, angle (rad), distance (x a-b distance for "two"), height]
@@ -42,17 +43,17 @@ static func shot(w: GameWorld, cast: Dictionary, phrase: Dictionary, first: bool
 	if not args.is_empty():
 		# "#camera N angle distance height": N 2 / 3 / 4 = a / b / c, else the two-shot.
 		var who := {2: "a", 3: "b", 4: "c"}.get(n, "two") as String
-		return _place(w, a, b, c, who, deg_to_rad(float(args[0])), float(args[1]), float(args[2]), false, cast.get("at", {})) + [[]]
+		return _place(w, a, b, c, who, deg_to_rad(float(args[0])), float(args[1]), float(args[2]), false, cast.get("at", {}), cast.get("at_z", {})) + [[]]
 	if n < 1:
 		n = 1 if first else 2 if speaker == a.uid else 4 if c and speaker == c.uid else 3
 	var p: Array = PRESETS.get(n, PRESETS[1])
-	var out := _place(w, a, b, c, p[0], p[1], p[2], p[3], p[0] == "two", cast.get("at", {}))
+	var out := _place(w, a, b, c, p[0], p[1], p[2], p[3], p[0] == "two", cast.get("at", {}), cast.get("at_z", {}))
 	out.append(HIDE.get(n, []))
 	return out
 
 
 static func _place(w: GameWorld, a: GameUnit, b: GameUnit, c: GameUnit, who: String, angle: float,
-		dist: float, h: float, relative: bool, at := {}) -> Array:
+		dist: float, h: float, relative: bool, at := {}, at_z := {}) -> Array:
 	var pa: Vector2 = _at(at, "a", a)
 	var pb: Vector2 = _at(at, "b", b) if b else Vector2.ZERO
 	var pc: Vector2 = _at(at, "c", c) if c else Vector2.ZERO
@@ -63,7 +64,7 @@ static func _place(w: GameWorld, a: GameUnit, b: GameUnit, c: GameUnit, who: Str
 			who = "a"
 		else:
 			var mid := (pa + pb) * 0.5
-			target = Vector3(mid.x, mid.y, (w.ground_at(pa.x, pa.y) + w.ground_at(pb.x, pb.y)) * 0.5)
+			target = Vector3(mid.x, mid.y, (_height(w, at_z, "a", pa) + _height(w, at_z, "b", pb)) * 0.5)
 			dir = Vector2(pa.y - pb.y, pb.x - pa.x)
 			if relative:
 				dist *= pa.distance_to(pb)
@@ -84,7 +85,7 @@ static func _place(w: GameWorld, a: GameUnit, b: GameUnit, c: GameUnit, who: Str
 			dir = Vector2.from_angle(u.facing)
 		dir = dir.normalized()
 		var p := pu + dir * float(u.proto.get("dialog_cam_distance", 0.0))
-		target = Vector3(p.x, p.y, w.ground_at(pu.x, pu.y) + float(u.proto.get("dialog_cam_height", 1.5)))
+		target = Vector3(p.x, p.y, _height(w, at_z, who, pu) + float(u.proto.get("dialog_cam_height", 1.5)))
 	dir = dir.normalized()
 	var cs := cos(angle)
 	var sn := sin(angle)
@@ -95,3 +96,10 @@ static func _place(w: GameWorld, a: GameUnit, b: GameUnit, c: GameUnit, who: Str
 static func _at(at: Dictionary, k: String, u: GameUnit) -> Vector2:
 	var v: Array = at.get(k, [])
 	return Vector2(float(v[0]), float(v[1])) if v.size() == 2 else u.pos
+
+
+static func _height(w: GameWorld, at_z: Dictionary, k: String, p: Vector2) -> float:
+	var z: Variant = at_z.get(k)
+	if (z is float or z is int) and is_finite(float(z)):
+		return float(z)
+	return w.ground_at(p.x, p.y)

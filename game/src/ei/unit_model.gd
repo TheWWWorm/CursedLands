@@ -195,6 +195,27 @@ var player: AnimationPlayer
 var weapon_type := ""
 var _current := ""
 var _animation_roots: Array[EIAnimPart] = []
+## Hidden figures retain their playback clock while deferring pose work.
+## Pose consumers and showing the figure materialize the current pose first.
+var _pose_pending := false
+var _timeline_pending := false
+
+
+func flush_pending_pose() -> void:
+	if not _pose_pending:
+		return
+	_pose_pending = false
+	if _timeline_pending and player:
+		_timeline_pending = false
+		var already_batching := EIAnimPart.batch
+		EIAnimPart.batch = true
+		player.advance(0.0)
+		EIAnimPart.batch = already_batching
+	for root: EIAnimPart in _animation_roots:
+		if is_instance_valid(root):
+			root._apply_key()
+
+
 ## Vertex morph parts: [MeshInstance3D "morph", {clip: [first shape, frame
 ## count]}, [shape indices set last]] (_apply_morphs).
 var _morph_parts: Array = []

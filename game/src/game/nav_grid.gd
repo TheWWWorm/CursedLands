@@ -839,7 +839,8 @@ func _raster_box(lo: Vector3, hi: Vector3, rot: Basis, base: Vector3, kind: int,
 				var cy := floori(py / CELL)
 				if cx < 0 or cy < 0 or cx >= size.x or cy >= size.y:
 					continue
-				var h := clampi(roundi((pa.z + db.z * ib) * _alt), 0, SPAN_MAX)
+				# Original stores the quantized sample as float32 before nearest-even FISTP.
+				var h := clampi(round_even(PackedFloat32Array([(pa.z + db.z * ib) * _alt])[0]), 0, SPAN_MAX)
 				var i := cy * size.x + cx
 				if i != last:
 					last = i

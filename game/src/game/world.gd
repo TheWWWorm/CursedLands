@@ -11,6 +11,7 @@ signal combat_event(kind: String, a: GameUnit, b: GameUnit, amount: float)
 signal item_worn(u: GameUnit, item: String, kind: String)
 
 const TICK := GameUnit.TICK
+const CorpsePools = preload("res://src/game/corpse_pools.gd")
 ## Godot4.7 Node's suspend notifications are not bound as script constants.
 ## The engine enum sends these two values through _notification nonetheless.
 const _ENGINE_SUSPENDED := 9003
@@ -27,6 +28,7 @@ var nav := NavGrid.new():
 			nav.registry_world = self
 var combat: Combat
 var ai: UnitAI
+var corpse_pools: CorpsePools
 var vm: ScriptVM
 var units := {}          # uid -> GameUnit
 ## Looted corpses taken off the world (Session.take_loot): uid -> GameUnit,
@@ -59,6 +61,12 @@ var _logic_step := 0
 var _fixed_step := int(OS.get_environment("EI_FIXED_FPS")) > 0 \
 	or OS.get_cmdline_user_args().has("--ei-fixed-step") or not Engine.get_write_movie_path().is_empty()
 var _frame_ms := -1
+## The original has a separate client55ms accumulator (456440,79bc58).
+## Only effect presentation advances here; received server time, movement,
+## commands, stats and authoritative expiration stay under their old owner.
+var _client_effect_accumulator := 0.0
+var _client_effect_step := 0
+var _client_effect_frame_ms := -1
 ## Conversation actors still walking or turning to their spot.
 var dialog_movers := {}   # GameUnit -> {to, angle, state, elapsed}
 ## Unit ids of the running conversation's actors a / b / c (Briefings.cast).
@@ -93,6 +101,7 @@ func _init() -> void:
 	nav.registry_world = self
 	combat = Combat.new(self)
 	ai = UnitAI.new(self)
+	corpse_pools = CorpsePools.new(self)
 	traps = MagicTraps.new(self)
 
 
@@ -286,6 +295,7 @@ func _notification(what: int) -> void:
 		# A new/retained/resumed world must not consume the loading or paused
 		# interval. Its native remainder and pending spell callbacks survive.
 		_frame_ms = -1
+		_client_effect_frame_ms = -1
 	elif what == NOTIFICATION_PREDELETE:
 		# Both interpreter objects are RefCounted. Their live reciprocal refs
 		# must be broken only when this world is actually being destroyed;
@@ -416,6 +426,27 @@ func units_near(p: Vector2, r: float) -> Array:
 	return out
 
 
+## Exact perception broadphase. Sample membership/order before the query;
+## unusual, unregistered and off-map fixtures keep the original two passes.
+func notice_units_near(observer: GameUnit, radius: float, cells: Dictionary, alive: bool, tracked: bool) -> Array:
+	_spatial_order()
+	var p := observer.pos
+	var kernel: RefCounted = ai._unit_query if ai else null
+	if kernel and authority and _spatial_registered and radius >= NavGrid.WIDE \
+			and p.x + radius < 65536.0 and p.y + radius < 65536.0 and nav.local_bucket_query(p, radius):
+		return kernel.order_units(kernel.near_cells(nav._call_buckets, p, radius, cells, observer, alive), _spatial_ranks)
+	var list := nav.units_all_around(p, radius) if tracked and authority and nav.size.x > 0 else units_near(p, radius)
+	if kernel:
+		return kernel.in_cells(list, observer, p, cells, alive)
+	var out := []
+	var center := Vector2i(int(GameUnit._fistp(p.x * 2.0 - 0.5) / 32), int(GameUnit._fistp(p.y * 2.0 - 0.5) / 32))
+	for u: GameUnit in list:
+		if u == observer or (alive and u.dead): continue
+		var cell := Vector2i(int(GameUnit._fistp(u.pos.x * 2.0 - 0.5) / 32), int(GameUnit._fistp(u.pos.y * 2.0 - 0.5) / 32))
+		if cells.has(cell - center): out.append(u)
+	return out
+
+
 ## Same registry/range/order semantics, with the current living state.
 func live_units_near(p: Vector2, r: float) -> Array:
 	return units_near(p, r).filter(func(u: GameUnit): return not u.dead)
@@ -491,6 +522,8 @@ func frame_clock_enabled() -> bool:
 
 
 func _process(_dt: float) -> void:
+	if not authority and not _fixed_step:
+		_sample_client_effect_frame(Time.get_ticks_msec(), Engine.time_scale)
 	if not frame_clock_enabled():
 		_frame_ms = -1
 		if lever_sys:
@@ -516,11 +549,49 @@ func _sample_frame(now_ms: int, rate: float, active := true) -> void:
 
 
 func _physics_process(dt: float) -> void:
+	if not authority:
+		# Fixed-FPS/off-tree tools retain their deterministic supplied clock.
+		# Runtime clients cap raw frame elapsed before the native rate.
+		if _fixed_step or not is_inside_tree() or not is_processing():
+			_advance_client_effects(dt)
+		return
 	# Manually supplied callbacks on off-tree/disabled worlds remain useful
 	# to fixtures; an active real-time world advances only once per frame.
 	if frame_clock_enabled():
 		return
 	_deliver(dt)
+
+
+func _client_effect_active() -> bool:
+	if authority or (is_inside_tree() and get_tree().paused):
+		return false
+	return session == null or (session.world == self and not session.loading_game \
+		and not session._zone_holding and not session._remote_loading)
+
+
+func _sample_client_effect_frame(now_ms: int, rate: float) -> void:
+	var before := _client_effect_frame_ms
+	_client_effect_frame_ms = now_ms
+	if before < 0 or not _client_effect_active():
+		return
+	var elapsed := (now_ms - before) & 0xffffffff
+	if elapsed > 0x80000000:
+		return
+	_advance_client_effects(minf(float(elapsed) / 1000.0, TICK * 5.0) * rate)
+
+
+## Packet application replaces remaining counts without resetting this
+## shared phase.510890 decrements only positive counters; it never erases
+## at zero. The next authority list is the sole removal/correction source.
+func _advance_client_effects(dt: float) -> void:
+	if not _client_effect_active() or not is_finite(dt):
+		return
+	_client_effect_accumulator += maxf(dt, 0.0)
+	while _client_effect_accumulator + 0.000000001 >= TICK:
+		_client_effect_accumulator = maxf(_client_effect_accumulator - TICK, 0.0)
+		_client_effect_step += 1
+		for u: GameUnit in units.values():
+			u.client_tick_effects()
 
 
 func _deliver(dt: float) -> void:
@@ -576,6 +647,7 @@ func _tick(dt: float) -> void:
 
 func _tick_body(dt: float) -> void:
 	var started := Time.get_ticks_usec() if profile_simulation else 0
+	corpse_pools.prepare_restore()
 	# A conversation does not stop the world: the original pauses it only under a
 	# modal screen in single player ((1)); the
 	# village screen is entered through, which unpauses
@@ -595,6 +667,7 @@ func _tick_body(dt: float) -> void:
 					dialog_movers.erase(u)
 			dialog_actors.clear()
 		_tick_dialog_movers(dt)
+		vm.briefings.staging_tick()
 		profile_record("script",started)
 	if lever_sys:
 		lever_sys.tick()
@@ -633,6 +706,7 @@ func _tick_body(dt: float) -> void:
 	var timers := get_node_or_null("SpellTimers") as Spells.WorldTimers
 	if timers:
 		timers._tick(dt, true)
+	corpse_pools.refresh()
 
 
 ## an ordinary walk, then facing, with a 30-second staging

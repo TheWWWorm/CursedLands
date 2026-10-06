@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.0.3
+
+- Windows retains its unsigned native acceleration module. If it cannot load, startup stops with a localized explanation and an Open Windows Security button instead of silently continuing through the script path. Windows can still show its own policy dialog first.
+- Integrated the completed desktop performance work: native ordered perception queries, fewer repeated animation and preview updates, and a larger global shader buffer. Windows and Linux ship the normal patched Godot templates; Android, macOS and Web retain the stock engine.
+- Corrected repeated move orders, ground-height raster rounding and the movement corridor used for approaching melee strikes.
+- Dialogue staging restores its saved camera lifecycle consistently across host and client conversations. Extreme Modern-camera occlusion remains under investigation.
+- Character details retain overflow effects and the height ruler. Buff counters now use simulation ticks, survive saves and update correctly on clients through pause and shared speed changes.
+- Corpse blood pools use the death timeline once, retain their saved history and synchronize across co-op zone and load changes.
+- Co-op protocol is now 4. All players must use the same compatible release.
+- Remaining limits from 1.0.2 still apply; focused synthetic and co-op fixtures do not establish a full campaign playthrough or Retroid frame rates.
+
 ## 1.0.2
 
 - Lost in Astral:

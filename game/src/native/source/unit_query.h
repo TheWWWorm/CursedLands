@@ -74,6 +74,7 @@ protected:
         ClassDB::bind_method(D_METHOD("notice_candidates", "near", "unit_script", "observer", "world", "sides", "npc", "revision"), &UnitQueryKernel::notice_candidates);
         ClassDB::bind_method(D_METHOD("in_cells", "near", "observer", "origin", "cells", "alive"), &UnitQueryKernel::in_cells);
         ClassDB::bind_method(D_METHOD("order_units", "list", "ranks"), &UnitQueryKernel::order_units);
+        ClassDB::bind_method(D_METHOD("near_cells", "buckets", "origin", "radius", "cells", "observer", "alive"), &UnitQueryKernel::near_cells);
     }
 public:
     static int64_t fistp(double value) {
@@ -93,6 +94,39 @@ public:
             Object *unit = entry.get_validated_object();
             if (!unit || unit == observer || (alive && bool(unit->get(dead_key)))) continue;
             if (cells.has(cell(unit->get(pos_key)) - center)) result.append(entry);
+        }
+        return result;
+    }
+    // Only used for fully registered positive-coordinate local queries.
+    // There the original nearest-even / truncated native16m cells coincide
+    // with coarse buckets. Filter before reading buckets and sorting rows.
+    Array near_cells(const Dictionary &buckets, Vector2 origin, double radius,
+                     const Dictionary &cells, Object *observer, bool alive) const {
+        Array result;
+        // Also guard direct extension callers before any integer conversion.
+        if (!std::isfinite(radius) || radius < 6. || !std::isfinite(origin.x) || !std::isfinite(origin.y) ||
+            origin.x - radius < 0. || origin.y - radius < 0. ||
+            origin.x + radius >= 65536. || origin.y + radius >= 65536.) return result;
+        const Vector2i center = cell(origin);
+        const int x0 = int(std::floor((origin.x - radius) / 16.));
+        const int x1 = int(std::floor((origin.x + radius) / 16.));
+        const int y0 = int(std::floor((origin.y - radius) / 16.));
+        const int y1 = int(std::floor((origin.y + radius) / 16.));
+        const double r2 = radius * radius;
+        for (int y = y0; y <= y1; ++y) {
+            for (int x = x0; x <= x1; ++x) {
+                if (!cells.has(Vector2i(x, y) - center)) continue;
+                const Variant value = buckets.get(x + y * 4096, Variant());
+                if (value.get_type() != Variant::ARRAY) continue;
+                const Array bucket = value;
+                for (int64_t i = 0; i < bucket.size(); ++i) {
+                    const Variant entry = bucket[i];
+                    Object *unit = entry.get_validated_object();
+                    if (!unit || unit == observer || (alive && bool(unit->get(dead_key)))) continue;
+                    const Vector2 position = unit->get(pos_key);
+                    if (double(position.distance_squared_to(origin)) <= r2 && cells.has(cell(position) - center)) result.append(entry);
+                }
+            }
         }
         return result;
     }

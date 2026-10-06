@@ -240,6 +240,7 @@ static func apply(world: GameWorld, caster: GameUnit, spell: String, target: Gam
 	# counter. Lasting effects are "magic effects" whose type is the
 	# spell index; fold them into stats.
 	var secs: float = float(p.duration) * GameUnit.TICK
+	var effect_ticks := int(p.duration)
 	if p.code in ["firewall", "litnwall", "acid_fog"] and world.ai:
 		# the effect's cells become dangerous
 		# until counter-1 at duration+2. Campfire creates no figure, so it
@@ -274,45 +275,45 @@ static func apply(world: GameWorld, caster: GameUnit, spell: String, target: Gam
 					audio.sound_units.append(u.uid)
 		"regeneration":   # health regeneration x effect
 			for u: GameUnit in victims:
-				_buff(u, "regeneration", secs, {"regen_mul": power})
+				_buff(u, "regeneration", effect_ticks, {"regen_mul": power})
 		"strength":   # damage x (1 + 0.003 s) / (1 + 0.003 w); HP likewise with 0.005
 			for u: GameUnit in victims:
-				_buff(u, "strength", secs, {"dmg_mul": 1.0 + 0.003 * power, "hp_mul": 1.0 + 0.005 * power})
+				_buff(u, "strength", effect_ticks, {"dmg_mul": 1.0 + 0.003 * power, "hp_mul": 1.0 + 0.005 * power})
 		"weak":
 			for u: GameUnit in victims:
-				_buff(u, "weak", secs, {"dmg_mul": 1.0 / (1.0 + 0.003 * power), "hp_mul": 1.0 / (1.0 + 0.005 * power)})
+				_buff(u, "weak", effect_ticks, {"dmg_mul": 1.0 / (1.0 + 0.003 * power), "hp_mul": 1.0 / (1.0 + 0.005 * power)})
 		"speed":   # speed - slow is added to actions (attack rate)
 			for u: GameUnit in victims:
-				_buff(u, "speed", secs, {"actions_add": power})
+				_buff(u, "speed", effect_ticks, {"actions_add": power})
 		"slow":
 			for u: GameUnit in victims:
-				_buff(u, "slow", secs, {"actions_add": -power})
+				_buff(u, "slow", effect_ticks, {"actions_add": -power})
 		"prot_fire", "prot_electro", "prot_acid":
 			#  adds protection effects to the armour of that type.
 			for u: GameUnit in victims:
-				_buff(u, p.code, secs, {"resist": PROTECTS[p.code], "armor": power})
+				_buff(u, p.code, effect_ticks, {"resist": PROTECTS[p.code], "armor": power})
 		"antimagic":   # protects against all three elements (max with the single ones)
 			for u: GameUnit in victims:
-				_buff(u, "antimagic", secs, {"resist": "all", "armor": power})
+				_buff(u, "antimagic", effect_ticks, {"resist": "all", "armor": power})
 		"stun":
 			for u: GameUnit in victims:
-				_buff(u, "stun", secs, {})   # effect 0x19: shown, read by nothing (see GameUnit)
+				_buff(u, "stun", effect_ticks, {})   # effect 0x19: shown, read by nothing (see GameUnit)
 		"feeblemind":   # a flag that refuses spell-casting orders
 			for u: GameUnit in victims:
-				_buff(u, "feeblemind", secs, {"no_cast": true})
+				_buff(u, "feeblemind", effect_ticks, {"no_cast": true})
 		# senses and detectability (GameUnit.sense / detect).
 		"invisibility":   # sight detectability - effect / 100
 			for u: GameUnit in victims:
-				_buff(u, "invisible", secs, {"detect": [0, -power * 0.01]})
+				_buff(u, "invisible", effect_ticks, {"detect": [0, -power * 0.01]})
 		"lichdom":   # life-sense detectability - effect
 			for u: GameUnit in victims:
-				_buff(u, "lichdom", secs, {"detect": [2, -power]})
+				_buff(u, "lichdom", effect_ticks, {"detect": [2, -power]})
 		"silence":   # hearing detectability - effect
 			for u: GameUnit in victims:
-				_buff(u, "silence", secs, {"detect": [3, -power]})
+				_buff(u, "silence", effect_ticks, {"detect": [3, -power]})
 		"stench":   # smell detectability + effect
 			for u: GameUnit in victims:
-				_buff(u, "stench", secs, {"detect": [4, power]})
+				_buff(u, "stench", effect_ticks, {"detect": [4, power]})
 		"charm":   #  case 0x24: repeated until the target is on the caster's side
 			audio.sound_units = []
 			for u: GameUnit in victims:
@@ -337,7 +338,7 @@ static func apply(world: GameWorld, caster: GameUnit, spell: String, target: Gam
 				-1, maxi(int(p.duration), 1))
 		"eagle_sight", "infravision", "detect_life":   # effect added to sight / night sight / life sense
 			for u: GameUnit in victims:
-				_buff(u, p.code, secs, {"sense": [["eagle_sight", "infravision", "detect_life"].find(p.code), power]})
+				_buff(u, p.code, effect_ticks, {"sense": [["eagle_sight", "infravision", "detect_life"].find(p.code), power]})
 		_:
 			if p.subtype in DAMAGE_TYPES:
 				_damage_spell(world, caster, p, target, at, from)
@@ -1093,7 +1094,8 @@ static func _fireworks_tick(world: GameWorld, at: Vector2, radius: float, durati
 		_fireworks_tick(world, at, radius, duration, counter - 1, id))
 
 
-static func _buff(u: GameUnit, name: String, secs: float, data: Dictionary) -> void:
-	data.until = u.world.time + secs
+static func _buff(u: GameUnit, name: String, ticks: int, data: Dictionary) -> void:
+	data[GameUnit.EFFECT_TICKS] = ticks
+	data.until = u.world.time + float(ticks) * GameUnit.TICK
 	u.buffs[name] = data
 	u.refresh_max_hp()

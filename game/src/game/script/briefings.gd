@@ -15,6 +15,9 @@ var _check := 0.0
 ## Native screen saves the third actor and, in #cage scenes, the second.
 ## Closing the conversation walks them back before reporting completion.
 var _return_actors: Array = []
+## A walking conversation waits for its required staging orders. The host
+## publishes the first phrase only after its ordinary walk/turn tick finishes.
+var _pending_dialog: Dictionary = {}
 
 
 func _init(v: ScriptVM) -> void:
@@ -197,7 +200,28 @@ func play_named(id: String, var_name: String, player := 0, partner: GameUnit = n
 		if c.has(k):
 			vm.world.dialog_actors[int(c[k])] = true
 	_face(c, instant)
-	vm.session.broadcast({"t": "dialog", "id": var_name, "brief": id, "title": b.title, "phrases": b.phrases, "cast": c})
+	var event := {"t": "dialog", "id": var_name, "brief": id, "title": b.title, "phrases": b.phrases, "cast": c}
+	_pending_dialog = {} if instant else event
+	if instant:
+		vm.session.broadcast(event)
+	else:
+		var waiting := event.duplicate(true)
+		waiting["staging"] = true
+		vm.session.broadcast(waiting)
+
+
+## Native village mode 2: only unfinished orders whose wait flag is set
+## delay the first phrase. Closing a prior conversation's return walk does
+## not delay this one. Called after World's mover/turn completion checks.
+func staging_tick() -> void:
+	if _pending_dialog.is_empty() or active.is_empty():
+		return
+	for m: Dictionary in vm.world.dialog_movers.values():
+		if int(m.get("state", 1)) > 0 and bool(m.get("wait", not m.get("restore", false))):
+			return
+	var event := _pending_dialog
+	_pending_dialog = {}
+	vm.session.broadcast(event)
 
 
 ## LiA: closing a script-started briefing scans the temporary
@@ -231,11 +255,15 @@ func _face(c: Dictionary, instant := false) -> void:
 	var d := float(b.proto.get("dialog_cam_distance", 0.0)) + 2.5
 	var a_at := a.pos
 	var b_at := b.pos
+	var a_z := a.position.y
+	var b_z := b.position.y
 	var cage := bool(vm.world.zone.get("cage", false))
 	if cage:
 		b_at = a.pos + Vector2.from_angle(a.facing) * d
+		b_z = a_z
 	else:
 		a_at = b.pos + Vector2.from_angle(b.facing) * d
+		a_z = b_z
 		_stage(a, a_at, (b_at - a_at).angle(), instant)
 	# The third actor's place: the middle of a and b
 	# turned by a right angle — mid + (b.y − mid.y, mid.x − b.x) — then
@@ -253,8 +281,12 @@ func _face(c: Dictionary, instant := false) -> void:
 	# The places the conversation camera works from (the original keeps them
 	#  and never reads the units again; DialogCamera).
 	c["at"] = {"a": [a_at.x, a_at.y], "b": [b_at.x, b_at.y]}
+	# Keep XY rows backward-compatible; the original camera separately
+	# retains the staged height rather than sampling the final footprint.
+	c["at_z"] = {"a": a_z, "b": b_z}
 	if cu:
 		c["at"]["c"] = [c_at.x, c_at.y]
+		c["at_z"]["c"] = (a_z + b_z) * 0.5
 
 
 func _remember_return(u: GameUnit) -> void:
@@ -267,18 +299,20 @@ func _remember_return(u: GameUnit) -> void:
 	vm.world.dialog_movers.erase(u)
 
 
-func _stage(u: GameUnit, point: Vector2, angle: float, instant: bool) -> void:
+func _stage(u: GameUnit, point: Vector2, angle: float, instant: bool, waiting := true) -> void:
 	if instant:
 		#  tries placement, then applies the facing and clears
 		# the AI order even when the footprint prevents that placement.
 		vm.world.dialog_place(u, point, angle)
 	elif not u.blocked:   #  refuses a walk under flag.
-		vm.world.dialog_movers[u] = {"to": point, "angle": angle, "state": 1, "elapsed": 0.0}
+		vm.world.dialog_movers[u] = {"to": point, "angle": angle, "state": 1, "elapsed": 0.0, "wait": waiting}
 		u.command({"type": "move", "to": point, "run": false})
 		u.set_meta("ai_state", 1)   # 608990 / LiA539810 call the ordinary AI move setter
 
 
 func complete(player: int, var_name: String, force := false) -> void:
+	if not force and not _pending_dialog.is_empty():
+		return   # mode 2 has no phrase/close controls yet
 	if var_name != active and not force:
 		return   # already finished (another co-op player closed it first)
 	if not force and active_player >= 0:
@@ -288,13 +322,17 @@ func complete(player: int, var_name: String, force := false) -> void:
 	for row: Dictionary in _return_actors:
 		var u: GameUnit = vm.world.units.get(int(row.uid))
 		if u and not u.dead:
-			_stage(u, row.to, float(row.angle), false)
+			_stage(u, row.to, float(row.angle), false, false)
 			if vm.world.dialog_movers.has(u):
 				vm.world.dialog_movers[u].restore = true
 	_return_actors.clear()
+	# A missing script-started briefing closes the currently displayed
+	# conversation, even when its completion key belongs to another topic.
+	var close_id := active if force and not active.is_empty() else var_name
+	_pending_dialog = {}
 	active = ""
 	active_player = -1
-	vm.session.broadcast({"t": "dialog_close", "id": var_name})
+	vm.session.broadcast({"t": "dialog_close", "id": close_id})
 	var key := _named_key(_named_id, player) if not _named_id.is_empty() else var_name
 	_named_id = ""
 	if key.is_empty():

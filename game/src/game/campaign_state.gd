@@ -688,8 +688,10 @@ func store_party_positions(world: GameWorld) -> void:
 			# unit whole), put back by restore_party_positions.
 			if u.dead:
 				h.dead = true
+				h.blood_pool = u.blood_pool_state()
 			else:
 				h.erase("dead")
+				h.erase("blood_pool")
 
 
 ## The F / Follow order across zones. the original (the party
@@ -810,6 +812,8 @@ func restore_party_positions(world: GameWorld) -> void:
 				u.lie_dead()
 				if world.session and not h.has("merc"):
 					world.session.hero_died(u)   # the co-op respawn / the death notice
+			if u.dead:
+				u.restore_blood_pool(h.get("blood_pool"))
 	replay_restored(world)
 
 
@@ -850,9 +854,12 @@ static func body_state(u: GameUnit) -> Dictionary:
 	var shown: Dictionary = rs.get("magic", {})
 	for k: String in u.buffs:
 		var b: Dictionary = Dictionary(u.buffs[k]).duplicate(true)
-		var left := float(b.get("until", 0.0)) - now
-		if left <= 0.0:
+		var counted := GameUnit.valid_effect_ticks(b.get(GameUnit.EFFECT_TICKS))
+		var left := float(b[GameUnit.EFFECT_TICKS]) * GameUnit.TICK if counted else float(b.get("until", 0.0)) - now
+		if not counted and left <= 0.0:
 			continue
+		if not counted:
+			b.erase(GameUnit.EFFECT_TICKS)
 		b.erase("until")
 		var code: String = _FX_CODE.get(k, k)
 		var ev = shown.get("%d:%s" % [u.uid, code])
@@ -880,10 +887,22 @@ static func apply_body(u: GameUnit, st: Dictionary) -> void:
 		if not e is Array or e.size() < 3:
 			continue
 		var b: Dictionary = Dictionary(e[2]).duplicate(true)
-		b.until = now + float(e[1])
+		var left := float(e[1])
+		if GameUnit.valid_effect_ticks(b.get(GameUnit.EFFECT_TICKS)):
+			# Exact new optional metadata survives the existing binary Variant
+			# dictionary.688510 reads the native DWORD without16-bit masking.
+			left = float(b[GameUnit.EFFECT_TICKS]) * GameUnit.TICK
+		else:
+			b.erase(GameUnit.EFFECT_TICKS)
+			# Old saves have only seconds left. Integral values can migrate;
+			# ambiguous/custom deadlines preserve the legacy absolute fallback.
+			var ticks := GameUnit.legacy_effect_ticks(left)
+			if ticks >= 0:
+				b[GameUnit.EFFECT_TICKS] = ticks
+		b.until = now + left
 		u.buffs[String(e[0])] = b
-		if e.size() > 4 and float(e[3]) >= 0.0:
-			fx.append({"t": "magicfx", "uid": u.uid, "code": String(e[4]), "secs": float(e[1]),
+		if e.size() > 4 and float(e[3]) >= 0.0 and left > 0.0:
+			fx.append({"t": "magicfx", "uid": u.uid, "code": String(e[4]), "secs": left,
 				"s": float(e[3]), "replay": true})
 	u.refresh_max_hp()
 	var ps: Array = st.get("parts", [])
@@ -943,7 +962,7 @@ func replay_restored(world: GameWorld) -> void:
 func store_zone(id: String, world: GameWorld) -> void:
 	if world == null or id.is_empty():
 		return
-	var z := {"dead": [], "removed": [], "units": {}, "levers": {}, "vm": {}, "loot": {}, "carried": {},
+	var z := {"dead": [], "removed": [], "units": {}, "levers": {}, "vm": {}, "loot": {}, "carried": {}, "blood_pools": {},
 		"added": world.get_meta("added_mobs", [])}
 	var present := {}
 	for u: GameUnit in world.units.values():
@@ -956,7 +975,7 @@ func store_zone(id: String, world: GameWorld) -> void:
 			rec.nid = u.uid
 			rec.position = Vector3(u.pos.x, u.pos.y, 0)
 			z.get_or_add("bodies", []).append({"rec": rec, "facing": u.facing, "loot": u.get_meta("loot", []),
-				"owner": int(u.get_meta("lmp_owner")), "conn": int(u.get_meta("lmp_conn", 0))})
+				"owner": int(u.get_meta("lmp_owner")), "conn": int(u.get_meta("lmp_conn", 0)), "blood_pool": u.blood_pool_state()})
 			continue
 		present[u.uid] = true
 		if u.has_meta("script_control"):
@@ -971,6 +990,7 @@ func store_zone(id: String, world: GameWorld) -> void:
 		z.carried[u.uid] = carried
 		if u.dead:
 			z.dead.append(u.uid)
+			z.blood_pools[u.uid] = u.blood_pool_state()
 			if u.has_meta("loot"):
 				z.loot[u.uid] = u.get_meta("loot")
 		else:
@@ -1022,6 +1042,7 @@ func store_zone(id: String, world: GameWorld) -> void:
 	var lasting := Spells.save_lasting(world)
 	if not lasting.is_empty():
 		z.lasting = lasting
+	z.pool_membership = world.corpse_pools.save_state()
 	zones[id] = z
 
 
@@ -1061,6 +1082,7 @@ func restore_zone(id: String, world: GameWorld) -> void:
 			bu.hp = 0
 			bu.model.act("death", 1, 0.0)
 			bu.freeze_pose(true)
+			bu.restore_blood_pool(b.get("blood_pool"))
 			bu.set_meta("lmp_owner", int(b.owner))
 			bu.set_meta("lmp_conn", int(b.conn))
 			if not (b.loot as Array).is_empty():
@@ -1094,6 +1116,8 @@ func restore_zone(id: String, world: GameWorld) -> void:
 			u.hp = 0
 			u.model.act("death", 1, 0.0)
 			u.freeze_pose(true)
+			var pools: Variant = z.get("blood_pools")
+			u.restore_blood_pool(pools.get(nid, pools.get(str(nid))) if pools is Dictionary else null)
 			if z.get("loot", {}).has(nid):
 				u.set_meta("loot", z.loot[nid])
 	for nid in z.units:
@@ -1153,6 +1177,7 @@ func restore_zone(id: String, world: GameWorld) -> void:
 		world.set_meta("restored_spellfx", z.spellfx.duplicate(true))
 	if not z.get("tornado", []).is_empty():
 		world.set_meta("restored_tornado", z.tornado)
+	world.corpse_pools.restore_state(z.get("pool_membership"))
 
 
 # ---------------------------------------------------------------- files

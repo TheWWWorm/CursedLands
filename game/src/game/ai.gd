@@ -1048,17 +1048,8 @@ func _notice_candidates_profile_body(u: GameUnit, notice_radius := NAN) -> Array
 		var r := notice_radius if not is_nan(notice_radius) else maxf((float(u.stats.sight) + u.sense_bonus(0)) * u.sight_factor(), u.sense(2))
 		var grid := _friend_grid(r * 2.0 / 32.0)
 		var cells: Dictionary = grid.cells
-		var c0 := _notice_cell(u)
-		near = []
 		var radius := float(int(grid.reach) + 1) * 16.0 * 1.5
-		var units := world.nav.units_all_around(u.pos, radius) if world.authority and world.nav.size.x > 0 \
-			else world.units_near(u.pos, radius)
-		if _unit_query:
-			near = _unit_query.in_cells(units, u, u.pos, cells, false)
-		else:
-			for o: GameUnit in units:
-				if o != u and cells.has(_notice_cell(o) - c0):
-					near.append(o)
+		near = world.notice_units_near(u, radius, cells, false, true)
 		u.set_meta("ai_near", near)
 		u.set_meta("ai_near_t", world.time + float((randi() & 3) + 8) * GameUnit.TICK)
 	return near

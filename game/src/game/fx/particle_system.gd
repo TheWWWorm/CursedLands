@@ -174,6 +174,7 @@ func carrier_valid(obj: Object) -> bool:
 func _bone(u: GameUnit, name: String) -> Node3D:
 	if not is_instance_valid(u.model):
 		return null
+	u.model.flush_pending_pose()
 	var key := u.get_instance_id()
 	var cached: Dictionary = _bones.get(key, {})
 	if int(cached.get("model", 0)) != u.model.get_instance_id():

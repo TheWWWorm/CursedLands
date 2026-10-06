@@ -51,6 +51,14 @@ static func tl(list: Array) -> Array:
 
 ## English → [Russian, German].
 const TEXTS := {
+	"Native acceleration could not start": ["Не удалось запустить аппаратное ускорение", "Native Beschleunigung konnte nicht gestartet werden"],
+	"Windows could not load libterrain_search.dll. This Windows build needs it for native acceleration.": ["Windows не смогла загрузить libterrain_search.dll. Эта версия для Windows требует библиотеку для ускорения вычислений.", "Windows konnte libterrain_search.dll nicht laden. Diese Windows-Version benötigt sie für die native Beschleunigung."],
+	"If the Windows error says 0xC0E90002, Application Control blocked the file. If Smart App Control is On, you can turn it Off in Windows Security > App & browser control > Smart App Control, then close and reopen the game.": ["Ошибка Windows 0xC0E90002 означает, что контроль приложений заблокировал файл. Если Smart App Control включён, его можно выключить: «Безопасность Windows» > «Управление приложениями и браузером» > Smart App Control. Затем закройте и снова запустите игру.", "Beim Windows-Fehler 0xC0E90002 hat die Anwendungssteuerung die Datei blockiert. Wenn Smart App Control eingeschaltet ist, kannst du es unter Windows-Sicherheit > App- und Browsersteuerung > Smart App Control ausschalten. Schließe das Spiel danach und öffne es erneut."],
+	"Turning Smart App Control off changes protection for all apps. Older Windows versions may require a Windows reset to turn it back on.": ["Выключение Smart App Control меняет защиту для всех приложений. В старых версиях Windows для повторного включения может потребоваться сброс Windows.", "Das Ausschalten von Smart App Control ändert den Schutz für alle Apps. Bei älteren Windows-Versionen kann zum erneuten Einschalten ein Zurücksetzen von Windows nötig sein."],
+	"If Smart App Control is already Off, extract the complete release folder again. On a managed PC, ask your administrator about its Application Control policy.": ["Если Smart App Control уже выключен, распакуйте всю папку игры заново. На рабочем компьютере уточните политику контроля приложений у администратора.", "Wenn Smart App Control bereits ausgeschaltet ist, entpacke den vollständigen Release-Ordner erneut. Frage bei einem verwalteten PC den Administrator nach der Anwendungssteuerungsrichtlinie."],
+	"Open Windows Security": ["Открыть «Безопасность Windows»", "Windows-Sicherheit öffnen"],
+	"Open Windows Security from the Start menu": ["Откройте «Безопасность Windows» через меню «Пуск»", "Windows-Sicherheit über das Startmenü öffnen"],
+	"Close game": ["Закрыть игру", "Spiel schließen"],
 	"Drawbridge motion": ["Движение подъёмных мостов", "Zugbrückenbewegung"],
 	"Fast drop": ["Быстрое опускание", "Schnelles Absenken"],
 	"Original timing": ["Время оригинала", "Originales Tempo"],

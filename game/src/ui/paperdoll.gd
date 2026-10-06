@@ -442,6 +442,7 @@ func _sync_pose(wounds := true) -> void:
 	if not is_instance_valid(_unit) or _unit.model == null:
 		return
 	var src: EIUnitModel = _unit.model
+	src.flush_pending_pose()
 	if src != _pairs_src:
 		_pairs_src = src
 		_pairs.clear()

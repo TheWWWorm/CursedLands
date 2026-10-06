@@ -88,6 +88,8 @@ static func combine(parts: Array, extras: Array = [], saved: Dictionary = {}) ->
 static func of(model: Node3D) -> Dictionary:
 	if not is_instance_valid(model) or not model.has_meta(PARTS):
 		return {}
+	if model is EIUnitModel:
+		model.flush_pending_pose()
 	var parts: Array = []
 	var inside := model.is_inside_tree()
 	var inv := model.global_transform.affine_inverse() if inside else Transform3D.IDENTITY

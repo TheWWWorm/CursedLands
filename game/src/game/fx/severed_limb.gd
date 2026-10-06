@@ -35,6 +35,7 @@ var _sink_from := 0.0
 static func throw(unit: GameUnit, part: String) -> SeveredLimb:
 	if unit == null or unit.model == null or unit.world == null or unit.get_parent() == null:
 		return null
+	unit.model.flush_pending_pose()
 	var root := unit.model.find_child(part, true, false) as Node3D
 	if root == null or not root.is_visible_in_tree():
 		return null
