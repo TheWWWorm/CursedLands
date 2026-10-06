@@ -21,7 +21,8 @@ static func open_path(path: String) -> EIResArchive:
 		var archive := EIResArchive.new()
 		archive._path = path
 		return archive if archive._parse() else null
-	var f := FileAccess.open(path, FileAccess.READ)
+	var actual := GameFiles.resolve(path)
+	var f := FileAccess.open(actual, FileAccess.READ) if not actual.is_empty() else null
 	if f == null:
 		push_error("Cannot open archive: %s" % path)
 		return null

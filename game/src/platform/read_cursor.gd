@@ -11,6 +11,7 @@ var _native: FileAccess
 
 static func open(source: String) -> DataReadCursor:
 	if not GameFiles.exists(source): return null
+	source = GameFiles.resolve(source)
 	var cursor := DataReadCursor.new()
 	cursor.path = source
 	cursor._size = GameFiles.length(source)

@@ -10,6 +10,13 @@ extends RefCounted
 const SOURCE_LIMIT := 32 * 1024 * 1024
 const RECT_LIMIT := 8 * 1024 * 1024
 const META_LIMIT := 4096
+static var _kernel: RefCounted = _make_kernel()
+
+
+static func _make_kernel() -> RefCounted:
+	return ClassDB.instantiate("ScreenRectKernel") if not OS.get_cmdline_user_args().has("--ei-script-picking") and ClassDB.class_exists("ScreenRectKernel") else null
+
+
 static var _meshes := {}   # weak mesh, stable resource revision, optional arrays
 static var _views := {}    # camera -> exact adjusted transform/projection context
 static var _rects := {}    # part -> exact pose/context and projected result
@@ -330,6 +337,11 @@ static func of_context(mi: MeshInstance3D, cam: Camera3D, view: Dictionary) -> R
 		_rects[id].stamp = _stamp
 		return _rects[id].rect
 	data = _mesh_data(mi.mesh)
+	if _kernel != null:
+		var surfaces := []
+		for s: Dictionary in data.surfaces:
+			surfaces.append([xf * _posed(mi, s), s.indices if s.indices != null else PackedInt32Array(), s.primitive])
+		return _remember(mi, key, _kernel.bounds(surfaces, planes, view.projection, view.inverse_basis, view.origin, view.size))
 	var deforming := mi.skin != null
 	for value in weights:
 		deforming = deforming or not is_zero_approx(value)

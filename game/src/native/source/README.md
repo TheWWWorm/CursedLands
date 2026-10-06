@@ -1,4 +1,4 @@
-# Optional compiled navigation
+# Optional compiled hot loops
 
 The `TerrainSearchKernel` extension accelerates integer terrain distances,
 component labels, block routes, moving search windows, and obstacle-stamp
@@ -48,3 +48,22 @@ through the same number of native simulation ticks.
 
 Performance measurements must compare equal simulation work in release builds.
 Headless fixed-step throughput is CPU cost, not a measurement of player FPS.
+
+## Perception and picking
+
+`UnitQueryKernel` also accelerates ordered cell filtering and nearby-list
+validation. It samples current registry membership for each synchronous combat
+query; perception rows are bounded and invalidated by unit state changes and
+script-instance lifetimes. `UnitNoticeLifetime` provides deletion invalidation
+without a per-frame script notification callback. The unit/AI/sound scripts
+retain their fallbacks (`-- --ei-script-units`).
+
+`ScreenRectKernel` clips the same posed mesh vertices and triangles against the
+camera frustum and returns the same rounded pixel bounds. The script fallback
+is selectable with `-- --ei-script-picking`. The extension does not approximate
+picking by a mesh bounding box or change animation, simulation, or sound timing.
+
+The focused differential suites cover object deletion/script replacement,
+registry edits and ordering, cell rounding, camera clipping and vertex morphs.
+ASan/UBSan checks use private instrumented libraries; only normal release
+libraries belong in distributable packages.

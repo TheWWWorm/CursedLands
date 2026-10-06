@@ -983,8 +983,8 @@ func store_zone(id: String, world: GameWorld) -> void:
 			if not present.has(int(r.nid)):
 				z.removed.append(int(r.nid))
 	for nid in world.levers:
-		z.levers[nid] = [world.levers[nid].state, world.lever_sys.figure_t(nid) if world.lever_sys else 0.0,
-			bool(world.levers[nid].get("enabled", true))]
+		z.levers[nid] = world.lever_sys.export_row(int(nid)) if world.lever_sys else \
+			[world.levers[nid].state, 0.0, bool(world.levers[nid].get("enabled", true))]
 	z.diplomacy = world.diplomacy   # script SetDiplomacy
 	z.water = world.water_levels.duplicate(true)   # SetWaterLevel (saved by the original)
 	z.traps = world.traps.save_state()   # ActivateTrap flag and countdown (saves the object)
@@ -1038,7 +1038,13 @@ func restore_zone(id: String, world: GameWorld) -> void:
 		world.add_mob_objects(file)
 	world.set_meta("added_mobs", z.get("added", []).duplicate())
 	var looted: Array = z.get("looted", [])
-	for nid in z.removed:
+	# Looted script-added units are not in the base map's removed list.
+	# Restore their existing tombstones too, before publishing live units.
+	var removed: Array = Array(z.removed).duplicate()
+	for nid in looted:
+		if not removed.has(nid):
+			removed.append(nid)
+	for nid in removed:
 		var u: GameUnit = world.units.get(int(nid))
 		if u and looted.has(int(nid)):
 			u.dead = true
@@ -1112,9 +1118,7 @@ func restore_zone(id: String, world: GameWorld) -> void:
 		if world.levers.has(int(nid)):
 			var v = z.levers[nid]
 			if v is Array:
-				world.lever_sys.restore(int(nid), int(v[0]), float(v[1]))
-				if v.size() > 2:   # EnableLever
-					world.levers[int(nid)].enabled = bool(v[2])
+				world.lever_sys.restore_row(int(nid), v)
 			else:   # older saves: the state alone
 				world.levers[int(nid)].state = int(v)
 				world.lever_sys.apply(int(nid), false)

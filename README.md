@@ -53,7 +53,7 @@ Download the package for your system from the [Releases](https://github.com/TheW
 
 1. Start the engine.
 2. When asked, choose either:
-   - the folder of an installed copy of Evil Islands (the one containing `res`, `maps` and `config`), or
+   - the folder of an installed copy of Evil Islands (the one containing `res`/`Res`, `maps`/`Maps` and `config`/`Config`; mixed capitalization is accepted too), or
    - the GOG offline installer itself (`setup_evil_islands_*.exe`). It is **not run**: the engine unpacks the game files from it once into its own user folder and checks each file. This takes a few minutes, and nothing needs to be installed on Linux or macOS, or
    - a game data pack (`.eipack`, see [Play in your browser](#play-in-your-browser)).
 3. The chosen folder is remembered. The original intro videos play, then the main menu opens.

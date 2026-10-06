@@ -9,10 +9,13 @@ var world: GameWorld
 ## cannot be retained by this cache. FIFO bounding only causes recomputation.
 const NOTICE_CELL_CAP := 1024
 var _notice_cells := {}
+var _unit_query: RefCounted
 
 
 func _init(w: GameWorld) -> void:
 	world = w
+	if ClassDB.class_exists("UnitQueryKernel") and not "--ei-script-units" in OS.get_cmdline_user_args():
+		_unit_query = ClassDB.instantiate("UnitQueryKernel")
 
 
 ## Calm motivations (Guard, Patrol, Sentry and
@@ -675,12 +678,15 @@ func player_perceive_profile_body(u: GameUnit, force := false) -> Dictionary:
 		if not is_instance_valid(o) or world.units.get(o.uid) != o:
 			corpses.erase(id)
 	var npc_scan := not force and u.controller < 0
-	for o in _notice_candidates(u, maxf(k[0] * k[1], k[4]) if not k.is_empty() else NAN):
-		if not is_instance_valid(o) or not o is GameUnit or o.hidden:
+	var candidates := _notice_candidates(u, maxf(k[0] * k[1], k[4]) if not k.is_empty() else NAN)
+	if _unit_query:
+		candidates = _unit_query.notice_candidates(candidates, GameUnit, u, world, hostile_sides, npc_scan, GameUnit.notice_revision)
+	for o in candidates:
+		if not _unit_query and (not is_instance_valid(o) or not o is GameUnit or o.hidden):
 			continue
 		# party observers scan everyone. An NPC scans living
 		# hostiles / party units and dead units outside those two groups.
-		if npc_scan:
+		if npc_scan and not _unit_query:
 			var hostile: Variant = hostile_sides.get(o.faction)
 			if hostile == null:
 				hostile = world.is_enemy(u, o)
@@ -1047,9 +1053,12 @@ func _notice_candidates_profile_body(u: GameUnit, notice_radius := NAN) -> Array
 		var radius := float(int(grid.reach) + 1) * 16.0 * 1.5
 		var units := world.nav.units_all_around(u.pos, radius) if world.authority and world.nav.size.x > 0 \
 			else world.units_near(u.pos, radius)
-		for o: GameUnit in units:
-			if o != u and cells.has(_notice_cell(o) - c0):
-				near.append(o)
+		if _unit_query:
+			near = _unit_query.in_cells(units, u, u.pos, cells, false)
+		else:
+			for o: GameUnit in units:
+				if o != u and cells.has(_notice_cell(o) - c0):
+					near.append(o)
 		u.set_meta("ai_near", near)
 		u.set_meta("ai_near_t", world.time + float((randi() & 3) + 8) * GameUnit.TICK)
 	return near

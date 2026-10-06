@@ -998,9 +998,7 @@ func _rpc_zone(id: String, records: Array, diplo: PackedInt32Array, extra_mobs: 
 	for f: String in extra_mobs:
 		world.add_mob_objects(f)
 	for nid in levers:
-		world.lever_sys.restore(int(nid), int(levers[nid][0]), float(levers[nid][1]))
-		if levers[nid].size() > 2 and world.levers.has(int(nid)):
-			world.levers[int(nid)].enabled = bool(levers[nid][2])
+		world.lever_sys.restore_row(int(nid), levers[nid])
 	for r: Dictionary in records:
 		_spawn_record(r)
 	_relink_heroes()
@@ -1077,7 +1075,7 @@ var _zone_held: Array[Callable] = []
 func _lever_states() -> Dictionary:
 	var out := {}
 	for nid in world.levers:
-		out[nid] = [world.levers[nid].state, world.lever_sys.figure_t(nid), bool(world.levers[nid].get("enabled", true))]
+		out[nid] = world.lever_sys.export_row(int(nid))
 	return out
 
 
@@ -3497,6 +3495,10 @@ func failed(u: GameUnit, n: int) -> void:
 
 ## Host -> all: UI-level events (messages, dialogs, sounds).
 func broadcast(event: Dictionary) -> void:
+	if is_host and world and String(event.get("t", "")) == "lever" and event.has("state") and not event.has("motion"):
+		var data: Dictionary = world.lever_sys.motion_payload(int(event.nid))
+		if not data.is_empty():
+			event["motion"] = data
 	if lmp_travel and not bool(event.get("global", false)):
 		_track(event)
 		lmp_travel.broadcast(event)
@@ -3572,8 +3574,11 @@ func _on_event(event: Dictionary) -> void:
 				if world.levers.has(int(event.nid)) and event.has("enabled"):   # EnableLever
 					world.levers[int(event.nid)].enabled = bool(event.enabled)
 				elif world.levers.has(int(event.nid)):
-					world.levers[int(event.nid)].state = event.state
-					world.lever_sys.apply(int(event.nid), true, float(event.get("time", -1.0)))
+					if event.has("motion"):
+						world.lever_sys.receive(int(event.nid), int(event.state), event.motion)
+					else:
+						world.levers[int(event.nid)].state = event.state
+						world.lever_sys.apply(int(event.nid), true, float(event.get("time", -1.0)))
 			"diplo":
 				world.set_relation(event.a, event.b, event.v)
 			"water":   # script SetWaterLevel: the host's whole list

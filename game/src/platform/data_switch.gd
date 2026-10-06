@@ -130,6 +130,7 @@ static func switch_to(path: String, expected_campaign := "") -> String:
 	var err := verify(path)
 	if err:
 		return err
+	path = GameFiles.resolve(path)
 	var next_campaign := CampaignProfile.detect(EIResArchive.open_path(path.path_join("res/texts.res")))
 	if expected_campaign and next_campaign != expected_campaign:
 		return RemakeText.t("These files belong to the other game. Select its tab to import them.")

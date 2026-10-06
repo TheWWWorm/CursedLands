@@ -51,6 +51,10 @@ static func tl(list: Array) -> Array:
 
 ## English → [Russian, German].
 const TEXTS := {
+	"Drawbridge motion": ["Движение подъёмных мостов", "Zugbrückenbewegung"],
+	"Fast drop": ["Быстрое опускание", "Schnelles Absenken"],
+	"Original timing": ["Время оригинала", "Originales Tempo"],
+	"Fast drop lowers moving drawbridges in at most 330 ms of game time; physical access opens only when lowering finishes. Original timing keeps the original motion and immediate physical access. The host's setting applies in co-op.": ["Быстрое опускание занимает не более 330 мс игрового времени; пройти по мосту можно только после завершения движения. Время оригинала сохраняет исходную анимацию и немедленный доступ. В совместной игре действует настройка сервера.", "Schnelles Absenken dauert höchstens 330 ms Spielzeit; die Brücke ist erst danach begehbar. Originales Tempo behält die ursprüngliche Bewegung und sofortige Begehbarkeit. Im Koop gilt die Einstellung des Hosts."],
 	"Refund all points": ["Вернуть все очки", "Alle Punkte erstatten"],
 	"Returns all XP spent on skills and purchased abilities, including attribute upgrades. Starting allocations and quest gifts stay; equipment and earned XP stay.": ["Возвращает весь опыт, потраченный на навыки и купленные умения, включая повышение характеристик. Начальные значения и награды заданий сохраняются, как и снаряжение и заработанный опыт.", "Erstattet sämtliche Erfahrung für Fähigkeiten und gekaufte Talente, einschließlich Attributsteigerungen. Anfangswerte, Questbelohnungen, Ausrüstung und verdiente Erfahrung bleiben erhalten."],
 	"No spent points to refund.": ["Нет потраченных очков для возврата.", "Keine ausgegebenen Punkte zum Erstatten."],
@@ -539,6 +543,8 @@ const TEXTS := {
 	"A private data pack (.eipack) also works.": ["Подойдёт и личный пакет данных (.eipack).", "Ein privates Datenpaket (.eipack) geht auch."],
 	"Unpacking %d files into %s ... (a few minutes, once)": ["Распаковка файлов (%d) в %s ... (несколько минут, один раз)", "Entpacke %d Dateien nach %s ... (einige Minuten, einmalig)"],
 	"Folder does not exist.": ["Папка не существует.", "Der Ordner existiert nicht."],
+	"Ambiguous game-data names: %s": ["Неоднозначные имена файлов игры: %s", "Mehrdeutige Spieldatennamen: %s"],
+	"Could not inspect game-data folder: %s": ["Не удалось проверить папку файлов игры: %s", "Spieldatenordner konnte nicht geprüft werden: %s"],
 	"Missing %s - point this at the Evil Islands install folder (the one containing game.exe).": ["Нет %s — укажите папку, куда установлены «Проклятые земли» (ту, где лежит game.exe).", "%s fehlt - wähle den Installationsordner von Evil Islands (den mit game.exe)."],
 	"Could not read the game archives in res/.": ["Не удалось прочитать архивы игры в res/.", "Die Spielarchive in res/ konnten nicht gelesen werden."],
 	"Cannot open the installer.": ["Не удаётся открыть установщик.", "Der Installer kann nicht geöffnet werden."],

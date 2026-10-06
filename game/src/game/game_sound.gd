@@ -58,11 +58,18 @@ const ACK_REPLACES := {0xd: [9], 0xe: [1], 0xf: [3], 0x10: [3], 0x11: [5, 6], 0x
 ## server's message 0x60).
 var combat_flag := 0
 var _sent_flags := {}          # host: player index -> value sent
+var _unit_query: RefCounted
+var _combat_membership := -1
 var _combat_near := {}         # uid -> {until, units}, native creature
 var _dialog_was := false
 var _shop_was := false
 ## The global map is up (event "travel" until a zone starts or "Stay here").
 var _on_map := false
+
+
+func _init() -> void:
+	if not OS.get_cmdline_user_args().has("--ei-script-units") and ClassDB.class_exists("UnitQueryKernel"):
+		_unit_query = ClassDB.instantiate("UnitQueryKernel")
 
 
 func _ready() -> void:
@@ -329,6 +336,15 @@ func _send_combat_flags() -> void:
 ## The server's native danger flag also gates its periodic network-character
 ## save. Reading it must work without an audio mixer.
 func player_combat_flag(player: int) -> int:
+	if _unit_query == null or _world == null: return _player_combat_flag(player)
+	_combat_membership = _unit_query.begin_registry_batch(_world.units)
+	var flag := _player_combat_flag(player)
+	_unit_query.end_batch()
+	_combat_membership = -1
+	return flag
+
+
+func _player_combat_flag(player: int) -> int:
 	if _world == null or _world.session == null:
 		return 0
 	var own: Array[GameUnit] = []
@@ -376,16 +392,28 @@ func _near_units(u: GameUnit) -> Array:
 		var cells: Dictionary = grid.cells
 		var c0 := _combat_cell(u)
 		var near := []
-		for o: GameUnit in _world.live_units_near(u.pos, float(int(grid.reach) + 1) * 16.0 * 1.5):
-			var oc := _combat_cell(o)
-			if o != u and cells.has(oc - c0):
-				near.append(o)
+		var radius := float(int(grid.reach) + 1) * 16.0 * 1.5
+		if _unit_query:
+			near = _unit_query.in_cells(_world.units_near(u.pos, radius), u, u.pos, cells, true)
+		else:
+			for o: GameUnit in _world.live_units_near(u.pos, radius):
+				var oc := _combat_cell(o)
+				if o != u and cells.has(oc - c0):
+					near.append(o)
 		row = {"until": _world.time + float((randi() & 3) + 8) * TICK, "units": near}
 		_combat_near[u.uid] = row
 	# A connection can leave this live world between native cache refreshes.
 	# Test validity before a typed local: Godot throws when assigning a freed
 	# object even when the loop body starts with an is_instance_valid guard.
 	var current: Array = row.units
+	if _unit_query != null:
+		# Validate the live registry once per synchronous flag query. A cached
+		# list already pruned against that exact membership needs no rescan.
+		if _combat_membership < 0 or int(row.get("membership", -1)) != _combat_membership:
+			current = _unit_query.prune_units(current, _world.units)
+			row.units = current
+			row.membership = _combat_membership
+		return current
 	for i in current.size():
 		var o = current[i]
 		if is_instance_valid(o) and _world.units.get(o.uid) == o: continue

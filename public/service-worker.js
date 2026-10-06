@@ -2,23 +2,23 @@
 // Replaced with content hashes and engine-only files by tools/export_mobile.py.
 // The "2" marks the cache layout that stores the shell under the scope URL;
 // older caches stored a redirected copy of index.html and are deleted below.
-const ENGINE_CACHE = 'cursed-engine-2-494299b6181755bcf93c';
+const ENGINE_CACHE = 'cursed-engine-2-42cf213bc5611dc67c99';
 // Hosts may redirect /index.html to / (Cloudflare Workers assets do). A
 // redirected response must never answer a navigation (the browser fails it
 // with ERR_FAILED), so the shell is fetched and stored as "./".
 const SHELL = new URL('./', self.registration.scope).href;
 const HASHES = {
 "data-worker.js": "23acf2e304952606e7e2a0bf850dc8e02b56dcae2913cc79e461c78afbd49d77",
-"files.js": "d69eec21a2fe18d638a91c5386252ab3d7dd454741a6f4bc6db6e0266e08d92c",
+"files.js": "5b23e470c5dedc93d0c80ea0696eff36bad3afbb88eb4bc85ced567f472c5b2a",
 "icon-192.png": "ce18b6621f58d2b24ef49ec182bf4f021f5992b2e46e666918764c47d92a1a0a",
 "icon-512.png": "33d17b00001bf55448c56919e7f9a9d56be7089231be189704d72a13d00363d4",
 "index.apple-touch-icon.png": "a8079e5f32d35cabbc12bb9f66f4b7c49a73b84d7fc1e8e4dde15914f9bc50eb",
 "index.audio.position.worklet.js": "be33985bc7160d6bf9646f259cd86b259cd67b02ccb297ee5c44f8ac84327bc8",
 "index.audio.worklet.js": "5b476a9c9ce642c0ee4256436d1bc31d9c38f868aca0f9a8e2a57c18d2dec2a3",
-"index.html": "d8da81dc38dcf6b078c98172224beeccd07d8ed88020e1d66fe3d543f9abf32a",
+"index.html": "de0aea21fe99223272a024b9448cb741264204a13b3f0230d854acd9965c8883",
 "index.icon.png": "490c9afe17f218360ceb84d41dd95d0409dfe0349c00a97c40cf3d8e04cf0b45",
 "index.js": "68586d6daafc93c6e697b3fb258976874aa7459b8931165ebb1dc3c9614cc42c",
-"index.pck": "f451aa1189331d56e224236f6485d35f3cd572e1c19c89d8aecf3630165c70bc",
+"index.pck": "2815eac19a2e4ec6f8c487f47b7f97df25a55db62959513a44a367994f4a99de",
 "index.png": "3cb4495c0b98dfbe4b663cbf2b6836473572339beb66d902367893162a70be0e",
 "index.wasm": "7eda98958eb09135a1acb54a4323a00b1a55af1997f15fa1cdc2b93e3df46656",
 "installer-worker.js": "d6afa8f57a10faef5edb0f1ce10ef2ec52a9e7ed690771ba0b97b431e9e24708",

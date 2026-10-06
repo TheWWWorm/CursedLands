@@ -148,11 +148,19 @@ window.CursedFiles = {
         throw new Error('Choose the GOG installer (.exe), a data pack (.eipack) or the game folder.');
       } else {
         let offset = 0;
+        const directories = new Map();
         for (const file of selected) {
           const parts = (file.webkitRelativePath || file.name).replaceAll('\\', '/').split('/');
           const start = parts.findIndex(p => ['res', 'maps', 'config', 'stream', 'movies', 'camera'].includes(p.toLowerCase()));
           if (start < 0) continue;
-          const path = cleanPath(parts.slice(start).join('/'));
+          const relative = parts.slice(start);
+          const path = cleanPath(relative.join('/'));
+          for (let count = 1; count < relative.length; count++) {
+            const spelling = relative.slice(0, count).join('/'), canonical = spelling.toLowerCase();
+            if (directories.has(canonical) && directories.get(canonical) !== spelling)
+              throw Object.assign(new Error('Ambiguous game-data names: %s'), {arg: canonical});
+            directories.set(canonical, spelling);
+          }
           if (files[path]) throw new Error('Duplicate data file: ' + path);
           files[path] = {size: file.size, offset, source: file}; offset += file.size;
         }

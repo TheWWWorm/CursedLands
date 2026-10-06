@@ -606,13 +606,17 @@ const FAR_VIEW := 260.0
 const FAR_VIEW_FOG := 1.4
 
 
-## BorderFogDistance (default 32 m).
-const BORDER_FOG := 32.0
+## The original default is32m (LIA437b60). The requested
+## boundary treatment keeps full concealment at the outer1m but confines
+## its fade to the perimeter, so playable ground is clear from5m inward.
+## The native falloff remains in ei_fog_of; this narrower default is user policy.
+const BORDER_FOG := 4.0
 
 
 ## Native settings live: BorderFogDistance is the same
 ## address as. The constructor and registry loader therefore
-## set the runtime band directly, to 32 m by default (45b210).
+## set the native runtime band directly, to32m by default (458870 /45b210).
+## BORDER_FOG above intentionally refines that placement for the remake.
 ## Main-menu rendering temporarily uses 6 m (6328d0).
 ## This original terrain/figure fog is always active during play; remake
 ## graphics presets and legacy gfx_edge_fade settings cannot disable it.

@@ -346,4 +346,4 @@ static func _step(pred: int, idx: int, nib: int) -> Vector2i:
 ## stream/<name>.mp3 of the installation, or "" when there is none.
 static func music_path(name: String) -> String:
 	var path := GameData.root.path_join("stream/%s.mp3" % name.to_lower())
-	return path if GameFiles.exists(path) else ""
+	return GameFiles.resolve(path) if GameFiles.exists(path) else ""

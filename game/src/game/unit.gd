@@ -16,13 +16,29 @@ const SPEED_SCALE := 0.5 / TICK
 const ARRIVE := 0.15
 const MeshScreenRect = preload("res://src/ui/mesh_screen_rect.gd")
 
+## A broad perception row contains only these four state fields. Changing
+## any of them invalidates it before the next query. The optional lifetime
+## token invalidates native rows when this script instance is destroyed.
+## Positions and diplomacy are still read at their original query points.
+static var notice_revision := 0
+var _notice_lifetime: RefCounted = ClassDB.instantiate("UnitNoticeLifetime") \
+	if ClassDB.class_exists("UnitNoticeLifetime") and not OS.get_cmdline_user_args().has("--ei-script-units") else null
+
 var world: GameWorld
 var uid := 0
 var info := {}          # map record (EIMob object) or synthetic spawn data
 var proto := {}         # monster_prototypes row
 var race := {}          # race_models row
-var faction := 0        # diplomacy index (OBJ_PLAYER)
-var controller := -1    # player index controlling this unit, -1 = AI
+var faction := 0:   # diplomacy index (OBJ_PLAYER)
+	set(value):
+		if faction != value:
+			faction = value
+			notice_revision += 1
+var controller := -1:   # player index, -1 = AI
+	set(value):
+		if controller != value:
+			controller = value
+			notice_revision += 1
 var display_name := ""
 
 ## Setting it keeps the unit's spatial bucket (NavGrid.rebucket) exact, so
@@ -63,8 +79,16 @@ var parts: Array[Dictionary] = []
 var mana := 0.0
 var max_mana := 0.0
 var stats := {}         # to_hit, parry, dmg_min, dmg_max, absorption, reach, attack_time
-var dead := false
-var hidden := false
+var dead := false:
+	set(value):
+		if dead != value:
+			dead = value
+			notice_revision += 1
+var hidden := false:
+	set(value):
+		if hidden != value:
+			hidden = value
+			notice_revision += 1
 var fogged := false   # out of this player's sight (UnitFog, client-side only)
 
 # --- orders
@@ -2952,23 +2976,37 @@ func _pre_cast(game_dt: float) -> float:
 
 ## Cheap pre-test for picking: whether `p` can be on the figure at all (the
 ## screen box of a cube round the unit that holds it standing or lying).
+var _cover_key: Array = []
+var _cover_lo := Vector2.ZERO
+var _cover_hi := Vector2.ZERO
+var _cover_behind := false
+
+
 func may_cover(cam: Camera3D, p: Vector2) -> bool:
 	if _body == null:
 		return true
 	var h := _body.aabb.size.y
-	var r := maxf(figure_radius, h) + 0.5
-	var box := AABB(Vector3(-r, -0.5, -r), Vector3(2.0 * r, h + 0.5, 2.0 * r))
-	var lo := Vector2(INF, INF)
-	var hi := Vector2(-INF, -INF)
-	var gx := get_global_transform_interpolated()   # as drawn (phys_interp)
-	for c in 8:
-		var wp := gx * box.get_endpoint(c)
-		if cam.is_position_behind(wp):
-			return true
-		var sp := cam.unproject_position(wp)
-		lo = lo.min(sp)
-		hi = hi.max(sp)
-	return p.x >= lo.x and p.y >= lo.y and p.x <= hi.x and p.y <= hi.y
+	var gx := get_global_transform_interpolated()
+	# This broad rectangle depends on the view and unit placement, not its
+	# animation or pointer position. Reuse only exactly equal inputs.
+	var key := [gx, h, figure_radius, cam.get_camera_projection(), cam.get_camera_transform(),
+		cam.global_transform, cam.get_viewport().get_visible_rect().size]
+	if key != _cover_key:
+		_cover_key = key
+		_cover_behind = false
+		var r := maxf(figure_radius, h) + 0.5
+		var box := AABB(Vector3(-r, -0.5, -r), Vector3(2.0 * r, h + 0.5, 2.0 * r))
+		_cover_lo = Vector2(INF, INF)
+		_cover_hi = Vector2(-INF, -INF)
+		for c in 8:
+			var wp := gx * box.get_endpoint(c)
+			if cam.is_position_behind(wp):
+				_cover_behind = true
+				break
+			var sp := cam.unproject_position(wp)
+			_cover_lo = _cover_lo.min(sp)
+			_cover_hi = _cover_hi.max(sp)
+	return _cover_behind or (p.x >= _cover_lo.x and p.y >= _cover_lo.y and p.x <= _cover_hi.x and p.y <= _cover_hi.y)
 
 
 ## Screen rectangles of the figure as drawn (the original
@@ -3170,7 +3208,7 @@ func _sync_transform() -> void:
 	var p := pos
 	var yaw := facing
 	_draw_move_speed = _move_speed
-	if world.authority:
+	if world.authority and (_draw_motion_active or _draw_line_goal != Vector2.INF):
 		#  evaluates the existing path at integer server time
 		# plus the draw-clock remainder.
 		var sample := _draw_motion_sample(world.logic_fraction())

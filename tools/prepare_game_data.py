@@ -15,11 +15,22 @@ def prepare(source, output):
     if output.is_relative_to(source):
         raise ValueError('Write the data pack outside the source installation.')
     files, index, offset = [], {}, 0
+    directories = {}
     for path in sorted(source.rglob('*')):
-        if not path.is_file() or path.is_symlink():
+        if path.is_symlink():
             continue
-        name = path.relative_to(source).as_posix().lower()
+        relative = path.relative_to(source).as_posix()
+        name = relative.lower()
         if name.split('/')[0] not in {'res', 'maps', 'config', 'stream', 'movies', 'camera'}:
+            continue
+        parts = relative.split('/')
+        for count in range(1, len(parts) + (1 if path.is_dir() else 0)):
+            spelling = '/'.join(parts[:count])
+            canonical = spelling.lower()
+            if canonical in directories and directories[canonical] != spelling:
+                raise ValueError('Ambiguous game-data names: ' + canonical)
+            directories[canonical] = spelling
+        if not path.is_file():
             continue
         if name in index:
             raise ValueError('Duplicate case-insensitive filename: ' + name)

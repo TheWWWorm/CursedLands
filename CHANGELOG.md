@@ -5,18 +5,21 @@
 - Lost in Astral:
   - Added expansion data import, including the supported two-disc ISO edition, without running its installer. Keep both games installed and switch between them from the original-style menu controls.
   - Each campaign keeps separate saves and imported files. Browser storage retains both game libraries; browser ISO import is unavailable.
+  - Installed folders accept original, lowercase and mixed-case game-data names for both campaigns. Source names stay unchanged; ambiguous case aliases are refused. Data-pack preparation and browser imports normalize their own stored paths.
   - Added a visible expansion co-op entry, campaign-specific hero choices and synchronization of scripted party replacements and waiting-party bags. Waiting-party mercenary records no longer overwrite an active companion’s identity and equipment on clients.
   - Support the expansion's chapter rosters, escorts and moving floors. Network explanations wrap within their panels, and damage, experience and hit labels scale together for readable displays.
 - Appearance:
   - Strength and Weakness temporarily broaden or slim the body in the world and character previews. The saved and trained base physique remains separate and returns when the effect expires.
   - Bare dead trees stay still in the wind; leafy versions of the same model, bushes and grass retain their movement.
-  - Restored the original 32-metre map-border fog by default. It stays active with Original look and no longer appears as a Remake option; the menu retains its original softer 6-metre band.
+  - Map-border fog now uses a narrower 4-metre band by default, keeping playable ground clearer on the first Lost in Astral mission. Boundary fog stays active with Original look; the menu retains its softer 6-metre band.
   - Quest targets now use the softer purple glow shown in the original-game reference, preventing washed-out ground and neon grass around quest lights.
   - Spear goblins use their authored pike in the world and character preview; ranged goblins keep their sling.
 - Movement:
+  - Drawbridges in River and Islands lower quickly by default and become walkable only when fully lowered. Raising closes them immediately. The host controls the timing in co-op; an Original timing choice preserves the original motion and access timing.
   - Zone transitions require a deliberate click inside the open exit by default. An optional setting keeps automatic transitions, and scripted story transfers still work.
   - Double-clicking the ground stands up from crouching or lying down and runs, with the normal transition and space check. Single clicks keep the current stance.
   - Restored the original ground-picking solver so oblique clicks on narrow elevated bridges select the deck instead of the water beneath it.
+  - Village movement and F1 selection keep the party leader after hiring a companion.
 - Visibility:
   - Wandering wisps are visible again in the world and character preview, using their translucent texture instead of the opaque-unit alpha cutoff.
   - Fixed distant enemies appearing in the world and minimap merely because campaign scripts give them names. Applies to fresh games and loaded saves; co-op still shares sight through living party members.
@@ -33,6 +36,12 @@
   - Belt items, including the Goblin doll, return to their original size after deselection. Refused immediate use clears targeting, and unenchanted dolls do not enter target mode.
 - Loading:
   - Keep newly created or resized portrait and character previews transparent until their first rendered image is ready. Hidden previews suspend rendering and retain their previous update policy.
+- Saves:
+  - Looted creatures added by scripts, including Orcs, no longer respawn after loading. Retained loot history is honored in older saves; deaths already lost and re-saved cannot be recovered automatically.
+- Remaining limits:
+  - The complete legal campaign script route and cooperative ending have passed automated checks. Complete ordinary combat playthroughs in single player and co-op remain unverified.
+  - Direct public-IP play still needs a two-player retry across routers. Dense and snowy regions can remain CPU limited on Retroid Pocket 5; controlled Linux measurements do not establish Windows or Retroid frame rates.
+  - The reported Modern dialogue-camera clipping with Estera and an ogre found in water remain unresolved.
 
 ## 1.0.1
 

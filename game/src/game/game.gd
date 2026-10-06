@@ -658,6 +658,22 @@ func my_units() -> Array[GameUnit]:
 		for u: GameUnit in world.units.values():
 			if u.controller == session.my_index and not u.dead:
 				out.append(u)
+	# Party member indices belong to the roster, not the world's insertion
+	# order. Hiring keeps the mapped NPC in place, before deployed heroes.
+	# Native village clicks, select1..3 and party faces all use roster order.
+	if session and session.state:
+		var roster: Array = Array(session.state.heroes.get(session.my_index, [])).duplicate()
+		for m: Dictionary in session.state.mercs.values():
+			if int(m.get("controller", -1)) == session.my_index and session.state.merc_party_active(m):
+				roster.append(m)
+		var ordered: Array[GameUnit] = []
+		for h: Dictionary in roster:
+			for i in out.size():
+				if out[i].has_meta("hero") and out[i].get_meta("hero") == h:
+					ordered.append(out.pop_at(i))
+					break
+		ordered.append_array(out)   # controlled non-roster units keep world order
+		return ordered
 	return out
 
 

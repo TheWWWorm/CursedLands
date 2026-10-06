@@ -159,6 +159,7 @@ const OPTIONS := [
 	["merc_travel", 1, 2, 18, 5, 0],
 	# Explicit exit-ground clicks by default (user request); optional automatic arrival.
 	["auto_exit", 1, 2, 18, 6, 0],
+	["mechanism_motion", 1, 2, 18, 7, 0],
 	# Network and co-op (group 19): the co-op host's rules — full experience
 	# for every party member (XpRules), monster scaling to the player count
 	# (MobScaling: Off / Light / Normal / Strong), shared loot
@@ -186,6 +187,7 @@ const FIXED_OPTIONS := {"shadow_units": 1, "shadow_buildings": 1, "shadow_flora"
 ## Labels of the remake's multiple-choice rows (value = index); "resolution"
 ## is built from the monitor (resolutions()).
 const DISPLAY_CHOICES := {
+	"mechanism_motion": ["Fast drop", "Original timing"],
 	"display_mode": ["Windowed", "Fullscreen", "Borderless fullscreen"],
 	"fps_limit": ["Off", "30", "60", "120", "144", "165", "240", "Display refresh"],
 	"vsync": ["Off", "On", "Adaptive"],
@@ -222,6 +224,7 @@ const REMAKE_OPTIONS := {
 	"item_icon_fit": ["Fit items inside icons", "Keeps long inventory and shop items inside their icon cells while they turn. Off: the original fixed model scale."],
 	"ui_active_buttons": ["Bright usable camp buttons", "Available camp modes and Exit are bright. Skills apply immediately, so their inactive Accept and Cancel controls are hidden. Deal controls show whether a transaction can be made or undone. Off: the original button layout and tint."],
 	"coop_clock": ["Shared pause and speed", "Co-op host: pause the game or switch to 2x speed for everyone. Clients follow the host's speed. Off: co-op always runs at normal speed."],
+	"mechanism_motion": ["Drawbridge motion", "Fast drop lowers moving drawbridges in at most 330 ms of game time; physical access opens only when lowering finishes. Original timing keeps the original motion and immediate physical access. The host's setting applies in co-op."],
 	"auto_exit": ["Automatic zone exits", "Automatically opens travel when your party walks into an open exit. Off: click the ground inside the exit where the exit cursor appears. The host's setting applies in co-op; scripted story transfers still work."],
 	"merc_travel": ["Mercenaries travel between regions", "Hired companions stay with their owner when the party travels to another allod or region. The host's setting applies in co-op. Off: the original regional companion rule."],
 	"net_websocket": ["Browser-compatible host", "Host with WebSocket over TCP. Native and browser clients join using ws://host:27015, or wss:// through an HTTPS reverse proxy. Off uses native ENet over UDP. Set before hosting."],
@@ -316,7 +319,7 @@ const REMAKE_OPTIONS := {
 ## screen). "marks" = EnableBloodprints and "footprints" = EnableFootprints
 ## switch the ground marks (GroundMarks).
 const OPTIONS_APPLIED := ["volume_sfx", "volume_stream", "volume_voice", "power_kbd",
-	"item_icon_fit", "ui_active_buttons", "coop_clock", "merc_travel", "auto_exit",
+	"item_icon_fit", "ui_active_buttons", "coop_clock", "merc_travel", "auto_exit", "mechanism_motion",
 	"power_mouse", "scroll_border", "rubber_select", "marks", "footprints", "select_type", "show_path", "brightness", "contrast", "gamma",
 	"show_flying_hp", "show_tutorial", "autosave", "tooltip_time", "switch_filters",
 	"camera_reverse_x", "camera_reverse_y", "reverse_stereo", "difficulty",
@@ -458,8 +461,12 @@ func _ready() -> void:
 
 ## Returns an empty string when `path` is a usable install, otherwise the reason.
 static func validate(path: String) -> String:
+	GameFiles.clear_path_cache()
 	if path.is_empty() or not GameFiles.directory_exists(path):
 		return RemakeText.t("Folder does not exist.")
+	var case_problem := GameFiles.case_error(path)
+	if not case_problem.is_empty():
+		return case_problem
 	for rel: String in REQUIRED:
 		if not GameFiles.exists(path.path_join(rel)):
 			return RemakeText.t("Missing %s - point this at the Evil Islands install folder (the one containing game.exe).") % rel
@@ -470,6 +477,7 @@ func open(path: String) -> String:
 	var err := validate(path)
 	if err:
 		return err
+	path = GameFiles.resolve(path)
 	root = path
 	textures = EIResArchive.open_path(path.path_join("res/textures.res"))
 	figures = EIResArchive.open_path(path.path_join("res/figures.res"))

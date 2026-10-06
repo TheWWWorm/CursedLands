@@ -18,6 +18,8 @@
 #include <vector>
 
 #include "window_frontier.h"
+#include "unit_query.h"
+#include "screen_rect.h"
 #include <godot_cpp/variant/dictionary.hpp>
 using namespace godot;
 
@@ -477,6 +479,8 @@ public:
 static void initialize_kernel(ModuleInitializationLevel level) {
     if (level == MODULE_INITIALIZATION_LEVEL_SCENE) {
         GDREGISTER_CLASS(TerrainWindowFrontier); GDREGISTER_CLASS(TerrainSearchKernel);
+        GDREGISTER_CLASS(UnitNoticeLifetime); GDREGISTER_CLASS(UnitQueryKernel);
+        GDREGISTER_CLASS(ScreenRectKernel);
     }
 }
 static void terminate_kernel(ModuleInitializationLevel) {}

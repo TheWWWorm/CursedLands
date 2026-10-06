@@ -384,6 +384,8 @@ func order_near_units(list: Array) -> Array:
 	if list.size() < 2:
 		return list
 	_spatial_order()
+	if ai and ai._unit_query and list.size() < 1048576:
+		return ai._unit_query.order_units(list, _spatial_ranks)
 	var keys := PackedInt64Array()
 	keys.resize(list.size())
 	for i in list.size():
@@ -491,8 +493,12 @@ func frame_clock_enabled() -> bool:
 func _process(_dt: float) -> void:
 	if not frame_clock_enabled():
 		_frame_ms = -1
+		if lever_sys:
+			lever_sys.draw(_dt)
 		return
 	_sample_frame(Time.get_ticks_msec(), Engine.time_scale)
+	if lever_sys:
+		lever_sys.draw(_dt)
 
 
 ## Full native integer timestamp delivery. Even an empty retained world
@@ -544,8 +550,17 @@ func _advance(dt: float) -> void:
 ##  stores the client clock remainder as float32. Rendering
 ## evaluates the existing spline at that fraction without moving the unit,
 ## changing its path or repainting its authoritative navigation stamp.
+var _fraction_acc := NAN
+var _fraction_value := 0.0
+
+
 func logic_fraction() -> float:
-	return float(PackedFloat32Array([_logic_accumulator / TICK])[0])
+	# Every unit draws from the same remainder. Convert it to native float32
+	# once per value, retaining identical results after direct clock edits.
+	if _fraction_acc != _logic_accumulator:
+		_fraction_acc = _logic_accumulator
+		_fraction_value = float(PackedFloat32Array([_logic_accumulator / TICK])[0])
+	return _fraction_value
 
 
 func draw_time() -> float:
@@ -581,6 +596,8 @@ func _tick_body(dt: float) -> void:
 			dialog_actors.clear()
 		_tick_dialog_movers(dt)
 		profile_record("script",started)
+	if lever_sys:
+		lever_sys.tick()
 	time += dt
 	# Native5d53b0 ticks the selected motivation once per completed server
 	# dispatch. Counting floor(time/55ms) loses/doubles rolls when the double
