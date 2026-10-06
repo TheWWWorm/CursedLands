@@ -332,9 +332,19 @@ func player_combat_flag(player: int) -> int:
 	if _world == null or _world.session == null:
 		return 0
 	var own: Array[GameUnit] = []
+	# Index the current attacks once. Rechecking every nearby unit for every
+	# relevant object made this query quadratic in crowded maps. This index
+	# lives only for this call, so orders, deaths and diplomacy stay current.
+	var attackers := {}
 	for u: GameUnit in _world.units.values():
-		if is_instance_valid(u) and u.controller == player and not u.dead and not u.hidden:
+		if not is_instance_valid(u): continue
+		if u.controller == player and not u.dead and not u.hidden:
 			own.append(u)
+		if not u.dead and u.order.get("type", "") == "attack":
+			var target := _act_target(u)
+			if target:
+				if not attackers.has(target): attackers[target] = []
+				attackers[target].append(u)
 	var flag := 0
 	for u: GameUnit in own:
 		for ratio in _near_ratios(u):
@@ -345,12 +355,13 @@ func player_combat_flag(player: int) -> int:
 			continue
 		if _hostile_act(u):
 			return 2
-		for a in _near_units(u):
-			if not is_instance_valid(a) or a.dead or own.is_empty():
-				continue
-			if String(a.order.get("type", "")) == "attack" and _act_target(a) == u \
-					and _world.is_enemy(a, own[0]):
-				return 2
+		# Refresh even without attackers: the native list lifetime and its RNG
+		# draw must be identical to the exhaustive scan.
+		var near := _near_units(u)
+		if not own.is_empty():
+			for a: GameUnit in attackers.get(u, []):
+				if near.has(a) and _world.is_enemy(a, own[0]):
+					return 2
 	return flag
 
 
@@ -361,14 +372,12 @@ func _near_units(u: GameUnit) -> Array:
 	var row: Dictionary = _combat_near.get(u.uid, {})
 	if row.is_empty() or _world.time >= float(row.until):
 		var r := maxf((float(u.stats.get("sight", 15.0)) + u.sense_bonus(0)) * u.sight_factor(), u.sense(2))
-		var cells := UnitAI._friend_cells(r * 2.0 / 32.0)
-		var c0 := Vector2i(int(GameUnit._fistp(u.pos.x * 2.0 - 0.5) / 32), int(GameUnit._fistp(u.pos.y * 2.0 - 0.5) / 32))
-		var reach := 0
-		for c: Vector2i in cells:
-			reach = maxi(reach, maxi(absi(c.x), absi(c.y)))
+		var grid := UnitAI._friend_grid(r * 2.0 / 32.0)
+		var cells: Dictionary = grid.cells
+		var c0 := _combat_cell(u)
 		var near := []
-		for o: GameUnit in _world.live_units_near(u.pos, float(reach + 1) * 16.0 * 1.5):
-			var oc := Vector2i(int(GameUnit._fistp(o.pos.x * 2.0 - 0.5) / 32), int(GameUnit._fistp(o.pos.y * 2.0 - 0.5) / 32))
+		for o: GameUnit in _world.live_units_near(u.pos, float(int(grid.reach) + 1) * 16.0 * 1.5):
+			var oc := _combat_cell(o)
 			if o != u and cells.has(oc - c0):
 				near.append(o)
 		row = {"until": _world.time + float((randi() & 3) + 8) * TICK, "units": near}
@@ -376,8 +385,25 @@ func _near_units(u: GameUnit) -> Array:
 	# A connection can leave this live world between native cache refreshes.
 	# Test validity before a typed local: Godot throws when assigning a freed
 	# object even when the loop body starts with an is_instance_valid guard.
-	row.units = row.units.filter(func(o): return is_instance_valid(o) and _world.units.get(o.uid) == o)
-	return row.units
+	var current: Array = row.units
+	for i in current.size():
+		var o = current[i]
+		if is_instance_valid(o) and _world.units.get(o.uid) == o: continue
+		# Copy only when pruning: callers may still hold the old cached list.
+		current = current.duplicate()
+		for j in range(current.size() - 1, i - 1, -1):
+			o = current[j]
+			if not is_instance_valid(o) or _world.units.get(o.uid) != o: current.remove_at(j)
+		row.units = current
+		break
+	return current
+
+
+## Share the exact-position memo with perception. It stores grid arithmetic,
+## not the sound list or its independent native refresh countdown.
+func _combat_cell(u: GameUnit) -> Vector2i:
+	if _world.ai: return _world.ai._notice_cell(u)
+	return Vector2i(int(GameUnit._fistp(u.pos.x * 2.0 - 0.5) / 32), int(GameUnit._fistp(u.pos.y * 2.0 - 0.5) / 32))
 
 
 ## how readily enemies near a party member detect that member

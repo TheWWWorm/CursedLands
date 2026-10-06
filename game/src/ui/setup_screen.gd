@@ -14,6 +14,7 @@ signal cancelled
 
 ## Re-import from the options: the label of the button that goes back.
 var back_text := ""
+var selected_campaign := ""
 
 var _path: LineEdit
 var _status: Label
@@ -27,6 +28,11 @@ var _dest := ""
 var _cancel: Button
 var _cancelled := false
 var _pack: PrivateDataImport
+var _choices: CampaignChoices
+var _play: Button
+var _iso_button: Button
+var _iso_hint: Label
+var _iso_dialog: FileDialog
 
 
 func _ready() -> void:
@@ -36,9 +42,18 @@ func _ready() -> void:
 	bg.set_anchors_preset(Control.PRESET_FULL_RECT)
 	add_child(bg)
 
+	var scroll := ScrollContainer.new()
+	scroll.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	scroll.offset_left = 16
+	scroll.offset_right = -16
+	scroll.offset_top = 16
+	scroll.offset_bottom = -16
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	add_child(scroll)
 	var center := CenterContainer.new()
-	center.set_anchors_preset(Control.PRESET_FULL_RECT)
-	add_child(center)
+	center.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	center.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	scroll.add_child(center)
 	var box := VBoxContainer.new()
 	box.custom_minimum_size = Vector2(640, 0)
 	box.add_theme_constant_override("separation", 12)
@@ -48,9 +63,22 @@ func _ready() -> void:
 	title.text = RemakeText.t("Evil Islands - Remake")
 	title.add_theme_font_size_override("font_size", 32)
 	box.add_child(title)
+	_choices = CampaignChoices.new()
+	if selected_campaign.is_empty():
+		selected_campaign = GameData.campaign_id
+	_choices.current = selected_campaign
+	_choices.selected.connect(_choose_campaign)
+	box.add_child(_choices)
+	_play = Button.new()
+	_play.text = RemakeText.t("Play selected game")
+	_play.pressed.connect(func():
+		_path.text = DataSwitch.installed(selected_campaign)
+		_try_open())
+	box.add_child(_play)
+	_buttons.append(_play)
 	var info := Label.new()
 	info.autowrap_mode = TextServer.AUTOWRAP_WORD
-	info.text = RemakeText.t("This remake uses the data files of your own copy of Evil Islands (GOG / original CD). Select the game's install folder - the one containing game.exe, res/ and maps/ - or the GOG installer (setup_evil_islands_*.exe) to unpack its files once.") + "\n" + RemakeText.t("A private data pack (.eipack) also works.")
+	info.text = RemakeText.t("Install either game or both. Choose a game above, then its installed folder, GOG installer or private .eipack. Each game keeps its own saves.")
 	box.add_child(info)
 	if back_text:
 		var current := Label.new()
@@ -97,6 +125,15 @@ func _ready() -> void:
 	imp.pressed.connect(_try_import)
 	box.add_child(imp)
 	_buttons += [browse_exe, imp]
+	_iso_hint = Label.new()
+	_iso_hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_iso_hint.text = RemakeText.t("For the expansion CDs, select both ISO images together. Disc order does not matter.")
+	box.add_child(_iso_hint)
+	_iso_button = Button.new()
+	_iso_button.text = RemakeText.t("Import Lost in Astral ISO images…")
+	_iso_button.pressed.connect(func(): _iso_dialog.popup_centered_ratio(0.7))
+	box.add_child(_iso_button)
+	_buttons.append(_iso_button)
 	_bar = ProgressBar.new()
 	_bar.visible = false
 	box.add_child(_bar)
@@ -135,11 +172,19 @@ func _ready() -> void:
 	_exe_dialog.filters = PackedStringArray(["*.exe,*.eipack ; " + RemakeText.t("Evil Islands installer or data pack")])
 	_exe_dialog.file_selected.connect(func(f: String): _exe.text = f; _try_import())
 	add_child(_exe_dialog)
+	_iso_dialog = FileDialog.new()
+	_iso_dialog.file_mode = FileDialog.FILE_MODE_OPEN_FILES
+	_iso_dialog.access = FileDialog.ACCESS_FILESYSTEM
+	_iso_dialog.use_native_dialog = true
+	_iso_dialog.filters = PackedStringArray(["*.iso ; " + RemakeText.t("Lost in Astral disc images")])
+	_iso_dialog.files_selected.connect(_import_discs)
+	add_child(_iso_dialog)
+	_choose_campaign(selected_campaign)
 	set_process(false)
 
 
 func _try_open() -> void:
-	var err := DataSwitch.switch_to(_path.text.strip_edges())
+	var err := DataSwitch.switch_to(_path.text.strip_edges(), selected_campaign)
 	_status.text = err
 	if err.is_empty():
 		opened.emit()
@@ -166,6 +211,7 @@ func _try_import() -> void:
 	_status.text = RemakeText.t("Unpacking %d files into %s ... (a few minutes, once)") % [_setup.files.size(), _dest]
 	for b: Button in _buttons:
 		b.disabled = true
+	_choices.set_busy(true)
 	_bar.visible = true
 	_bar.value = 0
 	_cancel.visible = true
@@ -174,6 +220,8 @@ func _try_import() -> void:
 
 
 func _process(_dt: float) -> void:
+	if _pack and _pack.busy:
+		_bar.value = _pack.fraction * 100.0
 	if _setup == null:
 		return
 	_bar.value = _setup.progress() * 100.0
@@ -188,9 +236,11 @@ func _process(_dt: float) -> void:
 	_cancel.visible = false
 	for b: Button in _buttons:
 		b.disabled = false
+	_choices.set_busy(false)
+	_play.disabled = DataSwitch.installed(selected_campaign).is_empty()
 	_status.modulate = Color(1, 0.6, 0.5)
 	if err.is_empty():
-		err = DataSwitch.switch_to(_dest)
+		err = DataSwitch.switch_to(_dest, selected_campaign)
 	if err:
 		_status.text = err
 		DataSwitch.discard(_dest)   # the old files stay as they were
@@ -202,6 +252,12 @@ func _process(_dt: float) -> void:
 ## A private .eipack: unpacked by PrivateDataImport into its own managed
 ## "import-<n>" folder, which is removed again when it fails or is cancelled.
 func _import_pack(file: String) -> void:
+	_prepare_pack()
+	_status.text = RemakeText.t("Importing %s") % file.get_file()
+	_pack.import_file(file)
+
+
+func _prepare_pack() -> void:
 	if _pack == null:
 		_pack = PrivateDataImport.new()
 		add_child(_pack)
@@ -209,20 +265,41 @@ func _import_pack(file: String) -> void:
 		_pack.failed.connect(func(message: String): _pack_done("", RemakeText.t(message)))
 		_pack.completed.connect(func(folder: String): _pack_done(folder, ""))
 	_status.modulate = Color(0.85, 0.85, 0.8)
-	_status.text = RemakeText.t("Importing %s") % file.get_file()
 	for b: Button in _buttons:
 		b.disabled = true
+	_choices.set_busy(true)
 	_cancel.visible = true
-	_pack.import_file(file)
+
+
+func _import_discs(paths: PackedStringArray) -> void:
+	_prepare_pack()
+	_bar.value = 0
+	_bar.show()
+	set_process(true)
+	_pack.import_isos(paths)
+
+
+func _choose_campaign(id: String) -> void:
+	selected_campaign = id
+	_choices.choose(id)
+	_path.text = DataSwitch.installed(id)
+	_play.disabled = _path.text.is_empty()
+	_iso_button.visible = id == CampaignProfile.ASTRAL
+	_iso_hint.visible = _iso_button.visible
+	_status.text = RemakeText.t("Installed") if not _play.disabled else RemakeText.t("Not installed")
 
 
 func _pack_done(folder: String, err: String) -> void:
 	_cancel.visible = false
+	_bar.hide()
+	set_process(false)
 	for b: Button in _buttons:
 		b.disabled = false
+	_choices.set_busy(false)
+	_play.disabled = DataSwitch.installed(selected_campaign).is_empty()
 	_status.modulate = Color(1, 0.6, 0.5)
 	if err.is_empty():
-		err = DataSwitch.switch_to(folder)
+		err = DataSwitch.switch_to(folder, selected_campaign)
 		if err:
 			DataSwitch.discard(folder)   # the old files stay as they were
 	if err:

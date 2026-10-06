@@ -48,7 +48,7 @@ var _last_snap := {}
 var _exit_t := 0.0
 var _sync_t := 0.0
 var _state_dirty := false
-var _leave_armed := -1      # exit a move click armed (leave-zone box, _arm_exit)
+var _leave_armed := -1      # exit a deliberate ground click armed (leave-zone box, _arm_exit)
 var _auto_exit := -1        # remake: exit the host party stands in (box shown / standing there on entry)
 var _auto_world: GameWorld
 var travel_options: Array = []   # host: destinations currently offered
@@ -336,7 +336,7 @@ func new_campaign(intro := true) -> void:
 ## (SideQuests.lmp_offer, as a new server's). `quest` (tests)
 ## takes that quest straight away.
 func new_lmp_game(base: String, quest := "", pk := 0) -> bool:
-	if not lmp_characters_ready():
+	if not LmpMode.available() or not lmp_characters_ready():
 		return false
 	base = base.to_lower()
 	quest = quest.to_lower()
@@ -878,6 +878,8 @@ func _deploy_parties(z: Dictionary, entrance: int) -> void:
 			slot += 1
 	for n in state.mercs.keys():
 		var m: Dictionary = state.mercs[n]
+		if not state.merc_party_active(m):
+			continue   # waiting with the party in which this companion was hired
 		if m.get("travel_waiting", false) and String(m.get("travel_waiting_zone", "")) == String(z.get("id", "")):
 			continue   # a save in the farewell must still satisfy its empty-party gate
 		if m.get("fallen", false) and not _restoring:
@@ -886,8 +888,8 @@ func _deploy_parties(z: Dictionary, entrance: int) -> void:
 			# save brings its body back (CampaignState.restore_party_positions).
 			state.mercs.erase(n)
 			continue
-		if (state.get_var(0, "adeadn%d" % n) >= 1.0 and not m.get("fallen", false)) or not state.current_party.is_empty():
-			continue   # dead, or waiting while the story uses another party
+		if state.get_var(0, "adeadn%d" % n) >= 1.0 and not m.get("fallen", false):
+			continue
 		var p := world.nav.nearest_walkable(rect.get_center() + Vector2(slot % 3 - 1, slot / 3) * 1.5)
 		slot += 1
 		_spawn_merc(m, p, view, true)
@@ -1428,20 +1430,38 @@ func party_heroes() -> Array:
 ## party stands in that exit and opens «leave_zone» / «leave_zone_msg» (✓ / ✗)
 ## once, disarming; ✓ leaves through it
 ## ✗ only closes. Co-op: the host's party decides (the box goes to player 0).
-func _arm_exit(player: int, at: Vector2, has_units: bool) -> void:
+func _arm_exit(player: int, at: Vector2, has_units: bool, clicked_exit := -1) -> void:
 	if lmp_travel:
-		lmp_travel.arm_exit(player, at, has_units)
+		lmp_travel.arm_exit(player, at, has_units, clicked_exit)
 		return
 	if player != leave_player():
 		return
 	_leave_armed = -1
 	if not has_units or world == null:
 		return
+	var n := open_exit_at(at, player)
+	if n >= 0 and (GameData.option("auto_exit") == 1 or clicked_exit == n):
+		_leave_armed = n
+
+
+## The open exit under a deliberate ground click. The server repeats this
+## lookup against the submitted point and controlled units before arming it.
+func open_exit_at(at: Vector2, player := -1) -> int:
+	if world == null or state == null:
+		return -1
 	var n := _exit_at(at)
-	if n >= 0:
-		var to := String(world.zone.exits[n].get("to", "none"))
-		if state.get_var(0, "z." + to.to_lower()) != 1.0:
-			_leave_armed = n
+	return n if n >= 0 and _exit_is_open(n, player) else -1
+
+
+func _exit_is_open(n: int, player := -1) -> bool:
+	if lmp_travel and player >= 0:
+		return lmp_travel._exit_open(player, n)
+	var ex: Dictionary = world.zone.get("exits", {}).get(n, {})
+	var to := String(ex.get("to", "none"))
+	if to.to_lower() == "none":
+		return false
+	var key := LmpMode.exit_var(to) if not lmp.is_empty() else "z." + to.to_lower()
+	return state.get_var(0, key) != 1.0
 
 
 func _exit_at(at: Vector2) -> int:
@@ -1465,7 +1485,7 @@ func _check_exits() -> void:
 	if _leave_armed < 0 or not travel_options.is_empty() or (world.vm and world.vm.briefings.active):
 		return
 	var ex: Dictionary = world.zone.get("exits", {}).get(_leave_armed, {})
-	if ex.is_empty():
+	if ex.is_empty() or not _exit_is_open(_leave_armed, leave_player()):
 		_leave_armed = -1
 		return
 	var r: Rect2 = ex.remove
@@ -1484,13 +1504,16 @@ func _check_exits() -> void:
 
 
 ## Remake-only (user request 2026-10-02; the original opens the box only after a
-## move click inside the exit): when every living
+## move click inside the exit). Optional auto_exit:
+## when every living
 ## hero of the host's party stands in one open exit's remove rect, the
 ## leave-zone box opens even without that click. Shown once per stay: it
 ## re-arms only after the party has left the rect (a ✗ leaves the party
 ## standing there); a party that starts the zone inside an exit is not asked
 ## until it has stepped out once.
 func _auto_exit_check() -> void:
+	if GameData.option("auto_exit") != 1:
+		return
 	var n := _party_exit()
 	if _auto_world != world:
 		_auto_world = world
@@ -1563,8 +1586,10 @@ func _alone_exit_check() -> void:
 ## box and no check of the other members, so hired mercenaries (and other
 ## heroes) need not be in the exit. Remake: the host's leader (co-op: the host
 ## decides, as for field exits); fired once per stay in the rect, so "Stay here"
-## on the global map does not reopen it at once.
+## on the global map does not reopen it at once. Default policy now requires
+## a deliberate exit-ground click before arrival (user request).
 func _village_exit_check() -> void:
+	var automatic := GameData.option("auto_exit") == 1
 	var exits: Dictionary = world.zone.get("exits", {})
 	var n := -1
 	var inside := false
@@ -1581,16 +1606,19 @@ func _village_exit_check() -> void:
 	if _auto_world != world:
 		_auto_world = world
 		_auto_exit = n if inside else -1
-		return
+		if automatic:
+			return
 	if not inside:
 		_auto_exit = -1
 		return
-	if n == _auto_exit or not travel_options.is_empty() or (world.vm and world.vm.briefings.active):
+	if (automatic and n == _auto_exit) or (not automatic and _leave_armed != n) \
+			or not travel_options.is_empty() or (world.vm and world.vm.briefings.active):
 		return
 	var to := String(exits[n].get("to", "none"))
 	if state.get_var(0, "z." + to.to_lower()) == 1.0:
 		return
 	_auto_exit = n
+	_leave_armed = -1
 	leave_zone(to, int(exits[n].get("to_exit", 1)))
 
 
@@ -1625,6 +1653,13 @@ func sp_game_over() -> bool:
 	travel_options = []
 	broadcast({"t": "game_over"})
 	return true
+
+
+## Lost in Astral's GameOver/GameOverMsg builtins end the story regardless
+## of the hero's health. The message arguments are authored text keys.
+func script_game_over(title := "game_over", text := "game_over_msg") -> void:
+	travel_options = []
+	broadcast({"t": "game_over", "scripted": true, "title": title, "text": text})
 
 
 ## Single player: the main hero (not a mercenary) is dead or gone.
@@ -1912,9 +1947,18 @@ func apply_command(cmd: Dictionary, player: int) -> void:
 	match String(cmd.t):
 		"move":
 			var c := Vector2(cmd.x, cmd.y)
-			_arm_exit(player, c, not mine.is_empty())
+			# Only a deliberate exit-ground click carries an integer exit tag.
+			# Stick/line and swarm moves never count as that click.
+			var tag: Variant = cmd.get("exit", -1)
+			var clicked_exit: int = tag if tag is int and not bool(cmd.get("line", false)) \
+					and not bool(cmd.get("swarm", false)) else -1
+			_arm_exit(player, c, not mine.is_empty(), clicked_exit)
 			for i in mine.size():
 				var off := group_offset(i)
+				# A double-click move requests standing before its order starts,
+				# retaining the live posture transition and clearance refusal.
+				if bool(cmd.get("run", false)) and mine[i].stance != GameUnit.STANCE_NONE:
+					mine[i].change_posture(GameUnit.STANCE_NONE)
 				# The unit's own gait decides run / walk (the original unit)
 				# "run" is the double-click flag (command).
 				var mo := {"type": "move", "to": c + off, "gait": true, "run": bool(cmd.get("run", false)), "path_notice": not bool(cmd.get("line", false))}
@@ -2031,7 +2075,7 @@ func apply_command(cmd: Dictionary, player: int) -> void:
 			if obj and world.lever_sys.usable(int(cmd.target)) and not mine.is_empty():
 				var p3: Vector3 = obj.get_meta("ei").position
 				_double_stand(mine[0], cmd, Vector2(p3.x, p3.y), 3.0)
-				mine[0].command({"type": "move", "to": world.nav.nearest_walkable(Vector2(p3.x, p3.y), 3), "gait": true, "path_notice": true,
+				mine[0].command({"type": "move", "to": Vector2(p3.x, p3.y), "use_object": int(cmd.target), "gait": true, "path_notice": true,
 					"run": bool(cmd.get("run", false))})
 				mine[0].set_meta("interact", [obj, player])
 		"steal":
@@ -2142,9 +2186,10 @@ func _merc_owner() -> int:
 func redeploy_party(player: int) -> void:
 	var at := Vector2.INF
 	var facing := 0.0
+	state.store_party_positions(world)
 	for u: GameUnit in world.units.values():
-		if u.controller == player and u.has_meta("hero") and not u.get_meta("hero").has("merc"):
-			if at == Vector2.INF:
+		if u.controller == player and u.has_meta("hero"):
+			if at == Vector2.INF and not u.get_meta("hero").has("merc"):
 				at = u.pos
 				facing = u.facing
 			world.remove_unit(u)
@@ -2165,6 +2210,16 @@ func redeploy_party(player: int) -> void:
 			state.apply_hero(u)
 			announce_unit(u)
 		slot += 1
+	for n in state.mercs:
+		var m: Dictionary = state.mercs[n]
+		if int(m.get("controller", 0)) != player or not state.merc_party_active(m) \
+				or m.get("travel_waiting", false) or state.get_var(0, "adeadn%d" % n) >= 1.0:
+			continue
+		var p := world.nav.nearest_walkable(at + Vector2(slot % 3 - 1, slot / 3) * 1.5)
+		var u := _spawn_merc(m, p, facing, true)
+		if u:
+			announce_unit(u)
+		slot += 1
 	broadcast({"t": "party"})
 	sync_state()
 
@@ -2172,7 +2227,7 @@ func redeploy_party(player: int) -> void:
 ## `player`: the one who hired it in a conversation (
 ##  on that player), -1 = scripts (the remake's choice: the
 ## player with the fewest units).
-func merc_changed(n: int, hired: bool, player := -1) -> void:
+func merc_changed(n: int, hired: bool, player := -1, leave_npc := true) -> void:
 	if world == null:
 		return
 	if not hired and player < 0 and state.mercs.get(n, {}).get("travel_waiting", false):
@@ -2185,44 +2240,71 @@ func merc_changed(n: int, hired: bool, player := -1) -> void:
 		var rec: Dictionary = npc.info.duplicate() if npc else _find_merc_record(n)
 		if rec.is_empty():
 			return
-		var m := state.make_merc(n, rec)
+		var m := state.make_merc(n, rec, CampaignState.script_character(npc))
 		m.controller = player if player >= 0 and players_include(player) else _merc_owner()
-		var heroes := party_heroes()
-		var at: Vector2 = npc.pos if npc else (heroes[0].pos if not heroes.is_empty() else Vector2.ZERO) + Vector2(1, 1)
-		var facing: float = npc.facing if npc else 0.0
 		if npc:
-			# the original puts the village unit itself into the party:
-			# it leaves its zone (stored as removed), so it cannot be hired
-			# again there, nor stand in the village while it travels or after
-			# it died.
-			world.remove_unit(npc)
-			broadcast({"t": "remove", "uid": npc.uid})
-		var u := _spawn_merc(m, world.nav.nearest_walkable(at), facing)
-		if u:
-			announce_unit(u)
+			#  adds a roster entry, not a new server unit. Keep its
+			# live equipment, body, magic, stamina and pending script commands.
+			m.village_mode = npc.mode
+			m.village_faction = npc.faction
+			_set_merc_control(npc, m, true)
+			broadcast({"t": "merc_control", "uid": npc.uid, "hired": true,
+				"character": m, "snap": npc.snapshot(), "stats": npc.stats})
+		else:
+			var heroes := party_heroes()
+			var at: Vector2 = (heroes[0].pos if not heroes.is_empty() else Vector2.ZERO) + Vector2(1, 1)
+			var u := _spawn_merc(m, world.nav.nearest_walkable(at))
+			if u:
+				announce_unit(u)
 		broadcast({"t": "party"})
 		sync_state()
 	elif not hired and state.mercs.has(n):
 		var m: Dictionary = state.mercs[n]
 		state.mercs.erase(n)
 		for u: GameUnit in world.units.values():
-			if u.has_meta("hero") and u.get_meta("hero") == m:
-				world.remove_unit(u)
-				broadcast({"t": "remove", "uid": u.uid})
-				# Dismissed in its village (n2), the same unit stays there as the
-				# village NPC again (the scripts walk it back to its spot).
-				var rec := {}
+			if u.has_meta("hero") and is_same(u.get_meta("hero"), m):
+				var home := false
 				for r: Dictionary in (world.map.unit_records if world.map else []):
 					if String(r.get("name", "")).to_lower() == "merc%d" % n:
-						rec = r.duplicate()
-				if not rec.is_empty() and not u.dead and not world.units.has(int(rec.get("nid", 0))):
-					rec.position = Vector3(u.pos.x, u.pos.y, 0)
-					var npc := world.spawn_unit(rec)
-					if npc:
-						npc.facing = u.facing
-						announce_unit(npc)
+						home = true
+				if leave_npc and home and not u.dead:
+					# n2 only destroys the party record (6620b0). The same mutable
+					# character stays for the authored walk back and later rehire.
+					_set_merc_control(u, m, false)
+					broadcast({"t": "merc_control", "uid": u.uid, "hired": false,
+						"character": m, "snap": u.snapshot(), "stats": u.stats})
+				else:
+					world.remove_unit(u)
+					broadcast({"t": "remove", "uid": u.uid})
 		broadcast({"t": "party"})
 		sync_state()
+
+
+## Mercenary membership changes on the existing server character. The host
+## sends this through its authority-only reliable event RPC before roster sync.
+func _set_merc_control(u: GameUnit, m: Dictionary, hired: bool) -> void:
+	if hired:
+		u.remove_meta("npc_character")
+		u.set_meta("hero", m)
+		u.controller = int(m.controller)
+		u.faction = 0
+		u.mode = "player"
+		u.display_name = String(m.name)
+		Combat.hero_stats(u, m)
+		u.refresh_max_hp()
+	else:
+		u.remove_meta("hero")
+		u.remove_meta("lent_of")
+		u.controller = -1
+		u.faction = int(m.get("village_faction", 0))
+		u.mode = String(m.get("village_mode", "standard"))
+		u.set_meta("npc_character", m.duplicate(true))
+	# Explicit empty lists are mutable inventory, not absent prototype defaults.
+	# The model already wears this same kit; no figure/playback reset is needed.
+	u.info.armors = PackedStringArray(m.get("armors", []))
+	u.info.weapons = PackedStringArray(m.get("weapons", []))
+	u.info.spells = PackedStringArray(m.get("spells", []))
+	u.info.quick_items = PackedStringArray(m.get("quick", []))
 
 
 ## Map record of mercenary N from the hub maps (for hiring outside the hub).
@@ -2519,7 +2601,10 @@ static func spend_charge(list: Array, i: int, cost: float, strict := false) -> b
 
 
 func _refresh_hero(u: GameUnit) -> void:
-	var h: Dictionary = u.get_meta("hero")
+	_refresh_character(u, u.get_meta("hero"))
+
+
+func _refresh_character(u: GameUnit, h: Dictionary) -> void:
 	Combat.hero_stats(u, h)
 	u.set_equipment(PackedStringArray(h.armors), PackedStringArray(h.weapons))
 	broadcast({"t": "equip", "uid": u.uid, "armors": h.armors, "weapons": h.weapons, "stats": u.stats})
@@ -2569,7 +2654,9 @@ func open_shop(id: int) -> void:
 		var party: Array = []
 		for l in state.heroes.values():
 			party += l
-		party += state.mercs.values()
+		for m: Dictionary in state.mercs.values():
+			if state.merc_party_active(m):
+				party.append(m)
 		for h: Dictionary in party:
 			for st: String in Skills.SCHOOL:
 				best[st] = maxf(float(best.get(st, -1e20)), Skills.knowledge(h, st))
@@ -3455,6 +3542,16 @@ func _on_event(event: Dictionary) -> void:
 					world.remove_unit(u)
 			"spawn":
 				_spawn_record(event.rec)
+			"merc_control":
+				var u: GameUnit = world.units.get(int(event.get("uid", -1)))
+				var m = event.get("character")
+				if u and m is Dictionary and typeof(m.get("merc")) in [TYPE_INT, TYPE_FLOAT] \
+						and String(u.info.get("name", "")).to_lower() == "merc%d" % int(m.merc):
+					_set_merc_control(u, m.duplicate(true), bool(event.get("hired", false)))
+					if event.get("snap") is Array:
+						u.apply_snapshot(event.snap, true)
+					if event.get("stats") is Dictionary:
+						u.stats = event.stats.duplicate(true)
 			"remove_obj":
 				var o = world.objects.get(int(event.nid))
 				world.objects.erase(int(event.nid))   # as the host (ScriptVM RemoveObjectFromServer)
@@ -3496,6 +3593,9 @@ func _on_event(event: Dictionary) -> void:
 				state.quest_items = event.quest_items
 				state.items = event.items
 				state.heroes = event.heroes
+				state.current_party = String(event.get("current_party", state.current_party))
+				state.parties = event.get("parties", state.parties)
+				state.party_bags = event.get("party_bags", state.party_bags)
 				state.mercs = event.get("mercs", state.mercs)
 				state.side_quests = event.get("side_quests", {})
 				state.shops = event.get("shops", state.shops)
@@ -3622,6 +3722,9 @@ func sync_state() -> void:
 	if online and is_host:
 		var ev := {"t": "state", "money": state.money, "quests": state.quests, "quest_items": state.quest_items,
 			"items": state.items, "heroes": state.heroes, "mercs": state.mercs, "side_quests": state.side_quests, "shops": state.shops, "visited": state.visited,
+			# Expansion chapters replace the host's active party. The live
+			# state must carry the same roster/bag identity as a zone snapshot.
+			"current_party": state.current_party, "parties": state.parties, "party_bags": state.party_bags,
 			"vars": state.vars, "gs_tables": state.gs_metadata(), "gs_reconstructed": state.gs_reconstructed,
 			"last_quest": state.last_quest, "world_time": state.world_time, "day": state.day,
 			"revive": GameData.option(Revive.OPTION), "unit_stats": _hero_stat_records(),
@@ -3679,6 +3782,8 @@ func _relink_heroes() -> void:
 				Combat.sync_natural_armor(u, h)   # as on the host (cleared when deployed)
 		# Mercenaries (their units keep the map name "merc<N>", CampaignState.merc_record).
 		for m: Dictionary in state.mercs.values():
+			if not state.merc_party_active(m):
+				continue
 			if int(m.get("controller", -1)) == u.controller and String(state.merc_record(m).name) == String(u.info.get("name", "")):
 				u.set_meta("hero", m)
 				u.display_name = m.name
@@ -3937,7 +4042,7 @@ func save_game(slot: String, save_name := "", frame: Image = null) -> void:
 	swap.cancel_all()   # return offered items before the authoritative save snapshot
 	_capture_save_state()
 	GameData.trace("save %s in %s" % [slot, zone_id])
-	var err := state.save("user://saves/%s.sav" % slot)
+	var err := state.save(SaveInfo.path(slot))
 	GameData.trace("save %s done (%d)" % [slot, err])
 	if err == OK:
 		# The Load screen's entry (the original info.sav / shot.sav).
@@ -4002,8 +4107,8 @@ static func latest_save() -> String:
 	var best := ""
 	var t := 0
 	for slot in ["quick", "autosave"]:
-		var p := "user://saves/%s.sav" % slot
-		if GameFiles.exists(p) and FileAccess.get_modified_time(p) >= t:
+		var p := SaveInfo.path(slot)
+		if GameFiles.exists(p) and FileAccess.get_modified_time(p) >= t and CampaignState.compatible_data(CampaignState.read_data(p)):
 			t = FileAccess.get_modified_time(p)
 			best = slot
 	return best
@@ -4170,7 +4275,7 @@ func _read_save(slot: String) -> CampaignState:
 	if not is_host:
 		return null
 	GameData.trace("load %s (from %s)" % [slot, zone_id])
-	var s := CampaignState.load_from("user://saves/%s.sav" % slot)
+	var s := CampaignState.load_from(SaveInfo.path(slot))
 	if s == null:
 		GameData.trace("load %s failed" % slot)
 	return s

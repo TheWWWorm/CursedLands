@@ -458,7 +458,8 @@ func _call(name: String, a: Array, inst: Instance):
 		"Add": return _num(v[0]) + _num(v[1])
 		"Sub": return _num(v[0]) - _num(v[1])
 		"Mul": return _num(v[0]) * _num(v[1])
-		"Random": return float(randi() % maxi(1, int(_num(v[0]))))
+		"Div": return _num(v[0]) / _num(v[1])
+		"Random": return random_value(_num(v[0]), randi())
 		# ---- campaign variables
 		"GSGetVar": return session.state.get_var(0, str(v[1]))
 		"GSSetVar":
@@ -470,7 +471,7 @@ func _call(name: String, a: Array, inst: Instance):
 			# updates the journal / mercs (else "Journal updated." repeats).
 			if not had or not is_equal_approx(old, _num(v[2])):
 				_on_var_changed(key)
-		"GSSetVarMax":
+		"GSSetVarMax", "GsSetVarMax":
 			var key := str(v[1])
 			if _num(v[2]) > session.state.get_var(0, key):
 				session.state.set_var(0, key, _num(v[2]))
@@ -518,8 +519,22 @@ func _call(name: String, a: Array, inst: Instance):
 		"GetX": return _xy(v[0]).x
 		"GetY": return _xy(v[0]).y
 		"GetZ":
-			var p := _xy(v[0])
-			return world.ground_at(p.x, p.y)
+			var u := _unit(v[0])
+			if u:
+				return world.ground_at(u.pos.x, u.pos.y)
+			# Native query0x57 (base4b41e0 / LiA46cca0): map objects
+			# add their relative z to the quantized AI height, including floors.
+			# The lift scripts rely on this offset changing after SetCP.
+			if typeof(v[0]) == TYPE_OBJECT and is_instance_valid(v[0]) and v[0] is Node3D and v[0].has_meta("ei"):
+				var p: Vector3 = v[0].get_meta("ei").position
+				return float(PackedFloat32Array([world.nav.quantized_cell_height(Vector2(p.x, p.y)) + p.z])[0])
+			return 0.0
+		# LiA (builtin 0xbd): quantized AI-cell height
+		# including raised floors, with round-to-even cell selection.
+		"GetZValue": return world.nav.quantized_cell_height(Vector2(_num(v[0]), _num(v[1])))
+		"HP", "MaxHP":
+			var u := _unit(v[0])
+			return (u.hp if name == "HP" else u.max_hp) if u else 0.0
 		# Builtins 0xbf / 0xc0 GetFutureX / Y(unit, ticks): the
 		# unit's position at logic tick now + ticks (round), its
 		# (the point reached along its path). 0 for no unit. Remake: along the
@@ -575,10 +590,33 @@ func _call(name: String, a: Array, inst: Instance):
 			var bu := _unit(v[0])
 			return 1.0 if bu and bu.blocked else 0.0
 		# ---- unit control
-		"Walk", "Run":
+		# LiA: Crawl=1 (kneel), Lie=0
+		# (prone), Stand/Walk=2, Run=3. These change the actual posture.
+		"Crawl", "Lie", "Stand", "Walk", "Run":
 			var u := _unit(v[0])
 			if u:
+				u.set_gait({"Crawl": 1, "Lie": 0, "Stand": 2, "Walk": 2, "Run": 3}[name])
 				u.set_meta("script_run", name == "Run")
+		# LiA: explicit attack/cast orders
+		# occupy AI states 3/4. Cast always uses slot 0, not an AI choice.
+		"Attack":
+			var u := _unit(v[0])
+			var target := _unit(v[1])
+			if u and not u.dead and target:
+				# The native script calls the same AI state-3 setter as the
+				# Aggression motivation (LiA 516c30, base 5d7b50). Its target
+				# participates in the next AI choice, including its keep bonus.
+				u.command({"type": "attack", "target": target, "aim": -1, "ai": true})
+				u.set_meta("ai_state", 3)
+				u.set_meta("ai_target", target)
+		"Cast":
+			var u := _unit(v[0])
+			if u and not u.dead:
+				var slots: Array = u.get_meta("hero").get("spells", []) if u.has_meta("hero") else Array(u.proto.get("spells", []))
+				var spell := String(slots[0]).strip_edges().to_lower() if not slots.is_empty() else ""
+				u.set_meta("ai_state", 4)
+				if not spell.is_empty() and not Spells.parse(spell).proto.is_empty():
+					u.command({"type": "cast", "spell": spell, "point": Vector2(_num(v[1]), _num(v[2]))})
 		# Builtin 0x2 MoveToPoint(unit, x, y) ->: AI state 1 and a
 		# move order to the point.
 		"MoveToPoint":
@@ -706,20 +744,22 @@ func _call(name: String, a: Array, inst: Instance):
 				u.orders.clear()
 				u.order = {}
 		# the original builtins 0xce / 0xcf: add to the
-		# hero's strength / dexterity; 0xcd GiveSkill(unit, "melee" | "archery" |
+		# character's strength / dexterity; 0xcd GiveSkill(unit, "melee" | "archery" |
 		# "science" |..., n) adds n levels (etc.: skill byte += n).
-		# Approx.: the original's side effects on two more unit fields (
-		#  += 0.2) are not traced; stats are recomputed as on level-up.
-		"GiveSkill", "GiveStrength", "GiveDexterity":
+		# LiA 0xd0 GiveIntelligence adds an integer to INT
+		# then recomputes stats; unlike STR/DEX it does not change the body.
+		"GiveSkill", "GiveStrength", "GiveDexterity", "GiveIntelligence":
 			var u := _unit(v[0])
-			if u and u.has_meta("hero"):
-				var hd: Dictionary = u.get_meta("hero")
+			var hd := CampaignState.script_character(u, true)
+			if not hd.is_empty():
 				if name == "GiveSkill" and n >= 3:
 					var sk := str(v[1]).to_lower()
 					hd.get_or_add("skills", {})[sk] = Skills.level(hd, sk) + int(_num(v[2]))
+				elif name == "GiveIntelligence" and n >= 2:
+					hd["int"] = float(hd.get("int", 20.0)) + int(_num(v[1]))
 				elif n >= 2:
 					var key := "str" if name == "GiveStrength" else "dex"
-					hd[key] = float(hd.get(key, 25.0)) + _num(v[1])
+					hd[key] = float(hd.get(key, 25.0)) + int(_num(v[1]))
 					#  also change the body once per call:
 					# GiveStrength muscle + 0.2, GiveDexterity fat
 					#  - 0.2, not below 0 (remake complexion: fat, muscle, height).
@@ -729,8 +769,7 @@ func _call(name: String, a: Array, inst: Instance):
 					else:
 						c.x = maxf(c.x - 0.2, 0.0)
 					Combat.set_complexion(u, hd, c)
-				session._refresh_hero(u)
-				session.sync_state()
+				session._refresh_character(u, hd)
 		# ---- diplomacy
 		"SetDiplomacy":
 			world.set_relation(int(_num(v[0])), int(_num(v[1])), _diplo_in(int(_num(v[2]))))
@@ -750,6 +789,7 @@ func _call(name: String, a: Array, inst: Instance):
 			areas.get_or_add(int(_num(v[0])), []).append(Rect2(Vector2(_num(v[1]), _num(v[2])), Vector2.ZERO).expand(Vector2(_num(v[3]), _num(v[4]))))
 		"AddRoundToArea":
 			areas.get_or_add(int(_num(v[0])), []).append(Vector3(_num(v[1]), _num(v[2]), _num(v[3])))
+		"DeleteArea": areas.erase(int(_num(v[0])))
 		"IsInArea":
 			var p := Vector2(_num(v[1]), _num(v[2]))
 			for s in areas.get(int(_num(v[0])), []):
@@ -870,6 +910,17 @@ func _call(name: String, a: Array, inst: Instance):
 			var qi := _quest_item_name(v[1])
 			session.erase_quest_item(int(_num(v[0])), qi)
 		"HaveItem": return 1.0 if session.have_quest_item(int(_num(v[0])), _quest_item_name(v[1])) else 0.0
+		# LiA case 0xe2 reads the named player's purse.
+		"GetMoney":
+			var player := int(_num(v[0]))
+			if not session.players_include(player):
+				return 0.0
+			var entry := session.coop.purse_entry(player)
+			return float(session.state.money if entry.is_empty() else entry.purse.get("money", 0))
+		# Expansion-only 0xe9/0xea explicitly end play even with a living
+		# hero (player).
+		"GameOver": session.script_game_over()
+		"GameOverMsg", "GameOverMSG": session.script_game_over(str(v[0]), str(v[1]))
 		"GiveMoney":
 			var money := int(_num(v[1]))
 			var player := int(_num(v[0])) if not session.lmp.is_empty() else -1
@@ -890,13 +941,13 @@ func _call(name: String, a: Array, inst: Instance):
 		# ---- parties
 		# Builtin 0x9a CreateParty(player, name) ->: a new empty party
 		# (no members, an empty bag, no money) appended to the player's list.
-		# **Approx.**: the original appends even when the name exists (lookups then
-		# find the older one); the remake replaces a party that is not current.
+		# A repeated name continues to resolve the first party.
 		"CreateParty":
 			session.state.create_party(str(v[1]))
 		"AddUnitToParty":
-			if "::" in str(v[1]):
-				session.state.add_party_unit(str(v[1]).get_slice("::", 0), str(v[1]).get_slice("::", 1), str(v[2]))
+			var ref := str(v[1])
+			session.state.add_party_unit(ref.get_slice("::", 0) if "::" in ref else "",
+				ref.get_slice("::", 1) if "::" in ref else ref, str(v[2]))
 		"CopyStats":
 			session.state.copy_stats(str(v[1]), str(v[2]))
 		"CopyItems":
@@ -910,13 +961,19 @@ func _call(name: String, a: Array, inst: Instance):
 				u.controller = 0
 				u.faction = 0
 				u.mode = "player"
-				u.set_meta("hero", {"name": u.display_name, "prototype": u.proto.get("name", ""), "merc": true})
+				# Native5300d0 / LiA4ae350 changes the controller and its
+				# live unit list, not the persistent character roster. An
+				# escort remains a mapped NPC and must be saved with the zone.
+				u.set_meta("script_control", true)
 				session.broadcast({"t": "party"})
 		"RemoveUnitFromParty":
-			var nm := str(v[1]).to_lower()
-			if nm.begins_with("merc") and nm.substr(4).is_valid_int():
-				session.state.set_var(0, "apartyn" + nm.substr(4), 0.0)
-				session.merc_changed(nm.substr(4).to_int(), false)
+			var ref := str(v[1])
+			var h := session.state.party_member(ref)
+			if h.has("merc") and session.state.mercs.get(int(h.merc), {}) == h:
+				session.state.set_var(0, "apartyn%d" % int(h.merc), 0.0)
+				session.merc_changed(int(h.merc), false)
+			else:
+				session.state.remove_party_unit(ref)
 		"RedeployParty":
 			session.redeploy_party(0)
 		# ---- presentation
@@ -970,13 +1027,21 @@ func _call(name: String, a: Array, inst: Instance):
 
 # ================================================================ helpers
 
+## Opcode 0x5f returns a float, not an integer remainder. LiA 46cca0 ->
+## 43ac30 scales a uint32 by 1/(2^32-1); the base 4b41e0 uses 2^-32.
+## Keep the native float argument/result boundaries. The draw source remains
+## the remake RNG; this does not reproduce the native whole-game RNG stream.
+static func random_value(maximum: float, word: int) -> float:
+	var astral := GameData.campaign_id == CampaignProfile.ASTRAL
+	var scale := 1.0 / 4294967295.0 if astral else 1.0 / 4294967296.0
+	var value := float(PackedFloat32Array([maximum])[0]) * float(word & 0xffffffff) * scale
+	if astral:
+		value += 0.0   # its range helper adds the lower bound, including to -0
+	return PackedFloat32Array([value])[0]
+
+
 func heroes() -> Array:
-	var out := []
-	for u: GameUnit in world.units.values():
-		if u.has_meta("hero") and not u.dead and not u.hidden:
-			out.append(u)
-	out.sort_custom(func(a, b): return a.controller < b.controller if a.controller != b.controller else a.uid < b.uid)
-	return out
+	return _party_records().filter(func(u: GameUnit): return not u.dead and not u.hidden)
 
 
 ## A hero ordered to talk to someone starts the conversation on arrival.
@@ -1173,10 +1238,10 @@ func _units_within(p: Vector2, r: float) -> Array:
 
 ## Builtins that only read (no world, unit, group or campaign change).
 const PURE_CALLS := {"Not": 1, "IsEqual": 1, "IsLess": 1, "IsGreater": 1, "IsEqualString": 1, "Add": 1,
-	"Sub": 1, "Mul": 1, "Random": 1, "GSGetVar": 1, "GetObject": 1, "GetObjectByID": 1, "GetObjectByName": 1,
+	"Sub": 1, "Mul": 1, "Div": 1, "Random": 1, "GSGetVar": 1, "GetObject": 1, "GetObjectByID": 1, "GetObjectByName": 1,
 	"GetObjectID": 1, "GroupSize": 1, "GroupHas": 1, "GroupCross": 1, "UnitSee": 1, "GroupSee": 1,
 	"PlayerSee": 1, "GetUnitOfPlayer": 1, "GetLeader": 1, "GetMercsNumber": 1, "GetX": 1, "GetY": 1,
-	"GetZ": 1, "GetFutureX": 1, "GetFutureY": 1, "DistanceUnitUnit": 1, "DistanceUnitPoint": 1,
+	"GetZ": 1, "GetZValue": 1, "HP": 1, "MaxHP": 1, "GetMoney": 1, "GetFutureX": 1, "GetFutureY": 1, "DistanceUnitUnit": 1, "DistanceUnitPoint": 1,
 	"UnitInSquare": 1, "IsDead": 1, "IsAlive": 1, "IsEnemy": 1, "IsPlayerInDanger": 1, "IsUnitVisible": 1,
 	"WasLooted": 1, "IsUnitBlocked": 1, "GetDiplomacy": 1, "IsInArea": 1, "GetLeverState": 1,
 	"HaveItem": 1, "GetWorldTime": 1, "Any": 1, "Every": 1}
@@ -1218,13 +1283,27 @@ func _player_visible() -> Array:
 	return out
 
 
-## The party records' units (heroes() without the dead / hidden filter).
+## Native GetUnitOfPlayer indexes the active roster, not sorted object IDs
+## (LiA 46b8d0, base 4b56c0). Named mercenaries can have smaller IDs than the
+## redeployed hero. Preserve each player's hero/companion recruitment order.
 func _party_records() -> Array:
 	var out := []
+	var rank := {}
+	var companions: Array = session.state.mercs.values()
 	for u: GameUnit in world.units.values():
 		if is_instance_valid(u) and u.has_meta("hero"):
 			out.append(u)
-	out.sort_custom(func(a, b): return a.controller < b.controller if a.controller != b.controller else a.uid < b.uid)
+			var h: Dictionary = u.get_meta("hero")
+			var roster: Array = session.state.heroes.get(u.controller, [])
+			var at := companions.find(h) if h.has("merc") else roster.find(h)
+			rank[u] = [1 if h.has("merc") else 0, at if at >= 0 else u.uid]
+		elif is_instance_valid(u) and u.controller >= 0 and u.has_meta("script_control"):
+			out.append(u)
+			rank[u] = [2, u._seq]
+	out.sort_custom(func(a: GameUnit, b: GameUnit):
+		if a.controller != b.controller:
+			return a.controller < b.controller
+		return rank[a][0] < rank[b][0] if rank[a][0] != rank[b][0] else rank[a][1] < rank[b][1])
 	return out
 
 
@@ -1290,7 +1369,8 @@ static func ai_busy(u: GameUnit) -> bool:
 		var alive: bool = t is GameUnit and is_instance_valid(t) and not t.dead
 		match s:
 			1: busy = "move" in kinds or "rotate" in kinds
-			3: busy = alive and (u.order.get("target") == t or "cast" in kinds)
+			3: busy = alive and (u.order.get("target") == t or "cast" in kinds or u.orders.any(
+				func(o: Dictionary): return o.get("type") == "attack" and o.get("target") == t))
 			4: busy = "cast" in kinds
 			6: busy = alive
 	if not busy or s == 0:
@@ -1513,7 +1593,7 @@ func recalc_merc_briefings() -> void:
 ## Whether mercenary `n` is in player `p`'s party.
 func _merc_of(n: int, p: int) -> bool:
 	var m = session.state.mercs.get(n)
-	return m != null and int((m as Dictionary).get("controller", 0)) == p
+	return m != null and session.state.merc_party_active(m) and int((m as Dictionary).get("controller", 0)) == p
 
 
 ## the original, run before a finished conversation's variable is
@@ -1542,7 +1622,7 @@ func merc_briefing_done(var_name: String, player := 0) -> void:
 					session.merc_changed(i, false, player)
 			10:
 				if _merc_of(i, player) and not _keep_travelling_merc(i, player):
-					session.merc_changed(i, false, player)
+					session.merc_changed(i, false, player, false)
 	recalc_merc_briefings()
 
 

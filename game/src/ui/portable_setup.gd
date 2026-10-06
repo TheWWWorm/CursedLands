@@ -11,6 +11,10 @@ signal cancelled
 signal deleted
 ## Re-import from the options: the label of the button that goes back.
 var back_text := ""
+var selected_campaign := ""
+var _choices: CampaignChoices
+var _play: Button
+var _iso_button: Button
 var _status: Label
 var _buttons: Array[Button] = []
 var _cancel: Button
@@ -36,6 +40,18 @@ func _ready() -> void:
 	title.text = "Cursed Lands" # l10n: ignore (application name)
 	title.add_theme_font_size_override("font_size", 30)
 	box.add_child(title)
+	_choices = CampaignChoices.new()
+	if selected_campaign.is_empty():
+		selected_campaign = GameData.campaign_id
+	_choices.current = selected_campaign
+	_choices.selected.connect(_choose_campaign)
+	box.add_child(_choices)
+	_play = Button.new()
+	_play.text = RemakeText.t("Play selected game")
+	_play.custom_minimum_size.y = 48
+	_play.pressed.connect(func(): _open(DataSwitch.installed(selected_campaign)))
+	box.add_child(_play)
+	_buttons.append(_play)
 	var info := Label.new()
 	info.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	info.text = RemakeText.t("Import the data from your own copy of Evil Islands. Your files stay on this device.")
@@ -66,6 +82,15 @@ func _ready() -> void:
 		dialog.file_selected.connect(func(path): _busy(true); _import.import_file(path))
 		add_child(dialog)
 		_add(box, "Choose installer / data pack…", func(): dialog.popup_centered_ratio(0.8))
+		var isos := FileDialog.new()
+		isos.file_mode = FileDialog.FILE_MODE_OPEN_FILES
+		isos.access = FileDialog.ACCESS_FILESYSTEM
+		isos.use_native_dialog = true
+		isos.filters = PackedStringArray(["*.iso ; " + RemakeText.t("Lost in Astral disc images")])
+		isos.files_selected.connect(func(paths): _busy(true); _import.import_isos(paths))
+		add_child(isos)
+		_add(box, "Import Lost in Astral ISO images…", func(): isos.popup_centered_ratio(0.8))
+		_iso_button = _buttons.back()
 	_cancel = Button.new()
 	_cancel.text = RemakeText.t("Cancel import")
 	_cancel.custom_minimum_size.y = 48
@@ -81,6 +106,7 @@ func _ready() -> void:
 	_status = Label.new()
 	_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	box.add_child(_status)
+	_choose_campaign(selected_campaign)
 	if OS.has_feature("web") and not OS.is_userfs_persistent():
 		_status.text = RemakeText.t("Save storage is unavailable. Allow browser storage before playing.")
 	_layout()
@@ -106,10 +132,21 @@ func _add(box: VBoxContainer, title: String, action: Callable) -> void:
 
 func _busy(value: bool) -> void:
 	for button in _buttons: button.disabled = value
+	_choices.set_busy(value)
+	_play.disabled = value or DataSwitch.installed(selected_campaign).is_empty()
 	_cancel.visible = value
 
+
+func _choose_campaign(id: String) -> void:
+	selected_campaign = id
+	_choices.choose(id)
+	_play.disabled = DataSwitch.installed(id).is_empty()
+	if _iso_button:
+		_iso_button.visible = id == CampaignProfile.ASTRAL
+	_status.text = RemakeText.t("Installed") if not _play.disabled else RemakeText.t("Not installed")
+
 func _choose_web(folder: bool) -> void:
-	JavaScriptBridge.get_interface("CursedFiles").choose(_callback, folder)
+	JavaScriptBridge.get_interface("CursedFiles").choose(_callback, folder, selected_campaign)
 
 ## CursedFiles callbacks: (kind, English text, optional format argument).
 func _browser_result(args: Array) -> void:
@@ -122,11 +159,11 @@ func _browser_result(args: Array) -> void:
 	_busy(str(args[0]) == "progress")
 	if str(args[0]) == "complete":
 		GameFiles.initialize()
-		_open(GameFiles.WEB_ROOT)
+		_open(GameFiles.active_root())
 
 func _open(folder: String) -> void:
 	_status.text = RemakeText.t("Opening game data…")
-	var error := DataSwitch.switch_to(folder)
+	var error := DataSwitch.switch_to(folder, selected_campaign)
 	if error:
 		_busy(false)
 		_status.text = RemakeText.t(error)

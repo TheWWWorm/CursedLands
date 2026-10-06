@@ -165,6 +165,8 @@ void fragment() {
 }
 """
 static var _preview_shader: Shader
+static var _wisp_unit_shader: Shader
+static var _wisp_preview_shader: Shader
 
 
 class PreviewMaterial extends ShaderMaterial:
@@ -204,7 +206,7 @@ var _plain_head: Array[Node3D] = []
 
 ## `unit` is a map object dictionary from EIMob (or a synthetic one with
 ## prototype/complexion/armors/weapons).
-static func create(unit: Dictionary, ui_preview := false) -> EIUnitModel:
+static func create(unit: Dictionary, ui_preview := false, initial_action := true) -> EIUnitModel:
 	var db := GameData.db
 	var proto := db.find("monster_prototypes", unit.get("prototype", unit.get("parent_template", "")))
 	var race := db.find("race_models", proto.get("base_race", ""))
@@ -217,7 +219,7 @@ static func create(unit: Dictionary, ui_preview := false) -> EIUnitModel:
 	var m := EIUnitModel.new()
 	m.template = tmpl
 	m.name = tmpl
-	m._build(model, unit, proto, race, ui_preview)
+	m._build(model, unit, proto, race, ui_preview, initial_action)
 	return m
 
 
@@ -576,11 +578,12 @@ func anim_names() -> PackedStringArray:
 	return out
 
 
-func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictionary, ui_preview := false) -> void:
+func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictionary, ui_preview := false, initial_action := true) -> void:
 	var db := GameData.db
 	var complexion: Vector3 = unit.get("complexion", Vector3.ZERO)
-	if complexion == Vector3.ZERO:   # spawned without a map record: the prototype's build
+	if complexion == Vector3.ZERO and not unit.get("effective_complexion", false):   # absent map override
 		complexion = GameUnit.proto_complexion(proto)
+	set_meta("complexion", complexion)
 	var mask := String(race.get("mask", template)).to_lower()
 	var parts: Dictionary = model.parts
 
@@ -595,6 +598,16 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 		# armour variants are added below from what the unit carries.
 		if p in body_parts or (body_parts.is_empty() and _is_body_part(p, model)):
 			mesh_for[p] = p
+	# Goblins carry an authored natural weapon rather than an inventory item.
+	# The ranged prototype keeps its sling; the other prototypes keep the pike.
+	if template == "unmogo":
+		var ranged := int(proto.get("weapon_type_id", -1)) == 5
+		mesh_for.erase("rh3.axeth00")
+		mesh_for.erase("rh3.sword00")
+		mesh_for.erase("rh3.pike00" if ranged else "sling")
+		var natural := "sling" if ranged else "rh3.pike00"
+		if parts.has(natural) and (body_parts.is_empty() or natural in body_parts):
+			mesh_for[natural] = natural
 	var layers: Array[String] = []
 	var surfaces: Array[Vector3] = []
 	#  formats the prototype's skin index directly. The race's
@@ -729,7 +742,7 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 		mesh_for[held[p]] = held[p]
 		weapon_parts[held[p]] = true
 
-	var mat = _material(ui_preview)
+	var mat = _material(ui_preview, mask == "unmowi")
 	mat.albedo_texture = _compose(mask, layers)
 	if mat is LitMaterial:
 		mat.set_shader_parameter("surface_tex", _compose_surface(mask, layers, surfaces))
@@ -876,7 +889,8 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 	neutral = _has_neutral()
 	movement_starts = int(race.get("type_id", 0)) == 0x32
 	pose_state = ST_NEUTRAL if neutral else ST_ATTACK
-	act("idle", 1, 0.0)
+	if initial_action:
+		act("idle", 1, 0.0)
 
 
 ## clip -> [first blend shape, frame count] of a morph mesh's shapes
@@ -932,8 +946,28 @@ func _apply_morphs() -> void:
 ## UI previews have their own light and camera, and must not inherit the
 ## loaded map's depth / border fog. World figures share the cached Gfx shader.
 ## PreviewMaterial culls back faces as the original's render state.
-static func _material(ui_preview: bool) -> Material:
-	return PreviewMaterial.new() if ui_preview else LitMaterial.new()
+static func _material(ui_preview: bool, soft_alpha := false) -> Material:
+	var material: ShaderMaterial = PreviewMaterial.new() if ui_preview else LitMaterial.new()
+	if not soft_alpha:
+		return material
+	# The authored wisp atlas is translucent throughout (maximum alpha119/255).
+	# Ordinary unit cutouts discard every one of its texels, including in the HUD.
+	if ui_preview:
+		if _wisp_preview_shader == null:
+			_wisp_preview_shader = Shader.new()
+			_wisp_preview_shader.code = _soft_alpha(PREVIEW_SHADER)
+		material.shader = _wisp_preview_shader
+	else:
+		if _wisp_unit_shader == null:
+			_wisp_unit_shader = Gfx.make_shader(_soft_alpha(UNIT_SHADER))
+		material.shader = _wisp_unit_shader
+	return material
+
+
+static func _soft_alpha(code: String) -> String:
+	return code.replace(", alpha_to_coverage", "").replace("\tALPHA_SCISSOR_THRESHOLD = 0.5;\n", "") \
+		.replace("\tALPHA_ANTIALIASING_EDGE = 0.3;\n", "") \
+		.replace("\tALPHA_TEXTURE_COORDINATE = UV * vec2(textureSize(albedo_tex, 0));\n", "")
 
 
 ## Builds the skinned body (see `smooth_joints`): a flat Skeleton3D with one

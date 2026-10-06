@@ -68,6 +68,7 @@ var _seed_topology := {}
 var _cell_components := {}
 var _single_source := {}
 var _undirected := true
+var _terrain_kernel: RefCounted
 var profile := false
 var profile_us := {}
 var profile_counts := {}
@@ -80,6 +81,7 @@ class CellFrontier:
 	var closed: Array[int] = []
 	var queue: Array = []
 	var stamp := PackedInt32Array()
+	var offsets := PackedInt32Array()
 	var reverse := false
 	var flat := false
 	var threshold := 0
@@ -100,6 +102,11 @@ func _init(grid, movement_layer) -> void:
 		if (_slopes[i] >= 0) != (_slopes[_slopes.size()-1-i] >= 0):
 			_undirected = false
 			break
+	# The same integer search is available as an optional desktop extension.
+	# Other targets retain the script implementation and identical results.
+	if not OS.get_cmdline_user_args().has("--ei-script-nav") and ClassDB.class_exists("TerrainSearchKernel"):
+		_terrain_kernel = ClassDB.instantiate("TerrainSearchKernel")
+		if not _terrain_kernel.configure(grid.size,_land,_cost,_heights,_slopes): _terrain_kernel = null
 
 func _profile(part: String, started: int) -> void:
 	if not profile: return
@@ -255,6 +262,11 @@ func _connected_rect(rect: Rect2i) -> bool:
 
 func _label_rect(rect: Rect2i) -> PackedInt32Array:
 	var started := Time.get_ticks_usec() if profile else 0
+	if _terrain_kernel != null and _undirected:
+		var native_labels: PackedInt32Array = _terrain_kernel.labels(rect)
+		if native_labels.size() == rect.size.x*rect.size.y:
+			_profile("topology",started)
+			return native_labels
 	var labels := PackedInt32Array()
 	if _connected_rect(rect):
 		labels.resize(rect.size.x*rect.size.y);labels.fill(1)
@@ -392,25 +404,39 @@ func _edge_open(b: Vector2i,k: int) -> bool:
 ## settled. The signed edge quantization and block-route tie order stay native.
 func _static_distances(rect: Rect2i,start: Vector2i,reverse: bool,goals: Array[Vector2i]) -> Dictionary:
 	var started := Time.get_ticks_usec() if profile else 0
+	if _terrain_kernel != null:
+		var native_costs: PackedInt32Array = _terrain_kernel.distances(rect,start,reverse,goals)
+		if native_costs.size() == rect.size.x*rect.size.y:
+			_profile("static_distances",started)
+			return {"rect":rect,"costs":native_costs}
 	var rw := rect.size.x;var rh := rect.size.y
 	var costs := PackedInt32Array();costs.resize(rw*rh);costs.fill(LIMIT)
 	var closed := PackedByteArray();closed.resize(costs.size())
 	var reachable := _reachable(rect,start,reverse)
-	var wanted := {}
+	var wanted := PackedByteArray();wanted.resize(costs.size())
+	var remaining := 0
 	for p: Vector2i in goals:
-		if _seen(reachable,p): wanted[(p.y-rect.position.y)*rw+p.x-rect.position.x] = true
-	if not rect.has_point(start) or wanted.is_empty(): return {"rect":rect,"costs":costs}
+		if _seen(reachable,p):
+			var index := (p.y-rect.position.y)*rw+p.x-rect.position.x
+			if wanted[index] == 0: wanted[index] = 1;remaining += 1
+	if not rect.has_point(start) or remaining == 0: return {"rect":rect,"costs":costs}
 	var si := (start.y-rect.position.y)*rw+start.x-rect.position.x
 	costs[si] = 0
-	var heap := PackedInt64Array([si])
-	while not heap.is_empty():
+	# Keep the heap's storage: resizing a packed array on every push/pop
+	# reallocates it throughout each of the overlapping static windows.
+	var heap := PackedInt64Array();heap.resize(64);heap[0] = si
+	var count := 1
+	var offsets := PackedInt32Array()
+	for d: Vector2i in DIRECTIONS: offsets.append(d.x+d.y*rw)
+	while count > 0:
 		var item := heap[0]
-		var last := heap[-1];heap.resize(heap.size()-1)
-		if not heap.is_empty():
+		count -= 1
+		var last := heap[count]
+		if count > 0:
 			var at := 0
-			while at*2+1 < heap.size():
+			while at*2+1 < count:
 				var child := at*2+1
-				if child+1 < heap.size() and heap[child+1] < heap[child]: child += 1
+				if child+1 < count and heap[child+1] < heap[child]: child += 1
 				if last <= heap[child]: break
 				heap[at] = heap[child];at = child
 			heap[at] = last
@@ -418,18 +444,23 @@ func _static_distances(rect: Rect2i,start: Vector2i,reverse: bool,goals: Array[V
 		var current_cost := int(item>>16)
 		if closed[current] != 0 or costs[current] != current_cost: continue
 		closed[current] = 1
-		wanted.erase(current)
-		if wanted.is_empty(): break
+		if wanted[current] != 0:
+			remaining -= 1
+			if remaining == 0: break
 		var x := current%rw;var y := current/rw
 		var gx := rect.position.x+x;var gy := rect.position.y+y
 		if gx < 0 or gy < 0 or gx >= _width or gy >= _height: continue
 		var gi := gy*_width+gx
-		if not reverse and _links[gi] < 0: _link_mask(gi)
+		var mask := 255 if reverse else _link_mask(gi)
+		# Clip once per settled cell; cached outgoing links already include
+		# map bounds. Reverse searches also need their source-cell bounds.
+		if x == 0 or reverse and gx == 0: mask &= ~0x0e
+		if x == rw-1 or reverse and gx == _width-1: mask &= ~0xe0
+		if y == 0 or reverse and gy == 0: mask &= ~0x83
+		if y == rh-1 or reverse and gy == _height-1: mask &= ~0x38
 		for k: int in CELL_ORDER:
-			var d: Vector2i = DIRECTIONS[k]
-			var qx := x+d.x;var qy := y+d.y
-			if qx < 0 or qy < 0 or qx >= rw or qy >= rh or gx+d.x < 0 or gy+d.y < 0 or gx+d.x >= _width or gy+d.y >= _height: continue
-			var qi := qy*rw+qx
+			if mask & (1<<(k-1)) == 0: continue
+			var qi := current+offsets[k]
 			if closed[qi] != 0: continue
 			var step := _cached_step(gi,k,true) if reverse else _edges8[gi*8+k-1]
 			if step < 0: continue
@@ -437,7 +468,8 @@ func _static_distances(rect: Rect2i,start: Vector2i,reverse: bool,goals: Array[V
 			if next >= costs[qi]: continue
 			costs[qi] = next
 			var key := (next<<16)|qi
-			var at := heap.size();heap.resize(at+1)
+			var at := count;count += 1
+			if count > heap.size(): heap.resize(heap.size()*2)
 			while at > 0:
 				var parent := (at-1)/2
 				if heap[parent] <= key: break
@@ -637,8 +669,14 @@ static func _remove(queue: Array,index: int,x: int) -> void:
 ## Native cell frontier, including unsettled tentative costs. `goal` stops
 ## before processing its node, as does; absent goal floods fully.
 func flood(rect: Rect2i,start: Vector2i,reverse: bool,stamps: bool,flat: bool,
-		goal := Vector2i(-1,-1),previous: CellFrontier = null,reopen := false) -> CellFrontier:
+		goal := Vector2i(-1,-1),previous: RefCounted = null,reopen := false) -> RefCounted:
 	var started := Time.get_ticks_usec() if profile else 0
+	if _terrain_kernel != null:
+		var native_stamp: PackedInt32Array = nav._stamp_window(rect) if stamps else PackedInt32Array()
+		var native_frontier: RefCounted = _terrain_kernel.flood(rect,start,reverse,native_stamp,flat,goal,previous,reopen,nav._ctx_thr)
+		if native_frontier != null:
+			_profile("dynamic_flood" if stamps else "static_flood",started)
+			return native_frontier
 	var n := rect.size.x*rect.size.y
 	var costs: Array[int] = []
 	costs.resize(n);costs.fill(LIMIT)
@@ -663,12 +701,12 @@ func flood(rect: Rect2i,start: Vector2i,reverse: bool,stamps: bool,flat: bool,
 				if not valid.has_point(rect.position+Vector2i(x,y)): closed[y*rect.size.x+x] = 1
 	if previous != null:
 		var overlap := rect.intersection(previous.rect)
-		var old_costs := previous.costs
-		var old_parents := previous.parents
-		var old_closed := previous.closed
+		var old_costs = previous.costs
+		var old_parents = previous.parents
+		var old_closed = previous.closed
 		for y in range(overlap.position.y,overlap.end.y):
 			var i := (y-rect.position.y)*rect.size.x+overlap.position.x-rect.position.x
-			var oi := (y-previous.rect.position.y)*previous.rect.size.x+overlap.position.x-previous.rect.position.x
+			var oi: int = (y-previous.rect.position.y)*previous.rect.size.x+overlap.position.x-previous.rect.position.x
 			for x in range(overlap.position.x,overlap.end.x):
 				costs[i] = old_costs[oi]
 				parents[i] = old_parents[oi]
@@ -683,6 +721,7 @@ func flood(rect: Rect2i,start: Vector2i,reverse: bool,stamps: bool,flat: bool,
 	var f := CellFrontier.new()
 	f.rect = rect;f.costs = costs;f.parents = parents;f.closed = closed;f.queue = queue
 	f.stamp = stamp;f.reverse = reverse;f.flat = flat;f.threshold = nav._ctx_thr
+	for d: Vector2i in DIRECTIONS: f.offsets.append(d.x + d.y * rect.size.x)
 	while true:
 		var current := _front(f.queue,f.costs)
 		if current < 0: break
@@ -692,7 +731,10 @@ func flood(rect: Rect2i,start: Vector2i,reverse: bool,stamps: bool,flat: bool,
 	_profile("dynamic_flood" if stamps else "static_flood",started)
 	return f
 
-func _advance(f: CellFrontier,current := -1) -> void:
+func _advance(f: RefCounted,current := -1) -> void:
+	if _terrain_kernel != null and not f is CellFrontier:
+		_terrain_kernel.advance(f,current)
+		return
 	var rect: Rect2i = f.rect
 	var costs: Array = f.costs
 	var parents: Array = f.parents
@@ -707,32 +749,40 @@ func _advance(f: CellFrontier,current := -1) -> void:
 	_remove(queue,current,x+1)
 	closed[current] = 1
 	var gi := gy*_width+gx
-	var threshold: int = f.threshold
 	var reverse: bool = f.reverse
 	var flat: bool = f.flat
-	if not reverse and _links[gi] < 0: _link_mask(gi)
+	# Static links already include map bounds and blocked terrain. Clip the
+	# rolling window once, preserving the native neighbor/insertion order.
+	var mask := 255 if reverse else _link_mask(gi)
+	if x == 0 or reverse and gx == 0: mask &= ~0x0e
+	if x == rw-1 or reverse and gx == _width-1: mask &= ~0xe0
+	if y == 0 or reverse and gy == 0: mask &= ~0x83
+	if y == rh-1 or reverse and gy == _height-1: mask &= ~0x38
+	var current_cost := int(costs[current])
+	var stamped := not stamp.is_empty()
+	var barrier := maxi(f.threshold, stamp[current] - 1) if stamped else 0
+	var offsets: PackedInt32Array = f.offsets
 	for k: int in CELL_ORDER:
-		var d: Vector2i = DIRECTIONS[k]
-		var qx := x+d.x;var qy := y+d.y
-		if qx < 0 or qy < 0 or qx >= rw or qy >= rh: continue
-		if gx+d.x < 0 or gy+d.y < 0 or gx+d.x >= _width or gy+d.y >= _height: continue
-		var qi := qy*rw+qx
+		if mask & (1<<(k-1)) == 0: continue
+		var qi := current + offsets[k]
 		if int(closed[qi]) != 0: continue
-		if not stamp.is_empty() and stamp[qi] > threshold and stamp[qi] >= stamp[current]: continue
+		if stamped and stamp[qi] > barrier: continue
 		var step := _cached_step(gi,k,true,flat) if reverse else (_flat_edges8[gi*8+k-1] if flat else _edges8[gi*8+k-1])
 		if step < 0: continue
-		var next: int = int(costs[current])+step
+		var next: int = current_cost+step
 		if next < int(costs[qi]):
 			costs[qi] = next
 			parents[qi] = ((k+3)&7)+1
-			_insert(queue,qi,qx+1,costs)
+			_insert(queue,qi,qi%rw+1,costs)
 
-func _chain(f: CellFrontier,p: Vector2i) -> PackedInt32Array:
+func _chain(f: RefCounted,p: Vector2i) -> PackedInt32Array:
+	if _terrain_kernel != null and not f is CellFrontier: return _terrain_kernel.chain(f,p)
 	var out := PackedInt32Array()
 	var r: Rect2i = f.rect
+	var parent_directions = f.parents
 	while r.has_point(p):
 		out.append(p.y*nav.size.x+p.x)
-		var direction := int(f.parents[_index(f,p)])
+		var direction := int(parent_directions[_index(f,p)])
 		if direction == 0: break
 		p += DIRECTIONS[direction]
 	return out
@@ -742,6 +792,8 @@ func _chain(f: CellFrontier,p: Vector2i) -> PackedInt32Array:
 func direct(start: Vector2i,goal: Vector2i) -> Dictionary:
 	var rect := _frame(start,goal)
 	if not rect.has_area(): return {}
+	if _terrain_kernel != null:
+		return _terrain_kernel.direct_window(rect,start,goal,nav._stamp_window(rect),nav._ctx_flat,nav._ctx_thr)
 	var sides := [flood(rect,start,false,true,nav._ctx_flat,start),
 		flood(rect,goal,true,true,nav._ctx_flat,goal)]
 	var meet := Vector2i.ZERO
@@ -772,7 +824,7 @@ static func cost_at(f,p: Vector2i) -> int:
 
 ##  exposes only closed nodes. The boundary-copy pass and
 ## path merge still read the tentative values directly.
-static func settled_cost_at(f: CellFrontier,p: Vector2i) -> int:
+static func settled_cost_at(f: RefCounted,p: Vector2i) -> int:
 	if not (f.rect as Rect2i).has_point(p): return LIMIT
 	var i := _index(f,p)
 	return int(f.costs[i]) if f.closed[i] != 0 else LIMIT
@@ -800,6 +852,10 @@ func _seeds(p: Vector2i,reverse: bool) -> Array:
 	return out
 
 func route(start: Vector2i,goal: Vector2i,avoid: Array[Vector2i] = []) -> Array[Vector2i]:
+	if _terrain_kernel != null:
+		var native_route: Array[Vector2i] = _terrain_kernel.block_route(_seeds(start,false),_seeds(goal,true),avoid,_raw)
+		if not native_route.is_empty(): last_blocks = native_route
+		return native_route
 	var count := size.x*size.y
 	var sides := []
 	for reverse in [false,true]:
@@ -866,16 +922,21 @@ func _frame(start: Vector2i,goal: Vector2i) -> Rect2i:
 	return Rect2i(Vector2i(mini((start.x+goal.x)/2-16,mini(start.x,goal.x)-1)+1,
 		mini((start.y+goal.y)/2-16,mini(start.y,goal.y)-1)+1),Vector2i(32,32))
 
-func _merge(f: CellFrontier,parents: Dictionary) -> void:
+func _merge(f: RefCounted,parents: Dictionary) -> void:
+	if _terrain_kernel != null and not f is CellFrontier:
+		_terrain_kernel.merge_parents(f,parents)
+		return
 	var r: Rect2i = f.rect
+	var local_costs = f.costs
+	var local_parents = f.parents
 	for y in r.size.y:
 		for x in r.size.x:
 			var p := r.position+Vector2i(x,y)
 			if not nav._in(p): continue
 			var i := y*r.size.x+x
 			var key: int = p.y*nav.size.x+p.x
-			if f.costs[i] < LIMIT and int(parents.get(key,0)) == 0:
-				parents[key] = int(f.parents[i])
+			if local_costs[i] < LIMIT and int(parents.get(key,0)) == 0:
+				parents[key] = int(local_parents[i])
 
 static func _octile(d: Vector2i) -> int:
 	return maxi(d.x,d.y)-mini(d.x,d.y)+((mini(d.x,d.y)*0x5a8)>>10)
@@ -889,7 +950,7 @@ func carrier(start: Vector2i,goal: Vector2i,maxcells := LIMIT,
 	var points: Array[Vector2i] = []
 	for b: Vector2i in blocks: points.append(representative(b))
 	points.append(goal)
-	var f: CellFrontier = null
+	var f: RefCounted = null
 	var parents := {}
 	var current := start
 	var reached := true

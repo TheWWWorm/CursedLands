@@ -159,7 +159,7 @@ static func instantiate(template: String, texture: String, complexion: Vector3,
 	# "nafl*" figures are the flora (naflbu bushes, nafltr trees). Stumps,
 	# logs and mushrooms are nafltr too; they keep the foliage look but no sway.
 	var flora := template.begins_with("nafl") and not morph
-	var sway := sways(template, texture, model) if flora else false
+	var sway := sways(template, texture, model, visible_parts) if flora else false
 	var nodes := {}
 	var geometry_parts: Array[WeakRef] = []
 	root.set_meta(EIFigureGeometry.PARTS, geometry_parts)
@@ -272,6 +272,8 @@ static func _parse_bones(template: String, part_names: Array) -> Dictionary:
 	var d := GameData.read_figure(template + ".bon")
 	if EIResArchive.is_archive(d):
 		var arc := EIResArchive.from_bytes(d)
+		if arc == null:
+			return out   # malformed optional offsets use the existing zero-offset fallback
 		for part: String in arc.entries:
 			out[part] = arc.read(part).to_float32_array()
 	elif d.size() >= 96 and part_names.size() == 1:
@@ -491,10 +493,12 @@ static var _sway_images := {}
 ## figures use alpha-tested cards (texels with alpha < 0.5) or the green leaf
 ## texels of the foliage mask; stumps (nafltr21-23, 74, 86), logs (nafltr20,
 ## 70, 83) and mushrooms (nafltr77-78) use only opaque bark / cap texels.
+## Only rendered parts count: bare BigTree01 placements omit crownlea.
 ## Thresholds (>= 4 % cut-out samples or >= 10 % leaf samples): the rigid ones
 ## reach at most 2.3 % / 4.5 %, the leafy ones at least 6.7 % / 40 %.
-static func sways(template: String, texture: String, model: Dictionary) -> bool:
-	var key := template + "|" + texture.to_lower()
+static func sways(template: String, texture: String, model: Dictionary,
+		visible_parts: PackedStringArray = PackedStringArray()) -> bool:
+	var key := template + "|" + texture.to_lower() + "|" + ",".join(visible_parts)
 	if _sways.has(key):
 		return _sways[key]
 	if not _sway_images.has(texture):
@@ -517,6 +521,8 @@ static func sways(template: String, texture: String, model: Dictionary) -> bool:
 	var cut := 0
 	var leaf := 0
 	for part: String in model.parts:
+		if not visible_parts.is_empty() and not part in visible_parts:
+			continue
 		var mesh := build_mesh(model.parts[part], Vector3(0.5, 0.5, 0.5))
 		if mesh.get_surface_count() == 0:
 			continue

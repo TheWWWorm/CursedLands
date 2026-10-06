@@ -132,7 +132,7 @@ func show_unit(u: GameUnit) -> void:
 	if u != _unit:
 		_pose_wait = 0.0
 	_unit = u
-	show_info(u.info)
+	show_info(u.figure_info())
 
 
 ## Same for a bare unit spec (prototype, complexion, armors, weapons).

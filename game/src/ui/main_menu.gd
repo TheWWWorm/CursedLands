@@ -24,6 +24,11 @@ var _difficulty: DifficultyPanel
 var _load: LoadPanel
 var _music: AudioStreamPlayer
 var _cursor: GameCursor
+var _campaigns: CampaignChoices
+var _campaign_bar: VBoxContainer
+var _campaign_error: Label
+var _coop_button: Button
+var _opening_panel := false
 
 
 func _ready() -> void:
@@ -58,6 +63,31 @@ func _ready() -> void:
 	_options = OptionsPanel.new()
 	_options.game_files = true   # remake: "Game files…" (Remake row 11)
 	_options.game_files_requested.connect(_game_files)
+	_campaign_bar = VBoxContainer.new()
+	_campaign_bar.name = "CampaignSwitch"
+	add_child(_campaign_bar)
+	_campaigns = CampaignChoices.new()
+	_campaigns.current = GameData.campaign_id
+	_campaigns.selected.connect(_select_campaign)
+	_campaign_bar.add_child(_campaigns)
+	# The expansion's original signpost deliberately has no Multiplayer
+	# board. Its remake co-op gets a visible entry beside the game choices.
+	if GameData.campaign_id == CampaignProfile.ASTRAL:
+		_coop_button = Button.new()
+		_coop_button.text = RemakeText.t("Co-op campaign")
+		_coop_button.custom_minimum_size = Vector2(220, 40)
+		_coop_button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+		CampaignChoices.style_button(_coop_button)
+		_coop_button.pressed.connect(func(): _on_board("multiplayer"))
+		_campaign_bar.add_child(_coop_button)
+	_campaign_error = Label.new()
+	_campaign_error.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_campaign_error.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_campaign_error.add_theme_font_override("font", Interface800.font())
+	_campaign_error.add_theme_color_override("font_color", Interface800.TEXT)
+	_campaign_bar.add_child(_campaign_error)
+	resized.connect(_layout_campaign_bar)
+	_layout_campaign_bar()
 	if _scene:
 		_net = NetworkPanel.new()
 		_panel = _net
@@ -166,10 +196,51 @@ func _ready() -> void:
 ## texts) is built again from the new archives, Options reopened on its page.
 ## Remake: Options › Remake › "Game files…": the setup screen over the
 ## hidden menu (main.gd change_game_files); its Back returns to that page.
-func _game_files() -> void:
+func _game_files(campaign := "") -> void:
 	visible = false
 	process_mode = Node.PROCESS_MODE_DISABLED
-	get_parent().change_game_files(_back_from_game_files)
+	get_parent().change_game_files(_back_from_game_files, campaign)
+
+
+func _select_campaign(id: String) -> void:
+	if id == GameData.campaign_id:
+		return
+	var path := DataSwitch.installed(id)
+	if path.is_empty():
+		visible = false
+		process_mode = Node.PROCESS_MODE_DISABLED
+		get_parent().change_game_files(func():
+			visible = true
+			process_mode = Node.PROCESS_MODE_INHERIT
+			_campaigns.choose(GameData.campaign_id), id)
+		return
+	_campaign_error.text = DataSwitch.switch_to(path, id)
+	if _campaign_error.text.is_empty():
+		DataSwitch.restart(get_tree())
+	else:
+		_campaigns.choose(GameData.campaign_id)
+
+
+func _process(_dt: float) -> void:
+	if _campaign_bar:
+		_campaign_bar.visible = not _scene or pad_menu_free()
+
+
+func _layout_campaign_bar() -> void:
+	var safe := Portability.safe_rect(size)
+	var width := minf(600, maxf(0, safe.size.x - 32))
+	_campaign_bar.position = Vector2(safe.get_center().x - width * 0.5, safe.position.y + 16)
+	_campaign_bar.size.x = width
+
+
+func campaign_pad_targets() -> Array:
+	var targets := []
+	if _campaign_bar and _campaign_bar.is_visible_in_tree():
+		for id: String in _campaigns.buttons:
+			targets.append({"rect": _campaigns.buttons[id].get_global_rect(), "id": "campaign_" + id})
+		if _coop_button:
+			targets.append({"rect": _coop_button.get_global_rect(), "id": "campaign_coop"})
+	return targets
 
 
 func _back_from_game_files() -> void:
@@ -198,6 +269,13 @@ func _add_viewer_link() -> void:
 func _on_board(action: String) -> void:
 	if not pad_menu_free():
 		return
+	if action in ["new", "load", "multiplayer", "options"]:
+		# Capture the island after the campaign controls have disappeared;
+		# otherwise their frozen text remains behind the next screen's status.
+		_opening_panel = true
+		_campaign_bar.hide()
+		if DisplayServer.get_name() != "headless":
+			await RenderingServer.frame_post_draw
 	match action:
 		"new": _difficulty.open()   #  case 0: the difficulty box first
 		"load": _load.open()        # case 1: the Load screen (no slide-in)
@@ -205,11 +283,12 @@ func _on_board(action: String) -> void:
 		"options": _options.open()
 		"credits": _credits()
 		"exit": get_tree().quit()
+	_opening_panel = false
 
 
 ## No screen over the signpost (its boards take clicks and the gamepad).
 func pad_menu_free() -> bool:
-	return not (_panel.visible or _options.visible or has_node("Credits") or _difficulty.visible or _load.visible \
+	return not (_opening_panel or _panel.visible or _options.visible or has_node("Credits") or _difficulty.visible or _load.visible \
 			or (_chars and _chars.visible))
 
 

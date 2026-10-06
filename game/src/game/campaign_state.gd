@@ -2,6 +2,8 @@ class_name CampaignState
 extends RefCounted
 ## Everything that persists across zones and in save games.
 
+var campaign_id := GameData.campaign_id
+
 ## Global script variables (GSGetVar/GSSetVar). Index 0 is the shared campaign
 ## state used by all original scripts; in co-op it is the party's shared progress.
 var vars := {}
@@ -315,11 +317,15 @@ func ensure_hero(player: int, prototype: String, player_name := "") -> void:
 ## The main hero's name in the edition's language: texts.res "unit human_hero"
 ## (Zak / Зак / Kiran), as the unit name the original shows for the Human Hero prototype.
 static func hero_name() -> String:
+	if GameData.campaign_id == CampaignProfile.ASTRAL:
+		var astral := GameData.text("pers Hero").strip_edges()
+		return astral if astral else "Kir"
 	var t := GameUnit.unit_title("human_hero")
 	return t if t else "Zak"
 
 
 func add_party_unit(party: String, unit_name: String, prototype: String) -> void:
+	party = _bag_name(party)
 	var proto := GameData.db.find("monster_prototypes", prototype)
 	var npc := GameData.db.find("npcs", prototype)
 	var title := GameUnit.unit_title(prototype)
@@ -333,10 +339,10 @@ func add_party_unit(party: String, unit_name: String, prototype: String) -> void
 		"complexion": GameUnit.proto_complexion(proto),
 		"armors": Array(Items.split_list(proto.get("wears", []))).map(func(x): return String(x).to_lower()),
 		"weapons": Array(proto_weapons(proto)).map(func(x): return String(x).to_lower()),
-		"quick": [], "spells": [],
+		"quick": [], "spells": Array(Items.split_list(proto.get("spells", []))).map(func(x): return String(x).to_lower()),
 	}
 	TrainingRefund.start(h)
-	parties.get_or_add(party, []).append(h)
+	_party_roster(party, true).append(h)
 
 
 ## A party record's weapons as the original makes them (
@@ -353,17 +359,40 @@ static func proto_weapons(proto: Dictionary) -> PackedStringArray:
 	return out
 
 
-## "Hero" (the main hero, wherever he is) or "Party::Unit".
+## Native 4baec0 / LiA46a490 split Party::Unit, then 662170 / 58c150
+## find that member by script identity. Unqualified names use the main party.
+## The remake stores active heroes and recruited mercenaries separately.
 func party_member(ref: String) -> Dictionary:
-	if "::" in ref:
-		var party := ref.get_slice("::", 0)
-		var roster: Array = heroes.get(0, []) if party == current_party else parties.get(party, [])
-		for h: Dictionary in roster:
-			if String(h.get("unit_name", h.name)).to_lower() == ref.get_slice("::", 1).to_lower():
-				return h
-		return {}
-	var main: Array = heroes.get(0, []) if current_party.is_empty() else parties.get("", [])
-	return main[0] if not main.is_empty() else {}
+	var party := _bag_name(ref.get_slice("::", 0) if "::" in ref else "")
+	var name := ref.get_slice("::", 1) if "::" in ref else ref
+	var roster := _party_roster(party)
+	for i in roster.size():
+		var h: Dictionary = roster[i]
+		# Legacy main heroes have only their translated display name.
+		var member := String(h.get("unit_name", "Hero" if i == 0 else h.get("name", "")))
+		if member.nocasecmp_to(name) == 0:
+			return h
+	for n in mercs:
+		var m: Dictionary = mercs[n]
+		if String(m.get("party", "")) == party and ("merc%d" % n).nocasecmp_to(name) == 0:
+			return m
+	return {}
+
+
+func _party_roster(party: String, create := false) -> Array:
+	if party == current_party:
+		return heroes.get_or_add(0, []) if create else heroes.get(0, [])
+	return parties.get_or_add(party, []) if create else parties.get(party, [])
+
+
+## Native removal drops the matching record, regardless of its prototype.
+## Mercenary world/NPC handoff is handled by Session.merc_changed.
+func remove_party_unit(ref: String) -> void:
+	var h := party_member(ref)
+	if h.is_empty():
+		return
+	var party := _bag_name(ref.get_slice("::", 0) if "::" in ref else "")
+	_party_roster(party).erase(h)
 
 
 func copy_stats(from: String, to: String) -> void:
@@ -380,9 +409,7 @@ func copy_stats(from: String, to: String) -> void:
 			b[k] = Dictionary(a[k]).duplicate()
 		elif k == TrainingRefund.KEY:
 			b[k] = Dictionary(a[k]).duplicate(true)
-	b.spells = Array(a.get("spells", [])).duplicate()
-	if not "::" in from:
-		b.name = a.name   # the main hero in another shape keeps his name
+	b.name = a.name   # original copies the display name after the stats block
 
 
 func copy_items(from: String, to: String) -> void:
@@ -390,7 +417,9 @@ func copy_items(from: String, to: String) -> void:
 	var b := party_member(to)
 	if a.is_empty() or b.is_empty() or a == b:
 		return
-	for k in ["armors", "weapons", "quick"]:
+	# Native6604c0 copies all four item lists, including spell containers
+	# . They are outside CopyStats'.. block.
+	for k in ["armors", "weapons", "quick", "spells"]:
 		b[k] = Array(a.get(k, [])).duplicate()
 	# The active-first combat list and native weapon cell order travel together.
 	b.weapon_slots = Session.weapon_slots(a)
@@ -398,6 +427,7 @@ func copy_items(from: String, to: String) -> void:
 
 ## Returns false when nothing changed. The bag goes with the party.
 func set_current_party(party: String) -> bool:
+	party = _bag_name(party)
 	if party == current_party or (not party.is_empty() and parties.get(party, []).is_empty()):
 		return false
 	parties[current_party] = heroes.get(0, [])
@@ -485,13 +515,36 @@ func party_records(player: int) -> Array:
 
 
 ## Hero record for mercenary N created from its NPC unit (or its map record).
-func make_merc(n: int, rec: Dictionary) -> Dictionary:
+func make_merc(n: int, rec: Dictionary, current: Dictionary = {}) -> Dictionary:
+	var m := current.duplicate(true) if not current.is_empty() else npc_character(rec)
+	m.merc = n
+	m.controller = 0
+	m.party = current_party
+	if String(m.name).is_empty():
+		m.name = "Mercenary %d" % n
+	if not m.has(TrainingRefund.KEY):
+		# Existing saved NPCs may include gifts or paid training. Recover only
+		# an unambiguous legacy history rather than treating them as fresh.
+		TrainingRefund.prepare(m)
+	mercs[n] = m
+	return m
+
+
+## Native recruitment adds to the current party's roster. Older saves only
+## recruited into the main party, whose name is the empty string.
+func merc_party_active(m: Dictionary) -> bool:
+	return String(m.get("party", "")) == current_party
+
+
+## A character's mutable stats do not depend on party membership. LiA's
+## prison choices train merc2 before hiring her (native 4aa010/90/130).
+static func npc_character(rec: Dictionary) -> Dictionary:
 	var proto_name := String(rec.get("prototype", rec.get("parent_template", "")))
 	var proto := GameData.db.find("monster_prototypes", proto_name)
 	var npc := GameData.db.find("npcs", proto_name)
 	var kit := merc_kit(rec, proto)
-	var m := {
-		"prototype": proto_name, "merc": n,
+	var h := {
+		"prototype": proto_name,
 		"name": GameUnit.unit_title(proto_name) if String(rec.get("name", "")).to_lower().begins_with("merc") else String(rec.get("name", "")),
 		"level": 1, "exp": 0.0,
 		"exp_total": float(npc.get("experience", 0.0)), "skills": Skills.from_npc(npc),
@@ -505,11 +558,37 @@ func make_merc(n: int, rec: Dictionary) -> Dictionary:
 		"spells": kit.spells,
 		"controller": 0,
 	}
-	if String(m.name).is_empty():
-		m.name = "Mercenary %d" % n
-	TrainingRefund.start(m)
-	mercs[n] = m
-	return m
+	# Start before script gifts or training; recruiting this NPC later must
+	# carry its existing purchase history rather than create a new baseline.
+	TrainingRefund.start(h)
+	return h
+
+
+## Read an existing character record, optionally creating one for a mapped
+## NPC. This never grants ownership or turns an NPC into a party hero.
+static func script_character(u: GameUnit, create := false) -> Dictionary:
+	if u == null:
+		return {}
+	if u.has_meta("hero"):
+		return u.get_meta("hero")
+	if u.has_meta("npc_character"):
+		return u.get_meta("npc_character")
+	if not create or GameData.db.find("npcs", String(u.proto.get("name", ""))).is_empty():
+		return {}
+	var h := npc_character(u.info)
+	u.set_meta("npc_character", h)
+	return h
+
+
+## Restore the NPC's complete changed stats before its saved body fractions.
+static func apply_npc_character(u: GameUnit, h: Dictionary) -> void:
+	if h.is_empty() or u.has_meta("hero"):
+		return
+	var record := h.duplicate(true)
+	u.set_meta("npc_character", record)
+	u.info.complexion = record.get("complexion", u.info.get("complexion", Vector3(.5, .5, .5)))
+	Combat.hero_stats(u, record)
+	u.set_equipment(PackedStringArray(record.get("armors", [])), PackedStringArray(record.get("weapons", [])))
 
 
 ## What a hired mercenary carries. the original (hire, n1 / n3) does
@@ -779,7 +858,11 @@ static func body_state(u: GameUnit) -> Dictionary:
 		var ev = shown.get("%d:%s" % [u.uid, code])
 		var s := float(ev[0].get("s", 1.0)) if ev is Array and not ev.is_empty() and ev[0] is Dictionary else -1.0
 		magic.append([k, left, b, s, code])
-	return {"parts": parts, "magic": magic}
+	var out := {"parts": parts, "magic": magic}
+	if u.has_meta("npc_character") and not u.has_meta("hero"):
+		out.npc_character = u.get_meta("npc_character").duplicate(true)
+		out.mana = u.mana
+	return out
 
 
 ## Puts back body_state(u): the effects first (strength / weakness change the
@@ -788,6 +871,9 @@ static func body_state(u: GameUnit) -> Dictionary:
 static func apply_body(u: GameUnit, st: Dictionary) -> void:
 	if u.dead or st.is_empty():
 		return
+	if st.get("npc_character") is Dictionary:
+		apply_npc_character(u, st.npc_character)
+		u.mana = clampf(float(st.get("mana", u.mana)), 0.0, u.max_mana)
 	var now := u.world.time if u.world else 0.0
 	var fx := []
 	for e in st.get("magic", []):
@@ -873,6 +959,8 @@ func store_zone(id: String, world: GameWorld) -> void:
 				"owner": int(u.get_meta("lmp_owner")), "conn": int(u.get_meta("lmp_conn", 0))})
 			continue
 		present[u.uid] = true
+		if u.has_meta("script_control"):
+			z.get_or_add("controls", {})[u.uid] = u.controller
 		# Original unit saves keep the mutable carried bag, including script
 		# gifts, partially stolen loot and an explicitly empty bag.
 		var carried := {"quest_items": Array(u.info.get("quest_items", [])).duplicate()}
@@ -1014,6 +1102,12 @@ func restore_zone(id: String, world: GameWorld) -> void:
 				u.visible = not u.hidden
 			if s.size() > 5 and s[5] is Dictionary:   # body parts and magic effects
 				apply_body(u, s[5])
+	for nid in z.get("controls", {}):
+		var u: GameUnit = world.units.get(int(nid))
+		if u:
+			u.controller = int(z.controls[nid])
+			u.mode = "player"
+			u.set_meta("script_control", true)
 	for nid in z.levers:
 		if world.levers.has(int(nid)):
 			var v = z.levers[nid]
@@ -1061,7 +1155,7 @@ func restore_zone(id: String, world: GameWorld) -> void:
 
 func to_dict() -> Dictionary:
 	var tables := gs_metadata()
-	return {"version": 1, "vars": vars, "gs_tables": tables, "gs_reconstructed": gs_reconstructed, "heroes": heroes, "zones": zones, "visited": visited,
+	return {"version": 2, "campaign_id": campaign_id, "vars": vars, "gs_tables": tables, "gs_reconstructed": gs_reconstructed, "heroes": heroes, "zones": zones, "visited": visited,
 		"quests": quests, "money": money, "items": items, "quest_items": quest_items,
 		"parties": parties, "current_party": current_party, "party_bags": party_bags, "experience": experience, "mercs": mercs, "pets": pets, "side_quests": side_quests, "shops": shops, "current_zone": current_zone,
 		"world_time": world_time, "day": day, "coop": coop, "camera": camera}
@@ -1088,8 +1182,8 @@ static func cap_belt(h: Dictionary, bag: Array) -> void:
 
 
 ## Every record's belt within BELT_SLOTS, the extras into that roster's bag:
-## the current roster's into the bag, the mercenaries' (who stay with the main
-## roster) and a waiting roster's into theirs.
+## the current roster's into the bag, each companion's and waiting roster's
+## into the bag belonging to its party.
 func cap_belts() -> void:
 	for k in heroes:
 		for h in heroes[k]:
@@ -1097,19 +1191,35 @@ func cap_belts() -> void:
 				cap_belt(h, items)
 	for m in mercs.values():
 		if m is Dictionary:
-			cap_belt(m, _bag("").items)
+			cap_belt(m, _bag(String(m.get("party", ""))).items)
 	for p in parties:
 		for h in parties[p]:
 			if h is Dictionary:
 				cap_belt(h, _bag(p).items)
 
 
-static func load_from(path: String) -> CampaignState:
+## Unlabelled version-1 saves predate expansion support and belong to the
+## original campaign. A copied foreign save must never load by zone ID alone.
+static func compatible_data(value: Variant) -> bool:
+	if not value is Dictionary or not value.get("heroes", {}) is Dictionary:
+		return false
+	var version: Variant = value.get("version", 1)
+	if version != 1 and version != 2:
+		return false
+	var id: Variant = value.get("campaign_id", CampaignProfile.ORIGINAL if version == 1 else "")
+	return CampaignProfile.matches(id, GameData.campaign_id)
+
+
+static func read_data(path: String) -> Variant:
 	var f := FileAccess.open(path, FileAccess.READ)
 	if f == null:
 		return null
-	var value: Variant = f.get_var(false)
-	if not value is Dictionary or not value.get("heroes", {}) is Dictionary:
+	return f.get_var(false)
+
+
+static func load_from(path: String) -> CampaignState:
+	var value: Variant = read_data(path)
+	if not compatible_data(value):
 		return null
 	var d: Dictionary = value
 	var s := CampaignState.new()

@@ -38,7 +38,7 @@ func zone(id: String) -> Dictionary:
 ## Parses the multiplayer maps (`lmp_zones`): map-LMP.txt from textsLmp.res
 ## and the quest maps' map.txt. Called once by Session.
 func load_lmp() -> void:
-	if not lmp_zones.is_empty() or GameData.texts_lmp == null:
+	if not lmp_zones.is_empty() or not LmpMode.available():
 		return
 	var keep := zones
 	var keep_q := quests

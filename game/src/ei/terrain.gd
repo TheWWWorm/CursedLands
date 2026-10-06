@@ -741,6 +741,8 @@ void fragment() {
 
 
 var map_name := ""
+## Internal .mp/.sec and atlas basename; renamed .mpr files can differ.
+var resource_prefix := ""
 var max_altitude := 0.0
 var sectors_x := 0
 var sectors_y := 0
@@ -814,15 +816,30 @@ static func load_map(name: String) -> EITerrain:
 	var arc := EIResArchive.open_path(GameData.root.path_join("maps/%s.mpr" % name))
 	if arc == null:
 		return null
+	var prefix := resolve_map_prefix(arc, name)
+	if prefix.is_empty():
+		push_error("No unambiguous .mp header in %s.mpr" % name)
+		return null
 	var t := EITerrain.new()
 	t.name = "Terrain"
 	t.map_name = name
-	if not t._parse_header(arc.read(name + ".mp")):
+	t.resource_prefix = prefix
+	if not t._parse_header(arc.read(prefix + ".mp")):
 		push_error("Bad .mp header in %s" % name)
+		t.free()
 		return null
 	t._load_atlases()
 	t._build(arc)
 	return t
+
+
+## Lost in Astral reuses maps under new filenames but retains their internal
+## names. Prefer the requested header; only fall back when there is one .mp.
+static func resolve_map_prefix(arc: EIResArchive, requested: String) -> String:
+	if arc.has(requested + ".mp"):
+		return requested
+	var headers := arc.names_with_suffix(".mp")
+	return headers[0].get_basename() if headers.size() == 1 else ""
 
 
 ## Terrain height (EI z) at EI world x, y using bilinear interpolation.
@@ -891,9 +908,9 @@ func _load_atlases() -> void:
 	_atlas_hd = Gfx.on("gfx_hd_textures") # applies on zone load, also for lazy detail
 	var images: Array[Image] = []
 	for i in int(get_meta("textures_count")):
-		var img := GameData.load_image("%s%03d" % [map_name, i])
+		var img := GameData.load_image("%s%03d" % [resource_prefix, i])
 		if img == null or img.get_width() != texture_size:
-			push_warning("Missing terrain atlas %s%03d" % [map_name, i])
+			push_warning("Missing terrain atlas %s%03d" % [resource_prefix, i])
 			var n := texture_size * (2 if _atlas_hd else 1)
 			img = Image.create(n, n, false, Image.FORMAT_RGBA8)
 			img.fill(Color.MAGENTA)
@@ -937,7 +954,7 @@ func _ensure_detail_atlases() -> void:
 		return
 	var images: Array[Image] = []
 	for i in int(get_meta("textures_count")):
-		var source := GameData.load_image("%s%03d" % [map_name, i])
+		var source := GameData.load_image("%s%03d" % [resource_prefix, i])
 		if source == null or source.get_width() != texture_size:
 			source = Image.create(texture_size, texture_size, false, Image.FORMAT_RGBA8)
 			source.fill(Color.MAGENTA)
@@ -988,7 +1005,7 @@ func _build(arc: EIResArchive) -> void:
 	for sy in sectors_y:
 		NetStatus.keep_alive()
 		for sx in sectors_x:
-			var d := arc.read("%s%03d%03d.sec" % [map_name, sx, sy])
+			var d := arc.read("%s%03d%03d.sec" % [resource_prefix, sx, sy])
 			if d.size() < 5 or d.decode_u32(0) != SEC_MAGIC:
 				push_warning("Missing sector %d,%d" % [sx, sy])
 				continue
@@ -1070,7 +1087,7 @@ func _build_surface_data() -> void:
 	_ripple.fill(0.35)
 	for m in mini(materials.size(), 64):
 		_ripple[m] = clampf(0.25 + float(materials[m].get("wave", 0.0)) * 0.65, 0.25, 1.0)
-		if m in SEA_MATERIALS.get(map_name, []) and _lava[m] == 0.0:
+		if m in SEA_MATERIALS.get(resource_prefix, []) and _lava[m] == 0.0:
 			_surf[m] = 1.0
 			_ripple[m] = 1.0
 

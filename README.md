@@ -1,10 +1,12 @@
 # Cursed Lands
 
-Play **Evil Islands: Curse of the Lost Soul** («Проклятые земли», Nival, 2000) on a modern engine on Windows, Linux, macOS and Android or in your browser, with **online co-op** support for the campaign.
+Play **Evil Islands: Curse of the Lost Soul** («Проклятые земли», Nival, 2000) and **Lost in Astral** («Затерянные в Астрале») on a modern engine on Windows, Linux, macOS and Android or in your browser, with **online co-op** support for the campaigns.
 
 This is a separate game engine, built in Godot, in the spirit of OpenMW and fheroes2: it reads the Evil Islands files you already own (maps, models, textures, animations, sounds, music, texts, scripts and game tables) and plays them with natively written rendering, combat, AI, scripting and interface systems that follow the original game's rules.
 
-> **You need your own copy of the game.** No game data ships with this engine: no models, textures, music, sounds, videos, texts or maps. Nothing is downloaded for you. The **GOG version** is recommended; it is the one the engine is developed and tested with.
+> **You need your own copy of the game you want to play.** No game data ships with this engine: no models, textures, music, sounds, videos, texts or maps. Nothing is downloaded for you. The original game's **GOG version** is the main tested edition. The expansion can use an installed folder, a data pack or the supported two-disc ISO edition.
+
+Windows and Linux x86-64 use a compiled navigation module; macOS, Android and the browser keep the optimized script implementation. Source and build instructions are in [the navigation guide](game/src/native/source/README.md).
 
 ## Screenshots
 
@@ -58,6 +60,8 @@ Download the package for your system from the [Releases](https://github.com/TheW
 
 **New Game** asks for the difficulty first, as the original does. It can be changed at any time in **Options → Game**.
 
+The setup screen and main menu let you choose **Main game — Evil Islands** or **Expansion — Lost in Astral**. Keep either or both installed; each has separate saves. **Options → Remake → Game files…** manages the two installations. For the expansion's supported CDs, choose **Import Lost in Astral ISO images…** and select both discs together. The engine reads the files without mounting the images or running the installer. Browser ISO import is unavailable; use a folder or data pack there. See [game library and expansion import](docs/campaign_library.md).
+
 In a camp's skills screen, **Refund all points** returns the experience spent on training for redistribution. Starting skills and attributes, free quest rewards and total earned experience are kept. Older characters are supported when their paid training can be reconstructed safely.
 
 Training purchases apply immediately. The default interface hides the unused Accept/Cancel controls on the skills screen and explains this; trade controls still reflect the current transaction.
@@ -65,6 +69,8 @@ Training purchases apply immediately. The default interface hides the unused Acc
 ## Co-op
 
 In **Multiplayer**, one player chooses **Host co-op campaign** (a new game or one of their saves); the others choose **Join co-op campaign** and pick the game from the list of games on the local network, or enter the host's address (add `:port` for a game hosted on another port). The host's machine runs the world, and every player controls their own hero and the mercenaries they hire.
+
+For **Lost in Astral**, select the expansion and use its **Co-op campaign** button above the signpost. Every player needs the expansion and the same compatible remake version. The expansion offers story co-op; the original multiplayer bases belong to the main game.
 
 - **Bring your own hero.** A joining player can bring the hero from their own single-player save, with their own gold and bag. Anything they earn, loot or buy is kept when they leave. In villages, players with their own bags can swap items and money through the player strip at the top right.
 - **Shared progress.** Quests the host completes count for a joining player too, if that player has reached the same point in the story. A player who is further ahead simply helps. A player who is behind gets no credit for quests they have not reached yet. When they leave, the progress they made is merged into a new save of their own, so two players can finish the whole campaign together.

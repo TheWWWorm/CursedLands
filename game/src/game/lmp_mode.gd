@@ -126,8 +126,15 @@ static func quest_title(id: String) -> String:
 	return String(q.get("title", id)) if not q.is_empty() else id
 
 
-## True when this installation has the multiplayer files (databaseLMP.res,
-## textsLmp.res with map-LMP.txt).
+## The standalone expansion retains old LMP archives, but has no supported
+## original multiplayer campaign. Their presence alone is not sufficient.
 static func available() -> bool:
-	return GameData.texts_lmp != null and GameData.texts_lmp.has("map-lmp.txt") \
+	return GameData.campaign_id != CampaignProfile.ASTRAL \
+		and GameData.texts_lmp != null and GameData.texts_lmp.has("map-lmp.txt") \
 		and GameFiles.exists(GameData.res_path("databaselmp.res"))
+
+
+static func unavailable_reason() -> String:
+	if GameData.campaign_id == CampaignProfile.ASTRAL:
+		return RemakeText.t("Lost in Astral does not include the original multiplayer campaign.")
+	return RemakeText.t("Needs the multiplayer files of the original game (databaseLMP.res), missing from this installation.")

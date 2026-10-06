@@ -424,7 +424,10 @@ func forced_on(m: String, u: GameUnit, g: Variant) -> void:
 	if m == "alt":
 		var to: Variant = u.pos if u else g
 		if to != null:
-			issue({"t": "move", "units": ids, "x": to.x, "y": to.y, "run": _double})
+			var cmd := {"t": "move", "units": ids, "x": to.x, "y": to.y, "run": _double}
+			if u == null:
+				_tag_exit_click(cmd, to)
+			issue(cmd)
 			marks.move_ordered(to)
 		return
 	if u and not u.dead:
@@ -904,7 +907,9 @@ func order_on(u: GameUnit, add: bool, p: Variant = null, lever := -1, ground: Va
 			return
 		var at = pick_ground(p) if p != null else ground
 		if at != null:
-			issue({"t": "move", "units": [party[0].uid], "x": at.x, "y": at.y, "run": _double})
+			var cmd := {"t": "move", "units": [party[0].uid], "x": at.x, "y": at.y, "run": _double}
+			_tag_exit_click(cmd, at)
+			issue(cmd)
 		return
 	if u and u.controller == session.my_index:
 		# on_off.wav for any click on an own unit, then
@@ -949,8 +954,19 @@ func order_on(u: GameUnit, add: bool, p: Variant = null, lever := -1, ground: Va
 		return
 	var g = pick_ground(p) if p != null else ground if ground != null else u.pos if u and not u.dead else null
 	if g != null:
-		issue({"t": "move", "units": ids, "x": g.x, "y": g.y, "run": _double})
+		var cmd := {"t": "move", "units": ids, "x": g.x, "y": g.y, "run": _double}
+		if u == null:
+			_tag_exit_click(cmd, g)
+		issue(cmd)
 		marks.move_ordered(g)
+
+
+## Deliberate mouse, touch or gamepad ground activation under the exit
+## cursor. Automatic movement and Follow bypass this input route.
+func _tag_exit_click(cmd: Dictionary, at: Vector2) -> void:
+	var n := session.open_exit_at(at, session.my_index)
+	if n >= 0:
+		cmd.exit = n
 
 
 ## Option "rubber_select" (CameraFrameSelectionSensetiveArea = slider × 10 px,
@@ -1292,19 +1308,53 @@ static func unit_level(u: GameUnit) -> int:
 	return int(u.proto.get("base_level", 1))
 
 
-## Screen point -> EI ground xy (or null).
+## Screen point -> EI ground xy (or null). solves the projected
+## ray against the world's current terrain/BASE-face height. A fixed-distance
+## ray march can step past a narrow elevated floor and pick the water behind it.
 func pick_ground(p: Vector2) -> Variant:
 	var cam := rig.camera
 	var from := cam.project_ray_origin(p)
 	var dir := cam.project_ray_normal(p)
+	if dir.y >= 0.0:
+		# Modern free-camera upward/horizontal rays retain the forward-only pick.
+		return _pick_ground_forward(from, dir)
+	var a := _pick_float(dir.x / dir.y)
+	var b := _pick_float(from.x - a * from.y)
+	var c := _pick_float(-dir.z / dir.y)
+	var d := _pick_float(-from.z - c * from.y)
+	var h := _pick_float(world.terrain.max_altitude * 0.5)
+	var xy := Vector2(maxf(0.0, _pick_float(a*h+b)), maxf(0.0, _pick_float(c*h+d)))
+	h = _pick_float((world.ground_at(xy.x, xy.y) + h) * 0.5)
+	var previous := h
+	for i in 100:
+		previous = h
+		xy = Vector2(maxf(0.0, _pick_float(a*h+b)), maxf(0.0, _pick_float(c*h+d)))
+		var ground := _pick_float(world.ground_at(xy.x, xy.y))
+		var converged := absf(ground-h) <= 0.01
+		h = ground
+		if converged and i < 99:
+			return xy
+	# Native fallback for discontinuous terrain/floor heights: averaged guesses,
+	# bounded separately to100 queries. Return the last queried XY, not h's XY.
+	for i in 100:
+		previous = _pick_float((h + previous) * 0.5)
+		xy = Vector2(maxf(0.0, _pick_float(a*previous+b)), maxf(0.0, _pick_float(c*previous+d)))
+		h = _pick_float(world.ground_at(xy.x, xy.y))
+		if absf(h-previous) <= 0.01:
+			break
+	return xy
+
+
+static func _pick_float(x: float) -> float:
+	return PackedFloat32Array([x])[0]
+
+
+func _pick_ground_forward(from: Vector3, dir: Vector3) -> Variant:
 	var t := 0.0
-	var prev := from
 	while t < 600.0:
 		t += 0.5
 		var q := from + dir * t
-		var ex := q.x
-		var ey := -q.z
-		if q.y <= world.ground_at(ex, ey):
+		if q.y <= world.ground_at(q.x, -q.z):
 			var lo := t - 0.5
 			var hi := t
 			for i in 12:
@@ -1316,7 +1366,6 @@ func pick_ground(p: Vector2) -> Variant:
 					lo = mid
 			var hit := from + dir * hi
 			return Vector2(hit.x, -hit.z)
-		prev = q
 	return null
 
 

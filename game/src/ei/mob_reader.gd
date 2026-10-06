@@ -93,7 +93,7 @@ func _walk(d: PackedByteArray, start: int, end: int, parent_kind: String, into: 
 	var p := start
 	while p + 8 <= end:
 		var id := d.decode_u32(p)
-		var n := d.decode_u32(p + 4)
+		var n := _record_size(d, p, end, id, parent_kind)
 		if n < 8 or p + n > end:
 			return
 		var body := p + 8
@@ -136,6 +136,21 @@ func _walk(d: PackedByteArray, start: int, end: int, parent_kind: String, into: 
 		else:
 			_field(d, id, body, blen, into)
 		p += n
+
+
+func _record_size(d: PackedByteArray, p: int, end: int, id: int, parent_kind: String) -> int:
+	# Native readers consume typed payloads; the next-header reader skips the
+	# declared length only for unhandled fields (LiA 41fbd0 / 41fc60).
+	# Shipped zone8 declares a 4-byte aggression field but stores one byte.
+	# bz21k / zone13 omit the count word from both trap-array lengths.
+	if parent_kind == "UNIT_LOGIC" and id == UNIT_LOGIC_AGRESSION_MODE:
+		return 9   # LiA 441010 -> 41fdb0
+	if parent_kind == "MAGIC_TRAP" and id in [MT_AREAS, MT_TARGETS]:
+		if p + 12 > end:
+			return 0
+		var stride := 12 if id == MT_AREAS else 8
+		return 12 + d.decode_u32(p + 8) * stride   # 43fec0 / 43ff10
+	return d.decode_u32(p + 4)
 
 
 func _field(d: PackedByteArray, id: int, p: int, n: int, o: Dictionary) -> void:

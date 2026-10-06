@@ -420,4 +420,7 @@ func pad_targets() -> Array:
 		var r := board_rect(e[1])
 		if r.size != Vector2.ZERO:
 			out.append({"rect": r, "id": BOARDS[e[1]]})
+	var parent := get_parent()
+	if parent and parent.has_method("campaign_pad_targets"):
+		out.append_array(parent.campaign_pad_targets())
 	return out

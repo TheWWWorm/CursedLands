@@ -447,14 +447,15 @@ func _publish_locations() -> void:
 	session.lmp_locations = public
 
 
-func arm_exit(player: int, at: Vector2, has_units: bool) -> void:
+func arm_exit(player: int, at: Vector2, has_units: bool, clicked_exit := -1) -> void:
 	if not owners.has(player):
 		return
 	owners[player].armed = -1
 	if not has_units:
 		return
 	var n := session._exit_at(at)
-	if n >= 0 and _exit_open(player, n):
+	if n >= 0 and _exit_open(player, n) \
+			and (GameData.option("auto_exit") == 1 or clicked_exit == n):
 		owners[player].armed = n
 
 
@@ -481,6 +482,7 @@ func _party_exit(player: int) -> int:
 
 
 func check_exits() -> void:
+	var automatic := GameData.option("auto_exit") == 1
 	var w := session.world
 	for player: int in registered(session.zone_id):
 		if loading(player):
@@ -488,8 +490,9 @@ func check_exits() -> void:
 		var o: Dictionary = owners[player]
 		var n := _party_exit(player)
 		if int(o.auto) == -2:
-			o.auto = n   # entering inside an exit does not immediately leave
-			continue
+			o.auto = n   # entering inside an exit does not automatically leave
+			if automatic:
+				continue
 		if n < 0:
 			o.auto = -1
 			continue
@@ -497,12 +500,13 @@ func check_exits() -> void:
 			continue
 		if String(w.zone.get("type", "")) == "brief":
 			# Native villages use only the first party record, without a box.
-			if n == int(o.auto):
+			if (automatic and n == int(o.auto)) or (not automatic and int(o.armed) != n):
 				continue
 			o.auto = n
+			o.armed = -1
 			var ex: Dictionary = w.zone.exits[n]
 			request(player, String(ex.to), int(ex.get("to_exit", 1)))
-		elif (int(o.armed) == n or n != int(o.auto)):
+		elif int(o.armed) == n or (automatic and n != int(o.auto)):
 			o.armed = -1
 			o.auto = n
 			session.broadcast({"t": "leave_box", "to": player, "exit": n})

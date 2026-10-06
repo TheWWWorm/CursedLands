@@ -409,6 +409,8 @@ static func unit_title(proto_name: String) -> String:
 	if proto_name.is_empty():
 		return ""
 	var t := GameData.text("unit " + proto_name.to_lower().replace(" ", "_"))
+	if t.is_empty():
+		t = GameData.text("pers " + proto_name)
 	return t.get_slice("\n", 0).strip_edges()
 
 
@@ -419,6 +421,102 @@ static func unit_title(proto_name: String) -> String:
 static func proto_complexion(proto: Dictionary) -> Vector3:
 	return Vector3(float(proto.get("complexion_y", 0.5)), float(proto.get("complexion_x", 0.5)),
 		float(proto.get("complexion_z", 0.5)))
+
+
+## Effective figure build; the record and trained/saved hero keep their base.
+## Native 50f2d0 restores base first, then reads presence of effects 29/30
+## (muscle ±0.4; creatures also height) and 37/38 (all axes). Powers and
+## duplicate effects do not multiply the visual offset. Values have no top clamp.
+static func buff_complexion(base: Vector3, type_id: int, effects: Dictionary) -> Vector3:
+	var strength := int(effects.has("strength")) - int(effects.has("weak"))
+	var size := int(effects.has("enlarge")) - int(effects.has("shrink"))
+	var delta := float(strength + size if size != 0 else strength) * 0.4000000059604645
+	if delta == 0.0:
+		return base
+	base.y = maxf(0.0, base.y + delta)
+	if size != 0:
+		base.x = maxf(0.0, base.x + delta)
+	if size != 0 or type_id != 0x32:
+		base.z = maxf(0.0, base.z + delta)
+	return base
+
+
+func figure_info() -> Dictionary:
+	var base: Vector3 = info.get("complexion", Vector3.ZERO)
+	if base == Vector3.ZERO:
+		base = proto_complexion(proto)
+	var shown := info.duplicate()
+	shown.complexion = buff_complexion(base, int(race.get("type_id", 0)), buffs)
+	# An actual effective zero build is not the absent-map-override sentinel.
+	shown.effective_complexion = true
+	return shown
+
+
+## Refresh only when magic changed the build. Preserve the playing mixer,
+## blend, queue and clock when the native translation height factor matches;
+## otherwise restore the same clip/phase under the updated height factor.
+func refresh_figure() -> void:
+	if model == null:
+		return
+	var shown := figure_info()
+	if model.get_meta("complexion", Vector3.INF) == shown.complexion:
+		return
+	var m := EIUnitModel.create(shown, false, false)
+	if m == null:
+		return
+	var old := model
+	for property: String in ["pose_state", "pose_mod", "_current", "_cycle", "_cycle_pos", "_resume", "_resume_clip"]:
+		m.set(property, old.get(property))
+	var was_acc := _anim_acc
+	var was_due := _anim_due
+	add_child(m)
+	m.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
+	if old.player and m.player and old.height_k == m.height_k:
+		# The same player retains in-progress blending and method-track state.
+		# Clear its node bindings after moving it to the replacement hierarchy.
+		var fresh := m.player
+		m.remove_child(fresh)
+		fresh.free()
+		if old.player.mixer_applied.is_connected(old._apply_morphs):
+			old.player.mixer_applied.disconnect(old._apply_morphs)
+		m.player = old.player
+		old.player = null
+		m.player.reparent(m, false)
+		if not m._morph_parts.is_empty():
+			m.player.mixer_applied.connect(m._apply_morphs)
+		m.player.clear_caches()
+		var batching := EIAnimPart.batch
+		EIAnimPart.batch = true
+		for n in old.find_children("*", "BoneAttachment3D", true, false):
+			if n is EIAnimPart:
+				var next := m.get_node_or_null(old.get_path_to(n)) as EIAnimPart
+				if next:
+					next.animation_key = n.animation_key
+		for root: EIAnimPart in m._animation_roots:
+			var previous := old.get_node_or_null(m.get_path_to(root)) as EIAnimPart
+			if previous:
+				root.position = previous.position
+			root._apply_key()
+		EIAnimPart.batch = batching
+	elif old.player and m.player and old.player.assigned_animation != "":
+		var clip := old.player.assigned_animation
+		var at := old.player.current_animation_position
+		m.player.callback_mode_process = AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_MANUAL
+		m.player.speed_scale = old.player.speed_scale
+		m.player.play(clip, 0.0)
+		m.player.seek(at, true)
+		for queued: String in old.player.get_queue():
+			m.player.queue(queued)
+		if not old.player.is_playing():
+			m.player.pause()
+	model = m
+	remove_child(old)
+	old.queue_free()
+	_anim_lod_setup()
+	_anim_acc = was_acc
+	_anim_due = was_due
+	_wounds_dirty = true
+	_pose_dirty = true
 
 
 func _init_stats() -> void:
@@ -548,6 +646,7 @@ func refresh_max_hp() -> void:
 	var m := _base_max_hp * _hp_mul()
 	if not is_equal_approx(m, _max_hp):
 		_set_max_hp(m)
+	refresh_figure()
 
 
 ## health spread over the damaged, attached parts by lethality
@@ -1389,8 +1488,13 @@ func _do_move(dt: float) -> void:
 
 
 func _do_move_profile_body(dt: float) -> void:
+	var use_target: Node3D = world.objects.get(int(order.get("use_object", 0)))
+	if order.has("use_object") and (use_target == null or not world.lever_sys.usable(int(order.use_object))):
+		remove_meta("interact")
+		_fail_order(EIAcks.NO_PATH)
+		return
 	if not order.has("cost_started"):
-		path_flat_cost = world.nav.cell_wet(pos)
+		path_flat_cost = order.has("use_object") or world.nav.cell_wet(pos)
 		order.cost_started = true
 	# A player's move order runs by the unit's gait (: == 3)
 	# or its double-click flag (standing only); script / AI moves
@@ -1410,8 +1514,13 @@ func _do_move_profile_body(dt: float) -> void:
 			path = _kept_path(order.to)
 		if path.is_empty():
 			path = _path_to(order.to)
-		motion_notice(order.to, 0)
+		if use_target:
+			motion_notice(order.to, 1, world.vm._interact_reach(self, use_target))
+		else:
+			motion_notice(order.to, 0)
 		if path.is_empty():
+			if order.has("use_object"):
+				remove_meta("interact")
 			_fail_order(EIAcks.NO_PATH)
 			return
 		_fresh_path = replan
@@ -1464,12 +1573,19 @@ func _kept_path(to: Vector2) -> PackedVector2Array:
 func _path_to(to: Vector2, t: GameUnit = null, flat_override := -1, limit := 1e6) -> PackedVector2Array:
 	var moving_at := _avoid_at
 	_avoid = null;_avoid_at = Vector2.INF
-	var found := world.nav.find_path(pos, to, [self, t] if t else [self], [], 0.0, move_class(),
-		bool(flat_override) if flat_override >= 0 else (t != null or path_flat_cost),NAN,limit,0.0,controller < 0,moving_at)
+	var found: PackedVector2Array
+	if order.has("use_object"):
+		var plan := world.nav.find_object_path(self, to, int(order.use_object), limit, moving_at)
+		found = plan.path
+		_planned_motion = plan.motion
+		_plan_blocks = int(plan.blocks)
+	else:
+		found = world.nav.find_path(pos, to, [self, t] if t else [self], [], 0.0, move_class(),
+			bool(flat_override) if flat_override >= 0 else (t != null or path_flat_cost),NAN,limit,0.0,controller < 0,moving_at)
+		_plan_blocks = world.nav.last_block_count
+		_planned_motion = world.nav.motion_record(pos, found, move_class(), has_meta("flying"))
 	_path_limit = limit
-	_plan_blocks = world.nav.last_block_count
 	_plan_path = found
-	_planned_motion = world.nav.motion_record(pos, found, move_class(), has_meta("flying"))
 	_planned_motion.path = found
 	_planned_motion.from = pos
 	return found
@@ -1533,7 +1649,8 @@ func motion_notice(at: Vector2, mode: int, reach := -1.0, full_path := false) ->
 	if not order.get("path_notice", false) or world == null or world.session == null:
 		return
 	order.erase("path_notice")
-	var record := world.nav.motion_record(pos, path, move_class(), has_meta("flying"))
+	var record := _planned_motion if _planned_motion.get("path") == path and _planned_motion.get("from") == pos \
+		else world.nav.motion_record(pos, path, move_class(), has_meta("flying"))
 	var cells: Array = []
 	for c: Vector2i in record.cells:
 		cells.append([c.x, c.y])
@@ -2659,7 +2776,7 @@ func rise(total := 1.0) -> void:
 func set_equipment(armors: PackedStringArray, weapons: PackedStringArray) -> void:
 	info.armors = armors
 	info.weapons = weapons
-	var m := EIUnitModel.create(info)
+	var m := EIUnitModel.create(figure_info())
 	if m == null:
 		return
 	if model:
@@ -3064,7 +3181,7 @@ func _sync_transform() -> void:
 				yaw = direction.angle()
 			_draw_move_speed = direction.length() * float(sample.v) * SPEED_SCALE
 	if world.authority and p == _xf_pos and yaw == _xf_facing and (t.get_instance_id() if t else 0) == _xf_tid \
-			and (t == null or t.surface_rev == _xf_rev) and transform == _xf:
+			and (t == null or t.surface_rev == _xf_rev) and world.nav.floor_rev == _xf_floor_rev and transform == _xf:
 		return
 	if not world.authority:
 		p = net_view.step(pos, get_physics_process_delta_time())
@@ -3084,6 +3201,7 @@ func _sync_transform() -> void:
 		_xf_facing = yaw
 		_xf_tid = t.get_instance_id() if t else 0
 		_xf_rev = t.surface_rev if t else 0
+		_xf_floor_rev = world.nav.floor_rev
 		_xf = transform
 	else:
 		_xf_tid = -1
@@ -3096,6 +3214,7 @@ var _xf_pos := Vector2(INF, INF)
 var _xf_facing := 0.0
 var _xf_tid := -1   # the terrain's instance id
 var _xf_rev := 0
+var _xf_floor_rev := -1
 var _xf := Transform3D()
 
 
@@ -3277,6 +3396,7 @@ func apply_snapshot(s: Array, quiet := false) -> void:
 			if b.size() > 4 and b[4] is Dictionary:
 				d.merge(b[4], true)
 			buffs[String(b[0])] = d
+		refresh_figure()
 	var a: String = s[4]
 	if a != action and not dead:
 		action = a

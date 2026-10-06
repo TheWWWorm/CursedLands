@@ -91,9 +91,10 @@ func open_menu() -> Control:
 ## game starts again into the main menu (DataSwitch.restart); "Delete
 ## imported data" (Android / web) starts it again into the setup screen.
 ## Back calls `back` with the old files untouched.
-func change_game_files(back: Callable) -> Control:
+func change_game_files(back: Callable, campaign := "") -> Control:
 	var setup: Control = preload("res://src/ui/portable_setup.gd").new() if Portability.constrained() else preload("res://src/ui/setup_screen.gd").new()
 	setup.name = "GameFilesSetup"
+	setup.selected_campaign = campaign
 	setup.back_text = RemakeText.t("Back to options")
 	setup.opened.connect(func(): DataSwitch.restart(get_tree()))
 	if setup.has_signal("deleted"):

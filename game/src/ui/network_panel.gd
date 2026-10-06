@@ -59,7 +59,9 @@ const HOVER_BAR := Color8(0xa0, 0x68, 0x00, 0x60)
 # Upper panel (rows) and lower panel (friends / addresses) of the pages.
 const TOP := Rect2(100, 60, 600, 258)
 const LOW := Rect2(100, 328, 600, 172)
-const ROW0 := 142.0
+const STATUS_RECT := Rect2(110, 4, 580, 48)
+const HINT_RECT := Rect2(110, 94, 580, 50)
+const ROW0 := 150.0
 const BOOK_ROWS := 5
 
 var page := MODES
@@ -85,6 +87,8 @@ var upnp: UpnpPort
 var host_mode := {}
 ## Screenshots / tests: lay the screen out as the browser build does.
 var simulate_web := false
+## Lost in Astral has a story campaign, but no original LMP base campaign.
+var campaign_only := GameData.campaign_id == CampaignProfile.ASTRAL
 ## Host: the game's password ("" none; Session.password, the original's Password
 ## switch case 5); joiner: the one it joins with
 ## (Session.join_password, the original's «Enter password» box).
@@ -122,6 +126,7 @@ func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	focus_mode = Control.FOCUS_ALL
+	tooltip_text = " "   # full explanations remain available when a block is shortened
 	_dim = Interface800.dim_layer()
 	add_child(_dim)
 	_board = InterfaceBoard.create("unmoco2", "mainmenu00", "mainmenu00labels",
@@ -168,7 +173,7 @@ func open() -> void:
 ## Shows `p` (one of the page enums).
 func show_page(p: int) -> void:
 	page = p
-	_board.visible = p == MODES   # over the choice of game, as over Options
+	_board.visible = p == MODES and not campaign_only
 	_switched_from = -1
 	_focus = ""
 	_hover = ""
@@ -180,7 +185,7 @@ func show_page(p: int) -> void:
 		lmp_base = LmpMode.BASES[0]
 	_sel = -1
 	if p == MODES:
-		for i in 4:
+		for i in (2 if campaign_only else 4):
 			if _mode_off(i + 1).is_empty():
 				_sel = i
 				break
@@ -261,7 +266,7 @@ func _mode_off(p: int) -> String:
 	if p in [HOST_COOP, HOST_LMP] and _web():
 		return RemakeText.t("Hosting is not available in the browser version: host from the desktop or Android version.")
 	if p in [HOST_LMP, JOIN_LMP] and not LmpMode.available():
-		return RemakeText.t("Needs the multiplayer files of the original game (databaseLMP.res), missing from this installation.")
+		return LmpMode.unavailable_reason()
 	return ""
 
 
@@ -286,8 +291,8 @@ func _mode_desc(p: int) -> String:
 
 func _page_desc() -> String:
 	match page:
-		MODES: return RemakeText.t("Choose what you want to play. Every player needs their own copy of Evil Islands.")
-		HOST_COOP: return RemakeText.t("You play Zak and lead the campaign; friends join with their own hero. Only you can save.")
+		MODES: return RemakeText.t("Play Lost in Astral together. Every player needs the expansion and the same remake version.") if campaign_only else RemakeText.t("Choose what you want to play. Every player needs their own copy of Evil Islands.")
+		HOST_COOP: return RemakeText.t("You lead the story as %s; friends join with their own hero. Only the host can save.") % CampaignState.hero_name()
 		HOST_LMP: return RemakeText.t("The original game's multiplayer: every player has a network character, quests are taken at the base and played in their own zone. There is no saving; characters keep what they earn.")
 		JOIN_COOP: return RemakeText.t("Join a friend's campaign: you play in the host's world with your own hero.")
 		JOIN_LMP: return RemakeText.t("Join a friend's multiplayer game with your network character.")
@@ -352,7 +357,7 @@ func _rows() -> Array:
 func _char_row(locked: bool) -> Dictionary:
 	var h: String
 	if not LmpMode.available():
-		h = RemakeText.t("Needs the multiplayer files of the original game (databaseLMP.res), missing from this installation.")
+		h = LmpMode.unavailable_reason()
 	elif MpCharacter.hero_of(MpCharacter.current()).is_empty():
 		h = RemakeText.t("None chosen yet: you would play a plain default hero. Create one: it is kept on this device and keeps what it earns.")
 	else:
@@ -385,8 +390,8 @@ func _pw_hint(host: bool) -> String:
 func _bring_hint() -> String:
 	match CoopProgress.bring_slot:
 		"": return RemakeText.t("A hero of the class below, made for this game; nothing is kept afterwards.")
-		CoopProgress.NEW: return RemakeText.t("A new Zak from the start of the story. What you achieve comes back as a new save “Co-op: <host>”.")
-	return RemakeText.t("The Zak of this save, with his things. What you achieve that your own game has not done yet comes back as a new save “Co-op: <host>”; this save stays as it is.")
+		CoopProgress.NEW: return RemakeText.t("A new hero at the start of this story. Progress returns in a new save “Co-op: <host>”.")
+	return RemakeText.t("Bring this save's hero and equipment. New progress returns in a separate save “Co-op: <host>”; this save stays unchanged.")
 
 
 func _start_choices() -> Array:
@@ -407,14 +412,40 @@ func _start_title() -> String:
 
 # ------------------------------------------------------------------ drawing
 
+## Keep the original font proportions within the available height too.
+## Width-only scaling makes three hint lines and adjacent rows collide on
+## widescreen windows, even though their 800×600 rectangles do not overlap.
+func font_px(i: int) -> int:
+	var scale := kv()
+	return maxi(6, int(round(minf(scale.x, scale.y) * 800.0 * FONT_EM[i])))
+
+
+func _status_text() -> String:
+	if upnp_text and hosting and page in [HOST_COOP, HOST_LMP]:
+		return status + ("\n" if status else "") + upnp_text
+	return status
+
+
+func _get_tooltip(at: Vector2) -> String:
+	var p := to800(at)
+	if STATUS_RECT.has_point(p):
+		return _status_text()
+	if page == MODES:
+		return ""
+	var rows := _rows()
+	for i in rows.size():
+		if _row_rect(i).has_point(p):
+			return String(rows[i].hint)
+	return ""
+
+
 func _draw() -> void:
 	_targets.clear()
 	if _internet and _internet.visible:
 		return
-	# The last connection message (the original's status rect, the screen's width).
-	text(Rect2(0, 0, 800, 20), status, 2, TEXT)
-	if upnp_text and hosting and page in [HOST_COOP, HOST_LMP]:
-		text(Rect2(0, 22, 800, 20), upnp_text, 1, GREY)
+	# Connection and router messages share a bounded, wrapped area above the
+	# frame. Long router diagnostics must not escape the window or cover it.
+	_block(STATUS_RECT, _status_text(), 0, TEXT, 3)
 	if page == MODES:
 		_draw_modes()
 	else:
@@ -429,10 +460,10 @@ func _draw_modes() -> void:
 	var ui := tex("saveload")
 	# Below the signpost board (as the original network screen places it).
 	panel(Rect2(100, 120, 600, 380))
-	text(Rect2(100, 128, 600, 24), RemakeText.t("Multiplayer"), 2, TEXT, HORIZONTAL_ALIGNMENT_CENTER)
+	text(Rect2(100, 128, 600, 24), RemakeText.t("Co-op campaign") if campaign_only else RemakeText.t("Multiplayer"), 2, TEXT, HORIZONTAL_ALIGNMENT_CENTER)
 	_block(Rect2(110, 152, 580, 32), _page_desc(), 0, GREY, 2, HORIZONTAL_ALIGNMENT_CENTER)
 	var y := 186.0
-	for g in 2:
+	for g in (1 if campaign_only else 2):
 		text(Rect2(110, y, 580, 20), RemakeText.t("Story campaign together") if g == 0 else RemakeText.t("The original game's multiplayer"), 1, ORANGE)
 		y += 22
 		for k in 2:
@@ -473,7 +504,7 @@ func _draw_page() -> void:
 		if _hover == "row:" + String(row.id) or (_hover.is_empty() and _sel >= 0 and _sel < rows.size() and rows[_sel] == row):
 			desc = String(row.hint)
 			hint_col = TEXT
-	_block(Rect2(110, 94, 580, 47), desc, 0, hint_col, 3, HORIZONTAL_ALIGNMENT_CENTER)
+	_block(HINT_RECT, desc, 0, hint_col, 3, HORIZONTAL_ALIGNMENT_CENTER)
 	for r in rows.size():
 		_draw_row(r, rows[r])
 	panel(LOW)
@@ -520,7 +551,7 @@ func _draw_row(r: int, row: Dictionary) -> void:
 		"choice":
 			_arrow(Vector2(408, y + h * 0.5), true, on)
 			_arrow(Vector2(682, y + h * 0.5), false, on)
-			text_vc(Rect2(418, y, 254, h), String(row.value), 1, col, HORIZONTAL_ALIGNMENT_CENTER)
+			text_vc(Rect2(418, y, 254, h), _fit_line(String(row.value), 254, 1), 1, col, HORIZONTAL_ALIGNMENT_CENTER)
 		"switch":
 			text_vc(Rect2(400, y, 285, h), String(row.value), 1, col)
 		"slider":
@@ -576,15 +607,21 @@ func _edit(r: Rect2, s: String, focused: bool, on: bool, placeholder := "") -> v
 			draw_line(Vector2(x, rr.position.y + 2 * kv().y), Vector2(x, rr.end.y - 2 * kv().y), ORANGE, maxf(1.0, round(kv().x)))
 
 
-## Word-wrapped text from the rect's top, at most `lines` lines; its height.
+func _fit_line(s: String, width: float, font_i: int, more := false) -> String:
+	if not more and text_width(s, font_i) <= width:
+		return s
+	while not s.is_empty() and text_width(s + "…", font_i) > width:
+		s = s.left(s.length() - 1)
+	return s.strip_edges() + "…"
+
+
+## Word-wrapped text within both dimensions of the rect; its drawn height.
 func _block(r: Rect2, s: String, font_i: int, col: Color, lines := 99, align := HORIZONTAL_ALIGNMENT_LEFT) -> float:
 	var ls := wrap_text(s, r.size.x, font_i)
 	var h := line_h(font_i)
-	var n := mini(ls.size(), lines)
+	var n := mini(mini(ls.size(), lines), maxi(0, int(floor(r.size.y / h))))
 	for i in n:
-		var t := ls[i]
-		if i == n - 1 and ls.size() > n:
-			t += "…"
+		var t := _fit_line(ls[i], r.size.x, font_i, i == n - 1 and ls.size() > n)
 		text(Rect2(r.position.x, r.position.y + h * i, r.size.x, h), t, font_i, col, align)
 	return h * n
 
@@ -976,9 +1013,9 @@ func _bring_choices() -> Array:
 func _bring_title(slot: String, with_class := false) -> String:
 	match slot:
 		"": return RemakeText.t("A co-op hero (nothing kept)") + (" — " + _class_title(hero_class()) if with_class else "")
-		CoopProgress.NEW: return RemakeText.t("A new Zak (start fresh)")
+		CoopProgress.NEW: return RemakeText.t("A new %s (start fresh)") % CampaignState.hero_name()
 	var i := SaveInfo.read(slot)
-	return RemakeText.t("Zak of the save “%s”") % i.display_name()
+	return RemakeText.t("Hero from the save “%s”") % i.display_name()
 
 
 # ------------------------------------------------------------------ actions
@@ -1288,8 +1325,9 @@ func _unhandled_key_input(e: InputEvent) -> void:
 			var d := -1 if k.keycode == KEY_UP else 1
 			if page == MODES:
 				var s := _sel
-				for n in 4:
-					s = posmod(s + d, 4)
+				var count := 2 if campaign_only else 4
+				for n in count:
+					s = posmod(s + d, count)
 					if _mode_off(s + 1).is_empty():
 						break
 				_sel = s

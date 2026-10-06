@@ -199,6 +199,9 @@ var _floors := {}                # cell -> Array of [top, key]
 var _fp := {}                    # object key -> {"spans": {cell: [b, t, k]}, "floors": {cell: top}}
 var _fp_nodes := {}              # object key -> Node3D
 var _face_buckets := {}          # 4m square -> [object key, native BASE face]
+var floor_rev := 0               # placement caches / immutable worker snapshot
+var _face_snapshot_rev := -1
+var _face_snapshot := {}
 var _next_key := -1
 var _occ := PackedByteArray()    # standing units whose stamp closes the cell (count)
 ## Counts the changes of the map's cells (build, objects, levers; not the
@@ -214,6 +217,8 @@ var _path_memo := {}
 var _path_memo_order: Array = []
 var _path_memo_ints := 0
 var _path_memo_rev := -1
+var _stamp_kernel: RefCounted
+var _stamp_kernel_checked := false
 var _memo_capture := false
 var _memo_windows := {}
 var _memo_capture_ints := 0
@@ -230,6 +235,7 @@ func build(t: EITerrain, water_levels: PackedFloat32Array, objects: Array) -> vo
 	_fp = {}
 	_fp_nodes = {}
 	_face_buckets = {}
+	floor_rev += 1
 	var qw := t.sectors_x * EITerrain.SECTOR
 	var qh := t.sectors_y * EITerrain.SECTOR
 	size = Vector2i(qw * 2, qh * 2)
@@ -754,9 +760,34 @@ static func _face_rect(face: Dictionary) -> Rect2i:
 ## Project onto the eligible authored rectangle, including its native.5m
 ## edge padding and separate centre/radius gate. Newer planes win equal heights.
 func plane_at(p: Vector2,ground := 0.0) -> Dictionary:
+	return plane_in(_face_buckets, p, ground)
+
+
+func ground_height(p: Vector2, ground: float) -> float:
+	return ground_in(_face_buckets, p, ground)
+
+
+## Most unit/particle samples have no floor nearby. Avoid allocating a
+## plane result for every particle on ordinary terrain.
+static func ground_in(buckets: Dictionary, p: Vector2, ground: float) -> float:
+	if buckets.is_empty() or not buckets.has(Vector2i(floori(p.x/BUCKET),floori(p.y/BUCKET))):
+		return ground
+	return float(plane_in(buckets,p,ground).height)
+
+
+## Immutable until the next floor mutation; worker effects must not read
+## the live buckets while SetCP / lever morphs replace their entries.
+func floor_snapshot() -> Dictionary:
+	if _face_snapshot_rev != floor_rev:
+		_face_snapshot = _face_buckets.duplicate(true)
+		_face_snapshot_rev = floor_rev
+	return _face_snapshot
+
+
+static func plane_in(buckets: Dictionary, p: Vector2, ground := 0.0) -> Dictionary:
 	var height := ground
 	var normal := Vector3(0,0,1)
-	var candidates: Array = _face_buckets.get(Vector2i(floori(p.x/BUCKET),floori(p.y/BUCKET)),[])
+	var candidates: Array = buckets.get(Vector2i(floori(p.x/BUCKET),floori(p.y/BUCKET)),[])
 	for i in range(candidates.size()-1,-1,-1):
 		var face: Dictionary = candidates[i][1]
 		var centre: Vector3 = face.centre
@@ -834,11 +865,16 @@ func _add_footprint(o: Node3D, fp: Dictionary) -> int:
 		_next_key -= 1
 	_fp[key] = fp
 	_fp_nodes[key] = o
+	if not fp.get("faces", []).is_empty():
+		for mesh: MeshInstance3D in o.find_children("*", "MeshInstance3D", true, false):
+			mesh.layers |= EITerrain.DECAL_LAYER
 	_put(key, fp)
 	return key
 
 
 func _put(key: int, fp: Dictionary) -> void:
+	if not fp.get("faces", []).is_empty():
+		floor_rev += 1
 	for face: Dictionary in fp.get("faces",[]):
 		var r := _face_rect(face)
 		for y in range(r.position.y,r.end.y):
@@ -858,6 +894,8 @@ func _put(key: int, fp: Dictionary) -> void:
 
 
 func _take(key: int, fp: Dictionary) -> void:
+	if not fp.get("faces", []).is_empty():
+		floor_rev += 1
 	for face: Dictionary in fp.get("faces",[]):
 		var r := _face_rect(face)
 		for y in range(r.position.y,r.end.y):
@@ -921,6 +959,32 @@ func remove_object(nid: int) -> void:
 	_fp.erase(nid)
 	_fp_nodes.erase(nid)
 	_update_region(_fp_rect(fp))
+
+
+## Object, from the same target-state part boxes as its footprint.
+func object_radius(nid: int) -> float:
+	return float(_fp[nid].radius) if _fp.has(nid) else NAN
+
+
+## Native use approach: lift only the target object's stamp
+## search to its origin with flat costs, then put the stamp back. Keep the
+## motion's cell factors while it is lifted too. Ordinary movement still
+## treats the object as an obstacle, including on a failed approach search.
+func find_object_path(u: GameUnit, to: Vector2, nid: int, limit := 1e6,
+		moving_at := Vector2.INF) -> Dictionary:
+	var fp: Dictionary = _fp.get(nid, {})
+	var region := _fp_rect(fp) if not fp.is_empty() else Rect2i()
+	if not fp.is_empty():
+		_take(nid, fp)
+		_update_region(region)
+	var found := find_path(u.pos, to, [u], [], 0.0, u.move_class(), true,
+		NAN, limit, 0.0, u.controller < 0, moving_at)
+	var result := {"path": found, "blocks": last_block_count,
+		"motion": motion_record(u.pos, found, u.move_class(), u.has_meta("flying"))}
+	if not fp.is_empty():
+		_put(nid, fp)
+		_update_region(region)
+	return result
 
 
 ## A lever's new state (: the figure's morph axis set to the
@@ -2118,14 +2182,22 @@ func _paint_stamp_window(r: Rect2i) -> PackedInt32Array:
 			clips.append(r)
 	if cs.is_empty():
 		return out
-	out.resize(r.size.x * r.size.y)
-	out.fill(0)
+	if not _stamp_kernel_checked:
+		_stamp_kernel_checked = true
+		if not OS.get_cmdline_user_args().has("--ei-script-nav") and ClassDB.class_exists("TerrainSearchKernel"):
+			_stamp_kernel = ClassDB.instantiate("TerrainSearchKernel")
+	var native_patterns: Array[PackedInt32Array] = []
+	if _stamp_kernel == null:
+		out.resize(r.size.x * r.size.y)
+		out.fill(0)
 	var w := r.size.x
 	var h := r.size.y
 	for n in cs.size():
 		var c := cs[n]
 		var k := stamp_key(rs[n])
-		if k == 0: continue
+		if k == 0:
+			if _stamp_kernel != null: native_patterns.append(PackedInt32Array())
+			continue
 		# Only the values over the mover's threshold can close a cell (the
 		# test is v > thr and v >= the value of the cell stepped from), so
 		# the rest stay 0: per (k, thr) the offsets and values over it.
@@ -2142,6 +2214,9 @@ func _paint_stamp_window(r: Rect2i) -> PackedInt32Array:
 			if st.is_empty():
 				st.append(0)
 			_stamp_k[key] = st
+		if _stamp_kernel != null:
+			native_patterns.append(st)
+			continue
 		var cx := c.x - r.position.x
 		var cy := c.y - r.position.y
 		var inside := cx >= 8 and cy >= 8 and cx + 8 <= w and cy + 8 <= h
@@ -2155,6 +2230,7 @@ func _paint_stamp_window(r: Rect2i) -> PackedInt32Array:
 			var o := y * w + x
 			if st[m + 2] > out[o]:
 				out[o] = st[m + 2]
+	if _stamp_kernel != null: return _stamp_kernel.paint_stamps(r,cs,native_patterns,clips)
 	return out
 
 
@@ -2538,6 +2614,13 @@ func ray(a: Vector2, za: float, b: Vector2, zb: float) -> float:
 func cell_height(p: Vector2) -> float:
 	var c := cell(p)
 	return _h[c.y * size.x + c.x] if _in(c) else 0.0
+
+
+## Script GetZValue (LiA) reads the stored uint16 height
+## divided by the terrain altitude scale, rather than the unrounded sample.
+func quantized_cell_height(p: Vector2) -> float:
+	var c := cell(p)
+	return float(_hq[c.y * size.x + c.x]) / _alt if _in(c) else 0.0
 
 
 ## the largest height difference (m) between successive cells

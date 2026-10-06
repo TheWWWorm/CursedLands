@@ -112,18 +112,28 @@ func _register_object(node: Node3D) -> void:
 			"science": Array(o.get("lever_science", PackedInt32Array([1, 0, 0])))}
 	elif o.kind == "MAGIC_TRAP":
 		traps.add(o)
-	if "bridge" in String(o.get("parent_template", "")).to_lower():
-		terrain.add_surface(node)
+	# Walkable parts are authored BASE figures, classified by NavGrid.
+	# Parent names miss LiA's lifts (whose parent is a chest) and retain
+	# stale mesh heights after movement, morphing or removal.
 
 
 ## A map object's radius (the original object, computed when
 ## the figure is built or a lever changes state): the half
 ## diagonal of the box round all its parts (part offset + part box) about
 ## the box centre; the object's returns it (CLeverObject
-## ). Here: the node-local box of its meshes.
+## ). Navigation keeps the authored FIG boxes at the lever's
+## target state; a render mesh's box includes other morph states too.
 func object_radius(node: Node3D) -> float:
 	if node == null or not is_instance_valid(node):
 		return 0.0
+	var nid := int(node.get_meta("ei", {}).get("nid", 0))
+	var radius := nav.object_radius(nid)
+	if not is_nan(radius):
+		return radius
+	var geometry := EIFigureGeometry.of(node)
+	if not geometry.is_empty():
+		return float(geometry.radius)
+	# Procedural remake objects may have no authored figure.
 	var box := AABB()
 	var first := true
 	var inv := node.global_transform.affine_inverse()
@@ -292,7 +302,10 @@ func _notification(what: int) -> void:
 
 
 func ground_at(x: float, y: float) -> float:
-	return terrain.ground_at(x, y) if terrain else 0.0
+	# Native client-world (5618e0): terrain, then BASE-part planes.
+	if terrain == null:
+		return 0.0
+	return nav.ground_height(Vector2(x, y), terrain.ground_at(x, y))
 
 
 ## Line of sight between two units' eyes, the original
@@ -561,11 +574,12 @@ func _tick_body(dt: float) -> void:
 		started = Time.get_ticks_usec() if profile_simulation else 0
 		vm.tick(dt)
 		talking = not vm.briefings.active.is_empty()
-		if talking:
-			_tick_dialog_movers(dt)
-		else:
-			dialog_movers.clear()
+		if not talking:
+			for u in dialog_movers.keys():
+				if not dialog_movers[u].get("restore", false):
+					dialog_movers.erase(u)
 			dialog_actors.clear()
+		_tick_dialog_movers(dt)
 		profile_record("script",started)
 	time += dt
 	# Native5d53b0 ticks the selected motivation once per completed server

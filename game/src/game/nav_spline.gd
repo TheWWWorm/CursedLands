@@ -12,6 +12,13 @@ var heading := 0.0
 var initial_turn := 0.0
 var turn_rate := 0.0
 var duration := 0.0
+## A built motion is immutable until the next build. Cache each segment's
+## invariant arithmetic; sample still subtracts intervals in the original
+## order so boundary rounding, backward seeks and native ties stay exact.
+var _lengths := PackedFloat64Array()
+var _intervals := PackedFloat64Array()
+var _x_coefficients := PackedVector2Array()
+var _y_coefficients := PackedVector2Array()
 
 
 ## `from` / `to` are metres; `cells` are the original half-metre cell indices.
@@ -21,6 +28,10 @@ func build(from: Vector2, to: Vector2, cells: Array[Vector2i], values: PackedInt
 		base: float, turn: float, facing: float) -> void:
 	controls.clear()
 	nodes.clear()
+	_lengths.clear()
+	_intervals.clear()
+	_x_coefficients.clear()
+	_y_coefficients.clear()
 	start = from / 0.5
 	heading = facing
 	turn_rate = turn
@@ -89,8 +100,15 @@ func build(from: Vector2, to: Vector2, cells: Array[Vector2i], values: PackedInt
 		initial_turn = diff
 	duration = absf(initial_turn) / turn_rate if turn_rate > 0.0 else (INF if initial_turn != 0.0 else 0.0)
 	for i in nodes.size() - 1:
-		var length := (nodes[i].p as Vector2).distance_to(nodes[i + 1].p)
-		duration += length / float(nodes[i].v) if float(nodes[i].v) > 0.0 else INF
+		var a: Dictionary = nodes[i]
+		var b: Dictionary = nodes[i + 1]
+		var length := (a.p as Vector2).distance_to(b.p)
+		var interval := length / float(a.v) if float(a.v) > 0.0 else INF
+		_lengths.append(length)
+		_intervals.append(interval)
+		_x_coefficients.append(_coefficients(float(a.p.x), float(a.d.x), float(b.p.x), float(b.d.x), length))
+		_y_coefficients.append(_coefficients(float(a.p.y), float(a.d.y), float(b.p.y), float(b.d.y), length))
+		duration += interval
 
 
 func _control(p: Vector2) -> void:
@@ -124,18 +142,19 @@ func sample(tick: float) -> Dictionary:
 		return {"p": start * 0.5, "d": Vector2.from_angle(angle), "v": 0.0,
 			"cell": nodes[0].cell, "index": 0, "turning": true, "active": true}
 	var t := tick - turning_time
-	for i in nodes.size() - 1:
-		var a: Dictionary = nodes[i]
-		var b: Dictionary = nodes[i + 1]
-		var length := (a.p as Vector2).distance_to(b.p)
-		var v := float(a.v)
-		var interval := length / v if v > 0.0 else INF
+	for i in _intervals.size():
+		var interval := _intervals[i]
 		if t <= interval:
-			var s := minf(t * v, length)
-			var p := Vector2(_cubic(float(a.p.x), float(a.d.x), float(b.p.x), float(b.d.x), length, s),
-				_cubic(float(a.p.y), float(a.d.y), float(b.p.y), float(b.d.y), length, s))
-			var d := Vector2(_derivative(float(a.p.x), float(a.d.x), float(b.p.x), float(b.d.x), length, s),
-				_derivative(float(a.p.y), float(a.d.y), float(b.p.y), float(b.d.y), length, s))
+			var a: Dictionary = nodes[i]
+			var b: Dictionary = nodes[i + 1]
+			var v := float(a.v)
+			var s := minf(t * v, _lengths[i])
+			var cx := _x_coefficients[i]
+			var cy := _y_coefficients[i]
+			var p := Vector2(((s * cx.y + cx.x) * s + float(a.d.x)) * s + float(a.p.x),
+				((s * cy.y + cy.x) * s + float(a.d.y)) * s + float(a.p.y))
+			var d := Vector2((2.0 * cx.x + s * cx.y * 3.0) * s + float(a.d.x),
+				(2.0 * cy.x + s * cy.y * 3.0) * s + float(a.d.y))
 			return {"p": p * 0.5, "d": d, "v": v, "cell": b.cell,
 				"index": i + 1, "turning": false, "active": true}
 		t -= interval

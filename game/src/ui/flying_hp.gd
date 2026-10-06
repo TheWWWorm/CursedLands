@@ -26,6 +26,8 @@ extends Control
 ##   "hp") when that part has its own rectangle (flag 0x40), else of the unit.
 ## The original draw uses fixed device pixels, integer anchor/motion and
 ## FTOL alpha bytes, independently of the 800 x 600 interface layout.
+## The remake scales this original glyph layout for readable modern displays;
+## _layout retains the native pixel geometry for the reference checks.
 ## Hits come from the host as "hitnum" events (GameUnit.
 ## take_damage, Session.give_experience), so co-op clients show them too.
 ## - Flags: unit (packed byte, from server stats) is set
@@ -109,11 +111,24 @@ func _draw() -> void:
 		var at: Variant = _anchor(u, cam)
 		if at == null:
 			continue
-		for glyph: Dictionary in _layout(at, int(it.n), int(it.f), u.controller >= 0, now - int(it.t0), vs):
+		for glyph: Dictionary in readable_layout(at, int(it.n), int(it.f), u.controller >= 0, now - int(it.t0), vs):
 			draw_texture_rect_region(_tex, glyph.rect, glyph.source, glyph.colour)
 	# Native removes every one-draw warning after this enabled draw pass,
 	# including a warning whose carrier or whole block could not be shown.
 	_items = _items.filter(func(it): return (int(it.f) & 0x80000000) == 0)
+
+
+## Original number sprites and labels, enlarged together. A fixed 12 px digit
+## is illegible beside the remake's player names on high-resolution screens.
+## Keep at least 18 px digits, then follow the smaller viewport scale so
+## ultrawide windows do not inflate them just because they are wider.
+static func readable_layout(at: Vector2, number: int, flags: int, party: bool, age_ms: int, viewport: Vector2) -> Array[Dictionary]:
+	var scale := maxf(1.5, minf(viewport.x / 800.0, viewport.y / 600.0))
+	var glyphs := _layout(at / scale, number, flags, party, age_ms, viewport / scale)
+	for glyph: Dictionary in glyphs:
+		var r: Rect2 = glyph.rect
+		glyph.rect = Rect2(r.position * scale, r.size * scale)
+	return glyphs
 
 
 ## Complete glyph placement device submit. The renderer

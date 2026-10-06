@@ -610,20 +610,12 @@ const FAR_VIEW_FOG := 1.4
 const BORDER_FOG := 32.0
 
 
-## The loaded map's size for the border fog (the map loader
-##  sets all map flags, so it is ).
-## The main menu screen sets it to 6 m and restores it on leaving
-##
-## In play the original has no band: is 0 in the original's.data and
-## only ever written by the main menu (6 m) and
-## the screen (4 m, restored), each restoring the old
-## value; the registry BorderFogDistance (settings) is read and saved but
-## never copied into it. With B = 0 returns 0xff (no fog), so the
-## map ends at its edge cliff over the clear colour [sky]. (does
-## keep the smaller of this alpha and the depth fog.) The remake options
-## gfx_edge_fade (fade the last EDGE_FADE metres, the menu's own 6 m) is not
-## original and defaults off.
-const EDGE_FADE := 6.0
+## Native settings live: BorderFogDistance is the same
+## address as. The constructor and registry loader therefore
+## set the runtime band directly, to 32 m by default (45b210).
+## Main-menu rendering temporarily uses 6 m (6328d0).
+## This original terrain/figure fog is always active during play; remake
+## graphics presets and legacy gfx_edge_fade settings cannot disable it.
 static var _border_size := Vector2.ZERO
 static var _border_menu := -1.0
 
@@ -641,7 +633,7 @@ static func refresh_border() -> void:
 	var size_ei := _border_size
 	var dist := _border_menu
 	if dist < 0.0:
-		dist = EDGE_FADE if on("gfx_edge_fade") else 0.0
+		dist = BORDER_FOG
 	RenderingServer.global_shader_parameter_set(&"ei_border", Vector3(size_ei.x, size_ei.y, dist))
 
 

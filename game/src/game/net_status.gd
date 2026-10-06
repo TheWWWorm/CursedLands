@@ -55,6 +55,7 @@ static var _lmp: EIResArchive
 static var _lmp_tried := false
 static var _world_hash := ""
 static var _hash_task := -1
+static var _hash_root := ""
 var _refused := false
 var _kicked := {}       # host: pid -> banned, players being removed (kick)
 var _was_kicked := false   # client: the host removed this player
@@ -355,9 +356,25 @@ func _exit_tree() -> void:
 	# A hash task still running (or done but never waited for) at quit made
 	# the process abort at exit, after the RenderingServer was gone
 	# (WorkerThreadPool still held the task's callable): claim it here.
+	_finish_world_hash()
+
+
+static func _finish_world_hash() -> void:
 	if _hash_task >= 0:
 		WorkerThreadPool.wait_for_task_completion(_hash_task)
 		_hash_task = -1
+
+
+## Switching the installed game files can keep this process alive (Android).
+## Claim the old reader before its files are replaced or deleted, then drop
+## results and text archives belonging to that copy. Session exit alone keeps
+## the hash cached so another session using the same files can reuse it.
+static func reset_game_files() -> void:
+	_finish_world_hash()
+	_world_hash = ""
+	_hash_root = ""
+	_lmp = null
+	_lmp_tried = false
 
 
 @rpc("any_peer", "call_remote", "reliable")
@@ -384,13 +401,16 @@ func _rpc_db_rows(rows: Dictionary) -> void:
 ## database stay each player's own (the host's numbers rule the game).
 static func world_hash() -> String:
 	_start_world_hash()
-	if _hash_task >= 0:
-		WorkerThreadPool.wait_for_task_completion(_hash_task)
-		_hash_task = -1
+	_finish_world_hash()
 	return _world_hash
 
 
 static func _start_world_hash() -> void:
+	# Native mobile switches campaigns without restarting the process.
+	# Never reuse the previous campaign's map hash (or network text archive).
+	if _hash_root != GameData.root:
+		reset_game_files()
+		_hash_root = GameData.root
 	# The task first: while it runs its worker writes _world_hash (read it
 	# only after wait_for_task_completion, world_hash()).
 	if _hash_task >= 0 or _world_hash != "" or not GameData.is_open():

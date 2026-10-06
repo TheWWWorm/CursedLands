@@ -8,13 +8,65 @@ signal failed(message: String)
 var cancelled := false
 var busy := false
 var _installer: EIInnoSetup
+var _discs: EIAstralDiscImport
+var _disc_stage := ""
+var fraction := 0.0
 
 func _exit_tree() -> void:
 	cancelled = true
+	if _discs:
+		_discs.cancel()
+		_discs.wait_to_finish()
+		_discs = null
+	if _disc_stage:
+		DataSwitch.discard(_disc_stage)
+		_disc_stage = ""
 	if _installer:
 		_installer.cancel()
 		_installer.wait_to_finish()
 		_installer = null
+
+
+func import_isos(paths: PackedStringArray) -> void:
+	if busy:
+		return
+	busy = true
+	cancelled = false
+	fraction = 0.0
+	_discs = EIAstralDiscImport.open(paths)
+	if _discs.error:
+		var message := _discs.error
+		_discs = null
+		busy = false
+		failed.emit(message)
+		return
+	var stage := "user://import-%d" % Time.get_ticks_usec()
+	_disc_stage = stage
+	if DirAccess.make_dir_recursive_absolute(stage) != OK or _discs.extract(ProjectSettings.globalize_path(stage)) != OK:
+		_discs = null
+		_disc_stage = ""
+		_finish(stage, "Could not create the private import folder.")
+		return
+	while not _discs.finished():
+		if cancelled:
+			_discs.cancel()
+		var state := _discs.status()
+		fraction = state.fraction
+		progress.emit(RemakeText.t("Importing discs: %d%% — %s") % [int(fraction * 100.0), state.file])
+		await get_tree().process_frame
+	var error := String(_discs.status().error)
+	if error and not cancelled:
+		GameData.trace("disc import: %s: %s" % [_discs.status().file, error])
+	_discs = null
+	if cancelled:
+		error = "Import cancelled."
+	if error.is_empty():
+		error = DataSwitch.verify(stage)
+	if error.is_empty() and CampaignProfile.detect(EIResArchive.open_path(stage.path_join("res/texts.res"))) != CampaignProfile.ASTRAL:
+		error = "These images are not the supported Lost in Astral discs."
+	fraction = 1.0 if error.is_empty() else fraction
+	_disc_stage = ""
+	_finish(stage, error)
 
 func import_file(path: String) -> void:
 	if busy:
@@ -90,7 +142,7 @@ func _pack(file: FileAccess, stage: String) -> String:
 		var length := int(entry.get("size", -1))
 		if name.is_empty() or name.is_absolute_path() or name.contains("\\") or name.contains(":") or ".." in name.split("/") or "" in name.split("/") or "." in name.split("/"):
 			return "Invalid data pack path."
-		if offset < 0 or length < 0 or length > 536870912 or payload + offset + length > file.get_length():
+		if offset < 0 or length < 0 or length > 2147483648 or payload + offset + length > file.get_length():
 			return "Invalid data pack range."
 	for key: String in index:
 		if cancelled:

@@ -7,9 +7,11 @@ extends RefCounted
 ## without touching the GameWorld or EITerrain nodes. The packed arrays are
 ## shared copy-on-write: a change the main thread makes to the terrain gets
 ## its own copy, this one stays as it was for the tick.
+## Authored floor planes use NavGrid's immutable snapshot for that revision.
 
 var heights := PackedFloat32Array()
 var surface := PackedFloat32Array()
+var floors := {}
 var grid_w := 0
 var cells_w := 0
 var cells_h := 0
@@ -23,6 +25,7 @@ static func of(w: GameWorld) -> FxGround:
 		return g
 	g.heights = t.heights
 	g.surface = t.surface
+	g.floors = w.nav.floor_snapshot()
 	g.grid_w = t.grid_w
 	g.cells_w = t.sectors_x * EITerrain.SECTOR
 	g.cells_h = t.sectors_y * EITerrain.SECTOR
@@ -30,8 +33,9 @@ static func of(w: GameWorld) -> FxGround:
 	return g
 
 
-## GameWorld.ground_at (EITerrain.ground_at): 0 without a terrain.
+## GameWorld.ground_at, including authored object planes: 0 without terrain.
 func at(x: float, y: float) -> float:
 	if not valid:
 		return 0.0
-	return EITerrain.ground_in(heights, surface, grid_w, cells_w, cells_h, x, y)
+	var ground := EITerrain.ground_in(heights, surface, grid_w, cells_w, cells_h, x, y)
+	return NavGrid.ground_in(floors, Vector2(x, y), ground)

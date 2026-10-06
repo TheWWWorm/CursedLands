@@ -33,10 +33,12 @@ static func level(h: Dictionary, skill: String) -> int:
 
 
 ## HUD skill byte: party characters have their current hero record;
-## another character has the NPC's initial skills. Other creatures have 0.
+## script-trained NPCs keep their mutable record too. Otherwise use the
+## NPC's initial skills. Other creatures have 0.
 static func unit_level(u: GameUnit, skill: String) -> int:
-	if u.has_meta("hero"):
-		return level(u.get_meta("hero"), skill)
+	var h := CampaignState.script_character(u)
+	if not h.is_empty():
+		return level(h, skill)
 	if u.uid >= 1000000000 and u.uid < 2000000000:
 		var npc := GameData.db.find("npcs", String(u.proto.get("name", "")))
 		return int(from_npc(npc).get(skill, 0))

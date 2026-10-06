@@ -8,6 +8,9 @@ const REQUIRED := ["res/textures.res", "res/figures.res", "res/redress.res", "re
 	"res/texts.res", "maps/zone1.mpr", "maps/zone1.mob"]
 
 var root := ""
+var campaign_id := CampaignProfile.ORIGINAL
+## Both editions may be installed; [game] root is only the active edition.
+var campaign_roots: Dictionary = {}
 var textures: EIResArchive
 var figures: EIResArchive
 var redress: EIResArchive
@@ -80,16 +83,16 @@ const OPTIONS := [
 	# Graphics page (row 6; row 7 "Detect best settings", 8 "Original look").
 	# Not gfx_*: the Original look preset leaves it.
 	["auto_graphics", 1, 2, 0, 6, 1],
-	# World and textures (group 13). All gfx_* default on except the map edge
-	# fade: the original draws nothing beyond the map, see Gfx.BORDER_FOG.
+	# World and textures (group 13). Native map-border fog is always active
+	# and is not a remake option; see Gfx.BORDER_FOG.
 	["gfx_hd_textures", 1, 2, 13, 0, 1], ["gfx_terrain", 1, 2, 13, 1, 1],
 	["gfx_materials", 1, 2, 13, 2, 1],
 	# Sharper unit texture filtering (EIUnitModel.SHARP_FETCH); characters
 	# wear their HUD face model (DetailedHead).
 	["gfx_sharp_units", 1, 2, 13, 3, 1], ["gfx_detailed_heads", 1, 2, 13, 4, 1],
-	["gfx_sky", 1, 2, 13, 5, 1], ["gfx_far_view", 1, 2, 13, 6, 1], ["gfx_edge_fade", 1, 2, 13, 7, 0],
-	["gfx_wind", 1, 2, 13, 8, 1], ["q_aniso", 1, 5, 13, 9, 4],
-	["gfx_grass", 1, 2, 13, 10, 1], ["gfx_soft_ground", 1, 2, 13, 11, 1],
+	["gfx_sky", 1, 2, 13, 5, 1], ["gfx_far_view", 1, 2, 13, 6, 1],
+	["gfx_wind", 1, 2, 13, 7, 1], ["q_aniso", 1, 5, 13, 8, 4],
+	["gfx_grass", 1, 2, 13, 9, 1], ["gfx_soft_ground", 1, 2, 13, 10, 1],
 	# Lighting and shadows (group 14). Each effect is independent and defaults
 	# on for new and existing settings files.
 	["gfx_firelight", 1, 2, 14, 0, 1], ["gfx_torch_glow", 1, 2, 14, 1, 1],
@@ -154,6 +157,8 @@ const OPTIONS := [
 	# the zone (Session.sp_game_over). Default on (user request).
 	["sp_death_notice", 1, 2, 18, 4, 1],
 	["merc_travel", 1, 2, 18, 5, 0],
+	# Explicit exit-ground clicks by default (user request); optional automatic arrival.
+	["auto_exit", 1, 2, 18, 6, 0],
 	# Network and co-op (group 19): the co-op host's rules — full experience
 	# for every party member (XpRules), monster scaling to the player count
 	# (MobScaling: Off / Light / Normal / Strong), shared loot
@@ -217,6 +222,7 @@ const REMAKE_OPTIONS := {
 	"item_icon_fit": ["Fit items inside icons", "Keeps long inventory and shop items inside their icon cells while they turn. Off: the original fixed model scale."],
 	"ui_active_buttons": ["Bright usable camp buttons", "Available camp modes and Exit are bright. Skills apply immediately, so their inactive Accept and Cancel controls are hidden. Deal controls show whether a transaction can be made or undone. Off: the original button layout and tint."],
 	"coop_clock": ["Shared pause and speed", "Co-op host: pause the game or switch to 2x speed for everyone. Clients follow the host's speed. Off: co-op always runs at normal speed."],
+	"auto_exit": ["Automatic zone exits", "Automatically opens travel when your party walks into an open exit. Off: click the ground inside the exit where the exit cursor appears. The host's setting applies in co-op; scripted story transfers still work."],
 	"merc_travel": ["Mercenaries travel between regions", "Hired companions stay with their owner when the party travels to another allod or region. The host's setting applies in co-op. Off: the original regional companion rule."],
 	"net_websocket": ["Browser-compatible host", "Host with WebSocket over TCP. Native and browser clients join using ws://host:27015, or wss:// through an HTTPS reverse proxy. Off uses native ENet over UDP. Set before hosting."],
 	# The Remake tab and its sections (OptionsPanel.SECTIONS: the link rows).
@@ -272,7 +278,6 @@ const REMAKE_OPTIONS := {
 	"gfx_ssao": ["Ambient occlusion", "Soft contact shadows (SSAO)."],
 	"gfx_bloom": ["Bloom", "Glow around bright lights."],
 	"gfx_severed_limbs": ["Severed limbs fly off", "A severed head, arm or leg is cut from the figure and thrown to the ground, where it lies for a while. Off: as the original, the part stays on the body, bloodied."],
-	"gfx_edge_fade": ["Map edge fade", "The last few metres of land at the map edge fade into the sky colour instead of ending in a hard edge."],
 	"display_mode": ["Display mode", "Windowed, fullscreen, or a borderless window covering the screen."],
 	"resolution": ["Resolution", "Window size when windowed; in fullscreen the 3D view is rendered at this size and scaled to the screen (the interface stays sharp)."],
 	"fps_limit": ["Frame rate limit", "Highest frames per second; Display refresh = the monitor's refresh rate."],
@@ -311,13 +316,13 @@ const REMAKE_OPTIONS := {
 ## screen). "marks" = EnableBloodprints and "footprints" = EnableFootprints
 ## switch the ground marks (GroundMarks).
 const OPTIONS_APPLIED := ["volume_sfx", "volume_stream", "volume_voice", "power_kbd",
-	"item_icon_fit", "ui_active_buttons", "coop_clock", "merc_travel",
+	"item_icon_fit", "ui_active_buttons", "coop_clock", "merc_travel", "auto_exit",
 	"power_mouse", "scroll_border", "rubber_select", "marks", "footprints", "select_type", "show_path", "brightness", "contrast", "gamma",
 	"show_flying_hp", "show_tutorial", "autosave", "tooltip_time", "switch_filters",
 	"camera_reverse_x", "camera_reverse_y", "reverse_stereo", "difficulty",
 	"gfx_sky", "gfx_water", "gfx_wind", "gfx_volumetric", "gfx_terrain", "gfx_heat_haze",
 	"gfx_grass", "gfx_soft_ground",
-	"gfx_ssao", "gfx_bloom", "gfx_far_view", "gfx_edge_fade", "gfx_severed_limbs",
+	"gfx_ssao", "gfx_bloom", "gfx_far_view", "gfx_severed_limbs",
 	"gfx_hd_textures", "gfx_soft_particles", "gfx_lit_particles", "gfx_contact_shadows", "gfx_torch_glow", "gfx_water_reflections",
 	"gfx_firelight", "gfx_materials", "gfx_foliage_light", "gfx_weather_surfaces", "gfx_lava_light", "gfx_detailed_heads",
 	"gfx_sharp_units", "q_aa", "q_shadows", "q_shadow_fit", "q_aniso", "confine_mouse",
@@ -332,14 +337,12 @@ const FSR2_SCALE := 0.67
 ## Values reset once when an older settings file is loaded, by the revision
 ## that introduced them: 1 object shadows on (remake default; the 2000
 ## defaults were off for speed), 2 defaults / scales corrected from the original
-## 3 map edge fade and outer landscape off (the original's map ends over the
-## clear colour), 4 shadow quality High and SMAA (Ultra shadows and MSAA cost
+## 3 retired map-edge option, 4 shadow quality High and SMAA (Ultra shadows and MSAA cost
 ## 1–3 ms of GPU time each at 1440p).
 const GFX_DEFAULTS := {
 	1: {"shadow_buildings": 1, "shadow_flora": 1},
 	2: {"power_kbd": 25, "rubber_select": 2, "brightness": 50, "contrast": 50, "gamma": 50,
 		"tooltip_time": 2},
-	3: {"gfx_edge_fade": 0},
 	4: {"q_shadows": 2, "q_aa": 1},
 }
 var _gfx_rev := GFX_REV
@@ -376,7 +379,7 @@ static func ground_effect_defaults(cfg: ConfigFile, platform: Dictionary = {}) -
 	var original := true
 	if cfg.has_section("options"):
 		for key: String in cfg.get_section_keys("options"):
-			if key.begins_with("gfx_") and not values.has(key):
+			if key.begins_with("gfx_") and key != "gfx_edge_fade" and not values.has(key):
 				seen = true
 				original = original and int(cfg.get_value("options", key)) == 0
 	var tier := int(cfg.get_value(GfxDetect.SECTION, "tier", -1))
@@ -398,6 +401,10 @@ func _ready() -> void:
 	var cfg := ConfigFile.new()
 	if cfg.load(CONFIG_PATH) == OK:
 		root = cfg.get_value("game", "root", "")
+		for id: String in [CampaignProfile.ORIGINAL, CampaignProfile.ASTRAL]:
+			var installed: Variant = cfg.get_value("games", id, "")
+			if installed is String and not installed.is_empty():
+				campaign_roots[id] = installed
 		player_name = cfg.get_value("player", "name", "Player")
 		hero_class = cfg.get_value("player", "hero", hero_class)
 		difficulty = cfg.get_value("game", "difficulty", 0)
@@ -409,7 +416,13 @@ func _ready() -> void:
 			options[key] = Portability.defaults()[key]
 	options.merge(ground_effect_defaults(cfg, Portability.defaults()), true)
 	if OS.has_feature("web") and not GameFiles.manifest.is_empty():
-		root = GameFiles.WEB_ROOT
+		root = GameFiles.active_root()
+	if OS.has_feature("web"):
+		for id: String in [CampaignProfile.ORIGINAL, CampaignProfile.ASTRAL]:
+			if GameFiles.library.has(id):
+				campaign_roots[id] = GameFiles.WEB_ROOT + "-" + id
+			else:
+				campaign_roots.erase(id)
 	# Browser settings saved before the web build kept edge scrolling hold the
 	# phone's scroll_border 0: back to the desktop default once.
 	if OS.has_feature("web") and int(cfg.get_value("remake", "web_input", 0)) < 1 \
@@ -465,6 +478,7 @@ func open(path: String) -> String:
 	if textures == null or figures == null or redress == null or dbres == null:
 		return RemakeText.t("Could not read the game archives in res/.")
 	_open_text_archives()   # first: sets the code page the database strings use
+	campaign_id = CampaignProfile.detect(texts)
 	db = EIDatabase.load_from(dbres)
 	# The quest maps' (maps/z*q*.mq / .mob) quest items — armorykey00, pyrkey,
 	# goldnuggets ... with script ids 80-86 (QObjGetItem) — exist only in
@@ -485,6 +499,7 @@ func open(path: String) -> String:
 				ground_types[int(k)] = reg[k]
 	_text_cache.clear()
 	_texture_cache.clear()
+	campaign_roots[campaign_id] = root
 	save_settings()
 	return ""
 
@@ -567,6 +582,8 @@ func get_texture(name: String) -> Texture2D:
 ## switches GameData.db to it, off back to the campaign's. Returns false when
 ## the installation has no databaseLMP.res.
 func use_lmp_database(on: bool) -> bool:
+	if on and campaign_id == CampaignProfile.ASTRAL:
+		return false
 	if on == lmp_db:
 		return true
 	if on:
@@ -598,6 +615,8 @@ func text(key: String) -> String:
 func save_settings() -> void:
 	var cfg := ConfigFile.new()
 	cfg.set_value("game", "root", root)
+	for id: String in campaign_roots:
+		cfg.set_value("games", id, campaign_roots[id])
 	cfg.set_value("player", "name", player_name)
 	cfg.set_value("player", "hero", hero_class)
 	cfg.set_value("game", "difficulty", difficulty)

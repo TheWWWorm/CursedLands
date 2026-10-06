@@ -37,12 +37,20 @@ const NET_RECORDS := {
 	4: {"items": true, "spells": true},
 	5: {"items": true, "spells": true},
 }
+## LiA (0) keeps campaign shop types but gives trader 5
+## the ordinary coefficients too. Stark actually uses it (bz31j).
+const ASTRAL_RECORDS := {
+	1: RECORDS[1], 2: RECORDS[2], 3: RECORDS[3], 4: RECORDS[4],
+	5: NET_RECORDS[5],
+}
 ## The original multiplayer game (Session.lmp) uses NET_RECORDS.
 static var network := false
 
 
 static func records() -> Dictionary:
-	return NET_RECORDS if network else RECORDS
+	if network:
+		return NET_RECORDS
+	return ASTRAL_RECORDS if GameData.campaign_id == CampaignProfile.ASTRAL else RECORDS
 
 
 static func exists(id: int) -> bool:

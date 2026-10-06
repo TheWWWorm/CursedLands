@@ -2,14 +2,35 @@
 
 ## 1.0.2
 
+- Lost in Astral:
+  - Added expansion data import, including the supported two-disc ISO edition, without running its installer. Keep both games installed and switch between them from the original-style menu controls.
+  - Each campaign keeps separate saves and imported files. Browser storage retains both game libraries; browser ISO import is unavailable.
+  - Added a visible expansion co-op entry, campaign-specific hero choices and synchronization of scripted party replacements and waiting-party bags. Waiting-party mercenary records no longer overwrite an active companion’s identity and equipment on clients.
+  - Support the expansion's chapter rosters, escorts and moving floors. Network explanations wrap within their panels, and damage, experience and hit labels scale together for readable displays.
+- Appearance:
+  - Strength and Weakness temporarily broaden or slim the body in the world and character previews. The saved and trained base physique remains separate and returns when the effect expires.
+  - Bare dead trees stay still in the wind; leafy versions of the same model, bushes and grass retain their movement.
+  - Restored the original 32-metre map-border fog by default. It stays active with Original look and no longer appears as a Remake option; the menu retains its original softer 6-metre band.
+  - Quest targets now use the softer purple glow shown in the original-game reference, preventing washed-out ground and neon grass around quest lights.
+  - Spear goblins use their authored pike in the world and character preview; ranged goblins keep their sling.
+- Movement:
+  - Zone transitions require a deliberate click inside the open exit by default. An optional setting keeps automatic transitions, and scripted story transfers still work.
+  - Double-clicking the ground stands up from crouching or lying down and runs, with the normal transition and space check. Single clicks keep the current stance.
+  - Restored the original ground-picking solver so oblique clicks on narrow elevated bridges select the deck instead of the water beneath it.
 - Visibility:
+  - Wandering wisps are visible again in the world and character preview, using their translucent texture instead of the opaque-unit alpha cutoff.
   - Fixed distant enemies appearing in the world and minimap merely because campaign scripts give them names. Applies to fresh games and loaded saves; co-op still shares sight through living party members.
+- Performance:
+  - Windows and Linux x86-64 use a compiled navigation kernel with the same route, movement and simulation rules. Other platforms retain the improved script path.
+  - Reduced repeated navigation, perception, movement and sound work. Controlled Linux co-op measurements reduced host world work by about 33%; this does not establish Windows or Retroid frame rates.
 - Co-op:
+  - Hiring and dismissing village companions preserves their live character state, buffs and stamina. Scripted village characters no longer receive prototype AI spell actions.
   - Client movement-mode controls now play the live posture transition instead of using the instant pose restoration intended for loading saves.
 - Interface:
   - Restored full original ability descriptions and rank details in the multiplayer character screen, including hover help for learned abilities. Corrected learned-row placement so the rows no longer overlap skill controls.
   - Training applies each purchase immediately. The default interface now explains this and hides the unused Accept/Cancel controls on that screen; transaction controls retain their actual enabled states.
   - Inventory and shop scrolling now use the original shaded arrow artwork and scrolling states, while keeping the corrected click targets.
+  - Belt items, including the Goblin doll, return to their original size after deselection. Refused immediate use clears targeting, and unenchanted dolls do not enter target mode.
 - Loading:
   - Keep newly created or resized portrait and character previews transparent until their first rendered image is ready. Hidden previews suspend rendering and retain their previous update policy.
 

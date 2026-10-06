@@ -602,7 +602,7 @@ func _player_target(u: GameUnit, around := Vector2.INF, radius := -1.0) -> GameU
 		if a == u or a.dead or a.controller != u.controller or a.order.get("type", "") != "attack" \
 				or u.controller < 0 and a.faction != u.faction:
 			continue
-		var e: GameUnit = a.order.get("target")
+		var e := a._order_target()
 		if e and is_instance_valid(e) and not e.dead and e.controller != u.controller and world.is_enemy(u, e) \
 				and not e in cands:
 			cands.append(e)
@@ -647,7 +647,11 @@ func player_perceive_profile_body(u: GameUnit, force := false) -> Dictionary:
 	var keep: Dictionary = u.get_meta("noticed", {})
 	var corpses: Dictionary = u.get_meta("seen_corpses", {})
 	var sight := float(u.stats.sight)
-	var k := notice_terms(u, sight)
+	# Most NPC scans contain only living friends. Observer terms are pure;
+	# sample them only when the drop pass or an eligible new target needs
+	# them. A candidate-list refresh still reads its current sense radius.
+	var k := PackedFloat64Array()
+	if not keep.is_empty(): k = notice_terms(u, sight)
 	var f := 1.0 if u.controller >= 0 else 1.05
 	var hostile_sides := {}
 	for id in keep.keys():
@@ -671,16 +675,21 @@ func player_perceive_profile_body(u: GameUnit, force := false) -> Dictionary:
 		if not is_instance_valid(o) or world.units.get(o.uid) != o:
 			corpses.erase(id)
 	var npc_scan := not force and u.controller < 0
-	for o in _notice_candidates(u, maxf(k[0] * k[1], k[4])):
+	for o in _notice_candidates(u, maxf(k[0] * k[1], k[4]) if not k.is_empty() else NAN):
 		if not is_instance_valid(o) or not o is GameUnit or o.hidden:
 			continue
 		# party observers scan everyone. An NPC scans living
 		# hostiles / party units and dead units outside those two groups.
-		if npc_scan and (_scan_enemy(u, o, hostile_sides) or o.controller >= 0) == o.dead:
-			continue
+		if npc_scan:
+			var hostile: Variant = hostile_sides.get(o.faction)
+			if hostile == null:
+				hostile = world.is_enemy(u, o)
+				hostile_sides[o.faction] = hostile
+			if (bool(hostile) or o.controller >= 0) == o.dead: continue
 		var id: int = o.get_instance_id()
-		if (corpses.has(id) if o.dead else keep.has(id)) or not can_notice_with(u, o, k):
-			continue
+		if corpses.has(id) if o.dead else keep.has(id): continue
+		if k.is_empty(): k = notice_terms(u, sight)
+		if not can_notice_with(u, o, k): continue
 		if o.dead:
 			corpses[id] = o
 			if world.relation(u.faction, o.faction) == 0 and mots(u).corpse:
@@ -827,6 +836,10 @@ func options(u: GameUnit) -> Dictionary:
 ## the prototype only (AI units' spells are its "spells" slots).
 static var _spell_opts := {}
 func _spell_list(u: GameUnit) -> Array:
+	#  calls 4613a0 on the unit ID: scripted characters (including
+	# the village mercenaries) receive the weapon option alone, no AI spells.
+	if u.uid >= 1000000000 and u.uid < 2000000000:
+		return [[], []]
 	var key: String = u.proto.get("name", "")
 	if not _spell_opts.has(key):
 		_spell_opts[key] = _spell_options(u, int(u.proto.get("weapon_type_id", 0)) == 16)
@@ -1326,6 +1339,11 @@ func rechoose_profile_body(u: GameUnit) -> bool:
 		u.set_meta("fear_on", true)
 		_fear_tick(u, fear)
 		return true
+	# Only Aggression selects from all noticed hostiles. A script can also
+	# put a unit without that motivation into attack state 3; Revenge keeps
+	# its attacker instead (native base 5d2390 / LiA 519920, branch).
+	if not String(mots(u).fight) in ["standard", "aggression"]:
+		return false
 	var foes := enemies(u)
 	if foes.is_empty():
 		return false
@@ -1340,6 +1358,9 @@ func rechoose_profile_body(u: GameUnit) -> bool:
 	else:
 		u.order = {"type": "cast", "spell": ch.opt.slot, "target": ch.t, "range": float(ch.opt.range),
 			"ai": true, "then": u.order}
+	if u.has_meta("ai_state"):
+		u.set_meta("ai_state", 3 if ch.opt.slot == "" else 4)
+		u.set_meta("ai_target", ch.t)
 	u.path = PackedVector2Array()
 	return true
 

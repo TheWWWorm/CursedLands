@@ -156,7 +156,7 @@ func client_hello() -> void:
 			if applied[id] is Dictionary:
 				seq[String(id)] = int(_num(applied[id].get("seq", 0), 0.0))
 	var bag := main_bag(st)
-	_rpc_bring.rpc_id(1, {"hero": main_hero(st), "vars": view, "visited": st.visited.keys(),
+	_rpc_bring.rpc_id(1, {"campaign_id": st.campaign_id, "hero": main_hero(st), "vars": view, "visited": st.visited.keys(),
 		"side_quests": st.side_quests, "quest_items": st.quest_items, "zone": st.current_zone, "seq": seq,
 		"money": int(bag.money), "items": bag.items})
 
@@ -198,7 +198,7 @@ func _rpc_package(pkg: Dictionary) -> void:
 		st = CampaignState.load_from(SaveInfo.path(_origin_slot))
 	elif _origin_new:
 		st = fresh_state()
-	if st == null:
+	if st == null or not CampaignProfile.matches(pkg.get("campaign_id", CampaignProfile.ORIGINAL), st.campaign_id):
 		return
 	merge(st, pkg)
 	if _merged_slot.is_empty():
@@ -232,6 +232,8 @@ func brings() -> bool:
 
 ## Applies a progress package to the client's own campaign state.
 static func merge(st: CampaignState, pkg: Dictionary) -> void:
+	if not CampaignProfile.matches(pkg.get("campaign_id", CampaignProfile.ORIGINAL), st.campaign_id):
+		return
 	var move: Dictionary = pkg.get("move", {}) if pkg.get("move") is Dictionary else {}
 	# Story vars credited to this player.
 	var cv: Dictionary = pkg.get("vars", {}) if pkg.get("vars") is Dictionary else {}
@@ -322,7 +324,7 @@ static func campaign_zone_ok(id: String) -> bool:
 ## Any peer -> host: the hero and the story state the joiner brings.
 @rpc("any_peer", "call_remote", "reliable")
 func _rpc_bring(data: Dictionary) -> void:
-	if not session.is_host:
+	if not session.is_host or not CampaignProfile.matches(data.get("campaign_id", CampaignProfile.ORIGINAL), session.state.campaign_id):
 		return
 	var pid := multiplayer.get_remote_sender_id()
 	var h := sanitize_hero(data.get("hero", {}))
@@ -871,7 +873,7 @@ func package(e: Dictionary) -> Dictionary:
 	for p in session.players.values():
 		if int(p.index) == 0:
 			host = String(p.name)
-	return {"host": host, "orig_name": e.orig_name, "hero": hero, "vars": (e.credits.vars as Dictionary).duplicate(),
+	return {"campaign_id": st.campaign_id, "host": host, "orig_name": e.orig_name, "hero": hero, "vars": (e.credits.vars as Dictionary).duplicate(),
 		"visited": (e.credits.visited as Dictionary).keys(), "side_quests": (e.credits.side_quests as Dictionary).duplicate(),
 		"quest_items": (e.credits.quest_items as Dictionary).duplicate(), "zones": zones,
 		"purse": {"money": int(purse.get("money", 0)), "items": (purse.get("items", []) as Array).duplicate()},

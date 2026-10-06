@@ -118,8 +118,9 @@ func show_unit(u: GameUnit) -> void:
 		_left.erase(u.get_instance_id())
 		_live[u.get_instance_id()] = self
 	_unit = u
+	var shown := u.figure_info()
 	var key := "%s|%s|%s|%s|%s" % [u.get_instance_id(), u.info.get("prototype", ""),
-		u.info.get("complexion", Vector3.ZERO), u.info.get("armors", []), u.info.get("weapons", [])]
+		shown.get("complexion", Vector3.ZERO), u.info.get("armors", []), u.info.get("weapons", [])]
 	if key == _key:
 		return
 	_key = key
@@ -142,7 +143,7 @@ func show_unit(u: GameUnit) -> void:
 	_wait_for_draw()
 	if _infa_face(vp, u):
 		return
-	var info: Dictionary = u.info.duplicate()
+	var info: Dictionary = shown
 	info.weld = false   # the head needs its own mesh here
 	var m := EIUnitModel.create(info, true)
 	if m == null:

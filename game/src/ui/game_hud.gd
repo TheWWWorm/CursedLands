@@ -602,7 +602,7 @@ func on_event(e: Dictionary) -> void:
 			_movie.pause_game = not game.session.online
 			_movie.play(String(e.get("name", "")))
 		"party": _rebuild_party()
-		"game_over": _show_game_over()
+		"game_over": _show_game_over(e)
 		"death_notice":   # remake option "revive": the hint that a companion can help
 			show_death_notice(RemakeText.t(ReviveOverlay.NOTICE_HINT) if e.get("revive", false) else "")
 		"ending": _show_ending()
@@ -669,8 +669,8 @@ func _show_ending() -> void:
 ## without the slide-in (= 0, = 0);, and (that
 ## Load screen closed without loading), go to the main menu (manager = 1
 ## ). Loading a save needs no result.
-func _show_game_over() -> void:
-	if game.session.online and game.session.lmp.is_empty():
+func _show_game_over(event: Dictionary = {}) -> void:
+	if game.session.online and game.session.lmp.is_empty() and not event.get("scripted", false):
 		_show_coop_game_over()
 		return
 	if MessageBox.is_up(_game_over_box) or _game_over_load:
@@ -680,7 +680,9 @@ func _show_game_over() -> void:
 	if not _esc_open:
 		_open_menu()
 	_menu.visible = false
-	_game_over_box = MessageBox.ask(self, "game_over", "game_over_msg")
+	# LiA field/village screens accept the
+	# script's title/body keys, defaulting to the usual hero-death message.
+	_game_over_box = MessageBox.ask(self, String(event.get("title", "game_over")), String(event.get("text", "game_over_msg")))
 	_game_over_box.process_mode = Node.PROCESS_MODE_ALWAYS
 	_game_over_box.answered.connect(func(yes: bool):
 		_game_over_box = null

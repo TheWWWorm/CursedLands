@@ -51,7 +51,7 @@ func attack_value(u: GameUnit) -> int:
 ## skills). when the prototype path applies (unnamed / unarmed).
 ## Cached per weapon in u.stats.
 static func named_weapon_ratings(u: GameUnit) -> Array:
-	if u.has_meta("hero") or u.uid < 1000000000 or u.uid >= 2000000000:
+	if u.has_meta("hero") or u.has_meta("npc_character") or u.uid < 1000000000 or u.uid >= 2000000000:
 		return []
 	var wid := ""
 	for id in Array(u.info.get("weapons", [])):

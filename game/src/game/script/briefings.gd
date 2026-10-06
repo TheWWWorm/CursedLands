@@ -10,7 +10,11 @@ extends RefCounted
 var vm: ScriptVM
 var active := ""          # full variable name of the running conversation
 var active_player := -1   # initiator; another peer may close the shared dialog
+var _named_id := ""       # a script requested this briefing without an owner
 var _check := 0.0
+## Native screen saves the third actor and, in #cage scenes, the second.
+## Closing the conversation walks them back before reporting completion.
+var _return_actors: Array = []
 
 
 func _init(v: ScriptVM) -> void:
@@ -173,8 +177,13 @@ func play_named(id: String, var_name: String, player := 0, partner: GameUnit = n
 	if text.is_empty():
 		# Quest maps ship their own briefings inside the .mq archive.
 		text = vm.session.quest_text("briefing " + id)
-	if var_name.is_empty():
-		var_name = "b.%s.%s" % [String(vm.world.zone.get("id", "")).to_lower(), id]
+	_named_id = id if var_name.is_empty() else ""
+	if not _named_id.is_empty():
+		var_name = _named_key(id, player)
+		if var_name.is_empty():
+			# An event ID for the dialog UI only; completion never creates a
+			# campaign variable if the native lookup still finds no owner.
+			var_name = "b.%s.%s" % [String(vm.world.zone.get("id", "")).to_lower(), id]
 	if text.is_empty():
 		push_warning("missing briefing " + id)
 		complete(player, var_name, true)
@@ -191,6 +200,18 @@ func play_named(id: String, var_name: String, player := 0, partner: GameUnit = n
 	vm.session.broadcast({"t": "dialog", "id": var_name, "brief": id, "title": b.title, "phrases": b.phrases, "cast": c})
 
 
+## LiA: closing a script-started briefing scans the temporary
+## b.* GS table in hash order and matches its third component with _stricmp.
+## There is no value==1 filter. Retain the key's exact case for GSSetVar and
+## #OnBriefingComplete (e.g. b.First.brief_0, not b.bz1r.brief_0).
+func _named_key(id: String, player: int) -> String:
+	for key: String in vm.session.state.gs_keys(player, "b.", true):
+		var parts := key.split(".")
+		if parts.size() == 3 and parts[2].nocasecmp_to(id) == 0:
+			return key
+	return ""
+
+
 ## Where the conversation's actors stand (the original
 ## ): the partner "a" walks to a spot in front of the second actor
 ## "b" (usually the hero) at b's prototype "dialog cam distance" + 2.5 m.
@@ -202,6 +223,7 @@ func play_named(id: String, var_name: String, player := 0, partner: GameUnit = n
 ## Approx.: instant placement collision uses our class grid / body circles,
 ## not object footprint check; walking uses our path.
 func _face(c: Dictionary, instant := false) -> void:
+	_return_actors.clear()
 	var a: GameUnit = vm.world.units.get(int(c.get("a", -1)))
 	var b: GameUnit = vm.world.units.get(int(c.get("b", -1)))
 	if a == null or b == null:
@@ -222,15 +244,27 @@ func _face(c: Dictionary, instant := false) -> void:
 	var cu: GameUnit = vm.world.units.get(int(c.get("c", -1)))
 	var c_at := cu.pos if cu else Vector2.ZERO
 	if cu:
+		_remember_return(cu)
 		c_at = mid + Vector2(b_at.y - mid.y, mid.x - b_at.x)
 		_stage(cu, c_at, (mid - c_at).angle(), instant)
 	if cage:
+		_remember_return(b)
 		_stage(b, b_at, (a_at - b_at).angle(), instant)
 	# The places the conversation camera works from (the original keeps them
 	#  and never reads the units again; DialogCamera).
 	c["at"] = {"a": [a_at.x, a_at.y], "b": [b_at.x, b_at.y]}
 	if cu:
 		c["at"]["c"] = [c_at.x, c_at.y]
+
+
+func _remember_return(u: GameUnit) -> void:
+	# A new conversation may interrupt an earlier return walk. Native
+	# 6064a0 / LiA53fbb0 preserve that earlier destination and facing.
+	var pending: Dictionary = vm.world.dialog_movers.get(u, {})
+	_return_actors.append({"uid": u.uid,
+		"to": pending.to if pending.get("restore", false) else u.pos,
+		"angle": pending.angle if pending.get("restore", false) else u.facing})
+	vm.world.dialog_movers.erase(u)
 
 
 func _stage(u: GameUnit, point: Vector2, angle: float, instant: bool) -> void:
@@ -241,6 +275,7 @@ func _stage(u: GameUnit, point: Vector2, angle: float, instant: bool) -> void:
 	elif not u.blocked:   #  refuses a walk under flag.
 		vm.world.dialog_movers[u] = {"to": point, "angle": angle, "state": 1, "elapsed": 0.0}
 		u.command({"type": "move", "to": point, "run": false})
+		u.set_meta("ai_state", 1)   # 608990 / LiA539810 call the ordinary AI move setter
 
 
 func complete(player: int, var_name: String, force := false) -> void:
@@ -248,10 +283,22 @@ func complete(player: int, var_name: String, force := false) -> void:
 		return   # already finished (another co-op player closed it first)
 	if not force and active_player >= 0:
 		player = active_player   # credit the speaker even when its peer closes it
+	# 608410 / LiA53bd80 restore c first, then #cage b, using walking
+	# staging (all three flags zero), before the GS completion callback.
+	for row: Dictionary in _return_actors:
+		var u: GameUnit = vm.world.units.get(int(row.uid))
+		if u and not u.dead:
+			_stage(u, row.to, float(row.angle), false)
+			if vm.world.dialog_movers.has(u):
+				vm.world.dialog_movers[u].restore = true
+	_return_actors.clear()
 	active = ""
 	active_player = -1
 	vm.session.broadcast({"t": "dialog_close", "id": var_name})
-	var key := var_name
+	var key := _named_key(_named_id, player) if not _named_id.is_empty() else var_name
+	_named_id = ""
+	if key.is_empty():
+		return
 	vm.merc_briefing_done(key, player)   #  runs first
 	vm.session.state.set_pvar(player, key, 2.0)
 	# Rewards go to the talking player's purse (a joiner's own, CoopProgress.with_purse);
@@ -264,7 +311,7 @@ func complete(player: int, var_name: String, force := false) -> void:
 		pass   # the multiplayer quest giver's take / cancel / complete
 	else:
 		vm.session.coop.with_purse(player, _rewards.bind(id, player), true)
-	vm.fire_event("#OnBriefingComplete", [float(player), var_name])
+	vm.fire_event("#OnBriefingComplete", [float(player), key])
 
 
 func _rewards(id: String, player := 0) -> void:

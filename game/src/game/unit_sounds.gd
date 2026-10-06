@@ -62,9 +62,17 @@ func tick() -> void:
 			continue
 		if u.model == null or u.model.player == null:
 			continue
-		n += 1
 		var pl := u.model.player
 		var anim: StringName = pl.current_animation
+		# Static figures and an exhausted/missing clip have no animation time.
+		# Retain the unit's entry but resynchronise before the next valid clip.
+		if anim == &"":
+			if not st.is_empty():
+				n += 1
+				st.seen = _stamp
+				st.far = true
+			continue
+		n += 1
 		var cur := pl.current_animation_position * EIAnim.FPS
 		if st.is_empty() or st.get("far", false):   # first sight (a joiner's corpse, a new model) / back in range: no sound
 			var c := String(anim).trim_prefix("ei/")

@@ -404,10 +404,16 @@ func _scan_units() -> void:
 
 func _step_frames(u: GameUnit, st: Dictionary) -> void:
 	var pl := u.model.player
+	var anim: StringName = pl.current_animation
+	if anim == &"":
+		st.clip = ""
+		st.frame = 0.0
+		st.erase("raw")
+		st.erase("anim")
+		return
 	# Early out while the pose has not moved (idle units, and the off-screen
 	# ones the animation LOD steps only now and then).
 	var raw := pl.current_animation_position
-	var anim: StringName = pl.current_animation
 	if raw == float(st.get("raw", -1.0)) and anim == st.get("anim", &""):
 		return
 	st.raw = raw

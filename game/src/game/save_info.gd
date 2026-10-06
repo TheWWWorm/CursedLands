@@ -28,11 +28,19 @@ var frame: Image
 
 
 static func path(slot: String, ext := "sav") -> String:
-	return DIR.path_join("%s.%s" % [slot, ext])
+	return directory().path_join("%s.%s" % [slot, ext])
+
+
+static func directory() -> String:
+	return CampaignProfile.save_directory(GameData.campaign_id)
+
+
+static func files() -> PackedStringArray:
+	return DirAccess.get_files_at(directory()) if DirAccess.dir_exists_absolute(directory()) else PackedStringArray()
 
 
 static func write(slot: String, gtime: float, allod: String, zone: String, name := "") -> void:
-	DirAccess.make_dir_recursive_absolute(DIR)
+	DirAccess.make_dir_recursive_absolute(directory())
 	var f := FileAccess.open(path(slot, "info.sav"), FileAccess.WRITE)
 	if f == null:
 		return
@@ -52,7 +60,7 @@ static func write(slot: String, gtime: float, allod: String, zone: String, name 
 ## name from its 5th character).
 static func new_slot() -> String:
 	var n := 0
-	for fn in DirAccess.get_files_at(DIR):
+	for fn in files():
 		if fn.ends_with(".sav") and not fn.ends_with(".info.sav"):
 			var slot := fn.get_basename()
 			if slot.begins_with("save") and slot.length() > 4:
@@ -83,7 +91,7 @@ func is_protected() -> bool:
 static func write_shot_image(slot: String, img: Image) -> void:
 	if img == null or img.is_empty():
 		return
-	DirAccess.make_dir_recursive_absolute(DIR)
+	DirAccess.make_dir_recursive_absolute(directory())
 	var i := img.duplicate() as Image
 	i.resize(SHOT_SIZE.x, SHOT_SIZE.y, Image.INTERPOLATE_BILINEAR)
 	i.save_png(path(slot, "shot.png"))
@@ -95,6 +103,7 @@ static func write_shot_image(slot: String, img: Image) -> void:
 static func write_shot(slot: String, vp: Viewport) -> void:
 	if vp == null or DisplayServer.get_name() == "headless":
 		return
+	var destination := path(slot, "shot.png")
 	for i in 10:
 		await vp.get_tree().process_frame
 		if LoadingScreen._current == null and i >= 1:
@@ -106,7 +115,7 @@ static func write_shot(slot: String, vp: Viewport) -> void:
 	if img == null or img.is_empty():
 		return
 	img.resize(SHOT_SIZE.x, SHOT_SIZE.y, Image.INTERPOLATE_BILINEAR)
-	img.save_png(path(slot, "shot.png"))
+	img.save_png(destination)
 
 
 static func read(slot: String) -> SaveInfo:
@@ -139,9 +148,15 @@ static func _cstr(f: FileAccess) -> String:
 ## Every save, newest first (sorts by the stored time).
 static func list() -> Array:
 	var out := []
-	for fn in DirAccess.get_files_at(DIR):
+	for fn in files():
 		if fn.ends_with(".sav") and not fn.ends_with(".info.sav"):
-			out.append(read(fn.get_basename()))
+			var data: Variant = CampaignState.read_data(directory().path_join(fn))
+			if data is Dictionary and not CampaignState.compatible_data(data):
+				continue
+			var info := read(fn.get_basename())
+			if not data is Dictionary:
+				info.error = true
+			out.append(info)
 	out.sort_custom(func(a: SaveInfo, b: SaveInfo): return a.time > b.time)
 	return out
 

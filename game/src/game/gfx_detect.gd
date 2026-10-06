@@ -324,6 +324,10 @@ static func load_record(path := GameData.CONFIG_PATH) -> Dictionary:
 	var r := {}
 	for k in cfg.get_section_keys(SECTION):
 		r[k] = cfg.get_value(SECTION, k)
+	# Retired remake toggle: keep automatic-tier/manual detection valid when
+	# loading an older record, without changing any remaining graphics choice.
+	if r.get("values") is Dictionary:
+		r.values.erase("gfx_edge_fade")
 	return r
 
 

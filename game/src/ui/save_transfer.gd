@@ -47,10 +47,10 @@ func _process(_dt: float) -> void:
 
 static func backup() -> String:
 	var files := {}
-	for file in DirAccess.get_files_at(SaveInfo.DIR):
+	for file in SaveInfo.files():
 		if _valid_name(file):
-			files[file] = Marshalls.raw_to_base64(FileAccess.get_file_as_bytes(SaveInfo.DIR.path_join(file)))
-	return JSON.stringify({"format": "cursed-lands-saves", "version": 1, "files": files})
+			files[file] = Marshalls.raw_to_base64(FileAccess.get_file_as_bytes(SaveInfo.directory().path_join(file)))
+	return JSON.stringify({"format": "cursed-lands-saves", "version": 2, "campaign_id": GameData.campaign_id, "files": files})
 
 static func _valid_name(name: String) -> bool:
 	if name.length() > 96 or name.contains("/") or name.contains("\\") or name.contains(":") or name.contains(".."):
@@ -61,8 +61,10 @@ func restore(text: String) -> String:
 	if text.to_utf8_buffer().size() > LIMIT:
 		return "Save backup is too large."
 	var data: Variant = JSON.parse_string(text)
-	if not data is Dictionary or data.get("format") != "cursed-lands-saves" or data.get("version") != 1 or not data.get("files") is Dictionary:
+	if not data is Dictionary or data.get("format") != "cursed-lands-saves" or (data.get("version") != 1 and data.get("version") != 2) or not data.get("files") is Dictionary:
 		return "This is not a Cursed Lands save backup."
+	if not CampaignProfile.matches(data.get("campaign_id", CampaignProfile.ORIGINAL if data.version == 1 else ""), GameData.campaign_id):
+		return "This backup belongs to a different campaign. Switch game files before importing it."
 	var files: Dictionary = data.files
 	if files.size() > 1000:
 		return "Too many saves in the backup."
@@ -77,20 +79,23 @@ func restore(text: String) -> String:
 		var bytes := Marshalls.base64_to_raw(files[name])
 		if bytes.is_empty() or Marshalls.raw_to_base64(bytes) != files[name]:
 			return "Damaged save backup."
+		if name.ends_with(".sav") and not name.ends_with(".info.sav"):
+			if bytes.size() < 4 or bytes.decode_u32(0) != bytes.size() - 4 or not CampaignState.compatible_data(bytes_to_var(bytes.slice(4))):
+				return "The backup contains an invalid save or a save from a different campaign."
 		total += bytes.size()
 		if total > LIMIT:
 			return "Save backup is too large."
 		decoded[name] = bytes
 	var prefix := "import_%d_" % Time.get_unix_time_from_system()
 	var count := 0
-	DirAccess.make_dir_recursive_absolute(SaveInfo.DIR)
+	DirAccess.make_dir_recursive_absolute(SaveInfo.directory())
 	var written := PackedStringArray()
 	# Preflight every destination before writing any member of the backup.
 	for name: String in decoded:
-		if FileAccess.file_exists(SaveInfo.DIR.path_join(prefix + name)):
+		if FileAccess.file_exists(SaveInfo.directory().path_join(prefix + name)):
 			return "These saves were just imported. Try again in a moment."
 	for name: String in decoded:
-		var dest := SaveInfo.DIR.path_join(prefix + name)
+		var dest := SaveInfo.directory().path_join(prefix + name)
 		var file := FileAccess.open(dest, FileAccess.WRITE)
 		if file == null:
 			for path in written: DirAccess.remove_absolute(path)

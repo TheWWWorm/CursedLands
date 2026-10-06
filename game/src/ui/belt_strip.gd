@@ -11,7 +11,8 @@ extends Control
 ## SpellSlots.)
 ## Keys item1–4 (P / O / I / U, cases 0x2a–0x2d):
 ## — click.wav; a wand or potion (prototype item_id 5 / 8) is picked (scale
-## 1.15, =, ItemView.add_color) and the next click in the
+## 0.65 / 1.0 for the bottom / top row, =
+## ItemView.add_color) and the next click in the
 ## world picks its target (interaction mode 3 / 4); the same cell again
 ## cancels. With Ctrl / Alt,: used at once — an offensive spell
 ##  on the nearest hostile unit in view (none:
@@ -39,18 +40,14 @@ extends Control
 ## potion shows only Effect and Duration (`potion_rows`); a wand the rows above
 ## with "%s %d/%d (%d)" infoitem_7, spell, item (Energy), item
 ##  (its charge) in place of Stamina / School.
-##  leaves the cell it unpicks at scale 1.0 until the next refill
-## (selection or belt changes; also refills every frame while the
-## one selected unit is dead, ≠ 0). Each wand's charge rides
+##  restores an unpicked cell to scale 0.55 / 0.85 immediately.
+## Each wand's charge rides on
 ## its item string (`Items.charge`), so two identical wands keep their own.
 
 const SLOTS := 8
 var game: Game
 var _items: Array = []
 var _sig := ""
-var _refill_sig := ""
-var _picked := -1     # cell picked at the last refresh
-var _unpicked := -1   # cell left at scale 1.0
 var _views: Array[ItemView] = []
 var _unit: GameUnit
 var _held := -1          # cell the press captured the mouse
@@ -85,30 +82,15 @@ func _process(_dt: float) -> void:
 	if sig == _sig:
 		return
 	_sig = sig
-	#  sets the cell it unpicks to scale 1.0; it keeps that until
-	# the belt is refilled (on a selection change, or the list
-	# changing).
-	var refill := "%s:%s" % [u.get_instance_id() if u else 0, ",".join(q)]
-	if refill != _refill_sig:
-		_refill_sig = refill
-		_unpicked = -1
-	elif _picked >= 0:
-		_unpicked = _picked
-	_picked = -1
 	_unit = u
 	_items = q.slice(0, SLOTS)
 	var k := size.y / 100.0   # pixels per 800×600 unit
 	for i in SLOTS:
 		var r := _cell_rect(i)
 		var picked := i < _items.size() and game.pending_spell == "%s%d:%s" % [Game.BELT, u.uid if u else -1, _items[i]]
-		# (695 − 50 i, 575 / 525, 20) at scale 0.55
-		# (bottom row) / 0.85 (top row);: the picked one 1.15 and
-		# brightened. Unclipped: the view is twice the cell.
-		if picked:
-			_picked = i
-			if _unpicked == i:
-				_unpicked = -1
-		var sc := 1.15 if picked else (1.0 if i == _unpicked else (0.55 if i < 4 else 0.85))
+		# the bottom row is 0.55 / 0.65, the top 0.85 / 1.0.
+		# Unclipped: the view is twice the cell.
+		var sc := (0.65 if picked else 0.55) if i < 4 else (1.0 if picked else 0.85)
 		_views[i].position = r.get_center() - r.size
 		_views[i].size = r.size * 2.0
 		_views[i].unit_px = k * 400.0 / ItemView.K * sc / 20.0
@@ -222,6 +204,10 @@ func use(i: int, now: bool) -> void:
 		return
 	game.touch_aim = -1
 	game.touch_force = ""
+	if now:
+		#  clears targeting even when no hostile target exists.
+		game.pending_spell = ""
+		game.hud.set_targeting("")
 	if now and _no_target(_items[i]):
 		# An offensive spell item with no hostile unit in view
 		#  sounds nomagic.wav and is not used.
@@ -231,11 +217,19 @@ func use(i: int, now: bool) -> void:
 	if GameSound.instance:
 		GameSound.instance.ui("buttons\\battle\\click.wav")
 	if now:
-		game.pending_spell = ""
-		game.hud.set_targeting("")
 		game.issue({"t": "use", "unit": _unit.uid, "item": _items[i]})
 	else:
-		game.begin_belt(_unit, _items[i])
+		var item := String(_items[i])
+		var kind := int(Items.info(item).get("row", {}).get("item_id", -1))
+		if kind != 5 and kind != 8:
+			return
+		#  leaves mode 0 for a wand/potion without a spell.
+		var sp := Items.spell_of(item) if kind == 5 else Items.potion_spell(item)
+		if sp.is_empty():
+			game.pending_spell = ""
+			game.hud.set_targeting("")
+		else:
+			game.begin_belt(_unit, item)
 	queue_redraw()
 
 

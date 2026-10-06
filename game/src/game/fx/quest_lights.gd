@@ -5,14 +5,15 @@ extends Node
 ## Outer CUnit and the other map-object classes forward through
 ##  to their class47 logic component's
 ## state 1 creates a quest light, state 2 removes it; 0 leaves
-## it alone. Colour/range are registry Quest Light R/G/B/Radius defaults
-## 200/255/255, 10; places it 2 m above its carrier, flag 0x40
+## it alone. Native settings default to cyan200/255/255; this softer purple
+## matches the requested original-game appearance. Native radius10 and
+##  height2 stay unchanged; flag0x40
 ## sends it through the additive light pass. The original minimap lists it.
 ## A unit also pushes white through its figure's
 ## until that light is removed. Creature controller class48 / 537c00
 ## is the separate electrical-hit flash, not quest-info dispatch.
 
-const COLOR := Color8(200, 255, 255)
+const COLOR := Color8(96, 40, 112)
 const RADIUS := 10.0
 
 var game: Game

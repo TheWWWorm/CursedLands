@@ -289,7 +289,7 @@ func ground_colour(x: float, y: float) -> Color:
 	if not _images.has(atlas):
 		if _images.size() >= 8:
 			_images.erase(_images.keys()[0])
-		_images[atlas] = GameData.load_image("%s%03d" % [terrain.map_name, atlas])
+		_images[atlas] = GameData.load_image("%s%03d" % [terrain.resource_prefix, atlas])
 	var image: Image = _images[atlas]
 	if image == null:
 		return Color.TRANSPARENT
@@ -494,5 +494,23 @@ static func blade_mesh(detailed: bool = true) -> ArrayMesh:
 	arrays[Mesh.ARRAY_TEX_UV] = uvs
 	arrays[Mesh.ARRAY_INDEX] = indices
 	var mesh := ArrayMesh.new()
-	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
+	# Keep every tuft and leaf. Only merge short segments of the curved
+	# blade when the projected mesh detail is small in the current view.
+	# Engine mesh LOD also follows zoom, resolution and shadow projections;
+	# distance to the ground focus alone kept eight rows at any zoom.
+	var lods := {0.035: _blade_indices(count, rows, [0, rows / 2, rows - 1])}
+	if detailed:
+		lods[0.012] = _blade_indices(count, rows, [0, 2, 4, rows - 1])
+	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays, [], lods)
 	return mesh
+
+
+static func _blade_indices(count: int, rows: int, levels: Array) -> PackedInt32Array:
+	var indices := PackedInt32Array()
+	for blade in count:
+		var base := blade * rows * 2
+		for i in levels.size() - 1:
+			var a := base + int(levels[i]) * 2
+			var b := base + int(levels[i + 1]) * 2
+			indices.append_array([a, b, a + 1, a + 1, b, b + 1])
+	return indices

@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Cursed Lands">
+<meta name="theme-color" content="#17130e">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>$GODOT_PROJECT_NAME</title>
+$GODOT_HEAD_INCLUDE
+<style>
+html,body{margin:0;position:fixed;inset:0;overflow:hidden;background:#17130e;color:#e4d7a7;font:16px system-ui;overscroll-behavior:none}
+#canvas{display:block;width:100%;height:100%;touch-action:none;outline:none}
+#start{position:fixed;inset:0;display:grid;place-content:center;text-align:center;padding:24px;gap:16px;background:#17130e;z-index:4;overflow:auto}
+button{font:inherit;color:inherit;background:#372e20;border:1px solid #8a734c;padding:12px 20px;border-radius:5px;min-height:48px}
+button:disabled{opacity:.6}#bar{height:6px;background:#372e20;border-radius:3px;overflow:hidden}#bar>div{height:100%;width:0;background:#c9a95c;transition:width .2s}#bar[hidden]{display:none}
+#notice{max-width:38em;white-space:pre-wrap}#safe-probe{position:fixed;visibility:hidden;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+#runtime-error{position:fixed;bottom:env(safe-area-inset-bottom);left:10%;right:10%;background:#421e18;color:white;z-index:5}#runtime-error:empty{display:none}
+#rotate{display:none;position:fixed;inset:0;background:#17130eeb;z-index:6;align-content:center;text-align:center;padding:32px}
+#start,#rotate{padding-left:max(24px,env(safe-area-inset-left),env(safe-area-inset-right));padding-right:max(24px,env(safe-area-inset-left),env(safe-area-inset-right));padding-top:max(24px,env(safe-area-inset-top));padding-bottom:max(24px,env(safe-area-inset-bottom))}
+@media(orientation:portrait) and (pointer:coarse){#rotate{display:block}}
+</style></head><body>
+<canvas id="canvas" tabindex="0">This game requires WebGL 2.</canvas>
+<div id="safe-probe"></div><div id="runtime-error" role="alert"></div>
+<div id="rotate">Turn your device sideways to play.<p><button onclick="this.parentElement.parentElement.style.display='none'">Continue upright</button></p></div>
+<div id="start"><h1>Cursed Lands</h1><div id="notice">Preparing…</div><div id="bar" hidden><div></div></div><button id="play">Play</button><button onclick="CursedFiles.fullscreen()">Fullscreen / Home Screen</button></div>
+<script src="storage.js"></script><script src="files.js"></script><script src="$GODOT_URL"></script>
+<script>
+const GODOT_CONFIG = $GODOT_CONFIG;
+const notice = document.getElementById('notice'), play = document.getElementById('play'), bar = document.getElementById('bar');
+const WELCOME = 'Use your own Evil Islands data. Your files stay on this device.\nOn iPhone or iPad: Share → Add to Home Screen → Open as Web App.';
+// Play is accepted at any time: pressed early, it waits (with progress) until
+// the engine is downloaded and loaded, then starts. It never returns to the
+// Play state; a failure offers a reload instead.
+let ready = false, wanted = false, starting = false, failed = false, label = 'Preparing', percent = null;
+function show() {
+  if (failed) return;
+  const text = label + '…' + (percent === null ? '' : ' ' + percent + '%');
+  const idle = ready && !starting;
+  bar.hidden = idle || percent === null; bar.firstChild.style.width = (percent || 0) + '%';
+  notice.textContent = idle ? WELCOME : text;
+  if (starting) play.textContent = 'Starting…';
+  else if (wanted) play.textContent = text;
+}
+function progress(text, loaded, total) {
+  label = text; percent = total > 0 ? Math.min(100, Math.floor(loaded / total * 100)) : null; show();
+}
+function fail(error) {
+  failed = true; bar.hidden = true;
+  notice.textContent = (error && error.message) || String(error);
+  play.textContent = 'Reload'; play.disabled = false;
+}
+const engine = new Engine(Object.assign({}, GODOT_CONFIG, {onProgress: (loaded, total) => progress('Loading the engine', loaded, total)}));
+function start() {
+  starting = true; play.disabled = true; label = 'Loading'; percent = null; show();
+  engine.startGame({onProgress: (loaded, total) => progress('Loading', loaded, total)})
+    .then(() => { document.getElementById('start').remove(); document.getElementById('canvas').focus(); })
+    .catch(fail);
+}
+CursedFiles.initialize((loaded, total) => progress('Downloading the game', loaded, total))
+  .then(() => { progress('Loading the engine', 0, 0); return engine.init(GODOT_CONFIG.executable); })
+  .then(() => { ready = true; if (wanted) start(); else show(); })
+  .catch(fail);
+play.addEventListener('click', () => {
+  if (failed) { location.reload(); return; }
+  if (starting || (wanted && !ready)) return;
+  wanted = true;
+  if (ready) start(); else { play.disabled = true; show(); }
+});
+</script></body></html>

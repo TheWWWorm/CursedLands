@@ -9,9 +9,9 @@ extends RefCounted
 ##   ones stay open and in use;
 ## - only then does GameData open them (settings.cfg [game] root); if that
 ##   still fails the old files are opened again;
-## - an old copy the remake unpacked itself (`managed`: user://game,
+## - an old copy of the SAME campaign the remake unpacked (`managed`: user://game,
 ##   user://game-<n>, user://import-<n>) is deleted only after that, never a
-##   folder of the player's; saves, settings.cfg (except the root), keyboard
+##   folder of the player's or the other campaign; saves, settings.cfg (except the library/root), keyboard
 ##   and other user:// files are never touched;
 ## - the converted movie cache (user://movies) is dropped when the new copy's
 ##   movies differ (another edition);
@@ -125,18 +125,23 @@ static func verify(path: String) -> String:
 
 ## Switches the game to the files at `path` (see the class notes). Returns ""
 ## or the reason it was refused; on a refusal nothing changed.
-static func switch_to(path: String) -> String:
+static func switch_to(path: String, expected_campaign := "") -> String:
 	path = path.strip_edges()
 	var err := verify(path)
 	if err:
 		return err
+	var next_campaign := CampaignProfile.detect(EIResArchive.open_path(path.path_join("res/texts.res")))
+	if expected_campaign and next_campaign != expected_campaign:
+		return RemakeText.t("These files belong to the other game. Select its tab to import them.")
 	var old := GameData.root
+	var replaced := String(GameData.campaign_roots.get(next_campaign, ""))
 	var old_ok := not old.is_empty() and GameData.validate(old) == ""
 	# Web: the import already replaced the data under the same virtual root
 	# (web/files.js commits last), so it is never "the same files".
 	var same := old_ok and _abs(old) == _abs(path) and not GameFiles.virtual_path(path)
 	var old_movies := _movie_stamp(old) if old_ok else ""
 	MoviePlayer.shutdown()   # background conversions read the old movies
+	NetStatus.reset_game_files()   # the old maps must finish reading before GameData changes
 	err = GameData.open(path)
 	if err:
 		if old_ok:
@@ -150,8 +155,10 @@ static func switch_to(path: String) -> String:
 	if old_ok and (GameFiles.virtual_path(path) or _movie_stamp(path) != old_movies):
 		clear_movie_cache()
 	var a := _abs(path)
-	if managed(old) and not (a + "/").begins_with(_abs(old) + "/"):
-		discard(old)
+	# Keep the other edition installed. Only a replaced copy of this same
+	# campaign may be removed, and never a path still registered elsewhere.
+	if managed(replaced) and replaced not in GameData.campaign_roots.values() and not (a + "/").begins_with(_abs(replaced) + "/"):
+		discard(replaced)
 	return ""
 
 
@@ -161,19 +168,27 @@ static func forget() -> void:
 	MoviePlayer.shutdown()
 	var old := GameData.root
 	if GameFiles.virtual_path(old):
+		NetStatus.reset_game_files()
 		var bridge := JavaScriptBridge.get_interface("CursedFiles")
 		if bridge:
 			bridge.forget()   # reloads the page when done
 			_web_reloading = true
 		GameFiles.manifest = {}
 	elif managed(old):
+		NetStatus.reset_game_files()
 		discard(old)
 	else:
 		return
+	GameData.campaign_roots.erase(GameData.campaign_id)
 	clear_movie_cache()
 	GameData.root = ""
 	GameData.save_settings()
 	GameData.trace("game files deleted")
+
+
+static func installed(id: String) -> String:
+	var path := String(GameData.campaign_roots.get(id, ""))
+	return path if path and GameData.validate(path).is_empty() else ""
 
 
 ## Movie names and sizes: a different list means another edition's movies.
@@ -255,6 +270,7 @@ const CACHES := {
 
 
 static func clear_caches() -> void:
+	NetStatus.reset_game_files()
 	EIAudio.shutdown()
 	for path: String in CACHES:
 		var s: Script = load(path)
@@ -274,7 +290,7 @@ static func restart(tree: SceneTree) -> void:
 		return
 	if OS.has_feature("web"):
 		if not _web_reloading:
-			JavaScriptBridge.eval("location.reload()")
+			GameFiles.bridge.activate(GameData.campaign_id)
 		return
 	if not Portability.constrained():
 		var args := OS.get_cmdline_args()
