@@ -9,7 +9,7 @@
 - Character details retain overflow effects and the height ruler. Buff counters now use simulation ticks, survive saves and update correctly on clients through pause and shared speed changes.
 - Corpse blood pools use the death timeline once, retain their saved history and synchronize across co-op zone and load changes.
 - Co-op protocol is now 4. All players must use the same compatible release.
-- Remaining limits from 1.0.2 still apply; focused synthetic and co-op fixtures do not establish a full campaign playthrough or Retroid frame rates.
+- Remaining known issues from 1.0.2 still apply, including extreme Modern-camera occlusion.
 
 ## 1.0.2
 
