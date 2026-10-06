@@ -787,6 +787,52 @@ func _chain(f: RefCounted,p: Vector2i) -> PackedInt32Array:
 		p += DIRECTIONS[direction]
 	return out
 
+## Reachability needs no sorted costs or route reconstruction. A certificate
+## is valid only after exhausting the complete directed, stamped component.
+## A boundary, nearby target or work limit means "unknown", never blocked.
+func sealed_reach(rect: Rect2i, start: Vector2i, target: Vector2, reach: float,
+		stamp: PackedInt32Array, threshold: int) -> bool:
+	if _terrain_kernel != null and _terrain_kernel.has_method("sealed_reach"):
+		return _terrain_kernel.sealed_reach(rect,start,target,reach,stamp,threshold)
+	return _sealed_reach_script(rect,start,target,reach,stamp,threshold)
+
+func _sealed_reach_script(rect: Rect2i, start: Vector2i, target: Vector2, reach: float,
+		stamp: PackedInt32Array, threshold: int) -> bool:
+	var rw := rect.size.x
+	if not rect.has_point(start) or stamp.size() != rw*rect.size.y or stamp.size() > 4096 \
+			or start.x < 0 or start.y < 0 or start.x >= _width or start.y >= _height \
+			or not is_finite(reach) or not target.is_finite(): return false
+	var seen := PackedByteArray()
+	seen.resize(stamp.size())
+	var pending := PackedInt32Array([(start.y-rect.position.y)*rw+start.x-rect.position.x])
+	seen[pending[0]] = 1
+	# Any point in the reached cell may be a relocated/partial endpoint.
+	# Enlarge range by its half diagonal, plus rounding tolerance.
+	var radius := maxf(reach,0.0)+0.354
+	var at := 0
+	while at < pending.size():
+		var i := pending[at]
+		at += 1
+		var x := i%rw
+		var y := i/rw
+		var p := rect.position+Vector2i(x,y)
+		if (Vector2(p)*0.5+Vector2(0.25,0.25)).distance_squared_to(target) <= radius*radius:
+			return false
+		var gi := p.y*_width+p.x
+		var barrier := maxi(threshold,stamp[i]-1)
+		for k: int in CELL_ORDER:
+			var q: Vector2i = p+DIRECTIONS[k]
+			if q.x < 0 or q.y < 0 or q.x >= _width or q.y >= _height: continue
+			if _cached_step(gi,k,false,true) < 0: continue
+			if not rect.has_point(q): return false
+			var qi := (q.y-rect.position.y)*rw+q.x-rect.position.x
+			if seen[qi] != 0 or stamp[qi] > barrier: continue
+			if pending.size() >= 128: return false
+			seen[qi] = 1
+			pending.append(qi)
+	return true
+
+
 ##  alternates two native windows and meets the first finite
 ## opposite cost at an open frontier. Tentative nodes count as reached.
 func direct(start: Vector2i,goal: Vector2i) -> Dictionary:

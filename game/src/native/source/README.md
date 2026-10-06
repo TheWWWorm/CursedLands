@@ -1,7 +1,7 @@
 # Optional compiled hot paths
 
 The `TerrainSearchKernel` extension accelerates integer terrain distances,
-component labels, block routes, moving search windows, and obstacle-stamp
+component labels, bounded AI reachability, block routes, moving search windows, and obstacle-stamp
 painting. It leaves AI scheduling, the 55 ms simulation clock, and network
 messages in GDScript. Each terrain instance belongs to the existing navigation
 map revision. Stamp painting is stateless and always uses the current units.
@@ -121,3 +121,25 @@ ASan/UBSan. Its optional extra argument runs synthetic scaling measurements.
 `tools/reactive_gameplay_test.gd` checks real-map reaction, stealth and patrols.
 The main-world CPU cost includes packing, live eligibility checks and the
 existing unit loop; kernel timings alone are not a gameplay benchmark.
+
+## Bounded AI reachability
+
+Before constructing a route merely to judge an attack or spell option, AI can
+prove that its actor is trapped outside the action's range. The proof visits at
+most 128 cells inside a 17-by-17-cell window, using current terrain, directed
+slope rules and the same max-combined occupancy stamps as the planner. The
+actor and its target are excluded from those stamps. Any possible endpoint in
+a reachable cell is covered by a conservative range margin.
+
+Reaching the window boundary, approaching the target, or hitting the work limit
+means unknown and immediately uses the existing planner. A completed sealed
+component can reject the option without generating a path, turn refinement or
+retries. No result persists across decisions: moving units, deaths, teleports
+and changed doors are considered on the next call. Map revisions still own
+static terrain kernels.
+
+The native method and GDScript fallback implement the same certificate. Older
+libraries without the method also use the fallback. This does not change AI
+tick frequency, movement commands, save data or the network protocol. The
+private `reach_pocket_test.gd` fixture compares both implementations and checks
+positive certificates against complete weighted floods.

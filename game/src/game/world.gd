@@ -20,6 +20,7 @@ const _ENGINE_UNSUSPENDED := 9004
 var zone := {}
 var map: EIMapScene
 var terrain: EITerrain
+var ground_marks: GroundMarks
 var mob: EIMob
 var nav := NavGrid.new():
 	set(value):

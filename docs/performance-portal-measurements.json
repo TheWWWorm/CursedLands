@@ -1,0 +1,121 @@
+{
+  "runs": [
+    {
+      "name": "portal-clean-baseline-1",
+      "variant": "baseline",
+      "fps": 3.012119278467018,
+      "steady_fps": 3.5879538922930103,
+      "frames": 91,
+      "seconds": 30.211287,
+      "ticks": 391,
+      "p95_ms": 409.048,
+      "gpu_ms": 15.9510000118842,
+      "peak_rss_mib": 3551.2265625,
+      "main_cpu_seconds": 28.5
+    },
+    {
+      "name": "portal-clean-candidate-1",
+      "variant": "candidate",
+      "fps": 5.228687470226455,
+      "steady_fps": 6.29222361133771,
+      "frames": 157,
+      "seconds": 30.026656,
+      "ticks": 430,
+      "p95_ms": 266.224,
+      "gpu_ms": 12.4456369800932,
+      "peak_rss_mib": 3586.51171875,
+      "main_cpu_seconds": 27.82
+    },
+    {
+      "name": "portal-clean-candidate-2",
+      "variant": "candidate",
+      "fps": 5.3221532633780635,
+      "steady_fps": 6.379629890213434,
+      "frames": 160,
+      "seconds": 30.06302,
+      "ticks": 432,
+      "p95_ms": 259.731,
+      "gpu_ms": 12.8864187508821,
+      "peak_rss_mib": 3582.67578125,
+      "main_cpu_seconds": 27.85
+    },
+    {
+      "name": "portal-clean-baseline-2",
+      "variant": "baseline",
+      "fps": 2.9177310582723277,
+      "steady_fps": 3.483921661023659,
+      "frames": 88,
+      "seconds": 30.160422,
+      "ticks": 385,
+      "p95_ms": 384.218,
+      "gpu_ms": 14.4907385043123,
+      "peak_rss_mib": 3573.265625,
+      "main_cpu_seconds": 28.42
+    },
+    {
+      "name": "portal-clean-baseline-3",
+      "variant": "baseline",
+      "fps": 2.8923769477291303,
+      "steady_fps": 3.430006797062881,
+      "frames": 87,
+      "seconds": 30.079067,
+      "ticks": 390,
+      "p95_ms": 424.159,
+      "gpu_ms": 14.5750805112137,
+      "peak_rss_mib": 3612.0390625,
+      "main_cpu_seconds": 28.4
+    },
+    {
+      "name": "portal-clean-candidate-3",
+      "variant": "candidate",
+      "fps": 5.9569183683208555,
+      "steady_fps": 7.143716810473318,
+      "frames": 179,
+      "seconds": 30.049094,
+      "ticks": 434,
+      "p95_ms": 251.112,
+      "gpu_ms": 12.1046033837942,
+      "peak_rss_mib": 3524.94140625,
+      "main_cpu_seconds": 27.76
+    }
+  ],
+  "means": {
+    "baseline": {
+      "fps": 2.9407424281561587,
+      "steady_fps": 3.5006274501265167,
+      "ticks": 388.6666666666667,
+      "p95_ms": 405.80833333333334,
+      "peak_rss_mib": 3578.84375
+    },
+    "candidate": {
+      "fps": 5.502586367308458,
+      "steady_fps": 6.605190104008154,
+      "ticks": 432,
+      "p95_ms": 259.02233333333334,
+      "peak_rss_mib": 3564.7096354166665
+    }
+  },
+  "fps_change_percent": 87.11554995853791,
+  "description": "Three interleaved 30-second Linux rendered co-op host runs per build; no profiler, Distant AI off. See performance-portal-2026-10-07.md for method and limitations.",
+  "baseline": "v1.0.3-experimental.3 / 7aa520e",
+  "candidate": "Bounded reachability, animation-driven ground contacts and retained animation bindings; before the subsequent hidden-figure materialization correction.",
+  "final_confirmation": [
+    {
+      "name": "portal-final-clean-1",
+      "fps": 5.556368493301182,
+      "steady_fps": 6.66962501589594,
+      "ticks": 433,
+      "frames": 167,
+      "seconds": 30.055602
+    },
+    {
+      "name": "portal-final-rebuild-1",
+      "fps": 3.01699399780648,
+      "steady_fps": 3.5803118250458503,
+      "ticks": 393,
+      "frames": 91,
+      "seconds": 30.162473
+    }
+  ],
+  "final_confirmation_description": "One final-source run, then the same source/runtime with only animation cache retention disabled (--ei-rebuild-animation-caches); both 30-second co-op host measurements, no profiler."
+}

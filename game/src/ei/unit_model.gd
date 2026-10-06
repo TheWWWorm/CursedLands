@@ -892,6 +892,11 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 				set_detailed_head(GameData.option("gfx_detailed_heads") != 0)
 
 	player = AnimationPlayer.new()
+	# The authored rig/library is fixed for this model's lifetime. Finishing
+	# a movement-start or cross clip need not re-resolve every track in it.
+	if ClassDB.class_has_method("AnimationPlayer", "set_preserve_track_caches_on_finish") \
+			and not OS.get_cmdline_user_args().has("--ei-rebuild-animation-caches"):
+		player.call("set_preserve_track_caches_on_finish", true)
 	player.name = "AnimationPlayer"
 	add_child(player)
 	player.root_node = NodePath("..")

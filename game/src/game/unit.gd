@@ -501,6 +501,9 @@ func refresh_figure() -> void:
 	var shown := figure_info()
 	if model.get_meta("complexion", Vector3.INF) == shown.complexion:
 		return
+	# The replacement copies the old rig's current keys and transforms.
+	# Materialize a hidden figure's deferred pose before reading those keys.
+	model.flush_pending_pose()
 	var m := EIUnitModel.create(shown, false, false)
 	if m == null:
 		return
@@ -2889,6 +2892,8 @@ func restore_blood_pool(value: Variant) -> void:
 ## death clip from its start every time the corpse was hovered. `at_end`: the
 ## clip's last frame (corpses of a restored zone / a late joiner).
 func freeze_pose(at_end := false) -> void:
+	if world and is_instance_valid(world.ground_marks):
+		world.ground_marks.queue_unit(self)
 	if model == null or model.player == null:
 		return
 	var p := model.player
@@ -3247,6 +3252,8 @@ static var native_unobserved_pose := ClassDB.class_has_method("AnimationPlayer",
 
 func anim_flush(defer_pose := false) -> void:
 	if _anim_acc > 0.0 and model and model.player:
+		if world and is_instance_valid(world.ground_marks):
+			world.ground_marks.queue_unit(self)
 		var a := _anim_acc
 		_anim_acc = 0.0
 		if _anim_roots.is_empty():

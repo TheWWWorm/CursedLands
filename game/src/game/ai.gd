@@ -816,6 +816,8 @@ func _reachable(u: GameUnit, o: GameUnit) -> bool:
 	var reach: float = u.stats.reach if u.stats.get("ranged", false) else u.melee_reach(o)
 	if u.pos.distance_to(o.pos) <= reach:
 		return true
+	if world.nav.target_is_sealed(u, o, reach):
+		return false
 	var d := u.dist3(o)
 	var limit := 3.0*d+10.0 if u.controller < 0 else 3.0*minf(d,10.0)+10.0
 	var path := world.nav.find_path(u.pos,o.pos,[u,o],[],0.0,u.move_class(),true,NAN,limit,0.0,u.controller < 0)
@@ -1321,6 +1323,8 @@ func _reach_option(u: GameUnit, opt: Dictionary, t: GameUnit) -> bool:
 	var reach := float(opt.range)
 	if t == u or u.pos.distance_to(t.pos) <= reach:
 		return true
+	if world.nav.target_is_sealed(u, t, reach):
+		return false
 	var limit := 3.0*u.dist3(t)+10.0
 	var path := world.nav.find_path(u.pos,t.pos,[u,t],[],0.0,u.move_class(),true,NAN,limit,0.0,u.controller < 0)
 	var end := path[-1] if not path.is_empty() and u.path_fits(path, t.pos, limit) else u.pos

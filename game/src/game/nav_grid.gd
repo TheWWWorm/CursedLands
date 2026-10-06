@@ -1566,6 +1566,44 @@ func nearest_walkable_for(u: GameUnit, p: Vector2, radius := 6.0, cls := WALK_CL
 	return out
 
 
+## A bounded reachability certificate for AI target selection. It can only
+## reject a target when every cell reachable from the actor is inside a small
+## sealed pocket and none can put the actor in range. Open or large regions
+## fall through to the ordinary planner; this never supplies a movement path.
+var reach_pockets := true
+
+func target_is_sealed(mover: GameUnit, target: GameUnit, reach: float) -> bool:
+	if not reach_pockets or not exact_search:
+		return false
+	var started := Time.get_ticks_usec() if profile_paths else 0
+	var start := cell(mover.pos)
+	if not _in(start): return false
+	var rect := Rect2i(start-Vector2i(8,8),Vector2i(17,17))
+	var old_lifted := _ctx_lifted
+	var old_avoid := _ctx_avoid
+	var old_moving := _ctx_moving_rect
+	var old_threshold := _ctx_thr
+	_ctx_lifted = [mover,target]
+	_ctx_avoid = []
+	_ctx_moving_rect = Rect2i()
+	_ctx_thr = stamp_threshold(mover.body_radius())
+	var threshold := _ctx_thr
+	var stamps := _paint_stamp_window(rect)
+	_ctx_lifted = old_lifted
+	_ctx_avoid = old_avoid
+	_ctx_moving_rect = old_moving
+	_ctx_thr = old_threshold
+	var sealed := false
+	if not stamps.is_empty():
+		var graph = native_graph(layer(mover.move_class()))
+		sealed = graph.sealed_reach(rect,start,target.pos,reach,stamps,threshold)
+	if profile_paths:
+		profile_totals.reach_checks = int(profile_totals.get("reach_checks",0))+1
+		profile_totals.reach_pruned = int(profile_totals.get("reach_pruned",0))+int(sealed)
+		profile_totals.reach_us = int(profile_totals.get("reach_us",0))+Time.get_ticks_usec()-started
+	return sealed
+
+
 ## The original cell path in EI xy, with its actual final point. GameUnit
 ## builds the native spline from these cells; diagnostics may opt into LOS.
 ## The stamps of the `ignore` units are lifted for the search (the mover and,

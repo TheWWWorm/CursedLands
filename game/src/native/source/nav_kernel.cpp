@@ -13,6 +13,7 @@
 #include <godot_cpp/variant/rect2i.hpp>
 #include <algorithm>
 #include <cstdint>
+#include <cmath>
 #include <functional>
 #include <queue>
 #include <vector>
@@ -39,6 +40,7 @@ class TerrainSearchKernel : public RefCounted {
     static constexpr int order[8] = {4,5,6,7,3,2,1,8};
 protected:
     static void _bind_methods() {
+        ClassDB::bind_method(D_METHOD("sealed_reach", "rect", "start", "target", "reach", "stamp", "threshold"), &TerrainSearchKernel::sealed_reach);
         ClassDB::bind_method(D_METHOD("configure", "size", "land", "costs", "heights", "slopes"), &TerrainSearchKernel::configure);
         ClassDB::bind_method(D_METHOD("distances", "rect", "start", "reverse", "goals"), &TerrainSearchKernel::distances);
         ClassDB::bind_method(D_METHOD("block_route", "sources", "targets", "avoid", "read_edges"), &TerrainSearchKernel::block_route);
@@ -65,6 +67,43 @@ public:
         for (int64_t i = 0; i < slopes.size(); ++i) {
             if ((slopes[i] >= 0) != (slopes[slopes.size() - 1 - i] >= 0)) {
                 topology_undirected = false; break;
+            }
+        }
+        return true;
+    }
+    // A conservative bounded flood for AI reachability, not a route search.
+    // Exhausting a closed component proves failure; all uncertainty falls back.
+    bool sealed_reach(Rect2i rect, Vector2i start, Vector2 target, double reach,
+                      const PackedInt32Array &stamp, int threshold) const {
+        const int rw = rect.size.x, rh = rect.size.y;
+        const int64_t n = int64_t(rw) * rh;
+        if (!width || rw <= 0 || rh <= 0 || n > 4096 || stamp.size() != n ||
+            !std::isfinite(reach) || !target.is_finite() || !rect.has_point(start) || start.x < 0 || start.y < 0 || start.x >= width || start.y >= height) return false;
+        std::vector<uint8_t> seen(n, 0);
+        std::array<int, 128> pending;
+        int count = 1;
+        pending[0] = (start.y - rect.position.y) * rw + start.x - rect.position.x;
+        seen[pending[0]] = 1;
+        const auto *st = stamp.ptr(); const auto *l = land.ptr(); const auto *c = costs.ptr();
+        const auto *h = heights.ptr(); const auto *s = slopes.ptr();
+        const double radius = std::max(reach, 0.0) + 0.354;
+        for (int at = 0; at < count; ++at) {
+            const int i = pending[at], x = rect.position.x + i % rw, y = rect.position.y + i / rw;
+            const double rx = x * 0.5 + 0.25 - target.x, ry = y * 0.5 + 0.25 - target.y;
+            if (rx * rx + ry * ry <= radius * radius) return false;
+            const int gi = y * width + x;
+            const int64_t barrier = std::max(int64_t(threshold), int64_t(st[i]) - 1);
+            for (int k : order) {
+                const int qx = x + dx[k], qy = y + dy[k];
+                if (qx < 0 || qy < 0 || qx >= width || qy >= height) continue;
+                const int qg = qy * width + qx;
+                const int64_t dh = int64_t(h[qg]) - h[gi] + 1023;
+                if (l[qg] || c[qg] < 0 || dh < 0 || dh >= slopes.size() || s[dh] < 0) continue;
+                if (!rect.has_point(Vector2i(qx, qy))) return false;
+                const int qi = (qy - rect.position.y) * rw + qx - rect.position.x;
+                if (seen[qi] || st[qi] > barrier) continue;
+                if (count == int(pending.size())) return false;
+                seen[qi] = 1; pending[count++] = qi;
             }
         }
         return true;

@@ -1,5 +1,25 @@
 # Changelog
 
+## Unreleased
+
+- Avoid full route construction for attack/spell choices when a bounded local
+  reachability check proves the actor cannot get into range. Open or uncertain
+  cases retain the existing planner; all units keep their current simulation rate.
+- Feed footsteps and ground deformation from animation advances instead of
+  scanning every unit on every rendered frame. Preserve contact geometry,
+  footprint events, camera shakes, death cleanup and the Experimental 3 fixes.
+- Rebuild the Linux and Windows native modules with the reachability helper.
+- Retain character animation track bindings when a movement-start, posture
+  transition or one-shot clip finishes. This avoids repeatedly rebuilding a
+  model's animation lookup. Playback timing and pose evaluation are unchanged;
+  unmodified Godot retains its existing behavior through capability checks.
+- Materialize a hidden character's current pose before rebuilding its figure
+  for strength/size effects, so the replacement does not inherit stale keys.
+- See the [Portal host investigation](docs/performance-portal-2026-10-07.md):
+  the supplied co-op scene improved from 2.94 to 5.50 average FPS on the Linux
+  test machine. The host remains CPU-bound; co-op quest-script reports are open.
+
+
 ## 1.0.3 Experimental 3
 
 - Include the completed Lost in Astral, fog and soft-ground fixes from the private `lia-test6` build alongside Experimental 2's default CPU improvements.

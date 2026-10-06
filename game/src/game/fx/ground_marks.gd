@@ -80,7 +80,7 @@ var _tables := {}               # "blood" / "foot" -> Array of [alpha, life, fad
 var _cells := {}                # texture cell key -> ImageTexture
 var _images := {}               # texture name -> Image
 var _steps := {}                # template -> {clip: {act, steps, hit}}
-var _scan_stamp := 0
+var _pending_units := {}        # units whose animation advanced since the last draw
 var _units := {}                # unit instance id -> per-unit step state
 var _ext := {}                  # "<instance id>:<part>" -> Vector2 half-extents
 var _sole_meshes := {}          # weak mesh reference + its immutable local vertices
@@ -102,6 +102,12 @@ static func of(w: GameWorld) -> GroundMarks:
 
 
 func _ready() -> void:
+	# Animation advances enqueue their owners. Drain after unit/model drawing,
+	# so paused and unchanged figures cost nothing per rendered frame.
+	process_priority = 1
+	world.ground_marks = self
+	world.unit_spawned.connect(queue_unit)
+	world.unit_died.connect(_unit_died)
 	_rng.randomize()
 	for k in [["blood", "blood_prints"], ["foot", "foot_prints"], ["fire", "fire_prints"]]:
 		var rows := []
@@ -110,6 +116,12 @@ func _ready() -> void:
 				rows.append(Array(r.get("normal", [0.0, 0, 0])))
 		_tables[k[0]] = rows
 	GameData.options_changed.connect(_apply_options)
+	_scan_units()
+
+
+func _exit_tree() -> void:
+	if is_instance_valid(world) and world.ground_marks == self:
+		world.ground_marks = null
 
 
 ## The prints.db row [alpha, life, fade] of a ground type. The original takes the
@@ -143,7 +155,7 @@ func _process(dt: float) -> void:
 		n += 1
 	if acc >= TICK:
 		acc = fmod(acc, TICK)
-	_scan_units()
+	_drain_units()
 
 
 ## World tick: each mark's update, removed at life 0.
@@ -388,32 +400,49 @@ func pool(u: GameUnit) -> void:
 	add_blood(p.x, p.y, r, r * 3.0, (_rng.randi() % 2 + 2) | ((bt - 1) << 16), false)
 
 
-## Units each frame: the step frames of the walk / run clip.
+## Explicit resynchronization after attaching the effect system. Normal
+## frames consume only the animation worklist; tools may rescan after seeking.
 func _scan_units() -> void:
-	if world == null or world.terrain == null:
-		return
-	_scan_stamp += 1
-	var seen := 0
+	if world == null: return
 	for u: GameUnit in world.units.values():
-		if not is_instance_valid(u) or u.model == null or u.model.player == null:
-			continue
-		var key := u.get_instance_id()
-		var st: StepState = _units.get(key)
-		if st == null:
-			st = StepState.new()
-			_units[key] = st
-		if st.seen != _scan_stamp:
-			seen += 1
-		st.seen = _scan_stamp
+		queue_unit(u)
+	_drain_units()
+
+
+func queue_unit(u: GameUnit) -> void:
+	if not is_instance_valid(u): return
+	var key := u.get_instance_id()
+	if not _units.has(key):
+		_units[key] = StepState.new()
+		var cleanup := _forget_unit.bind(key)
+		if not u.tree_exiting.is_connected(cleanup):
+			u.tree_exiting.connect(cleanup, CONNECT_ONE_SHOT)
+	_pending_units[key] = u
+
+
+func _forget_unit(key: int) -> void:
+	if _units.has(key):
+		_clear_deform_contacts(_units[key])
+		_units.erase(key)
+	_pending_units.erase(key)
+
+
+func _unit_died(u: GameUnit, _killer: GameUnit) -> void:
+	var st: StepState = _units.get(u.get_instance_id())
+	if st != null: _clear_deform_contacts(st)
+
+
+func _drain_units() -> void:
+	if world == null or world.terrain == null: return
+	for key: int in _pending_units:
+		var u: GameUnit = _pending_units[key]
+		if not is_instance_valid(u): continue
+		var st: StepState = _units[key]
 		if u.dead:
 			_clear_deform_contacts(st)
-			continue
-		_step_frames(u, st)
-	if _units.size() > seen:
-		for k in _units.keys():
-			if _units[k].seen != _scan_stamp:
-				_clear_deform_contacts(_units[k])
-				_units.erase(k)
+		elif u.model != null and u.model.player != null:
+			_step_frames(u, st)
+	_pending_units.clear()
 	if tick >= _sole_sweep and _sole_meshes.size() > 256:
 		_sole_sweep = tick + 40
 		for key in _sole_meshes.keys():
@@ -543,7 +572,7 @@ func _plant_step(u: GameUnit, n: Node3D, left: bool, fp: int, st: Variant) -> vo
 func _clear_deform_contacts(st: StepState) -> void:
 	if st.contacts.is_empty():
 		return
-	var details := world.terrain.details if world and world.terrain else null
+	var details := world.terrain.details if is_instance_valid(world) and is_instance_valid(world.terrain) else null
 	if is_instance_valid(details) and is_instance_valid(details.soft_ground):
 		for id: int in st.contacts:
 			details.soft_ground.forget_contact(id)
