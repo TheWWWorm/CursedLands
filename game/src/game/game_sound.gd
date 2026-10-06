@@ -319,7 +319,7 @@ func _send_combat_flags() -> void:
 	var parties := {}
 	for p in s.state.heroes if s.state else {}:
 		parties[int(p)] = true
-	for u: GameUnit in _world.units.values():
+	for u: GameUnit in _world.party_units():
 		if not is_instance_valid(u) or u.controller < 0:
 			continue
 		parties[u.controller] = true

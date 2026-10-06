@@ -1,1 +1,1 @@
-{"enabled_classes":["RefCounted","OS","Script"]}
+{"enabled_classes":["RefCounted","OS","Script","AStarGrid2D"]}

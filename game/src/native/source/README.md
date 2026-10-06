@@ -11,6 +11,24 @@ with the `-- --ei-script-nav` diagnostic launch option. Android, Web, and macOS
 export presets exclude the desktop extension and use that implementation.
 The current packaged targets are Windows x86-64 and Linux x86-64.
 
+`NavigationBuildKernel` constructs the initial height/liquid cells, dry-cell
+classification, movement-class weights and dilation, AStar grids, and connected
+regions in bulk. It returns the same packed arrays consumed by the existing
+search and dynamic-update code. Region relabeling after object/lever changes also
+uses the helper. Component IDs retain first-cell row order. Inputs are current
+map data; no navigation state is read from a persistent cache.
+
+`NavGrid` keeps its original script construction when the new class is absent,
+including with older desktop libraries, or when `-- --ei-script-nav` is set.
+The build profile includes `AStarGrid2D` for the bulk grid writes.
+
+Derived foliage masks have a separate, platform-independent cache under
+`user://cache/foliage-v1`. Entries are keyed by normalized source pixels,
+dimensions and texture name, contain checksummed RGBA data, and are replaced
+atomically. A missing, stale, corrupt or unwritable entry uses ordinary mask
+generation. Bump the cache version when changing the mask algorithm/regions.
+No original game data or generated cache entries belong in an export.
+
 
 `UnitQueryKernel` accelerates ordered cell filtering and nearby-unit list
 validation. Every combat query samples the actual live registry, including
@@ -72,7 +90,34 @@ through the same number of native simulation ticks.
 Performance measurements must compare equal simulation work in release builds.
 Headless fixed-step throughput is CPU cost, not a measurement of player FPS.
 
+`nav_build_test.gd` compares every generated array and AStar cell against the
+frozen script builder, with all eight classes, boundary costs, liquid/height
+cases, and object/floor insertion/removal. `nav_build_map_test.gd` repeats the
+comparison on actual maps. The frozen reference changes only its class name and
+the typing of unused path-refinement calls. `foliage_cache_test.gd` compares all
+supported atlas pixels/mipmaps and checks content invalidation and corruption.
+
 The unit-query tests also cover registry mutation, freed nodes, script
 replacement and exact cell boundaries/order. Geometry comparisons cover
 clipping, projection modes, morphs and cache reuse. Run the native helper
 suites under address/undefined-behavior sanitizers in a private test build.
+
+## Shared AI activity pass
+
+`AIActivityKernel` summarizes faction/stimulus masks in spatial cells from packed
+arrays, then marks potentially active observers. It is an intentionally
+conservative activity filter, separate from exact sight and combat decisions.
+Its standalone `ai_activity_core.h` uses only owned C++ data and does not access
+Godot objects, scene state, shared mutable caches or RNG. Linux and Windows
+ship the kernel; the same scheduler has a GDScript fallback on other platforms.
+`-- --ei-script-activity` selects that fallback. `-- --ei-legacy-ai` disables
+reactive scheduling entirely. See `docs/ai_activity.md` for behavior and wake-up
+contracts. The earlier statement about leaving AI scheduling in GDScript still
+applies: only the packed activity calculation is native.
+
+`tools/ai_activity_test.gd` checks the bridge and scheduler;
+`tools/ai_activity_core_test.cpp` can be compiled independently with C++17 and
+ASan/UBSan. Its optional extra argument runs synthetic scaling measurements.
+`tools/reactive_gameplay_test.gd` checks real-map reaction, stealth and patrols.
+The main-world CPU cost includes packing, live eligibility checks and the
+existing unit loop; kernel timings alone are not a gameplay benchmark.

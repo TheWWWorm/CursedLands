@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.0.3 Experimental 2
+
+- Add shared AI activity scheduling: calm NPCs keep their patrol deadlines and movement while avoiding redundant decisions. Combat, player orders, scripts and wake-up events retain their ordinary updates. The default scheduler does not use camera visibility.
+- Reduce repeated AI/party/quest-light reads and footprint bookkeeping during gameplay.
+- In repeated River and Islands starting-scene tests on a Ryzen 9 5950X/RTX 3090, average FPS increased by about 13% at normal speed and 32% at double speed versus Experimental 1, with Distant AI off. See [measurements and limits](docs/performance-experimental-2.md).
+- Build navigation grids in bulk on Windows/Linux and cache derived foliage masks locally to shorten subsequent map loads.
+- Retain all Experimental 1 fixes and its existing desktop animation runtime. The optional Distant AI approximation remains off by default; it is separate from the new scheduler.
+- Derived activity state is rebuilt after loading; the save format and co-op protocol remain unchanged. All co-op participants should use this same experimental build.
+- Internal ambient random-number consumption can differ from the old scheduler. Full campaign playthroughs and Windows/macOS/Android device testing remain outstanding.
+
 ## 1.0.3
 
 - Windows retains its unsigned native acceleration module. If it cannot load, startup stops with a localized explanation and an Open Windows Security button instead of silently continuing through the script path. Windows can still show its own policy dialog first.

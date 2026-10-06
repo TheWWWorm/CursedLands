@@ -160,6 +160,8 @@ const OPTIONS := [
 	# Explicit exit-ground clicks by default (user request); optional automatic arrival.
 	["auto_exit", 1, 2, 18, 6, 0],
 	["mechanism_motion", 1, 2, 18, 7, 0],
+	# Optional approximation for distant NPC decisions; exact behavior is the default.
+	["distant_ai", 1, 2, 18, 8, 0],
 	# Network and co-op (group 19): the co-op host's rules — full experience
 	# for every party member (XpRules), monster scaling to the player count
 	# (MobScaling: Off / Light / Normal / Strong), shared loot
@@ -306,6 +308,7 @@ const REMAKE_OPTIONS := {
 	"cam_follow": ["Camera follows the hero", "Modern camera: follows the selected hero until you pan away. Home, F1-F3 or a portrait double-click centres and resumes following. Moving a hero never pulls the camera back. Off: these controls centre without following."],
 	"cam_see_through": ["See-through objects", "Modern camera: trees, houses and rocks that hide your heroes fade to see-through."],
 	"unit_fog": ["Fog of war (single player)", "Enemies and other people are only seen within reach of your party's eyes: 2 × the larger of sight and life sense + 5 m around each party member, as the original's network game does. Off: the original single player, everyone on the map is drawn."],
+	"distant_ai": ["Distant AI (experimental)", "Reduce CPU use by making distant, idle NPCs decide less often. Nearby units, combat and active orders keep their normal update rate. Offscreen reactions and patrol timing can change. Requires fog of war in single player; the host controls this in co-op."],
 	"coop_full_xp": ["Full experience for every party member", "Co-op host: every player's hero and every mercenary gets the whole experience of a kill or quest. Off: the original network rule (shared among the players' heroes by experience, mercenaries get none). Single player is not affected."],
 	"coop_share_loot": ["Shared loot", "Co-op host: whatever a player finds — loot from bodies and chests, a theft, the money and items of a conversation or quest reward — every other player gets an identical copy of in their own bag, and the same money. Trades and items passed between players are not copied; quest items count for the whole party anyway. Off: as the original, a find belongs to whoever takes it."],
 	"coop_scale": ["Scale monsters to player count", "Co-op host: monsters get more health and hit harder for each player beyond the first (Light +25 % health / +12.5 % damage, Normal +50 % / +25 %, Strong +100 % / +50 % per extra player). Off: as the original."],
@@ -331,7 +334,7 @@ const OPTIONS_APPLIED := ["volume_sfx", "volume_stream", "volume_voice", "power_
 	"gfx_sharp_units", "q_aa", "q_shadows", "q_shadow_fit", "q_aniso", "confine_mouse",
 	"display_mode", "resolution", "fps_limit", "vsync", "show_fps", "render_scale", "phys_interp",
 	"camera_style", "cam_pan_speed", "cam_rotate_speed", "cam_zoom_speed", "cam_follow", "village_start_view",
-	"cam_see_through", "cam_wasd", "coop_full_xp", "coop_scale", "net_upnp", "net_websocket", "unit_fog", "path_through", "sp_full_xp", "aim_press_once", "start_zones", "sp_death_notice", "revive", "coop_player_names", "coop_share_loot", "enemy_hp_bars", "smile_faces",
+	"cam_see_through", "cam_wasd", "coop_full_xp", "coop_scale", "net_upnp", "net_websocket", "unit_fog", "distant_ai", "path_through", "sp_full_xp", "aim_press_once", "start_zones", "sp_death_notice", "revive", "coop_player_names", "coop_share_loot", "enemy_hp_bars", "smile_faces",
 	"pad_enabled", "pad_rumble", "pad_deadzone", "pad_cursor_speed", "pad_target_radius", "pad_wheel_pause", "pad_glyphs", "pad_swap_sticks", "pad_light", "pad_gyro", "pad_gyro_sensitivity", "auto_graphics", "renderer"]
 signal options_changed
 const GFX_REV := 4

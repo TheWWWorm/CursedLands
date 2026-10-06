@@ -19,7 +19,9 @@
 
 #include "window_frontier.h"
 #include "unit_query.h"
+#include "ai_activity.h"
 #include "screen_rect.h"
+#include "nav_build.h"
 #include <godot_cpp/variant/dictionary.hpp>
 using namespace godot;
 
@@ -481,6 +483,7 @@ static void initialize_kernel(ModuleInitializationLevel level) {
         GDREGISTER_CLASS(TerrainWindowFrontier); GDREGISTER_CLASS(TerrainSearchKernel);
         GDREGISTER_CLASS(UnitNoticeLifetime); GDREGISTER_CLASS(UnitQueryKernel);
         GDREGISTER_CLASS(ScreenRectKernel);
+        GDREGISTER_CLASS(NavigationBuildKernel); GDREGISTER_CLASS(AIActivityKernel);
     }
 }
 static void terminate_kernel(ModuleInitializationLevel) {}

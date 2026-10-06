@@ -31,6 +31,9 @@ var ai: UnitAI
 var corpse_pools: CorpsePools
 var vm: ScriptVM
 var units := {}          # uid -> GameUnit
+var _party_rows: Array = []
+var _party_revision := -1
+var _party_units: Array[GameUnit] = []
 ## Looted corpses taken off the world (Session.take_loot): uid -> GameUnit,
 ## out of the tree. the original's drops the object from the server
 ## but the script variables that hold it keep it, and WasLooted (builtin
@@ -110,6 +113,30 @@ func _ready() -> void:
 	# Keep that order with native frame delivery and preserve caller overrides.
 	if authority and not _fixed_step and process_priority == 0:
 		process_priority = -2
+
+
+## Read-only party membership in registry order.
+## The registry is public (scripts/tests may replace or reorder entries), so
+## compare its exact values as well as the controller revision.
+## Callers still read current health, visibility and positions themselves.
+func party_units() -> Array[GameUnit]:
+	var rows := units.values()
+	var changed := rows != _party_rows or _party_revision != GameUnit.notice_revision
+	if not changed:
+		for u in _party_units:
+			if not is_instance_valid(u):
+				changed = true
+				break
+	if changed:
+		_party_rows = rows
+		_party_revision = GameUnit.notice_revision
+		var selected: Array[GameUnit] = []
+		for u in rows:
+			if is_instance_valid(u) and u.controller >= 0:
+				selected.append(u)
+		selected.make_read_only()
+		_party_units = selected
+	return _party_units
 
 
 func _register_object(node: Node3D) -> void:
@@ -255,6 +282,7 @@ func spawn_unit(record: Dictionary) -> GameUnit:
 		u.free()
 		return null
 	units[u.uid] = u
+	ai.activity.invalidate()
 	_seq_n += 1
 	u._seq = _seq_n
 	nav.rebucket(u)
@@ -272,6 +300,7 @@ func remove_unit(u: GameUnit) -> void:
 	u._seq = 0
 	nav.untrack_unit(u)
 	units.erase(u.uid)
+	ai.activity.invalidate()
 	u.queue_free()
 
 
@@ -281,6 +310,7 @@ func remove_looted(u: GameUnit) -> void:
 	u._seq = 0
 	nav.untrack_unit(u)
 	units.erase(u.uid)
+	ai.activity.invalidate()
 	u.set_meta("looted", true)
 	looted[u.uid] = u
 	if u.get_parent():
@@ -394,6 +424,14 @@ func order_near_units(list: Array) -> Array:
 	if list.size() < 2:
 		return list
 	_spatial_order()
+	return _order_near_units_current(list)
+
+
+# The synchronous bucket read cannot change membership after units_near
+# sampled it. Reuse that order without allocating another registry snapshot.
+func _order_near_units_current(list: Array) -> Array:
+	if list.size() < 2:
+		return list
 	if ai and ai._unit_query and list.size() < 1048576:
 		return ai._unit_query.order_units(list, _spatial_ranks)
 	var keys := PackedInt64Array()
@@ -417,7 +455,7 @@ func units_near(p: Vector2, r: float) -> Array:
 	# global queries. Negative radii historically use r*r in this API too.
 	if authority and _spatial_registered and is_finite(r) and r >= 0.0 \
 			and is_finite(p.x) and is_finite(p.y) and nav.local_bucket_query(p, r):
-		return order_near_units(nav.units_all_around(p, r, false))
+		return _order_near_units_current(nav.units_all_around(p, r, false))
 	var out := []
 	var r2 := r * r
 	for candidate in _spatial_rows:
@@ -469,6 +507,7 @@ func set_relation(fa: int, fb: int, v: int) -> void:
 	#  changes only this row. Its notification replaces that
 	# side's bit in each affected unit's hostility mask, including hit hate.
 	diplomacy[fa * 32 + fb] = v
+	ai.activity.invalidate()
 	for u: GameUnit in units.values():
 		if u.faction != fa or not u.has_meta("hate"):
 			continue
@@ -672,6 +711,7 @@ func _tick_body(dt: float) -> void:
 	if lever_sys:
 		lever_sys.tick()
 	time += dt
+	ai.activity.begin_tick(dt)
 	# Native5d53b0 ticks the selected motivation once per completed server
 	# dispatch. Counting floor(time/55ms) loses/doubles rolls when the double
 	# world clock straddles a rounding boundary. Fractional diagnostic _tick
@@ -683,6 +723,7 @@ func _tick_body(dt: float) -> void:
 		if chat:
 			ai.chatter(u, dt)
 	profile_record("units",started)
+	ai.activity.end_tick()
 	# Magic traps update on the 55 ms server tick.
 	_trap_t += dt
 	while _trap_t >= GameUnit.TICK:

@@ -49,6 +49,8 @@ var pos := Vector2.ZERO:
 		pos = v
 		if _seq != 0:
 			world.nav.rebucket(self)
+			if world.ai.activity.enabled:
+				world.ai.activity.moved(self)
 ## Order of registration in GameWorld.units (0 = not in it): nearby-unit
 ## queries return units in this order, the order of a scan of `units`.
 var _seq := 0
@@ -3046,7 +3048,7 @@ func _anim_lod_setup() -> void:
 		add_child(_body)
 
 
-static var defer_hidden_pose := true
+static var defer_hidden_pose := not OS.get_cmdline_user_args().has("--ei-eager-poses")
 
 
 func _process(dt: float) -> void:

@@ -5,6 +5,8 @@ extends RefCounted
 ## the original's "Player" motivation with their Aggressive / Defensive mode.
 
 var world: GameWorld
+var distant: DistantAI
+var activity: AIActivity
 ## Per-world derived grid coordinates. Values hold no nodes; deleted units
 ## cannot be retained by this cache. FIFO bounding only causes recomputation.
 const NOTICE_CELL_CAP := 1024
@@ -14,6 +16,8 @@ var _unit_query: RefCounted
 
 func _init(w: GameWorld) -> void:
 	world = w
+	distant = DistantAI.new(w)
+	activity = AIActivity.new(w)
 	if ClassDB.class_exists("UnitQueryKernel") and not "--ei-script-units" in OS.get_cmdline_user_args():
 		_unit_query = ClassDB.instantiate("UnitQueryKernel")
 
@@ -56,27 +60,48 @@ static func fearful(u: GameUnit) -> bool:
 ## past the list): model 0 has no motivation at all, model 4 the Player
 ## motivation (case 4, think runs _player). Heroes whose player
 ## left (a remake feature) keep the remake's set.
+const EMPTY_LOGIC_LIST: Array = []
+const EMPTY_DESCRIPTOR: Dictionary = {}
+const MOT_NONE := {"fight": "none", "susp": false, "corpse": false, "fear": -1}
+const MOT_AGGRESSION := {"fight": "aggression", "susp": true, "corpse": true, "fear": -1}
+const MOT_HERO := {"fight": "standard", "susp": true, "corpse": true, "fear": -1}
+const MOT_HERO_REVENGE := {"fight": "revenge", "susp": true, "corpse": true, "fear": -1}
+const MOT_STANDARD := {"fight": "standard", "susp": true, "corpse": true, "fear": 0}
+const MOT_REVENGE := {"fight": "revenge", "susp": true, "corpse": true, "fear": 0}
+const MOT_CORPSE := {"fight": "none", "susp": false, "corpse": true, "fear": 0}
+const MOT_FEAR := {"fight": "none", "susp": false, "corpse": true, "fear": 1}
+
+
+# ScriptVM callers edit this result before storing a new UM record.
 func mots(u: GameUnit) -> Dictionary:
+	return _read_mots(u).duplicate()
+
+
+# Internal readers do not mutate these shared, read-only default records.
+# Explicit UM values remain sampled and converted on every call.
+func _read_mots(u: GameUnit, lg: Dictionary = EMPTY_DESCRIPTOR) -> Dictionary:
 	if u.has_meta("um"):
 		var m: Dictionary = u.get_meta("um")
 		return {"fight": String(m.get("fight", "none")), "susp": bool(m.get("susp", false)),
 			"corpse": bool(m.get("corpse", false)), "fear": int(m.get("fear", -1))}
-	var lg := logic(u)
+	if lg.is_empty():
+		lg = logic(u)
 	var ag := int(lg.get("aggression", 0))
 	var model := int(lg.get("logic_model", 3))
 	if u.mode == "aggression":
-		return {"fight": "aggression", "susp": true, "corpse": true, "fear": -1}
+		return MOT_AGGRESSION
 	if u.has_meta("hero"):
-		return {"fight": "revenge" if ag == 1 else "standard", "susp": true, "corpse": true, "fear": -1}
+		return MOT_HERO_REVENGE if ag == 1 else MOT_HERO
 	if model == 0 or model == 4:
-		return {"fight": "none", "susp": false, "corpse": false, "fear": -1}
+		return MOT_NONE
 	match ag:
-		0: return {"fight": "standard", "susp": true, "corpse": true, "fear": 0}
-		1: return {"fight": "revenge", "susp": true, "corpse": true, "fear": 0}
-		2: return {"fight": "none", "susp": false, "corpse": true, "fear": 0}
-	return {"fight": "none", "susp": false, "corpse": true, "fear": 1}
+		0: return MOT_STANDARD
+		1: return MOT_REVENGE
+		2: return MOT_CORPSE
+	return MOT_FEAR
 
 
+## AIActivity can bypass redundant calm decisions; actions and timers still tick.
 ## The AI tick of a unit with nothing to do. the original runs the AI of every
 ## unit every 55 ms logic tick (creature
 ## no stagger); the remake runs it once
@@ -95,25 +120,29 @@ func think_profile_body(u: GameUnit) -> void:
 	var now := world.time
 	if now < u.ai_next:
 		return
+	if activity._valid and activity.enabled and activity.defer_decision(u):
+		return
+	if distant.enabled and not distant.should_think(u):
+		return
 	u.ai_next = now + GameUnit.TICK - 0.0001
 	# Script UMPlayer (builtin 0x31) gives an AI unit the Player motivation
 	#  the player units have.
 	if u.controller >= 0 or u.mode == "player":
 		_player(u)
 		return
+	var lg := logic(u)
 	if u.mode == "standard" and not u.has_meta("um") and not u.has_meta("hero"):
 		# logic model 4 = the Player motivation alone, model 0 =
 		# no motivation (the alarm check still runs).
-		var lm := int(logic(u).get("logic_model", 3))
+		var lm := int(lg.get("logic_model", 3))
 		if lm == 0 or lm == 4:
-			_alarm_check(u)
+			_alarm_check(u, lg)
 			if lm == 4:
 				_player(u)
 			return
-	var ms := mots(u)
-	var known: Variant = _alarm_check(u)   # before the motivations
+	var ms := _read_mots(u, lg)
+	var known: Variant = _alarm_check(u, lg)   # before the motivations
 	var home: Vector2 = u.mode_data.point if u.mode_data.has("point") else _home(u)
-	var lg := logic(u)
 	var fight: String = ms.fight
 	var foes := []
 	var have_foes := false
@@ -698,7 +727,7 @@ func player_perceive_profile_body(u: GameUnit, force := false) -> Dictionary:
 		if not can_notice_with(u, o, k): continue
 		if o.dead:
 			corpses[id] = o
-			if world.relation(u.faction, o.faction) == 0 and mots(u).corpse:
+			if world.relation(u.faction, o.faction) == 0 and _read_mots(u).corpse:
 				suspect(u, o.pos, 800.0, -3.0)
 		else:
 			keep[id] = o
@@ -748,7 +777,7 @@ func _fights(o: GameUnit, u: GameUnit) -> bool:
 func _in_aggression(o: GameUnit, u: GameUnit) -> bool:
 	if o.controller >= 0 or o.mode == "player":
 		return false   # the Player motivation, no Aggression
-	var fight := String(mots(o).fight)
+	var fight := String(_read_mots(o).fight)
 	if fight == "none":
 		return false
 	var busy := String(o.order.get("type", "")) in ["attack", "cast"]
@@ -1334,7 +1363,7 @@ func rechoose_profile_body(u: GameUnit) -> bool:
 		return false
 	u.set_meta("ai_rechoose", now + GameUnit.TICK - 0.0001)
 	# Fear's kiting (15000) beats Aggression mid-fight too.
-	var fear := int(mots(u).fear)
+	var fear := int(_read_mots(u).fear)
 	if fear >= 0 and _fear_priority(u, fear) >= 15000:
 		u.set_meta("fear_on", true)
 		_fear_tick(u, fear)
@@ -1390,7 +1419,7 @@ func on_attacked(u: GameUnit, by: GameUnit) -> void:
 	# 1000 (-2 a tick) at the attacker.
 	if world.relation(u.faction, by.faction) != 0:
 		suspect(u, by.pos, 1000.0)
-	var fight := String(mots(u).fight)
+	var fight := String(_read_mots(u).fight)
 	if u.mode == "standard" and not u.has_meta("um") and not u.has_meta("hero") \
 			and int(logic(u).get("logic_model", 3)) in [0, 4]:
 		fight = "none"   # model 4's Player motivation answers in _player
@@ -1864,7 +1893,7 @@ func _calm_busy(u: GameUnit) -> bool:
 ## The unit's current logic descriptor (AI = its index; 0 unless an
 ## alarm switched it); the unit record itself without any.
 func logic(u: GameUnit) -> Dictionary:
-	var ls: Array = u.info.get("logic", [])
+	var ls: Array = u.info.get("logic", EMPTY_LOGIC_LIST)
 	var i := int(u.get_meta("logic_idx", 0))
 	return ls[i] if i < ls.size() else u.info
 
@@ -1983,8 +2012,10 @@ func invoke_alarm(i: int, at: Vector2, force: bool) -> void:
 ## `_motivation_alert`).
 ## Returns the `enemies(u)` it took when nothing changed after (no alert
 ## raised), for think to reuse; else null.
-func _alarm_check(u: GameUnit) -> Variant:
-	var c := int(logic(u).get("alarm_cond", 0))
+func _alarm_check(u: GameUnit, lg: Dictionary = EMPTY_DESCRIPTOR) -> Variant:
+	if lg.is_empty():
+		lg = logic(u)
+	var c := int(lg.get("alarm_cond", 0))
 	if (c == 0 or c == 2) and not u.has_meta("alerted"):
 		var foes := enemies(u)
 		if foes.is_empty():

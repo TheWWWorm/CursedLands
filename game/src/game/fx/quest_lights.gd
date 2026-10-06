@@ -15,6 +15,7 @@ extends Node
 
 const COLOR := Color8(96, 40, 112)
 const RADIUS := 10.0
+const EMPTY_INFO: Dictionary = {}
 
 var game: Game
 var _world: GameWorld
@@ -104,12 +105,16 @@ func _refresh_objects() -> void:
 		carriers[u.uid] = u
 	for nid: int in carriers:
 		var obj = carriers[nid]
-		if not _current_carrier(nid, obj):
+		if not is_instance_valid(obj) or not obj is Node3D:
 			continue
 		var node: Node3D = obj
 		var info := String((node as GameUnit).info.get("quest_info", "")) if node is GameUnit \
-			else String(node.get_meta("ei", {}).get("quest_info", ""))
+			else String(node.get_meta("ei", EMPTY_INFO).get("quest_info", ""))
 		if info.is_empty():
+			continue
+		# Most scenery has no quest light. Validate registration only for
+		# actual carriers, after the cheap metadata filter.
+		if not _current_carrier(nid, obj):
 			continue
 		# "q." + current zone id + "." + OBJ_QUEST_INFO.
 		var value := _value(info)

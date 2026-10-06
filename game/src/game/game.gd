@@ -655,7 +655,7 @@ func attach_world(w: GameWorld) -> void:
 func my_units() -> Array[GameUnit]:
 	var out: Array[GameUnit] = []
 	if world:
-		for u: GameUnit in world.units.values():
+		for u: GameUnit in (world.party_units() if session.my_index >= 0 else world.units.values()):
 			if u.controller == session.my_index and not u.dead:
 				out.append(u)
 	# Party member indices belong to the roster, not the world's insertion

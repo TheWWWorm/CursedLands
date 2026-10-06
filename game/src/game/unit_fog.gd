@@ -98,7 +98,7 @@ static func party_eyes_for(w: GameWorld, player: int, shared := false) -> Array:
 	var eyes := []
 	if w == null:
 		return eyes
-	for m: GameUnit in w.units.values():
+	for m: GameUnit in w.party_units():
 		if m.dead or m.hidden or m.controller < 0:
 			continue
 		if not shared and m.controller != player:
@@ -117,7 +117,7 @@ static func noticed_for(s: Session, player: int, living_sources_only := false) -
 	var ids := {}
 	var w := s.world
 	var shared := s.online and s.lmp.is_empty()
-	for m: GameUnit in w.units.values():
+	for m: GameUnit in w.party_units():
 		if not is_instance_valid(m) or m.controller < 0 or (not shared and m.controller != player):
 			continue
 		ids[m.uid] = true

@@ -226,6 +226,21 @@ var _memo_complete := true
 var _memo_end_written := false
 
 
+var _build_kernel: RefCounted
+var _build_kernel_checked := false
+
+
+## Old desktop helpers and platforms without the extension retain the same
+## script implementation. Construction is stateless; live edits still use
+## the current arrays, and never rely on a saved map cache.
+func _native_builder() -> RefCounted:
+	if not _build_kernel_checked:
+		_build_kernel_checked = true
+		if not OS.get_cmdline_user_args().has("--ei-script-nav") and ClassDB.class_exists("NavigationBuildKernel"):
+			_build_kernel = ClassDB.instantiate("NavigationBuildKernel")
+	return _build_kernel
+
+
 func build(t: EITerrain, water_levels: PackedFloat32Array, objects: Array) -> void:
 	terrain = t
 	map_rev += 1
@@ -277,30 +292,41 @@ func build(t: EITerrain, water_levels: PackedFloat32Array, objects: Array) -> vo
 		and t.water_mat.size() == water_levels.size()
 	_liq.resize(n)
 	_liq.fill(255)
-	for cy in size.y:
-		var qy := cy >> 1
-		var ny := 0 if (cy & 1) == 0 else w   # row of the nearest quad corner
-		for cx in size.x:
-			var qx := cx >> 1
-			var nx := cx & 1
-			# half the nearest quad corner + a quarter of each of the
-			# two corners sharing an edge with it.
-			var vi := qy * w + qx
-			var gz := hs[vi + ny + nx] * 0.5 + (hs[vi + ny + (1 - nx)] + hs[vi + (w - ny) + nx]) * 0.25
-			var i := cy * size.x + cx
-			_h0[i] = gz
-			_hq0[i] = roundi(gz * _alt)
-			var q := qy * qw + qx
-			_cost0[i] = cost_of[int(t.ground[q]) & 31] if has_ground else 2
-			if has_water:
-				# the depth in height steps, 6 bits (63 = deeper)
-				# a cell is under water when it rounds to 1 or more.
-				var dep := maxf(0.0, water_levels[q] - gz)
-				if roundi(dep * _alt) >= 1:
-					_depth0[i] = dep
-					if has_liq and t.liquid_ground[q] != 255 and liq_ok[t.water_mat[q]] == 1:
-						_liq[i] = t.liquid_ground[q] & 31
-						_cost0[i] = cost_of[_liq[i]]
+	var builder := _native_builder()
+	var base: Dictionary = builder.base_cells({"size":size,"grid_width":w,"heights":hs,"water":water_levels,
+		"ground":t.ground,"water_mat":t.water_mat,"liquid":t.liquid_ground,"liq_ok":liq_ok,
+		"cost_of":cost_of,"alt":_alt}) if builder else {}
+	if not base.is_empty():
+		_h0 = base.h
+		_hq0 = base.hq
+		_cost0 = base.cost
+		_depth0 = base.depth
+		_liq = base.liq
+	else:
+		for cy in size.y:
+			var qy := cy >> 1
+			var ny := 0 if (cy & 1) == 0 else w   # row of the nearest quad corner
+			for cx in size.x:
+				var qx := cx >> 1
+				var nx := cx & 1
+				# half the nearest quad corner + a quarter of each of the
+				# two corners sharing an edge with it.
+				var vi := qy * w + qx
+				var gz := hs[vi + ny + nx] * 0.5 + (hs[vi + ny + (1 - nx)] + hs[vi + (w - ny) + nx]) * 0.25
+				var i := cy * size.x + cx
+				_h0[i] = gz
+				_hq0[i] = roundi(gz * _alt)
+				var q := qy * qw + qx
+				_cost0[i] = cost_of[int(t.ground[q]) & 31] if has_ground else 2
+				if has_water:
+					# the depth in height steps, 6 bits (63 = deeper)
+					# a cell is under water when it rounds to 1 or more.
+					var dep := maxf(0.0, water_levels[q] - gz)
+					if roundi(dep * _alt) >= 1:
+						_depth0[i] = dep
+						if has_liq and t.liquid_ground[q] != 255 and liq_ok[t.water_mat[q]] == 1:
+							_liq[i] = t.liquid_ground[q] & 31
+							_cost0[i] = cost_of[_liq[i]]
 	_h = _h0.duplicate()
 	_hq = _hq0.duplicate()
 	_cost = _cost0.duplicate()
@@ -310,21 +336,34 @@ func build(t: EITerrain, water_levels: PackedFloat32Array, objects: Array) -> vo
 		_add_footprint(o, _footprint(o))
 	for i: int in _floors:
 		_apply_floor(i)
-	# Slopes.
-	for cy in range(1, size.y - 1):
-		for cx in range(1, size.x - 1):
-			_steep[cy * size.x + cx] = _steep_at(cy * size.x + cx)
-	# Dry cell values (the same for every class); wet cells and cells under
-	# object spans are left to the layers.
-	_dry_raw.resize(n)
-	_dry_raw.fill(0)
-	_dry_weight.resize(n)
-	_dry_weight.fill(1.0)
-	_special.resize(n)
-	_special.fill(0)
-	for i in n:
-		_dry_cell(i)
-	_rebuild_lists()
+	var prepared: Dictionary = builder.prepare({"size":size,"hq":_hq,"cost":_cost,"depth":_depth,
+		"spans":_spans,"slope60":_slope_tab[0],"slope40":_slope_tab[1]}) if builder else {}
+	if not prepared.is_empty():
+		_steep = prepared.steep
+		_steep_cells = prepared.steep_cells
+		_dry_raw = prepared.raw
+		_dry_weight = prepared.weight
+		_special = prepared.special
+		_special_cells = prepared.special_cells
+		_mode_w = prepared.mode
+		_dry_diff = prepared.diff
+		_lists_dirty = false
+	else:
+		# Slopes.
+		for cy in range(1, size.y - 1):
+			for cx in range(1, size.x - 1):
+				_steep[cy * size.x + cx] = _steep_at(cy * size.x + cx)
+		# Dry cell values (the same for every class); wet cells and cells under
+		# object spans are left to the layers.
+		_dry_raw.resize(n)
+		_dry_raw.fill(0)
+		_dry_weight.resize(n)
+		_dry_weight.fill(1.0)
+		_special.resize(n)
+		_special.fill(0)
+		for i in n:
+			_dry_cell(i)
+		_rebuild_lists()
 	layer(WALK_CLASS)
 
 
@@ -462,6 +501,24 @@ func layer(cls: int) -> Layer:
 func _build_layer(cls: int) -> Layer:
 	if _lists_dirty:
 		_rebuild_lists()
+	var builder := _native_builder()
+	if builder:
+		var built: Dictionary = builder.build_layer({"size":size,"cls":cls,"alt":_alt,"mode":_mode_w,
+			"dry_raw":_dry_raw,"dry_weight":_dry_weight,"steep":_steep,"special_cells":_special_cells,
+			"diff":_dry_diff,"cost":_cost,"depth":_depth,"hq":_hq,"spans":_spans,
+			"fixed":_fixed_sets.get(_group(cls), PackedByteArray())})
+		if not built.is_empty():
+			var result := Layer.new()
+			result.cls = cls
+			result.astar = built.astar
+			result.raw = built.raw
+			result.land = built.land
+			result.cost = built.cost
+			result.bmin = built.bmin
+			result.comp = built.comp
+			_fixed_sets[_group(cls)] = built.fixed
+			_paint_layer_units(result)
+			return result
 	var L := Layer.new()
 	L.cls = cls
 	var n := size.x * size.y
@@ -533,14 +590,19 @@ func _build_layer(cls: int) -> Layer:
 	while i0 >= 0:
 		A.set_point_solid(Vector2i(i0 % size.x, i0 / size.x))
 		i0 = land.find(1, i0 + 1)
+	_paint_layer_units(L)
+	_label(L)
+	return L
+
+
+func _paint_layer_units(L: Layer) -> void:
+	var A := L.astar
 	for b: Array in _buckets.values():
 		for u: GameUnit in b:
 			if u._occ_cell.x >= 0:
 				for off: Vector2i in _stamp_offsets(u._occ_r):
 					if _in(u._occ_cell + off):
 						A.set_point_solid(u._occ_cell + off)
-	_label(L)
-	return L
 
 
 ## The class group sharing the dry / slope closures (_fixed).
@@ -1113,6 +1175,12 @@ static func _local_xf(n: Node3D, root: Node3D) -> Transform3D:
 ## Labels the 8-connected regions of cells open to terrain and objects, so a
 ## search for a cut-off goal need not flood the whole region first.
 func _label(L: Layer) -> void:
+	var builder := _native_builder()
+	if builder:
+		var labels: PackedInt32Array = builder.labels(size, L.land)
+		if labels.size() == size.x * size.y:
+			L.comp = labels
+			return
 	# 8-connected regions of the open cells, numbered by their first cell in
 	# row order. Done on the row runs of open cells (found with find(), so
 	# the cells are not walked one by one in GDScript) joined by union-find:

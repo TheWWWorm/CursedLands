@@ -53,6 +53,20 @@ class Mark:
 	var decal: Decal
 
 
+## Persistent typed state avoids rebuilding a set and looking up dictionary fields for
+## every unit on every rendered frame. Clip time stays live; death pools retain their authoritative event path.
+class StepState:
+	var clip := ""
+	var frame := 0.0
+	var bloody := -1
+	var left := 0
+	var wait := 0
+	var raw := -1.0
+	var anim := &""
+	var clip_name := ""
+	var seen := 0
+
+
 var world: GameWorld
 var tick := 0
 var acc := 0.0
@@ -63,6 +77,7 @@ var _tables := {}               # "blood" / "foot" -> Array of [alpha, life, fad
 var _cells := {}                # texture cell key -> ImageTexture
 var _images := {}               # texture name -> Image
 var _steps := {}                # template -> {clip: {act, steps, hit}}
+var _scan_stamp := 0
 var _units := {}                # unit instance id -> per-unit step state
 var _ext := {}                  # "<instance id>:<part>" -> Vector2 half-extents
 var _rng := RandomNumberGenerator.new()
@@ -372,42 +387,48 @@ func pool(u: GameUnit) -> void:
 func _scan_units() -> void:
 	if world == null or world.terrain == null:
 		return
-	var seen := {}
+	_scan_stamp += 1
+	var seen := 0
 	for u: GameUnit in world.units.values():
 		if not is_instance_valid(u) or u.model == null or u.model.player == null:
 			continue
 		var key := u.get_instance_id()
-		seen[key] = true
-		var st: Dictionary = _units.get(key, {})
-		if st.is_empty():
-			st = {"clip": "", "frame": 0.0, "bloody": -1, "left": 0, "wait": 0}
+		var st: StepState = _units.get(key)
+		if st == null:
+			st = StepState.new()
 			_units[key] = st
+		if st.seen != _scan_stamp:
+			seen += 1
+		st.seen = _scan_stamp
 		if u.dead:
 			continue
 		_step_frames(u, st)
-	if _units.size() > seen.size():
+	if _units.size() > seen:
 		for k in _units.keys():
-			if not seen.has(k):
+			if _units[k].seen != _scan_stamp:
 				_units.erase(k)
 
 
-func _step_frames(u: GameUnit, st: Dictionary) -> void:
+func _step_frames(u: GameUnit, st: StepState) -> void:
 	var pl := u.model.player
 	var anim: StringName = pl.current_animation
 	if anim == &"":
 		st.clip = ""
 		st.frame = 0.0
-		st.erase("raw")
-		st.erase("anim")
+		st.raw = -1.0
+		st.anim = &""
+		st.clip_name = ""
 		return
 	# Early out while the pose has not moved (idle units, and the off-screen
 	# ones the animation LOD steps only now and then).
 	var raw := pl.current_animation_position
-	if raw == float(st.get("raw", -1.0)) and anim == st.get("anim", &""):
+	if raw == st.raw and anim == st.anim:
 		return
 	st.raw = raw
-	st.anim = anim
-	var clip := String(anim).trim_prefix("ei/")
+	if anim != st.anim:
+		st.anim = anim
+		st.clip_name = String(anim).trim_prefix("ei/")
+	var clip := st.clip_name
 	if clip == "":
 		return
 	var cur := raw * EIAnim.FPS
@@ -460,7 +481,7 @@ func _step_shake(u: GameUnit) -> void:
 ## half-extents, moved back by half of them along the facing, at angle
 ## π − acos(dir.y) (negated for dir.x < 0); feet stay bloody for rand(4) + 4
 ## more steps after a pool.
-func _step(u: GameUnit, i: int, st: Dictionary) -> void:
+func _step(u: GameUnit, i: int, st: Variant) -> void:
 	var fp := int(u.race.get("footprint_type", -1))
 	var leg := int(u.race.get("leg_segment", 0))
 	if fp < 0 or leg <= 0 or leg >= 9:

@@ -89,6 +89,52 @@ static func blend_layer(base: Image, layer: Image, profile: Vector3) -> void:
 
 
 static var _foliage := {}
+const FOLIAGE_CACHE := "user://cache/foliage-v1"
+const FOLIAGE_MAGIC := "EIFOL001"
+
+
+static func _foliage_hash(data: PackedByteArray) -> PackedByteArray:
+	var hash := HashingContext.new()
+	hash.start(HashingContext.HASH_SHA256)
+	hash.update(data)
+	return hash.finish()
+
+
+## Hash the decoded source as well as its dimensions: edited/modded assets
+## never inherit a mask from another installation. Bump the directory version
+## whenever the mask algorithm or identified atlas regions change.
+static func _foliage_path(name: String, size: Vector2i, source: PackedByteArray) -> String:
+	return FOLIAGE_CACHE.path_join("%s-%dx%d-%s.bin" % [name,size.x,size.y,_foliage_hash(source).hex_encode()])
+
+
+static func _foliage_read(path: String, size: Vector2i) -> PackedByteArray:
+	if not FileAccess.file_exists(path): return PackedByteArray()
+	var f := FileAccess.open(path, FileAccess.READ)
+	var bytes := size.x * size.y * 4
+	if f == null or f.get_length() != 48 + bytes: return PackedByteArray()
+	if f.get_buffer(8).get_string_from_ascii() != FOLIAGE_MAGIC or f.get_32() != size.x or f.get_32() != size.y:
+		return PackedByteArray()
+	var checksum := f.get_buffer(32)
+	var data := f.get_buffer(bytes)
+	return data if data.size() == bytes and _foliage_hash(data) == checksum else PackedByteArray()
+
+
+static func _foliage_write(path: String, size: Vector2i, data: PackedByteArray) -> void:
+	if DirAccess.make_dir_recursive_absolute(path.get_base_dir()) != OK: return
+	# Rename a complete file into place; simultaneous game processes never read
+	# a half-written entry. Cache failures leave ordinary generation available.
+	var temporary := path + ".%d.tmp" % OS.get_process_id()
+	var f := FileAccess.open(temporary, FileAccess.WRITE)
+	if f == null: return
+	f.store_buffer(FOLIAGE_MAGIC.to_ascii_buffer())
+	f.store_32(size.x)
+	f.store_32(size.y)
+	f.store_buffer(_foliage_hash(data))
+	f.store_buffer(data)
+	var ok := f.get_error() == OK
+	f.close()
+	if not ok or DirAccess.rename_absolute(temporary,path) != OK:
+		DirAccess.remove_absolute(temporary)
 
 ## R = leaf transmission; G = bark relief. Atlas coordinates are normalized,
 ## so the mask also lines up with the optional HD albedo without regeneration.
@@ -110,6 +156,14 @@ static func foliage_mask(texture: String) -> Texture2D:
 	var data := img.get_data()
 	var width := img.get_width()
 	var height := img.get_height()
+	var cache_path := _foliage_path(name, img.get_size(), data)
+	var cached := _foliage_read(cache_path, img.get_size())
+	if not cached.is_empty():
+		var mask := Image.create_from_data(width, height, false, Image.FORMAT_RGBA8, cached)
+		mask.generate_mipmaps()
+		var result := ImageTexture.create_from_image(mask)
+		_foliage[name] = result
+		return result
 	for y in height:
 		for x in width:
 			var uv := Vector2((x + 0.5) / width, (y + 0.5) / height)
@@ -124,6 +178,7 @@ static func foliage_mask(texture: String) -> Texture2D:
 			data[i + 1] = 255 if bark_region(name, uv) and data[i + 3] > 245 else 0
 			data[i + 2] = 0
 			data[i + 3] = 255
+	_foliage_write(cache_path, img.get_size(), data)
 	var mask := Image.create_from_data(width, height, false, Image.FORMAT_RGBA8, data)
 	mask.generate_mipmaps()
 	var result := ImageTexture.create_from_image(mask)
