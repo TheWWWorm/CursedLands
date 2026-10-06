@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.0.3 Experimental 3
+
+- Include the completed Lost in Astral, fog and soft-ground fixes from the private `lia-test6` build alongside Experimental 2's default CPU improvements.
+- Direct named locations now load immediately, including the Lost in Astral recruiter round trip, without opening an empty map chooser.
+- Restore Lost in Astral movie narration, pause menu music during the intro and rebuild previously silent movie caches automatically.
+- Correct expansion NPC faces in the world and character preview, and use the runtime prototype outfits and weapons when map equipment is not an active override. Equipment changes survive saves and network records.
+- Hide the invisible map blockers' stray editor triangles while retaining their collision and script objects.
+- Conceal the outer map rim with an opaque 4-metre strip and a softer falloff that clears by 17 metres. Border fog and the lower sky share the horizon colour; volumetric mist no longer attenuates diffuse light twice. Applies to both campaigns.
+- Show carried quest items in the upper belt row, separately from consumable quick items, in both campaigns.
+- Snow and sand deformation produces continuous trails following rendered soles, paws and leg tips, including legged enemies. Snow banks have softer uneven edges and local geometry shadows; sand impressions are much shallower. Tracks fade within four minutes, use bounded caches and clear on map changes or loads.
+- Retain the faster footprint bookkeeping and authoritative corpse effects from Experimental 2. Co-op protocol remains 4; all participants should use the same experimental build.
+- See the [combined-build measurements and validation](docs/experimental-3.md): 869 packaged Linux checks passed; the tested scene averaged 3–5% lower FPS than Experimental 2, with overlapping run ranges.
+
 ## 1.0.3 Experimental 2
 
 - Add shared AI activity scheduling: calm NPCs keep their patrol deadlines and movement while avoiding redundant decisions. Combat, player orders, scripts and wake-up events retain their ordinary updates. The default scheduler does not use camera visibility.

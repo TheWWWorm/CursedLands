@@ -609,6 +609,9 @@ static func apply_npc_character(u: GameUnit, h: Dictionary) -> void:
 ## import 0, so a mercenary carries its prototype's kit; Merc1 (basecam.mob,
 ## Human Mercenary Warrior) the stone axe and the stone short bow once each.
 static func merc_kit(rec: Dictionary, proto: Dictionary) -> Dictionary:
+	if rec.get("_equipment_resolved", false):
+		return {"weapons": Array(rec.get("weapons", [])), "armors": Array(rec.get("armors", [])),
+			"spells": Array(rec.get("spells", [])), "quick": Array(rec.get("quick_items", []))}
 	var low := func(x): return String(x).to_lower()
 	var imports := Combat.mob_imports(rec)
 	var weapons: Array = Array(proto_weapons(proto)).map(low)
@@ -631,6 +634,26 @@ static func merc_kit(rec: Dictionary, proto: Dictionary) -> Dictionary:
 		spells.append_array(Array(rec.get("spells", [])).map(low))
 	var quick: Array = Array(rec.get("quick_items", [])).map(low).slice(0, BELT_SLOTS)
 	return {"weapons": weapons.slice(0, 4), "armors": armors, "spells": spells, "quick": quick}
+
+
+## Map files retain editor equipment even when the runtime prototype changed.
+## Native 5927c0 -> 5141f0 equips the prototype first; 477b00 applies map
+## armour/weapons only when its import block is active. Resolve once so saved
+## or network records and later equipment changes keep their current kit.
+static func map_unit_record(rec: Dictionary) -> Dictionary:
+	if not rec.has("need_import") or rec.get("_equipment_resolved", false):
+		return rec
+	var proto := GameData.db.find("monster_prototypes", rec.get("prototype", rec.get("parent_template", "")))
+	if proto.is_empty():
+		return rec
+	var kit := merc_kit(rec, proto)
+	var out := rec.duplicate()
+	out.armors = PackedStringArray(kit.armors)
+	out.weapons = PackedStringArray(kit.weapons)
+	out.spells = PackedStringArray(kit.spells)
+	out.quick_items = PackedStringArray(kit.quick)
+	out._equipment_resolved = true
+	return out
 
 
 ## The hired mercenary keeps its map name "merc<N>" (its display name is

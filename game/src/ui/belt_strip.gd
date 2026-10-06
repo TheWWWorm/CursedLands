@@ -2,8 +2,10 @@ class_name BeltStrip
 extends Control
 ## The selected hero's belt (quick items) bottom right (the original
 ## builds it, fills it): eight 50×50 cells in 520..720 ×
-## 500..600 of the 800×600 layout, the entry (i) — for a hero the
-## player's list (stack count ≥ 1), else unit [0..3] —
+## 500..600 of the 800×600 layout. The lower four are (i) — for a hero the
+## player's list (stack count ≥ 1), else unit [0..3]
+## the upper four show the local main hero's carried quest items (0x3009,
+## player bag). Each item is
 ## drawn as its 3D model centred at (695 − 50 i, 575) for i < 4, then
 ## (695 − 50 (i − 4), 525): from the bottom right cell leftwards, then the
 ## top row, (…, 20) at scale 0.55 (bottom) / 0.85 (top), in the
@@ -76,18 +78,26 @@ func _has_point(p: Vector2) -> bool:
 func _process(_dt: float) -> void:
 	var u: GameUnit = game.selected[0] if game and not game.selected.is_empty() and is_instance_valid(game.selected[0]) else null
 	var q: Array = u.get_meta("hero").get("quick", []) if u and u.has_meta("hero") else []
+	var items := ["", "", "", "", "", "", "", ""]
+	for i in mini(q.size(), 4):
+		items[i] = q[i]
+	if u and u.has_meta("hero") and not u.get_meta("hero").has("merc") and u.controller == game.session.my_index:
+		var quest: Array = game.session.state.quest_items.keys() if game.session.lmp.is_empty() \
+			else game.session.coop.owner_bag(game.session.my_index).filter(func(it): return Items.kind(String(it)) == "quest")
+		for i in mini(quest.size(), 4):
+			items[4 + i] = quest[i]
 	# The unit's instance, not its uid: after a reload the party is new units
 	# with the same uids (see SpellSlots._process).
-	var sig := "%s:%s:%s:%s" % [u.get_instance_id() if u else 0, ",".join(q), size, game.pending_spell]
+	var sig := "%s:%s:%s:%s" % [u.get_instance_id() if u else 0, ",".join(items), size, game.pending_spell]
 	if sig == _sig:
 		return
 	_sig = sig
 	_unit = u
-	_items = q.slice(0, SLOTS)
+	_items = items
 	var k := size.y / 100.0   # pixels per 800×600 unit
 	for i in SLOTS:
 		var r := _cell_rect(i)
-		var picked := i < _items.size() and game.pending_spell == "%s%d:%s" % [Game.BELT, u.uid if u else -1, _items[i]]
+		var picked: bool = i < 4 and not _items[i].is_empty() and game.pending_spell == "%s%d:%s" % [Game.BELT, u.uid if u else -1, _items[i]]
 		# the bottom row is 0.55 / 0.65, the top 0.85 / 1.0.
 		# Unclipped: the view is twice the cell.
 		var sc := (0.65 if picked else 0.55) if i < 4 else (1.0 if picked else 0.85)
@@ -96,15 +106,15 @@ func _process(_dt: float) -> void:
 		_views[i].unit_px = k * 400.0 / ItemView.K * sc / 20.0
 		_views[i].screen_at = Vector3(695.0 - 50.0 * (i % 4), 575.0 if i < 4 else 525.0, 20.0 / sc)
 		_views[i].add_color = Color8(0x40, 0x40, 0x40) if picked else Color(0, 0, 0)
-		_views[i].visible = i < _items.size()
+		_views[i].visible = not _items[i].is_empty()
 		_views[i].item = "~"
-		_views[i].show_item(_items[i] if i < _items.size() else "")
+		_views[i].show_item(_items[i])
 	queue_redraw()
 
 
 func _slot_at(p: Vector2) -> int:
 	for i in _items.size():
-		if _cell_rect(i).has_point(p):
+		if not _items[i].is_empty() and _cell_rect(i).has_point(p):
 			return i
 	return -1
 
@@ -115,6 +125,8 @@ func _get_tooltip(p: Vector2) -> String:
 	if i < 0:
 		return ""
 	var it := String(_items[i])
+	if i >= 4:   # quest items have a name, no consumable hotkey
+		return Items.title(it)
 	return GameData.tip_key(tooltip_text(it), 42 + i)
 
 
@@ -200,7 +212,13 @@ func _gui_input(e: InputEvent) -> void:
 ##  (now = true: use at once) for cell i.
 func use(i: int, now: bool) -> void:
 	_process(0.0)
-	if i < 0 or i >= _items.size() or _unit == null:
+	if i < 0 or i >= _items.size() or _items[i].is_empty() or _unit == null:
+		return
+	if i >= 4:
+		# The quest row is informational. Native single-click cancels the
+		# current targeting mode; double-click has no consumable to use.
+		if not now:
+			game.cancel_touch_target()
 		return
 	game.touch_aim = -1
 	game.touch_force = ""

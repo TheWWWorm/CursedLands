@@ -41,6 +41,8 @@ uniform float spin = 0.0;
 uniform float fancy = 0.0;   // remake option gfx_sky
 uniform float night = 0.0;
 global uniform vec3 ei_flash;   // remake: lightning sky brighten (Gfx.set_lightning_flash)
+global uniform vec4 ei_border;
+global uniform vec3 ei_fog_col;
 
 // nask0sky.fig rings: radius, height (dome origin = eye − 16 m), v, fog factor, normal z
 const float RR[7] = float[](39.891, 39.109, 37.605, 34.610, 30.084, 24.531, 17.961);
@@ -139,6 +141,12 @@ void sky() {
 		}
 		// remake: a lightning strike lights the clouds (soft flash, ParticleFx)
 		col = mix(col, vec3(0.78, 0.82, 0.9), ei_flash.x);
+	}
+	// The opaque map perimeter fades to ei_fog_col. Continue that same fog
+	// into the lower sky, or dome clouds expose the outline of the map
+	// even when its edge is fully fogged. The menu keeps its native dome.
+	if (ei_border.z > 0.0 && ei_border.w > 0.5) {
+		col = mix(ei_fog_col, col, smoothstep(0.0, 0.35, EYEDIR.y));
 	}
 	COLOR = to_linear(col);
 	#if CURRENT_RENDERER == RENDERER_COMPATIBILITY

@@ -65,6 +65,9 @@ class StepState:
 	var anim := &""
 	var clip_name := ""
 	var seen := 0
+	var contacts: Dictionary = {}
+	var foot_model := 0
+	var feet: Array[WeakRef] = []
 
 
 var world: GameWorld
@@ -80,6 +83,8 @@ var _steps := {}                # template -> {clip: {act, steps, hit}}
 var _scan_stamp := 0
 var _units := {}                # unit instance id -> per-unit step state
 var _ext := {}                  # "<instance id>:<part>" -> Vector2 half-extents
+var _sole_meshes := {}          # weak mesh reference + its immutable local vertices
+var _sole_sweep := 0
 var _rng := RandomNumberGenerator.new()
 static var _dbres: EIResArchive
 
@@ -401,18 +406,25 @@ func _scan_units() -> void:
 			seen += 1
 		st.seen = _scan_stamp
 		if u.dead:
+			_clear_deform_contacts(st)
 			continue
 		_step_frames(u, st)
 	if _units.size() > seen:
 		for k in _units.keys():
 			if _units[k].seen != _scan_stamp:
+				_clear_deform_contacts(_units[k])
 				_units.erase(k)
+	if tick >= _sole_sweep and _sole_meshes.size() > 256:
+		_sole_sweep = tick + 40
+		for key in _sole_meshes.keys():
+			if _sole_meshes[key].ref.get_ref() == null: _sole_meshes.erase(key)
 
 
 func _step_frames(u: GameUnit, st: StepState) -> void:
 	var pl := u.model.player
 	var anim: StringName = pl.current_animation
 	if anim == &"":
+		_clear_deform_contacts(st)
 		st.clip = ""
 		st.frame = 0.0
 		st.raw = -1.0
@@ -441,7 +453,12 @@ func _step_frames(u: GameUnit, st: StepState) -> void:
 	st.frame = cur
 	var rec: Dictionary = _clip_steps(u.model.template).get(clip, {})
 	if rec.is_empty():
+		_clear_deform_contacts(st)
 		return
+	if int(rec.act) in [4, 5] and u.visible and u.stance != GameUnit.STANCE_CRAWL:
+		_deform_feet(u, st)
+	else:
+		_clear_deform_contacts(st)
 	if int(rec.act) == 2:   # clip flags: the shake at record
 		# Skipped while the client's world mode is 3 (
 		# set from world): the village screen.
@@ -484,24 +501,35 @@ func _step_shake(u: GameUnit) -> void:
 func _step(u: GameUnit, i: int, st: Variant) -> void:
 	var fp := int(u.race.get("footprint_type", -1))
 	var leg := int(u.race.get("leg_segment", 0))
-	if fp < 0 or leg <= 0 or leg >= 9:
+	if leg <= 0 or leg >= 9:
 		return
 	var left := i & 1 == 0
 	if bool(u.race.get("first_step_right", false)):
 		left = not left
 	var part := ("ll%d" if left else "rl%d") % leg
 	var n := _part(u, part)
-	if n == null:
+	if n != null:
+		_plant_step(u, n, left, fp, st)
 		return
-	var ext := _extent(u, part, n, "foot")
-	var p := ParticleFx.ei(n.global_position)
-	var dir := Vector2(cos(u.facing), sin(u.facing))
-	var ang := PI - acos(clampf(dir.y, -1.0, 1.0))
-	if dir.x < 0.0:
-		ang = -ang
-	if is_instance_valid(world.terrain.details):
-		world.terrain.details.add_step(p.x - ext.x * dir.x * 0.5, p.y - ext.y * dir.y * 0.5, ext.x, ext.y, ang)
-	var found := add_footprint(p.x - ext.x * dir.x * 0.5, p.y - ext.y * dir.y * 0.5, ext.x, ext.y, ang,
+	# Multi-legged figures (including spiders) name their terminal segments
+	# leg1_l4, leg2_r4, etc. Their walking cycle plants alternating tripods.
+	for pair in range(1, 9):
+		var side := left if pair & 1 else not left
+		n = _part(u, "leg%d_%s%d" % [pair, "l" if side else "r", leg])
+		if n != null:
+			_plant_step(u, n, side, fp, st)
+
+
+func _plant_step(u: GameUnit, n: Node3D, left: bool, fp: int, st: Variant) -> void:
+	# A legged creature can displace soft ground without a footprint atlas cell.
+	if fp < 0:
+		return
+	var contact := _sole_contact(n)
+	if contact.is_empty():
+		return
+	var p: Vector2 = contact.p
+	var ext: Vector2 = contact.extent
+	var found := add_footprint(p.x, p.y, ext.x, ext.y, contact.angle,
 		(int(left) << 16) | fp, int(st.bloody))
 	if int(st.left) < 1:
 		st.bloody = -1
@@ -510,6 +538,107 @@ func _step(u: GameUnit, i: int, st: Variant) -> void:
 	if found >= 0:
 		st.bloody = found
 		st.left = _rng.randi() % 4 + 4
+
+
+func _clear_deform_contacts(st: StepState) -> void:
+	if st.contacts.is_empty():
+		return
+	var details := world.terrain.details if world and world.terrain else null
+	if is_instance_valid(details) and is_instance_valid(details.soft_ground):
+		for id: int in st.contacts:
+			details.soft_ground.forget_contact(id)
+	st.contacts.clear()
+
+
+func _deform_feet(u: GameUnit, st: StepState) -> void:
+	var details := world.terrain.details
+	if not is_instance_valid(details) or not is_instance_valid(details.soft_ground):
+		return
+	if int(u.race.get("leg_segment", 0)) <= 0:
+		return
+	if u.global_position.y > world.terrain.ground_at(u.pos.x, u.pos.y) + 0.2:
+		_clear_deform_contacts(st)
+		return
+	if st.foot_model != u.model.get_instance_id():
+		_clear_deform_contacts(st)
+		st.foot_model = u.model.get_instance_id()
+		st.feet = []
+		st.contacts = {}
+		# Terminal hind feet, front paws (shorter chains on quadrupeds), and
+		# each of a spider's legs. Upright hands fail the ground-contact check.
+		var prefixes := ["ll", "rl", "lh", "rh"]
+		for pair in range(1, 9):
+			prefixes.append("leg%d_l" % pair)
+			prefixes.append("leg%d_r" % pair)
+		for prefix: String in prefixes:
+			for segment in range(8, 0, -1):
+				var n := _part(u, prefix + str(segment))
+				if n != null:
+					st.feet.append(weakref(n))
+					break
+	for ref: WeakRef in st.feet:
+		var n := ref.get_ref() as Node3D
+		if n == null:
+			continue
+		var contact := _sole_contact(n)
+		var id := n.get_instance_id()
+		if contact.is_empty():
+			if st.contacts.has(id): st.contacts[id].grounded = false
+			continue
+		var p: Vector2 = contact.p
+		var previous: Dictionary = st.contacts.get(id, {})
+		# The footfall stays at the rendered sole. Its successive plants also
+		# sweep a wider band of loose material, including between footprints.
+		if not previous.is_empty() and previous.grounded and p.distance_squared_to(previous.p) < 0.0036:
+			continue
+		details.add_step(p.x, p.y, contact.extent.x, contact.extent.y, contact.angle, id, p)
+		st.contacts[id] = {"p": p, "grounded": true}
+
+
+func _sole_contact(n: Node3D) -> Dictionary:
+	if n.has_meta(EIFigureGeometry.META):
+		var box := n.global_transform * EIFigureGeometry.box(n.get_meta(EIFigureGeometry.META))
+		var centre := box.get_center()
+		if box.position.y > world.terrain.ground_at(centre.x, -centre.z) + 0.09:
+			return {}
+	var points := PackedVector3Array()
+	var bottom := INF
+	for child: Node in n.get_children():
+		var mi := child as MeshInstance3D
+		if mi == null or mi.mesh == null or not mi.visible:
+			continue
+		var key := mi.mesh.get_instance_id()
+		if not _sole_meshes.has(key):
+			var vertices := PackedVector3Array()
+			for surface in mi.mesh.get_surface_count():
+				vertices.append_array(mi.mesh.surface_get_arrays(surface)[Mesh.ARRAY_VERTEX])
+			_sole_meshes[key] = {"ref": weakref(mi.mesh), "vertices": vertices}
+		var transform := mi.global_transform
+		for vertex: Vector3 in _sole_meshes[key].vertices:
+			var p := transform * vertex
+			points.append(p)
+			bottom = minf(bottom, p.y)
+	if points.is_empty():
+		return {}
+	# Use the actual sole/tip, not the ankle pivot or the whole shin's box.
+	var forward := Vector2(n.global_basis.z.x, -n.global_basis.z.z).normalized()
+	if forward.length_squared() < 0.1: forward = Vector2.UP
+	var across := Vector2(forward.y, -forward.x)
+	var lo := Vector2(INF, INF)
+	var hi := -lo
+	for p: Vector3 in points:
+		if p.y > bottom + 0.035:
+			continue
+		var xy := Vector2(p.x, -p.z)
+		var local := Vector2(xy.dot(across), xy.dot(forward))
+		lo = lo.min(local)
+		hi = hi.max(local)
+	var mid := (lo + hi) * 0.5
+	var p := across * mid.x + forward * mid.y
+	if bottom > world.terrain.ground_at(p.x, p.y) + 0.075:
+		return {}
+	var extent := ((hi - lo) * 0.5).clamp(Vector2(0.025, 0.045), Vector2(0.32, 0.46))
+	return {"p": p, "extent": extent, "angle": forward.angle() - PI * 0.5, "height": bottom}
 
 
 # ------------------------------------------------------------------ unit helpers

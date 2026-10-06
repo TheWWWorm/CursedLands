@@ -1702,6 +1702,10 @@ func leave_zone(target: String, entrance: int, player := -1, source_zone := "", 
 		return
 	if z.get("type", "game") != "edge":
 		travel_options = [{"zone": target, "entrance": entrance, "title": zone_title(target)}]
+		# A named location is a direct transition; only edge zones open the
+		# global map. Small scenes may have no selectable map piece at all.
+		_travel(target, entrance)
+		return
 	else:
 		# The global map's routes (CampaignMap.routes = the original)
 		# from the edge; the older walk over open zones only as a fallback.

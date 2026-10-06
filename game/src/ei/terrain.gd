@@ -62,25 +62,75 @@ uniform sampler2D terrain_cells : filter_nearest, repeat_disable;
 // Highest solid cover per metre, rasterized from existing placed meshes.
 // Rain cannot wet terrain or water underneath a roof / bridge deck.
 uniform sampler2D rain_cover : filter_nearest, repeat_disable;
-// Optional dense snow/sand tiles. R depresses, G raises a shallow rim; all
+// Optional loose surface and dense tracks. R compacts, G displaces banks; all
 // collision heights and the original undeformed sector meshes stay intact.
+uniform bool soft_ground = false;
 uniform bool soft_tracks = false;
 uniform sampler2D soft_track_texture : filter_linear, repeat_disable;
 uniform vec2 soft_track_origin;
+uniform float soft_track_time = 0.0;
 uniform float level[64];
 varying vec3 wpos;
+varying vec2 soft_profile;
+vec2 soft_type(int g) {
+	// Loose layer thickness and maximum compression, in metres. The swept
+	// floor stays near the authored ground where the actor's feet stand.
+	if (g == 9) { return vec2(0.20, 0.30); }
+	if (g == 12) { return vec2(0.075, 0.12); }
+	if (g == 3) { return vec2(0.008, 0.025); }
+	return vec2(0.0);
+}
+int soft_ground_at(ivec2 p) {
+	return int(texelFetch(terrain_tiles, clamp(p, ivec2(0), textureSize(terrain_tiles, 0) - 1), 0).g + 0.5);
+}
+vec2 soft_surface(vec2 p, float height) {
+	ivec2 tile = ivec2(floor(p * 0.5));
+	vec2 profile = soft_type(soft_ground_at(tile));
+	if (profile.x == 0.0) { return vec2(0.0); }
+	// Soft materials of different thickness share the same border height.
+	vec2 grid = p * 0.5 - 0.5;
+	ivec2 base = ivec2(floor(grid));
+	vec2 blend = smoothstep(vec2(0.0), vec2(1.0), fract(grid));
+	profile = mix(mix(soft_type(soft_ground_at(base)), soft_type(soft_ground_at(base + ivec2(1, 0))), blend.x),
+		mix(soft_type(soft_ground_at(base + ivec2(0, 1))), soft_type(soft_ground_at(base + ivec2(1, 1))), blend.x), blend.y);
+	vec2 local = p - vec2(tile) * 2.0;
+	// Taper to zero at hard material boundaries instead of opening cracks
+	// between the loose layer and the original rock/road triangles.
+	float mask = 1.0;
+	if (soft_type(soft_ground_at(tile + ivec2(-1, 0))).x == 0.0) { mask *= smoothstep(0.0, 0.6, local.x); }
+	if (soft_type(soft_ground_at(tile + ivec2(1, 0))).x == 0.0) { mask *= smoothstep(0.0, 0.6, 2.0 - local.x); }
+	if (soft_type(soft_ground_at(tile + ivec2(0, -1))).x == 0.0) { mask *= smoothstep(0.0, 0.6, local.y); }
+	if (soft_type(soft_ground_at(tile + ivec2(0, 1))).x == 0.0) { mask *= smoothstep(0.0, 0.6, 2.0 - local.y); }
+	vec4 cell = textureLod(terrain_cells, p / vec2(textureSize(terrain_cells, 0)), 0.0);
+	float water_y = cell.r + level[clamp(int(cell.a + 0.5), 0, 63)];
+	return profile * mask * smoothstep(0.025, 0.10, height - water_y);
+}
+vec2 soft_uv(vec2 p) {
+	// Both sector textures contain their common boundary sample exactly.
+	return ((p - soft_track_origin) * (511.0 / 32.0) + 0.5) / 512.0;
+}
+float soft_height(vec2 track) {
+	// A new crossing compacts the bank of an older trail too.
+	return track.g * (1.0 - smoothstep(0.05, 0.30, track.r)) - track.r;
+}
+vec2 soft_sample(vec2 uv) {
+	vec4 track = textureLod(soft_track_texture, uv, 0.0);
+	// Coverage-normalized timestamps keep new track edges from inheriting
+	// the zero timestamp of untouched texels late in a long map session.
+	float age = max(soft_track_time - track.b / max(track.a, 1e-5), 0.0);
+	return track.rg * clamp((240.0 - age) / 60.0, 0.0, 1.0);
+}
 void vertex() {
 	wpos = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
-	if (soft_tracks) {
-		int width = textureSize(terrain_tiles, 0).x;
-		int id = int(UV2.y + 0.5);
-		int g = int(texelFetch(terrain_tiles, ivec2(id % width, id / width), 0).g + 0.5);
-		if (g == 3 || g == 9 || g == 12) {
-			vec2 track_uv = (vec2(wpos.x, -wpos.z) - soft_track_origin) / 32.0;
-			vec2 track = textureLod(soft_track_texture, track_uv, 0.0).rg;
-			VERTEX.y += (track.g - track.r) * 0.04;
-			wpos = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
+	soft_profile = vec2(0.0);
+	if (soft_ground) {
+		soft_profile = soft_surface(vec2(wpos.x, -wpos.z), wpos.y);
+		VERTEX.y += soft_profile.x;
+		if (soft_tracks) {
+			vec2 track = soft_sample(soft_uv(vec2(wpos.x, -wpos.z)));
+			VERTEX.y += soft_height(track) * soft_profile.y;
 		}
+		wpos = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
 	}
 	ei_e = COLOR.rgb;
 	ei_k = COLOR.a * 4.0;
@@ -251,24 +301,28 @@ void fragment() {
 		c *= 1.0 - wet * mix(0.23, 0.08, grass);
 		ei_surface = vec3(wet * mix(0.65, 0.15, grass), mix(0.35, 0.65, grass), 0.0);
 	}
-	if (soft_tracks && (ground == 3 || ground == 9 || ground == 12)) {
-		vec2 uv = (vec2(wpos.x, -wpos.z) - soft_track_origin) / 32.0;
+	if (soft_tracks && soft_profile.y > 0.0) {
+		vec2 uv = soft_uv(vec2(wpos.x, -wpos.z));
 		vec2 step_uv = vec2(1.0 / 512.0, 0.0);
-		vec2 a = texture(soft_track_texture, uv - step_uv).rg;
-		vec2 b = texture(soft_track_texture, uv + step_uv).rg;
-		vec2 d = texture(soft_track_texture, uv - step_uv.yx).rg;
-		vec2 e = texture(soft_track_texture, uv + step_uv.yx).rg;
-		vec2 slope = vec2((b.g - b.r) - (a.g - a.r), (e.g - e.r) - (d.g - d.r)) * 0.32;
+		vec2 a = soft_sample(uv - step_uv);
+		vec2 b = soft_sample(uv + step_uv);
+		vec2 d = soft_sample(uv - step_uv.yx);
+		vec2 e = soft_sample(uv + step_uv.yx);
+		vec2 track = soft_sample(uv);
+		vec2 slope = vec2(soft_height(b) - soft_height(a), soft_height(e) - soft_height(d)) * soft_profile.y * (511.0 / 64.0);
 		vec3 wn = normalize((INV_VIEW_MATRIX * vec4(NORMAL, 0.0)).xyz);
 		vec3 track_normal = normalize(wn + vec3(-slope.x, 0.0, slope.y));
-		// The original vertex-lit look has no per-pixel normal response.
-		// Keep tracks legible when this independent option alone is enabled.
+		// The original look has no per-pixel normal response. Keep a gentle
+		// cue there; enhanced materials use their actual light/shadow response.
 		if (ei_surface_fx.x < 0.5 && dot(ei_sun_dir, ei_sun_dir) > 0.5) {
 			float relief = dot(track_normal - wn, normalize(ei_sun_dir));
-			c *= clamp(1.0 + relief * 0.75, 0.65, 1.18);
+			c *= clamp(1.0 + relief * 0.5, 0.78, 1.06);
 		}
 		wn = track_normal;
 		NORMAL = normalize((VIEW_MATRIX * vec4(wn, 0.0)).xyz);
+		// Compacted material is subtly darker; shaped geometry and normals,
+		// rather than a flat dark stamp, provide most of the trail's contrast.
+		c *= 1.0 - track.r * (ground == 3 ? 0.12 : 0.16);
 	}
 	ALBEDO = c;
 	ROUGHNESS = 1.0;
@@ -1105,6 +1159,7 @@ func apply_gfx() -> void:
 	_land_mat.set_shader_parameter("terrain_cells", _cell_tex)
 	_land_mat.set_shader_parameter("terrain_tiles", _tile_tex)
 	_land_mat.set_shader_parameter("rain_cover", _rain_cover)
+	_land_mat.set_shader_parameter("soft_ground", Gfx.on("gfx_soft_ground"))
 	# The original water's terms (also the base of the remake water).
 	var me := PackedVector3Array()
 	var ma := PackedFloat32Array()

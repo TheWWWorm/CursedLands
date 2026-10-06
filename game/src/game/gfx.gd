@@ -43,9 +43,8 @@ const GLOBALS := {
 	&"ei_sun": Color(1.0, 1.0, 1.0),
 	&"ei_fog_col": Color(0.18, 0.71, 0.85),
 	&"ei_fog": Color(90.0, 100.0, 0.0),   # start, end (view depth, m)
-	&"ei_border": Color(0.0, 0.0, 0.0),
-	&"ei_sky": Color(0.18, 0.71, 0.85),
-	&"ei_sun_dir": Color(0.0, 0.0, 0.0),   # world direction towards the sun (update_original)   # Lights [sky]: the clear colour   # map width, height (EI m), BorderFogDistance
+	&"ei_sky": Color(0.18, 0.71, 0.85),   # Lights [sky]: the clear colour
+	&"ei_sun_dir": Color(0.0, 0.0, 0.0),   # world direction towards the sun (update_original)
 	&"ei_surface_fx": Color(1.0, 1.0, 1.0),   # materials, leaf backlight, rain surfaces
 	&"ei_weather": Color(0.0, 0.0, 0.0),   # wetness, current rain intensity, reserved
 	&"ei_sun_pass": Color(0.0, 0.0, 0.0),   # 1: the sun is drawn in its own additive pass (GLES3, shadowed)
@@ -65,7 +64,8 @@ global uniform vec3 ei_ambient;
 global uniform vec3 ei_sun;
 global uniform vec3 ei_fog_col;
 global uniform vec3 ei_fog;
-global uniform vec3 ei_border;
+// Map width/height, fade width, quadratic interior falloff (0 = native linear).
+global uniform vec4 ei_border;
 global uniform vec3 ei_sky;
 global uniform vec3 ei_sun_dir;
 global uniform vec3 ei_sun_pass;
@@ -90,6 +90,7 @@ vec3 ei_lin(vec3 c) {
 // depth fog, so the fog reaches 100 % exactly at the far plane. Border fog
 // within BorderFogDistance B + 1 m of the map edge the vertex
 // fogs by min(d, B) / B, d = the length of the distances into that band.
+// Play maps soften the interior quadratically; the menu keeps its native ramp.
 // `v` view-space, `w` world position.
 vec4 ei_fog_of(vec3 v, vec3 w) {
 	float f = clamp((-v.z - ei_fog.x) / max(ei_fog.y - ei_fog.x, 1e-3), 0.0, 1.0);
@@ -99,10 +100,16 @@ vec4 ei_fog_of(vec3 v, vec3 w) {
 		vec2 lo = min(p - b, vec2(0.0));
 		vec2 hi = min(ei_border.xy - b - p, vec2(0.0));
 		float d = sqrt(dot(lo, lo) + dot(hi, hi));
-		float fb = min(d, ei_border.z) / ei_border.z;
-		// the border always fades into the clear colour [sky] (equal to the
-		// fog colour unless the far view option tints the distance fog)
-		vec3 col = mix(ei_fog_col, ei_sky, fb / max(f + fb, 1e-4));
+		// Outer tiles may slope away below the visible rim. Keep a solid
+		// 4 m cover there; fading from the last vertex exposed that rim.
+		float width = max(ei_border.z - 3.0 * ei_border.w, 1e-3);
+		float fb = min(d, width) / width;
+		fb = mix(fb, fb * fb, ei_border.w);
+		// Play-map borders and the lower sky use the same colour as distance
+		// fog, including the far-view tint. Otherwise a fully fogged edge
+		// still cuts a silhouette against the sky, especially at long range.
+		vec3 border_col = mix(ei_sky, ei_fog_col, ei_border.w);
+		vec3 col = mix(ei_fog_col, border_col, fb / max(f + fb, 1e-4));
 		return vec4(ei_lin(col), max(f, fb));
 	}
 	return vec4(ei_lin(ei_fog_col), f);
@@ -407,6 +414,8 @@ bool ei_mapped_light(vec3 direction, float falloff, vec3 vpos, mat4 view) {
 	return false;
 }
 void light() {
+	// ALBEDO already carries the fog scale. Scale only additive light
+	// contributions explicitly, not the diffuse factors multiplied by it.
 	vec3 ei_alb = ALBEDO;
 	vec3 d = ei_vertex_diffuse;
 	vec3 s = ei_vertex_specular;
@@ -451,14 +460,14 @@ void light() {
 		// Retain the existing facing guard for this separate approximation.
 		float shadow = mix(1.0, mix(0.5, 1.0, ATTENUATION), smoothstep(0.0, 0.15, facing));
 #endif
-		DIFFUSE_LIGHT = max(DIFFUSE_LIGHT, ei_draw_factor(ei_alb, d, s, shadow) /*EI_FA*/);
+		DIFFUSE_LIGHT = max(DIFFUSE_LIGHT, ei_draw_factor(ei_alb, d, s, shadow));
 	} else {
 		// Godot's attenuation0 falloff: (1 - (distance/radius)^4)^2.
 		float a = 1.0 - sqrt(max(1.0 - sqrt(clamp(ATTENUATION, 0.0, 1.0)), 0.0));
 		bool mapped = ei_mapped_light(LIGHT, a, ei_vpos, VIEW_MATRIX);
 		bool have_sun = dot(ei_sun_dir, ei_sun_dir) > 0.5;
 		if (mapped && !have_sun) {
-			DIFFUSE_LIGHT = max(DIFFUSE_LIGHT, ei_draw_factor(ei_alb, d, s, 1.0) /*EI_FA*/);
+			DIFFUSE_LIGHT = max(DIFFUSE_LIGHT, ei_draw_factor(ei_alb, d, s, 1.0));
 		} else if (!mapped) {
 			// The native list has no four-light limit. These remaining Godot
 			// passes cannot recover its full vertex max/shadow, so retain a
@@ -481,7 +490,7 @@ void light() {
 #endif
 			if (ei_sun_pass.x > 0.5 && have_sun) {
 				vec3 over = max(ei_draw_colour(ei_alb, nd, ns) - ei_draw_colour(ei_alb, d, s), vec3(0.0));
-				DIFFUSE_LIGHT = max(DIFFUSE_LIGHT, ei_lin(over) / max(ei_alb, vec3(1e-4)) /*EI_FA*/);
+				DIFFUSE_LIGHT = max(DIFFUSE_LIGHT, ei_lin(over) / max(ei_alb, vec3(1e-4)));
 			} else {
 				float shadow = 1.0;
 				if (have_sun) {
@@ -489,7 +498,7 @@ void light() {
 					float base = dot(ei_draw_colour(ei_alb, d, s), W);
 					if (base > 0.01) { shadow = clamp(dot(ei_srgb(DIFFUSE_LIGHT * ei_alb), W) / base, 0.5, 1.0); }
 				}
-				DIFFUSE_LIGHT = max(DIFFUSE_LIGHT, ei_draw_factor(ei_alb, nd, ns, shadow) /*EI_FA*/);
+				DIFFUSE_LIGHT = max(DIFFUSE_LIGHT, ei_draw_factor(ei_alb, nd, ns, shadow));
 			}
 		}
 	}
@@ -535,6 +544,7 @@ static func ensure_globals() -> void:
 	for k: StringName in GLOBALS:
 		var c: Color = GLOBALS[k]
 		RenderingServer.global_shader_parameter_add(k, RenderingServer.GLOBAL_VAR_TYPE_VEC3, Vector3(c.r, c.g, c.b))
+	RenderingServer.global_shader_parameter_add(&"ei_border", RenderingServer.GLOBAL_VAR_TYPE_VEC4, Vector4.ZERO)
 	for i in PASS_LIGHTS:
 		RenderingServer.global_shader_parameter_add(StringName("ei_pl%d" % i), RenderingServer.GLOBAL_VAR_TYPE_VEC4, Vector4.ZERO)
 		RenderingServer.global_shader_parameter_add(StringName("ei_plc%d" % i), RenderingServer.GLOBAL_VAR_TYPE_VEC4, Vector4.ZERO)
@@ -606,11 +616,13 @@ const FAR_VIEW := 260.0
 const FAR_VIEW_FOG := 1.4
 
 
-## The original default is32m (LIA437b60). The requested
-## boundary treatment keeps full concealment at the outer1m but confines
-## its fade to the perimeter, so playable ground is clear from5m inward.
-## The native falloff remains in ei_fog_of; this narrower default is user policy.
-const BORDER_FOG := 4.0
+## Native default: 32 m (LIA437b60). A linear ramp that wide
+## washes out playable ground; a 4 m ramp leaves the perimeter too exposed.
+## The shared play-map profile is opaque across the outer 4 m, then falls
+## off quadratically: below 1% at 16 m and clear from 17 m. Covering the
+## whole outer tile hides its raised rim as well as its lowest edge vertices.
+## This is a visual refinement against the reference views, not a native value.
+const BORDER_FOG := 16.0
 
 
 ## Native settings live: BorderFogDistance is the same
@@ -638,7 +650,8 @@ static func refresh_border() -> void:
 	var dist := _border_menu
 	if dist < 0.0:
 		dist = BORDER_FOG
-	RenderingServer.global_shader_parameter_set(&"ei_border", Vector3(size_ei.x, size_ei.y, dist))
+	var quadratic := 1.0 if _border_menu < 0.0 else 0.0
+	RenderingServer.global_shader_parameter_set(&"ei_border", Vector4(size_ei.x, size_ei.y, dist, quadratic))
 
 
 const HORIZON_V := 0.383

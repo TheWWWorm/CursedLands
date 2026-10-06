@@ -1,6 +1,7 @@
 class_name SoftGroundDeform
 extends Node
-## Shallow, optional snow/sand geometry displacement. Only stepped-on tiles
+## Optional snow/sand compaction: planted feet and connected travel troughs.
+## Only touched tiles
 ## are tessellated; original triangle planes, UVs and lighting are interpolated.
 ## Per-sector textures and geometry are bounded and discarded on leaving the
 ## world, loading or disabling the option. Saves and collision remain original.
@@ -9,18 +10,25 @@ const TYPES := [3, 9, 12] # authored sand, loose snow, packed snow
 const SECTOR := 32
 const RESOLUTION := 512
 const SUBDIV := 16
-const DEPTH := 0.04
+const DEPTH := 0.30 # maximum loose-snow depth; see the terrain material profiles
 const MAX_SECTORS := 8
 const MAX_TILES := 128
-const MAX_STEPS := 64 # per sector
+const MAX_STEPS := 384 # recent-contact log; the persistent field survives eviction
+const MAX_WALKERS := 1024 # separate foot identities, including multi-legged units
+const LINK_TIME := 8.0 # slow gaits; idle/death explicitly end the contact stream
+const LINK_DISTANCE := 2.5 # never connect teleports or widely separated contacts
 const LIFE := 240.0
 const FADE := 60.0
+const TRAIL_SUPPORT := 2.6 # feathered, irregular shoulders around the swept floor
+
+static var _edge_noise: FastNoiseLite
 
 var terrain: EITerrain
 var sectors := {} # Vector2i -> source mesh/arrays, dense tiles, track image
 var _queue: Array[Dictionary] = []
 var _age := 0.0
 var _refresh := 0.0
+var _walkers := {} # rendered foot identity -> most recent grounded contact
 
 
 func _exit_tree() -> void:
@@ -29,6 +37,7 @@ func _exit_tree() -> void:
 
 func clear() -> void:
 	_queue.clear()
+	_walkers.clear()
 	for key: Vector2i in sectors.keys():
 		_restore(key)
 
@@ -38,6 +47,9 @@ func _restore(key: Vector2i) -> void:
 	var node := (rec.node as WeakRef).get_ref() as MeshInstance3D
 	if node:
 		node.mesh = rec.source
+		node.extra_cull_margin = rec.margin
+	var shadow := (rec.shadow as WeakRef).get_ref() as MeshInstance3D
+	if shadow: shadow.free()
 	sectors.erase(key)
 	_queue = _queue.filter(func(q: Dictionary) -> bool: return q.key != key)
 
@@ -49,11 +61,15 @@ func refresh_materials() -> void:
 		rec.material.set_shader_parameter("soft_tracks", true)
 		rec.material.set_shader_parameter("soft_track_origin", Vector2(key * SECTOR))
 		rec.material.set_shader_parameter("soft_track_texture", rec.texture)
+		rec.material.set_shader_parameter("soft_track_time", _age)
 		var node := (rec.node as WeakRef).get_ref() as MeshInstance3D
 		# A newly queued sector still displays its original mesh. Never attach
 		# the track material to that source: restoring it must remove tracks.
 		if node and node.mesh != rec.source:
 			node.mesh.surface_set_material(0, rec.material)
+		var shadow := (rec.shadow as WeakRef).get_ref() as MeshInstance3D
+		if shadow and shadow.mesh:
+			shadow.mesh.surface_set_material(0, rec.material)
 
 
 func refresh_rain_cover() -> void:
@@ -73,10 +89,73 @@ func step_allowed(p: Vector2) -> bool:
 func add_step(p: Vector2, extent: Vector2, angle: float) -> void:
 	if not is_instance_valid(terrain) or not step_allowed(p):
 		return
-	var ext := extent.abs().clamp(Vector2(0.06, 0.10), Vector2(0.32, 0.46))
-	var radius := ext.length() * 1.35
-	var first := Vector2i(((p - Vector2.ONE * radius) / SECTOR).floor())
-	var last := Vector2i(((p + Vector2.ONE * radius) / SECTOR).floor())
+	var ext := extent.abs().clamp(Vector2(0.025, 0.045), Vector2(0.32, 0.46))
+	_add_mark({"p": p, "extent": ext, "angle": angle, "time": _age})
+
+
+func forget_contact(owner: int) -> void:
+	_walkers.erase(owner)
+
+
+func add_travel(owner: int, p: Vector2, extent: Vector2) -> void:
+	if owner == 0 or not is_instance_valid(terrain):
+		return
+	if not step_allowed(p):
+		_walkers.erase(owner)
+		return
+	var previous: Dictionary = _walkers.get(owner, {})
+	var footprint := extent.max(previous.get("extent", extent) as Vector2)
+	if not _walkers.has(owner) and _walkers.size() >= MAX_WALKERS:
+		_walkers.erase(_walkers.keys()[0])
+	_walkers[owner] = {"p": p, "time": _age, "extent": footprint}
+	if previous.is_empty() or _age - float(previous.time) > LINK_TIME:
+		return
+	var from: Vector2 = previous.p
+	var distance := from.distance_to(p)
+	if distance < 0.08:
+		# Accumulate slow movement; resetting the start at every tiny contact
+		# would prevent a slow walker from ever producing a connected strip.
+		_walkers[owner].p = from
+		return
+	if distance > LINK_DISTANCE:
+		return
+	# Never drag a trench across a bridge, water, rock or a skipped contact.
+	var samples := ceili(distance / 0.15)
+	for i in samples + 1:
+		if not step_allowed(from.lerp(p, float(i) / samples)):
+			return
+	# A foot displaces a band of loose material wider than its sole. Adjacent
+	# foot paths merge into a compressed corridor with the prints inside it.
+	var width := clampf(footprint.x * 1.8 + footprint.y * 0.5 + 0.14, 0.18, 0.65)
+	var pressure := clampf(sqrt(footprint.x * footprint.y / 0.009), 0.35, 1.0)
+	if terrain.ground_type(p.x, p.y) == 3:
+		width *= 0.75
+	_add_mark({"p": from, "to": p, "extent": Vector2.ONE * width, "pressure": pressure, "angle": 0.0, "time": _age})
+
+
+static func _bounds(mark: Dictionary) -> Rect2:
+	var radius: float = mark.extent.length() * 1.8 if not mark.has("to") else mark.extent.x * TRAIL_SUPPORT
+	var to: Vector2 = mark.get("to", mark.p)
+	return Rect2((mark.p as Vector2).min(to) - Vector2.ONE * radius,
+		(to - (mark.p as Vector2)).abs() + Vector2.ONE * radius * 2.0)
+
+
+static func _mark_tiles(mark: Dictionary, key: Vector2i) -> PackedInt32Array:
+	var bounds := _bounds(mark)
+	var origin := Vector2(key * SECTOR)
+	var lo := Vector2i(((bounds.position - origin) * 0.5).floor()).clamp(Vector2i.ZERO, Vector2i(15, 15))
+	var hi := Vector2i(((bounds.end - origin) * 0.5).floor()).clamp(Vector2i.ZERO, Vector2i(15, 15))
+	var ids := PackedInt32Array()
+	for y in range(lo.y, hi.y + 1):
+		for x in range(lo.x, hi.x + 1):
+			ids.append(y * 16 + x)
+	return ids
+
+
+func _add_mark(mark: Dictionary) -> void:
+	var bounds := _bounds(mark)
+	var first := Vector2i((bounds.position / SECTOR).floor())
+	var last := Vector2i((bounds.end / SECTOR).floor())
 	for y in range(first.y, last.y + 1):
 		for x in range(first.x, last.x + 1):
 			var key := Vector2i(x, y)
@@ -85,7 +164,7 @@ func add_step(p: Vector2, extent: Vector2, angle: float) -> void:
 			var rec := _sector(key)
 			if rec.is_empty():
 				continue
-			var ids := _tile_ids(p, ext, key)
+			var ids := _mark_tiles(mark, key)
 			var needed := 0
 			for id: int in ids:
 				needed += int(not rec.tiles.has(id))
@@ -93,18 +172,24 @@ func add_step(p: Vector2, extent: Vector2, angle: float) -> void:
 			# tiles would otherwise discard part of this newest footprint too.
 			_make_room(key, needed)
 			for id: int in ids:
+				rec.touched[id] = _age
 				if not rec.tiles.has(id):
 					rec.tiles[id] = null
 					_queue.append({"key": key, "id": id})
 			rec.last = _age
-			rec.steps.append({"p": p, "extent": ext, "angle": angle, "time": _age})
+			rec.steps.append(mark)
+			rec.pending.append(mark)
 			if rec.steps.size() > MAX_STEPS:
 				rec.steps.pop_front()
+			# The bounded recent-contact log is not the deformation history.
+			# Older imprints remain in the field until their own timestamps fade.
+			if rec.pending.size() >= 128:
+				_paint_pending(key, rec)
 			rec.dirty = true
 
 
 static func _tile_ids(p: Vector2, extent: Vector2, key: Vector2i) -> PackedInt32Array:
-	var radius := extent.length() * 1.35
+	var radius := extent.length() * 1.8
 	var origin := Vector2(key * SECTOR)
 	var lo := Vector2i(((p - Vector2.ONE * radius - origin) * 0.5).floor()).clamp(Vector2i.ZERO, Vector2i(15, 15))
 	var hi := Vector2i(((p + Vector2.ONE * radius - origin) * 0.5).floor()).clamp(Vector2i.ZERO, Vector2i(15, 15))
@@ -129,11 +214,16 @@ func _make_room(keep: Vector2i, needed: int = 1) -> void:
 		# Discard its old tracks as a group; the next footfall starts afresh.
 		var rec: Dictionary = sectors[keep]
 		rec.tiles.clear()
+		rec.touched.clear()
 		rec.steps.clear()
+		rec.pending.clear()
+		rec.image.fill(Color(0, 0, 0, 0))
 		_queue = _queue.filter(func(q: Dictionary) -> bool: return q.key != keep)
 		var node := (rec.node as WeakRef).get_ref() as MeshInstance3D
 		if node:
 			node.mesh = rec.source
+		var shadow := (rec.shadow as WeakRef).get_ref() as MeshInstance3D
+		if shadow: shadow.mesh = null
 
 
 func tile_count() -> int:
@@ -155,14 +245,25 @@ func _sector(key: Vector2i) -> Dictionary:
 	var node := terrain.get_node_or_null("Sector_%d_%d" % [key.x, key.y]) as MeshInstance3D
 	if node == null or node.mesh == null:
 		return {}
-	var image := Image.create(RESOLUTION, RESOLUTION, false, Image.FORMAT_RG8)
-	image.fill(Color(0, 0, 0, 1))
+	var image := Image.create(RESOLUTION, RESOLUTION, false, Image.FORMAT_RGBAF)
+	image.fill(Color(0, 0, 0, 0))
+	# The original land layer is deliberately excluded from the sun's map.
+	# Only the touched patches opt into geometry-based local self-shadowing.
+	var shadow := MeshInstance3D.new()
+	shadow.name = "SoftGroundShadow"
+	shadow.layers = 1
+	shadow.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_SHADOWS_ONLY
+	shadow.extra_cull_margin = DEPTH
+	node.add_child(shadow)
 	var rec := {"node": weakref(node), "source": node.mesh, "arrays": node.mesh.surface_get_arrays(0),
-		"tiles": {}, "steps": [], "last": _age, "image": image,
+		"tiles": {}, "touched": {}, "steps": [], "pending": [], "last": _age, "image": image,
+		"shadow": weakref(shadow), "margin": node.extra_cull_margin,
 		"texture": ImageTexture.create_from_image(image), "material": terrain._land_mat.duplicate(), "dirty": false}
+	node.extra_cull_margin = maxf(node.extra_cull_margin, DEPTH)
 	rec.material.set_shader_parameter("soft_tracks", true)
 	rec.material.set_shader_parameter("soft_track_origin", Vector2(key * SECTOR))
 	rec.material.set_shader_parameter("soft_track_texture", rec.texture)
+	rec.material.set_shader_parameter("soft_track_time", _age)
 	sectors[key] = rec
 	return rec
 
@@ -175,6 +276,8 @@ func _rebuild(rec: Dictionary) -> void:
 	# kept when adding vertices (and are unnecessary for either look).
 	arrays[Mesh.ARRAY_TANGENT] = null
 	var ids := PackedInt32Array()
+	var shadow_ids := PackedInt32Array()
+	var source_count := (source[Mesh.ARRAY_VERTEX] as PackedVector3Array).size()
 	var original: PackedInt32Array = source[Mesh.ARRAY_INDEX]
 	for tile in 256:
 		if not rec.tiles.has(tile) or rec.tiles[tile] == null:
@@ -186,6 +289,7 @@ func _rebuild(rec: Dictionary) -> void:
 			arrays[field].append_array(dense[field])
 		for id: int in dense[Mesh.ARRAY_INDEX]:
 			ids.append(base + id)
+			shadow_ids.append(base + id - source_count)
 	arrays[Mesh.ARRAY_INDEX] = ids
 	var mesh := ArrayMesh.new()
 	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
@@ -193,6 +297,20 @@ func _rebuild(rec: Dictionary) -> void:
 	var node := (rec.node as WeakRef).get_ref() as MeshInstance3D
 	if node:
 		node.mesh = mesh
+	var shadow := (rec.shadow as WeakRef).get_ref() as MeshInstance3D
+	if shadow:
+		if shadow_ids.is_empty():
+			shadow.mesh = null
+		else:
+			var shadow_arrays := []
+			shadow_arrays.resize(Mesh.ARRAY_MAX)
+			for field in [Mesh.ARRAY_VERTEX, Mesh.ARRAY_NORMAL, Mesh.ARRAY_TEX_UV, Mesh.ARRAY_TEX_UV2, Mesh.ARRAY_COLOR]:
+				shadow_arrays[field] = arrays[field].slice(source_count)
+			shadow_arrays[Mesh.ARRAY_INDEX] = shadow_ids
+			var shadow_mesh := ArrayMesh.new()
+			shadow_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, shadow_arrays)
+			shadow_mesh.surface_set_material(0, rec.material)
+			shadow.mesh = shadow_mesh
 
 
 static func _subdivide(arrays: Array, ids: PackedInt32Array, source: Array, a: int, b: int, c: int) -> void:
@@ -223,27 +341,28 @@ func _process(dt: float) -> void:
 	var timed := _refresh >= 1.0
 	if timed:
 		_refresh = 0.0
+		for owner: int in _walkers.keys():
+			if _age - float(_walkers[owner].time) > LINK_TIME:
+				_walkers.erase(owner)
 	var changed := {}
 	# Retire expired work before tessellation. A newer footstep can keep a
 	# sector alive without keeping every older tile's dense geometry alive.
 	for key: Vector2i in sectors.keys():
 		var rec: Dictionary = sectors[key]
+		rec.material.set_shader_parameter("soft_track_time", _age)
 		if (rec.node as WeakRef).get_ref() == null:
 			_restore(key)
 			continue
 		if timed:
 			rec.steps = rec.steps.filter(func(s: Dictionary) -> bool: return _age - s.time < LIFE)
-		if rec.steps.is_empty():
+		if _age - float(rec.last) >= LIFE:
 			_restore(key)
 			continue
-		if rec.dirty or timed:
-			var wanted := {}
-			for s: Dictionary in rec.steps:
-				for id: int in _tile_ids(s.p, s.extent, key):
-					wanted[id] = true
+		if timed:
 			for id: int in rec.tiles.keys():
-				if not wanted.has(id):
+				if _age - float(rec.touched[id]) >= LIFE:
 					rec.tiles.erase(id)
+					rec.touched.erase(id)
 					changed[key] = true
 			if changed.has(key):
 				_queue = _queue.filter(func(q: Dictionary) -> bool: return q.key != key or rec.tiles.has(q.id))
@@ -276,33 +395,82 @@ func _process(dt: float) -> void:
 		_rebuild(sectors[key])
 	for key: Vector2i in sectors:
 		var rec: Dictionary = sectors[key]
-		if rec.dirty or timed:
+		if rec.dirty:
 			_redraw(key, rec)
 			rec.dirty = false
 
 
-func _redraw(key: Vector2i, rec: Dictionary) -> void:
+func _paint_pending(key: Vector2i, rec: Dictionary) -> void:
 	var image: Image = rec.image
-	image.fill(Color(0, 0, 0, 1))
-	for s: Dictionary in rec.steps:
-		var fade := clampf((LIFE - (_age - s.time)) / FADE, 0.0, 1.0)
-		paint(image, s.p - Vector2(key * SECTOR), s.extent, s.angle, fade)
-	(rec.texture as ImageTexture).update(image)
+	for s: Dictionary in rec.pending:
+		var stamp := float(s.time)
+		if s.has("to"):
+			paint_trail(image, s.p - Vector2(key * SECTOR), s.to - Vector2(key * SECTOR), s.extent.x, s.get("pressure", 1.0), stamp, Vector2(key * SECTOR))
+		else:
+			paint(image, s.p - Vector2(key * SECTOR), s.extent, s.angle, 1.0, stamp)
+	rec.pending.clear()
 
 
-static func paint(image: Image, p: Vector2, extent: Vector2, angle: float, strength: float) -> void:
-	var scale := float(RESOLUTION) / SECTOR
-	var radius := extent.length() * 1.35
+func _redraw(key: Vector2i, rec: Dictionary) -> void:
+	_paint_pending(key, rec)
+	(rec.texture as ImageTexture).update(rec.image)
+
+
+static func strength_at(stamp: float, now: float) -> float:
+	return clampf((LIFE - maxf(now - stamp, 0.0)) / FADE, 0.0, 1.0)
+
+
+static func paint(image: Image, p: Vector2, extent: Vector2, angle: float, strength: float, stamp := 0.0) -> void:
+	# End samples sit on sector boundaries, shared exactly by both textures.
+	var scale := float(RESOLUTION - 1) / SECTOR
+	var radius := extent.length() * 1.8
 	var lo := Vector2i(((p - Vector2.ONE * radius) * scale).floor()).clamp(Vector2i.ZERO, image.get_size() - Vector2i.ONE)
 	var hi := Vector2i(((p + Vector2.ONE * radius) * scale).ceil()).clamp(Vector2i.ZERO, image.get_size() - Vector2i.ONE)
 	var turn := Transform2D(-angle, Vector2.ZERO)
+	var pressure := clampf(sqrt(extent.x * extent.y / 0.009), 0.35, 1.0)
 	for y in range(lo.y, hi.y + 1):
 		for x in range(lo.x, hi.x + 1):
-			var local := turn * (Vector2(x + 0.5, y + 0.5) / scale - p)
+			var local := turn * (Vector2(x, y) / scale - p)
 			var r := (local / extent).length()
-			if r > 1.28:
+			if r > 1.8:
 				continue
-			var depression := (1.0 - smoothstep(0.45, 1.0, r)) * strength * 0.82
-			var rim := (smoothstep(0.85, 1.05, r) - smoothstep(1.05, 1.28, r)) * strength * 0.18
+			var depression := (1.0 - smoothstep(0.35, 1.25, r)) * strength * 0.82 * pressure
+			var rim := (smoothstep(0.9, 1.3, r) - smoothstep(1.3, 1.8, r)) * strength * 0.06 * pressure
 			var prev := image.get_pixel(x, y)
-			image.set_pixel(x, y, Color(maxf(prev.r, depression), maxf(prev.g, rim), 0, 1))
+			var fade := strength_at(prev.b, stamp)
+			image.set_pixel(x, y, Color(maxf(prev.r * fade, depression), maxf(prev.g * fade, rim), stamp, 1))
+
+
+static func paint_trail(image: Image, from: Vector2, to: Vector2, width: float, strength: float, stamp := 0.0, origin := Vector2.ZERO) -> void:
+	var scale := float(RESOLUTION - 1) / SECTOR
+	var radius := width * TRAIL_SUPPORT
+	var lo := Vector2i(((from.min(to) - Vector2.ONE * radius) * scale).floor()).clamp(Vector2i.ZERO, image.get_size() - Vector2i.ONE)
+	var hi := Vector2i(((from.max(to) + Vector2.ONE * radius) * scale).ceil()).clamp(Vector2i.ZERO, image.get_size() - Vector2i.ONE)
+	var along := to - from
+	var length_sq := maxf(along.length_squared(), 1e-6)
+	if _edge_noise == null:
+		_edge_noise = FastNoiseLite.new()
+		_edge_noise.seed = 73129
+		_edge_noise.noise_type = FastNoiseLite.TYPE_SIMPLEX_SMOOTH
+		_edge_noise.fractal_type = FastNoiseLite.FRACTAL_NONE
+		_edge_noise.frequency = 2.4
+	for y in range(lo.y, hi.y + 1):
+		for x in range(lo.x, hi.x + 1):
+			var p := Vector2(x, y) / scale
+			var nearest := from + along * clampf((p - from).dot(along) / length_sq, 0.0, 1.0)
+			var r := p.distance_to(nearest) / width
+			if r > TRAIL_SUPPORT:
+				continue
+			# World-anchored variation joins across sectors and successive steps.
+			# It roughens the shoulders without punching holes in the floor.
+			var q := p + origin
+			var rough := _edge_noise.get_noise_2d(q.x, q.y) * 0.18 \
+				+ _edge_noise.get_noise_2d(q.x * 3.7 + 43.0, q.y * 3.7 - 17.0) * 0.07
+			r /= 1.0 + rough
+			if r > 2.05:
+				continue
+			var depression := (1.0 - smoothstep(0.2, 1.6, r)) * strength * 0.64
+			var rim := (smoothstep(1.0, 1.45, r) - smoothstep(1.45, 2.05, r)) * strength * 0.05
+			var prev := image.get_pixel(x, y)
+			var fade := strength_at(prev.b, stamp)
+			image.set_pixel(x, y, Color(maxf(prev.r * fade, depression), maxf(prev.g * fade, rim), stamp, 1))

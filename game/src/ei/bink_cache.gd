@@ -9,12 +9,13 @@ extends RefCounted
 ##
 ## .eiv layout (little endian):
 ##   0  "EIV1", u32 complete (0 while converting), u32 width, height, frames,
-##      fps_num, fps_den, audio_rate, audio_channels, u32 reserved
+##      fps_num, fps_den, audio_rate, audio_channels, u32 audio_version
 ##   40 u64 audio_offset, u64 audio_size, u64 index_offset
 ##   64 frame JPEGs back to back, then the PCM16 audio, then the index:
 ##      frames + 1 u64 offsets (frame i = [off[i], off[i+1]))
 
 const MAGIC := 0x31564945  # "EIV1"
+const AUDIO_VERSION := 1  # adds Lost in Astral DCT sound to previously silent caches
 const HEADER := 64
 const JPG_QUALITY := 0.85
 
@@ -77,7 +78,7 @@ func _serial(src: String, dst: String) -> void:
 	cum_cost = PackedInt64Array([0])
 	for i in frame_count: cum_cost.append(cum_cost[i] + decoder.frame_size(i) + 2000)
 	var audio: EIBinkAudio
-	if not decoder.audio_tracks.is_empty() and not decoder.audio_tracks[0].get("dct", false):
+	if not decoder.audio_tracks.is_empty():
 		audio = EIBinkAudio.new(decoder.audio_tracks[0], decoder.revision)
 		audio_rate = decoder.audio_tracks[0].rate
 		audio_channels = decoder.audio_tracks[0].channels
@@ -173,7 +174,7 @@ func convert(src: String, dst: String) -> bool:
 	var cum := PackedInt64Array([0])
 	for i in a.frame_count:
 		cum.append(cum[i] + a.frame_size(i) + 2000)
-	var has_audio: bool = not a.audio_tracks.is_empty() and not a.audio_tracks[0].get("dct", false)
+	var has_audio: bool = not a.audio_tracks.is_empty()
 	# Published under the mutex: the movie player reads these from the main
 	# thread (frame_count > 0 first, then cum_cost after frames_done()).
 	_mutex.lock()
@@ -261,7 +262,7 @@ func _write_header(f: FileAccess, complete: bool, audio_off: int, audio_size: in
 	f.seek(0)
 	f.store_32(MAGIC)
 	f.store_32(1 if complete else 0)
-	for v in [width, height, frame_count, fps_num, fps_den, audio_rate, audio_channels, 0]:
+	for v in [width, height, frame_count, fps_num, fps_den, audio_rate, audio_channels, AUDIO_VERSION]:
 		f.store_32(v)
 	f.store_64(audio_off)
 	f.store_64(audio_size)
@@ -297,7 +298,11 @@ static func open_cache(file: String) -> Dictionary:
 	var r := {"file": f}
 	for k in ["width", "height", "frames", "fps_num", "fps_den", "audio_rate", "audio_channels"]:
 		r[k] = f.get_32()
-	f.get_32()
+	var audio_version := f.get_32()
+	# Old converters omitted DCT audio entirely. Rebuild those caches once;
+	# existing RDFT soundtracks can still be reused without reconversion.
+	if audio_version < AUDIO_VERSION and int(r.audio_rate) == 0:
+		return {}
 	var audio_off := f.get_64()
 	var audio_size := f.get_64()
 	var index_off := f.get_64()

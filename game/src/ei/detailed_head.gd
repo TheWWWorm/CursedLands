@@ -60,8 +60,17 @@ static func face_names(proto: Dictionary, race: Dictionary, c: Vector3, hair: in
 	var build := "th" if c.x < 0.2 else ("fa" if c.x > 0.8 else "me")
 	var fig := "infa%s%s%dface" % [model, build, hair + 1]
 	var tex := "face%s%02d" % [sex, int(proto.get("skin", 0))]
-	if EIFigure.get_model(fig).is_empty() or GameData.get_texture(tex) == null:
+	var face_model := EIFigure.get_model(fig)
+	if face_model.is_empty() or GameData.get_texture(tex) == null:
 		return PackedStringArray()
+	# Only the original interface-atlas heads support this replacement.
+	# Lost in Astral supplies group-4 portrait meshes with different UVs
+	# and proportions. They fit its custom portrait paintings, but not
+	# the ordinary NPC faces or the world figure's head/neck attachment.
+	# Keep the authored body head and hair for those models, including Kir.
+	for part: Dictionary in face_model.parts.values():
+		if part.get("texture_group", 0) != 8:
+			return PackedStringArray()
 	return PackedStringArray([fig, tex])
 
 

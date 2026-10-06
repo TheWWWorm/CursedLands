@@ -278,7 +278,7 @@ const REMAKE_OPTIONS := {
 	"gfx_volumetric": ["Volumetric fog / light shafts", "Light mist lit by the sun (shafts through the trees at dawn and dusk) and the torches."],
 	"gfx_terrain": ["Terrain detail", "Sharper original ground textures with fewer tile seams; relief follows painted rock and path patterns, with softer sand and snow, fine grass and damp banks."],
 	"gfx_grass": ["Grass blades", "Adds grass blades on green ground, with wind and shadows when shadow quality is enabled. Automatic settings enable this on capable desktops; off by default on Android."],
-	"gfx_soft_ground": ["Snow and sand deformation", "Footsteps leave shallow depressions and raised edges in snow and sand. Tracks gradually disappear; off by default on Android."],
+	"gfx_soft_ground": ["Snow and sand deformation", "Movement compresses loose snow and sand into connected trails with raised banks and deeper footprints. Snow gives way more than sand or packed snow. Tracks gradually disappear; off by default on Android."],
 	"gfx_heat_haze": ["Heat haze", "Air shimmering above torches and camp fires."],
 	"gfx_ssao": ["Ambient occlusion", "Soft contact shadows (SSAO)."],
 	"gfx_bloom": ["Bloom", "Glow around bright lights."],

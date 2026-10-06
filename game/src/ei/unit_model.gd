@@ -228,6 +228,7 @@ var _plain_head: Array[Node3D] = []
 ## `unit` is a map object dictionary from EIMob (or a synthetic one with
 ## prototype/complexion/armors/weapons).
 static func create(unit: Dictionary, ui_preview := false, initial_action := true) -> EIUnitModel:
+	unit = CampaignState.map_unit_record(unit)
 	var db := GameData.db
 	var proto := db.find("monster_prototypes", unit.get("prototype", unit.get("parent_template", "")))
 	var race := db.find("race_models", proto.get("base_race", ""))

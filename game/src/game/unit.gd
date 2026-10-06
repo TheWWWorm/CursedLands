@@ -299,6 +299,7 @@ var _far := false
 
 
 func setup(w: GameWorld, record: Dictionary) -> bool:
+	record = CampaignState.map_unit_record(record)
 	world = w
 	info = record
 	uid = int(record.get("nid", 0))

@@ -180,6 +180,11 @@ static func instantiate(template: String, texture: String, complexion: Vector3,
 		if fig.is_empty() or (not visible_parts.is_empty() and not part in visible_parts):
 			continue
 		EIFigureGeometry.attach(node, fig, complexion, geometry_parts)
+		# FakeBox is an invisible map blocker. Its tiny corner triangles
+		# are editor geometry; some maps give it a visible podium texture.
+		# Keep its authored bounds and part nodes for collision and scripts.
+		if template == "stst151":
+			continue
 		var mi := MeshInstance3D.new()
 		mi.mesh = build_morph_mesh(fig, complexion) if morph else build_mesh(fig, complexion)
 		var material_id: int = fig.get("material", 0)

@@ -1,6 +1,6 @@
 class_name EIBinkAudio
 extends RefCounted
-## Bink audio decoder (RDFT variant, the one every Evil Islands movie uses):
+## Bink audio decoder (RDFT for Evil Islands, DCT for Lost in Astral):
 ## one packet per video frame -> interleaved PCM16.
 ## Decoder logic follows FFmpeg's libavcodec/binkaudio.c (LGPL-2.1, Peter Ross)
 ## and the "Bink Audio" page of wiki.multimedia.cx; the inverse real DFT is done
@@ -12,7 +12,7 @@ const RLE_LENGTHS := [2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15, 16, 32, 64]
 
 var rate := 22050
 var channels := 1
-var supported := true  ## false for the DCT variant (not used by the game)
+var supported := true  ## mono and stereo Bink 1 tracks
 
 var _n := 0  # transform size (interleaved samples)
 var _ov := 0  # overlap
@@ -26,7 +26,9 @@ var _coef := PackedFloat64Array()
 var _out := PackedFloat64Array()
 var _quant := PackedFloat64Array()
 var _version_b := false
-# FFT (size _n / 2)
+var _dct := false
+var _decode_channels := 1
+# FFT (size _n for DCT, _n / 2 for RDFT)
 var _re := PackedFloat64Array()
 var _im := PackedFloat64Array()
 var _rev := PackedInt32Array()
@@ -41,15 +43,17 @@ var _p := 0
 func _init(track: Dictionary, revision := 0x69) -> void:
 	rate = int(track.get("rate", 22050))
 	channels = int(track.get("channels", 1))
-	supported = not track.get("dct", false)
+	supported = rate > 0 and channels in [1, 2]
+	_dct = track.get("dct", false)
+	_decode_channels = channels if _dct else 1
 	_version_b = revision == 0x62
 	var bits := 9 if rate < 22050 else (10 if rate < 44100 else 11)
-	var sr := rate * channels  # RDFT: channels are already interleaved
-	if not _version_b and channels == 2:
+	var sr := rate if _dct else rate * channels  # RDFT: already interleaved
+	if not _dct and not _version_b and channels == 2:
 		bits += 1
 	_n = 1 << bits
 	_ov = _n / 16
-	_root = 2.0 / (sqrt(_n) * 32768.0)
+	_root = (float(_n) if _dct else 2.0) / (sqrt(_n) * 32768.0)
 	_qt.resize(96)
 	for i in 96:
 		_qt[i] = exp(i * 0.15289164787221953823) * _root
@@ -65,14 +69,14 @@ func _init(track: Dictionary, revision := 0x69) -> void:
 		_bands[i] = (CRITICAL_FREQS[i - 1] * _n / half) & ~1
 	_bands[_nb] = _n
 	_quant.resize(26)
-	_prev.resize(_ov)
+	_prev.resize(_ov * _decode_channels)
 	_coef.resize(_n + 2)
 	_out.resize(_n)
-	var m := _n / 2
+	var m := _n if _dct else _n / 2
 	_re.resize(m)
 	_im.resize(m)
 	_rev.resize(m)
-	var lb := bits - 1
+	var lb := bits if _dct else bits - 1
 	for i in m:
 		var r := 0
 		for b in lb:
@@ -87,8 +91,9 @@ func _init(track: Dictionary, revision := 0x69) -> void:
 	_wc.resize(m)
 	_ws.resize(m)
 	for k in m:
-		_wc[k] = cos(TAU * k / _n)
-		_ws[k] = sin(TAU * k / _n)
+		var angle := PI * k / (2.0 * _n) if _dct else TAU * k / _n
+		_wc[k] = cos(angle)
+		_ws[k] = sin(angle)
 
 
 ## Decodes one audio packet (as returned by EIBink.audio_packet) to PCM16.
@@ -121,6 +126,36 @@ func _float() -> float:
 
 
 func _decode_block(nbits: int, pcm: PackedByteArray) -> bool:
+	if _dct:
+		_p += 2  # one block header, before both channel coefficient streams
+	var count := _n - _ov
+	var base := pcm.size()
+	pcm.resize(base + count * _decode_channels * 2)
+	for ch in _decode_channels:
+		if not _decode_coefficients(nbits):
+			pcm.resize(base)
+			return false
+		if _dct:
+			_inverse_dct()
+		else:
+			_inverse_rdft()
+		var out := _out
+		var previous := ch * _ov
+		var overlap := _ov * _decode_channels
+		if not _first:
+			for t in _ov:
+				var weight := t * _decode_channels + ch
+				out[t] = (_prev[previous + t] * (overlap - weight) + out[t] * weight) / overlap
+		for t in _ov:
+			_prev[previous + t] = out[count + t]
+		for t in count:
+			pcm.encode_s16(base + (t * _decode_channels + ch) * 2,
+				clampi(roundi(out[t] * 32768.0), -32768, 32767))
+	_first = false
+	return true
+
+
+func _decode_coefficients(nbits: int) -> bool:
 	var n := _n
 	var coef := _coef
 	var quant := _quant
@@ -192,20 +227,6 @@ func _decode_block(nbits: int, pcm: PackedByteArray) -> bool:
 			_p = p
 			return false
 	_p = p
-	_inverse_rdft()
-	var out := _out
-	var ov := _ov
-	if not _first:
-		for t in ov:
-			out[t] = (_prev[t] * (ov - t) + out[t] * t) / ov
-	for t in ov:
-		_prev[t] = out[n - ov + t]
-	_first = false
-	var cnt := n - ov
-	var base := pcm.size()
-	pcm.resize(base + cnt * 2)
-	for t in cnt:
-		pcm.encode_s16(base + t * 2, clampi(roundi(out[t] * 32768.0), -32768, 32767))
 	return true
 
 
@@ -245,6 +266,37 @@ func _inverse_rdft() -> void:
 		var r := rev[k]
 		re[r] = er - oi
 		im[r] = ei + orr
+	_inverse_fft()
+
+	var out := _out
+	for t in m:
+		out[2 * t] = 0.5 * re[t]
+		out[2 * t + 1] = 0.5 * im[t]
+
+
+## DCT-III with Bink's doubled DC term: 2/N * (c0 + sum c[k] cos(...)).
+## Rotate into an N-point complex spectrum, then undo the even/odd shuffle.
+func _inverse_dct() -> void:
+	var n := _n
+	var c := _coef
+	var re := _re
+	var im := _im
+	re[0] = 2.0 * c[0]
+	im[0] = 0.0
+	for k in range(1, n):
+		var r := _rev[k]
+		re[r] = c[k] * _wc[k] + c[n - k] * _ws[k]
+		im[r] = c[k] * _ws[k] - c[n - k] * _wc[k]
+	_inverse_fft()
+	for t in n / 2:
+		_out[2 * t] = re[t] / n
+		_out[2 * t + 1] = re[n - 1 - t] / n
+
+
+func _inverse_fft() -> void:
+	var re := _re
+	var im := _im
+	var m := re.size()
 	# iterative radix-2 inverse FFT
 	var tc := _tc
 	var ts := _ts
@@ -268,7 +320,3 @@ func _inverse_rdft() -> void:
 				im[s2] = ui - xi
 				s += size
 		size <<= 1
-	var out := _out
-	for t in m:
-		out[2 * t] = 0.5 * re[t]
-		out[2 * t + 1] = 0.5 * im[t]

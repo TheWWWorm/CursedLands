@@ -121,9 +121,11 @@ func apply_options() -> void:
 		soft_ground = null
 
 
-func add_step(x: float, y: float, a: float, b: float, angle: float) -> void:
+func add_step(x: float, y: float, a: float, b: float, angle: float, owner := 0, centre := Vector2.INF) -> void:
 	if is_instance_valid(soft_ground) and Gfx.on("gfx_soft_ground"):
 		soft_ground.add_step(Vector2(x, y), Vector2(a, b), angle)
+		if centre.is_finite():
+			soft_ground.add_travel(owner, centre, Vector2(a, b))
 
 
 func water_changed() -> void:

@@ -329,7 +329,9 @@ func _single() -> void:
 	var s := _make_session()
 	s.players = {1: {"index": 0, "name": GameData.player_name}}
 	# the original: Intro.bik first, then the game loads (Session.new_campaign).
+	_music.stream_paused = true
 	await MovieSequence.start(get_parent(), PackedStringArray(["intro"])).done
+	_music.stream_paused = false
 	start_game.emit(s)
 	s.new_campaign(false)
 
