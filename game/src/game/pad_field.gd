@@ -330,7 +330,7 @@ func _candidates(stick: Vector2) -> Array:
 		# A heal or a potion may go to the leader itself (BG3 lets the
 		# character target itself); others in need come first by distance.
 		out.append({"unit": u, "score": 1.5})
-	for o: GameUnit in game.world.units.values():
+	for o: GameUnit in game.world.visible_units():
 		if o == u or o.hidden or not o.visible or o.fogged:
 			continue
 		var dist := o.pos.distance_to(u.pos)
@@ -1255,7 +1255,7 @@ func _rumble_poll() -> void:
 		if _last_level >= 0 and lvl > _last_level:
 			PadInput.rumble(0.4, 0.0, 0.1)
 		_last_level = lvl
-	for m: GameUnit in game.world.units.values():
+	for m: GameUnit in game.world.party_units():
 		if m.controller != game.session.my_index:
 			continue
 		var was := bool(_last_dead.get(m.uid, m.dead))

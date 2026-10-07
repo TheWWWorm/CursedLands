@@ -211,6 +211,35 @@ func party_units() -> Array[GameUnit]:
 	return _party_units
 
 
+var _visible_units: Array[GameUnit] = []
+var _visible_registry_revision := -1
+var _visible_structure_revision := -1
+var _visible_revision := -1
+var _visible_untracked := true
+
+
+## Shared broad phase for UI queries. Preserve registry order and the local
+## visible flag those queries used; each caller still checks its own rules.
+## Off-tree tools have no visibility signals, so they always read live flags.
+func visible_units() -> Array[GameUnit]:
+	if not is_inside_tree() or _visible_untracked or _visible_registry_revision != units_revision \
+			or _visible_structure_revision != GameUnit.structure_revision \
+			or _visible_revision != GameUnit.visibility_revision:
+		_visible_registry_revision = units_revision
+		_visible_structure_revision = GameUnit.structure_revision
+		_visible_revision = GameUnit.visibility_revision
+		_visible_untracked = false
+		var selected: Array[GameUnit] = []
+		for u in _unit_rows:
+			if is_instance_valid(u) and u is GameUnit:
+				_visible_untracked = _visible_untracked or not u.is_inside_tree()
+				if u.visible:
+					selected.append(u)
+		selected.make_read_only()
+		_visible_units = selected
+	return _visible_units
+
+
 func _register_object(node: Node3D) -> void:
 	var o: Dictionary = node.get_meta("ei")
 	objects[int(o.get("nid", 0))] = node

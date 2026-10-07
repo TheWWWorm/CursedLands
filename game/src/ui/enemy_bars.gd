@@ -119,7 +119,7 @@ func entries() -> Array:
 	for u: GameUnit in game.selected:
 		if is_instance_valid(u):
 			near.append(u.pos)
-	for u: GameUnit in w.units.values():
+	for u: GameUnit in w.visible_units():
 		if u.dead or u.hidden or not u.visible or u.controller >= 0 or u.model == null or u.max_hp <= 0.0:
 			continue
 		if not (w.is_enemy(lead, u) or w.is_enemy(u, lead)):

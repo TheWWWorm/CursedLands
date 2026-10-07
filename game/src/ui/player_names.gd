@@ -65,7 +65,7 @@ func _process(_dt: float) -> void:
 ## [unit, name, colour] of every player's main hero.
 func entries() -> Array:
 	var out := []
-	for u: GameUnit in game.world.units.values():
+	for u: GameUnit in game.world.party_units():
 		if u.controller < 0 or not u.has_meta("hero") or (u.get_meta("hero") as Dictionary).has("merc"):
 			continue
 		var n := player_name(game.session, u.controller)

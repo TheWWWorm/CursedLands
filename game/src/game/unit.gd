@@ -24,6 +24,7 @@ static var notice_revision := 0
 ## Registry eligibility changes independently of position/health/perception.
 ## This also catches a fixture freeing or reparenting a retained registry row.
 static var structure_revision := 0
+static var visibility_revision := 0
 class StructureLifetime extends RefCounted:
 	func _notification(what: int) -> void:
 		if what == NOTIFICATION_PREDELETE:
@@ -415,10 +416,17 @@ var _far := false
 
 
 func _init() -> void:
+	visibility_changed.connect(_visibility_revision_changed)
+	tree_entered.connect(_visibility_revision_changed)
+	tree_exiting.connect(_visibility_revision_changed)
 	if ClassDB.class_exists("UnitSimulationState") and not OS.get_cmdline_user_args().has("--ei-script-unit-state"):
 		_sim_state = ClassDB.instantiate("UnitSimulationState")
 		_sim_state.capture(self)
 		_sim_lease = _sim_state.attach()
+
+
+func _visibility_revision_changed() -> void:
+	visibility_revision += 1
 
 
 func setup(w: GameWorld, record: Dictionary) -> bool:

@@ -601,7 +601,7 @@ func _update_hero_lights() -> void:
 			if is_instance_valid(_hero_lights[k]):
 				_hero_lights[k].queue_free()
 			_hero_lights.erase(k)
-	for u: GameUnit in world.units.values():
+	for u: GameUnit in world.party_units():
 		if u.controller < 0 or u.dead or u.hidden:
 			continue
 		var l: OmniLight3D = _hero_lights.get(u)
@@ -1452,7 +1452,7 @@ func pick_unit(p: Vector2) -> GameUnit:
 		# Prefer the exact hit; only use the nearest visible silhouette as a
 		# fallback. A small enemy beside a hero should not steal a precise tap.
 		var best := TouchInput.target_pixels() * 0.35
-		for unit: GameUnit in world.units.values():
+		for unit: GameUnit in world.visible_units():
 			if unit.hidden or not unit.visible or not unit.near_screen():
 				continue
 			var rects := unit.screen_rects(rig.camera)
@@ -1472,7 +1472,7 @@ func _pick_unit(p: Vector2) -> GameUnit:
 	var to_view := cam.global_transform.affine_inverse()
 	var hits: Array = []    # [dead, depth, unit]
 	var loose: Array = []   # union-rectangle hits
-	for u: GameUnit in world.units.values():
+	for u: GameUnit in world.visible_units():
 		if u.hidden or not u.visible or not u.near_screen() or not u.may_cover(cam, p):
 			continue
 		var rects := u.screen_rects(cam)

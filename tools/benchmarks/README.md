@@ -66,3 +66,56 @@ This benchmark does not measure rendered FPS, networking under WAN conditions
 or ordinary single-player performance. Validate actual gameplay separately with
 a fixed renderer, resolution, render scale, camera, graphics options and save.
 Report frame percentiles and actual simulated time alongside average FPS.
+
+## Rendered Portal gameplay
+
+`portal_gameplay.gd` versions the bounded gameplay fixture used by the private
+Android investigation. It requires the same 415-actor Portal save, follows the
+close Terror view, issues normal movement commands and retains combat. Set
+`terror: true` for that camera. `isolated: true` with `host: true` starts the
+ordinary separated co-op authority. This has one owner and no remote guest;
+it does not establish WAN or ordinary single-player performance.
+
+Pass `--gameplay-config=/absolute/config.json` on desktop, or put the
+configuration in the private Android application's `user://bench.json`:
+
+```json
+{
+  "name": "portal-original-01",
+  "save": "user://fixtures/portal.sav",
+  "graphics": "original",
+  "host": true,
+  "isolated": true,
+  "terror": true,
+  "players": 1,
+  "speed": 1,
+  "seconds": 60,
+  "options": {
+    "distant_ai": 0,
+    "render_scale": 2,
+    "q_aa": 0,
+    "q_shadows": 0,
+    "q_aniso": 1
+  }
+}
+```
+
+`graphics: "original"` calls the same preset function as Options → Original
+look and verifies every remake graphics switch is off. It deliberately leaves
+render scale and quality at the configured values. `graphics: "configured"`
+uses the supplied options; replay the **entire** options dictionary from a
+control result for a matched comparison. Platform defaults with only enhanced
+materials disabled are not the Original preset.
+
+The result and screenshot are written as `user://<name>.json` / `.png`. The
+JSON records all effective options, renderer, adapter, viewport, actual render
+scale, camera, frame percentiles, commands, activity and simulated seconds.
+Verify that the JSON exists even when the launcher exits cleanly. Keep APK,
+engine, native module and fixture hashes in the external receipt. GPU timing
+queries are excluded from the measured gameplay window.
+
+A minute at the accepted Retroid 1× target must advance approximately 60
+simulated seconds. At requested 2× it must advance approximately 120 seconds;
+high rendered FPS alone is insufficient. Frozen scenes and hidden-layer probes
+are diagnostics only. After Android testing, disable the private application's
+`bench.json` autorun before returning the device.

@@ -37,7 +37,7 @@ func _process(_dt: float) -> void:
 				at = (p - global_position) / kv()
 		var cam := get_viewport().get_camera_3d()
 		if cam:
-			for u: GameUnit in game.world.units.values():
+			for u: GameUnit in game.world.visible_units():
 				var f := Revive.progress(u)
 				if f < 0.0 or not u.visible or u.hidden:
 					continue

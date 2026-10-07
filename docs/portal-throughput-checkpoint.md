@@ -5,6 +5,11 @@ reach 60 FPS or actual 2× simulation on Retroid, and it does not establish a fi
 for the reported Windows slowdown. It follows published Experimental 5 commit
 `fc06dcc93353969f093072030b4add9124fda140`; no new release is published here.
 
+The user subsequently accepted **60 FPS at 1× with Original graphics** as the
+Retroid target (8 October). The 2× measurements below remain the CPU checkpoint
+record; the desktop/Windows 2× target remains open. Current Original-look
+validation is recorded separately.
+
 ## Retained changes
 
 - Native AI eligibility and sensing use shared empty defaults instead of
