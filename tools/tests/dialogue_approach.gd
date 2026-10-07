@@ -18,7 +18,7 @@ func _ready() -> void:
 	for i in 3:
 		var u := GameUnit.new(); u.uid = i+1; u.world = w
 		u.pos = Vector2(10.0+i*3.0,20.0+i); u.position.y = 2.0+i
-		units.append(u); w.units[u.uid] = u
+		units.append(u); w.set_unit(u.uid, u)
 	var c := {"a":1,"b":2,"c":3}
 	b._face(c,false,true)
 	check(b._return_actors.is_empty(), "clicked conversation has no return walk")
@@ -45,7 +45,7 @@ func _ready() -> void:
 	check(hero.has_meta("interact"), "queuing later movement preserves current interaction")
 	hero.command({"type":"move","to":hero.pos})
 	check(not hero.has_meta("interact"), "replacement movement cancels current interaction")
-	w.dialog_movers.clear(); w.units.clear()
+	w.dialog_movers.clear(); w.units = {}
 	for u in units: u.free()
 	w.free()
 	print("DIALOG_STAGING_CHECKS ",checks," checks ",failures," failures")

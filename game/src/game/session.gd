@@ -886,6 +886,7 @@ func _build_world(z: Dictionary, authority: bool, attach := true) -> void:
 		w.process_mode = Node.PROCESS_MODE_PAUSABLE
 		game.add_child(w)
 	LoadingScreen.step(7)
+	w.prepare_animation_bindings()
 	_building = false
 
 
@@ -1068,6 +1069,7 @@ func _rpc_zone(id: String, records: Array, diplo: PackedInt32Array, extra_mobs: 
 	game.attach_world(world)
 	if _remote_loading:
 		world.process_mode = Node.PROCESS_MODE_DISABLED
+	world.prepare_animation_bindings()
 	game.rig.village_start_view(z)
 	ShaderWarmup.run(game)
 	if not _remote_loading:

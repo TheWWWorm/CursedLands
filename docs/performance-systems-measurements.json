@@ -1,0 +1,1511 @@
+{
+  "date": "2026-10-07",
+  "version": "1.0.3-experimental.4",
+  "published": false,
+  "baseline_commit": "d239eda7e0d7aa2c69f3a9eaf75aff63d689b278",
+  "method": "Linux/X11 Forward+, Ryzen 9 5950X, RTX 3090, 1280x720, scale 1.0, main CPU 15 and workers 10\u201313; real headless ENet peer on CPU 14 with workers 6\u20139. Three interleaved fresh-process runs per variant and saved scene. 30 seconds realtime, Distant AI off, normal combined visuals. Separate rendering warm-up, simulation held; profiling disabled. No concurrent game/compile workload.",
+  "final_benchmark_files": {
+    "CPU.x86_64": "3abb01d86e54244b58baa93f1e7b586f8e900e5ac5e51b201144e1557e1165b9",
+    "libterrain_search.so": "df81869dced6f4f877b4ab75caf45f0cea2b36498936f111ca546e383b27c642",
+    "CPU.pck": "2c469c032de70da164af412793332d06f6ef3f5ff3652d7df24a95ec7189110e"
+  },
+  "source_aggregate_sha256": "acb97fcde1375130edb6c8fc8de1fa8803b69b171e64cc863aeb1f965dd413a9",
+  "host": {
+    "runs": [
+      {
+        "name": "handoff-final-dead-bugfix-01",
+        "scene": "dead",
+        "variant": "bugfix",
+        "fps": 5.74686889488608,
+        "first10_fps": 4.537809024794589,
+        "later20_fps": 6.3391287112166985,
+        "frames": 173,
+        "wall_seconds": 30.103349,
+        "simulated_seconds": 47.2449999999998,
+        "logic_ticks": 859,
+        "events": 26,
+        "units": 315,
+        "p50_ms": 154.001,
+        "p95_ms": 198.918,
+        "max_ms": 1653.101,
+        "gpu_ms": 14.2499884429006,
+        "peak_rss_mib": 2379.40625,
+        "main_cpu_seconds": 28.57,
+        "load_seconds": 4.648802,
+        "load_cpu_seconds": 4.24
+      },
+      {
+        "name": "handoff-final-dead-final-01",
+        "scene": "dead",
+        "variant": "final",
+        "fps": 7.166484160203387,
+        "first10_fps": 5.939853446700638,
+        "later20_fps": 7.774777438217856,
+        "frames": 215,
+        "wall_seconds": 30.000764,
+        "simulated_seconds": 55.3299999999997,
+        "logic_ticks": 1006,
+        "events": 30,
+        "units": 315,
+        "p50_ms": 131.037,
+        "p95_ms": 166.234,
+        "max_ms": 914.175,
+        "gpu_ms": 13.6207348690477,
+        "peak_rss_mib": 2248.69140625,
+        "main_cpu_seconds": 28.34,
+        "load_seconds": 4.689637,
+        "load_cpu_seconds": 4.24
+      },
+      {
+        "name": "handoff-final-dead-final-02",
+        "scene": "dead",
+        "variant": "final",
+        "fps": 7.082379511932945,
+        "first10_fps": 5.570759226620613,
+        "later20_fps": 7.832048553113835,
+        "frames": 213,
+        "wall_seconds": 30.074638,
+        "simulated_seconds": 54.5599999999997,
+        "logic_ticks": 992,
+        "events": 28,
+        "units": 315,
+        "p50_ms": 131.508,
+        "p95_ms": 178.535,
+        "max_ms": 929.105,
+        "gpu_ms": 13.6492394595079,
+        "peak_rss_mib": 2302.0546875,
+        "main_cpu_seconds": 28.39,
+        "load_seconds": 4.674112,
+        "load_cpu_seconds": 4.25
+      },
+      {
+        "name": "handoff-final-dead-bugfix-02",
+        "scene": "dead",
+        "variant": "bugfix",
+        "fps": 5.926369059505873,
+        "first10_fps": 4.705912979658941,
+        "later20_fps": 6.5316612481512255,
+        "frames": 178,
+        "wall_seconds": 30.035254,
+        "simulated_seconds": 48.5649999999998,
+        "logic_ticks": 883,
+        "events": 26,
+        "units": 315,
+        "p50_ms": 148.616,
+        "p95_ms": 188.515,
+        "max_ms": 1646.041,
+        "gpu_ms": 14.3504269685638,
+        "peak_rss_mib": 2406.546875,
+        "main_cpu_seconds": 28.49,
+        "load_seconds": 4.640775,
+        "load_cpu_seconds": 4.24
+      },
+      {
+        "name": "handoff-final-dead-bugfix-03",
+        "scene": "dead",
+        "variant": "bugfix",
+        "fps": 5.673436968115284,
+        "first10_fps": 4.56120544753889,
+        "later20_fps": 6.213481814008618,
+        "frames": 171,
+        "wall_seconds": 30.14046,
+        "simulated_seconds": 46.6949999999998,
+        "logic_ticks": 849,
+        "events": 26,
+        "units": 315,
+        "p50_ms": 154.96,
+        "p95_ms": 199.501,
+        "max_ms": 1643.043,
+        "gpu_ms": 14.6836199230618,
+        "peak_rss_mib": 2403.30078125,
+        "main_cpu_seconds": 28.61,
+        "load_seconds": 4.679202,
+        "load_cpu_seconds": 4.27
+      },
+      {
+        "name": "handoff-final-dead-final-03",
+        "scene": "dead",
+        "variant": "final",
+        "fps": 7.214911739685452,
+        "first10_fps": 5.756293092670462,
+        "later20_fps": 7.935659469772174,
+        "frames": 217,
+        "wall_seconds": 30.076598,
+        "simulated_seconds": 55.1649999999997,
+        "logic_ticks": 1003,
+        "events": 30,
+        "units": 315,
+        "p50_ms": 131.584,
+        "p95_ms": 165.527,
+        "max_ms": 940.642,
+        "gpu_ms": 13.3008525536357,
+        "peak_rss_mib": 2218.375,
+        "main_cpu_seconds": 28.4,
+        "load_seconds": 4.696648,
+        "load_cpu_seconds": 4.27
+      },
+      {
+        "name": "handoff-final2-portal-bugfix-01",
+        "scene": "portal",
+        "variant": "bugfix",
+        "fps": 3.4905481772939178,
+        "first10_fps": 1.4103548251260756,
+        "later20_fps": 4.530151100169846,
+        "frames": 105,
+        "wall_seconds": 30.081235,
+        "simulated_seconds": 23.5949999999999,
+        "logic_ticks": 429,
+        "events": 66,
+        "units": 416,
+        "p50_ms": 222.977,
+        "p95_ms": 303.634,
+        "max_ms": 5287.136,
+        "gpu_ms": 16.6326571509952,
+        "peak_rss_mib": 3566.1796875,
+        "main_cpu_seconds": 28.12,
+        "load_seconds": 10.911616,
+        "load_cpu_seconds": 9.95
+      },
+      {
+        "name": "handoff-final2-portal-final-01",
+        "scene": "portal",
+        "variant": "final",
+        "fps": 5.316081408742967,
+        "first10_fps": 3.8187562029664903,
+        "later20_fps": 6.064004211325636,
+        "frames": 160,
+        "wall_seconds": 30.097357,
+        "simulated_seconds": 27.9949999999999,
+        "logic_ticks": 509,
+        "events": 78,
+        "units": 416,
+        "p50_ms": 167.649,
+        "p95_ms": 247.622,
+        "max_ms": 1291.862,
+        "gpu_ms": 15.0410687506199,
+        "peak_rss_mib": 3234.24609375,
+        "main_cpu_seconds": 27.77,
+        "load_seconds": 12.641257,
+        "load_cpu_seconds": 11.72
+      },
+      {
+        "name": "handoff-final2-portal-final-02",
+        "scene": "portal",
+        "variant": "final",
+        "fps": 5.477240241051684,
+        "first10_fps": 4.11162108583701,
+        "later20_fps": 6.164915396309832,
+        "frames": 165,
+        "wall_seconds": 30.12466,
+        "simulated_seconds": 28.0499999999999,
+        "logic_ticks": 510,
+        "events": 78,
+        "units": 416,
+        "p50_ms": 164.3,
+        "p95_ms": 239.209,
+        "max_ms": 1316.414,
+        "gpu_ms": 14.9034121224374,
+        "peak_rss_mib": 3110.609375,
+        "main_cpu_seconds": 27.75,
+        "load_seconds": 12.454895,
+        "load_cpu_seconds": 11.55
+      },
+      {
+        "name": "handoff-final2-portal-bugfix-02",
+        "scene": "portal",
+        "variant": "bugfix",
+        "fps": 3.263786592584484,
+        "first10_fps": 1.407846633210197,
+        "later20_fps": 4.188758160382201,
+        "frames": 98,
+        "wall_seconds": 30.026473,
+        "simulated_seconds": 22.4949999999999,
+        "logic_ticks": 409,
+        "events": 63,
+        "units": 416,
+        "p50_ms": 227.967,
+        "p95_ms": 421.114,
+        "max_ms": 5160.683,
+        "gpu_ms": 15.8678776050101,
+        "peak_rss_mib": 3602.8828125,
+        "main_cpu_seconds": 28.02,
+        "load_seconds": 10.384061,
+        "load_cpu_seconds": 9.43
+      },
+      {
+        "name": "handoff-final2-portal-bugfix-03",
+        "scene": "portal",
+        "variant": "bugfix",
+        "fps": 3.356319692441485,
+        "first10_fps": 1.3180273186508469,
+        "later20_fps": 4.3575992172750055,
+        "frames": 101,
+        "wall_seconds": 30.092485,
+        "simulated_seconds": 23.4299999999999,
+        "logic_ticks": 426,
+        "events": 67,
+        "units": 416,
+        "p50_ms": 226.662,
+        "p95_ms": 308.105,
+        "max_ms": 5258.664,
+        "gpu_ms": 16.9807821783689,
+        "peak_rss_mib": 3544.859375,
+        "main_cpu_seconds": 28.16,
+        "load_seconds": 10.43572,
+        "load_cpu_seconds": 9.47
+      },
+      {
+        "name": "handoff-final2-portal-final-03",
+        "scene": "portal",
+        "variant": "final",
+        "fps": 5.3619481522926495,
+        "first10_fps": 3.9349363322256656,
+        "later20_fps": 6.066855544760006,
+        "frames": 161,
+        "wall_seconds": 30.0264,
+        "simulated_seconds": 27.8299999999999,
+        "logic_ticks": 506,
+        "events": 78,
+        "units": 416,
+        "p50_ms": 165.601,
+        "p95_ms": 222.598,
+        "max_ms": 1348.575,
+        "gpu_ms": 14.7230185662738,
+        "peak_rss_mib": 3128.78515625,
+        "main_cpu_seconds": 27.58,
+        "load_seconds": 12.499979,
+        "load_cpu_seconds": 11.6
+      }
+    ],
+    "means": {
+      "dead": {
+        "bugfix": {
+          "fps": 5.782224974169079,
+          "first10_fps": 4.601642483997473,
+          "later20_fps": 6.3614239244588475,
+          "simulated_seconds": 47.501666666666466,
+          "p50_ms": 152.52566666666667,
+          "p95_ms": 195.64466666666667,
+          "max_ms": 1647.395,
+          "main_cpu_seconds": 28.556666666666665,
+          "load_seconds": 4.656259666666666,
+          "load_cpu_seconds": 4.25,
+          "peak_rss_mib": 2396.41796875
+        },
+        "final": {
+          "fps": 7.154591803940595,
+          "first10_fps": 5.755635255330571,
+          "later20_fps": 7.8474951537012885,
+          "simulated_seconds": 55.01833333333303,
+          "p50_ms": 131.37633333333335,
+          "p95_ms": 170.09866666666667,
+          "max_ms": 927.974,
+          "main_cpu_seconds": 28.376666666666665,
+          "load_seconds": 4.686799,
+          "load_cpu_seconds": 4.253333333333333,
+          "peak_rss_mib": 2256.3736979166665
+        },
+        "fps_change_percent": 23.734234414992272
+      },
+      "portal": {
+        "bugfix": {
+          "fps": 3.3702181541066287,
+          "first10_fps": 1.378742925662373,
+          "later20_fps": 4.358836159275684,
+          "simulated_seconds": 23.173333333333233,
+          "p50_ms": 225.86866666666668,
+          "p95_ms": 344.28433333333334,
+          "max_ms": 5235.494333333333,
+          "main_cpu_seconds": 28.1,
+          "load_seconds": 10.577132333333333,
+          "load_cpu_seconds": 9.616666666666667,
+          "peak_rss_mib": 3571.3072916666665
+        },
+        "final": {
+          "fps": 5.3850899340291,
+          "first10_fps": 3.955104540343055,
+          "later20_fps": 6.098591717465158,
+          "simulated_seconds": 27.958333333333233,
+          "p50_ms": 165.85,
+          "p95_ms": 236.47633333333334,
+          "max_ms": 1318.9503333333334,
+          "main_cpu_seconds": 27.7,
+          "load_seconds": 12.532043666666667,
+          "load_cpu_seconds": 11.623333333333333,
+          "peak_rss_mib": 3157.8802083333335
+        },
+        "fps_change_percent": 59.78461001010689
+      }
+    }
+  },
+  "excluded_runs": [
+    {
+      "name": "handoff-final-portal-bugfix-01",
+      "reason": "RPC attempted after private fixture closed ENet during teardown; run rejected. Fixed callbacks only after saved measurement; six clean Portal runs repeated."
+    },
+    {
+      "name": "handoff-client-portal-bugfix-01",
+      "reason": "Private client sampler could miss a first frame before observing host begin; excluded and replaced by continuous full-window sampling."
+    },
+    {
+      "name": "handoff-client-portal-final-01",
+      "reason": "Private client sampler could miss a first frame before observing host begin; excluded and replaced by continuous full-window sampling."
+    },
+    {
+      "name": "handoff-client-portal-final-02",
+      "reason": "Private fixture changed while launcher was being stopped, so host and peer loaded different boundary formats. Peer exited and wrapper terminated host; excluded. No production change."
+    },
+    {
+      "name": "handoff-package-tunnel-01",
+      "reason": "Package runner omitted the saved party required by this later scene; a fresh campaign had no Kel. Retained as a fixture setup failure and repeated with the original saved party, as in the integrated regression."
+    }
+  ],
+  "limitations": [
+    "No original-game executable comparison.",
+    "Measurements are from bounded saved scenes, not a full campaign.",
+    "Windows cross-compiled, not executed on Windows.",
+    "First 30 seconds still fall short of full 2x Dead City simulation; later progress measured separately."
+  ],
+  "river_controls": {
+    "runs": [
+      {
+        "name": "handoff-control-river-exp2-01",
+        "scene": "river",
+        "variant": "exp2",
+        "fps": 17.54127233994726,
+        "seconds": 20.009951,
+        "simulated_seconds": 19.965,
+        "logic_ticks": 363,
+        "units": 239,
+        "p50_ms": 56.326,
+        "p95_ms": 64.598,
+        "max_ms": 73.329,
+        "gpu_ms": 9.38741596064337,
+        "strikes": null,
+        "hits": null,
+        "peak_rss_mib": 2304.65234375,
+        "main_cpu_seconds": 19.15
+      },
+      {
+        "name": "handoff-control-river-baseline-01",
+        "scene": "river",
+        "variant": "baseline",
+        "fps": 18.483039039225652,
+        "seconds": 20.018353,
+        "simulated_seconds": 20.02,
+        "logic_ticks": 364,
+        "units": 239,
+        "p50_ms": 53.717,
+        "p95_ms": 61.136,
+        "max_ms": 75.174,
+        "gpu_ms": 9.04637296521986,
+        "strikes": null,
+        "hits": null,
+        "peak_rss_mib": 2347.17578125,
+        "main_cpu_seconds": 19.16
+      },
+      {
+        "name": "handoff-control-river-final-01",
+        "scene": "river",
+        "variant": "final",
+        "fps": 19.2980304041217,
+        "seconds": 20.05386,
+        "simulated_seconds": 20.02,
+        "logic_ticks": 364,
+        "units": 239,
+        "p50_ms": 51.133,
+        "p95_ms": 57.696,
+        "max_ms": 232.405,
+        "gpu_ms": 8.69778035161415,
+        "strikes": null,
+        "hits": null,
+        "peak_rss_mib": 2290.21875,
+        "main_cpu_seconds": 19.1
+      },
+      {
+        "name": "handoff-control-river-final-02",
+        "scene": "river",
+        "variant": "final",
+        "fps": 19.366157639524932,
+        "seconds": 20.03495,
+        "simulated_seconds": 20.02,
+        "logic_ticks": 364,
+        "units": 239,
+        "p50_ms": 51.012,
+        "p95_ms": 57.857,
+        "max_ms": 237.543,
+        "gpu_ms": 8.73201803448274,
+        "strikes": null,
+        "hits": null,
+        "peak_rss_mib": 2263.25390625,
+        "main_cpu_seconds": 19.07
+      },
+      {
+        "name": "handoff-control-river-baseline-02",
+        "scene": "river",
+        "variant": "baseline",
+        "fps": 17.52522721507014,
+        "seconds": 20.028271,
+        "simulated_seconds": 20.02,
+        "logic_ticks": 364,
+        "units": 239,
+        "p50_ms": 55.774,
+        "p95_ms": 65.453,
+        "max_ms": 277.622,
+        "gpu_ms": 9.41250712783248,
+        "strikes": null,
+        "hits": null,
+        "peak_rss_mib": 2372.81640625,
+        "main_cpu_seconds": 19.19
+      },
+      {
+        "name": "handoff-control-river-exp2-02",
+        "scene": "river",
+        "variant": "exp2",
+        "fps": 18.487130184322186,
+        "seconds": 20.013923,
+        "simulated_seconds": 20.02,
+        "logic_ticks": 364,
+        "units": 239,
+        "p50_ms": 53.978,
+        "p95_ms": 61.016,
+        "max_ms": 73.502,
+        "gpu_ms": 9.13960541261209,
+        "strikes": null,
+        "hits": null,
+        "peak_rss_mib": 2308.08203125,
+        "main_cpu_seconds": 19.16
+      },
+      {
+        "name": "handoff-control-river-baseline-03",
+        "scene": "river",
+        "variant": "baseline",
+        "fps": 17.909463719816568,
+        "seconds": 20.045268,
+        "simulated_seconds": 20.075,
+        "logic_ticks": 365,
+        "units": 239,
+        "p50_ms": 55.562,
+        "p95_ms": 62.48,
+        "max_ms": 85.079,
+        "gpu_ms": 8.70652367211982,
+        "strikes": null,
+        "hits": null,
+        "peak_rss_mib": 2322.9140625,
+        "main_cpu_seconds": 19.19
+      },
+      {
+        "name": "handoff-control-river-exp2-03",
+        "scene": "river",
+        "variant": "exp2",
+        "fps": 17.582899750847314,
+        "seconds": 20.019451,
+        "simulated_seconds": 20.02,
+        "logic_ticks": 364,
+        "units": 239,
+        "p50_ms": 55.275,
+        "p95_ms": 65.399,
+        "max_ms": 280.507,
+        "gpu_ms": 9.18346024507826,
+        "strikes": null,
+        "hits": null,
+        "peak_rss_mib": 2384.3828125,
+        "main_cpu_seconds": 19.16
+      },
+      {
+        "name": "handoff-control-river-final-03",
+        "scene": "river",
+        "variant": "final",
+        "fps": 19.787024658580137,
+        "seconds": 20.013115,
+        "simulated_seconds": 20.02,
+        "logic_ticks": 364,
+        "units": 239,
+        "p50_ms": 50.654,
+        "p95_ms": 56.547,
+        "max_ms": 112.156,
+        "gpu_ms": 8.92593688314611,
+        "strikes": null,
+        "hits": null,
+        "peak_rss_mib": 2251.68359375,
+        "main_cpu_seconds": 19.16
+      },
+      {
+        "name": "handoff-control-double-exp2-01",
+        "scene": "double",
+        "variant": "exp2",
+        "fps": 10.836937155952215,
+        "seconds": 20.024108,
+        "simulated_seconds": 39.985,
+        "logic_ticks": 727,
+        "units": 239,
+        "p50_ms": 88.17,
+        "p95_ms": 116.803,
+        "max_ms": 212.827,
+        "gpu_ms": 11.4407373243763,
+        "strikes": null,
+        "hits": null,
+        "peak_rss_mib": 2354.82421875,
+        "main_cpu_seconds": 19.12
+      },
+      {
+        "name": "handoff-control-double-baseline-01",
+        "scene": "double",
+        "variant": "baseline",
+        "fps": 10.626243438855921,
+        "seconds": 20.044713,
+        "simulated_seconds": 39.765,
+        "logic_ticks": 723,
+        "units": 239,
+        "p50_ms": 91.511,
+        "p95_ms": 109.815,
+        "max_ms": 313.136,
+        "gpu_ms": 11.4160328874006,
+        "strikes": null,
+        "hits": null,
+        "peak_rss_mib": 2275.32421875,
+        "main_cpu_seconds": 19.15
+      },
+      {
+        "name": "handoff-control-double-final-01",
+        "scene": "double",
+        "variant": "final",
+        "fps": 13.675956983824587,
+        "seconds": 20.035161,
+        "simulated_seconds": 40.095,
+        "logic_ticks": 729,
+        "units": 239,
+        "p50_ms": 74.017,
+        "p95_ms": 83.987,
+        "max_ms": 101.552,
+        "gpu_ms": 9.69327371137856,
+        "strikes": null,
+        "hits": null,
+        "peak_rss_mib": 2279.12890625,
+        "main_cpu_seconds": 19.05
+      },
+      {
+        "name": "handoff-control-double-final-02",
+        "scene": "double",
+        "variant": "final",
+        "fps": 13.292081242599723,
+        "seconds": 20.011915,
+        "simulated_seconds": 40.04,
+        "logic_ticks": 728,
+        "units": 239,
+        "p50_ms": 76.072,
+        "p95_ms": 85.741,
+        "max_ms": 93.267,
+        "gpu_ms": 10.196274427543,
+        "strikes": null,
+        "hits": null,
+        "peak_rss_mib": 2281.828125,
+        "main_cpu_seconds": 19.08
+      },
+      {
+        "name": "handoff-control-double-baseline-02",
+        "scene": "double",
+        "variant": "baseline",
+        "fps": 10.291990772780622,
+        "seconds": 20.015564,
+        "simulated_seconds": 38.5,
+        "logic_ticks": 700,
+        "units": 239,
+        "p50_ms": 90.463,
+        "p95_ms": 112.102,
+        "max_ms": 642.682,
+        "gpu_ms": 11.7991553602867,
+        "strikes": null,
+        "hits": null,
+        "peak_rss_mib": 2400.92578125,
+        "main_cpu_seconds": 19.14
+      },
+      {
+        "name": "handoff-control-double-exp2-02",
+        "scene": "double",
+        "variant": "exp2",
+        "fps": 11.653506587443408,
+        "seconds": 20.079793,
+        "simulated_seconds": 40.04,
+        "logic_ticks": 728,
+        "units": 239,
+        "p50_ms": 84.7,
+        "p95_ms": 101.691,
+        "max_ms": 206.258,
+        "gpu_ms": 11.1000598088289,
+        "strikes": null,
+        "hits": null,
+        "peak_rss_mib": 2329.15234375,
+        "main_cpu_seconds": 19.17
+      },
+      {
+        "name": "handoff-control-double-baseline-03",
+        "scene": "double",
+        "variant": "baseline",
+        "fps": 10.798011006372626,
+        "seconds": 20.003684,
+        "simulated_seconds": 37.95,
+        "logic_ticks": 690,
+        "units": 239,
+        "p50_ms": 84.599,
+        "p95_ms": 112.772,
+        "max_ms": 615.745,
+        "gpu_ms": 10.472837973524,
+        "strikes": null,
+        "hits": null,
+        "peak_rss_mib": 2361.57421875,
+        "main_cpu_seconds": 19.13
+      },
+      {
+        "name": "handoff-control-double-exp2-03",
+        "scene": "double",
+        "variant": "exp2",
+        "fps": 11.821418175136158,
+        "seconds": 20.048356,
+        "simulated_seconds": 39.27,
+        "logic_ticks": 714,
+        "units": 239,
+        "p50_ms": 81.466,
+        "p95_ms": 96.351,
+        "max_ms": 583.737,
+        "gpu_ms": 10.6898438940571,
+        "strikes": null,
+        "hits": null,
+        "peak_rss_mib": 2322.4375,
+        "main_cpu_seconds": 19.15
+      },
+      {
+        "name": "handoff-control-double-final-03",
+        "scene": "double",
+        "variant": "final",
+        "fps": 13.62115652001105,
+        "seconds": 20.042351,
+        "simulated_seconds": 40.095,
+        "logic_ticks": 729,
+        "units": 239,
+        "p50_ms": 74.891,
+        "p95_ms": 83.448,
+        "max_ms": 94.526,
+        "gpu_ms": 10.0942417867891,
+        "strikes": null,
+        "hits": null,
+        "peak_rss_mib": 2240.93359375,
+        "main_cpu_seconds": 19.09
+      },
+      {
+        "name": "handoff-control-battle-baseline-01",
+        "scene": "battle",
+        "variant": "baseline",
+        "fps": 3.5002657737012117,
+        "seconds": 20.284174,
+        "simulated_seconds": 16.445,
+        "logic_ticks": 299,
+        "units": 239,
+        "p50_ms": 243.596,
+        "p95_ms": 423.172,
+        "max_ms": 1556.32,
+        "gpu_ms": 16.9855070651417,
+        "strikes": 131,
+        "hits": 59,
+        "peak_rss_mib": 2496.9765625,
+        "main_cpu_seconds": 19.94
+      },
+      {
+        "name": "handoff-control-battle-final-01",
+        "scene": "battle",
+        "variant": "final",
+        "fps": 3.790930199497702,
+        "seconds": 20.04785,
+        "simulated_seconds": 17.82,
+        "logic_ticks": 324,
+        "units": 239,
+        "p50_ms": 252.641,
+        "p95_ms": 458.687,
+        "max_ms": 505.318,
+        "gpu_ms": 18.4006316034417,
+        "strikes": 139,
+        "hits": 64,
+        "peak_rss_mib": 2282.109375,
+        "main_cpu_seconds": 19.66
+      },
+      {
+        "name": "handoff-control-battle-final-02",
+        "scene": "battle",
+        "variant": "final",
+        "fps": 3.1723115886078923,
+        "seconds": 20.174563,
+        "simulated_seconds": 16.995,
+        "logic_ticks": 309,
+        "units": 239,
+        "p50_ms": 323.167,
+        "p95_ms": 407.894,
+        "max_ms": 565.41,
+        "gpu_ms": 19.8250781595707,
+        "strikes": 131,
+        "hits": 61,
+        "peak_rss_mib": 2268.84765625,
+        "main_cpu_seconds": 19.89
+      },
+      {
+        "name": "handoff-control-battle-baseline-02",
+        "scene": "battle",
+        "variant": "baseline",
+        "fps": 4.575272027274191,
+        "seconds": 20.108094,
+        "simulated_seconds": 19.14,
+        "logic_ticks": 348,
+        "units": 239,
+        "p50_ms": 207.16,
+        "p95_ms": 334.198,
+        "max_ms": 777.602,
+        "gpu_ms": 17.4102934961734,
+        "strikes": 132,
+        "hits": 68,
+        "peak_rss_mib": 2525.79296875,
+        "main_cpu_seconds": 19.68
+      },
+      {
+        "name": "handoff-control-battle-baseline-03",
+        "scene": "battle",
+        "variant": "baseline",
+        "fps": 3.6784686356117424,
+        "seconds": 20.117067,
+        "simulated_seconds": 17.38,
+        "logic_ticks": 316,
+        "units": 239,
+        "p50_ms": 282.682,
+        "p95_ms": 391.151,
+        "max_ms": 961.677,
+        "gpu_ms": 18.9048108023566,
+        "strikes": 128,
+        "hits": 58,
+        "peak_rss_mib": 2454.01171875,
+        "main_cpu_seconds": 19.78
+      },
+      {
+        "name": "handoff-control-battle-final-03",
+        "scene": "battle",
+        "variant": "final",
+        "fps": 4.980950107267251,
+        "seconds": 20.076491,
+        "simulated_seconds": 19.085,
+        "logic_ticks": 347,
+        "units": 239,
+        "p50_ms": 163.646,
+        "p95_ms": 324.693,
+        "max_ms": 716.966,
+        "gpu_ms": 17.4043699932098,
+        "strikes": 149,
+        "hits": 81,
+        "peak_rss_mib": 2310.640625,
+        "main_cpu_seconds": 19.66
+      }
+    ],
+    "means": {
+      "river": {
+        "exp2": {
+          "fps": 17.870434091705587,
+          "p50_ms": 55.193,
+          "p95_ms": 63.671,
+          "max_ms": 142.446,
+          "simulated_seconds": 20.001666666666665,
+          "peak_rss_mib": 2332.3723958333335
+        },
+        "baseline": {
+          "fps": 17.972576658037454,
+          "p50_ms": 55.01766666666666,
+          "p95_ms": 63.023,
+          "max_ms": 145.95833333333334,
+          "simulated_seconds": 20.038333333333334,
+          "peak_rss_mib": 2347.6354166666665
+        },
+        "final": {
+          "fps": 19.483737567408923,
+          "p50_ms": 50.933,
+          "p95_ms": 57.36666666666667,
+          "max_ms": 194.03466666666668,
+          "simulated_seconds": 20.02,
+          "peak_rss_mib": 2268.3854166666665
+        }
+      },
+      "double": {
+        "exp2": {
+          "fps": 11.43728730617726,
+          "p50_ms": 84.77866666666667,
+          "p95_ms": 104.94833333333334,
+          "max_ms": 334.274,
+          "simulated_seconds": 39.765,
+          "peak_rss_mib": 2335.4713541666665
+        },
+        "baseline": {
+          "fps": 10.57208173933639,
+          "p50_ms": 88.85766666666666,
+          "p95_ms": 111.563,
+          "max_ms": 523.8543333333333,
+          "simulated_seconds": 38.73833333333334,
+          "peak_rss_mib": 2345.94140625
+        },
+        "final": {
+          "fps": 13.52973158214512,
+          "p50_ms": 74.99333333333334,
+          "p95_ms": 84.392,
+          "max_ms": 96.44833333333334,
+          "simulated_seconds": 40.07666666666667,
+          "peak_rss_mib": 2267.296875
+        }
+      },
+      "battle": {
+        "baseline": {
+          "fps": 3.9180021455290484,
+          "p50_ms": 244.47933333333333,
+          "p95_ms": 382.8403333333333,
+          "max_ms": 1098.533,
+          "simulated_seconds": 17.655,
+          "peak_rss_mib": 2492.2604166666665
+        },
+        "final": {
+          "fps": 3.981397298457615,
+          "p50_ms": 246.48466666666664,
+          "p95_ms": 397.09133333333335,
+          "max_ms": 595.898,
+          "simulated_seconds": 17.96666666666667,
+          "peak_rss_mib": 2287.19921875
+        }
+      }
+    }
+  },
+  "river_control_method": "Three interleaved fresh-process runs/build/case; River gz7g, 239 units, fixed camera, 180 warm simulation ticks, 20 measured realtime seconds. Same hardware/display/render settings as host tests. baseline denotes published Experimental 3; exp2 denotes Experimental 2; final denotes local Experimental 4. Crowded case rearranges 32 fighters/side; combat work varies, and overlapping FPS ranges do not establish an FPS gain.",
+  "combat_profile": {
+    "samples": 3670,
+    "estimated_main_cpu_seconds": 18.35,
+    "path_finding_inclusive_percent": 32.0,
+    "block_carrier_inclusive_percent": 20.7,
+    "ai_choice_inclusive_percent": 28.1,
+    "sight_ray_self_percent": 1.6,
+    "note": "One separate warmed private sampling build, not a production/FPS run. Inclusive categories overlap."
+  },
+  "fixed_work_replay": {
+    "method": "One fixed-work real-ENet pair per saved scene. 450 exact 55ms logic ticks, shared seed per batch, isolated profiles. Compare repaired baseline and final redesign; not general deterministic-network certification.",
+    "runs": [
+      {
+        "scene": "dead",
+        "ticks": 450,
+        "state_digest": "20719dbf8839196cf6f9b45e744c4e6628ec35c2968bd7fbdec77f547bc8bbcc",
+        "raw_state_sha256": "20719dbf8839196cf6f9b45e744c4e6628ec35c2968bd7fbdec77f547bc8bbcc",
+        "raw_bytes_identical": true,
+        "events": 14,
+        "combat_rng": 1374132391448909570,
+        "baseline_wall_seconds": 13.202978,
+        "final_wall_seconds": 10.771744
+      },
+      {
+        "scene": "portal",
+        "ticks": 450,
+        "state_digest": "b4871dbb576b3f5aa37006cd0dba99133ff31e9dcdde709217dc0fee3bf783ac",
+        "raw_state_sha256": "b4871dbb576b3f5aa37006cd0dba99133ff31e9dcdde709217dc0fee3bf783ac",
+        "raw_bytes_identical": true,
+        "events": 69,
+        "combat_rng": -6449746319111045889,
+        "baseline_wall_seconds": 26.759232,
+        "final_wall_seconds": 20.816002
+      }
+    ]
+  },
+  "rendered_client": {
+    "method": "Two rendered processes share one RTX 3090; client and host have separate CPU affinity. Continuous client frame sampling covers the complete host measurement window, including a frame crossing either boundary. FPS counts completions inside that window; CPU boundary intervals are prorated. Not a two-PC measurement.",
+    "runs": [
+      {
+        "name": "handoff-client2-portal-bugfix-01",
+        "variant": "bugfix",
+        "fps": 11.701435609908575,
+        "seconds": 30.081779,
+        "p50_ms": 71.149,
+        "p95_ms": 90.916,
+        "max_ms": 2041.602,
+        "gpu_ms": 9.07435409340575,
+        "units": 416,
+        "main_cpu_seconds": 25.4207913261985
+      },
+      {
+        "name": "handoff-client2-portal-final-01",
+        "variant": "final",
+        "fps": 12.857915997635876,
+        "seconds": 30.020417,
+        "p50_ms": 71.909,
+        "p95_ms": 95.278,
+        "max_ms": 1720.146,
+        "gpu_ms": 8.83455040165312,
+        "units": 416,
+        "main_cpu_seconds": 24.8112304529414
+      },
+      {
+        "name": "handoff-client2-portal-final-02",
+        "variant": "final",
+        "fps": 12.626954473947618,
+        "seconds": 30.094351,
+        "p50_ms": 71.924,
+        "p95_ms": 93.347,
+        "max_ms": 1384.529,
+        "gpu_ms": 8.59576116396686,
+        "units": 416,
+        "main_cpu_seconds": 24.4873734795071
+      },
+      {
+        "name": "handoff-client2-portal-bugfix-02",
+        "variant": "bugfix",
+        "fps": 11.756502386586638,
+        "seconds": 30.025937,
+        "p50_ms": 70.101,
+        "p95_ms": 93.551,
+        "max_ms": 3039.209,
+        "gpu_ms": 8.76985311912278,
+        "units": 416,
+        "main_cpu_seconds": 24.8613693581873
+      },
+      {
+        "name": "handoff-client2-portal-bugfix-03",
+        "variant": "bugfix",
+        "fps": 11.824195339426979,
+        "seconds": 30.107757,
+        "p50_ms": 70.39,
+        "p95_ms": 96.204,
+        "max_ms": 2953.103,
+        "gpu_ms": 8.98516526876711,
+        "units": 416,
+        "main_cpu_seconds": 25.2233478469157
+      },
+      {
+        "name": "handoff-client2-portal-final-03",
+        "variant": "final",
+        "fps": 13.307657408596887,
+        "seconds": 30.133027,
+        "p50_ms": 69.003,
+        "p95_ms": 94.756,
+        "max_ms": 1639.491,
+        "gpu_ms": 8.7795870731126,
+        "units": 416,
+        "main_cpu_seconds": 25.261919107942
+      }
+    ],
+    "means": {
+      "bugfix": {
+        "fps": 11.760711111974064,
+        "p50_ms": 70.54666666666667,
+        "p95_ms": 93.557,
+        "max_ms": 2677.9713333333334,
+        "main_cpu_seconds": 25.16850284376717
+      },
+      "final": {
+        "fps": 12.930842626726793,
+        "p50_ms": 70.94533333333334,
+        "p95_ms": 94.46033333333334,
+        "max_ms": 1581.3886666666667,
+        "main_cpu_seconds": 24.853507680130164
+      },
+      "fps_change_percent": 9.949496281405711
+    },
+    "camera_endpoints_match_across_runs": true
+  },
+  "additional_host_checks": {
+    "runs": [
+      {
+        "name": "handoff-extra-dead1-bugfix-01",
+        "scene": "dead1",
+        "variant": "bugfix",
+        "fps": 9.88076412839484,
+        "first10_fps": 6.708167865192658,
+        "later20_fps": 11.468285033657663,
+        "frames": 297,
+        "wall_seconds": 30.058404,
+        "simulated_seconds": 26.6749999999999,
+        "logic_ticks": 485,
+        "events": 15,
+        "units": 315,
+        "p50_ms": 85.188,
+        "p95_ms": 132.881,
+        "max_ms": 1732.431,
+        "gpu_ms": 12.0658114558519,
+        "peak_rss_mib": 2415.65234375,
+        "main_cpu_seconds": 28.52,
+        "load_seconds": 4.654224,
+        "load_cpu_seconds": 4.26
+      },
+      {
+        "name": "handoff-extra-dead1-final-01",
+        "scene": "dead1",
+        "variant": "final",
+        "fps": 13.09244783967115,
+        "first10_fps": 9.765305480400176,
+        "later20_fps": 14.742084237868477,
+        "frames": 393,
+        "wall_seconds": 30.017305,
+        "simulated_seconds": 28.7649999999999,
+        "logic_ticks": 523,
+        "events": 16,
+        "units": 315,
+        "p50_ms": 67.18,
+        "p95_ms": 102.741,
+        "max_ms": 908.041,
+        "gpu_ms": 10.9457709880276,
+        "peak_rss_mib": 2205.73046875,
+        "main_cpu_seconds": 28.4,
+        "load_seconds": 4.646843,
+        "load_cpu_seconds": 4.26
+      },
+      {
+        "name": "handoff-extra-dead1-final-02",
+        "scene": "dead1",
+        "variant": "final",
+        "fps": 12.77283898366254,
+        "first10_fps": 9.11100518316074,
+        "later20_fps": 14.590305471529442,
+        "frames": 384,
+        "wall_seconds": 30.063794,
+        "simulated_seconds": 28.7649999999999,
+        "logic_ticks": 523,
+        "events": 16,
+        "units": 315,
+        "p50_ms": 67.684,
+        "p95_ms": 107.729,
+        "max_ms": 941.358,
+        "gpu_ms": 11.059263035655,
+        "peak_rss_mib": 2220.84375,
+        "main_cpu_seconds": 28.45,
+        "load_seconds": 4.567416,
+        "load_cpu_seconds": 4.22
+      },
+      {
+        "name": "handoff-extra-dead1-bugfix-02",
+        "scene": "dead1",
+        "variant": "bugfix",
+        "fps": 11.194283452583548,
+        "first10_fps": 6.556966267233094,
+        "later20_fps": 13.50199424454992,
+        "frames": 336,
+        "wall_seconds": 30.01532,
+        "simulated_seconds": 27.1149999999999,
+        "logic_ticks": 493,
+        "events": 15,
+        "units": 315,
+        "p50_ms": 76.233,
+        "p95_ms": 114.497,
+        "max_ms": 2407.978,
+        "gpu_ms": 11.601047622306,
+        "peak_rss_mib": 2411.50390625,
+        "main_cpu_seconds": 28.47,
+        "load_seconds": 4.667607,
+        "load_cpu_seconds": 4.27
+      },
+      {
+        "name": "handoff-extra-dead1-bugfix-03",
+        "scene": "dead1",
+        "variant": "bugfix",
+        "fps": 10.976867714873267,
+        "first10_fps": 6.156637991200045,
+        "later20_fps": 13.369613542340968,
+        "frames": 330,
+        "wall_seconds": 30.063221,
+        "simulated_seconds": 27.1149999999999,
+        "logic_ticks": 493,
+        "events": 15,
+        "units": 315,
+        "p50_ms": 77.445,
+        "p95_ms": 114.745,
+        "max_ms": 2422.822,
+        "gpu_ms": 11.4426242192586,
+        "peak_rss_mib": 2371.48046875,
+        "main_cpu_seconds": 28.48,
+        "load_seconds": 4.631491,
+        "load_cpu_seconds": 4.25
+      },
+      {
+        "name": "handoff-extra-dead1-final-03",
+        "scene": "dead1",
+        "variant": "final",
+        "fps": 13.018781806948313,
+        "first10_fps": 9.47122073858796,
+        "later20_fps": 14.780722981088065,
+        "frames": 391,
+        "wall_seconds": 30.033532,
+        "simulated_seconds": 28.8199999999999,
+        "logic_ticks": 524,
+        "events": 16,
+        "units": 315,
+        "p50_ms": 67.264,
+        "p95_ms": 102.006,
+        "max_ms": 930.647,
+        "gpu_ms": 11.1065805708356,
+        "peak_rss_mib": 2230.66796875,
+        "main_cpu_seconds": 28.42,
+        "load_seconds": 4.652578,
+        "load_cpu_seconds": 4.24
+      },
+      {
+        "name": "handoff-extra-dead2cores-bugfix-01",
+        "scene": "dead2cores",
+        "variant": "bugfix",
+        "fps": 5.4265190724500885,
+        "first10_fps": 3.4190485451596477,
+        "later20_fps": 6.659466118925579,
+        "frames": 163,
+        "wall_seconds": 30.037672,
+        "simulated_seconds": 44.3849999999998,
+        "logic_ticks": 807,
+        "events": 24,
+        "units": 315,
+        "p50_ms": 154.171,
+        "p95_ms": 201.04,
+        "max_ms": 2376.426,
+        "gpu_ms": 14.716748430685,
+        "peak_rss_mib": 2417.07421875,
+        "main_cpu_seconds": 27.15,
+        "load_seconds": 6.160015,
+        "load_cpu_seconds": 4.28
+      },
+      {
+        "name": "handoff-extra-dead2cores-final-01",
+        "scene": "dead2cores",
+        "variant": "final",
+        "fps": 6.634810288547237,
+        "first10_fps": 4.7229905735137505,
+        "later20_fps": 7.584769025320254,
+        "frames": 200,
+        "wall_seconds": 30.144042,
+        "simulated_seconds": 52.0299999999998,
+        "logic_ticks": 946,
+        "events": 28,
+        "units": 315,
+        "p50_ms": 136.909,
+        "p95_ms": 182.065,
+        "max_ms": 1856.956,
+        "gpu_ms": 13.5572299599648,
+        "peak_rss_mib": 2221.80078125,
+        "main_cpu_seconds": 27.08,
+        "load_seconds": 6.022017,
+        "load_cpu_seconds": 4.24
+      },
+      {
+        "name": "handoff-extra-dead2cores-final-02",
+        "scene": "dead2cores",
+        "variant": "final",
+        "fps": 6.342490361905157,
+        "first10_fps": 4.622847034614471,
+        "later20_fps": 7.197729836009723,
+        "frames": 191,
+        "wall_seconds": 30.114354,
+        "simulated_seconds": 50.8199999999998,
+        "logic_ticks": 924,
+        "events": 28,
+        "units": 315,
+        "p50_ms": 143.112,
+        "p95_ms": 191.217,
+        "max_ms": 1872.735,
+        "gpu_ms": 14.145926735164,
+        "peak_rss_mib": 2292.31640625,
+        "main_cpu_seconds": 27.06,
+        "load_seconds": 6.098814,
+        "load_cpu_seconds": 4.23
+      },
+      {
+        "name": "handoff-extra-dead2cores-bugfix-02",
+        "scene": "dead2cores",
+        "variant": "bugfix",
+        "fps": 5.292404165128735,
+        "first10_fps": 3.356906616656218,
+        "later20_fps": 6.240751518287474,
+        "frames": 159,
+        "wall_seconds": 30.043057,
+        "simulated_seconds": 43.3949999999998,
+        "logic_ticks": 789,
+        "events": 24,
+        "units": 315,
+        "p50_ms": 156.471,
+        "p95_ms": 209.864,
+        "max_ms": 2341.922,
+        "gpu_ms": 14.6799748528678,
+        "peak_rss_mib": 2435.4140625,
+        "main_cpu_seconds": 27.18,
+        "load_seconds": 6.146864,
+        "load_cpu_seconds": 4.25
+      }
+    ],
+    "means": {
+      "dead1": {
+        "bugfix": {
+          "fps": 10.683971765283886,
+          "first10_fps": 6.473924041208599,
+          "later20_fps": 12.779964273516184,
+          "simulated_seconds": 26.968333333333234,
+          "p50_ms": 79.622,
+          "p95_ms": 120.70766666666667,
+          "max_ms": 2187.7436666666667,
+          "main_cpu_seconds": 28.49,
+          "load_seconds": 4.651107333333333,
+          "load_cpu_seconds": 4.26,
+          "peak_rss_mib": 2399.5455729166665
+        },
+        "final": {
+          "fps": 12.961356210094001,
+          "first10_fps": 9.449177134049625,
+          "later20_fps": 14.704370896828662,
+          "simulated_seconds": 28.783333333333236,
+          "p50_ms": 67.376,
+          "p95_ms": 104.15866666666666,
+          "max_ms": 926.682,
+          "main_cpu_seconds": 28.423333333333332,
+          "load_seconds": 4.622279,
+          "load_cpu_seconds": 4.24,
+          "peak_rss_mib": 2219.0807291666665
+        },
+        "fps_change_percent": 21.315897260325656
+      },
+      "dead2cores": {
+        "bugfix": {
+          "fps": 5.359461618789412,
+          "first10_fps": 3.3879775809079327,
+          "later20_fps": 6.450108818606527,
+          "simulated_seconds": 43.8899999999998,
+          "p50_ms": 155.321,
+          "p95_ms": 205.452,
+          "max_ms": 2359.174,
+          "main_cpu_seconds": 27.165,
+          "load_seconds": 6.153439499999999,
+          "load_cpu_seconds": 4.265000000000001,
+          "peak_rss_mib": 2426.244140625
+        },
+        "final": {
+          "fps": 6.488650325226197,
+          "first10_fps": 4.6729188040641105,
+          "later20_fps": 7.391249430664988,
+          "simulated_seconds": 51.4249999999998,
+          "p50_ms": 140.01049999999998,
+          "p95_ms": 186.64100000000002,
+          "max_ms": 1864.8455,
+          "main_cpu_seconds": 27.07,
+          "load_seconds": 6.0604154999999995,
+          "load_cpu_seconds": 4.235,
+          "peak_rss_mib": 2257.05859375
+        },
+        "fps_change_percent": 21.06906974532723
+      }
+    }
+  },
+  "additional_host_method": "Dead City 1x: three interleaved runs/build with headline host affinity. Dead City 2x/two-core host: two runs/build in baseline/final/final/baseline order; host main CPU15, all host workers CPU14, headless peer main CPU13/workers CPU12. 30-second realtime windows, same render options, no Distant AI. CPU affinity is a contention diagnostic, not an emulation of older hardware.",
+  "benchmark_source_note": "Gameplay source and binaries match the frozen comparison throughout; only the native-source README changed after the benchmark freeze. Clean package compiled scripts are audited against the benchmark pack.",
+  "clean_package": {
+    "cases": 22,
+    "assertions": 27610,
+    "story_scenarios": 4,
+    "checks": [
+      {
+        "name": "handoff-package-nav-01",
+        "seconds": 12.418963990996417,
+        "warnings": [],
+        "summary": [
+          "NAV_TOPOLOGY 7072 checks 0 failures"
+        ]
+      },
+      {
+        "name": "handoff-package-motion-01",
+        "seconds": 1.7032768819990451,
+        "warnings": [],
+        "summary": [
+          "MOTION_RECORDS 10221 checks 0 failures"
+        ]
+      },
+      {
+        "name": "handoff-package-body-01",
+        "seconds": 1.602400330004457,
+        "warnings": [],
+        "summary": [
+          "BODY_RECORDS 4025 checks 0 failures"
+        ]
+      },
+      {
+        "name": "handoff-package-registry-01",
+        "seconds": 1.8034496890031733,
+        "warnings": [],
+        "summary": [
+          "REGISTRY_QUERIES PASS=1283 FAIL=0"
+        ]
+      },
+      {
+        "name": "handoff-package-registry-script-01",
+        "seconds": 1.8035483810017467,
+        "warnings": [],
+        "summary": [
+          "REGISTRY_QUERIES PASS=1283 FAIL=0"
+        ]
+      },
+      {
+        "name": "handoff-package-health-script-01",
+        "seconds": 1.6031424200045876,
+        "warnings": [],
+        "summary": [
+          "AI_HEALTH_CHECKS 45 checks 0 failures"
+        ]
+      },
+      {
+        "name": "handoff-package-combat-01",
+        "seconds": 1.8034593060001498,
+        "warnings": [],
+        "summary": [
+          "COMBAT_INPUTS 480 checks 0 failures"
+        ]
+      },
+      {
+        "name": "handoff-package-camp-01",
+        "seconds": 1.9034891690025688,
+        "warnings": [],
+        "summary": [
+          "CAMP_GRANTS 130 checks 0 failures"
+        ]
+      },
+      {
+        "name": "handoff-package-movie-01",
+        "seconds": 14.724672673000896,
+        "warnings": [],
+        "summary": [
+          "MOVIE_GATE 15 checks 0 failures"
+        ]
+      },
+      {
+        "name": "handoff-package-dynamic-nav-01",
+        "seconds": 5.807236881999415,
+        "warnings": [],
+        "summary": [
+          "DYNAMIC_NAVIGATION 133 checks 0 failures"
+        ]
+      },
+      {
+        "name": "handoff-package-animation-prepare-01",
+        "seconds": 1.6030250709954998,
+        "warnings": [],
+        "summary": [
+          "CACHE_PREPARATION 1435 checks 0 failures"
+        ]
+      },
+      {
+        "name": "handoff-package-animation-retain-01",
+        "seconds": 1.603139923994604,
+        "warnings": [],
+        "summary": [
+          "CACHE_LIFECYCLE PASS=1256 FAIL=0"
+        ]
+      },
+      {
+        "name": "handoff-package-recruiter-01",
+        "seconds": 18.83262913699582,
+        "warnings": [],
+        "summary": [
+          "SCENE_RESULT {\"client\":\"gz1g\",\"elapsed\":5.31666666666665,\"host\":\"gz1g\",\"legacy_save\":true,\"passed\":true,\"reloaded\":true,\"scene\":\"bz1r\",\"single\":false}"
+        ]
+      },
+      {
+        "name": "handoff-package-recruiter-single-01",
+        "seconds": 8.711571601998003,
+        "warnings": [],
+        "summary": [
+          "SCENE_RESULT {\"client\":\"\",\"elapsed\":3.71666666666666,\"host\":\"gz1g\",\"legacy_save\":false,\"passed\":true,\"reloaded\":false,\"scene\":\"bz1r\",\"single\":true}"
+        ]
+      },
+      {
+        "name": "handoff-package-tunnel-02",
+        "seconds": 26.54627821900067,
+        "warnings": [],
+        "summary": [
+          "SCENE_RESULT {\"client\":\"gz1d2\",\"elapsed\":8.34999999999999,\"host\":\"gz1d2\",\"legacy_save\":false,\"passed\":true,\"reloaded\":true,\"scene\":\"cz1h\",\"single\":false}"
+        ]
+      },
+      {
+        "name": "handoff-package-tunnel-single-01",
+        "seconds": 11.519647186003567,
+        "warnings": [],
+        "summary": [
+          "SCENE_RESULT {\"client\":\"\",\"elapsed\":7.83333333333331,\"host\":\"gz1d2\",\"legacy_save\":false,\"passed\":true,\"reloaded\":false,\"scene\":\"cz1h\",\"single\":true}"
+        ]
+      },
+      {
+        "name": "handoff-package-camp-net-01",
+        "seconds": 61.48421737099852,
+        "warnings": [
+          "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+        ],
+        "summary": [
+          "CAMP_NET 21 checks 0 failures"
+        ]
+      },
+      {
+        "name": "handoff-package-wall-01",
+        "seconds": 19.23424111300119,
+        "warnings": [
+          "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+        ],
+        "summary": [
+          "WALL_NET 59 checks 0 failures"
+        ]
+      },
+      {
+        "name": "handoff-package-menu-base-01",
+        "seconds": 5.209497313997417,
+        "warnings": [
+          "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+        ],
+        "summary": [
+          "NETWORK_MENU_CHECKS 16 checks 0 failures"
+        ]
+      },
+      {
+        "name": "handoff-package-menu-astral-01",
+        "seconds": 5.311388372996589,
+        "warnings": [
+          "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+        ],
+        "summary": [
+          "NETWORK_MENU_CHECKS 16 checks 0 failures"
+        ]
+      },
+      {
+        "name": "handoff-package-item-views-01",
+        "seconds": 4.307852944999468,
+        "warnings": [
+          "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+        ],
+        "summary": [
+          "ITEM_VIEW 60 checks 0 failures"
+        ]
+      },
+      {
+        "name": "handoff-package-item-views-gl-01",
+        "seconds": 2.7045460090012057,
+        "warnings": [
+          "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet.",
+          "WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.",
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "summary": [
+          "ITEM_VIEW 60 checks 0 failures"
+        ]
+      }
+    ],
+    "packs": {
+      "linux": {
+        "resources": 551,
+        "compiled_scripts": 201,
+        "scripts_match_benchmark": true,
+        "engine_sha256": "3abb01d86e54244b58baa93f1e7b586f8e900e5ac5e51b201144e1557e1165b9",
+        "native_sha256": "df81869dced6f4f877b4ab75caf45f0cea2b36498936f111ca546e383b27c642",
+        "pack_sha256": "d2855e15055fe9f463ceea749f32c9603daa4fa47b36c6f7890b1705779a2c09"
+      },
+      "windows": {
+        "resources": 551,
+        "compiled_scripts": 201,
+        "scripts_match_benchmark": true,
+        "engine_sha256": "b151484e4db00d11d507e1f0bca50cd38d60bf99a22fc145ead77161b5cd8344",
+        "native_sha256": "1f5401f0dffb431d51c529fb76235149a36643a9544b7faaa39ac904c4d84aa7",
+        "pack_sha256": "d2855e15055fe9f463ceea749f32c9603daa4fa47b36c6f7890b1705779a2c09"
+      }
+    },
+    "windows_executed": false
+  }
+}

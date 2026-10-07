@@ -61,6 +61,13 @@ var _sent_flags := {}          # host: player index -> value sent
 var _unit_query: RefCounted
 var _combat_membership := -1
 var _combat_near := {}         # uid -> {until, units}, native creature
+## Built only for a synchronous flag batch. Orders, ownership and sight are
+## sampled again at the next batch; no timer or gameplay query is skipped.
+class CombatInputs extends RefCounted:
+	var own := {}
+	var attackers := {}
+	var shared_relevant: Array[GameUnit] = []
+	var has_shared := false
 var _dialog_was := false
 var _shop_was := false
 ## The global map is up (event "travel" until a zone starts or "Stay here").
@@ -323,8 +330,19 @@ func _send_combat_flags() -> void:
 		if not is_instance_valid(u) or u.controller < 0:
 			continue
 		parties[u.controller] = true
+	var inputs := _combat_inputs()
+	if _unit_query:
+		_combat_membership = _unit_query.begin_registry_batch(_world.units)
+	var flags := {}
 	for p in parties:
-		var flag := player_combat_flag(int(p))
+		flags[p] = _player_combat_flag(int(p), inputs)
+	if _unit_query:
+		_unit_query.end_batch()
+		_combat_membership = -1
+	# Publish after the synchronous read batch so event handlers cannot
+	# change the roster or orders halfway through the other players' inputs.
+	for p in flags:
+		var flag: int = flags[p]
 		if int(_sent_flags.get(p, -1)) != flag:
 			_sent_flags[p] = flag
 			s.broadcast({"t": "combat_flag", "p": p, "v": flag})
@@ -344,29 +362,44 @@ func player_combat_flag(player: int) -> int:
 	return flag
 
 
-func _player_combat_flag(player: int) -> int:
-	if _world == null or _world.session == null:
-		return 0
-	var own: Array[GameUnit] = []
-	# Index the current attacks once. Rechecking every nearby unit for every
-	# relevant object made this query quadratic in crowded maps. This index
-	# lives only for this call, so orders, deaths and diplomacy stay current.
-	var attackers := {}
-	for u: GameUnit in _world.units.values():
+func _combat_inputs() -> CombatInputs:
+	var inputs := CombatInputs.new()
+	for u: GameUnit in _world.unit_rows():
 		if not is_instance_valid(u): continue
-		if u.controller == player and not u.dead and not u.hidden:
-			own.append(u)
+		if not u.dead and not u.hidden:
+			if not inputs.own.has(u.controller): inputs.own[u.controller] = []
+			inputs.own[u.controller].append(u)
 		if not u.dead and u.order.get("type", "") == "attack":
 			var target := _act_target(u)
 			if target:
-				if not attackers.has(target): attackers[target] = []
-				attackers[target].append(u)
+				if not inputs.attackers.has(target): inputs.attackers[target] = []
+				inputs.attackers[target].append(u)
+	return inputs
+
+
+func _player_combat_flag(player: int, inputs: CombatInputs = null) -> int:
+	if _world == null or _world.session == null:
+		return 0
+	if inputs == null: inputs = _combat_inputs()
+	var own: Array = inputs.own.get(player, [])
 	var flag := 0
 	for u: GameUnit in own:
 		for ratio in _near_ratios(u):
 			if ratio <= 2.0:
 				flag = 1
-	for u in UnitFog.relevant_for(_world.session, player):
+	# Campaign co-op deliberately shares every party member's eyes. Preserve
+	# the first query's order (after own detection) and reuse its exact list.
+	# LMP and single-player lists remain specific to the issuing player.
+	var shared := _world.session.online and _world.session.lmp.is_empty()
+	var relevant: Array[GameUnit]
+	if shared and inputs.has_shared:
+		relevant = inputs.shared_relevant
+	else:
+		relevant = UnitFog.relevant_for(_world.session, player)
+		if shared:
+			inputs.shared_relevant = relevant
+			inputs.has_shared = true
+	for u in relevant:
 		if not is_instance_valid(u) or u.dead:
 			continue
 		if _hostile_act(u):
@@ -375,7 +408,7 @@ func _player_combat_flag(player: int) -> int:
 		# draw must be identical to the exhaustive scan.
 		var near := _near_units(u)
 		if not own.is_empty():
-			for a: GameUnit in attackers.get(u, []):
+			for a: GameUnit in inputs.attackers.get(u, []):
 				if near.has(a) and _world.is_enemy(a, own[0]):
 					return 2
 	return flag
@@ -650,7 +683,7 @@ func bored_context(u: GameUnit) -> int:
 ## net handler, unit). Approx.: "acts" = the remake unit is
 ## not idle, rather than the native post-action dispatcher's return value.
 func _bored_tick() -> void:
-	for u: GameUnit in _world.units.values():
+	for u: GameUnit in _world.unit_rows():
 		if not is_instance_valid(u) or u.dead or u.controller < 0 or not u.has_meta("hero"):
 			continue
 		var g := u.gait()

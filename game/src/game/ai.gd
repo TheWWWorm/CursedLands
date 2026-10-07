@@ -581,7 +581,7 @@ func follow_engage(u: GameUnit) -> bool:
 ## FollowMaxDist · k + 1.
 func _follower_far(u: GameUnit, k: float) -> bool:
 	var lim := GameData.ai_value("Logic", "FollowMaxDist", 4.0) * k + 1.0
-	for f: GameUnit in world.units.values():
+	for f: GameUnit in world.unit_rows():
 		if f == u or f.dead or f.controller != u.controller:
 			continue
 		if f.order.get("type", "") == "follow" and f.order.get("target") == u \
@@ -1009,7 +1009,7 @@ func _score(u: GameUnit, c: GameUnit, opt: Dictionary, list: Array, cur, thr: fl
 static func _healing_max(c: GameUnit) -> int:
 	var mx := float(GameUnit._fistp(c.max_hp))
 	var missing := 0.0
-	for p: Dictionary in c.parts:
+	for p: UnitBodyPart in c.parts:
 		if int(p.state) == 1:
 			missing += mx * float(PackedFloat32Array([float(p.lethal)])[0])
 	return GameUnit._fistp(float(PackedFloat32Array([mx - missing])[0]))
@@ -1438,7 +1438,7 @@ func on_attacked(u: GameUnit, by: GameUnit) -> void:
 func _react(u: GameUnit, code: int) -> void:
 	if world.session and not EIAcks.lines([GameSound.voice_name(u)], code).is_empty():
 		var players := {}
-		for m: GameUnit in world.units.values():
+		for m: GameUnit in world.unit_rows():
 			if is_instance_valid(m) and m.controller >= 0:
 				players[m.controller] = true
 		for player: int in players:
@@ -1676,7 +1676,7 @@ func tick() -> void:
 	# with loudness = movement noise x hearing detectability
 	# x the ground's StepSound (folded into GameUnit.noise), 26 ticks.
 	if _tick_n & 15 == 0 and world.authority:
-		for u: GameUnit in world.units.values():
+		for u: GameUnit in world.unit_rows():
 			if not u.dead and not u.hidden:
 				var loud := u.noise() * u.detect(3)
 				if loud > 0.0:
@@ -1707,7 +1707,7 @@ func tick() -> void:
 ## Refresh cached candidate observers and retained witnesses; the ordinary
 ## perception pass handles both a newly seen and a retained corpse.
 func on_corpse(dead: GameUnit) -> void:
-	for o: GameUnit in world.units.values():
+	for o: GameUnit in world.unit_rows():
 		if not is_instance_valid(o) or o.dead or o == dead:
 			continue
 		if not o.get_meta("noticed", {}).has(dead.get_instance_id()) and not dead in _notice_candidates(o):
@@ -1747,7 +1747,7 @@ func _hate(o: GameUnit, f: int) -> void:
 		return
 	var who: Array = [o]
 	if o.controller >= 0:
-		who = world.units.values().filter(func(x: GameUnit): return x.controller == o.controller)
+		who = world.unit_rows().filter(func(x: GameUnit): return x.controller == o.controller)
 	for x: GameUnit in who:
 		if not _hates(x, f):
 			var h: Dictionary = x.get_meta("hate", {})
@@ -1988,7 +1988,7 @@ func invoke_alarm(i: int, at: Vector2, force: bool) -> void:
 			al[k] = {"on": false, "time": 0, "pos": Vector2.ZERO}
 	al[i] = {"on": true, "time": _tick_n, "pos": at}
 	world.set_meta("alarms", al)
-	for u: GameUnit in world.units.values():
+	for u: GameUnit in world.unit_rows():
 		if u.dead or u.controller >= 0 or u.has_meta("hero"):
 			continue
 		var ls: Array = u.info.get("logic", [])

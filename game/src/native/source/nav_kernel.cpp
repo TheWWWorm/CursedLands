@@ -16,10 +16,13 @@
 #include <cmath>
 #include <functional>
 #include <queue>
+#include <map>
+#include <tuple>
 #include <vector>
 
 #include "window_frontier.h"
 #include "unit_query.h"
+#include "motion_spline.h"
 #include "ai_activity.h"
 #include "screen_rect.h"
 #include "nav_build.h"
@@ -40,6 +43,13 @@ class TerrainSearchKernel : public RefCounted {
     static constexpr int order[8] = {4,5,6,7,3,2,1,8};
 protected:
     static void _bind_methods() {
+        ClassDB::bind_method(D_METHOD("configure_topology", "cost_values"), &TerrainSearchKernel::configure_topology);
+        ClassDB::bind_method(D_METHOD("topology_representative", "block"), &TerrainSearchKernel::topology_representative);
+        ClassDB::bind_method(D_METHOD("topology_raw", "block"), &TerrainSearchKernel::topology_raw);
+        ClassDB::bind_method(D_METHOD("topology_connections", "block"), &TerrainSearchKernel::topology_connections);
+        ClassDB::bind_method(D_METHOD("topology_component", "block"), &TerrainSearchKernel::topology_component);
+        ClassDB::bind_method(D_METHOD("topology_seeds", "point", "reverse"), &TerrainSearchKernel::topology_seeds);
+        ClassDB::bind_method(D_METHOD("topology_stats"), &TerrainSearchKernel::topology_stats);
         ClassDB::bind_method(D_METHOD("sealed_reach", "rect", "start", "target", "reach", "stamp", "threshold"), &TerrainSearchKernel::sealed_reach);
         ClassDB::bind_method(D_METHOD("configure", "size", "land", "costs", "heights", "slopes"), &TerrainSearchKernel::configure);
         ClassDB::bind_method(D_METHOD("distances", "rect", "start", "reverse", "goals"), &TerrainSearchKernel::distances);
@@ -55,6 +65,7 @@ protected:
 public:
     bool configure(Vector2i size, const PackedByteArray &p_land, const PackedInt32Array &p_costs,
                    const PackedInt32Array &p_heights, const PackedInt32Array &p_slopes) {
+        reset_topology();
         width = 0; height = 0;
         int64_t n = int64_t(size.x) * size.y;
         if (size.x <= 0 || size.y <= 0 || n > 0x7fffffff || p_land.size() != n ||
@@ -515,6 +526,7 @@ public:
         }
         return output;
     }
+#include "nav_topology.h"
 };
 
 static void initialize_kernel(ModuleInitializationLevel level) {
@@ -523,6 +535,7 @@ static void initialize_kernel(ModuleInitializationLevel level) {
         GDREGISTER_CLASS(UnitNoticeLifetime); GDREGISTER_CLASS(UnitQueryKernel);
         GDREGISTER_CLASS(ScreenRectKernel);
         GDREGISTER_CLASS(NavigationBuildKernel); GDREGISTER_CLASS(AIActivityKernel);
+        GDREGISTER_CLASS(MotionSplineKernel);
     }
 }
 static void terminate_kernel(ModuleInitializationLevel) {}

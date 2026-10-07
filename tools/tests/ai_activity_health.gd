@@ -41,7 +41,7 @@ func _ready() -> void:
 			check(u._hp == u.max_hp and u.hp < u.max_hp and not a.defer_decision(u), "unscaled fallback cannot conceal a wound")
 			u.heal(1000.0)
 	GameData.options["coop_scale"] = old_scale
-	w.units.clear();u.free();w.free()
+	w.units = {};u.free();w.free()
 
 	print("AI_HEALTH_CHECKS ",checks," checks ",failures," failures")
 	get_tree().quit(1 if failures else 0)

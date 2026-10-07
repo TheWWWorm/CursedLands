@@ -1,0 +1,37 @@
+--- a/scene/animation/animation_player.h
++++ b/scene/animation/animation_player.h
+@@ -249,6 +249,7 @@
+ 	virtual void advance(double p_time) override;
+ 	bool advance_unobserved_pose(double p_time);
+ 	void set_preserve_track_caches_on_finish(bool p_enabled);
++	bool prepare_track_caches();
+ 
+ 	AnimationPlayer();
+ 	~AnimationPlayer();
+--- a/scene/animation/animation_player.cpp
++++ b/scene/animation/animation_player.cpp
+@@ -737,6 +737,16 @@
+ 	_clear_caches();
+ }
+ 
++// Resolve the immutable rig during loading without advancing its timeline,
++// seeking, applying a pose or firing playback/mixer/track events. The ordinary
++// invalidation paths still apply after library, target or hierarchy changes.
++bool AnimationPlayer::prepare_track_caches() {
++	if (!is_inside_tree()) {
++		return false;
++	}
++	return cache_valid || _update_caches();
++}
++
+ // Private visual-only experiment. The caller must materialize the pose with
+ // advance(0) before observing transforms or morphs. All eventful, captured,
+ // blended, nonlooping and root-motion animation takes the normal path.
+@@ -1115,6 +1125,7 @@
+ 	ClassDB::bind_method(D_METHOD("seek", "seconds", "update", "update_only"), &AnimationPlayer::seek, DEFVAL(false), DEFVAL(false));
+ 	ClassDB::bind_method(D_METHOD("advance_unobserved_pose", "seconds"), &AnimationPlayer::advance_unobserved_pose);
+ 	ClassDB::bind_method(D_METHOD("set_preserve_track_caches_on_finish", "enabled"), &AnimationPlayer::set_preserve_track_caches_on_finish);
++	ClassDB::bind_method(D_METHOD("prepare_track_caches"), &AnimationPlayer::prepare_track_caches);
+ 
+ 	ADD_PROPERTY(PropertyInfo(Variant::STRING_NAME, "current_animation", PROPERTY_HINT_ENUM, "", PROPERTY_USAGE_EDITOR), "set_current_animation", "get_current_animation");
+ 	ADD_PROPERTY(PropertyInfo(Variant::STRING_NAME, "assigned_animation", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NONE), "set_assigned_animation", "get_assigned_animation");

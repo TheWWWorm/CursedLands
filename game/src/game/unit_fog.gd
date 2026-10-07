@@ -77,7 +77,7 @@ func _process(dt: float) -> void:
 	# shipped scripts use no other camera command) the whole cast shows,
 	# wherever the actors stand (DialogPanel hides the others itself). Remake.
 	var talk := not game.session.online and game.rig != null and game.rig.held
-	for u: GameUnit in w.units.values():
+	for u: GameUnit in w.unit_rows():
 		u.fogged = on and not talk and not _always.has(u.uid) and not sees(eyes, u)
 		var want := not u.hidden and not u.fogged
 		if u.visible != want:
@@ -137,7 +137,7 @@ static func noticed_for(s: Session, player: int, living_sources_only := false) -
 		for o in (m.get_meta("seen_corpses", {}) as Dictionary).values():
 			if is_instance_valid(o):
 				ids[o.uid] = true
-	for u: GameUnit in w.units.values():
+	for u: GameUnit in w.unit_rows():
 		if is_instance_valid(u) and not u.hidden and ids.has(u.uid):
 			out.append(u)
 	return out
@@ -169,7 +169,7 @@ static func always_for(s: Session, player: int) -> Dictionary:
 		return out
 	for u: GameUnit in noticed_for(s, player):
 		out[u.uid] = true
-	for u: GameUnit in s.world.units.values():
+	for u: GameUnit in s.world.unit_rows():
 		if is_instance_valid(u) and not String(u.info.get("name", "")).is_empty():
 			out[u.uid] = true
 	return out
@@ -191,7 +191,7 @@ static func relevant_for(s: Session, player: int, camera := Vector2.INF) -> Arra
 		camera = Vector2(s.game.rig.position.x, -s.game.rig.position.z)
 	var talk := not s.online and s.game != null and s.game.rig != null and s.game.rig.held
 	var always := (sight_list_for(s, player) if sight and s.lmp.is_empty() else always_for(s, player)) if not village and not talk else {}
-	for u: GameUnit in s.world.units.values():
+	for u: GameUnit in s.world.unit_rows():
 		if not is_instance_valid(u) or u.hidden:
 			continue
 		if village or talk or always.has(u.uid) or (sees(eyes, u) if sight else \

@@ -19,6 +19,18 @@ var _lengths := PackedFloat64Array()
 var _intervals := PackedFloat64Array()
 var _x_coefficients := PackedVector2Array()
 var _y_coefficients := PackedVector2Array()
+var _kernel: RefCounted
+
+
+func _init() -> void:
+	if ClassDB.class_exists("MotionSplineKernel") and not OS.get_cmdline_user_args().has("--ei-script-motion"):
+		_kernel = ClassDB.instantiate("MotionSplineKernel")
+
+
+func _publish() -> void:
+	if _kernel and not _kernel.configure(nodes, _lengths, _intervals, _x_coefficients, _y_coefficients,
+			start, heading, initial_turn, turn_rate):
+		_kernel = null
 
 
 ## `from` / `to` are metres; `cells` are the original half-metre cell indices.
@@ -38,6 +50,7 @@ func build(from: Vector2, to: Vector2, cells: Array[Vector2i], values: PackedInt
 	initial_turn = 0.0
 	duration = 0.0
 	if cells.is_empty():
+		_publish()
 		return
 	controls.append({"p": start, "n": 0})
 	var previous := 0
@@ -91,6 +104,7 @@ func build(from: Vector2, to: Vector2, cells: Array[Vector2i], values: PackedInt
 		if delta > 0.0 and (turn <= 0.0 or length / maxf(float(a.v), 0.00000001) < delta / turn):
 			a.v = length * turn / delta
 	if nodes.is_empty():
+		_publish()
 		return
 	var first_direction: Vector2 = nodes[0].d
 	var diff := wrapf(first_direction.angle() - facing, -PI, PI)
@@ -109,6 +123,7 @@ func build(from: Vector2, to: Vector2, cells: Array[Vector2i], values: PackedInt
 		_x_coefficients.append(_coefficients(float(a.p.x), float(a.d.x), float(b.p.x), float(b.d.x), length))
 		_y_coefficients.append(_coefficients(float(a.p.y), float(a.d.y), float(b.p.y), float(b.d.y), length))
 		duration += interval
+	_publish()
 
 
 func _control(p: Vector2) -> void:
@@ -133,6 +148,13 @@ static func _bend(a: int, b: int) -> int:
 ## The returned speed is cells/tick; tangent is the spline derivative, whose
 ## length need not be one. Animation advances at tangent.length() × speed.
 func sample(tick: float) -> Dictionary:
+	if _kernel:
+		return _kernel.sample(tick)
+	return sample_script(tick)
+
+
+## Diagnostic oracle and fallback when the optional extension is unavailable.
+func sample_script(tick: float) -> Dictionary:
 	if nodes.is_empty():
 		return {"p": start * 0.5, "d": Vector2.from_angle(heading), "v": 0.0,
 			"cell": Vector2i.ZERO, "index": 0, "turning": false, "active": false}

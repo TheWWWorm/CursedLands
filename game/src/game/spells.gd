@@ -896,7 +896,7 @@ static func _spell_damage(world: GameWorld, caster: GameUnit, p: Dictionary, u: 
 		var armors: Array = u.get_meta("hero").get("armors", [])
 		if not armors.is_empty():
 			var lethal := 0.0
-			for pt: Dictionary in u.parts:
+			for pt: UnitBodyPart in u.parts:
 				if int(pt.state) > 1:
 					lethal += float(pt.lethal)
 			# `wear`: false = only what is left (the test for a blank hit).

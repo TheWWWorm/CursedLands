@@ -31,8 +31,25 @@ var combat: Combat
 var ai: UnitAI
 var corpse_pools: CorpsePools
 var vm: ScriptVM
-var units := {}          # uid -> GameUnit
-var _party_rows: Array = []
+const EMPTY_UNITS: Dictionary = {}
+const EMPTY_ROWS: Array = []
+var _units: Dictionary = EMPTY_UNITS
+var _unit_rows: Array = EMPTY_ROWS
+var units_revision := 0
+## Membership and order change only through set_unit/erase_unit or replacement.
+## Readers retain an immutable snapshot, so a query never rescans the registry
+## to discover same-count replacement or erase/reinsert. Unit fields stay live.
+var units: Dictionary:
+	get: return _units
+	set(value):
+		_units = value.duplicate()
+		_units.make_read_only()
+		_unit_rows = _units.values()
+		_unit_rows.make_read_only()
+		units_revision += 1
+		if ai: ai.activity.invalidate()
+var _party_registry_revision := -1
+var _party_structure_revision := -1
 var _party_revision := -1
 var _party_units: Array[GameUnit] = []
 ## Looted corpses taken off the world (Session.take_loot): uid -> GameUnit,
@@ -116,24 +133,50 @@ func _ready() -> void:
 		process_priority = -2
 
 
-## Read-only party membership in registry order.
-## The registry is public (scripts/tests may replace or reorder entries), so
-## compare its exact values as well as the controller revision.
-## Callers still read current health, visibility and positions themselves.
+## Stable registry order, held until the next explicit membership change.
+func unit_rows() -> Array:
+	return _unit_rows
+
+
+## Binding every clip on the first movement tick can stall a crowded map.
+## Resolve the fixed rig once under the loading screen. This engine operation
+## changes neither playback clocks nor poses and emits no animation events.
+func prepare_animation_bindings() -> void:
+	if not ClassDB.class_has_method("AnimationPlayer", "prepare_track_caches") \
+			or OS.get_cmdline_user_args().has("--ei-lazy-animation-bindings"):
+		return
+	for u: GameUnit in _unit_rows:
+		if is_instance_valid(u) and u.model and u.model.player:
+			u.model.player.call("prepare_track_caches")
+			NetStatus.keep_alive()
+
+
+## Registry-only adapters. Spawning/removal also manage navigation and nodes.
+func set_unit(id: int, u: GameUnit) -> void:
+	if _units.get(id) == u and _units.has(id): return
+	var next := _units.duplicate()
+	next[id] = u
+	units = next
+
+
+func erase_unit(id: int) -> void:
+	if not _units.has(id): return
+	var next := _units.duplicate()
+	next.erase(id)
+	units = next
+
+
+## Read-only party membership in registry order. Callers still read current
+## health, visibility and positions; ownership and freed nodes invalidate it.
 func party_units() -> Array[GameUnit]:
-	var rows := units.values()
-	var changed := rows != _party_rows or _party_revision != GameUnit.notice_revision
-	if not changed:
-		for u in _party_units:
-			if not is_instance_valid(u):
-				changed = true
-				break
-	if changed:
-		_party_rows = rows
+	if _party_registry_revision != units_revision or _party_revision != GameUnit.notice_revision \
+			or _party_structure_revision != GameUnit.structure_revision:
+		_party_registry_revision = units_revision
+		_party_structure_revision = GameUnit.structure_revision
 		_party_revision = GameUnit.notice_revision
 		var selected: Array[GameUnit] = []
-		for u in rows:
-			if is_instance_valid(u) and u.controller >= 0:
+		for u in _unit_rows:
+			if is_instance_valid(u) and u is GameUnit and u.controller >= 0:
 				selected.append(u)
 		selected.make_read_only()
 		_party_units = selected
@@ -268,7 +311,7 @@ func load_map(mpr: String, mob_name := "", with_units := true) -> bool:
 			LoadingScreen.object_done()
 		# The nav grids of the units' standing classes, built while loading
 		# rather than on a unit's first path (NavGrid.layer).
-		for u: GameUnit in units.values():
+		for u: GameUnit in unit_rows():
 			NetStatus.keep_alive()
 			nav.layer(u._classes[2])
 	LoadingScreen.objects_done()
@@ -282,8 +325,7 @@ func spawn_unit(record: Dictionary) -> GameUnit:
 	if not u.setup(self, record):
 		u.free()
 		return null
-	units[u.uid] = u
-	ai.activity.invalidate()
+	set_unit(u.uid, u)
 	_seq_n += 1
 	u._seq = _seq_n
 	nav.rebucket(u)
@@ -300,8 +342,7 @@ func new_uid() -> int:
 func remove_unit(u: GameUnit) -> void:
 	u._seq = 0
 	nav.untrack_unit(u)
-	units.erase(u.uid)
-	ai.activity.invalidate()
+	erase_unit(u.uid)
 	u.queue_free()
 
 
@@ -310,8 +351,7 @@ func remove_unit(u: GameUnit) -> void:
 func remove_looted(u: GameUnit) -> void:
 	u._seq = 0
 	nav.untrack_unit(u)
-	units.erase(u.uid)
-	ai.activity.invalidate()
+	erase_unit(u.uid)
 	u.set_meta("looted", true)
 	looted[u.uid] = u
 	if u.get_parent():
@@ -390,18 +430,23 @@ var _spatial_rows: Array = []
 var _spatial_ranks := {}
 var _spatial_nav: NavGrid
 var _spatial_registry_rev := -1
+var _spatial_units_rev := -1
+var _spatial_structure_rev := -1
 var _spatial_registered := false
 
 
-## Dictionary.values order is authoritative, including erase/reinsert and
-## synthetic worlds whose _seq values differ. Native Array equality checks
-## this registry snapshot without scanning every position for every query.
+## Registry order remains authoritative, including erase/reinsert and
+## synthetic worlds whose _seq values differ. Versions replace repeated
+## O(population) snapshots and equality checks on every local query.
 func _spatial_order() -> void:
-	var rows := units.values()
 	var revision := nav.registry_rev if nav else -1
-	if rows == _spatial_rows and nav == _spatial_nav and revision == _spatial_registry_rev:
+	if units_revision == _spatial_units_rev and GameUnit.structure_revision == _spatial_structure_rev \
+			and nav == _spatial_nav and revision == _spatial_registry_rev:
 		return
+	var rows := _unit_rows
 	_spatial_rows = rows
+	_spatial_units_rev = units_revision
+	_spatial_structure_rev = GameUnit.structure_revision
 	_spatial_nav = nav
 	_spatial_registry_rev = revision
 	_spatial_ranks.clear()
@@ -509,7 +554,7 @@ func set_relation(fa: int, fb: int, v: int) -> void:
 	# side's bit in each affected unit's hostility mask, including hit hate.
 	diplomacy[fa * 32 + fb] = v
 	ai.activity.invalidate()
-	for u: GameUnit in units.values():
+	for u: GameUnit in unit_rows():
 		if u.faction != fa or not u.has_meta("hate"):
 			continue
 		var h: Dictionary = u.get_meta("hate")
@@ -630,7 +675,7 @@ func _advance_client_effects(dt: float) -> void:
 	while _client_effect_accumulator + 0.000000001 >= TICK:
 		_client_effect_accumulator = maxf(_client_effect_accumulator - TICK, 0.0)
 		_client_effect_step += 1
-		for u: GameUnit in units.values():
+		for u: GameUnit in unit_rows():
 			u.client_tick_effects()
 
 
@@ -719,7 +764,7 @@ func _tick_body(dt: float) -> void:
 	# calls retain their existing elapsed-boundary semantics.
 	var chat := dt == TICK or floorf(time / TICK) > floorf((time - dt) / TICK)
 	started = Time.get_ticks_usec() if profile_simulation else 0
-	for u: GameUnit in units.values():
+	for u: GameUnit in unit_rows():
 		u.tick(dt)
 		if chat:
 			ai.chatter(u, dt)
@@ -781,7 +826,7 @@ func _tick_dialog_movers(dt: float) -> void:
 func dialog_place(u: GameUnit, point: Vector2, angle: float) -> void:
 	var clear := nav.cell_open(point, u.move_class())
 	if clear:
-		for other: GameUnit in units.values():
+		for other: GameUnit in unit_rows():
 			if other != u and not other.dead and point.distance_to(other.pos) < u.body_radius() + other.body_radius():
 				clear = false
 				break

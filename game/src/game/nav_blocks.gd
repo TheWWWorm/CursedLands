@@ -69,6 +69,7 @@ var _cell_components := {}
 var _single_source := {}
 var _undirected := true
 var _terrain_kernel: RefCounted
+var _native_topology := false
 var profile := false
 var profile_us := {}
 var profile_counts := {}
@@ -95,9 +96,6 @@ func _init(grid, movement_layer) -> void:
 	_heights = grid._hq;_slopes = grid._slope_tab[0 if movement_layer.cls == 0 else 1]
 	_cost_lookup = grid.STEP_COST
 	for d: Vector2i in DIRECTIONS: _offsets.append(d.x+d.y*_width)
-	_links.resize(_width*_height);_links.fill(-1)
-	_edges8.resize(_links.size()*8)
-	_flat_edges8.resize(_edges8.size())
 	for i in _slopes.size():
 		if (_slopes[i] >= 0) != (_slopes[_slopes.size()-1-i] >= 0):
 			_undirected = false
@@ -107,6 +105,17 @@ func _init(grid, movement_layer) -> void:
 	if not OS.get_cmdline_user_args().has("--ei-script-nav") and ClassDB.class_exists("TerrainSearchKernel"):
 		_terrain_kernel = ClassDB.instantiate("TerrainSearchKernel")
 		if not _terrain_kernel.configure(grid.size,_land,_cost,_heights,_slopes): _terrain_kernel = null
+		if _terrain_kernel and _terrain_kernel.has_method("configure_topology") and not OS.get_cmdline_user_args().has("--ei-script-topology"):
+			_native_topology = _terrain_kernel.configure_topology(PackedInt32Array(_cost_lookup))
+	if not _terrain_kernel: _ensure_links()
+
+## The native graph owns these computations. Allocate the large script edge
+## tables only if a fallback actually needs them (including diagnostic switches).
+func _ensure_links() -> void:
+	if not _links.is_empty(): return
+	_links.resize(_width*_height);_links.fill(-1)
+	_edges8.resize(_links.size()*8)
+	_flat_edges8.resize(_edges8.size())
 
 func _profile(part: String, started: int) -> void:
 	if not profile: return
@@ -114,6 +123,7 @@ func _profile(part: String, started: int) -> void:
 	profile_counts[part] = int(profile_counts.get(part,0))+1
 
 func representative(b: Vector2i) -> Vector2i:
+	if _native_topology and _terrain_kernel: return _terrain_kernel.topology_representative(b)
 	var key := b.y * size.x + b.x
 	if representatives.has(key): return representatives[key]
 	var started := Time.get_ticks_usec() if profile else 0
@@ -151,6 +161,7 @@ func _value(p: Vector2i) -> int:
 	return 0 if _land[i] != 0 else _cost_lookup.find(_cost[i])
 
 func _raw(b: Vector2i) -> PackedInt32Array:
+	if _native_topology and _terrain_kernel: return _terrain_kernel.topology_raw(b)
 	var key := b.y*size.x+b.x
 	if raw_edges.has(key): return raw_edges[key]
 	var started := Time.get_ticks_usec() if profile else 0
@@ -180,6 +191,7 @@ func _inside(b: Vector2i) -> bool:
 ## its eight directed costs once; overlapping25/32-cell windows read the
 ## same values. Two packed tables cost64bytes per grid cell/movement class.
 func _link_mask(i: int) -> int:
+	if _links.is_empty(): _ensure_links()
 	if _links[i] >= 0: return _links[i]
 	var x := i%_width;var y := i/_width
 	var mask := 0
@@ -202,6 +214,7 @@ func _link_mask(i: int) -> int:
 	return mask
 
 func _cached_step(i: int,k: int,reverse: bool,flat := false) -> int:
+	if _links.is_empty(): _ensure_links()
 	var from := i+_offsets[k] if reverse else i
 	if _links[from] < 0: _link_mask(from)
 	var slot := from*8+(((k+3)&7) if reverse else k-1)
@@ -337,6 +350,7 @@ static func _join_labels(parents: Array[int],a: int,b: int) -> void:
 
 
 func _scan_labels(rect: Rect2i) -> PackedInt32Array:
+	_ensure_links()
 	var rw := rect.size.x;var rh := rect.size.y
 	var labels := PackedInt32Array();labels.resize(rw*rh)
 	# A completely open rectangle with finite cardinal links has one
@@ -382,6 +396,7 @@ static func _seen(f: Dictionary,p: Vector2i) -> bool:
 	return f.labels[_index(f,p)] == f.component if f.has("labels") else f.seen[_index(f,p)] != 0
 
 func _connections(b: Vector2i) -> PackedByteArray:
+	if _native_topology and _terrain_kernel: return _terrain_kernel.topology_connections(b)
 	var key := b.y*size.x+b.x
 	if connections.has(key): return connections[key]
 	var started := Time.get_ticks_usec() if profile else 0
@@ -482,6 +497,7 @@ func _static_distances(rect: Rect2i,start: Vector2i,reverse: bool,goals: Array[V
 ##  connected block labels. Numeric labels are private; only
 ## equality is used by relocation, so the reachable component is built lazily.
 func component(b: Vector2i) -> int:
+	if _native_topology and _terrain_kernel: return _terrain_kernel.topology_component(b)
 	if not _inside(b): return 0
 	var key := b.y*size.x+b.x
 	if components.has(key): return int(components[key])
@@ -521,6 +537,7 @@ func _in_component(p: Vector2i,wanted: int) -> bool:
 	return false
 
 func _topology_seeds(p: Vector2i,reverse: bool) -> Array:
+	if _native_topology and _terrain_kernel: return _terrain_kernel.topology_seeds(p,reverse)
 	var key := Vector3i(p.x,p.y,int(reverse))
 	if _seed_topology.has(key): return _seed_topology[key]
 	var block := Vector2i(clampi(p.x/BLOCK,0,size.x-1),clampi(p.y/BLOCK,0,size.y-1))
@@ -899,7 +916,8 @@ func _seeds(p: Vector2i,reverse: bool) -> Array:
 
 func route(start: Vector2i,goal: Vector2i,avoid: Array[Vector2i] = []) -> Array[Vector2i]:
 	if _terrain_kernel != null:
-		var native_route: Array[Vector2i] = _terrain_kernel.block_route(_seeds(start,false),_seeds(goal,true),avoid,_raw)
+		var read_edges := Callable(_terrain_kernel,"topology_raw") if _native_topology else _raw
+		var native_route: Array[Vector2i] = _terrain_kernel.block_route(_seeds(start,false),_seeds(goal,true),avoid,read_edges)
 		if not native_route.is_empty(): last_blocks = native_route
 		return native_route
 	var count := size.x*size.y

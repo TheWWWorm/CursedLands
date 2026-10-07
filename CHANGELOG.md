@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+- Rebuild static navigation and movement sampling around persistent native
+  records, reuse unit registry order, cache body-derived health by revision,
+  and share co-op combat inputs. Distant AI stays off and normal simulation,
+  command and combat timing are retained.
+- Prepare character animation bindings during loading to reduce first-use
+  gameplay stalls. Portal loading takes about two seconds longer in the test.
+- Three interleaved Linux co-op comparisons against the repaired baseline
+  average 60% higher Portal FPS and 24% higher Dead City 2× FPS, with lower
+  stalls and memory use. These demanding hosts remain CPU-bound; full 2×
+  throughput is not yet sustained through the initial load into gameplay.
+  See the [systems report and individual measurements](docs/performance-systems-2026-10-07.md).
+
 - Repair the Lost in Astral co-op recruiter exit, Kel's tunnel escape and camp
   stat grants. Scripted walks/turns/clips survive saves; known stuck legacy
   exits and untouched heroes missing a proven camp grant can recover.

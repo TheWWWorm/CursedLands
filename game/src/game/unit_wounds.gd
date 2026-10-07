@@ -56,11 +56,11 @@ static func levels(u: GameUnit) -> PackedByteArray:
 	if u == null or u.parts.size() < 6:
 		return out
 	for i in 6:
-		var p: Dictionary = u.parts[i]
-		var mx := float(p.get("max", 0.0))
-		if int(p.get("state", 0)) == 0 or mx <= 0.0:
+		var p: UnitBodyPart = u.parts[i]
+		var mx := float(p.max)
+		if int(p.state) == 0 or mx <= 0.0:
 			continue
-		var f := float(p.get("cur", 0.0)) / mx
+		var f := float(p.cur) / mx
 		if f == 1.0:
 			continue
 		if f <= 1.0 / mx:

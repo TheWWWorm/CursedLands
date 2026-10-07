@@ -21,11 +21,28 @@ const MeshScreenRect = preload("res://src/ui/mesh_screen_rect.gd")
 ## token invalidates native rows when this script instance is destroyed.
 ## Positions and diplomacy are still read at their original query points.
 static var notice_revision := 0
+## Registry eligibility changes independently of position/health/perception.
+## This also catches a fixture freeing or reparenting a retained registry row.
+static var structure_revision := 0
+class StructureLifetime extends RefCounted:
+	func _notification(what: int) -> void:
+		if what == NOTIFICATION_PREDELETE:
+			GameUnit.structure_revision += 1
+## Owner-free token also expires when a tool replaces this node's script.
+var _structure_lifetime := StructureLifetime.new()
 var _notice_lifetime: RefCounted = ClassDB.instantiate("UnitNoticeLifetime") \
 	if ClassDB.class_exists("UnitNoticeLifetime") and not OS.get_cmdline_user_args().has("--ei-script-units") else null
 
-var world: GameWorld
-var uid := 0
+var world: GameWorld:
+	set(value):
+		if world != value:
+			world = value
+			structure_revision += 1
+var uid := 0:
+	set(value):
+		if uid != value:
+			uid = value
+			structure_revision += 1
 var info := {}          # map record (EIMob object) or synthetic spawn data
 var proto := {}         # monster_prototypes row
 var race := {}          # race_models row
@@ -53,7 +70,11 @@ var pos := Vector2.ZERO:
 				world.ai.activity.moved(self)
 ## Order of registration in GameWorld.units (0 = not in it): nearby-unit
 ## queries return units in this order, the order of a scan of `units`.
-var _seq := 0
+var _seq := 0:
+	set(value):
+		if _seq != value:
+			_seq = value
+			structure_revision += 1
 ## Co-op client: where the unit is drawn between the host's snapshots.
 var net_view := NetSmooth.new()
 var facing := 0.0
@@ -77,7 +98,26 @@ var _max_hp := 10.0
 ## head, torso, right arm, left arm, right leg, left leg (race_models columns):
 ## {type: 0 skull / 1 torso / 2 arm / 3 leg, size, lethal, cur, max, state:
 ## 0 absent / 1 severed / 2 destroyed / 3 intact}.
-var parts: Array[Dictionary] = []
+const _EMPTY_PARTS: Array[UnitBodyPart] = []
+var _parts: Array[UnitBodyPart] = _EMPTY_PARTS
+var _parts_revision := UnitBodyPart.Revision.new()
+var _health_revision := -1
+var _health_max := NAN
+var _health_value := 0.0
+## Replace the roster as a whole; individual typed fields stay editable.
+## Read-only membership prevents an untracked append/erase from staling health.
+var parts: Array:
+	get: return _parts
+	set(records):
+		var token := UnitBodyPart.Revision.new()
+		var fresh: Array[UnitBodyPart] = []
+		for row in records:
+			fresh.append(UnitBodyPart.from_record(row.record() if row is UnitBodyPart else row, token))
+		fresh.make_read_only()
+		_parts = fresh
+		_parts_revision = token
+		_health_revision = -1
+		_limbs.clear()
 var mana := 0.0
 var max_mana := 0.0
 var stats := {}         # to_hit, parry, dmg_min, dmg_max, absorption, reach, attack_time
@@ -612,7 +652,8 @@ const HIT_TABLE := [0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5]
 
 
 func _init_parts() -> void:
-	parts.clear()
+	parts = []
+	var records: Array = []
 	_limbs.clear()
 	var torso: Array = Array(race.get("torso", []))
 	if torso.size() < 4 or float(torso[2]) <= 0.0:
@@ -622,12 +663,13 @@ func _init_parts() -> void:
 		var size := float(r[2]) if r.size() >= 4 else 0.0
 		var t: int = PART_TYPES.get(String(r[0]) if r.size() else "none", -1)
 		var m := _max_hp * size / float(torso[2])
-		parts.append({"type": t, "size": size, "lethal": float(r[3]) if r.size() >= 4 else 0.0,
+		records.append({"type": t, "size": size, "lethal": float(r[3]) if r.size() >= 4 else 0.0,
 			"sever": int(r[1]) if r.size() >= 4 else 0,
 			"cur": m, "max": m, "state": 3 if size > 0.0 and t >= 0 else 0})
+	parts = records
 
 
-func _part_frac(p: Dictionary) -> float:
+func _part_frac(p: UnitBodyPart) -> float:
 	if p.cur < 0.0:
 		return 1.0
 	return (p.max - p.cur) / p.max
@@ -636,11 +678,16 @@ func _part_frac(p: Dictionary) -> float:
 func _get_hp() -> float:
 	if parts.is_empty():
 		return _hp
+	if _health_revision == _parts_revision.value and _health_max == _max_hp:
+		return _health_value
 	var lost := 0.0
-	for p in parts:
+	for p: UnitBodyPart in _parts:
 		if p.state > 0:
 			lost += _max_hp * p.lethal * _part_frac(p)
-	return _max_hp - lost
+	_health_revision = _parts_revision.value
+	_health_max = _max_hp
+	_health_value = _max_hp - lost
+	return _health_value
 
 
 func _set_hp(v: float) -> void:
@@ -667,7 +714,7 @@ func _set_max_hp(v: float) -> void:
 	if parts.is_empty():
 		return
 	var torso_size: float = parts[1].size
-	for p in parts:
+	for p: UnitBodyPart in parts:
 		if p.state > 0:
 			var m: float = v * p.size / torso_size
 			p.cur = minf(p.cur * m / p.max, m) if p.max > 0.0 else m
@@ -700,12 +747,12 @@ func heal(amount: float) -> void:
 		_hp = minf(_max_hp, _hp + amount)
 		return
 	var w := 0.0
-	for p in parts:
+	for p: UnitBodyPart in parts:
 		if p.state > 1 and p.cur < p.max:
 			w += p.lethal
 	if w <= 0.0:
 		return
-	for p in parts:
+	for p: UnitBodyPart in parts:
 		if p.state > 1 and p.cur < p.max:
 			p.cur = minf(p.max, p.cur + amount / (w * _max_hp) * p.max)
 			_wounds_dirty = true
@@ -716,7 +763,7 @@ func heal(amount: float) -> void:
 
 ##  (respawn / resurrection): every attached part intact and full.
 func restore_parts() -> void:
-	for p in parts:
+	for p: UnitBodyPart in parts:
 		if p.state > 0:
 			p.state = 3
 			p.cur = p.max
@@ -791,7 +838,7 @@ func ack(code: int) -> void:
 ## health falls below -5 x max; at 0 it is destroyed. A hero losing an arm or a
 ## leg says so (ack 0x1e / 0x1f).
 func _hurt_part(i: int, dmg: float, types := PackedFloat32Array()) -> void:
-	var p: Dictionary = parts[i]
+	var p: UnitBodyPart = parts[i]
 	if p.state < 2:
 		return
 	p.cur -= dmg
@@ -799,7 +846,7 @@ func _hurt_part(i: int, dmg: float, types := PackedFloat32Array()) -> void:
 	_pose_dirty = true
 	var sever: bool = p.cur < -5.0 * p.max
 	for t in types.size():
-		if types[t] >= p.max and int(p.get("sever", 0)) & (1 << t):
+		if types[t] >= p.max and int(p.sever) & (1 << t):
 			sever = true
 	if sever:
 		p.state = 1
@@ -820,7 +867,7 @@ func body_damage(amount: float, layers := Callable()) -> void:
 		_hp -= amount
 		return
 	var w := 0.0
-	for p in parts:
+	for p: UnitBodyPart in parts:
 		if p.state > 1:
 			w += p.lethal
 	if w <= 0.0:
@@ -863,7 +910,7 @@ func part_group(i: int) -> String:
 ## the parts of each type and the ai.reg levels are looked up once.)
 func wound_factor(type: int) -> float:
 	var r := 1.0
-	for p: Dictionary in _limbs_of(type):
+	for p: UnitBodyPart in _limbs_of(type):
 		if p.state != 0 and p.cur != p.max:
 			r = minf(r, p.cur / p.max)
 	var lv := _wound_levels()
@@ -874,7 +921,7 @@ func wound_factor(type: int) -> float:
 	return 1.0
 
 
-var _limbs := {}   # part type -> its part dictionaries (wound_factor; reset by _init_parts)
+var _limbs := {}   # part type -> typed body records (reset with the roster)
 
 
 ## The parts of one type in `parts` order (remembered until _init_parts).
@@ -882,7 +929,7 @@ func _limbs_of(type: int) -> Array:
 	var of_type = _limbs.get(type)
 	if of_type == null:
 		of_type = []
-		for p in parts:
+		for p: UnitBodyPart in parts:
 			if p.type == type:
 				of_type.append(p)
 		_limbs[type] = of_type
@@ -2985,11 +3032,11 @@ func rise(total := 1.0) -> void:
 	_hp = total
 	if not parts.is_empty():
 		var l := 0.0
-		for p in parts:
+		for p: UnitBodyPart in parts:
 			if p.state > 0:
 				l += float(p.lethal)
 		var f := clampf((_max_hp - total) / (_max_hp * l), 0.0, 0.999) if l > 0.0 and _max_hp > 0.0 else 0.0
-		for p in parts:
+		for p: UnitBodyPart in parts:
 			if p.state > 0:
 				p.state = 3
 				p.cur = float(p.max) * (1.0 - f)
@@ -3544,8 +3591,8 @@ func _draw_step(_dt: float) -> void:
 ## wire format.
 func snapshot() -> Array:
 	var ph := PackedByteArray()
-	for p: Dictionary in parts:
-		ph.append(clampi(roundi(float(p.get("cur", 0.0)) / maxf(float(p.get("max", 1.0)), 0.001) * 255.0), 0, 255))
+	for p: UnitBodyPart in parts:
+		ph.append(clampi(roundi(float(p.cur) / maxf(float(p.max), 0.001) * 255.0), 0, 255))
 	# Co-op bandwidth: values on a binary grid fit 4-byte floats in var_to_bytes.
 	return [uid, snappedf(pos.x, 1.0 / 64.0), snappedf(pos.y, 1.0 / 64.0), snappedf(facing, 1.0 / 256.0), action,
 		snappedf(hp, 1.0 / 64.0), int(dead) | (int(hidden) << 1) | (severed_mask() << 2)
@@ -3637,7 +3684,7 @@ func apply_snapshot(s: Array, quiet := false) -> void:
 		mana = s[7]
 		var ph: PackedByteArray = s[8]
 		for i in mini(ph.size(), parts.size()):
-			parts[i].cur = ph[i] / 255.0 * float(parts[i].get("max", 1.0))
+			parts[i].cur = ph[i] / 255.0 * float(parts[i].max)
 		_wounds_dirty = true
 		_pose_dirty = true
 	alert = bool(flags & 256)

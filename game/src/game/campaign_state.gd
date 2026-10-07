@@ -868,9 +868,9 @@ const _FX_CODE := {"invisible": "invisibility"}
 ## ([name, seconds left, effect data, visual strength or -1, visual code]).
 static func body_state(u: GameUnit) -> Dictionary:
 	var parts := []
-	for p: Dictionary in u.parts:
-		var m := float(p.get("max", 0.0))
-		parts.append([float(p.get("cur", 0.0)) / m if m > 0.0 else 1.0, int(p.get("state", 0))])
+	for p: UnitBodyPart in u.parts:
+		var m := float(p.max)
+		parts.append([float(p.cur) / m if m > 0.0 else 1.0, int(p.state)])
 	var magic := []
 	var now := u.world.time if u.world else 0.0
 	var rs: Dictionary = u.world.get_meta("replay", {}) if u.world else {}
@@ -931,7 +931,7 @@ static func apply_body(u: GameUnit, st: Dictionary) -> void:
 	var ps: Array = st.get("parts", [])
 	if not ps.is_empty() and ps.size() == u.parts.size():
 		for i in ps.size():
-			var p: Dictionary = u.parts[i]
+			var p: UnitBodyPart = u.parts[i]
 			if int(p.state) == 0 or not ps[i] is Array:
 				continue
 			p.state = int(ps[i][1])

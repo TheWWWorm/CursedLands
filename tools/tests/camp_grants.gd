@@ -22,7 +22,7 @@ func actor(w: GameWorld, id: int, owner: int, h: Dictionary) -> GameUnit:
 	u.controller = owner
 	u.info = {"complexion":h.complexion}
 	u.set_meta("hero",h)
-	w.units[id] = u
+	w.set_unit(id, u)
 	return u
 
 func _ready() -> void:
@@ -87,7 +87,7 @@ func _ready() -> void:
 		loaded.ensure_hero(5,"Human Hero","Unknown")
 		loaded.set_var(0,"b.Clerk.brief_3"+("b" if branch=="a" else "a"),2)
 		check(not Grants.catch_up(loaded,5),branch+" ambiguous story choice is not guessed")
-		w.units.clear()
+		w.units = {}
 		main.free(); joiner.free(); kel.free(); w.free(); s.free()
 	print("CAMP_GRANTS ",checks," checks ",failures," failures")
 	get_tree().quit(1 if failures else 0)

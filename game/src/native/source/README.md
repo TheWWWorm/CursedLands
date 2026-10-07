@@ -11,6 +11,21 @@ with the `-- --ei-script-nav` diagnostic launch option. Android, Web, and macOS
 export presets exclude the desktop extension and use that implementation.
 The current packaged targets are Windows x86-64 and Linux x86-64.
 
+The terrain instance also owns persistent static block topology: representatives,
+weighted edges, connectivity, labels and bounded endpoint-seed caches. Door,
+floor and object changes invalidate it through the existing map revision.
+Moving actor occupancy remains a live input to each search window. Directed
+slopes, blocked starts and tie ordering retain the script graph's results.
+`-- --ei-script-topology` keeps the original topology adapter for comparison;
+older libraries automatically use it. Large script edge tables are allocated
+only if a fallback actually needs them.
+
+`MotionSplineKernel` owns the typed nodes and coefficients of a built movement
+route. Its samples retain double intermediates, float Vector2 rounding and
+the scalar interval order, including zero-speed paths and backward seeks.
+`-- --ei-script-motion` uses the retained scalar evaluator. Platforms without
+this class use the same fallback automatically.
+
 `NavigationBuildKernel` constructs the initial height/liquid cells, dry-cell
 classification, movement-class weights and dilation, AStar grids, and connected
 regions in bulk. It returns the same packed arrays consumed by the existing
@@ -31,8 +46,13 @@ No original game data or generated cache entries belong in an export.
 
 
 `UnitQueryKernel` accelerates ordered cell filtering and nearby-unit list
-validation. Every combat query samples the actual live registry, including
-changed IDs and same-count replacements, before reusing a pruned list. Its
+validation. Combat queries sample the live registry, including changed IDs
+and same-count replacements; a synchronous all-player flag batch shares that
+sampling. World spatial queries reuse an ordered roster snapshot until its
+explicit membership or registration revision changes. Live membership edits
+use `World.set_unit`, `erase_unit`, spawn/removal, or whole-roster replacement;
+the exposed dictionary and row array are read-only. An owner-free unit lifetime
+token also invalidates the order cache on freeing or script replacement. Its
 perception rows store only faction/controller/dead/hidden fields; field edits
 invalidate them, and a unit-owned `UnitNoticeLifetime` token invalidates them
 on destruction or script replacement. The token must remain owned solely by
@@ -89,6 +109,15 @@ through the same number of native simulation ticks.
 
 Performance measurements must compare equal simulation work in release builds.
 Headless fixed-step throughput is CPU cost, not a measurement of player FPS.
+
+The public `tools/tests/nav_topology.gd`, `motion_records.gd`,
+`registry_queries.gd` and `dynamic_navigation.gd` fixtures cover the persistent
+records, scalar oracles, same-size roster edits and a real changing door with
+live occupancy. Run them through `--tool=/absolute/path/to/the/test.gd` after
+the normal `--ei-path` argument. Dynamic navigation requires Lost in Astral
+content; the other fixtures use synthetic records. The navigation and motion
+suites have also run under ASan/UBSan on Linux. The final benchmark report is
+`docs/performance-systems-2026-10-07.md` in the repository root.
 
 `nav_build_test.gd` compares every generated array and AStar cell against the
 frozen script builder, with all eight classes, boundary costs, liquid/height

@@ -381,8 +381,8 @@ func _draw_parts(c: CanvasItem, u: GameUnit) -> void:
 		return
 	var lost := u.severed_mask()
 	for i in 6:
-		var p: Dictionary = u.parts[i]
-		if int(p.get("state", 0)) == 0:
+		var p: UnitBodyPart = u.parts[i]
+		if int(p.state) == 0:
 			continue
 		var at: Vector2 = PART_POS[i]
 		var gone := (lost >> i) & 1 == 1
@@ -412,12 +412,12 @@ func _armor(u: GameUnit) -> PackedFloat32Array:
 	var sums := PackedFloat32Array([0, 0, 0, 0, 0, 0, 0])
 	var ws := 0.0
 	for i in mini(u.parts.size(), 6):
-		var part: Dictionary = u.parts[i]
+		var part: UnitBodyPart = u.parts[i]
 		# Snapshots carry severance in the existing mask; a client's local
 		# part records otherwise keep their prototype state.
-		if int(part.get("state", 0)) <= 1 or (u._severed_want >> i) & 1:
+		if int(part.state) <= 1 or (u._severed_want >> i) & 1:
 			continue
-		var type := int(part.get("type", -1))
+		var type := int(part.type)
 		if type < 0 or type >= PART_WEIGHT.size():
 			continue
 		var w: float = PART_WEIGHT[type]

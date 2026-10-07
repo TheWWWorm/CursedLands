@@ -15,7 +15,8 @@ var _kernel: RefCounted
 var _quiet := {}
 var _origins := {}
 var _revision := -1
-var _registry_size := 0
+var _registry_revision := -1
+var _structure_revision := -1
 var _valid := false
 var _diplomacy := PackedInt32Array()
 var _side_masks := PackedInt64Array()
@@ -38,7 +39,7 @@ func begin_tick(dt: float) -> void:
 	if not world.dialog_actors.is_empty() or (world.vm != null and not world.vm.briefings.active.is_empty()):
 		return
 	var start := Time.get_ticks_usec()
-	var rows: Array = world.units.values()
+	var rows: Array = world.unit_rows()
 	_quiet.clear()
 	_origins.clear()
 	# Fighting/scripted populations cannot benefit from an idle batch. Do
@@ -85,7 +86,8 @@ func begin_tick(dt: float) -> void:
 		if active[i] == 0:
 			_quiet[rows[i].get_instance_id()] = true
 	_revision = GameUnit.notice_revision
-	_registry_size = world.units.size()
+	_registry_revision = world.units_revision
+	_structure_revision = GameUnit.structure_revision
 	_valid = true
 	batches += 1
 	batch_usec += Time.get_ticks_usec() - start
@@ -109,7 +111,8 @@ func moved(u: GameUnit) -> void:
 
 func defer_decision(u: GameUnit) -> bool:
 	considered += 1
-	if not _valid or _revision != GameUnit.notice_revision or _registry_size != world.units.size() \
+	if not _valid or _revision != GameUnit.notice_revision or _registry_revision != world.units_revision \
+			or _structure_revision != GameUnit.structure_revision \
 			or not _quiet.has(u.get_instance_id()):
 		return false
 	# Health is derived from body parts. _hp is only the fallback for units
