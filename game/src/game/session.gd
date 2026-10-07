@@ -2022,13 +2022,16 @@ func apply_command(cmd: Dictionary, player: int) -> void:
 						u.command({"type": "follow", "target": target})
 		"interact":
 			if shop_available():
-				# village topics open immediately, only for a
-				# Stop/Rest creature with no posted primitive. This rechecks
-				# the host state and the per-player mercenary topic ownership.
-				if target and not target.dead and not mine.is_empty() and target.village_talk_ready() \
-						and not Briefings.pending_for(state, target, player).is_empty() and world.vm:
+				# Keep the host's idle/ownership gate, then approach the NPC
+				# through the ordinary cancellable order before opening topics.
+				if not (target and not target.dead and not mine.is_empty() and target.village_talk_ready() \
+						and not Briefings.pending_for(state, target, player).is_empty() and world.vm):
+					return
+				if mine[0].blocked:
+					# The first village story deliberately blocks Zak until he
+					# talks to the elder. Do not require walking to unlock it.
 					world.vm.briefings.interact(mine[0], target, player)
-				return
+					return
 			if target and not mine.is_empty():
 				var talker := _interaction_unit(mine, target)
 				_double_stand(talker, cmd, target.pos, TALK_REACH)

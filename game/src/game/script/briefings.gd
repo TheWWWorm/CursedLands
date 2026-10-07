@@ -61,6 +61,8 @@ func interact(_unit: GameUnit, target: Object, player: int) -> void:
 	if not active.is_empty() or not (target is GameUnit):
 		return
 	var t: GameUnit = target
+	if t.dead or (vm.session.shop_available() and not t.village_talk_ready()):
+		return
 	var options := []
 	var constr := []
 	for e: Array in available_for(t, player):
@@ -100,7 +102,7 @@ func topic(player: int, var_name: String, uid: int) -> void:
 				vm.session.open_shop(n)
 				vm.session.broadcast({"t": "shop", "player": player, "constr": n})
 				return
-			play_named(id, var_name, player, t)
+			play_named(id, var_name, player, t, false, true)
 			return
 
 
@@ -175,7 +177,7 @@ static func _topic_compare(a: String, b: String) -> int:
 
 
 ## Starts conversation `id` for everyone. `var_name` is reported on completion.
-func play_named(id: String, var_name: String, player := 0, partner: GameUnit = null, instant := false) -> void:
+func play_named(id: String, var_name: String, player := 0, partner: GameUnit = null, instant := false, approached := false) -> void:
 	var text := GameData.text("briefing " + id)
 	if text.is_empty():
 		# Quest maps ship their own briefings inside the .mq archive.
@@ -199,7 +201,7 @@ func play_named(id: String, var_name: String, player := 0, partner: GameUnit = n
 	for k in ["a", "b", "c"]:
 		if c.has(k):
 			vm.world.dialog_actors[int(c[k])] = true
-	_face(c, instant)
+	_face(c, instant, approached)
 	var event := {"t": "dialog", "id": var_name, "brief": id, "title": b.title, "phrases": b.phrases, "cast": c}
 	_pending_dialog = {} if instant else event
 	if instant:
@@ -236,21 +238,22 @@ func _named_key(id: String, player: int) -> String:
 	return ""
 
 
-## Where the conversation's actors stand (the original
-## ): the partner "a" walks to a spot in front of the second actor
-## "b" (usually the hero) at b's prototype "dialog cam distance" + 2.5 m.
-## In a #cage zone (map record -> screen), a stays and b moves
-## in front of a instead. The third actor goes to the triangle's corner.
-## Topic clicks use walking (: 0,1); automatic briefings and
-## the script briefing command use instant placement (1,1).
-## The intended places are kept in the cast ("at") for the camera.
-## Approx.: instant placement collision uses our class grid / body circles,
-## not object footprint check; walking uses our path.
-func _face(c: Dictionary, instant := false) -> void:
+## Clicked conversations face the actors where the player approached the NPC.
+## Other briefings retain authored staging: the partner
+## moves in front of the hero, or the hero in front of the partner in #cage
+## zones; the third actor takes the triangle's corner. The cast retains these
+## positions and heights for the conversation camera.
+func _face(c: Dictionary, instant := false, approached := false) -> void:
 	_return_actors.clear()
 	var a: GameUnit = vm.world.units.get(int(c.get("a", -1)))
 	var b: GameUnit = vm.world.units.get(int(c.get("b", -1)))
 	if a == null or b == null:
+		return
+	if approached:
+		# Clicked conversations begin where the player approached the NPC.
+		# Walking the NPC to a camera mark can fail on a wall or body and
+		# used to hold the entire dialogue behind a 30-second deadline.
+		_face_in_place(c, a, b)
 		return
 	var d := float(b.proto.get("dialog_cam_distance", 0.0)) + 2.5
 	var a_at := a.pos
@@ -287,6 +290,24 @@ func _face(c: Dictionary, instant := false) -> void:
 	if cu:
 		c["at"]["c"] = [c_at.x, c_at.y]
 		c["at_z"]["c"] = (a_z + b_z) * 0.5
+
+
+func _face_in_place(cast: Dictionary, a: GameUnit, b: GameUnit) -> void:
+	cast["at"] = {}
+	cast["at_z"] = {}
+	var middle := (a.pos + b.pos) * 0.5
+	for key in ["a", "b", "c"]:
+		var u: GameUnit = vm.world.units.get(int(cast.get(key, -1)))
+		if u == null:
+			continue
+		cast.at[key] = [u.pos.x, u.pos.y]
+		cast.at_z[key] = u.position.y
+		if u.blocked:
+			continue
+		var toward := b.pos if key == "a" else a.pos if key == "b" else middle
+		var angle := (toward - u.pos).angle() if toward != u.pos else u.facing
+		vm.world.dialog_movers[u] = {"to": u.pos, "angle": angle, "state": 2, "elapsed": 0.0, "wait": true}
+		u.command({"type": "rotate", "angle": angle, "turn_speed": 1.0 / GameUnit.TICK})
 
 
 func _remember_return(u: GameUnit) -> void:

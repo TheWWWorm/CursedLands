@@ -1,9 +1,13 @@
 # Portal co-op host CPU investigation
 
-Status: unreleased candidate, based on Experimental 3 (`7aa520e`). The supplied
+Status: unreleased checkpoint `8976134`, based on Experimental 3 (`7aa520e`). The supplied
 Lost in Astral save reproduces severe host slowdown in Portal (`gz1h`) after
 the encounter with Ужас. This checkpoint improves it substantially but does
 not make this scene run at an acceptable frame rate.
+
+These measurements and validation describe that checkpoint. Later scaled-AI,
+host-menu and conversation corrections are documented in the
+[Dead City follow-up](performance-dead-city-2026-10-07.md).
 
 ## Rendered co-op measurements
 

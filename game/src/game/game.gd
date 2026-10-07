@@ -909,7 +909,7 @@ func order_on(u: GameUnit, add: bool, p: Variant = null, lever := -1, ground: Va
 		issue({"t": "revive", "units": helpers.map(func(s): return s.uid), "target": u.uid, "run": _double})
 		marks.unit_ordered(u, false, Session.LOOT_REACH, marks.first_mine())
 		return
-	# villages have immediate topics and a
+	# Villages use an NPC approach before the topic list and a
 	# single party leader's ground movement, without field selection. The
 	# creature must be in Stop/Rest with no posted primitive; a completed
 	# stationary Follow may qualify. Briefings also enforces merc ownership.
@@ -1268,9 +1268,8 @@ const ORDER_ACKS := {"move": EIAcks.MOVE, "attack": EIAcks.ATTACK, "cast": EIAck
 
 ## Whether unit flag (GameUnit.blocked) refuses this command. The
 ## server's order handlers (
-## ) skip flagged units; a village click on an NPC is no order
-## (opens the topic list at once), so the remake's
-## walk-and-talk "interact" stays open there — basecam's first arrival needs
+## ) skip flagged units; blocked village heroes can still open topics
+## without an approach — basecam's first arrival needs
 ## the blocked Zak to talk to the elder (b.elder.s1 → FrTP → unblock).
 static func block_refuses(t: String, village: bool) -> bool:
 	# Follow's separate message handler does not read the bit.

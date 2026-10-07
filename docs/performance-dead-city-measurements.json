@@ -1,0 +1,478 @@
+{
+  "environment": {
+    "os": "Linux Ubuntu 24.04",
+    "cpu": "Ryzen 9 5950X",
+    "gpu": "RTX 3090",
+    "renderer": "Forward+ Vulkan",
+    "resolution": [
+      1280,
+      720
+    ],
+    "host_main_core": 15,
+    "host_worker_cores": [
+      10,
+      11,
+      12,
+      13
+    ],
+    "peer_main_core": 14,
+    "peer_worker_cores": [
+      6,
+      7,
+      8,
+      9
+    ],
+    "distant_ai": false,
+    "display": "owned private Xvfb",
+    "profiled_fps_runs": false
+  },
+  "save_sha256": "ebde811c2443ac104badd9a84a8b982bf6f6366765c7ba4a2f00653a6427c606",
+  "dead_city": {
+    "experimental3": {
+      "runs": [
+        {
+          "name": "dead-city-baseline-3",
+          "fps": 4.57181445907219,
+          "seconds": 30.184952,
+          "frames": 138,
+          "ticks": 685,
+          "simulated_seconds": 37.6749999999998,
+          "p95_ms": 233.51,
+          "gpu_ms": 14.5397535994433,
+          "activity": {
+            "batch_us": 1026107,
+            "batches": 684,
+            "considered": 214371,
+            "deferred": 0
+          },
+          "display": ":60",
+          "main_cpu_seconds": 28.76
+        },
+        {
+          "name": "dead-city-baseline-5",
+          "fps": 4.730368338458788,
+          "seconds": 30.018804,
+          "frames": 142,
+          "ticks": 705,
+          "simulated_seconds": 38.7749999999998,
+          "p95_ms": 230.918,
+          "gpu_ms": 13.9240563150863,
+          "activity": {
+            "batch_us": 1067534,
+            "batches": 704,
+            "considered": 220890,
+            "deferred": 0
+          },
+          "display": ":60",
+          "main_cpu_seconds": 28.56
+        }
+      ],
+      "mean": {
+        "fps": 4.651091398765489,
+        "ticks": 695,
+        "simulated_seconds": 38.224999999999795,
+        "p95_ms": 232.214,
+        "gpu_ms": 14.231904957264799,
+        "main_cpu_seconds": 28.66
+      }
+    },
+    "before_health_fix": {
+      "runs": [
+        {
+          "name": "dead-city-candidate-1",
+          "fps": 4.684063099844526,
+          "seconds": 30.102071,
+          "frames": 141,
+          "ticks": 700,
+          "simulated_seconds": 38.4999999999998,
+          "p95_ms": 230.143,
+          "gpu_ms": 13.4192127505093,
+          "activity": {
+            "batch_us": 1038535,
+            "batches": 699,
+            "considered": 219105,
+            "deferred": 0
+          },
+          "display": ":60",
+          "main_cpu_seconds": 28.62
+        },
+        {
+          "name": "dead-city-candidate-2",
+          "fps": 4.777648884478706,
+          "seconds": 30.140348,
+          "frames": 144,
+          "ticks": 715,
+          "simulated_seconds": 39.3249999999998,
+          "p95_ms": 228.341,
+          "gpu_ms": 13.8360346754392,
+          "activity": {
+            "batch_us": 1112486,
+            "batches": 714,
+            "considered": 223494,
+            "deferred": 0
+          },
+          "display": ":60",
+          "main_cpu_seconds": 28.68
+        }
+      ],
+      "mean": {
+        "fps": 4.730855992161616,
+        "ticks": 707.5,
+        "simulated_seconds": 38.912499999999795,
+        "p95_ms": 229.24200000000002,
+        "gpu_ms": 13.62762371297425,
+        "main_cpu_seconds": 28.65
+      }
+    },
+    "candidate": {
+      "runs": [
+        {
+          "name": "dead-city-health-1",
+          "fps": 5.539516205191243,
+          "seconds": 30.147037,
+          "frames": 167,
+          "ticks": 829,
+          "simulated_seconds": 45.5949999999998,
+          "p95_ms": 198.312,
+          "gpu_ms": 13.9271676497545,
+          "activity": {
+            "batch_us": 1252131,
+            "batches": 828,
+            "considered": 259323,
+            "deferred": 202132
+          },
+          "display": ":60",
+          "main_cpu_seconds": 28.62
+        },
+        {
+          "name": "dead-city-health-2",
+          "fps": 5.454628302004143,
+          "seconds": 30.06621,
+          "frames": 164,
+          "ticks": 814,
+          "simulated_seconds": 44.7699999999998,
+          "p95_ms": 199.842,
+          "gpu_ms": 13.2396036415565,
+          "activity": {
+            "batch_us": 1231544,
+            "batches": 813,
+            "considered": 254934,
+            "deferred": 198162
+          },
+          "display": ":60",
+          "main_cpu_seconds": 28.54
+        }
+      ],
+      "mean": {
+        "fps": 5.497072253597693,
+        "ticks": 821.5,
+        "simulated_seconds": 45.1824999999998,
+        "p95_ms": 199.077,
+        "gpu_ms": 13.5833856456555,
+        "main_cpu_seconds": 28.58
+      }
+    }
+  },
+  "menus": {
+    "menu-base-saves-baseline-1": {
+      "adapter": "NVIDIA GeForce RTX 3090",
+      "campaign": "cursed_lands",
+      "micro": {
+        "rows_us": 4986.57
+      },
+      "phases": [
+        {
+          "fps": 38.1834252059747,
+          "frames": 115,
+          "main_cpu_seconds": 2.94,
+          "p95_ms": 27.312,
+          "phase": "signpost",
+          "seconds": 3.011778
+        },
+        {
+          "fps": 33.4493684196233,
+          "frames": 101,
+          "main_cpu_seconds": 2.96,
+          "p95_ms": 31.775,
+          "phase": "network_modes",
+          "seconds": 3.019489
+        },
+        {
+          "fps": 32.0845815724025,
+          "frames": 97,
+          "main_cpu_seconds": 2.96,
+          "p95_ms": 33.719,
+          "phase": "host_new",
+          "seconds": 3.023259
+        },
+        {
+          "fps": 7.70522134693048,
+          "frames": 24,
+          "main_cpu_seconds": 3.09,
+          "p95_ms": 134.451,
+          "phase": "host_saved",
+          "seconds": 3.114771
+        },
+        {
+          "fps": 8.20757145183403,
+          "frames": 25,
+          "main_cpu_seconds": 3.03,
+          "p95_ms": 125.678,
+          "phase": "hosting_saved",
+          "seconds": 3.045968
+        },
+        {
+          "fps": 8.93915711694305,
+          "frames": 27,
+          "main_cpu_seconds": 2.99,
+          "p95_ms": 114.123,
+          "phase": "hosting_without_background",
+          "seconds": 3.020419
+        }
+      ],
+      "renderer": "forward_plus",
+      "resolution": "(1280.0, 720.0)",
+      "save_count": 2
+    },
+    "menu-base-saves-candidate-1": {
+      "adapter": "NVIDIA GeForce RTX 3090",
+      "campaign": "cursed_lands",
+      "micro": {
+        "rows_us": 22.43
+      },
+      "phases": [
+        {
+          "fps": 38.7621168886543,
+          "frames": 117,
+          "main_cpu_seconds": 2.94,
+          "p95_ms": 27.26,
+          "phase": "signpost",
+          "seconds": 3.018411
+        },
+        {
+          "fps": 33.4661819261411,
+          "frames": 101,
+          "main_cpu_seconds": 2.95,
+          "p95_ms": 31.433,
+          "phase": "network_modes",
+          "seconds": 3.017972
+        },
+        {
+          "fps": 33.6619091168448,
+          "frames": 101,
+          "main_cpu_seconds": 2.93,
+          "p95_ms": 32.172,
+          "phase": "host_new",
+          "seconds": 3.000424
+        },
+        {
+          "fps": 33.0421985221546,
+          "frames": 100,
+          "main_cpu_seconds": 2.98,
+          "p95_ms": 32.032,
+          "phase": "host_saved",
+          "seconds": 3.026433
+        },
+        {
+          "fps": 31.2592904939167,
+          "frames": 94,
+          "main_cpu_seconds": 2.94,
+          "p95_ms": 35.52,
+          "phase": "hosting_saved",
+          "seconds": 3.007106
+        },
+        {
+          "fps": 39.2800041809903,
+          "frames": 118,
+          "main_cpu_seconds": 2.93,
+          "p95_ms": 26.249,
+          "phase": "hosting_without_background",
+          "seconds": 3.004073
+        }
+      ],
+      "renderer": "forward_plus",
+      "resolution": "(1280.0, 720.0)",
+      "save_count": 2
+    },
+    "menu-lia-saves-baseline-1": {
+      "adapter": "NVIDIA GeForce RTX 3090",
+      "campaign": "lost_in_astral",
+      "micro": {
+        "rows_us": 4475.87
+      },
+      "phases": [
+        {
+          "fps": 38.7742048802474,
+          "frames": 117,
+          "main_cpu_seconds": 2.95,
+          "p95_ms": 27.532,
+          "phase": "signpost",
+          "seconds": 3.01747
+        },
+        {
+          "fps": 35.4573266103591,
+          "frames": 107,
+          "main_cpu_seconds": 2.95,
+          "p95_ms": 31.529,
+          "phase": "network_modes",
+          "seconds": 3.017712
+        },
+        {
+          "fps": 35.5010189124213,
+          "frames": 107,
+          "main_cpu_seconds": 2.95,
+          "p95_ms": 30.073,
+          "phase": "host_new",
+          "seconds": 3.013998
+        },
+        {
+          "fps": 8.73986095204924,
+          "frames": 27,
+          "main_cpu_seconds": 3.07,
+          "p95_ms": 120.904,
+          "phase": "host_saved",
+          "seconds": 3.089294
+        },
+        {
+          "fps": 9.11678833780436,
+          "frames": 28,
+          "main_cpu_seconds": 3.05,
+          "p95_ms": 113.046,
+          "phase": "hosting_saved",
+          "seconds": 3.071257
+        },
+        {
+          "fps": 9.71908601715095,
+          "frames": 30,
+          "main_cpu_seconds": 3.07,
+          "p95_ms": 104.525,
+          "phase": "hosting_without_background",
+          "seconds": 3.08671
+        }
+      ],
+      "renderer": "forward_plus",
+      "resolution": "(1280.0, 720.0)",
+      "save_count": 2
+    },
+    "menu-lia-saves-candidate-1": {
+      "adapter": "NVIDIA GeForce RTX 3090",
+      "campaign": "lost_in_astral",
+      "micro": {
+        "rows_us": 26.66
+      },
+      "phases": [
+        {
+          "fps": 37.8072836726924,
+          "frames": 114,
+          "main_cpu_seconds": 2.93,
+          "p95_ms": 28.249,
+          "phase": "signpost",
+          "seconds": 3.015292
+        },
+        {
+          "fps": 34.8119574100567,
+          "frames": 105,
+          "main_cpu_seconds": 2.94,
+          "p95_ms": 30.312,
+          "phase": "network_modes",
+          "seconds": 3.016205
+        },
+        {
+          "fps": 31.613145611147,
+          "frames": 95,
+          "main_cpu_seconds": 2.93,
+          "p95_ms": 35.051,
+          "phase": "host_new",
+          "seconds": 3.005079
+        },
+        {
+          "fps": 31.6757982053681,
+          "frames": 96,
+          "main_cpu_seconds": 2.96,
+          "p95_ms": 34.027,
+          "phase": "host_saved",
+          "seconds": 3.030705
+        },
+        {
+          "fps": 31.2879137119282,
+          "frames": 94,
+          "main_cpu_seconds": 2.94,
+          "p95_ms": 34.864,
+          "phase": "hosting_saved",
+          "seconds": 3.004355
+        },
+        {
+          "fps": 38.8411139498691,
+          "frames": 117,
+          "main_cpu_seconds": 2.94,
+          "p95_ms": 26.685,
+          "phase": "hosting_without_background",
+          "seconds": 3.012272
+        }
+      ],
+      "renderer": "forward_plus",
+      "resolution": "(1280.0, 720.0)",
+      "save_count": 2
+    }
+  },
+  "candidate_freeze": {
+    "checkpoint": "dialogue, host menu and scaled AI health; unreleased",
+    "export_receipt": "export-ai-health-1.receipt.json",
+    "files": {
+      "src/game/session.gd": "a5e76d81d0e82370a7467418aa54e1e3cdefab875ce34ae1b5eda3a2d03bd536",
+      "src/game/script/vm.gd": "e17854ca926f93c2721cd1127eeb7672ec71583618a231b80f7c71d804f7832a",
+      "src/game/unit.gd": "4fc9460f24afb1ab88fdaf882a9db2931a5d1618148af872bd27e3dbb06ae4e7",
+      "src/game/script/briefings.gd": "af132e8977373c67908b12519d2483ff08fe50e0baf1a0dfefb26a53665dd8c2",
+      "src/game/game.gd": "0e20a60b2cb94285d88ab63eca892071cb2d61107c6d1d3f77b656cdc8651be9",
+      "src/game/ai_activity.gd": "eab16c9d7ae03df260d32fef9a76010e5f5ca160657762afe84cce7541568369",
+      "src/ui/network_panel.gd": "4f49567668a24a254c9a2ac850c66e1120455a5c167d86aa91191f945fea9862",
+      "build/candidate/CPU.x86_64": "4966febc063957d5f7c514e08b9135a6862b14b2188a8c54e201ab2a2dd544b9",
+      "build/candidate/CPU.pck": "9bde61ee37515fdabd88b6a1a3b810ee5125818262c6de00bb5e3be3c76dc799"
+    }
+  },
+  "excluded_dead_city_runs": {
+    "baseline-1": "Fixture expected the Portal zone on the client; no measurement.",
+    "baseline-2": "Fixture selected the wrong saved player name; no measurement.",
+    "baseline-4": "Timing completed, then teardown freed RPC nodes before closing ENet; excluded from clean averages. Final harness closes ENet first."
+  },
+  "portal_same_display_health_check": {
+    "rows": [
+      {
+        "name": "portal-health-final-1",
+        "fps": 3.298752301921003,
+        "frames": 99,
+        "seconds": 30.011347,
+        "ticks": 424,
+        "gpu_ms": 16.7674848575785,
+        "p95_ms": 323.222,
+        "deferred_decisions": 59555,
+        "display": ":60"
+      },
+      {
+        "name": "portal-health-control-1",
+        "fps": 3.047623388747187,
+        "frames": 92,
+        "seconds": 30.187457,
+        "ticks": 420,
+        "gpu_ms": 15.965423832769,
+        "p95_ms": 345.012,
+        "deferred_decisions": 0,
+        "display": ":60"
+      },
+      {
+        "name": "portal-checkpoint-private-1",
+        "fps": 2.973278256326913,
+        "frames": 90,
+        "seconds": 30.269619,
+        "ticks": 416,
+        "gpu_ms": 14.0527000586192,
+        "p95_ms": 337.005,
+        "deferred_decisions": 0,
+        "display": ":60"
+      }
+    ],
+    "control": "Legacy _hp eligibility implemented as an external subclass; current source/runtime and owned private display unchanged.",
+    "checkpoint_control": "Seven changed production files restored byte-for-byte from 8976134 into an isolated source copy, reexported, and paired with the same retained-final runtime. Rendering and measurement use the current private display harness.",
+    "interpretation": "One sample per variant. The lower absolute FPS versus historical desktop-display runs also affects the unchanged earlier checkpoint. Do not pool measurements across display contexts or infer an exact display-only penalty."
+  }
+}

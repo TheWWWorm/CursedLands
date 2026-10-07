@@ -119,6 +119,10 @@ var _book_top := 0
 var _book_drag := false
 var _targets := {}           # id -> Rect2 (800 units) of what was drawn last
 var _internet: Control
+## Save validation decodes the complete campaign. Read it once when entering
+## the host page; drawing and row layout must not deserialize world state.
+var _start_slots: Array = [""]
+var _start_titles := {}
 
 
 func _ready() -> void:
@@ -181,6 +185,7 @@ func show_page(p: int) -> void:
 	_lan_sel = -1
 	if p == HOST_COOP:
 		lmp_base = ""
+		_refresh_start_saves()
 	elif p == HOST_LMP and not lmp_base in LmpMode.BASES:
 		lmp_base = LmpMode.BASES[0]
 	_sel = -1
@@ -394,20 +399,26 @@ func _bring_hint() -> String:
 	return RemakeText.t("Bring this save's hero and equipment. New progress returns in a separate save “Co-op: <host>”; this save stays unchanged.")
 
 
-func _start_choices() -> Array:
-	var out := [""]
+func _refresh_start_saves() -> void:
+	_start_slots = [""]
+	_start_titles.clear()
 	for i: SaveInfo in SaveInfo.list():
 		if not i.error:
-			out.append(i.slot)
-	return out
+			_start_slots.append(i.slot)
+			_start_titles[i.slot] = "%s  %s" % [i.display_name(), i.date_text()]
+	if not _start_titles.has(start_slot):
+		start_slot = ""
+
+
+func _start_choices() -> Array:
+	return _start_slots
 
 
 func _start_title() -> String:
-	if start_slot.is_empty() or not _start_choices().has(start_slot):
+	if not _start_titles.has(start_slot):
 		start_slot = ""
 		return RemakeText.t("A new game (the beginning of the story)")
-	var i := SaveInfo.read(start_slot)
-	return "%s  %s" % [i.display_name(), i.date_text()]
+	return String(_start_titles[start_slot])
 
 
 # ------------------------------------------------------------------ drawing

@@ -1051,7 +1051,8 @@ func _check_interactions() -> void:
 			continue
 		var it: Array = u.get_meta("interact")
 		var t = it[0]
-		if u.dead or not is_instance_valid(t) or u.order.get("type", "") not in ["follow", "move", ""]:
+		if u.dead or not is_instance_valid(t) or (u.order_failed and u.orders.is_empty()) \
+				or u.order.get("type", "") not in ["follow", "move", ""]:
 			u.remove_meta("interact")
 		elif u.pos.distance_to(_xy(t)) < _interact_reach(u, t, it[2] if it.size() > 2 else ""):
 			u.remove_meta("interact")
@@ -1077,6 +1078,7 @@ func _check_interactions() -> void:
 						if is_instance_valid(u) and not u.dead and world.lever_sys.usable(nid):
 							_use_lever(u, nid)})
 			else:
+				u.command({"type": "wait", "t": 0.0})
 				briefings.interact(u, t, it[1])
 
 

@@ -2,6 +2,20 @@
 
 ## Unreleased
 
+- Restore calm AI scheduling for healthy co-op monsters after player-count
+  scaling. Eligibility now reads body-derived health; real wounds keep the
+  actor active. Two controlled Dead City co-op runs at 2× average 18% higher
+  FPS than Experimental 3, but remain severely CPU-bound. See the
+  [follow-up measurements](docs/performance-dead-city-2026-10-07.md).
+- Cache validated save choices when opening the co-op host page, avoiding full
+  campaign deserialization during every redraw. Reopening refreshes the list.
+- Walk the player's village hero to a clicked NPC before opening topics, then
+  turn conversation actors in place. This avoids NPCs getting stuck while
+  walking to dialogue camera marks. Replacement commands and failed approaches
+  clear pending interactions; the first-village story lock remains supported.
+- Preserve automatic and side-quest briefing placement. Validate clicked
+  conversations on the host and joining player, including completion credit.
+
 - Avoid full route construction for attack/spell choices when a bounded local
   reachability check proves the actor cannot get into range. Open or uncertain
   cases retain the existing planner; all units keep their current simulation rate.

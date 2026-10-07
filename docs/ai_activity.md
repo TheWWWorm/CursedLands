@@ -16,6 +16,13 @@ This first scheduler still receives the existing 55 ms world updates and perform
 
 Player-controlled units, heroes, marked script actors, active non-calm orders, queued orders, failed paths, animation locks, wounds, buffs, pending hits, suspicious/fearful/alerted actors, retained noticed units/corpses, custom motivation/hostility states, friendly-spell casters and area-spell dangers bypass deferral. Different neutral factions alone do not wake each other. Hostile factions are directional, including self-faction hostility.
 
+Health eligibility reads the body-derived `hp` property. The internal `_hp`
+field is a fallback for units without body parts and does not track co-op
+maximum-health scaling or ordinary body wounds. Reading that fallback disabled
+quiet scheduling for healthy scaled populations; it could also miss real wounds.
+The focused `tools/tests/ai_activity_health.gd` regression covers scaling,
+injury, healing and removing scaling.
+
 Membership operations and diplomacy commands invalidate the current batch immediately. Changes to dead/hidden/controller/faction fields use the existing notice revision. Positional writes compare against the tick snapshot; displacement exceeding 8 m invalidates the remainder of the batch. The sensing envelope includes 16 m of movement margin, shared between observer and target. Dialogue, clients and nonstandard diagnostic timesteps use ordinary decisions. Queries outside the unit-update phase also use ordinary decisions.
 
 Sleeping invalidates the old neighbour-refresh deadline. Waking therefore queries current neighbours instead of waiting as long as the previous 8–11-tick cache interval. Movement and patrol timing are not slowed because a unit is far from the player. The earlier `Distant AI (experimental)` setting is a separate approximation experiment and remains off by default.

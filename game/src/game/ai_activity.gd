@@ -112,10 +112,12 @@ func defer_decision(u: GameUnit) -> bool:
 	if not _valid or _revision != GameUnit.notice_revision or _registry_size != world.units.size() \
 			or not _quiet.has(u.get_instance_id()):
 		return false
+	# Health is derived from body parts. _hp is only the fallback for units
+	# without parts; co-op scaling changes max HP without updating that field.
 	if u.controller >= 0 or u.dead or u.hidden or u.alert or u.has_meta("hero") \
 			or not u.mode in UnitAI.CALM_MODES or bool(u.info.get("use_in_script", false)) \
 			or not u.orders.is_empty() or u.order_failed or u._anim_lock > 0.0 \
-			or not u._pending_hit.is_empty() or not u.buffs.is_empty() or u._hp < u.max_hp:
+			or not u._pending_hit.is_empty() or not u.buffs.is_empty() or u.hp < u.max_hp:
 		return false
 	if u.has_meta("suspect") or u.has_meta("fear_on") or u.has_meta("attacker") \
 			or u.has_meta("um") or u.has_meta("alerted") or u.has_meta("hate") or u.has_meta("peace") \

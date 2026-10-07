@@ -919,6 +919,9 @@ func command(o: Dictionary, queue := false) -> void:
 	if dead:
 		return
 	if not queue:
+		# A replacement order cancels the pending arrival interaction.
+		# Callers attach the new interaction after posting its approach.
+		remove_meta("interact")
 		_wait_on = null
 		orders.clear()
 		order = {}
