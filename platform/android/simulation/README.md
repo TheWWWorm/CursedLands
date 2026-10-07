@@ -1,7 +1,7 @@
 # Android simulation process
 
-This source is experimental and has been tested in the private Retroid Pocket 5
-app. It has not been published as an Android release. It separates a co-op host's
+This source is experimental, has been tested on Retroid Pocket 5 and is included
+in the Experimental 5 ARM64 Android release. It separates a co-op host's
 authoritative world from its local view using the same authenticated loopback
 protocol as the desktop `LocalHost`. Ordinary single-player sessions still use
 the inline world. This change does not make Portal sustain 60 FPS or true 2× on
@@ -22,7 +22,12 @@ To build a template, use the Godot commit in `engine_patches/godot-4.7/README.md
 3. Build the normal ARM64 release engine and Android export template with Godot's
    build system. Keep its matching `libc++_shared.so` in the template. Include the
    game's ARM64 GDExtension as described in the native guide.
-4. Export the game using that custom template. Stock templates have no
+4. Export a clean `game/` copy using that custom **release** template, the ARM64
+   GDExtension and the existing public signing credentials. Preserve package ID
+   `org.cursedlands.engine`; Experimental 5 uses version code 15. Include the
+   repository, Godot, font and native-library notices, and exclude private
+   benchmark tools and test bootstrap changes. The template and APK must not
+   have `android:debuggable` enabled. Stock templates have no
    `EISimulation` singleton and retain the inline host automatically.
 
 The device lifecycle test is `tools/tests/android_simulation_lifecycle.gd` (and

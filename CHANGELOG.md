@@ -1,6 +1,12 @@
 # Changelog
 
-## 1.0.3-experimental.5 — experimental branch, 7 October 2026
+## 1.0.3-experimental.5 — experimental release, 7 October 2026
+
+- Provide Linux and Windows x86-64, Android ARM64 and universal macOS packages.
+  Android now includes the six common engine patches, native helpers and the
+  headless co-op service; its public package retains the previous signing key
+  and advances the version code to 15. macOS retains the stock engine and script
+  fallbacks. Windows and macOS have not been runtime-tested on their target OS.
 
 - Separate co-op simulation from the local view, with independent desktop
   processes and an optional Android headless service. Retain owner commands,

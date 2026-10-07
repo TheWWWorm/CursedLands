@@ -31,9 +31,9 @@ The sixth caches whether a clip's tracks permit deferred pose evaluation.
 Every internal track-cache invalidation advances a generation, including when
 signals are blocked. Playback mode, section and running-state checks remain
 live. Adding a method/event track therefore immediately disables deferral.
-Published Android packages, macOS and Web use the official 4.7 templates.
-The private Android performance build also uses the six common patches and the
-optional `android-headless-service.patch`; see
+macOS and Web use the official 4.7 templates. Experimental 5 Android ARM64 uses
+the six common patches and `android-headless-service.patch`; earlier public
+Android releases used the official template. See
 [the Android service guide](../../platform/android/simulation/README.md).
 The extra patch guards Android-only sensor dispatch and supplies a surface-free
 frame loop for the engine's existing `GodotService`. It does not change the

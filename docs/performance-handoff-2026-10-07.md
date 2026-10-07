@@ -3,7 +3,11 @@
 This checkpoint gathers the completed performance work and gameplay repairs on
 `release/1.0.3-experimental.5-performance`, version `1.0.3-experimental.5`.
 It retains the Experimental 3 integration and the local Experimental 4 checkpoint
-`bdaf986bc196a56c55f0b24530f47eb1f98d9d69`. No public release or tag is created.
+`bdaf986bc196a56c55f0b24530f47eb1f98d9d69`.
+[Experimental 5 downloads](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.0.3-experimental.5)
+use tag `v1.0.3-experimental.5` and include Linux/Windows x86-64, Android ARM64
+and universal macOS packages. The earlier branch-only delivery did not create a
+GitHub release; these packages are the subsequent publication checkpoint.
 
 **Stable 60+ FPS at actual 2× simulation speed is still not achieved across the
 requested devices and locations.** This is a usable experimental checkpoint,
@@ -150,7 +154,19 @@ profiles, original assets and saves out of the export. All co-op participants
 must use the same experimental build (protocol 5). The engine still requires the
 player's original game data. The audited desktop packages each contain 557 resources and 204 compiled
 gameplay scripts, with no private probes, original game data or user saves. Windows is cross-compiled; it has not been executed on Windows.
-The private Android profiling package is not a distributable player build.
+The public Android APK is a clean release export, without the private benchmark
+bootstrap or probes. It uses the tested production ARM64 engine and native
+library, the six common patches and Android service integration. It retains
+`org.cursedlands.engine` and the previous public signing certificate, with
+version code 15. Experimental 5 Android supports ARM64 only; older public
+packages also included x86-64. The private profiling APK remains separate and
+is not a release asset.
+
+macOS includes Intel and Apple silicon executables from the stock Godot 4.7
+template, with the same 204 gameplay scripts and their native-free fallbacks.
+It does not include the patched engine or native hot paths, and it has not been
+runtime-tested on macOS. The app is unsigned and not notarized. Do not apply
+Linux or Retroid performance measurements to the macOS package.
 
 Useful diagnostic fallbacks are `--ei-inline-host`, `--ei-script-motion-build`,
 `--ei-script-motion`, `--ei-script-unit-state`, `--ei-script-terrain` and
@@ -170,7 +186,7 @@ Useful diagnostic fallbacks are `--ei-inline-host`, `--ei-script-motion-build`,
 4. Repeat extended Portal combat, post-tunnel Suslanger travel, open-world and
    expansion gameplay on the actual targets. Report p95/p99/worst frames and
    simulated seconds, not just average FPS or a selected 2× setting.
-5. Validate Windows, real WAN co-op, longer Android background/resume and
+5. Validate Windows and macOS, real WAN co-op, longer Android background/resume and
    physical touch/controller paths. Two earlier desktop NVIDIA Xid 32 / Vulkan
    device-loss startup failures remain an unresolved environment/runtime issue.
 

@@ -2,7 +2,6 @@
   "version": "1.0.3-experimental.5",
   "branch": "release/1.0.3-experimental.5-performance",
   "goal_60fps_at_2x_met": false,
-  "public_release_created": false,
   "linux_core_suite": [
     {
       "fixture": "body_records",
@@ -771,5 +770,40 @@
       "no_remaining_processes": true
     }
   ],
-  "desktop_final_note": "Same frozen pack, settings and system scheduling. Significant run-to-run variation; both runs retained. Average FPS above 60 does not satisfy a stable 60 FPS target."
+  "desktop_final_note": "Same frozen pack, settings and system scheduling. Significant run-to-run variation; both runs retained. Average FPS above 60 does not satisfy a stable 60 FPS target.",
+  "release_tag": "v1.0.3-experimental.5",
+  "release_url": "https://github.com/TheWWWorm/CursedLands/releases/tag/v1.0.3-experimental.5",
+  "macos_runtime_tested": false,
+  "public_package_architectures": {
+    "linux": [
+      "x86_64"
+    ],
+    "windows": [
+      "x86_64"
+    ],
+    "android": [
+      "arm64-v8a"
+    ],
+    "macos": [
+      "x86_64",
+      "arm64"
+    ]
+  },
+  "public_android_build": {
+    "package": "org.cursedlands.engine",
+    "version_code": 15,
+    "production_engine_sha256": "424eaf73630ec110faf614f550f8047c24a78e224211df45d8b957bf03b7cc79",
+    "native_sha256": "b0fbf87dd3cb2cd0b3831b54b5ef272881d8ba7ded7152a711891ca69280fde9",
+    "benchmark_probes_included": false,
+    "debuggable": false,
+    "note": "Gameplay measurements above use the private test app. The public APK exports clean production scripts with the same engine and ARM64 native library."
+  },
+  "macos_build": {
+    "template": "official Godot 4.7",
+    "native_hot_paths": false,
+    "common_engine_patches": false,
+    "signed": false,
+    "notarized": false,
+    "note": "Script fallbacks; Linux/Android performance measurements do not establish macOS performance."
+  }
 }

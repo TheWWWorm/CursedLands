@@ -1,0 +1,133 @@
+{
+  "packs": {
+    "linux": {
+      "resources": 557,
+      "compiled_scripts": 204,
+      "scripts_match_core_suite_except": [
+        "src/game/lmp_travel.gdc",
+        "src/game/local_host.gdc"
+      ],
+      "engine_sha256": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+      "native_sha256": "77876cdd75f8cf860761e21bedb066090e10ce139a8342bf8dbd5336d9093e81",
+      "pack_sha256": "52040e1e36f1a007beb6c9cdcd7edece1ba31d68abbc8e8799fad7f9d4c0254a"
+    },
+    "windows": {
+      "resources": 557,
+      "compiled_scripts": 204,
+      "scripts_match_core_suite_except": [
+        "src/game/lmp_travel.gdc",
+        "src/game/local_host.gdc"
+      ],
+      "engine_sha256": "daea748b8ce15b87838ecd38ef2f53246b43ae833d621654c705811de3fd1e44",
+      "native_sha256": "066d113fd691c188a78b6e5309b990499063b81ea031192a376acf857176f77b",
+      "pack_sha256": "52040e1e36f1a007beb6c9cdcd7edece1ba31d68abbc8e8799fad7f9d4c0254a"
+    },
+    "macos": {
+      "resources": 555,
+      "compiled_scripts": 204,
+      "scripts_identical_to_linux": true,
+      "architectures": [
+        "x86_64",
+        "arm64"
+      ],
+      "runtime_tested": false,
+      "engine_sha256": "9a5f1aa073176c0d609887af859c17889cca631c3c59373587c0297a0eacd940",
+      "pack_sha256": "9beeaf47874b860279148c59b9426bca8c308ad0b7d064e2abd09d381f8afb48"
+    },
+    "android": {
+      "resources": 566,
+      "compiled_scripts": 204,
+      "scripts_identical_to_linux": true,
+      "engine_arguments": [
+        "--xr_mode_regular",
+        "--xr-mode",
+        "off",
+        "--fullscreen",
+        "--background_color",
+        "#000000"
+      ],
+      "sparse_index": {
+        "format": 4,
+        "resources": 566,
+        "all_resource_sizes_and_md5_match": true,
+        "template_baseline_profiles": {
+          "dexopt/baseline.prof": {
+            "bytes": 1177,
+            "sha256": "4442960fb3fefc2020d4675b3fa13bb1017c4718e9144912ff7f2567262216b8"
+          },
+          "dexopt/baseline.profm": {
+            "bytes": 142,
+            "sha256": "df4de3e1028dedbb7787c99a666a9d79cc23407c6640bd5e86877734a2a88d28"
+          }
+        }
+      },
+      "version_code": 15,
+      "debuggable": false,
+      "same_public_signing_certificate": true,
+      "library_sha256": {
+        "lib/arm64-v8a/libc++_shared.so": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+        "lib/arm64-v8a/libgodot_android.so": "424eaf73630ec110faf614f550f8047c24a78e224211df45d8b957bf03b7cc79",
+        "lib/arm64-v8a/libterrain_search_android.so": "b0fbf87dd3cb2cd0b3831b54b5ef272881d8ba7ded7152a711891ca69280fde9"
+      }
+    }
+  },
+  "archives": {
+    "CursedLands-1.0.3-experimental.5-linux-x86_64.tar.gz": {
+      "files": 18,
+      "exact_readback": true,
+      "sha256": "68f9ba92bee1aa30e4f0857cbfed183c0254dee173dc729cbe1406884b8f1279"
+    },
+    "CursedLands-1.0.3-experimental.5-windows-x86_64.zip": {
+      "files": 18,
+      "exact_readback": true,
+      "sha256": "ee2c9729b3d39761d0451035205cf0558f8baa8ec683858d867736fc95e90f2c"
+    },
+    "CursedLands-1.0.3-experimental.5-macos-universal.zip": {
+      "files": 21,
+      "exact_readback": true,
+      "sha256": "2d7a6f46fb300bbb6a92c0ffcddb830af88d97d8138fcf33df93bc53765541e2"
+    },
+    "CursedLands-1.0.3-experimental.5-android.apk": {
+      "files": 658,
+      "exact_readback": true,
+      "sha256": "0835787357e0ebda80f41080c8240d3ef6a0138dee591455176923866cba864e"
+    }
+  },
+  "version": "1.0.3-experimental.5",
+  "release_tag": "v1.0.3-experimental.5",
+  "gameplay_source_commit": "0bd3ed26506208ea57ce98c4314e92b5f2dd37e8",
+  "android_clean_release_startup": {
+    "verification_package": "org.cursedlands.releasecheck",
+    "public_game_assets_and_libraries_identical": true,
+    "clean_release_mode": true,
+    "startup_to_game_library": true,
+    "service_plugin_initialized": true,
+    "godot_script_errors": 0,
+    "android_driver_warning": "OpenGLRenderer: Unable to match the desired swap behavior (library UI rendered successfully)",
+    "original_public_install_unchanged": true,
+    "verification_app_removed": true,
+    "scope": "Clean release startup only; gameplay and service lifecycle evidence remains the previously tested private APK."
+  },
+  "assets": [
+    {
+      "name": "CursedLands-1.0.3-experimental.5-linux-x86_64.tar.gz",
+      "bytes": 35411217,
+      "sha256": "68f9ba92bee1aa30e4f0857cbfed183c0254dee173dc729cbe1406884b8f1279"
+    },
+    {
+      "name": "CursedLands-1.0.3-experimental.5-windows-x86_64.zip",
+      "bytes": 36622372,
+      "sha256": "ee2c9729b3d39761d0451035205cf0558f8baa8ec683858d867736fc95e90f2c"
+    },
+    {
+      "name": "CursedLands-1.0.3-experimental.5-macos-universal.zip",
+      "bytes": 62990884,
+      "sha256": "2d7a6f46fb300bbb6a92c0ffcddb830af88d97d8138fcf33df93bc53765541e2"
+    },
+    {
+      "name": "CursedLands-1.0.3-experimental.5-android.apk",
+      "bytes": 29035051,
+      "sha256": "0835787357e0ebda80f41080c8240d3ef6a0138dee591455176923866cba864e"
+    }
+  ]
+}

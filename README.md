@@ -6,9 +6,9 @@ This is a separate game engine, built in Godot, in the spirit of OpenMW and fher
 
 > **You need your own copy of the game you want to play.** No game data ships with this engine: no models, textures, music, sounds, videos, texts or maps. Nothing is downloaded for you. The original game's **GOG version** is the main tested edition. The expansion can use an installed folder, a data pack or the supported two-disc ISO edition.
 
-Windows and Linux x86-64 use compiled hot paths. Current source also includes Android ARM64 helpers, tested in a private Retroid Pocket 5 build; published Android packages may predate these changes. macOS and the browser retain script implementations. Source and build instructions are in [the native guide](game/src/native/source/README.md).
+Windows and Linux x86-64 and Experimental 5 Android ARM64 use compiled hot paths. macOS and the browser retain script implementations. Source and build instructions are in [the native guide](game/src/native/source/README.md).
 
-This branch is **1.0.3-experimental.5**. It gathers the gameplay repairs, native system work and separate co-op simulation; it is not the latest public release. See the [current handoff and measured limits](docs/performance-handoff-2026-10-07.md). Stable 60 FPS at actual 2× remains unfinished, especially on Retroid Pocket 5.
+This branch is **1.0.3-experimental.5**. [Experimental 5 downloads](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.0.3-experimental.5) gather the gameplay repairs, native system work and separate co-op simulation for Linux, Windows, Android and macOS. See the [current handoff and measured limits](docs/performance-handoff-2026-10-07.md). Stable 60 FPS at actual 2× remains unfinished, especially on Retroid Pocket 5.
 
 ## Screenshots
 
@@ -47,7 +47,7 @@ Download the package for your system from the [Releases](https://github.com/TheW
 - **Windows (x86-64):** extract the ZIP and run `CursedLands.exe`. The EXE and native DLL are unsigned. SmartScreen may offer **More info → Run anyway**. Smart App Control is a separate policy: if it blocks the native DLL with `0xC0E90002`, the game shows a notice with an **Open Windows Security** button. You can manually turn Smart App Control Off under **App & browser control → Smart App Control**, then restart the game. This changes protection for all apps; older Windows versions may require a Windows reset to re-enable it. Native acceleration remains required on Windows.
 - **Linux (x86-64):** extract the archive and run `CursedLands.x86_64`. If your file manager dropped the executable permission, run `chmod +x CursedLands.x86_64` first.
 - **macOS (Apple silicon and Intel):** extract the ZIP and open the app. It is not signed or notarized, so macOS may block the first start; allow it under **System Settings → Privacy & Security**.
-- **Android 8+ (ARM64 / x86-64), preview:** install the APK; allow your browser or file manager to install apps when it asks. On first start, choose a game data pack (`.eipack`, see [Play in your browser](#play-in-your-browser)) or the GOG installer (`setup_evil_islands_*.exe`), which is unpacked without being run. Touch controls are explained in the game.
+- **Android 8+ (ARM64 in Experimental 5), preview:** install the APK; allow your browser or file manager to install apps when it asks. The Experimental 5 APK retains the existing application ID and signing certificate, so it updates earlier releases without uninstalling them. On first start, choose a game data pack (`.eipack`, see [Play in your browser](#play-in-your-browser)) or the GOG installer (`setup_evil_islands_*.exe`), which is unpacked without being run. Touch controls are explained in the game. Older releases also provide x86-64 Android support.
 - **Browser (WebGL 2):** nothing to download; [play the hosted version](https://cursedlands.wwworm.com/), see above.
   To host the browser version yourself, use `…-web.zip`. It needs HTTPS and the `Cross-Origin-Opener-Policy: same-origin` and `Cross-Origin-Embedder-Policy: require-corp` headers (included in its `_headers` file).
 
