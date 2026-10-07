@@ -27,6 +27,9 @@ func actor(w: GameWorld, id: int, owner: int, h: Dictionary) -> GameUnit:
 
 func _ready() -> void:
 	check(GameData.campaign_id == CampaignProfile.ASTRAL,"runs with original LiA content")
+	if failures:
+		get_tree().quit(1)
+		return
 	var mob := EIMob.load_bytes(GameData.read_file("maps/bz1h.mob"))
 	for branch: String in ["a","b","c","d","e","f"]:
 		var s := ProbeSession.new()

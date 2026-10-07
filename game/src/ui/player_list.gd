@@ -23,7 +23,7 @@ func _ready() -> void:
 
 
 func _host() -> bool:
-	return game != null and game.session != null and game.session.online and game.session.is_host
+	return game != null and game.session != null and game.session.online and game.session.can_manage_game()
 
 
 func _has_point(point: Vector2) -> bool:

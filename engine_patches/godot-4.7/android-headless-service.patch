@@ -1,0 +1,101 @@
+--- a/platform/android/java_godot_lib_jni.cpp
++++ b/platform/android/java_godot_lib_jni.cpp
+@@ -325,10 +325,12 @@
+ 		step.increment();
+ 	}
+ 
+-	DisplayServerAndroid::get_singleton()->process_accelerometer(accelerometer);
+-	DisplayServerAndroid::get_singleton()->process_gravity(gravity);
+-	DisplayServerAndroid::get_singleton()->process_magnetometer(magnetometer);
+-	DisplayServerAndroid::get_singleton()->process_gyroscope(gyroscope);
++	if (DisplayServerAndroid *dsa = Object::cast_to<DisplayServerAndroid>(DisplayServer::get_singleton())) {
++		dsa->process_accelerometer(accelerometer);
++		dsa->process_gravity(gravity);
++		dsa->process_magnetometer(magnetometer);
++		dsa->process_gyroscope(gyroscope);
++	}
+ 
+ 	bool should_swap_buffers = false;
+ 	if (os_android->main_loop_iterate(&should_swap_buffers)) {
+--- a/platform/android/java/lib/src/main/java/org/godotengine/godot/Godot.kt
++++ b/platform/android/java/lib/src/main/java/org/godotengine/godot/Godot.kt
+@@ -541,8 +541,10 @@
+ 					java.lang.Boolean.parseBoolean(GodotLib.getGlobal("display/window/per_pixel_transparency/allowed"))
+ 			Log.d(TAG, "Render view should be transparent: $shouldBeTransparent")
+ 
+-			val nativeRenderer = getNativeRenderer()
+-			if (nativeRenderer == "vulkan") {
++			val nativeRenderer = if (commandLine.contains("--headless")) "headless" else getNativeRenderer()
++			if (nativeRenderer == "headless") {
++				renderView = GodotHeadlessRenderView(this, godotInputHandler)
++			} else if (nativeRenderer == "vulkan") {
+ 				renderView = GodotVulkanRenderView(this, godotInputHandler, shouldBeTransparent)
+ 			} else if (nativeRenderer == "opengl3") {
+ 				renderView = GodotGLRenderView(this, godotInputHandler, xrMode, useDebugOpengl, shouldBeTransparent)
+--- /dev/null
++++ b/platform/android/java/lib/src/main/java/org/godotengine/godot/GodotHeadlessRenderView.java
+@@ -0,0 +1,64 @@
++// SPDX-License-Identifier: MIT
++package org.godotengine.godot;
++
++import android.view.SurfaceView;
++import org.godotengine.godot.input.GodotInputHandler;
++import java.util.concurrent.LinkedBlockingQueue;
++import java.util.concurrent.TimeUnit;
++
++/** A surface-independent loop for a headless Godot service instance. */
++final class GodotHeadlessRenderView implements GodotRenderView {
++    private final SurfaceView view;
++    private final GodotInputHandler input;
++    private final LinkedBlockingQueue<Runnable> queue = new LinkedBlockingQueue<>();
++    private volatile boolean exiting;
++    private boolean running;
++    private Thread thread;
++
++    GodotHeadlessRenderView(Godot godot, GodotInputHandler input) {
++        this.view = new SurfaceView(godot.getContext());
++        this.input = input;
++    }
++    @Override public SurfaceView getView() { return view; }
++    @Override public GodotInputHandler getInputHandler() { return input; }
++    @Override public void startRenderer() {
++        if (thread != null) return;
++        thread = new Thread(() -> {
++            try {
++                while (!exiting) {
++                    Runnable event = running ? queue.poll() : queue.poll(100, TimeUnit.MILLISECONDS);
++                    while (event != null) {
++                        event.run();
++                        event = queue.poll();
++                    }
++                    if (running && !exiting) GodotLib.step();
++                }
++            } catch (InterruptedException ignored) {
++                Thread.currentThread().interrupt();
++            } finally {
++                GodotLib.ondestroy();
++            }
++        }, "GodotSimulation");
++        thread.start();
++    }
++    @Override public void queueOnRenderThread(Runnable event) { queue.offer(event); }
++    @Override public void onActivityResumed() {
++        queueOnRenderThread(() -> { running = true; GodotLib.onRendererResumed(); });
++    }
++    @Override public void onActivityPaused() {
++        queueOnRenderThread(() -> { GodotLib.onRendererPaused(); running = false; });
++    }
++    @Override public void onActivityStarted() {}
++    @Override public void onActivityStopped() {}
++    @Override public boolean blockingExitRenderer(long timeout) {
++        exiting = true;
++        queue.offer(() -> {});
++        if (thread == null || thread == Thread.currentThread()) return true;
++        try { thread.join(timeout); }
++        catch (InterruptedException e) { Thread.currentThread().interrupt(); }
++        return !thread.isAlive();
++    }
++    @Override public void configurePointerIcon(int type, String path, float x, float y) {}
++    @Override public void setPointerIcon(int type) {}
++    @Override public boolean canCapturePointer() { return false; }
++}

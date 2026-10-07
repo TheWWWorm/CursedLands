@@ -171,6 +171,9 @@ func leave(secs := 3.0) -> void:
 func _rpc_bye() -> void:
 	if session.is_host:
 		var pid := multiplayer.get_remote_sender_id()
+		if session.local_host.authorized(pid):
+			bye()
+			return
 		_leaving[pid] = true
 		if session.players.has(pid):
 			session.swap.command({"t": "withdraw"}, int(session.players[pid].index))
@@ -211,7 +214,10 @@ func _rpc_bye_all() -> void:
 ## the same name or address for the rest of this hosting session
 ## (`refuse`, «lmp_you_are_banned»). False when there is nobody to remove.
 func kick(pid: int, ban := false) -> bool:
-	if session == null or not session.online or not session.is_host or pid == 1 \
+	if session and session.local_host.frontend:
+		session.local_host.request("kick", {"pid": pid, "ban": ban})
+		return pid != session.host_player_id() and session.players.has(pid)
+	if session == null or not session.online or not session.is_host or pid == session.host_player_id() \
 			or not session.players.has(pid) or _kicked.has(pid):
 		return false
 	var player_name := String(session.players[pid].name)
@@ -250,6 +256,8 @@ func _address(pid: int) -> String:
 	var enet := NetSim.enet_of(multiplayer)
 	if enet and enet.get_peer(pid):
 		return enet.get_peer(pid).get_remote_address()
+	if multiplayer.multiplayer_peer is WebSocketMultiplayerPeer:
+		return str(multiplayer.multiplayer_peer.get_peer_address(pid))
 	return ""
 
 
@@ -329,7 +337,7 @@ func _rpc_chat(idx: int, player_name: String, text: String) -> void:
 # drops the connection.
 
 ## Remake co-op protocol; raise it when the messages change incompatibly.
-const PROTOCOL := 5   # campaign movies require completion acknowledgements
+const PROTOCOL := 6   # local host ownership is separate from server authority
 const CoopDb := preload("res://src/game/coop_db.gd")
 
 
@@ -577,6 +585,7 @@ func _rpc_loaded(zone: String, epoch := 0) -> void:
 			return
 		if session.lmp_travel and not session.lmp_travel.loaded(pid, zone, epoch):
 			return
+		session.local_host.zone_loaded(pid, zone)
 		_loaded[pid] = zone.left(32)
 		_loaded_at[pid] = Time.get_ticks_msec()
 		_rtt.erase(pid)

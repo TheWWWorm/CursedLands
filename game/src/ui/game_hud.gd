@@ -462,7 +462,7 @@ func inspect_quest_item(item: String) -> void:
 func _process(_dt: float) -> void:
 	_layout_safe_area()
 	_layout_dials()
-	var host_online: bool = game != null and game.session != null and game.session.online and game.session.is_host
+	var host_online: bool = game != null and game.session != null and game.session.online and game.session.can_manage_game()
 	if _players_btn.visible != (_menu.visible and host_online):
 		_players_btn.visible = _menu.visible and host_online
 	var hints: bool = _menu.visible and PadInput.active == "pad"
@@ -736,7 +736,7 @@ func _show_game_over(event: Dictionary = {}) -> void:
 	_game_over_box.process_mode = Node.PROCESS_MODE_ALWAYS
 	_game_over_box.answered.connect(func(yes: bool):
 		_game_over_box = null
-		if yes and game.session.is_host:
+		if yes and game.session.can_manage_game():
 			_game_over_load = true
 			_save_load.open(false, _esc_frame, false)
 		else:
@@ -754,9 +754,9 @@ func _show_coop_game_over() -> void:
 		_death_notice.name = "DeathNotice"
 		_death_notice.chosen.connect(_on_death_notice)
 		_add_ui(_death_notice)
-	_death_notice.allow_load = game.session.is_host
+	_death_notice.allow_load = game.session.can_manage_game()
 	_death_notice.still_dead = game.session.all_party_heroes_dead
-	_death_notice.hint = "" if game.session.is_host else RemakeText.t("Waiting for the host to load the game.")
+	_death_notice.hint = "" if game.session.can_manage_game() else RemakeText.t("Waiting for the host to load the game.")
 	_death_notice.visible = true
 	_death_notice.queue_redraw()
 
@@ -1015,7 +1015,7 @@ func toggle_aggression() -> void:
 ## Remake: the co-op host's player list (PlayersPanel) over the Esc menu's
 ## frozen frame, as the Options screen; closing it closes the Esc menu.
 func open_players() -> void:
-	if game.session == null or not game.session.online or not game.session.is_host:
+	if game.session == null or not game.session.online or not game.session.can_manage_game():
 		return
 	if not _esc_open:
 		_open_menu()
@@ -1110,13 +1110,13 @@ func _on_esc_board(action: String) -> void:
 			_menu.visible = false
 			_options.open(_esc_frame, true)
 		"save":
-			if not game.session.is_host:
+			if not game.session.can_manage_game():
 				log_msg(RemakeText.t("Only the host can save"))
 				return
 			_menu.visible = false
 			_save_load.open(true, _esc_frame, true, game.session.fresh_save_entry(_esc_frame))
 		"load":
-			if not game.session.is_host:
+			if not game.session.can_manage_game():
 				log_msg(RemakeText.t("Only the host can load"))
 				return
 			_menu.visible = false
@@ -1132,7 +1132,7 @@ func _on_esc_board(action: String) -> void:
 
 ## Quick save / load from the Esc menu: the host of a game with saves.
 func _quick_ok() -> bool:
-	return game.session.is_host and game.session.lmp.is_empty()
+	return game.session.can_manage_game() and game.session.lmp.is_empty()
 
 
 func _draw_esc_hints() -> void:

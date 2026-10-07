@@ -98,7 +98,7 @@ func _ready() -> void:
 		_net.back_requested.connect(_leave_net)
 		_net.stop_requested.connect(_stop_net)
 		_net.lobby_changed.connect(func(m: Dictionary):
-			if _session and _session.online and _session.is_host:
+			if _session and _session.online and _session.can_manage_game():
 				_session.set_lobby_mode(m))
 		_chars = MpCharPanel.new()
 		add_child(_chars)
@@ -365,7 +365,7 @@ func _host(max_players := Session.MAX_PLAYERS) -> void:
 	var s := _make_session()
 	var port := _port()
 	s.password = _net.password.strip_edges() if _net else ""
-	var err := s.host(port, max_players)
+	var err := await s.start_host(port, max_players)
 	if err != OK:
 		_set_status(RemakeText.t("Could not host on port %d (error %d).") % [port, err])
 		return
@@ -412,11 +412,11 @@ func _join(address := "") -> void:
 		s.multiplayer.connected_to_server.connect(func(): _set_status(RemakeText.t("Connected to %s.") % typed), CONNECT_ONE_SHOT)
 		s.multiplayer.connection_failed.connect(func():
 			if _session == s:
-				_close_session()
+				await _close_session()
 				_set_status(RemakeText.t("Could not reach %s. Check the address, and that the host has started hosting.") % typed), CONNECT_ONE_SHOT)
 		s.multiplayer.server_disconnected.connect(func():
 			if _session == s and _net.visible and _net.joining:   # still in the lobby
-				_close_session()
+				await _close_session()
 				_set_status(RemakeText.t("The host closed the game.")), CONNECT_ONE_SHOT)
 	else:
 		_set_status(RemakeText.t("Connecting to %s... the host starts the campaign.") % address)
@@ -439,7 +439,7 @@ func _join_refused(title: String, text: String) -> void:
 	b.ok_only = true
 	add_child(b)
 	b.answered.connect(func(_yes):
-		_close_session()
+		await _close_session()
 		_set_status(title), CONNECT_ONE_SHOT)
 
 
@@ -449,12 +449,15 @@ static func _port() -> int:
 
 
 func _start_coop() -> void:
-	if _net and _net.lmp_base and not _session.lmp_characters_ready():
+	if _net and _net.lmp_base and not _session.local_host.frontend and not _session.lmp_characters_ready():
 		return
 	start_game.emit(_session)
 	if _net and _net.lmp_base:   # the original's own multiplayer game (LmpMode)
 		await _session.hold_loading(_net.lmp_base.to_lower())
-		_session.new_lmp_game(_net.lmp_base)
+		if _session.local_host.frontend:
+			await _session.local_host.request("lmp", {"base": _net.lmp_base})
+		else:
+			_session.new_lmp_game(_net.lmp_base)
 		return
 	if _net and _net.start_slot and await _session.load_game_shown(_net.start_slot):   # the host's save, continued
 		return
@@ -464,17 +467,19 @@ func _start_coop() -> void:
 ## Back on the Multiplayer screen's first page: to the signpost; an open
 ## host / connection is closed.
 func _leave_net() -> void:
-	_close_session()
+	await _close_session()
 	_net.visible = false
 
 
 ## Stop hosting / disconnect, staying on the Multiplayer screen.
 func _stop_net() -> void:
-	_close_session()
+	await _close_session()
 	_set_status("")
 
 
 func _close_session() -> void:
+	if _session and _session.local_host.frontend:
+		await _session.local_host.stop()
 	if _session and _session.online:
 		_session.multiplayer.multiplayer_peer = OfflineMultiplayerPeer.new()
 		_session.online = false
@@ -500,14 +505,14 @@ func _refresh_lobby() -> void:
 		for pid in _session.players:
 			# Remake: who is who when names repeat (everyone starts as "Player").
 			var tags := PackedStringArray()
-			if int(pid) == 1:
+			if int(_session.players[pid].index) == 0:
 				tags.append(RemakeText.t("host"))
 			if int(pid) == me:
 				tags.append(RemakeText.t("you"))
 			names.append("%d. %s%s" % [_session.players[pid].index + 1, _session.players[pid].name,
 				" (%s)" % ", ".join(tags) if not tags.is_empty() else ""])
 		_net.lobby = names
-		_net.host_mode = _session.lobby_mode if not _session.is_host else {}
+		_net.host_mode = _session.lobby_mode if not _session.can_manage_game() else {}
 		_net.queue_redraw()
 		return
 	if _lobby == null:

@@ -53,4 +53,4 @@ Evil Islands: Curse of the Lost Soul («Проклятые земли»), its pr
 
 ## Optional compiled navigation
 
-Windows and Linux x86-64 packages include the project’s Apache-2.0 navigation module, built with MIT-licensed godot-cpp bindings at commit `507ed9d840c01a3c5b2a39af8bb4000bfac30bf5`. The desktop packages include binding and compiler-runtime notices in `NATIVE_NAVIGATION_NOTICES.txt`. Source and build instructions are in `game/src/native/source`. Other platforms use the script implementation.
+Windows and Linux x86-64 packages include the project’s Apache-2.0 native helpers, built with MIT-licensed godot-cpp bindings at commit `507ed9d840c01a3c5b2a39af8bb4000bfac30bf5`. Current source also supplies Android ARM64 helpers. Binding and Windows compiler-runtime notices are in `game/src/native/NATIVE_NAVIGATION_NOTICES.txt`; Android NDK toolchain and sysroot notices, including the static C++ runtime, are preserved in `game/src/native/NATIVE_ANDROID_NOTICES.txt`. Source and build instructions are in `game/src/native/source`. Other platforms retain script implementations.

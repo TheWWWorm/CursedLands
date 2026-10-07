@@ -1,14 +1,15 @@
 class_name ShaderWarmup
 extends Node3D
-## Remake, Compatibility renderer only (web, Android, --rendering-method
-## gl_compatibility): compiles the GL programs of materials that first appear
-## during play while the zone is still loading. Godot's GLES3 backend has no
+## Prepare materials that first appear during play while the zone is still
+## loading, including spell variants absent from the initial camera view.
+## Godot's GLES3 backend has no
 ## ubershader: a program is built for each shader on its first draw in each
 ## state (instancing, the sun's separate shadow pass, a point light in the
 ## base pass, a shadowed point light's additive pass, the shadow and depth
 ## passes ...), and a build on desktop GL, WebGL (ANGLE) or a phone took up to
 ## seconds, so the first fireball, lightning, rain, move order and so on
-## stalled the game. Forward+ / Mobile keep their own pipeline cache.
+## stalled the game. Forward+ / Mobile also need a first draw to populate
+## their pipeline cache for those previously unseen materials.
 ##
 ## `run` (Session, at the end of a zone load) puts zero-area quads with each
 ## material under the camera, just past the near plane, at four spots: no
@@ -25,12 +26,12 @@ extends Node3D
 ##     ParticleFx), lightning, light halo, rain / snow, the Field of vision
 ##     overlay, arrows, the selection triangle.
 ## A material set (shader, light state, environment) already warmed in this
-## run is skipped. Bounded by `budget_ms` per load (stops between batches;
-## the zone's first picture, built on the first frame of play before, is not
-## counted).
+## run is skipped. GLES is bounded by `budget_ms` per load (stops between
+## batches; the zone's first picture is not counted). Forward+ / Mobile
+## finish the complete set, including spell pipelines needed in combat.
 
 static var enabled := true
-## Wall time per zone load; the rest compiles on first use as before. 0: no limit.
+## GLES wall time per zone load; the rest compiles on first use. 0: no limit.
 static var budget_ms := 2000
 static var last_ms := 0
 static var last_count := 0
@@ -38,7 +39,7 @@ const BATCH := 2
 const DIST := 0.5         # metres in front of the camera (near plane 0.05..0.1)
 const LIGHT_RANGE := 0.03
 const GROUP_GAP := 0.08
-enum {MESH, PARTICLE, INSTANCED}
+enum {MESH, PARTICLE, INSTANCED, GRASS}
 
 static var _warmed := {}   # key -> true
 static var _keep: Array[Material] = []   # _shader_holder copies
@@ -47,7 +48,8 @@ static var _mms := {}   # kind -> MultiMesh
 
 
 static func active() -> bool:
-	return enabled and Portability.compatibility() and DisplayServer.get_name() != "headless"
+	return enabled and DisplayServer.get_name() != "headless" \
+		and not OS.get_cmdline_user_args().has("--ei-no-shader-warmup")
 
 
 ## Session: after the zone is built, the parties deployed and the camera set.
@@ -59,6 +61,11 @@ static func run(game: Game) -> void:
 	var cam := game.rig.camera
 	if cam == null or not cam.is_inside_tree():
 		return
+	if game.world.terrain:
+		var terrain:=game.world.terrain
+		if not is_instance_valid(terrain.color_cache) and TerrainColorCache.available():
+			terrain.color_cache=TerrainColorCache.create(terrain)
+		if is_instance_valid(terrain.color_cache):terrain.color_cache.prepare(cam)
 	var t0 := Time.get_ticks_msec()
 	var env := _env_key(game)
 	var items: Array = []   # [key, material, kind]
@@ -73,6 +80,10 @@ static func run(game: Game) -> void:
 			_add(items, seen, pm, env, PARTICLE)
 	for m: Material in _zone_materials(game.world) + _effect_materials(game):
 		_add(items, seen, m, env, MESH)
+	if game.world.terrain and game.world.terrain.details and game.world.terrain.details._material:
+		var grass := game.world.terrain.details
+		_multimesh(GRASS).mesh = grass._mesh
+		_add(items, seen, grass._material, env, GRASS)
 	# VisionFog: its overlay is a MultiMesh of plain transforms.
 	_add(items, seen, VisionFog.material(), env, INSTANCED)
 	if items.is_empty():
@@ -89,6 +100,7 @@ static func run(game: Game) -> void:
 		# were built on the first frame of play before; not counted.
 		_push(cam, w)
 		RenderingServer.force_draw(true, 0.0)
+		RenderingServer.force_sync()
 	var first_ms := Time.get_ticks_msec() - t0
 	t0 = Time.get_ticks_msec()
 	var i := 0
@@ -105,10 +117,16 @@ static func run(game: Game) -> void:
 		if forced:
 			_push(cam, w)
 			RenderingServer.force_draw(true, 0.0)
+			# With a rendering worker, queue submission alone does not measure
+			# compilation time or honor the loading budget. Wait only here.
+			RenderingServer.force_sync()
 			for c in shown:
 				c.queue_free()   # freed at the frame's end; hidden for the next batch
 				(c as Node3D).visible = false
-			if budget_ms > 0 and Time.get_ticks_msec() - t0 >= budget_ms:
+			# RD's first unseen effect can otherwise synchronously compile a
+			# missing pipeline in combat. Finish this small shader set at load;
+			# Compatibility retains its bounded per-zone program budget.
+			if Portability.compatibility() and budget_ms > 0 and Time.get_ticks_msec() - t0 >= budget_ms:
 				break
 	last_ms = Time.get_ticks_msec() - t0
 	GameData.trace("shader warm-up: %d of %d materials, %d ms (zone's first picture %d ms)%s" % [
@@ -300,7 +318,7 @@ func _show(m: Material, kind: int) -> Array[Node]:
 		else:
 			var mmi := MultiMeshInstance3D.new()
 			mmi.multimesh = _multimesh(kind)
-			mmi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+			mmi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_DOUBLE_SIDED if kind == GRASS else GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 			gi = mmi
 		gi.material_override = m
 		gi.custom_aabb = AABB(Vector3(-0.01, -0.01, -0.01), Vector3(0.02, 0.02, 0.02))
@@ -316,12 +334,12 @@ static func _multimesh(kind: int) -> MultiMesh:
 	if not _mms.has(kind):
 		var mm := MultiMesh.new()
 		mm.transform_format = MultiMesh.TRANSFORM_3D
-		mm.use_colors = kind == PARTICLE
-		mm.use_custom_data = kind == PARTICLE
+		mm.use_colors = kind in [PARTICLE, GRASS]
+		mm.use_custom_data = kind in [PARTICLE, GRASS]
 		mm.mesh = _zero_quad()
 		mm.instance_count = 1
 		mm.set_instance_transform(0, Transform3D(Basis(Vector3.ZERO, Vector3.ZERO, Vector3.ZERO), Vector3.ZERO))
-		if kind == PARTICLE:
+		if kind in [PARTICLE, GRASS]:
 			mm.set_instance_color(0, Color(0, 0, 0, 0))
 			mm.set_instance_custom_data(0, Color(0, 0, 0, 0))
 		_mms[kind] = mm

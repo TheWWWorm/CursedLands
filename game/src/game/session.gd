@@ -38,6 +38,7 @@ var state: CampaignState
 var my_index := 0
 var is_host := true
 var online := false
+var local_host: LocalHost
 ## peer id -> {index, name}
 var players := {1: {"index": 0, "name": "Player", "colour": 1}}
 var max_players := MAX_PLAYERS   # host: this game's Max Players (host itself included)
@@ -150,10 +151,18 @@ func _ready() -> void:
 	swap.name = "PlayerSwap"
 	swap.session = self
 	add_child(swap)
+	local_host = LocalHost.new()
+	local_host.name = "LocalHost"
+	local_host.session = self
+	add_child(local_host)
 	multiplayer.connected_to_server.connect(func():
 		_relax_timeout(1)   # the client's own zone builds stall as long as the host's
-		coop.client_hello()
+		if not local_host.frontend:
+			coop.client_hello()
 		_send_mp_char()
+		if local_host.frontend:
+			local_host.hello()
+			return
 		_rpc_hello.rpc_id(1, GameData.player_name, GameData.hero_class, NetStatus.PROTOCOL, NetStatus.world_hash(), join_password))
 	multiplayer.server_disconnected.connect(func():
 		_cancel_movie()
@@ -214,6 +223,22 @@ func _cancel_movie() -> void:
 
 # ------------------------------------------------------------------ setup
 
+## Presentation ownership is independent of simulation authority on desktop.
+func can_manage_game() -> bool:
+	return is_host or (local_host != null and local_host.frontend)
+
+
+func host_player_id() -> int:
+	var pid := _pid_of(0)
+	return pid if pid > 0 else 1
+
+
+func start_host(port := PORT, limit := MAX_PLAYERS) -> Error:
+	if LocalHost.available():
+		return await local_host.start(port, limit)
+	return host(port, limit)
+
+
 func host(port := PORT, limit := MAX_PLAYERS) -> Error:
 	if OS.has_feature("web"):
 		return ERR_UNAVAILABLE
@@ -228,7 +253,7 @@ func host(port := PORT, limit := MAX_PLAYERS) -> Error:
 	# beyond Max Players hears "server full" (NetStatus.refusal) instead of
 	# a silent timeout.
 	max_players = clampi(limit, 1, MAX_PLAYERS)
-	var err: Error = peer.create_server(port) if socket_mode else peer.create_server(port, max_players)
+	var err: Error = peer.create_server(port) if socket_mode else peer.create_server(port, max_players + (1 if local_host.worker else 0))
 	if err != OK:
 		return err
 	multiplayer.multiplayer_peer = peer if socket_mode else NetSim.wrap(peer)   # (tools: --netsim)
@@ -250,7 +275,7 @@ func host(port := PORT, limit := MAX_PLAYERS) -> Error:
 ## server record: name, base, quest, players, max, password).
 func lan_info() -> Dictionary:
 	var mode := "lmp" if not lmp.is_empty() or String(lobby_mode.get("mode", "")) == "lmp" else "coop"
-	return {"name": String(players.get(1, {}).get("name", GameData.player_name)), "mode": mode,
+	return {"name": String(players.get(host_player_id(), {}).get("name", GameData.player_name)), "mode": mode,
 		"base": String(lmp.get("base", lobby_mode.get("base", ""))) if mode == "lmp" else "",
 		"quest": String(lmp.get("quest", "")), "players": players.size(), "max": max_players,
 		"pw": password != "", "ws": multiplayer.multiplayer_peer is WebSocketMultiplayerPeer,
@@ -261,6 +286,9 @@ func lan_info() -> Dictionary:
 ## told to every joiner already connected.
 func set_lobby_mode(mode: Dictionary) -> void:
 	lobby_mode = mode
+	if local_host.frontend:
+		local_host.request("lobby", mode)
+		return
 	if online and is_host and world == null:
 		_rpc_event.rpc({"t": "lobby", "mode": mode})
 
@@ -326,6 +354,9 @@ func _clock_options_changed() -> void:
 
 
 func set_coop_clock(sector: int) -> void:
+	if local_host.frontend:
+		local_host.request("clock", {"sector": sector})
+		return
 	if not is_host or not coop_clock_enabled() or loading_game or map_open or world == null:
 		return
 	if sector == 0:
@@ -373,6 +404,9 @@ func _rpc_clock(enabled: bool, paused: bool, rate: int) -> void:
 ## player menu plays it before calling this with `intro` false; otherwise
 ## (co-op, **approx.**) every peer sees it once the first zone is built.
 func new_campaign(intro := true) -> void:
+	if local_host.frontend:
+		await local_host.request("campaign", {"intro": intro})
+		return
 	_clear_lmp_worlds()
 	if not lmp.is_empty():
 		lmp = {}
@@ -464,7 +498,7 @@ func _pid_of(idx: int) -> int:
 func _ensure_lmp_hero(idx: int, _player_name: String) -> bool:
 	if state.heroes.has(idx):
 		return true
-	var pid := _pid_of(idx) if idx > 0 else 1
+	var pid := _pid_of(idx)
 	var sent := _lmp_character(pid)
 	var rec := MpCharacter.accept(sent) if not sent.is_empty() else {}
 	if not rec.is_empty():
@@ -529,7 +563,7 @@ func _mp_send(idx: int) -> void:
 	var e := coop.purse_entry(idx)
 	var rec := MpCharacter.record(h, int(e.purse.money) if not e.is_empty() else state.money,
 		e.purse.get("items", []) if not e.is_empty() else state.items)
-	if idx == 0:
+	if idx == 0 and not local_host.worker:
 		_mp_save(rec)
 		return
 	var pid := _pid_of(idx)
@@ -823,6 +857,9 @@ func _enter_zone(id: String, entrance: int, autosave := true) -> void:
 ## Save loads publish only after the saved party positions / body state
 ## have been restored, so reliable load-end never uncovers entrance poses.
 func _publish_zone() -> void:
+	if world and world.authority:
+		world.nav.prepare_static_navigation(world.unit_rows())
+	local_host.publishing_zone()
 	if online and is_host:
 		if lmp_travel:
 			lmp_travel.publish()
@@ -863,6 +900,8 @@ func _build_world(z: Dictionary, authority: bool, attach := true) -> void:
 	w.zone = z
 	w.authority = authority
 	w.session = self
+	w.presentation = not local_host.worker
+	w.retain_logic_debt = local_host.worker
 	_building = true   # NetStatus.keep_alive polls the network meanwhile
 	w.load_map(z.mpr, z.get("mob", z.mpr), authority)
 	if String(z.get("id", "")) == ENDING_ZONE:   # the end credits' movies, ahead of time
@@ -878,6 +917,7 @@ func _build_world(z: Dictionary, authority: bool, attach := true) -> void:
 		state.restore_zone(zone_id, w)
 		w.item_worn.connect(_on_item_worn)
 	LoadingScreen.step(6)
+	EIAcks.prepare()
 	world = w
 	if attach:
 		game.attach_world(w)
@@ -886,6 +926,8 @@ func _build_world(z: Dictionary, authority: bool, attach := true) -> void:
 		w.process_mode = Node.PROCESS_MODE_PAUSABLE
 		game.add_child(w)
 	LoadingScreen.step(7)
+	if w.presentation and w.terrain and w.terrain.details:
+		w.terrain.details.prepare_grass()
 	w.prepare_animation_bindings()
 	_building = false
 
@@ -1438,6 +1480,8 @@ func _water_event() -> Dictionary:
 ## (the zone script that made them does not run again). Its PlayMusic does
 ## not: the original's zone load only sets the zone music mode.
 func _replay_local() -> void:
+	if not world.presentation:
+		return
 	for ev: Dictionary in _replay_events(true):
 		ParticleFx.of(world).on_event(ev)
 
@@ -3323,7 +3367,7 @@ func _ic_spells() -> void:
 
 
 func _physics_process(dt: float) -> void:
-	if get_tree().paused or loading_game or movie_active():
+	if get_tree().paused or loading_game or movie_active() or local_host.awaiting_view:
 		return
 	if is_host:
 		_mp_tick(dt)
@@ -3377,6 +3421,11 @@ func _tick_world_session(dt: float) -> void:
 		if full or prev == null or prev != sn:
 			snaps.append(sn)
 			_last_snap[u.uid] = sn
+	_send_snapshot_records(snaps, world.time)
+	snap_usec += Time.get_ticks_usec() - t0
+
+
+func _send_snapshot_records(snaps: Array, time: float, recipient := 0) -> void:
 	# Stay under the ENet MTU: ~130 bytes per unit record, more for units
 	# with magic effects (the chunk closes early then).
 	var chunk := []
@@ -3384,18 +3433,19 @@ func _tick_world_session(dt: float) -> void:
 	for sn: Array in snaps:
 		var n := var_to_bytes(sn).size()   # includes optional native visibility history
 		if not chunk.is_empty() and (chunk.size() >= SNAP_CHUNK or size + n > SNAP_BYTES):
-			_send_snap(chunk, world.time)
+			_send_snap(chunk, time, recipient)
 			chunk = []
 			size = 0
 		chunk.append(sn)
 		size += n
 	if not chunk.is_empty():
-		_send_snap(chunk, world.time)
-	snap_usec += Time.get_ticks_usec() - t0
+		_send_snap(chunk, time, recipient)
 
 
-func _send_snap(snaps: Array, time: float) -> void:
-	if lmp_travel:
+func _send_snap(snaps: Array, time: float, recipient := 0) -> void:
+	if recipient > 0:
+		_rpc_snap.rpc_id(recipient, snaps, time)
+	elif lmp_travel:
 		lmp_travel.send_snap(snaps, time)
 	else:
 		_rpc_snap.rpc(snaps, time)
@@ -3590,13 +3640,13 @@ func broadcast(event: Dictionary) -> void:
 		event = event.duplicate()
 		event.serial = _movie_serial
 		_movie_ev = event
-		_movie_wait = {1: true}
+		_movie_wait = {} if local_host.worker else {1: true}
 		if online:
 			for pid in players:
 				if int(pid) != 1 and CoopProgress.peer_alive(multiplayer, int(pid)):
 					_movie_wait[int(pid)] = true
 		_movie_deadline = Time.get_ticks_msec() + MOVIE_TIMEOUT_MS
-		if game == null: _movie_ack.call_deferred(1, _movie_serial)
+		if game == null and not local_host.worker: _movie_ack.call_deferred(1, _movie_serial)
 	if is_host and world and String(event.get("t", "")) == "lever" and event.has("state") and not event.has("motion"):
 		var data: Dictionary = world.lever_sys.motion_payload(int(event.nid))
 		if not data.is_empty():
@@ -3626,6 +3676,12 @@ func _rpc_event(event: Dictionary) -> void:
 
 func _on_event(event: Dictionary) -> void:
 	var t := String(event.get("t", ""))
+	if t == "local_host_view":
+		local_host.restore_view(event.get("camera", {}))
+		return
+	if t == "local_save_failed" and local_host.frontend:
+		message.emit(RemakeText.t("Could not save the game."))
+		return
 	if t == "movie" and event.has("serial"):
 		_movie_ev = event
 	elif t == "movie_release" and int(event.get("serial", -1)) == int(_movie_ev.get("serial", -2)):
@@ -3742,18 +3798,18 @@ func _on_event(event: Dictionary) -> void:
 						u.set_meta("loot", [])
 					elif u.has_meta("loot"):
 						u.remove_meta("loot")
-	if t == "spell_light" and world:
+	if t == "spell_light" and world and world.presentation:
 		SpellFx.teleport_result(world, event)
-	if t == "spellfx" and world:
+	if t == "spellfx" and world and world.presentation:
 		SpellFx.spawn_event(world, event)
 		if not event.get("replay", false):
 			GameSound.spell(String(event.code), EISpace.pos(event.x, event.y, world.ground_at(event.x, event.y)), "end")
 		ParticleFx.of(world).spell_cast(event)
-	if world and t in ParticleFx.EVENTS:   # visual only, on every peer
+	if world and world.presentation and t in ParticleFx.EVENTS:   # visual only, on every peer
 		ParticleFx.of(world).on_event(event)
-	if world and t == "blood":   # the hit's blood mark (visual only, every peer)
+	if world and world.presentation and t == "blood":   # the hit's blood mark (visual only, every peer)
 		GroundMarks.of(world).hit(event)
-	if world and t == "blood_pool":
+	if world and world.presentation and t == "blood_pool":
 		if String(event.get("zone", "")) != String(world.zone.get("id", "")):
 			return
 		if lmp.is_empty() and event.get("pool_epoch") != (_load_serial if is_host else _pool_epoch):
@@ -3770,7 +3826,7 @@ func _on_event(event: Dictionary) -> void:
 			var xp_unit: GameUnit = world.units.get(int(event.get("uid", -1)))
 			if xp_unit and is_instance_valid(xp_unit):
 				xp_unit.set_meta("xp_stats", event.xp_stats.duplicate(true))
-		if game:
+		if game and world and world.presentation:
 			FlyingHP.of(game).add(event)
 			if int(event.get("f", 0)) & 4:
 				game.electrical_hit(event)
@@ -3789,7 +3845,7 @@ func _on_event(event: Dictionary) -> void:
 				lobby_mode = event.get("mode", {}) if event.get("mode") is Dictionary else {}
 				players_changed.emit()
 		_:
-			if game:
+			if game and not (local_host.worker and t in ["movie", "movie_release"]):
 				game.on_event(event)
 
 
@@ -4009,7 +4065,7 @@ func _drop_stale_peer(pid: int, player_name: String) -> void:
 		return
 	var addr := enet.get_peer(pid).get_remote_address()
 	for old in players.keys():
-		if old == pid or old == 1 or String(players[old].name) != player_name:
+		if old == pid or int(players[old].index) == 0 or String(players[old].name) != player_name:
 			continue
 		var op := enet.get_peer(old)
 		if op and op.get_remote_address() == addr:
@@ -4109,6 +4165,10 @@ func _on_peer_disconnected(pid: int) -> void:
 	if _building:   # noticed by NetStatus.keep_alive inside a zone build
 		_on_peer_disconnected.call_deferred(pid)
 		return
+	if local_host.authorized(pid):
+		net.bye()
+		get_tree().quit()
+		return
 	if not is_host or not players.has(pid):
 		return
 	var idx: int = players[pid].index
@@ -4157,20 +4217,23 @@ func _leader() -> GameUnit:
 ## frame captured when the game switched to its menus, the save's shot
 ## without it (quick / auto saves) the frame
 ## screen shortly after.
-func save_game(slot: String, save_name := "", frame: Image = null) -> void:
+func save_game(slot: String, save_name := "", frame: Image = null) -> Error:
+	if local_host.frontend:
+		local_host.save(slot, save_name, frame)
+		return OK   # accepted; the worker reports completion or failure
 	if not is_host:
 		message.emit(RemakeText.t("Only the host can save."))
-		return
+		return ERR_UNAUTHORIZED
 	if not lmp.is_empty():
-		return   # the multiplayer game has no saves (its network heroes keep themselves)
+		return ERR_UNAVAILABLE   # LMP keeps its network heroes separately
 	if loading_game:
-		return
+		return ERR_UNAVAILABLE
 	if coop.purse_active():   # mid-command of a joiner (its purse in state): right after
 		save_game.call_deferred(slot, save_name, frame)
-		return
+		return ERR_BUSY
 	if movie_active():
 		_movie_saves[slot] = [save_name, frame]
-		return
+		return ERR_BUSY
 	swap.cancel_all()   # return offered items before the authoritative save snapshot
 	_capture_save_state()
 	GameData.trace("save %s in %s" % [slot, zone_id])
@@ -4181,20 +4244,24 @@ func save_game(slot: String, save_name := "", frame: Image = null) -> void:
 		SaveInfo.write(slot, state.get_var(0, "gtime"), _allod_id(), zone_id, save_name)
 		if frame:
 			SaveInfo.write_shot_image(slot, frame)
-		else:
+		elif not local_host.worker:
 			SaveInfo.write_shot(slot, get_viewport())
+		local_host.saved(slot, frame != null)
 	# No log line: the original checks the free space first («no_disc_space» box
 	# load_panel) and shows nothing after a save; while it saves it shows
 	# «string notify_saving» (NotifyLine; after the shot, so the
 	# picture stays clean). Not for the zone autosave.
 	if err != OK:
 		push_error("save %s failed (%d)" % [slot, err])
+		if local_host.worker and local_host.owner_peer > 1:
+			_rpc_event.rpc_id(local_host.owner_peer, {"t": "local_save_failed"})
 	elif slot != "autosave" and game and game.hud:
 		game.hud.notify("string notify_saving")
 	if err == OK and online:
 		for pid in players:
 			if int(pid) != 1 and CoopProgress.peer_alive(multiplayer, int(pid)):
 				_rpc_event.rpc_id(int(pid), {"t": "saved", "slot": slot})
+	return err
 
 
 ## Snapshot the running world before measuring or writing it. Otherwise the
@@ -4208,8 +4275,8 @@ func _capture_save_state() -> void:
 	state.current_zone = zone_id
 	state.store_party_positions(world)
 	state.store_follow(world, "follow_live")
-	state.camera = game.rig.pose() if game and game.rig else {}   # scenario.sav camera record
-	if game and game.hud and game.hud.minimap and not state.camera.is_empty():
+	state.camera = local_host.camera.duplicate(true) if local_host.worker else (game.rig.pose() if game and game.rig else {})   # scenario.sav camera record
+	if not local_host.worker and game and game.hud and game.hud.minimap and not state.camera.is_empty():
 		state.camera["minimap_zoom"] = game.hud.minimap.zoom   #  reads it back
 	coop.before_save()
 
@@ -4218,6 +4285,8 @@ func _capture_save_state() -> void:
 ## caller. This engine writes one Variant file; include store_var's 4-byte
 ## length prefix and capture the same live state as save_game first.
 func save_bytes_needed() -> int:
+	if local_host.frontend:
+		return local_host.save_bytes
 	if not is_host or not lmp.is_empty() or loading_game or coop.purse_active() or state == null or world == null:
 		return 0
 	_capture_save_state()
@@ -4262,6 +4331,9 @@ func load_game(slot: String) -> bool:
 ## The menus' load: load_game with the loading screen put on screen first on
 ## web / mobile (LoadingScreen.hold), before anything changes.
 func load_game_shown(slot: String) -> bool:
+	if local_host.frontend:
+		var answer := await local_host.request("load", {"slot": slot})
+		return bool(answer.get("ok", false))
 	if not _may_load():
 		return false
 	var s := _read_save(slot)
@@ -4427,6 +4499,8 @@ func _load_state(slot: String, s: CampaignState) -> bool:
 		if idx > 0:
 			s.ensure_hero(idx, _hero_proto(idx), String(players[pid].name))
 	state = s
+	if local_host.worker:
+		local_host.camera = state.camera.duplicate(true)
 	zone_id = ""
 	_restoring = true
 	_enter_zone(s.current_zone, 1, false)
@@ -4455,6 +4529,8 @@ func _load_state(slot: String, s: CampaignState) -> bool:
 	_publish_zone()
 	state.replay_restored(world)
 	sync_state()
+	if local_host.worker and local_host.owner_peer > 1:
+		_rpc_event.rpc_id(local_host.owner_peer, {"t": "local_host_view", "camera": state.camera})
 	GameData.trace("load %s done in %s" % [slot, zone_id])
 	_finish_host_load()
 	return true

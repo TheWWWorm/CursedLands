@@ -81,6 +81,13 @@ var _sample_p := Vector2(INF, INF)
 var _sample := {}
 var _scenery := {} # chunk -> local expanded mesh boxes and inverse transforms
 var _scenery_signature := []
+var _native_grass := ClassDB.class_exists("GrassChunkJob") and not OS.get_cmdline_user_args().has("--ei-script-grass")
+var _grass_field: RefCounted
+var _grass_jobs: Array[Dictionary] = []
+var _building_chunks := {}
+var _wanted_chunks := {}
+var _grass_generation := 0
+const MAX_GRASS_JOBS := 4
 
 
 static func create(t: EITerrain) -> TerrainDetails:
@@ -156,6 +163,28 @@ func _process(_dt: float) -> void:
 		_stream(focus)
 	if _material:
 		_material.set_shader_parameter("view_position", p)
+	if _native_grass:
+		prepare_grass()
+		_finish_grass_jobs()
+		while _grass_field and not _queue.is_empty() and _grass_jobs.size() < MAX_GRASS_JOBS:
+			var key: Vector2i = _queue.pop_front()
+			if _chunks.has(key) or _building_chunks.has(key):
+				continue
+			var job := _grass_job(key)
+			if job == null:
+				_native_grass = false
+				_queue.push_front(key)
+				break
+			if Portability.threads():
+				var task := WorkerThreadPool.add_task(Callable(job, "run"), false, "grass chunk")
+				_grass_jobs.append({"key":key,"generation":_grass_generation,"kernel":job,"task":task})
+				_building_chunks[key] = true
+			else:
+				job.run()
+				_install_chunk(key, job.read_result())
+				break
+		if _grass_field and _native_grass:
+			return
 	var start := Time.get_ticks_usec()
 	while not _queue.is_empty():
 		var key: Vector2i = _queue.pop_front()
@@ -166,6 +195,15 @@ func _process(_dt: float) -> void:
 
 
 func _clear_grass() -> void:
+	# Only immutable data is in flight. Joining also makes option changes,
+	# flooding, scenery replacement and world destruction explicit barriers.
+	_grass_generation += 1
+	for job: Dictionary in _grass_jobs:
+		WorkerThreadPool.wait_for_task_completion(job.task)
+	_grass_jobs.clear()
+	_building_chunks.clear()
+	_wanted_chunks.clear()
+	_grass_field = null
 	for n: MultiMeshInstance3D in _chunks.values():
 		if is_instance_valid(n):
 			n.queue_free()
@@ -188,7 +226,7 @@ func _update_scenery() -> void:
 	var root: Node3D = map.get_node_or_null("Objects") if map else null
 	var world := map.get_parent() as GameWorld if map else null
 	var signature := [root.get_instance_id() if root else 0,
-		root.get_child_count() if root else 0, world.nav.map_rev if world else 0]
+		root.get_child_count() if root else 0, world.nav.map_rev if world else 0, terrain.surface_rev]
 	if signature == _scenery_signature:
 		return
 	if not _scenery_signature.is_empty():
@@ -262,6 +300,9 @@ func _stream(focus: Vector2i) -> void:
 		return Vector2(a - focus).length_squared() < Vector2(b - focus).length_squared())
 	if wanted.size() > MAX_CHUNKS:
 		wanted.resize(MAX_CHUNKS)
+	_wanted_chunks.clear()
+	for k in wanted:
+		_wanted_chunks[k] = true
 	for k: Vector2i in _chunks.keys():
 		if not wanted.has(k):
 			(_chunks[k] as MultiMeshInstance3D).queue_free()
@@ -272,7 +313,7 @@ func _stream(focus: Vector2i) -> void:
 			(_chunks[k] as MultiMeshInstance3D).multimesh.mesh = _chunk_mesh(k)
 	_queue.clear()
 	for k in wanted:
-		if not _chunks.has(k):
+		if not _chunks.has(k) and not _building_chunks.has(k):
 			_queue.append(k)
 
 
@@ -365,7 +406,7 @@ func grass_allowed(p: Vector2, include_scenery := true) -> bool:
 	return green_colour(ground_colour(p.x, p.y)) and (not include_scenery or scenery_clear(p, h))
 
 
-func _build_chunk(key: Vector2i) -> void:
+func _ensure_grass_resources() -> void:
 	if _mesh == null:
 		_mesh = blade_mesh()
 		_far_mesh = blade_mesh(false)
@@ -373,7 +414,61 @@ func _build_chunk(key: Vector2i) -> void:
 		_material.shader = Gfx.make_shader(GRASS_SHADER, true, true)
 		_material.set_shader_parameter("breeze", float(Gfx.on("gfx_wind")))
 		_material.set_shader_parameter("view_position", Vector3(_focus.x * CHUNK, 0.0, -_focus.y * CHUNK))
-	var data := instances(key)
+
+
+## Called under the loading screen. Geometry jobs subsequently need no scene
+## access or texture loading. A changed map/water revision gets a new snapshot.
+func prepare_grass() -> void:
+	if not _grass or not is_instance_valid(terrain):
+		return
+	_update_scenery()
+	_ensure_grass_resources()
+	if not _native_grass or _grass_field:
+		return
+	var images := {}
+	for code: int in terrain.land_tile:
+		var atlas := (code >> 6) & 255
+		if not images.has(atlas):
+			images[atlas] = _images.get(atlas) if _images.has(atlas) else GameData.load_image("%s%03d" % [terrain.resource_prefix, atlas])
+	var kernel: RefCounted = ClassDB.instantiate("GrassFieldKernel")
+	if kernel.configure({"size":Vector2i(terrain.size_ei()),"grid_w":terrain.grid_w,
+			"texture_size":terrain.texture_size,"tile_size":terrain.tile_size,
+			"heights":terrain.heights,"surface":terrain.surface,"water":terrain.water,
+			"land_xy":terrain.land_xy,"land_tile":terrain.land_tile,"ground":terrain.ground}, images):
+		_grass_field = kernel
+	else:
+		_native_grass = false
+
+
+func _grass_job(key: Vector2i) -> RefCounted:
+	var job: RefCounted = ClassDB.instantiate("GrassChunkJob")
+	if not job.configure(_grass_field, key, hash("%s:%d:%d" % [terrain.map_name, key.x, key.y]),
+			terrain.map_name.hash() & 0x7fffffff, _scenery.get(key, [])):
+		return null
+	return job
+
+
+func _finish_grass_jobs(wait := false) -> void:
+	var start := Time.get_ticks_usec()
+	for i in range(_grass_jobs.size() - 1, -1, -1):
+		var record: Dictionary = _grass_jobs[i]
+		if not wait and not WorkerThreadPool.is_task_completed(record.task):
+			continue
+		WorkerThreadPool.wait_for_task_completion(record.task)
+		_grass_jobs.remove_at(i)
+		_building_chunks.erase(record.key)
+		if _grass and int(record.generation) == _grass_generation and _wanted_chunks.has(record.key) and not _chunks.has(record.key):
+			_install_chunk(record.key, record.kernel.read_result())
+		if not wait and Time.get_ticks_usec() - start >= BUILD_US:
+			break
+
+
+func _build_chunk(key: Vector2i) -> void:
+	_ensure_grass_resources()
+	_install_chunk(key, instances_script(key))
+
+
+func _install_chunk(key: Vector2i, data: Dictionary) -> void:
 	var transforms: Array[Transform3D] = data.transforms
 	var colours: Array[Color] = data.colours
 	var custom: Array[Color] = data.custom
@@ -383,10 +478,13 @@ func _build_chunk(key: Vector2i) -> void:
 	multi.use_custom_data = true
 	multi.mesh = _chunk_mesh(key)
 	multi.instance_count = transforms.size()
-	for i in transforms.size():
-		multi.set_instance_transform(i, transforms[i])
-		multi.set_instance_color(i, colours[i])
-		multi.set_instance_custom_data(i, custom[i])
+	if data.has("buffer"):
+		multi.buffer = data.buffer
+	else:
+		for i in transforms.size():
+			multi.set_instance_transform(i, transforms[i])
+			multi.set_instance_color(i, colours[i])
+			multi.set_instance_custom_data(i, custom[i])
 	var node := MultiMeshInstance3D.new()
 	node.name = "Grass_%d_%d" % [key.x, key.y]
 	node.multimesh = multi
@@ -418,6 +516,18 @@ func growth(p: Vector2) -> float:
 
 
 func instances(key: Vector2i) -> Dictionary:
+	if _native_grass:
+		prepare_grass()
+		if _grass_field:
+			var job := _grass_job(key)
+			if job:
+				job.run()
+				return job.read_result()
+	return instances_script(key)
+
+
+## Retained independent oracle and fallback for unsupported platforms.
+func instances_script(key: Vector2i) -> Dictionary:
 	_update_scenery()
 	var transforms: Array[Transform3D] = []
 	var colours: Array[Color] = []

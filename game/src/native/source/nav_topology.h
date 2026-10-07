@@ -37,12 +37,12 @@ private:
         TopologyReach result; result.rect = rect;
         const int rw = rect.size.x, rh = rect.size.y;
         const bool in_map = start.x >= 0 && start.y >= 0 && start.x < width && start.y < height;
-        if (topology_undirected && rect.has_point(start) && in_map && land[start.y * width + start.x] == 0) {
+        if (topology_undirected && rect.has_point(start) && in_map && land.ptr()[start.y * width + start.x] == 0) {
             const auto key = std::make_tuple(rect.position.x, rect.position.y, rw, rh);
             auto it = topology_labels.find(key);
             if (it == topology_labels.end()) it = topology_labels.emplace(key, labels(rect)).first;
             result.labels = it->second;
-            result.component = result.labels[(start.y - rect.position.y) * rw + start.x - rect.position.x];
+            result.component = result.labels.ptr()[(start.y - rect.position.y) * rw + start.x - rect.position.x];
             return result;
         }
         // A blocked start may step out; a reversed directed search may enter
@@ -105,13 +105,15 @@ public:
         Vector2i chosen = b * 8 + Vector2i(3, 3);
         int best = 0; bool crossing = false;
         const Rect2i rect(b * 8, Vector2i(9, 9));
+        const int32_t *cell_costs = costs.ptr();
+        const uint8_t *cell_land = land.ptr();
         for (int radius = 1; radius < 5; ++radius) {
             for (int y = 4 - radius; y < 4 + radius; ++y) {
                 for (int x = 4 - radius; x < 4 + radius; ++x) {
                     const Vector2i p = b * 8 + Vector2i(x, y);
                     const int gi = p.y * width + p.x;
-                    const auto found = topology_cost_values.find(costs[gi]);
-                    const int value = land[gi] ? 0 : (found == topology_cost_values.end() ? -1 : found->second);
+                    const auto found = topology_cost_values.find(cell_costs[gi]);
+                    const int value = cell_land[gi] ? 0 : (found == topology_cost_values.end() ? -1 : found->second);
                     if (!value || (crossing && value <= best)) continue;
                     const auto reachable = topology_reach(rect, p);
                     bool left = false, right = false, top = false, bottom = false;
@@ -208,11 +210,43 @@ public:
         for (int k = 0; k < 8; ++k) result[k] = block_edges[i][k];
         return result;
     }
+    // Loading only: one worker exclusively owns this graph until its caller
+    // joins. Other movement classes own separate graphs and may prepare in
+    // parallel. No actor occupancy, callbacks or scene objects are accessed.
+    // Warm the same immutable components and nearby weighted edges that the
+    // first movement/attack queries otherwise build on the simulation thread.
+    int prepare_topology(const TypedArray<Vector2i> &points) {
+        if (!topology_ready) return 0;
+        for (int64_t i = 0; i < points.size(); ++i) {
+            const Vector2i point = points[i];
+            const Array seeds = topology_seeds(point, false);
+            for (int64_t j = 0; j < seeds.size(); ++j) {
+                const Array entry = seeds[j];
+                const Vector2i block = entry[0];
+                topology_component(block);
+                topology_raw(block);
+            }
+        }
+        return int(points.size());
+    }
+    int prepare_routes(const TypedArray<Vector2i> &points) {
+        const int prepared = prepare_topology(points);
+        if (!topology_ready) return prepared;
+        const int bw = width / 8;
+        // Components containing restored actors are already labelled. Prepare
+        // their exact weighted edges too: long first routes otherwise perform
+        // hundreds of 25x25 distance searches on the simulation thread.
+        for (int i = 0; i < int(topology_components.size()); ++i) {
+            if (topology_components[i]) topology_raw(Vector2i(i % bw, i / bw));
+        }
+        return prepared;
+    }
     Dictionary topology_stats() const {
         Dictionary out;
         out["representatives"] = std::count_if(topology_representatives.begin(), topology_representatives.end(), [](Vector2i p) { return p.x >= 0; });
         out["components"] = std::count_if(topology_components.begin(), topology_components.end(), [](int c) { return c != 0; });
         out["labels"] = int64_t(topology_labels.size());
         out["seeds"] = int64_t(topology_seed_cache[0].size() + topology_seed_cache[1].size());
+        out["weighted_blocks"] = std::count(block_ready.begin(), block_ready.end(), uint8_t(1));
         return out;
     }

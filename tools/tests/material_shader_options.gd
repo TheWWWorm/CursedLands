@@ -1,0 +1,81 @@
+extends Node
+## Compile both option values and fog forms, then switch existing materials.
+var checks := 0
+var failures := 0
+var draw: MeshInstance3D
+
+func render_shader(shader: Shader) -> void:
+	if draw == null: return
+	var material := ShaderMaterial.new()
+	material.shader = shader
+	draw.material_override = material
+	# Shader parsing alone does not exercise a GLES driver's generated program.
+	await get_tree().process_frame
+	await get_tree().process_frame
+
+func check(value: bool, label: String) -> void:
+	checks += 1
+	if not value:
+		failures += 1
+		printerr("FAIL ", label)
+
+func _ready() -> void:
+	if DisplayServer.get_name() != "headless":
+		var camera := Camera3D.new()
+		camera.position = Vector3(0, 0, 4)
+		add_child(camera); camera.make_current()
+		var light := DirectionalLight3D.new()
+		add_child(light)
+		draw = MeshInstance3D.new()
+		draw.mesh = QuadMesh.new()
+		add_child(draw)
+	var sources := [
+		[EITerrain.TERRAIN_SHADER, true], [EITerrain.WATER_SHADER, true],
+		[EITerrain.WATER_FX_SHADER, true], [EIFigure.FOLIAGE_SHADER, false],
+		[EIFigure.OBJECT_SHADER, false], [EIUnitModel.UNIT_SHADER, false],
+		[TerrainDetails.GRASS_SHADER, true],
+		[EITerrain.TERRAIN_SHADER.replace("shader_type spatial;", "shader_type spatial;\n#define EI_BAKED_TERRAIN"), true]]
+	var shaders: Array[Shader] = []
+	var materials: Array[ShaderMaterial] = []
+	GameData.options["gfx_materials"] = 0
+	Gfx.apply_surface_options()
+	for row: Array in sources:
+		var shader := Gfx.make_shader(row[0], true, row[1])
+		shaders.append(shader)
+		var material := ShaderMaterial.new()
+		material.shader = shader
+		material.set_shader_parameter("ei_material_diffuse", Color(.25, .5, .75, 1))
+		materials.append(material)
+		check(not shader.code.contains("ei_surface_fx.x"), "initial specialization")
+	for detail in [1, 0, 1, 0]:
+		var before := shaders.map(func(s): return s.code)
+		GameData.options["gfx_materials"] = detail
+		Gfx.apply_surface_options()
+		for i in shaders.size():
+			check(shaders[i].code != before[i] and not shaders[i].code.contains("ei_surface_fx.x"), "existing shader recompiles")
+			check(materials[i].shader == shaders[i], "material keeps shader identity")
+			check(materials[i].get_shader_parameter("ei_material_diffuse") == Color(.25, .5, .75, 1), "material keeps parameters")
+			check(not shaders[i].get_shader_uniform_list().is_empty(), "switched real shader compiles")
+			await render_shader(shaders[i])
+	# Compose directly so both fog forms compile even on renderers where the
+	# options UI intentionally disallows volumetric fog.
+	for detail in [0, 1]:
+		GameData.options["gfx_materials"] = detail
+		for fog in [false, true]:
+			Gfx._vol_fog = fog
+			for row: Array in sources:
+				var code: String = row[0]
+				if Portability.compatibility(): code = code.replace("instance uniform", "uniform")
+				var shader := Shader.new()
+				shader.code = Gfx.compose(code, true, row[1])
+				check(not shader.get_shader_uniform_list().is_empty(), "detail/fog variant compiles")
+				check(shader.code.contains("vec4 ei_fogv") == fog, "requested fog path present")
+				await render_shader(shader)
+	Gfx._specialize_materials = false
+	Gfx.apply_surface_options()
+	for shader in shaders:
+		check(shader.code.contains("ei_surface_fx.x"), "dynamic diagnostic fallback restored")
+		check(not shader.get_shader_uniform_list().is_empty(), "dynamic fallback compiles")
+		await render_shader(shader)
+	print("MATERIAL_SHADER_OPTIONS checks=", checks, " failures=", failures)
+	get_tree().quit(1 if failures else 0)

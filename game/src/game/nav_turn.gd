@@ -11,6 +11,8 @@ const LIMIT := 0x7fffffff
 const DX := [0, 0, -1, -1, -1, 0, 1, 1, 1]
 const DY := [0, -1, -1, 0, 1, 1, 1, 0, -1]
 static var _templates: Array[Array] = []
+static var _kernel: RefCounted
+static var _kernel_checked := false
 
 class State:
 	var g := PackedInt32Array()
@@ -39,6 +41,40 @@ static func refine(nav: NavGrid, layer: NavGrid.Layer, cells: PackedInt32Array,
 		facing: float, end: Vector2, flat: bool) -> Dictionary:
 	if cells.size() < 3:
 		return {"cells": cells, "cost": 0}
+	var kernel := native_kernel()
+	if kernel:
+		var result: Dictionary = kernel.refine(native_context(nav,layer,flat), cells, heading(facing),
+			end_cost(end), nav._stamp_window)
+		if not result.is_empty(): return result
+	return refine_script(nav,layer,cells,facing,end,flat)
+
+
+static func native_kernel() -> RefCounted:
+	if not _kernel_checked:
+		_kernel_checked = true
+		if ClassDB.class_exists("NavTurnKernel") and not OS.get_cmdline_user_args().has("--ei-script-turn") \
+				and not OS.get_cmdline_user_args().has("--ei-script-nav"):
+			_build_templates()
+			_kernel = ClassDB.instantiate("NavTurnKernel")
+			if not _kernel.configure(_templates): _kernel = null
+	return _kernel
+
+
+static func native_context(nav: NavGrid, layer: NavGrid.Layer, flat: bool) -> Dictionary:
+	return {"size":nav.size,"land":layer.land,"costs":layer.cost,"heights":nav._hq,
+		"slopes":nav._slope_tab[0 if layer.cls == 0 else 1],"flat":flat,"threshold":nav._ctx_thr}
+
+
+static func end_cost(end: Vector2) -> int:
+	var x := end.x / NavGrid.CELL
+	return roundi((1.0 - 2.0 * absf(x - roundf(x))) * 2048.0)
+
+
+## Independent fallback also used to check native frontier/cost equivalence.
+static func refine_script(nav: NavGrid, layer: NavGrid.Layer, cells: PackedInt32Array,
+		facing: float, end: Vector2, flat: bool) -> Dictionary:
+	if cells.size() < 3:
+		return {"cells":cells,"cost":0}
 	_build_templates()
 	var runner := NavTurn.new()
 	runner._nav = nav

@@ -31,6 +31,14 @@ func _ready() -> void:
 	var u := body()
 	check(u.parts.is_read_only(), "roster membership cannot bypass invalidation")
 	check(u.hp == 100.0, "fresh body is healthy")
+	check(u.run_refusal() == 0 and u._legs_ratio() == 1.0 and u.wound_factor(3) == 1.0, "healthy typed legs permit running")
+	u.parts[4].cur = u.parts[4].max * 0.25
+	check(u.run_refusal() == 1 and u._legs_ratio() == 0.25 and u.wound_factor(3) < 1.0, "injury invalidates movement values immediately")
+	u.parts[4].type = 2
+	check(u.run_refusal() == 0 and u.wound_factor(3) == 1.0 and u.wound_factor(2) < 1.0, "part regrouping invalidates limb membership")
+	u.parts[4].type = 3
+	u.restore_parts()
+	check(u.run_refusal() == 0 and u.wound_factor(3) == 1.0, "restored limbs permit normal movement")
 	u._hurt_part(2,3.0)
 	check(is_equal_approx(u.hp,97.5), "limb damage keeps original lethal weighting")
 	u.heal(2.5)

@@ -1,0 +1,775 @@
+{
+  "version": "1.0.3-experimental.5",
+  "branch": "release/1.0.3-experimental.5-performance",
+  "goal_60fps_at_2x_met": false,
+  "public_release_created": false,
+  "linux_core_suite": [
+    {
+      "fixture": "body_records",
+      "campaign": "base",
+      "exit_code": 0,
+      "errors": [],
+      "summaries": [
+        "BODY_RECORDS 4029 checks 0 failures"
+      ]
+    },
+    {
+      "fixture": "combat_inputs",
+      "campaign": "base",
+      "exit_code": 0,
+      "errors": [],
+      "summaries": [
+        "COMBAT_INPUTS 480 checks 0 failures"
+      ]
+    },
+    {
+      "fixture": "registry_queries",
+      "campaign": "base",
+      "exit_code": 0,
+      "errors": [],
+      "summaries": [
+        "SPATIAL_QUERY exhaustive_us=90452 indexed_us=7349 queries=2000 units=321 checksum=5792"
+      ]
+    },
+    {
+      "fixture": "ai_activity_health",
+      "campaign": "base",
+      "exit_code": 0,
+      "errors": [],
+      "summaries": [
+        "AI_HEALTH_CHECKS 45 checks 0 failures"
+      ]
+    },
+    {
+      "fixture": "dialogue_approach",
+      "campaign": "base",
+      "exit_code": 0,
+      "errors": [],
+      "summaries": [
+        "DIALOG_STAGING_CHECKS 16 checks 0 failures"
+      ]
+    },
+    {
+      "fixture": "camp_grants",
+      "campaign": "astral",
+      "exit_code": 0,
+      "errors": [],
+      "summaries": [
+        "CAMP_GRANTS 130 checks 0 failures"
+      ]
+    },
+    {
+      "fixture": "shop_spells",
+      "campaign": "base",
+      "exit_code": 0,
+      "errors": [],
+      "summaries": [
+        "SHOP_SPELLS cursed_lands 13680 checks 0 failures"
+      ]
+    },
+    {
+      "fixture": "shop_spells",
+      "campaign": "astral",
+      "exit_code": 0,
+      "errors": [],
+      "summaries": [
+        "SHOP_SPELLS lost_in_astral 14038 checks 0 failures"
+      ]
+    },
+    {
+      "fixture": "coop_movie",
+      "campaign": "astral",
+      "exit_code": 0,
+      "errors": [],
+      "summaries": [
+        "MOVIE_GATE 15 checks 0 failures"
+      ]
+    },
+    {
+      "fixture": "unit_simulation_state",
+      "campaign": "astral",
+      "exit_code": 0,
+      "errors": [],
+      "summaries": [
+        "UNIT_SIMULATION_STATE checks=11824 failures=0"
+      ]
+    },
+    {
+      "fixture": "ai_live_eligibility",
+      "campaign": "astral",
+      "exit_code": 0,
+      "errors": [],
+      "summaries": [
+        "AI_LIVE_ELIGIBILITY 4589 checks 0 failures"
+      ]
+    },
+    {
+      "fixture": "ai_activity_senses",
+      "campaign": "astral",
+      "exit_code": 0,
+      "errors": [],
+      "summaries": [
+        "AI_SENSES_CHECKS 5291 checks 0 failures"
+      ]
+    },
+    {
+      "fixture": "perception_batch",
+      "campaign": "astral",
+      "exit_code": 0,
+      "errors": [],
+      "summaries": [
+        "PERCEPTION_BATCH checks=2857 failures=0 native_us=39855 script_us=126335"
+      ]
+    },
+    {
+      "fixture": "creature_damage",
+      "campaign": "astral",
+      "exit_code": 0,
+      "errors": [],
+      "summaries": [
+        "CREATURE_DAMAGE checks=22 failures=0"
+      ]
+    },
+    {
+      "fixture": "delayed_cast_lifetime",
+      "campaign": "astral",
+      "exit_code": 0,
+      "errors": [],
+      "summaries": [
+        "DELAYED_CAST_LIFETIME checks=32 failures=0"
+      ]
+    },
+    {
+      "fixture": "motion_build",
+      "campaign": "astral",
+      "exit_code": 0,
+      "errors": [],
+      "summaries": [
+        "MOTION_BUILD checks=57185 failures=0 native_us=3944 script_us=152157"
+      ]
+    },
+    {
+      "fixture": "motion_records",
+      "campaign": "astral",
+      "exit_code": 0,
+      "errors": [],
+      "summaries": [
+        "MOTION_RECORDS 10221 checks 0 failures"
+      ]
+    },
+    {
+      "fixture": "nav_topology",
+      "campaign": "astral",
+      "exit_code": 0,
+      "errors": [],
+      "summaries": [
+        "NAV_TOPOLOGY 7072 checks 0 failures"
+      ]
+    },
+    {
+      "fixture": "dynamic_navigation",
+      "campaign": "astral",
+      "exit_code": 0,
+      "errors": [],
+      "summaries": [
+        "DYNAMIC_NAVIGATION 140 checks 0 failures"
+      ]
+    },
+    {
+      "fixture": "nav_turn_native",
+      "campaign": "astral",
+      "exit_code": 0,
+      "errors": [],
+      "summaries": [
+        "NAV_TURN_NATIVE {\"changed\":520,\"checks\":2997,\"failures\":0,\"finite\":794,\"large_native_us\":3260,\"large_script_us\":31491,\"native_us\":29971,\"script_us\":586926}"
+      ]
+    },
+    {
+      "fixture": "nav_preparation",
+      "campaign": "astral",
+      "exit_code": 0,
+      "errors": [],
+      "summaries": [
+        "NAV_PREPARATION 6560 checks 0 failures"
+      ]
+    },
+    {
+      "fixture": "unit_neighbour_batch",
+      "campaign": "astral",
+      "exit_code": 0,
+      "errors": [],
+      "summaries": [
+        "UNIT_NEIGHBOUR_CHECKS 10029 checks 0 failures"
+      ]
+    },
+    {
+      "fixture": "unit_presentation",
+      "campaign": "astral",
+      "exit_code": 0,
+      "errors": [],
+      "summaries": [
+        "UNIT_PRESENTATION checks=40969 failures=0"
+      ]
+    },
+    {
+      "fixture": "net_smooth_native",
+      "campaign": "astral",
+      "exit_code": 0,
+      "errors": [],
+      "summaries": [
+        "NET_SMOOTH_NATIVE checks=61441 failures=0"
+      ]
+    },
+    {
+      "fixture": "client_placement",
+      "campaign": "astral",
+      "exit_code": 0,
+      "errors": [],
+      "summaries": [
+        "CLIENT_PLACEMENT checks=18 failures=0"
+      ]
+    },
+    {
+      "fixture": "fire_particles",
+      "campaign": "astral",
+      "exit_code": 0,
+      "errors": [],
+      "summaries": [
+        "FIRE_PARTICLES checks=19580 failures=0 native_us=44597 script_us=139402"
+      ]
+    },
+    {
+      "fixture": "spell_particles",
+      "campaign": "astral",
+      "exit_code": 0,
+      "errors": [],
+      "summaries": [
+        "SPELL_PARTICLES checks=76995 failures=0 native_ticks=12636 native_us=319710 script_us=903305"
+      ]
+    },
+    {
+      "fixture": "particle_draw",
+      "campaign": "astral",
+      "exit_code": 0,
+      "errors": [],
+      "summaries": [
+        "PARTICLE_DRAW checks=1723 failures=0 native_us=16648 script_us=53600"
+      ]
+    },
+    {
+      "fixture": "terrain_color",
+      "campaign": "astral",
+      "exit_code": 0,
+      "errors": [],
+      "summaries": [
+        "TERRAIN_COLOR checks=3300 failures=0 workers_us=17100"
+      ]
+    },
+    {
+      "fixture": "terrain_sector",
+      "campaign": "astral",
+      "exit_code": 0,
+      "errors": [],
+      "summaries": [
+        "TERRAIN_SECTOR checks=17946 failures=0"
+      ]
+    },
+    {
+      "fixture": "grass_chunks",
+      "campaign": "astral",
+      "exit_code": 0,
+      "errors": [],
+      "summaries": [
+        "GRASS_CHUNKS checks=3655 failures=0 tufts=21043 native_us=15052 script_us=448617"
+      ]
+    },
+    {
+      "fixture": "grass_authored",
+      "campaign": "astral",
+      "exit_code": 0,
+      "errors": [],
+      "summaries": [
+        "GRASS_AUTHORED checks=196 failures=0 chunks=63 tufts=9224"
+      ]
+    },
+    {
+      "fixture": "soft_ground_mesh",
+      "campaign": "astral",
+      "exit_code": 0,
+      "errors": [],
+      "summaries": [
+        "SOFT_GROUND_MESH checks=3014 failures=0 native_us=23148 script_us=354903"
+      ]
+    },
+    {
+      "fixture": "mmp_native",
+      "campaign": "astral",
+      "exit_code": 0,
+      "errors": [],
+      "summaries": [
+        "MMP_NATIVE {\"assets\":207,\"checks\":422,\"failures\":0,\"native_us\":41970,\"script_us\":7010803}"
+      ]
+    },
+    {
+      "fixture": "audio_native",
+      "campaign": "astral",
+      "exit_code": 0,
+      "errors": [],
+      "summaries": [
+        "AUDIO_NATIVE {\"assets\":4186,\"checks\":8965,\"failures\":0,\"native_us\":413090,\"script_us\":11757951}"
+      ]
+    },
+    {
+      "fixture": "quest_carriers",
+      "campaign": "astral",
+      "exit_code": 0,
+      "errors": [],
+      "summaries": [
+        "QUEST_CARRIERS 12 checks 0 failures"
+      ]
+    },
+    {
+      "fixture": "worker_clock",
+      "campaign": "astral",
+      "exit_code": 0,
+      "errors": [],
+      "summaries": [
+        "WORKER_CLOCK 8255 checks 0 failures"
+      ]
+    }
+  ],
+  "android_gameplay": [
+    {
+      "scene": "Portal",
+      "run": "rp5-portal-sector20-2x-01",
+      "zone": "gz1h",
+      "fps": 19.3463852061755,
+      "frame_ms": {
+        "max": 130.831,
+        "p50": 48.545,
+        "p95": 73.939,
+        "p99": 98.176
+      },
+      "sim_seconds": 37.8399999999998,
+      "wall_seconds": 30.03145,
+      "units": 414,
+      "players": 1,
+      "wing_keys": 23,
+      "renderer": "gl_compatibility",
+      "render_scale": 0.75,
+      "viewport_size": [
+        1920,
+        1080
+      ],
+      "apk_sha256": "4b6cec4abf576dae491b69a36788bea621c27cc176443b6e6c418c5768561a43",
+      "errors": []
+    },
+    {
+      "scene": "Suslanger city",
+      "run": "rp5-suslanger-sector20-2x-01",
+      "zone": "gz2h",
+      "fps": 21.0306365047122,
+      "frame_ms": {
+        "max": 106.904,
+        "p50": 44.956,
+        "p95": 72.112,
+        "p99": 77.654
+      },
+      "sim_seconds": 34.4849999999999,
+      "wall_seconds": 30.003847,
+      "units": 323,
+      "players": 1,
+      "wing_keys": 0,
+      "renderer": "gl_compatibility",
+      "render_scale": 0.75,
+      "viewport_size": [
+        1920,
+        1080
+      ],
+      "apk_sha256": "4b6cec4abf576dae491b69a36788bea621c27cc176443b6e6c418c5768561a43",
+      "errors": []
+    },
+    {
+      "scene": "River and Islands",
+      "run": "rp5-river-experimental5-2x-01",
+      "zone": "gz16g",
+      "fps": 25.5180318708225,
+      "frame_ms": {
+        "max": 118.325,
+        "p50": 37.253,
+        "p95": 52.438,
+        "p99": 79.46
+      },
+      "sim_seconds": 50.4349999999998,
+      "wall_seconds": 30.017989,
+      "units": 294,
+      "players": 1,
+      "wing_keys": 0,
+      "renderer": "gl_compatibility",
+      "render_scale": 0.75,
+      "viewport_size": [
+        1920,
+        1080
+      ],
+      "apk_sha256": "23594983eed299636507cb43a3085bf9dec262b9d03ef153f55c5b722e32b624",
+      "errors": []
+    },
+    {
+      "scene": "City Environs",
+      "run": "rp5-environs-experimental5-2x-01",
+      "zone": "gz21k",
+      "fps": 37.9409186945433,
+      "frame_ms": {
+        "max": 70.454,
+        "p50": 25.3,
+        "p95": 36.669,
+        "p99": 46.858
+      },
+      "sim_seconds": 59.7849999999997,
+      "wall_seconds": 30.020359,
+      "units": 207,
+      "players": 1,
+      "wing_keys": 0,
+      "renderer": "gl_compatibility",
+      "render_scale": 0.75,
+      "viewport_size": [
+        1920,
+        1080
+      ],
+      "apk_sha256": "23594983eed299636507cb43a3085bf9dec262b9d03ef153f55c5b722e32b624",
+      "errors": []
+    },
+    {
+      "scene": "Dead City",
+      "run": "rp5-deadcity-experimental5-2x-01",
+      "zone": "gz7g",
+      "fps": 36.3824321362691,
+      "frame_ms": {
+        "max": 75.148,
+        "p50": 27.001,
+        "p95": 35.686,
+        "p99": 42.866
+      },
+      "sim_seconds": 59.8399999999997,
+      "wall_seconds": 30.014486,
+      "units": 262,
+      "players": 1,
+      "wing_keys": 0,
+      "renderer": "gl_compatibility",
+      "render_scale": 0.75,
+      "viewport_size": [
+        1920,
+        1080
+      ],
+      "apk_sha256": "23594983eed299636507cb43a3085bf9dec262b9d03ef153f55c5b722e32b624",
+      "errors": []
+    }
+  ],
+  "android_lifecycle_home": {
+    "ready": {
+      "handle": 1,
+      "parent": 11190
+    },
+    "first": {
+      "frames": 25,
+      "pid": 11260
+    },
+    "paused": {
+      "frames": 30,
+      "pid": 11260
+    },
+    "held": {
+      "frames": 30,
+      "pid": 11260
+    },
+    "resumed": {
+      "frames": 155,
+      "pid": 11260
+    },
+    "background_hold_seconds": 4,
+    "counter_held": true,
+    "resumed_advances": true,
+    "same_child": true,
+    "runner_exit": 0,
+    "remaining_private_processes": ""
+  },
+  "desktop_previous_worker25": {
+    "variant": "portal60-worker25",
+    "run": "portal-worker25-2x-01",
+    "fps": 102.79435316353289,
+    "frame_ms": {
+      "max": 83.803,
+      "mean": 9.72812451361868,
+      "p50": 9.447,
+      "p95": 14.255
+    },
+    "sim_seconds": 59.7299999999997,
+    "players": 2,
+    "units": 415,
+    "errors": 0,
+    "status": "Bounded 30-second run; frame-time tails still miss stable 60."
+  },
+  "native_state_checks": {
+    "status": "Generation-safe actor-lifetime registry validated; 550-tick comparisons show no material gain. Infrastructure only, not completion of native AI/movement redesign.",
+    "fields": 21,
+    "checks_initial_Linux_ARM": {
+      "owned_state": 11820,
+      "AI_eligibility": 4589,
+      "AI_senses": 5291,
+      "perception": 2857,
+      "creature_damage": 22
+    },
+    "ASan_UBSan_initial": "owned state11820, AI4589/senses5291, perception2857, route57185 all passed; registry version needs new sanitizer check.",
+    "checks_registered_Linux_ARM": {
+      "owned_state": 11824,
+      "AI_eligibility": 4589,
+      "AI_senses": 5291,
+      "perception": 2857
+    },
+    "ASan_UBSan_registered": "11824 actor lifetime,4589 AI eligibility,5291 senses,2857 perception all pass; production Linux library restored.",
+    "timings_registered_us": {
+      "Linux_object": 29769,
+      "Linux_owned": 24194,
+      "ARM_object": 60566,
+      "ARM_owned": 49150
+    },
+    "windows": "Current library cross-compiled and copied; no Windows runtime test."
+  },
+  "engine_commit": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+  "windows_runtime_tested": false,
+  "limits": [
+    "Ordinary single-player remains inline.",
+    "Android Portal, Suslanger and River do not sustain actual 2x.",
+    "No complete campaign, real WAN or Windows runtime certification.",
+    "Performance tables are bounded gameplay scenarios, not locked 60 FPS acceptance."
+  ],
+  "clean_package_checks": [
+    {
+      "run": "experimental5-package-r3-local_host_worker",
+      "exit_code": 0,
+      "errors": [],
+      "log_sha256": "4931264cb81396d755b1a369fe9a2ba0716c10ed168b0437d6310b43941fa9f8",
+      "summaries": [
+        "LOCAL_HOST_RESULT {\"checks\":33,\"failures\":0}"
+      ]
+    },
+    {
+      "run": "experimental5-package-r3-local_host_lmp",
+      "exit_code": 0,
+      "errors": [],
+      "log_sha256": "d6ab6d2b707dbeb43594e361165bda6e7af1521b0215af881794a351be7a802d",
+      "summaries": [
+        "LOCAL_HOST_LMP 19 checks 0 failures"
+      ]
+    },
+    {
+      "run": "experimental5-package-r2-local_host_campaign",
+      "exit_code": 0,
+      "errors": [],
+      "log_sha256": "817bf7e6d87dc6de232ebfe6eca85aa043580e1f505f9b5e58df93d115c43ac8",
+      "summaries": [
+        "LOCAL_HOST_CAMPAIGN 19 checks 0 failures"
+      ]
+    },
+    {
+      "run": "experimental5-package-r2-material_shader_options",
+      "exit_code": 0,
+      "errors": [],
+      "log_sha256": "3d091b418b9dd9964cc83259bd41e30b523846dfd192d116aee8f4bb9c1e7c05",
+      "summaries": [
+        "MATERIAL_SHADER_OPTIONS checks=216 failures=0"
+      ]
+    },
+    {
+      "run": "experimental5-package-r2-terrain_sector",
+      "exit_code": 0,
+      "errors": [],
+      "log_sha256": "323bbe39d56376774110290580c9a7ef97720d8ce845feb012219a3fffa50009",
+      "summaries": [
+        "TERRAIN_SECTOR checks=17946 failures=0"
+      ]
+    },
+    {
+      "run": "experimental5-package-r2-coop_story",
+      "exit_code": 0,
+      "errors": [],
+      "log_sha256": "0f2b238b9c6c808ee39429fee0fc6573c78a013bee664b446139917095981282",
+      "summaries": [
+        "SCENE_RESULT {\"client\":\"gz1g\",\"elapsed\":5.39999999999999,\"host\":\"gz1g\",\"legacy_save\":true,\"passed\":true,\"reloaded\":true,\"scene\":\"bz1r\",\"single\":false}"
+      ]
+    },
+    {
+      "run": "experimental5-package-r2-coop_story-tunnel",
+      "exit_code": 0,
+      "errors": [],
+      "log_sha256": "b7dd6654baf5d34ec4f34214ca37cbd2cce389ca0b7524f6171edb213e4cf4e9",
+      "summaries": [
+        "SCENE_RESULT {\"client\":\"gz1d2\",\"elapsed\":8.34999999999999,\"host\":\"gz1d2\",\"legacy_save\":false,\"passed\":true,\"reloaded\":true,\"scene\":\"cz1h\",\"single\":false}"
+      ]
+    }
+  ],
+  "clean_package_checks_note": "Campaign/movie, shader, terrain and story scenarios passed before the final thumbnail-only LocalHost change; the updated save/reload and LMP tests passed again afterward.",
+  "core_suite_pack_sha256": "48a3bf920edde1f52c17c24ae4e76f05e56e46aaedf5e8c2adcdddee409eaf27",
+  "scripts_changed_after_core_suite": [
+    "src/game/local_host.gd",
+    "src/game/lmp_travel.gd"
+  ],
+  "native_libraries_sha256": {
+    "libterrain_search.dll": "066d113fd691c188a78b6e5309b990499063b81ea031192a376acf857176f77b",
+    "libterrain_search.so": "77876cdd75f8cf860761e21bedb066090e10ce139a8342bf8dbd5336d9093e81",
+    "libterrain_search_android.so": "b0fbf87dd3cb2cd0b3831b54b5ef272881d8ba7ded7152a711891ca69280fde9"
+  },
+  "final_desktop_pack_sha256": "52040e1e36f1a007beb6c9cdcd7edece1ba31d68abbc8e8799fad7f9d4c0254a",
+  "engine_sha256": {
+    "fast-runtime.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+    "fast-runtime.exe": "daea748b8ce15b87838ecd38ef2f53246b43ae833d621654c705811de3fd1e44"
+  },
+  "final_private_android": {
+    "private_instrumented": false,
+    "engine_sha256": "424eaf73630ec110faf614f550f8047c24a78e224211df45d8b957bf03b7cc79",
+    "native_sha256": "b0fbf87dd3cb2cd0b3831b54b5ef272881d8ba7ded7152a711891ca69280fde9",
+    "apk_sha256": "d3006712b7f0350cd313734d0c3c2194b3eeec2841a498f0d814b4f2d9be8d2d",
+    "changes": [
+      "16m terrain draw pieces with shared material cache and original deformation layout",
+      "APK19 actor state, routes, native systems and headless service retained",
+      "Original multiplayer owner map publication and load acknowledgement",
+      "Stopped-process guard and authority-owned save-thumbnail tickets"
+    ],
+    "version": 23,
+    "package": "org.cursedlands.performance",
+    "cleanup": {
+      "package": "org.cursedlands.performance",
+      "apk": 23,
+      "no_private_processes": true,
+      "automatic_benchmark_disabled": true,
+      "data_root": "user://data/astral",
+      "regular_user_package_modified": false
+    }
+  },
+  "android_service_checks": [
+    {
+      "run": "rp5-experimental5-final-lifecycle",
+      "errors": [],
+      "apk_sha256": "74951284500cdb73a3ff758358157e3c7014458b4171dc681df175542c4f187a",
+      "summaries": [
+        "ANDROID_LIFECYCLE {\"checks\":22,\"error\":\"\",\"failures\":0,\"pids\":[12554.0,12597.0]}"
+      ]
+    },
+    {
+      "run": "rp5-experimental5-final-campaign-r3",
+      "errors": [],
+      "apk_sha256": "d3006712b7f0350cd313734d0c3c2194b3eeec2841a498f0d814b4f2d9be8d2d",
+      "summaries": [
+        "LOCAL_HOST_RESULT {\"checks\":33,\"failures\":0}"
+      ]
+    }
+  ],
+  "android_portal_final": {
+    "scene": "Portal",
+    "run": "rp5-portal-experimental5-final-2x-01",
+    "zone": "gz1h",
+    "fps": 20.5037266355292,
+    "frame_ms": {
+      "max": 116.995,
+      "p50": 45.731,
+      "p95": 70.877,
+      "p99": 85.496
+    },
+    "sim_seconds": 36.6849999999998,
+    "wall_seconds": 30.043319,
+    "units": 414,
+    "players": 1,
+    "wing_keys": 22,
+    "renderer": "gl_compatibility",
+    "render_scale": 0.75,
+    "viewport_size": [
+      1920,
+      1080
+    ],
+    "apk_sha256": "d3006712b7f0350cd313734d0c3c2194b3eeec2841a498f0d814b4f2d9be8d2d",
+    "errors": []
+  },
+  "excluded_or_fixed_failures": [
+    {
+      "run": "experimental5-final-camp_grants",
+      "reason": "Fixture ran with base campaign instead of Lost in Astral; fixed setup and added an early guard. Correct campaign passes."
+    },
+    {
+      "run": "experimental5-package-local_host_worker",
+      "reason": "Stopped process liveness queried PID -1. Production guard added; final repeated check passes."
+    },
+    {
+      "run": "experimental5-lmp-before",
+      "reason": "Owner view did not receive the new LMP map after travel. Fixed publication and loading acknowledgement; 19 final checks pass."
+    },
+    {
+      "run": "rp5-experimental5-final-campaign",
+      "reason": "Reused test-slot thumbnail and a delayed-capture overwrite race. Unique test slots and authoritative per-save capture tickets added; final 33 checks pass with an explicit stale-image RPC."
+    },
+    {
+      "run": "portal-experimental5-clean-2x-01",
+      "reason": "External benchmark depended on a private resource intentionally absent from the clean pack. Made that dependency external too; no game change."
+    }
+  ],
+  "desktop_final": [
+    {
+      "run": "portal-experimental5-clean-2x-02",
+      "fps": 77.87209583232675,
+      "frame_ms": {
+        "max": 80.906,
+        "mean": 12.8414976465554,
+        "p50": 11.721,
+        "p95": 22.204
+      },
+      "sim_seconds": 59.7299999999997,
+      "wall_seconds": 30.01075,
+      "units": 415,
+      "players": 2,
+      "viewport_size": [
+        1280,
+        720
+      ],
+      "render_scale": 1.0,
+      "renderer": "forward_plus",
+      "cpu_layout": "system",
+      "sha256": {
+        "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+        "CPU.pck": "52040e1e36f1a007beb6c9cdcd7edece1ba31d68abbc8e8799fad7f9d4c0254a",
+        "libterrain_search.so": "77876cdd75f8cf860761e21bedb066090e10ce139a8342bf8dbd5336d9093e81"
+      },
+      "errors": [],
+      "peer_errors": [],
+      "no_remaining_processes": true
+    },
+    {
+      "run": "portal-experimental5-clean-2x-03",
+      "fps": 115.99049651198578,
+      "frame_ms": {
+        "max": 82.624,
+        "mean": 8.62136436781609,
+        "p50": 8.106,
+        "p95": 13.489
+      },
+      "sim_seconds": 59.8399999999997,
+      "wall_seconds": 30.002458,
+      "units": 415,
+      "players": 2,
+      "viewport_size": [
+        1280,
+        720
+      ],
+      "render_scale": 1.0,
+      "renderer": "forward_plus",
+      "cpu_layout": "system",
+      "sha256": {
+        "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+        "CPU.pck": "52040e1e36f1a007beb6c9cdcd7edece1ba31d68abbc8e8799fad7f9d4c0254a",
+        "libterrain_search.so": "77876cdd75f8cf860761e21bedb066090e10ce139a8342bf8dbd5336d9093e81"
+      },
+      "errors": [],
+      "peer_errors": [],
+      "no_remaining_processes": true
+    }
+  ],
+  "desktop_final_note": "Same frozen pack, settings and system scheduling. Significant run-to-run variation; both runs retained. Average FPS above 60 does not satisfy a stable 60 FPS target."
+}

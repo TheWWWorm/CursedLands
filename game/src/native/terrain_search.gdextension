@@ -5,3 +5,4 @@ reloadable = false
 [libraries]
 linux.x86_64 = "res://src/native/bin/libterrain_search.so"
 windows.x86_64 = "res://src/native/bin/libterrain_search.dll"
+android.arm64 = "res://src/native/bin/libterrain_search_android.so"

@@ -59,6 +59,7 @@ var _party_units: Array[GameUnit] = []
 ## after a save, CampaignState "looted").
 var looted := {}
 var objects := {}        # nid -> Node3D (placed map objects)
+var objects_revision := 0   # creation/replacement; removals also validate live registration
 var levers := {}         # nid -> {state, states, cycled, door}
 var lever_sys: LeverSystem
 ## .mob MAGIC_TRAP objects (the original CMagicTrapObject), run by the host.
@@ -73,6 +74,12 @@ var time := 0.0
 ## The remainder belongs to this world, including a retained LMP world.
 var _logic_accumulator := 0.0
 var _logic_step := 0
+## A separate simulation process can repay a transient stall without blocking
+## the owner's renderer. Keep the same five-tick callback budget, retaining
+## the excess outside the fractional presentation clock. Inline worlds keep
+## the original cap; paused/loading intervals are excluded by _sample_frame.
+var retain_logic_debt := false
+var _logic_debt := 0.0
 ## Godot4.7 discards time beyond max_physics_steps_per_frame from both its
 ## physics and frame deltas (Main::iteration). Native456440 instead reads
 ## timeGetTime once per rendered loop, capped at five55/27ms intervals.
@@ -88,10 +95,14 @@ var _frame_ms := -1
 var _client_effect_accumulator := 0.0
 var _client_effect_step := 0
 var _client_effect_frame_ms := -1
+var _client_placement: Object
 ## Conversation actors still walking or turning to their spot.
 var dialog_movers := {}   # GameUnit -> {to, angle, state, elapsed}
 ## Unit ids of the running conversation's actors a / b / c (Briefings.cast).
 var dialog_actors := {}
+## Simulation workers retain animation clocks and queried geometry, but have
+## no local particles, HUD, wounds or scene presentation.
+var presentation := true
 var authority := true
 var session: Session
 ## SetWaterLevel state, the original's list at server (adds
@@ -129,8 +140,10 @@ func _init() -> void:
 func _ready() -> void:
 	# Physics used to finish the world before any frame/camera/UI callback.
 	# Keep that order with native frame delivery and preserve caller overrides.
-	if authority and not _fixed_step and process_priority == 0:
+	if not _fixed_step and process_priority == 0:
 		process_priority = -2
+	if ClassDB.class_exists("UnitPresentationKernel") and not OS.get_cmdline_user_args().has("--ei-script-presentation"):
+		_client_placement = ClassDB.instantiate("UnitPresentationKernel")
 
 
 ## Stable registry order, held until the next explicit membership change.
@@ -186,6 +199,7 @@ func party_units() -> Array[GameUnit]:
 func _register_object(node: Node3D) -> void:
 	var o: Dictionary = node.get_meta("ei")
 	objects[int(o.get("nid", 0))] = node
+	objects_revision += 1
 	if o.kind == "LEVER":
 		levers[int(o.nid)] = {"state": int(o.get("lever_state", 0)), "states": maxi(1, int(o.get("lever_states", 2))),
 			"cycled": int(o.get("lever_cycled", 0)), "door": int(o.get("lever_door", 0)), "enabled": true,
@@ -602,13 +616,19 @@ func is_enemy(a: GameUnit, b: GameUnit) -> bool:
 	return relation(a.faction, b.faction) == 2
 
 
+func draw_frame_enabled() -> bool:
+	return not _fixed_step and is_inside_tree() and is_physics_processing()
+
+
 func frame_clock_enabled() -> bool:
-	return authority and not _fixed_step and is_inside_tree() and is_physics_processing()
+	return authority and draw_frame_enabled()
 
 
 func _process(_dt: float) -> void:
 	if not authority and not _fixed_step:
 		_sample_client_effect_frame(Time.get_ticks_msec(), Engine.time_scale)
+		if _client_placement and draw_frame_enabled():
+			_client_placement.sync_clients(self, _unit_rows, _dt, Engine.get_process_frames())
 	if not frame_clock_enabled():
 		_frame_ms = -1
 		if lever_sys:
@@ -695,12 +715,28 @@ func _deliver(dt: float) -> void:
 func _advance(dt: float) -> void:
 	if not is_finite(dt):
 		return
-	_logic_accumulator += clampf(dt, 0.0, TICK * 5.0)
+	if retain_logic_debt:
+		_logic_debt += maxf(dt, 0.0)
+		var incoming := minf(_logic_debt, TICK * 5.0)
+		_logic_debt -= incoming
+		_logic_accumulator += incoming
+	else:
+		_logic_accumulator += clampf(dt, 0.0, TICK * 5.0)
+	var steps := 0
 	while _logic_accumulator + 0.000000001 >= TICK:
 		_logic_accumulator = maxf(_logic_accumulator - TICK, 0.0)
 		_tick(TICK)
+		steps += 1
 		if is_queued_for_deletion() or (session and session.movie_active()):
-			return
+			break
+		if retain_logic_debt and steps >= 5:
+			break
+	if retain_logic_debt and _logic_accumulator + 0.000000001 >= TICK:
+		# A movie may interrupt a batch. Its undelivered whole ticks remain
+		# pending, while spline interpolation always sees a fraction below one.
+		var pending := floori((_logic_accumulator + 0.000000001) / TICK) * TICK
+		_logic_debt += pending
+		_logic_accumulator = maxf(_logic_accumulator - pending, 0.0)
 
 
 ##  stores the client clock remainder as float32. Rendering

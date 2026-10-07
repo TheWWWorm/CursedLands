@@ -170,6 +170,25 @@ vec3 tile_sample(float packed, vec2 p, vec2 dx, vec2 dy) {
 	vec2 gy = tile_turn(dy, rotation) * interior / (tiles_per_axis * span);
 	return textureGrad(atlases, vec3(uv, float((code >> 6) & 255)), gx * vec2(1.0, -1.0), gy * vec2(1.0, -1.0)).rgb;
 }
+#ifdef EI_BAKED_TERRAIN
+uniform sampler2D baked_ground : source_color, filter_linear_mipmap_anisotropic, repeat_disable;
+uniform vec2 bake_origin;
+uniform vec2 bake_span;
+vec3 ground_sample(ivec2 cell, vec2 p, vec2 dx, vec2 dy, out vec4 traits) {
+ ivec2 shift=ivec2(floor(p)); cell+=shift; p-=vec2(shift);
+ traits=tile_traits(tile_info(cell).g);
+ if(blend_edges) {
+  vec2 edge=min(p,1.0-p);
+  vec2 weight=0.5*(1.0-smoothstep(vec2(0.0),vec2(0.12),edge));
+  ivec2 step_cell=ivec2(p.x<0.5 ? -1:1,p.y<0.5 ? -1:1);
+  vec4 tx=tile_traits(tile_info(cell+ivec2(step_cell.x,0)).g);
+  vec4 ty=tile_traits(tile_info(cell+ivec2(0,step_cell.y)).g);
+  vec4 txy=tile_traits(tile_info(cell+step_cell).g);
+  traits=mix(mix(traits,tx,weight.x),mix(ty,txy,weight.x),weight.y);
+ }
+ return textureGrad(baked_ground,(vec2(cell)+p-bake_origin)/bake_span,dx/bake_span,dy/bake_span).rgb;
+}
+#else
 vec3 ground_sample(ivec2 cell, vec2 p, vec2 dx, vec2 dy, out vec4 traits) {
 	// Gradient taps may cross an edge. Resolve their actual owner first, so
 	// both sides derive the same colour AND height gradient at the join.
@@ -202,6 +221,8 @@ vec3 ground_sample(ivec2 cell, vec2 p, vec2 dx, vec2 dy, out vec4 traits) {
 	}
 	return c;
 }
+#endif
+
 float ground_height(vec3 colour) {
 	// A shallow visual approximation, not geometry: painted bright ridges
 	// rise above dark cracks. Work in perceptual brightness, not linear RGB.
@@ -508,8 +529,10 @@ uniform sampler2D screen_tex : hint_screen_texture, filter_linear_mipmap;
 uniform sampler2D wave_a : hint_normal, filter_linear_mipmap, repeat_enable;
 uniform sampler2D wave_b : hint_normal, filter_linear_mipmap, repeat_enable;
 uniform sampler2D foam_tex : filter_linear_mipmap, repeat_enable;
-varying float alpha;
-varying vec3 spec;
+// Preserve the exact alpha/specular interpolation in one varying location.
+varying vec4 water_colour;
+#define alpha water_colour.a
+#define spec water_colour.rgb
 varying float ei_wave_scale;
 varying vec3 wpos;
 varying vec2 tgrid;
@@ -535,6 +558,7 @@ void vertex() {
 	// The tile grid position before the waves sway the vertex: the texture
 	// rides on the vertices as with the original UVs.
 	vec3 w0 = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
+	water_colour = vec4(0.0);
 	tgrid = vec2(w0.x, -w0.z) * 0.5;
 	ei_e = mat_e[m];
 	ei_k = 0.0;
@@ -854,6 +878,7 @@ var _tile_tex: ImageTexture
 var _water_tile_tex: ImageTexture
 var _rain_cover: ImageTexture
 var details: TerrainDetails
+var color_cache: TerrainColorCache
 static var _land_shader: Shader
 static var _water_shader: Shader
 static var _water_fx_shader: Shader
@@ -1077,9 +1102,10 @@ func _build(arc: EIResArchive) -> void:
 				wverts = _read_vertices(d, 5 + VERTS * VERTS * 8, sx, sy, false)
 				_liquid_xy(wverts[0], land[0], water_mats, sx, sy)
 				land.append(_underwater(land[0], wverts[0], vert_mats))
-			var mi := _make_mesh(land, land_tex, PackedInt32Array(), land_mat, Vector2i(sx * TILES, sy * TILES))
+			var mi := EITerrainSector.new()
+			mi.configure(_mesh_arrays(land, land_tex, PackedInt32Array(), Vector2i(sx * TILES, sy * TILES)),
+				land_mat, SHADOW_RECEIVER_LAYER | DECAL_LAYER, EITerrainSector.preferred() and not Gfx.on("gfx_soft_ground"))
 			mi.name = "Sector_%d_%d" % [sx, sy]
-			mi.layers = SHADOW_RECEIVER_LAYER | DECAL_LAYER
 			add_child(mi)
 			if liquids:
 				var water_tex := _read_u16s(d, tex_off + 512)
@@ -1215,6 +1241,16 @@ func apply_gfx() -> void:
 		details = TerrainDetails.create(self)
 	elif is_instance_valid(details):
 		details.apply_options()
+	# Turning off deformation first joins its jobs and restores their meshes.
+	# Only then may the sector replace its presentation children.
+	for sector in get_children():
+		if sector is EITerrainSector:
+			sector.set_subdivided(EITerrainSector.preferred() and not Gfx.on("gfx_soft_ground"))
+
+	if is_inside_tree() and not is_instance_valid(color_cache) and TerrainColorCache.available():
+		color_cache = TerrainColorCache.create(self)
+	elif is_instance_valid(color_cache):
+		color_cache.refresh()
 
 
 ## SurfaceWeather's static cover map affects rendering only. Keep it across
@@ -1225,6 +1261,8 @@ func set_rain_cover(image: Image) -> void:
 	_rain_cover = ImageTexture.create_from_image(image)
 	if _land_mat:
 		_land_mat.set_shader_parameter("rain_cover", _rain_cover)
+	if is_instance_valid(color_cache):
+		color_cache.sync_parameter("rain_cover", _rain_cover)
 	if _water_mat and _water_mat.shader == _water_fx_shader:
 		_water_mat.set_shader_parameter("rain_cover", _rain_cover)
 	if is_instance_valid(details) and is_instance_valid(details.soft_ground):
@@ -1372,6 +1410,8 @@ func set_water_offset(mat: int, offset: float) -> Rect2i:
 				_level[m] = water_offsets[m]
 		_water_mat.set_shader_parameter("level", _level)
 		_land_mat.set_shader_parameter("level", _level)
+	if is_instance_valid(color_cache):
+		color_cache.sync_parameter("level", _level)
 	var cells_w := sectors_x * SECTOR
 	var lo := Vector2i(1 << 30, 1 << 30)
 	var hi := Vector2i(-1, -1)
@@ -1618,6 +1658,18 @@ func _read_vertices(d: PackedByteArray, off: int, sx: int, sy: int, is_land: boo
 ## (per vertex from `vert_mats`, _vertex_materials, else the tile's), or the
 ## global land-tile address for seamless map-neighbour sampling.
 func _make_mesh(verts: Array, tex: PackedInt32Array, tile_mats: PackedInt32Array, mat: Material, tile_origin := Vector2i.ZERO, vert_mats := PackedInt32Array()) -> MeshInstance3D:
+	var arrays := _mesh_arrays(verts, tex, tile_mats, tile_origin, vert_mats)
+	if arrays.is_empty():
+		return null
+	var mesh := ArrayMesh.new()
+	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
+	mesh.surface_set_material(0, mat)
+	var mi := MeshInstance3D.new()
+	mi.mesh = mesh
+	return mi
+
+
+func _mesh_arrays(verts: Array, tex: PackedInt32Array, tile_mats: PackedInt32Array, tile_origin := Vector2i.ZERO, vert_mats := PackedInt32Array()) -> Array:
 	var src_pos: PackedVector3Array = verts[0]
 	var src_nrm: PackedVector3Array = verts[1]
 	var pos := PackedVector3Array()
@@ -1661,7 +1713,7 @@ func _make_mesh(verts: Array, tex: PackedInt32Array, tile_mats: PackedInt32Array
 					var e := a + 4
 					idx.append_array([c, b, a, b, c, e])
 	if pos.is_empty():
-		return null
+		return []
 	var arrays := []
 	arrays.resize(Mesh.ARRAY_MAX)
 	arrays[Mesh.ARRAY_VERTEX] = pos
@@ -1670,9 +1722,4 @@ func _make_mesh(verts: Array, tex: PackedInt32Array, tile_mats: PackedInt32Array
 	arrays[Mesh.ARRAY_TEX_UV2] = uv2
 	arrays[Mesh.ARRAY_COLOR] = col
 	arrays[Mesh.ARRAY_INDEX] = idx
-	var mesh := ArrayMesh.new()
-	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
-	mesh.surface_set_material(0, mat)
-	var mi := MeshInstance3D.new()
-	mi.mesh = mesh
-	return mi
+	return arrays

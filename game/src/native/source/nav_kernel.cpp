@@ -21,8 +21,20 @@
 #include <vector>
 
 #include "window_frontier.h"
+#include "unit_simulation_state.h"
 #include "unit_query.h"
+#include "perception_batch.h"
+#include "terrain_color.h"
+#include "particle_draw.h"
+#include "unit_presentation.h"
 #include "motion_spline.h"
+#include "mmp_texture.h"
+#include "audio_decode.h"
+#include "fire_particles.h"
+#include "spell_particles.h"
+#include "grass_chunk.h"
+#include "nav_turn.h"
+#include "soft_ground_mesh.h"
 #include "ai_activity.h"
 #include "screen_rect.h"
 #include "nav_build.h"
@@ -50,6 +62,8 @@ protected:
         ClassDB::bind_method(D_METHOD("topology_component", "block"), &TerrainSearchKernel::topology_component);
         ClassDB::bind_method(D_METHOD("topology_seeds", "point", "reverse"), &TerrainSearchKernel::topology_seeds);
         ClassDB::bind_method(D_METHOD("topology_stats"), &TerrainSearchKernel::topology_stats);
+        ClassDB::bind_method(D_METHOD("prepare_topology", "points"), &TerrainSearchKernel::prepare_topology);
+        ClassDB::bind_method(D_METHOD("prepare_routes", "points"), &TerrainSearchKernel::prepare_routes);
         ClassDB::bind_method(D_METHOD("sealed_reach", "rect", "start", "target", "reach", "stamp", "threshold"), &TerrainSearchKernel::sealed_reach);
         ClassDB::bind_method(D_METHOD("configure", "size", "land", "costs", "heights", "slopes"), &TerrainSearchKernel::configure);
         ClassDB::bind_method(D_METHOD("distances", "rect", "start", "reverse", "goals"), &TerrainSearchKernel::distances);
@@ -76,7 +90,7 @@ public:
         land = p_land; costs = p_costs; heights = p_heights; slopes = p_slopes;
         topology_undirected = true;
         for (int64_t i = 0; i < slopes.size(); ++i) {
-            if ((slopes[i] >= 0) != (slopes[slopes.size() - 1 - i] >= 0)) {
+            if ((p_slopes[i] >= 0) != (p_slopes[slopes.size() - 1 - i] >= 0)) {
                 topology_undirected = false; break;
             }
         }
@@ -532,10 +546,23 @@ public:
 static void initialize_kernel(ModuleInitializationLevel level) {
     if (level == MODULE_INITIALIZATION_LEVEL_SCENE) {
         GDREGISTER_CLASS(TerrainWindowFrontier); GDREGISTER_CLASS(TerrainSearchKernel);
+        GDREGISTER_CLASS(UnitSimulationState); GDREGISTER_CLASS(UnitSimulationLease);
         GDREGISTER_CLASS(UnitNoticeLifetime); GDREGISTER_CLASS(UnitQueryKernel);
+        GDREGISTER_CLASS(PerceptionKernel);
+        GDREGISTER_CLASS(TerrainColorField);
+        GDREGISTER_CLASS(ParticleDrawBuffer);
         GDREGISTER_CLASS(ScreenRectKernel);
         GDREGISTER_CLASS(NavigationBuildKernel); GDREGISTER_CLASS(AIActivityKernel);
         GDREGISTER_CLASS(MotionSplineKernel);
+        GDREGISTER_CLASS(MmpTextureKernel);
+        GDREGISTER_CLASS(AudioDecodeKernel);
+        GDREGISTER_CLASS(FireParticleKernel);
+        GDREGISTER_CLASS(SpellParticleKernel);
+        GDREGISTER_CLASS(GrassFieldKernel); GDREGISTER_CLASS(GrassChunkJob);
+        GDREGISTER_CLASS(NavTurnKernel);
+        GDREGISTER_CLASS(SoftGroundMeshJob);
+        GDREGISTER_CLASS(UnitPresentationKernel);
+        GDREGISTER_CLASS(NetSmoothKernel);
     }
 }
 static void terminate_kernel(ModuleInitializationLevel) {}

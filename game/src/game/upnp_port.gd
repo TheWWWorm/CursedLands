@@ -31,6 +31,9 @@ var mapped := false
 var busy := false
 var status := ""
 var method := ""         # "UPnP", "PCP" or "NAT-PMP" once mapped
+## The local owner's UI mirrors a worker's mapping. Only that worker owns
+## the router connection and may open, renew or remove the mapping.
+var remote := false
 ## Tests: the gateway ("ip" or "ip:port") instead of the default route; and
 ## `skip_upnp` to go straight to PCP / NAT-PMP.
 var gateway := ""
@@ -46,7 +49,7 @@ var _renew: Timer
 
 ## Host started: map `port` (UDP) on the router in the background.
 func open(p: int) -> void:
-	if not Portability.threads() or OS.has_feature("web"):
+	if remote or not Portability.threads() or OS.has_feature("web"):
 		return
 	if busy or mapped:
 		return
@@ -391,6 +394,14 @@ static func _local_ip_for(gw: String) -> String:
 
 ## Hosting ends: the router forgets the forwarding (blocking, short).
 func close() -> void:
+	if remote:
+		mapped = false
+		busy = false
+		status = ""
+		external_ip = ""
+		external_port = 0
+		method = ""
+		return
 	if _thread:
 		_thread.wait_to_finish()
 		_thread = null

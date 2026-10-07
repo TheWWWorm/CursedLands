@@ -2009,6 +2009,51 @@ func native_graph(L: Layer):
 	_native_graphs[L.cls].profile = profile_paths
 	return _native_graphs[L.cls]
 
+
+## Called after saved doors and actors are restored, before play resumes.
+## Only immutable terrain work runs concurrently: every movement class has
+## its own native graph, and all jobs finish before any route can read it.
+## A later map revision replaces these graphs through native_graph as usual.
+func prepare_static_navigation(rows: Array) -> void:
+	if not exact_search or size == Vector2i.ZERO or OS.get_cmdline_user_args().has("--ei-lazy-nav"):
+		return
+	if not ClassDB.class_exists("TerrainSearchKernel") \
+			or not ClassDB.class_has_method("TerrainSearchKernel", "prepare_topology") \
+			or OS.get_cmdline_user_args().has("--ei-script-nav") \
+			or OS.get_cmdline_user_args().has("--ei-script-topology"):
+		return
+	var starts := {}
+	for u: GameUnit in rows:
+		if u.dead: continue
+		for cls: int in [u.move_class(), u._classes[2]]:
+			if not starts.has(cls): starts[cls] = {}
+			starts[cls][cell(u.pos)] = true
+	var jobs: Array[Callable] = []
+	for cls: int in starts:
+		var graph = native_graph(layer(cls))
+		if not graph._native_topology or not graph._terrain_kernel.has_method("prepare_topology"):
+			continue
+		var points: Array[Vector2i] = []
+		points.assign(starts[cls].keys())
+		points.make_read_only()
+		var method := "prepare_routes" if graph._terrain_kernel.has_method("prepare_routes") \
+			and not OS.get_cmdline_user_args().has("--ei-lazy-route-weights") else "prepare_topology"
+		jobs.append(Callable(graph._terrain_kernel, method).bind(points))
+	if jobs.is_empty(): return
+	var started := Time.get_ticks_msec()
+	var tasks := PackedInt64Array()
+	for job: Callable in jobs:
+		if Portability.threads():
+			# Loading owns every graph and joins the batch. Use the available
+			# workers instead of the pool's small background-task allowance.
+			tasks.append(WorkerThreadPool.add_task(job, true, "navigation preparation"))
+		else:
+			job.call()
+	# Do not poll network callbacks here: they could replace a door/graph while
+	# a worker owns it. The loading caller keeps the world paused until joined.
+	for task: int in tasks: WorkerThreadPool.wait_for_task_completion(task)
+	GameData.trace("navigation prepared %d classes in %d ms" % [jobs.size(), Time.get_ticks_msec() - started])
+
 ## native relocation, direct bidirectional windows, then the
 ## static block route and its overlapping dynamic windows.
 func _find_native(L: Layer,a: Vector2,b: Vector2) -> PackedVector2Array:
@@ -2959,11 +3004,22 @@ const CBUCKET := 16.0
 const WIDE := 6.0
 var _cbuckets := {}
 var _call_buckets := {}
+static var _native_unit_queries := ClassDB.class_exists("UnitQueryKernel") and ClassDB.class_has_method("UnitQueryKernel", "near_units") \
+	and not OS.get_cmdline_user_args().has("--ei-script-units")
+var _unit_queries: RefCounted = ClassDB.instantiate("UnitQueryKernel") if _native_unit_queries else null
 
 
 ## Every unit in GameWorld.units within `r` of `p`, dead ones too, in
 ## GameWorld.units order: GameWorld.units_near from the buckets.
 func units_all_around(p: Vector2, r: float, ordered := true) -> Array:
+	if _unit_queries:
+		var near: Array = _unit_queries.near_units(_all_buckets if r < WIDE else _call_buckets,
+			registered_units, p, r, BUCKET if r < WIDE else CBUCKET, false)
+		return _ordered_units(near) if ordered else near
+	return units_all_around_script(p, r, ordered)
+
+
+func units_all_around_script(p: Vector2, r: float, ordered := true) -> Array:
 	var out := []
 	var r2 := r * r
 	var bs := BUCKET if r < WIDE else CBUCKET
@@ -3031,6 +3087,14 @@ static func _cbucket_key(p: Vector2) -> int:
 ## `ordered` false: in no particular order, for callers that only combine
 ## them (stamp maxima, an any-test).
 func units_around(p: Vector2, r: float, ordered := true) -> Array:
+	if _unit_queries:
+		var near: Array = _unit_queries.near_units(_all_buckets if r < WIDE else _call_buckets,
+			registered_units, p, r, BUCKET if r < WIDE else CBUCKET, true)
+		return _ordered_units(near) if ordered else near
+	return units_around_script(p, r, ordered)
+
+
+func units_around_script(p: Vector2, r: float, ordered := true) -> Array:
 	var out := []
 	var r2 := r * r
 	var bs := BUCKET if r < WIDE else CBUCKET
@@ -3065,6 +3129,15 @@ func units_around(p: Vector2, r: float, ordered := true) -> Array:
 ## before the node's descending step, trapping overlapping party members.
 ## Point-only callers, including straight stick movement, keep their cell.
 func step_blocker(u: GameUnit, q: Vector2, result: Dictionary, next_cell := Vector2i(-1, -1)) -> GameUnit:
+	if _unit_queries and q.is_finite() and u.pos.is_finite():
+		# Preserve the fast same-cell exit before querying or sorting neighbours.
+		var cq := next_cell if next_cell.x >= 0 else cell(q)
+		if cq == cell(u.pos): return null
+		return _unit_queries.step_blocker(u, q, cq, units_around(q, 10.0), result)
+	return step_blocker_script(u, q, result, next_cell)
+
+
+func step_blocker_script(u: GameUnit, q: Vector2, result: Dictionary, next_cell := Vector2i(-1, -1)) -> GameUnit:
 	var cq := next_cell if next_cell.x >= 0 else cell(q)
 	var c0 := cell(u.pos)
 	if cq == c0:

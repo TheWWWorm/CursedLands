@@ -15,6 +15,8 @@ static var _speech: EIResArchive
 static var _cache := {}
 static var _dirs := {}
 static var _music_reg := {}
+static var _decode_kernel: Object = ClassDB.instantiate("AudioDecodeKernel") \
+	if ClassDB.class_exists("AudioDecodeKernel") and not OS.get_cmdline_user_args().has("--ei-script-audio") else null
 
 
 static func _archive(name: String) -> EIResArchive:
@@ -228,7 +230,13 @@ static func decode_wav(d: PackedByteArray) -> AudioStreamWAV:
 ## (_tables, the same arithmetic as _step) and the samples go straight into
 ## the output bytes.
 static func _ima_decode(src: PackedByteArray, align: int, channels: int) -> PackedByteArray:
-	if align <= 4 * channels:
+	if _decode_kernel:
+		return _decode_kernel.decode_ima(src, align, channels)
+	return _ima_decode_script(src, align, channels)
+
+
+static func _ima_decode_script(src: PackedByteArray, align: int, channels: int) -> PackedByteArray:
+	if channels < 1 or channels > 8 or align <= 4 * channels or align > 2147483647 or src.size() > 128 * 1024 * 1024:
 		return PackedByteArray()
 	_tables()
 	var dtab := _diff_tab

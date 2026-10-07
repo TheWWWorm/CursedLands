@@ -40,6 +40,12 @@ static var _sets := {}
 static var _loaded := false
 
 
+## Decode the immutable voice/subtitle database while the loading screen is
+## still visible. The first command or NPC reaction must only choose a line.
+static func prepare() -> void:
+	_load()
+
+
 static func lines(names: Array, code: int) -> Array:
 	_load()
 	var cf: Array = CODE_FIELD.get(code, [])

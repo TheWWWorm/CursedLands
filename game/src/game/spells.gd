@@ -6,7 +6,14 @@ extends RefCounted
 ## dispatcher and the stat fold (see apply).
 
 const TARGET_POINT := 116
-const DAMAGE_TYPES := ["fire", "lightning", "acid"]
+## Native 683910 chooses damage by spell index, independently of the
+## knowledge school in spells.sdb. Rick/Curse Magic use domination knowledge
+## but deal fire/electrical damage, like Fire Arrow/Lightning respectively.
+const DAMAGE_SCHOOLS := {
+	"arrow": "fire", "fireball": "fire", "firewall": "fire", "campfire": "fire", "rick_magic": "fire",
+	"lightning": "lightning", "inv_lit": "lightning", "litnwall": "lightning", "curse_magic": "lightning",
+	"acid_ray": "acid", "acid_column": "acid", "acid_fog": "acid",
+}
 ## Damage type slot (piercing .. general) of each elemental school.
 const DAMAGE_TYPE_INDEX := {"fire": 3, "acid": 4, "lightning": 5}
 const PROTECTS := {"prot_fire": "fire", "prot_electro": "lightning", "prot_acid": "acid"}
@@ -220,7 +227,7 @@ static func light_time(spell: String) -> float:
 
 static func is_hostile(spell: String) -> bool:
 	var p := parse(spell)
-	return p.subtype in DAMAGE_TYPES or p.code in ["weak", "slow", "stun", "feeblemind", "silence"]
+	return DAMAGE_SCHOOLS.has(p.code) or p.code in ["weak", "slow", "stun", "feeblemind", "silence"]
 
 
 ## Host: apply a spell cast by `caster` at a unit or ground point.
@@ -340,7 +347,7 @@ static func apply(world: GameWorld, caster: GameUnit, spell: String, target: Gam
 			for u: GameUnit in victims:
 				_buff(u, p.code, effect_ticks, {"sense": [["eagle_sight", "infravision", "detect_life"].find(p.code), power]})
 		_:
-			if p.subtype in DAMAGE_TYPES:
+			if DAMAGE_SCHOOLS.has(p.code):
 				_damage_spell(world, caster, p, target, at, from)
 	return audio
 
@@ -529,6 +536,27 @@ class WorldTimers extends Node:
 		var started := Time.get_ticks_usec() if w and w.profile_simulation else 0
 		f.call()
 		if is_instance_valid(w): w.profile_record("spell_callback",started)
+
+
+## A casting action may outlive a removed/summoned creature. A self-bound
+## GameUnit lambda keeps a raw instance pointer even if its body checks
+## validity. Own this callback in the script and resolve both actors weakly.
+static func cast_after(world: GameWorld, caster: GameUnit, spell: String, target: GameUnit, at: Vector2, secs: float) -> void:
+	var caster_ref := _ref(caster)
+	var target_ref := _ref(target)
+	_after(world, secs, func():
+		var c: GameUnit = _deref(caster_ref)
+		if c == null or c.dead or not is_instance_valid(world) or c.world != world:
+			return
+		var t: GameUnit = _deref(target_ref)
+		cast_unit(world, c, spell, t, at)
+		# Hearing lasts 26 ticks at twice the caster's detectability. A spell
+		# can itself remove the caster, so resolve it again after dispatch.
+		c = _deref(caster_ref)
+		if c != null and is_instance_valid(world) and c.world == world \
+				and int(parse(spell).proto.get("type_id", 0)) != 1:
+			world.ai.noise_event(c, c.detect(3) * 2.0)
+	)
 
 
 static func _after(world: GameWorld, secs: float, f: Callable, always := false) -> void:
@@ -855,7 +883,8 @@ static func _spell_damage(world: GameWorld, caster: GameUnit, p: Dictionary, u: 
 	if int(p.duration) > 1:
 		af = 4.0 / float(p.duration)
 		power *= af
-	var t := int(DAMAGE_TYPE_INDEX.get(p.subtype, 6))
+	var school: String = DAMAGE_SCHOOLS.get(p.code, p.subtype)
+	var t := int(DAMAGE_TYPE_INDEX.get(school, 6))
 	# Native record electric type factor sets bit4 before absorption
 	# zero-damage struck hits retain the electrical flash.
 	var hit_flags := 4 if t == 5 else 0
@@ -863,7 +892,7 @@ static func _spell_damage(world: GameWorld, caster: GameUnit, p: Dictionary, u: 
 	# Protection effects are folded into that armour.
 	var prot := 0.0
 	for b in u.buffs.values():
-		if b.get("resist", "") in [p.subtype, "all"]:
+		if b.get("resist", "") in [school, "all"]:
 			prot = maxf(prot, float(b.get("armor", 0.0)))
 	var arm := (armour[t] if t < armour.size() else 0.0) + prot
 	var dmg := power - arm * af * world.combat.difficulty(u, "Absorption")
@@ -1095,6 +1124,10 @@ static func _fireworks_tick(world: GameWorld, at: Vector2, radius: float, durati
 
 
 static func _buff(u: GameUnit, name: String, ticks: int, data: Dictionary) -> void:
+	# A new sensing/detectability effect can expand a later observer's
+	# envelope after the current activity snapshot was captured.
+	if u.world and u.world.ai:
+		u.world.ai.activity.invalidate()
 	data[GameUnit.EFFECT_TICKS] = ticks
 	data.until = u.world.time + float(ticks) * GameUnit.TICK
 	u.buffs[name] = data

@@ -4,6 +4,7 @@ extends Node3D
 ## All player intents go through `issue()` so they can be sent to the host
 ## in multiplayer (see Session).
 
+var simulation_only := false
 var session: Session
 var world: GameWorld
 var rig: CameraRig
@@ -62,6 +63,19 @@ var speed := 0   # 0 normal, 1 accelerated (clock dial)
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	simulation_only = session != null and session.local_host != null and session.local_host.worker
+	if simulation_only:
+		# Camera state is still needed by save/travel and sound logic; UI and
+		# GPU scene systems belong solely to the owner's frontend.
+		rig = CameraRig.new()
+		add_child(rig)
+		rig.set_process(false)
+		sound = GameSound.new()
+		sound.game = self
+		add_child(sound)
+		set_process(false)
+		set_process_unhandled_input(false)
+		return
 	_setup_env()
 	rig = CameraRig.new()
 	add_child(rig)
@@ -195,7 +209,7 @@ func _keep_selection() -> void:
 ## control a shared pause and exact 2x rate; clients receive that choice.
 func set_speed(sector: int) -> void:
 	if session.online:
-		if session.coop_clock_enabled() and not session.is_host:
+		if session.coop_clock_enabled() and not session.can_manage_game():
 			session.message.emit(RemakeText.t("Only the host can change game speed."))
 		elif session.coop_clock_enabled():
 			sound.ui("buttons\\battle\\clock.wav")
@@ -345,7 +359,8 @@ func cancel_touch_target() -> void:
 	touch_aim = -1
 	touch_force = ""
 	pending_spell = ""
-	hud.set_targeting("")
+	if hud:
+		hud.set_targeting("")
 
 func held_aim() -> int:
 	if touch_aim >= 0:
@@ -640,8 +655,11 @@ func attach_world(w: GameWorld) -> void:
 		# The field screen's first activation follows party
 		# member 0; modern: the glide and attachment.
 		rig.follow(mine[0])
-	hud.on_world(w)
+	if hud:
+		hud.on_world(w)
 	sound.on_world(w)
+	if simulation_only:
+		return
 	_apply_shadows(w)
 	_fit_shadows()
 	var pfx := ParticleFx.of(w)
@@ -818,7 +836,7 @@ func _key_action(act: String) -> void:
 		"quicksave":
 			session.save_game("quick")
 		"quickload":
-			if session.is_host and not await session.load_game_shown("quick"):
+			if session.can_manage_game() and not await session.load_game_shown("quick"):
 				hud.log_msg(RemakeText.t("No quick save."))
 		"follow":   # HUD Follow: the next click picks the unit to follow
 			if not selected.is_empty():
@@ -1222,7 +1240,7 @@ func on_event(e: Dictionary) -> void:
 	sound.on_event(e)   # sounds of broadcast events (GameSound)
 	match String(e.get("t", "")):
 		"order_path":
-			if int(e.get("to", -1)) == session.my_index:
+			if marks and int(e.get("to", -1)) == session.my_index:
 				marks.on_path(e)
 		"travel":
 			# Leaving the zone closes the field screen (: normal speed)
@@ -1239,6 +1257,8 @@ func on_event(e: Dictionary) -> void:
 			if world and not e.has("go"):   # "Stay here": the zone runs again
 				world.process_mode = Node.PROCESS_MODE_PAUSABLE
 		"vision_fog":
+			if simulation_only:
+				return
 			var tu: GameUnit = world.units.get(int(e.get("uid", -1))) if world else null
 			var cu: GameUnit = world.units.get(int(e.get("caster", -1))) if world else null
 			if tu and int(e.get("to", -1)) == session.my_index and (not e.has("caster") or cu):
@@ -1251,14 +1271,15 @@ func on_event(e: Dictionary) -> void:
 				pass
 			elif e.has("near"):
 				if my_units().any(func(m: GameUnit): return not m.dead and m.pos.distance_to(who.pos) <= float(e.near)):
-					hud._faces.acknowledge(who, int(e.get("code", -1)))
+					if hud: hud._faces.acknowledge(who, int(e.get("code", -1)))
 					GameSound.ack(who, int(e.get("code", -1)))
 			elif int(e.get("to", -1)) == session.my_index:
-				hud._faces.acknowledge(who, int(e.get("code", -1)))
+				if hud: hud._faces.acknowledge(who, int(e.get("code", -1)))
 				GameSound.ack(who, int(e.get("code", -1)))
 		"smile":   # remake option "smile_faces" (SmileFaces)
 			SmileFaces.show(self, e)
-	hud.on_event(e)
+	if hud:
+		hud.on_event(e)
 
 
 ## Order acknowledgements (acks.db), spoken by the first unit given the order.

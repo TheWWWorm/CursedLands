@@ -54,6 +54,8 @@ class Effect:
 	var pre_aabb := AABB()
 	var pre_reach := -1.0
 	var want_fill := false   # set by _tick: refill the buffer with the tick (drawn last frame)
+	var draw_buffer: RefCounted = ClassDB.instantiate("ParticleDrawBuffer") \
+		if ClassDB.class_exists("ParticleDrawBuffer") and not OS.get_cmdline_user_args().has("--ei-script-particle-buffer") else null
 
 
 ## Remake: one tick's worker round, plain data only. The workers run
@@ -121,6 +123,9 @@ func _init() -> void:
 
 
 func _ready() -> void:
+	if world and not world.presentation:
+		set_process(false)
+		return
 	GameData.options_changed.connect(_apply_material_options)
 
 
@@ -785,6 +790,23 @@ func _fill_apply(ef: Effect, mm: MultiMesh) -> void:
 ## The instance buffer of the emitter's particles (the Effect's own data, no
 ## node: safe on a worker); _fill_apply hands it to the MultiMesh at tick t.
 static func _fill_calc(ef: Effect, has_cam: bool, eye: Vector3, fwd: Vector3, t: int) -> void:
+	if ef.draw_buffer:
+		# Release the previous script view before the native writer reuses its
+		# storage. RenderingServer keeps its own submitted buffer reference.
+		ef.buf = PackedFloat32Array()
+		var row: Dictionary = ef.draw_buffer.pack(ef.e.parts, has_cam and ef.e.add != 1 and ef.e.parts.size() >= 2,
+			eye, fwd, ef.e.d8, ef.e.wp, ef.pre_aabb, ef.pre_reach)
+		if not row.is_empty():
+			ef.buf = row.buffer; ef.cap = row.capacity; ef.pre_k = row.count
+			ef.pre_aabb = row.box; ef.pre_reach = row.reach; ef.pre = t
+			return
+		# Custom malformed/nonfinite records retain the old scalar handling.
+		ef.draw_buffer = null
+		ef.cap = 0
+	_fill_calc_script(ef, has_cam, eye, fwd, t)
+
+
+static func _fill_calc_script(ef: Effect, has_cam: bool, eye: Vector3, fwd: Vector3, t: int) -> void:
 	var e := ef.e
 	var n := e.parts.size()
 	# Taken out of the Effect while it is written: the only reference, so the

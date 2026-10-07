@@ -1,1 +1,1 @@
-{"enabled_classes":["RefCounted","OS","Script","AStarGrid2D"]}
+{"enabled_classes":["RefCounted","OS","Script","AStarGrid2D","Node3D","Time","RandomNumberGenerator","FastNoiseLite","Image"]}

@@ -1,7 +1,7 @@
 # Desktop export templates
 
-The Windows and Linux x86-64 release templates use Godot 4.7, source commit
-`5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88`, with the five patches in this
+The Windows and Linux x86-64 release templates target Godot 4.7, source commit
+`5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88`, with the six patches in this
 directory. Apply them in the order listed below and build normal release
 templates with the standard Godot build instructions:
 
@@ -10,6 +10,7 @@ templates with the standard Godot build instructions:
 3. `unobserved-pose.patch`
 4. `preserve-character-track-caches.patch`
 5. `prepare-character-track-caches.patch`
+6. `cache-unobserved-track-eligibility.patch`
 
 The first two patches repair separate-render-thread shutdown and snapshot
 mutable images for queued texture uploads. The third lets an unobserved looping
@@ -26,7 +27,17 @@ advancing playback, writing poses or emitting playback/track/mixer events.
 This moves first-use setup out of gameplay; it is not a steady-state CPU gain.
 The existing invalidation rules still apply. `--ei-lazy-animation-bindings`
 keeps first-use construction for comparisons.
-Android, macOS and Web use the official 4.7 templates. These patches retain
+The sixth caches whether a clip's tracks permit deferred pose evaluation.
+Every internal track-cache invalidation advances a generation, including when
+signals are blocked. Playback mode, section and running-state checks remain
+live. Adding a method/event track therefore immediately disables deferral.
+Published Android packages, macOS and Web use the official 4.7 templates.
+The private Android performance build also uses the six common patches and the
+optional `android-headless-service.patch`; see
+[the Android service guide](../../platform/android/simulation/README.md).
+The extra patch guards Android-only sensor dispatch and supplies a surface-free
+frame loop for the engine's existing `GodotService`. It does not change the
+graphical rendering thread mode. These patches retain
 Godot's MIT license; complete engine notices accompany every release package.
 
 The focused `tests/animation_cache_retention.gd` fixture compares normal and
@@ -37,3 +48,6 @@ profile with its normal `--ei-path` argument and
 after the `--` separator. It exits nonzero on failure and requires the new API.
 `tests/animation_cache_preparation.gd` compares prepared and lazy players
 through events, blending, library edits, target replacement and tree reentry.
+`tests/unobserved_eligibility.gd` compares normal and deferred players through
+looping, reverse playback, event-track insertion with blocked signals, track
+removal/path changes, resource replacement, and tree reentry.

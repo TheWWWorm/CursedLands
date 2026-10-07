@@ -51,6 +51,23 @@ func _start() -> void:
 	_clear()
 	var args := OS.get_cmdline_user_args()
 	for a in args:
+		if a.begins_with("--local-host-config="):
+			MoviePlayer.enabled = false
+			TutorialPanel.auto_show = false
+			var s := Session.new()
+			add_child(s)
+			var config := s.local_host.configure(a.trim_prefix("--local-host-config="))
+			if config.is_empty():
+				get_tree().quit(1)
+				return
+			var error := s.host(int(config.port), int(config.limit))
+			s.local_host.listening(error)
+			if error != OK:
+				get_tree().quit(1)
+				return
+			start_game(s)
+			return
+	for a in args:
 		if a.begins_with("--tool="):
 			# Tools drive the game themselves: no movies, no tutorial pop-ups.
 			MoviePlayer.enabled = false
@@ -128,6 +145,8 @@ func back_to_menu() -> void:
 		# The others see "left the game", not "lost connection"; a joiner
 		# first gets its last progress package (NetStatus.leave).
 		await s.net.leave()
+		if s.local_host.frontend:
+			await s.local_host.stop()
 		s.multiplayer.multiplayer_peer = OfflineMultiplayerPeer.new()
 		_leaving = false
 	game = null

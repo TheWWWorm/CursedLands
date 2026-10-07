@@ -448,7 +448,7 @@ func _rpc_offers(o: Dictionary, k: Dictionary) -> void:
 
 ## A textslmp line with the other player's name, in this player's language.
 func _note(idx: int, key: String, who: String) -> void:
-	if idx == session.my_index:
+	if idx == session.my_index and not session.local_host.worker:
 		_show_note(key, who)
 		return
 	var pid := session._pid_of(idx)
@@ -470,7 +470,7 @@ func _show_note(key: String, who: String) -> void:
 
 
 func _note_text(idx: int, text: String) -> void:
-	if idx == session.my_index:
+	if idx == session.my_index and not session.local_host.worker:
 		note.emit(text)
 		session.message.emit(text)
 		return

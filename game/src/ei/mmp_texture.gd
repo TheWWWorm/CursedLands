@@ -6,6 +6,8 @@ extends RefCounted
 
 const MAGIC := 0x00504D4D  # "MMP\0"
 const DATA_OFFSET := 76
+static var _raw_kernel: RefCounted = ClassDB.instantiate("MmpTextureKernel") \
+	if ClassDB.class_exists("MmpTextureKernel") and not OS.get_cmdline_user_args().has("--ei-script-textures") else null
 
 
 static func decode(data: PackedByteArray) -> Image:
@@ -29,7 +31,7 @@ static func decode(data: PackedByteArray) -> Image:
 	else:
 		img = _decode_raw(data, w, h)
 		# 8888 textures are stored bottom-up, unlike every other format.
-		if tag == PackedByteArray([0x88, 0x88, 0, 0]):
+		if img and tag == PackedByteArray([0x88, 0x88, 0, 0]):
 			img.flip_y()
 	if img and img.get_format() != Image.FORMAT_RGBA8:
 		img.convert(Image.FORMAT_RGBA8)
@@ -59,10 +61,24 @@ static func _decode_pnt3(data: PackedByteArray, size: int, w: int, h: int) -> Im
 
 
 static func _decode_raw(data: PackedByteArray, w: int, h: int) -> Image:
+	if _raw_kernel:
+		var rgba: PackedByteArray = _raw_kernel.decode_raw(data, w, h)
+		return Image.create_from_data(w, h, false, Image.FORMAT_RGBA8, rgba) if not rgba.is_empty() else null
+	return _decode_raw_script(data, w, h)
+
+
+## Independent reference and fallback on platforms without the extension.
+static func _decode_raw_script(data: PackedByteArray, w: int, h: int) -> Image:
+	if data.size() < DATA_OFFSET or w <= 0 or h <= 0 or w > 16384 or h > 16384 or w * h > 64 * 1024 * 1024:
+		return null
+	if not data.decode_u32(20) in [16, 32] or w * h * (data.decode_u32(20) / 8) > data.size() - DATA_OFFSET:
+		return null
 	var bpp := data.decode_u32(20) / 8
 	var masks: Array[PackedInt64Array] = []
 	for c in 4:  # a, r, g, b: (mask, shift, bit count)
 		var p := 24 + c * 12
+		if data.decode_u32(p + 4) >= 64:
+			return null
 		masks.append(PackedInt64Array([data.decode_u32(p), data.decode_u32(p + 4), data.decode_u32(p + 8)]))
 	var out := PackedByteArray()
 	out.resize(w * h * 4)

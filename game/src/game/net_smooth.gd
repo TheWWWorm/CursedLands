@@ -20,8 +20,17 @@ var _last_ms := 0
 var _interval := 0.1
 
 
+static func create() -> RefCounted:
+	if ClassDB.class_exists("NetSmoothKernel") and not OS.get_cmdline_user_args().has("--ei-script-presentation"):
+		return ClassDB.instantiate("NetSmoothKernel")
+	return NetSmooth.new()
+
+
 func got(target: Vector2, quiet := false, facing := INF) -> void:
-	var now := Time.get_ticks_msec()
+	got_at(target, Time.get_ticks_msec(), quiet, facing)
+
+
+func got_at(target: Vector2, now: int, quiet: bool, facing: float) -> void:
 	if _last_ms > 0:
 		_interval = clampf(lerpf(_interval, (now - _last_ms) / 1000.0, 0.25), 0.05, 0.4)
 	_last_ms = now

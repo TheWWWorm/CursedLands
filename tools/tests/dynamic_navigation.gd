@@ -29,11 +29,15 @@ func compare(label: String, pairs: Array) -> void:
 	var scalar = Blocks.new(nav,nav.layer(cls))
 	scalar._native_topology = false
 	check(native._native_topology,label+" native topology available")
+	var turn_kernel := NavTurn.native_kernel()
+	check(turn_kernel != null,label+" native turn kernel available")
 	for pair: Array in pairs:
 		nav._native_graphs[cls] = native
 		var actual := route(pair[0],pair[1])
 		nav._native_graphs[cls] = scalar
+		NavTurn._kernel = null   # independent turn pass as well as static topology
 		var expected := route(pair[0],pair[1])
+		NavTurn._kernel = turn_kernel
 		check(actual == expected,label+" complete path "+str(pair))
 		check(native.route(nav.cell(pair[0]),nav.cell(pair[1])) == scalar.route(nav.cell(pair[0]),nav.cell(pair[1])),label+" static block route")
 	nav._native_graphs[cls] = native

@@ -6,7 +6,9 @@ This is a separate game engine, built in Godot, in the spirit of OpenMW and fher
 
 > **You need your own copy of the game you want to play.** No game data ships with this engine: no models, textures, music, sounds, videos, texts or maps. Nothing is downloaded for you. The original game's **GOG version** is the main tested edition. The expansion can use an installed folder, a data pack or the supported two-disc ISO edition.
 
-Windows and Linux x86-64 use a compiled navigation module; macOS, Android and the browser keep the optimized script implementation. Source and build instructions are in [the navigation guide](game/src/native/source/README.md).
+Windows and Linux x86-64 use compiled hot paths. Current source also includes Android ARM64 helpers, tested in a private Retroid Pocket 5 build; published Android packages may predate these changes. macOS and the browser retain script implementations. Source and build instructions are in [the native guide](game/src/native/source/README.md).
+
+This branch is **1.0.3-experimental.5**. It gathers the gameplay repairs, native system work and separate co-op simulation; it is not the latest public release. See the [current handoff and measured limits](docs/performance-handoff-2026-10-07.md). Stable 60 FPS at actual 2× remains unfinished, especially on Retroid Pocket 5.
 
 ## Screenshots
 

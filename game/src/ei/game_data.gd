@@ -456,7 +456,7 @@ func _ready() -> void:
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--ei-path="):
 			root = arg.trim_prefix("--ei-path=")
-	var rc := RendererChoice.startup()   # options.renderer; the trial of a new renderer
+	var rc := null if Array(OS.get_cmdline_user_args()).any(func(a): return a.begins_with("--local-host-config=")) else RendererChoice.startup()   # options.renderer; the trial of a new renderer
 	if rc:
 		add_child(rc)
 	add_child(CrashReport.new())   # session marker, unexpected-exit report
@@ -624,6 +624,10 @@ func text(key: String) -> String:
 
 
 func save_settings() -> void:
+	# The simulation child shares saves and reads settings, but the UI is
+	# the sole writer of display, player and preference settings.
+	if Array(OS.get_cmdline_user_args()).any(func(a): return a.begins_with("--local-host-config=")):
+		return
 	var cfg := ConfigFile.new()
 	cfg.set_value("game", "root", root)
 	for id: String in campaign_roots:

@@ -1,6 +1,26 @@
 # Changelog
 
-## Unreleased
+## 1.0.3-experimental.5 — experimental branch, 7 October 2026
+
+- Separate co-op simulation from the local view, with independent desktop
+  processes and an optional Android headless service. Retain owner commands,
+  pause, saves, movie completion and startup/shutdown lifecycle.
+- Extend native processing to AI/perception inputs, route construction,
+  animation presentation, particles and bulk buffers, grass/terrain work,
+  audio and texture decoding. Cache animation eligibility in the engine.
+- Add bounded Android Compatibility terrain caching and smaller terrain draw
+  pieces; retain authored geometry, weather, water and soft-ground switching.
+- Keep the separated host’s view synchronized during original multiplayer
+  base/quest travel, handle liveness checks after shutdown cleanly, and prevent
+  delayed automatic thumbnails from overwriting newer manual save images.
+- Fix repeated Terror wing animations, creature spell damage and delayed
+  callbacks referencing removed casters. Retain all prior gameplay fixes.
+- Record desktop and Retroid results with actual simulation progress. Portal
+  reaches 20.5 FPS in the final Retroid run; stable 60 FPS at actual 2× is not achieved.
+  See the [handoff](docs/performance-handoff-2026-10-07.md) and
+  [validation record](docs/experimental5-validation.json).
+
+## Previous local Experimental 4 checkpoint
 
 - Rebuild static navigation and movement sampling around persistent native
   records, reuse unit registry order, cache body-derived health by revision,

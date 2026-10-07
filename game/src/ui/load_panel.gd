@@ -340,6 +340,13 @@ func _load() -> void:
 func _save() -> void:
 	if sel < 0:
 		return
+	var hud := get_canvas_layer_node()
+	var game: Variant = hud.get("game") if hud else null
+	var session: Variant = game.get("session") if game is Object else null
+	if session is Session and session.local_host.frontend:
+		await session.local_host.measure_save()
+		if not is_inside_tree() or not visible or sel < 0:
+			return
 	if not _disk_ok():
 		_no_space()
 		return

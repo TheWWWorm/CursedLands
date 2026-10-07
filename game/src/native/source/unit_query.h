@@ -7,6 +7,7 @@
 #include <godot_cpp/variant/dictionary.hpp>
 #include <godot_cpp/variant/vector2i.hpp>
 #include <algorithm>
+#include <array>
 #include <atomic>
 #include <cmath>
 #include <limits>
@@ -75,6 +76,8 @@ protected:
         ClassDB::bind_method(D_METHOD("in_cells", "near", "observer", "origin", "cells", "alive"), &UnitQueryKernel::in_cells);
         ClassDB::bind_method(D_METHOD("order_units", "list", "ranks"), &UnitQueryKernel::order_units);
         ClassDB::bind_method(D_METHOD("near_cells", "buckets", "origin", "radius", "cells", "observer", "alive"), &UnitQueryKernel::near_cells);
+        ClassDB::bind_method(D_METHOD("near_units", "buckets", "registered", "origin", "radius", "bucket_size", "alive"), &UnitQueryKernel::near_units);
+        ClassDB::bind_method(D_METHOD("step_blocker", "unit", "point", "next_cell", "near", "result"), &UnitQueryKernel::step_blocker);
     }
 public:
     static int64_t fistp(double value) {
@@ -85,6 +88,98 @@ public:
     }
     static Vector2i cell(Vector2 p) {
         return Vector2i(fistp(double(p.x) * 2. - .5) / 32, fistp(double(p.y) * 2. - .5) / 32);
+    }
+    Array near_units(const Dictionary &buckets, const Dictionary &registered, Vector2 origin,
+                     double radius, double bucket_size, bool alive) const {
+        Array out;
+        const double r2 = radius * radius;
+        auto append = [&](const Variant &entry) {
+            Object *unit = entry.get_validated_object();
+            if (!unit || (alive && bool(unit->get(dead_key)))) return;
+            const Vector2 p = unit->get(pos_key);
+            if (double(p.distance_squared_to(origin)) <= r2) out.append(entry);
+        };
+        bool local = std::isfinite(radius) && radius >= 0. && origin.is_finite() &&
+            double(origin.x) - radius >= 0. && double(origin.y) - radius >= 0. && bucket_size > 0.;
+        const double x0 = std::floor((double(origin.x) - radius) / bucket_size), x1 = std::floor((double(origin.x) + radius) / bucket_size);
+        const double y0 = std::floor((double(origin.y) - radius) / bucket_size), y1 = std::floor((double(origin.y) + radius) / bucket_size);
+        const double width = x1 - x0 + 1., height = y1 - y0 + 1.;
+        local = local && std::isfinite(x0) && std::isfinite(x1) && std::isfinite(y0) && std::isfinite(y1) &&
+            x0 < 0x1p50 && x1 < 0x1p50 && y0 < 0x1p50 && y1 < 0x1p50 &&
+            width > 0. && height > 0. && width < 4096. && height < 4096. &&
+            width * height <= double(std::max(int64_t(16), registered.size() * 4));
+        if (!local) {
+            const Array values = registered.values();
+            for (int64_t i = 0; i < values.size(); ++i) append(values[i]);
+        } else {
+            for (int64_t y = int64_t(y0); y <= int64_t(y1); ++y) {
+                for (int64_t x = int64_t(x0); x <= int64_t(x1); ++x) {
+                    const Variant value = buckets.get(x + y * 4096, Variant());
+                    if (value.get_type() != Variant::ARRAY) continue;
+                    const Array bucket = value;
+                    for (int64_t i = 0; i < bucket.size(); ++i) append(bucket[i]);
+                }
+            }
+        }
+        return out;
+    }
+private:
+    mutable std::unordered_map<int64_t, std::array<uint8_t, 256>> stamps;
+    static Vector2i nav_cell(Vector2 p) { return Vector2i(fistp(double(p.x) * 2. - .5), fistp(double(p.y) * 2. - .5)); }
+    static int64_t stamp_key(double radius) { return radius <= 0.20000000298023224 ? 0 : fistp(float(radius * 10. + 1.)); }
+    int stamp_value(int64_t k, Vector2i delta) const {
+        if (!k || delta.x < -8 || delta.y < -8 || delta.x > 7 || delta.y > 7) return 0;
+        auto it = stamps.find(k);
+        if (it == stamps.end()) {
+            if (stamps.size() >= 64) stamps.clear();
+            std::array<uint8_t, 256> values;
+            const double radius = float(double(k) * .1);
+            for (int y = -8; y < 8; ++y) for (int x = -8; x < 8; ++x) {
+                const int64_t value = fistp(float((radius + 2. - std::sqrt(double(x*x + y*y)) * .5) * 16.));
+                values[(y + 8) * 16 + x + 8] = value > 0 ? uint8_t(value) : 0;
+            }
+            it = stamps.emplace(k, values).first;
+        }
+        return it->second[(delta.y + 8) * 16 + delta.x + 8];
+    }
+    static int signed_stamp(int value) { return value & 128 ? value - 256 : value; }
+public:
+    Object *step_blocker(Object *unit, Vector2 point, Vector2i next_cell, const Array &near, Dictionary result) const {
+        if (!unit) return nullptr;
+        const Vector2 origin = unit->get(pos_key);
+        const Vector2i c0 = nav_cell(origin), cq = next_cell.x >= 0 ? next_cell : nav_cell(point);
+        if (c0 == cq) return nullptr;
+        static const StringName radius_method("body_radius"), moving_key("_moving");
+        const double radius = unit->call(radius_method);
+        struct Row { Object *unit; Vector2 pos; Vector2i cell; double radius; int64_t key; };
+        std::vector<Row> rows; rows.reserve(size_t(near.size()));
+        int now[2] = {}, next[2] = {};
+        for (int64_t i = 0; i < near.size(); ++i) {
+            Object *other = near[i].get_validated_object();
+            if (!other || other == unit || bool(other->get(dead_key))) continue;
+            const Vector2 p = other->get(pos_key);
+            const double r = other->call(radius_method);
+            const int64_t k = stamp_key(r);
+            const Vector2i c = nav_cell(p);
+            const int layer = bool(other->get(moving_key)) ? 1 : 0;
+            next[layer] = std::max(next[layer], stamp_value(k, cq - c));
+            now[layer] = std::max(now[layer], stamp_value(k, c0 - c));
+            rows.push_back({other, p, c, r, k});
+        }
+        const int threshold = std::max(int64_t(0), fistp(float((2. - radius) * 16.))) & 255;
+        const int layer = next[0] > threshold && next[0] > now[0] ? 1 :
+            signed_stamp(next[1]) > threshold && signed_stamp(next[1]) > signed_stamp(now[1]) ? 2 : 0;
+        if (!layer) return nullptr;
+        for (const auto &row : rows) {
+            if (double(point.distance_to(row.pos)) >= radius + row.radius) continue;
+            const Vector2i offset = c0 - row.cell;
+            if (!row.key || offset.x < -8 || offset.y < -8 || offset.x > 7 || offset.y > 7 ||
+                signed_stamp(stamp_value(row.key, offset)) >= threshold) {
+                result["standing"] = layer == 1;
+                return row.unit;
+            }
+        }
+        return nullptr;
     }
     Array in_cells(const Array &near, Object *observer, Vector2 origin, const Dictionary &cells, bool alive) const {
         Array result;

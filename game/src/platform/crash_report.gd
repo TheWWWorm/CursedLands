@@ -141,6 +141,8 @@ static func scan(own_pid: int) -> Dictionary:
 ## A process `pid` runs (Linux / Android: /proc; OS.is_process_running knows
 ## only child processes). Elsewhere a second game window's marker counts as left.
 static func alive(pid: int) -> bool:
+	if OS.has_feature("android") and Engine.has_singleton("EISimulation"):
+		return bool(Engine.get_singleton("EISimulation").process_is_alive(pid))
 	return pid > 0 and (OS.has_feature("linuxbsd") or OS.has_feature("android")) and DirAccess.dir_exists_absolute("/proc/%d" % pid)
 
 

@@ -26,7 +26,7 @@ func adopt() -> void:
 		quest_zone = session.zone_id
 	for p: Dictionary in session.players.values():
 		owners[int(p.index)] = {"zone": session.zone_id, "entrance": session._lmp_entrance,
-			"generation": 1, "loading": int(p.index) != 0, "armed": -1, "auto": -2}
+			"generation": 1, "loading": session._pid_of(int(p.index)) > 1, "armed": -1, "auto": -2}
 	session.lmp_generation = 1
 	_publish_locations()
 
@@ -294,13 +294,17 @@ func _perform(player: int, target: String, entrance: int, old_generation: int) -
 	session.swap.cancel_player(player)
 	with_world(source, _detach_party.bind(player, true))
 	owners[player] = {"zone": target, "entrance": entrance, "generation": old_generation + 1,
-		"loading": player != 0, "armed": -1, "auto": -2}
+		"loading": session._pid_of(player) > 1, "armed": -1, "auto": -2}
 	_publish_locations()
 	with_world(destination, _deploy_party.bind(player, entrance))
 	if player == 0:
 		_activate(destination)
-	else:
-		with_world(destination, publish.bind(session._pid_of(player)))
+	# A separated host still owns slot zero, but its view is a remote peer.
+	# Activate the authority context and send that view the new generation;
+	# commands stay held until its normal loaded acknowledgement arrives.
+	var peer := session._pid_of(player)
+	if peer > 1:
+		with_world(destination, publish.bind(peer))
 	session._mp_send(player)
 	session.mark_dirty()
 	session.sync_state()

@@ -204,8 +204,17 @@ static func compose(code: String, lit := true, wrap := false) -> String:
 	ensure_globals()
 	if lit and not wrap and not code.contains("#define EI_FIGURE_LIGHT"):
 		code = code.replace("shader_type spatial;", "shader_type spatial;\n#define EI_FIGURE_LIGHT")
+	if lit:
+		# A scalar varying still consumes a complete GPU location. Keep the
+		# same interpolated values in one vec4 so the enhanced water shader
+		# also fits Mobile's Adreno limit, including volumetric fog.
+		code = code.replace("varying vec3 ei_e;\nvarying float ei_k;",
+			"varying vec4 ei_vertex_inputs;\n#define ei_e ei_vertex_inputs.rgb\n#define ei_k ei_vertex_inputs.a")
+		# Godot establishes the varying's stage on a whole-value assignment;
+		# a first write to a swizzle is treated as reading an unset varying.
+		code = code.replace("void vertex() {", "void vertex() {\n\tei_vertex_inputs = vec4(0.0);")
 	var i := code.find("\nvoid ")
-	var extra := "varying vec3 ei_surface;\nvarying float ei_leaf;\nvarying vec3 ei_vpos;\n" if lit else ""
+	var extra := "varying vec4 ei_surface_leaf;\n#define ei_surface ei_surface_leaf.rgb\n#define ei_leaf ei_surface_leaf.a\nvarying vec3 ei_vpos;\n" if lit else ""
 	if lit:
 		extra += VERTEX_LIGHT.replace("WRAP_TERM", _wrap_term(wrap))
 	code = code.substr(0, i + 1) + LIGHT_COMMON + extra + code.substr(i + 1)
@@ -213,8 +222,13 @@ static func compose(code: String, lit := true, wrap := false) -> String:
 		code = _vertex_tail(code, "\n\tvec3 ei_d; vec3 ei_s;\n\tei_vertex_colours((MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz, normalize(MODEL_NORMAL_MATRIX * NORMAL), ei_e, ei_k, ei_d, ei_s);\n\tei_vertex_diffuse = ei_d; ei_vertex_specular = ei_s;\n")
 		# Fragment-to-light varyings: absent profiles keep the exact original
 		# diffuse response. x = highlight strength, y = roughness, z = metal.
-		code = code.replace("void fragment() {", "void fragment() {\n\tei_surface = vec3(0.0, 1.0, 0.0);\n\tei_leaf = 0.0;\n\tei_vpos = VERTEX;")
+		code = code.replace("void fragment() {", "void fragment() {\n\tei_surface_leaf = vec4(0.0, 1.0, 0.0, 0.0);\n\tei_vpos = VERTEX;")
 	code = code + light_code(wrap, code.contains("#define EI_GRASS_LIGHT")) if lit else code
+	# A uniform branch still reserves the registers/code for the complete
+	# per-pixel lighting path on mobile GPUs. This option changes only in
+	# settings, so compile its current value and rebuild on that transition.
+	if _specialize_materials:
+		code = code.replace("ei_surface_fx.x", "1.0" if on("gfx_materials") else "0.0")
 	return _blend_fog(code, lit) if _vol_fog else code
 
 
@@ -235,11 +249,15 @@ static func _vertex_tail(code: String, tail: String) -> String:
 	return code
 
 
-## Shaders made by make_shader, recomposed when gfx_volumetric switches
+## Shaders made by make_shader, recomposed when gfx_volumetric or
+## gfx_materials switches. Existing Shader/ShaderMaterial identities and
+## their parameters survive the rebuild.
 ## (the FOG write is compile-time: Godot skips volumetric fog for every
 ## material that writes FOG).
 static var _made: Array = []   # [WeakRef(Shader), code, lit, wrap]
 static var _vol_fog := false
+static var _material_mode := -1
+static var _specialize_materials := not OS.get_cmdline_user_args().has("--ei-dynamic-material-shader")
 
 
 static func make_shader(code: String, lit := true, wrap := false) -> Shader:
@@ -253,9 +271,11 @@ static func make_shader(code: String, lit := true, wrap := false) -> Shader:
 
 
 static func _set_vol_fog(v: bool) -> void:
-	if v == _vol_fog:
+	var mode := int(on("gfx_materials")) if _specialize_materials else -2
+	if v == _vol_fog and mode == _material_mode:
 		return
 	_vol_fog = v
+	_material_mode = mode
 	var keep: Array = []
 	for r: Array in _made:
 		var sh := (r[0] as WeakRef).get_ref() as Shader
@@ -553,6 +573,7 @@ static func ensure_globals() -> void:
 
 static func apply_surface_options() -> void:
 	ensure_globals()
+	_set_vol_fog(on("gfx_volumetric"))
 	apply_unit_sharpness()
 	RenderingServer.global_shader_parameter_set(&"ei_surface_fx", Vector3(
 		float(on("gfx_materials")), float(on("gfx_foliage_light")), float(on("gfx_weather_surfaces"))))

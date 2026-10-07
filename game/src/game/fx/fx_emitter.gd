@@ -82,6 +82,28 @@ var has_carrier := false
 ## Remake: camera shakes a callback asked for ([at, p2, amp, decay], EI
 ## metres); ParticleFx starts them on the main thread after the tick.
 var shakes: Array = []
+var _fire_kernel: RefCounted
+var _fire_spawn: Callable
+var _fire_update: Callable
+var _spell_kernel: RefCounted
+var _spell_spawn: Callable
+var _spell_update: Callable
+var _spell_control: Callable
+
+
+func prepare_spell_batch() -> void:
+	if ClassDB.class_exists("SpellParticleKernel") and not OS.get_cmdline_user_args().has("--ei-script-spell-particles"):
+		_spell_kernel = ClassDB.instantiate("SpellParticleKernel")
+		_spell_spawn = spawn_fn
+		_spell_update = upd_fn
+		_spell_control = ctl_fn
+
+
+func prepare_fire_batch() -> void:
+	if ClassDB.class_exists("FireParticleKernel") and not OS.get_cmdline_user_args().has("--ei-script-fire"):
+		_fire_kernel = ClassDB.instantiate("FireParticleKernel")
+		_fire_spawn = spawn_fn
+		_fire_update = upd_fn
 
 
 func rnd() -> int:
@@ -191,6 +213,19 @@ func update_pre() -> bool:
 ## this emitter (and its ground snapshot) when `par`, no node or other
 ## object; returns false when the emitter is finished.
 func update_sim() -> bool:
+	if _fire_kernel and spawn_fn == _fire_spawn and upd_fn == _fire_update and not ctl_fn.is_valid():
+		return _fire_kernel.step(self)
+	# The first spawn reads the carrier's bounds/height and sometimes the
+	# camera. Keep that setup on its original script path; subsequent ticks
+	# contain only emitter-owned data, including the same random stream.
+	if _spell_kernel and spawn_fn == _spell_spawn and upd_fn == _spell_update and ctl_fn == _spell_control \
+		and not cp.is_empty() and (type < 0x202b or (ec > 0 and cp.size() >= ec)):
+		return _spell_kernel.step(self)
+	return update_sim_script()
+
+
+## Independent original update and callback path, also used by custom emitters.
+func update_sim_script() -> bool:
 	if ctl_fn.is_valid():
 		for c in cp:
 			ctl_fn.call(self, c)

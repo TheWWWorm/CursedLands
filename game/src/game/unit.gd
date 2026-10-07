@@ -33,6 +33,15 @@ var _structure_lifetime := StructureLifetime.new()
 var _notice_lifetime: RefCounted = ClassDB.instantiate("UnitNoticeLifetime") \
 	if ClassDB.class_exists("UnitNoticeLifetime") and not OS.get_cmdline_user_args().has("--ei-script-units") else null
 
+## Native inputs stay attached to this script instance and follow public writes.
+## Rich containers keep their live backing store; this is not a worker snapshot.
+var _sim_lease: RefCounted
+var _sim_state: RefCounted:
+	set(value):
+		if _sim_state != value:
+			_sim_lease = null
+			_sim_state = value
+
 var world: GameWorld:
 	set(value):
 		if world != value:
@@ -42,19 +51,28 @@ var uid := 0:
 	set(value):
 		if uid != value:
 			uid = value
+			if _sim_state: _sim_state.update(&"uid", value)
 			structure_revision += 1
-var info := {}          # map record (EIMob object) or synthetic spawn data
-var proto := {}         # monster_prototypes row
+var info := {}: # map record (EIMob object) or synthetic spawn data
+	set(value):
+		info = value
+		if _sim_state: _sim_state.update(&"info", value)
+var proto := {}: # monster_prototypes row
+	set(value):
+		proto = value
+		if _sim_state: _sim_state.update(&"proto", value)
 var race := {}          # race_models row
 var faction := 0:   # diplomacy index (OBJ_PLAYER)
 	set(value):
 		if faction != value:
 			faction = value
+			if _sim_state: _sim_state.update(&"faction", value)
 			notice_revision += 1
 var controller := -1:   # player index, -1 = AI
 	set(value):
 		if controller != value:
 			controller = value
+			if _sim_state: _sim_state.update(&"controller", value)
 			notice_revision += 1
 var display_name := ""
 
@@ -63,6 +81,7 @@ var display_name := ""
 ## teleports, snapshots, placement) at once, as a scan of every unit would.
 var pos := Vector2.ZERO:
 	set(v):
+		if _sim_state and pos != v: _sim_state.update(&"pos", v)
 		pos = v
 		if _seq != 0:
 			world.nav.rebucket(self)
@@ -76,8 +95,12 @@ var _seq := 0:
 			_seq = value
 			structure_revision += 1
 ## Co-op client: where the unit is drawn between the host's snapshots.
-var net_view := NetSmooth.new()
-var facing := 0.0
+var net_view := NetSmooth.create()
+var facing := 0.0:
+	set(value):
+		if facing != value:
+			facing = value
+			if _sim_state: _sim_state.update(&"facing", value)
 var model: EIUnitModel
 
 # --- stats
@@ -94,7 +117,11 @@ var max_hp: float:
 		_set_max_hp(v * _hp_mul())
 var _base_max_hp := 10.0
 var _hp := 10.0
-var _max_hp := 10.0
+var _max_hp := 10.0:
+	set(value):
+		if _max_hp != value:
+			_max_hp = value
+			if _sim_state: _sim_state.update(&"_max_hp", value)
 ## head, torso, right arm, left arm, right leg, left leg (race_models columns):
 ## {type: 0 skull / 1 torso / 2 arm / 3 leg, size, lethal, cur, max, state:
 ## 0 absent / 1 severed / 2 destroyed / 3 intact}.
@@ -118,24 +145,36 @@ var parts: Array:
 		_parts_revision = token
 		_health_revision = -1
 		_limbs.clear()
+		_limb_revision = -1
 var mana := 0.0
 var max_mana := 0.0
-var stats := {}         # to_hit, parry, dmg_min, dmg_max, absorption, reach, attack_time
+var stats := {}: # to_hit, parry, dmg_min, dmg_max, absorption, reach, attack_time
+	set(value):
+		stats = value
+		if _sim_state: _sim_state.update(&"stats", value)
 var dead := false:
 	set(value):
 		if dead != value:
 			dead = value
+			if _sim_state: _sim_state.update(&"dead", value)
 			notice_revision += 1
 var hidden := false:
 	set(value):
 		if hidden != value:
 			hidden = value
+			if _sim_state: _sim_state.update(&"hidden", value)
 			notice_revision += 1
 var fogged := false   # out of this player's sight (UnitFog, client-side only)
 
 # --- orders
-var orders: Array[Dictionary] = []
-var order := {}
+var orders: Array[Dictionary] = []:
+	set(value):
+		orders = value
+		if _sim_state: _sim_state.update(&"orders", value)
+var order := {}:
+	set(value):
+		order = value
+		if _sim_state: _sim_state.update(&"order", value)
 var path := PackedVector2Array()
 ## The active motion consumes at most32 cells. The last cell
 ## is the first of the next chunk; the full remaining record stays available
@@ -173,10 +212,18 @@ var _regen_t := 0.0
 const STANCE_NONE := 0
 const STANCE_KNEEL := 1
 const STANCE_CRAWL := 2
-var stance := STANCE_NONE
+var stance := STANCE_NONE:
+	set(value):
+		if stance != value:
+			stance = value
+			if _sim_state: _sim_state.update(&"stance", value)
 var sneaking: bool:
 	get: return stance != STANCE_NONE
-var mode := "standard"      # AI mode: standard / sentry / guard / follow / fear / aggression / player
+var mode := "standard": # AI mode: standard / sentry / guard / follow / fear / aggression / player
+	set(value):
+		if mode != value:
+			mode = value
+			if _sim_state: _sim_state.update(&"mode", value)
 ## Player units' Aggressive (true) / Defensive (false) mode: the original unit
 ## 1 by default, set; read by the Player
 ## motivation (UnitAI.think). Toggled from the HUD dial / keyboard "swarm".
@@ -190,7 +237,11 @@ var strike_aim := -1        # aimed part of the last strike (the original order)
 var strike_miss := false
 var _attack_cd := 0.0
 var _repath := 0.0
-var _anim_lock := 0.0
+var _anim_lock := 0.0:
+	set(value):
+		if _anim_lock != value:
+			_anim_lock = value
+			if _sim_state: _sim_state.update(&"_anim_lock", value)
 var _story_clip := ""     # a script clip whose completion the saved VM may await
 ## Native village talk checks the creature's current command
 ## (Stop 0 or Rest 11) and posted command (empty 9),.
@@ -198,7 +249,10 @@ var _story_clip := ""     # a script clip whose completion the saved VM may awai
 var _talk_command := 0
 var _talk_posted := 9
 var _talk_remote_ready := true
-var _pending_hit := {}
+var _pending_hit := {}:
+	set(value):
+		_pending_hit = value
+		if _sim_state: _sim_state.update(&"_pending_hit", value)
 ## Authoritative death-queue ticks and the pool message's once flag. A
 ## corpse restored without this optional state remains quiet.
 var _pool_left := -1
@@ -207,17 +261,35 @@ var _pool_step := -1
 var _pool_checked_step := -1
 var _step_dist := 0.0
 var _last_pos := Vector2.ZERO
-var action := "idle"        # replicated visual state
+## Consecutive casts/strikes can keep the same action string between every
+## network snapshot. A generation distinguishes a new action from a repeated
+## state packet, so clients restart its clip exactly once.
+var _action_serial := 0
+var _remote_action_serial := -1
+var action := "idle":
+	set(value):
+		if value != action or value in ["attack", "hit"] or value.begins_with("cast") or value.begins_with("anim:"):
+			_action_serial += 1
+		if _sim_state and action != value: _sim_state.update(&"action", value)
+		action = value
 ## Combat stance (the original unit): set by an attack command
 ## (command 3). Humans then stand, walk and idle in the
 ## combat clips instead of the relaxed ones.
 ## run on every command tick: command 3 (attack) sets it, any
 ## other command clears it for a party unit (unit, the party, set)
 ## units outside a party keep it once set.
-var alert := false
+var alert := false:
+	set(value):
+		if alert != value:
+			alert = value
+			if _sim_state: _sim_state.update(&"alert", value)
 var ai_next := 0.0      # world time of the unit's next AI tick (UnitAI)
 var _perceive_next := 0.0   # next noticed-list update of a Player-motivation unit
-var order_failed := false   # the last order ended unsuccessfully (creature)
+var order_failed := false: # the last order ended unsuccessfully (creature)
+	set(value):
+		if order_failed != value:
+			order_failed = value
+			if _sim_state: _sim_state.update(&"order_failed", value)
 var limp := 0               # walk modifier 0-2 (replicated to clients, which have no body parts)
 ## Unit flag (unit +8): set / cleared by script BlockUnit and by a
 ## "say_block" line (GameSound), read by IsUnitBlocked; player orders skip the
@@ -234,7 +306,10 @@ var resting := false:
 			_pose_dirty = true
 			if resting and _talk_command == 0 and order.is_empty():
 				_talk_command = 11
-var buffs := {}             # name -> {until, _effect_ticks?, dmg_mul?, hp_mul?, actions_add?, regen_mul?, no_cast?, detect?, sense?, resist?, armor?}
+var buffs := {}: # name -> {until, _effect_ticks?, dmg_mul?, hp_mul?, actions_add?, regen_mul?, no_cast?, detect?, sense?, resist?, armor?}
+	set(value):
+		buffs = value
+		if _sim_state: _sim_state.update(&"buffs", value)
 const EFFECT_TICKS := "_effect_ticks"
 ## Old packet rows carried only an absolute deadline. Age their display from
 ## the received clock at this unit's last list replacement, not from later
@@ -337,6 +412,13 @@ var _anim_roots: Array[EIAnimPart] = []
 const OFFSCREEN_LAYER := 1 << 19
 var _geoms: Array[GeometryInstance3D] = []
 var _far := false
+
+
+func _init() -> void:
+	if ClassDB.class_exists("UnitSimulationState") and not OS.get_cmdline_user_args().has("--ei-script-unit-state"):
+		_sim_state = ClassDB.instantiate("UnitSimulationState")
+		_sim_state.capture(self)
+		_sim_lease = _sim_state.attach()
 
 
 func setup(w: GameWorld, record: Dictionary) -> bool:
@@ -522,12 +604,16 @@ static func buff_complexion(base: Vector3, type_id: int, effects: Dictionary) ->
 	return base
 
 
-func figure_info() -> Dictionary:
+func figure_complexion() -> Vector3:
 	var base: Vector3 = info.get("complexion", Vector3.ZERO)
 	if base == Vector3.ZERO:
 		base = proto_complexion(proto)
+	return buff_complexion(base, int(race.get("type_id", 0)), buffs)
+
+
+func figure_info() -> Dictionary:
 	var shown := info.duplicate()
-	shown.complexion = buff_complexion(base, int(race.get("type_id", 0)), buffs)
+	shown.complexion = figure_complexion()
 	# An actual effective zero build is not the absent-map-override sentinel.
 	shown.effective_complexion = true
 	return shown
@@ -539,9 +625,9 @@ func figure_info() -> Dictionary:
 func refresh_figure() -> void:
 	if model == null:
 		return
-	var shown := figure_info()
-	if model.get_meta("complexion", Vector3.INF) == shown.complexion:
+	if model.get_meta("complexion", Vector3.INF) == figure_complexion():
 		return
+	var shown := figure_info()
 	# The replacement copies the old rig's current keys and transforms.
 	# Materialize a hidden figure's deferred pose before reading those keys.
 	model.flush_pending_pose()
@@ -909,23 +995,39 @@ func part_group(i: int) -> String:
 ## (Remake speed: it runs for every unit several times a physics step, so
 ## the parts of each type and the ai.reg levels are looked up once.)
 func wound_factor(type: int) -> float:
+	_refresh_limb_cache()
+	if _wound_factors.has(type):
+		return _wound_factors[type]
 	var r := 1.0
 	for p: UnitBodyPart in _limbs_of(type):
 		if p.state != 0 and p.cur != p.max:
 			r = minf(r, p.cur / p.max)
 	var lv := _wound_levels()
-	if r <= lv[0]:
-		return lv[1]
-	if r <= lv[2]:
-		return lv[3]
-	return 1.0
+	var result := lv[1] if r <= lv[0] else lv[3] if r <= lv[2] else 1.0
+	_wound_factors[type] = result
+	return result
 
 
 var _limbs := {}   # part type -> typed body records (reset with the roster)
+var _limb_revision := -1
+var _limb_reg := {}
+var _wound_factors := {}
+var _leg_ratio := NAN
+
+
+func _refresh_limb_cache() -> void:
+	if _limb_revision == _parts_revision.value and is_same(_limb_reg, GameData.ai_reg):
+		return
+	_limb_revision = _parts_revision.value
+	_limb_reg = GameData.ai_reg
+	_limbs.clear()
+	_wound_factors.clear()
+	_leg_ratio = NAN
 
 
 ## The parts of one type in `parts` order (remembered until _init_parts).
 func _limbs_of(type: int) -> Array:
+	_refresh_limb_cache()
 	var of_type = _limbs.get(type)
 	if of_type == null:
 		of_type = []
@@ -954,10 +1056,14 @@ static func _wound_levels() -> PackedFloat64Array:
 
 ## Worst leg ratio (blocks running below DamageLevelRunLimit).
 func _legs_ratio() -> float:
+	_refresh_limb_cache()
+	if not is_nan(_leg_ratio):
+		return _leg_ratio
 	var r := 1.0
-	for p: Dictionary in _limbs_of(3):
+	for p: UnitBodyPart in _limbs_of(3):
 		if p.state != 0:
 			r = minf(r, p.cur / p.max)
+	_leg_ratio = r
 	return r
 
 
@@ -2644,16 +2750,7 @@ func _do_cast(dt: float) -> void:
 	#  is 5 for the whole action).
 	if world.session:
 		world.session.broadcast({"t": "castfx", "uid": uid, "spell": spell, "secs": cast_t})
-	var tref: WeakRef = weakref(t) if t else null   # the target may leave the world first
-	Spells._after(world, cast_t, func():
-		if not dead and is_instance_valid(world):
-			var tu: GameUnit = tref.get_ref() if tref else null
-			Spells.cast_unit(world, self, spell, tu, at)
-			# the cast is heard (the caster's hearing
-			# detectability × 2, 26 ticks) unless the spell record's is 1.
-			if int(Spells.parse(spell).proto.get("type_id", 0)) != 1:
-				world.ai.noise_event(self, detect(3) * 2.0)
-	)
+	Spells.cast_after(world, self, spell, t, at, cast_t)
 
 
 ## The cast clip (query, cast action), else an attack
@@ -3116,10 +3213,11 @@ static var defer_hidden_pose := not OS.get_cmdline_user_args().has("--ei-eager-p
 func _process(dt: float) -> void:
 	if _screen == null:
 		return
-	if world and world.frame_clock_enabled():
+	if world and world.draw_frame_enabled():
 		if not _frame_drawing:
-			# The native spline already supplies the rendered fraction. Godot's
-			# physics interpolation here would add a second, older placement.
+			# Authority samples its native spline; replicas advance NetSmooth
+			# with the rendered delta. Both already supply this frame's position,
+			# so physics interpolation would add a second, older placement.
 			_frame_drawing = true
 			_anim_clock = -1.0
 			if process_priority == 0:
@@ -3127,11 +3225,12 @@ func _process(dt: float) -> void:
 				_frame_priority_set = true
 			physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
 			reset_physics_interpolation()
-		_game_clock = world.draw_time()
-		_draw_step(0.0)
+		_game_clock = world.draw_time() if world.authority else _game_clock + dt
+		_draw_step(0.0 if world.authority else dt,
+			not world.authority and _placement_frame == Engine.get_process_frames())
 	# Wound layers from part health (every peer), redone when part health,
 	# armour or the figure changed (_wounds_dirty).
-	if _wounds_dirty:
+	if _wounds_dirty and (world == null or world.presentation):
 		_wounds_dirty = false
 		UnitWounds.update(self)
 	# Out of view (box and shadow reach), the figure leaves the sun's shadow
@@ -3182,12 +3281,12 @@ func _process(dt: float) -> void:
 	elif _screen.is_on_screen():
 		step = ANIM_SHADOW_STEP
 	if step == 0.0:
-		anim_flush(defer_hidden_pose and not visible and not anim_watched)
+		anim_flush(defer_hidden_pose and (not visible or (world and not world.presentation)) and not anim_watched)
 		return
 	_anim_due -= dt
 	if _anim_due <= 0.0:
 		_anim_due = maxf(_anim_due + step, 0.0)
-		anim_flush(defer_hidden_pose and not visible and not anim_watched)
+		anim_flush(defer_hidden_pose and (not visible or (world and not world.presentation)) and not anim_watched)
 
 
 ## The playback factor of the playing clip: a walk / run / crawl clip runs at
@@ -3473,11 +3572,13 @@ func resync_drawn() -> void:
 	reset_physics_interpolation()
 
 
-func _sync_transform() -> void:
+func _sync_transform(draw_dt := -1.0) -> void:
+	# A direct/script placement invalidates the native replica's copied cache.
+	_placement_revision += 1
 	if world == null:
 		return
 	# Only on change: a moved node re-places its whole part / mesh subtree.
-	# Host: the same position, facing and ground as the last placement (and
+	# The same drawn position, facing and ground as the last placement (and
 	# the node still there) give the same transform; the ground lookup is
 	# skipped (most units stand still).
 	var t := world.terrain
@@ -3494,12 +3595,15 @@ func _sync_transform() -> void:
 			if direction != Vector2.ZERO:
 				yaw = direction.angle()
 			_draw_move_speed = direction.length() * float(sample.v) * SPEED_SCALE
-	if world.authority and p == _xf_pos and yaw == _xf_facing and (t.get_instance_id() if t else 0) == _xf_tid \
+	if not world.authority:
+		var elapsed := get_physics_process_delta_time() if draw_dt < 0.0 else draw_dt
+		p = net_view.step(pos, elapsed)
+		yaw = net_view.step_yaw(facing, elapsed)
+	# Advance smoothing before checking the cache. Once it reaches the
+	# target, stationary actors can share the host's exact placement cache.
+	if p == _xf_pos and yaw == _xf_facing and (t.get_instance_id() if t else 0) == _xf_tid \
 			and (t == null or t.surface_rev == _xf_rev) and world.nav.floor_rev == _xf_floor_rev and transform == _xf:
 		return
-	if not world.authority:
-		p = net_view.step(pos, get_physics_process_delta_time())
-		yaw = net_view.step_yaw(facing, get_physics_process_delta_time())
 	_drawn = p
 	var xf := Transform3D(Basis(Vector3.UP, yaw + MODEL_YAW_OFFSET),
 		EISpace.pos(p.x, p.y, world.ground_at(p.x, p.y)))
@@ -3510,19 +3614,15 @@ func _sync_transform() -> void:
 		transform = xf
 		if jump:
 			reset_physics_interpolation()
-	if world.authority:
-		_xf_pos = p
-		_xf_facing = yaw
-		_xf_tid = t.get_instance_id() if t else 0
-		_xf_rev = t.surface_rev if t else 0
-		_xf_floor_rev = world.nav.floor_rev
-		_xf = transform
-	else:
-		_xf_tid = -1
-		_xf_pos = Vector2(INF, INF)
+	_xf_pos = p
+	_xf_facing = yaw
+	_xf_tid = t.get_instance_id() if t else 0
+	_xf_rev = t.surface_rev if t else 0
+	_xf_floor_rev = world.nav.floor_rev
+	_xf = transform
 
 
-# _sync_transform's last host placement (pos, facing, terrain and its surface
+# _sync_transform's last drawn placement (pos, facing, terrain and its surface
 # revision, the transform set).
 var _xf_pos := Vector2(INF, INF)
 var _xf_facing := 0.0
@@ -3530,10 +3630,12 @@ var _xf_tid := -1   # the terrain's instance id
 var _xf_rev := 0
 var _xf_floor_rev := -1
 var _xf := Transform3D()
+var _placement_frame := -1   # native roster placement already supplied this frame
+var _placement_revision := 0
 
 
 func _physics_process(_dt: float) -> void:
-	if world and world.frame_clock_enabled():
+	if world and world.draw_frame_enabled():
 		return
 	if _frame_drawing:
 		_frame_drawing = false
@@ -3547,8 +3649,9 @@ func _physics_process(_dt: float) -> void:
 	_draw_step(_dt)
 
 
-func _draw_step(_dt: float) -> void:
-	_sync_transform()
+func _draw_step(_dt: float, placement_ready := false) -> void:
+	if not placement_ready:
+		_sync_transform(_dt)
 	#  takes the speed along the path spline where the unit is
 	# drawn; here the distance covered in the step (a jump of more than 2 m,
 	# a placement or teleport, counts as standing).
@@ -3601,7 +3704,7 @@ func snapshot() -> Array:
 		| (int(strike_miss) << 24) | (int(resting) << 25) | (int(blocked) << 26)
 		| (int(village_talk_ready()) << 27), snappedf(mana, 1.0 / 16.0), ph,
 		snappedf(_max_hp, 1.0 / 16.0), snappedf(max_mana, 1.0 / 16.0), _buff_snapshot(), _perception_snapshot(),
-		snappedf(_move_speed, 1.0 / 256.0)]
+		snappedf(_move_speed, 1.0 / 256.0), _action_serial]
 
 
 func _perception_snapshot() -> Array:
@@ -3722,10 +3825,15 @@ func apply_snapshot(s: Array, quiet := false) -> void:
 			buffs[String(b[0])] = d
 		refresh_figure()
 	var a: String = s[4]
-	if a != action and not dead:
+	var fresh_action := false
+	if s.size() > 14:
+		fresh_action = int(s[14]) != _remote_action_serial
+		_remote_action_serial = int(s[14])
+	if (a != action or (fresh_action and not a in _STEADY)) and not dead:
 		action = a
+		_anim_acc = 0.0
 		if a.begins_with("anim:"):
-			model.play(a.substr(5), 0.1)
+			model.play(a.substr(5), 0.1, fresh_action)
 		elif a.begins_with("revive:"):   # remake option "revive" (Revive): the held clip
 			_keep_clip(a.get_slice(":", 1))
 		elif a.begins_with("cast"):

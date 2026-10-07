@@ -83,7 +83,7 @@ func rows() -> Array:
 	for pid in pids:
 		var p: Dictionary = session.players[pid]
 		var st: Dictionary = session.net.status.get(pid, {})
-		var ping := RemakeText.t("host") if int(pid) == 1 else (NetStatus.state_text("connect")
+		var ping := RemakeText.t("host") if int(p.index) == 0 else (NetStatus.state_text("connect")
 			if String(st.get("state", "connect")) == "connect" else "%d ms" % int(st.get("ping", 0)))
 		out.append([int(pid), String(p.name), NetStatus.colour(int(p.index), session.players), ping])
 	return out
@@ -98,7 +98,7 @@ func _layout() -> Dictionary:
 	var lines := []
 	for r: Array in list:
 		lines.append([r, y])
-		if r[0] != 1:
+		if r[0] != session.host_player_id():
 			btn["kick:%d" % r[0]] = Rect2(X + W - 10.0 - BTN_W * 2.0 - 6.0, y + 1.0, BTN_W, BTN_H)
 			btn["ban:%d" % r[0]] = Rect2(X + W - 10.0 - BTN_W, y + 1.0, BTN_W, BTN_H)
 		y += ROW_H
@@ -175,7 +175,7 @@ func press(b: String) -> void:
 		return
 	var pid := int(b.get_slice(":", 1))
 	var ban := b.begins_with("ban:")
-	if session == null or not session.players.has(pid) or pid == 1:
+	if session == null or not session.players.has(pid) or pid == session.host_player_id():
 		return
 	sound("messbox\\ok")
 	var who := String(session.players[pid].name)
@@ -225,7 +225,7 @@ func _unhandled_key_input(e: InputEvent) -> void:
 func _process(_dt: float) -> void:
 	if not visible:
 		return
-	if session == null or not session.online or not session.is_host:
+	if session == null or not session.online or not session.can_manage_game():
 		close()
 		return
 	queue_redraw()   # pings, players coming and going

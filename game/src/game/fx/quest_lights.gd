@@ -22,6 +22,8 @@ var _world: GameWorld
 var lights := {}       # map-object nid -> OmniLight3D
 var _objects := {}     # nid -> [Node3D, quest-info name, last GS value]
 var _scan := 0.0
+var _unit_revision := -1
+var _object_revision := -1
 
 
 func _init(g: Game) -> void:
@@ -37,6 +39,8 @@ func on_world(w: GameWorld) -> void:
 			l.queue_free()
 	lights.clear()
 	_objects.clear()
+	_unit_revision = -1
+	_object_revision = -1
 	_world = w
 	if w == null:
 		return
@@ -55,7 +59,7 @@ func _unit_created(u: GameUnit) -> void:
 func _refresh_created(u: Variant) -> void:
 	# A queued AddMob unit may be removed before this deferred callback.
 	if is_instance_valid(u) and u is GameUnit and u.world == _world and not String(u.info.get("quest_info", "")).is_empty():
-		_refresh_objects()
+		_refresh_objects(false)
 
 
 ## The part after the second dot is OBJ_QUEST_INFO. is
@@ -68,7 +72,7 @@ func quest_changed(key: String, value: float) -> void:
 	if i2 < 0:
 		return
 	var info := key.substr(i2 + 1)
-	_refresh_objects()
+	_refresh_objects(false)
 	for nid: int in _objects:
 		var row: Array = _objects[nid]
 		if row[1] == info:
@@ -97,34 +101,38 @@ func _current_carrier(nid: int, obj: Variant) -> bool:
 	return _world.objects.get(nid) == obj
 
 
-func _refresh_objects() -> void:
+## Initial discovery and AddMob/registry changes scan the scene once. Quest
+## values are polled only for the small set of authored quest carriers.
+## Explicit callers can request a full scan after editing map metadata.
+func _refresh_objects(rescan := true) -> void:
 	if _world == null or game.session == null or game.session.state == null:
 		return
-	var carriers := _world.objects.duplicate()
-	for u: GameUnit in _world.units.values():
-		carriers[u.uid] = u
-	for nid: int in carriers:
-		var obj = carriers[nid]
-		if not is_instance_valid(obj) or not obj is Node3D:
-			continue
-		var node: Node3D = obj
-		var info := String((node as GameUnit).info.get("quest_info", "")) if node is GameUnit \
-			else String(node.get_meta("ei", EMPTY_INFO).get("quest_info", ""))
-		if info.is_empty():
-			continue
-		# Most scenery has no quest light. Validate registration only for
-		# actual carriers, after the cheap metadata filter.
-		if not _current_carrier(nid, obj):
-			continue
-		# "q." + current zone id + "." + OBJ_QUEST_INFO.
-		var value := _value(info)
-		if not _objects.has(nid) or _objects[nid][0] != node or _objects[nid][1] != info or _objects[nid][2] != value:
-			_objects[nid] = [node, info, value]
-			_switch(nid, node, value)
+	if rescan or _unit_revision != _world.units_revision or _object_revision != _world.objects_revision:
+		_unit_revision = _world.units_revision
+		_object_revision = _world.objects_revision
+		var carriers := _world.objects.duplicate()
+		for u: GameUnit in _world.unit_rows():
+			carriers[u.uid] = u
+		for nid: int in carriers:
+			var node: Variant = carriers[nid]
+			if not is_instance_valid(node) or not node is Node3D:
+				continue
+			var info := String((node as GameUnit).info.get("quest_info", "")) if node is GameUnit \
+				else String(node.get_meta("ei", EMPTY_INFO).get("quest_info", ""))
+			if info.is_empty() or not _current_carrier(nid, node):
+				continue
+			if not _objects.has(nid) or _objects[nid][0] != node or _objects[nid][1] != info:
+				_objects[nid] = [node, info, NAN]
 	for nid: int in _objects.keys():
-		if not _current_carrier(nid, _objects[nid][0]):
+		var row: Array = _objects[nid]
+		if not _current_carrier(nid, row[0]):
 			_remove(nid)
 			_objects.erase(nid)
+			continue
+		var value := _value(row[1])
+		if row[2] != value:
+			row[2] = value
+			_switch(nid, row[0], value)
 
 
 func _switch(nid: int, node: Node3D, value: float) -> void:
@@ -170,7 +178,7 @@ func _process(dt: float) -> void:
 	_scan -= dt
 	if _scan <= 0.0:
 		_scan = 0.25
-		_refresh_objects()
+		_refresh_objects(false)
 	for nid: int in lights.keys():
 		var obj = _objects.get(nid, [null])[0]
 		var light = lights[nid]

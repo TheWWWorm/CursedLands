@@ -7,7 +7,11 @@ class Revision extends RefCounted:
 	var value := 0
 
 var revision: Revision
-var type := -1
+var type := -1:
+	set(v):
+		if type != v:
+			type = v
+			if revision: revision.value += 1
 var size := 0.0
 var sever := 0
 var lethal := 0.0:

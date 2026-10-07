@@ -5,8 +5,14 @@ extends RefCounted
 ## Each segment keeps its first node's speed; turns cap that speed before
 ## evaluation. The first turn takes place without moving the unit.
 
-var controls: Array[Dictionary] = []
-var nodes: Array[Dictionary] = []
+var controls: Array[Dictionary] = []:
+	get:
+		_materialize()
+		return controls
+var nodes: Array[Dictionary] = []:
+	get:
+		_materialize()
+		return nodes
 var start := Vector2.ZERO
 var heading := 0.0
 var initial_turn := 0.0
@@ -15,11 +21,25 @@ var duration := 0.0
 ## A built motion is immutable until the next build. Cache each segment's
 ## invariant arithmetic; sample still subtracts intervals in the original
 ## order so boundary rounding, backward seeks and native ties stay exact.
-var _lengths := PackedFloat64Array()
-var _intervals := PackedFloat64Array()
-var _x_coefficients := PackedVector2Array()
-var _y_coefficients := PackedVector2Array()
+var _lengths := PackedFloat64Array():
+	get:
+		_materialize()
+		return _lengths
+var _intervals := PackedFloat64Array():
+	get:
+		_materialize()
+		return _intervals
+var _x_coefficients := PackedVector2Array():
+	get:
+		_materialize()
+		return _x_coefficients
+var _y_coefficients := PackedVector2Array():
+	get:
+		_materialize()
+		return _y_coefficients
 var _kernel: RefCounted
+var _native_records := false
+var _native_build := not OS.get_cmdline_user_args().has("--ei-script-motion-build")
 
 
 func _init() -> void:
@@ -38,6 +58,23 @@ func _publish() -> void:
 ## cells/tick, and `turn` radians/tick (unit base × RotateSpeedMult = 100).
 func build(from: Vector2, to: Vector2, cells: Array[Vector2i], values: PackedInt32Array,
 		base: float, turn: float, facing: float) -> void:
+	if _kernel and _native_build and _kernel.has_method("build"):
+		var metadata: PackedFloat64Array = _kernel.build(from, to, cells, values, base, turn, facing)
+		if metadata.size() == 2:
+			start = from / 0.5
+			heading = facing
+			turn_rate = turn
+			initial_turn = metadata[0]
+			duration = metadata[1]
+			_native_records = true
+			return
+	build_script(from, to, cells, values, base, turn, facing)
+
+
+## Independent scalar construction and optional-native fallback.
+func build_script(from: Vector2, to: Vector2, cells: Array[Vector2i], values: PackedInt32Array,
+		base: float, turn: float, facing: float) -> void:
+	_native_records = false
 	controls.clear()
 	nodes.clear()
 	_lengths.clear()
@@ -124,6 +161,21 @@ func build(from: Vector2, to: Vector2, cells: Array[Vector2i], values: PackedInt
 		_y_coefficients.append(_coefficients(float(a.p.y), float(a.d.y), float(b.p.y), float(b.d.y), length))
 		duration += interval
 	_publish()
+
+
+## Tools may inspect the original public records. Materialize them only when
+## requested; gameplay reads duration and samples the native route directly.
+func _materialize() -> void:
+	if not _native_records:
+		return
+	_native_records = false
+	var data: Dictionary = _kernel.records()
+	controls.assign(data.controls)
+	nodes.assign(data.nodes)
+	_lengths = data.lengths
+	_intervals = data.intervals
+	_x_coefficients = data.xs
+	_y_coefficients = data.ys
 
 
 func _control(p: Vector2) -> void:

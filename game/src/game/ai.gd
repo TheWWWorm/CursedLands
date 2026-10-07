@@ -12,6 +12,7 @@ var activity: AIActivity
 const NOTICE_CELL_CAP := 1024
 var _notice_cells := {}
 var _unit_query: RefCounted
+var _perception: RefCounted
 
 
 func _init(w: GameWorld) -> void:
@@ -20,6 +21,8 @@ func _init(w: GameWorld) -> void:
 	activity = AIActivity.new(w)
 	if ClassDB.class_exists("UnitQueryKernel") and not "--ei-script-units" in OS.get_cmdline_user_args():
 		_unit_query = ClassDB.instantiate("UnitQueryKernel")
+	if ClassDB.class_exists("PerceptionKernel") and not "--ei-script-perception" in OS.get_cmdline_user_args():
+		_perception = ClassDB.instantiate("PerceptionKernel")
 
 
 ## Calm motivations (Guard, Patrol, Sentry and
@@ -710,6 +713,14 @@ func player_perceive_profile_body(u: GameUnit, force := false) -> Dictionary:
 	var candidates := _notice_candidates(u, maxf(k[0] * k[1], k[4]) if not k.is_empty() else NAN)
 	if _unit_query:
 		candidates = _unit_query.notice_candidates(candidates, GameUnit, u, world, hostile_sides, npc_scan, GameUnit.notice_revision)
+	# Keep custom AI/world callbacks sequential; the standard query's ray and
+	# suspicion operations do not mutate target visibility or observer senses.
+	var batch: bool = _perception != null and _unit_query != null and get_script() == UnitAI \
+		and world.get_script() == GameWorld and u.get_script() == GameUnit
+	if batch:
+		var visible: Variant = _perception.new_visible(candidates, GameUnit, u, world, self, k, keep, corpses, sight)
+		if visible is Array: candidates = visible
+		else: batch = false
 	for o in candidates:
 		if not _unit_query and (not is_instance_valid(o) or not o is GameUnit or o.hidden):
 			continue
@@ -723,8 +734,9 @@ func player_perceive_profile_body(u: GameUnit, force := false) -> Dictionary:
 			if (bool(hostile) or o.controller >= 0) == o.dead: continue
 		var id: int = o.get_instance_id()
 		if corpses.has(id) if o.dead else keep.has(id): continue
-		if k.is_empty(): k = notice_terms(u, sight)
-		if not can_notice_with(u, o, k): continue
+		if not batch:
+			if k.is_empty(): k = notice_terms(u, sight)
+			if not can_notice_with(u, o, k): continue
 		if o.dead:
 			corpses[id] = o
 			if world.relation(u.faction, o.faction) == 0 and _read_mots(u).corpse:

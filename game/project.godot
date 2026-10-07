@@ -20,7 +20,7 @@ config/icon="res://icon.svg"
 run/main_scene="res://scenes/main.tscn"
 run/flush_stdout_on_print=true
 config/features=PackedStringArray("4.7")
-config/version="1.0.3-experimental.4"
+config/version="1.0.3-experimental.5"
 config/project_settings_override.android="user://renderer.cfg"
 
 [autoload]
@@ -56,7 +56,18 @@ project/assembly_name="Evil Islands Remake (PoC)"
 
 timers/tooltip_delay_sec=1000000.0
 
+[threading]
+
+; The owner and its simulation process have independent pools. Huge default
+; pools make small per-frame jobs contend more than they compute.
+worker_pool/max_threads.linux=4
+worker_pool/max_threads.windows=4
+
 [rendering]
+
+; Desktop templates include the queued-image and render-thread shutdown fixes.
+driver/threads/thread_model.linux=2
+driver/threads/thread_model.windows=2
 
 ; Keep figure parameters resident across zone transitions.
 limits/global_shader_variables/buffer_size=262144

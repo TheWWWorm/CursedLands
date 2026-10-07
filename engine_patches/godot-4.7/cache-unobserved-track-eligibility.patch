@@ -1,0 +1,93 @@
+--- a/scene/animation/animation_player.cpp
++++ b/scene/animation/animation_player.cpp
+@@ -747,7 +747,7 @@
+ 	return cache_valid || _update_caches();
+ }
+ 
+-// Private visual-only experiment. The caller must materialize the pose with
++// The caller must materialize the pose with
+ // advance(0) before observing transforms or morphs. All eventful, captured,
+ // blended, nonlooping and root-motion animation takes the normal path.
+ bool AnimationPlayer::advance_unobserved_pose(double p_time) {
+@@ -756,25 +756,34 @@
+ 			playback.current.is_enabled && playback.blend.is_empty() && playback_queue.is_empty() &&
+ 			root_motion_track.is_empty() && capture_cache.remain <= 0.0 && get_script_instance() == nullptr;
+ 	if (eligible) {
+-		const Ref<Animation> &animation = animation_set[playback.current.animation_name].animation;
+-		eligible = animation->get_loop_mode() == Animation::LOOP_LINEAR &&
++		AnimationData &data = animation_set[playback.current.animation_name];
++		const Ref<Animation> &animation = data.animation;
++		// Structural eligibility changes with the normal track-cache lifetime.
++		// Never rescan immutable paths for every unseen character frame. The
++		// internal generation also works when callers block object signals.
++		if (data.unobserved_pose_generation != track_cache_generation) {
++			bool safe = true;
++			for (int i = 0; safe && i < animation->get_track_count(); i++) {
++				switch (animation->track_get_type(i)) {
++					case Animation::TYPE_POSITION_3D:
++					case Animation::TYPE_ROTATION_3D:
++					case Animation::TYPE_SCALE_3D:
++						break;
++					case Animation::TYPE_VALUE: {
++						const NodePath path = animation->track_get_path(i);
++						safe = animation->value_track_get_update_mode(i) == Animation::UPDATE_CONTINUOUS &&
++								path.get_subname_count() == 1 && path.get_subname(0) == SNAME("animation_key");
++					} break;
++					default:
++						safe = false;
++						break;
++				}
++			}
++			data.unobserved_pose_eligible = safe;
++			data.unobserved_pose_generation = track_cache_generation;
++		}
++		eligible = data.unobserved_pose_eligible && animation->get_loop_mode() == Animation::LOOP_LINEAR &&
+ 				playback.current.get_end_time() > playback.current.get_start_time();
+-		for (int i = 0; eligible && i < animation->get_track_count(); i++) {
+-			switch (animation->track_get_type(i)) {
+-				case Animation::TYPE_POSITION_3D:
+-				case Animation::TYPE_ROTATION_3D:
+-				case Animation::TYPE_SCALE_3D:
+-					break;
+-				case Animation::TYPE_VALUE: {
+-					const NodePath path = animation->track_get_path(i);
+-					eligible = animation->value_track_get_update_mode(i) == Animation::UPDATE_CONTINUOUS &&
+-							path.get_subname_count() == 1 && path.get_subname(0) == SNAME("animation_key");
+-				} break;
+-				default:
+-					eligible = false;
+-					break;
+-			}
+-		}
+ 	}
+ 	if (!eligible) {
+ 		AnimationMixer::advance(p_time);
+--- a/scene/animation/animation_mixer.cpp
++++ b/scene/animation/animation_mixer.cpp
+@@ -584,6 +584,7 @@
+ /* -------------------------------------------- */
+ 
+ void AnimationMixer::_clear_caches() {
++	track_cache_generation++;
+ 	_init_root_motion_cache();
+ 	_clear_audio_streams();
+ 	_clear_playing_caches();
+--- a/scene/animation/animation_mixer.h
++++ b/scene/animation/animation_mixer.h
+@@ -79,6 +79,8 @@
+ 		Ref<Animation> animation;
+ 		StringName animation_library;
+ 		uint64_t last_update = 0;
++		uint64_t unobserved_pose_generation = 0;
++		bool unobserved_pose_eligible = false;
+ 	};
+ 
+ 	struct PlaybackInfo {
+@@ -101,6 +103,7 @@
+ protected:
+ 	/* ---- Data lists ---- */
+ 	LocalVector<AnimationLibraryData> animation_libraries;
++	uint64_t track_cache_generation = 1;
+ 	AHashMap<StringName, AnimationData> animation_set; // HashMap<Library name + Animation name, AnimationData>
+ 
+ 	TypedArray<StringName> _get_animation_library_list() const;

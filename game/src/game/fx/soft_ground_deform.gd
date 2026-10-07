@@ -29,6 +29,9 @@ var _queue: Array[Dictionary] = []
 var _age := 0.0
 var _refresh := 0.0
 var _walkers := {} # rendered foot identity -> most recent grounded contact
+var _native_mesh := ClassDB.class_exists("SoftGroundMeshJob") and not OS.get_cmdline_user_args().has("--ei-script-soft-ground")
+var _mesh_jobs: Array[Dictionary] = []
+var _generation := 0
 
 
 func _exit_tree() -> void:
@@ -36,6 +39,11 @@ func _exit_tree() -> void:
 
 
 func clear() -> void:
+	# Workers own only packed snapshots. Join before releasing this world's
+	# bookkeeping; a completed old job must never restore a cleared trail.
+	for job: Dictionary in _mesh_jobs:
+		WorkerThreadPool.wait_for_task_completion(job.task)
+	_mesh_jobs.clear()
 	_queue.clear()
 	_walkers.clear()
 	for key: Vector2i in sectors.keys():
@@ -213,6 +221,8 @@ func _make_room(keep: Vector2i, needed: int = 1) -> void:
 		# A very long walk within a single sector also has a strict ceiling.
 		# Discard its old tracks as a group; the next footfall starts afresh.
 		var rec: Dictionary = sectors[keep]
+		rec.revision += 1
+		rec.build_pending = false
 		rec.tiles.clear()
 		rec.touched.clear()
 		rec.steps.clear()
@@ -242,7 +252,8 @@ func _sector(key: Vector2i) -> Dictionary:
 			if sectors[k].last < sectors[oldest].last:
 				oldest = k
 		_restore(oldest)
-	var node := terrain.get_node_or_null("Sector_%d_%d" % [key.x, key.y]) as MeshInstance3D
+	var sector := terrain.get_node_or_null("Sector_%d_%d" % [key.x, key.y])
+	var node: MeshInstance3D = sector.deformation_surface() if sector is EITerrainSector else sector as MeshInstance3D
 	if node == null or node.mesh == null:
 		return {}
 	var image := Image.create(RESOLUTION, RESOLUTION, false, Image.FORMAT_RGBAF)
@@ -255,9 +266,11 @@ func _sector(key: Vector2i) -> Dictionary:
 	shadow.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_SHADOWS_ONLY
 	shadow.extra_cull_margin = DEPTH
 	node.add_child(shadow)
+	_generation += 1
 	var rec := {"node": weakref(node), "source": node.mesh, "arrays": node.mesh.surface_get_arrays(0),
 		"tiles": {}, "touched": {}, "steps": [], "pending": [], "last": _age, "image": image,
 		"shadow": weakref(shadow), "margin": node.extra_cull_margin,
+		"generation": _generation, "revision": 0, "building": false, "build_pending": false,
 		"texture": ImageTexture.create_from_image(image), "material": terrain._land_mat.duplicate(), "dirty": false}
 	node.extra_cull_margin = maxf(node.extra_cull_margin, DEPTH)
 	rec.material.set_shader_parameter("soft_tracks", true)
@@ -291,6 +304,16 @@ func _rebuild(rec: Dictionary) -> void:
 			ids.append(base + id)
 			shadow_ids.append(base + id - source_count)
 	arrays[Mesh.ARRAY_INDEX] = ids
+	var shadow_arrays := []
+	shadow_arrays.resize(Mesh.ARRAY_MAX)
+	if not shadow_ids.is_empty():
+		for field in [Mesh.ARRAY_VERTEX, Mesh.ARRAY_NORMAL, Mesh.ARRAY_TEX_UV, Mesh.ARRAY_TEX_UV2, Mesh.ARRAY_COLOR]:
+			shadow_arrays[field] = arrays[field].slice(source_count)
+		shadow_arrays[Mesh.ARRAY_INDEX] = shadow_ids
+	_apply_mesh(rec, arrays, shadow_arrays)
+
+
+func _apply_mesh(rec: Dictionary, arrays: Array, shadow_arrays: Array) -> void:
 	var mesh := ArrayMesh.new()
 	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
 	mesh.surface_set_material(0, rec.material)
@@ -299,18 +322,63 @@ func _rebuild(rec: Dictionary) -> void:
 		node.mesh = mesh
 	var shadow := (rec.shadow as WeakRef).get_ref() as MeshInstance3D
 	if shadow:
-		if shadow_ids.is_empty():
+		if shadow_arrays[Mesh.ARRAY_INDEX] == null:
 			shadow.mesh = null
 		else:
-			var shadow_arrays := []
-			shadow_arrays.resize(Mesh.ARRAY_MAX)
-			for field in [Mesh.ARRAY_VERTEX, Mesh.ARRAY_NORMAL, Mesh.ARRAY_TEX_UV, Mesh.ARRAY_TEX_UV2, Mesh.ARRAY_COLOR]:
-				shadow_arrays[field] = arrays[field].slice(source_count)
-			shadow_arrays[Mesh.ARRAY_INDEX] = shadow_ids
 			var shadow_mesh := ArrayMesh.new()
 			shadow_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, shadow_arrays)
 			shadow_mesh.surface_set_material(0, rec.material)
 			shadow.mesh = shadow_mesh
+
+
+func _finish_mesh_jobs(wait := false) -> void:
+	for i in range(_mesh_jobs.size() - 1, -1, -1):
+		var job: Dictionary = _mesh_jobs[i]
+		if not wait and not WorkerThreadPool.is_task_completed(job.task):
+			continue
+		WorkerThreadPool.wait_for_task_completion(job.task)
+		_mesh_jobs.remove_at(i)
+		var rec: Dictionary = sectors.get(job.key, {})
+		if rec.is_empty() or rec.generation != job.generation:
+			continue
+		rec.building = false
+		if rec.revision != job.revision:
+			# Tile expiry/capacity eviction invalidates the snapshot. New contacts
+			# can be coalesced into the next build without reviving old geometry.
+			rec.build_pending = true
+			continue
+		var result: Array = job.kernel.read_result()
+		for id: int in result[2]:
+			rec.tiles[id] = result[2][id]
+		_apply_mesh(rec, result[0], result[1])
+
+
+func _build_meshes(changed: Dictionary) -> void:
+	for q: Dictionary in _queue:
+		if sectors.has(q.key): changed[q.key] = true
+	_queue.clear()
+	for key: Vector2i in changed:
+		sectors[key].build_pending = true
+	_finish_mesh_jobs()
+	for key: Vector2i in sectors:
+		var rec: Dictionary = sectors[key]
+		if rec.building or not rec.build_pending or _mesh_jobs.size() >= MAX_SECTORS:
+			continue
+		var kernel: Object = ClassDB.instantiate("SoftGroundMeshJob")
+		if not kernel.configure(rec.arrays, rec.tiles):
+			# Preserve the ordinary script path for an unsupported mesh layout.
+			_native_mesh = false
+			_finish_mesh_jobs(true)
+			for k: Vector2i in sectors:
+				for id: int in sectors[k].tiles:
+					if sectors[k].tiles[id] == null: _queue.append({"key": k, "id": id})
+			_build_script(changed)
+			return
+		rec.building = true
+		rec.build_pending = false
+		var task := WorkerThreadPool.add_task(Callable(kernel, "run"), false, "soft-ground mesh")
+		_mesh_jobs.append({"key": key, "generation": rec.generation, "revision": rec.revision,
+			"kernel": kernel, "task": task})
 
 
 static func _subdivide(arrays: Array, ids: PackedInt32Array, source: Array, a: int, b: int, c: int) -> void:
@@ -363,9 +431,22 @@ func _process(dt: float) -> void:
 				if _age - float(rec.touched[id]) >= LIFE:
 					rec.tiles.erase(id)
 					rec.touched.erase(id)
+					rec.revision += 1
 					changed[key] = true
 			if changed.has(key):
 				_queue = _queue.filter(func(q: Dictionary) -> bool: return q.key != key or rec.tiles.has(q.id))
+	if _native_mesh:
+		_build_meshes(changed)
+	else:
+		_build_script(changed)
+	for key: Vector2i in sectors:
+		var rec: Dictionary = sectors[key]
+		if rec.dirty:
+			_redraw(key, rec)
+			rec.dirty = false
+
+
+func _build_script(changed: Dictionary) -> void:
 	var start := Time.get_ticks_usec()
 	while not _queue.is_empty():
 		var q: Dictionary = _queue.pop_front()
@@ -393,11 +474,6 @@ func _process(dt: float) -> void:
 			break
 	for key: Vector2i in changed:
 		_rebuild(sectors[key])
-	for key: Vector2i in sectors:
-		var rec: Dictionary = sectors[key]
-		if rec.dirty:
-			_redraw(key, rec)
-			rec.dirty = false
 
 
 func _paint_pending(key: Vector2i, rec: Dictionary) -> void:

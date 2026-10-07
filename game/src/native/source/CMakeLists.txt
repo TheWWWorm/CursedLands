@@ -16,6 +16,10 @@ endif()
 
 # Keep build-machine paths out of distributable diagnostics and binaries.
 if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+  # Match Godot's math on ARM as well as x86. Fusing multiply/add changes
+  # intermediate rounding in interpolation and feeds different future state.
+  target_compile_options(terrain_search PRIVATE -ffp-contract=off)
+  target_compile_options(godot-cpp PRIVATE -ffp-contract=off)
   target_compile_options(terrain_search PRIVATE
     "-ffile-prefix-map=${CMAKE_CURRENT_SOURCE_DIR}=src/native/source"
     "-ffile-prefix-map=${GODOTCPP_DIR}=godot-cpp"
