@@ -606,7 +606,7 @@ func _client_effect_active() -> bool:
 	if authority or (is_inside_tree() and get_tree().paused):
 		return false
 	return session == null or (session.world == self and not session.loading_game \
-		and not session._zone_holding and not session._remote_loading)
+		and not session._zone_holding and not session._remote_loading and not session.movie_active())
 
 
 func _sample_client_effect_frame(now_ms: int, rate: float) -> void:
@@ -635,7 +635,7 @@ func _advance_client_effects(dt: float) -> void:
 
 
 func _deliver(dt: float) -> void:
-	if not authority:
+	if not authority or (session and session.movie_active()):
 		return
 	if session and session.lmp_travel:
 		if session.lmp_travel.can_tick(self):
@@ -654,7 +654,7 @@ func _advance(dt: float) -> void:
 	while _logic_accumulator + 0.000000001 >= TICK:
 		_logic_accumulator = maxf(_logic_accumulator - TICK, 0.0)
 		_tick(TICK)
-		if is_queued_for_deletion():
+		if is_queued_for_deletion() or (session and session.movie_active()):
 			return
 
 
@@ -791,6 +791,48 @@ func dialog_place(u: GameUnit, point: Vector2, angle: float) -> void:
 	u.command({"type": "wait", "t": 0.0})
 	u._anim_lock = 0.0
 	u._set_action("idle")
+
+
+## Authored brief scenes have precise walking marks and distance predicates.
+## An extra co-op hero must not turn such a mark into a nearby "successful"
+## path endpoint. Let idle guests walk aside before planning the story move.
+## Static obstacles and busy/player-commanded units retain ordinary collision.
+func prepare_story_move(actor: GameUnit, point: Vector2) -> bool:
+	if session == null or not session.online or not session.lmp.is_empty() or zone.get("type", "") != "brief":
+		return true
+	var ready := true
+	for other: GameUnit in party_units():
+		if other == actor or other.controller <= 0 or other.dead or other.hidden or not other.has_meta("hero") \
+				or other.get_meta("hero").has("merc"):
+			continue
+		var clearance := actor.body_radius() + other.body_radius() + 0.75
+		if other.pos.distance_squared_to(point) >= clearance * clearance:
+			continue
+		if other.order.get("story_yield", false) or other.orders.any(func(o: Dictionary): return o.get("story_yield", false)):
+			ready = false
+			continue
+		if not other.order.is_empty() or not other.orders.is_empty() or other.blocked or other._anim_lock > 0.0 \
+				or (vm and not vm.briefings.active.is_empty() and dialog_actors.has(other.uid)):
+			continue
+		var away := (other.pos - point).normalized()
+		if away.is_zero_approx():
+			away = Vector2.from_angle(actor.facing + PI * 0.5)
+		var destination := Vector2.INF
+		for angle in [0.0, PI / 4.0, -PI / 4.0, PI / 2.0, -PI / 2.0, PI]:
+			var target := point + away.rotated(angle) * (clearance + 1.0)
+			var route := nav.find_path(other.pos, target, [other], [], 0.0, other.move_class())
+			if route.is_empty() or route[-1].distance_squared_to(point) < (clearance + 0.25) * (clearance + 0.25):
+				continue
+			var length := other.pos.distance_to(route[0])
+			for i in range(1, route.size()):
+				length += route[i - 1].distance_to(route[i])
+			if length <= 6.0:
+				destination = route[-1]
+				break
+		if destination != Vector2.INF:
+			other.command({"type": "move", "to": destination, "run": false, "story_yield": true})
+			ready = false
+	return ready
 
 
 # ---------------------------------------------------------------- water

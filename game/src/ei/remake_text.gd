@@ -527,6 +527,8 @@ const TEXTS := {
 	"Unknown destination ": ["Неизвестная цель перехода ", "Unbekanntes Reiseziel "],
 	"Village quests": ["Задания в деревне", "Aufgaben im Dorf"],
 	"Close": ["Закрыть", "Schließen"],
+	"Inspect": ["Осмотреть", "Ansehen"],
+	"Waiting for other players…": ["Ожидание других игроков…", "Warten auf andere Spieler…"],
 	"Finish your current task first.": ["Сначала выполните текущее задание.", "Erfülle zuerst deine aktuelle Aufgabe."],
 	"Nobody here needs help right now.": ["Сейчас здесь никому не нужна помощь.", "Hier braucht gerade niemand Hilfe."],
 	"%s  (%s, %d experience)\n%s": ["%s  (%s, опыт: %d)\n%s", "%s  (%s, %d Erfahrung)\n%s"],

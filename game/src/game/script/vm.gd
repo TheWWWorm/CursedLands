@@ -71,6 +71,7 @@ static func create(w: GameWorld, s: Session) -> ScriptVM:
 	vm.briefings = Briefings.new(vm)
 	var text := w.mob.script_text if w.mob else ""
 	vm.ast = ScriptParser.parse(text)
+	preload("res://src/game/script/story_compat.gd").apply(vm.ast, s.state.campaign_id, String(w.zone.get("id", "")))
 	for e in vm.ast.errors:
 		push_warning("script %s: %s" % [w.zone.get("id", "?"), e])
 	for g in vm.ast.globals:
@@ -92,6 +93,7 @@ static func create(w: GameWorld, s: Session) -> ScriptVM:
 		vm._start_world(vm.ast.world)
 	else:
 		vm._restore(restored)
+		preload("res://src/game/script/story_compat.gd").recover(vm)
 	if not quest_world.is_empty() and String(restored.get("quest", "")) != String(w.get_meta("quest_mob", "")):
 		vm._start_world(quest_world, quest_src)
 	vm.recalc_merc_briefings()   #  (party deployed)
@@ -183,6 +185,7 @@ func _tick(dt: float) -> void:
 	cur.reverse()
 	for inst: Instance in cur:
 		_run(inst)
+		if session.movie_active(): break
 	instances = instances.filter(func(x: Instance): return not (x.killed and x.frames.is_empty()))
 	if not _pending_zone.is_empty():
 		var z = _pending_zone
@@ -247,6 +250,8 @@ func _run(inst: Instance) -> void:
 			P.S_CALL:
 				if _stmt_call(st[1], st[2], inst):
 					return   # thread is sleeping
+				if session.movie_active():
+					return   # resume at the next saved instruction after presentation
 
 
 func _all(conds: Array, inst: Instance) -> bool:
@@ -623,7 +628,8 @@ func _call(name: String, a: Array, inst: Instance):
 			var u := _unit(v[0])
 			if u and not u.dead:
 				var to := Vector2(_num(v[1]), _num(v[2]))
-				u.move_to(to, u.get_meta("script_run", false) or u.running)
+				u.command({"type": "move", "to": to, "run": u.get_meta("script_run", false) or u.running,
+					"story_move": true})
 				u.set_meta("ai_state", 1)
 		# Builtins 0x8e SetCP / 0xad SetCPFast(object, x, y, z) put the object
 		# there at once (: position.., world grid
@@ -658,12 +664,12 @@ func _call(name: String, a: Array, inst: Instance):
 			var u := _unit(v[0])
 			if u:
 				var d := Vector2(_num(v[1]), _num(v[2])) - u.pos
-				u.command({"type": "rotate", "angle": atan2(d.y, d.x)}, true)
+				u.command({"type": "rotate", "angle": atan2(d.y, d.x), "story": true}, true)
 				u.set_meta("ai_state", 1)
 		"PlayAnimation":
 			var u := _unit(v[0])
 			if u:
-				u.command({"type": "anim", "name": str(v[1]).to_lower()}, true)
+				u.command({"type": "anim", "name": str(v[1]).to_lower(), "story": true}, true)
 		"HideObject":
 			_hide(v[0], _truthy(v[1]))
 		"RemoveUnitFromServer", "RemoveObjectFromServer":
@@ -750,6 +756,8 @@ func _call(name: String, a: Array, inst: Instance):
 		# then recomputes stats; unlike STR/DEX it does not change the body.
 		"GiveSkill", "GiveStrength", "GiveDexterity", "GiveIntelligence":
 			var u := _unit(v[0])
+			if preload("res://src/game/script/camp_grants.gd").apply(self, inst.sname, name, v, u):
+				return null
 			var hd := CampaignState.script_character(u, true)
 			if not hd.is_empty():
 				if name == "GiveSkill" and n >= 3:
@@ -1692,6 +1700,8 @@ func save_state() -> Dictionary:
 			d.wu = _ser(inst.wait_unit)
 		insts.append(d)
 	return {"globals": g, "instances": insts, "areas": areas, "alarms": _alarm_save(), "qobjs": qobjs, "sciences": sciences,
+		"story_orders": _save_story_orders(),
+		"briefing_queue": _ser(briefings._after_movie) if briefings else [],
 		"world_done": _world_done.duplicate(),
 		"fx_auto": _fx_auto,   # the replayed CreateFXSource(-1) sources keep their ids (zone "fx")
 		"quest": String(world.get_meta("quest_mob", "")) if world.has_meta("quest_mob") else ""}
@@ -1726,6 +1736,18 @@ func _alarm_load(al) -> void:
 
 
 func _restore(d: Dictionary) -> void:
+	for row: Dictionary in d.get("story_orders", []):
+		var u = _deser(row.get("actor"))
+		if not u is GameUnit or u.dead: continue
+		for order: Dictionary in row.get("orders", []):
+			if order.get("type") in ["move", "rotate", "anim"]:
+				u.command(order.duplicate(true), true)
+				if order.type != "anim": u.set_meta("ai_state", 1)
+	if briefings:
+		var pending = _deser(d.get("briefing_queue", []))
+		if pending is Array:
+			for request in pending:
+				if request is Array and request.size() == 6: briefings._after_movie.append(request)
 	_world_done.clear()
 	var done = d.get("world_done", {})
 	if done is Dictionary:
@@ -1780,6 +1802,22 @@ func _restore(d: Dictionary) -> void:
 			var wu = _deser(s.wu)
 			inst.wait_unit = wu if wu is GameUnit else null
 		instances.append(inst)
+
+
+## Ordinary manual orders still stop on load. Scripted marks/turns/clips
+## must resume: the saved VM can be waiting for their completion.
+func _save_story_orders() -> Array:
+	var out := []
+	for u: GameUnit in world.units.values():
+		if u.dead: continue
+		var orders := []
+		if not u._story_clip.is_empty() and u._anim_lock > 0.0:
+			orders.append({"type":"anim", "name":u._story_clip, "story":true})
+		for order: Dictionary in [u.order] + u.orders:
+			if order.get("story", false) or order.get("story_move", false) or order.get("story_yield", false):
+				orders.append(order.duplicate(true))
+		if not orders.is_empty(): out.append({"actor":_ser(u), "orders":orders})
+	return out
 
 
 ## A saved thread's frames: the first runs `body`, each further one the For

@@ -29,6 +29,8 @@ extends Node
 ## only units are hidden, map objects never. Remake party sight (single
 ## player option / campaign co-op) does not reveal script-named units merely
 ## because they need to remain available to the server's scripts.
+## Campaign sight clips both the nearby relevance radius and retained
+## perception against geometry. Only explicit life sense sees through walls.
 
 const REFRESH := 0.1
 const CAMERA_RANGE := 100.0   # single player: list radius round the camera
@@ -69,7 +71,7 @@ func _process(dt: float) -> void:
 	if not on and not _was_on:
 		return
 	_was_on = on
-	# The party's eyes once per refresh: [position, range²].
+	# The party's eyes once per refresh: [position, range², observer].
 	var eyes := party_eyes(game) if on else []
 	# Single player: while a script holds the camera (a conversation; the
 	# shipped scripts use no other camera command) the whole cast shows,
@@ -104,7 +106,7 @@ static func party_eyes_for(w: GameWorld, player: int, shared := false) -> Array:
 		if not shared and m.controller != player:
 			continue
 		var r := range_of(m)
-		eyes.append([m.pos, r * r])
+		eyes.append([m.pos, r * r, m])
 	return eyes
 
 
@@ -146,8 +148,16 @@ static func noticed_for(s: Session, player: int, living_sources_only := false) -
 ## retain native perception for scripts, but cannot reveal distant enemies.
 static func sight_list_for(s: Session, player: int) -> Dictionary:
 	var out := {}
+	if s == null or s.world == null: return out
+	var eyes := party_eyes_for(s.world, player, s.online)
 	for u: GameUnit in noticed_for(s, player, true):
-		out[u.uid] = true
+		if u.controller >= 0 and (s.online or u.controller == player):
+			out[u.uid] = true
+			continue
+		for e: Array in eyes:
+			if _unoccluded(e, u):
+				out[u.uid] = true
+				break
 	return out
 
 
@@ -180,7 +190,7 @@ static func relevant_for(s: Session, player: int, camera := Vector2.INF) -> Arra
 	if camera == Vector2.INF and s.game != null and s.game.rig != null:
 		camera = Vector2(s.game.rig.position.x, -s.game.rig.position.z)
 	var talk := not s.online and s.game != null and s.game.rig != null and s.game.rig.held
-	var always := always_for(s, player) if not village and not talk else {}
+	var always := (sight_list_for(s, player) if sight and s.lmp.is_empty() else always_for(s, player)) if not village and not talk else {}
 	for u: GameUnit in s.world.units.values():
 		if not is_instance_valid(u) or u.hidden:
 			continue
@@ -204,12 +214,25 @@ static func listed(g: Game, u: GameUnit) -> bool:
 	return u.pos.distance_squared_to(cam) < CAMERA_RANGE * CAMERA_RANGE
 
 
-## Whether one of the party's `eyes` ([position, range²]) has `u` in range.
+## Whether a nearby unit is visible, including the geometry between it and
+## at least one living party member. The native LMP relevance stays radial.
 static func sees(eyes: Array, u: GameUnit) -> bool:
 	for e: Array in eyes:
-		if (e[0] as Vector2).distance_squared_to(u.pos) < float(e[1]):
+		if (e[0] as Vector2).distance_squared_to(u.pos) < float(e[1]) and _unoccluded(e, u):
 			return true
 	return false
+
+
+static func _unoccluded(eye: Array, u: GameUnit) -> bool:
+	if eye.size() < 3: return true   # old callers providing a radial relevance sample
+	var observer: GameUnit = eye[2]
+	var w := observer.world
+	if observer == u or w == null or (w.session and not w.session.lmp.is_empty()): return true
+	var life := observer.sense(2) * u.detect(2)
+	if not u.dead and life > 0.0 and observer.pos.distance_squared_to(u.pos) < life * life:
+		return true
+	# NavGrid keeps a legacy nonzero floor for an opaque object hit.
+	return w.sight_ray(observer, u) > 0.0001
 
 
 ## 2 x max(sight x sight factor, life sense) + 5.

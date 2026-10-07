@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+- Repair the Lost in Astral co-op recruiter exit, Kel's tunnel escape and camp
+  stat grants. Scripted walks/turns/clips survive saves; known stuck legacy
+  exits and untouched heroes missing a proven camp grant can recover.
+- Wait for movie completion on every connected peer before resuming story
+  scripts and dialogue. Frame staged conversations from actual actor positions.
+  Co-op protocol is now 5; every participant needs the same build.
+- Require unobstructed sight for ordinary peripheral and retained party vision,
+  while preserving explicit life sense and shared vision through another hero.
+- Make quest items clickable for their authored description, retain finished
+  shop spells across construction attempts, and correct inventory hover axes.
+  See [repairs and validation limits](docs/bugs-2026-10-07.md).
+
 - Restore calm AI scheduling for healthy co-op monsters after player-count
   scaling. Eligibility now reads body-derived health; real wounds keep the
   actor active. Two controlled Dead City co-op runs at 2× average 18% higher
@@ -31,7 +43,7 @@
   for strength/size effects, so the replacement does not inherit stale keys.
 - See the [Portal host investigation](docs/performance-portal-2026-10-07.md):
   the supplied co-op scene improved from 2.94 to 5.50 average FPS on the Linux
-  test machine. The host remains CPU-bound; co-op quest-script reports are open.
+  test machine. The host remains CPU-bound; the later co-op repairs are described above.
 
 
 ## 1.0.3 Experimental 3

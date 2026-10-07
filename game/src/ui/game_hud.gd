@@ -41,6 +41,9 @@ var _journal: JournalPanel
 var _side_quests: SideQuestPanel
 var _tutorial: TutorialPanel
 var _movie: MoviePlayer
+var _movie_serial := -1
+var _item_info_box: MessageBox
+var _inspected_quest := ""
 var _target_label: Label
 var _notify: NotifyLine
 var _spell_owner: GameUnit
@@ -218,6 +221,7 @@ func _ready() -> void:
 	_movie = MoviePlayer.new()
 	_movie.hud = self
 	_add_ui(_movie)
+	_movie.finished.connect(_movie_finished)
 
 	# The village screen's name under the cursor (VillageName).
 	var vname := VillageName.new()
@@ -252,6 +256,7 @@ func _ready() -> void:
 
 func on_world(w: GameWorld) -> void:
 	if w != _world:
+		if MessageBox.is_up(_item_info_box): _item_info_box.queue_free()
 		_world = w
 		if not w.combat_event.is_connected(_on_combat):
 			w.combat_event.connect(_on_combat)
@@ -426,6 +431,31 @@ func set_targeting(spell_title: String) -> void:
 	_target_label.text = "" if spell_title.is_empty() else RemakeText.t("Cast %s: click a target (right click cancels)") % spell_title
 
 
+func inspected_quest_item() -> String:
+	return _inspected_quest if MessageBox.is_up(_item_info_box) else ""
+
+
+## Quest objects are read-only: reveal their authored description without
+## submitting a use/trade command or changing either peer's inventory.
+func inspect_quest_item(item: String) -> void:
+	if Items.kind(item) != "quest" or game.session.loading_game:
+		return
+	var owned := game.session.state.quest_items.has(item) if game.session.lmp.is_empty() \
+		else item in game.session.coop.owner_bag(game.session.my_index)
+	if not owned: return
+	game.cancel_touch_target()
+	if MessageBox.is_up(_item_info_box): _item_info_box.queue_free()
+	_item_info_box = MessageBox.new()
+	_item_info_box.title = Items.title(item)
+	_item_info_box.message = Items.flavor(item)
+	if _item_info_box.message.is_empty(): _item_info_box.message = Items.type_text(item)
+	_item_info_box.ok_only = true
+	_item_info_box.process_mode = Node.PROCESS_MODE_ALWAYS
+	_inspected_quest = item
+	_add_ui(_item_info_box)
+	if GameSound.instance: GameSound.instance.ui("buttons\\battle\\click.wav")
+
+
 ## The unit under the mouse is shown by the unit panel (shows
 ## the hovered unit, else the selected one); the original draws no name label
 ## the cursor, so the remake's earlier one is gone.
@@ -571,6 +601,8 @@ func _play_quest_sound() -> void:
 
 
 func on_event(e: Dictionary) -> void:
+	if String(e.get("t", "")) in ["dialog", "topics", "movie", "travel", "game_over"] and MessageBox.is_up(_item_info_box):
+		_item_info_box.queue_free()
 	match String(e.get("t", "")):
 		"dialog": _dialog.show_briefing(e)
 		"topics":
@@ -599,8 +631,19 @@ func on_event(e: Dictionary) -> void:
 		"travel_close": _close_travel()
 		"tutorial": _tutorial.show_tutorial(String(e.id))
 		"movie":
-			_movie.pause_game = not game.session.online
+			var serial := int(e.get("serial", -1))
+			if serial >= 0 and serial == _movie_serial: return
+			# Finish the previous local presentation before assigning a token;
+			# its finished signal must never acknowledge the next movie.
+			_movie_serial = -1
+			_movie.stop()
+			_movie_serial = serial
+			_movie.pause_game = serial < 0 and not game.session.online
 			_movie.play(String(e.get("name", "")))
+		"movie_release":
+			if int(e.get("serial", -2)) == _movie_serial:
+				_movie_serial = -1
+				_movie.stop()
 		"party": _rebuild_party()
 		"game_over": _show_game_over(e)
 		"death_notice":   # remake option "revive": the hint that a companion can help
@@ -616,6 +659,13 @@ func on_event(e: Dictionary) -> void:
 		"constr_result":   # Session._spell_constr's answer to this player's camp screen
 			if int(e.get("to", -1)) == game.session.my_index:
 				_inventory._camp.constr_result(e)
+
+
+func _movie_finished() -> void:
+	if _movie_serial < 0: return
+	var serial := _movie_serial
+	_movie.wait_for_peers()
+	game.session.submit({"t":"movie_done", "serial":serial})
 
 
 ## Client message 6 (handler: the items join the player's bag
@@ -713,6 +763,7 @@ func _show_coop_game_over() -> void:
 
 func _close_for_host_load() -> void:
 	dismiss_death_notice()
+	if MessageBox.is_up(_item_info_box): _item_info_box.queue_free()
 	_game_over_load = false
 	if is_instance_valid(_game_over_box):
 		_game_over_box.queue_free()
@@ -1095,7 +1146,7 @@ func _draw_esc_hints() -> void:
 
 
 func blocks_input() -> bool:
-	return game.session.loading_game or _esc_open or _menu.visible or _dialog.visible or _travel.visible or (TouchInput.enabled and _panel_open())
+	return game.session.loading_game or MessageBox.is_up(_item_info_box) or _esc_open or _menu.visible or _dialog.visible or _travel.visible or (TouchInput.enabled and _panel_open())
 
 
 ## Polling the keyboard bypasses GUI event consumption, so the camera must
@@ -1122,7 +1173,7 @@ func _panel_open() -> bool:
 	if quests_screen != null:
 		return true
 	for panel in [_inventory, _journal, _side_quests, _tutorial, _movie, _options, _save_load,
-			_game_over_box, _quit_box, _players_panel]:
+			_game_over_box, _quit_box, _players_panel, _item_info_box]:
 		if is_instance_valid(panel) and panel.visible:
 			return true
 	# Remake (gamepad): the game-over notice takes the pad (PadUI snaps to its

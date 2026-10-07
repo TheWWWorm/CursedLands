@@ -27,8 +27,10 @@ extends SubViewportContainer
 ## Draw/TLP projection maps EI x right, y down and z forward for all callers:
 ## - spells, keystones and runes (0x3008, loot 2/3, 2/4): q = rot(z, π);
 ## - blueprints (loot 2/0..2): q = rot(x, π);
-## - weapons (0x3004): q = rot(x, π) · rot((1,1,0), a), everything else
-##   rot(x, π) · rot((0,1,0), a), where a turns while the item is the
+## - weapons (0x3004) turn about the fixed UI diagonal (1,1,0), other
+##   items about UI vertical (0,1,0), after their rot(x, π) rest pose.
+##   Godot composes this as spin · rest (the original uses row vectors).
+##   The angle a turns while the item is the
 ##   widget's hovered one (`spin`): the speed gains 8 rad/s² up to 5 rad/s;
 ##   unhovered, a speed ≥ 0.1 becomes (2π − a) · 4 (back to the start),
 ##   below it a and the speed drop to 0.
@@ -73,7 +75,7 @@ const K := 0.48157462
 var _vp: SubViewport
 var _model: Node3D
 var _base := Quaternion.IDENTITY
-var _axis := Vector3.ZERO   # EI axis of the turn, zero = none
+var _axis := Vector3.ZERO   # fixed EI UI-space axis, zero = none
 var _angle := 0.0
 var _speed := 0.0
 var _pulse := -1   # PULSE index, -1 = none
@@ -307,5 +309,7 @@ func _process(dt: float) -> void:
 	_angle += dt * _speed
 	while _angle > TAU:
 		_angle -= TAU
-	var q := _base * Quaternion(_axis, _angle)
+	# Apply the turn in the preview's space. Postmultiplication rotated the
+	# weapon axis through its rest pose, tumbling an axe end over end.
+	var q := Quaternion(_axis, _angle) * _base
 	_model.quaternion = EISpace.quat(q.w, q.x, q.y, q.z)

@@ -967,6 +967,10 @@ static func sanitize_hero(d) -> Dictionary:
 		h.mana = maxf(0.0, d.mana)
 	if d.get("unit_name") is String:
 		h.unit_name = String(d.unit_name).left(32)
+	var camp := preload("res://src/game/script/camp_grants.gd")
+	var camp_receipt: Dictionary = camp.sanitize(d.get(camp.KEY))
+	if not camp_receipt.is_empty():
+		h[camp.KEY] = camp_receipt
 	if d.has(TrainingRefund.KEY):
 		h[TrainingRefund.KEY] = TrainingRefund.sanitize(h, d[TrainingRefund.KEY])
 	else:

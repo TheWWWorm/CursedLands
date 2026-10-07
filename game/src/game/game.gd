@@ -171,7 +171,7 @@ func _setup_env() -> void:
 func _process(dt: float) -> void:
 	if world == null:
 		return
-	if not session.is_host and not get_tree().paused and not session.loading_game:
+	if not session.is_host and not get_tree().paused and not session.loading_game and not session.movie_active():
 		session.state.world_time = fmod(session.state.world_time + dt / CampaignState.HOUR_SECONDS, 24.0)   # same pace as the host VM
 	_update_daylight()
 	_keep_selection()

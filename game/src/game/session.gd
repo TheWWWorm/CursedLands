@@ -55,6 +55,13 @@ var travel_options: Array = []   # host: destinations currently offered
 var _travel_ev := {}        # host: the open global map event (for joiners)
 var map_open := false       # every peer: the global map is up ("travel" until "travel_close" / a zone)
 var _dialog_ev := {}        # host: the running conversation event (for joiners)
+var _movie_ev := {}
+var _movie_wait := {}       # peer IDs still presenting the current movie
+var _movie_queue: Array[String] = []
+var _movie_serial := 0
+var _movie_deadline := 0
+var _movie_saves := {}     # defer snapshots until presentation/dialogue handoff is complete
+const MOVIE_TIMEOUT_MS := 600000   # disconnected/unresponsive presentation watchdog
 var coop: CoopProgress
 var net: NetStatus
 var upnp: UpnpPort
@@ -149,12 +156,60 @@ func _ready() -> void:
 		_send_mp_char()
 		_rpc_hello.rpc_id(1, GameData.player_name, GameData.hero_class, NetStatus.PROTOCOL, NetStatus.world_hash(), join_password))
 	multiplayer.server_disconnected.connect(func():
+		_cancel_movie()
 		_cancel_remote_load()
 		_apply_clock(false, 0)
 		var t := net.server_lost_text()
 		if t:
 			message.emit(t))
 	GameData.options_changed.connect(_clock_options_changed)
+
+
+## Movie completion belongs to presentation, not simulation time. RPCs and
+## this watchdog remain live while the world/clock is paused or loading.
+func movie_active() -> bool:
+	return not _movie_ev.is_empty()
+
+
+func _movie_ack(pid: int, serial: int) -> void:
+	if not is_host or serial != int(_movie_ev.get("serial", -1)):
+		return
+	_movie_wait.erase(pid)
+	if _movie_wait.is_empty(): _release_movie()
+
+
+func _process(_dt: float) -> void:
+	if not is_host or not movie_active(): return
+	for pid in _movie_wait.keys():
+		if int(pid) != 1 and (not online or not players.has(pid) or not CoopProgress.peer_alive(multiplayer, int(pid))):
+			_movie_wait.erase(pid)
+	if _movie_wait.is_empty() or Time.get_ticks_msec() >= _movie_deadline:
+		_release_movie()
+
+
+func _release_movie() -> void:
+	if not movie_active(): return
+	var serial := int(_movie_ev.serial)
+	_movie_wait.clear()
+	broadcast({"t":"movie_release", "serial":serial})
+	_movie_ev = {}
+	if not _movie_queue.is_empty():
+		broadcast({"t":"movie", "name":_movie_queue.pop_front()})
+	else:
+		var saves := _movie_saves
+		_movie_saves = {}
+		for slot: String in saves:
+			save_game.call_deferred(slot, saves[slot][0], saves[slot][1])
+
+
+func _cancel_movie() -> void:
+	_movie_queue.clear()
+	_movie_saves.clear()
+	if is_host:
+		_release_movie()
+	elif movie_active():
+		_on_event({"t":"movie_release", "serial":int(_movie_ev.serial)})
+	_movie_wait.clear()
 
 
 # ------------------------------------------------------------------ setup
@@ -867,6 +922,8 @@ func _deploy_parties(z: Dictionary, entrance: int) -> void:
 	var slot := 0
 	for pid in players:
 		var idx: int = players[pid].index
+		if lmp.is_empty():
+			preload("res://src/game/script/camp_grants.gd").catch_up(state, idx)
 		for rec: Dictionary in state.party_records(idx):
 			var p := rect.get_center() + Vector2(slot % 3 - 1, slot / 3) * 1.5
 			p = world.nav.nearest_walkable(p)
@@ -1339,6 +1396,9 @@ func _replay_events(local := false) -> Array:
 ## (pid 0 = every client).
 func _send_world_state(pid: int) -> void:
 	var evs := _replay_events()
+	if movie_active():
+		if pid > 0: _movie_wait[pid] = true
+		evs.append(_movie_ev)
 	evs.append(_water_event())   # includes an empty list, clearing any old offsets
 	if not _dialog_ev.is_empty() and world.vm and world.vm.briefings.active == String(_dialog_ev.get("id", "")):
 		evs.append(_dialog_ev)
@@ -1868,6 +1928,12 @@ func _travel(zone: String, entrance: int) -> void:
 # ------------------------------------------------------------------ commands
 
 func submit(cmd: Dictionary) -> void:
+	if String(cmd.get("t", "")) == "movie_done":
+		if is_host: _movie_ack(1, int(cmd.get("serial", -1)))
+		elif online: _rpc_cmd.rpc_id(1, cmd)
+		return
+	if movie_active():
+		return
 	if loading_game:
 		return
 	if not lmp.is_empty():
@@ -1885,9 +1951,14 @@ func submit(cmd: Dictionary) -> void:
 
 @rpc("any_peer", "call_remote", "reliable")
 func _rpc_cmd(cmd: Dictionary) -> void:
-	if not is_host or loading_game:
+	if not is_host:
 		return
 	var pid := multiplayer.get_remote_sender_id()
+	if String(cmd.get("t", "")) == "movie_done":
+		if players.has(pid): _movie_ack(pid, int(cmd.get("serial", -1)))
+		return
+	if loading_game or movie_active():
+		return
 	if players.has(pid):
 		if lmp_travel:
 			lmp_travel.command(cmd, int(players[pid].index))
@@ -1940,7 +2011,7 @@ static func group_offset(i: int) -> Vector2:
 
 
 func apply_command(cmd: Dictionary, player: int) -> void:
-	if world == null:
+	if world == null or movie_active():
 		return
 	var mine: Array[GameUnit] = []
 	for id in cmd.get("units", []):
@@ -3250,7 +3321,7 @@ func _ic_spells() -> void:
 
 
 func _physics_process(dt: float) -> void:
-	if get_tree().paused or loading_game:
+	if get_tree().paused or loading_game or movie_active():
 		return
 	if is_host:
 		_mp_tick(dt)
@@ -3507,6 +3578,23 @@ func failed(u: GameUnit, n: int) -> void:
 
 ## Host -> all: UI-level events (messages, dialogs, sounds).
 func broadcast(event: Dictionary) -> void:
+	if is_host and String(event.get("t", "")) == "movie" and lmp.is_empty() and not event.has("serial"):
+		var movie := String(event.get("name", ""))
+		if movie.is_empty(): return
+		if movie_active():
+			_movie_queue.append(movie)
+			return
+		_movie_serial += 1
+		event = event.duplicate()
+		event.serial = _movie_serial
+		_movie_ev = event
+		_movie_wait = {1: true}
+		if online:
+			for pid in players:
+				if int(pid) != 1 and CoopProgress.peer_alive(multiplayer, int(pid)):
+					_movie_wait[int(pid)] = true
+		_movie_deadline = Time.get_ticks_msec() + MOVIE_TIMEOUT_MS
+		if game == null: _movie_ack.call_deferred(1, _movie_serial)
 	if is_host and world and String(event.get("t", "")) == "lever" and event.has("state") and not event.has("motion"):
 		var data: Dictionary = world.lever_sys.motion_payload(int(event.nid))
 		if not data.is_empty():
@@ -3536,6 +3624,10 @@ func _rpc_event(event: Dictionary) -> void:
 
 func _on_event(event: Dictionary) -> void:
 	var t := String(event.get("t", ""))
+	if t == "movie" and event.has("serial"):
+		_movie_ev = event
+	elif t == "movie_release" and int(event.get("serial", -1)) == int(_movie_ev.get("serial", -2)):
+		_movie_ev = {}
 	if t == "travel":
 		map_open = true
 		GameData.trace("travel map open from %s" % zone_id)
@@ -3931,6 +4023,7 @@ func _spawn_late_joiner(idx: int, pid: int) -> void:
 	if lmp_travel:
 		lmp_travel.join(idx, pid)
 		return
+	var repaired := preload("res://src/game/script/camp_grants.gd").catch_up(state, idx) if lmp.is_empty() else false
 	var leader: GameUnit = null
 	for u: GameUnit in world.units.values():
 		if u.controller == 0 and not u.dead:
@@ -3967,6 +4060,11 @@ func _spawn_late_joiner(idx: int, pid: int) -> void:
 	# takes up the follow order the save kept for it.
 	if not fresh.is_empty():
 		state.apply_follow(world, "follow_live", fresh)
+	if repaired and reclaimed:
+		for u: GameUnit in world.units.values():
+			if u.controller == idx and u.has_meta("hero") and not u.get_meta("hero").has("merc"):
+				Combat.set_complexion(u, u.get_meta("hero"), u.get_meta("hero").complexion)
+				_refresh_hero(u)
 	_rpc_zone.rpc_id(pid, zone_id, _unit_records(), world.diplomacy, _extra_mobs(),
 		String(world.zone.get("mpr", "")), _lever_states(), _load_serial)
 	_send_world_state(pid)
@@ -4067,6 +4165,9 @@ func save_game(slot: String, save_name := "", frame: Image = null) -> void:
 		return
 	if coop.purse_active():   # mid-command of a joiner (its purse in state): right after
 		save_game.call_deferred(slot, save_name, frame)
+		return
+	if movie_active():
+		_movie_saves[slot] = [save_name, frame]
 		return
 	swap.cancel_all()   # return offered items before the authoritative save snapshot
 	_capture_save_state()
@@ -4179,6 +4280,7 @@ func _may_load() -> bool:
 
 
 func _begin_host_load(id: String) -> void:
+	_cancel_movie()
 	loading_game = true
 	_loading_zone_id = id
 	_load_serial += 1

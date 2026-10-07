@@ -151,6 +151,7 @@ var strike_miss := false
 var _attack_cd := 0.0
 var _repath := 0.0
 var _anim_lock := 0.0
+var _story_clip := ""     # a script clip whose completion the saved VM may await
 ## Native village talk checks the creature's current command
 ## (Stop 0 or Rest 11) and posted command (empty 9),.
 ## This is independent of the AI motivation, held Follow and stance clips.
@@ -1375,6 +1376,7 @@ func _tick(dt: float) -> void:
 	if _anim_lock > 0.0:
 		_anim_lock -= dt
 		return
+	_story_clip = ""
 	if _talk_command == 10 and order.is_empty():
 		_talk_command = 11 if resting else 0
 	if resting and not (order.is_empty() and orders.is_empty()):
@@ -1424,6 +1426,7 @@ func _tick(dt: float) -> void:
 			if order.t <= 0.0:
 				order = {}
 		"anim":
+			_story_clip = String(order.name) if order.get("story", false) else ""
 			_anim_lock = model.act(order.name, int(order.get("variant", 1)), 0.1) if not model.has_anim(order.name) \
 				else _play_clip(order.name)
 			action = "anim:" + String(order.name)
@@ -1617,6 +1620,9 @@ func _do_move_profile_body(dt: float) -> void:
 		running = bool(order.get("run", true))
 	if path.is_empty():
 		var replan := _avoid != null and is_instance_valid(_avoid)
+		if order.get("story_move", false) and not world.prepare_story_move(self, order.to):
+			_set_action("idle")
+			return
 		# The stick's moves ("line", remake): the straight line when it can
 		# be walked as it is (NavGrid.direct_line), else the path search.
 		if order.get("line", false) and not replan and world.nav.direct_line(self, order.to):

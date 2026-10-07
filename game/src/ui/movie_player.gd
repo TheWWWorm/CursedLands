@@ -34,8 +34,8 @@ var hud: GameHUD
 var loop := false
 var silent := false
 ## the original plays a movie in a modal loop, so the game stands
-## still underneath; the HUD's player pauses the tree in single player (a co-op
-## peer cannot stop the others' game, so there it keeps running).
+## still underneath. Session gates campaign simulation until all peers finish;
+## this tree pause is retained for standalone/tokenless presentation callers.
 var pause_game := false
 var _paused_tree := false
 var _view: TextureRect
@@ -45,6 +45,7 @@ var _skip: Button
 var _mat: ShaderMaterial
 var _tex: Array[ImageTexture] = [null, null, null]
 var _state := IDLE
+var _completion_generation := 0
 var _name := ""
 var _conv: EIBinkCache  # conversion being streamed (null when playing a finished cache)
 var _file: FileAccess
@@ -142,11 +143,13 @@ static func shutdown() -> void:
 
 
 func play(name: String) -> void:
+	_completion_generation += 1
 	name = name.to_lower().get_file().get_basename()
 	if name.is_empty():
+		_finish_unplayed.call_deferred(_completion_generation)
 		return
 	if not enabled:
-		finished.emit.call_deferred()
+		_finish_unplayed.call_deferred(_completion_generation)
 		return
 	if _state != IDLE and name == _name:
 		return
@@ -167,6 +170,7 @@ func play(name: String) -> void:
 			return
 		var src := GameData.root.path_join("movies/%s.bik" % name)
 		if GameData.root.is_empty() or not GameFiles.exists(src):
+			_finish_unplayed.call_deferred(_completion_generation)
 			return
 		conv = EIBinkCache.new()
 		conv.start(src, cached)
@@ -216,7 +220,19 @@ static func preconvert(names: Array) -> void:
 		_converters[n] = conv
 
 
+func _finish_unplayed(generation: int) -> void:
+	if generation == _completion_generation: finished.emit()
+
+
+func wait_for_peers() -> void:
+	_label.text = RemakeText.t("Waiting for other players…")
+	_skip.visible = false
+	visible = true
+	move_to_front()
+
+
 func stop() -> void:
+	_completion_generation += 1
 	if not Portability.threads() and _conv and _conv.is_running():
 		_conv.cancel = true
 		_converters.erase(_name)
@@ -227,6 +243,7 @@ func stop() -> void:
 	_audio.stop()
 	_audio.stream = null
 	_state = IDLE
+	_skip.visible = not loop
 	_conv = null
 	_file = null
 	_view.texture = null
@@ -415,5 +432,5 @@ func _pause() -> void:
 
 func _unhandled_input(e: InputEvent) -> void:
 	if visible and not loop and e is InputEventKey and e.pressed and not e.echo and e.keycode in [KEY_SPACE, KEY_ESCAPE]:
-		stop()
+		if _state != IDLE: stop()
 		get_viewport().set_input_as_handled()

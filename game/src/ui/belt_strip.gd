@@ -88,7 +88,8 @@ func _process(_dt: float) -> void:
 			items[4 + i] = quest[i]
 	# The unit's instance, not its uid: after a reload the party is new units
 	# with the same uids (see SpellSlots._process).
-	var sig := "%s:%s:%s:%s" % [u.get_instance_id() if u else 0, ",".join(items), size, game.pending_spell]
+	var inspected := game.hud.inspected_quest_item() if game and game.hud else ""
+	var sig := "%s:%s:%s:%s:%s" % [u.get_instance_id() if u else 0, ",".join(items), size, game.pending_spell, inspected]
 	if sig == _sig:
 		return
 	_sig = sig
@@ -97,7 +98,8 @@ func _process(_dt: float) -> void:
 	var k := size.y / 100.0   # pixels per 800×600 unit
 	for i in SLOTS:
 		var r := _cell_rect(i)
-		var picked: bool = i < 4 and not _items[i].is_empty() and game.pending_spell == "%s%d:%s" % [Game.BELT, u.uid if u else -1, _items[i]]
+		var picked: bool = not _items[i].is_empty() and (game.pending_spell == "%s%d:%s" % [Game.BELT, u.uid if u else -1, _items[i]] \
+			if i < 4 else inspected == _items[i])
 		# the bottom row is 0.55 / 0.65, the top 0.85 / 1.0.
 		# Unclipped: the view is twice the cell.
 		var sc := (0.65 if picked else 0.55) if i < 4 else (1.0 if picked else 0.85)
@@ -126,7 +128,7 @@ func _get_tooltip(p: Vector2) -> String:
 		return ""
 	var it := String(_items[i])
 	if i >= 4:   # quest items have a name, no consumable hotkey
-		return Items.title(it)
+		return Items.title(it) + "\n" + RemakeText.t("Inspect")
 	return GameData.tip_key(tooltip_text(it), 42 + i)
 
 
@@ -215,10 +217,7 @@ func use(i: int, now: bool) -> void:
 	if i < 0 or i >= _items.size() or _items[i].is_empty() or _unit == null:
 		return
 	if i >= 4:
-		# The quest row is informational. Native single-click cancels the
-		# current targeting mode; double-click has no consumable to use.
-		if not now:
-			game.cancel_touch_target()
+		game.hud.inspect_quest_item(String(_items[i]))
 		return
 	game.touch_aim = -1
 	game.touch_force = ""

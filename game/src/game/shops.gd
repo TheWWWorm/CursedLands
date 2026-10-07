@@ -236,11 +236,19 @@ static func _gen_ready(goods: Dictionary, protos: Array, pool: Array, templates:
 ## each), (runes, rand(20..50) each).
 static func _gen_spells(goods: Dictionary, l: Dictionary, runes: Dictionary, school_max: Dictionary, rng: RandomNumberGenerator) -> void:
 	var templates := _templates("spell_templates", l)
-	var ready := []
+	var ready := {}
 	for t in 10:
-		ready = _template_spells(templates, runes, school_max, 50, rng)
+		# Keep successful constructions. A later unlucky attempt used to
+		# discard them all, especially when only one school was learned.
+		for sp: String in _template_spells(templates, runes, school_max, 50, rng):
+			ready[sp] = true
 		if ready.size() >= l.spell_prototypes.size():
 			break
+	if ready.is_empty():
+		# If any template fits, offer it even after ten unlucky coin tosses.
+		# Complexity, required runes and the party's school caps still apply.
+		for sp: String in _template_spells(templates, runes, school_max, 0, rng):
+			ready[sp] = true
 	for sp: String in ready:
 		_add(goods, "spell:" + sp, 1)
 	for row: Dictionary in l.spell_prototypes:

@@ -2241,11 +2241,16 @@ func can_notice_with_profile_body(u: GameUnit, o: GameUnit, k: PackedFloat64Arra
 	var r := k[0] * o.vis_factor() * k[1] * o.detect(0)
 	if d <= r or d < k[3]:
 		var ang := absf(wrapf((o.pos - u.pos).angle() - u.facing, -PI, PI))
-		if d <= r and ang <= k[2] and d < world.sight_ray(u, o) * r:
-			return true
+		var ray := -1.0
+		if d <= r and ang <= k[2]:
+			ray = world.sight_ray(u, o)
+			if d < ray * r: return true
 		# peripheral vision (in front, within) has no
 		# detectability factor, so it still catches an invisible unit; only the
 		# sight test is scaled by the target's sight detectability.
 		if ang <= PI * 0.5 and d < k[3]:
-			return true
+			# Peripheral vision still detects invisible nearby actors, but
+			# ordinary eyesight must not bypass a wall or a closed door.
+			if ray < 0.0: ray = world.sight_ray(u, o)
+			if ray > 0.0001: return true
 	return not o.dead and d < o.detect(2) * k[4]

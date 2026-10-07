@@ -18,6 +18,7 @@ var _return_actors: Array = []
 ## A walking conversation waits for its required staging orders. The host
 ## publishes the first phrase only after its ordinary walk/turn tick finishes.
 var _pending_dialog: Dictionary = {}
+var _after_movie: Array = []
 
 
 func _init(v: ScriptVM) -> void:
@@ -25,6 +26,10 @@ func _init(v: ScriptVM) -> void:
 
 
 func tick() -> void:
+	if vm.session.movie_active(): return
+	if active.is_empty() and not _after_movie.is_empty():
+		var request: Array = _after_movie.pop_front()
+		play_named.callv(request)
 	if not active.is_empty() or vm.time < _check:
 		return
 	_check = vm.time + 0.5
@@ -178,6 +183,9 @@ static func _topic_compare(a: String, b: String) -> int:
 
 ## Starts conversation `id` for everyone. `var_name` is reported on completion.
 func play_named(id: String, var_name: String, player := 0, partner: GameUnit = null, instant := false, approached := false) -> void:
+	if vm.session.movie_active():
+		_after_movie.append([id, var_name, player, partner, instant, approached])
+		return
 	var text := GameData.text("briefing " + id)
 	if text.is_empty():
 		# Quest maps ship their own briefings inside the .mq archive.
@@ -281,6 +289,19 @@ func _face(c: Dictionary, instant := false, approached := false) -> void:
 	if cage:
 		_remember_return(b)
 		_stage(b, b_at, (a_at - b_at).angle(), instant)
+	if instant:
+		# A co-op body or static footprint can refuse the requested placement.
+		# Freeze the actual stage, not an imaginary mark behind a wall/body.
+		a_at = a.pos
+		b_at = b.pos
+		a_z = a.position.y
+		b_z = b.position.y
+		if a_at != b_at:
+			a.facing = (b_at - a_at).angle()
+			b.facing = (a_at - b_at).angle()
+		if cu:
+			c_at = cu.pos
+			cu.facing = ((a_at + b_at) * 0.5 - c_at).angle()
 	# The places the conversation camera works from (the original keeps them
 	#  and never reads the units again; DialogCamera).
 	c["at"] = {"a": [a_at.x, a_at.y], "b": [b_at.x, b_at.y]}
@@ -289,7 +310,7 @@ func _face(c: Dictionary, instant := false, approached := false) -> void:
 	c["at_z"] = {"a": a_z, "b": b_z}
 	if cu:
 		c["at"]["c"] = [c_at.x, c_at.y]
-		c["at_z"]["c"] = (a_z + b_z) * 0.5
+		c["at_z"]["c"] = cu.position.y if instant else (a_z + b_z) * 0.5
 
 
 func _face_in_place(cast: Dictionary, a: GameUnit, b: GameUnit) -> void:

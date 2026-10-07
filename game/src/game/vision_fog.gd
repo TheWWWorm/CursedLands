@@ -98,15 +98,15 @@ static func visible_cells(w: GameWorld, u: GameUnit, reference: GameUnit = null)
 		_paint(w, u, life, -1.0, -1000.0, cells)
 	var peripheral := float(u.proto.get("peripheral_skills", 0.0))
 	if peripheral != 0.0:
-		_paint(w, u, peripheral, 0.0, -1000.0, cells)
+		_paint(w, u, peripheral, 0.0, height, cells)
 	var out := cells.keys()
 	out.sort_custom(func(a: Vector2, b: Vector2): return a.y < b.y or (a.y == b.y and a.x < b.x))
 	return out
 
 
 ##  global half-metre samples, nearest-even bounds, inclusive
-## radius/cone tests and distance-scaled terrain ray. The two extra senses
-## bypass terrain; peripheral vision keeps the forward half circle.
+## radius/cone tests and distance-scaled terrain ray. Life sense bypasses
+## terrain; peripheral vision keeps the forward half circle and occlusion.
 static func _paint(w: GameWorld, u: GameUnit, radius: float, cosine: float, height: float, cells: Dictionary) -> void:
 	var centre := Vector2i(GameUnit._fistp(_f32(u.pos.x * 2.0 - 0.5)), GameUnit._fistp(_f32(u.pos.y * 2.0 - 0.5)))
 	var n := GameUnit._fistp(_f32(radius * 2.0 - 0.5)) + 1
