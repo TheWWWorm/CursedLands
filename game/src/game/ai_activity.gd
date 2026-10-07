@@ -7,7 +7,11 @@ extends RefCounted
 ## their ordinary update rate. No camera or client visibility is consulted.
 
 const CELL := 32.0
-const MOTION_MARGIN := 16.0
+## A pair can close by at most this much while the batch is valid: each
+## actor gets half the envelope. A longer move immediately invalidates the
+## batch in moved(), so fast movement and teleports use live decisions.
+## Sixteen metres kept distant actors scanning despite their short steps.
+const MOTION_MARGIN := 2.0
 const EMPTY: Dictionary = {}
 var world: GameWorld
 var enabled := not OS.get_cmdline_user_args().has("--ei-legacy-ai")
@@ -247,7 +251,7 @@ static func evaluate_script(positions: PackedVector2Array, radii: PackedFloat64A
 
 
 ## Deliberately independent all-pairs oracle / fallback for the native grid.
-## The 16 m envelope permits either actor to move up to 8 m later this tick.
+## The envelope permits either actor to move up to half the margin this tick.
 static func evaluate_senses_script(positions: PackedVector2Array, terms: PackedFloat64Array,
 		factions: PackedInt64Array, flags: PackedByteArray, masks: PackedInt64Array, margin: float) -> PackedByteArray:
 	var n := positions.size()

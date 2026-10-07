@@ -119,6 +119,21 @@ var profile_counts := {}
 var profile_slow: Array[Dictionary] = []
 
 
+## A diagnostic scope records every return path. Normal play creates none
+## and enters the update body directly, without a profiling wrapper call.
+class ProfileScope extends RefCounted:
+	var finish: Callable
+	func _init(callback: Callable) -> void:
+		finish = callback
+	func _notification(what: int) -> void:
+		if what == NOTIFICATION_PREDELETE and finish.is_valid():
+			finish.call()
+
+
+func profile_scope(part: String, uid := -1) -> ProfileScope:
+	return ProfileScope.new(profile_record.bind(part, Time.get_ticks_usec(), uid))
+
+
 func profile_record(part: String,started: int,uid := -1) -> void:
 	if not profile_simulation: return
 	var elapsed := Time.get_ticks_usec()-started

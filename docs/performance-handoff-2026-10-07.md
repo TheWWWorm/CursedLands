@@ -1,5 +1,10 @@
 # Experimental 5 performance and gameplay handoff
 
+For subsequent local optimization, see the [Portal throughput checkpoint](portal-throughput-checkpoint.md)
+and its [validation record](portal-throughput-validation.json). That unreleased
+CPU checkpoint improves complete-simulation time; Retroid's 60 FPS/actual 2×
+target and the reported Windows 4K slowdown remain unresolved.
+
 This checkpoint gathers the completed performance work and gameplay repairs on
 `release/1.0.3-experimental.5-performance`, version `1.0.3-experimental.5`.
 It retains the Experimental 3 integration and the local Experimental 4 checkpoint

@@ -111,15 +111,7 @@ func _read_mots(u: GameUnit, lg: Dictionary = EMPTY_DESCRIPTOR) -> Dictionary:
 ## logic tick while the unit is idle, and while it is busy rechoose() (AI
 ## attack / cast orders) or calm_tick() (other orders of a calm motivation).
 func think(u: GameUnit) -> void:
-	if not world.profile_simulation:
-		think_profile_body(u)
-		return
-	var started := Time.get_ticks_usec()
-	think_profile_body(u)
-	world.profile_record("aithink",started,u.uid)
-
-
-func think_profile_body(u: GameUnit) -> void:
+	var _profile := world.profile_scope("aithink", u.uid) if world.profile_simulation else null
 	var now := world.time
 	if now < u.ai_next:
 		return
@@ -400,14 +392,7 @@ func _fear_tick(u: GameUnit, flag := 0) -> void:
 ## the calm motivation is current, also while the unit walks. Returns true
 ## when it issued a cast.
 func calm_tick(u: GameUnit, idle := false) -> bool:
-	if not world.profile_simulation: return calm_tick_profile_body(u, idle)
-	var started := Time.get_ticks_usec()
-	var result := calm_tick_profile_body(u, idle)
-	world.profile_record("aicalm_tick",started,u.uid)
-	return result
-
-
-func calm_tick_profile_body(u: GameUnit, idle := false) -> bool:
+	var _profile := world.profile_scope("aicalm_tick", u.uid) if world.profile_simulation else null
 	if u.controller >= 0 or u.dead or not u.mode in CALM_MODES:
 		return false
 	if not idle:
@@ -668,14 +653,7 @@ func _player_target(u: GameUnit, around := Vector2.INF, radius := -1.0) -> GameU
 ##  is the AI units'). Returns the list (meta "noticed").
 ## Approx.: "fighting the observer" = an attack or cast order on it.
 func player_perceive(u: GameUnit, force := false) -> Dictionary:
-	if not world.profile_simulation: return player_perceive_profile_body(u, force)
-	var started := Time.get_ticks_usec()
-	var result := player_perceive_profile_body(u, force)
-	world.profile_record("aiplayer_perceive",started,u.uid)
-	return result
-
-
-func player_perceive_profile_body(u: GameUnit, force := false) -> Dictionary:
+	var _profile := world.profile_scope("aiplayer_perceive", u.uid) if world.profile_simulation else null
 	if not force and u.has_meta("perceived") and float(u.get_meta("perceived")) == world.time:
 		return u.get_meta("noticed", {})
 	u.set_meta("perceived", world.time)
@@ -1076,14 +1054,7 @@ func _hostiles_near(u: GameUnit, r: float) -> Array:
 ## float bits as integers — returns the cells up to the first key ≥ p, with
 ## p = max(sight × factor, life sense) × 2 / 32 (`_friend_cells`).
 func _notice_candidates(u: GameUnit, notice_radius := NAN) -> Array:
-	if not world.profile_simulation: return _notice_candidates_profile_body(u, notice_radius)
-	var started := Time.get_ticks_usec()
-	var result := _notice_candidates_profile_body(u, notice_radius)
-	world.profile_record("ai_notice_candidates",started,u.uid)
-	return result
-
-
-func _notice_candidates_profile_body(u: GameUnit, notice_radius := NAN) -> Array:
+	var _profile := world.profile_scope("ai_notice_candidates", u.uid) if world.profile_simulation else null
 	var near: Array = u.get_meta("ai_near", [])
 	if world.time >= float(u.get_meta("ai_near_t", -1.0)):
 		# player_perceive already calculated these exact terms before its
@@ -1219,14 +1190,7 @@ func _current(u: GameUnit) -> Dictionary:
 ## fails goes on the ignore list. No random rolls, no mana check.
 ## Returns {opt, t} or {}.
 func choose(u: GameUnit, foes: Array, friendly_only := false) -> Dictionary:
-	if not world.profile_simulation: return choose_profile_body(u, foes, friendly_only)
-	var started := Time.get_ticks_usec()
-	var result := choose_profile_body(u, foes, friendly_only)
-	world.profile_record("aichoose",started,u.uid)
-	return result
-
-
-func choose_profile_body(u: GameUnit, foes: Array, friendly_only := false) -> Dictionary:
+	var _profile := world.profile_scope("aichoose", u.uid) if world.profile_simulation else null
 	var os := options(u)
 	if os.b.is_empty() and (foes.is_empty() or os.a.is_empty()):
 		return {}
@@ -1364,14 +1328,7 @@ func _attack(u: GameUnit, t: GameUnit) -> void:
 ## No counter or cooldown. Remake: while an AI attack / cast order runs, once
 ## per logic tick. Returns true when the order changed.
 func rechoose(u: GameUnit) -> bool:
-	if not world.profile_simulation: return rechoose_profile_body(u)
-	var started := Time.get_ticks_usec()
-	var result := rechoose_profile_body(u)
-	world.profile_record("airechoose",started,u.uid)
-	return result
-
-
-func rechoose_profile_body(u: GameUnit) -> bool:
+	var _profile := world.profile_scope("airechoose", u.uid) if world.profile_simulation else null
 	if u.controller >= 0 or not u.order.get("ai", false) or fearful(u):
 		return false
 	var now := world.time
@@ -1466,15 +1423,7 @@ func _react(u: GameUnit, code: int) -> void:
 ## per 55 ms AI tick: none while Suspection or Fear is current, none for the
 ## player's units (Player motivation). Rolled here once per 55 ms of world time.
 func chatter(u: GameUnit, dt: float) -> void:
-	if not world.profile_simulation:
-		chatter_profile_body(u, dt)
-		return
-	var started := Time.get_ticks_usec()
-	chatter_profile_body(u, dt)
-	world.profile_record("aichatter",started,u.uid)
-
-
-func chatter_profile_body(u: GameUnit, dt: float) -> void:
+	var _profile := world.profile_scope("aichatter", u.uid) if world.profile_simulation else null
 	if u.controller >= 0 or u.dead or u.has_meta("hero") or u.mode == "player" or fearful(u):
 		return
 	var n := 1 if dt == GameUnit.TICK else int(floorf(world.time / GameUnit.TICK) - floorf((world.time - dt) / GameUnit.TICK))
@@ -2239,14 +2188,7 @@ func notice_terms(u: GameUnit, radius: float) -> PackedFloat64Array:
 
 
 func can_notice_with(u: GameUnit, o: GameUnit, k: PackedFloat64Array) -> bool:
-	if not world.profile_simulation: return can_notice_with_profile_body(u, o, k)
-	var started := Time.get_ticks_usec()
-	var result := can_notice_with_profile_body(u, o, k)
-	world.profile_record("aican_notice_with",started,u.uid)
-	return result
-
-
-func can_notice_with_profile_body(u: GameUnit, o: GameUnit, k: PackedFloat64Array) -> bool:
+	var _profile := world.profile_scope("aican_notice_with", u.uid) if world.profile_simulation else null
 	if o.hidden:
 		return false
 	var d := u.pos.distance_to(o.pos)

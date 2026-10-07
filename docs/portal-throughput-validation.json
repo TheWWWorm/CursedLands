@@ -1,0 +1,655 @@
+{
+  "status": "Local CPU checkpoint after Experimental 5; neither 60 FPS nor actual 2x on Retroid is achieved. Not published.",
+  "baseline_commit": "fc06dcc93353969f093072030b4add9124fda140",
+  "fixture": {
+    "version": 2,
+    "ticks": 1100,
+    "sim_seconds": 60.5,
+    "starting_units": 415,
+    "zone": "gz1h",
+    "profile": false,
+    "source_sha256": "9c0fe9663b92b77a50b8018a409064c23d9b43040d6d7a5361059faedd9b22c9",
+    "scope": "Complete headless simulation including engine yields; rendering and WAN excluded; frame-clock audio RNG is not deterministic replay.",
+    "save_sha256": "4ff292bd274782568ddb130db35002a103f94fe84eeec096121432297e387f6f"
+  },
+  "retroid_simulation": {
+    "baseline_apk": 23,
+    "candidate_apk": 29,
+    "baseline": {
+      "runs": [
+        {
+          "name": "throughput-clock-baseline-01",
+          "fixture_version": 2,
+          "wall_seconds": 42.552163,
+          "tick_seconds": 36.718207,
+          "sim_seconds": 60.4999999999997,
+          "events": 27,
+          "deferred": 354084,
+          "considered": 428807,
+          "tick_ms": {
+            "max": 446.472,
+            "p50": 31.578,
+            "p95": 41.241
+          },
+          "evidence_sha256": "1ee2b37cd56d17c650d1519017cac0c7ac31e237a29f91570ac5ecb467967da0"
+        },
+        {
+          "name": "throughput-clock-baseline-02",
+          "fixture_version": 2,
+          "wall_seconds": 43.443269,
+          "tick_seconds": 37.554101,
+          "sim_seconds": 60.4999999999997,
+          "events": 27,
+          "deferred": 354207,
+          "considered": 428769,
+          "tick_ms": {
+            "max": 446.2,
+            "p50": 32.453,
+            "p95": 42.005
+          },
+          "evidence_sha256": "6490b3f1fff2dd30482f9aec2a9d5142fc21b4ec21ecc5239b3e84e2a586862a"
+        },
+        {
+          "name": "throughput-clock-baseline-03",
+          "fixture_version": 2,
+          "wall_seconds": 41.552207,
+          "tick_seconds": 35.913999,
+          "sim_seconds": 60.4999999999997,
+          "events": 27,
+          "deferred": 354947,
+          "considered": 429018,
+          "tick_ms": {
+            "max": 437.401,
+            "p50": 30.981,
+            "p95": 40.526
+          },
+          "evidence_sha256": "3951a2302d1ea78bf1e01db8fde5ad8b60a0db4149d1f249bfe01bc8c256bd2f"
+        }
+      ],
+      "median_wall_seconds": 42.552163
+    },
+    "candidate": {
+      "runs": [
+        {
+          "name": "throughput-clock-empty-step-01",
+          "fixture_version": 2,
+          "wall_seconds": 35.807278,
+          "tick_seconds": 29.994138,
+          "sim_seconds": 60.4999999999997,
+          "events": 27,
+          "deferred": 407691,
+          "considered": 428955,
+          "tick_ms": {
+            "max": 438.576,
+            "p50": 25.543,
+            "p95": 35.085
+          },
+          "evidence_sha256": "8d5670f5e4c8e94e98a268a5543de631ae441af810534c04899bf09c9e7fd627"
+        },
+        {
+          "name": "throughput-clock-empty-step-02",
+          "fixture_version": 2,
+          "wall_seconds": 34.641803,
+          "tick_seconds": 28.973395,
+          "sim_seconds": 60.4999999999997,
+          "events": 27,
+          "deferred": 407781,
+          "considered": 428756,
+          "tick_ms": {
+            "max": 435.931,
+            "p50": 24.783,
+            "p95": 34.192
+          },
+          "evidence_sha256": "3d983f4e169c78921cc27d218e83d5e634396b6f86ceaca50e1959ced16c7d4e"
+        },
+        {
+          "name": "throughput-clock-empty-step-03",
+          "fixture_version": 2,
+          "wall_seconds": 35.643213,
+          "tick_seconds": 29.837345,
+          "sim_seconds": 60.4999999999997,
+          "events": 27,
+          "deferred": 408081,
+          "considered": 428814,
+          "tick_ms": {
+            "max": 440.274,
+            "p50": 25.498,
+            "p95": 34.482
+          },
+          "evidence_sha256": "e4df761d903c8e2d0646c79392a4f9a088365a17089f7045d0849c5a8075605a"
+        }
+      ],
+      "median_wall_seconds": 35.643213
+    },
+    "median_wall_reduction_percent": 16.236424926272253,
+    "device": "Retroid Pocket 5 / Android 13 / Adreno 650",
+    "pool_threads": 4
+  },
+  "linux_simulation": {
+    "baseline_variant": "portal60-experimental5-final",
+    "candidate_variant": "throughput-empty-step01",
+    "baseline": {
+      "runs": [
+        {
+          "name": "throughput-desktop-baseline-04",
+          "fixture_version": 2,
+          "wall_seconds": 21.226481,
+          "tick_seconds": 18.186699,
+          "sim_seconds": 60.4999999999997,
+          "events": 27,
+          "deferred": 352361,
+          "considered": 428866,
+          "tick_ms": {
+            "max": 234.014,
+            "p50": 15.668,
+            "p95": 20.662
+          },
+          "evidence_sha256": "0ef12ef85961fa4609f4e27d68d4bb226448959d86ddf050a640789948b3ea9d"
+        },
+        {
+          "name": "throughput-desktop-baseline-05",
+          "fixture_version": 2,
+          "wall_seconds": 21.008367,
+          "tick_seconds": 17.948236,
+          "sim_seconds": 60.4999999999997,
+          "events": 27,
+          "deferred": 354897,
+          "considered": 428430,
+          "tick_ms": {
+            "max": 230.57,
+            "p50": 15.538,
+            "p95": 20.767
+          },
+          "evidence_sha256": "5608db6e1f2ed6a946ee7538f4bbafd25e666b1a140f13b9eee765b427d7f3f7"
+        },
+        {
+          "name": "throughput-desktop-baseline-06",
+          "fixture_version": 2,
+          "wall_seconds": 20.672165,
+          "tick_seconds": 17.645006,
+          "sim_seconds": 60.4999999999997,
+          "events": 26,
+          "deferred": 354717,
+          "considered": 429051,
+          "tick_ms": {
+            "max": 234.149,
+            "p50": 15.227,
+            "p95": 20.721
+          },
+          "evidence_sha256": "406d1b21e90ae30853f3bda599058c858e18582ac8f6022c91a1e10cb9669540"
+        }
+      ],
+      "median_wall_seconds": 21.008367
+    },
+    "candidate": {
+      "runs": [
+        {
+          "name": "throughput-desktop-empty-step-04",
+          "fixture_version": 2,
+          "wall_seconds": 16.86052,
+          "tick_seconds": 14.077992,
+          "sim_seconds": 60.4999999999997,
+          "events": 27,
+          "deferred": 407581,
+          "considered": 429304,
+          "tick_ms": {
+            "max": 230.205,
+            "p50": 12.09,
+            "p95": 17.084
+          },
+          "evidence_sha256": "1d64cd9d8c38b0285236fb9a700dff7c059adac19c3f007f777961ed0d5044fc"
+        },
+        {
+          "name": "throughput-desktop-empty-step-05",
+          "fixture_version": 2,
+          "wall_seconds": 17.681234,
+          "tick_seconds": 14.723579,
+          "sim_seconds": 60.4999999999997,
+          "events": 27,
+          "deferred": 407798,
+          "considered": 428826,
+          "tick_ms": {
+            "max": 236.075,
+            "p50": 12.535,
+            "p95": 17.674
+          },
+          "evidence_sha256": "79c7482d680d375ba53ac14891648fec377d49fa1a17da9d20881a9be3be324f"
+        },
+        {
+          "name": "throughput-desktop-empty-step-07",
+          "fixture_version": 2,
+          "wall_seconds": 16.997435,
+          "tick_seconds": 14.222323,
+          "sim_seconds": 60.4999999999997,
+          "events": 27,
+          "deferred": 407762,
+          "considered": 429099,
+          "tick_ms": {
+            "max": 230.059,
+            "p50": 12.087,
+            "p95": 16.976
+          },
+          "evidence_sha256": "fd5f2492252c7813cf47286818ef6f534ad1ba30310e85e4ff27833136509850"
+        }
+      ],
+      "median_wall_seconds": 16.997435
+    },
+    "median_wall_reduction_percent": 19.092069364553655,
+    "machine": "Ryzen 9 5950X / RTX 3090, normal scheduler"
+  },
+  "retroid_gameplay": {
+    "scope": "One matched 60-second pair; requested 2x, real separated local co-op authority, no remote guest. Not sustained-60 evidence.",
+    "runs": [
+      {
+        "name": "throughput-baseline-gameplay-60-01",
+        "fps": 22.0772532577861,
+        "frame_ms": {
+          "max": 110.296,
+          "p50": 43.051,
+          "p95": 65.186,
+          "p99": 81.034
+        },
+        "sim_seconds": 75.7350000000012,
+        "wall_seconds": 60.016524,
+        "wing_keys": 26,
+        "renderer": "gl_compatibility",
+        "viewport_size": [
+          1920,
+          1080
+        ],
+        "render_scale": 0.75,
+        "camera_far": 100.0,
+        "camera_near": 0.0500000007450581,
+        "camera_fov": 55.0,
+        "units": 414,
+        "players": 1,
+        "isolated": true,
+        "options": {
+          "aim_press_once": 1,
+          "auto_exit": 0,
+          "auto_graphics": 1,
+          "autosave": 0,
+          "brightness": 50,
+          "cam_follow": 1,
+          "cam_pan_speed": 50,
+          "cam_rotate_speed": 50,
+          "cam_see_through": 1,
+          "cam_wasd": 1,
+          "cam_zoom_speed": 50,
+          "camera_reverse_x": 0,
+          "camera_reverse_y": 0,
+          "camera_style": 1,
+          "confine_mouse": 0,
+          "contrast": 50,
+          "coop_clock": 1,
+          "coop_full_xp": 1,
+          "coop_player_names": 1,
+          "coop_scale": 2,
+          "coop_share_loot": 1,
+          "difficulty": 0,
+          "display_mode": 1,
+          "distant_ai": 0,
+          "enemy_hp_bars": 1,
+          "footprints": 1,
+          "fps_limit": 0,
+          "gamma": 50,
+          "gfx_bloom": 1,
+          "gfx_contact_shadows": 1,
+          "gfx_detailed_heads": 1,
+          "gfx_far_view": 0,
+          "gfx_firelight": 1,
+          "gfx_foliage_light": 1,
+          "gfx_grass": 0,
+          "gfx_hd_textures": 0,
+          "gfx_heat_haze": 0,
+          "gfx_lava_light": 1,
+          "gfx_lit_particles": 1,
+          "gfx_materials": 0,
+          "gfx_severed_limbs": 1,
+          "gfx_sharp_units": 1,
+          "gfx_sky": 1,
+          "gfx_soft_ground": 0,
+          "gfx_soft_particles": 0,
+          "gfx_ssao": 0,
+          "gfx_terrain": 1,
+          "gfx_torch_glow": 0,
+          "gfx_volumetric": 0,
+          "gfx_water": 1,
+          "gfx_water_reflections": 0,
+          "gfx_weather_surfaces": 1,
+          "gfx_wind": 1,
+          "item_icon_fit": 1,
+          "marks": 1,
+          "mechanism_motion": 0,
+          "merc_travel": 0,
+          "net_directory": 0,
+          "net_lan": 0,
+          "net_upnp": 0,
+          "net_websocket": 0,
+          "pad_cursor_speed": 50,
+          "pad_deadzone": 13,
+          "pad_enabled": 1,
+          "pad_glyphs": 0,
+          "pad_gyro": 0,
+          "pad_gyro_sensitivity": 50,
+          "pad_light": 1,
+          "pad_rumble": 70,
+          "pad_swap_sticks": 0,
+          "pad_target_radius": 6,
+          "pad_wheel_pause": 1,
+          "path_through": 1,
+          "phys_interp": 1,
+          "power_kbd": 25,
+          "power_mouse": 50,
+          "q_aa": 0,
+          "q_aniso": 1,
+          "q_shadow_fit": 1,
+          "q_shadows": 0,
+          "render_scale": 2,
+          "renderer": 0,
+          "resolution": 0,
+          "reverse_stereo": 0,
+          "revive": 1,
+          "rubber_select": 2,
+          "scroll_border": 0,
+          "select_type": 0,
+          "show_flying_hp": 1,
+          "show_fps": 0,
+          "show_path": 1,
+          "show_tutorial": 1,
+          "smile_faces": 1,
+          "sp_death_notice": 1,
+          "sp_full_xp": 0,
+          "start_zones": 1,
+          "switch_filters": 1,
+          "tooltip_time": 2,
+          "ui_active_buttons": 1,
+          "unit_fog": 1,
+          "village_start_view": 0,
+          "volume_sfx": 100,
+          "volume_stream": 100,
+          "volume_voice": 100,
+          "vsync": 0
+        },
+        "evidence_sha256": "d2ace267da50b7bf783dc088c3b805d4cf8908ce5e47989a113ce082dc3b75db",
+        "apk_sha256": "d3006712b7f0350cd313734d0c3c2194b3eeec2841a498f0d814b4f2d9be8d2d"
+      },
+      {
+        "name": "throughput-empty-step-gameplay-60-01",
+        "fps": 22.0315667688713,
+        "frame_ms": {
+          "max": 113.39,
+          "p50": 43.34,
+          "p95": 64.838,
+          "p99": 79.435
+        },
+        "sim_seconds": 91.1350000000031,
+        "wall_seconds": 60.004811,
+        "wing_keys": 23,
+        "renderer": "gl_compatibility",
+        "viewport_size": [
+          1920,
+          1080
+        ],
+        "render_scale": 0.75,
+        "camera_far": 100.0,
+        "camera_near": 0.0500000007450581,
+        "camera_fov": 55.0,
+        "units": 414,
+        "players": 1,
+        "isolated": true,
+        "options": {
+          "aim_press_once": 1,
+          "auto_exit": 0,
+          "auto_graphics": 1,
+          "autosave": 0,
+          "brightness": 50,
+          "cam_follow": 1,
+          "cam_pan_speed": 50,
+          "cam_rotate_speed": 50,
+          "cam_see_through": 1,
+          "cam_wasd": 1,
+          "cam_zoom_speed": 50,
+          "camera_reverse_x": 0,
+          "camera_reverse_y": 0,
+          "camera_style": 1,
+          "confine_mouse": 0,
+          "contrast": 50,
+          "coop_clock": 1,
+          "coop_full_xp": 1,
+          "coop_player_names": 1,
+          "coop_scale": 2,
+          "coop_share_loot": 1,
+          "difficulty": 0,
+          "display_mode": 1,
+          "distant_ai": 0,
+          "enemy_hp_bars": 1,
+          "footprints": 1,
+          "fps_limit": 0,
+          "gamma": 50,
+          "gfx_bloom": 1,
+          "gfx_contact_shadows": 1,
+          "gfx_detailed_heads": 1,
+          "gfx_far_view": 0,
+          "gfx_firelight": 1,
+          "gfx_foliage_light": 1,
+          "gfx_grass": 0,
+          "gfx_hd_textures": 0,
+          "gfx_heat_haze": 0,
+          "gfx_lava_light": 1,
+          "gfx_lit_particles": 1,
+          "gfx_materials": 0,
+          "gfx_severed_limbs": 1,
+          "gfx_sharp_units": 1,
+          "gfx_sky": 1,
+          "gfx_soft_ground": 0,
+          "gfx_soft_particles": 0,
+          "gfx_ssao": 0,
+          "gfx_terrain": 1,
+          "gfx_torch_glow": 0,
+          "gfx_volumetric": 0,
+          "gfx_water": 1,
+          "gfx_water_reflections": 0,
+          "gfx_weather_surfaces": 1,
+          "gfx_wind": 1,
+          "item_icon_fit": 1,
+          "marks": 1,
+          "mechanism_motion": 0,
+          "merc_travel": 0,
+          "net_directory": 0,
+          "net_lan": 0,
+          "net_upnp": 0,
+          "net_websocket": 0,
+          "pad_cursor_speed": 50,
+          "pad_deadzone": 13,
+          "pad_enabled": 1,
+          "pad_glyphs": 0,
+          "pad_gyro": 0,
+          "pad_gyro_sensitivity": 50,
+          "pad_light": 1,
+          "pad_rumble": 70,
+          "pad_swap_sticks": 0,
+          "pad_target_radius": 6,
+          "pad_wheel_pause": 1,
+          "path_through": 1,
+          "phys_interp": 1,
+          "power_kbd": 25,
+          "power_mouse": 50,
+          "q_aa": 0,
+          "q_aniso": 1,
+          "q_shadow_fit": 1,
+          "q_shadows": 0,
+          "render_scale": 2,
+          "renderer": 0,
+          "resolution": 0,
+          "reverse_stereo": 0,
+          "revive": 1,
+          "rubber_select": 2,
+          "scroll_border": 0,
+          "select_type": 0,
+          "show_flying_hp": 1,
+          "show_fps": 0,
+          "show_path": 1,
+          "show_tutorial": 1,
+          "smile_faces": 1,
+          "sp_death_notice": 1,
+          "sp_full_xp": 0,
+          "start_zones": 1,
+          "switch_filters": 1,
+          "tooltip_time": 2,
+          "ui_active_buttons": 1,
+          "unit_fog": 1,
+          "village_start_view": 0,
+          "volume_sfx": 100,
+          "volume_stream": 100,
+          "volume_voice": 100,
+          "vsync": 0
+        },
+        "evidence_sha256": "ce7ae2f62189a35cd830ba277f1e45a12d5467e4e57007345ce3f1c2006c9526",
+        "apk_sha256": "44f93929f1791d12978c60d8eb4e93f6d9e0333408cd673d5b1e740bcea06d33"
+      }
+    ]
+  },
+  "windows_report": {
+    "source": "User report, unverified on target OS",
+    "cpu": "7945xh (as reported)",
+    "gpu": "RTX 4090 mobile",
+    "resolution": "4K",
+    "scale": "100%",
+    "speed": "2x",
+    "settings": "all maximum remake settings",
+    "mode": "co-op",
+    "version": "latest experimental",
+    "renderer": "shipped default Direct3D 12",
+    "fps_reported": 40,
+    "status": "Unresolved; Linux 720p measurements cannot validate this configuration."
+  },
+  "artifacts": {
+    "android": {
+      "private_instrumented": false,
+      "engine_sha256": "424eaf73630ec110faf614f550f8047c24a78e224211df45d8b957bf03b7cc79",
+      "native_sha256": "7791588e721f977a415112194cda86e38a9df8ec1d84fc9c68d5f6ccfad0eebd",
+      "apk_sha256": "44f93929f1791d12978c60d8eb4e93f6d9e0333408cd673d5b1e740bcea06d33",
+      "changes": [
+        "Shared empty defaults in native live AI eligibility and senses",
+        "Profiling scopes skip script wrapper calls when profiling is disabled",
+        "AI conservative movement envelope reduced from 16m to 2m with live overflow invalidation",
+        "Skip overwritten movement samples and empty effect updates"
+      ]
+    },
+    "linux_export": {
+      "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+      "CPU.pck": "1c4084d0a64b555f935c86e630a7c3ac94d17f536cbc5df8113b23a0cbc68432",
+      "libterrain_search.so": "459d0cdcb8c71e147cf5e0094cff43163dda93e4c8a6df64ff3efd13addb113b"
+    },
+    "native_windows_dll_sha256": "23fb742a8d0803a15d20604747b588a315841774fcc26fca9c809359fd918456",
+    "source_freeze_sha256": "e599cfead9222936c4c90606d6904feffdf434e36740074c4b395f565c4e0cdc"
+  },
+  "tests": [
+    {
+      "platform": "Linux",
+      "run": "throughput-empty-step-motion_build-01",
+      "result": "MOTION_BUILD checks=57185 failures=0 native_us=4063 script_us=160868",
+      "log_sha256": "544103c1404b5c57b778b7708bfce77cad21e1e334df047d3cb149b86d47a76f"
+    },
+    {
+      "platform": "Linux",
+      "run": "throughput-empty-step-motion_records-01",
+      "result": "MOTION_RECORDS 10221 checks 0 failures",
+      "log_sha256": "61e8556123d38499f60508dc15460055b4d04bff78e73648bcc5575b39613c93"
+    },
+    {
+      "platform": "Linux",
+      "run": "throughput-empty-step-worker_clock-01",
+      "result": "WORKER_CLOCK 8255 checks 0 failures",
+      "log_sha256": "9aeb503d75f833d625a6ed8a2dafd38701c307526aad64f0faa14588a263b987"
+    },
+    {
+      "platform": "Linux",
+      "run": "throughput-empty-step-creature_damage-02",
+      "result": "CREATURE_DAMAGE checks=22 failures=0",
+      "log_sha256": "96d321431137b24ce74c5942321bc98a82f42fc328ed08f7cb20673e6a25da4b"
+    },
+    {
+      "platform": "Linux",
+      "run": "throughput-envelope-senses-03",
+      "result": "AI_SENSES_CHECKS 7340 checks 0 failures",
+      "log_sha256": "7dbaa735b2d9cb53cdb554805b0bc10eee2b8f453c8a0e92c83ee9896e07eac5"
+    },
+    {
+      "platform": "Linux",
+      "run": "throughput-envelope-live-01",
+      "result": "AI_LIVE_ELIGIBILITY 4589 checks 0 failures",
+      "log_sha256": "86ed72338c9ed50e69c97149d805da8b25f57f1b0fa2f8687f3558f73143d9e0"
+    },
+    {
+      "platform": "Linux",
+      "run": "throughput-scopes-test-02",
+      "result": "SIMULATION_PROFILE_SCOPES 19 checks 0 failures",
+      "log_sha256": "12919ee2df4a6ea474d161a45dbcafa5dbb47ae2b7604c8f7abe96d4a5517cc4"
+    },
+    {
+      "platform": "Retroid ARM64",
+      "run": "throughput-empty-step-motion_build-arm-01",
+      "result": "MOTION_BUILD checks=57185 failures=0 native_us=8795 script_us=296875",
+      "log_sha256": "a665629f6dad66ba7ef71529931fc50f09f6ca7a760c39bb42b4c815999e6da0"
+    },
+    {
+      "platform": "Retroid ARM64",
+      "run": "throughput-empty-step-motion_records-arm-01",
+      "result": "MOTION_RECORDS 10221 checks 0 failures",
+      "log_sha256": "92c542679ff0269d08d67244e8c4b8284d1f4b069587066d1b08b0a9cb14cdb5"
+    },
+    {
+      "platform": "Retroid ARM64",
+      "run": "throughput-empty-step-creature_damage-arm-01",
+      "result": "CREATURE_DAMAGE checks=22 failures=0",
+      "log_sha256": "11a37715a53ead1901abb4e2207b3f1fe9af5fb619638872d1dbb4e8166cc9a3"
+    },
+    {
+      "platform": "Retroid ARM64",
+      "run": "throughput-envelope-ai_activity_senses-01",
+      "result": "AI_SENSES_CHECKS 7340 checks 0 failures",
+      "log_sha256": "57c3af0d90e43039d24acb8fbc09aa83ead840449fd10e91a2fd1eac02a8eb00"
+    },
+    {
+      "platform": "Retroid ARM64",
+      "run": "throughput-envelope-ai_live_eligibility-01",
+      "result": "AI_LIVE_ELIGIBILITY 4589 checks 0 failures",
+      "log_sha256": "21718d53d569b906bfb00979d9e5bd6ba13d7520314fe4802b285c67ed1fa5f4"
+    },
+    {
+      "platform": "Retroid ARM64",
+      "run": "throughput-envelope-ai_activity_health-01",
+      "result": "AI_HEALTH_CHECKS 45 checks 0 failures",
+      "log_sha256": "9ff8a4b790fc4bcecfd833e4a054080a13b4e57e546d7f4c5c7890a4ff5c727e"
+    },
+    {
+      "platform": "Retroid ARM64",
+      "run": "throughput-empty-step-simulation_profile_scopes-arm-01",
+      "result": "SIMULATION_PROFILE_SCOPES 19 checks 0 failures",
+      "log_sha256": "5f4ca4b94f3baefda654502980ea4a0dca71edf92d93d410cf0a0a72ea2cbba7"
+    }
+  ],
+  "excluded": [
+    "Fixture version 1 disabled world physics and added legacy actor placement work.",
+    "throughput-envelope-4k-max-01 and -02, throughput-empty-step-4k-max-01: aborted when an unrelated Godot project started.",
+    "throughput-desktop-empty-step-06: unrelated Godot test overlapped; replaced by -07.",
+    "throughput-empty-step-creature_damage-01: launched with base campaign instead of required Lost in Astral; corrected -02 passes.",
+    "Initial movement-envelope boundary fixture omitted actor registration; corrected registered fixture passes."
+  ],
+  "rejected_experiments": [
+    "Fused native movement contacts: correctness passed, no complete-simulation gain; reverted.",
+    "Animation-query cache: correctness passed, no convincing incremental complete-simulation gain; reverted.",
+    "Suppressing actor physics callbacks: 34.24s versus 34.64-35.81s current range, too small/uncertain for added lifecycle complexity; diagnostic only."
+  ],
+  "remaining": [
+    "60 simulated seconds within 30 wall seconds on Retroid.",
+    "60 FPS at actual 2x in Portal and other large maps, including sustained frame percentiles.",
+    "Windows 4K Direct3D 12 target hardware validation.",
+    "Further rendering-path profiling independent from simulation.",
+    "Ordinary single-player authority still runs inline.",
+    "Vulkan terrain cache remains disabled after visible brightness mismatch.",
+    "No new release package or macOS runtime validation."
+  ]
+}

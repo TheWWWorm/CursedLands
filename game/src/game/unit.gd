@@ -1153,14 +1153,7 @@ func speed() -> float:
 ##  packs the gait and legs' wound multiplier into bytes. Walk
 ## postures use the running base for rotation, while their translation walks.
 func _move_base(for_turn := false) -> float:
-	if not world or not world.profile_simulation: return _move_base_profile_body(for_turn)
-	var started := Time.get_ticks_usec()
-	var result := _move_base_profile_body(for_turn)
-	world.profile_record("unit_move_base",started,uid)
-	return result
-
-
-func _move_base_profile_body(for_turn := false) -> float:
+	var _profile := world.profile_scope("unit_move_base", uid) if world and world.profile_simulation else null
 	var s: Array = race.get("speeds", [0.4, 0.16])
 	# race speeds: run, walk, sneak, crawl
 	# no running while carrying more than the maximum load.
@@ -1464,11 +1457,12 @@ func tick(dt: float) -> void:
 		_tick(dt)
 	else:
 		_tick_blood_pool()
-	_tick_effects()
-	world.profile_record("unit_logic",started,uid)
+	if not buffs.is_empty():
+		_tick_effects()
+	if world.profile_simulation: world.profile_record("unit_logic",started,uid)
 	started = Time.get_ticks_usec() if world.profile_simulation else 0
 	world.nav.track_unit(self)
-	world.profile_record("unit_stamp",started,uid)
+	if world.profile_simulation: world.profile_record("unit_stamp",started,uid)
 
 
 func _tick(dt: float) -> void:
@@ -1519,7 +1513,7 @@ func _tick(dt: float) -> void:
 			if is_instance_valid(hit_target) and hit_target is GameUnit:
 				_resolve_hit(hit_target, _pending_hit.get("roll", {}))
 			_pending_hit = {}
-	world.profile_record("unit_housekeeping",started,uid)
+	if world.profile_simulation: world.profile_record("unit_housekeeping",started,uid)
 	# The perception of a Player-motivation unit runs on every AI tick, busy,
 	# walking or in a clip: the noticed list the
 	# engage check reads (UnitAI.player_perceive).
@@ -1747,15 +1741,7 @@ func _play_clip(clip: String) -> float:
 
 
 func _do_move(dt: float) -> void:
-	if not world or not world.profile_simulation:
-		_do_move_profile_body(dt)
-		return
-	var started := Time.get_ticks_usec()
-	_do_move_profile_body(dt)
-	world.profile_record("unit_do_move",started,uid)
-
-
-func _do_move_profile_body(dt: float) -> void:
+	var _profile := world.profile_scope("unit_do_move", uid) if world and world.profile_simulation else null
 	var use_target: Node3D = world.objects.get(int(order.get("use_object", 0)))
 	if order.has("use_object") and (use_target == null or not world.lever_sys.usable(int(order.use_object))):
 		remove_meta("interact")
@@ -1830,14 +1816,7 @@ func _path_to(to: Vector2, t: GameUnit = null, flat_override := -1, limit := 1e6
 
 
 func _ensure_motion() -> bool:
-	if not world or not world.profile_simulation: return _ensure_motion_profile_body()
-	var started := Time.get_ticks_usec()
-	var result := _ensure_motion_profile_body()
-	world.profile_record("unit_ensure_motion",started,uid)
-	return result
-
-
-func _ensure_motion_profile_body() -> bool:
+	var _profile := world.profile_scope("unit_ensure_motion", uid) if world and world.profile_simulation else null
 	if path.is_empty():
 		_motion = null
 		return false
@@ -1985,14 +1964,7 @@ func _ghost_cutoff(record: Dictionary,at: Vector2,reach: float,ray: Dictionary) 
 ## than sqrt(60) m from it, queue instead (unit-AI).
 ## Units never push each other.
 func _step_along_path(dt: float) -> bool:
-	if not world or not world.profile_simulation: return _step_along_path_profile_body(dt)
-	var started := Time.get_ticks_usec()
-	var result := _step_along_path_profile_body(dt)
-	world.profile_record("unit_step_along_path",started,uid)
-	return result
-
-
-func _step_along_path_profile_body(dt: float) -> bool:
+	var _profile := world.profile_scope("unit_step_along_path", uid) if world and world.profile_simulation else null
 	# Straight stick movement is an explicit remake input mode. Ordinary
 	# commands use the original cell spline, including its initial turn hold.
 	if order.get("line", false) and path.size() == 1:
@@ -2002,7 +1974,9 @@ func _step_along_path_profile_body(dt: float) -> bool:
 	_draw_motion_active = true
 	var from := pos
 	var left := maxf(0.0, dt / TICK)
-	var sample: Dictionary = _motion.sample(_motion_tick)
+	# Positive time samples its destination inside the loop. Only a zero
+	# step needs the current sample for the remaining path and draw speed.
+	var sample: Dictionary = _motion.sample(_motion_tick) if left <= 0.0 else {}
 	while left > 0.0:
 		var remaining := maxf(0.0, _motion.duration - _motion_tick)
 		var step := minf(left, remaining)
@@ -2035,7 +2009,7 @@ func _step_along_path_profile_body(dt: float) -> bool:
 			break
 		_motion_offset += _motion_count - 1
 		_build_motion(pos, facing)
-		sample = _motion.sample(0.0)
+		sample = _motion.sample(0.0) if left <= 0.0 else {}
 	# Remaining public cells are kept for command reach checks and save/debug
 	# tools. An in-place public edit is restored as by the scalar rebuild;
 	# replacing the path invalidates _ensure_motion's active record.
@@ -3432,15 +3406,7 @@ func anim_flush(defer_pose := false) -> void:
 
 
 func _set_action(a: String) -> void:
-	if not world or not world.profile_simulation:
-		_set_action_profile_body(a)
-		return
-	var started := Time.get_ticks_usec()
-	_set_action_profile_body(a)
-	world.profile_record("unit_set_action",started,uid)
-
-
-func _set_action_profile_body(a: String) -> void:
+	var _profile := world.profile_scope("unit_set_action", uid) if world and world.profile_simulation else null
 	# A unit that stays idle asks for the same pose every frame: when nothing
 	# it depends on changed (stance, combat flag, part health, the figure and
 	# its playing clip), the call would change nothing and is skipped. The

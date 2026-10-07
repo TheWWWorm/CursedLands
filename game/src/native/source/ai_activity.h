@@ -50,6 +50,10 @@ public:
     }
     bool can_defer_impl(Object *unit,Object *ai,double time,const UnitSimulationState *state,bool standard_ai) const {
         if (!unit || !ai) return false;
+        // Shared read-only defaults avoid allocating containers for each live
+        // eligibility query. Consumers only inspect them, never mutate them.
+        static const Dictionary empty_dictionary;
+        static const Array empty_array;
         static const StringName controller("controller"), dead("dead"), hidden("hidden"), alert("alert"),
             hero("hero"), mode_key("mode"), info_key("info"), orders_key("orders"), failed("order_failed"),
             lock("_anim_lock"), pending("_pending_hit"), buffs_key("buffs"), hp("hp"), max_hp("max_hp"),
@@ -70,8 +74,8 @@ public:
                 double(unit->get(hp)) < (state ? state->max_hp : double(unit->get(max_hp)))) return false;
         if (unit->has_meta(suspect) || unit->has_meta(fear_on) || unit->has_meta(attacker) ||
                 unit->has_meta(um) || unit->has_meta(alerted) || unit->has_meta(hate) || unit->has_meta(peace) ||
-                !Dictionary(unit->get_meta(noticed, Dictionary())).is_empty() ||
-                !Dictionary(unit->get_meta(corpses, Dictionary())).is_empty() ||
+                !Dictionary(unit->get_meta(noticed, empty_dictionary)).is_empty() ||
+                !Dictionary(unit->get_meta(corpses, empty_dictionary)).is_empty() ||
                 !Array(ai->get(dangers)).is_empty()) return false;
         // Prototype classification remains owned by UnitAI. Existing entries
         // can be read without another script invocation; misses and custom AI
@@ -101,15 +105,15 @@ public:
             support=!Array(spells[1]).is_empty();
         }
         if(support) return false;
-        const Dictionary fear = unit->get_meta(fear_key, Dictionary());
+        const Dictionary fear = unit->get_meta(fear_key, empty_dictionary);
         if (double(fear.get(r_key, 10.)) != 10. || double(fear.get(j_key, 3.)) != 3. || fear.has(danger)) return false;
-        const Dictionary calm = unit->get_meta(calm_key, Dictionary());
+        const Dictionary calm = unit->get_meta(calm_key, empty_dictionary);
         if (mode == standard) {
-            Dictionary descriptor;
+            Dictionary descriptor = empty_dictionary;
             bool direct=false;
             if (state && standard_ai) {
                 static const String list_key("logic"); static const StringName index_key("logic_idx");
-                const Variant source=info.get(list_key,Array());
+                const Variant source=info.get(list_key,empty_array);
                 if (source.get_type()==Variant::ARRAY) {
                     const Array list=source; const int64_t index=unit->get_meta(index_key,0);
                     if (index>=list.size()) { descriptor=info; direct=true; }
@@ -178,6 +182,7 @@ public:
     PackedByteArray evaluate_world_impl(const Array &units,const PackedInt64Array &side_masks,
             double darkness,double weather,double margin,const Ref<Script> &unit_script,
             std::unordered_map<uint64_t,Vector2> *capture,std::vector<uint64_t> *ids) const {
+        static const Array empty_array;
         PackedByteArray result; result.resize(units.size()); result.fill(1);
         if (side_masks.size() != 32) return result;
         static const StringName pos_key("pos"), faction_key("faction"), controller_key("controller"),
@@ -198,9 +203,9 @@ public:
             const Dictionary proto = state.is_valid() ? state->proto : Dictionary(unit->get(proto_key)),
                 stats = state.is_valid() ? state->stats : Dictionary(unit->get(stats_key)),
                 buffs = state.is_valid() ? state->buffs : Dictionary(unit->get(buffs_key));
-            const Array senses = proto.get(senses_key, Array()), detection = proto.get(detection_key, Array());
+            const Array senses = proto.get(senses_key, empty_array), detection = proto.get(detection_key, empty_array);
             double bonus[3] = {}, high[3] = {};
-            const Array values = buffs.values();
+            const Array values = buffs.is_empty() ? empty_array : buffs.values();
             for (int64_t bi = 0; bi < values.size(); ++bi) {
                 const Dictionary buff = values[bi];
                 if (buff.has(sense_key)) {

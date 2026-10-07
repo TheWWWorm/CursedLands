@@ -42,6 +42,7 @@ func _ready() -> void:
 	terms[3] = 1.5
 	check(kernel.evaluate_senses(positions, terms, factions, PackedByteArray(), masks, 16.0) == PackedByteArray([1, 1]), "malformed rows fail open")
 	_live_capture(kernel, rng)
+	_motion_envelope(rng)
 	print("AI_SENSES_CHECKS ", checks, " checks ", failures, " failures")
 	get_tree().quit(1 if failures else 0)
 
@@ -70,7 +71,7 @@ func _live_capture(kernel: RefCounted, rng: RandomNumberGenerator) -> void:
 				"detect": {"detect":[rng.randi_range(0,2),rng.randf_range(-2,2)]}}
 		w.ai.activity.begin_tick(GameUnit.TICK)
 		var expected := w.ai.activity._capture_script(w.unit_rows())
-		check(kernel.evaluate_world(w.unit_rows(),w.ai.activity._side_masks,w.darkness(),w.weather_sight_factor(),16.0) == expected, "live capture matches script senses %d" % trial)
+		check(kernel.evaluate_world(w.unit_rows(),w.ai.activity._side_masks,w.darkness(),w.weather_sight_factor(),AIActivity.MOTION_MARGIN) == expected, "live capture matches script senses %d" % trial)
 		check(w.ai.activity._owned_batch,"native world activity batch")
 		var rows := w.unit_rows()
 		for i in rows.size():
@@ -79,10 +80,11 @@ func _live_capture(kernel: RefCounted, rng: RandomNumberGenerator) -> void:
 	var u: GameUnit = units[1]
 	w.ai.activity.begin_tick(GameUnit.TICK)
 	var origin := u.pos
-	u.pos += Vector2(8,0)
+	var limit := AIActivity.MOTION_MARGIN * 0.5
+	u.pos += Vector2(limit,0)
 	w.ai.activity.moved(u)
 	check(w.ai.activity._valid,"exact half-margin stays valid")
-	u.pos = origin + Vector2(8.1,0)
+	u.pos = origin + Vector2(limit + 0.1,0)
 	w.ai.activity.moved(u)
 	check(not w.ai.activity._valid,"larger same-tick move invalidates")
 	u.pos = origin
@@ -108,3 +110,48 @@ func _live_capture(kernel: RefCounted, rng: RandomNumberGenerator) -> void:
 	w.units = {}
 	for other: GameUnit in units.values(): other.free()
 	w.free()
+
+## With both actors moving toward one another, a quiet batch still cannot
+## miss a possible encounter. Crossing either movement budget fails open
+## immediately, including a target moved earlier in the sequential tick.
+func _motion_envelope(rng: RandomNumberGenerator) -> void:
+	var w := GameWorld.new()
+	w.time = 1.0
+	var observer := GameUnit.new()
+	var target := GameUnit.new()
+	for u: GameUnit in [observer, target]:
+		u.world = w
+		u.proto = {"name":"motion-envelope", "senses":PackedFloat32Array([8,100,0]),
+			"detection":PackedFloat32Array([1,1,1]), "peripheral_skills":0.0}
+		u.stats.sight = 8.0
+		u.set_meta("calm", {"busy":true,"until":100.0})
+	observer.uid = 1
+	target.uid = 2
+	target.controller = 0
+	w.units = {1:observer,2:target}
+	observer._seq = 1
+	target._seq = 2
+	var limit := AIActivity.MOTION_MARGIN * 0.5
+	for trial in 512:
+		var direction := Vector2.from_angle(rng.randf_range(-PI,PI))
+		var start := direction * (12.0 + AIActivity.MOTION_MARGIN + 0.01)
+		observer.pos = Vector2.ZERO
+		target.pos = start
+		w.ai.activity.begin_tick(GameUnit.TICK)
+		check(w.ai.activity.defer_decision(observer),"outside full sensing envelope")
+		observer.pos = direction * (limit - 0.001)
+		target.pos = start - direction * (limit - 0.001)
+		check(w.ai.activity._valid and observer.pos.distance_to(target.pos) > 12.0,"two legal moves remain outside reach")
+		check(w.ai.activity.defer_decision(observer),"quiet decision remains safe after both moves")
+		if trial % 2:
+			observer.pos = direction * (limit + 0.01)
+		else:
+			target.pos = start - direction * (limit + 0.01)
+		check(not w.ai.activity._valid and not w.ai.activity.defer_decision(observer),"either actor crossing budget wakes same tick")
+	# Equality belongs to the active set, even before either actor moves.
+	observer.pos = Vector2.ZERO
+	target.pos = Vector2(12.0 + AIActivity.MOTION_MARGIN,0)
+	w.ai.activity.begin_tick(GameUnit.TICK)
+	check(not w.ai.activity.defer_decision(observer),"exact pair envelope is active")
+	w.units = {}
+	observer.free(); target.free(); w.free()

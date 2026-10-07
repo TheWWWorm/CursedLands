@@ -1,0 +1,68 @@
+# Portal complete-simulation benchmark
+
+`portal_throughput.gd` is the version-2 fixed-work fixture. It loads a copy of
+the supplied Lost in Astral Portal save, requires 415 starting actors in `gz1h`,
+and runs 1,100 complete 55 ms world ticks (60.5 simulated seconds). It yields
+to the engine after every five ticks. Record both the entire elapsed window and
+the sum of tick durations: passing the 2× milestone requires the entire window
+to take no more than 30.25 seconds. A tick-only result is insufficient.
+
+Use an isolated application data directory, the matching original expansion
+installation and a frozen game export. Do not place original game assets or
+saves in the repository. For Linux:
+
+```sh
+mkdir -p /tmp/portal-bench-data /tmp/portal-bench-config /tmp/portal-bench-cache
+XDG_DATA_HOME=/tmp/portal-bench-data \
+XDG_CONFIG_HOME=/tmp/portal-bench-config \
+XDG_CACHE_HOME=/tmp/portal-bench-cache \
+  /absolute/export/CursedLands.x86_64 --headless --audio-driver Dummy -- \
+  --ei-path=/absolute/LostInAstral \
+  --tool=/absolute/checkout/tools/benchmarks/portal_throughput.gd \
+  --throughput-config=/absolute/config.json
+```
+
+The JSON configuration names a unique run, an existing fixture and a writable
+result path:
+
+```json
+{
+  "name": "baseline-01",
+  "save": "/absolute/Portal/quick.sav",
+  "out": "/absolute/results/baseline-01.json",
+  "ticks": 1100,
+  "profile": false
+}
+```
+
+For the private Android test application, copy `portal_throughput.gd` and
+`android_portal_throughput.gd` into its `user://` directory. Put the same
+configuration in `user://bench.json`, using device-local paths. Launch the
+Android wrapper through the private application's tool entry point. It starts
+the real headless simulation service, limits the blank frontend to 10 FPS and
+disables its rendering loop. Verify the output file, service exit and APK/native
+library hashes. The normal user application and its saves are not a test profile.
+
+Keep the production world physics flag enabled. Turning it off selects the
+legacy per-actor placement path and adds artificial work during catch-up frames.
+The fixture disables automatic world/session simulation, sets the worker role
+before creating the game and asserts a headless display. Version 1 results are
+not comparable to this fixture.
+
+Run at least three alternating baseline/candidate repetitions with profiling
+off. Retain failed or contaminated receipts but exclude them from performance
+comparisons. Do not build or run another game on the measured machine during a
+timed window. Freeze engine, pack, native module, fixture and configuration
+hashes. Keep scheduler, worker-pool settings, device power mode and temperature
+consistent. Profiling runs are diagnostic only.
+
+The fixture retains normal actors, combat, movement, scripts, effects and audio
+logic. It does not provide deterministic replay: audio/animation callbacks still
+use the frame clock and can alter shared RNG consumption. State snapshots and
+combat counts diagnose gross fixture errors; use independent correctness tests
+for equivalence claims.
+
+This benchmark does not measure rendered FPS, networking under WAN conditions
+or ordinary single-player performance. Validate actual gameplay separately with
+a fixed renderer, resolution, render scale, camera, graphics options and save.
+Report frame percentiles and actual simulated time alongside average FPS.
