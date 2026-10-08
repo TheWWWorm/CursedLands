@@ -96,7 +96,12 @@ static func create(w: GameWorld, s: Session) -> ScriptVM:
 		preload("res://src/game/script/story_compat.gd").recover(vm)
 	if not quest_world.is_empty() and String(restored.get("quest", "")) != String(w.get_meta("quest_mob", "")):
 		vm._start_world(quest_world, quest_src)
-	vm.recalc_merc_briefings()   #  (party deployed)
+	# An explicit load restores both GS flags and their waiting consumers.
+	# Deployment recalculation would erase a completed hire flag before the
+	# restored thread sees it (Kel's prison escape waits for b.merc2.n1_2=2).
+	# Ordinary zone revisits still recalculate topics for the current party.
+	if not s._restoring or restored.is_empty():
+		vm.recalc_merc_briefings()
 	return vm
 
 
@@ -665,7 +670,7 @@ func _call(name: String, a: Array, inst: Instance):
 				u.set_meta("ai_state", 1)
 				preload("res://src/game/script/story_compat.gd").story_move(self, inst.sname, u, to)
 		"RemakeEscapeReady":
-			return preload("res://src/game/script/story_compat.gd").escape_guests(self).all(func(u: GameUnit): return u.pos.y < 84.0)
+			return preload("res://src/game/script/story_compat.gd").escape_ready(self)
 		# Builtins 0x8e SetCP / 0xad SetCPFast(object, x, y, z) put the object
 		# there at once (: position.., world grid
 		# re-link); a unit then drops what it was doing and stands

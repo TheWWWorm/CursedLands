@@ -2878,7 +2878,15 @@ func command_allowed(cmd: Dictionary) -> bool:
 ## The authored village view circle is also the boundary for remake free
 ## walking. Native story movement and conversation staging are not clipped.
 func village_move_limit() -> Vector3:
-	return world.zone.get("restrict", Vector3.ZERO) if shop_available() else Vector3.ZERO
+	if not shop_available(): return Vector3.ZERO
+	# The slave pen confines the party until the authored night escape breaks
+	# its barrier. Keeping the circle afterward turns a player's run-away
+	# click back toward Terror's fire, even after the script led them outside.
+	if state.campaign_id == CampaignProfile.ASTRAL and zone_id == "bz1h" \
+			and state.get_var(0,"bz1h_night") == 2.0:
+		var barrier: GameUnit = world.units.get(1001009)
+		if barrier == null or barrier.dead: return Vector3.ZERO
+	return world.zone.get("restrict", Vector3.ZERO)
 
 
 ## Character management (equipment, belt, skills, abilities, spells): in a

@@ -40,7 +40,9 @@ static func apply(ast: ScriptParser, campaign: String, zone: String) -> void:
 
 ## The slave-camp escape predates co-op: only Kir and Kel receive its
 ## running order, and only their arrival starts Terror's attack. Extend the
-## exact authored staging to every live guest before releasing that attack.
+## staging to every live guest before releasing that attack. Guests must
+## continue beyond the two original marks, leaving room to flee the first
+## fireball rather than crowding Kir and Kel as soon as they cross the gate.
 static func _escape_party(ast: ScriptParser) -> void:
 	var hero := [P.N_CALL,"GetUnitOfPlayer",[[P.N_NUM,0.0],[P.N_NUM,0.0]]]
 	var move := [P.S_CALL,"MoveToPoint",[hero,[P.N_NUM,407.0],[P.N_NUM,82.0]]]
@@ -64,12 +66,28 @@ static func story_move(vm: ScriptVM, script: String, unit: GameUnit, to: Vector2
 	if script != "VCheck#1#1" or to != Vector2(407,82): return
 	var story := vm._story_records()
 	if story.is_empty() or unit != story[0]: return
-	var i := 0
-	for guest: GameUnit in escape_guests(vm):
-		i += 1
-		guest.set_gait(3)
-		guest.command({"type":"move", "to":to+Vector2(0,-1.1*i), "run":true, "story_move":true})
-		guest.set_meta("ai_state",1)
+	var guests := escape_guests(vm)
+	for i in guests.size(): _run_escape_guest(guests[i],i)
+
+
+static func _run_escape_guest(guest: GameUnit, index: int) -> void:
+	guest.set_gait(3)
+	guest.command({"type":"move", "to":Vector2(407,78.5-1.5*index), "run":true, "story_move":true})
+	guest.set_meta("ai_state",1)
+
+
+static func escape_ready(vm: ScriptVM) -> bool:
+	var guests := escape_guests(vm)
+	var ready := true
+	for i in guests.size():
+		var guest: GameUnit = guests[i]
+		if guest.pos.y < 80.0: continue
+		ready = false
+		# A temporary crowd can exhaust a route, and a guest can join after
+		# the single authored MoveToPoint. Continue idle guests during this
+		# arrival wait without replacing an active player command.
+		if guest.is_idle(): _run_escape_guest(guest,i)
+	return ready
 
 
 ## The stationary call switch only starts Lift#01 once in the original.
