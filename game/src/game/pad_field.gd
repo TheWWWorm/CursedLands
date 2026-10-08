@@ -18,7 +18,7 @@ const RETICLE_SPEED := 9.0
 ## The ring's aimed strikes laid out like the numpad and the original cursors
 ## (the target faces the viewer: its right arm is on the screen's left):
 ## AIM_ORDER index → degrees clockwise from up.
-const AIM_ANGLES := {0: 0.0, 2: 90.0, 4: 135.0, 1: 180.0, 5: 225.0, 3: 270.0}
+const AIM_ANGLES := {0: 0.0, 2: 60.0, 4: 120.0, 1: 180.0, 5: 240.0, 3: 300.0}
 const AIM_ACTIONS := ["cs_head", "cs_body", "cs_lhand", "cs_rhand", "cs_lleg", "cs_rleg"]
 
 var game: Game
@@ -36,6 +36,7 @@ var last_aim := 0             # the ring's last aimed part (AIM_ORDER index)
 var _wheel_kind := ""         # "", "actions", "items", "system", "ring", "gait"
 var _wheel_button := ""       # the action that opened it (release with a flick confirms)
 var _flicked := false
+var _wheel_neutral := true
 var _wheel_paused: Variant = null
 var _ring_target := {}
 var _ring_ground: Variant = null
@@ -155,6 +156,9 @@ func _process(dt: float) -> void:
 	var ls := PadInput.stick(true)
 	var rs := PadInput.stick(false)
 	if _wheel_kind != "":
+		if not _wheel_neutral:
+			_wheel_neutral = ls.length() < 0.25 and rs.length() < 0.25
+			return
 		if wheel.flick(ls if ls.length() >= rs.length() else rs):
 			_flicked = true
 		return
@@ -164,7 +168,15 @@ func _process(dt: float) -> void:
 		ls = Vector2.ZERO
 	if game.direct and game.direct.active() and not cursor_mode:
 		game.direct.pad_step(ls,rs,real)
-		target = {}
+		# Shoulder aiming still needs an explicit friendly target: the caster
+		# cannot be hit by its own crosshair, and allies may stand behind it.
+		if friendly_spell() or Time.get_ticks_msec() < _manual_until:
+			_target_t -= real
+			if _target_t <= 0.0:
+				_target_t = 0.12
+				_update_target(Vector2.ZERO)
+		else:
+			target = {}
 		return
 	var sx := -1.0 if GameData.option("camera_reverse_x") else 1.0
 	game.rig.pad_turn = rs.x * sx
@@ -309,6 +321,23 @@ func _radius() -> float:
 	return 4.0 + GameData.option("pad_target_radius")
 
 
+func friendly_spell() -> bool:
+	if not game.has_spell_target(): return false
+	var spell := game.pending_spell
+	if spell.begins_with(Game.BELT):
+		var item := spell.split(":", true, 2)[2]
+		spell = Items.spell_of(item) if Items.is_wand(item) else Items.potion_spell(item)
+	return not spell.is_empty() and not Spells.offensive(spell)
+
+
+func cast_self() -> void:
+	if not friendly_spell() or not game.cast_portrait(leader()): return
+	target = {}
+	reticle = null
+	game.pending_spell = ""
+	game.hud.set_targeting("")
+
+
 ## What the soft target may be now: [{unit} / {lever, at}, score…].
 func _candidates(stick: Vector2) -> Array:
 	var u := leader()
@@ -337,9 +366,8 @@ func _candidates(stick: Vector2) -> Array:
 	var conn := conn_id(self, game.session.online)
 	var any_enemy := false
 	if friendly and pend != Game.FOLLOW:
-		# A heal or a potion may go to the leader itself (BG3 lets the
-		# character target itself); others in need come first by distance.
-		out.append({"unit": u, "score": 1.5})
+		if not game.pending_target(u).is_empty():
+			out.append({"unit": u, "score": -100.0})
 	for o: GameUnit in game.world.visible_units():
 		if o == u or o.hidden or not o.visible or o.fogged:
 			continue
@@ -348,6 +376,8 @@ func _candidates(stick: Vector2) -> Array:
 			continue
 		var score := dist
 		var enemy := not o.dead and game.world.is_enemy(u, o)
+		if friendly and (enemy or game.pending_target(o).is_empty()):
+			continue
 		# Teammates are targets only when explicitly healing / using an item
 		# or choosing Follow. Pointer mode still permits deliberate targeting.
 		if not o.dead and o.controller >= 0 and o.controller != me and not (friendly or pend == Game.FOLLOW):
@@ -520,9 +550,16 @@ func hints() -> Array:
 		out.append([B, RemakeText.t("Right click")])
 		out.append([PadInput.button_of("cursor"), RemakeText.t("Leave pointer")])
 		return out
+	if game.has_spell_target():
+		out.append([A, RemakeText.t("Cast"), not game.pending_target(target_unit(), reticle).is_empty()])
+		if friendly_spell(): out.append([X, RemakeText.t("Cast on self"), game.can_cast_portrait(leader())])
+		out.append(["DPAD_LR", RemakeText.t("Target")])
+		out.append(["RS" if game.direct and game.direct.active() else "LS", RemakeText.t("Aim at the ground")])
+		out.append([B, RemakeText.t("Cancel")])
+		return out
 	if game.direct and game.direct.active():
 		return [[PadInput.button_of("system"),RemakeText.t("Attack / cast"),game.session.command_allowed({"t":"direct_attack"})], [A,RemakeText.t("Interact")],
-			["RS",RemakeText.t("Look")], [PadInput.button_of("actions"),RemakeText.t("Spells")],
+			[X,RemakeText.t("Aimed strike")], [PadInput.button_of("actions"),RemakeText.t("Spells")],
 			[PadInput.button_of("items"),RemakeText.t("Items")], [PadInput.button_of("cursor"),RemakeText.t("Pointer")]]
 	if game.pending_spell != "":
 		out.append([A, _verb(target)[1] if not target.is_empty() or reticle != null else RemakeText.t("Cast"), not target.is_empty() or reticle != null])
@@ -582,7 +619,9 @@ func _on_action(a: String, phase: String) -> void:
 			else:
 				cancel()
 		["context", "down"]:
-			if mod:
+			if friendly_spell():
+				cast_self()
+			elif mod:
 				_forced("alt")
 			else:
 				open_ring()
@@ -705,6 +744,8 @@ func act() -> void:
 	game._double = PadInput.was_double("interact")
 	if game.pending_spell != "":
 		var u := target_unit()
+		if game.has_spell_target() and game.pending_target(u, reticle).is_empty():
+			return
 		if reticle != null and u == null:
 			game.cast_on(null, null, reticle)
 		elif u:
@@ -810,6 +851,7 @@ func open_wheel(kind: String, button: String) -> void:
 	_wheel_kind = kind
 	_wheel_button = button
 	_flicked = false
+	_wheel_neutral = PadInput.stick(true).length() < 0.25 and PadInput.stick(false).length() < 0.25
 	wheel.pages = PackedStringArray()
 	wheel.page = 0
 	_fill_wheel()
@@ -832,7 +874,8 @@ func _fill_wheel() -> void:
 			wheel.page = (LB_PAGES + RB_PAGES).find(page)
 			wheel.title = _page_title(page)
 			entries = _page_entries(page)
-			wheel.hints.append([LB + "+" + RB, RemakeText.t("Page")])
+			wheel.hints.append([LB, RemakeText.t("Previous page")])
+			wheel.hints.append([RB, RemakeText.t("Next page")])
 			wheel.hints.append([PadInput.button_of("mod"), RemakeText.t("Use at once")])
 		"system":
 			var page: String = RT_PAGES[_page.system]
@@ -840,7 +883,8 @@ func _fill_wheel() -> void:
 			wheel.page = _page.system
 			wheel.title = _page_title(page)
 			entries = _system_entries() if page == "game" else _camera_entries()
-			wheel.hints.append([LB + "+" + RB, RemakeText.t("Page")])
+			wheel.hints.append([LB, RemakeText.t("Previous page")])
+			wheel.hints.append([RB, RemakeText.t("Next page")])
 			if page == "camera":
 				wheel.hints.append([PadInput.button_of("mod"), RemakeText.t("Store view")])
 		"ring":
@@ -848,6 +892,7 @@ func _fill_wheel() -> void:
 			entries = r[0]
 			pre = r[1]
 			wheel.title = r[2]
+			wheel.hints.append(["DPAD_LR", RemakeText.t("Select")])
 		"gait":
 			var r := _gait_entries()
 			entries = r[0]
@@ -880,9 +925,11 @@ func _page_entries(page: String) -> Array:
 			var spells: Array = h.get("spells", [])
 			for i in mini(spells.size(), SpellSlots.SLOTS):
 				var sp := String(spells[i])
+				var usable := Spells.known_usable(u, sp)
 				var tt := int((Spells.parse(sp).get("proto", {}) as Dictionary).get("texture_type", -1))
 				out.append({"id": ["spell", i], "label": Spells.title(sp), "icon": SpellSlots.icon("spell%04d" % tt) if tt >= 0 else null,
-					"on": game.pending_spell == sp})
+					"on": game.pending_spell == sp, "enabled": usable,
+					"tip": "" if usable else RemakeText.t("Spell requirements are not met.")})
 		"belt":
 			var q: Array = h.get("quick", [])
 			for i in mini(q.size(), BeltStrip.SLOTS):
@@ -978,6 +1025,7 @@ func open_gait() -> void:
 	_wheel_kind = "gait"
 	_wheel_button = "gait"
 	_flicked = false
+	_wheel_neutral = PadInput.stick(true).length() < 0.25 and PadInput.stick(false).length() < 0.25
 	wheel.pages = PackedStringArray()
 	_fill_wheel()
 	_hold_pause(true)
@@ -994,19 +1042,17 @@ func _ring_entries() -> Array:
 	if u and not u.dead and u.controller != game.session.my_index:
 		var enemy := me != null and game.world.is_enemy(me, u)
 		if enemy:
-			# Attack, the six aimed strikes (numpad layout, original cursors), Use/Steal.
-			out.append({"id": ["attack"], "label": RemakeText.t("Attack"), "short": RemakeText.t("Attack"), "angle": 315.0,
-				"icon": _cursor("cursor_attack")})
+			# Six equally sized sectors; ordinary attack stays on A / RT and
+			# Use/Steal on the actions page. Feet no longer need narrow flicks.
 			for i in 6:
 				var strip: Array = []
 				for f: Image in GameCursor.frames(Game.AIM_CURSORS[i]):
 					strip.append(ImageTexture.create_from_image(f))
-				out.append({"id": ["aim", i], "label": _orig("action_" + AIM_ACTIONS[i], AIM_ACTIONS[i]),
+				var label := _orig("action_" + AIM_ACTIONS[i], AIM_ACTIONS[i])
+				out.append({"id": ["aim", i], "label": label, "caption": RemakeText.t(TouchActions.PARTS[i]),
 					"strip": strip, "angle": AIM_ANGLES[i], "tip": RemakeText.t("Aimed strike")})
 				if i == last_aim:
 					pre = out.size() - 1
-			out.append({"id": ["steal"], "label": Skills.title("science"), "short": Skills.title("science"), "angle": 45.0,
-				"icon": _cursor("cursor_steal"), "enabled": me != null and me.has_meta("hero")})
 		else:
 			out.append({"id": ["interact"], "label": RemakeText.t("Talk"), "icon": _cursor("cursor_talk")})
 			out.append({"id": ["steal"], "label": Skills.title("science"), "icon": _cursor("cursor_steal"),
@@ -1055,11 +1101,16 @@ func _cursor(kind: String) -> Texture2D:
 ## X: the ring on the soft target, else on the ground ahead (or `ground`).
 func open_ring(ground: Variant = null) -> void:
 	_stop_moving()
+	if game.direct and game.direct.active() and not cursor_mode:
+		var under := game.pick_unit(get_viewport().get_visible_rect().size * 0.5, leader())
+		if under: target = {"unit": under}
+		elif target.is_empty(): _update_target(Vector2.ZERO)
 	_ring_target = target.duplicate()
 	_ring_ground = ground if ground != null else _ahead()
 	_wheel_kind = "ring"
 	_wheel_button = "context"
 	_flicked = false
+	_wheel_neutral = PadInput.stick(true).length() < 0.25 and PadInput.stick(false).length() < 0.25
 	wheel.pages = PackedStringArray()
 	_fill_wheel()
 	_hold_pause(true)
@@ -1091,6 +1142,9 @@ func wheel_kind() -> String:
 
 func _wheel_action(a: String, phase: String) -> void:
 	match [a, phase]:
+		["left", "down"], ["right", "down"], ["up", "down"], ["down", "down"]:
+			wheel.cycle(1 if a in ["right", "down"] else -1)
+			_flicked = true
 		["interact", "down"]:
 			_confirm()
 		["cancel", "down"]:
@@ -1164,7 +1218,9 @@ func _confirm() -> void:
 		_: _ring_pick(id)
 	if kind != "ring" and game.pending_spell != "":
 		reticle = null
-		_update_target(Vector2.ZERO)
+		target = {}
+		if friendly_spell() or not (game.direct and game.direct.active()):
+			_update_target(Vector2.ZERO)
 
 
 func _system(id: String) -> void:

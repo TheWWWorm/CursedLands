@@ -51,6 +51,10 @@ static func tl(list: Array) -> Array:
 
 ## English → [Russian, German].
 const TEXTS := {
+	"Cast on self": ["На себя", "Auf sich selbst wirken"],
+	"Previous page": ["Предыдущая", "Vorherige Seite"],
+	"Next page": ["Следующая", "Nächste Seite"],
+	"Spell requirements are not met.": ["Не выполнены требования заклинания.", "Die Voraussetzungen des Zaubers sind nicht erfüllt."],
 	"Control mode": ["Режим управления", "Steuerungsmodus"],
 	"Auto (gamepad)": ["Авто (геймпад)", "Auto (Gamepad)"],
 	"Classic": ["Классическое", "Klassisch"],

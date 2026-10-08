@@ -2782,6 +2782,12 @@ func _spell_cost(sp: Dictionary) -> float:
 
 
 func _do_cast(dt: float) -> void:
+	# A queued approach must not preserve permission across a stat reset or
+	# unequip. Only player spell orders carry this flag, not wands or story magic.
+	if order.get("known_spell", false) and not Spells.known_usable(self, String(order.spell)):
+		order = order.get("then", {})
+		path = PackedVector2Array()
+		return
 	var t: GameUnit = _order_target()
 	#  execute quick potion kind 8 before
 	# checking the cannot-cast bit. Wands and known spells still refuse it.
@@ -3942,8 +3948,12 @@ func snapshot() -> Array:
 		snappedf(_move_speed, 1.0 / 256.0), _action_serial]
 
 
+var _perception_wire_ids := []
+var _perception_wire := []
+
+
 func _perception_snapshot() -> Array:
-	var out := [[], []]
+	var out := [PackedInt32Array(), PackedInt32Array()]
 	if controller < 0 or world == null:
 		return out
 	var slot := 0
@@ -3952,11 +3962,49 @@ func _perception_snapshot() -> Array:
 			if is_instance_valid(o) and o is GameUnit and world.units.get(o.uid) == o:
 				out[slot].append(o.uid)
 		slot += 1
-	return out
+	for list in out: list.sort()
+	if out != _perception_wire_ids:
+		_perception_wire_ids = out
+		_perception_wire = out
+		# Retained visibility can contain hundreds of actor IDs in Portal.
+		# Compress only this list, caching it until it changes; movement stays
+		# cheap and the common large-history record fits a single datagram.
+		var raw := var_to_bytes(out)
+		if raw.size() > 256:
+			var deltas := []
+			for list in out:
+				var delta := PackedInt32Array()
+				var previous := 0
+				for id: int in list:
+					delta.append(id - previous)
+					previous = id
+				deltas.append(delta)
+			raw = var_to_bytes(deltas)
+			var packed := raw.compress(FileAccess.COMPRESSION_ZSTD)
+			if packed.size() + 32 < raw.size():
+				_perception_wire = [raw.size(), packed, 1] # sorted ID deltas
+	return _perception_wire
 
 
 func _apply_perception_snapshot(row) -> void:
 	var ids := []
+	if row is Array and row.size() in [2, 3] and row[0] is int and row[1] is PackedByteArray:
+		if row[0] > 0 and row[0] <= 1048576:
+			var deltas: bool = row.size() == 3 and row[2] == 1
+			row = bytes_to_var((row[1] as PackedByteArray).decompress(row[0], FileAccess.COMPRESSION_ZSTD))
+			if deltas and row is Array:
+				var decoded := []
+				for list in row:
+					var values := PackedInt32Array()
+					var id := 0
+					if list is PackedInt32Array:
+						for delta: int in list:
+							id += delta
+							values.append(id)
+					decoded.append(values)
+				row = decoded
+		else:
+			row = null
 	if row is Array and row.size() == 2 and world != null:
 		for list in row:
 			if list is Array or list is PackedInt32Array or list is PackedInt64Array:

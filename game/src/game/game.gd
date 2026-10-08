@@ -1100,6 +1100,8 @@ func begin_cast(i: int) -> void:
 	var spells: Array = selected[0].get_meta("hero").get("spells", [])
 	if i < 0 or i >= mini(8, spells.size()):
 		return
+	if not Spells.known_usable(selected[0], String(spells[i])):
+		return
 	cancel_touch_target()
 	pending_spell = spells[i]
 	hud.set_targeting(Spells.title(pending_spell))
@@ -1155,7 +1157,7 @@ func pending_target(u: GameUnit, ground: Variant = null) -> Dictionary:
 		if not caster.has_meta("hero") or caster.cannot_cast():
 			return {}
 		var i: int = caster.get_meta("hero").get("spells", []).find(spell)
-		if i < 0 or i >= 8:
+		if i < 0 or i >= 8 or not Spells.known_usable(caster, spell):
 			return {}
 	if spell.is_empty():
 		return {}

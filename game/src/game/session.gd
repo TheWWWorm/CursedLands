@@ -47,7 +47,8 @@ var local_host: LocalHost
 var players := {1: {"index": 0, "name": "Player", "colour": 1}}
 var max_players := MAX_PLAYERS   # host: this game's Max Players (host itself included)
 var zone_id := ""
-var _snap_t := 0.0
+var _snap_at_ms := 0
+var _snapshot_serial := 0
 var _snap_count := 0
 var _last_snap := {}
 var _exit_t := 0.0
@@ -1220,10 +1221,10 @@ func _apply_lmp_event(id: String, generation: int, ev: Dictionary) -> void:
 		_on_event(ev)
 
 
-@rpc("authority", "call_remote", "unreliable_ordered")
-func _rpc_lmp_snap(id: String, generation: int, snaps: Array, time: float) -> void:
+@rpc("authority", "call_remote", "unreliable")
+func _rpc_lmp_snap(id: String, generation: int, snaps: Array, time: float, serial: int) -> void:
 	if not lmp.is_empty() and id == zone_id and generation == lmp_generation:
-		_apply_snap(snaps, time)
+		_apply_snap(snaps, time, serial)
 
 
 ## Client, web / mobile: host messages that came while _rpc_zone waited for
@@ -2302,9 +2303,9 @@ func apply_command(cmd: Dictionary, player: int) -> void:
 		"cast", "direct_cast":
 			var u := _hero_unit(int(cmd.get("unit", -1)), player)
 			var spell := String(cmd.get("spell", "")).to_lower()
-			if u and not u.dead and not u.blocked and spell in u.get_meta("hero").get("spells", []):
+			if u and not u.dead and not u.blocked and Spells.known_usable(u, spell):
 				var tu: GameUnit = world.units.get(int(cmd.get("target", -1)))
-				u.command({"type": "cast", "spell": spell, "target": tu, "path_notice": true,
+				u.command({"type": "cast", "spell": spell, "target": tu, "path_notice": true, "known_spell": true,
 					"point": Vector2(float(cmd.get("x", u.pos.x)), float(cmd.get("y", u.pos.y)))})
 		"train":
 			var u := _hero_unit(int(cmd.get("unit", -1)), player)
@@ -3627,10 +3628,12 @@ func _tick_world_session(dt: float) -> void:
 			sync_state()
 	if not (online and is_host and world):
 		return
-	_snap_t -= dt
-	if _snap_t > 0.0:
+	# Network cadence is wall time. Doubling simulation speed must not double
+	# packet bursts, including multiple physics callbacks in one worker frame.
+	var now := Time.get_ticks_msec()
+	if now < _snap_at_ms:
 		return
-	_snap_t = SNAP_RATE
+	_snap_at_ms = now + int(SNAP_RATE * 1000.0)
 	_snap_count += 1
 	var t0 := Time.get_ticks_usec()
 	var snaps := []
@@ -3638,7 +3641,9 @@ func _tick_world_session(dt: float) -> void:
 	for u: GameUnit in world.units.values():
 		# Bandwidth (remake): the periodic full refresh is spread over 20
 		# ticks, units far from every player's heroes go at a fifth of the rate.
-		var full := (_snap_count + u.uid) % 20 == 0
+		# Resend party state every update: losing the final stop packet used to
+		# leave a player walking on the spot until the two-second full refresh.
+		var full := u.controller >= 0 or (_snap_count + u.uid) % 20 == 0
 		if not full and (_snap_count + u.uid) % 5 != 0 and NetSmooth.far(u.pos, near):
 			continue
 		var sn := u.snapshot()
@@ -3668,28 +3673,35 @@ func _send_snapshot_records(snaps: Array, time: float, recipient := 0) -> void:
 
 
 func _send_snap(snaps: Array, time: float, recipient := 0) -> void:
+	_snapshot_serial += 1
 	if recipient > 0:
-		_rpc_snap.rpc_id(recipient, snaps, time, _load_serial)
+		_rpc_snap.rpc_id(recipient, snaps, time, _load_serial, _snapshot_serial)
 	elif lmp_travel:
-		lmp_travel.send_snap(snaps, time)
+		lmp_travel.send_snap(snaps, time, _snapshot_serial)
 	else:
-		_rpc_snap.rpc(snaps, time, _load_serial)
+		_rpc_snap.rpc(snaps, time, _load_serial, _snapshot_serial)
 
 
-@rpc("authority", "call_remote", "unreliable_ordered")
-func _rpc_snap(snaps: Array, t: float, generation := -1) -> void:
+@rpc("authority", "call_remote", "unreliable")
+func _rpc_snap(snaps: Array, t: float, generation := -1, serial := -1) -> void:
 	if not lmp.is_empty() or generation != _pool_epoch:
 		return   # actual LMP requires the owner-scoped generation wrapper
-	_apply_snap(snaps, t)
+	_apply_snap(snaps, t, serial)
 
 
-func _apply_snap(snaps: Array, t: float) -> void:
+func _apply_snap(snaps: Array, t: float, serial := -1) -> void:
 	if world == null or _zone_holding or _remote_loading:
 		return
-	world.time = t
+	world.time = maxf(world.time, t)
 	for s: Array in snaps:
 		var u: GameUnit = world.units.get(int(s[0]))
 		if u:
+			# Chunks carry different actors and may arrive out of order. ENet's
+			# channel-wide ordering discarded valid updates to unrelated units.
+			# Order each actor instead, including the faster local-owner stream.
+			if serial >= 0:
+				if serial <= int(u.get_meta("snapshot_serial", -1)): continue
+				u.set_meta("snapshot_serial", serial)
 			u.apply_snapshot(s)
 
 

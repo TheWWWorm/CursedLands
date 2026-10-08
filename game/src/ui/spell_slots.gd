@@ -34,6 +34,7 @@ var _unit: GameUnit
 var _held := -1          # cell the press captured the mouse
 var _held_double := false  # that press was a double click (manager)
 var _first := 0
+var _usable: Array[bool] = []
 
 
 static var _icons := {}
@@ -113,9 +114,12 @@ func _process(_dt: float) -> void:
 	var u: GameUnit = game.selected[0] if game and not game.selected.is_empty() and is_instance_valid(game.selected[0]) else null
 	var h: Dictionary = u.get_meta("hero") if u and u.has_meta("hero") else {}
 	var spells: Array = h.get("spells", [])
+	_usable.clear()
+	for i in mini(spells.size(), SLOTS):
+		_usable.append(Spells.known_usable(u, String(spells[i])))
 	# The unit's instance, not its uid: a reload (Session.load_game) builds the
 	# party anew with the same uids, and _unit must not stay the freed one.
-	var sig := "%s:%s:%s:%s" % [u.get_instance_id() if u else 0, ",".join(spells), size, game.pending_spell]
+	var sig := "%s:%s:%s:%s:%s" % [u.get_instance_id() if u else 0, ",".join(spells), size, game.pending_spell, _usable]
 	if sig == _sig:
 		return
 	_sig = sig
@@ -142,7 +146,8 @@ func _get_tooltip(p: Vector2) -> String:
 	var sp := Spells.parse(_entries[i][0])
 	var t := GameData.text("spell " + String(sp.code)).get_slice("\n", 0).strip_edges()
 	# hotkey 0x1e + slot (spell1..8).
-	return GameData.tip_key(BeltStrip.spell_rows(t if t else String(sp.name), _entries[i][0]), 30 + i)
+	var tip := GameData.tip_key(BeltStrip.spell_rows(t if t else String(sp.name), _entries[i][0]), 30 + i)
+	return tip if _usable[i] else tip + "\n" + RemakeText.t("Spell requirements are not met.")
 
 
 ## Acts on the release over a cell, as BeltStrip (
@@ -166,6 +171,9 @@ func use(i: int, now: bool) -> void:
 	if i < 0 or i >= _entries.size() or _unit == null or game == null:
 		return
 	var sp: String = _entries[i][0]
+	if not Spells.known_usable(_unit, sp):
+		_sound("buttons\\battle\\nomagic.wav")
+		return
 	game.touch_aim = -1
 	game.touch_force = ""
 	if now:
@@ -212,8 +220,8 @@ func _draw() -> void:
 		var t := int(Spells.parse(e[0]).proto.get("texture_type", -1))
 		var tex := icon("spell%04d" % t) if t >= 0 else null
 		if tex:
-			draw_texture_rect(tex, r, false)
-			if game and game.pending_spell == String(e[0]):
+			draw_texture_rect(tex, r, false, Color.WHITE if _usable[i] else Color(0.4, 0.4, 0.4))
+			if _usable[i] and game and game.pending_spell == String(e[0]):
 				_glow_tex = tex
 				_glow_rect = r
 	_glow.queue_redraw()

@@ -337,7 +337,7 @@ func _rpc_chat(idx: int, player_name: String, text: String) -> void:
 # drops the connection.
 
 ## Remake co-op protocol; raise it when the messages change incompatibly.
-const PROTOCOL := 12   # peers must share the widened Catacombs lift geometry
+const PROTOCOL := 13   # per-actor snapshot sequencing and packed perception history
 const CoopDb := preload("res://src/game/coop_db.gd")
 
 

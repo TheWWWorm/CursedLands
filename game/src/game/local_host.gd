@@ -464,8 +464,8 @@ func _process(dt: float) -> void:
 
 ## The local view receives its controlled units after each worker frame,
 ## including commands while paused. The ordinary world snapshot RPC carries
-## both streams, so an older periodic snapshot cannot arrive after a newer
-## local one on a separately ordered channel. Periodic resends recover loss.
+## both streams, with per-actor sequence checks rejecting older arrivals.
+## Periodic resends recover loss.
 func _send_owner_snapshots() -> void:
 	if not worker or owner_peer <= 1 or not session.online or not session.is_host \
 			or session.world == null or session.loading_game or awaiting_view \

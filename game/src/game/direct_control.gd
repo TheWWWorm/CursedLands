@@ -223,7 +223,9 @@ func pad_action(action: String, phase: String) -> bool:
 		elif phase == "up": _fire = false
 		return true
 	if action == "interact":
-		if phase == "tap": interact()
+		if phase == "tap":
+			if game.has_spell_target(): field().act()
+			else: interact()
 		return true
 	return false
 
@@ -246,10 +248,12 @@ func attack() -> void:
 	if game.pending_spell != "":
 		var p := get_viewport().get_visible_rect().size*0.5
 		var target := game.pick_unit(p,leader())
+		if PadInput.active == "pad" and field().target_unit() != null:
+			target = field().target_unit()
 		if game.has_spell_target() and game.pending_target(target,game.pick_ground(p)).is_empty():
 			_fire = false
 			return
-		game.cast_on(target,p)
+		game.cast_on(target, null if target else p)
 		game.pending_spell = ""
 		game.hud.set_targeting("")
 		_fire = false

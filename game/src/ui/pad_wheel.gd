@@ -82,10 +82,23 @@ func flick(v: Vector2) -> bool:
 		if d < bd:
 			bd = d
 			best = i
+	# Keep the current sector near a boundary instead of alternating parts
+	# with tiny stick movements. D-pad navigation remains exact.
+	if selected >= 0 and absf(wrapf(a - angle_of(selected), -180.0, 180.0)) <= bd + 8.0:
+		best = selected
 	if best != selected:
 		selected = best
 		queue_redraw()
 	return true
+
+
+func cycle(step: int) -> void:
+	if entries.is_empty(): return
+	var indices := range(entries.size())
+	indices.sort_custom(func(a, b): return angle_of(a) < angle_of(b))
+	var i := indices.find(selected)
+	selected = indices[posmod(i + step, indices.size())] if i >= 0 else indices[0 if step > 0 else -1]
+	queue_redraw()
 
 
 func _process(dt: float) -> void:
@@ -166,8 +179,13 @@ func _draw() -> void:
 		if not strip.is_empty():
 			tex = strip[int(_t / FRAME_SEC) % strip.size()] if sel else strip[0]
 		if tex:
-			var s := cell * 1.25
-			draw_texture_rect(tex, Rect2(p - Vector2(s, s) * 0.5, Vector2(s, s)), false, mod)
+			var caption := String(e.get("caption", ""))
+			var s := cell * (1.25 if caption.is_empty() else 0.95)
+			var centre := p if caption.is_empty() else p - Vector2(0, cell * 0.18)
+			draw_texture_rect(tex, Rect2(centre - Vector2(s, s) * 0.5, Vector2(s, s)), false, mod)
+			if not caption.is_empty():
+				draw_string(font, p + Vector2(-cell, cell * 0.68), caption, HORIZONTAL_ALIGNMENT_CENTER,
+					cell * 2.0, int(12.0 * k), Interface800.TEXT)
 		elif String(e.get("item", "")) == "":
 			var short := String(e.get("short", e.get("label", "")))
 			var fs := int(13.0 * k)
