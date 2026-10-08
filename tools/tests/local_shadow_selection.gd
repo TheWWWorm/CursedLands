@@ -219,6 +219,10 @@ func changed_pixels(a: Image, b: Image) -> int:
 	return count
 
 func rendered_fixture(resident_anchors := false) -> Dictionary:
+	# Clear confinement before making the diagnostic window unfocusable. X11
+	# cannot grab the pointer for a minimized/no-focus window.
+	GameData.options["confine_mouse"] = 0
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_NO_FOCUS, true)
 	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_MINIMIZED)
 	Engine.max_fps = 30

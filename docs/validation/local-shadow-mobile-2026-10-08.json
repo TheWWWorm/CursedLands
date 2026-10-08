@@ -1,0 +1,1903 @@
+{
+  "date": "2026-10-08",
+  "implementation": "Validate and enable local-shadow fades for desktop native Mobile; constrained Mobile stays opt-in",
+  "parent_commit": "9478a97c20c3586f95fe4ac5959bc1c6971a5270",
+  "reference_commit": "d529d14e9bf3c960833a9d9633786fc4588ec6d2",
+  "reference_clean": true,
+  "reference_locations": [
+    "Source/point_shadow_policy.h:13",
+    "Source/point_shadow_policy.h:275",
+    "Source/point_shadow_policy.h:287"
+  ],
+  "reference_policy_sha256": "7372cc59530077a8b047990795609562f55f3e8c96192b19d7dcf410c75f11c6",
+  "engine_directory": "/home/llm2x/Documents/EI/local/scratchpad/coop-performance-20261005/engine-profile/godot-5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+  "engine_locations": [
+    "servers/rendering/renderer_rd/storage_rd/light_storage.cpp:1160",
+    "servers/rendering/renderer_rd/shaders/forward_mobile/scene_forward_mobile.glsl:1038",
+    "servers/rendering/renderer_rd/shaders/scene_forward_lights_inc.glsl:502",
+    "servers/rendering/renderer_rd/shaders/scene_forward_lights_inc.glsl:626"
+  ],
+  "engine_source_sha256": {
+    "servers/rendering/renderer_rd/storage_rd/light_storage.cpp": "b5619355dddef39ddc9a6277786e0cbf3dc1696c57ffb7dcd35df8fcb165e96c",
+    "servers/rendering/renderer_rd/shaders/forward_mobile/scene_forward_mobile.glsl": "4549a45e96d2c553c7f0c014afa4e4c95a0704e2acaa5f7f795e9c26a6448100",
+    "servers/rendering/renderer_rd/shaders/scene_forward_lights_inc.glsl": "981c84d70c1f6e7d79709b3c815fad7ffd574e981fed742b86dbe6a0320c2146",
+    "core/core_string_names.h": "468422de88fc5ed8b0b28631850c26be6edf7d853db562da6ff1a521b5daeefc"
+  },
+  "qa_directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-mobile",
+  "hardware": "Linux x86_64, NVIDIA GeForce RTX 3090 / NVIDIA 580.178.04, Godot 4.7 5b4e0cb0f with local engine patches",
+  "source_sha256": {
+    "game/src/game/fx/local_lighting.gd": "84b98d94aa2427fc43c92db3e5c7c3abac340f70a3919b3aa19875e68500966f",
+    "game/src/game/fx/local_light_shader.gd": "d856b1cdc4e0143aee769b84aa9e1819988c55f2fc21966405b35f23c1352a74",
+    "game/src/game/gfx.gd": "b7027428ec3e83a58bf9d4020a3209b66462011c92192c653ca1111fce3a606e",
+    "game/src/platform/portability.gd": "6ec17950f2bb45117d1b34410ba19da3996f3bfea53c4722498f83a3de45763e",
+    "game/project.godot": "cb56a271b71e3daa09de3973fd87b163af73c19f767300fe0181e0a11606afa8",
+    "tools/tests/local_shadow_selection.gd": "0505d42507121c85488aa8300b65d0d35cef3d2bcac69a687cb1d8e1ddb50a24",
+    "tools/tests/local_shadow_fades.gd": "0e0b60a702206dd73ca092872895e884c445af85926fe2bfe16de999d7c1ae5d",
+    "tools/tests/local_light_passes.gd": "2a2529c4a5d8e7a114f7ed87106e0e9a1766e14c9c79e178c357b3a6b3adaf45",
+    "tools/tests/local_shadow_importance.gd": "a1c56432ca9371503d5013919dc20e161a54aac16a02a43c665073ed9d8c75d9",
+    "tools/tests/material_shader_options.gd": "ac4c773ee9c844e537f5003bf2d8259a05aec94d0d1c29b55c6a662b340e5ad0"
+  },
+  "qa_script_sha256": {
+    "run.py": "6e20bf6b712a70b118f69a4b496a6f744b9180de2c6f75a83cd1efcfa3aeb5ce",
+    "suite.py": "91bb142394e8ff9c112278d4ea2e897891a447fb78c5823ffb2c99cb5c6322c3",
+    "mobile_probe.gd": "ea2d4b05d21924984e3075a2a33bb1098b1cbad8337e12d344ddb7d4fb9136e8",
+    "integration.py": "10be89b177c495654df7e28d9cd1a46eb017c2d4d9bf829b5aa615517a649a69"
+  },
+  "export_sha256": {
+    "CursedLands.x86_64": "3154bb4465f616e24b811dd576e9230022872cd80f8d5ab854efed2716b926d4",
+    "CursedLands.pck": "4eb75b710bac227849d51ce001396ce210daf50bbc29a301976a213e7c8dd186",
+    "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+  },
+  "baseline_export_sha256": {
+    "CursedLands.x86_64": "3154bb4465f616e24b811dd576e9230022872cd80f8d5ab854efed2716b926d4",
+    "CursedLands.pck": "cfd49627e6d08c6dd04612b0f37d42c1d85144269eeb9add03781b07f29b6884",
+    "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+  },
+  "constrained_override": "_custom_features=\"mobile\"\n",
+  "final_candidate_checks": 7209,
+  "policy": {
+    "forward_plus": "unchanged; enabled",
+    "gl_compatibility": "unchanged; desktop corrected shader/fades on, constrained opt-in",
+    "mobile_desktop": "enabled unless --no-local-shadow-fades",
+    "mobile_constrained": "disabled unless --local-shadow-fades; --no-local-shadow-fades wins",
+    "android_and_web_default_renderer": "gl_compatibility, unchanged"
+  },
+  "scope": {
+    "shader_changes": false,
+    "sun_policy_changes": false,
+    "shadow_map_cache_added": false,
+    "total_shadow_enabled_limit": 4,
+    "lava_shadow_enabled_limit": 2,
+    "fade_leg_seconds": 0.4,
+    "map_or_gameplay_changes": false,
+    "physical_device_or_installed_build_used": false
+  },
+  "image_controls": {
+    "baseline_lighting": {
+      "first": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-mobile/baseline-passes",
+      "second": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-mobile/candidate-passes",
+      "images": 36,
+      "exact": 34,
+      "different": [
+        "local-shadows-mobile-pass-five-zero.png",
+        "local-shadows-mobile-pass-sun-shadow-zero.png"
+      ],
+      "deltas": {
+        "local-shadows-mobile-pass-five-zero.png": {
+          "max_channel_delta": 2,
+          "mean_channel_delta": 0.006342230902777778,
+          "pixels_above_2": 0
+        },
+        "local-shadows-mobile-pass-sun-shadow-zero.png": {
+          "max_channel_delta": 2,
+          "mean_channel_delta": 0.006342230902777778,
+          "pixels_above_2": 0
+        }
+      }
+    },
+    "probe_vs_production": {
+      "first": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-mobile/baseline-fade-probe",
+      "second": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-mobile/candidate-fades-final",
+      "images": 14,
+      "exact": 14,
+      "different": [],
+      "deltas": {}
+    },
+    "simulated_device_opt_in": {
+      "first": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-mobile/candidate-fades-final",
+      "second": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-mobile/candidate-constrained-opt-in",
+      "images": 18,
+      "exact": 16,
+      "different": [
+        "local-shadows-mobile-pass-disabled.png",
+        "local-shadows-mobile-pass-zero.png"
+      ],
+      "deltas": {
+        "local-shadows-mobile-pass-disabled.png": {
+          "max_channel_delta": 2,
+          "mean_channel_delta": 0.006342230902777778,
+          "pixels_above_2": 0
+        },
+        "local-shadows-mobile-pass-zero.png": {
+          "max_channel_delta": 2,
+          "mean_channel_delta": 0.006342230902777778,
+          "pixels_above_2": 0
+        }
+      }
+    },
+    "forward_regression": {
+      "first": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-shadow-importance/fades-forward-cached",
+      "second": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-mobile/candidate-forward",
+      "images": 18,
+      "exact": 18,
+      "different": [],
+      "deltas": {}
+    },
+    "compat_regression": {
+      "first": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-shadow-importance/fades-gl-cached",
+      "second": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-mobile/candidate-compat",
+      "images": 18,
+      "exact": 18,
+      "different": [],
+      "deltas": {}
+    }
+  },
+  "runs": [
+    {
+      "label": "candidate-fades-final",
+      "classification": "final candidate",
+      "results": {
+        "LOCAL_SHADOW_FADES": {
+          "checks": 924,
+          "constrained": false,
+          "editor": false,
+          "failures": 0,
+          "gpu": {
+            "crowded_pass_boundary": {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0
+            },
+            "endpoint": {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0
+            },
+            "exchange": {
+              "changed_pixels": 47626,
+              "max_channel_delta": 33,
+              "mean_channel_delta": 1.60817599826389
+            },
+            "moving_caster_pixels": 19859,
+            "moving_light_pixels": 186370,
+            "pass_boundary": {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0
+            },
+            "production_fades": true,
+            "steps": [
+              {
+                "changed_pixels": 21667,
+                "max_channel_delta": 11,
+                "mean_channel_delta": 0.281776258680556
+              },
+              {
+                "changed_pixels": 21435,
+                "max_channel_delta": 10,
+                "mean_channel_delta": 0.265234375
+              },
+              {
+                "changed_pixels": 21083,
+                "max_channel_delta": 9,
+                "mean_channel_delta": 0.251426866319444
+              },
+              {
+                "changed_pixels": 20874,
+                "max_channel_delta": 8,
+                "mean_channel_delta": 0.240200737847222
+              },
+              {
+                "changed_pixels": 20943,
+                "max_channel_delta": 8,
+                "mean_channel_delta": 0.239969618055556
+              },
+              {
+                "changed_pixels": 21022,
+                "max_channel_delta": 9,
+                "mean_channel_delta": 0.2514453125
+              },
+              {
+                "changed_pixels": 21396,
+                "max_channel_delta": 10,
+                "mean_channel_delta": 0.265252821180556
+              },
+              {
+                "changed_pixels": 21689,
+                "max_channel_delta": 11,
+                "mean_channel_delta": 0.281593967013889
+              }
+            ]
+          },
+          "light_limit": 8,
+          "renderer": "mobile"
+        }
+      },
+      "tool_sha256_at_start": "0e0b60a702206dd73ca092872895e884c445af85926fe2bfe16de999d7c1ae5d",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-mobile/export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "mobile",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/local_shadow_fades.gd"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 9.573982453992357,
+      "other_render_processes_at_start": [
+        {
+          "pid": 3639942,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+        }
+      ],
+      "other_render_processes_at_end": [],
+      "warnings": [],
+      "errors": [],
+      "png_sha256": {
+        "local-shadows-mobile-fade-step-5.png": "972eb0b257572f03f17105862fa27089dd8b1fd602f62eb07cc073f7e475df11",
+        "local-shadows-mobile-fade-direct-endpoint.png": "fa81226aa13e4f16efb2c82d9eafe6f381a348f4f9c7267b91f4ef2a9f6b51e1",
+        "local-shadows-mobile-pass-crowded-disabled.png": "c27615665d610c979e99fe737d0f1d6ef14019460881d5c00f2f2f0ae787aecf",
+        "local-shadows-mobile-fade-initial.png": "da90fbe2febf00b71814f75c038dec0535fb6cfde3dea8ecddb65a62ba7e1152",
+        "local-shadows-mobile-fade-step-6.png": "8ffad422afe5165ff888d28e08a7e041f0821e8e318fce579ae06063ace2e567",
+        "local-shadows-mobile-fade-start.png": "da90fbe2febf00b71814f75c038dec0535fb6cfde3dea8ecddb65a62ba7e1152",
+        "local-shadows-mobile-pass-zero.png": "453890580a137c1f0517f976d05c5773b17e6cfbb56d4237bd66787924baac3b",
+        "local-shadows-mobile-fade-step-2.png": "0fa1f628b882459b1da204f64a964ec86f6a21671fa8ce7e56ced79bdaa477ac",
+        "local-shadows-mobile-fade-step-8.png": "fa81226aa13e4f16efb2c82d9eafe6f381a348f4f9c7267b91f4ef2a9f6b51e1",
+        "local-shadows-mobile-fade-moved-light.png": "b06956364167d666cb09de9cc8fffe3a89b67719976ef31aa07221711cb40fe5",
+        "local-shadows-mobile-pass-crowded-zero.png": "c27615665d610c979e99fe737d0f1d6ef14019460881d5c00f2f2f0ae787aecf",
+        "local-shadows-mobile-fade-partial-caster.png": "8ffad422afe5165ff888d28e08a7e041f0821e8e318fce579ae06063ace2e567",
+        "local-shadows-mobile-pass-disabled.png": "453890580a137c1f0517f976d05c5773b17e6cfbb56d4237bd66787924baac3b",
+        "local-shadows-mobile-fade-step-1.png": "1f468d91f1b2e8ffe207400a41e21cf4207a2fac2464026c7df1e951bcfd29b6",
+        "local-shadows-mobile-fade-step-3.png": "863cc1189a1f440769e37b271bd2cdf7b69a36189a64754b92c7cdc4d4d3999b",
+        "local-shadows-mobile-fade-step-4.png": "583caf4a213ac7eb53ab65a440a2504a0039065ba75f1d3966a1bfd965b4377f",
+        "local-shadows-mobile-fade-step-7.png": "3f51b4c8cf019c2b181a486532d648bd4ea35aeb948e5eb45376f2c51e122953",
+        "local-shadows-mobile-fade-moved-caster.png": "9050c4548f0caf49ee1aa510d5738dd903960beb3e5e1c6be9b1e6418e8f2516"
+      }
+    },
+    {
+      "label": "candidate-constrained-default-final",
+      "classification": "final candidate",
+      "results": {
+        "LOCAL_SHADOW_FADES": {
+          "checks": 738,
+          "constrained": true,
+          "editor": false,
+          "failures": 0,
+          "gpu": {
+            "crowded_pass_boundary": {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0
+            },
+            "pass_boundary": {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0
+            },
+            "production_fades": false
+          },
+          "light_limit": 8,
+          "renderer": "mobile"
+        }
+      },
+      "tool_sha256_at_start": "0e0b60a702206dd73ca092872895e884c445af85926fe2bfe16de999d7c1ae5d",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-mobile/candidate-constrained/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "mobile",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/local_shadow_fades.gd"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 5.0624078389955685,
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [
+        {
+          "pid": 3640481,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+        }
+      ],
+      "warnings": [],
+      "errors": [],
+      "png_sha256": {
+        "local-shadows-mobile-pass-crowded-disabled.png": "c27615665d610c979e99fe737d0f1d6ef14019460881d5c00f2f2f0ae787aecf",
+        "local-shadows-mobile-pass-zero.png": "06c1cabc3510927ca6727a3df46ae8c3f6e0c05294d2a495043ea77eef577eaa",
+        "local-shadows-mobile-pass-crowded-zero.png": "c27615665d610c979e99fe737d0f1d6ef14019460881d5c00f2f2f0ae787aecf",
+        "local-shadows-mobile-pass-disabled.png": "06c1cabc3510927ca6727a3df46ae8c3f6e0c05294d2a495043ea77eef577eaa"
+      }
+    },
+    {
+      "label": "candidate-constrained-opt-in",
+      "classification": "final candidate",
+      "results": {
+        "LOCAL_SHADOW_FADES": {
+          "checks": 924,
+          "constrained": true,
+          "editor": false,
+          "failures": 0,
+          "gpu": {
+            "crowded_pass_boundary": {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0
+            },
+            "endpoint": {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0
+            },
+            "exchange": {
+              "changed_pixels": 47626,
+              "max_channel_delta": 33,
+              "mean_channel_delta": 1.60817599826389
+            },
+            "moving_caster_pixels": 19859,
+            "moving_light_pixels": 186370,
+            "pass_boundary": {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0
+            },
+            "production_fades": true,
+            "steps": [
+              {
+                "changed_pixels": 21667,
+                "max_channel_delta": 11,
+                "mean_channel_delta": 0.281776258680556
+              },
+              {
+                "changed_pixels": 21435,
+                "max_channel_delta": 10,
+                "mean_channel_delta": 0.265234375
+              },
+              {
+                "changed_pixels": 21083,
+                "max_channel_delta": 9,
+                "mean_channel_delta": 0.251426866319444
+              },
+              {
+                "changed_pixels": 20874,
+                "max_channel_delta": 8,
+                "mean_channel_delta": 0.240200737847222
+              },
+              {
+                "changed_pixels": 20943,
+                "max_channel_delta": 8,
+                "mean_channel_delta": 0.239969618055556
+              },
+              {
+                "changed_pixels": 21022,
+                "max_channel_delta": 9,
+                "mean_channel_delta": 0.2514453125
+              },
+              {
+                "changed_pixels": 21396,
+                "max_channel_delta": 10,
+                "mean_channel_delta": 0.265252821180556
+              },
+              {
+                "changed_pixels": 21689,
+                "max_channel_delta": 11,
+                "mean_channel_delta": 0.281593967013889
+              }
+            ]
+          },
+          "light_limit": 8,
+          "renderer": "mobile"
+        }
+      },
+      "tool_sha256_at_start": "0e0b60a702206dd73ca092872895e884c445af85926fe2bfe16de999d7c1ae5d",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-mobile/candidate-constrained/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "mobile",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/local_shadow_fades.gd",
+        "--local-shadow-fades"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 9.324728145002155,
+      "other_render_processes_at_start": [
+        {
+          "pid": 3640481,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+        }
+      ],
+      "other_render_processes_at_end": [],
+      "warnings": [],
+      "errors": [],
+      "png_sha256": {
+        "local-shadows-mobile-fade-step-5.png": "972eb0b257572f03f17105862fa27089dd8b1fd602f62eb07cc073f7e475df11",
+        "local-shadows-mobile-fade-direct-endpoint.png": "fa81226aa13e4f16efb2c82d9eafe6f381a348f4f9c7267b91f4ef2a9f6b51e1",
+        "local-shadows-mobile-pass-crowded-disabled.png": "c27615665d610c979e99fe737d0f1d6ef14019460881d5c00f2f2f0ae787aecf",
+        "local-shadows-mobile-fade-initial.png": "da90fbe2febf00b71814f75c038dec0535fb6cfde3dea8ecddb65a62ba7e1152",
+        "local-shadows-mobile-fade-step-6.png": "8ffad422afe5165ff888d28e08a7e041f0821e8e318fce579ae06063ace2e567",
+        "local-shadows-mobile-fade-start.png": "da90fbe2febf00b71814f75c038dec0535fb6cfde3dea8ecddb65a62ba7e1152",
+        "local-shadows-mobile-pass-zero.png": "06c1cabc3510927ca6727a3df46ae8c3f6e0c05294d2a495043ea77eef577eaa",
+        "local-shadows-mobile-fade-step-2.png": "0fa1f628b882459b1da204f64a964ec86f6a21671fa8ce7e56ced79bdaa477ac",
+        "local-shadows-mobile-fade-step-8.png": "fa81226aa13e4f16efb2c82d9eafe6f381a348f4f9c7267b91f4ef2a9f6b51e1",
+        "local-shadows-mobile-fade-moved-light.png": "b06956364167d666cb09de9cc8fffe3a89b67719976ef31aa07221711cb40fe5",
+        "local-shadows-mobile-pass-crowded-zero.png": "c27615665d610c979e99fe737d0f1d6ef14019460881d5c00f2f2f0ae787aecf",
+        "local-shadows-mobile-fade-partial-caster.png": "8ffad422afe5165ff888d28e08a7e041f0821e8e318fce579ae06063ace2e567",
+        "local-shadows-mobile-pass-disabled.png": "06c1cabc3510927ca6727a3df46ae8c3f6e0c05294d2a495043ea77eef577eaa",
+        "local-shadows-mobile-fade-step-1.png": "1f468d91f1b2e8ffe207400a41e21cf4207a2fac2464026c7df1e951bcfd29b6",
+        "local-shadows-mobile-fade-step-3.png": "863cc1189a1f440769e37b271bd2cdf7b69a36189a64754b92c7cdc4d4d3999b",
+        "local-shadows-mobile-fade-step-4.png": "583caf4a213ac7eb53ab65a440a2504a0039065ba75f1d3966a1bfd965b4377f",
+        "local-shadows-mobile-fade-step-7.png": "3f51b4c8cf019c2b181a486532d648bd4ea35aeb948e5eb45376f2c51e122953",
+        "local-shadows-mobile-fade-moved-caster.png": "9050c4548f0caf49ee1aa510d5738dd903960beb3e5e1c6be9b1e6418e8f2516"
+      }
+    },
+    {
+      "label": "candidate-off",
+      "classification": "final candidate",
+      "results": {
+        "LOCAL_SHADOW_FADES": {
+          "checks": 738,
+          "constrained": false,
+          "editor": false,
+          "failures": 0,
+          "gpu": {
+            "crowded_pass_boundary": {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0
+            },
+            "pass_boundary": {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0
+            },
+            "production_fades": false
+          },
+          "light_limit": 8,
+          "renderer": "mobile"
+        }
+      },
+      "tool_sha256_at_start": "0e0b60a702206dd73ca092872895e884c445af85926fe2bfe16de999d7c1ae5d",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-mobile/export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "mobile",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/local_shadow_fades.gd",
+        "--no-local-shadow-fades"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 4.572318277001614,
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [],
+      "warnings": [],
+      "errors": [],
+      "png_sha256": {
+        "local-shadows-mobile-pass-crowded-disabled.png": "c27615665d610c979e99fe737d0f1d6ef14019460881d5c00f2f2f0ae787aecf",
+        "local-shadows-mobile-pass-zero.png": "453890580a137c1f0517f976d05c5773b17e6cfbb56d4237bd66787924baac3b",
+        "local-shadows-mobile-pass-crowded-zero.png": "c27615665d610c979e99fe737d0f1d6ef14019460881d5c00f2f2f0ae787aecf",
+        "local-shadows-mobile-pass-disabled.png": "453890580a137c1f0517f976d05c5773b17e6cfbb56d4237bd66787924baac3b"
+      }
+    },
+    {
+      "label": "candidate-both-flags",
+      "classification": "final candidate",
+      "results": {
+        "LOCAL_SHADOW_FADES": {
+          "checks": 738,
+          "constrained": false,
+          "editor": false,
+          "failures": 0,
+          "gpu": {
+            "crowded_pass_boundary": {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0
+            },
+            "pass_boundary": {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0
+            },
+            "production_fades": false
+          },
+          "light_limit": 8,
+          "renderer": "mobile"
+        }
+      },
+      "tool_sha256_at_start": "0e0b60a702206dd73ca092872895e884c445af85926fe2bfe16de999d7c1ae5d",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-mobile/export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "mobile",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/local_shadow_fades.gd",
+        "--local-shadow-fades",
+        "--no-local-shadow-fades"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 4.564589360990794,
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [
+        {
+          "pid": 3641162,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+        }
+      ],
+      "warnings": [],
+      "errors": [],
+      "png_sha256": {
+        "local-shadows-mobile-pass-crowded-disabled.png": "c27615665d610c979e99fe737d0f1d6ef14019460881d5c00f2f2f0ae787aecf",
+        "local-shadows-mobile-pass-zero.png": "453890580a137c1f0517f976d05c5773b17e6cfbb56d4237bd66787924baac3b",
+        "local-shadows-mobile-pass-crowded-zero.png": "c27615665d610c979e99fe737d0f1d6ef14019460881d5c00f2f2f0ae787aecf",
+        "local-shadows-mobile-pass-disabled.png": "453890580a137c1f0517f976d05c5773b17e6cfbb56d4237bd66787924baac3b"
+      }
+    },
+    {
+      "label": "candidate-passes",
+      "classification": "final candidate",
+      "results": {
+        "LOCAL_LIGHT_PASSES": {
+          "adapter": "NVIDIA GeForce RTX 3090",
+          "checks": 155,
+          "cost_mode": false,
+          "editor": false,
+          "failures": 0,
+          "light_limit": 8,
+          "renderer": "mobile",
+          "rows": [
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0,
+              "situation": "single"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0,
+              "situation": "five"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0,
+              "situation": "sun-shadow"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0,
+              "situation": "fog"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0,
+              "situation": "surface"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0,
+              "situation": "crowded"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0,
+              "situation": "original"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0,
+              "situation": "emission"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0,
+              "situation": "fog-full"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0,
+              "situation": "fog-dense"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0,
+              "situation": "fog-bright-edge"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0,
+              "situation": "emission-fog"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0,
+              "situation": "original-far"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0,
+              "situation": "transparent"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0,
+              "situation": "glow"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0,
+              "situation": "no-local"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0,
+              "situation": "terrain-lighting"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0,
+              "situation": "small-atlas"
+            }
+          ]
+        }
+      },
+      "tool_sha256_at_start": "2a2529c4a5d8e7a114f7ed87106e0e9a1766e14c9c79e178c357b3a6b3adaf45",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-mobile/export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "mobile",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/local_light_passes.gd"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 15.838082353002392,
+      "other_render_processes_at_start": [
+        {
+          "pid": 3641162,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+        }
+      ],
+      "other_render_processes_at_end": [
+        {
+          "pid": 3641788,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+        }
+      ],
+      "warnings": [],
+      "errors": [],
+      "png_sha256": {
+        "local-shadows-mobile-pass-terrain-lighting-disabled.png": "453890580a137c1f0517f976d05c5773b17e6cfbb56d4237bd66787924baac3b",
+        "local-shadows-mobile-pass-fog-bright-edge-disabled.png": "eda5b7c8c3ffd4ce8f8034cf296ab165114df5f52713a4c88d5f1f98563bde57",
+        "local-shadows-mobile-pass-small-atlas-disabled.png": "234e0a66a2b432cb2b238c9bb187e84facb7dc660dff50aaf4fe99d60312b7b7",
+        "local-shadows-mobile-pass-fog-full-zero.png": "37070430880db726c41f5055fd083b270efb24d7cc22c708cbd449a1c07a48bf",
+        "local-shadows-mobile-pass-emission-fog-zero.png": "e61e56fbee75a5983942a09871ad0dd2fa4c3f8a0475e6e2ab98cb1de590fc7f",
+        "local-shadows-mobile-pass-transparent-zero.png": "453890580a137c1f0517f976d05c5773b17e6cfbb56d4237bd66787924baac3b",
+        "local-shadows-mobile-pass-surface-zero.png": "e49f33fcfcc31e1f754f74dfafc181ef4604b9b44b5aaf8a8773cfb8514f7a22",
+        "local-shadows-mobile-pass-emission-fog-disabled.png": "e61e56fbee75a5983942a09871ad0dd2fa4c3f8a0475e6e2ab98cb1de590fc7f",
+        "local-shadows-mobile-pass-crowded-disabled.png": "439b6bd3eb6579c065fdd907837d7babac2784cf20c35beba9baa48c8bb6d2f6",
+        "local-shadows-mobile-pass-no-local-zero.png": "c553bd08ac7d170ff77003212bb76122d744affd999bb078eeee536843632f07",
+        "local-shadows-mobile-pass-small-atlas-zero.png": "234e0a66a2b432cb2b238c9bb187e84facb7dc660dff50aaf4fe99d60312b7b7",
+        "local-shadows-mobile-pass-original-zero.png": "255750901b364422f5d17868808521f905e76f40121242eea3f1ac3db470fdf9",
+        "local-shadows-mobile-pass-sun-shadow-zero.png": "453890580a137c1f0517f976d05c5773b17e6cfbb56d4237bd66787924baac3b",
+        "local-shadows-mobile-pass-terrain-lighting-zero.png": "453890580a137c1f0517f976d05c5773b17e6cfbb56d4237bd66787924baac3b",
+        "local-shadows-mobile-pass-fog-bright-edge-zero.png": "eda5b7c8c3ffd4ce8f8034cf296ab165114df5f52713a4c88d5f1f98563bde57",
+        "local-shadows-mobile-pass-fog-dense-disabled.png": "cd852d3ee40af8a052236981d97bafe3493399d3b0374c43f0c27812b06d0a01",
+        "local-shadows-mobile-pass-original-far-disabled.png": "fe909edd98a46f61a6c8d95e477d376c1d8ac88ef99ecb332c3d81ff0ca0e97e",
+        "local-shadows-mobile-pass-fog-dense-zero.png": "cd852d3ee40af8a052236981d97bafe3493399d3b0374c43f0c27812b06d0a01",
+        "local-shadows-mobile-pass-glow-disabled.png": "f5d9cb35825cdcd986bb4d1a65fa77bd7b8541cfb0b92d732c94f7985993257f",
+        "local-shadows-mobile-pass-emission-zero.png": "fc86d19c804e0aacc00514f7bae7f4a166b8b69a8c53870225136f68b7c5a61d",
+        "local-shadows-mobile-pass-surface-disabled.png": "e49f33fcfcc31e1f754f74dfafc181ef4604b9b44b5aaf8a8773cfb8514f7a22",
+        "local-shadows-mobile-pass-sun-shadow-disabled.png": "453890580a137c1f0517f976d05c5773b17e6cfbb56d4237bd66787924baac3b",
+        "local-shadows-mobile-pass-transparent-disabled.png": "453890580a137c1f0517f976d05c5773b17e6cfbb56d4237bd66787924baac3b",
+        "local-shadows-mobile-pass-original-disabled.png": "255750901b364422f5d17868808521f905e76f40121242eea3f1ac3db470fdf9",
+        "local-shadows-mobile-pass-fog-zero.png": "e16b6800baf8dcd1da0fd4b05e9faa53dd091c0f43a7dd578546274ab3e89d62",
+        "local-shadows-mobile-pass-crowded-zero.png": "439b6bd3eb6579c065fdd907837d7babac2784cf20c35beba9baa48c8bb6d2f6",
+        "local-shadows-mobile-pass-original-far-zero.png": "fe909edd98a46f61a6c8d95e477d376c1d8ac88ef99ecb332c3d81ff0ca0e97e",
+        "local-shadows-mobile-pass-fog-disabled.png": "e16b6800baf8dcd1da0fd4b05e9faa53dd091c0f43a7dd578546274ab3e89d62",
+        "local-shadows-mobile-pass-five-zero.png": "453890580a137c1f0517f976d05c5773b17e6cfbb56d4237bd66787924baac3b",
+        "local-shadows-mobile-pass-single-zero.png": "b7d167437e392dab839d458e67fab62bb2b8fabb813949ed5c4286cabf5e12f8",
+        "local-shadows-mobile-pass-fog-full-disabled.png": "37070430880db726c41f5055fd083b270efb24d7cc22c708cbd449a1c07a48bf",
+        "local-shadows-mobile-pass-five-disabled.png": "453890580a137c1f0517f976d05c5773b17e6cfbb56d4237bd66787924baac3b",
+        "local-shadows-mobile-pass-emission-disabled.png": "fc86d19c804e0aacc00514f7bae7f4a166b8b69a8c53870225136f68b7c5a61d",
+        "local-shadows-mobile-pass-single-disabled.png": "b7d167437e392dab839d458e67fab62bb2b8fabb813949ed5c4286cabf5e12f8",
+        "local-shadows-mobile-pass-glow-zero.png": "f5d9cb35825cdcd986bb4d1a65fa77bd7b8541cfb0b92d732c94f7985993257f",
+        "local-shadows-mobile-pass-no-local-disabled.png": "c553bd08ac7d170ff77003212bb76122d744affd999bb078eeee536843632f07"
+      }
+    },
+    {
+      "label": "candidate-selection",
+      "classification": "final candidate",
+      "results": {
+        "LOCAL_SHADOW_SELECTION": {
+          "checks": 425,
+          "control": false,
+          "editor": false,
+          "failures": 0,
+          "renderer": "mobile",
+          "selection_changes": 3
+        }
+      },
+      "tool_sha256_at_start": "0505d42507121c85488aa8300b65d0d35cef3d2bcac69a687cb1d8e1ddb50a24",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-mobile/export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "mobile",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/local_shadow_selection.gd"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 4.326473886001622,
+      "other_render_processes_at_start": [
+        {
+          "pid": 3641788,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+        }
+      ],
+      "other_render_processes_at_end": [],
+      "warnings": [],
+      "errors": [],
+      "png_sha256": {
+        "local-shadows-mobile-replaced.png": "fa81226aa13e4f16efb2c82d9eafe6f381a348f4f9c7267b91f4ef2a9f6b51e1",
+        "local-shadows-mobile-held.png": "da90fbe2febf00b71814f75c038dec0535fb6cfde3dea8ecddb65a62ba7e1152",
+        "local-shadows-mobile-moved-light.png": "53e7ddefd606a0c7d6ce61410a749fe4a1cd0dbbea8404072e188c46fdc6f5c3",
+        "local-shadows-mobile-initial.png": "da90fbe2febf00b71814f75c038dec0535fb6cfde3dea8ecddb65a62ba7e1152",
+        "local-shadows-mobile-moved-caster.png": "f2595b0689f374cdfef9b2a92e1eb991a42f635df9c6ebf3eb2ae9f9ffa444d5"
+      }
+    },
+    {
+      "label": "candidate-importance",
+      "classification": "final candidate",
+      "results": {
+        "LOCAL_SHADOW_IMPORTANCE": {
+          "checks": 358,
+          "editor": false,
+          "failures": 0,
+          "rendered_impact": [
+            {
+              "retained_signal_fraction": 0.980366585028586,
+              "selected": [
+                0,
+                1,
+                2,
+                4
+              ],
+              "signals": [
+                {
+                  "changed_pixels": 0,
+                  "light": 0,
+                  "max_channel_delta": 0,
+                  "mean_channel_delta": 0.0,
+                  "pass_boundary": {
+                    "changed_pixels": 0,
+                    "max_channel_delta": 0,
+                    "mean_channel_delta": 0.0
+                  }
+                },
+                {
+                  "changed_pixels": 0,
+                  "light": 1,
+                  "max_channel_delta": 0,
+                  "mean_channel_delta": 0.0,
+                  "pass_boundary": {
+                    "changed_pixels": 0,
+                    "max_channel_delta": 0,
+                    "mean_channel_delta": 0.0
+                  }
+                },
+                {
+                  "changed_pixels": 0,
+                  "light": 2,
+                  "max_channel_delta": 0,
+                  "mean_channel_delta": 0.0,
+                  "pass_boundary": {
+                    "changed_pixels": 0,
+                    "max_channel_delta": 0,
+                    "mean_channel_delta": 0.0
+                  }
+                },
+                {
+                  "changed_pixels": 0,
+                  "light": 3,
+                  "max_channel_delta": 2,
+                  "mean_channel_delta": 0.0333235677083333,
+                  "pass_boundary": {
+                    "changed_pixels": 0,
+                    "max_channel_delta": 0,
+                    "mean_channel_delta": 0.0
+                  }
+                },
+                {
+                  "changed_pixels": 29337,
+                  "light": 4,
+                  "max_channel_delta": 63,
+                  "mean_channel_delta": 1.66396484375,
+                  "pass_boundary": {
+                    "changed_pixels": 0,
+                    "max_channel_delta": 0,
+                    "mean_channel_delta": 0.0
+                  }
+                }
+              ],
+              "situation": "brightness",
+              "strongest": 4
+            },
+            {
+              "retained_signal_fraction": 0.992000485274817,
+              "selected": [
+                0,
+                1,
+                2,
+                4
+              ],
+              "signals": [
+                {
+                  "changed_pixels": 0,
+                  "light": 0,
+                  "max_channel_delta": 0,
+                  "mean_channel_delta": 0.0,
+                  "pass_boundary": {
+                    "changed_pixels": 0,
+                    "max_channel_delta": 0,
+                    "mean_channel_delta": 0.0
+                  }
+                },
+                {
+                  "changed_pixels": 0,
+                  "light": 1,
+                  "max_channel_delta": 0,
+                  "mean_channel_delta": 0.0,
+                  "pass_boundary": {
+                    "changed_pixels": 0,
+                    "max_channel_delta": 0,
+                    "mean_channel_delta": 0.0
+                  }
+                },
+                {
+                  "changed_pixels": 0,
+                  "light": 2,
+                  "max_channel_delta": 0,
+                  "mean_channel_delta": 0.0,
+                  "pass_boundary": {
+                    "changed_pixels": 0,
+                    "max_channel_delta": 0,
+                    "mean_channel_delta": 0.0
+                  }
+                },
+                {
+                  "changed_pixels": 1318,
+                  "light": 3,
+                  "max_channel_delta": 8,
+                  "mean_channel_delta": 0.017314453125,
+                  "pass_boundary": {
+                    "changed_pixels": 0,
+                    "max_channel_delta": 0,
+                    "mean_channel_delta": 0.0
+                  }
+                },
+                {
+                  "changed_pixels": 30620,
+                  "light": 4,
+                  "max_channel_delta": 66,
+                  "mean_channel_delta": 2.14712348090278,
+                  "pass_boundary": {
+                    "changed_pixels": 0,
+                    "max_channel_delta": 0,
+                    "mean_channel_delta": 0.0
+                  }
+                }
+              ],
+              "situation": "range",
+              "strongest": 4
+            }
+          ],
+          "renderer": "mobile",
+          "selection_cost": []
+        }
+      },
+      "tool_sha256_at_start": "a1c56432ca9371503d5013919dc20e161a54aac16a02a43c665073ed9d8c75d9",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-mobile/export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "mobile",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/local_shadow_importance.gd"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 10.573827329004416,
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [],
+      "warnings": [],
+      "errors": [],
+      "png_sha256": {
+        "local-shadows-mobile-importance-brightness-light-3.png": "2c5829973993e5fc9c4b57ebec1cac00866c81d15fb48a27f69ecc584cd02eeb",
+        "local-shadows-mobile-importance-range-zero-2.png": "99a1bcb65f83e864a53ea519f37944f41c4c667cd24dcee679ed5c150ade3401",
+        "local-shadows-mobile-importance-brightness-light-2.png": "c11d090c9fc821d883118540d9c13a60a53d6bf56c2b1f349c4496f8dbcf6812",
+        "local-shadows-mobile-importance-brightness-light-1.png": "c11d090c9fc821d883118540d9c13a60a53d6bf56c2b1f349c4496f8dbcf6812",
+        "local-shadows-mobile-importance-range-light-0.png": "99a1bcb65f83e864a53ea519f37944f41c4c667cd24dcee679ed5c150ade3401",
+        "local-shadows-mobile-importance-range-clear.png": "99a1bcb65f83e864a53ea519f37944f41c4c667cd24dcee679ed5c150ade3401",
+        "local-shadows-mobile-importance-range-zero-3.png": "99a1bcb65f83e864a53ea519f37944f41c4c667cd24dcee679ed5c150ade3401",
+        "local-shadows-mobile-importance-brightness-selected.png": "8395b6a8e14f05acb0cc1c32506977f6cefa8c4750f657146cb8406c7013296a",
+        "local-shadows-mobile-importance-brightness-zero-2.png": "c11d090c9fc821d883118540d9c13a60a53d6bf56c2b1f349c4496f8dbcf6812",
+        "local-shadows-mobile-importance-range-zero-4.png": "99a1bcb65f83e864a53ea519f37944f41c4c667cd24dcee679ed5c150ade3401",
+        "local-shadows-mobile-importance-range-selected.png": "5e2a77bb111cd3461cf345d19b571fbf4c30e1cef2af3882a587ab4bd337a689",
+        "local-shadows-mobile-importance-brightness-zero-0.png": "c11d090c9fc821d883118540d9c13a60a53d6bf56c2b1f349c4496f8dbcf6812",
+        "local-shadows-mobile-importance-range-light-2.png": "99a1bcb65f83e864a53ea519f37944f41c4c667cd24dcee679ed5c150ade3401",
+        "local-shadows-mobile-importance-brightness-zero-4.png": "c11d090c9fc821d883118540d9c13a60a53d6bf56c2b1f349c4496f8dbcf6812",
+        "local-shadows-mobile-importance-range-light-3.png": "80775ff50af790910dc739fb5707e7cc7871619ccafe3da8f5e2af0011ec45d7",
+        "local-shadows-mobile-importance-brightness-light-4.png": "8395b6a8e14f05acb0cc1c32506977f6cefa8c4750f657146cb8406c7013296a",
+        "local-shadows-mobile-importance-brightness-light-0.png": "c11d090c9fc821d883118540d9c13a60a53d6bf56c2b1f349c4496f8dbcf6812",
+        "local-shadows-mobile-importance-brightness-zero-3.png": "c11d090c9fc821d883118540d9c13a60a53d6bf56c2b1f349c4496f8dbcf6812",
+        "local-shadows-mobile-importance-range-light-1.png": "99a1bcb65f83e864a53ea519f37944f41c4c667cd24dcee679ed5c150ade3401",
+        "local-shadows-mobile-importance-brightness-clear.png": "c11d090c9fc821d883118540d9c13a60a53d6bf56c2b1f349c4496f8dbcf6812",
+        "local-shadows-mobile-importance-brightness-zero-1.png": "c11d090c9fc821d883118540d9c13a60a53d6bf56c2b1f349c4496f8dbcf6812",
+        "local-shadows-mobile-importance-range-zero-0.png": "99a1bcb65f83e864a53ea519f37944f41c4c667cd24dcee679ed5c150ade3401",
+        "local-shadows-mobile-importance-range-light-4.png": "5e2a77bb111cd3461cf345d19b571fbf4c30e1cef2af3882a587ab4bd337a689",
+        "local-shadows-mobile-importance-range-zero-1.png": "99a1bcb65f83e864a53ea519f37944f41c4c667cd24dcee679ed5c150ade3401"
+      }
+    },
+    {
+      "label": "candidate-shaders",
+      "classification": "final candidate",
+      "results": {
+        "MATERIAL_SHADER_OPTIONS": {
+          "checks": 362,
+          "failures": 0,
+          "drawn_shader_variants": 108
+        }
+      },
+      "tool_sha256_at_start": "ac4c773ee9c844e537f5003bf2d8259a05aec94d0d1c29b55c6a662b340e5ad0",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-mobile/export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "mobile",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/material_shader_options.gd"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 62.38135558500653,
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [
+        {
+          "pid": 3644751,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+        }
+      ],
+      "warnings": [],
+      "errors": [],
+      "png_sha256": {}
+    },
+    {
+      "label": "candidate-forward",
+      "classification": "final candidate",
+      "results": {
+        "LOCAL_SHADOW_FADES": {
+          "checks": 923,
+          "constrained": false,
+          "editor": false,
+          "failures": 0,
+          "gpu": {
+            "crowded_pass_boundary": {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0
+            },
+            "endpoint": {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0
+            },
+            "exchange": {
+              "changed_pixels": 47291,
+              "max_channel_delta": 33,
+              "mean_channel_delta": 1.60210286458333
+            },
+            "moving_caster_pixels": 19817,
+            "moving_light_pixels": 185029,
+            "pass_boundary": {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0
+            },
+            "production_fades": true,
+            "steps": [
+              {
+                "changed_pixels": 21524,
+                "max_channel_delta": 11,
+                "mean_channel_delta": 0.278829210069444
+              },
+              {
+                "changed_pixels": 21290,
+                "max_channel_delta": 10,
+                "mean_channel_delta": 0.264709201388889
+              },
+              {
+                "changed_pixels": 21063,
+                "max_channel_delta": 9,
+                "mean_channel_delta": 0.251421440972222
+              },
+              {
+                "changed_pixels": 20814,
+                "max_channel_delta": 8,
+                "mean_channel_delta": 0.240277777777778
+              },
+              {
+                "changed_pixels": 20829,
+                "max_channel_delta": 8,
+                "mean_channel_delta": 0.240300564236111
+              },
+              {
+                "changed_pixels": 21024,
+                "max_channel_delta": 9,
+                "mean_channel_delta": 0.251206597222222
+              },
+              {
+                "changed_pixels": 21303,
+                "max_channel_delta": 10,
+                "mean_channel_delta": 0.264756944444444
+              },
+              {
+                "changed_pixels": 21536,
+                "max_channel_delta": 11,
+                "mean_channel_delta": 0.279034288194444
+              }
+            ]
+          },
+          "light_limit": 8,
+          "renderer": "forward_plus"
+        }
+      },
+      "tool_sha256_at_start": "0e0b60a702206dd73ca092872895e884c445af85926fe2bfe16de999d7c1ae5d",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-mobile/export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/local_shadow_fades.gd"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 11.323917035013437,
+      "other_render_processes_at_start": [
+        {
+          "pid": 3644751,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+        }
+      ],
+      "other_render_processes_at_end": [],
+      "warnings": [],
+      "errors": [],
+      "png_sha256": {
+        "local-shadows-forward_plus-fade-direct-endpoint.png": "66e63459257ddce98a3e8e6b41e4c033ea7afd33d8a98cc39eb13c460f165a71",
+        "local-shadows-forward_plus-fade-step-1.png": "96b254134097b5afcecb186d85f81e8bb6bdd4e4ec068dcfa799e3e24d795842",
+        "local-shadows-forward_plus-fade-step-7.png": "36e869cafc817dd8c699c9f7c99a77f7238b620a2e4e51cb401b10a59bfb8385",
+        "local-shadows-forward_plus-fade-step-5.png": "1b5c5954c2304dd5435cde775c3280979fc9f980775ca5b7781d88523a5ae7c9",
+        "local-shadows-forward_plus-pass-zero.png": "b6e2662f90cdca210c1bfd92a102d057ec4e9d830301c4670d5474bd3a07c2bb",
+        "local-shadows-forward_plus-fade-step-2.png": "320cb7a5445f0374f58f3b2c309448ccbb6b07a7f2b1ca00565047d921a354e6",
+        "local-shadows-forward_plus-pass-crowded-zero.png": "6de4ada2b65c8e7ebd7395793e023131f92c5e95a67cb12af4585f11c288d0a7",
+        "local-shadows-forward_plus-pass-disabled.png": "b6e2662f90cdca210c1bfd92a102d057ec4e9d830301c4670d5474bd3a07c2bb",
+        "local-shadows-forward_plus-fade-step-8.png": "66e63459257ddce98a3e8e6b41e4c033ea7afd33d8a98cc39eb13c460f165a71",
+        "local-shadows-forward_plus-fade-initial.png": "9b5dc8e1dd83834eab85462ab9d57d62d7ee9ab7746eb4f4ac2454c73a7c2e29",
+        "local-shadows-forward_plus-fade-moved-light.png": "65de7b4d446499ff3d1faea439b71cd2c534b81162e3eb2a20d65b942ef1b942",
+        "local-shadows-forward_plus-pass-crowded-disabled.png": "6de4ada2b65c8e7ebd7395793e023131f92c5e95a67cb12af4585f11c288d0a7",
+        "local-shadows-forward_plus-fade-step-6.png": "5f241b44d1a87b00eb007fc7582718409378d5669c2eeb4178f0cc7cc1b33ad8",
+        "local-shadows-forward_plus-fade-start.png": "9b5dc8e1dd83834eab85462ab9d57d62d7ee9ab7746eb4f4ac2454c73a7c2e29",
+        "local-shadows-forward_plus-fade-partial-caster.png": "5f241b44d1a87b00eb007fc7582718409378d5669c2eeb4178f0cc7cc1b33ad8",
+        "local-shadows-forward_plus-fade-step-4.png": "f525905014578f1cd6b99960a61bf4168251dd020372bdd32fbfc4a32b4718ce",
+        "local-shadows-forward_plus-fade-moved-caster.png": "9bbc48a7f1c826d0daae4bf4d4bc1a92ea4814847d79f2bf068870093eddecee",
+        "local-shadows-forward_plus-fade-step-3.png": "27035c83e79004f24251c37dbd471494f4f2bee190b94d29a40ff277acaf58c2"
+      }
+    },
+    {
+      "label": "candidate-compat",
+      "classification": "final candidate",
+      "results": {
+        "LOCAL_SHADOW_FADES": {
+          "checks": 924,
+          "constrained": false,
+          "editor": false,
+          "failures": 0,
+          "gpu": {
+            "crowded_pass_boundary": {
+              "changed_pixels": 0,
+              "max_channel_delta": 1,
+              "mean_channel_delta": 0.0529014756944444
+            },
+            "endpoint": {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0
+            },
+            "exchange": {
+              "changed_pixels": 40021,
+              "max_channel_delta": 65,
+              "mean_channel_delta": 2.75735026041667
+            },
+            "moving_caster_pixels": 17274,
+            "moving_light_pixels": 214572,
+            "pass_boundary": {
+              "changed_pixels": 0,
+              "max_channel_delta": 1,
+              "mean_channel_delta": 0.0553266059027778
+            },
+            "production_fades": true,
+            "steps": [
+              {
+                "changed_pixels": 23246,
+                "max_channel_delta": 26,
+                "mean_channel_delta": 0.561580946180556
+              },
+              {
+                "changed_pixels": 23230,
+                "max_channel_delta": 18,
+                "mean_channel_delta": 0.459736328125
+              },
+              {
+                "changed_pixels": 23186,
+                "max_channel_delta": 14,
+                "mean_channel_delta": 0.400334201388889
+              },
+              {
+                "changed_pixels": 23163,
+                "max_channel_delta": 12,
+                "mean_channel_delta": 0.359287109375
+              },
+              {
+                "changed_pixels": 23181,
+                "max_channel_delta": 12,
+                "mean_channel_delta": 0.359177517361111
+              },
+              {
+                "changed_pixels": 23222,
+                "max_channel_delta": 14,
+                "mean_channel_delta": 0.400163845486111
+              },
+              {
+                "changed_pixels": 23253,
+                "max_channel_delta": 18,
+                "mean_channel_delta": 0.459514973958333
+              },
+              {
+                "changed_pixels": 23283,
+                "max_channel_delta": 26,
+                "mean_channel_delta": 0.561112196180556
+              }
+            ]
+          },
+          "light_limit": 8,
+          "renderer": "gl_compatibility"
+        }
+      },
+      "tool_sha256_at_start": "0e0b60a702206dd73ca092872895e884c445af85926fe2bfe16de999d7c1ae5d",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-mobile/export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/local_shadow_fades.gd"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 10.319292396015953,
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [
+        {
+          "pid": 3645896,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+        }
+      ],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "errors": [],
+      "png_sha256": {
+        "local-shadows-gl_compatibility-pass-crowded-disabled.png": "de5765d711a440cc4e4faa857898dfde7a68393c03f5018cba4bf05c6b9ff851",
+        "local-shadows-gl_compatibility-fade-step-6.png": "5beb01f6f52f4369613a9249c582b1bd07e39dca21f567ac41fee7bcccee0366",
+        "local-shadows-gl_compatibility-fade-initial.png": "e56852b60aa17ec1563bd3bbdd51a8004f1d092a72d45e37e03639168b875656",
+        "local-shadows-gl_compatibility-fade-moved-light.png": "e96ae35b63b74152cb05ba5d75535974440a915a05b20929fe6abe0f2a965692",
+        "local-shadows-gl_compatibility-fade-step-2.png": "a85a1e501ee30552912a7185d63c0f809fb4884f1e3b4530bcb5673ce66f596d",
+        "local-shadows-gl_compatibility-fade-step-1.png": "d6624c64922e84753461fb87334f27b6c982ef9c8ae349e595ddd41111ee4be0",
+        "local-shadows-gl_compatibility-fade-partial-caster.png": "5beb01f6f52f4369613a9249c582b1bd07e39dca21f567ac41fee7bcccee0366",
+        "local-shadows-gl_compatibility-pass-disabled.png": "a11f492853413f778c6cc099bbf09a7bb511fca0d9e9baebae290221b87cdacc",
+        "local-shadows-gl_compatibility-fade-step-8.png": "1e33e477b215a5706b1bd5916967b218123f85a7433112414755695843a78780",
+        "local-shadows-gl_compatibility-fade-moved-caster.png": "8d98b8b8b103ff036076887d950e15c21ef5e090a522f44c5fa64fccafe2290b",
+        "local-shadows-gl_compatibility-fade-step-4.png": "355c84cfc1e7bde413b78fb40b32d65a410ba0cb2e308770a9d3ba860716a39a",
+        "local-shadows-gl_compatibility-fade-direct-endpoint.png": "1e33e477b215a5706b1bd5916967b218123f85a7433112414755695843a78780",
+        "local-shadows-gl_compatibility-pass-zero.png": "65850f631b42c0652fa729b6c13cd9ffbe4eacd1877f81c60357abcc07b1833f",
+        "local-shadows-gl_compatibility-fade-step-3.png": "2580e7ca23a5f8096775992179b7f474b04dc498933efa4641d7323563ec2975",
+        "local-shadows-gl_compatibility-fade-step-7.png": "9fbf700be5b08a9d2d3821fd71859cd80f22e0db33018669a4485c76bcc6c038",
+        "local-shadows-gl_compatibility-fade-step-5.png": "0e9e145e4bc6b213862465cbc63e1d28507ff1b7a727d21fd4185b133ddd9dac",
+        "local-shadows-gl_compatibility-fade-start.png": "e56852b60aa17ec1563bd3bbdd51a8004f1d092a72d45e37e03639168b875656",
+        "local-shadows-gl_compatibility-pass-crowded-zero.png": "fa7fb8eea7422d982a04797bbd0f8b095ae99d0e7603270c0fee4ad1a07ed94a"
+      }
+    },
+    {
+      "label": "baseline-passes",
+      "classification": "unchanged baseline",
+      "results": {
+        "LOCAL_LIGHT_PASSES": {
+          "adapter": "NVIDIA GeForce RTX 3090",
+          "checks": 155,
+          "cost_mode": false,
+          "editor": false,
+          "failures": 0,
+          "light_limit": 8,
+          "renderer": "mobile",
+          "rows": [
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0,
+              "situation": "single"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 2,
+              "mean_channel_delta": 0.00634223090277778,
+              "situation": "five"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 2,
+              "mean_channel_delta": 0.00634223090277778,
+              "situation": "sun-shadow"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0,
+              "situation": "fog"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0,
+              "situation": "surface"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0,
+              "situation": "crowded"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0,
+              "situation": "original"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0,
+              "situation": "emission"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0,
+              "situation": "fog-full"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0,
+              "situation": "fog-dense"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0,
+              "situation": "fog-bright-edge"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0,
+              "situation": "emission-fog"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0,
+              "situation": "original-far"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0,
+              "situation": "transparent"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0,
+              "situation": "glow"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0,
+              "situation": "no-local"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0,
+              "situation": "terrain-lighting"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0,
+              "situation": "small-atlas"
+            }
+          ]
+        }
+      },
+      "tool_sha256_at_start": "2a2529c4a5d8e7a114f7ed87106e0e9a1766e14c9c79e178c357b3a6b3adaf45",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-mobile/export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "mobile",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/local_light_passes.gd"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 19.833309652021853,
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [],
+      "warnings": [],
+      "errors": [],
+      "png_sha256": {
+        "local-shadows-mobile-pass-terrain-lighting-disabled.png": "453890580a137c1f0517f976d05c5773b17e6cfbb56d4237bd66787924baac3b",
+        "local-shadows-mobile-pass-fog-bright-edge-disabled.png": "eda5b7c8c3ffd4ce8f8034cf296ab165114df5f52713a4c88d5f1f98563bde57",
+        "local-shadows-mobile-pass-small-atlas-disabled.png": "234e0a66a2b432cb2b238c9bb187e84facb7dc660dff50aaf4fe99d60312b7b7",
+        "local-shadows-mobile-pass-fog-full-zero.png": "37070430880db726c41f5055fd083b270efb24d7cc22c708cbd449a1c07a48bf",
+        "local-shadows-mobile-pass-emission-fog-zero.png": "e61e56fbee75a5983942a09871ad0dd2fa4c3f8a0475e6e2ab98cb1de590fc7f",
+        "local-shadows-mobile-pass-transparent-zero.png": "453890580a137c1f0517f976d05c5773b17e6cfbb56d4237bd66787924baac3b",
+        "local-shadows-mobile-pass-surface-zero.png": "e49f33fcfcc31e1f754f74dfafc181ef4604b9b44b5aaf8a8773cfb8514f7a22",
+        "local-shadows-mobile-pass-emission-fog-disabled.png": "e61e56fbee75a5983942a09871ad0dd2fa4c3f8a0475e6e2ab98cb1de590fc7f",
+        "local-shadows-mobile-pass-crowded-disabled.png": "439b6bd3eb6579c065fdd907837d7babac2784cf20c35beba9baa48c8bb6d2f6",
+        "local-shadows-mobile-pass-no-local-zero.png": "c553bd08ac7d170ff77003212bb76122d744affd999bb078eeee536843632f07",
+        "local-shadows-mobile-pass-small-atlas-zero.png": "234e0a66a2b432cb2b238c9bb187e84facb7dc660dff50aaf4fe99d60312b7b7",
+        "local-shadows-mobile-pass-original-zero.png": "255750901b364422f5d17868808521f905e76f40121242eea3f1ac3db470fdf9",
+        "local-shadows-mobile-pass-sun-shadow-zero.png": "06c1cabc3510927ca6727a3df46ae8c3f6e0c05294d2a495043ea77eef577eaa",
+        "local-shadows-mobile-pass-terrain-lighting-zero.png": "453890580a137c1f0517f976d05c5773b17e6cfbb56d4237bd66787924baac3b",
+        "local-shadows-mobile-pass-fog-bright-edge-zero.png": "eda5b7c8c3ffd4ce8f8034cf296ab165114df5f52713a4c88d5f1f98563bde57",
+        "local-shadows-mobile-pass-fog-dense-disabled.png": "cd852d3ee40af8a052236981d97bafe3493399d3b0374c43f0c27812b06d0a01",
+        "local-shadows-mobile-pass-original-far-disabled.png": "fe909edd98a46f61a6c8d95e477d376c1d8ac88ef99ecb332c3d81ff0ca0e97e",
+        "local-shadows-mobile-pass-fog-dense-zero.png": "cd852d3ee40af8a052236981d97bafe3493399d3b0374c43f0c27812b06d0a01",
+        "local-shadows-mobile-pass-glow-disabled.png": "f5d9cb35825cdcd986bb4d1a65fa77bd7b8541cfb0b92d732c94f7985993257f",
+        "local-shadows-mobile-pass-emission-zero.png": "fc86d19c804e0aacc00514f7bae7f4a166b8b69a8c53870225136f68b7c5a61d",
+        "local-shadows-mobile-pass-surface-disabled.png": "e49f33fcfcc31e1f754f74dfafc181ef4604b9b44b5aaf8a8773cfb8514f7a22",
+        "local-shadows-mobile-pass-sun-shadow-disabled.png": "453890580a137c1f0517f976d05c5773b17e6cfbb56d4237bd66787924baac3b",
+        "local-shadows-mobile-pass-transparent-disabled.png": "453890580a137c1f0517f976d05c5773b17e6cfbb56d4237bd66787924baac3b",
+        "local-shadows-mobile-pass-original-disabled.png": "255750901b364422f5d17868808521f905e76f40121242eea3f1ac3db470fdf9",
+        "local-shadows-mobile-pass-fog-zero.png": "e16b6800baf8dcd1da0fd4b05e9faa53dd091c0f43a7dd578546274ab3e89d62",
+        "local-shadows-mobile-pass-crowded-zero.png": "439b6bd3eb6579c065fdd907837d7babac2784cf20c35beba9baa48c8bb6d2f6",
+        "local-shadows-mobile-pass-original-far-zero.png": "fe909edd98a46f61a6c8d95e477d376c1d8ac88ef99ecb332c3d81ff0ca0e97e",
+        "local-shadows-mobile-pass-fog-disabled.png": "e16b6800baf8dcd1da0fd4b05e9faa53dd091c0f43a7dd578546274ab3e89d62",
+        "local-shadows-mobile-pass-five-zero.png": "06c1cabc3510927ca6727a3df46ae8c3f6e0c05294d2a495043ea77eef577eaa",
+        "local-shadows-mobile-pass-single-zero.png": "b7d167437e392dab839d458e67fab62bb2b8fabb813949ed5c4286cabf5e12f8",
+        "local-shadows-mobile-pass-fog-full-disabled.png": "37070430880db726c41f5055fd083b270efb24d7cc22c708cbd449a1c07a48bf",
+        "local-shadows-mobile-pass-five-disabled.png": "453890580a137c1f0517f976d05c5773b17e6cfbb56d4237bd66787924baac3b",
+        "local-shadows-mobile-pass-emission-disabled.png": "fc86d19c804e0aacc00514f7bae7f4a166b8b69a8c53870225136f68b7c5a61d",
+        "local-shadows-mobile-pass-single-disabled.png": "b7d167437e392dab839d458e67fab62bb2b8fabb813949ed5c4286cabf5e12f8",
+        "local-shadows-mobile-pass-glow-zero.png": "f5d9cb35825cdcd986bb4d1a65fa77bd7b8541cfb0b92d732c94f7985993257f",
+        "local-shadows-mobile-pass-no-local-disabled.png": "c553bd08ac7d170ff77003212bb76122d744affd999bb078eeee536843632f07"
+      }
+    },
+    {
+      "label": "baseline-fade-probe",
+      "classification": "QA-only fade override on baseline",
+      "results": {
+        "MOBILE_SHADOW_PROBE": {
+          "checks": 188,
+          "failures": 0,
+          "gpu": {
+            "endpoint": {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0
+            },
+            "exchange": {
+              "changed_pixels": 47626,
+              "max_channel_delta": 33,
+              "mean_channel_delta": 1.60817599826389
+            },
+            "moving_caster_pixels": 19859,
+            "moving_light_pixels": 186370,
+            "steps": [
+              {
+                "changed_pixels": 21667,
+                "max_channel_delta": 11,
+                "mean_channel_delta": 0.281776258680556
+              },
+              {
+                "changed_pixels": 21435,
+                "max_channel_delta": 10,
+                "mean_channel_delta": 0.265234375
+              },
+              {
+                "changed_pixels": 21083,
+                "max_channel_delta": 9,
+                "mean_channel_delta": 0.251426866319444
+              },
+              {
+                "changed_pixels": 20874,
+                "max_channel_delta": 8,
+                "mean_channel_delta": 0.240200737847222
+              },
+              {
+                "changed_pixels": 20943,
+                "max_channel_delta": 8,
+                "mean_channel_delta": 0.239969618055556
+              },
+              {
+                "changed_pixels": 21022,
+                "max_channel_delta": 9,
+                "mean_channel_delta": 0.2514453125
+              },
+              {
+                "changed_pixels": 21396,
+                "max_channel_delta": 10,
+                "mean_channel_delta": 0.265252821180556
+              },
+              {
+                "changed_pixels": 21689,
+                "max_channel_delta": 11,
+                "mean_channel_delta": 0.281593967013889
+              }
+            ]
+          },
+          "qa_gate_override": true,
+          "renderer": "mobile"
+        }
+      },
+      "tool_sha256_at_start": "ea2d4b05d21924984e3075a2a33bb1098b1cbad8337e12d344ddb7d4fb9136e8",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-mobile/export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "mobile",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-mobile/mobile_probe.gd"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 6.809793947002618,
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [],
+      "warnings": [],
+      "errors": [],
+      "png_sha256": {
+        "local-shadows-mobile-fade-step-5.png": "972eb0b257572f03f17105862fa27089dd8b1fd602f62eb07cc073f7e475df11",
+        "local-shadows-mobile-fade-direct-endpoint.png": "fa81226aa13e4f16efb2c82d9eafe6f381a348f4f9c7267b91f4ef2a9f6b51e1",
+        "local-shadows-mobile-fade-initial.png": "da90fbe2febf00b71814f75c038dec0535fb6cfde3dea8ecddb65a62ba7e1152",
+        "local-shadows-mobile-fade-step-6.png": "8ffad422afe5165ff888d28e08a7e041f0821e8e318fce579ae06063ace2e567",
+        "local-shadows-mobile-fade-start.png": "da90fbe2febf00b71814f75c038dec0535fb6cfde3dea8ecddb65a62ba7e1152",
+        "local-shadows-mobile-fade-step-2.png": "0fa1f628b882459b1da204f64a964ec86f6a21671fa8ce7e56ced79bdaa477ac",
+        "local-shadows-mobile-fade-step-8.png": "fa81226aa13e4f16efb2c82d9eafe6f381a348f4f9c7267b91f4ef2a9f6b51e1",
+        "local-shadows-mobile-fade-moved-light.png": "b06956364167d666cb09de9cc8fffe3a89b67719976ef31aa07221711cb40fe5",
+        "local-shadows-mobile-fade-partial-caster.png": "8ffad422afe5165ff888d28e08a7e041f0821e8e318fce579ae06063ace2e567",
+        "local-shadows-mobile-fade-step-1.png": "1f468d91f1b2e8ffe207400a41e21cf4207a2fac2464026c7df1e951bcfd29b6",
+        "local-shadows-mobile-fade-step-3.png": "863cc1189a1f440769e37b271bd2cdf7b69a36189a64754b92c7cdc4d4d3999b",
+        "local-shadows-mobile-fade-step-4.png": "583caf4a213ac7eb53ab65a440a2504a0039065ba75f1d3966a1bfd965b4377f",
+        "local-shadows-mobile-fade-step-7.png": "3f51b4c8cf019c2b181a486532d648bd4ea35aeb948e5eb45376f2c51e122953",
+        "local-shadows-mobile-fade-moved-caster.png": "9050c4548f0caf49ee1aa510d5738dd903960beb3e5e1c6be9b1e6418e8f2516"
+      }
+    }
+  ],
+  "discarded_attempts": [
+    {
+      "label": "candidate-constrained-default",
+      "reason": "QA override used custom_features instead of engine key _custom_features: Portability.constrained stayed false. X11 also logged NO GRAB. Fixed the QA key, asserted the effective feature in suite, and clear mouse confinement before the no-focus/minimized fixture. This attempt is not counted as constrained validation.",
+      "run": {
+        "tool_sha256_at_start": "0e0b60a702206dd73ca092872895e884c445af85926fe2bfe16de999d7c1ae5d",
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-mobile/candidate-constrained/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "mobile",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/local_shadow_fades.gd"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 9.317888740013586,
+        "other_render_processes_at_start": [],
+        "other_render_processes_at_end": [],
+        "warnings": [],
+        "errors": [
+          "ERROR: NO GRAB"
+        ],
+        "png_sha256": {
+          "local-shadows-mobile-fade-step-5.png": "972eb0b257572f03f17105862fa27089dd8b1fd602f62eb07cc073f7e475df11",
+          "local-shadows-mobile-fade-direct-endpoint.png": "fa81226aa13e4f16efb2c82d9eafe6f381a348f4f9c7267b91f4ef2a9f6b51e1",
+          "local-shadows-mobile-pass-crowded-disabled.png": "c27615665d610c979e99fe737d0f1d6ef14019460881d5c00f2f2f0ae787aecf",
+          "local-shadows-mobile-fade-initial.png": "da90fbe2febf00b71814f75c038dec0535fb6cfde3dea8ecddb65a62ba7e1152",
+          "local-shadows-mobile-fade-step-6.png": "8ffad422afe5165ff888d28e08a7e041f0821e8e318fce579ae06063ace2e567",
+          "local-shadows-mobile-fade-start.png": "da90fbe2febf00b71814f75c038dec0535fb6cfde3dea8ecddb65a62ba7e1152",
+          "local-shadows-mobile-pass-zero.png": "453890580a137c1f0517f976d05c5773b17e6cfbb56d4237bd66787924baac3b",
+          "local-shadows-mobile-fade-step-2.png": "0fa1f628b882459b1da204f64a964ec86f6a21671fa8ce7e56ced79bdaa477ac",
+          "local-shadows-mobile-fade-step-8.png": "fa81226aa13e4f16efb2c82d9eafe6f381a348f4f9c7267b91f4ef2a9f6b51e1",
+          "local-shadows-mobile-fade-moved-light.png": "b06956364167d666cb09de9cc8fffe3a89b67719976ef31aa07221711cb40fe5",
+          "local-shadows-mobile-pass-crowded-zero.png": "c27615665d610c979e99fe737d0f1d6ef14019460881d5c00f2f2f0ae787aecf",
+          "local-shadows-mobile-fade-partial-caster.png": "8ffad422afe5165ff888d28e08a7e041f0821e8e318fce579ae06063ace2e567",
+          "local-shadows-mobile-pass-disabled.png": "453890580a137c1f0517f976d05c5773b17e6cfbb56d4237bd66787924baac3b",
+          "local-shadows-mobile-fade-step-1.png": "1f468d91f1b2e8ffe207400a41e21cf4207a2fac2464026c7df1e951bcfd29b6",
+          "local-shadows-mobile-fade-step-3.png": "863cc1189a1f440769e37b271bd2cdf7b69a36189a64754b92c7cdc4d4d3999b",
+          "local-shadows-mobile-fade-step-4.png": "583caf4a213ac7eb53ab65a440a2504a0039065ba75f1d3966a1bfd965b4377f",
+          "local-shadows-mobile-fade-step-7.png": "3f51b4c8cf019c2b181a486532d648bd4ea35aeb948e5eb45376f2c51e122953",
+          "local-shadows-mobile-fade-moved-caster.png": "9050c4548f0caf49ee1aa510d5738dd903960beb3e5e1c6be9b1e6418e8f2516"
+        }
+      }
+    }
+  ],
+  "pre_final_fixture_run": {
+    "label": "candidate-fades",
+    "reason": "Passed before clearing mouse confinement in the shared diagnostic fixture; final desktop Mobile run repeated after that test setup fix. Counted only the latter.",
+    "run": {
+      "tool_sha256_at_start": "0e0b60a702206dd73ca092872895e884c445af85926fe2bfe16de999d7c1ae5d",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-mobile/export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "mobile",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/local_shadow_fades.gd"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 9.57632592099253,
+      "other_render_processes_at_start": [
+        {
+          "pid": 3635983,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+        }
+      ],
+      "other_render_processes_at_end": [
+        {
+          "pid": 3636453,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+        },
+        {
+          "pid": 3636551,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+        }
+      ],
+      "warnings": [],
+      "errors": [],
+      "png_sha256": {
+        "local-shadows-mobile-fade-step-5.png": "972eb0b257572f03f17105862fa27089dd8b1fd602f62eb07cc073f7e475df11",
+        "local-shadows-mobile-fade-direct-endpoint.png": "fa81226aa13e4f16efb2c82d9eafe6f381a348f4f9c7267b91f4ef2a9f6b51e1",
+        "local-shadows-mobile-pass-crowded-disabled.png": "c27615665d610c979e99fe737d0f1d6ef14019460881d5c00f2f2f0ae787aecf",
+        "local-shadows-mobile-fade-initial.png": "da90fbe2febf00b71814f75c038dec0535fb6cfde3dea8ecddb65a62ba7e1152",
+        "local-shadows-mobile-fade-step-6.png": "8ffad422afe5165ff888d28e08a7e041f0821e8e318fce579ae06063ace2e567",
+        "local-shadows-mobile-fade-start.png": "da90fbe2febf00b71814f75c038dec0535fb6cfde3dea8ecddb65a62ba7e1152",
+        "local-shadows-mobile-pass-zero.png": "453890580a137c1f0517f976d05c5773b17e6cfbb56d4237bd66787924baac3b",
+        "local-shadows-mobile-fade-step-2.png": "0fa1f628b882459b1da204f64a964ec86f6a21671fa8ce7e56ced79bdaa477ac",
+        "local-shadows-mobile-fade-step-8.png": "fa81226aa13e4f16efb2c82d9eafe6f381a348f4f9c7267b91f4ef2a9f6b51e1",
+        "local-shadows-mobile-fade-moved-light.png": "b06956364167d666cb09de9cc8fffe3a89b67719976ef31aa07221711cb40fe5",
+        "local-shadows-mobile-pass-crowded-zero.png": "c27615665d610c979e99fe737d0f1d6ef14019460881d5c00f2f2f0ae787aecf",
+        "local-shadows-mobile-fade-partial-caster.png": "8ffad422afe5165ff888d28e08a7e041f0821e8e318fce579ae06063ace2e567",
+        "local-shadows-mobile-pass-disabled.png": "453890580a137c1f0517f976d05c5773b17e6cfbb56d4237bd66787924baac3b",
+        "local-shadows-mobile-fade-step-1.png": "1f468d91f1b2e8ffe207400a41e21cf4207a2fac2464026c7df1e951bcfd29b6",
+        "local-shadows-mobile-fade-step-3.png": "863cc1189a1f440769e37b271bd2cdf7b69a36189a64754b92c7cdc4d4d3999b",
+        "local-shadows-mobile-fade-step-4.png": "583caf4a213ac7eb53ab65a440a2504a0039065ba75f1d3966a1bfd965b4377f",
+        "local-shadows-mobile-fade-step-7.png": "3f51b4c8cf019c2b181a486532d648bd4ea35aeb948e5eb45376f2c51e122953",
+        "local-shadows-mobile-fade-moved-caster.png": "9050c4548f0caf49ee1aa510d5738dd903960beb3e5e1c6be9b1e6418e8f2516"
+      }
+    }
+  },
+  "limitations": [
+    "Desktop native Mobile correctness is not Android/Web or full-map acceptance. Custom _custom_features=mobile exercises the actual platform gate on the desktop export; it does not simulate hardware, drivers, thermals, touch or Android lifecycle.",
+    "No CPU/GPU timing or FPS claim. Some correctness runs overlap unrelated Godot processes; their PIDs are recorded and they were not altered. The two initial baseline runs used an older detector that could miss resolved Godot binary names; their concurrency is not established.",
+    "Native Mobile uses existing shared opacity blending without the GLES colour-conversion helper. Per-frame opacity updates and shadow rendering still cost work; not asserted cheaper on device.",
+    "34/36 baseline lighting control images are exact; two vary by at most 2/255 with no pixel exceeding that bound. Fourteen fade-probe images match production exactly. Small cross-run numerical residuals are recorded, not explained as measured performance or total pixel identity.",
+    "The test report light_limit field is the OpenGL setting, not a native Mobile light cap. Mobile has its own eight-per-type receiver limit. The small-atlas boundary case uses 1024, but most fixtures explicitly use 2048; neither is physical-device validation.",
+    "Full-map/caster-aware acceptance, static/dynamic map caching, actual Android fade cost, P6 shimmer/redraw evidence and other handoff priorities remain open."
+  ],
+  "integration_check": {
+    "target": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo",
+    "base": "3172ede12a5f41b0182c34a70b5eeda787c95e52",
+    "source_parent": "9478a97c20c3586f95fe4ac5959bc1c6971a5270",
+    "command": [
+      "git",
+      "apply",
+      "--check",
+      "--whitespace=error-all",
+      "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-mobile/combined-implementation.patch"
+    ],
+    "return_code": 0,
+    "stdout": "",
+    "stderr": "",
+    "patch_sha256": "e05985d34a4079bab599b64a528cefd76d00745d187ca9f6e7478ce3b777a3ef",
+    "unchanged": true,
+    "before": {
+      "head": "40ea5a981b992bda63d4e505f47747a7c60068f2",
+      "status": "",
+      "files": {
+        "game/src/ei/figure.gd": "5fd0c1d31f462a49914e0a619580ffbcc5344965c18798f5bf3f2f58c68bad8f",
+        "game/src/ei/game_data.gd": "6b978ec8cbc2ed07baf11f461ffdacb7e7239854cc1c588ca60bfb83040267c7",
+        "game/src/ei/map_scene.gd": "8c3ebb5dff18651be8d23c7b36d25f1c3e9bb90ace3d6fc27a70c697c8da1a5e",
+        "game/src/ei/mmp_texture.gd": "ea95f86058da0b18c5c411c4bb69cc9db00c5770501cd5efbf0125d3f2ca104b",
+        "game/src/ei/terrain.gd": "25b87e8fadf2bd7c68ebc963cb36db34788dc2e962ce6a736ba1c51db4c89361",
+        "game/src/ei/unit_model.gd": "f454fd48b39f318b8822a004129c65530ba4adf9b63f6bd5425bf68452824fe6",
+        "game/src/game/fx/ground_contact.gd": null,
+        "game/src/game/fx/ground_contact.gd.uid": null,
+        "game/src/game/fx/ground_contact_shader.gd": null,
+        "game/src/game/fx/ground_contact_shader.gd.uid": null,
+        "game/src/game/fx/ground_surface_data.gd": null,
+        "game/src/game/fx/ground_surface_data.gd.uid": null,
+        "game/src/game/fx/ground_surface_shader.gd": null,
+        "game/src/game/fx/ground_surface_shader.gd.uid": null,
+        "game/src/game/fx/local_light_shader.gd": null,
+        "game/src/game/fx/local_light_shader.gd.uid": null,
+        "game/src/game/fx/local_lighting.gd": "be1570ca9e47eafcb48f0d4964a941066d521d63cc570ea8aff8333c20b1d34a",
+        "game/src/game/fx/scenery_batch_watch.gd": null,
+        "game/src/game/fx/scenery_batch_watch.gd.uid": null,
+        "game/src/game/fx/scenery_batches.gd": null,
+        "game/src/game/fx/scenery_batches.gd.uid": null,
+        "game/src/game/fx/scenery_light_groups.gd": null,
+        "game/src/game/fx/scenery_light_groups.gd.uid": null,
+        "game/src/game/fx/soft_ground_deform.gd": "a9b5a1941d17ccf67716affb9e416c702d67c7405730109461ead2260fffe051",
+        "game/src/game/fx/soft_ground_field.gd": null,
+        "game/src/game/fx/soft_ground_field.gd.uid": null,
+        "game/src/game/game.gd": "ae6fbf51f89b6536cfa28505f544bb7ba22402b2eca1593400d5fb303d1ec08f",
+        "game/src/game/gfx.gd": "d4111e59b158111d2b5c0ab75feadde1f77db81e528773f23676fddd0e11cdb5",
+        "game/src/game/gfx_detect.gd": "bcbc43453022fd0718fa2ceed9f8cc1271b644dec2eda9f34e3fb78e269475dc",
+        "game/src/game/unit_wounds.gd": "8eea1966c2ac60d58e6d6d6b358cbcec28655a9b90423fd6663a29858fbaf41e",
+        "game/src/platform/portability.gd": "3afa19cb0340929d7e1034066b490568e2df52b5b1e3a9decb3c6c89b76a3735",
+        "game/src/ui/camera_fade.gd": "00dca9e22b1d5cf21c073b82570353533f8f7fa9f98c3a9e478e7fec17bfa0fe",
+        "game/src/ui/menu_scene.gd": "ac5780e52e21d66654fdf0ca49a786c45442958fab7814dc615b02712b604da1",
+        "tools/benchmarks/directional_shadows.gd": null,
+        "tools/benchmarks/ground_contact.gd": null,
+        "tools/benchmarks/ground_contact_preparation.py": null,
+        "tools/benchmarks/ground_contact_surface.gd": null,
+        "tools/benchmarks/scenery_batch_lights.gd": null,
+        "tools/benchmarks/scenery_batches.gd": null,
+        "tools/benchmarks/scenery_resources.gd": null,
+        "tools/benchmarks/terrain_occlusion.gd": null,
+        "tools/tests/foliage_materials.gd": null,
+        "tools/tests/ground_contact.gd": null,
+        "tools/tests/local_light_passes.gd": null,
+        "tools/tests/local_shadow_fades.gd": null,
+        "tools/tests/local_shadow_importance.gd": null,
+        "tools/tests/local_shadow_selection.gd": null,
+        "tools/tests/material_shader_options.gd": "dff493bc1167c94ed445a3b18749914f39340b960a36a607d1785a2f3ff889e9",
+        "tools/tests/mmp_texture.gd": null,
+        "tools/tests/mmp_upload.gd": null,
+        "tools/tests/scenery_batch_lights.gd": null,
+        "tools/tests/scenery_batches.gd": null,
+        "tools/tests/soft_ground_field.gd": null,
+        "tools/tests/sun_aiming.gd": null,
+        "tools/tests/wound_source.gd": null
+      }
+    },
+    "after": {
+      "head": "40ea5a981b992bda63d4e505f47747a7c60068f2",
+      "status": "",
+      "files": {
+        "game/src/ei/figure.gd": "5fd0c1d31f462a49914e0a619580ffbcc5344965c18798f5bf3f2f58c68bad8f",
+        "game/src/ei/game_data.gd": "6b978ec8cbc2ed07baf11f461ffdacb7e7239854cc1c588ca60bfb83040267c7",
+        "game/src/ei/map_scene.gd": "8c3ebb5dff18651be8d23c7b36d25f1c3e9bb90ace3d6fc27a70c697c8da1a5e",
+        "game/src/ei/mmp_texture.gd": "ea95f86058da0b18c5c411c4bb69cc9db00c5770501cd5efbf0125d3f2ca104b",
+        "game/src/ei/terrain.gd": "25b87e8fadf2bd7c68ebc963cb36db34788dc2e962ce6a736ba1c51db4c89361",
+        "game/src/ei/unit_model.gd": "f454fd48b39f318b8822a004129c65530ba4adf9b63f6bd5425bf68452824fe6",
+        "game/src/game/fx/ground_contact.gd": null,
+        "game/src/game/fx/ground_contact.gd.uid": null,
+        "game/src/game/fx/ground_contact_shader.gd": null,
+        "game/src/game/fx/ground_contact_shader.gd.uid": null,
+        "game/src/game/fx/ground_surface_data.gd": null,
+        "game/src/game/fx/ground_surface_data.gd.uid": null,
+        "game/src/game/fx/ground_surface_shader.gd": null,
+        "game/src/game/fx/ground_surface_shader.gd.uid": null,
+        "game/src/game/fx/local_light_shader.gd": null,
+        "game/src/game/fx/local_light_shader.gd.uid": null,
+        "game/src/game/fx/local_lighting.gd": "be1570ca9e47eafcb48f0d4964a941066d521d63cc570ea8aff8333c20b1d34a",
+        "game/src/game/fx/scenery_batch_watch.gd": null,
+        "game/src/game/fx/scenery_batch_watch.gd.uid": null,
+        "game/src/game/fx/scenery_batches.gd": null,
+        "game/src/game/fx/scenery_batches.gd.uid": null,
+        "game/src/game/fx/scenery_light_groups.gd": null,
+        "game/src/game/fx/scenery_light_groups.gd.uid": null,
+        "game/src/game/fx/soft_ground_deform.gd": "a9b5a1941d17ccf67716affb9e416c702d67c7405730109461ead2260fffe051",
+        "game/src/game/fx/soft_ground_field.gd": null,
+        "game/src/game/fx/soft_ground_field.gd.uid": null,
+        "game/src/game/game.gd": "ae6fbf51f89b6536cfa28505f544bb7ba22402b2eca1593400d5fb303d1ec08f",
+        "game/src/game/gfx.gd": "d4111e59b158111d2b5c0ab75feadde1f77db81e528773f23676fddd0e11cdb5",
+        "game/src/game/gfx_detect.gd": "bcbc43453022fd0718fa2ceed9f8cc1271b644dec2eda9f34e3fb78e269475dc",
+        "game/src/game/unit_wounds.gd": "8eea1966c2ac60d58e6d6d6b358cbcec28655a9b90423fd6663a29858fbaf41e",
+        "game/src/platform/portability.gd": "3afa19cb0340929d7e1034066b490568e2df52b5b1e3a9decb3c6c89b76a3735",
+        "game/src/ui/camera_fade.gd": "00dca9e22b1d5cf21c073b82570353533f8f7fa9f98c3a9e478e7fec17bfa0fe",
+        "game/src/ui/menu_scene.gd": "ac5780e52e21d66654fdf0ca49a786c45442958fab7814dc615b02712b604da1",
+        "tools/benchmarks/directional_shadows.gd": null,
+        "tools/benchmarks/ground_contact.gd": null,
+        "tools/benchmarks/ground_contact_preparation.py": null,
+        "tools/benchmarks/ground_contact_surface.gd": null,
+        "tools/benchmarks/scenery_batch_lights.gd": null,
+        "tools/benchmarks/scenery_batches.gd": null,
+        "tools/benchmarks/scenery_resources.gd": null,
+        "tools/benchmarks/terrain_occlusion.gd": null,
+        "tools/tests/foliage_materials.gd": null,
+        "tools/tests/ground_contact.gd": null,
+        "tools/tests/local_light_passes.gd": null,
+        "tools/tests/local_shadow_fades.gd": null,
+        "tools/tests/local_shadow_importance.gd": null,
+        "tools/tests/local_shadow_selection.gd": null,
+        "tools/tests/material_shader_options.gd": "dff493bc1167c94ed445a3b18749914f39340b960a36a607d1785a2f3ff889e9",
+        "tools/tests/mmp_texture.gd": null,
+        "tools/tests/mmp_upload.gd": null,
+        "tools/tests/scenery_batch_lights.gd": null,
+        "tools/tests/scenery_batches.gd": null,
+        "tools/tests/soft_ground_field.gd": null,
+        "tools/tests/sun_aiming.gd": null,
+        "tools/tests/wound_source.gd": null
+      }
+    }
+  }
+}

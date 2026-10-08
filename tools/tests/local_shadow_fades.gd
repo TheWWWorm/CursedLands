@@ -35,7 +35,7 @@ func advance(f: Dictionary, dt: float) -> void:
 
 func fading_fixture() -> Dictionary:
 	var f := fixture()
-	# Exercise the state machine headlessly and on both backends. The rendered
+	# Exercise the state machine headlessly and on every backend. The rendered
 	# transition test below uses the production backend gate without overriding.
 	f.manager._fade_shadows = true
 	return f
@@ -249,16 +249,18 @@ func test_pass_boundary() -> void:
 	var crowded_disabled := await capture(f.view, "pass-crowded-disabled")
 	gpu_report["pass_boundary"] = delta(zero, disabled)
 	gpu_report["crowded_pass_boundary"] = delta(crowded_zero, crowded_disabled)
-	if RenderingServer.get_current_rendering_method() == "forward_plus":
+	var method := RenderingServer.get_current_rendering_method()
+	gpu_report["production_fades"] = f.manager._fade_shadows
+	if method == "forward_plus":
 		check(zero.get_data() == disabled.get_data() and crowded_zero.get_data() == crowded_disabled.get_data(),
 				"Forward+ zero-opacity flags preserve all unoccluded lighting pixels")
-	elif RenderingServer.get_current_rendering_method() == "gl_compatibility":
+	elif method in ["gl_compatibility", "mobile"]:
 		var args := OS.get_cmdline_user_args()
 		var expected := not args.has("--no-local-shadow-fades") and (not Portability.constrained() or args.has("--local-shadow-fades"))
-		check(f.manager._fade_shadows == expected, "Compatibility fade policy follows platform and explicit test switches")
-		if expected:
+		check(f.manager._fade_shadows == expected, "%s fade policy follows platform and explicit test switches" % method)
+		if expected or method == "mobile":
 			check(delta(zero, disabled).max_channel_delta <= 2 and delta(crowded_zero, crowded_disabled).max_channel_delta <= 2,
-					"Compatibility pass change stays within output quantization at both light counts")
+					"%s pass change stays within output quantization at both light counts" % method)
 	else:
 		check(not f.manager._fade_shadows, "unvalidated backend keeps production fades disabled")
 	dispose(f)
@@ -326,10 +328,11 @@ func _ready() -> void:
 	test_process_order()
 	if DisplayServer.get_name() != "headless":
 		await test_pass_boundary()
-		if RenderingServer.get_current_rendering_method() in ["forward_plus", "gl_compatibility"]:
+		if RenderingServer.get_current_rendering_method() in ["forward_plus", "gl_compatibility", "mobile"]:
 			await test_rendered_fades()
 	var report := {"checks": checks, "failures": failures, "gpu": gpu_report,
 			"renderer": RenderingServer.get_current_rendering_method(), "editor": OS.has_feature("editor"),
+			"constrained": Portability.constrained(),
 			"light_limit": ProjectSettings.get_setting("rendering/limits/opengl/max_lights_per_object")}
 	var output := "user://local-shadow-fades-" + RenderingServer.get_current_rendering_method() + ".json"
 	var file := FileAccess.open(output, FileAccess.WRITE)

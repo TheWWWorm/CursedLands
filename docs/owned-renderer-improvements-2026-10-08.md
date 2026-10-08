@@ -1159,6 +1159,85 @@ Compatibility's Android/web fade gate, desktop sun policy, native Mobile fade
 policy and all visual-option defaults are unchanged. No character, co-op,
 zone-transition, installed-build or physical-device changes are included.
 
+## P5 follow-up: validate native Mobile shadow fades
+
+The native `mobile` renderer now uses the same bounded opacity transitions on
+desktop. `--no-local-shadow-fades` retains the immediate switch for comparisons.
+Constrained native Mobile stays off by default and accepts `--local-shadow-fades`;
+the disable switch wins when both are present. Android/web still default to
+Compatibility in `game/project.godot`. Forward+ and Compatibility retain their
+previous policies, and the user's continuous-desktop/held-device sun policy
+remains separate.
+
+This adapts R0's 0.4-second transitions in `Source/point_shadow_policy.h:13`
+and `PointShadowScheduler::select` around line 275 to another remake backend.
+The reference's work budget must still not be interpreted as our resident-light
+limit. Our four-total/two-lava caps and sequential outgoing/incoming fade legs
+are preserved. No selection, light energy, map caching or custom shader math
+changes were needed for this step.
+
+### Source and implementation locations
+
+- `game/src/game/fx/local_lighting.gd:53` contains the renderer/platform gate.
+- `tools/tests/local_shadow_fades.gd:234` checks flag/opacity continuity and
+  records the actual production gate; its rendered transition checks now run
+  on Mobile too. The report includes the actual constrained-platform feature.
+- `tools/tests/local_shadow_selection.gd:221` clears mouse confinement before
+  making the diagnostic window unfocusable/minimized, avoiding X11's `NO GRAB`.
+- Existing `tools/tests/local_light_passes.gd`,
+  `tools/tests/local_shadow_importance.gd` and
+  `tools/tests/material_shader_options.gd` cover the actual composed shaders,
+  selected lights and option switches on this newly validated backend.
+- In the pinned engine source at
+  `/home/llm2x/Documents/EI/local/scratchpad/coop-performance-20261005/engine-profile/godot-5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88`,
+  `servers/rendering/renderer_rd/storage_rd/light_storage.cpp:1160` supplies
+  native shadow opacity. Mobile includes the shared implementation at
+  `servers/rendering/renderer_rd/shaders/forward_mobile/scene_forward_mobile.glsl:1038`;
+  `servers/rendering/renderer_rd/shaders/scene_forward_lights_inc.glsl:502`
+  gates sampling and line 626 blends its result with full illumination.
+  Mobile therefore does not need `LocalLightShader`'s GLES colour correction.
+
+### Validation and limits
+
+The final Linux export passes **7,209 checks**: desktop Mobile fades (924),
+simulated constrained default (738) and opt-in (924), explicit disable (738),
+both flags (738), 18 lighting-boundary cases (155), selection (425), importance
+(358), 108 drawn shader variants (362), and Forward+/Compatibility fade
+regressions (923/924). All 14 fade images match the earlier QA-only override
+on the frozen `9478a97` export exactly.
+
+The visible exchange changes 47,626 pixels. Its largest immediate RGB-channel
+change is 33/255; eight sampled 0.1-second steps peak at 8–11/255, with an exact
+settled endpoint. Partially faded shadows follow moving casters and lights.
+All 18 candidate flag/zero-opacity boundary cases are exact in this run. Across
+the baseline comparison, 34/36 lighting images are exact; two differ by at most
+2/255. These small differences are retained in the evidence, not reported as
+total pixel identity. All 36 Forward+/Compatibility regression images match
+the preceding checkpoint exactly.
+
+The constrained-policy runs use a separate Linux export copy with
+`_custom_features="mobile"` in its adjacent `override.cfg`. The suite verifies
+that `Portability.constrained()` and the native Mobile renderer are active.
+This checks the real platform branch, not Android hardware or driver quality.
+The first attempt used the wrong key `custom_features`, stayed unconstrained
+and logged `NO GRAB`; it is excluded from acceptance. Most fixtures use a 2048
+atlas; the separate small-atlas boundary case uses 1024. The report's
+`light_limit` field is an OpenGL setting, not Mobile's eight-per-type receiver cap.
+
+No FPS or GPU-cost benefit is claimed. There is no added custom colour-conversion
+shader path, but opacity writes and native shadow rendering still cost work.
+Some correctness runs overlapped unrelated Godot processes, recorded in the
+evidence; those processes were untouched. Physical Android testing, full-map
+and caster-aware selection acceptance, and static/dynamic map caching remain
+open. The Retroid, installed builds and the other chat's files were not modified.
+
+Exact source/export hashes, commands, captures, platform-gate results,
+discarded attempt and read-only integration check are in
+[local-shadow-mobile-2026-10-08.json](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/docs/validation/local-shadow-mobile-2026-10-08.json).
+Raw runs, the frozen candidate, baseline probe and sequential reproduction
+suite are under
+`/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-mobile/`.
+
 ## P6 investigation: directional-shadow snapping
 
 At the start of this batch, the remake separated direct lighting from a held
@@ -1602,11 +1681,11 @@ the benchmark. It preserves individual object nodes and does not touch the
 other chat's newer creature visibility or story/co-op effect changes.
 
 The latest read-only `git apply --check` includes all production/tool changes
-from this branch's base through the P5 importance-ranking checkpoint. It passed
-against active committed HEAD `433d5d97588cfd775fe342bd8544e71df9c27871`, including
-uncommitted VM, session, camera-rig and slave-camp test changes. Its HEAD, status
-and hashes of all 59 touched/dirty files were unchanged. **No patch was applied.**
-The result and exact target state are in the P5 importance validation JSON above.
+from this branch's base through the P5 native Mobile checkpoint. It passed
+against clean committed HEAD `40ea5a981b992bda63d4e505f47747a7c60068f2`, after
+the other chat committed its story/co-op fixes. Its HEAD, status and hashes of
+all 55 touched files were unchanged. **No patch was applied.**
+The result and exact target state are in the P5 Mobile validation JSON above.
 `game_data.gd` is shared by earlier commits: preserve its newer control/options
 changes when integrating. Recheck before integration because that checkout is
 still changing. Do not message or alter the other chat without human authorization.
@@ -1629,12 +1708,13 @@ still changing. Do not message or alter the other chat without human authorizati
    deformation and shadows before integration. Do not repeat the forced-draw
    timing approach or assume standard web templates include native occlusion.
 3. **P5 local shadows, then P6 directional stability:** stable selection and
-   bounded Forward+/desktop Compatibility strength transitions are implemented.
+   bounded desktop Forward+/Compatibility/Mobile strength transitions are implemented.
    The GLES pass discontinuity is corrected, with a measured GPU tradeoff;
    Android/web retain the existing path until device acceptance. Range/strength
-   ranking and per-scan frustum reuse are now implemented. Full-map/device and
-   caster-aware selection acceptance, native Mobile fades and cached map updates
-   remain separate work.
+   ranking and per-scan frustum reuse are now implemented. Native Mobile uses
+   its existing opacity blend and provides a constrained-device opt-in;
+   desktop correctness and the actual platform gate are validated. Full-map/device
+   and caster-aware selection acceptance, plus cached map updates, remain open.
    For P6, identify actual shimmer/redraw cost and renderer capabilities
    before changing cascade settings or planning engine-level projection reuse.
 4. **C1 character batching/skinning:** keep as an isolated prototype until the

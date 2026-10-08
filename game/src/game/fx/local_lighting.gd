@@ -41,12 +41,22 @@ var _lava: Array[Dictionary] = []
 var _shadow_since := {}
 # Enable GLES fades only with its corrected shader. Constrained GLES keeps the
 # cheaper existing path unless explicitly requested for device comparisons.
-# The native Mobile path is unvalidated.
-var _fade_shadows := RenderingServer.get_current_rendering_method() == "forward_plus" or LocalLightShader.enabled()
+# Native Mobile uses its existing opacity blend; device acceptance is opt-in.
+var _fade_shadows := _shadow_fades_enabled()
 # Desired selections and resident shadow maps are separate: outgoing maps
 # release their slot before a replacement starts. Both tables use weak refs.
 var _shadow_wanted := {}
 var _shadow_fades := {}
+
+
+static func _shadow_fades_enabled() -> bool:
+	match RenderingServer.get_current_rendering_method():
+		"forward_plus":
+			return true
+		"mobile":
+			var args := OS.get_cmdline_user_args()
+			return not args.has("--no-local-shadow-fades") and (not Portability.constrained() or args.has("--local-shadow-fades"))
+	return LocalLightShader.enabled()
 
 
 func _init(g: Game) -> void:
