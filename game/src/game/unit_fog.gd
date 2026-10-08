@@ -30,7 +30,10 @@ extends Node
 ## player option / campaign co-op) does not reveal script-named units merely
 ## because they need to remain available to the server's scripts.
 ## Campaign sight clips both the nearby relevance radius and retained
-## perception against geometry. Only explicit life sense sees through walls.
+## perception against geometry. Rendering samples the figures' width, not
+## only the AI's single eye ray: a partially visible body must not disappear
+## behind a grazing terrain cell or fence post. Only explicit life sense
+## sees through a completely closed wall. Facing never changes this test.
 
 const REFRESH := 0.1
 const CAMERA_RANGE := 100.0   # single player: list radius round the camera
@@ -232,7 +235,29 @@ static func _unoccluded(eye: Array, u: GameUnit) -> bool:
 	if not u.dead and life > 0.0 and observer.pos.distance_squared_to(u.pos) < life * life:
 		return true
 	# NavGrid keeps a legacy nonzero floor for an opaque object hit.
-	return w.sight_ray(observer, u) > 0.0001
+	if w.sight_ray(observer, u) > 0.0001:
+		return true
+	# The original rendering relevance is radial, independently of the AI's
+	# eye ray. Remake wall clipping needs a body test: the half-metre AI grid
+	# can cover an eye while a shoulder or part of a corpse remains exposed.
+	# Sample a fixed footprint, independent of facing, animation and camera.
+	# Keep the original posture height and AI detection/combat rays unchanged.
+	var direction := (u.pos - observer.pos).normalized()
+	var side := direction.orthogonal()
+	var a_side := side * observer.figure_radius * 0.5
+	var b_side := side * u.figure_radius
+	var a_z := observer.eye_z(false)
+	var b_z := u.eye_z()
+	for sign: float in [-1.0, 1.0]:
+		if w.terrain_ray(observer.pos + a_side * sign, a_z,
+				u.pos + b_side * sign, b_z) > 0.0001:
+			return true
+	# The near/far edges matter for prone bodies on slopes too.
+	for sign: float in [-1.0, 1.0]:
+		if w.terrain_ray(observer.pos, a_z,
+				u.pos + direction * u.figure_radius * sign, b_z) > 0.0001:
+			return true
+	return false
 
 
 ## 2 x max(sight x sight factor, life sense) + 5.

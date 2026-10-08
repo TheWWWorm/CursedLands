@@ -1,0 +1,508 @@
+{
+  "date": "2026-10-08",
+  "baseline_commit": "702f522c367c54e201d5c3f0d848ee803389b6a6",
+  "scope": "U01: a single AI sight ray hid an entire partially exposed creature/corpse after a small observer movement. Rendering now tests fixed figure-width samples, independent of facing, animation and camera. AI detection and combat rays remain unchanged.",
+  "original_comparison": {
+    "relevance": "FUN_0058b750 gathers nearby objects through the radial FUN_005c0bd0 query at 2 * max(sight * factor, life sense) + 5, plus retained/named lists. It does not use the AI eye ray for this nearby rendering list.",
+    "retention": "FUN_005caa00 drops noticed living targets based on distance/fighting relationships, not observer facing. Remake retains this behavior.",
+    "ray": "FUN_005bc3e0 samples the original half-metre navigation grid; its AI ray remains intact. The extra geometry clipping in UnitFog is a remake feature.",
+    "files": [
+      "inspection/ghidra/decompiled/functions/0018b/58b750_FUN_0058b750.c",
+      "inspection/ghidra/decompiled/functions/001c0/5c0bd0_FUN_005c0bd0.c",
+      "inspection/ghidra/decompiled/functions/001ca/5caa00_FUN_005caa00.c",
+      "inspection/ghidra/decompiled/functions/001bc/5bc3e0_FUN_005bc3e0.c"
+    ]
+  },
+  "production": {
+    "seconds": 5.972410802001832,
+    "command": [
+      "/home/llm2x/.local/bin/godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+      "--export-release",
+      "Linux",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps28/CPU.x86_64"
+    ],
+    "engine_source": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/fast-runtime.x86_64",
+    "errors": [],
+    "sha256": {
+      "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+      "CPU.pck": "470a7e92483c21c6c25d6348c01dc713ca30dd1935ff78c9f1f8bfa2440c8714",
+      "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+    }
+  },
+  "runs": {
+    "gameplay-visibility-before-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps27/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/unit_visibility.gd",
+        "--label=gameplay-visibility-before-01"
+      ],
+      "exit_code": 1,
+      "stopped": false,
+      "seconds": 18.926789031975204,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "log_sha256": "70a875f07bf4bcf8ca726d2e218e25803e7c5cab018e6670b43b67c69db1f890",
+      "checks": 72,
+      "failures": 48,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-visibility-before-01.log"
+    },
+    "gameplay-visibility-source-01": {
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/unit_visibility.gd",
+        "--label=gameplay-visibility-source-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 18.229483108996646,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "log_sha256": "8b12aaaaf8f165ec94972a29ee31e92c4f24560a1072f712df529bdb0ca34c4b",
+      "checks": 72,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-visibility-source-01.log"
+    },
+    "gameplay-visibility-production-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps28/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/unit_visibility.gd",
+        "--label=gameplay-visibility-production-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 19.636369877989637,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "log_sha256": "28f4e9b2306898d2ff124c52c169e27a5dfcaea1bb47b62c7017d80a468e47d7",
+      "checks": 72,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-visibility-production-01.log"
+    },
+    "gameplay-visibility-network-headless-safe-02": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps28/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/unit_visibility.gd",
+        "--label=gameplay-visibility-network-headless-safe-02",
+        "--network"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 71.72649711300619,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "84999776ff9ab3536b27bd0ee2a3d6da23ce130a5656764a81beef0b7b92076c",
+      "checks": 144,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-visibility-network-headless-safe-02.log"
+    },
+    "gameplay-visibility-wall-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps28/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/tests/handoff_wall_net.gd",
+        "--label=gameplay-visibility-wall-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 6.111769170005573,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature.",
+        "WARNING: LanDiscovery: port 27016 is in use; this game is not listed on the local network."
+      ],
+      "log_sha256": "5405eb2bd746f1be13d93bb76c47d469457fcba10ceaadbd8f1e7bb62f98a500",
+      "checks": 59,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-visibility-wall-01.log"
+    },
+    "gameplay-visibility-camera-after-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps28/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--resolution",
+        "1600x900",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/tests/visibility_render_probe.gd",
+        "--label=gameplay-visibility-camera-after-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 59.20070552499965,
+      "errors": [],
+      "warnings": [
+        "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+      ],
+      "log_sha256": "619c55b4b8c2748312190bfa60538aa8ac516ad4ed1408d37c99286023861401",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-visibility-camera-after-01.log"
+    }
+  },
+  "excluded": {
+    "gameplay-visibility-network-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps28/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--resolution",
+        "1600x900",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/unit_visibility.gd",
+        "--label=gameplay-visibility-network-01",
+        "--network"
+      ],
+      "exit_code": 1,
+      "stopped": false,
+      "seconds": 119.20253184001194,
+      "errors": [],
+      "warnings": [
+        "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+      ],
+      "log_sha256": "f7f4e617f18cef3038fde029f8fecb62202825a4e7f622e18f4707a3409b7f7f",
+      "reason": "Rendered two-world fixture lost its peer during initial world delivery; no visibility assertions ran. Loading investigation remains separate."
+    },
+    "gameplay-visibility-network-02": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps28/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--resolution",
+        "1600x900",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/unit_visibility.gd",
+        "--label=gameplay-visibility-network-02",
+        "--network"
+      ],
+      "exit_code": 1,
+      "stopped": false,
+      "seconds": 120.55576512697735,
+      "errors": [],
+      "warnings": [
+        "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+      ],
+      "log_sha256": "b91ef6a3182a07a679a61fb657eec9ab07e9c28a486c5a44c549a01a3c54ac97",
+      "reason": "Rendered two-world fixture lost its peer during initial world delivery; no visibility assertions ran. Loading investigation remains separate."
+    },
+    "gameplay-visibility-network-headless-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps28/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/unit_visibility.gd",
+        "--label=gameplay-visibility-network-headless-01",
+        "--network"
+      ],
+      "exit_code": -11,
+      "stopped": false,
+      "seconds": 73.61903961002827,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "log_sha256": "b7c91571a54fb4471e8c1aadaae642f58b546dcd653283f327a9bc548d502213",
+      "reason": "Fixture accessed replica world.vm, which is null. Corrected fixture guards the optional VM; the repeat passes. Not a game/render-thread crash."
+    },
+    "gameplay-visibility-network-headless-safe-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps28/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/unit_visibility.gd",
+        "--label=gameplay-visibility-network-headless-safe-01",
+        "--network"
+      ],
+      "exit_code": -11,
+      "stopped": false,
+      "seconds": 70.62112318200525,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "edad7b21c2a9e28bc9fc827ca4a91cedaa822e0e04f75a9dab51f944cc3a0663",
+      "reason": "Fixture accessed replica world.vm, which is null. Corrected fixture guards the optional VM; the repeat passes. Not a game/render-thread crash."
+    }
+  },
+  "fixtures": {
+    "tools/tests/unit_visibility.gd": "fefc5c56c3f337b3cda1f013c8c83f71028d9788df5ba5672d766828a4c9692f",
+    "tools/tests/unit_visibility_render.gd": "5a3a77fc4a154949663db6843c3d8c5e63684cd8b5efd8fbf2c7737ddb0dcb53"
+  },
+  "rendered": {
+    "result": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/gameplay-visibility-camera-after-01/godot/app_userdata/Cursed Lands/visibility-render-probe.json",
+    "result_sha256": "9dc840c40ce1e8fa494d1928512b234fd4b7ee5015a829b94b9c80ac7433fe35",
+    "character_facing_samples": 120,
+    "camera_orbit_samples": 24,
+    "unexpected_hidden": 0,
+    "inspected_screenshots": [
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/gameplay-visibility-camera-after-01/godot/app_userdata/Cursed Lands/visibility-997322-normal.png",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/gameplay-visibility-camera-after-01/godot/app_userdata/Cursed Lands/visibility-1001005-normal.png",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/gameplay-visibility-camera-after-01/godot/app_userdata/Cursed Lands/visibility-1002008-normal.png"
+    ],
+    "timing_use": "Xvfb correctness/visual review only."
+  },
+  "retroid": {
+    "status": "Complete: 72 functional checks and four 120-second Portal walks; private APK61 restored, autorun disabled and all private processes stopped.",
+    "candidate_apk": 61,
+    "production": {
+      "private_instrumented": false,
+      "engine_sha256": "424eaf73630ec110faf614f550f8047c24a78e224211df45d8b957bf03b7cc79",
+      "native_sha256": "231ad722fd1f9eb0b5b47d7c9a386931a95b9f7ccb404fd7773a1fc651564fb7",
+      "apk_sha256": "12f742e85232fdc31ca705243559ba0ab4b6c4c86e47097f166e652554cac143",
+      "changes": [
+        "Render partially visible units and corpses using figure widths while preserving geometry, posture and original AI detection."
+      ],
+      "baseline_apk": 60,
+      "accepted": true,
+      "acceptance_scope": "U01 functional regression and bounded Portal before/after check; no general FPS or Windows acceptance."
+    },
+    "source": {
+      "source_head": "702f522c367c54e201d5c3f0d848ee803389b6a6",
+      "uncommitted_source": [
+        "game/src/game/unit_fog.gd"
+      ],
+      "sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/game/src/game/unit_fog.gd": "60937cd284923a3f66f3829ced38025fbf522887a4296eda5d7fb4e508000421",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate/src/game/unit_fog.gd": "60937cd284923a3f66f3829ced38025fbf522887a4296eda5d7fb4e508000421",
+        "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/stage/src/game/unit_fog.gd": "60937cd284923a3f66f3829ced38025fbf522887a4296eda5d7fb4e508000421"
+      }
+    },
+    "performance": {
+      "sequence": "ABBA",
+      "scope": "Two reversed pairs of the established 120-second Portal entrance walk; Original graphics, 1x, 4 workers, separate single-player service. Bounded living-party route, not every view/combat encounter or a Windows measurement.",
+      "runs": [
+        {
+          "name": "visibility-portal60-before-01",
+          "fps": 54.4929726770652,
+          "frame_ms": {
+            "max": 83.59,
+            "p50": 17.365,
+            "p95": 25.199,
+            "p99": 28.083
+          },
+          "sim_seconds": 119.900000000007,
+          "wall_seconds": 120.015475,
+          "zone": "gz1h",
+          "units": 415,
+          "original_look": true,
+          "single_player_worker": true,
+          "multiplayer_game": false,
+          "viewport_size": [
+            1920,
+            1080
+          ],
+          "render_scale": 0.75,
+          "renderer": "gl_compatibility",
+          "apk_sha256": "f3e06ba359015986d22c0e2f1899efe9025a11672e610c4f987675ac8ce8418d",
+          "result": "/home/llm2x/Documents/EI/local/scratchpad/portal-throughput-20261007/runs/visibility-portal60-before-01.json",
+          "result_sha256": "d4e06af076e55de405448a52f12321151655e95d498e4ba3214cdc01e8dd7929",
+          "receipt": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/visibility-portal60-before-01.receipt.json",
+          "all_party_alive": true,
+          "unique_party_positions": {
+            "1500000001": 30,
+            "1000059185": 39
+          },
+          "battery_temperature_before": "305",
+          "battery_temperature_after": "312"
+        },
+        {
+          "name": "visibility-portal61-after-01",
+          "fps": 54.3477971026241,
+          "frame_ms": {
+            "max": 91.243,
+            "p50": 17.759,
+            "p95": 23.844,
+            "p99": 27.37
+          },
+          "sim_seconds": 119.790000000007,
+          "wall_seconds": 120.004864,
+          "zone": "gz1h",
+          "units": 415,
+          "original_look": true,
+          "single_player_worker": true,
+          "multiplayer_game": false,
+          "viewport_size": [
+            1920,
+            1080
+          ],
+          "render_scale": 0.75,
+          "renderer": "gl_compatibility",
+          "apk_sha256": "12f742e85232fdc31ca705243559ba0ab4b6c4c86e47097f166e652554cac143",
+          "result": "/home/llm2x/Documents/EI/local/scratchpad/portal-throughput-20261007/runs/visibility-portal61-after-01.json",
+          "result_sha256": "8fbfb418256c358cfb76d8dd04a7efde8d145cebf80b7f0ca092d6bd6c2dee10",
+          "receipt": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/visibility-portal61-after-01.receipt.json",
+          "all_party_alive": true,
+          "unique_party_positions": {
+            "1500000001": 31,
+            "1000059185": 41
+          },
+          "battery_temperature_before": "317",
+          "battery_temperature_after": "327"
+        },
+        {
+          "name": "visibility-portal61-after-02",
+          "fps": 54.6316139944282,
+          "frame_ms": {
+            "max": 94.042,
+            "p50": 17.349,
+            "p95": 25.105,
+            "p99": 28.279
+          },
+          "sim_seconds": 119.900000000007,
+          "wall_seconds": 120.022081,
+          "zone": "gz1h",
+          "units": 415,
+          "original_look": true,
+          "single_player_worker": true,
+          "multiplayer_game": false,
+          "viewport_size": [
+            1920,
+            1080
+          ],
+          "render_scale": 0.75,
+          "renderer": "gl_compatibility",
+          "apk_sha256": "12f742e85232fdc31ca705243559ba0ab4b6c4c86e47097f166e652554cac143",
+          "result": "/home/llm2x/Documents/EI/local/scratchpad/portal-throughput-20261007/runs/visibility-portal61-after-02.json",
+          "result_sha256": "dd67b3bc66f8adadbb9be459006abe99b410e42731989565b083130cbc077fdd",
+          "receipt": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/visibility-portal61-after-02.receipt.json",
+          "all_party_alive": true,
+          "unique_party_positions": {
+            "1500000001": 28,
+            "1000059185": 35
+          },
+          "battery_temperature_before": "330",
+          "battery_temperature_after": "337"
+        },
+        {
+          "name": "visibility-portal60-before-02",
+          "fps": 53.657080440505,
+          "frame_ms": {
+            "max": 54.121,
+            "p50": 17.936,
+            "p95": 24.305,
+            "p99": 28.275
+          },
+          "sim_seconds": 119.900000000007,
+          "wall_seconds": 120.002802,
+          "zone": "gz1h",
+          "units": 415,
+          "original_look": true,
+          "single_player_worker": true,
+          "multiplayer_game": false,
+          "viewport_size": [
+            1920,
+            1080
+          ],
+          "render_scale": 0.75,
+          "renderer": "gl_compatibility",
+          "apk_sha256": "f3e06ba359015986d22c0e2f1899efe9025a11672e610c4f987675ac8ce8418d",
+          "result": "/home/llm2x/Documents/EI/local/scratchpad/portal-throughput-20261007/runs/visibility-portal60-before-02.json",
+          "result_sha256": "b6252d3751cbe4b16cf12731eaebb2df4fd5239faa0c97977f91b65b106c6d8e",
+          "receipt": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/visibility-portal60-before-02.receipt.json",
+          "all_party_alive": true,
+          "unique_party_positions": {
+            "1500000001": 30,
+            "1000059185": 39
+          },
+          "battery_temperature_before": "342",
+          "battery_temperature_after": "347"
+        }
+      ],
+      "median_fps_before": 54.0750265587851,
+      "median_fps_after": 54.489705548526146,
+      "median_change_percent": 0.7668585965283858,
+      "interpretation": "No convincing FPS change or regression on this route; ranges overlap and the first pair is slightly slower. Visibility correctness fix, not a performance gain. Stable 60 FPS remains open."
+    },
+    "functional": {
+      "checks": 72,
+      "failures": 0,
+      "seconds": 37.180033683776855,
+      "errors": [],
+      "apk_sha256": "12f742e85232fdc31ca705243559ba0ab4b6c4c86e47097f166e652554cac143",
+      "fixture_sha256": "fefc5c56c3f337b3cda1f013c8c83f71028d9788df5ba5672d766828a4c9692f",
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/gameplay-visibility61-01.receipt.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/gameplay-visibility61-01.log",
+      "log_sha256": "72dc7052c381b7008ad49aff471927e4b58a58b555940eac936984bd2627ac1d"
+    },
+    "cleanup": {
+      "installed_private_apk": 61,
+      "apk_sha256": "12f742e85232fdc31ca705243559ba0ab4b6c4c86e47097f166e652554cac143",
+      "autorun_disabled": true,
+      "archived_bench": "files/bench-visibility61-disabled.json",
+      "bench_sha256": "21e6c5ea308a25e5d9d9ae9f3945fdd1c85f47705e3f044178a75de922c02bf0",
+      "processes_remaining": [],
+      "normal_app_untouched": true
+    }
+  },
+  "limits": [
+    "The exact user-reported turn-only event did not reproduce at a fixed position; no claim that every distant flicker has been resolved.",
+    "The wider visibility test is a remake adaptation, not a claim that the original executable uses multiple rays.",
+    "Original closed-door, shared sight, observer death/hidden/departure, life sense and below-ground regressions pass.",
+    "Real ENet checks use two in-process peers; full rendered separate-process playthrough and Windows validation remain open.",
+    "Stable 60 FPS in all large maps remains unfinished."
+  ]
+}
