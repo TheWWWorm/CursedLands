@@ -19,9 +19,10 @@ extends RefCounted
 ##   (each paired layer is listed twice, as in the original).
 ## The wound images live in redress.res (characters, 128²) or textures.res
 ## (creatures, 64²); a missing layer is skipped (the original logs it).
-## Remake: the composite is blended into a per-unit copy of the albedo
-## texture (same result as the original's second alpha-blended stage where the skin
-## is opaque); the levels come from the part health, which co-op clients get
+## Remake: a native-size wound composite is shared across outfits, then
+## blended into each albedo before mip generation. This preserves the remake's
+## filtering; separate GPU texture sampling is not equivalent at wound edges.
+## The levels come from the part health, which co-op clients get
 ## in the unit snapshots, so every peer shows them. The unit panel figure
 ## (Paperdoll) gets the same layer. The composer (renderer
 ##  = 2dintmmx.dll) adds source bytes to destination bytes
@@ -35,10 +36,17 @@ const OTHER_CODES := ["hd", "bd", "h", "h", "l", "l"]
 ## Texture ownership also owns its CPU pixels; clearing a wound cache cannot
 ## force another GPU readback of an otherwise unchanged outfit.
 const SOURCE_IMAGE := &"ei_wound_source"
+## Native-size, mip-free wound layers are shared by all outfits and previews.
+## Limit both entries (including failed decodes) and retained pixel memory.
+const LAYER_CACHE_LIMIT := 64
+const LAYER_CACHE_BYTES := 4 * 1024 * 1024
 
 static var _images := {}      # layer file -> Image (or null)
 static var _layer_data := {}  # layer file -> original bytes, including PNT3 block skips
-static var _composites := {}  # "base instance id|mask|levels" -> Texture2D
+static var _composites := {}  # "base instance id|mask|human|levels" -> Texture2D
+static var _wound_layers := {} # "mask|human|levels" -> immutable Image (or null), LRU
+static var _wound_layer_bytes := 0
+static var _layer_jobs := {}  # layer key -> first composite job producing that layer
 ## Base texture instance id -> its immutable RGBA8 image without mipmaps.
 ## Unit textures retain their source before upload. Other texture producers
 ## keep the cached readback path, so custom materials remain supported.
@@ -123,7 +131,7 @@ static func apply(model: EIUnitModel, lv: PackedByteArray, human: bool) -> void:
 		if m.has_meta("wound_base") and m.has_meta("wound_tex") and m.albedo_texture == m.get_meta("wound_tex"):
 			base = m.get_meta("wound_base")
 		m.set_meta("wound_base", base)
-		var key2 := _key(base, mask, lv)
+		var key2 := _key(base, mask, lv, human)
 		m.set_meta("wound_pend", key2)
 		var tex := _wounded(base, mask, lv, human)
 		if tex == null:
@@ -141,8 +149,12 @@ static func _put(m, tex: Texture2D) -> void:
 	m.set_meta("wound_tex", tex)
 
 
-static func _key(base: Texture2D, mask: String, lv: PackedByteArray) -> String:
-	return "%d|%s|%s" % [base.get_instance_id(), mask, lv.hex_encode()]
+static func _key(base: Texture2D, mask: String, lv: PackedByteArray, human := true) -> String:
+	return "%d|%s" % [base.get_instance_id(), _layer_key(mask, lv, human)]
+
+
+static func _layer_key(mask: String, lv: PackedByteArray, human: bool) -> String:
+	return "%s|%d|%s" % [mask, int(human), lv.hex_encode()]
 
 
 static func _start_poll() -> void:
@@ -159,6 +171,15 @@ static func _start_poll() -> void:
 static func _poll(wait := false) -> void:
 	for key in _jobs.keys():
 		var job: Dictionary = _jobs[key]
+		if job.has("layer_job"):
+			# Followers never block a worker waiting for another pool task.
+			# The first job also bakes its own outfit, avoiding an extra frame
+			# for the first wound. Other outfits start once its layer is ready.
+			if not job.layer_job.get("finished", false):
+				continue
+			job.wound = job.layer_job.wound
+			job.erase("layer_job")
+			_launch(job)
 		if job.task >= 0 and not wait and not WorkerThreadPool.is_task_completed(job.task):
 			continue
 		if job.task >= 0:
@@ -166,6 +187,10 @@ static func _poll(wait := false) -> void:
 		_jobs.erase(key)
 		for n in job.decoded:
 			_images[n] = job.decoded[n]
+		if job.get("compose_layer", false):
+			_layer_jobs.erase(job.layer_key)
+			_cache_layer(job.layer_key, job.wound)
+		job.finished = true
 		var tex: Texture2D = job.base
 		if job.out != null:
 			tex = ImageTexture.create_from_image(job.out)
@@ -190,6 +215,8 @@ static func _poll(wait := false) -> void:
 ## Finishes every pending composite now (tests).
 static func flush() -> void:
 	_poll(true)
+	while not _jobs.is_empty():
+		_poll(true)
 
 
 ## At quit (Main._exit_tree): waits for the workers and drops the cached
@@ -199,6 +226,9 @@ static func shutdown() -> void:
 		if _jobs[key].task >= 0:
 			WorkerThreadPool.wait_for_task_completion(_jobs[key].task)
 	_jobs.clear()
+	_layer_jobs.clear()
+	_wound_layers.clear()
+	_wound_layer_bytes = 0
 	_waiting.clear()
 	_composites.clear()
 	_bases.clear()
@@ -231,7 +261,7 @@ static func _materials(model: Node) -> Array:
 
 ## The composite texture, or null while a worker builds it (apply waits).
 static func _wounded(base: Texture2D, mask: String, lv: PackedByteArray, human: bool) -> Texture2D:
-	var key := _key(base, mask, lv)
+	var key := _key(base, mask, lv, human)
 	if _composites.has(key):
 		return _composites[key]
 	if _jobs.has(key):
@@ -239,26 +269,29 @@ static func _wounded(base: Texture2D, mask: String, lv: PackedByteArray, human: 
 	if _composites.size() > 512:   # instance ids are never reused; just bound the memory
 		_composites.clear()
 		_bases.clear()
-	# Main thread: archive reads and the immutable CPU base for the worker.
-	var codes: Array = HUMAN_CODES if human else OTHER_CODES
+	var layer_key := _layer_key(mask, lv, human)
+	# Only a cold layer needs archive reads. Simultaneous outfit/preview
+	# requests share its producer; later requests use the completed layer.
 	var layers := []   # [name, Image or null, bytes to decode]
-	var any := false
-	for i in 6:
-		if lv[i] == 0:
-			continue
-		var name := "%s%sw%d" % [mask, codes[i], lv[i]]
-		if not _layer_data.has(name):
-			_layer_data[name] = _layer_bytes(name)
-		var d: PackedByteArray = _layer_data[name]
-		if _images.has(name):
-			layers.append([name, _images[name], d])
-			any = any or _images[name] != null
-		else:
-			layers.append([name, null, d])
-			any = any or not d.is_empty()
-	if not any:
-		_composites[key] = base
-		return base
+	if not _wound_layers.has(layer_key) and not _layer_jobs.has(layer_key):
+		var codes: Array = HUMAN_CODES if human else OTHER_CODES
+		var any := false
+		for i in 6:
+			if lv[i] == 0:
+				continue
+			var name := "%s%sw%d" % [mask, codes[i], lv[i]]
+			if not _layer_data.has(name):
+				_layer_data[name] = _layer_bytes(name)
+			var d: PackedByteArray = _layer_data[name]
+			if _images.has(name):
+				layers.append([name, _images[name], d])
+				any = any or _images[name] != null
+			else:
+				layers.append([name, null, d])
+				any = any or not d.is_empty()
+		if not any:
+			_composites[key] = base
+			return base
 	var bid := base.get_instance_id()
 	if not _bases.has(bid):
 		var src: Image = base.get_meta(SOURCE_IMAGE) if base.has_meta(SOURCE_IMAGE) else null
@@ -272,19 +305,68 @@ static func _wounded(base: Texture2D, mask: String, lv: PackedByteArray, human: 
 				src.convert(Image.FORMAT_RGBA8)
 		if src:
 			_bases[bid] = src
-	var job := {"base": base, "src": _bases.get(bid), "layers": layers, "out": null, "decoded": {}}
-	job.task = -1
-	if Portability.threads():
-		job.task = WorkerThreadPool.add_task(_build.bind(job), false, "UnitWounds")
+	# Populate worker-written slots before launch: a worker may replace values,
+	# but must not resize this Dictionary while the main thread reads its task.
+	var job := {"base": base, "src": _bases.get(bid), "out": null, "wound": null,
+			"decoded": {}, "task": -1, "finished": false}
+	if _wound_layers.has(layer_key):
+		job.wound = _wound_layers[layer_key]
+		# Dictionary insertion order supplies the LRU order without a second list.
+		_wound_layers.erase(layer_key)
+		_wound_layers[layer_key] = job.wound
+		_launch(job)
+	elif _layer_jobs.has(layer_key):
+		job.layer_job = _layer_jobs[layer_key]
 	else:
-		_build(job)
+		job.layers = layers
+		job.layer_key = layer_key
+		job.compose_layer = true
+		_layer_jobs[layer_key] = job
+		_launch(job)
 	_jobs[key] = job
 	return null
 
 
-## Worker: decodes the new layers, composes them and blends
-## the result over the base image. Touches only the job's own images.
+static func _launch(job: Dictionary) -> void:
+	if Portability.threads():
+		job.task = WorkerThreadPool.add_task(_build.bind(job), false, "UnitWounds")
+	else:
+		_build(job)
+
+
+static func _cache_layer(key: String, image: Image) -> void:
+	var bytes := image.get_data_size() if image else 0
+	if bytes > LAYER_CACHE_BYTES:
+		return # An oversized custom asset may finish its requests without retention.
+	while _wound_layers.size() >= LAYER_CACHE_LIMIT or _wound_layer_bytes + bytes > LAYER_CACHE_BYTES:
+		var oldest = _wound_layers.keys()[0]
+		var previous: Image = _wound_layers[oldest]
+		_wound_layer_bytes -= previous.get_data_size() if previous else 0
+		_wound_layers.erase(oldest)
+	_wound_layers[key] = image
+	_wound_layer_bytes += bytes
+
+
+## Worker: retain the original blend-before-filter result, including mipmaps.
+## Shared wound/base images are immutable; only private copies are resized or
+## blended. Sampling two independent GPU textures changes filtered wound edges.
 static func _build(job: Dictionary) -> void:
+	if job.has("layers"):
+		job.wound = _compose_layer(job)
+	var comp: Image = job.wound
+	var src: Image = job.src
+	if comp == null or src == null:
+		return
+	var out := src.duplicate() as Image
+	if comp.get_size() != out.get_size():
+		comp = comp.duplicate()
+		comp.resize(out.get_width(), out.get_height(), Image.INTERPOLATE_BILINEAR)
+	out.blend_rect(comp, Rect2i(Vector2i.ZERO, comp.get_size()), Vector2i.ZERO)
+	out.generate_mipmaps()
+	job.out = out
+
+
+static func _compose_layer(job: Dictionary) -> Image:
 	var pixels := PackedByteArray()
 	var dims := Vector2i.ZERO
 	for l: Array in job.layers:
@@ -304,17 +386,10 @@ static func _build(job: Dictionary) -> void:
 		var d: PackedByteArray = l[2]
 		var pnt3 := d.size() >= EIMmp.DATA_OFFSET and d.decode_u32(16) == 0x33544e50
 		pixels = _blend_native(pixels, d.slice(EIMmp.DATA_OFFSET) if pnt3 else img.get_data(), pnt3, pnt3)
-	var src: Image = job.src
-	if pixels.is_empty() or src == null:
-		return
+	if pixels.is_empty():
+		return null
 	pixels = _argb4444(pixels)
-	var comp := Image.create_from_data(dims.x, dims.y, false, Image.FORMAT_RGBA8, pixels)
-	var out := src.duplicate() as Image
-	if comp.get_size() != out.get_size():
-		comp.resize(out.get_width(), out.get_height(), Image.INTERPOLATE_BILINEAR)
-	out.blend_rect(comp, Rect2i(Vector2i.ZERO, comp.get_size()), Vector2i.ZERO)
-	out.generate_mipmaps()
-	job.out = out
+	return Image.create_from_data(dims.x, dims.y, false, Image.FORMAT_RGBA8, pixels)
 
 
 ## Native MMX composer. Both branches work in four-pixel blocks. PNT3

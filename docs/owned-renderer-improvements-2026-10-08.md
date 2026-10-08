@@ -1,4 +1,4 @@
-# Owned renderer adaptations — 8 October 2026
+# Owned renderer adaptations — 8–9 October 2026
 
 Worktree: `/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008`
 
@@ -65,6 +65,127 @@ Cost: one additional mip-free RGBA8 source per cached outfit texture
   and `wound-source-candidate.log`.
 - No FPS gain is claimed. Gameplay/GPU timing and mobile validation remain
   separate from this correctness check.
+
+## P1 follow-up: share native wound composition — 9 October
+
+The first P1 step removed normal outfit readback. This follow-up also avoids
+repeating native wound-layer composition for every outfit with the same mask,
+human/creature limb layout and six damage levels. The complete GPU-overlay
+proposal was evaluated first and remains unshipped for the filtering reason below.
+
+### Accepted implementation
+
+Only `game/src/game/unit_wounds.gd` changes production behavior in this checkpoint.
+`_compose_layer` preserves the existing PNT3 byte compositor, ordered repeated
+creature limbs, dimension checks and ARGB4444 truncation. It produces an immutable,
+native-size image. `_build` still blends that image into a private copy of the
+outfit and generates the same final mip chain. Resizing uses a private wound copy;
+neither cached wound pixels nor retained outfit pixels are modified.
+
+`_wounded` shares a completed layer or joins its in-flight producer. The first
+request composes the wound and bakes its own outfit in one worker task. Other
+outfits start their final blend after `_poll` observes that producer's completion;
+workers never wait on another pool task. This can add a scheduling step for a
+dependent outfit, so do not claim zero latency or rely only on blocking `flush()`
+tests. The benchmark also exercises the ordinary frame poll. The synchronous
+branch follows the same dependency/lifetime rules. Worker-written dictionary
+slots are initialized before launch to avoid concurrent dictionary resizing.
+
+The completed wound cache uses LRU order, capped at **64 entries and 4 MiB of
+pixel payload**. Null entries count toward the entry limit. An oversized custom
+layer can finish pending requests without being retained. This bound excludes
+existing caches and in-flight/client-held image references. Eviction cannot
+orphan a dependent job because it retains its producer's result. Shutdown waits
+for active workers, drops deferred work and clears the added cache. Final
+composite keys now include the human/creature layout as well as base identity.
+The material's newest pending key still rejects stale health/outfit results.
+
+Locations:
+
+- [unit_wounds.gd:156](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/game/src/game/unit_wounds.gd:156): `_layer_key`, independent wound identity.
+- [unit_wounds.gd:171](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/game/src/game/unit_wounds.gd:171): `_poll`, dependency publication and existing material ownership checks.
+- [unit_wounds.gd:263](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/game/src/game/unit_wounds.gd:263): `_wounded`, request reuse/coalescing.
+- [unit_wounds.gd:337](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/game/src/game/unit_wounds.gd:337): cache bounds; `_build` and `_compose_layer` follow.
+- [wound_cache.gd](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/wound_cache.gd): dependent jobs, source immutability, resizing, limb layouts, skips, healing, replacement outfits, world/preview/selection materials, eviction and shutdown.
+- [wound_composition.gd](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/wound_composition.gd): the same workload runs against frozen baseline/candidate packs; `--wound-render` adds real posed world and preview figures, selection, worsening and healing, with sharpening off/on.
+
+The reference motivation remains R0 `Source/renderer.cpp:5436/5528`, with
+base/wound admission at `Source/engine_bridge.cpp:6758`. This adaptation separates
+CPU wound composition lifetime; it does **not** port their separate draw pass.
+
+### Evidence and limits
+
+The frozen application baseline is `fa0dd73`. Both sides use the same patched
+Linux engine from the P5 cache checkpoint. Final candidate pack SHA-256:
+`e0f0fd37d7c95eab2ba4305020efb2f9c2007b1cdc2267d84487c4d19d110f2d`.
+
+- **1,211 candidate checks pass**, plus 846 baseline checks. The candidate total
+  includes the existing 39-check retained-source regression, the 43-check cache
+  fixture and the 201-check real-asset workload in both threaded and synchronous
+  paths, plus 215 rendered checks on each of Compatibility, Forward+ and Mobile.
+- All **48 composed texture outputs, including every mip byte**, match the
+  frozen baseline in each of the five final composition runs. Cases use human
+  `skin_00`/`skin_14`, real creature `unanwibo` wounds with duplicated limbs,
+  and 64/128/256/512-pixel outfit variants. The resized variants are synthetic
+  filtering/ownership fixtures, not a census of shipped outfit sizes.
+- In each eight-outfit cold wave, native layer compositions fall **8→1**. With
+  the layer cached, new outfits and albedo-cache eviction need **zero** new
+  native compositions. Across all six waves the count falls 48→3. Final albedo
+  blending, mip generation and **upload bytes remain unchanged**.
+- All 24 Compatibility/Mobile render pairs are exact. Forward+ has at most
+  **seven changed pixels at 1/255** in a 768×512 capture, including healthy/healed
+  controls. A repeated baseline itself changes one pixel in two captures, but
+  does not fully explain that residual. Do not call Forward+ pixel-identical.
+- A QA-only Linux pack forces `Portability.threads()` false, and its reports
+  confirm `threads: false`. It validates synchronous code, **not** an Android or
+  browser build. Adding a `web` feature tag to a desktop template failed to
+  select this path because the template still advertises `threads`; those
+  earlier runs are explicitly superseded.
+- Other agents' game processes overlapped final runs. Timings remain diagnostic;
+  no controlled frame-time, FPS or device-performance claim is made. Native work
+  counts, byte comparisons and rendered captures are the accepted evidence.
+
+The reproducible receipts, pack/engine/source hashes, output hashes, image
+comparisons, rejected runs and read-only integration check are in
+[wound-layer-cache-2026-10-09.json](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/docs/validation/wound-layer-cache-2026-10-09.json).
+Full logs, exported packs and PNGs are under
+`/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p1-wound-overlay`.
+`final-suite.py` and `run.py` there replay the bounded, off-screen, no-focus
+checks with isolated application data. A symlinked executable initially loaded
+its target directory's old pack; final candidate executables are real copies,
+and their pack hashes are recorded. No installed application or device was used.
+
+### Wound-only GPU sampler experiment: keep as a diagnostic
+
+[wound_layers.gd](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/wound_layers.gd)
+compares two real wound states on an atlas quad at 256/128/64/24 displayed pixels,
+with sharpening off/on. Each run checks that independently reconstructed native
+wound composition reproduces the current baked image. Its **six structural
+checks do not mean the separate-sampler images match**. The report deliberately
+measures those differences rather than accepting them as production quality.
+
+The sampled human bases are **256×256**, while their wound layers are **128×128**.
+Native-size independent sampling changes LOD/filtering. Resizing the wound to
+base size before making its own mip chain improves large views, but still leaves
+up to **37/255** channel differences in the distant mixed-wound case. The total
+image error reaches about 9.7% of the wound signal on Compatibility and 20.9%
+on Forward+ in this fixture; this ratio is diagnostic, not a perceptual score.
+The visual comparison is saved as `sampling-comparison.png` in the QA directory.
+
+The core issue is that filtering a pre-blended image generally differs from
+blending independently filtered base and alpha values. Even opaque bases do not
+remove this correlation. Color space also matters: Compatibility already works
+in encoded space, whereas Vulkan `source_color` samples require the appropriate
+conversion to approximate the remake's byte-color blend. The deliberately wrong
+linear-blend control reaches 67/255 error on Forward+. Neither a naive second
+sampler nor unconditional sRGB conversion is a qualified replacement.
+
+Future GPU work must explicitly choose and validate its filtering/visual
+contract, then preserve late-job ownership, detailed-head exclusions, soft-alpha
+creatures and detached selection copies. If material state moves from the
+albedo texture to new uniforms, `OrderMarks._bright_of` must synchronize those
+uniforms too; it currently resynchronizes only albedo. The current CPU cache is
+a reusable first stage, not completion of full-albedo/upload elimination.
 
 ## P2: preserve authored mip levels and eligible compressed textures
 
@@ -1770,7 +1891,8 @@ The implementation is in this isolated branch. Do not overwrite another agent's
 working checkout or installed packages to test it. Integrate the focused commits
 once the active source owner can accept them, preserving their newer changes.
 
-P1 changes only `unit_model.gd` and `unit_wounds.gd` plus its test/documentation.
+P1 changes only `unit_model.gd` and `unit_wounds.gd` plus tests/documentation.
+The 9 October shared-layer follow-up changes production only in `unit_wounds.gd`.
 P2 changes only `mmp_texture.gd`, the texture-loading methods in `game_data.gd`,
 and `Gfx.texture_3d` plus its tests/documentation. No network, inventory,
 campaign-state, pricing or dialogue-camera behavior was edited.
@@ -1797,9 +1919,12 @@ clean `40ea5a981b992bda63d4e505f47747a7c60068f2`. The other chat has since
 committed its lift changes. The current accumulated patch needs reconciliation
 in `game/src/ei/map_scene.gd`; **do not apply the full patch blindly**. All
 remaining paths pass when that file is excluded. The latest check includes the
-new engine patch and records target HEAD/status and hashes before/after; it did
-not change any target file. Exact revision, dirty files and commands are in the
-P5 cache evidence. The native engine patch separately passes a read-only check
+new engine patch and P1 cache work. It records target HEAD/status and hashes
+before/after; it did not change any target file. The P1 check targets
+`a8eb6ffa42915acd849b6c9103ad6d24a841b5c3` with the other chat's active Kel,
+safe-zone control, co-op and loading changes. All 81 recorded file hashes,
+HEAD and status remain unchanged. Exact dirty files and commands are in the
+P1 cache evidence. The native engine patch separately passes a read-only check
 against the pinned engine source.
 
 The current foliage/cache changes add no new map-loading or gameplay hooks.
@@ -1813,7 +1938,14 @@ without human authorization. No patch was applied here.
 
 ## Next work in the established order
 
-1. **P3 static scenery batching:** the opt-in live manager, complete-light guard,
+1. **P1/P2 remaining texture work:** retained outfit pixels and shared native
+   wound composition are implemented. Final wound-albedo blending/mips/uploads
+   remain. The separate GPU sampler experiment changes filtered wound appearance;
+   do not enable it without a justified visual contract and material-lifecycle
+   acceptance. P2's compressed path still excludes default HD upscaling. Further
+   work should measure the actual active texture path rather than count an
+   already cached operation as saved work.
+2. **P3 static scenery batching:** the opt-in live manager, complete-light guard,
    movement/fade lifetime and real-map validation are now implemented above.
    The nine-pixel residual is reproduced by the unchanged-renderer control.
    Desktop timing does not establish a net gain despite fewer draws; keep this
@@ -1822,13 +1954,13 @@ without human authorization. No patch was applied here.
    before rollout. Preserve the
    explicit material-change notification contract and logical mesh consumers;
    do not replace this with a naive MultiMesh regrouping pass.
-2. **P4 occlusion:** the native terrain/opaque-object diagnostic above now
+3. **P4 occlusion:** the native terrain/opaque-object diagnostic above now
    measures hidden work. No general desktop gain or complete visual acceptance
    is established. Resume for a specific expensive obstructed scene/device;
    preserve gameplay visibility and validate motion, thin openings, fades,
    deformation and shadows before integration. Do not repeat the forced-draw
    timing approach or assume standard web templates include native occlusion.
-3. **P5 local shadows, then P6 directional stability:** stable selection and
+4. **P5 local shadows, then P6 directional stability:** stable selection and
    bounded desktop Forward+/Compatibility/Mobile strength transitions are implemented.
    The GLES pass discontinuity is corrected, with a measured GPU tradeoff;
    Android/web retain the existing path until device acceptance. Range/strength
@@ -1842,11 +1974,11 @@ without human authorization. No patch was applied here.
    and real device performance remain open.
    For P6, identify actual shimmer/redraw cost and renderer capabilities
    before changing cascade settings or planning engine-level projection reuse.
-4. **C1 character batching/skinning:** keep as an isolated prototype until the
+5. **C1 character batching/skinning:** keep as an isolated prototype until the
    main character/gameplay changes settle. The active remake still animates rigid
    figure parts. Converting to a skinned mesh was an author suggestion, not an
    implemented upstream feature or a demonstrated speedup.
-5. **Visual track:** V1 ground-contact blending, V4 water interaction, V2 biome
+6. **Visual track:** V1 ground-contact blending, V4 water interaction, V2 biome
    ground cover, then the remaining audit features. V1 now has shared production
    storage and an opt-in scenery blend, with the validation and limitations above.
    Resolve cold preparation and finish its lighting/visual acceptance before
