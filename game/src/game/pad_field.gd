@@ -533,7 +533,7 @@ func hints() -> Array:
 # ------------------------------------------------------------------ actions
 
 func _can_change_speed() -> bool:
-	return not game.session.online or (game.session.is_host and game.session.coop_clock_enabled())
+	return not game.session.multiplayer_game or (game.session.can_manage_game() and game.session.coop_clock_enabled())
 
 
 func _on_action(a: String, phase: String) -> void:
@@ -595,7 +595,7 @@ func _on_action(a: String, phase: String) -> void:
 		["up", "tap"]:
 			cycle_party(-1 if mod else 1)
 		["up", "hold"]:
-			if not mod and not game.session.online:
+			if not mod and not game.session.multiplayer_game:
 				game._key_action("select_all")
 		["down", "tap"]:
 			if mod:
@@ -906,12 +906,12 @@ func _system_entries() -> Array:
 		add.call("side_quests", RemakeText.t("Side quests"))
 	add.call("minimap", _orig("action_w_minimap", "Minimap"))
 	add.call("log", _orig("action_w_text1", "Messages"))
-	add.call("quicksave", _orig("action_quicksave", "Quick save"), "", s.is_host)
-	add.call("quickload", _orig("action_quickload", "Quick load"), "", s.is_host)
+	add.call("quicksave", _orig("action_quicksave", "Quick save"), "", s.can_manage_game())
+	add.call("quickload", _orig("action_quickload", "Quick load"), "", s.can_manage_game())
 	add.call("tutorial", _orig("action_tutorial_script", "Tutorial"))
-	if s.online:
+	if s.multiplayer_game:
 		add.call("chat", RemakeText.t("Chat"))
-		if s.is_host:
+		if s.can_manage_game():
 			add.call("players", RemakeText.t("Players"))
 	return out
 
@@ -1062,7 +1062,7 @@ func close_wheel() -> void:
 ## a wheel is open (EI fights run in real time); network games never pause.
 func _hold_pause(on: bool) -> void:
 	if on:
-		if _wheel_paused == null and not game.session.online and GameData.option("pad_wheel_pause") != 0:
+		if _wheel_paused == null and not game.session.multiplayer_game and GameData.option("pad_wheel_pause") != 0:
 			_wheel_paused = get_tree().paused
 			get_tree().paused = true
 	elif _wheel_paused != null:
@@ -1226,7 +1226,7 @@ func _on_connection(dev: int, connected: bool) -> void:
 	if PadInput.active != "pad" or game.world == null:
 		return
 	game.hud.log_msg(RemakeText.t("Controller disconnected"))
-	if not game.session.online and not get_tree().paused:
+	if not game.session.multiplayer_game and not get_tree().paused:
 		game.set_speed(0)
 
 

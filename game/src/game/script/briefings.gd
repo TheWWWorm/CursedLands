@@ -159,7 +159,7 @@ static func pending_for(state: CampaignState, u: GameUnit, player := 0) -> Array
 				constr = [parts[1], parts[2]]   # last found before online sorting
 			else:
 				out.append([parts[1], parts[2]])
-	if u.world and u.world.session and u.world.session.online:
+	if u.world and u.world.session and u.world.session.multiplayer_game:
 		# Native network60b2f0 ->6f21f0 uses _stricmp, so n10 precedes
 		# n2. GS identifiers are bytes; only ASCII uppercase folds here.
 		out.sort_custom(func(a, b): return _topic_compare(a[1], b[1]) < 0)

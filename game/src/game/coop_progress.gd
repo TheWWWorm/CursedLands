@@ -113,7 +113,7 @@ static func peer_alive(mp: MultiplayerAPI, pid: int) -> bool:
 
 
 func _host_online() -> bool:
-	return session != null and session.online and session.is_host
+	return session != null and session.multiplayer_game and session.is_host
 
 
 func _physics_process(dt: float) -> void:

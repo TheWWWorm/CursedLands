@@ -984,7 +984,7 @@ func dialog_place(u: GameUnit, point: Vector2, angle: float) -> void:
 ## path endpoint. Let idle guests walk aside before planning the story move.
 ## Static obstacles and busy/player-commanded units retain ordinary collision.
 func prepare_story_move(actor: GameUnit, point: Vector2) -> bool:
-	if session == null or not session.online or not session.lmp.is_empty() or zone.get("type", "") != "brief":
+	if session == null or not session.multiplayer_game or not session.lmp.is_empty() or zone.get("type", "") != "brief":
 		return true
 	var ready := true
 	for other: GameUnit in party_units():

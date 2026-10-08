@@ -81,7 +81,7 @@ static func apply(vm: ScriptVM, script: String, call_name: String, args: Array, 
 	var plan: Dictionary = (HERO if role == "hero" else KEL)[branch]
 	if args.size() < 2 or not plan.has(effect) or float(args[-1]) != float(plan[effect]): return false
 	var records: Array = [hd]
-	if role == "hero" and vm.session.online:
+	if role == "hero" and vm.session.multiplayer_game:
 		for index in vm.session.state.heroes:
 			var roster: Array = vm.session.state.heroes[index]
 			if int(index) > 0 and not roster.is_empty(): records.append(roster[0])

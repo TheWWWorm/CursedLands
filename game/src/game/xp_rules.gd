@@ -39,12 +39,12 @@ static func give(s: Session, amount: float, source := "quest", player := 0) -> v
 	if amount == 0.0 or s.world == null:
 		return
 	var gains := []   # [unit, record, share]
-	if s.online and full_experience() and s.lmp.is_empty():   # remake option: not in the original multiplayer game
+	if s.multiplayer_game and full_experience() and s.lmp.is_empty():   # remake option: not in the original multiplayer game
 		gains = _full(s, amount)
-	elif s.online and source in ["kill", "quest"]:
+	elif s.multiplayer_game and source in ["kill", "quest"]:
 		gains = _network_split(s, amount)
 	else:
-		gains = _party_split(s, amount, player, not s.online and GameData.option("sp_full_xp") != 0)
+		gains = _party_split(s, amount, player, not s.multiplayer_game and GameData.option("sp_full_xp") != 0)
 	for g: Array in gains:
 		gain(s, g[0], g[1], g[2])
 	# No text window line: the original shows a gain only as each hero's flying

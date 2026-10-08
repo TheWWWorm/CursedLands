@@ -390,7 +390,7 @@ func _player_combat_flag(player: int, inputs: CombatInputs = null) -> int:
 	# Campaign co-op deliberately shares every party member's eyes. Preserve
 	# the first query's order (after own detection) and reuse its exact list.
 	# LMP and single-player lists remain specific to the issuing player.
-	var shared := _world.session.online and _world.session.lmp.is_empty()
+	var shared := _world.session.multiplayer_game and _world.session.lmp.is_empty()
 	var relevant: Array[GameUnit]
 	if shared and inputs.has_shared:
 		relevant = inputs.shared_relevant

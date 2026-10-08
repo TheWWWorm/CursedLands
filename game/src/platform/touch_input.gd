@@ -281,7 +281,7 @@ func _notification(what: int) -> void:
 		cancel_gesture()
 		var g := game()
 		var testing := Array(OS.get_cmdline_user_args()).any(func(arg): return String(arg).begins_with("--tool="))
-		if not testing and enabled and g and g.session.is_host and not g.session.online and not g.hud._esc_open:
+		if not testing and enabled and g and g.session.can_manage_game() and not g.session.multiplayer_game and not g.hud._esc_open:
 			g.session.save_game("autosave")
 			g.hud.toggle_menu()
 	elif what == NOTIFICATION_WM_GO_BACK_REQUEST:

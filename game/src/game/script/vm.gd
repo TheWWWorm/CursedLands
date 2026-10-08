@@ -1935,7 +1935,7 @@ var _world_event_memo := {}
 
 
 func _once_per_world(inst: Instance) -> bool:
-	if session == null or not session.online or not session.lmp.is_empty():
+	if session == null or not session.multiplayer_game or not session.lmp.is_empty():
 		return true
 	var def: Dictionary = ast.scripts.get(inst.sname, {})
 	var params: Array = def.get("params", [])

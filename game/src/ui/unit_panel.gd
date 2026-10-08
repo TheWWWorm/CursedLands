@@ -403,7 +403,7 @@ func _armor(u: GameUnit) -> PackedFloat32Array:
 	if not Combat.named(u):   #  param 3 = 0
 		# This panel uses the global multiplier for every unnamed unit. The
 		# combat calculation's separate party exception does not apply here.
-		var level := 0 if game and game.session and game.session.online else GameData.difficulty
+		var level := 0 if game and game.session and game.session.multiplayer_game else GameData.difficulty
 		var f := GameData.ai_value("DifficultyLevels", "Absorption", 1.0, level)
 		for t in 7:
 			out[t] *= f
@@ -517,7 +517,7 @@ func _draw_attributes(c: CanvasItem, u: GameUnit) -> void:
 			lines.append("%s %s" % [_txt("string infounit_12"), ", ".join(below)])
 		#  shows the experience line only in a network game
 		# after the party unit's other lines.
-		if u.has_meta("hero") and game and game.session and game.session.online:
+		if u.has_meta("hero") and game and game.session and game.session.multiplayer_game:
 			lines.append("%s %d" % [_txt("string camp_current_exp"), int(u.get_meta("hero").get("exp", 0.0))])
 	else:
 		if not above.is_empty():

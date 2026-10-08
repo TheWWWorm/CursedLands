@@ -173,10 +173,10 @@ func _unhandled_key_input(e: InputEvent) -> void:
 	if e.keycode == KEY_ESCAPE:
 		visible = false
 		get_viewport().set_input_as_handled()
-	elif e.keycode in [KEY_ENTER, KEY_KP_ENTER] and hud.game.session.online:
+	elif e.keycode in [KEY_ENTER, KEY_KP_ENTER] and hud.game.session.multiplayer_game:
 		hud.chat_line.open()
 		get_viewport().set_input_as_handled()
-	elif e.keycode == KEY_BACKSPACE and hud.game.session.online:
+	elif e.keycode == KEY_BACKSPACE and hud.game.session.multiplayer_game:
 		hud.clear_chat()
 		get_viewport().set_input_as_handled()
 	elif _camp.visible and EIKeymap.event_action(e) == "tutorial_script":

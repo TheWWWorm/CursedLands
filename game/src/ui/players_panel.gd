@@ -225,7 +225,7 @@ func _unhandled_key_input(e: InputEvent) -> void:
 func _process(_dt: float) -> void:
 	if not visible:
 		return
-	if session == null or not session.online or not session.can_manage_game():
+	if session == null or not session.multiplayer_game or not session.can_manage_game():
 		close()
 		return
 	queue_redraw()   # pings, players coming and going

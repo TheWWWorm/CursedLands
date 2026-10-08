@@ -699,7 +699,7 @@ func _unhandled_input(e: InputEvent) -> void:
 				_click_sound()
 				_next()
 		KEY_ENTER, KEY_KP_ENTER, KEY_ESCAPE:
-			if e.keycode != KEY_ESCAPE and hud.game.session.online:
+			if e.keycode != KEY_ESCAPE and hud.game.session.multiplayer_game:
 				hud.chat_line.open()   # Enter opens the chat in a network game
 			elif _mode == PLAYING:
 				_click_sound()
@@ -712,7 +712,7 @@ func _unhandled_input(e: InputEvent) -> void:
 				_topic_list.visible = false
 				visible = false
 		KEY_BACKSPACE:   # network only: clears the chat list
-			if not hud.game.session.online:
+			if not hud.game.session.multiplayer_game:
 				return
 			hud.clear_chat()
 		_:

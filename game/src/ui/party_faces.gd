@@ -101,7 +101,7 @@ func _units() -> Array:
 	var out := []
 	for u in game.my_units():
 		out.append([u, true])
-	if game.session and game.session.online:
+	if game.session and game.session.multiplayer_game:
 		for u: GameUnit in game.world.party_units():
 			if u.controller >= 0 and u.controller != game.session.my_index and u.has_meta("hero") and not u.dead:
 				out.append([u, false])
@@ -223,7 +223,7 @@ func _get_tooltip(at: Vector2) -> String:
 	var title: String = _cells[i][0].display_name
 	# select1..3 (action ids 55..57), in single player only. tip_key uses
 	# EIKeymap.key_of_id to show the first current binding, if any.
-	if i < 3 and _cells[i][2] and game and game.session and not game.session.online:
+	if i < 3 and _cells[i][2] and game and game.session and not game.session.multiplayer_game:
 		return GameData.tip_key(title, 55 + i)
 	if not _cells[i][2] and game and game.session:   # remake: whose hero it is
 		var who := PlayerNames.player_name(game.session, (_cells[i][0] as GameUnit).controller)

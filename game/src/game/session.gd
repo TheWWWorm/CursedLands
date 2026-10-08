@@ -38,6 +38,10 @@ var state: CampaignState
 var my_index := 0
 var is_host := true
 var online := false
+## Transport is also used by the local single-player worker. Only this flag
+## selects multiplayer gameplay rules and UI; RPC routing still uses online.
+var multiplayer_game: bool:
+	get: return online and (local_host == null or not local_host.single_player)
 var local_host: LocalHost
 ## peer id -> {index, name}
 var players := {1: {"index": 0, "name": "Player", "colour": 1}}
@@ -239,16 +243,28 @@ func start_host(port := PORT, limit := MAX_PLAYERS) -> Error:
 	return host(port, limit)
 
 
+func _start_single_if_needed() -> Error:
+	if online or local_host.worker or not lmp.is_empty() or not LocalHost.available():
+		return OK
+	var error := await local_host.start(0, 1, true)
+	if error != OK:
+		is_host = true
+		if error != ERR_SKIP:
+			GameData.trace("Single-player worker unavailable (%d); using inline simulation" % error)
+	return error
+
+
 func host(port := PORT, limit := MAX_PLAYERS) -> Error:
 	if OS.has_feature("web"):
 		return ERR_UNAVAILABLE
-	var socket_mode := GameData.option("net_websocket") != 0
+	var solo := local_host.single_player
+	var socket_mode := not solo and GameData.option("net_websocket") != 0
 	var peer: MultiplayerPeer = _websocket_peer() if socket_mode else ENetMultiplayerPeer.new()
 	# Remake: "*" listens on IPv4 and IPv6 at once (a dual-stack socket), so
 	# friends can join by "[IPv6 address]:port" too (often reachable without
 	# any port forwarding).
 	if peer is ENetMultiplayerPeer:
-		peer.set_bind_ip("*")
+		peer.set_bind_ip("127.0.0.1" if solo else "*")
 	# ENet takes one connection more than the game has room for, so a joiner
 	# beyond Max Players hears "server full" (NetStatus.refusal) instead of
 	# a silent timeout.
@@ -259,14 +275,15 @@ func host(port := PORT, limit := MAX_PLAYERS) -> Error:
 	multiplayer.multiplayer_peer = peer if socket_mode else NetSim.wrap(peer)   # (tools: --netsim)
 	online = true
 	is_host = true
-	if not socket_mode and GameData.option("net_upnp") == 1 and not Array(OS.get_cmdline_user_args()).any(func(a): return a.begins_with("--tool=")):
+	if not solo and not socket_mode and GameData.option("net_upnp") == 1 and not Array(OS.get_cmdline_user_args()).any(func(a): return a.begins_with("--tool=")):
 		upnp.open(port)
 	my_index = 0
 	players = {1: {"index": 0, "name": GameData.player_name, "colour": 1}}
-	host_port = port
+	host_port = peer.get_host().get_local_port() if peer is ENetMultiplayerPeer else port
 	password = password.left(PASSWORD_MAX)
-	lan.listen()   # the LAN game list (LanDiscovery)
-	directory.reload_settings()
+	if not solo:
+		lan.listen()   # the LAN game list (LanDiscovery)
+		directory.reload_settings()
 	_clock_options_changed()
 	return OK
 
@@ -341,11 +358,11 @@ static func _websocket_peer() -> WebSocketMultiplayerPeer:
 # ------------------------------------------------------------------ remake co-op clock
 
 func coop_clock_enabled() -> bool:
-	return online and lmp.is_empty() and (GameData.option("coop_clock") == 1 if is_host else host_clock)
+	return multiplayer_game and lmp.is_empty() and (GameData.option("coop_clock") == 1 if is_host else host_clock)
 
 
 func _clock_options_changed() -> void:
-	if not online or not is_host:
+	if not multiplayer_game or not is_host:
 		return
 	host_clock = lmp.is_empty() and GameData.option("coop_clock") == 1
 	if not host_clock:
@@ -386,7 +403,7 @@ func _apply_clock(paused: bool, rate: int) -> void:
 
 
 func _send_clock(pid := 0) -> void:
-	if not online or not is_host:
+	if not multiplayer_game or not is_host:
 		return
 	for peer in ([pid] if pid else players.keys()):
 		if int(peer) != 1 and CoopProgress.peer_alive(multiplayer, int(peer)):
@@ -395,6 +412,8 @@ func _send_clock(pid := 0) -> void:
 
 @rpc("authority", "call_remote", "reliable")
 func _rpc_clock(enabled: bool, paused: bool, rate: int) -> void:
+	if local_host.single_player:
+		return
 	host_clock = enabled
 	_apply_clock(paused if enabled else false, rate if enabled else 0)
 
@@ -404,6 +423,8 @@ func _rpc_clock(enabled: bool, paused: bool, rate: int) -> void:
 ## player menu plays it before calling this with `intro` false; otherwise
 ## (co-op, **approx.**) every peer sees it once the first zone is built.
 func new_campaign(intro := true) -> void:
+	if await _start_single_if_needed() == ERR_SKIP:
+		return
 	if local_host.frontend:
 		await local_host.request("campaign", {"intro": intro})
 		return
@@ -778,7 +799,7 @@ func _enter_zone(id: String, entrance: int, autosave := true) -> void:
 		message.emit(RemakeText.t("Unknown zone ") + id)
 		return
 	swap.cancel_all()
-	if world and zone_id and (not lmp.is_empty() or online):
+	if world and zone_id and (not lmp.is_empty() or multiplayer_game):
 		# a player whose hero is dead (or gone) when it is sent to
 		# another zone is respawned first (player =).
 		# Remake co-op: the same at a zone change, with the option "revive"
@@ -1773,7 +1794,7 @@ func script_game_over(title := "game_over", text := "game_over_msg") -> void:
 
 ## Single player: the main hero (not a mercenary) is dead or gone.
 func sp_main_hero_dead() -> bool:
-	if online or not lmp.is_empty() or world == null:
+	if multiplayer_game or not lmp.is_empty() or world == null:
 		return false
 	for u: GameUnit in world.units.values():
 		if u.controller == 0 and u.has_meta("hero") and not u.get_meta("hero").has("merc") and not u.dead:
@@ -3499,7 +3520,7 @@ func hero_died(u: GameUnit) -> void:
 	# the companions; leaving the zone ends the game (`sp_game_over`).
 	# Remake option "sp_death_notice": the game-over sound and a small notice
 	# (GameHUD) at once, without pausing; the zone change rule is unchanged.
-	if not online and lmp.is_empty():
+	if not multiplayer_game and lmp.is_empty():
 		if GameData.option("sp_death_notice") == 1 and sp_main_hero_dead():
 			# Remake option "revive": the notice says a companion can help.
 			broadcast({"t": "death_notice", "revive": Revive.helper_present(self, u)})
@@ -3987,6 +4008,9 @@ func _rpc_hello(player_name: String, hero_class: String, protocol := 0, maps_md5
 	if not is_host:
 		return
 	var pid := multiplayer.get_remote_sender_id()
+	if local_host.single_player:
+		multiplayer.multiplayer_peer.disconnect_peer(pid)
+		return
 	if not CoopProgress.peer_alive(multiplayer, pid):
 		return   # dropped again before its hello was handled (it will say hello anew)
 	# A wrong password is refused before a stale connection of the same name
@@ -4331,6 +4355,8 @@ func load_game(slot: String) -> bool:
 ## The menus' load: load_game with the loading screen put on screen first on
 ## web / mobile (LoadingScreen.hold), before anything changes.
 func load_game_shown(slot: String) -> bool:
+	if await _start_single_if_needed() == ERR_SKIP:
+		return false
 	if local_host.frontend:
 		var answer := await local_host.request("load", {"slot": slot})
 		return bool(answer.get("ok", false))

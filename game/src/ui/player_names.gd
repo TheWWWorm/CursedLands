@@ -52,7 +52,7 @@ func _ready() -> void:
 
 func active() -> bool:
 	var s := game.session if game else null
-	return s != null and s.online and game.world != null and GameData.option(OPTION) != 0 \
+	return s != null and s.multiplayer_game and game.world != null and GameData.option(OPTION) != 0 \
 			and not s.shop_available() and not (game.hud and game.hud._movie and game.hud._movie.visible)
 
 

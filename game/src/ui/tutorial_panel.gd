@@ -421,7 +421,7 @@ func close_point() -> Vector2:
 
 func _online() -> bool:
 	var hud := get_canvas_layer_node() as GameHUD
-	return hud == null or hud.game == null or hud.game.session == null or hud.game.session.online
+	return hud == null or hud.game == null or hud.game.session == null or hud.game.session.multiplayer_game
 
 
 ## A movie that paused the tree before the window opened unpauses it when it

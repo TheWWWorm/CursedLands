@@ -1,11 +1,17 @@
 # Android simulation process
 
-This source is experimental, has been tested on Retroid Pocket 5 and is included
-in the Experimental 5 ARM64 Android release. It separates a co-op host's
-authoritative world from its local view using the same authenticated loopback
-protocol as the desktop `LocalHost`. Ordinary single-player sessions still use
-the inline world. This change does not make Portal sustain 60 FPS or true 2× on
-the Retroid by itself.
+The Experimental 5 ARM64 Android release separates a co-op host's authoritative
+world from its local view using the same authenticated loopback protocol as the
+desktop `LocalHost`. It has been tested on Retroid Pocket 5.
+
+The subsequent, unpublished single-player checkpoint also uses this service for
+ordinary campaign creation and loading. It preserves offline gameplay rules,
+menu/controller pauses, saves and the original accelerated clock. Its private
+ENet connection binds only to loopback on an automatically assigned port; it
+does not advertise a multiplayer game. Platforms without the service retain
+inline simulation. The public Experimental 5 release still runs single player
+inline. See the [single-player checkpoint](../../../docs/portal-single-player-checkpoint.md)
+for the implementation and validation boundaries.
 
 The service runs a separate, headless Godot engine. It shares no mutable engine
 objects with the visible engine. Android owns its binding and process lifetime;
@@ -44,8 +50,16 @@ An earlier matched Portal pair averaged 3.93 FPS inline and 8.50 FPS with the
 service, but only 37 simulated seconds elapsed in 30 real seconds with 2×
 selected. These are incomplete performance results, not acceptance numbers.
 
-Later native and rendering changes reach about 20.5 FPS in the final Portal run and 21–38 FPS
+The published native and rendering changes reach about 20.5 FPS in the final Portal run and 21–38 FPS
 in the other measured expansion locations. Portal still falls short of actual
 2×. See the [current handoff](../../../docs/performance-handoff-2026-10-07.md)
 for settings, build provenance and limits. The private benchmark APK is not
 a distributable player build.
+
+The later single-player checkpoint measures 43.95 FPS median at actual Original
+graphics and 1× in Portal, versus 11.83 inline in the same private APK. A
+three-minute living-party walk averages 44.65 FPS. Neither is stable 60 FPS.
+The service saves authoritative single-player state on Android's application
+pause notification: the frontend's save request may still be queued when the
+service suspends. `tools/tests/single_player_android_background.gd` plus an
+external Home/resume controller verifies the save reaches disk before resume.

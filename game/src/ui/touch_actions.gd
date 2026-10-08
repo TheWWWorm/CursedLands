@@ -178,7 +178,7 @@ func _show_menu() -> void:
 	_entry("Force attack", func(): game.cancel_touch_target(); game.touch_force = "ctrl")
 	if game.session.shop_available():
 		_entry("Side quests", game.hud.toggle_side_quests)
-	if game.session.online:
+	if game.session.multiplayer_game:
 		_entry("Chat", game.hud.chat_line.open)
 	if OS.has_feature("web"):
 		_entry("Fullscreen", func(): JavaScriptBridge.get_interface("CursedFiles").fullscreen())

@@ -462,7 +462,7 @@ func inspect_quest_item(item: String) -> void:
 func _process(_dt: float) -> void:
 	_layout_safe_area()
 	_layout_dials()
-	var host_online: bool = game != null and game.session != null and game.session.online and game.session.can_manage_game()
+	var host_online: bool = game != null and game.session != null and game.session.multiplayer_game and game.session.can_manage_game()
 	if _players_btn.visible != (_menu.visible and host_online):
 		_players_btn.visible = _menu.visible and host_online
 	var hints: bool = _menu.visible and PadInput.active == "pad"
@@ -535,7 +535,7 @@ func _quest_note(key: String, value: float) -> void:
 		_send_bird()
 	var v := int(value)
 	var sub := parts.size() == 4
-	if sub and not game.session.online \
+	if sub and not game.session.multiplayer_game \
 			and game.session.state.get_var(0, "q.%s.%s" % [parts[1], parts[2]]) == 0.0:
 		return
 	if not _quest_field_top():
@@ -638,7 +638,7 @@ func on_event(e: Dictionary) -> void:
 			_movie_serial = -1
 			_movie.stop()
 			_movie_serial = serial
-			_movie.pause_game = serial < 0 and not game.session.online
+			_movie.pause_game = serial < 0 and not game.session.multiplayer_game
 			_movie.play(String(e.get("name", "")))
 		"movie_release":
 			if int(e.get("serial", -2)) == _movie_serial:
@@ -720,7 +720,7 @@ func _show_ending() -> void:
 ## Load screen closed without loading), go to the main menu (manager = 1
 ## ). Loading a save needs no result.
 func _show_game_over(event: Dictionary = {}) -> void:
-	if game.session.online and game.session.lmp.is_empty() and not event.get("scripted", false):
+	if game.session.multiplayer_game and game.session.lmp.is_empty() and not event.get("scripted", false):
 		_show_coop_game_over()
 		return
 	if MessageBox.is_up(_game_over_box) or _game_over_load:
@@ -790,7 +790,7 @@ func _close_for_host_load() -> void:
 ## The notice also hides itself once the main hero lives again (a revival, a
 ## load: GameOverNotice.still_dead); `dismiss_death_notice` hides it at once.
 func show_death_notice(hint := "") -> void:
-	if game.session.online or MessageBox.is_up(_game_over_box) or _game_over_load:
+	if game.session.multiplayer_game or MessageBox.is_up(_game_over_box) or _game_over_load:
 		return
 	GameSound.instance.ui("buttons\\gameover.wav")
 	if _death_notice == null:
@@ -887,7 +887,7 @@ func _show_travel(options: Array, from := "", start: Array = []) -> void:
 
 ## Quick save / load on the travel map: single player only.
 func _travel_quick(action: String) -> void:
-	if game.session.online:
+	if game.session.multiplayer_game:
 		return
 	if action == "quicksave":
 		game.session.save_game("quick")
@@ -1015,7 +1015,7 @@ func toggle_aggression() -> void:
 ## Remake: the co-op host's player list (PlayersPanel) over the Esc menu's
 ## frozen frame, as the Options screen; closing it closes the Esc menu.
 func open_players() -> void:
-	if game.session == null or not game.session.online or not game.session.can_manage_game():
+	if game.session == null or not game.session.multiplayer_game or not game.session.can_manage_game():
 		return
 	if not _esc_open:
 		_open_menu()
@@ -1042,7 +1042,7 @@ func _open_menu() -> void:
 	_esc_bg.use(_esc_frame)
 	_esc_bg.visible = _esc_frame != null
 	_menu.visible = true
-	if not game.session.online:
+	if not game.session.multiplayer_game:
 		_pause_before = get_tree().paused
 		get_tree().paused = true
 

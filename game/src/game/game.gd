@@ -208,7 +208,7 @@ func _keep_selection() -> void:
 ## accelerated. Remake option coop_clock lets the co-op host
 ## control a shared pause and exact 2x rate; clients receive that choice.
 func set_speed(sector: int) -> void:
-	if session.online:
+	if session.multiplayer_game:
 		if session.coop_clock_enabled() and not session.can_manage_game():
 			session.message.emit(RemakeText.t("Only the host can change game speed."))
 		elif session.coop_clock_enabled():
@@ -236,7 +236,7 @@ func set_speed(sector: int) -> void:
 func reset_speed() -> void:
 	speed = 0
 	Engine.time_scale = 1.0
-	if session and session.online:
+	if session and session.multiplayer_game:
 		session.reset_coop_clock()
 
 
@@ -762,11 +762,11 @@ func _unhandled_input(e: InputEvent) -> void:
 			return
 		match e.keycode:   # remake-only windows on keys the original leaves free
 			KEY_ENTER, KEY_KP_ENTER:   # co-op chat (NetStatus; Enter is unbound in keyboard.ini)
-				if session.online:
+				if session.multiplayer_game:
 					hud.chat_line.open()
 					get_viewport().set_input_as_handled()
 			KEY_BACKSPACE:   # a network game's chat list cleared
-				if session.online:
+				if session.multiplayer_game:
 					hud.clear_chat()
 					get_viewport().set_input_as_handled()
 			KEY_J:
@@ -816,14 +816,14 @@ func _key_action(act: String) -> void:
 		return
 	match act:
 		"select_all":   # case 0x3a, not in a network game
-			if not session.online:
+			if not session.multiplayer_game:
 				sound.ui("buttons\\battle\\on_off.wav")
 				selected = my_units()
 		"accel", "decel":
 			# Cases 3 / 2 (KP_PLUS / KP_MINUS): neither paused nor a network
 			# game — clock.wav, speed = 1 / 0, tick 27
 			# 55 ms (the clock dial's sectors, set_speed).
-			if not get_tree().paused and (not session.online or session.coop_clock_enabled()):
+			if not get_tree().paused and (not session.multiplayer_game or session.coop_clock_enabled()):
 				set_speed(2 if act == "accel" else 1)
 		"w_minimap":   # case 0x34
 			hud.minimap.key_toggle()

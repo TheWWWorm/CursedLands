@@ -15,7 +15,7 @@ var rng := RandomNumberGenerator.new()
 ## scales the natural armour of units outside a player party (
 ## ). A network game always plays at 0.
 func difficulty(u: GameUnit, key: String) -> float:
-	if GameData.difficulty == 0 or (world.session and world.session.online):
+	if GameData.difficulty == 0 or (world.session and world.session.multiplayer_game):
 		return 1.0
 	if key == "Absorption":
 		if u.controller >= 0 or u.has_meta("hero"):

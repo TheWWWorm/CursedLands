@@ -111,7 +111,7 @@ func swap_text(pid: int) -> String:
 ## True in the multiplayer game's base (a "brief" zone of LmpMode).
 func wanted() -> bool:
 	var s := game.session if game else null
-	if s == null or not s.online or game.world == null or s.campaign == null:
+	if s == null or not s.multiplayer_game or game.world == null or s.campaign == null:
 		return false
 	if s.lmp.is_empty() and not _coop_swap():
 		return false
@@ -183,7 +183,7 @@ func _process(_dt: float) -> void:
 	if game and game.hud and game.hud._inventory:
 		var inv = game.hud._inventory
 		game_trading = inv.visible and inv._camp.visible and int(inv._camp.shop_id) != 0
-	if game and game.session and game.session.online:
+	if game and game.session and game.session.multiplayer_game:
 		game.session.net.set_trading(game_trading)
 	var on := wanted()
 	visible = on

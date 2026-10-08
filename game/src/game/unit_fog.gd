@@ -54,7 +54,7 @@ func active() -> bool:
 
 static func sight_active(s: Session) -> bool:
 	return s != null and not s.shop_available() \
-		and (s.online or _force or GameData.option("unit_fog") == 1)
+		and (s.multiplayer_game or _force or GameData.option("unit_fog") == 1)
 
 
 func _process(dt: float) -> void:
@@ -76,7 +76,7 @@ func _process(dt: float) -> void:
 	# Single player: while a script holds the camera (a conversation; the
 	# shipped scripts use no other camera command) the whole cast shows,
 	# wherever the actors stand (DialogPanel hides the others itself). Remake.
-	var talk := not game.session.online and game.rig != null and game.rig.held
+	var talk := not game.session.multiplayer_game and game.rig != null and game.rig.held
 	for u: GameUnit in w.unit_rows():
 		u.fogged = on and not talk and not _always.has(u.uid) and not sees(eyes, u)
 		var want := not u.hidden and not u.fogged
@@ -93,7 +93,7 @@ func _process(dt: float) -> void:
 static func party_eyes(g: Game) -> Array:
 	if g == null or g.world == null or g.session == null:
 		return []
-	return party_eyes_for(g.world, g.session.my_index, g.session.online and g.session.lmp.is_empty())
+	return party_eyes_for(g.world, g.session.my_index, g.session.multiplayer_game and g.session.lmp.is_empty())
 
 
 static func party_eyes_for(w: GameWorld, player: int, shared := false) -> Array:
@@ -118,7 +118,7 @@ static func noticed_for(s: Session, player: int, living_sources_only := false) -
 		return out
 	var ids := {}
 	var w := s.world
-	var shared := s.online and s.lmp.is_empty()
+	var shared := s.multiplayer_game and s.lmp.is_empty()
 	for m: GameUnit in w.party_units():
 		if not is_instance_valid(m) or m.controller < 0 or (not shared and m.controller != player):
 			continue
@@ -149,9 +149,9 @@ static func noticed_for(s: Session, player: int, living_sources_only := false) -
 static func sight_list_for(s: Session, player: int) -> Dictionary:
 	var out := {}
 	if s == null or s.world == null: return out
-	var eyes := party_eyes_for(s.world, player, s.online)
+	var eyes := party_eyes_for(s.world, player, s.multiplayer_game)
 	for u: GameUnit in noticed_for(s, player, true):
-		if u.controller >= 0 and (s.online or u.controller == player):
+		if u.controller >= 0 and (s.multiplayer_game or u.controller == player):
 			out[u.uid] = true
 			continue
 		for e: Array in eyes:
@@ -186,10 +186,10 @@ static func relevant_for(s: Session, player: int, camera := Vector2.INF) -> Arra
 		return out
 	var village := s.shop_available()
 	var sight := sight_active(s)
-	var eyes := party_eyes_for(s.world, player, s.online and s.lmp.is_empty()) if sight else []
+	var eyes := party_eyes_for(s.world, player, s.multiplayer_game and s.lmp.is_empty()) if sight else []
 	if camera == Vector2.INF and s.game != null and s.game.rig != null:
 		camera = Vector2(s.game.rig.position.x, -s.game.rig.position.z)
-	var talk := not s.online and s.game != null and s.game.rig != null and s.game.rig.held
+	var talk := not s.multiplayer_game and s.game != null and s.game.rig != null and s.game.rig.held
 	var always := (sight_list_for(s, player) if sight and s.lmp.is_empty() else always_for(s, player)) if not village and not talk else {}
 	for u: GameUnit in s.world.unit_rows():
 		if not is_instance_valid(u) or u.hidden:

@@ -13,6 +13,7 @@ var checks := 0
 var failures := 0
 var startup_done := false
 var startup_result := OK
+var single := OS.get_cmdline_user_args().has("--single")
 
 func check(ok: bool, label: String) -> void:
 	checks += 1
@@ -28,7 +29,7 @@ func until(predicate: Callable, seconds := 10.0) -> bool:
 	return bool(predicate.call())
 
 func launch(s: Session) -> void:
-	startup_result = await s.local_host.start(29923,2)
+	startup_result = await s.local_host.start(0 if single else 29923, 1 if single else 2, single)
 	startup_done = true
 
 func _ready() -> void:
@@ -46,12 +47,19 @@ func _ready() -> void:
 	g.hud._movie = movie
 	g.hud._add_ui(movie)
 	movie.finished.connect(g.hud._movie_finished)
-	var err := await s.local_host.start(29923,2)
+	var err := OK
+	if not single or DisplayServer.get_name()=="headless":
+		err = await s.local_host.start(0 if single else 29923, 1 if single else 2, single)
 	check(err == OK,"owner starts")
 	if err != OK:
 		get_tree().quit(1)
 		return
-	var answer := await s.local_host.request("campaign",{"intro":true})
+	var answer := {}
+	if single:
+		await s.new_campaign(true)
+		answer.ok = s.local_host.frontend and s.local_host.single_player and not s.multiplayer_game
+	else:
+		answer = await s.local_host.request("campaign",{"intro":true})
 	check(answer.get("ok",false),"worker starts new campaign")
 	check(await until(func():return s.world != null and s.zone_id=="gz1g" and not s._remote_loading),"owner receives fresh first zone")
 	check(await until(func():return movie.starts>0),"owner receives opening movie")

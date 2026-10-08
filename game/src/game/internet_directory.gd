@@ -180,7 +180,7 @@ func _release() -> void:
 func _process(dt: float) -> void:
 	if not session or _url.is_empty():
 		return
-	if not session.online or not session.is_host:
+	if not session.multiplayer_game or not session.is_host:
 		_release()
 		_url = ""
 		return

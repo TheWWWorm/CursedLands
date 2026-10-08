@@ -97,7 +97,7 @@ func _answer() -> void:
 		if pkt.size() < 8 or pkt.size() > 512 or pkt.slice(0, 4).get_string_from_ascii() != QUERY:
 			continue
 		var q: Variant = bytes_to_var(pkt.slice(4))
-		if not q is Dictionary or session == null or not session.online or not session.is_host:
+		if not q is Dictionary or session == null or not session.multiplayer_game or not session.is_host:
 			continue
 		var info := session.lan_info()
 		info["t"] = int((q as Dictionary).get("t", 0))

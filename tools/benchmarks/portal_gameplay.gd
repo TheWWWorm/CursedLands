@@ -27,6 +27,7 @@ func _ready()->void:
 		GameData.options.merge(GfxDetect.original_look_values(true,{},-1),true)
 		if not GfxDetect.original_look_on(GameData.options):
 			push_error("Original look preset did not apply");get_tree().quit(1);return
+	GameData.difficulty=GameData.option("difficulty")
 	GameData._apply_display()
 	Engine.max_fps=0
 	seed(519826)
@@ -41,13 +42,21 @@ func _ready()->void:
 	if cfg.get("host",false):
 		var e:Error = await session.start_host(29901,6) if cfg.get("isolated",false) else session.host(29901,6)
 		if e!=OK:push_error("Device host failed "+str(e));get_tree().quit(1);return
-	if not await session.load_game_shown("device_fixture"):
+	# Same-build inline control bypasses only automatic worker startup.
+	var loaded := session.load_game("device_fixture") if cfg.get("inline_single",false) and not cfg.get("host",false) \
+		else await session.load_game_shown("device_fixture")
+	if not loaded:
 		push_error("Device save load failed");get_tree().quit(1);return
 	var w:=session.world
 	if session.zone_id!="gz1h" or w.units.size()!=415:
 		push_error("Unexpected Portal fixture: %s / %s" % [session.zone_id,w.units.size()]);get_tree().quit(1);return
 	if session.local_host.frontend:
-		await session.local_host.request("clock", {"sector":0})
+		if session.local_host.single_player:
+			get_tree().paused=true
+			session.local_host._sync_single_clock()
+			await session.local_host.request("measure_save")
+		else:
+			await session.local_host.request("clock", {"sector":0})
 	else:
 		w.process_mode=Node.PROCESS_MODE_DISABLED
 	session.set_physics_process(false)
@@ -73,8 +82,12 @@ func _ready()->void:
 	var previous:=before
 	started=Time.get_ticks_msec()
 	recording=true
-	if session.online:session.set_coop_clock(int(cfg.get("speed",2)))
-	else:Engine.time_scale=float(cfg.get("speed",2))
+	if session.multiplayer_game:
+		session.set_coop_clock(int(cfg.get("speed",2)))
+	else:
+		Engine.time_scale=float(cfg.get("speed",2))
+		get_tree().paused=false
+		session.local_host._sync_single_clock()
 	w._frame_ms=-1
 	w.process_mode=Node.PROCESS_MODE_PAUSABLE
 	session.set_physics_process(true)
@@ -94,6 +107,10 @@ func _ready()->void:
 		var u:GameUnit=session.world.units.get(uid)
 		return {"uid":uid,"dead":u.dead,"hp":u.hp,"pos":u.pos} if u else {"uid":uid}
 	),"wall_seconds":(after-before)/1e6,"fps":timeline.size()*1e6/(after-before),"sim_seconds":w.time-sim,"timeline":timeline,"frame_ms":{"p50":frames[frames.size()/2],"p95":frames[int(frames.size()*.95)],"p99":frames[int(frames.size()*.99)],"max":frames[-1]},"units":w.units.size(),"census":census,"commands":commands,"wing_keys":wings.size(),"players":session.players.size(),"online":session.online,"options":GameData.options.duplicate(),"renderer":RenderingServer.get_current_rendering_method(),"adapter":RenderingServer.get_video_adapter_name(),"viewport_size":[get_viewport().size.x,get_viewport().size.y],"render_scale":get_viewport().scaling_3d_scale,"engine":Engine.get_version_info(),"native":ClassDB.class_exists("TerrainSearchKernel"),"config":cfg}
+	result.single_player_worker=session.local_host.single_player
+	result.multiplayer_game=session.multiplayer_game
+	result.fixture_version=2
+	result.difficulty_runtime=GameData.difficulty
 	f=FileAccess.open("user://"+String(cfg.name)+".json",FileAccess.WRITE);f.store_string(JSON.stringify(result,"  "));f.close()
 	print("DEVICE_MEASURE_DONE ",JSON.stringify({"name":cfg.name,"fps":result.fps,"frame_ms":result.frame_ms,"sim_seconds":result.sim_seconds,"native":result.native,"renderer":result.renderer}))
 	get_viewport().get_texture().get_image().save_png("user://"+String(cfg.name)+".png")

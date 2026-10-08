@@ -76,6 +76,14 @@ close Terror view, issues normal movement commands and retains combat. Set
 ordinary separated co-op authority. This has one owner and no remote guest;
 it does not establish WAN or ordinary single-player performance.
 
+Version 2 also measures ordinary single-player with `host: false`. Supported
+rendered builds start its local simulation worker automatically. Set
+`inline_single: true` for a same-build inline control; this bypasses only
+automatic worker startup. The result records `single_player_worker`,
+`multiplayer_game` and the effective difficulty, so a co-op run cannot be
+mistaken for single-player. Both modes pause during camera setup, and the local
+worker acknowledges that pause before measurement. Profiling stays off.
+
 Pass `--gameplay-config=/absolute/config.json` on desktop, or put the
 configuration in the private Android application's `user://bench.json`:
 
@@ -137,8 +145,10 @@ route near the entrance with ordinary commands and a rotating terrain-aware
 camera. Both party members remained alive in the recorded run; report this
 exploration result separately from the close Terror combat comparison.
 
-For inline single-player diagnostics, use `host: false` and
+For inline single-player diagnostics, use `host: false`, `inline_single: true` and
 `original_city_gameplay.gd`. Its straight route reaches combat and the party
-can die. Neither camera variant is a full map playthrough. In particular,
+can die. Use the loop wrapper for matched living-party single-player comparisons,
+with `inline_single: false` for the separated candidate. Neither camera variant
+is a full map playthrough. In particular,
 the close Terror fixture's party dies around 25 seconds: later near-60 FPS
 averages include the death view and cannot establish sustained gameplay.

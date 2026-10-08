@@ -1,12 +1,16 @@
 class_name LocalHost
 extends Node
-## Co-op: an authoritative process and its local player view have
+## An authoritative process and its local player view have
 ## independent frame loops. The owner occupies player slot zero, not a second
 ## co-op slot. All other connections retain the ordinary network protocol.
 
 var session: Session
 var frontend := false
 var worker := false
+## Local transport does not turn an offline campaign into a multiplayer game.
+var single_player := false
+var _single_clock: Array = []
+var _single_pause_observer: Node
 var owner_peer := 0
 var process_id := -1
 var parent_id := -1
@@ -45,22 +49,25 @@ func _ready() -> void:
 	GameData.options_changed.connect(_options_changed)
 
 
-func start(port: int, limit: int) -> Error:
+func start(port: int, limit: int, solo := false) -> Error:
 	if frontend or worker or session.online:
 		return ERR_ALREADY_IN_USE
 	if OS.get_name() == "Android" and not Engine.has_singleton("EISimulation"):
 		return ERR_UNAVAILABLE
+	single_player = solo
+	_single_clock = []
 	_shot_generation += 1
 	_pending_shots.clear()
 	_token = Crypto.new().generate_random_bytes(32).hex_encode()
 	var directory := ProjectSettings.globalize_path("user://local-host")
 	DirAccess.make_dir_recursive_absolute(directory)
 	_config = directory.path_join("%d-%d.cfg" % [OS.get_process_id(), Time.get_ticks_usec()])
-	var config := {"token": _token, "parent": OS.get_process_id(), "port": port,
+	var config := {"token": _token, "parent": OS.get_process_id(), "port": port, "single_player": solo,
 		"limit": limit, "password": session.password, "name": GameData.player_name,
 		"hero": GameData.hero_class, "options": GameData.options.duplicate(true)}
 	var file := FileAccess.open(_config, FileAccess.WRITE)
 	if file == null:
+		single_player = false
 		return FileAccess.get_open_error()
 	if OS.get_name() != "Windows":
 		FileAccess.set_unix_permissions(_config, 0x180)   # owner read/write
@@ -83,6 +90,7 @@ func start(port: int, limit: int) -> Error:
 	if process_id <= 0:
 		_cleanup_files()
 		frontend = false
+		single_player = false
 		session.upnp.remote = false
 		return ERR_CANT_FORK
 	var deadline := Time.get_ticks_msec() + 30000
@@ -91,11 +99,15 @@ func start(port: int, limit: int) -> Error:
 		await get_tree().process_frame
 	var result := ERR_CANT_CREATE
 	if frontend and not _stopping and FileAccess.file_exists(_config + ".ready"):
-		result = int(FileAccess.get_file_as_string(_config + ".ready"))
+		var ready = JSON.parse_string(FileAccess.get_file_as_string(_config + ".ready"))
+		if ready is Dictionary:
+			result = int(ready.get("error", ERR_CANT_CREATE))
+			port = int(ready.get("port", port))
+			session.host_port = port
 	if result == OK:
 		# The worker uses the host's selected transport. Loopback is the only
 		# connection permitted to authenticate as the local owner.
-		var address := "ws://127.0.0.1:%d" % port if GameData.option("net_websocket") else "127.0.0.1"
+		var address := "ws://127.0.0.1:%d" % port if not single_player and GameData.option("net_websocket") else "127.0.0.1"
 		result = session.join(address, port)
 		while result == OK and frontend and not _stopping and process_id > 0 and not _ready_owner and _process_alive() \
 				and Time.get_ticks_msec() < deadline:
@@ -125,6 +137,7 @@ func configure(path: String) -> Dictionary:
 	if not config is Dictionary or String(config.get("token", "")).length() != 64:
 		return {}
 	worker = true
+	single_player = bool(config.get("single_player", false))
 	_owner_seen = Time.get_ticks_msec()
 	_config = path
 	_token = config.token
@@ -138,10 +151,14 @@ func configure(path: String) -> Dictionary:
 
 
 func listening(error: Error) -> void:
-	var file := FileAccess.open(_config + ".ready", FileAccess.WRITE)
+	# Publish the port and status together; the parent's next frame must
+	# never observe a newly created but still empty readiness record.
+	var pending := _config + ".ready.tmp"
+	var file := FileAccess.open(pending, FileAccess.WRITE)
 	if file:
-		file.store_string(str(int(error)))
+		file.store_string(JSON.stringify({"error": int(error), "port": session.host_port}))
 		file.close()
+		DirAccess.rename_absolute(pending, _config + ".ready")
 	Engine.max_fps = 60
 
 
@@ -177,6 +194,42 @@ func _rpc_owned() -> void:
 		return
 	_ready_owner = true
 	_token = ""
+	if single_player and _single_pause_observer == null:
+		var observer := SinglePauseObserver.new()
+		observer.owner_host = self
+		observer.process_mode = Node.PROCESS_MODE_PAUSABLE
+		add_child(observer)
+		_single_pause_observer = observer
+	_sync_single_clock()
+
+
+## The observer has no frame callbacks. Pause notifications deliver the
+## change immediately, including menus and controller-wheel pauses.
+class SinglePauseObserver extends Node:
+	var owner_host: LocalHost
+	func _notification(what: int) -> void:
+		if what == NOTIFICATION_PAUSED or what == NOTIFICATION_UNPAUSED:
+			owner_host._sync_single_clock()
+
+
+func _sync_single_clock() -> void:
+	if not frontend or not single_player or not _ready_owner or not CoopProgress.peer_alive(multiplayer, 1):
+		return
+	var value := [get_tree().paused, Engine.time_scale]
+	if value != _single_clock:
+		_single_clock = value
+		_rpc_single_clock.rpc_id(1, bool(value[0]), float(value[1]))
+
+
+@rpc("any_peer", "call_remote", "reliable")
+func _rpc_single_clock(paused: bool, rate: float) -> void:
+	if not single_player or not authorized(multiplayer.get_remote_sender_id()) \
+			or not is_finite(rate) or rate <= 0.0 or rate > 8.0:
+		return
+	Engine.time_scale = rate
+	get_tree().paused = paused
+	if session.game:
+		session.game.speed = int(rate > 1.0)
 
 
 func authorized(pid: int) -> bool:
@@ -384,6 +437,7 @@ func _rpc_camera(pose: Dictionary) -> void:
 
 
 func _process(dt: float) -> void:
+	_sync_single_clock()
 	if worker:
 		_send_owner_snapshots()
 	_heartbeat += dt
@@ -486,6 +540,8 @@ func stop() -> void:
 	session.upnp.close()
 	session.upnp.remote = false
 	session.online = false
+	single_player = false
+	_single_clock = []
 	multiplayer.multiplayer_peer = OfflineMultiplayerPeer.new()
 	_stopping = false
 	_cleanup_files()
@@ -502,7 +558,7 @@ func _rpc_shutdown() -> void:
 func _cleanup_files() -> void:
 	if _config.is_empty():
 		return
-	for path in [_config, _config + ".ready"]:
+	for path in [_config, _config + ".ready", _config + ".ready.tmp"]:
 		if FileAccess.file_exists(path):
 			DirAccess.remove_absolute(path)
 
@@ -525,3 +581,10 @@ func _process_alive() -> bool:
 func _notification(what: int) -> void:
 	if worker and what == NOTIFICATION_APPLICATION_RESUMED:
 		_owner_seen = Time.get_ticks_msec()
+	elif what == NOTIFICATION_APPLICATION_PAUSED and OS.get_name() == "Android" \
+			and worker and single_player and session and session.world and not session.loading_game:
+		# Android suspends this service with its owner. The owner's focus-out
+		# save RPC can still be queued, so persist authority before suspension
+		# instead of depending on the app surviving until the next resume.
+		get_tree().paused = true
+		session.save_game("autosave")

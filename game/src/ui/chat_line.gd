@@ -61,7 +61,7 @@ func _fit(t: String) -> void:
 
 
 func open() -> void:
-	if game == null or not game.session.online:
+	if game == null or not game.session.multiplayer_game:
 		return
 	_place()
 	text = ""
