@@ -7,6 +7,9 @@ extends RefCounted
 const DECLARATIONS := """
 uniform vec3 contact_extent = vec3(1.0);
 uniform float contact_strength = 0.7;
+// One call site for the two projections keeps GL compilers from expanding
+// the complete displaced-surface search twice. Internal bound, always two.
+uniform int contact_query_passes = 2;
 uniform sampler2D query_normals : filter_nearest, repeat_disable;
 varying float contact_band;
 varying vec4 contact_diffuse_weight;
@@ -101,27 +104,34 @@ ContactResult contact_prepare(vec3 world,vec3 wn,float band,float distance_to_ey
 	// A conservative bound from every source vertex of the nine candidate
 	// cells. Loose material/banks can add at most 0.5 m; no track read needed.
 	if (world.y>texelFetch(query_vertices,cell,0).a+0.5+band*2.5) { return result; }
-	float height; vec2 grid; ivec2 tile; mat2 jacobian;
-	if (!query_surface(p,height,grid,tile,jacobian)) { return result; }
-	float rise=max(world.y-height,0.0);
-	if (rise>band*2.5) { return result; }
-	vec4 water=textureLod(terrain_cells,p/vec2(textureSize(terrain_cells,0)),0.0);
-	float water_y=water.r+level[clamp(int(water.a+0.5),0,63)];
-	strength*=smoothstep(0.025,0.10,height-water_y);
-	if (strength<=0.0) { return result; }
 	// Fold the adjacent strip up the wall. At zero rise this is exactly the
 	// original ground point; upward faces retain an ordinary top projection.
 	float horizontal=length(wn.xz);
 	vec2 fold=horizontal>1e-3 ? vec2(wn.x,-wn.z)/horizontal*smoothstep(0.2,0.7,horizontal) : vec2(0.0);
-	vec2 folded=p+fold*rise;
-	float folded_height; vec2 folded_grid; ivec2 folded_tile; mat2 folded_jacobian;
-	if (horizontal>1e-3 && rise>0.001 && query_surface(folded,folded_height,folded_grid,folded_tile,folded_jacobian)) {
-		grid=folded_grid; tile=folded_tile; jacobian=folded_jacobian; height=folded_height;
-	} else {
-		folded=p;
+	float height=0.0; vec2 grid=vec2(0.0); ivec2 tile=ivec2(0); mat2 jacobian=mat2(1.0);
+	float rise=0.0; vec2 folded=p;
+	for (int pass=0;pass<contact_query_passes;pass++) {
+		float sampled_height; vec2 sampled_grid; ivec2 sampled_tile; mat2 sampled_jacobian;
+		if (!query_surface(folded,sampled_height,sampled_grid,sampled_tile,sampled_jacobian)) {
+			if (pass==0) { return result; }
+			// The folded strip can leave the map. Retain the first query's
+			// complete state, including its original point and derivatives.
+			folded=p; break;
+		}
+		height=sampled_height; grid=sampled_grid; tile=sampled_tile; jacobian=sampled_jacobian;
+		if (pass==0) {
+			rise=max(world.y-height,0.0);
+			if (rise>band*2.5) { return result; }
+			vec4 water=textureLod(terrain_cells,p/vec2(textureSize(terrain_cells,0)),0.0);
+			float water_y=water.r+level[clamp(int(water.a+0.5),0,63)];
+			strength*=smoothstep(0.025,0.10,height-water_y);
+			if (strength<=0.0) { return result; }
+			if (horizontal<=1e-3 || rise<=0.001) { break; }
+			folded=p+fold*rise;
+		}
 	}
-	water=textureLod(terrain_cells,folded/vec2(textureSize(terrain_cells,0)),0.0);
-	water_y=water.r+level[clamp(int(water.a+0.5),0,63)];
+	vec4 water=textureLod(terrain_cells,folded/vec2(textureSize(terrain_cells,0)),0.0);
+	float water_y=water.r+level[clamp(int(water.a+0.5),0,63)];
 	int ground=int(water.g+0.5);
 	vec2 uv=grid*0.5;
 	vec2 dx=jacobian*dFdx(folded)*0.5;

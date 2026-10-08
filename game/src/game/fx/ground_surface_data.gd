@@ -61,6 +61,7 @@ func bind(material: ShaderMaterial) -> void:
 	material.set_shader_parameter("query_vertices", vertices)
 	material.set_shader_parameter("query_cell_count", 9)
 	material.set_shader_parameter("query_vertex_count", 3)
+	material.set_shader_parameter("contact_query_passes", 2)
 	material.set_shader_parameter("query_normals", normals)
 	var field := _empty
 	if is_instance_valid(terrain.details) and is_instance_valid(terrain.details.soft_ground):

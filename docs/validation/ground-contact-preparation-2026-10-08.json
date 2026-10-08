@@ -1,0 +1,3730 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-08",
+  "scope": "Projection-only shader expansion optimization; effect remains opt-in on every platform. Colour-loop experiments rejected.",
+  "baseline_commit": "27b1e4e24dee3c2a2b771f1cc41457a417d9c807",
+  "engine": "Godot 4.7.stable 5b4e0cb0f",
+  "adapter": "NVIDIA GeForce RTX 3090",
+  "source_sha256": {
+    "game/src/game/fx/ground_contact_shader.gd": "76150145cb4e39b40b03eea146da3516c2afcdf7e14dd887f8d0da0a449e75b7",
+    "game/src/game/fx/ground_surface_data.gd": "7c1399d586083644dce2a418f022da598c42200e0b82673e70d3499de9d668b7",
+    "tools/benchmarks/ground_contact_preparation.py": "5c432f2b2b3af603a0dbc5214c18314603b5401095a02db2dd3e8d8e11f65a82",
+    "tools/benchmarks/ground_contact.gd": "cdf2937168d886e43ec8be34f338fda4ff32665d2e8eec4ea61d23363a122e0d",
+    "tools/tests/ground_contact.gd": "a7b780097420ee871dae9c927e21b7a894b370bce724534e43f7afe57c2a86cd",
+    "tools/tests/material_shader_options.gd": "c531defaccb472dee140728b9cfefdaef2a94f28a22c1dd81913e71679eda223"
+  },
+  "builds": {
+    "baseline": {
+      "executable": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-export/CursedLands.x86_64",
+      "executable_sha256": "3154bb4465f616e24b811dd576e9230022872cd80f8d5ab854efed2716b926d4",
+      "pack_sha256": "501fbad1e6ba8f4882594e29ad11141370efa215c4826c9bc95cbe8bdd1dcf10"
+    },
+    "projection": {
+      "executable": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-preparation/export/CursedLands.x86_64",
+      "executable_sha256": "3154bb4465f616e24b811dd576e9230022872cd80f8d5ab854efed2716b926d4",
+      "pack_sha256": "c9273c16f0bda337d8e9ebfda4e912a270b0ef1328b1d7d33e0595b43aead7fb"
+    },
+    "rejected_six_colour_loop": {
+      "executable": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-preparation/export-taps/CursedLands.x86_64",
+      "executable_sha256": "3154bb4465f616e24b811dd576e9230022872cd80f8d5ab854efed2716b926d4",
+      "pack_sha256": "e5a2d9cae82e83f9222f4969f9b1ce6e308590ec144d51b7269e06f03bc6432d"
+    },
+    "rejected_five_colour_loop": {
+      "executable": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-preparation/export-five/CursedLands.x86_64",
+      "executable_sha256": "3154bb4465f616e24b811dd576e9230022872cd80f8d5ab854efed2716b926d4",
+      "pack_sha256": "5e8cafa44b37d4fcd93795905c0ccd0b81084eddf041343c612f5b589627c5ae"
+    }
+  },
+  "selected_candidate_checks": 492,
+  "selected_candidate_validation": {
+    "runs": [
+      {
+        "build": "baseline",
+        "renderer": "gl_compatibility",
+        "test": "ground_contact_map",
+        "return_code": 0,
+        "elapsed_seconds": 21.04,
+        "errors": [],
+        "summary": [
+          "GROUND_CONTACT_MAP checks=30 failures=0"
+        ],
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-preparation/validation/baseline-gl_compatibility-ground_contact_map.log",
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-export/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--audio-driver",
+          "Dummy",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/ground_contact.gd"
+        ],
+        "other_game_processes_at_start": "PID ELAPSED COMMAND\n3120741     343 godot-4 --headless --path . --script res://tools/verify_adventure_save.gd",
+        "script_sha256": "cdf2937168d886e43ec8be34f338fda4ff32665d2e8eec4ea61d23363a122e0d",
+        "pack_sha256": "501fbad1e6ba8f4882594e29ad11141370efa215c4826c9bc95cbe8bdd1dcf10",
+        "png_sha256": {
+          "ground-contact-map-gl_compatibility-bz2g-near-on.png": "4f7df0b60c991cf5fbc79325f7c2031620bac82790a8993be217ddad089695c3",
+          "ground-contact-map-gl_compatibility-bz2g-far-on.png": "a91dafa259ff9066db159b035aa11458b1ae9942edded6e24e8fe67c0014f4fd",
+          "ground-contact-map-gl_compatibility-bz10k-near-on.png": "ff8b285ebccce4f745c65a9014d1a0f0b873dad5aee84c320910055012a4cced",
+          "ground-contact-map-gl_compatibility-bz13h-far-on.png": "aa03c44e59f254d6a499e56f0e783caae19006dafc9e83d287584df1606783d5",
+          "ground-contact-map-gl_compatibility-bz13h-near-restored.png": "61cc84a0d879d9401dc4c53aa319b0c82b93b10bf14478d5f5583847503585e4",
+          "ground-contact-map-gl_compatibility-bz2g-far-restored.png": "5e3309d152e194a55ff3fc41b725440d7681517c5d30eefd2dceff2736148700",
+          "ground-contact-map-gl_compatibility-bz2g-near-restored.png": "0a8285d681471e6f158ece7dcfc1b15edfd8580338cba29e5c266b628823575e",
+          "ground-contact-map-gl_compatibility-bz13h-far-off.png": "b9abb6d71579894123f7952da99584aeab2659e6f85bfca9c3764b5e2bf7d270",
+          "ground-contact-map-gl_compatibility-bz13h-near-on.png": "81ce32064557719be149b0025c39ed31f4f4f4829dceb227fa1efb56329725e7",
+          "ground-contact-map-gl_compatibility-bz10k-far-off.png": "86a7737de1c1b7ee72a5718a59b2d79407e11ff885b9810d61b8263b39f987e1",
+          "ground-contact-map-gl_compatibility-bz13h-near-off.png": "61cc84a0d879d9401dc4c53aa319b0c82b93b10bf14478d5f5583847503585e4",
+          "ground-contact-map-gl_compatibility-bz10k-near-restored.png": "601abe8c88c5667953f71fa7b84872620d3a86a2d21599cb12cb5790c20c8e99",
+          "ground-contact-map-gl_compatibility-bz10k-far-restored.png": "86a7737de1c1b7ee72a5718a59b2d79407e11ff885b9810d61b8263b39f987e1",
+          "ground-contact-map-gl_compatibility-bz13h-far-restored.png": "b9abb6d71579894123f7952da99584aeab2659e6f85bfca9c3764b5e2bf7d270",
+          "ground-contact-map-gl_compatibility-bz10k-near-off.png": "601abe8c88c5667953f71fa7b84872620d3a86a2d21599cb12cb5790c20c8e99",
+          "ground-contact-map-gl_compatibility-bz2g-far-off.png": "5e3309d152e194a55ff3fc41b725440d7681517c5d30eefd2dceff2736148700",
+          "ground-contact-map-gl_compatibility-bz10k-far-on.png": "b472f9915e14b4a35f5dc4a49c7171d5ef54065e9a865e81118c079d8db24281",
+          "ground-contact-map-gl_compatibility-bz2g-near-off.png": "0a8285d681471e6f158ece7dcfc1b15edfd8580338cba29e5c266b628823575e"
+        },
+        "result": {
+          "adapter": "NVIDIA GeForce RTX 3090",
+          "checks": 30,
+          "editor": false,
+          "failures": 0,
+          "renderer": "gl_compatibility",
+          "rows": [
+            {
+              "base_materials": 18,
+              "contact_materials": 99,
+              "difference": {
+                "changed": 2172,
+                "mean": 0.0528645833333333,
+                "peak": 58
+              },
+              "distance": "near",
+              "focus": "(69.6434, 11.36386, -40.651)",
+              "map": "bz2g",
+              "object": "LeafTree00-3715",
+              "off": {
+                "cpu_median_ms": 1.00899994373322,
+                "cpu_p95_ms": 1.51300001144409,
+                "draws": 1067,
+                "gpu_median_ms": 0.518999993801117,
+                "gpu_p95_ms": 0.52700001001358,
+                "warmup_ms": 386
+              },
+              "on": {
+                "cpu_median_ms": 1.41499996185303,
+                "cpu_p95_ms": 2.04299998283386,
+                "draws": 1067,
+                "gpu_median_ms": 1.92999994754791,
+                "gpu_p95_ms": 2.22900009155273,
+                "warmup_ms": 276
+              },
+              "registered_parts": 668,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              },
+              "restored": {
+                "cpu_median_ms": 1.06599998474121,
+                "cpu_p95_ms": 1.52699995040894,
+                "draws": 1067,
+                "gpu_median_ms": 0.488000005483627,
+                "gpu_p95_ms": 0.493999987840652,
+                "warmup_ms": 195
+              },
+              "template": "nafltr56"
+            },
+            {
+              "base_materials": 18,
+              "contact_materials": 99,
+              "difference": {
+                "changed": 114,
+                "mean": 0.00245208333333333,
+                "peak": 21
+              },
+              "distance": "far",
+              "focus": "(69.6434, 11.36386, -40.651)",
+              "map": "bz2g",
+              "object": "LeafTree00-3715",
+              "off": {
+                "cpu_median_ms": 1.09700000286102,
+                "cpu_p95_ms": 1.48199999332428,
+                "draws": 1107,
+                "gpu_median_ms": 0.416000008583069,
+                "gpu_p95_ms": 0.486000001430511,
+                "warmup_ms": 193
+              },
+              "on": {
+                "cpu_median_ms": 1.60899996757507,
+                "cpu_p95_ms": 1.9210000038147,
+                "draws": 1107,
+                "gpu_median_ms": 1.91999995708466,
+                "gpu_p95_ms": 2.78800010681152,
+                "warmup_ms": 272
+              },
+              "registered_parts": 668,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              },
+              "restored": {
+                "cpu_median_ms": 1.07400000095367,
+                "cpu_p95_ms": 1.375,
+                "draws": 1107,
+                "gpu_median_ms": 0.435999989509583,
+                "gpu_p95_ms": 0.442999988794327,
+                "warmup_ms": 189
+              },
+              "template": "nafltr56"
+            },
+            {
+              "base_materials": 3,
+              "contact_materials": 72,
+              "difference": {
+                "changed": 3074,
+                "mean": 0.233285416666667,
+                "peak": 104
+              },
+              "distance": "near",
+              "focus": "(84.42931, 12.86823, -82.66885)",
+              "map": "bz10k",
+              "object": "WinterFirTree00-1090",
+              "off": {
+                "cpu_median_ms": 0.503000020980835,
+                "cpu_p95_ms": 0.657000005245209,
+                "draws": 448,
+                "gpu_median_ms": 0.523000001907349,
+                "gpu_p95_ms": 0.569000005722046,
+                "warmup_ms": 198
+              },
+              "on": {
+                "cpu_median_ms": 0.717999994754791,
+                "cpu_p95_ms": 0.998000025749207,
+                "draws": 448,
+                "gpu_median_ms": 1.96599996089935,
+                "gpu_p95_ms": 2.73900008201599,
+                "warmup_ms": 235
+              },
+              "registered_parts": 268,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              },
+              "restored": {
+                "cpu_median_ms": 0.495000004768372,
+                "cpu_p95_ms": 0.671000003814697,
+                "draws": 448,
+                "gpu_median_ms": 0.453000009059906,
+                "gpu_p95_ms": 0.500999987125397,
+                "warmup_ms": 191
+              },
+              "template": "nafltr59"
+            },
+            {
+              "base_materials": 3,
+              "contact_materials": 72,
+              "difference": {
+                "changed": 103,
+                "mean": 0.0031875,
+                "peak": 34
+              },
+              "distance": "far",
+              "focus": "(84.42931, 12.86823, -82.66885)",
+              "map": "bz10k",
+              "object": "WinterFirTree00-1090",
+              "off": {
+                "cpu_median_ms": 0.582000017166138,
+                "cpu_p95_ms": 0.716000020503998,
+                "draws": 494,
+                "gpu_median_ms": 0.384999990463257,
+                "gpu_p95_ms": 0.439000010490417,
+                "warmup_ms": 188
+              },
+              "on": {
+                "cpu_median_ms": 0.851000010967255,
+                "cpu_p95_ms": 1.01800000667572,
+                "draws": 494,
+                "gpu_median_ms": 0.703000009059906,
+                "gpu_p95_ms": 2.47300004959106,
+                "warmup_ms": 280
+              },
+              "registered_parts": 268,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              },
+              "restored": {
+                "cpu_median_ms": 0.578999996185303,
+                "cpu_p95_ms": 0.802999973297119,
+                "draws": 494,
+                "gpu_median_ms": 0.393999993801117,
+                "gpu_p95_ms": 0.439000010490417,
+                "warmup_ms": 189
+              },
+              "template": "nafltr59"
+            },
+            {
+              "base_materials": 13,
+              "contact_materials": 133,
+              "difference": {
+                "changed": 1713,
+                "mean": 0.0859083333333333,
+                "peak": 64
+              },
+              "distance": "near",
+              "focus": "(54.08064, 23.01896, -44.75)",
+              "map": "bz13h",
+              "object": "HadoganDome00-43320",
+              "off": {
+                "cpu_median_ms": 0.866999983787537,
+                "cpu_p95_ms": 1.11000001430511,
+                "draws": 780,
+                "gpu_median_ms": 0.561999976634979,
+                "gpu_p95_ms": 0.60699999332428,
+                "warmup_ms": 208
+              },
+              "on": {
+                "cpu_median_ms": 1.3289999961853,
+                "cpu_p95_ms": 1.81599998474121,
+                "draws": 780,
+                "gpu_median_ms": 2.0239999294281,
+                "gpu_p95_ms": 2.91499996185303,
+                "warmup_ms": 275
+              },
+              "registered_parts": 725,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              },
+              "restored": {
+                "cpu_median_ms": 0.912000000476837,
+                "cpu_p95_ms": 1.39999997615814,
+                "draws": 780,
+                "gpu_median_ms": 0.435999989509583,
+                "gpu_p95_ms": 0.485000014305115,
+                "warmup_ms": 193
+              },
+              "template": "stbuho39"
+            },
+            {
+              "base_materials": 13,
+              "contact_materials": 133,
+              "difference": {
+                "changed": 830,
+                "mean": 0.0352333333333333,
+                "peak": 75
+              },
+              "distance": "far",
+              "focus": "(54.08064, 23.01896, -44.75)",
+              "map": "bz13h",
+              "object": "HadoganDome00-43320",
+              "off": {
+                "cpu_median_ms": 1.38999998569489,
+                "cpu_p95_ms": 1.90199995040894,
+                "draws": 1380,
+                "gpu_median_ms": 0.515999972820282,
+                "gpu_p95_ms": 0.566999971866608,
+                "warmup_ms": 191
+              },
+              "on": {
+                "cpu_median_ms": 2.05599999427795,
+                "cpu_p95_ms": 2.55100011825562,
+                "draws": 1380,
+                "gpu_median_ms": 2.09500002861023,
+                "gpu_p95_ms": 2.71499991416931,
+                "warmup_ms": 271
+              },
+              "registered_parts": 725,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              },
+              "restored": {
+                "cpu_median_ms": 1.35699999332428,
+                "cpu_p95_ms": 1.68799996376038,
+                "draws": 1380,
+                "gpu_median_ms": 0.439000010490417,
+                "gpu_p95_ms": 0.488000005483627,
+                "warmup_ms": 192
+              },
+              "template": "stbuho39"
+            }
+          ],
+          "size": "800x600"
+        }
+      },
+      {
+        "build": "baseline",
+        "renderer": "forward_plus",
+        "test": "ground_contact_map",
+        "return_code": 0,
+        "elapsed_seconds": 27.3,
+        "errors": [],
+        "summary": [
+          "GROUND_CONTACT_MAP checks=30 failures=0"
+        ],
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-preparation/validation/baseline-forward_plus-ground_contact_map.log",
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-export/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "forward_plus",
+          "--audio-driver",
+          "Dummy",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/ground_contact.gd"
+        ],
+        "other_game_processes_at_start": "PID ELAPSED COMMAND\n3120741     364 godot-4 --headless --path . --script res://tools/verify_adventure_save.gd\n3129663       1 godot-4 --headless --path . --script res://tools/verify_first_scenario.gd",
+        "script_sha256": "cdf2937168d886e43ec8be34f338fda4ff32665d2e8eec4ea61d23363a122e0d",
+        "pack_sha256": "501fbad1e6ba8f4882594e29ad11141370efa215c4826c9bc95cbe8bdd1dcf10",
+        "png_sha256": {
+          "ground-contact-map-forward_plus-bz10k-far-restored.png": "5b94fd89e57bc63bfbdcb160ec45112656e5f4c30f1ef05b8fb3400f1cee01b4",
+          "ground-contact-map-forward_plus-bz10k-far-on.png": "e6a2eeb7bcf13daa738d6da1a88ccf1b7fd63f56f96ff3db4dcfb8d62d98db19",
+          "ground-contact-map-forward_plus-bz10k-near-off.png": "bdd34786978b8de45e35c550651488ac41b90d39b2cb901906edd6354c41c1ca",
+          "ground-contact-map-forward_plus-bz10k-far-off.png": "5b94fd89e57bc63bfbdcb160ec45112656e5f4c30f1ef05b8fb3400f1cee01b4",
+          "ground-contact-map-forward_plus-bz13h-far-off.png": "3d3d80340e62eba398a09ce8b3ca789abfb8198e74837b71b0a35686a8637ea2",
+          "ground-contact-map-forward_plus-bz13h-near-on.png": "e4bacbe1cbaafc281b0abbdca5983e95ebf21abec5e0499ab800885718badbbd",
+          "ground-contact-map-forward_plus-bz13h-near-off.png": "edfdffc34edf51eac2ad69ddd19ab23aa4cef81f7591acadcaa06021e74539b8",
+          "ground-contact-map-forward_plus-bz10k-near-on.png": "0df68ed42106091b37875482cf13ca5ebb98cac8a09701951ade4cc3c43164f0",
+          "ground-contact-map-forward_plus-bz2g-near-off.png": "114449c0cefe8c9da99d1d96f0c8f54139f98ecddd71b7bda9c49c4312ce1f32",
+          "ground-contact-map-forward_plus-bz2g-near-on.png": "e25fdd1958ad88f426b94f172181b2eecdbc5c674df6152960e3dc87e9d699a3",
+          "ground-contact-map-forward_plus-bz2g-far-restored.png": "1bce03f2ae08d42ae4101f7536bdc20709eb7e00c7d29e4b289c1b05f73a087b",
+          "ground-contact-map-forward_plus-bz13h-far-on.png": "68f1ddfb3b452e8d756ab7cac1bd469c92cca808398fdaff789b2854467f0384",
+          "ground-contact-map-forward_plus-bz2g-far-off.png": "1bce03f2ae08d42ae4101f7536bdc20709eb7e00c7d29e4b289c1b05f73a087b",
+          "ground-contact-map-forward_plus-bz2g-near-restored.png": "114449c0cefe8c9da99d1d96f0c8f54139f98ecddd71b7bda9c49c4312ce1f32",
+          "ground-contact-map-forward_plus-bz13h-far-restored.png": "3d3d80340e62eba398a09ce8b3ca789abfb8198e74837b71b0a35686a8637ea2",
+          "ground-contact-map-forward_plus-bz2g-far-on.png": "0f48191c0430a503a25bbd373713872d7d618496d302647bea9fd2e83ba09a97",
+          "ground-contact-map-forward_plus-bz13h-near-restored.png": "edfdffc34edf51eac2ad69ddd19ab23aa4cef81f7591acadcaa06021e74539b8",
+          "ground-contact-map-forward_plus-bz10k-near-restored.png": "bdd34786978b8de45e35c550651488ac41b90d39b2cb901906edd6354c41c1ca"
+        },
+        "result": {
+          "adapter": "NVIDIA GeForce RTX 3090",
+          "checks": 30,
+          "editor": false,
+          "failures": 0,
+          "renderer": "forward_plus",
+          "rows": [
+            {
+              "base_materials": 18,
+              "contact_materials": 99,
+              "difference": {
+                "changed": 2263,
+                "mean": 0.0523145833333333,
+                "peak": 59
+              },
+              "distance": "near",
+              "focus": "(69.6434, 11.36386, -40.651)",
+              "map": "bz2g",
+              "object": "LeafTree00-3715",
+              "off": {
+                "cpu_median_ms": 0.400000005960464,
+                "cpu_p95_ms": 0.50900000333786,
+                "draws": 646,
+                "gpu_median_ms": 0.811999976634979,
+                "gpu_p95_ms": 0.936999976634979,
+                "warmup_ms": 3509
+              },
+              "on": {
+                "cpu_median_ms": 0.423000007867813,
+                "cpu_p95_ms": 0.46399998664856,
+                "draws": 646,
+                "gpu_median_ms": 1.61899995803833,
+                "gpu_p95_ms": 2.04500007629395,
+                "warmup_ms": 2211
+              },
+              "registered_parts": 668,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              },
+              "restored": {
+                "cpu_median_ms": 0.363999992609024,
+                "cpu_p95_ms": 0.40200001001358,
+                "draws": 646,
+                "gpu_median_ms": 0.601999998092651,
+                "gpu_p95_ms": 0.728999972343445,
+                "warmup_ms": 183
+              },
+              "template": "nafltr56"
+            },
+            {
+              "base_materials": 18,
+              "contact_materials": 99,
+              "difference": {
+                "changed": 106,
+                "mean": 0.00240833333333333,
+                "peak": 21
+              },
+              "distance": "far",
+              "focus": "(69.6434, 11.36386, -40.651)",
+              "map": "bz2g",
+              "object": "LeafTree00-3715",
+              "off": {
+                "cpu_median_ms": 0.418000012636185,
+                "cpu_p95_ms": 0.592000007629395,
+                "draws": 860,
+                "gpu_median_ms": 0.499000012874603,
+                "gpu_p95_ms": 0.573000013828278,
+                "warmup_ms": 174
+              },
+              "on": {
+                "cpu_median_ms": 0.455000013113022,
+                "cpu_p95_ms": 0.681999981403351,
+                "draws": 860,
+                "gpu_median_ms": 0.72299998998642,
+                "gpu_p95_ms": 0.855000019073486,
+                "warmup_ms": 182
+              },
+              "registered_parts": 668,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              },
+              "restored": {
+                "cpu_median_ms": 0.407000005245209,
+                "cpu_p95_ms": 0.593999981880188,
+                "draws": 860,
+                "gpu_median_ms": 0.577000021934509,
+                "gpu_p95_ms": 0.703000009059906,
+                "warmup_ms": 179
+              },
+              "template": "nafltr56"
+            },
+            {
+              "base_materials": 3,
+              "contact_materials": 72,
+              "difference": {
+                "changed": 3454,
+                "mean": 0.210789583333333,
+                "peak": 103
+              },
+              "distance": "near",
+              "focus": "(84.42931, 12.86823, -82.66885)",
+              "map": "bz10k",
+              "object": "WinterFirTree00-1090",
+              "off": {
+                "cpu_median_ms": 0.170000001788139,
+                "cpu_p95_ms": 0.236000001430511,
+                "draws": 195,
+                "gpu_median_ms": 0.61599999666214,
+                "gpu_p95_ms": 0.731000006198883,
+                "warmup_ms": 177
+              },
+              "on": {
+                "cpu_median_ms": 0.203999996185303,
+                "cpu_p95_ms": 0.41100001335144,
+                "draws": 195,
+                "gpu_median_ms": 1.84599995613098,
+                "gpu_p95_ms": 2.47199988365173,
+                "warmup_ms": 184
+              },
+              "registered_parts": 268,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              },
+              "restored": {
+                "cpu_median_ms": 0.172000005841255,
+                "cpu_p95_ms": 0.273000001907349,
+                "draws": 195,
+                "gpu_median_ms": 0.518999993801117,
+                "gpu_p95_ms": 0.656000018119812,
+                "warmup_ms": 180
+              },
+              "template": "nafltr59"
+            },
+            {
+              "base_materials": 3,
+              "contact_materials": 72,
+              "difference": {
+                "changed": 104,
+                "mean": 0.00296666666666667,
+                "peak": 32
+              },
+              "distance": "far",
+              "focus": "(84.42931, 12.86823, -82.66885)",
+              "map": "bz10k",
+              "object": "WinterFirTree00-1090",
+              "off": {
+                "cpu_median_ms": 0.197999998927116,
+                "cpu_p95_ms": 0.239999994635582,
+                "draws": 339,
+                "gpu_median_ms": 0.433999985456467,
+                "gpu_p95_ms": 0.568000018596649,
+                "warmup_ms": 173
+              },
+              "on": {
+                "cpu_median_ms": 0.229000002145767,
+                "cpu_p95_ms": 0.36599999666214,
+                "draws": 339,
+                "gpu_median_ms": 0.643999993801117,
+                "gpu_p95_ms": 0.759999990463257,
+                "warmup_ms": 187
+              },
+              "registered_parts": 268,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              },
+              "restored": {
+                "cpu_median_ms": 0.197999998927116,
+                "cpu_p95_ms": 0.270999997854233,
+                "draws": 339,
+                "gpu_median_ms": 0.52700001001358,
+                "gpu_p95_ms": 0.643999993801117,
+                "warmup_ms": 180
+              },
+              "template": "nafltr59"
+            },
+            {
+              "base_materials": 13,
+              "contact_materials": 133,
+              "difference": {
+                "changed": 1723,
+                "mean": 0.0852479166666667,
+                "peak": 59
+              },
+              "distance": "near",
+              "focus": "(54.08064, 23.01896, -44.75)",
+              "map": "bz13h",
+              "object": "HadoganDome00-43320",
+              "off": {
+                "cpu_median_ms": 0.34799998998642,
+                "cpu_p95_ms": 0.497999995946884,
+                "draws": 430,
+                "gpu_median_ms": 0.632000029087067,
+                "gpu_p95_ms": 0.667999982833862,
+                "warmup_ms": 178
+              },
+              "on": {
+                "cpu_median_ms": 0.444999992847443,
+                "cpu_p95_ms": 0.949999988079071,
+                "draws": 430,
+                "gpu_median_ms": 1.55900001525879,
+                "gpu_p95_ms": 2.31200003623962,
+                "warmup_ms": 191
+              },
+              "registered_parts": 725,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              },
+              "restored": {
+                "cpu_median_ms": 0.444000005722046,
+                "cpu_p95_ms": 0.700999975204468,
+                "draws": 430,
+                "gpu_median_ms": 0.501999974250793,
+                "gpu_p95_ms": 0.619000017642975,
+                "warmup_ms": 180
+              },
+              "template": "stbuho39"
+            },
+            {
+              "base_materials": 13,
+              "contact_materials": 133,
+              "difference": {
+                "changed": 796,
+                "mean": 0.0333104166666667,
+                "peak": 40
+              },
+              "distance": "far",
+              "focus": "(54.08064, 23.01896, -44.75)",
+              "map": "bz13h",
+              "object": "HadoganDome00-43320",
+              "off": {
+                "cpu_median_ms": 0.552999973297119,
+                "cpu_p95_ms": 0.694999992847443,
+                "draws": 1000,
+                "gpu_median_ms": 0.505999982357025,
+                "gpu_p95_ms": 0.662000000476837,
+                "warmup_ms": 172
+              },
+              "on": {
+                "cpu_median_ms": 0.671999990940094,
+                "cpu_p95_ms": 1.14400005340576,
+                "draws": 1000,
+                "gpu_median_ms": 0.779999971389771,
+                "gpu_p95_ms": 0.88400000333786,
+                "warmup_ms": 190
+              },
+              "registered_parts": 725,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              },
+              "restored": {
+                "cpu_median_ms": 0.559000015258789,
+                "cpu_p95_ms": 0.980000019073486,
+                "draws": 1000,
+                "gpu_median_ms": 0.577000021934509,
+                "gpu_p95_ms": 0.621999979019165,
+                "warmup_ms": 182
+              },
+              "template": "stbuho39"
+            }
+          ],
+          "size": "800x600"
+        }
+      },
+      {
+        "build": "candidate",
+        "renderer": "gl_compatibility",
+        "test": "material_shader_options",
+        "return_code": 0,
+        "elapsed_seconds": 2.95,
+        "errors": [],
+        "summary": [
+          "MATERIAL_SHADER_OPTIONS checks=362 failures=0"
+        ],
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-preparation/validation-export/candidate-gl_compatibility-material_shader_options.log",
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-preparation/export/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--audio-driver",
+          "Dummy",
+          "--headless",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/material_shader_options.gd"
+        ],
+        "other_game_processes_at_start": "PID ELAPSED COMMAND\n3147165     215 godot-4 --headless --path . --script res://tools/verify_frontend.gd",
+        "script_sha256": "c531defaccb472dee140728b9cfefdaef2a94f28a22c1dd81913e71679eda223",
+        "pack_sha256": "c9273c16f0bda337d8e9ebfda4e912a270b0ef1328b1d7d33e0595b43aead7fb",
+        "png_sha256": {}
+      },
+      {
+        "build": "candidate",
+        "renderer": "gl_compatibility",
+        "test": "ground_contact",
+        "return_code": 0,
+        "elapsed_seconds": 7.36,
+        "errors": [],
+        "summary": [
+          "GROUND_CONTACT checks=35 failures=0"
+        ],
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-preparation/validation-export/candidate-gl_compatibility-ground_contact.log",
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-preparation/export/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--audio-driver",
+          "Dummy",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/ground_contact.gd"
+        ],
+        "other_game_processes_at_start": "PID ELAPSED COMMAND\n3147165     218 godot-4 --headless --path . --script res://tools/verify_frontend.gd",
+        "script_sha256": "a7b780097420ee871dae9c927e21b7a894b370bce724534e43f7afe57c2a86cd",
+        "pack_sha256": "c9273c16f0bda337d8e9ebfda4e912a270b0ef1328b1d7d33e0595b43aead7fb",
+        "png_sha256": {
+          "ground-contact-gl_compatibility-off.png": "ab48c85776c602b3a5e02ae87ba99d0932749b774761aea110fac9b4b4aaedcb",
+          "ground-contact-gl_compatibility-on.png": "d8c3c3edad0cc7cadb185fe59dd288300c28512a691ba732960583a26749de8e"
+        },
+        "result": {
+          "checks": 35,
+          "failures": 0,
+          "renderer": "gl_compatibility",
+          "rows": [
+            {
+              "case": "basic",
+              "lower": {
+                "changed": 5112,
+                "mean": 0.245912960765171,
+                "peak": 0.439215688034892
+              },
+              "upper": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0.0
+              }
+            }
+          ]
+        }
+      },
+      {
+        "build": "candidate",
+        "renderer": "forward_plus",
+        "test": "ground_contact",
+        "return_code": 0,
+        "elapsed_seconds": 8.91,
+        "errors": [],
+        "summary": [
+          "GROUND_CONTACT checks=35 failures=0"
+        ],
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-preparation/validation-export/candidate-forward_plus-ground_contact.log",
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-preparation/export/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "forward_plus",
+          "--audio-driver",
+          "Dummy",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/ground_contact.gd"
+        ],
+        "other_game_processes_at_start": "PID ELAPSED COMMAND\n3147165     226 godot-4 --headless --path . --script res://tools/verify_frontend.gd",
+        "script_sha256": "a7b780097420ee871dae9c927e21b7a894b370bce724534e43f7afe57c2a86cd",
+        "pack_sha256": "c9273c16f0bda337d8e9ebfda4e912a270b0ef1328b1d7d33e0595b43aead7fb",
+        "png_sha256": {
+          "ground-contact-forward_plus-off.png": "6d6b0e78115ea23ef0d58c01071694143d983483ae418cb4d2648887a8b4edd0",
+          "ground-contact-forward_plus-on.png": "7c8a8bf00a66c47eccd67667d75d5e557c7595510ad7e5b75cb0b93388a6261b"
+        },
+        "result": {
+          "checks": 35,
+          "failures": 0,
+          "renderer": "forward_plus",
+          "rows": [
+            {
+              "case": "basic",
+              "lower": {
+                "changed": 5083,
+                "mean": 0.239871358847315,
+                "peak": 0.419607847929001
+              },
+              "upper": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0.0
+              }
+            }
+          ]
+        }
+      },
+      {
+        "build": "candidate",
+        "renderer": "gl_compatibility",
+        "test": "ground_contact_map",
+        "return_code": 0,
+        "elapsed_seconds": 20.69,
+        "errors": [],
+        "summary": [
+          "GROUND_CONTACT_MAP checks=30 failures=0"
+        ],
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-preparation/validation-export/candidate-gl_compatibility-ground_contact_map.log",
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-preparation/export/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--audio-driver",
+          "Dummy",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/ground_contact.gd"
+        ],
+        "other_game_processes_at_start": "PID ELAPSED COMMAND\n3147165     235 godot-4 --headless --path . --script res://tools/verify_frontend.gd",
+        "script_sha256": "cdf2937168d886e43ec8be34f338fda4ff32665d2e8eec4ea61d23363a122e0d",
+        "pack_sha256": "c9273c16f0bda337d8e9ebfda4e912a270b0ef1328b1d7d33e0595b43aead7fb",
+        "png_sha256": {
+          "ground-contact-map-gl_compatibility-bz2g-near-on.png": "4f7df0b60c991cf5fbc79325f7c2031620bac82790a8993be217ddad089695c3",
+          "ground-contact-map-gl_compatibility-bz2g-far-on.png": "a91dafa259ff9066db159b035aa11458b1ae9942edded6e24e8fe67c0014f4fd",
+          "ground-contact-map-gl_compatibility-bz10k-near-on.png": "ff8b285ebccce4f745c65a9014d1a0f0b873dad5aee84c320910055012a4cced",
+          "ground-contact-map-gl_compatibility-bz13h-far-on.png": "aa03c44e59f254d6a499e56f0e783caae19006dafc9e83d287584df1606783d5",
+          "ground-contact-map-gl_compatibility-bz13h-near-restored.png": "61cc84a0d879d9401dc4c53aa319b0c82b93b10bf14478d5f5583847503585e4",
+          "ground-contact-map-gl_compatibility-bz2g-far-restored.png": "5e3309d152e194a55ff3fc41b725440d7681517c5d30eefd2dceff2736148700",
+          "ground-contact-map-gl_compatibility-bz2g-near-restored.png": "0a8285d681471e6f158ece7dcfc1b15edfd8580338cba29e5c266b628823575e",
+          "ground-contact-map-gl_compatibility-bz13h-far-off.png": "b9abb6d71579894123f7952da99584aeab2659e6f85bfca9c3764b5e2bf7d270",
+          "ground-contact-map-gl_compatibility-bz13h-near-on.png": "81ce32064557719be149b0025c39ed31f4f4f4829dceb227fa1efb56329725e7",
+          "ground-contact-map-gl_compatibility-bz10k-far-off.png": "86a7737de1c1b7ee72a5718a59b2d79407e11ff885b9810d61b8263b39f987e1",
+          "ground-contact-map-gl_compatibility-bz13h-near-off.png": "61cc84a0d879d9401dc4c53aa319b0c82b93b10bf14478d5f5583847503585e4",
+          "ground-contact-map-gl_compatibility-bz10k-near-restored.png": "601abe8c88c5667953f71fa7b84872620d3a86a2d21599cb12cb5790c20c8e99",
+          "ground-contact-map-gl_compatibility-bz10k-far-restored.png": "86a7737de1c1b7ee72a5718a59b2d79407e11ff885b9810d61b8263b39f987e1",
+          "ground-contact-map-gl_compatibility-bz13h-far-restored.png": "b9abb6d71579894123f7952da99584aeab2659e6f85bfca9c3764b5e2bf7d270",
+          "ground-contact-map-gl_compatibility-bz10k-near-off.png": "601abe8c88c5667953f71fa7b84872620d3a86a2d21599cb12cb5790c20c8e99",
+          "ground-contact-map-gl_compatibility-bz2g-far-off.png": "5e3309d152e194a55ff3fc41b725440d7681517c5d30eefd2dceff2736148700",
+          "ground-contact-map-gl_compatibility-bz10k-far-on.png": "b472f9915e14b4a35f5dc4a49c7171d5ef54065e9a865e81118c079d8db24281",
+          "ground-contact-map-gl_compatibility-bz2g-near-off.png": "0a8285d681471e6f158ece7dcfc1b15edfd8580338cba29e5c266b628823575e"
+        },
+        "result": {
+          "adapter": "NVIDIA GeForce RTX 3090",
+          "checks": 30,
+          "editor": false,
+          "failures": 0,
+          "renderer": "gl_compatibility",
+          "rows": [
+            {
+              "base_materials": 18,
+              "contact_materials": 99,
+              "difference": {
+                "changed": 2172,
+                "mean": 0.0528645833333333,
+                "peak": 58
+              },
+              "distance": "near",
+              "focus": "(69.6434, 11.36386, -40.651)",
+              "map": "bz2g",
+              "object": "LeafTree00-3715",
+              "off": {
+                "cpu_median_ms": 0.986000001430511,
+                "cpu_p95_ms": 1.33399999141693,
+                "draws": 1067,
+                "gpu_median_ms": 0.493000000715256,
+                "gpu_p95_ms": 0.549000024795532,
+                "warmup_ms": 382
+              },
+              "on": {
+                "cpu_median_ms": 1.41100001335144,
+                "cpu_p95_ms": 1.71700000762939,
+                "draws": 1067,
+                "gpu_median_ms": 2.13199996948242,
+                "gpu_p95_ms": 2.84699988365173,
+                "warmup_ms": 266
+              },
+              "registered_parts": 668,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              },
+              "restored": {
+                "cpu_median_ms": 0.985000014305115,
+                "cpu_p95_ms": 1.37300002574921,
+                "draws": 1067,
+                "gpu_median_ms": 0.474000006914139,
+                "gpu_p95_ms": 0.523000001907349,
+                "warmup_ms": 188
+              },
+              "template": "nafltr56"
+            },
+            {
+              "base_materials": 18,
+              "contact_materials": 99,
+              "difference": {
+                "changed": 114,
+                "mean": 0.00245208333333333,
+                "peak": 21
+              },
+              "distance": "far",
+              "focus": "(69.6434, 11.36386, -40.651)",
+              "map": "bz2g",
+              "object": "LeafTree00-3715",
+              "off": {
+                "cpu_median_ms": 1.05799996852875,
+                "cpu_p95_ms": 1.25699996948242,
+                "draws": 1107,
+                "gpu_median_ms": 0.398999989032745,
+                "gpu_p95_ms": 0.460999995470047,
+                "warmup_ms": 188
+              },
+              "on": {
+                "cpu_median_ms": 1.50399994850159,
+                "cpu_p95_ms": 1.85899996757507,
+                "draws": 1107,
+                "gpu_median_ms": 0.694999992847443,
+                "gpu_p95_ms": 1.66100001335144,
+                "warmup_ms": 261
+              },
+              "registered_parts": 668,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              },
+              "restored": {
+                "cpu_median_ms": 1.06500005722046,
+                "cpu_p95_ms": 1.30499994754791,
+                "draws": 1107,
+                "gpu_median_ms": 0.495000004768372,
+                "gpu_p95_ms": 0.533999979496002,
+                "warmup_ms": 189
+              },
+              "template": "nafltr56"
+            },
+            {
+              "base_materials": 3,
+              "contact_materials": 72,
+              "difference": {
+                "changed": 3074,
+                "mean": 0.233285416666667,
+                "peak": 104
+              },
+              "distance": "near",
+              "focus": "(84.42931, 12.86823, -82.66885)",
+              "map": "bz10k",
+              "object": "WinterFirTree00-1090",
+              "off": {
+                "cpu_median_ms": 0.455000013113022,
+                "cpu_p95_ms": 0.556999981403351,
+                "draws": 448,
+                "gpu_median_ms": 0.546000003814697,
+                "gpu_p95_ms": 0.583999991416931,
+                "warmup_ms": 195
+              },
+              "on": {
+                "cpu_median_ms": 0.697000026702881,
+                "cpu_p95_ms": 0.822000026702881,
+                "draws": 448,
+                "gpu_median_ms": 2.6340000629425,
+                "gpu_p95_ms": 3.27900004386902,
+                "warmup_ms": 224
+              },
+              "registered_parts": 268,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              },
+              "restored": {
+                "cpu_median_ms": 0.504999995231628,
+                "cpu_p95_ms": 0.648000001907349,
+                "draws": 448,
+                "gpu_median_ms": 0.386999994516373,
+                "gpu_p95_ms": 0.425000011920929,
+                "warmup_ms": 187
+              },
+              "template": "nafltr59"
+            },
+            {
+              "base_materials": 3,
+              "contact_materials": 72,
+              "difference": {
+                "changed": 103,
+                "mean": 0.0031875,
+                "peak": 34
+              },
+              "distance": "far",
+              "focus": "(84.42931, 12.86823, -82.66885)",
+              "map": "bz10k",
+              "object": "WinterFirTree00-1090",
+              "off": {
+                "cpu_median_ms": 0.563000023365021,
+                "cpu_p95_ms": 0.732999980449677,
+                "draws": 494,
+                "gpu_median_ms": 0.324999988079071,
+                "gpu_p95_ms": 0.331999987363815,
+                "warmup_ms": 193
+              },
+              "on": {
+                "cpu_median_ms": 0.824000000953674,
+                "cpu_p95_ms": 0.907000005245209,
+                "draws": 494,
+                "gpu_median_ms": 0.592999994754791,
+                "gpu_p95_ms": 0.606000006198883,
+                "warmup_ms": 265
+              },
+              "registered_parts": 268,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              },
+              "restored": {
+                "cpu_median_ms": 0.583999991416931,
+                "cpu_p95_ms": 0.637000024318695,
+                "draws": 494,
+                "gpu_median_ms": 0.426999986171722,
+                "gpu_p95_ms": 0.43299999833107,
+                "warmup_ms": 191
+              },
+              "template": "nafltr59"
+            },
+            {
+              "base_materials": 13,
+              "contact_materials": 133,
+              "difference": {
+                "changed": 1713,
+                "mean": 0.0859083333333333,
+                "peak": 64
+              },
+              "distance": "near",
+              "focus": "(54.08064, 23.01896, -44.75)",
+              "map": "bz13h",
+              "object": "HadoganDome00-43320",
+              "off": {
+                "cpu_median_ms": 0.89300000667572,
+                "cpu_p95_ms": 1.02699995040894,
+                "draws": 780,
+                "gpu_median_ms": 0.561999976634979,
+                "gpu_p95_ms": 0.589999973773956,
+                "warmup_ms": 210
+              },
+              "on": {
+                "cpu_median_ms": 1.28299999237061,
+                "cpu_p95_ms": 1.48000001907349,
+                "draws": 780,
+                "gpu_median_ms": 2.2960000038147,
+                "gpu_p95_ms": 3.17000007629395,
+                "warmup_ms": 259
+              },
+              "registered_parts": 725,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              },
+              "restored": {
+                "cpu_median_ms": 0.897000014781952,
+                "cpu_p95_ms": 1.07599997520447,
+                "draws": 780,
+                "gpu_median_ms": 0.397000014781952,
+                "gpu_p95_ms": 0.400999993085861,
+                "warmup_ms": 195
+              },
+              "template": "stbuho39"
+            },
+            {
+              "base_materials": 13,
+              "contact_materials": 133,
+              "difference": {
+                "changed": 830,
+                "mean": 0.0352333333333333,
+                "peak": 75
+              },
+              "distance": "far",
+              "focus": "(54.08064, 23.01896, -44.75)",
+              "map": "bz13h",
+              "object": "HadoganDome00-43320",
+              "off": {
+                "cpu_median_ms": 1.32299995422363,
+                "cpu_p95_ms": 1.63399994373322,
+                "draws": 1380,
+                "gpu_median_ms": 0.407000005245209,
+                "gpu_p95_ms": 0.495999991893768,
+                "warmup_ms": 190
+              },
+              "on": {
+                "cpu_median_ms": 1.94000005722046,
+                "cpu_p95_ms": 2.16400003433228,
+                "draws": 1380,
+                "gpu_median_ms": 0.75900000333786,
+                "gpu_p95_ms": 2.06399989128113,
+                "warmup_ms": 257
+              },
+              "registered_parts": 725,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              },
+              "restored": {
+                "cpu_median_ms": 1.32099997997284,
+                "cpu_p95_ms": 1.48300004005432,
+                "draws": 1380,
+                "gpu_median_ms": 0.488000005483627,
+                "gpu_p95_ms": 0.499000012874603,
+                "warmup_ms": 196
+              },
+              "template": "stbuho39"
+            }
+          ],
+          "size": "800x600"
+        }
+      },
+      {
+        "build": "candidate",
+        "renderer": "forward_plus",
+        "test": "ground_contact_map",
+        "return_code": 0,
+        "elapsed_seconds": 24.84,
+        "errors": [],
+        "summary": [
+          "GROUND_CONTACT_MAP checks=30 failures=0"
+        ],
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-preparation/validation-export/candidate-forward_plus-ground_contact_map.log",
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-preparation/export/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "forward_plus",
+          "--audio-driver",
+          "Dummy",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/ground_contact.gd"
+        ],
+        "other_game_processes_at_start": "PID ELAPSED COMMAND\n3147165     255 godot-4 --headless --path . --script res://tools/verify_frontend.gd",
+        "script_sha256": "cdf2937168d886e43ec8be34f338fda4ff32665d2e8eec4ea61d23363a122e0d",
+        "pack_sha256": "c9273c16f0bda337d8e9ebfda4e912a270b0ef1328b1d7d33e0595b43aead7fb",
+        "png_sha256": {
+          "ground-contact-map-forward_plus-bz10k-far-restored.png": "5b94fd89e57bc63bfbdcb160ec45112656e5f4c30f1ef05b8fb3400f1cee01b4",
+          "ground-contact-map-forward_plus-bz10k-far-on.png": "e6a2eeb7bcf13daa738d6da1a88ccf1b7fd63f56f96ff3db4dcfb8d62d98db19",
+          "ground-contact-map-forward_plus-bz10k-near-off.png": "bdd34786978b8de45e35c550651488ac41b90d39b2cb901906edd6354c41c1ca",
+          "ground-contact-map-forward_plus-bz10k-far-off.png": "5b94fd89e57bc63bfbdcb160ec45112656e5f4c30f1ef05b8fb3400f1cee01b4",
+          "ground-contact-map-forward_plus-bz13h-far-off.png": "3d3d80340e62eba398a09ce8b3ca789abfb8198e74837b71b0a35686a8637ea2",
+          "ground-contact-map-forward_plus-bz13h-near-on.png": "e4bacbe1cbaafc281b0abbdca5983e95ebf21abec5e0499ab800885718badbbd",
+          "ground-contact-map-forward_plus-bz13h-near-off.png": "edfdffc34edf51eac2ad69ddd19ab23aa4cef81f7591acadcaa06021e74539b8",
+          "ground-contact-map-forward_plus-bz10k-near-on.png": "0df68ed42106091b37875482cf13ca5ebb98cac8a09701951ade4cc3c43164f0",
+          "ground-contact-map-forward_plus-bz2g-near-off.png": "114449c0cefe8c9da99d1d96f0c8f54139f98ecddd71b7bda9c49c4312ce1f32",
+          "ground-contact-map-forward_plus-bz2g-near-on.png": "e25fdd1958ad88f426b94f172181b2eecdbc5c674df6152960e3dc87e9d699a3",
+          "ground-contact-map-forward_plus-bz2g-far-restored.png": "1bce03f2ae08d42ae4101f7536bdc20709eb7e00c7d29e4b289c1b05f73a087b",
+          "ground-contact-map-forward_plus-bz13h-far-on.png": "68f1ddfb3b452e8d756ab7cac1bd469c92cca808398fdaff789b2854467f0384",
+          "ground-contact-map-forward_plus-bz2g-far-off.png": "1bce03f2ae08d42ae4101f7536bdc20709eb7e00c7d29e4b289c1b05f73a087b",
+          "ground-contact-map-forward_plus-bz2g-near-restored.png": "114449c0cefe8c9da99d1d96f0c8f54139f98ecddd71b7bda9c49c4312ce1f32",
+          "ground-contact-map-forward_plus-bz13h-far-restored.png": "3d3d80340e62eba398a09ce8b3ca789abfb8198e74837b71b0a35686a8637ea2",
+          "ground-contact-map-forward_plus-bz2g-far-on.png": "0f48191c0430a503a25bbd373713872d7d618496d302647bea9fd2e83ba09a97",
+          "ground-contact-map-forward_plus-bz13h-near-restored.png": "edfdffc34edf51eac2ad69ddd19ab23aa4cef81f7591acadcaa06021e74539b8",
+          "ground-contact-map-forward_plus-bz10k-near-restored.png": "bdd34786978b8de45e35c550651488ac41b90d39b2cb901906edd6354c41c1ca"
+        },
+        "result": {
+          "adapter": "NVIDIA GeForce RTX 3090",
+          "checks": 30,
+          "editor": false,
+          "failures": 0,
+          "renderer": "forward_plus",
+          "rows": [
+            {
+              "base_materials": 18,
+              "contact_materials": 99,
+              "difference": {
+                "changed": 2263,
+                "mean": 0.0523145833333333,
+                "peak": 59
+              },
+              "distance": "near",
+              "focus": "(69.6434, 11.36386, -40.651)",
+              "map": "bz2g",
+              "object": "LeafTree00-3715",
+              "off": {
+                "cpu_median_ms": 0.361999988555908,
+                "cpu_p95_ms": 0.46900001168251,
+                "draws": 646,
+                "gpu_median_ms": 0.797999978065491,
+                "gpu_p95_ms": 0.898000001907349,
+                "warmup_ms": 3450
+              },
+              "on": {
+                "cpu_median_ms": 0.407000005245209,
+                "cpu_p95_ms": 0.485000014305115,
+                "draws": 646,
+                "gpu_median_ms": 1.83800005912781,
+                "gpu_p95_ms": 2.2279999256134,
+                "warmup_ms": 2192
+              },
+              "registered_parts": 668,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              },
+              "restored": {
+                "cpu_median_ms": 0.33500000834465,
+                "cpu_p95_ms": 0.40200001001358,
+                "draws": 646,
+                "gpu_median_ms": 0.597000002861023,
+                "gpu_p95_ms": 0.691999971866608,
+                "warmup_ms": 188
+              },
+              "template": "nafltr56"
+            },
+            {
+              "base_materials": 18,
+              "contact_materials": 99,
+              "difference": {
+                "changed": 106,
+                "mean": 0.00240833333333333,
+                "peak": 21
+              },
+              "distance": "far",
+              "focus": "(69.6434, 11.36386, -40.651)",
+              "map": "bz2g",
+              "object": "LeafTree00-3715",
+              "off": {
+                "cpu_median_ms": 0.375,
+                "cpu_p95_ms": 0.486999988555908,
+                "draws": 860,
+                "gpu_median_ms": 0.493000000715256,
+                "gpu_p95_ms": 0.519999980926514,
+                "warmup_ms": 178
+              },
+              "on": {
+                "cpu_median_ms": 0.426999986171722,
+                "cpu_p95_ms": 0.550000011920929,
+                "draws": 860,
+                "gpu_median_ms": 0.748000025749207,
+                "gpu_p95_ms": 0.760999977588654,
+                "warmup_ms": 185
+              },
+              "registered_parts": 668,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              },
+              "restored": {
+                "cpu_median_ms": 0.36599999666214,
+                "cpu_p95_ms": 0.38400000333786,
+                "draws": 860,
+                "gpu_median_ms": 0.569999992847443,
+                "gpu_p95_ms": 0.626999974250793,
+                "warmup_ms": 177
+              },
+              "template": "nafltr56"
+            },
+            {
+              "base_materials": 3,
+              "contact_materials": 72,
+              "difference": {
+                "changed": 3454,
+                "mean": 0.210789583333333,
+                "peak": 103
+              },
+              "distance": "near",
+              "focus": "(84.42931, 12.86823, -82.66885)",
+              "map": "bz10k",
+              "object": "WinterFirTree00-1090",
+              "off": {
+                "cpu_median_ms": 0.158999994397163,
+                "cpu_p95_ms": 0.180999994277954,
+                "draws": 195,
+                "gpu_median_ms": 0.600000023841858,
+                "gpu_p95_ms": 0.637000024318695,
+                "warmup_ms": 179
+              },
+              "on": {
+                "cpu_median_ms": 0.187000006437302,
+                "cpu_p95_ms": 0.261999994516373,
+                "draws": 195,
+                "gpu_median_ms": 2.07699990272522,
+                "gpu_p95_ms": 2.36100006103516,
+                "warmup_ms": 185
+              },
+              "registered_parts": 268,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              },
+              "restored": {
+                "cpu_median_ms": 0.165999993681908,
+                "cpu_p95_ms": 0.200000002980232,
+                "draws": 195,
+                "gpu_median_ms": 0.517000019550323,
+                "gpu_p95_ms": 0.550000011920929,
+                "warmup_ms": 173
+              },
+              "template": "nafltr59"
+            },
+            {
+              "base_materials": 3,
+              "contact_materials": 72,
+              "difference": {
+                "changed": 104,
+                "mean": 0.00296666666666667,
+                "peak": 32
+              },
+              "distance": "far",
+              "focus": "(84.42931, 12.86823, -82.66885)",
+              "map": "bz10k",
+              "object": "WinterFirTree00-1090",
+              "off": {
+                "cpu_median_ms": 0.199000000953674,
+                "cpu_p95_ms": 0.256000012159348,
+                "draws": 339,
+                "gpu_median_ms": 0.430000007152557,
+                "gpu_p95_ms": 0.493000000715256,
+                "warmup_ms": 171
+              },
+              "on": {
+                "cpu_median_ms": 0.231000006198883,
+                "cpu_p95_ms": 0.31700000166893,
+                "draws": 339,
+                "gpu_median_ms": 0.672999978065491,
+                "gpu_p95_ms": 0.794000029563904,
+                "warmup_ms": 183
+              },
+              "registered_parts": 268,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              },
+              "restored": {
+                "cpu_median_ms": 0.202000007033348,
+                "cpu_p95_ms": 0.261000007390976,
+                "draws": 339,
+                "gpu_median_ms": 0.523999989032745,
+                "gpu_p95_ms": 0.558000028133392,
+                "warmup_ms": 180
+              },
+              "template": "nafltr59"
+            },
+            {
+              "base_materials": 13,
+              "contact_materials": 133,
+              "difference": {
+                "changed": 1723,
+                "mean": 0.0852479166666667,
+                "peak": 59
+              },
+              "distance": "near",
+              "focus": "(54.08064, 23.01896, -44.75)",
+              "map": "bz13h",
+              "object": "HadoganDome00-43320",
+              "off": {
+                "cpu_median_ms": 0.330000013113022,
+                "cpu_p95_ms": 0.428000003099442,
+                "draws": 430,
+                "gpu_median_ms": 0.629000008106232,
+                "gpu_p95_ms": 0.703000009059906,
+                "warmup_ms": 182
+              },
+              "on": {
+                "cpu_median_ms": 0.368000000715256,
+                "cpu_p95_ms": 0.428000003099442,
+                "draws": 430,
+                "gpu_median_ms": 1.87600004673004,
+                "gpu_p95_ms": 2.16000008583069,
+                "warmup_ms": 191
+              },
+              "registered_parts": 725,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              },
+              "restored": {
+                "cpu_median_ms": 0.331999987363815,
+                "cpu_p95_ms": 0.437000006437302,
+                "draws": 430,
+                "gpu_median_ms": 0.497000008821487,
+                "gpu_p95_ms": 0.626999974250793,
+                "warmup_ms": 173
+              },
+              "template": "stbuho39"
+            },
+            {
+              "base_materials": 13,
+              "contact_materials": 133,
+              "difference": {
+                "changed": 796,
+                "mean": 0.0333104166666667,
+                "peak": 40
+              },
+              "distance": "far",
+              "focus": "(54.08064, 23.01896, -44.75)",
+              "map": "bz13h",
+              "object": "HadoganDome00-43320",
+              "off": {
+                "cpu_median_ms": 0.500999987125397,
+                "cpu_p95_ms": 0.603999972343445,
+                "draws": 1000,
+                "gpu_median_ms": 0.504000008106232,
+                "gpu_p95_ms": 0.671999990940094,
+                "warmup_ms": 180
+              },
+              "on": {
+                "cpu_median_ms": 0.592000007629395,
+                "cpu_p95_ms": 0.643999993801117,
+                "draws": 1000,
+                "gpu_median_ms": 0.841000020503998,
+                "gpu_p95_ms": 0.938000023365021,
+                "warmup_ms": 187
+              },
+              "registered_parts": 725,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              },
+              "restored": {
+                "cpu_median_ms": 0.522000014781952,
+                "cpu_p95_ms": 0.596000015735626,
+                "draws": 1000,
+                "gpu_median_ms": 0.564999997615814,
+                "gpu_p95_ms": 0.611999988555908,
+                "warmup_ms": 181
+              },
+              "template": "stbuho39"
+            }
+          ],
+          "size": "800x600"
+        }
+      }
+    ],
+    "comparisons": [
+      {
+        "renderer": "gl_compatibility",
+        "all_pngs_identical": true,
+        "files": 18
+      },
+      {
+        "renderer": "forward_plus",
+        "all_pngs_identical": true,
+        "files": 18
+      }
+    ]
+  },
+  "initial_cold_experiments": [
+    {
+      "variant": "baseline",
+      "metadata": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-export/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--contact-map=bz2g",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/ground_contact.gd"
+        ],
+        "return_code": 0,
+        "elapsed_seconds": 32.11815916700289,
+        "other_game_processes": "    PID ELAPSED COMMAND\n",
+        "driver_cache_files": 5,
+        "engine_cache_files": 12
+      },
+      "rows_from_original_cold_log": [
+        {
+          "base_materials": 18,
+          "contact_materials": 99,
+          "difference": {
+            "changed": 2172,
+            "mean": 0.0528645833333333,
+            "peak": 58
+          },
+          "distance": "near",
+          "focus": "(69.6434, 11.36386, -40.651)",
+          "map": "bz2g",
+          "object": "LeafTree00-3715",
+          "off": {
+            "cpu_median_ms": 0.970000028610229,
+            "cpu_p95_ms": 1.13300001621246,
+            "draws": 1067,
+            "gpu_median_ms": 0.679000020027161,
+            "gpu_p95_ms": 2.39199995994568,
+            "warmup_ms": 6571
+          },
+          "on": {
+            "cpu_median_ms": 1.47200000286102,
+            "cpu_p95_ms": 2.39000010490417,
+            "draws": 1067,
+            "gpu_median_ms": 2.33400011062622,
+            "gpu_p95_ms": 4.12599992752075,
+            "warmup_ms": 16614
+          },
+          "registered_parts": 668,
+          "restoration": {
+            "changed": 0,
+            "mean": 0.0,
+            "peak": 0
+          },
+          "restored": {
+            "cpu_median_ms": 0.967999994754791,
+            "cpu_p95_ms": 1.04999995231628,
+            "draws": 1067,
+            "gpu_median_ms": 0.504999995231628,
+            "gpu_p95_ms": 0.513000011444092,
+            "warmup_ms": 189
+          },
+          "template": "nafltr56"
+        },
+        {
+          "base_materials": 18,
+          "contact_materials": 99,
+          "difference": {
+            "changed": 114,
+            "mean": 0.00245208333333333,
+            "peak": 21
+          },
+          "distance": "far",
+          "focus": "(69.6434, 11.36386, -40.651)",
+          "map": "bz2g",
+          "object": "LeafTree00-3715",
+          "off": {
+            "cpu_median_ms": 1.04900002479553,
+            "cpu_p95_ms": 1.21800005435944,
+            "draws": 1107,
+            "gpu_median_ms": 0.428999990224838,
+            "gpu_p95_ms": 0.492000013589859,
+            "warmup_ms": 195
+          },
+          "on": {
+            "cpu_median_ms": 1.50399994850159,
+            "cpu_p95_ms": 1.69400000572205,
+            "draws": 1107,
+            "gpu_median_ms": 1.94799995422363,
+            "gpu_p95_ms": 2.46900010108948,
+            "warmup_ms": 272
+          },
+          "registered_parts": 668,
+          "restoration": {
+            "changed": 0,
+            "mean": 0.0,
+            "peak": 0
+          },
+          "restored": {
+            "cpu_median_ms": 1.04900002479553,
+            "cpu_p95_ms": 1.21099996566772,
+            "draws": 1107,
+            "gpu_median_ms": 0.449000000953674,
+            "gpu_p95_ms": 0.488999992609024,
+            "warmup_ms": 196
+          },
+          "template": "nafltr56"
+        }
+      ],
+      "summary": [
+        "GROUND_CONTACT_MAP checks=10 failures=0"
+      ],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-preparation/control-cold/run.log",
+      "log_sha256": "91a7ee04b194a00ddf489f018d5afe49f1427fcbb5abc07f33a9651f3be24d99",
+      "cache_initialization": "New isolated engine/driver directories; initial file counts and end-of-run process snapshot were not captured in this exploratory runner."
+    },
+    {
+      "variant": "projection",
+      "metadata": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-preparation/export/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--contact-map=bz2g",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/ground_contact.gd"
+        ],
+        "return_code": 0,
+        "elapsed_seconds": 28.210903191007674,
+        "other_game_processes": "    PID ELAPSED COMMAND\n",
+        "driver_cache_files": 5,
+        "engine_cache_files": 12
+      },
+      "rows_from_original_cold_log": [
+        {
+          "base_materials": 18,
+          "contact_materials": 99,
+          "difference": {
+            "changed": 2172,
+            "mean": 0.0528645833333333,
+            "peak": 58
+          },
+          "distance": "near",
+          "focus": "(69.6434, 11.36386, -40.651)",
+          "map": "bz2g",
+          "object": "LeafTree00-3715",
+          "off": {
+            "cpu_median_ms": 0.958000004291534,
+            "cpu_p95_ms": 1.14699995517731,
+            "draws": 1067,
+            "gpu_median_ms": 1.69700002670288,
+            "gpu_p95_ms": 3.21199989318848,
+            "warmup_ms": 6540
+          },
+          "on": {
+            "cpu_median_ms": 1.44500005245209,
+            "cpu_p95_ms": 1.82700002193451,
+            "draws": 1067,
+            "gpu_median_ms": 2.39199995994568,
+            "gpu_p95_ms": 4.54899978637695,
+            "warmup_ms": 12673
+          },
+          "registered_parts": 668,
+          "restoration": {
+            "changed": 0,
+            "mean": 0.0,
+            "peak": 0
+          },
+          "restored": {
+            "cpu_median_ms": 0.998000025749207,
+            "cpu_p95_ms": 1.13300001621246,
+            "draws": 1067,
+            "gpu_median_ms": 0.467000007629395,
+            "gpu_p95_ms": 0.509999990463257,
+            "warmup_ms": 187
+          },
+          "template": "nafltr56"
+        },
+        {
+          "base_materials": 18,
+          "contact_materials": 99,
+          "difference": {
+            "changed": 114,
+            "mean": 0.00245208333333333,
+            "peak": 21
+          },
+          "distance": "far",
+          "focus": "(69.6434, 11.36386, -40.651)",
+          "map": "bz2g",
+          "object": "LeafTree00-3715",
+          "off": {
+            "cpu_median_ms": 1.05099999904633,
+            "cpu_p95_ms": 1.46700000762939,
+            "draws": 1107,
+            "gpu_median_ms": 0.395999997854233,
+            "gpu_p95_ms": 0.444999992847443,
+            "warmup_ms": 189
+          },
+          "on": {
+            "cpu_median_ms": 1.52799999713898,
+            "cpu_p95_ms": 1.84300005435944,
+            "draws": 1107,
+            "gpu_median_ms": 0.688000023365021,
+            "gpu_p95_ms": 0.745999991893768,
+            "warmup_ms": 259
+          },
+          "registered_parts": 668,
+          "restoration": {
+            "changed": 0,
+            "mean": 0.0,
+            "peak": 0
+          },
+          "restored": {
+            "cpu_median_ms": 1.07500004768372,
+            "cpu_p95_ms": 1.34500002861023,
+            "draws": 1107,
+            "gpu_median_ms": 0.483999997377396,
+            "gpu_p95_ms": 0.521000027656555,
+            "warmup_ms": 189
+          },
+          "template": "nafltr56"
+        }
+      ],
+      "summary": [
+        "GROUND_CONTACT_MAP checks=10 failures=0"
+      ],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-preparation/candidate-cold/run.log",
+      "log_sha256": "17d8dcfddfd2a66667329ed6765f6509a8934dcab5ac30b30311f164d7aa11e2",
+      "cache_initialization": "New isolated engine/driver directories; initial file counts and end-of-run process snapshot were not captured in this exploratory runner."
+    }
+  ],
+  "alternating_warm_runs": [
+    {
+      "variant": "baseline",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--contact-map=bz2g",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/ground_contact.gd"
+      ],
+      "pack_sha256": "501fbad1e6ba8f4882594e29ad11141370efa215c4826c9bc95cbe8bdd1dcf10",
+      "return_code": 0,
+      "errors": [],
+      "other_processes_before": "PID ELAPSED COMMAND",
+      "other_processes_after": "PID ELAPSED COMMAND",
+      "result": {
+        "adapter": "NVIDIA GeForce RTX 3090",
+        "checks": 10,
+        "editor": false,
+        "failures": 0,
+        "renderer": "gl_compatibility",
+        "rows": [
+          {
+            "base_materials": 18,
+            "contact_materials": 99,
+            "difference": {
+              "changed": 2172,
+              "mean": 0.0528645833333333,
+              "peak": 58
+            },
+            "distance": "near",
+            "focus": "(69.6434, 11.36386, -40.651)",
+            "map": "bz2g",
+            "object": "LeafTree00-3715",
+            "off": {
+              "cpu_median_ms": 1.01999998092651,
+              "cpu_p95_ms": 1.42799997329712,
+              "draws": 1067,
+              "gpu_median_ms": 0.523000001907349,
+              "gpu_p95_ms": 0.574999988079071,
+              "warmup_ms": 389
+            },
+            "on": {
+              "cpu_median_ms": 1.442999958992,
+              "cpu_p95_ms": 1.68299996852875,
+              "draws": 1067,
+              "gpu_median_ms": 1.91499996185303,
+              "gpu_p95_ms": 3.02300000190735,
+              "warmup_ms": 272
+            },
+            "registered_parts": 668,
+            "restoration": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0
+            },
+            "restored": {
+              "cpu_median_ms": 0.959999978542328,
+              "cpu_p95_ms": 1.15799999237061,
+              "draws": 1067,
+              "gpu_median_ms": 0.488999992609024,
+              "gpu_p95_ms": 0.541000008583069,
+              "warmup_ms": 193
+            },
+            "template": "nafltr56"
+          },
+          {
+            "base_materials": 18,
+            "contact_materials": 99,
+            "difference": {
+              "changed": 114,
+              "mean": 0.00245208333333333,
+              "peak": 21
+            },
+            "distance": "far",
+            "focus": "(69.6434, 11.36386, -40.651)",
+            "map": "bz2g",
+            "object": "LeafTree00-3715",
+            "off": {
+              "cpu_median_ms": 1.10899996757507,
+              "cpu_p95_ms": 1.44700002670288,
+              "draws": 1107,
+              "gpu_median_ms": 0.416999995708466,
+              "gpu_p95_ms": 0.492000013589859,
+              "warmup_ms": 188
+            },
+            "on": {
+              "cpu_median_ms": 1.51400005817413,
+              "cpu_p95_ms": 1.76400005817413,
+              "draws": 1107,
+              "gpu_median_ms": 1.89999997615814,
+              "gpu_p95_ms": 2.34100008010864,
+              "warmup_ms": 274
+            },
+            "registered_parts": 668,
+            "restoration": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0
+            },
+            "restored": {
+              "cpu_median_ms": 1.08800005912781,
+              "cpu_p95_ms": 1.44200003147125,
+              "draws": 1107,
+              "gpu_median_ms": 0.441000014543533,
+              "gpu_p95_ms": 0.474000006914139,
+              "warmup_ms": 188
+            },
+            "template": "nafltr56"
+          }
+        ],
+        "size": "800x600"
+      },
+      "png_sha256": {
+        "ground-contact-map-gl_compatibility-bz2g-near-on.png": "4f7df0b60c991cf5fbc79325f7c2031620bac82790a8993be217ddad089695c3",
+        "ground-contact-map-gl_compatibility-bz2g-far-on.png": "a91dafa259ff9066db159b035aa11458b1ae9942edded6e24e8fe67c0014f4fd",
+        "ground-contact-map-gl_compatibility-bz2g-far-restored.png": "5e3309d152e194a55ff3fc41b725440d7681517c5d30eefd2dceff2736148700",
+        "ground-contact-map-gl_compatibility-bz2g-near-restored.png": "0a8285d681471e6f158ece7dcfc1b15edfd8580338cba29e5c266b628823575e",
+        "ground-contact-map-gl_compatibility-bz2g-far-off.png": "5e3309d152e194a55ff3fc41b725440d7681517c5d30eefd2dceff2736148700",
+        "ground-contact-map-gl_compatibility-bz2g-near-off.png": "0a8285d681471e6f158ece7dcfc1b15edfd8580338cba29e5c266b628823575e"
+      }
+    },
+    {
+      "variant": "projection",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-preparation/export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--contact-map=bz2g",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/ground_contact.gd"
+      ],
+      "pack_sha256": "c9273c16f0bda337d8e9ebfda4e912a270b0ef1328b1d7d33e0595b43aead7fb",
+      "return_code": 0,
+      "errors": [],
+      "other_processes_before": "PID ELAPSED COMMAND",
+      "other_processes_after": "PID ELAPSED COMMAND",
+      "result": {
+        "adapter": "NVIDIA GeForce RTX 3090",
+        "checks": 10,
+        "editor": false,
+        "failures": 0,
+        "renderer": "gl_compatibility",
+        "rows": [
+          {
+            "base_materials": 18,
+            "contact_materials": 99,
+            "difference": {
+              "changed": 2172,
+              "mean": 0.0528645833333333,
+              "peak": 58
+            },
+            "distance": "near",
+            "focus": "(69.6434, 11.36386, -40.651)",
+            "map": "bz2g",
+            "object": "LeafTree00-3715",
+            "off": {
+              "cpu_median_ms": 1.19099998474121,
+              "cpu_p95_ms": 1.89100003242493,
+              "draws": 1067,
+              "gpu_median_ms": 0.528999984264374,
+              "gpu_p95_ms": 0.564000010490417,
+              "warmup_ms": 408
+            },
+            "on": {
+              "cpu_median_ms": 1.51699995994568,
+              "cpu_p95_ms": 2.30699992179871,
+              "draws": 1067,
+              "gpu_median_ms": 2.07699990272522,
+              "gpu_p95_ms": 3.16799998283386,
+              "warmup_ms": 264
+            },
+            "registered_parts": 668,
+            "restoration": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0
+            },
+            "restored": {
+              "cpu_median_ms": 0.989000022411346,
+              "cpu_p95_ms": 1.2610000371933,
+              "draws": 1067,
+              "gpu_median_ms": 0.474000006914139,
+              "gpu_p95_ms": 0.483000010251999,
+              "warmup_ms": 194
+            },
+            "template": "nafltr56"
+          },
+          {
+            "base_materials": 18,
+            "contact_materials": 99,
+            "difference": {
+              "changed": 114,
+              "mean": 0.00245208333333333,
+              "peak": 21
+            },
+            "distance": "far",
+            "focus": "(69.6434, 11.36386, -40.651)",
+            "map": "bz2g",
+            "object": "LeafTree00-3715",
+            "off": {
+              "cpu_median_ms": 1.08399999141693,
+              "cpu_p95_ms": 1.22000002861023,
+              "draws": 1107,
+              "gpu_median_ms": 0.398999989032745,
+              "gpu_p95_ms": 0.493000000715256,
+              "warmup_ms": 191
+            },
+            "on": {
+              "cpu_median_ms": 1.57299995422363,
+              "cpu_p95_ms": 1.99199998378754,
+              "draws": 1107,
+              "gpu_median_ms": 0.685000002384186,
+              "gpu_p95_ms": 0.716000020503998,
+              "warmup_ms": 258
+            },
+            "registered_parts": 668,
+            "restoration": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0
+            },
+            "restored": {
+              "cpu_median_ms": 1.15400004386902,
+              "cpu_p95_ms": 1.67900002002716,
+              "draws": 1107,
+              "gpu_median_ms": 0.486999988555908,
+              "gpu_p95_ms": 0.493000000715256,
+              "warmup_ms": 188
+            },
+            "template": "nafltr56"
+          }
+        ],
+        "size": "800x600"
+      },
+      "png_sha256": {
+        "ground-contact-map-gl_compatibility-bz2g-near-on.png": "4f7df0b60c991cf5fbc79325f7c2031620bac82790a8993be217ddad089695c3",
+        "ground-contact-map-gl_compatibility-bz2g-far-on.png": "a91dafa259ff9066db159b035aa11458b1ae9942edded6e24e8fe67c0014f4fd",
+        "ground-contact-map-gl_compatibility-bz2g-far-restored.png": "5e3309d152e194a55ff3fc41b725440d7681517c5d30eefd2dceff2736148700",
+        "ground-contact-map-gl_compatibility-bz2g-near-restored.png": "0a8285d681471e6f158ece7dcfc1b15edfd8580338cba29e5c266b628823575e",
+        "ground-contact-map-gl_compatibility-bz2g-far-off.png": "5e3309d152e194a55ff3fc41b725440d7681517c5d30eefd2dceff2736148700",
+        "ground-contact-map-gl_compatibility-bz2g-near-off.png": "0a8285d681471e6f158ece7dcfc1b15edfd8580338cba29e5c266b628823575e"
+      }
+    },
+    {
+      "variant": "both",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-preparation/export-taps/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--contact-map=bz2g",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/ground_contact.gd"
+      ],
+      "pack_sha256": "e5a2d9cae82e83f9222f4969f9b1ce6e308590ec144d51b7269e06f03bc6432d",
+      "return_code": 0,
+      "errors": [],
+      "other_processes_before": "PID ELAPSED COMMAND",
+      "other_processes_after": "PID ELAPSED COMMAND",
+      "result": {
+        "adapter": "NVIDIA GeForce RTX 3090",
+        "checks": 10,
+        "editor": false,
+        "failures": 0,
+        "renderer": "gl_compatibility",
+        "rows": [
+          {
+            "base_materials": 18,
+            "contact_materials": 99,
+            "difference": {
+              "changed": 2172,
+              "mean": 0.0528645833333333,
+              "peak": 58
+            },
+            "distance": "near",
+            "focus": "(69.6434, 11.36386, -40.651)",
+            "map": "bz2g",
+            "object": "LeafTree00-3715",
+            "off": {
+              "cpu_median_ms": 1.10500001907349,
+              "cpu_p95_ms": 1.66499996185303,
+              "draws": 1067,
+              "gpu_median_ms": 0.522000014781952,
+              "gpu_p95_ms": 0.533999979496002,
+              "warmup_ms": 368
+            },
+            "on": {
+              "cpu_median_ms": 1.58500003814697,
+              "cpu_p95_ms": 2.36299991607666,
+              "draws": 1067,
+              "gpu_median_ms": 2.40300011634827,
+              "gpu_p95_ms": 3.41799998283386,
+              "warmup_ms": 236
+            },
+            "registered_parts": 668,
+            "restoration": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0
+            },
+            "restored": {
+              "cpu_median_ms": 1.02199995517731,
+              "cpu_p95_ms": 1.38800001144409,
+              "draws": 1067,
+              "gpu_median_ms": 0.467999994754791,
+              "gpu_p95_ms": 0.476000010967255,
+              "warmup_ms": 194
+            },
+            "template": "nafltr56"
+          },
+          {
+            "base_materials": 18,
+            "contact_materials": 99,
+            "difference": {
+              "changed": 114,
+              "mean": 0.00245208333333333,
+              "peak": 21
+            },
+            "distance": "far",
+            "focus": "(69.6434, 11.36386, -40.651)",
+            "map": "bz2g",
+            "object": "LeafTree00-3715",
+            "off": {
+              "cpu_median_ms": 1.08500003814697,
+              "cpu_p95_ms": 1.84200000762939,
+              "draws": 1107,
+              "gpu_median_ms": 0.395999997854233,
+              "gpu_p95_ms": 0.483000010251999,
+              "warmup_ms": 194
+            },
+            "on": {
+              "cpu_median_ms": 1.59300005435944,
+              "cpu_p95_ms": 2.18499994277954,
+              "draws": 1107,
+              "gpu_median_ms": 1.92299997806549,
+              "gpu_p95_ms": 2.39599990844727,
+              "warmup_ms": 242
+            },
+            "registered_parts": 668,
+            "restoration": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0
+            },
+            "restored": {
+              "cpu_median_ms": 1.08200001716614,
+              "cpu_p95_ms": 1.35399997234344,
+              "draws": 1107,
+              "gpu_median_ms": 0.435999989509583,
+              "gpu_p95_ms": 0.44200000166893,
+              "warmup_ms": 188
+            },
+            "template": "nafltr56"
+          }
+        ],
+        "size": "800x600"
+      },
+      "png_sha256": {
+        "ground-contact-map-gl_compatibility-bz2g-near-on.png": "4f7df0b60c991cf5fbc79325f7c2031620bac82790a8993be217ddad089695c3",
+        "ground-contact-map-gl_compatibility-bz2g-far-on.png": "a91dafa259ff9066db159b035aa11458b1ae9942edded6e24e8fe67c0014f4fd",
+        "ground-contact-map-gl_compatibility-bz2g-far-restored.png": "5e3309d152e194a55ff3fc41b725440d7681517c5d30eefd2dceff2736148700",
+        "ground-contact-map-gl_compatibility-bz2g-near-restored.png": "0a8285d681471e6f158ece7dcfc1b15edfd8580338cba29e5c266b628823575e",
+        "ground-contact-map-gl_compatibility-bz2g-far-off.png": "5e3309d152e194a55ff3fc41b725440d7681517c5d30eefd2dceff2736148700",
+        "ground-contact-map-gl_compatibility-bz2g-near-off.png": "0a8285d681471e6f158ece7dcfc1b15edfd8580338cba29e5c266b628823575e"
+      }
+    },
+    {
+      "variant": "baseline",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--contact-map=bz2g",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/ground_contact.gd"
+      ],
+      "pack_sha256": "501fbad1e6ba8f4882594e29ad11141370efa215c4826c9bc95cbe8bdd1dcf10",
+      "return_code": 0,
+      "errors": [],
+      "other_processes_before": "PID ELAPSED COMMAND",
+      "other_processes_after": "PID ELAPSED COMMAND",
+      "result": {
+        "adapter": "NVIDIA GeForce RTX 3090",
+        "checks": 10,
+        "editor": false,
+        "failures": 0,
+        "renderer": "gl_compatibility",
+        "rows": [
+          {
+            "base_materials": 18,
+            "contact_materials": 99,
+            "difference": {
+              "changed": 2172,
+              "mean": 0.0528645833333333,
+              "peak": 58
+            },
+            "distance": "near",
+            "focus": "(69.6434, 11.36386, -40.651)",
+            "map": "bz2g",
+            "object": "LeafTree00-3715",
+            "off": {
+              "cpu_median_ms": 1.00100004673004,
+              "cpu_p95_ms": 1.58399999141693,
+              "draws": 1067,
+              "gpu_median_ms": 0.505999982357025,
+              "gpu_p95_ms": 0.555999994277954,
+              "warmup_ms": 391
+            },
+            "on": {
+              "cpu_median_ms": 1.47099995613098,
+              "cpu_p95_ms": 1.89600002765656,
+              "draws": 1067,
+              "gpu_median_ms": 1.99600005149841,
+              "gpu_p95_ms": 3.12400007247925,
+              "warmup_ms": 273
+            },
+            "registered_parts": 668,
+            "restoration": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0
+            },
+            "restored": {
+              "cpu_median_ms": 1.00699996948242,
+              "cpu_p95_ms": 1.25800001621246,
+              "draws": 1067,
+              "gpu_median_ms": 0.499000012874603,
+              "gpu_p95_ms": 0.551999986171722,
+              "warmup_ms": 188
+            },
+            "template": "nafltr56"
+          },
+          {
+            "base_materials": 18,
+            "contact_materials": 99,
+            "difference": {
+              "changed": 114,
+              "mean": 0.00245208333333333,
+              "peak": 21
+            },
+            "distance": "far",
+            "focus": "(69.6434, 11.36386, -40.651)",
+            "map": "bz2g",
+            "object": "LeafTree00-3715",
+            "off": {
+              "cpu_median_ms": 1.09599995613098,
+              "cpu_p95_ms": 1.3400000333786,
+              "draws": 1107,
+              "gpu_median_ms": 0.428999990224838,
+              "gpu_p95_ms": 0.547999978065491,
+              "warmup_ms": 188
+            },
+            "on": {
+              "cpu_median_ms": 1.50699996948242,
+              "cpu_p95_ms": 1.71000003814697,
+              "draws": 1107,
+              "gpu_median_ms": 1.98300004005432,
+              "gpu_p95_ms": 2.69000005722046,
+              "warmup_ms": 274
+            },
+            "registered_parts": 668,
+            "restoration": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0
+            },
+            "restored": {
+              "cpu_median_ms": 1.06900000572205,
+              "cpu_p95_ms": 1.67700004577637,
+              "draws": 1107,
+              "gpu_median_ms": 0.45100000500679,
+              "gpu_p95_ms": 0.500999987125397,
+              "warmup_ms": 189
+            },
+            "template": "nafltr56"
+          }
+        ],
+        "size": "800x600"
+      },
+      "png_sha256": {
+        "ground-contact-map-gl_compatibility-bz2g-near-on.png": "4f7df0b60c991cf5fbc79325f7c2031620bac82790a8993be217ddad089695c3",
+        "ground-contact-map-gl_compatibility-bz2g-far-on.png": "a91dafa259ff9066db159b035aa11458b1ae9942edded6e24e8fe67c0014f4fd",
+        "ground-contact-map-gl_compatibility-bz2g-far-restored.png": "5e3309d152e194a55ff3fc41b725440d7681517c5d30eefd2dceff2736148700",
+        "ground-contact-map-gl_compatibility-bz2g-near-restored.png": "0a8285d681471e6f158ece7dcfc1b15edfd8580338cba29e5c266b628823575e",
+        "ground-contact-map-gl_compatibility-bz2g-far-off.png": "5e3309d152e194a55ff3fc41b725440d7681517c5d30eefd2dceff2736148700",
+        "ground-contact-map-gl_compatibility-bz2g-near-off.png": "0a8285d681471e6f158ece7dcfc1b15edfd8580338cba29e5c266b628823575e"
+      }
+    },
+    {
+      "variant": "both",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-preparation/export-taps/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--contact-map=bz2g",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/ground_contact.gd"
+      ],
+      "pack_sha256": "e5a2d9cae82e83f9222f4969f9b1ce6e308590ec144d51b7269e06f03bc6432d",
+      "return_code": 0,
+      "errors": [],
+      "other_processes_before": "PID ELAPSED COMMAND",
+      "other_processes_after": "PID ELAPSED COMMAND",
+      "result": {
+        "adapter": "NVIDIA GeForce RTX 3090",
+        "checks": 10,
+        "editor": false,
+        "failures": 0,
+        "renderer": "gl_compatibility",
+        "rows": [
+          {
+            "base_materials": 18,
+            "contact_materials": 99,
+            "difference": {
+              "changed": 2172,
+              "mean": 0.0528645833333333,
+              "peak": 58
+            },
+            "distance": "near",
+            "focus": "(69.6434, 11.36386, -40.651)",
+            "map": "bz2g",
+            "object": "LeafTree00-3715",
+            "off": {
+              "cpu_median_ms": 0.962000012397766,
+              "cpu_p95_ms": 1.15600001811981,
+              "draws": 1067,
+              "gpu_median_ms": 0.477999985218048,
+              "gpu_p95_ms": 0.528999984264374,
+              "warmup_ms": 384
+            },
+            "on": {
+              "cpu_median_ms": 1.40699994564056,
+              "cpu_p95_ms": 1.51900005340576,
+              "draws": 1067,
+              "gpu_median_ms": 2.36199998855591,
+              "gpu_p95_ms": 2.67400002479553,
+              "warmup_ms": 234
+            },
+            "registered_parts": 668,
+            "restoration": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0
+            },
+            "restored": {
+              "cpu_median_ms": 0.930000007152557,
+              "cpu_p95_ms": 0.976999998092651,
+              "draws": 1067,
+              "gpu_median_ms": 0.46399998664856,
+              "gpu_p95_ms": 0.512000024318695,
+              "warmup_ms": 192
+            },
+            "template": "nafltr56"
+          },
+          {
+            "base_materials": 18,
+            "contact_materials": 99,
+            "difference": {
+              "changed": 114,
+              "mean": 0.00245208333333333,
+              "peak": 21
+            },
+            "distance": "far",
+            "focus": "(69.6434, 11.36386, -40.651)",
+            "map": "bz2g",
+            "object": "LeafTree00-3715",
+            "off": {
+              "cpu_median_ms": 1.03100001811981,
+              "cpu_p95_ms": 1.307000041008,
+              "draws": 1107,
+              "gpu_median_ms": 0.39300000667572,
+              "gpu_p95_ms": 0.435999989509583,
+              "warmup_ms": 193
+            },
+            "on": {
+              "cpu_median_ms": 1.52999997138977,
+              "cpu_p95_ms": 1.98099994659424,
+              "draws": 1107,
+              "gpu_median_ms": 1.93400001525879,
+              "gpu_p95_ms": 2.33599996566772,
+              "warmup_ms": 239
+            },
+            "registered_parts": 668,
+            "restoration": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0
+            },
+            "restored": {
+              "cpu_median_ms": 1.0460000038147,
+              "cpu_p95_ms": 1.21899998188019,
+              "draws": 1107,
+              "gpu_median_ms": 0.437999993562698,
+              "gpu_p95_ms": 0.446000009775162,
+              "warmup_ms": 195
+            },
+            "template": "nafltr56"
+          }
+        ],
+        "size": "800x600"
+      },
+      "png_sha256": {
+        "ground-contact-map-gl_compatibility-bz2g-near-on.png": "4f7df0b60c991cf5fbc79325f7c2031620bac82790a8993be217ddad089695c3",
+        "ground-contact-map-gl_compatibility-bz2g-far-on.png": "a91dafa259ff9066db159b035aa11458b1ae9942edded6e24e8fe67c0014f4fd",
+        "ground-contact-map-gl_compatibility-bz2g-far-restored.png": "5e3309d152e194a55ff3fc41b725440d7681517c5d30eefd2dceff2736148700",
+        "ground-contact-map-gl_compatibility-bz2g-near-restored.png": "0a8285d681471e6f158ece7dcfc1b15edfd8580338cba29e5c266b628823575e",
+        "ground-contact-map-gl_compatibility-bz2g-far-off.png": "5e3309d152e194a55ff3fc41b725440d7681517c5d30eefd2dceff2736148700",
+        "ground-contact-map-gl_compatibility-bz2g-near-off.png": "0a8285d681471e6f158ece7dcfc1b15edfd8580338cba29e5c266b628823575e"
+      }
+    },
+    {
+      "variant": "projection",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-preparation/export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--contact-map=bz2g",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/ground_contact.gd"
+      ],
+      "pack_sha256": "c9273c16f0bda337d8e9ebfda4e912a270b0ef1328b1d7d33e0595b43aead7fb",
+      "return_code": 0,
+      "errors": [],
+      "other_processes_before": "PID ELAPSED COMMAND",
+      "other_processes_after": "PID ELAPSED COMMAND",
+      "result": {
+        "adapter": "NVIDIA GeForce RTX 3090",
+        "checks": 10,
+        "editor": false,
+        "failures": 0,
+        "renderer": "gl_compatibility",
+        "rows": [
+          {
+            "base_materials": 18,
+            "contact_materials": 99,
+            "difference": {
+              "changed": 2172,
+              "mean": 0.0528645833333333,
+              "peak": 58
+            },
+            "distance": "near",
+            "focus": "(69.6434, 11.36386, -40.651)",
+            "map": "bz2g",
+            "object": "LeafTree00-3715",
+            "off": {
+              "cpu_median_ms": 0.975000023841858,
+              "cpu_p95_ms": 1.19599997997284,
+              "draws": 1067,
+              "gpu_median_ms": 0.519999980926514,
+              "gpu_p95_ms": 0.532000005245209,
+              "warmup_ms": 380
+            },
+            "on": {
+              "cpu_median_ms": 1.442999958992,
+              "cpu_p95_ms": 1.76900005340576,
+              "draws": 1067,
+              "gpu_median_ms": 2.07399988174438,
+              "gpu_p95_ms": 2.35700011253357,
+              "warmup_ms": 259
+            },
+            "registered_parts": 668,
+            "restoration": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0
+            },
+            "restored": {
+              "cpu_median_ms": 1.23300004005432,
+              "cpu_p95_ms": 1.42299997806549,
+              "draws": 1067,
+              "gpu_median_ms": 0.462999999523163,
+              "gpu_p95_ms": 0.469999998807907,
+              "warmup_ms": 188
+            },
+            "template": "nafltr56"
+          },
+          {
+            "base_materials": 18,
+            "contact_materials": 99,
+            "difference": {
+              "changed": 114,
+              "mean": 0.00245208333333333,
+              "peak": 21
+            },
+            "distance": "far",
+            "focus": "(69.6434, 11.36386, -40.651)",
+            "map": "bz2g",
+            "object": "LeafTree00-3715",
+            "off": {
+              "cpu_median_ms": 1.057000041008,
+              "cpu_p95_ms": 1.28699994087219,
+              "draws": 1107,
+              "gpu_median_ms": 0.391999989748001,
+              "gpu_p95_ms": 0.477999985218048,
+              "warmup_ms": 190
+            },
+            "on": {
+              "cpu_median_ms": 1.56299996376038,
+              "cpu_p95_ms": 1.93700003623962,
+              "draws": 1107,
+              "gpu_median_ms": 0.695999979972839,
+              "gpu_p95_ms": 0.711000025272369,
+              "warmup_ms": 272
+            },
+            "registered_parts": 668,
+            "restoration": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0
+            },
+            "restored": {
+              "cpu_median_ms": 1.07299995422363,
+              "cpu_p95_ms": 1.38100004196167,
+              "draws": 1107,
+              "gpu_median_ms": 0.486000001430511,
+              "gpu_p95_ms": 0.49099999666214,
+              "warmup_ms": 192
+            },
+            "template": "nafltr56"
+          }
+        ],
+        "size": "800x600"
+      },
+      "png_sha256": {
+        "ground-contact-map-gl_compatibility-bz2g-near-on.png": "4f7df0b60c991cf5fbc79325f7c2031620bac82790a8993be217ddad089695c3",
+        "ground-contact-map-gl_compatibility-bz2g-far-on.png": "a91dafa259ff9066db159b035aa11458b1ae9942edded6e24e8fe67c0014f4fd",
+        "ground-contact-map-gl_compatibility-bz2g-far-restored.png": "5e3309d152e194a55ff3fc41b725440d7681517c5d30eefd2dceff2736148700",
+        "ground-contact-map-gl_compatibility-bz2g-near-restored.png": "0a8285d681471e6f158ece7dcfc1b15edfd8580338cba29e5c266b628823575e",
+        "ground-contact-map-gl_compatibility-bz2g-far-off.png": "5e3309d152e194a55ff3fc41b725440d7681517c5d30eefd2dceff2736148700",
+        "ground-contact-map-gl_compatibility-bz2g-near-off.png": "0a8285d681471e6f158ece7dcfc1b15edfd8580338cba29e5c266b628823575e"
+      }
+    }
+  ],
+  "rejected_six_colour_loop_cold_warm": {
+    "map": "bz2g",
+    "renderer": "gl_compatibility",
+    "tool_sha256": "cdf2937168d886e43ec8be34f338fda4ff32665d2e8eec4ea61d23363a122e0d",
+    "runs": {
+      "baseline_cold": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-export/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--contact-map=bz2g",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/ground_contact.gd"
+        ],
+        "elapsed_seconds": 32.966632643016055,
+        "return_code": 0,
+        "other_game_processes_at_start": "PID ELAPSED COMMAND",
+        "engine_cache_before": 0,
+        "driver_cache_before": 0,
+        "engine_cache_after": 12,
+        "driver_cache_after": 5,
+        "executable_sha256": "3154bb4465f616e24b811dd576e9230022872cd80f8d5ab854efed2716b926d4",
+        "pack_sha256": "501fbad1e6ba8f4882594e29ad11141370efa215c4826c9bc95cbe8bdd1dcf10",
+        "result": {
+          "adapter": "NVIDIA GeForce RTX 3090",
+          "checks": 10,
+          "editor": false,
+          "failures": 0,
+          "renderer": "gl_compatibility",
+          "rows": [
+            {
+              "base_materials": 18,
+              "contact_materials": 99,
+              "difference": {
+                "changed": 2172,
+                "mean": 0.0528645833333333,
+                "peak": 58
+              },
+              "distance": "near",
+              "focus": "(69.6434, 11.36386, -40.651)",
+              "map": "bz2g",
+              "object": "LeafTree00-3715",
+              "off": {
+                "cpu_median_ms": 1.00600004196167,
+                "cpu_p95_ms": 1.23599994182587,
+                "draws": 1067,
+                "gpu_median_ms": 0.708000004291534,
+                "gpu_p95_ms": 2.58800005912781,
+                "warmup_ms": 6544
+              },
+              "on": {
+                "cpu_median_ms": 1.40100002288818,
+                "cpu_p95_ms": 1.61199998855591,
+                "draws": 1067,
+                "gpu_median_ms": 1.97300004959106,
+                "gpu_p95_ms": 4.61800003051758,
+                "warmup_ms": 17401
+              },
+              "registered_parts": 668,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              },
+              "restored": {
+                "cpu_median_ms": 0.998000025749207,
+                "cpu_p95_ms": 1.20000004768372,
+                "draws": 1067,
+                "gpu_median_ms": 0.49099999666214,
+                "gpu_p95_ms": 0.495999991893768,
+                "warmup_ms": 194
+              },
+              "template": "nafltr56"
+            },
+            {
+              "base_materials": 18,
+              "contact_materials": 99,
+              "difference": {
+                "changed": 114,
+                "mean": 0.00245208333333333,
+                "peak": 21
+              },
+              "distance": "far",
+              "focus": "(69.6434, 11.36386, -40.651)",
+              "map": "bz2g",
+              "object": "LeafTree00-3715",
+              "off": {
+                "cpu_median_ms": 1.06900000572205,
+                "cpu_p95_ms": 1.25399994850159,
+                "draws": 1107,
+                "gpu_median_ms": 0.416999995708466,
+                "gpu_p95_ms": 0.495000004768372,
+                "warmup_ms": 194
+              },
+              "on": {
+                "cpu_median_ms": 1.52600002288818,
+                "cpu_p95_ms": 2.37800002098083,
+                "draws": 1107,
+                "gpu_median_ms": 1.91499996185303,
+                "gpu_p95_ms": 2.3199999332428,
+                "warmup_ms": 272
+              },
+              "registered_parts": 668,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              },
+              "restored": {
+                "cpu_median_ms": 1.03699994087219,
+                "cpu_p95_ms": 1.23300004005432,
+                "draws": 1107,
+                "gpu_median_ms": 0.444000005722046,
+                "gpu_p95_ms": 0.490000009536743,
+                "warmup_ms": 189
+              },
+              "template": "nafltr56"
+            }
+          ],
+          "size": "800x600"
+        },
+        "png_sha256": {
+          "ground-contact-map-gl_compatibility-bz2g-near-on.png": "4f7df0b60c991cf5fbc79325f7c2031620bac82790a8993be217ddad089695c3",
+          "ground-contact-map-gl_compatibility-bz2g-far-on.png": "a91dafa259ff9066db159b035aa11458b1ae9942edded6e24e8fe67c0014f4fd",
+          "ground-contact-map-gl_compatibility-bz2g-far-restored.png": "5e3309d152e194a55ff3fc41b725440d7681517c5d30eefd2dceff2736148700",
+          "ground-contact-map-gl_compatibility-bz2g-near-restored.png": "0a8285d681471e6f158ece7dcfc1b15edfd8580338cba29e5c266b628823575e",
+          "ground-contact-map-gl_compatibility-bz2g-far-off.png": "5e3309d152e194a55ff3fc41b725440d7681517c5d30eefd2dceff2736148700",
+          "ground-contact-map-gl_compatibility-bz2g-near-off.png": "0a8285d681471e6f158ece7dcfc1b15edfd8580338cba29e5c266b628823575e"
+        },
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-preparation/paired-1/baseline/cold.log"
+      },
+      "baseline_warm": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-export/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--contact-map=bz2g",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/ground_contact.gd"
+        ],
+        "elapsed_seconds": 8.530381724005565,
+        "return_code": 0,
+        "other_game_processes_at_start": "PID ELAPSED COMMAND",
+        "engine_cache_before": 12,
+        "driver_cache_before": 5,
+        "engine_cache_after": 12,
+        "driver_cache_after": 5,
+        "executable_sha256": "3154bb4465f616e24b811dd576e9230022872cd80f8d5ab854efed2716b926d4",
+        "pack_sha256": "501fbad1e6ba8f4882594e29ad11141370efa215c4826c9bc95cbe8bdd1dcf10",
+        "result": {
+          "adapter": "NVIDIA GeForce RTX 3090",
+          "checks": 10,
+          "editor": false,
+          "failures": 0,
+          "renderer": "gl_compatibility",
+          "rows": [
+            {
+              "base_materials": 18,
+              "contact_materials": 99,
+              "difference": {
+                "changed": 2172,
+                "mean": 0.0528645833333333,
+                "peak": 58
+              },
+              "distance": "near",
+              "focus": "(69.6434, 11.36386, -40.651)",
+              "map": "bz2g",
+              "object": "LeafTree00-3715",
+              "off": {
+                "cpu_median_ms": 0.975000023841858,
+                "cpu_p95_ms": 1.55400002002716,
+                "draws": 1067,
+                "gpu_median_ms": 0.524999976158142,
+                "gpu_p95_ms": 0.574000000953674,
+                "warmup_ms": 384
+              },
+              "on": {
+                "cpu_median_ms": 1.41700005531311,
+                "cpu_p95_ms": 1.63800001144409,
+                "draws": 1067,
+                "gpu_median_ms": 1.9539999961853,
+                "gpu_p95_ms": 2.36400008201599,
+                "warmup_ms": 278
+              },
+              "registered_parts": 668,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              },
+              "restored": {
+                "cpu_median_ms": 0.982999980449677,
+                "cpu_p95_ms": 1.15499997138977,
+                "draws": 1067,
+                "gpu_median_ms": 0.500999987125397,
+                "gpu_p95_ms": 0.550000011920929,
+                "warmup_ms": 191
+              },
+              "template": "nafltr56"
+            },
+            {
+              "base_materials": 18,
+              "contact_materials": 99,
+              "difference": {
+                "changed": 114,
+                "mean": 0.00245208333333333,
+                "peak": 21
+              },
+              "distance": "far",
+              "focus": "(69.6434, 11.36386, -40.651)",
+              "map": "bz2g",
+              "object": "LeafTree00-3715",
+              "off": {
+                "cpu_median_ms": 1.06299996376038,
+                "cpu_p95_ms": 1.21399998664856,
+                "draws": 1107,
+                "gpu_median_ms": 0.428999990224838,
+                "gpu_p95_ms": 0.504000008106232,
+                "warmup_ms": 188
+              },
+              "on": {
+                "cpu_median_ms": 1.51800000667572,
+                "cpu_p95_ms": 1.77600002288818,
+                "draws": 1107,
+                "gpu_median_ms": 1.9650000333786,
+                "gpu_p95_ms": 2.53299999237061,
+                "warmup_ms": 276
+              },
+              "registered_parts": 668,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              },
+              "restored": {
+                "cpu_median_ms": 1.0789999961853,
+                "cpu_p95_ms": 1.21800005435944,
+                "draws": 1107,
+                "gpu_median_ms": 0.444999992847443,
+                "gpu_p95_ms": 0.492000013589859,
+                "warmup_ms": 194
+              },
+              "template": "nafltr56"
+            }
+          ],
+          "size": "800x600"
+        },
+        "png_sha256": {
+          "ground-contact-map-gl_compatibility-bz2g-near-on.png": "4f7df0b60c991cf5fbc79325f7c2031620bac82790a8993be217ddad089695c3",
+          "ground-contact-map-gl_compatibility-bz2g-far-on.png": "a91dafa259ff9066db159b035aa11458b1ae9942edded6e24e8fe67c0014f4fd",
+          "ground-contact-map-gl_compatibility-bz2g-far-restored.png": "5e3309d152e194a55ff3fc41b725440d7681517c5d30eefd2dceff2736148700",
+          "ground-contact-map-gl_compatibility-bz2g-near-restored.png": "0a8285d681471e6f158ece7dcfc1b15edfd8580338cba29e5c266b628823575e",
+          "ground-contact-map-gl_compatibility-bz2g-far-off.png": "5e3309d152e194a55ff3fc41b725440d7681517c5d30eefd2dceff2736148700",
+          "ground-contact-map-gl_compatibility-bz2g-near-off.png": "0a8285d681471e6f158ece7dcfc1b15edfd8580338cba29e5c266b628823575e"
+        },
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-preparation/paired-1/baseline/warm.log"
+      },
+      "candidate_cold": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-preparation/export-taps/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--contact-map=bz2g",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/ground_contact.gd"
+        ],
+        "elapsed_seconds": 23.95637120399624,
+        "return_code": 0,
+        "other_game_processes_at_start": "PID ELAPSED COMMAND",
+        "engine_cache_before": 0,
+        "driver_cache_before": 0,
+        "engine_cache_after": 12,
+        "driver_cache_after": 5,
+        "executable_sha256": "3154bb4465f616e24b811dd576e9230022872cd80f8d5ab854efed2716b926d4",
+        "pack_sha256": "e5a2d9cae82e83f9222f4969f9b1ce6e308590ec144d51b7269e06f03bc6432d",
+        "result": {
+          "adapter": "NVIDIA GeForce RTX 3090",
+          "checks": 10,
+          "editor": false,
+          "failures": 0,
+          "renderer": "gl_compatibility",
+          "rows": [
+            {
+              "base_materials": 18,
+              "contact_materials": 99,
+              "difference": {
+                "changed": 2172,
+                "mean": 0.0528645833333333,
+                "peak": 58
+              },
+              "distance": "near",
+              "focus": "(69.6434, 11.36386, -40.651)",
+              "map": "bz2g",
+              "object": "LeafTree00-3715",
+              "off": {
+                "cpu_median_ms": 0.976000010967255,
+                "cpu_p95_ms": 1.21200001239777,
+                "draws": 1067,
+                "gpu_median_ms": 0.711000025272369,
+                "gpu_p95_ms": 3.04800009727478,
+                "warmup_ms": 6535
+              },
+              "on": {
+                "cpu_median_ms": 1.46800005435944,
+                "cpu_p95_ms": 1.78699994087219,
+                "draws": 1067,
+                "gpu_median_ms": 2.59400010108948,
+                "gpu_p95_ms": 5.72399997711182,
+                "warmup_ms": 8560
+              },
+              "registered_parts": 668,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              },
+              "restored": {
+                "cpu_median_ms": 0.962999999523163,
+                "cpu_p95_ms": 1.42499995231628,
+                "draws": 1067,
+                "gpu_median_ms": 0.465999990701675,
+                "gpu_p95_ms": 0.474000006914139,
+                "warmup_ms": 192
+              },
+              "template": "nafltr56"
+            },
+            {
+              "base_materials": 18,
+              "contact_materials": 99,
+              "difference": {
+                "changed": 114,
+                "mean": 0.00245208333333333,
+                "peak": 21
+              },
+              "distance": "far",
+              "focus": "(69.6434, 11.36386, -40.651)",
+              "map": "bz2g",
+              "object": "LeafTree00-3715",
+              "off": {
+                "cpu_median_ms": 1.05299997329712,
+                "cpu_p95_ms": 1.30200004577637,
+                "draws": 1107,
+                "gpu_median_ms": 0.395000010728836,
+                "gpu_p95_ms": 0.476999998092651,
+                "warmup_ms": 191
+              },
+              "on": {
+                "cpu_median_ms": 1.61000001430511,
+                "cpu_p95_ms": 2.54500007629395,
+                "draws": 1107,
+                "gpu_median_ms": 1.90299999713898,
+                "gpu_p95_ms": 2.30200004577637,
+                "warmup_ms": 238
+              },
+              "registered_parts": 668,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              },
+              "restored": {
+                "cpu_median_ms": 1.07400000095367,
+                "cpu_p95_ms": 1.24699997901917,
+                "draws": 1107,
+                "gpu_median_ms": 0.437000006437302,
+                "gpu_p95_ms": 0.485000014305115,
+                "warmup_ms": 192
+              },
+              "template": "nafltr56"
+            }
+          ],
+          "size": "800x600"
+        },
+        "png_sha256": {
+          "ground-contact-map-gl_compatibility-bz2g-near-on.png": "4f7df0b60c991cf5fbc79325f7c2031620bac82790a8993be217ddad089695c3",
+          "ground-contact-map-gl_compatibility-bz2g-far-on.png": "a91dafa259ff9066db159b035aa11458b1ae9942edded6e24e8fe67c0014f4fd",
+          "ground-contact-map-gl_compatibility-bz2g-far-restored.png": "5e3309d152e194a55ff3fc41b725440d7681517c5d30eefd2dceff2736148700",
+          "ground-contact-map-gl_compatibility-bz2g-near-restored.png": "0a8285d681471e6f158ece7dcfc1b15edfd8580338cba29e5c266b628823575e",
+          "ground-contact-map-gl_compatibility-bz2g-far-off.png": "5e3309d152e194a55ff3fc41b725440d7681517c5d30eefd2dceff2736148700",
+          "ground-contact-map-gl_compatibility-bz2g-near-off.png": "0a8285d681471e6f158ece7dcfc1b15edfd8580338cba29e5c266b628823575e"
+        },
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-preparation/paired-1/candidate/cold.log"
+      },
+      "candidate_warm": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-preparation/export-taps/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--contact-map=bz2g",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/ground_contact.gd"
+        ],
+        "elapsed_seconds": 8.430147782026324,
+        "return_code": 0,
+        "other_game_processes_at_start": "PID ELAPSED COMMAND",
+        "other_game_processes_at_end": "PID ELAPSED COMMAND",
+        "engine_cache_before": 12,
+        "driver_cache_before": 5,
+        "engine_cache_after": 12,
+        "driver_cache_after": 5,
+        "executable_sha256": "3154bb4465f616e24b811dd576e9230022872cd80f8d5ab854efed2716b926d4",
+        "pack_sha256": "e5a2d9cae82e83f9222f4969f9b1ce6e308590ec144d51b7269e06f03bc6432d",
+        "result": {
+          "adapter": "NVIDIA GeForce RTX 3090",
+          "checks": 10,
+          "editor": false,
+          "failures": 0,
+          "renderer": "gl_compatibility",
+          "rows": [
+            {
+              "base_materials": 18,
+              "contact_materials": 99,
+              "difference": {
+                "changed": 2172,
+                "mean": 0.0528645833333333,
+                "peak": 58
+              },
+              "distance": "near",
+              "focus": "(69.6434, 11.36386, -40.651)",
+              "map": "bz2g",
+              "object": "LeafTree00-3715",
+              "off": {
+                "cpu_median_ms": 0.985000014305115,
+                "cpu_p95_ms": 1.18900001049042,
+                "draws": 1067,
+                "gpu_median_ms": 0.497999995946884,
+                "gpu_p95_ms": 0.550000011920929,
+                "warmup_ms": 404
+              },
+              "on": {
+                "cpu_median_ms": 1.37000000476837,
+                "cpu_p95_ms": 1.56599998474121,
+                "draws": 1067,
+                "gpu_median_ms": 2.35400009155273,
+                "gpu_p95_ms": 2.74900007247925,
+                "warmup_ms": 235
+              },
+              "registered_parts": 668,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              },
+              "restored": {
+                "cpu_median_ms": 0.984000027179718,
+                "cpu_p95_ms": 1.20899999141693,
+                "draws": 1067,
+                "gpu_median_ms": 0.46399998664856,
+                "gpu_p95_ms": 0.509999990463257,
+                "warmup_ms": 187
+              },
+              "template": "nafltr56"
+            },
+            {
+              "base_materials": 18,
+              "contact_materials": 99,
+              "difference": {
+                "changed": 114,
+                "mean": 0.00245208333333333,
+                "peak": 21
+              },
+              "distance": "far",
+              "focus": "(69.6434, 11.36386, -40.651)",
+              "map": "bz2g",
+              "object": "LeafTree00-3715",
+              "off": {
+                "cpu_median_ms": 1.067999958992,
+                "cpu_p95_ms": 1.32200002670288,
+                "draws": 1107,
+                "gpu_median_ms": 0.391999989748001,
+                "gpu_p95_ms": 0.437999993562698,
+                "warmup_ms": 192
+              },
+              "on": {
+                "cpu_median_ms": 1.49300003051758,
+                "cpu_p95_ms": 1.73800003528595,
+                "draws": 1107,
+                "gpu_median_ms": 1.92999994754791,
+                "gpu_p95_ms": 2.3510000705719,
+                "warmup_ms": 238
+              },
+              "registered_parts": 668,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              },
+              "restored": {
+                "cpu_median_ms": 1.02300000190735,
+                "cpu_p95_ms": 1.22099995613098,
+                "draws": 1107,
+                "gpu_median_ms": 0.439000010490417,
+                "gpu_p95_ms": 0.470999985933304,
+                "warmup_ms": 191
+              },
+              "template": "nafltr56"
+            }
+          ],
+          "size": "800x600"
+        },
+        "png_sha256": {
+          "ground-contact-map-gl_compatibility-bz2g-near-on.png": "4f7df0b60c991cf5fbc79325f7c2031620bac82790a8993be217ddad089695c3",
+          "ground-contact-map-gl_compatibility-bz2g-far-on.png": "a91dafa259ff9066db159b035aa11458b1ae9942edded6e24e8fe67c0014f4fd",
+          "ground-contact-map-gl_compatibility-bz2g-far-restored.png": "5e3309d152e194a55ff3fc41b725440d7681517c5d30eefd2dceff2736148700",
+          "ground-contact-map-gl_compatibility-bz2g-near-restored.png": "0a8285d681471e6f158ece7dcfc1b15edfd8580338cba29e5c266b628823575e",
+          "ground-contact-map-gl_compatibility-bz2g-far-off.png": "5e3309d152e194a55ff3fc41b725440d7681517c5d30eefd2dceff2736148700",
+          "ground-contact-map-gl_compatibility-bz2g-near-off.png": "0a8285d681471e6f158ece7dcfc1b15edfd8580338cba29e5c266b628823575e"
+        },
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-preparation/paired-1/candidate/warm.log"
+      }
+    },
+    "comparisons": {
+      "baseline_cold vs candidate_cold": {
+        "all_pngs_identical": true,
+        "files": 6
+      },
+      "baseline_cold vs baseline_warm": {
+        "all_pngs_identical": true,
+        "files": 6
+      },
+      "candidate_cold vs candidate_warm": {
+        "all_pngs_identical": true,
+        "files": 6
+      }
+    }
+  },
+  "rejected_five_colour_loop_gpu_diagnostic": [
+    {
+      "timing_scope": "GPU diagnostic; headless background jobs recorded, cold compilation not CPU-isolated",
+      "variant": "baseline",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--contact-map=bz2g",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/ground_contact.gd"
+      ],
+      "pack_sha256": "501fbad1e6ba8f4882594e29ad11141370efa215c4826c9bc95cbe8bdd1dcf10",
+      "return_code": 0,
+      "errors": [],
+      "other_processes_before": "PID ELAPSED COMMAND\n3147165     136 godot-4 --headless --path . --script res://tools/verify_frontend.gd",
+      "other_processes_after": "PID ELAPSED COMMAND\n3147165     144 godot-4 --headless --path . --script res://tools/verify_frontend.gd",
+      "result": {
+        "adapter": "NVIDIA GeForce RTX 3090",
+        "checks": 10,
+        "editor": false,
+        "failures": 0,
+        "renderer": "gl_compatibility",
+        "rows": [
+          {
+            "base_materials": 18,
+            "contact_materials": 99,
+            "difference": {
+              "changed": 2172,
+              "mean": 0.0528645833333333,
+              "peak": 58
+            },
+            "distance": "near",
+            "focus": "(69.6434, 11.36386, -40.651)",
+            "map": "bz2g",
+            "object": "LeafTree00-3715",
+            "off": {
+              "cpu_median_ms": 0.958000004291534,
+              "cpu_p95_ms": 1.37600004673004,
+              "draws": 1067,
+              "gpu_median_ms": 0.49099999666214,
+              "gpu_p95_ms": 0.537000000476837,
+              "warmup_ms": 371
+            },
+            "on": {
+              "cpu_median_ms": 1.3639999628067,
+              "cpu_p95_ms": 1.67999994754791,
+              "draws": 1067,
+              "gpu_median_ms": 1.94000005722046,
+              "gpu_p95_ms": 2.62899994850159,
+              "warmup_ms": 269
+            },
+            "registered_parts": 668,
+            "restoration": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0
+            },
+            "restored": {
+              "cpu_median_ms": 0.940999984741211,
+              "cpu_p95_ms": 1.1360000371933,
+              "draws": 1067,
+              "gpu_median_ms": 0.486000001430511,
+              "gpu_p95_ms": 0.532999992370605,
+              "warmup_ms": 194
+            },
+            "template": "nafltr56"
+          },
+          {
+            "base_materials": 18,
+            "contact_materials": 99,
+            "difference": {
+              "changed": 114,
+              "mean": 0.00245208333333333,
+              "peak": 21
+            },
+            "distance": "far",
+            "focus": "(69.6434, 11.36386, -40.651)",
+            "map": "bz2g",
+            "object": "LeafTree00-3715",
+            "off": {
+              "cpu_median_ms": 1.03900003433228,
+              "cpu_p95_ms": 1.23599994182587,
+              "draws": 1107,
+              "gpu_median_ms": 0.414000004529953,
+              "gpu_p95_ms": 0.522000014781952,
+              "warmup_ms": 188
+            },
+            "on": {
+              "cpu_median_ms": 1.47500002384186,
+              "cpu_p95_ms": 1.68499994277954,
+              "draws": 1107,
+              "gpu_median_ms": 1.93400001525879,
+              "gpu_p95_ms": 2.74600005149841,
+              "warmup_ms": 272
+            },
+            "registered_parts": 668,
+            "restoration": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0
+            },
+            "restored": {
+              "cpu_median_ms": 1.07700002193451,
+              "cpu_p95_ms": 1.32799994945526,
+              "draws": 1107,
+              "gpu_median_ms": 0.435999989509583,
+              "gpu_p95_ms": 0.486999988555908,
+              "warmup_ms": 189
+            },
+            "template": "nafltr56"
+          }
+        ],
+        "size": "800x600"
+      },
+      "png_sha256": {
+        "ground-contact-map-gl_compatibility-bz2g-near-on.png": "4f7df0b60c991cf5fbc79325f7c2031620bac82790a8993be217ddad089695c3",
+        "ground-contact-map-gl_compatibility-bz2g-far-on.png": "a91dafa259ff9066db159b035aa11458b1ae9942edded6e24e8fe67c0014f4fd",
+        "ground-contact-map-gl_compatibility-bz2g-far-restored.png": "5e3309d152e194a55ff3fc41b725440d7681517c5d30eefd2dceff2736148700",
+        "ground-contact-map-gl_compatibility-bz2g-near-restored.png": "0a8285d681471e6f158ece7dcfc1b15edfd8580338cba29e5c266b628823575e",
+        "ground-contact-map-gl_compatibility-bz2g-far-off.png": "5e3309d152e194a55ff3fc41b725440d7681517c5d30eefd2dceff2736148700",
+        "ground-contact-map-gl_compatibility-bz2g-near-off.png": "0a8285d681471e6f158ece7dcfc1b15edfd8580338cba29e5c266b628823575e"
+      }
+    },
+    {
+      "timing_scope": "GPU diagnostic; headless background jobs recorded, cold compilation not CPU-isolated",
+      "variant": "five",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-preparation/export-five/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--contact-map=bz2g",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/ground_contact.gd"
+      ],
+      "pack_sha256": "5e8cafa44b37d4fcd93795905c0ccd0b81084eddf041343c612f5b589627c5ae",
+      "return_code": 0,
+      "errors": [],
+      "other_processes_before": "PID ELAPSED COMMAND\n3147165     144 godot-4 --headless --path . --script res://tools/verify_frontend.gd",
+      "other_processes_after": "PID ELAPSED COMMAND\n3147165     170 godot-4 --headless --path . --script res://tools/verify_frontend.gd",
+      "result": {
+        "adapter": "NVIDIA GeForce RTX 3090",
+        "checks": 10,
+        "editor": false,
+        "failures": 0,
+        "renderer": "gl_compatibility",
+        "rows": [
+          {
+            "base_materials": 18,
+            "contact_materials": 99,
+            "difference": {
+              "changed": 2172,
+              "mean": 0.0528645833333333,
+              "peak": 58
+            },
+            "distance": "near",
+            "focus": "(69.6434, 11.36386, -40.651)",
+            "map": "bz2g",
+            "object": "LeafTree00-3715",
+            "off": {
+              "cpu_median_ms": 1.00600004196167,
+              "cpu_p95_ms": 1.32200002670288,
+              "draws": 1067,
+              "gpu_median_ms": 0.667999982833862,
+              "gpu_p95_ms": 2.47499990463257,
+              "warmup_ms": 6732
+            },
+            "on": {
+              "cpu_median_ms": 1.44900000095367,
+              "cpu_p95_ms": 2.1489999294281,
+              "draws": 1067,
+              "gpu_median_ms": 2.3989999294281,
+              "gpu_p95_ms": 3.28200006484985,
+              "warmup_ms": 9576
+            },
+            "registered_parts": 668,
+            "restoration": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0
+            },
+            "restored": {
+              "cpu_median_ms": 0.968999981880188,
+              "cpu_p95_ms": 1.19599997997284,
+              "draws": 1067,
+              "gpu_median_ms": 0.467999994754791,
+              "gpu_p95_ms": 0.474999994039536,
+              "warmup_ms": 189
+            },
+            "template": "nafltr56"
+          },
+          {
+            "base_materials": 18,
+            "contact_materials": 99,
+            "difference": {
+              "changed": 114,
+              "mean": 0.00245208333333333,
+              "peak": 21
+            },
+            "distance": "far",
+            "focus": "(69.6434, 11.36386, -40.651)",
+            "map": "bz2g",
+            "object": "LeafTree00-3715",
+            "off": {
+              "cpu_median_ms": 1.06900000572205,
+              "cpu_p95_ms": 1.47399997711182,
+              "draws": 1107,
+              "gpu_median_ms": 0.395000010728836,
+              "gpu_p95_ms": 0.398999989032745,
+              "warmup_ms": 188
+            },
+            "on": {
+              "cpu_median_ms": 1.54299998283386,
+              "cpu_p95_ms": 1.86600005626678,
+              "draws": 1107,
+              "gpu_median_ms": 1.94000005722046,
+              "gpu_p95_ms": 2.58400011062622,
+              "warmup_ms": 238
+            },
+            "registered_parts": 668,
+            "restoration": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0
+            },
+            "restored": {
+              "cpu_median_ms": 1.05599999427795,
+              "cpu_p95_ms": 1.23500001430511,
+              "draws": 1107,
+              "gpu_median_ms": 0.439999997615814,
+              "gpu_p95_ms": 0.479999989271164,
+              "warmup_ms": 189
+            },
+            "template": "nafltr56"
+          }
+        ],
+        "size": "800x600"
+      },
+      "png_sha256": {
+        "ground-contact-map-gl_compatibility-bz2g-near-on.png": "4f7df0b60c991cf5fbc79325f7c2031620bac82790a8993be217ddad089695c3",
+        "ground-contact-map-gl_compatibility-bz2g-far-on.png": "a91dafa259ff9066db159b035aa11458b1ae9942edded6e24e8fe67c0014f4fd",
+        "ground-contact-map-gl_compatibility-bz2g-far-restored.png": "5e3309d152e194a55ff3fc41b725440d7681517c5d30eefd2dceff2736148700",
+        "ground-contact-map-gl_compatibility-bz2g-near-restored.png": "0a8285d681471e6f158ece7dcfc1b15edfd8580338cba29e5c266b628823575e",
+        "ground-contact-map-gl_compatibility-bz2g-far-off.png": "5e3309d152e194a55ff3fc41b725440d7681517c5d30eefd2dceff2736148700",
+        "ground-contact-map-gl_compatibility-bz2g-near-off.png": "0a8285d681471e6f158ece7dcfc1b15edfd8580338cba29e5c266b628823575e"
+      }
+    },
+    {
+      "timing_scope": "GPU diagnostic; headless background jobs recorded, cold compilation not CPU-isolated",
+      "variant": "five",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-preparation/export-five/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--contact-map=bz2g",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/ground_contact.gd"
+      ],
+      "pack_sha256": "5e8cafa44b37d4fcd93795905c0ccd0b81084eddf041343c612f5b589627c5ae",
+      "return_code": 0,
+      "errors": [],
+      "other_processes_before": "PID ELAPSED COMMAND\n3147165     170 godot-4 --headless --path . --script res://tools/verify_frontend.gd",
+      "other_processes_after": "PID ELAPSED COMMAND\n3147165     178 godot-4 --headless --path . --script res://tools/verify_frontend.gd",
+      "result": {
+        "adapter": "NVIDIA GeForce RTX 3090",
+        "checks": 10,
+        "editor": false,
+        "failures": 0,
+        "renderer": "gl_compatibility",
+        "rows": [
+          {
+            "base_materials": 18,
+            "contact_materials": 99,
+            "difference": {
+              "changed": 2172,
+              "mean": 0.0528645833333333,
+              "peak": 58
+            },
+            "distance": "near",
+            "focus": "(69.6434, 11.36386, -40.651)",
+            "map": "bz2g",
+            "object": "LeafTree00-3715",
+            "off": {
+              "cpu_median_ms": 1.00600004196167,
+              "cpu_p95_ms": 1.32599997520447,
+              "draws": 1067,
+              "gpu_median_ms": 0.522000014781952,
+              "gpu_p95_ms": 0.575999975204468,
+              "warmup_ms": 406
+            },
+            "on": {
+              "cpu_median_ms": 1.4539999961853,
+              "cpu_p95_ms": 1.56099998950958,
+              "draws": 1067,
+              "gpu_median_ms": 2.39000010490417,
+              "gpu_p95_ms": 3.29800009727478,
+              "warmup_ms": 245
+            },
+            "registered_parts": 668,
+            "restoration": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0
+            },
+            "restored": {
+              "cpu_median_ms": 1.0110000371933,
+              "cpu_p95_ms": 1.45000004768372,
+              "draws": 1067,
+              "gpu_median_ms": 0.469999998807907,
+              "gpu_p95_ms": 0.521000027656555,
+              "warmup_ms": 187
+            },
+            "template": "nafltr56"
+          },
+          {
+            "base_materials": 18,
+            "contact_materials": 99,
+            "difference": {
+              "changed": 114,
+              "mean": 0.00245208333333333,
+              "peak": 21
+            },
+            "distance": "far",
+            "focus": "(69.6434, 11.36386, -40.651)",
+            "map": "bz2g",
+            "object": "LeafTree00-3715",
+            "off": {
+              "cpu_median_ms": 1.10000002384186,
+              "cpu_p95_ms": 1.41799998283386,
+              "draws": 1107,
+              "gpu_median_ms": 0.397000014781952,
+              "gpu_p95_ms": 0.490000009536743,
+              "warmup_ms": 193
+            },
+            "on": {
+              "cpu_median_ms": 1.72599995136261,
+              "cpu_p95_ms": 2.07999992370605,
+              "draws": 1107,
+              "gpu_median_ms": 1.91700005531311,
+              "gpu_p95_ms": 2.55999994277954,
+              "warmup_ms": 249
+            },
+            "registered_parts": 668,
+            "restoration": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0
+            },
+            "restored": {
+              "cpu_median_ms": 1.13199996948242,
+              "cpu_p95_ms": 1.38900005817413,
+              "draws": 1107,
+              "gpu_median_ms": 0.444000005722046,
+              "gpu_p95_ms": 0.483999997377396,
+              "warmup_ms": 195
+            },
+            "template": "nafltr56"
+          }
+        ],
+        "size": "800x600"
+      },
+      "png_sha256": {
+        "ground-contact-map-gl_compatibility-bz2g-near-on.png": "4f7df0b60c991cf5fbc79325f7c2031620bac82790a8993be217ddad089695c3",
+        "ground-contact-map-gl_compatibility-bz2g-far-on.png": "a91dafa259ff9066db159b035aa11458b1ae9942edded6e24e8fe67c0014f4fd",
+        "ground-contact-map-gl_compatibility-bz2g-far-restored.png": "5e3309d152e194a55ff3fc41b725440d7681517c5d30eefd2dceff2736148700",
+        "ground-contact-map-gl_compatibility-bz2g-near-restored.png": "0a8285d681471e6f158ece7dcfc1b15edfd8580338cba29e5c266b628823575e",
+        "ground-contact-map-gl_compatibility-bz2g-far-off.png": "5e3309d152e194a55ff3fc41b725440d7681517c5d30eefd2dceff2736148700",
+        "ground-contact-map-gl_compatibility-bz2g-near-off.png": "0a8285d681471e6f158ece7dcfc1b15edfd8580338cba29e5c266b628823575e"
+      }
+    },
+    {
+      "timing_scope": "GPU diagnostic; headless background jobs recorded, cold compilation not CPU-isolated",
+      "variant": "projection",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-preparation/export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--contact-map=bz2g",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/ground_contact.gd"
+      ],
+      "pack_sha256": "c9273c16f0bda337d8e9ebfda4e912a270b0ef1328b1d7d33e0595b43aead7fb",
+      "return_code": 0,
+      "errors": [],
+      "other_processes_before": "PID ELAPSED COMMAND\n3147165     178 godot-4 --headless --path . --script res://tools/verify_frontend.gd",
+      "other_processes_after": "PID ELAPSED COMMAND\n3147165     187 godot-4 --headless --path . --script res://tools/verify_frontend.gd",
+      "result": {
+        "adapter": "NVIDIA GeForce RTX 3090",
+        "checks": 10,
+        "editor": false,
+        "failures": 0,
+        "renderer": "gl_compatibility",
+        "rows": [
+          {
+            "base_materials": 18,
+            "contact_materials": 99,
+            "difference": {
+              "changed": 2172,
+              "mean": 0.0528645833333333,
+              "peak": 58
+            },
+            "distance": "near",
+            "focus": "(69.6434, 11.36386, -40.651)",
+            "map": "bz2g",
+            "object": "LeafTree00-3715",
+            "off": {
+              "cpu_median_ms": 1.01199996471405,
+              "cpu_p95_ms": 1.64900004863739,
+              "draws": 1067,
+              "gpu_median_ms": 0.518999993801117,
+              "gpu_p95_ms": 0.569999992847443,
+              "warmup_ms": 391
+            },
+            "on": {
+              "cpu_median_ms": 1.48800003528595,
+              "cpu_p95_ms": 2.10400009155273,
+              "draws": 1067,
+              "gpu_median_ms": 2.13800001144409,
+              "gpu_p95_ms": 2.90000009536743,
+              "warmup_ms": 268
+            },
+            "registered_parts": 668,
+            "restoration": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0
+            },
+            "restored": {
+              "cpu_median_ms": 1.02199995517731,
+              "cpu_p95_ms": 1.3309999704361,
+              "draws": 1067,
+              "gpu_median_ms": 0.469999998807907,
+              "gpu_p95_ms": 0.512000024318695,
+              "warmup_ms": 190
+            },
+            "template": "nafltr56"
+          },
+          {
+            "base_materials": 18,
+            "contact_materials": 99,
+            "difference": {
+              "changed": 114,
+              "mean": 0.00245208333333333,
+              "peak": 21
+            },
+            "distance": "far",
+            "focus": "(69.6434, 11.36386, -40.651)",
+            "map": "bz2g",
+            "object": "LeafTree00-3715",
+            "off": {
+              "cpu_median_ms": 1.10300004482269,
+              "cpu_p95_ms": 1.45099997520447,
+              "draws": 1107,
+              "gpu_median_ms": 0.395999997854233,
+              "gpu_p95_ms": 0.483000010251999,
+              "warmup_ms": 188
+            },
+            "on": {
+              "cpu_median_ms": 1.53699994087219,
+              "cpu_p95_ms": 2.29099988937378,
+              "draws": 1107,
+              "gpu_median_ms": 0.686999976634979,
+              "gpu_p95_ms": 0.712999999523163,
+              "warmup_ms": 267
+            },
+            "registered_parts": 668,
+            "restoration": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0
+            },
+            "restored": {
+              "cpu_median_ms": 1.08800005912781,
+              "cpu_p95_ms": 1.51600003242493,
+              "draws": 1107,
+              "gpu_median_ms": 0.488000005483627,
+              "gpu_p95_ms": 0.495999991893768,
+              "warmup_ms": 193
+            },
+            "template": "nafltr56"
+          }
+        ],
+        "size": "800x600"
+      },
+      "png_sha256": {
+        "ground-contact-map-gl_compatibility-bz2g-near-on.png": "4f7df0b60c991cf5fbc79325f7c2031620bac82790a8993be217ddad089695c3",
+        "ground-contact-map-gl_compatibility-bz2g-far-on.png": "a91dafa259ff9066db159b035aa11458b1ae9942edded6e24e8fe67c0014f4fd",
+        "ground-contact-map-gl_compatibility-bz2g-far-restored.png": "5e3309d152e194a55ff3fc41b725440d7681517c5d30eefd2dceff2736148700",
+        "ground-contact-map-gl_compatibility-bz2g-near-restored.png": "0a8285d681471e6f158ece7dcfc1b15edfd8580338cba29e5c266b628823575e",
+        "ground-contact-map-gl_compatibility-bz2g-far-off.png": "5e3309d152e194a55ff3fc41b725440d7681517c5d30eefd2dceff2736148700",
+        "ground-contact-map-gl_compatibility-bz2g-near-off.png": "0a8285d681471e6f158ece7dcfc1b15edfd8580338cba29e5c266b628823575e"
+      }
+    }
+  ],
+  "integration": {
+    "base": "3172ede12a5f41b0182c34a70b5eeda787c95e52",
+    "isolated_head": "27b1e4e24dee3c2a2b771f1cc41457a417d9c807",
+    "includes_uncommitted_projection_only_optimization": true,
+    "scope": "all production game source changes; no patch applied",
+    "patch_sha256": "58d5b9e3d79ff500f5b645395aabadf69bb1674978b63c01d23e1cdd613ad3c2",
+    "command": [
+      "git",
+      "apply",
+      "--check",
+      "-"
+    ],
+    "return_code": 0,
+    "stdout": "",
+    "stderr": "",
+    "before": {
+      "head": "ba584dfb1049818fca7a0f4544cad98f06a2d363",
+      "status": " M docs/gameplay-gaps-2026-10-08.md\n M game/src/game/coop_progress.gd\n M game/src/game/net_status.gd\n M game/src/game/script/vm.gd\n?? game/src/game/coop_party_progress.gd\n?? game/src/game/coop_party_progress.gd.uid\n?? tools/tests/coop_progress_context.gd\n?? tools/tests/coop_progress_context_network.gd\n",
+      "touched_sha256": {
+        "game/src/ei/figure.gd": "5fd0c1d31f462a49914e0a619580ffbcc5344965c18798f5bf3f2f58c68bad8f",
+        "game/src/ei/game_data.gd": "6b978ec8cbc2ed07baf11f461ffdacb7e7239854cc1c588ca60bfb83040267c7",
+        "game/src/ei/map_scene.gd": "8c3ebb5dff18651be8d23c7b36d25f1c3e9bb90ace3d6fc27a70c697c8da1a5e",
+        "game/src/ei/mmp_texture.gd": "ea95f86058da0b18c5c411c4bb69cc9db00c5770501cd5efbf0125d3f2ca104b",
+        "game/src/ei/terrain.gd": "25b87e8fadf2bd7c68ebc963cb36db34788dc2e962ce6a736ba1c51db4c89361",
+        "game/src/ei/unit_model.gd": "f454fd48b39f318b8822a004129c65530ba4adf9b63f6bd5425bf68452824fe6",
+        "game/src/game/fx/ground_contact.gd": null,
+        "game/src/game/fx/ground_contact.gd.uid": null,
+        "game/src/game/fx/ground_contact_shader.gd": null,
+        "game/src/game/fx/ground_contact_shader.gd.uid": null,
+        "game/src/game/fx/ground_surface_data.gd": null,
+        "game/src/game/fx/ground_surface_data.gd.uid": null,
+        "game/src/game/fx/ground_surface_shader.gd": null,
+        "game/src/game/fx/ground_surface_shader.gd.uid": null,
+        "game/src/game/fx/local_lighting.gd": "be1570ca9e47eafcb48f0d4964a941066d521d63cc570ea8aff8333c20b1d34a",
+        "game/src/game/fx/soft_ground_deform.gd": "a9b5a1941d17ccf67716affb9e416c702d67c7405730109461ead2260fffe051",
+        "game/src/game/fx/soft_ground_field.gd": null,
+        "game/src/game/fx/soft_ground_field.gd.uid": null,
+        "game/src/game/game.gd": "ae6fbf51f89b6536cfa28505f544bb7ba22402b2eca1593400d5fb303d1ec08f",
+        "game/src/game/gfx.gd": "d4111e59b158111d2b5c0ab75feadde1f77db81e528773f23676fddd0e11cdb5",
+        "game/src/game/gfx_detect.gd": "bcbc43453022fd0718fa2ceed9f8cc1271b644dec2eda9f34e3fb78e269475dc",
+        "game/src/game/unit_wounds.gd": "8eea1966c2ac60d58e6d6d6b358cbcec28655a9b90423fd6663a29858fbaf41e",
+        "game/src/platform/portability.gd": "3afa19cb0340929d7e1034066b490568e2df52b5b1e3a9decb3c6c89b76a3735",
+        "game/src/ui/menu_scene.gd": "ac5780e52e21d66654fdf0ca49a786c45442958fab7814dc615b02712b604da1"
+      }
+    },
+    "after": {
+      "head": "ba584dfb1049818fca7a0f4544cad98f06a2d363",
+      "status": " M docs/gameplay-gaps-2026-10-08.md\n M game/src/game/coop_progress.gd\n M game/src/game/net_status.gd\n M game/src/game/script/vm.gd\n?? game/src/game/coop_party_progress.gd\n?? game/src/game/coop_party_progress.gd.uid\n?? tools/tests/coop_progress_context.gd\n?? tools/tests/coop_progress_context_network.gd\n",
+      "touched_sha256": {
+        "game/src/ei/figure.gd": "5fd0c1d31f462a49914e0a619580ffbcc5344965c18798f5bf3f2f58c68bad8f",
+        "game/src/ei/game_data.gd": "6b978ec8cbc2ed07baf11f461ffdacb7e7239854cc1c588ca60bfb83040267c7",
+        "game/src/ei/map_scene.gd": "8c3ebb5dff18651be8d23c7b36d25f1c3e9bb90ace3d6fc27a70c697c8da1a5e",
+        "game/src/ei/mmp_texture.gd": "ea95f86058da0b18c5c411c4bb69cc9db00c5770501cd5efbf0125d3f2ca104b",
+        "game/src/ei/terrain.gd": "25b87e8fadf2bd7c68ebc963cb36db34788dc2e962ce6a736ba1c51db4c89361",
+        "game/src/ei/unit_model.gd": "f454fd48b39f318b8822a004129c65530ba4adf9b63f6bd5425bf68452824fe6",
+        "game/src/game/fx/ground_contact.gd": null,
+        "game/src/game/fx/ground_contact.gd.uid": null,
+        "game/src/game/fx/ground_contact_shader.gd": null,
+        "game/src/game/fx/ground_contact_shader.gd.uid": null,
+        "game/src/game/fx/ground_surface_data.gd": null,
+        "game/src/game/fx/ground_surface_data.gd.uid": null,
+        "game/src/game/fx/ground_surface_shader.gd": null,
+        "game/src/game/fx/ground_surface_shader.gd.uid": null,
+        "game/src/game/fx/local_lighting.gd": "be1570ca9e47eafcb48f0d4964a941066d521d63cc570ea8aff8333c20b1d34a",
+        "game/src/game/fx/soft_ground_deform.gd": "a9b5a1941d17ccf67716affb9e416c702d67c7405730109461ead2260fffe051",
+        "game/src/game/fx/soft_ground_field.gd": null,
+        "game/src/game/fx/soft_ground_field.gd.uid": null,
+        "game/src/game/game.gd": "ae6fbf51f89b6536cfa28505f544bb7ba22402b2eca1593400d5fb303d1ec08f",
+        "game/src/game/gfx.gd": "d4111e59b158111d2b5c0ab75feadde1f77db81e528773f23676fddd0e11cdb5",
+        "game/src/game/gfx_detect.gd": "bcbc43453022fd0718fa2ceed9f8cc1271b644dec2eda9f34e3fb78e269475dc",
+        "game/src/game/unit_wounds.gd": "8eea1966c2ac60d58e6d6d6b358cbcec28655a9b90423fd6663a29858fbaf41e",
+        "game/src/platform/portability.gd": "3afa19cb0340929d7e1034066b490568e2df52b5b1e3a9decb3c6c89b76a3735",
+        "game/src/ui/menu_scene.gd": "ac5780e52e21d66654fdf0ca49a786c45442958fab7814dc615b02712b604da1"
+      }
+    },
+    "other_checkout_unchanged": true
+  },
+  "limitations": [
+    "Warmup includes 24 rendered frames, not a pure compiler timer.",
+    "Projection-only near-view GPU median rose from 1.915/1.996 ms to 2.077/2.074 ms; far-view fell from 1.900/1.983 ms to 0.685/0.696 ms. Scene/driver samples, not gameplay FPS.",
+    "All six alternating warm runs had no other game process at start or end; original cold runs only captured start snapshots.",
+    "Some broad correctness runs overlap unrelated test processes. Their frame times are not controlled comparisons.",
+    "The five-colour-tap diagnostic records headless background jobs; its cold CPU preparation is not used as a controlled comparison.",
+    "No Android/web validation; defaults remain off. All previous broader quality acceptance requirements remain.",
+    "Shared field/worker and triangle-query math did not change; their earlier regression suites were not repeated."
+  ]
+}

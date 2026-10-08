@@ -723,6 +723,69 @@ Further work before treating V1 as finished:
    is established. Both platforms remain off by default, as does desktop until
    the remaining cost/quality work warrants changing it.
 
+## V1: reduce duplicate surface-query expansion
+
+The follow-up changes only
+[ground_contact_shader.gd](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/game/src/game/fx/ground_contact_shader.gd)
+and its internal parameter binding in
+[ground_surface_data.gd](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/game/src/game/fx/ground_surface_data.gd).
+`contact_prepare` now uses a single shader call site for its two surface queries.
+The runtime bound is always two; it is a compiler control, not a user quality
+setting. The folded strip, fallback to the original query when the strip leaves
+the map, early rejection, all colour samples and final lighting remain. This
+avoids expanding the large displaced-triangle search at both call sites.
+
+[ground_contact_preparation.py](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/ground_contact_preparation.py)
+compares two frozen Linux exports on Compatibility, first with empty Godot and
+NVIDIA driver caches and then with the same caches warm. It isolates all XDG
+and driver directories, records commands/build hashes/cache counts/captures,
+and checks for other game processes before each run. `--resume` completes an
+interrupted comparison only if the map, benchmark, build and completed-run
+sequence still match; cold caches must be empty and warm cache counts must
+match the preceding cold run. Interrupted runs that changed caches need a new
+output directory. The wrapper does not measure a pure compiler duration: the
+reported on-state warmup includes 24 rendered frames.
+
+The retained projection-only change measured **16,614 ms → 12,673 ms** in the
+initial fresh-cache Compatibility grass sample (about 24% less). A separate
+six-sample colour loop lowered this further to 8,560 ms, but was rejected after
+alternating warm runs exposed a larger GPU cost. On the same RTX 3090 scene:
+
+| Variant | Near-view GPU median, two runs | Far-view GPU median, two runs |
+|---|---:|---:|
+| Committed baseline | 1.915 / 1.996 ms | 1.900 / 1.983 ms |
+| Retained projection loop | 2.077 / 2.074 ms | 0.685 / 0.696 ms |
+| Rejected projection + colour loops | 2.403 / 2.362 ms | 1.923 / 1.934 ms |
+
+All six alternating runs had no other game process at start or end and identical
+capture hashes. The retained change still has a small near-view tradeoff, and
+the far-view saving is specific to this sampled scene/driver. It is not a
+whole-game FPS claim. A five-tap loop with a separate mean also failed to improve
+that near-view cost in a follow-up diagnostic; its headless background jobs are
+recorded, so its cold CPU preparation is not used as a controlled comparison.
+**Defaults remain off**: 12.7 seconds is still too costly to enable automatically,
+and no Android/web result is established.
+
+The selected candidate passes 362 headless shader-option checks, 35 contact
+ownership / rendered-band checks on each backend, and 30 map checks on each
+backend: **492 checks, zero failures**. The selected candidate's map captures
+are compared with frozen baseline captures: **36 byte-identical PNGs**, grass,
+snow and sand × near/far × off/on/restored on Compatibility and Forward+.
+This exercises the detail sampler; the focused rendered-band fixture also runs
+with detail disabled. Query math, shared texture storage and worker code are
+unchanged, so their earlier tests were not repeated. Some broad correctness
+runs overlapped unrelated tests; their timings are retained for diagnosis and
+are not a controlled runtime performance comparison.
+
+Frozen exports remain under the isolated QA directory: `v1-export` is the
+committed baseline, and `v1-preparation/export` is the selected projection-only
+candidate. `export-taps` and `export-five` are rejected experiments, not the
+current source. The initial cold-run logs, alternating warm comparison, selected
+validation, source/pack hashes and integration check are retained in
+[ground-contact-preparation-2026-10-08.json](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/docs/validation/ground-contact-preparation-2026-10-08.json).
+The broader lighting, animated-camera, cross-sector prop and physical-device
+requirements listed above remain open.
+
 ## Integration
 
 The implementation is in this isolated branch. Do not overwrite another agent's
@@ -745,14 +808,15 @@ above and small hooks in `figure.gd`, `map_scene.gd`, `terrain.gd`, `gfx.gd`,
 `game_data.gd`, graphics defaults and `soft_ground_deform.gd`. It does not modify
 character/zone-transfer ownership, controls, combat or camera implementation.
 
-The latest read-only `git apply --check` includes the complete isolated branch
-and this staged V1 implementation. It passed against active committed HEAD
-`0ccb2de508df403c2b87354fec65e5bc1b3b4a32`, including the other chat's uncommitted
-third-person/control/combat work. `game_data.gd` is shared: preserve its newer
-control options when integrating. Its HEAD, status and hashes of all files touched
+The latest read-only `git apply --check` includes the complete production source
+changes in this isolated branch plus the shader preparation optimization. It
+passed against active committed HEAD
+`ba584dfb1049818fca7a0f4544cad98f06a2d363`, including the other chat's uncommitted
+co-op progression work. `game_data.gd` is shared: preserve its newer control
+options when integrating. Its HEAD, status and hashes of all files touched
 by this branch were unchanged across the check. **No patch was applied.**
-Evidence is `integration-check-v1-contact.json` in the QA directory; its compact
-record is also included in the V1 validation JSON. Recheck before integration
+Evidence is `integration-check-v1-preparation.json` in the QA directory; its
+record is also included in the preparation validation JSON. Recheck before integration
 because that checkout is still changing. Do not message or alter the other chat
 without human authorization.
 
