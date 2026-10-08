@@ -1,0 +1,900 @@
+{
+  "status": "Accepted local particle-stage gameplay improvement; stable 60 FPS remains open",
+  "date": "2026-10-08",
+  "base_commit": "a70dccceaca1cadbccbcf7670000c5ac5ae56117",
+  "changes": [
+    "Batch tornado particle update, spawning and delayed removal in the existing native spell kernel",
+    "Keep original ground-aware control callbacks, exact RNG and serialized state",
+    "Use script fallback for older helpers and custom callbacks"
+  ],
+  "comparison": {
+    "short_order": [
+      "tornado-original-loop-candidate-60-01",
+      "tornado-original-loop-control-60-01",
+      "tornado-original-loop-control-60-02",
+      "tornado-original-loop-candidate-60-02"
+    ],
+    "median_control_fps": 52.54889397006535,
+    "median_candidate_fps": 55.570299580443,
+    "short_gain_percent": 5.749703527725636,
+    "long_control_fps": 53.9463571223843,
+    "long_candidate_fps": 55.8883927241579,
+    "long_gain_percent": 3.5999383561114984,
+    "pair_gains_percent": [
+      8.683414594178451,
+      2.8922711453903016,
+      3.5999383561114984
+    ],
+    "candidate_minus_control_p95_ms": [
+      -4.057000000000002,
+      0.04100000000000037,
+      -1.6359999999999992
+    ],
+    "interpretation": "All three matched gameplay comparisons favor the candidate. Do not extrapolate to stable 60 FPS, combat, other maps, Windows or pure simulation throughput."
+  },
+  "fixture": {
+    "description": "Same living-party Portal entrance3 loop as portal-single-player-validation.json",
+    "fixture_version": 2,
+    "fixture_sha256": "4d6a538bf509791462a3a91e02953c1306373dd0c06ae800435296f1118a2045",
+    "single_player": true,
+    "original_look": true,
+    "renderer": "gl_compatibility",
+    "viewport_size": [
+      1920,
+      1080
+    ],
+    "render_scale": 0.75,
+    "speed": 1,
+    "workers": 4,
+    "distant_ai": false,
+    "difficulty": 0,
+    "profiling": false,
+    "full_options_sha256": "83173cd2486927600d6810952d420059cfcfd7eed39aebf449911508475e15c6"
+  },
+  "runs": [
+    {
+      "name": "tornado-original-loop-candidate-60-01",
+      "fps": 56.3596761881635,
+      "frame_ms": {
+        "max": 50.828,
+        "p50": 17.139,
+        "p95": 22.941,
+        "p99": 25.917
+      },
+      "sim_seconds": 59.9499999999997,
+      "wall_seconds": 60.007442,
+      "candidate": true,
+      "apk_version": 50,
+      "result_path": "/home/llm2x/Documents/EI/local/scratchpad/portal-throughput-20261007/runs/tornado-original-loop-candidate-60-01.json",
+      "result_sha256": "941a01e69ef65e7113b91cffffe94a7ec8b7d5abc297f49ace42d67f8d789600",
+      "screenshot_sha256": "81213cca676704926cd5eee708f2bd9d5d768b5840e97f54ffab494502ac9f56",
+      "receipt_path": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/tornado-original-loop-candidate-60-01.receipt.json",
+      "receipt_sha256": "91b9e2d9806d30a9d9d8a95045ab0d681001fd2d6bebe56991c08aad67103cce",
+      "log_sha256": "bd92c93638cbaa15c5385c4ba8b68c0c39cb482055e5c2fbbce19fa40c535bcb",
+      "apk_sha256": "30c3e5813fc6ec85537df602e38265af2ec6e19d7c0f5e90d79d213e07e73180",
+      "options_sha256": "e13ff12b715cc3a42157ef1775511be6fc527e17a6abeddbb3831b0f8472e7ba",
+      "ten_second_bins": [
+        {
+          "start": 0,
+          "seconds": 10.0,
+          "fps": 54.3,
+          "p95_ms": 23.489
+        },
+        {
+          "start": 10,
+          "seconds": 10.0,
+          "fps": 57.2,
+          "p95_ms": 21.637
+        },
+        {
+          "start": 20,
+          "seconds": 10.0,
+          "fps": 55.8,
+          "p95_ms": 23.866
+        },
+        {
+          "start": 30,
+          "seconds": 10.0,
+          "fps": 56.8,
+          "p95_ms": 22.89
+        },
+        {
+          "start": 40,
+          "seconds": 10.0,
+          "fps": 56.1,
+          "p95_ms": 22.624
+        },
+        {
+          "start": 50,
+          "seconds": 10.0,
+          "fps": 57.9,
+          "p95_ms": 23.855
+        }
+      ],
+      "actors": 415,
+      "living_party_members": 2,
+      "movement_commands": 20,
+      "renderer": "gl_compatibility",
+      "viewport_size": [
+        1920,
+        1080
+      ],
+      "render_scale": 0.75,
+      "battery_temperature_before_c": 32.2,
+      "battery_temperature_after_c": 32.2
+    },
+    {
+      "name": "tornado-original-loop-control-60-01",
+      "fps": 51.8567404222708,
+      "frame_ms": {
+        "max": 47.796,
+        "p50": 17.865,
+        "p95": 26.998,
+        "p99": 29.944
+      },
+      "sim_seconds": 59.8949999999997,
+      "wall_seconds": 60.011485,
+      "candidate": false,
+      "apk_version": 49,
+      "result_path": "/home/llm2x/Documents/EI/local/scratchpad/portal-throughput-20261007/runs/tornado-original-loop-control-60-01.json",
+      "result_sha256": "a0e783198f265b5c6eaac569535645a3502625469d5cd40ee5dfc7c967b4e9d5",
+      "screenshot_sha256": "363a6157d5a747cfe47c38fc25109c04c01dd375c74a65ccbd739c6169cc5c02",
+      "receipt_path": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/tornado-original-loop-control-60-01.receipt.json",
+      "receipt_sha256": "e5711deb3b33ff1fc625483bb1b8626545a35d11b3856e3bf733c981daddef65",
+      "log_sha256": "8bc503cf894408546952bb93784f4998ce4e04c9723773b0e0d8bc7a8b194417",
+      "apk_sha256": "0f196d03f272ed382924f6b97abf79b5de5dda13fec78e600270528f67ffcb0a",
+      "options_sha256": "e13ff12b715cc3a42157ef1775511be6fc527e17a6abeddbb3831b0f8472e7ba",
+      "ten_second_bins": [
+        {
+          "start": 0,
+          "seconds": 10.0,
+          "fps": 52.7,
+          "p95_ms": 25.512
+        },
+        {
+          "start": 10,
+          "seconds": 10.0,
+          "fps": 52.4,
+          "p95_ms": 25.014
+        },
+        {
+          "start": 20,
+          "seconds": 10.0,
+          "fps": 51.5,
+          "p95_ms": 26.969
+        },
+        {
+          "start": 30,
+          "seconds": 10.0,
+          "fps": 51.8,
+          "p95_ms": 26.738
+        },
+        {
+          "start": 40,
+          "seconds": 10.0,
+          "fps": 51.5,
+          "p95_ms": 27.574
+        },
+        {
+          "start": 50,
+          "seconds": 10.0,
+          "fps": 51.2,
+          "p95_ms": 28.206
+        }
+      ],
+      "actors": 415,
+      "living_party_members": 2,
+      "movement_commands": 20,
+      "renderer": "gl_compatibility",
+      "viewport_size": [
+        1920,
+        1080
+      ],
+      "render_scale": 0.75,
+      "battery_temperature_before_c": 32.2,
+      "battery_temperature_after_c": 33.0
+    },
+    {
+      "name": "tornado-original-loop-control-60-02",
+      "fps": 53.2410475178599,
+      "frame_ms": {
+        "max": 53.903,
+        "p50": 18.041,
+        "p95": 24.428,
+        "p99": 28.228
+      },
+      "sim_seconds": 59.8399999999997,
+      "wall_seconds": 60.010089,
+      "candidate": false,
+      "apk_version": 49,
+      "result_path": "/home/llm2x/Documents/EI/local/scratchpad/portal-throughput-20261007/runs/tornado-original-loop-control-60-02.json",
+      "result_sha256": "b1787883ab34ac2c6d7e107f4e74bda4783fb07d33a7a94b1342301cc6640c58",
+      "screenshot_sha256": "b07a165193fbe2ac0b8c9ac291f800a1ffa13940fa38f67f11fa9779b446386c",
+      "receipt_path": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/tornado-original-loop-control-60-02.receipt.json",
+      "receipt_sha256": "d14bdbca593d69538164cee4d685687ea83f066aa7a6116e1c67858d56a1e40a",
+      "log_sha256": "00879ba33ad1d1f06803051f6b48935d0fa96885e93fd485f99c0102022e68d0",
+      "apk_sha256": "0f196d03f272ed382924f6b97abf79b5de5dda13fec78e600270528f67ffcb0a",
+      "options_sha256": "e13ff12b715cc3a42157ef1775511be6fc527e17a6abeddbb3831b0f8472e7ba",
+      "ten_second_bins": [
+        {
+          "start": 0,
+          "seconds": 10.0,
+          "fps": 53.3,
+          "p95_ms": 25.172
+        },
+        {
+          "start": 10,
+          "seconds": 10.0,
+          "fps": 55.6,
+          "p95_ms": 22.583
+        },
+        {
+          "start": 20,
+          "seconds": 10.0,
+          "fps": 49.2,
+          "p95_ms": 26.284
+        },
+        {
+          "start": 30,
+          "seconds": 10.0,
+          "fps": 51.7,
+          "p95_ms": 24.491
+        },
+        {
+          "start": 40,
+          "seconds": 10.0,
+          "fps": 53.8,
+          "p95_ms": 23.71
+        },
+        {
+          "start": 50,
+          "seconds": 10.0,
+          "fps": 55.8,
+          "p95_ms": 24.34
+        }
+      ],
+      "actors": 415,
+      "living_party_members": 2,
+      "movement_commands": 20,
+      "renderer": "gl_compatibility",
+      "viewport_size": [
+        1920,
+        1080
+      ],
+      "render_scale": 0.75,
+      "battery_temperature_before_c": 33.0,
+      "battery_temperature_after_c": 33.7
+    },
+    {
+      "name": "tornado-original-loop-candidate-60-02",
+      "fps": 54.7809229727225,
+      "frame_ms": {
+        "max": 55.054,
+        "p50": 17.298,
+        "p95": 24.469,
+        "p99": 28.183
+      },
+      "sim_seconds": 59.8399999999997,
+      "wall_seconds": 60.00264,
+      "candidate": true,
+      "apk_version": 50,
+      "result_path": "/home/llm2x/Documents/EI/local/scratchpad/portal-throughput-20261007/runs/tornado-original-loop-candidate-60-02.json",
+      "result_sha256": "31e1ac81231b254f5f9b7150aac0d252788100662e317123a63b05e5c4b9eb9e",
+      "screenshot_sha256": "8ffcb9997afe016f3a17a246e2b23da14b07277932d0b722bf08968289ecd351",
+      "receipt_path": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/tornado-original-loop-candidate-60-02.receipt.json",
+      "receipt_sha256": "b1b8e983537ffb640c03e7863ebd4af933e47cca354dc27bfeac758ff4c7de7d",
+      "log_sha256": "a3c69295b6eeffa4e21f62a4a8eb922ae1fbf1b812bce932dec08e401c871d76",
+      "apk_sha256": "30c3e5813fc6ec85537df602e38265af2ec6e19d7c0f5e90d79d213e07e73180",
+      "options_sha256": "e13ff12b715cc3a42157ef1775511be6fc527e17a6abeddbb3831b0f8472e7ba",
+      "ten_second_bins": [
+        {
+          "start": 0,
+          "seconds": 10.0,
+          "fps": 53.1,
+          "p95_ms": 24.879
+        },
+        {
+          "start": 10,
+          "seconds": 10.0,
+          "fps": 55.5,
+          "p95_ms": 24.209
+        },
+        {
+          "start": 20,
+          "seconds": 10.0,
+          "fps": 53.2,
+          "p95_ms": 25.224
+        },
+        {
+          "start": 30,
+          "seconds": 10.0,
+          "fps": 54.1,
+          "p95_ms": 25.203
+        },
+        {
+          "start": 40,
+          "seconds": 10.0,
+          "fps": 55.8,
+          "p95_ms": 24.15
+        },
+        {
+          "start": 50,
+          "seconds": 10.0,
+          "fps": 56.9,
+          "p95_ms": 23.775
+        }
+      ],
+      "actors": 415,
+      "living_party_members": 2,
+      "movement_commands": 20,
+      "renderer": "gl_compatibility",
+      "viewport_size": [
+        1920,
+        1080
+      ],
+      "render_scale": 0.75,
+      "battery_temperature_before_c": 33.7,
+      "battery_temperature_after_c": 34.5
+    },
+    {
+      "name": "tornado-original-loop-control-180-01",
+      "fps": 53.9463571223843,
+      "frame_ms": {
+        "max": 50.196,
+        "p50": 17.321,
+        "p95": 25.889,
+        "p99": 29.093
+      },
+      "sim_seconds": 179.850000000014,
+      "wall_seconds": 180.012155,
+      "candidate": false,
+      "apk_version": 49,
+      "result_path": "/home/llm2x/Documents/EI/local/scratchpad/portal-throughput-20261007/runs/tornado-original-loop-control-180-01.json",
+      "result_sha256": "25a0aa6b44bbef35a13d6e4e83ce9a463bc265f8a1297322cc7803fc974da97e",
+      "screenshot_sha256": "8f5f088812be36ed1e7d02db94ca96779bf78dd31c9d28c7bc88c7a9a0ae48c2",
+      "receipt_path": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/tornado-original-loop-control-180-01.receipt.json",
+      "receipt_sha256": "8e5361af733c89e03a5b237561250efaae64fd2b4067c803a01361628b3b04f6",
+      "log_sha256": "8ecaa41d604cd34fca923a338ef115a4c0a2c5a5e6a30848830646b8dc99caf9",
+      "apk_sha256": "0f196d03f272ed382924f6b97abf79b5de5dda13fec78e600270528f67ffcb0a",
+      "options_sha256": "e13ff12b715cc3a42157ef1775511be6fc527e17a6abeddbb3831b0f8472e7ba",
+      "ten_second_bins": [
+        {
+          "start": 0,
+          "seconds": 10.0,
+          "fps": 53.3,
+          "p95_ms": 25.343
+        },
+        {
+          "start": 10,
+          "seconds": 10.0,
+          "fps": 55.0,
+          "p95_ms": 24.504
+        },
+        {
+          "start": 20,
+          "seconds": 10.0,
+          "fps": 48.9,
+          "p95_ms": 28.714
+        },
+        {
+          "start": 30,
+          "seconds": 10.0,
+          "fps": 53.1,
+          "p95_ms": 26.237
+        },
+        {
+          "start": 40,
+          "seconds": 10.0,
+          "fps": 53.4,
+          "p95_ms": 26.049
+        },
+        {
+          "start": 50,
+          "seconds": 10.0,
+          "fps": 55.6,
+          "p95_ms": 24.763
+        },
+        {
+          "start": 60,
+          "seconds": 10.0,
+          "fps": 57.0,
+          "p95_ms": 23.927
+        },
+        {
+          "start": 70,
+          "seconds": 10.0,
+          "fps": 57.2,
+          "p95_ms": 23.978
+        },
+        {
+          "start": 80,
+          "seconds": 10.0,
+          "fps": 53.4,
+          "p95_ms": 26.362
+        },
+        {
+          "start": 90,
+          "seconds": 10.0,
+          "fps": 51.8,
+          "p95_ms": 25.983
+        },
+        {
+          "start": 100,
+          "seconds": 10.0,
+          "fps": 52.2,
+          "p95_ms": 26.246
+        },
+        {
+          "start": 110,
+          "seconds": 10.0,
+          "fps": 50.8,
+          "p95_ms": 27.344
+        },
+        {
+          "start": 120,
+          "seconds": 10.0,
+          "fps": 51.1,
+          "p95_ms": 27.165
+        },
+        {
+          "start": 130,
+          "seconds": 10.0,
+          "fps": 51.5,
+          "p95_ms": 27.231
+        },
+        {
+          "start": 140,
+          "seconds": 10.0,
+          "fps": 52.3,
+          "p95_ms": 27.205
+        },
+        {
+          "start": 150,
+          "seconds": 10.0,
+          "fps": 56.7,
+          "p95_ms": 24.621
+        },
+        {
+          "start": 160,
+          "seconds": 10.0,
+          "fps": 59.0,
+          "p95_ms": 23.544
+        },
+        {
+          "start": 170,
+          "seconds": 10.0,
+          "fps": 58.7,
+          "p95_ms": 23.606
+        }
+      ],
+      "actors": 415,
+      "living_party_members": 2,
+      "movement_commands": 60,
+      "renderer": "gl_compatibility",
+      "viewport_size": [
+        1920,
+        1080
+      ],
+      "render_scale": 0.75,
+      "battery_temperature_before_c": 34.7,
+      "battery_temperature_after_c": 35.7
+    },
+    {
+      "name": "tornado-original-loop-candidate-180-01",
+      "fps": 55.8883927241579,
+      "frame_ms": {
+        "max": 52.598,
+        "p50": 16.964,
+        "p95": 24.253,
+        "p99": 27.503
+      },
+      "sim_seconds": 179.850000000014,
+      "wall_seconds": 180.001598,
+      "candidate": true,
+      "apk_version": 50,
+      "result_path": "/home/llm2x/Documents/EI/local/scratchpad/portal-throughput-20261007/runs/tornado-original-loop-candidate-180-01.json",
+      "result_sha256": "8ad9ae163ae432cade73256b0a7f0d48722b2e985d584a4a89f3f19a98099f9a",
+      "screenshot_sha256": "a9262891e54b70533655f3685c411b7696303cd74a9dae74eb99b86bd29fe0dd",
+      "receipt_path": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/tornado-original-loop-candidate-180-01.receipt.json",
+      "receipt_sha256": "7d06050a1b54c04a08cca983187e45ad2042ea2decef0de5cf1fb8033c0dfa30",
+      "log_sha256": "9639539394afdad1b9982c363fd7bbdbdbb49b8b54e31391399f54ce28d01a82",
+      "apk_sha256": "30c3e5813fc6ec85537df602e38265af2ec6e19d7c0f5e90d79d213e07e73180",
+      "options_sha256": "e13ff12b715cc3a42157ef1775511be6fc527e17a6abeddbb3831b0f8472e7ba",
+      "ten_second_bins": [
+        {
+          "start": 0,
+          "seconds": 10.0,
+          "fps": 53.0,
+          "p95_ms": 25.364
+        },
+        {
+          "start": 10,
+          "seconds": 10.0,
+          "fps": 54.3,
+          "p95_ms": 24.563
+        },
+        {
+          "start": 20,
+          "seconds": 10.0,
+          "fps": 54.6,
+          "p95_ms": 24.808
+        },
+        {
+          "start": 30,
+          "seconds": 10.0,
+          "fps": 54.3,
+          "p95_ms": 25.047
+        },
+        {
+          "start": 40,
+          "seconds": 10.0,
+          "fps": 55.2,
+          "p95_ms": 23.994
+        },
+        {
+          "start": 50,
+          "seconds": 10.0,
+          "fps": 57.6,
+          "p95_ms": 23.685
+        },
+        {
+          "start": 60,
+          "seconds": 10.0,
+          "fps": 58.2,
+          "p95_ms": 23.23
+        },
+        {
+          "start": 70,
+          "seconds": 10.0,
+          "fps": 57.6,
+          "p95_ms": 24.015
+        },
+        {
+          "start": 80,
+          "seconds": 10.0,
+          "fps": 57.1,
+          "p95_ms": 24.165
+        },
+        {
+          "start": 90,
+          "seconds": 10.0,
+          "fps": 52.9,
+          "p95_ms": 26.096
+        },
+        {
+          "start": 100,
+          "seconds": 10.0,
+          "fps": 54.1,
+          "p95_ms": 25.252
+        },
+        {
+          "start": 110,
+          "seconds": 10.0,
+          "fps": 53.6,
+          "p95_ms": 25.722
+        },
+        {
+          "start": 120,
+          "seconds": 10.0,
+          "fps": 53.7,
+          "p95_ms": 24.989
+        },
+        {
+          "start": 130,
+          "seconds": 10.0,
+          "fps": 55.3,
+          "p95_ms": 24.33
+        },
+        {
+          "start": 140,
+          "seconds": 10.0,
+          "fps": 56.9,
+          "p95_ms": 23.445
+        },
+        {
+          "start": 150,
+          "seconds": 10.0,
+          "fps": 58.5,
+          "p95_ms": 23.404
+        },
+        {
+          "start": 160,
+          "seconds": 10.0,
+          "fps": 60.1,
+          "p95_ms": 21.018
+        },
+        {
+          "start": 170,
+          "seconds": 10.0,
+          "fps": 58.9,
+          "p95_ms": 22.107
+        }
+      ],
+      "actors": 415,
+      "living_party_members": 2,
+      "movement_commands": 60,
+      "renderer": "gl_compatibility",
+      "viewport_size": [
+        1920,
+        1080
+      ],
+      "render_scale": 0.75,
+      "battery_temperature_before_c": 35.7,
+      "battery_temperature_after_c": 37.0
+    }
+  ],
+  "correctness": [
+    {
+      "name": "tornado-particles-linux-03",
+      "checks": 26244,
+      "failures": 0,
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/tornado-particles-linux-03.json",
+      "receipt_sha256": "4b067e041b9f2bde136a96c280967815bb164d2473559dac734e0cb931c0ab5e",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/tornado-particles-linux-03.log",
+      "log_sha256": "bbf6bd2cb5025103b3c3bf95849ad64144f3e9e87e4b89cc1aa0e9caa2705336",
+      "seconds": 9.316447084012907,
+      "environment": "stock Linux headless"
+    },
+    {
+      "name": "tornado-particles-old-helper-01",
+      "checks": 26244,
+      "failures": 0,
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/tornado-particles-old-helper-01.json",
+      "receipt_sha256": "fb65b5361e6716b99c2b5e198f99714c2f45bea90a2ca01541ae2228baf62632",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/tornado-particles-old-helper-01.log",
+      "log_sha256": "87fe75f3ee1cf94110e01a435642efb45a53977edc2d6c8a7b4cb44ed0445e77",
+      "seconds": 12.320594251010334,
+      "environment": "stock Linux headless"
+    },
+    {
+      "name": "tornado-particles-forward-01",
+      "checks": 26244,
+      "failures": 0,
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/tornado-particles-forward-01.json",
+      "receipt_sha256": "9255aed50ee1ba3e07e3b3be6ec139a87c38d1ea862b1a3e9f171ede553b06ce",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/tornado-particles-forward-01.log",
+      "log_sha256": "4abf5a9c1a579f0c28d1334492cd08403e452db23cdf69e399acd33e997040f9",
+      "seconds": 11.019290135009214,
+      "environment": "packaged Linux Forward+"
+    },
+    {
+      "name": "tornado-spell-regression-linux-01",
+      "checks": 76995,
+      "failures": 0,
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/tornado-spell-regression-linux-01.json",
+      "receipt_sha256": "57713006ddabce07ef22ffae3103da986541d0518a3918671f71e7569d5d18f3",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/tornado-spell-regression-linux-01.log",
+      "log_sha256": "458403a67b35545209ba471032023cd4ceb22ab799821a7ba1ec118af628fd57",
+      "seconds": 4.608263026981149,
+      "environment": "stock Linux headless"
+    },
+    {
+      "name": "tornado-particles-device-01",
+      "checks": 26244,
+      "failures": 0,
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/tornado-particles-device-01.receipt.json",
+      "receipt_sha256": "84d405f7aa837057e50b8ff523461e5fc0a7a911b4f7904ee12b03a488d09735",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/tornado-particles-device-01.log",
+      "log_sha256": "0a1fd79a2e70c69210f4f7a288f1711ea2587b103473c0ab5eeac1100a9b91c0",
+      "seconds": 16.80702567100525,
+      "environment": "Retroid OpenGL ES"
+    },
+    {
+      "name": "tornado-spell-regression-device-01",
+      "checks": 76995,
+      "failures": 0,
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/tornado-spell-regression-device-01.receipt.json",
+      "receipt_sha256": "1771688c16e36241c63d56ed9ee6eccafc7b3958f1b2ee795c190306d8db731d",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/tornado-spell-regression-device-01.log",
+      "log_sha256": "14cd9fe47901b883b799a7728cb3f53131a233d527c3cc03540f05c63a922f65",
+      "seconds": 8.636940956115723,
+      "environment": "Retroid OpenGL ES"
+    }
+  ],
+  "fixture_sha256": "81b008c258b6deef7861819713c829ec92ad4d4deb1a4780c7696f61ad315232",
+  "visual_review": "Ordinary original-look world, party and HUD output present in both gameplay captures; no visible corruption. Particle/control bytes are the detailed fidelity check, since the ordinary entrance walk does not place a tornado in view.",
+  "screenshots_inspected": [
+    "tornado-original-loop-candidate-60-01.png",
+    "tornado-original-loop-candidate-180-01.png"
+  ],
+  "native_sha256": {
+    "libterrain_search_android.so": "231ad722fd1f9eb0b5b47d7c9a386931a95b9f7ccb404fd7773a1fc651564fb7",
+    "libterrain_search.dll": "40a2e9ed88b7a92164902937d0466cf9d7ce3ae661be79af929d0aab4ab191c3",
+    "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+  },
+  "artifacts": {
+    "android_control": {
+      "private_instrumented": false,
+      "engine_sha256": "424eaf73630ec110faf614f550f8047c24a78e224211df45d8b957bf03b7cc79",
+      "native_sha256": "7791588e721f977a415112194cda86e38a9df8ec1d84fc9c68d5f6ccfad0eebd",
+      "apk_sha256": "0f196d03f272ed382924f6b97abf79b5de5dda13fec78e600270528f67ffcb0a",
+      "changes": [
+        "Retain clock face drawing while hands animate; preserve pause and quest pulse redraws",
+        "Recalculate lower HUD geometry only when its display and touch inputs change",
+        "Reuse immutable lever science lookup default"
+      ],
+      "baseline_apk": 47,
+      "accepted": true,
+      "acceptance": "Three matched comparisons favor candidate; modest 1.93% longer-run gain with identical visual checks. Stable60FPS remains open."
+    },
+    "android_candidate": {
+      "private_instrumented": false,
+      "engine_sha256": "424eaf73630ec110faf614f550f8047c24a78e224211df45d8b957bf03b7cc79",
+      "native_sha256": "231ad722fd1f9eb0b5b47d7c9a386931a95b9f7ccb404fd7773a1fc651564fb7",
+      "apk_sha256": "30c3e5813fc6ec85537df602e38265af2ec6e19d7c0f5e90d79d213e07e73180",
+      "changes": [
+        "Batch tornado particle update, spawning and delayed removal in the existing native spell kernel",
+        "Keep original ground-following control callback, exact RNG order and serialized particle state",
+        "Fallback to script for older helpers and custom callbacks"
+      ],
+      "baseline_apk": 49,
+      "accepted": true,
+      "acceptance": "Retained after two reversed60secondpairs and a matched180secondpair at actualOriginal1x; stable60 remains open"
+    },
+    "linux": {
+      "seconds": 5.920895171002485,
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--headless",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+        "--export-release",
+        "Linux",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/throughput-tornado-particles01/CPU.x86_64"
+      ],
+      "engine_source": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/fast-runtime.x86_64",
+      "errors": [],
+      "sha256": {
+        "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+        "CPU.pck": "8cbf76131d41f865638c58b846ddadb84757f382781f5e8a75a67cfe03f3ecb9",
+        "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+      }
+    },
+    "source_freeze_path": "/home/llm2x/Documents/EI/local/scratchpad/portal-throughput-20261007/tornado-particles-v1-source-freeze.json",
+    "source_freeze_sha256": "1e1c28a1db808467b15e7c6b548df809a35cecb44a9ecd091bc599e93b45253b",
+    "source_files": 520
+  },
+  "cleanup": {
+    "installed_private_apk": 50,
+    "apk_sha256": "30c3e5813fc6ec85537df602e38265af2ec6e19d7c0f5e90d79d213e07e73180",
+    "autorun_disabled": true,
+    "archived_bench": "files/bench-disabled-tornado-particles50.json",
+    "archived_bench_sha256": "773ff0481c62e3bfa9314511118691a65fa70a36c151e5078c53cade5a765a61",
+    "private_processes": [],
+    "timestamp": 1791436085.2756414
+  },
+  "private_android_source_overrides": {
+    "export_presets.cfg": "cf712fefe1caf1ab3cc890148158be3ea6c2d7e729521e81260c333cbc7e54ce",
+    "src/main.gd": "a43fc6b253b95a6c26cd87b406d255697e2ac2f849994a35d3f1d052412a26d8"
+  },
+  "initial_failed_checks": {
+    "initial_tests": [
+      "tornado-particles-linux-01",
+      "tornado-particles-linux-02"
+    ],
+    "failed_checks": 7256,
+    "total_checks": 26244,
+    "cause": "GDScript decimal parser reads2.793967696741381e-10 one ULP below C++ compiler; radius and size then differ.",
+    "fix": "Read coefficient with engine String.to_float once; original script reference unchanged.",
+    "passing_test": "tornado-particles-linux-03",
+    "proof": "float-literals.log"
+  },
+  "metadata_correction": {
+    "reason": "Freeze copied the previous manifest hashes correctly but retained old base/change descriptions; corrected metadata only. No file hash or measured source changed.",
+    "before_sha256": "44cec5f05cc3ed01d1dfe24881d0084ae7f207402f9c56c82f3df6d209f2c842",
+    "before_metadata": {
+      "base": "8bbc09b",
+      "changes": [
+        "Retain minimap map/frame while camera heading alone changes; redraw heading on its own child",
+        "Reuse empty UnitSounds state defaults and immutable unit roster"
+      ],
+      "description": "Tornado particle candidate APK50; acceptance pending"
+    },
+    "after_sha256": "1e1c28a1db808467b15e7c6b548df809a35cecb44a9ecd091bc599e93b45253b"
+  },
+  "desktop_exclusions": {
+    "status": "No accepted desktop performance comparison from this iteration",
+    "attempts": [
+      {
+        "name": "tornado-desktop-4k-living-loop-control-180-01",
+        "reason": "Inherited peer helper reused its180second join deadline for the connected lifetime; joining peer exited about166seconds into the180secondmeasurement. Final player count1. Exclude full run from co-op performance acceptance. Both controlled host units remained alive.",
+        "receipt_sha256": "4b6a4befa50990cfd1a01f3f6147d089c1e36244afb370d3b6411e7b82b40dc2",
+        "measurement_sha256": "91068621a0978608d37eb2ddd9f7374e8e92ba4f724c77d8dcefd919651245e2",
+        "raw_harness_eligible": true,
+        "semantic_acceptance_eligible": false,
+        "repair": "Freeze a new probe/base pair, use separate600secondconnected-lifetime deadline, reject player disconnects each measured frame and record all party survival."
+      },
+      {
+        "name": "tornado-desktop-4k-living-loop-control-180-02",
+        "reason": "Stopped when an unrelated Godot editor/import process launched after223.96seconds. About159seconds of gameplay elapsed, but no final measurement was written. Excluded.",
+        "receipt_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/runs/tornado-desktop-4k-living-loop-control-180-02.receipt.json",
+        "receipt_sha256": "fb3d4fa8875dfe2cd96c655a7a08bb773fb8bcc9ac97fc7b66c3f812f67e3035",
+        "log_sha256": "5bf305692ebf11616c1b454bf2d416a9b3716bca7961c833a520b66d5e1a46b8",
+        "foreign_games": {
+          "2437411": {
+            "exe": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "cmd": "godot-4 --headless --path remake --editor --import --quit ",
+            "ppid": 2437410,
+            "rss_kib": 55884
+          }
+        },
+        "seconds_before_stop": 223.9601408749877,
+        "private_processes_after": {}
+      }
+    ],
+    "probe_repair": {
+      "v2_probe_path": "/home/llm2x/Documents/EI/local/scratchpad/portal-throughput-20261007/owner_4k_living_loop_v2.gd",
+      "v2_probe_sha256": "d523b18bfd119914dd47bf76eaaf09a92af53364d74a1e09a2502dddafd89797",
+      "v2_base_path": "/home/llm2x/Documents/EI/local/scratchpad/portal-throughput-20261007/owner_4k_probe_base_v2.gd",
+      "v2_base_sha256": "5e60285a5d93d2a05d4b37da19925cdcd6b91c3016de5974e5f97e01b62a867c",
+      "prior_base_sha256": "ab50a60a94fc5f3c4febba935f9a6244f2f31ff1547c0a10952592273c62c4b9",
+      "purpose": "Separate joining timeout from connected lifetime, assert two players every measured frame, record all party members. Both benchmark versions and the invalid evidence are retained."
+    },
+    "next": "Run v2 control/candidate on a quiet desktop; use unique names and update analyzer filenames. Windows native runtime is still unavailable."
+  },
+  "follow_up": {
+    "status": "Read-only investigation; none of these hypotheses is implemented or measured",
+    "retroid_target": "Stable60FPS actualOriginal1x; desktop2x and other large maps remain in scope",
+    "remaining_profile_basis": {
+      "path": "profiles/redraw-original-loop-script-profile-01.summary.json",
+      "frontend_inclusive_percent": {
+        "hidden_animation": 6.8,
+        "UnitSounds": 3.2,
+        "GameSound": 4.0
+      },
+      "worker_profile": "Previous RPC-aligned APK46 diagnostic: about56%logic,21%actorpresentation; not a production performance comparison"
+    },
+    "hypotheses": [
+      {
+        "name": "Reduce per-frame headless presentation work while retaining full logic debt",
+        "evidence": [
+          "LocalHost arguments, listening and option RPC explicitly set max FPS60",
+          "GameWorld native55ms clock retains worker logic debt independently of rendered frames",
+          "Owner party snapshots publish from LocalHost._process; whole-population snapshots have100ms cadence"
+        ],
+        "required_validation": [
+          "Full1100tick/60.5sim unprofiled comparison on Retroid",
+          "Owner snapshot/input latency and actual1x/2x progress",
+          "Pose-dependent logic, combat, dialogue, save/reload and lifecycle",
+          "Long living-party frontend FPS; lower callback rate alone is not acceptance"
+        ]
+      },
+      {
+        "name": "Avoid scanning distant replicas for sound every frontend frame",
+        "evidence": [
+          "UnitSounds.tick traverses every world.unit_rows() entry and reads its current position before discarding units beyond40m",
+          "GameWorld.units_near uses native spatial buckets only on authority; replicas still use a script scan",
+          "Existing native actor records expose live positions and lifetime leases"
+        ],
+        "required_validation": [
+          "Original roster/RNG order, exact40m boundary and same-count replacement/freed actors",
+          "No missed near/far reentry, footsteps or attack acknowledgement state",
+          "Hidden replica must wake before animation/sound observation",
+          "Use repeated full-game comparisons; expected ceiling is only a few percent of frontend CPU"
+        ]
+      },
+      {
+        "name": "Defer more unobserved replica animation work",
+        "evidence": [
+          "Current hidden scheduler advances full hidden presentation every0.2s",
+          "Snapshot arrival and observation consume pending elapsed time",
+          "Ground mark and severed-limb consumers need explicit audit before any larger deferral"
+        ],
+        "required_validation": [
+          "Clip changes, death, casts, idle cycling, random-order effects, pause and visibility changes",
+          "Consume pending time before every observation/state transition",
+          "Do not weaken the existing bounded-clock test without replacing it with stronger observed-state equivalence"
+        ]
+      }
+    ],
+    "unsafe_shortcut_rejected": "Do not disable GameSound wholesale in the authority. _world_tick advances weather.host_tick, combat flags, boredom acknowledgements and _ack_tick. say_block affects GameUnit.blocked and allowed orders, so silent audio still has gameplay responsibilities.",
+    "changes_made": false
+  },
+  "limits": [
+    "Stable 60 FPS at 1x Original not achieved",
+    "No new complete-simulation throughput gain claimed",
+    "Windows native library cross-built, without runtime validation; Windows 4K/max/D3D12 report unresolved",
+    "No new combat, other-map, campaign, WAN or platform packaging coverage",
+    "Public Experimental 5 and original Android app/saves unchanged"
+  ]
+}

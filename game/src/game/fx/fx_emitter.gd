@@ -94,6 +94,11 @@ var _spell_control: Callable
 func prepare_spell_batch() -> void:
 	if ClassDB.class_exists("SpellParticleKernel") and not OS.get_cmdline_user_args().has("--ei-script-spell-particles"):
 		_spell_kernel = ClassDB.instantiate("SpellParticleKernel")
+		# An older helper still supports modifiers/orbits. Tornadoes keep the
+		# script fallback until a helper advertises this additional batch.
+		if type == 0x200a and (not _spell_kernel.has_method("supports_type") or not _spell_kernel.supports_type(type)):
+			_spell_kernel = null
+			return
 		_spell_spawn = spawn_fn
 		_spell_update = upd_fn
 		_spell_control = ctl_fn
@@ -220,6 +225,10 @@ func update_sim() -> bool:
 	# contain only emitter-owned data, including the same random stream.
 	if _spell_kernel and spawn_fn == _spell_spawn and upd_fn == _spell_update and ctl_fn == _spell_control \
 		and not cp.is_empty() and (type < 0x202b or (ec > 0 and cp.size() >= ec)):
+		if type == 0x200a:
+			# The funnel samples the tick's immutable ground snapshot. Keep
+			# that control update once per emitter; batch all particle work.
+			for c in cp: ctl_fn.call(self, c)
 		return _spell_kernel.step(self)
 	return update_sim_script()
 
