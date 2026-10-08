@@ -324,6 +324,7 @@ the available budget takes precedence.
 
 ### Source and implementation locations
 
+- Commit: `9bc5ce2` — `Stabilize local shadow selection across camera movement`.
 - Reference: R0 [Source/point_shadow_policy.h:11](https://github.com/Ilufus/evil-islands-owned-renderer/blob/d529d14e9bf3c960833a9d9633786fc4588ec6d2/Source/point_shadow_policy.h#L11), `PointShadowPolicy` and `PointShadowScheduler::select`. Its two-second hold, 1.25 score hysteresis and four-unit distance hysteresis inform the adaptation. Upstream uses those policies for eligibility, scheduling and pressure retirement; this is a Godot selection adaptation, not a literal scheduler port. In particular, upstream's four-lamp work budget is **not** a four-resident-shadow limit. Our existing four-shadow cap is retained independently.
 - [game/src/game/fx/local_lighting.gd:13](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/game/src/game/fx/local_lighting.gd:13): policy constants and `_shadow_since` state.
 - [game/src/game/fx/local_lighting.gd:365](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/game/src/game/fx/local_lighting.gd:365): `_shadow_candidate`, `_select_shadows` and `_assign_shadows`.
@@ -386,11 +387,12 @@ fixture and this documentation. No object ownership or camera code was changed.
 The P3 probe is a standalone benchmark only (commit `3855cc4`). P5 changes only
 `local_lighting.gd` plus its regression fixture and documentation.
 
-Read-only `git apply --check` of P1, P2 and the first P3 stage passed against the active
-checkout's working files while its committed HEAD was
-`ab62e0296476daa481bd1abd20833fcb8084cc2d`, including its unrelated uncommitted
-gameplay work. No patch was applied. Recheck before integrating because that
-checkout is still changing.
+Read-only `git apply --check` of the combined P1, P2, P3 and P5 patch through
+`9bc5ce2` passed against the active checkout at
+`083ef5a9b5cc534cb73a5b0d72f9ea571d6426a1`. Its working tree was clean and its
+HEAD/status were unchanged across the check. No patch was applied. Evidence:
+`integration-check-p5.json` in the QA directory. Recheck before integrating
+because that checkout is still changing.
 
 ## Next work in the established order
 
