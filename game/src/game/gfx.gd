@@ -1030,13 +1030,13 @@ static func particle_tint() -> Color:
 
 
 ## Option gfx_hd_textures: map-object / foliage textures 2x upscaled
-## (TexUpscale), else the original (GameData.get_texture).
+## (TexUpscale), else preserve the original compressed/authored mip chain.
 static var _hd := {}
 
 
 static func texture_3d(name: String) -> Texture2D:
 	if name == "" or not on("gfx_hd_textures"):
-		return GameData.get_texture(name) if name != "" else null
+		return GameData.get_texture(name, true) if name != "" else null
 	var key := name.to_lower()
 	if not _hd.has(key):
 		var img := GameData.load_image(key)

@@ -557,10 +557,13 @@ func read_file(rel: String) -> PackedByteArray:
 	return GameFiles.read(path)
 
 
-func load_image(name: String) -> Image:
+func load_image(name: String, authored_mips := false) -> Image:
+	var data: PackedByteArray
 	if not textures.has(name + ".mmp") and menus and menus.has(name + ".mmp"):
-		return EIMmp.decode(menus.read(name + ".mmp"))
-	return EIMmp.decode(textures.read(name + ".mmp"))
+		data = menus.read(name + ".mmp")
+	else:
+		data = textures.read(name + ".mmp")
+	return EIMmp.decode_texture(data, RenderingServer.has_os_feature("s3tc")) if authored_mips else EIMmp.decode(data)
 
 
 ## A model file (.mod/.fig/.bon/.anm) from figures.res, or menus.res for the menu signposts.
@@ -575,16 +578,18 @@ func read_figure(file: String) -> PackedByteArray:
 
 
 ## Cached, mipmapped texture for objects; null if missing.
-func get_texture(name: String) -> Texture2D:
+func get_texture(name: String, authored_mips := false) -> Texture2D:
 	name = name.to_lower()
-	if not _texture_cache.has(name):
-		var img := load_image(name)
+	var key := name + ("#authored_mips" if authored_mips else "")
+	if not _texture_cache.has(key):
+		var img := load_image(name, authored_mips)
 		var tex: Texture2D = null
 		if img:
-			img.generate_mipmaps()
+			if not authored_mips:
+				img.generate_mipmaps()
 			tex = ImageTexture.create_from_image(img)
-		_texture_cache[name] = tex
-	return _texture_cache[name]
+		_texture_cache[key] = tex
+	return _texture_cache[key]
 
 
 ## the original: a multiplayer game loads
