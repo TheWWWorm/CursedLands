@@ -35,6 +35,9 @@ The additional [campaign audit](/home/llm2x/Documents/EI/local/implementation-ga
 | U25 | Verify tamed dragon's departure after harpies against original scripts; user observed eventual departure. | Original handler orders the dragon home after crossing y=295 away from the hero, then clears following after 150 ticks. Order/delay regression passes; no departure change needed. |
 | U26 | Rejoining with a changed name updates overhead text but leaves the old name in character preview. | Rebinding a saved guest slot updates saved and live display names without replacing character data. Save/load tests pass; renamed real-network reconnect pending. |
 | U27 | Experimental third-person mode: behind-shoulder view, persistent HP bars, free aimed attacks including peaceful zones, WASD movement and mouse camera/attacks; default mode for gamepad. Preserve classic controls as a selectable mode. | Requested; open |
+| U28 | Refund older characters and all trainable skills/abilities, including Zak’s innate backstab. | Requested; replaces the old purchased-only refund policy. |
+| U29 | Remove ability purchase-order advantage while retaining escalating costs at the cheapest obtainable order. | Requested; six numerical skill curves are already independent; the global perk multiplier is the affected system. |
+| U30 | Sell the armour/weapon infusion runes in the Gipath spell shop. | Requested; add authored ic/it runes to campaign trader 2. |
 
 ## Campaign audit findings
 
@@ -48,8 +51,8 @@ The additional [campaign audit](/home/llm2x/Documents/EI/local/implementation-ga
 | G06 | Named parties disable LiA camp catch-up for late joiners/partial receipts. | Fixed named-party camp catch-up; six branches and saved idempotence pass. |
 | G07 | Co-op ownership/order changes the meaning of fixed story-roster indexes. Separate narrative roles from added guests; audit effects intended for everyone. | Fixed stable story-role indexes including guest-owned Kel. Effects intended for every co-op participant still need map-specific adaptation. |
 | G08 | Define/test guest participation in temporary protagonist chapters, including equipment, disguise and script constraints. | Behavior/design coverage open |
-| G09 | Pets are suppressed and later forgotten in named parties. Distinguish accompanying pets from persistent waiting pets. | Audit state reproduction; open |
-| G10 | In-place party redeployment fails to reconcile guest-owned companions. | Source-backed risk; open |
+| G09 | Pets are suppressed and later forgotten in named parties. Distinguish accompanying pets from persistent waiting pets. | Fixed party-scoped pet persistence, LiA travelling group versus Shaina waiting group, wounds and original guest ownership. Original-data save/transfer regressions pass. |
+| G10 | In-place party redeployment fails to reconcile guest-owned companions. | Fixed campaign redeployment of guest-owned mercenaries and pets. Original Shaina switch/return over ENet passes. |
 
 ## Validation and checkpoints
 
@@ -59,7 +62,7 @@ Performance results and their limits remain in [the large-area checkpoint](large
 
 Rendered two-world fixtures pass with the engine's safe render-thread mode. Separate render-thread attempts produced buffer-update errors or timeouts and are retained as failed validation; shipping-default two-process presentation still needs a separate test. Xvfb results establish correctness only. These fixes have not yet been packaged for Windows or checked on Retroid, and they do not establish a new performance gain.
 
-Full chapter playthroughs, guest progress-package structure (G02), pets/redeployment (G09/G10), remaining player reports and experimental third-person mode remain open. This document tracks coverage rather than treating source inspection as completion.
+Full chapter playthroughs, guest progress-package structure (G02), remaining player reports and experimental third-person mode remain open. This document tracks coverage rather than treating source inspection as completion.
 
 The second gameplay checkpoint covers camp movement/escape, script-added actor lifetime, Catacombs floor/lever behavior and renamed guest slots. [Mechanism validation](gameplay-campaign-mechanisms-validation.json) records the exact production export: 20 camp checks, 12 actor-lifetime checks, 18 rendered Catacombs checks, and 37 base / 64 LiA roster checks pass. The previous production export fails 11 camp, 5 lifetime and 4 Catacombs assertions. The movement fixture registers every paused NPC in navigation; initial attempts without those registrations are excluded. These prepared regressions are not a full co-op chapter playthrough.
 
@@ -76,3 +79,5 @@ The quest checkpoint distinguishes unit-carried `RemoveQuestItem` from player-ba
 [Rune validation](gameplay-rune-validation.json) records ten failures in the prior export and sixteen passing production checks. The saved modifier code makes recovery exact; the fix does not infer a replacement from a blank display name.
 
 [Shelter validation](gameplay-shelter-validation.json) records eleven checks for the original scripted departure. The repeat-load crash was traced to the fixture ticking a freed old-world VM; it is excluded as a game defect.
+
+[Party-dependent validation](gameplay-party-dependents-validation.json) records ten pre-fix failures and 23 passing production LiA checks, plus 13 base-campaign checks. Temporary substitute parties retain waiting animals, and returning guest-owned companions keep ownership and wound state.

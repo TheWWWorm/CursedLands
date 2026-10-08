@@ -37,7 +37,7 @@ var experience := 0.0     # experience not yet distributed
 ## Hired mercenaries: number N (script var apartyn<N>) -> hero record + controller.
 var mercs := {}
 ## Fully tamed units (Spells.tame stage 3) travelling with the party:
-## [{rec, hp, controller, pos}]. the original puts them in the
+## [{rec, hp, controller, pos, party}]. the original puts them in the
 ## tamer's party, whose members go to the next zone.
 var pets: Array = []
 ## Trader records by id (Shops): goods, restock flag, prototypes sold there.
@@ -801,14 +801,29 @@ static func party_unit(world: GameWorld, ref: Array) -> GameUnit:
 	return null
 
 
-## Refreshes `pets` from the tamed party members in `world`.
+## Kir's ordinary LiA chapter names represent the same travelling party;
+## Shaina is a temporary substitute. Base-game substitutes keep their own
+## animals. Older unlabelled pets belonged to the main protagonist.
+func pet_party() -> String:
+	return current_party if campaign_id != CampaignProfile.ASTRAL or current_party == "Shaina" else ""
+
+
+func pet_party_active(pet: Dictionary) -> bool:
+	return String(pet.get("party", "")) == pet_party()
+
+
+## Refresh only the animals deployed in this world, retaining other parties'
+## waiting pets. SetCurrentParty may already have changed current_party while
+## the old world is still alive, so use its deployment identity.
 func collect_pets(world: GameWorld) -> void:
-	pets = []
+	var deployed := String(world.get_meta("pet_party", pet_party()))
+	pets = pets.filter(func(pet: Dictionary): return String(pet.get("party", "")) != deployed)
 	for u: GameUnit in world.units.values():
 		if is_pet(u):
 			var rec := u.info.duplicate()
 			rec.erase("nid")
-			var pet := {"rec": rec, "hp": u.hp, "controller": u.controller, "pos": u.pos, "body": body_state(u)}
+			var owner := int(u.get_meta("lent_of", u.get_meta("orphan_of", u.controller)))
+			var pet := {"rec": rec, "hp": u.hp, "mana": u.mana, "controller": owner, "pos": u.pos, "body": body_state(u), "party": deployed}
 			if u.has_meta("xp_stats") and u.get_meta("xp_stats") is Dictionary:
 				pet.xp_stats = u.get_meta("xp_stats").duplicate(true)
 				pet.mana = u.mana

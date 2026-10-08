@@ -998,6 +998,7 @@ func _on_item_worn(u: GameUnit, item: String, kind: String) -> void:
 
 
 func _deploy_parties(z: Dictionary, entrance: int) -> void:
+	world.set_meta("pet_party", state.pet_party())
 	var exit: Dictionary = z.exits.get(entrance, {})
 	var rect: Rect2 = exit.get("deploy", Rect2(world.terrain.size_ei() * 0.5, Vector2(4, 4)))
 	var view := deg_to_rad(float(exit.get("view", 0.0)))
@@ -1037,8 +1038,8 @@ func _deploy_parties(z: Dictionary, entrance: int) -> void:
 		slot += 1
 		_spawn_merc(m, p, view, true)
 	for pet: Dictionary in state.pets:
-		if not state.current_party.is_empty():
-			break
+		if not state.pet_party_active(pet):
+			continue
 		var p := world.nav.nearest_walkable(rect.get_center() + Vector2(slot % 3 - 1, slot / 3) * 1.5)
 		slot += 1
 		_spawn_pet(pet, p, view)
@@ -1052,6 +1053,8 @@ func _spawn_pet(pet: Dictionary, p: Vector2, facing := 0.0) -> GameUnit:
 	var u := world.spawn_unit(rec)
 	if u:
 		u.controller = int(pet.controller) if players_include(int(pet.controller)) else _merc_owner()
+		if u.controller != int(pet.controller):
+			u.set_meta("lent_of", int(pet.controller))
 		u.faction = 0
 		u.mode = "player"
 		u.facing = facing
@@ -1063,6 +1066,8 @@ func _spawn_pet(pet: Dictionary, p: Vector2, facing := 0.0) -> GameUnit:
 			u.hp = minf(float(pet.hp), u.max_hp)
 		if pet.has("mana"):
 			u.mana = minf(float(pet.mana), u.max_mana)
+		if pet.get("body") is Dictionary:
+			CampaignState.apply_body(u, pet.body)
 	return u
 
 
@@ -2368,10 +2373,15 @@ func _merc_owner() -> int:
 func redeploy_party(player: int) -> void:
 	var at := Vector2.INF
 	var facing := 0.0
+	var campaign_redeploy := player == 0 and lmp.is_empty()
 	state.store_party_positions(world)
+	if campaign_redeploy:
+		state.collect_pets(world)
 	for u: GameUnit in world.units.values():
-		if u.controller == player and u.has_meta("hero"):
-			if at == Vector2.INF and not u.get_meta("hero").has("merc"):
+		var character: Dictionary = u.get_meta("hero", {})
+		if (u.has_meta("hero") and (u.controller == player or (campaign_redeploy and character.has("merc")))) \
+				or (campaign_redeploy and CampaignState.is_pet(u)):
+			if at == Vector2.INF and u.controller == player and u.has_meta("hero") and not character.has("merc"):
 				at = u.pos
 				facing = u.facing
 			world.remove_unit(u)
@@ -2394,7 +2404,7 @@ func redeploy_party(player: int) -> void:
 		slot += 1
 	for n in state.mercs:
 		var m: Dictionary = state.mercs[n]
-		if int(m.get("controller", 0)) != player or not state.merc_party_active(m) \
+		if (not campaign_redeploy and int(m.get("controller", 0)) != player) or not state.merc_party_active(m) \
 				or m.get("travel_waiting", false) or state.get_var(0, "adeadn%d" % n) >= 1.0:
 			continue
 		var p := world.nav.nearest_walkable(at + Vector2(slot % 3 - 1, slot / 3) * 1.5)
@@ -2402,6 +2412,15 @@ func redeploy_party(player: int) -> void:
 		if u:
 			announce_unit(u)
 		slot += 1
+	if campaign_redeploy:
+		world.set_meta("pet_party", state.pet_party())
+		for pet: Dictionary in state.pets:
+			if not state.pet_party_active(pet): continue
+			var p := world.nav.nearest_walkable(at + Vector2(slot % 3 - 1, slot / 3) * 1.5)
+			var u := _spawn_pet(pet, p, facing)
+			if u: announce_unit(u)
+			slot += 1
+		state.replay_restored(world)
 	broadcast({"t": "party"})
 	sync_state()
 
