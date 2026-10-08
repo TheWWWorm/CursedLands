@@ -787,7 +787,7 @@ static func _items(v) -> Array:
 	if v is Array:
 		for it in v:
 			if it is String and out.size() < 2000 and (Items.kind(it) != "" or it.begins_with("spell:")):
-				out.append(it)
+				out.append(Items.canonical_rune(it))
 	return out
 
 

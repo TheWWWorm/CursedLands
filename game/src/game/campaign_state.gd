@@ -247,6 +247,7 @@ func gs_keys(player := 0, prefix := "", clone := false) -> Array[String]:
 ## unit's .mob UNIT_QUEST_ITEMS) go to the quest item list that the script
 ## builtin HaveItem reads, everything else into the party bag.
 func add_item(id: String, n := 1) -> void:
+	id = Items.canonical_rune(id)
 	if Items.kind(id) == "quest":
 		quest_items[String(Items.info(id).row.get("name", id)).to_lower()] = true
 		return
@@ -1312,9 +1313,32 @@ static func load_from(path: String) -> CampaignState:
 		if k.get_slice(".", 2).begins_with("constr") and k.contains(":b.") and is_equal_approx(float(s.vars[k]), 2.0):
 			s.vars[k] = 1.0
 	s.migrate_charges()
+	s.migrate_runes()
 	s.cap_belts()   # saves of builds whose belt took eight
 	TrainingRefund.migrate_state(s)
 	return s
+
+
+## The old item parser treated native Rune.<modifier> loot as an untextured
+## materialless item. Keep each copy and its owner, restoring the modifier
+## already encoded in the saved ID. Saved corpse loot is parsed on pickup.
+func migrate_runes() -> void:
+	var bags: Array = [items]
+	for bag: Dictionary in party_bags.values():
+		bags.append(bag.get("items", []))
+	for entry: Dictionary in coop.get("host", {}).get("joiners", {}).values():
+		bags.append(entry.get("purse", {}).get("items", []))
+	for bag in bags:
+		if not bag is Array: continue
+		for i in bag.size():
+			if bag[i] is String: bag[i] = Items.canonical_rune(bag[i])
+	for shop: Dictionary in shops.values():
+		var goods: Dictionary = shop.get("goods", {})
+		for id: String in goods.keys():
+			var fixed := Items.canonical_rune(id)
+			if fixed != id:
+				goods[fixed] = int(goods.get(fixed, 0)) + int(goods[id])
+				goods.erase(id)
 
 
 ## Saves of builds that kept charges in the hero record ("charges": item

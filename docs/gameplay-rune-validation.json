@@ -1,0 +1,124 @@
+{
+  "baseline_commit": "0138145",
+  "export": {
+    "seconds": 6.026010358007625,
+    "command": [
+      "/home/llm2x/.local/bin/godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+      "--export-release",
+      "Linux",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps12/CPU.x86_64"
+    ],
+    "engine_source": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/fast-runtime.x86_64",
+    "errors": [],
+    "sha256": {
+      "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+      "CPU.pck": "e2a552b5ea9a3a798ddc6d53cd595fde7e9c95388ded65c3120222e5fbf7d603",
+      "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+    }
+  },
+  "tests": {
+    "gameplay-rune-before-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps11/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/rune_loot.gd",
+        "--label=gameplay-rune-before-01"
+      ],
+      "exit_code": 1,
+      "stopped": false,
+      "seconds": 9.015666049002903,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "27247d48b7a732d61e38416fa216fe9bc05e19701999a34dd946b47b6ce6d1ad",
+      "raw_log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-rune-before-01.log",
+      "checks": 15,
+      "failures": 10
+    },
+    "gameplay-rune-after-01": {
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/rune_loot.gd",
+        "--label=gameplay-rune-after-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 10.81714954401832,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "2b8eafe7404954778b2adfa1aa3584b1306b76789d3150441f42a05e0b9b27ad",
+      "raw_log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-rune-after-01.log",
+      "checks": 15,
+      "failures": 0
+    },
+    "gameplay-rune-production-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps12/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--resolution",
+        "1600x900",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/rune_loot.gd",
+        "--label=gameplay-rune-production-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 26.548480705998372,
+      "errors": [],
+      "warnings": [
+        "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+      ],
+      "log_sha256": "4d80826801b3bafb7d32c3012d069ca3ec954d8874ecbf055d9f5c6ccd68091a",
+      "raw_log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-rune-production-01.log",
+      "checks": 16,
+      "failures": 0
+    }
+  },
+  "source_sha256": {
+    "game/src/game/items.gd": "679942d21b88aed7ba80fc79d1b4a9a5a92416157206dbd35be6658925e33a43",
+    "game/src/game/campaign_state.gd": "7958a5e503a7ed8ca0b7dfa29d29720cb147bb01f5bc3a059cf7390a522fe52d",
+    "game/src/game/coop_progress.gd": "948429a975303dd54fd0eb12a3d154092fd57c754372fc69937bdae091f7e31c",
+    "tools/tests/rune_loot.gd": "f723d3dd6f62d506d6e80f04e3d4189b199145dd7daa4b65f9e1bf10d401493c"
+  },
+  "original_evidence": [
+    "items.idb Rune has instruction subtype 4. Native 6ac930 case 4 interprets its dot suffix as a spell modifier.",
+    "Human Gipath NPC Wife M3 carries rune.e1; actual zone3obr ChiefWife 3323 theft reproduces a blank zero-price item before the fix.",
+    "Human Gipath Brigand Effect F3 also carries rune.e2. Other authored rune.<code> drops include orcs, a dryad and a succubus."
+  ],
+  "visual_review": [
+    "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/gameplay-rune-production-01/godot/app_userdata/Cursed Lands/recovered-rune.png"
+  ],
+  "recovery": "Recognized rune.<code> IDs become rune:<code> in new loot, loaded current/waiting bags, guest purses, imported co-op bags and trader stock. All copies and ownership persist; unknown/bare items are retained. Corpse inventories are parsed at pickup.",
+  "limitations": [
+    "The reported user save was not available; the actual Gipath carrier reproduces all described symptoms.",
+    "No private user save was changed. Recovery runs when a save is loaded by the corrected build.",
+    "Internal colour modifiers c4/c5 are separate zero-value items; no speculative filtering or deletion was added.",
+    "Windows and Retroid gameplay packaging pending."
+  ]
+}

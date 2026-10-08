@@ -254,6 +254,7 @@ static func from_spec(s: String) -> Array:
 static func parse_stack(s: String) -> Array:
 	var native := s.strip_edges().to_lower()
 	if native.begins_with("prototype.") or native.begins_with("modifier.") \
+			or native.begins_with("rune.") \
 			or native.begins_with("spell container[") or native.begins_with("spell container ["):
 		return from_spec(s)
 	s = s.strip_edges()
@@ -289,6 +290,17 @@ static func _native_spell_item(id: String) -> String:
 		return "keystone:" + id.substr(10)
 	if id.begins_with("modifier."):
 		return "rune:" + id.substr(9)
+	return canonical_rune(id)
+
+
+## Native loot instruction subtype 4 is named Rune in items.idb. Enemy
+## prototypes use "rune.e1", etc.; the suffix is a modifier code, not a
+## material. Old remake saves retained it intact, so repair only recognized
+## codes. Bare/unknown items are preserved rather than guessed or discarded.
+static func canonical_rune(id: String) -> String:
+	var native := id.strip_edges().to_lower()
+	if native.begins_with("rune.") and not Spells.mod_row(native.substr(5)).is_empty():
+		return "rune:" + native.substr(5)
 	return id
 
 
