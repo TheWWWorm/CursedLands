@@ -1453,7 +1453,8 @@ func pick_unit(p: Vector2) -> GameUnit:
 		# fallback. A small enemy beside a hero should not steal a precise tap.
 		var best := TouchInput.target_pixels() * 0.35
 		for unit: GameUnit in world.visible_units():
-			if unit.hidden or not unit.visible or not unit.near_screen():
+			if unit.hidden or not unit.visible or not unit.near_screen() \
+					or not unit.may_cover(rig.camera, p, best):
 				continue
 			var rects := unit.screen_rects(rig.camera)
 			if rects.is_empty():

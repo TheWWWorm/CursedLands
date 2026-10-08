@@ -1,0 +1,209 @@
+{
+  "status": "Accepted unpublished local checkpoint; stable60FPS at1x Original remains open",
+  "date": "2026-10-08",
+  "base_commit": "78651d496e0c69086eb27d0d9cbf6cd4fb0f0e62",
+  "change": "Conservative touch fallback bound expands existing screen rectangle by the current touch radius before detailed animated mesh projection. Exact-hit priority, final mesh test and radius are unchanged.",
+  "profile": {
+    "name": "single-original-loop-script-profile-01",
+    "diagnostic_only": true,
+    "main_thread_cpu_seconds": 27.175,
+    "main_inclusive_percent": {
+      "res://src/game/game.gd:_process": 14.7,
+      "res://src/game/game.gd:_update_cursor": 12.27,
+      "res://src/game/game.gd:pick_unit": 10.67,
+      "res://src/game/world.gd:_process": 10.14,
+      "res://src/game/unit.gd:screen_rects": 9.97,
+      "res://src/ui/mesh_screen_rect.gd:of_context": 8.94,
+      "res://src/game/unit.gd:_present_frame": 8.39,
+      "res://src/game/world.gd:_step_hidden_presentations": 7.14,
+      "res://src/game/unit.gd:_advance_sleeping_presentation": 6.77,
+      "res://src/game/unit.gd:_step_sleeping_presentation": 6.68,
+      "res://src/ui/minimap.gd:_draw": 5.39,
+      "res://src/game/unit.gd:anim_flush": 5.0,
+      "res://src/game/game_sound.gd:_process": 4.56,
+      "res://src/game/session.gd:_rpc_snap": 4.54,
+      "res://src/game/session.gd:_apply_snap": 4.54,
+      "res://src/game/unit.gd:apply_snapshot": 4.4,
+      "res://src/game/fx/particle_system.gd:_process": 4.08,
+      "res://src/game/unit_sounds.gd:tick": 3.55,
+      "res://src/ui/minimap.gd:_draw_marks": 3.05,
+      "res://src/game/unit.gd:_process": 3.0,
+      "res://src/game/fx/ground_marks.gd:_process": 2.5,
+      "res://src/game/game.gd:_update_daylight": 2.41,
+      "res://src/game/fx/ground_marks.gd:_drain_units": 2.34,
+      "res://src/game/fx/particle_system.gd:_tick": 2.12
+    }
+  },
+  "fixture": {
+    "description": "Same living-party Portal entrance3 loop as portal-single-player-validation.json",
+    "fixture_version": 2,
+    "fixture_sha256": "4d6a538bf509791462a3a91e02953c1306373dd0c06ae800435296f1118a2045",
+    "single_player": true,
+    "original_look": true,
+    "renderer": "gl_compatibility",
+    "viewport_size": [
+      1920,
+      1080
+    ],
+    "render_scale": 0.75,
+    "speed": 1,
+    "workers": 4,
+    "distant_ai": false,
+    "difficulty": 0,
+    "profiling": false,
+    "full_options_sha256": "83173cd2486927600d6810952d420059cfcfd7eed39aebf449911508475e15c6"
+  },
+  "comparison": {
+    "order": [
+      "touch-original-loop-candidate-60-01",
+      "touch-original-loop-control-60-01",
+      "touch-original-loop-control-60-02",
+      "touch-original-loop-candidate-60-02"
+    ],
+    "median_control_fps": 44.531841132493,
+    "median_candidate_fps": 49.54715617118015,
+    "gain_percent": 11.262312339086478,
+    "pairs": 2,
+    "seconds_per_run": 60
+  },
+  "runs": [
+    {
+      "name": "touch-original-loop-candidate-60-01",
+      "fps": 50.0024501367186,
+      "frame_ms": {
+        "max": 54.426,
+        "p50": 18.799,
+        "p95": 27.128,
+        "p99": 29.882
+      },
+      "sim_seconds": 59.7849999999997,
+      "wall_seconds": 60.017059,
+      "result_sha256": "d26a3397674196c3c6a01fbf700a8869336e3375d0e723dd7861af5d82c859db",
+      "screenshot_sha256": "6be644c0875a29cc02d47b461b3f821ed64af27d127a34d3bf0b05810a97d531",
+      "receipt_sha256": "30d5e65f2749c31151fcbd36aa5419f551fa97e2065f1a33a2dd9eb2746e43ba",
+      "apk_sha256": "dc3c3fda9f0ee0a82c232581a3d92afd0f161e541521fb6a7e4a1d01d3b0f40c",
+      "options_sha256": "83173cd2486927600d6810952d420059cfcfd7eed39aebf449911508475e15c6",
+      "party_alive_throughout": true,
+      "simulated_actors": 415,
+      "battery_temperature_before_c": 33.5,
+      "battery_temperature_after_c": 33.5
+    },
+    {
+      "name": "touch-original-loop-control-60-01",
+      "fps": 45.4365810630594,
+      "frame_ms": {
+        "max": 55.799,
+        "p50": 21.318,
+        "p95": 28.466,
+        "p99": 33.358
+      },
+      "sim_seconds": 59.9499999999997,
+      "wall_seconds": 60.01772,
+      "result_sha256": "2e875145a32fb6d1cf132720d6c783f88e6abd78845e436e45cac36b733ddbda",
+      "screenshot_sha256": "371efea99f01e25e70baf7e84a0b28a78cc074dcc1de87849db08b5494e43efe",
+      "receipt_sha256": "da6976bce5b03f1ae336452c0ccfe4eead81c0f0c2b60ff3c1ca50b9ae2223b4",
+      "apk_sha256": "bbbbcd02362a8b506b590efeb5f7d80aa772a436468d0e9ef228cc6ce2aa68e9",
+      "options_sha256": "83173cd2486927600d6810952d420059cfcfd7eed39aebf449911508475e15c6",
+      "party_alive_throughout": true,
+      "simulated_actors": 415,
+      "battery_temperature_before_c": 33.7,
+      "battery_temperature_after_c": 33.7
+    },
+    {
+      "name": "touch-original-loop-control-60-02",
+      "fps": 43.6271012019266,
+      "frame_ms": {
+        "max": 60.27,
+        "p50": 22.2,
+        "p95": 30.348,
+        "p99": 34.552
+      },
+      "sim_seconds": 59.9499999999997,
+      "wall_seconds": 60.008571,
+      "result_sha256": "4bf687aeb9caa0b8c47afb48c2f03a1aa9ccc568f16e82e9ee0708ba2bf4b649",
+      "screenshot_sha256": "44bc49f7937746bbad64fb1ba87c6afbd80d9e575183a88737061674910e3c1f",
+      "receipt_sha256": "ab4bca12faf3564f42df07b42933c855853734e348d46f0b6687acbcab021b06",
+      "apk_sha256": "bbbbcd02362a8b506b590efeb5f7d80aa772a436468d0e9ef228cc6ce2aa68e9",
+      "options_sha256": "83173cd2486927600d6810952d420059cfcfd7eed39aebf449911508475e15c6",
+      "party_alive_throughout": true,
+      "simulated_actors": 415,
+      "battery_temperature_before_c": 33.7,
+      "battery_temperature_after_c": 34.5
+    },
+    {
+      "name": "touch-original-loop-candidate-60-02",
+      "fps": 49.0918622056417,
+      "frame_ms": {
+        "max": 54.552,
+        "p50": 19.119,
+        "p95": 27.639,
+        "p99": 31.61
+      },
+      "sim_seconds": 59.8399999999997,
+      "wall_seconds": 60.009946,
+      "result_sha256": "be273507219b867df0eda27d10ddcb5862439bf57717fb13e2c8b4cc9ff1cc6f",
+      "screenshot_sha256": "e56093e54fc0f80b26d1531e226569a9944a897d19f6ce418db03208a5a00e5e",
+      "receipt_sha256": "0df50a033ef85ded7c51f1f46af01c53621bcde021d9cb4aece3200b0f5d02a7",
+      "apk_sha256": "dc3c3fda9f0ee0a82c232581a3d92afd0f161e541521fb6a7e4a1d01d3b0f40c",
+      "options_sha256": "83173cd2486927600d6810952d420059cfcfd7eed39aebf449911508475e15c6",
+      "party_alive_throughout": true,
+      "simulated_actors": 415,
+      "battery_temperature_before_c": 34.5,
+      "battery_temperature_after_c": 35.0
+    }
+  ],
+  "correctness": [
+    {
+      "name": "touch-picking-correctness-01",
+      "checks": 1352,
+      "failures": 0,
+      "log_sha256": "c2468fc14b6e6bde61086fdff82663fb9aff42a9a88fc067af2e5c92c4c1ed15"
+    },
+    {
+      "name": "touch-picking-rendered-02",
+      "checks": 1352,
+      "failures": 0,
+      "log_sha256": "645f49dba166a21b1d3b2a25ce48b28544063c11759455374c6be8dff02bcc85"
+    },
+    {
+      "name": "touch-picking-device-01",
+      "checks": 1352,
+      "failures": 0,
+      "log_sha256": "4865b892588f9a0d018c433a9b351331c45c72822ac5fbd081fd414f316e6103"
+    },
+    {
+      "name": "touch-picking-packaged-03",
+      "checks": 1352,
+      "failures": 0,
+      "log_sha256": "7d8e58077f30d97f8f1594a05e8df8c6fa1ca12af9d7e4a9719c9e0eeba3623f"
+    }
+  ],
+  "sources": {
+    "freeze_sha256": "d3d18fbface0faee67f4b03eabcf0c2a3f4c5e2568cea56f50efa9c97c0151a9",
+    "game_file_count": 520,
+    "changed_game_files": {
+      "game/src/game/game.gd": "617f8973c823791c4e1172006976625876f0c36125c75b6ba1125003886d905f",
+      "game/src/game/unit.gd": "75ecc445a82548ee99e02fd3fc4da7eaf483f7a6f59bb82b7edcb2e1f479156b"
+    },
+    "test_sha256": "727e2a683218fbd89feb464ee147e3215260e6b1aa23518105c5552e0b33e014",
+    "note": "A test comment was clarified after the initial Linux and Android runs; executable test code is unchanged."
+  },
+  "artifacts": {
+    "private_control_apk42_sha256": "bbbbcd02362a8b506b590efeb5f7d80aa772a436468d0e9ef228cc6ce2aa68e9",
+    "private_candidate_apk43_sha256": "dc3c3fda9f0ee0a82c232581a3d92afd0f161e541521fb6a7e4a1d01d3b0f40c",
+    "candidate_linux_pack_sha256": "bdbd5afa9ea54cf358dba7c0acbe4767d41792efcae47757bfa5e9bf741dad44",
+    "android_engine_sha256": "424eaf73630ec110faf614f550f8047c24a78e224211df45d8b957bf03b7cc79",
+    "android_native_sha256": "7791588e721f977a415112194cda86e38a9df8ec1d84fc9c68d5f6ccfad0eebd",
+    "linux_engine_sha256": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+    "linux_native_sha256": "459d0cdcb8c71e147cf5e0094cff43163dda93e4c8a6df64ff3efd13addb113b"
+  },
+  "harness_recovery": "First candidate completed and was retained. Android refused the first control installation because its version was older. No control benchmark started. Controller now uses adb install -r -d for the private debuggable package and resumes the recorded sequence.",
+  "limits": [
+    "No60FPS claim: candidate p95 remains27.128-27.639ms and worst frame54.426-54.552ms.",
+    "No longer candidate run beyond two60-second repetitions; the preceding single-player checkpoint has separate180-second coverage.",
+    "Performance applies to this Retroid Original/1x single-player exploration route; no Windows4K/max fix or desktop FPS gain is claimed.",
+    "Private sampler profile is diagnostic only, not accepted FPS evidence. All four compared gameplay runs use the unchanged production engine.",
+    "No engine/native/AI/graphics quality changes and no new full-simulation gain claimed.",
+    "Public release and original Android app remain unchanged."
+  ]
+}

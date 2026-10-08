@@ -3474,7 +3474,7 @@ var _cover_hi := Vector2.ZERO
 var _cover_behind := false
 
 
-func may_cover(cam: Camera3D, p: Vector2) -> bool:
+func may_cover(cam: Camera3D, p: Vector2, margin := 0.0) -> bool:
 	if _body == null:
 		return true
 	var h := _body.aabb.size.y
@@ -3498,7 +3498,10 @@ func may_cover(cam: Camera3D, p: Vector2) -> bool:
 			var sp := cam.unproject_position(wp)
 			_cover_lo = _cover_lo.min(sp)
 			_cover_hi = _cover_hi.max(sp)
-	return _cover_behind or (p.x >= _cover_lo.x and p.y >= _cover_lo.y and p.x <= _cover_hi.x and p.y <= _cover_hi.y)
+	# Touch fallback accepts a silhouette within its pixel radius. Expand
+	# only the query, sharing the same cached bounds with exact picking.
+	return _cover_behind or (p.x >= _cover_lo.x - margin and p.y >= _cover_lo.y - margin \
+		and p.x <= _cover_hi.x + margin and p.y <= _cover_hi.y + margin)
 
 
 ## Screen rectangles of the figure as drawn (the original

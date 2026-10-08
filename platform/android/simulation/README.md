@@ -63,3 +63,8 @@ The service saves authoritative single-player state on Android's application
 pause notification: the frontend's save request may still be queued when the
 service suspends. `tools/tests/single_player_android_background.gd` plus an
 external Home/resume controller verifies the save reaches disk before resume.
+
+The subsequent [touch-picking checkpoint](../../../docs/portal-touch-picking-checkpoint.md)
+raises that same walking route to 49.55 FPS median in two 60-second runs, versus
+44.53 in contemporary controls. Stable 60 FPS remains unfinished; both later
+checkpoints are local and unpublished.
