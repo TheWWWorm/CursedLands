@@ -1,0 +1,861 @@
+{
+  "status": "Accepted modest local gameplay improvement; stable 60 FPS remains open",
+  "date": "2026-10-08",
+  "base_commit": "206556858770d53e7e891e4b1376c96eba78c7db",
+  "baseline_game_code": "7aa3d0762c0bd4e2c5021d20c2fb3ed64020dc1a",
+  "changes": [
+    "Retain clock face drawing while hands animate; preserve pause and quest pulse redraws",
+    "Recalculate lower HUD geometry only when its display and touch inputs change",
+    "Reuse immutable lever science lookup default"
+  ],
+  "comparison": {
+    "short_order": [
+      "controls-original-loop-candidate-60-01",
+      "controls-original-loop-control-60-01",
+      "controls-original-loop-control-60-02",
+      "controls-original-loop-candidate-60-02"
+    ],
+    "median_control_fps": 52.15030963476535,
+    "median_candidate_fps": 53.6366856494026,
+    "short_gain_percent": 2.8501767775629405,
+    "long_control_fps": 54.1964013589498,
+    "long_candidate_fps": 55.2419536461345,
+    "long_gain_percent": 1.9291913502888614,
+    "pair_gains_percent": [
+      5.083331873188435,
+      0.7040412732603807,
+      1.9291913502888614
+    ],
+    "interpretation": "Small gain in all three comparisons, with better p95/p99. Do not extrapolate to stable60, combat, other maps or other platforms."
+  },
+  "fixture": {
+    "description": "Same living-party Portal entrance3 loop as portal-single-player-validation.json",
+    "fixture_version": 2,
+    "fixture_sha256": "4d6a538bf509791462a3a91e02953c1306373dd0c06ae800435296f1118a2045",
+    "single_player": true,
+    "original_look": true,
+    "renderer": "gl_compatibility",
+    "viewport_size": [
+      1920,
+      1080
+    ],
+    "render_scale": 0.75,
+    "speed": 1,
+    "workers": 4,
+    "distant_ai": false,
+    "difficulty": 0,
+    "profiling": false,
+    "full_options_sha256": "83173cd2486927600d6810952d420059cfcfd7eed39aebf449911508475e15c6"
+  },
+  "runs": [
+    {
+      "name": "controls-original-loop-candidate-60-01",
+      "fps": 53.7123428230694,
+      "frame_ms": {
+        "max": 56.087,
+        "p50": 17.674,
+        "p95": 24.954,
+        "p99": 28.817
+      },
+      "sim_seconds": 59.8399999999997,
+      "wall_seconds": 60.00483,
+      "candidate": true,
+      "apk_version": 49,
+      "result_path": "/home/llm2x/Documents/EI/local/scratchpad/portal-throughput-20261007/runs/controls-original-loop-candidate-60-01.json",
+      "result_sha256": "3305de00ca3a5c2a46cabb25f9e9677d826c3a662f9c4f0dd3567edd003d3e92",
+      "screenshot_sha256": "afef90e902f77c84a54425c098c738b9bbb319cdf07b7d3a175c26dd8c5d53a3",
+      "receipt_path": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/controls-original-loop-candidate-60-01.receipt.json",
+      "receipt_sha256": "a4f5f94d17451d26cd5e95bb7b6121063354c016204b0495c6f4ae557af2ddb9",
+      "log_sha256": "d3fe228ab1ed02b58e66035459c53584d67c57ba6e2c6a8275a990f39efad2d4",
+      "apk_sha256": "0f196d03f272ed382924f6b97abf79b5de5dda13fec78e600270528f67ffcb0a",
+      "options_sha256": "e13ff12b715cc3a42157ef1775511be6fc527e17a6abeddbb3831b0f8472e7ba",
+      "ten_second_bins": [
+        {
+          "start": 0,
+          "seconds": 10.0,
+          "fps": 52.3,
+          "p95_ms": 26.192
+        },
+        {
+          "start": 10,
+          "seconds": 10.0,
+          "fps": 53.0,
+          "p95_ms": 26.384
+        },
+        {
+          "start": 20,
+          "seconds": 10.0,
+          "fps": 50.9,
+          "p95_ms": 26.916
+        },
+        {
+          "start": 30,
+          "seconds": 10.0,
+          "fps": 53.4,
+          "p95_ms": 25.086
+        },
+        {
+          "start": 40,
+          "seconds": 10.0,
+          "fps": 55.6,
+          "p95_ms": 23.341
+        },
+        {
+          "start": 50,
+          "seconds": 10.0,
+          "fps": 57.0,
+          "p95_ms": 23.48
+        }
+      ],
+      "actors": 415,
+      "living_party_members": 2,
+      "movement_commands": 20,
+      "renderer": "gl_compatibility",
+      "viewport_size": [
+        1920,
+        1080
+      ],
+      "render_scale": 0.75,
+      "battery_temperature_before_c": 31.7,
+      "battery_temperature_after_c": 32.0
+    },
+    {
+      "name": "controls-original-loop-control-60-01",
+      "fps": 51.1140462198971,
+      "frame_ms": {
+        "max": 49.772,
+        "p50": 18.115,
+        "p95": 27.092,
+        "p99": 31.235
+      },
+      "sim_seconds": 59.8949999999997,
+      "wall_seconds": 60.003076,
+      "candidate": false,
+      "apk_version": 47,
+      "result_path": "/home/llm2x/Documents/EI/local/scratchpad/portal-throughput-20261007/runs/controls-original-loop-control-60-01.json",
+      "result_sha256": "6d84119cf270f202394e94e562fa8859dee3b989d1d9ad2c1b3c9e21d62522dd",
+      "screenshot_sha256": "c4b9c909ac9a8a07d03e84bfd079ff4eb3043a5d9347900a9367e28d4463a029",
+      "receipt_path": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/controls-original-loop-control-60-01.receipt.json",
+      "receipt_sha256": "e7dace8bab0a479869f491bee571fa43714221ede427aa12b8831c816c5c8e4c",
+      "log_sha256": "ad934b028de782634eeb0e20ea69574acdc35a703cb34b911a617e5418a81606",
+      "apk_sha256": "a36d80d5cc26fc4c4e68585856bbf65006a1b887b744e9721fce13656ed5f21f",
+      "options_sha256": "e13ff12b715cc3a42157ef1775511be6fc527e17a6abeddbb3831b0f8472e7ba",
+      "ten_second_bins": [
+        {
+          "start": 0,
+          "seconds": 10.0,
+          "fps": 51.5,
+          "p95_ms": 26.161
+        },
+        {
+          "start": 10,
+          "seconds": 10.0,
+          "fps": 52.3,
+          "p95_ms": 26.138
+        },
+        {
+          "start": 20,
+          "seconds": 10.0,
+          "fps": 50.0,
+          "p95_ms": 27.672
+        },
+        {
+          "start": 30,
+          "seconds": 10.0,
+          "fps": 49.1,
+          "p95_ms": 28.672
+        },
+        {
+          "start": 40,
+          "seconds": 10.0,
+          "fps": 51.0,
+          "p95_ms": 26.966
+        },
+        {
+          "start": 50,
+          "seconds": 10.0,
+          "fps": 52.7,
+          "p95_ms": 26.214
+        }
+      ],
+      "actors": 415,
+      "living_party_members": 2,
+      "movement_commands": 20,
+      "renderer": "gl_compatibility",
+      "viewport_size": [
+        1920,
+        1080
+      ],
+      "render_scale": 0.75,
+      "battery_temperature_before_c": 32.0,
+      "battery_temperature_after_c": 32.7
+    },
+    {
+      "name": "controls-original-loop-control-60-02",
+      "fps": 53.1865730496336,
+      "frame_ms": {
+        "max": 50.754,
+        "p50": 17.506,
+        "p95": 26.362,
+        "p99": 30.109
+      },
+      "sim_seconds": 59.9499999999997,
+      "wall_seconds": 60.015147,
+      "candidate": false,
+      "apk_version": 47,
+      "result_path": "/home/llm2x/Documents/EI/local/scratchpad/portal-throughput-20261007/runs/controls-original-loop-control-60-02.json",
+      "result_sha256": "6c9604cc96e56ca2fa3747d6cedc2c2908ed701b9420f428d53e1f8559d963e8",
+      "screenshot_sha256": "f9ce6ba318b52edeb50025d0344734ec163169287a498195c0b075fdd7fb08df",
+      "receipt_path": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/controls-original-loop-control-60-02.receipt.json",
+      "receipt_sha256": "8ef6a2711772c549a4d7bfe4ab60498b3085c0c2c70718dd0cbe45444022f627",
+      "log_sha256": "d39e0524d1f4556377186b4d928ff501bb227f6557b3bd7eeb276107e7491e84",
+      "apk_sha256": "a36d80d5cc26fc4c4e68585856bbf65006a1b887b744e9721fce13656ed5f21f",
+      "options_sha256": "e13ff12b715cc3a42157ef1775511be6fc527e17a6abeddbb3831b0f8472e7ba",
+      "ten_second_bins": [
+        {
+          "start": 0,
+          "seconds": 10.0,
+          "fps": 53.8,
+          "p95_ms": 25.377
+        },
+        {
+          "start": 10,
+          "seconds": 10.0,
+          "fps": 56.0,
+          "p95_ms": 23.764
+        },
+        {
+          "start": 20,
+          "seconds": 10.0,
+          "fps": 49.5,
+          "p95_ms": 28.127
+        },
+        {
+          "start": 30,
+          "seconds": 10.0,
+          "fps": 51.5,
+          "p95_ms": 28.138
+        },
+        {
+          "start": 40,
+          "seconds": 10.0,
+          "fps": 53.3,
+          "p95_ms": 26.79
+        },
+        {
+          "start": 50,
+          "seconds": 10.0,
+          "fps": 55.0,
+          "p95_ms": 25.278
+        }
+      ],
+      "actors": 415,
+      "living_party_members": 2,
+      "movement_commands": 20,
+      "renderer": "gl_compatibility",
+      "viewport_size": [
+        1920,
+        1080
+      ],
+      "render_scale": 0.75,
+      "battery_temperature_before_c": 32.7,
+      "battery_temperature_after_c": 33.5
+    },
+    {
+      "name": "controls-original-loop-candidate-60-02",
+      "fps": 53.5610284757358,
+      "frame_ms": {
+        "max": 51.06,
+        "p50": 17.491,
+        "p95": 25.826,
+        "p99": 29.767
+      },
+      "sim_seconds": 59.8399999999997,
+      "wall_seconds": 60.006316,
+      "candidate": true,
+      "apk_version": 49,
+      "result_path": "/home/llm2x/Documents/EI/local/scratchpad/portal-throughput-20261007/runs/controls-original-loop-candidate-60-02.json",
+      "result_sha256": "127e3d60e64b141da0b4888aed327f3697d2f241fec6a3eb6c297b7620288e28",
+      "screenshot_sha256": "0b0422ba64f349ac64b58689847e6078d6e28940237e0fa287a14aa3a6d7a428",
+      "receipt_path": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/controls-original-loop-candidate-60-02.receipt.json",
+      "receipt_sha256": "9305ad450c144be08e1431ac086b457019d949e8b664b6c716c276d85dbe7322",
+      "log_sha256": "ac8750d1ff51a610ddc2a0759d9949200967146e4cbd8b28d65f8da186d797a1",
+      "apk_sha256": "0f196d03f272ed382924f6b97abf79b5de5dda13fec78e600270528f67ffcb0a",
+      "options_sha256": "e13ff12b715cc3a42157ef1775511be6fc527e17a6abeddbb3831b0f8472e7ba",
+      "ten_second_bins": [
+        {
+          "start": 0,
+          "seconds": 10.0,
+          "fps": 53.2,
+          "p95_ms": 25.401
+        },
+        {
+          "start": 10,
+          "seconds": 10.0,
+          "fps": 55.2,
+          "p95_ms": 23.871
+        },
+        {
+          "start": 20,
+          "seconds": 10.0,
+          "fps": 53.8,
+          "p95_ms": 24.627
+        },
+        {
+          "start": 30,
+          "seconds": 10.0,
+          "fps": 51.2,
+          "p95_ms": 27.604
+        },
+        {
+          "start": 40,
+          "seconds": 10.0,
+          "fps": 52.5,
+          "p95_ms": 26.773
+        },
+        {
+          "start": 50,
+          "seconds": 10.0,
+          "fps": 55.4,
+          "p95_ms": 24.3
+        }
+      ],
+      "actors": 415,
+      "living_party_members": 2,
+      "movement_commands": 20,
+      "renderer": "gl_compatibility",
+      "viewport_size": [
+        1920,
+        1080
+      ],
+      "render_scale": 0.75,
+      "battery_temperature_before_c": 33.5,
+      "battery_temperature_after_c": 34.2
+    },
+    {
+      "name": "hud-original-loop-control-180-01",
+      "fps": 54.1964013589498,
+      "frame_ms": {
+        "max": 53.624,
+        "p50": 17.359,
+        "p95": 25.911,
+        "p99": 29.179
+      },
+      "sim_seconds": 179.905000000014,
+      "wall_seconds": 180.011952,
+      "candidate": false,
+      "apk_version": 47,
+      "result_path": "/home/llm2x/Documents/EI/local/scratchpad/portal-throughput-20261007/runs/hud-original-loop-control-180-01.json",
+      "result_sha256": "4baca6b78a84cfae565542835512efb02527bcb8f8ca1d6ecc5a8fa1158a5099",
+      "screenshot_sha256": "8494c95259c55aee45cb35bb6fb6daf70de1ab9deb3dcc6ef2bf92c6cc47e8b6",
+      "receipt_path": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/hud-original-loop-control-180-01.receipt.json",
+      "receipt_sha256": "0d2e4a05feeb8407f67c8b3134fa1ebd7fdc85002161bed270d99e5eb0e84b80",
+      "log_sha256": "bc3992dcf6e9b125cfff753840460c9d7e9576f54e1d4aa781a1ec5f3c8e2414",
+      "apk_sha256": "a36d80d5cc26fc4c4e68585856bbf65006a1b887b744e9721fce13656ed5f21f",
+      "options_sha256": "e13ff12b715cc3a42157ef1775511be6fc527e17a6abeddbb3831b0f8472e7ba",
+      "ten_second_bins": [
+        {
+          "start": 0,
+          "seconds": 10.0,
+          "fps": 52.6,
+          "p95_ms": 25.33
+        },
+        {
+          "start": 10,
+          "seconds": 10.0,
+          "fps": 52.3,
+          "p95_ms": 26.015
+        },
+        {
+          "start": 20,
+          "seconds": 10.0,
+          "fps": 50.8,
+          "p95_ms": 26.467
+        },
+        {
+          "start": 30,
+          "seconds": 10.0,
+          "fps": 55.6,
+          "p95_ms": 24.302
+        },
+        {
+          "start": 40,
+          "seconds": 10.0,
+          "fps": 55.6,
+          "p95_ms": 23.275
+        },
+        {
+          "start": 50,
+          "seconds": 10.0,
+          "fps": 56.5,
+          "p95_ms": 23.05
+        },
+        {
+          "start": 60,
+          "seconds": 10.0,
+          "fps": 58.9,
+          "p95_ms": 21.826
+        },
+        {
+          "start": 70,
+          "seconds": 10.0,
+          "fps": 58.7,
+          "p95_ms": 24.002
+        },
+        {
+          "start": 80,
+          "seconds": 10.0,
+          "fps": 54.8,
+          "p95_ms": 25.765
+        },
+        {
+          "start": 90,
+          "seconds": 10.0,
+          "fps": 51.6,
+          "p95_ms": 26.875
+        },
+        {
+          "start": 100,
+          "seconds": 10.0,
+          "fps": 50.3,
+          "p95_ms": 27.998
+        },
+        {
+          "start": 110,
+          "seconds": 10.0,
+          "fps": 50.7,
+          "p95_ms": 27.742
+        },
+        {
+          "start": 120,
+          "seconds": 10.0,
+          "fps": 51.7,
+          "p95_ms": 27.528
+        },
+        {
+          "start": 130,
+          "seconds": 10.0,
+          "fps": 49.7,
+          "p95_ms": 28.171
+        },
+        {
+          "start": 140,
+          "seconds": 10.0,
+          "fps": 51.8,
+          "p95_ms": 28.244
+        },
+        {
+          "start": 150,
+          "seconds": 10.0,
+          "fps": 56.6,
+          "p95_ms": 23.904
+        },
+        {
+          "start": 160,
+          "seconds": 10.0,
+          "fps": 58.8,
+          "p95_ms": 23.758
+        },
+        {
+          "start": 170,
+          "seconds": 10.0,
+          "fps": 58.5,
+          "p95_ms": 22.186
+        }
+      ],
+      "actors": 415,
+      "living_party_members": 2,
+      "movement_commands": 60,
+      "renderer": "gl_compatibility",
+      "viewport_size": [
+        1920,
+        1080
+      ],
+      "render_scale": 0.75,
+      "battery_temperature_before_c": 34.5,
+      "battery_temperature_after_c": 35.5
+    },
+    {
+      "name": "hud-original-loop-candidate-180-01",
+      "fps": 55.2419536461345,
+      "frame_ms": {
+        "max": 53.971,
+        "p50": 17.166,
+        "p95": 24.449,
+        "p99": 27.931
+      },
+      "sim_seconds": 179.905000000014,
+      "wall_seconds": 180.008116,
+      "candidate": true,
+      "apk_version": 49,
+      "result_path": "/home/llm2x/Documents/EI/local/scratchpad/portal-throughput-20261007/runs/hud-original-loop-candidate-180-01.json",
+      "result_sha256": "1fd0405ecb7844fd6d947021bed8576fd13df6b939125cbccd7f1990b7927252",
+      "screenshot_sha256": "9e5ac3d2dc4e86539bfc155b37413bc68da594a2e37e730bbc8638953b49097f",
+      "receipt_path": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/hud-original-loop-candidate-180-01.receipt.json",
+      "receipt_sha256": "d5e93d83a650935667f614a20064b50f93e6ab27429bf601f4cef4f4d4ca48f2",
+      "log_sha256": "d0a840ee02470f4dc817824e108e7acf221d93bea6ca9fd8abdb400095202135",
+      "apk_sha256": "0f196d03f272ed382924f6b97abf79b5de5dda13fec78e600270528f67ffcb0a",
+      "options_sha256": "e13ff12b715cc3a42157ef1775511be6fc527e17a6abeddbb3831b0f8472e7ba",
+      "ten_second_bins": [
+        {
+          "start": 0,
+          "seconds": 10.0,
+          "fps": 54.0,
+          "p95_ms": 24.506
+        },
+        {
+          "start": 10,
+          "seconds": 10.0,
+          "fps": 55.7,
+          "p95_ms": 22.968
+        },
+        {
+          "start": 20,
+          "seconds": 10.0,
+          "fps": 52.0,
+          "p95_ms": 25.302
+        },
+        {
+          "start": 30,
+          "seconds": 10.0,
+          "fps": 54.0,
+          "p95_ms": 23.219
+        },
+        {
+          "start": 40,
+          "seconds": 10.0,
+          "fps": 54.2,
+          "p95_ms": 22.946
+        },
+        {
+          "start": 50,
+          "seconds": 10.0,
+          "fps": 54.1,
+          "p95_ms": 25.009
+        },
+        {
+          "start": 60,
+          "seconds": 10.0,
+          "fps": 57.4,
+          "p95_ms": 23.532
+        },
+        {
+          "start": 70,
+          "seconds": 10.0,
+          "fps": 58.6,
+          "p95_ms": 23.724
+        },
+        {
+          "start": 80,
+          "seconds": 10.0,
+          "fps": 56.3,
+          "p95_ms": 24.114
+        },
+        {
+          "start": 90,
+          "seconds": 10.0,
+          "fps": 52.5,
+          "p95_ms": 26.12
+        },
+        {
+          "start": 100,
+          "seconds": 10.0,
+          "fps": 52.1,
+          "p95_ms": 25.627
+        },
+        {
+          "start": 110,
+          "seconds": 10.0,
+          "fps": 52.1,
+          "p95_ms": 26.439
+        },
+        {
+          "start": 120,
+          "seconds": 10.0,
+          "fps": 53.2,
+          "p95_ms": 25.767
+        },
+        {
+          "start": 130,
+          "seconds": 10.0,
+          "fps": 55.0,
+          "p95_ms": 24.978
+        },
+        {
+          "start": 140,
+          "seconds": 10.0,
+          "fps": 55.6,
+          "p95_ms": 24.792
+        },
+        {
+          "start": 150,
+          "seconds": 10.0,
+          "fps": 58.0,
+          "p95_ms": 24.546
+        },
+        {
+          "start": 160,
+          "seconds": 10.0,
+          "fps": 60.0,
+          "p95_ms": 22.506
+        },
+        {
+          "start": 170,
+          "seconds": 10.0,
+          "fps": 59.5,
+          "p95_ms": 23.401
+        }
+      ],
+      "actors": 415,
+      "living_party_members": 2,
+      "movement_commands": 60,
+      "renderer": "gl_compatibility",
+      "viewport_size": [
+        1920,
+        1080
+      ],
+      "render_scale": 0.75,
+      "battery_temperature_before_c": 35.5,
+      "battery_temperature_after_c": 37.0
+    }
+  ],
+  "correctness": [
+    {
+      "name": "hud-retained-controls-gl-02",
+      "platform": "Stock Linux GL",
+      "checks": 107,
+      "failures": 0,
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/hud-retained-controls-gl-02.json",
+      "receipt_sha256": "773335180173d18de9833aa9fd3543540c420856db11d952c9345efe5bf4c9da",
+      "log_sha256": "6647188b738aecf14f801e13619ff6d9556b4f049efa07a9f0a1c02730d2a93c"
+    },
+    {
+      "name": "hud-retained-controls-forward-01",
+      "platform": "Packaged Linux Forward+",
+      "checks": 107,
+      "failures": 0,
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/hud-retained-controls-forward-01.json",
+      "receipt_sha256": "306aa26dd4badca4228ec0ac68454410ae5f6b2837b8ee212f157dd4829c7e82",
+      "log_sha256": "a0a08370f8cacee7200bf7ec804a13ce353736007bba34334bfdc3b9c893b4d8"
+    },
+    {
+      "name": "hud-retained-controls-android-01",
+      "platform": "Physical Retroid GL",
+      "checks": 107,
+      "failures": 0,
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/hud-retained-controls-android-01.receipt.json",
+      "receipt_sha256": "6ed0ef97e7f781288cc7c4282276d1731e84cb2f0fdda86493daecb581bfafed",
+      "log_sha256": "f0a69b54268ba96b32c2c2e3d5982e9670d9d0ad82ca7c2baff04bfaca55d157"
+    }
+  ],
+  "fixture_sha256": "7873149b86231b3aa01bdf69ff012c38b8b56357f17f753f8305dbc082a098c9",
+  "artifacts": {
+    "android_control": {
+      "private_instrumented": false,
+      "engine_sha256": "424eaf73630ec110faf614f550f8047c24a78e224211df45d8b957bf03b7cc79",
+      "native_sha256": "7791588e721f977a415112194cda86e38a9df8ec1d84fc9c68d5f6ccfad0eebd",
+      "apk_sha256": "a36d80d5cc26fc4c4e68585856bbf65006a1b887b744e9721fce13656ed5f21f",
+      "changes": [
+        "Retain minimap map/frame while camera heading alone changes; redraw heading on its own child",
+        "Reuse empty UnitSounds state defaults and immutable unit roster"
+      ],
+      "base_commit": "8bbc09b"
+    },
+    "android_candidate": {
+      "private_instrumented": false,
+      "engine_sha256": "424eaf73630ec110faf614f550f8047c24a78e224211df45d8b957bf03b7cc79",
+      "native_sha256": "7791588e721f977a415112194cda86e38a9df8ec1d84fc9c68d5f6ccfad0eebd",
+      "apk_sha256": "0f196d03f272ed382924f6b97abf79b5de5dda13fec78e600270528f67ffcb0a",
+      "changes": [
+        "Retain clock face drawing while hands animate; preserve pause and quest pulse redraws",
+        "Recalculate lower HUD geometry only when its display and touch inputs change",
+        "Reuse immutable lever science lookup default"
+      ],
+      "baseline_apk": 47,
+      "accepted": true,
+      "acceptance": "Three matched comparisons favor candidate; modest 1.93% longer-run gain with identical visual checks. Stable60FPS remains open."
+    },
+    "linux": {
+      "seconds": 5.970745849015657,
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--headless",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+        "--export-release",
+        "Linux",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/throughput-foreground-controls01/CPU.x86_64"
+      ],
+      "engine_source": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/fast-runtime.x86_64",
+      "errors": [],
+      "sha256": {
+        "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+        "CPU.pck": "071b1e2fb855d96dbe3b4d9cba2c7c79a8f8dc2781be0023b80c6088936bb296",
+        "libterrain_search.so": "459d0cdcb8c71e147cf5e0094cff43163dda93e4c8a6df64ff3efd13addb113b"
+      }
+    },
+    "source_freeze_path": "/home/llm2x/Documents/EI/local/scratchpad/portal-throughput-20261007/foreground-controls-v1-source-freeze.json",
+    "source_freeze_sha256": "53805fa47f10833335630fd7fb0e13b86805d23179b07edeae6b6122566e6cd3",
+    "source_files": 520
+  },
+  "cleanup": {
+    "installed_private_apk": 49,
+    "apk_sha256": "0f196d03f272ed382924f6b97abf79b5de5dda13fec78e600270528f67ffcb0a",
+    "autorun_disabled": true,
+    "archived_bench": "files/bench-disabled-foreground-controls49.json",
+    "archived_bench_sha256": "3dbfb84e846e991d8273722b80ccba74b1f8bc0a8be3bc6b00c46d7d061d25ab",
+    "private_processes": [],
+    "timestamp": 1791433303.0984433
+  },
+  "staging_alignment": {
+    "note": "Only excluded source/README/foreign-platform files were synchronized; measured game scripts, engine and loaded native binaries unchanged. Android private export and benchmark bootstrap remain intentional differences.",
+    "files": [
+      {
+        "stage": "linux",
+        "path": "game/src/native/source/README.md",
+        "old_sha256": "2fe24ac9a40ec1e3463938a8e4f3aed801b9471d487c241fb15f8f9d3e09f409",
+        "new_sha256": "0c5011ac5e583ef7d9085944f521db0821c004555386299a7e418e5397e40ad0",
+        "excluded_from_export": true
+      },
+      {
+        "stage": "android",
+        "path": "game/src/native/bin/libterrain_search.dll",
+        "old_sha256": "301e451b6460bfdeb10e79d4ebc4bf2d6ddde567bfffd9cd702e34fb59fd1928",
+        "new_sha256": "23fb742a8d0803a15d20604747b588a315841774fcc26fca9c809359fd918456",
+        "excluded_from_export": true
+      },
+      {
+        "stage": "android",
+        "path": "game/src/native/source/build_profile.json",
+        "old_sha256": "3868e4f18743e13967dbf352ab82ce43f6cbfcb5b386bf5171f483e930d88eda",
+        "new_sha256": "f1eab604e2153c0e47a4e9739c31f5a429f49be1ef8e4c5d282566435648816f",
+        "excluded_from_export": true
+      },
+      {
+        "stage": "android",
+        "path": "game/src/native/source/nav_kernel.cpp",
+        "old_sha256": "03972e157f2cd15a28fa94f735af281afdcd57f0235176698f54d785e7cdc2d0",
+        "new_sha256": "e80fc0b4b8e11e1511a0bcc0ed21033150e0f196722bc2f4aac26ca49557b19c",
+        "excluded_from_export": true
+      },
+      {
+        "stage": "android",
+        "path": "game/src/native/source/terrain_color.h",
+        "old_sha256": null,
+        "new_sha256": "bea88dfd0c4ab9cfa145d9b2a1fbd5824bb3b3e297f9b8b148b5d4c6d94ef343",
+        "excluded_from_export": true
+      },
+      {
+        "stage": "android",
+        "path": "game/src/native/source/ai_activity.h",
+        "old_sha256": "1f13f0697ab94fbf0e5bde44732c07aa5f37316fb2c4c2543fcaa7ec3e564936",
+        "new_sha256": "7805227ffa60b9d48a8ae70eb08a85e6803942ebc197c277633d1d9ecfb94902",
+        "excluded_from_export": true
+      },
+      {
+        "stage": "android",
+        "path": "game/src/native/source/grass_chunk.h",
+        "old_sha256": null,
+        "new_sha256": "e22c5ac62e0dbcd78941ff59bb993d084316cfd77f92acc1e8d086e04470b167",
+        "excluded_from_export": true
+      },
+      {
+        "stage": "android",
+        "path": "game/src/native/source/spell_particles.h",
+        "old_sha256": null,
+        "new_sha256": "c47002a55f950a7a285d28122eaed2218b530bf0940f636bbeda3d86ebcaa610",
+        "excluded_from_export": true
+      },
+      {
+        "stage": "android",
+        "path": "game/src/native/source/perception_batch.h",
+        "old_sha256": null,
+        "new_sha256": "9f06163af45f688d5bff19462681cb15e5df0648c0505d4b3766035601e40f77",
+        "excluded_from_export": true
+      },
+      {
+        "stage": "android",
+        "path": "game/src/native/source/README.md",
+        "old_sha256": "3c17c94167ae223519717555f4e001cdc3852818a6a9ff316579687ee9a7f8ae",
+        "new_sha256": "0c5011ac5e583ef7d9085944f521db0821c004555386299a7e418e5397e40ad0",
+        "excluded_from_export": true
+      },
+      {
+        "stage": "android",
+        "path": "game/src/native/source/particle_draw.h",
+        "old_sha256": null,
+        "new_sha256": "3ffe0d4be02ab06fbaeda1d9b1e6ce416dd7baf57d9bceb15a273d14bb2c3e28",
+        "excluded_from_export": true
+      }
+    ]
+  },
+  "private_android_source_overrides": {
+    "export_presets.cfg": "657a83c9d519a21962f21a84e1d39888e03bb17d02d61db1daf02d6eaf935727",
+    "src/main.gd": "a43fc6b253b95a6c26cd87b406d255697e2ac2f849994a35d3f1d052412a26d8"
+  },
+  "exclusions": [
+    {
+      "name": "hud-retained-controls-gl-01",
+      "reason": "104 checks passed, but fixture cleanup leaked two textures. A minimal Game fixture and a rendering cleanup frame fixed it; no production change.",
+      "receipt_sha256": "ffee9d3c14805054a3403180b680e84994a394336385b64cf568954722b1960b"
+    },
+    {
+      "name": "redraw-desktop-4k-living-loop-180-04",
+      "reason": "Stopped during loading when an unrelated Godot test started. No performance measurement window reached.",
+      "receipt_sha256": "165091c217fb17dccd3199e706a0f46fdb12306caef342049c83243f968e6f45",
+      "seconds_before_stop": 29.401949266000884,
+      "foreign_games": {
+        "2362895": {
+          "exe": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "cmd": "godot-4 --path /home/llm2x/Documents/etherlords/remake --audio-driver Dummy --script tools/verify_resource_sites_ui.gd -- --profile=el2 ",
+          "ppid": 2362887,
+          "rss_kib": 34636
+        }
+      }
+    }
+  ],
+  "analysis_correction": "Use delimited -control- matching: the prefix controls also contains control. An initial scratch print incorrectly included all four runs in the control; corrected before reporting or deciding.",
+  "follow_up": {
+    "profile": "profiles/redraw-original-loop-script-profile-01.summary.json",
+    "status": "Read-only follow-up investigation; no additional production changes or gains claimed",
+    "observations": [
+      {
+        "stage": "Hidden replica presentation",
+        "profile_inclusive_percent": 7.4,
+        "source": "game/src/game/world.gd:_step_hidden_presentations",
+        "detail": "405 of 415 actors are dormant by the end of the Original entrance loop. Every 0.2 seconds the staggered scheduler still advances presentation, model cycles and GroundMarks; fresh snapshots also consume pending time. Observation and snapshot changes must preserve the old clip/rate interval."
+      },
+      {
+        "stage": "Unit sound candidate traversal",
+        "profile_self_percent": 3.1,
+        "source": "game/src/game/unit_sounds.gd:tick",
+        "detail": "Every frame visits the immutable full roster, obtains an instance ID and state dictionary, then rejects distant units. Client GameWorld.units_near still uses a full script traversal; simply calling it is not a spatial optimization."
+      },
+      {
+        "stage": "Original point-light selection",
+        "profile_inclusive_percent": 2.2,
+        "source": "game/src/game/gfx.gd:update_pass_lights",
+        "detail": "Every frame allocates a full light ranking, script-sorts it, and rebuilds shader parameter names; only the four selected lights are consumed. Any bounded selection must preserve distance/range ranking, equal-distance behavior, live changes and all renderers."
+      },
+      {
+        "stage": "Client effect clocks",
+        "profile_inclusive_percent": 0.97,
+        "source": "game/src/game/world.gd:_sample_client_effect_frame",
+        "detail": "Every 55 ms visits all replicas, even units with no timed effects. Any active-effect roster must handle snapshot replacement, expiry semantics, world membership and legacy counters."
+      },
+      {
+        "stage": "Tornado particle stage",
+        "source": "game/src/game/fx/fx_types.gd:up_tornado",
+        "detail": "All four particle workers still call script per particle for tornado 0x200a; worker profiles place about one quarter of their CPU directly in up_tornado and most remaining time in generic update_sim. Existing fire/spell batches do not cover it. A future whole-emitter tick can preserve the emitter-owned arrays, RNG order, control-point update, spawn/death/interpolation state and custom-callback fallback. Measure complete gameplay, since isolated kernel timing would not prove a gain."
+      }
+    ],
+    "next_requirement": "Prefer removal of a complete repeated stage over another isolated native port; verify end-to-end Original gameplay and use repeated whole-tick runs for any simulation change."
+  },
+  "limits": [
+    "Stable60FPS at1x Original not achieved",
+    "No new complete-simulation throughput gain claimed",
+    "No Windows4K/max/D3D12 runtime validation; user40FPS report unresolved",
+    "No expanded combat, other-map, campaign, WAN or platform packaging coverage",
+    "Public Experimental5 and original Android app/saves unchanged"
+  ]
+}

@@ -33,17 +33,28 @@ signal sector_pressed(index: int)
 signal inner_pressed
 
 const R := 80.0
-var kind := "move"
+var kind := "move":
+	set(v):
+		kind = v
+		_update_process()
 ## Selected sector; on the clock 0 = paused.
 var selected := -1:
 	set(v):
 		selected = v
 		_update_process()
 ## Aggressive / Defensive disc: 1 all aggressive, 0 all defensive, else blank.
-var aggression := -1
+var aggression := -1:
+	set(v):
+		if aggression == v: return
+		aggression = v
+		queue_redraw()
 var _tex: Texture2D
 var _hover := -2
-var ring_angle := 0.0
+var ring_angle := 0.0:
+	set(v):
+		if ring_angle == v: return
+		ring_angle = v
+		queue_redraw()
 ## Quest-disc pulse: set by a quest notification
 ## (dial), cleared when the disc is clicked
 ## the disc colour is cos(2π·phase)·0.3 + 0.7 with the phase
@@ -56,10 +67,31 @@ var pulse := false:
 var _phase := 0.0
 var _last_ms := 0
 var _theta := 0.0   # clock hands
+var _hands_layer: HandsLayer
+
+
+## The hands and speed pointer overlay the face. Their animation does not
+## rebuild the face's three textured fans or change its update cadence.
+class HandsLayer extends Control:
+	var dial: HudDial
+	func _draw() -> void:
+		dial._draw_hands(self)
+
+
+func _redraw_all() -> void:
+	queue_redraw()
+	if _hands_layer:
+		_hands_layer.visible = kind == "clock"
+		_hands_layer.queue_redraw()
 
 
 func _ready() -> void:
 	_tex = GameData.get_texture("battle00")
+	_hands_layer = HandsLayer.new()
+	_hands_layer.dial = self
+	_hands_layer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(_hands_layer)
+	resized.connect(_redraw_all)
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	process_mode = Node.PROCESS_MODE_ALWAYS   # the paused clock keeps blinking
 	_update_process()
@@ -70,7 +102,7 @@ func _update_process() -> void:
 	if on and not is_processing():
 		_last_ms = Time.get_ticks_msec()
 	set_process(on)
-	queue_redraw()
+	_redraw_all()
 
 
 ## The phase advances by the frame's real seconds (
@@ -84,7 +116,10 @@ func _process(_dt: float) -> void:
 		_theta += dt * (1.0 if selected == 2 else 0.5)
 		while _theta > PI / 6.0:
 			_theta -= PI / 6.0
-	queue_redraw()
+	if pulse or (kind == "clock" and selected == 0):
+		queue_redraw()
+	if kind == "clock" and _hands_layer:
+		_hands_layer.queue_redraw()
 
 
 func _scale() -> float:
@@ -217,15 +252,21 @@ func _draw() -> void:
 		_disc(o, 65.0 * s, Vector2(174, 81), 65.0, PI * 0.5, PI, ring_angle, Color(g, g, g))
 		var q := f if pulse else 1.0
 		_disc(o, 32.0 * s, Vector2(174, 81), 32.0, PI * 0.5, PI, 0.0, Color(q, q, q))
-		for k in 4:
-			_hand(o, _theta - PI / 12.0 - k * PI / 6.0, s)
-		if selected >= 0 and (not paused or _phase > 0.5):
-			var a := PI - (selected * 2 + 1) * PI / 12.0
-			_pointer(o + Vector2(cos(a), -sin(a)) * 73.0 * s, a, s)
 
 
-func _tri(a: Vector2, b: Vector2, c: Vector2, ua: Vector2, ub: Vector2, uc: Vector2, col: Color) -> void:
-	draw_polygon(PackedVector2Array([a, b, c]), PackedColorArray([col, col, col]),
+func _draw_hands(canvas: CanvasItem) -> void:
+	if _tex == null or kind != "clock": return
+	var o := size
+	var s := _scale()
+	for k in 4:
+		_hand(o, _theta - PI / 12.0 - k * PI / 6.0, s, canvas)
+	if selected >= 0 and (selected != 0 or _phase > 0.5):
+		var a := PI - (selected * 2 + 1) * PI / 12.0
+		_pointer(o + Vector2(cos(a), -sin(a)) * 73.0 * s, a, s, canvas)
+
+
+func _tri(a: Vector2, b: Vector2, c: Vector2, ua: Vector2, ub: Vector2, uc: Vector2, col: Color, canvas: CanvasItem = null) -> void:
+	(canvas if canvas else self).draw_polygon(PackedVector2Array([a, b, c]), PackedColorArray([col, col, col]),
 		PackedVector2Array([ua, ub, uc]), _tex)
 
 
@@ -271,19 +312,19 @@ static func arrow(sx: float, sy: float, a: float, scale: float, z := ARROW_Z) ->
 
 
 ## One clock hand: pivot (800 + 30 sin a, 600 − 30 cos a), scale 0.4.
-func _hand(o: Vector2, a: float, s: float) -> void:
+func _hand(o: Vector2, a: float, s: float, canvas: CanvasItem = null) -> void:
 	var pts := arrow(800.0 + 30.0 * sin(a), 600.0 - 30.0 * cos(a), a, 0.4)
 	var uvs := PackedVector2Array()
 	for i in 3:
 		pts[i] = o + (pts[i] - Vector2(800, 600)) * s
 		uvs.append(ARROW_UV[i] / 256.0)   # image rows as they are (no V flip)
-	draw_polygon(pts, PackedColorArray([Color.WHITE, Color.WHITE, Color.WHITE]), uvs, _tex)
+	(canvas if canvas else self).draw_polygon(pts, PackedColorArray([Color.WHITE, Color.WHITE, Color.WHITE]), uvs, _tex)
 
 
 ## The triangle pointer sprite (: points (0,0) (17,11) (17,-11)
 ## atlas 104,19 / 115,2 / 93,2), its tip towards the dial centre.
-func _pointer(p: Vector2, a: float, s: float) -> void:
+func _pointer(p: Vector2, a: float, s: float, canvas: CanvasItem = null) -> void:
 	var fwd := Vector2(cos(a), -sin(a))
 	var side := Vector2(-fwd.y, fwd.x)
 	_tri(p, p + (fwd * 17.0 + side * 11.0) * s, p + (fwd * 17.0 - side * 11.0) * s,
-		_uv(104, 19), _uv(115, 2), _uv(93, 2), Color.WHITE)
+		_uv(104, 19), _uv(115, 2), _uv(93, 2), Color.WHITE, canvas)

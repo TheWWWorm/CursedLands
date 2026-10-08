@@ -15,6 +15,7 @@ var _morph := {}   # nid -> {"nodes": [Node3D with p0 / p1], "meshes": [MeshInst
 var _tweens := {}
 # Fast mechanisms retain their last committed navigation pose until the
 # authoritative world completes the visible drop. Clients only draw it.
+const DEFAULT_SCIENCE := [1, 0, 0]
 const MOTION_VERSION := 1
 const FAST_TICKS := 6
 var _physical := {}
@@ -70,7 +71,7 @@ func figure_t(nid: int) -> float:
 func usable(nid: int) -> bool:
 	if not world.levers.has(nid) or not bool(world.levers[nid].get("enabled", true)):
 		return false
-	var l: Array = world.levers[nid].get("science", [1, 0, 0])
+	var l: Array = world.levers[nid].get("science", DEFAULT_SCIENCE)
 	return l.is_empty() or int(l[0]) != 0
 
 

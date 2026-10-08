@@ -59,6 +59,7 @@ var unit_panel: UnitPanel
 var chat_line: ChatLine
 var touch_actions: TouchActions
 var _safe_root: Control
+var _dial_layout_key: Array = []
 
 
 func _ready() -> void:
@@ -309,6 +310,31 @@ func _dial(kind: String, corner: Vector2) -> HudDial:
 
 
 func _layout_dials() -> void:
+	# These controls depend on display geometry, not on the game clock or
+	# selection. Keep their offsets until those actual inputs change.
+	var key := [ui_size(), TouchInput.enabled,
+		TouchInput.target_pixels() if TouchInput.enabled else 0.0, transform.get_scale()]
+	if key != _dial_layout_key:
+		_dial_layout_key = key
+		_place_dials()
+	var sel := _selected_gait()
+	var clock := 0 if game.get_tree().paused else 1 + game.speed
+	var aggr := _selected_aggression()
+	if sel != _move_dial.selected or clock != _clock_dial.selected or aggr != _move_dial.aggression:
+		_move_dial.selected = sel
+		_move_dial.aggression = aggr
+		_clock_dial.selected = clock
+		_move_dial.queue_redraw()
+		_clock_dial.queue_redraw()
+	var hour: float = game.session.state.world_time if game.session and game.session.state else 12.0
+	# Sun (atlas left) mid-quadrant at noon, moon at midnight.
+	var ang := PI * 0.25 + (hour - 12.0) / 24.0 * TAU
+	if absf(ang - _clock_dial.ring_angle) > 0.002:
+		_clock_dial.ring_angle = ang
+		_clock_dial.queue_redraw()
+
+
+func _place_dials() -> void:
 	var s := roundf(ui_size().y * 80.0 / 600.0)
 	if TouchInput.enabled:
 		s = maxf(s, TouchInput.target_pixels() * 1.25 / minf(transform.get_scale().x, transform.get_scale().y))
@@ -355,21 +381,6 @@ func _layout_dials() -> void:
 		_layout_portrait_bottom(s)
 	# The targeting hint (remake-only) under the text window (0..100).
 	_target_label.offset_top = top_bottom() + 4.0 if portrait() else s * 104.0 / 80.0
-	var sel := _selected_gait()
-	var clock := 0 if game.get_tree().paused else 1 + game.speed
-	var aggr := _selected_aggression()
-	if sel != _move_dial.selected or clock != _clock_dial.selected or aggr != _move_dial.aggression:
-		_move_dial.selected = sel
-		_move_dial.aggression = aggr
-		_clock_dial.selected = clock
-		_move_dial.queue_redraw()
-		_clock_dial.queue_redraw()
-	var hour: float = game.session.state.world_time if game.session and game.session.state else 12.0
-	# Sun (atlas left) mid-quadrant at noon, moon at midnight.
-	var ang := PI * 0.25 + (hour - 12.0) / 24.0 * TAU
-	if absf(ang - _clock_dial.ring_angle) > 0.002:
-		_clock_dial.ring_angle = ang
-		_clock_dial.queue_redraw()
 
 
 ## Portrait: the dials leave no room beside the party faces for the weapon
