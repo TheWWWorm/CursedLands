@@ -1,0 +1,285 @@
+{
+  "status": "Accepted unpublished local checkpoint; Retroid stable60FPS at1x Original remains open",
+  "date": "2026-10-08",
+  "base_commit": "8bbc09b1a9f7ca0ef5d20d773a786da6dd1b8ef8",
+  "changes": [
+    "Minimap heading draws in its own child; camera rotation alone retains the map, markers and frame at their existing55ms cadence",
+    "UnitSounds reuses an immutable actor roster and a shared empty read-only default instead of allocating a population array and empty dictionaries every frame"
+  ],
+  "fixture": {
+    "description": "Same living-party Portal entrance3 loop as portal-single-player-validation.json",
+    "fixture_version": 2,
+    "fixture_sha256": "4d6a538bf509791462a3a91e02953c1306373dd0c06ae800435296f1118a2045",
+    "single_player": true,
+    "original_look": true,
+    "renderer": "gl_compatibility",
+    "viewport_size": [
+      1920,
+      1080
+    ],
+    "render_scale": 0.75,
+    "speed": 1,
+    "workers": 4,
+    "distant_ai": false,
+    "difficulty": 0,
+    "profiling": false,
+    "full_options_sha256": "83173cd2486927600d6810952d420059cfcfd7eed39aebf449911508475e15c6"
+  },
+  "comparison": {
+    "order": [
+      "redraw-original-loop-candidate-60-01",
+      "redraw-original-loop-control-60-01",
+      "redraw-original-loop-control-60-02",
+      "redraw-original-loop-candidate-60-02"
+    ],
+    "median_control_fps": 49.02479408439815,
+    "median_candidate_fps": 52.919465979292795,
+    "gain_percent": 7.9442901650740305,
+    "pairs": 2,
+    "seconds_per_run": 60
+  },
+  "runs": [
+    {
+      "name": "redraw-original-loop-candidate-60-01",
+      "fps": 54.1451955163179,
+      "frame_ms": {
+        "max": 49.417,
+        "p50": 17.433,
+        "p95": 25.075,
+        "p99": 27.702
+      },
+      "sim_seconds": 59.8399999999997,
+      "wall_seconds": 60.005324,
+      "result_sha256": "0f4a9969c5901adccc92a2b84a9247e53a1e5d29cd3f593a00cb61f388d4b8c4",
+      "screenshot_sha256": "42dde83644654eef62a9f0ce6b5d14d4c7e439f9b98850c3798881fd1ac42ded",
+      "receipt_sha256": "6177844c54c0e01eb4e2e1f1a095326565295e1c08141a2f5778efa082d43436",
+      "apk_sha256": "a36d80d5cc26fc4c4e68585856bbf65006a1b887b744e9721fce13656ed5f21f",
+      "options_sha256": "83173cd2486927600d6810952d420059cfcfd7eed39aebf449911508475e15c6",
+      "party_alive_throughout": true,
+      "simulated_actors": 415,
+      "battery_temperature_before_c": 33.7,
+      "battery_temperature_after_c": 33.7
+    },
+    {
+      "name": "redraw-original-loop-control-60-01",
+      "fps": 48.9971720465534,
+      "frame_ms": {
+        "max": 54.644,
+        "p50": 19.378,
+        "p95": 27.142,
+        "p99": 31.586
+      },
+      "sim_seconds": 59.8399999999997,
+      "wall_seconds": 60.003463,
+      "result_sha256": "20bcc8b23196ffac999294c12dedda42555910465ca72c0493f865e742cc8d21",
+      "screenshot_sha256": "25238c69f1bceb30ebc935e83ad655612c0ae37105b3492815e2b23d9a3a7f97",
+      "receipt_sha256": "8025f34e0c61aaaf94a67ac7f77c0056ed21781c8151029c5aba094cf38abc35",
+      "apk_sha256": "dc3c3fda9f0ee0a82c232581a3d92afd0f161e541521fb6a7e4a1d01d3b0f40c",
+      "options_sha256": "83173cd2486927600d6810952d420059cfcfd7eed39aebf449911508475e15c6",
+      "party_alive_throughout": true,
+      "simulated_actors": 415,
+      "battery_temperature_before_c": 33.7,
+      "battery_temperature_after_c": 34.2
+    },
+    {
+      "name": "redraw-original-loop-control-60-02",
+      "fps": 49.0524161222429,
+      "frame_ms": {
+        "max": 46.806,
+        "p50": 18.991,
+        "p95": 28.429,
+        "p99": 33.045
+      },
+      "sim_seconds": 59.8399999999997,
+      "wall_seconds": 60.017431,
+      "result_sha256": "69327fc8eb408c98bda3e01203bdba9383eef631c6079083e36827a5700b8f2b",
+      "screenshot_sha256": "aff1ba6d3234cf3e1370276121c203f056bb576a35aeaef188af63562462a9c2",
+      "receipt_sha256": "ba25174d7515a4e70959ef2e43d502c2216d18ac08247f2b10691829e8a784ad",
+      "apk_sha256": "dc3c3fda9f0ee0a82c232581a3d92afd0f161e541521fb6a7e4a1d01d3b0f40c",
+      "options_sha256": "83173cd2486927600d6810952d420059cfcfd7eed39aebf449911508475e15c6",
+      "party_alive_throughout": true,
+      "simulated_actors": 415,
+      "battery_temperature_before_c": 34.2,
+      "battery_temperature_after_c": 34.7
+    },
+    {
+      "name": "redraw-original-loop-candidate-60-02",
+      "fps": 51.6937364422677,
+      "frame_ms": {
+        "max": 56.324,
+        "p50": 18.686,
+        "p95": 25.033,
+        "p99": 29.382
+      },
+      "sim_seconds": 59.8399999999997,
+      "wall_seconds": 60.00727,
+      "result_sha256": "d9c49193b6988e8fb38d9e4f7924f251cc437317f405a5b55042b77f9f2c2417",
+      "screenshot_sha256": "b19a929db9c15179553295d2ed946c7ccfe67c66f288c79e5674a4d2b4b6f657",
+      "receipt_sha256": "0f5ea01e64dff06196139ce0a6229f299016a25ae9f811cff07b6e6be636c6bc",
+      "apk_sha256": "a36d80d5cc26fc4c4e68585856bbf65006a1b887b744e9721fce13656ed5f21f",
+      "options_sha256": "83173cd2486927600d6810952d420059cfcfd7eed39aebf449911508475e15c6",
+      "party_alive_throughout": true,
+      "simulated_actors": 415,
+      "battery_temperature_before_c": 34.7,
+      "battery_temperature_after_c": 35.5
+    },
+    {
+      "name": "redraw-original-loop-long-180-01",
+      "fps": 53.4426719291588,
+      "frame_ms": {
+        "max": 94.638,
+        "p50": 17.816,
+        "p95": 25.14,
+        "p99": 28.632
+      },
+      "sim_seconds": 179.905000000014,
+      "wall_seconds": 180.00597,
+      "result_sha256": "37d84263ef583c98c6116deb55898c87f9cccbf4d32ed863836c009e8e3b841a",
+      "screenshot_sha256": "0eda4283e5ef1275e78532053da604fd5a476066bdab56d19edfc995037ddc52",
+      "receipt_sha256": "e1fab50cf6af549365850a6d31c74fedd90be5a76c8cbd3283c8d39dae559fa6",
+      "apk_sha256": "a36d80d5cc26fc4c4e68585856bbf65006a1b887b744e9721fce13656ed5f21f",
+      "options_sha256": "83173cd2486927600d6810952d420059cfcfd7eed39aebf449911508475e15c6",
+      "party_alive_throughout": true,
+      "simulated_actors": 415,
+      "battery_temperature_before_c": 35.5,
+      "battery_temperature_after_c": 36.5
+    }
+  ],
+  "correctness": [
+    {
+      "name": "redraw-minimap-gl-03",
+      "checks": 29,
+      "failures": 0,
+      "receipt_sha256": "a795afc70577831a4c171c3589f458deac204e94c74391465eeb85c234478153",
+      "log_sha256": "b0b5dcfba207955d02a39cc1fcea26fef51c4c50fb7e5b78a605859230569aab"
+    },
+    {
+      "name": "redraw-minimap-forward-01",
+      "checks": 29,
+      "failures": 0,
+      "receipt_sha256": "8ee17c3d95dfd7c4ad0330c6aa1ede5e25590e36b0a39a6a7638fc8f4d4a61c3",
+      "log_sha256": "fa87f3ea66cd9bef27ac3459ce7f81589d6ceb8a0dbd9849b8f7b1bb0a04147a"
+    },
+    {
+      "name": "redraw-hidden-regression-01",
+      "checks": 69,
+      "failures": 0,
+      "receipt_sha256": "6bffe00c29efdfb2ab88145df600d9e41046fabc6aab523320cdf436434323a2",
+      "log_sha256": "fc3c80631560ed308d5f6da69349566b8b38aa847c1e766d8f15d4b6f858f5b3"
+    },
+    {
+      "name": "redraw-minimap-redraw-device-01",
+      "checks": 29,
+      "failures": 0,
+      "receipt_sha256": "101f76d6f693c7af479a07ab171e4052af8e6b50bc05de0bc349eb404ba1a3b5",
+      "log_sha256": "cd0e72c197334f7a9803933404cdb887bf3bcd506d4ab8affc29bde1ac7cf81d"
+    },
+    {
+      "name": "redraw-hidden-presentation-device-01",
+      "checks": 69,
+      "failures": 0,
+      "receipt_sha256": "dd10197752c6e58c260e81e6111f54fcc4c61297485fdebd548b65b367a98315",
+      "log_sha256": "500d872185f9ca40a54cc764497818e28b746281c792f04646aa434374c3029d"
+    }
+  ],
+  "artifacts": {
+    "android": {
+      "private_instrumented": false,
+      "engine_sha256": "424eaf73630ec110faf614f550f8047c24a78e224211df45d8b957bf03b7cc79",
+      "native_sha256": "7791588e721f977a415112194cda86e38a9df8ec1d84fc9c68d5f6ccfad0eebd",
+      "apk_sha256": "a36d80d5cc26fc4c4e68585856bbf65006a1b887b744e9721fce13656ed5f21f",
+      "changes": [
+        "Retain minimap map/frame while camera heading alone changes; redraw heading on its own child",
+        "Reuse empty UnitSounds state defaults and immutable unit roster"
+      ],
+      "base_commit": "8bbc09b"
+    },
+    "linux": {
+      "seconds": 5.970864833012456,
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--headless",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+        "--export-release",
+        "Linux",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/throughput-foreground-redraw01/CPU.x86_64"
+      ],
+      "engine_source": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/fast-runtime.x86_64",
+      "errors": [],
+      "sha256": {
+        "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+        "CPU.pck": "c6532b25bc0da7b9803d38191a6c1dcd328bbaab66c740b3b3a2714c6d8b9edb",
+        "libterrain_search.so": "459d0cdcb8c71e147cf5e0094cff43163dda93e4c8a6df64ff3efd13addb113b"
+      }
+    },
+    "game_source_freeze_sha256": "0dfe287f0de6f7b7c0018153a099ee6aec35d5e023fef67be05c79f7a475621b",
+    "game_source_files": 520
+  },
+  "worker_diagnostics": {
+    "base_commit": "8bbc09b1a9f7ca0ef5d20d773a786da6dd1b8ef8",
+    "diagnostic_only": true,
+    "acceptance_fps": false,
+    "unchanged_production_engine_sha256": "424eaf73630ec110faf614f550f8047c24a78e224211df45d8b957bf03b7cc79",
+    "native_sample": {
+      "control_name": "single-touch-original-loop-native-profile-01",
+      "disabled_presentation_name": "single-worker-no-presentation-diagnostic-01",
+      "sample_seconds": 30,
+      "control_worker_cpu_seconds": 29.874368125,
+      "disabled_presentation_worker_cpu_seconds": 24.77386625,
+      "control_frontend_cpu_seconds": 26.527634875,
+      "disabled_frontend_cpu_seconds": 25.442207875,
+      "diagnostic_gameplay_fps": [
+        49.711864,
+        54.374861
+      ],
+      "samples": [
+        12308,
+        11049
+      ],
+      "lost": [
+        0,
+        0
+      ],
+      "conclusion": "Actor/model frame work is material; wholesale disabling is not a valid gameplay implementation and was never retained."
+    },
+    "excluded_profile": {
+      "name": "single-worker-current-script-profile-01",
+      "reason": "Clock started during loading. Whole-window sound cost is not representative of gameplay. Last7.8s retained only as preliminary hint; replaced by RPC-aligned full profile02."
+    },
+    "aligned_script_profile": {
+      "name": "single-worker-window-script-profile-02",
+      "sample_timing": "Worker-only reliable owner RPC from measured gameplay start until32s; frontend timer not enabled",
+      "main_cpu_seconds": 31.745,
+      "samples": 6349,
+      "inclusive_percent": {
+        "world_tick": 56.4,
+        "unit_presentation": 20.7,
+        "unit_transform": 8.5,
+        "ai_deferral": 10.3,
+        "game_sound": 8.1
+      },
+      "self_percent": {
+        "unit_sounds_tick": 1.3
+      },
+      "instrumented": true
+    },
+    "next": "Use profile to remove redundant foreground work; no acceptance of frozen or disabled authority poses.",
+    "evidence_sha256": {
+      "single-touch-original-loop-native-profile-01.data": "56f10c8fd383cc026bfa5bbb981165cfeb8e0f4a98df3c8186fd97967c0a373c",
+      "single-worker-no-presentation-diagnostic-01.data": "c3c860e4347709613b61df7d84580fb81b4a0529bffd2c2387f28fa49e8066de",
+      "single-worker-window-script-profile-02.bin": "6abbc330b46293b800aa2e46f993300b36f11856dd072944c8361a6cd07641ef"
+    }
+  },
+  "fixture_repairs": [
+    "Initial minimap fixture had two untyped local declarations; parse failure excluded.",
+    "Second fixture passed all24 pixel comparisons but failed its rotation-only assertion because its previous case was still sliding. The final fixture settles the slide before isolating rotation. No production repair was required."
+  ],
+  "limits": [
+    "Stable60FPS not achieved",
+    "No new complete-simulation throughput gain claimed",
+    "No Windows4K/max/D3D12 runtime validation; reported40FPS unresolved",
+    "Other maps, full campaign, platform packaging and WAN coverage not extended by this checkpoint",
+    "The benchmark partial final time-bin printer was corrected for45-second diagnostic runs; complete-run FPS values were already correct"
+  ]
+}

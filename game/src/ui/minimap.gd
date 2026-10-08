@@ -60,9 +60,31 @@ var _l := 1.0              # L = max(W, H)
 var _zone := ""
 var _north_lit := 0.0   # seconds the N button stays lit
 var _view_xy := Vector2(0, 1)
+var _heading_layer: HeadingLayer
+var _heading_key: Array = []
+
+
+## Camera rotation changes only this arrow. Keeping its draw commands on a
+## child lets the map, markers and frame retain their normal 55 ms cadence.
+class HeadingLayer extends Control:
+	var minimap: Minimap
+	func _draw() -> void:
+		if minimap._tex == null or minimap._atlas == null:
+			return
+		var h := minimap._heading()
+		var pts := HudDial.arrow(694 + minimap._off, 84, atan2(h.x, h.y), 0.8)
+		var uvs := PackedVector2Array()
+		for i in 3:
+			pts[i] = minimap._pt(pts[i], true)
+			uvs.append(Vector2(HudDial.ARROW_UV[i].x, 256.0 - HudDial.ARROW_UV[i].y) / 256.0)
+		draw_polygon(pts, PackedColorArray([Color.WHITE, Color.WHITE, Color.WHITE]), uvs, minimap._atlas)
 
 
 func _ready() -> void:
+	_heading_layer = HeadingLayer.new()
+	_heading_layer.minimap = self
+	_heading_layer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(_heading_layer)
 	anchor_left = 1.0
 	anchor_right = 1.0
 	mouse_filter = Control.MOUSE_FILTER_STOP
@@ -135,7 +157,11 @@ func _process(_dt: float) -> void:
 	# Redrawn at the 55 ms logic rate (the unit dots move per tick) or when
 	# the view changes; every frame cost a pass over all units.
 	_redraw_t -= _dt
-	var key := [open, zoom, _north_lit > 0.0, k, _off, _heading(), _held]
+	var heading_key := [_heading(), k, _off, _tex, _atlas]
+	if heading_key != _heading_key:
+		_heading_key = heading_key
+		_heading_layer.queue_redraw()
+	var key := [open, zoom, _north_lit > 0.0, k, _off, _held]
 	if _redraw_t <= 0.0 or key != _drawn_key:
 		_redraw_t = GameUnit.TICK
 		_drawn_key = key
@@ -327,9 +353,6 @@ func _draw() -> void:
 		_arrow(HudDial.arrow(850, 20, -PI * 0.5, 0.8), true)
 	else:
 		_arrow(HudDial.arrow(713, 20, PI * 0.5, 0.8), true)
-	if _tex:
-		var h := _heading()   # atan2(−vx, −vy) (h = −v)
-		_arrow(HudDial.arrow(694 + _off, 84, atan2(h.x, h.y), 0.8), true)
 
 
 ## The markers (one mesh: sprite [2]

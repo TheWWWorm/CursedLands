@@ -1,3 +1,12 @@
+**Latest local checkpoint, 8 October: foreground redraw.** Actual Original graphics
+at 1× on Retroid now measures 52.92 FPS median in two reversed 60-second pairs,
+versus 49.02 FPS in restored controls. A three-minute living-party walk averages
+53.44 FPS and advances 179.905 simulated seconds. Stable 60 FPS remains open.
+This changes minimap redraw scheduling and sound-state allocations; it does not
+change simulation or graphics quality. See the [checkpoint report](portal-foreground-redraw-checkpoint.md)
+and [validation](portal-foreground-redraw-validation.json). These changes are
+unpublished, and the reported Windows 4K/max/D3D12 slowdown remains unresolved.
+
 # Experimental 5 performance and gameplay handoff
 
 For subsequent local optimization, see the [Portal throughput checkpoint](portal-throughput-checkpoint.md)

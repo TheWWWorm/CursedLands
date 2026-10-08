@@ -68,3 +68,11 @@ The subsequent [touch-picking checkpoint](../../../docs/portal-touch-picking-che
 raises that same walking route to 49.55 FPS median in two 60-second runs, versus
 44.53 in contemporary controls. Stable 60 FPS remains unfinished; both later
 checkpoints are local and unpublished.
+
+The local [foreground redraw checkpoint](../../../docs/portal-foreground-redraw-checkpoint.md)
+reduces repeated minimap and sound-state work. The same Original/1× single-player
+loop measures 52.92 FPS median versus 49.02 in restored controls; a three-minute
+walk averages 53.44 FPS with both party members alive. Stable 60 FPS remains open,
+with p95 25.14 ms and a 94.64 ms worst frame in the longer run. The private build
+uses the same production engine and native module. The worker-presentation
+suppression experiment was diagnostic only and was not retained.

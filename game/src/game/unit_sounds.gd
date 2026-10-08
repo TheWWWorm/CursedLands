@@ -21,6 +21,7 @@ const MIN_D := 8.0
 const MAX_D := 40.0
 ## Silence (magic effect 0x10, (0x10)) mutes the steps.
 const SILENCE := "silence"
+const EMPTY_STATE: Dictionary = {}
 
 var mixer: SoundMixer
 var world: GameWorld
@@ -49,11 +50,11 @@ func tick() -> void:
 	_stamp += 1
 	var n := 0
 	var lis := Vector2(mixer.listener.x, mixer.listener.y)
-	for u: GameUnit in world.units.values():
+	for u: GameUnit in world.unit_rows():
 		if not is_instance_valid(u):
 			continue
 		var key := u.get_instance_id()
-		var st: Dictionary = _units.get(key, {})
+		var st: Dictionary = _units.get(key, EMPTY_STATE)
 		if u.pos.distance_squared_to(lis) > MAX_D * MAX_D:
 			if not st.is_empty():
 				n += 1
@@ -110,13 +111,13 @@ func tick() -> void:
 
 ## The unit's attack sound is still playing.
 func attack_playing(u: GameUnit) -> bool:
-	var st: Dictionary = _units.get(u.get_instance_id(), {})
+	var st: Dictionary = _units.get(u.get_instance_id(), EMPTY_STATE)
 	return not st.is_empty() and mixer.playing(int(st.attack))
 
 
 ## an attack acknowledgement takes the attack sound's place.
 func set_attack(u: GameUnit, h: int) -> void:
-	var st: Dictionary = _units.get(u.get_instance_id(), {})
+	var st: Dictionary = _units.get(u.get_instance_id(), EMPTY_STATE)
 	if not st.is_empty():
 		st.attack = h
 
