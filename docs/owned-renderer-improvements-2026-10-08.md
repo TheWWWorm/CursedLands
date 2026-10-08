@@ -848,7 +848,8 @@ was performed for this policy change.
 
 ## P5 follow-up: bounded shadow-strength transitions
 
-Forward+ now fades enhanced fire, spell and lava shadows over 0.4 seconds.
+Historical checkpoint `ea81497`; the subsequent Compatibility correction is
+recorded in the next section. Forward+ fades enhanced fire, spell and lava shadows over 0.4 seconds.
 At a full budget, the outgoing shadow fades out before its replacement starts
 fading in: nominally 0.8 seconds for the complete handoff, plus scan/frame
 granularity. Initial admission takes 0.4 seconds. At every intermediate step,
@@ -867,7 +868,7 @@ property snapshot. Turning enhancement off restores it, including when the
 original light already cast shadows. External spell energy/lifetime ownership
 is preserved.
 
-Only Forward+ enables this path. A zero-opacity Compatibility shadow still
+At that checkpoint only Forward+ enabled this path. A zero-opacity Compatibility shadow still
 uses a different additive pass from an unshadowed local light. The current
 production shader's encoded colour correction cannot make the two paths
 identical in these fixtures. Fading opacity to zero and then disabling the flag
@@ -927,6 +928,123 @@ Raw runs and the isolated release are under
 `/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-fades/`.
 Use `--tool=/absolute/path/to/tools/tests/local_shadow_fades.gd`, the existing
 isolated asset root and `--render-thread safe`; GPU runs must remain sequential.
+
+## P5 follow-up: continuous Compatibility light-pass transitions
+
+Desktop Compatibility now uses the bounded 0.4-second shadow fades too. The
+prerequisite is a shader correction: enabling a zero-opacity shadow must not
+change the underlying illumination. This is a quality improvement with a
+measurable GPU cost, **not a shadow-cache or FPS optimization**.
+
+Android/web Compatibility retain the existing shader and immediate shadow
+exchange by default. `--local-shadow-fades` opts into the corrected shader and
+fades for device comparisons; `--no-local-shadow-fades` selects the old
+Compatibility path, including on desktop, and wins if both are supplied.
+These switches are user arguments after `--`. They affect Compatibility only.
+Forward+ keeps its previously validated fade policy; native Mobile remains
+unvalidated. Sun aiming is a separate policy: desktop stays continuous, while
+Android/web retain the replaceable shimmer/cost fallback requested by the user.
+
+### Why the correction is needed
+
+Godot's GLES base pass and each shadowed-light pass are encoded separately,
+then added in stored sRGB. The previous remake shader approximately corrected
+one shadow pass, but its unshadowed lights accumulated differently. Fog,
+emission and other lights made that discrepancy large even at zero shadow
+opacity. Applying an opacity fade alone would still finish with a brightness
+jump when the shadow flag changed.
+
+The corrected path gives each enhanced local light the same encoded addition
+in either pass. It includes that light's surface highlight/leaf transmission,
+captures fragment emission and the renderer's half-packed fog, and compensates
+the base pass before Godot performs its final fog/encoding operations. It uses
+the pinned GLES encode/inverse pair, not the remake's clamped colour helpers.
+Fully opaque fog bypasses the inverse; zero fog avoids unnecessary conversion
+round trips. The original non-local lighting arithmetic is retained.
+
+This establishes consistent per-light additions, **not pixel preservation of
+the previous enhanced-light look**: multiple unshadowed enhanced lights can now
+produce brighter results. It assumes the game's current linear tone mapping,
+exposure 1 and original environment. Revalidate before changing that pipeline.
+It does not alter light energy, create extra light nodes, enlarge the four-light
+shadow budget, or cache native maps. The marker still follows `shadow_enabled`;
+native routing also requires an allocated shadow atlas entry. Both the normal
+2048 atlas and the constrained 1024 atlas are covered, but absent atlases and
+alternate environment/reflection-probe pipelines are outside this acceptance.
+
+### Source and implementation locations
+
+- Upstream motivation remains R0 [PointShadowPolicy::fade_seconds and PointShadowScheduler::select](/home/llm2x/Documents/evil-islands-owned-renderer/Source/point_shadow_policy.h:13), including retirement at zero strength around line 275. This pass correction is a Godot adaptation discovered while applying that idea; it is not an upstream implementation copied into GDScript. Upstream's four-lamp value is a per-frame work budget, not a residency cap.
+- [local_light_shader.gd:9](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/game/src/game/fx/local_light_shader.gd:9) owns the desktop/device gate and explicit overrides. `COMMON`, `CAPTURE`, `BEGIN` and `END` below it contain the transfer functions, fragment state and consistent accumulation. Keep the fog packing and emission polynomial aligned with the engine when upgrading Godot.
+- [gfx.gd:203](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/game/src/game/gfx.gd:203) inserts the helpers only when enabled; `_function_tail` captures after the complete fragment body, including optional fog rewrites. [light_code:441](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/game/src/game/gfx.gd:441) surrounds each light contribution and preserves the previous generated branch on other paths. Ground-contact lighting still rewrites the complete composed light function.
+- [local_lighting.gd:45](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/game/src/game/fx/local_lighting.gd:45) enables fades with the corrected shader. The prior weak-reference state machine, restoration, two-second tenure and four-total/two-lava limits are unchanged.
+- Pinned Godot [scene.glsl:2393](/home/llm2x/Documents/EI/local/scratchpad/coop-performance-20261005/engine-profile/godot-5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88/drivers/gles3/shaders/scene.glsl:2393) packs fog; emission conversion follows. Its base output encodes at line 2798; the separately fogged additive output encodes at line 3070. [tonemap_inc.glsl:14](/home/llm2x/Documents/EI/local/scratchpad/coop-performance-20261005/engine-profile/godot-5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88/drivers/gles3/shaders/tonemap_inc.glsl:14) defines the actual conversions. [rasterizer_scene_gles3.cpp:1353](/home/llm2x/Documents/EI/local/scratchpad/coop-performance-20261005/engine-profile/godot-5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88/drivers/gles3/rasterizer_scene_gles3.cpp:1353) selects the separate pass using shadow availability. Exact source hashes are in the evidence JSON.
+- [local_light_passes.gd:10](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/local_light_passes.gd:10) renders the actual composed production shaders in 18 situations. Its `--light-pass-cost` mode at line 75 measures a larger static fill workload. [local_shadow_fades.gd](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/local_shadow_fades.gd) now exercises production GLES transitions and the legacy override. [material_shader_options.gd](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/material_shader_options.gd) uses an explicit SubViewport and forced draw to compile the driver's real programs while keeping the main window minimized.
+
+### Acceptance and cost
+
+On the exported Linux build / RTX 3090 / NVIDIA 580.178.04, all 18 boundary
+situations pass at both per-object light limits (8 and 4): 155 checks each.
+They cover single/five/crowded lights, sun shadows, material highlights,
+original point lights, emission, partial/dense/full fog, a bright fog boundary,
+transparency, glow, original lighting without locals, terrain lighting, and the
+1024 shadow atlas. Every flag transition stays within 2/255 per channel, with
+zero pixels above that threshold; only glow reaches 2/255. The frozen `ea81497`
+export fails 16 of those 18 situations as the intended negative control. The
+five-light boundary falls from 220,150 pixels above 2/255 / peak 39/255 to zero
+such pixels / peak 1/255.
+
+The final transition suite passes 726 headless checks, 924 on each GLES light
+limit, 923 on Forward+, and 737 in the explicit legacy GLES mode. Existing
+selection checks pass 418 times in that legacy mode; all five selection
+captures match `ea81497` byte for byte. All 18 Forward+ fade captures also match
+that checkpoint exactly, as do both original/no-local controls. The shared
+ground-contact lifecycle test passes 35 checks. All 108 material/shader option
+switches render on each backend, with 362 checks passing per backend. Including
+the two candidate cost runs, the final exported candidate passes **5,769 checks**.
+The 16 expected failures in the frozen negative control are recorded separately.
+The final GLES shader-option run takes 173 seconds; the Forward+ run reuses its
+shader cache and takes 7.8 seconds. These compilation-validation timings are
+not a matched cold-start performance comparison.
+
+For the new GLES lighting model, the immediate left/right exchange peaks at
+65/255; eight sampled 0.1-second fade steps peak at 12–25/255, without a jump
+when selection starts, and settle to exactly the direct-exchange endpoint.
+A shadow-only moving caster changes 17,279 pixels during a partial fade, so
+native shadow-map updates remain live. These are controlled 640×480 shader
+fixtures, not a full-map artistic review or physical-device acceptance.
+
+The static cost probe uses 1280×960, 64 warmup draws and 96 measured draws per
+case. The table averages the two per-run GPU medians in baseline/candidate/
+candidate/baseline order. All corresponding draw counts remain equal.
+
+| Scene | Previous GPU time | Corrected GPU time | Added time |
+| --- | ---: | ---: | ---: |
+| No enhanced local lights | 0.078 ms | 0.079 ms | about 0.001 ms |
+| Five local lights | 0.368 ms | 0.425 ms | 0.057 ms |
+| Crowded local lights | 0.420 ms | 0.571 ms | 0.152 ms |
+| Five lights with fog | 0.441 ms | 0.500 ms | 0.059 ms |
+
+The crowded GPU cost remains about 36% higher in this deliberately small
+fill-heavy fixture. Removing redundant conversion round trips reduced the
+earlier candidate's sampled cost, but does not make the correction free.
+Viewport CPU and forced-draw wall timings are recorded separately; neither
+establishes a whole-game FPS gain. The probe explicitly submits static draws:
+minimized X11 windows suppress automatic rendering, so initial attempts that
+waited for `frame_post_draw` produced no timing samples and were discarded.
+Do not use that forced-draw approach for frame-count-dependent occlusion tests.
+
+Keep constrained rollout opt-in until Android/browser GPU cost, driver shader
+limits and full-scene lighting are checked. The four-light-limit desktop run
+and 1024 atlas case do not substitute for device testing. Native Mobile,
+importance scoring, static/dynamic map caching and broader V1 lighting
+acceptance remain separate priorities. The Retroid and installed builds were
+not used. Reproduction commands, exact check counts, image/source/pack hashes,
+shader-option compilation results, discarded runs and the read-only integration
+check are in
+[local-light-passes-2026-10-08.json](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/docs/validation/local-light-passes-2026-10-08.json).
+Raw evidence and frozen exports are under
+`/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-compat-light/`.
 
 ## P6 investigation: directional-shadow snapping
 
@@ -1354,8 +1472,9 @@ and `Gfx.texture_3d` plus its tests/documentation. No network, inventory,
 campaign-state, pricing or dialogue-camera behavior was edited.
 The first P3 stage changes only `figure.gd`, its resource census, regression
 fixture and this documentation. No object ownership or camera code was changed.
-The P3 probe is a standalone benchmark only (commit `3855cc4`). P5 changes only
-`local_lighting.gd` plus its regression fixture and documentation.
+The P3 probe is a standalone benchmark only (commit `3855cc4`). P5 changes
+`local_lighting.gd` and, in the Compatibility follow-up, `gfx.gd` and the new
+`local_light_shader.gd`, plus their regression fixtures and documentation.
 The P6 comparison is a standalone benchmark. The subsequent user-directed
 default correction changes only sun policy/setup and menu sun aiming, plus its
 test; it does not modify character visibility or zone-transition code.
@@ -1370,11 +1489,11 @@ the benchmark. It preserves individual object nodes and does not touch the
 other chat's newer creature visibility or story/co-op effect changes.
 
 The latest read-only `git apply --check` includes all production/tool changes
-from this branch's base through the P5 strength-transition checkpoint. It passed against
-active committed HEAD `d938e9da308d9d37cc3c13aa0a448f8c7e83e779`, including the
-other chat's uncommitted temporary co-op guest-role work. Its HEAD, status and hashes of
-all files touched by this branch were unchanged. **No patch was applied.**
-The result and exact target state are in the P5 strength-transition validation JSON above.
+from this branch's base through the P5 Compatibility correction. It passed
+against active committed HEAD `78498914b00842d216cd19544a5647bc9ad79555` with
+a clean working tree. Its HEAD, status and hashes of all 54 touched files were
+unchanged. **No patch was applied.** The result and exact target state are in
+the P5 Compatibility validation JSON above.
 `game_data.gd` is shared by earlier commits: preserve its newer control/options
 changes when integrating. Recheck before integration because that checkout is
 still changing. Do not message or alter the other chat without human authorization.
@@ -1396,9 +1515,10 @@ still changing. Do not message or alter the other chat without human authorizati
    preserve gameplay visibility and validate motion, thin openings, fades,
    deformation and shadows before integration. Do not repeat the forced-draw
    timing approach or assume standard web templates include native occlusion.
-3. **P5 local shadows, then P6 directional stability:** the first stable-selection
-   step and bounded Forward+ strength transitions are implemented above. Fix the
-   Compatibility pass discontinuity before enabling fades there. Better importance
+3. **P5 local shadows, then P6 directional stability:** stable selection and
+   bounded Forward+/desktop Compatibility strength transitions are implemented.
+   The GLES pass discontinuity is corrected, with a measured GPU tradeoff;
+   Android/web retain the existing path until device acceptance. Better importance
    scoring, native Mobile validation and cached map updates remain separate work.
    For P6, identify actual shimmer/redraw cost and renderer capabilities
    before changing cascade settings or planning engine-level projection reuse.

@@ -217,9 +217,11 @@ static func compose(code: String, lit := true, wrap := false) -> String:
 	var extra := "varying vec4 ei_surface_leaf;\n#define ei_surface ei_surface_leaf.rgb\n#define ei_leaf ei_surface_leaf.a\nvarying vec3 ei_vpos;\n" if lit else ""
 	if lit:
 		extra += VERTEX_LIGHT.replace("WRAP_TERM", _wrap_term(wrap))
+		if LocalLightShader.enabled():
+			extra += LocalLightShader.COMMON
 	code = code.substr(0, i + 1) + LIGHT_COMMON + extra + code.substr(i + 1)
 	if lit:
-		code = _vertex_tail(code, "\n\tvec3 ei_d; vec3 ei_s;\n\tei_vertex_colours((MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz, normalize(MODEL_NORMAL_MATRIX * NORMAL), ei_e, ei_k, ei_d, ei_s);\n\tei_vertex_diffuse = ei_d; ei_vertex_specular = ei_s;\n")
+		code = _function_tail(code, "vertex", "\n\tvec3 ei_d; vec3 ei_s;\n\tei_vertex_colours((MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz, normalize(MODEL_NORMAL_MATRIX * NORMAL), ei_e, ei_k, ei_d, ei_s);\n\tei_vertex_diffuse = ei_d; ei_vertex_specular = ei_s;\n")
 		# Fragment-to-light varyings: absent profiles keep the exact original
 		# diffuse response. x = highlight strength, y = roughness, z = metal.
 		code = code.replace("void fragment() {", "void fragment() {\n\tei_surface_leaf = vec4(0.0, 1.0, 0.0, 0.0);\n\tei_vpos = VERTEX;")
@@ -244,12 +246,16 @@ static func compose(code: String, lit := true, wrap := false) -> String:
 				code = code.replace("uniform bool soft_tracks = false;", "const bool soft_tracks = false;")
 			if not on("gfx_weather_surfaces"):
 				code = code.replace("ei_surface_fx.z", "0.0")
-	return _blend_fog(code, lit) if _vol_fog else code
+	if _vol_fog:
+		code = _blend_fog(code, lit)
+	if lit and LocalLightShader.enabled():
+		code = _function_tail(code, "fragment", LocalLightShader.CAPTURE)
+	return code
 
 
-## Wind, lever morphs and water displacement precede the native light pass.
-static func _vertex_tail(code: String, tail: String) -> String:
-	var i := code.find("void vertex()")
+## Insert after the stage's complete body, including nested option branches.
+static func _function_tail(code: String, stage: String, tail: String) -> String:
+	var i := code.find("void " + stage + "()")
 	if i < 0:
 		return code
 	i = code.find("{", i)
@@ -453,6 +459,7 @@ bool ei_mapped_light(vec3 direction, float falloff, vec3 vpos, mat4 view) {
 	return false;
 }
 void light() {
+/*EI_LOCAL_BEGIN*/
 	// ALBEDO already carries the fog scale. Scale only additive light
 	// contributions explicitly, not the diffuse factors multiplied by it.
 	vec3 ei_alb = ALBEDO;
@@ -556,8 +563,15 @@ void light() {
 		float transmission = pow(max(dot(-NORMAL, ei_light_dir), 0.0), 1.5);
 		SPECULAR_LIGHT += ei_alb * LIGHT_COLOR / PI * transmission * ATTENUATION * ei_leaf * 0.22 /*EI_FA*/;
 	}
+/*EI_LOCAL_END*/
 }
 """.replace("WRAP_TERM", _wrap_term(wrap)).replace("SUN_MARK_VALUE", "%.3f" % SUN_MARK)
+	if LocalLightShader.enabled():
+		# Replace the old per-light approximation only on GLES. Do this before
+		# inserting the complete accumulation below, which uses the same marker.
+		code = code.replace("if (SPECULAR_AMOUNT > 0.0245) {", "if (false) {")
+	code = code.replace("/*EI_LOCAL_BEGIN*/", LocalLightShader.BEGIN if LocalLightShader.enabled() else "")
+	code = code.replace("/*EI_LOCAL_END*/", LocalLightShader.END if LocalLightShader.enabled() else "")
 	# New grass keeps its baked ground/upward diffuse. Its real leaf normal
 	# still drives transmission and shadows. Other shader text is unchanged.
 	if grass:

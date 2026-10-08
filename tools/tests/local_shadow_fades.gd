@@ -1,7 +1,7 @@
 extends "local_shadow_selection.gd"
 ## Tests the actual manager's elapsed transitions, separately from selection
-## tests that settle fades. GPU captures also expose the Compatibility pass
-## discontinuity that prevents enabling opacity transitions on that backend.
+## tests that settle fades. GPU captures also check the zero-opacity pass
+## boundary that must preserve ordinary lighting before fades are enabled.
 
 var gpu_report := {}
 
@@ -252,6 +252,13 @@ func test_pass_boundary() -> void:
 	if RenderingServer.get_current_rendering_method() == "forward_plus":
 		check(zero.get_data() == disabled.get_data() and crowded_zero.get_data() == crowded_disabled.get_data(),
 				"Forward+ zero-opacity flags preserve all unoccluded lighting pixels")
+	elif RenderingServer.get_current_rendering_method() == "gl_compatibility":
+		var args := OS.get_cmdline_user_args()
+		var expected := not args.has("--no-local-shadow-fades") and (not Portability.constrained() or args.has("--local-shadow-fades"))
+		check(f.manager._fade_shadows == expected, "Compatibility fade policy follows platform and explicit test switches")
+		if expected:
+			check(delta(zero, disabled).max_channel_delta <= 2 and delta(crowded_zero, crowded_disabled).max_channel_delta <= 2,
+					"Compatibility pass change stays within output quantization at both light counts")
 	else:
 		check(not f.manager._fade_shadows, "unvalidated backend keeps production fades disabled")
 	dispose(f)
@@ -259,7 +266,12 @@ func test_pass_boundary() -> void:
 
 func test_rendered_fades() -> void:
 	var f := rendered_fixture()
-	check(f.manager._fade_shadows, "Forward+ uses production fade policy")
+	if RenderingServer.get_current_rendering_method() == "forward_plus" or f.manager._fade_shadows:
+		check(f.manager._fade_shadows, "validated backend uses production fade policy")
+	if not f.manager._fade_shadows:
+		dispose(f)
+		f.view.free()
+		return
 	choose(f, -2)
 	advance(f, 2.01)
 	var first := await capture(f.view, "fade-initial")
@@ -314,7 +326,7 @@ func _ready() -> void:
 	test_process_order()
 	if DisplayServer.get_name() != "headless":
 		await test_pass_boundary()
-		if RenderingServer.get_current_rendering_method() == "forward_plus":
+		if RenderingServer.get_current_rendering_method() in ["forward_plus", "gl_compatibility"]:
 			await test_rendered_fades()
 	var report := {"checks": checks, "failures": failures, "gpu": gpu_report,
 			"renderer": RenderingServer.get_current_rendering_method(), "editor": OS.has_feature("editor"),

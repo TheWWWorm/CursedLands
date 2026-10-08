@@ -3,15 +3,22 @@ extends Node
 var checks := 0
 var failures := 0
 var draw: MeshInstance3D
+var render_view: SubViewport
+var rendered_variants := 0
 
 func render_shader(shader: Shader) -> void:
 	if draw == null: return
+	var started := Time.get_ticks_msec()
+	rendered_variants += 1
+	print("MATERIAL_SHADER_DRAW begin=", rendered_variants, " source_chars=", shader.code.length())
 	var material := ShaderMaterial.new()
 	material.shader = shader
 	draw.material_override = material
 	# Shader parsing alone does not exercise a GLES driver's generated program.
 	await get_tree().process_frame
+	RenderingServer.force_draw()
 	await get_tree().process_frame
+	print("MATERIAL_SHADER_DRAW end=", rendered_variants, " elapsed_ms=", Time.get_ticks_msec() - started)
 
 func check(value: bool, label: String) -> void:
 	checks += 1
@@ -30,14 +37,21 @@ func uniform_names(shader: Shader) -> Array:
 
 func _ready() -> void:
 	if DisplayServer.get_name() != "headless":
+		DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_NO_FOCUS, true)
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_MINIMIZED)
+		render_view = SubViewport.new()
+		render_view.size = Vector2i(320, 240)
+		render_view.own_world_3d = true
+		render_view.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+		add_child(render_view)
 		var camera := Camera3D.new()
 		camera.position = Vector3(0, 0, 4)
-		add_child(camera); camera.make_current()
+		render_view.add_child(camera); camera.make_current()
 		var light := DirectionalLight3D.new()
-		add_child(light)
+		render_view.add_child(light)
 		draw = MeshInstance3D.new()
 		draw.mesh = QuadMesh.new()
-		add_child(draw)
+		render_view.add_child(draw)
 	var sources := [
 		[EITerrain.TERRAIN_SHADER, true], [EITerrain.WATER_SHADER, true],
 		[EITerrain.WATER_FX_SHADER, true], [EIFigure.FOLIAGE_SHADER, false],

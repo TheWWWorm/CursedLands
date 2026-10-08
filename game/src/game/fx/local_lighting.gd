@@ -39,10 +39,10 @@ var _lava: Array[Dictionary] = []
 # Light instance IDs, not owning references. A pooled lava node loses its
 # tenure when it changes cells; an ineligible light never keeps a reserved slot.
 var _shadow_since := {}
-# Compatibility changes additive passes when a shadow flag changes. Even at
-# zero opacity that can change unoccluded lighting; retain immediate exchanges
-# there until that separate shader/pass issue is solved. Mobile is unvalidated.
-var _fade_shadows := RenderingServer.get_current_rendering_method() == "forward_plus"
+# Enable GLES fades only with its corrected shader. Constrained GLES keeps the
+# cheaper existing path unless explicitly requested for device comparisons.
+# The native Mobile path is unvalidated.
+var _fade_shadows := RenderingServer.get_current_rendering_method() == "forward_plus" or LocalLightShader.enabled()
 # Desired selections and resident shadow maps are separate: outgoing maps
 # release their slot before a replacement starts. Both tables use weak refs.
 var _shadow_wanted := {}

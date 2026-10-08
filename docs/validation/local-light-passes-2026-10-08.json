@@ -1,0 +1,2416 @@
+{
+  "date": "2026-10-08",
+  "implementation": "Consistent GLES enhanced-local-light accumulation and bounded desktop Compatibility shadow fades",
+  "parent_commit": "ea814978bbdb536e8c2a3e55a84c239cb577a494",
+  "reference_commit": "d529d14e9bf3c960833a9d9633786fc4588ec6d2",
+  "reference_clean": true,
+  "reference_locations": [
+    "Source/point_shadow_policy.h:13",
+    "Source/point_shadow_policy.h:275"
+  ],
+  "reference_policy_sha256": "7372cc59530077a8b047990795609562f55f3e8c96192b19d7dcf410c75f11c6",
+  "qa_directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-compat-light",
+  "engine_source_root": "/home/llm2x/Documents/EI/local/scratchpad/coop-performance-20261005/engine-profile/godot-5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+  "hardware": "NVIDIA GeForce RTX 3090, NVIDIA 580.178.04, Linux x86_64; Godot 4.7 5b4e0cb0f with local engine patches",
+  "source_sha256": {
+    "game/src/game/fx/local_lighting.gd": "6c944b8a7dc445adb46f4e4259f37060b2ba6dfcf041016edb7cae8dbb99d895",
+    "game/src/game/fx/local_light_shader.gd": "d856b1cdc4e0143aee769b84aa9e1819988c55f2fc21966405b35f23c1352a74",
+    "game/src/game/fx/local_light_shader.gd.uid": "2b17939b0d8ca04008fca07dc5dbc78c61eb66255a43ad41ea74b483ffb8aaf0",
+    "game/src/game/gfx.gd": "b7027428ec3e83a58bf9d4020a3209b66462011c92192c653ca1111fce3a606e",
+    "game/src/platform/portability.gd": "6ec17950f2bb45117d1b34410ba19da3996f3bfea53c4722498f83a3de45763e",
+    "tools/tests/local_light_passes.gd": "2a2529c4a5d8e7a114f7ed87106e0e9a1766e14c9c79e178c357b3a6b3adaf45",
+    "tools/tests/local_shadow_fades.gd": "db9d91efe65203256bbacb7a0ae17d1a43a267a4ff3e0ac4c6bf2db91c778a5a",
+    "tools/tests/local_shadow_selection.gd": "f6c94d1de12216ad8b1897b8afca87ae2616ddd74297e8cbc865c2ce4e616c46",
+    "tools/tests/material_shader_options.gd": "ac4c773ee9c844e537f5003bf2d8259a05aec94d0d1c29b55c6a662b340e5ad0",
+    "tools/tests/ground_contact.gd": "a7b780097420ee871dae9c927e21b7a894b370bce724534e43f7afe57c2a86cd"
+  },
+  "engine_source_sha256": {
+    "drivers/gles3/rasterizer_scene_gles3.cpp": "991cc1664055810899c7002c9e2a92967ba8f3c5dbc3d69318167e200f19240e",
+    "drivers/gles3/shaders/scene.glsl": "2c77be0c85b7ab1a85ed8009c77cdb6216f1494d43083592213ad68f9e812977",
+    "drivers/gles3/shaders/tonemap_inc.glsl": "a0dea1a09f4d89739d5d3447c04929146bbf266e72532b68b7d76705216f69da",
+    "main/main.cpp": "2fa6ef2736aa28e2feced47ca872bce1a95e3e6c56bb6002a96660a008df8992",
+    "platform/linuxbsd/x11/display_server_x11.cpp": "45ccc689108c7210f2915748eee633efdc9ce478154c3be8a38a56755f9bc50e"
+  },
+  "export_sha256": {
+    "CursedLands.x86_64": "3154bb4465f616e24b811dd576e9230022872cd80f8d5ab854efed2716b926d4",
+    "CursedLands.pck": "f5cf9ace9d6abf0674bbceeede1890b972e5d51a0d5c40bde19e87cdfbb9c7d7",
+    "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+  },
+  "budget4_override": "[rendering]\nlimits/opengl/max_lights_per_object=4\n",
+  "baseline_export_sha256": {
+    "CursedLands.x86_64": "3154bb4465f616e24b811dd576e9230022872cd80f8d5ab854efed2716b926d4",
+    "CursedLands.pck": "c8214fd9efdb853185fe493aa126788caebdc2ece9c858355abda14eba8c7fb5",
+    "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+  },
+  "before_optimization_export_sha256": {
+    "CursedLands.x86_64": "3154bb4465f616e24b811dd576e9230022872cd80f8d5ab854efed2716b926d4",
+    "CursedLands.pck": "bb690a7999dcea5ddb1189edc944ea285a39e0041d20ecb827248892d3582f3e",
+    "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+  },
+  "final_candidate_checks": 5769,
+  "scope": {
+    "desktop_compatibility_fades": true,
+    "constrained_compatibility_fades_default": false,
+    "constrained_opt_in": "--local-shadow-fades",
+    "compatibility_legacy_override": "--no-local-shadow-fades",
+    "forward_plus_policy": "unchanged, enabled",
+    "native_mobile_policy": "unchanged, fades disabled pending validation",
+    "four_light_budget_override_is_not_device_validation": true,
+    "fade_seconds": 0.4,
+    "total_shadow_enabled_limit": 4,
+    "lava_shadow_enabled_limit": 2,
+    "shadow_cache_added": false,
+    "sun_policy_changed_by_this_checkpoint": false
+  },
+  "image_controls": {
+    "forward_unchanged": {
+      "local-shadows-forward_plus-fade-direct-endpoint.png": {
+        "exact_file": true,
+        "max_channel_delta": 0,
+        "candidate_sha256": "b6e2662f90cdca210c1bfd92a102d057ec4e9d830301c4670d5474bd3a07c2bb",
+        "baseline_sha256": "b6e2662f90cdca210c1bfd92a102d057ec4e9d830301c4670d5474bd3a07c2bb"
+      },
+      "local-shadows-forward_plus-fade-step-1.png": {
+        "exact_file": true,
+        "max_channel_delta": 0,
+        "candidate_sha256": "295cbb0e4ceb43389b004cc679146e801b05606fedb0a95442ad2c0b2eb42fbc",
+        "baseline_sha256": "295cbb0e4ceb43389b004cc679146e801b05606fedb0a95442ad2c0b2eb42fbc"
+      },
+      "local-shadows-forward_plus-fade-step-7.png": {
+        "exact_file": true,
+        "max_channel_delta": 0,
+        "candidate_sha256": "341a88c42f359625c157bbe88b6149e38d4d53a7ada1a09bb9fab1c78ce7a86a",
+        "baseline_sha256": "341a88c42f359625c157bbe88b6149e38d4d53a7ada1a09bb9fab1c78ce7a86a"
+      },
+      "local-shadows-forward_plus-fade-step-5.png": {
+        "exact_file": true,
+        "max_channel_delta": 0,
+        "candidate_sha256": "e3eb67d959b257a06d3dbeb2cbe537b8d9eb147e5c47dd2b9a7728beb2fb95a1",
+        "baseline_sha256": "e3eb67d959b257a06d3dbeb2cbe537b8d9eb147e5c47dd2b9a7728beb2fb95a1"
+      },
+      "local-shadows-forward_plus-pass-zero.png": {
+        "exact_file": true,
+        "max_channel_delta": 0,
+        "candidate_sha256": "2beb9ff02a42802ee49e1f15a0c268d59ca09e3a1b1ed34a7d4a5d461613490b",
+        "baseline_sha256": "2beb9ff02a42802ee49e1f15a0c268d59ca09e3a1b1ed34a7d4a5d461613490b"
+      },
+      "local-shadows-forward_plus-fade-step-2.png": {
+        "exact_file": true,
+        "max_channel_delta": 0,
+        "candidate_sha256": "59d0eaa859d1562668344ed42cbf2d9cddf374324f3ddfe4d37e4b2e0856507e",
+        "baseline_sha256": "59d0eaa859d1562668344ed42cbf2d9cddf374324f3ddfe4d37e4b2e0856507e"
+      },
+      "local-shadows-forward_plus-pass-crowded-zero.png": {
+        "exact_file": true,
+        "max_channel_delta": 0,
+        "candidate_sha256": "4b68c1f3c4854dcc3f9b8e139b6242adbb27b00654beeea10c7ca592ace97da9",
+        "baseline_sha256": "4b68c1f3c4854dcc3f9b8e139b6242adbb27b00654beeea10c7ca592ace97da9"
+      },
+      "local-shadows-forward_plus-pass-disabled.png": {
+        "exact_file": true,
+        "max_channel_delta": 0,
+        "candidate_sha256": "2beb9ff02a42802ee49e1f15a0c268d59ca09e3a1b1ed34a7d4a5d461613490b",
+        "baseline_sha256": "2beb9ff02a42802ee49e1f15a0c268d59ca09e3a1b1ed34a7d4a5d461613490b"
+      },
+      "local-shadows-forward_plus-fade-step-8.png": {
+        "exact_file": true,
+        "max_channel_delta": 0,
+        "candidate_sha256": "b6e2662f90cdca210c1bfd92a102d057ec4e9d830301c4670d5474bd3a07c2bb",
+        "baseline_sha256": "b6e2662f90cdca210c1bfd92a102d057ec4e9d830301c4670d5474bd3a07c2bb"
+      },
+      "local-shadows-forward_plus-fade-initial.png": {
+        "exact_file": true,
+        "max_channel_delta": 0,
+        "candidate_sha256": "60cb7b17d1d7eae9fb0c54e2e06d7351ac5092150dd3129c82449d2a79390147",
+        "baseline_sha256": "60cb7b17d1d7eae9fb0c54e2e06d7351ac5092150dd3129c82449d2a79390147"
+      },
+      "local-shadows-forward_plus-fade-moved-light.png": {
+        "exact_file": true,
+        "max_channel_delta": 0,
+        "candidate_sha256": "92dcfa1598143804c773c36169b97e0aa8c72fc965afb0d0900286d7628481d6",
+        "baseline_sha256": "92dcfa1598143804c773c36169b97e0aa8c72fc965afb0d0900286d7628481d6"
+      },
+      "local-shadows-forward_plus-pass-crowded-disabled.png": {
+        "exact_file": true,
+        "max_channel_delta": 0,
+        "candidate_sha256": "4b68c1f3c4854dcc3f9b8e139b6242adbb27b00654beeea10c7ca592ace97da9",
+        "baseline_sha256": "4b68c1f3c4854dcc3f9b8e139b6242adbb27b00654beeea10c7ca592ace97da9"
+      },
+      "local-shadows-forward_plus-fade-step-6.png": {
+        "exact_file": true,
+        "max_channel_delta": 0,
+        "candidate_sha256": "1449197a365d7d494f977182a74c80639e0b02a0b3345d0e6fbf35488f37c61a",
+        "baseline_sha256": "1449197a365d7d494f977182a74c80639e0b02a0b3345d0e6fbf35488f37c61a"
+      },
+      "local-shadows-forward_plus-fade-start.png": {
+        "exact_file": true,
+        "max_channel_delta": 0,
+        "candidate_sha256": "60cb7b17d1d7eae9fb0c54e2e06d7351ac5092150dd3129c82449d2a79390147",
+        "baseline_sha256": "60cb7b17d1d7eae9fb0c54e2e06d7351ac5092150dd3129c82449d2a79390147"
+      },
+      "local-shadows-forward_plus-fade-partial-caster.png": {
+        "exact_file": true,
+        "max_channel_delta": 0,
+        "candidate_sha256": "1449197a365d7d494f977182a74c80639e0b02a0b3345d0e6fbf35488f37c61a",
+        "baseline_sha256": "1449197a365d7d494f977182a74c80639e0b02a0b3345d0e6fbf35488f37c61a"
+      },
+      "local-shadows-forward_plus-fade-step-4.png": {
+        "exact_file": true,
+        "max_channel_delta": 0,
+        "candidate_sha256": "2beb9ff02a42802ee49e1f15a0c268d59ca09e3a1b1ed34a7d4a5d461613490b",
+        "baseline_sha256": "2beb9ff02a42802ee49e1f15a0c268d59ca09e3a1b1ed34a7d4a5d461613490b"
+      },
+      "local-shadows-forward_plus-fade-moved-caster.png": {
+        "exact_file": true,
+        "max_channel_delta": 0,
+        "candidate_sha256": "7ed46c21cd05bd9a008208ff7e1ae5eb25389fb07140300414fa98d5c148a3c1",
+        "baseline_sha256": "7ed46c21cd05bd9a008208ff7e1ae5eb25389fb07140300414fa98d5c148a3c1"
+      },
+      "local-shadows-forward_plus-fade-step-3.png": {
+        "exact_file": true,
+        "max_channel_delta": 0,
+        "candidate_sha256": "97de7fb24e90b74e8789df74e073ff06a0fa0e61d8653997be72942e9b98567a",
+        "baseline_sha256": "97de7fb24e90b74e8789df74e073ff06a0fa0e61d8653997be72942e9b98567a"
+      }
+    },
+    "legacy_unchanged": {
+      "local-shadows-gl_compatibility-held.png": {
+        "exact_file": true,
+        "max_channel_delta": 0,
+        "candidate_sha256": "af226ac41b82cceae418b3f8a1480f77d84d534d9be8a98a002a37c3767d8a0e",
+        "baseline_sha256": "af226ac41b82cceae418b3f8a1480f77d84d534d9be8a98a002a37c3767d8a0e"
+      },
+      "local-shadows-gl_compatibility-moved-caster.png": {
+        "exact_file": true,
+        "max_channel_delta": 0,
+        "candidate_sha256": "9e58edf68921401d5a16494bd87b7d17ec13ee27b7536938d9cfddbbb8df794d",
+        "baseline_sha256": "9e58edf68921401d5a16494bd87b7d17ec13ee27b7536938d9cfddbbb8df794d"
+      },
+      "local-shadows-gl_compatibility-moved-light.png": {
+        "exact_file": true,
+        "max_channel_delta": 0,
+        "candidate_sha256": "94525485deb7352a43c1eb5443dc1b37b6702e81091c10c94abdfa783828cfcf",
+        "baseline_sha256": "94525485deb7352a43c1eb5443dc1b37b6702e81091c10c94abdfa783828cfcf"
+      },
+      "local-shadows-gl_compatibility-replaced.png": {
+        "exact_file": true,
+        "max_channel_delta": 0,
+        "candidate_sha256": "fd0431793dcc079eca7eb0a1d77019c56ac80c19dee8002b54bc53f4c1050dcd",
+        "baseline_sha256": "fd0431793dcc079eca7eb0a1d77019c56ac80c19dee8002b54bc53f4c1050dcd"
+      },
+      "local-shadows-gl_compatibility-initial.png": {
+        "exact_file": true,
+        "max_channel_delta": 0,
+        "candidate_sha256": "af226ac41b82cceae418b3f8a1480f77d84d534d9be8a98a002a37c3767d8a0e",
+        "baseline_sha256": "af226ac41b82cceae418b3f8a1480f77d84d534d9be8a98a002a37c3767d8a0e"
+      }
+    },
+    "original_no_local": {
+      "local-shadows-gl_compatibility-pass-no-local-disabled.png": {
+        "exact_file": true,
+        "max_channel_delta": 0,
+        "candidate_sha256": "75603bc3653ca4083b267782d60bc9297a434b492b4e7ba8000c76ed85a3d389",
+        "baseline_sha256": "75603bc3653ca4083b267782d60bc9297a434b492b4e7ba8000c76ed85a3d389"
+      },
+      "local-shadows-gl_compatibility-pass-no-local-zero.png": {
+        "exact_file": true,
+        "max_channel_delta": 0,
+        "candidate_sha256": "75603bc3653ca4083b267782d60bc9297a434b492b4e7ba8000c76ed85a3d389",
+        "baseline_sha256": "75603bc3653ca4083b267782d60bc9297a434b492b4e7ba8000c76ed85a3d389"
+      }
+    }
+  },
+  "final_cost_abba_gpu_summary": [
+    {
+      "situation": "no-local",
+      "baseline_gpu_ms": 0.0780000016093254,
+      "candidate_gpu_ms": 0.07850000262260434,
+      "difference_ms": 0.0005000010132789473,
+      "change_pct": 0.6410269268753099
+    },
+    {
+      "situation": "five",
+      "baseline_gpu_ms": 0.3680000007152555,
+      "candidate_gpu_ms": 0.424999997019768,
+      "difference_ms": 0.05699999630451247,
+      "change_pct": 15.489129400468915
+    },
+    {
+      "situation": "crowded",
+      "baseline_gpu_ms": 0.41949999332428,
+      "candidate_gpu_ms": 0.5710000097751615,
+      "difference_ms": 0.15150001645088151,
+      "change_pct": 36.11442642712264
+    },
+    {
+      "situation": "fog",
+      "baseline_gpu_ms": 0.4409999996423725,
+      "candidate_gpu_ms": 0.499500006437302,
+      "difference_ms": 0.058500006794929504,
+      "change_pct": 13.265307674006777
+    }
+  ],
+  "timing_method": {
+    "viewport_size": [
+      1280,
+      960
+    ],
+    "warmup_draws": 64,
+    "measured_draws": 96,
+    "submission": "force_draw(false), isolated static SubViewport; not frame-count-dependent occlusion",
+    "order": [
+      "cost-opt-baseline-a",
+      "cost-opt-candidate-a",
+      "cost-opt-candidate-b",
+      "cost-opt-baseline-b"
+    ],
+    "summary": "mean of the two per-run GPU medians, not whole-game frame time",
+    "vsync": false,
+    "renderer_runs_sequential": true
+  },
+  "limitations": [
+    "GLES uses consistent encoded per-light additions; multiple enhanced lights can be brighter than the previous mixed accumulation. This is not pixel preservation of the old enhanced-light look.",
+    "Requires current original environment (linear tone mapping, exposure 1), native fog packing and pass-marker convention. Revalidate on engine/pipeline changes.",
+    "Native shadow-pass routing also requires an atlas allocation. Normal 2048 and constrained 1024 sizes are exercised; absent atlases and alternate reflection-probe pipelines are not accepted by these fixtures.",
+    "The 18-case pixel fixture uses production composed shaders on a controlled quad, including terrain-lighting semantics. It is not a complete map/artistic acceptance pass.",
+    "Added shader work is measurable even on desktop. Android/web retain their existing shader by default; no physical mobile/browser GPU or FPS result is claimed.",
+    "Native Mobile renderer, importance scoring and native static/dynamic shadow caching remain separate work.",
+    "The shadow budget counts enabled local light nodes, not native atlas residency. The correction adds no lights or maps and does not prove VRAM/cache savings.",
+    "The no-local, fallback and Forward+ image controls are exact; other enhanced-light images are intentionally not expected to match the previous lighting model.",
+    "Other checkout, installed builds and physical devices were not changed. The integration check was read-only."
+  ],
+  "runs": [
+    {
+      "label": "passes-gl-optimized",
+      "classification": "final candidate",
+      "results": {
+        "LOCAL_LIGHT_PASSES": {
+          "adapter": "NVIDIA GeForce RTX 3090",
+          "checks": 155,
+          "cost_mode": false,
+          "editor": false,
+          "failures": 0,
+          "light_limit": 8,
+          "renderer": "gl_compatibility",
+          "rows": [
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 1,
+              "mean_channel_delta": 8.68055555555556e-06,
+              "situation": "single"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 1,
+              "mean_channel_delta": 0.0579611545138889,
+              "situation": "five"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 1,
+              "mean_channel_delta": 0.057451171875,
+              "situation": "sun-shadow"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 1,
+              "mean_channel_delta": 0.000642361111111111,
+              "situation": "fog"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 1,
+              "mean_channel_delta": 0.0577289496527778,
+              "situation": "surface"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 1,
+              "mean_channel_delta": 0.0529427083333333,
+              "situation": "crowded"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 1,
+              "mean_channel_delta": 0.0579361979166667,
+              "situation": "original"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 1,
+              "mean_channel_delta": 0.0581195746527778,
+              "situation": "emission"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0,
+              "situation": "fog-full"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 1,
+              "mean_channel_delta": 6.51041666666667e-06,
+              "situation": "fog-dense"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 1,
+              "mean_channel_delta": 2.17013888888889e-06,
+              "situation": "fog-bright-edge"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 1,
+              "mean_channel_delta": 0.000665147569444444,
+              "situation": "emission-fog"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 1,
+              "mean_channel_delta": 0.0578689236111111,
+              "situation": "original-far"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 1,
+              "mean_channel_delta": 0.0647612847222222,
+              "situation": "transparent"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 2,
+              "mean_channel_delta": 0.172660590277778,
+              "situation": "glow"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0,
+              "situation": "no-local"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 1,
+              "mean_channel_delta": 0.057958984375,
+              "situation": "terrain-lighting"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 1,
+              "mean_channel_delta": 0.0579611545138889,
+              "situation": "small-atlas"
+            }
+          ]
+        }
+      },
+      "tool_sha256_at_start": "2a2529c4a5d8e7a114f7ed87106e0e9a1766e14c9c79e178c357b3a6b3adaf45",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-compat-light/export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/local_light_passes.gd"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 24.333820633008145,
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "errors": [],
+      "png_sha256": {
+        "local-shadows-gl_compatibility-pass-single-zero.png": "a5c5c28204ba0bceb5d889576141740eaabf22011d2d13ca4f2929b51f32b55b",
+        "local-shadows-gl_compatibility-pass-glow-zero.png": "b8014016810af87b7d1e591c8844907dcdb89ab13e263424e5aafb2855f6c682",
+        "local-shadows-gl_compatibility-pass-transparent-zero.png": "3df47cc65465773c9d4932a22d550c7561e906e9ce33ca75a325491908fb11f5",
+        "local-shadows-gl_compatibility-pass-fog-disabled.png": "9372ea473f02854ea7f0526f1001ff14837af3b5d961123cec4e7eb57e016036",
+        "local-shadows-gl_compatibility-pass-five-zero.png": "904a1429a5e971990a036fabd551ed93e0397f1ee1d7f5ce4f0bedf5bab2b57c",
+        "local-shadows-gl_compatibility-pass-single-disabled.png": "ad3cc2daf8aefa975012c28fa593602aaaeec0281154b6d94bd61ea7f97ad35b",
+        "local-shadows-gl_compatibility-pass-crowded-disabled.png": "6425fa2de1897d0d9ce4c865b4df35a80e996e4d22a0ef4b2e8b4d34c5992441",
+        "local-shadows-gl_compatibility-pass-fog-bright-edge-zero.png": "e066b56a89c5d1eea197ff17fcb6442e37128b60be087e89e09c6cca8b9078ec",
+        "local-shadows-gl_compatibility-pass-emission-disabled.png": "ca1a9b7914a1ed1dc32628bd3041ef44cd9b91126ef7f21368a8d3f86cbf08a5",
+        "local-shadows-gl_compatibility-pass-five-disabled.png": "f5fc0e0b019b63f73023f70eb9faaacd247344421c201790dfdd2485d2395337",
+        "local-shadows-gl_compatibility-pass-surface-zero.png": "6396b8c1fb128b36e1de9075e1d1ac6b8876837f8c9ab40c8c9fd245785c9eab",
+        "local-shadows-gl_compatibility-pass-fog-full-zero.png": "50470f6146462e2cbfa97fd08d0d2df089467befe401fe948b561968e52c09d1",
+        "local-shadows-gl_compatibility-pass-small-atlas-zero.png": "904a1429a5e971990a036fabd551ed93e0397f1ee1d7f5ce4f0bedf5bab2b57c",
+        "local-shadows-gl_compatibility-pass-terrain-lighting-zero.png": "70bd693c87ed2b57f91a211ae29a42bdf4e0740b9cc1266a1c9d6289946c0d6f",
+        "local-shadows-gl_compatibility-pass-small-atlas-disabled.png": "f5fc0e0b019b63f73023f70eb9faaacd247344421c201790dfdd2485d2395337",
+        "local-shadows-gl_compatibility-pass-original-disabled.png": "1f5b2ed255edb0c9632f870d03afda7d8d4bc2210b8ee5675676875fe3621007",
+        "local-shadows-gl_compatibility-pass-fog-zero.png": "eeeafb009a16851ee43f5c413d5040440ab4543000a2c89d362ca2c497a856ec",
+        "local-shadows-gl_compatibility-pass-fog-full-disabled.png": "50470f6146462e2cbfa97fd08d0d2df089467befe401fe948b561968e52c09d1",
+        "local-shadows-gl_compatibility-pass-original-zero.png": "ec6c6c06aeda8de072fd7e766aa82d1e67506e91d4c99eb855b69c7d3544f4f4",
+        "local-shadows-gl_compatibility-pass-sun-shadow-zero.png": "d70f00cd3cc9b87f7c7a3ef86bf5edf98957959cee1017c8019b738c6052e085",
+        "local-shadows-gl_compatibility-pass-terrain-lighting-disabled.png": "dbb4c9681404c93a12e4e1363bb9d17cbbb11ae91b1d024142322db0da15b33d",
+        "local-shadows-gl_compatibility-pass-emission-fog-disabled.png": "711edaea3a6b1844c9674a15cf23f20a3c2dffe07640f0dff0b020e91e881b56",
+        "local-shadows-gl_compatibility-pass-no-local-disabled.png": "75603bc3653ca4083b267782d60bc9297a434b492b4e7ba8000c76ed85a3d389",
+        "local-shadows-gl_compatibility-pass-surface-disabled.png": "8911537e55bdd8ba677c7c79e526d8db61ceb0b18e91e71d89f4ad85807e8692",
+        "local-shadows-gl_compatibility-pass-no-local-zero.png": "75603bc3653ca4083b267782d60bc9297a434b492b4e7ba8000c76ed85a3d389",
+        "local-shadows-gl_compatibility-pass-fog-bright-edge-disabled.png": "e5a29ff0d000ec78e6485bcd9da06cd9dfa2b59d9e521ca9dada927e31e50794",
+        "local-shadows-gl_compatibility-pass-original-far-disabled.png": "f428065f8d1b799efcbd4e9cd2c989c9ebeea8089dddb8b633fceeb123d88fbc",
+        "local-shadows-gl_compatibility-pass-sun-shadow-disabled.png": "a7edb7ef9c9d871ba0286a273e8d80212784140bd39464cd8d3e2d7cf0c973e6",
+        "local-shadows-gl_compatibility-pass-glow-disabled.png": "815d021fdeb7a4aac475cd675588ca9bbc15dd00c25c099801b891e0d8e90917",
+        "local-shadows-gl_compatibility-pass-fog-dense-disabled.png": "1e5bbe0768fc1d19f1fa8195187aa7dcc8c52565aa6451b07b86af2d0d5fa409",
+        "local-shadows-gl_compatibility-pass-emission-fog-zero.png": "de994053666bb3945a2de70638663278d6fcd135a83965f25dab60e862b73444",
+        "local-shadows-gl_compatibility-pass-transparent-disabled.png": "754670ebdf81da0a39ff88b0472aace84f01eb199a6c85ce5b767cb0f89f038f",
+        "local-shadows-gl_compatibility-pass-original-far-zero.png": "b1964f546a89b16104a0a68fe638f84f0daf26f67be2673c12c3e9fd8906edc1",
+        "local-shadows-gl_compatibility-pass-emission-zero.png": "150c9be8dfd866de6e349d4f5d6301e1433a4825f9ffb5abc1253cfa0be401d5",
+        "local-shadows-gl_compatibility-pass-crowded-zero.png": "44a0c663747f19e5b282b567d4e692195b1184d29ff4b506d8fd19718e3b45ea",
+        "local-shadows-gl_compatibility-pass-fog-dense-zero.png": "f71f9427691a2ac21bf43c148a0a62d3bb19f41b0cde169b0384c43f9ce84cd3"
+      }
+    },
+    {
+      "label": "passes-gl4-optimized",
+      "classification": "final candidate",
+      "results": {
+        "LOCAL_LIGHT_PASSES": {
+          "adapter": "NVIDIA GeForce RTX 3090",
+          "checks": 155,
+          "cost_mode": false,
+          "editor": false,
+          "failures": 0,
+          "light_limit": 4,
+          "renderer": "gl_compatibility",
+          "rows": [
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 1,
+              "mean_channel_delta": 8.68055555555556e-06,
+              "situation": "single"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 1,
+              "mean_channel_delta": 0.0579611545138889,
+              "situation": "five"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 1,
+              "mean_channel_delta": 0.057451171875,
+              "situation": "sun-shadow"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 1,
+              "mean_channel_delta": 0.000642361111111111,
+              "situation": "fog"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 1,
+              "mean_channel_delta": 0.0577289496527778,
+              "situation": "surface"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 1,
+              "mean_channel_delta": 1.41059027777778e-05,
+              "situation": "crowded"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 1,
+              "mean_channel_delta": 1.953125e-05,
+              "situation": "original"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 1,
+              "mean_channel_delta": 0.0581195746527778,
+              "situation": "emission"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0,
+              "situation": "fog-full"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 1,
+              "mean_channel_delta": 6.51041666666667e-06,
+              "situation": "fog-dense"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 1,
+              "mean_channel_delta": 2.17013888888889e-06,
+              "situation": "fog-bright-edge"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 1,
+              "mean_channel_delta": 0.000665147569444444,
+              "situation": "emission-fog"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 1,
+              "mean_channel_delta": 1.41059027777778e-05,
+              "situation": "original-far"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 1,
+              "mean_channel_delta": 0.0647612847222222,
+              "situation": "transparent"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 2,
+              "mean_channel_delta": 0.172660590277778,
+              "situation": "glow"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0,
+              "situation": "no-local"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 1,
+              "mean_channel_delta": 0.057958984375,
+              "situation": "terrain-lighting"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 1,
+              "mean_channel_delta": 0.0579611545138889,
+              "situation": "small-atlas"
+            }
+          ]
+        }
+      },
+      "tool_sha256_at_start": "2a2529c4a5d8e7a114f7ed87106e0e9a1766e14c9c79e178c357b3a6b3adaf45",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-compat-light/export4/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/local_light_passes.gd"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 23.835909568995703,
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "errors": [],
+      "png_sha256": {
+        "local-shadows-gl_compatibility-pass-single-zero.png": "a5c5c28204ba0bceb5d889576141740eaabf22011d2d13ca4f2929b51f32b55b",
+        "local-shadows-gl_compatibility-pass-glow-zero.png": "b8014016810af87b7d1e591c8844907dcdb89ab13e263424e5aafb2855f6c682",
+        "local-shadows-gl_compatibility-pass-transparent-zero.png": "3df47cc65465773c9d4932a22d550c7561e906e9ce33ca75a325491908fb11f5",
+        "local-shadows-gl_compatibility-pass-fog-disabled.png": "9372ea473f02854ea7f0526f1001ff14837af3b5d961123cec4e7eb57e016036",
+        "local-shadows-gl_compatibility-pass-five-zero.png": "904a1429a5e971990a036fabd551ed93e0397f1ee1d7f5ce4f0bedf5bab2b57c",
+        "local-shadows-gl_compatibility-pass-single-disabled.png": "ad3cc2daf8aefa975012c28fa593602aaaeec0281154b6d94bd61ea7f97ad35b",
+        "local-shadows-gl_compatibility-pass-crowded-disabled.png": "546fdb842f72ce8b282bac2a67f15244b80615a29de385144e8b55808fb40f9c",
+        "local-shadows-gl_compatibility-pass-fog-bright-edge-zero.png": "e066b56a89c5d1eea197ff17fcb6442e37128b60be087e89e09c6cca8b9078ec",
+        "local-shadows-gl_compatibility-pass-emission-disabled.png": "ca1a9b7914a1ed1dc32628bd3041ef44cd9b91126ef7f21368a8d3f86cbf08a5",
+        "local-shadows-gl_compatibility-pass-five-disabled.png": "f5fc0e0b019b63f73023f70eb9faaacd247344421c201790dfdd2485d2395337",
+        "local-shadows-gl_compatibility-pass-surface-zero.png": "6396b8c1fb128b36e1de9075e1d1ac6b8876837f8c9ab40c8c9fd245785c9eab",
+        "local-shadows-gl_compatibility-pass-fog-full-zero.png": "50470f6146462e2cbfa97fd08d0d2df089467befe401fe948b561968e52c09d1",
+        "local-shadows-gl_compatibility-pass-small-atlas-zero.png": "904a1429a5e971990a036fabd551ed93e0397f1ee1d7f5ce4f0bedf5bab2b57c",
+        "local-shadows-gl_compatibility-pass-terrain-lighting-zero.png": "70bd693c87ed2b57f91a211ae29a42bdf4e0740b9cc1266a1c9d6289946c0d6f",
+        "local-shadows-gl_compatibility-pass-small-atlas-disabled.png": "f5fc0e0b019b63f73023f70eb9faaacd247344421c201790dfdd2485d2395337",
+        "local-shadows-gl_compatibility-pass-original-disabled.png": "fd158cd6515b321dc7af2997eba1b8b667a712981328dce0677229971e23d1a6",
+        "local-shadows-gl_compatibility-pass-fog-zero.png": "eeeafb009a16851ee43f5c413d5040440ab4543000a2c89d362ca2c497a856ec",
+        "local-shadows-gl_compatibility-pass-fog-full-disabled.png": "50470f6146462e2cbfa97fd08d0d2df089467befe401fe948b561968e52c09d1",
+        "local-shadows-gl_compatibility-pass-original-zero.png": "0f4200ea1c8fc6a72a7e49a5ca4608c077d54ae86473d980179bc34adba550cf",
+        "local-shadows-gl_compatibility-pass-sun-shadow-zero.png": "d70f00cd3cc9b87f7c7a3ef86bf5edf98957959cee1017c8019b738c6052e085",
+        "local-shadows-gl_compatibility-pass-terrain-lighting-disabled.png": "dbb4c9681404c93a12e4e1363bb9d17cbbb11ae91b1d024142322db0da15b33d",
+        "local-shadows-gl_compatibility-pass-emission-fog-disabled.png": "711edaea3a6b1844c9674a15cf23f20a3c2dffe07640f0dff0b020e91e881b56",
+        "local-shadows-gl_compatibility-pass-no-local-disabled.png": "75603bc3653ca4083b267782d60bc9297a434b492b4e7ba8000c76ed85a3d389",
+        "local-shadows-gl_compatibility-pass-surface-disabled.png": "8911537e55bdd8ba677c7c79e526d8db61ceb0b18e91e71d89f4ad85807e8692",
+        "local-shadows-gl_compatibility-pass-no-local-zero.png": "75603bc3653ca4083b267782d60bc9297a434b492b4e7ba8000c76ed85a3d389",
+        "local-shadows-gl_compatibility-pass-fog-bright-edge-disabled.png": "e5a29ff0d000ec78e6485bcd9da06cd9dfa2b59d9e521ca9dada927e31e50794",
+        "local-shadows-gl_compatibility-pass-original-far-disabled.png": "76f01d835fd2c6e6e60c245dc192344d6dfaf93aa9af2bf8c8d1d10b6d869064",
+        "local-shadows-gl_compatibility-pass-sun-shadow-disabled.png": "a7edb7ef9c9d871ba0286a273e8d80212784140bd39464cd8d3e2d7cf0c973e6",
+        "local-shadows-gl_compatibility-pass-glow-disabled.png": "815d021fdeb7a4aac475cd675588ca9bbc15dd00c25c099801b891e0d8e90917",
+        "local-shadows-gl_compatibility-pass-fog-dense-disabled.png": "1e5bbe0768fc1d19f1fa8195187aa7dcc8c52565aa6451b07b86af2d0d5fa409",
+        "local-shadows-gl_compatibility-pass-emission-fog-zero.png": "de994053666bb3945a2de70638663278d6fcd135a83965f25dab60e862b73444",
+        "local-shadows-gl_compatibility-pass-transparent-disabled.png": "754670ebdf81da0a39ff88b0472aace84f01eb199a6c85ce5b767cb0f89f038f",
+        "local-shadows-gl_compatibility-pass-original-far-zero.png": "9e12136344dfd466f571bbad999f042a078f82125cd889c2db577ec84486eabd",
+        "local-shadows-gl_compatibility-pass-emission-zero.png": "150c9be8dfd866de6e349d4f5d6301e1433a4825f9ffb5abc1253cfa0be401d5",
+        "local-shadows-gl_compatibility-pass-crowded-zero.png": "b1ce0ac41a377e53df8275da5aee50302d930620d0df3b396830275efb8dbfa7",
+        "local-shadows-gl_compatibility-pass-fog-dense-zero.png": "f71f9427691a2ac21bf43c148a0a62d3bb19f41b0cde169b0384c43f9ce84cd3"
+      }
+    },
+    {
+      "label": "fades-headless-optimized",
+      "classification": "final candidate",
+      "results": {
+        "LOCAL_SHADOW_FADES": {
+          "checks": 726,
+          "editor": false,
+          "failures": 0,
+          "gpu": {},
+          "light_limit": 8,
+          "renderer": "forward_plus"
+        }
+      },
+      "tool_sha256_at_start": "dfa684f11deee1cf6ae20e5fb19262bd470de8fa7721a210a6afa55ecf5475e4",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-compat-light/export/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/local_shadow_fades.gd"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 2.0569393880141433,
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [],
+      "warnings": [],
+      "errors": [],
+      "png_sha256": {}
+    },
+    {
+      "label": "fades-gl-optimized",
+      "classification": "final candidate",
+      "results": {
+        "LOCAL_SHADOW_FADES": {
+          "checks": 924,
+          "editor": false,
+          "failures": 0,
+          "gpu": {
+            "crowded_pass_boundary": {
+              "changed_pixels": 0,
+              "max_channel_delta": 1,
+              "mean_channel_delta": 2.49565972222222e-05
+            },
+            "endpoint": {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0
+            },
+            "exchange": {
+              "changed_pixels": 40018,
+              "max_channel_delta": 65,
+              "mean_channel_delta": 2.75772894965278
+            },
+            "moving_caster_pixels": 17279,
+            "moving_light_pixels": 214557,
+            "pass_boundary": {
+              "changed_pixels": 0,
+              "max_channel_delta": 1,
+              "mean_channel_delta": 0.0579611545138889
+            },
+            "steps": [
+              {
+                "changed_pixels": 23259,
+                "max_channel_delta": 25,
+                "mean_channel_delta": 0.561533203125
+              },
+              {
+                "changed_pixels": 23224,
+                "max_channel_delta": 18,
+                "mean_channel_delta": 0.459929470486111
+              },
+              {
+                "changed_pixels": 23192,
+                "max_channel_delta": 14,
+                "mean_channel_delta": 0.400065104166667
+              },
+              {
+                "changed_pixels": 23163,
+                "max_channel_delta": 12,
+                "mean_channel_delta": 0.359607204861111
+              },
+              {
+                "changed_pixels": 23190,
+                "max_channel_delta": 12,
+                "mean_channel_delta": 0.3594140625
+              },
+              {
+                "changed_pixels": 23213,
+                "max_channel_delta": 14,
+                "mean_channel_delta": 0.399965277777778
+              },
+              {
+                "changed_pixels": 23259,
+                "max_channel_delta": 18,
+                "mean_channel_delta": 0.459714626736111
+              },
+              {
+                "changed_pixels": 23280,
+                "max_channel_delta": 25,
+                "mean_channel_delta": 0.561009114583333
+              }
+            ]
+          },
+          "light_limit": 8,
+          "renderer": "gl_compatibility"
+        }
+      },
+      "tool_sha256_at_start": "dfa684f11deee1cf6ae20e5fb19262bd470de8fa7721a210a6afa55ecf5475e4",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-compat-light/export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/local_shadow_fades.gd"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 8.811305028997594,
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "errors": [],
+      "png_sha256": {
+        "local-shadows-gl_compatibility-pass-crowded-disabled.png": "7165698626ffc1a4b224d69ee9200bc6252b9988b5e438be3f59b09bd8ff3734",
+        "local-shadows-gl_compatibility-fade-step-6.png": "16cd20a1d6d94a53e30250c8df8c5327ae7810e25513631f39d1410f10058a78",
+        "local-shadows-gl_compatibility-fade-initial.png": "90ffa29dcf3df0989293211c5a55f650ef9da4475973f93b35c6c681bcfa0080",
+        "local-shadows-gl_compatibility-fade-moved-light.png": "0b18f6a91022e2856f31fc205cd48307c0027e2fe0b6a3f93385e94c5906a746",
+        "local-shadows-gl_compatibility-fade-step-2.png": "8edd586b9814c74b2d7fe5ec3c5614305aa0f71722c2be05edef020bdcc93f43",
+        "local-shadows-gl_compatibility-fade-step-1.png": "6e2c0bb8df0c3cc23ef5006856053424b5ab1ada665e8d6944b8cf406ea7d7c5",
+        "local-shadows-gl_compatibility-fade-partial-caster.png": "16cd20a1d6d94a53e30250c8df8c5327ae7810e25513631f39d1410f10058a78",
+        "local-shadows-gl_compatibility-pass-disabled.png": "f5fc0e0b019b63f73023f70eb9faaacd247344421c201790dfdd2485d2395337",
+        "local-shadows-gl_compatibility-fade-step-8.png": "0378680e5640506a10b11039f984fb15c9d82c77624be45c5b792dec63ff90ef",
+        "local-shadows-gl_compatibility-fade-moved-caster.png": "2a9f85acef7480775fab8896b2101c0893a879d6dfd2e260651c94221a146b40",
+        "local-shadows-gl_compatibility-fade-step-4.png": "5039a8dea26692d82c8df538dcc0b62d8ad06fa1c18bf573226ffb9a45e689ec",
+        "local-shadows-gl_compatibility-fade-direct-endpoint.png": "0378680e5640506a10b11039f984fb15c9d82c77624be45c5b792dec63ff90ef",
+        "local-shadows-gl_compatibility-pass-zero.png": "904a1429a5e971990a036fabd551ed93e0397f1ee1d7f5ce4f0bedf5bab2b57c",
+        "local-shadows-gl_compatibility-fade-step-3.png": "c59a577b853ae91450b444c222d10780b0ef42eccd06c6852b477645a99dfdfe",
+        "local-shadows-gl_compatibility-fade-step-7.png": "77edd99caf21ecf81f4c9a900dc8d0cdf914bac26e28281a8947d5f34d5da2c7",
+        "local-shadows-gl_compatibility-fade-step-5.png": "9726140eab41dedced84b26b19b72fd2fe4e3f62ac49974f960de04116acb656",
+        "local-shadows-gl_compatibility-fade-start.png": "90ffa29dcf3df0989293211c5a55f650ef9da4475973f93b35c6c681bcfa0080",
+        "local-shadows-gl_compatibility-pass-crowded-zero.png": "14adef708d3ce8d30356b77f9e3c91b5110030646572aa5f1b8bdb5b66e9bbcb"
+      }
+    },
+    {
+      "label": "fades-gl4-optimized",
+      "classification": "final candidate",
+      "results": {
+        "LOCAL_SHADOW_FADES": {
+          "checks": 924,
+          "editor": false,
+          "failures": 0,
+          "gpu": {
+            "crowded_pass_boundary": {
+              "changed_pixels": 0,
+              "max_channel_delta": 1,
+              "mean_channel_delta": 1.41059027777778e-05
+            },
+            "endpoint": {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0
+            },
+            "exchange": {
+              "changed_pixels": 40018,
+              "max_channel_delta": 65,
+              "mean_channel_delta": 2.75772894965278
+            },
+            "moving_caster_pixels": 17279,
+            "moving_light_pixels": 214557,
+            "pass_boundary": {
+              "changed_pixels": 0,
+              "max_channel_delta": 1,
+              "mean_channel_delta": 0.0579611545138889
+            },
+            "steps": [
+              {
+                "changed_pixels": 23259,
+                "max_channel_delta": 25,
+                "mean_channel_delta": 0.561533203125
+              },
+              {
+                "changed_pixels": 23224,
+                "max_channel_delta": 18,
+                "mean_channel_delta": 0.459929470486111
+              },
+              {
+                "changed_pixels": 23192,
+                "max_channel_delta": 14,
+                "mean_channel_delta": 0.400065104166667
+              },
+              {
+                "changed_pixels": 23163,
+                "max_channel_delta": 12,
+                "mean_channel_delta": 0.359607204861111
+              },
+              {
+                "changed_pixels": 23190,
+                "max_channel_delta": 12,
+                "mean_channel_delta": 0.3594140625
+              },
+              {
+                "changed_pixels": 23213,
+                "max_channel_delta": 14,
+                "mean_channel_delta": 0.399965277777778
+              },
+              {
+                "changed_pixels": 23259,
+                "max_channel_delta": 18,
+                "mean_channel_delta": 0.459714626736111
+              },
+              {
+                "changed_pixels": 23280,
+                "max_channel_delta": 25,
+                "mean_channel_delta": 0.561009114583333
+              }
+            ]
+          },
+          "light_limit": 4,
+          "renderer": "gl_compatibility"
+        }
+      },
+      "tool_sha256_at_start": "dfa684f11deee1cf6ae20e5fb19262bd470de8fa7721a210a6afa55ecf5475e4",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-compat-light/export4/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/local_shadow_fades.gd"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 8.562221903004684,
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "errors": [],
+      "png_sha256": {
+        "local-shadows-gl_compatibility-pass-crowded-disabled.png": "2a41a70a3871fbb01073292f85b5e47921f88c0c5ded4a5f6373e8af6959f70c",
+        "local-shadows-gl_compatibility-fade-step-6.png": "16cd20a1d6d94a53e30250c8df8c5327ae7810e25513631f39d1410f10058a78",
+        "local-shadows-gl_compatibility-fade-initial.png": "90ffa29dcf3df0989293211c5a55f650ef9da4475973f93b35c6c681bcfa0080",
+        "local-shadows-gl_compatibility-fade-moved-light.png": "0b18f6a91022e2856f31fc205cd48307c0027e2fe0b6a3f93385e94c5906a746",
+        "local-shadows-gl_compatibility-fade-step-2.png": "8edd586b9814c74b2d7fe5ec3c5614305aa0f71722c2be05edef020bdcc93f43",
+        "local-shadows-gl_compatibility-fade-step-1.png": "6e2c0bb8df0c3cc23ef5006856053424b5ab1ada665e8d6944b8cf406ea7d7c5",
+        "local-shadows-gl_compatibility-fade-partial-caster.png": "16cd20a1d6d94a53e30250c8df8c5327ae7810e25513631f39d1410f10058a78",
+        "local-shadows-gl_compatibility-pass-disabled.png": "f5fc0e0b019b63f73023f70eb9faaacd247344421c201790dfdd2485d2395337",
+        "local-shadows-gl_compatibility-fade-step-8.png": "0378680e5640506a10b11039f984fb15c9d82c77624be45c5b792dec63ff90ef",
+        "local-shadows-gl_compatibility-fade-moved-caster.png": "2a9f85acef7480775fab8896b2101c0893a879d6dfd2e260651c94221a146b40",
+        "local-shadows-gl_compatibility-fade-step-4.png": "5039a8dea26692d82c8df538dcc0b62d8ad06fa1c18bf573226ffb9a45e689ec",
+        "local-shadows-gl_compatibility-fade-direct-endpoint.png": "0378680e5640506a10b11039f984fb15c9d82c77624be45c5b792dec63ff90ef",
+        "local-shadows-gl_compatibility-pass-zero.png": "904a1429a5e971990a036fabd551ed93e0397f1ee1d7f5ce4f0bedf5bab2b57c",
+        "local-shadows-gl_compatibility-fade-step-3.png": "c59a577b853ae91450b444c222d10780b0ef42eccd06c6852b477645a99dfdfe",
+        "local-shadows-gl_compatibility-fade-step-7.png": "77edd99caf21ecf81f4c9a900dc8d0cdf914bac26e28281a8947d5f34d5da2c7",
+        "local-shadows-gl_compatibility-fade-step-5.png": "9726140eab41dedced84b26b19b72fd2fe4e3f62ac49974f960de04116acb656",
+        "local-shadows-gl_compatibility-fade-start.png": "90ffa29dcf3df0989293211c5a55f650ef9da4475973f93b35c6c681bcfa0080",
+        "local-shadows-gl_compatibility-pass-crowded-zero.png": "65dd900c5103a6868fcffed6e8b3cceed91f90ec9deee1c3a445207b2d748dc3"
+      }
+    },
+    {
+      "label": "fades-forward-policy-final",
+      "classification": "final candidate",
+      "results": {
+        "LOCAL_SHADOW_FADES": {
+          "checks": 923,
+          "editor": false,
+          "failures": 0,
+          "gpu": {
+            "crowded_pass_boundary": {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0
+            },
+            "endpoint": {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0
+            },
+            "exchange": {
+              "changed_pixels": 47267,
+              "max_channel_delta": 33,
+              "mean_channel_delta": 1.59921657986111
+            },
+            "moving_caster_pixels": 19844,
+            "moving_light_pixels": 184714,
+            "pass_boundary": {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0
+            },
+            "steps": [
+              {
+                "changed_pixels": 21497,
+                "max_channel_delta": 11,
+                "mean_channel_delta": 0.278161892361111
+              },
+              {
+                "changed_pixels": 21278,
+                "max_channel_delta": 10,
+                "mean_channel_delta": 0.26416015625
+              },
+              {
+                "changed_pixels": 21045,
+                "max_channel_delta": 9,
+                "mean_channel_delta": 0.251078559027778
+              },
+              {
+                "changed_pixels": 20801,
+                "max_channel_delta": 8,
+                "mean_channel_delta": 0.239860026041667
+              },
+              {
+                "changed_pixels": 20806,
+                "max_channel_delta": 8,
+                "mean_channel_delta": 0.239873046875
+              },
+              {
+                "changed_pixels": 21029,
+                "max_channel_delta": 9,
+                "mean_channel_delta": 0.250952690972222
+              },
+              {
+                "changed_pixels": 21271,
+                "max_channel_delta": 10,
+                "mean_channel_delta": 0.264106987847222
+              },
+              {
+                "changed_pixels": 21505,
+                "max_channel_delta": 11,
+                "mean_channel_delta": 0.278343098958333
+              }
+            ]
+          },
+          "light_limit": 8,
+          "renderer": "forward_plus"
+        }
+      },
+      "tool_sha256_at_start": "db9d91efe65203256bbacb7a0ae17d1a43a267a4ff3e0ac4c6bf2db91c778a5a",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-compat-light/export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/local_shadow_fades.gd"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 8.308070608996786,
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [],
+      "warnings": [],
+      "errors": [],
+      "png_sha256": {
+        "local-shadows-forward_plus-fade-direct-endpoint.png": "b6e2662f90cdca210c1bfd92a102d057ec4e9d830301c4670d5474bd3a07c2bb",
+        "local-shadows-forward_plus-fade-step-1.png": "295cbb0e4ceb43389b004cc679146e801b05606fedb0a95442ad2c0b2eb42fbc",
+        "local-shadows-forward_plus-fade-step-7.png": "341a88c42f359625c157bbe88b6149e38d4d53a7ada1a09bb9fab1c78ce7a86a",
+        "local-shadows-forward_plus-fade-step-5.png": "e3eb67d959b257a06d3dbeb2cbe537b8d9eb147e5c47dd2b9a7728beb2fb95a1",
+        "local-shadows-forward_plus-pass-zero.png": "2beb9ff02a42802ee49e1f15a0c268d59ca09e3a1b1ed34a7d4a5d461613490b",
+        "local-shadows-forward_plus-fade-step-2.png": "59d0eaa859d1562668344ed42cbf2d9cddf374324f3ddfe4d37e4b2e0856507e",
+        "local-shadows-forward_plus-pass-crowded-zero.png": "4b68c1f3c4854dcc3f9b8e139b6242adbb27b00654beeea10c7ca592ace97da9",
+        "local-shadows-forward_plus-pass-disabled.png": "2beb9ff02a42802ee49e1f15a0c268d59ca09e3a1b1ed34a7d4a5d461613490b",
+        "local-shadows-forward_plus-fade-step-8.png": "b6e2662f90cdca210c1bfd92a102d057ec4e9d830301c4670d5474bd3a07c2bb",
+        "local-shadows-forward_plus-fade-initial.png": "60cb7b17d1d7eae9fb0c54e2e06d7351ac5092150dd3129c82449d2a79390147",
+        "local-shadows-forward_plus-fade-moved-light.png": "92dcfa1598143804c773c36169b97e0aa8c72fc965afb0d0900286d7628481d6",
+        "local-shadows-forward_plus-pass-crowded-disabled.png": "4b68c1f3c4854dcc3f9b8e139b6242adbb27b00654beeea10c7ca592ace97da9",
+        "local-shadows-forward_plus-fade-step-6.png": "1449197a365d7d494f977182a74c80639e0b02a0b3345d0e6fbf35488f37c61a",
+        "local-shadows-forward_plus-fade-start.png": "60cb7b17d1d7eae9fb0c54e2e06d7351ac5092150dd3129c82449d2a79390147",
+        "local-shadows-forward_plus-fade-partial-caster.png": "1449197a365d7d494f977182a74c80639e0b02a0b3345d0e6fbf35488f37c61a",
+        "local-shadows-forward_plus-fade-step-4.png": "2beb9ff02a42802ee49e1f15a0c268d59ca09e3a1b1ed34a7d4a5d461613490b",
+        "local-shadows-forward_plus-fade-moved-caster.png": "7ed46c21cd05bd9a008208ff7e1ae5eb25389fb07140300414fa98d5c148a3c1",
+        "local-shadows-forward_plus-fade-step-3.png": "97de7fb24e90b74e8789df74e073ff06a0fa0e61d8653997be72942e9b98567a"
+      }
+    },
+    {
+      "label": "fades-gl-legacy-policy-final",
+      "classification": "final candidate",
+      "results": {
+        "LOCAL_SHADOW_FADES": {
+          "checks": 737,
+          "editor": false,
+          "failures": 0,
+          "gpu": {
+            "crowded_pass_boundary": {
+              "changed_pixels": 257452,
+              "max_channel_delta": 47,
+              "mean_channel_delta": 10.6093598090278
+            },
+            "pass_boundary": {
+              "changed_pixels": 220150,
+              "max_channel_delta": 39,
+              "mean_channel_delta": 7.57529188368056
+            }
+          },
+          "light_limit": 8,
+          "renderer": "gl_compatibility"
+        }
+      },
+      "tool_sha256_at_start": "db9d91efe65203256bbacb7a0ae17d1a43a267a4ff3e0ac4c6bf2db91c778a5a",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-compat-light/export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/local_shadow_fades.gd",
+        "--no-local-shadow-fades"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 4.05501586702303,
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "errors": [],
+      "png_sha256": {
+        "local-shadows-gl_compatibility-pass-crowded-disabled.png": "19a6fd43cebd01bd615f0b853273609480f3779812566bc2f6f763f80a0b931c",
+        "local-shadows-gl_compatibility-pass-disabled.png": "a07ec34ab35c9f752e46f8bf5ddabdb7d586a965c00779b0a734e65487a3b599",
+        "local-shadows-gl_compatibility-pass-zero.png": "e3aae478437bb0d0cc3424463cd9f8bc5b3f22649791a3166aa6c21794117c26",
+        "local-shadows-gl_compatibility-pass-crowded-zero.png": "ca6d340aa413459dc8d28fe3f850cca008279ad25244bf8edbcc1d49eb0c252f"
+      }
+    },
+    {
+      "label": "selection-gl-legacy",
+      "classification": "final candidate",
+      "results": {
+        "LOCAL_SHADOW_SELECTION": {
+          "checks": 418,
+          "control": false,
+          "editor": false,
+          "failures": 0,
+          "renderer": "gl_compatibility",
+          "selection_changes": 3
+        }
+      },
+      "tool_sha256_at_start": "f6c94d1de12216ad8b1897b8afca87ae2616ddd74297e8cbc865c2ce4e616c46",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-compat-light/export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/local_shadow_selection.gd",
+        "--no-local-shadow-fades"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 3.805786493991036,
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "errors": [],
+      "png_sha256": {
+        "local-shadows-gl_compatibility-held.png": "af226ac41b82cceae418b3f8a1480f77d84d534d9be8a98a002a37c3767d8a0e",
+        "local-shadows-gl_compatibility-moved-caster.png": "9e58edf68921401d5a16494bd87b7d17ec13ee27b7536938d9cfddbbb8df794d",
+        "local-shadows-gl_compatibility-moved-light.png": "94525485deb7352a43c1eb5443dc1b37b6702e81091c10c94abdfa783828cfcf",
+        "local-shadows-gl_compatibility-replaced.png": "fd0431793dcc079eca7eb0a1d77019c56ac80c19dee8002b54bc53f4c1050dcd",
+        "local-shadows-gl_compatibility-initial.png": "af226ac41b82cceae418b3f8a1480f77d84d534d9be8a98a002a37c3767d8a0e"
+      }
+    },
+    {
+      "label": "ground-contact-gl-optimized",
+      "classification": "final candidate",
+      "results": {
+        "GROUND_CONTACT": {
+          "checks": 35,
+          "failures": 0
+        }
+      },
+      "tool_sha256_at_start": "a7b780097420ee871dae9c927e21b7a894b370bce724534e43f7afe57c2a86cd",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-compat-light/export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/ground_contact.gd"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 8.813936285994714,
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "errors": [],
+      "png_sha256": {}
+    },
+    {
+      "label": "shader-options-gl-optimized",
+      "classification": "final candidate",
+      "results": {
+        "MATERIAL_SHADER_OPTIONS": {
+          "checks": 362,
+          "failures": 0
+        }
+      },
+      "tool_sha256_at_start": "ac4c773ee9c844e537f5003bf2d8259a05aec94d0d1c29b55c6a662b340e5ad0",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-compat-light/export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/material_shader_options.gd"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 173.02529630999197,
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "errors": [],
+      "png_sha256": {}
+    },
+    {
+      "label": "shader-options-forward-optimized",
+      "classification": "final candidate",
+      "results": {
+        "MATERIAL_SHADER_OPTIONS": {
+          "checks": 362,
+          "failures": 0
+        }
+      },
+      "tool_sha256_at_start": "ac4c773ee9c844e537f5003bf2d8259a05aec94d0d1c29b55c6a662b340e5ad0",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-compat-light/export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/material_shader_options.gd"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 7.806972691992996,
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [],
+      "warnings": [],
+      "errors": [],
+      "png_sha256": {}
+    },
+    {
+      "label": "cost-opt-candidate-a",
+      "classification": "final candidate",
+      "results": {
+        "LOCAL_LIGHT_PASSES": {
+          "adapter": "NVIDIA GeForce RTX 3090",
+          "checks": 24,
+          "cost_mode": true,
+          "editor": false,
+          "failures": 0,
+          "light_limit": 8,
+          "renderer": "gl_compatibility",
+          "rows": [
+            {
+              "situation": "no-local",
+              "timing": {
+                "cpu_median_ms": 0.158000007271767,
+                "draw_calls": 1,
+                "force_draw_median_ms": 0.52,
+                "forced_draws": 160,
+                "gpu_median_ms": 0.0790000036358833,
+                "samples": 96
+              }
+            },
+            {
+              "situation": "five",
+              "timing": {
+                "cpu_median_ms": 0.0879999995231628,
+                "draw_calls": 4,
+                "force_draw_median_ms": 0.843,
+                "forced_draws": 160,
+                "gpu_median_ms": 0.435000002384186,
+                "samples": 96
+              }
+            },
+            {
+              "situation": "crowded",
+              "timing": {
+                "cpu_median_ms": 0.0860000029206276,
+                "draw_calls": 2,
+                "force_draw_median_ms": 0.997,
+                "forced_draws": 160,
+                "gpu_median_ms": 0.577000021934509,
+                "samples": 96
+              }
+            },
+            {
+              "situation": "fog",
+              "timing": {
+                "cpu_median_ms": 0.096000000834465,
+                "draw_calls": 4,
+                "force_draw_median_ms": 0.943,
+                "forced_draws": 160,
+                "gpu_median_ms": 0.504000008106232,
+                "samples": 96
+              }
+            }
+          ]
+        }
+      },
+      "tool_sha256_at_start": "2a2529c4a5d8e7a114f7ed87106e0e9a1766e14c9c79e178c357b3a6b3adaf45",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-compat-light/export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/local_light_passes.gd",
+        "--light-pass-cost"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 8.309309319010936,
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "errors": [],
+      "png_sha256": {}
+    },
+    {
+      "label": "cost-opt-candidate-b",
+      "classification": "final candidate",
+      "results": {
+        "LOCAL_LIGHT_PASSES": {
+          "adapter": "NVIDIA GeForce RTX 3090",
+          "checks": 24,
+          "cost_mode": true,
+          "editor": false,
+          "failures": 0,
+          "light_limit": 8,
+          "renderer": "gl_compatibility",
+          "rows": [
+            {
+              "situation": "no-local",
+              "timing": {
+                "cpu_median_ms": 0.0790000036358833,
+                "draw_calls": 1,
+                "force_draw_median_ms": 0.416,
+                "forced_draws": 160,
+                "gpu_median_ms": 0.0780000016093254,
+                "samples": 96
+              }
+            },
+            {
+              "situation": "five",
+              "timing": {
+                "cpu_median_ms": 0.0879999995231628,
+                "draw_calls": 4,
+                "force_draw_median_ms": 0.816,
+                "forced_draws": 160,
+                "gpu_median_ms": 0.41499999165535,
+                "samples": 96
+              }
+            },
+            {
+              "situation": "crowded",
+              "timing": {
+                "cpu_median_ms": 0.0879999995231628,
+                "draw_calls": 2,
+                "force_draw_median_ms": 0.984,
+                "forced_draws": 160,
+                "gpu_median_ms": 0.564999997615814,
+                "samples": 96
+              }
+            },
+            {
+              "situation": "fog",
+              "timing": {
+                "cpu_median_ms": 0.0860000029206276,
+                "draw_calls": 4,
+                "force_draw_median_ms": 0.923,
+                "forced_draws": 160,
+                "gpu_median_ms": 0.495000004768372,
+                "samples": 96
+              }
+            }
+          ]
+        }
+      },
+      "tool_sha256_at_start": "2a2529c4a5d8e7a114f7ed87106e0e9a1766e14c9c79e178c357b3a6b3adaf45",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-compat-light/export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/local_light_passes.gd",
+        "--light-pass-cost"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 8.310215745994356,
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "errors": [],
+      "png_sha256": {}
+    },
+    {
+      "label": "passes-gl-baseline",
+      "classification": "expected negative control",
+      "results": {
+        "LOCAL_LIGHT_PASSES": {
+          "adapter": "NVIDIA GeForce RTX 3090",
+          "checks": 155,
+          "cost_mode": false,
+          "editor": false,
+          "failures": 16,
+          "light_limit": 8,
+          "renderer": "gl_compatibility",
+          "rows": [
+            {
+              "changed_pixels": 14312,
+              "max_channel_delta": 3,
+              "mean_channel_delta": 0.253792317708333,
+              "situation": "single"
+            },
+            {
+              "changed_pixels": 220150,
+              "max_channel_delta": 39,
+              "mean_channel_delta": 7.57529188368056,
+              "situation": "five"
+            },
+            {
+              "changed_pixels": 263280,
+              "max_channel_delta": 37,
+              "mean_channel_delta": 10.9856271701389,
+              "situation": "sun-shadow"
+            },
+            {
+              "changed_pixels": 233304,
+              "max_channel_delta": 28,
+              "mean_channel_delta": 8.17924696180556,
+              "situation": "fog"
+            },
+            {
+              "changed_pixels": 226840,
+              "max_channel_delta": 53,
+              "mean_channel_delta": 9.44633463541667,
+              "situation": "surface"
+            },
+            {
+              "changed_pixels": 254636,
+              "max_channel_delta": 46,
+              "mean_channel_delta": 10.0812369791667,
+              "situation": "crowded"
+            },
+            {
+              "changed_pixels": 224472,
+              "max_channel_delta": 39,
+              "mean_channel_delta": 8.631533203125,
+              "situation": "original"
+            },
+            {
+              "changed_pixels": 262009,
+              "max_channel_delta": 45,
+              "mean_channel_delta": 10.3869292534722,
+              "situation": "emission"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0,
+              "situation": "fog-full"
+            },
+            {
+              "changed_pixels": 137697,
+              "max_channel_delta": 10,
+              "mean_channel_delta": 1.59861870659722,
+              "situation": "fog-dense"
+            },
+            {
+              "changed_pixels": 35281,
+              "max_channel_delta": 3,
+              "mean_channel_delta": 0.360807291666667,
+              "situation": "fog-bright-edge"
+            },
+            {
+              "changed_pixels": 241946,
+              "max_channel_delta": 32,
+              "mean_channel_delta": 9.43304144965278,
+              "situation": "emission-fog"
+            },
+            {
+              "changed_pixels": 220150,
+              "max_channel_delta": 39,
+              "mean_channel_delta": 8.24282118055556,
+              "situation": "original-far"
+            },
+            {
+              "changed_pixels": 202555,
+              "max_channel_delta": 22,
+              "mean_channel_delta": 4.17158745659722,
+              "situation": "transparent"
+            },
+            {
+              "changed_pixels": 221361,
+              "max_channel_delta": 38,
+              "mean_channel_delta": 7.55380208333333,
+              "situation": "glow"
+            },
+            {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0,
+              "situation": "no-local"
+            },
+            {
+              "changed_pixels": 220150,
+              "max_channel_delta": 39,
+              "mean_channel_delta": 7.57529188368056,
+              "situation": "terrain-lighting"
+            },
+            {
+              "changed_pixels": 220150,
+              "max_channel_delta": 39,
+              "mean_channel_delta": 7.57529188368056,
+              "situation": "small-atlas"
+            }
+          ]
+        }
+      },
+      "tool_sha256_at_start": "2a2529c4a5d8e7a114f7ed87106e0e9a1766e14c9c79e178c357b3a6b3adaf45",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-fades/candidate/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/local_light_passes.gd"
+      ],
+      "return_code": 1,
+      "elapsed_sec": 18.07802061800612,
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "errors": [
+        "FAIL single pass boundary stays within output quantization",
+        "FAIL five pass boundary stays within output quantization",
+        "FAIL sun-shadow pass boundary stays within output quantization",
+        "FAIL fog pass boundary stays within output quantization",
+        "FAIL surface pass boundary stays within output quantization",
+        "FAIL crowded pass boundary stays within output quantization",
+        "FAIL original pass boundary stays within output quantization",
+        "FAIL emission pass boundary stays within output quantization",
+        "FAIL fog-dense pass boundary stays within output quantization",
+        "FAIL fog-bright-edge pass boundary stays within output quantization",
+        "FAIL emission-fog pass boundary stays within output quantization",
+        "FAIL original-far pass boundary stays within output quantization",
+        "FAIL transparent pass boundary stays within output quantization",
+        "FAIL glow pass boundary stays within output quantization",
+        "FAIL terrain-lighting pass boundary stays within output quantization",
+        "FAIL small-atlas pass boundary stays within output quantization"
+      ],
+      "png_sha256": {
+        "local-shadows-gl_compatibility-pass-single-zero.png": "a41c730fc4d115fd0b0afcfc5f121f19387d32da12d25871da24b1dc58539c0c",
+        "local-shadows-gl_compatibility-pass-glow-zero.png": "6f99947e9c6898cdb63b2c348e508497de010be8b26eb9f3a017ed134b1937aa",
+        "local-shadows-gl_compatibility-pass-transparent-zero.png": "dfbdbddb8acd4333217ee1067b7656456e661f6362db6df3e8aa5b9cd35da8cc",
+        "local-shadows-gl_compatibility-pass-fog-disabled.png": "07a800eb4920af1f82ba0926874787eb37dcc19d0e41563d790558a96b995c52",
+        "local-shadows-gl_compatibility-pass-five-zero.png": "e3aae478437bb0d0cc3424463cd9f8bc5b3f22649791a3166aa6c21794117c26",
+        "local-shadows-gl_compatibility-pass-single-disabled.png": "87425c2da311485ca03b388c4ee81ea3c62816e552de70b1e064b8c7ec459449",
+        "local-shadows-gl_compatibility-pass-crowded-disabled.png": "82c46481ab9df61820e37f54bc49da570798ffd9b67ebad15ee5918f94e5b76e",
+        "local-shadows-gl_compatibility-pass-fog-bright-edge-zero.png": "50470f6146462e2cbfa97fd08d0d2df089467befe401fe948b561968e52c09d1",
+        "local-shadows-gl_compatibility-pass-emission-disabled.png": "2aec721d1f2d39b7aa10aaf3eebe177cfc37c36a4e864d526ac2af5d6aaa3e45",
+        "local-shadows-gl_compatibility-pass-five-disabled.png": "a07ec34ab35c9f752e46f8bf5ddabdb7d586a965c00779b0a734e65487a3b599",
+        "local-shadows-gl_compatibility-pass-surface-zero.png": "a0f85ac0b211159116e600a78c4bf1e73ecaa8bbfee8b5cecc36ad76a1a6a87b",
+        "local-shadows-gl_compatibility-pass-fog-full-zero.png": "50470f6146462e2cbfa97fd08d0d2df089467befe401fe948b561968e52c09d1",
+        "local-shadows-gl_compatibility-pass-small-atlas-zero.png": "e3aae478437bb0d0cc3424463cd9f8bc5b3f22649791a3166aa6c21794117c26",
+        "local-shadows-gl_compatibility-pass-terrain-lighting-zero.png": "e3aae478437bb0d0cc3424463cd9f8bc5b3f22649791a3166aa6c21794117c26",
+        "local-shadows-gl_compatibility-pass-small-atlas-disabled.png": "a07ec34ab35c9f752e46f8bf5ddabdb7d586a965c00779b0a734e65487a3b599",
+        "local-shadows-gl_compatibility-pass-original-disabled.png": "50e8b5fb1015d1f5433936edd4445a23ada42f0d0873368524f42d9f25b35fa0",
+        "local-shadows-gl_compatibility-pass-fog-zero.png": "9395e0679c2c9a6518ac443f06f75b2ab78e5939625a40d12e7a8c7b12efe787",
+        "local-shadows-gl_compatibility-pass-fog-full-disabled.png": "50470f6146462e2cbfa97fd08d0d2df089467befe401fe948b561968e52c09d1",
+        "local-shadows-gl_compatibility-pass-original-zero.png": "1b51aadbc6033d5e3f06e8e2aa90cf744e54898d60abe1bc9d8db137015209cd",
+        "local-shadows-gl_compatibility-pass-sun-shadow-zero.png": "be3088a713e491b33a0f3ce95a19bc709100661c63c66194a1999214377bcd6c",
+        "local-shadows-gl_compatibility-pass-terrain-lighting-disabled.png": "a07ec34ab35c9f752e46f8bf5ddabdb7d586a965c00779b0a734e65487a3b599",
+        "local-shadows-gl_compatibility-pass-emission-fog-disabled.png": "1347afb2f8e9bceb143cbdb76ad0135ec9fbd7011d0b4a10d4632a057812c881",
+        "local-shadows-gl_compatibility-pass-no-local-disabled.png": "75603bc3653ca4083b267782d60bc9297a434b492b4e7ba8000c76ed85a3d389",
+        "local-shadows-gl_compatibility-pass-surface-disabled.png": "e3ab89a8985745147ac3dcf259ff83df45a42b27d9ab3306ace79c8f303657c6",
+        "local-shadows-gl_compatibility-pass-no-local-zero.png": "75603bc3653ca4083b267782d60bc9297a434b492b4e7ba8000c76ed85a3d389",
+        "local-shadows-gl_compatibility-pass-fog-bright-edge-disabled.png": "20250c11dae91172df8d798fda67e5aeb7dcbd4fa266784317d4072b18d4f682",
+        "local-shadows-gl_compatibility-pass-original-far-disabled.png": "badfa03c6d1b7a3431f651302bfd8e11c6fd06c43221b1e808c06e730172a1f0",
+        "local-shadows-gl_compatibility-pass-sun-shadow-disabled.png": "b43b47d327220db1a081002a16e8f72b8032eda10088b734e188beefe0c382e0",
+        "local-shadows-gl_compatibility-pass-glow-disabled.png": "4d49df6b9751761f08847cd8abd5cd88dd6944adb189df55387beec3850a4aa5",
+        "local-shadows-gl_compatibility-pass-fog-dense-disabled.png": "afd505010059e3b532f33762f20dc269b5905a54a83f916a7e8b472b33b5ca79",
+        "local-shadows-gl_compatibility-pass-emission-fog-zero.png": "e4a3199967a21bcc9b41a6a902010524d602391fc357c47ad8794eddcebfe338",
+        "local-shadows-gl_compatibility-pass-transparent-disabled.png": "cf777f2501beaa1d0b6300a12c75a7ae220de75c2a0c2f5c725012986decc4d4",
+        "local-shadows-gl_compatibility-pass-original-far-zero.png": "4648cdd18f0a5ace36ac4b0befa48e7096453f4e9b52464c5a65adb05537d657",
+        "local-shadows-gl_compatibility-pass-emission-zero.png": "8e9845a197138cd9e5e3342847eda1e48f53112807e8d34cf305c123498c8809",
+        "local-shadows-gl_compatibility-pass-crowded-zero.png": "2dd85caf9ba4ec4f4bd04e9a3a2321b13f0139010edf8b39d2ecd622727a619a",
+        "local-shadows-gl_compatibility-pass-fog-dense-zero.png": "83f1c5db687c13c4221eea4e0fa1b7fc774762439c0ae98665a7ca28a564df75"
+      }
+    },
+    {
+      "label": "cost-opt-baseline-a",
+      "classification": "baseline",
+      "results": {
+        "LOCAL_LIGHT_PASSES": {
+          "adapter": "NVIDIA GeForce RTX 3090",
+          "checks": 24,
+          "cost_mode": true,
+          "editor": false,
+          "failures": 0,
+          "light_limit": 8,
+          "renderer": "gl_compatibility",
+          "rows": [
+            {
+              "situation": "no-local",
+              "timing": {
+                "cpu_median_ms": 0.090999998152256,
+                "draw_calls": 1,
+                "force_draw_median_ms": 0.455,
+                "forced_draws": 160,
+                "gpu_median_ms": 0.0780000016093254,
+                "samples": 96
+              }
+            },
+            {
+              "situation": "five",
+              "timing": {
+                "cpu_median_ms": 0.166999995708466,
+                "draw_calls": 4,
+                "force_draw_median_ms": 0.928,
+                "forced_draws": 160,
+                "gpu_median_ms": 0.374000012874603,
+                "samples": 96
+              }
+            },
+            {
+              "situation": "crowded",
+              "timing": {
+                "cpu_median_ms": 0.0939999967813492,
+                "draw_calls": 2,
+                "force_draw_median_ms": 0.863,
+                "forced_draws": 160,
+                "gpu_median_ms": 0.421999990940094,
+                "samples": 96
+              }
+            },
+            {
+              "situation": "fog",
+              "timing": {
+                "cpu_median_ms": 0.0920000001788139,
+                "draw_calls": 4,
+                "force_draw_median_ms": 0.91,
+                "forced_draws": 160,
+                "gpu_median_ms": 0.446000009775162,
+                "samples": 96
+              }
+            }
+          ]
+        }
+      },
+      "tool_sha256_at_start": "2a2529c4a5d8e7a114f7ed87106e0e9a1766e14c9c79e178c357b3a6b3adaf45",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-fades/candidate/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/local_light_passes.gd",
+        "--light-pass-cost"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 8.560730054974556,
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "errors": [],
+      "png_sha256": {}
+    },
+    {
+      "label": "cost-opt-baseline-b",
+      "classification": "baseline",
+      "results": {
+        "LOCAL_LIGHT_PASSES": {
+          "adapter": "NVIDIA GeForce RTX 3090",
+          "checks": 24,
+          "cost_mode": true,
+          "editor": false,
+          "failures": 0,
+          "light_limit": 8,
+          "renderer": "gl_compatibility",
+          "rows": [
+            {
+              "situation": "no-local",
+              "timing": {
+                "cpu_median_ms": 0.0879999995231628,
+                "draw_calls": 1,
+                "force_draw_median_ms": 0.441,
+                "forced_draws": 160,
+                "gpu_median_ms": 0.0780000016093254,
+                "samples": 96
+              }
+            },
+            {
+              "situation": "five",
+              "timing": {
+                "cpu_median_ms": 0.0939999967813492,
+                "draw_calls": 4,
+                "force_draw_median_ms": 0.755,
+                "forced_draws": 160,
+                "gpu_median_ms": 0.361999988555908,
+                "samples": 96
+              }
+            },
+            {
+              "situation": "crowded",
+              "timing": {
+                "cpu_median_ms": 0.119000002741814,
+                "draw_calls": 2,
+                "force_draw_median_ms": 0.905,
+                "forced_draws": 160,
+                "gpu_median_ms": 0.416999995708466,
+                "samples": 96
+              }
+            },
+            {
+              "situation": "fog",
+              "timing": {
+                "cpu_median_ms": 0.149000003933907,
+                "draw_calls": 4,
+                "force_draw_median_ms": 0.962,
+                "forced_draws": 160,
+                "gpu_median_ms": 0.435999989509583,
+                "samples": 96
+              }
+            }
+          ]
+        }
+      },
+      "tool_sha256_at_start": "2a2529c4a5d8e7a114f7ed87106e0e9a1766e14c9c79e178c357b3a6b3adaf45",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-fades/candidate/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/local_light_passes.gd",
+        "--light-pass-cost"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 8.312072711996734,
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "errors": [],
+      "png_sha256": {}
+    },
+    {
+      "label": "shader-options-baseline",
+      "classification": "baseline",
+      "results": {
+        "MATERIAL_SHADER_OPTIONS": {
+          "checks": 362,
+          "failures": 0
+        }
+      },
+      "tool_sha256_at_start": "ac4c773ee9c844e537f5003bf2d8259a05aec94d0d1c29b55c6a662b340e5ad0",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-fades/candidate/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/material_shader_options.gd"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 157.43363715399755,
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "errors": [],
+      "png_sha256": {}
+    },
+    {
+      "label": "cost-forced-baseline-a",
+      "classification": "before optimization",
+      "results": {
+        "LOCAL_LIGHT_PASSES": {
+          "adapter": "NVIDIA GeForce RTX 3090",
+          "checks": 24,
+          "cost_mode": true,
+          "editor": false,
+          "failures": 0,
+          "light_limit": 8,
+          "renderer": "gl_compatibility",
+          "rows": [
+            {
+              "situation": "no-local",
+              "timing": {
+                "cpu_median_ms": 0.123000003397465,
+                "draw_calls": 1,
+                "force_draw_median_ms": 0.486,
+                "forced_draws": 160,
+                "gpu_median_ms": 0.0780000016093254,
+                "samples": 96
+              }
+            },
+            {
+              "situation": "five",
+              "timing": {
+                "cpu_median_ms": 0.18299999833107,
+                "draw_calls": 4,
+                "force_draw_median_ms": 0.888,
+                "forced_draws": 160,
+                "gpu_median_ms": 0.351000010967255,
+                "samples": 96
+              }
+            },
+            {
+              "situation": "crowded",
+              "timing": {
+                "cpu_median_ms": 0.123999997973442,
+                "draw_calls": 2,
+                "force_draw_median_ms": 0.89,
+                "forced_draws": 160,
+                "gpu_median_ms": 0.40599998831749,
+                "samples": 96
+              }
+            },
+            {
+              "situation": "fog",
+              "timing": {
+                "cpu_median_ms": 0.0869999974966049,
+                "draw_calls": 4,
+                "force_draw_median_ms": 0.844,
+                "forced_draws": 160,
+                "gpu_median_ms": 0.418999999761581,
+                "samples": 96
+              }
+            }
+          ]
+        }
+      },
+      "tool_sha256_at_start": "7543eeaacce55b2b8f763f14b9834d9cf71d9e4a0049cd17ce857fb2d64d5c0f",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-fades/candidate/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/local_light_passes.gd",
+        "--light-pass-cost"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 8.309311282995623,
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "errors": [],
+      "png_sha256": {}
+    },
+    {
+      "label": "cost-forced-candidate-a",
+      "classification": "before optimization",
+      "results": {
+        "LOCAL_LIGHT_PASSES": {
+          "adapter": "NVIDIA GeForce RTX 3090",
+          "checks": 24,
+          "cost_mode": true,
+          "editor": false,
+          "failures": 0,
+          "light_limit": 8,
+          "renderer": "gl_compatibility",
+          "rows": [
+            {
+              "situation": "no-local",
+              "timing": {
+                "cpu_median_ms": 0.0989999994635582,
+                "draw_calls": 1,
+                "force_draw_median_ms": 0.482,
+                "forced_draws": 160,
+                "gpu_median_ms": 0.0790000036358833,
+                "samples": 96
+              }
+            },
+            {
+              "situation": "five",
+              "timing": {
+                "cpu_median_ms": 0.131999999284744,
+                "draw_calls": 4,
+                "force_draw_median_ms": 0.912,
+                "forced_draws": 160,
+                "gpu_median_ms": 0.435999989509583,
+                "samples": 96
+              }
+            },
+            {
+              "situation": "crowded",
+              "timing": {
+                "cpu_median_ms": 0.130999997258186,
+                "draw_calls": 2,
+                "force_draw_median_ms": 1.099,
+                "forced_draws": 160,
+                "gpu_median_ms": 0.60699999332428,
+                "samples": 96
+              }
+            },
+            {
+              "situation": "fog",
+              "timing": {
+                "cpu_median_ms": 0.101000003516674,
+                "draw_calls": 4,
+                "force_draw_median_ms": 0.989,
+                "forced_draws": 160,
+                "gpu_median_ms": 0.495999991893768,
+                "samples": 96
+              }
+            }
+          ]
+        }
+      },
+      "tool_sha256_at_start": "7543eeaacce55b2b8f763f14b9834d9cf71d9e4a0049cd17ce857fb2d64d5c0f",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-compat-light/export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/local_light_passes.gd",
+        "--light-pass-cost"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 8.81791998402332,
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "errors": [],
+      "png_sha256": {}
+    },
+    {
+      "label": "cost-forced-candidate-b",
+      "classification": "before optimization",
+      "results": {
+        "LOCAL_LIGHT_PASSES": {
+          "adapter": "NVIDIA GeForce RTX 3090",
+          "checks": 24,
+          "cost_mode": true,
+          "editor": false,
+          "failures": 0,
+          "light_limit": 8,
+          "renderer": "gl_compatibility",
+          "rows": [
+            {
+              "situation": "no-local",
+              "timing": {
+                "cpu_median_ms": 0.150999993085861,
+                "draw_calls": 1,
+                "force_draw_median_ms": 0.521,
+                "forced_draws": 160,
+                "gpu_median_ms": 0.0790000036358833,
+                "samples": 96
+              }
+            },
+            {
+              "situation": "five",
+              "timing": {
+                "cpu_median_ms": 0.211999997496605,
+                "draw_calls": 4,
+                "force_draw_median_ms": 1.035,
+                "forced_draws": 160,
+                "gpu_median_ms": 0.407999992370605,
+                "samples": 96
+              }
+            },
+            {
+              "situation": "crowded",
+              "timing": {
+                "cpu_median_ms": 0.153999999165535,
+                "draw_calls": 2,
+                "force_draw_median_ms": 1.096,
+                "forced_draws": 160,
+                "gpu_median_ms": 0.600000023841858,
+                "samples": 96
+              }
+            },
+            {
+              "situation": "fog",
+              "timing": {
+                "cpu_median_ms": 0.166999995708466,
+                "draw_calls": 4,
+                "force_draw_median_ms": 1.031,
+                "forced_draws": 160,
+                "gpu_median_ms": 0.486999988555908,
+                "samples": 96
+              }
+            }
+          ]
+        }
+      },
+      "tool_sha256_at_start": "7543eeaacce55b2b8f763f14b9834d9cf71d9e4a0049cd17ce857fb2d64d5c0f",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-compat-light/export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/local_light_passes.gd",
+        "--light-pass-cost"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 8.845196451991796,
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "errors": [],
+      "png_sha256": {}
+    },
+    {
+      "label": "cost-forced-baseline-b",
+      "classification": "before optimization",
+      "results": {
+        "LOCAL_LIGHT_PASSES": {
+          "adapter": "NVIDIA GeForce RTX 3090",
+          "checks": 24,
+          "cost_mode": true,
+          "editor": false,
+          "failures": 0,
+          "light_limit": 8,
+          "renderer": "gl_compatibility",
+          "rows": [
+            {
+              "situation": "no-local",
+              "timing": {
+                "cpu_median_ms": 0.0890000015497208,
+                "draw_calls": 1,
+                "force_draw_median_ms": 0.5,
+                "forced_draws": 160,
+                "gpu_median_ms": 0.090999998152256,
+                "samples": 96
+              }
+            },
+            {
+              "situation": "five",
+              "timing": {
+                "cpu_median_ms": 0.155000001192093,
+                "draw_calls": 4,
+                "force_draw_median_ms": 0.852,
+                "forced_draws": 160,
+                "gpu_median_ms": 0.367000013589859,
+                "samples": 96
+              }
+            },
+            {
+              "situation": "crowded",
+              "timing": {
+                "cpu_median_ms": 0.11599999666214,
+                "draw_calls": 2,
+                "force_draw_median_ms": 0.891,
+                "forced_draws": 160,
+                "gpu_median_ms": 0.425000011920929,
+                "samples": 96
+              }
+            },
+            {
+              "situation": "fog",
+              "timing": {
+                "cpu_median_ms": 0.0890000015497208,
+                "draw_calls": 4,
+                "force_draw_median_ms": 0.855,
+                "forced_draws": 160,
+                "gpu_median_ms": 0.425000011920929,
+                "samples": 96
+              }
+            }
+          ]
+        }
+      },
+      "tool_sha256_at_start": "7543eeaacce55b2b8f763f14b9834d9cf71d9e4a0049cd17ce857fb2d64d5c0f",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-fades/candidate/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/local_light_passes.gd",
+        "--light-pass-cost"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 8.838142077991506,
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "errors": [],
+      "png_sha256": {}
+    }
+  ],
+  "discarded_harness_attempts": [
+    {
+      "label": "cost-baseline-1",
+      "reason": "No cost samples: automatic render callback was suppressed in the minimized X11 setup; replaced with explicit static submissions.",
+      "return_code": -15,
+      "elapsed_sec": 150.28601877199253,
+      "tool_sha256_at_start": "00475ce09fd8560d9232488b0d8a7982b116e5af683fa9a588ed5030b223eed6",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-compat-light/cost-baseline-1/run.log"
+    },
+    {
+      "label": "cost-baseline-loop",
+      "reason": "No cost samples: automatic render callback was suppressed in the minimized X11 setup; replaced with explicit static submissions.",
+      "return_code": -15,
+      "elapsed_sec": 58.12032579499646,
+      "tool_sha256_at_start": "84f9cb6377cab6289a4acc8d1f8f17323a48501d074e7fafaf4e9f26ee3e8d07",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-compat-light/cost-baseline-loop/run.log"
+    },
+    {
+      "label": "cost-baseline-a",
+      "reason": "No cost samples: automatic render callback was suppressed in the minimized X11 setup; replaced with explicit static submissions.",
+      "return_code": -15,
+      "elapsed_sec": 88.437672939006,
+      "tool_sha256_at_start": "4d79f087bbd249bf90f0b9cb4ab52d97b77c5938b2d5ea2e5cc3392c7993add1",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-compat-light/cost-baseline-a/run.log"
+    },
+    {
+      "label": "shader-options-gl",
+      "reason": "Initial shader harness/150s limit; replaced with explicit SubViewport, real forced draws and a 360s bound. Stale copied PNGs are excluded.",
+      "return_code": -15,
+      "elapsed_sec": 150.2877306260052,
+      "tool_sha256_at_start": "c531defaccb472dee140728b9cfefdaef2a94f28a22c1dd81913e71679eda223",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-compat-light/shader-options-gl/run.log"
+    }
+  ],
+  "integration_check": {
+    "target": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo",
+    "base": "3172ede12a5f41b0182c34a70b5eeda787c95e52",
+    "source_parent": "ea814978bbdb536e8c2a3e55a84c239cb577a494",
+    "command": [
+      "git",
+      "apply",
+      "--check",
+      "--whitespace=error-all",
+      "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-compat-light/combined-implementation.patch"
+    ],
+    "return_code": 0,
+    "stdout": "",
+    "stderr": "",
+    "patch_sha256": "4da263ab842773230592322a1b5f1201a94ad07d810a47c36073dc4496db437c",
+    "unchanged": true,
+    "before": {
+      "head": "78498914b00842d216cd19544a5647bc9ad79555",
+      "status": "",
+      "files": {
+        "game/src/ei/figure.gd": "5fd0c1d31f462a49914e0a619580ffbcc5344965c18798f5bf3f2f58c68bad8f",
+        "game/src/ei/game_data.gd": "6b978ec8cbc2ed07baf11f461ffdacb7e7239854cc1c588ca60bfb83040267c7",
+        "game/src/ei/map_scene.gd": "8c3ebb5dff18651be8d23c7b36d25f1c3e9bb90ace3d6fc27a70c697c8da1a5e",
+        "game/src/ei/mmp_texture.gd": "ea95f86058da0b18c5c411c4bb69cc9db00c5770501cd5efbf0125d3f2ca104b",
+        "game/src/ei/terrain.gd": "25b87e8fadf2bd7c68ebc963cb36db34788dc2e962ce6a736ba1c51db4c89361",
+        "game/src/ei/unit_model.gd": "f454fd48b39f318b8822a004129c65530ba4adf9b63f6bd5425bf68452824fe6",
+        "game/src/game/fx/ground_contact.gd": null,
+        "game/src/game/fx/ground_contact.gd.uid": null,
+        "game/src/game/fx/ground_contact_shader.gd": null,
+        "game/src/game/fx/ground_contact_shader.gd.uid": null,
+        "game/src/game/fx/ground_surface_data.gd": null,
+        "game/src/game/fx/ground_surface_data.gd.uid": null,
+        "game/src/game/fx/ground_surface_shader.gd": null,
+        "game/src/game/fx/ground_surface_shader.gd.uid": null,
+        "game/src/game/fx/local_light_shader.gd": null,
+        "game/src/game/fx/local_light_shader.gd.uid": null,
+        "game/src/game/fx/local_lighting.gd": "be1570ca9e47eafcb48f0d4964a941066d521d63cc570ea8aff8333c20b1d34a",
+        "game/src/game/fx/scenery_batch_watch.gd": null,
+        "game/src/game/fx/scenery_batch_watch.gd.uid": null,
+        "game/src/game/fx/scenery_batches.gd": null,
+        "game/src/game/fx/scenery_batches.gd.uid": null,
+        "game/src/game/fx/scenery_light_groups.gd": null,
+        "game/src/game/fx/scenery_light_groups.gd.uid": null,
+        "game/src/game/fx/soft_ground_deform.gd": "a9b5a1941d17ccf67716affb9e416c702d67c7405730109461ead2260fffe051",
+        "game/src/game/fx/soft_ground_field.gd": null,
+        "game/src/game/fx/soft_ground_field.gd.uid": null,
+        "game/src/game/game.gd": "ae6fbf51f89b6536cfa28505f544bb7ba22402b2eca1593400d5fb303d1ec08f",
+        "game/src/game/gfx.gd": "d4111e59b158111d2b5c0ab75feadde1f77db81e528773f23676fddd0e11cdb5",
+        "game/src/game/gfx_detect.gd": "bcbc43453022fd0718fa2ceed9f8cc1271b644dec2eda9f34e3fb78e269475dc",
+        "game/src/game/unit_wounds.gd": "8eea1966c2ac60d58e6d6d6b358cbcec28655a9b90423fd6663a29858fbaf41e",
+        "game/src/platform/portability.gd": "3afa19cb0340929d7e1034066b490568e2df52b5b1e3a9decb3c6c89b76a3735",
+        "game/src/ui/camera_fade.gd": "00dca9e22b1d5cf21c073b82570353533f8f7fa9f98c3a9e478e7fec17bfa0fe",
+        "game/src/ui/menu_scene.gd": "ac5780e52e21d66654fdf0ca49a786c45442958fab7814dc615b02712b604da1",
+        "tools/benchmarks/directional_shadows.gd": null,
+        "tools/benchmarks/ground_contact.gd": null,
+        "tools/benchmarks/ground_contact_preparation.py": null,
+        "tools/benchmarks/ground_contact_surface.gd": null,
+        "tools/benchmarks/scenery_batch_lights.gd": null,
+        "tools/benchmarks/scenery_batches.gd": null,
+        "tools/benchmarks/scenery_resources.gd": null,
+        "tools/benchmarks/terrain_occlusion.gd": null,
+        "tools/tests/foliage_materials.gd": null,
+        "tools/tests/ground_contact.gd": null,
+        "tools/tests/local_light_passes.gd": null,
+        "tools/tests/local_shadow_fades.gd": null,
+        "tools/tests/local_shadow_selection.gd": null,
+        "tools/tests/material_shader_options.gd": "dff493bc1167c94ed445a3b18749914f39340b960a36a607d1785a2f3ff889e9",
+        "tools/tests/mmp_texture.gd": null,
+        "tools/tests/mmp_upload.gd": null,
+        "tools/tests/scenery_batch_lights.gd": null,
+        "tools/tests/scenery_batches.gd": null,
+        "tools/tests/soft_ground_field.gd": null,
+        "tools/tests/sun_aiming.gd": null,
+        "tools/tests/wound_source.gd": null
+      }
+    },
+    "after": {
+      "head": "78498914b00842d216cd19544a5647bc9ad79555",
+      "status": "",
+      "files": {
+        "game/src/ei/figure.gd": "5fd0c1d31f462a49914e0a619580ffbcc5344965c18798f5bf3f2f58c68bad8f",
+        "game/src/ei/game_data.gd": "6b978ec8cbc2ed07baf11f461ffdacb7e7239854cc1c588ca60bfb83040267c7",
+        "game/src/ei/map_scene.gd": "8c3ebb5dff18651be8d23c7b36d25f1c3e9bb90ace3d6fc27a70c697c8da1a5e",
+        "game/src/ei/mmp_texture.gd": "ea95f86058da0b18c5c411c4bb69cc9db00c5770501cd5efbf0125d3f2ca104b",
+        "game/src/ei/terrain.gd": "25b87e8fadf2bd7c68ebc963cb36db34788dc2e962ce6a736ba1c51db4c89361",
+        "game/src/ei/unit_model.gd": "f454fd48b39f318b8822a004129c65530ba4adf9b63f6bd5425bf68452824fe6",
+        "game/src/game/fx/ground_contact.gd": null,
+        "game/src/game/fx/ground_contact.gd.uid": null,
+        "game/src/game/fx/ground_contact_shader.gd": null,
+        "game/src/game/fx/ground_contact_shader.gd.uid": null,
+        "game/src/game/fx/ground_surface_data.gd": null,
+        "game/src/game/fx/ground_surface_data.gd.uid": null,
+        "game/src/game/fx/ground_surface_shader.gd": null,
+        "game/src/game/fx/ground_surface_shader.gd.uid": null,
+        "game/src/game/fx/local_light_shader.gd": null,
+        "game/src/game/fx/local_light_shader.gd.uid": null,
+        "game/src/game/fx/local_lighting.gd": "be1570ca9e47eafcb48f0d4964a941066d521d63cc570ea8aff8333c20b1d34a",
+        "game/src/game/fx/scenery_batch_watch.gd": null,
+        "game/src/game/fx/scenery_batch_watch.gd.uid": null,
+        "game/src/game/fx/scenery_batches.gd": null,
+        "game/src/game/fx/scenery_batches.gd.uid": null,
+        "game/src/game/fx/scenery_light_groups.gd": null,
+        "game/src/game/fx/scenery_light_groups.gd.uid": null,
+        "game/src/game/fx/soft_ground_deform.gd": "a9b5a1941d17ccf67716affb9e416c702d67c7405730109461ead2260fffe051",
+        "game/src/game/fx/soft_ground_field.gd": null,
+        "game/src/game/fx/soft_ground_field.gd.uid": null,
+        "game/src/game/game.gd": "ae6fbf51f89b6536cfa28505f544bb7ba22402b2eca1593400d5fb303d1ec08f",
+        "game/src/game/gfx.gd": "d4111e59b158111d2b5c0ab75feadde1f77db81e528773f23676fddd0e11cdb5",
+        "game/src/game/gfx_detect.gd": "bcbc43453022fd0718fa2ceed9f8cc1271b644dec2eda9f34e3fb78e269475dc",
+        "game/src/game/unit_wounds.gd": "8eea1966c2ac60d58e6d6d6b358cbcec28655a9b90423fd6663a29858fbaf41e",
+        "game/src/platform/portability.gd": "3afa19cb0340929d7e1034066b490568e2df52b5b1e3a9decb3c6c89b76a3735",
+        "game/src/ui/camera_fade.gd": "00dca9e22b1d5cf21c073b82570353533f8f7fa9f98c3a9e478e7fec17bfa0fe",
+        "game/src/ui/menu_scene.gd": "ac5780e52e21d66654fdf0ca49a786c45442958fab7814dc615b02712b604da1",
+        "tools/benchmarks/directional_shadows.gd": null,
+        "tools/benchmarks/ground_contact.gd": null,
+        "tools/benchmarks/ground_contact_preparation.py": null,
+        "tools/benchmarks/ground_contact_surface.gd": null,
+        "tools/benchmarks/scenery_batch_lights.gd": null,
+        "tools/benchmarks/scenery_batches.gd": null,
+        "tools/benchmarks/scenery_resources.gd": null,
+        "tools/benchmarks/terrain_occlusion.gd": null,
+        "tools/tests/foliage_materials.gd": null,
+        "tools/tests/ground_contact.gd": null,
+        "tools/tests/local_light_passes.gd": null,
+        "tools/tests/local_shadow_fades.gd": null,
+        "tools/tests/local_shadow_selection.gd": null,
+        "tools/tests/material_shader_options.gd": "dff493bc1167c94ed445a3b18749914f39340b960a36a607d1785a2f3ff889e9",
+        "tools/tests/mmp_texture.gd": null,
+        "tools/tests/mmp_upload.gd": null,
+        "tools/tests/scenery_batch_lights.gd": null,
+        "tools/tests/scenery_batches.gd": null,
+        "tools/tests/soft_ground_field.gd": null,
+        "tools/tests/sun_aiming.gd": null,
+        "tools/tests/wound_source.gd": null
+      }
+    }
+  }
+}
