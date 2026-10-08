@@ -2,6 +2,8 @@ extends Node
 ## Actual Catacombs geometry, original mover script, ordinary walk/use orders.
 ## Synthetic party ownership; unrelated actors are held still. This covers a
 ## blocked selected operator, not large-party platform capacity or an ENet trip.
+## Recreate the authored narrow layout even when production widens this lift;
+## catacomb_capacity and catacomb_capacity_net cover the new layout separately.
 const LIFT := 2240358
 const UP := 338779
 const DOWN := 1357456
@@ -30,6 +32,26 @@ func height() -> float:
 func use(ids: Array, lever: int) -> void:
 	s.apply_command({"t":"use_lever", "units":ids, "target":lever}, 0)
 
+func original_layout() -> void:
+	var w := s.world
+	w.map._relocated_objects.clear()
+	var original := EIMob.load_bytes(GameData.read_file("maps/zone1dun2.mob"))
+	for info: Dictionary in original.objects:
+		var nid := int(info.get("nid",0))
+		var old: Node3D = w.objects.get(nid)
+		if old == null: continue
+		var current: Dictionary = old.get_meta("ei")
+		if current.position==info.position and current.complexion==info.complexion: continue
+		var saved: Dictionary = w.levers.get(nid,{}).duplicate(true)
+		w.nav.remove_object(nid)
+		var node := w.map.place_object(info,old.get_parent())
+		w.map.object_nodes.erase(old);w.map.object_nodes.append(node)
+		old.get_parent().remove_child(old);old.free()
+		w._register_object(node)
+		if not saved.is_empty():w.levers[nid]=saved
+		w.nav.add_object(node)
+		if not saved.is_empty():w.lever_sys.add(nid)
+
 func _ready() -> void:
 	GameData.options.merge({"autosave":0,"show_tutorial":0,"net_upnp":0,"net_lan":0,"net_directory":0},true)
 	s = Session.new(); add_child(s)
@@ -40,6 +62,7 @@ func _ready() -> void:
 	await s.enter_zone("gz1d2",1,false)
 	var w := s.world
 	w.set_process(false); w.set_physics_process(false)
+	original_layout()
 	ticks(30)
 	var lead: GameUnit = s.party_units(0)[0]
 	w.vm._use_lever(lead,CALL); ticks(900)

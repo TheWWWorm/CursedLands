@@ -1777,6 +1777,9 @@ func _do_move(dt: float) -> void:
 	else:
 		running = bool(order.get("run", true))
 	if path.is_empty():
+		if world.time < float(order.get("group_retry_at", -INF)):
+			_set_action("idle")
+			return
 		var replan := _avoid != null and is_instance_valid(_avoid)
 		if order.get("story_move", false) and not world.prepare_story_move(self, order.to):
 			_set_action("idle")
@@ -1789,6 +1792,7 @@ func _do_move(dt: float) -> void:
 			# Native554830 plans every new move. The nav memo validates standing
 			# stamps; even identical cells need a fresh physical motion anchor.
 			path = _path_to(order.to)
+		if path.is_empty() and _retry_group_move(): return
 		if use_target:
 			motion_notice(order.to, 1, world.vm._interact_reach(self, use_target))
 		else:
@@ -1800,7 +1804,32 @@ func _do_move(dt: float) -> void:
 			return
 		_fresh_path = replan
 	if _step_along_path(dt):
+		if not order.is_empty() and pos.distance_to(order.to) > 0.75 and _retry_group_move(): return
 		order = {}
+	elif _moving:
+		order.erase("group_retry_until")
+		order.erase("group_retry_at")
+
+
+## A group click starts its orders one unit at a time. In a narrow passage
+## its still-standing members can temporarily leave the others no route.
+## Retry the ordinary collision-aware search, only while a nearby member of
+## the same click still intends to move. A stationary deadlock expires in
+## two seconds; replacement commands and unrelated actors never qualify.
+func _retry_group_move() -> bool:
+	var group: Dictionary = order.get("move_group", {})
+	if group.is_empty() or world.time >= float(order.get("group_retry_until", INF)): return false
+	for id: int in group.get("members", []):
+		var other: GameUnit = world.units.get(id)
+		if other == null or other == self or other.dead or other.blocked or other.controller != controller \
+				or pos.distance_squared_to(other.pos) > 36.0: continue
+		var next: Dictionary = other.order if not other.order.is_empty() else (other.orders[0] if not other.orders.is_empty() else {})
+		if not is_same(group, next.get("move_group")): continue
+		if not order.has("group_retry_until"): order.group_retry_until = world.time + 2.0
+		order.group_retry_at = world.time + 0.2
+		_set_action("idle")
+		return true
+	return false
 
 
 ## Empty compatibility slot cleared by NavGrid._relocate after object changes.
@@ -2159,6 +2188,7 @@ func _blocked_by(b: GameUnit, standing: bool, next := Vector2.INF) -> void:
 		_avoid_at = next if temporary_moving or not standing else Vector2.INF
 		path = _path_to(goal,_order_target() if kind in ["attack","cast","follow"] else null,-1,_path_limit)
 		if path.is_empty():
+			if kind == "move" and _retry_group_move(): return
 			_fail_order(EIAcks.NO_WAY_TO_ATTACK if kind == "attack" else EIAcks.NO_PATH)
 			if kind == "attack": target = null;_goal = Vector2.INF
 	_set_action("idle")

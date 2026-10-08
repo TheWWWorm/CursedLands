@@ -317,6 +317,7 @@ func move_object(nid: int, p: Vector3) -> void:
 	var o: Dictionary = node.get_meta("ei")
 	if not node.has_meta("moved_from"):
 		node.set_meta("moved_from", o.position)
+	if map: p = map.moved_object_position(nid,p)
 	o.position = p
 	node.position = EISpace.pos(p.x, p.y, terrain.height_at(p.x, p.y) + p.z)
 	nav.remove_object(nid)

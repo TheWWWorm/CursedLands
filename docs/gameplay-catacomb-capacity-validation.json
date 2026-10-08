@@ -1,0 +1,152 @@
+{
+  "baseline_commit": "40ea5a981b992bda63d4e505f47747a7c60068f2",
+  "export": {
+    "seconds": 6.03607004499645,
+    "command": [
+      "/home/llm2x/.local/bin/godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+      "--export-release",
+      "Linux",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps46/CPU.x86_64"
+    ],
+    "engine_source": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/fast-runtime.x86_64",
+    "errors": [],
+    "sha256": {
+      "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+      "CPU.pck": "5a4e824dde5fafa728a855d9c3c9bba9d6e50fec2b06a013effcd3e19db9dc85",
+      "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+    }
+  },
+  "network_export": {
+    "seconds": 5.978126137983054,
+    "command": [
+      "/home/llm2x/.local/bin/godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+      "--export-release",
+      "Linux",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps44/CPU.x86_64"
+    ],
+    "engine_source": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/fast-runtime.x86_64",
+    "errors": [],
+    "sha256": {
+      "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+      "CPU.pck": "da518a633a1c49397b8bdce51e2891c753ba9436fa2e53b8b4b74ffbfe15e639",
+      "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+    }
+  },
+  "runs": {
+    "catacomb-capacity-final-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps46/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/catacomb_capacity.gd",
+        "--label=catacomb-capacity-final-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 27.673319841997,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "86716a38aac2ffebb01c25e063a0e1582bc593dae44ff5e5203506224ccd529b",
+      "checks": 45,
+      "failures": 0,
+      "variant": "gameplay-gaps46",
+      "raw_log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/catacomb-capacity-final-01.log"
+    },
+    "catacomb-original-regression-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps46/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/catacomb_group_lever.gd",
+        "--label=catacomb-original-regression-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 15.0316907580127,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "3570412e89a454d8492444f7cf63ef635fba633487de416224a09d649d7e07c7",
+      "checks": 24,
+      "failures": 0,
+      "variant": "gameplay-gaps46",
+      "raw_log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/catacomb-original-regression-01.log"
+    },
+    "catacomb-mechanisms-final-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps46/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/catacomb_mechanisms.gd",
+        "--label=catacomb-mechanisms-final-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 29.667444120015716,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "f74f43121b505d31cff512f5e1cf22dc991f71dac15eb71e8e9cff8d2d04b320",
+      "checks": 15,
+      "failures": 0,
+      "variant": "gameplay-gaps46",
+      "raw_log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/catacomb-mechanisms-final-01.log"
+    },
+    "catacomb-capacity-net-02": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps44/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/catacomb_capacity_net.gd",
+        "--label=catacomb-capacity-net-02"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 22.132745280017843,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "0413344479df56dc9d41451aecdbace4fa6b110a9aad1773ca07985a3971c728",
+      "checks": 36,
+      "failures": 0,
+      "variant": "gameplay-gaps44",
+      "raw_log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/catacomb-capacity-net-02.log"
+    }
+  },
+  "scope": "Local follow-up after Experimental 6. Authored lift origin and vertical movement preserved; deck widened through original model morph; frame and switches moved with saved-position migration. Group destinations are distinct and collision-aware retries allow nearby members of the same click to clear narrow passages.",
+  "limits": [
+    "Prepared five-human party; top boarding order 0,1,2,3,4 and bottom order 4,3,2,0,1 still matter.",
+    "Network fixture uses two ENet peers in one process; guest operates controls, host group unloads before guest.",
+    "Network validation predates the final map-null guard and lazy movement-group creation, both covered by subsequent single-player tests.",
+    "Stationary group retry timeout/cancellation not independently exercised.",
+    "No Windows/Android or full chapter validation of these follow-up changes."
+  ],
+  "fixture_sha256": {
+    "catacomb_capacity.gd": "593af151883bd9c342886a0da7a4305fb6ed3a6bd634d3082d80d3f5c262b823",
+    "catacomb_capacity_net.gd": "3a04e560221c3d8a83b66a0164d7724e16709df468ddac7eeca46b0c991ea31d",
+    "catacomb_group_lever.gd": "572876e993e6e2d8cd36d2485c2e50eb5d09a6b40d0fcee6a333ed5018de3070"
+  }
+}

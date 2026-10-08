@@ -2137,7 +2137,13 @@ func _lever_unit(selected: Array[GameUnit], obj: Node3D) -> GameUnit:
 
 ## The spot of the i-th unit of a group move round the clicked point (remake).
 static func group_offset(i: int) -> Vector2:
-	return Vector2.ZERO if i == 0 else Vector2.from_angle(i * 2.1) * 1.2
+	if i == 0: return Vector2.ZERO
+	var ring := 1
+	i -= 1
+	while i >= 6 * ring:
+		i -= 6 * ring
+		ring += 1
+	return Vector2.from_angle(float(i) * TAU / (6 * ring)) * (1.6 * ring)
 
 
 func apply_command(cmd: Dictionary, player: int) -> void:
@@ -2166,6 +2172,11 @@ func apply_command(cmd: Dictionary, player: int) -> void:
 					and state.get_var(0, "z." + String(ex.to)) != 1.0:
 				limit = Vector3.ZERO   # the authored open exit remains reachable
 			_arm_exit(player, c, not mine.is_empty(), clicked_exit)
+			# Shared identity distinguishes this click from later replacement
+			# commands. Only these actors may wait briefly for one another.
+			var group := {}
+			if mine.size() > 1 and not cmd.get("line", false) and not cmd.get("swarm", false):
+				group.members = mine.map(func(u: GameUnit): return u.uid)
 			for i in mine.size():
 				var off := group_offset(i)
 				# A double-click move requests standing before its order starts,
@@ -2175,6 +2186,8 @@ func apply_command(cmd: Dictionary, player: int) -> void:
 				# The unit's own gait decides run / walk (the original unit)
 				# "run" is the double-click flag (command).
 				var mo := {"type": "move", "to": c + off, "gait": true, "run": bool(cmd.get("run", false)), "path_notice": not bool(cmd.get("line", false))}
+				if not group.is_empty():
+					mo.move_group = group
 				if limit.z > 0.0:
 					mo.village_limit = limit
 					mo.to = Vector2(limit.x,limit.y) + (mo.to-Vector2(limit.x,limit.y)).limit_length(limit.z)

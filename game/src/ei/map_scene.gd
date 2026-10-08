@@ -9,6 +9,8 @@ var stats := {}
 var unit_records: Array[Dictionary] = []
 var object_nodes: Array[Node3D] = []
 var _spawn_units := true
+const CatacombLift := preload("res://src/ei/catacomb_lift.gd")
+var _relocated_objects := {}
 
 
 static func load_map(map_name: String, mob_name := "", spawn_units := true) -> EIMapScene:
@@ -27,10 +29,15 @@ static func load_map(map_name: String, mob_name := "", spawn_units := true) -> E
 	var mob_path := "maps/%s.mob" % mob_name
 	if GameFiles.exists(GameData.root.path_join(mob_path)):
 		s.mob = EIMob.load_bytes(GameData.read_file(mob_path))
+		s._relocated_objects = CatacombLift.apply(map_name,mob_name,s.mob,s.terrain)
 		s._place_objects()
 	s.stats.terrain_ms = t1 - t0
 	s.stats.objects_ms = Time.get_ticks_msec() - t1
 	return s
+
+
+func moved_object_position(nid: int, p: Vector3) -> Vector3:
+	return CatacombLift.moved_position(_relocated_objects,nid,p)
 
 
 ## Instantiates one .mob object record under `parent` (null if its model is missing).
