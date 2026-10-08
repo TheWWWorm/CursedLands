@@ -636,10 +636,136 @@ reinsertion control and the integration check are in
 The cached export and full reports are under the isolated QA `p3-seams`
 directory; `p3-runtime/export` remains the frozen `3240251` reference.
 
+## P4 diagnostic: native occlusion has a scene-dependent cost
+
+The owned renderer's R0
+[terrain Hi-Z construction](/home/llm2x/Documents/evil-islands-owned-renderer/Source/renderer_occlusion.cpp:37)
+and [same-frame/camera guard](/home/llm2x/Documents/evil-islands-owned-renderer/Source/renderer_occlusion.cpp:110)
+remain useful references. Godot already has a different implementation that
+should be evaluated first: CPU ray casting through occluder geometry, a small
+hierarchical depth buffer, and conservative instance-bound tests. It is shared
+by Compatibility and Forward+, not a missing GLES-only GPU feature.
+
+Relevant pinned local engine sources:
+
+- [ray buffer update](/home/llm2x/Documents/EI/local/scratchpad/coop-performance-20261005/engine-profile/godot-5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88/modules/raycast/raycast_occlusion_cull.cpp:597);
+- [viewport ray budget and dimensions](/home/llm2x/Documents/EI/local/scratchpad/coop-performance-20261005/engine-profile/godot-5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88/servers/rendering/renderer_viewport.cpp:316);
+- [camera visibility test](/home/llm2x/Documents/EI/local/scratchpad/coop-performance-20261005/engine-profile/godot-5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88/servers/rendering/renderer_scene_cull.cpp:2927) and the separate [directional-caster collection](/home/llm2x/Documents/EI/local/scratchpad/coop-performance-20261005/engine-profile/godot-5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88/servers/rendering/renderer_scene_cull.cpp:3241);
+- [occlusion hysteresis](/home/llm2x/Documents/EI/local/scratchpad/coop-performance-20261005/engine-profile/godot-5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88/servers/rendering/renderer_scene_occlusion_cull.h:175);
+- [web template default](/home/llm2x/Documents/EI/local/scratchpad/coop-performance-20261005/engine-profile/godot-5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88/platform/web/detect.py:85): `module_raycast_enabled` is false. Desktop availability is not evidence that the browser build has it.
+
+### What the new probe measures
+
+[terrain_occlusion.gd](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/terrain_occlusion.gd)
+loads a real map without gameplay units, retains its logical nodes, and toggles
+only a private SubViewport's native occlusion. No production hook, option or
+occluder manager was added. Both controls disable soft-ground deformation,
+ground-contact blending, HD upscaling and volumetric effects. Grass and sun
+shadows are separate flags. The camera uses the modern 55° lens, 260 m far plane
+in these runs, and six fixed overview/low/opposite poses around dense scenery
+and the map centre.
+
+The initial terrain proxy copies **actual tile vertices and indices** from
+[EITerrainSector](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/game/src/ei/terrain_sector.gd:22),
+including authored horizontal offsets. Each sampled map contributes 16 sectors
+and 32,768 triangles. This establishes a reference before coarse simplification;
+it is not an optimized low-polygon occluder mesh. Reconstructing the height grid
+or filling object bounds with solid boxes would not preserve holes/silhouettes.
+
+`--occlusion-opaque-objects` additionally admits rigid visible OBJECT meshes
+using the known non-deforming figure shader, with no skin, blend shape, extra
+pass or transparency. Every alpha byte in every mip must be 255; actual mesh
+triangles retain geometric openings. The frozen fortress admits 274 meshes /
+13,358 triangles after checking eight textures. This deliberately excludes
+alpha-cutout atlases and all foliage. It is **not** a production lifetime rule:
+camera fading, scripted movement and material/visibility changes would require
+immediate conservative invalidation. Native occluder BVH rebuilds are asynchronous.
+
+### Results and decision
+
+Eight final exported runs cover **29 views/configurations**: three-map
+Compatibility sweeps, the strongest view/open-view controls with lower ray
+budget, grass plus shadows, scenery-only culling targets, opaque-object
+occluders, and Forward+. All 174 timing windows advance 96 normal rendered
+frames, discard 32 warmup frames, and measure 64. Each condition uses three
+windows per state in the order off/on/on/off/off/on.
+
+| Selected case | Draws off → on | Native viewport CPU off → on |
+|---|---:|---:|
+| `bz2g`, obstructed opposite view, terrain, 512 rays/thread | 350 → 215 | 0.387 → 0.495 ms |
+| Same view, 128 rays/thread | 350 → 238 | 0.385 → 0.398 ms |
+| `bz2g`, open high view, terrain, 512 rays/thread | 182 → 182 | 0.247 → 0.441 ms |
+| `bz2g`, opposite view, grass and shadows | 949 → 791 | 0.885 → 0.932 ms |
+| `bz13h`, low view, terrain + opaque objects | 390 → 370 | 0.469 → 0.623 ms |
+| Forward+, `bz2g` opposite view | 559 → 348 | 0.163 → 0.341 ms |
+
+The default-ray terrain path adds **0.108–0.204 ms** of native viewport CPU time
+in all 18 baseline Compatibility views. Lowering the ray budget approaches
+break-even in the obstructed view but retains overhead in the open view.
+Opaque-object occluders remove only three additional draws beyond terrain in
+the fortress low view and none in its other two tested poses. Their script-side
+assembly takes about 14 ms here, including texture readbacks; that excludes
+background BVH construction and is not a zone-load benchmark.
+
+The grass/shadow view shows a GPU saving, and targeting only placed scenery
+removes 132 draws versus 158 when grass/terrain may also be culled. GPU time and
+pre/post-render wall time vary substantially across runs, including variation
+in a control view with unchanged draw counts. The data identifies a possible
+benefit in obstructed, expensive scenes, not a stable gameplay FPS gain. No
+other recognized game/editor render process was present at the runs' start/end;
+this is not continuous load isolation or fixed CPU/GPU clocks.
+
+**No production rollout is justified by this checkpoint.** Of the 29 settled
+comparisons, 22 are byte-exact; all 29 off-state restorations are byte-exact.
+Seven fortress cases differ by 1–18 pixels above 2/255 (maximum 27/255).
+Their cause is unverified; do not transfer P3's separately reproduced nine-pixel
+conclusion to them. The raw shadow counter remains zero even with shadows
+enabled, so use image comparisons rather than that counter as shadow evidence.
+
+Continuous camera motion, narrow openings, cave entrances, moving/fading
+objects, deformation, real gameplay and actual Android/browser performance
+remain acceptance work. Coarse conservative proxies and workload-based
+selection may reduce the cost, but require evidence before implementation.
+Keep logical/gameplay vision separate. With no general win established, the
+next safe implementation priority can return to P5's remaining light/shadow
+transition work; P4 should resume for a specific workload or device where it
+has a demonstrated benefit.
+
+### Reproduction details that matter
+
+Use the existing exported `--tool` runner with `--render-thread safe`, isolated
+XDG directories and the original game installation. Supported flags are
+`--occlusion-map=bz2g`, `--occlusion-views=dense_opposite,center_high`,
+`--occlusion-timing`, `--occlusion-rays=128`, `--occlusion-grass`,
+`--occlusion-shadows`, `--occlusion-scenery-only` and
+`--occlusion-opaque-objects`. The source defaults to `bz13h`, all six poses,
+512 rays/thread, and no optional effects. Do not combine with `--scenery-batches`.
+
+Two initial timing approaches were rejected. Setting VSync only on DisplayServer
+is insufficient: GameData reapplies its startup options after three frames.
+Disabling automatic rendering and using `force_draw()` is also invalid here:
+Godot advances the frame counter used by occlusion hysteresis in its normal
+[main render loop](/home/llm2x/Documents/EI/local/scratchpad/coop-performance-20261005/engine-profile/godot-5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88/main/main.cpp:5086),
+so forced draws alone can leave objects retained indefinitely. The final tool
+sets the options too, measures normal pre/post draw signals, and verifies the
+frame advance. Its wall metric is not interchangeable with P3's force-draw metric.
+
+The probe freezes shader time with new shared Shader resources and restores
+the original material shaders afterward. Earlier attempts to rewrite compiled
+Forward+ shaders produced render-thread RID errors and leak warnings; those
+runs are excluded. Final runs complete without script/render errors or RID-leak
+warnings. Compatibility retains its known unsupported screen-space-AA warning.
+
+The [evidence JSON](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/docs/validation/terrain-occlusion-2026-10-08.json)
+contains source/export hashes, exact commands, per-window distributions, image
+hashes, rejected attempts and the read-only integration check. Full receipts
+and images are under the isolated QA `p4-occlusion` directory.
+
 ## P5, first stage: stable local-shadow selection
 
-P4's production visibility changes overlap the other chat's active investigation,
-so the next independent change is the local-light selection policy. The original
+At this first-stage checkpoint, P4's production visibility changes overlapped
+the other chat's investigation, so the independent change was the local-light
+selection policy. The original
 fire path already favored incumbents by 20%; lava shadow selection had no such
 bias. Both could still change abruptly at the eligibility distance, and fire
 could exchange shadows every 0.25-second scan when focus movement overcame its
@@ -1161,11 +1287,11 @@ the benchmark. It preserves individual object nodes and does not touch the
 other chat's newer creature visibility or story/co-op effect changes.
 
 The latest read-only `git apply --check` includes all production/tool changes
-from this branch's base through the P3 bounds-cache/cost checkpoint. It passed against
+from this branch's base through the P4 diagnostic checkpoint. It passed against
 active committed HEAD `a25b1fb18cae99a217cce21c9e720b35db09afd2`, including the
 other chat's uncommitted story/co-op script work. Its HEAD, status and hashes of
 all files touched by this branch were unchanged. **No patch was applied.**
-The result and exact target state are in the cost validation JSON above.
+The result and exact target state are in the P4 validation JSON above.
 `game_data.gd` is shared by earlier commits: preserve its newer control/options
 changes when integrating. Recheck before integration because that checkout is
 still changing. Do not message or alter the other chat without human authorization.
@@ -1181,9 +1307,12 @@ still changing. Do not message or alter the other chat without human authorizati
    before rollout. Preserve the
    explicit material-change notification contract and logical mesh consumers;
    do not replace this with a naive MultiMesh regrouping pass.
-2. **P4 occlusion:** after identifying hidden-geometry cost, evaluate Godot's
-   existing facilities before a custom Hi-Z path. Keep world/gameplay visibility
-   separate and verify camera movement, thin openings and shadows.
+2. **P4 occlusion:** the native terrain/opaque-object diagnostic above now
+   measures hidden work. No general desktop gain or complete visual acceptance
+   is established. Resume for a specific expensive obstructed scene/device;
+   preserve gameplay visibility and validate motion, thin openings, fades,
+   deformation and shadows before integration. Do not repeat the forced-draw
+   timing approach or assume standard web templates include native occlusion.
 3. **P5 local shadows, then P6 directional stability:** the first stable-selection
    step and real-GPU transition checks are implemented above. Shadow-strength
    transitions, better importance scoring and cached map updates remain separate
