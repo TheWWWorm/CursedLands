@@ -1,0 +1,54 @@
+{
+  "export": {
+    "seconds": 5.973341734992573,
+    "command": [
+      "/home/llm2x/.local/bin/godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+      "--export-release",
+      "Linux",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps11/CPU.x86_64"
+    ],
+    "engine_source": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/fast-runtime.x86_64",
+    "errors": [],
+    "sha256": {
+      "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+      "CPU.pck": "b6babaedc34ade3b4a1d649b60c9f610293fe69c582343fdc247672dc40f9307",
+      "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+    }
+  },
+  "test": {
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps11/CPU.x86_64",
+      "--audio-driver",
+      "Dummy",
+      "--render-thread",
+      "safe",
+      "--headless",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/shelter_departure.gd",
+      "--label=gameplay-shelter-03"
+    ],
+    "exit_code": 0,
+    "stopped": false,
+    "seconds": 50.68884391701431,
+    "errors": [],
+    "warnings": [],
+    "log_sha256": "4b30d1ab8166df0ed7c7bd91dacbc375318a32cfdc6a1228cfa5508bc279f9f2"
+  },
+  "checks": 11,
+  "failures": 0,
+  "raw_log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-shelter-03.log",
+  "fixture_sha256": "77475f346eb1c674c561e1cc196e4886b50d77726a1e86ab907d77c03f704ceb",
+  "original_route": "bz3h b.Glav.brief_49 -> LeaveToZone(0, gz3h, 1), remake entrance 2. Host and guest completion over ENet, round trip and save/reload; both old worlds released.",
+  "excluded": [
+    "shelter-01/02 and gdb-01/04 crashed because the fixture manually ticked a freed VM after the live world frame clock had already transferred. Disabling Session physics alone was insufficient. The corrected fixture disables world physics before advancing its VM. No production crash fix is claimed.",
+    "gdb-02/03 failed to launch the private debug runtime due to pack/path handling."
+  ],
+  "limitations": [
+    "This verifies the scripted direct departure only. The ordinary camp exit/global-map report remains open.",
+    "Two peers in one process; shipping separate worker and Windows validation still pending."
+  ]
+}
