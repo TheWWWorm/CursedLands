@@ -254,8 +254,8 @@ func _process(dt: float) -> void:
 		l.visible = l.light_energy > 0.001
 
 
-static func _in_view(camera: Camera3D, p: Vector3, radius: float) -> bool:
-	for plane: Plane in camera.get_frustum():
+static func _in_view(frustum: Array[Plane], p: Vector3, radius: float) -> bool:
+	for plane: Plane in frustum:
 		if plane.distance_to(p) > radius:
 			return false
 	return true
@@ -270,6 +270,8 @@ static func _exposed_lava(t: EITerrain, x: int, y: int, width: int, height: int)
 
 
 func _scan_lava(t: EITerrain, camera: Camera3D, focus: Vector3) -> void:
+	var camera_position := camera.global_position
+	var frustum := camera.get_frustum()
 	var width := t.sectors_x * EITerrain.SECTOR
 	var height := t.sectors_y * EITerrain.SECTOR
 	var cx := focus.x
@@ -292,8 +294,8 @@ func _scan_lava(t: EITerrain, camera: Camera3D, focus: Vector3) -> void:
 			var cell := y * width + x
 			var p := Vector3(x + 0.5, t.water[cell] + 0.5, -(y + 0.5))
 			if p.distance_squared_to(focus) > LAVA_SCAN_RADIUS * LAVA_SCAN_RADIUS \
-					or p.distance_squared_to(camera.global_position) > 85.0 * 85.0 \
-					or not _in_view(camera, p, LAVA_RADIUS):
+					or p.distance_squared_to(camera_position) > 85.0 * 85.0 \
+					or not _in_view(frustum, p, LAVA_RADIUS):
 				continue
 			if _exposed_lava(t, x - 2, y, width, height) and _exposed_lava(t, x + 2, y, width, height) \
 					and _exposed_lava(t, x, y - 2, width, height) and _exposed_lava(t, x, y + 2, width, height):
@@ -379,14 +381,14 @@ func _disable_shadows(fx: ParticleFx) -> void:
 		Gfx.set_local_shadow(d.light, false)
 
 
-func _shadow_candidate(l: OmniLight3D, camera: Camera3D) -> bool:
+func _shadow_candidate(l: OmniLight3D, camera_position: Vector3, frustum: Array[Plane]) -> bool:
 	if l.is_queued_for_deletion() or not l.is_visible_in_tree():
 		return false
 	var distance := SHADOW_DISTANCE
 	if (_shadow_since.has(l.get_instance_id()) or _shadow_fades.has(l.get_instance_id())) and l.shadow_enabled:
 		distance += SHADOW_DISTANCE_MARGIN
-	return l.global_position.distance_squared_to(camera.global_position) < distance * distance \
-		and _in_view(camera, l.global_position, l.omni_range)
+	return l.global_position.distance_squared_to(camera_position) < distance * distance \
+		and _in_view(frustum, l.global_position, l.omni_range)
 
 
 ## Keep eligible incumbents for a minimum tenure, then require a meaningful
@@ -410,7 +412,25 @@ func _select_shadows(candidates: Array[Dictionary], limit: int, selected: Dictio
 		selected[candidates[i].light.get_instance_id()] = candidates[i]
 
 
+## Approximate useful shadow coverage, not a caster/occlusion query. R0's
+## point_shadow_policy.h:283 weights range and peak colour strength. Here the
+## squared range weights our existing squared-distance preference, retaining
+## its equal-light hysteresis response. Use authored opacity, never the live
+## fade value: newly admitted shadows start at zero and must keep their slot.
+static func _shadow_score(l: OmniLight3D, distance_squared: float, opacity: float) -> float:
+	var color := l.light_color.srgb_to_linear()
+	var strength := maxf(0.0, maxf(color.r, maxf(color.g, color.b))) * maxf(l.light_energy, 0.0) * maxf(opacity, 0.0)
+	var range_squared := l.omni_range * l.omni_range
+	if l.omni_range <= 0.0 or strength <= 0.0 or not is_finite(strength):
+		return INF
+	return (1.0 + distance_squared) / (range_squared * strength)
+
+
 func _assign_shadows(fx: ParticleFx, camera: Camera3D, focus: Vector3) -> void:
+	# This scan has no yields. Reuse the current camera snapshot within it,
+	# then refresh next scan so panning/projection changes cannot leave a cache.
+	var camera_position := camera.global_position
+	var frustum := camera.get_frustum()
 	var fire: Array[Dictionary] = []
 	var lava: Array[Dictionary] = []
 	var records := _light_records(fx)
@@ -420,13 +440,15 @@ func _assign_shadows(fx: ParticleFx, camera: Camera3D, focus: Vector3) -> void:
 				continue
 			var l: OmniLight3D = d.light
 			var p := l.global_position
-			var score := p.distance_squared_to(focus) + p.distance_squared_to(camera.global_position) * 0.15
-			if _shadow_candidate(l, camera):
+			var distance_squared := p.distance_squared_to(focus) + p.distance_squared_to(camera_position) * 0.15
+			var score := _shadow_score(l, distance_squared, float(d.original.shadow_opacity))
+			if is_finite(score) and _shadow_candidate(l, camera_position, frustum):
 				fire.append({"light": l, "score": score, "lava": false,
 						"opacity": float(d.original.shadow_opacity)})
 	for d: Dictionary in _lava:
-		if d.active and _shadow_candidate(d.light, camera):
-			lava.append({"light": d.light, "score": d.light.global_position.distance_squared_to(focus),
+		var score := _shadow_score(d.light, d.light.global_position.distance_squared_to(focus), 1.0)
+		if d.active and is_finite(score) and _shadow_candidate(d.light, camera_position, frustum):
+			lava.append({"light": d.light, "score": score,
 					"lava": true, "opacity": 1.0})
 	var selected := {}
 	var lava_count := mini(LAVA_SHADOW_LIMIT, lava.size())

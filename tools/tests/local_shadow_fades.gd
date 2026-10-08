@@ -265,7 +265,7 @@ func test_pass_boundary() -> void:
 	f.view.free()
 
 func test_rendered_fades() -> void:
-	var f := rendered_fixture()
+	var f := rendered_fixture(true)
 	if RenderingServer.get_current_rendering_method() == "forward_plus" or f.manager._fade_shadows:
 		check(f.manager._fade_shadows, "validated backend uses production fade policy")
 	if not f.manager._fade_shadows:

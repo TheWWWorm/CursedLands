@@ -37,20 +37,21 @@ func dispose(f: Dictionary) -> void:
 	f.world.free()
 	f.camera.free()
 
-func fire(f: Dictionary, p: Vector3) -> OmniLight3D:
+func fire(f: Dictionary, p: Vector3, opacity := 1.0) -> OmniLight3D:
 	var light := OmniLight3D.new()
 	light.position = p
 	light.omni_range = 8.0
+	light.shadow_opacity = opacity
 	f.world.add_child(light)
 	var d := {"light": light, "kind": "fire", "energy": 1.0, "pos": p, "until": -1}
 	LocalLighting.prepare_particle(d)
 	f.fx.lights.append(d)
 	return light
 
-func clustered_fire(f: Dictionary) -> Array[OmniLight3D]:
+func clustered_fire(f: Dictionary, left_opacity := 1.0) -> Array[OmniLight3D]:
 	for z in [-1.0, 0.0, 1.0]:
 		fire(f, Vector3(0, 2, z))
-	return [fire(f, Vector3(-10, 2, 0)), fire(f, Vector3(10, 2, 0))]
+	return [fire(f, Vector3(-10, 2, 0), left_opacity), fire(f, Vector3(10, 2, 0))]
 
 func scan(f: Dictionary, time: float, x: float) -> Array:
 	f.manager._time = time
@@ -129,8 +130,14 @@ func test_eligibility() -> void:
 		f.camera.look_at(light.global_position)
 		scan(f, 0.25, 0)
 		check(light.shadow_enabled == row[1], "65 m entry and 69 m exit use separate thresholds")
-	light.queue_free()
+	f.camera.look_at(f.camera.global_position + Vector3.BACK)
 	scan(f, 0.5, 0)
+	check(not light.shadow_enabled, "camera rotation refreshes frustum eligibility on the next scan")
+	f.camera.look_at(light.global_position)
+	scan(f, 0.75, 0)
+	check(light.shadow_enabled, "returning camera admits the light with the current frustum")
+	light.queue_free()
+	scan(f, 1.0, 0)
 	check(not light.shadow_enabled, "queued light releases its shadow before destruction")
 	dispose(f)
 
@@ -211,7 +218,7 @@ func changed_pixels(a: Image, b: Image) -> int:
 				break
 	return count
 
-func rendered_fixture() -> Dictionary:
+func rendered_fixture(resident_anchors := false) -> Dictionary:
 	DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_NO_FOCUS, true)
 	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_MINIMIZED)
 	Engine.max_fps = 30
@@ -261,9 +268,14 @@ func rendered_fixture() -> Dictionary:
 	blocker.material_override = material
 	blocker.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_SHADOWS_ONLY
 	view.add_child(blocker)
-	for z in [-1.0, 0.0, 1.0]:
+	# Transition tests need three firmly preferred residents, leaving one slot
+	# for the two visible torches. Keep them behind the one-sided receiver so
+	# their stronger selection weight does not wash out the measured shadows.
+	# One is outside the receiver's light range, leaving both torches in its
+	# native four-light list on constrained Compatibility configurations.
+	for z in [-0.1, -0.2, -9.0] if resident_anchors else [-1.0, 0.0, 1.0]:
 		var anchor := fire(f, Vector3(0, 2, z))
-		anchor.light_energy = 0.03
+		anchor.light_energy = (16.0 if z < -8.0 else 1.7) if resident_anchors else 0.03
 	var pair: Array[OmniLight3D] = [fire(f, Vector3(-2, 2, 3)), fire(f, Vector3(2, 2, 3))]
 	for light in pair:
 		light.light_energy = 0.7
@@ -274,7 +286,7 @@ func rendered_fixture() -> Dictionary:
 	return f
 
 func test_rendered_transitions() -> void:
-	var f := rendered_fixture()
+	var f := rendered_fixture(true)
 	var view: SubViewport = f.view
 	var blocker: MeshInstance3D = f.blocker
 	var pair: Array[OmniLight3D] = f.pair

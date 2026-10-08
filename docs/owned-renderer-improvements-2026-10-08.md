@@ -1046,6 +1046,119 @@ check are in
 Raw evidence and frozen exports are under
 `/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-compat-light/`.
 
+## P5 follow-up: range and strength aware shadow selection
+
+The selector now considers a local light's range, linear peak colour, energy
+and authored shadow opacity. A dim near light no longer automatically outranks
+a brighter or wider light slightly farther away. Zero-contribution fire/spell
+lights and lava banks cannot keep a reserved slot. This changes shadow
+admission only: light energy, colour, position, range and effect lifetime stay
+with their existing owners. The four-total/two-lava limits remain unchanged.
+
+R0 [PointShadowScheduler::select:283](/home/llm2x/Documents/evil-islands-owned-renderer/Source/point_shadow_policy.h:283)
+weights radius and peak colour strength when ordering work/allocation requests.
+Its formula is `radius * peak_colour / (1 + distance / max(radius, 1))`;
+its scheduler does not impose our four-resident-light cap. The remake adapts
+that idea to its existing squared-distance ordering instead of copying its
+allocation policy. Lower score is better:
+
+```text
+score = (1 + previous_distance_score)
+        / (range² * linear_peak_colour * energy * authored_shadow_opacity)
+```
+
+Fire/spell distance remains `focus_distance² + 0.15 * camera_distance²`;
+lava retains its focus-distance preference. Nonpositive contribution is
+ineligible. The one-unit numerator floor prevents an arbitrarily weak light
+at the exact focus from receiving an unbeatable zero score. Existing two-second
+tenure and 1.25 hysteresis still apply to eligible lights. Authored opacity is
+read from the original property snapshot, **not the animated fade value**:
+newly admitted zero-opacity shadows and partial fades must not disqualify
+themselves. Zero contribution is a hard eligibility loss on the next 0.25-second
+selection scan, so it does not keep waiting out its old tenure.
+
+Implementation is in [local_lighting.gd](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/game/src/game/fx/local_lighting.gd):
+`_shadow_score`, `_assign_shadows`, `_shadow_candidate`, `_in_view` and
+`_scan_lava`. Both scans now capture the current camera position/frustum once,
+reusing that snapshot only inside their synchronous loop. It is not a persistent
+camera cache; every new scan observes camera motion and projection changes.
+This removes repeated frustum extraction while paying for the richer ranking.
+
+### Independent acceptance
+
+[local_shadow_importance.gd](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/local_shadow_importance.gd)
+tests actual manager admission for brightness, colour, range and authored
+opacity; zero-contribution release; lava reservation; unchanged light
+properties; zero/partial transition opacity; and independent ±8% flutter after
+tenure expires. Existing selection/fade suites retain their timing, ownership,
+restoration, moving-caster and budget checks. The eight-second equal-light
+camera oscillation still produces three selected-set changes. A new camera
+rotation/return case checks that the per-scan frustum is refreshed.
+
+The GPU comparison measures each light separately: hold its native shadow/pass
+flag constant, capture opacity 0 and opacity 1, and sum the absolute RGB change.
+It then asks the actual manager which four lights to retain. This measurement
+does not use the proposed score. Both frozen `1bb7503` and the candidate render
+the same single-light controls; their selected sets differ.
+
+| Controlled scene / renderer | Previous selected share of measured shadow signal | Weighted selection |
+| --- | ---: | ---: |
+| Brightness, Compatibility limit 8 | 3.9% | 96.1% |
+| Range, Compatibility limit 8 | 1.7% | 98.3% |
+| Brightness, Forward+ | 2.0% | 98.0% |
+| Range, Forward+ | 0.8% | 99.2% |
+
+Compatibility's four-light-limit cases also select the strongest measured
+shadow. Individual zero-opacity flag changes stay within 1/255 on GLES and
+are exact on Forward+, separately recorded from the shadow-strength signal.
+These figures describe two deliberately diagnostic scenes, not global visual
+quality percentages. The heuristic cannot determine whether a bright light
+actually has visible receivers/casters, whether a wall occludes it, or which
+other light a geometry's native limit excludes. Full-map artistic/device
+acceptance and caster-aware selection remain open.
+
+Transition fixtures now use three stronger anchor lights so that their
+selection remains stable under the new weighting. One anchor is outside the
+receiver's light range: otherwise the native four-light list can omit the
+outgoing torch and make its first fade leg invisible. Both fade legs remain
+visible in the final fixture. That superseded fixture failure is recorded in
+the evidence, rather than weakening the per-step fade assertions.
+
+The `--shadow-importance-cost` mode measures the actual selection method with
+16, 64 and 128 candidate lights. It excludes gameplay, renderer submission and
+shadow-map work. The richer score alone added about 0.10 ms to the old 0.74 ms
+128-light scan on this desktop. Per-scan frustum reuse removes most of that
+overhead. The final baseline/candidate/candidate/baseline comparison averages
+two per-run medians (64 warmup scans, 256 measured scans each):
+
+| Candidate lights | Previous scan | Final scan | Added CPU time per scan |
+| --- | ---: | ---: | ---: |
+| 16 | 78 µs | 89.5 µs | 11.5 µs |
+| 64 | 363 µs | 373.5 µs | 10.5 µs |
+| 128 | 731.5 µs | 748 µs | 16.5 µs |
+
+The final exported candidate passes **7,354 checks**: 318 headless importance
+checks, 358 importance checks on each of Compatibility limits 8/4 and Forward+,
+384 headless and 425-per-backend selection checks, 726 headless fade checks,
+924/924/923 rendered fade checks, 737 legacy-Compatibility fade checks and 494
+checks across the two candidate timing runs. All 44 single-light/control
+images shared with the baseline (22 on each desktop renderer) match exactly.
+The old selector produces 11 expected headless failures and 13 on each rendered
+baseline run; these are recorded separately from candidate success.
+
+No GPU/frame-rate saving is
+inferred from selecting more useful lights: larger selected ranges can also
+include more casters, even with the same number of shadow-enabled lights.
+
+Exact check counts, final selector timings, frozen-export/source hashes,
+negative controls, image comparisons and the read-only integration check are in
+[local-shadow-importance-2026-10-08.json](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/docs/validation/local-shadow-importance-2026-10-08.json).
+Raw runs and exported binaries are under
+`/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-shadow-importance/`.
+Compatibility's Android/web fade gate, desktop sun policy, native Mobile fade
+policy and all visual-option defaults are unchanged. No character, co-op,
+zone-transition, installed-build or physical-device changes are included.
+
 ## P6 investigation: directional-shadow snapping
 
 At the start of this batch, the remake separated direct lighting from a held
@@ -1489,11 +1602,11 @@ the benchmark. It preserves individual object nodes and does not touch the
 other chat's newer creature visibility or story/co-op effect changes.
 
 The latest read-only `git apply --check` includes all production/tool changes
-from this branch's base through the P5 Compatibility correction. It passed
-against active committed HEAD `78498914b00842d216cd19544a5647bc9ad79555` with
-a clean working tree. Its HEAD, status and hashes of all 54 touched files were
-unchanged. **No patch was applied.** The result and exact target state are in
-the P5 Compatibility validation JSON above.
+from this branch's base through the P5 importance-ranking checkpoint. It passed
+against active committed HEAD `433d5d97588cfd775fe342bd8544e71df9c27871`, including
+uncommitted VM, session, camera-rig and slave-camp test changes. Its HEAD, status
+and hashes of all 59 touched/dirty files were unchanged. **No patch was applied.**
+The result and exact target state are in the P5 importance validation JSON above.
 `game_data.gd` is shared by earlier commits: preserve its newer control/options
 changes when integrating. Recheck before integration because that checkout is
 still changing. Do not message or alter the other chat without human authorization.
@@ -1518,8 +1631,10 @@ still changing. Do not message or alter the other chat without human authorizati
 3. **P5 local shadows, then P6 directional stability:** stable selection and
    bounded Forward+/desktop Compatibility strength transitions are implemented.
    The GLES pass discontinuity is corrected, with a measured GPU tradeoff;
-   Android/web retain the existing path until device acceptance. Better importance
-   scoring, native Mobile validation and cached map updates remain separate work.
+   Android/web retain the existing path until device acceptance. Range/strength
+   ranking and per-scan frustum reuse are now implemented. Full-map/device and
+   caster-aware selection acceptance, native Mobile fades and cached map updates
+   remain separate work.
    For P6, identify actual shimmer/redraw cost and renderer capabilities
    before changing cascade settings or planning engine-level projection reuse.
 4. **C1 character batching/skinning:** keep as an isolated prototype until the
