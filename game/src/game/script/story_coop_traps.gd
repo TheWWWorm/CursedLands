@@ -1,5 +1,5 @@
 extends RefCounted
-## Independent original trap threads for extra campaign participants. A small
+## Independent original trap/follow threads for extra campaign participants. A small
 ## watcher remembers which character slots were armed, including late joins.
 ## Child threads reuse native conditions, Sleep and save/resume machinery.
 const P := preload("res://src/game/script/script_parser.gd")
@@ -24,28 +24,29 @@ static func _replace_calls(body: Array, names: Array) -> void:
 
 static func apply(ast: ScriptParser, zone: String) -> void:
 	if not FAMILIES.has(zone): return
-	var cfg: Dictionary = FAMILIES[zone]
+	apply_family(ast, FAMILIES[zone])
+
+
+static func apply_family(ast: ScriptParser, cfg: Dictionary) -> void:
 	var root: String = cfg.root
 	if ast.scripts.has(root+WATCH): return
 	var original: Dictionary = ast.scripts.get(root, {})
-	var peer: Dictionary = ast.scripts.get(cfg.peer, {})
-	if original.is_empty() or peer.is_empty() or original.blocks.size() != 1: return
-	var expected: Dictionary = original.duplicate(true)
-	var block: Dictionary = expected.blocks[0]
-	block.conds = Effects.replace(block.conds, Effects.role(cfg.slot), Effects.role(cfg.slot-1))
-	block.body = Effects.replace(block.body, Effects.role(cfg.slot), Effects.role(cfg.slot-1))
-	var names := [root]
+	var pairs := {root:cfg.peer}
 	if cfg.has("cooldown"):
-		var cooldown: Dictionary = ast.scripts.get(cfg.cooldown, {})
-		var peer_cooldown: Dictionary = ast.scripts.get(cfg.peer_cooldown, {})
-		if cooldown.is_empty() or peer_cooldown.is_empty() or cooldown.blocks.size() != 1: return
-		block.body = Effects.replace(block.body, [P.S_CALL,cfg.cooldown,[[P.N_VAR,"this"]]], [P.S_CALL,cfg.peer_cooldown,[[P.N_VAR,"this"]]])
-		var expected_cooldown: Dictionary = cooldown.duplicate(true)
-		expected_cooldown.blocks[0].body = Effects.replace(expected_cooldown.blocks[0].body,
-			[P.S_CALL,root,[[P.N_VAR,"this"]]], [P.S_CALL,cfg.peer,[[P.N_VAR,"this"]]])
-		if expected_cooldown != peer_cooldown: return
-		names.append(cfg.cooldown)
-	if expected != peer: return
+		pairs[cfg.cooldown] = cfg.peer_cooldown
+	pairs.merge(cfg.get("chain",{}))
+	for name: String in pairs:
+		var def: Dictionary = ast.scripts.get(name,{})
+		var peer: Dictionary = ast.scripts.get(pairs[name],{})
+		if def.is_empty() or peer.is_empty() or def.blocks.size() != 1: return
+		var expected: Dictionary = def.duplicate(true)
+		var b: Dictionary = expected.blocks[0]
+		b.conds = Effects.replace(b.conds, Effects.role(cfg.slot), Effects.role(cfg.slot-1))
+		b.body = Effects.replace(b.body, Effects.role(cfg.slot), Effects.role(cfg.slot-1))
+		for call: String in pairs:
+			b.body = Effects.replace(b.body, [P.S_CALL,call,[[P.N_VAR,"this"]]], [P.S_CALL,pairs[call],[[P.N_VAR,"this"]]])
+		if expected != peer: return
+	var names: Array = pairs.keys()
 	# Generate definitions only. Original scripts and saved instruction indexes
 	# are untouched; the arm hook is limited to the inspected original caller.
 	for name: String in names:

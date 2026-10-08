@@ -2444,6 +2444,7 @@ func redeploy_party(player: int) -> void:
 			slot += 1
 		state.replay_restored(world)
 		coop.GuestRoles.redeploy(self)
+	if world.vm: world.vm.resolve_script_ai_targets()
 	broadcast({"t": "party"})
 	sync_state()
 
@@ -4271,6 +4272,7 @@ func _spawn_late_joiner(idx: int, pid: int) -> void:
 				Combat.set_complexion(u, u.get_meta("hero"), u.get_meta("hero").complexion)
 				_refresh_hero(u)
 	_relink_heroes()
+	if world.vm: world.vm.resolve_script_ai_targets()
 	_rpc_zone.rpc_id(pid, zone_id, _unit_records(), world.diplomacy, _extra_mobs(),
 		String(world.zone.get("mpr", "")), _lever_states(), _load_serial)
 	_send_world_state(pid)

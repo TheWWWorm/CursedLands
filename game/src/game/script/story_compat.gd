@@ -4,6 +4,12 @@ const P := preload("res://src/game/script/script_parser.gd")
 
 static func apply(ast: ScriptParser, campaign: String, zone: String) -> void:
 	if campaign != CampaignProfile.ASTRAL:
+		if campaign == CampaignProfile.ORIGINAL and zone == "gz6g":
+			# The amulet dragon has three identical native follow/return
+			# cycles. Added guests use the third role's original cadence.
+			preload("res://src/game/script/story_coop_traps.gd").apply_family(ast, {
+				"root":"VCheck#0#404", "peer":"VCheck#0#393", "slot":2, "caller":"WorldScript",
+				"chain":{"VTriger#0#401":"VTriger#0#394", "VCheck#0#402":"VCheck#0#396", "VTriger#0#406":"VTriger#0#398"}})
 		return
 	preload("res://src/game/script/story_coop_effects.gd").apply(ast, zone)
 	preload("res://src/game/script/story_coop_traps.gd").apply(ast, zone)
@@ -85,8 +91,9 @@ static func lift_recall(vm: ScriptVM, nid: int) -> void:
 ## Earlier saves kept VM waits but lost the corresponding walking orders.
 ## Recover inspected active trap families and the two proven escape waits.
 static func recover(vm: ScriptVM) -> void:
-	if vm.session.state.campaign_id != CampaignProfile.ASTRAL: return
+	# Only definitions installed by apply() can be recovered, in either campaign.
 	preload("res://src/game/script/story_coop_traps.gd").recover(vm)
+	if vm.session.state.campaign_id != CampaignProfile.ASTRAL: return
 	var zone := String(vm.world.zone.get("id", ""))
 	if zone == "bz1h" and vm.instances.any(func(i): return i.sname == "VCheck#1#1a" and not i.killed):
 		# Old saves kept this arrival wait without guest escape orders.

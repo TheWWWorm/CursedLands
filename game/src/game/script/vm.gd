@@ -620,6 +620,7 @@ func _call(name: String, a: Array, inst: Instance):
 			if u:
 				u.set_gait({"Crawl": 1, "Lie": 0, "Stand": 2, "Walk": 2, "Run": 3}[name])
 				u.set_meta("script_run", name == "Run")
+				if not u.has_meta("hero"): u.set_meta("script_ai", true)
 		# LiA: explicit attack/cast orders
 		# occupy AI states 3/4. Cast always uses slot 0, not an AI choice.
 		"Attack":
@@ -1399,6 +1400,7 @@ func _um_add(o, add: Dictionary) -> void:
 		u.mode = "standard"
 	m.merge(add, true)
 	u.set_meta("um", m)
+	u.set_meta("script_ai", true)
 
 
 func _mode(o, mode: String, data: Dictionary) -> void:
@@ -1407,6 +1409,11 @@ func _mode(o, mode: String, data: Dictionary) -> void:
 		return
 	u.mode = mode
 	u.mode_data = data
+	u.set_meta("script_ai", true)
+	var refs := {}
+	for key in data:
+		if data[key] is GameUnit: refs[key] = _ser(data[key])
+	u.set_meta("script_ai_refs", refs)
 	u.remove_meta("calm")   # the new motivation starts in state 0
 	if mode == "sentry" or mode == "guard":
 		# The unit keeps its gait: Walk / Run (builtins 0x40 / 0x41 ->
@@ -1782,6 +1789,7 @@ func save_state() -> Dictionary:
 		insts.append(d)
 	return {"globals": g, "instances": insts, "areas": areas, "alarms": _alarm_save(), "qobjs": qobjs, "sciences": sciences,
 		"story_orders": _save_story_orders(),
+		"script_ai": _save_script_ai(),
 		"briefing_queue": _ser(briefings._after_movie) if briefings else [],
 		"world_done": _world_done.duplicate(),
 		"fx_auto": _fx_auto,   # the replayed CreateFXSource(-1) sources keep their ids (zone "fx")
@@ -1817,6 +1825,23 @@ func _alarm_load(al) -> void:
 
 
 func _restore(d: Dictionary) -> void:
+	for row: Dictionary in d.get("script_ai", []):
+		var u = _deser(row.get("actor"))
+		if not u is GameUnit or u.dead or u.has_meta("hero"): continue
+		u.mode = String(row.get("mode", "standard"))
+		u.mode_data = {}
+		var refs := {}
+		for key in row.get("data", {}):
+			var value = row.data[key]
+			if value is Dictionary and value.has("u"): refs[key] = value.duplicate(true)
+			u.mode_data[key] = _deser(value) if not refs.has(key) else null
+		u.set_meta("script_ai_refs", refs)
+		if row.get("um") is Dictionary: u.set_meta("um", row.um.duplicate(true))
+		u.set_meta("script_ai", true)
+		u.set_meta("script_run", bool(row.get("run", false)))
+		u.restore_gait(int(row.get("gait", 2)))
+		u.remove_meta("calm")
+	resolve_script_ai_targets()
 	for row: Dictionary in d.get("story_orders", []):
 		var u = _deser(row.get("actor"))
 		if not u is GameUnit or u.dead: continue
@@ -1883,6 +1908,35 @@ func _restore(d: Dictionary) -> void:
 			var wu = _deser(s.wu)
 			inst.wait_unit = wu if wu is GameUnit else null
 		instances.append(inst)
+
+
+## Script-selected NPC follow/guard/motivation state outlives the instruction
+## that set it. Preserve it separately from transient combat choices and
+## resolve targets after the party has been deployed. Old saves without this
+## optional section retain their authored defaults.
+func _save_script_ai() -> Array:
+	var out := []
+	for u: GameUnit in world.units.values():
+		if u.dead or u.has_meta("hero") or not u.get_meta("script_ai", false): continue
+		var data := {}
+		var refs: Dictionary = u.get_meta("script_ai_refs", {})
+		for key in u.mode_data: data[key] = refs[key].duplicate(true) if refs.has(key) else _ser(u.mode_data[key])
+		var row := {"actor":_ser(u), "mode":u.mode, "data":data, "run":bool(u.get_meta("script_run", false)), "gait":u.gait()}
+		if u.has_meta("um"): row.um = u.get_meta("um").duplicate(true)
+		out.append(row)
+	return out
+
+
+## A followed guest may be absent when loading or acquire a new body after a
+## party switch. Keep its stable reference and bind only on those events;
+## never let a missing hero reference select an unrelated recycled unit id.
+func resolve_script_ai_targets() -> void:
+	for u: GameUnit in world.units.values():
+		if u.dead or u.has_meta("hero"): continue
+		var refs: Dictionary = u.get_meta("script_ai_refs", {})
+		for key in refs:
+			var ref: Dictionary = refs[key]
+			u.mode_data[key] = _hero_by_key(ref.h) if ref.has("h") else _deser(ref)
 
 
 ## Ordinary manual orders still stop on load. Scripted marks/turns/clips
@@ -1970,10 +2024,11 @@ func _deser(v):
 func _hero_key(u: GameUnit) -> Array:
 	if not u.has_meta("hero") or u.get_meta("hero").has("merc") or session == null or session.state == null:
 		return []
-	var roster: Array = session.state.heroes.get(u.controller, [])
+	var owner := int(u.get_meta("orphan_of", u.controller))
+	var roster: Array = session.state.heroes.get(owner, [])
 	for i in roster.size():
 		if is_same(roster[i], u.get_meta("hero")):
-			return [u.controller, i]
+			return [owner, i]
 	return []
 
 
