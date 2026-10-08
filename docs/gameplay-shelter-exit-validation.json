@@ -1,0 +1,129 @@
+{
+  "baseline_commit": "ec9bc07",
+  "export": {
+    "seconds": 5.918481651984621,
+    "command": [
+      "/home/llm2x/.local/bin/godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+      "--export-release",
+      "Linux",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps19/CPU.x86_64"
+    ],
+    "engine_source": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/fast-runtime.x86_64",
+    "errors": [],
+    "sha256": {
+      "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+      "CPU.pck": "beb366d88280c3917866aa76850504bdf82c135e76f0c2ca338f15cbd743c00c",
+      "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+    }
+  },
+  "fixture_sha256": "84266815e90477595e060c0517e09e8283ab45ebdee603cb2fdbdea5b23f6aae",
+  "runs": {
+    "gameplay-shelter-exit-before-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps18/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/shelter_exit.gd",
+        "--label=gameplay-shelter-exit-before-01"
+      ],
+      "exit_code": 1,
+      "stopped": false,
+      "seconds": 8.511416707013268,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "7c5d6c6e0fa654d8dd0daab7a92d5457a82f13641c09c67781dc3dc4aecdb473",
+      "checks": 8,
+      "failures": 2,
+      "raw_log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-shelter-exit-before-01.log"
+    },
+    "gameplay-shelter-exit-after-01": {
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/shelter_exit.gd",
+        "--label=gameplay-shelter-exit-after-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 35.456329712993465,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "84e541a6feda0f46a07b4ea0a1604ad9338a85c013bf2c79e4c8f8e88e488b0e",
+      "checks": 14,
+      "failures": 0,
+      "raw_log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-shelter-exit-after-01.log"
+    },
+    "gameplay-shelter-exit-production-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps19/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--resolution",
+        "1600x900",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/shelter_exit.gd",
+        "--label=gameplay-shelter-exit-production-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 79.23687270798837,
+      "errors": [],
+      "warnings": [
+        "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+      ],
+      "log_sha256": "dea3e35f3fc80f1b213e3dc2d17b11913565db3e93d3b56e225ded2920e16e2a",
+      "checks": 14,
+      "failures": 0,
+      "raw_log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-shelter-exit-production-01.log"
+    }
+  },
+  "captures": [
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/gameplay-shelter-exit-production-01/godot/app_userdata/Cursed Lands/shelter-exit-host.png",
+      "sha256": "5873b3911240a06bb8f8bd7123f588934cce967977c178fbed20da5718361563",
+      "reviewed": true
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/gameplay-shelter-exit-production-01/godot/app_userdata/Cursed Lands/shelter-exit-guest.png",
+      "sha256": "e71f7b0d0dad69215857c625a7d77e9ca33351f5c271205ff481b75559e7dd5d",
+      "reviewed": true
+    }
+  ],
+  "finding": "Prepared native Shelter arrival has visited gz3h and open camp/edge, but z.gz3h remains zero. Its ordinary exit offers gz3h entrance 2 while no selectable figure or extra button represents it.",
+  "change": "Show existing route offers to visited same-allod places without selectable figures. Current zone, unvisited places and represented places keep their prior presentation; story variables and route computation are unchanged.",
+  "original_data": [
+    "inspection/lost-in-astral/map.txt: bz3h exit 1 -> gz3h_bz3h -> gz3h entrance 2",
+    "inspection/lost-in-astral/scripts/zone3.txt: arrival opens z.bz3h and z.gz3h_bz3h without setting z.gz3h",
+    "inspection/lost-in-astral/scripts/bz3h.txt: brief_49 separately transfers directly to gz3h; already validated"
+  ],
+  "limits": [
+    "Prepared two-world real ENet regression, not a full chapter playthrough.",
+    "Xvfb renders establish UI correctness, not performance.",
+    "The additional route button is a remake fallback; exact original executable ordinary-exit presentation has not been established.",
+    "Windows and Retroid packaging remains pending."
+  ]
+}
