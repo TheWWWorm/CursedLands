@@ -912,7 +912,10 @@ func _draw(t: float) -> void:
 		var hidden: bool = is_instance_valid(e.carrier) and e.carrier is GameUnit \
 			and (not e.carrier.visible or e.carrier.hidden)
 		var unseen := false
-		if cam and e.wp.distance_squared_to(eye) > DRAW_DIST * DRAW_DIST:
+		# A path can cross the screen while its starting point is far away.
+		# Its particle bounds/frustum still cull it; the anchor-only distance
+		# rule applies to local effects, not this bounded, short-lived trail.
+		if cam and e.type != 0x2039 and e.wp.distance_squared_to(eye) > DRAW_DIST * DRAW_DIST:
 			unseen = true   # far off screen: not refilled (a remake saving)
 		elif ef.reach >= 0.0 and not hidden:
 			var gw := godot(e.wp)

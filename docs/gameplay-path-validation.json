@@ -1,0 +1,133 @@
+{
+  "baseline_commit": "a6100da",
+  "export": {
+    "seconds": 5.968870572978631,
+    "command": [
+      "/home/llm2x/.local/bin/godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+      "--export-release",
+      "Linux",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps08/CPU.x86_64"
+    ],
+    "engine_source": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/fast-runtime.x86_64",
+    "errors": [],
+    "sha256": {
+      "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+      "CPU.pck": "a0f312fc428342e4ffb92025cf77934c117e1b092163fbc4b336df798a5c761b",
+      "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+    }
+  },
+  "tests": {
+    "gameplay-path-before-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps07/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--resolution",
+        "1600x900",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/path_preview.gd",
+        "--label=gameplay-path-before-01"
+      ],
+      "exit_code": 1,
+      "stopped": false,
+      "seconds": 19.93143670700374,
+      "errors": [],
+      "warnings": [
+        "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+      ],
+      "log_sha256": "c06f61f5af953ead448367b3e0297e5c483436d5ccbf6a227a928d8c6ca881d1",
+      "checks": 9,
+      "failures": 2,
+      "raw_log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-path-before-01.log"
+    },
+    "gameplay-path-after-02": {
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--resolution",
+        "1600x900",
+        "--windowed",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/path_preview.gd",
+        "--label=gameplay-path-after-02"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 22.545005182008026,
+      "errors": [],
+      "warnings": [
+        "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+      ],
+      "log_sha256": "a9e1ad547eaa06970dd7cc75d635e53c2ec98e08490d22376f41e5fdf19ed05d",
+      "checks": 9,
+      "failures": 0,
+      "raw_log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-path-after-02.log"
+    },
+    "gameplay-path-production-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps08/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--resolution",
+        "1600x900",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/path_preview.gd",
+        "--label=gameplay-path-production-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 20.336916992993793,
+      "errors": [],
+      "warnings": [
+        "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+      ],
+      "log_sha256": "e3d52202404b8dc1ccdfec811ce798ac8323e2f91017a39e5d0ac368ea3f63a5",
+      "checks": 9,
+      "failures": 0,
+      "raw_log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-path-production-01.log"
+    }
+  },
+  "source_sha256": {
+    "game/src/game/order_marks.gd": "64f199b953db467775df4a0763c2b8a2a5ffc8355cb55260428d4b9e0ba5d5e7",
+    "game/src/game/fx/particle_system.gd": "9a45f450e348a1eca912a8c45ea534b8e256c0950c0c107e84b9a1b13e79c359",
+    "tools/tests/path_preview.gd": "5d4b5395ea13daf14005c6b44e4ebd9c4ff4890710bba644592c2c4007ef6f3b"
+  },
+  "visual_review": [
+    "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/gameplay-path-production-01/godot/app_userdata/Cursed Lands/distant-path.png"
+  ],
+  "limitations": [
+    "Synthetic route records, original Gipath terrain. Does not test pathfinder reachability of a one-kilometre destination.",
+    "Before01/after02 captured the first tick before particles gained alpha; production fixture advances twice and the visible green trail was inspected. The buffer-visibility and route-length assertions remain equivalent.",
+    "After01 failed GDScript inference; replaced with typed float operations.",
+    "Xvfb correctness only; no FPS claim. Android/Windows pending."
+  ]
+}

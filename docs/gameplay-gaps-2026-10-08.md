@@ -21,7 +21,7 @@ The additional [campaign audit](/home/llm2x/Documents/EI/local/implementation-ga
 | U11 | Host and client characters lag, jump and catch up during ordinary co-op. Measure authority updates and interpolation under real load. | Open |
 | U12 | Shelter exit opens an empty travel map instead of the authored direct transfer. | Open; current source already distinguishes direct destinations, needs original-route test |
 | U13 | Selecting travel closes the map onto a frozen world before showing loading. Cover both desktop and deferred mobile presentation. | Loading overlay is prepared before travel UI closes; deferred presentation regression passes. |
-| U14 | Long paths have no preview line. | Open |
+| U14 | Long paths have no preview line. | Fixed 90-metre anchor culling and route truncation. Long routes span the full length with the same 2,500-dot budget; short-route spacing and action stopping distance are preserved. Nine production checks and rendered destination review pass. |
 | U15 | Classic peaceful zones allow keyboard/controller forced attack, spells and crouching. Enforce at authority as well as UI. | Classic safe-zone restrictions enforced in authority and input paths, including keyboard/controller prediction. Original-data command and movement regression passes; scripts retain their authored commands. |
 | U16 | Base campaign lizards lack visible pitchforks. | Open |
 | U17 | Dialogue camera is obstructed by scenery. | Open |
@@ -66,3 +66,5 @@ The second gameplay checkpoint covers camp movement/escape, script-added actor l
 The inventory checkpoint uses network protocol 8 for atomic trade requests/results. [Inventory validation](gameplay-inventory-validation.json) records 31 passing checks in the production export, including the real guest UI/ENet path, one final inventory update, personal purse isolation, worn items, failed offers and transfer cancellation. Spell and stack screenshots were inspected. No new performance claim is attached to these gameplay fixes.
 
 The quest checkpoint distinguishes unit-carried `RemoveQuestItem` from player-bag `EraseQuestItem`. [Lifecycle validation](gameplay-quest-lifecycle-validation.json) records 20 passing production checks and two failures in the previous production export. The reported pair duplication and amulet/key retention did not reproduce in this prepared lifecycle; those results are recorded without claiming an additional fix.
+
+[Path validation](gameplay-path-validation.json) records the bounded long-route resampling and distant-camera rendering regression. Both defects fail in the prior production export; the corrected exported build passes all nine checks.

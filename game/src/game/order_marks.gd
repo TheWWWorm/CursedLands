@@ -77,7 +77,7 @@ func on_path(e: Dictionary) -> void:
 	var start := _point(e.get("start", []), u.pos)
 	var at := _point(e.get("target", []), u.pos)
 	_show(u, at, clampi(int(e.get("mode", 3)), 0, 3), int(e.get("cross", 0)),
-		_ghost_ticks(e), float(e.get("ticks", 0.0)), start)
+		_ghost_ticks(e), start)
 
 
 static func _point(row, fallback: Vector2) -> Vector2:
@@ -107,7 +107,7 @@ func _mine() -> Array:
 
 
 ##  for one message: dots unless A = 3, then ring / cross.
-func _show(u: GameUnit, at: Vector2, a: int, b: int, ticks: PackedVector3Array, f: float, start := Vector2.INF) -> void:
+func _show(u: GameUnit, at: Vector2, a: int, b: int, ticks: PackedVector3Array, start := Vector2.INF) -> void:
 	if not GameData.option("show_path"):
 		return
 	var w := game.world
@@ -119,7 +119,7 @@ func _show(u: GameUnit, at: Vector2, a: int, b: int, ticks: PackedVector3Array, 
 	if a != 3 and ticks.size() > 0:
 		var k118: float = [1.0, 0.0, 2.0][a]
 		var ef := fx.spawn(0x2039, Vector3(start.x, start.y, w.ground_at(start.x, start.y)), 1.0, null,
-			{"k118": k118, "k11c": minf(f, float(ticks.size() - 1)), "secs": 1.5})
+			{"k118": k118, "k11c": float(ticks.size() - 1), "secs": 1.5})
 		if ef:
 			ef.e.set_meta("path", ticks)
 	fx.spawn(0x203b if b != 0 else 0x203a, Vector3(at.x, at.y, w.ground_at(at.x, at.y)), 1.0, null, {"secs": 0.6})
@@ -149,9 +149,15 @@ func _ghost_ticks(e: Dictionary) -> PackedVector3Array:
 	var spline := MotionSpline.new()
 	spline.build(_point(e.get("start", []), Vector2.ZERO), _point(e.get("end", []), Vector2.ZERO),
 		cells, PackedInt32Array(e.get("values", [])), GHOST_BASE, 1e10, float(e.get("heading", 0.0)))
-	var ticks := mini(int(ceil(spline.duration)), 2499) if is_finite(spline.duration) else 0
-	for tick in ticks + 1:
-		var p: Vector2 = spline.sample(tick).p
+	# Clip to the server's action contact before resampling. Short routes keep
+	# every original whole tick. Long routes span the complete route within the
+	# same 2,500-particle budget instead of disappearing after its first 625 m.
+	var last := ceilf(spline.duration) if is_finite(spline.duration) else 0.0
+	last = maxf(0.0, minf(last, floorf(float(e.get("ticks", 0.0)))))
+	var steps := mini(int(last), 2499)
+	for tick in steps + 1:
+		var at := last * float(tick) / float(steps) if steps > 0 else 0.0
+		var p: Vector2 = spline.sample(at).p
 		out.append(Vector3(p.x, p.y, 0.0))
 	return out
 
