@@ -1,0 +1,130 @@
+{
+  "baseline_commit": "083ef5a",
+  "scope": "G02 personal hero/purse merge into an existing chapter. Complete party-context packaging remains open.",
+  "export": {
+    "seconds": 5.974032981990604,
+    "command": [
+      "/home/llm2x/.local/bin/godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+      "--export-release",
+      "Linux",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps17/CPU.x86_64"
+    ],
+    "engine_source": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/fast-runtime.x86_64",
+    "errors": [],
+    "sha256": {
+      "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+      "CPU.pck": "3a535a5df00c090d77832e86a24e2bab85307331edca91651705d52524f624dd",
+      "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+    }
+  },
+  "runs": {
+    "gameplay-progress-chapters-before-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps16/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_progress_chapters.gd",
+        "--label=gameplay-progress-chapters-before-01"
+      ],
+      "exit_code": 1,
+      "stopped": false,
+      "seconds": 1.8030503100017086,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "log_sha256": "8cc07e2d6fe795a9b7b9479edf6c653d33176af7123398501e3b418a7382e9ed"
+    },
+    "gameplay-progress-chapters-after-01": {
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_progress_chapters.gd",
+        "--label=gameplay-progress-chapters-after-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 3.005551918002311,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "log_sha256": "9bbb674d3709abc6dced2c24f44629f163814295afbec3dd0abbdbd9ac4bb2ab"
+    },
+    "gameplay-progress-chapters-production-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps17/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_progress_chapters.gd",
+        "--label=gameplay-progress-chapters-production-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 1.9044184630038217,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "log_sha256": "d54f68b9426fec3b2bb8ee943878723574aea358e19eb718381f4c52aa7e2f83"
+    },
+    "gameplay-progress-chapters-base-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps17/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_progress_chapters.gd",
+        "--label=gameplay-progress-chapters-base-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 1.9036805810173973,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "log_sha256": "2e19dbc2310587ed37d83b71fa665dde7e75ef26ba4fa7531cf1f0f271c10d5d"
+    }
+  },
+  "checks": {
+    "baseline_astral": {
+      "checks": 17,
+      "failures": 10
+    },
+    "production_astral": {
+      "checks": 17,
+      "failures": 0
+    },
+    "production_base": {
+      "checks": 7,
+      "failures": 0
+    }
+  },
+  "source_sha256": {
+    "game/src/game/coop_progress.gd": "a95cefded5cd05d6055a04577930da6a3e0221df28bcaf91bf3c1205499c1f37",
+    "tools/tests/coop_progress_chapters.gd": "f5eadc517e0992c5bdc34ea26d216ca0b859d5693fe4dd2622b86eb17db1c0c2"
+  },
+  "limitations": [
+    "These are original-data package-merge and save/reload checks, not complete chapter playthroughs or network reconnection tests.",
+    "Package creation still omits current/waiting party context; transfer to a chapter absent from the recipient remains open.",
+    "No Windows/Retroid packaging or new FPS claim."
+  ]
+}

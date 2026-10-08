@@ -38,7 +38,6 @@ The additional [campaign audit](/home/llm2x/Documents/EI/local/implementation-ga
 | U28 | Refund older characters and all trainable skills/abilities, including Zak’s innate backstab. | Fixed full reset of six trainable skills and all abilities, including initial backstab and skill gifts. Older records migrate with old-price credit. Desktop, co-op and Retroid save/reset checks pass. |
 | U29 | Remove ability purchase-order advantage while retaining escalating costs at the cheapest obtainable order. | Fixed ability pricing as the difference in cheapest legal final-allocation prices; original prerequisites, curve and rounding remain. 5,247 legal orders agree in each tested campaign. Six numerical skill curves were already independent. |
 | U30 | Sell the armour/weapon infusion runes in the Gipath spell shop. | Gipath witch stocks native ic/it runes. Existing shops receive missing stock once without replacing other goods or replenishing exhausted entries. Co-op stock sync and enchantment compatibility pass. |
-
 | U31 | Spell, template and rune artwork should fill its slot. | All three use their respective flat pictures across the full square slot interior. Skills, inventory and buy/sell layouts were visually checked in the exported build. |
 
 ## Campaign audit findings
@@ -46,7 +45,7 @@ The additional [campaign audit](/home/llm2x/Documents/EI/local/implementation-ga
 | ID | Required follow-up | Status |
 | --- | --- | --- |
 | G01 | Party-switching dialogue corrupts host/guest purse ownership inside `with_purse`. Verify cash and item ownership through switch, return and save/load. | Fixed nested purse ownership and campaign bag operations; original Nalo handler + guest RPC + save/reload/disconnect pass. |
-| G02 | Guest progress package omits current/waiting parties, bags and companions; merge can advance story with the wrong character. | Reproduced by audit; open |
+| G02 | Guest progress package omits current/waiting parties, bags and companions; merge can advance story with the wrong character. | Corrected personal hero/purse merge for existing LiA chapters and waiting Kir during Shaina. 17 LiA / 7 base checks pass; previous build fails 10. Complete current/waiting party, bag and companion packaging remains open. |
 | G03 | LiA import selects dormant pre-chapter hero/bag. Distinguish permanent chapter progression from temporary substitute characters. | Fixed protagonist import for normal LiA chapters and temporary Shaina; original-data chapter tests pass. |
 | G04 | Disconnect/death changes script protagonist; abandoned guest counts as mercenary. Keep narrative identity independent of connection/liveness. | Fixed protagonist/mercenary identity independent of guest disconnect or protagonist death; state tests and real Nalo disconnect pass. |
 | G05 | `Heroes` drops dead story members before authored party-death predicates run. Preserve required story roster for those predicates. | Fixed required story corpses in Heroes; actual LiA CheckFail predicate tests pass. Optional guest death stays separate. |
@@ -87,3 +86,5 @@ The quest checkpoint distinguishes unit-carried `RemoveQuestItem` from player-ba
 [Training and infusion validation](gameplay-training-validation.json) records 92 production reset/pricing checks, 16 rendered co-op checks, 36 base-shop checks, 35 expansion scope checks and 92 Retroid checks. The old build fails 66 training and 24 infusion assertions. The refund tooltip and zero-allocation screen were inspected. Private APK55 is installed with autorun disabled; the normal Android installation is unchanged.
 
 [Spell-slot visual validation](gameplay-spell-slots-validation.json) records the inspected skills/shop/trade captures and the production export. Finished spells, templates and runes use their distinct native pictures. Prices, counts and selection borders draw above the full-size artwork. The co-op training fixture also uses the inventory panel’s supported `hide()` method when closing its screen.
+
+[Chapter-merge validation](gameplay-progress-chapters-validation.json) records the fix for guest progress overwriting the dormant opening hero instead of the current LiA protagonist. Existing FPrison and FSusel states, temporary Shaina, base Nalo, personal names, positions, purses and save/reload are covered. It does not establish complete chapter-context transfer (G02).

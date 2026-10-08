@@ -282,9 +282,12 @@ static func merge(st: CampaignState, pkg: Dictionary) -> void:
 		if zs[z] is Dictionary:
 			st.zones[String(z)] = (zs[z] as Dictionary).duplicate(true)
 	# The hero, as it is in the host's world.
+	# LiA normally progresses through named protagonist parties. Only a
+	# temporary substitute leaves the imported hero in a waiting party.
+	var hero_party := main_party(st)
 	var h := sanitize_hero(pkg.get("hero", {}))
 	if not h.is_empty():
-		var roster: Array = st.heroes.get_or_add(0, []) if st.current_party.is_empty() else st.parties.get_or_add("", [])
+		var roster: Array = st.heroes.get_or_add(0, []) if st.current_party == hero_party else st.parties.get_or_add(hero_party, [])
 		var old: Dictionary = roster[0] if not roster.is_empty() and roster[0] is Dictionary else {}
 		h.name = String(old.get("name", pkg.get("orig_name", h.name)))
 		if old.has("unit_name"):
@@ -307,15 +310,15 @@ static func merge(st: CampaignState, pkg: Dictionary) -> void:
 	if purse.has("money"):
 		var money := maxi(0, int(_num(purse.money, 0.0)))
 		var items := _items(purse.get("items", []))
-		if st.current_party.is_empty():
+		if st.current_party == hero_party:
 			st.money = money
 			st.items = items
 		else:
-			var b: Dictionary = st.party_bags.get_or_add("", {"items": [], "money": 0})
+			var b: Dictionary = st.party_bags.get_or_add(hero_party, {"items": [], "money": 0})
 			b.money = money
 			b.items = items
 	if not h.is_empty():
-		CampaignState.cap_belt(h, st._bag("").items)   # the belt's four; extras to its bag
+		CampaignState.cap_belt(h, st._bag(hero_party).items)   # the belt's four; extras to its bag
 	var sid := String(pkg.get("sid", ""))
 	if sid:
 		var applied: Dictionary = st.coop.get_or_add("applied", {}) if st.coop.get("applied") is Dictionary else {}
