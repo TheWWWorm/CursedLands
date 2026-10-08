@@ -5,6 +5,7 @@ const P := preload("res://src/game/script/script_parser.gd")
 static func apply(ast: ScriptParser, campaign: String, zone: String) -> void:
 	if campaign != CampaignProfile.ASTRAL:
 		return
+	preload("res://src/game/script/story_coop_effects.gd").apply(ast, zone)
 	if zone == "bz1h":
 		_escape_party(ast)
 	if zone != "cz1h": return

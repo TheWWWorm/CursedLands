@@ -422,6 +422,11 @@ func _call(name: String, a: Array, inst: Instance):
 		_seen_memo.clear()
 	# Special forms with lazily evaluated arguments.
 	match name:
+		"RemakePartyCast":
+			preload("res://src/game/script/story_coop_effects.gd").cast(self, a, inst)
+			return null
+		"RemakeMatchExtra":
+			return preload("res://src/game/script/story_coop_effects.gd").match_extra(self, a, inst)
 		"Any", "Every":
 			var var_name: String = a[0][1]
 			var items := _group(_eval(a[1], inst))
