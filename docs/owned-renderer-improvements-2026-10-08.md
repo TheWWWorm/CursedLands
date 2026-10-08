@@ -432,6 +432,8 @@ P6 remains an investigation, not a completed shadow-caching implementation.
 
 ### User clarification: constrain the fallback, not desktop sunlight
 
+Commit: `39b4b7e` — `Keep desktop sun aiming continuous across renderers`.
+
 The user clarified that holding was introduced for Android/web shimmer and
 cost, is unnecessary on desktop, and is optional even on Android if a better
 and cheaper implementation is demonstrated. Treat it as a fallback, not the
@@ -484,12 +486,13 @@ The P6 comparison is a standalone benchmark. The subsequent user-directed
 default correction changes only sun policy/setup and menu sun aiming, plus its
 test; it does not modify character visibility or zone-transition code.
 
-Read-only `git apply --check` of the combined P1, P2, P3 and P5 patch through
-`9bc5ce2` passed against the active checkout at
-`083ef5a9b5cc534cb73a5b0d72f9ea571d6426a1`. Its working tree was clean and its
-HEAD/status were unchanged across the check. No patch was applied. Evidence:
-`integration-check-p5.json` in the QA directory. Recheck before integrating
-because that checkout is still changing.
+Read-only `git apply --check` of the combined patch through `39b4b7e`, including
+the P6 desktop-default correction, passed against the active checkout at
+`e07271d7edd5d9ed0c6ee8541f7d417f2f635ed0`. The other chat had unrelated uncommitted
+co-op changes in `campaign_state.gd`, `session.gd`, `main_menu.gd`,
+`network_panel.gd` and its new test. Its HEAD/status were unchanged across the
+check. No patch was applied. Evidence: `integration-check-p6.json` in the QA
+directory. Recheck before integrating because that checkout is still changing.
 
 ## Next work in the established order
 
