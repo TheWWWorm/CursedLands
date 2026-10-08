@@ -15,8 +15,9 @@ const FigureMaterial = preload("res://src/ei/figure_material.gd")
 static var _models := {}
 static var _materials := {}
 static var _foliage := {}
-## gl_compatibility: the per-mesh copies of those (part_y is no instance uniform there).
-static var _foliage_local: Array[WeakRef] = []
+## Compatibility needs part_y on the material. Identical base/height pairs
+## share a variant, weakly retained while placed parts (or fades) own it.
+static var _foliage_local := {}   # base material -> {part_y: WeakRef}
 static var _wind := true
 
 ## Remake foliage: the original alpha-tested material plus optional wind
@@ -200,10 +201,7 @@ static func instantiate(template: String, texture: String, complexion: Vector3,
 				y += (q as Node3D).position.y
 				q = q.get_parent()
 			if Portability.compatibility():
-				var local_mat := mat.duplicate() as ShaderMaterial
-				local_mat.set_shader_parameter("part_y", y)
-				mi.material_override = local_mat
-				_foliage_local.append(weakref(local_mat))   # set_wind reaches the copies too
+				mi.material_override = foliage_variant(mat, y)
 			else:
 				mi.set_instance_shader_parameter("part_y", y)
 		if morph:
@@ -477,6 +475,21 @@ static func foliage_material_for(texture: String, sway := true, stiff := false, 
 	return m
 
 
+## Share only the exact base resource and height. Texture, figure material,
+## sway, stiffness and graphics variants are already part of the base key.
+## CameraFade still creates its own per-object dither copy on Compatibility.
+static func foliage_variant(base: ShaderMaterial, part_y: float) -> ShaderMaterial:
+	var variants: Dictionary = _foliage_local.get(base, {})
+	var ref: WeakRef = variants.get(part_y)
+	var material := ref.get_ref() as ShaderMaterial if ref else null
+	if material == null:
+		material = base.duplicate() as ShaderMaterial
+		material.set_shader_parameter("part_y", part_y)
+		variants[part_y] = weakref(material)
+		_foliage_local[base] = variants
+	return material
+
+
 ## Cacti sway only a little (remake choice after measurements of saguaros:
 ## small vibrations, stiff at the base, no leaves). The data names them: every
 ## .mob placement of nafltr71 / nafltr72 (texture tree04) is called
@@ -562,13 +575,16 @@ static func set_wind(on: bool) -> void:
 	_wind = on
 	for m: ShaderMaterial in _foliage.values():
 		m.set_shader_parameter("wind", 1.0 if on and m.get_meta("sway", true) else 0.0)
-	var alive: Array[WeakRef] = []
-	for r: WeakRef in _foliage_local:
-		var m := r.get_ref() as ShaderMaterial
-		if m:
-			m.set_shader_parameter("wind", 1.0 if on and m.get_meta("sway", true) else 0.0)
-			alive.append(r)
-	_foliage_local = alive
+	for base: ShaderMaterial in _foliage_local.keys():
+		var variants: Dictionary = _foliage_local[base]
+		for height: float in variants.keys():
+			var m := (variants[height] as WeakRef).get_ref() as ShaderMaterial
+			if m:
+				m.set_shader_parameter("wind", 1.0 if on and m.get_meta("sway", true) else 0.0)
+			else:
+				variants.erase(height)
+		if variants.is_empty():
+			_foliage_local.erase(base)
 
 
 static func clear_cache() -> void:

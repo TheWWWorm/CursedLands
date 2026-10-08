@@ -157,6 +157,94 @@ directories point inside the QA directory, keeping real saves and settings out
 of the run. For GPU checks, use `--render-thread safe --audio-driver Dummy` and
 `--rendering-method gl_compatibility` or `forward_plus`; omit `--headless`.
 
+## P3, first stage: retain equivalent foliage materials
+
+Investigation confirmed `EIFigure.build_mesh` already caches figure geometry
+by part and complexion. Adding another mesh cache would duplicate existing
+behavior. Forward+ also provides automatic instancing for suitable shared
+meshes/materials; see [Godot's 3D optimization documentation](https://docs.godotengine.org/en/stable/tutorials/performance/optimizing_3d_performance.html).
+Compatibility still needs a material uniform for each foliage part's `part_y`.
+It previously allocated a fresh `ShaderMaterial` for every placed part, even
+when the base material and height were identical.
+
+The first P3 change shares those exact base-resource/height pairs. Keys use the
+actual numeric height, without string rounding. Distinct textures, authored
+figure materials, sway/stiffness modes and graphics variants retain their own
+base resource identities. Each placement retains its original mesh node,
+transform, visibility, script identity, navigation geometry and camera-fade
+behavior. CameraFade's Compatibility path already creates a separate dither
+copy when an individual object fades, then restores its original material.
+
+The variant cache holds weak material references; placed meshes and active
+fades own their lifetimes. `set_wind` updates each live variant once and removes
+dead entries. `clear_cache` clears variant membership during a data-source
+switch. Forward+'s existing instance-uniform path is unchanged.
+
+### Locations and evidence
+
+- [game/src/ei/figure.gd](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/game/src/ei/figure.gd): `_foliage_local`, `foliage_variant`, the Compatibility branch in `instantiate`, `set_wind` and existing `clear_cache`.
+- [tools/tests/foliage_materials.gd](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/foliage_materials.gd): real tree placements, exact-height separation, material distinctions, individual fade/restore, wind eligibility, weak ownership and cache reset. GPU comparison uses independent per-mesh material copies with a frozen wind clock.
+- [tools/benchmarks/scenery_resources.gd](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/scenery_resources.gd): original map resource census. All placement nodes remain alive while counting, so weak sharing is measured correctly. `--scenery-control=/absolute/file.gd` accepts the previous `figure.gd` with its `class_name` declaration removed; the control snapshot used commit `aa5d4fa`.
+- Reference renderer: R0 `Source/retained_static_scene.cpp:303` and `Source/retained_static_submission.cpp:394`, immutable placement/resource preparation. This is a Godot resource-retention adaptation, not a port of D3D indirect submission.
+
+With HD upscaling off on Compatibility, the same original static placements
+produced these counts:
+
+| Map | Mesh nodes | Unique meshes, unchanged | Material resources before | Material resources after |
+|---|---:|---:|---:|---:|
+| `bz2g` | 665 | 101 | 644 | 16 |
+| `bz4g` | 338 | 221 | 216 | 10 |
+| `bz13h` | 494 | 111 | 228 | 10 |
+
+The census's `potential_cell16_merges` is only an upper bound based on equal
+mesh/material resources in 16 m cells. It is not measured draw-call reduction
+and does not yet account for all lighting, culling, sorting or fade constraints.
+
+Headless Compatibility validation passed **25 checks**. GPU checks passed with
+pixel-identical shared/copy images on Compatibility (**28 checks**) and Forward+
+(**27 checks**), in both the editor binary and an exported Linux release
+(`editor: false`). The fixture's Compatibility draw counts stayed **18 → 18**.
+Its Forward+ copied-material control demonstrates automatic instancing, but
+the production Forward+ path was already shared before this change; do not
+attribute that fixture's draw reduction to a new production optimization.
+No frame-time, application-memory-byte or device-performance gain is claimed.
+
+Logs under the QA directory: `scenery-resources-control.log`,
+`scenery-resources-candidate.log`, `foliage-materials-headless.log`,
+`foliage-materials-gl_compatibility.log` and
+`foliage-materials-forward_plus.log`; the release equivalents are
+`export-foliage-materials-gl_compatibility.log` and
+`export-foliage-materials-forward_plus.log`, from the separate `p3-export/`
+build recorded in `p3-export.log`. Captures are
+`data/godot/app_userdata/Cursed Lands/foliage-materials-*.png`.
+
+### Explicit batching remains open
+
+P3 is not complete. The next prototype must preserve individual fading and
+scripted movement/removal while keeping batches spatially bounded. Specific
+integration constraints found in current source:
+
+- `CameraFade._build/_hides/_set_alpha` retains each object's mesh triangles
+  and changes only that object's material during a fade. The other chat's
+  new `DialogCamera` obstruction check likewise reads individual visible
+  `MeshInstance3D` nodes and triangle geometry.
+- `TerrainDetails._update_scenery`, `SurfaceWeather.rasterize_cover` and
+  navigation inspect the logical mesh nodes. Hiding/removing those nodes to
+  suppress their old draw would change those consumers unless they understand
+  the replacement representation.
+- Godot Compatibility selects a bounded set of lights per geometry. Combining
+  several objects may change which local lights they receive; preserve that
+  behavior or prove the intended tradeoff before enabling broad MultiMeshes.
+- `LocalLighting._light_quality` documents a current engine light-pairing
+  constraint: changing mesh/light masks while paired can leave stale light
+  references. Do not suppress original draws by changing their layers without
+  resolving that lifetime issue.
+- Keep levers, effect carriers, animated geometry and per-object overrides out
+  of an initial static batch unless they have explicit update handling.
+
+These findings explain the limited first stage. They are implementation work
+still to do, not a declaration that broader P3 or P4 is unnecessary.
+
 ## Integration
 
 The implementation is in this isolated branch. Do not overwrite another agent's
@@ -167,20 +255,23 @@ P1 changes only `unit_model.gd` and `unit_wounds.gd` plus its test/documentation
 P2 changes only `mmp_texture.gd`, the texture-loading methods in `game_data.gd`,
 and `Gfx.texture_3d` plus its tests/documentation. No network, inventory,
 campaign-state, pricing or dialogue-camera behavior was edited.
+The first P3 stage changes only `figure.gd`, its resource census, regression
+fixture and this documentation. No object ownership or camera code was changed.
 
-Read-only `git apply --check` of the combined changes passed against the active
+Read-only `git apply --check` of P1, P2 and the first P3 stage passed against the active
 checkout's working files while its committed HEAD was
-`8fac4f526ad67d88c1abf48afb321fcf6af45b14`, including its unrelated uncommitted
+`ab62e0296476daa481bd1abd20833fcb8084cc2d`, including its unrelated uncommitted
 gameplay work. No patch was applied. Recheck before integrating because that
 checkout is still changing.
 
 ## Next work in the established order
 
-1. **P3 static scenery batching:** next performance investigation. Profile a
-   dense map first, then group compatible static meshes in bounded cells while
-   preserving logical object nodes, selection, scripts, destruction and camera
-   fading. `map_scene.gd` and `figure.gd` are the main entry points. Coordinate
-   with the recent dialogue-obstruction work before changing visual ownership.
+1. **P3 static scenery batching:** material retention and a three-map resource
+   census are now implemented above. Next, measure a dense rendered map and
+   prototype compatible static batches in bounded cells, addressing the listed
+   consumers and light-selection constraints. `map_scene.gd` and `figure.gd`
+   are the main entry points. Preserve the recent dialogue-obstruction work
+   before changing visual ownership.
 2. **P4 occlusion:** after identifying hidden-geometry cost, evaluate Godot's
    existing facilities before a custom Hi-Z path. Keep world/gameplay visibility
    separate and verify camera movement, thin openings and shadows.
