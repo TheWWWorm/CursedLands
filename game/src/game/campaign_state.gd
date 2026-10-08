@@ -259,6 +259,15 @@ func add_item(id: String, n := 1) -> void:
 
 func ensure_hero(player: int, prototype: String, player_name := "") -> void:
 	if heroes.has(player):
+		# Older LiA co-op saves could contain a base-game class absent from
+		# the mod's database. Keep the player's data, replacing only that
+		# known unavailable template with the session's valid campaign choice.
+		if player > 0 and not heroes[player].is_empty():
+			var old: Dictionary = heroes[player][0]
+			var old_proto := String(old.get("prototype", ""))
+			if old_proto in Session.COOP_CLASSES and GameData.db.find("monster_prototypes", old_proto).is_empty() \
+					and not GameData.db.find("monster_prototypes", prototype).is_empty():
+				old.prototype = prototype
 		# A loaded co-op slot keeps its character and equipment, but its
 		# display name follows the player now bound to that slot. Preserve
 		# the deployment/script name used to relink an already live unit.

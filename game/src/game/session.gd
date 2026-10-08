@@ -698,13 +698,24 @@ func _exit_tree() -> void:
 		Shops.network = false
 
 
+## Campaign mods need not contain the original mercenary prototypes. Offer
+## only characters from the active database; LiA's fallback is its native Kir.
+static func coop_classes() -> Array:
+	if not GameData.is_open():
+		return COOP_CLASSES.duplicate()
+	var choices := COOP_CLASSES.filter(func(proto: String): return not GameData.db.find("monster_prototypes", proto).is_empty())
+	return choices if not choices.is_empty() else ["Human Hero"]
+
+
 func _hero_proto(index: int) -> String:
 	if index == 0:
 		return "Human Hero"
+	var choices := coop_classes()
 	for p in players.values():
-		if int(p.index) == index and String(p.get("hero", "")) in COOP_CLASSES:
+		if int(p.index) == index and String(p.get("hero", "")) in choices:
 			return String(p.hero)
-	return COOP_HEROES[(index - 1) % COOP_HEROES.size()]
+	var fallback: String = COOP_HEROES[(index - 1) % COOP_HEROES.size()]
+	return fallback if fallback in choices else String(choices[0])
 
 
 # ------------------------------------------------------------------ quest items

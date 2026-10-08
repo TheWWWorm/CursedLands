@@ -39,6 +39,7 @@ The additional [campaign audit](/home/llm2x/Documents/EI/local/implementation-ga
 | U29 | Remove ability purchase-order advantage while retaining escalating costs at the cheapest obtainable order. | Fixed ability pricing as the difference in cheapest legal final-allocation prices; original prerequisites, curve and rounding remain. 5,247 legal orders agree in each tested campaign. Six numerical skill curves were already independent. |
 | U30 | Sell the armour/weapon infusion runes in the Gipath spell shop. | Gipath witch stocks native ic/it runes. Existing shops receive missing stock once without replacing other goods or replenishing exhausted entries. Co-op stock sync and enchantment compatibility pass. |
 | U31 | Spell, template and rune artwork should fill its slot. | All three use their respective flat pictures across the full square slot interior. Skills, inventory and buy/sell layouts were visually checked in the exported build. |
+| U32 | Additional finding: LiA offers unavailable base-game co-op classes, leaving default guests without a usable body. | Class choices and authority fallback now use the active campaign database. Known unavailable class records in old saves recover without resetting progress. 25 LiA / 34 base ENet checks pass; previous LiA build fails 20. |
 
 ## Campaign audit findings
 
@@ -88,3 +89,5 @@ The quest checkpoint distinguishes unit-carried `RemoveQuestItem` from player-ba
 [Spell-slot visual validation](gameplay-spell-slots-validation.json) records the inspected skills/shop/trade captures and the production export. Finished spells, templates and runes use their distinct native pictures. Prices, counts and selection borders draw above the full-size artwork. The co-op training fixture also uses the inventory panel’s supported `hide()` method when closing its screen.
 
 [Chapter-merge validation](gameplay-progress-chapters-validation.json) records the fix for guest progress overwriting the dormant opening hero instead of the current LiA protagonist. Existing FPrison and FSusel states, temporary Shaina, base Nalo, personal names, positions, purses and save/reload are covered. It does not establish complete chapter-context transfer (G02).
+
+[Campaign-class validation](gameplay-coop-classes-validation.json) records the missing LiA class templates, valid native-character fallback, unchanged original-campaign choices, old-record recovery, and real guest deployment/transfer/save-load checks. This defect was found while validating the Catacombs performance fixture; its first smoke timings are excluded because the guest did not remain a usable character.
