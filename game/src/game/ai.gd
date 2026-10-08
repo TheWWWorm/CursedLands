@@ -469,6 +469,7 @@ func on_player_attacked(u: GameUnit, by: GameUnit) -> void:
 ##   already fighting (state 3) are left out. Both check on every 55 ms AI
 ##   tick (think(): ai_next = now + TICK).
 func _player(u: GameUnit) -> void:
+	if u.controller >= 0 and u.direct_controlled: return
 	# AI holds the attacker for one AI tick (cleared at its end); the
 	# engage check does not read it (the attacker is in the noticed list).
 	u.remove_meta("attacker")

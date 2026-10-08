@@ -69,7 +69,7 @@ var status := ""             # set by MainMenu: the last connection message
 var upnp_text := ""          # set by MainMenu: the router's answer (UpnpPort)
 var player_name := "Player"
 var max_players := Session.MAX_PLAYERS
-var hero := 0                # Session.COOP_CLASSES index: the co-op hero's class
+var hero := 0                # Session.coop_classes() index in the active campaign
 var addresses: PackedStringArray = []   # the address book, last used first
 var address := ""            # the address typed on a join page
 var lobby: Array = []        # player lines once hosting / connected (MainMenu)
@@ -164,7 +164,7 @@ static func cli_port() -> int:
 ## Opens the screen on the choice of game.
 func open() -> void:
 	player_name = GameData.player_name
-	hero = maxi(0, Session.COOP_CLASSES.find(GameData.hero_class))
+	hero = maxi(0, Session.coop_classes().find(GameData.hero_class))
 	max_players = Session.MAX_PLAYERS
 	if address.is_empty():
 		address = addresses[0] if not addresses.is_empty() else ("wss://" if _web() else "")
@@ -214,7 +214,8 @@ func go_back() -> void:
 
 
 func hero_class() -> String:
-	return String(Session.COOP_CLASSES[clampi(hero, 0, Session.COOP_CLASSES.size() - 1)])
+	var choices := Session.coop_classes()
+	return String(choices[clampi(hero, 0, choices.size() - 1)])
 
 
 func selected_address() -> String:
@@ -1072,7 +1073,7 @@ func _activate(id: String, dir := 0) -> void:
 			var ch := _bring_choices()
 			CoopProgress.bring_slot = ch[posmod(maxi(0, ch.find(CoopProgress.bring_slot)) + step, ch.size())]
 		"class":
-			hero = posmod(hero + step, Session.COOP_CLASSES.size())
+			hero = posmod(hero + step, Session.coop_classes().size())
 		"char":
 			sound("messbox\\ok")
 			characters_requested.emit()

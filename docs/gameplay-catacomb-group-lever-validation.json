@@ -1,0 +1,122 @@
+{
+  "date": "2026-10-08",
+  "status": "Local follow-up after Experimental 6; not included in its downloads",
+  "base_commit": "78498914b00842d216cd19544a5647bc9ad79555",
+  "branch": "fix/catacomb-group-lever",
+  "summary": "When the selected lead actor cannot reach a switch, another selected qualified actor may operate it. The original lift script and platform geometry are unchanged.",
+  "reproduction": "Two actors walk onto the Catacombs lift and descend. The actor at (30.505,61.995) blocks the lead actor at (30.505,63.005). Experimental 6 always orders the lead and fails to raise the lift; the candidate sends the already reachable second actor.",
+  "checks": {
+    "candidate_total": 39,
+    "failures": 0,
+    "baseline_regression_failures": 3
+  },
+  "limits": [
+    "Prepared actual-map fixture with synthetic party ownership, unrelated AI held still; no ENet or full campaign claim.",
+    "A third actor can stop on the overlapping fixed landing and remain upstairs. Larger-party capacity remains open.",
+    "No Android or Windows follow-up runtime check, no new release, and no performance measurements."
+  ],
+  "evidence": [
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps36/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/catacomb_group_lever.gd",
+        "--label=catacomb-group-baseline-01"
+      ],
+      "exit_code": 1,
+      "stopped": false,
+      "seconds": 9.615790222014766,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "5678f433a5102eeba5e849ed9c809e30a5b593d48f34837e4c3399518c95d65e",
+      "name": "catacomb-group-baseline-01",
+      "checks": 24,
+      "failures": 3,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/catacomb-group-baseline-01.log"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps37/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/catacomb_group_lever.gd",
+        "--label=catacomb-group-candidate-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 13.723409526981413,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "cb228caa5d1df1e067f21c480f78812ca0d0a82005dba7c3c0aac9656620b931",
+      "name": "catacomb-group-candidate-01",
+      "checks": 24,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/catacomb-group-candidate-01.log"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps37/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/catacomb_mechanisms.gd",
+        "--label=catacomb-mechanisms-followup-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 24.240155901992694,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "336aa76d78ba1e7a612a0ba5a4f23b4e83d5d7b4c49149de415cb507737b2516",
+      "name": "catacomb-mechanisms-followup-01",
+      "checks": 15,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/catacomb-mechanisms-followup-01.log"
+    }
+  ],
+  "export": {
+    "seconds": 5.926310876006028,
+    "command": [
+      "/home/llm2x/.local/bin/godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+      "--export-release",
+      "Linux",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps37/CPU.x86_64"
+    ],
+    "engine_source": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/fast-runtime.x86_64",
+    "errors": [],
+    "sha256": {
+      "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+      "CPU.pck": "7a41149372343a1bb97d8fc1c6c6455e49b9facd59dd115e40b71f4857bee12f",
+      "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+    }
+  },
+  "source_sha256": {
+    "game/src/game/session.gd": "7cac97d9f25f10bf06c8d6c6843427ab4582a53969c2e3d951eef316e05cedf4",
+    "game/src/game/script/vm.gd": "255ba8614b03d5467e5a3a31c48f15543a34c279b6d7e91ca978a6bfd132ccef",
+    "tools/tests/catacomb_group_lever.gd": "245bf5ecd7e382290d2be0d81f6f09cb5da84229685fe4d884d83b01d86d0349"
+  },
+  "excluded_attempts": [
+    {
+      "name": "catacomb-boarding-source-01",
+      "reason": "Production runtime does not support --path; failed before game code. Replaced by actual exported gameplay-gaps37 checks."
+    }
+  ]
+}

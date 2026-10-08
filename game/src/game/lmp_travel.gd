@@ -4,7 +4,7 @@ extends RefCounted
 ## Session's temporary world scopes are synchronous, like its purse scopes;
 ## a deferred departure always carries the owner and its old generation.
 
-const FIELDS := ["world", "zone_id", "_snap_t", "_snap_count", "_last_snap", "_exit_t",
+const FIELDS := ["world", "zone_id", "_snap_at_ms", "_snap_count", "_last_snap", "_exit_t",
 	"_leave_armed", "_auto_exit", "_auto_world", "travel_options", "_travel_ev", "map_open",
 	"_dialog_ev", "_alone_exit", "_alone_world", "_ic_t", "_lmp_entrance"]
 
@@ -168,10 +168,10 @@ func broadcast(ev: Dictionary) -> void:
 			send_event(pid, ev)
 
 
-func send_snap(snaps: Array, time: float) -> void:
+func send_snap(snaps: Array, time: float, serial: int) -> void:
 	for pid: int in peers_here():
 		var idx := int(session.players[pid].index)
-		session._rpc_lmp_snap.rpc_id(pid, session.zone_id, generation_of(idx), snaps, time)
+		session._rpc_lmp_snap.rpc_id(pid, session.zone_id, generation_of(idx), snaps, time, serial)
 
 
 func publish(pid := 0) -> void:
@@ -210,7 +210,7 @@ func physics(dt: float) -> void:
 
 
 func _new_context(id: String) -> Dictionary:
-	return {"world": null, "zone_id": id, "_snap_t": 0.0, "_snap_count": 0,
+	return {"world": null, "zone_id": id, "_snap_at_ms": 0, "_snap_count": 0,
 		"_last_snap": {}, "_exit_t": 0.0, "_leave_armed": -1, "_auto_exit": -1,
 		"_auto_world": null, "travel_options": [], "_travel_ev": {}, "map_open": false,
 		"_dialog_ev": {}, "_alone_exit": {}, "_alone_world": null, "_ic_t": 0.0,

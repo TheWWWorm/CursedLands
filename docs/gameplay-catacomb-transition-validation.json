@@ -1,0 +1,253 @@
+{
+  "source_checkpoint": "9db0440",
+  "purpose": "U08 diagnostic: compare the rendered guest after the authored Catacombs exit, same-session reload and process restart. Not an FPS improvement experiment.",
+  "conditions": {
+    "display": ":0 physical desktop",
+    "gpu": "NVIDIA GeForce RTX 3090",
+    "resolution": [
+      3840,
+      2160
+    ],
+    "render_scale": 1.0,
+    "settings": "all remake graphics maximum",
+    "speed": 2,
+    "seconds_per_sample": 45,
+    "topology": "shipping simulation worker + headless owner frontend + rendered guest in separate processes",
+    "gpu_timer_reads": false,
+    "fixed_camera": true,
+    "fixtures": "Prepared Catacombs save with original Kel; exit movement and confirmation, original cz2h brief_5a completion, original transfer to gz1h. No full chapter playthrough."
+  },
+  "runs": {
+    "gameplay-catacomb-process-01": {
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/runs/gameplay-catacomb-process-01.receipt.json",
+      "receipt_sha256": "32f6ff57354293c5e428c041fd0517b3b8d2849509191c271a556c42fef98136",
+      "build_sha256": {
+        "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+        "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82",
+        "CPU.pck": "7387d31f64ba2f2e34d82bca7b67c5d83df73d6d99ee6239d79df441ac367fe8"
+      },
+      "fixture_sha256": "c626bd316d17aa8a80c9e6862ab81eafc9e62836959d46ef91237743cc0da54a",
+      "probe_sha256": "38147778f5317694c3626e96d4b79b2fd4c545038a79e2a0ab240dbfee1b327d",
+      "seconds": 292.42455863099894,
+      "owner_checks": {
+        "checks": 16,
+        "failures": 0
+      },
+      "samples": {
+        "exit": {
+          "seconds": 45.006994,
+          "fps": 56.0357352459487,
+          "frame_ms": {
+            "max": 52.325,
+            "p50": 16.769,
+            "p95": 25.307,
+            "p99": 34.352
+          },
+          "camera": "[X: (0.866025, 0.0, -0.5), Y: (-0.384263, 0.639819, -0.665563), Z: (0.319909, 0.768526, 0.554099), O: (264.8341, 30.42037, -37.45162)]",
+          "my_units": [
+            {
+              "dead": false,
+              "hp": 13.6875,
+              "name": "Transition Guest",
+              "pos": "(257.1562, 50.75)"
+            }
+          ],
+          "units": 415,
+          "visible": 6,
+          "sim_before": 0.0,
+          "sim_after": 89.9250000000029,
+          "progress_packages": 0,
+          "raw": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/runs/gameplay-catacomb-process-01-exit-measure.json",
+          "sha256": "59e410b1a9f81eada8ffb162b6611aa856bcdba2594da48810718c2d66db2e76"
+        },
+        "reload": {
+          "seconds": 45.005772,
+          "fps": 54.8818493770088,
+          "frame_ms": {
+            "max": 47.731,
+            "p50": 17.231,
+            "p95": 25.645,
+            "p99": 33.032
+          },
+          "camera": "[X: (0.866025, 0.0, -0.5), Y: (-0.384263, 0.639819, -0.665563), Z: (0.319909, 0.768526, 0.554099), O: (264.8341, 30.42037, -37.45162)]",
+          "my_units": [
+            {
+              "dead": false,
+              "hp": 13.6875,
+              "name": "Transition Guest",
+              "pos": "(257.1562, 50.75)"
+            }
+          ],
+          "units": 415,
+          "visible": 6,
+          "sim_before": 0.0,
+          "sim_after": 89.8700000000029,
+          "progress_packages": 0,
+          "raw": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/runs/gameplay-catacomb-process-01-reload-measure.json",
+          "sha256": "bf09590bff8d8502360180d25fd6035cd61bcd4679ee3f29c081c09396ae301d"
+        },
+        "restart": {
+          "seconds": 45.014202,
+          "fps": 54.4939128322213,
+          "frame_ms": {
+            "max": 57.174,
+            "p50": 17.273,
+            "p95": 26.498,
+            "p99": 33.123
+          },
+          "camera": "[X: (0.866025, 0.0, -0.5), Y: (-0.384263, 0.639819, -0.665563), Z: (0.319909, 0.768526, 0.554099), O: (264.8341, 30.42037, -37.45162)]",
+          "my_units": [
+            {
+              "dead": false,
+              "hp": 13.6875,
+              "name": "Transition Guest",
+              "pos": "(257.1562, 50.75)"
+            }
+          ],
+          "units": 415,
+          "visible": 5,
+          "sim_before": 0.0,
+          "sim_after": 90.420000000003,
+          "progress_packages": 0,
+          "raw": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/runs/gameplay-catacomb-process-01-restart-measure.json",
+          "sha256": "b85b051d592a54ca8834dec2fb7a8a0ac486bdf1d1782873ef44e843c245b079"
+        }
+      }
+    },
+    "gameplay-catacomb-process-bring-01": {
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/runs/gameplay-catacomb-process-bring-01.receipt.json",
+      "receipt_sha256": "0b88551793abeaa5f32aec955162cf354640a97e4f7db5005eb75a97fcaf9d25",
+      "build_sha256": {
+        "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+        "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82",
+        "CPU.pck": "7387d31f64ba2f2e34d82bca7b67c5d83df73d6d99ee6239d79df441ac367fe8"
+      },
+      "fixture_sha256": "c626bd316d17aa8a80c9e6862ab81eafc9e62836959d46ef91237743cc0da54a",
+      "probe_sha256": "38147778f5317694c3626e96d4b79b2fd4c545038a79e2a0ab240dbfee1b327d",
+      "seconds": 288.42137655999977,
+      "owner_checks": {
+        "checks": 16,
+        "failures": 0
+      },
+      "samples": {
+        "exit": {
+          "seconds": 45.002206,
+          "fps": 56.0194760230198,
+          "frame_ms": {
+            "max": 98.219,
+            "p50": 16.611,
+            "p95": 25.571,
+            "p99": 36.083
+          },
+          "camera": "[X: (0.866025, 0.0, -0.5), Y: (-0.384263, 0.639819, -0.665563), Z: (0.319909, 0.768526, 0.554099), O: (264.8341, 30.42037, -37.45162)]",
+          "my_units": [
+            {
+              "dead": false,
+              "hp": 13.6875,
+              "name": "Transition Guest",
+              "pos": "(257.1562, 50.75)"
+            }
+          ],
+          "units": 415,
+          "visible": 6,
+          "sim_before": 0.0,
+          "sim_after": 90.1450000000029,
+          "progress_packages": 10,
+          "raw": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/runs/gameplay-catacomb-process-bring-01-exit-measure.json",
+          "sha256": "110983dde314e70e2f71babbe85282c5241f05b576e1f6633a44322f08fcef9f"
+        },
+        "reload": {
+          "seconds": 45.003684,
+          "fps": 55.2399221361522,
+          "frame_ms": {
+            "max": 200.474,
+            "p50": 16.858,
+            "p95": 25.566,
+            "p99": 34.09
+          },
+          "camera": "[X: (0.866025, 0.0, -0.5), Y: (-0.384263, 0.639819, -0.665563), Z: (0.319909, 0.768526, 0.554099), O: (264.8341, 30.42037, -37.45162)]",
+          "my_units": [
+            {
+              "dead": false,
+              "hp": 13.6875,
+              "name": "Transition Guest",
+              "pos": "(257.1562, 50.75)"
+            }
+          ],
+          "units": 415,
+          "visible": 5,
+          "sim_before": 0.0,
+          "sim_after": 90.1450000000029,
+          "progress_packages": 18,
+          "raw": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/runs/gameplay-catacomb-process-bring-01-reload-measure.json",
+          "sha256": "f21a95f3816337b38b8618ae214d98097e81c1836078c8ec87210e93ab3f793b"
+        },
+        "restart": {
+          "seconds": 45.010942,
+          "fps": 54.8533287750343,
+          "frame_ms": {
+            "max": 238.328,
+            "p50": 17.028,
+            "p95": 25.799,
+            "p99": 35.994
+          },
+          "camera": "[X: (0.866025, 0.0, -0.5), Y: (-0.384263, 0.639819, -0.665563), Z: (0.319909, 0.768526, 0.554099), O: (264.8341, 30.42037, -37.45162)]",
+          "my_units": [
+            {
+              "dead": false,
+              "hp": 13.6875,
+              "name": "Transition Guest",
+              "pos": "(257.1562, 50.75)"
+            }
+          ],
+          "units": 415,
+          "visible": 6,
+          "sim_before": 0.0,
+          "sim_after": 90.530000000003,
+          "progress_packages": 8,
+          "raw": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/runs/gameplay-catacomb-process-bring-01-restart-measure.json",
+          "sha256": "a423e3c31032fba9b3b6adf2b8ca4575b08f3c75731530cbe0eb4726a9edc8b7"
+        }
+      }
+    }
+  },
+  "two_world_correctness": {
+    "receipt": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps16/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--resolution",
+        "1600x900",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/tests/catacomb_transition_probe.gd",
+        "--label=gameplay-catacomb-transition-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 127.28409037398524,
+      "errors": [],
+      "warnings": [
+        "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+      ],
+      "log_sha256": "9ecd15f606154c41ed9ad30486ac92bce6e169281fc60eedf5fd4bc4eb9b5b6d"
+    },
+    "checks": 10,
+    "failures": 0,
+    "result": "Both old worlds freed; field camera released; node census similar after reload. Xvfb, correctness only."
+  },
+  "limitations": [
+    "Linux Vulkan, not the reported Windows laptop/D3D12 environment.",
+    "45-second stationary samples compare recovery paths; they do not establish sustained 60 FPS in ordinary play.",
+    "The original 4 FPS condition was not reproduced. Rare long frames remain, especially with guest progress saves; no cause is assigned without profiling.",
+    "Initial smoke run excluded: only two seconds, concurrent diagnostics, unavailable LiA default class, disappearing guest and inconsistent restart camera. The class defect is separately fixed and regression-tested."
+  ]
+}

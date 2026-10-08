@@ -1,0 +1,253 @@
+{
+  "baseline_commit": "0ccb2de508df403c2b87354fec65e5bc1b3b4a32",
+  "scope": "U27 experimental third-person mode; focused functional validation only",
+  "protocol": 9,
+  "export": {
+    "seconds": 5.925364389986498,
+    "command": [
+      "/home/llm2x/.local/bin/godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+      "--export-release",
+      "Linux",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps23/CPU.x86_64"
+    ],
+    "engine_source": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/fast-runtime.x86_64",
+    "errors": [],
+    "sha256": {
+      "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+      "CPU.pck": "72e493607aa9403c050c1c62da52e881b4e5f171d9a879a2123f85c4abfd216e",
+      "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+    }
+  },
+  "source_sha256": {
+    "game/src/ei/game_data.gd": "6b978ec8cbc2ed07baf11f461ffdacb7e7239854cc1c588ca60bfb83040267c7",
+    "game/src/ei/remake_text.gd": "2e6ec8669c23bf3574ba536f00256ff545d0d9629d3f4fb237d918929cc842b1",
+    "game/src/game/ai.gd": "99b09a3aed035a10b25dc7ade3d9988f8cf5e629d21aaaaa85e32c8280f12493",
+    "game/src/game/game.gd": "ae6fbf51f89b6536cfa28505f544bb7ba22402b2eca1593400d5fb303d1ec08f",
+    "game/src/game/net_status.gd": "aedda7e6f90a68c2594a1c75ed6df65b660207a9bcce166a72d024da881b6000",
+    "game/src/game/pad_field.gd": "bcfd87e9b016153b17d20960a9eee3706589da7e46a8a4e71ef2431c0c1d6f55",
+    "game/src/game/projectile.gd": "b6721c35e354afd2b205deafecc97643a44076ce702c7f95b05df32d8d37f587",
+    "game/src/game/session.gd": "93a914c5e019bead9ae63c83de4959a9857c17827142557266da49bc114ba81f",
+    "game/src/game/unit.gd": "724268c0e542552c08bcd6ec8bb9ac912dadbca623d5d7c5efb8651e5cd2f0a5",
+    "game/src/ui/camera_rig.gd": "e60a7bc635b54495ca34f699df52602a34f582d7084cfdc9ebaa98d6e01d6113",
+    "game/src/ui/enemy_bars.gd": "f7a4710199c67782d1faa58ab3d11bcb4fb7a7b23208c8577f94dd1ade6e2e56",
+    "game/src/ui/game_hud.gd": "c094d8431299b9bdf790f8c1ec94a9f487296732076fd280c71e32388bfe6558",
+    "game/src/game/direct_control.gd": "d359aa33bd5350327eb35f6bacd31648937abf8a5c400c0c7bc8a35ff436d93c",
+    "game/src/game/direct_combat.gd": "cdfaf10df743ebc6d049b6d0715f9c686926ba4bfbe4f9db3ad8e2f05c66c19c",
+    "game/src/game/direct_control.gd.uid": "513dd2515b9e3552b0c015ca4bbbd34013a5c730a34d309eaf09b23d307da2e8",
+    "game/src/game/direct_combat.gd.uid": "b7e2d7e6994bce21663a5af275d01a45fad6c6c4b4523bf21e1ec7a4654b1673"
+  },
+  "fixtures": {
+    "direct_combat": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/direct_combat.gd",
+      "sha256": "dc35395598bd49290f7243e4222e0d70a999f2f762eeb8911be4c51c8f57fbf7"
+    },
+    "direct_controls": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/direct_controls.gd",
+      "sha256": "8b9c5b90766af19b66ad00886216368ff65b12a46f7b496816ac4e6880766583"
+    },
+    "direct_coop": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/direct_coop.gd",
+      "sha256": "412f91c8bd823801d9310ed71974cca66e1599657376d8fc46d970436068a45a"
+    },
+    "slave_camp_escape": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/slave_camp_escape.gd",
+      "sha256": "3bb002ad17987a118224635554b88362d05a7d044c499264dfb57becd160dd39"
+    }
+  },
+  "desktop": {
+    "gameplay-direct-combat-production-02": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps23/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/direct_combat.gd",
+        "--label=gameplay-direct-combat-production-02"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 1.7034616110031493,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "e73f578115886e8bb956bd2ae60035a44eca28ed72428dc2bd0bfc7564cf5fbe",
+      "checks": 28,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-direct-combat-production-02.log"
+    },
+    "gameplay-direct-controls-production-02": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps23/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--resolution",
+        "1600x900",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/direct_controls.gd",
+        "--label=gameplay-direct-controls-production-02"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 24.73162355099339,
+      "errors": [],
+      "warnings": [
+        "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+      ],
+      "log_sha256": "bc32337553e2c72909347fb43760d1241a5a4fe4e6bd2e434b1bb81efe8227cf",
+      "checks": 31,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-direct-controls-production-02.log"
+    },
+    "gameplay-direct-coop-production-02": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps23/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/direct_coop.gd",
+        "--label=gameplay-direct-coop-production-02"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 24.94282611698145,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "f86a9fbcd53391defdecfe0b9f619dcf073006cd504a71f1e10f5ddcbc4631d8",
+      "checks": 11,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-direct-coop-production-02.log"
+    },
+    "gameplay-direct-camp-regression-01": {
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/slave_camp_escape.gd",
+        "--label=gameplay-direct-camp-regression-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 12.020560356002534,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "18cd29b51f0dcebb7fad23e5e13e51e2f7ec8f2ac768524d196d1d061096d7f4",
+      "checks": 20,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-direct-camp-regression-01.log"
+    }
+  },
+  "retroid": {
+    "gameplay-direct-controls-58-01": {
+      "checks": 31,
+      "failures": 0,
+      "seconds": 25.962222576141357,
+      "config": {
+        "name": "gameplay-direct-controls-58-01",
+        "save": "user://fixtures/portal.sav",
+        "data": "user://data/astral",
+        "speed": 1,
+        "seconds": 30,
+        "host": false,
+        "players": 1,
+        "terror": false,
+        "isolated": false,
+        "options": {},
+        "tool": "user://direct_controls.gd"
+      },
+      "renderer": "gl_compatibility",
+      "workers": 4,
+      "apk_sha256": "a8e578535829f1497a165a0c0f413ee69a817ac94d2d678e5cce1c698e6bcc58",
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/gameplay-direct-controls-58-01.log",
+      "log_sha256": "3e92b8e70b18c7c67d2b8104e6888232334989a0998025af9a5d4949dfd4fa1b",
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/gameplay-direct-controls-58-01.receipt.json",
+      "receipt_sha256": "6c9a730a9dc8fb048065f04486f90a8870c6c1308d37cda936a04f7a148acab1"
+    },
+    "gameplay-direct-combat-58-01": {
+      "checks": 28,
+      "failures": 0,
+      "seconds": 6.600615501403809,
+      "config": {
+        "name": "gameplay-direct-combat-58-01",
+        "save": "user://fixtures/portal.sav",
+        "data": "user://data/astral",
+        "speed": 1,
+        "seconds": 30,
+        "host": false,
+        "players": 1,
+        "terror": false,
+        "isolated": false,
+        "options": {},
+        "tool": "user://direct_combat.gd"
+      },
+      "renderer": "gl_compatibility",
+      "workers": 4,
+      "apk_sha256": "a8e578535829f1497a165a0c0f413ee69a817ac94d2d678e5cce1c698e6bcc58",
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/gameplay-direct-combat-58-01.log",
+      "log_sha256": "3cdf4fd4657bff0ec1582d0e165ec2689750be7875ddd319ec194c59cb6e5376",
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/gameplay-direct-combat-58-01.receipt.json",
+      "receipt_sha256": "c049d387e665181debf311853d383ad049b0235db5f3a869b6d0d6ae2c49a625"
+    }
+  },
+  "limits": [
+    "No new FPS acceptance or Windows packaging/runtime result.",
+    "Long combat/chapter playthrough, dense-map shoulder-view performance and decorative camera clearance remain open.",
+    "Simulation and render code unchanged outside the explicit mode keep prior performance evidence; this turn did not repeat performance comparisons."
+  ],
+  "reviewed_images": [
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/gameplay-direct-controls-production-02/godot/app_userdata/Cursed Lands/third-person-camp.png",
+      "sha256": "4538aa7ecfbab94e5567692170895891a40cef56f91267765ead7993d201b98c"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/gameplay-direct-controls-58-01-camp.png",
+      "sha256": "0c543739b600e56129e81ead54ea88a65997e8a143390407d853b6636a744dd0"
+    }
+  ],
+  "cleanup": {
+    "installed_private_apk": 58,
+    "autorun_disabled": true,
+    "archived_bench": "files/bench-third-person58-disabled.json",
+    "private_processes": [],
+    "timestamp": 1791468849.7326446
+  },
+  "private_apk": {
+    "private_instrumented": false,
+    "engine_sha256": "424eaf73630ec110faf614f550f8047c24a78e224211df45d8b957bf03b7cc79",
+    "native_sha256": "231ad722fd1f9eb0b5b47d7c9a386931a95b9f7ccb404fd7773a1fc651564fb7",
+    "apk_sha256": "a8e578535829f1497a165a0c0f413ee69a817ac94d2d678e5cce1c698e6bcc58",
+    "changes": [
+      "Place keyboard hints above the lower HUD; ignore own body while aiming interaction/spells; reject overflowing aim vectors"
+    ],
+    "baseline_apk": 57,
+    "accepted": true,
+    "accepted_scope": "Focused experimental gameplay checks: 31 loaded-scene controls/camera and 28 geometric combat/authority; no FPS acceptance",
+    "autorun_disabled": true
+  }
+}

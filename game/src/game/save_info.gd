@@ -100,22 +100,25 @@ static func write_shot_image(slot: String, img: Image) -> void:
 ## The frame on screen, stretched to 256×192 as does. Taken
 ## once the loading screen is gone (the original's autosave runs on the zone's 10th
 ## frame): up to 10 frames later, after drawing.
-static func write_shot(slot: String, vp: Viewport) -> void:
+static func write_shot(slot: String, vp: Viewport, still_current := Callable()) -> bool:
 	if vp == null or DisplayServer.get_name() == "headless":
-		return
+		return false
 	var destination := path(slot, "shot.png")
+	var tree := vp.get_tree()
 	for i in 10:
-		await vp.get_tree().process_frame
+		await tree.process_frame
 		if LoadingScreen._current == null and i >= 1:
 			break
 	await RenderingServer.frame_post_draw
 	if not is_instance_valid(vp):
-		return
+		return false
+	if not still_current.is_null() and (not still_current.is_valid() or not still_current.call()):
+		return false
 	var img := vp.get_texture().get_image()
 	if img == null or img.is_empty():
-		return
+		return false
 	img.resize(SHOT_SIZE.x, SHOT_SIZE.y, Image.INTERPOLATE_BILINEAR)
-	img.save_png(destination)
+	return img.save_png(destination) == OK
 
 
 static func read(slot: String) -> SaveInfo:

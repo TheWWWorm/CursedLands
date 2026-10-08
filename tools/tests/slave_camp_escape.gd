@@ -27,9 +27,11 @@ func _ready() -> void:
 	s.state.set_current_party("FPrison")
 	for i in [1,2]: s.state.ensure_hero(i,"Human Hero","Guest "+str(i))
 	s.state.set_var(0,"bz1h_night",2)
+	s.state.set_var(0,"b.merc2.n11_2",99)
 	await s.enter_zone("bz1h",1,false)
 	var w := s.world; w.set_process(false); w.set_physics_process(false)
 	var vm := w.vm; vm.instances.clear()
+	check(s.state.get_var(0,"b.merc2.n11_2")!=99.,"a fresh zone still recalculates current party dialogue topics")
 	var hero: GameUnit = vm._by_name("Hero")
 	var kel: GameUnit = vm._by_name("merc2")
 	check(hero != null and kel != null,"authored Kir and Kel deployed")
@@ -49,13 +51,15 @@ func _ready() -> void:
 	g.hud.set_move_mode("crawl")
 	check(guest.stance == GameUnit.STANCE_NONE,"client does not predict a refused crouch")
 	s.is_host = true
-	for kind in ["attack","cast","steal","use"]:
+	for kind in ["attack","cast","direct_attack","direct_cast","steal","use"]:
 		guest.order = {}; guest.orders.clear()
 		var spells: Array = guest.get_meta("hero").get("spells",[])
 		s.apply_command({"t":kind,"units":[guest.uid],"unit":guest.uid,"target":1001009,
-			"spell":spells[0] if not spells.is_empty() else "healing{}"},1)
+			"spell":spells[0] if not spells.is_empty() else "healing{}","direction":Vector3.RIGHT},1)
 		check(guest.orders.is_empty(),"authority rejects safe-zone "+kind)
 	var limit: Vector3 = w.zone.restrict
+	var escape_view := Vector3(400,0,-77)
+	check(g.rig.clamp_look_at(escape_view,true)!=escape_view,"camera remains bounded while the night barrier is intact")
 	s.apply_command({"t":"move","units":[guest.uid],"x":limit.x+100,"y":limit.y,"line":true},1)
 	check(not guest.orders.is_empty() and guest.orders[0].get("village_limit",Vector3.ZERO)==limit \
 		and guest.orders[0].to.distance_to(Vector2(limit.x,limit.y))<=limit.z+0.001,"safe-zone move is bounded by the authored village circle")
@@ -69,6 +73,8 @@ func _ready() -> void:
 	var barrier: GameUnit = w.units.get(1001009)
 	check(barrier != null,"original camp barrier exists")
 	barrier.dead = true
+	check(s.village_move_limit()==Vector3.ZERO,"breaking the night barrier releases player movement")
+	check(g.rig.clamp_look_at(escape_view,true)==escape_view,"escape camera can follow the party beyond the old camp circle")
 	vm.spawn("VCheck#1#1",[null])
 	for i in 20: w.time += GameUnit.TICK; vm.tick(GameUnit.TICK)
 	check(not w.units.has(1001009),"original handler removes the destroyed barrier")
@@ -86,12 +92,26 @@ func _ready() -> void:
 		u.order = {}; u.orders.clear(); u.path = PackedVector2Array(); w.nav.track_unit(u)
 	var conditions: Array = vm.ast.scripts["VCheck#1#1a"].blocks[0].conds
 	check(not vm._all(conditions,ScriptVM.Instance.new()),"Terror waits until the guest party clears the barrier")
+	var held_positions := guests.map(func(u):return u.pos)
+	for i in guests.size(): guests[i].pos = Vector2(405.0+i,83)
+	check(not vm._all(conditions,ScriptVM.Instance.new()),"crossing the gate does not release Terror into a crowded escape")
+	guests[0].orders.clear(); guests[0].order = {}
+	vm._all(conditions,ScriptVM.Instance.new())
+	check(not guests[0].orders.is_empty() and guests[0].orders[0].get("story_move",false),
+		"arrival wait resumes an idle guest after a failed route or late join")
+	var player_order := {"type":"move","to":Vector2(401,78),"run":true}
+	guests[0].command(player_order)
+	vm._all(conditions,ScriptVM.Instance.new())
+	check(guests[0].orders.size()==1 and guests[0].orders[0]==player_order,
+		"escape recovery does not overwrite an active player command")
+	for i in guests.size(): guests[i].pos = held_positions[i]
+	preload("res://src/game/script/story_compat.gd").recover(vm)
 	for tick in 1000:
 		w.time += GameUnit.TICK; w._logic_step += 1
 		w.ai.activity.begin_tick(GameUnit.TICK)
 		for u in guests: u.tick(GameUnit.TICK)
 		w.ai.activity.end_tick()
-		if guests.all(func(u: GameUnit):return u.pos.y<84.0): break
+		if guests.all(func(u: GameUnit):return u.pos.y<80.0): break
 	for u in guests:
 		if u._motion:
 			var next: Dictionary = u._motion.sample(u._motion_tick+1)
@@ -99,12 +119,18 @@ func _ready() -> void:
 			var blocker := w.nav.step_blocker(u,next.p,res,next.cell)
 			print("ESCAPE_BLOCKER ",u.controller," radius=",u.body_radius()," tick=",u._motion_tick," q=",next.p," blocker=",blocker.info.get("name","") if blocker else "none"," ",blocker.pos if blocker else Vector2.ZERO," order=",blocker.order if blocker else {}," ",res)
 		print("ESCAPE_ARRIVAL ",u.controller," ",u.pos," ",u.order," pending=",u.orders," avoid=",u._avoid," path=",u.path," waiting=",u._waiting_for())
-	check(guests.all(func(u: GameUnit):return u.pos.y<84.0),"both guests actually route through the opened camp barrier")
+	check(guests.all(func(u: GameUnit):return u.pos.y<80.0),"both guests actually route beyond the crowded escape marks")
 	check(vm._all(conditions,ScriptVM.Instance.new()),"arrival releases the original Terror sequence")
 	guests[0].pos.y = 92; guests[0].dead = true
 	check(vm._all(conditions,ScriptVM.Instance.new()),"optional dead guest does not deadlock the story")
 	guests[0].dead = false; guests[0].controller = -1
 	check(vm._all(conditions,ScriptVM.Instance.new()),"disconnected guest does not deadlock the story")
+	guests[0].controller = 1
+	s.apply_command({"t":"move","units":[guests[0].uid],"x":400.0,"y":77.0,"run":true},1)
+	check(not guests[0].orders.is_empty() and guests[0].orders[0].to==Vector2(400,77) \
+		and not guests[0].orders[0].has("village_limit"),"run-away command after barrier removal is not redirected into camp")
+	s.state.set_var(0,"bz1h_night",0)
+	check(s.village_move_limit()==limit,"missing barrier outside the night escape does not unlock the camp")
 	g.queue_free(); s.queue_free()
 	for i in 8: await get_tree().process_frame
 	print("SLAVE_CAMP_ESCAPE ",checks," checks ",failures," failures")

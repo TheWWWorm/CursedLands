@@ -115,26 +115,29 @@ func _ready() -> void:
 		st.create_party("HeroAlone"); st.add_party_unit("HeroAlone","Hero","Human Hero Hadagan"); st.set_current_party("HeroAlone")
 		st.money = 111; st.items = ["host-bag-sentinel"]
 		check(CoopProgress.main_hero(st) == st.parties[""][0], "base substitution still imports original Zak")
-		ps.coop.joiners.guest = {"idx":1,"purse":{"money":222,"items":["guest-bag-sentinel"]}}
-		ps.coop.joiners.other = {"idx":2,"purse":{"money":333,"items":["other-bag-sentinel"]}}
+		# This purse-only fixture has no imported/active chapter context.
+		ps.coop.joiners.guest = {"idx":1,"active":false,"purse":{"money":222,"items":["guest-bag-sentinel"]}}
+		ps.coop.joiners.other = {"idx":2,"active":false,"purse":{"money":333,"items":["other-bag-sentinel"]}}
 		var pvm := vm_for(ps,"bz13h")
 		ps.coop.with_purse(1,func(): pvm.fire_event("#OnBriefingComplete",[0.0,"b.Nalo.Kr60"]))
 		check(st.current_party == "Pretty" and st.money == 0 and st.items.is_empty(),"original Nalo handoff selects Nalo's bag")
 		check(st.party_bags.HeroAlone == {"money":111,"items":["host-bag-sentinel"]},"waiting host bag retains its money and items")
-		check(ps.coop.joiners.guest.purse == {"money":222,"items":["guest-bag-sentinel"]},"guest closing Nalo dialogue retains personal bag")
+		check(ps.coop.joiners.guest.purse == {"money":0,"items":[]},"guest closing Nalo dialogue gets a separate empty temporary bag")
+		check(st.coop.guest_roles[1].bags[""] == {"money":222,"items":["guest-bag-sentinel"]},"guest normal bag waits with original character")
 		ps.coop.with_purse(1,func():
 			ps.coop.with_purse(0,func(): st.money += 10; st.items.append("host-reward"))
 			ps.coop.with_purse(2,func(): st.money += 20; st.items.append("other-reward"))
 			st.money += 30; st.items.append("guest-reward"))
 		check(st.money == 10 and st.items == ["host-reward"],"nested host reward has correct owner")
 		check(ps.coop.joiners.other.purse == {"money":353,"items":["other-bag-sentinel","other-reward"]},"nested third-player reward has correct owner")
-		check(ps.coop.joiners.guest.purse == {"money":252,"items":["guest-bag-sentinel","guest-reward"]},"outer guest scope resumes its own bag")
+		check(ps.coop.joiners.guest.purse == {"money":30,"items":["guest-reward"]},"outer guest scope resumes its temporary bag")
 		ps.coop.with_purse(1,func(): vm_call(pvm,"SetCurrentParty",[0.0,"HeroAlone"]))
 		check(st.money == 111 and st.items == ["host-bag-sentinel"],"return restores waiting protagonist bag")
 		check(st.party_bags.Pretty == {"money":10,"items":["host-reward"]},"Nalo's bag stays with Nalo")
 		ps.coop.with_purse(1,func(): vm_call(pvm,"AddLoot",[0.0,"Pretty","HeroAlone"]))
 		check(st.money == 121 and st.items == ["host-bag-sentinel","host-reward"],"authored AddLoot uses named campaign bags")
-		check(ps.coop.joiners.guest.purse.money == 252,"campaign loot copy leaves guest purse intact")
+		check(ps.coop.joiners.guest.purse == {"money":30,"items":["guest-reward"]},"authored AddLoot transfers guest Nalo loot to its own captive bag")
+		check(st.coop.guest_roles[1].bags[""] == {"money":222,"items":["guest-bag-sentinel"]},"normal guest purse stays parked through nested rewards and transfers")
 		check(st.save("user://party-purses.sav") == OK,"party bags save")
 		var loaded := CampaignState.load_from("user://party-purses.sav")
 		check(loaded.current_party == st.current_party and loaded.money == st.money and loaded.items == st.items and loaded.party_bags == st.party_bags,"saved party bags reload without reassignment")

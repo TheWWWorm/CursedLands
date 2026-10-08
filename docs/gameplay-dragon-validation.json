@@ -1,0 +1,359 @@
+{
+  "date": "2026-10-08",
+  "baseline_commit": "9006daeec52382fec3a35c17630e33dc48154b2e",
+  "scope": "U25/G07 original amulet-dragon cycles for extra co-op participants; G12 preservation of script-selected NPC behavior and follow targets. Functional validation only.",
+  "contract": [
+    "Keep the original three dragon follow/return cycles and saved instruction indexes unchanged. Clone only the structurally identical third-role chain for additional eligible participants.",
+    "Retain item-55 and DFol gates, strict five-unit follow range, three-tick initial delay, home order at y<295 and the original 150-tick departure wait. The eventual original departure is intentional.",
+    "Late guests are armed, guest-controlled native companions are not duplicated, and old-save recovery is idempotent. Dead, hidden or disconnected extra participants cannot trigger a new follow.",
+    "Save script-selected living NPC behavior, mode data, motivation overrides and gait. Restore hero targets by stable ownership and roster index; an absent guest cannot fall back to an unrelated recycled unit id.",
+    "Resolve saved follow references after load, party redeployment and late arrival/reconnect. Persistence and rebinding run at those events, without a new per-tick actor scan.",
+    "Old saves without the optional NPC behavior section retain authored defaults. State that was never saved cannot be recovered."
+  ],
+  "source_sha256": {
+    "game/src/game/script/story_coop_traps.gd": "df6b6df36465ad77eafeb778e1fad4a3d8381c3ff2aa09213c4fc1f2781d1709",
+    "game/src/game/script/story_compat.gd": "a96e9ae3999b2711122746ebf6838a2f3a4d55d0b97c94cb02ea9f29da7a9b2c",
+    "game/src/game/script/vm.gd": "839b8be4cdf768fdb45efe5afb666d432024d705a9e6768013f9dcfcb4c82fe7",
+    "game/src/game/session.gd": "f929a79bbd8a07f006da3c76b3808ff4bd62fc413147b9025ce64de9f1f3f341",
+    "tools/tests/story_coop_dragon.gd": "0fdfcf207e9c21faa1d288c83e41533298a8a504f755e6b051d74dfd190fbc7f",
+    "tools/tests/story_coop_dragon_net.gd": "6d4a1551d5cd6199d9ef0ad5f36bd83b19126de3b4c2875202896b9a3decd434"
+  },
+  "original_script": {
+    "path": "/home/llm2x/Documents/EI/inspection/samples/scripts/zone6.txt",
+    "sha256": "d4918cdc920bf7af06d0ea6402a6a080b47edcdb53f84e78263ceade605664c9",
+    "map": "gz6g",
+    "dragon_object": 1155
+  },
+  "production": {
+    "seconds": 5.922089369996684,
+    "command": [
+      "/home/llm2x/.local/bin/godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+      "--export-release",
+      "Linux",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps35/CPU.x86_64"
+    ],
+    "engine_source": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/fast-runtime.x86_64",
+    "errors": [],
+    "sha256": {
+      "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+      "CPU.pck": "d9c2c80b10d3fade93f3bea8b0946e7101e46744a98a6192383aa8548722d654",
+      "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+    }
+  },
+  "baseline_production": {
+    "seconds": 5.971756006008945,
+    "command": [
+      "/home/llm2x/.local/bin/godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+      "--export-release",
+      "Linux",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps34/CPU.x86_64"
+    ],
+    "engine_source": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/fast-runtime.x86_64",
+    "errors": [],
+    "sha256": {
+      "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+      "CPU.pck": "0aa305c36863ebc864c726163c1f5af73303e24cf02f1415e8ec45924b5a1e12",
+      "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+    }
+  },
+  "runs": {
+    "gameplay-dragon-before-04": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps34/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_dragon.gd",
+        "--label=gameplay-dragon-before-04"
+      ],
+      "exit_code": 1,
+      "stopped": false,
+      "seconds": 2.1035894880187698,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "5e152dedd15e3380cd83ea60ccaddd6c8a66a1f343e9273a3545963cb8854efc",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-dragon-before-04.log",
+      "checks": 40,
+      "failures": 10
+    },
+    "gameplay-dragon-state-final-source-01": {
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_dragon.gd",
+        "--label=gameplay-dragon-state-final-source-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 3.3060264679952525,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "22c2d4e3b24af44ffaabab58b0e6eeba3140b049a428ebb3a66cb47f0c753b40",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-dragon-state-final-source-01.log",
+      "checks": 40,
+      "failures": 0
+    },
+    "gameplay-dragon-production-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps35/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_dragon.gd",
+        "--label=gameplay-dragon-production-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 2.20401951301028,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "b14a68d675c7cb43a1ecfeedf2ad51bac3cc84763dfe97051a7ef4f2fcd5ed33",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-dragon-production-01.log",
+      "checks": 40,
+      "failures": 0
+    },
+    "gameplay-dragon-net-production-02": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps35/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_dragon_net.gd",
+        "--label=gameplay-dragon-net-production-02"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 24.644554241996957,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "36e2e69d4742a1c10958f00e90877025de494624164c17d8969f173d01287ebb",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-dragon-net-production-02.log",
+      "checks": 32,
+      "failures": 0
+    },
+    "gameplay-dragon-traps-production-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps35/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_traps.gd",
+        "--label=gameplay-dragon-traps-production-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 2.604482218011981,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "76defaaae13802f876387234399fed2b5e2dc546e8995d2d2d06ffc18a219b0b",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-dragon-traps-production-01.log",
+      "checks": 55,
+      "failures": 0
+    },
+    "gameplay-dragon-predicates-net-production-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps35/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_predicates_net.gd",
+        "--label=gameplay-dragon-predicates-net-production-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 27.544191605004016,
+      "errors": [],
+      "warnings": [
+        "WARNING: LanDiscovery: port 27016 is in use; this game is not listed on the local network."
+      ],
+      "log_sha256": "4175e0df13d4b4dc7af48dc37dce1563d77452ef7ed5fbb87d67c5b7b57297ea",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-dragon-predicates-net-production-01.log",
+      "checks": 21,
+      "failures": 0
+    },
+    "gameplay-dragon-roles-net-production-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps35/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_guest_roles_net.gd",
+        "--label=gameplay-dragon-roles-net-production-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 56.8985251809936,
+      "errors": [],
+      "warnings": [
+        "WARNING: LanDiscovery: port 27016 is in use; this game is not listed on the local network."
+      ],
+      "log_sha256": "48392e6af047c623ab639d6cf704ce54a210bffd5dfebf00c7ea97fd3df1bd2c",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-dragon-roles-net-production-01.log",
+      "checks": 31,
+      "failures": 0
+    }
+  },
+  "retroid": {
+    "apk": {
+      "private_instrumented": false,
+      "engine_sha256": "424eaf73630ec110faf614f550f8047c24a78e224211df45d8b957bf03b7cc79",
+      "native_sha256": "231ad722fd1f9eb0b5b47d7c9a386931a95b9f7ccb404fd7773a1fc651564fb7",
+      "apk_sha256": "bb890a94715a63a1728b0fd5b94fe8cfd5afe604017bd5b066a8ef19f7460856",
+      "changes": [
+        "Original dragon guest follow cycles and persistence of script-selected NPC behavior/targets across saves and reconnects"
+      ],
+      "baseline_apk": 66,
+      "accepted": true,
+      "acceptance_scope": "40 original dragon script checks with synthetic actors, 55 LiA trap checks and 21 real ENet guard/save/load checks. Functional validation only; no base-map Android playthrough or FPS acceptance.",
+      "autorun": false,
+      "cleanup": {
+        "disabled_config": "files/bench-dragon67-disabled.json",
+        "autorun_absent_shell_test_exit": 1,
+        "private_processes": [],
+        "installed_apk_sha256": "bb890a94715a63a1728b0fd5b94fe8cfd5afe604017bd5b066a8ef19f7460856",
+        "normal_app_unchanged": true
+      }
+    },
+    "runs": {
+      "gameplay-dragon67-state-01": {
+        "receipt": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/gameplay-dragon67-state-01.receipt.json",
+        "receipt_sha256": "8c86db69dab793898ab864a7f7beeed34693f9945bd5fde14860b8dca707e00d",
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/gameplay-dragon67-state-01.log",
+        "log_sha256": "f602b1f89be825281a0c54ca4e56e0f6155876038eb51dfc5aafc58464c67f8e",
+        "seconds": 6.656372308731079,
+        "errors": [],
+        "apk_sha256": "bb890a94715a63a1728b0fd5b94fe8cfd5afe604017bd5b066a8ef19f7460856",
+        "checks": 40,
+        "failures": 0
+      },
+      "gameplay-dragon67-traps-01": {
+        "receipt": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/gameplay-dragon67-traps-01.receipt.json",
+        "receipt_sha256": "02c2eb44af847cecc939d43acfed92f49869cb7712fe2df9a9d84af0a3af1b88",
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/gameplay-dragon67-traps-01.log",
+        "log_sha256": "6addbba670ef056aba1e5d242b973b495b3a6c905ff211d0b2b7bec32f21a6fa",
+        "seconds": 7.6124186515808105,
+        "errors": [],
+        "apk_sha256": "bb890a94715a63a1728b0fd5b94fe8cfd5afe604017bd5b066a8ef19f7460856",
+        "checks": 55,
+        "failures": 0
+      },
+      "gameplay-dragon67-predicates-net-01": {
+        "receipt": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/gameplay-dragon67-predicates-net-01.receipt.json",
+        "receipt_sha256": "fa71c99e939a2374970b3db7737e613378f30c64b93b9b3f55cfe9e5d1fd4f9e",
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/gameplay-dragon67-predicates-net-01.log",
+        "log_sha256": "d68963521a4c0378249f9c7a02d1fad7e963c0c8c21ac019d9ce0b454c391653",
+        "seconds": 52.310452461242676,
+        "errors": [],
+        "apk_sha256": "bb890a94715a63a1728b0fd5b94fe8cfd5afe604017bd5b066a8ef19f7460856",
+        "checks": 21,
+        "failures": 0
+      }
+    },
+    "cleanup": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/dragon67-cleanup.json"
+  },
+  "diagnostics": {
+    "gameplay-dragon-net-source-01": {
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_dragon_net.gd",
+        "--label=gameplay-dragon-net-source-01"
+      ],
+      "exit_code": 1,
+      "stopped": false,
+      "seconds": 20.135711643990362,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "65aaa7f12ed40ecaf8d066d290d7d6b9cbbb5b32bea7d772c53f26f17da10a9c",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-dragon-net-source-01.log",
+      "checks": 21,
+      "failures": 2
+    },
+    "gameplay-dragon-net-source-02": {
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_dragon_net.gd",
+        "--label=gameplay-dragon-net-source-02"
+      ],
+      "exit_code": 1,
+      "stopped": false,
+      "seconds": 20.330312745005358,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "568b944aae515c9efedfb40bd051fa8e86b914d20025282a6f3c3fbd9bb5d0b7",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-dragon-net-source-02.log",
+      "checks": 21,
+      "failures": 2
+    }
+  },
+  "diagnostic_limits": [
+    "Intermediate source runs reproduce lost NPC follow state after reload and reconnect, with 21 checks and two failures. These intermediate source trees were not frozen independently and are diagnostic evidence, not release-baseline comparisons.",
+    "The final 32-check ENet fixture additionally replaces the guest body through real party redeployment, saves while its guest is absent, reloads host-only and reconnects before completing the original departure cooldown.",
+    "Concurrent desktop guard/guest-role regressions report an occupied LAN-discovery port 27016. Their independent gameplay ENet ports complete all assertions; discovery and performance are not tested by those runs."
+  ],
+  "excluded_attempts": [
+    "The initial synthetic fixture used the wrong quest-item key and compared numeric trace arguments against an Object. Fixed fixtures use the actual database key and a GameUnit type guard. Initial before-01/source-01 runs are excluded.",
+    "Before-02/-03 and production-net-01 used earlier fixture revisions. The recorded before-04/production-01 state pair shares the final fixture; production-net-02 is the final network fixture."
+  ],
+  "limitations": [
+    "Desktop network validation uses the actual original map/dragon with separate ENet peer APIs in one process; unrelated AI and story threads are paused. Movement orders and saved state are verified, not the full harpy quest or complete path traversal.",
+    "Retroid dragon validation executes the original base-campaign script text with synthetic actors while LiA assets are loaded. It is not an Android base-map playthrough. The Retroid guard regression does load the actual LiA map and peers.",
+    "Named/cosmetic teleport and base captivity predicates, full temporary-role quests and later chapter/reconnect coverage remain open.",
+    "No new FPS result, Windows runtime acceptance, shipping-process delivery acceptance or public release. Protocol remains 11."
+  ]
+}

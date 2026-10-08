@@ -81,7 +81,7 @@ func _ready() -> void:
 
 func active() -> bool:
 	var s := game.session if game else null
-	return s != null and game.world != null and input_shows() and not s.shop_available() \
+	return s != null and game.world != null and (input_shows() or (game.direct and game.direct.active())) and (not s.shop_available() or (game.direct and game.direct.active())) \
 			and not (game.hud and game.hud._movie and game.hud._movie.visible)
 
 
@@ -106,7 +106,8 @@ func entries() -> Array:
 	if w == null or mine.is_empty():
 		return out
 	var lead: GameUnit = mine[0]
-	var always := GameData.option(OPTION) == ALWAYS
+	var direct := game.direct != null and game.direct.active()
+	var always := direct or GameData.option(OPTION) == ALWAYS
 	var hl: GameUnit = null
 	if PadInput.field != null and is_instance_valid(PadInput.field) and PadInput.active == "pad":
 		hl = PadInput.field.call("target_unit")
@@ -120,9 +121,9 @@ func entries() -> Array:
 		if is_instance_valid(u):
 			near.append(u.pos)
 	for u: GameUnit in w.visible_units():
-		if u.dead or u.hidden or not u.visible or u.controller >= 0 or u.model == null or u.max_hp <= 0.0:
+		if u.dead or u.hidden or not u.visible or (u.controller >= 0 and not direct) or u.model == null or u.max_hp <= 0.0:
 			continue
-		if not (w.is_enemy(lead, u) or w.is_enemy(u, lead)):
+		if not direct and not (w.is_enemy(lead, u) or w.is_enemy(u, lead)):
 			continue
 		var close := false
 		for p: Vector2 in near:
@@ -135,7 +136,7 @@ func entries() -> Array:
 		out.append([u, 1.0 if always or hurt or u == hl else 0.0,
 			u.pos.distance_squared_to(focus) if focus != Vector2.INF else 0.0])
 	out.sort_custom(func(a, b): return float(a[2]) < float(b[2]))
-	if out.size() > MAX:
+	if not direct and out.size() > MAX:
 		out.resize(MAX)
 	return out
 

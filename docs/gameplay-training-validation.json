@@ -1,0 +1,290 @@
+{
+  "baseline_commit": "8fac4f5",
+  "export": {
+    "seconds": 5.918781783984741,
+    "command": [
+      "/home/llm2x/.local/bin/godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+      "--export-release",
+      "Linux",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps14/CPU.x86_64"
+    ],
+    "engine_source": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/fast-runtime.x86_64",
+    "errors": [],
+    "sha256": {
+      "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+      "CPU.pck": "670a84a1e1c424e5bccec319eb28a691f8985d03c11c22d8f10480681780174d",
+      "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+    }
+  },
+  "tests": {
+    "gameplay-training-before-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps13/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/training_reset.gd",
+        "--label=gameplay-training-before-01"
+      ],
+      "exit_code": 1,
+      "stopped": false,
+      "seconds": 6.713136662991019,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "4e356e24f028119f619a99be90606b3c5bf2a3e74677aaf722efdf0429b24495",
+      "raw_log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-training-before-01.log",
+      "checks": 92,
+      "failures": 66
+    },
+    "gameplay-training-after-02": {
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/training_reset.gd",
+        "--label=gameplay-training-after-02"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 8.717207664012676,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "48f1101c2dbb11176efefbeb3639505b0fbaef5c42af1647c5e2b11781fb5418",
+      "raw_log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-training-after-02.log",
+      "checks": 92,
+      "failures": 0
+    },
+    "gameplay-training-production-02": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps14/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--resolution",
+        "1600x900",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/training_reset.gd",
+        "--label=gameplay-training-production-02"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 10.119483563001268,
+      "errors": [],
+      "warnings": [
+        "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+      ],
+      "log_sha256": "55da4566220ff3c4d97edb11fbdea926334c91f6f12361204bd6cdf5aa73096f",
+      "raw_log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-training-production-02.log",
+      "checks": 92,
+      "failures": 0
+    },
+    "gameplay-training-coop-03": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps14/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--resolution",
+        "1600x900",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/training_coop.gd",
+        "--label=gameplay-training-coop-03"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 35.757379558024695,
+      "errors": [],
+      "warnings": [
+        "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+      ],
+      "log_sha256": "69fb30200f3705898ec3a89483adb6a12a872f0539a51d3631953b4c5a0322b0",
+      "raw_log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-training-coop-03.log",
+      "checks": 16,
+      "failures": 0
+    },
+    "gameplay-infusions-before-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps13/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/gipat_infusions.gd",
+        "--label=gameplay-infusions-before-01"
+      ],
+      "exit_code": 1,
+      "stopped": false,
+      "seconds": 2.1039674950006884,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "c21d972a1fb20dd4b099b4877351ef2a7a98e9b46a6fae493544cb833479a795",
+      "raw_log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-infusions-before-01.log",
+      "checks": 36,
+      "failures": 24
+    },
+    "gameplay-infusions-production-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps14/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/gipat_infusions.gd",
+        "--label=gameplay-infusions-production-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 2.103931101009948,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "a127f3913d0503fc14d67b460949dd028b6b9b9cc8a2ad64ca9671d3180ceb25",
+      "raw_log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-infusions-production-01.log",
+      "checks": 36,
+      "failures": 0
+    },
+    "gameplay-infusions-astral-01": {
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/gipat_infusions.gd",
+        "--label=gameplay-infusions-astral-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 3.6058537760109175,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "25165eb3e8482be8a42c262d6fb7b9ceafce279230df84cbc5c8c59ab8cc2d0f",
+      "raw_log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-infusions-astral-01.log",
+      "checks": 35,
+      "failures": 0
+    }
+  },
+  "retroid": {
+    "config": {
+      "name": "training-reset55-01",
+      "save": "user://fixtures/portal.sav",
+      "data": "user://data/astral",
+      "speed": 1,
+      "seconds": 30,
+      "host": false,
+      "players": 1,
+      "terror": false,
+      "isolated": false,
+      "options": {},
+      "tool": "user://training_reset.gd"
+    },
+    "renderer_requested": "gl_compatibility",
+    "workers_requested": 4,
+    "apk_sha256": "f5903a99e9bb20f2f458db35c8bda81a73a5437ce78a510ff78fbcc4e4a9560a",
+    "seconds": 31.071233987808228,
+    "errors": [],
+    "receipt": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/training-reset55-01.receipt.json",
+    "raw_log": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/training-reset55-01.log",
+    "checks": 92,
+    "failures": 0,
+    "legal_orders": 5247,
+    "cold_menu_us": 5103,
+    "repeated_menu_us": 205.3
+  },
+  "android_export": {
+    "private_instrumented": false,
+    "engine_sha256": "424eaf73630ec110faf614f550f8047c24a78e224211df45d8b957bf03b7cc79",
+    "native_sha256": "231ad722fd1f9eb0b5b47d7c9a386931a95b9f7ccb404fd7773a1fc651564fb7",
+    "apk_sha256": "f5903a99e9bb20f2f458db35c8bda81a73a5437ce78a510ff78fbcc4e4a9560a",
+    "changes": [
+      "Committed gameplay fixes through 8fac4f5 plus full training reset, order-independent ability prices and Gipath infusion stock"
+    ],
+    "baseline_apk": 54,
+    "accepted": false
+  },
+  "android_cleanup": {
+    "installed_private_apk": 55,
+    "apk_sha256": "f5903a99e9bb20f2f458db35c8bda81a73a5437ce78a510ff78fbcc4e4a9560a",
+    "autorun_disabled": true,
+    "archived_bench": "files/bench-disabled-training55.json",
+    "bench_sha256": "2409f58fb14f5360e91545cd57183eeeb2176efe140a3d2b9c6f07484131de80",
+    "processes_remaining": {
+      "org.cursedlands.performance": "",
+      "org.cursedlands.performance:simulation": ""
+    },
+    "original_app_untouched": true
+  },
+  "source_sha256": {
+    "game/src/game/training_refund.gd": "4aa8a504a2eb8eaa8fefe127bcb1f77a80c2ab896a19e49f844ae6eb62006cc9",
+    "game/src/game/perks.gd": "b8a9eeaf30e525f2043117a5f4231faed19cd749f1f06beb7996674255d48403",
+    "game/src/game/shops.gd": "91f35cccd1549c934843dbab3a339c837fe930c2eba74f24f4f2a78d16e98fc4",
+    "game/src/game/coop_progress.gd": "8cfd89c7b0f2cc6e0c5f36dcf3922b8a69fec14804bcc3b547bb81af7bd31163",
+    "game/src/game/session.gd": "088f30746efcfb0b33db0abe80d5c44d2a584fe78b051fbda0307c7fea8865dc",
+    "game/src/ui/camp_view.gd": "7000084b8d8fd54f8510aef07c62a166ed839722da205360a8296766e917326b",
+    "game/src/ei/remake_text.gd": "b0846c2947a1ade7967aea6845cca146a35420d2530582dbc6cfb1c515993820",
+    "tools/tests/training_reset.gd": "e4f96266075715e6c5cb3d1a75ee05fd1d1fc5a85c0f6f0df71bdc7282f9c13f",
+    "tools/tests/training_coop.gd": "263542bf1fa832ab2a78ea65b2397da84b1293fa314877ccc66b9e747f9d4684",
+    "tools/tests/gipat_infusions.gd": "2c1d2c96bf9625224fe226cd2a9d47ff5f5151da5e7b54a153ded05462c8ac89"
+  },
+  "rules": [
+    "All six trainable numerical skills and all ability ranks reset, including starting ranks and skill gifts. Base STR/DEX/INT, earned XP and equipment remain. Gift receipts remain so awards cannot repeat.",
+    "An allocation costs the minimum original rounded cost over all prerequisite-respecting orders. Each purchase charges the difference between final and previous allocation prices. Identical cost chains share memoized subproblems, with a conservative branch bound; no approximate answer is substituted.",
+    "Pre-version-2 records retain their ordered old ability price as a one-time overpayment credit. New purchase/reset cycles return exactly the same points.",
+    "Gipath campaign trader 2 stocks original ic/it infusion runes. Old trader records gain only missing entries once; sold-out stock, unrelated goods and sold prototypes persist. Native LMP and other campaign masks are unchanged."
+  ],
+  "exhaustive_orders_per_campaign": 5247,
+  "visual_review": [
+    "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/gameplay-training-coop-03/godot/app_userdata/Cursed Lands/training-before.png",
+    "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/gameplay-training-coop-03/godot/app_userdata/Cursed Lands/training-after.png"
+  ],
+  "excluded": [
+    "training-after-01 used an incorrect hard-coded old rounded price (540 instead of 580) for two assertions. The independent oracle passed. Fixed expectation uses native rounding.",
+    "training-astral-01 hard-coded two base-game prices despite the expansion having its own skill curve; corrected campaign-aware fixture passes on Retroid.",
+    "training-production-01 used a nested test Session with ordinary single-player worker launch, whose RPC paths require the production scene hierarchy. Corrected targeted fixture reloads the serialized state explicitly.",
+    "training-coop-01/02 had RPC errors during fixture teardown; sessions are marked offline before closing peers. Their guest viewport was not configured to render while offscreen, so those black screenshots are excluded. training-coop-03 renders the guest viewport and closes cleanly."
+  ],
+  "limitations": [
+    "Prepared reset, pricing, save and shop checks; not an entire campaign playthrough.",
+    "Menu calculation timings are diagnostics, not gameplay FPS evidence.",
+    "Retroid test uses the expansion data, with the private production engine APK55. The Gipath shop and base-game Zak checks use Linux original data.",
+    "Windows packaging and the remaining gameplay-gap list remain open."
+  ]
+}

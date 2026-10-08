@@ -1,0 +1,163 @@
+{
+  "date": "2026-10-08",
+  "status": "local post-Experimental-6 correction; unpublished",
+  "issue": "U09: Terror remains in Portal waterside settlement after the escape and Catacombs.",
+  "findings": [
+    "The Windows Experimental 6 archive contains the earlier added-actor tombstone fix; its relevant scripts match the shipped Linux package.",
+    "An existing local route checkpoint already has escape-removal flag q.gz1h.q02h.2=2, no unfinished removal thread, and living Terror 666666 saved at (79.5225,59.2278). Absence-based migration cannot recognize this previously resurrected actor.",
+    "Original Portal scripts VCheck#1#8a and VTriger#1#2 set that flag, sleep seven script ticks, and remove actor 666666. The completed flag is never an instruction to keep Terror in the settlement."
+  ],
+  "changes": [
+    "Recover an already-resurrected Portal Terror when its original removal is completed. Restrict recovery to the LiA Portal zone, zone1evil.mob, and inspected original removal bodies. Preserve an active removal frame so mid-disappearance saves resume their timer.",
+    "Older saves without carried-inventory snapshots can prove actor absence from the complete living-unit plus corpse lists. Keep living actors and dead lootable actors.",
+    "Recovery runs while the host builds the saved world, before publishing its actors to clients; subsequent saves retain the actor tombstone."
+  ],
+  "source_checkpoint": {
+    "path": "/home/llm2x/Documents/EI/local/lost-in-astral/checks/story-route6-profile/godot/app_userdata/Evil Islands Remake (PoC)/saves/lost_in_astral/lia_story_02_catacombs.sav",
+    "sha256": "c1472aa344b5fd112a2dac5ed04e56389050b32f3d2258c365f89ab7cb07503c",
+    "origin": "existing local LiA route checkpoint, not the user's Windows save; read-only source copied into disposable profile"
+  },
+  "original_contract": {
+    "file": "inspection/lost-in-astral/scripts/zone1.txt",
+    "scripts": [
+      "VCheck#1#8a",
+      "VTriger#1#2"
+    ],
+    "flag": "q.gz1h.q02h.2",
+    "actor": 666666,
+    "wait_ticks": 7
+  },
+  "candidate_runs": [
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps50/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/terror_revisit_net.gd",
+        "--label=terror-return-after-01",
+        "--save=/home/llm2x/Documents/EI/local/lost-in-astral/checks/story-route6-profile/godot/app_userdata/Evil Islands Remake (PoC)/saves/lost_in_astral/lia_story_02_catacombs.sav"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 78.05999021299067,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "476df599aa36e8d5cdea68c6dd74aced56114a8e310aadfa49eeb7c961fae9e6",
+      "name": "terror-return-after-01",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/terror-return-after-01.log",
+      "checks": 21,
+      "failures": 0
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps50/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/terror_active_save.gd",
+        "--label=terror-active-save-after-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 44.46842603202094,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "f63db41dbc6134bc9f87fa718d86a3660af2792f807bb611aba56912f105fde6",
+      "name": "terror-active-save-after-01",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/terror-active-save-after-01.log",
+      "checks": 12,
+      "failures": 0
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps50/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/added_actor_lifetime.gd",
+        "--label=terror-legacy-removal-after-02"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 20.55010296899127,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "011745b5f412b71a9a1c66386d96c6b385000c1f4761af508a551cbe0bb2dd53",
+      "name": "terror-legacy-removal-after-02",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/terror-legacy-removal-after-02.log",
+      "checks": 17,
+      "failures": 0
+    }
+  ],
+  "baseline_run": {
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/experimental6-audit/CPU.x86_64",
+      "--audio-driver",
+      "Dummy",
+      "--render-thread",
+      "safe",
+      "--headless",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/terror_revisit_net.gd",
+      "--label=exp6-terror-return-before-01",
+      "--save=/home/llm2x/Documents/EI/local/lost-in-astral/checks/story-route6-profile/godot/app_userdata/Evil Islands Remake (PoC)/saves/lost_in_astral/lia_story_02_catacombs.sav"
+    ],
+    "exit_code": 1,
+    "stopped": false,
+    "seconds": 84.53544489698834,
+    "errors": [],
+    "warnings": [],
+    "log_sha256": "d3e812c0374b35cd8bd11710ae9b92f837af7d89c9783bb911a7aa38f489855f",
+    "name": "exp6-terror-return-before-01",
+    "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/exp6-terror-return-before-01.log",
+    "checks": 21,
+    "failures": 5
+  },
+  "export": {
+    "seconds": 5.977145624987315,
+    "command": [
+      "/home/llm2x/.local/bin/godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+      "--export-release",
+      "Linux",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps50/CPU.x86_64"
+    ],
+    "engine_source": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/fast-runtime.x86_64",
+    "errors": [],
+    "sha256": {
+      "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+      "CPU.pck": "02df6d43e2ee99e62e418772e62f4fa9bac43a453dd1872a6f7a9af525ff110e",
+      "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+    }
+  },
+  "sha256": {
+    "game/src/game/campaign_state.gd": "5825b88ea87dcbbbe43b861eeec20410093248b027272fde4bc5043deb44046d",
+    "game/src/game/script/story_compat.gd": "7829b3f62ec3796ad93b7c616a934151e3687c6dbfb8436e76a7424e43cfb3be",
+    "tools/tests/terror_revisit_net.gd": "17e1feae8944d91516a7c0cf07a5e0592d19ff978bb44d7c2daa5da7bf5efe79",
+    "tools/tests/terror_active_save.gd": "99729b1cca723dbd420cdbbfa4ef1c1a04513582e22d2784c4644b524b403eb9",
+    "tools/tests/added_actor_lifetime.gd": "2d391985f8a3fb4deb1b831e7c1bff791af8b150192762a502471940ab5cf24f"
+  },
+  "limits": [
+    "50 focused checks pass; the actual Experimental 6 package fails five corresponding return/reload assertions.",
+    "Full world teardown/rebuild, two ENet peers, late join and save/reload are exercised. The fixture requests zone transfers through Session.enter_zone; it does not play every quest between Portal and Catacombs.",
+    "The supplied Windows screenshot and report locate the symptom; the user's actual save was not available. No Windows/Android/macOS runtime test or full chapter certification is claimed.",
+    "Other inhabitants' saved health/positions and party money/inventory remain unchanged. Previously killed villagers are not resurrected by this repair.",
+    "Published Experimental 6 artifacts and tag remain unchanged; performance is deferred."
+  ]
+}

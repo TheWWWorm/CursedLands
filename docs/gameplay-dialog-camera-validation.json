@@ -1,0 +1,159 @@
+{
+  "baseline_commit": "3172ede",
+  "export": {
+    "seconds": 5.973341734992573,
+    "command": [
+      "/home/llm2x/.local/bin/godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+      "--export-release",
+      "Linux",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps11/CPU.x86_64"
+    ],
+    "engine_source": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/fast-runtime.x86_64",
+    "errors": [],
+    "sha256": {
+      "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+      "CPU.pck": "b6babaedc34ade3b4a1d649b60c9f610293fe69c582343fdc247672dc40f9307",
+      "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+    }
+  },
+  "tests": {
+    "gameplay-dialog-camera-before-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps09/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/dialog_camera_obstacles.gd",
+        "--label=gameplay-dialog-camera-before-01"
+      ],
+      "exit_code": 1,
+      "stopped": false,
+      "seconds": 1.8035354229796212,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "log_sha256": "7a92c83a42163192cb95388762191e5ced78c6e68f977f0645ad5b910f2c3816",
+      "raw_log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-dialog-camera-before-01.log",
+      "checks": 7,
+      "failures": 2
+    },
+    "gameplay-dialog-camera-after-03": {
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/dialog_camera_obstacles.gd",
+        "--label=gameplay-dialog-camera-after-03"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 3.0057212600077037,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "log_sha256": "6e2446077f8ffbeb6a8bdb5282f9ac88db3b4448dae0a2675e0554bfa35baf87",
+      "raw_log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-dialog-camera-after-03.log",
+      "checks": 7,
+      "failures": 0
+    },
+    "gameplay-dialog-camera-production-02": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps11/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--resolution",
+        "1600x900",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/dialog_camera_obstacles.gd",
+        "--label=gameplay-dialog-camera-production-02"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 8.214992504013935,
+      "errors": [],
+      "warnings": [
+        "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+      ],
+      "log_sha256": "c3bff6b7ec526b1871406e0e801749da7727081fe3a1881bc39195d3faeb6c17",
+      "raw_log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-dialog-camera-production-02.log",
+      "checks": 9,
+      "failures": 0
+    },
+    "gameplay-dialog-camp-02": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps11/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--resolution",
+        "1600x900",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/dialog_camera_camp.gd",
+        "--label=gameplay-dialog-camp-02"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 25.54378972298582,
+      "errors": [],
+      "warnings": [
+        "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+      ],
+      "log_sha256": "01b3a26961e47891267ecbf6b601d9020f65d902b5d06fc168432471cdce9e00",
+      "raw_log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-dialog-camp-02.log"
+    }
+  },
+  "source_sha256": {
+    "game/src/game/dialog_camera.gd": "8c7e2903679fa67c9e8d203224fccb883a5d8e2f7a9ed3eb0cc5dfbfb41a370a",
+    "tools/tests/dialog_camera_obstacles.gd": "316a64b51899a776cfc2fd11412a8d12bbf5d6a9cfd0569b4886110d5bb6be25",
+    "tools/tests/dialog_camera_camp.gd": "36cb8b398efdf4ff0e2bdb0442eedd2cffc78051d3ec71f9d0e4a83a9bebba02"
+  },
+  "camp_query_us": {
+    "shots": 81,
+    "adjusted": 2,
+    "median": 768,
+    "max": 2826
+  },
+  "visual_review": [
+    "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/gameplay-dialog-camera-production-02/godot/app_userdata/Cursed Lands/dialog-camera-original.png",
+    "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/gameplay-dialog-camera-production-02/godot/app_userdata/Cursed Lands/dialog-camera-clear.png",
+    "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/gameplay-dialog-camp-02/godot/app_userdata/Cursed Lands/dialog-camera-camp.png"
+  ],
+  "excluded": [
+    "after-01 and camp-01 contained fixture/script parse errors; repaired before recorded checks.",
+    "gaps10 used script triangle iteration; final gaps11 uses the engine cached native triangle tree."
+  ],
+  "limitations": [
+    "Prepared views and original camp geometry, not a full dialogue playthrough.",
+    "Occlusion tests use static scenery meshes and terrain; actor occlusion and animated mesh deformation are outside this change.",
+    "No clear candidate retains the authored shot.",
+    "Query timings are diagnostic from this desktop and do not establish gameplay FPS or handheld cost.",
+    "Windows and Retroid package checks pending."
+  ]
+}

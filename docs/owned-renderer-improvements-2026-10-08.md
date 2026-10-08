@@ -2044,6 +2044,38 @@ requirements listed above remain open.
 
 ## Integration
 
+### Current combined checkpoint — 9 October
+
+The user confirmed that the other EI agent has stopped and explicitly
+authorized shared changes. The renderer branch through `7202b8e` is now
+reconciled with the latest gameplay branch at
+`09ffbf7cc6e820907ad80040cc232bd3665f4060`, including its unpublished fixes and
+**protocol 13**. The one conflict in `game/src/ei/map_scene.gd` preserves
+`CatacombLift.apply` before object placement and saved-position migration,
+alongside the scenery manager and ground-contact attachment. Automatic merges
+in `game_data.gd` and `game.gd` retain both the control options and sun policy.
+The combined source is intended for the canonical checkout at
+`/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo`.
+Installed builds and published releases are separate from this source merge.
+
+The exported combined Linux build passes **577 checks** across wound caching,
+held-sun override, scenery/contact lifecycle, Mobile array ownership, five-rider
+catacomb travel and old-save migration with batching enabled, and prison
+late-join/real-ENet regression tests. The sun fixture's 10 desktop Compatibility
+assertions also pass, but its immediate shutdown reports two texture leaks on
+both the frozen pre-merge and combined build. An eight-frame drain did not
+remove them; that test edit was reverted. Those runs are recorded separately,
+not counted as clean passes or treated as a new merge regression.
+See [`validation/renderer-gameplay-integration-2026-10-09.json`](validation/renderer-gameplay-integration-2026-10-09.json)
+for source/runtime hashes, exact commands and the baseline issue.
+
+Keep the Mobile engine patch when building new templates. Scenery batching and
+ground contact remain opt-in/off by default. Desktop sunlight remains continuous,
+including Compatibility; held sunlight is the constrained-device fallback and
+explicit override. This merge does not establish a faster Android/web replacement.
+
+### Historical isolation and applicability checks
+
 The implementation is in this isolated branch. Do not overwrite another agent's
 working checkout or installed packages to test it. Integrate the focused commits
 once the active source owner can accept them, preserving their newer changes.
@@ -2138,8 +2170,9 @@ without human authorization. No patch was applied here.
    and real device performance remain open.
    For P6, identify actual shimmer/redraw cost and renderer capabilities
    before changing cascade settings or planning engine-level projection reuse.
-5. **C1 character batching/skinning:** keep as an isolated prototype until the
-   main character/gameplay changes settle. The active remake still animates rigid
+5. **C1 character batching/skinning:** the other agent has stopped and the latest
+   character/gameplay code is now integrated, so a controlled prototype can
+   proceed on that base. The active remake still animates rigid
    figure parts. Converting to a skinned mesh was an author suggestion, not an
    implemented upstream feature or a demonstrated speedup.
 6. **Visual track:** V1 ground-contact blending, V4 water interaction, V2 biome

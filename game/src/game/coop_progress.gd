@@ -1,6 +1,8 @@
 class_name CoopProgress
 extends Node
 const TrainingRefund := preload("res://src/game/training_refund.gd")
+const PartyProgress := preload("res://src/game/coop_party_progress.gd")
+const GuestRoles := preload("res://src/game/coop_guest_roles.gd")
 ## Remake-only co-op feature: bring your own hero, shared progression.
 ## (Not in the original: the original network game played separate LMP maps with
 ## network characters;.)
@@ -84,6 +86,8 @@ var _origin_slot := ""   # the save brought ("" = new hero)
 var _origin_new := false
 var _merged_slot := ""
 var _merged_name := ""
+var _preview_zone := ""   # one preview per visited location, independent of save frequency
+var _preview_serial := 0
 ## Client: the last merged save written (tests read it).
 var last_merged := ""
 var merged_count := 0    # packages merged so far (NetStatus.leave waits for one more)
@@ -158,7 +162,7 @@ func client_hello() -> void:
 	var bag := main_bag(st)
 	_rpc_bring.rpc_id(1, {"campaign_id": st.campaign_id, "hero": main_hero(st), "vars": view, "visited": st.visited.keys(),
 		"side_quests": st.side_quests, "quest_items": st.quest_items, "zone": st.current_zone, "seq": seq,
-		"money": int(bag.money), "items": bag.items})
+		"money": int(bag.money), "items": bag.items, "party_context": PartyProgress.capture(st)})
 
 
 ## The campaign state the client brought (a fresh one for a new hero).
@@ -227,14 +231,29 @@ func _rpc_package(pkg: Dictionary) -> void:
 	if session.campaign:
 		allod = String(session.campaign.zones.get(st.current_zone, {}).get("allod", "")).to_lower()
 	SaveInfo.write(_merged_slot, st.get_var(0, "gtime"), allod, st.current_zone, _merged_name)
-	# The Load screen's preview: this client's view of the shared game (the
-	# host's zone) at the latest package; LoadPanel falls back to the zone's
-	# minimap picture while there is none.
-	SaveInfo.write_shot(_merged_slot, session.get_viewport())
+	_refresh_preview(st.current_zone)
 	if last_merged.is_empty():
 		session.message.emit(RemakeText.t("Your progress is saved as \"%s\".") % _merged_name)
 	last_merged = _merged_slot
 	merged_count += 1
+
+
+## Progress still saves at every package. Re-reading a 4K viewport for its
+## thumbnail every few seconds stalls the client; refresh the preview only
+## when its saved location changes. Never photograph a different host zone
+## for an origin whose story progress did not move there.
+func _refresh_preview(zone: String) -> void:
+	if zone.is_empty() or zone == _preview_zone or zone != session.zone_id:
+		return
+	_preview_zone = zone
+	_preview_serial += 1
+	var serial := _preview_serial
+	var valid := func() -> bool:
+		return is_instance_valid(session) and serial == _preview_serial \
+			and session.zone_id == zone and not session.loading_game and not session._remote_loading
+	var written := await SaveInfo.write_shot(_merged_slot, session.get_viewport(), valid)
+	if not written and serial == _preview_serial:
+		_preview_zone = ""   # a cancelled/loading capture may retry on the next package
 
 
 ## Client: brought its own hero (progress packages come back to it).
@@ -247,6 +266,11 @@ static func merge(st: CampaignState, pkg: Dictionary) -> void:
 	if not CampaignProfile.matches(pkg.get("campaign_id", CampaignProfile.ORIGINAL), st.campaign_id):
 		return
 	var move: Dictionary = pkg.get("move", {}) if pkg.get("move") is Dictionary else {}
+	var context := PartyProgress.read(pkg.get("party_context"))
+	if context != null and move and campaign_zone_ok(String(move.get("zone", ""))):
+		PartyProgress.apply(st, context)
+	else:
+		context = null
 	# Story vars credited to this player.
 	var cv: Dictionary = pkg.get("vars", {}) if pkg.get("vars") is Dictionary else {}
 	for k in cv:
@@ -282,16 +306,23 @@ static func merge(st: CampaignState, pkg: Dictionary) -> void:
 		if zs[z] is Dictionary:
 			st.zones[String(z)] = (zs[z] as Dictionary).duplicate(true)
 	# The hero, as it is in the host's world.
+	# LiA normally progresses through named protagonist parties. Only a
+	# temporary substitute leaves the imported hero in a waiting party.
+	var hero_party := main_party(st)
 	var h := sanitize_hero(pkg.get("hero", {}))
+	if context != null and move:
+		# The context already combines personal progress with the authored
+		# chapter body, waiting-party positions and companion ownership.
+		h = main_hero(st).duplicate(true)
 	if not h.is_empty():
-		var roster: Array = st.heroes.get_or_add(0, []) if st.current_party.is_empty() else st.parties.get_or_add("", [])
+		var roster: Array = st.heroes.get_or_add(0, []) if st.current_party == hero_party else st.parties.get_or_add(hero_party, [])
 		var old: Dictionary = roster[0] if not roster.is_empty() and roster[0] is Dictionary else {}
 		h.name = String(old.get("name", pkg.get("orig_name", h.name)))
 		if old.has("unit_name"):
 			h.unit_name = old.unit_name
 		# Where the hero stands: the host's world when the save moves there,
 		# else where it was in the joiner's own game.
-		var src: Dictionary = pkg.hero if move and pkg.get("hero") is Dictionary else old
+		var src: Dictionary = pkg.hero if move and context == null and pkg.get("hero") is Dictionary else old
 		for k in ["pos", "mana", "gait"]:
 			if src.has(k):
 				h[k] = src[k]
@@ -307,15 +338,15 @@ static func merge(st: CampaignState, pkg: Dictionary) -> void:
 	if purse.has("money"):
 		var money := maxi(0, int(_num(purse.money, 0.0)))
 		var items := _items(purse.get("items", []))
-		if st.current_party.is_empty():
+		if st.current_party == hero_party:
 			st.money = money
 			st.items = items
 		else:
-			var b: Dictionary = st.party_bags.get_or_add("", {"items": [], "money": 0})
+			var b: Dictionary = st.party_bags.get_or_add(hero_party, {"items": [], "money": 0})
 			b.money = money
 			b.items = items
 	if not h.is_empty():
-		CampaignState.cap_belt(h, st._bag("").items)   # the belt's four; extras to its bag
+		CampaignState.cap_belt(h, st._bag(hero_party).items)   # the belt's four; extras to its bag
 	var sid := String(pkg.get("sid", ""))
 	if sid:
 		var applied: Dictionary = st.coop.get_or_add("applied", {}) if st.coop.get("applied") is Dictionary else {}
@@ -368,6 +399,9 @@ func _rpc_bring(data: Dictionary) -> void:
 		h.erase(k)
 	_pending[pid] = {"hero": h, "vars": view, "visited": visited, "side_quests": sq, "quest_items": qi, "seq": seq,
 		"purse": {"money": clampi(int(_num(data.get("money", 0), 0.0)), 0, 99999999), "items": _items(data.get("items", []))}}
+	var context := PartyProgress.read(data.get("party_context"))
+	if context != null:
+		_pending[pid].party_context = PartyProgress.capture(context)
 	CampaignState.cap_belt(h, _pending[pid].purse.items)   # the belt's four; extras to its own bag
 
 
@@ -390,6 +424,10 @@ func on_hello(pid: int, idx: int, player_name: String) -> void:
 			for k in ["vars", "visited", "side_quests", "quest_items"]:
 				e[k] = data[k]
 			e.credits = {"vars": {}, "visited": {}, "side_quests": {}, "quest_items": {}, "zones": {}}
+			if data.has("party_context"):
+				e.party_context = data.party_context
+		if not e.has("party_context") and data.has("party_context"):
+			e.party_context = data.party_context
 		e.pid = pid
 		e.idx = idx
 		e.active = true
@@ -418,7 +456,10 @@ func on_hello(pid: int, idx: int, player_name: String) -> void:
 		"sid": "%08x%08x" % [randi(), Time.get_ticks_usec() & 0xffffffff], "seq": 0,
 	}
 	e.hero_in.name = player_name.strip_edges() if player_name.strip_edges() else String(e.orig_name)
+	if data.has("party_context"):
+		e.party_context = data.party_context
 	joiners[key] = e
+	session.state.coop.get(GuestRoles.KEY, {}).erase(idx)
 	if session.world:
 		# Late join: the hero comes in place of any old one of this slot.
 		_drop_old_units(idx)
@@ -555,7 +596,7 @@ func purse_entry(player: int) -> Dictionary:
 	for e: Dictionary in joiners.values():
 		if int(e.idx) == player and e.get("purse") is Dictionary:
 			return e
-	return {}
+	return GuestRoles.purse(session.state, player) if session else {}
 
 
 ## Host: runs `f` with player `player`'s own purse and bag standing in for the
@@ -574,20 +615,27 @@ func with_purse(player: int, f: Callable, found := false) -> Variant:
 		# speaker's scope, then resume the outer command with its own bag.
 		var outer := _swap
 		var state := session.state
-		outer.e.purse.money = state.money
-		outer.e.purse.items = state.items
-		state.money = int(outer.money)
-		state.items = outer.items
+		if not outer.get("shared", false):
+			outer.e.purse.money = state.money
+			outer.e.purse.items = state.items
+			state.money = int(outer.money)
+			state.items = outer.items
 		_swap = {}
 		var nested = with_purse(player, f, found)
 		outer.money = state.money
 		outer.items = state.items
-		state.money = int(outer.e.purse.money)
-		state.items = outer.e.purse.items
+		# A party operation can change a class guest from the shared bag to
+		# a temporary private bag (or back) while this command is unwinding.
+		var resumed := purse_entry(int(outer.e.idx))
+		outer.shared = resumed.is_empty()
+		if not resumed.is_empty():
+			outer.e = resumed
+			state.money = int(resumed.purse.money)
+			state.items = resumed.purse.items
 		_swap = outer
 		return nested
 	var e := purse_entry(player) if _swap.is_empty() else {}
-	if e.is_empty():
+	if e.is_empty() and (player <= 0 or not _swap.is_empty()):
 		if not found or not sharing():
 			return f.call()
 		var before := _purse_now(player)
@@ -595,17 +643,21 @@ func with_purse(player: int, f: Callable, found := false) -> Variant:
 		_found(before)
 		return r0
 	var st := session.state
-	_swap = {"e": e, "money": st.money, "items": st.items}
-	st.money = int(e.purse.get("money", 0))
-	st.items = e.purse.get_or_add("items", [])
+	var shared := e.is_empty()
+	if shared: e = {"idx":player}
+	_swap = {"e": e, "money": st.money, "items": st.items, "shared":shared}
+	if not shared:
+		st.money = int(e.purse.get("money", 0))
+		st.items = e.purse.get_or_add("items", [])
 	var before := _purse_now(player) if found and sharing() else {}
 	var r = f.call()
 	if not before.is_empty():
 		_found(before)
-	e.purse.money = st.money
-	e.purse.items = st.items
-	st.money = int(_swap.money)
-	st.items = _swap.items
+	if not _swap.get("shared", false):
+		_swap.e.purse.money = st.money
+		_swap.e.purse.items = st.items
+		st.money = int(_swap.money)
+		st.items = _swap.items
 	_swap = {}
 	session.mark_dirty()
 	_flush_shared()
@@ -651,7 +703,7 @@ func sharing() -> bool:
 ## party, a script's reward).
 func _purse_now(player: int) -> Dictionary:
 	var key := "campaign"
-	if not _swap.is_empty():
+	if not _swap.is_empty() and not _swap.get("shared", false):
 		key = "p%d" % int(_swap.e.idx)
 	elif not purse_entry(player).is_empty():
 		key = "p%d" % player
@@ -787,7 +839,7 @@ static func _items(v) -> Array:
 	if v is Array:
 		for it in v:
 			if it is String and out.size() < 2000 and (Items.kind(it) != "" or it.begins_with("spell:")):
-				out.append(it)
+				out.append(Items.canonical_rune(it))
 	return out
 
 
@@ -897,17 +949,69 @@ func _settle() -> void:
 
 # ---------------------------------------------------------------- packages
 
+## Original party operations run on each eligible player's private story
+## copy before changing the host's party. This is event-driven, never part of
+## an actor tick. A behind/ahead guest keeps its own chapter untouched.
+func party_operation(op: String, args: Array) -> void:
+	if not _host_online() or _loading or not session.lmp.is_empty():
+		return
+	for e: Dictionary in joiners.values():
+		if not e.active or not e.in_sync or not e.clean or not e.present:
+			continue
+		var context := PartyProgress.read(e.get("party_context"))
+		if context == null or context.current_party != session.state.current_party:
+			continue
+		var roster: Array = session.state.heroes.get(int(e.idx), [])
+		var hero: Dictionary = roster[0] if not roster.is_empty() else e.hero_in
+		var purse: Dictionary = {"money": session.state.money, "items": session.state.items} \
+			if not _swap.is_empty() and int(_swap.e.idx) == int(e.idx) else e.purse
+		var personal := GuestRoles.personal(session, int(e.idx), hero, purse)
+		PartyProgress.personal(context, personal.hero, personal.purse, false)
+		PartyProgress.dependents(context, session.state, e)
+		GuestRoles.progress(session, int(e.idx), context)
+		PartyProgress.operation(context, op, args)
+		e.party_context = PartyProgress.capture(context)
+	with_campaign_purse(GuestRoles.operation.bind(session, op, args))
+
+
 func package(e: Dictionary) -> Dictionary:
 	var st := session.state
 	var roster: Array = st.heroes.get(int(e.idx), [])
-	var hero: Dictionary = (roster[0] if not roster.is_empty() else e.hero_in as Dictionary).duplicate(true)
+	var personal := GuestRoles.personal(session, int(e.idx), roster[0] if not roster.is_empty() else e.hero_in as Dictionary, e.get("purse", {}))
+	var hero: Dictionary = personal.hero.duplicate(true)
 	var zones: Dictionary = (e.credits.zones as Dictionary).duplicate()
 	if e.in_sync and e.clean and e.present and session.world and session.zone_id:
 		zones[session.zone_id] = (st.zones.get(session.zone_id, {}) as Dictionary).duplicate(true)
 	var move := {}
-	if e.in_sync and session.zone_id:
+	if e.in_sync and e.clean and e.present and session.zone_id:
 		move = {"zone": session.zone_id, "world_time": st.world_time, "day": st.day}
-	var purse: Dictionary = e.get("purse", {})
+	var purse: Dictionary = personal.purse
+	var context := PartyProgress.read(e.get("party_context"))
+	var party_context := {}
+	if context == null:
+		move.clear()   # old tallies still return their hero/purse, never an incomplete chapter
+	else:
+		if context.current_party != st.current_party:
+			# A rejected/missed party change must not move this save into a
+			# location requiring a character it cannot deploy.
+			move.clear()
+		elif not move.is_empty():
+			PartyProgress.personal(context, hero, purse, true)
+			if e.clean and e.present:
+				PartyProgress.dependents(context, st, e)
+			GuestRoles.progress(session, int(e.idx), context)
+			party_context = PartyProgress.capture(context)
+			e.party_context = party_context.duplicate(true)
+			e.context_checkpoint = {"party_context": party_context.duplicate(true), "move": move.duplicate()}
+	if move.is_empty():
+		# Packages are cumulative from the original imported save. Leaving a
+		# credited chapter must not discard the last resumable checkpoint.
+		var previous: Dictionary = e.get("context_checkpoint", {})
+		var saved := PartyProgress.read(previous.get("party_context"))
+		if saved != null:
+			PartyProgress.personal(saved, hero, purse, false)
+			party_context = PartyProgress.capture(saved)
+			move = previous.get("move", {}).duplicate()
 	var host := "host"
 	for p in session.players.values():
 		if int(p.index) == 0:
@@ -916,7 +1020,7 @@ func package(e: Dictionary) -> Dictionary:
 		"visited": (e.credits.visited as Dictionary).keys(), "side_quests": (e.credits.side_quests as Dictionary).duplicate(),
 		"quest_items": (e.credits.quest_items as Dictionary).duplicate(), "zones": zones,
 		"purse": {"money": int(purse.get("money", 0)), "items": (purse.get("items", []) as Array).duplicate()},
-		"move": move}
+		"move": move, "party_context": party_context}
 
 
 ## Host: every connected joiner gets its package when it changed.
@@ -929,6 +1033,7 @@ func send_all() -> void:
 	_settle()
 	if session.world and session.zone_id:
 		session.state.store_party_positions(session.world)
+		session.state.collect_pets(session.world)
 		if joiners.values().any(func(e): return e.active and e.in_sync and e.clean and e.present):
 			session.state.store_zone(session.zone_id, session.world)
 	for key in joiners:
@@ -990,7 +1095,7 @@ static func sanitize_hero(d) -> Dictionary:
 			# saves/RPC preserve it; retain that allocation with canonical keys.
 			if (k is String or k is StringName) and String(k).length() <= 32:
 				skills[String(k)] = clampf(_num(d.skills[k], 0.0), 0.0, 1000.0)
-	h.skills = skills if not skills.is_empty() else Skills.from_npc(npc)
+	h.skills = skills if d.get("skills") is Dictionary else Skills.from_npc(npc)
 	h.perks = _strings(d.get("perks"), 256, 64)
 	h.armors = _strings(d.get("armors"), 16).filter(func(x): return Items.kind(x) == "armor")
 	h.weapons = _strings(d.get("weapons"), 4).filter(func(x): return Items.kind(x) == "weapon")

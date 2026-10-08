@@ -96,7 +96,12 @@ static func create(w: GameWorld, s: Session) -> ScriptVM:
 		preload("res://src/game/script/story_compat.gd").recover(vm)
 	if not quest_world.is_empty() and String(restored.get("quest", "")) != String(w.get_meta("quest_mob", "")):
 		vm._start_world(quest_world, quest_src)
-	vm.recalc_merc_briefings()   #  (party deployed)
+	# An explicit load restores both GS flags and their waiting consumers.
+	# Deployment recalculation would erase a completed hire flag before the
+	# restored thread sees it (Kel's prison escape waits for b.merc2.n1_2=2).
+	# Ordinary zone revisits still recalculate topics for the current party.
+	if not s._restoring or restored.is_empty():
+		vm.recalc_merc_briefings()
 	return vm
 
 
@@ -204,7 +209,7 @@ func _run(inst: Instance) -> void:
 		inst.poll = time + POLL
 		for bi in inst.blocks.size():
 			var b: Dictionary = inst.blocks[bi]
-			if _all(b.conds, inst):
+			if _party_conditions(b.conds, inst):
 				inst.block_index = bi
 				inst.frames = [{"body": b.body, "i": 0}]
 				if not _once_per_world(inst):
@@ -261,7 +266,28 @@ func _all(conds: Array, inst: Instance) -> bool:
 	return true
 
 
-func spawn(name: String, args: Array) -> void:
+## Inspected shared checks keep their original waiting threads, including
+## old saves, but can be satisfied by a newly arrived party member. Never
+## generalize an individual trap, movement order or character-specific chain.
+func _party_conditions(conds: Array, inst: Instance) -> bool:
+	var def: Dictionary = ast.scripts.get(inst.sname,{})
+	if not def.get("party_check",false) or session == null or not session.multiplayer_game \
+			or not session.lmp.is_empty() or not _world_event(inst.sname): return _all(conds,inst)
+	var param: String = def.params[0]
+	var original = inst.locals.get(param)
+	var party := _party_records().filter(func(u: GameUnit): return not u.dead and not u.hidden)
+	# Keep the native actor's priority whenever it is still present.
+	if original in party:
+		party.erase(original)
+		party.push_front(original)
+	for u: GameUnit in party:
+		inst.locals[param] = u
+		if _all(conds,inst): return true
+	inst.locals[param] = original
+	return false
+
+
+func spawn(name: String, args: Array, caller := "") -> void:
 	var s: Dictionary = ast.scripts.get(name, {})
 	if s.is_empty():
 		return
@@ -272,6 +298,7 @@ func spawn(name: String, args: Array) -> void:
 	for k in mini(params.size(), args.size()):
 		inst.locals[params[k]] = args[k]
 	instances.append(inst)
+	preload("res://src/game/script/story_coop_traps.gd").arm(self, name, args, caller)
 
 
 func fire_event(name: String, args: Array) -> void:
@@ -409,7 +436,7 @@ func _stmt_call(name: String, a: Array, inst: Instance) -> bool:
 			inst.killed = true
 			return false
 	if ast.scripts.has(name):
-		spawn(name, _args(a, inst))
+		spawn(name, _args(a, inst), inst.sname)
 		return false
 	_call(name, a, inst)
 	return false
@@ -422,6 +449,27 @@ func _call(name: String, a: Array, inst: Instance):
 		_seen_memo.clear()
 	# Special forms with lazily evaluated arguments.
 	match name:
+		"RemakeCaptivityTarget":
+			return preload("res://src/game/script/story_coop_predicates.gd").captivity_target(self,_unit(_eval(a[0],inst)))
+		"RemakeSentryTarget":
+			var target := _unit(_eval(a[1],inst))
+			if target: _mode(_eval(a[0],inst),"sentry",{"point":target.pos})
+			return null
+		"RemakePartyAny":
+			return preload("res://src/game/script/story_coop_predicates.gd").any_extra(self,a,inst)
+		"RemakeNearestParty":
+			return preload("res://src/game/script/story_coop_predicates.gd").nearest(self,_eval(a[0],inst),_unit(_eval(a[1],inst)))
+		"RemakeTrapActor":
+			return preload("res://src/game/script/story_coop_traps.gd").actor(self, String(_eval(a[0],inst)), int(_num(_eval(a[1],inst))))
+		"RemakeTrapJoin":
+			var values := _args(a,inst)
+			preload("res://src/game/script/story_coop_traps.gd").join(self,values[0],values.slice(1),inst)
+			return null
+		"RemakePartyCast":
+			preload("res://src/game/script/story_coop_effects.gd").cast(self, a, inst)
+			return null
+		"RemakeMatchExtra":
+			return preload("res://src/game/script/story_coop_effects.gd").match_extra(self, a, inst)
 		"Any", "Every":
 			var var_name: String = a[0][1]
 			var items := _group(_eval(a[1], inst))
@@ -456,7 +504,14 @@ func _call(name: String, a: Array, inst: Instance):
 	match name:
 		# ---- logic and arithmetic
 		"Not": return 0.0 if _truthy(v[0]) else 1.0
-		"IsEqual": return 1.0 if is_equal_approx(_num(v[0]), _num(v[1])) or (v[0] is Object and v[0] == v[1]) else 0.0
+		"IsEqual":
+			if typeof(v[0]) == TYPE_OBJECT or typeof(v[1]) == TYPE_OBJECT: return 1.0 if is_same(v[0],v[1]) else 0.0
+			var left := _num(v[0]); var right := _num(v[1])
+			# IDs and counters are whole numbers, even though the script
+			# language represents them as floats. Relative tolerance makes
+			# neighbouring generated actor IDs compare equal at this scale.
+			if left == floor(left) and right == floor(right): return 1.0 if left == right else 0.0
+			return 1.0 if is_equal_approx(left,right) else 0.0
 		"IsLess": return 1.0 if _num(v[0]) < _num(v[1]) else 0.0
 		"IsGreater": return 1.0 if _num(v[0]) > _num(v[1]) else 0.0
 		"IsEqualString": return 1.0 if str(v[0]).to_lower() == str(v[1]).to_lower() else 0.0
@@ -604,6 +659,7 @@ func _call(name: String, a: Array, inst: Instance):
 			if u:
 				u.set_gait({"Crawl": 1, "Lie": 0, "Stand": 2, "Walk": 2, "Run": 3}[name])
 				u.set_meta("script_run", name == "Run")
+				if not u.has_meta("hero"): u.set_meta("script_ai", true)
 		# LiA: explicit attack/cast orders
 		# occupy AI states 3/4. Cast always uses slot 0, not an AI choice.
 		"Attack":
@@ -635,7 +691,7 @@ func _call(name: String, a: Array, inst: Instance):
 				u.set_meta("ai_state", 1)
 				preload("res://src/game/script/story_compat.gd").story_move(self, inst.sname, u, to)
 		"RemakeEscapeReady":
-			return preload("res://src/game/script/story_compat.gd").escape_guests(self).all(func(u: GameUnit): return u.pos.y < 84.0)
+			return preload("res://src/game/script/story_compat.gd").escape_ready(self)
 		# Builtins 0x8e SetCP / 0xad SetCPFast(object, x, y, z) put the object
 		# there at once (: position.., world grid
 		# re-link); a unit then drops what it was doing and stands
@@ -868,6 +924,7 @@ func _call(name: String, a: Array, inst: Instance):
 		# Builtin 0xdf FixItems(): every item the server holds (list at server
 		# ) gets its durability back to the maximum.
 		"FixItems":
+			session.coop.party_operation(name, v)
 			session.state.fix_items()
 			for u: GameUnit in world.units.values():
 				if u.has_meta("hero"):
@@ -879,6 +936,7 @@ func _call(name: String, a: Array, inst: Instance):
 		# `from` into it; AddLoot adds them (merges stacks).
 		"CopyLoot", "AddLoot":
 			if n >= 3:
+				session.coop.party_operation(name, v)
 				session.coop.with_campaign_purse(session.state.move_loot.bind(str(v[1]), str(v[2]), name == "CopyLoot"))
 				session.sync_state()
 		"Nop", "SetPlayerAggression":
@@ -958,16 +1016,21 @@ func _call(name: String, a: Array, inst: Instance):
 		# (no members, an empty bag, no money) appended to the player's list.
 		# A repeated name continues to resolve the first party.
 		"CreateParty":
+			session.coop.party_operation(name, v)
 			session.state.create_party(str(v[1]))
 		"AddUnitToParty":
+			session.coop.party_operation(name, v)
 			var ref := str(v[1])
 			session.state.add_party_unit(ref.get_slice("::", 0) if "::" in ref else "",
 				ref.get_slice("::", 1) if "::" in ref else ref, str(v[2]))
 		"CopyStats":
+			session.coop.party_operation(name, v)
 			session.state.copy_stats(str(v[1]), str(v[2]))
 		"CopyItems":
+			session.coop.party_operation(name, v)
 			session.state.copy_items(str(v[1]), str(v[2]))
 		"SetCurrentParty":
+			session.coop.party_operation(name, v)
 			if session.coop.with_campaign_purse(session.state.set_current_party.bind(str(v[1]))):
 				session.sync_state()
 		"AddUnitUnderControl":
@@ -982,13 +1045,14 @@ func _call(name: String, a: Array, inst: Instance):
 				u.set_meta("script_control", true)
 				session.broadcast({"t": "party"})
 		"RemoveUnitFromParty":
+			session.coop.party_operation(name, v)
 			var ref := str(v[1])
 			var h := session.state.party_member(ref)
 			if h.has("merc") and session.state.mercs.get(int(h.merc), {}) == h:
 				session.state.set_var(0, "apartyn%d" % int(h.merc), 0.0)
-				session.merc_changed(int(h.merc), false)
+				session.merc_changed(int(h.merc), false, -1, true, true)
 			else:
-				session.state.remove_party_unit(ref)
+				session.remove_named_party_unit(ref)
 		"RedeployParty":
 			session.redeploy_party(0)
 		# ---- presentation
@@ -1131,7 +1195,7 @@ func _interact_reach(u: GameUnit, t, kind := "") -> float:
 
 ## A lever / switch used by `u` (sub-code 0): its science
 ## check against the unit's Use/Steal value and the party's quest items.
-func _use_lever(u: GameUnit, nid: int) -> void:
+func _lever_science_ok(u: GameUnit, nid: int) -> bool:
 	var use := Session.steal_value(u)
 	var bag := session.state.items if session.lmp.is_empty() else session.coop.owner_bag(u.controller)
 	var quest := bag.filter(func(x): return Items.kind(String(x)) == "quest")
@@ -1139,7 +1203,11 @@ func _use_lever(u: GameUnit, nid: int) -> void:
 	# state.quest_items (HaveItem); they open levers too.
 	if session.lmp.is_empty():
 		quest.append_array(session.state.quest_items.keys())
-	if world.lever_sys.science_ok(nid, use, quest):
+	return world.lever_sys.science_ok(nid, use, quest)
+
+
+func _use_lever(u: GameUnit, nid: int) -> void:
+	if _lever_science_ok(u, nid):
 		var time := world.lever_sys.set_state(nid, -1)
 		session.broadcast({"t": "lever", "nid": nid, "state": world.levers[nid].state, "time": time})
 		preload("res://src/game/script/story_compat.gd").lift_recall(self, nid)
@@ -1267,7 +1335,8 @@ const PURE_CALLS := {"Not": 1, "IsEqual": 1, "IsLess": 1, "IsGreater": 1, "IsEqu
 	"GetZ": 1, "GetZValue": 1, "HP": 1, "MaxHP": 1, "GetMoney": 1, "GetFutureX": 1, "GetFutureY": 1, "DistanceUnitUnit": 1, "DistanceUnitPoint": 1,
 	"UnitInSquare": 1, "IsDead": 1, "IsAlive": 1, "IsEnemy": 1, "IsPlayerInDanger": 1, "IsUnitVisible": 1,
 	"WasLooted": 1, "IsUnitBlocked": 1, "GetDiplomacy": 1, "IsInArea": 1, "GetLeverState": 1,
-	"HaveItem": 1, "GetWorldTime": 1, "Any": 1, "Every": 1}
+	"HaveItem": 1, "GetWorldTime": 1, "Any": 1, "Every": 1,
+	"RemakePartyAny": 1, "RemakeNearestParty": 1, "RemakeTrapActor": 1}
 
 
 func _in_danger() -> bool:
@@ -1313,7 +1382,7 @@ func _party_records() -> Array:
 	var out := []
 	var rank := {}
 	var companions: Array = session.state.mercs.values()
-	for u: GameUnit in world.units.values():
+	for u: GameUnit in world.party_units():
 		if is_instance_valid(u) and u.has_meta("hero") and u.controller >= 0:
 			out.append(u)
 			var h: Dictionary = u.get_meta("hero")
@@ -1374,6 +1443,7 @@ func _um_add(o, add: Dictionary) -> void:
 		u.mode = "standard"
 	m.merge(add, true)
 	u.set_meta("um", m)
+	u.set_meta("script_ai", true)
 
 
 func _mode(o, mode: String, data: Dictionary) -> void:
@@ -1382,6 +1452,11 @@ func _mode(o, mode: String, data: Dictionary) -> void:
 		return
 	u.mode = mode
 	u.mode_data = data
+	u.set_meta("script_ai", true)
+	var refs := {}
+	for key in data:
+		if data[key] is GameUnit: refs[key] = _ser(data[key])
+	u.set_meta("script_ai_refs", refs)
 	u.remove_meta("calm")   # the new motivation starts in state 0
 	if mode == "sentry" or mode == "guard":
 		# The unit keeps its gait: Walk / Run (builtins 0x40 / 0x41 ->
@@ -1757,6 +1832,7 @@ func save_state() -> Dictionary:
 		insts.append(d)
 	return {"globals": g, "instances": insts, "areas": areas, "alarms": _alarm_save(), "qobjs": qobjs, "sciences": sciences,
 		"story_orders": _save_story_orders(),
+		"script_ai": _save_script_ai(),
 		"briefing_queue": _ser(briefings._after_movie) if briefings else [],
 		"world_done": _world_done.duplicate(),
 		"fx_auto": _fx_auto,   # the replayed CreateFXSource(-1) sources keep their ids (zone "fx")
@@ -1792,6 +1868,23 @@ func _alarm_load(al) -> void:
 
 
 func _restore(d: Dictionary) -> void:
+	for row: Dictionary in d.get("script_ai", []):
+		var u = _deser(row.get("actor"))
+		if not u is GameUnit or u.dead or u.has_meta("hero"): continue
+		u.mode = String(row.get("mode", "standard"))
+		u.mode_data = {}
+		var refs := {}
+		for key in row.get("data", {}):
+			var value = row.data[key]
+			if value is Dictionary and value.has("u"): refs[key] = value.duplicate(true)
+			u.mode_data[key] = _deser(value) if not refs.has(key) else null
+		u.set_meta("script_ai_refs", refs)
+		if row.get("um") is Dictionary: u.set_meta("um", row.um.duplicate(true))
+		u.set_meta("script_ai", true)
+		u.set_meta("script_run", bool(row.get("run", false)))
+		u.restore_gait(int(row.get("gait", 2)))
+		u.remove_meta("calm")
+	resolve_script_ai_targets()
 	for row: Dictionary in d.get("story_orders", []):
 		var u = _deser(row.get("actor"))
 		if not u is GameUnit or u.dead: continue
@@ -1858,6 +1951,35 @@ func _restore(d: Dictionary) -> void:
 			var wu = _deser(s.wu)
 			inst.wait_unit = wu if wu is GameUnit else null
 		instances.append(inst)
+
+
+## Script-selected NPC follow/guard/motivation state outlives the instruction
+## that set it. Preserve it separately from transient combat choices and
+## resolve targets after the party has been deployed. Old saves without this
+## optional section retain their authored defaults.
+func _save_script_ai() -> Array:
+	var out := []
+	for u: GameUnit in world.units.values():
+		if u.dead or u.has_meta("hero") or not u.get_meta("script_ai", false): continue
+		var data := {}
+		var refs: Dictionary = u.get_meta("script_ai_refs", {})
+		for key in u.mode_data: data[key] = refs[key].duplicate(true) if refs.has(key) else _ser(u.mode_data[key])
+		var row := {"actor":_ser(u), "mode":u.mode, "data":data, "run":bool(u.get_meta("script_run", false)), "gait":u.gait()}
+		if u.has_meta("um"): row.um = u.get_meta("um").duplicate(true)
+		out.append(row)
+	return out
+
+
+## A followed guest may be absent when loading or acquire a new body after a
+## party switch. Keep its stable reference and bind only on those events;
+## never let a missing hero reference select an unrelated recycled unit id.
+func resolve_script_ai_targets() -> void:
+	for u: GameUnit in world.units.values():
+		if u.dead or u.has_meta("hero"): continue
+		var refs: Dictionary = u.get_meta("script_ai_refs", {})
+		for key in refs:
+			var ref: Dictionary = refs[key]
+			u.mode_data[key] = _hero_by_key(ref.h) if ref.has("h") else _deser(ref)
 
 
 ## Ordinary manual orders still stop on load. Scripted marks/turns/clips
@@ -1945,10 +2067,11 @@ func _deser(v):
 func _hero_key(u: GameUnit) -> Array:
 	if not u.has_meta("hero") or u.get_meta("hero").has("merc") or session == null or session.state == null:
 		return []
-	var roster: Array = session.state.heroes.get(u.controller, [])
+	var owner := int(u.get_meta("orphan_of", u.controller))
+	var roster: Array = session.state.heroes.get(owner, [])
 	for i in roster.size():
 		if is_same(roster[i], u.get_meta("hero")):
-			return [u.controller, i]
+			return [owner, i]
 	return []
 
 
@@ -2002,7 +2125,8 @@ func _once_per_world(inst: Instance) -> bool:
 		return true
 	if not _world_event(inst.sname):
 		return true
-	if _world_done.has(inst.sname) and int(_world_done[inst.sname]) != me.controller:
+	var shared := bool(def.get("party_check",false))
+	if _world_done.has(inst.sname) and (shared or int(_world_done[inst.sname]) != me.controller):
 		inst.killed = true
 		inst.frames.clear()
 		return false
@@ -2012,7 +2136,7 @@ func _once_per_world(inst: Instance) -> bool:
 			continue
 		var other = o.locals.get(params[0])
 		if typeof(other) == TYPE_OBJECT and is_instance_valid(other) and other is GameUnit \
-				and other.has_meta("hero") and other.controller != me.controller:
+				and other.has_meta("hero") and (shared or other.controller != me.controller):
 			o.killed = true   # idle: dropped at the end of this tick, never runs
 	return true
 

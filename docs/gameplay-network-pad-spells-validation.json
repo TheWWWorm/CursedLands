@@ -1,0 +1,307 @@
+{
+  "date": "2026-10-09",
+  "status": "Local/unpublished; Experimental 6 assets unchanged. No device installation.",
+  "source_parent": "9e4576fcca1da0816e0002bb56290cbaedd3a60c",
+  "network_protocol": 13,
+  "export": {
+    "seconds": 5.980449677008437,
+    "command": [
+      "/home/llm2x/.local/bin/godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+      "--export-release",
+      "Linux",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps56/CPU.x86_64"
+    ],
+    "engine_source": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/fast-runtime.x86_64",
+    "errors": [],
+    "sha256": {
+      "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+      "CPU.pck": "21ae0940933e61549c52cfa9e3b032de37376cf11701ecbd1c302e08e912b390",
+      "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+    }
+  },
+  "source_sha256": {
+    "game/src/ei/remake_text.gd": "49b3bd88aac521b0928ae44fe63e6eb45fc9ab41def6a6558eeaf6c0001546fb",
+    "game/src/game/direct_control.gd": "cd83b453ef54ab6b193e32efa88589d76dfcba564164fb61265c17c24cf489a5",
+    "game/src/game/game.gd": "121c0f1d0d9b800090dfbbe0a9d35a9756c2129adfc91d5abd7d5670078855a2",
+    "game/src/game/lmp_travel.gd": "a4103e4b054442c7fc4c2d2f7719e13d0e9d2aee8a73641808d13a5f36d7e49f",
+    "game/src/game/local_host.gd": "7b50966ad45ceb769ad82fc83fbacb9efa70ec8402f2ccc14f4eabd489d78d97",
+    "game/src/game/net_status.gd": "58fbf5970b4e4c3daddbb149d74444211a11182e84a4e35549473e2a1902f1ca",
+    "game/src/game/pad_field.gd": "199d04fd6769c925d7b7208939bf85ab121163763042674800e03c5997e05250",
+    "game/src/game/session.gd": "fabd178a1f154ba2a3dca6e8231a819893b1b0854e27e0b1206d3fe501d2afb5",
+    "game/src/game/spells.gd": "ded9e25648532c128ec9a46162f8945b42b27f6226cfb761fdd16860793234e3",
+    "game/src/game/unit.gd": "9f75c46c922cb0b919f547cd5c884fdb679e5b4a14c9787fffe821c160db3e8c",
+    "game/src/ui/pad_wheel.gd": "92b71f1aa2310fb0b15272204566b15ba27f830a957accde3865bcaabb82c5a5",
+    "game/src/ui/spell_slots.gd": "20d46f4d23bb0c510b867432295cd149f4fcf360bbbb42e2a17f62a9f2b249dd"
+  },
+  "fixture_sha256": {
+    "snapshot_delivery": "9eb481be8f0fe6cc17a76268e3f168232a622dc696e022bc41812bd591bf7280",
+    "snapshot_recovery": "ae5b1008a7d6f80c086265ffc86750fdf684726976737113df0bcd4893170d6c",
+    "worker_coop_delivery": "4f7a26d10f28d36117784b526f6c4ffe20ad6c69d5719ad6fc4157de89b5863a",
+    "gamepad_coop_targets": "5668bf87d7363bac104034bfed854ba279282394462ad52f607f6c1aba4340bb",
+    "spell_requirements_coop": "09bd2e9dcafa83ec8e81998dc18c45a1478e5fb0b474f7bc6ee848fe43282450",
+    "network_render_clock": "bfca6f3b7c4af29a3fcddbf688c66c205e5fa1b1dff5116768f9c007ec563c86"
+  },
+  "findings": [
+    "Manual learned-spell commands validated membership but not current knowledge/stamina requirements. Recheck UI, authority admission and queued execution; retain slots and preserve item/script rules.",
+    "Shoulder controls erased the soft target every frame and RT/A ignored it. Friendly spells default to self, X self-casts, D-pad cycles valid targets and A/RT honors that target without changing caster.",
+    "The body-part ring mixed six aimed strikes with unrelated actions and narrow foot sectors. Six equal labelled sectors, D-pad navigation, hysteresis and neutral-on-open improve precise selection.",
+    "Snapshot cadence used simulation delta; 2x sent more traffic. One ordered unreliable channel discarded older chunks for unrelated actors. Per-actor monotonic serials now reject stale data, and a wall-time deadline limits updates to 10 Hz.",
+    "Loss of a final stopped-party state could leave the old walking animation until a staggered full refresh. Every periodic update now repeats party state.",
+    "Full retained perception increased a Portal actor record to 3476 bytes. Sorted packed ID deltas, cached Zstandard compression and compatible legacy-array decoding reduce this stress-case record to 984 bytes without changing vision rules."
+  ],
+  "runs": [
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps52/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/snapshot_delivery.gd",
+        "--label=snapshot-delivery-before-04",
+        "--netsim=80,30,2"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 46.49511774300481,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "099acdcbbe5e098976802b6ed517ea820ba8cbaa027ba010aff3ab7bb1f1923e",
+      "label": "snapshot-delivery-before-04",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/snapshot-delivery-before-04.log",
+      "results": [
+        "SNAPSHOT_POPULATION 415 actor_bytes=3476",
+        "SNAPSHOT_DELIVERY [{\"gap_max_ms\":183,\"gap_p95_ms\":131,\"max_error\":0.528237998485565,\"packet_bytes\":567548,\"packet_count\":384,\"packet_max_bytes\":3484,\"rate\":1.0,\"updates\":74},{\"gap_max_ms\":267,\"gap_p95_ms\":101,\"max_error\":3.00000166893005,\"packet_bytes\":862996,\"packet_count\":564,\"packet_max_bytes\":3484,\"rate\":2.0,\"updates\":120}]"
+      ]
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps56/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/snapshot_delivery.gd",
+        "--label=snapshot-delivery-after-02",
+        "--netsim=80,30,2"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 45.0804406979878,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "17c5caf0bfa2183a6da550592dc597144d8237a427e5cf23227c20b66f822ad1",
+      "label": "snapshot-delivery-after-02",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/snapshot-delivery-after-02.log",
+      "results": [
+        "SNAPSHOT_POPULATION 415 actor_bytes=984",
+        "SNAPSHOT_DELIVERY [{\"gap_max_ms\":135,\"gap_p95_ms\":134,\"max_error\":0.479441344738007,\"packet_bytes\":390600,\"packet_count\":393,\"packet_max_bytes\":1100,\"rate\":1.0,\"updates\":76},{\"gap_max_ms\":308,\"gap_p95_ms\":202,\"max_error\":3.00000166893005,\"packet_bytes\":338432,\"packet_count\":346,\"packet_max_bytes\":1100,\"rate\":2.0,\"updates\":71}]"
+      ]
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps56/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/snapshot_recovery.gd",
+        "--label=snapshot-recovery-final-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 2.3048312769969925,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "022bc3a24b1ec583a8e27dd129656b13cd081cc4d2d95ed8fdb0f2fd85a636be",
+      "label": "snapshot-recovery-final-01",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/snapshot-recovery-final-01.log",
+      "results": [
+        "SNAPSHOT_RECOVERY 16 checks 0 failures"
+      ]
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps56/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/network_render_clock.gd",
+        "--label=network-clock-final-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 2.0043086189834867,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "c1d45247da52f4fa2d03f00495f4aa0f36e04a2e85072cd152e1aa65d74f02f5",
+      "label": "network-clock-final-01",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/network-clock-final-01.log",
+      "results": [
+        "NETWORK_RENDER_CLOCK 145 checks 0 failures"
+      ]
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps56/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/worker_coop_delivery.gd",
+        "--label=worker-coop-delivery-after-02"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 64.05213204497704,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "a7df2004101829dd7182806c9237d722c8a931055e32e8117be41c1d654cc960",
+      "label": "worker-coop-delivery-after-02",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/worker-coop-delivery-after-02.log",
+      "results": [
+        "WORKER_COOP_DELIVERY {\"checks\":9,\"failures\":0,\"results\":[{\"distance\":16.0019946396351,\"max_gap_ms\":158,\"p95_gap_ms\":139,\"packets\":74,\"simulation_seconds\":8.02999999999996,\"speed\":1,\"units\":415,\"wall_seconds\":8.014},{\"distance\":32.3618470728397,\"max_gap_ms\":212,\"p95_gap_ms\":178,\"packets\":64,\"simulation_seconds\":15.8949999999999,\"speed\":2,\"units\":415,\"wall_seconds\":8.002}]}"
+      ]
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps56/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--resolution",
+        "1600x900",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/gamepad_coop_targets.gd",
+        "--label=gamepad-coop-targets-final-01",
+        "--ei-inline-host"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 67.71813991700765,
+      "errors": [],
+      "warnings": [
+        "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+      ],
+      "log_sha256": "fc48f4888c1c1d45499599e92817f4dca242593a8c3e5f6f247db136bd543d7d",
+      "label": "gamepad-coop-targets-final-01",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gamepad-coop-targets-final-01.log",
+      "results": [
+        "GAMEPAD_COOP_TARGETS 19 checks 0 failures"
+      ]
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps56/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/spell_requirements_coop.gd",
+        "--label=spell-requirements-final-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 40.49972431600327,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "4af019f867b18996a348a65128aa419a85eac71c6885c43e3e0ee4f60a54c6c8",
+      "label": "spell-requirements-final-01",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/spell-requirements-final-01.log",
+      "results": [
+        "SPELL_REQUIREMENTS_COOP 17 checks 0 failures"
+      ]
+    }
+  ],
+  "visual_review": {
+    "image": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/gamepad-coop-targets-final-01/godot/app_userdata/Cursed Lands/gamepad-body-parts.png",
+    "result": "1280x720 guest viewport: six labelled sectors, visible title/selected part/button hints, no stale page tabs or clipped text. Functional Xvfb rendering only."
+  },
+  "excluded_or_superseded": [
+    {
+      "runs": [
+        "spell-requirements-coop-01"
+      ],
+      "reason": "Fixture disabled host physics and therefore its deferred state flush; explicit sync after the real command restored normal presentation behavior. No production change was needed for this fixture failure."
+    },
+    {
+      "runs": [
+        "gamepad-coop-targets-01"
+      ],
+      "reason": "Rendered LiA initial transfer exceeded the fixture 30-second wait. Final gamepad scene uses a 60-second wait and inline two-session test configuration; slow initial delivery remains a separate open observation."
+    },
+    {
+      "runs": [
+        "gamepad-coop-targets-02"
+      ],
+      "reason": "Fixture called field handlers without a routed button press. Corrected to PadInput._press/_release through real signal dispatch."
+    },
+    {
+      "runs": [
+        "snapshot-delivery-before-01",
+        "snapshot-delivery-before-02"
+      ],
+      "reason": "Transport fixture counted an initial stale load gap, allowed its shared history dictionary to be pruned, and retained NetSim signal closures at shutdown. Fixed fixture; these outputs are not comparisons."
+    },
+    {
+      "runs": [
+        "snapshot-delivery-before-03",
+        "snapshot-delivery-after-01"
+      ],
+      "reason": "The large visibility stress list left presentation processing active in both scenes. Final transport fixture disables simulation and presentation so delivery is isolated. First compression version also still exceeded the packet budget and was superseded by sorted ID deltas."
+    },
+    {
+      "runs": [
+        "worker-coop-delivery-after-01"
+      ],
+      "reason": "Fixture expected an extra server player entry; owner authentication replaces that entry. Test and its worker were explicitly stopped, the identity count corrected, and the real service run repeated successfully."
+    }
+  ],
+  "limits": [
+    "Transport stress uses the loaded 415-actor Portal population with an intentionally full retained visibility list; moving position is controlled and both worlds simulation/presentation are disabled. It uses ENet plus 80 ms RTT, 30 ms jitter and 2 percent artificial loss.",
+    "Compared snapshot payload bytes over 8 seconds: 567548 to 390600 at 1x; 862996 to 338432 at 2x. Maximum serialized payload 3484 to 1100 bytes. These are transport results, not CPU or FPS improvements.",
+    "Raw received gap measurements do not establish a general latency improvement. No multi-second internet-stall reproduction is claimed.",
+    "The independent simulation-service test uses a copied ordinary Portal route save and original live simulation, with two ENet frontends. Its 8-second phases reach 8.03 and 15.895 simulated seconds and maximum guest snapshot gaps of 158 and 212 ms. No long-playthrough/WAN/Windows guarantee follows from this short loopback check.",
+    "Windows/macOS/Retroid runtime and hardware-controller ergonomics were not tested in this checkpoint. All new test processes were stopped; published release and device installs are unchanged.",
+    "All peers require the same protocol-13 build. Broad performance work remains deferred; this addresses specific networking, controller and spell-reset reports."
+  ],
+  "validation_counts": {
+    "spell_requirements_coop": 17,
+    "gamepad_coop_rendered": 19,
+    "snapshot_recovery_and_lmp_fences": 16,
+    "existing_interpolation_clock": 145,
+    "worker_coop": {
+      "reported_before_shutdown": 9,
+      "shutdown_checked_after_report": 1
+    }
+  }
+}

@@ -137,7 +137,17 @@ static func complexity(spell: String) -> float:
 ## stamina for its cost (camphelp 106).
 static func usable_by(h: Dictionary, max_stamina: float, spell: String) -> bool:
 	var p := parse(spell)
-	return Skills.knowledge(h, String(p.subtype)) >= complexity(spell) and max_stamina >= float(p.mana)
+	return not p.proto.is_empty() and Skills.knowledge(h, String(p.subtype)) >= float(p.complex) and max_stamina >= float(p.mana)
+
+
+## Recheck learned spells after training, equipment changes and save loads.
+## Keep the spell in its slot; item magic and scripted casts have their own rules.
+static func known_usable(u: GameUnit, spell: String) -> bool:
+	if not is_instance_valid(u) or not u.has_meta("hero"):
+		return false
+	var h: Dictionary = u.get_meta("hero")
+	var slot: int = h.get("spells", []).find(spell)
+	return slot >= 0 and slot < 8 and usable_by(h, u.max_mana, spell)
 
 
 ## Whether rune `code` fits spell `spell` (the prototype's mods flags allow its

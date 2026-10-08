@@ -37,7 +37,7 @@ var experience := 0.0     # experience not yet distributed
 ## Hired mercenaries: number N (script var apartyn<N>) -> hero record + controller.
 var mercs := {}
 ## Fully tamed units (Spells.tame stage 3) travelling with the party:
-## [{rec, hp, controller, pos}]. the original puts them in the
+## [{rec, hp, controller, pos, party}]. the original puts them in the
 ## tamer's party, whose members go to the next zone.
 var pets: Array = []
 ## Trader records by id (Shops): goods, restock flag, prototypes sold there.
@@ -247,6 +247,7 @@ func gs_keys(player := 0, prefix := "", clone := false) -> Array[String]:
 ## unit's .mob UNIT_QUEST_ITEMS) go to the quest item list that the script
 ## builtin HaveItem reads, everything else into the party bag.
 func add_item(id: String, n := 1) -> void:
+	id = Items.canonical_rune(id)
 	if Items.kind(id) == "quest":
 		quest_items[String(Items.info(id).row.get("name", id)).to_lower()] = true
 		return
@@ -258,6 +259,15 @@ func add_item(id: String, n := 1) -> void:
 
 func ensure_hero(player: int, prototype: String, player_name := "") -> void:
 	if heroes.has(player):
+		# Older LiA co-op saves could contain a base-game class absent from
+		# the mod's database. Keep the player's data, replacing only that
+		# known unavailable template with the session's valid campaign choice.
+		if player > 0 and not heroes[player].is_empty():
+			var old: Dictionary = heroes[player][0]
+			var old_proto := String(old.get("prototype", ""))
+			if old_proto in Session.COOP_CLASSES and GameData.db.find("monster_prototypes", old_proto).is_empty() \
+					and not GameData.db.find("monster_prototypes", prototype).is_empty():
+				old.prototype = prototype
 		# A loaded co-op slot keeps its character and equipment, but its
 		# display name follows the player now bound to that slot. Preserve
 		# the deployment/script name used to relink an already live unit.
@@ -512,7 +522,7 @@ func fix_items() -> void:
 func party_records(player: int) -> Array:
 	var out := []
 	for h: Dictionary in heroes.get(player, []):
-		var rec := {"prototype": h.prototype, "parent_template": h.prototype, "name": h.get("unit_name", h.name),
+		var rec := {"prototype": h.prototype, "parent_template": h.prototype, "name": h.get("guest_unit_name", h.get("unit_name", h.name)),
 			"complexion": h.complexion, "player": 0, "kind": "UNIT", "type": 50}
 		rec.armors = PackedStringArray(h.get("armors", []))
 		rec.weapons = PackedStringArray(h.get("weapons", []))
@@ -531,8 +541,7 @@ func make_merc(n: int, rec: Dictionary, current: Dictionary = {}) -> Dictionary:
 	if String(m.name).is_empty():
 		m.name = "Mercenary %d" % n
 	if not m.has(TrainingRefund.KEY):
-		# Existing saved NPCs may include gifts or paid training. Recover only
-		# an unambiguous legacy history rather than treating them as fresh.
+		# Existing saved NPCs retain credit for their older ability prices.
 		TrainingRefund.prepare(m)
 	mercs[n] = m
 	return m
@@ -676,7 +685,7 @@ func merc_record(m: Dictionary) -> Dictionary:
 
 func apply_hero(u: GameUnit) -> void:
 	for h: Dictionary in heroes.get(u.controller, []):
-		if String(h.get("unit_name", h.name)) == String(u.info.get("name", "")) or h.prototype == u.proto.get("name", ""):
+		if String(h.get("guest_unit_name", h.get("unit_name", h.name))) == String(u.info.get("name", "")) or h.prototype == u.proto.get("name", ""):
 			u.display_name = h.name
 			Combat.clear_natural_armor(u, h)
 			Combat.hero_stats(u, h)
@@ -800,14 +809,29 @@ static func party_unit(world: GameWorld, ref: Array) -> GameUnit:
 	return null
 
 
-## Refreshes `pets` from the tamed party members in `world`.
+## Kir's ordinary LiA chapter names represent the same travelling party;
+## Shaina is a temporary substitute. Base-game substitutes keep their own
+## animals. Older unlabelled pets belonged to the main protagonist.
+func pet_party() -> String:
+	return current_party if campaign_id != CampaignProfile.ASTRAL or current_party == "Shaina" else ""
+
+
+func pet_party_active(pet: Dictionary) -> bool:
+	return String(pet.get("party", "")) == pet_party()
+
+
+## Refresh only the animals deployed in this world, retaining other parties'
+## waiting pets. SetCurrentParty may already have changed current_party while
+## the old world is still alive, so use its deployment identity.
 func collect_pets(world: GameWorld) -> void:
-	pets = []
+	var deployed := String(world.get_meta("pet_party", pet_party()))
+	pets = pets.filter(func(pet: Dictionary): return String(pet.get("party", "")) != deployed)
 	for u: GameUnit in world.units.values():
 		if is_pet(u):
 			var rec := u.info.duplicate()
 			rec.erase("nid")
-			var pet := {"rec": rec, "hp": u.hp, "controller": u.controller, "pos": u.pos, "body": body_state(u)}
+			var owner := int(u.get_meta("lent_of", u.get_meta("orphan_of", u.controller)))
+			var pet := {"rec": rec, "hp": u.hp, "mana": u.mana, "controller": owner, "pos": u.pos, "body": body_state(u), "party": deployed}
 			if u.has_meta("xp_stats") and u.get_meta("xp_stats") is Dictionary:
 				pet.xp_stats = u.get_meta("xp_stats").duplicate(true)
 				pet.mana = u.mana
@@ -994,7 +1018,7 @@ func store_zone(id: String, world: GameWorld) -> void:
 	if world == null or id.is_empty():
 		return
 	var z := {"dead": [], "removed": [], "units": {}, "levers": {}, "vm": {}, "loot": {}, "carried": {}, "blood_pools": {},
-		"added": world.get_meta("added_mobs", [])}
+		"added": world.get_meta("added_mobs", []), "detached": []}
 	var present := {}
 	for u: GameUnit in world.units.values():
 		if u.has_meta("hero") or is_pet(u):
@@ -1009,6 +1033,11 @@ func store_zone(id: String, world: GameWorld) -> void:
 				"owner": int(u.get_meta("lmp_owner")), "conn": int(u.get_meta("lmp_conn", 0)), "blood_pool": u.blood_pool_state()})
 			continue
 		present[u.uid] = true
+		if u.has_meta("detached_party_npc"):
+			var rec: Dictionary = u.info.duplicate(true)
+			rec.nid = u.uid
+			rec.position = Vector3(u.pos.x, u.pos.y, 0)
+			z.detached.append(rec)
 		if u.has_meta("script_control"):
 			z.get_or_add("controls", {})[u.uid] = u.controller
 		# Original unit saves keep the mutable carried bag, including script
@@ -1024,8 +1053,10 @@ func store_zone(id: String, world: GameWorld) -> void:
 			z.blood_pools[u.uid] = u.blood_pool_state()
 			if u.has_meta("loot"):
 				z.loot[u.uid] = u.get_meta("loot")
-		else:
-			z.units[u.uid] = [u.pos.x, u.pos.y, u.hp, u.faction, u.hidden, body_state(u)]
+		# Both living actors and corpses keep their actual location and
+		# facing. Resetting a guard's angle on load changes who it can see.
+		z.units[u.uid] = [u.pos.x, u.pos.y, 0.0 if u.dead else u.hp, u.faction, u.hidden,
+			{} if u.dead else body_state(u), u.facing]
 	# Looted corpses (Session.take_loot) are off the world but WasLooted still
 	# sees them (GameWorld.looted).
 	z.looted = world.looted.keys()
@@ -1088,6 +1119,12 @@ func restore_zone(id: String, world: GameWorld) -> void:
 	if z.is_empty():
 		return
 	var removed: Array = Array(z.get("removed", [])).duplicate()
+	# Party members dismissed by scripts can stay in a zone whose base .mob
+	# never contained them. Restore them before mutable inventory/body/VM state.
+	for rec: Dictionary in z.get("detached", []):
+		if world.units.has(int(rec.get("nid", 0))): continue
+		var u := world.spawn_unit(rec.duplicate(true))
+		if u: u.set_meta("detached_party_npc", true)
 	var added_ids := {}
 	# Units that scripts added from extra .mob files come back first.
 	for file: String in z.get("added", []):
@@ -1096,10 +1133,16 @@ func restore_zone(id: String, world: GameWorld) -> void:
 			if o.kind != "UNIT": continue
 			var nid := int(o.get("nid", -1))
 			added_ids[nid] = true
-			# Existing saves with the complete carried-inventory snapshot
-			# also identify absent added actors, although their old writer
-			# omitted them from `removed`. Older saves lack that evidence.
-			if z.get("carried") is Dictionary and not z.carried.has(nid) and not z.carried.has(str(nid)):
+			# Earlier writers omitted added actors from `removed`. Their
+			# complete inventory snapshot proves absence; before that field
+			# existed, all living actors were in `units` and corpses in `dead`.
+			var absent := false
+			if z.get("carried") is Dictionary:
+				absent = not z.carried.has(nid) and not z.carried.has(str(nid))
+			elif z.get("units") is Dictionary and z.get("dead") is Array:
+				absent = not z.units.has(nid) and not z.units.has(str(nid)) \
+					and not z.dead.has(nid) and not z.dead.has(str(nid))
+			if absent:
 				if not removed.has(nid): removed.append(nid)
 			if not removed.has(nid) and not world.units.has(nid):
 				world.spawn_unit(o)
@@ -1179,6 +1222,8 @@ func restore_zone(id: String, world: GameWorld) -> void:
 				u.visible = not u.hidden
 			if s.size() > 5 and s[5] is Dictionary:   # body parts and magic effects
 				apply_body(u, s[5])
+			if s.size() > 6 and (s[6] is float or s[6] is int) and is_finite(float(s[6])):
+				u.facing = float(s[6])
 	for nid in z.get("controls", {}):
 		var u: GameUnit = world.units.get(int(nid))
 		if u:
@@ -1312,9 +1357,32 @@ static func load_from(path: String) -> CampaignState:
 		if k.get_slice(".", 2).begins_with("constr") and k.contains(":b.") and is_equal_approx(float(s.vars[k]), 2.0):
 			s.vars[k] = 1.0
 	s.migrate_charges()
+	s.migrate_runes()
 	s.cap_belts()   # saves of builds whose belt took eight
 	TrainingRefund.migrate_state(s)
 	return s
+
+
+## The old item parser treated native Rune.<modifier> loot as an untextured
+## materialless item. Keep each copy and its owner, restoring the modifier
+## already encoded in the saved ID. Saved corpse loot is parsed on pickup.
+func migrate_runes() -> void:
+	var bags: Array = [items]
+	for bag: Dictionary in party_bags.values():
+		bags.append(bag.get("items", []))
+	for entry: Dictionary in coop.get("host", {}).get("joiners", {}).values():
+		bags.append(entry.get("purse", {}).get("items", []))
+	for bag in bags:
+		if not bag is Array: continue
+		for i in bag.size():
+			if bag[i] is String: bag[i] = Items.canonical_rune(bag[i])
+	for shop: Dictionary in shops.values():
+		var goods: Dictionary = shop.get("goods", {})
+		for id: String in goods.keys():
+			var fixed := Items.canonical_rune(id)
+			if fixed != id:
+				goods[fixed] = int(goods.get(fixed, 0)) + int(goods[id])
+				goods.erase(id)
 
 
 ## Saves of builds that kept charges in the hero record ("charges": item

@@ -1,0 +1,164 @@
+{
+  "baseline_commit": "9adb471",
+  "export": {
+    "seconds": 5.9802359960158356,
+    "command": [
+      "/home/llm2x/.local/bin/godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+      "--export-release",
+      "Linux",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps13/CPU.x86_64"
+    ],
+    "engine_source": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/fast-runtime.x86_64",
+    "errors": [],
+    "sha256": {
+      "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+      "CPU.pck": "3336a60a112971513e2bad2c039f096bb93d97356e3aba767b64e4654d5403ec",
+      "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+    }
+  },
+  "tests": {
+    "gameplay-dependents-before-03": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps12/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/party_dependents.gd",
+        "--label=gameplay-dependents-before-03"
+      ],
+      "exit_code": 1,
+      "stopped": false,
+      "seconds": 92.16658056600136,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "b2ded0c118af3047ba3f89f1f82acf5169c6eec3505ecd4360ba34a599d8b7c6",
+      "raw_log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-dependents-before-03.log",
+      "checks": 23,
+      "failures": 10
+    },
+    "gameplay-dependents-after-03": {
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/party_dependents.gd",
+        "--label=gameplay-dependents-after-03"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 94.78308159002336,
+      "errors": [],
+      "warnings": [
+        "WARNING: LanDiscovery: port 27016 is in use; this game is not listed on the local network.",
+        "WARNING: [Physics interpolation] Interpolated Camera3D triggered from outside physics process: \"/root/Main/@Node@8/Guest/@Node3D@410/@Node3D@413/@Camera3D@414\" (possibly benign)."
+      ],
+      "log_sha256": "c6f4e8f7ddbf223ce5cabc16faefddf83d51f3232c666855f671d76b4ae9d52e",
+      "raw_log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-dependents-after-03.log",
+      "checks": 23,
+      "failures": 0
+    },
+    "gameplay-dependents-production-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps13/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/party_dependents.gd",
+        "--label=gameplay-dependents-production-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 86.95428486799938,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "69a61c0fd59c9d10200cdceca76bb852296da8b96319f19060d4d922151c4fa2",
+      "raw_log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-dependents-production-01.log",
+      "checks": 23,
+      "failures": 0
+    },
+    "gameplay-pet-waiting-after-01": {
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/pet_waiting.gd",
+        "--label=gameplay-pet-waiting-after-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 13.624237520009046,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "8d8ea9087d4648619d67c241ef4e2262866ca3632f0bcb847cf6205d2a26874f",
+      "raw_log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-pet-waiting-after-01.log",
+      "checks": 13,
+      "failures": 0
+    },
+    "gameplay-pet-waiting-production-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps13/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/pet_waiting.gd",
+        "--label=gameplay-pet-waiting-production-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 11.420001863996731,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "d76e8c2989a736a31f18b7317a6a1059c6e82d670621effaf2d58919e1621437",
+      "raw_log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-pet-waiting-production-01.log",
+      "checks": 13,
+      "failures": 0
+    }
+  },
+  "source_sha256": {
+    "game/src/game/campaign_state.gd": "8c3df52a529ac6cd39f3ca1f77a33fa960988a39b071b850a89b4f86cf6acb9a",
+    "game/src/game/session.gd": "ea06624f659e1c9c27b1162499de7c0914b034636b10c21e09d10b75c0876a9b",
+    "tools/tests/party_dependents.gd": "252bd09337d3a546d9b0ecfe5e5ac81bc2bc4919979635c8dca0b5da45782032",
+    "tools/tests/pet_waiting.gd": "851888d089ac1404ad63adca56294769c44d876ff1fcd4eea96db3372fc65e27"
+  },
+  "coverage": [
+    "Original bz5h Shaina choice and return handlers, guest-owned Kel and wounded guest-tamed wolf, real ENet guest ownership, save/reload, further map transfer and animal death.",
+    "Base-campaign substitute party, older unlabelled animal, waiting save/reload, disconnected guest ownership and temporary loan."
+  ],
+  "excluded": [
+    "dependents-before/after-01 shared an ENet port; before/after-02 did not restore Kel from his original bz1h mob before the fixture attempted to hire him. Corrected fixtures use independent ports and the actual original Kel record."
+  ],
+  "limitations": [
+    "Prepared story checkpoints, not the entire Shaina quest.",
+    "Two peers in one process with safe render threading. No Windows/Retroid packaging or performance claim.",
+    "Guest main heroes retain their own equipment during Shaina; broader temporary-chapter role policy remains G08."
+  ]
+}

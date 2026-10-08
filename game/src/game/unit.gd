@@ -169,6 +169,8 @@ var hidden := false:
 var fogged := false   # out of this player's sight (UnitFog, client-side only)
 
 # --- orders
+## Transient input ownership; never written into the character/save.
+var direct_controlled := false
 var orders: Array[Dictionary] = []:
 	set(value):
 		orders = value
@@ -1142,7 +1144,7 @@ static func _talk_order_command(o: Dictionary) -> int:
 	match String(o.get("type", "")):
 		"move": return 1
 		"rotate": return 2
-		"attack": return 3
+		"attack", "direct_attack": return 3
 		"cast": return 4
 		"use": return 6
 		"anim": return 10
@@ -1522,9 +1524,12 @@ func _tick(dt: float) -> void:
 		_pending_hit.t -= dt
 		# Native549160 completes when the integer end counter is reached.
 		if _pending_hit.t <= 0.000000001:
-			var hit_target = _pending_hit.get("target")
-			if is_instance_valid(hit_target) and hit_target is GameUnit:
-				_resolve_hit(hit_target, _pending_hit.get("roll", {}))
+			if _pending_hit.has("direction"):
+				_resolve_direct_hit(_pending_hit.direction)
+			else:
+				var hit_target = _pending_hit.get("target")
+				if is_instance_valid(hit_target) and hit_target is GameUnit:
+					_resolve_hit(hit_target, _pending_hit.get("roll", {}))
 			_pending_hit = {}
 	if world.profile_simulation: world.profile_record("unit_housekeeping",started,uid)
 	# The perception of a Player-motivation unit runs on every AI tick, busy,
@@ -1573,6 +1578,7 @@ func _tick(dt: float) -> void:
 	match order.type:
 		"move": _do_move(dt)
 		"attack": _do_attack(dt)
+		"direct_attack": _do_direct_attack(dt)
 		"follow":
 			_do_follow(dt)
 			# Follow is an AI state: only its actual move is command 1.
@@ -1771,6 +1777,9 @@ func _do_move(dt: float) -> void:
 	else:
 		running = bool(order.get("run", true))
 	if path.is_empty():
+		if world.time < float(order.get("group_retry_at", -INF)):
+			_set_action("idle")
+			return
 		var replan := _avoid != null and is_instance_valid(_avoid)
 		if order.get("story_move", false) and not world.prepare_story_move(self, order.to):
 			_set_action("idle")
@@ -1783,6 +1792,7 @@ func _do_move(dt: float) -> void:
 			# Native554830 plans every new move. The nav memo validates standing
 			# stamps; even identical cells need a fresh physical motion anchor.
 			path = _path_to(order.to)
+		if path.is_empty() and _retry_group_move(): return
 		if use_target:
 			motion_notice(order.to, 1, world.vm._interact_reach(self, use_target))
 		else:
@@ -1794,7 +1804,32 @@ func _do_move(dt: float) -> void:
 			return
 		_fresh_path = replan
 	if _step_along_path(dt):
+		if not order.is_empty() and pos.distance_to(order.to) > 0.75 and _retry_group_move(): return
 		order = {}
+	elif _moving:
+		order.erase("group_retry_until")
+		order.erase("group_retry_at")
+
+
+## A group click starts its orders one unit at a time. In a narrow passage
+## its still-standing members can temporarily leave the others no route.
+## Retry the ordinary collision-aware search, only while a nearby member of
+## the same click still intends to move. A stationary deadlock expires in
+## two seconds; replacement commands and unrelated actors never qualify.
+func _retry_group_move() -> bool:
+	var group: Dictionary = order.get("move_group", {})
+	if group.is_empty() or world.time >= float(order.get("group_retry_until", INF)): return false
+	for id: int in group.get("members", []):
+		var other: GameUnit = world.units.get(id)
+		if other == null or other == self or other.dead or other.blocked or other.controller != controller \
+				or pos.distance_squared_to(other.pos) > 36.0: continue
+		var next: Dictionary = other.order if not other.order.is_empty() else (other.orders[0] if not other.orders.is_empty() else {})
+		if not is_same(group, next.get("move_group")): continue
+		if not order.has("group_retry_until"): order.group_retry_until = world.time + 2.0
+		order.group_retry_at = world.time + 0.2
+		_set_action("idle")
+		return true
+	return false
 
 
 ## Empty compatibility slot cleared by NavGrid._relocate after object changes.
@@ -2153,6 +2188,7 @@ func _blocked_by(b: GameUnit, standing: bool, next := Vector2.INF) -> void:
 		_avoid_at = next if temporary_moving or not standing else Vector2.INF
 		path = _path_to(goal,_order_target() if kind in ["attack","cast","follow"] else null,-1,_path_limit)
 		if path.is_empty():
+			if kind == "move" and _retry_group_move(): return
 			_fail_order(EIAcks.NO_WAY_TO_ATTACK if kind == "attack" else EIAcks.NO_PATH)
 			if kind == "attack": target = null;_goal = Vector2.INF
 	_set_action("idle")
@@ -2422,6 +2458,39 @@ static func _strike_delay_ticks(base: float, act: float, armed := true) -> int:
 		factor = float(PackedFloat32Array([15.0 / factor])[0])
 	var value := int(base) if armed else int(PackedFloat32Array([base])[0])
 	return _fistp(float(PackedFloat32Array([float(value) * factor])[0]))
+
+
+## A single committed swing/shot. Never approaches or locks on to a victim.
+func _do_direct_attack(dt: float) -> void:
+	alert = true
+	var d: Vector3 = order.direction
+	path = PackedVector2Array()
+	_goal = Vector2.INF
+	if stance != STANCE_NONE:
+		change_posture(STANCE_NONE)
+		return
+	if not _turn_to(Vector2(d.x,-d.z).angle(),dt): return
+	if _attack_cd > 0.0 or _update_pose(): return
+	var len := maxf(model.act("attack",randi_range(1,3),0.05),0.6)
+	action = "attack"
+	_anim_lock = len
+	var a_w := float(stats.get("weapon_actions",proto.get("tuning_actions",50.0)))
+	_attack_cd = maxf(_strike_delay_ticks(a_w,actions(),stats.has("weapon_actions"))*TICK,len)
+	strike_aim = -1
+	strike_miss = false
+	_pending_hit = {"t":_hit_ticks()*TICK,"direction":d}
+	order = {}
+	GameSound.unit(self,"attack")
+
+
+func _resolve_direct_hit(d: Vector3) -> void:
+	if stats.get("ranged",false):
+		var p := Projectile.launch_direct(world,self,d,true)
+		if world.session: world.session.broadcast({"t":"direct_arrow","a":uid,"direction":d,"start":p.global_position})
+	else:
+		var victim := DirectCombat.melee_target(self,d)
+		if victim: DirectCombat.contact(self,victim)
+		else: strike_miss = true
 
 
 func _do_attack(dt: float) -> void:
@@ -2713,6 +2782,12 @@ func _spell_cost(sp: Dictionary) -> float:
 
 
 func _do_cast(dt: float) -> void:
+	# A queued approach must not preserve permission across a stat reset or
+	# unequip. Only player spell orders carry this flag, not wands or story magic.
+	if order.get("known_spell", false) and not Spells.known_usable(self, String(order.spell)):
+		order = order.get("then", {})
+		path = PackedVector2Array()
+		return
 	var t: GameUnit = _order_target()
 	#  execute quick potion kind 8 before
 	# checking the cannot-cast bit. Wands and known spells still refuse it.
@@ -3688,7 +3763,7 @@ func _update_pose() -> bool:
 	if st != old and action in ["walk", "run", "crawl"] and _posture_of(st) != _posture_of(old):
 		path = PackedVector2Array()
 		_moving = false
-		if order.get("type", "") != "attack":
+		if order.get("type", "") not in ["attack","direct_attack"]:
 			var l := model.cross(old, st, "idle")
 			if l > 0.0:
 				action = "idle"
@@ -3760,6 +3835,9 @@ func _sync_transform(draw_dt := -1.0) -> void:
 			_draw_move_speed = direction.length() * float(sample.v) * SPEED_SCALE
 	if not world.authority:
 		var elapsed := get_physics_process_delta_time() if draw_dt < 0.0 else draw_dt
+		# Snapshot arrival intervals are unscaled; at 2x a scaled delta would
+		# finish each glide halfway to the next packet and then stop moving.
+		elapsed /= maxf(Engine.time_scale, 0.001)
 		p = net_view.step(pos, elapsed)
 		yaw = net_view.step_yaw(facing, elapsed)
 	# Advance smoothing before checking the cache. Once it reaches the
@@ -3830,7 +3908,7 @@ func _draw_step(_dt: float, placement_ready := false) -> void:
 	# gap played the attack -> neutral cross clip and back on every repeated
 	# attack click, and clicks a second apart kept the strike from starting.
 	var cmd := order if not order.is_empty() or orders.is_empty() else orders[0]
-	if alert and controller >= 0 and world and world.authority and cmd.get("type", "") != "attack":
+	if alert and controller >= 0 and world and world.authority and cmd.get("type", "") not in ["attack","direct_attack"] and not _pending_hit.has("direction"):
 		alert = false
 	_update_pose()
 	if not dead:
@@ -3870,8 +3948,12 @@ func snapshot() -> Array:
 		snappedf(_move_speed, 1.0 / 256.0), _action_serial]
 
 
+var _perception_wire_ids := []
+var _perception_wire := []
+
+
 func _perception_snapshot() -> Array:
-	var out := [[], []]
+	var out := [PackedInt32Array(), PackedInt32Array()]
 	if controller < 0 or world == null:
 		return out
 	var slot := 0
@@ -3880,11 +3962,49 @@ func _perception_snapshot() -> Array:
 			if is_instance_valid(o) and o is GameUnit and world.units.get(o.uid) == o:
 				out[slot].append(o.uid)
 		slot += 1
-	return out
+	for list in out: list.sort()
+	if out != _perception_wire_ids:
+		_perception_wire_ids = out
+		_perception_wire = out
+		# Retained visibility can contain hundreds of actor IDs in Portal.
+		# Compress only this list, caching it until it changes; movement stays
+		# cheap and the common large-history record fits a single datagram.
+		var raw := var_to_bytes(out)
+		if raw.size() > 256:
+			var deltas := []
+			for list in out:
+				var delta := PackedInt32Array()
+				var previous := 0
+				for id: int in list:
+					delta.append(id - previous)
+					previous = id
+				deltas.append(delta)
+			raw = var_to_bytes(deltas)
+			var packed := raw.compress(FileAccess.COMPRESSION_ZSTD)
+			if packed.size() + 32 < raw.size():
+				_perception_wire = [raw.size(), packed, 1] # sorted ID deltas
+	return _perception_wire
 
 
 func _apply_perception_snapshot(row) -> void:
 	var ids := []
+	if row is Array and row.size() in [2, 3] and row[0] is int and row[1] is PackedByteArray:
+		if row[0] > 0 and row[0] <= 1048576:
+			var deltas: bool = row.size() == 3 and row[2] == 1
+			row = bytes_to_var((row[1] as PackedByteArray).decompress(row[0], FileAccess.COMPRESSION_ZSTD))
+			if deltas and row is Array:
+				var decoded := []
+				for list in row:
+					var values := PackedInt32Array()
+					var id := 0
+					if list is PackedInt32Array:
+						for delta: int in list:
+							id += delta
+							values.append(id)
+					decoded.append(values)
+				row = decoded
+		else:
+			row = null
 	if row is Array and row.size() == 2 and world != null:
 		for list in row:
 			if list is Array or list is PackedInt32Array or list is PackedInt64Array:

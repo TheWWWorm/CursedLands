@@ -74,7 +74,8 @@ extends Control
 ## Keys quicksave / quickload (via the action table: 0x35
 ## 0x36) work here in single player only.
 ## Remake differences (**Approx.**): "Stay here" and buttons for destinations
-## on another allod are remake-only (the original builds only the turn / camp
+## on another allod are remake-only
+## (the original builds only the turn / camp
 ## buttons, tips 90100-90102, and cannot stay); pieces are picked by ray
 ## casts instead of the id buffer; in co-op only the party leader travels
 ## (the original's client sends travel command 6 with no leader check; the
@@ -412,9 +413,11 @@ func _build_extra() -> void:
 	th.default_font = Interface800.font()
 	_extra.theme = th
 	th.default_font_size = 16
-	# Offered places on another allod (not on this island).
+	# Cross-island routes need buttons. On this island, entering the edge
+	# reveals its adjacent game regions in Session, as in the original.
 	for o: Dictionary in options:
-		if String(session.campaign.zone(String(o.zone)).get("allod", "")).to_lower() == allod:
+		var id := String(o.zone)
+		if String(session.campaign.zone(id).get("allod", "")).to_lower() == allod:
 			continue
 		var b := Button.new()
 		b.text = String(o.title)

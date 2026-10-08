@@ -4,7 +4,19 @@ const P := preload("res://src/game/script/script_parser.gd")
 
 static func apply(ast: ScriptParser, campaign: String, zone: String) -> void:
 	if campaign != CampaignProfile.ASTRAL:
+		if campaign == CampaignProfile.ORIGINAL:
+			preload("res://src/game/script/story_coop_predicates.gd").apply_original(ast,zone)
+			if zone == "gz15h": _prison_party_checks(ast)
+		if campaign == CampaignProfile.ORIGINAL and zone == "gz6g":
+			# The amulet dragon has three identical native follow/return
+			# cycles. Added guests use the third role's original cadence.
+			preload("res://src/game/script/story_coop_traps.gd").apply_family(ast, {
+				"root":"VCheck#0#404", "peer":"VCheck#0#393", "slot":2, "caller":"WorldScript",
+				"chain":{"VTriger#0#401":"VTriger#0#394", "VCheck#0#402":"VCheck#0#396", "VTriger#0#406":"VTriger#0#398"}})
 		return
+	preload("res://src/game/script/story_coop_effects.gd").apply(ast, zone)
+	preload("res://src/game/script/story_coop_traps.gd").apply(ast, zone)
+	preload("res://src/game/script/story_coop_predicates.gd").apply(ast, zone)
 	if zone == "bz1h":
 		_escape_party(ast)
 	if zone != "cz1h": return
@@ -24,12 +36,40 @@ static func apply(ast: ScriptParser, campaign: String, zone: String) -> void:
 	for block: Dictionary in ast.scripts.get("VCheck#0#2", {}).get("blocks", []):
 		for condition: Array in block.conds:
 			if condition == check:
-				condition[2][0][2][1][1] = 300.5
+					condition[2][0][2][1][1] = 300.5
+
+
+## The original prison arms these shared quest/discovery checks once for
+## each deployed hero. A late guest otherwise has no thread. Mark only the
+## inspected registration loops; the VM also verifies that their complete
+## trigger chains never act on the individual. Native bodies and saved
+## instruction indexes remain unchanged.
+static func _prison_party_checks(ast: ScriptParser) -> void:
+	var parents := {
+		"VTriger#0#43":["VCheck#0#44"], "VTriger#0#48":["VCheck#0#49"],
+		"VTriger#0#109":["VCheck#0#106"], "VTriger#0#208":["VCheck#0#189"],
+		"VTriger#0#236":["VCheck#0#237"],
+		"VTriger#0#257":["VCheck#0#258","VCheck#0#352","VCheck#0#356"],
+		"VTriger#0#290":["VCheck#0#289"], "VTriger#0#294":["VCheck#0#296"],
+		"VTriger#0#295":["VCheck#0#297"],
+	}
+	for parent: String in parents:
+		var blocks: Array = ast.scripts.get(parent,{}).get("blocks",[])
+		if blocks.size() != 1 or not blocks[0].conds.is_empty(): continue
+		var calls := []
+		for child: String in parents[parent]: calls.append([P.S_CALL,child,[[P.N_VAR,"VSS#i#val"]]])
+		if blocks[0].body != [[P.S_CALL,"KillScript",[]],[P.S_FOR,"VSS#i#val",[P.N_VAR,"Heroes"],calls]]: continue
+		for child: String in parents[parent]:
+			var def: Dictionary = ast.scripts.get(child,{})
+			if def.get("params",[]) != ["this"] or def.blocks.size() != 1 or def.blocks[0].conds.is_empty(): continue
+			def.party_check = true
 
 
 ## The slave-camp escape predates co-op: only Kir and Kel receive its
 ## running order, and only their arrival starts Terror's attack. Extend the
-## exact authored staging to every live guest before releasing that attack.
+## staging to every live guest before releasing that attack. Guests must
+## continue beyond the two original marks, leaving room to flee the first
+## fireball rather than crowding Kir and Kel as soon as they cross the gate.
 static func _escape_party(ast: ScriptParser) -> void:
 	var hero := [P.N_CALL,"GetUnitOfPlayer",[[P.N_NUM,0.0],[P.N_NUM,0.0]]]
 	var move := [P.S_CALL,"MoveToPoint",[hero,[P.N_NUM,407.0],[P.N_NUM,82.0]]]
@@ -53,12 +93,28 @@ static func story_move(vm: ScriptVM, script: String, unit: GameUnit, to: Vector2
 	if script != "VCheck#1#1" or to != Vector2(407,82): return
 	var story := vm._story_records()
 	if story.is_empty() or unit != story[0]: return
-	var i := 0
-	for guest: GameUnit in escape_guests(vm):
-		i += 1
-		guest.set_gait(3)
-		guest.command({"type":"move", "to":to+Vector2(0,-1.1*i), "run":true, "story_move":true})
-		guest.set_meta("ai_state",1)
+	var guests := escape_guests(vm)
+	for i in guests.size(): _run_escape_guest(guests[i],i)
+
+
+static func _run_escape_guest(guest: GameUnit, index: int) -> void:
+	guest.set_gait(3)
+	guest.command({"type":"move", "to":Vector2(407,78.5-1.5*index), "run":true, "story_move":true})
+	guest.set_meta("ai_state",1)
+
+
+static func escape_ready(vm: ScriptVM) -> bool:
+	var guests := escape_guests(vm)
+	var ready := true
+	for i in guests.size():
+		var guest: GameUnit = guests[i]
+		if guest.pos.y < 80.0: continue
+		ready = false
+		# A temporary crowd can exhaust a route, and a guest can join after
+		# the single authored MoveToPoint. Continue idle guests during this
+		# arrival wait without replacing an active player command.
+		if guest.is_idle(): _run_escape_guest(guest,i)
+	return ready
 
 
 ## The stationary call switch only starts Lift#01 once in the original.
@@ -80,10 +136,16 @@ static func lift_recall(vm: ScriptVM, nid: int) -> void:
 
 
 ## Earlier saves kept VM waits but lost the corresponding walking orders.
-## Only the two proven escape waits can be recovered from their exact marks.
+## Recover inspected active trap families and the two proven escape waits.
 static func recover(vm: ScriptVM) -> void:
+	# Only definitions installed by apply() can be recovered, in either campaign.
+	preload("res://src/game/script/story_coop_traps.gd").recover(vm)
 	if vm.session.state.campaign_id != CampaignProfile.ASTRAL: return
 	var zone := String(vm.world.zone.get("id", ""))
+	if zone == "gz1h":
+		_recover_terror(vm)
+	if zone == "bz2h":
+		_recover_kel(vm)
 	if zone == "bz1h" and vm.instances.any(func(i): return i.sname == "VCheck#1#1a" and not i.killed):
 		# Old saves kept this arrival wait without guest escape orders.
 		var hero := vm._by_name("Hero") as GameUnit
@@ -102,3 +164,59 @@ static func recover(vm: ScriptVM) -> void:
 			u.command({"type":"move", "to":at, "run":false, "story_move":true})
 			u.set_meta("ai_state",1)
 			return
+
+
+## Old builds could reload zone1evil.mob after Terror's removal, then save
+## that resurrected actor as alive. Absence-based migration cannot repair
+## those saves. The original escape flag and despawn bodies establish that
+## this Portal actor has already left. A save in the seven-tick disappearance
+## animation still has a running removal frame; let that frame finish normally.
+static func _recover_terror(vm: ScriptVM) -> void:
+	if vm.session.state.get_var(0,"q.gz1h.q02h.2") != 2.0: return
+	if not vm.world.get_meta("added_mobs",[]).any(func(file): return String(file).to_lower() == "zone1evil.mob"): return
+	var target := [P.N_CALL,"GetObject",[[P.N_NUM,666666.0]]]
+	var done := [P.S_CALL,"GSSetVarMax",[[P.N_NUM,0.0],[P.N_STR,"q.gz1h.q02h.2"],[P.N_NUM,2.0]]]
+	var remove := [P.S_CALL,"RemoveUnitFromServer",[target]]
+	var names := ["VCheck#1#8a","VTriger#1#2"]
+	for name: String in names:
+		var blocks: Array = vm.ast.scripts.get(name,{}).get("blocks",[])
+		if blocks.size() != 1: return
+		var body: Array = blocks[0].body
+		var at := body.find(remove)
+		if not body.has(done) or at < 1 or body[at-1] != [P.S_CALL,"Sleep",[[P.N_NUM,7.0]]]: return
+	if vm.instances.any(func(i): return i.sname in names and not i.frames.is_empty()): return
+	var terror: GameUnit = vm.world.units.get(666666)
+	if terror:
+		vm.world.remove_unit(terror)
+		GameData.trace("restored completed Portal escape: removed resurrected Terror")
+
+
+## Older builds deleted Kel when the first Shelter briefing removed him
+## from FPrison. Native scripts keep that actor hidden, then reveal him when
+## Shaina's disguise hand-in finishes. Only repair this inspected old-save
+## contract; new snapshots explicitly track actors detached from a party.
+static func _recover_kel(vm: ScriptVM) -> void:
+	var st := vm.session.state
+	var saved: Dictionary = st.zones.get("bz2h", {})
+	if saved.has("detached") or st.get_var(0,"b.bz2h.brief_6") != 2.0 \
+			or st.get_var(0,"adeadn2") != 0.0 or vm._by_name("merc2") != null: return
+	var nid := ScriptVM.name_id("merc2")
+	if nid in saved.get("dead", []) or nid in saved.get("removed", []): return
+	var actor := [P.N_CALL,"GetObjectByName",[[P.N_STR,"merc2"]]]
+	var place := [P.S_CALL,"SetCP",[actor,[P.N_NUM,83.5],[P.N_NUM,233.0],[P.N_NUM,0.0]]]
+	var remove := [P.S_CALL,"RemoveUnitFromParty",[[P.N_NUM,0.0],[P.N_STR,"FPrison::merc2"]]]
+	var hide := [P.S_CALL,"HideObject",[actor,[P.N_NUM,1.0]]]
+	var reveal := [P.S_CALL,"HideObject",[actor,[P.N_NUM,0.0]]]
+	if not vm.ast.scripts.get("Start",{}).get("blocks",[]).any(func(b):return b.body.has(place)): return
+	if not vm.ast.scripts.get("#OnBriefingComplete",{}).get("blocks",[]).any(func(b):return b.body.has(remove) and b.body.has(hide)): return
+	if not vm.ast.scripts.get("VCheck#1#2",{}).get("blocks",[]).any(func(b):return b.body.has(reveal)): return
+	var rec := {"kind":"UNIT", "type":50, "nid":nid, "name":"merc2", "prototype":"merc2",
+		"parent_template":"merc2", "position":Vector3(83.5,233,0), "player":0}
+	var kel := vm.world.spawn_unit(rec)
+	if kel == null: return
+	kel.controller = -1
+	kel.set_meta("detached_party_npc", true)
+	kel.hidden = st.get_var(0,"Trans") < 1.0
+	kel.visible = not kel.hidden
+	kel.facing = atan2(-1.0, 1.0)
+	GameData.trace("restored missing Shelter Kel from the original briefing contract")

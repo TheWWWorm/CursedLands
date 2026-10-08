@@ -156,7 +156,7 @@ func _ready() -> void:
 	hl.text = RemakeText.t("Co-op hero: ")
 	hero_row.add_child(hl)
 	_hero = OptionButton.new()
-	for proto: String in Session.COOP_CLASSES:
+	for proto: String in Session.coop_classes():
 		var t := GameUnit.unit_title(proto)
 		_hero.add_item(("%s (%s)" % [proto.trim_prefix("Human Mercenary "), t]) if t else proto.trim_prefix("Human Mercenary "))
 		_hero.set_item_metadata(_hero.item_count - 1, proto)

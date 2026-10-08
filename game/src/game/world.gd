@@ -317,6 +317,7 @@ func move_object(nid: int, p: Vector3) -> void:
 	var o: Dictionary = node.get_meta("ei")
 	if not node.has_meta("moved_from"):
 		node.set_meta("moved_from", o.position)
+	if map: p = map.moved_object_position(nid,p)
 	o.position = p
 	node.position = EISpace.pos(p.x, p.y, terrain.height_at(p.x, p.y) + p.z)
 	nav.remove_object(nid)
@@ -674,7 +675,9 @@ func _process(_dt: float) -> void:
 	if not authority and not _fixed_step:
 		_sample_client_effect_frame(Time.get_ticks_msec(), Engine.time_scale)
 		if _client_placement and draw_frame_enabled():
-			_client_placement.sync_clients(self, _unit_rows, _dt, Engine.get_process_frames())
+			# NetSmooth measures packet spacing in wall time. Animation/effects
+			# still use scaled time, but the glide must span the real interval.
+			_client_placement.sync_clients(self, _unit_rows, _dt / maxf(Engine.time_scale, 0.001), Engine.get_process_frames())
 	if not frame_clock_enabled():
 		_frame_ms = -1
 		if lever_sys:

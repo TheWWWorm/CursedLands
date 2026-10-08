@@ -50,7 +50,9 @@ const SCHEMA := {
 		["fire_prints", " S11", "name,normal,alt"],
 	],
 	"quests.qdb": [
-		["quests", "SFIISIIs", "name,experience,unknown,zone,comment,money,record,unknown2"],
+		# Native objectives read field 5 as float (LiA 57aed0, record +0x14).
+		# Reading its bits as an int turned the authored 230 into 1130758144.
+		["quests", "SFIISFIs", "name,experience,unknown,zone,comment,money,record,unknown2"],
 		["briefings", "SFFsSsssssI", "name,unknown,money,give_items,comment,take_items,give_quests,give_quests2,open_zones,unknown2,bonus"],
 	],
 }

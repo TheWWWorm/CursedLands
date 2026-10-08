@@ -71,7 +71,8 @@ const REFUND_RECT := Rect2(20, 355, 160, 28)
 ##   20400) and six filter buttons (mode 0, tips 21100-21105
 ##   icons at U + 168).
 ## textures.res images come out of EIMmp upside down against the original's UVs, so
-## they are flipped once here. Every slot shows its item's 3D model.
+## they are flipped once here. Spell pieces use flat slot artwork; other
+## items show their 3D models.
 ## Side areas:
 ## - backdrop (draw, texture "campinfo"): the
 ##   stone tile UV 14,14-114,114 over 0,100-800,500 (8×4), per 200-wide
@@ -1404,7 +1405,8 @@ func _process(_dt: float) -> void:
 			_content["armor%d" % i] = [armor_by_type.get(i, ""), "worn"]
 	for k in _views:
 		if _key_shown(k):
-			_views[k].show_item(String(_content.get(k, [""])[0]))
+			var id := String(_content.get(k, [""])[0])
+			_views[k].show_item("" if Items.is_spell_piece(id) else id)
 	queue_redraw()
 
 
@@ -2090,6 +2092,14 @@ func _draw() -> void:
 		elif b == "cancel":
 			lit = d[3]
 		_region("campinfo", SIDE_BUTTONS[b][0], SIDE_BUTTONS[b][1], Color.WHITE if lit else Color(0.5, 0.5, 0.5))
+	# Spells, templates and runes fill the square cell with their own artwork.
+	# The shared 3D item-card model leaves large perspective-dependent gaps.
+	for k: String in _content:
+		var id := String(_content[k][0])
+		if not _key_shown(k) or not Items.is_spell_piece(id): continue
+		var texture := String(Items.look(id).get("texture", ""))
+		var picture := SpellSlots.icon(texture) if not texture.is_empty() else null
+		if picture: draw_texture_rect(picture, _r(_slot_rect(k).grow(-10.0)), false)
 	# Selection.
 	for k in _content:
 		if _key_shown(k) and _content[k][0] != "" and _content[k][0] == selected_id and _content[k][1] == selected_where:
@@ -2889,7 +2899,7 @@ func _draw_skills() -> void:
 		elif not at_camp:
 			refund_help = "Points can be refunded in a village or camp."
 		else:
-			refund_help = "Returns all XP spent on skills and purchased abilities, including attribute upgrades. Starting allocations and quest gifts stay; equipment and earned XP stay."
+			refund_help = "Resets all skills and abilities, including starting ranks and skill gifts, and refunds their points. Base attributes, equipment and earned XP stay."
 	_skill_rows.append([REFUND_RECT, {"t": "refund_training", "unit": _unit.uid} if refundable else {},
 		[RemakeText.t("Refund all points"), RemakeText.t(refund_help)], "refund"])
 	var o := Vector2(200, 100)

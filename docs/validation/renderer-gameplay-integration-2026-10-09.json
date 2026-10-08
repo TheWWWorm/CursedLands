@@ -1,0 +1,1022 @@
+{
+  "date": "2026-10-09",
+  "renderer_parent": "7202b8ee2d6dbf04914cc42277d18890e3a017c4",
+  "gameplay_parent": "09ffbf7cc6e820907ad80040cc232bd3665f4060",
+  "worktree": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008",
+  "qa_root": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/integration-09ffbf7",
+  "protocol": 13,
+  "merge_conflicts": [
+    "game/src/ei/map_scene.gd"
+  ],
+  "resolution": "Keep CatacombLift.apply before object placement and moved_object_position, together with scenery manager readiness/registration and ground-contact attachment. Automatic merges in game_data.gd and game.gd retain both changes.",
+  "production_sha256": {
+    "engine_patches/godot-4.7/mobile-shader-recompile-lock.patch": "02bc97dd57f9b3388d71837b30b036e814ae5bf6e6fca3b3cf3948d260c746b6",
+    "game/src/ei/catacomb_lift.gd": "cd8c0e31ebfcb4b85f7d3fc72a5a1a71120805dcae24969b910989ab37eeb98f",
+    "game/src/ei/figure.gd": "c42a84ec0dd5ed80494b20ae97cdf2cd10f73cfcdffa1843b308a26ae60b855f",
+    "game/src/ei/game_data.gd": "b34ef135f1d5793392830e047658b6f0baf629d65a83b400225d09646ef3596a",
+    "game/src/ei/map_scene.gd": "ceccd63e4b562c7427d2c08290e8fee4a261730c097c43ee419d39b0c5574b2e",
+    "game/src/ei/mmp_texture.gd": "1c4aed0ea7cb368ca135c47cbe1d27e2266f31f81fa61f3281d610259b8fe609",
+    "game/src/ei/terrain.gd": "c36de7e1954635658be6daa54818aff893ae6c9c11141f3ee889ce164e14ba9c",
+    "game/src/ei/unit_model.gd": "a802385ecc05a9b119f64860ebf872f27ed1ccda5834eb6bd38511da5e83be45",
+    "game/src/game/fx/ground_contact.gd": "decc8c11939254670d861b3930f85fbb801daa6486a1d64b3c6c3ebe53f09041",
+    "game/src/game/fx/ground_contact.gd.uid": "02e7a5c753aef9d32c91201e73b01aa51dc2ad7558266ed7ebca597d5e7d04a5",
+    "game/src/game/fx/ground_contact_shader.gd": "76150145cb4e39b40b03eea146da3516c2afcdf7e14dd887f8d0da0a449e75b7",
+    "game/src/game/fx/ground_contact_shader.gd.uid": "20d674d3711e818880fc4ff3b6266ab36b8bf7c0cc76ff8b53403866d3fdcae2",
+    "game/src/game/fx/ground_surface_data.gd": "7c1399d586083644dce2a418f022da598c42200e0b82673e70d3499de9d668b7",
+    "game/src/game/fx/ground_surface_data.gd.uid": "e2606ed179225418c04f35b685fb0abc3819d41ca5f912898205fe9c92ad93bd",
+    "game/src/game/fx/ground_surface_shader.gd": "9c682d0c3554ddbfcd9ef0e9146ea8057683ab687fc29d9aaee86fa9ccd08e47",
+    "game/src/game/fx/ground_surface_shader.gd.uid": "54eb10a06c14a243117e22c809f1dcdfac826806504c0aaa758b0d5438a51f7b",
+    "game/src/game/fx/local_light_shader.gd": "d856b1cdc4e0143aee769b84aa9e1819988c55f2fc21966405b35f23c1352a74",
+    "game/src/game/fx/local_light_shader.gd.uid": "2b17939b0d8ca04008fca07dc5dbc78c61eb66255a43ad41ea74b483ffb8aaf0",
+    "game/src/game/fx/local_lighting.gd": "84b98d94aa2427fc43c92db3e5c7c3abac340f70a3919b3aa19875e68500966f",
+    "game/src/game/fx/scenery_batch_watch.gd": "b0af74667003955c9d91f8c5141f494a0fc030f9fab560ecbd8dd66656e40f1c",
+    "game/src/game/fx/scenery_batch_watch.gd.uid": "d1efbe494873d472e7df4923fc5e3854dfa954b4d66affdba3b1a88c766e58a6",
+    "game/src/game/fx/scenery_batches.gd": "84f0b413d9f1c11737de4b73a2bc806c4e8607c38c747a01cf1a6223f2d7baa6",
+    "game/src/game/fx/scenery_batches.gd.uid": "71f6e7f46146f54d06b20f969eaee84a43275cf447e0cfa8a94be61f0f04f0de",
+    "game/src/game/fx/scenery_light_groups.gd": "db4961190b0e59a4e240915a00a6461d9f4fef21d9fa5f0c562692b1d28a91f0",
+    "game/src/game/fx/scenery_light_groups.gd.uid": "98ec540a22f2c59906767aec8a571e308c3acee41d2e3751a4f389cf32aff709",
+    "game/src/game/fx/soft_ground_deform.gd": "4a85eae7bf6a047061e6b0adecba61300ae2e52105b432502828ece83ed5d2e0",
+    "game/src/game/fx/soft_ground_field.gd": "164c7d3be795256003b4d46465fec783033bc09f733594369bde33980e9e3d16",
+    "game/src/game/fx/soft_ground_field.gd.uid": "9cdb5124a330adeb2db833125e5a3b6d38ee15df5763a58d119f0b58881a5f92",
+    "game/src/game/game.gd": "12f16f8fcf90a239b55b6546c15569a08bcd6273b66004a6f239024f134b7dba",
+    "game/src/game/gfx.gd": "eecb46494bf78c59fbf80c3001b63e69fbd473bd6d2b9425450a7fbca28ff604",
+    "game/src/game/gfx_detect.gd": "3ce2a1902c13966fc4db7e912dad078a8e79d34c780f71482b20203812a19af7",
+    "game/src/game/net_status.gd": "58fbf5970b4e4c3daddbb149d74444211a11182e84a4e35549473e2a1902f1ca",
+    "game/src/game/script/story_compat.gd": "4f55a92ca14ae455eed81b08122ea5aef54e5ae449cdf1836526a8960886b2a1",
+    "game/src/game/script/vm.gd": "234d811440e8ba582299169a086117beab6e0af55b6a1aae19b350b5eaf26cd4",
+    "game/src/game/tex_upscale.gd": "0f13cadea2b2b96b73e97469612b74ed05e4e5400b2bbf7aa7bd349da9bc0079",
+    "game/src/game/tex_upscale_texture.gd": "d2c84c17341be6c0ff018f6d588cd78b4864f56250e81d2691def6b963e467be",
+    "game/src/game/tex_upscale_texture.gd.uid": "ff5cb790ab9e61d3de44137063fa874a55bc504037b7f6f1fbb9c2eee39f6082",
+    "game/src/game/unit_wounds.gd": "4edb31e88d784fec0739a674e43733da7fda3a4cb8ca4a8e12573d130a15615e",
+    "game/src/platform/data_switch.gd": "9e56b62e78aa15698fa43926044ed0abadc152534fefc9695599e7847dfb4867",
+    "game/src/platform/portability.gd": "6ec17950f2bb45117d1b34410ba19da3996f3bfea53c4722498f83a3de45763e",
+    "game/src/ui/camera_fade.gd": "92fb47eeaa0321f3afd3cf451ea23f61ac9a3770d6f7e6fd57741dd488ecd0d2",
+    "game/src/ui/menu_scene.gd": "9cdbb7e06aa3986960a61a6afd0d5671802a5ced76633ce232da0a119d25959c"
+  },
+  "export": {
+    "command": [
+      "/home/llm2x/.local/bin/godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/game",
+      "--export-release",
+      "Linux",
+      "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/integration-09ffbf7/candidate/CursedLands.x86_64"
+    ],
+    "seconds": 5.974787672021193,
+    "return_code": 0,
+    "errors": [],
+    "warnings": [
+      "WARNING: Missing .uid file for path \"res://src/game/fx/terrain_color_cache.gd\". The file was re-created from cache.",
+      "WARNING: Missing .uid file for path \"res://src/game/script/camp_grants.gd\". The file was re-created from cache.",
+      "WARNING: Missing .uid file for path \"res://src/game/body_part.gd\". The file was re-created from cache.",
+      "WARNING: Missing .uid file for path \"res://src/platform/windows_native_startup.gd\". The file was re-created from cache."
+    ],
+    "sha256": {
+      "CursedLands.x86_64": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+      "CursedLands.pck": "c3707d425197a2ede8ee12b972cfd429dd2d14eefa4578f7b98f070d488f956e",
+      "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+    }
+  },
+  "accepted_checks": 577,
+  "accepted_runs": [
+    {
+      "name": "wound-cache",
+      "receipt": {
+        "tool_sha256_at_start": "7b88fcf037e2f47a10eccbdfbf98b3548926a19384f3b25ce8d49b8f29a16f73",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "c3707d425197a2ede8ee12b972cfd429dd2d14eefa4578f7b98f070d488f956e",
+        "termination_reason": null,
+        "timeout_sec": 160,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/integration-09ffbf7/candidate/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/wound_cache.gd"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 2.067199036013335,
+        "other_render_processes_at_start": [
+          {
+            "pid": 3957227,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 3957299,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 3957299,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 3957619,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/integration-09ffbf7/wound-cache/isolated/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/integration-09ffbf7/wound-cache/isolated/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/integration-09ffbf7/wound-cache/isolated/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {}
+      },
+      "result": {
+        "checks": 43,
+        "failures": 0,
+        "threads": true
+      },
+      "log_sha256": "7874a7a08051987ec1e003d1d8d5a48b168a7632c0d2ffa1b71012c05e940b70"
+    },
+    {
+      "name": "sun-held-headless",
+      "receipt": {
+        "tool_sha256_at_start": "6a717b653bce57dfbb141d889d9ef667a788b5381e569ed48fa5d47edae5a233",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "c3707d425197a2ede8ee12b972cfd429dd2d14eefa4578f7b98f070d488f956e",
+        "termination_reason": null,
+        "timeout_sec": 160,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/integration-09ffbf7/candidate/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/sun_aiming.gd",
+          "--held-sun"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 1.8066149280057289,
+        "other_render_processes_at_start": [],
+        "other_render_processes_at_end": [
+          {
+            "pid": 3962527,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/integration-09ffbf7/sun-held-headless/isolated/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/integration-09ffbf7/sun-held-headless/isolated/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/integration-09ffbf7/sun-held-headless/isolated/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {}
+      },
+      "result": {
+        "checks": 10,
+        "editor": false,
+        "failures": 0,
+        "held": true,
+        "renderer": "gl_compatibility"
+      },
+      "log_sha256": "98ecc5673ae720ca331f34683d3c71151fd3f4cf89840a011f49acad201f97ab"
+    },
+    {
+      "name": "scenery-live",
+      "receipt": {
+        "tool_sha256_at_start": "1deb225250c9387ea8029a382a184d4734c01811c77774275be63c4d89947f78",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "c3707d425197a2ede8ee12b972cfd429dd2d14eefa4578f7b98f070d488f956e",
+        "termination_reason": null,
+        "timeout_sec": 160,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/integration-09ffbf7/candidate/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/scenery_batches.gd"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 9.067347927019,
+        "other_render_processes_at_start": [
+          {
+            "pid": 3962527,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 3962781,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/integration-09ffbf7/scenery-live/isolated/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/integration-09ffbf7/scenery-live/isolated/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/integration-09ffbf7/scenery-live/isolated/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {
+          "scenery-runtime-initial-0-control.png": "1e35538c5d1c0563ac7e2e4474e49a57712ea8f537eeda4ec21d0e7fd8f72e56",
+          "scenery-runtime-initial-2-control.png": "1e35538c5d1c0563ac7e2e4474e49a57712ea8f537eeda4ec21d0e7fd8f72e56",
+          "scenery-runtime-initial-1-control.png": "1e35538c5d1c0563ac7e2e4474e49a57712ea8f537eeda4ec21d0e7fd8f72e56",
+          "scenery-runtime-initial-0-managed.png": "1e35538c5d1c0563ac7e2e4474e49a57712ea8f537eeda4ec21d0e7fd8f72e56",
+          "scenery-runtime-initial-2-managed.png": "1e35538c5d1c0563ac7e2e4474e49a57712ea8f537eeda4ec21d0e7fd8f72e56",
+          "scenery-runtime-initial-1-managed.png": "1e35538c5d1c0563ac7e2e4474e49a57712ea8f537eeda4ec21d0e7fd8f72e56"
+        }
+      },
+      "result": {
+        "checks": 119,
+        "failures": 0
+      },
+      "log_sha256": "50b4f3d4e8388631e855aa5be21637fa2d8244c63c22194cfcbdc231b88f981a"
+    },
+    {
+      "name": "contact-live",
+      "receipt": {
+        "tool_sha256_at_start": "a7b780097420ee871dae9c927e21b7a894b370bce724534e43f7afe57c2a86cd",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "c3707d425197a2ede8ee12b972cfd429dd2d14eefa4578f7b98f070d488f956e",
+        "termination_reason": null,
+        "timeout_sec": 160,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/integration-09ffbf7/candidate/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/ground_contact.gd"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 8.311979930003872,
+        "other_render_processes_at_start": [
+          {
+            "pid": 3962781,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/integration-09ffbf7/contact-live/isolated/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/integration-09ffbf7/contact-live/isolated/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/integration-09ffbf7/contact-live/isolated/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {
+          "ground-contact-gl_compatibility-off.png": "ab48c85776c602b3a5e02ae87ba99d0932749b774761aea110fac9b4b4aaedcb",
+          "ground-contact-gl_compatibility-on.png": "d8c3c3edad0cc7cadb185fe59dd288300c28512a691ba732960583a26749de8e"
+        }
+      },
+      "result": {
+        "checks": 35,
+        "failures": 0
+      },
+      "log_sha256": "c2c1c2c2aac49fd9b6c8cbb3d992b1c25bd0b5b807e4275fe1b05aeca7bf1829"
+    },
+    {
+      "name": "hd-array-mobile",
+      "receipt": {
+        "tool_sha256_at_start": "4c00927a9464a86af7a51f115d0dbceb514bcac347e349e59fcc478622a6c512",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "c3707d425197a2ede8ee12b972cfd429dd2d14eefa4578f7b98f070d488f956e",
+        "termination_reason": null,
+        "timeout_sec": 160,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/integration-09ffbf7/candidate/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "mobile",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/hd_resident_array.gd"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 11.320613001997117,
+        "other_render_processes_at_start": [],
+        "other_render_processes_at_end": [
+          {
+            "pid": 3963150,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/integration-09ffbf7/hd-array-mobile/isolated/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/integration-09ffbf7/hd-array-mobile/isolated/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/integration-09ffbf7/hd-array-mobile/isolated/cache"
+        },
+        "warnings": [
+          "WARNING: Missing terrain atlas __missing_hd_atlas__000",
+          "WARNING: Missing terrain atlas __missing_hd_atlas__001"
+        ],
+        "errors": [],
+        "png_sha256": {}
+      },
+      "result": {
+        "checks": 271,
+        "failures": 0,
+        "renderer": "mobile",
+        "rows": [
+          {
+            "bytes": 20,
+            "equal": true,
+            "layer": 0,
+            "name": "(1, 1) clamp",
+            "source_size": "(1, 1)"
+          },
+          {
+            "bytes": 20,
+            "equal": true,
+            "layer": 1,
+            "name": "(1, 1) clamp",
+            "source_size": "(1, 1)"
+          },
+          {
+            "bytes": 20,
+            "equal": true,
+            "layer": 2,
+            "name": "(1, 1) clamp",
+            "source_size": "(1, 1)"
+          },
+          {
+            "bytes": 20,
+            "equal": true,
+            "layer": 0,
+            "name": "(1, 1) repeat",
+            "source_size": "(1, 1)"
+          },
+          {
+            "bytes": 20,
+            "equal": true,
+            "layer": 1,
+            "name": "(1, 1) repeat",
+            "source_size": "(1, 1)"
+          },
+          {
+            "bytes": 20,
+            "equal": true,
+            "layer": 2,
+            "name": "(1, 1) repeat",
+            "source_size": "(1, 1)"
+          },
+          {
+            "bytes": 156,
+            "equal": true,
+            "layer": 0,
+            "name": "(1, 7) clamp",
+            "source_size": "(1, 7)"
+          },
+          {
+            "bytes": 156,
+            "equal": true,
+            "layer": 1,
+            "name": "(1, 7) clamp",
+            "source_size": "(1, 7)"
+          },
+          {
+            "bytes": 156,
+            "equal": true,
+            "layer": 2,
+            "name": "(1, 7) clamp",
+            "source_size": "(1, 7)"
+          },
+          {
+            "bytes": 156,
+            "equal": true,
+            "layer": 0,
+            "name": "(1, 7) repeat",
+            "source_size": "(1, 7)"
+          },
+          {
+            "bytes": 156,
+            "equal": true,
+            "layer": 1,
+            "name": "(1, 7) repeat",
+            "source_size": "(1, 7)"
+          },
+          {
+            "bytes": 156,
+            "equal": true,
+            "layer": 2,
+            "name": "(1, 7) repeat",
+            "source_size": "(1, 7)"
+          },
+          {
+            "bytes": 156,
+            "equal": true,
+            "layer": 0,
+            "name": "(7, 1) clamp",
+            "source_size": "(7, 1)"
+          },
+          {
+            "bytes": 156,
+            "equal": true,
+            "layer": 1,
+            "name": "(7, 1) clamp",
+            "source_size": "(7, 1)"
+          },
+          {
+            "bytes": 156,
+            "equal": true,
+            "layer": 2,
+            "name": "(7, 1) clamp",
+            "source_size": "(7, 1)"
+          },
+          {
+            "bytes": 156,
+            "equal": true,
+            "layer": 0,
+            "name": "(7, 1) repeat",
+            "source_size": "(7, 1)"
+          },
+          {
+            "bytes": 156,
+            "equal": true,
+            "layer": 1,
+            "name": "(7, 1) repeat",
+            "source_size": "(7, 1)"
+          },
+          {
+            "bytes": 156,
+            "equal": true,
+            "layer": 2,
+            "name": "(7, 1) repeat",
+            "source_size": "(7, 1)"
+          },
+          {
+            "bytes": 312,
+            "equal": true,
+            "layer": 0,
+            "name": "(3, 5) clamp",
+            "source_size": "(3, 5)"
+          },
+          {
+            "bytes": 312,
+            "equal": true,
+            "layer": 1,
+            "name": "(3, 5) clamp",
+            "source_size": "(3, 5)"
+          },
+          {
+            "bytes": 312,
+            "equal": true,
+            "layer": 2,
+            "name": "(3, 5) clamp",
+            "source_size": "(3, 5)"
+          },
+          {
+            "bytes": 312,
+            "equal": true,
+            "layer": 0,
+            "name": "(3, 5) repeat",
+            "source_size": "(3, 5)"
+          },
+          {
+            "bytes": 312,
+            "equal": true,
+            "layer": 1,
+            "name": "(3, 5) repeat",
+            "source_size": "(3, 5)"
+          },
+          {
+            "bytes": 312,
+            "equal": true,
+            "layer": 2,
+            "name": "(3, 5) repeat",
+            "source_size": "(3, 5)"
+          },
+          {
+            "bytes": 43692,
+            "equal": true,
+            "layer": 0,
+            "name": "(32, 64) clamp",
+            "source_size": "(32, 64)"
+          },
+          {
+            "bytes": 43692,
+            "equal": true,
+            "layer": 1,
+            "name": "(32, 64) clamp",
+            "source_size": "(32, 64)"
+          },
+          {
+            "bytes": 43692,
+            "equal": true,
+            "layer": 2,
+            "name": "(32, 64) clamp",
+            "source_size": "(32, 64)"
+          },
+          {
+            "bytes": 43692,
+            "equal": true,
+            "layer": 0,
+            "name": "(32, 64) repeat",
+            "source_size": "(32, 64)"
+          },
+          {
+            "bytes": 43692,
+            "equal": true,
+            "layer": 1,
+            "name": "(32, 64) repeat",
+            "source_size": "(32, 64)"
+          },
+          {
+            "bytes": 43692,
+            "equal": true,
+            "layer": 2,
+            "name": "(32, 64) repeat",
+            "source_size": "(32, 64)"
+          },
+          {
+            "bytes": 728,
+            "equal": true,
+            "layer": 0,
+            "name": "single layer fallback",
+            "source_size": "(7, 5)"
+          },
+          {
+            "bytes": 168,
+            "equal": true,
+            "layer": 0,
+            "name": "HD off",
+            "source_size": "(7, 5)"
+          },
+          {
+            "bytes": 168,
+            "equal": true,
+            "layer": 1,
+            "name": "HD off",
+            "source_size": "(7, 5)"
+          },
+          {
+            "bytes": 340,
+            "equal": true,
+            "layer": 0,
+            "name": "missing magenta",
+            "source_size": "(4, 4)"
+          },
+          {
+            "bytes": 340,
+            "equal": true,
+            "layer": 1,
+            "name": "missing magenta",
+            "source_size": "(4, 4)"
+          },
+          {
+            "bytes": 312,
+            "equal": true,
+            "layer": 0,
+            "name": "declined main device",
+            "source_size": "(3, 5)"
+          },
+          {
+            "bytes": 312,
+            "equal": true,
+            "layer": 1,
+            "name": "declined main device",
+            "source_size": "(3, 5)"
+          },
+          {
+            "bytes": 340,
+            "equal": true,
+            "layer": 0,
+            "name": "restart",
+            "source_size": "(4, 4)"
+          },
+          {
+            "bytes": 340,
+            "equal": true,
+            "layer": 1,
+            "name": "restart",
+            "source_size": "(4, 4)"
+          }
+        ]
+      },
+      "log_sha256": "d86869d9c152d2d75b9f51d66fd173e99c55aeedba002d38dd6253d9ab95d3ec"
+    },
+    {
+      "name": "catacomb-batches",
+      "receipt": {
+        "tool_sha256_at_start": "593af151883bd9c342886a0da7a4305fb6ed3a6bd634d3082d80d3f5c262b823",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "c3707d425197a2ede8ee12b972cfd429dd2d14eefa4578f7b98f070d488f956e",
+        "termination_reason": null,
+        "timeout_sec": 160,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/integration-09ffbf7/candidate/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/catacomb_capacity.gd",
+          "--scenery-batches",
+          "--ei-inline-host"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 66.67176700601703,
+        "other_render_processes_at_start": [
+          {
+            "pid": 3963150,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 3965115,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/integration-09ffbf7/catacomb-batches/isolated/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/integration-09ffbf7/catacomb-batches/isolated/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/integration-09ffbf7/catacomb-batches/isolated/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {
+          "catacomb-boarding-top.png": "4d58e45bdef19ba5f87e21979f9e5cd2af212e1e5d0cdf9a4ac7dc880b0013ed",
+          "catacomb-boarding-bottom.png": "c9617c52e2e8e5bf6f8482a980dfa7f281d242ade50e11c4eccfd9ae0b7cec9e"
+        }
+      },
+      "result": {
+        "checks": 45,
+        "failures": 0
+      },
+      "log_sha256": "0024f2a1393dd38e30549db3e52e0ae559d1f96862c1aefc4c90bbc3a8907828"
+    },
+    {
+      "name": "prison-late-join",
+      "receipt": {
+        "tool_sha256_at_start": "06c53d50b72774c54a8452c23537a389505556e6c74c9ab3251ded7c6154ce3e",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "c3707d425197a2ede8ee12b972cfd429dd2d14eefa4578f7b98f070d488f956e",
+        "termination_reason": null,
+        "timeout_sec": 160,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/integration-09ffbf7/candidate/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/prison_late_join.gd",
+          "--ei-inline-host"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 2.5646296670020092,
+        "other_render_processes_at_start": [
+          {
+            "pid": 3965115,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 3965115,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/integration-09ffbf7/prison-late-join/isolated/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/integration-09ffbf7/prison-late-join/isolated/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/integration-09ffbf7/prison-late-join/isolated/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {}
+      },
+      "result": {
+        "checks": 39,
+        "failures": 0
+      },
+      "log_sha256": "524c73c8271a94fedfe638a3e967eb32a3ced71cafa0e2c75baf51b5094a2192"
+    },
+    {
+      "name": "prison-late-join-net",
+      "receipt": {
+        "tool_sha256_at_start": "269065404d26b13253e4303713572525b017eea6c93ad2311f1f05f434d4798c",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "c3707d425197a2ede8ee12b972cfd429dd2d14eefa4578f7b98f070d488f956e",
+        "termination_reason": null,
+        "timeout_sec": 160,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/integration-09ffbf7/candidate/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/prison_late_join_net.gd",
+          "--ei-inline-host"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 23.09675712499302,
+        "other_render_processes_at_start": [
+          {
+            "pid": 3965115,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 3965115,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/integration-09ffbf7/prison-late-join-net/isolated/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/integration-09ffbf7/prison-late-join-net/isolated/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/integration-09ffbf7/prison-late-join-net/isolated/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {}
+      },
+      "result": {
+        "checks": 15,
+        "failures": 0
+      },
+      "log_sha256": "cacb7c657932232950024cfd85afa400ce145b10b46efb999673b547a6bf11f8"
+    }
+  ],
+  "sun_policy_baseline_issue": {
+    "description": "All 10 game/menu sun assertions pass in pre-merge and merged desktop Compatibility. Both report the same two 349524-byte OpenGL texture leaks on fixture exit. Eight drained frames do not remove them; the ineffective fixture edit was reverted. These runs are not counted as clean passes, and no engine/runtime fix is claimed.",
+    "runs": [
+      {
+        "name": "sun-desktop",
+        "receipt": {
+          "tool_sha256_at_start": "6a717b653bce57dfbb141d889d9ef667a788b5381e569ed48fa5d47edae5a233",
+          "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+          "pack_sha256": "c3707d425197a2ede8ee12b972cfd429dd2d14eefa4578f7b98f070d488f956e",
+          "termination_reason": null,
+          "timeout_sec": 160,
+          "command": [
+            "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/integration-09ffbf7/candidate/CursedLands.x86_64",
+            "--render-thread",
+            "safe",
+            "--rendering-method",
+            "gl_compatibility",
+            "--windowed",
+            "--resolution",
+            "256x144",
+            "--position",
+            "-10000,-10000",
+            "--audio-driver",
+            "Dummy",
+            "--",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+            "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/sun_aiming.gd"
+          ],
+          "return_code": 0,
+          "elapsed_sec": 3.3080465350067243,
+          "other_render_processes_at_start": [
+            {
+              "pid": 3957299,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "pid": 3957619,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            }
+          ],
+          "other_render_processes_at_end": [
+            {
+              "pid": 3957299,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            }
+          ],
+          "xdg_directories": {
+            "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/integration-09ffbf7/sun-desktop/isolated/data",
+            "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/integration-09ffbf7/sun-desktop/isolated/config",
+            "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/integration-09ffbf7/sun-desktop/isolated/cache"
+          },
+          "warnings": [
+            "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+          ],
+          "errors": [
+            "ERROR: Texture with GL ID of 24: leaked 349524 bytes.",
+            "ERROR: Texture with GL ID of 25: leaked 349524 bytes."
+          ],
+          "png_sha256": {}
+        },
+        "assertions": {
+          "checks": 10,
+          "failures": 0
+        },
+        "log_sha256": "d837d187e5bb9ff4b1147442d5767d0b587c94a7bc275238e32d0b8e5ec2e0ea"
+      },
+      {
+        "name": "sun-premerge",
+        "receipt": {
+          "tool_sha256_at_start": "6a717b653bce57dfbb141d889d9ef667a788b5381e569ed48fa5d47edae5a233",
+          "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+          "pack_sha256": "7ca90aae91bf53994e78fe095d3a37c9f2b155e3be9a97d9788001aae9ff9b99",
+          "termination_reason": null,
+          "timeout_sec": 30,
+          "command": [
+            "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-terrain/candidate/CursedLands.x86_64",
+            "--render-thread",
+            "safe",
+            "--rendering-method",
+            "gl_compatibility",
+            "--windowed",
+            "--resolution",
+            "256x144",
+            "--position",
+            "-10000,-10000",
+            "--audio-driver",
+            "Dummy",
+            "--",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+            "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/sun_aiming.gd"
+          ],
+          "return_code": 0,
+          "elapsed_sec": 3.30998748698039,
+          "other_render_processes_at_start": [
+            {
+              "pid": 3958612,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            }
+          ],
+          "other_render_processes_at_end": [
+            {
+              "pid": 3959277,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            }
+          ],
+          "xdg_directories": {
+            "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/integration-09ffbf7/sun-premerge/isolated/data",
+            "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/integration-09ffbf7/sun-premerge/isolated/config",
+            "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/integration-09ffbf7/sun-premerge/isolated/cache"
+          },
+          "warnings": [
+            "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+          ],
+          "errors": [
+            "ERROR: Texture with GL ID of 24: leaked 349524 bytes.",
+            "ERROR: Texture with GL ID of 25: leaked 349524 bytes."
+          ],
+          "png_sha256": {}
+        },
+        "assertions": {
+          "checks": 10,
+          "failures": 0
+        },
+        "log_sha256": "459891406b1203401a7499bc9b6f28865acd6178483a983916891daa177d7214"
+      },
+      {
+        "name": "sun-desktop-drained",
+        "receipt": {
+          "tool_sha256_at_start": "9d38f8052b37876689714150eb54a48e6534a86837acaf70521183af792e1c61",
+          "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+          "pack_sha256": "c3707d425197a2ede8ee12b972cfd429dd2d14eefa4578f7b98f070d488f956e",
+          "termination_reason": null,
+          "timeout_sec": 30,
+          "command": [
+            "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/integration-09ffbf7/candidate/CursedLands.x86_64",
+            "--render-thread",
+            "safe",
+            "--rendering-method",
+            "gl_compatibility",
+            "--windowed",
+            "--resolution",
+            "256x144",
+            "--position",
+            "-10000,-10000",
+            "--audio-driver",
+            "Dummy",
+            "--",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+            "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/sun_aiming.gd"
+          ],
+          "return_code": 0,
+          "elapsed_sec": 4.087971403991105,
+          "other_render_processes_at_start": [
+            {
+              "pid": 3959756,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            }
+          ],
+          "other_render_processes_at_end": [
+            {
+              "pid": 3959756,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            }
+          ],
+          "xdg_directories": {
+            "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/integration-09ffbf7/sun-desktop-drained/isolated/data",
+            "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/integration-09ffbf7/sun-desktop-drained/isolated/config",
+            "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/integration-09ffbf7/sun-desktop-drained/isolated/cache"
+          },
+          "warnings": [
+            "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+          ],
+          "errors": [
+            "ERROR: Texture with GL ID of 24: leaked 349524 bytes.",
+            "ERROR: Texture with GL ID of 25: leaked 349524 bytes."
+          ],
+          "png_sha256": {}
+        },
+        "assertions": {
+          "checks": 10,
+          "failures": 0
+        },
+        "log_sha256": "268c3a615f7e115e3f5a3b87b20b06c3039fcd90ec866b2c8e85ae0c2061428d"
+      }
+    ]
+  },
+  "limits": [
+    "Linux desktop and local ENet regression scope; no Android/web/Windows/macOS acceptance or publication.",
+    "Scenery batching remains opt-in and ground-contact defaults remain off.",
+    "The existing Mobile shader lifetime/lock engine patch is present in the validated runtime; platform templates are not installed by this source merge.",
+    "Export reports four regenerated pre-existing missing UID warnings, with no script/parse/export errors. Generated files are retained under QA and excluded from the merge.",
+    "The catacomb fixture exercises production motion and save migration with staged riders and unrelated AI held still; it is not a full campaign playthrough.",
+    "Protocol 13 applies to all peers and the simulation service."
+  ]
+}

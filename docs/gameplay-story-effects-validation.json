@@ -1,0 +1,358 @@
+{
+  "date": "2026-10-08",
+  "baseline_commit": "5e4c0b0897df41f66a628664dd66deef8ebbc281",
+  "scope": "G07 partial: eight paired party-spell handlers and six shared spell-trap handlers extend to living additional campaign participants. No new performance result or Windows release.",
+  "party_casts": {
+    "gz1h/zone1": [
+      "PortalFire"
+    ],
+    "gz5h/zone5": [
+      "Tiger#1#1",
+      "Tiger#2#1",
+      "Tiger#3#1"
+    ],
+    "gz10g/zone10": [
+      "VCheck#3#5",
+      "VCheck#3#6"
+    ],
+    "gz36j/zonefinal": [
+      "Healing#0#1",
+      "Healing#1#1"
+    ]
+  },
+  "shared_traps": {
+    "gz16g/zone16": [
+      "VCheck#0#4"
+    ],
+    "gz21k/zone21": [
+      "Trap#0#1",
+      "Trap#1#1",
+      "Trap#1#2",
+      "Trap#1#3",
+      "Trap#1#4"
+    ]
+  },
+  "contract": [
+    "Only LiA and the listed map/script pairs are adapted, and only when paired original casts or trap bodies match structurally.",
+    "Extra living, visible, controlled heroes/script-controlled characters join effects after the first two story records. Dead/hidden/disconnected extras and pets without hero/script control are excluded. Guest-owned Kel is already covered and is not repeated.",
+    "Shared traps retain the original two branches first; the extra branch uses all original companion conditions and the original body. One victim/shot or shared cooldown, not a new shot for every guest.",
+    "The Ingos item-60 exemption is deliberately preserved only for the original protagonist, matching the original companion rule for added participants.",
+    "Party spell source/target coordinates are rebound where the source script uses each hero position. Fixed lever origins stay fixed.",
+    "Existing condition/block/statement indexes do not move. A cast statement is replaced in place, and a trap block is appended. Original sleeping saves continue without replaying prior casts."
+  ],
+  "production": {
+    "seconds": 5.974415919976309,
+    "command": [
+      "/home/llm2x/.local/bin/godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+      "--export-release",
+      "Linux",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps29/CPU.x86_64"
+    ],
+    "engine_source": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/fast-runtime.x86_64",
+    "errors": [],
+    "sha256": {
+      "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+      "CPU.pck": "e8c09d3f495266107fc3c7efd21c62306811704bc40167d49d46006efcc70011",
+      "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+    }
+  },
+  "source_sha256": {
+    "game/src/game/script/story_coop_effects.gd": "66f7ff605a7615e9678cf58dedd735e27fe2f6f9364e1b23a22c052f8f0430c0",
+    "game/src/game/script/story_compat.gd": "26e47dae02497a6dff60c747b95166390c2e40e3d14ad95689f4efec598f8f34",
+    "game/src/game/script/vm.gd": "1bc72a60154a352316a71cc7df34ae4b0f52708035ce64e8dbf43fee5eb00c22",
+    "tools/tests/story_coop_effects.gd": "c3fc438cdb341c364ccb3ae28fcb732f028bdcc1fece2ce1f384524bcf01194c",
+    "tools/tests/story_coop_effects_net.gd": "52696e02a31d652dd81f34bad7001f3aa2ca9a3faf548eea086bf7071c673470"
+  },
+  "original_script_sha256": {
+    "zone1.txt": "56c682a2d9df4a81d2a18cde60bf59e60c69e6576ee648b7564a3ba084770020",
+    "zone5.txt": "1ef74a1320d4619b5905c01d44f9906e741906e7d801d8e82ca640c2c672fe0d",
+    "zone10.txt": "6baf5e418ade4c02a5c67f327acc0113b251ab31439444f4b130af98903fecc0",
+    "zone16.txt": "2e8833a3b86b546db4edfd474f9bf6d26daf8c5df3447d00cf6f64429ab9800c",
+    "zone21.txt": "098b6db07957951c3292d6ad1d3eeccf486a83c40dfc960f14c0cda0a746ee13",
+    "zonefinal.txt": "412e05317390538bf551e4d2c8089e34f47552348671629f825673d4228aaea7"
+  },
+  "runs": {
+    "gameplay-effects-before-02": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps28/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_effects.gd",
+        "--label=gameplay-effects-before-02"
+      ],
+      "exit_code": 1,
+      "stopped": false,
+      "seconds": 3.4066580480139237,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "log_sha256": "1944d50653b0a2ecd9cfa309316e2ca9d2ea448c78f47d7a62b03dcd3082025f",
+      "checks": 166,
+      "failures": 39,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-effects-before-02.log"
+    },
+    "gameplay-effects-production-03": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps29/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_effects.gd",
+        "--label=gameplay-effects-production-03"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 3.4070321529870853,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "log_sha256": "656c06d6719089426ed3ab3d37b14a01a33ee81bde81a7c82ea518e0fe0e22c1",
+      "checks": 166,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-effects-production-03.log"
+    },
+    "gameplay-effects-network-before-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps28/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_effects_net.gd",
+        "--label=gameplay-effects-network-before-01"
+      ],
+      "exit_code": 1,
+      "stopped": false,
+      "seconds": 7.112046362017281,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "30009c5bdf37f21658d159e69b49dd4ef01590651546add2353c65c59793bdce",
+      "checks": 26,
+      "failures": 5,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-effects-network-before-01.log"
+    },
+    "gameplay-effects-network-05": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps29/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_effects_net.gd",
+        "--label=gameplay-effects-network-05"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 7.413712458015652,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "4b2583ee9d61033a2205e99072963f2d7338b72ca8e724ecb9c1bcbc03d62434",
+      "checks": 26,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-effects-network-05.log"
+    },
+    "gameplay-effects-network-render-02": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps29/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--resolution",
+        "1600x900",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_effects_net.gd",
+        "--label=gameplay-effects-network-render-02"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 48.286142555007245,
+      "errors": [],
+      "warnings": [
+        "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+      ],
+      "log_sha256": "4fde02a3d17f5cd03d33c05afd25ed14c9be88afb4f88d01d864028ec6f82590",
+      "checks": 27,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-effects-network-render-02.log"
+    }
+  },
+  "retroid": {
+    "apk": 62,
+    "build": {
+      "private_instrumented": false,
+      "engine_sha256": "424eaf73630ec110faf614f550f8047c24a78e224211df45d8b957bf03b7cc79",
+      "native_sha256": "231ad722fd1f9eb0b5b47d7c9a386931a95b9f7ccb404fd7773a1fc651564fb7",
+      "apk_sha256": "bc4fccb5c8e832c3caec9f33b92bd6374fd65706e7f58f9356d80fd171e29117",
+      "changes": [
+        "Extend inspected paired LiA spells and shared traps to added campaign participants; preserve original script frame indexes."
+      ],
+      "baseline_apk": 61,
+      "accepted": false
+    },
+    "runs": {
+      "gameplay-effects62-02": {
+        "seconds": 9.642420053482056,
+        "errors": [],
+        "apk_sha256": "bc4fccb5c8e832c3caec9f33b92bd6374fd65706e7f58f9356d80fd171e29117",
+        "renderer_requested": "gl_compatibility",
+        "workers_requested": 4,
+        "config": {
+          "name": "gameplay-effects62-02",
+          "save": "user://fixtures/portal.sav",
+          "data": "user://data/astral",
+          "speed": 1,
+          "seconds": 30,
+          "host": false,
+          "players": 1,
+          "terror": false,
+          "isolated": false,
+          "options": {},
+          "tool": "user://story_coop_effects.gd"
+        },
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/gameplay-effects62-02.log",
+        "log_sha256": "32baa1cf03884efef49d8e2b0814c8b10fdc743254a738ba62aa4787e1e75438",
+        "checks": 166,
+        "failures": 0
+      },
+      "gameplay-effects62-net-02": {
+        "seconds": 17.766784191131592,
+        "errors": [],
+        "apk_sha256": "bc4fccb5c8e832c3caec9f33b92bd6374fd65706e7f58f9356d80fd171e29117",
+        "renderer_requested": "gl_compatibility",
+        "workers_requested": 4,
+        "config": {
+          "name": "gameplay-effects62-net-02",
+          "save": "user://fixtures/portal.sav",
+          "data": "user://data/astral",
+          "speed": 1,
+          "seconds": 30,
+          "host": false,
+          "players": 1,
+          "terror": false,
+          "isolated": false,
+          "options": {},
+          "tool": "user://story_coop_effects_net.gd"
+        },
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/gameplay-effects62-net-02.log",
+        "log_sha256": "7bcfb9e5dacec2d379425d146d062ac83157f161a8f0e722f17ceaab198f4d13",
+        "checks": 27,
+        "failures": 0
+      }
+    },
+    "cleanup": {
+      "installed_private_apk": 62,
+      "apk_sha256": "bc4fccb5c8e832c3caec9f33b92bd6374fd65706e7f58f9356d80fd171e29117",
+      "autorun_disabled": true,
+      "archived_bench": "files/bench-effects62-disabled.json",
+      "bench_sha256": "119b7a0d570324458d9a74ba76131e956a6d561902b601d51e3d10cb96fd9705",
+      "processes_remaining": [],
+      "normal_app_untouched": true
+    }
+  },
+  "rendered_review": [
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/gameplay-effects-network-render-02/godot/app_userdata/Cursed Lands/coop-shrine.png",
+      "sha256": "292483f9f20c4a74fa7cfedbe5a35b6b0baffdc6501be93ad30d8461af85938f",
+      "observed": "Three separated participants have active shrine effects in the open hall; guest HUD shows recovered health and effect icons. Xvfb functional capture, not a performance sample."
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/gameplay-effects62-net-02.png",
+      "sha256": "7832b06a6eeb1873577db9cc8e854bb69f5a58ea03076fcb2af431035fd73a78",
+      "observed": "Retroid OpenGL renderer shows the three active shrine effect figures and recovered party bars."
+    }
+  ],
+  "excluded_or_superseded": [
+    {
+      "run": "gameplay-effects-source-01",
+      "reason": "158 assertions passed, but the fixture retained VM/Briefings reference cycles and leaked resources at exit. Cleared in source-02; no game lifecycle change."
+    },
+    {
+      "run": "gameplay-effects-production-02",
+      "reason": "Added fixture guard referenced nonexistent CampaignProfile.BASE; corrected to ORIGINAL. No game compile error."
+    },
+    {
+      "runs": [
+        "gameplay-effects-network-01",
+        "gameplay-effects-network-02",
+        "gameplay-effects-network-03",
+        "gameplay-effects-network-04"
+      ],
+      "reason": "Invalid exact-HP delivery assertions ignored quantized max HP and body-part bytes. Diagnostic run04 shows received HP 0.987647 for host HP1 and 17.125 for host17.140016, with matching received buffs. Final fixture checks wire body/max values and uses normal repeated chunked snapshots; this is not a networking fix."
+    },
+    {
+      "runs": [
+        "gameplay-effects-network-render-01",
+        "gameplay-effects62-net-01"
+      ],
+      "reason": "Functional checks passed, but the initial entrance camera was blocked by the lintel. Final captures stage actors in the open hall. No camera code change."
+    }
+  ],
+  "limits": [
+    "Script probe executes original .mob handlers but records spell dispatch and stubs unrelated lever/particle presentation. The shrine integration test uses actual maps/effects, authoritative lever use, real ENet, and real save/reload.",
+    "Network fixtures run two worlds/peers in one process. They pause unrelated AI/story threads and manually publish snapshots. They do not establish shipping service behavior, internet play, full chapter completion or FPS.",
+    "Only the actual throne-room effect chain is rendered/network-tested; other adapted maps have original-data dispatch, gate, cooldown and ownership checks.",
+    "The matching-template fallback leaves divergent modded handlers alone where matching fails; exhaustive modified-content compatibility is not claimed.",
+    "The private Android package is installed and stopped, autorun disabled. Normal Android package/saves and public Experimental5 are unchanged."
+  ],
+  "remaining_G07": [
+    {
+      "scripts": "zonefinal Trap#0#3/#4",
+      "work": "Individual lethal y>75 boundary checks, quest gate q.gz36j.q22j.5; extend per participant without changing independent one-shot/restore semantics."
+    },
+    {
+      "scripts": "zone1 Lift#64/#65/#66; VCheck#5#2/#3",
+      "work": "Individual lift kill checks and observer not-seeing predicates."
+    },
+    {
+      "scripts": "zone9 VCheck#4#7/#7a/#8/#8a",
+      "work": "Independent per-character acid rays and 25-tick rearming chains."
+    },
+    {
+      "scripts": "zone10 and zone15 VCityGuard; zone3dun1 VGAlarm",
+      "work": "Detection and hostility must consider additional guests, while preserving story gates."
+    },
+    {
+      "scripts": "zone16 VCheck#0#6; zone21 VCheck#1#3/#6#2",
+      "work": "Nearest-of-two scripted attackers; inspect appropriate extra-player target selection."
+    },
+    {
+      "scripts": "zone22 VCheck#2#3/#3#2",
+      "work": "Indexed distance/perception triggers and fireworks."
+    },
+    {
+      "scripts": "zone32/zone34/zone35 Caboom#0/#1 chains",
+      "work": "Proximity-triggered Green creature explosions against added players."
+    },
+    {
+      "scripts": "cz0k and zone7 fixed Kel relocation; cz1j teleport particles",
+      "work": "Named relocation is intentionally preserved; cosmetic party teleport coverage can be reviewed separately."
+    },
+    {
+      "scripts": "base zone19 captivity guards; zone6 YDragon",
+      "work": "Review with temporary-party/captive-role policy and original escort behavior; do not blanket-rewrite indexed roles."
+    }
+  ]
+}

@@ -8,6 +8,7 @@ var simulation_only := false
 var session: Session
 var world: GameWorld
 var rig: CameraRig
+var direct: DirectControl
 var hud: GameHUD
 var selected: Array[GameUnit] = []
 var _drag_start := Vector2.ZERO
@@ -104,6 +105,8 @@ func _ready() -> void:
 	add_child(marks)
 	quest_lights = QuestLights.new(self)
 	add_child(quest_lights)
+	direct = DirectControl.new(self)
+	add_child(direct)
 	add_child(PadField.new(self))   # remake: the gamepad in the field (PadInput)
 	GameData.options_changed.connect(_apply_options)
 	get_tree().node_added.connect(_on_node_added)
@@ -242,6 +245,7 @@ func reset_speed() -> void:
 
 ## Cursor by what is under the mouse (the original cursor set, GameCursor).
 func _update_cursor() -> void:
+	if direct and direct.active() and not direct.pointer: return
 	if cursor.camera_drag_active():
 		cursor.set_kind("cursor_camera")
 		return
@@ -715,6 +719,9 @@ const AIM_CURSORS := ["cursor_attack_hd", "cursor_attack_bd", "cursor_attack_lh"
 
 
 func _unhandled_input(e: InputEvent) -> void:
+	if direct and direct.handle_input(e):
+		get_viewport().set_input_as_handled()
+		return
 	if world == null or hud.blocks_input():
 		return
 	if (touch_aim >= 0 or touch_force != "") and ((e is InputEventMouseButton and e.button_index == MOUSE_BUTTON_RIGHT and e.pressed) or (e is InputEventKey and e.keycode == KEY_ESCAPE and e.pressed)):
@@ -1087,11 +1094,13 @@ func begin_belt(u: GameUnit, item: String) -> void:
 
 
 func begin_cast(i: int) -> void:
-	if not session.command_allowed({"t":"cast"}): return
+	if not session.command_allowed({"t":"direct_cast" if direct and direct.active() else "cast"}): return
 	if selected.is_empty() or not selected[0].has_meta("hero"):
 		return
 	var spells: Array = selected[0].get_meta("hero").get("spells", [])
 	if i < 0 or i >= mini(8, spells.size()):
+		return
+	if not Spells.known_usable(selected[0], String(spells[i])):
 		return
 	cancel_touch_target()
 	pending_spell = spells[i]
@@ -1148,7 +1157,7 @@ func pending_target(u: GameUnit, ground: Variant = null) -> Dictionary:
 		if not caster.has_meta("hero") or caster.cannot_cast():
 			return {}
 		var i: int = caster.get_meta("hero").get("spells", []).find(spell)
-		if i < 0 or i >= 8:
+		if i < 0 or i >= 8 or not Spells.known_usable(caster, spell):
 			return {}
 	if spell.is_empty():
 		return {}
@@ -1218,8 +1227,9 @@ func cast_on(u: GameUnit, p: Variant = null, ground: Variant = null, lever := -1
 	else:
 		cmd.x = target_info.at.x
 		cmd.y = target_info.at.y
+	if direct and direct.active() and cmd.t == "cast": cmd.t = "direct_cast"
 	issue(cmd)
-	if cmd.t == "cast":
+	if cmd.t in ["cast","direct_cast"]:
 		marks.cast_ordered(caster, String(target_info.spell), target_info.target,
 			Vector2(float(cmd.get("x", 0.0)), float(cmd.get("y", 0.0))))
 
@@ -1300,7 +1310,7 @@ const ORDER_ACKS := {"move": EIAcks.MOVE, "attack": EIAcks.ATTACK, "cast": EIAck
 ## the blocked Zak to talk to the elder (b.elder.s1 → FrTP → unblock).
 static func block_refuses(t: String, village: bool) -> bool:
 	# Follow's separate message handler does not read the bit.
-	return ORDER_ACKS.has(t) and t != "follow" and not (village and t == "interact")
+	return (ORDER_ACKS.has(t) or t == "direct_attack") and t != "follow" and not (village and t == "interact")
 
 
 func issue(cmd: Dictionary) -> void:
@@ -1450,18 +1460,18 @@ var _pick_key := []
 var _pick_hit: GameUnit
 
 
-func pick_unit(p: Vector2) -> GameUnit:
-	var key := [Engine.get_process_frames(), p]
+func pick_unit(p: Vector2, exclude: GameUnit = null) -> GameUnit:
+	var key := [Engine.get_process_frames(), p, exclude]
 	if key == _pick_key and (_pick_hit == null or is_instance_valid(_pick_hit)):
 		return _pick_hit
 	_pick_key = key
-	_pick_hit = _pick_unit(p)
+	_pick_hit = _pick_unit(p,exclude)
 	if _pick_hit == null and TouchInput.enabled:
 		# Prefer the exact hit; only use the nearest visible silhouette as a
 		# fallback. A small enemy beside a hero should not steal a precise tap.
 		var best := TouchInput.target_pixels() * 0.35
 		for unit: GameUnit in world.visible_units():
-			if unit.hidden or not unit.visible or not unit.near_screen() \
+			if unit == exclude or unit.hidden or not unit.visible or not unit.near_screen() \
 					or not unit.may_cover(rig.camera, p, best):
 				continue
 			var rects := unit.screen_rects(rig.camera)
@@ -1476,13 +1486,13 @@ func pick_unit(p: Vector2) -> GameUnit:
 	return _pick_hit
 
 
-func _pick_unit(p: Vector2) -> GameUnit:
+func _pick_unit(p: Vector2, exclude: GameUnit = null) -> GameUnit:
 	var cam := rig.camera
 	var to_view := cam.global_transform.affine_inverse()
 	var hits: Array = []    # [dead, depth, unit]
 	var loose: Array = []   # union-rectangle hits
 	for u: GameUnit in world.visible_units():
-		if u.hidden or not u.visible or not u.near_screen() or not u.may_cover(cam, p):
+		if u == exclude or u.hidden or not u.visible or not u.near_screen() or not u.may_cover(cam, p):
 			continue
 		var rects := u.screen_rects(cam)
 		if rects.is_empty() or not _in_rect(rects[0], p):

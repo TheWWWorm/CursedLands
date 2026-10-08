@@ -375,6 +375,10 @@ func clamp_look_at(p: Vector3, pan := false) -> Vector3:
 	var x := clampf(p.x, 0.0, s.x - 1.0)
 	var y := clampf(-p.z, 0.0, s.y - 1.0)
 	var r = _zone().get("restrict", null) if in_village() and (pan or modern()) else null
+	if r is Vector3:
+		var g := get_parent() as Game
+		if g and g.session and g.session.world == g.world:
+			r = g.session.village_move_limit()
 	if r is Vector3 and r.z > 0.0:
 		var d := Vector2(x - r.x, y - r.y)
 		if d.length_squared() > r.z * r.z:
@@ -583,6 +587,7 @@ func _input(e: InputEvent) -> void:
 
 
 func _unhandled_input(e: InputEvent) -> void:
+	if get_parent() is Game and get_parent().direct and get_parent().direct.active(): return
 	if _input_blocked():
 		return
 	if (e is InputEventMouseButton and e.pressed and e.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_DOWN]) \
@@ -681,6 +686,9 @@ func _shake_tick(delta: float, add: bool) -> void:
 
 
 func _process(delta: float) -> void:
+	if get_parent() is Game and get_parent().direct and get_parent().direct.active():
+		get_parent().direct.apply_camera()
+		return
 	if _opening_view is Transform3D:
 		if _input_blocked():
 			return

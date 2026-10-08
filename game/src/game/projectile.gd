@@ -18,6 +18,23 @@ var roll := {}:
 		if not roll.is_empty() and is_instance_valid(source) and world:
 			roll.merge(world.combat.strike_record(source))
 var _mesh: MeshInstance3D
+var _direct := false
+var _direction := Vector3.ZERO
+var _remaining := 0.0
+
+
+static func launch_direct(w: GameWorld, a: GameUnit, direction: Vector3, hit: bool, start := Vector3.INF) -> Projectile:
+	var p := Projectile.new()
+	p.world = w
+	p.source = a
+	p.apply_hit = hit
+	p._direct = true
+	p._direction = direction.normalized()
+	p._remaining = clampf(float(a.stats.get("reach",30.0)),1.0,100.0)
+	w.add_child(p)
+	p.global_position = DirectCombat.origin(a) if start == Vector3.INF else start
+	p.roll = {"hit":true,"backstab":false}
+	return p
 
 
 static func launch(w: GameWorld, a: GameUnit, b: GameUnit, hit: bool) -> Projectile:
@@ -59,6 +76,9 @@ func _physics_process(dt: float) -> void:
 
 
 func _tick(dt: float) -> void:
+	if _direct:
+		_tick_direct(dt)
+		return
 	if target == null or not is_instance_valid(target) or not target.is_inside_tree():
 		queue_free()   # the target left the world (zone change, removed body)
 		return
@@ -75,3 +95,22 @@ func _tick(dt: float) -> void:
 		return
 	look_at(goal, Vector3.UP)
 	global_position += d.normalized() * step
+
+
+func _tick_direct(dt: float) -> void:
+	if not is_instance_valid(world) or not is_instance_valid(source) or source.world != world:
+		queue_free()
+		return
+	var distance := minf(_remaining,SPEED*dt)
+	var start := global_position
+	var end := start + _direction*distance
+	var fraction := DirectCombat.scene_fraction(world,start,end)
+	var hit := DirectCombat.ray_body(world,source,start,end,fraction)
+	global_position = start.lerp(end,float(hit.fraction))
+	look_at(global_position+_direction,Vector3.UP)
+	_remaining -= distance
+	if hit.unit != null:
+		if apply_hit: DirectCombat.contact(source,hit.unit,roll)
+		queue_free()
+	elif fraction < 1.0 or _remaining <= 0.0:
+		queue_free()

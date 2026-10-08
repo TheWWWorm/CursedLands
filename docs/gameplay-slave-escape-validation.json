@@ -1,0 +1,395 @@
+{
+  "date": "2026-10-08",
+  "status": "Local follow-up after Experimental 6; not included in its downloads",
+  "base_commit": "433d5d97588cfd775fe342bd8544e71df9c27871",
+  "branch": "fix/escape-save-and-coop",
+  "summary": "Preserve restored dialogue completion flags; release the camp movement/camera circle after the night barrier breaks; stage added guests beyond the original pair before Terror and resume idle guests during that wait.",
+  "findings": [
+    "An ordinary-play save has b.merc2.n1_2=2 and VCheck#0#10 waiting for it. Unconditional deployment recalculation during explicit loading resets it to 0, leaving the escape unstarted. Explicit restored-VM loads now retain the saved flags; fresh zones and revisits still recalculate topics.",
+    "The night escape destroys/removes barrier 1001009. Keeping the safe-zone circle clamps ordinary run-away destinations back into camp. Movement and camera use the released boundary after that phase, while the intact camp/daytime remain bounded.",
+    "The first guest staging threshold released Terror while extra actors were still crowding Kir/Kel in the first fireball area. Guests now run past the original marks; the guest gate waits for Y<80. Original Kir/Kel gates, Terror scripts, spells and damage remain unchanged.",
+    "A route interrupted by temporary crowding can leave a guest idle before reaching that gate. The active arrival wait reissues only idle guests; active player commands remain in control. This also admits guests arriving after the single original walking order."
+  ],
+  "checks": {
+    "candidate_total": 192,
+    "failures": 0,
+    "boundary_baseline_failures": 6,
+    "save_flag_baseline_failures": 1
+  },
+  "scope": [
+    "Production Linux export with actual Lost in Astral assets. Three real ENet host/client runs in one process with separate SceneMultiplayer worlds; headless safe render thread. This is functional validation, not shipping-process/rendering or performance acceptance.",
+    "Full escape resumes a copied ordinary-play checkpoint, then runs original AI, attacks, spells, scripts and travel. No actor position/stat/HP injections after load. Initial world ticks are held only while the client joins; HUD dialogue is advanced through normal UI callbacks.",
+    "Both clients issuing early run commands, and an idle guest whose host moves on Terror appearing, reach gz1h without any party death. Death signals are checked before transfer because redeployment can revive bodies and hide an in-scene failure.",
+    "Client-side camp boundary and camera release are checked on the final ENet run. Two-extra-guest route, idle recovery, player-command retention, fresh-zone recalculation and alive/disconnected gates are isolated in the 29-check movement fixture.",
+    "Existing original and Lost in Astral roster/purse/save/name checks pass. No protocol, runtime or native-kernel change."
+  ],
+  "limits": [
+    "No full chapter, Internet latency, larger network party or Windows/Android/macOS runtime claim for this follow-up.",
+    "Joining over ENet during the middle of the escape wait is not exercised; the isolated fixture covers the corresponding idle-guest recovery behavior.",
+    "The save defect is verified at the completed Kel escape dialogue; unrelated saved dialogue sequences are not exhaustively covered.",
+    "The scripted escape does not make party members invulnerable or guarantee survival after arbitrary player orders.",
+    "Published Experimental 6/tag/assets and device installations are unchanged. Performance work remains deferred."
+  ],
+  "source_checkpoint": {
+    "path": "/home/llm2x/Documents/EI/local/lost-in-astral/checks/prison7-profile/godot/app_userdata/Evil Islands Remake (PoC)/saves/lost_in_astral/lia_opening_06_escape_started.sav",
+    "sha256": "43edcfd1cb3c54a3d079d2b4f072dc367e105783ab8e280f0e692a39da50835c",
+    "origin": "Earlier ordinary opening/prison playthrough; source remains unchanged. Fixture copies it into its disposable profile.",
+    "origin_log": "/home/llm2x/Documents/EI/local/lost-in-astral/checks/prison7.log",
+    "saved_value": 2,
+    "pending_thread": "VCheck#0#10"
+  },
+  "candidate_runs": [
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps42/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/slave_escape_play_net.gd",
+        "--label=slave-escape-play-net-08",
+        "--save=/home/llm2x/Documents/EI/local/lost-in-astral/checks/prison7-profile/godot/app_userdata/Evil Islands Remake (PoC)/saves/lost_in_astral/lia_opening_06_escape_started.sav"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 56.202976999979,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "508f96ef32f7f99d7c55128381f02524395a868b388289df8ab26502a001a7c6",
+      "name": "slave-escape-play-net-08",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/slave-escape-play-net-08.log",
+      "checks": 19,
+      "failures": 0
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps42/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/slave_escape_play_net.gd",
+        "--label=slave-escape-idle-client-01",
+        "--save=/home/llm2x/Documents/EI/local/lost-in-astral/checks/prison7-profile/godot/app_userdata/Evil Islands Remake (PoC)/saves/lost_in_astral/lia_opening_06_escape_started.sav",
+        "--reactive",
+        "--idle-guest"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 55.20477888098685,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "f0c70f6103a95d4af2e3c367f2dc6a4bcd0a7c92213374462a5e5933e6c21950",
+      "name": "slave-escape-idle-client-01",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/slave-escape-idle-client-01.log",
+      "checks": 19,
+      "failures": 0
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps42/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/slave_escape_play_net.gd",
+        "--label=slave-escape-client-boundary-01",
+        "--save=/home/llm2x/Documents/EI/local/lost-in-astral/checks/prison7-profile/godot/app_userdata/Evil Islands Remake (PoC)/saves/lost_in_astral/lia_opening_06_escape_started.sav",
+        "--reactive",
+        "--idle-guest"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 53.89277417000267,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "251ce597b28420ac941bd06f184dac20d2ca594bf8c46c37e2e9d71790a18fe3",
+      "name": "slave-escape-client-boundary-01",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/slave-escape-client-boundary-01.log",
+      "checks": 22,
+      "failures": 0
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps42/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/slave_camp_escape.gd",
+        "--label=slave-escape-boundary-after-02"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 10.518821165984264,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "eb9bb8f61bb5b09bccfd0df4774d8d3c47f8d458b1030172262252b77d13cc96",
+      "name": "slave-escape-boundary-after-02",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/slave-escape-boundary-after-02.log",
+      "checks": 29,
+      "failures": 0
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps42/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/campaign_roster.gd",
+        "--label=slave-escape-roster-base-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 1.9034237209998537,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "94555eb597bd411daa77bd7f3b73bcea065aec98549d102a30803204ccfd7af4",
+      "name": "slave-escape-roster-base-01",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/slave-escape-roster-base-01.log",
+      "checks": 39,
+      "failures": 0
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps42/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/campaign_roster.gd",
+        "--label=slave-escape-roster-astral-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 2.104142199998023,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "4aa6df1b744012f3903b398b9dd8eda4af98effd00ee237ca7b7bf47bf248d74",
+      "name": "slave-escape-roster-astral-01",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/slave-escape-roster-astral-01.log",
+      "checks": 64,
+      "failures": 0
+    }
+  ],
+  "baseline_runs": [
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps37/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/slave_camp_escape.gd",
+        "--label=slave-escape-boundary-before-01"
+      ],
+      "exit_code": 1,
+      "stopped": false,
+      "seconds": 10.819910988007905,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "6dab710c2bc68a5254bdb4438fbd4fad5dc6a330e8e26f0d964531fecb615e34",
+      "name": "slave-escape-boundary-before-01",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/slave-escape-boundary-before-01.log",
+      "checks": 28,
+      "failures": 6
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps37/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/slave_escape_play_net.gd",
+        "--label=slave-escape-load-before-01",
+        "--save=/home/llm2x/Documents/EI/local/lost-in-astral/checks/prison7-profile/godot/app_userdata/Evil Islands Remake (PoC)/saves/lost_in_astral/lia_opening_06_escape_started.sav"
+      ],
+      "exit_code": 1,
+      "stopped": false,
+      "seconds": 15.427883547003148,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "070ea06eaa80e6ae7a52fa75683bce21c33ae0261bc17f4a2fdd83ab329b629c",
+      "name": "slave-escape-load-before-01",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/slave-escape-load-before-01.log",
+      "checks": 8,
+      "failures": 1
+    }
+  ],
+  "baseline_fixture_note": "The boundary baseline had 28 checks; the later candidate adds the fresh-zone topic assertion. Network fixture later adds three client-boundary checks; earlier passing versions had 19, final has 22.",
+  "intermediate_failures": [
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps39/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/tests/slave_escape_play_net.gd",
+        "--label=slave-escape-play-net-04"
+      ],
+      "exit_code": 1,
+      "stopped": false,
+      "seconds": 52.488916986010736,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "64861748b3a79e6b49689ccfcb1c1a33c42ed2d43c03bcbe91511626beaf160d",
+      "name": "slave-escape-play-net-04",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/slave-escape-play-net-04.log",
+      "checks": 18,
+      "failures": 1,
+      "interpretation": "After load/boundary fixes only: party death from crowded staging remains."
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps40/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/tests/slave_escape_play_net.gd",
+        "--label=slave-escape-play-net-05"
+      ],
+      "exit_code": 1,
+      "stopped": false,
+      "seconds": 51.69010679400526,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "0541be6ae9cb88aef934c2928a84554479533c30b9f0a8c67609ebc9374f99d9",
+      "name": "slave-escape-play-net-05",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/slave-escape-play-net-05.log",
+      "checks": 18,
+      "failures": 1,
+      "interpretation": "Camera release does not by itself fix a guest dying in the first fireball."
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps40/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/tests/slave_escape_play_net.gd",
+        "--label=slave-escape-play-net-06"
+      ],
+      "exit_code": 1,
+      "stopped": false,
+      "seconds": 52.80950976902386,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "b72a9c5420a20ea4963153f0aa52db30f27dba3c657c937043db8232bab20bff",
+      "name": "slave-escape-play-net-06",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/slave-escape-play-net-06.log",
+      "checks": 18,
+      "failures": 1,
+      "interpretation": "Detailed position/RPC/spell trace shows route contention, not a missing client command."
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps41/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/tests/slave_escape_play_net.gd",
+        "--label=slave-escape-play-net-07"
+      ],
+      "exit_code": 1,
+      "stopped": false,
+      "seconds": 194.28457478201017,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "405d47f7898a160b3e3e216d57cee201af48dbaf1693f0f239fba9485e38f804",
+      "name": "slave-escape-play-net-07",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/slave-escape-play-net-07.log",
+      "checks": 15,
+      "failures": 2,
+      "interpretation": "Later staging alone prevents the premature attack but stalls after an interrupted guest route; idle recovery is required."
+    }
+  ],
+  "excluded_acceptance_attempts": [
+    {
+      "name": "slave-escape-play-net-01",
+      "reason": "Initial fixture hid the dialogue UI and was terminated; not a completed scene check."
+    },
+    {
+      "name": "slave-escape-play-net-02",
+      "reason": "Unhidden fixture reproduces pre-fix flag stall but was terminated; completed save-flag baseline above replaces it for acceptance."
+    },
+    {
+      "name": "slave-escape-play-net-03",
+      "reason": "Fixture incorrectly required a travel-map selection even though the original escape transfers directly. In-scene deaths remain evidence; post-transfer living bodies were not proof of survival."
+    },
+    {
+      "name": "slave-escape-boundary-after-01",
+      "reason": "Fresh synthetic party did not mark Kel hired, so expecting her n1 flag to clear was invalid. All escape checks passed. Corrected assertion uses the universally recalculated n11 topic and passes in after-02."
+    }
+  ],
+  "export": {
+    "seconds": 5.976213760994142,
+    "command": [
+      "/home/llm2x/.local/bin/godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+      "--export-release",
+      "Linux",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps42/CPU.x86_64"
+    ],
+    "engine_source": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/fast-runtime.x86_64",
+    "errors": [],
+    "sha256": {
+      "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+      "CPU.pck": "130d1bffaaee94cf96c632877b9c9b1d054fb81851b266f66a965d0663e4d0c6",
+      "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+    }
+  },
+  "source_sha256": {
+    "game/src/game/session.gd": "68aaa9570ed7bded3f4fae33c5033b446b2ba53eba3d9391c6d332247267088a",
+    "game/src/game/script/vm.gd": "9c6c3b9e29f52215fe85f38b0967cb20db5d3d0e69c6ec4c11abdd16346411b7",
+    "game/src/game/script/story_compat.gd": "0ab32df4cf20a54c3a156b2f58f130c83db8e7470e95dfe8abb5f1936af5dc9d",
+    "game/src/ui/camera_rig.gd": "da160a94580a9ccb8cb0e0978ca0bd262fd46c30d3b77a734563ff5f45c14afa",
+    "tools/tests/slave_camp_escape.gd": "2de7cba23fcfb20ea291354cacde5e5e2e9847d56e63f4769ef3aab5738ad059",
+    "tools/tests/slave_escape_play_net.gd": "e71b1476e053cf96bd334ec9c24da1427f2360f08164bc6efee2d83f1d05ab6e",
+    "tools/tests/story_coop_traps_net.gd": "653b64334bee8ec40cd387805116a8c2154a2b03f14ee6c3c18e1aa6be0c5417",
+    "tools/tests/campaign_roster.gd": "49cce7a4e6aea418f2dd348ce22082fe719e34ca37174c186805b1aa3da4010d"
+  }
+}

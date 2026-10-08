@@ -1,0 +1,180 @@
+{
+  "baseline_commit": "3b33723",
+  "export": {
+    "seconds": 5.978957977000391,
+    "command": [
+      "/home/llm2x/.local/bin/godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+      "--export-release",
+      "Linux",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps47/CPU.x86_64"
+    ],
+    "engine_source": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/fast-runtime.x86_64",
+    "errors": [],
+    "sha256": {
+      "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+      "CPU.pck": "6002f1b51926c6e1b38997494e6cf7e84a8b1549f70836bc98ea914e1a99f90d",
+      "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+    }
+  },
+  "native": {
+    "base": {
+      "binary": "/home/llm2x/Documents/EI/inspection/extracted/app/game.exe",
+      "sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+      "reveal_function": "0x662990",
+      "map_constructor": "0x62d310"
+    },
+    "astral": {
+      "binary": "/home/llm2x/Documents/EI/inspection/lost-in-astral/game/game.exe",
+      "sha256": "f04a305b77c84ea29c18ad2996d23072ccef1c0c46876c9b93bae4ce9351d1ff",
+      "reveal_function": "0x58cdd0",
+      "map_constructor": "0x561e30"
+    }
+  },
+  "original_rule": "When current zone is an edge, each directly adjacent game zone whose z.<id> equals zero is assigned one. Camps and edges are not revealed; nonzero game-zone states are preserved.",
+  "fix": "Restore edge-entry reveal in Session and send authoritative adjacent states in the reliable travel event before client map construction. Remove same-island fallback buttons.",
+  "runs": {
+    "portal-map-before-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps46/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/shelter_exit.gd",
+        "--label=portal-map-before-01",
+        "--portal"
+      ],
+      "exit_code": 1,
+      "stopped": false,
+      "seconds": 23.04023571999278,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "5731c2a01538fae88a9170358e7470cdaddbc5ce586db692fb4a473b92b162bf",
+      "checks": 18,
+      "failures": 8,
+      "raw_log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/portal-map-before-01.log"
+    },
+    "portal-map-after-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps47/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--resolution",
+        "1600x900",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/shelter_exit.gd",
+        "--label=portal-map-after-01",
+        "--portal"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 96.88246063201223,
+      "errors": [],
+      "warnings": [
+        "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+      ],
+      "log_sha256": "d3e27e3fd55cb25075bfc31d1feb36948255ef7de76a038e693f076bda2f7140",
+      "checks": 28,
+      "failures": 0,
+      "raw_log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/portal-map-after-01.log"
+    },
+    "shelter-map-after-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps47/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/shelter_exit.gd",
+        "--label=shelter-map-after-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 35.46419122500811,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "0647ac92342ef24d864e775f25407c95aa95f9945325859ab3eb18cf787607b7",
+      "checks": 27,
+      "failures": 0,
+      "raw_log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/shelter-map-after-01.log"
+    },
+    "map-reveal-base-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps47/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/travel_reveal.gd",
+        "--label=map-reveal-base-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 2.0043844470055774,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "b4b1318bec5f5f8d867954588facc547cbc4206e666ff08b05450bf23fafe60f",
+      "checks": 9,
+      "failures": 0,
+      "raw_log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/map-reveal-base-01.log"
+    },
+    "map-reveal-astral-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps47/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/travel_reveal.gd",
+        "--label=map-reveal-astral-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 2.304533928981982,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "246d01c092d3237cceb9cf90724beed30b8171e23162d53bd320b123b0641b12",
+      "checks": 9,
+      "failures": 0,
+      "raw_log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/map-reveal-astral-01.log"
+    }
+  },
+  "fixtures": {
+    "shelter_exit.gd": "7d1a620ff44fa7d630aa5e2acd0bb49ba0e0efe6c6a3210c74b821415b8d74b2",
+    "travel_reveal.gd": "86c8e019f2cc10a2eea39fcfde8c05cf3bfe6459687441c827bdcb578e183524"
+  },
+  "screenshots": [
+    "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/portal-map-after-01/godot/app_userdata/Cursed Lands/portal-map-host.png",
+    "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/portal-map-after-01/godot/app_userdata/Cursed Lands/portal-map-guest.png"
+  ],
+  "visual_review": "Both region borders and Portal / Slave lists hover panel match the supplied original example. Guest capture includes its transient load-complete notification.",
+  "limits": [
+    "Two ENet peers in one process, prepared camp saves; not a full story playthrough.",
+    "Rendered Xvfb run validates appearance, not performance.",
+    "No Windows/Android runtime validation of this follow-up.",
+    "Experimental 6 assets remain unchanged."
+  ]
+}

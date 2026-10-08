@@ -15,7 +15,8 @@ extends RefCounted
 ## remake's places are the cast's "at" (Briefings._face); a unit's own
 ## position only when "at" is missing. Optional "at_z" retains the original
 ## full3D stage height; older casts use the ground under the place.
-## No obstacle test (the original has none: sets eye and target).
+## The original sets eye and target without an obstacle test. The remake
+## retains a clear authored shot, otherwise tries nearby unobstructed angles.
 
 ## preset -> [who, angle (rad), distance (x a-b distance for "two"), height]
 const PRESETS := {
@@ -43,13 +44,72 @@ static func shot(w: GameWorld, cast: Dictionary, phrase: Dictionary, first: bool
 	if not args.is_empty():
 		# "#camera N angle distance height": N 2 / 3 / 4 = a / b / c, else the two-shot.
 		var who := {2: "a", 3: "b", 4: "c"}.get(n, "two") as String
-		return _place(w, a, b, c, who, deg_to_rad(float(args[0])), float(args[1]), float(args[2]), false, cast.get("at", {}), cast.get("at_z", {})) + [[]]
+		return _clear_shot(w, _place(w, a, b, c, who, deg_to_rad(float(args[0])), float(args[1]), float(args[2]), false, cast.get("at", {}), cast.get("at_z", {}))) + [[]]
 	if n < 1:
 		n = 1 if first else 2 if speaker == a.uid else 4 if c and speaker == c.uid else 3
 	var p: Array = PRESETS.get(n, PRESETS[1])
 	var out := _place(w, a, b, c, p[0], p[1], p[2], p[3], p[0] == "two", cast.get("at", {}), cast.get("at_z", {}))
+	out = _clear_shot(w, out)
 	out.append(HIDE.get(n, []))
 	return out
+
+
+## Snapshot only nearby scenery for this phrase. Exact triangles keep open
+## doors, arches and gaps usable; a large building's bounding box alone must
+## not disqualify a shot. Native triangle trees are shared by Mesh, so moving
+## lifts and doors cannot leave stale world-space triangles between phrases.
+static func _clear_shot(w: GameWorld, shot: Array) -> Array:
+	if shot.size() < 2: return shot
+	var eye: Vector3 = shot[0]
+	var target: Vector3 = shot[1]
+	var meshes := []
+	var seen := {}
+	var objects: Array = w.objects.values()
+	if w.map: objects.append_array(w.map.object_nodes)
+	var centre := EISpace.vec(target)
+	var reach := eye.distance_to(target) + 4.0
+	for object in objects:
+		if not is_instance_valid(object) or not object is Node3D or not object.is_visible_in_tree(): continue
+		if seen.has(object.get_instance_id()): continue
+		seen[object.get_instance_id()] = true
+		for child: Node in object.find_children("*", "MeshInstance3D", true, false):
+			var mesh := child as MeshInstance3D
+			if mesh.mesh == null or not mesh.is_visible_in_tree(): continue
+			var box := mesh.global_transform * mesh.get_aabb()
+			if box.get_center().distance_to(centre) > reach + box.size.length() * 0.5: continue
+			meshes.append({"mesh":mesh.mesh,"box":box,"inverse":mesh.global_transform.affine_inverse()})
+	if _clear(w, meshes, eye, target): return shot
+	var delta := eye - target
+	# Preserve the authored target and try the smallest angular changes first.
+	# A closer camera is the fallback for enclosed spaces.
+	for scale: float in [1.0, 0.75, 0.5]:
+		for lift: float in [0.0, 1.0, 2.0]:
+			for angle: float in [0.0, 30.0, -30.0, 60.0, -60.0, 90.0, -90.0, 135.0, -135.0, 180.0]:
+				var offset := Vector2(delta.x, delta.y).rotated(deg_to_rad(angle)) * scale
+				var candidate := target + Vector3(offset.x, offset.y, delta.z * scale + lift)
+				if _clear(w, meshes, candidate, target): return [candidate, target]
+	return shot
+
+
+static func _clear(w: GameWorld, meshes: Array, eye: Vector3, target: Vector3) -> bool:
+	if eye.z < w.ground_at(eye.x, eye.y) + 0.3: return false
+	# Probe the focal area, not only its centre: thin posts can hide a face.
+	var side := Vector2(eye.y-target.y, target.x-eye.x).normalized() * 0.18
+	var a := EISpace.vec(eye)
+	for offset: Vector3 in [Vector3.ZERO, Vector3(side.x,side.y,0.35), Vector3(-side.x,-side.y,0.35)]:
+		var b := EISpace.vec(target + offset)
+		if w.terrain:
+			var distance := eye.distance_to(target+offset)
+			var steps := maxi(1, ceili(distance/0.4))
+			for i in range(1,steps):
+				var point := eye.lerp(target+offset,float(i)/steps)
+				if point.z < w.ground_at(point.x,point.y)+0.05: return false
+		for row: Dictionary in meshes:
+			if (row.box as AABB).intersects_segment(a,b)==null: continue
+			var triangles := (row.mesh as Mesh).generate_triangle_mesh()
+			var inverse: Transform3D = row.inverse
+			if triangles and not triangles.intersect_segment(inverse*a,inverse*b).is_empty(): return false
+	return true
 
 
 static func _place(w: GameWorld, a: GameUnit, b: GameUnit, c: GameUnit, who: String, angle: float,

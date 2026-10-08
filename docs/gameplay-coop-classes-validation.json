@@ -1,0 +1,200 @@
+{
+  "baseline_commit": "e07271d",
+  "discovery": "All ten base co-op class prototypes are absent from the original Lost in Astral database. Its default guest was a record with no valid actor body.",
+  "export": {
+    "seconds": 5.97629152299487,
+    "command": [
+      "/home/llm2x/.local/bin/godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+      "--export-release",
+      "Linux",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps18/CPU.x86_64"
+    ],
+    "engine_source": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/fast-runtime.x86_64",
+    "errors": [],
+    "sha256": {
+      "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+      "CPU.pck": "7387d31f64ba2f2e34d82bca7b67c5d83df73d6d99ee6239d79df441ac367fe8",
+      "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+    }
+  },
+  "runs": {
+    "gameplay-coop-classes-before-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps17/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_campaign_classes.gd",
+        "--label=gameplay-coop-classes-before-01"
+      ],
+      "exit_code": 1,
+      "stopped": false,
+      "seconds": 51.89042963102111,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "log_sha256": "c15f4127c611a1324cdb21de89bdec87e772b4f08670f57765ed94082ab0e1ee"
+    },
+    "gameplay-coop-classes-after-01": {
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_campaign_classes.gd",
+        "--label=gameplay-coop-classes-after-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 57.79921696599922,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature.",
+        "WARNING: [Physics interpolation] Interpolated Camera3D triggered from outside physics process: \"/root/Main/@Node@8/Guest/@Node3D@410/@Node3D@413/@Camera3D@414\" (possibly benign)."
+      ],
+      "log_sha256": "fa02b47bc29b095d09d4cc19ca2d2f816a72e09929c1c367eece5ee4b243fed4"
+    },
+    "gameplay-coop-classes-production-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps18/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_campaign_classes.gd",
+        "--label=gameplay-coop-classes-production-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 51.67869102701661,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "log_sha256": "41fda2c329c5c686cf8114dbbc7d120c746dc165c119e1962d3ba17f4b896fc6"
+    },
+    "gameplay-coop-classes-base-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps18/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_campaign_classes.gd",
+        "--label=gameplay-coop-classes-base-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 14.217723581998143,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "log_sha256": "b6a11f921a0a61270aed82c492fe4f8ec71bf7115255e8ca21b6f43bead5bee5"
+    }
+  },
+  "checks": {
+    "baseline_astral": {
+      "checks": 24,
+      "failures": 20
+    },
+    "stock_astral": {
+      "checks": 24,
+      "failures": 0
+    },
+    "production_astral": {
+      "checks": 25,
+      "failures": 0
+    },
+    "production_base": {
+      "checks": 34,
+      "failures": 0
+    }
+  },
+  "fixture_versions": {
+    "baseline_and_stock_sha256": "6b5f0acba6056cbc56b9f0dec75b476bce6e90cc7b03c6a8c2bad2a5453598dc",
+    "production_sha256": "7d34455fb953e2814eade7a8d61515afec8d00cf1d2c22682a193cf5550f44c5",
+    "difference": "Production adds a serialized unavailable-class record with earned stats before the actual ENet reload, and checks that both peers retain the stats."
+  },
+  "source_sha256": {
+    "game/src/game/session.gd": "1fbd58debf8d0065986fd4a6da0f33dd580d26a79a77512b9d2ec5eb90dca681",
+    "game/src/game/campaign_state.gd": "4ac8cce27f0a986b06ed616b44711b04afbfa4b7aacbfca2a0bebbb1affcd4ee",
+    "game/src/ui/network_panel.gd": "9bf857a59f70db4988155378bfdc10bd92f18dcfd0a7d4a1c6e91cb2babdf120",
+    "game/src/ui/main_menu.gd": "d7980fa1af1d897d8de0b2e603e06afe6451e6674e02a8ca53f7f25ebc76ea51",
+    "tools/tests/coop_campaign_classes.gd": "7d34455fb953e2814eade7a8d61515afec8d00cf1d2c22682a193cf5550f44c5"
+  },
+  "limitations": [
+    "Prepared two-peer ENet fixture, not a complete chapter playthrough.",
+    "No Windows or Retroid package validation; no FPS improvement claim.",
+    "Temporary protagonist/disguise participation rules (G08) remain open."
+  ],
+  "retroid_apk56": {
+    "apk": {
+      "private_instrumented": false,
+      "engine_sha256": "424eaf73630ec110faf614f550f8047c24a78e224211df45d8b957bf03b7cc79",
+      "native_sha256": "231ad722fd1f9eb0b5b47d7c9a386931a95b9f7ccb404fd7773a1fc651564fb7",
+      "apk_sha256": "77df7db2346e9d66adec25a5189b4469c0977d80490e1a5da1dddd7b1f559050",
+      "changes": [
+        "Full-size spell, template and rune slot artwork",
+        "Campaign-valid LiA guests and chapter progress merge",
+        "Shelter ordinary exit destination",
+        "Co-op preview capture cadence and cancellation",
+        "Wall-time client interpolation at changed game speeds"
+      ],
+      "baseline_apk": 55,
+      "accepted": true,
+      "acceptance_scope": "Focused gameplay regressions: 145 interpolation, 15 progress-preview and 25 campaign-class assertions. No new FPS acceptance or public release.",
+      "autorun": false,
+      "cleanup": {
+        "disabled_config": "files/bench.gameplay-gaps21-disabled.json",
+        "private_processes_stopped": true
+      }
+    },
+    "runs": {
+      "gameplay-coop-classes-56-01": {
+        "receipt": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/gameplay-coop-classes-56-01.receipt.json",
+        "receipt_sha256": "afec2d58b6412a4c89599bbf3f0d2461f889e6dee351eddd9bc5eaf05c1a4b06",
+        "log_sha256": "045f1fd47124c97f8287b56c8b52bceea9220592aa067d7e961ed074da7ca946",
+        "seconds": 51.31929063796997,
+        "errors": [
+          "10-08 16:18:24.257 31626 31655 E godot   : ERROR: Scene fixture setup or wait failed"
+        ],
+        "checks": null,
+        "failures": null
+      },
+      "gameplay-coop-classes-56-02": {
+        "receipt": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/gameplay-coop-classes-56-02.receipt.json",
+        "receipt_sha256": "66c495e07873f384c217e27ef15776f02a78f32a615323b07db8d4e5cdf3d51b",
+        "log_sha256": "4c28a4999870a1850edca447161fef3bdce5787bfe7ab8446218bda5d07cd6c5",
+        "seconds": 108.2693305015564,
+        "errors": [],
+        "checks": 25,
+        "failures": 0
+      },
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/tests/coop_campaign_classes_android.gd",
+        "sha256": "a99954deed7b8d3e954c180689c623eb0f4563983c0ac56ad3254564d97e6303",
+        "base_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/tests/coop_story_android.gd",
+        "base_sha256": "a895206cb1529f3b9165183a5809437c80b37c7904d31c70851ff31f5a04acb8",
+        "adaptation": "90-second wait instead of 30; explicitly active guest viewport and state logging."
+      },
+      "limitations": [
+        "The first attempt timed out after the authority loaded. The diagnostic repeat completed 25 checks, but its initial guest load took roughly 48 seconds after authority readiness.",
+        "Both peers share one process with separate multiplayer overrides. NetStatus.keep_alive polls the default SceneTree API during world construction, so this setup does not establish shipping separate-process loading behavior.",
+        "Do not count either run as a performance acceptance or claim an initial-loading fix."
+      ]
+    }
+  }
+}
