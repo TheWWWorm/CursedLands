@@ -156,7 +156,7 @@
     "Windows and macOS runtime validation remains unavailable. Full campaign, internet co-op, camera/boarding and third-person playthrough work remains."
   ],
   "packaging": {
-    "status": "in progress",
+    "status": "Clean exports and startup checks verified; archives and upload checked separately.",
     "platforms": [
       "Linux x86_64",
       "Windows x86_64",
@@ -165,6 +165,115 @@
     ],
     "android_version_code": 16,
     "protocol": 11,
-    "published": false
-  }
+    "packs": {
+      "linux": {
+        "resources": 571,
+        "compiled_scripts": 211,
+        "scripts_match_core_suite_except": [],
+        "engine_sha256": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+        "native_sha256": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82",
+        "pack_sha256": "05433b7f29f58f7e187c95952670c716b3a89f25ec5d340925b3b5337f183fe2"
+      },
+      "windows": {
+        "resources": 571,
+        "compiled_scripts": 211,
+        "scripts_match_core_suite_except": [],
+        "engine_sha256": "daea748b8ce15b87838ecd38ef2f53246b43ae833d621654c705811de3fd1e44",
+        "native_sha256": "40a2e9ed88b7a92164902937d0466cf9d7ce3ae661be79af929d0aab4ab191c3",
+        "pack_sha256": "05433b7f29f58f7e187c95952670c716b3a89f25ec5d340925b3b5337f183fe2"
+      },
+      "macos": {
+        "resources": 569,
+        "compiled_scripts": 211,
+        "scripts_identical_to_linux": true,
+        "architectures": [
+          "x86_64",
+          "arm64"
+        ],
+        "runtime_tested": false,
+        "engine_sha256": "9a5f1aa073176c0d609887af859c17889cca631c3c59373587c0297a0eacd940",
+        "pack_sha256": "f74381e1cd7961d69b1f10eaf783eb6a8a97859cc05ec1cc7dfdfb18b58158ca"
+      },
+      "android": {
+        "resources": 580,
+        "compiled_scripts": 211,
+        "scripts_identical_to_linux": true,
+        "engine_arguments": [
+          "--xr_mode_regular",
+          "--xr-mode",
+          "off",
+          "--fullscreen",
+          "--background_color",
+          "#000000"
+        ],
+        "sparse_index": {
+          "format": 4,
+          "resources": 580,
+          "all_resource_sizes_and_md5_match": true,
+          "template_baseline_profiles": {
+            "dexopt/baseline.prof": {
+              "bytes": 1177,
+              "sha256": "4442960fb3fefc2020d4675b3fa13bb1017c4718e9144912ff7f2567262216b8"
+            },
+            "dexopt/baseline.profm": {
+              "bytes": 142,
+              "sha256": "df4de3e1028dedbb7787c99a666a9d79cc23407c6640bd5e86877734a2a88d28"
+            }
+          }
+        },
+        "version_code": 16,
+        "debuggable": false,
+        "same_public_signing_certificate": true,
+        "library_sha256": {
+          "lib/arm64-v8a/libc++_shared.so": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+          "lib/arm64-v8a/libgodot_android.so": "424eaf73630ec110faf614f550f8047c24a78e224211df45d8b957bf03b7cc79",
+          "lib/arm64-v8a/libterrain_search_android.so": "231ad722fd1f9eb0b5b47d7c9a386931a95b9f7ccb404fd7773a1fc651564fb7"
+        }
+      }
+    }
+  },
+  "startup": {
+    "linux": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/experimental6-gameplay-20261008/linux/CursedLands.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--quit-after",
+        "30",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--no-movies"
+      ],
+      "exit_code": 0,
+      "seconds": 7.952583458012668,
+      "errors": [],
+      "version_logged": true,
+      "log_sha256": "795f2edf4ad5f2adc8c317af943b64a27c73f7fc9003e5d39e7222584b989e77"
+    },
+    "retroid": {
+      "package": "org.cursedlands.releasecheck",
+      "startup": "Starting: Intent { cmp=org.cursedlands.releasecheck/com.godot.game.GodotAppLauncher }\nStatus: ok\nLaunchState: COLD\nActivity: org.cursedlands.releasecheck/com.godot.game.GodotApp\nTotalTime: 1375\nWaitTime: 1377\nComplete\n",
+      "pid": "10234",
+      "errors": [],
+      "version_logged": true,
+      "screenshot": "/home/llm2x/Documents/EI/local/builds/experimental6-gameplay-20261008/android-startup.png",
+      "log_sha256": "159f6ae4b9cc70f518030c0ad04aaa59427ecc5bee02fed9a535a759c1b61e00",
+      "stopped": true,
+      "scope": "Fresh graphical startup only; no game assets or gameplay benchmark. Public package identity differs; compiled gameplay matched to public APK."
+    },
+    "android_verification_identity": {
+      "compiled_scripts_identical": 211,
+      "native_libraries_identical": 3,
+      "public_apk_sha256": "8ec4440fe42a4eb6e8761e173528bc8f7498114cc441e1c84e35920f7afbcf2a",
+      "verification_apk_sha256": "2bb1df8967f3b1bfd83edbb153134762c4513904a0baf90fa16fc920b0a7c144"
+    }
+  },
+  "excluded_attempts": [
+    "The first headless Linux startup had no original-data path and exited with the expected setup diagnostic. The corrected isolated-profile launch passes.",
+    "The first Android preparation started before the desktop license-copy dependency completed. Its incomplete stage was archived and clean preparation/export passed; no APK came from that attempt.",
+    "The first captivity fixture exposed approximate comparison of large actor IDs. The corrected VM passes 29 focused checks; the previous exported build fails 15."
+  ],
+  "game_source_commit": "a50525b03f1404cb6bd30e3efe8c79627e5d3b55",
+  "focused_passing_assertions": 181
 }
