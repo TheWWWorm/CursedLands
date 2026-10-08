@@ -4,6 +4,8 @@ const P := preload("res://src/game/script/script_parser.gd")
 
 static func apply(ast: ScriptParser, campaign: String, zone: String) -> void:
 	if campaign != CampaignProfile.ASTRAL:
+		if campaign == CampaignProfile.ORIGINAL:
+			preload("res://src/game/script/story_coop_predicates.gd").apply_original(ast,zone)
 		if campaign == CampaignProfile.ORIGINAL and zone == "gz6g":
 			# The amulet dragon has three identical native follow/return
 			# cycles. Added guests use the third role's original cadence.

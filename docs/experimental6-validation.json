@@ -1,0 +1,170 @@
+{
+  "date": "2026-10-08",
+  "version": "1.0.3-experimental.6",
+  "scope": "Focused release validation at user request. Performance work deferred; prior per-feature receipts remain applicable to unchanged code.",
+  "last_gameplay_changes": [
+    "Base captivity guards can dispatch toward an eligible extra intruder through the original third-role priority/cooldown chain.",
+    "Script IsEqual compares whole-number IDs/counters exactly and Objects by identity. Fractional tolerance remains."
+  ],
+  "last_change_source_sha256": {
+    "game/src/game/script/story_compat.gd": "6ed12cb2fcb3fbdc0aa6b870aa5cf17f7285622891da27ed686931a3b5bfe439",
+    "game/src/game/script/story_coop_predicates.gd": "b69f35cd8487f141cab14d2cbc377278dbf4443d9474b5a28e5ca4e53676f33c",
+    "game/src/game/script/vm.gd": "88c0bb86c4e8f262976558d810230598ead3f01c87843e0a4ab024ee39ec09d6",
+    "tools/tests/story_coop_captivity.gd": "643869878f6742b09e9bfcf399ea464eb055942ec0b3283e1f637d53b97a19b7"
+  },
+  "production_export": {
+    "seconds": 6.025185098988004,
+    "command": [
+      "/home/llm2x/.local/bin/godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+      "--export-release",
+      "Linux",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps36/CPU.x86_64"
+    ],
+    "engine_source": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/fast-runtime.x86_64",
+    "errors": [],
+    "sha256": {
+      "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+      "CPU.pck": "cd8533b367e12378271569ed171152b9eb1365928c3ad7dadfa58700767edded",
+      "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+    }
+  },
+  "focused_runs": {
+    "gameplay-captivity-before-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps35/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_captivity.gd",
+        "--label=gameplay-captivity-before-01"
+      ],
+      "exit_code": 1,
+      "stopped": false,
+      "seconds": 2.5060286140069366,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "2c6d44835eec628882fc782a3899cb654625cbb106b31902a280285e4fcd4cb5",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-captivity-before-01.log",
+      "checks": 29,
+      "failures": 15
+    },
+    "experimental6-captivity-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps36/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_captivity.gd",
+        "--label=experimental6-captivity-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 2.5053374800190795,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "08d6fc6165e68507f32b3851480a01ac3de1d8604766475be2f39408261113c3",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/experimental6-captivity-01.log",
+      "checks": 29,
+      "failures": 0
+    },
+    "experimental6-dragon-net-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps36/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_dragon_net.gd",
+        "--label=experimental6-dragon-net-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 27.775414954987355,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "e9d3e4c22c8b900e45429e06de71f976e42c048643b88ac805121664aadae334",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/experimental6-dragon-net-01.log",
+      "checks": 32,
+      "failures": 0
+    },
+    "experimental6-predicates-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps36/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_predicates.gd",
+        "--label=experimental6-predicates-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 3.606342687009601,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "a140d5267a7ad8d2666154563862533ca954471e6b94f1a844b792fb49dae288",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/experimental6-predicates-01.log",
+      "checks": 101,
+      "failures": 0
+    },
+    "experimental6-single-worker-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps36/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/local_host_campaign.gd",
+        "--label=experimental6-single-worker-01",
+        "--single"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 23.37600151100196,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "f524f6402372e2e96f6b2803700865c59acbd56f21188b06dca828ffd1b1a2ac",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/experimental6-single-worker-01.log",
+      "checks": 19,
+      "failures": 0
+    }
+  },
+  "previous_validation": "docs/gameplay-gaps-2026-10-08.md links per-feature Linux/ENet/Retroid receipts.",
+  "limits": [
+    "No new FPS acceptance. Windows 4K/max/2x report and stable-60 Retroid target remain unresolved.",
+    "Captivity fixture executes the original scripts with controlled actors and records commands. It is not a full prison playthrough or general late-join watcher fix.",
+    "Windows and macOS runtime validation remains unavailable. Full campaign, internet co-op, camera/boarding and third-person playthrough work remains."
+  ],
+  "packaging": {
+    "status": "in progress",
+    "platforms": [
+      "Linux x86_64",
+      "Windows x86_64",
+      "Android arm64",
+      "macOS universal"
+    ],
+    "android_version_code": 16,
+    "protocol": 11,
+    "published": false
+  }
+}

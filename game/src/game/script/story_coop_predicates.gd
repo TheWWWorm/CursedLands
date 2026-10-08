@@ -1,5 +1,5 @@
 extends RefCounted
-## Inspected LiA checks that mean any party participant, rather than a named
+## Inspected campaign checks that mean any party participant, rather than a named
 ## story role. Keep original branch/statement indexes for sleeping saves.
 const P := preload("res://src/game/script/script_parser.gd")
 const E := preload("res://src/game/script/story_coop_effects.gd")
@@ -93,6 +93,38 @@ static func apply(ast: ScriptParser, zone: String) -> void:
 			var near := expr("IsLess",[expr("DistanceUnitUnit",[[P.N_VAR,"i" if i == 1 else "this"],E.role(1)]),[P.N_NUM,2.0]])
 			for b: Dictionary in ast.scripts["Caboom#1#"+str(i)].blocks:
 				b.conds = E.replace(b.conds,near,_with_extra(near))
+
+
+## The prison alarm records its intruder in Try1, then dispatches only the
+## three original roles. Share the last role's existing priority/cooldown
+## chain with an added intruder rather than start competing guard loops.
+static func apply_original(ast: ScriptParser, zone: String) -> void:
+	if zone != "gz19h": return
+	var root: Dictionary = ast.scripts.get("VCheck#0#230",{})
+	var peer: Dictionary = ast.scripts.get("VCheck#0#229",{})
+	var orders: Dictionary = ast.scripts.get("VTriger#0#235",{})
+	var peer_orders: Dictionary = ast.scripts.get("VTriger#0#234",{})
+	if root.is_empty() or peer.is_empty() or orders.is_empty() or peer_orders.is_empty(): return
+	if root.blocks.size()!=1 or orders.blocks.size()!=1: return
+	var expected := root.duplicate(true)
+	expected.blocks[0].conds = E.replace(expected.blocks[0].conds,E.role(2),E.role(1))
+	_rename_calls(expected.blocks[0].body,{"VCheck#0#403":"VCheck#0#398"})
+	if expected != peer: return
+	expected = orders.duplicate(true)
+	expected.blocks[0].body = E.replace(expected.blocks[0].body,E.role(2),E.role(1))
+	_rename_calls(expected.blocks[0].body,{"VTriger#0#242":"VTriger#0#241"})
+	if expected != peer_orders: return
+	var target := expr("RemakeCaptivityTarget",[[P.N_VAR,"Try1"]])
+	root.blocks[0].conds = E.replace(root.blocks[0].conds,E.role(2),target)
+	var sentry := [P.S_CALL,"UMSentry",[[P.N_VAR,"i"],expr("GetX",[E.role(2)]),expr("GetY",[E.role(2)])]]
+	orders.blocks[0].body = E.replace(orders.blocks[0].body,sentry,[P.S_CALL,"RemakeSentryTarget",[[P.N_VAR,"i"],target]])
+
+
+static func captivity_target(vm: ScriptVM, intruder: GameUnit) -> GameUnit:
+	var story := vm._story_records().slice(0,3)
+	if intruder == null or story.has(intruder): return story[2] if story.size()>2 else null
+	if intruder.dead or intruder.hidden or intruder.controller<0: return null
+	return intruder if vm.world.party_units().has(intruder) and (intruder.has_meta("hero") or intruder.has_meta("script_control")) else null
 
 
 static func any_extra(vm: ScriptVM, args: Array, inst: ScriptVM.Instance) -> float:

@@ -423,6 +423,12 @@ func _call(name: String, a: Array, inst: Instance):
 		_seen_memo.clear()
 	# Special forms with lazily evaluated arguments.
 	match name:
+		"RemakeCaptivityTarget":
+			return preload("res://src/game/script/story_coop_predicates.gd").captivity_target(self,_unit(_eval(a[0],inst)))
+		"RemakeSentryTarget":
+			var target := _unit(_eval(a[1],inst))
+			if target: _mode(_eval(a[0],inst),"sentry",{"point":target.pos})
+			return null
 		"RemakePartyAny":
 			return preload("res://src/game/script/story_coop_predicates.gd").any_extra(self,a,inst)
 		"RemakeNearestParty":
@@ -472,7 +478,14 @@ func _call(name: String, a: Array, inst: Instance):
 	match name:
 		# ---- logic and arithmetic
 		"Not": return 0.0 if _truthy(v[0]) else 1.0
-		"IsEqual": return 1.0 if is_equal_approx(_num(v[0]), _num(v[1])) or (v[0] is Object and v[0] == v[1]) else 0.0
+		"IsEqual":
+			if typeof(v[0]) == TYPE_OBJECT or typeof(v[1]) == TYPE_OBJECT: return 1.0 if is_same(v[0],v[1]) else 0.0
+			var left := _num(v[0]); var right := _num(v[1])
+			# IDs and counters are whole numbers, even though the script
+			# language represents them as floats. Relative tolerance makes
+			# neighbouring generated actor IDs compare equal at this scale.
+			if left == floor(left) and right == floor(right): return 1.0 if left == right else 0.0
+			return 1.0 if is_equal_approx(left,right) else 0.0
 		"IsLess": return 1.0 if _num(v[0]) < _num(v[1]) else 0.0
 		"IsGreater": return 1.0 if _num(v[0]) > _num(v[1]) else 0.0
 		"IsEqualString": return 1.0 if str(v[0]).to_lower() == str(v[1]).to_lower() else 0.0

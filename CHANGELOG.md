@@ -1,5 +1,33 @@
 # Changelog
 
+## 1.0.3-experimental.6 — experimental release, 8 October 2026
+
+- Extend separated simulation to ordinary single-player and include the
+  previously validated Retroid presentation improvements. Performance work
+  is deferred for this release; stable 60 FPS and the reported Windows 4K
+  slowdown remain unresolved.
+- Improve co-op loading/input boundaries, movement interpolation, atomic
+  trading, character names, personal campaign progress and temporary roles.
+  All peers must use this build together (protocol 11).
+- Repair partial-figure/corpse visibility, cross-floor melee, Catacombs lift
+  recall, village movement/actions, dialogue cameras, long path previews,
+  scripted Terror persistence, Shelter travel and guest death presentation.
+- Refund all trainable skills and abilities, including starting gifts; make
+  escalating ability prices independent of purchase order. Add Gipath shop
+  infusion runes and recover identifiable legacy rune records.
+- Fill spell/template/rune slots with their correct artwork, retain spell
+  colours, merge shop offer stacks and settle sales in one transaction.
+- Add experimental shoulder camera, WASD/stick movement and aimed combat;
+  gamepads default to this mode, with classic controls still selectable.
+- Preserve story roles while including guests in inspected spells, traps,
+  guard checks and dragon follow cycles. Preserve scripted NPC behavior and
+  target ownership across saves. Compare whole-number script IDs exactly so
+  nearby generated actor IDs cannot select the wrong player.
+- Publish Linux/Windows x86-64, Android ARM64 and universal macOS packages.
+  Validation is focused; Windows/macOS runtime checks, full campaign
+  playthroughs and the known remaining co-op/camera cases are still open.
+  See [release notes](docs/experimental6-release-notes.md).
+
 ## 1.0.3-experimental.5 — experimental release, 7 October 2026
 
 - Provide Linux and Windows x86-64, Android ARM64 and universal macOS packages.
