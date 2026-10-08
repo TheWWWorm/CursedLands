@@ -423,6 +423,10 @@ func _call(name: String, a: Array, inst: Instance):
 		_seen_memo.clear()
 	# Special forms with lazily evaluated arguments.
 	match name:
+		"RemakePartyAny":
+			return preload("res://src/game/script/story_coop_predicates.gd").any_extra(self,a,inst)
+		"RemakeNearestParty":
+			return preload("res://src/game/script/story_coop_predicates.gd").nearest(self,_eval(a[0],inst),_unit(_eval(a[1],inst)))
 		"RemakeTrapActor":
 			return preload("res://src/game/script/story_coop_traps.gd").actor(self, String(_eval(a[0],inst)), int(_num(_eval(a[1],inst))))
 		"RemakeTrapJoin":
@@ -1287,7 +1291,8 @@ const PURE_CALLS := {"Not": 1, "IsEqual": 1, "IsLess": 1, "IsGreater": 1, "IsEqu
 	"GetZ": 1, "GetZValue": 1, "HP": 1, "MaxHP": 1, "GetMoney": 1, "GetFutureX": 1, "GetFutureY": 1, "DistanceUnitUnit": 1, "DistanceUnitPoint": 1,
 	"UnitInSquare": 1, "IsDead": 1, "IsAlive": 1, "IsEnemy": 1, "IsPlayerInDanger": 1, "IsUnitVisible": 1,
 	"WasLooted": 1, "IsUnitBlocked": 1, "GetDiplomacy": 1, "IsInArea": 1, "GetLeverState": 1,
-	"HaveItem": 1, "GetWorldTime": 1, "Any": 1, "Every": 1}
+	"HaveItem": 1, "GetWorldTime": 1, "Any": 1, "Every": 1,
+	"RemakePartyAny": 1, "RemakeNearestParty": 1, "RemakeTrapActor": 1}
 
 
 func _in_danger() -> bool:
@@ -1333,7 +1338,7 @@ func _party_records() -> Array:
 	var out := []
 	var rank := {}
 	var companions: Array = session.state.mercs.values()
-	for u: GameUnit in world.units.values():
+	for u: GameUnit in world.party_units():
 		if is_instance_valid(u) and u.has_meta("hero") and u.controller >= 0:
 			out.append(u)
 			var h: Dictionary = u.get_meta("hero")

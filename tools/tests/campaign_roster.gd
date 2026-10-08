@@ -115,8 +115,9 @@ func _ready() -> void:
 		st.create_party("HeroAlone"); st.add_party_unit("HeroAlone","Hero","Human Hero Hadagan"); st.set_current_party("HeroAlone")
 		st.money = 111; st.items = ["host-bag-sentinel"]
 		check(CoopProgress.main_hero(st) == st.parties[""][0], "base substitution still imports original Zak")
-		ps.coop.joiners.guest = {"idx":1,"purse":{"money":222,"items":["guest-bag-sentinel"]}}
-		ps.coop.joiners.other = {"idx":2,"purse":{"money":333,"items":["other-bag-sentinel"]}}
+		# This purse-only fixture has no imported/active chapter context.
+		ps.coop.joiners.guest = {"idx":1,"active":false,"purse":{"money":222,"items":["guest-bag-sentinel"]}}
+		ps.coop.joiners.other = {"idx":2,"active":false,"purse":{"money":333,"items":["other-bag-sentinel"]}}
 		var pvm := vm_for(ps,"bz13h")
 		ps.coop.with_purse(1,func(): pvm.fire_event("#OnBriefingComplete",[0.0,"b.Nalo.Kr60"]))
 		check(st.current_party == "Pretty" and st.money == 0 and st.items.is_empty(),"original Nalo handoff selects Nalo's bag")

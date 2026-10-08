@@ -1,0 +1,312 @@
+{
+  "date": "2026-10-08",
+  "baseline_commit": "a25b1fb18cae99a217cce21c9e720b35db09afd2",
+  "scope": "G07 LiA guard/proximity/targeting predicates for extra co-op participants; G11 NPC facing and corpse pose save/load. Functional validation only.",
+  "contract": [
+    "Adapt only inspected LiA map/script families with structural guards; retain original story roles, startup scripts, branch indexes and saved frames.",
+    "Extra participants prevent whole-party unseen gates, trigger guard alarms and zone22 interactions, participate in Green proximity explosions, and replace native attack targets only when strictly closer to the original reference point.",
+    "Hidden/dead/uncontrolled extras are excluded. Guest-controlled Kel retains the original narrative slot and is not counted twice. Original target tie choices and coordinated guard origins stay intact.",
+    "Preserve the original Green rearm/death-dispatch sequence, including existing multi-wave behavior; compare full timestamped guest and original companion traces.",
+    "NPCs and corpses retain position/facing on save. Old six-field rows retain authored facing, and old corpse death records remain valid. New snapshots cannot recover positions absent from old saves.",
+    "Story roster lookup reuses the existing controlled-party registry instead of scanning every actor; no new cache or measured speedup is claimed."
+  ],
+  "source_sha256": {
+    "game/src/game/campaign_state.gd": "6a6e309985e2e4e4296fb7a525f85be97469d950d5c367a3bbee78dab4b10fd0",
+    "game/src/game/script/story_compat.gd": "339cf17994bdf029bada5ae63e64fe9b8ea79fc31ea0085c0e8e3344ac3951a5",
+    "game/src/game/script/story_coop_predicates.gd": "5f20fa12a5058b8e6151011640ada6493cc85b5852eb2d2c9b7d222b519ae206",
+    "game/src/game/script/story_coop_predicates.gd.uid": "f886cf8b549157133b933d6f51d76577d78676bb1e41116a3b7435ae1087c657",
+    "game/src/game/script/vm.gd": "f474a46763c628c03652e5fc74aa5d061c9495a0247d8ec4ed49c63a0456ed32",
+    "tools/tests/story_coop_predicates.gd": "29668267f1e9cc53d6b9856016e5cb4f9f7151addd0e9ef76ad2f70dfc151562",
+    "tools/tests/story_coop_predicates_net.gd": "bf45945bd093bfb7225b00cfa6365407d3587871609ee67f62ca5ec18a1fba7c",
+    "tools/tests/campaign_roster.gd": "6f6327250524c42b13f502ca95a260d33d6423bbe8d47292f7afac8f9f1aa037"
+  },
+  "original_script_sha256": {
+    "zone1.txt": "56c682a2d9df4a81d2a18cde60bf59e60c69e6576ee648b7564a3ba084770020",
+    "zone3dun1.txt": "c3b1425737877a1473126077df849e6e53fba6129130fac7880191437292f8e5",
+    "zone10.txt": "6baf5e418ade4c02a5c67f327acc0113b251ab31439444f4b130af98903fecc0",
+    "zone15.txt": "502225e5d93a24c9ac9a379d97aaa210a246dd149dbf6c3a0f084e69ff9e3b0a",
+    "zone16.txt": "2e8833a3b86b546db4edfd474f9bf6d26daf8c5df3447d00cf6f64429ab9800c",
+    "zone21.txt": "098b6db07957951c3292d6ad1d3eeccf486a83c40dfc960f14c0cda0a746ee13",
+    "zone22.txt": "b8f7a19c5fed90a1ef5d84cf32e46d9ae4f13f5471e8c6f2a4ec3307038b5869",
+    "zone32.txt": "29d9ef8b6c067dc218e278702c46e0b6cd0c7a37346689ef53d478c5835d6aad",
+    "zone34.txt": "f203bb8f2a3dbd1c760e2dfdf446e898d7098ecdbf3ba7a700ceb7df919e4638",
+    "zone35.txt": "e3498ea9211e7340f35bec94881a10e823617f838f105571e2854ba87f52d77a"
+  },
+  "production": {
+    "seconds": 5.973274249001406,
+    "command": [
+      "/home/llm2x/.local/bin/godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+      "--export-release",
+      "Linux",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps32/CPU.x86_64"
+    ],
+    "engine_source": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/fast-runtime.x86_64",
+    "errors": [],
+    "sha256": {
+      "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+      "CPU.pck": "a7c8436e20edd17404525e6ec7138796931045507ba783924846db93c23683b3",
+      "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+    }
+  },
+  "runs": {
+    "gameplay-predicates-before-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps30/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_predicates.gd",
+        "--label=gameplay-predicates-before-01"
+      ],
+      "exit_code": 1,
+      "stopped": false,
+      "seconds": 3.507448470016243,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "log_sha256": "f2e71d53a044ac79644973282a57d61e3bb41e75bcf7e2b507e465c3237558f1",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-predicates-before-01.log",
+      "checks": 101,
+      "failures": 36
+    },
+    "gameplay-predicates-pose-before-02": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps31/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_predicates_net.gd",
+        "--label=gameplay-predicates-pose-before-02"
+      ],
+      "exit_code": 1,
+      "stopped": false,
+      "seconds": 20.536176979978336,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "fe12649f2c3630e53009c96319cc14a236262348e86a0ca04aa8efb907f70639",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-predicates-pose-before-02.log",
+      "checks": 17,
+      "failures": 3
+    },
+    "gameplay-predicates-production-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps32/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_predicates.gd",
+        "--label=gameplay-predicates-production-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 4.934122787992237,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "log_sha256": "5a8b945428954969cea7509147896a4226d3a2497eb598c31e511f9d1a53222d",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-predicates-production-01.log",
+      "checks": 101,
+      "failures": 0
+    },
+    "gameplay-predicates-network-production-04": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps32/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_predicates_net.gd",
+        "--label=gameplay-predicates-network-production-04"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 27.149868698994396,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "1dc6e9eaeda276fa283bb4456549ee6131531a9a85f449d0ed63b6781cf889f6",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-predicates-network-production-04.log",
+      "checks": 21,
+      "failures": 0
+    },
+    "gameplay-predicates-traps-production-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps32/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_traps.gd",
+        "--label=gameplay-predicates-traps-production-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 3.6222122499893885,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "log_sha256": "a4c9475dd25af8664e37a4007a1fa7a75f92f98255811fd2c1276adb05cf34ee",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-predicates-traps-production-01.log",
+      "checks": 55,
+      "failures": 0
+    },
+    "gameplay-predicates-effects-source-01": {
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_effects.gd",
+        "--label=gameplay-predicates-effects-source-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 5.109049504011637,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "log_sha256": "76e04e8ad85f2b08b160a42b1a0c2a112af63078a782170f88725e0935b8c614",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-predicates-effects-source-01.log",
+      "checks": 166,
+      "failures": 0
+    },
+    "gameplay-predicates-roster-astral-source-01": {
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/campaign_roster.gd",
+        "--label=gameplay-predicates-roster-astral-source-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 3.607164583983831,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "log_sha256": "2ca4169da38ad99025c337045ec3601ec3c90be270978d96f6e519f87b1c0a12",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-predicates-roster-astral-source-01.log",
+      "checks": 64,
+      "failures": 0
+    },
+    "gameplay-predicates-roster-base-source-02": {
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/campaign_roster.gd",
+        "--label=gameplay-predicates-roster-base-source-02"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 3.1056519839912653,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "log_sha256": "20e392c35d29e1bddc9c153e01c86a50e17f8e0943fb5e5d6bb507618c6e7171",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-predicates-roster-base-source-02.log",
+      "checks": 37,
+      "failures": 0
+    }
+  },
+  "retroid": {
+    "apk": {
+      "private_instrumented": false,
+      "engine_sha256": "424eaf73630ec110faf614f550f8047c24a78e224211df45d8b957bf03b7cc79",
+      "native_sha256": "231ad722fd1f9eb0b5b47d7c9a386931a95b9f7ccb404fd7773a1fc651564fb7",
+      "apk_sha256": "43832d7c6d69091f2ddda437aeb54ee74b86732cb700f80212ddd9ffea5dd9a6",
+      "changes": [
+        "G07 LiA guard, nearest-target and proximity predicates for extra guests",
+        "Preserve NPC/corpse position and facing across saves; reuse cached party registry"
+      ],
+      "baseline_apk": 63,
+      "accepted": true,
+      "acceptance_scope": "101 original-script state checks and 21 real ENet guard/save/load/legacy-state checks. Functional validation only.",
+      "autorun": false,
+      "cleanup": {
+        "disabled_config": "files/bench-predicates64-disabled.json",
+        "autorun_absent_shell_test_exit": 1,
+        "private_processes": [],
+        "installed_apk_sha256": "43832d7c6d69091f2ddda437aeb54ee74b86732cb700f80212ddd9ffea5dd9a6",
+        "normal_app_unchanged": true
+      }
+    },
+    "runs": {
+      "gameplay-predicates64-state-01": {
+        "receipt": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/gameplay-predicates64-state-01.receipt.json",
+        "receipt_sha256": "09db47c40d180eec093fb192a37f4e1e7c23e7dff3c22f5d9b50fec76e738d23",
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/gameplay-predicates64-state-01.log",
+        "log_sha256": "a3e02652c32402d7fe7cb19b1fe812520da6bc1bc26f08eb65b4286e6278a479",
+        "seconds": 9.687679290771484,
+        "errors": [],
+        "apk_sha256": "43832d7c6d69091f2ddda437aeb54ee74b86732cb700f80212ddd9ffea5dd9a6",
+        "checks": 101,
+        "failures": 0
+      },
+      "gameplay-predicates64-net-02": {
+        "receipt": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/gameplay-predicates64-net-02.receipt.json",
+        "receipt_sha256": "5b614f438424def6205660bfe247a93559a0c5f3cb0bab42a2a04443ebec410e",
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/gameplay-predicates64-net-02.log",
+        "log_sha256": "43769d2ce363cc0129391d6da039f7a06d9fbb8997f0ec59bf40924f3cbf3d8e",
+        "seconds": 52.31935667991638,
+        "errors": [],
+        "apk_sha256": "43832d7c6d69091f2ddda437aeb54ee74b86732cb700f80212ddd9ffea5dd9a6",
+        "checks": 21,
+        "failures": 0
+      }
+    },
+    "cleanup": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/predicates64-cleanup.json"
+  },
+  "performance": {
+    "run": "gameplay-predicates-throughput-control-01",
+    "reason": "Aborted when a foreign Godot --import process (pid3425631) appeared; own labelled engine terminated, unrelated process untouched. No sample accepted.",
+    "accepted": false,
+    "comparison_complete": false
+  },
+  "excluded_attempts": [
+    "Initial source attempt used an Object.call name collision; renamed helper to expr. Initial Green assertion assumed exactly two casts; replaced with complete original-versus-extra trace comparison.",
+    "Early network fixtures cleared WorldScript before native Sleep/group setup or assumed queued combat orders were immediately current/persisted. Final fixture uses native startup, checks queued orders and saves the pending alarm.",
+    "network-source-06 and pose-before-01 overlapped localhost port29934; excluded as fixture interference. Only this task's labelled engine processes were stopped.",
+    "network-production-01/-02 used exact corpse HP zero equality despite normal floating-point residue (~-3e-14); final check uses is_zero_approx.",
+    "roster-base-source-01 used purse-only fake joiners missing the active flag; corrected fixture schema and reran with debug errors enabled."
+  ],
+  "limitations": [
+    "Original-script fixture controls perception and pauses unrelated AI/presentation. Real ENet fixture uses actual guard sight and original map actors, but unrelated story/AI remain paused.",
+    "No full campaign playthrough, Windows runtime validation, shipping-process load acceptance or new FPS result.",
+    "G07 named/cosmetic teleports and base dragon/captivity review remain. G08 live temporary guest roles are still open."
+  ]
+}

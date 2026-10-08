@@ -1048,8 +1048,10 @@ func store_zone(id: String, world: GameWorld) -> void:
 			z.blood_pools[u.uid] = u.blood_pool_state()
 			if u.has_meta("loot"):
 				z.loot[u.uid] = u.get_meta("loot")
-		else:
-			z.units[u.uid] = [u.pos.x, u.pos.y, u.hp, u.faction, u.hidden, body_state(u)]
+		# Both living actors and corpses keep their actual location and
+		# facing. Resetting a guard's angle on load changes who it can see.
+		z.units[u.uid] = [u.pos.x, u.pos.y, 0.0 if u.dead else u.hp, u.faction, u.hidden,
+			{} if u.dead else body_state(u), u.facing]
 	# Looted corpses (Session.take_loot) are off the world but WasLooted still
 	# sees them (GameWorld.looted).
 	z.looted = world.looted.keys()
@@ -1203,6 +1205,8 @@ func restore_zone(id: String, world: GameWorld) -> void:
 				u.visible = not u.hidden
 			if s.size() > 5 and s[5] is Dictionary:   # body parts and magic effects
 				apply_body(u, s[5])
+			if s.size() > 6 and (s[6] is float or s[6] is int) and is_finite(float(s[6])):
+				u.facing = float(s[6])
 	for nid in z.get("controls", {}):
 		var u: GameUnit = world.units.get(int(nid))
 		if u:

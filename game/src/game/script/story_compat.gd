@@ -7,6 +7,7 @@ static func apply(ast: ScriptParser, campaign: String, zone: String) -> void:
 		return
 	preload("res://src/game/script/story_coop_effects.gd").apply(ast, zone)
 	preload("res://src/game/script/story_coop_traps.gd").apply(ast, zone)
+	preload("res://src/game/script/story_coop_predicates.gd").apply(ast, zone)
 	if zone == "bz1h":
 		_escape_party(ast)
 	if zone != "cz1h": return
