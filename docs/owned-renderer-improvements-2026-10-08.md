@@ -468,6 +468,100 @@ Evidence: `sun-control.log`, `sun-gl.log`, `sun-gl-held.log`, `sun-forward.log`,
 `p6-export.log` and the isolated `p6-export/` release. No installed build or
 other chat's working files were changed.
 
+## V1: validate the terrain surface before blending objects
+
+This is a **prerequisite diagnostic, not an enabled ground-contact effect**.
+[tools/benchmarks/ground_contact_surface.gd](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/ground_contact_surface.gd)
+compares a shader lookup with the actual rasterized terrain triangles, including
+loose snow/sand and the installed footprint geometry. It runs externally against
+the frozen `p6-export/` Linux release; no production source changed in this step.
+The upstream design remains R1 `Source/contact_blend.h` and
+`Renderer::update_contact_blend_maps`, as linked in the main audit's V1 section.
+
+Three implementation findings matter:
+
+1. `EITerrain.height_at` is a gameplay-oriented bilinear query. The drawn land
+   also has signed-byte horizontal vertex offsets (`_read_vertices`, `land_xy`)
+   and two particular triangles per cell (`_mesh_arrays`: CBA and BCD). In the
+   tested 8 m sloping patches, the bilinear control averages approximately
+   9–13 cm from the rendered surface. Do not use it directly for the contact band.
+2. The first enclosing triangle is insufficient. Some authored offsets fold
+   triangles over each other. On the selected `bz10k` snow patch, first-hit
+   selection fails the 2 mm threshold at **239 pixels**, reaching approximately
+   **1.11 m** error. The diagnostic searches both triangles in each of the nine
+   possible nearby cells and selects the highest deformed surface, matching the
+   top-down depth buffer. This establishes a correctness reference; doing all
+   those fetches on every object fragment is not yet a production cost decision.
+3. Soft-ground lookup must reproduce the geometry that is currently installed.
+   `SoftGroundDeform._subdivide` uses 16-way subdivision in each original
+   triangle's barycentric coordinates. The shader applies the loose profile and
+   track height at those vertices, then rasterization interpolates them. Sampling
+   a continuous height formula directly at the fragment is different. Pending
+   tiles must remain coarse until their mesh job is installed; cleared/expired
+   tiles must return to the coarse representation. The original tile coordinates
+   also interpolate over displaced triangles, so world xy alone is not the
+   correct authored atlas UV.
+
+The probe reads the original atlas/soft-profile shader helpers from
+`EITerrain.TERRAIN_SHADER`, while the reference side renders the real installed
+`EITerrainSector._parts` meshes. It compares height inside the mesh fragment
+shader against its own interpolated world position. The **2 mm pass/fail flag is
+computed on the GPU**; read-back RGB values provide approximate statistics only.
+This avoids false height failures caused by packing a large height across colour
+channel boundaries. The separate UV/albedo pass compares the rasterized mesh with
+a flat query surface. Captures use a floating target and calibrate colour space.
+
+Validation on NVIDIA RTX 3090, Godot 4.7 `5b4e0cb0f`, exported Linux release:
+
+- **158 checks pass on Compatibility and 158 on Forward+.** There are 16 terrain
+  states per renderer and 1,032,250 covered height samples per renderer. No query
+  coverage failures and no sampled height errors above 2 mm remain.
+- Maps: `bz2g` grass at `(121.35, 31.45)`, `bz10k` snow at `(45.35, 111.45)`,
+  `bz13h` authored sand/type 3 at `(52.35, 21.45)`. Cases cover original and padded
+  atlases, loose material, queued-but-not-installed footprints, installed tracks,
+  fading tracks and clear/restore. Type 12 is not represented by these maps.
+- A separate no-tracks control proves the footprint field affects the rendered
+  reference: 1,309 snow pixels and 556 sand pixels exceed 2 mm without the track
+  query. Fading reduces those counts to 1,131 and 431 on both backends.
+- UV differences stay below 2/255. Painted albedo passes the diagnostic's
+  **99th-percentile** threshold of 2/255, but is **not pixel-identical**. The
+  original sand patch has 253 changed pixels on Compatibility and 256 on
+  Forward+, with peak differences about 0.188 in an RGB channel. Shader
+  derivatives/filtering across triangle boundaries still need investigation.
+- Three subpixel holes in the installed dense sand geometry appear on both
+  backends. The probe reports them separately, excludes background from the
+  height comparison, and does not call them query coverage failures.
+
+Machine-readable results and the exact script SHA-256 are retained in
+[docs/validation/ground-contact-surface-2026-10-08.json](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/docs/validation/ground-contact-surface-2026-10-08.json).
+QA logs are `ground-contact-surface-gl.log` and
+`ground-contact-surface-forward.log`. Raw reports/captures use `ground-surface-*`
+and `ground-contact-surface-*.json` in the isolated QA user-data directory.
+
+Before enabling V1:
+
+- Move the validated sampling into shared production helpers, and resolve the
+  albedo edge differences. The probe compares painted albedo, not the full
+  sharpened/relief/macro/rain/light response.
+- Share footprint GPU storage and installed-tile state per world. The probe's
+  `surface_data` copies existing **CPU** images into a diagnostic texture array;
+  it does not read textures from the GPU, but that duplicated storage is not the
+  intended production implementation. Preserve job generations, water changes,
+  sector eviction, option toggles and world teardown.
+- Bind only eligible rigid scenery. Keep units, equipment, portraits and UI
+  outside the effect. Use the actual mesh bounds/transform for a bounded contact
+  band; test small props, long walls, slopes, tile/sector borders and moving
+  objects/cameras. Preserve original alpha and CameraFade's material lifecycle.
+- Retain P3's sharing where possible. Do not make a unique material per placement
+  merely to bind the same terrain. Keep world textures out of global figure
+  caches, and avoid per-frame updates to hundreds of material copies.
+- Blend the ground response without multiplying it by the object's original
+  diffuse/emissive tint. Add GPU tests for a white ground under a red/dark object,
+  unchanged upper surfaces, shadows and local lighting.
+- Measure shader/sampler cost before setting defaults. No Android/web, camera
+  motion, moving-water, full-map performance or completed V1 quality claim is
+  established by this diagnostic.
+
 ## Integration
 
 The implementation is in this isolated branch. Do not overwrite another agent's
@@ -485,14 +579,16 @@ The P3 probe is a standalone benchmark only (commit `3855cc4`). P5 changes only
 The P6 comparison is a standalone benchmark. The subsequent user-directed
 default correction changes only sun policy/setup and menu sun aiming, plus its
 test; it does not modify character visibility or zone-transition code.
+The V1 surface probe adds only a standalone diagnostic and its evidence/docs.
 
-Read-only `git apply --check` of the combined patch through `39b4b7e`, including
-the P6 desktop-default correction, passed against the active checkout at
-`e07271d7edd5d9ed0c6ee8541f7d417f2f635ed0`. The other chat had unrelated uncommitted
-co-op changes in `campaign_state.gd`, `session.gd`, `main_menu.gd`,
-`network_panel.gd` and its new test. Its HEAD/status were unchanged across the
-check. No patch was applied. Evidence: `integration-check-p6.json` in the QA
-directory. Recheck before integrating because that checkout is still changing.
+The latest read-only `git apply --check` of the combined changes, including P6's
+desktop correction and the V1 surface probe, passed against the active checkout
+at `2bbe1c62e927db6ae5503b0a5e64aa62ca505cb7`. The other chat had unrelated
+uncommitted changes in `coop_progress.gd` and `save_info.gd`. Its HEAD/status were
+unchanged across the check. No patch was applied. Evidence:
+`integration-check-v1-surface.json` in the QA directory (the earlier P6-only
+checkpoint is `integration-check-p6.json`). Recheck before integrating because
+that checkout is still changing.
 
 ## Next work in the established order
 
@@ -515,5 +611,6 @@ directory. Recheck before integrating because that checkout is still changing.
    figure parts. Converting to a skinned mesh was an author suggestion, not an
    implemented upstream feature or a demonstrated speedup.
 5. **Visual track:** V1 ground-contact blending, V4 water interaction, V2 biome
-   ground cover, then the remaining audit features. These remain proposals;
-   none was silently enabled in this performance batch.
+   ground cover, then the remaining audit features. V1's surface-query diagnostic
+   is validated above; the object blend, storage sharing, filtering and cost work
+   remain open. No visual effect was silently enabled in this performance batch.
