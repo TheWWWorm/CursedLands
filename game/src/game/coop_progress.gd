@@ -84,6 +84,8 @@ var _origin_slot := ""   # the save brought ("" = new hero)
 var _origin_new := false
 var _merged_slot := ""
 var _merged_name := ""
+var _preview_zone := ""   # one preview per visited location, independent of save frequency
+var _preview_serial := 0
 ## Client: the last merged save written (tests read it).
 var last_merged := ""
 var merged_count := 0    # packages merged so far (NetStatus.leave waits for one more)
@@ -227,14 +229,29 @@ func _rpc_package(pkg: Dictionary) -> void:
 	if session.campaign:
 		allod = String(session.campaign.zones.get(st.current_zone, {}).get("allod", "")).to_lower()
 	SaveInfo.write(_merged_slot, st.get_var(0, "gtime"), allod, st.current_zone, _merged_name)
-	# The Load screen's preview: this client's view of the shared game (the
-	# host's zone) at the latest package; LoadPanel falls back to the zone's
-	# minimap picture while there is none.
-	SaveInfo.write_shot(_merged_slot, session.get_viewport())
+	_refresh_preview(st.current_zone)
 	if last_merged.is_empty():
 		session.message.emit(RemakeText.t("Your progress is saved as \"%s\".") % _merged_name)
 	last_merged = _merged_slot
 	merged_count += 1
+
+
+## Progress still saves at every package. Re-reading a 4K viewport for its
+## thumbnail every few seconds stalls the client; refresh the preview only
+## when its saved location changes. Never photograph a different host zone
+## for an origin whose story progress did not move there.
+func _refresh_preview(zone: String) -> void:
+	if zone.is_empty() or zone == _preview_zone or zone != session.zone_id:
+		return
+	_preview_zone = zone
+	_preview_serial += 1
+	var serial := _preview_serial
+	var valid := func() -> bool:
+		return is_instance_valid(session) and serial == _preview_serial \
+			and session.zone_id == zone and not session.loading_game and not session._remote_loading
+	var written := await SaveInfo.write_shot(_merged_slot, session.get_viewport(), valid)
+	if not written and serial == _preview_serial:
+		_preview_zone = ""   # a cancelled/loading capture may retry on the next package
 
 
 ## Client: brought its own hero (progress packages come back to it).

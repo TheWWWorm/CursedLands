@@ -1,0 +1,416 @@
+{
+  "baseline_commit": "2bbe1c6",
+  "change": "Keep saving every received progress package, but capture its preview once per saved location. Reject deferred captures after a location change, during loading or after the session closes; cancelled captures can retry.",
+  "export": {
+    "seconds": 5.916310063999845,
+    "command": [
+      "/home/llm2x/.local/bin/godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+      "--export-release",
+      "Linux",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps20/CPU.x86_64"
+    ],
+    "engine_source": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/fast-runtime.x86_64",
+    "errors": [],
+    "sha256": {
+      "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+      "CPU.pck": "6c34ee3d6d407c66d3ba02816b7835ea853a5a20c4fe0bd74264163cd26524dc",
+      "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+    }
+  },
+  "fixture_sha256": "7f2f2ed4d60e1f2abeb89895f0447d7f725a942a2f225940ac08a6acfeb1b8e2",
+  "initial_fixture": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/tests/coop_progress_preview_initial.gd",
+    "sha256": "231d11a70bdc292752c23b9e7c9c880355becd15ab23638adb18ba2cbcca69ef",
+    "note": "Before/after initial runs have twelve checks. The final fixture also covers loading/retry and an unguarded ordinary-save capture."
+  },
+  "runs": {
+    "gameplay-progress-preview-before-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps19/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--resolution",
+        "1600x900",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_progress_preview.gd",
+        "--label=gameplay-progress-preview-before-01"
+      ],
+      "exit_code": 1,
+      "stopped": false,
+      "seconds": 8.214431853004498,
+      "errors": [],
+      "warnings": [
+        "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+      ],
+      "log_sha256": "24bad707424a656280ef3dfc877829e8d4bab934184a84a9b1b671df70f862f6",
+      "checks": 12,
+      "failures": 4,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-progress-preview-before-01.log"
+    },
+    "gameplay-progress-preview-after-01": {
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--resolution",
+        "1600x900",
+        "--windowed",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_progress_preview.gd",
+        "--label=gameplay-progress-preview-after-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 9.315783500001999,
+      "errors": [],
+      "warnings": [
+        "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+      ],
+      "log_sha256": "07069c1584acb48030e8104a7b0bc6ee4a17e7b41cce53cc7d1dfe13500df226",
+      "checks": 12,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-progress-preview-after-01.log"
+    },
+    "gameplay-progress-preview-production-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps20/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--resolution",
+        "1600x900",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_progress_preview.gd",
+        "--label=gameplay-progress-preview-production-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 9.415629927010741,
+      "errors": [],
+      "warnings": [
+        "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+      ],
+      "log_sha256": "e7396ed93f343e0d7a51a62e78cd000167967d8c9ad5138045f655127185e354",
+      "checks": 15,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-progress-preview-production-01.log"
+    },
+    "gameplay-progress-preview-base-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps20/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--resolution",
+        "1600x900",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_progress_preview.gd",
+        "--label=gameplay-progress-preview-base-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 9.215985967981396,
+      "errors": [],
+      "warnings": [
+        "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+      ],
+      "log_sha256": "8e6d036982981f824d24c1158aa8230fdc990d5015ad6902e6c102653d429e7d",
+      "checks": 15,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-progress-preview-base-01.log"
+    }
+  },
+  "retroid": {
+    "receipt": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/gameplay-progress-preview-56-01.receipt.json",
+    "receipt_sha256": "ab1df418a10b14f3b7224b4824f903495af4327e072ad8bfb3b185b4982b3780",
+    "log": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/gameplay-progress-preview-56-01.log",
+    "log_sha256": "c5e73735a5b89fa836d7f82eb40349411f4db506381d864c36e2fab71d3748b6",
+    "checks": 15,
+    "failures": 0,
+    "errors": [],
+    "seconds": 10.672499418258667,
+    "apk_sha256": "77df7db2346e9d66adec25a5189b4469c0977d80490e1a5da1dddd7b1f559050",
+    "config": {
+      "name": "gameplay-progress-preview-56-01",
+      "save": "user://fixtures/portal.sav",
+      "data": "user://data/astral",
+      "speed": 1,
+      "seconds": 30,
+      "host": false,
+      "players": 1,
+      "terror": false,
+      "isolated": false,
+      "options": {},
+      "tool": "user://coop_progress_preview.gd"
+    }
+  },
+  "apk": {
+    "private_instrumented": false,
+    "engine_sha256": "424eaf73630ec110faf614f550f8047c24a78e224211df45d8b957bf03b7cc79",
+    "native_sha256": "231ad722fd1f9eb0b5b47d7c9a386931a95b9f7ccb404fd7773a1fc651564fb7",
+    "apk_sha256": "77df7db2346e9d66adec25a5189b4469c0977d80490e1a5da1dddd7b1f559050",
+    "changes": [
+      "Full-size spell, template and rune slot artwork",
+      "Campaign-valid LiA guests and chapter progress merge",
+      "Shelter ordinary exit destination",
+      "Co-op preview capture cadence and cancellation",
+      "Wall-time client interpolation at changed game speeds"
+    ],
+    "baseline_apk": 55,
+    "accepted": false
+  },
+  "profile": {
+    "diagnostic_export": {
+      "seconds": 5.864278288994683,
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--headless",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+        "--export-release",
+        "Linux",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps19-progress-profile/CPU.x86_64"
+      ],
+      "engine_source": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/fast-runtime.x86_64",
+      "errors": [],
+      "sha256": {
+        "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+        "CPU.pck": "09e3d97306d7a92b48a1dc9f969cd0e4e21e5da054b70e9edaa7dadfafed4eb0",
+        "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+      }
+    },
+    "raw_receipt": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/runs/gameplay-progress-profile-02.receipt.json",
+    "raw_measurement": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/runs/gameplay-progress-profile-02-exit-measure.json",
+    "measurement_sha256": "cf8a3f6544d6bcdcb1175b51c05fb10f27da9f27461124a3cc90dfaa99a7bcb0",
+    "correlation": [
+      {
+        "at_usec": 946749,
+        "frame_ms": 98.352,
+        "frame": 1906,
+        "events": [
+          {
+            "kind": "SHOT_PROFILE",
+            "duration_ms": 53.388,
+            "read_ms": 38.057
+          }
+        ]
+      },
+      {
+        "at_usec": 34125698,
+        "frame_ms": 86.768,
+        "frame": 3700,
+        "events": [
+          {
+            "kind": "SHOT_PROFILE",
+            "duration_ms": 67.146,
+            "read_ms": 52.206
+          }
+        ]
+      },
+      {
+        "at_usec": 41697338,
+        "frame_ms": 82.424,
+        "frame": 4194,
+        "events": [
+          {
+            "kind": "SHOT_PROFILE",
+            "duration_ms": 71.795,
+            "read_ms": 55.199
+          }
+        ]
+      },
+      {
+        "at_usec": 11652950,
+        "frame_ms": 75.379,
+        "frame": 2398,
+        "events": [
+          {
+            "kind": "SHOT_PROFILE",
+            "duration_ms": 47.881,
+            "read_ms": 34.433
+          }
+        ]
+      },
+      {
+        "at_usec": 19120981,
+        "frame_ms": 74.99,
+        "frame": 2805,
+        "events": [
+          {
+            "kind": "SHOT_PROFILE",
+            "duration_ms": 49.668,
+            "read_ms": 33.331
+          }
+        ]
+      },
+      {
+        "at_usec": 4315580,
+        "frame_ms": 74.558,
+        "frame": 2049,
+        "events": [
+          {
+            "kind": "SHOT_PROFILE",
+            "duration_ms": 49.454,
+            "read_ms": 35.46
+          }
+        ]
+      },
+      {
+        "at_usec": 26655789,
+        "frame_ms": 62.753,
+        "frame": 3214,
+        "events": [
+          {
+            "kind": "SHOT_PROFILE",
+            "duration_ms": 49.086,
+            "read_ms": 35.006
+          }
+        ]
+      },
+      {
+        "at_usec": 822391,
+        "frame_ms": 52.12,
+        "frame": 1904,
+        "events": [
+          {
+            "kind": "PROGRESS_PROFILE",
+            "duration_ms": 4.288,
+            "read_ms": 0.0
+          }
+        ]
+      },
+      {
+        "at_usec": 1623936,
+        "frame_ms": 48.867,
+        "frame": 1932,
+        "events": []
+      },
+      {
+        "at_usec": 1785637,
+        "frame_ms": 47.933,
+        "frame": 1937,
+        "events": []
+      },
+      {
+        "at_usec": 2873833,
+        "frame_ms": 46.529,
+        "frame": 1977,
+        "events": []
+      },
+      {
+        "at_usec": 1670329,
+        "frame_ms": 46.393,
+        "frame": 1933,
+        "events": []
+      }
+    ],
+    "scope": "The completed first 45-second window preceded contention. Its seven longest frames overlap thumbnail capture, whose measured call durations are 47.9\u201371.8 ms. The enclosing three-phase run was later aborted during reload because unrelated graphics work started. This is cause profiling, not a successful full benchmark or a before/after gain."
+  },
+  "excluded_or_diagnostic_comparisons": {
+    "gameplay-progress-profile-01": {
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/runs/gameplay-progress-profile-01.receipt.json",
+      "sha256": "b596940e418a3e16d07eb23db9221b36c8057c49212300ee8a425d6a5a3fec40",
+      "failure": "Unrelated game active: diagnostic stopped",
+      "seconds": 6.292829404992517,
+      "foreign_seen": {
+        "2995701": {
+          "exe": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p6-export/CursedLands.x86_64",
+          "ppid": 2995700,
+          "rss_kib": 43932
+        }
+      }
+    },
+    "gameplay-progress-profile-02": {
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/runs/gameplay-progress-profile-02.receipt.json",
+      "sha256": "a7c83670541b36876dd88ce7799ff4f7cb8e3e309f2a10a432a284801ab04f61",
+      "failure": "Unrelated game active: diagnostic stopped",
+      "seconds": 152.1446942820039,
+      "foreign_seen": {
+        "3000069": {
+          "exe": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p6-export/CursedLands.x86_64",
+          "ppid": 3000068,
+          "rss_kib": 48876
+        }
+      }
+    },
+    "gameplay-progress-frame-baseline-01": {
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/runs/gameplay-progress-frame-baseline-01.receipt.json",
+      "sha256": "e8efc07d06c3e3f7ab540c9721bb34a01f89a1a68ac0fce3dcf4f907539da4c5",
+      "failure": "Unrelated game active: diagnostic stopped",
+      "seconds": 39.04795283000567,
+      "foreign_seen": {
+        "3010377": {
+          "exe": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p6-export/CursedLands.x86_64",
+          "ppid": 3010376,
+          "rss_kib": 48756
+        },
+        "3010385": {
+          "exe": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p6-export/CursedLands.x86_64",
+          "ppid": 3010377,
+          "rss_kib": 49068
+        }
+      }
+    },
+    "gameplay-progress-field-baseline-01": {
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/runs/gameplay-progress-field-baseline-01.receipt.json",
+      "sha256": "fdd1f4f0c1b8318f6a4e9f3ade35cb52a4e43c43d37b1062e9cdfc84c3580d3d",
+      "failure": null,
+      "seconds": 109.09754647899535,
+      "foreign_seen": {},
+      "limitation": "Completed cleanly, but late joining produced only three progress packages and included first-frame warm-up; not accepted as the requested same-path throughput comparison. The revised present-at-arrival/warm-up run was interrupted."
+    },
+    "gameplay-progress-field-baseline-02": {
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/runs/gameplay-progress-field-baseline-02.receipt.json",
+      "sha256": "4ed69bed2131915aa3348805b45442e114251fafdfda92a7f74f5977a16d4841",
+      "failure": "Unrelated game active: diagnostic stopped",
+      "seconds": 48.689026015024865,
+      "foreign_seen": {
+        "3021220": {
+          "exe": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "ppid": 3021219,
+          "rss_kib": 58172
+        }
+      }
+    }
+  },
+  "limits": [
+    "No sustained 4 FPS collapse was reproduced or fixed.",
+    "A clean repeated post-change frame-time comparison remains outstanding due to other graphics tests on the shared desktop. No FPS or latency gain is claimed.",
+    "One capture can still stall during a location change; remaining network jitter and full campaign playthroughs are open.",
+    "Private APK56 also includes other gameplay changes; it is not a public release or a Windows validation."
+  ]
+}
