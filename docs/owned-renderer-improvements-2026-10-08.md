@@ -372,6 +372,62 @@ Current validation logs: `export-local-shadow-selection-headless.log`,
 passed. No mobile, other-vendor GPU, full gameplay soak or frame-time benchmark
 was performed for this policy change.
 
+## P6 investigation: directional-shadow snapping
+
+The remake already separates the direct-light direction from its held shadow
+direction on Compatibility/mobile (`Game._aim_sun`, `Game.sun_basis`,
+`Portability.held_sun`). Desktop Forward+ keeps continuous aiming. The existing
+held policy re-aims on zone/view changes, camera cuts, and a ten-degree lag cap.
+`shadow_diag.gd` already provides aim, roll, atlas, split and bias comparisons.
+
+The exact Godot source used by these builds already fits camera-slice spheres,
+reserves border texels and snaps their projected bounds to a texel grid.
+Directional shadow setup runs for the visible shadowed lights during rendering;
+snapping only the sun direction does not establish retained depth-map reuse.
+See [_light_instance_setup_directional_shadow](https://github.com/godotengine/godot/blob/5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88/servers/rendering/renderer_scene_cull.cpp#L2150),
+especially lines 2273–2319, and its call around line 3387. Do not add a second
+camera-position snapping approximation in GDScript without an engine-level
+reason and coverage tests.
+
+Reference R0 `retained_static_submission.cpp:187` snaps normalized direction
+components to 1/512 and renormalizes, retaining exact direct sunlight. Its
+`finish_shadow_receiver_xy` around line 883 additionally quantizes coverage
+radius and reserves filter support. The following experiment evaluates only
+the direction policy, not that entire fitting/reuse pipeline.
+
+[tools/benchmarks/directional_shadows.gd](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/directional_shadows.gd)
+compares continuous, 1/512-component snapping and the existing held aiming code
+on the real `bz13h` map. It freezes wind/time and direct illumination, uses a
+fixed camera, 480 × 360 pixels, a 2048 atlas and 31 azimuth samples spaced by
+0.02 degrees. Samples describe a controlled angular trace, not actual frame
+timing. A no-shadow control changes zero pixels on both backends, isolating
+the measured differences to shadows in this fixture.
+
+| Renderer | Policy | Direction changes across 30 steps | Median changed pixels per step | Peak changed pixels per step |
+|---|---|---:|---:|---:|
+| Compatibility | Continuous | 30 | 869 | 939 |
+| Compatibility | Snap 1/512 | 4 | 0 | 1,463 |
+| Compatibility | Held | 0 | 0 | 0 |
+| Forward+ | Continuous | 30 | 471 | 510 |
+| Forward+ | Snap 1/512 | 4 | 0 | 963 |
+| Forward+ | Held | 0 | 0 | 0 |
+
+Changed pixels require a channel difference above 2/255. Snapping exchanges
+frequent small changes for fewer larger ones; a lower median alone is not
+proof of smoother-looking animation. The maximum snapped direction error was
+0.076 degrees. Held direction error reached 0.405 degrees over this short
+trace, below its existing ten-degree re-aim threshold. The test does not assess
+that larger re-aim event, moving/zooming cameras, low sun, mobile GPUs or cascade
+coverage. Neither a quality improvement nor a speedup is established for a new
+production policy. Keep the current defaults pending stronger evidence.
+
+The exported Linux build completed the probe on RTX 3090, OpenGL Compatibility
+and Vulkan Forward+. Logs: `directional-shadows-gl_compatibility.log` and
+`directional-shadows-forward_plus.log` in the QA directory; first/last captures
+are `data/godot/app_userdata/Cursed Lands/directional-shadows-*.png`. The inspected
+pinned engine file is saved there as `godot-5b4e0cb-renderer_scene_cull.cpp`.
+P6 remains an investigation, not a completed shadow-caching implementation.
+
 ## Integration
 
 The implementation is in this isolated branch. Do not overwrite another agent's
@@ -386,6 +442,7 @@ The first P3 stage changes only `figure.gd`, its resource census, regression
 fixture and this documentation. No object ownership or camera code was changed.
 The P3 probe is a standalone benchmark only (commit `3855cc4`). P5 changes only
 `local_lighting.gd` plus its regression fixture and documentation.
+The P6 comparison is a standalone benchmark and changes no runtime defaults.
 
 Read-only `git apply --check` of the combined P1, P2, P3 and P5 patch through
 `9bc5ce2` passed against the active checkout at
