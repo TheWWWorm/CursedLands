@@ -11,7 +11,8 @@ The source audit and priorities are in
 This checkout is isolated from the ongoing work in
 [Optimize game performance](codex://threads/01a117f6-fd90-7190-be5e-9fc0c2bc06aa).
 That chat was addressing runes, dialogue cameras, Shelter co-op departure,
-party/pet persistence and ability pricing during this batch. Its checkout is
+party/pet persistence and ability pricing, then creature visibility and low FPS
+after a Catacombs transition during this batch. Its checkout is
 `/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo`.
 Only this worktree and a separate QA directory were changed. No active release
 checkout, installed build, Android device or real save profile was modified.
@@ -288,6 +289,88 @@ tool through the same exported `--tool` entry point described above. It exits
 successfully when the measurement completes, even when pixels differ; it is a
 diagnostic benchmark, not a passing fidelity test.
 
+## P5, first stage: stable local-shadow selection
+
+P4's production visibility changes overlap the other chat's active investigation,
+so the next independent change is the local-light selection policy. The original
+fire path already favored incumbents by 20%; lava shadow selection had no such
+bias. Both could still change abruptly at the eligibility distance, and fire
+could exchange shadows every 0.25-second scan when focus movement overcame its
+score bias.
+
+The manager now keeps an eligible selected light for two seconds, subject to
+the existing shared four-shadow budget and at-most-two lava reservation. After
+that minimum, a challenger must beat the incumbent's score divided by 1.25.
+This preserves the existing fire score preference and applies it to lava too.
+The original distance/focus scoring itself is unchanged; this is not a new
+brightness/coverage importance heuristic.
+
+New selections enter within 65 m of the camera. Existing selections can remain
+until 69 m, avoiding repeated exchanges at a single cutoff. Frustum eligibility
+still applies, and hidden/queued-for-deletion lights do not reserve shadows.
+Dropping eligibility bypasses the minimum hold. Tenure uses light instance IDs,
+keeps only currently selected entries, and resets for disabled options, loss of
+camera, world changes, inactive lava, and pooled lava nodes assigned a new cell.
+A light that was externally disabled receives a fresh tenure if reselected.
+
+`Gfx.set_local_shadow` continues to update the Compatibility additive-pass
+marker along with the shadow flag. No light mask, particle lifetime, energy
+controller, caster transform or render update is delayed. Godot still renders
+selected moving lights/casters normally. Selection can still visibly change
+after the hold; shadow-strength fades and static/dynamic shadow-map reuse are
+not implemented by this step. The hold can intentionally delay a better but
+still-visible challenger by up to two seconds; becoming ineligible or shrinking
+the available budget takes precedence.
+
+### Source and implementation locations
+
+- Reference: R0 [Source/point_shadow_policy.h:11](https://github.com/Ilufus/evil-islands-owned-renderer/blob/d529d14e9bf3c960833a9d9633786fc4588ec6d2/Source/point_shadow_policy.h#L11), `PointShadowPolicy` and `PointShadowScheduler::select`. Its two-second hold, 1.25 score hysteresis and four-unit distance hysteresis inform the adaptation. Upstream uses those policies for eligibility, scheduling and pressure retirement; this is a Godot selection adaptation, not a literal scheduler port. In particular, upstream's four-lamp work budget is **not** a four-resident-shadow limit. Our existing four-shadow cap is retained independently.
+- [game/src/game/fx/local_lighting.gd:13](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/game/src/game/fx/local_lighting.gd:13): policy constants and `_shadow_since` state.
+- [game/src/game/fx/local_lighting.gd:365](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/game/src/game/fx/local_lighting.gd:365): `_shadow_candidate`, `_select_shadows` and `_assign_shadows`.
+- Same file: `apply_options`, `_clear_lava`, `_process`, `_sync_lava` and `_disable_shadows` invalidate selection history at the corresponding lifetime boundaries.
+- [tools/tests/local_shadow_selection.gd](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/local_shadow_selection.gd): actual manager/camera/light integration, plus an optional real-GPU fixture using the production figure shader.
+
+### Evidence and limits
+
+The deterministic eight-second trace alternates focus across five clustered
+fire lights every 0.25 seconds while keeping four shadows available. The old
+manager changed its selected set **31 times**; the new manager changed it
+**3 times**. This is an explicit policy trace, not measured game FPS or a claim
+about all camera movements.
+
+The exported Linux executable passed **377 headless checks**, and **418 checks
+on each of OpenGL Compatibility and Vulkan Forward+**, RTX 3090. Tests cover
+hold expiry, eventual replacement, ordering, distance thresholds, hidden/freed/
+queued lights, moving lights, lava competition, shrinking the fire budget, pool
+reuse, option restoration, camera reset and world cleanup. The current fixture
+against the previous manager from commit `3855cc4` fails ten relevant checks;
+the control script has only its `class_name` line removed for isolated loading.
+
+The rendered fixture holds the camera and illumination constant while focus
+requests a different shadow selection. During the minimum hold, captured pixels
+are identical on both backends. When the hold expires, 61,050 Compatibility
+pixels / 47,267 Forward+ pixels change by more than 2/255, showing a real visible
+shadow transition. Moving the invisible shadow caster while a light is held
+changes 17,486 / 23,272 pixels, and moving the selected light also updates the
+image. Thus the hold does not freeze the caster's rendered shadow. These are
+fixture pixel counts, not image-quality scores or performance gains.
+
+An older scratchpad `local_lighting_test.gd` was also run. It reports the same
+two spell-flash energy/restoration expectation failures on both the frozen
+pre-P5 build and the candidate; all other checks in that fixture pass. This
+legacy fixture is not reported as green, and unrelated spell timing was not
+changed to satisfy its older expectations. Evidence: `local-lighting-control.log`
+and `local-lighting-regression.log` under the QA directory.
+
+Current validation logs: `export-local-shadow-selection-headless.log`,
+`export-local-shadow-selection-control.log`,
+`export-local-shadow-selection-gl_compatibility.log` and
+`export-local-shadow-selection-forward_plus.log`. The frozen release is under
+`p5-export/`, built with `p5-export.log`; images are
+`data/godot/app_userdata/Cursed Lands/local-shadows-*.png`. Editor GPU runs also
+passed. No mobile, other-vendor GPU, full gameplay soak or frame-time benchmark
+was performed for this policy change.
+
 ## Integration
 
 The implementation is in this isolated branch. Do not overwrite another agent's
@@ -300,6 +383,8 @@ and `Gfx.texture_3d` plus its tests/documentation. No network, inventory,
 campaign-state, pricing or dialogue-camera behavior was edited.
 The first P3 stage changes only `figure.gd`, its resource census, regression
 fixture and this documentation. No object ownership or camera code was changed.
+The P3 probe is a standalone benchmark only (commit `3855cc4`). P5 changes only
+`local_lighting.gd` plus its regression fixture and documentation.
 
 Read-only `git apply --check` of P1, P2 and the first P3 stage passed against the active
 checkout's working files while its committed HEAD was
@@ -318,9 +403,11 @@ checkout is still changing.
 2. **P4 occlusion:** after identifying hidden-geometry cost, evaluate Godot's
    existing facilities before a custom Hi-Z path. Keep world/gameplay visibility
    separate and verify camera movement, thin openings and shadows.
-3. **P5 local shadow selection, then P6 directional stability:** policy changes
-   can be separate from gameplay; require actual shadow-transition evidence and
-   renderer capability checks before promising cached shadow-map updates.
+3. **P5 local shadows, then P6 directional stability:** the first stable-selection
+   step and real-GPU transition checks are implemented above. Shadow-strength
+   transitions, better importance scoring and cached map updates remain separate
+   work. For P6, identify actual shimmer/redraw cost and renderer capabilities
+   before changing cascade settings or planning engine-level projection reuse.
 4. **C1 character batching/skinning:** keep as an isolated prototype until the
    main character/gameplay changes settle. The active remake still animates rigid
    figure parts. Converting to a skinned mesh was an author suggestion, not an

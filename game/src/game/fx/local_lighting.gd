@@ -10,6 +10,10 @@ const SCAN := 0.25
 const SHADOW_LIMIT := 4
 const LAVA_LIMIT := 6
 const LAVA_SHADOW_LIMIT := 2
+const SHADOW_HOLD := 2.0
+const SHADOW_HYSTERESIS := 1.25
+const SHADOW_DISTANCE := 65.0
+const SHADOW_DISTANCE_MARGIN := 4.0
 const LAVA_SCAN_RADIUS := 46.0
 const LAVA_SPACING := 7.0
 const LAVA_RADIUS := 6.0
@@ -31,6 +35,9 @@ var _time := 0.0
 var _fire_on := false
 var _lava_on := false
 var _lava: Array[Dictionary] = []
+# Light instance IDs, not owning references. A pooled lava node loses its
+# tenure when it changes cells; an ineligible light never keeps a reserved slot.
+var _shadow_since := {}
 
 
 func _init(g: Game) -> void:
@@ -142,6 +149,8 @@ func apply_options() -> void:
 		var fx := _world.get_node_or_null("ParticleFx") as ParticleFx
 		for d: Dictionary in _light_records(fx):
 			apply_particle(d, _fire_on)
+			if not _fire_on and is_instance_valid(d.light):
+				_shadow_since.erase(d.light.get_instance_id())
 	if not _lava_on:
 		_clear_lava()
 	_t = 0.0
@@ -172,6 +181,7 @@ func _light_records(fx: ParticleFx) -> Array[Dictionary]:
 func _clear_lava() -> void:
 	for d: Dictionary in _lava:
 		if is_instance_valid(d.light):
+			_shadow_since.erase(d.light.get_instance_id())
 			d.light.visible = false
 			d.light.queue_free()
 	_lava.clear()
@@ -182,6 +192,7 @@ func _process(dt: float) -> void:
 	if not is_instance_valid(_world) or _world != current:
 		_restore_particles()
 		_clear_lava()
+		_shadow_since.clear()
 		_world = current
 		_t = 0.0
 	if not is_instance_valid(_world):
@@ -329,6 +340,7 @@ func _sync_lava(chosen: Array[Dictionary]) -> void:
 				break
 		if slot.is_empty():
 			slot = _new_lava()
+		_shadow_since.erase(slot.light.get_instance_id())
 		slot.cell = c.cell
 		slot.active = true
 		slot.energy = 0.0
@@ -337,15 +349,48 @@ func _sync_lava(chosen: Array[Dictionary]) -> void:
 		slot.light.global_position = c.pos
 	for d: Dictionary in _lava:
 		if not d.active:
+			_shadow_since.erase(d.light.get_instance_id())
 			Gfx.set_local_shadow(d.light, false)
 
 
 func _disable_shadows(fx: ParticleFx) -> void:
+	_shadow_since.clear()
 	for d: Dictionary in _light_records(fx):
 		if d.get("enhanced", false) and is_instance_valid(d.light):
 			Gfx.set_local_shadow(d.light, false)
 	for d: Dictionary in _lava:
 		Gfx.set_local_shadow(d.light, false)
+
+
+func _shadow_candidate(l: OmniLight3D, camera: Camera3D) -> bool:
+	if l.is_queued_for_deletion() or not l.is_visible_in_tree():
+		return false
+	var distance := SHADOW_DISTANCE
+	if _shadow_since.has(l.get_instance_id()) and l.shadow_enabled:
+		distance += SHADOW_DISTANCE_MARGIN
+	return l.global_position.distance_squared_to(camera.global_position) < distance * distance \
+		and _in_view(camera, l.global_position, l.omni_range)
+
+
+## Keep eligible incumbents for a minimum tenure, then require a meaningful
+## score improvement. This is selection stability, not shadow-map caching:
+## Godot still updates selected moving lights/casters through its normal path.
+func _select_shadows(candidates: Array[Dictionary], limit: int, selected: Dictionary) -> void:
+	for c: Dictionary in candidates:
+		var id: int = c.light.get_instance_id()
+		if not c.light.shadow_enabled:
+			_shadow_since.erase(id)
+		var incumbent: bool = _shadow_since.has(id) and c.light.shadow_enabled
+		c["held"] = incumbent and _time - float(_shadow_since.get(id, 0.0)) < SHADOW_HOLD
+		c["rank"] = float(c.score) / SHADOW_HYSTERESIS if incumbent else float(c.score)
+	candidates.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
+		if a.held != b.held:
+			return a.held
+		if a.rank != b.rank:
+			return a.rank < b.rank
+		return a.light.get_instance_id() < b.light.get_instance_id())
+	for i in mini(limit, candidates.size()):
+		selected[candidates[i].light.get_instance_id()] = true
 
 
 func _assign_shadows(fx: ParticleFx, camera: Camera3D, focus: Vector3) -> void:
@@ -359,21 +404,21 @@ func _assign_shadows(fx: ParticleFx, camera: Camera3D, focus: Vector3) -> void:
 			var l: OmniLight3D = d.light
 			var p := l.global_position
 			var score := p.distance_squared_to(focus) + p.distance_squared_to(camera.global_position) * 0.15
-			if p.distance_squared_to(camera.global_position) < 65.0 * 65.0 and _in_view(camera, p, l.omni_range):
-				fire.append({"light": l, "score": score * (0.8 if l.shadow_enabled else 1.0)})
+			if _shadow_candidate(l, camera):
+				fire.append({"light": l, "score": score})
 	for d: Dictionary in _lava:
-		if d.active and d.light.global_position.distance_squared_to(camera.global_position) < 65.0 * 65.0:
+		if d.active and _shadow_candidate(d.light, camera):
 			lava.append({"light": d.light, "score": d.light.global_position.distance_squared_to(focus)})
-	fire.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return a.score < b.score)
-	lava.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return a.score < b.score)
 	var selected := {}
 	var lava_count := mini(LAVA_SHADOW_LIMIT, lava.size())
-	for i in lava_count:
-		selected[lava[i].light] = true
-	for i in mini(SHADOW_LIMIT - lava_count, fire.size()):
-		selected[fire[i].light] = true
+	_select_shadows(lava, lava_count, selected)
+	_select_shadows(fire, SHADOW_LIMIT - lava_count, selected)
+	var since := {}
+	for id: int in selected:
+		since[id] = _shadow_since.get(id, _time)
+	_shadow_since = since
 	for d: Dictionary in records:
 		if d.get("enhanced", false) and is_instance_valid(d.light):
-			Gfx.set_local_shadow(d.light, selected.has(d.light))
+			Gfx.set_local_shadow(d.light, selected.has(d.light.get_instance_id()))
 	for d: Dictionary in _lava:
-		Gfx.set_local_shadow(d.light, selected.has(d.light))
+		Gfx.set_local_shadow(d.light, selected.has(d.light.get_instance_id()))
