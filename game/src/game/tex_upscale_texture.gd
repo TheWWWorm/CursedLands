@@ -1,6 +1,6 @@
 class_name TexUpscaleTexture
 extends RefCounted
-## Scenery-only HD output on the renderer's own device. Terrain callers that
+## HD textures and terrain arrays on the renderer's own device. Callers that
 ## need CPU Images continue to use TexUpscale.up2. All RD ownership stays on
 ## the rendering thread; there is no local-device submit/sync or readback.
 
@@ -38,6 +38,20 @@ class OwnedTexture extends Texture2DRD:
 			texture_rd_rid = RID()
 			RenderingServer.call_on_render_thread(TexUpscaleTexture._free_texture.bind(rid))
 
+class OwnedArray extends Texture2DArrayRD:
+	var backing := RID()
+	func release() -> void:
+		if not backing.is_valid(): return
+		var rid := backing; backing = RID()
+		texture_rd_rid = RID()
+		RenderingServer.call_on_render_thread(TexUpscaleTexture._free_texture.bind(rid))
+	func _notification(what: int) -> void:
+		if what == NOTIFICATION_PREDELETE and backing.is_valid():
+			# As with OwnedTexture, detach inline during last-reference teardown.
+			var rid := backing; backing = RID()
+			texture_rd_rid = RID()
+			RenderingServer.call_on_render_thread(TexUpscaleTexture._free_texture.bind(rid))
+
 static var _tried := false
 static var _up_shader := RID()
 static var _up_pipeline := RID()
@@ -50,10 +64,35 @@ static var _live := {} # backing RID -> WeakRef, accessed only on render thread
 static func create(source: Image, wrap := true) -> Texture2D:
 	if source == null or source.is_empty() or DisplayServer.get_name() == "headless" or RenderingServer.get_rendering_device() == null:
 		return null
+	var src := _prepare(source)
+	if src == null: return null
+	return _submit([src],wrap,false) as Texture2D
+
+static func create_array(sources: Array[Image], wrap := false) -> TextureLayered:
+	# The pinned TextureLayeredRD/TextureStorage reject single-layer RD arrays.
+	# Preserve the ordinary ImageTexture array fallback for those custom maps.
+	if not can_try_array(sources.size()): return null
+	var prepared: Array[Image] = []
+	for source: Image in sources:
+		var src := _prepare(source)
+		if src == null or (not prepared.is_empty() and src.get_size() != prepared[0].get_size()): return null
+		prepared.append(src)
+	return _submit(prepared,wrap,true) as TextureLayered
+
+## Basic backend/layout gate, also used before terrain retains source layers.
+## Creation may still decline if a device cannot build the compute pipelines.
+static func can_try_array(layers: int) -> bool:
+	return layers > 1 and DisplayServer.get_name() != "headless" and RenderingServer.get_rendering_device() != null
+
+static func _prepare(source: Image) -> Image:
+	if source == null or source.is_empty(): return null
 	var src := source.duplicate() as Image
 	if src.is_compressed() and src.decompress() != OK: return null
 	src.clear_mipmaps(); src.convert(Image.FORMAT_RGBA8)
-	var job := {"source":src,"wrap":wrap,"texture":null,"done":Semaphore.new()}
+	return src
+
+static func _submit(sources: Array[Image], wrap: bool, array: bool) -> Texture:
+	var job := {"sources":sources,"wrap":wrap,"array":array,"texture":null,"done":Semaphore.new()}
 	RenderingServer.call_on_render_thread(_create_on_render_thread.bind(job))
 	job.done.wait()
 	return job.texture
@@ -95,16 +134,21 @@ static func _uniforms(rd: RenderingDevice, input: RID, output: RID, shader: RID)
 	return rd.uniform_set_create([a,b],shader,0)
 
 static func _create_on_render_thread(job: Dictionary) -> void:
-	job.texture = _create(job.source,job.wrap)
+	job.texture = _create(job.sources,job.wrap,job.array)
 	job.done.post()
 
-static func _create(src: Image, wrap: bool) -> Texture2D:
+static func _create(sources: Array[Image], wrap: bool, array: bool) -> Texture:
 	var rd := RenderingServer.get_rendering_device()
 	if rd == null or not _init_device(rd): return null
+	var src := sources[0]
 	var fmt := RDTextureFormat.new(); fmt.format = RenderingDevice.DATA_FORMAT_R8G8B8A8_UNORM
 	fmt.width = src.get_width(); fmt.height = src.get_height()
+	fmt.texture_type = RenderingDevice.TEXTURE_TYPE_2D_ARRAY if array else RenderingDevice.TEXTURE_TYPE_2D
+	fmt.array_layers = sources.size()
 	fmt.usage_bits = RenderingDevice.TEXTURE_USAGE_STORAGE_BIT | RenderingDevice.TEXTURE_USAGE_CAN_UPDATE_BIT
-	var input := rd.texture_create(fmt,RDTextureView.new(),[src.get_data()])
+	var data: Array[PackedByteArray] = []
+	for source: Image in sources: data.append(source.get_data())
+	var input := rd.texture_create(fmt,RDTextureView.new(),data)
 	if not input.is_valid(): return null
 	fmt.width *= 2; fmt.height *= 2
 	fmt.mipmaps = 1
@@ -120,37 +164,60 @@ static func _create(src: Image, wrap: bool) -> Texture2D:
 	if not output.is_valid(): rd.free_rid(input); return null
 	var slices: Array[RID] = []
 	var sets: Array[RID] = []
-	for level in fmt.mipmaps:
-		var slice := rd.texture_create_shared_from_slice(RDTextureView.new(),output,0,level)
-		if not slice.is_valid(): rd.free_rid(input); rd.free_rid(output); return null
-		slices.append(slice)
-		var uniforms := _uniforms(rd,input if level == 0 else slices[level-1],slice,_up_shader if level == 0 else _mip_shader)
-		if not uniforms.is_valid():
-			for old: RID in sets: rd.free_rid(old)
-			rd.free_rid(input); rd.free_rid(output); return null
-		sets.append(uniforms)
+	var inputs: Array[RID] = []
+	var ready := true
+	for layer in fmt.array_layers:
+		var previous := input
+		if array:
+			previous = rd.texture_create_shared_from_slice(RDTextureView.new(),input,layer,0)
+			if not previous.is_valid(): ready = false; break
+			inputs.append(previous)
+		for level in fmt.mipmaps:
+			var slice := rd.texture_create_shared_from_slice(RDTextureView.new(),output,layer,level)
+			if not slice.is_valid(): ready = false; break
+			slices.append(slice)
+			var uniforms := _uniforms(rd,previous,slice,_up_shader if level == 0 else _mip_shader)
+			if not uniforms.is_valid(): ready = false; break
+			sets.append(uniforms); previous = slice
+		if not ready: break
+	if not ready:
+		_free_inputs(rd,input,inputs,slices,sets)
+		rd.free_rid(output)
+		return null
 	var constants := PackedByteArray(); constants.resize(16)
 	constants.encode_s32(0,src.get_width()); constants.encode_s32(4,src.get_height())
 	constants.encode_s32(8,int(wrap)); constants.encode_float(12,0.5)
 	var commands := rd.compute_list_begin()
-	rd.compute_list_bind_compute_pipeline(commands,_up_pipeline)
-	rd.compute_list_bind_uniform_set(commands,sets[0],0)
-	rd.compute_list_set_push_constant(commands,constants,constants.size())
-	rd.compute_list_dispatch(commands,ceili(fmt.width/8.0),ceili(fmt.height/8.0),1)
-	var w := fmt.width; var h := fmt.height
-	for level in range(1,fmt.mipmaps):
-		rd.compute_list_add_barrier(commands)
-		rd.compute_list_bind_compute_pipeline(commands,_mip_pipeline)
-		rd.compute_list_bind_uniform_set(commands,sets[level],0)
-		w = maxi(1,w>>1); h = maxi(1,h>>1)
-		rd.compute_list_dispatch(commands,ceili(w/8.0),ceili(h/8.0),1)
+	for layer in fmt.array_layers:
+		if layer > 0: rd.compute_list_add_barrier(commands)
+		rd.compute_list_bind_compute_pipeline(commands,_up_pipeline)
+		rd.compute_list_bind_uniform_set(commands,sets[layer*fmt.mipmaps],0)
+		rd.compute_list_set_push_constant(commands,constants,constants.size())
+		rd.compute_list_dispatch(commands,ceili(fmt.width/8.0),ceili(fmt.height/8.0),1)
+		var w := fmt.width; var h := fmt.height
+		for level in range(1,fmt.mipmaps):
+			rd.compute_list_add_barrier(commands)
+			rd.compute_list_bind_compute_pipeline(commands,_mip_pipeline)
+			rd.compute_list_bind_uniform_set(commands,sets[layer*fmt.mipmaps+level],0)
+			w = maxi(1,w>>1); h = maxi(1,h>>1)
+			rd.compute_list_dispatch(commands,ceili(w/8.0),ceili(h/8.0),1)
 	rd.compute_list_end()
-	for uniforms: RID in sets: rd.free_rid(uniforms)
-	for slice: RID in slices: rd.free_rid(slice)
-	rd.free_rid(input)
-	var texture := OwnedTexture.new(); texture.backing = output; texture.texture_rd_rid = output
+	_free_inputs(rd,input,inputs,slices,sets)
+	var texture: Texture
+	if array:
+		var layered := OwnedArray.new(); layered.backing = output; layered.texture_rd_rid = output
+		texture = layered
+	else:
+		var single := OwnedTexture.new(); single.backing = output; single.texture_rd_rid = output
+		texture = single
 	_live[output] = weakref(texture)
 	return texture
+
+static func _free_inputs(rd: RenderingDevice, input: RID, inputs: Array[RID], slices: Array[RID], sets: Array[RID]) -> void:
+	for uniforms: RID in sets: rd.free_rid(uniforms)
+	for slice: RID in slices: rd.free_rid(slice)
+	for slice: RID in inputs: rd.free_rid(slice)
+	rd.free_rid(input)
 
 static func _free_texture(rid: RID) -> void:
 	_live.erase(rid)
@@ -164,7 +231,7 @@ static func shutdown() -> void:
 
 static func _shutdown(done: Semaphore) -> void:
 	for reference: WeakRef in _live.values():
-		var texture := reference.get_ref() as OwnedTexture
+		var texture: Variant = reference.get_ref()
 		if texture: texture.release()
 	_live.clear()
 	var rd := RenderingServer.get_rendering_device()

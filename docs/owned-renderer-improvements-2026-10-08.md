@@ -366,6 +366,76 @@ reports only the known `map_scene.gd` conflict, and passes with that path exclud
 All 68 recorded implementation/test paths, target HEAD and status are unchanged.
 The target's active controller and co-op delivery edits were left untouched.
 
+## P2 follow-up: keep HD terrain arrays on the main GPU — 9 October
+
+The terrain counterpart of `048a0cf` now keeps both original and gutter-padded
+HD atlas arrays on the main RenderingDevice. It uses the same upscaling shader,
+encoded-byte mip averaging, texture sizes, tile gutters and UVs as the previous
+Image path. Water still samples the original atlas; detailed ground samples
+the padded atlas. The HD option remains latched at map load, including lazy
+detail construction.
+
+Implementation locations:
+
+- `game/src/game/tex_upscale_texture.gd`: `OwnedArray`, `can_try_array`,
+  `create_array`, `_create` and `_free_inputs`. Input/output views select one
+  layer and mip at a time, so the existing 2D compute shaders retain their
+  pixel math. Uniform sets and transient views are released after recording;
+  the wrapper owns the output backing RID and detaches server views before
+  freeing it. Shutdown covers both 2D and array owners.
+- `game/src/game/tex_upscale.gd`: `texture_array` supplies the established
+  Image fallback when the main-device path declines.
+- `game/src/ei/terrain.gd`: `_load_atlases` and `_ensure_detail_atlases` select
+  the resident path only for eligible HD arrays. Compatibility, headless,
+  HD-off and single-layer maps retain per-layer CPU processing. This avoids
+  retaining all raw images in addition to their enlarged fallback outputs.
+- `tools/tests/hd_resident_array.gd`: byte/mip equality, immutable sources,
+  odd/one-pixel dimensions, wrap/clamp, missing magenta atlases, latched lazy
+  detail, declined compute, last-owner release, shutdown and restart.
+- `tools/benchmarks/terrain_atlas_census.gd`, `terrain_atlas_scene.gd` and
+  `terrain_water_atlas_scene.gd`: map census, real rendered atlas use and a
+  visible-water fixture. Test-only readbacks are not production reads.
+
+The pinned engine's `scene/resources/texture_rd.cpp` **and**
+`servers/rendering/renderer_rd/storage_rd/texture_storage.cpp` reject
+single-layer RD arrays. Those custom maps use the original path rather than
+allocating a fake second layer. All 38 base-map headers inspected have 3–8
+layers. No additional engine patch is needed; the existing Mobile shader
+lifetime/lock patch remains a prerequisite for this branch.
+
+Evidence is in
+[`validation/hd-resident-terrain-2026-10-09.json`](validation/hd-resident-terrain-2026-10-09.json).
+The initial candidate passes 5,351 checks, with 143 baseline checks. All 96
+real layer/mip comparisons (48 distinct outputs on each of Forward+/Mobile)
+match every byte. There are 112 exact baseline/candidate render pairs across
+three terrain maps, visible water on `zone1`, all three desktop renderers and
+HD-off controls. Draw counts match in every pair. Initial buried-water focus
+points are not treated as proof of visible water: the additional `zone1`
+fixture verifies an actual water surface and a visible water-option response.
+
+The final per-layer fallback correction passes another 901 checks, including
+real Forward+ array bytes with a separate render thread, Compatibility and
+headless lifetime/fallback cases. Its 32 production map captures match the
+frozen baseline exactly, with unchanged draws. Evidence separates the initial
+and final pack hashes. An early fixture held array references until function
+return and failed its own release assertion; moving that readback loop into
+a helper resolves the fixture issue, and the superseded run is excluded.
+
+For the tested eight-layer maps, constructing both HD arrays avoids **82 MiB
+of enlarged-image readback and 109.33 MiB of final image/mip upload**, as well
+as CPU mip generation. Original source decoding, gutter preparation and source
+GPU upload remain. The final RGBA8 GPU payload is unchanged. This is a cold
+map-construction transfer saving, not a per-frame saving, measured peak-memory
+reduction, FPS result or physical-device claim. Recorded foreground setup
+times do not measure asynchronous GPU completion.
+
+`TerrainColorCache` currently consumes array pixels only on Compatibility;
+if it is enabled on Vulkan later, its layer readbacks must be accounted for.
+The previously documented native worker-pool exit issue remains separate:
+fixtures release upscaler resources and drain frames before quitting, and this
+checkpoint does not fix the engine issue. Compressed HD-off terrain arrays,
+any HD memory policy and actual Android/browser acceptance remain open.
+
 ## P3, first stage: retain equivalent foliage materials
 
 Investigation confirmed `EIFigure.build_mesh` already caches figure geometry
@@ -2033,7 +2103,9 @@ without human authorization. No patch was applied here.
    do not enable it without a justified visual contract and material-lifecycle
    acceptance. P2's HD scenery path now avoids the main-device round trip on
    RenderingDevice backends, with byte/render/lifetime evidence above. Remaining
-   P2 work includes terrain atlas transfers and any justified HD memory policy,
+   P2's terrain follow-up also avoids enlarged atlas readback and final upload,
+   with the unchanged fallback and byte/render evidence above. Remaining
+   P2 work includes any justified HD memory policy or compressed raw atlases,
    plus actual device load/memory measurements. The final HD payload is still
    RGBA8; do not count cached operations as per-frame savings. Keep the recorded
    pre-existing native exit issue separate from the accepted texture results.

@@ -691,8 +691,8 @@ const LAVA := 13
 ## and sharing it put the decals on far figures.
 const DECAL_LAYER := 1 << 18
 
-var _atlases: Texture2DArray
-var _detail_atlases: Texture2DArray
+var _atlases: TextureLayered
+var _detail_atlases: TextureLayered
 var _atlas_hd := false
 const TERRAIN_GUTTER := 8
 var _water_mat: ShaderMaterial
@@ -816,20 +816,26 @@ func _parse_header(d: PackedByteArray) -> bool:
 
 func _load_atlases() -> void:
 	_atlas_hd = Gfx.on("gfx_hd_textures") # applies on zone load, also for lazy detail
+	var resident := _atlas_hd and TexUpscaleTexture.can_try_array(int(get_meta("textures_count")))
 	var images: Array[Image] = []
 	for i in int(get_meta("textures_count")):
 		var img := GameData.load_image("%s%03d" % [resource_prefix, i])
 		if img == null or img.get_width() != texture_size:
 			push_warning("Missing terrain atlas %s%03d" % [resource_prefix, i])
-			var n := texture_size * (2 if _atlas_hd else 1)
+			var n := texture_size * (2 if _atlas_hd and not resident else 1)
 			img = Image.create(n, n, false, Image.FORMAT_RGBA8)
 			img.fill(Color.MAGENTA)
-		elif _atlas_hd:
-			img = TexUpscale.up2(img, false)   # option gfx_hd_textures (UVs are normalised)
-		img.generate_mipmaps()
+		elif _atlas_hd and not resident:
+			img = TexUpscale.up2(img, false)
+		# Keep the CPU path per-layer: retaining all raw sources would add
+		# temporary image memory on constrained/Compatibility backends.
+		if not resident: img.generate_mipmaps()
 		images.append(img)
-	_atlases = Texture2DArray.new()
-	_atlases.create_from_images(images)
+	if resident:
+		_atlases = TexUpscale.texture_array(images,true,false)
+	else:
+		var texture := Texture2DArray.new(); texture.create_from_images(images)
+		_atlases = texture
 
 
 ## Edge-extruded gutters isolate packed tiles during upscale and filtering.
@@ -862,6 +868,7 @@ static func padded_atlas(source: Image, tile: int, gutter: int) -> Image:
 func _ensure_detail_atlases() -> void:
 	if _detail_atlases != null:
 		return
+	var resident := _atlas_hd and TexUpscaleTexture.can_try_array(int(get_meta("textures_count")))
 	var images: Array[Image] = []
 	for i in int(get_meta("textures_count")):
 		var source := GameData.load_image("%s%03d" % [resource_prefix, i])
@@ -869,12 +876,14 @@ func _ensure_detail_atlases() -> void:
 			source = Image.create(texture_size, texture_size, false, Image.FORMAT_RGBA8)
 			source.fill(Color.MAGENTA)
 		var img := padded_atlas(source, tile_size, TERRAIN_GUTTER)
-		if _atlas_hd:
-			img = TexUpscale.up2(img, false)
-		img.generate_mipmaps()
+		if _atlas_hd and not resident: img = TexUpscale.up2(img, false)
+		if not resident: img.generate_mipmaps()
 		images.append(img)
-	_detail_atlases = Texture2DArray.new()
-	_detail_atlases.create_from_images(images)
+	if resident:
+		_detail_atlases = TexUpscale.texture_array(images,true,false)
+	else:
+		var texture := Texture2DArray.new(); texture.create_from_images(images)
+		_detail_atlases = texture
 
 
 func _tile_uv(f: int, dx: int, dy: int) -> Array:

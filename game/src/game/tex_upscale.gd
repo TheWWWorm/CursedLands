@@ -7,8 +7,8 @@ extends RefCounted
 ## Lanczos overshoot kept as light sharpening. Transparent texels keep the
 ## nearest source colour so alpha-tested edges and mipmaps do not darken.
 ## No GPU (headless, Compatibility renderer): Image.resize Lanczos instead.
-## Scenery texture callers use texture_2d() to keep the upscale and mip chain
-## on the main device. CPU Image callers (terrain atlases) retain this path.
+## Texture callers use texture_2d()/texture_array() to keep the upscale and mip
+## chain on the main device. Callers needing CPU Images retain up2().
 
 const SHADER := """
 #version 450
@@ -147,6 +147,28 @@ static func texture_2d(img: Image, wrap := true) -> Texture2D:
 	var image := up2(img, wrap)
 	image.generate_mipmaps()
 	return ImageTexture.create_from_image(image)
+
+
+## Terrain layers. Padding is prepared on the CPU before this call; enlarged
+## images/mips stay on the main device when supported. HD-off and unsupported
+## arrays retain Image processing, including custom single-layer maps.
+static func texture_array(sources: Array[Image], upscale := true, wrap := false) -> TextureLayered:
+	if sources.is_empty(): return null
+	for source: Image in sources:
+		if source == null or source.is_empty() or source.get_size() != sources[0].get_size(): return null
+	if upscale:
+		var t0 := Time.get_ticks_usec()
+		var texture := TexUpscaleTexture.create_array(sources,wrap)
+		if texture:
+			ms += (Time.get_ticks_usec()-t0)/1000.0
+			count += sources.size()
+			return texture
+	var images: Array[Image] = []
+	for source: Image in sources:
+		var image := up2(source,wrap) if upscale else source.duplicate() as Image
+		image.generate_mipmaps(); images.append(image)
+	var texture := Texture2DArray.new()
+	return texture if texture.create_from_images(images) == OK else null
 
 
 ## `img` 2x larger (RGBA8, no mipmaps); `wrap`: the texture repeats (else
