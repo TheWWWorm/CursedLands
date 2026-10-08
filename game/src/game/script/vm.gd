@@ -1169,7 +1169,7 @@ func _interact_reach(u: GameUnit, t, kind := "") -> float:
 
 ## A lever / switch used by `u` (sub-code 0): its science
 ## check against the unit's Use/Steal value and the party's quest items.
-func _use_lever(u: GameUnit, nid: int) -> void:
+func _lever_science_ok(u: GameUnit, nid: int) -> bool:
 	var use := Session.steal_value(u)
 	var bag := session.state.items if session.lmp.is_empty() else session.coop.owner_bag(u.controller)
 	var quest := bag.filter(func(x): return Items.kind(String(x)) == "quest")
@@ -1177,7 +1177,11 @@ func _use_lever(u: GameUnit, nid: int) -> void:
 	# state.quest_items (HaveItem); they open levers too.
 	if session.lmp.is_empty():
 		quest.append_array(session.state.quest_items.keys())
-	if world.lever_sys.science_ok(nid, use, quest):
+	return world.lever_sys.science_ok(nid, use, quest)
+
+
+func _use_lever(u: GameUnit, nid: int) -> void:
+	if _lever_science_ok(u, nid):
 		var time := world.lever_sys.set_state(nid, -1)
 		session.broadcast({"t": "lever", "nid": nid, "state": world.levers[nid].state, "time": time})
 		preload("res://src/game/script/story_compat.gd").lift_recall(self, nid)

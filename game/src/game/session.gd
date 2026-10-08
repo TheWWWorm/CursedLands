@@ -2112,6 +2112,29 @@ func _interaction_unit(units: Array[GameUnit], target: GameUnit) -> GameUnit:
 	return sorted[0]
 
 
+## A group may fill the Catacombs lift's narrow deck. Prefer its selected
+## lead actor as before, but let another selected actor operate the switch
+## when the lead cannot reach it. Do not issue orders to the other riders.
+func _lever_unit(selected: Array[GameUnit], obj: Node3D) -> GameUnit:
+	if selected.size() == 1 or world.vm == null:
+		return selected[0]
+	var p: Vector3 = obj.get_meta("ei").position
+	var at := Vector2(p.x, p.y)
+	var nid := int(obj.get_meta("ei").nid)
+	for u: GameUnit in selected:
+		if not world.vm._lever_science_ok(u, nid):
+			continue
+		var reach := world.vm._interact_reach(u, obj)
+		if u.pos.distance_to(at) < reach:
+			return u
+		var route: Dictionary = world.nav.find_object_path(u, at, nid)
+		var path: PackedVector2Array = route.path
+		if not path.is_empty() and path[-1].distance_to(at) < reach:
+			return u
+	# Keep the usual failure/skill acknowledgement when no selected actor can.
+	return selected[0]
+
+
 ## The spot of the i-th unit of a group move round the clicked point (remake).
 static func group_offset(i: int) -> Vector2:
 	return Vector2.ZERO if i == 0 else Vector2.from_angle(i * 2.1) * 1.2
@@ -2283,10 +2306,11 @@ func apply_command(cmd: Dictionary, player: int) -> void:
 			var obj = world.objects.get(int(cmd.get("target", -1)))
 			if obj and world.lever_sys.usable(int(cmd.target)) and not mine.is_empty():
 				var p3: Vector3 = obj.get_meta("ei").position
-				_double_stand(mine[0], cmd, Vector2(p3.x, p3.y), 3.0)
-				mine[0].command({"type": "move", "to": Vector2(p3.x, p3.y), "use_object": int(cmd.target), "gait": true, "path_notice": true,
+				var operator := _lever_unit(mine, obj)
+				_double_stand(operator, cmd, Vector2(p3.x, p3.y), 3.0)
+				operator.command({"type": "move", "to": Vector2(p3.x, p3.y), "use_object": int(cmd.target), "gait": true, "path_notice": true,
 					"run": bool(cmd.get("run", false))})
-				mine[0].set_meta("interact", [obj, player])
+				operator.set_meta("interact", [obj, player])
 		"steal":
 			var thief: GameUnit = world.units.get(int(cmd.get("unit", -1)))
 			if thief and thief.controller == player and not thief.blocked and target and not target.dead:
