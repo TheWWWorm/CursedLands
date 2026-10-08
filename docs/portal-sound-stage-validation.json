@@ -1,0 +1,489 @@
+{
+  "status": "Rejected: no convincing complete-game gain; added traversal complexity not retained",
+  "date": "2026-10-08",
+  "retained_game_code": "40394a34b9dc91c421ad1257874f0173e70f099a",
+  "comparison": {
+    "median_control_fps": 53.7364616732867,
+    "median_candidate_fps": 53.7665836910718,
+    "gain_percent": 0.05605508224237887,
+    "pair_gains_percent": [
+      -2.78447429843256,
+      3.06989190016127
+    ],
+    "mechanism": "Component diagnostic: native-to-script calls per nearby actor reduce the benefit of the far filter and regress dense nearby populations. Full-game median is flat.",
+    "restored_game_code": "40394a34b9dc91c421ad1257874f0173e70f099a"
+  },
+  "fixture": {
+    "description": "Same living-party Portal entrance3 loop as portal-single-player-validation.json",
+    "fixture_version": 2,
+    "fixture_sha256": "4d6a538bf509791462a3a91e02953c1306373dd0c06ae800435296f1118a2045",
+    "single_player": true,
+    "original_look": true,
+    "renderer": "gl_compatibility",
+    "viewport_size": [
+      1920,
+      1080
+    ],
+    "render_scale": 0.75,
+    "speed": 1,
+    "workers": 4,
+    "distant_ai": false,
+    "difficulty": 0,
+    "profiling": false,
+    "full_options_sha256": "83173cd2486927600d6810952d420059cfcfd7eed39aebf449911508475e15c6"
+  },
+  "runs": [
+    {
+      "name": "sound-stage-original-loop-candidate-60-01",
+      "fps": 53.7866555307628,
+      "frame_ms": {
+        "max": 44.38,
+        "p50": 17.68,
+        "p95": 24.815,
+        "p99": 28.617
+      },
+      "sim_seconds": 59.8949999999997,
+      "wall_seconds": 60.014886,
+      "apk_version": 51,
+      "apk_sha256": "891fe00e7cf20253ca81eaa2226be824dd82fa4ba4e59d7ef3234eb7277ba526",
+      "result_path": "/home/llm2x/Documents/EI/local/scratchpad/portal-throughput-20261007/runs/sound-stage-original-loop-candidate-60-01.json",
+      "result_sha256": "1e9ff1ed840fbb746e27621039153a35843cae447b859372e3e10dba772bda98",
+      "receipt_path": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/sound-stage-original-loop-candidate-60-01.receipt.json",
+      "receipt_sha256": "a48b6a251143098e692e00e72a9b7a027ea96964afc04a1821155ed17b0c6ea6",
+      "log_sha256": "9f420140824bc22f919cab08508fced272d5633cbd50cdc78c2961390451cec5",
+      "options_sha256": "e13ff12b715cc3a42157ef1775511be6fc527e17a6abeddbb3831b0f8472e7ba",
+      "actors": 415,
+      "living_party_members": 2,
+      "battery_temperature_before_c": 33.2,
+      "battery_temperature_after_c": 33.2
+    },
+    {
+      "name": "sound-stage-original-loop-control-60-01",
+      "fps": 55.3272279737264,
+      "frame_ms": {
+        "max": 49.079,
+        "p50": 17.23,
+        "p95": 24.203,
+        "p99": 27.175
+      },
+      "sim_seconds": 59.8399999999997,
+      "wall_seconds": 60.006621,
+      "apk_version": 50,
+      "apk_sha256": "30c3e5813fc6ec85537df602e38265af2ec6e19d7c0f5e90d79d213e07e73180",
+      "result_path": "/home/llm2x/Documents/EI/local/scratchpad/portal-throughput-20261007/runs/sound-stage-original-loop-control-60-01.json",
+      "result_sha256": "5e5c6400db7d291b8a052e2df04d14a7ecb9c3208c131aaeed1f84948c60f7aa",
+      "receipt_path": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/sound-stage-original-loop-control-60-01.receipt.json",
+      "receipt_sha256": "d3e6fe990234655a4648753f0e7963821c1d084b4438faa62b750a96fa314fa2",
+      "log_sha256": "bd8c9aa04cb5fa00098cb44bf1a49518495121ee2f95ab09b7ebd438c081dfd2",
+      "options_sha256": "e13ff12b715cc3a42157ef1775511be6fc527e17a6abeddbb3831b0f8472e7ba",
+      "actors": 415,
+      "living_party_members": 2,
+      "battery_temperature_before_c": 33.2,
+      "battery_temperature_after_c": 33.7
+    },
+    {
+      "name": "sound-stage-original-loop-control-60-02",
+      "fps": 52.145695372847,
+      "frame_ms": {
+        "max": 58.775,
+        "p50": 18.11,
+        "p95": 26.309,
+        "p99": 29.791
+      },
+      "sim_seconds": 59.8399999999997,
+      "wall_seconds": 60.004953,
+      "apk_version": 50,
+      "apk_sha256": "30c3e5813fc6ec85537df602e38265af2ec6e19d7c0f5e90d79d213e07e73180",
+      "result_path": "/home/llm2x/Documents/EI/local/scratchpad/portal-throughput-20261007/runs/sound-stage-original-loop-control-60-02.json",
+      "result_sha256": "219f8456185f7297e613ff25bd46011512fbcea309ee5c32637433846b733b1d",
+      "receipt_path": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/sound-stage-original-loop-control-60-02.receipt.json",
+      "receipt_sha256": "522977ba39da0067e423dba9dcb1a4583f1a6a004c2efff96c41618f5e74e48f",
+      "log_sha256": "c4d0895021a5e09c905dc9915c3f4074b644bb7a3a9e08287e86fa263ae4f901",
+      "options_sha256": "e13ff12b715cc3a42157ef1775511be6fc527e17a6abeddbb3831b0f8472e7ba",
+      "actors": 415,
+      "living_party_members": 2,
+      "battery_temperature_before_c": 33.7,
+      "battery_temperature_after_c": 34.5
+    },
+    {
+      "name": "sound-stage-original-loop-candidate-60-02",
+      "fps": 53.7465118513808,
+      "frame_ms": {
+        "max": 47.537,
+        "p50": 17.702,
+        "p95": 24.814,
+        "p99": 27.728
+      },
+      "sim_seconds": 59.9499999999997,
+      "wall_seconds": 60.003894,
+      "apk_version": 51,
+      "apk_sha256": "891fe00e7cf20253ca81eaa2226be824dd82fa4ba4e59d7ef3234eb7277ba526",
+      "result_path": "/home/llm2x/Documents/EI/local/scratchpad/portal-throughput-20261007/runs/sound-stage-original-loop-candidate-60-02.json",
+      "result_sha256": "3e1709af5555f7ed4c00a22f3d8b904641d21abd8c157267d57bacab02d4d5f5",
+      "receipt_path": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/sound-stage-original-loop-candidate-60-02.receipt.json",
+      "receipt_sha256": "7d9ab13bd49ac189e3fe8d8e5075f7501725a2dda89c1da861840702c09d9122",
+      "log_sha256": "80f2a6699ddeb5d8456b424d5a43128c66e66c2964c41fc755db83cc13e05ac9",
+      "options_sha256": "e13ff12b715cc3a42157ef1775511be6fc527e17a6abeddbb3831b0f8472e7ba",
+      "actors": 415,
+      "living_party_members": 2,
+      "battery_temperature_before_c": 34.5,
+      "battery_temperature_after_c": 35.0
+    }
+  ],
+  "correctness": {
+    "status": "All listed correctness checks passed; candidate rejected for flat complete-game performance.",
+    "checks": [
+      {
+        "name": "sound-stage-linux-02",
+        "checks": 967,
+        "failures": 0,
+        "receipt": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sound-stage-linux-02.json",
+        "receipt_sha256": "c204280a2299e70e49182e239d6b12f1b8d2f9bd606afedf38c45307199e7733",
+        "log_sha256": "515758ee855755f81a93f4413402506bcf8fa0772752e05bed7d07be1d400277",
+        "seconds": 3.004503034026129
+      },
+      {
+        "name": "sound-stage-forward-01",
+        "checks": 967,
+        "failures": 0,
+        "receipt": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sound-stage-forward-01.json",
+        "receipt_sha256": "9b141fd616be59af6cae49212b1b7e6463df99923730d66fd51ead99e6dd283f",
+        "log_sha256": "b7f882856a0202cb7dd6c729fce9c254a4c4d052fe369ac0df7c23e8c0cddd8e",
+        "seconds": 5.5087963979749475
+      },
+      {
+        "name": "sound-stage-old-helper-01",
+        "checks": 962,
+        "failures": 0,
+        "receipt": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sound-stage-old-helper-01.json",
+        "receipt_sha256": "2dba4f6ecc71a1eaa5bbef8f7b3b588f73edeaf7d2750e8d4c3ae9dc290abebe",
+        "log_sha256": "dfd57a9658b6fff1bd42c9e6da88e11419cfc1eea1d67c349168fd0d4bacd370",
+        "seconds": 3.00578826200217
+      },
+      {
+        "name": "sound-stage-hidden-linux-01",
+        "checks": 69,
+        "failures": 0,
+        "receipt": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sound-stage-hidden-linux-01.json",
+        "receipt_sha256": "04f393b34fc407e961c0443a97243e7c656dd7709c5cf4937aff42842eb29a91",
+        "log_sha256": "282c10380644a77c49a2700261e6b6b0b69342b25cebff6c93a7ca6b7832bb7c",
+        "seconds": 3.0048788860149216
+      },
+      {
+        "name": "sound-stage-registry-linux-01",
+        "checks": 1283,
+        "failures": 0,
+        "receipt": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sound-stage-registry-linux-01.json",
+        "receipt_sha256": "4a5bd87c862a12ee6ba94d23b80e1857575371e9bc29a33764766aafc7f2c3fa",
+        "log_sha256": "91ac1118489c7d74b23aaf856db09338c1c6e33437f13043ae3cc749065d262a",
+        "seconds": 3.3055153230088763
+      },
+      {
+        "name": "sound-stage-device-01",
+        "checks": 967,
+        "failures": 0,
+        "receipt": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/sound-stage-device-01.receipt.json",
+        "receipt_sha256": "441d54893f13a530d17852dc61a53f60569c4fdb7102d433f6a2ec319cfa3e68",
+        "log_sha256": "dd2b3a21cd7522ceac7f9630787cd6e58497d46673e54cb2b2ca1469f9abae11",
+        "seconds": 6.658109903335571
+      },
+      {
+        "name": "sound-stage-hidden-device-01",
+        "checks": 69,
+        "failures": 0,
+        "receipt": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/sound-stage-hidden-device-01.receipt.json",
+        "receipt_sha256": "58e77a22369e6318c50da9723d610c0c976501bb73c4b3ee4e152cf11aca9b49",
+        "log_sha256": "6e25d0a2124293a38c4b7f7759e3f7c73c40a3c5f82cfd4ab172f8f5f6b59e43",
+        "seconds": 6.604918956756592
+      }
+    ],
+    "fixture_sha256": "8f9029f2edcb2be99750663e51a9ee3618005dc4d7ae72b8fd9feafa729700ea",
+    "reference_source_sha256": "ef679aae85a84ae96a6a544385af28d7bd28beb520d8f1d840575b17e0c37d0f",
+    "native_sha256": {
+      "libterrain_search_android.so": "9a1db748f160fe7c756f8c3b2cd71964f490be9540b86777fb2a846226ee5ae5",
+      "libterrain_search.dll": "2ec918960a63e0796699484e45de843e232920bbf8135731b35ec758e01ee7ea",
+      "libterrain_search.so": "56b18b157aefeae6be69177d4de16a65f85222d341f11eea55a63c5f8075aec7"
+    },
+    "source_files_verified": 520,
+    "source_freeze_sha256": "3557d990a5efb0428ec4309e4451684885c3ff6c94964753173a056b4c87f705",
+    "initial_failure": {
+      "name": "sound-stage-linux-01",
+      "reason": "Strict typing: ClassDB.instantiate inferred Variant. Added explicit RefCounted type before all passing runs.",
+      "receipt_sha256": "81785abb71238f515a9bd8785bc1c79c066ff419525e8860e98560b9920de4ed"
+    },
+    "harness_improvement": "Private APK export now accepts explicit baseline-apk and change arguments. It no longer writes stale APK19 descriptions into new receipts."
+  },
+  "component_diagnostic": {
+    "status": "Diagnostic only; not a gameplay comparison",
+    "actors": 415,
+    "seconds": 7.41,
+    "interpretation": "Distant filtering alone is faster, but native-to-script callbacks for each nearby actor erase much of the gain and dense nearby populations become slower. This is evidence against retaining this traversal design without full-game benefit.",
+    "rows": [
+      {
+        "actors": 415,
+        "native": true,
+        "near": 0,
+        "ticks": 1000,
+        "us": 64173
+      },
+      {
+        "actors": 415,
+        "native": false,
+        "near": 0,
+        "ticks": 1000,
+        "us": 90492
+      },
+      {
+        "actors": 415,
+        "native": false,
+        "near": 0,
+        "ticks": 1000,
+        "us": 90295
+      },
+      {
+        "actors": 415,
+        "native": true,
+        "near": 0,
+        "ticks": 1000,
+        "us": 64290
+      },
+      {
+        "actors": 415,
+        "native": true,
+        "near": 4,
+        "ticks": 1000,
+        "us": 75387
+      },
+      {
+        "actors": 415,
+        "native": false,
+        "near": 4,
+        "ticks": 1000,
+        "us": 97915
+      },
+      {
+        "actors": 415,
+        "native": false,
+        "near": 4,
+        "ticks": 1000,
+        "us": 98142
+      },
+      {
+        "actors": 415,
+        "native": true,
+        "near": 4,
+        "ticks": 1000,
+        "us": 75868
+      },
+      {
+        "actors": 415,
+        "native": true,
+        "near": 40,
+        "ticks": 1000,
+        "us": 123855
+      },
+      {
+        "actors": 415,
+        "native": false,
+        "near": 40,
+        "ticks": 1000,
+        "us": 136325
+      },
+      {
+        "actors": 415,
+        "native": false,
+        "near": 40,
+        "ticks": 1000,
+        "us": 136500
+      },
+      {
+        "actors": 415,
+        "native": true,
+        "near": 40,
+        "ticks": 1000,
+        "us": 123843
+      },
+      {
+        "actors": 415,
+        "native": true,
+        "near": 200,
+        "ticks": 1000,
+        "us": 310440
+      },
+      {
+        "actors": 415,
+        "native": false,
+        "near": 200,
+        "ticks": 1000,
+        "us": 286263
+      },
+      {
+        "actors": 415,
+        "native": false,
+        "near": 200,
+        "ticks": 1000,
+        "us": 286338
+      },
+      {
+        "actors": 415,
+        "native": true,
+        "near": 200,
+        "ticks": 1000,
+        "us": 311738
+      },
+      {
+        "actors": 415,
+        "native": true,
+        "near": 415,
+        "ticks": 1000,
+        "us": 561148
+      },
+      {
+        "actors": 415,
+        "native": false,
+        "near": 415,
+        "ticks": 1000,
+        "us": 483821
+      },
+      {
+        "actors": 415,
+        "native": false,
+        "near": 415,
+        "ticks": 1000,
+        "us": 485278
+      },
+      {
+        "actors": 415,
+        "native": true,
+        "near": 415,
+        "ticks": 1000,
+        "us": 558238
+      }
+    ],
+    "summary": [
+      {
+        "near": 0,
+        "native_microseconds_per_tick": 64.2315,
+        "script_microseconds_per_tick": 90.3935,
+        "time_change_percent": -28.942346518278416
+      },
+      {
+        "near": 4,
+        "native_microseconds_per_tick": 75.6275,
+        "script_microseconds_per_tick": 98.0285,
+        "time_change_percent": -22.851517670881428
+      },
+      {
+        "near": 40,
+        "native_microseconds_per_tick": 123.849,
+        "script_microseconds_per_tick": 136.4125,
+        "time_change_percent": -9.209933107303215
+      },
+      {
+        "near": 200,
+        "native_microseconds_per_tick": 311.089,
+        "script_microseconds_per_tick": 286.3005,
+        "time_change_percent": 8.658210516572629
+      },
+      {
+        "near": 415,
+        "native_microseconds_per_tick": 559.693,
+        "script_microseconds_per_tick": 484.5495,
+        "time_change_percent": 15.507909924579423
+      }
+    ],
+    "log_sha256": "ca40d74df3780e1c2b15537f918349c90182ccc21deba1fb7703efde9f1144f2"
+  },
+  "restoration": {
+    "restored_commit": "40394a34b9dc91c421ad1257874f0173e70f099a",
+    "verified_source_files": 520,
+    "source_tree_clean": true,
+    "removed_candidate_objects": [
+      "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/native-build-linux/CMakeFiles/terrain_search.dir/nav_kernel.cpp.o",
+      "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/native-build-linux/CMakeFiles/terrain_search.dir/nav_kernel.cpp.o.d",
+      "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/native-build-android/CMakeFiles/terrain_search.dir/nav_kernel.cpp.o",
+      "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/native-build-android/CMakeFiles/terrain_search.dir/nav_kernel.cpp.o.d",
+      "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/native-build-windows/CMakeFiles/terrain_search.dir/nav_kernel.cpp.obj",
+      "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/native-build-windows/CMakeFiles/terrain_search.dir/nav_kernel.cpp.obj.d"
+    ]
+  },
+  "cleanup": {
+    "installed_private_apk": 50,
+    "apk_sha256": "30c3e5813fc6ec85537df602e38265af2ec6e19d7c0f5e90d79d213e07e73180",
+    "autorun_disabled": true,
+    "archived_bench": "files/bench-disabled-rejected-sound-stage51.json",
+    "archived_bench_sha256": "fc1e505404e699f21647b252cbe206ad30605ef948bfb5eddeb4f4d175bcd5f2",
+    "private_processes": [],
+    "timestamp": 1791437974.896149
+  },
+  "artifacts": {
+    "baseline": {
+      "private_instrumented": false,
+      "engine_sha256": "424eaf73630ec110faf614f550f8047c24a78e224211df45d8b957bf03b7cc79",
+      "native_sha256": "231ad722fd1f9eb0b5b47d7c9a386931a95b9f7ccb404fd7773a1fc651564fb7",
+      "apk_sha256": "30c3e5813fc6ec85537df602e38265af2ec6e19d7c0f5e90d79d213e07e73180",
+      "changes": [
+        "Batch tornado particle update, spawning and delayed removal in the existing native spell kernel",
+        "Keep original ground-following control callback, exact RNG order and serialized particle state",
+        "Fallback to script for older helpers and custom callbacks"
+      ],
+      "baseline_apk": 49,
+      "accepted": true,
+      "acceptance": "Retained after two reversed60secondpairs and a matched180secondpair at actualOriginal1x; stable60 remains open"
+    },
+    "rejected_candidate": {
+      "private_instrumented": false,
+      "engine_sha256": "424eaf73630ec110faf614f550f8047c24a78e224211df45d8b957bf03b7cc79",
+      "native_sha256": "9a1db748f160fe7c756f8c3b2cd71964f490be9540b86777fb2a846226ee5ae5",
+      "apk_sha256": "891fe00e7cf20253ca81eaa2226be824dd82fa4ba4e59d7ef3234eb7277ba526",
+      "changes": [
+        "One ordered native sound traversal skips unheard actor script work",
+        "Retain nearby callbacks, live state and script fallback"
+      ],
+      "baseline_apk": 50,
+      "accepted": false,
+      "rejected": true,
+      "decision": "Rejected: no convincing complete-game gain; added traversal complexity not retained"
+    },
+    "linux_candidate": {
+      "seconds": 5.973740680026822,
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--headless",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+        "--export-release",
+        "Linux",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/throughput-sound-stage01/CPU.x86_64"
+      ],
+      "engine_source": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/fast-runtime.x86_64",
+      "errors": [],
+      "sha256": {
+        "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+        "CPU.pck": "ee71bdefb73b70b00cc506815efcc4186e1b455d0c6f16e1c4f72a2e8b5011ea",
+        "libterrain_search.so": "56b18b157aefeae6be69177d4de16a65f85222d341f11eea55a63c5f8075aec7"
+      }
+    },
+    "candidate_source_freeze": "/home/llm2x/Documents/EI/local/scratchpad/portal-throughput-20261007/sound-stage-v1-source-freeze.json",
+    "candidate_source_freeze_sha256": "3557d990a5efb0428ec4309e4451684885c3ff6c94964753173a056b4c87f705",
+    "candidate_archive": "/home/llm2x/Documents/EI/local/scratchpad/portal-throughput-20261007/sound-stage-experiment/candidate",
+    "candidate_files": {
+      "tools/tests/sound_stage.gd": "8f9029f2edcb2be99750663e51a9ee3618005dc4d7ae72b8fd9feafa729700ea",
+      "game/src/game/unit_sounds.gd": "46328dced7182eb422431990b30b8717d864aaacc9211026313571fb2d8bf183",
+      "game/src/native/bin/libterrain_search_android.so": "9a1db748f160fe7c756f8c3b2cd71964f490be9540b86777fb2a846226ee5ae5",
+      "game/src/native/bin/libterrain_search.dll": "2ec918960a63e0796699484e45de843e232920bbf8135731b35ec758e01ee7ea",
+      "game/src/native/bin/libterrain_search.so": "56b18b157aefeae6be69177d4de16a65f85222d341f11eea55a63c5f8075aec7",
+      "game/src/native/source/unit_query.h": "b44b74e27695eb3a355669e07e9bf20f169cedc04f9a5183b95fb3e091a62bf0"
+    },
+    "candidate_patch_sha256": "15416f6e78c7582eb0b57b18b980df6ac990ca5aff67a1b12a39b335a7aa6db0",
+    "retained_source_freeze": "/home/llm2x/Documents/EI/local/scratchpad/portal-throughput-20261007/tornado-particles-v1-source-freeze.json",
+    "retained_source_freeze_sha256": "1e1c28a1db808467b15e7c6b548df809a35cecb44a9ecd091bc599e93b45253b",
+    "private_export_helper_sha256": "903fb2012832dfff47268354e07ee6639b662bfccc7ba26c2795d5daa9babc80"
+  },
+  "next_step": "Investigate the complete worker presentation stage (about21% of the earlier aligned worker CPU profile), with actual input/snapshot cadence, gameplay, full-tick and frontend-FPS checks. Avoid another filter that retains per-actor cross-language callbacks.",
+  "limits": [
+    "Stable60FPS Original1x onRetroid remains open",
+    "No new simulation-throughput or Windows4K/max/D3D12 gain",
+    "No new release, combat/other-map coverage or platform packaging validation"
+  ]
+}
