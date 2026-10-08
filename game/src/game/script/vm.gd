@@ -919,9 +919,11 @@ func _call(name: String, a: Array, inst: Instance):
 				for m in ["loot", "pockets"]:
 					if u.has_meta(m):
 						u.get_meta(m).append(qi)
-		"EraseQuestItem", "RemoveQuestItem":
+		"EraseQuestItem":
 			var qi := _quest_item_name(v[1])
 			session.erase_quest_item(int(_num(v[0])), qi)
+		"RemoveQuestItem":
+			_remove_carried_quest(_unit(v[0]), _quest_item_name(v[1]))
 		"HaveItem": return 1.0 if session.have_quest_item(int(_num(v[0])), _quest_item_name(v[1])) else 0.0
 		# LiA case 0xe2 reads the named player's purse.
 		"GetMoney":
@@ -1439,6 +1441,24 @@ func _diplo_in(v: int) -> int:
 
 func _diplo_out(v: int) -> int:
 	return -1 if v == 2 else (1 if v == 0 else 0)
+
+
+## Native 4b6760 case 0xae removes the first matching script id from
+## the named unit's carried bag (5313b0), not from player 0. Pockets and
+## corpse loot can share an Array, so snapshot all views before editing.
+func _remove_carried_quest(u: GameUnit, key: String) -> void:
+	if u == null: return
+	var bags := {"quest_items":Array(u.info.get("quest_items",[])).duplicate()}
+	for field in ["pockets","loot"]:
+		if u.has_meta(field): bags[field] = Array(u.get_meta(field)).duplicate()
+	for field: String in bags:
+		var items: Array = bags[field]
+		for i in items.size():
+			if Session._quest_item_key(String(Items.parse_stack(String(items[i]))[0])) == key:
+				items.remove_at(i)
+				break
+		if field == "quest_items": u.info.quest_items = items
+		else: u.set_meta(field,items)
 
 
 func _quest_item_name(v) -> String:

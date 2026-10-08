@@ -1,0 +1,111 @@
+{
+  "baseline_commit": "4f57dc2",
+  "export": {
+    "seconds": 5.9750673630042,
+    "command": [
+      "/home/llm2x/.local/bin/godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+      "--export-release",
+      "Linux",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps07/CPU.x86_64"
+    ],
+    "engine_source": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/fast-runtime.x86_64",
+    "errors": [],
+    "sha256": {
+      "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+      "CPU.pck": "c82e5e97210c7e0b0c4dcf59aaa7ec5e75729ac5ba7f30b8d2fc289d85c8db12",
+      "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+    }
+  },
+  "tests": {
+    "gameplay-quest-lifecycle-before-03": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps06/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/quest_inventory_lifecycle.gd",
+        "--label=gameplay-quest-lifecycle-before-03"
+      ],
+      "exit_code": 1,
+      "stopped": false,
+      "seconds": 33.257529829017585,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "log_sha256": "219c3092050566d9146e8727b2695c88f18b101e01e534d87ef593d939881392",
+      "checks": 20,
+      "failures": 2,
+      "raw_log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-quest-lifecycle-before-03.log"
+    },
+    "gameplay-quest-lifecycle-after-01": {
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/quest_inventory_lifecycle.gd",
+        "--label=gameplay-quest-lifecycle-after-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 36.06572671199683,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "log_sha256": "e81047efb26d1f7e67c01a2fc8f6c5793ec3decd408ae0690c76e81eb419ce97",
+      "checks": 20,
+      "failures": 0,
+      "raw_log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-quest-lifecycle-after-01.log"
+    },
+    "gameplay-quest-lifecycle-production-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps07/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/quest_inventory_lifecycle.gd",
+        "--label=gameplay-quest-lifecycle-production-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 32.844910424988484,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "log_sha256": "fc408d47c871019ef0cc6b5694e1864bd53be1be594de3ddc781ab25497fad68",
+      "checks": 20,
+      "failures": 0,
+      "raw_log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-quest-lifecycle-production-01.log"
+    }
+  },
+  "source_sha256": {
+    "game/src/game/script/vm.gd": "8be78425b11752b063e9f9f23c0c2a6bd861fa16aeca3130e61f17195c19ec00",
+    "tools/tests/quest_inventory_lifecycle.gd": "dc1e85d374fb21af93d7697bc132df06342f39deb1e8d2750f2077dc8a0648df"
+  },
+  "original_evidence": [
+    "4b6760 case 0xae enumerates the named unit carried bag and removes the first matching quest script id through 5313b0. EraseQuestItem case 0x93 instead addresses the player bag.",
+    "Original M4 and Z15 briefing rewards consume the stolen pair and Dragon Amulet/book. Original cage-open handler erases CageKey00.",
+    "Original gz6g VCheck#0#362 orders YDragon home beyond y=295 with a distant hero, then clears GFol after 150 ticks."
+  ],
+  "limitations": [
+    "Prepared original maps and direct inventory/death commands, not full quest playthroughs or multiplayer validation.",
+    "Pair steal/turn-in/save/reload/revisit, Dragon Amulet and Cage Key already pass the baseline; no new deletion logic was added for those reports.",
+    "Dragon test checks the original departure order and delay, not actual movement home.",
+    "Before01/02 were invalid fixtures: they cleared WorldScript before its initial Sleep(2) completed. Replaced by before03.",
+    "No Windows or Android package validation."
+  ]
+}
