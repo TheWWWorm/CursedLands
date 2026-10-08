@@ -1,0 +1,139 @@
+{
+  "baseline_commit": "6407b53",
+  "export": {
+    "seconds": 5.969429504999425,
+    "command": [
+      "/home/llm2x/.local/bin/godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+      "--export-release",
+      "Linux",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps48/CPU.x86_64"
+    ],
+    "engine_source": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/fast-runtime.x86_64",
+    "errors": [],
+    "sha256": {
+      "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+      "CPU.pck": "c27c95773fa191d7452b9fc5b971e45967e2f0d73fd0ba3c69276c84983b3d78",
+      "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+    }
+  },
+  "native": {
+    "base_objectives": "0x64dc20",
+    "astral_objectives": "0x57aed0",
+    "record_experience": "float32 at +0x0c",
+    "record_promised_money": "float32 at +0x14",
+    "database_field": 5,
+    "astral_database_sha256": "b44fbff1c0a727b9ca72d2bc0c55c0fbfd2ddf38bfbbffe1f393a9541eedb36c"
+  },
+  "reported_quest": {
+    "id": "q3h",
+    "title": "Маскировка",
+    "experience": 10,
+    "promised_money": 230,
+    "old_incorrect_int32": 1130758144,
+    "raw_money_hex": "0x43660000"
+  },
+  "fix": "Read quest money as float32 in the shared database schema. No currency cap or payout change. QuestComplete reads experience only; actual cash comes from existing script/dialogue reward paths.",
+  "runs": {
+    "quest-rewards-before-02": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps47/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/quest_rewards.gd",
+        "--label=quest-rewards-before-02"
+      ],
+      "exit_code": 1,
+      "stopped": false,
+      "seconds": 2.4050104430061765,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "e5091fdfa57a4e57e36be8a02822e852ea7be70fb071b5afa5a563e99ace78fe",
+      "checks": 12,
+      "failures": 5,
+      "raw_log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/quest-rewards-before-02.log"
+    },
+    "quest-rewards-astral-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps48/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--resolution",
+        "1600x900",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/quest_rewards.gd",
+        "--label=quest-rewards-astral-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 6.712356773001375,
+      "errors": [],
+      "warnings": [
+        "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+      ],
+      "log_sha256": "17a49169f4ba6bb6cd78c4973c34143c16039630df7afbaa60c476c6c7e07c70",
+      "checks": 12,
+      "failures": 0,
+      "raw_log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/quest-rewards-astral-01.log"
+    },
+    "quest-rewards-base-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps48/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/quest_rewards.gd",
+        "--label=quest-rewards-base-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 2.103828846011311,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "0f6c683ef1a12c117bbffdbffe419ba7b13f93779e7b7ef605ca0acd354356a9",
+      "checks": 4,
+      "failures": 0,
+      "raw_log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/quest-rewards-base-01.log"
+    }
+  },
+  "excluded_run": {
+    "label": "quest-rewards-before-01",
+    "reason": "Fixture cleanup attempted to clear a read-only units snapshot. Fixed fixture cleanup and repeated baseline as before-02."
+  },
+  "fixture_sha256": "e9590f400aa58d6d4f6fa1c6857ef1833772e048bd50a091d3d7c2731e06d06b",
+  "screenshots": {
+    "portal-map-fixed.png": {
+      "path": "/home/llm2x/Documents/EI/local/review-20261008-map-rewards/portal-map-fixed.png",
+      "sha256": "4e09b7627ce115a69504cbb9979f67d9949dceb14b46bcf7ab09f23a7a0c71fe"
+    },
+    "masking-reward-fixed.png": {
+      "path": "/home/llm2x/Documents/EI/local/review-20261008-map-rewards/masking-reward-fixed.png",
+      "sha256": "50c40641ac1fdc69a7ed7f9efec4abd4a29e05e8e48f8f17f4c15a1139059443"
+    }
+  },
+  "visual_review": "Reviewed Portal region outline and Portal / Slave lists panel, then Masking objective description showing 10 experience and 230 money.",
+  "limits": [
+    "Prepared database/UI and QuestComplete checks, not full quest playthrough.",
+    "Linux rendered export; Windows/Android runtime not rerun for this schema correction.",
+    "Not included in published Experimental 6."
+  ]
+}
