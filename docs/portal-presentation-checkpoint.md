@@ -49,3 +49,6 @@ frame intervals and simulated time without synchronized GPU timing reads.
 See its [instructions](../tools/benchmarks/README.md#rendered-portal-gameplay).
 Hidden-actor scheduling and terrain specialization require their own complete
 gameplay validation before becoming accepted changes.
+
+The subsequent [hidden presentation checkpoint](portal-hidden-presentation-checkpoint.md)
+records the combined actor scheduling and terrain specialization comparison.

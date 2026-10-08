@@ -102,7 +102,7 @@ func _units() -> Array:
 	for u in game.my_units():
 		out.append([u, true])
 	if game.session and game.session.online:
-		for u: GameUnit in game.world.units.values():
+		for u: GameUnit in game.world.party_units():
 			if u.controller >= 0 and u.controller != game.session.my_index and u.has_meta("hero") and not u.dead:
 				out.append([u, false])
 	return out

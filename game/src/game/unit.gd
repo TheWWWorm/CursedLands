@@ -46,6 +46,7 @@ var _sim_state: RefCounted:
 var world: GameWorld:
 	set(value):
 		if world != value:
+			wake_presentation()
 			world = value
 			structure_revision += 1
 var uid := 0:
@@ -407,7 +408,11 @@ var _draw_move_speed := 0.0
 var _speed_from := Vector2.INF
 var _drawn := Vector2.ZERO
 ## Shown in the unit panel, whose figure mirrors this pose: full animation rate.
-var anim_watched := false
+var anim_watched := false:
+	set(value):
+		anim_watched = value
+		if value and _presentation_sleeping:
+			wake_presentation()
 var _anim_roots: Array[EIAnimPart] = []
 ## Render layer of out-of-view figures; the sun's shadow_caster_mask leaves it out.
 const OFFSCREEN_LAYER := 1 << 19
@@ -3190,11 +3195,146 @@ func _anim_lod_setup() -> void:
 
 
 static var defer_hidden_pose := not OS.get_cmdline_user_args().has("--ei-eager-poses")
+static var sleep_hidden_replicas := not OS.get_cmdline_user_args().has("--ei-eager-replicas")
+var _presentation_sleeping := false
+var _presentation_advancing := false
+var _presentation_generation := 0
+var _presentation_stamp := 0.0
+var _presentation_paused_at := -1.0
+var _presentation_observed_until := 0.0
+var _sleeping_model: EIUnitModel
+var _sleeping_model_process := false
+var _sleeping_physics := false
+var _presentation_pause_observer: Node
+
+
+## This node has no frame callbacks. Putting _notification on GameUnit itself
+## would add a script call to every actor's process and physics notification,
+## including the authority. Only replicas that sleep need this observer.
+class PresentationPauseObserver extends Node:
+	var unit: GameUnit
+	func _notification(what: int) -> void:
+		if what == NOTIFICATION_PAUSED or what == NOTIFICATION_UNPAUSED \
+				or what == NOTIFICATION_DISABLED or what == NOTIFICATION_ENABLED:
+			unit._presentation_mode_changed()
+
+
+func _presentation_mode_changed() -> void:
+	if not _presentation_sleeping or world == null:
+		return
+	if not can_process():
+		if _presentation_paused_at < 0.0:
+			_presentation_paused_at = world._presentation_clock
+	elif _presentation_paused_at >= 0.0:
+		# A disabled actor may share a world that continues rendering. Keep
+		# its pending active interval, but never replay the paused interval.
+		_presentation_stamp += world._presentation_clock - _presentation_paused_at
+		_presentation_paused_at = -1.0
+
+
+func _can_sleep_presentation() -> bool:
+	if not sleep_hidden_replicas or visible or anim_watched or world == null or world.authority \
+			or not world.draw_frame_enabled() or not is_inside_tree() or model == null:
+		return false
+	if world._presentation_clock < _presentation_observed_until:
+		return false
+	var sound := GameSound.instance
+	if sound == null or sound._world != world or sound.mixer == null:
+		return false
+	var eye := Vector2(sound.mixer.listener.x, sound.mixer.listener.y)
+	return pos.distance_squared_to(eye) > ANIM_HEAR * ANIM_HEAR
+
+
+func _sleep_model() -> void:
+	if _sleeping_model == model:
+		return
+	_sleeping_model = model
+	_sleeping_model_process = model != null and model.is_processing()
+	if model:
+		model.set_process(false)
+
+
+func _advance_sleeping_presentation() -> void:
+	if not _presentation_sleeping or _presentation_advancing or world == null or not can_process():
+		return
+	var dt := maxf(world._presentation_clock - _presentation_stamp, 0.0)
+	_presentation_stamp = world._presentation_clock
+	if dt > 0.0:
+		_presentation_advancing = true
+		_present_frame(dt)
+		if is_instance_valid(_sleeping_model) and _sleeping_model_process and _sleeping_model.can_process():
+			_sleeping_model._process(dt)
+		_presentation_advancing = false
+
+
+func _step_sleeping_presentation() -> void:
+	if not _can_sleep_presentation():
+		wake_presentation()
+	else:
+		_advance_sleeping_presentation()
+		_sleep_model()   # a complexion/snapshot may have replaced the figure
+
+
+func wake_presentation() -> void:
+	if not _presentation_sleeping:
+		return
+	_advance_sleeping_presentation()
+	_presentation_sleeping = false
+	_presentation_paused_at = -1.0
+	set_process(true)
+	set_physics_process(_sleeping_physics)
+	if is_instance_valid(_sleeping_model):
+		_sleeping_model.set_process(_sleeping_model_process)
+	_sleeping_model = null
+	# Its first visible frame starts at the latest authoritative placement.
+	net_view.got(pos, true, facing)
+	_sync_transform(0.0)
+	if _wounds_dirty and world and world.presentation:
+		_wounds_dirty = false
+		UnitWounds.update(self)
+	if model:
+		model.flush_pending_pose()
+
+
+## A particle/bone consumer needs a current transform even outside sight.
+## Keep it active across nearby effect ticks instead of sleeping every frame.
+func observe_presentation() -> void:
+	if world:
+		_presentation_observed_until = world._presentation_clock + ANIM_OFFSCREEN_STEP
+	wake_presentation()
 
 
 func _process(dt: float) -> void:
+	if world and not world.authority and is_processing() and _can_sleep_presentation():
+		_presentation_sleeping = true
+		_presentation_generation += 1
+		_presentation_stamp = world._presentation_clock
+		# World and actor callbacks have different priorities once drawing
+		# starts. Include this skipped frame only if the world already sampled
+		# it; otherwise the world's later callback will add it to the clock.
+		if world._presentation_frame == Engine.get_process_frames():
+			_presentation_stamp -= dt
+		_sleeping_physics = is_physics_processing()
+		set_process(false)
+		set_physics_process(false)
+		_sleep_model()
+		if _presentation_pause_observer == null:
+			var observer := PresentationPauseObserver.new()
+			observer.unit = self
+			add_child(observer)
+			_presentation_pause_observer = observer
+		world.sleep_presentation(self)
+		return
+	_present_frame(dt)
+
+
+func _present_frame(dt: float) -> void:
 	if _screen == null:
 		return
+	# Current peers send movement speed explicitly, so hidden animation does
+	# not need a terrain lookup or a model transform to recover that speed.
+	# Older packets retain the original placement-derived fallback.
+	var dormant := _presentation_advancing and _remote_move_speed
 	if world and world.draw_frame_enabled():
 		if not _frame_drawing:
 			# Authority samples its native spline; replicas advance NetSmooth
@@ -3208,18 +3348,21 @@ func _process(dt: float) -> void:
 			physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
 			reset_physics_interpolation()
 		_game_clock = world.draw_time() if world.authority else _game_clock + dt
-		_draw_step(0.0 if world.authority else dt,
-			not world.authority and _placement_frame == Engine.get_process_frames())
+		if dormant:
+			_update_pose()
+		else:
+			_draw_step(0.0 if world.authority else dt,
+				not world.authority and _placement_frame == Engine.get_process_frames())
 	# Wound layers from part health (every peer), redone when part health,
 	# armour or the figure changed (_wounds_dirty).
-	if _wounds_dirty and (world == null or world.presentation):
+	if not dormant and _wounds_dirty and (world == null or world.presentation):
 		_wounds_dirty = false
 		UnitWounds.update(self)
 	# Out of view (box and shadow reach), the figure leaves the sun's shadow
 	# casters (Game sets the sun's caster mask): neither it nor its shadow can
 	# be seen, and a few hundred figures in the shadow splits cost more than
 	# everything on screen.
-	var far := not _screen.is_on_screen() and not _headless
+	var far := _far if dormant else not _screen.is_on_screen() and not _headless
 	if far != _far:
 		_far = far
 		for g in _geoms:
@@ -3239,6 +3382,12 @@ func _process(dt: float) -> void:
 		_anim_acc = 0.0
 		return
 	_anim_acc += _held(game_dt * _anim_rate())
+	if dormant:
+		_anim_due -= dt
+		if _anim_due <= 0.0:
+			_anim_due = maxf(_anim_due + ANIM_OFFSCREEN_STEP, 0.0)
+			anim_flush(defer_hidden_pose)
+		return
 	# Walking units keep the full rate everywhere: GroundMarks places their
 	# footprints at the clips' step frames from the posed feet.
 	if pos != _anim_pos:
@@ -3388,6 +3537,8 @@ func near_screen() -> bool:
 static var native_unobserved_pose := ClassDB.class_has_method("AnimationPlayer", "advance_unobserved_pose")
 
 func anim_flush(defer_pose := false) -> void:
+	if not defer_pose and _presentation_sleeping and not _presentation_advancing:
+		wake_presentation()
 	if _anim_acc > 0.0 and model and model.player:
 		if world and is_instance_valid(world.ground_marks):
 			world.ground_marks.queue_unit(self)
@@ -3531,6 +3682,7 @@ static func _posture_of(st: int) -> int:
 ## every process / physics notification, in big fights too.)
 func _on_visibility_changed() -> void:
 	if is_inside_tree() and is_visible_in_tree():
+		wake_presentation()
 		resync_drawn()
 
 
@@ -3730,6 +3882,10 @@ func _buff_snapshot() -> Array:
 ## `quiet`: the unit's state as found by a joining client (no death clip,
 ## sounds or hit numbers; a corpse lies already dead).
 func apply_snapshot(s: Array, quiet := false) -> void:
+	# Account for the old clip/rate before replacing it with newer authority
+	# state. This prevents a late hidden update advancing the new action by
+	# time that belonged to its predecessor.
+	_advance_sleeping_presentation()
 	if s.size() > 10:
 		if not is_equal_approx(_max_hp, s[9]):
 			_set_max_hp(s[9])
@@ -3821,3 +3977,8 @@ func apply_snapshot(s: Array, quiet := false) -> void:
 			if a == "hit":
 				GameSound.unit(self, "hit")
 			_set_action(a)
+	if _presentation_sleeping:
+		if not _can_sleep_presentation():
+			wake_presentation()
+		else:
+			_sleep_model()

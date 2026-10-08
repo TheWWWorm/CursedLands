@@ -669,6 +669,8 @@ func frame_clock_enabled() -> bool:
 
 
 func _process(_dt: float) -> void:
+	_presentation_frame = Engine.get_process_frames()
+	_step_hidden_presentations(_dt)
 	if not authority and not _fixed_step:
 		_sample_client_effect_frame(Time.get_ticks_msec(), Engine.time_scale)
 		if _client_placement and draw_frame_enabled():
@@ -681,6 +683,65 @@ func _process(_dt: float) -> void:
 	_sample_frame(Time.get_ticks_msec(), Engine.time_scale)
 	if lever_sys:
 		lever_sys.draw(_dt)
+
+
+## Invisible replicas outside hearing keep animation time on a coarse clock.
+## Observation and fresh snapshots consume pending time immediately; otherwise
+## small staggered queues avoid updating unobservable figures every frame.
+## Authority always runs normally.
+var _presentation_clock := 0.0
+var _presentation_frame := -1
+var _hidden_presentations: Array[Array] = []
+var _hidden_slot := 0
+var _hidden_insert_slot := 0
+var _hidden_acc := 0.0
+var _hidden_pending := 0
+const HIDDEN_PRESENTATION_STEP := 0.2
+const HIDDEN_PRESENTATION_BUCKETS := 8
+const HIDDEN_PRESENTATION_SLICE := HIDDEN_PRESENTATION_STEP / HIDDEN_PRESENTATION_BUCKETS
+
+
+func sleep_presentation(u: GameUnit) -> void:
+	if _hidden_presentations.is_empty():
+		for i in HIDDEN_PRESENTATION_BUCKETS:
+			_hidden_presentations.append([])
+	# Assignment order distributes newly dormant crowds evenly, including
+	# authored IDs that happen to share low bits.
+	_hidden_presentations[_hidden_insert_slot].append([u, u._presentation_generation])
+	_hidden_insert_slot = (_hidden_insert_slot + 1) % HIDDEN_PRESENTATION_BUCKETS
+	_hidden_pending += 1
+
+
+func _step_hidden_presentations(dt: float) -> void:
+	if not is_finite(dt):
+		return
+	dt = maxf(dt, 0.0)
+	_presentation_clock += dt
+	if _hidden_pending == 0:
+		_hidden_acc = 0.0
+		return
+	_hidden_acc += dt
+	# A long frame visits each slot once, delivering all elapsed time to its
+	# actors instead of repeatedly traversing the same queues with zero delta.
+	var steps := mini(int(_hidden_acc / HIDDEN_PRESENTATION_SLICE), _hidden_presentations.size())
+	if authority:
+		steps = _hidden_presentations.size()
+	if steps > 0:
+		_hidden_acc = fmod(_hidden_acc, HIDDEN_PRESENTATION_SLICE)
+	for i in steps:
+		var due := _hidden_presentations[_hidden_slot]
+		_hidden_presentations[_hidden_slot] = []
+		for entry: Array in due:
+			_hidden_pending -= 1
+			var u: GameUnit = entry[0] if is_instance_valid(entry[0]) else null
+			if u == null or not u._presentation_sleeping or u.world != self \
+					or u._presentation_generation != int(entry[1]):
+				continue
+			u._step_sleeping_presentation()
+			if u._presentation_sleeping:
+				_hidden_presentations[_hidden_slot].append(entry)
+				_hidden_pending += 1
+		_hidden_slot = (_hidden_slot + 1) % _hidden_presentations.size()
 
 
 ## Full native integer timestamp delivery. Even an empty retained world

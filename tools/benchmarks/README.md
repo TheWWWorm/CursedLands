@@ -119,3 +119,26 @@ simulated seconds. At requested 2× it must advance approximately 120 seconds;
 high rendered FPS alone is insufficient. Frozen scenes and hidden-layer probes
 are diagnostics only. After Android testing, disable the private application's
 `bench.json` autorun before returning the device.
+
+### Exact Retroid Original fixtures
+
+The wrappers `original_gameplay_versioned.gd`, `original_city_gameplay.gd`
+and `original_city_loop_gameplay.gd` retain the exact fixtures used for the
+8 October hidden presentation checkpoint. Copy them beside
+`user://portal_gameplay.gd` in the private application. The first replays the
+complete Android options dictionary before applying Original look. The second
+also records party health and sleeping replica counts at every census.
+
+The loop wrapper uses the authored 415-actor Portal population at entrance 3
+after the catacombs, with the supplied party/progress and no setup simulation,
+healing or invulnerability. Use that fixture as `save`, omit `terror`, and set
+`seconds: 180`, `speed: 1`, `host: true`, `isolated: true`. It walks a short
+route near the entrance with ordinary commands and a rotating terrain-aware
+camera. Both party members remained alive in the recorded run; report this
+exploration result separately from the close Terror combat comparison.
+
+For inline single-player diagnostics, use `host: false` and
+`original_city_gameplay.gd`. Its straight route reaches combat and the party
+can die. Neither camera variant is a full map playthrough. In particular,
+the close Terror fixture's party dies around 25 seconds: later near-60 FPS
+averages include the death view and cannot establish sustained gameplay.

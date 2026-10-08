@@ -254,6 +254,7 @@ func carrier_height(obj: Object) -> float:
 func carrier_point(e: FxEmitter, obj: Object) -> Vector3:
 	if obj is GameUnit:
 		var u: GameUnit = obj
+		u.observe_presentation()
 		if e.flags & FxEmitter.F_BONE:
 			return unit_point(u, e.bone)
 		return ei(u.global_position)
@@ -266,6 +267,7 @@ func carrier_point(e: FxEmitter, obj: Object) -> Vector3:
 ## hand. Creature baseline weapon nodes are still represented by the raw
 ## centre fallback until that animation-manager cache is ported.
 func unit_point(u: GameUnit, sel: int) -> Vector3:
+	u.observe_presentation()
 	if sel == 0:
 		if int(u.race.get("type_id", -1)) == 0x32:
 			var hand := _bone(u, "rh3")
@@ -292,6 +294,7 @@ func unit_point(u: GameUnit, sel: int) -> Vector3:
 
 
 func bone_point(u: GameUnit, name: String) -> Vector3:
+	u.observe_presentation()
 	var n := _bone(u, name)
 	return ei(n.global_position) if n else ei(u.global_position)
 

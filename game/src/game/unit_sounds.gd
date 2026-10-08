@@ -60,6 +60,8 @@ func tick() -> void:
 				st.seen = _stamp
 				st.far = true
 			continue
+		if u._presentation_sleeping:
+			u.wake_presentation()
 		if u.model == null or u.model.player == null:
 			continue
 		var pl := u.model.player

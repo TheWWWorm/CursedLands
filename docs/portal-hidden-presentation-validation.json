@@ -1,0 +1,721 @@
+{
+  "status": "Local, not published. Retroid 60 FPS is not achieved; Windows report unresolved.",
+  "parent_commit": "d1ba92735d7e67a8cfaa293b61b57ed15fa9654e",
+  "device": "Retroid Pocket 5, Android 13, Adreno 650",
+  "target": {
+    "retroid": "Stable 60 FPS at 1x with actual Original graphics",
+    "desktop": "60 FPS at 2x, including the reported Windows 4K/100%/maximum/D3D12 co-op case"
+  },
+  "settings": {
+    "options": {
+      "aim_press_once": 1,
+      "auto_exit": 0,
+      "auto_graphics": 1,
+      "autosave": 0,
+      "brightness": 50,
+      "cam_follow": 1,
+      "cam_pan_speed": 50,
+      "cam_rotate_speed": 50,
+      "cam_see_through": 1,
+      "cam_wasd": 1,
+      "cam_zoom_speed": 50,
+      "camera_reverse_x": 0,
+      "camera_reverse_y": 0,
+      "camera_style": 1,
+      "confine_mouse": 0,
+      "contrast": 50,
+      "coop_clock": 1,
+      "coop_full_xp": 1,
+      "coop_player_names": 1,
+      "coop_scale": 2,
+      "coop_share_loot": 1,
+      "difficulty": 0,
+      "display_mode": 1,
+      "distant_ai": 0,
+      "enemy_hp_bars": 1,
+      "footprints": 1,
+      "fps_limit": 0,
+      "gamma": 50,
+      "gfx_bloom": 0,
+      "gfx_contact_shadows": 0,
+      "gfx_detailed_heads": 0,
+      "gfx_far_view": 0,
+      "gfx_firelight": 0,
+      "gfx_foliage_light": 0,
+      "gfx_grass": 0,
+      "gfx_hd_textures": 0,
+      "gfx_heat_haze": 0,
+      "gfx_lava_light": 0,
+      "gfx_lit_particles": 0,
+      "gfx_materials": 0,
+      "gfx_severed_limbs": 0,
+      "gfx_sharp_units": 0,
+      "gfx_sky": 0,
+      "gfx_soft_ground": 0,
+      "gfx_soft_particles": 0,
+      "gfx_ssao": 0,
+      "gfx_terrain": 0,
+      "gfx_torch_glow": 0,
+      "gfx_volumetric": 0,
+      "gfx_water": 0,
+      "gfx_water_reflections": 0,
+      "gfx_weather_surfaces": 0,
+      "gfx_wind": 0,
+      "item_icon_fit": 1,
+      "marks": 1,
+      "mechanism_motion": 0,
+      "merc_travel": 0,
+      "net_directory": 0,
+      "net_lan": 0,
+      "net_upnp": 0,
+      "net_websocket": 0,
+      "pad_cursor_speed": 50,
+      "pad_deadzone": 13,
+      "pad_enabled": 1,
+      "pad_glyphs": 0,
+      "pad_gyro": 0,
+      "pad_gyro_sensitivity": 50,
+      "pad_light": 1,
+      "pad_rumble": 70,
+      "pad_swap_sticks": 0,
+      "pad_target_radius": 6,
+      "pad_wheel_pause": 1,
+      "path_through": 1,
+      "phys_interp": 1,
+      "power_kbd": 25,
+      "power_mouse": 50,
+      "q_aa": 0,
+      "q_aniso": 1,
+      "q_shadow_fit": 1,
+      "q_shadows": 0,
+      "render_scale": 2,
+      "renderer": 0,
+      "resolution": 0,
+      "reverse_stereo": 0,
+      "revive": 1,
+      "rubber_select": 2,
+      "scroll_border": 0,
+      "select_type": 0,
+      "show_flying_hp": 1,
+      "show_fps": 0,
+      "show_path": 1,
+      "show_tutorial": 1,
+      "smile_faces": 1,
+      "sp_death_notice": 1,
+      "sp_full_xp": 0,
+      "start_zones": 1,
+      "switch_filters": 1,
+      "tooltip_time": 2,
+      "ui_active_buttons": 1,
+      "unit_fog": 1,
+      "village_start_view": 0,
+      "volume_sfx": 100,
+      "volume_stream": 100,
+      "volume_voice": 100,
+      "vsync": 0
+    },
+    "renderer": "gl_compatibility",
+    "adapter": "Adreno (TM) 650",
+    "viewport_size": [
+      1920,
+      1080
+    ],
+    "render_scale": 0.75,
+    "camera_far": 100.0,
+    "camera_near": 0.0500000007450581,
+    "camera_fov": 55.0,
+    "camera_mode": "terror close view",
+    "players": 1,
+    "online": true,
+    "isolated": true
+  },
+  "scope": "Repeated 60-second close Terror test, 415 actors initially, normal commands/combat, one owner, separate authority, no external guest. Party dies around 25 seconds; later frames cannot establish sustained 60 FPS.",
+  "baseline": [
+    {
+      "name": "throughput-original-1x-baseline-60-01",
+      "fps": 32.1783896600686,
+      "frame_ms": {
+        "max": 90.857,
+        "p50": 29.946,
+        "p95": 39.816,
+        "p99": 47.577
+      },
+      "wall_seconds": 60.009218,
+      "sim_seconds": 59.8949999999997,
+      "units": 414,
+      "wing_keys": 41,
+      "isolated": true,
+      "original_look": true,
+      "controlled": [
+        {
+          "dead": true,
+          "hp": -56.5249998867512,
+          "pos": "(401.0, 69.5)",
+          "uid": 1500000001
+        },
+        {
+          "dead": true,
+          "hp": -27.3699999451637,
+          "pos": "(401.0, 78.5)",
+          "uid": 1000059185
+        }
+      ],
+      "evidence_sha256": "ef879059b8fa1a483f7909f8a982107941f2200161b68be126b890fc065312c8",
+      "apk_sha256": "44f93929f1791d12978c60d8eb4e93f6d9e0333408cd673d5b1e740bcea06d33",
+      "ten_second_fps": [
+        28.6,
+        29.8,
+        32.8,
+        34.3,
+        33.9,
+        33.6
+      ]
+    },
+    {
+      "name": "throughput-original-1x-baseline-60-02",
+      "fps": 30.1726421604611,
+      "frame_ms": {
+        "max": 90.318,
+        "p50": 32.638,
+        "p95": 41.477,
+        "p99": 48.275
+      },
+      "wall_seconds": 60.02126,
+      "sim_seconds": 59.9499999999997,
+      "units": 414,
+      "wing_keys": 41,
+      "isolated": true,
+      "original_look": true,
+      "controlled": [
+        {
+          "dead": true,
+          "hp": -56.5249998867512,
+          "pos": "(401.0, 69.5)",
+          "uid": 1500000001
+        },
+        {
+          "dead": true,
+          "hp": -27.3699999451637,
+          "pos": "(401.0, 78.5)",
+          "uid": 1000059185
+        }
+      ],
+      "evidence_sha256": "6aaa9bdbab0e9b825a29db33353791ed7a2117f0195d15ef32c5823251971249",
+      "apk_sha256": "44f93929f1791d12978c60d8eb4e93f6d9e0333408cd673d5b1e740bcea06d33",
+      "ten_second_fps": [
+        28.1,
+        28.8,
+        29.9,
+        31.2,
+        31.0,
+        32.0
+      ]
+    },
+    {
+      "name": "throughput-original-1x-baseline-60-03",
+      "fps": 30.2610250029053,
+      "frame_ms": {
+        "max": 104.892,
+        "p50": 32.297,
+        "p95": 41.822,
+        "p99": 50.745
+      },
+      "wall_seconds": 60.011186,
+      "sim_seconds": 59.8399999999997,
+      "units": 414,
+      "wing_keys": 40,
+      "isolated": true,
+      "original_look": true,
+      "controlled": [
+        {
+          "dead": true,
+          "hp": -56.5249998867512,
+          "pos": "(401.0, 69.5)",
+          "uid": 1500000001
+        },
+        {
+          "dead": true,
+          "hp": -27.3699999451637,
+          "pos": "(401.0, 78.5)",
+          "uid": 1000059185
+        }
+      ],
+      "evidence_sha256": "c5b35a0bc31c34dde2fb98a93556da4b4a742b7c409a48af87e6fc8cae482782",
+      "apk_sha256": "44f93929f1791d12978c60d8eb4e93f6d9e0333408cd673d5b1e740bcea06d33",
+      "ten_second_fps": [
+        27.2,
+        28.3,
+        30.5,
+        31.7,
+        31.4,
+        32.4
+      ]
+    }
+  ],
+  "candidate": [
+    {
+      "name": "throughput-original-1x-hidden-v6-60-01",
+      "fps": 55.3344242818051,
+      "frame_ms": {
+        "max": 84.866,
+        "p50": 16.814,
+        "p95": 27.824,
+        "p99": 32.995
+      },
+      "wall_seconds": 60.016889,
+      "sim_seconds": 59.8949999999997,
+      "units": 414,
+      "wing_keys": 40,
+      "isolated": true,
+      "original_look": true,
+      "controlled": [
+        {
+          "dead": true,
+          "hp": -56.5249998867512,
+          "pos": "(401.0, 69.5)",
+          "uid": 1500000001
+        },
+        {
+          "dead": true,
+          "hp": -27.3699999451637,
+          "pos": "(401.0, 78.5)",
+          "uid": 1000059185
+        }
+      ],
+      "evidence_sha256": "dfdd5a2ef2437427df5a15a1a37302e843cb75aa6d151a672d900d619951353e",
+      "apk_sha256": "a6a40f9004591d8184ae7658718c85387d3b4992283d2ee5f3d791d22b49b205",
+      "ten_second_fps": [
+        46.7,
+        50.4,
+        55.4,
+        59.5,
+        60.0,
+        60.0
+      ]
+    },
+    {
+      "name": "throughput-original-1x-hidden-v6-60-02",
+      "fps": 55.3368473536648,
+      "frame_ms": {
+        "max": 93.157,
+        "p50": 17.064,
+        "p95": 27.232,
+        "p99": 32.599
+      },
+      "wall_seconds": 60.014261,
+      "sim_seconds": 59.8949999999997,
+      "units": 414,
+      "wing_keys": 42,
+      "isolated": true,
+      "original_look": true,
+      "controlled": [
+        {
+          "dead": true,
+          "hp": -56.5249998867512,
+          "pos": "(401.0, 69.5)",
+          "uid": 1500000001
+        },
+        {
+          "dead": true,
+          "hp": -27.3699999451637,
+          "pos": "(401.0, 78.5)",
+          "uid": 1000059185
+        }
+      ],
+      "evidence_sha256": "ca0e3df9d5e34038066c17cb120e843b600c44b9b01425b72d9480efbb9c05e9",
+      "apk_sha256": "a6a40f9004591d8184ae7658718c85387d3b4992283d2ee5f3d791d22b49b205",
+      "ten_second_fps": [
+        47.1,
+        50.0,
+        55.0,
+        59.9,
+        60.0,
+        60.0
+      ]
+    }
+  ],
+  "median_fps": {
+    "before": 30.2610250029053,
+    "after": 55.33563581773495,
+    "increase_percent": 82.86107563250846
+  },
+  "terrain_control": {
+    "name": "throughput-original-1x-hidden-no-terrain-60-01",
+    "fps": 48.6973005463064,
+    "frame_ms": {
+      "max": 81.268,
+      "p50": 19.245,
+      "p95": 30.856,
+      "p99": 34.199
+    },
+    "wall_seconds": 60.003326,
+    "sim_seconds": 59.8399999999997,
+    "units": 414,
+    "wing_keys": 42,
+    "isolated": true,
+    "original_look": true,
+    "controlled": [
+      {
+        "dead": true,
+        "hp": -56.5249998867512,
+        "pos": "(401.0, 69.5)",
+        "uid": 1500000001
+      },
+      {
+        "dead": true,
+        "hp": -27.3699999451637,
+        "pos": "(401.0, 78.5)",
+        "uid": 1000059185
+      }
+    ],
+    "evidence_sha256": "5f326d643567bbd51f632f5f2055f4d2b0dca10bc7f8a1f346c06c2b46dad1df",
+    "apk_sha256": "0a8c6aeee408f194010e3e56b38ad048469be65c304456bab2b95d63aea62e2c",
+    "ten_second_fps": [
+      38.5,
+      42.7,
+      50.7,
+      53.6,
+      52.8,
+      53.8
+    ]
+  },
+  "terrain_with_v3": [
+    {
+      "name": "throughput-original-1x-hidden-v3-60-01",
+      "fps": 54.8809524146811,
+      "frame_ms": {
+        "max": 93.595,
+        "p50": 17.015,
+        "p95": 27.948,
+        "p99": 33.234
+      },
+      "wall_seconds": 60.002603,
+      "sim_seconds": 59.8399999999997,
+      "units": 414,
+      "wing_keys": 40,
+      "isolated": true,
+      "original_look": true,
+      "controlled": [
+        {
+          "dead": true,
+          "hp": -56.5249998867512,
+          "pos": "(401.0, 69.5)",
+          "uid": 1500000001
+        },
+        {
+          "dead": true,
+          "hp": -27.3699999451637,
+          "pos": "(401.0, 78.5)",
+          "uid": 1000059185
+        }
+      ],
+      "evidence_sha256": "18abc4b897e89d95d05a12b98e5f5957bac36f8ead87278ce9216b323e9044e7",
+      "apk_sha256": "e2e8da61bae8a49a2c50120a3ed0ccc89b5a3c6c854f019054f749204e2cd059",
+      "ten_second_fps": [
+        46.3,
+        48.3,
+        54.7,
+        60.0,
+        59.9,
+        60.0
+      ]
+    },
+    {
+      "name": "throughput-original-1x-hidden-v3-60-02",
+      "fps": 54.4816253343791,
+      "frame_ms": {
+        "max": 94.519,
+        "p50": 17.482,
+        "p95": 27.669,
+        "p99": 33.664
+      },
+      "wall_seconds": 60.001881,
+      "sim_seconds": 59.9499999999997,
+      "units": 414,
+      "wing_keys": 39,
+      "isolated": true,
+      "original_look": true,
+      "controlled": [
+        {
+          "dead": true,
+          "hp": -56.5249998867512,
+          "pos": "(401.0, 69.5)",
+          "uid": 1500000001
+        },
+        {
+          "dead": true,
+          "hp": -27.3699999451637,
+          "pos": "(401.0, 78.5)",
+          "uid": 1000059185
+        }
+      ],
+      "evidence_sha256": "e0240fc98a172fc195011a5fa85cb72cb7d18c1d93001ff5d446c1252b01a9d3",
+      "apk_sha256": "e2e8da61bae8a49a2c50120a3ed0ccc89b5a3c6c854f019054f749204e2cd059",
+      "ten_second_fps": [
+        46.3,
+        48.9,
+        54.6,
+        58.7,
+        58.7,
+        59.6
+      ]
+    }
+  ],
+  "long_entrance_walk": {
+    "name": "throughput-original-city-loop-v6-180-01",
+    "fps": 45.0944046110537,
+    "frame_ms": {
+      "max": 94.862,
+      "p50": 21.189,
+      "p95": 29.175,
+      "p99": 32.22
+    },
+    "wall_seconds": 180.000159,
+    "sim_seconds": 179.905000000014,
+    "units": 415,
+    "wing_keys": 0,
+    "isolated": true,
+    "original_look": true,
+    "controlled": [
+      {
+        "dead": false,
+        "hp": 23.75,
+        "pos": "(255.6875, 66.75)",
+        "uid": 1500000001
+      },
+      {
+        "dead": false,
+        "hp": 11.5,
+        "pos": "(257.1875, 66.75)",
+        "uid": 1000059185
+      }
+    ],
+    "evidence_sha256": "1580ec93cb39062f8e536a2a442cab2bd61924e6fffdabd7acafdd9b2483a909",
+    "apk_sha256": "a6a40f9004591d8184ae7658718c85387d3b4992283d2ee5f3d791d22b49b205",
+    "ten_second_fps": [
+      45.0,
+      47.3,
+      43.9,
+      44.2,
+      43.8,
+      44.6,
+      46.0,
+      46.5,
+      45.6,
+      43.2,
+      42.3,
+      44.9,
+      45.3,
+      45.3,
+      44.2,
+      46.6,
+      47.1,
+      45.8
+    ],
+    "first_party_death_ms": null,
+    "all_dead_ms": null
+  },
+  "ordinary_single_player_diagnostic": {
+    "name": "throughput-original-city-single-baseline-60-01",
+    "fps": 12.4136768326015,
+    "frame_ms": {
+      "max": 552.717,
+      "p50": 73.156,
+      "p95": 111.079,
+      "p99": 177.518
+    },
+    "wall_seconds": 60.014451,
+    "sim_seconds": 59.6199999999997,
+    "units": 415,
+    "wing_keys": 0,
+    "isolated": false,
+    "original_look": true,
+    "controlled": [
+      {
+        "dead": true,
+        "hp": -8.30419469271119,
+        "pos": "(256.5, 100.1573)",
+        "uid": 1500000001
+      },
+      {
+        "dead": true,
+        "hp": -4.03133162528628,
+        "pos": "(256.9702, 89.2372)",
+        "uid": 1000059185
+      }
+    ],
+    "evidence_sha256": "264415f0a0826cfadb382a0a56acc1ffec2d3cb2990ae45bae91595883b5b349",
+    "apk_sha256": "64ce0114d7b5cd3e522653244bb019a8a0bdf894673ff530a2ba18b02a530a7d",
+    "ten_second_fps": [
+      12.7,
+      13.3,
+      10.9,
+      11.8,
+      12.2,
+      13.5
+    ],
+    "first_party_death_ms": 40590,
+    "all_dead_ms": 52091
+  },
+  "complete_simulation": [
+    {
+      "name": "throughput-hidden-v3-complete-clock-01",
+      "fixture_version": 2,
+      "ticks": 1100,
+      "sim_seconds": 60.4999999999997,
+      "wall_seconds": 36.554895,
+      "tick_seconds": 30.596713,
+      "profile": false,
+      "units": 414,
+      "rng_next": 3397502660,
+      "evidence_sha256": "880aee5467b28ff2b83b7e1815898911e021438dca0ff303a685aedaf941d908"
+    },
+    {
+      "name": "throughput-hidden-reverse-complete-clock-01",
+      "fixture_version": 2,
+      "ticks": 1100,
+      "sim_seconds": 60.4999999999997,
+      "wall_seconds": 36.320054,
+      "tick_seconds": 30.487367,
+      "profile": false,
+      "units": 414,
+      "rng_next": 2722298876,
+      "evidence_sha256": "467aa9a9b92b51e43a953ab5749a437ef2e6063b2ea4b3cad373ca83258c6da8"
+    },
+    {
+      "name": "throughput-hidden-v6-complete-clock-01",
+      "fixture_version": 2,
+      "ticks": 1100,
+      "sim_seconds": 60.4999999999997,
+      "wall_seconds": 35.354193,
+      "tick_seconds": 29.536959,
+      "profile": false,
+      "units": 414,
+      "rng_next": 3769288135,
+      "evidence_sha256": "300deeb18b460878f95039ff4c15598306bf0a5097a7279b289d441687555911"
+    }
+  ],
+  "checks": [
+    {
+      "name": "throughput-dormant-order-fix-01",
+      "checks": 69,
+      "failures": 0,
+      "log_sha256": "0612ba34740667b65f2f56fda6de7c9871e9461d0fb5bfe3292e51fd925824ee"
+    },
+    {
+      "name": "throughput-dormant-order-native-01",
+      "checks": 69,
+      "failures": 0,
+      "log_sha256": "e85a0576acd2a5d4b410c9e9c302e37cb85b9f0e1c34859fee07f0900a078abc"
+    },
+    {
+      "name": "throughput-dormant-order-arm-01",
+      "checks": 69,
+      "failures": 0,
+      "log_sha256": "0e03beafacc0efdf7ef340e2bef67de876fc776904ffce3cf7ebfd751de6b666"
+    },
+    {
+      "name": "throughput-original-shaders-headless-03",
+      "checks": 308,
+      "failures": 0,
+      "log_sha256": "46ecc44c7775184f57b0143647050796f7080a053a323e951f190c2965c5ec15"
+    },
+    {
+      "name": "throughput-original-shaders-gl-01",
+      "checks": 308,
+      "failures": 0,
+      "log_sha256": "119df5bc0518c24f7117652c47e5bbe57c1fe6125e27035166eca16941dacca7"
+    },
+    {
+      "name": "throughput-original-shaders-mobile-01",
+      "checks": 308,
+      "failures": 0,
+      "log_sha256": "508f484d1fb048906ee6c7952330fc431573f479d428e34a8149a35e370acd40"
+    },
+    {
+      "name": "throughput-original-shaders-forward-01",
+      "checks": 308,
+      "failures": 0,
+      "log_sha256": "27a9eaae245f77b0c66e296d712b455f33c9d971325b6e254d9e6de0e4a912a0"
+    },
+    {
+      "name": "throughput-original-shaders-gl-arm-01",
+      "checks": 308,
+      "failures": 0,
+      "log_sha256": "b986847b8e40a113e1c4f32cb910778a6018c2b8c39314ec067a54fc56724e1d"
+    },
+    {
+      "name": "throughput-original-shaders-mobile-arm-01",
+      "checks": 308,
+      "failures": 0,
+      "log_sha256": "aa0280895f35606db6da6d515c741d2478e97f869e5867b35243be4bde15ff4f"
+    }
+  ],
+  "regression_test": "throughput-dormant-order-regression-01 reproduced a double-counted first sleeping frame; the fixed fixture passes 69 checks on stock Linux, patched Linux and ARM.",
+  "artifacts": {
+    "android": {
+      "private_instrumented": false,
+      "engine_sha256": "424eaf73630ec110faf614f550f8047c24a78e224211df45d8b957bf03b7cc79",
+      "native_sha256": "7791588e721f977a415112194cda86e38a9df8ec1d84fc9c68d5f6ccfad0eebd",
+      "apk_sha256": "a6a40f9004591d8184ae7658718c85387d3b4992283d2ee5f3d791d22b49b205",
+      "changes": [
+        "CPU checkpoint 35dc2c9 and UI roster checkpoint d1ba927",
+        "Unchanged production engine and native binaries",
+        "Suspend invisible, inaudible replica presentation; retain animation time and wake before observation",
+        "Retain the measured 0.2-second / 8-queue cadence",
+        "Fix the first sleeping frame when the actor callback precedes the world callback",
+        "Specialize disabled Original terrain shader branches; reuse visible/party rosters in minimap and party faces"
+      ]
+    },
+    "linux": {
+      "seconds": 5.9656858060043305,
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--headless",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+        "--export-release",
+        "Linux",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/throughput-hidden-presentation06/CPU.x86_64"
+      ],
+      "engine_source": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/fast-runtime.x86_64",
+      "errors": [],
+      "sha256": {
+        "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+        "CPU.pck": "73423b6c7b969ccc1c1bc3ea4b4f62793fcb89c79c50fb63b35b4de0723a6222",
+        "libterrain_search.so": "459d0cdcb8c71e147cf5e0094cff43163dda93e4c8a6df64ff3efd13addb113b"
+      }
+    },
+    "source_freeze_sha256": "52750bf849379227d5c16db2af0d7549fdfa7339f6c94b42cb3d42b63fc66598"
+  },
+  "source_files": {
+    "game/src/game/fx/particle_system.gd": "f2affbb5aab3f161d728b58d89e97c34482491e47002527ea875008303ffec18",
+    "game/src/game/gfx.gd": "d4111e59b158111d2b5c0ab75feadde1f77db81e528773f23676fddd0e11cdb5",
+    "game/src/game/unit.gd": "307c0c72715a69181b1644406aeec3754f90bc1e9c8ffe47ff23958959633d5f",
+    "game/src/game/unit_sounds.gd": "eda13465eaa047897e522af4edcc8910a3a0a284ad721c9dcd0c6b0dc72f876d",
+    "game/src/game/world.gd": "fbb5d2d880f21e2916cefe9d986bc54d536369f0dae34e0cbd976ccf934b8c25",
+    "game/src/ui/minimap.gd": "bc876313bec9914c59fb5bcc71eddf30296026bf751bfefbe9b283621db05cef",
+    "game/src/ui/party_faces.gd": "901f9d28e3120feab9474a39e25b4b53d78f8fc41b6e898d7a17da111fe6a2e7"
+  },
+  "private_fixture_sha256": {
+    "original_gameplay_versioned.gd": "6430ab8ce22e49aba8b5073ec424a09d6c08818edcef85e42e41d15af340d817",
+    "original_city_gameplay.gd": "27e88289067b53634b2b130e549125b50fd76f24a66f84ef42398deb5ac82bb8",
+    "original_city_loop_gameplay.gd": "9f5dd06f4dc7c06dcbfd57ebb6ef59cf14f9f20ed753da70cdb77110c7b70b51"
+  },
+  "rejected": "One-second scheduling variants measured 56.12 and 54.88 FPS without a convincing gain over v3; retain 0.2 seconds / 8 queues. The 67% scale diagnostic measured 54.71 FPS without a material gain; keep 75%.",
+  "visual_evidence": "The frozen Original terrain control/specialized central region [350,400,1580,900] had identical pixels. The runtime options fixture passes 308 checks. The long walk final image was inspected: both characters are visible, the camera is above the ground, and no death dialog obscures gameplay.",
+  "desktop": "The 4K/max/Vulkan/Linux v2 candidate measured 63.58 FPS versus 67.20 for the control; no gain established. Later v3 and v6 attempts were aborted and excluded after unrelated Godot processes started. No Windows runtime access.",
+  "remaining": [
+    "Combat remains below 60 FPS with long frame spikes",
+    "Single-player simulation remains inline",
+    "Further complete-stage simulation gains: 60.5 simulated seconds still take about 36 real seconds",
+    "Windows D3D12 target validation",
+    "Packaging and platform lifecycle validation"
+  ],
+  "changes": [
+    "Suspend invisible, inaudible replica presentation; retain animation time and wake before observation",
+    "Retain the measured 0.2-second / 8-queue cadence",
+    "Fix the first sleeping frame when the actor callback precedes the world callback",
+    "Specialize disabled Original terrain shader branches; reuse visible/party rosters in minimap and party faces"
+  ]
+}

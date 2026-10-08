@@ -229,6 +229,17 @@ static func compose(code: String, lit := true, wrap := false) -> String:
 	# settings, so compile its current value and rebuild on that transition.
 	if _specialize_materials:
 		code = code.replace("ei_surface_fx.x", "1.0" if on("gfx_materials") else "0.0")
+		# Original terrain still paid for the large disabled detail/deformation
+		# branches on Adreno. Preserve per-sector uniforms while enabled; when
+		# the option is off, let the driver remove the unreachable work entirely.
+		if code.contains("#define EI_TERRAIN_LIGHT"):
+			if not on("gfx_terrain"):
+				code = code.replace("uniform float detail = 0.0;", "const float detail = 0.0;")
+			if not on("gfx_soft_ground"):
+				code = code.replace("uniform bool soft_ground = false;", "const bool soft_ground = false;")
+				code = code.replace("uniform bool soft_tracks = false;", "const bool soft_tracks = false;")
+			if not on("gfx_weather_surfaces"):
+				code = code.replace("ei_surface_fx.z", "0.0")
 	return _blend_fog(code, lit) if _vol_fog else code
 
 
@@ -249,14 +260,15 @@ static func _vertex_tail(code: String, tail: String) -> String:
 	return code
 
 
-## Shaders made by make_shader, recomposed when gfx_volumetric or
-## gfx_materials switches. Existing Shader/ShaderMaterial identities and
+## Shaders made by make_shader, recomposed when fog, material or terrain
+## options switch. Existing Shader/ShaderMaterial identities and
 ## their parameters survive the rebuild.
 ## (the FOG write is compile-time: Godot skips volumetric fog for every
 ## material that writes FOG).
 static var _made: Array = []   # [WeakRef(Shader), code, lit, wrap]
 static var _vol_fog := false
 static var _material_mode := -1
+static var _terrain_mode := -1
 static var _specialize_materials := not OS.get_cmdline_user_args().has("--ei-dynamic-material-shader")
 
 
@@ -272,10 +284,13 @@ static func make_shader(code: String, lit := true, wrap := false) -> Shader:
 
 static func _set_vol_fog(v: bool) -> void:
 	var mode := int(on("gfx_materials")) if _specialize_materials else -2
-	if v == _vol_fog and mode == _material_mode:
+	var terrain_mode := (int(on("gfx_terrain")) | (int(on("gfx_soft_ground")) << 1) \
+		| (int(on("gfx_weather_surfaces")) << 2)) if _specialize_materials else -2
+	if v == _vol_fog and mode == _material_mode and terrain_mode == _terrain_mode:
 		return
 	_vol_fog = v
 	_material_mode = mode
+	_terrain_mode = terrain_mode
 	var keep: Array = []
 	for r: Array in _made:
 		var sh := (r[0] as WeakRef).get_ref() as Shader

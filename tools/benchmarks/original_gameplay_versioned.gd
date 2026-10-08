@@ -1,0 +1,11 @@
+extends "user://portal_gameplay.gd"
+
+func _ready()->void:
+	GameData.options.merge({"aim_press_once":1,"auto_exit":0,"auto_graphics":1,"autosave":0,"brightness":50,"cam_follow":1,"cam_pan_speed":50,"cam_rotate_speed":50,"cam_see_through":1,"cam_wasd":1,"cam_zoom_speed":50,"camera_reverse_x":0,"camera_reverse_y":0,"camera_style":1,"confine_mouse":0,"contrast":50,"coop_clock":1,"coop_full_xp":1,"coop_player_names":1,"coop_scale":2,"coop_share_loot":1,"difficulty":0,"display_mode":1,"distant_ai":0,"enemy_hp_bars":1,"footprints":1,"fps_limit":0,"gamma":50,"gfx_bloom":1,"gfx_contact_shadows":1,"gfx_detailed_heads":1,"gfx_far_view":0,"gfx_firelight":1,"gfx_foliage_light":1,"gfx_grass":0,"gfx_hd_textures":0,"gfx_heat_haze":0,"gfx_lava_light":1,"gfx_lit_particles":1,"gfx_materials":0,"gfx_severed_limbs":1,"gfx_sharp_units":1,"gfx_sky":1,"gfx_soft_ground":0,"gfx_soft_particles":0,"gfx_ssao":0,"gfx_terrain":1,"gfx_torch_glow":0,"gfx_volumetric":0,"gfx_water":1,"gfx_water_reflections":0,"gfx_weather_surfaces":1,"gfx_wind":1,"item_icon_fit":1,"marks":1,"mechanism_motion":0,"merc_travel":0,"net_directory":0,"net_lan":0,"net_upnp":0,"net_websocket":0,"pad_cursor_speed":50,"pad_deadzone":13,"pad_enabled":1,"pad_glyphs":0,"pad_gyro":0,"pad_gyro_sensitivity":50,"pad_light":1,"pad_rumble":70,"pad_swap_sticks":0,"pad_target_radius":6,"pad_wheel_pause":1,"path_through":1,"phys_interp":1,"power_kbd":25,"power_mouse":50,"q_aa":0,"q_aniso":1,"q_shadow_fit":1,"q_shadows":0,"render_scale":2,"renderer":0,"resolution":0,"reverse_stereo":0,"revive":1,"rubber_select":2,"scroll_border":0,"select_type":0,"show_flying_hp":1,"show_fps":0,"show_path":1,"show_tutorial":1,"smile_faces":1,"sp_death_notice":1,"sp_full_xp":0,"start_zones":1,"switch_filters":1,"tooltip_time":2,"ui_active_buttons":1,"unit_fog":1,"village_start_view":0,"volume_sfx":100,"volume_stream":100,"volume_voice":100,"vsync":0},true)
+	GameData.options.merge(GfxDetect.original_look_values(true,{},-1),true)
+	if not GfxDetect.original_look_on(GameData.options):
+		push_error("Original look preset did not apply")
+		get_tree().quit(1)
+		return
+	print("DEVICE_PRESET original=",GfxDetect.original_look_on(GameData.options))
+	await super._ready()

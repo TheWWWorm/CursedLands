@@ -356,7 +356,7 @@ func _draw_marks(c: Vector2) -> void:
 		return
 	var mine := game.my_units()
 	var ending := String(game.world.zone.get("id", "")) == "gz20g"
-	for u: GameUnit in game.world.units.values():
+	for u: GameUnit in game.world.visible_units():
 		if u.dead or not UnitFog.listed(game, u):   # the player's list (UnitFog)
 			continue
 		var n := (u.pos - c) * 2.0 / _l * zoom

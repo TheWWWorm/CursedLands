@@ -19,6 +19,15 @@ func check(value: bool, label: String) -> void:
 		failures += 1
 		printerr("FAIL ", label)
 
+func uniform_names(shader: Shader) -> Array:
+	if DisplayServer.get_name() == "headless":
+		# Godot's dummy backend retains old uniform metadata on recompilation.
+		# Parse a fresh copy here; rendered runs inspect the actual live shader.
+		var current := Shader.new()
+		current.code = shader.code
+		shader = current
+	return shader.get_shader_uniform_list().map(func(u): return String(u.name))
+
 func _ready() -> void:
 	if DisplayServer.get_name() != "headless":
 		var camera := Camera3D.new()
@@ -71,11 +80,35 @@ func _ready() -> void:
 				check(not shader.get_shader_uniform_list().is_empty(), "detail/fog variant compiles")
 				check(shader.code.contains("vec4 ei_fogv") == fog, "requested fog path present")
 				await render_shader(shader)
+	# Toggle each terrain feature independently on existing ordinary/cached
+	# materials. Disabled constants must not strand the live uniforms or
+	# their per-sector values when the player restores the option.
+	for mask in [0, 1, 3, 2, 6, 7, 5, 4, 0]:
+		GameData.options.gfx_terrain = mask & 1
+		GameData.options.gfx_soft_ground = (mask >> 1) & 1
+		GameData.options.gfx_weather_surfaces = (mask >> 2) & 1
+		Gfx.apply_surface_options()
+		for i in [0, 7]:
+			var material := materials[i]
+			material.set_shader_parameter("detail", 1.0)
+			material.set_shader_parameter("soft_ground", true)
+			material.set_shader_parameter("soft_tracks", true)
+			var uniforms := uniform_names(shaders[i])
+			check(uniforms.has("detail") == bool(mask & 1), "terrain detail restores its live uniform")
+			check(uniforms.has("soft_ground") == bool(mask & 2), "deformation restores its live uniform")
+			check(uniforms.has("soft_tracks") == bool(mask & 2), "tracks restore their per-sector uniform")
+			check(material.shader == shaders[i] and material.get_shader_parameter("detail") == 1.0 \
+				and material.get_shader_parameter("soft_tracks") == true, "terrain switch retains material and values")
+			check(shaders[i].code.contains("ei_surface_fx.z") == bool(mask & 4), "weather can be toggled independently")
+			await render_shader(shaders[i])
 	Gfx._specialize_materials = false
 	Gfx.apply_surface_options()
 	for shader in shaders:
 		check(shader.code.contains("ei_surface_fx.x"), "dynamic diagnostic fallback restored")
 		check(not shader.get_shader_uniform_list().is_empty(), "dynamic fallback compiles")
 		await render_shader(shader)
+	for i in [0, 7]:
+		var uniforms := uniform_names(shaders[i])
+		check(uniforms.has("detail") and uniforms.has("soft_ground") and uniforms.has("soft_tracks"), "dynamic terrain fallback restores every option")
 	print("MATERIAL_SHADER_OPTIONS checks=", checks, " failures=", failures)
 	get_tree().quit(1 if failures else 0)
