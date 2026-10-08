@@ -31,13 +31,17 @@ extends RefCounted
 
 const HUMAN_CODES := ["hd", "bd", "lh", "rh", "ll", "rl"]
 const OTHER_CODES := ["hd", "bd", "h", "h", "l", "l"]
+## Immutable, mip-free RGBA8 image retained by the unit texture's producer.
+## Texture ownership also owns its CPU pixels; clearing a wound cache cannot
+## force another GPU readback of an otherwise unchanged outfit.
+const SOURCE_IMAGE := &"ei_wound_source"
 
 static var _images := {}      # layer file -> Image (or null)
 static var _layer_data := {}  # layer file -> original bytes, including PNT3 block skips
 static var _composites := {}  # "base instance id|mask|levels" -> Texture2D
-## Base texture instance id -> its RGBA8 image without mipmaps: get_image()
-## reads the texture back from the GPU (a RenderingServer sync), so once per
-## texture rather than once per wound combination.
+## Base texture instance id -> its immutable RGBA8 image without mipmaps.
+## Unit textures retain their source before upload. Other texture producers
+## keep the cached readback path, so custom materials remain supported.
 static var _bases := {}
 ## Remake (CPU): a new composite (layer decode, blends, mipmaps: 5–8 ms) is
 ## built on WorkerThreadPool; the texture is made and put on the materials
@@ -235,7 +239,7 @@ static func _wounded(base: Texture2D, mask: String, lv: PackedByteArray, human: 
 	if _composites.size() > 512:   # instance ids are never reused; just bound the memory
 		_composites.clear()
 		_bases.clear()
-	# Main thread: the archive reads and the GPU read-back of the base.
+	# Main thread: archive reads and the immutable CPU base for the worker.
 	var codes: Array = HUMAN_CODES if human else OTHER_CODES
 	var layers := []   # [name, Image or null, bytes to decode]
 	var any := false
@@ -257,13 +261,16 @@ static func _wounded(base: Texture2D, mask: String, lv: PackedByteArray, human: 
 		return base
 	var bid := base.get_instance_id()
 	if not _bases.has(bid):
-		var src := base.get_image()
+		var src: Image = base.get_meta(SOURCE_IMAGE) if base.has_meta(SOURCE_IMAGE) else null
+		if src == null:
+			src = base.get_image()
+			if src:
+				src = src.duplicate()
+				if src.is_compressed():
+					src.decompress()
+				src.clear_mipmaps()
+				src.convert(Image.FORMAT_RGBA8)
 		if src:
-			src = src.duplicate()
-			if src.is_compressed():
-				src.decompress()
-			src.clear_mipmaps()
-			src.convert(Image.FORMAT_RGBA8)
 			_bases[bid] = src
 	var job := {"base": base, "src": _bases.get(bid), "layers": layers, "out": null, "decoded": {}}
 	job.task = -1

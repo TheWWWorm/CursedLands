@@ -1176,8 +1176,10 @@ static func _compose(mask: String, layers: Array[String]) -> Texture2D:
 		base.blend_rect(img, Rect2i(Vector2i.ZERO, img.get_size()), Vector2i.ZERO)
 	var tex: Texture2D = null
 	if base:
+		var wound_source := base.duplicate() as Image
 		base.generate_mipmaps()
 		tex = ImageTexture.create_from_image(base)
+		tex.set_meta(UnitWounds.SOURCE_IMAGE, wound_source)
 	_textures[key] = tex
 	return tex
 
