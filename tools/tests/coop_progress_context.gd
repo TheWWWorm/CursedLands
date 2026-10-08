@@ -121,6 +121,8 @@ func _ready() -> void:
 		check(CoopProgress.main_hero(shaina).get("pos") == Vector2(20,30), "temporary substitute retains last protagonist location")
 		var waiting: Array = entry.party_context.parties.get("FSusel", [])
 		if not waiting.is_empty(): waiting[0].erase("pos")
+		var live_waiting: Array = s.state.coop.get("guest_roles", {}).get(1, {}).get("parties", {}).get("FSusel", [])
+		if not live_waiting.is_empty(): live_waiting[0].erase("pos")
 		var no_position := clone(origin)
 		CoopProgress.merge(no_position, s.coop.package(entry))
 		check(not waiting.is_empty() and not CoopProgress.main_hero(no_position).has("pos"), "waiting protagonist without a saved position does not inherit substitute-map coordinates")

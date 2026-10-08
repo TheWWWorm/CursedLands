@@ -1,0 +1,470 @@
+{
+  "date": "2026-10-08",
+  "baseline_commit": "d938e9da308d9d37cc3c13aa0a448f8c7e83e779",
+  "scope": "G08 live co-op temporary roles, separate waiting/current inventories, original stat/item transfers and legacy/reconnect handling. Focused gameplay validation only.",
+  "network_protocol": 11,
+  "contract": [
+    "Captivity, Nalo, Jun disguise and Shaina apply their original temporary body/equipment rules to guests, including visiting or disconnected saved guests. Ordinary LiA permanent chapter changes retain live guest heroes.",
+    "Each guest parks their own normal hero and purse. Captivity copies their own stats; Nalo and Shaina start with stock role abilities; Jun copies their own stats/equipment. Normal records return through the original operations.",
+    "Temporary class-only guests receive an empty private bag without cloning the shared host inventory. Only loot transferred by original party operations returns to the shared bag; Nalo/Shaina-only bags remain parked.",
+    "Nested host/guest rewards and campaign party switches resume the correct current purse even when class guests enter or leave temporary private inventory.",
+    "Live role restrictions are independent of quest-credit eligibility. Eligible standalone guest saves retain the guest's played temporary role and private loot; uncredited travel cannot advance the saved checkpoint.",
+    "Extra actor deployment names are unique and link on both peers; native narrative Hero/Nalo/Shaina remains host-controlled. Network display names, including ::, do not override original CopyStats references.",
+    "New late arrivals and old saves reconstruct the inspected original role setup. Existing saved journals rebind to live roster records; offline old-save guests follow subsequent role switches before reconnect.",
+    "Work runs on party operations, deployment and progress snapshots, outside per-actor tick loops. No performance gain is claimed."
+  ],
+  "source_sha256": {
+    "game/src/game/campaign_state.gd": "3a7f88372e3e59d4b90e1e858c82864db45ec7650895e2e7955e5af781babde3",
+    "game/src/game/coop_guest_roles.gd": "600057da4cba14e41fb21e6d0440c25c19f5b932860209a23fdf9753a295e3c6",
+    "game/src/game/coop_guest_roles.gd.uid": "4f54d41ac79b24720973ec671f1afe1b77c7e73cb9100e70a97caf4f2ddf6019",
+    "game/src/game/coop_party_progress.gd": "1b9a0041d6ea81bb3038f808ade49328753cabcec79f4011aad46c8288abe7aa",
+    "game/src/game/coop_progress.gd": "1e1789c63105a4607ec8416e4becc23905496d58ea4fb4d70539780e6c64c49e",
+    "game/src/game/net_status.gd": "f199d796477bb9d5b26b42a44b0a5f7ae6841c090ebb45403412fff9d199bcba",
+    "game/src/game/session.gd": "b5fd112c22bc4aed9214c24c102b823ea1f914409d79b12835aa2069d0b7c6a4",
+    "tools/tests/campaign_roster.gd": "49cce7a4e6aea418f2dd348ce22082fe719e34ca37174c186805b1aa3da4010d",
+    "tools/tests/coop_guest_roles.gd": "be08f73018774c4c6c286f5b4cd6d211503fc2f282fab9c73666d241920c801e",
+    "tools/tests/coop_guest_roles_net.gd": "8bccf75bbc623b6c341eea3f57e933a6c4fcb94e3f2e57d4c98c5e9f1e82c9c4",
+    "tools/tests/coop_party_switch.gd": "33633a147d9e36455e38c07903ea493f83edae52a339fd93a917013fe032f3eb",
+    "tools/tests/coop_progress_context.gd": "ab4a375ed78e5575e7a030c533fc3cd0044805170837d16fd4dcd3a46a88afb6"
+  },
+  "original_script_sha256": {
+    "inspection/samples/scripts/bz7g.txt": "3c583037098aafaac673d315f6f2913b1765187f6d148bc224d29fb185be3fae",
+    "inspection/samples/scripts/bz13h.txt": "be547dfde335882ca4c05be68cda94cf46f3b30a0fa28478b3da8e25dc5ad2e5",
+    "inspection/samples/scripts/zone15.txt": "aecf8f7e00c75e9570001294bbc247bbf4e9a987a688c6e3d158505a067385cc",
+    "inspection/lost-in-astral/scripts/bz5h.txt": "ab90326623f37b9c2e83632ab616938ff90a3f12615078cfcdbbe397a338b8e4"
+  },
+  "staged_source_equality": {
+    "checked_gd_uid_files": 417,
+    "excluded": "Private main entry point and platform native binaries",
+    "linux_candidate_mismatches": [],
+    "android_stage_mismatches": []
+  },
+  "production": {
+    "seconds": 5.971756006008945,
+    "command": [
+      "/home/llm2x/.local/bin/godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+      "--export-release",
+      "Linux",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps34/CPU.x86_64"
+    ],
+    "engine_source": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/fast-runtime.x86_64",
+    "errors": [],
+    "sha256": {
+      "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+      "CPU.pck": "0aa305c36863ebc864c726163c1f5af73303e24cf02f1415e8ec45924b5a1e12",
+      "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+    }
+  },
+  "baseline_runs": {
+    "gameplay-roles-net-base-before-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps32/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_guest_roles_net.gd",
+        "--label=gameplay-roles-net-base-before-01"
+      ],
+      "exit_code": 1,
+      "stopped": false,
+      "seconds": 15.92852897598641,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "88cbc861e0e6a75c9ee1586e7548f781f1d49b6797ed4511af2d75e562843b73",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-roles-net-base-before-01.log",
+      "checks": 14,
+      "failures": 2
+    },
+    "gameplay-roles-net-astral-before-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps32/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_guest_roles_net.gd",
+        "--label=gameplay-roles-net-astral-before-01"
+      ],
+      "exit_code": 1,
+      "stopped": false,
+      "seconds": 25.52895938200527,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "220761f650c491dcdc66d2e3f58b74c6887f26127a78e4b8e85a2fa128084e97",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-roles-net-astral-before-01.log",
+      "checks": 14,
+      "failures": 2
+    }
+  },
+  "production_runs": {
+    "gameplay-roles-base-production-02": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps34/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_guest_roles.gd",
+        "--label=gameplay-roles-base-production-02"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 2.004275321000023,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "a4f7f7a361946ad7545fa07f09a56f5bccacb91f3573062cd743bd82fe1e00da",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-roles-base-production-02.log",
+      "checks": 51,
+      "failures": 0
+    },
+    "gameplay-roles-astral-production-02": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps34/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_guest_roles.gd",
+        "--label=gameplay-roles-astral-production-02"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 2.304113474994665,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "0c591f8b8a1e10f63e7b0a59c6058cb357c2c276e63e615b172e3fd3f7a6c483",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-roles-astral-production-02.log",
+      "checks": 38,
+      "failures": 0
+    },
+    "gameplay-roles-context-base-production-02": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps34/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_progress_context.gd",
+        "--label=gameplay-roles-context-base-production-02"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 2.00364534399705,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "4b0599cb09ed8a5de126d4f0b4dc5f4196c7065607ab334aea3aae708edbb3c6",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-roles-context-base-production-02.log",
+      "checks": 69,
+      "failures": 0
+    },
+    "gameplay-roles-context-astral-production-02": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps34/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_progress_context.gd",
+        "--label=gameplay-roles-context-astral-production-02"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 2.4045251959760208,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "67fa8db9c8dd243fb4751211d07790591cdb2d68a3bb30997cbecdd25ef95f0c",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-roles-context-astral-production-02.log",
+      "checks": 73,
+      "failures": 0
+    },
+    "gameplay-roles-net-base-production-02": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps34/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_guest_roles_net.gd",
+        "--label=gameplay-roles-net-base-production-02"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 27.745696311001666,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "6c0fdd27fa36ba0b9563f4971c21a9bf7200ef15987d2a91e9c6147425d67e61",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-roles-net-base-production-02.log",
+      "checks": 31,
+      "failures": 0
+    },
+    "gameplay-roles-net-astral-production-02": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps34/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_guest_roles_net.gd",
+        "--label=gameplay-roles-net-astral-production-02"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 53.68750195601024,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "82bd4872cb5b9830b445dcaf8becc9614e6a97e14371e63d3663387988175304",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-roles-net-astral-production-02.log",
+      "checks": 31,
+      "failures": 0
+    }
+  },
+  "supporting_runs": {
+    "gameplay-roles-roster-base-source-01": {
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/campaign_roster.gd",
+        "--label=gameplay-roles-roster-base-source-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 3.2052189170208294,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "6b142ff6cf87821352a677b100fd1a1f8a2256345ef8208acb63c794bdf76be9",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-roles-roster-base-source-01.log",
+      "checks": 39,
+      "failures": 0
+    },
+    "gameplay-roles-switch-base-source-01": {
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_party_switch.gd",
+        "--label=gameplay-roles-switch-base-source-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 24.845410616020672,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "3ddc1a9d083b5eaced0ac4ad48ac286faec27b841dcb007e5380662ca29d1b92",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-roles-switch-base-source-01.log",
+      "checks": 23,
+      "failures": 0
+    },
+    "gameplay-roles-trade-source-01": {
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_trade.gd",
+        "--label=gameplay-roles-trade-source-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 27.445760989998234,
+      "errors": [],
+      "warnings": [
+        "WARNING: [Physics interpolation] Interpolated Camera3D triggered from outside physics process: \"/root/Main/@Node@8/TradeGuest/@Node3D@413/@Node3D@416/@Camera3D@417\" (possibly benign)."
+      ],
+      "log_sha256": "4bb5192c3847d88e34b858ba656934fde5df109a56ec17912c944bf572f948c9",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-roles-trade-source-01.log",
+      "checks": 31,
+      "failures": 0
+    },
+    "gameplay-roles-dependents-production-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps33/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/party_dependents.gd",
+        "--label=gameplay-roles-dependents-production-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 72.33119626098778,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "baea0715fb4b77c1759d4bbaa3b21b806ea4e2c94c8f7fc44c9161dbfa6cc86c",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-roles-dependents-production-01.log",
+      "checks": 23,
+      "failures": 0
+    }
+  },
+  "supporting_run_scope": "Roster and prior Nalo handoff checks use final source. Trade and companion/pet checks preceded the final offline-old-save/name-resolution refinement (dependents used export33). Final export34 role, progress and network checks above cover the refinement.",
+  "android": {
+    "artifact": {
+      "private_instrumented": false,
+      "engine_sha256": "424eaf73630ec110faf614f550f8047c24a78e224211df45d8b957bf03b7cc79",
+      "native_sha256": "231ad722fd1f9eb0b5b47d7c9a386931a95b9f7ccb404fd7773a1fc651564fb7",
+      "apk_sha256": "6c6397bd3ef7dbc25f0faaceec02fd5b34985a4092225e37251c34540bbeb74a",
+      "changes": [
+        "Temporary co-op guest roles, independent inventory, original role restoration and legacy offline migration; protocol 11"
+      ],
+      "baseline_apk": 65,
+      "accepted": true,
+      "acceptance_scope": "Focused LiA gameplay only: 38 role state and 31 actual ENet import/save/load/reconnect/return checks. No FPS, WAN, Windows or full-quest acceptance.",
+      "autorun": false,
+      "cleanup": {
+        "disabled_config": "files/bench-roles66-disabled.json",
+        "autorun_absent_shell_test_exit": 1,
+        "private_processes": [],
+        "installed_apk_sha256": "6c6397bd3ef7dbc25f0faaceec02fd5b34985a4092225e37251c34540bbeb74a",
+        "normal_app_unchanged": true
+      }
+    },
+    "source_receipt": {
+      "baseline_commit": "d938e9da308d9d37cc3c13aa0a448f8c7e83e779",
+      "scope": "G08 temporary live guest roles and private bags, original role restoration, old-save/offline projection; protocol 11",
+      "source_sha256": {
+        "game/src/game/coop_progress.gd": "1e1789c63105a4607ec8416e4becc23905496d58ea4fb4d70539780e6c64c49e",
+        "game/src/game/net_status.gd": "f199d796477bb9d5b26b42a44b0a5f7ae6841c090ebb45403412fff9d199bcba",
+        "game/src/game/coop_guest_roles.gd.uid": "4f54d41ac79b24720973ec671f1afe1b77c7e73cb9100e70a97caf4f2ddf6019",
+        "game/src/game/coop_party_progress.gd": "1b9a0041d6ea81bb3038f808ade49328753cabcec79f4011aad46c8288abe7aa",
+        "game/src/game/session.gd": "b5fd112c22bc4aed9214c24c102b823ea1f914409d79b12835aa2069d0b7c6a4",
+        "game/src/game/coop_guest_roles.gd": "600057da4cba14e41fb21e6d0440c25c19f5b932860209a23fdf9753a295e3c6",
+        "game/src/game/campaign_state.gd": "3a7f88372e3e59d4b90e1e858c82864db45ec7650895e2e7955e5af781babde3"
+      }
+    },
+    "runs": {
+      "gameplay-roles66-state-01": {
+        "receipt": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/gameplay-roles66-state-01.receipt.json",
+        "receipt_sha256": "c00169283f1a39e2ddaa38444c90bbd4d0cbd53d4d5138bf6170d525209f7d7a",
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/gameplay-roles66-state-01.log",
+        "log_sha256": "a1929cac1639682e8d1c5e92053af6e4a163002c39356e2345d29cdac9b57b68",
+        "checks": 38,
+        "failures": 0,
+        "seconds": 6.658592462539673,
+        "apk_sha256": "6c6397bd3ef7dbc25f0faaceec02fd5b34985a4092225e37251c34540bbeb74a",
+        "renderer": "gl_compatibility",
+        "workers": 4
+      },
+      "gameplay-roles66-net-01": {
+        "receipt": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/gameplay-roles66-net-01.receipt.json",
+        "receipt_sha256": "ab5dc2389f6d90f6be5ad715b3946cc2f0ed77f6faa37a9e004a3e6b96726743",
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/gameplay-roles66-net-01.log",
+        "log_sha256": "665bdf25fddbe34460f9833e8ff5655193203be0d0c8c43bf407dd94e2405515",
+        "checks": 31,
+        "failures": 0,
+        "seconds": 108.26376104354858,
+        "apk_sha256": "6c6397bd3ef7dbc25f0faaceec02fd5b34985a4092225e37251c34540bbeb74a",
+        "renderer": "gl_compatibility",
+        "workers": 4
+      }
+    }
+  },
+  "corrected_or_excluded_attempts": [
+    {
+      "runs": [
+        "gameplay-roles-import-01",
+        "gameplay-roles-base-source-01",
+        "gameplay-roles-astral-source-01"
+      ],
+      "reason": "Initial helper name collided with built-in seed and fixture inferred a Variant without an explicit type; corrected before accepted runs."
+    },
+    {
+      "runs": [
+        "gameplay-roles-context-base-source-01",
+        "gameplay-roles-context-base-source-02"
+      ],
+      "reason": "Context comparison exposed default/key-type normalization differences; final role overlays use the personal package representation."
+    },
+    {
+      "runs": [
+        "gameplay-roles-context-astral-source-01"
+      ],
+      "reason": "Fixture erased the private checkpoint pose but retained the now-authoritative live waiting pose; final fixture clears both to model a missing saved location."
+    },
+    {
+      "runs": [
+        "gameplay-roles-net-astral-source-01"
+      ],
+      "reason": "Client did not link unique guest deployment names to character records. Fixed client relinking."
+    },
+    {
+      "runs": [
+        "gameplay-roles-net-astral-source-02",
+        "gameplay-roles-net-base-source-01",
+        "gameplay-roles-net-base-source-02"
+      ],
+      "reason": "Fixture initially expected whole-chapter credit for a late arrival. Final fixture re-enters together to establish eligibility. Base source02 was interrupted while waiting on that invalid expectation."
+    },
+    {
+      "runs": [
+        "gameplay-roles-net-base-source-01",
+        "gameplay-roles-net-base-source-03"
+      ],
+      "reason": "A return fixture assumed VM deferred LeaveToZone was still queued. Final fixture waits for the actual destination."
+    },
+    {
+      "runs": [
+        "gameplay-roles-net-base-source-03"
+      ],
+      "reason": "Real stat-copy defect: a network deployment name shadowed the original Hero record, leaving captive strength at 23 instead of 31. Fixed guest context main-role resolution; final checks also include :: in a guest name."
+    }
+  ],
+  "limits": [
+    "Prepared transitions run real original instructions and ENet RPCs with unrelated AI/story threads paused. They are not full Nalo rescue, captivity, Jun or Shaina quest playthroughs.",
+    "ENet peers share one process with separate multiplayer APIs. No shipping separate-process initial-delivery, WAN latency or Windows runtime acceptance is inferred.",
+    "Linux headless uses safe render thread; Retroid uses Original-compatible GL on a private APK. Functional durations are not performance benchmarks.",
+    "Retroid currently has LiA test data; base temporary roles are validated on desktop. Base captivity script predicates and remaining G07 review remain open.",
+    "Protocol 11 requires matching peer builds. No new public release, push or normal Android installation change."
+  ]
+}

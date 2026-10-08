@@ -522,7 +522,7 @@ func fix_items() -> void:
 func party_records(player: int) -> Array:
 	var out := []
 	for h: Dictionary in heroes.get(player, []):
-		var rec := {"prototype": h.prototype, "parent_template": h.prototype, "name": h.get("unit_name", h.name),
+		var rec := {"prototype": h.prototype, "parent_template": h.prototype, "name": h.get("guest_unit_name", h.get("unit_name", h.name)),
 			"complexion": h.complexion, "player": 0, "kind": "UNIT", "type": 50}
 		rec.armors = PackedStringArray(h.get("armors", []))
 		rec.weapons = PackedStringArray(h.get("weapons", []))
@@ -685,7 +685,7 @@ func merc_record(m: Dictionary) -> Dictionary:
 
 func apply_hero(u: GameUnit) -> void:
 	for h: Dictionary in heroes.get(u.controller, []):
-		if String(h.get("unit_name", h.name)) == String(u.info.get("name", "")) or h.prototype == u.proto.get("name", ""):
+		if String(h.get("guest_unit_name", h.get("unit_name", h.name))) == String(u.info.get("name", "")) or h.prototype == u.proto.get("name", ""):
 			u.display_name = h.name
 			Combat.clear_natural_armor(u, h)
 			Combat.hero_stats(u, h)

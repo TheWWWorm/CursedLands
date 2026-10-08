@@ -2,6 +2,7 @@ class_name CoopProgress
 extends Node
 const TrainingRefund := preload("res://src/game/training_refund.gd")
 const PartyProgress := preload("res://src/game/coop_party_progress.gd")
+const GuestRoles := preload("res://src/game/coop_guest_roles.gd")
 ## Remake-only co-op feature: bring your own hero, shared progression.
 ## (Not in the original: the original network game played separate LMP maps with
 ## network characters;.)
@@ -458,6 +459,7 @@ func on_hello(pid: int, idx: int, player_name: String) -> void:
 	if data.has("party_context"):
 		e.party_context = data.party_context
 	joiners[key] = e
+	session.state.coop.get(GuestRoles.KEY, {}).erase(idx)
 	if session.world:
 		# Late join: the hero comes in place of any old one of this slot.
 		_drop_old_units(idx)
@@ -594,7 +596,7 @@ func purse_entry(player: int) -> Dictionary:
 	for e: Dictionary in joiners.values():
 		if int(e.idx) == player and e.get("purse") is Dictionary:
 			return e
-	return {}
+	return GuestRoles.purse(session.state, player) if session else {}
 
 
 ## Host: runs `f` with player `player`'s own purse and bag standing in for the
@@ -613,20 +615,27 @@ func with_purse(player: int, f: Callable, found := false) -> Variant:
 		# speaker's scope, then resume the outer command with its own bag.
 		var outer := _swap
 		var state := session.state
-		outer.e.purse.money = state.money
-		outer.e.purse.items = state.items
-		state.money = int(outer.money)
-		state.items = outer.items
+		if not outer.get("shared", false):
+			outer.e.purse.money = state.money
+			outer.e.purse.items = state.items
+			state.money = int(outer.money)
+			state.items = outer.items
 		_swap = {}
 		var nested = with_purse(player, f, found)
 		outer.money = state.money
 		outer.items = state.items
-		state.money = int(outer.e.purse.money)
-		state.items = outer.e.purse.items
+		# A party operation can change a class guest from the shared bag to
+		# a temporary private bag (or back) while this command is unwinding.
+		var resumed := purse_entry(int(outer.e.idx))
+		outer.shared = resumed.is_empty()
+		if not resumed.is_empty():
+			outer.e = resumed
+			state.money = int(resumed.purse.money)
+			state.items = resumed.purse.items
 		_swap = outer
 		return nested
 	var e := purse_entry(player) if _swap.is_empty() else {}
-	if e.is_empty():
+	if e.is_empty() and (player <= 0 or not _swap.is_empty()):
 		if not found or not sharing():
 			return f.call()
 		var before := _purse_now(player)
@@ -634,17 +643,21 @@ func with_purse(player: int, f: Callable, found := false) -> Variant:
 		_found(before)
 		return r0
 	var st := session.state
-	_swap = {"e": e, "money": st.money, "items": st.items}
-	st.money = int(e.purse.get("money", 0))
-	st.items = e.purse.get_or_add("items", [])
+	var shared := e.is_empty()
+	if shared: e = {"idx":player}
+	_swap = {"e": e, "money": st.money, "items": st.items, "shared":shared}
+	if not shared:
+		st.money = int(e.purse.get("money", 0))
+		st.items = e.purse.get_or_add("items", [])
 	var before := _purse_now(player) if found and sharing() else {}
 	var r = f.call()
 	if not before.is_empty():
 		_found(before)
-	e.purse.money = st.money
-	e.purse.items = st.items
-	st.money = int(_swap.money)
-	st.items = _swap.items
+	if not _swap.get("shared", false):
+		_swap.e.purse.money = st.money
+		_swap.e.purse.items = st.items
+		st.money = int(_swap.money)
+		st.items = _swap.items
 	_swap = {}
 	session.mark_dirty()
 	_flush_shared()
@@ -690,7 +703,7 @@ func sharing() -> bool:
 ## party, a script's reward).
 func _purse_now(player: int) -> Dictionary:
 	var key := "campaign"
-	if not _swap.is_empty():
+	if not _swap.is_empty() and not _swap.get("shared", false):
 		key = "p%d" % int(_swap.e.idx)
 	elif not purse_entry(player).is_empty():
 		key = "p%d" % player
@@ -952,23 +965,27 @@ func party_operation(op: String, args: Array) -> void:
 		var hero: Dictionary = roster[0] if not roster.is_empty() else e.hero_in
 		var purse: Dictionary = {"money": session.state.money, "items": session.state.items} \
 			if not _swap.is_empty() and int(_swap.e.idx) == int(e.idx) else e.purse
-		PartyProgress.personal(context, hero, purse, false)
+		var personal := GuestRoles.personal(session, int(e.idx), hero, purse)
+		PartyProgress.personal(context, personal.hero, personal.purse, false)
 		PartyProgress.dependents(context, session.state, e)
+		GuestRoles.progress(session, int(e.idx), context)
 		PartyProgress.operation(context, op, args)
 		e.party_context = PartyProgress.capture(context)
+	with_campaign_purse(GuestRoles.operation.bind(session, op, args))
 
 
 func package(e: Dictionary) -> Dictionary:
 	var st := session.state
 	var roster: Array = st.heroes.get(int(e.idx), [])
-	var hero: Dictionary = (roster[0] if not roster.is_empty() else e.hero_in as Dictionary).duplicate(true)
+	var personal := GuestRoles.personal(session, int(e.idx), roster[0] if not roster.is_empty() else e.hero_in as Dictionary, e.get("purse", {}))
+	var hero: Dictionary = personal.hero.duplicate(true)
 	var zones: Dictionary = (e.credits.zones as Dictionary).duplicate()
 	if e.in_sync and e.clean and e.present and session.world and session.zone_id:
 		zones[session.zone_id] = (st.zones.get(session.zone_id, {}) as Dictionary).duplicate(true)
 	var move := {}
 	if e.in_sync and e.clean and e.present and session.zone_id:
 		move = {"zone": session.zone_id, "world_time": st.world_time, "day": st.day}
-	var purse: Dictionary = e.get("purse", {})
+	var purse: Dictionary = personal.purse
 	var context := PartyProgress.read(e.get("party_context"))
 	var party_context := {}
 	if context == null:
@@ -982,6 +999,7 @@ func package(e: Dictionary) -> Dictionary:
 			PartyProgress.personal(context, hero, purse, true)
 			if e.clean and e.present:
 				PartyProgress.dependents(context, st, e)
+			GuestRoles.progress(session, int(e.idx), context)
 			party_context = PartyProgress.capture(context)
 			e.party_context = party_context.duplicate(true)
 			e.context_checkpoint = {"party_context": party_context.duplicate(true), "move": move.duplicate()}

@@ -1017,6 +1017,7 @@ func _deploy_parties(z: Dictionary, entrance: int) -> void:
 	for pid in players:
 		var idx: int = players[pid].index
 		if lmp.is_empty():
+			coop.GuestRoles.ensure(self, idx)
 			preload("res://src/game/script/camp_grants.gd").catch_up(state, idx)
 		for rec: Dictionary in state.party_records(idx):
 			var p := rect.get_center() + Vector2(slot % 3 - 1, slot / 3) * 1.5
@@ -2442,6 +2443,7 @@ func redeploy_party(player: int) -> void:
 			if u: announce_unit(u)
 			slot += 1
 		state.replay_restored(world)
+		coop.GuestRoles.redeploy(self)
 	broadcast({"t": "party"})
 	sync_state()
 
@@ -4092,7 +4094,7 @@ func _relink_heroes() -> void:
 		if u.controller < 0:
 			continue
 		for h: Dictionary in state.heroes.get(u.controller, []):
-			if String(h.get("unit_name", h.name)) == String(u.info.get("name", "")):
+			if String(h.get("guest_unit_name", h.get("unit_name", h.name))) == String(u.info.get("name", "")):
 				u.set_meta("hero", h)
 				u.display_name = h.name
 				Combat.sync_natural_armor(u, h)   # as on the host (cleared when deployed)
@@ -4221,6 +4223,11 @@ func _spawn_late_joiner(idx: int, pid: int) -> void:
 	if lmp_travel:
 		lmp_travel.join(idx, pid)
 		return
+	if coop.GuestRoles.ensure(self, idx):
+		for u: GameUnit in world.units.values().duplicate():
+			if (u.controller == idx or int(u.get_meta("orphan_of", -1)) == idx) and u.has_meta("hero") and not u.get_meta("hero").has("merc"):
+				world.remove_unit(u)
+				broadcast({"t":"remove", "uid":u.uid})
 	var repaired := preload("res://src/game/script/camp_grants.gd").catch_up(state, idx) if lmp.is_empty() else false
 	var leader: GameUnit = null
 	for u: GameUnit in world.units.values():

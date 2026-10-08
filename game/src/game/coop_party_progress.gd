@@ -93,6 +93,7 @@ static func personal(st: CampaignState, hero: Dictionary, purse: Dictionary, pos
 	if not h.is_empty():
 		for k in ["prototype", "unit_name", "complexion", "voice", "name"]:
 			if old.has(k): h[k] = old[k]
+			elif k == "unit_name": h.erase(k)   # keep the original main Hero fallback
 		var body: Dictionary = hero if positions and st.current_party == name else old
 		for k in ["pos", "mana", "gait", "hp", "body", "dead", "blood_pool"]:
 			if body.has(k): h[k] = body[k].duplicate(true) if body[k] is Dictionary or body[k] is Array else body[k]
