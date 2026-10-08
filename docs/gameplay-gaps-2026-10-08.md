@@ -24,7 +24,7 @@ The additional [campaign audit](/home/llm2x/Documents/EI/local/implementation-ga
 | U14 | Long paths have no preview line. | Fixed 90-metre anchor culling and route truncation. Long routes span the full length with the same 2,500-dot budget; short-route spacing and action stopping distance are preserved. Nine production checks and rendered destination review pass. |
 | U15 | Classic peaceful zones allow keyboard/controller forced attack, spells and crouching. Enforce at authority as well as UI. | Classic safe-zone restrictions enforced in authority and input paths, including keyboard/controller prediction. Original-data command and movement regression passes; scripts retain their authored commands. |
 | U16 | Base campaign lizards lack visible pitchforks. | Restored the original unmoli natural trident, which was filtered as an equipment variant. Original camp model and explicit part-omission checks pass; rendered comparison inspected. |
-| U17 | Dialogue camera is obstructed by scenery. | Open |
+| U17 | Dialogue camera is obstructed by scenery. | Clear authored shots stay unchanged; blocked shots try nearby angles/heights against terrain and actual scenery triangles. Nine production checks and a rendered 81-shot original-camp probe pass. Full dialogue/mobile coverage pending. |
 | U18 | Spell icons show prototype colors instead of the actual spell's colors. | Finished containers now use the original coloured spell artwork; keystones keep prototype artwork. Rendered fire/lightning comparison inspected. |
 | U19 | Invisible zero-price rune appears in Gipath. | No empty modifier codes or zero-price runes found in generated base shop stock. User clarified the label is “Руна”, sale value 0 and no 3D model. Trace modifier/deconstruction paths; no speculative item deletion. |
 | U20 | Repeated identical items for sale create separate stacks; merge into the current sale stack. | Buy/sell piles group identical strings into counted stacks, including more than eight copies. Wear/charge distinctions and eight distinct slots remain. Rendered shop layout inspected. |
@@ -70,3 +70,5 @@ The quest checkpoint distinguishes unit-carried `RemoveQuestItem` from player-ba
 [Path validation](gameplay-path-validation.json) records the bounded long-route resampling and distant-camera rendering regression. Both defects fail in the prior production export; the corrected exported build passes all nine checks.
 
 [Lizard validation](gameplay-lizard-validation.json) records the missing original trident in the previous build and the corrected production render.
+
+[Dialogue-camera validation](gameplay-dialog-camera-validation.json) records the blocked-view/open-gap regression and real camp geometry probe. The search uses the engine’s cached triangle tree and recomputes object transforms so moved doors do not leave stale obstacles. This is a presentation fix, not a new FPS result.
