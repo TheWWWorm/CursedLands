@@ -1,21 +1,26 @@
 # Owned renderer adaptations — 8–9 October 2026
 
-Worktree: `/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008`
+Original renderer worktree: `/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008`
 
-Branch: `improve/owned-renderer-wounds-textures`
+Original branch: `improve/owned-renderer-wounds-textures`
 
 Starting commit: `3172ede12a5f41b0182c34a70b5eeda787c95e52`
 
 The source audit and priorities are in
 [OWNED_RENDERER_IMPROVEMENT_HANDOFF.md](/home/llm2x/Documents/EI/OWNED_RENDERER_IMPROVEMENT_HANDOFF.md).
-This checkout is isolated from the ongoing work in
+The renderer work was initially isolated from the concurrent work in
 [Optimize game performance](codex://threads/01a117f6-fd90-7190-be5e-9fc0c2bc06aa).
 That chat was addressing runes, dialogue cameras, Shelter co-op departure,
 party/pet persistence and ability pricing, then creature visibility and low FPS
 after a Catacombs transition during this batch. Its checkout is
 `/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo`.
-Only this worktree and a separate QA directory were changed. No active release
-checkout, installed build, Android device or real save profile was modified.
+During that stage, only the renderer worktree and a separate QA directory were
+changed. On 9 October, with the other chat stopped and explicit user
+authorization, both histories were combined at `f6c8922` and the canonical
+checkout above was advanced to it. **Continue in that canonical checkout on
+`fix/catacomb-coop-deck`, with protocol 13.** The integration section records
+the validation. Installed builds, Android devices and real save profiles were
+not modified by this renderer work.
 
 P1 and P2 were selected in the audit's priority order because they can be
 implemented in texture-loading/composition code without changing those gameplay
