@@ -3760,6 +3760,9 @@ func _sync_transform(draw_dt := -1.0) -> void:
 			_draw_move_speed = direction.length() * float(sample.v) * SPEED_SCALE
 	if not world.authority:
 		var elapsed := get_physics_process_delta_time() if draw_dt < 0.0 else draw_dt
+		# Snapshot arrival intervals are unscaled; at 2x a scaled delta would
+		# finish each glide halfway to the next packet and then stop moving.
+		elapsed /= maxf(Engine.time_scale, 0.001)
 		p = net_view.step(pos, elapsed)
 		yaw = net_view.step_yaw(facing, elapsed)
 	# Advance smoothing before checking the cache. Once it reaches the

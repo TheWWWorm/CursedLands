@@ -1,0 +1,184 @@
+{
+  "baseline_commit": "450e411",
+  "finding": "NetSmooth derives speed from real-time packet spacing, but both the batched native placement caller and scalar unit caller supplied Engine.time_scale-scaled frame delta. At 2x, a 100 ms glide finished in 50 ms and stood still until the next packet.",
+  "change": "Convert only client placement delta back to wall time. Animation, effects and simulation retain scaled time; direct placements and zero-time updates retain their behavior. No native binary or packet format change.",
+  "fixture_sha256": "bfca6f3b7c4af29a3fcddbf688c66c205e5fa1b1dff5116768f9c007ec563c86",
+  "export": {
+    "seconds": 5.922192655998515,
+    "command": [
+      "/home/llm2x/.local/bin/godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+      "--export-release",
+      "Linux",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps21/CPU.x86_64"
+    ],
+    "engine_source": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/fast-runtime.x86_64",
+    "errors": [],
+    "sha256": {
+      "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+      "CPU.pck": "060ce655669f4294d14baa18c598b4d0c4d64d0b91d308550162ce5d29201d87",
+      "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+    }
+  },
+  "runs": {
+    "gameplay-network-clock-before-02": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps20/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/network_render_clock.gd",
+        "--label=gameplay-network-clock-before-02"
+      ],
+      "exit_code": 1,
+      "stopped": false,
+      "seconds": 1.7033901960239746,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "log_sha256": "650f6b0272daec73a7dfb3c52caf671b41486234a4d01090e0c4996ceb3425ab",
+      "checks": 145,
+      "failures": 64,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-network-clock-before-02.log"
+    },
+    "gameplay-network-clock-after-01": {
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/network_render_clock.gd",
+        "--label=gameplay-network-clock-after-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 2.90406839599018,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "log_sha256": "d3129c2c68046423b236aa1d598c95bc2030d1dc5c34b633239b2db3080c7fb7",
+      "checks": 145,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-network-clock-after-01.log"
+    },
+    "gameplay-network-clock-production-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps21/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/network_render_clock.gd",
+        "--label=gameplay-network-clock-production-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 1.803673821996199,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "log_sha256": "621a08715cd36520a1a184561b879b510d2ab70c7af03afbac10588bd521bb59",
+      "checks": 145,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-network-clock-production-01.log"
+    },
+    "gameplay-client-placement-clock-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps21/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/client_placement.gd",
+        "--label=gameplay-client-placement-clock-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 1.7034644150116947,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "log_sha256": "2fe7477fa9be05e10a3322fcc078ec0cd6a181ee1130f22d4f836922db8069a9",
+      "checks": 18,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-client-placement-clock-01.log"
+    },
+    "gameplay-native-placement-clock-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps21/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/unit_presentation.gd",
+        "--label=gameplay-native-placement-clock-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 1.8037427559902426,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "log_sha256": "d22a8a2f390b65acdcef672375fff5f9041a930b23ca7586fd8598fdbf8992fa",
+      "checks": 40969,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-native-placement-clock-01.log"
+    }
+  },
+  "retroid": {
+    "receipt": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/gameplay-network-clock-56-01.receipt.json",
+    "receipt_sha256": "ce9684d941d94a4dec195a814f36e8aef96d152f73899adf6a3878b48917eba5",
+    "log_sha256": "5ad03d4cac3071e372101da30a68d4b447f8ceebff7c0d7bd321553fbe248997",
+    "checks": 145,
+    "failures": 0,
+    "errors": [],
+    "apk_sha256": "77df7db2346e9d66adec25a5189b4469c0977d80490e1a5da1dddd7b1f559050",
+    "renderer": "gl_compatibility",
+    "device": "Retroid Pocket 5"
+  },
+  "apk": {
+    "private_instrumented": false,
+    "engine_sha256": "424eaf73630ec110faf614f550f8047c24a78e224211df45d8b957bf03b7cc79",
+    "native_sha256": "231ad722fd1f9eb0b5b47d7c9a386931a95b9f7ccb404fd7773a1fc651564fb7",
+    "apk_sha256": "77df7db2346e9d66adec25a5189b4469c0977d80490e1a5da1dddd7b1f559050",
+    "changes": [
+      "Full-size spell, template and rune slot artwork",
+      "Campaign-valid LiA guests and chapter progress merge",
+      "Shelter ordinary exit destination",
+      "Co-op preview capture cadence and cancellation",
+      "Wall-time client interpolation at changed game speeds"
+    ],
+    "baseline_apk": 55,
+    "accepted": false
+  },
+  "coverage": [
+    "Six samples of each received position/facing over its 100 ms arrival interval at 0.5x, 1x, 2x and 3x.",
+    "Independent script smoothing and the real native world-roster callback; every native frame checks that the roster placed it.",
+    "Animation clock retains scaled time, teleport remains immediate, zero elapsed time holds position.",
+    "Existing ground-cache, placement invalidation, native/scalar parity and single-placement-per-frame checks."
+  ],
+  "excluded": [
+    "The initial before-01 probe did not register its unit in the world roster, so it exercised scalar placement with both smoothing implementations. It was replaced by before-02, which verifies every native roster callback."
+  ],
+  "limits": [
+    "Controlled arrival/frame timing, not an internet latency or packet-loss playthrough.",
+    "The change addresses accelerated/slow-motion stop-start rendering; it does not establish that all co-op lag or the reported sustained 4 FPS collapse is fixed.",
+    "No FPS gain is claimed; Windows runtime validation remains pending."
+  ]
+}
