@@ -87,7 +87,8 @@ static func hold(tree: SceneTree, zone: Dictionary, kind := NEW_ZONE) -> void:
 		await tree.process_frame   # another load's screen on its way: that load goes first
 	if _current and is_instance_valid(_current) and _current._early:
 		return   # already shown and presented (Session.load_game, then enter_zone)
-	begin(tree, zone, kind)
+	if not (_current and is_instance_valid(_current) and _current._waiting_remote):
+		begin(tree, zone, kind)
 	var ls := _current
 	if ls == null:
 		return
@@ -110,7 +111,7 @@ static func hold(tree: SceneTree, zone: Dictionary, kind := NEW_ZONE) -> void:
 ## rebuilds. The later local begin reuses it, and reliable load-end removes
 ## it only after the host's state / zone have both arrived.
 static func wait_remote(tree: SceneTree, zone: Dictionary) -> void:
-	begin(tree, zone, CLIENT)
+	prepare(tree, zone, CLIENT)
 	var ls := _current
 	if ls == null:
 		return
@@ -126,6 +127,15 @@ static func wait_remote(tree: SceneTree, zone: Dictionary) -> void:
 			ls._idle = 0
 
 
+## Start a transaction before closing old UI. Network acknowledgement can
+## take many frames; the unfinished-load watchdog must not remove this screen.
+## On deferred surfaces hold() still waits for its actual presentation.
+static func prepare(tree: SceneTree, zone: Dictionary, kind := NEW_ZONE) -> void:
+	begin(tree, zone, kind)
+	if _current and is_instance_valid(_current):
+		_current._waiting_remote = true
+
+
 static func movie_for(zone: Dictionary) -> String:
 	var id := String(zone.get("id", ""))
 	if id in ["gz1g", "bz7g"]:
@@ -136,7 +146,7 @@ static func movie_for(zone: Dictionary) -> String:
 
 ## Opens the screen for a zone load and shows its first frame (0, a joiner 8).
 static func begin(tree: SceneTree, zone: Dictionary, kind := NEW_ZONE) -> void:
-	if _current and is_instance_valid(_current) and _current._early and not _current._holding:
+	if _current and is_instance_valid(_current) and (_current._early or _current._waiting_remote) and not _current._holding:
 		_current._early = false   # shown by `hold` for this load: kept
 		_current._kind = kind
 		_current._idle = 0

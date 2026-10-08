@@ -1,0 +1,268 @@
+{
+  "baseline_commit": "329512ca9c4e78f0061629b4e599e11f4f861ae7",
+  "export": {
+    "seconds": 5.923663270979887,
+    "command": [
+      "/home/llm2x/.local/bin/godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+      "--export-release",
+      "Linux",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps03/CPU.x86_64"
+    ],
+    "engine_source": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/fast-runtime.x86_64",
+    "errors": [],
+    "sha256": {
+      "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+      "CPU.pck": "9d0493f1c5c76e2790c35dfd63523a2e20544ecbec9ba91c43b7ccbe7ee66381",
+      "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+    }
+  },
+  "tests": {
+    "gameplay-roster-base-03": {
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/campaign_roster.gd",
+        "--label=gameplay-roster-base-03"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 3.1049519520020112,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "log_sha256": "6851a7043303dd9efc85f3e036456427bc8970d56b6bc9c99a4165e7052463ca"
+    },
+    "gameplay-roster-astral-02": {
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/campaign_roster.gd",
+        "--label=gameplay-roster-astral-02"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 3.405923990998417,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "log_sha256": "44e9486c2ee2c55cd289b4a573eb0be9899d29a892956c6b41bb12664e4feb33"
+    },
+    "gameplay-roster-release-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps03/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/campaign_roster.gd",
+        "--label=gameplay-roster-release-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 1.9033578020171262,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "log_sha256": "40a6514eaa778b87f064bbfd0bc9b42cae3878c40cbae61ed9a3605aee4be20e"
+    },
+    "gameplay-camp-grants-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps03/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camp_grants.gd",
+        "--label=gameplay-camp-grants-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 1.9035833860107232,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "log_sha256": "b722ca142a6805fa061243a7804baf0920ceb712b215cdef993707019cd56c55"
+    },
+    "gameplay-nalo-network-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps03/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_party_switch.gd",
+        "--label=gameplay-nalo-network-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 20.926256333012134,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "log_sha256": "4a20cd9785e82bda009e90ff4449a8913be660336867a7f24e2deca90ea609f1"
+    },
+    "gameplay-transfer-death-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps02/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--resolution",
+        "1600x900",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_zone_transfer.gd",
+        "--label=gameplay-transfer-death-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 75.8337198770023,
+      "errors": [],
+      "warnings": [
+        "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+      ],
+      "log_sha256": "d9ddfe3060b84db8504f2970d3637e2acc586944d3955a3c12519baeba1501a1"
+    },
+    "gameplay-transfer-movie-04": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-transfer01/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--resolution",
+        "1600x900",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_movie.gd",
+        "--label=gameplay-transfer-movie-04"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 28.24905837100232,
+      "errors": [],
+      "warnings": [
+        "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+      ],
+      "log_sha256": "8b778a4dfc85902480ecf966abbcb3068165e053fa0d87494f57c3979bada665"
+    },
+    "gameplay-transfer-base-03": {
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_zone_transfer.gd",
+        "--label=gameplay-transfer-base-03"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 40.169173792004585,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature.",
+        "WARNING: [Physics interpolation] Interpolated Camera3D triggered from outside physics process: \"/root/Main/@Node@8/Client/@Node3D@410/@Node3D@413/@Camera3D@414\" (possibly benign)."
+      ],
+      "log_sha256": "07f69dc67fe9d83673321b5b7a67ce4c2fa141ae857f63227e4b5caac35d6a46"
+    },
+    "gameplay-transfer-baseline-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/throughput-worker-cadence02/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_zone_transfer.gd",
+        "--label=gameplay-transfer-baseline-01"
+      ],
+      "exit_code": 1,
+      "stopped": false,
+      "seconds": 36.34498990298016,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "log_sha256": "514afdbe614fec9a4dfcb385223b715d6aa26d767a02a956a633d0fae0f7ce83"
+    },
+    "gameplay-roster-base-before-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/throughput-worker-cadence02/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/campaign_roster.gd",
+        "--label=gameplay-roster-base-before-01"
+      ],
+      "exit_code": 1,
+      "stopped": false,
+      "seconds": 1.8029414560005534,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "log_sha256": "b94466935c779a60eb041a483fee98ee4a0c8bcf5ac752678a97e0e0361cfdff"
+    }
+  },
+  "limitations": [
+    "No Windows or Retroid runtime validation of this gameplay checkpoint yet.",
+    "Rendered two-world fixtures need safe render-thread mode; separate-thread failures were not counted as passes.",
+    "Prepared original-data states are not complete campaign playthroughs.",
+    "Roster/death fixture source expanded after earlier baseline tests; compare only shared assertions."
+  ],
+  "source_sha256": {
+    "tools/tests/coop_zone_transfer.gd": "ee95d7ede638b32fe728b204d1506dff7f08fc60fc16ff067418dc9aa85aac36",
+    "tools/tests/coop_story.gd": "2d35e5d2f6f2ad8bb510d3f39e9022ca42dd0005ced74810c777b9471ce8a317",
+    "tools/tests/coop_party_switch.gd": "58d705aa367244ad441db38bd44e60c22a60926adb7a44fd7c1825f38a5d102b",
+    "tools/tests/coop_movie.gd": "0cf8ca9655095a0c2bd347289a5c5169671696fb83e2f3f370591f6b58a37340",
+    "tools/tests/campaign_roster.gd": "46aa3edd3068efe01db6fbaf476430f8a0701e32d31ede4e0da1bd23793a62a8",
+    "game/src/game/coop_progress.gd": "1cd6d5cf931cc031fdaa51ed30136c7e8ac9dbed78018c1eb0b1b9f397c1fadb",
+    "game/src/game/game.gd": "b85dceecf1098aad53a33d3a552cd5eee51c8ca3a512b7a6d38a6e9f4c54438a",
+    "game/src/game/net_status.gd": "ad56725ac4841bb6d0e196eea341901a6d78d2c44551adb0b1c8d952299680a5",
+    "game/src/game/script/camp_grants.gd": "5b4e74e2a655245ffadde263a374e7dab86e79ecbf432769ad208894b8094531",
+    "game/src/game/script/vm.gd": "87e21a9afd45d6d3715f04654e6c9eea97b48600e131153d66fa3850824bd0fe",
+    "game/src/game/session.gd": "6042809ffc1e4d87baa51d79be775f17977708684cc12040d5fbe392ff28c15b",
+    "game/src/ui/game_hud.gd": "e4dba3cab39f42c14545a2bf30d3d7d79b79076ca9000809c66f9d04a91cfd84",
+    "game/src/ui/loading_screen.gd": "a06e13aa486f3b1f9d153743425ca77504fcd4a11fef9851cf8d0cf5308181bb"
+  }
+}

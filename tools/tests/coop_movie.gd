@@ -45,7 +45,10 @@ func _ready() -> void:
 	host.state.set_var(0,"b.bz1h.brief_2",1)
 	host.broadcast({"t":"movie","name":"teleprt1.bik"})
 	await host.enter_zone("bz1h",1,false)
-	require(await until(func(): return client.world != null and client.zone_id=="bz1h" and not client._remote_loading))
+	var arrived := await until(func(): return client.world != null and client.zone_id=="bz1h" and not client._remote_loading)
+	if not arrived:
+		print("MOVIE_LOAD_STATE ", {"zone":client.zone_id,"holding":client._zone_holding,"held":client._zone_held.size(),"loading":client.loading_game,"remote":client._remote_loading,"peers":client.players,"paused":get_tree().paused})
+	require(arrived)
 	check(hm.starts==1 and cm.starts==1,"zone replay does not restart the movie")
 	var t := host.world.time
 	for i in 25: await get_tree().process_frame

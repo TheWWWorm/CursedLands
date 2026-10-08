@@ -100,7 +100,7 @@ static func apply(vm: ScriptVM, script: String, call_name: String, args: Array, 
 ## the old 25/25/25 guest failure. Modified legacy records are left alone.
 ## Partial new receipts can safely finish after reload or a later join.
 static func catch_up(st: CampaignState, index: int) -> bool:
-	if index <= 0 or not st.current_party.is_empty(): return false
+	if index <= 0: return false
 	var branch := chosen(st)
 	var roster: Array = st.heroes.get(index, [])
 	if branch.is_empty() or roster.is_empty(): return false

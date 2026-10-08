@@ -176,18 +176,30 @@ static func fresh_state() -> CampaignState:
 	return st
 
 
-## The save's main hero (the one waiting while a scripted party plays).
+## Base campaign substitutions leave Zak in the original party. LiA's named
+## parties are Kir's normal chapter progression; only Shaina is temporary
+## (bz5h returns explicitly to FSusel).
+static func main_party(st: CampaignState) -> String:
+	if st.campaign_id != CampaignProfile.ASTRAL:
+		return ""
+	if st.current_party == "Shaina" and st.parties.has("FSusel"):
+		return "FSusel"
+	return st.current_party
+
+
+## The save's protagonist, including completed LiA chapter progression.
 static func main_hero(st: CampaignState) -> Dictionary:
-	var roster: Array = st.heroes.get(0, []) if st.current_party.is_empty() else st.parties.get("", [])
+	var party := main_party(st)
+	var roster: Array = st.heroes.get(0, []) if st.current_party == party else st.parties.get(party, [])
 	return roster[0] if not roster.is_empty() and roster[0] is Dictionary else {}
 
 
-## The save's main purse and bag ({money, items}; the waiting party's while a
-## scripted party plays). `items` is the save's own array.
+## The same protagonist's purse and bag. `items` is the save's own array.
 static func main_bag(st: CampaignState) -> Dictionary:
-	if st.current_party.is_empty():
+	var party := main_party(st)
+	if st.current_party == party:
 		return {"money": st.money, "items": st.items}
-	var b: Dictionary = st.party_bags.get_or_add("", {"items": [], "money": 0})
+	var b: Dictionary = st.party_bags.get_or_add(party, {"items": [], "money": 0})
 	return {"money": int(b.get("money", 0)), "items": b.get_or_add("items", [])}
 
 
@@ -556,6 +568,24 @@ func purse_entry(player: int) -> Dictionary:
 ## (loot, theft, a conversation's or a script's reward): with the option
 ## "coop_share_loot" the other players get a copy (share_found).
 func with_purse(player: int, f: Callable, found := false) -> Variant:
+	if not _swap.is_empty() and int(_swap.e.idx) != player:
+		# A shared dialogue can be closed by a different peer from its
+		# speaker. Commit the outer owner's bag before entering that
+		# speaker's scope, then resume the outer command with its own bag.
+		var outer := _swap
+		var state := session.state
+		outer.e.purse.money = state.money
+		outer.e.purse.items = state.items
+		state.money = int(outer.money)
+		state.items = outer.items
+		_swap = {}
+		var nested = with_purse(player, f, found)
+		outer.money = state.money
+		outer.items = state.items
+		state.money = int(outer.e.purse.money)
+		state.items = outer.e.purse.items
+		_swap = outer
+		return nested
 	var e := purse_entry(player) if _swap.is_empty() else {}
 	if e.is_empty():
 		if not found or not sharing():
@@ -580,6 +610,15 @@ func with_purse(player: int, f: Callable, found := false) -> Variant:
 	session.mark_dirty()
 	_flush_shared()
 	return r
+
+
+## Authored party operations belong to the campaign's protagonist. A guest
+## may close the dialogue while its personal bag is temporarily installed.
+## Keep that guest's rewards, restore the host bag for the party operation,
+## then resume the outer command with the same guest bag. The saved host
+## bag must now be the newly selected party's, not the one we started with.
+func with_campaign_purse(f: Callable) -> Variant:
+	return with_purse(0, f)
 
 
 # ---------------------------------------------------------------- shared loot

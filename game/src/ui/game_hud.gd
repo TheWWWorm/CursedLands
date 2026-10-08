@@ -634,7 +634,7 @@ func on_event(e: Dictionary) -> void:
 		"saved":
 			notify("string notify_saving")
 		"load_begin":
-			_close_for_host_load()
+			_close_for_host_load(bool(e.get("travel", false)))
 		"load_end":
 			if game.session.online and not game.session.is_host:
 				notify("string notify_loading")
@@ -731,8 +731,8 @@ func _show_ending() -> void:
 ## Load screen closed without loading), go to the main menu (manager = 1
 ## ). Loading a save needs no result.
 func _show_game_over(event: Dictionary = {}) -> void:
-	if game.session.multiplayer_game and game.session.lmp.is_empty() and not event.get("scripted", false):
-		_show_coop_game_over()
+	if game.session.multiplayer_game and game.session.lmp.is_empty():
+		_show_coop_game_over(event)
 		return
 	if MessageBox.is_up(_game_over_box) or _game_over_load:
 		return
@@ -756,7 +756,7 @@ func _show_game_over(event: Dictionary = {}) -> void:
 
 ## Remake co-op has one save owner. A dead party can wait, hide this notice,
 ## or leave; only the host gets Load. A host load always dismisses it.
-func _show_coop_game_over() -> void:
+func _show_coop_game_over(event: Dictionary = {}) -> void:
 	if is_instance_valid(_death_notice) and _death_notice.visible:
 		return
 	GameSound.instance.ui("buttons\\gameover.wav")
@@ -766,13 +766,17 @@ func _show_coop_game_over() -> void:
 		_death_notice.chosen.connect(_on_death_notice)
 		_add_ui(_death_notice)
 	_death_notice.allow_load = game.session.can_manage_game()
-	_death_notice.still_dead = game.session.all_party_heroes_dead
+	# LiA can fail because a required companion died while other heroes
+	# remain alive. Only a host reload clears that authored failure.
+	_death_notice.still_dead = Callable() if event.get("scripted", false) else game.session.all_party_heroes_dead
+	_death_notice.title = GameData.text("string " + String(event.get("title", "game_over"))).strip_edges()
+	_death_notice.message = GameData.text("string " + String(event.get("text", "game_over_msg"))).strip_edges()
 	_death_notice.hint = "" if game.session.can_manage_game() else RemakeText.t("Waiting for the host to load the game.")
 	_death_notice.visible = true
 	_death_notice.queue_redraw()
 
 
-func _close_for_host_load() -> void:
+func _close_for_host_load(preserve_movie := false) -> void:
 	dismiss_death_notice()
 	if MessageBox.is_up(_item_info_box): _item_info_box.queue_free()
 	_game_over_load = false
@@ -784,6 +788,8 @@ func _close_for_host_load() -> void:
 		_save_load._close()
 	_close_menu()
 	for p in [_dialog, _inventory, _journal, _side_quests, _tutorial, _movie, _options]:
+		if p == _movie and preserve_movie:
+			continue
 		if is_instance_valid(p):
 			p.visible = false
 	if quests_screen:

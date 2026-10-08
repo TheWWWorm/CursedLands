@@ -337,7 +337,7 @@ func _rpc_chat(idx: int, player_name: String, text: String) -> void:
 # drops the connection.
 
 ## Remake co-op protocol; raise it when the messages change incompatibly.
-const PROTOCOL := 6   # local host ownership is separate from server authority
+const PROTOCOL := 7   # campaign orders and snapshots carry the loaded-world generation
 const CoopDb := preload("res://src/game/coop_db.gd")
 
 

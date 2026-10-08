@@ -508,18 +508,20 @@ func _call(name: String, a: Array, inst: Instance):
 		# the player's k-th party record (0x784 bytes each: the hero
 		# first, then the mercenaries), dead or hidden alike; none past the end.
 		"GetUnitOfPlayer":
-			var hs := _party_records()
+			var hs := _story_records(int(_num(v[0])))
 			var k := int(_num(v[1]))
 			return hs[k] if k >= 0 and k < hs.size() else null
 		"GetLeader":
-			var hs := heroes()
+			var hs := _story_records(int(_num(v[0]))).filter(func(u: GameUnit): return not u.dead and not u.hidden)
 			return hs[0] if not hs.is_empty() else null
 		# Builtin 0xd1 GetMercsNumber(player) ->: the party records
-		# whose unit exists and lives, minus one (the hero). Co-op: minus one
-		# per player.
+		# whose unit exists and lives, excluding the protagonist. Guest heroes
+		# and abandoned peer actors are not hired story companions.
 		"GetMercsNumber":
-			var alive := _party_records().filter(func(u: GameUnit): return not u.dead).size()
-			return float(maxi(0, alive - _player_count()))
+			var player := 0 if session.lmp.is_empty() else int(_num(v[0]))
+			var roster: Array = session.state.heroes.get(player, [])
+			var main: Dictionary = roster[0] if not roster.is_empty() else {}
+			return float(_story_records(player).filter(func(u: GameUnit): return not u.dead and not is_same(u.get_meta("hero", {}), main)).size())
 		# ---- unit queries
 		"GetX": return _xy(v[0]).x
 		"GetY": return _xy(v[0]).y
@@ -874,7 +876,7 @@ func _call(name: String, a: Array, inst: Instance):
 		# `from` into it; AddLoot adds them (merges stacks).
 		"CopyLoot", "AddLoot":
 			if n >= 3:
-				session.state.move_loot(str(v[1]), str(v[2]), name == "CopyLoot")
+				session.coop.with_campaign_purse(session.state.move_loot.bind(str(v[1]), str(v[2]), name == "CopyLoot"))
 				session.sync_state()
 		"Nop", "SetPlayerAggression":
 			pass
@@ -961,7 +963,7 @@ func _call(name: String, a: Array, inst: Instance):
 		"CopyItems":
 			session.state.copy_items(str(v[1]), str(v[2]))
 		"SetCurrentParty":
-			if session.state.set_current_party(str(v[1])):
+			if session.coop.with_campaign_purse(session.state.set_current_party.bind(str(v[1]))):
 				session.sync_state()
 		"AddUnitUnderControl":
 			var u := _unit(v[1])
@@ -1145,7 +1147,12 @@ func _player_count() -> int:
 
 func _refresh_heroes() -> void:
 	if globals.has("Heroes"):
-		globals["Heroes"] = heroes()
+		# The original deployment group retains corpses. Otherwise LiA's
+		# Every(Heroes, IsAlive) can never detect a required character's death.
+		# Extra co-op heroes use Session's death/revive rules; their death must
+		# not stand in for a required story companion's scripted failure.
+		var story := _story_records()
+		globals["Heroes"] = _party_records().filter(func(u: GameUnit): return story.has(u) or not u.dead and not u.hidden)
 
 
 func _get_object(id: int):
@@ -1173,7 +1180,7 @@ func _by_name(n: String):
 		return by_id
 	n = n.to_lower()
 	if n == "hero":
-		var hs := heroes()
+		var hs := _story_records()
 		return hs[0] if not hs.is_empty() else null
 	for u: GameUnit in world.units.values():
 		if String(u.info.get("name", "")).to_lower() == n:
@@ -1301,7 +1308,7 @@ func _party_records() -> Array:
 	var rank := {}
 	var companions: Array = session.state.mercs.values()
 	for u: GameUnit in world.units.values():
-		if is_instance_valid(u) and u.has_meta("hero"):
+		if is_instance_valid(u) and u.has_meta("hero") and u.controller >= 0:
 			out.append(u)
 			var h: Dictionary = u.get_meta("hero")
 			var roster: Array = session.state.heroes.get(u.controller, [])
@@ -1314,6 +1321,28 @@ func _party_records() -> Array:
 		if a.controller != b.controller:
 			return a.controller < b.controller
 		return rank[a][0] < rank[b][0] if rank[a][0] != rank[b][0] else rank[a][1] < rank[b][1])
+	return out
+
+
+## Authored indexes refer to the protagonist's active story roster, not the
+## number or ownership of co-op heroes. A recruited Kel stays slot 1 when a
+## guest controls her. Dead/hidden members still occupy their authored slot.
+func _story_records(player := 0) -> Array:
+	var party := _party_records()
+	if not session.lmp.is_empty():
+		return party.filter(func(u: GameUnit): return u.controller == player)
+	var out := []
+	for h: Dictionary in session.state.heroes.get(0, []):
+		for u: GameUnit in party:
+			if is_same(u.get_meta("hero", {}), h):
+				out.append(u)
+				break
+	for h: Dictionary in session.state.mercs.values():
+		if not session.state.merc_party_active(h): continue
+		for u: GameUnit in party:
+			if is_same(u.get_meta("hero", {}), h):
+				out.append(u)
+				break
 	return out
 
 

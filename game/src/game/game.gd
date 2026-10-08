@@ -1239,6 +1239,10 @@ func electrical_hit(e: Dictionary) -> void:
 func on_event(e: Dictionary) -> void:
 	sound.on_event(e)   # sounds of broadcast events (GameSound)
 	match String(e.get("t", "")):
+		"load_begin":
+			cancel_touch_target()
+			_dragging = false
+			_framing = false
 		"order_path":
 			if marks and int(e.get("to", -1)) == session.my_index:
 				marks.on_path(e)
@@ -1298,6 +1302,8 @@ static func block_refuses(t: String, village: bool) -> bool:
 
 
 func issue(cmd: Dictionary) -> void:
+	if session.loading_game:
+		return
 	var t := String(cmd.get("t", ""))
 	# A unit with flag (script BlockUnit, or saying a "say_block"
 	# line) is left out of the order (skip it; the

@@ -103,7 +103,7 @@ var swap: PlayerSwap
 var clock_paused := false
 var clock_speed := 0
 var host_clock := false
-## A host save-load is a reliable transaction: clients stop issuing orders
+## A host save-load or campaign transfer is a reliable transaction: clients stop issuing orders
 ## and present their loading screen before the host rebuilds the world.
 var loading_game := false
 var _load_serial := 0
@@ -783,9 +783,27 @@ func erase_quest_item(player: int, name: String) -> bool:
 ## mobile: the loading screen is put on screen first (LoadingScreen.hold),
 ## before anything changes; elsewhere it returns with the zone loaded.
 func enter_zone(id: String, entrance: int, autosave := true) -> void:
+	if loading_game:
+		return
+	if lmp.is_empty() and world != null and zone_exists(id) and campaign.zone(id).has("mpr"):
+		_begin_host_load(id, false)
+		await _complete_zone_travel(id, entrance, _load_serial, autosave)
+		return
 	if LoadingScreen.deferred() and zone_exists(id):
 		await LoadingScreen.hold(get_tree(), campaign.zone(id), LoadingScreen.SAVED_ZONE if state.zones.has(id) else LoadingScreen.NEW_ZONE)
 	_enter_zone(id, entrance, autosave)
+
+
+## The old world is frozen before this coroutine yields. In particular, a
+## dialogue completion must unwind its guest-purse scope before rebuilding.
+func _complete_zone_travel(id: String, entrance: int, serial: int, autosave := true) -> void:
+	await _wait_load_clients()
+	if not loading_game or serial != _load_serial:
+		return
+	if LoadingScreen.deferred():
+		await LoadingScreen.hold(get_tree(), campaign.zone(id), LoadingScreen.SAVED_ZONE if state.zones.has(id) else LoadingScreen.NEW_ZONE)
+	_enter_zone(id, entrance, autosave)
+	_finish_host_load()
 
 
 ## Host: enter_zone without waiting for the loading screen (callers that need
@@ -1981,14 +1999,17 @@ func zone_title(id: String) -> String:
 
 
 func _travel(zone: String, entrance: int) -> void:
-	if sp_game_over():   #  message 6
+	if loading_game or sp_game_over():   #  message 6
 		return
 	for o: Dictionary in travel_options:
 		if o.zone == zone and int(o.entrance) == entrance:
+			if not zone_exists(zone) or not campaign.zone(zone).has("mpr"):
+				return
+			_begin_host_load(zone, false)
 			travel_options = []
 			broadcast({"t": "travel_close", "go": zone})   # the zone stays frozen (Game.on_event)
 			state.advance_hours(float(o.get("hours", 0.0)))
-			call_deferred("enter_zone", zone, entrance)
+			call_deferred("_complete_zone_travel", zone, entrance, _load_serial)
 			return
 
 
@@ -2003,10 +2024,9 @@ func submit(cmd: Dictionary) -> void:
 		return
 	if loading_game:
 		return
-	if not lmp.is_empty():
-		cmd = cmd.duplicate()
-		cmd._zone = zone_id
-		cmd._generation = lmp_generation
+	cmd = cmd.duplicate()
+	cmd._zone = zone_id
+	cmd._generation = lmp_generation if not lmp.is_empty() else (_load_serial if is_host else _pool_epoch)
 	if is_host:
 		if lmp_travel:
 			lmp_travel.command(cmd, my_index)
@@ -2026,6 +2046,9 @@ func _rpc_cmd(cmd: Dictionary) -> void:
 		return
 	if loading_game or movie_active():
 		return
+	if lmp.is_empty() and (String(cmd.get("_zone", "")) != zone_id \
+			or int(cmd.get("_generation", -1)) != _load_serial):
+		return   # an order issued before this transfer/reload cannot enter the new world
 	if players.has(pid):
 		if lmp_travel:
 			lmp_travel.command(cmd, int(players[pid].index))
@@ -3465,16 +3488,16 @@ func _send_snapshot_records(snaps: Array, time: float, recipient := 0) -> void:
 
 func _send_snap(snaps: Array, time: float, recipient := 0) -> void:
 	if recipient > 0:
-		_rpc_snap.rpc_id(recipient, snaps, time)
+		_rpc_snap.rpc_id(recipient, snaps, time, _load_serial)
 	elif lmp_travel:
 		lmp_travel.send_snap(snaps, time)
 	else:
-		_rpc_snap.rpc(snaps, time)
+		_rpc_snap.rpc(snaps, time, _load_serial)
 
 
 @rpc("authority", "call_remote", "unreliable_ordered")
-func _rpc_snap(snaps: Array, t: float) -> void:
-	if not lmp.is_empty():
+func _rpc_snap(snaps: Array, t: float, generation := -1) -> void:
+	if not lmp.is_empty() or generation != _pool_epoch:
 		return   # actual LMP requires the owner-scoped generation wrapper
 	_apply_snap(snaps, t)
 
@@ -4379,8 +4402,9 @@ func _may_load() -> bool:
 	return lmp.is_empty() and not loading_game
 
 
-func _begin_host_load(id: String) -> void:
-	_cancel_movie()
+func _begin_host_load(id: String, cancel_movie := true) -> void:
+	if cancel_movie:
+		_cancel_movie()
 	loading_game = true
 	_loading_zone_id = id
 	_load_serial += 1
@@ -4394,9 +4418,12 @@ func _begin_host_load(id: String) -> void:
 			if int(pid) != 1 and CoopProgress.peer_alive(multiplayer, int(pid)):
 				_load_waiting[int(pid)] = true
 				net.loading_started(int(pid), _load_serial)
-				_rpc_load_prepare.rpc_id(int(pid), _load_serial, id)
+				_rpc_load_prepare.rpc_id(int(pid), _load_serial, id, not cancel_movie)
+	# Draw before closing the map/menu; there must be no exposed frozen-world
+	# frame while the host waits for peers to acknowledge the transfer.
+	LoadingScreen.prepare(get_tree(), campaign.zone(id), LoadingScreen.SAVED_ZONE if cancel_movie or state.zones.has(id) else LoadingScreen.NEW_ZONE)
 	if game:
-		game.on_event({"t": "load_begin"})
+		game.on_event({"t": "load_begin", "travel": not cancel_movie})
 
 
 func _flush_load_notice() -> void:
@@ -4421,7 +4448,7 @@ func _wait_load_clients() -> void:
 
 
 @rpc("authority", "call_remote", "reliable")
-func _rpc_load_prepare(serial: int, id: String) -> void:
+func _rpc_load_prepare(serial: int, id: String, travel := false) -> void:
 	_pool_epoch = maxi(_pool_epoch, serial)
 	if serial <= _load_serial:
 		return
@@ -4433,9 +4460,9 @@ func _rpc_load_prepare(serial: int, id: String) -> void:
 	if world:
 		_loading_world_mode = world.process_mode
 		world.process_mode = Node.PROCESS_MODE_DISABLED
-	if game:
-		game.on_event({"t": "load_begin"})
 	await LoadingScreen.wait_remote(get_tree(), campaign.zone(id))
+	if game:
+		game.on_event({"t": "load_begin", "travel": travel})
 	# On a deferred surface the host must wait until the picture is actually
 	# presented; otherwise receipt / input blocking is already synchronous.
 	if _remote_loading and serial == _load_serial:
