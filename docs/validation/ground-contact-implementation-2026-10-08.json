@@ -1,0 +1,4656 @@
+{
+  "date": "2026-10-08",
+  "scope": "Experimental opt-in V1 scenery contact and shared footprint storage; defaults off on every platform. Isolated branch, not integrated.",
+  "engine": "Godot 4.7 stable 5b4e0cb0f",
+  "qa_directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa",
+  "source_base_commit": "4915d18",
+  "runs": [
+    {
+      "renderer": "gl_compatibility",
+      "test": "soft_ground_mesh",
+      "return_code": 0,
+      "elapsed_seconds": 2.09,
+      "errors": [],
+      "summary": [
+        "SOFT_GROUND_MESH checks=3014 failures=0 native_us=23750 script_us=349242"
+      ],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-exported-gl_compatibility-soft_ground_mesh.log",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/soft_ground_mesh.gd"
+      ],
+      "other_game_processes_at_start": "PID ELAPSED COMMAND",
+      "script_sha256": "6b08323c9d683f969dae671c0abc73a80787ec59d2afab7a2738c15b1ff18922"
+    },
+    {
+      "renderer": "gl_compatibility",
+      "test": "material_shader_options",
+      "return_code": 0,
+      "elapsed_seconds": 2.85,
+      "errors": [],
+      "summary": [
+        "MATERIAL_SHADER_OPTIONS checks=362 failures=0"
+      ],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-exported-gl_compatibility-material_shader_options.log",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/material_shader_options.gd"
+      ],
+      "other_game_processes_at_start": "PID ELAPSED COMMAND",
+      "script_sha256": "c531defaccb472dee140728b9cfefdaef2a94f28a22c1dd81913e71679eda223"
+    },
+    {
+      "renderer": "gl_compatibility",
+      "test": "soft_ground_field",
+      "return_code": 0,
+      "elapsed_seconds": 2.75,
+      "errors": [],
+      "summary": [
+        "SOFT_GROUND_FIELD checks=152 failures=0"
+      ],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-exported-gl_compatibility-soft_ground_field.log",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--audio-driver",
+        "Dummy",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/soft_ground_field.gd"
+      ],
+      "other_game_processes_at_start": "PID ELAPSED COMMAND",
+      "script_sha256": "a81e867963459d30d502e3ecb1b07dde44084ecb3b3b911d2cdf11fd4cf00b1a"
+    },
+    {
+      "renderer": "gl_compatibility",
+      "test": "ground_contact",
+      "return_code": 0,
+      "elapsed_seconds": 6.6,
+      "errors": [],
+      "summary": [
+        "GROUND_CONTACT checks=35 failures=0"
+      ],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-exported-gl_compatibility-ground_contact.log",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--audio-driver",
+        "Dummy",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/ground_contact.gd"
+      ],
+      "other_game_processes_at_start": "PID ELAPSED COMMAND",
+      "script_sha256": "a7b780097420ee871dae9c927e21b7a894b370bce724534e43f7afe57c2a86cd"
+    },
+    {
+      "renderer": "gl_compatibility",
+      "test": "ground_contact_surface",
+      "return_code": 0,
+      "elapsed_seconds": 8.16,
+      "errors": [],
+      "summary": [
+        "{\"adapter\": \"NVIDIA GeForce RTX 3090\", \"checks\": 158, \"editor\": false, \"failures\": 0, \"renderer\": \"gl_compatibility\", \"size\": 256, \"span\": 8.0}"
+      ],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-exported-gl_compatibility-ground_contact_surface.log",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--audio-driver",
+        "Dummy",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/ground_contact_surface.gd"
+      ],
+      "other_game_processes_at_start": "PID ELAPSED COMMAND",
+      "script_sha256": "a417599b535f742a00a6952408b5934cf0561cab97be40f7d00afd2115fdb3cd"
+    },
+    {
+      "renderer": "gl_compatibility",
+      "test": "ground_contact_map",
+      "return_code": 0,
+      "elapsed_seconds": 20.47,
+      "errors": [],
+      "summary": [
+        "GROUND_CONTACT_MAP checks=30 failures=0"
+      ],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-exported-gl_compatibility-ground_contact_map.log",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--audio-driver",
+        "Dummy",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/ground_contact.gd"
+      ],
+      "other_game_processes_at_start": "PID ELAPSED COMMAND",
+      "script_sha256": "cdf2937168d886e43ec8be34f338fda4ff32665d2e8eec4ea61d23363a122e0d"
+    },
+    {
+      "renderer": "forward_plus",
+      "test": "soft_ground_field",
+      "return_code": 0,
+      "elapsed_seconds": 3.55,
+      "errors": [],
+      "summary": [
+        "SOFT_GROUND_FIELD checks=152 failures=0"
+      ],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-exported-forward_plus-soft_ground_field.log",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--audio-driver",
+        "Dummy",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/soft_ground_field.gd"
+      ],
+      "other_game_processes_at_start": "PID ELAPSED COMMAND",
+      "script_sha256": "a81e867963459d30d502e3ecb1b07dde44084ecb3b3b911d2cdf11fd4cf00b1a"
+    },
+    {
+      "renderer": "forward_plus",
+      "test": "ground_contact",
+      "return_code": 0,
+      "elapsed_seconds": 5.5,
+      "errors": [],
+      "summary": [
+        "GROUND_CONTACT checks=35 failures=0"
+      ],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-exported-forward_plus-ground_contact.log",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--audio-driver",
+        "Dummy",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/ground_contact.gd"
+      ],
+      "other_game_processes_at_start": "PID ELAPSED COMMAND",
+      "script_sha256": "a7b780097420ee871dae9c927e21b7a894b370bce724534e43f7afe57c2a86cd"
+    },
+    {
+      "renderer": "forward_plus",
+      "test": "ground_contact_surface",
+      "return_code": 0,
+      "elapsed_seconds": 9.76,
+      "errors": [],
+      "summary": [
+        "{\"adapter\": \"NVIDIA GeForce RTX 3090\", \"checks\": 158, \"editor\": false, \"failures\": 0, \"renderer\": \"forward_plus\", \"size\": 256, \"span\": 8.0}"
+      ],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-exported-forward_plus-ground_contact_surface.log",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--audio-driver",
+        "Dummy",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/ground_contact_surface.gd"
+      ],
+      "other_game_processes_at_start": "PID ELAPSED COMMAND",
+      "script_sha256": "a417599b535f742a00a6952408b5934cf0561cab97be40f7d00afd2115fdb3cd"
+    },
+    {
+      "renderer": "forward_plus",
+      "test": "ground_contact_map",
+      "return_code": 0,
+      "elapsed_seconds": 23.23,
+      "errors": [],
+      "summary": [
+        "GROUND_CONTACT_MAP checks=30 failures=0"
+      ],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-exported-forward_plus-ground_contact_map.log",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--audio-driver",
+        "Dummy",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/ground_contact.gd"
+      ],
+      "other_game_processes_at_start": "PID ELAPSED COMMAND",
+      "script_sha256": "cdf2937168d886e43ec8be34f338fda4ff32665d2e8eec4ea61d23363a122e0d"
+    }
+  ],
+  "source_sha256": {
+    "game/src/ei/figure.gd": "02cd4191f34f93cca6f531ec1dc3018075e9b4b68992cc654fcfdd07a24383fa",
+    "game/src/ei/game_data.gd": "ff628255cbc24302bc4b8353d9565974e667d6ae5cd1960e48c3ce8c670c28ba",
+    "game/src/ei/map_scene.gd": "3daa4fa224f984dd15c5c2ddb2ae23b077493691a7e1bfedd35be874ba0b9db6",
+    "game/src/ei/terrain.gd": "902e31b9d9469202a189e77d8983ab028777d5eb5d431bd09cc26ba97706b071",
+    "game/src/game/fx/soft_ground_deform.gd": "4a85eae7bf6a047061e6b0adecba61300ae2e52105b432502828ece83ed5d2e0",
+    "game/src/game/gfx.gd": "184968541ac01be32f50c95a90f6c40536fd88e4e37ce9232772cb79cffd9444",
+    "game/src/game/gfx_detect.gd": "3ce2a1902c13966fc4db7e912dad078a8e79d34c780f71482b20203812a19af7",
+    "game/src/platform/portability.gd": "6ec17950f2bb45117d1b34410ba19da3996f3bfea53c4722498f83a3de45763e",
+    "game/src/game/fx/soft_ground_field.gd": "164c7d3be795256003b4d46465fec783033bc09f733594369bde33980e9e3d16",
+    "game/src/game/fx/ground_surface_shader.gd": "9c682d0c3554ddbfcd9ef0e9146ea8057683ab687fc29d9aaee86fa9ccd08e47",
+    "game/src/game/fx/ground_surface_data.gd": "96251d65973418ddb3e1ff0733a260b34aaad886ef3d3075b2c94d696d53b9df",
+    "game/src/game/fx/ground_contact_shader.gd": "35f147710f4b8072c1c4cf91276ef3206c56723238014f266da6a9918309244b",
+    "game/src/game/fx/ground_contact.gd": "5ed7e47cb3d7adeab61525941edf8ea4cae29d9fdb4a7522950504cce437d33e"
+  },
+  "backends": {
+    "gl_compatibility": {
+      "surface": {
+        "adapter": "NVIDIA GeForce RTX 3090",
+        "checks": 158,
+        "editor": false,
+        "failures": 0,
+        "renderer": "gl_compatibility",
+        "rows": [
+          {
+            "case": "bz2g-type0-original",
+            "changed": 0,
+            "examples": [],
+            "max": 7.8125e-05,
+            "mean": 4.11592424747062e-05,
+            "missing": 0,
+            "output": "height",
+            "p99": 5.85937486903276e-05,
+            "pixels": 64516,
+            "position": "(121.35, 31.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz2g-type0-original",
+            "changed": 52847,
+            "examples": [
+              {
+                "error": 0.0060546875,
+                "pixel": "(11, 1)"
+              },
+              {
+                "error": 0.029296875,
+                "pixel": "(12, 1)"
+              },
+              {
+                "error": 0.048828125,
+                "pixel": "(13, 1)"
+              },
+              {
+                "error": 0.068359375,
+                "pixel": "(14, 1)"
+              },
+              {
+                "error": 0.08984375,
+                "pixel": "(15, 1)"
+              }
+            ],
+            "max": 1.466796875,
+            "mean": 0.128747557534172,
+            "missing": 0,
+            "output": "bilinear_control",
+            "p99": 0.80078125,
+            "pixels": 64516,
+            "position": "(121.35, 31.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz2g-type0-original",
+            "changed": 0,
+            "max": 0.00048828125,
+            "mean": 1.30739419870792e-06,
+            "missing": 0,
+            "output": "uv",
+            "p99": 1.52587890625e-05,
+            "pixels": 64516,
+            "position": "(121.35, 31.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz2g-type0-original",
+            "changed": 2,
+            "max": 0.0621337890625,
+            "mean": 6.3377955264526e-05,
+            "missing": 0,
+            "output": "albedo",
+            "p99": 0.000823974609375,
+            "pixels": 64516,
+            "position": "(121.35, 31.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz2g-type0-original",
+            "changed": 79,
+            "max": 0.0621337890625,
+            "mean": 0.000100585363005681,
+            "missing": 0,
+            "output": "implicit_gradients_control",
+            "p99": 0.001220703125,
+            "pixels": 64516,
+            "position": "(121.35, 31.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz2g-type0-padded",
+            "changed": 0,
+            "examples": [],
+            "max": 7.8125e-05,
+            "mean": 4.11592424747062e-05,
+            "missing": 0,
+            "output": "height",
+            "p99": 5.85937486903276e-05,
+            "pixels": 64516,
+            "position": "(121.35, 31.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz2g-type0-padded",
+            "changed": 52847,
+            "examples": [
+              {
+                "error": 0.0060546875,
+                "pixel": "(11, 1)"
+              },
+              {
+                "error": 0.029296875,
+                "pixel": "(12, 1)"
+              },
+              {
+                "error": 0.048828125,
+                "pixel": "(13, 1)"
+              },
+              {
+                "error": 0.068359375,
+                "pixel": "(14, 1)"
+              },
+              {
+                "error": 0.08984375,
+                "pixel": "(15, 1)"
+              }
+            ],
+            "max": 1.466796875,
+            "mean": 0.128747557534172,
+            "missing": 0,
+            "output": "bilinear_control",
+            "p99": 0.80078125,
+            "pixels": 64516,
+            "position": "(121.35, 31.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz2g-type0-padded",
+            "changed": 0,
+            "max": 0.00048828125,
+            "mean": 1.30739419870792e-06,
+            "missing": 0,
+            "output": "uv",
+            "p99": 1.52587890625e-05,
+            "pixels": 64516,
+            "position": "(121.35, 31.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz2g-type0-padded",
+            "changed": 0,
+            "max": 0.0029296875,
+            "mean": 7.20973047425812e-05,
+            "missing": 0,
+            "output": "albedo",
+            "p99": 0.000732421875,
+            "pixels": 64516,
+            "position": "(121.35, 31.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz2g-type0-padded",
+            "changed": 69,
+            "max": 0.037353515625,
+            "mean": 0.000105542053336123,
+            "missing": 0,
+            "output": "implicit_gradients_control",
+            "p99": 0.0009765625,
+            "pixels": 64516,
+            "position": "(121.35, 31.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-original",
+            "changed": 0,
+            "examples": [],
+            "max": 0.00025390625,
+            "mean": 4.15201025714259e-05,
+            "missing": 0,
+            "output": "height",
+            "p99": 7.81249982537702e-05,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-original",
+            "changed": 55083,
+            "examples": [
+              {
+                "error": 0.014609375,
+                "pixel": "(1, 1)"
+              },
+              {
+                "error": 0.01525390625,
+                "pixel": "(2, 1)"
+              },
+              {
+                "error": 0.01591796875,
+                "pixel": "(3, 1)"
+              },
+              {
+                "error": 0.01658203125,
+                "pixel": "(4, 1)"
+              },
+              {
+                "error": 0.0172265625,
+                "pixel": "(5, 1)"
+              }
+            ],
+            "max": 1.951171875,
+            "mean": 0.118921425801835,
+            "missing": 0,
+            "output": "bilinear_control",
+            "p99": 0.994140625,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-original",
+            "changed": 239,
+            "examples": [
+              {
+                "error": 0.021484375,
+                "pixel": "(101, 91)"
+              },
+              {
+                "error": 0.01431640625,
+                "pixel": "(102, 92)"
+              },
+              {
+                "error": 0.0094921875,
+                "pixel": "(103, 93)"
+              },
+              {
+                "error": 0.04296875,
+                "pixel": "(103, 94)"
+              },
+              {
+                "error": 0.00470703125,
+                "pixel": "(104, 94)"
+              }
+            ],
+            "max": 1.111328125,
+            "mean": 0.00161737434802696,
+            "missing": 0,
+            "output": "first_hit_control",
+            "p99": 7.81249982537702e-05,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-original",
+            "changed": 0,
+            "max": 0.00048828125,
+            "mean": 2.85706137818526e-06,
+            "missing": 0,
+            "output": "uv",
+            "p99": 0.0,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-original",
+            "changed": 0,
+            "max": 0.00244140625,
+            "mean": 1.55757147451795e-05,
+            "missing": 0,
+            "output": "albedo",
+            "p99": 0.00048828125,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-original",
+            "changed": 72,
+            "max": 0.03125,
+            "mean": 5.39625102687705e-05,
+            "missing": 0,
+            "output": "implicit_gradients_control",
+            "p99": 0.00048828125,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-padded",
+            "changed": 0,
+            "examples": [],
+            "max": 0.00025390625,
+            "mean": 4.15201025714259e-05,
+            "missing": 0,
+            "output": "height",
+            "p99": 7.81249982537702e-05,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-padded",
+            "changed": 55083,
+            "examples": [
+              {
+                "error": 0.014609375,
+                "pixel": "(1, 1)"
+              },
+              {
+                "error": 0.01525390625,
+                "pixel": "(2, 1)"
+              },
+              {
+                "error": 0.01591796875,
+                "pixel": "(3, 1)"
+              },
+              {
+                "error": 0.01658203125,
+                "pixel": "(4, 1)"
+              },
+              {
+                "error": 0.0172265625,
+                "pixel": "(5, 1)"
+              }
+            ],
+            "max": 1.951171875,
+            "mean": 0.118921425801835,
+            "missing": 0,
+            "output": "bilinear_control",
+            "p99": 0.994140625,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-padded",
+            "changed": 0,
+            "max": 0.00048828125,
+            "mean": 2.85706137818526e-06,
+            "missing": 0,
+            "output": "uv",
+            "p99": 0.0,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-padded",
+            "changed": 0,
+            "max": 0.00244140625,
+            "mean": 1.39712193486887e-05,
+            "missing": 0,
+            "output": "albedo",
+            "p99": 0.00048828125,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-padded",
+            "changed": 62,
+            "max": 0.03125,
+            "mean": 4.91187505812512e-05,
+            "missing": 0,
+            "output": "implicit_gradients_control",
+            "p99": 0.00048828125,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-loose",
+            "changed": 0,
+            "examples": [],
+            "max": 0.00025390625,
+            "mean": 4.15231299212306e-05,
+            "missing": 0,
+            "output": "height",
+            "p99": 7.81249982537702e-05,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-loose",
+            "changed": 64441,
+            "examples": [
+              {
+                "error": 0.1875,
+                "pixel": "(1, 1)"
+              },
+              {
+                "error": 0.1875,
+                "pixel": "(2, 1)"
+              },
+              {
+                "error": 0.185546875,
+                "pixel": "(3, 1)"
+              },
+              {
+                "error": 0.185546875,
+                "pixel": "(4, 1)"
+              },
+              {
+                "error": 0.185546875,
+                "pixel": "(5, 1)"
+              }
+            ],
+            "max": 1.75,
+            "mean": 0.252619042357225,
+            "missing": 0,
+            "output": "bilinear_control",
+            "p99": 0.931640625,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-loose",
+            "changed": 64516,
+            "examples": [
+              {
+                "error": 0.201171875,
+                "pixel": "(1, 1)"
+              },
+              {
+                "error": 0.201171875,
+                "pixel": "(2, 1)"
+              },
+              {
+                "error": 0.201171875,
+                "pixel": "(3, 1)"
+              },
+              {
+                "error": 0.201171875,
+                "pixel": "(4, 1)"
+              },
+              {
+                "error": 0.201171875,
+                "pixel": "(5, 1)"
+              }
+            ],
+            "max": 0.203125,
+            "mean": 0.201172086914486,
+            "missing": 0,
+            "output": "undeformed_control",
+            "p99": 0.201171875,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-loose",
+            "changed": 0,
+            "max": 0.00048828125,
+            "mean": 2.85706137818526e-06,
+            "missing": 0,
+            "output": "uv",
+            "p99": 0.0,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-loose",
+            "changed": 0,
+            "max": 0.00244140625,
+            "mean": 1.55757147451795e-05,
+            "missing": 0,
+            "output": "albedo",
+            "p99": 0.00048828125,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-loose",
+            "changed": 72,
+            "max": 0.03125,
+            "mean": 5.39625102687705e-05,
+            "missing": 0,
+            "output": "implicit_gradients_control",
+            "p99": 0.00048828125,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-pending",
+            "changed": 0,
+            "examples": [],
+            "max": 0.00025390625,
+            "mean": 4.15231299212306e-05,
+            "missing": 0,
+            "output": "height",
+            "p99": 7.81249982537702e-05,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-pending",
+            "changed": 64441,
+            "examples": [
+              {
+                "error": 0.1875,
+                "pixel": "(1, 1)"
+              },
+              {
+                "error": 0.1875,
+                "pixel": "(2, 1)"
+              },
+              {
+                "error": 0.185546875,
+                "pixel": "(3, 1)"
+              },
+              {
+                "error": 0.185546875,
+                "pixel": "(4, 1)"
+              },
+              {
+                "error": 0.185546875,
+                "pixel": "(5, 1)"
+              }
+            ],
+            "max": 1.75,
+            "mean": 0.252619042357225,
+            "missing": 0,
+            "output": "bilinear_control",
+            "p99": 0.931640625,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-pending",
+            "changed": 64516,
+            "examples": [
+              {
+                "error": 0.201171875,
+                "pixel": "(1, 1)"
+              },
+              {
+                "error": 0.201171875,
+                "pixel": "(2, 1)"
+              },
+              {
+                "error": 0.201171875,
+                "pixel": "(3, 1)"
+              },
+              {
+                "error": 0.201171875,
+                "pixel": "(4, 1)"
+              },
+              {
+                "error": 0.201171875,
+                "pixel": "(5, 1)"
+              }
+            ],
+            "max": 0.203125,
+            "mean": 0.201172086914486,
+            "missing": 0,
+            "output": "undeformed_control",
+            "p99": 0.201171875,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-pending",
+            "changed": 0,
+            "max": 0.00048828125,
+            "mean": 2.85706137818526e-06,
+            "missing": 0,
+            "output": "uv",
+            "p99": 0.0,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-pending",
+            "changed": 0,
+            "max": 0.00244140625,
+            "mean": 1.55757147451795e-05,
+            "missing": 0,
+            "output": "albedo",
+            "p99": 0.00048828125,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-pending",
+            "changed": 72,
+            "max": 0.03125,
+            "mean": 5.39625102687705e-05,
+            "missing": 0,
+            "output": "implicit_gradients_control",
+            "p99": 0.00048828125,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-tracks",
+            "changed": 0,
+            "examples": [],
+            "max": 0.00029296875,
+            "mean": 4.14774169391797e-05,
+            "missing": 0,
+            "output": "height",
+            "p99": 7.81249982537702e-05,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-tracks",
+            "changed": 64437,
+            "examples": [
+              {
+                "error": 0.1875,
+                "pixel": "(1, 1)"
+              },
+              {
+                "error": 0.1875,
+                "pixel": "(2, 1)"
+              },
+              {
+                "error": 0.185546875,
+                "pixel": "(3, 1)"
+              },
+              {
+                "error": 0.185546875,
+                "pixel": "(4, 1)"
+              },
+              {
+                "error": 0.185546875,
+                "pixel": "(5, 1)"
+              }
+            ],
+            "max": 1.751953125,
+            "mean": 0.251620952675499,
+            "missing": 0,
+            "output": "bilinear_control",
+            "p99": 0.931640625,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-tracks",
+            "changed": 64502,
+            "examples": [
+              {
+                "error": 0.201171875,
+                "pixel": "(1, 1)"
+              },
+              {
+                "error": 0.201171875,
+                "pixel": "(2, 1)"
+              },
+              {
+                "error": 0.201171875,
+                "pixel": "(3, 1)"
+              },
+              {
+                "error": 0.201171875,
+                "pixel": "(4, 1)"
+              },
+              {
+                "error": 0.201171875,
+                "pixel": "(5, 1)"
+              }
+            ],
+            "max": 0.216796875,
+            "mean": 0.20021646307941,
+            "missing": 0,
+            "output": "undeformed_control",
+            "p99": 0.203125,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-tracks",
+            "changed": 1309,
+            "examples": [
+              {
+                "error": 0.00294921875,
+                "pixel": "(124, 115)"
+              },
+              {
+                "error": 0.002890625,
+                "pixel": "(125, 115)"
+              },
+              {
+                "error": 0.003125,
+                "pixel": "(123, 116)"
+              },
+              {
+                "error": 0.005546875,
+                "pixel": "(124, 116)"
+              },
+              {
+                "error": 0.0051171875,
+                "pixel": "(125, 116)"
+              }
+            ],
+            "max": 0.244140625,
+            "mean": 0.00120223719939386,
+            "missing": 0,
+            "output": "no_tracks_control",
+            "p99": 0.0152148436754942,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-tracks",
+            "changed": 0,
+            "max": 0.00048828125,
+            "mean": 2.8797665017205e-06,
+            "missing": 0,
+            "output": "uv",
+            "p99": 0.0,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-tracks",
+            "changed": 1,
+            "max": 0.0126953125,
+            "mean": 1.58103343550437e-05,
+            "missing": 0,
+            "output": "albedo",
+            "p99": 0.00048828125,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-tracks",
+            "changed": 71,
+            "max": 0.03125,
+            "mean": 5.37430274079298e-05,
+            "missing": 0,
+            "output": "implicit_gradients_control",
+            "p99": 0.00048828125,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-fading",
+            "changed": 0,
+            "examples": [],
+            "max": 0.00029296875,
+            "mean": 4.14547118156445e-05,
+            "missing": 0,
+            "output": "height",
+            "p99": 7.81249982537702e-05,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-fading",
+            "changed": 64441,
+            "examples": [
+              {
+                "error": 0.1875,
+                "pixel": "(1, 1)"
+              },
+              {
+                "error": 0.1875,
+                "pixel": "(2, 1)"
+              },
+              {
+                "error": 0.185546875,
+                "pixel": "(3, 1)"
+              },
+              {
+                "error": 0.185546875,
+                "pixel": "(4, 1)"
+              },
+              {
+                "error": 0.185546875,
+                "pixel": "(5, 1)"
+              }
+            ],
+            "max": 1.751953125,
+            "mean": 0.252109518496381,
+            "missing": 0,
+            "output": "bilinear_control",
+            "p99": 0.931640625,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-fading",
+            "changed": 64516,
+            "examples": [
+              {
+                "error": 0.201171875,
+                "pixel": "(1, 1)"
+              },
+              {
+                "error": 0.201171875,
+                "pixel": "(2, 1)"
+              },
+              {
+                "error": 0.201171875,
+                "pixel": "(3, 1)"
+              },
+              {
+                "error": 0.201171875,
+                "pixel": "(4, 1)"
+              },
+              {
+                "error": 0.201171875,
+                "pixel": "(5, 1)"
+              }
+            ],
+            "max": 0.208984375,
+            "mean": 0.200686802740793,
+            "missing": 0,
+            "output": "undeformed_control",
+            "p99": 0.203125,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-fading",
+            "changed": 1131,
+            "examples": [
+              {
+                "error": 0.00279296875,
+                "pixel": "(124, 116)"
+              },
+              {
+                "error": 0.002578125,
+                "pixel": "(125, 116)"
+              },
+              {
+                "error": 0.00263671875,
+                "pixel": "(126, 116)"
+              },
+              {
+                "error": 0.00244140625,
+                "pixel": "(127, 116)"
+              },
+              {
+                "error": 0.0020703125,
+                "pixel": "(122, 117)"
+              }
+            ],
+            "max": 0.123046875,
+            "mean": 0.000626392883645487,
+            "missing": 0,
+            "output": "no_tracks_control",
+            "p99": 0.00722656259313226,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-fading",
+            "changed": 0,
+            "max": 0.00048828125,
+            "mean": 2.8797665017205e-06,
+            "missing": 0,
+            "output": "uv",
+            "p99": 0.0,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-fading",
+            "changed": 1,
+            "max": 0.0126953125,
+            "mean": 1.58103343550437e-05,
+            "missing": 0,
+            "output": "albedo",
+            "p99": 0.00048828125,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-fading",
+            "changed": 71,
+            "max": 0.03125,
+            "mean": 5.37430274079298e-05,
+            "missing": 0,
+            "output": "implicit_gradients_control",
+            "p99": 0.00048828125,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-cleared",
+            "changed": 0,
+            "examples": [],
+            "max": 0.00025390625,
+            "mean": 4.15231299212306e-05,
+            "missing": 0,
+            "output": "height",
+            "p99": 7.81249982537702e-05,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-cleared",
+            "changed": 64441,
+            "examples": [
+              {
+                "error": 0.1875,
+                "pixel": "(1, 1)"
+              },
+              {
+                "error": 0.1875,
+                "pixel": "(2, 1)"
+              },
+              {
+                "error": 0.185546875,
+                "pixel": "(3, 1)"
+              },
+              {
+                "error": 0.185546875,
+                "pixel": "(4, 1)"
+              },
+              {
+                "error": 0.185546875,
+                "pixel": "(5, 1)"
+              }
+            ],
+            "max": 1.75,
+            "mean": 0.252619042357225,
+            "missing": 0,
+            "output": "bilinear_control",
+            "p99": 0.931640625,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-cleared",
+            "changed": 64516,
+            "examples": [
+              {
+                "error": 0.201171875,
+                "pixel": "(1, 1)"
+              },
+              {
+                "error": 0.201171875,
+                "pixel": "(2, 1)"
+              },
+              {
+                "error": 0.201171875,
+                "pixel": "(3, 1)"
+              },
+              {
+                "error": 0.201171875,
+                "pixel": "(4, 1)"
+              },
+              {
+                "error": 0.201171875,
+                "pixel": "(5, 1)"
+              }
+            ],
+            "max": 0.203125,
+            "mean": 0.201172086914486,
+            "missing": 0,
+            "output": "undeformed_control",
+            "p99": 0.201171875,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-cleared",
+            "changed": 0,
+            "max": 0.00048828125,
+            "mean": 2.85706137818526e-06,
+            "missing": 0,
+            "output": "uv",
+            "p99": 0.0,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-cleared",
+            "changed": 0,
+            "max": 0.00244140625,
+            "mean": 1.55757147451795e-05,
+            "missing": 0,
+            "output": "albedo",
+            "p99": 0.00048828125,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-cleared",
+            "changed": 72,
+            "max": 0.03125,
+            "mean": 5.39625102687705e-05,
+            "missing": 0,
+            "output": "implicit_gradients_control",
+            "p99": 0.00048828125,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-original",
+            "changed": 0,
+            "examples": [],
+            "max": 5.859375e-05,
+            "mean": 3.92692679916341e-05,
+            "missing": 0,
+            "output": "height",
+            "p99": 5.85937486903276e-05,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-original",
+            "changed": 53134,
+            "examples": [
+              {
+                "error": 0.0078125,
+                "pixel": "(1, 1)"
+              },
+              {
+                "error": 0.00828125,
+                "pixel": "(2, 1)"
+              },
+              {
+                "error": 0.00875,
+                "pixel": "(3, 1)"
+              },
+              {
+                "error": 0.00921875,
+                "pixel": "(4, 1)"
+              },
+              {
+                "error": 0.0096875,
+                "pixel": "(5, 1)"
+              }
+            ],
+            "max": 0.78125,
+            "mean": 0.0946267023393425,
+            "missing": 0,
+            "output": "bilinear_control",
+            "p99": 0.544921875,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-original",
+            "changed": 0,
+            "max": 0.00048828125,
+            "mean": 2.72461482422965e-06,
+            "missing": 0,
+            "output": "uv",
+            "p99": 0.0,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-original",
+            "changed": 8,
+            "max": 0.188232421875,
+            "mean": 0.00011797487584233,
+            "missing": 0,
+            "output": "albedo",
+            "p99": 0.0009765625,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-original",
+            "changed": 253,
+            "max": 0.188232421875,
+            "mean": 0.000219693119745126,
+            "missing": 0,
+            "output": "implicit_gradients_control",
+            "p99": 0.00146484375,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-padded",
+            "changed": 0,
+            "examples": [],
+            "max": 5.859375e-05,
+            "mean": 3.92692679916341e-05,
+            "missing": 0,
+            "output": "height",
+            "p99": 5.85937486903276e-05,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-padded",
+            "changed": 53134,
+            "examples": [
+              {
+                "error": 0.0078125,
+                "pixel": "(1, 1)"
+              },
+              {
+                "error": 0.00828125,
+                "pixel": "(2, 1)"
+              },
+              {
+                "error": 0.00875,
+                "pixel": "(3, 1)"
+              },
+              {
+                "error": 0.00921875,
+                "pixel": "(4, 1)"
+              },
+              {
+                "error": 0.0096875,
+                "pixel": "(5, 1)"
+              }
+            ],
+            "max": 0.78125,
+            "mean": 0.0946267023393425,
+            "missing": 0,
+            "output": "bilinear_control",
+            "p99": 0.544921875,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-padded",
+            "changed": 0,
+            "max": 0.00048828125,
+            "mean": 2.72461482422965e-06,
+            "missing": 0,
+            "output": "uv",
+            "p99": 0.0,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-padded",
+            "changed": 5,
+            "max": 0.03076171875,
+            "mean": 0.000143156749936547,
+            "missing": 0,
+            "output": "albedo",
+            "p99": 0.0009765625,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-padded",
+            "changed": 231,
+            "max": 0.14208984375,
+            "mean": 0.000235953062848508,
+            "missing": 0,
+            "output": "implicit_gradients_control",
+            "p99": 0.00146484375,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-loose",
+            "changed": 0,
+            "examples": [],
+            "max": 5.859375e-05,
+            "mean": 3.92716898714778e-05,
+            "missing": 0,
+            "output": "height",
+            "p99": 5.85937486903276e-05,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-loose",
+            "changed": 61134,
+            "examples": [
+              {
+                "error": 0.0078125,
+                "pixel": "(1, 1)"
+              },
+              {
+                "error": 0.00828125,
+                "pixel": "(2, 1)"
+              },
+              {
+                "error": 0.00875,
+                "pixel": "(3, 1)"
+              },
+              {
+                "error": 0.00921875,
+                "pixel": "(4, 1)"
+              },
+              {
+                "error": 0.0096875,
+                "pixel": "(5, 1)"
+              }
+            ],
+            "max": 0.78125,
+            "mean": 0.094619118828065,
+            "missing": 0,
+            "output": "bilinear_control",
+            "p99": 0.544921875,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-loose",
+            "changed": 31730,
+            "examples": [
+              {
+                "error": 0.00205078125,
+                "pixel": "(107, 85)"
+              },
+              {
+                "error": 0.00208984375,
+                "pixel": "(108, 85)"
+              },
+              {
+                "error": 0.00212890625,
+                "pixel": "(109, 85)"
+              },
+              {
+                "error": 0.00216796875,
+                "pixel": "(110, 85)"
+              },
+              {
+                "error": 0.00220703125,
+                "pixel": "(111, 85)"
+              }
+            ],
+            "max": 0.00798828125,
+            "mean": 0.00360141555243886,
+            "missing": 0,
+            "output": "undeformed_control",
+            "p99": 0.00798828154802322,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-loose",
+            "changed": 0,
+            "max": 0.00048828125,
+            "mean": 2.72461482422965e-06,
+            "missing": 0,
+            "output": "uv",
+            "p99": 0.0,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-loose",
+            "changed": 8,
+            "max": 0.188232421875,
+            "mean": 0.00011797487584233,
+            "missing": 0,
+            "output": "albedo",
+            "p99": 0.0009765625,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-loose",
+            "changed": 253,
+            "max": 0.188232421875,
+            "mean": 0.000219693119745126,
+            "missing": 0,
+            "output": "implicit_gradients_control",
+            "p99": 0.00146484375,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-pending",
+            "changed": 0,
+            "examples": [],
+            "max": 5.859375e-05,
+            "mean": 3.92716898714778e-05,
+            "missing": 0,
+            "output": "height",
+            "p99": 5.85937486903276e-05,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-pending",
+            "changed": 61134,
+            "examples": [
+              {
+                "error": 0.0078125,
+                "pixel": "(1, 1)"
+              },
+              {
+                "error": 0.00828125,
+                "pixel": "(2, 1)"
+              },
+              {
+                "error": 0.00875,
+                "pixel": "(3, 1)"
+              },
+              {
+                "error": 0.00921875,
+                "pixel": "(4, 1)"
+              },
+              {
+                "error": 0.0096875,
+                "pixel": "(5, 1)"
+              }
+            ],
+            "max": 0.78125,
+            "mean": 0.094619118828065,
+            "missing": 0,
+            "output": "bilinear_control",
+            "p99": 0.544921875,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-pending",
+            "changed": 31730,
+            "examples": [
+              {
+                "error": 0.00205078125,
+                "pixel": "(107, 85)"
+              },
+              {
+                "error": 0.00208984375,
+                "pixel": "(108, 85)"
+              },
+              {
+                "error": 0.00212890625,
+                "pixel": "(109, 85)"
+              },
+              {
+                "error": 0.00216796875,
+                "pixel": "(110, 85)"
+              },
+              {
+                "error": 0.00220703125,
+                "pixel": "(111, 85)"
+              }
+            ],
+            "max": 0.00798828125,
+            "mean": 0.00360141555243886,
+            "missing": 0,
+            "output": "undeformed_control",
+            "p99": 0.00798828154802322,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-pending",
+            "changed": 0,
+            "max": 0.00048828125,
+            "mean": 2.72461482422965e-06,
+            "missing": 0,
+            "output": "uv",
+            "p99": 0.0,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-pending",
+            "changed": 8,
+            "max": 0.188232421875,
+            "mean": 0.00011797487584233,
+            "missing": 0,
+            "output": "albedo",
+            "p99": 0.0009765625,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-pending",
+            "changed": 253,
+            "max": 0.188232421875,
+            "mean": 0.000219693119745126,
+            "missing": 0,
+            "output": "implicit_gradients_control",
+            "p99": 0.00146484375,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-tracks",
+            "changed": 0,
+            "examples": [],
+            "max": 5.859375e-05,
+            "mean": 3.92832040634951e-05,
+            "missing": 0,
+            "output": "height",
+            "p99": 5.85937486903276e-05,
+            "pixels": 64513,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 3
+          },
+          {
+            "case": "bz13h-type3-tracks",
+            "changed": 61150,
+            "examples": [
+              {
+                "error": 0.0078125,
+                "pixel": "(1, 1)"
+              },
+              {
+                "error": 0.00828125,
+                "pixel": "(2, 1)"
+              },
+              {
+                "error": 0.00875,
+                "pixel": "(3, 1)"
+              },
+              {
+                "error": 0.00921875,
+                "pixel": "(4, 1)"
+              },
+              {
+                "error": 0.0096875,
+                "pixel": "(5, 1)"
+              }
+            ],
+            "max": 0.78125,
+            "mean": 0.0946803632964315,
+            "missing": 0,
+            "output": "bilinear_control",
+            "p99": 0.544921875,
+            "pixels": 64513,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 3
+          },
+          {
+            "case": "bz13h-type3-tracks",
+            "changed": 31201,
+            "examples": [
+              {
+                "error": 0.00203125,
+                "pixel": "(75, 89)"
+              },
+              {
+                "error": 0.00203125,
+                "pixel": "(76, 89)"
+              },
+              {
+                "error": 0.00203125,
+                "pixel": "(77, 89)"
+              },
+              {
+                "error": 0.00203125,
+                "pixel": "(78, 89)"
+              },
+              {
+                "error": 0.00203125,
+                "pixel": "(79, 89)"
+              }
+            ],
+            "max": 0.01232421875,
+            "mean": 0.00357641579991468,
+            "missing": 0,
+            "output": "undeformed_control",
+            "p99": 0.00798828154802322,
+            "pixels": 64513,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 3
+          },
+          {
+            "case": "bz13h-type3-tracks",
+            "changed": 556,
+            "examples": [
+              {
+                "error": 0.0021484375,
+                "pixel": "(124, 121)"
+              },
+              {
+                "error": 0.0032421875,
+                "pixel": "(125, 121)"
+              },
+              {
+                "error": 0.003125,
+                "pixel": "(126, 121)"
+              },
+              {
+                "error": 0.0027734375,
+                "pixel": "(127, 121)"
+              },
+              {
+                "error": 0.00373046875,
+                "pixel": "(124, 122)"
+              }
+            ],
+            "max": 0.0234375,
+            "mean": 0.000123673595825622,
+            "missing": 0,
+            "output": "no_tracks_control",
+            "p99": 0.000996093731373549,
+            "pixels": 64513,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 3
+          },
+          {
+            "case": "bz13h-type3-tracks",
+            "changed": 0,
+            "max": 0.00048828125,
+            "mean": 2.84584114829569e-06,
+            "missing": 0,
+            "output": "uv",
+            "p99": 0.0,
+            "pixels": 64513,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 3
+          },
+          {
+            "case": "bz13h-type3-tracks",
+            "changed": 8,
+            "max": 0.188232421875,
+            "mean": 0.000121468125701167,
+            "missing": 0,
+            "output": "albedo",
+            "p99": 0.0009765625,
+            "pixels": 64513,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 3
+          },
+          {
+            "case": "bz13h-type3-tracks",
+            "changed": 254,
+            "max": 0.188232421875,
+            "mean": 0.000222738631803135,
+            "missing": 0,
+            "output": "implicit_gradients_control",
+            "p99": 0.00146484375,
+            "pixels": 64513,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 3
+          },
+          {
+            "case": "bz13h-type3-fading",
+            "changed": 0,
+            "examples": [],
+            "max": 5.859375e-05,
+            "mean": 3.92832040634951e-05,
+            "missing": 0,
+            "output": "height",
+            "p99": 5.85937486903276e-05,
+            "pixels": 64513,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 3
+          },
+          {
+            "case": "bz13h-type3-fading",
+            "changed": 61108,
+            "examples": [
+              {
+                "error": 0.0078125,
+                "pixel": "(1, 1)"
+              },
+              {
+                "error": 0.00828125,
+                "pixel": "(2, 1)"
+              },
+              {
+                "error": 0.00875,
+                "pixel": "(3, 1)"
+              },
+              {
+                "error": 0.00921875,
+                "pixel": "(4, 1)"
+              },
+              {
+                "error": 0.0096875,
+                "pixel": "(5, 1)"
+              }
+            ],
+            "max": 0.78125,
+            "mean": 0.0946429913471733,
+            "missing": 0,
+            "output": "bilinear_control",
+            "p99": 0.544921875,
+            "pixels": 64513,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 3
+          },
+          {
+            "case": "bz13h-type3-fading",
+            "changed": 31124,
+            "examples": [
+              {
+                "error": 0.00203125,
+                "pixel": "(75, 89)"
+              },
+              {
+                "error": 0.00203125,
+                "pixel": "(76, 89)"
+              },
+              {
+                "error": 0.00203125,
+                "pixel": "(77, 89)"
+              },
+              {
+                "error": 0.00203125,
+                "pixel": "(78, 89)"
+              },
+              {
+                "error": 0.00203125,
+                "pixel": "(79, 89)"
+              }
+            ],
+            "max": 0.0085546875,
+            "mean": 0.0035656391444344,
+            "missing": 0,
+            "output": "undeformed_control",
+            "p99": 0.00798828154802322,
+            "pixels": 64513,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 3
+          },
+          {
+            "case": "bz13h-type3-fading",
+            "changed": 431,
+            "examples": [
+              {
+                "error": 0.0023828125,
+                "pixel": "(125, 122)"
+              },
+              {
+                "error": 0.00251953125,
+                "pixel": "(126, 122)"
+              },
+              {
+                "error": 0.002421875,
+                "pixel": "(127, 122)"
+              },
+              {
+                "error": 0.0024609375,
+                "pixel": "(124, 123)"
+              },
+              {
+                "error": 0.0031640625,
+                "pixel": "(125, 123)"
+              }
+            ],
+            "max": 0.01015625,
+            "mean": 8.02727018197623e-05,
+            "missing": 0,
+            "output": "no_tracks_control",
+            "p99": 0.000507812481373549,
+            "pixels": 64513,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 3
+          },
+          {
+            "case": "bz13h-type3-fading",
+            "changed": 0,
+            "max": 0.00048828125,
+            "mean": 2.84584114829569e-06,
+            "missing": 0,
+            "output": "uv",
+            "p99": 0.0,
+            "pixels": 64513,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 3
+          },
+          {
+            "case": "bz13h-type3-fading",
+            "changed": 8,
+            "max": 0.188232421875,
+            "mean": 0.000121468125701167,
+            "missing": 0,
+            "output": "albedo",
+            "p99": 0.0009765625,
+            "pixels": 64513,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 3
+          },
+          {
+            "case": "bz13h-type3-fading",
+            "changed": 254,
+            "max": 0.188232421875,
+            "mean": 0.000222738631803135,
+            "missing": 0,
+            "output": "implicit_gradients_control",
+            "p99": 0.00146484375,
+            "pixels": 64513,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 3
+          },
+          {
+            "case": "bz13h-type3-cleared",
+            "changed": 0,
+            "examples": [],
+            "max": 5.859375e-05,
+            "mean": 3.92716898714778e-05,
+            "missing": 0,
+            "output": "height",
+            "p99": 5.85937486903276e-05,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-cleared",
+            "changed": 61134,
+            "examples": [
+              {
+                "error": 0.0078125,
+                "pixel": "(1, 1)"
+              },
+              {
+                "error": 0.00828125,
+                "pixel": "(2, 1)"
+              },
+              {
+                "error": 0.00875,
+                "pixel": "(3, 1)"
+              },
+              {
+                "error": 0.00921875,
+                "pixel": "(4, 1)"
+              },
+              {
+                "error": 0.0096875,
+                "pixel": "(5, 1)"
+              }
+            ],
+            "max": 0.78125,
+            "mean": 0.094619118828065,
+            "missing": 0,
+            "output": "bilinear_control",
+            "p99": 0.544921875,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-cleared",
+            "changed": 31730,
+            "examples": [
+              {
+                "error": 0.00205078125,
+                "pixel": "(107, 85)"
+              },
+              {
+                "error": 0.00208984375,
+                "pixel": "(108, 85)"
+              },
+              {
+                "error": 0.00212890625,
+                "pixel": "(109, 85)"
+              },
+              {
+                "error": 0.00216796875,
+                "pixel": "(110, 85)"
+              },
+              {
+                "error": 0.00220703125,
+                "pixel": "(111, 85)"
+              }
+            ],
+            "max": 0.00798828125,
+            "mean": 0.00360141555243886,
+            "missing": 0,
+            "output": "undeformed_control",
+            "p99": 0.00798828154802322,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-cleared",
+            "changed": 0,
+            "max": 0.00048828125,
+            "mean": 2.72461482422965e-06,
+            "missing": 0,
+            "output": "uv",
+            "p99": 0.0,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-cleared",
+            "changed": 8,
+            "max": 0.188232421875,
+            "mean": 0.00011797487584233,
+            "missing": 0,
+            "output": "albedo",
+            "p99": 0.0009765625,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-cleared",
+            "changed": 253,
+            "max": 0.188232421875,
+            "mean": 0.000219693119745126,
+            "missing": 0,
+            "output": "implicit_gradients_control",
+            "p99": 0.00146484375,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          }
+        ],
+        "size": 256,
+        "span": 8.0
+      },
+      "contact": {
+        "checks": 35,
+        "failures": 0,
+        "renderer": "gl_compatibility",
+        "rows": [
+          {
+            "case": "basic",
+            "lower": {
+              "changed": 5112,
+              "mean": 0.245912960765171,
+              "peak": 0.439215688034892
+            },
+            "upper": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0.0
+            }
+          }
+        ]
+      },
+      "maps": {
+        "adapter": "NVIDIA GeForce RTX 3090",
+        "checks": 30,
+        "editor": false,
+        "failures": 0,
+        "renderer": "gl_compatibility",
+        "rows": [
+          {
+            "base_materials": 18,
+            "contact_materials": 99,
+            "difference": {
+              "changed": 2172,
+              "mean": 0.0528645833333333,
+              "peak": 58
+            },
+            "distance": "near",
+            "focus": "(69.6434, 11.36386, -40.651)",
+            "map": "bz2g",
+            "object": "LeafTree00-3715",
+            "off": {
+              "cpu_median_ms": 0.986000001430511,
+              "cpu_p95_ms": 1.28100001811981,
+              "draws": 1067,
+              "gpu_median_ms": 0.521000027656555,
+              "gpu_p95_ms": 0.564999997615814,
+              "warmup_ms": 660
+            },
+            "on": {
+              "cpu_median_ms": 1.38300001621246,
+              "cpu_p95_ms": 1.61699998378754,
+              "draws": 1067,
+              "gpu_median_ms": 2.06500005722046,
+              "gpu_p95_ms": 2.52900004386902,
+              "warmup_ms": 912
+            },
+            "registered_parts": 668,
+            "restoration": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0
+            },
+            "restored": {
+              "cpu_median_ms": 0.982999980449677,
+              "cpu_p95_ms": 1.08500003814697,
+              "draws": 1067,
+              "gpu_median_ms": 1.09899997711182,
+              "gpu_p95_ms": 2.25699996948242,
+              "warmup_ms": 194
+            },
+            "template": "nafltr56"
+          },
+          {
+            "base_materials": 18,
+            "contact_materials": 99,
+            "difference": {
+              "changed": 114,
+              "mean": 0.00245208333333333,
+              "peak": 21
+            },
+            "distance": "far",
+            "focus": "(69.6434, 11.36386, -40.651)",
+            "map": "bz2g",
+            "object": "LeafTree00-3715",
+            "off": {
+              "cpu_median_ms": 1.05200004577637,
+              "cpu_p95_ms": 1.23199999332428,
+              "draws": 1107,
+              "gpu_median_ms": 0.603999972343445,
+              "gpu_p95_ms": 0.662000000476837,
+              "warmup_ms": 189
+            },
+            "on": {
+              "cpu_median_ms": 1.52100002765656,
+              "cpu_p95_ms": 2.41599988937378,
+              "draws": 1107,
+              "gpu_median_ms": 1.77499997615814,
+              "gpu_p95_ms": 2.32599997520447,
+              "warmup_ms": 278
+            },
+            "registered_parts": 668,
+            "restoration": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0
+            },
+            "restored": {
+              "cpu_median_ms": 1.00399994850159,
+              "cpu_p95_ms": 1.18400001525879,
+              "draws": 1107,
+              "gpu_median_ms": 0.653999984264374,
+              "gpu_p95_ms": 1.51900005340576,
+              "warmup_ms": 195
+            },
+            "template": "nafltr56"
+          },
+          {
+            "base_materials": 3,
+            "contact_materials": 72,
+            "difference": {
+              "changed": 3074,
+              "mean": 0.233285416666667,
+              "peak": 104
+            },
+            "distance": "near",
+            "focus": "(84.42931, 12.86823, -82.66885)",
+            "map": "bz10k",
+            "object": "WinterFirTree00-1090",
+            "off": {
+              "cpu_median_ms": 0.437999993562698,
+              "cpu_p95_ms": 0.537000000476837,
+              "draws": 448,
+              "gpu_median_ms": 1.52499997615814,
+              "gpu_p95_ms": 2.16899991035461,
+              "warmup_ms": 196
+            },
+            "on": {
+              "cpu_median_ms": 0.697000026702881,
+              "cpu_p95_ms": 0.90200001001358,
+              "draws": 448,
+              "gpu_median_ms": 2.03999996185303,
+              "gpu_p95_ms": 2.67199993133545,
+              "warmup_ms": 232
+            },
+            "registered_parts": 268,
+            "restoration": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0
+            },
+            "restored": {
+              "cpu_median_ms": 0.492000013589859,
+              "cpu_p95_ms": 0.579999983310699,
+              "draws": 448,
+              "gpu_median_ms": 0.619000017642975,
+              "gpu_p95_ms": 0.629999995231628,
+              "warmup_ms": 189
+            },
+            "template": "nafltr59"
+          },
+          {
+            "base_materials": 3,
+            "contact_materials": 72,
+            "difference": {
+              "changed": 103,
+              "mean": 0.0031875,
+              "peak": 34
+            },
+            "distance": "far",
+            "focus": "(84.42931, 12.86823, -82.66885)",
+            "map": "bz10k",
+            "object": "WinterFirTree00-1090",
+            "off": {
+              "cpu_median_ms": 0.565999984741211,
+              "cpu_p95_ms": 0.726999998092651,
+              "draws": 494,
+              "gpu_median_ms": 0.521000027656555,
+              "gpu_p95_ms": 0.565999984741211,
+              "warmup_ms": 188
+            },
+            "on": {
+              "cpu_median_ms": 0.828000009059906,
+              "cpu_p95_ms": 0.884999990463257,
+              "draws": 494,
+              "gpu_median_ms": 1.77100002765656,
+              "gpu_p95_ms": 2.29900002479553,
+              "warmup_ms": 273
+            },
+            "registered_parts": 268,
+            "restoration": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0
+            },
+            "restored": {
+              "cpu_median_ms": 0.583000004291534,
+              "cpu_p95_ms": 0.633000016212463,
+              "draws": 494,
+              "gpu_median_ms": 0.635999977588654,
+              "gpu_p95_ms": 1.39900004863739,
+              "warmup_ms": 193
+            },
+            "template": "nafltr59"
+          },
+          {
+            "base_materials": 13,
+            "contact_materials": 133,
+            "difference": {
+              "changed": 1713,
+              "mean": 0.0859083333333333,
+              "peak": 64
+            },
+            "distance": "near",
+            "focus": "(54.08064, 23.01896, -44.75)",
+            "map": "bz13h",
+            "object": "HadoganDome00-43320",
+            "off": {
+              "cpu_median_ms": 0.882000029087067,
+              "cpu_p95_ms": 1.13900005817413,
+              "draws": 780,
+              "gpu_median_ms": 1.50999999046326,
+              "gpu_p95_ms": 1.97800004482269,
+              "warmup_ms": 210
+            },
+            "on": {
+              "cpu_median_ms": 1.25300002098083,
+              "cpu_p95_ms": 1.37600004673004,
+              "draws": 780,
+              "gpu_median_ms": 2.13800001144409,
+              "gpu_p95_ms": 2.93099999427795,
+              "warmup_ms": 269
+            },
+            "registered_parts": 725,
+            "restoration": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0
+            },
+            "restored": {
+              "cpu_median_ms": 0.860000014305115,
+              "cpu_p95_ms": 0.958000004291534,
+              "draws": 780,
+              "gpu_median_ms": 0.647000014781952,
+              "gpu_p95_ms": 0.689999997615814,
+              "warmup_ms": 195
+            },
+            "template": "stbuho39"
+          },
+          {
+            "base_materials": 13,
+            "contact_materials": 133,
+            "difference": {
+              "changed": 830,
+              "mean": 0.0352333333333333,
+              "peak": 75
+            },
+            "distance": "far",
+            "focus": "(54.08064, 23.01896, -44.75)",
+            "map": "bz13h",
+            "object": "HadoganDome00-43320",
+            "off": {
+              "cpu_median_ms": 1.31299996376038,
+              "cpu_p95_ms": 1.50399994850159,
+              "draws": 1380,
+              "gpu_median_ms": 0.657000005245209,
+              "gpu_p95_ms": 1.51499998569489,
+              "warmup_ms": 195
+            },
+            "on": {
+              "cpu_median_ms": 1.93599998950958,
+              "cpu_p95_ms": 2.12199997901917,
+              "draws": 1380,
+              "gpu_median_ms": 2.05999994277954,
+              "gpu_p95_ms": 3.2720000743866,
+              "warmup_ms": 271
+            },
+            "registered_parts": 725,
+            "restoration": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0
+            },
+            "restored": {
+              "cpu_median_ms": 1.32400000095367,
+              "cpu_p95_ms": 1.54700005054474,
+              "draws": 1380,
+              "gpu_median_ms": 0.569999992847443,
+              "gpu_p95_ms": 0.621999979019165,
+              "warmup_ms": 194
+            },
+            "template": "stbuho39"
+          }
+        ],
+        "size": "800x600"
+      }
+    },
+    "forward_plus": {
+      "surface": {
+        "adapter": "NVIDIA GeForce RTX 3090",
+        "checks": 158,
+        "editor": false,
+        "failures": 0,
+        "renderer": "forward_plus",
+        "rows": [
+          {
+            "case": "bz2g-type0-original",
+            "changed": 0,
+            "examples": [],
+            "max": 3.90625e-05,
+            "mean": 1.09559789432084e-06,
+            "missing": 0,
+            "output": "height",
+            "p99": 1.95312495634425e-05,
+            "pixels": 64516,
+            "position": "(121.35, 31.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz2g-type0-original",
+            "changed": 52847,
+            "examples": [
+              {
+                "error": 0.00603515625,
+                "pixel": "(11, 1)"
+              },
+              {
+                "error": 0.025390625,
+                "pixel": "(12, 1)"
+              },
+              {
+                "error": 0.044921875,
+                "pixel": "(13, 1)"
+              },
+              {
+                "error": 0.064453125,
+                "pixel": "(14, 1)"
+              },
+              {
+                "error": 0.0859375,
+                "pixel": "(15, 1)"
+              }
+            ],
+            "max": 1.46875,
+            "mean": 0.126453782419283,
+            "missing": 0,
+            "output": "bilinear_control",
+            "p99": 0.80078125,
+            "pixels": 64516,
+            "position": "(121.35, 31.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz2g-type0-original",
+            "changed": 0,
+            "max": 0.00048828125,
+            "mean": 2.21456255366734e-06,
+            "missing": 0,
+            "output": "uv",
+            "p99": 3.0517578125e-05,
+            "pixels": 64516,
+            "position": "(121.35, 31.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz2g-type0-original",
+            "changed": 2,
+            "max": 0.084228515625,
+            "mean": 6.37862917967314e-05,
+            "missing": 0,
+            "output": "albedo",
+            "p99": 0.0008544921875,
+            "pixels": 64516,
+            "position": "(121.35, 31.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz2g-type0-original",
+            "changed": 91,
+            "max": 0.084228515625,
+            "mean": 0.000102647666530856,
+            "missing": 0,
+            "output": "implicit_gradients_control",
+            "p99": 0.001220703125,
+            "pixels": 64516,
+            "position": "(121.35, 31.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz2g-type0-padded",
+            "changed": 0,
+            "examples": [],
+            "max": 3.90625e-05,
+            "mean": 1.09559789432084e-06,
+            "missing": 0,
+            "output": "height",
+            "p99": 1.95312495634425e-05,
+            "pixels": 64516,
+            "position": "(121.35, 31.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz2g-type0-padded",
+            "changed": 52847,
+            "examples": [
+              {
+                "error": 0.00603515625,
+                "pixel": "(11, 1)"
+              },
+              {
+                "error": 0.025390625,
+                "pixel": "(12, 1)"
+              },
+              {
+                "error": 0.044921875,
+                "pixel": "(13, 1)"
+              },
+              {
+                "error": 0.064453125,
+                "pixel": "(14, 1)"
+              },
+              {
+                "error": 0.0859375,
+                "pixel": "(15, 1)"
+              }
+            ],
+            "max": 1.46875,
+            "mean": 0.126453782419283,
+            "missing": 0,
+            "output": "bilinear_control",
+            "p99": 0.80078125,
+            "pixels": 64516,
+            "position": "(121.35, 31.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz2g-type0-padded",
+            "changed": 0,
+            "max": 0.00048828125,
+            "mean": 2.21456255366734e-06,
+            "missing": 0,
+            "output": "uv",
+            "p99": 3.0517578125e-05,
+            "pixels": 64516,
+            "position": "(121.35, 31.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz2g-type0-padded",
+            "changed": 0,
+            "max": 0.0045166015625,
+            "mean": 7.36953625861426e-05,
+            "missing": 0,
+            "output": "albedo",
+            "p99": 0.000732421875,
+            "pixels": 64516,
+            "position": "(121.35, 31.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz2g-type0-padded",
+            "changed": 75,
+            "max": 0.0361328125,
+            "mean": 0.000109015706268555,
+            "missing": 0,
+            "output": "implicit_gradients_control",
+            "p99": 0.0009765625,
+            "pixels": 64516,
+            "position": "(121.35, 31.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-original",
+            "changed": 0,
+            "examples": [],
+            "max": 0.00021484375,
+            "mean": 1.37320587141179e-06,
+            "missing": 0,
+            "output": "height",
+            "p99": 3.90624991268851e-05,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-original",
+            "changed": 55083,
+            "examples": [
+              {
+                "error": 0.014609375,
+                "pixel": "(1, 1)"
+              },
+              {
+                "error": 0.0152734375,
+                "pixel": "(2, 1)"
+              },
+              {
+                "error": 0.0159375,
+                "pixel": "(3, 1)"
+              },
+              {
+                "error": 0.01658203125,
+                "pixel": "(4, 1)"
+              },
+              {
+                "error": 0.01724609375,
+                "pixel": "(5, 1)"
+              }
+            ],
+            "max": 1.953125,
+            "mean": 0.116853435279134,
+            "missing": 0,
+            "output": "bilinear_control",
+            "p99": 0.994140625,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-original",
+            "changed": 239,
+            "examples": [
+              {
+                "error": 0.017578125,
+                "pixel": "(101, 91)"
+              },
+              {
+                "error": 0.01431640625,
+                "pixel": "(102, 92)"
+              },
+              {
+                "error": 0.0094921875,
+                "pixel": "(103, 93)"
+              },
+              {
+                "error": 0.0390625,
+                "pixel": "(103, 94)"
+              },
+              {
+                "error": 0.00470703125,
+                "pixel": "(104, 94)"
+              }
+            ],
+            "max": 1.11328125,
+            "mean": 0.00157122754675194,
+            "missing": 0,
+            "output": "first_hit_control",
+            "p99": 3.90624991268851e-05,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-original",
+            "changed": 0,
+            "max": 0.00048828125,
+            "mean": 4.46534096193192e-07,
+            "missing": 0,
+            "output": "uv",
+            "p99": 0.0,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-original",
+            "changed": 0,
+            "max": 0.00341796875,
+            "mean": 1.3509548503472e-05,
+            "missing": 0,
+            "output": "albedo",
+            "p99": 0.00048828125,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-original",
+            "changed": 67,
+            "max": 0.03125,
+            "mean": 5.16919979152458e-05,
+            "missing": 0,
+            "output": "implicit_gradients_control",
+            "p99": 0.00048828125,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-padded",
+            "changed": 0,
+            "examples": [],
+            "max": 0.00021484375,
+            "mean": 1.37320587141179e-06,
+            "missing": 0,
+            "output": "height",
+            "p99": 3.90624991268851e-05,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-padded",
+            "changed": 55083,
+            "examples": [
+              {
+                "error": 0.014609375,
+                "pixel": "(1, 1)"
+              },
+              {
+                "error": 0.0152734375,
+                "pixel": "(2, 1)"
+              },
+              {
+                "error": 0.0159375,
+                "pixel": "(3, 1)"
+              },
+              {
+                "error": 0.01658203125,
+                "pixel": "(4, 1)"
+              },
+              {
+                "error": 0.01724609375,
+                "pixel": "(5, 1)"
+              }
+            ],
+            "max": 1.953125,
+            "mean": 0.116853435279134,
+            "missing": 0,
+            "output": "bilinear_control",
+            "p99": 0.994140625,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-padded",
+            "changed": 0,
+            "max": 0.00048828125,
+            "mean": 4.46534096193192e-07,
+            "missing": 0,
+            "output": "uv",
+            "p99": 0.0,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-padded",
+            "changed": 0,
+            "max": 0.00341796875,
+            "mean": 1.31689716504433e-05,
+            "missing": 0,
+            "output": "albedo",
+            "p99": 0.00048828125,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-padded",
+            "changed": 50,
+            "max": 0.03125,
+            "mean": 4.8430028500682e-05,
+            "missing": 0,
+            "output": "implicit_gradients_control",
+            "p99": 0.00048828125,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-loose",
+            "changed": 0,
+            "examples": [],
+            "max": 0.00021484375,
+            "mean": 1.3710867265485e-06,
+            "missing": 0,
+            "output": "height",
+            "p99": 3.90624991268851e-05,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-loose",
+            "changed": 64441,
+            "examples": [
+              {
+                "error": 0.18359375,
+                "pixel": "(1, 1)"
+              },
+              {
+                "error": 0.18359375,
+                "pixel": "(2, 1)"
+              },
+              {
+                "error": 0.18359375,
+                "pixel": "(3, 1)"
+              },
+              {
+                "error": 0.181640625,
+                "pixel": "(4, 1)"
+              },
+              {
+                "error": 0.181640625,
+                "pixel": "(5, 1)"
+              }
+            ],
+            "max": 1.751953125,
+            "mean": 0.249681941785759,
+            "missing": 0,
+            "output": "bilinear_control",
+            "p99": 0.93359375,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-loose",
+            "changed": 64516,
+            "examples": [
+              {
+                "error": 0.19921875,
+                "pixel": "(1, 1)"
+              },
+              {
+                "error": 0.19921875,
+                "pixel": "(2, 1)"
+              },
+              {
+                "error": 0.19921875,
+                "pixel": "(3, 1)"
+              },
+              {
+                "error": 0.19921875,
+                "pixel": "(4, 1)"
+              },
+              {
+                "error": 0.19921875,
+                "pixel": "(5, 1)"
+              }
+            ],
+            "max": 0.19921875,
+            "mean": 0.19921875,
+            "missing": 0,
+            "output": "undeformed_control",
+            "p99": 0.19921875,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-loose",
+            "changed": 0,
+            "max": 0.00048828125,
+            "mean": 4.46534096193192e-07,
+            "missing": 0,
+            "output": "uv",
+            "p99": 0.0,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-loose",
+            "changed": 0,
+            "max": 0.00341796875,
+            "mean": 1.3509548503472e-05,
+            "missing": 0,
+            "output": "albedo",
+            "p99": 0.00048828125,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-loose",
+            "changed": 67,
+            "max": 0.03125,
+            "mean": 5.16919979152458e-05,
+            "missing": 0,
+            "output": "implicit_gradients_control",
+            "p99": 0.00048828125,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-pending",
+            "changed": 0,
+            "examples": [],
+            "max": 0.00021484375,
+            "mean": 1.3710867265485e-06,
+            "missing": 0,
+            "output": "height",
+            "p99": 3.90624991268851e-05,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-pending",
+            "changed": 64441,
+            "examples": [
+              {
+                "error": 0.18359375,
+                "pixel": "(1, 1)"
+              },
+              {
+                "error": 0.18359375,
+                "pixel": "(2, 1)"
+              },
+              {
+                "error": 0.18359375,
+                "pixel": "(3, 1)"
+              },
+              {
+                "error": 0.181640625,
+                "pixel": "(4, 1)"
+              },
+              {
+                "error": 0.181640625,
+                "pixel": "(5, 1)"
+              }
+            ],
+            "max": 1.751953125,
+            "mean": 0.249681941785759,
+            "missing": 0,
+            "output": "bilinear_control",
+            "p99": 0.93359375,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-pending",
+            "changed": 64516,
+            "examples": [
+              {
+                "error": 0.19921875,
+                "pixel": "(1, 1)"
+              },
+              {
+                "error": 0.19921875,
+                "pixel": "(2, 1)"
+              },
+              {
+                "error": 0.19921875,
+                "pixel": "(3, 1)"
+              },
+              {
+                "error": 0.19921875,
+                "pixel": "(4, 1)"
+              },
+              {
+                "error": 0.19921875,
+                "pixel": "(5, 1)"
+              }
+            ],
+            "max": 0.19921875,
+            "mean": 0.19921875,
+            "missing": 0,
+            "output": "undeformed_control",
+            "p99": 0.19921875,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-pending",
+            "changed": 0,
+            "max": 0.00048828125,
+            "mean": 4.46534096193192e-07,
+            "missing": 0,
+            "output": "uv",
+            "p99": 0.0,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-pending",
+            "changed": 0,
+            "max": 0.00341796875,
+            "mean": 1.3509548503472e-05,
+            "missing": 0,
+            "output": "albedo",
+            "p99": 0.00048828125,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-pending",
+            "changed": 67,
+            "max": 0.03125,
+            "mean": 5.16919979152458e-05,
+            "missing": 0,
+            "output": "implicit_gradients_control",
+            "p99": 0.00048828125,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-tracks",
+            "changed": 0,
+            "examples": [],
+            "max": 0.00025390625,
+            "mean": 1.36261014709533e-06,
+            "missing": 0,
+            "output": "height",
+            "p99": 3.90624991268851e-05,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-tracks",
+            "changed": 64437,
+            "examples": [
+              {
+                "error": 0.18359375,
+                "pixel": "(1, 1)"
+              },
+              {
+                "error": 0.18359375,
+                "pixel": "(2, 1)"
+              },
+              {
+                "error": 0.18359375,
+                "pixel": "(3, 1)"
+              },
+              {
+                "error": 0.181640625,
+                "pixel": "(4, 1)"
+              },
+              {
+                "error": 0.181640625,
+                "pixel": "(5, 1)"
+              }
+            ],
+            "max": 1.751953125,
+            "mean": 0.24868203448321,
+            "missing": 0,
+            "output": "bilinear_control",
+            "p99": 0.93359375,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-tracks",
+            "changed": 64502,
+            "examples": [
+              {
+                "error": 0.19921875,
+                "pixel": "(1, 1)"
+              },
+              {
+                "error": 0.19921875,
+                "pixel": "(2, 1)"
+              },
+              {
+                "error": 0.19921875,
+                "pixel": "(3, 1)"
+              },
+              {
+                "error": 0.19921875,
+                "pixel": "(4, 1)"
+              },
+              {
+                "error": 0.19921875,
+                "pixel": "(5, 1)"
+              }
+            ],
+            "max": 0.21484375,
+            "mean": 0.198228274405768,
+            "missing": 0,
+            "output": "undeformed_control",
+            "p99": 0.19921875,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-tracks",
+            "changed": 1309,
+            "examples": [
+              {
+                "error": 0.0029296875,
+                "pixel": "(124, 115)"
+              },
+              {
+                "error": 0.00287109375,
+                "pixel": "(125, 115)"
+              },
+              {
+                "error": 0.0030859375,
+                "pixel": "(123, 116)"
+              },
+              {
+                "error": 0.00552734375,
+                "pixel": "(124, 116)"
+              },
+              {
+                "error": 0.00509765625,
+                "pixel": "(125, 116)"
+              }
+            ],
+            "max": 0.240234375,
+            "mean": 0.00112688949010712,
+            "missing": 0,
+            "output": "no_tracks_control",
+            "p99": 0.0152148436754942,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-tracks",
+            "changed": 0,
+            "max": 0.00048828125,
+            "mean": 4.6167084521669e-07,
+            "missing": 0,
+            "output": "uv",
+            "p99": 0.0,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-tracks",
+            "changed": 1,
+            "max": 0.01220703125,
+            "mean": 1.3570095499566e-05,
+            "missing": 0,
+            "output": "albedo",
+            "p99": 0.00048828125,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-tracks",
+            "changed": 66,
+            "max": 0.03125,
+            "mean": 5.13589894367289e-05,
+            "missing": 0,
+            "output": "implicit_gradients_control",
+            "p99": 0.00048828125,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-fading",
+            "changed": 0,
+            "examples": [],
+            "max": 0.00025390625,
+            "mean": 1.35383083266171e-06,
+            "missing": 0,
+            "output": "height",
+            "p99": 3.90624991268851e-05,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-fading",
+            "changed": 64441,
+            "examples": [
+              {
+                "error": 0.18359375,
+                "pixel": "(1, 1)"
+              },
+              {
+                "error": 0.18359375,
+                "pixel": "(2, 1)"
+              },
+              {
+                "error": 0.18359375,
+                "pixel": "(3, 1)"
+              },
+              {
+                "error": 0.181640625,
+                "pixel": "(4, 1)"
+              },
+              {
+                "error": 0.181640625,
+                "pixel": "(5, 1)"
+              }
+            ],
+            "max": 1.751953125,
+            "mean": 0.24917108468006,
+            "missing": 0,
+            "output": "bilinear_control",
+            "p99": 0.93359375,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-fading",
+            "changed": 64516,
+            "examples": [
+              {
+                "error": 0.19921875,
+                "pixel": "(1, 1)"
+              },
+              {
+                "error": 0.19921875,
+                "pixel": "(2, 1)"
+              },
+              {
+                "error": 0.19921875,
+                "pixel": "(3, 1)"
+              },
+              {
+                "error": 0.19921875,
+                "pixel": "(4, 1)"
+              },
+              {
+                "error": 0.19921875,
+                "pixel": "(5, 1)"
+              }
+            ],
+            "max": 0.20703125,
+            "mean": 0.198695230398273,
+            "missing": 0,
+            "output": "undeformed_control",
+            "p99": 0.19921875,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-fading",
+            "changed": 1131,
+            "examples": [
+              {
+                "error": 0.0027734375,
+                "pixel": "(124, 116)"
+              },
+              {
+                "error": 0.00255859375,
+                "pixel": "(125, 116)"
+              },
+              {
+                "error": 0.0026171875,
+                "pixel": "(126, 116)"
+              },
+              {
+                "error": 0.00240234375,
+                "pixel": "(127, 116)"
+              },
+              {
+                "error": 0.00205078125,
+                "pixel": "(122, 117)"
+              }
+            ],
+            "max": 0.119140625,
+            "mean": 0.000555410007304382,
+            "missing": 0,
+            "output": "no_tracks_control",
+            "p99": 0.00720703136175871,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-fading",
+            "changed": 0,
+            "max": 0.00048828125,
+            "mean": 4.6167084521669e-07,
+            "missing": 0,
+            "output": "uv",
+            "p99": 0.0,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-fading",
+            "changed": 1,
+            "max": 0.01220703125,
+            "mean": 1.3570095499566e-05,
+            "missing": 0,
+            "output": "albedo",
+            "p99": 0.00048828125,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-fading",
+            "changed": 66,
+            "max": 0.03125,
+            "mean": 5.13589894367289e-05,
+            "missing": 0,
+            "output": "implicit_gradients_control",
+            "p99": 0.00048828125,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-cleared",
+            "changed": 0,
+            "examples": [],
+            "max": 0.00021484375,
+            "mean": 1.3710867265485e-06,
+            "missing": 0,
+            "output": "height",
+            "p99": 3.90624991268851e-05,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-cleared",
+            "changed": 64441,
+            "examples": [
+              {
+                "error": 0.18359375,
+                "pixel": "(1, 1)"
+              },
+              {
+                "error": 0.18359375,
+                "pixel": "(2, 1)"
+              },
+              {
+                "error": 0.18359375,
+                "pixel": "(3, 1)"
+              },
+              {
+                "error": 0.181640625,
+                "pixel": "(4, 1)"
+              },
+              {
+                "error": 0.181640625,
+                "pixel": "(5, 1)"
+              }
+            ],
+            "max": 1.751953125,
+            "mean": 0.249681941785759,
+            "missing": 0,
+            "output": "bilinear_control",
+            "p99": 0.93359375,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-cleared",
+            "changed": 64516,
+            "examples": [
+              {
+                "error": 0.19921875,
+                "pixel": "(1, 1)"
+              },
+              {
+                "error": 0.19921875,
+                "pixel": "(2, 1)"
+              },
+              {
+                "error": 0.19921875,
+                "pixel": "(3, 1)"
+              },
+              {
+                "error": 0.19921875,
+                "pixel": "(4, 1)"
+              },
+              {
+                "error": 0.19921875,
+                "pixel": "(5, 1)"
+              }
+            ],
+            "max": 0.19921875,
+            "mean": 0.19921875,
+            "missing": 0,
+            "output": "undeformed_control",
+            "p99": 0.19921875,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-cleared",
+            "changed": 0,
+            "max": 0.00048828125,
+            "mean": 4.46534096193192e-07,
+            "missing": 0,
+            "output": "uv",
+            "p99": 0.0,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-cleared",
+            "changed": 0,
+            "max": 0.00341796875,
+            "mean": 1.3509548503472e-05,
+            "missing": 0,
+            "output": "albedo",
+            "p99": 0.00048828125,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz10k-type9-cleared",
+            "changed": 67,
+            "max": 0.03125,
+            "mean": 5.16919979152458e-05,
+            "missing": 0,
+            "output": "implicit_gradients_control",
+            "p99": 0.00048828125,
+            "pixels": 64516,
+            "position": "(45.35, 111.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-original",
+            "changed": 0,
+            "examples": [],
+            "max": 1.953125e-05,
+            "mean": 7.87110949221899e-09,
+            "missing": 0,
+            "output": "height",
+            "p99": 0.0,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-original",
+            "changed": 53134,
+            "examples": [
+              {
+                "error": 0.0078125,
+                "pixel": "(1, 1)"
+              },
+              {
+                "error": 0.00828125,
+                "pixel": "(2, 1)"
+              },
+              {
+                "error": 0.00875,
+                "pixel": "(3, 1)"
+              },
+              {
+                "error": 0.00921875,
+                "pixel": "(4, 1)"
+              },
+              {
+                "error": 0.0096875,
+                "pixel": "(5, 1)"
+              }
+            ],
+            "max": 0.78125,
+            "mean": 0.0924892937774123,
+            "missing": 0,
+            "output": "bilinear_control",
+            "p99": 0.54296875,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-original",
+            "changed": 0,
+            "max": 0.00048828125,
+            "mean": 2.57324733399467e-06,
+            "missing": 0,
+            "output": "uv",
+            "p99": 0.0,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-original",
+            "changed": 6,
+            "max": 0.19287109375,
+            "mean": 0.000118459251811082,
+            "missing": 0,
+            "output": "albedo",
+            "p99": 0.0009765625,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-original",
+            "changed": 256,
+            "max": 0.1875,
+            "mean": 0.000221259536757355,
+            "missing": 0,
+            "output": "implicit_gradients_control",
+            "p99": 0.001708984375,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-padded",
+            "changed": 0,
+            "examples": [],
+            "max": 1.953125e-05,
+            "mean": 7.87110949221899e-09,
+            "missing": 0,
+            "output": "height",
+            "p99": 0.0,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-padded",
+            "changed": 53134,
+            "examples": [
+              {
+                "error": 0.0078125,
+                "pixel": "(1, 1)"
+              },
+              {
+                "error": 0.00828125,
+                "pixel": "(2, 1)"
+              },
+              {
+                "error": 0.00875,
+                "pixel": "(3, 1)"
+              },
+              {
+                "error": 0.00921875,
+                "pixel": "(4, 1)"
+              },
+              {
+                "error": 0.0096875,
+                "pixel": "(5, 1)"
+              }
+            ],
+            "max": 0.78125,
+            "mean": 0.0924892937774123,
+            "missing": 0,
+            "output": "bilinear_control",
+            "p99": 0.54296875,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-padded",
+            "changed": 0,
+            "max": 0.00048828125,
+            "mean": 2.57324733399467e-06,
+            "missing": 0,
+            "output": "uv",
+            "p99": 0.0,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-padded",
+            "changed": 4,
+            "max": 0.03125,
+            "mean": 0.000145170410580079,
+            "missing": 0,
+            "output": "albedo",
+            "p99": 0.0009765625,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-padded",
+            "changed": 232,
+            "max": 0.1513671875,
+            "mean": 0.00023836832036457,
+            "missing": 0,
+            "output": "implicit_gradients_control",
+            "p99": 0.00146484375,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-loose",
+            "changed": 0,
+            "examples": [],
+            "max": 1.953125e-05,
+            "mean": 7.87110949221899e-09,
+            "missing": 0,
+            "output": "height",
+            "p99": 0.0,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-loose",
+            "changed": 61134,
+            "examples": [
+              {
+                "error": 0.0078125,
+                "pixel": "(1, 1)"
+              },
+              {
+                "error": 0.00828125,
+                "pixel": "(2, 1)"
+              },
+              {
+                "error": 0.00875,
+                "pixel": "(3, 1)"
+              },
+              {
+                "error": 0.00921875,
+                "pixel": "(4, 1)"
+              },
+              {
+                "error": 0.0096875,
+                "pixel": "(5, 1)"
+              }
+            ],
+            "max": 0.78125,
+            "mean": 0.0925534984175265,
+            "missing": 0,
+            "output": "bilinear_control",
+            "p99": 0.54296875,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-loose",
+            "changed": 31730,
+            "examples": [
+              {
+                "error": 0.00201171875,
+                "pixel": "(107, 85)"
+              },
+              {
+                "error": 0.00205078125,
+                "pixel": "(108, 85)"
+              },
+              {
+                "error": 0.00208984375,
+                "pixel": "(109, 85)"
+              },
+              {
+                "error": 0.00212890625,
+                "pixel": "(110, 85)"
+              },
+              {
+                "error": 0.00216796875,
+                "pixel": "(111, 85)"
+              }
+            ],
+            "max": 0.00798828125,
+            "mean": 0.00357978604628927,
+            "missing": 0,
+            "output": "undeformed_control",
+            "p99": 0.00798828154802322,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-loose",
+            "changed": 0,
+            "max": 0.00048828125,
+            "mean": 2.57324733399467e-06,
+            "missing": 0,
+            "output": "uv",
+            "p99": 0.0,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-loose",
+            "changed": 6,
+            "max": 0.19287109375,
+            "mean": 0.000118459251811082,
+            "missing": 0,
+            "output": "albedo",
+            "p99": 0.0009765625,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-loose",
+            "changed": 256,
+            "max": 0.1875,
+            "mean": 0.000221259536757355,
+            "missing": 0,
+            "output": "implicit_gradients_control",
+            "p99": 0.001708984375,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-pending",
+            "changed": 0,
+            "examples": [],
+            "max": 1.953125e-05,
+            "mean": 7.87110949221899e-09,
+            "missing": 0,
+            "output": "height",
+            "p99": 0.0,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-pending",
+            "changed": 61134,
+            "examples": [
+              {
+                "error": 0.0078125,
+                "pixel": "(1, 1)"
+              },
+              {
+                "error": 0.00828125,
+                "pixel": "(2, 1)"
+              },
+              {
+                "error": 0.00875,
+                "pixel": "(3, 1)"
+              },
+              {
+                "error": 0.00921875,
+                "pixel": "(4, 1)"
+              },
+              {
+                "error": 0.0096875,
+                "pixel": "(5, 1)"
+              }
+            ],
+            "max": 0.78125,
+            "mean": 0.0925534984175265,
+            "missing": 0,
+            "output": "bilinear_control",
+            "p99": 0.54296875,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-pending",
+            "changed": 31730,
+            "examples": [
+              {
+                "error": 0.00201171875,
+                "pixel": "(107, 85)"
+              },
+              {
+                "error": 0.00205078125,
+                "pixel": "(108, 85)"
+              },
+              {
+                "error": 0.00208984375,
+                "pixel": "(109, 85)"
+              },
+              {
+                "error": 0.00212890625,
+                "pixel": "(110, 85)"
+              },
+              {
+                "error": 0.00216796875,
+                "pixel": "(111, 85)"
+              }
+            ],
+            "max": 0.00798828125,
+            "mean": 0.00357978604628927,
+            "missing": 0,
+            "output": "undeformed_control",
+            "p99": 0.00798828154802322,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-pending",
+            "changed": 0,
+            "max": 0.00048828125,
+            "mean": 2.57324733399467e-06,
+            "missing": 0,
+            "output": "uv",
+            "p99": 0.0,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-pending",
+            "changed": 6,
+            "max": 0.19287109375,
+            "mean": 0.000118459251811082,
+            "missing": 0,
+            "output": "albedo",
+            "p99": 0.0009765625,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-pending",
+            "changed": 256,
+            "max": 0.1875,
+            "mean": 0.000221259536757355,
+            "missing": 0,
+            "output": "implicit_gradients_control",
+            "p99": 0.001708984375,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-tracks",
+            "changed": 0,
+            "examples": [],
+            "max": 1.953125e-05,
+            "mean": 8.47697363322121e-09,
+            "missing": 0,
+            "output": "height",
+            "p99": 0.0,
+            "pixels": 64513,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 3
+          },
+          {
+            "case": "bz13h-type3-tracks",
+            "changed": 61150,
+            "examples": [
+              {
+                "error": 0.0078125,
+                "pixel": "(1, 1)"
+              },
+              {
+                "error": 0.00828125,
+                "pixel": "(2, 1)"
+              },
+              {
+                "error": 0.00875,
+                "pixel": "(3, 1)"
+              },
+              {
+                "error": 0.00921875,
+                "pixel": "(4, 1)"
+              },
+              {
+                "error": 0.0096875,
+                "pixel": "(5, 1)"
+              }
+            ],
+            "max": 0.78125,
+            "mean": 0.0926068558856182,
+            "missing": 0,
+            "output": "bilinear_control",
+            "p99": 0.54296875,
+            "pixels": 64513,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 3
+          },
+          {
+            "case": "bz13h-type3-tracks",
+            "changed": 31201,
+            "examples": [
+              {
+                "error": 0.0019921875,
+                "pixel": "(75, 89)"
+              },
+              {
+                "error": 0.0019921875,
+                "pixel": "(76, 89)"
+              },
+              {
+                "error": 0.0019921875,
+                "pixel": "(77, 89)"
+              },
+              {
+                "error": 0.0019921875,
+                "pixel": "(78, 89)"
+              },
+              {
+                "error": 0.0019921875,
+                "pixel": "(79, 89)"
+              }
+            ],
+            "max": 0.01234375,
+            "mean": 0.0035546926467324,
+            "missing": 0,
+            "output": "undeformed_control",
+            "p99": 0.00798828154802322,
+            "pixels": 64513,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 3
+          },
+          {
+            "case": "bz13h-type3-tracks",
+            "changed": 556,
+            "examples": [
+              {
+                "error": 0.002109375,
+                "pixel": "(124, 121)"
+              },
+              {
+                "error": 0.00322265625,
+                "pixel": "(125, 121)"
+              },
+              {
+                "error": 0.0030859375,
+                "pixel": "(126, 121)"
+              },
+              {
+                "error": 0.00275390625,
+                "pixel": "(127, 121)"
+              },
+              {
+                "error": 0.0037109375,
+                "pixel": "(124, 122)"
+              }
+            ],
+            "max": 0.01953125,
+            "mean": 8.27055932525228e-05,
+            "missing": 0,
+            "output": "no_tracks_control",
+            "p99": 0.000957031268626451,
+            "pixels": 64513,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 3
+          },
+          {
+            "case": "bz13h-type3-tracks",
+            "changed": 0,
+            "max": 0.00048828125,
+            "mean": 2.5506608164246e-06,
+            "missing": 0,
+            "output": "uv",
+            "p99": 0.0,
+            "pixels": 64513,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 3
+          },
+          {
+            "case": "bz13h-type3-tracks",
+            "changed": 6,
+            "max": 0.19287109375,
+            "mean": 0.00012219898084979,
+            "missing": 0,
+            "output": "albedo",
+            "p99": 0.0009765625,
+            "pixels": 64513,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 3
+          },
+          {
+            "case": "bz13h-type3-tracks",
+            "changed": 257,
+            "max": 0.1875,
+            "mean": 0.000224451529209714,
+            "missing": 0,
+            "output": "implicit_gradients_control",
+            "p99": 0.001708984375,
+            "pixels": 64513,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 3
+          },
+          {
+            "case": "bz13h-type3-fading",
+            "changed": 0,
+            "examples": [],
+            "max": 1.953125e-05,
+            "mean": 8.47697363322121e-09,
+            "missing": 0,
+            "output": "height",
+            "p99": 0.0,
+            "pixels": 64513,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 3
+          },
+          {
+            "case": "bz13h-type3-fading",
+            "changed": 61108,
+            "examples": [
+              {
+                "error": 0.0078125,
+                "pixel": "(1, 1)"
+              },
+              {
+                "error": 0.00828125,
+                "pixel": "(2, 1)"
+              },
+              {
+                "error": 0.00875,
+                "pixel": "(3, 1)"
+              },
+              {
+                "error": 0.00921875,
+                "pixel": "(4, 1)"
+              },
+              {
+                "error": 0.0096875,
+                "pixel": "(5, 1)"
+              }
+            ],
+            "max": 0.78125,
+            "mean": 0.09257201734048,
+            "missing": 0,
+            "output": "bilinear_control",
+            "p99": 0.54296875,
+            "pixels": 64513,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 3
+          },
+          {
+            "case": "bz13h-type3-fading",
+            "changed": 31124,
+            "examples": [
+              {
+                "error": 0.0019921875,
+                "pixel": "(75, 89)"
+              },
+              {
+                "error": 0.0019921875,
+                "pixel": "(76, 89)"
+              },
+              {
+                "error": 0.0019921875,
+                "pixel": "(77, 89)"
+              },
+              {
+                "error": 0.0019921875,
+                "pixel": "(78, 89)"
+              },
+              {
+                "error": 0.0019921875,
+                "pixel": "(79, 89)"
+              }
+            ],
+            "max": 0.00857421875,
+            "mean": 0.00354385877168009,
+            "missing": 0,
+            "output": "undeformed_control",
+            "p99": 0.00798828154802322,
+            "pixels": 64513,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 3
+          },
+          {
+            "case": "bz13h-type3-fading",
+            "changed": 431,
+            "examples": [
+              {
+                "error": 0.00236328125,
+                "pixel": "(125, 122)"
+              },
+              {
+                "error": 0.0025,
+                "pixel": "(126, 122)"
+              },
+              {
+                "error": 0.0023828125,
+                "pixel": "(127, 122)"
+              },
+              {
+                "error": 0.002421875,
+                "pixel": "(124, 123)"
+              },
+              {
+                "error": 0.00314453125,
+                "pixel": "(125, 123)"
+              }
+            ],
+            "max": 0.01015625,
+            "mean": 4.11429915288391e-05,
+            "missing": 0,
+            "output": "no_tracks_control",
+            "p99": 0.000468749989522621,
+            "pixels": 64513,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 3
+          },
+          {
+            "case": "bz13h-type3-fading",
+            "changed": 0,
+            "max": 0.00048828125,
+            "mean": 2.5506608164246e-06,
+            "missing": 0,
+            "output": "uv",
+            "p99": 0.0,
+            "pixels": 64513,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 3
+          },
+          {
+            "case": "bz13h-type3-fading",
+            "changed": 6,
+            "max": 0.19287109375,
+            "mean": 0.00012219898084979,
+            "missing": 0,
+            "output": "albedo",
+            "p99": 0.0009765625,
+            "pixels": 64513,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 3
+          },
+          {
+            "case": "bz13h-type3-fading",
+            "changed": 257,
+            "max": 0.1875,
+            "mean": 0.000224451529209714,
+            "missing": 0,
+            "output": "implicit_gradients_control",
+            "p99": 0.001708984375,
+            "pixels": 64513,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 3
+          },
+          {
+            "case": "bz13h-type3-cleared",
+            "changed": 0,
+            "examples": [],
+            "max": 1.953125e-05,
+            "mean": 7.87110949221899e-09,
+            "missing": 0,
+            "output": "height",
+            "p99": 0.0,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-cleared",
+            "changed": 61134,
+            "examples": [
+              {
+                "error": 0.0078125,
+                "pixel": "(1, 1)"
+              },
+              {
+                "error": 0.00828125,
+                "pixel": "(2, 1)"
+              },
+              {
+                "error": 0.00875,
+                "pixel": "(3, 1)"
+              },
+              {
+                "error": 0.00921875,
+                "pixel": "(4, 1)"
+              },
+              {
+                "error": 0.0096875,
+                "pixel": "(5, 1)"
+              }
+            ],
+            "max": 0.78125,
+            "mean": 0.0925534984175265,
+            "missing": 0,
+            "output": "bilinear_control",
+            "p99": 0.54296875,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-cleared",
+            "changed": 31730,
+            "examples": [
+              {
+                "error": 0.00201171875,
+                "pixel": "(107, 85)"
+              },
+              {
+                "error": 0.00205078125,
+                "pixel": "(108, 85)"
+              },
+              {
+                "error": 0.00208984375,
+                "pixel": "(109, 85)"
+              },
+              {
+                "error": 0.00212890625,
+                "pixel": "(110, 85)"
+              },
+              {
+                "error": 0.00216796875,
+                "pixel": "(111, 85)"
+              }
+            ],
+            "max": 0.00798828125,
+            "mean": 0.00357978604628927,
+            "missing": 0,
+            "output": "undeformed_control",
+            "p99": 0.00798828154802322,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-cleared",
+            "changed": 0,
+            "max": 0.00048828125,
+            "mean": 2.57324733399467e-06,
+            "missing": 0,
+            "output": "uv",
+            "p99": 0.0,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-cleared",
+            "changed": 6,
+            "max": 0.19287109375,
+            "mean": 0.000118459251811082,
+            "missing": 0,
+            "output": "albedo",
+            "p99": 0.0009765625,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          },
+          {
+            "case": "bz13h-type3-cleared",
+            "changed": 256,
+            "max": 0.1875,
+            "mean": 0.000221259536757355,
+            "missing": 0,
+            "output": "implicit_gradients_control",
+            "p99": 0.001708984375,
+            "pixels": 64516,
+            "position": "(52.35, 21.45)",
+            "raster_holes": 0
+          }
+        ],
+        "size": 256,
+        "span": 8.0
+      },
+      "contact": {
+        "checks": 35,
+        "failures": 0,
+        "renderer": "forward_plus",
+        "rows": [
+          {
+            "case": "basic",
+            "lower": {
+              "changed": 5083,
+              "mean": 0.239871358847315,
+              "peak": 0.419607847929001
+            },
+            "upper": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0.0
+            }
+          }
+        ]
+      },
+      "maps": {
+        "adapter": "NVIDIA GeForce RTX 3090",
+        "checks": 30,
+        "editor": false,
+        "failures": 0,
+        "renderer": "forward_plus",
+        "rows": [
+          {
+            "base_materials": 18,
+            "contact_materials": 99,
+            "difference": {
+              "changed": 2263,
+              "mean": 0.0523145833333333,
+              "peak": 59
+            },
+            "distance": "near",
+            "focus": "(69.6434, 11.36386, -40.651)",
+            "map": "bz2g",
+            "object": "LeafTree00-3715",
+            "off": {
+              "cpu_median_ms": 0.352999985218048,
+              "cpu_p95_ms": 0.499000012874603,
+              "draws": 646,
+              "gpu_median_ms": 0.813000023365021,
+              "gpu_p95_ms": 0.957000017166138,
+              "warmup_ms": 2170
+            },
+            "on": {
+              "cpu_median_ms": 0.372999995946884,
+              "cpu_p95_ms": 0.460999995470047,
+              "draws": 646,
+              "gpu_median_ms": 1.75499999523163,
+              "gpu_p95_ms": 2.16899991035461,
+              "warmup_ms": 1961
+            },
+            "registered_parts": 668,
+            "restoration": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0
+            },
+            "restored": {
+              "cpu_median_ms": 0.324000000953674,
+              "cpu_p95_ms": 0.372999995946884,
+              "draws": 646,
+              "gpu_median_ms": 0.603999972343445,
+              "gpu_p95_ms": 0.750999987125397,
+              "warmup_ms": 189
+            },
+            "template": "nafltr56"
+          },
+          {
+            "base_materials": 18,
+            "contact_materials": 99,
+            "difference": {
+              "changed": 106,
+              "mean": 0.00240833333333333,
+              "peak": 21
+            },
+            "distance": "far",
+            "focus": "(69.6434, 11.36386, -40.651)",
+            "map": "bz2g",
+            "object": "LeafTree00-3715",
+            "off": {
+              "cpu_median_ms": 0.377999991178513,
+              "cpu_p95_ms": 0.41499999165535,
+              "draws": 860,
+              "gpu_median_ms": 0.501999974250793,
+              "gpu_p95_ms": 0.625,
+              "warmup_ms": 172
+            },
+            "on": {
+              "cpu_median_ms": 0.428999990224838,
+              "cpu_p95_ms": 0.467000007629395,
+              "draws": 860,
+              "gpu_median_ms": 0.742999970912933,
+              "gpu_p95_ms": 0.884999990463257,
+              "warmup_ms": 188
+            },
+            "registered_parts": 668,
+            "restoration": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0
+            },
+            "restored": {
+              "cpu_median_ms": 0.377999991178513,
+              "cpu_p95_ms": 0.433999985456467,
+              "draws": 860,
+              "gpu_median_ms": 0.596000015735626,
+              "gpu_p95_ms": 0.717999994754791,
+              "warmup_ms": 173
+            },
+            "template": "nafltr56"
+          },
+          {
+            "base_materials": 3,
+            "contact_materials": 72,
+            "difference": {
+              "changed": 3454,
+              "mean": 0.210789583333333,
+              "peak": 103
+            },
+            "distance": "near",
+            "focus": "(84.42931, 12.86823, -82.66885)",
+            "map": "bz10k",
+            "object": "WinterFirTree00-1090",
+            "off": {
+              "cpu_median_ms": 0.165000006556511,
+              "cpu_p95_ms": 0.254000008106232,
+              "draws": 195,
+              "gpu_median_ms": 0.685999989509583,
+              "gpu_p95_ms": 0.712999999523163,
+              "warmup_ms": 174
+            },
+            "on": {
+              "cpu_median_ms": 0.185000002384186,
+              "cpu_p95_ms": 0.324000000953674,
+              "draws": 195,
+              "gpu_median_ms": 1.84200000762939,
+              "gpu_p95_ms": 2.36500000953674,
+              "warmup_ms": 181
+            },
+            "registered_parts": 268,
+            "restoration": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0
+            },
+            "restored": {
+              "cpu_median_ms": 0.158999994397163,
+              "cpu_p95_ms": 0.214000001549721,
+              "draws": 195,
+              "gpu_median_ms": 0.519999980926514,
+              "gpu_p95_ms": 0.667999982833862,
+              "warmup_ms": 177
+            },
+            "template": "nafltr59"
+          },
+          {
+            "base_materials": 3,
+            "contact_materials": 72,
+            "difference": {
+              "changed": 104,
+              "mean": 0.00296666666666667,
+              "peak": 32
+            },
+            "distance": "far",
+            "focus": "(84.42931, 12.86823, -82.66885)",
+            "map": "bz10k",
+            "object": "WinterFirTree00-1090",
+            "off": {
+              "cpu_median_ms": 0.188999995589256,
+              "cpu_p95_ms": 0.254000008106232,
+              "draws": 339,
+              "gpu_median_ms": 0.433999985456467,
+              "gpu_p95_ms": 0.560000002384186,
+              "warmup_ms": 175
+            },
+            "on": {
+              "cpu_median_ms": 0.216999992728233,
+              "cpu_p95_ms": 0.252000004053116,
+              "draws": 339,
+              "gpu_median_ms": 0.665000021457672,
+              "gpu_p95_ms": 0.675000011920929,
+              "warmup_ms": 180
+            },
+            "registered_parts": 268,
+            "restoration": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0
+            },
+            "restored": {
+              "cpu_median_ms": 0.187000006437302,
+              "cpu_p95_ms": 0.216000005602837,
+              "draws": 339,
+              "gpu_median_ms": 0.550000011920929,
+              "gpu_p95_ms": 0.558000028133392,
+              "warmup_ms": 174
+            },
+            "template": "nafltr59"
+          },
+          {
+            "base_materials": 13,
+            "contact_materials": 133,
+            "difference": {
+              "changed": 1723,
+              "mean": 0.0852479166666667,
+              "peak": 59
+            },
+            "distance": "near",
+            "focus": "(54.08064, 23.01896, -44.75)",
+            "map": "bz13h",
+            "object": "HadoganDome00-43320",
+            "off": {
+              "cpu_median_ms": 0.317999988794327,
+              "cpu_p95_ms": 0.446999996900558,
+              "draws": 430,
+              "gpu_median_ms": 0.680000007152557,
+              "gpu_p95_ms": 0.737999975681305,
+              "warmup_ms": 178
+            },
+            "on": {
+              "cpu_median_ms": 0.363000005483627,
+              "cpu_p95_ms": 0.409000009298325,
+              "draws": 430,
+              "gpu_median_ms": 1.59300005435944,
+              "gpu_p95_ms": 2.27500009536743,
+              "warmup_ms": 190
+            },
+            "registered_parts": 725,
+            "restoration": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0
+            },
+            "restored": {
+              "cpu_median_ms": 0.321000009775162,
+              "cpu_p95_ms": 0.363000005483627,
+              "draws": 430,
+              "gpu_median_ms": 0.503000020980835,
+              "gpu_p95_ms": 0.617999970912933,
+              "warmup_ms": 176
+            },
+            "template": "stbuho39"
+          },
+          {
+            "base_materials": 13,
+            "contact_materials": 133,
+            "difference": {
+              "changed": 796,
+              "mean": 0.0333104166666667,
+              "peak": 40
+            },
+            "distance": "far",
+            "focus": "(54.08064, 23.01896, -44.75)",
+            "map": "bz13h",
+            "object": "HadoganDome00-43320",
+            "off": {
+              "cpu_median_ms": 0.515999972820282,
+              "cpu_p95_ms": 0.550999999046326,
+              "draws": 1000,
+              "gpu_median_ms": 0.507000029087067,
+              "gpu_p95_ms": 0.579999983310699,
+              "warmup_ms": 176
+            },
+            "on": {
+              "cpu_median_ms": 0.578000009059906,
+              "cpu_p95_ms": 0.60699999332428,
+              "draws": 1000,
+              "gpu_median_ms": 0.839999973773956,
+              "gpu_p95_ms": 0.890999972820282,
+              "warmup_ms": 185
+            },
+            "registered_parts": 725,
+            "restoration": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0
+            },
+            "restored": {
+              "cpu_median_ms": 0.532999992370605,
+              "cpu_p95_ms": 0.864000022411346,
+              "draws": 1000,
+              "gpu_median_ms": 0.619000017642975,
+              "gpu_p95_ms": 0.662999987602234,
+              "warmup_ms": 177
+            },
+            "template": "stbuho39"
+          }
+        ],
+        "size": "800x600"
+      }
+    }
+  },
+  "startup_observations": [
+    {
+      "stage": "bounded cell loop",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-map-loop-gl.log",
+      "on_warmup_ms": 64168,
+      "off_warmup_ms": 380,
+      "same_changed_pixels": 2172
+    },
+    {
+      "stage": "consolidated vertex loop",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-map-vertex-loop-gl.log",
+      "on_warmup_ms": 24954,
+      "off_warmup_ms": 410,
+      "same_changed_pixels": 2172
+    },
+    {
+      "stage": "packed profile data",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-map-profile-gl.log",
+      "on_warmup_ms": 16429,
+      "off_warmup_ms": 2542,
+      "same_changed_pixels": 2172
+    }
+  ],
+  "limitations": [
+    "No physical Android/web validation.",
+    "Cold shader preparation remains expensive; first-use times are observed warmup windows, not a controlled cache-flush study.",
+    "Map viewport costs are not gameplay FPS. GPU clocks/load vary.",
+    "Contact does not reproduce every terrain relief/track normal, wet specular term or shoreline vertex-light interpolation.",
+    "Broad animated camera, moving/rotated/scaled props and all-assets acceptance remain open."
+  ],
+  "export_sha256": {
+    "CursedLands.x86_64": "3154bb4465f616e24b811dd576e9230022872cd80f8d5ab854efed2716b926d4",
+    "CursedLands.pck": "501fbad1e6ba8f4882594e29ad11141370efa215c4826c9bc95cbe8bdd1dcf10"
+  },
+  "integration": {
+    "date": "2026-10-08T14:12:54.581607+00:00",
+    "action": "git apply --check only; no patch applied",
+    "base": "3172ede12a5f41b0182c34a70b5eeda787c95e52",
+    "source_head": "4915d18fe401cec2e538145b5abf8d3d41061c97",
+    "patch_sha256": "3b71fe45629752479fcbda235be75cac137f3b822a1f08c9c78856b10472305a",
+    "unchanged": true,
+    "return_code": 0,
+    "stdout": "",
+    "stderr": "",
+    "target_head": "0ccb2de508df403c2b87354fec65e5bc1b3b4a32",
+    "target_status": " M game/src/ei/game_data.gd\n M game/src/ei/remake_text.gd\n M game/src/game/ai.gd\n M game/src/game/game.gd\n M game/src/game/net_status.gd\n M game/src/game/pad_field.gd\n M game/src/game/projectile.gd\n M game/src/game/session.gd\n M game/src/game/unit.gd\n M game/src/ui/camera_rig.gd\n M game/src/ui/enemy_bars.gd\n M game/src/ui/game_hud.gd\n?? game/src/game/direct_combat.gd\n?? game/src/game/direct_combat.gd.uid\n?? game/src/game/direct_control.gd\n?? game/src/game/direct_control.gd.uid\n?? tools/tests/direct_combat.gd\n?? tools/tests/direct_controls.gd\n?? tools/tests/direct_coop.gd\n"
+  },
+  "total_checks": 4126
+}

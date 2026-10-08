@@ -36,91 +36,9 @@ shader_type spatial;
 render_mode cull_disabled, ambient_light_disabled;
 varying vec3 ei_e;
 varying float ei_k;
-uniform sampler2DArray atlases : source_color, filter_linear_mipmap_anisotropic, repeat_disable;
-// The original tile lookup. Vulkan (Forward+ / Mobile): explicit gradients
-// and a whole layer number. On an Adreno 650 (Retroid Pocket 5) the implicit-
-// LOD array lookup on the varying layer drew the land as one flat colour with
-// black blocks, while gfx_terrain's textureGrad lookup drew correctly. The
-// same texels and filtering as texture() everywhere else.
-#if CURRENT_RENDERER == RENDERER_COMPATIBILITY
-#define EI_ATLAS(uv, layer) texture(atlases, vec3(uv, layer))
-#else
-#define EI_ATLAS(uv, layer) textureGrad(atlases, vec3(uv, floor(layer + 0.5)), dFdx(uv), dFdy(uv))
-#endif
-// Remake rendering (option gfx_terrain): padded tile filtering, restrained
-// sharpening and relief derived from the painted texture, with finer noise.
-uniform float detail = 0.0;
-uniform float tiles_per_axis = 8.0;
-uniform float atlas_padding = 0.0; // gutter / original tile size; 0 for original
-uniform float source_texel = 0.001953125;
-uniform sampler2D terrain_tiles : filter_nearest, repeat_disable; // code, ground type
-uniform bool blend_edges = true;
-uniform sampler2D detail_nm : hint_normal, filter_linear_mipmap_anisotropic, repeat_enable;
-uniform sampler2D macro_tex : filter_linear_mipmap, repeat_enable;
-// Cell data: base water height, land type, liquid type, liquid material.
-uniform sampler2D terrain_cells : filter_nearest, repeat_disable;
-// Highest solid cover per metre, rasterized from existing placed meshes.
-// Rain cannot wet terrain or water underneath a roof / bridge deck.
-uniform sampler2D rain_cover : filter_nearest, repeat_disable;
-// Optional loose surface and dense tracks. R compacts, G displaces banks; all
-// collision heights and the original undeformed sector meshes stay intact.
-uniform bool soft_ground = false;
-uniform bool soft_tracks = false;
-uniform sampler2D soft_track_texture : filter_linear, repeat_disable;
-uniform vec2 soft_track_origin;
-uniform float soft_track_time = 0.0;
-uniform float level[64];
-varying vec3 wpos;
+""" + GroundSurfaceShader.LAND_UNIFORMS + GroundSurfaceShader.SOFT_UNIFORMS + """varying vec3 wpos;
 varying vec2 soft_profile;
-vec2 soft_type(int g) {
-	// Loose layer thickness and maximum compression, in metres. The swept
-	// floor stays near the authored ground where the actor's feet stand.
-	if (g == 9) { return vec2(0.20, 0.30); }
-	if (g == 12) { return vec2(0.075, 0.12); }
-	if (g == 3) { return vec2(0.008, 0.025); }
-	return vec2(0.0);
-}
-int soft_ground_at(ivec2 p) {
-	return int(texelFetch(terrain_tiles, clamp(p, ivec2(0), textureSize(terrain_tiles, 0) - 1), 0).g + 0.5);
-}
-vec2 soft_surface(vec2 p, float height) {
-	ivec2 tile = ivec2(floor(p * 0.5));
-	vec2 profile = soft_type(soft_ground_at(tile));
-	if (profile.x == 0.0) { return vec2(0.0); }
-	// Soft materials of different thickness share the same border height.
-	vec2 grid = p * 0.5 - 0.5;
-	ivec2 base = ivec2(floor(grid));
-	vec2 blend = smoothstep(vec2(0.0), vec2(1.0), fract(grid));
-	profile = mix(mix(soft_type(soft_ground_at(base)), soft_type(soft_ground_at(base + ivec2(1, 0))), blend.x),
-		mix(soft_type(soft_ground_at(base + ivec2(0, 1))), soft_type(soft_ground_at(base + ivec2(1, 1))), blend.x), blend.y);
-	vec2 local = p - vec2(tile) * 2.0;
-	// Taper to zero at hard material boundaries instead of opening cracks
-	// between the loose layer and the original rock/road triangles.
-	float mask = 1.0;
-	if (soft_type(soft_ground_at(tile + ivec2(-1, 0))).x == 0.0) { mask *= smoothstep(0.0, 0.6, local.x); }
-	if (soft_type(soft_ground_at(tile + ivec2(1, 0))).x == 0.0) { mask *= smoothstep(0.0, 0.6, 2.0 - local.x); }
-	if (soft_type(soft_ground_at(tile + ivec2(0, -1))).x == 0.0) { mask *= smoothstep(0.0, 0.6, local.y); }
-	if (soft_type(soft_ground_at(tile + ivec2(0, 1))).x == 0.0) { mask *= smoothstep(0.0, 0.6, 2.0 - local.y); }
-	vec4 cell = textureLod(terrain_cells, p / vec2(textureSize(terrain_cells, 0)), 0.0);
-	float water_y = cell.r + level[clamp(int(cell.a + 0.5), 0, 63)];
-	return profile * mask * smoothstep(0.025, 0.10, height - water_y);
-}
-vec2 soft_uv(vec2 p) {
-	// Both sector textures contain their common boundary sample exactly.
-	return ((p - soft_track_origin) * (511.0 / 32.0) + 0.5) / 512.0;
-}
-float soft_height(vec2 track) {
-	// A new crossing compacts the bank of an older trail too.
-	return track.g * (1.0 - smoothstep(0.05, 0.30, track.r)) - track.r;
-}
-vec2 soft_sample(vec2 uv) {
-	vec4 track = textureLod(soft_track_texture, uv, 0.0);
-	// Coverage-normalized timestamps keep new track edges from inheriting
-	// the zero timestamp of untouched texels late in a long map session.
-	float age = max(soft_track_time - track.b / max(track.a, 1e-5), 0.0);
-	return track.rg * clamp((240.0 - age) / 60.0, 0.0, 1.0);
-}
-void vertex() {
+""" + GroundSurfaceShader.SOFT_FUNCTIONS + """void vertex() {
 	wpos = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
 	soft_profile = vec2(0.0);
 	if (soft_ground) {
@@ -135,95 +53,7 @@ void vertex() {
 	ei_e = COLOR.rgb;
 	ei_k = COLOR.a * 4.0;
 }
-vec2 tile_turn(vec2 p, int rotation) {
-	if (rotation == 1) { return vec2(-p.y, p.x); }
-	if (rotation == 2) { return -p; }
-	if (rotation == 3) { return vec2(p.y, -p.x); }
-	return p;
-}
-vec4 tile_info(ivec2 cell) {
-	return texelFetch(terrain_tiles, clamp(cell, ivec2(0), textureSize(terrain_tiles, 0) - 1), 0);
-}
-// stone, soft ground, grass, ice. Blend these with the colour so relief and
-// sharpening cannot introduce another hard line at a material boundary.
-vec4 tile_traits(float type) {
-	int g = int(type + 0.5);
-	return vec4((g == 2 || g == 4 || g == 15) ? 1.0 : 0.0,
-		(g == 3 || g == 9 || g == 12) ? 1.0 : 0.0,
-		(g == 0 || g == 5 || g == 11) ? 1.0 : 0.0, g == 10 ? 1.0 : 0.0);
-}
-// p is in the unrotated, visible 48/64 tile interior. Samples from a
-// neighbour can extend into its authored border, never an unrelated tile.
-vec3 tile_sample(float packed, vec2 p, vec2 dx, vec2 dy) {
-	int code = int(packed + 0.5);
-	int tile = code & 63;
-	int rotation = (code >> 14) & 3;
-	int per_row = int(tiles_per_axis);
-	float border = 8.0 * source_texel * tiles_per_axis;
-	float interior = 1.0 - 2.0 * border;
-	vec2 local = vec2(border) + (vec2(0.5) + tile_turn(p - 0.5, rotation)) * interior;
-	local = clamp(vec2(local.x, 1.0 - local.y), vec2(0.0), vec2(1.0));
-	vec2 tile_origin = vec2(float(tile % per_row), float(per_row - 1 - tile / per_row));
-	float span = 1.0 + 2.0 * atlas_padding;
-	vec2 uv = (tile_origin + (local + atlas_padding) / span) / tiles_per_axis;
-	vec2 gx = tile_turn(dx, rotation) * interior / (tiles_per_axis * span);
-	vec2 gy = tile_turn(dy, rotation) * interior / (tiles_per_axis * span);
-	return textureGrad(atlases, vec3(uv, float((code >> 6) & 255)), gx * vec2(1.0, -1.0), gy * vec2(1.0, -1.0)).rgb;
-}
-#ifdef EI_BAKED_TERRAIN
-uniform sampler2D baked_ground : source_color, filter_linear_mipmap_anisotropic, repeat_disable;
-uniform vec2 bake_origin;
-uniform vec2 bake_span;
-vec3 ground_sample(ivec2 cell, vec2 p, vec2 dx, vec2 dy, out vec4 traits) {
- ivec2 shift=ivec2(floor(p)); cell+=shift; p-=vec2(shift);
- traits=tile_traits(tile_info(cell).g);
- if(blend_edges) {
-  vec2 edge=min(p,1.0-p);
-  vec2 weight=0.5*(1.0-smoothstep(vec2(0.0),vec2(0.12),edge));
-  ivec2 step_cell=ivec2(p.x<0.5 ? -1:1,p.y<0.5 ? -1:1);
-  vec4 tx=tile_traits(tile_info(cell+ivec2(step_cell.x,0)).g);
-  vec4 ty=tile_traits(tile_info(cell+ivec2(0,step_cell.y)).g);
-  vec4 txy=tile_traits(tile_info(cell+step_cell).g);
-  traits=mix(mix(traits,tx,weight.x),mix(ty,txy,weight.x),weight.y);
- }
- return textureGrad(baked_ground,(vec2(cell)+p-bake_origin)/bake_span,dx/bake_span,dy/bake_span).rgb;
-}
-#else
-vec3 ground_sample(ivec2 cell, vec2 p, vec2 dx, vec2 dy, out vec4 traits) {
-	// Gradient taps may cross an edge. Resolve their actual owner first, so
-	// both sides derive the same colour AND height gradient at the join.
-	ivec2 shift = ivec2(floor(p));
-	cell += shift;
-	p -= vec2(shift);
-	vec4 info = tile_info(cell);
-	vec3 c = tile_sample(info.r, p, dx, dy);
-	traits = tile_traits(info.g);
-	if (!blend_edges) { return c; }
-	vec2 edge = min(p, 1.0 - p);
-	vec2 weight = 0.5 * (1.0 - smoothstep(vec2(0.0), vec2(0.12), edge));
-	ivec2 step_cell = ivec2(p.x < 0.5 ? -1 : 1, p.y < 0.5 ? -1 : 1);
-	if (weight.x > 0.0) {
-		info = tile_info(cell + ivec2(step_cell.x, 0));
-		c = mix(c, tile_sample(info.r, p - vec2(float(step_cell.x), 0.0), dx, dy), weight.x);
-		traits = mix(traits, tile_traits(info.g), weight.x);
-	}
-	if (weight.y > 0.0) {
-		info = tile_info(cell + ivec2(0, step_cell.y));
-		vec3 other = tile_sample(info.r, p - vec2(0.0, float(step_cell.y)), dx, dy);
-		vec4 other_traits = tile_traits(info.g);
-		if (weight.x > 0.0) {
-			info = tile_info(cell + step_cell);
-			other = mix(other, tile_sample(info.r, p - vec2(step_cell), dx, dy), weight.x);
-			other_traits = mix(other_traits, tile_traits(info.g), weight.x);
-		}
-		c = mix(c, other, weight.y);
-		traits = mix(traits, other_traits, weight.y);
-	}
-	return c;
-}
-#endif
-
-float ground_height(vec3 colour) {
+""" + GroundSurfaceShader.TILE_FUNCTIONS + """float ground_height(vec3 colour) {
 	// A shallow visual approximation, not geometry: painted bright ridges
 	// rise above dark cracks. Work in perceptual brightness, not linear RGB.
 	return sqrt(max(dot(colour, vec3(0.2126, 0.7152, 0.0722)), 0.0));
@@ -873,6 +703,7 @@ var _lava := PackedFloat32Array()
 var _surf := PackedFloat32Array()
 var _ripple := PackedFloat32Array()
 var _height_tex: ImageTexture
+var contact: GroundContact
 var _cell_tex: ImageTexture
 var _tile_tex: ImageTexture
 var _water_tile_tex: ImageTexture
@@ -1136,6 +967,12 @@ func _build_surface_data() -> void:
 		var type_id := code & 0x3fff
 		tiles[i * 4] = code
 		tiles[i * 4 + 1] = tile_types[type_id] if type_id < tile_types.size() else 0
+		# The spare channels hold the loose-ground profile once per map;
+		# terrain and contact queries need not repeat type branches per tap.
+		match int(tiles[i * 4 + 1]):
+			9: tiles[i * 4 + 2] = 0.20; tiles[i * 4 + 3] = 0.30
+			12: tiles[i * 4 + 2] = 0.075; tiles[i * 4 + 3] = 0.12
+			3: tiles[i * 4 + 2] = 0.008; tiles[i * 4 + 3] = 0.025
 	_tile_tex = ImageTexture.create_from_image(Image.create_from_data(sectors_x * TILES,
 		sectors_y * TILES, false, Image.FORMAT_RGBAF, tiles.to_byte_array()))
 	var wtiles := PackedFloat32Array()
@@ -1251,6 +1088,8 @@ func apply_gfx() -> void:
 		color_cache = TerrainColorCache.create(self)
 	elif is_instance_valid(color_cache):
 		color_cache.refresh()
+	if is_instance_valid(contact):
+		contact.queue_refresh()
 
 
 ## SurfaceWeather's static cover map affects rendering only. Keep it across
@@ -1267,6 +1106,8 @@ func set_rain_cover(image: Image) -> void:
 		_water_mat.set_shader_parameter("rain_cover", _rain_cover)
 	if is_instance_valid(details) and is_instance_valid(details.soft_ground):
 		details.soft_ground.refresh_rain_cover()
+	if is_instance_valid(contact):
+		contact.refresh_parameters()
 
 
 func _record_ground(tex: PackedInt32Array, sx: int, sy: int) -> void:
@@ -1412,6 +1253,8 @@ func set_water_offset(mat: int, offset: float) -> Rect2i:
 		_land_mat.set_shader_parameter("level", _level)
 	if is_instance_valid(color_cache):
 		color_cache.sync_parameter("level", _level)
+	if is_instance_valid(contact):
+		contact.refresh_parameters()
 	var cells_w := sectors_x * SECTOR
 	var lo := Vector2i(1 << 30, 1 << 30)
 	var hi := Vector2i(-1, -1)

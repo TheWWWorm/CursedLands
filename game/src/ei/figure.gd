@@ -137,6 +137,7 @@ static func world_material_for(texture: String, material_id := 0) -> Material:
 		_oshader_a2c = Gfx.make_shader(OBJECT_SHADER.replace("if (a2c > 0.5) {", "if (true) {"))
 	var m := ShaderMaterial.new()
 	m.shader = _oshader_a2c if a2c else _oshader
+	m.set_meta("ground_contact_source", OBJECT_SHADER.replace("if (a2c > 0.5) {", "if (true) {") if a2c else OBJECT_SHADER)
 	m.set_shader_parameter("albedo_tex", tex)
 	m.set_shader_parameter("surface_profile", SurfaceResponse.object_profile(texture))
 	FigureMaterial.apply(m, material_id)
@@ -471,6 +472,7 @@ static func foliage_material_for(texture: String, sway := true, stiff := false, 
 	m.set_shader_parameter("stiff", 1.0 if stiff else 0.0)
 	FigureMaterial.apply(m, material_id)
 	m.set_meta("sway", sway)
+	m.set_meta("ground_contact_source", FOLIAGE_SHADER)
 	_foliage[key] = m
 	return m
 

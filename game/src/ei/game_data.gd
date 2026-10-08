@@ -93,6 +93,8 @@ const OPTIONS := [
 	["gfx_sky", 1, 2, 13, 5, 1], ["gfx_far_view", 1, 2, 13, 6, 1],
 	["gfx_wind", 1, 2, 13, 7, 1], ["q_aniso", 1, 5, 13, 8, 4],
 	["gfx_grass", 1, 2, 13, 9, 1], ["gfx_soft_ground", 1, 2, 13, 10, 1],
+	# Opt in until first-use compilation and wider device costs are resolved.
+	["gfx_ground_contact", 1, 2, 13, 11, 0],
 	# Lighting and shadows (group 14). Each effect is independent and defaults
 	# on for new and existing settings files.
 	["gfx_firelight", 1, 2, 14, 0, 1], ["gfx_torch_glow", 1, 2, 14, 1, 1],
@@ -279,6 +281,7 @@ const REMAKE_OPTIONS := {
 	"gfx_terrain": ["Terrain detail", "Sharper original ground textures with fewer tile seams; relief follows painted rock and path patterns, with softer sand and snow, fine grass and damp banks."],
 	"gfx_grass": ["Grass blades", "Adds grass blades on green ground, with wind and shadows when shadow quality is enabled. Automatic settings enable this on capable desktops; off by default on Android."],
 	"gfx_soft_ground": ["Snow and sand deformation", "Movement compresses loose snow and sand into connected trails with raised banks and deeper footprints. Snow gives way more than sand or packed snow. Tracks gradually disappear; off by default on Android."],
+	"gfx_ground_contact": ["Ground contact blending", "Experimental: blends the surrounding ground onto the bases of rocks, buildings and tree trunks, following slopes, loose snow and footprints. First use may pause while preparing graphics. Off by default."],
 	"gfx_heat_haze": ["Heat haze", "Air shimmering above torches and camp fires."],
 	"gfx_ssao": ["Ambient occlusion", "Soft contact shadows (SSAO)."],
 	"gfx_bloom": ["Bloom", "Glow around bright lights."],
@@ -327,7 +330,7 @@ const OPTIONS_APPLIED := ["volume_sfx", "volume_stream", "volume_voice", "power_
 	"show_flying_hp", "show_tutorial", "autosave", "tooltip_time", "switch_filters",
 	"camera_reverse_x", "camera_reverse_y", "reverse_stereo", "difficulty",
 	"gfx_sky", "gfx_water", "gfx_wind", "gfx_volumetric", "gfx_terrain", "gfx_heat_haze",
-	"gfx_grass", "gfx_soft_ground",
+	"gfx_grass", "gfx_soft_ground", "gfx_ground_contact",
 	"gfx_ssao", "gfx_bloom", "gfx_far_view", "gfx_severed_limbs",
 	"gfx_hd_textures", "gfx_soft_particles", "gfx_lit_particles", "gfx_contact_shadows", "gfx_torch_glow", "gfx_water_reflections",
 	"gfx_firelight", "gfx_materials", "gfx_foliage_light", "gfx_weather_surfaces", "gfx_lava_light", "gfx_detailed_heads",
@@ -380,7 +383,8 @@ func _notification(what: int) -> void:
 ## existing Original look / untouched automatic tier. Saved choices win.
 static func ground_effect_defaults(cfg: ConfigFile, platform: Dictionary = {}) -> Dictionary:
 	var values := {"gfx_grass": int(platform.get("gfx_grass", 1)),
-		"gfx_soft_ground": int(platform.get("gfx_soft_ground", 1))}
+		"gfx_soft_ground": int(platform.get("gfx_soft_ground", 1)),
+		"gfx_ground_contact": int(platform.get("gfx_ground_contact", 0))}
 	var seen := false
 	var original := true
 	if cfg.has_section("options"):
@@ -397,7 +401,7 @@ static func ground_effect_defaults(cfg: ConfigFile, platform: Dictionary = {}) -
 	for key: String in values:
 		if cfg.has_section_key("options", key):
 			values[key] = int(cfg.get_value("options", key))
-		elif (seen and original) or (untouched and tier >= (2 if key == "gfx_grass" else 3)):
+		elif (seen and original) or (untouched and tier >= (2 if key in ["gfx_grass", "gfx_ground_contact"] else 3)):
 			values[key] = 0
 	return values
 

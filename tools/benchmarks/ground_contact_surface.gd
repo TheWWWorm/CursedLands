@@ -11,116 +11,44 @@ var _linear_capture := false
 const SIZE := 256
 const SPAN := 8.0
 
-const QUERY := """
-uniform sampler2D query_vertices : filter_nearest, repeat_disable;
-uniform sampler2D query_tiles : filter_nearest, repeat_disable;
-uniform sampler2DArray query_tracks : filter_linear, repeat_disable;
-uniform bool query_bilinear = false;
-uniform bool query_undeformed = false;
-uniform bool query_no_tracks = false;
-uniform bool query_first_hit = false;
-uniform float query_time = 0.0;
-// Data uses EI xy; returned vertices use Godot xyz.
-vec3 query_vertex(ivec2 p) {
-	vec3 data = texelFetch(query_vertices, p, 0).rgb;
-	return vec3(float(p.x) + data.x, data.y, -float(p.y) - data.z);
+## Frozen pre-extraction displacement oracle: derives profiles from type IDs,
+## independent of the production texture's newly populated B/A channels.
+const PROFILE_REFERENCE := """vec2 reference_soft_type(int g) {
+	// Loose layer thickness and maximum compression, in metres. The swept
+	// floor stays near the authored ground where the actor's feet stand.
+	if (g == 9) { return vec2(0.20, 0.30); }
+	if (g == 12) { return vec2(0.075, 0.12); }
+	if (g == 3) { return vec2(0.008, 0.025); }
+	return vec2(0.0);
 }
-bool query_weights(vec2 p, vec3 a, vec3 b, vec3 c, out vec3 w) {
-	vec2 x = b.xz - a.xz;
-	vec2 y = c.xz - a.xz;
-	vec2 q = vec2(p.x, -p.y) - a.xz;
-	float d = x.x * y.y - x.y * y.x;
-	if (abs(d) < 1e-10) { w = vec3(-1.0); return false; }
-	float u = (q.x * y.y - q.y * y.x) / d;
-	float v = (x.x * q.y - x.y * q.x) / d;
-	w = vec3(1.0 - u - v, u, v);
-	return min(min(w.x, w.y), w.z) >= -1e-5;
+int reference_soft_ground_at(ivec2 p) {
+	return int(texelFetch(terrain_tiles, clamp(p, ivec2(0), textureSize(terrain_tiles, 0) - 1), 0).g + 0.5);
 }
-float query_displace(vec3 p, vec2 origin, float layer) {
-	if (!soft_ground || query_undeformed) { return p.y; }
-	vec2 profile = soft_surface(vec2(p.x, -p.z), p.y);
-	float h = p.y + profile.x;
-	if (layer >= 0.0 && !query_no_tracks) {
-		vec2 uv = ((vec2(p.x, -p.z) - origin) * (511.0 / 32.0) + 0.5) / 512.0;
-		vec4 track = textureLod(query_tracks, vec3(uv, layer), 0.0);
-		float age = max(query_time - track.b / max(track.a, 1e-5), 0.0);
-		vec2 value = track.rg * clamp((240.0 - age) / 60.0, 0.0, 1.0);
-		h += soft_height(value) * profile.y;
-	}
-	return h;
-}
-vec3 query_point(vec3 a, vec3 b, vec3 c, vec2 uv) {
-	return a * (1.0 - uv.x - uv.y) + b * uv.x + c * uv.y;
-}
-float query_elevation(vec3 a, vec3 b, vec3 c, vec3 w, ivec2 cell) {
-	vec2 state = texelFetch(query_tiles, cell / 2, 0).rg;
-	vec2 origin = vec2(cell / 32) * 32.0;
-	float layer = state.x - 1.0;
-	float height;
-	if (soft_ground && state.y > 0.5 && !query_undeformed) {
-		// Reconstruct the installed 16-way subdivision in the ORIGINAL
-		// triangle's barycentric coordinates, not a regular world xy grid.
-		vec2 q = w.yz * 16.0;
-		vec2 lo = floor(q);
-		vec2 f = q - lo;
-		vec2 u; vec2 v; vec2 z;
-		vec3 blend;
-		if (f.x + f.y <= 1.0) {
-			u = lo; v = lo + vec2(1.0,0.0); z = lo + vec2(0.0,1.0);
-			blend = vec3(1.0 - f.x - f.y, f.x, f.y);
-		} else {
-			u = lo + vec2(1.0,0.0); v = lo + vec2(1.0); z = lo + vec2(0.0,1.0);
-			blend = vec3(1.0 - f.y, f.x + f.y - 1.0, 1.0 - f.x);
-		}
-		height = dot(blend, vec3(query_displace(query_point(a,b,c,u / 16.0), origin, layer),
-			query_displace(query_point(a,b,c,v / 16.0), origin, layer),
-			query_displace(query_point(a,b,c,z / 16.0), origin, layer)));
-	} else {
-		height = dot(w, vec3(query_displace(a,origin,layer), query_displace(b,origin,layer), query_displace(c,origin,layer)));
-	}
-	return height;
-}
-bool query_surface(vec2 p, out float height, out vec2 grid, out ivec2 tile) {
-	height = -1e10; grid = vec2(0.0); tile = ivec2(0);
-	bool found = false;
-	// Some authored offsets fold cells over each other. The first enclosing
-	// triangle is NOT always the one seen by the depth buffer. Examine both
-	// triangles of all nine candidate cells and retain the highest surface.
-	ivec2 offsets[9] = ivec2[9](ivec2(0), ivec2(-1,0), ivec2(1,0), ivec2(0,-1), ivec2(0,1),
-		ivec2(-1,-1), ivec2(1,-1), ivec2(-1,1), ivec2(1,1));
-	for (int i = 0; i < 9; i++) {
-		if (found && query_first_hit) { break; }
-		ivec2 cell = ivec2(floor(p)) + offsets[i];
-		if (any(lessThan(cell, ivec2(0))) || any(greaterThanEqual(cell, textureSize(query_vertices, 0) - 1))) { continue; }
-		vec3 va = query_vertex(cell);
-		vec3 vb = query_vertex(cell + ivec2(1,0));
-		vec3 vc = query_vertex(cell + ivec2(0,1));
-		vec3 vd = query_vertex(cell + ivec2(1));
-		for (int side = 0; side < 2; side++) {
-			if (found && query_first_hit) { break; }
-			vec3 a = side == 0 ? vc : vb;
-			vec3 b = side == 0 ? vb : vc;
-			vec3 c = side == 0 ? va : vd;
-			vec3 w;
-			if (!query_weights(p, a, b, c, w)) { continue; }
-			float h = query_elevation(a,b,c,w,cell);
-			if (h <= height) { continue; }
-			height = h; found = true; tile = cell / 2;
-			vec2 ga = vec2(cell) + (side == 0 ? vec2(0,1) : vec2(1,0));
-			vec2 gb = vec2(cell) + (side == 0 ? vec2(1,0) : vec2(0,1));
-			vec2 gc = vec2(cell) + (side == 0 ? vec2(0) : vec2(1));
-			grid = ga * w.x + gb * w.y + gc * w.z;
-		}
-	}
-	if (found && query_bilinear) {
-		ivec2 at = clamp(ivec2(floor(p)), ivec2(0), textureSize(query_vertices, 0) - 2);
-		vec2 f = clamp(p - vec2(at), vec2(0.0), vec2(1.0));
-		height = mix(mix(query_vertex(at).y, query_vertex(at + ivec2(1,0)).y, f.x),
-			mix(query_vertex(at + ivec2(0,1)).y, query_vertex(at + ivec2(1)).y, f.x), f.y);
-	}
-	return found;
+vec2 reference_soft_surface(vec2 p, float height) {
+	ivec2 tile = ivec2(floor(p * 0.5));
+	vec2 profile = reference_soft_type(reference_soft_ground_at(tile));
+	if (profile.x == 0.0) { return vec2(0.0); }
+	// Soft materials of different thickness share the same border height.
+	vec2 grid = p * 0.5 - 0.5;
+	ivec2 base = ivec2(floor(grid));
+	vec2 blend = smoothstep(vec2(0.0), vec2(1.0), fract(grid));
+	profile = mix(mix(reference_soft_type(reference_soft_ground_at(base)), reference_soft_type(reference_soft_ground_at(base + ivec2(1, 0))), blend.x),
+		mix(reference_soft_type(reference_soft_ground_at(base + ivec2(0, 1))), reference_soft_type(reference_soft_ground_at(base + ivec2(1, 1))), blend.x), blend.y);
+	vec2 local = p - vec2(tile) * 2.0;
+	// Taper to zero at hard material boundaries instead of opening cracks
+	// between the loose layer and the original rock/road triangles.
+	float mask = 1.0;
+	if (reference_soft_type(reference_soft_ground_at(tile + ivec2(-1, 0))).x == 0.0) { mask *= smoothstep(0.0, 0.6, local.x); }
+	if (reference_soft_type(reference_soft_ground_at(tile + ivec2(1, 0))).x == 0.0) { mask *= smoothstep(0.0, 0.6, 2.0 - local.x); }
+	if (reference_soft_type(reference_soft_ground_at(tile + ivec2(0, -1))).x == 0.0) { mask *= smoothstep(0.0, 0.6, local.y); }
+	if (reference_soft_type(reference_soft_ground_at(tile + ivec2(0, 1))).x == 0.0) { mask *= smoothstep(0.0, 0.6, 2.0 - local.y); }
+	vec4 cell = textureLod(terrain_cells, p / vec2(textureSize(terrain_cells, 0)), 0.0);
+	float water_y = cell.r + level[clamp(int(cell.a + 0.5), 0, 63)];
+	return profile * mask * smoothstep(0.025, 0.10, height - water_y);
 }
 """
+
+var QUERY := GroundSurfaceShader.QUERY_SHADER.replace("const bool query_", "uniform bool query_")
 
 const OUTPUT := """
 uniform int query_output = 0;
@@ -144,21 +72,24 @@ func fragment(source: String, first: String, last: String) -> String:
 func make_shader(query: bool) -> Shader:
 	var original := EITerrain.TERRAIN_SHADER
 	var declarations := fragment(original, "uniform sampler2DArray atlases", "varying vec3 wpos;")
-	var soft := fragment(original, "vec2 soft_type", "void vertex()")
+	var soft := GroundSurfaceShader.SOFT_FUNCTIONS
 	var tiles := fragment(original, "vec2 tile_turn", "float ground_height")
 	var code := "shader_type spatial;\nrender_mode unshaded, cull_disabled, fog_disabled;\n" + declarations
-	code += "varying vec3 wpos;\n" + soft + tiles + OUTPUT + QUERY
+	code += "varying vec3 wpos;\n" + soft + PROFILE_REFERENCE + tiles + OUTPUT + QUERY
 	if query:
 		code += """
 void vertex() { wpos = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz; }
 void fragment() {
-	float h; vec2 grid; ivec2 tile;
-	if (!query_surface(vec2(wpos.x, -wpos.z), h, grid, tile)) { discard; }
+	float h; vec2 grid; ivec2 tile; mat2 jacobian;
+	if (!query_surface(vec2(wpos.x, -wpos.z), h, grid, tile, jacobian)) { discard; }
 	vec3 c = vec3(0.0);
 	if (query_output == 1) {
 		vec4 traits;
 		vec2 p = grid * 0.5;
-		c = ground_sample(tile, p - vec2(tile), dFdx(p), dFdy(p), traits);
+		vec2 dx = jacobian * dFdx(wpos.xz * vec2(1.0,-1.0)) * 0.5;
+		vec2 dy = jacobian * dFdy(wpos.xz * vec2(1.0,-1.0)) * 0.5;
+		if (query_implicit_gradients) { dx = dFdx(p); dy = dFdy(p); }
+		c = ground_sample(tile, p - vec2(tile), dx, dy, traits);
 	} else if (query_output == 2) { c = vec3(fract(grid * 0.03125), 0.5); }
 	ALBEDO = query_output == 1 ? c : query_colour(c);
 }
@@ -168,7 +99,7 @@ void fragment() {
 void vertex() {
 	wpos = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
 	if (soft_ground) {
-		vec2 profile = soft_surface(vec2(wpos.x, -wpos.z), wpos.y);
+		vec2 profile = reference_soft_surface(vec2(wpos.x, -wpos.z), wpos.y);
 		VERTEX.y += profile.x;
 		if (soft_tracks) { VERTEX.y += soft_height(soft_sample(soft_uv(vec2(wpos.x, -wpos.z)))) * profile.y; }
 		wpos = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
@@ -177,8 +108,8 @@ void vertex() {
 void fragment() {
 	vec3 c = vec3(0.0);
 	if (query_output == 0) {
-		float h; vec2 grid; ivec2 owner;
-		if (!query_surface(vec2(wpos.x, -wpos.z), h, grid, owner)) {
+		float h; vec2 grid; ivec2 owner; mat2 jacobian;
+		if (!query_surface(vec2(wpos.x, -wpos.z), h, grid, owner, jacobian)) {
 			c = vec3(0.0, 1.0, 1.0);
 		} else {
 			float error = abs(h - wpos.y);
@@ -251,7 +182,12 @@ func surface_data(terrain: EITerrain, soft: SoftGroundDeform) -> Dictionary:
 	var tracks := Texture2DArray.new()
 	check(tracks.create_from_images(images) == OK, "diagnostic track snapshot accepted")
 	return {"query_vertices": verts, "query_tiles": ImageTexture.create_from_image(table),
-		"query_tracks": tracks, "query_time": soft._age if soft else 0.0}
+		"query_tracks": tracks, "query_clock": _clock_texture(soft._age if soft else 0.0)}
+
+func _clock_texture(time: float) -> ImageTexture:
+	var image := Image.create(1, 1, false, Image.FORMAT_RF)
+	image.fill(Color(time, 0, 0, 0))
+	return ImageTexture.create_from_image(image)
 
 func make_view(p: Vector2, height: float) -> SubViewport:
 	var view := SubViewport.new()
@@ -381,8 +317,7 @@ func find_patch(t: EITerrain, type_id: int) -> Vector2:
 				continue
 			var vi := y * t.grid_w + x
 			var slope := absf(t.heights[vi + 1] - t.heights[vi]) + absf(t.heights[vi + t.grid_w] - t.heights[vi])
-			# Prefer displaced, sloping terrain, while staying within the
-			# height encoder's 64 m span over this 8 m patch.
+			# Prefer displaced, sloping terrain in this 8 m patch.
 			var value := t.land_xy[vi].length() * 2 + minf(slope, 1.0)
 			if value > score:
 				score = value
@@ -396,6 +331,14 @@ func render_case(t: EITerrain, p: Vector2, label: String, soft: SoftGroundDeform
 	var real_shader := make_shader(false)
 	var query_shader := make_shader(true)
 	var snapshot := surface_data(t, soft)
+	# Independent CPU snapshot remains the geometry oracle. The query plane
+	# consumes production storage, including slot reuse and the shared clock.
+	var shared := snapshot.duplicate()
+	if soft:
+		var field := soft.shared_field()
+		shared.query_tiles = field.tiles
+		shared.query_tracks = field.texture
+		shared.query_clock = field.clock
 	var materials: Array[ShaderMaterial] = []
 	for sector: Node in t.get_children():
 		if not sector is EITerrainSector:
@@ -405,8 +348,8 @@ func render_case(t: EITerrain, p: Vector2, label: String, soft: SoftGroundDeform
 			copy.mesh = part.mesh
 			var original := part.mesh.surface_get_material(0) as ShaderMaterial
 			var mat := copy_material(original, real_shader)
-			for key: String in snapshot:
-				mat.set_shader_parameter(key, snapshot[key])
+			for key: String in shared:
+				mat.set_shader_parameter(key, shared[key])
 			materials.append(mat)
 			copy.material_override = mat
 			actual.add_child(copy)
@@ -417,8 +360,8 @@ func render_case(t: EITerrain, p: Vector2, label: String, soft: SoftGroundDeform
 	plane.position = Vector3(p.x, h, -p.y)
 	var qm := copy_material(t._land_mat, query_shader)
 	qm.set_shader_parameter("blend_edges", Gfx.on("gfx_terrain"))
-	for key: String in snapshot:
-		qm.set_shader_parameter(key, snapshot[key])
+	for key: String in shared:
+		qm.set_shader_parameter(key, shared[key])
 	plane.material_override = qm
 	query.add_child(plane)
 	for output in [0, 2, 1]:
@@ -470,6 +413,12 @@ func render_case(t: EITerrain, p: Vector2, label: String, soft: SoftGroundDeform
 					for mat: ShaderMaterial in materials:
 						mat.set_shader_parameter("query_no_tracks", false)
 		else:
+			if output == 1:
+				qm.set_shader_parameter("query_implicit_gradients", true)
+				var control := compare(a, await capture(query))
+				control.merge({"case": label, "output": "implicit_gradients_control", "position": str(p)})
+				rows.append(control)
+				qm.set_shader_parameter("query_implicit_gradients", false)
 			var suffix := "%s-%s-%s" % [RenderingServer.get_current_rendering_method(), label, row.output]
 			a.save_png("user://ground-surface-" + suffix + "-mesh.png")
 			b.save_png("user://ground-surface-" + suffix + "-query.png")

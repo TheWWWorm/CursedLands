@@ -7,8 +7,8 @@ extends Node
 ## world, loading or disabling the option. Saves and collision remain original.
 
 const TYPES := [3, 9, 12] # authored sand, loose snow, packed snow
-const SECTOR := 32
-const RESOLUTION := 512
+const SECTOR := SoftGroundField.SECTOR
+const RESOLUTION := SoftGroundField.RESOLUTION
 const SUBDIV := 16
 const DEPTH := 0.30 # maximum loose-snow depth; see the terrain material profiles
 const MAX_SECTORS := 8
@@ -24,6 +24,7 @@ const TRAIL_SUPPORT := 2.6 # feathered, irregular shoulders around the swept flo
 static var _edge_noise: FastNoiseLite
 
 var terrain: EITerrain
+var field: SoftGroundField
 var sectors := {} # Vector2i -> source mesh/arrays, dense tiles, track image
 var _queue: Array[Dictionary] = []
 var _age := 0.0
@@ -32,6 +33,12 @@ var _walkers := {} # rendered foot identity -> most recent grounded contact
 var _native_mesh := ClassDB.class_exists("SoftGroundMeshJob") and not OS.get_cmdline_user_args().has("--ei-script-soft-ground")
 var _mesh_jobs: Array[Dictionary] = []
 var _generation := 0
+
+
+func shared_field() -> SoftGroundField:
+	if field == null:
+		field = SoftGroundField.new(terrain.sectors_x * 16, terrain.sectors_y * 16)
+	return field
 
 
 func _exit_tree() -> void:
@@ -48,6 +55,8 @@ func clear() -> void:
 	_walkers.clear()
 	for key: Vector2i in sectors.keys():
 		_restore(key)
+	if field:
+		field.flush(_age)
 
 
 func _restore(key: Vector2i) -> void:
@@ -59,6 +68,8 @@ func _restore(key: Vector2i) -> void:
 	var shadow := (rec.shadow as WeakRef).get_ref() as MeshInstance3D
 	if shadow: shadow.free()
 	sectors.erase(key)
+	field.release(key)
+	field.flush(_age)
 	_queue = _queue.filter(func(q: Dictionary) -> bool: return q.key != key)
 
 
@@ -69,6 +80,7 @@ func refresh_materials() -> void:
 		rec.material.set_shader_parameter("soft_tracks", true)
 		rec.material.set_shader_parameter("soft_track_origin", Vector2(key * SECTOR))
 		rec.material.set_shader_parameter("soft_track_texture", rec.texture)
+		rec.material.set_shader_parameter("soft_track_layer", rec.layer)
 		rec.material.set_shader_parameter("soft_track_time", _age)
 		var node := (rec.node as WeakRef).get_ref() as MeshInstance3D
 		# A newly queued sector still displays its original mesh. Never attach
@@ -232,6 +244,8 @@ func _make_room(keep: Vector2i, needed: int = 1) -> void:
 		var node := (rec.node as WeakRef).get_ref() as MeshInstance3D
 		if node:
 			node.mesh = rec.source
+		field.uninstall(keep)
+		field.flush(_age)
 		var shadow := (rec.shadow as WeakRef).get_ref() as MeshInstance3D
 		if shadow: shadow.mesh = null
 
@@ -258,6 +272,7 @@ func _sector(key: Vector2i) -> Dictionary:
 		return {}
 	var image := Image.create(RESOLUTION, RESOLUTION, false, Image.FORMAT_RGBAF)
 	image.fill(Color(0, 0, 0, 0))
+	var layer := shared_field().allocate(key, image)
 	# The original land layer is deliberately excluded from the sun's map.
 	# Only the touched patches opt into geometry-based local self-shadowing.
 	var shadow := MeshInstance3D.new()
@@ -271,11 +286,13 @@ func _sector(key: Vector2i) -> Dictionary:
 		"tiles": {}, "touched": {}, "steps": [], "pending": [], "last": _age, "image": image,
 		"shadow": weakref(shadow), "margin": node.extra_cull_margin,
 		"generation": _generation, "revision": 0, "building": false, "build_pending": false,
-		"texture": ImageTexture.create_from_image(image), "material": terrain._land_mat.duplicate(), "dirty": false}
+		"texture": field.texture, "layer": layer, "key": key,
+		"material": terrain._land_mat.duplicate(), "dirty": false}
 	node.extra_cull_margin = maxf(node.extra_cull_margin, DEPTH)
 	rec.material.set_shader_parameter("soft_tracks", true)
 	rec.material.set_shader_parameter("soft_track_origin", Vector2(key * SECTOR))
 	rec.material.set_shader_parameter("soft_track_texture", rec.texture)
+	rec.material.set_shader_parameter("soft_track_layer", layer)
 	rec.material.set_shader_parameter("soft_track_time", _age)
 	sectors[key] = rec
 	return rec
@@ -320,6 +337,8 @@ func _apply_mesh(rec: Dictionary, arrays: Array, shadow_arrays: Array) -> void:
 	var node := (rec.node as WeakRef).get_ref() as MeshInstance3D
 	if node:
 		node.mesh = mesh
+	field.install(rec.key, rec.tiles)
+	field.flush(_age)
 	var shadow := (rec.shadow as WeakRef).get_ref() as MeshInstance3D
 	if shadow:
 		if shadow_arrays[Mesh.ARRAY_INDEX] == null:
@@ -444,6 +463,8 @@ func _process(dt: float) -> void:
 		if rec.dirty:
 			_redraw(key, rec)
 			rec.dirty = false
+	if field:
+		field.flush(_age)
 
 
 func _build_script(changed: Dictionary) -> void:
@@ -489,7 +510,7 @@ func _paint_pending(key: Vector2i, rec: Dictionary) -> void:
 
 func _redraw(key: Vector2i, rec: Dictionary) -> void:
 	_paint_pending(key, rec)
-	(rec.texture as ImageTexture).update(rec.image)
+	field.update(key)
 
 
 static func strength_at(stamp: float, now: float) -> float:

@@ -538,7 +538,7 @@ QA logs are `ground-contact-surface-gl.log` and
 `ground-contact-surface-forward.log`. Raw reports/captures use `ground-surface-*`
 and `ground-contact-surface-*.json` in the isolated QA user-data directory.
 
-Before enabling V1:
+At the `4915d18` diagnostic checkpoint, the remaining work was:
 
 - Move the validated sampling into shared production helpers, and resolve the
   albedo edge differences. The probe compares painted albedo, not the full
@@ -562,6 +562,167 @@ Before enabling V1:
   motion, moving-water, full-map performance or completed V1 quality claim is
   established by this diagnostic.
 
+## V1: opt-in scenery blend and shared footprint storage
+
+A first production path is now implemented in this branch. **It is experimental
+and defaults off on every platform**, including desktop. It has not been merged
+into the active release or installed. The existing desktop continuous-sun policy
+and constrained-device held-sun fallback are unchanged by this increment.
+
+The reference is R1
+[Source/contact_blend.h](https://github.com/Ilufus/evil-islands-owned-renderer/blob/0092dc6e1d7c4aab3f74644a79e9bfca11ecf293/Source/contact_blend.h).
+The bounded contact height, irregular edge, folded ground projection and mixing
+of completed mesh/ground colours are adapted from its helpers. Our terrain
+lookup, Godot lighting integration, material ownership and shared deformation
+storage are remake-specific; this does not port their D3D11 renderer.
+
+### Implementation map
+
+- [ground_surface_shader.gd](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/game/src/game/fx/ground_surface_shader.gd)
+  contains the common atlas/rotation/border and loose-ground sampling code,
+  plus `QUERY_SHADER`. The latter searches both triangles of nine cells, selects
+  the highest drawn surface, and reconstructs only **installed** dense tiles.
+  Its triangle Jacobian supplies texture gradients without taking derivatives
+  across unrelated UV owners. Internal runtime loop bounds remain 9 cells and
+  3 vertices; they are not quality settings. The benchmark turns only diagnostic
+  `query_*` booleans into uniforms for negative controls.
+- [terrain.gd](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/game/src/ei/terrain.gd)
+  uses those common helpers. `_build_surface_data` fills previously unused B/A
+  channels of the existing RGBAF tile texture with loose thickness/compression
+  (snow 0.20/0.30, packed snow 0.075/0.12, sand 0.008/0.025). This adds no texture
+  allocation and removes repeated type branches from shader queries. Water-level
+  and rain-cover changes refresh contact parameters after land uniforms change.
+- [soft_ground_field.gd](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/game/src/game/fx/soft_ground_field.gd)
+  owns one shared `Texture2DArray`, an installed-tile RGF texture, and an RF clock.
+  Capacity grows 1/2/4/8 layers; it reuses the existing CPU sector images rather
+  than copying them. The texture RID survives growth, vacancy reuse and clearing.
+  Empty storage shrinks to a 1×1 placeholder. A full eight-layer array is 32 MiB;
+  three or five active sectors can retain spare capacity, so this is not a claim
+  of lower total memory than the previous individual textures.
+- [soft_ground_deform.gd](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/game/src/game/fx/soft_ground_deform.gd)
+  allocates/reuses field layers, updates only changed layers, and publishes a
+  sector's layer/dense flags when `_apply_mesh` installs its geometry. A queued
+  tile remains coarse. Eviction, capacity reset, clear and teardown remove the
+  installed state. The original worker generations and mesh/shadow restoration
+  remain in place. One shared clock avoids updating every contact material per
+  frame; this path performs no GPU readback.
+- [ground_surface_data.gd](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/game/src/game/fx/ground_surface_data.gd)
+  owns a world's authored vertex/normal textures, conservative height bounds,
+  and a weak terrain reference. It binds the existing land atlases, tile/cell
+  data, water/rain values and shared field. With no active deformation it uses
+  an empty field. These textures are created lazily when contact is enabled.
+- [ground_contact_shader.gd](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/game/src/game/fx/ground_contact_shader.gd)
+  extends the original object/foliage shaders. Transformed mesh bounds limit the
+  band to 1/8 of vertical size, capped at 0.4 m; reach varies with face direction,
+  noise and the actual ground colour. A conservative height rejection and
+  30–45 m distance fade bound work. The strip follows slopes and deformation,
+  folds up walls, and fades away under water. It includes the ground's bounded
+  sharpening, macro variation, wet-bank/rain colour and compacted-track darkness.
+  Ground lighting is mixed after figure diffuse/emissive modulation. Compatibility
+  needs explicit sRGB conversion for the additional fragment-to-light colour and
+  a finite albedo carrier for zero texture channels; rendered tests caught both.
+- [ground_contact.gd](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/game/src/game/fx/ground_contact.gd)
+  owns weak mesh registrations and per-world material variants keyed by original
+  base material plus exact local bounds. `refresh` runs after option listeners,
+  preserves active camera fade amounts, and restores the exact original material
+  when disabled. World-bound entries are removed from CameraFade's otherwise
+  global strong caches. Teardown releases the world textures.
+- [map_scene.gd](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/game/src/ei/map_scene.gd)
+  calls `GroundContact.attach` only for placed records whose kind is not `UNIT`.
+  Headless workers skip this visual registration. [figure.gd](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/game/src/ei/figure.gd)
+  marks eligible raw object/foliage shader sources; regular figure caches never
+  receive world textures. Characters, equipment and portraits are not registered.
+- [gfx.gd](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/game/src/game/gfx.gd)
+  applies the extended light composition only to `EI_GROUND_CONTACT` variants.
+  Other materials retain the original light source text. The independent option
+  is `gfx_ground_contact` in [game_data.gd](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/game/src/ei/game_data.gd),
+  group 13, row 11. Saved explicit choices win; defaults, Original look and
+  automatic/platform settings leave it off.
+
+### Validation and limits
+
+The exported Linux release is in the isolated QA directory's `v1-export`.
+[ground-contact-implementation-2026-10-08.json](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/docs/validation/ground-contact-implementation-2026-10-08.json)
+retains the commands, source hashes, backend results, resource counts and timings.
+The earlier surface-only JSON remains a historical checkpoint.
+
+Exported release results, all with zero failures:
+
+| Check | Compatibility | Forward+ |
+|---|---:|---:|
+| Shared field GPU lifecycle | 152 | 152 |
+| Contact ownership and rendered band | 35 | 35 |
+| Authored surface/profile query | 158 | 158 |
+| Three maps, near/far off/on/off | 30 | 30 |
+
+Additionally, 3,014 headless worker/mesh checks and 362 shader-option checks
+pass: **4,126 checks total**. The surface test covers 1,032,250 height pixels per
+backend with no query misses or errors above 2 mm. Three existing subpixel sand
+raster holes are reported separately. No other game process was present at the
+start of any final validation case. The image review included the corrected
+snow camera and the grass/tree and sand/building comparisons.
+
+The final 800×600 map samples add about 0.24–0.62 ms of viewport CPU work on
+Compatibility, and about 0.02–0.06 ms on Forward+ (on minus the mean of the two
+off captures). On-state GPU medians range 1.77–2.14 ms on Compatibility and
+0.67–1.84 ms on Forward+, with visibly variable off medians. Read the paired
+numbers in the JSON; this effect costs work even where its distant contribution
+is small. No overall speedup is claimed.
+
+The updated [ground_contact_surface.gd](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/ground_contact_surface.gd)
+uses the **production shared field** for query reads. Its real-mesh vertex pass
+retains the old type-ID displacement function as an independent oracle for the
+new packed profiles. Analytic gradients reduce original sand's colour outliers
+from 253 to 8 pixels in the sampled patch, and padded grass from 69 to zero.
+Sparse edge/raster ownership differences remain; this is not pixel identity.
+
+[soft_ground_field.gd](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/soft_ground_field.gd)
+keeps one shader's textures bound while growing, updating, retiring, reusing,
+clearing and rebuilding storage. [ground_contact.gd](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/ground_contact.gd)
+checks sharing/isolation, fades, wind/water parameter propagation, cache cleanup,
+opt-in defaults, rendered upper surfaces, small-prop bounds, underwater rejection,
+alpha holes, and final ground colour under dark/red/emissive object materials.
+The existing `soft_ground_mesh` worker regression and expanded
+`material_shader_options` composition/option/fog checks also run.
+
+[ground_contact.gd (map benchmark)](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/ground_contact.gd)
+renders grass/snow/sand maps `bz2g`, `bz10k`, `bz13h` at near/far cameras in an
+800×600 viewport, with fixed sun shadows and off/on/off captures. Camera height
+is kept above the terrain at its position. Do not use the earlier snow capture
+made from inside the hillside as visual acceptance evidence. Draw counts and
+original pixels restore exactly in the final fixtures. Contact variants increase
+material counts: the tested Compatibility maps register 668/268/725 parts,
+using 99/72/133 contact materials versus 18/3/13 eligible base materials.
+They share identical bounds; this is still a cost relative to the P3 base path.
+
+**Do not enable by default yet.** Initial Compatibility warmup in this fixture
+was about 64.2 s; consolidating displaced vertex work and storing profiles in the
+existing tile data reduced a subsequent first-use observation to about 16.4 s.
+These are observed 24-frame warmups after shader changes, not a controlled driver
+cache-flush benchmark. Warm cached runs are much faster. Cold preparation is
+still unacceptable as an automatic new effect. The sampled viewport CPU/GPU
+costs are retained rather than converted into gameplay FPS claims; GPU clock/load
+variation matters, and one earlier exploratory run overlapped the other chat's
+GPU test. The exported validation records other game processes at each start.
+
+Further work before treating V1 as finished:
+
+1. Reduce first-use preparation and measure cold/warm behavior on actual target
+   hardware. Compare fixed versus runtime query loops, shader variants with
+   deformation absent, and a reusable GPU surface cache if justified. Preserve
+   the exact folded-triangle/dense-tile result and the independent oracle.
+2. The band uses base/interpolated ground normals and native light channels.
+   It does **not** yet reproduce all painted/triplanar relief normals, track-normal
+   glints, wet specular response or underwater vertex-light interpolation at a
+   shoreline. Broader local-light, wet-weather and animated-camera acceptance
+   remains; do not describe the copied ground as a complete terrain BSDF.
+3. Extend visual coverage to rotated/scaled moving props, long walls across
+   sectors, track crossings at scenery roots, and representative maps/camera
+   angles. Existing shader/field tests are not an all-assets gameplay test.
+4. No physical Android/web quality, compilation, thermal or frame-time result
+   is established. Both platforms remain off by default, as does desktop until
+   the remaining cost/quality work warrants changing it.
+
 ## Integration
 
 The implementation is in this isolated branch. Do not overwrite another agent's
@@ -579,16 +740,21 @@ The P3 probe is a standalone benchmark only (commit `3855cc4`). P5 changes only
 The P6 comparison is a standalone benchmark. The subsequent user-directed
 default correction changes only sun policy/setup and menu sun aiming, plus its
 test; it does not modify character visibility or zone-transition code.
-The V1 surface probe adds only a standalone diagnostic and its evidence/docs.
+The V1 surface probe was standalone. The subsequent opt-in path adds the modules
+above and small hooks in `figure.gd`, `map_scene.gd`, `terrain.gd`, `gfx.gd`,
+`game_data.gd`, graphics defaults and `soft_ground_deform.gd`. It does not modify
+character/zone-transfer ownership, controls, combat or camera implementation.
 
-The latest read-only `git apply --check` of the combined changes, including P6's
-desktop correction and the V1 surface probe, passed against the active checkout
-at `2bbe1c62e927db6ae5503b0a5e64aa62ca505cb7`. The other chat had unrelated
-uncommitted changes in `coop_progress.gd` and `save_info.gd`. Its HEAD/status were
-unchanged across the check. No patch was applied. Evidence:
-`integration-check-v1-surface.json` in the QA directory (the earlier P6-only
-checkpoint is `integration-check-p6.json`). Recheck before integrating because
-that checkout is still changing.
+The latest read-only `git apply --check` includes the complete isolated branch
+and this staged V1 implementation. It passed against active committed HEAD
+`0ccb2de508df403c2b87354fec65e5bc1b3b4a32`, including the other chat's uncommitted
+third-person/control/combat work. `game_data.gd` is shared: preserve its newer
+control options when integrating. Its HEAD, status and hashes of all files touched
+by this branch were unchanged across the check. **No patch was applied.**
+Evidence is `integration-check-v1-contact.json` in the QA directory; its compact
+record is also included in the V1 validation JSON. Recheck before integration
+because that checkout is still changing. Do not message or alter the other chat
+without human authorization.
 
 ## Next work in the established order
 
@@ -611,6 +777,7 @@ that checkout is still changing.
    figure parts. Converting to a skinned mesh was an author suggestion, not an
    implemented upstream feature or a demonstrated speedup.
 5. **Visual track:** V1 ground-contact blending, V4 water interaction, V2 biome
-   ground cover, then the remaining audit features. V1's surface-query diagnostic
-   is validated above; the object blend, storage sharing, filtering and cost work
-   remain open. No visual effect was silently enabled in this performance batch.
+   ground cover, then the remaining audit features. V1 now has shared production
+   storage and an opt-in scenery blend, with the validation and limitations above.
+   Resolve cold preparation and finish its lighting/visual acceptance before
+   enabling defaults. No visual effect was silently enabled in this batch.

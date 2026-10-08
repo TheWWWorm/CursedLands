@@ -223,7 +223,11 @@ static func compose(code: String, lit := true, wrap := false) -> String:
 		# Fragment-to-light varyings: absent profiles keep the exact original
 		# diffuse response. x = highlight strength, y = roughness, z = metal.
 		code = code.replace("void fragment() {", "void fragment() {\n\tei_surface_leaf = vec4(0.0, 1.0, 0.0, 0.0);\n\tei_vpos = VERTEX;")
-	code = code + light_code(wrap, code.contains("#define EI_GRASS_LIGHT")) if lit else code
+	if lit:
+		var lighting := light_code(wrap, code.contains("#define EI_GRASS_LIGHT"))
+		if code.contains("#define EI_GROUND_CONTACT"):
+			lighting = GroundContactShader.lighting(lighting)
+		code += lighting
 	# A uniform branch still reserves the registers/code for the complete
 	# per-pixel lighting path on mobile GPUs. This option changes only in
 	# settings, so compile its current value and rebuild on that transition.
@@ -232,7 +236,7 @@ static func compose(code: String, lit := true, wrap := false) -> String:
 		# Original terrain still paid for the large disabled detail/deformation
 		# branches on Adreno. Preserve per-sector uniforms while enabled; when
 		# the option is off, let the driver remove the unreachable work entirely.
-		if code.contains("#define EI_TERRAIN_LIGHT"):
+		if code.contains("#define EI_TERRAIN_LIGHT") or code.contains("#define EI_GROUND_CONTACT"):
 			if not on("gfx_terrain"):
 				code = code.replace("uniform float detail = 0.0;", "const float detail = 0.0;")
 			if not on("gfx_soft_ground"):

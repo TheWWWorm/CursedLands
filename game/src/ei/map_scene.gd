@@ -51,6 +51,8 @@ func place_object(o: Dictionary, parent: Node3D) -> Node3D:
 	node.name = String(o.get("name", template)).validate_node_name()
 	node.set_meta("ei", o)
 	parent.add_child(node)
+	if o.kind != "UNIT":
+		GroundContact.attach(node, terrain)
 	return node
 
 
