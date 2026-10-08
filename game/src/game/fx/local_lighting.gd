@@ -11,6 +11,7 @@ const SHADOW_LIMIT := 4
 const LAVA_LIMIT := 6
 const LAVA_SHADOW_LIMIT := 2
 const SHADOW_HOLD := 2.0
+const SHADOW_FADE := 0.4
 const SHADOW_HYSTERESIS := 1.25
 const SHADOW_DISTANCE := 65.0
 const SHADOW_DISTANCE_MARGIN := 4.0
@@ -24,7 +25,7 @@ const FIRE_ENERGY := 1.7
 const FIRE_HALO := 0.24
 const LAVA_COLOR := Color(1.0, 0.25, 0.055)
 # light_cull_mask is left alone (see _light_quality).
-const ORIGINAL_PROPERTIES := [&"light_color", &"light_energy", &"light_specular", &"shadow_enabled",
+const ORIGINAL_PROPERTIES := [&"light_color", &"light_energy", &"light_specular", &"shadow_enabled", &"shadow_opacity",
 	&"shadow_caster_mask", &"distance_fade_enabled", &"distance_fade_begin",
 	&"distance_fade_shadow", &"distance_fade_length", &"shadow_bias", &"shadow_normal_bias", &"shadow_blur"]
 
@@ -38,6 +39,14 @@ var _lava: Array[Dictionary] = []
 # Light instance IDs, not owning references. A pooled lava node loses its
 # tenure when it changes cells; an ineligible light never keeps a reserved slot.
 var _shadow_since := {}
+# Compatibility changes additive passes when a shadow flag changes. Even at
+# zero opacity that can change unoccluded lighting; retain immediate exchanges
+# there until that separate shader/pass issue is solved. Mobile is unvalidated.
+var _fade_shadows := RenderingServer.get_current_rendering_method() == "forward_plus"
+# Desired selections and resident shadow maps are separate: outgoing maps
+# release their slot before a replacement starts. Both tables use weak refs.
+var _shadow_wanted := {}
+var _shadow_fades := {}
 
 
 func _init(g: Game) -> void:
@@ -52,6 +61,7 @@ func _ready() -> void:
 
 func _exit_tree() -> void:
 	_restore_particles()
+	_clear_lava()
 
 
 ## Called at light creation as well, so even a short spell flash enters the
@@ -148,9 +158,9 @@ func apply_options() -> void:
 	if is_instance_valid(_world):
 		var fx := _world.get_node_or_null("ParticleFx") as ParticleFx
 		for d: Dictionary in _light_records(fx):
+			if not _fire_on and d.get("enhanced", false) and is_instance_valid(d.light):
+				_forget_shadow(d.light)
 			apply_particle(d, _fire_on)
-			if not _fire_on and is_instance_valid(d.light):
-				_shadow_since.erase(d.light.get_instance_id())
 	if not _lava_on:
 		_clear_lava()
 	_t = 0.0
@@ -161,6 +171,8 @@ func _restore_particles() -> void:
 		return
 	var fx := _world.get_node_or_null("ParticleFx") as ParticleFx
 	for d: Dictionary in _light_records(fx):
+		if d.get("enhanced", false) and is_instance_valid(d.light):
+			_forget_shadow(d.light)
 		apply_particle(d, false)
 
 
@@ -181,7 +193,7 @@ func _light_records(fx: ParticleFx) -> Array[Dictionary]:
 func _clear_lava() -> void:
 	for d: Dictionary in _lava:
 		if is_instance_valid(d.light):
-			_shadow_since.erase(d.light.get_instance_id())
+			_forget_shadow(d.light)
 			d.light.visible = false
 			d.light.queue_free()
 	_lava.clear()
@@ -193,6 +205,8 @@ func _process(dt: float) -> void:
 		_restore_particles()
 		_clear_lava()
 		_shadow_since.clear()
+		_shadow_wanted.clear()
+		_shadow_fades.clear()
 		_world = current
 		_t = 0.0
 	if not is_instance_valid(_world):
@@ -219,6 +233,8 @@ func _process(dt: float) -> void:
 			d.light.light_energy = float(d.energy) * fade
 			if d.has("halo_strength"):
 				d.halo.set_shader_parameter("strength", float(d.halo_strength) * fade)
+	if _fade_shadows:
+		_advance_shadows(dt)
 	_t -= dt
 	if _t <= 0.0:
 		_t = SCAN
@@ -340,20 +356,21 @@ func _sync_lava(chosen: Array[Dictionary]) -> void:
 				break
 		if slot.is_empty():
 			slot = _new_lava()
-		_shadow_since.erase(slot.light.get_instance_id())
+		_forget_shadow(slot.light)
 		slot.cell = c.cell
 		slot.active = true
 		slot.energy = 0.0
 		slot.light.light_energy = 0.0
-		Gfx.set_local_shadow(slot.light, false)
 		slot.light.global_position = c.pos
 	for d: Dictionary in _lava:
 		if not d.active:
-			_shadow_since.erase(d.light.get_instance_id())
-			Gfx.set_local_shadow(d.light, false)
+			_forget_shadow(d.light)
 
 
 func _disable_shadows(fx: ParticleFx) -> void:
+	_shadow_wanted.clear()
+	for id: int in _shadow_fades.keys():
+		_release_shadow(id)
 	_shadow_since.clear()
 	for d: Dictionary in _light_records(fx):
 		if d.get("enhanced", false) and is_instance_valid(d.light):
@@ -366,7 +383,7 @@ func _shadow_candidate(l: OmniLight3D, camera: Camera3D) -> bool:
 	if l.is_queued_for_deletion() or not l.is_visible_in_tree():
 		return false
 	var distance := SHADOW_DISTANCE
-	if _shadow_since.has(l.get_instance_id()) and l.shadow_enabled:
+	if (_shadow_since.has(l.get_instance_id()) or _shadow_fades.has(l.get_instance_id())) and l.shadow_enabled:
 		distance += SHADOW_DISTANCE_MARGIN
 	return l.global_position.distance_squared_to(camera.global_position) < distance * distance \
 		and _in_view(camera, l.global_position, l.omni_range)
@@ -390,7 +407,7 @@ func _select_shadows(candidates: Array[Dictionary], limit: int, selected: Dictio
 			return a.rank < b.rank
 		return a.light.get_instance_id() < b.light.get_instance_id())
 	for i in mini(limit, candidates.size()):
-		selected[candidates[i].light.get_instance_id()] = true
+		selected[candidates[i].light.get_instance_id()] = candidates[i]
 
 
 func _assign_shadows(fx: ParticleFx, camera: Camera3D, focus: Vector3) -> void:
@@ -405,14 +422,19 @@ func _assign_shadows(fx: ParticleFx, camera: Camera3D, focus: Vector3) -> void:
 			var p := l.global_position
 			var score := p.distance_squared_to(focus) + p.distance_squared_to(camera.global_position) * 0.15
 			if _shadow_candidate(l, camera):
-				fire.append({"light": l, "score": score})
+				fire.append({"light": l, "score": score, "lava": false,
+						"opacity": float(d.original.shadow_opacity)})
 	for d: Dictionary in _lava:
 		if d.active and _shadow_candidate(d.light, camera):
-			lava.append({"light": d.light, "score": d.light.global_position.distance_squared_to(focus)})
+			lava.append({"light": d.light, "score": d.light.global_position.distance_squared_to(focus),
+					"lava": true, "opacity": 1.0})
 	var selected := {}
 	var lava_count := mini(LAVA_SHADOW_LIMIT, lava.size())
 	_select_shadows(lava, lava_count, selected)
 	_select_shadows(fire, SHADOW_LIMIT - lava_count, selected)
+	if _fade_shadows:
+		_set_shadow_targets(selected, fire + lava, records)
+		return
 	var since := {}
 	for id: int in selected:
 		since[id] = _shadow_since.get(id, _time)
@@ -422,3 +444,91 @@ func _assign_shadows(fx: ParticleFx, camera: Camera3D, focus: Vector3) -> void:
 			Gfx.set_local_shadow(d.light, selected.has(d.light.get_instance_id()))
 	for d: Dictionary in _lava:
 		Gfx.set_local_shadow(d.light, selected.has(d.light.get_instance_id()))
+
+
+func _forget_shadow(l: OmniLight3D) -> void:
+	var id := l.get_instance_id()
+	_shadow_wanted.erase(id)
+	_release_shadow(id)
+	Gfx.set_local_shadow(l, false)
+
+
+func _release_shadow(id: int) -> void:
+	_shadow_since.erase(id)
+	if not _shadow_fades.has(id):
+		return
+	var state: Dictionary = _shadow_fades[id]
+	var light := state.light.get_ref() as OmniLight3D
+	if is_instance_valid(light):
+		Gfx.set_local_shadow(light, false)
+		light.shadow_opacity = state.opacity
+	_shadow_fades.erase(id)
+
+
+func _set_shadow_targets(selected: Dictionary, eligible: Array[Dictionary], records: Array[Dictionary]) -> void:
+	var allowed := {}
+	for c: Dictionary in eligible:
+		allowed[c.light.get_instance_id()] = true
+	# Ineligibility is a hard release, not an outgoing fade. In particular,
+	# hidden/moved/expired lights must not keep a slot from a visible light.
+	for id: int in _shadow_fades.keys():
+		if not allowed.has(id):
+			_release_shadow(id)
+	_shadow_wanted.clear()
+	var since := {}
+	for id: int in selected:
+		var c: Dictionary = selected[id]
+		_shadow_wanted[id] = {"light": weakref(c.light), "lava": c.lava, "opacity": c.opacity}
+		if _shadow_fades.has(id) and c.light.shadow_enabled:
+			since[id] = _shadow_since.get(id, _time)
+	_shadow_since = since
+	# Adopt original/pre-existing flags through the same budget. Resident maps
+	# can finish fading out; no other managed light may keep an untracked map.
+	for d: Dictionary in records + _lava:
+		if not d.get("enhanced", false) and not d.has("cell"):
+			continue
+		if is_instance_valid(d.light) and not _shadow_fades.has(d.light.get_instance_id()):
+			Gfx.set_local_shadow(d.light, false)
+	_advance_shadows(0.0)
+
+
+func _advance_shadows(dt: float) -> void:
+	var lava_count := 0
+	for id: int in _shadow_fades.keys():
+		var state: Dictionary = _shadow_fades[id]
+		var light := state.light.get_ref() as OmniLight3D
+		if not is_instance_valid(light) or light.is_queued_for_deletion() or not light.is_visible_in_tree():
+			_shadow_wanted.erase(id)
+			_release_shadow(id)
+			continue
+		if not light.shadow_enabled:
+			_release_shadow(id)
+			continue
+		var target := 1.0 if _shadow_wanted.has(id) else 0.0
+		state.strength = move_toward(float(state.strength), target, maxf(dt, 0.0) / SHADOW_FADE)
+		if target == 0.0 and is_zero_approx(state.strength):
+			_release_shadow(id)
+			continue
+		var opacity := float(state.opacity) * float(state.strength)
+		if not is_equal_approx(light.shadow_opacity, opacity):
+			light.shadow_opacity = opacity
+		lava_count += int(state.lava)
+	# Insertion order gives desired lava reservations first. A newly admitted
+	# light starts at zero and receives its full tenure from admission time.
+	for id: int in _shadow_wanted.keys():
+		if _shadow_fades.has(id):
+			continue
+		var state: Dictionary = _shadow_wanted[id]
+		var light := state.light.get_ref() as OmniLight3D
+		if not is_instance_valid(light) or light.is_queued_for_deletion() or not light.is_visible_in_tree():
+			_shadow_wanted.erase(id)
+			continue
+		if _shadow_fades.size() >= SHADOW_LIMIT or (state.lava and lava_count >= LAVA_SHADOW_LIMIT):
+			continue
+		state = state.duplicate()
+		state["strength"] = 0.0
+		light.shadow_opacity = 0.0
+		Gfx.set_local_shadow(light, true)
+		_shadow_fades[id] = state
+		_shadow_since[id] = _time
+		lava_count += int(state.lava)

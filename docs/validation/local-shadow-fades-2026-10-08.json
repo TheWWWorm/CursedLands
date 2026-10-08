@@ -1,0 +1,747 @@
+{
+  "date": "2026-10-08",
+  "implementation": "Bounded Forward+ local-shadow strength transitions",
+  "parent_commit": "7715f95e94546f09224f90dfe400d541f5699253",
+  "reference_commit": "d529d14e9bf3c960833a9d9633786fc4588ec6d2",
+  "reference_locations": [
+    "Source/point_shadow_policy.h:13",
+    "Source/point_shadow_policy.h:275"
+  ],
+  "qa_directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-fades",
+  "engine_source_root": "/home/llm2x/Documents/EI/local/scratchpad/coop-performance-20261005/engine-profile/godot-5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+  "hardware": "NVIDIA GeForce RTX 3090, NVIDIA 580.178.04, Linux x86_64",
+  "source_sha256": {
+    "game/src/game/fx/local_lighting.gd": "1d22f767f25b7b9565128d778ed1eb1c254a9a64c9999719c35ccba411cd969f",
+    "tools/tests/local_shadow_selection.gd": "f6c94d1de12216ad8b1897b8afca87ae2616ddd74297e8cbc865c2ce4e616c46",
+    "tools/tests/local_shadow_fades.gd": "b3ca2f3d53cb545e857191b1fd2d330e9c9b081a2bb0fe8e9c00194b1aef5219",
+    "game/src/game/gfx.gd": "184968541ac01be32f50c95a90f6c40536fd88e4e37ce9232772cb79cffd9444",
+    "game/src/platform/portability.gd": "6ec17950f2bb45117d1b34410ba19da3996f3bfea53c4722498f83a3de45763e"
+  },
+  "engine_source_sha256": {
+    "drivers/gles3/rasterizer_scene_gles3.cpp": "991cc1664055810899c7002c9e2a92967ba8f3c5dbc3d69318167e200f19240e",
+    "drivers/gles3/shaders/scene.glsl": "2c77be0c85b7ab1a85ed8009c77cdb6216f1494d43083592213ad68f9e812977",
+    "servers/rendering/renderer_rd/storage_rd/light_storage.cpp": "b5619355dddef39ddc9a6277786e0cbf3dc1696c57ffb7dcd35df8fcb165e96c"
+  },
+  "export_sha256": {
+    "CursedLands.x86_64": "3154bb4465f616e24b811dd576e9230022872cd80f8d5ab854efed2716b926d4",
+    "CursedLands.pck": "c8214fd9efdb853185fe493aa126788caebdc2ece9c858355abda14eba8c7fb5",
+    "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+  },
+  "baseline_pack_sha256": "481571ce7e85bc227e026eb78803e81b963ac8ff61a0c0b8ba39b82797936861",
+  "candidate_checks": 4754,
+  "scope": {
+    "fades_default": "forward_plus only",
+    "shadow_enabled_light_limit": 4,
+    "lava_shadow_enabled_limit": 2,
+    "fade_seconds": 0.4,
+    "full_budget_exchange_seconds_nominal": 0.8,
+    "initial_fade_seconds_nominal": 0.4,
+    "underlying_selection_scan_seconds": 0.25,
+    "tenure_seconds_from_admission": 2.0
+  },
+  "compatibility_baseline_images": {
+    "local-shadows-gl_compatibility-held.png": {
+      "candidate": "af226ac41b82cceae418b3f8a1480f77d84d534d9be8a98a002a37c3767d8a0e",
+      "baseline": "af226ac41b82cceae418b3f8a1480f77d84d534d9be8a98a002a37c3767d8a0e",
+      "equal": true
+    },
+    "local-shadows-gl_compatibility-initial.png": {
+      "candidate": "af226ac41b82cceae418b3f8a1480f77d84d534d9be8a98a002a37c3767d8a0e",
+      "baseline": "af226ac41b82cceae418b3f8a1480f77d84d534d9be8a98a002a37c3767d8a0e",
+      "equal": true
+    },
+    "local-shadows-gl_compatibility-moved-caster.png": {
+      "candidate": "9e58edf68921401d5a16494bd87b7d17ec13ee27b7536938d9cfddbbb8df794d",
+      "baseline": "9e58edf68921401d5a16494bd87b7d17ec13ee27b7536938d9cfddbbb8df794d",
+      "equal": true
+    },
+    "local-shadows-gl_compatibility-moved-light.png": {
+      "candidate": "94525485deb7352a43c1eb5443dc1b37b6702e81091c10c94abdfa783828cfcf",
+      "baseline": "94525485deb7352a43c1eb5443dc1b37b6702e81091c10c94abdfa783828cfcf",
+      "equal": true
+    },
+    "local-shadows-gl_compatibility-replaced.png": {
+      "candidate": "fd0431793dcc079eca7eb0a1d77019c56ac80c19dee8002b54bc53f4c1050dcd",
+      "baseline": "fd0431793dcc079eca7eb0a1d77019c56ac80c19dee8002b54bc53f4c1050dcd",
+      "equal": true
+    }
+  },
+  "limitations": [
+    "State-machine tests force fades on each backend; only the Forward+ rendered transition uses the production fade gate.",
+    "The native Mobile renderer and physical Android/web performance are unvalidated; their defaults are not changed.",
+    "Native opacity does not cache shadow maps or establish frame-time/VRAM savings. The cap counts shadow-enabled local lights, not retained native atlas allocations.",
+    "Compatibility changes passes when toggling shadow_enabled. The five-light fixture changes 220150 pixels above 2/255 even at zero opacity, with maximum channel delta 39/255; fades remain disabled.",
+    "Crowded Compatibility fixtures show additional native per-object selection behavior; a correct pass/light representation is required before rollout there.",
+    "This controlled 640x480 production-shader fixture measures visual continuity, not whole-game FPS or full-scene artistic acceptance.",
+    "Moving-light image changes include direct illumination; the shadow-only moving caster independently verifies map updates during a partial fade.",
+    "The other checkout was only read and checked for patch applicability; no changes were applied or messages sent."
+  ],
+  "runs": [
+    {
+      "label": "fades-headless",
+      "results": {
+        "LOCAL_SHADOW_FADES": {
+          "checks": 726,
+          "editor": false,
+          "failures": 0,
+          "gpu": {},
+          "light_limit": 8,
+          "renderer": "forward_plus"
+        }
+      },
+      "tool_sha256_at_start": "b3ca2f3d53cb545e857191b1fd2d330e9c9b081a2bb0fe8e9c00194b1aef5219",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-fades/export/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/local_shadow_fades.gd"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 1.7978606180113275,
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [],
+      "warnings": [],
+      "errors": [],
+      "png_sha256": {}
+    },
+    {
+      "label": "fades-forward-final",
+      "results": {
+        "LOCAL_SHADOW_FADES": {
+          "checks": 923,
+          "editor": false,
+          "failures": 0,
+          "gpu": {
+            "crowded_pass_boundary": {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0
+            },
+            "endpoint": {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0
+            },
+            "exchange": {
+              "changed_pixels": 47267,
+              "max_channel_delta": 33,
+              "mean_channel_delta": 1.59921657986111
+            },
+            "moving_caster_pixels": 19844,
+            "moving_light_pixels": 184714,
+            "pass_boundary": {
+              "changed_pixels": 0,
+              "max_channel_delta": 0,
+              "mean_channel_delta": 0.0
+            },
+            "steps": [
+              {
+                "changed_pixels": 21497,
+                "max_channel_delta": 11,
+                "mean_channel_delta": 0.278161892361111
+              },
+              {
+                "changed_pixels": 21278,
+                "max_channel_delta": 10,
+                "mean_channel_delta": 0.26416015625
+              },
+              {
+                "changed_pixels": 21045,
+                "max_channel_delta": 9,
+                "mean_channel_delta": 0.251078559027778
+              },
+              {
+                "changed_pixels": 20801,
+                "max_channel_delta": 8,
+                "mean_channel_delta": 0.239860026041667
+              },
+              {
+                "changed_pixels": 20806,
+                "max_channel_delta": 8,
+                "mean_channel_delta": 0.239873046875
+              },
+              {
+                "changed_pixels": 21029,
+                "max_channel_delta": 9,
+                "mean_channel_delta": 0.250952690972222
+              },
+              {
+                "changed_pixels": 21271,
+                "max_channel_delta": 10,
+                "mean_channel_delta": 0.264106987847222
+              },
+              {
+                "changed_pixels": 21505,
+                "max_channel_delta": 11,
+                "mean_channel_delta": 0.278343098958333
+              }
+            ]
+          },
+          "light_limit": 8,
+          "renderer": "forward_plus"
+        }
+      },
+      "tool_sha256_at_start": "b3ca2f3d53cb545e857191b1fd2d330e9c9b081a2bb0fe8e9c00194b1aef5219",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-fades/export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/local_shadow_fades.gd"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 8.310094479995314,
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [],
+      "warnings": [],
+      "errors": [],
+      "png_sha256": {
+        "local-shadows-forward_plus-fade-direct-endpoint.png": "b6e2662f90cdca210c1bfd92a102d057ec4e9d830301c4670d5474bd3a07c2bb",
+        "local-shadows-forward_plus-fade-step-1.png": "295cbb0e4ceb43389b004cc679146e801b05606fedb0a95442ad2c0b2eb42fbc",
+        "local-shadows-forward_plus-fade-step-7.png": "341a88c42f359625c157bbe88b6149e38d4d53a7ada1a09bb9fab1c78ce7a86a",
+        "local-shadows-forward_plus-fade-step-5.png": "e3eb67d959b257a06d3dbeb2cbe537b8d9eb147e5c47dd2b9a7728beb2fb95a1",
+        "local-shadows-forward_plus-pass-zero.png": "2beb9ff02a42802ee49e1f15a0c268d59ca09e3a1b1ed34a7d4a5d461613490b",
+        "local-shadows-forward_plus-fade-step-2.png": "59d0eaa859d1562668344ed42cbf2d9cddf374324f3ddfe4d37e4b2e0856507e",
+        "local-shadows-forward_plus-pass-crowded-zero.png": "4b68c1f3c4854dcc3f9b8e139b6242adbb27b00654beeea10c7ca592ace97da9",
+        "local-shadows-forward_plus-pass-disabled.png": "2beb9ff02a42802ee49e1f15a0c268d59ca09e3a1b1ed34a7d4a5d461613490b",
+        "local-shadows-forward_plus-fade-step-8.png": "b6e2662f90cdca210c1bfd92a102d057ec4e9d830301c4670d5474bd3a07c2bb",
+        "local-shadows-forward_plus-fade-initial.png": "60cb7b17d1d7eae9fb0c54e2e06d7351ac5092150dd3129c82449d2a79390147",
+        "local-shadows-forward_plus-fade-moved-light.png": "92dcfa1598143804c773c36169b97e0aa8c72fc965afb0d0900286d7628481d6",
+        "local-shadows-forward_plus-pass-crowded-disabled.png": "4b68c1f3c4854dcc3f9b8e139b6242adbb27b00654beeea10c7ca592ace97da9",
+        "local-shadows-forward_plus-fade-step-6.png": "1449197a365d7d494f977182a74c80639e0b02a0b3345d0e6fbf35488f37c61a",
+        "local-shadows-forward_plus-fade-start.png": "60cb7b17d1d7eae9fb0c54e2e06d7351ac5092150dd3129c82449d2a79390147",
+        "local-shadows-forward_plus-fade-partial-caster.png": "1449197a365d7d494f977182a74c80639e0b02a0b3345d0e6fbf35488f37c61a",
+        "local-shadows-forward_plus-fade-step-4.png": "2beb9ff02a42802ee49e1f15a0c268d59ca09e3a1b1ed34a7d4a5d461613490b",
+        "local-shadows-forward_plus-fade-moved-caster.png": "7ed46c21cd05bd9a008208ff7e1ae5eb25389fb07140300414fa98d5c148a3c1",
+        "local-shadows-forward_plus-fade-step-3.png": "97de7fb24e90b74e8789df74e073ff06a0fa0e61d8653997be72942e9b98567a"
+      }
+    },
+    {
+      "label": "fades-gl",
+      "results": {
+        "LOCAL_SHADOW_FADES": {
+          "checks": 737,
+          "editor": false,
+          "failures": 0,
+          "gpu": {
+            "crowded_pass_boundary": {
+              "changed_pixels": 257452,
+              "max_channel_delta": 47,
+              "mean_channel_delta": 10.6093598090278
+            },
+            "pass_boundary": {
+              "changed_pixels": 220150,
+              "max_channel_delta": 39,
+              "mean_channel_delta": 7.57529188368056
+            }
+          },
+          "light_limit": 8,
+          "renderer": "gl_compatibility"
+        }
+      },
+      "tool_sha256_at_start": "b3ca2f3d53cb545e857191b1fd2d330e9c9b081a2bb0fe8e9c00194b1aef5219",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-fades/export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/local_shadow_fades.gd"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 3.55310689099133,
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "errors": [],
+      "png_sha256": {
+        "local-shadows-gl_compatibility-pass-crowded-disabled.png": "19a6fd43cebd01bd615f0b853273609480f3779812566bc2f6f763f80a0b931c",
+        "local-shadows-gl_compatibility-pass-disabled.png": "a07ec34ab35c9f752e46f8bf5ddabdb7d586a965c00779b0a734e65487a3b599",
+        "local-shadows-gl_compatibility-pass-zero.png": "e3aae478437bb0d0cc3424463cd9f8bc5b3f22649791a3166aa6c21794117c26",
+        "local-shadows-gl_compatibility-pass-crowded-zero.png": "ca6d340aa413459dc8d28fe3f850cca008279ad25244bf8edbcc1d49eb0c252f"
+      }
+    },
+    {
+      "label": "fades-gl4",
+      "results": {
+        "LOCAL_SHADOW_FADES": {
+          "checks": 737,
+          "editor": false,
+          "failures": 0,
+          "gpu": {
+            "crowded_pass_boundary": {
+              "changed_pixels": 244080,
+              "max_channel_delta": 43,
+              "mean_channel_delta": 8.87771375868055
+            },
+            "pass_boundary": {
+              "changed_pixels": 220150,
+              "max_channel_delta": 39,
+              "mean_channel_delta": 7.57529188368056
+            }
+          },
+          "light_limit": 4,
+          "renderer": "gl_compatibility"
+        }
+      },
+      "tool_sha256_at_start": "b3ca2f3d53cb545e857191b1fd2d330e9c9b081a2bb0fe8e9c00194b1aef5219",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-fades/export4/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/local_shadow_fades.gd"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 5.550944290007465,
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "errors": [],
+      "png_sha256": {
+        "local-shadows-gl_compatibility-pass-crowded-disabled.png": "89764126c1e05a01b08748e64add26e70b86b5d69f413f663afbcdd126e8ccc2",
+        "local-shadows-gl_compatibility-pass-disabled.png": "a07ec34ab35c9f752e46f8bf5ddabdb7d586a965c00779b0a734e65487a3b599",
+        "local-shadows-gl_compatibility-pass-zero.png": "e3aae478437bb0d0cc3424463cd9f8bc5b3f22649791a3166aa6c21794117c26",
+        "local-shadows-gl_compatibility-pass-crowded-zero.png": "c555a1cbbb77f9d0cf5dc5ae42f4610ff0f264b3af744ec8a0db7dea9c6af9a8"
+      }
+    },
+    {
+      "label": "selection-headless",
+      "results": {
+        "LOCAL_SHADOW_SELECTION": {
+          "checks": 377,
+          "control": false,
+          "editor": false,
+          "failures": 0,
+          "renderer": "forward_plus",
+          "selection_changes": 3
+        }
+      },
+      "tool_sha256_at_start": "f6c94d1de12216ad8b1897b8afca87ae2616ddd74297e8cbc865c2ce4e616c46",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-fades/export/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/local_shadow_selection.gd"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 1.7983792549930513,
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [],
+      "warnings": [],
+      "errors": [],
+      "png_sha256": {}
+    },
+    {
+      "label": "selection-forward",
+      "results": {
+        "LOCAL_SHADOW_GPU": {
+          "adapter": "NVIDIA GeForce RTX 3090",
+          "held_pixels": 0,
+          "moving_caster_pixels": 23272,
+          "moving_light_pixels": 181587,
+          "replacement_pixels": 47267
+        },
+        "LOCAL_SHADOW_SELECTION": {
+          "checks": 418,
+          "control": false,
+          "editor": false,
+          "failures": 0,
+          "renderer": "forward_plus",
+          "selection_changes": 3
+        }
+      },
+      "tool_sha256_at_start": "f6c94d1de12216ad8b1897b8afca87ae2616ddd74297e8cbc865c2ce4e616c46",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-fades/export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/local_shadow_selection.gd"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 4.050865074998001,
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [],
+      "warnings": [],
+      "errors": [],
+      "png_sha256": {
+        "local-shadows-forward_plus-moved-light.png": "0aac295a1f827b1d170675256cde878d53b7bf640925b06621227656f68e2d30",
+        "local-shadows-forward_plus-held.png": "60cb7b17d1d7eae9fb0c54e2e06d7351ac5092150dd3129c82449d2a79390147",
+        "local-shadows-forward_plus-replaced.png": "b6e2662f90cdca210c1bfd92a102d057ec4e9d830301c4670d5474bd3a07c2bb",
+        "local-shadows-forward_plus-moved-caster.png": "9648935060a1a4ea6d75b5ccc0e96795219d076d7a8425282636b8f67ea5ded0",
+        "local-shadows-forward_plus-initial.png": "60cb7b17d1d7eae9fb0c54e2e06d7351ac5092150dd3129c82449d2a79390147"
+      }
+    },
+    {
+      "label": "selection-gl",
+      "results": {
+        "LOCAL_SHADOW_GPU": {
+          "adapter": "NVIDIA GeForce RTX 3090",
+          "held_pixels": 0,
+          "moving_caster_pixels": 17486,
+          "moving_light_pixels": 193007,
+          "replacement_pixels": 61050
+        },
+        "LOCAL_SHADOW_SELECTION": {
+          "checks": 418,
+          "control": false,
+          "editor": false,
+          "failures": 0,
+          "renderer": "gl_compatibility",
+          "selection_changes": 3
+        }
+      },
+      "tool_sha256_at_start": "f6c94d1de12216ad8b1897b8afca87ae2616ddd74297e8cbc865c2ce4e616c46",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-fades/export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/local_shadow_selection.gd"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 3.303552840021439,
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "errors": [],
+      "png_sha256": {
+        "local-shadows-gl_compatibility-held.png": "af226ac41b82cceae418b3f8a1480f77d84d534d9be8a98a002a37c3767d8a0e",
+        "local-shadows-forward_plus-moved-light.png": "0aac295a1f827b1d170675256cde878d53b7bf640925b06621227656f68e2d30",
+        "local-shadows-gl_compatibility-moved-caster.png": "9e58edf68921401d5a16494bd87b7d17ec13ee27b7536938d9cfddbbb8df794d",
+        "local-shadows-forward_plus-replaced.png": "b6e2662f90cdca210c1bfd92a102d057ec4e9d830301c4670d5474bd3a07c2bb",
+        "local-shadows-gl_compatibility-moved-light.png": "94525485deb7352a43c1eb5443dc1b37b6702e81091c10c94abdfa783828cfcf",
+        "local-shadows-gl_compatibility-replaced.png": "fd0431793dcc079eca7eb0a1d77019c56ac80c19dee8002b54bc53f4c1050dcd",
+        "local-shadows-forward_plus-moved-caster.png": "9648935060a1a4ea6d75b5ccc0e96795219d076d7a8425282636b8f67ea5ded0",
+        "local-shadows-gl_compatibility-initial.png": "af226ac41b82cceae418b3f8a1480f77d84d534d9be8a98a002a37c3767d8a0e"
+      }
+    },
+    {
+      "label": "selection-gl4",
+      "results": {
+        "LOCAL_SHADOW_GPU": {
+          "adapter": "NVIDIA GeForce RTX 3090",
+          "held_pixels": 0,
+          "moving_caster_pixels": 17486,
+          "moving_light_pixels": 193007,
+          "replacement_pixels": 61050
+        },
+        "LOCAL_SHADOW_SELECTION": {
+          "checks": 418,
+          "control": false,
+          "editor": false,
+          "failures": 0,
+          "renderer": "gl_compatibility",
+          "selection_changes": 3
+        }
+      },
+      "tool_sha256_at_start": "f6c94d1de12216ad8b1897b8afca87ae2616ddd74297e8cbc865c2ce4e616c46",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-fades/export4/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/local_shadow_selection.gd"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 3.550671634002356,
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "errors": [],
+      "png_sha256": {
+        "local-shadows-gl_compatibility-held.png": "af226ac41b82cceae418b3f8a1480f77d84d534d9be8a98a002a37c3767d8a0e",
+        "local-shadows-gl_compatibility-moved-caster.png": "9e58edf68921401d5a16494bd87b7d17ec13ee27b7536938d9cfddbbb8df794d",
+        "local-shadows-gl_compatibility-moved-light.png": "94525485deb7352a43c1eb5443dc1b37b6702e81091c10c94abdfa783828cfcf",
+        "local-shadows-gl_compatibility-replaced.png": "fd0431793dcc079eca7eb0a1d77019c56ac80c19dee8002b54bc53f4c1050dcd",
+        "local-shadows-gl_compatibility-initial.png": "af226ac41b82cceae418b3f8a1480f77d84d534d9be8a98a002a37c3767d8a0e"
+      }
+    },
+    {
+      "label": "selection-baseline-gl",
+      "results": {
+        "LOCAL_SHADOW_GPU": {
+          "adapter": "NVIDIA GeForce RTX 3090",
+          "held_pixels": 0,
+          "moving_caster_pixels": 17486,
+          "moving_light_pixels": 193007,
+          "replacement_pixels": 61050
+        },
+        "LOCAL_SHADOW_SELECTION": {
+          "checks": 418,
+          "control": false,
+          "editor": false,
+          "failures": 0,
+          "renderer": "gl_compatibility",
+          "selection_changes": 3
+        }
+      },
+      "tool_sha256_at_start": "f6c94d1de12216ad8b1897b8afca87ae2616ddd74297e8cbc865c2ce4e616c46",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p3-seams/export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/local_shadow_selection.gd"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 3.3015604430111125,
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "errors": [],
+      "png_sha256": {
+        "local-shadows-gl_compatibility-held.png": "af226ac41b82cceae418b3f8a1480f77d84d534d9be8a98a002a37c3767d8a0e",
+        "local-shadows-gl_compatibility-moved-caster.png": "9e58edf68921401d5a16494bd87b7d17ec13ee27b7536938d9cfddbbb8df794d",
+        "local-shadows-gl_compatibility-moved-light.png": "94525485deb7352a43c1eb5443dc1b37b6702e81091c10c94abdfa783828cfcf",
+        "local-shadows-gl_compatibility-replaced.png": "fd0431793dcc079eca7eb0a1d77019c56ac80c19dee8002b54bc53f4c1050dcd",
+        "local-shadows-gl_compatibility-initial.png": "af226ac41b82cceae418b3f8a1480f77d84d534d9be8a98a002a37c3767d8a0e"
+      }
+    }
+  ],
+  "integration_check": {
+    "target": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo",
+    "base": "3172ede12a5f41b0182c34a70b5eeda787c95e52",
+    "patch_sha256": "d2b6ddbec1d8cc1789a3bbcaf1ac1f010d237578913260c23aabbdb9d7c77f77",
+    "patch_path": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-fades/combined-production-and-tools.patch",
+    "before": {
+      "head": "d938e9da308d9d37cc3c13aa0a448f8c7e83e779",
+      "status": " M game/src/game/campaign_state.gd\n M game/src/game/coop_progress.gd\n M game/src/game/session.gd\n M tools/tests/coop_progress_context.gd\n?? game/src/game/coop_guest_roles.gd\n?? game/src/game/coop_guest_roles.gd.uid\n?? tools/tests/coop_guest_roles.gd\n?? tools/tests/coop_guest_roles_net.gd\n",
+      "file_sha256": {
+        "game/src/ei/figure.gd": "5fd0c1d31f462a49914e0a619580ffbcc5344965c18798f5bf3f2f58c68bad8f",
+        "game/src/ei/game_data.gd": "6b978ec8cbc2ed07baf11f461ffdacb7e7239854cc1c588ca60bfb83040267c7",
+        "game/src/ei/map_scene.gd": "8c3ebb5dff18651be8d23c7b36d25f1c3e9bb90ace3d6fc27a70c697c8da1a5e",
+        "game/src/ei/mmp_texture.gd": "ea95f86058da0b18c5c411c4bb69cc9db00c5770501cd5efbf0125d3f2ca104b",
+        "game/src/ei/terrain.gd": "25b87e8fadf2bd7c68ebc963cb36db34788dc2e962ce6a736ba1c51db4c89361",
+        "game/src/ei/unit_model.gd": "f454fd48b39f318b8822a004129c65530ba4adf9b63f6bd5425bf68452824fe6",
+        "game/src/game/campaign_state.gd": "3a7f88372e3e59d4b90e1e858c82864db45ec7650895e2e7955e5af781babde3",
+        "game/src/game/coop_guest_roles.gd": "048f60488a29ae0776ec29d2f9661f01121ef26707db03cc276393116574c1da",
+        "game/src/game/coop_guest_roles.gd.uid": "4f54d41ac79b24720973ec671f1afe1b77c7e73cb9100e70a97caf4f2ddf6019",
+        "game/src/game/coop_progress.gd": "1e1789c63105a4607ec8416e4becc23905496d58ea4fb4d70539780e6c64c49e",
+        "game/src/game/fx/ground_contact.gd": null,
+        "game/src/game/fx/ground_contact.gd.uid": null,
+        "game/src/game/fx/ground_contact_shader.gd": null,
+        "game/src/game/fx/ground_contact_shader.gd.uid": null,
+        "game/src/game/fx/ground_surface_data.gd": null,
+        "game/src/game/fx/ground_surface_data.gd.uid": null,
+        "game/src/game/fx/ground_surface_shader.gd": null,
+        "game/src/game/fx/ground_surface_shader.gd.uid": null,
+        "game/src/game/fx/local_lighting.gd": "be1570ca9e47eafcb48f0d4964a941066d521d63cc570ea8aff8333c20b1d34a",
+        "game/src/game/fx/scenery_batch_watch.gd": null,
+        "game/src/game/fx/scenery_batch_watch.gd.uid": null,
+        "game/src/game/fx/scenery_batches.gd": null,
+        "game/src/game/fx/scenery_batches.gd.uid": null,
+        "game/src/game/fx/scenery_light_groups.gd": null,
+        "game/src/game/fx/scenery_light_groups.gd.uid": null,
+        "game/src/game/fx/soft_ground_deform.gd": "a9b5a1941d17ccf67716affb9e416c702d67c7405730109461ead2260fffe051",
+        "game/src/game/fx/soft_ground_field.gd": null,
+        "game/src/game/fx/soft_ground_field.gd.uid": null,
+        "game/src/game/game.gd": "ae6fbf51f89b6536cfa28505f544bb7ba22402b2eca1593400d5fb303d1ec08f",
+        "game/src/game/gfx.gd": "d4111e59b158111d2b5c0ab75feadde1f77db81e528773f23676fddd0e11cdb5",
+        "game/src/game/gfx_detect.gd": "bcbc43453022fd0718fa2ceed9f8cc1271b644dec2eda9f34e3fb78e269475dc",
+        "game/src/game/session.gd": "b5fd112c22bc4aed9214c24c102b823ea1f914409d79b12835aa2069d0b7c6a4",
+        "game/src/game/unit_wounds.gd": "8eea1966c2ac60d58e6d6d6b358cbcec28655a9b90423fd6663a29858fbaf41e",
+        "game/src/platform/portability.gd": "3afa19cb0340929d7e1034066b490568e2df52b5b1e3a9decb3c6c89b76a3735",
+        "game/src/ui/camera_fade.gd": "00dca9e22b1d5cf21c073b82570353533f8f7fa9f98c3a9e478e7fec17bfa0fe",
+        "game/src/ui/menu_scene.gd": "ac5780e52e21d66654fdf0ca49a786c45442958fab7814dc615b02712b604da1",
+        "tools/benchmarks/directional_shadows.gd": null,
+        "tools/benchmarks/ground_contact.gd": null,
+        "tools/benchmarks/ground_contact_preparation.py": null,
+        "tools/benchmarks/ground_contact_surface.gd": null,
+        "tools/benchmarks/scenery_batch_lights.gd": null,
+        "tools/benchmarks/scenery_batches.gd": null,
+        "tools/benchmarks/scenery_resources.gd": null,
+        "tools/benchmarks/terrain_occlusion.gd": null,
+        "tools/tests/coop_guest_roles.gd": "14d44226e6910d33d415bb2710cb9505085e704aec1413a8633362b2114d1ace",
+        "tools/tests/coop_guest_roles_net.gd": "418d8d7b8e8aa5b409bc648e67b298f6f5fb0fad7d4d93b0b729e57d6c1def6a",
+        "tools/tests/coop_progress_context.gd": "ab4a375ed78e5575e7a030c533fc3cd0044805170837d16fd4dcd3a46a88afb6",
+        "tools/tests/foliage_materials.gd": null,
+        "tools/tests/ground_contact.gd": null,
+        "tools/tests/local_shadow_fades.gd": null,
+        "tools/tests/local_shadow_selection.gd": null,
+        "tools/tests/material_shader_options.gd": "dff493bc1167c94ed445a3b18749914f39340b960a36a607d1785a2f3ff889e9",
+        "tools/tests/mmp_texture.gd": null,
+        "tools/tests/mmp_upload.gd": null,
+        "tools/tests/scenery_batch_lights.gd": null,
+        "tools/tests/scenery_batches.gd": null,
+        "tools/tests/soft_ground_field.gd": null,
+        "tools/tests/sun_aiming.gd": null,
+        "tools/tests/wound_source.gd": null
+      }
+    },
+    "after": {
+      "head": "d938e9da308d9d37cc3c13aa0a448f8c7e83e779",
+      "status": " M game/src/game/campaign_state.gd\n M game/src/game/coop_progress.gd\n M game/src/game/session.gd\n M tools/tests/coop_progress_context.gd\n?? game/src/game/coop_guest_roles.gd\n?? game/src/game/coop_guest_roles.gd.uid\n?? tools/tests/coop_guest_roles.gd\n?? tools/tests/coop_guest_roles_net.gd\n",
+      "file_sha256": {
+        "game/src/ei/figure.gd": "5fd0c1d31f462a49914e0a619580ffbcc5344965c18798f5bf3f2f58c68bad8f",
+        "game/src/ei/game_data.gd": "6b978ec8cbc2ed07baf11f461ffdacb7e7239854cc1c588ca60bfb83040267c7",
+        "game/src/ei/map_scene.gd": "8c3ebb5dff18651be8d23c7b36d25f1c3e9bb90ace3d6fc27a70c697c8da1a5e",
+        "game/src/ei/mmp_texture.gd": "ea95f86058da0b18c5c411c4bb69cc9db00c5770501cd5efbf0125d3f2ca104b",
+        "game/src/ei/terrain.gd": "25b87e8fadf2bd7c68ebc963cb36db34788dc2e962ce6a736ba1c51db4c89361",
+        "game/src/ei/unit_model.gd": "f454fd48b39f318b8822a004129c65530ba4adf9b63f6bd5425bf68452824fe6",
+        "game/src/game/campaign_state.gd": "3a7f88372e3e59d4b90e1e858c82864db45ec7650895e2e7955e5af781babde3",
+        "game/src/game/coop_guest_roles.gd": "048f60488a29ae0776ec29d2f9661f01121ef26707db03cc276393116574c1da",
+        "game/src/game/coop_guest_roles.gd.uid": "4f54d41ac79b24720973ec671f1afe1b77c7e73cb9100e70a97caf4f2ddf6019",
+        "game/src/game/coop_progress.gd": "1e1789c63105a4607ec8416e4becc23905496d58ea4fb4d70539780e6c64c49e",
+        "game/src/game/fx/ground_contact.gd": null,
+        "game/src/game/fx/ground_contact.gd.uid": null,
+        "game/src/game/fx/ground_contact_shader.gd": null,
+        "game/src/game/fx/ground_contact_shader.gd.uid": null,
+        "game/src/game/fx/ground_surface_data.gd": null,
+        "game/src/game/fx/ground_surface_data.gd.uid": null,
+        "game/src/game/fx/ground_surface_shader.gd": null,
+        "game/src/game/fx/ground_surface_shader.gd.uid": null,
+        "game/src/game/fx/local_lighting.gd": "be1570ca9e47eafcb48f0d4964a941066d521d63cc570ea8aff8333c20b1d34a",
+        "game/src/game/fx/scenery_batch_watch.gd": null,
+        "game/src/game/fx/scenery_batch_watch.gd.uid": null,
+        "game/src/game/fx/scenery_batches.gd": null,
+        "game/src/game/fx/scenery_batches.gd.uid": null,
+        "game/src/game/fx/scenery_light_groups.gd": null,
+        "game/src/game/fx/scenery_light_groups.gd.uid": null,
+        "game/src/game/fx/soft_ground_deform.gd": "a9b5a1941d17ccf67716affb9e416c702d67c7405730109461ead2260fffe051",
+        "game/src/game/fx/soft_ground_field.gd": null,
+        "game/src/game/fx/soft_ground_field.gd.uid": null,
+        "game/src/game/game.gd": "ae6fbf51f89b6536cfa28505f544bb7ba22402b2eca1593400d5fb303d1ec08f",
+        "game/src/game/gfx.gd": "d4111e59b158111d2b5c0ab75feadde1f77db81e528773f23676fddd0e11cdb5",
+        "game/src/game/gfx_detect.gd": "bcbc43453022fd0718fa2ceed9f8cc1271b644dec2eda9f34e3fb78e269475dc",
+        "game/src/game/session.gd": "b5fd112c22bc4aed9214c24c102b823ea1f914409d79b12835aa2069d0b7c6a4",
+        "game/src/game/unit_wounds.gd": "8eea1966c2ac60d58e6d6d6b358cbcec28655a9b90423fd6663a29858fbaf41e",
+        "game/src/platform/portability.gd": "3afa19cb0340929d7e1034066b490568e2df52b5b1e3a9decb3c6c89b76a3735",
+        "game/src/ui/camera_fade.gd": "00dca9e22b1d5cf21c073b82570353533f8f7fa9f98c3a9e478e7fec17bfa0fe",
+        "game/src/ui/menu_scene.gd": "ac5780e52e21d66654fdf0ca49a786c45442958fab7814dc615b02712b604da1",
+        "tools/benchmarks/directional_shadows.gd": null,
+        "tools/benchmarks/ground_contact.gd": null,
+        "tools/benchmarks/ground_contact_preparation.py": null,
+        "tools/benchmarks/ground_contact_surface.gd": null,
+        "tools/benchmarks/scenery_batch_lights.gd": null,
+        "tools/benchmarks/scenery_batches.gd": null,
+        "tools/benchmarks/scenery_resources.gd": null,
+        "tools/benchmarks/terrain_occlusion.gd": null,
+        "tools/tests/coop_guest_roles.gd": "14d44226e6910d33d415bb2710cb9505085e704aec1413a8633362b2114d1ace",
+        "tools/tests/coop_guest_roles_net.gd": "418d8d7b8e8aa5b409bc648e67b298f6f5fb0fad7d4d93b0b729e57d6c1def6a",
+        "tools/tests/coop_progress_context.gd": "ab4a375ed78e5575e7a030c533fc3cd0044805170837d16fd4dcd3a46a88afb6",
+        "tools/tests/foliage_materials.gd": null,
+        "tools/tests/ground_contact.gd": null,
+        "tools/tests/local_shadow_fades.gd": null,
+        "tools/tests/local_shadow_selection.gd": null,
+        "tools/tests/material_shader_options.gd": "dff493bc1167c94ed445a3b18749914f39340b960a36a607d1785a2f3ff889e9",
+        "tools/tests/mmp_texture.gd": null,
+        "tools/tests/mmp_upload.gd": null,
+        "tools/tests/scenery_batch_lights.gd": null,
+        "tools/tests/scenery_batches.gd": null,
+        "tools/tests/soft_ground_field.gd": null,
+        "tools/tests/sun_aiming.gd": null,
+        "tools/tests/wound_source.gd": null
+      }
+    },
+    "unchanged": true,
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": "",
+    "applied": false
+  }
+}

@@ -55,6 +55,12 @@ func clustered_fire(f: Dictionary) -> Array[OmniLight3D]:
 func scan(f: Dictionary, time: float, x: float) -> Array:
 	f.manager._time = time
 	f.manager._assign_shadows(f.fx, f.camera, Vector3(x, 2, 0))
+	# These checks isolate the ranking/hold policy at the supplied policy time.
+	# Settle opacity separately; local_shadow_fades.gd tests elapsed transitions
+	# and pending admissions without skipping their intermediate states.
+	if "_fade_shadows" in f.manager and f.manager._fade_shadows:
+		f.manager._advance_shadows(f.manager.SHADOW_FADE)
+		f.manager._advance_shadows(f.manager.SHADOW_FADE)
 	var ids := []
 	var lava := 0
 	for d: Dictionary in f.fx.lights + f.manager._lava:
@@ -205,7 +211,7 @@ func changed_pixels(a: Image, b: Image) -> int:
 				break
 	return count
 
-func test_rendered_transitions() -> void:
+func rendered_fixture() -> Dictionary:
 	DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_NO_FOCUS, true)
 	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_MINIMIZED)
 	Engine.max_fps = 30
@@ -262,6 +268,16 @@ func test_rendered_transitions() -> void:
 	for light in pair:
 		light.light_energy = 0.7
 		light.omni_attenuation = 0.0
+	f["view"] = view
+	f["blocker"] = blocker
+	f["pair"] = pair
+	return f
+
+func test_rendered_transitions() -> void:
+	var f := rendered_fixture()
+	var view: SubViewport = f.view
+	var blocker: MeshInstance3D = f.blocker
+	var pair: Array[OmniLight3D] = f.pair
 	scan(f, 0, -2)
 	check(pair[0].shadow_enabled and not pair[1].shadow_enabled, "GPU fixture selects left torch first")
 	var before := await capture(view, "initial")

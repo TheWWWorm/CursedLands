@@ -790,8 +790,9 @@ A light that was externally disabled receives a fresh tenure if reselected.
 marker along with the shadow flag. No light mask, particle lifetime, energy
 controller, caster transform or render update is delayed. Godot still renders
 selected moving lights/casters normally. Selection can still visibly change
-after the hold; shadow-strength fades and static/dynamic shadow-map reuse are
-not implemented by this step. The hold can intentionally delay a better but
+after the hold; shadow-strength fades and static/dynamic shadow-map reuse were
+not implemented by this first step. The follow-up below adds Forward+ strength
+transitions. The hold can intentionally delay a better but
 still-visible challenger by up to two seconds; becoming ineligible or shrinking
 the available budget takes precedence.
 
@@ -800,7 +801,7 @@ the available budget takes precedence.
 - Commit: `9bc5ce2` — `Stabilize local shadow selection across camera movement`.
 - Reference: R0 [Source/point_shadow_policy.h:11](https://github.com/Ilufus/evil-islands-owned-renderer/blob/d529d14e9bf3c960833a9d9633786fc4588ec6d2/Source/point_shadow_policy.h#L11), `PointShadowPolicy` and `PointShadowScheduler::select`. Its two-second hold, 1.25 score hysteresis and four-unit distance hysteresis inform the adaptation. Upstream uses those policies for eligibility, scheduling and pressure retirement; this is a Godot selection adaptation, not a literal scheduler port. In particular, upstream's four-lamp work budget is **not** a four-resident-shadow limit. Our existing four-shadow cap is retained independently.
 - [game/src/game/fx/local_lighting.gd:13](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/game/src/game/fx/local_lighting.gd:13): policy constants and `_shadow_since` state.
-- [game/src/game/fx/local_lighting.gd:365](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/game/src/game/fx/local_lighting.gd:365): `_shadow_candidate`, `_select_shadows` and `_assign_shadows`.
+- [game/src/game/fx/local_lighting.gd:382](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/game/src/game/fx/local_lighting.gd:382): `_shadow_candidate`, `_select_shadows` and `_assign_shadows`.
 - Same file: `apply_options`, `_clear_lava`, `_process`, `_sync_lava` and `_disable_shadows` invalidate selection history at the corresponding lifetime boundaries.
 - [tools/tests/local_shadow_selection.gd](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/local_shadow_selection.gd): actual manager/camera/light integration, plus an optional real-GPU fixture using the production figure shader.
 
@@ -844,6 +845,88 @@ Current validation logs: `export-local-shadow-selection-headless.log`,
 `data/godot/app_userdata/Cursed Lands/local-shadows-*.png`. Editor GPU runs also
 passed. No mobile, other-vendor GPU, full gameplay soak or frame-time benchmark
 was performed for this policy change.
+
+## P5 follow-up: bounded shadow-strength transitions
+
+Forward+ now fades enhanced fire, spell and lava shadows over 0.4 seconds.
+At a full budget, the outgoing shadow fades out before its replacement starts
+fading in: nominally 0.8 seconds for the complete handoff, plus scan/frame
+granularity. Initial admission takes 0.4 seconds. At every intermediate step,
+at most four local lights have `shadow_enabled`, including at most two lava
+lights. An outgoing light still counts against this limit. This does not claim
+that Godot immediately deallocates a disabled light's retained atlas slot.
+
+Desired selections and admitted lights have separate, bounded weak-reference
+tables. The two-second hold starts when a light is admitted, so waiting for a
+slot does not consume its tenure. A cancelled replacement can reverse the
+outgoing fade from its current opacity. Hidden/freed/queued lights release on
+the next manager update; range/frustum rejection releases on the selection
+scan. No-camera, option, world and pooled-lava changes cancel deferred writes.
+Authored `shadow_opacity` is both the fade ceiling and part of the original
+property snapshot. Turning enhancement off restores it, including when the
+original light already cast shadows. External spell energy/lifetime ownership
+is preserved.
+
+Only Forward+ enables this path. A zero-opacity Compatibility shadow still
+uses a different additive pass from an unshadowed local light. The current
+production shader's encoded colour correction cannot make the two paths
+identical in these fixtures. Fading opacity to zero and then disabling the flag
+would therefore introduce a brightness jump over ordinary lit surfaces.
+Compatibility keeps the existing immediate selection exchange; the native
+Mobile renderer also stays on that path pending validation. This local-light
+gate is independent of the desktop continuous-sun policy described below.
+
+### Source and implementation locations
+
+- R0 [Source/point_shadow_policy.h:13](https://github.com/Ilufus/evil-islands-owned-renderer/blob/d529d14e9bf3c960833a9d9633786fc4588ec6d2/Source/point_shadow_policy.h#L13) defines `fade_seconds = .4f`. [PointShadowScheduler::select:275](https://github.com/Ilufus/evil-islands-owned-renderer/blob/d529d14e9bf3c960833a9d9633786fc4588ec6d2/Source/point_shadow_policy.h#L275) ramps retiring, moving, valid and overlay strengths, releasing retired slots at zero. The remake adapts the strength/retirement idea; it does not implement that renderer's static/dynamic caches or copy its scheduling budget as a resident limit.
+- [local_lighting.gd:14](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/game/src/game/fx/local_lighting.gd:14): duration; line 28 snapshots opacity; line 45 gates the backend. `_set_shadow_targets` at line 468 separates selection from admission; `_advance_shadows` at line 495 enforces both limits and updates opacity. `_release_shadow`/`_forget_shadow` and the existing lifecycle methods restore ownership correctly.
+- [gfx.gd:388](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/game/src/game/gfx.gd:388): `set_local_shadow` keeps the actual shadow flag and Compatibility marker aligned. `light_code`, especially lines 481–490, is the existing local-light/pass correction to investigate before enabling GLES fades. It is not changed by this increment.
+- Pinned Godot `5b4e0cb0f`: `drivers/gles3/rasterizer_scene_gles3.cpp:2076`, `drivers/gles3/shaders/scene.glsl:2996`, and `servers/rendering/renderer_rd/storage_rd/light_storage.cpp:1160` implement native opacity and distance-fade multiplication. Their inspected source hashes and absolute source root are in the evidence JSON. Native opacity is an available control, not proof of map caching or lower frame cost.
+- [local_shadow_fades.gd](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/local_shadow_fades.gd): actual-manager timing, budget, reversal, disappearance, lava reuse, original-property and process-order cases. `test_pass_boundary` diagnoses the renderer boundary; `test_rendered_fades` captures the real Forward+ transition using the production figure shader. The shared [local_shadow_selection.gd](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/local_shadow_selection.gd) still checks ranking/hold policy separately, settling fades without advancing its explicit policy clock.
+
+### Validation and remaining work
+
+The exported Linux release passes 726 headless transition checks, 923 Forward+
+checks and 737 checks on each Compatibility light budget (8 and 4). The state
+machine is explicitly exercised on all three test configurations; only the
+Forward+ rendered transition uses an enabled production fade policy. Existing
+selection tests pass 377 headless checks and 418 checks on each GPU configuration.
+That is 4,754 passing candidate checks, plus 418 in the frozen Compatibility
+baseline. All five baseline/candidate Compatibility captures match byte for
+byte. No installed build or physical device was used.
+
+In the controlled 640×480 Forward+ fixture, an immediate left/right exchange
+changes 47,267 pixels above 2/255, with a peak channel difference of 33/255.
+The eight sampled 0.1-second fade steps peak at 8–11/255. Starting a replacement
+causes zero immediate changed pixels; the settled result matches the direct
+exchange exactly. A shadow-only caster moving during a half-strength fade
+changes 19,844 pixels, demonstrating that the native map continues updating.
+Carried-light captures also change, but that count includes ordinary lighting.
+These are visual continuity measurements, not whole-game performance results.
+
+| Zero-opacity flag transition | Changed pixels above 2/255 | Maximum channel difference |
+| --- | ---: | ---: |
+| Forward+, five lights | 0 | 0 |
+| Forward+, thirteen lights | 0 | 0 |
+| Compatibility budget 8, five lights | 220,150 | 39/255 |
+| Compatibility budget 8, thirteen lights | 257,452 | 47/255 |
+| Compatibility budget 4, thirteen lights | 244,080 | 43/255 |
+
+Before GLES rollout, fix or replace the pass/light representation and repeat
+the zero-opacity boundary test with multiple light counts, sun shadows and
+terrain/figure materials. Do not mask that discontinuity by fading the light's
+energy, which would change illumination. Full gameplay visual acceptance,
+native Mobile/device testing, importance scoring and static/dynamic map reuse
+remain separate work. The added per-frame bookkeeping visits at most four
+admitted lights and four targets; no frame-time or VRAM improvement is claimed.
+
+The reproducible exported commands, source/pack/image hashes, complete check
+counts and read-only integration result are saved in
+[local-shadow-fades-2026-10-08.json](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/docs/validation/local-shadow-fades-2026-10-08.json).
+Raw runs and the isolated release are under
+`/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-fades/`.
+Use `--tool=/absolute/path/to/tools/tests/local_shadow_fades.gd`, the existing
+isolated asset root and `--render-thread safe`; GPU runs must remain sequential.
 
 ## P6 investigation: directional-shadow snapping
 
@@ -1287,11 +1370,11 @@ the benchmark. It preserves individual object nodes and does not touch the
 other chat's newer creature visibility or story/co-op effect changes.
 
 The latest read-only `git apply --check` includes all production/tool changes
-from this branch's base through the P4 diagnostic checkpoint. It passed against
-active committed HEAD `a25b1fb18cae99a217cce21c9e720b35db09afd2`, including the
-other chat's uncommitted story/co-op script work. Its HEAD, status and hashes of
+from this branch's base through the P5 strength-transition checkpoint. It passed against
+active committed HEAD `d938e9da308d9d37cc3c13aa0a448f8c7e83e779`, including the
+other chat's uncommitted temporary co-op guest-role work. Its HEAD, status and hashes of
 all files touched by this branch were unchanged. **No patch was applied.**
-The result and exact target state are in the P4 validation JSON above.
+The result and exact target state are in the P5 strength-transition validation JSON above.
 `game_data.gd` is shared by earlier commits: preserve its newer control/options
 changes when integrating. Recheck before integration because that checkout is
 still changing. Do not message or alter the other chat without human authorization.
@@ -1314,9 +1397,10 @@ still changing. Do not message or alter the other chat without human authorizati
    deformation and shadows before integration. Do not repeat the forced-draw
    timing approach or assume standard web templates include native occlusion.
 3. **P5 local shadows, then P6 directional stability:** the first stable-selection
-   step and real-GPU transition checks are implemented above. Shadow-strength
-   transitions, better importance scoring and cached map updates remain separate
-   work. For P6, identify actual shimmer/redraw cost and renderer capabilities
+   step and bounded Forward+ strength transitions are implemented above. Fix the
+   Compatibility pass discontinuity before enabling fades there. Better importance
+   scoring, native Mobile validation and cached map updates remain separate work.
+   For P6, identify actual shimmer/redraw cost and renderer capabilities
    before changing cascade settings or planning engine-level projection reuse.
 4. **C1 character batching/skinning:** keep as an isolated prototype until the
    main character/gameplay changes settle. The active remake still animates rigid
