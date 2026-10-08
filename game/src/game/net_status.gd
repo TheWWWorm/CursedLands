@@ -337,7 +337,7 @@ func _rpc_chat(idx: int, player_name: String, text: String) -> void:
 # drops the connection.
 
 ## Remake co-op protocol; raise it when the messages change incompatibly.
-const PROTOCOL := 8   # atomic camp trade requests and acknowledgements
+const PROTOCOL := 9   # experimental direction attacks and non-homing arrows
 const CoopDb := preload("res://src/game/coop_db.gd")
 
 

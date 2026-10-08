@@ -2190,6 +2190,16 @@ func apply_command(cmd: Dictionary, player: int) -> void:
 				u.aggressive = bool(cmd.get("on", true))
 				if u.has_meta("hero"):
 					u.get_meta("hero").aggressive = u.aggressive
+		"direct_control":
+			var leader_id := int(cmd.get("leader",-1))
+			for u: GameUnit in world.unit_rows():
+				if u.controller == player: u.direct_controlled = u.uid == leader_id and not u.dead
+		"direct_attack":
+			var direction: Variant = cmd.get("direction")
+			if not direction is Vector3 or not direction.is_finite() or not is_finite(direction.length_squared()) or direction.length_squared() < 0.5: return
+			for u in mine:
+				if u._attack_cd > 0.0 or u._anim_lock > 0.0 or not u._pending_hit.is_empty(): continue
+				u.command({"type":"direct_attack","direction":direction.normalized()})
 		"attack":
 			if target:
 				for u in mine:
@@ -2226,7 +2236,7 @@ func apply_command(cmd: Dictionary, player: int) -> void:
 				# the use / talk packet 0x36 orders one unit only
 				# (the nearest one whose path reaches the target)
 				# and leaves the rest where they are.
-		"cast":
+		"cast", "direct_cast":
 			var u := _hero_unit(int(cmd.get("unit", -1)), player)
 			var spell := String(cmd.get("spell", "")).to_lower()
 			if u and not u.dead and not u.blocked and spell in u.get_meta("hero").get("spells", []):
@@ -3872,6 +3882,9 @@ func _on_event(event: Dictionary) -> void:
 				if String(event.get("zone", zone_id)) == zone_id and seq >= _water_received:
 					_water_received = seq
 					world.set_water_state(event.l)
+			"direct_arrow":
+				var a: GameUnit = world.units.get(int(event.a))
+				if a: Projectile.launch_direct(world,a,event.direction,false,event.start)
 			"arrow":
 				var a: GameUnit = world.units.get(int(event.a))
 				var b: GameUnit = world.units.get(int(event.b))
@@ -4318,6 +4331,7 @@ func _on_peer_disconnected(pid: int) -> void:
 		for u: GameUnit in world.units.values():
 			if u.controller == idx:
 				u.controller = -1
+				u.direct_controlled = false
 				u.mode = "follow"
 				u.mode_data = {"target": _leader()}
 				u.set_meta("orphan_of", idx)   # given back if the player returns

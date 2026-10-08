@@ -169,6 +169,8 @@ var hidden := false:
 var fogged := false   # out of this player's sight (UnitFog, client-side only)
 
 # --- orders
+## Transient input ownership; never written into the character/save.
+var direct_controlled := false
 var orders: Array[Dictionary] = []:
 	set(value):
 		orders = value
@@ -1142,7 +1144,7 @@ static func _talk_order_command(o: Dictionary) -> int:
 	match String(o.get("type", "")):
 		"move": return 1
 		"rotate": return 2
-		"attack": return 3
+		"attack", "direct_attack": return 3
 		"cast": return 4
 		"use": return 6
 		"anim": return 10
@@ -1522,9 +1524,12 @@ func _tick(dt: float) -> void:
 		_pending_hit.t -= dt
 		# Native549160 completes when the integer end counter is reached.
 		if _pending_hit.t <= 0.000000001:
-			var hit_target = _pending_hit.get("target")
-			if is_instance_valid(hit_target) and hit_target is GameUnit:
-				_resolve_hit(hit_target, _pending_hit.get("roll", {}))
+			if _pending_hit.has("direction"):
+				_resolve_direct_hit(_pending_hit.direction)
+			else:
+				var hit_target = _pending_hit.get("target")
+				if is_instance_valid(hit_target) and hit_target is GameUnit:
+					_resolve_hit(hit_target, _pending_hit.get("roll", {}))
 			_pending_hit = {}
 	if world.profile_simulation: world.profile_record("unit_housekeeping",started,uid)
 	# The perception of a Player-motivation unit runs on every AI tick, busy,
@@ -1573,6 +1578,7 @@ func _tick(dt: float) -> void:
 	match order.type:
 		"move": _do_move(dt)
 		"attack": _do_attack(dt)
+		"direct_attack": _do_direct_attack(dt)
 		"follow":
 			_do_follow(dt)
 			# Follow is an AI state: only its actual move is command 1.
@@ -2422,6 +2428,39 @@ static func _strike_delay_ticks(base: float, act: float, armed := true) -> int:
 		factor = float(PackedFloat32Array([15.0 / factor])[0])
 	var value := int(base) if armed else int(PackedFloat32Array([base])[0])
 	return _fistp(float(PackedFloat32Array([float(value) * factor])[0]))
+
+
+## A single committed swing/shot. Never approaches or locks on to a victim.
+func _do_direct_attack(dt: float) -> void:
+	alert = true
+	var d: Vector3 = order.direction
+	path = PackedVector2Array()
+	_goal = Vector2.INF
+	if stance != STANCE_NONE:
+		change_posture(STANCE_NONE)
+		return
+	if not _turn_to(Vector2(d.x,-d.z).angle(),dt): return
+	if _attack_cd > 0.0 or _update_pose(): return
+	var len := maxf(model.act("attack",randi_range(1,3),0.05),0.6)
+	action = "attack"
+	_anim_lock = len
+	var a_w := float(stats.get("weapon_actions",proto.get("tuning_actions",50.0)))
+	_attack_cd = maxf(_strike_delay_ticks(a_w,actions(),stats.has("weapon_actions"))*TICK,len)
+	strike_aim = -1
+	strike_miss = false
+	_pending_hit = {"t":_hit_ticks()*TICK,"direction":d}
+	order = {}
+	GameSound.unit(self,"attack")
+
+
+func _resolve_direct_hit(d: Vector3) -> void:
+	if stats.get("ranged",false):
+		var p := Projectile.launch_direct(world,self,d,true)
+		if world.session: world.session.broadcast({"t":"direct_arrow","a":uid,"direction":d,"start":p.global_position})
+	else:
+		var victim := DirectCombat.melee_target(self,d)
+		if victim: DirectCombat.contact(self,victim)
+		else: strike_miss = true
 
 
 func _do_attack(dt: float) -> void:
@@ -3688,7 +3727,7 @@ func _update_pose() -> bool:
 	if st != old and action in ["walk", "run", "crawl"] and _posture_of(st) != _posture_of(old):
 		path = PackedVector2Array()
 		_moving = false
-		if order.get("type", "") != "attack":
+		if order.get("type", "") not in ["attack","direct_attack"]:
 			var l := model.cross(old, st, "idle")
 			if l > 0.0:
 				action = "idle"
@@ -3833,7 +3872,7 @@ func _draw_step(_dt: float, placement_ready := false) -> void:
 	# gap played the attack -> neutral cross clip and back on every repeated
 	# attack click, and clicks a second apart kept the strike from starting.
 	var cmd := order if not order.is_empty() or orders.is_empty() else orders[0]
-	if alert and controller >= 0 and world and world.authority and cmd.get("type", "") != "attack":
+	if alert and controller >= 0 and world and world.authority and cmd.get("type", "") not in ["attack","direct_attack"] and not _pending_hit.has("direction"):
 		alert = false
 	_update_pose()
 	if not dead:

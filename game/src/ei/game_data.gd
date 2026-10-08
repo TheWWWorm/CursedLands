@@ -116,6 +116,7 @@ const OPTIONS := [
 	["cam_pan_speed", 0, 100, 16, 3, 50], ["cam_rotate_speed", 0, 100, 16, 4, 50],
 	["cam_zoom_speed", 0, 100, 16, 5, 50], ["cam_wasd", 1, 2, 16, 7, 1],
 	["village_start_view", 1, 2, 16, 6, 0],
+	["control_mode", 1, 3, 16, 8, 0],
 	# Interface and controls (group 17).
 	# Small health bars over visible hostile units (EnemyBars): 0 off (the
 	# original, which shows a unit's health only in the unit panel), 1 auto
@@ -195,6 +196,7 @@ const DISPLAY_CHOICES := {
 	"vsync": ["Off", "On", "Adaptive"],
 	"render_scale": ["50 %", "67 %", "75 %", "85 %", "100 %", "125 %", "150 %", "200 %"],
 	"camera_style": ["Original", "Modern"],
+	"control_mode": ["Auto (gamepad)", "Classic", "Third person (experimental)"],
 	"q_aa": ["Off", "SMAA", "MSAA 4×", "MSAA 4× + SMAA", "TAA", "FSR 2"],
 	"q_shadows": ["Low", "Medium", "High", "Ultra"],
 	"q_aniso": ["Off", "2×", "4×", "8×", "16×"],
@@ -301,6 +303,7 @@ const REMAKE_OPTIONS := {
 	"phys_interp": ["Smooth motion", "Creatures are drawn between the game's 60 steps a second, so they move smoothly on screens faster than 60 Hz. Visual only."],
 	"render_scale": ["Render scale", "Resolution of the 3D view relative to the window: below 100 % faster, above it sharper (supersampling)."],
 	"gfx_far_view": ["Far view", "See 260 m instead of 100 m, with a long soft fade into the fog; off: the original 100 m view with its short fog band."],
+	"control_mode": ["Control mode", "Auto uses third person with a gamepad and classic controls with a mouse. Third person: WASD moves, mouse looks, left click attacks, E interacts, Tab releases the pointer. Gamepad: sticks move and look, RT attacks, A interacts, LT + RT opens the system wheel. Visible health bars stay on. Attacks can hit friendly characters, including in villages."],
 	"camera_style": ["Camera style", "Original: the 2000 game's camera. Modern: responsive pan, smooth zoom and terrain clearance. Middle drag turns; Alt + middle drag or right drag tilts; Shift + middle drag pans. Home centres; optional hero follow and see-through objects."],
 	"cam_pan_speed": ["Camera pan speed (modern)", "Speed of the modern camera's panning (keys, screen edges)."],
 	"cam_rotate_speed": ["Camera turn speed (modern)", "Speed of the modern camera's turning and tilting (drag, keys)."],
@@ -333,7 +336,7 @@ const OPTIONS_APPLIED := ["volume_sfx", "volume_stream", "volume_voice", "power_
 	"gfx_firelight", "gfx_materials", "gfx_foliage_light", "gfx_weather_surfaces", "gfx_lava_light", "gfx_detailed_heads",
 	"gfx_sharp_units", "q_aa", "q_shadows", "q_shadow_fit", "q_aniso", "confine_mouse",
 	"display_mode", "resolution", "fps_limit", "vsync", "show_fps", "render_scale", "phys_interp",
-	"camera_style", "cam_pan_speed", "cam_rotate_speed", "cam_zoom_speed", "cam_follow", "village_start_view",
+	"control_mode", "camera_style", "cam_pan_speed", "cam_rotate_speed", "cam_zoom_speed", "cam_follow", "village_start_view",
 	"cam_see_through", "cam_wasd", "coop_full_xp", "coop_scale", "net_upnp", "net_websocket", "unit_fog", "distant_ai", "path_through", "sp_full_xp", "aim_press_once", "start_zones", "sp_death_notice", "revive", "coop_player_names", "coop_share_loot", "enemy_hp_bars", "smile_faces",
 	"pad_enabled", "pad_rumble", "pad_deadzone", "pad_cursor_speed", "pad_target_radius", "pad_wheel_pause", "pad_glyphs", "pad_swap_sticks", "pad_light", "pad_gyro", "pad_gyro_sensitivity", "auto_graphics", "renderer"]
 signal options_changed

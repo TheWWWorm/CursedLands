@@ -124,6 +124,7 @@ func leader() -> GameUnit:
 
 func _on_mode() -> void:
 	if PadInput.active != "pad":
+		_stop_moving()
 		_set_cursor_mode(false)
 		world_info = false
 		game.hud.unit_panel.ignore_hover = false
@@ -142,11 +143,13 @@ func _process(dt: float) -> void:
 	game.hud.unit_panel.ignore_hover = pad and not cursor_mode
 	if world_info and not PadInput.held("gait"):
 		world_info = false   # the release went to a menu, or the pad was unplugged
+	if not pad and game.direct and game.direct.active(): return
 	if not takes_input():
 		if _wheel_kind != "":
 			close_wheel()
 		_stop_moving()
 		return
+	if not pad: return
 	_rumble_poll()
 	_light_poll()
 	var ls := PadInput.stick(true)
@@ -159,6 +162,10 @@ func _process(dt: float) -> void:
 		if ls == Vector2.ZERO:
 			_ls_wait = false
 		ls = Vector2.ZERO
+	if game.direct and game.direct.active() and not cursor_mode:
+		game.direct.pad_step(ls,rs,real)
+		target = {}
+		return
 	var sx := -1.0 if GameData.option("camera_reverse_x") else 1.0
 	game.rig.pad_turn = rs.x * sx
 	game.rig.pad_zoom = rs.y
@@ -186,6 +193,7 @@ func _over_something() -> bool:
 
 ## The stick on the ground plane by the camera's heading, EI xy.
 func _ground_dir(v: Vector2) -> Vector2:
+	if game.direct and game.direct.active(): return game.direct.ground_direction(v)
 	var d3 := game.rig._screen_to_ground(v)
 	return Vector2(d3.x, -d3.z).normalized()
 
@@ -252,6 +260,8 @@ func _submit_move(u: GameUnit, to: Vector2, line := false) -> void:
 	if GameSound.blocked(u):
 		return
 	var cmd := {"t": "move", "units": [u.uid], "x": to.x, "y": to.y, "run": false}
+	if game.direct and game.direct.active() and PadInput.active != "pad":
+		cmd.run = Input.is_physical_key_pressed(KEY_SHIFT)
 	if line:
 		cmd.line = true
 	game.session.submit(cmd)
@@ -510,6 +520,10 @@ func hints() -> Array:
 		out.append([B, RemakeText.t("Right click")])
 		out.append([PadInput.button_of("cursor"), RemakeText.t("Leave pointer")])
 		return out
+	if game.direct and game.direct.active():
+		return [[PadInput.button_of("system"),RemakeText.t("Attack / cast")], [A,RemakeText.t("Interact")],
+			["RS",RemakeText.t("Look")], [PadInput.button_of("actions"),RemakeText.t("Spells")],
+			[PadInput.button_of("items"),RemakeText.t("Items")], [PadInput.button_of("cursor"),RemakeText.t("Pointer")]]
 	if game.pending_spell != "":
 		out.append([A, _verb(target)[1] if not target.is_empty() or reticle != null else RemakeText.t("Cast"), not target.is_empty() or reticle != null])
 		out.append(["DPAD_LR", RemakeText.t("Target")])
@@ -551,6 +565,7 @@ func _on_action(a: String, phase: String) -> void:
 		_in_wheel.erase(a)
 	elif _in_wheel.has(a):
 		return
+	if not cursor_mode and game.direct and game.direct.active() and game.direct.pad_action(a,phase): return
 	if cursor_mode and _cursor_action(a, phase, mod):
 		return
 	match [a, phase]:

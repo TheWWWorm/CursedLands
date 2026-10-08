@@ -482,7 +482,7 @@ func _process(_dt: float) -> void:
 	if hints:
 		_esc_hints.queue_redraw()
 	# Village ("brief" zone) = the village screen without CInterface3D.
-	var field: bool = game == null or game.session == null or not game.session.shop_available()
+	var field: bool = game == null or game.session == null or not game.session.shop_available() or (game.direct and game.direct.active())
 	if field != _field_on or (not field and _field.visible):
 		_field_on = field
 		_field.visible = field

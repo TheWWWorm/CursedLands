@@ -583,6 +583,7 @@ func _input(e: InputEvent) -> void:
 
 
 func _unhandled_input(e: InputEvent) -> void:
+	if get_parent() is Game and get_parent().direct and get_parent().direct.active(): return
 	if _input_blocked():
 		return
 	if (e is InputEventMouseButton and e.pressed and e.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_DOWN]) \
@@ -681,6 +682,9 @@ func _shake_tick(delta: float, add: bool) -> void:
 
 
 func _process(delta: float) -> void:
+	if get_parent() is Game and get_parent().direct and get_parent().direct.active():
+		get_parent().direct.apply_camera()
+		return
 	if _opening_view is Transform3D:
 		if _input_blocked():
 			return
