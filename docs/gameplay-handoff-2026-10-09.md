@@ -2,6 +2,16 @@
 
 ## Stop state and how to resume
 
+**Continuation update, 9 October:** the user authorized the renderer chat to
+continue the renderer list, then tackle this backlog, and confirmed that it is
+the only agent working on EI. Renderer changes through `7202b8e` and this
+handoff's gameplay source `09ffbf7` are now combined at `f6c8922` in the canonical
+checkout below. Protocol remains 13; no release or installation was made.
+See `docs/owned-renderer-improvements-2026-10-08.md` for integration evidence and
+remaining renderer work. U45 still takes priority when gameplay work starts.
+The following stop statement and export57 details describe the previous chat's
+handoff, not a new stop instruction for the authorized continuation.
+
 The user explicitly requested: finish the current task, write the remaining work and new reports into a handoff, then stop for now so another agent can continue. The current task is finished and committed; the overall backlog is **not complete**. Do not restart work without a new instruction to resume. No release or device installation was made during this final task.
 
 **Canonical checkout:** `/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo`  

@@ -2054,7 +2054,8 @@ reconciled with the latest gameplay branch at
 `CatacombLift.apply` before object placement and saved-position migration,
 alongside the scenery manager and ground-contact attachment. Automatic merges
 in `game_data.gd` and `game.gd` retain both the control options and sun policy.
-The combined source is intended for the canonical checkout at
+The combined source was committed as `f6c89228b774eda8e8ea03724da53a71af9a09a4`
+and the canonical checkout was advanced to it at
 `/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo`.
 Installed builds and published releases are separate from this source merge.
 

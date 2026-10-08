@@ -1018,5 +1018,12 @@
     "Export reports four regenerated pre-existing missing UID warnings, with no script/parse/export errors. Generated files are retained under QA and excluded from the merge.",
     "The catacomb fixture exercises production motion and save migration with staged riders and unrelated AI held still; it is not a full campaign playthrough.",
     "Protocol 13 applies to all peers and the simulation service."
-  ]
+  ],
+  "canonical_integration": {
+    "checkout": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo",
+    "branch": "fix/catacomb-coop-deck",
+    "merge_commit": "f6c89228b774eda8e8ea03724da53a71af9a09a4",
+    "source_hashes_match_validated_export": true,
+    "method": "fast-forward of the previously clean gameplay checkout; both parent histories preserved"
+  }
 }
