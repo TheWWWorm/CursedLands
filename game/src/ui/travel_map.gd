@@ -74,7 +74,7 @@ extends Control
 ## Keys quicksave / quickload (via the action table: 0x35
 ## 0x36) work here in single player only.
 ## Remake differences (**Approx.**): "Stay here" and buttons for destinations
-## on another allod or visited places without a selectable figure are remake-only
+## on another allod are remake-only
 ## (the original builds only the turn / camp
 ## buttons, tips 90100-90102, and cannot stay); pieces are picked by ray
 ## casts instead of the id buffer; in co-op only the party leader travels
@@ -413,18 +413,12 @@ func _build_extra() -> void:
 	th.default_font = Interface800.font()
 	_extra.theme = th
 	th.default_font_size = 16
-	# Cross-island routes need buttons. Some expansion camps also return to a
-	# visited area whose original z.<id> is still zero (Shelter -> gz3h), so
-	# its island piece cannot be selected. Expose that existing route without
-	# changing story flags or revealing unvisited same-island areas.
+	# Cross-island routes need buttons. On this island, entering the edge
+	# reveals its adjacent game regions in Session, as in the original.
 	for o: Dictionary in options:
 		var id := String(o.zone)
 		if String(session.campaign.zone(id).get("allod", "")).to_lower() == allod:
-			if id == session.zone_id or not session.state.visited.has(id):
-				continue
-			if _pieces.any(func(p): return p.id == id and p.state != 0) \
-					or _briefs.any(func(b): return b.id == id):
-				continue
+			continue
 		var b := Button.new()
 		b.text = String(o.title)
 		b.disabled = not leader

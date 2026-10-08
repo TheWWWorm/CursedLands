@@ -1869,6 +1869,9 @@ func leave_zone(target: String, entrance: int, player := -1, source_zone := "", 
 		_travel(target, entrance)
 		return
 	else:
+		# Native 662990 (base) / 58cdd0 (LiA): entering an edge reveals
+		# its adjacent game zones. Scripts need not set these flags themselves.
+		_reveal_travel_zones(target)
 		# The global map's routes (CampaignMap.routes = the original)
 		# from the edge; the older walk over open zones only as a fallback.
 		travel_options = _route_options(target)
@@ -1883,7 +1886,30 @@ func leave_zone(target: String, entrance: int, player := -1, source_zone := "", 
 		return
 	# "start": the starting areas the map shows as their own piece — the
 	# host's option, so every peer's map agrees.
-	broadcast({"t": "travel", "options": travel_options, "from": target, "start": start_zones_shown()})
+	# Include the reveal in the same reliable event: a guest-purse scope may
+	# defer the full state update until after the map has already been built.
+	broadcast({"t": "travel", "options": travel_options, "from": target, "start": start_zones_shown(),
+		"zone_states": _travel_zone_states(target)})
+
+
+## Reveal only directly adjacent game regions, never camps or further edges.
+## State 2 means completed and must retain its original dimmed appearance.
+func _reveal_travel_zones(edge: String) -> void:
+	for id: String in _travel_zone_states(edge):
+		if state.get_var(0, "z." + id) == 0.0:
+			state.set_var(0, "z." + id, 1.0)
+			mark_dirty()
+
+
+func _travel_zone_states(edge: String) -> Dictionary:
+	var out := {}
+	var z := campaign.zone(edge)
+	if z.get("type", "") != "edge": return out
+	for ex: Dictionary in z.get("exits", {}).values():
+		var id := String(ex.get("to", ""))
+		if campaign.zone(id).get("type", "") == "game":
+			out[id] = state.get_var(0, "z." + id)
+	return out
 
 
 ## Remake option "start_zones" (Starting areas on the travel map). The
@@ -3869,6 +3895,9 @@ func _on_event(event: Dictionary) -> void:
 	elif t == "movie_release" and int(event.get("serial", -1)) == int(_movie_ev.get("serial", -2)):
 		_movie_ev = {}
 	if t == "travel":
+		if not is_host:
+			for id: String in event.get("zone_states", {}):
+				state.set_var(0, "z." + id, float(event.zone_states[id]))
 		map_open = true
 		GameData.trace("travel map open from %s" % zone_id)
 	elif t == "travel_close":
