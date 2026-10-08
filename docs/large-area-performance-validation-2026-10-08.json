@@ -1,0 +1,2204 @@
+{
+  "date": "2026-10-08",
+  "production_commit": "bc508250462ef31c115290a63e6b67ae315f9d34",
+  "baseline_commit": "fc06dcc93353969f093072030b4add9124fda140",
+  "production_changes": false,
+  "plan": {
+    "date": "2026-10-08",
+    "production_commit": "bc508250462ef31c115290a63e6b67ae315f9d34",
+    "production_changes": false,
+    "affinity_experiment": "Deferred before any device mutation when user requested broader map validation",
+    "retroid": {
+      "apk": 54,
+      "mode": "ordinary single-player separated worker",
+      "settings": "actual Original, 1x, 1920x1080 display, 0.75 render scale, GL, four native worker threads, default Android scheduler",
+      "areas": [
+        "gz2h",
+        "gz16g",
+        "gz21k",
+        "gz7g"
+      ],
+      "sequence": "two 120-second passes in reversed area order, then Portal reference",
+      "route": "bounded authored-entrance walks, unchanged populations, normal move commands and rotating terrain-aware camera",
+      "guards": "require actual 1x progress, both party members alive and moving, expected map and population; retain but exclude failed/dead/contaminated runs",
+      "limits": "Does not certify every view, combat encounter or thermal condition. Authored populations with supplied party/progress are reproducible fixtures, not a naturally played campaign save.",
+      "environs_followup": "Both entrance-1 routes caused deaths. Retest from authored village entrance 5 with the same supplied party, fresh 207-actor population and unchanged rules. Separate fixture/save hashes and run names.",
+      "suslanger_replication_limit": "Only first 120-second short-loop run survives. Second dies at 44.5s; its conservative 44.015s living prefix is 51.05 FPS, but full average is excluded and no further survival-selected repetition is added."
+    },
+    "desktop": {
+      "baseline": "published Experimental 5 (fc06dcc); exact production Linux PCK/engine/native module",
+      "candidate": "bc50825 production game, packaged throughput-worker-cadence02",
+      "workload": "Portal, 4K, 100%, all max remake, 2x, two-player co-op, three living party members, entrance loop",
+      "sequence": "candidate/control/control/candidate, 180 seconds each",
+      "host": "real DISPLAY :0, RTX3090, Linux Vulkan, system CPU placement",
+      "limits": "No Windows/D3D12 runtime available; cannot establish a fix for the user's 4090 Mobile result.",
+      "secondary_workload": "Matched 1920x1080, all other max/2x/co-op settings and route unchanged; four 120-second runs in candidate/control/control/candidate order, sequentially after 4K"
+    }
+  },
+  "retroid_summary": [
+    {
+      "zone": "gz2h",
+      "area": "Suslanger",
+      "valid_runs": 1,
+      "fps_median": 50.633969881295,
+      "fps_min": 50.633969881295,
+      "fps_max": 50.633969881295,
+      "p95_ms_median": 25.139,
+      "p99_ms_median": 28.581,
+      "ten_second_fps_min": 45.7,
+      "ten_second_fps_max": 54.9,
+      "sim_seconds_min": 119.735000000007,
+      "sim_seconds_max": 119.735000000007
+    },
+    {
+      "zone": "gz16g",
+      "area": "River and Islands",
+      "valid_runs": 2,
+      "fps_median": 49.065132221203754,
+      "fps_min": 48.9402706454465,
+      "fps_max": 49.189993796961,
+      "p95_ms_median": 27.5865,
+      "p99_ms_median": 34.590500000000006,
+      "ten_second_fps_min": 45.1,
+      "ten_second_fps_max": 53.9,
+      "sim_seconds_min": 119.845000000007,
+      "sim_seconds_max": 119.845000000007
+    },
+    {
+      "zone": "gz21k",
+      "area": "City Environs",
+      "valid_runs": 2,
+      "fps_median": 56.88474112676005,
+      "fps_min": 56.7678869837609,
+      "fps_max": 57.0015952697592,
+      "p95_ms_median": 21.610999999999997,
+      "p99_ms_median": 24.636499999999998,
+      "ten_second_fps_min": 51.3,
+      "ten_second_fps_max": 59.9,
+      "sim_seconds_min": 119.900000000007,
+      "sim_seconds_max": 119.955000000007
+    },
+    {
+      "zone": "gz7g",
+      "area": "Dead City",
+      "valid_runs": 2,
+      "fps_median": 59.859038617495656,
+      "fps_min": 59.8554293474195,
+      "fps_max": 59.8626478875718,
+      "p95_ms_median": 19.41,
+      "p99_ms_median": 20.6205,
+      "ten_second_fps_min": 59.0,
+      "ten_second_fps_max": 60.1,
+      "sim_seconds_min": 119.900000000007,
+      "sim_seconds_max": 119.900000000007
+    },
+    {
+      "zone": "gz1h",
+      "area": "Portal reference",
+      "valid_runs": 1,
+      "fps_median": 54.2765067057024,
+      "fps_min": 54.2765067057024,
+      "fps_max": 54.2765067057024,
+      "p95_ms_median": 25.223,
+      "p99_ms_median": 28.281,
+      "ten_second_fps_min": 51.3,
+      "ten_second_fps_max": 57.2,
+      "sim_seconds_min": 119.900000000007,
+      "sim_seconds_max": 119.900000000007
+    }
+  ],
+  "desktop_summary": [
+    {
+      "control": {
+        "fps_median": 57.58856892610122,
+        "fps_min": 55.079772120067034,
+        "fps_max": 60.09736573213541,
+        "p95_ms_median": 20.6915,
+        "p99_ms_median": 26.6515,
+        "cpu_cores_median": {
+          "owner": 1.0831575213135576,
+          "worker": 1.005906289162509,
+          "peer": 1.0807111554768636
+        }
+      },
+      "candidate": {
+        "fps_median": 58.13917860272206,
+        "fps_min": 57.58043543797426,
+        "fps_max": 58.697921767469865,
+        "p95_ms_median": 22.3085,
+        "p99_ms_median": 24.576999999999998,
+        "cpu_cores_median": {
+          "owner": 0.9015680400305659,
+          "worker": 0.8977097430407078,
+          "peer": 0.6751838603315566
+        }
+      },
+      "resolution": "4k",
+      "fps_change_percent": 0.9561093232363538,
+      "worker_cpu_change_percent": -10.756125822802321
+    },
+    {
+      "control": {
+        "fps_median": 106.36995644974309,
+        "fps_min": 105.94705467188012,
+        "fps_max": 106.79285822760603,
+        "p95_ms_median": 12.979,
+        "p99_ms_median": 15.0775,
+        "cpu_cores_median": {
+          "owner": 1.5033397562110307,
+          "worker": 1.0063323320018989,
+          "peer": 1.1651384088987466
+        }
+      },
+      "candidate": {
+        "fps_median": 159.63272490361373,
+        "fps_min": 157.97874405081868,
+        "fps_max": 161.28670575640876,
+        "p95_ms_median": 8.756499999999999,
+        "p99_ms_median": 9.9925,
+        "cpu_cores_median": {
+          "owner": 1.2724579188540646,
+          "worker": 0.898171183701802,
+          "peer": 0.7370530128745507
+        }
+      },
+      "resolution": "1080",
+      "fps_change_percent": 50.073131767272905,
+      "worker_cpu_change_percent": -10.748054580034372
+    }
+  ],
+  "runs": {
+    "retroid": [
+      {
+        "name": "large-area-v2-retroid-suslanger-120-01",
+        "fps": 50.633969881295,
+        "frame_ms": {
+          "max": 89.279,
+          "p50": 19.335,
+          "p95": 25.139,
+          "p99": 28.581
+        },
+        "sim_seconds": 119.735000000007,
+        "wall_seconds": 120.018241,
+        "zone": "gz2h",
+        "units": 323,
+        "controlled": [
+          {
+            "dead": false,
+            "hp": 5.15138252973556,
+            "pos": "(308.5, 75.0)",
+            "uid": 1500000001
+          },
+          {
+            "dead": false,
+            "hp": 13.25,
+            "pos": "(310.0, 75.0)",
+            "uid": 1000059185
+          }
+        ],
+        "original_look": true,
+        "single_player_worker": true,
+        "multiplayer_game": false,
+        "online": true,
+        "viewport_size": [
+          1920,
+          1080
+        ],
+        "render_scale": 0.75,
+        "renderer": "gl_compatibility",
+        "first_party_death_ms": null,
+        "unique_party_positions": {
+          "1500000001": 59,
+          "1000059185": 50
+        },
+        "receipt": "$SCRATCHPAD/portal-60-20261007/android/runs/large-area-v2-retroid-suslanger-120-01.receipt.json",
+        "result": "$SCRATCHPAD/portal-throughput-20261007/runs/large-area-v2-retroid-suslanger-120-01.json",
+        "apk_sha256": "f2a2159c9c19158026deea5d55c4392d12dd5c74f9726b2024448cbfe1a3ead6",
+        "errors": [],
+        "acceptance_eligible": true,
+        "ten_second_fps_min": 45.7,
+        "ten_second_fps_max": 54.9,
+        "frames_over_33ms": 27,
+        "frames_over_50ms": 2,
+        "frames_over_100ms": 0,
+        "frame_count": 6077,
+        "frame_p99_ms": 28.581,
+        "battery_temperature_c": [
+          33.5,
+          34.0
+        ]
+      },
+      {
+        "name": "large-area-v2-retroid-river-120-01",
+        "fps": 49.189993796961,
+        "frame_ms": {
+          "max": 72.697,
+          "p50": 19.687,
+          "p95": 27.471,
+          "p99": 34.606
+        },
+        "sim_seconds": 119.845000000007,
+        "wall_seconds": 120.004081,
+        "zone": "gz16g",
+        "units": 294,
+        "controlled": [
+          {
+            "dead": false,
+            "hp": 23.75,
+            "pos": "(155.0, 302.5)",
+            "uid": 1500000001
+          },
+          {
+            "dead": false,
+            "hp": 11.5,
+            "pos": "(156.5, 302.5)",
+            "uid": 1000059185
+          }
+        ],
+        "original_look": true,
+        "single_player_worker": true,
+        "multiplayer_game": false,
+        "online": true,
+        "viewport_size": [
+          1920,
+          1080
+        ],
+        "render_scale": 0.75,
+        "renderer": "gl_compatibility",
+        "first_party_death_ms": null,
+        "unique_party_positions": {
+          "1500000001": 28,
+          "1000059185": 29
+        },
+        "receipt": "$SCRATCHPAD/portal-60-20261007/android/runs/large-area-v2-retroid-river-120-01.receipt.json",
+        "result": "$SCRATCHPAD/portal-throughput-20261007/runs/large-area-v2-retroid-river-120-01.json",
+        "apk_sha256": "f2a2159c9c19158026deea5d55c4392d12dd5c74f9726b2024448cbfe1a3ead6",
+        "errors": [],
+        "acceptance_eligible": true,
+        "ten_second_fps_min": 45.1,
+        "ten_second_fps_max": 53.9,
+        "frames_over_33ms": 76,
+        "frames_over_50ms": 4,
+        "frames_over_100ms": 0,
+        "frame_count": 5903,
+        "frame_p99_ms": 34.606,
+        "battery_temperature_c": [
+          34.0,
+          35.0
+        ]
+      },
+      {
+        "name": "large-area-v2-retroid-environs-120-01",
+        "fps": 59.5923865760117,
+        "frame_ms": {
+          "max": 84.576,
+          "p50": 16.582,
+          "p95": 24.647,
+          "p99": 27.182
+        },
+        "sim_seconds": 119.790000000007,
+        "wall_seconds": 120.015331,
+        "zone": "gz21k",
+        "units": 207,
+        "controlled": [
+          {
+            "dead": true,
+            "hp": -16.3874999433756,
+            "pos": "(481.5, 339.2344)",
+            "uid": 1500000001
+          },
+          {
+            "dead": true,
+            "hp": -0.114999890327454,
+            "pos": "(487.9531, 336.625)",
+            "uid": 1000059185
+          }
+        ],
+        "original_look": true,
+        "single_player_worker": true,
+        "multiplayer_game": false,
+        "online": true,
+        "viewport_size": [
+          1920,
+          1080
+        ],
+        "render_scale": 0.75,
+        "renderer": "gl_compatibility",
+        "first_party_death_ms": 24009,
+        "unique_party_positions": {
+          "1500000001": 23,
+          "1000059185": 21
+        },
+        "receipt": "$SCRATCHPAD/portal-60-20261007/android/runs/large-area-v2-retroid-environs-120-01.receipt.json",
+        "result": "$SCRATCHPAD/portal-throughput-20261007/runs/large-area-v2-retroid-environs-120-01.json",
+        "apk_sha256": "f2a2159c9c19158026deea5d55c4392d12dd5c74f9726b2024448cbfe1a3ead6",
+        "errors": [],
+        "acceptance_eligible": false,
+        "ten_second_fps_min": 56.9,
+        "ten_second_fps_max": 60.1,
+        "frames_over_33ms": 9,
+        "frames_over_50ms": 2,
+        "frames_over_100ms": 0,
+        "frame_count": 7152,
+        "frame_p99_ms": 27.182,
+        "battery_temperature_c": [
+          35.0,
+          35.7
+        ]
+      },
+      {
+        "name": "large-area-v2-retroid-deadcity-120-01",
+        "fps": 59.8554293474195,
+        "frame_ms": {
+          "max": 64.068,
+          "p50": 16.652,
+          "p95": 19.413,
+          "p99": 20.648
+        },
+        "sim_seconds": 119.900000000007,
+        "wall_seconds": 120.005822,
+        "zone": "gz7g",
+        "units": 262,
+        "controlled": [
+          {
+            "dead": false,
+            "hp": 23.75,
+            "pos": "(206.0, 297.5)",
+            "uid": 1500000001
+          },
+          {
+            "dead": false,
+            "hp": 11.5,
+            "pos": "(207.5, 297.5)",
+            "uid": 1000059185
+          }
+        ],
+        "original_look": true,
+        "single_player_worker": true,
+        "multiplayer_game": false,
+        "online": true,
+        "viewport_size": [
+          1920,
+          1080
+        ],
+        "render_scale": 0.75,
+        "renderer": "gl_compatibility",
+        "first_party_death_ms": null,
+        "unique_party_positions": {
+          "1500000001": 33,
+          "1000059185": 35
+        },
+        "receipt": "$SCRATCHPAD/portal-60-20261007/android/runs/large-area-v2-retroid-deadcity-120-01.receipt.json",
+        "result": "$SCRATCHPAD/portal-throughput-20261007/runs/large-area-v2-retroid-deadcity-120-01.json",
+        "apk_sha256": "f2a2159c9c19158026deea5d55c4392d12dd5c74f9726b2024448cbfe1a3ead6",
+        "errors": [],
+        "acceptance_eligible": true,
+        "ten_second_fps_min": 59.0,
+        "ten_second_fps_max": 60.0,
+        "frames_over_33ms": 3,
+        "frames_over_50ms": 2,
+        "frames_over_100ms": 0,
+        "frame_count": 7183,
+        "frame_p99_ms": 20.648,
+        "battery_temperature_c": [
+          35.7,
+          36.2
+        ]
+      },
+      {
+        "name": "large-area-v2-retroid-deadcity-120-02",
+        "fps": 59.8626478875718,
+        "frame_ms": {
+          "max": 64.384,
+          "p50": 16.653,
+          "p95": 19.407,
+          "p99": 20.593
+        },
+        "sim_seconds": 119.900000000007,
+        "wall_seconds": 120.008056,
+        "zone": "gz7g",
+        "units": 262,
+        "controlled": [
+          {
+            "dead": false,
+            "hp": 23.75,
+            "pos": "(206.0, 297.5)",
+            "uid": 1500000001
+          },
+          {
+            "dead": false,
+            "hp": 11.5,
+            "pos": "(207.5, 297.5)",
+            "uid": 1000059185
+          }
+        ],
+        "original_look": true,
+        "single_player_worker": true,
+        "multiplayer_game": false,
+        "online": true,
+        "viewport_size": [
+          1920,
+          1080
+        ],
+        "render_scale": 0.75,
+        "renderer": "gl_compatibility",
+        "first_party_death_ms": null,
+        "unique_party_positions": {
+          "1500000001": 36,
+          "1000059185": 38
+        },
+        "receipt": "$SCRATCHPAD/portal-60-20261007/android/runs/large-area-v2-retroid-deadcity-120-02.receipt.json",
+        "result": "$SCRATCHPAD/portal-throughput-20261007/runs/large-area-v2-retroid-deadcity-120-02.json",
+        "apk_sha256": "f2a2159c9c19158026deea5d55c4392d12dd5c74f9726b2024448cbfe1a3ead6",
+        "errors": [],
+        "acceptance_eligible": true,
+        "ten_second_fps_min": 59.0,
+        "ten_second_fps_max": 60.1,
+        "frames_over_33ms": 4,
+        "frames_over_50ms": 2,
+        "frames_over_100ms": 0,
+        "frame_count": 7184,
+        "frame_p99_ms": 20.593,
+        "battery_temperature_c": [
+          36.2,
+          37.0
+        ]
+      },
+      {
+        "name": "large-area-v2-retroid-environs-120-02",
+        "fps": 59.6854260579938,
+        "frame_ms": {
+          "max": 79.035,
+          "p50": 16.554,
+          "p95": 24.684,
+          "p99": 27.317
+        },
+        "sim_seconds": 119.900000000007,
+        "wall_seconds": 120.012547,
+        "zone": "gz21k",
+        "units": 207,
+        "controlled": [
+          {
+            "dead": true,
+            "hp": -0.23749977350235,
+            "pos": "(476.25, 336.0)",
+            "uid": 1500000001
+          },
+          {
+            "dead": true,
+            "hp": -7.93499997258186,
+            "pos": "(476.0, 336.0)",
+            "uid": 1000059185
+          }
+        ],
+        "original_look": true,
+        "single_player_worker": true,
+        "multiplayer_game": false,
+        "online": true,
+        "viewport_size": [
+          1920,
+          1080
+        ],
+        "render_scale": 0.75,
+        "renderer": "gl_compatibility",
+        "first_party_death_ms": 10519,
+        "unique_party_positions": {
+          "1500000001": 15,
+          "1000059185": 15
+        },
+        "receipt": "$SCRATCHPAD/portal-60-20261007/android/runs/large-area-v2-retroid-environs-120-02.receipt.json",
+        "result": "$SCRATCHPAD/portal-throughput-20261007/runs/large-area-v2-retroid-environs-120-02.json",
+        "apk_sha256": "f2a2159c9c19158026deea5d55c4392d12dd5c74f9726b2024448cbfe1a3ead6",
+        "errors": [],
+        "acceptance_eligible": false,
+        "ten_second_fps_min": 56.7,
+        "ten_second_fps_max": 60.1,
+        "frames_over_33ms": 6,
+        "frames_over_50ms": 2,
+        "frames_over_100ms": 0,
+        "frame_count": 7163,
+        "frame_p99_ms": 27.317,
+        "battery_temperature_c": [
+          37.0,
+          37.2
+        ]
+      },
+      {
+        "name": "large-area-v2-retroid-river-120-02",
+        "fps": 48.9402706454465,
+        "frame_ms": {
+          "max": 85.181,
+          "p50": 19.797,
+          "p95": 27.702,
+          "p99": 34.575
+        },
+        "sim_seconds": 119.845000000007,
+        "wall_seconds": 120.003423,
+        "zone": "gz16g",
+        "units": 294,
+        "controlled": [
+          {
+            "dead": false,
+            "hp": 23.75,
+            "pos": "(155.0, 302.5)",
+            "uid": 1500000001
+          },
+          {
+            "dead": false,
+            "hp": 11.5,
+            "pos": "(156.5, 302.5)",
+            "uid": 1000059185
+          }
+        ],
+        "original_look": true,
+        "single_player_worker": true,
+        "multiplayer_game": false,
+        "online": true,
+        "viewport_size": [
+          1920,
+          1080
+        ],
+        "render_scale": 0.75,
+        "renderer": "gl_compatibility",
+        "first_party_death_ms": null,
+        "unique_party_positions": {
+          "1500000001": 31,
+          "1000059185": 31
+        },
+        "receipt": "$SCRATCHPAD/portal-60-20261007/android/runs/large-area-v2-retroid-river-120-02.receipt.json",
+        "result": "$SCRATCHPAD/portal-throughput-20261007/runs/large-area-v2-retroid-river-120-02.json",
+        "apk_sha256": "f2a2159c9c19158026deea5d55c4392d12dd5c74f9726b2024448cbfe1a3ead6",
+        "errors": [],
+        "acceptance_eligible": true,
+        "ten_second_fps_min": 45.1,
+        "ten_second_fps_max": 53.5,
+        "frames_over_33ms": 77,
+        "frames_over_50ms": 7,
+        "frames_over_100ms": 0,
+        "frame_count": 5873,
+        "frame_p99_ms": 34.575,
+        "battery_temperature_c": [
+          37.2,
+          37.5
+        ]
+      },
+      {
+        "name": "large-area-v2-retroid-suslanger-120-02",
+        "fps": 56.2636687508501,
+        "frame_ms": {
+          "max": 83.118,
+          "p50": 16.769,
+          "p95": 24.694,
+          "p99": 26.806
+        },
+        "sim_seconds": 119.845000000007,
+        "wall_seconds": 120.006394,
+        "zone": "gz2h",
+        "units": 323,
+        "controlled": [
+          {
+            "dead": true,
+            "hp": -5.49044106155634,
+            "pos": "(299.9219, 74.9375)",
+            "uid": 1500000001
+          },
+          {
+            "dead": true,
+            "hp": -4.02499993145466,
+            "pos": "(310.0, 75.0)",
+            "uid": 1000059185
+          }
+        ],
+        "original_look": true,
+        "single_player_worker": true,
+        "multiplayer_game": false,
+        "online": true,
+        "viewport_size": [
+          1920,
+          1080
+        ],
+        "render_scale": 0.75,
+        "renderer": "gl_compatibility",
+        "first_party_death_ms": 44500,
+        "unique_party_positions": {
+          "1500000001": 22,
+          "1000059185": 33
+        },
+        "receipt": "$SCRATCHPAD/portal-60-20261007/android/runs/large-area-v2-retroid-suslanger-120-02.receipt.json",
+        "result": "$SCRATCHPAD/portal-throughput-20261007/runs/large-area-v2-retroid-suslanger-120-02.json",
+        "apk_sha256": "f2a2159c9c19158026deea5d55c4392d12dd5c74f9726b2024448cbfe1a3ead6",
+        "errors": [],
+        "acceptance_eligible": false,
+        "ten_second_fps_min": 48.7,
+        "ten_second_fps_max": 60.0,
+        "frames_over_33ms": 10,
+        "frames_over_50ms": 2,
+        "frames_over_100ms": 0,
+        "frame_count": 6752,
+        "frame_p99_ms": 26.806,
+        "battery_temperature_c": [
+          37.5,
+          38.0
+        ]
+      },
+      {
+        "name": "large-area-v2-retroid-portal-120-01",
+        "fps": 54.2765067057024,
+        "frame_ms": {
+          "max": 88.755,
+          "p50": 17.462,
+          "p95": 25.223,
+          "p99": 28.281
+        },
+        "sim_seconds": 119.900000000007,
+        "wall_seconds": 120.015093,
+        "zone": "gz1h",
+        "units": 415,
+        "controlled": [
+          {
+            "dead": false,
+            "hp": 23.75,
+            "pos": "(255.6562, 50.75)",
+            "uid": 1500000001
+          },
+          {
+            "dead": false,
+            "hp": 11.5,
+            "pos": "(257.1562, 50.75)",
+            "uid": 1000059185
+          }
+        ],
+        "original_look": true,
+        "single_player_worker": true,
+        "multiplayer_game": false,
+        "online": true,
+        "viewport_size": [
+          1920,
+          1080
+        ],
+        "render_scale": 0.75,
+        "renderer": "gl_compatibility",
+        "first_party_death_ms": null,
+        "unique_party_positions": {
+          "1500000001": 30,
+          "1000059185": 40
+        },
+        "receipt": "$SCRATCHPAD/portal-60-20261007/android/runs/large-area-v2-retroid-portal-120-01.receipt.json",
+        "result": "$SCRATCHPAD/portal-throughput-20261007/runs/large-area-v2-retroid-portal-120-01.json",
+        "apk_sha256": "f2a2159c9c19158026deea5d55c4392d12dd5c74f9726b2024448cbfe1a3ead6",
+        "errors": [],
+        "acceptance_eligible": true,
+        "ten_second_fps_min": 51.3,
+        "ten_second_fps_max": 57.2,
+        "frames_over_33ms": 19,
+        "frames_over_50ms": 3,
+        "frames_over_100ms": 0,
+        "frame_count": 6514,
+        "frame_p99_ms": 28.281,
+        "battery_temperature_c": [
+          38.0,
+          38.2
+        ]
+      },
+      {
+        "name": "large-area-v3-retroid-environs-120-01",
+        "fps": 59.8454038729826,
+        "frame_ms": {
+          "max": 72.07,
+          "p50": 16.546,
+          "p95": 24.831,
+          "p99": 27.42
+        },
+        "sim_seconds": 119.845000000007,
+        "wall_seconds": 120.009216,
+        "zone": "gz21k",
+        "units": 207,
+        "controlled": [
+          {
+            "dead": true,
+            "hp": -0.458235068064109,
+            "pos": "(491.0, 337.0)",
+            "uid": 1500000001
+          },
+          {
+            "dead": true,
+            "hp": -0.114999890327454,
+            "pos": "(491.9375, 332.6875)",
+            "uid": 1000059185
+          }
+        ],
+        "original_look": true,
+        "single_player_worker": true,
+        "multiplayer_game": false,
+        "online": true,
+        "viewport_size": [
+          1920,
+          1080
+        ],
+        "render_scale": 0.75,
+        "renderer": "gl_compatibility",
+        "first_party_death_ms": 2505,
+        "unique_party_positions": {
+          "1500000001": 1,
+          "1000059185": 8
+        },
+        "receipt": "$SCRATCHPAD/portal-60-20261007/android/runs/large-area-v3-retroid-environs-120-01.receipt.json",
+        "result": "$SCRATCHPAD/portal-throughput-20261007/runs/large-area-v3-retroid-environs-120-01.json",
+        "apk_sha256": "f2a2159c9c19158026deea5d55c4392d12dd5c74f9726b2024448cbfe1a3ead6",
+        "errors": [],
+        "acceptance_eligible": false,
+        "ten_second_fps_min": 58.5,
+        "ten_second_fps_max": 60.1,
+        "frames_over_33ms": 10,
+        "frames_over_50ms": 3,
+        "frames_over_100ms": 0,
+        "frame_count": 7182,
+        "frame_p99_ms": 27.42,
+        "battery_temperature_c": [
+          38.2,
+          38.2
+        ]
+      },
+      {
+        "name": "large-area-v3-retroid-environs-120-02",
+        "fps": 58.968623034824,
+        "frame_ms": {
+          "max": 80.695,
+          "p50": 16.675,
+          "p95": 24.611,
+          "p99": 27.339
+        },
+        "sim_seconds": 119.900000000007,
+        "wall_seconds": 120.012977,
+        "zone": "gz21k",
+        "units": 207,
+        "controlled": [
+          {
+            "dead": true,
+            "hp": -8.31249985843897,
+            "pos": "(490.7656, 335.5312)",
+            "uid": 1500000001
+          },
+          {
+            "dead": true,
+            "hp": -4.02499993145466,
+            "pos": "(492.5, 337.5)",
+            "uid": 1000059185
+          }
+        ],
+        "original_look": true,
+        "single_player_worker": true,
+        "multiplayer_game": false,
+        "online": true,
+        "viewport_size": [
+          1920,
+          1080
+        ],
+        "render_scale": 0.75,
+        "renderer": "gl_compatibility",
+        "first_party_death_ms": 26009,
+        "unique_party_positions": {
+          "1500000001": 16,
+          "1000059185": 12
+        },
+        "receipt": "$SCRATCHPAD/portal-60-20261007/android/runs/large-area-v3-retroid-environs-120-02.receipt.json",
+        "result": "$SCRATCHPAD/portal-throughput-20261007/runs/large-area-v3-retroid-environs-120-02.json",
+        "apk_sha256": "f2a2159c9c19158026deea5d55c4392d12dd5c74f9726b2024448cbfe1a3ead6",
+        "errors": [],
+        "acceptance_eligible": false,
+        "ten_second_fps_min": 54.7,
+        "ten_second_fps_max": 60.1,
+        "frames_over_33ms": 7,
+        "frames_over_50ms": 2,
+        "frames_over_100ms": 0,
+        "frame_count": 7077,
+        "frame_p99_ms": 27.339,
+        "battery_temperature_c": [
+          38.2,
+          38.5
+        ]
+      },
+      {
+        "name": "large-area-entry5-retroid-environs-120-01",
+        "fps": 57.0015952697592,
+        "frame_ms": {
+          "max": 80.253,
+          "p50": 17.158,
+          "p95": 21.517,
+          "p99": 24.413
+        },
+        "sim_seconds": 119.900000000007,
+        "wall_seconds": 120.014185,
+        "zone": "gz21k",
+        "units": 207,
+        "controlled": [
+          {
+            "dead": false,
+            "hp": 23.75,
+            "pos": "(335.5, 257.5)",
+            "uid": 1500000001
+          },
+          {
+            "dead": false,
+            "hp": 11.5,
+            "pos": "(337.0, 257.5)",
+            "uid": 1000059185
+          }
+        ],
+        "original_look": true,
+        "single_player_worker": true,
+        "multiplayer_game": false,
+        "online": true,
+        "viewport_size": [
+          1920,
+          1080
+        ],
+        "render_scale": 0.75,
+        "renderer": "gl_compatibility",
+        "first_party_death_ms": null,
+        "unique_party_positions": {
+          "1500000001": 27,
+          "1000059185": 27
+        },
+        "receipt": "$SCRATCHPAD/portal-60-20261007/android/runs/large-area-entry5-retroid-environs-120-01.receipt.json",
+        "result": "$SCRATCHPAD/portal-throughput-20261007/runs/large-area-entry5-retroid-environs-120-01.json",
+        "apk_sha256": "f2a2159c9c19158026deea5d55c4392d12dd5c74f9726b2024448cbfe1a3ead6",
+        "errors": [],
+        "acceptance_eligible": true,
+        "ten_second_fps_min": 52.3,
+        "ten_second_fps_max": 59.9,
+        "frames_over_33ms": 13,
+        "frames_over_50ms": 2,
+        "frames_over_100ms": 0,
+        "frame_count": 6841,
+        "frame_p99_ms": 24.413,
+        "battery_temperature_c": [
+          38.0,
+          37.2
+        ]
+      },
+      {
+        "name": "large-area-entry5-retroid-environs-120-02",
+        "fps": 56.7678869837609,
+        "frame_ms": {
+          "max": 75.372,
+          "p50": 17.213,
+          "p95": 21.705,
+          "p99": 24.86
+        },
+        "sim_seconds": 119.955000000007,
+        "wall_seconds": 120.015036,
+        "zone": "gz21k",
+        "units": 207,
+        "controlled": [
+          {
+            "dead": false,
+            "hp": 23.75,
+            "pos": "(335.5, 257.5)",
+            "uid": 1500000001
+          },
+          {
+            "dead": false,
+            "hp": 11.5,
+            "pos": "(337.0, 257.5)",
+            "uid": 1000059185
+          }
+        ],
+        "original_look": true,
+        "single_player_worker": true,
+        "multiplayer_game": false,
+        "online": true,
+        "viewport_size": [
+          1920,
+          1080
+        ],
+        "render_scale": 0.75,
+        "renderer": "gl_compatibility",
+        "first_party_death_ms": null,
+        "unique_party_positions": {
+          "1500000001": 28,
+          "1000059185": 28
+        },
+        "receipt": "$SCRATCHPAD/portal-60-20261007/android/runs/large-area-entry5-retroid-environs-120-02.receipt.json",
+        "result": "$SCRATCHPAD/portal-throughput-20261007/runs/large-area-entry5-retroid-environs-120-02.json",
+        "apk_sha256": "f2a2159c9c19158026deea5d55c4392d12dd5c74f9726b2024448cbfe1a3ead6",
+        "errors": [],
+        "acceptance_eligible": true,
+        "ten_second_fps_min": 51.3,
+        "ten_second_fps_max": 59.9,
+        "frames_over_33ms": 11,
+        "frames_over_50ms": 2,
+        "frames_over_100ms": 0,
+        "frame_count": 6813,
+        "frame_p99_ms": 24.86,
+        "battery_temperature_c": [
+          37.2,
+          37.5
+        ]
+      }
+    ],
+    "desktop": [
+      {
+        "name": "large-area-desktop-4k-candidate-180-01",
+        "variant": "throughput-worker-cadence02",
+        "returncode": 0,
+        "receipt": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-4k-candidate-180-01.receipt.json",
+        "measure": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-4k-candidate-180-01-measure.json",
+        "eligible": true,
+        "errors": [],
+        "fps": 57.58043543797426,
+        "wall_seconds": 180.009059,
+        "frame_ms": {
+          "max": 105.072,
+          "mean": 17.3669911239749,
+          "p50": 16.804,
+          "p95": 23.755
+        },
+        "sim_seconds": 359.755000000036,
+        "units": 416,
+        "players": 2,
+        "viewport": [
+          3840,
+          2160
+        ],
+        "render_scale": 1.0,
+        "party_ids": [
+          1500000001,
+          1000059185,
+          1500000002
+        ],
+        "first_party_death_ms": null,
+        "ten_second_fps_min": 44.2,
+        "ten_second_fps_max": 64.8,
+        "frames_over_33ms": 13,
+        "frames_over_50ms": 1,
+        "frames_over_100ms": 1,
+        "frame_count": 10365,
+        "frame_p99_ms": 26.48,
+        "cpu_cores": {
+          "owner": 1.0653025640838518,
+          "worker": 0.9144657212422529,
+          "peer": 0.6955717393653102
+        },
+        "sha256": {
+          "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+          "CPU.pck": "a6bb4452c61f1ea05f4335228c7c21fa628f88384e92b2dbf97376c29195839e",
+          "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+        }
+      },
+      {
+        "name": "large-area-desktop-4k-control-180-01",
+        "variant": "experimental5-clean",
+        "returncode": 0,
+        "receipt": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-4k-control-180-01.receipt.json",
+        "measure": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-4k-control-180-01-measure.json",
+        "eligible": true,
+        "errors": [],
+        "fps": 60.09736573213541,
+        "wall_seconds": 180.00789,
+        "frame_ms": {
+          "max": 107.188,
+          "mean": 16.639651321871,
+          "p50": 16.433,
+          "p95": 19.652
+        },
+        "sim_seconds": 359.810000000036,
+        "units": 416,
+        "players": 2,
+        "viewport": [
+          3840,
+          2160
+        ],
+        "render_scale": 1.0,
+        "party_ids": [
+          1500000001,
+          1000059185,
+          1500000002
+        ],
+        "first_party_death_ms": null,
+        "ten_second_fps_min": 50.1,
+        "ten_second_fps_max": 63.8,
+        "frames_over_33ms": 5,
+        "frames_over_50ms": 1,
+        "frames_over_100ms": 1,
+        "frame_count": 10818,
+        "frame_p99_ms": 24.577,
+        "cpu_cores": {
+          "owner": 1.0461635350748184,
+          "worker": 1.0058046038635788,
+          "peer": 1.039159092467909
+        },
+        "sha256": {
+          "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+          "CPU.pck": "52040e1e36f1a007beb6c9cdcd7edece1ba31d68abbc8e8799fad7f9d4c0254a",
+          "libterrain_search.so": "77876cdd75f8cf860761e21bedb066090e10ce139a8342bf8dbd5336d9093e81"
+        }
+      },
+      {
+        "name": "large-area-desktop-4k-control-180-02",
+        "variant": "experimental5-clean",
+        "returncode": 0,
+        "receipt": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-4k-control-180-02.receipt.json",
+        "measure": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-4k-control-180-02-measure.json",
+        "eligible": true,
+        "errors": [],
+        "fps": 55.079772120067034,
+        "wall_seconds": 180.011638,
+        "frame_ms": {
+          "max": 123.862,
+          "mean": 18.1554727181039,
+          "p50": 17.89,
+          "p95": 21.731
+        },
+        "sim_seconds": 359.810000000036,
+        "units": 416,
+        "players": 2,
+        "viewport": [
+          3840,
+          2160
+        ],
+        "render_scale": 1.0,
+        "party_ids": [
+          1500000001,
+          1000059185,
+          1500000002
+        ],
+        "first_party_death_ms": null,
+        "ten_second_fps_min": 42.3,
+        "ten_second_fps_max": 58.6,
+        "frames_over_33ms": 18,
+        "frames_over_50ms": 3,
+        "frames_over_100ms": 1,
+        "frame_count": 9915,
+        "frame_p99_ms": 28.726,
+        "cpu_cores": {
+          "owner": 1.120151507552297,
+          "worker": 1.0060079744614394,
+          "peer": 1.1222632184858181
+        },
+        "sha256": {
+          "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+          "CPU.pck": "52040e1e36f1a007beb6c9cdcd7edece1ba31d68abbc8e8799fad7f9d4c0254a",
+          "libterrain_search.so": "77876cdd75f8cf860761e21bedb066090e10ce139a8342bf8dbd5336d9093e81"
+        }
+      },
+      {
+        "name": "large-area-desktop-4k-candidate-180-02",
+        "variant": "throughput-worker-cadence02",
+        "returncode": 0,
+        "receipt": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-4k-candidate-180-02.receipt.json",
+        "measure": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-4k-candidate-180-02-measure.json",
+        "eligible": true,
+        "errors": [],
+        "fps": 58.697921767469865,
+        "wall_seconds": 180.006373,
+        "frame_ms": {
+          "max": 100.066,
+          "mean": 17.0363633352262,
+          "p50": 16.883,
+          "p95": 20.862
+        },
+        "sim_seconds": 359.755000000036,
+        "units": 416,
+        "players": 2,
+        "viewport": [
+          3840,
+          2160
+        ],
+        "render_scale": 1.0,
+        "party_ids": [
+          1500000001,
+          1000059185,
+          1500000002
+        ],
+        "first_party_death_ms": null,
+        "ten_second_fps_min": 53.9,
+        "ten_second_fps_max": 63.3,
+        "frames_over_33ms": 6,
+        "frames_over_50ms": 3,
+        "frames_over_100ms": 1,
+        "frame_count": 10566,
+        "frame_p99_ms": 22.674,
+        "cpu_cores": {
+          "owner": 0.7378335159772799,
+          "worker": 0.8809537648391628,
+          "peer": 0.654795981297803
+        },
+        "sha256": {
+          "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+          "CPU.pck": "a6bb4452c61f1ea05f4335228c7c21fa628f88384e92b2dbf97376c29195839e",
+          "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+        }
+      },
+      {
+        "name": "large-area-desktop-1080-candidate-120-01",
+        "variant": "throughput-worker-cadence02",
+        "returncode": 0,
+        "receipt": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-1080-candidate-120-01.receipt.json",
+        "measure": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-1080-candidate-120-01-measure.json",
+        "eligible": true,
+        "errors": [],
+        "fps": 161.28670575640876,
+        "wall_seconds": 120.003691,
+        "frame_ms": {
+          "max": 107.168,
+          "mean": 6.20013226556445,
+          "p50": 6.101,
+          "p95": 8.667
+        },
+        "sim_seconds": 239.690000000021,
+        "units": 416,
+        "players": 2,
+        "viewport": [
+          1920,
+          1080
+        ],
+        "render_scale": 1.0,
+        "party_ids": [
+          1500000001,
+          1000059185,
+          1500000002
+        ],
+        "first_party_death_ms": null,
+        "ten_second_fps_min": 152.0,
+        "ten_second_fps_max": 168.6,
+        "frames_over_33ms": 1,
+        "frames_over_50ms": 1,
+        "frames_over_100ms": 1,
+        "frame_count": 19355,
+        "frame_p99_ms": 9.853,
+        "cpu_cores": {
+          "owner": 1.2643967271436203,
+          "worker": 0.9000875156518231,
+          "peer": 0.7389700137775865
+        },
+        "sha256": {
+          "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+          "CPU.pck": "a6bb4452c61f1ea05f4335228c7c21fa628f88384e92b2dbf97376c29195839e",
+          "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+        }
+      },
+      {
+        "name": "large-area-desktop-1080-control-120-01",
+        "variant": "experimental5-clean",
+        "returncode": 0,
+        "receipt": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-1080-control-120-01.receipt.json",
+        "measure": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-1080-control-120-01-measure.json",
+        "eligible": true,
+        "errors": [],
+        "fps": 105.94705467188012,
+        "wall_seconds": 120.003336,
+        "frame_ms": {
+          "max": 73.505,
+          "mean": 9.43866690262703,
+          "p50": 9.174,
+          "p95": 12.973
+        },
+        "sim_seconds": 239.800000000021,
+        "units": 416,
+        "players": 2,
+        "viewport": [
+          1920,
+          1080
+        ],
+        "render_scale": 1.0,
+        "party_ids": [
+          1500000001,
+          1000059185,
+          1500000002
+        ],
+        "first_party_death_ms": null,
+        "ten_second_fps_min": 96.3,
+        "ten_second_fps_max": 121.1,
+        "frames_over_33ms": 2,
+        "frames_over_50ms": 1,
+        "frames_over_100ms": 0,
+        "frame_count": 12714,
+        "frame_p99_ms": 14.949,
+        "cpu_cores": {
+          "owner": 1.4951442273311089,
+          "worker": 1.0062523520030071,
+          "peer": 1.1516843272116057
+        },
+        "sha256": {
+          "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+          "CPU.pck": "52040e1e36f1a007beb6c9cdcd7edece1ba31d68abbc8e8799fad7f9d4c0254a",
+          "libterrain_search.so": "77876cdd75f8cf860761e21bedb066090e10ce139a8342bf8dbd5336d9093e81"
+        }
+      },
+      {
+        "name": "large-area-desktop-1080-control-120-02",
+        "variant": "experimental5-clean",
+        "returncode": 0,
+        "receipt": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-1080-control-120-02.receipt.json",
+        "measure": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-1080-control-120-02-measure.json",
+        "eligible": true,
+        "errors": [],
+        "fps": 106.79285822760603,
+        "wall_seconds": 120.008025,
+        "frame_ms": {
+          "max": 111.501,
+          "mean": 9.36391229712859,
+          "p50": 9.016,
+          "p95": 12.985
+        },
+        "sim_seconds": 239.855000000022,
+        "units": 416,
+        "players": 2,
+        "viewport": [
+          1920,
+          1080
+        ],
+        "render_scale": 1.0,
+        "party_ids": [
+          1500000001,
+          1000059185,
+          1500000002
+        ],
+        "first_party_death_ms": null,
+        "ten_second_fps_min": 97.3,
+        "ten_second_fps_max": 120.5,
+        "frames_over_33ms": 1,
+        "frames_over_50ms": 1,
+        "frames_over_100ms": 1,
+        "frame_count": 12816,
+        "frame_p99_ms": 15.206,
+        "cpu_cores": {
+          "owner": 1.5115352850909523,
+          "worker": 1.0064123120007906,
+          "peer": 1.1785924905858878
+        },
+        "sha256": {
+          "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+          "CPU.pck": "52040e1e36f1a007beb6c9cdcd7edece1ba31d68abbc8e8799fad7f9d4c0254a",
+          "libterrain_search.so": "77876cdd75f8cf860761e21bedb066090e10ce139a8342bf8dbd5336d9093e81"
+        }
+      },
+      {
+        "name": "large-area-desktop-1080-candidate-120-02",
+        "variant": "throughput-worker-cadence02",
+        "returncode": 0,
+        "receipt": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-1080-candidate-120-02.receipt.json",
+        "measure": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-1080-candidate-120-02-measure.json",
+        "eligible": true,
+        "errors": [],
+        "fps": 157.97874405081868,
+        "wall_seconds": 120.003486,
+        "frame_ms": {
+          "max": 61.947,
+          "mean": 6.32995843443401,
+          "p50": 6.214,
+          "p95": 8.846
+        },
+        "sim_seconds": 239.800000000021,
+        "units": 416,
+        "players": 2,
+        "viewport": [
+          1920,
+          1080
+        ],
+        "render_scale": 1.0,
+        "party_ids": [
+          1500000001,
+          1000059185,
+          1500000002
+        ],
+        "first_party_death_ms": null,
+        "ten_second_fps_min": 149.8,
+        "ten_second_fps_max": 170.0,
+        "frames_over_33ms": 1,
+        "frames_over_50ms": 1,
+        "frames_over_100ms": 0,
+        "frame_count": 18958,
+        "frame_p99_ms": 10.132,
+        "cpu_cores": {
+          "owner": 1.280519110564509,
+          "worker": 0.8962548517517811,
+          "peer": 0.735136011971515
+        },
+        "sha256": {
+          "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+          "CPU.pck": "a6bb4452c61f1ea05f4335228c7c21fa628f88384e92b2dbf97376c29195839e",
+          "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+        }
+      }
+    ]
+  },
+  "exclusions": [
+    {
+      "name": "large-area-retroid-suslanger-120-01",
+      "reason": "First party death at 17.502 seconds, both dead by end. Original 24-metre route reaches a fight; not living-party performance acceptance. All results retained.",
+      "harness_issue": "Post-run validator also incorrectly required online=false. The single-player frontend uses a private local connection (online=true); single_player_worker=true and multiplayer_game=false establish mode. Corrected before remaining runs.",
+      "route_revision": "Suslanger now alternates 8 metres from entrance and back; no health, actor, AI or combat changes.",
+      "conservative_living_prefix": {
+        "until_last_all_alive_census_ms": 17001,
+        "seconds": 16.999576,
+        "fps": 50.41302206596212,
+        "p95_ms": 25.56,
+        "p99_ms": 32.554
+      }
+    },
+    {
+      "name": "large-area-v2-retroid-environs-120-01",
+      "reason": "First party death at 24.009 seconds, both dead by end. Full 120-second FPS excluded from living-party acceptance.",
+      "living_window_fps": 58.06156024824024,
+      "living_window_seconds": 24.009,
+      "next_step": "Keep existing two-pass evidence unchanged, then run separately named short entrance-loop fixture; no health or enemy modifications.",
+      "conservative_living_prefix": {
+        "until_last_all_alive_census_ms": 23509,
+        "seconds": 23.507345,
+        "fps": 58.024417474623355,
+        "p95_ms": 21.113,
+        "p99_ms": 26.903
+      }
+    },
+    {
+      "name": "large-area-v2-retroid-environs-120-02",
+      "reason": "Repeat of same City Environs route: first party death at 10.519 seconds. Full average excluded.",
+      "living_window_seconds": 10.519,
+      "living_window_fps": 56.65937826789619,
+      "conservative_living_prefix": {
+        "until_last_all_alive_census_ms": 10008,
+        "seconds": 10.005925,
+        "fps": 56.76636592818755,
+        "p95_ms": 23.166,
+        "p99_ms": 30.981
+      }
+    },
+    {
+      "name": "large-area-v2-retroid-suslanger-120-02",
+      "reason": "First party death at 44.5 seconds on the same 8-metre loop; full average is excluded. Only the other full 120-second Suslanger run meets the living-party guard. Preserve limited replication rather than selecting repeats until the party survives.",
+      "conservative_living_prefix": {
+        "until_last_all_alive_census_ms": 44018,
+        "seconds": 44.015043,
+        "fps": 51.050728270332485,
+        "p95_ms": 25.319,
+        "p99_ms": 29.161
+      }
+    },
+    {
+      "name": "large-area-v3-retroid-environs-120-01",
+      "reason": "Revised north/south entrance-1 loop also reaches combat: first death at 2.505 seconds. Full average excluded. Authored alternative entrances are being inspected; no game code or actor health changed."
+    },
+    {
+      "name": "large-area-v3-retroid-environs-120-02",
+      "reason": "Revised north/south entrance-1 loop also reaches combat: first death at 26.009 seconds. Full average excluded. Authored alternative entrances are being inspected; no game code or actor health changed."
+    }
+  ],
+  "settings_comparison": [
+    {
+      "name": "large-area-desktop-4k-candidate-180-01",
+      "options_differences": {},
+      "same_start_camera": true,
+      "same_party_ids": true,
+      "same_viewport": true,
+      "same_scale": true,
+      "same_renderer": true
+    },
+    {
+      "name": "large-area-desktop-4k-control-180-01",
+      "options_differences": {},
+      "same_start_camera": true,
+      "same_party_ids": true,
+      "same_viewport": true,
+      "same_scale": true,
+      "same_renderer": true
+    },
+    {
+      "name": "large-area-desktop-4k-control-180-02",
+      "options_differences": {},
+      "same_start_camera": true,
+      "same_party_ids": true,
+      "same_viewport": true,
+      "same_scale": true,
+      "same_renderer": true
+    },
+    {
+      "name": "large-area-desktop-4k-candidate-180-02",
+      "options_differences": {},
+      "same_start_camera": true,
+      "same_party_ids": true,
+      "same_viewport": true,
+      "same_scale": true,
+      "same_renderer": true
+    },
+    {
+      "name": "large-area-desktop-1080-candidate-120-01",
+      "options_differences": {},
+      "same_start_camera": true,
+      "same_party_ids": true,
+      "same_viewport": true,
+      "same_scale": true,
+      "same_renderer": true
+    },
+    {
+      "name": "large-area-desktop-1080-control-120-01",
+      "options_differences": {},
+      "same_start_camera": true,
+      "same_party_ids": true,
+      "same_viewport": true,
+      "same_scale": true,
+      "same_renderer": true
+    },
+    {
+      "name": "large-area-desktop-1080-control-120-02",
+      "options_differences": {},
+      "same_start_camera": true,
+      "same_party_ids": true,
+      "same_viewport": true,
+      "same_scale": true,
+      "same_renderer": true
+    },
+    {
+      "name": "large-area-desktop-1080-candidate-120-02",
+      "options_differences": {},
+      "same_start_camera": true,
+      "same_party_ids": true,
+      "same_viewport": true,
+      "same_scale": true,
+      "same_renderer": true
+    }
+  ],
+  "game_source_verification": {
+    "game_files_checked": 520,
+    "all_match": true,
+    "freeze": "local/scratchpad/portal-throughput-20261007/worker-cadence-v2-source-freeze.json",
+    "benchmark_only_changes": true
+  },
+  "cleanup": {
+    "installed_private_apk": 54,
+    "apk_sha256": "f2a2159c9c19158026deea5d55c4392d12dd5c74f9726b2024448cbfe1a3ead6",
+    "autorun_disabled": true,
+    "archived_bench": "files/bench-disabled-large-area-sweep54.json",
+    "bench_sha256": "64cf34f141e6089194d85829658a700108cd541044a6c1eeca965d9c2410959d",
+    "processes_remaining": {
+      "org.cursedlands.performance": "",
+      "org.cursedlands.performance:simulation": ""
+    },
+    "original_app_untouched": true,
+    "affinity_changed": false
+  },
+  "gpu_observations": [
+    {
+      "wall_time": 1791443524.3073604,
+      "run": "large-area-desktop-4k-candidate-180-02",
+      "type": "point observation, not GPU frame timing",
+      "gpu": "NVIDIA GeForce RTX 3090, 74, 1800 MHz, 9751 MHz, 100 %, 345.79 W, 370.00 W\nNVIDIA GeForce RTX 3090 Ti, 36, 210 MHz, 405 MHz, 0 %, 22.35 W, 450.00 W\n",
+      "processes": "# gpu         pid   type     sm    mem    enc    dec    jpg    ofa    command \n# Idx           #    C/G      %      %      %      %      %      %    name \n    0       2628     G      -      -      -      -      -      -    Xorg           \n    0       3195   C+G      -      -      -      -      -      -    gnome-remote-de\n    0       3274     G      -      -      -      -      -      -    gnome-shell    \n    0       3865     G      -      -      -      -      -      -    xdg-desktop-por\n    0       4039     G      -      -      -      -      -      -    snapd-desktop-i\n    0       4149     G      -      -      -      -      -      -    gnome-system-mo\n    0       4244     G      -      -      -      -      -      -    Claude --gpu-pr\n    0       5104     G      -      -      -      -      -      -    coolercontrol  \n    0       5863     G      -      -      -      -      -      -    Codex --change-\n    0       9357     G      -      -      -      -      -      -    telegram-deskto\n    0      45955     G      -      -      -      -      -      -    nautilus       \n    0     307334     G      -      -      -      -      -      -    gnome-control-c\n    0     360839     G      -      -      -      -      -      -    Code --        \n    0    1643813     G      -      -      -      -      -      -    brave --type=gp\n    0    2576800   C+G     98     29      0      0      -      -    CPU.x86_64     \n",
+      "note": "Shared real desktop. Xorg and Codex also use this GPU; other Godot games are excluded by harness, desktop compositor/app graphics are not. Preserve 4K variability and do not claim a small gain/regression."
+    },
+    {
+      "wall_time": 1791443805.6245515,
+      "run": "large-area-desktop-1080-candidate-120-01",
+      "type": "point observation, not GPU frame timing",
+      "gpu": "NVIDIA GeForce RTX 3090, 74, 1845 MHz, 99 %, 351.99 W\nNVIDIA GeForce RTX 3090 Ti, 36, 210 MHz, 0 %, 22.31 W\n"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-1080-candidate-120-01-creatures.json",
+      "sha256": "7dec621bae6bf0b1c3393fca9c837e153229743dcc6ecf9fba991023aaac5afe",
+      "bytes": 8052106
+    },
+    {
+      "path": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-1080-candidate-120-01-measure.json",
+      "sha256": "58cd7073acbf1e3a6fbaba3d145e6692e80fd08d58574da028722adfb5794aa0",
+      "bytes": 1236880
+    },
+    {
+      "path": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-1080-candidate-120-01.log",
+      "sha256": "8e2da07e5f332df59efe2e511899b97e77723c3f8328f2ce15c628a89ce45654",
+      "bytes": 1875
+    },
+    {
+      "path": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-1080-candidate-120-01.png",
+      "sha256": "cc877c265f51f526a56f65ba962f73f08e69b5f342af8456624e2132c576c1ba",
+      "bytes": 2678263
+    },
+    {
+      "path": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-1080-candidate-120-01.receipt.json",
+      "sha256": "7054973259fd0f2e7dd2d4814d5a68cad5ebaa5d4ed4f918b1272db672789638",
+      "bytes": 572611
+    },
+    {
+      "path": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-1080-candidate-120-02-creatures.json",
+      "sha256": "66a29011c848b1a7156a5f62c8d13d726bbe5d3dc9aee85e65231fc5b19ed8e5",
+      "bytes": 8051423
+    },
+    {
+      "path": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-1080-candidate-120-02-measure.json",
+      "sha256": "86a5597e31549a5458f0d08be068e5c1e8a6475c96fb1356a6b3b339d465ecb6",
+      "bytes": 1211308
+    },
+    {
+      "path": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-1080-candidate-120-02.log",
+      "sha256": "b2f10ed8de6decb666f834cf7082da791beecd3e688c19de37e9e41fb4eb2ec2",
+      "bytes": 1875
+    },
+    {
+      "path": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-1080-candidate-120-02.png",
+      "sha256": "027845f66e35a20d00b97d82e9d4167888f96ef8ed3f51f7e2bcef6fccc4aea7",
+      "bytes": 2677375
+    },
+    {
+      "path": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-1080-candidate-120-02.receipt.json",
+      "sha256": "09f59d76e312f7f589e10796050c222880ef50210c729b4409ec3fdcea9c2975",
+      "bytes": 575177
+    },
+    {
+      "path": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-1080-control-120-01-creatures.json",
+      "sha256": "e2ddbd0bcefe9fcb1838979eb67ddfdb59e2e2a38e2dfcd3a1e2a56f51bc2971",
+      "bytes": 8019865
+    },
+    {
+      "path": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-1080-control-120-01-measure.json",
+      "sha256": "7383b18ea7bdce494134a4040d4766edaf06f359727dc6a2a15132b395828c35",
+      "bytes": 821054
+    },
+    {
+      "path": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-1080-control-120-01.log",
+      "sha256": "fe6a46c3542997309599c7561c5098e35daf35550e945e2b0d467e231d175a90",
+      "bytes": 1871
+    },
+    {
+      "path": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-1080-control-120-01.png",
+      "sha256": "f4cc0c0ab4526e93ad17ddbc20eb18024a74a53c071ee43aa508a36a063050fd",
+      "bytes": 2674521
+    },
+    {
+      "path": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-1080-control-120-01.receipt.json",
+      "sha256": "9aa7b58888e466a4359d9acb765f180e38e313022221c482aa33f6f58afd0e81",
+      "bytes": 575980
+    },
+    {
+      "path": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-1080-control-120-02-creatures.json",
+      "sha256": "dffdadbcfc306e2e6e4cebb58bb8f1ecb2f7e6b18c343dcca4433e29c5d11227",
+      "bytes": 8019718
+    },
+    {
+      "path": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-1080-control-120-02-measure.json",
+      "sha256": "749c5c5bfbe6ae15f53f7aec8223146bc5d2b067d827f2e3d3d90f6ab84624f5",
+      "bytes": 827608
+    },
+    {
+      "path": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-1080-control-120-02.log",
+      "sha256": "41b6a289f8f9a20d56fb9a088109d57bec685ab64415cc4e344b02b27e288bfc",
+      "bytes": 1871
+    },
+    {
+      "path": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-1080-control-120-02.png",
+      "sha256": "534786a3de38a11216c90bf9bff97d67995a91d76070a69994f3829bfa9e8128",
+      "bytes": 2672972
+    },
+    {
+      "path": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-1080-control-120-02.receipt.json",
+      "sha256": "23524349396938a6793094c2d872fec472e690ab3e910a7ca06554a6dbccbeaa",
+      "bytes": 578086
+    },
+    {
+      "path": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-4k-candidate-180-01-creatures.json",
+      "sha256": "1f8057a471171d9ae1b5b7c3d14c85938d0243ac259b4517c767b67d18476d1b",
+      "bytes": 11811619
+    },
+    {
+      "path": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-4k-candidate-180-01-measure.json",
+      "sha256": "59972bb8b4446bbf23a2157f3bc3074f88aa877cb106165af60151e2c74873da",
+      "bytes": 685108
+    },
+    {
+      "path": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-4k-candidate-180-01.log",
+      "sha256": "2e8c3fdd1345d9f2e1ff7581b2f331976f2c40a6316c8d18f90247a2cc8485e2",
+      "bytes": 1871
+    },
+    {
+      "path": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-4k-candidate-180-01.png",
+      "sha256": "84360672f2e18e116c20a590d768a221099ce04431434af3593cbcc05875ed3a",
+      "bytes": 9415398
+    },
+    {
+      "path": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-4k-candidate-180-01.receipt.json",
+      "sha256": "5c6258d6e3d14a83bc589ef11ec7852357a5a484058f9d9fb98565a96d06e36e",
+      "bytes": 854457
+    },
+    {
+      "path": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-4k-candidate-180-02-creatures.json",
+      "sha256": "cfac43a8dce58b553df3c5181a88001db7f915baaaeabd701d0016e2dedea86c",
+      "bytes": 11772864
+    },
+    {
+      "path": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-4k-candidate-180-02-measure.json",
+      "sha256": "f9c24fa58887983c2db2a1d7442f37ca805588d73ae32a8a10cb67eedf5392e1",
+      "bytes": 698347
+    },
+    {
+      "path": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-4k-candidate-180-02.log",
+      "sha256": "309a3a4ce225417f59ac7d3a6b802d9a801a448c4533b73fd623e25608313cf3",
+      "bytes": 1871
+    },
+    {
+      "path": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-4k-candidate-180-02.png",
+      "sha256": "98167ad8ef8717b3ff9be0521a624343e93b1bf57232baffd0ce7346b81b3db9",
+      "bytes": 9447991
+    },
+    {
+      "path": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-4k-candidate-180-02.receipt.json",
+      "sha256": "082cea8719a801f331a503e3ca6e60f9cc843a86d69200bfa81cd0595816afdd",
+      "bytes": 864760
+    },
+    {
+      "path": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-4k-control-180-01-creatures.json",
+      "sha256": "e2c40c0f9ab2e856cfe8a2d47db3c450e59c48179ae5e3f02ce37e501b1b5673",
+      "bytes": 11876562
+    },
+    {
+      "path": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-4k-control-180-01-measure.json",
+      "sha256": "f6171c56afdc164e2ec99b9087de159819f93987fac3c71f6c4a0ea0ee98b098",
+      "bytes": 715240
+    },
+    {
+      "path": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-4k-control-180-01.log",
+      "sha256": "635861809c4dc5008363e32488997e44abff5f2ba7bc1090f93d3325a442d490",
+      "bytes": 1866
+    },
+    {
+      "path": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-4k-control-180-01.png",
+      "sha256": "7a8d2b0ef620cf96380a884ea92fb5cbbb63fbe467e4288ea37fc95feddbbd84",
+      "bytes": 9455055
+    },
+    {
+      "path": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-4k-control-180-01.receipt.json",
+      "sha256": "5ac9da4f4dd2bf506746b7575b7952bf981e6ff5f6b0b77c2b321b3824839214",
+      "bytes": 863454
+    },
+    {
+      "path": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-4k-control-180-02-creatures.json",
+      "sha256": "abbd021ca888871c9babe57cfa35f8852743d67e9a6e32ed566e1a922afa5fbb",
+      "bytes": 11806151
+    },
+    {
+      "path": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-4k-control-180-02-measure.json",
+      "sha256": "b84180f18f50c646a4e184399063d0abcd91d0d218d48bfec717ea692dd183d4",
+      "bytes": 656560
+    },
+    {
+      "path": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-4k-control-180-02.log",
+      "sha256": "256d3c2c9a71275423401193691acf6ef8fdb57e4a3c6cf9eb25427f09ec2fd4",
+      "bytes": 1867
+    },
+    {
+      "path": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-4k-control-180-02.png",
+      "sha256": "ec4095d6a44bad838e5acd8eb4b73bd9d3441c3c4baa4f8b3370508dd59ded10",
+      "bytes": 9447670
+    },
+    {
+      "path": "$SCRATCHPAD/cpu-redesign-20261006/runs/large-area-desktop-4k-control-180-02.receipt.json",
+      "sha256": "40f0d7cca4ad85dd6bd0e99f25cba8fc3dcb7d76d6682968cf1be89029f7a5ba",
+      "bytes": 865874
+    },
+    {
+      "path": "$SCRATCHPAD/portal-60-20261007/android/runs/large-area-entry5-retroid-environs-120-01.log",
+      "sha256": "4b84b9ab7fb4ca29ec69ef97d8b704a2864897d6a20d1354e429d4a4b409a409",
+      "bytes": 2447
+    },
+    {
+      "path": "$SCRATCHPAD/portal-60-20261007/android/runs/large-area-entry5-retroid-environs-120-01.receipt.json",
+      "sha256": "f9a58d8e8236f2f6efe9bda29430e30de31385ff4dc43302babb6d9494ad0547",
+      "bytes": 7146
+    },
+    {
+      "path": "$SCRATCHPAD/portal-60-20261007/android/runs/large-area-entry5-retroid-environs-120-02.log",
+      "sha256": "b0e62324b03b3c89ffb21c99735aa3732c336e6baed78235107be8e9fd81d87e",
+      "bytes": 2446
+    },
+    {
+      "path": "$SCRATCHPAD/portal-60-20261007/android/runs/large-area-entry5-retroid-environs-120-02.receipt.json",
+      "sha256": "095789d8b7dbcbc3ae9ee04fd7f8681242825129f6bdac9b932f1702c8818d41",
+      "bytes": 7148
+    },
+    {
+      "path": "$SCRATCHPAD/portal-60-20261007/android/runs/large-area-retroid-suslanger-120-01.log",
+      "sha256": "144d429a8973d97a16a8c59846ab10dda67e250055d20fe12c72268a22b04bb4",
+      "bytes": 2429
+    },
+    {
+      "path": "$SCRATCHPAD/portal-60-20261007/android/runs/large-area-retroid-suslanger-120-01.receipt.json",
+      "sha256": "83b73bb110a7362c0dbcfd71454355a525f76c3dfbf81c98036c91827f0b228e",
+      "bytes": 7117
+    },
+    {
+      "path": "$SCRATCHPAD/portal-60-20261007/android/runs/large-area-v2-retroid-deadcity-120-01.log",
+      "sha256": "df3a9a5fc65a5d6822704e65a9d87f10fcdfd1327012a93ae94327decd42c95a",
+      "bytes": 2432
+    },
+    {
+      "path": "$SCRATCHPAD/portal-60-20261007/android/runs/large-area-v2-retroid-deadcity-120-01.receipt.json",
+      "sha256": "623a6d0a964850cf608254a8be3ecc44e941c97d14b9537addd1c61fde057709",
+      "bytes": 7119
+    },
+    {
+      "path": "$SCRATCHPAD/portal-60-20261007/android/runs/large-area-v2-retroid-deadcity-120-02.log",
+      "sha256": "a4e1d96845f0b3fc56bf5cb1037bae592046f5a015dad3c09142630c723d4697",
+      "bytes": 2432
+    },
+    {
+      "path": "$SCRATCHPAD/portal-60-20261007/android/runs/large-area-v2-retroid-deadcity-120-02.receipt.json",
+      "sha256": "d59e84eed99399367324a7f3a4cc9b43e2144affb03798ebb3ec9c67c4ccad1c",
+      "bytes": 7119
+    },
+    {
+      "path": "$SCRATCHPAD/portal-60-20261007/android/runs/large-area-v2-retroid-environs-120-01.log",
+      "sha256": "c7d3d49d5e115fba74d595ae46d197e486bc6eb3fae34d02492ae51d665523cb",
+      "bytes": 2439
+    },
+    {
+      "path": "$SCRATCHPAD/portal-60-20261007/android/runs/large-area-v2-retroid-environs-120-01.receipt.json",
+      "sha256": "b70cb4cf3c998a34b708b694f9ddbba2ca29b28745fc1a609879c9b0abd97cf9",
+      "bytes": 7120
+    },
+    {
+      "path": "$SCRATCHPAD/portal-60-20261007/android/runs/large-area-v2-retroid-environs-120-02.log",
+      "sha256": "7c6ceeda87d9fb680327dd76c351b9b94e7a3af304bb5b97388b8efe3079dded",
+      "bytes": 2439
+    },
+    {
+      "path": "$SCRATCHPAD/portal-60-20261007/android/runs/large-area-v2-retroid-environs-120-02.receipt.json",
+      "sha256": "779a2866a472decbdc25fa42d1a75405548512779a82b480e5bb27c422db4b45",
+      "bytes": 7120
+    },
+    {
+      "path": "$SCRATCHPAD/portal-60-20261007/android/runs/large-area-v2-retroid-portal-120-01.log",
+      "sha256": "b68c0490409e44db54ae6904464f7bfa1178b198190ebbbba6bce0a0c14401ea",
+      "bytes": 2430
+    },
+    {
+      "path": "$SCRATCHPAD/portal-60-20261007/android/runs/large-area-v2-retroid-portal-120-01.receipt.json",
+      "sha256": "1ff9a35ebd5c12521a5417ede902b4199b5360b8c70bef9f214cef2e16a62eee",
+      "bytes": 7116
+    },
+    {
+      "path": "$SCRATCHPAD/portal-60-20261007/android/runs/large-area-v2-retroid-river-120-01.log",
+      "sha256": "da4bd518d109e2350673ab392e8f5a22a3b2dbd0e100d586a5b0b365e686bc07",
+      "bytes": 2433
+    },
+    {
+      "path": "$SCRATCHPAD/portal-60-20261007/android/runs/large-area-v2-retroid-river-120-01.receipt.json",
+      "sha256": "281a31f202fceaaf9674828c2ecfdb33485cce1c8a92ed7579d905467262c8e2",
+      "bytes": 7116
+    },
+    {
+      "path": "$SCRATCHPAD/portal-60-20261007/android/runs/large-area-v2-retroid-river-120-02.log",
+      "sha256": "dd03257a74748e4880e111f42116dca47db1b33dae9f9739d99befdeeb5b3c53",
+      "bytes": 2433
+    },
+    {
+      "path": "$SCRATCHPAD/portal-60-20261007/android/runs/large-area-v2-retroid-river-120-02.receipt.json",
+      "sha256": "c8af1cb93183d82c0bc8e5eb6e51b03faa4b75dd56139b1b40b22d12c25ab1d7",
+      "bytes": 7116
+    },
+    {
+      "path": "$SCRATCHPAD/portal-60-20261007/android/runs/large-area-v2-retroid-suslanger-120-01.log",
+      "sha256": "55ddeaba09a3c1d2074c1c507e9dffa82957c8a1795b1fec873fbb43ff851e78",
+      "bytes": 2435
+    },
+    {
+      "path": "$SCRATCHPAD/portal-60-20261007/android/runs/large-area-v2-retroid-suslanger-120-01.receipt.json",
+      "sha256": "bcb88733e18a3eb180f1d9c47fa63fd0c5d8699b0baa7580ec64dbf8ed584914",
+      "bytes": 7120
+    },
+    {
+      "path": "$SCRATCHPAD/portal-60-20261007/android/runs/large-area-v2-retroid-suslanger-120-02.log",
+      "sha256": "a852288c7e126d723b2c2999c29dccb943d48f4be93492d80abfb8aa2ca0bef6",
+      "bytes": 2436
+    },
+    {
+      "path": "$SCRATCHPAD/portal-60-20261007/android/runs/large-area-v2-retroid-suslanger-120-02.receipt.json",
+      "sha256": "4f7f25453113e9d80e32e7d6d52062f657eeffaec07425357ef95ccafa4f5caa",
+      "bytes": 7120
+    },
+    {
+      "path": "$SCRATCHPAD/portal-60-20261007/android/runs/large-area-v3-retroid-environs-120-01.log",
+      "sha256": "0519bb5c6f3bfea5b32f5d2ed003891484e94755f7f76b84c5ed5efcf94cac5b",
+      "bytes": 2437
+    },
+    {
+      "path": "$SCRATCHPAD/portal-60-20261007/android/runs/large-area-v3-retroid-environs-120-01.receipt.json",
+      "sha256": "df891404853e7ef93b5b065f85e5668daf1d11e160935ca11e19e41d31721a24",
+      "bytes": 7126
+    },
+    {
+      "path": "$SCRATCHPAD/portal-60-20261007/android/runs/large-area-v3-retroid-environs-120-02.log",
+      "sha256": "aa2341d935612a10cf6ac84149c85e75bd89d8cad9fe34e6596d886d5a853a15",
+      "bytes": 2438
+    },
+    {
+      "path": "$SCRATCHPAD/portal-60-20261007/android/runs/large-area-v3-retroid-environs-120-02.receipt.json",
+      "sha256": "ab7dd1629343fbf686789112545c1fcd675da58b86f40501a4f19fccee54f1b3",
+      "bytes": 7127
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/large-area-sweep/analysis-summary.txt",
+      "sha256": "247f2560223bf674a8dc34b213b018090d772fe7096b068a8c768600ea50dfb7",
+      "bytes": 7022
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/large-area-sweep/analyze.py",
+      "sha256": "e0530fe2f48cafe4c314b754144fd81ec4f0f5c06dd6619f7148f4955044c6d2",
+      "bytes": 2519
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/large-area-sweep/checkpoint-summary.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/large-area-sweep/cleanup.json",
+      "sha256": "330db4da57774a0934e9c7f9618a1d7d86a7875664627844f502f1a119ab8863",
+      "bytes": 483
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/large-area-sweep/cleanup.py",
+      "sha256": "b253750f451f87b08bc2d423be4d7afdce5279ccb6e346925f929280f33ad5d8",
+      "bytes": 1747
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/large-area-sweep/desktop-1080-progress.json",
+      "sha256": "3e43a490bdbaea119966208104d79fbdd156878ec14cfb53b5435f0cc7095810",
+      "bytes": 3547
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/large-area-sweep/desktop-hardware.txt",
+      "sha256": "f7f052cef9dd384e18b149bee8ab4c0f4684613f7ede93c6458fe8926f99aed2",
+      "bytes": 3694
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/large-area-sweep/desktop-harness/cpu_trace.gd",
+      "sha256": "1cc9176ceeb3a8b583fafffc32ae43daa4d74233ad4c4048a4718839859fbc3e",
+      "bytes": 1357
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/large-area-sweep/desktop-harness/owner_4k_living_loop_v2.gd",
+      "sha256": "d523b18bfd119914dd47bf76eaaf09a92af53364d74a1e09a2502dddafd89797",
+      "bytes": 9296
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/large-area-sweep/desktop-harness/owner_4k_probe_base_v2.gd",
+      "sha256": "5e60285a5d93d2a05d4b37da19925cdcd6b91c3016de5974e5f97e01b62a867c",
+      "bytes": 15902
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/large-area-sweep/desktop-harness/owner_run.py",
+      "sha256": "34ceba04eea11121bf0275090283cfbea8dbd6fa49c190039213c5bc1f066ed2",
+      "bytes": 9206
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/large-area-sweep/desktop-progress.json",
+      "sha256": "408c154a212a4eae4dad0285d0a8e9dee8d65bebd39212a8aebebd4d8b5f2e7c",
+      "bytes": 3526
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/large-area-sweep/desktop_compare.py",
+      "sha256": "5181dfec94daeae2be451d766136d946e7e430a3996df74a84532fb8154ea03e",
+      "bytes": 2058
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/large-area-sweep/desktop_compare_1080.py",
+      "sha256": "f7178304e229c94497e385da6b422e6b0bd5ef12d8131449ab66ae31238bb842",
+      "bytes": 2112
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/large-area-sweep/entry5-input-hashes.json",
+      "sha256": "6230d3ed2a081762fb813919f0e1eec21222f1e7e2feb26032f11b9276c10f51",
+      "bytes": 662
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/large-area-sweep/environs-entry5-fixture/gz21k.json",
+      "sha256": "c6462d47d763b8fe45167c722872ef72f4b7abf52e3d2c464ebc5ae65749ed99",
+      "bytes": 48950
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/large-area-sweep/environs-entry5-fixture/gz21k.sav",
+      "sha256": "f011ab887aadb1dd5b322df03c6376039a5eb238f4a28cd8d156a9e452842614",
+      "bytes": 396968
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/large-area-sweep/exclusions.json",
+      "sha256": "efb820b40bd21bdb753488751b71bcc62069f5ecf305fab8cea4d666605d4571",
+      "bytes": 2971
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/large-area-sweep/final-fixture-hashes.json",
+      "sha256": "2ec496b3a3b21bd4c3176d697374f45e3e578c12f24c9e28b64493cda30449ae",
+      "bytes": 505
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/large-area-sweep/gpu-observations.json",
+      "sha256": "aec4767165cf903065903ccc25cec4fcf0bd06a675f01a594a5804c12af5f5ef",
+      "bytes": 2274
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/large-area-sweep/harness-v1/input-hashes.json",
+      "sha256": "62e801e4034c993d57e4e88a802fb40df94ec80e36fd276e5ea9dd01c88b995d",
+      "bytes": 707
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/large-area-sweep/harness-v1/large_area_gameplay.gd",
+      "sha256": "5863e5badbe690a1d94ed4079f51ba703cb90e1b42505053fa1e12689b9adce5",
+      "bytes": 2148
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/large-area-sweep/harness-v1/retroid_sweep.py",
+      "sha256": "6e102979467af34a14cc0686680a7475dc9661db373581c7746245d98d3cd7c1",
+      "bytes": 3173
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/large-area-sweep/harness-v2/input-hashes.json",
+      "sha256": "0d9adb8add29801fb299d52f087097e033bcbf07c02a4b737ba198ace300399b",
+      "bytes": 707
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/large-area-sweep/harness-v2/large_area_gameplay.gd",
+      "sha256": "5ce3fb76e85f42adcb7557c9ef01ea920f97c8d8a214070f9561a20dde8a032d",
+      "bytes": 2112
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/large-area-sweep/harness-v2/original_gameplay_versioned.gd",
+      "sha256": "6430ab8ce22e49aba8b5073ec424a09d6c08818edcef85e42e41d15af340d817",
+      "bytes": 2207
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/large-area-sweep/harness-v2/portal_gameplay.gd",
+      "sha256": "b26962c937cbf5737e0f313db25ccd6d49f99fd4b8613abb33cc3163aa0b83bb",
+      "bytes": 8981
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/large-area-sweep/harness-v2/retroid_sweep.py",
+      "sha256": "7080eca4d75bf473ea62c45e6761ead9d2d27813a56fc11d4a343ff9d785867a",
+      "bytes": 3156
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/large-area-sweep/input-hashes.json",
+      "sha256": "0d9adb8add29801fb299d52f087097e033bcbf07c02a4b737ba198ace300399b",
+      "bytes": 707
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/large-area-sweep/inspect_entrances.gd",
+      "sha256": "57b5c187d896e481a3efe6c37ca2490749737ebbd6b352402b5a994c53b39bee",
+      "bytes": 215
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/large-area-sweep/large_area_environs_entry5.gd",
+      "sha256": "188c771bad0a5132e0bc4ec16ec3ed65366647642173b746d1413a00f2c02d5a",
+      "bytes": 2128
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/large-area-sweep/large_area_short_environs.gd",
+      "sha256": "6fb5eee68665adbb75b0518906758b7bf907d9f89caf818cfa153548a9eda618",
+      "bytes": 2112
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/large-area-sweep/make_environs_entry5.gd",
+      "sha256": "1d12ce6f1d25cd57fbc5b46f6f364b6861c8853e660724d03d40eff3cb56836e",
+      "bytes": 1980
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/large-area-sweep/plan.json",
+      "sha256": "907bf14d7486c682c893d043b6582aad1183da57190a1065a8806a98ee611db8",
+      "bytes": 2352
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/large-area-sweep/retroid-environs-entry5-progress.json",
+      "sha256": "a68d403aa498bd90e0a42e04eba146a1a111ccd621b13573dfecc16693bb6c7c",
+      "bytes": 6171
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/large-area-sweep/retroid-environs-short-progress.json",
+      "sha256": "d2732faca19dc2f27a5157c980645817efe3844374bee9b556c7cbed9aea329f",
+      "bytes": 6207
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/large-area-sweep/retroid-progress.json",
+      "sha256": "9eec4fe4b64e59369af9c23954f2124910248820c5621ee34dde7dd951a9b9a3",
+      "bytes": 27738
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/large-area-sweep/retroid-v1-excluded.json",
+      "sha256": "adf7b98edc2287fc0a3421c9035bfaaca64894dc952ef370f51eebb400bd7466",
+      "bytes": 3097
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/large-area-sweep/retroid_environs_entry5.py",
+      "sha256": "f815efa9059aef2855d4a0a3d8ce380ed050f58cf671ac28bdd2bd866deb9450",
+      "bytes": 3072
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/large-area-sweep/retroid_environs_short.py",
+      "sha256": "6820efb3e5c8e5186554c12e4430edca7c6b936c7769120bb8a2b0e678aa8a2a",
+      "bytes": 3050
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/large-area-sweep/retroid_sweep.py",
+      "sha256": "7080eca4d75bf473ea62c45e6761ead9d2d27813a56fc11d4a343ff9d785867a",
+      "bytes": 3156
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/large-area-sweep/settings-comparison.json",
+      "sha256": "ec5faa1fa8a2ccc02551a3b69e3b4c22426c5d4aa483d2776454a7df879ae1bc",
+      "bytes": 1843
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/large-area-sweep/source-verification.json",
+      "sha256": "eacbf148b8f5a05c932be93922cc193badbc75262d2a61890be8a61ef32f14fd",
+      "bytes": 183
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/large-area-sweep/visual-review.json",
+      "sha256": "54d0d0e2b6d98bf51bba46b3503f9f452622f2bab925005a9ba0ffc51e69e3e1",
+      "bytes": 949
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/large-area-sweep/write_report.py",
+      "sha256": "972a625408b4426b81e350230fdf57c5179a07478a53dced558b497cb3fac719",
+      "bytes": 10581
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/runs/large-area-entry5-retroid-environs-120-01.json",
+      "sha256": "2da4a70ae480463c5e0a538cc9d804f5b27d5d7f52e0c22840ffde7b18459b9c",
+      "bytes": 577212
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/runs/large-area-entry5-retroid-environs-120-01.png",
+      "sha256": "27eb6067fba0332253603b26bbcc1e407e2dd95343530b5cde9f547936225717",
+      "bytes": 2611825
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/runs/large-area-entry5-retroid-environs-120-02.json",
+      "sha256": "7a31128d54cd2b83756f856f9900b473708e5a809db6cafa055580099e21e8cc",
+      "bytes": 575488
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/runs/large-area-entry5-retroid-environs-120-02.png",
+      "sha256": "95ab2b78f3b6852e99e8507166aff7c23da64d28d77844da3c931fa2536ab113",
+      "bytes": 2637145
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/runs/large-area-retroid-suslanger-120-01.json",
+      "sha256": "1b05033ddbec3bd2a3b803068a27b39b2871b0d740f577aedfad7d41e02e7504",
+      "bytes": 566634
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/runs/large-area-retroid-suslanger-120-01.png",
+      "sha256": "1a206a01bf7ff50cbc9fabdb1cb59474a17427547421499ef51a0bae42f617c2",
+      "bytes": 2720588
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/runs/large-area-v2-retroid-deadcity-120-01.json",
+      "sha256": "90755d4fae8c2f74b7a0c1709074bfe4f235464a36b8726ffca8549d0259666e",
+      "bytes": 599249
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/runs/large-area-v2-retroid-deadcity-120-01.png",
+      "sha256": "d1747d19a0207489d5e3bae89bc5e2ff774b81cfe7026b23ce2a41e42571e219",
+      "bytes": 3415588
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/runs/large-area-v2-retroid-deadcity-120-02.json",
+      "sha256": "f593a3e3ca4d87a770e0ff1bf5de39f81961f829b12bf56065d70d6a1423ff48",
+      "bytes": 599344
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/runs/large-area-v2-retroid-deadcity-120-02.png",
+      "sha256": "d370e552a77767394c30d3563713c52c1f3b05f48b75e8462049d3e79ef115a2",
+      "bytes": 3413931
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/runs/large-area-v2-retroid-environs-120-01.json",
+      "sha256": "249843db7d8ebbbe938951bfba42e42c1b114a32e6314467248be32b3234ce5f",
+      "bytes": 599005
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/runs/large-area-v2-retroid-environs-120-01.png",
+      "sha256": "f55cfda633cfb133a61143dc0e4559d24aaded9fa2968e96e3b6f7e261ab075b",
+      "bytes": 2096956
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/runs/large-area-v2-retroid-environs-120-02.json",
+      "sha256": "fd08ba34860013aff27ceae35594f2084a838f521f191e9c7174b8b499271fc2",
+      "bytes": 598136
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/runs/large-area-v2-retroid-environs-120-02.png",
+      "sha256": "085a64c2c35035bae6fd8c2406848db914517dc44ae994b5387de9eed98647d7",
+      "bytes": 2060728
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/runs/large-area-v2-retroid-portal-120-01.json",
+      "sha256": "5ec6b9631d2434002e0f3d1e294359dca32aad94c7a2dd28a0af35124466923b",
+      "bytes": 780244
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/runs/large-area-v2-retroid-portal-120-01.png",
+      "sha256": "cabe87ed3ca8a602df12fd02e9a6a0c6bb2a767d0d968607e26553362056ffa1",
+      "bytes": 2476386
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/runs/large-area-v2-retroid-river-120-01.json",
+      "sha256": "06d58ac81f587038bfef91c1801d395b06fd0dd02eb45fd9556201e96148ec4b",
+      "bytes": 517317
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/runs/large-area-v2-retroid-river-120-01.png",
+      "sha256": "2e069788004f095071f7ea24f75002809ea0f14edc78d19469f25d605a140ff0",
+      "bytes": 2723456
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/runs/large-area-v2-retroid-river-120-02.json",
+      "sha256": "4b8c9926a98fafc749a2fe712b95a7f110e33694d27d31a136a8a9e2c1933584",
+      "bytes": 515347
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/runs/large-area-v2-retroid-river-120-02.png",
+      "sha256": "4f017f5f6729227b61c62b92891d5b8fe1431d762820045a934a10a3699f6150",
+      "bytes": 2795842
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/runs/large-area-v2-retroid-suslanger-120-01.json",
+      "sha256": "9a7d8aaf232d2451a76b4958f3a26dc6a9dd3f75e0748969e6b89b0ccaabb246",
+      "bytes": 530766
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/runs/large-area-v2-retroid-suslanger-120-01.png",
+      "sha256": "e3651004ec53a87bdea94ec61f8e3a4a93c1d537ae325fdec4193e6019910e4d",
+      "bytes": 2228688
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/runs/large-area-v2-retroid-suslanger-120-02.json",
+      "sha256": "21b5e707d5953e6bdfcf3c3d6c786c6d83a5fa30d79803cad54fcf3c91cc80eb",
+      "bytes": 572399
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/runs/large-area-v2-retroid-suslanger-120-02.png",
+      "sha256": "0e8084b6b6e4351b7089b76aa8d5e67c32855572f3bead2a823eac8fdb20386a",
+      "bytes": 1983174
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/runs/large-area-v3-retroid-environs-120-01.json",
+      "sha256": "c8f1d213f60d325d35ccb3169575f8746841258a83319b24d263e24cf15dbc0f",
+      "bytes": 600212
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/runs/large-area-v3-retroid-environs-120-01.png",
+      "sha256": "62e0bd35f4d665016fee3581c21f7d20ab9e7371c700dd604eda7c5bfb3ceef3",
+      "bytes": 2000831
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/runs/large-area-v3-retroid-environs-120-02.json",
+      "sha256": "200e8c5b7ccf2bc29c8590db7862195f276e1fc6f01f3d9e432a7aad271da3a8",
+      "bytes": 593657
+    },
+    {
+      "path": "$SCRATCHPAD/portal-throughput-20261007/runs/large-area-v3-retroid-environs-120-02.png",
+      "sha256": "c014cffa026e653b05c89191d5a677782085bc9a7f07293ebe25bf6cf9cbc21f",
+      "bytes": 2153684
+    }
+  ]
+}

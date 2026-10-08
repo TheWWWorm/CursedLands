@@ -48,7 +48,7 @@ func _ready()->void:
 	if not loaded:
 		push_error("Device save load failed");get_tree().quit(1);return
 	var w:=session.world
-	if session.zone_id!="gz1h" or w.units.size()!=415:
+	if not _fixture_matches():
 		push_error("Unexpected Portal fixture: %s / %s" % [session.zone_id,w.units.size()]);get_tree().quit(1);return
 	if session.local_host.frontend:
 		if session.local_host.single_player:
@@ -118,6 +118,9 @@ func _ready()->void:
 	if session.local_host.frontend:await session.local_host.stop()
 	session.multiplayer.multiplayer_peer=OfflineMultiplayerPeer.new()
 	get_tree().quit()
+
+func _fixture_matches()->bool:
+	return session.zone_id=="gz1h" and session.world.units.size()==415
 
 func _focus()->GameUnit:
 	if cfg.get("terror",false):

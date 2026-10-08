@@ -152,3 +152,41 @@ with `inline_single: false` for the separated candidate. Neither camera variant
 is a full map playthrough. In particular,
 the close Terror fixture's party dies around 25 seconds: later near-60 FPS
 averages include the death view and cannot establish sustained gameplay.
+
+## Original single-player large-area sweep
+
+`large_area_gameplay.gd` extends `original_gameplay_versioned.gd`, which extends
+`portal_gameplay.gd`; copy all three into the private application's `user://`
+directory. The base Portal fixture retains its original strict population
+check. The large-area override requires a matching save basename, zone and
+population: `gz2h` (Suslanger, 323), `gz16g` (River and Islands, 294), `gz21k`
+(City Environs, 207), `gz7g` (Dead City, 262), or `gz1h` (Portal, 415).
+
+Use the authored-entrance fixtures with the supplied Lost in Astral party and
+progress. They contain fresh authored populations and no simulated setup
+steps. Keep proprietary saves/assets outside the repository and record their
+hashes in the run receipt. Set `host: false`, `speed: 1`, `seconds: 120`,
+`terror: false`, and use the versioned Original settings. The current Retroid
+comparison uses a 1920×1080 viewport at 75% render scale, OpenGL ES, four native
+workers, normal Android scheduling and production APK54.
+
+The fixture follows the party with the ordinary rotating terrain-aware camera
+and issues normal movement commands on fixed entrance loops. It records both
+characters' health, life state, position and action every half second, plus
+population, activity and frame intervals. Require actual simulation progress
+and moving, living characters throughout; retain failed runs with their reason.
+`single_player_worker: true` and `multiplayer_game: false` establish ordinary
+single-player. `online: true` is expected for its private local transport and
+does not mean co-op rules are active.
+
+These are bounded entrance-walk measurements on fully populated large maps.
+They do not establish performance in every view or heavy combat encounter. The
+initial Suslanger route reached a fight and is archived as an excluded run;
+the retained Suslanger route walks eight metres from the entrance and back.
+City Environs uses authored village entrance 5 (hero at 335.5, 257.5),
+walking sixteen metres north and back. Its entrance-1 attempts are excluded
+after party deaths. Use the separately frozen entrance-5 save; the earlier
+entrance-1 save has the same basename and population but a different route. Health,
+population and combat rules remain unchanged. Repeat areas in reversed order,
+report ten-second FPS ranges and p95/p99 frames, and keep the measured game
+sources unchanged between areas.
