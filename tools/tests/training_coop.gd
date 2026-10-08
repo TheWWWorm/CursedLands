@@ -63,7 +63,7 @@ func _ready() -> void:
 	if DisplayServer.get_name()!="headless":
 		panel.refresh();await settled()
 		check(cg.get_viewport().get_texture().get_image().save_png("user://training-after.png")==OK,"zero-allocation screen captured")
-	panel.close()
+	panel.hide()
 	check(host.save_game("coop_training")==OK,"co-op training saves")
 	check(await host.load_game_shown("coop_training"),"co-op training reloads")
 	host.world.set_physics_process(false)

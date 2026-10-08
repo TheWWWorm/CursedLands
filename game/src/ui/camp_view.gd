@@ -1404,7 +1404,8 @@ func _process(_dt: float) -> void:
 			_content["armor%d" % i] = [armor_by_type.get(i, ""), "worn"]
 	for k in _views:
 		if _key_shown(k):
-			_views[k].show_item(String(_content.get(k, [""])[0]))
+			var id := String(_content.get(k, [""])[0])
+			_views[k].show_item("" if Items.is_spell_container(id) else id)
 	queue_redraw()
 
 
@@ -2090,6 +2091,14 @@ func _draw() -> void:
 		elif b == "cancel":
 			lit = d[3]
 		_region("campinfo", SIDE_BUTTONS[b][0], SIDE_BUTTONS[b][1], Color.WHITE if lit else Color(0.5, 0.5, 0.5))
+	# Finished spells fill the square cell with their coloured HUD artwork.
+	# The shared 3D item-card model leaves large perspective-dependent gaps.
+	for k: String in _content:
+		var id := String(_content[k][0])
+		if not _key_shown(k) or not Items.is_spell_container(id): continue
+		var t := int(Spells.parse(Items.spell_code(id)).proto.get("texture_type", -1))
+		var picture := SpellSlots.icon("spell%04d" % t) if t >= 0 else null
+		if picture: draw_texture_rect(picture, _r(_slot_rect(k).grow(-10.0)), false)
 	# Selection.
 	for k in _content:
 		if _key_shown(k) and _content[k][0] != "" and _content[k][0] == selected_id and _content[k][1] == selected_where:
