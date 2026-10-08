@@ -111,5 +111,108 @@
   "limitations": [
     "Linux Vulkan visual validation; no new Windows or Retroid package validation or performance claim.",
     "Earlier training validation receipts retain the exact pre-cleanup fixture hash; this change only replaces its unsupported close method."
-  ]
+  ],
+  "templates_and_runes_followup": {
+    "baseline_commit": "69df91e",
+    "export": {
+      "seconds": 5.98993405100191,
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--headless",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+        "--export-release",
+        "Linux",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps16/CPU.x86_64"
+      ],
+      "engine_source": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/fast-runtime.x86_64",
+      "errors": [],
+      "sha256": {
+        "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+        "CPU.pck": "c01b7d79f1d1090f8ef624dcd460c9d5e95c75425be1d98dd8244278fb7175a4",
+        "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+      }
+    },
+    "runs": {
+      "gameplay-spell-piece-slots-after-01": {
+        "command": [
+          "/home/llm2x/.local/bin/godot-4",
+          "--audio-driver",
+          "Dummy",
+          "--render-thread",
+          "safe",
+          "--display-driver",
+          "x11",
+          "--rendering-method",
+          "forward_plus",
+          "--resolution",
+          "1600x900",
+          "--windowed",
+          "--path",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/tests/spell_piece_slots_visual.gd",
+          "--label=gameplay-spell-piece-slots-after-01"
+        ],
+        "exit_code": 0,
+        "stopped": false,
+        "seconds": 22.23966486399877,
+        "errors": [],
+        "warnings": [
+          "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+        ],
+        "log_sha256": "d04f42dcc0a08f5eadc9ba1482f3792ca6a2595474f3ca4ae0eeba7f7e542447"
+      },
+      "gameplay-spell-piece-slots-production-01": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps16/CPU.x86_64",
+          "--audio-driver",
+          "Dummy",
+          "--render-thread",
+          "safe",
+          "--display-driver",
+          "x11",
+          "--rendering-method",
+          "forward_plus",
+          "--resolution",
+          "1600x900",
+          "--windowed",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/tests/spell_piece_slots_visual.gd",
+          "--label=gameplay-spell-piece-slots-production-01"
+        ],
+        "exit_code": 0,
+        "stopped": false,
+        "seconds": 20.63666761398781,
+        "errors": [],
+        "warnings": [
+          "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+        ],
+        "log_sha256": "db5acf4320e4bd0b24b2374bd3865461e22e1d1c6b5b0ed0254506b31637600f"
+      }
+    },
+    "tested_camp_view_sha256": "9cec702ed6b6e8a7d8b30a35e2359c3ebd0dcf07dd0b8436c46c0646a0c53293",
+    "final_camp_view_sha256": "1a189e3d68150b7dcc4dcd470fe48ded8be72505c41d51b3e45c7a314ab2df50",
+    "post_validation_change": "Class documentation only: explains flat spell-piece artwork instead of claiming every item uses a 3D model. Executable code is identical.",
+    "capture_fixture": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/tests/spell_piece_slots_visual.gd",
+      "sha256": "3af8343b06400b04ff46350f1a5828685d78bde6bc5a847666f8d734fe82782a"
+    },
+    "visual_review": [
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/gameplay-spell-piece-slots-after-01/godot/app_userdata/Cursed Lands/spell-piece-slots-shop.png",
+        "sha256": "91c0f99b0b593381c14de0fbf6165afe95cf7bf1d4f71502ed47d7e0f77407a5"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/gameplay-spell-piece-slots-after-01/godot/app_userdata/Cursed Lands/spell-piece-slots-trade.png",
+        "sha256": "e66855e069beba6d7dbcba6c0a4be81e511acf1d4d8ca33c5c13eee3080be885"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/gameplay-spell-piece-slots-production-01/godot/app_userdata/Cursed Lands/spell-piece-slots-trade.png",
+        "sha256": "e66855e069beba6d7dbcba6c0a4be81e511acf1d4d8ca33c5c13eee3080be885"
+      }
+    ]
+  }
 }

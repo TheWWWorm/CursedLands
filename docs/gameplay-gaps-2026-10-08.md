@@ -39,7 +39,7 @@ The additional [campaign audit](/home/llm2x/Documents/EI/local/implementation-ga
 | U29 | Remove ability purchase-order advantage while retaining escalating costs at the cheapest obtainable order. | Fixed ability pricing as the difference in cheapest legal final-allocation prices; original prerequisites, curve and rounding remain. 5,247 legal orders agree in each tested campaign. Six numerical skill curves were already independent. |
 | U30 | Sell the armour/weapon infusion runes in the Gipath spell shop. | Gipath witch stocks native ic/it runes. Existing shops receive missing stock once without replacing other goods or replenishing exhausted entries. Co-op stock sync and enchantment compatibility pass. |
 
-| U31 | Finished spell artwork leaves large empty edges in its slot. | Finished spells fill the square slot interior using the cached coloured HUD picture. Skills, inventory, shop and buy/sell layouts were visually checked in the exported build. |
+| U31 | Spell, template and rune artwork should fill its slot. | All three use their respective flat pictures across the full square slot interior. Skills, inventory and buy/sell layouts were visually checked in the exported build. |
 
 ## Campaign audit findings
 
@@ -86,4 +86,4 @@ The quest checkpoint distinguishes unit-carried `RemoveQuestItem` from player-ba
 
 [Training and infusion validation](gameplay-training-validation.json) records 92 production reset/pricing checks, 16 rendered co-op checks, 36 base-shop checks, 35 expansion scope checks and 92 Retroid checks. The old build fails 66 training and 24 infusion assertions. The refund tooltip and zero-allocation screen were inspected. Private APK55 is installed with autorun disabled; the normal Android installation is unchanged.
 
-[Spell-slot visual validation](gameplay-spell-slots-validation.json) records the inspected skills/shop/trade captures and the production export. Prices, counts and selection borders draw above the full-size artwork. The co-op training fixture also uses the inventory panel’s supported `hide()` method when closing its screen.
+[Spell-slot visual validation](gameplay-spell-slots-validation.json) records the inspected skills/shop/trade captures and the production export. Finished spells, templates and runes use their distinct native pictures. Prices, counts and selection borders draw above the full-size artwork. The co-op training fixture also uses the inventory panel’s supported `hide()` method when closing its screen.

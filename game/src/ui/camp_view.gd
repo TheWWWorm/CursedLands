@@ -71,7 +71,8 @@ const REFUND_RECT := Rect2(20, 355, 160, 28)
 ##   20400) and six filter buttons (mode 0, tips 21100-21105
 ##   icons at U + 168).
 ## textures.res images come out of EIMmp upside down against the original's UVs, so
-## they are flipped once here. Every slot shows its item's 3D model.
+## they are flipped once here. Spell pieces use flat slot artwork; other
+## items show their 3D models.
 ## Side areas:
 ## - backdrop (draw, texture "campinfo"): the
 ##   stone tile UV 14,14-114,114 over 0,100-800,500 (8×4), per 200-wide
@@ -1405,7 +1406,7 @@ func _process(_dt: float) -> void:
 	for k in _views:
 		if _key_shown(k):
 			var id := String(_content.get(k, [""])[0])
-			_views[k].show_item("" if Items.is_spell_container(id) else id)
+			_views[k].show_item("" if Items.is_spell_piece(id) else id)
 	queue_redraw()
 
 
@@ -2091,13 +2092,13 @@ func _draw() -> void:
 		elif b == "cancel":
 			lit = d[3]
 		_region("campinfo", SIDE_BUTTONS[b][0], SIDE_BUTTONS[b][1], Color.WHITE if lit else Color(0.5, 0.5, 0.5))
-	# Finished spells fill the square cell with their coloured HUD artwork.
+	# Spells, templates and runes fill the square cell with their own artwork.
 	# The shared 3D item-card model leaves large perspective-dependent gaps.
 	for k: String in _content:
 		var id := String(_content[k][0])
-		if not _key_shown(k) or not Items.is_spell_container(id): continue
-		var t := int(Spells.parse(Items.spell_code(id)).proto.get("texture_type", -1))
-		var picture := SpellSlots.icon("spell%04d" % t) if t >= 0 else null
+		if not _key_shown(k) or not Items.is_spell_piece(id): continue
+		var texture := String(Items.look(id).get("texture", ""))
+		var picture := SpellSlots.icon(texture) if not texture.is_empty() else null
 		if picture: draw_texture_rect(picture, _r(_slot_rect(k).grow(-10.0)), false)
 	# Selection.
 	for k in _content:
