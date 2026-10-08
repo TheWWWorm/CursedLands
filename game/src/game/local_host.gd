@@ -4,6 +4,10 @@ extends Node
 ## independent frame loops. The owner occupies player slot zero, not a second
 ## co-op slot. All other connections retain the ordinary network protocol.
 
+## Headless animation and placement retain their elapsed-time clocks. The
+## visible client renders independently, and world logic keeps 55 ms ticks.
+const FRAME_RATE := 30
+
 var session: Session
 var frontend := false
 var worker := false
@@ -73,7 +77,7 @@ func start(port: int, limit: int, solo := false) -> Error:
 		FileAccess.set_unix_permissions(_config, 0x180)   # owner read/write
 	file.store_var(config)
 	file.close()
-	var arguments := PackedStringArray(["--headless", "--render-thread", "safe", "--audio-driver", "Dummy", "--max-fps", "60",
+	var arguments := PackedStringArray(["--headless", "--render-thread", "safe", "--audio-driver", "Dummy", "--max-fps", str(FRAME_RATE),
 		"--log-file", _config + ".log"])
 	if OS.has_feature("editor"):
 		arguments.append_array(["--path", ProjectSettings.globalize_path("res://")])
@@ -159,7 +163,7 @@ func listening(error: Error) -> void:
 		file.store_string(JSON.stringify({"error": int(error), "port": session.host_port}))
 		file.close()
 		DirAccess.rename_absolute(pending, _config + ".ready")
-	Engine.max_fps = 60
+	Engine.max_fps = FRAME_RATE
 
 
 func hello() -> void:
@@ -427,7 +431,7 @@ func _rpc_options(options: Dictionary) -> void:
 		GameData.options.merge(options, true)
 		GameData.difficulty = GameData.option("difficulty")
 		GameData.options_changed.emit()
-		Engine.max_fps = 60
+		Engine.max_fps = FRAME_RATE
 
 
 @rpc("any_peer", "call_remote", "unreliable_ordered")

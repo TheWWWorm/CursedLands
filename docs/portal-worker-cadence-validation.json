@@ -1,0 +1,1206 @@
+{
+  "date": "2026-10-08",
+  "status": "Retained local worker cadence improvement; stable60 remains open",
+  "base_commit": "584ac48837cd48f68e0944d06f048e98e4467f0b",
+  "changes": [
+    "Preserve the worker frame cap when startup and live display options are applied",
+    "Run the authority at 30 frames per second with the unchanged original elapsed-time clock, 55 ms ticks and physics cadence"
+  ],
+  "comparison": {
+    "median_control_fps": 53.1414469948287,
+    "median_candidate_fps": 55.6460512348975,
+    "short_gain_percent": 4.713090029920575,
+    "long_control_fps": 55.6549350030303,
+    "long_candidate_fps": 56.6654751176482,
+    "long_gain_percent": 1.815724184320544
+  },
+  "runs": [
+    {
+      "name": "worker-cadence-v2-original-loop-candidate-60-01",
+      "fps": 55.6320862474,
+      "frame_ms": {
+        "max": 53.234,
+        "p50": 17.458,
+        "p95": 22.854,
+        "p99": 26.96
+      },
+      "sim_seconds": 59.8949999999997,
+      "wall_seconds": 60.001345,
+      "apk": 54,
+      "actors": 415,
+      "living_party": 2,
+      "result": {
+        "path": "$SCRATCHPAD/portal-throughput-20261007/runs/worker-cadence-v2-original-loop-candidate-60-01.json",
+        "sha256": "5dc8411635f0af60fe0f10465e20a2e8a628f34902f1f59de6c9d543e5b697bd"
+      },
+      "receipt": {
+        "path": "$SCRATCHPAD/portal-60-20261007/android/runs/worker-cadence-v2-original-loop-candidate-60-01.receipt.json",
+        "sha256": "51aa12c7f64e58ac369b408417bab38021f185e529c2db7eb075a3f76346b804"
+      },
+      "screenshot": {
+        "path": "$SCRATCHPAD/portal-throughput-20261007/runs/worker-cadence-v2-original-loop-candidate-60-01.png",
+        "sha256": "79e0c9c3ca069fdf383277e7ae54e6fd056613e69ce8a4060742b80657199f99"
+      },
+      "ten_second_fps": [
+        54.5,
+        57.0,
+        52.5,
+        56.3,
+        55.8,
+        57.6
+      ]
+    },
+    {
+      "name": "worker-cadence-v2-original-loop-control-60-01",
+      "fps": 52.7379977106877,
+      "frame_ms": {
+        "max": 49.967,
+        "p50": 18.509,
+        "p95": 23.952,
+        "p99": 29.082
+      },
+      "sim_seconds": 59.8949999999997,
+      "wall_seconds": 60.013655,
+      "apk": 53,
+      "actors": 415,
+      "living_party": 2,
+      "result": {
+        "path": "$SCRATCHPAD/portal-throughput-20261007/runs/worker-cadence-v2-original-loop-control-60-01.json",
+        "sha256": "8545c499118bc0aaa642a908c7c928bb3b5cd2394398578f17d953c384ac94c4"
+      },
+      "receipt": {
+        "path": "$SCRATCHPAD/portal-60-20261007/android/runs/worker-cadence-v2-original-loop-control-60-01.receipt.json",
+        "sha256": "3bf224669ba5dd99712b087561da4b49f891ebb8f7087f4efb56eb6944e0be72"
+      },
+      "screenshot": {
+        "path": "$SCRATCHPAD/portal-throughput-20261007/runs/worker-cadence-v2-original-loop-control-60-01.png",
+        "sha256": "c2a688e57246d163135318b90f395084e347a64021d73e1ae3f8400e1f312c18"
+      },
+      "ten_second_fps": [
+        52.2,
+        52.9,
+        50.3,
+        52.7,
+        53.6,
+        54.7
+      ]
+    },
+    {
+      "name": "worker-cadence-v2-original-loop-control-60-02",
+      "fps": 53.5448962789697,
+      "frame_ms": {
+        "max": 45.211,
+        "p50": 17.769,
+        "p95": 25.078,
+        "p99": 29.231
+      },
+      "sim_seconds": 59.7849999999997,
+      "wall_seconds": 60.005719,
+      "apk": 53,
+      "actors": 415,
+      "living_party": 2,
+      "result": {
+        "path": "$SCRATCHPAD/portal-throughput-20261007/runs/worker-cadence-v2-original-loop-control-60-02.json",
+        "sha256": "4ece9be7b8a360db3b845823452910972076db5371f9c8faccf0a87c6f0268fb"
+      },
+      "receipt": {
+        "path": "$SCRATCHPAD/portal-60-20261007/android/runs/worker-cadence-v2-original-loop-control-60-02.receipt.json",
+        "sha256": "3d89bda493300eab25398797a25fb6c3061f31502cad17f5bb1a8d4dde67872b"
+      },
+      "screenshot": {
+        "path": "$SCRATCHPAD/portal-throughput-20261007/runs/worker-cadence-v2-original-loop-control-60-02.png",
+        "sha256": "4d9f6e6c8d61727ccef81d883cd6eb980bc95bae461108566779041439df35cb"
+      },
+      "ten_second_fps": [
+        52.6,
+        55.4,
+        49.6,
+        53.4,
+        54.8,
+        55.4
+      ]
+    },
+    {
+      "name": "worker-cadence-v2-original-loop-candidate-60-02",
+      "fps": 55.660016222395,
+      "frame_ms": {
+        "max": 94.515,
+        "p50": 17.441,
+        "p95": 22.717,
+        "p99": 26.743
+      },
+      "sim_seconds": 59.8949999999997,
+      "wall_seconds": 60.007169,
+      "apk": 54,
+      "actors": 415,
+      "living_party": 2,
+      "result": {
+        "path": "$SCRATCHPAD/portal-throughput-20261007/runs/worker-cadence-v2-original-loop-candidate-60-02.json",
+        "sha256": "2e60ddbe267a9069f911f8d68eccd3319c9685e2f6fe003970693e5b00b60450"
+      },
+      "receipt": {
+        "path": "$SCRATCHPAD/portal-60-20261007/android/runs/worker-cadence-v2-original-loop-candidate-60-02.receipt.json",
+        "sha256": "220e92f1907cea057c50e64b6392f29ed4dbff46f799cf5f348b4896db1b911b"
+      },
+      "screenshot": {
+        "path": "$SCRATCHPAD/portal-throughput-20261007/runs/worker-cadence-v2-original-loop-candidate-60-02.png",
+        "sha256": "65a749d012aa4af4375d9e0f1ee7c7166fafde7ac70166dd0ed7dcbdae81acdb"
+      },
+      "ten_second_fps": [
+        53.9,
+        54.8,
+        55.5,
+        55.5,
+        56.4,
+        57.8
+      ]
+    },
+    {
+      "name": "worker-cadence-v2-original-loop-control-180-01",
+      "fps": 55.6549350030303,
+      "frame_ms": {
+        "max": 47.494,
+        "p50": 17.346,
+        "p95": 23.45,
+        "p99": 26.759
+      },
+      "sim_seconds": 179.850000000014,
+      "wall_seconds": 180.002007,
+      "apk": 53,
+      "actors": 415,
+      "living_party": 2,
+      "result": {
+        "path": "$SCRATCHPAD/portal-throughput-20261007/runs/worker-cadence-v2-original-loop-control-180-01.json",
+        "sha256": "6a186be50d3b18fc65173ab1f9c9bdafe988c956c8d58e2e076d71f244b0e263"
+      },
+      "receipt": {
+        "path": "$SCRATCHPAD/portal-60-20261007/android/runs/worker-cadence-v2-original-loop-control-180-01.receipt.json",
+        "sha256": "b77c0d3bce311cedbde639c12d922998904571bf202bdd2fb1f83f90a772d775"
+      },
+      "screenshot": {
+        "path": "$SCRATCHPAD/portal-throughput-20261007/runs/worker-cadence-v2-original-loop-control-180-01.png",
+        "sha256": "5f491aabd49229d68e76805a898d5f931f6b4c9fc34605fe8ecf8d4f7d30a43b"
+      },
+      "ten_second_fps": [
+        53.1,
+        54.8,
+        51.9,
+        54.2,
+        55.2,
+        57.0,
+        58.0,
+        59.2,
+        56.2,
+        52.9,
+        52.2,
+        53.0,
+        54.2,
+        55.4,
+        56.1,
+        59.0,
+        59.9,
+        59.4
+      ]
+    },
+    {
+      "name": "worker-cadence-v2-original-loop-candidate-180-01",
+      "fps": 56.6654751176482,
+      "frame_ms": {
+        "max": 54.982,
+        "p50": 16.845,
+        "p95": 23.833,
+        "p99": 26.563
+      },
+      "sim_seconds": 179.905000000014,
+      "wall_seconds": 180.003785,
+      "apk": 54,
+      "actors": 415,
+      "living_party": 2,
+      "result": {
+        "path": "$SCRATCHPAD/portal-throughput-20261007/runs/worker-cadence-v2-original-loop-candidate-180-01.json",
+        "sha256": "482e4d0d254b1f062a5d0b035029b605aede452181efa2bd15d0e87df1567558"
+      },
+      "receipt": {
+        "path": "$SCRATCHPAD/portal-60-20261007/android/runs/worker-cadence-v2-original-loop-candidate-180-01.receipt.json",
+        "sha256": "accbce9145d3acb302808052628186f3523d5c1921d4122f61288aa149035a00"
+      },
+      "screenshot": {
+        "path": "$SCRATCHPAD/portal-throughput-20261007/runs/worker-cadence-v2-original-loop-candidate-180-01.png",
+        "sha256": "0eb2628ab35d8a916ccfcc40b7674b9a81a42521da84fa974c9d2956f44a848d"
+      },
+      "ten_second_fps": [
+        54.0,
+        56.4,
+        55.4,
+        56.1,
+        55.4,
+        57.7,
+        59.1,
+        59.3,
+        58.0,
+        53.6,
+        53.9,
+        54.0,
+        54.3,
+        55.2,
+        57.6,
+        60.0,
+        60.0,
+        59.9
+      ]
+    }
+  ],
+  "startup_fix_comparison": [
+    {
+      "name": "worker-frame-limit-original-loop-candidate-60-01",
+      "fps": 53.0274057531602,
+      "frame_ms": {
+        "max": 47.48,
+        "p50": 18.114,
+        "p95": 24.763,
+        "p99": 28.235
+      },
+      "sim_seconds": 59.8399999999997,
+      "wall_seconds": 60.006707
+    },
+    {
+      "name": "worker-frame-limit-original-loop-control-60-01",
+      "fps": 53.0152096319886,
+      "frame_ms": {
+        "max": 51.573,
+        "p50": 17.928,
+        "p95": 25.557,
+        "p99": 29.004
+      },
+      "sim_seconds": 59.8949999999997,
+      "wall_seconds": 60.001649
+    },
+    {
+      "name": "worker-frame-limit-original-loop-control-60-03",
+      "fps": 54.4481596522038,
+      "frame_ms": {
+        "max": 54.35,
+        "p50": 17.682,
+        "p95": 24.206,
+        "p99": 27.467
+      },
+      "sim_seconds": 59.8399999999997,
+      "wall_seconds": 60.002028
+    },
+    {
+      "name": "worker-frame-limit-original-loop-candidate-60-02",
+      "fps": 55.4894560785208,
+      "frame_ms": {
+        "max": 52.832,
+        "p50": 17.241,
+        "p95": 24.167,
+        "p99": 28.142
+      },
+      "sim_seconds": 59.7849999999997,
+      "wall_seconds": 60.011401
+    }
+  ],
+  "desktop_startup_fix": {
+    "conditions": "Linux RTX3090 Vulkan 4K100% max remake 2x; not Windows validation",
+    "runs": [
+      {
+        "name": "frame-limit-desktop-4k-living-control-180-02",
+        "fps": 57.585927372612844,
+        "sim_seconds": 359.865000000036,
+        "frame_ms": {
+          "max": 93.421,
+          "mean": 17.365338896392,
+          "p50": 17.181,
+          "p95": 21.387,
+          "p99": 23.812
+        },
+        "cpu_process_cores_average": {
+          "owner": 0.7886982548676283,
+          "worker": 1.0058655574524606,
+          "peer": 0.6684081459070672
+        },
+        "ten_second_fps": [
+          50.8,
+          58.8,
+          56.2,
+          57.6,
+          56.0,
+          57.2,
+          59.4,
+          60.8,
+          60.2,
+          58.7,
+          57.3,
+          56.7,
+          56.8,
+          57.7,
+          55.7,
+          58.4,
+          58.0,
+          60.2
+        ],
+        "party_ids": [
+          1500000001,
+          1000059185,
+          1500000002
+        ],
+        "all_party_alive": true,
+        "source_receipt": "$SCRATCHPAD/cpu-redesign-20261006/runs/frame-limit-desktop-4k-living-control-180-02.receipt.json"
+      },
+      {
+        "name": "frame-limit-desktop-4k-living-candidate-180-01",
+        "fps": 58.27398964470649,
+        "sim_seconds": 359.920000000036,
+        "frame_ms": {
+          "max": 109.486,
+          "mean": 17.1603030505243,
+          "p50": 16.997,
+          "p95": 21.202,
+          "p99": 24.222
+        },
+        "cpu_process_cores_average": {
+          "owner": 0.8589140652944645,
+          "worker": 0.9777952895839424,
+          "peer": 0.6873203056324771
+        },
+        "ten_second_fps": [
+          49.6,
+          59.4,
+          56.2,
+          58.3,
+          56.1,
+          57.6,
+          59.3,
+          61.0,
+          61.4,
+          60.5,
+          60.4,
+          58.7,
+          58.0,
+          58.3,
+          56.5,
+          58.7,
+          58.1,
+          60.8
+        ],
+        "party_ids": [
+          1500000001,
+          1000059185,
+          1500000002
+        ],
+        "all_party_alive": true,
+        "source_receipt": "$SCRATCHPAD/cpu-redesign-20261006/runs/frame-limit-desktop-4k-living-candidate-180-01.receipt.json"
+      }
+    ],
+    "fps_change_percent": 1.1948444758760335
+  },
+  "desktop_30fps_candidate": {
+    "name": "cadence-v2-desktop-4k-living-candidate-180-01",
+    "fps": 57.90473073483553,
+    "sim_seconds": 359.755000000036,
+    "frame_ms": {
+      "max": 103.08,
+      "mean": 17.2697325146311,
+      "p50": 17.132,
+      "p95": 21.203,
+      "p99": 23.405
+    },
+    "cpu_process_cores_average": {
+      "owner": 0.7853985787838716,
+      "worker": 0.8884244577649357,
+      "peer": 0.682595097814639
+    },
+    "ten_second_fps": [
+      52.2,
+      59.4,
+      56.4,
+      58.0,
+      55.6,
+      57.2,
+      58.9,
+      60.5,
+      60.9,
+      59.6,
+      59.1,
+      57.3,
+      57.5,
+      57.7,
+      55.5,
+      58.0,
+      57.9,
+      60.5
+    ],
+    "party_ids": [
+      1500000001,
+      1000059185,
+      1500000002
+    ],
+    "all_party_alive": true,
+    "source_receipt": "$SCRATCHPAD/cpu-redesign-20261006/runs/cadence-v2-desktop-4k-living-candidate-180-01.receipt.json"
+  },
+  "correctness": {
+    "linux": [
+      {
+        "name": "cadence-v2-worker-clock-linux-01",
+        "receipt": {
+          "command": [
+            "$SCRATCHPAD/cpu-redesign-20261006/build/throughput-worker-cadence02/CPU.x86_64",
+            "--audio-driver",
+            "Dummy",
+            "--headless",
+            "--",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+            "--tool=$SCRATCHPAD/cpu-animation-20261006/release-repo/tools/tests/worker_clock.gd",
+            "--label=cadence-v2-worker-clock-linux-01"
+          ],
+          "exit_code": 0,
+          "stopped": false,
+          "seconds": 1.6032460189890116,
+          "errors": [],
+          "warnings": [
+            "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+          ],
+          "log_sha256": "888803d806b59fa2a0370489b0619396ed0a14082d705410e53303bf758dad8b"
+        },
+        "result": [
+          "WORKER_CLOCK 8255 checks 0 failures"
+        ]
+      },
+      {
+        "name": "cadence-v2-single-player-linux-01",
+        "receipt": {
+          "command": [
+            "$SCRATCHPAD/cpu-redesign-20261006/build/throughput-worker-cadence02/CPU.x86_64",
+            "--audio-driver",
+            "Dummy",
+            "--display-driver",
+            "x11",
+            "--rendering-method",
+            "forward_plus",
+            "--resolution",
+            "1600x900",
+            "--windowed",
+            "--",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+            "--tool=$SCRATCHPAD/cpu-animation-20261006/release-repo/tools/tests/single_player_process.gd",
+            "--label=cadence-v2-single-player-linux-01",
+            "--save=$SCRATCHPAD/portal-60-20261007/astral-fixtures/gz1h.sav"
+          ],
+          "exit_code": 0,
+          "stopped": false,
+          "seconds": 68.10725324400119,
+          "errors": [],
+          "warnings": [
+            "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet.",
+            "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+          ],
+          "log_sha256": "73d59db8cdd958631ab031abb795c21a19f78b93ffe3afd91d7e9c6bb75b7405"
+        },
+        "result": [
+          "SINGLE_PLAYER_PROCESS checks=30 failures=0"
+        ]
+      },
+      {
+        "name": "cadence-v2-coop-worker-linux-01",
+        "receipt": {
+          "command": [
+            "$SCRATCHPAD/cpu-redesign-20261006/build/throughput-worker-cadence02/CPU.x86_64",
+            "--audio-driver",
+            "Dummy",
+            "--display-driver",
+            "x11",
+            "--rendering-method",
+            "forward_plus",
+            "--resolution",
+            "1600x900",
+            "--windowed",
+            "--",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+            "--tool=$SCRATCHPAD/cpu-animation-20261006/release-repo/tools/tests/local_host_worker.gd",
+            "--label=cadence-v2-coop-worker-linux-01",
+            "--save=$SCRATCHPAD/portal-60-20261007/astral-fixtures/gz1h.sav"
+          ],
+          "exit_code": 0,
+          "stopped": false,
+          "seconds": 72.82932363799773,
+          "errors": [],
+          "warnings": [
+            "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet.",
+            "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+          ],
+          "log_sha256": "be5124e81fe5fecbfded451b362a147c9bbf66ad52f2a4db745c5702f6edaa49"
+        },
+        "result": [
+          "LOCAL_HOST_RESULT {\"checks\":33,\"failures\":0}"
+        ]
+      },
+      {
+        "name": "cadence-v2-campaign-linux-01",
+        "receipt": {
+          "command": [
+            "$SCRATCHPAD/cpu-redesign-20261006/build/throughput-worker-cadence02/CPU.x86_64",
+            "--audio-driver",
+            "Dummy",
+            "--display-driver",
+            "x11",
+            "--rendering-method",
+            "forward_plus",
+            "--resolution",
+            "1600x900",
+            "--windowed",
+            "--",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+            "--tool=$SCRATCHPAD/cpu-animation-20261006/release-repo/tools/tests/local_host_campaign.gd",
+            "--label=cadence-v2-campaign-linux-01",
+            "--single"
+          ],
+          "exit_code": 0,
+          "stopped": false,
+          "seconds": 35.859514353011036,
+          "errors": [],
+          "warnings": [
+            "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet.",
+            "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+          ],
+          "log_sha256": "3931ae86906c061a0730718d44296fe34447186c079e615e7e86002e187a1cf4"
+        },
+        "result": [
+          "LOCAL_HOST_CAMPAIGN 19 checks 0 failures"
+        ]
+      },
+      {
+        "name": "cadence-v2-response-candidate-linux-03",
+        "receipt": {
+          "command": [
+            "$SCRATCHPAD/cpu-redesign-20261006/build/throughput-worker-cadence02/CPU.x86_64",
+            "--audio-driver",
+            "Dummy",
+            "--display-driver",
+            "x11",
+            "--rendering-method",
+            "forward_plus",
+            "--resolution",
+            "1600x900",
+            "--windowed",
+            "--",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+            "--tool=$SCRATCHPAD/cpu-animation-20261006/release-repo/tools/tests/worker_cadence_response.gd",
+            "--label=cadence-v2-response-candidate-linux-03",
+            "--save=$SCRATCHPAD/portal-60-20261007/astral-fixtures/gz1h.sav"
+          ],
+          "exit_code": 0,
+          "stopped": false,
+          "seconds": 63.79560228300397,
+          "errors": [],
+          "warnings": [
+            "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet.",
+            "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+          ],
+          "log_sha256": "d247f0a6839ad14d6d5fcac55330d8c7014b5f75e7b406a97e3c25fd20d66c96"
+        },
+        "result": [
+          "WORKER_RESPONSE_RESULT {\"checks\":34,\"failures\":0,\"latencies_ms\":[32,33,33,34,34,34,35,35,35,35,37,860],\"rates\":[{\"phase_sim_seconds\":9.18499999999998,\"phase_wall_seconds\":9.395375,\"requested_rate\":1.0,\"resume_ms\":391,\"sim_seconds\":7.91999999999998,\"speed\":1,\"wall_seconds\":7.983833},{\"phase_sim_seconds\":18.4249999999999,\"phase_wall_seconds\":9.076541,\"requested_rate\":2.03703703703704,\"resume_ms\":33,\"sim_seconds\":16.3349999999999,\"speed\":2,\"wall_seconds\":7.995661}]}"
+        ]
+      }
+    ],
+    "android": [
+      {
+        "name": "cadence-v2-response-device-02",
+        "result": "10-08 09:36:10.831 16743 16772 I godot   : WORKER_RESPONSE_RESULT {\"checks\":34,\"failures\":0,\"latencies_ms\":[21,27,28,29,29,29,30,30,30,30,30,44],\"rates\":[{\"phase_sim_seconds\":9.51499999999998,\"phase_wall_seconds\":9.684477,\"requested_rate\":1.0,\"resume_ms\":654,\"sim_seconds\":8.63499999999998,\"speed\":1,\"wall_seconds\":8.015589},{\"phase_sim_seconds\":12.9799999999999,\"phase_wall_seconds\":9.157195,\"requested_rate\":2.03703703703704,\"resume_ms\":140,\"sim_seconds\":11.2749999999999,\"speed\":2,\"wall_seconds\":8.010245}]}",
+        "receipt": {
+          "config": {
+            "name": "cadence-v2-response-device-02",
+            "save": "user://fixtures/portal.sav",
+            "data": "user://data/astral",
+            "speed": 1,
+            "seconds": 10,
+            "host": false,
+            "players": 1,
+            "terror": false,
+            "isolated": false,
+            "options": {},
+            "tool": "user://worker_response.gd"
+          },
+          "renderer_requested": "gl_compatibility",
+          "workers_requested": 4,
+          "battery_before": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Max charging current: 1150000\n  Max charging voltage: 5000000\n  Charge counter: 4823106\n  status: 2\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4387\n  temperature: 377\n  technology: Li-ion\n",
+          "start": 1791441286.5917733,
+          "installed": "Activity Resolver Table:\n  Non-Data Actions:\n      android.intent.action.MAIN:\n        ee66eb9 org.cursedlands.performance/com.godot.game.GodotAppLauncher filter 9efb2fe\n          Action: \"android.intent.action.MAIN\"\n          Category: \"android.intent.category.DEFAULT\"\n          Category: \"android.intent.category.LAUNCHER\"\n\nReceiver Resolver Table:\n  Non-Data Actions:\n      androidx.profileinstaller.action.SAVE_PROFILE:\n        20cca5f org.cursedlands.performance/androidx.profileinstaller.ProfileInstallReceiver filter f10010a\n          Action: \"androidx.profileinstaller.action.SAVE_PROFILE\"\n      androidx.profileinstaller.action.INSTALL_PROFILE:\n        20cca5f org.cursedlands.performance/androidx.profileinstaller.ProfileInstallReceiver filter 9954cac\n          Action: \"androidx.profileinstaller.action.INSTALL_PROFILE\"\n      androidx.profileinstaller.action.SKIP_FILE:\n        20cca5f org.cursedlands.performance/androidx.profileinstaller.ProfileInstallReceiver filter af63d75\n          Action: \"androidx.profileinstaller.action.SKIP_FILE\"\n      androidx.profileinstaller.action.BENCHMARK_OPERATION:\n        20cca5f org.cursedlands.performance/androidx.profileinstaller.ProfileInstallReceiver filter 1ddad7b\n          Action: \"androidx.profileinstaller.action.BENCHMARK_OPERATION\"\n\nDomain verification status:\n\nRegistered ContentProviders:\n  org.cursedlands.performance/androidx.core.content.FileProvider:\n    Provider{8185a90 org.cursedlands.performance/androidx.core.content.FileProvider}\n  org.cursedlands.performance/androidx.startup.InitializationProvider:\n    Provider{9569f89 org.cursedlands.performance/androidx.startup.InitializationProvider}\n\nContentProvider Authorities:\n  [org.cursedlands.performance.fileprovider]:\n    Provider{8185a90 org.cursedlands.performance/androidx.core.content.FileProvider}\n      applicationInfo=ApplicationInfo{b73db8e org.cursedlands.performance}\n\nKey Set Manager:\n  [org.cursedlands.performance]\n      Signing KeySets: 83\n\nPackages:\n  Package [org.cursedlands.performance] (b0defaf):\n    userId=10124\n    pkg=Package{4508fbc org.cursedlands.performance}\n    codePath=/data/app/~~-Hs0LWfM2H8cOwd4gLZwCg==/org.cursedlands.performance-xxc4p9Qf7WMUIuZm_9oPiw==\n    resourcePath=/data/app/~~-Hs0LWfM2H8cOwd4gLZwCg==/org.cursedlands.performance-xxc4p9Qf7WMUIuZm_9oPiw==\n    legacyNativeLibraryDir=/data/app/~~-Hs0LWfM2H8cOwd4gLZwCg==/org.cursedlands.performance-xxc4p9Qf7WMUIuZm_9oPiw==/lib\n    extractNativeLibs=true\n    primaryCpuAbi=arm64-v8a\n    secondaryCpuAbi=null\n    cpuAbiOverride=null\n    versionCode=54 minSdk=24 targetSdk=36\n    minExtensionVersions=[]\n    versionName=portal60-private-service-54\n    usesNonSdkApi=false\n    splits=[base]\n    apkSigningVersion=4\n    flags=[ DEBUGGABLE HAS_CODE ALLOW_CLEAR_USER_DATA ]\n    privateFlags=[ PRIVATE_FLAG_ACTIVITIES_RESIZE_MODE_RESIZEABLE_VIA_SDK_VERSION ALLOW_AUDIO_PLAYBACK_CAPTURE PRIVATE_FLAG_ALLOW_NATIVE_HEAP_POINTER_TAGGING ]\n    forceQueryable=false\n    dataDir=/data/user/0/org.cursedlands.performance\n    supportsScreens=[small, medium, large, xlarge, resizeable, anyDensity]\n    timeStamp=2026-10-08 09:34:46\n    lastUpdateTime=2026-10-08 09:34:46\n    packageSource=0\n    signatures=PackageSignatures{eb91bc0 version:4, signatures:[dfaa785c], past signatures:[]}\n    installPermissionsFixed=true\n    pkgFlags=[ DEBUGGABLE HAS_CODE ALLOW_CLEAR_USER_DATA ]\n    requested permissions:\n      android.permission.INTERNET\n    install permissions:\n      android.permission.INTERNET: granted=true\n    User 0: ceDataInode=63516 installed=true hidden=false suspended=false distractionFlags=0 stopped=false notLaunched=false enabled=0 instant=false virtual=false\n      installReason=0\n      firstInstallTime=2026-10-07 15:18:08\n      uninstallReason=0\n      overlay paths:\n        /product/overlay/NavigationBarModeGestural/NavigationBarModeGesturalOverlay.apk\n        /data/resource-cache/com.android.systemui-neutral-dkLj.frro\n        /data/resource-cache/com.android.systemui-accent-3XZv.frro\n      legacy overlay paths:\n        /product/overlay/NavigationBarModeGestural/NavigationBarModeGesturalOverlay.apk\n      gids=[3003]\n      runtime permissions:\n\nQueries:\n  system apps queryable: false\n  queries via forceQueryable:\n  queries via package name:\n  queries via component:\n    com.android.settings.intelligence:\n      org.cursedlands.performance\n    com.infoldgames.infinitynikkien:\n      org.cursedlands.performance\n  queryable via interaction:\n    User 0:\n  queryable via uses-library:\n\nDexopt state:\n  [org.cursedlands.performance]\n    path: /data/app/~~-Hs0LWfM2H8cOwd4gLZwCg==/org.cursedlands.performance-xxc4p9Qf7WMUIuZm_9oPiw==/base.apk\n      arm64: [status=run-from-apk] [reason=unknown]\n  BgDexopt state:\n    enabled:true\n    mDexOptThread:null\n    mDexOptCancellingThread:null\n    mFinishedPostBootUpdate:true\n    mLastExecutionStatus:0\n    mLastExecutionStartTimeMs:259248570\n    mLastExecutionDurationIncludingSleepMs:24382\n    mLastExecutionStartUptimeMs:189187302\n    mLastExecutionDurationMs:24382\n    now:342095299\n    mLastCancelledPackages:\n    mFailedPackageNamesPrimary:\n    mFailedPackageNamesSecondary:\n\nCompiler stats:\n  [org.cursedlands.performance]\n    (No recorded stats)\n",
+          "apk_sha256": "f2a2159c9c19158026deea5d55c4392d12dd5c74f9726b2024448cbfe1a3ead6",
+          "battery_after": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Max charging current: 1200000\n  Max charging voltage: 5000000\n  Charge counter: 4828415\n  status: 2\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4379\n  temperature: 372\n  technology: Li-ion\n",
+          "seconds": 87.05919075012207,
+          "errors": []
+        }
+      },
+      {
+        "name": "cadence-v2-single-player-device-02",
+        "result": "10-08 09:38:04.391 17173 17202 I godot   : SINGLE_PLAYER_PROCESS checks=30 failures=0",
+        "receipt": {
+          "config": {
+            "name": "cadence-v2-single-player-device-02",
+            "save": "user://fixtures/portal.sav",
+            "data": "user://data/astral",
+            "speed": 1,
+            "seconds": 10,
+            "host": false,
+            "players": 1,
+            "terror": false,
+            "isolated": false,
+            "options": {},
+            "tool": "user://single_player_process.gd"
+          },
+          "renderer_requested": "gl_compatibility",
+          "workers_requested": 4,
+          "battery_before": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Max charging current: 1200000\n  Max charging voltage: 5000000\n  Charge counter: 4828415\n  status: 2\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4379\n  temperature: 372\n  technology: Li-ion\n",
+          "start": 1791441373.91769,
+          "installed": "Activity Resolver Table:\n  Non-Data Actions:\n      android.intent.action.MAIN:\n        ee66eb9 org.cursedlands.performance/com.godot.game.GodotAppLauncher filter 9efb2fe\n          Action: \"android.intent.action.MAIN\"\n          Category: \"android.intent.category.DEFAULT\"\n          Category: \"android.intent.category.LAUNCHER\"\n\nReceiver Resolver Table:\n  Non-Data Actions:\n      androidx.profileinstaller.action.SAVE_PROFILE:\n        20cca5f org.cursedlands.performance/androidx.profileinstaller.ProfileInstallReceiver filter f10010a\n          Action: \"androidx.profileinstaller.action.SAVE_PROFILE\"\n      androidx.profileinstaller.action.INSTALL_PROFILE:\n        20cca5f org.cursedlands.performance/androidx.profileinstaller.ProfileInstallReceiver filter 9954cac\n          Action: \"androidx.profileinstaller.action.INSTALL_PROFILE\"\n      androidx.profileinstaller.action.SKIP_FILE:\n        20cca5f org.cursedlands.performance/androidx.profileinstaller.ProfileInstallReceiver filter af63d75\n          Action: \"androidx.profileinstaller.action.SKIP_FILE\"\n      androidx.profileinstaller.action.BENCHMARK_OPERATION:\n        20cca5f org.cursedlands.performance/androidx.profileinstaller.ProfileInstallReceiver filter 1ddad7b\n          Action: \"androidx.profileinstaller.action.BENCHMARK_OPERATION\"\n\nDomain verification status:\n\nRegistered ContentProviders:\n  org.cursedlands.performance/androidx.core.content.FileProvider:\n    Provider{8185a90 org.cursedlands.performance/androidx.core.content.FileProvider}\n  org.cursedlands.performance/androidx.startup.InitializationProvider:\n    Provider{9569f89 org.cursedlands.performance/androidx.startup.InitializationProvider}\n\nContentProvider Authorities:\n  [org.cursedlands.performance.fileprovider]:\n    Provider{8185a90 org.cursedlands.performance/androidx.core.content.FileProvider}\n      applicationInfo=ApplicationInfo{72444eb org.cursedlands.performance}\n\nKey Set Manager:\n  [org.cursedlands.performance]\n      Signing KeySets: 83\n\nPackages:\n  Package [org.cursedlands.performance] (b0defaf):\n    userId=10124\n    pkg=Package{4508fbc org.cursedlands.performance}\n    codePath=/data/app/~~-Hs0LWfM2H8cOwd4gLZwCg==/org.cursedlands.performance-xxc4p9Qf7WMUIuZm_9oPiw==\n    resourcePath=/data/app/~~-Hs0LWfM2H8cOwd4gLZwCg==/org.cursedlands.performance-xxc4p9Qf7WMUIuZm_9oPiw==\n    legacyNativeLibraryDir=/data/app/~~-Hs0LWfM2H8cOwd4gLZwCg==/org.cursedlands.performance-xxc4p9Qf7WMUIuZm_9oPiw==/lib\n    extractNativeLibs=true\n    primaryCpuAbi=arm64-v8a\n    secondaryCpuAbi=null\n    cpuAbiOverride=null\n    versionCode=54 minSdk=24 targetSdk=36\n    minExtensionVersions=[]\n    versionName=portal60-private-service-54\n    usesNonSdkApi=false\n    splits=[base]\n    apkSigningVersion=4\n    flags=[ DEBUGGABLE HAS_CODE ALLOW_CLEAR_USER_DATA ]\n    privateFlags=[ PRIVATE_FLAG_ACTIVITIES_RESIZE_MODE_RESIZEABLE_VIA_SDK_VERSION ALLOW_AUDIO_PLAYBACK_CAPTURE PRIVATE_FLAG_ALLOW_NATIVE_HEAP_POINTER_TAGGING ]\n    forceQueryable=false\n    dataDir=/data/user/0/org.cursedlands.performance\n    supportsScreens=[small, medium, large, xlarge, resizeable, anyDensity]\n    timeStamp=2026-10-08 09:34:46\n    lastUpdateTime=2026-10-08 09:34:46\n    packageSource=0\n    signatures=PackageSignatures{eb91bc0 version:4, signatures:[dfaa785c], past signatures:[]}\n    installPermissionsFixed=true\n    pkgFlags=[ DEBUGGABLE HAS_CODE ALLOW_CLEAR_USER_DATA ]\n    requested permissions:\n      android.permission.INTERNET\n    install permissions:\n      android.permission.INTERNET: granted=true\n    User 0: ceDataInode=63516 installed=true hidden=false suspended=false distractionFlags=0 stopped=false notLaunched=false enabled=0 instant=false virtual=false\n      installReason=0\n      firstInstallTime=2026-10-07 15:18:08\n      uninstallReason=0\n      overlay paths:\n        /product/overlay/NavigationBarModeGestural/NavigationBarModeGesturalOverlay.apk\n        /data/resource-cache/com.android.systemui-neutral-dkLj.frro\n        /data/resource-cache/com.android.systemui-accent-3XZv.frro\n      legacy overlay paths:\n        /product/overlay/NavigationBarModeGestural/NavigationBarModeGesturalOverlay.apk\n      gids=[3003]\n      runtime permissions:\n\nQueries:\n  system apps queryable: false\n  queries via forceQueryable:\n  queries via package name:\n  queries via component:\n    com.android.settings.intelligence:\n      org.cursedlands.performance\n    com.infoldgames.infinitynikkien:\n      org.cursedlands.performance\n  queryable via interaction:\n    User 0:\n      [com.rp.factorytest,com.retroidpocket.setupwizard,com.rp.mapping,com.android.wallpaperbackup,com.qualcomm.qti.services.secureui,com.android.inputdevices,com.android.keychain,com.retroidpocket.gamelauncher,com.android.settings,android,com.rp.fota,com.android.localtransport,com.rp.gameassistant,com.android.location.fused,com.rp.settings,com.android.providers.settings]:\n        org.cursedlands.performance\n      com.google.android.inputmethod.latin:\n        org.cursedlands.performance\n  queryable via uses-library:\n\nDexopt state:\n  [org.cursedlands.performance]\n    path: /data/app/~~-Hs0LWfM2H8cOwd4gLZwCg==/org.cursedlands.performance-xxc4p9Qf7WMUIuZm_9oPiw==/base.apk\n      arm64: [status=run-from-apk] [reason=unknown]\n  BgDexopt state:\n    enabled:true\n    mDexOptThread:null\n    mDexOptCancellingThread:null\n    mFinishedPostBootUpdate:true\n    mLastExecutionStatus:0\n    mLastExecutionStartTimeMs:259248570\n    mLastExecutionDurationIncludingSleepMs:24382\n    mLastExecutionStartUptimeMs:189187302\n    mLastExecutionDurationMs:24382\n    now:342182629\n    mLastCancelledPackages:\n    mFailedPackageNamesPrimary:\n    mFailedPackageNamesSecondary:\n\nCompiler stats:\n  [org.cursedlands.performance]\n    (No recorded stats)\n",
+          "apk_sha256": "f2a2159c9c19158026deea5d55c4392d12dd5c74f9726b2024448cbfe1a3ead6",
+          "battery_after": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Max charging current: 1250000\n  Max charging voltage: 5000000\n  Charge counter: 4835098\n  status: 2\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4379\n  temperature: 372\n  technology: Li-ion\n",
+          "seconds": 113.59737849235535,
+          "errors": []
+        }
+      },
+      {
+        "name": "cadence-v2-clock-device-02",
+        "result": "10-08 09:38:12.655 17730 17759 I godot   : WORKER_CLOCK 8255 checks 0 failures",
+        "receipt": {
+          "config": {
+            "name": "cadence-v2-clock-device-02",
+            "save": "user://fixtures/portal.sav",
+            "data": "user://data/astral",
+            "speed": 1,
+            "seconds": 10,
+            "host": false,
+            "players": 1,
+            "terror": false,
+            "isolated": false,
+            "options": {},
+            "tool": "user://worker_clock.gd"
+          },
+          "renderer_requested": "gl_compatibility",
+          "workers_requested": 4,
+          "battery_before": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Max charging current: 1250000\n  Max charging voltage: 5000000\n  Charge counter: 4835322\n  status: 2\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4382\n  temperature: 372\n  technology: Li-ion\n",
+          "start": 1791441487.9220524,
+          "installed": "Activity Resolver Table:\n  Non-Data Actions:\n      android.intent.action.MAIN:\n        ee66eb9 org.cursedlands.performance/com.godot.game.GodotAppLauncher filter 9efb2fe\n          Action: \"android.intent.action.MAIN\"\n          Category: \"android.intent.category.DEFAULT\"\n          Category: \"android.intent.category.LAUNCHER\"\n\nReceiver Resolver Table:\n  Non-Data Actions:\n      androidx.profileinstaller.action.SAVE_PROFILE:\n        20cca5f org.cursedlands.performance/androidx.profileinstaller.ProfileInstallReceiver filter f10010a\n          Action: \"androidx.profileinstaller.action.SAVE_PROFILE\"\n      androidx.profileinstaller.action.INSTALL_PROFILE:\n        20cca5f org.cursedlands.performance/androidx.profileinstaller.ProfileInstallReceiver filter 9954cac\n          Action: \"androidx.profileinstaller.action.INSTALL_PROFILE\"\n      androidx.profileinstaller.action.SKIP_FILE:\n        20cca5f org.cursedlands.performance/androidx.profileinstaller.ProfileInstallReceiver filter af63d75\n          Action: \"androidx.profileinstaller.action.SKIP_FILE\"\n      androidx.profileinstaller.action.BENCHMARK_OPERATION:\n        20cca5f org.cursedlands.performance/androidx.profileinstaller.ProfileInstallReceiver filter 1ddad7b\n          Action: \"androidx.profileinstaller.action.BENCHMARK_OPERATION\"\n\nDomain verification status:\n\nRegistered ContentProviders:\n  org.cursedlands.performance/androidx.core.content.FileProvider:\n    Provider{8185a90 org.cursedlands.performance/androidx.core.content.FileProvider}\n  org.cursedlands.performance/androidx.startup.InitializationProvider:\n    Provider{9569f89 org.cursedlands.performance/androidx.startup.InitializationProvider}\n\nContentProvider Authorities:\n  [org.cursedlands.performance.fileprovider]:\n    Provider{8185a90 org.cursedlands.performance/androidx.core.content.FileProvider}\n      applicationInfo=ApplicationInfo{eeeb24f org.cursedlands.performance}\n\nKey Set Manager:\n  [org.cursedlands.performance]\n      Signing KeySets: 83\n\nPackages:\n  Package [org.cursedlands.performance] (b0defaf):\n    userId=10124\n    pkg=Package{4508fbc org.cursedlands.performance}\n    codePath=/data/app/~~-Hs0LWfM2H8cOwd4gLZwCg==/org.cursedlands.performance-xxc4p9Qf7WMUIuZm_9oPiw==\n    resourcePath=/data/app/~~-Hs0LWfM2H8cOwd4gLZwCg==/org.cursedlands.performance-xxc4p9Qf7WMUIuZm_9oPiw==\n    legacyNativeLibraryDir=/data/app/~~-Hs0LWfM2H8cOwd4gLZwCg==/org.cursedlands.performance-xxc4p9Qf7WMUIuZm_9oPiw==/lib\n    extractNativeLibs=true\n    primaryCpuAbi=arm64-v8a\n    secondaryCpuAbi=null\n    cpuAbiOverride=null\n    versionCode=54 minSdk=24 targetSdk=36\n    minExtensionVersions=[]\n    versionName=portal60-private-service-54\n    usesNonSdkApi=false\n    splits=[base]\n    apkSigningVersion=4\n    flags=[ DEBUGGABLE HAS_CODE ALLOW_CLEAR_USER_DATA ]\n    privateFlags=[ PRIVATE_FLAG_ACTIVITIES_RESIZE_MODE_RESIZEABLE_VIA_SDK_VERSION ALLOW_AUDIO_PLAYBACK_CAPTURE PRIVATE_FLAG_ALLOW_NATIVE_HEAP_POINTER_TAGGING ]\n    forceQueryable=false\n    dataDir=/data/user/0/org.cursedlands.performance\n    supportsScreens=[small, medium, large, xlarge, resizeable, anyDensity]\n    timeStamp=2026-10-08 09:34:46\n    lastUpdateTime=2026-10-08 09:34:46\n    packageSource=0\n    signatures=PackageSignatures{eb91bc0 version:4, signatures:[dfaa785c], past signatures:[]}\n    installPermissionsFixed=true\n    pkgFlags=[ DEBUGGABLE HAS_CODE ALLOW_CLEAR_USER_DATA ]\n    requested permissions:\n      android.permission.INTERNET\n    install permissions:\n      android.permission.INTERNET: granted=true\n    User 0: ceDataInode=63516 installed=true hidden=false suspended=false distractionFlags=0 stopped=false notLaunched=false enabled=0 instant=false virtual=false\n      installReason=0\n      firstInstallTime=2026-10-07 15:18:08\n      uninstallReason=0\n      overlay paths:\n        /product/overlay/NavigationBarModeGestural/NavigationBarModeGesturalOverlay.apk\n        /data/resource-cache/com.android.systemui-neutral-dkLj.frro\n        /data/resource-cache/com.android.systemui-accent-3XZv.frro\n      legacy overlay paths:\n        /product/overlay/NavigationBarModeGestural/NavigationBarModeGesturalOverlay.apk\n      gids=[3003]\n      runtime permissions:\n\nQueries:\n  system apps queryable: false\n  queries via forceQueryable:\n  queries via package name:\n  queries via component:\n    com.android.settings.intelligence:\n      org.cursedlands.performance\n    com.infoldgames.infinitynikkien:\n      org.cursedlands.performance\n  queryable via interaction:\n    User 0:\n      [com.rp.factorytest,com.retroidpocket.setupwizard,com.rp.mapping,com.android.wallpaperbackup,com.qualcomm.qti.services.secureui,com.android.inputdevices,com.android.keychain,com.retroidpocket.gamelauncher,com.android.settings,android,com.rp.fota,com.android.localtransport,com.rp.gameassistant,com.android.location.fused,com.rp.settings,com.android.providers.settings]:\n        org.cursedlands.performance\n      com.google.android.inputmethod.latin:\n        org.cursedlands.performance\n  queryable via uses-library:\n\nDexopt state:\n  [org.cursedlands.performance]\n    path: /data/app/~~-Hs0LWfM2H8cOwd4gLZwCg==/org.cursedlands.performance-xxc4p9Qf7WMUIuZm_9oPiw==/base.apk\n      arm64: [status=run-from-apk] [reason=unknown]\n  BgDexopt state:\n    enabled:true\n    mDexOptThread:null\n    mDexOptCancellingThread:null\n    mFinishedPostBootUpdate:true\n    mLastExecutionStatus:0\n    mLastExecutionStartTimeMs:259248570\n    mLastExecutionDurationIncludingSleepMs:24382\n    mLastExecutionStartUptimeMs:189187302\n    mLastExecutionDurationMs:24382\n    now:342296640\n    mLastCancelledPackages:\n    mFailedPackageNamesPrimary:\n    mFailedPackageNamesSecondary:\n\nCompiler stats:\n  [org.cursedlands.performance]\n    (No recorded stats)\n",
+          "apk_sha256": "f2a2159c9c19158026deea5d55c4392d12dd5c74f9726b2024448cbfe1a3ead6",
+          "battery_after": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Max charging current: 1150000\n  Max charging voltage: 5000000\n  Charge counter: 4836389\n  status: 2\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4383\n  temperature: 370\n  technology: Li-ion\n",
+          "seconds": 7.056771755218506,
+          "errors": []
+        }
+      }
+    ],
+    "android_background": {
+      "result": {
+        "background_ms": 12024,
+        "background_sim_delta": 0.11,
+        "checks": 12,
+        "failures": 0,
+        "sim_after": 2.915,
+        "sim_before": 2.805
+      },
+      "control": {
+        "ready": {
+          "autosave_before": 1791424085,
+          "path": "/data/data/org.cursedlands.performance/files/saves/lost_in_astral/autosave.sav"
+        },
+        "pid_before": "17957",
+        "home_at": 1791441615.1496928,
+        "autosave_mtime_in_background": 1791441615,
+        "saved_while_background": true,
+        "pid_before_resume": "17957",
+        "resume_at": 1791441627.2208316,
+        "resume": "Starting: Intent { cmp=org.cursedlands.performance/com.godot.game.GodotAppLauncher }\nWarning: Activity not started, its current task has been brought to the front\nStatus: ok\nLaunchState: HOT\nActivity: org.cursedlands.performance/com.godot.game.GodotApp\nTotalTime: 66\nWaitTime: 68\nComplete\n"
+      },
+      "receipt": {
+        "config": {
+          "name": "cadence-v2-background-device-01",
+          "save": "user://fixtures/portal.sav",
+          "data": "user://data/astral",
+          "speed": 1,
+          "seconds": 10,
+          "host": false,
+          "players": 1,
+          "terror": false,
+          "isolated": false,
+          "options": {},
+          "tool": "user://single_player_android_background.gd"
+        },
+        "renderer_requested": "gl_compatibility",
+        "workers_requested": 4,
+        "battery_before": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Max charging current: 1250000\n  Max charging voltage: 5000000\n  Charge counter: 4846557\n  status: 2\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4387\n  temperature: 370\n  technology: Li-ion\n",
+        "start": 1791441551.209151,
+        "installed": "Activity Resolver Table:\n  Non-Data Actions:\n      android.intent.action.MAIN:\n        ee66eb9 org.cursedlands.performance/com.godot.game.GodotAppLauncher filter 9efb2fe\n          Action: \"android.intent.action.MAIN\"\n          Category: \"android.intent.category.DEFAULT\"\n          Category: \"android.intent.category.LAUNCHER\"\n\nReceiver Resolver Table:\n  Non-Data Actions:\n      androidx.profileinstaller.action.SAVE_PROFILE:\n        20cca5f org.cursedlands.performance/androidx.profileinstaller.ProfileInstallReceiver filter f10010a\n          Action: \"androidx.profileinstaller.action.SAVE_PROFILE\"\n      androidx.profileinstaller.action.INSTALL_PROFILE:\n        20cca5f org.cursedlands.performance/androidx.profileinstaller.ProfileInstallReceiver filter 9954cac\n          Action: \"androidx.profileinstaller.action.INSTALL_PROFILE\"\n      androidx.profileinstaller.action.SKIP_FILE:\n        20cca5f org.cursedlands.performance/androidx.profileinstaller.ProfileInstallReceiver filter af63d75\n          Action: \"androidx.profileinstaller.action.SKIP_FILE\"\n      androidx.profileinstaller.action.BENCHMARK_OPERATION:\n        20cca5f org.cursedlands.performance/androidx.profileinstaller.ProfileInstallReceiver filter 1ddad7b\n          Action: \"androidx.profileinstaller.action.BENCHMARK_OPERATION\"\n\nDomain verification status:\n\nRegistered ContentProviders:\n  org.cursedlands.performance/androidx.core.content.FileProvider:\n    Provider{8185a90 org.cursedlands.performance/androidx.core.content.FileProvider}\n  org.cursedlands.performance/androidx.startup.InitializationProvider:\n    Provider{9569f89 org.cursedlands.performance/androidx.startup.InitializationProvider}\n\nContentProvider Authorities:\n  [org.cursedlands.performance.fileprovider]:\n    Provider{8185a90 org.cursedlands.performance/androidx.core.content.FileProvider}\n      applicationInfo=ApplicationInfo{3eaeb57 org.cursedlands.performance}\n\nKey Set Manager:\n  [org.cursedlands.performance]\n      Signing KeySets: 83\n\nPackages:\n  Package [org.cursedlands.performance] (b04e644):\n    userId=10124\n    pkg=Package{4508fbc org.cursedlands.performance}\n    codePath=/data/app/~~-Hs0LWfM2H8cOwd4gLZwCg==/org.cursedlands.performance-xxc4p9Qf7WMUIuZm_9oPiw==\n    resourcePath=/data/app/~~-Hs0LWfM2H8cOwd4gLZwCg==/org.cursedlands.performance-xxc4p9Qf7WMUIuZm_9oPiw==\n    legacyNativeLibraryDir=/data/app/~~-Hs0LWfM2H8cOwd4gLZwCg==/org.cursedlands.performance-xxc4p9Qf7WMUIuZm_9oPiw==/lib\n    extractNativeLibs=true\n    primaryCpuAbi=arm64-v8a\n    secondaryCpuAbi=null\n    cpuAbiOverride=null\n    versionCode=54 minSdk=24 targetSdk=36\n    minExtensionVersions=[]\n    versionName=portal60-private-service-54\n    usesNonSdkApi=false\n    splits=[base]\n    apkSigningVersion=4\n    flags=[ DEBUGGABLE HAS_CODE ALLOW_CLEAR_USER_DATA ]\n    privateFlags=[ PRIVATE_FLAG_ACTIVITIES_RESIZE_MODE_RESIZEABLE_VIA_SDK_VERSION ALLOW_AUDIO_PLAYBACK_CAPTURE PRIVATE_FLAG_ALLOW_NATIVE_HEAP_POINTER_TAGGING ]\n    forceQueryable=false\n    dataDir=/data/user/0/org.cursedlands.performance\n    supportsScreens=[small, medium, large, xlarge, resizeable, anyDensity]\n    timeStamp=2026-10-08 09:34:46\n    lastUpdateTime=2026-10-08 09:34:46\n    packageSource=0\n    signatures=PackageSignatures{eb91bc0 version:4, signatures:[dfaa785c], past signatures:[]}\n    installPermissionsFixed=true\n    pkgFlags=[ DEBUGGABLE HAS_CODE ALLOW_CLEAR_USER_DATA ]\n    requested permissions:\n      android.permission.INTERNET\n    install permissions:\n      android.permission.INTERNET: granted=true\n    User 0: ceDataInode=63516 installed=true hidden=false suspended=false distractionFlags=0 stopped=true notLaunched=false enabled=0 instant=false virtual=false\n      installReason=0\n      firstInstallTime=2026-10-07 15:18:08\n      uninstallReason=0\n      overlay paths:\n        /product/overlay/NavigationBarModeGestural/NavigationBarModeGesturalOverlay.apk\n        /data/resource-cache/com.android.systemui-neutral-dkLj.frro\n        /data/resource-cache/com.android.systemui-accent-3XZv.frro\n      legacy overlay paths:\n        /product/overlay/NavigationBarModeGestural/NavigationBarModeGesturalOverlay.apk\n      gids=[3003]\n      runtime permissions:\n\nQueries:\n  system apps queryable: false\n  queries via forceQueryable:\n  queries via package name:\n  queries via component:\n    com.android.settings.intelligence:\n      org.cursedlands.performance\n    com.infoldgames.infinitynikkien:\n      org.cursedlands.performance\n  queryable via interaction:\n    User 0:\n      [com.rp.factorytest,com.retroidpocket.setupwizard,com.rp.mapping,com.android.wallpaperbackup,com.qualcomm.qti.services.secureui,com.android.inputdevices,com.android.keychain,com.retroidpocket.gamelauncher,com.android.settings,android,com.rp.fota,com.android.localtransport,com.rp.gameassistant,com.android.location.fused,com.rp.settings,com.android.providers.settings]:\n        org.cursedlands.performance\n      com.google.android.inputmethod.latin:\n        org.cursedlands.performance\n  queryable via uses-library:\n\nDexopt state:\n  [org.cursedlands.performance]\n    path: /data/app/~~-Hs0LWfM2H8cOwd4gLZwCg==/org.cursedlands.performance-xxc4p9Qf7WMUIuZm_9oPiw==/base.apk\n      arm64: [status=run-from-apk] [reason=unknown]\n  BgDexopt state:\n    enabled:true\n    mDexOptThread:null\n    mDexOptCancellingThread:null\n    mFinishedPostBootUpdate:true\n    mLastExecutionStatus:0\n    mLastExecutionStartTimeMs:259248570\n    mLastExecutionDurationIncludingSleepMs:24382\n    mLastExecutionStartUptimeMs:189187302\n    mLastExecutionDurationMs:24382\n    now:342359926\n    mLastCancelledPackages:\n    mFailedPackageNamesPrimary:\n    mFailedPackageNamesSecondary:\n\nCompiler stats:\n  [org.cursedlands.performance]\n    (No recorded stats)\n",
+        "apk_sha256": "f2a2159c9c19158026deea5d55c4392d12dd5c74f9726b2024448cbfe1a3ead6",
+        "battery_after": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Max charging current: 1200000\n  Max charging voltage: 5000000\n  Charge counter: 4855043\n  status: 2\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4387\n  temperature: 370\n  technology: Li-ion\n",
+        "seconds": 81.90202617645264,
+        "errors": []
+      }
+    },
+    "startup_settings": {
+      "control": {
+        "command": [
+          "/home/llm2x/.local/bin/godot-4",
+          "--headless",
+          "--audio-driver",
+          "Dummy",
+          "--path",
+          "$SCRATCHPAD/cpu-redesign-20261006/candidate",
+          "--script",
+          "$SCRATCHPAD/cpu-animation-20261006/release-repo/tools/tests/worker_display_settings.gd",
+          "--",
+          "--local-host-config=fixture"
+        ],
+        "exit_code": 1,
+        "expected_exit_code": 1,
+        "source_sha256": "38e470f244d2b1856f6cb6c491ef32cf3d52a2b9dbc0cafe4f36eaa3d6a523e2",
+        "log_sha256": "ffb49d6b76a847f25f0ec94630d5bab7205ae5364938e5a4214c33eed0653405",
+        "fixture_sha256": "cf707457d6897b87d6715112835da02decffe14115583d4297e76657d112cab7",
+        "result": "WORKER_DISPLAY_SETTINGS {\"checks\":19,\"failures\":16,\"worker\":true}"
+      },
+      "candidate-worker": {
+        "command": [
+          "/home/llm2x/.local/bin/godot-4",
+          "--headless",
+          "--audio-driver",
+          "Dummy",
+          "--path",
+          "$SCRATCHPAD/cpu-redesign-20261006/candidate",
+          "--script",
+          "$SCRATCHPAD/cpu-animation-20261006/release-repo/tools/tests/worker_display_settings.gd",
+          "--",
+          "--local-host-config=fixture"
+        ],
+        "exit_code": 0,
+        "expected_exit_code": 0,
+        "source_sha256": "59b2819e67e4f707eaed34eb7f1787cae5718d2ed9907d6dc0e644d5136b1919",
+        "log_sha256": "9310165b8d3c2b6cfc20ebe8c2bc574bb7a20ac447d158dec311c6d4abac7353",
+        "fixture_sha256": "cf707457d6897b87d6715112835da02decffe14115583d4297e76657d112cab7",
+        "result": "WORKER_DISPLAY_SETTINGS {\"checks\":19,\"failures\":0,\"worker\":true}"
+      },
+      "candidate-frontend": {
+        "command": [
+          "/home/llm2x/.local/bin/godot-4",
+          "--headless",
+          "--audio-driver",
+          "Dummy",
+          "--path",
+          "$SCRATCHPAD/cpu-redesign-20261006/candidate",
+          "--script",
+          "$SCRATCHPAD/cpu-animation-20261006/release-repo/tools/tests/worker_display_settings.gd",
+          "--"
+        ],
+        "exit_code": 0,
+        "expected_exit_code": 0,
+        "source_sha256": "59b2819e67e4f707eaed34eb7f1787cae5718d2ed9907d6dc0e644d5136b1919",
+        "log_sha256": "c3e2f7c7d298e189871f82cee35bca12b33ada36274a12dac6a32c1196249a05",
+        "fixture_sha256": "cf707457d6897b87d6715112835da02decffe14115583d4297e76657d112cab7",
+        "result": "WORKER_DISPLAY_SETTINGS {\"checks\":19,\"failures\":0,\"worker\":false}"
+      }
+    }
+  },
+  "clock_investigation": {
+    "run": "cadence-v2-response-device-01",
+    "result": "34checks /1failure",
+    "reason": "Cropped 8s interval advanced8.305s after659ms first-progress stall. Do not yet attribute to a regression: full speed-phase timing was missing. Revised test records and checks the whole interval from the speed request; production source unchanged.",
+    "original_fixture": "harness/worker_response_v1.gd",
+    "baseline_53_result": {
+      "checks": 34,
+      "failures": 1,
+      "latencies_ms": [
+        10,
+        13,
+        20,
+        27,
+        28,
+        29,
+        29,
+        29,
+        29,
+        29,
+        29,
+        31
+      ],
+      "rates": [
+        {
+          "phase_sim_seconds": 9.51499999999998,
+          "phase_wall_seconds": 9.626717,
+          "requested_rate": 1.0,
+          "resume_ms": 607,
+          "sim_seconds": 8.63499999999998,
+          "speed": 1,
+          "wall_seconds": 8.008317
+        },
+        {
+          "phase_sim_seconds": 13.2549999999999,
+          "phase_wall_seconds": 9.02593,
+          "requested_rate": 2.03703703703704,
+          "resume_ms": 7,
+          "sim_seconds": 11.8249999999999,
+          "speed": 2,
+          "wall_seconds": 8.019829
+        }
+      ]
+    },
+    "v2_fixture_sha256": "e5c4d8668ba6b8d940f57e9e5b9e1c6980c1fe86e85eafec9ca8ba6121c0dc33",
+    "resolution": "The retained 60 FPS control also repays elapsed startup debt: its cropped window advances8.635sim/8.008wall, but the full1x phase advances9.515sim/9.627wall. The full phase does not overrun. Both upper rate and catch-up checks now use the complete speed phase; production clock code is unchanged.",
+    "final_fixture_sha256": "38fdbc363b15a074785144d0450831e33a9f3edb7d3553276253f78a62ef1704"
+  },
+  "exclusions": {
+    "unenforced_initial_candidate": {
+      "status": "excluded",
+      "reason": "Delayed GameData display application overwrites LocalHost startup frame limit after four frames; requested 30 FPS was not enforced. Candidate52 result does not measure a sustained 30 FPS worker. Control run stopped before completion.",
+      "boot_log": "cadence-worker-boot-linux-01.log",
+      "completed_candidate": "worker-cadence-original-loop-candidate-60-01",
+      "stopped_control": "worker-cadence-original-loop-control-60-01",
+      "additional_exclusions": [
+        "cadence-single-player-linux-01 used base data with an Astral save and failed load; corrected Astral run -02 passes30checks, but neither establishes capped cadence.",
+        "frame-limit-display-control-01 attempted --script with a release template, which did not execute the fixture; corrected source tests use the stock editor runtime and -02 names.",
+        "frame-limit-desktop-4k-living-control-180-01 was refused before launch because a local correctness fixture was still running; -02 began only after it completed. No performance result was produced by the refused attempt."
+      ]
+    },
+    "startup_fix_living_party": [
+      {
+        "run": "worker-frame-limit-original-loop-control-60-02",
+        "reason": "Predefined living-party guard failed: main hero died at wall54.021s, simulated53.9s; workload changed. Excluded from matched living-party FPS comparison.",
+        "reported_fps": 53.5232540125485,
+        "replacement": "worker-frame-limit-original-loop-control-60-03",
+        "rule": "Do not alter health, enemies or difficulty to force survival; preserve the failed run."
+      }
+    ]
+  },
+  "source_freeze": {
+    "path": "$SCRATCHPAD/portal-throughput-20261007/worker-cadence-v2-source-freeze.json",
+    "sha256": "b485220faedcba72143ffdfa2d204e3d1c1fb8ff2342c4b3db162009641d3114"
+  },
+  "source_files": 520,
+  "fixtures": {
+    "worker_cadence_response.gd": "38fdbc363b15a074785144d0450831e33a9f3edb7d3553276253f78a62ef1704",
+    "worker_display_settings.gd": "cf707457d6897b87d6715112835da02decffe14115583d4297e76657d112cab7"
+  },
+  "artifacts": {
+    "android": {
+      "50": {
+        "private_instrumented": false,
+        "engine_sha256": "424eaf73630ec110faf614f550f8047c24a78e224211df45d8b957bf03b7cc79",
+        "native_sha256": "231ad722fd1f9eb0b5b47d7c9a386931a95b9f7ccb404fd7773a1fc651564fb7",
+        "apk_sha256": "30c3e5813fc6ec85537df602e38265af2ec6e19d7c0f5e90d79d213e07e73180",
+        "changes": [
+          "Batch tornado particle update, spawning and delayed removal in the existing native spell kernel",
+          "Keep original ground-following control callback, exact RNG order and serialized particle state",
+          "Fallback to script for older helpers and custom callbacks"
+        ],
+        "baseline_apk": 49,
+        "accepted": true,
+        "acceptance": "Retained after two reversed60secondpairs and a matched180secondpair at actualOriginal1x; stable60 remains open"
+      },
+      "53": {
+        "private_instrumented": false,
+        "engine_sha256": "424eaf73630ec110faf614f550f8047c24a78e224211df45d8b957bf03b7cc79",
+        "native_sha256": "231ad722fd1f9eb0b5b47d7c9a386931a95b9f7ccb404fd7773a1fc651564fb7",
+        "apk_sha256": "ba0020f05ca1fa90b896ded86f2024e848264aec8da6f360578d2f144c607970",
+        "changes": [
+          "Preserve the existing 60 FPS simulation worker cap across delayed startup window options and subsequent display setting changes"
+        ],
+        "baseline_apk": 50,
+        "accepted": false
+      },
+      "54": {
+        "private_instrumented": false,
+        "engine_sha256": "424eaf73630ec110faf614f550f8047c24a78e224211df45d8b957bf03b7cc79",
+        "native_sha256": "231ad722fd1f9eb0b5b47d7c9a386931a95b9f7ccb404fd7773a1fc651564fb7",
+        "apk_sha256": "f2a2159c9c19158026deea5d55c4392d12dd5c74f9726b2024448cbfe1a3ead6",
+        "changes": [
+          "30 FPS headless authority cadence with display-setting override fixed; original elapsed-time clock, 55 ms ticks and physics cadence unchanged"
+        ],
+        "baseline_apk": 53,
+        "accepted": true,
+        "acceptance": "Repeated Original/1x gameplay improvement; cadence plus startup-limit fix. Stable60FPS remains open."
+      }
+    },
+    "linux": {
+      "seconds": 5.978357510000933,
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--headless",
+        "--path",
+        "$SCRATCHPAD/cpu-redesign-20261006/candidate",
+        "--export-release",
+        "Linux",
+        "$SCRATCHPAD/cpu-redesign-20261006/build/throughput-worker-cadence02/CPU.x86_64"
+      ],
+      "engine_source": "$SCRATCHPAD/portal-60-20261007/fast-runtime.x86_64",
+      "errors": [],
+      "sha256": {
+        "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+        "CPU.pck": "a6bb4452c61f1ea05f4335228c7c21fa628f88384e92b2dbf97376c29195839e",
+        "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+      }
+    }
+  },
+  "cleanup": {
+    "installed_private_apk": 54,
+    "apk_sha256": "f2a2159c9c19158026deea5d55c4392d12dd5c74f9726b2024448cbfe1a3ead6",
+    "autorun_disabled": true,
+    "archived_bench": "files/bench-disabled-worker-cadence54.json",
+    "bench_sha256": "81dea23621863786a739474c54b7afde53ead142c8508be9c716e6c46e792db2",
+    "processes_remaining": [],
+    "original_app_untouched": true
+  },
+  "scheduling": {
+    "control": {
+      "wall_timestamp": 1791440406.6043322,
+      "sample": "android-control-long-scheduling-02",
+      "processes": [
+        {
+          "process": "org.cursedlands.performance",
+          "pid": 12906,
+          "cgroup": "5:schedtune:/top-app\n4:memory:/\n3:cpuset:/top-app\n2:cpu:/\n1:blkio:/\n0::/uid_10124/pid_12906\n",
+          "status": "Name:\tnds.performance\nState:\tS (sleeping)\nThreads:\t31\nCpus_allowed_list:\t0-7\nMems_allowed_list:\t0",
+          "top_threads": [
+            {
+              "tid": 12934,
+              "comm": "GLThread 91",
+              "cpu_ticks": 8999,
+              "priority": 20,
+              "nice": 0,
+              "last_cpu": 4,
+              "cgroup": "5:schedtune:/top-app\n4:memory:/\n3:cpuset:/top-app\n2:cpu:/\n1:blkio:/\n0::/uid_10124/pid_12906\n",
+              "cpu_allowed": "Cpus_allowed_list:\t0-7"
+            },
+            {
+              "tid": 12932,
+              "comm": "WorkerThread 2",
+              "cpu_ticks": 722,
+              "priority": 10,
+              "nice": -10,
+              "last_cpu": 5,
+              "cgroup": "5:schedtune:/top-app\n4:memory:/\n3:cpuset:/top-app\n2:cpu:/\n1:blkio:/\n0::/uid_10124/pid_12906\n",
+              "cpu_allowed": "Cpus_allowed_list:\t0-7"
+            },
+            {
+              "tid": 12931,
+              "comm": "WorkerThread 1",
+              "cpu_ticks": 284,
+              "priority": 10,
+              "nice": -10,
+              "last_cpu": 5,
+              "cgroup": "5:schedtune:/top-app\n4:memory:/\n3:cpuset:/top-app\n2:cpu:/\n1:blkio:/\n0::/uid_10124/pid_12906\n",
+              "cpu_allowed": "Cpus_allowed_list:\t0-7"
+            },
+            {
+              "tid": 12933,
+              "comm": "WorkerThread 3",
+              "cpu_ticks": 204,
+              "priority": 10,
+              "nice": -10,
+              "last_cpu": 5,
+              "cgroup": "5:schedtune:/top-app\n4:memory:/\n3:cpuset:/top-app\n2:cpu:/\n1:blkio:/\n0::/uid_10124/pid_12906\n",
+              "cpu_allowed": "Cpus_allowed_list:\t0-7"
+            },
+            {
+              "tid": 12930,
+              "comm": "WorkerThread 0",
+              "cpu_ticks": 160,
+              "priority": 10,
+              "nice": -10,
+              "last_cpu": 5,
+              "cgroup": "5:schedtune:/top-app\n4:memory:/\n3:cpuset:/top-app\n2:cpu:/\n1:blkio:/\n0::/uid_10124/pid_12906\n",
+              "cpu_allowed": "Cpus_allowed_list:\t0-7"
+            }
+          ],
+          "thread_read_error": ""
+        },
+        {
+          "process": "org.cursedlands.performance:simulation",
+          "pid": 12963,
+          "cgroup": "5:schedtune:/foreground\n4:memory:/\n3:cpuset:/foreground\n2:cpu:/\n1:blkio:/\n0::/uid_10124/pid_12963\n",
+          "status": "Name:\tance:simulation\nState:\tS (sleeping)\nThreads:\t22\nCpus_allowed_list:\t0-7\nMems_allowed_list:\t0",
+          "top_threads": [
+            {
+              "tid": 12986,
+              "comm": "GodotSimulation",
+              "cpu_ticks": 8737,
+              "priority": 20,
+              "nice": 0,
+              "last_cpu": 7,
+              "cgroup": "5:schedtune:/foreground\n4:memory:/\n3:cpuset:/foreground\n2:cpu:/\n1:blkio:/\n0::/uid_10124/pid_12963\n",
+              "cpu_allowed": "Cpus_allowed_list:\t0-7"
+            },
+            {
+              "tid": 12983,
+              "comm": "WorkerThread 1",
+              "cpu_ticks": 726,
+              "priority": 20,
+              "nice": 0,
+              "last_cpu": 7,
+              "cgroup": "5:schedtune:/foreground\n4:memory:/\n3:cpuset:/foreground\n2:cpu:/\n1:blkio:/\n0::/uid_10124/pid_12963\n",
+              "cpu_allowed": "Cpus_allowed_list:\t0-7"
+            },
+            {
+              "tid": 12982,
+              "comm": "WorkerThread 0",
+              "cpu_ticks": 272,
+              "priority": 20,
+              "nice": 0,
+              "last_cpu": 4,
+              "cgroup": "5:schedtune:/foreground\n4:memory:/\n3:cpuset:/foreground\n2:cpu:/\n1:blkio:/\n0::/uid_10124/pid_12963\n",
+              "cpu_allowed": "Cpus_allowed_list:\t0-7"
+            },
+            {
+              "tid": 12985,
+              "comm": "WorkerThread 3",
+              "cpu_ticks": 247,
+              "priority": 20,
+              "nice": 0,
+              "last_cpu": 7,
+              "cgroup": "5:schedtune:/foreground\n4:memory:/\n3:cpuset:/foreground\n2:cpu:/\n1:blkio:/\n0::/uid_10124/pid_12963\n",
+              "cpu_allowed": "Cpus_allowed_list:\t0-7"
+            },
+            {
+              "tid": 12984,
+              "comm": "WorkerThread 2",
+              "cpu_ticks": 180,
+              "priority": 20,
+              "nice": 0,
+              "last_cpu": 4,
+              "cgroup": "5:schedtune:/foreground\n4:memory:/\n3:cpuset:/foreground\n2:cpu:/\n1:blkio:/\n0::/uid_10124/pid_12963\n",
+              "cpu_allowed": "Cpus_allowed_list:\t0-7"
+            }
+          ],
+          "thread_read_error": ""
+        }
+      ]
+    },
+    "candidate": {
+      "wall_timestamp": 1791440716.4422019,
+      "sample": "android-candidate-long-scheduling-01",
+      "processes": [
+        {
+          "process": "org.cursedlands.performance",
+          "pid": 14098,
+          "cgroup": "5:schedtune:/top-app\n4:memory:/\n3:cpuset:/top-app\n2:cpu:/\n1:blkio:/\n0::/uid_10124/pid_14098\n",
+          "status": "Name:\tnds.performance\nState:\tS (sleeping)\nThreads:\t32\nCpus_allowed_list:\t0-7\nMems_allowed_list:\t0",
+          "top_threads": [
+            {
+              "tid": 14126,
+              "comm": "GLThread 91",
+              "cpu_ticks": 14399,
+              "priority": 20,
+              "nice": 0,
+              "last_cpu": 5,
+              "cgroup": "5:schedtune:/top-app\n4:memory:/\n3:cpuset:/top-app\n2:cpu:/\n1:blkio:/\n0::/uid_10124/pid_14098\n",
+              "cpu_allowed": "Cpus_allowed_list:\t0-7"
+            },
+            {
+              "tid": 14124,
+              "comm": "WorkerThread 2",
+              "cpu_ticks": 969,
+              "priority": 10,
+              "nice": -10,
+              "last_cpu": 6,
+              "cgroup": "5:schedtune:/top-app\n4:memory:/\n3:cpuset:/top-app\n2:cpu:/\n1:blkio:/\n0::/uid_10124/pid_14098\n",
+              "cpu_allowed": "Cpus_allowed_list:\t0-7"
+            },
+            {
+              "tid": 14123,
+              "comm": "WorkerThread 1",
+              "cpu_ticks": 554,
+              "priority": 10,
+              "nice": -10,
+              "last_cpu": 6,
+              "cgroup": "5:schedtune:/top-app\n4:memory:/\n3:cpuset:/top-app\n2:cpu:/\n1:blkio:/\n0::/uid_10124/pid_14098\n",
+              "cpu_allowed": "Cpus_allowed_list:\t0-7"
+            },
+            {
+              "tid": 14125,
+              "comm": "WorkerThread 3",
+              "cpu_ticks": 397,
+              "priority": 10,
+              "nice": -10,
+              "last_cpu": 5,
+              "cgroup": "5:schedtune:/top-app\n4:memory:/\n3:cpuset:/top-app\n2:cpu:/\n1:blkio:/\n0::/uid_10124/pid_14098\n",
+              "cpu_allowed": "Cpus_allowed_list:\t0-7"
+            },
+            {
+              "tid": 14122,
+              "comm": "WorkerThread 0",
+              "cpu_ticks": 279,
+              "priority": 10,
+              "nice": -10,
+              "last_cpu": 5,
+              "cgroup": "5:schedtune:/top-app\n4:memory:/\n3:cpuset:/top-app\n2:cpu:/\n1:blkio:/\n0::/uid_10124/pid_14098\n",
+              "cpu_allowed": "Cpus_allowed_list:\t0-7"
+            }
+          ],
+          "thread_read_error": ""
+        },
+        {
+          "process": "org.cursedlands.performance:simulation",
+          "pid": 14155,
+          "cgroup": "5:schedtune:/foreground\n4:memory:/\n3:cpuset:/foreground\n2:cpu:/\n1:blkio:/\n0::/uid_10124/pid_14155\n",
+          "status": "Name:\tance:simulation\nState:\tS (sleeping)\nThreads:\t21\nCpus_allowed_list:\t0-7\nMems_allowed_list:\t0",
+          "top_threads": [
+            {
+              "tid": 14177,
+              "comm": "GodotSimulation",
+              "cpu_ticks": 14548,
+              "priority": 20,
+              "nice": 0,
+              "last_cpu": 7,
+              "cgroup": "5:schedtune:/foreground\n4:memory:/\n3:cpuset:/foreground\n2:cpu:/\n1:blkio:/\n0::/uid_10124/pid_14155\n",
+              "cpu_allowed": "Cpus_allowed_list:\t0-7"
+            },
+            {
+              "tid": 14174,
+              "comm": "WorkerThread 1",
+              "cpu_ticks": 617,
+              "priority": 20,
+              "nice": 0,
+              "last_cpu": 4,
+              "cgroup": "5:schedtune:/foreground\n4:memory:/\n3:cpuset:/foreground\n2:cpu:/\n1:blkio:/\n0::/uid_10124/pid_14155\n",
+              "cpu_allowed": "Cpus_allowed_list:\t0-7"
+            },
+            {
+              "tid": 14175,
+              "comm": "WorkerThread 2",
+              "cpu_ticks": 288,
+              "priority": 20,
+              "nice": 0,
+              "last_cpu": 7,
+              "cgroup": "5:schedtune:/foreground\n4:memory:/\n3:cpuset:/foreground\n2:cpu:/\n1:blkio:/\n0::/uid_10124/pid_14155\n",
+              "cpu_allowed": "Cpus_allowed_list:\t0-7"
+            },
+            {
+              "tid": 14173,
+              "comm": "WorkerThread 0",
+              "cpu_ticks": 272,
+              "priority": 20,
+              "nice": 0,
+              "last_cpu": 6,
+              "cgroup": "5:schedtune:/foreground\n4:memory:/\n3:cpuset:/foreground\n2:cpu:/\n1:blkio:/\n0::/uid_10124/pid_14155\n",
+              "cpu_allowed": "Cpus_allowed_list:\t0-7"
+            },
+            {
+              "tid": 14176,
+              "comm": "WorkerThread 3",
+              "cpu_ticks": 257,
+              "priority": 20,
+              "nice": 0,
+              "last_cpu": 7,
+              "cgroup": "5:schedtune:/foreground\n4:memory:/\n3:cpuset:/foreground\n2:cpu:/\n1:blkio:/\n0::/uid_10124/pid_14155\n",
+              "cpu_allowed": "Cpus_allowed_list:\t0-7"
+            }
+          ],
+          "thread_read_error": ""
+        }
+      ]
+    }
+  },
+  "limits": [
+    "Stable60FPS at1x Original not achieved; 2x Retroid remains slower than real-time target",
+    "No new complete-tick CPU throughput claim; last retained Portal60.5sim run35.354s",
+    "Windows4K100%maxD3D12 about40FPS unresolved; Linux/Vulkan is not Windows validation",
+    "Cold first progress and action stalls remain; no exhaustive gameplay, combat or other-map certification",
+    "No new native module or engine build; publicExperimental5 and original Android package/saves unchanged"
+  ]
+}

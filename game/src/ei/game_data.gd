@@ -1028,6 +1028,11 @@ func apply_mouse_mode() -> void:
 
 
 func _apply_window() -> void:
+	# A headless simulation child owns its frame limit. In particular, the
+	# delayed startup window update must not replace it with the visible
+	# player's limit (often unlimited) after LocalHost.listening().
+	if Array(OS.get_cmdline_user_args()).any(func(a): return a.begins_with("--local-host-config=")):
+		return
 	var list := resolutions()
 	var ri := clampi(option("resolution"), 0, list.size() - 1)
 	var size: Vector2i = list[ri]
