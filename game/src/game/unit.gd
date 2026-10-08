@@ -1995,6 +1995,9 @@ func _step_along_path(dt: float) -> bool:
 		var step := minf(left, remaining)
 		var next := _motion.sample(_motion_tick + step)
 		var q: Vector2 = next.p
+		if _outside_village_move(q):
+			_fail_order(EIAcks.NO_PATH)
+			return true
 		if q.distance_squared_to(pos) > 0.00000001:
 			var res := {}
 			var b := world.nav.step_blocker(self, q, res, next.cell)
@@ -2059,6 +2062,9 @@ func _step_line_path(dt: float) -> bool:
 			var ang := (tgt - pos).angle()
 			_turn_to(ang, dt)
 		var q := tgt if d <= budget else pos + (tgt - pos) / d * budget
+		if _outside_village_move(q):
+			_fail_order(EIAcks.NO_PATH)
+			return true
 		var res := {}
 		var b := world.nav.step_blocker(self, q, res)
 		if b:
@@ -2096,6 +2102,15 @@ func _walk_action() -> void:
 		_set_action("crawl")
 	else:
 		_set_action("run" if running and not cannot_run() else "walk")
+
+
+func _outside_village_move(at: Vector2) -> bool:
+	var limit: Vector3 = order.get("village_limit", Vector3.ZERO)
+	if limit.z <= 0.0: return false
+	var center := Vector2(limit.x,limit.y)
+	var d := at.distance_squared_to(center)
+	# A character outside the circle in an older save can walk back in.
+	return d > limit.z*limit.z+0.001 and d >= pos.distance_squared_to(center)
 
 
 func _blocked_by(b: GameUnit, standing: bool, next := Vector2.INF) -> void:
@@ -2433,6 +2448,9 @@ func _do_attack(dt: float) -> void:
 	var ranged: bool = stats.get("ranged", false)
 	var reach: float = stats.reach if ranged else melee_reach(t)
 	var d := pos.distance_to(t.pos)
+	if not ranged and d <= reach and not _melee_height_clear(t):
+		_approach(t, dist3(t), reach, dt)
+		return
 	# A party unit's aligned, standing melee query can test the selected clip's
 	# impact tick directly. Do not reject this branch against
 	# today's blocker positions before it reaches that query. Outside the
@@ -2639,6 +2657,8 @@ func _strike_clear(t: GameUnit, d: float) -> bool:
 ## own cadence and RNG. For the ordinary zero-relativeZ case,52fcc0 retains
 ## unit+24. Use XY without substituting different ground heights.
 func _strike_clear_at(t: GameUnit, ticks: int, point := Vector2.INF) -> bool:
+	if not _melee_height_clear(t, point):
+		return false
 	if order.get("full_path", false) or float(stats.get("range", 0.0)) >= 3.0 \
 			or GameSound.held_weapon_type(self) in [5, 6]:
 		return true
@@ -2666,6 +2686,19 @@ func _strike_clear_at(t: GameUnit, ticks: int, point := Vector2.INF) -> bool:
 				and c > -0.30000001192092896 and c < 0.30000001192092896:
 			return false
 	return true
+
+
+## Melee cannot bridge separate storeys just because their XY footprints
+## overlap. Preserve ordinary planar reach, allowing the actors' body
+## heights and weapon reach to cover steps and differently sized creatures.
+## Recheck at impact because a scripted lift can move during the swing.
+func _melee_height_clear(t: GameUnit, point := Vector2.INF) -> bool:
+	if world == null: return true
+	var at := t.pos if point == Vector2.INF else point
+	var a := world.ground_at(pos.x, pos.y)
+	var b := world.ground_at(at.x, at.y)
+	var gap := maxf(a - b - t.figure_half_z * 2.0, b - a - figure_half_z * 2.0)
+	return gap <= melee_reach(t)
 
 
 ## The stamina a cast costs. Only the players' units pay it or need it
@@ -2868,14 +2901,15 @@ static func _clip_duration(tmpl: String, clip: String) -> int:
 func _resolve_hit(t: GameUnit, roll := {}) -> void:
 	if t == null or not is_instance_valid(t) or t.dead:
 		return
-	# No range check: the blow fires at the strike's end tick wherever the
-	# target now stands (case 3
-	# the target's with the stored roll).
+	# Preserve the original committed blow's planar range behavior, but
+	# a lift or floor transition must not make it hit another storey.
 	if stats.get("ranged", false):
 		Projectile.launch(world, self, t, true).roll = roll
 		if world.session:
 			world.session.broadcast({"t": "arrow", "a": uid, "b": t.uid})
 		world.combat.weapon_spell(self, t)
+		return
+	if not _melee_height_clear(t):
 		return
 	world.combat.melee(self, t, roll)
 	world.combat.weapon_spell(self, t)

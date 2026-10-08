@@ -2101,7 +2101,7 @@ static func group_offset(i: int) -> Vector2:
 
 
 func apply_command(cmd: Dictionary, player: int) -> void:
-	if world == null or movie_active():
+	if world == null or movie_active() or not command_allowed(cmd):
 		return
 	var mine: Array[GameUnit] = []
 	for id in cmd.get("units", []):
@@ -2120,6 +2120,11 @@ func apply_command(cmd: Dictionary, player: int) -> void:
 			var tag: Variant = cmd.get("exit", -1)
 			var clicked_exit: int = tag if tag is int and not bool(cmd.get("line", false)) \
 					and not bool(cmd.get("swarm", false)) else -1
+			var limit := village_move_limit()
+			var ex: Dictionary = world.zone.get("exits", {}).get(clicked_exit, {})
+			if ex.has("remove") and (ex.remove as Rect2).has_point(c) and String(ex.get("to", "none")) != "none" \
+					and state.get_var(0, "z." + String(ex.to)) != 1.0:
+				limit = Vector3.ZERO   # the authored open exit remains reachable
 			_arm_exit(player, c, not mine.is_empty(), clicked_exit)
 			for i in mine.size():
 				var off := group_offset(i)
@@ -2130,6 +2135,9 @@ func apply_command(cmd: Dictionary, player: int) -> void:
 				# The unit's own gait decides run / walk (the original unit)
 				# "run" is the double-click flag (command).
 				var mo := {"type": "move", "to": c + off, "gait": true, "run": bool(cmd.get("run", false)), "path_notice": not bool(cmd.get("line", false))}
+				if limit.z > 0.0:
+					mo.village_limit = limit
+					mo.to = Vector2(limit.x,limit.y) + (mo.to-Vector2(limit.x,limit.y)).limit_length(limit.z)
 				if cmd.get("line", false):
 					# The gamepad stick's moves (PadField): straight where the
 					# line can be walked (GameUnit._do_move, NavGrid.direct_line).
@@ -2180,7 +2188,7 @@ func apply_command(cmd: Dictionary, player: int) -> void:
 			if target and not target.dead:
 				for u in mine:
 					if u != target:
-						u.command({"type": "follow", "target": target})
+						u.command({"type": "follow", "target": target, "village_limit":village_move_limit()})
 		"interact":
 			if shop_available():
 				# Keep the host's idle/ownership gate, then approach the NPC
@@ -2784,6 +2792,23 @@ func _refresh_character(u: GameUnit, h: Dictionary) -> void:
 
 func shop_available() -> bool:
 	return world != null and String(world.zone.get("type", "")) == "brief"
+
+
+## Classic safe-zone controls. Scripted attacks, casts and escape orders
+## bypass player command dispatch and retain their authored behavior.
+func command_allowed(cmd: Dictionary) -> bool:
+	if not shop_available(): return true
+	match String(cmd.get("t", "")):
+		"attack", "cast", "steal", "use", "aggression": return false
+		"gait": return int(cmd.get("gait",2)) >= 2
+		"move": return not bool(cmd.get("swarm",false))
+	return true
+
+
+## The authored village view circle is also the boundary for remake free
+## walking. Native story movement and conversation staging are not clipped.
+func village_move_limit() -> Vector3:
+	return world.zone.get("restrict", Vector3.ZERO) if shop_available() else Vector3.ZERO
 
 
 ## Character management (equipment, belt, skills, abilities, spells): in a
@@ -4170,6 +4195,7 @@ func _spawn_late_joiner(idx: int, pid: int) -> void:
 			if u.controller == idx and u.has_meta("hero") and not u.get_meta("hero").has("merc"):
 				Combat.set_complexion(u, u.get_meta("hero"), u.get_meta("hero").complexion)
 				_refresh_hero(u)
+	_relink_heroes()
 	_rpc_zone.rpc_id(pid, zone_id, _unit_records(), world.diplomacy, _extra_mobs(),
 		String(world.zone.get("mpr", "")), _lever_states(), _load_serial)
 	_send_world_state(pid)

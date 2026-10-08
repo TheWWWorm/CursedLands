@@ -138,6 +138,18 @@ func _ready() -> void:
 		check(st.save("user://party-purses.sav") == OK,"party bags save")
 		var loaded := CampaignState.load_from("user://party-purses.sav")
 		check(loaded.current_party == st.current_party and loaded.money == st.money and loaded.items == st.items and loaded.party_bags == st.party_bags,"saved party bags reload without reassignment")
+	var original_name: String = s.state.heroes[0][0].name
+	var before_guest: Dictionary = s.state.heroes[1][0].duplicate(true)
+	s.state.ensure_hero(1,"Human Hero","Alice")
+	s._relink_heroes()
+	check(s.state.heroes[1][0].name=="Alice" and guest.display_name=="Alice","rebound guest name updates live character preview")
+	check(s.state.heroes[1][0].get("unit_name","")==before_guest.get("unit_name",before_guest.name),"renaming preserves the deployment identity")
+	check(s.state.heroes[1][0].weapons==before_guest.weapons and s.state.heroes[1][0].skills==before_guest.skills,"renaming does not replace the guest character")
+	s.state.ensure_hero(0,"Human Hero","Host Alias")
+	check(s.state.heroes[0][0].name==original_name,"host lobby alias does not rename the story protagonist")
+	check(s.state.save("user://renamed-party.sav")==OK,"renamed party saves")
+	var renamed := CampaignState.load_from("user://renamed-party.sav")
+	check(renamed.heroes[1][0].name=="Alice" and renamed.heroes[1][0].unit_name==s.state.heroes[1][0].unit_name,"guest display and deployment names survive save/load")
 	for n in allocations:
 		if n is GameWorld: n.units = {}
 	for n in allocations: n.free()

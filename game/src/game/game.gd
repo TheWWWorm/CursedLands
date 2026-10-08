@@ -1074,6 +1074,7 @@ const BELT := "@belt:"
 ## One click on a belt item (the original): choose its target next
 ## the same item again cancels.
 func begin_belt(u: GameUnit, item: String) -> void:
+	if not session.command_allowed({"t":"use"}): return
 	touch_aim = -1
 	touch_force = ""
 	var key := "%s%d:%s" % [BELT, u.uid, item]
@@ -1086,6 +1087,7 @@ func begin_belt(u: GameUnit, item: String) -> void:
 
 
 func begin_cast(i: int) -> void:
+	if not session.command_allowed({"t":"cast"}): return
 	if selected.is_empty() or not selected[0].has_meta("hero"):
 		return
 	var spells: Array = selected[0].get_meta("hero").get("spells", [])
@@ -1302,7 +1304,7 @@ static func block_refuses(t: String, village: bool) -> bool:
 
 
 func issue(cmd: Dictionary) -> void:
-	if session.loading_game:
+	if session.loading_game or not session.command_allowed(cmd):
 		return
 	var t := String(cmd.get("t", ""))
 	# A unit with flag (script BlockUnit, or saying a "say_block"
@@ -1339,7 +1341,7 @@ func issue(cmd: Dictionary) -> void:
 		for id in ids:
 			var m: GameUnit = world.units.get(int(id))
 			if m:
-				GameSound.ack(m, ORDER_ACKS[t])
+				GameSound.ack(m, EIAcks.MOVE if t == "interact" and session.shop_available() else ORDER_ACKS[t])
 
 
 ## a named unit's level from its figure, any

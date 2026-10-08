@@ -1212,9 +1212,13 @@ func _update_ground(g: Game, dt: float) -> void:
 		return
 	var x := position.x
 	var y := -position.z
-	var h := terrain.height_at(x, y) * 0.4
+	var centre := _camera_ground(x, y)
+	var h := centre * 0.4
 	for o: Vector2 in [Vector2(3, 0), Vector2(-3, 0), Vector2(0, 3), Vector2(0, -3)]:
-		h += terrain.height_at(x + o.x, y + o.y) * 0.15
+		h += _camera_ground(x + o.x, y + o.y) * 0.15
+	# Averaging across a narrow bridge/lift must not pull the focus into
+	# the pit beneath the floor at the actual look-at point.
+	h = maxf(h, centre)
 	if _follow_unit and is_instance_valid(_follow_unit):
 		# Blended out from 2 to 4 m (no step when the view leaves the hero).
 		var p := _follow_unit.get_global_transform_interpolated().origin
@@ -1230,6 +1234,15 @@ func _update_ground(g: Game, dt: float) -> void:
 	position.y = _ground_s + lerpf(M_LIFT_CLOSE, M_LIFT_FAR, _zoom_t(_dist_s))
 
 
+## The modern camera shares the actors' raised floors, including scripted
+## moving lifts, and stays above visible water rather than its bottom.
+func _camera_ground(x: float, y: float) -> float:
+	if terrain == null: return 0.0
+	var g := get_parent() as Game
+	var h := g.world.ground_at(x, y) if g and g.world and g.world.terrain == terrain else terrain.ground_at(x, y)
+	return maxf(h, terrain.water_at(x, y))
+
+
 ## Extra pitch (rad) the eye line from the look-at point needs to stay
 ## M_CLEARANCE above the terrain (hills behind the camera, the hero in a dip).
 func _needed_terrain_pitch() -> float:
@@ -1239,7 +1252,7 @@ func _needed_terrain_pitch() -> float:
 	_terrain_pitch = 0.0
 	var p0 := _modern_pitch()
 	_terrain_pitch = base
-	var ty := position.y if _ground_init else terrain.height_at(position.x, -position.z) + M_LIFT_CLOSE
+	var ty := position.y if _ground_init else _camera_ground(position.x, -position.z) + M_LIFT_CLOSE
 	var dir := Vector2(sin(_yaw_s), cos(_yaw_s))   # ground direction look-at → eye (Godot x, z)
 	var extra := 0.0
 	while extra < deg_to_rad(60.0):
@@ -1266,7 +1279,7 @@ func _eye_line_clear(p: float, ty: float, dir: Vector2) -> bool:
 		var r := _dist_s * f * cos(p)
 		var gx := position.x + dir.x * r
 		var gz := position.z + dir.y * r
-		if ty + _dist_s * f * sin(p) < terrain.height_at(gx, -gz) + M_CLEARANCE:
+		if ty + _dist_s * f * sin(p) < _camera_ground(gx, -gz) + M_CLEARANCE:
 			return false
 	return true
 
@@ -1280,13 +1293,13 @@ func _apply_modern() -> void:
 		_goal = clamp_look_at(_goal)
 		position = clamp_look_at(position)
 		if not _ground_init:
-			position.y = terrain.height_at(position.x, -position.z) + lerpf(M_LIFT_CLOSE, M_LIFT_FAR, _zoom_t(_dist_s))
+			position.y = _camera_ground(position.x, -position.z) + lerpf(M_LIFT_CLOSE, M_LIFT_FAR, _zoom_t(_dist_s))
 	pitch = -_modern_pitch()
 	var b := Basis.from_euler(Vector3(pitch, _yaw_s, 0))
 	var eye := global_position + b * Vector3(0, 0, _dist_s)
 	if terrain:
 		# Never under the ground at the eye itself.
-		var h := terrain.height_at(eye.x, -eye.z) + 1.0
+		var h := _camera_ground(eye.x, -eye.z) + 1.0
 		if eye.y < h:
 			eye.y = h
 	eye.y += _shake_ofs

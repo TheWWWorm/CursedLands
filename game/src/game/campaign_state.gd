@@ -258,6 +258,14 @@ func add_item(id: String, n := 1) -> void:
 
 func ensure_hero(player: int, prototype: String, player_name := "") -> void:
 	if heroes.has(player):
+		# A loaded co-op slot keeps its character and equipment, but its
+		# display name follows the player now bound to that slot. Preserve
+		# the deployment/script name used to relink an already live unit.
+		if player > 0 and not heroes[player].is_empty() and player_name.strip_edges() != "" and player_name != "Player":
+			var h: Dictionary = heroes[player][0]
+			if not h.has("merc"):
+				if not h.has("unit_name"): h.unit_name = h.name
+				h.name = player_name.strip_edges()
 		return
 	var proto := GameData.db.find("monster_prototypes", prototype)
 	var npc := GameData.db.find("npcs", prototype)
@@ -1025,6 +1033,12 @@ func store_zone(id: String, world: GameWorld) -> void:
 		for r: Dictionary in world.map.unit_records:
 			if not present.has(int(r.nid)):
 				z.removed.append(int(r.nid))
+	# AddMob actors have the same lifetime as the base map's actors. In
+	# particular, LiA removes Terror after the escape; reloading its .mob
+	# must not resurrect it when returning from the catacombs.
+	for nid: int in world.get_meta("added_unit_ids", {}):
+		if not present.has(nid) and not z.removed.has(nid):
+			z.removed.append(nid)
 	for nid in world.levers:
 		z.levers[nid] = world.lever_sys.export_row(int(nid)) if world.lever_sys else \
 			[world.levers[nid].state, 0.0, bool(world.levers[nid].get("enabled", true))]
@@ -1073,18 +1087,28 @@ func restore_zone(id: String, world: GameWorld) -> void:
 	var z: Dictionary = zones.get(id, {})
 	if z.is_empty():
 		return
+	var removed: Array = Array(z.get("removed", [])).duplicate()
+	var added_ids := {}
 	# Units that scripts added from extra .mob files come back first.
 	for file: String in z.get("added", []):
 		var extra := EIMob.load_bytes(GameData.read_file("maps/" + file))
 		for o: Dictionary in extra.objects:
-			if o.kind == "UNIT" and not world.units.has(int(o.get("nid", -1))):
+			if o.kind != "UNIT": continue
+			var nid := int(o.get("nid", -1))
+			added_ids[nid] = true
+			# Existing saves with the complete carried-inventory snapshot
+			# also identify absent added actors, although their old writer
+			# omitted them from `removed`. Older saves lack that evidence.
+			if z.get("carried") is Dictionary and not z.carried.has(nid) and not z.carried.has(str(nid)):
+				if not removed.has(nid): removed.append(nid)
+			if not removed.has(nid) and not world.units.has(nid):
 				world.spawn_unit(o)
 		world.add_mob_objects(file)
 	world.set_meta("added_mobs", z.get("added", []).duplicate())
+	world.set_meta("added_unit_ids", added_ids)
 	var looted: Array = z.get("looted", [])
 	# Looted script-added units are not in the base map's removed list.
 	# Restore their existing tombstones too, before publishing live units.
-	var removed: Array = Array(z.removed).duplicate()
 	for nid in looted:
 		if not removed.has(nid):
 			removed.append(nid)

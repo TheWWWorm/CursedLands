@@ -633,6 +633,9 @@ func _call(name: String, a: Array, inst: Instance):
 				u.command({"type": "move", "to": to, "run": u.get_meta("script_run", false) or u.running,
 					"story_move": true})
 				u.set_meta("ai_state", 1)
+				preload("res://src/game/script/story_compat.gd").story_move(self, inst.sname, u, to)
+		"RemakeEscapeReady":
+			return preload("res://src/game/script/story_compat.gd").escape_guests(self).all(func(u: GameUnit): return u.pos.y < 84.0)
 		# Builtins 0x8e SetCP / 0xad SetCPFast(object, x, y, z) put the object
 		# there at once (: position.., world grid
 		# re-link); a unit then drops what it was doing and stands
@@ -1137,6 +1140,7 @@ func _use_lever(u: GameUnit, nid: int) -> void:
 	if world.lever_sys.science_ok(nid, use, quest):
 		var time := world.lever_sys.set_state(nid, -1)
 		session.broadcast({"t": "lever", "nid": nid, "state": world.levers[nid].state, "time": time})
+		preload("res://src/game/script/story_compat.gd").lift_recall(self, nid)
 	else:
 		u.ack(EIAcks.SCIENCE_FAILED)   # ack 0x11
 
@@ -1533,6 +1537,9 @@ func _add_mob(file: String) -> void:
 	world.set_meta("added_mobs", added)
 	for o: Dictionary in extra.objects:
 		if o.kind == "UNIT":
+			var ids: Dictionary = world.get_meta("added_unit_ids", {})
+			ids[int(o.nid)] = true
+			world.set_meta("added_unit_ids", ids)
 			var u := world.spawn_unit(o)
 			if u:
 				session.announce_unit(u)

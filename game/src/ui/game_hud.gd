@@ -986,7 +986,7 @@ func _selected_gait() -> int:
 ## run / walk / sneak / crawl keys. Nothing happens with nothing selected.
 func set_move_mode(mode: String) -> void:
 	var g := {"crawl": 0, "sneak": 1, "walk": 2, "run": 3}.get(mode, -1) as int
-	if g < 0 or _first_selected() == null:
+	if g < 0 or _first_selected() == null or not game.session.command_allowed({"t":"gait", "gait":g}):
 		return
 	if GameSound.instance:
 		GameSound.instance.ui("buttons\\battle\\click.wav")

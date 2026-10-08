@@ -1,0 +1,244 @@
+{
+  "baseline_commit": "e18c3ef",
+  "export": {
+    "seconds": 5.9187157319975086,
+    "command": [
+      "/home/llm2x/.local/bin/godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+      "--export-release",
+      "Linux",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps04/CPU.x86_64"
+    ],
+    "engine_source": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/fast-runtime.x86_64",
+    "errors": [],
+    "sha256": {
+      "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+      "CPU.pck": "0c6fe2e2d00ea71cb436e4dfe4ccdcba4277789f3edb3c2293499062e78b1f25",
+      "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+    }
+  },
+  "tests": {
+    "gameplay-camp-release-02": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps04/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/slave_camp_escape.gd",
+        "--label=gameplay-camp-release-02"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 10.31724363102694,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "log_sha256": "8df2700b600062ad1af60816732f312d568b0dffcbdf6db7855cae58f991e87e",
+      "checks": 20,
+      "failures": 0,
+      "raw_log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-camp-release-02.log"
+    },
+    "gameplay-terror-release-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps04/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/added_actor_lifetime.gd",
+        "--label=gameplay-terror-release-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 18.530628092004918,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "log_sha256": "920a3245e5b4898da425bd78f647061fa99e22058ab77f6f3c940c8b1cf1248a",
+      "checks": 12,
+      "failures": 0,
+      "raw_log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-terror-release-01.log"
+    },
+    "gameplay-catacombs-render-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps04/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--resolution",
+        "1600x900",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/catacomb_mechanisms.gd",
+        "--label=gameplay-catacombs-render-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 38.86672115701367,
+      "errors": [],
+      "warnings": [
+        "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+      ],
+      "log_sha256": "4505e3fd018b24c676162522163aa96a6007c67daed7bf4dab9c445adcd229a7",
+      "checks": 18,
+      "failures": 0,
+      "raw_log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-catacombs-render-01.log"
+    },
+    "gameplay-roster-base-names-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps04/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/campaign_roster.gd",
+        "--label=gameplay-roster-base-names-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 1.803433313005371,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "log_sha256": "f686f9c88500652c1edf9706a67cdc7880dbe9286536e1a260b8f8ab6ce58182",
+      "checks": 37,
+      "failures": 0,
+      "raw_log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-roster-base-names-01.log"
+    },
+    "gameplay-roster-names-release-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps04/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/campaign_roster.gd",
+        "--label=gameplay-roster-names-release-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 2.2042229189828504,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "log_sha256": "714e864900593dcf86fc0375b3ec8fc7054102815245a44cad6fe3e241138939",
+      "checks": 64,
+      "failures": 0,
+      "raw_log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-roster-names-release-01.log"
+    },
+    "gameplay-camp-before-02": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps03/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/slave_camp_escape.gd",
+        "--label=gameplay-camp-before-02"
+      ],
+      "exit_code": 1,
+      "stopped": false,
+      "seconds": 10.415407277003396,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "log_sha256": "1972350f32437add1ba71965754afe20c334cd75c885e559d3ba3ae516ec5a44",
+      "checks": 18,
+      "failures": 11,
+      "raw_log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-camp-before-02.log"
+    },
+    "gameplay-terror-before-02": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps03/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/added_actor_lifetime.gd",
+        "--label=gameplay-terror-before-02"
+      ],
+      "exit_code": 1,
+      "stopped": false,
+      "seconds": 18.82206305299769,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "log_sha256": "ab64fc4f3800e7b9059ff5cb88f24fdff62b3f894e49e71079657c5cae03a1ac",
+      "checks": 12,
+      "failures": 5,
+      "raw_log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-terror-before-02.log"
+    },
+    "gameplay-lift-recall-before-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps03/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/catacomb_mechanisms.gd",
+        "--label=gameplay-lift-recall-before-01"
+      ],
+      "exit_code": 1,
+      "stopped": false,
+      "seconds": 23.939717339002527,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "log_sha256": "787b43375b3c77178cdab06271c319e67f9f73ce9c2e36e47132a01b12e02405",
+      "checks": 16,
+      "failures": 4,
+      "raw_log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-lift-recall-before-01.log"
+    }
+  },
+  "source_sha256": {
+    "game/src/game/campaign_state.gd": "7e4eaf7cc10d7b45c84a2f00483d7eda726e87a4491f3310f64fe902a51687cf",
+    "game/src/game/game.gd": "d916fbac953159d73b9adf8adb0a0661d7daa6c72565c4a6b88debcad679c7bb",
+    "game/src/game/script/story_compat.gd": "9e9ce198a135831b4abd1e5f9c3584b34bf1be71548f044823c8e13f222b31a6",
+    "game/src/game/script/vm.gd": "07c144142fdff58c7bf8c16d2c3d243736de2d59cb924fa0bb85b3da910ba820",
+    "game/src/game/session.gd": "3a625ac3eabaf90cda0a0074d076f3f7ea0adb7037603391cd7c7ed10ecddc01",
+    "game/src/game/unit.gd": "33d9855fdf8d9f3fc280dedbccb9fdaf498b2569d40b1d46f7d4035991452cea",
+    "game/src/ui/camera_rig.gd": "b2471c4e344e5f1750e0c4116407c37d2b10726ea8f9f0ee99e9845a8109a202",
+    "game/src/ui/game_hud.gd": "193baa689ae1d27ea3ad96d98648b0233550b4ac7bb5858ac08777db9cc60544",
+    "tools/tests/campaign_roster.gd": "595298376a8e1493eb89b508855e1aa153094644c7138d2b5fb3082c75c05ab1",
+    "tools/tests/added_actor_lifetime.gd": "b465761ecb5ece731b05f0aa411c31640286f641550c9354d7023399f6b25e7e",
+    "tools/tests/catacomb_mechanisms.gd": "d7b1b2887877e371ff7477f4d61b1d20ff269877a0c15980ccdfbb2723efd43c",
+    "tools/tests/slave_camp_escape.gd": "3bb002ad17987a118224635554b88362d05a7d044c499264dfb57becd160dd39"
+  },
+  "visual_review": [
+    "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/gameplay-catacombs-render-01/godot/app_userdata/Cursed Lands/catacomb-view-0.png",
+    "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/gameplay-catacombs-render-01/godot/app_userdata/Cursed Lands/catacomb-view-1.png",
+    "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/gameplay-catacombs-render-01/godot/app_userdata/Cursed Lands/catacomb-view-2.png"
+  ],
+  "limitations": [
+    "No Windows or Retroid validation of this gameplay batch yet.",
+    "Prepared original-data states, not full chapter playthroughs or network boarding.",
+    "Safe render-thread / Xvfb Catacombs checks establish visual correctness, not performance.",
+    "Terror restore fixture exercises persistence on an existing world, not a full zone transfer.",
+    "Initial escape tests omitted paused NPC navigation registration and are excluded as movement evidence.",
+    "Initial camp negative baseline issued an RPC without a peer; replaced by clean baseline 02.",
+    "Authored camera circle is reused as a remake player-walking bound; this is not a claim about original walking behavior."
+  ]
+}
