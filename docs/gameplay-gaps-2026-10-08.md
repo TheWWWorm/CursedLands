@@ -35,9 +35,9 @@ The additional [campaign audit](/home/llm2x/Documents/EI/local/implementation-ga
 | U25 | Verify tamed dragon's departure after harpies against original scripts; user observed eventual departure. | Original handler orders the dragon home after crossing y=295 away from the hero, then clears following after 150 ticks. Order/delay regression passes; no departure change needed. |
 | U26 | Rejoining with a changed name updates overhead text but leaves the old name in character preview. | Rebinding a saved guest slot updates saved and live display names without replacing character data. Save/load tests pass; renamed real-network reconnect pending. |
 | U27 | Experimental third-person mode: behind-shoulder view, persistent HP bars, free aimed attacks including peaceful zones, WASD movement and mouse camera/attacks; default mode for gamepad. Preserve classic controls as a selectable mode. | Requested; open |
-| U28 | Refund older characters and all trainable skills/abilities, including Zak’s innate backstab. | Requested; replaces the old purchased-only refund policy. |
-| U29 | Remove ability purchase-order advantage while retaining escalating costs at the cheapest obtainable order. | Requested; six numerical skill curves are already independent; the global perk multiplier is the affected system. |
-| U30 | Sell the armour/weapon infusion runes in the Gipath spell shop. | Requested; add authored ic/it runes to campaign trader 2. |
+| U28 | Refund older characters and all trainable skills/abilities, including Zak’s innate backstab. | Fixed full reset of six trainable skills and all abilities, including initial backstab and skill gifts. Older records migrate with old-price credit. Desktop, co-op and Retroid save/reset checks pass. |
+| U29 | Remove ability purchase-order advantage while retaining escalating costs at the cheapest obtainable order. | Fixed ability pricing as the difference in cheapest legal final-allocation prices; original prerequisites, curve and rounding remain. 5,247 legal orders agree in each tested campaign. Six numerical skill curves were already independent. |
+| U30 | Sell the armour/weapon infusion runes in the Gipath spell shop. | Gipath witch stocks native ic/it runes. Existing shops receive missing stock once without replacing other goods or replenishing exhausted entries. Co-op stock sync and enchantment compatibility pass. |
 
 ## Campaign audit findings
 
@@ -81,3 +81,5 @@ The quest checkpoint distinguishes unit-carried `RemoveQuestItem` from player-ba
 [Shelter validation](gameplay-shelter-validation.json) records eleven checks for the original scripted departure. The repeat-load crash was traced to the fixture ticking a freed old-world VM; it is excluded as a game defect.
 
 [Party-dependent validation](gameplay-party-dependents-validation.json) records ten pre-fix failures and 23 passing production LiA checks, plus 13 base-campaign checks. Temporary substitute parties retain waiting animals, and returning guest-owned companions keep ownership and wound state.
+
+[Training and infusion validation](gameplay-training-validation.json) records 92 production reset/pricing checks, 16 rendered co-op checks, 36 base-shop checks, 35 expansion scope checks and 92 Retroid checks. The old build fails 66 training and 24 infusion assertions. The refund tooltip and zero-allocation screen were inspected. Private APK55 is installed with autorun disabled; the normal Android installation is unchanged.

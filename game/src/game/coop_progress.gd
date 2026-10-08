@@ -990,7 +990,7 @@ static func sanitize_hero(d) -> Dictionary:
 			# saves/RPC preserve it; retain that allocation with canonical keys.
 			if (k is String or k is StringName) and String(k).length() <= 32:
 				skills[String(k)] = clampf(_num(d.skills[k], 0.0), 0.0, 1000.0)
-	h.skills = skills if not skills.is_empty() else Skills.from_npc(npc)
+	h.skills = skills if d.get("skills") is Dictionary else Skills.from_npc(npc)
 	h.perks = _strings(d.get("perks"), 256, 64)
 	h.armors = _strings(d.get("armors"), 16).filter(func(x): return Items.kind(x) == "armor")
 	h.weapons = _strings(d.get("weapons"), 4).filter(func(x): return Items.kind(x) == "weapon")

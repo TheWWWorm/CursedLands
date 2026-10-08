@@ -2882,6 +2882,7 @@ func open_shop(id: int) -> void:
 		rng.randomize()
 		rec.goods = Shops.generate(id, rec.get("sold", {}), best, rng)
 		rec.restock = false
+	Shops.migrate_stock(id, rec)
 	sync_state()
 
 

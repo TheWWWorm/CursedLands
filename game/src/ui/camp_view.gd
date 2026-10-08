@@ -2889,7 +2889,7 @@ func _draw_skills() -> void:
 		elif not at_camp:
 			refund_help = "Points can be refunded in a village or camp."
 		else:
-			refund_help = "Returns all XP spent on skills and purchased abilities, including attribute upgrades. Starting allocations and quest gifts stay; equipment and earned XP stay."
+			refund_help = "Resets all skills and abilities, including starting ranks and skill gifts, and refunds their points. Base attributes, equipment and earned XP stay."
 	_skill_rows.append([REFUND_RECT, {"t": "refund_training", "unit": _unit.uid} if refundable else {},
 		[RemakeText.t("Refund all points"), RemakeText.t(refund_help)], "refund"])
 	var o := Vector2(200, 100)

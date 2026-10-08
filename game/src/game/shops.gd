@@ -82,6 +82,21 @@ static func _mask(row: Dictionary, id: int) -> bool:
 	return Items._in_shop(row, id - 1)
 
 
+## The campaign's Gipath witch also supplies the native weapon/armour
+## infusion runes. Existing stock gets one additive migration; reopening a
+## shop never replenishes sold-out goods or discards the player's sales.
+static func gipat_infusions(id: int) -> bool:
+	return id == 2 and not network and GameData.campaign_id != CampaignProfile.ASTRAL
+
+
+static func migrate_stock(id: int, rec: Dictionary) -> void:
+	if not gipat_infusions(id) or bool(rec.get("gipat_infusions", false)): return
+	var goods: Dictionary = rec.get_or_add("goods", {})
+	for code: String in ["ic", "it"]:
+		goods.get_or_add("rune:" + code, 20)
+	rec.gipat_infusions = true
+
+
 static func _lc(v) -> String:
 	return String(v).to_lower()
 
@@ -94,7 +109,7 @@ static func lists(id: int, sold: Dictionary) -> Dictionary:
 		var key := "code" if t.begins_with("spell") else "name"
 		var seen := {}
 		for row in GameData.db.table(t):
-			if _mask(row, id):
+			if _mask(row, id) or (gipat_infusions(id) and t == "spell_modifiers" and _lc(row.get("code", "")) in ["ic", "it"]):
 				rows.append(row)
 				seen[_lc(row.get(key, ""))] = true
 		for n: String in sold.get(t, []):

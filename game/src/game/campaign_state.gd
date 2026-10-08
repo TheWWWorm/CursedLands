@@ -532,8 +532,7 @@ func make_merc(n: int, rec: Dictionary, current: Dictionary = {}) -> Dictionary:
 	if String(m.name).is_empty():
 		m.name = "Mercenary %d" % n
 	if not m.has(TrainingRefund.KEY):
-		# Existing saved NPCs may include gifts or paid training. Recover only
-		# an unambiguous legacy history rather than treating them as fresh.
+		# Existing saved NPCs retain credit for their older ability prices.
 		TrainingRefund.prepare(m)
 	mercs[n] = m
 	return m
