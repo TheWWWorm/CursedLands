@@ -261,7 +261,7 @@ func _all(conds: Array, inst: Instance) -> bool:
 	return true
 
 
-func spawn(name: String, args: Array) -> void:
+func spawn(name: String, args: Array, caller := "") -> void:
 	var s: Dictionary = ast.scripts.get(name, {})
 	if s.is_empty():
 		return
@@ -272,6 +272,7 @@ func spawn(name: String, args: Array) -> void:
 	for k in mini(params.size(), args.size()):
 		inst.locals[params[k]] = args[k]
 	instances.append(inst)
+	preload("res://src/game/script/story_coop_traps.gd").arm(self, name, args, caller)
 
 
 func fire_event(name: String, args: Array) -> void:
@@ -409,7 +410,7 @@ func _stmt_call(name: String, a: Array, inst: Instance) -> bool:
 			inst.killed = true
 			return false
 	if ast.scripts.has(name):
-		spawn(name, _args(a, inst))
+		spawn(name, _args(a, inst), inst.sname)
 		return false
 	_call(name, a, inst)
 	return false
@@ -422,6 +423,12 @@ func _call(name: String, a: Array, inst: Instance):
 		_seen_memo.clear()
 	# Special forms with lazily evaluated arguments.
 	match name:
+		"RemakeTrapActor":
+			return preload("res://src/game/script/story_coop_traps.gd").actor(self, String(_eval(a[0],inst)), int(_num(_eval(a[1],inst))))
+		"RemakeTrapJoin":
+			var values := _args(a,inst)
+			preload("res://src/game/script/story_coop_traps.gd").join(self,values[0],values.slice(1),inst)
+			return null
 		"RemakePartyCast":
 			preload("res://src/game/script/story_coop_effects.gd").cast(self, a, inst)
 			return null

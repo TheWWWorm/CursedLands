@@ -6,6 +6,7 @@ static func apply(ast: ScriptParser, campaign: String, zone: String) -> void:
 	if campaign != CampaignProfile.ASTRAL:
 		return
 	preload("res://src/game/script/story_coop_effects.gd").apply(ast, zone)
+	preload("res://src/game/script/story_coop_traps.gd").apply(ast, zone)
 	if zone == "bz1h":
 		_escape_party(ast)
 	if zone != "cz1h": return
@@ -81,9 +82,10 @@ static func lift_recall(vm: ScriptVM, nid: int) -> void:
 
 
 ## Earlier saves kept VM waits but lost the corresponding walking orders.
-## Only the two proven escape waits can be recovered from their exact marks.
+## Recover inspected active trap families and the two proven escape waits.
 static func recover(vm: ScriptVM) -> void:
 	if vm.session.state.campaign_id != CampaignProfile.ASTRAL: return
+	preload("res://src/game/script/story_coop_traps.gd").recover(vm)
 	var zone := String(vm.world.zone.get("id", ""))
 	if zone == "bz1h" and vm.instances.any(func(i): return i.sname == "VCheck#1#1a" and not i.killed):
 		# Old saves kept this arrival wait without guest escape orders.
