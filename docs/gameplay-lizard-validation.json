@@ -1,0 +1,131 @@
+{
+  "baseline_commit": "1b83c4a",
+  "export": {
+    "seconds": 5.975068853003904,
+    "command": [
+      "/home/llm2x/.local/bin/godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+      "--export-release",
+      "Linux",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps09/CPU.x86_64"
+    ],
+    "engine_source": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/fast-runtime.x86_64",
+    "errors": [],
+    "sha256": {
+      "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+      "CPU.pck": "5af1ab7d4613d0a1cc71af15149e175ff47c6de1e437f376a8cc1f44773f2d30",
+      "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+    }
+  },
+  "tests": {
+    "gameplay-lizard-before-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps08/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--resolution",
+        "1600x900",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/lizard_trident.gd",
+        "--label=gameplay-lizard-before-01"
+      ],
+      "exit_code": 1,
+      "stopped": false,
+      "seconds": 6.911298029997852,
+      "errors": [],
+      "warnings": [
+        "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+      ],
+      "log_sha256": "85a8d4dce0cc3d0d99c075cf37f45a26bef504503b0c34a1f4ec602b9bec19db",
+      "checks": 4,
+      "failures": 1,
+      "raw_log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-lizard-before-01.log"
+    },
+    "gameplay-lizard-after-01": {
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--resolution",
+        "1600x900",
+        "--windowed",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/lizard_trident.gd",
+        "--label=gameplay-lizard-after-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 8.315149726025993,
+      "errors": [],
+      "warnings": [
+        "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+      ],
+      "log_sha256": "df3d0cf6e6d727b61c2f4795969fc4e29c765910dd561fb91be23b24b003949b",
+      "checks": 4,
+      "failures": 0,
+      "raw_log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-lizard-after-01.log"
+    },
+    "gameplay-lizard-production-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps09/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--resolution",
+        "1600x900",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/lizard_trident.gd",
+        "--label=gameplay-lizard-production-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 6.608744335011579,
+      "errors": [],
+      "warnings": [
+        "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+      ],
+      "log_sha256": "5b36bafd8d239c31b8db20963e53af75f292c781de6416badb8097372d1903f3",
+      "checks": 4,
+      "failures": 0,
+      "raw_log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-lizard-production-01.log"
+    }
+  },
+  "source_sha256": {
+    "game/src/ei/unit_model.gd": "f454fd48b39f318b8822a004129c65530ba4adf9b63f6bd5425bf68452824fe6",
+    "tools/tests/lizard_trident.gd": "5913eead5133d239e1ab8352b382ba07bde5f0f2926037d74c1d3eb99b85e4ea"
+  },
+  "visual_review": [
+    "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/gameplay-lizard-after-01/godot/app_userdata/Cursed Lands/lizard-trident.png"
+  ],
+  "original_evidence": "bz4g.mob OLiz (DragonkinGreenF3) has no inventory weapon; unmoli links include rh3.trident. The natural trident uses the creature texture.",
+  "limitations": [
+    "Prepared original model at default Original joint setting, not combat animation playthrough.",
+    "Windows and Retroid package checks pending."
+  ]
+}

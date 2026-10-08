@@ -630,6 +630,11 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 		var natural := "sling" if ranged else "rh3.pike00"
 		if parts.has(natural) and (body_parts.is_empty() or natural in body_parts):
 			mesh_for[natural] = natural
+	# The lizard's trident is part of its authored figure, with no inventory
+	# weapon entry. The generic dotted-variant filter otherwise drops it.
+	if template == "unmoli" and parts.has("rh3.trident") \
+			and (body_parts.is_empty() or "rh3.trident" in body_parts):
+		mesh_for["rh3.trident"] = "rh3.trident"
 	var layers: Array[String] = []
 	var surfaces: Array[Vector3] = []
 	#  formats the prototype's skin index directly. The race's
