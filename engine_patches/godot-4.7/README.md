@@ -1,9 +1,9 @@
 # Desktop export templates
 
-The Windows and Linux x86-64 release templates target Godot 4.7, source commit
-`5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88`, with the six patches in this
-directory. Apply them in the order listed below and build normal release
-templates with the standard Godot build instructions:
+The template recipe targets Godot 4.7, source commit
+`5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88`. Apply the common patches in the
+order listed below and build normal release templates with the standard Godot
+build instructions. Adding a patch here does not update installed templates.
 
 1. `render-thread-shutdown.patch`
 2. `queued-image-snapshot.patch`
@@ -11,6 +11,7 @@ templates with the standard Godot build instructions:
 4. `preserve-character-track-caches.patch`
 5. `prepare-character-track-caches.patch`
 6. `cache-unobserved-track-eligibility.patch`
+7. `mobile-shader-recompile-lock.patch`
 
 The first two patches repair separate-render-thread shutdown and snapshot
 mutable images for queued texture uploads. The third lets an unobserved looping
@@ -31,8 +32,22 @@ The sixth caches whether a clip's tracks permit deferred pose evaluation.
 Every internal track-cache invalidation advances a generation, including when
 signals are blocked. Playback mode, section and running-state checks remain
 live. Adding a method/event track therefore immediately disables deferral.
+
+The seventh finishes Mobile's pending pipeline jobs before changing shader state
+and limits its shared compiler mutex to the compiler call. Previously,
+`ShaderData::set_code` kept that mutex while `clear_pipelines` waited for jobs
+that could call `get_shader_variant` and need the same mutex. Live shader
+changes could therefore deadlock, including disabling foliage wind on a loaded
+map. Waiting before changing the version also prevents a worker from trying to
+free obsolete shader RIDs, which must happen on the render thread. Apply this patch
+before accepting the native Mobile wind/cache path. It changes no shader
+equations, cache policy, or Compatibility/Forward+ code. Linux validation and
+the paired engine controls are recorded in
+[`local-shadow-cache-2026-10-08.json`](../../docs/validation/local-shadow-cache-2026-10-08.json).
+Windows, Android and macOS builds of this patch still need platform validation.
+
 macOS and Web use the official 4.7 templates. Experimental 5 Android ARM64 uses
-the six common patches and `android-headless-service.patch`; earlier public
+the first six common patches and `android-headless-service.patch`; earlier public
 Android releases used the official template. See
 [the Android service guide](../../platform/android/simulation/README.md).
 The extra patch guards Android-only sensor dispatch and supplies a surface-free

@@ -1,0 +1,37 @@
+--- a/servers/rendering/renderer_rd/forward_mobile/scene_shader_forward_mobile.cpp
++++ b/servers/rendering/renderer_rd/forward_mobile/scene_shader_forward_mobile.cpp
+@@ -41,6 +41,11 @@
+ /* ShaderData */
+ 
+ void SceneShaderForwardMobile::ShaderData::set_code(const String &p_code) {
++	// Finish jobs while the old version is valid, before taking the compiler
++	// mutex. Variant lookup in those jobs needs the same mutex, and a dirty
++	// version could otherwise free old shader RIDs from a worker thread.
++	pipeline_hash_map.clear_pipelines();
++
+ 	//compile
+ 
+ 	code = p_code;
+@@ -166,8 +171,11 @@
+ 
+ 	actions.uniforms = &uniforms;
+ 
+-	MutexLock lock(SceneShaderForwardMobile::singleton_mutex);
+-	Error err = SceneShaderForwardMobile::singleton->compiler.compile(RSE::SHADER_SPATIAL, code, &actions, path, gen_code);
++	Error err = OK;
++	{
++		MutexLock lock(SceneShaderForwardMobile::singleton_mutex);
++		err = SceneShaderForwardMobile::singleton->compiler.compile(RSE::SHADER_SPATIAL, code, &actions, path, gen_code);
++	}
+ 
+ 	if (err != OK) {
+ 		if (version.is_valid()) {
+@@ -238,8 +246,6 @@
+ 	ubo_size = gen_code.uniform_total_size;
+ 	ubo_offsets = gen_code.uniform_offsets;
+ 	texture_uniforms = gen_code.texture_uniforms;
+-
+-	pipeline_hash_map.clear_pipelines();
+ 
+ 	// If any form of Alpha Antialiasing is enabled, set the blend mode to alpha to coverage.
+ 	if (alpha_antialiasing_mode != ALPHA_ANTIALIASING_OFF) {

@@ -1238,6 +1238,118 @@ Raw runs, the frozen candidate, baseline probe and sequential reproduction
 suite are under
 `/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-mobile/`.
 
+## P5 follow-up: let stationary foliage reuse native shadow maps
+
+Godot already retains complete local shadow maps. The disabled foliage wind
+branch still referenced `TIME`, so Godot classified those materials as animated
+and repeatedly dirtied overlapping lights even when their `wind` uniform was
+zero. This checkpoint removes that inactive vertex branch at shader compilation
+and gives authored rigid plants a permanently stationary shader. Wind settings,
+light selection, shadow strength, sun policy and scene ownership stay as before.
+
+This follows R0's principle of avoiding repeated static shadow work, not its
+separate static-depth/dynamic-overlay implementation. See R0
+`Source/renderer_point_shadows.cpp:28–88` (separate page allocation) and
+`138–139` (static/overlay slots), at
+`d529d14e9bf3c960833a9d9633786fc4588ec6d2`. Godot's whole-map reuse still stops
+when a contributing caster, light, material or relevant atlas allocation changes.
+Animated characters, wind-on foliage and particles can still require redraws.
+
+### Implementation and engine prerequisite
+
+- [figure.gd:30](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/game/src/ei/figure.gd:30): wind branch marker and permanent `FOLIAGE_STILL_SHADER`. `foliage_material_for` selects the appropriate shared program and passes that source to ground-contact variants.
+- [figure.gd:589](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/game/src/ei/figure.gd:589): `set_wind` recomposes shared programs. The material's `wind` uniform now retains authored strength (1 for normal sway, 0 for rigid plants), rather than mirroring the global switch. Material copies made while wind is off therefore animate correctly when it is restored.
+- [gfx.gd:203](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/game/src/game/gfx.gd:203), `compose` and `set_foliage_wind`: compile inactive deformation out, including contact variants; no new per-frame scan. Changing the option can incur shader preparation work.
+- [camera_fade.gd:214](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/game/src/ui/camera_fade.gd:214): refresh cached dither programs in place after wind or other surface/fog recomposition. Active material/shader identities, textures, per-part values and fade strength survive. This does not change camera movement, visibility selection or fade ownership.
+- [mobile-shader-recompile-lock.patch](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/engine_patches/godot-4.7/mobile-shader-recompile-lock.patch): **required for native Mobile acceptance**. Finish pending pipeline jobs before changing shader state or taking the compiler mutex, then confine that mutex to the compiler call. See the [template recipe](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/engine_patches/godot-4.7/README.md). Adding the patch does not update installed templates; Linux was built in a separate QA copy. Windows/Android/macOS builds still need validation. Compatibility and Forward+ engine code are unchanged.
+
+Pinned engine: `5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88`, in
+`/home/llm2x/Documents/EI/local/scratchpad/coop-performance-20261005/engine-profile/godot-5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88`.
+Useful source locations:
+
+- `servers/rendering/renderer_scene_cull.cpp:3607–3641`: dirty/version tracking, atlas update and re-dirtying for animated casters. `renderer_scene_cull.h:719–745` uses the normal rendered-frame counter for multiple-camera handling.
+- `drivers/gles3/storage/material_storage.cpp:3215` and `servers/rendering/renderer_rd/forward_mobile/scene_shader_forward_mobile.cpp:252`: animation classification depends on vertex `TIME` use, not a runtime zero uniform.
+- `servers/rendering/renderer_rd/storage_rd/light_storage.cpp:219` and `drivers/gles3/storage/light_storage.cpp:144`: energy/opacity changes do not increment the depth-map version; movement/range/bias changes can invalidate it.
+- Unpatched `forward_mobile/scene_shader_forward_mobile.cpp:169, 242, 478`: the code setter held the singleton mutex while waiting for pipeline work whose variant lookup needed that same mutex. `renderer_rd/pipeline_hash_map_rd.h:87, 214` contains the wait/clear operation. The final patch moves that wait before version mutation as well as correcting lock scope.
+
+### Rendered acceptance and limits
+
+[local_shadow_cache.gd](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/local_shadow_cache.gd)
+loads actual maps and authored torch placement/radii through `ParticleFx`, then
+selects shadows with the production manager. It freezes gameplay and simulation,
+omits units/grass/directional shadows, and samples 48 normal rendered frames per
+state. `force_draw()` is unsuitable for this cache test: it does not advance the
+engine clock used by the dirty-shadow logic. Keep the off-screen window drawable;
+minimizing it suppresses normal X11 draws. All runs use isolated data directories,
+`--render-thread safe`, no focus and a bounded runner.
+
+| Authored map / selected torch | Overlapping foliage meshes | Baseline wind-off shadow primitives/frame | Candidate wind-off shadow primitives/frame |
+|---|---:|---:|---:|
+| `zonemainmenunew`, radius 5 | 12 | 16,266 | 0 |
+| `zone3obr`, radius 5 | 3 | 14,933 | 0 |
+
+These counts concern the selected static diagnostic scene, not whole-game FPS.
+Compatibility and Forward+ reproduce the result; the patched Mobile renderer
+also reuses depth. Motion of the authored light or an authored fireplace mesh
+resumes updates, restoring either returns to zero updates and the original
+image, and wind restoration resumes animated shadows. Changing energy/opacity
+alone keeps static depth cached. Sixteen paired Compatibility captures, including
+settled motion endpoints and restorations, are byte-identical to `851a843`.
+Eight additional Mobile comparisons are exact with both application revisions
+on the final patched engine (24 paired captures total).
+
+Counter caveat: use shadow **primitives**, not the GLES shadow draw counter.
+Pinned GLES leaves that draw counter at zero and counts shadow submissions in
+its `VISIBLE/DRAW_CALLS` field (`rasterizer_scene_gles3.cpp:3929`). The raw
+`visible_draws` field therefore falls 129→74 and 217→190 here without a change
+in visible scenery. Mobile's shadow draw field is assigned per pass rather than
+summed (`render_forward_mobile.cpp:1600`). None of those fields should be
+misrepresented as directly comparable color-pass draws across backends.
+
+[foliage_shadow_cache.gd](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/foliage_shadow_cache.gd)
+uses real foliage materials and exercises base/contact/dither combinations,
+rigid plants, off→on→off→on changes, and unrelated material-option recompilation.
+It requires exact stationary pixels, zero inactive depth updates, restored
+animation/depth updates when enabled, retained textures/resources/fade values,
+and identical off-state restoration. The existing foliage, ground-contact,
+scenery-batch and material-option fixtures are also retained and extended for
+the stationary shader. The final engine passes 141 focused checks on each
+backend and 416 Mobile material-option checks (126 drawn shader variants).
+The existing engine also passes 25 headless/28 rendered foliage checks, 35
+ground-contact checks, 119 live scenery checks, 416 Compatibility material-option
+checks and 141 legacy/dynamic-shader cache checks. Four candidate map runs pass
+34 checks each; three paired baseline map runs pass 33 each. The acceptance
+set contains 1,739 candidate checks and 99 baseline map checks. Exact per-run
+commands, source hashes and earlier rejected/control runs are in the evidence.
+
+The engine diagnosis is part of this checkpoint, not a silently ignored test
+failure. The original export stalled on `zone3obr` after wind-on. A separately
+built matched engine control, differing only in the Mobile code setter, also
+stalled and was terminated at 60 seconds. Narrowing the mutex alone removed
+the stall but caused 36 render-thread-only RID errors and leaked shader RIDs;
+that binary is rejected. Waiting before shader-version mutation removes those
+errors. The final settled run completes all map assertions without engine
+errors or resource warnings.
+
+Short startup captures are not accepted as steady-state comparisons. The small
+Mobile fixture showed a 41-pixel change above 2/255 (peak 7/255) on its first
+static sample, reproduced with identical before/after PNGs on baseline and
+candidate. It now uses 120 initial warm-up frames. The map's early 16-frame
+warm-up showed 11 differing pixels (peak 7/255) during shader preparation;
+Mobile acceptance uses `--shadow-cache-warmup=240`, keeping strict image checks.
+The exact internal source of that transient was not instrumented. The initial
+map motion comparisons also used an ambiguous caster and unsettled endpoint;
+final controls identify the same authored mesh and wait four frames after its
+last movement. Superseded captures and rejected runs remain in QA.
+
+Evidence: [local-shadow-cache-2026-10-08.json](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/docs/validation/local-shadow-cache-2026-10-08.json),
+with raw logs, frozen exports, source/pack hashes and controls under
+`/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-shadow-cache`.
+Correctness runs overlapped unrelated Godot work; timing fields are diagnostic
+only. No Android/browser hardware, installed build or real save was used. This
+is a native-cache eligibility improvement, not the upstream split-depth cache,
+a directional-shadow optimization or a demonstrated device/FPS speedup.
+
 ## P6 investigation: directional-shadow snapping
 
 At the start of this batch, the remake separated direct lighting from a held
@@ -1680,15 +1792,24 @@ hooks in `map_scene.gd`, `camera_fade.gd` and `ground_contact.gd`, plus tests an
 the benchmark. It preserves individual object nodes and does not touch the
 other chat's newer creature visibility or story/co-op effect changes.
 
-The latest read-only `git apply --check` includes all production/tool changes
-from this branch's base through the P5 native Mobile checkpoint. It passed
-against clean committed HEAD `40ea5a981b992bda63d4e505f47747a7c60068f2`, after
-the other chat committed its story/co-op fixes. Its HEAD, status and hashes of
-all 55 touched files were unchanged. **No patch was applied.**
-The result and exact target state are in the P5 Mobile validation JSON above.
-`game_data.gd` is shared by earlier commits: preserve its newer control/options
-changes when integrating. Recheck before integration because that checkout is
-still changing. Do not message or alter the other chat without human authorization.
+The full stack through `851a843` previously passed a read-only check against
+clean `40ea5a981b992bda63d4e505f47747a7c60068f2`. The other chat has since
+committed its lift changes. The current accumulated patch needs reconciliation
+in `game/src/ei/map_scene.gd`; **do not apply the full patch blindly**. All
+remaining paths pass when that file is excluded. The latest check includes the
+new engine patch and records target HEAD/status and hashes before/after; it did
+not change any target file. Exact revision, dirty files and commands are in the
+P5 cache evidence. The native engine patch separately passes a read-only check
+against the pinned engine source.
+
+The current foliage/cache changes add no new map-loading or gameplay hooks.
+The overlap is from this branch's earlier scenery/ground-contact integration,
+where the other chat now has lift initialization. Reconcile both owners' setup
+and teardown when integrating; preserve `catacomb_lift` as well as the
+experimental scenery manager. `game_data.gd` also contains earlier shared
+changes. Recheck the active checkout before integration and preserve its newer
+control/options/session/travel changes. Do not message or alter the other chat
+without human authorization. No patch was applied here.
 
 ## Next work in the established order
 
@@ -1714,7 +1835,11 @@ still changing. Do not message or alter the other chat without human authorizati
    ranking and per-scan frustum reuse are now implemented. Native Mobile uses
    its existing opacity blend and provides a constrained-device opt-in;
    desktop correctness and the actual platform gate are validated. Full-map/device
-   and caster-aware selection acceptance, plus cached map updates, remain open.
+   and caster-aware selection acceptance remain open. Disabled wind and rigid
+   foliage now permit native whole-map shadow reuse; live fade/contact shaders
+   follow the same specialization. Native Mobile requires the accompanying
+   engine lifetime/lock patch. The upstream static-depth/dynamic-overlay cache
+   and real device performance remain open.
    For P6, identify actual shimmer/redraw cost and renderer capabilities
    before changing cascade settings or planning engine-level projection reuse.
 4. **C1 character batching/skinning:** keep as an isolated prototype until the

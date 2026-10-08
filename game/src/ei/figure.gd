@@ -18,7 +18,6 @@ static var _foliage := {}
 ## Compatibility needs part_y on the material. Identical base/height pairs
 ## share a variant, weakly retained while placed parts (or fades) own it.
 static var _foliage_local := {}   # base material -> {part_y: WeakRef}
-static var _wind := true
 
 ## Remake foliage: the original alpha-tested material plus optional wind
 ## (gfx_wind), bark detail (gfx_materials) and masked leaf transmission
@@ -30,6 +29,7 @@ static var _wind := true
 ## root rising to the full share at STIFF_TOP m, and do not flutter.
 const FOLIAGE_SHADER := """
 shader_type spatial;
+#define EI_FOLIAGE_WIND
 render_mode cull_disabled, ambient_light_disabled;
 varying vec3 ei_e;
 varying float ei_k;
@@ -45,6 +45,7 @@ const float STIFF_TOP = 2.5;
 void vertex() {
 	ei_e = ei_material_emissive;
 	ei_k = 0.0;
+#ifndef EI_FOLIAGE_WIND_DISABLED
 	float hgt = max(part_y + VERTEX.y, 0.0);
 	if (wind > 0.0 && hgt > 0.05) {
 		vec3 o = NODE_POSITION_WORLD;
@@ -58,6 +59,7 @@ void vertex() {
 		// world offset into the model's space (objects are scaled 1, rotated)
 		VERTEX += (inverse(mat3(MODEL_MATRIX)) * dw);
 	}
+#endif
 }
 void fragment() {
 	FOG = ei_fog_of(VERTEX, (INV_VIEW_MATRIX * vec4(VERTEX, 1.0)).xyz);
@@ -78,6 +80,10 @@ void fragment() {
 	}
 }
 """
+
+# A zero wind uniform still marks TIME-dependent vertex code as animated in
+# Godot, preventing local shadow reuse. Rigid plants never need that code.
+const FOLIAGE_STILL_SHADER := "#define EI_FOLIAGE_STILL\n" + FOLIAGE_SHADER
 
 
 ## Map objects in the original light model (Gfx.light_code: the 3dfpfpu.dll
@@ -465,14 +471,16 @@ static func foliage_material_for(texture: String, sway := true, stiff := false, 
 	if tex == null:
 		return material_for(texture)
 	var m := ShaderMaterial.new()
-	m.shader = _foliage_shader()
+	m.shader = _foliage_shader(sway)
 	m.set_shader_parameter("albedo_tex", tex)
 	m.set_shader_parameter("foliage_mask", SurfaceResponse.foliage_mask(texture))
-	m.set_shader_parameter("wind", 1.0 if _wind and sway else 0.0)
+	# Authored strength stays on material copies, including camera fades.
+	# The global wind switch compiles the inactive vertex branch out instead.
+	m.set_shader_parameter("wind", 1.0 if sway else 0.0)
 	m.set_shader_parameter("stiff", 1.0 if stiff else 0.0)
 	FigureMaterial.apply(m, material_id)
 	m.set_meta("sway", sway)
-	m.set_meta("ground_contact_source", FOLIAGE_SHADER)
+	m.set_meta("ground_contact_source", FOLIAGE_SHADER if sway else FOLIAGE_STILL_SHADER)
 	_foliage[key] = m
 	return m
 
@@ -563,27 +571,28 @@ static func sways(template: String, texture: String, model: Dictionary,
 
 
 static var _fshader: Shader
+static var _fshader_still: Shader
 
 
-static func _foliage_shader() -> Shader:
+static func _foliage_shader(sway := true) -> Shader:
+	if not sway:
+		if _fshader_still == null:
+			_fshader_still = Gfx.make_shader(FOLIAGE_STILL_SHADER)
+		return _fshader_still
 	if _fshader == null:
 		Gfx.ensure_globals()
 		_fshader = Gfx.make_shader(FOLIAGE_SHADER)
 	return _fshader
 
 
-## Option gfx_wind on / off for every foliage material.
+## Update shared shader programs, preserving material and per-part identities.
 static func set_wind(on: bool) -> void:
-	_wind = on
-	for m: ShaderMaterial in _foliage.values():
-		m.set_shader_parameter("wind", 1.0 if on and m.get_meta("sway", true) else 0.0)
+	Gfx.set_foliage_wind(on)
 	for base: ShaderMaterial in _foliage_local.keys():
 		var variants: Dictionary = _foliage_local[base]
 		for height: float in variants.keys():
 			var m := (variants[height] as WeakRef).get_ref() as ShaderMaterial
-			if m:
-				m.set_shader_parameter("wind", 1.0 if on and m.get_meta("sway", true) else 0.0)
-			else:
+			if m == null:
 				variants.erase(height)
 		if variants.is_empty():
 			_foliage_local.erase(base)

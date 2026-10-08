@@ -59,7 +59,7 @@ func test_variants() -> void:
 		check(EIFigure.foliage_variant(other, 0.25) != first, "different base look stays separate")
 	var still := EIFigure.foliage_variant(EIFigure.foliage_material_for("tree02", false, false, 18), 0.25)
 	EIFigure.set_wind(false)
-	check(first.get_shader_parameter("wind") == 0.0 and still.get_shader_parameter("wind") == 0.0, "wind disabled on live variants")
+	check(first.get_shader_parameter("wind") == 1.0 and still.get_shader_parameter("wind") == 0.0, "wind switch preserves authored strengths for material copies")
 	EIFigure.set_wind(true)
 	check(first.get_shader_parameter("wind") == 1.0 and still.get_shader_parameter("wind") == 0.0, "wind restores authored sway eligibility")
 	var transient := EIFigure.foliage_variant(base, 123.0)

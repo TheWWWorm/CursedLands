@@ -202,6 +202,8 @@ void ei_vertex_colours(vec3 p, vec3 n, vec3 e, float kw, out vec3 d, out vec3 s)
 ## and the map objects too.
 static func compose(code: String, lit := true, wrap := false) -> String:
 	ensure_globals()
+	if code.contains("#define EI_FOLIAGE_WIND") and (not _foliage_wind or code.contains("#define EI_FOLIAGE_STILL")):
+		code = code.replace("#define EI_FOLIAGE_WIND\n", "#define EI_FOLIAGE_WIND\n#define EI_FOLIAGE_WIND_DISABLED\n")
 	if lit and not wrap and not code.contains("#define EI_FIGURE_LIGHT"):
 		code = code.replace("shader_type spatial;", "shader_type spatial;\n#define EI_FIGURE_LIGHT")
 	if lit:
@@ -280,6 +282,23 @@ static var _vol_fog := false
 static var _material_mode := -1
 static var _terrain_mode := -1
 static var _specialize_materials := not OS.get_cmdline_user_args().has("--ei-dynamic-material-shader")
+static var _foliage_wind := true
+
+
+## Shader TIME detection cannot see a zero uniform. Compile inactive foliage
+## wind out, including contact variants, so native local-shadow caching works.
+static func set_foliage_wind(enabled: bool) -> void:
+	if enabled == _foliage_wind:
+		return
+	_foliage_wind = enabled
+	for r: Array in _made:
+		var source: String = r[1]
+		if not source.contains("#define EI_FOLIAGE_WIND") or source.contains("#define EI_FOLIAGE_STILL"):
+			continue
+		var shader := (r[0] as WeakRef).get_ref() as Shader
+		if shader:
+			shader.code = compose(source, r[2], r[3])
+			CameraFade.refresh_shader(shader)
 
 
 static func make_shader(code: String, lit := true, wrap := false) -> Shader:
@@ -306,6 +325,7 @@ static func _set_vol_fog(v: bool) -> void:
 		var sh := (r[0] as WeakRef).get_ref() as Shader
 		if sh:
 			sh.code = compose(r[1], r[2], r[3])
+			CameraFade.refresh_shader(sh)
 			keep.append(r)
 	_made = keep
 

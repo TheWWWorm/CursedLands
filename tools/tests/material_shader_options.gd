@@ -59,7 +59,9 @@ func _ready() -> void:
 		[TerrainDetails.GRASS_SHADER, true],
 		[EITerrain.TERRAIN_SHADER.replace("shader_type spatial;", "shader_type spatial;\n#define EI_BAKED_TERRAIN"), true],
 		[GroundContactShader.source(EIFigure.OBJECT_SHADER), false],
-		[GroundContactShader.source(EIFigure.FOLIAGE_SHADER), false]]
+		[GroundContactShader.source(EIFigure.FOLIAGE_SHADER), false],
+		[EIFigure.FOLIAGE_STILL_SHADER, false],
+		[GroundContactShader.source(EIFigure.FOLIAGE_STILL_SHADER), false]]
 	var shaders: Array[Shader] = []
 	var materials: Array[ShaderMaterial] = []
 	GameData.options["gfx_materials"] = 0

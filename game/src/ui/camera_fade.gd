@@ -201,13 +201,28 @@ static func dither_shader(orig: Shader) -> Shader:
 	if _shaders.has(orig):
 		return _shaders[orig]
 	var sh: Shader = null
-	var code := orig.code
+	var code := _dither_code(orig.code)
+	if not code.is_empty():
+		sh = Shader.new()
+		sh.code = code
+	_shaders[orig] = sh
+	return sh
+
+
+## Recomposition keeps the derived Shader identity, so active Compatibility
+## material copies retain their fade amount, textures and authored wind strength.
+static func refresh_shader(orig: Shader) -> void:
+	var derived := _shaders.get(orig) as Shader
+	if derived:
+		derived.code = _dither_code(orig.code)
+
+
+static func _dither_code(code: String) -> String:
 	var f := code.find("void fragment()")
 	var b := code.find("{", f) if f >= 0 else -1
 	if b >= 0:
-		sh = Shader.new()
-		sh.code = code.substr(0, f) + DITHER + code.substr(f, b + 1 - f) + DITHER_FRAG + code.substr(b + 1)
+		code = code.substr(0, f) + DITHER + code.substr(f, b + 1 - f) + DITHER_FRAG + code.substr(b + 1)
 		if Portability.compatibility():
-			sh.code = sh.code.replace("instance uniform", "uniform")
-	_shaders[orig] = sh
-	return sh
+			code = code.replace("instance uniform", "uniform")
+		return code
+	return ""
