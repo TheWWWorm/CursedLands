@@ -51,7 +51,8 @@ static func info(id: String) -> Dictionary:
 ## "<code>_%02d.%d" texture (texture1, texture2), a potion / wand blueprint
 ## the quick item's look, a keystone (spell) "initqi1item" with
 ## "prototype%04d" and a rune "initqi1item" with "modifier%04d" (modifier
-## index). The keystone's picture is the prototype's texture_type: the original
+## index). A finished container uses "spell%04d" (native 6a57e0).
+## The keystone's picture is the prototype's texture_type: the original
 ## reads prototype, which the record reader fills
 ## field 0x12 = texture_type (the 19th spell_prototypes column).
 static func look(id: String) -> Dictionary:
@@ -64,7 +65,7 @@ static func look(id: String) -> Dictionary:
 			for k in mods.size():
 				if String(mods[k].get("code", "")).to_lower() == id.substr(5):
 					n = k
-		var tex := ("modifier%04d" if id.begins_with("rune:") else "prototype%04d") % n
+		var tex := ("modifier%04d" if id.begins_with("rune:") else ("spell%04d" if is_spell_container(id) else "prototype%04d")) % n
 		return {"model": "initqi1item", "texture": tex} if n >= 0 and GameData.has_figure("initqi1item.fig") else {}
 	if id.begins_with("bp:"):
 		var r := blueprint_row(id)
@@ -491,12 +492,13 @@ static func _worn_fraction(id: String) -> float:
 	return clampf(wear(id) / m, 0.0, 1.0) if m > 0.0 and kind(id) in ["weapon", "armor"] else 0.0
 
 
-static func deal_price(id: String, mode: int) -> int:
+static func deal_price(id: String, mode: int, coefficients: Array = []) -> int:
+	var rates := coef if coefficients.is_empty() else coefficients
 	var p := float(price(id))
-	var worn := p * float(coef[Deal.REPAIR]) * _worn_fraction(id)
+	var worn := p * float(rates[Deal.REPAIR]) * _worn_fraction(id)
 	if mode == Deal.REPAIR:
 		return maxi(1, int(worn)) if worn > 0.0 else 0
-	return maxi(0, int(p * float(coef[mode]) - worn))
+	return maxi(0, int(p * float(rates[mode]) - worn))
 
 
 static func _spellish(id: String) -> bool:

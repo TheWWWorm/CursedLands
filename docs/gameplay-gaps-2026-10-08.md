@@ -25,11 +25,11 @@ The additional [campaign audit](/home/llm2x/Documents/EI/local/implementation-ga
 | U15 | Classic peaceful zones allow keyboard/controller forced attack, spells and crouching. Enforce at authority as well as UI. | Classic safe-zone restrictions enforced in authority and input paths, including keyboard/controller prediction. Original-data command and movement regression passes; scripts retain their authored commands. |
 | U16 | Base campaign lizards lack visible pitchforks. | Open |
 | U17 | Dialogue camera is obstructed by scenery. | Open |
-| U18 | Spell icons show prototype colors instead of the actual spell's colors. | Open |
-| U19 | Invisible zero-price rune appears in Gipath. | Open |
-| U20 | Repeated identical items for sale create separate stacks; merge into the current sale stack. | Open |
+| U18 | Spell icons show prototype colors instead of the actual spell's colors. | Finished containers now use the original coloured spell artwork; keystones keep prototype artwork. Rendered fire/lightning comparison inspected. |
+| U19 | Invisible zero-price rune appears in Gipath. | No empty modifier codes or zero-price runes found in generated base shop stock. User confirms the item has no tooltip. Trace malformed/legacy entries; no speculative item deletion. |
+| U20 | Repeated identical items for sale create separate stacks; merge into the current sale stack. | Buy/sell piles group identical strings into counted stacks, including more than eight copies. Wear/charge distinctions and eight distinct slots remain. Rendered shop layout inspected. |
 | U21 | Zak uses stealing lines when walking up to camp NPCs to talk. | Camp talk approach uses the movement acknowledgement instead of object-use acknowledgement. Audio listening check pending. |
-| U22 | Sold inventory disappears slowly, especially when hosting co-op. Apply sale presentation atomically after confirmation. | Open |
+| U22 | Sold inventory disappears slowly, especially when hosting co-op. Apply sale presentation atomically after confirmation. | One authority transaction validates and settles the entire offer, then sends one inventory snapshot and acknowledgement. Real ENet guest UI test passes; stale/oversold/unaffordable offers leave both bag and trader unchanged. |
 | U23 | Steal/turn in/kill/loot duplicates the quest pair Резак и Шило; check equivalent quest-carrier cases. | Open |
 | U24 | Quest objects such as Dragon Amulet and Cage Key remain after their authored removal. | Open |
 | U25 | Verify tamed dragon's departure after harpies against original scripts; user observed eventual departure. | Open |
@@ -62,3 +62,5 @@ Rendered two-world fixtures pass with the engine's safe render-thread mode. Sepa
 Full chapter playthroughs, guest progress-package structure (G02), pets/redeployment (G09/G10), remaining player reports and experimental third-person mode remain open. This document tracks coverage rather than treating source inspection as completion.
 
 The second gameplay checkpoint covers camp movement/escape, script-added actor lifetime, Catacombs floor/lever behavior and renamed guest slots. [Mechanism validation](gameplay-campaign-mechanisms-validation.json) records the exact production export: 20 camp checks, 12 actor-lifetime checks, 18 rendered Catacombs checks, and 37 base / 64 LiA roster checks pass. The previous production export fails 11 camp, 5 lifetime and 4 Catacombs assertions. The movement fixture registers every paused NPC in navigation; initial attempts without those registrations are excluded. These prepared regressions are not a full co-op chapter playthrough.
+
+The inventory checkpoint uses network protocol 8 for atomic trade requests/results. [Inventory validation](gameplay-inventory-validation.json) records 31 passing checks in the production export, including the real guest UI/ENet path, one final inventory update, personal purse isolation, worn items, failed offers and transfer cancellation. Spell and stack screenshots were inspected. No new performance claim is attached to these gameplay fixes.

@@ -2241,6 +2241,9 @@ func apply_command(cmd: Dictionary, player: int) -> void:
 			_item_command(cmd, player)
 		"buy", "sell":
 			_trade(cmd, player)
+		"trade":
+			var ok := _trade_apply(cmd)
+			_finish_trade.call_deferred(player, int(cmd.get("req", 0)), ok)
 		"repair":
 			_repair(cmd, player)
 		"construct":
@@ -2887,38 +2890,59 @@ func shop_count(item: String, cmd := {}) -> int:
 	return int(shop_record(id).get("goods", {}).get(item, 0)) if id else 0
 
 
+## A confirmed pile settles once. In particular a guest's personal purse
+## must be restored before the snapshot and acknowledgement are published.
+const MAX_TRADE_ITEMS := 4096
+
 func _trade(cmd: Dictionary, _player: int) -> void:
-	var sid := shop_id(cmd)
-	if sid == 0:
-		return
-	var rec := shop_record(sid)
-	var goods: Dictionary = rec.goods
-	var item := String(cmd.get("item", "")).to_lower()
-	var spellish := Items.is_spell_piece(item)
-	if not (Shops.sells_spells(sid) if spellish else Shops.sells_items(sid)):
-		return
-	if cmd.t == "buy":
-		# The goods are the trader's inventory (moves the buy pile
-		# out of it): what is bought is gone until the next restock.
-		if int(goods.get(item, 0)) <= 0:
-			return
-		var p := Items.buy_price(item)
-		if state.money < p:
-			return
-		# Spells too go into the party's bag (moves the whole buy
-		# pile, modes 2 and 4); a hero learns one from there ("learn").
-		state.money -= p
-		_take_goods(goods, item, 1)
-		state.items.append(item)
-	else:
-		var i := state.items.find(item)
-		if i < 0 or Items.kind(item) == "quest":
-			return
-		state.items.remove_at(i)
-		var p := Items.deal_price(item, Items.Deal.SPELL_SELL if spellish else Items.Deal.SELL)
-		state.money += p
-		_sold_to(rec, item)
+	var batch := cmd.duplicate()
+	batch.buy = [cmd.get("item", "")] if cmd.t == "buy" else []
+	batch.sell = [cmd.get("item", "")] if cmd.t == "sell" else []
+	if _trade_apply(batch): sync_state()
+
+
+func _finish_trade(player: int, req: int, ok: bool) -> void:
 	sync_state()
+	broadcast({"t":"trade_result", "to":player, "req":req, "ok":ok})
+
+
+func _trade_apply(cmd: Dictionary) -> bool:
+	var sid := shop_id(cmd)
+	var buy: Variant = cmd.get("buy", [])
+	var sell: Variant = cmd.get("sell", [])
+	if sid == 0 or not buy is Array or not sell is Array: return false
+	if buy.size()+sell.size() == 0 or buy.size()+sell.size() > MAX_TRADE_ITEMS: return false
+	# Work on copies: a stale stock count or unaffordable purchase must not
+	# leave half a deal behind. Exact item strings retain wear and charge.
+	var rec := shop_record(sid).duplicate(true)
+	var bag := state.items.duplicate()
+	var money := state.money
+	var rates := Shops.coef(sid)
+	for entries: Array in [sell, buy]:
+		for value in entries:
+			if not value is String: return false
+			var item := String(value).to_lower()
+			var spellish := Items.is_spell_piece(item)
+			if not (Shops.sells_spells(sid) if spellish else Shops.sells_items(sid)): return false
+			if Items.kind(item) in ["", "quest"]: return false
+	for value: String in sell:
+		var item := value.to_lower()
+		var i := bag.find(item)
+		if i < 0: return false
+		bag.remove_at(i)
+		money += Items.deal_price(item, Items.Deal.SPELL_SELL if Items.is_spell_piece(item) else Items.Deal.SELL, rates)
+		_sold_to(rec, item)
+	for value: String in buy:
+		var item := value.to_lower()
+		if int(rec.goods.get(item,0)) <= 0: return false
+		money -= Items.deal_price(item, Items.Deal.SPELL_BUY if Items.is_spell_piece(item) else Items.Deal.BUY, rates)
+		_take_goods(rec.goods, item, 1)
+		bag.append(item)
+	if money < 0: return false
+	state.money = money
+	state.items = bag
+	state.shops[sid] = rec
+	return true
 
 
 func _take_goods(goods: Dictionary, item: String, n: int) -> void:

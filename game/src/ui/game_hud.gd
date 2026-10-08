@@ -634,6 +634,7 @@ func on_event(e: Dictionary) -> void:
 		"saved":
 			notify("string notify_saving")
 		"load_begin":
+			_inventory._camp.reset_transactions()
 			_close_for_host_load(bool(e.get("travel", false)))
 		"load_end":
 			if game.session.online and not game.session.is_host:
@@ -667,6 +668,9 @@ func on_event(e: Dictionary) -> void:
 		"got":
 			if int(e.get("to", -1)) in [-1, game.session.my_index]:
 				_got_items(e)
+		"trade_result":
+			if int(e.get("to", -1)) == game.session.my_index:
+				_inventory._camp.trade_result(e)
 		"constr_result":   # Session._spell_constr's answer to this player's camp screen
 			if int(e.get("to", -1)) == game.session.my_index:
 				_inventory._camp.constr_result(e)

@@ -135,6 +135,9 @@ func open_swap() -> void:
 ## `constr`: the trader picked from the topic list ("constr<N>", Shops); 0 opens
 ## the dressing screen alone (the global map's camp button, constr.current 0).
 func open(shop: bool, constr := 0) -> void:
+	if _camp.trade_wait:
+		visible = true
+		return
 	if visible and _camp.mode == "swap" and hud.game.session.swap.partner() >= 0:
 		return   # the swap screen stays until the swap ends
 	_camp.shop_id = constr if shop else 0
@@ -186,7 +189,7 @@ func _unhandled_key_input(e: InputEvent) -> void:
 
 ## Shop commands name the trader of this camp screen (Session.shop_id).
 func _issue(cmd: Dictionary) -> void:
-	if cmd.get("t", "") in ["buy", "sell", "repair", "construct", "deconstruct", "spell_constr"]:
+	if cmd.get("t", "") in ["buy", "sell", "trade", "repair", "construct", "deconstruct", "spell_constr"]:
 		cmd["shop"] = _camp.shop_id
 	_sound(String(cmd.get("t", "")))
 	hud.game.issue(cmd)
@@ -347,13 +350,9 @@ func _clear_buttons() -> void:
 		c.queue_free()
 
 
-## A trade screen's Yes: sell first (the gold pays for the purchases), then buy.
+## The sale proceeds and purchases settle together in the owner's purse.
 func _on_deal(buy: Array, sell: Array) -> void:
-	var u := _hero()
-	for it in sell:
-		_issue({"t": "sell", "item": it})
-	for it in buy:
-		_issue({"t": "buy", "item": it, "unit": u.uid if u else -1})
+	_issue({"t":"trade", "buy":buy, "sell":sell, "req":_camp._trade_req})
 
 
 ## An item pressed in the camp (CampView: every screen acts on the press

@@ -1,0 +1,105 @@
+{
+  "baseline_commit": "b5aa059",
+  "export": {
+    "seconds": 5.978992295014905,
+    "command": [
+      "/home/llm2x/.local/bin/godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+      "--export-release",
+      "Linux",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps06/CPU.x86_64"
+    ],
+    "engine_source": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/fast-runtime.x86_64",
+    "errors": [],
+    "sha256": {
+      "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+      "CPU.pck": "c7fa8b3921aa8f79afd29b63d5862d739c0ad9a60cefcd3dfc6414434c0cb62b",
+      "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+    }
+  },
+  "tests": {
+    "gameplay-trade-after-02": {
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_trade.gd",
+        "--label=gameplay-trade-after-02"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 27.347120891005034,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature.",
+        "WARNING: [Physics interpolation] Interpolated Camera3D triggered from outside physics process: \"/root/Main/@Node@8/TradeGuest/@Node3D@410/@Node3D@413/@Camera3D@414\" (possibly benign)."
+      ],
+      "log_sha256": "3b1081c0119ed92bfe30d2bf1cbcefc23ca9746c72330e830be331ef6aa56211",
+      "checks": 28,
+      "failures": 0,
+      "raw_log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-trade-after-02.log"
+    },
+    "gameplay-trade-render-02": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps06/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--resolution",
+        "1600x900",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_trade.gd",
+        "--label=gameplay-trade-render-02"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 63.411491748003755,
+      "errors": [],
+      "warnings": [
+        "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+      ],
+      "log_sha256": "34d7693cf33ddb561c20681739184ab04f3f28233bf5d503aa24090a9e7e9b69",
+      "checks": 31,
+      "failures": 0,
+      "raw_log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/gameplay-trade-render-02.log"
+    }
+  },
+  "source_sha256": {
+    "game/src/game/items.gd": "6c0966ba67ea1d1e2f4756ab8cd6ec9fe041f3995409554cbcca9c2a8eeaaae1",
+    "game/src/game/net_status.gd": "8bc99bc39e661572c3e62fbc30769fa28faf8a6bf74b5d2698e4b3abd9b0328a",
+    "game/src/game/session.gd": "8cd2dd94ff5833c1ba30e80689d2a5dc3eab88c25b5ce46241afe2b2ba0c45d8",
+    "game/src/ui/camp_view.gd": "9a94e2e89394c6c007a0387e8927a3be93c1433107b1b14a63623ea4b5a57b01",
+    "game/src/ui/game_hud.gd": "adbc34ae064acb35d13fcf72213409cca8ed8201270e11ae96254f5e0b51b357",
+    "game/src/ui/inventory_panel.gd": "497e8b0b7d3eff4b959e2a07ac352107b21c3d9c8a76f624888942791233e009",
+    "tools/tests/coop_trade.gd": "f1dffb420c84d37a4889f82ec8485256a2b29c494adaf0e21e4831a2d2e31fbb"
+  },
+  "visual_review": [
+    "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/gameplay-trade-render-02/godot/app_userdata/Cursed Lands/trade-stacks.png",
+    "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/gameplay-trade-render-02/godot/app_userdata/Cursed Lands/spell-item-colours.png"
+  ],
+  "original_evidence": [
+    "Original 6a57e0 selects spell%04d for finished spell containers; 6a4b50 selects prototype%04d for keystones.",
+    "Base database probe found no empty modifier codes or zero-price runes in generated shop stock. Hidden modifiers without artwork exist; no inventory deletion or speculative migration was applied."
+  ],
+  "limitations": [
+    "No Windows or Retroid gameplay packaging yet.",
+    "Two ENet peers in one process, original Gipath camp, prepared inventory. Safe render-thread / Xvfb correctness checks are not performance evidence.",
+    "Initial test01 failed parsing because the fixture used data() instead of to_dict(); not a production failure.",
+    "Public Experimental 5 negative replay has not been run for this batch.",
+    "Blank zero-price rune remains unidentified; user reports no tooltip."
+  ]
+}
