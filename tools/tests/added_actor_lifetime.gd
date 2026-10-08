@@ -30,9 +30,10 @@ func _ready() -> void:
 	check(snap.removed.has(666666),"added actor's removal is saved")
 	check(s.state.save("user://terror.sav") == OK,"zone save writes")
 	var restored := CampaignState.load_from("user://terror.sav")
-	for legacy in [false,true]:
+	for legacy: String in ["current","carried","units"]:
 		restored.zones.gz1h = snap.duplicate(true)
-		if legacy: restored.zones.gz1h.removed.erase(666666)
+		if legacy != "current": restored.zones.gz1h.removed.erase(666666)
+		if legacy == "units": restored.zones.gz1h.erase("carried")
 		restored.restore_zone("gz1h",w)
 		check(not w.units.has(666666),"removed Terror stays absent, legacy="+str(legacy))
 		restored.store_zone("gz1h",w)
@@ -43,10 +44,19 @@ func _ready() -> void:
 		var live := w.spawn_unit(rec)
 		restored.store_zone("gz1h",w)
 		check(not restored.zones.gz1h.removed.has(666666),"present Terror is not marked removed")
+		if legacy == "units": restored.zones.gz1h.erase("carried")
 		w.remove_unit(live)
 		restored.restore_zone("gz1h",w)
 		check(w.units.has(666666),"living added actor returns from its save")
 		if w.units.has(666666): w.remove_unit(w.units[666666])
+		# The oldest format stored corpses only in `dead`, not `units`.
+		if legacy == "units":
+			restored.zones.gz1h.erase("carried")
+			restored.zones.gz1h.units.erase(666666)
+			restored.zones.gz1h.dead.append(666666)
+			restored.restore_zone("gz1h",w)
+			check(w.units.has(666666) and w.units[666666].dead,"old saved corpse stays dead and lootable")
+			if w.units.has(666666): w.remove_unit(w.units[666666])
 	g.queue_free(); s.queue_free()
 	for i in 8: await get_tree().process_frame
 	print("ADDED_ACTOR_LIFETIME ",checks," checks ",failures," failures")

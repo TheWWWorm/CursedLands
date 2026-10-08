@@ -1029,9 +1029,9 @@ func _call(name: String, a: Array, inst: Instance):
 			var h := session.state.party_member(ref)
 			if h.has("merc") and session.state.mercs.get(int(h.merc), {}) == h:
 				session.state.set_var(0, "apartyn%d" % int(h.merc), 0.0)
-				session.merc_changed(int(h.merc), false)
+				session.merc_changed(int(h.merc), false, -1, true, true)
 			else:
-				session.state.remove_party_unit(ref)
+				session.remove_named_party_unit(ref)
 		"RedeployParty":
 			session.redeploy_party(0)
 		# ---- presentation

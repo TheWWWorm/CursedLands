@@ -85,6 +85,11 @@ func _ready() -> void:
 	var s := Session.new();s.world=w;s.state=CampaignState.new()
 	w.zone={"type":"brief"}
 	check(not s.command_allowed({"t":"attack"}) and not s.command_allowed({"t":"cast"}),"classic village combat stays restricted")
+	check(not s.command_allowed({"t":"direct_cast"}),"third-person spells are also restricted in villages")
+	s.apply_command({"t":"direct_attack","units":[a.uid],"direction":Vector3.RIGHT},0)
+	check(a.orders.is_empty(),"authority refuses third-person attacks in a village")
+	a.orders.clear()
+	w.zone={"type":"game"}
 	s.apply_command({"t":"direct_attack","units":[a.uid],"direction":Vector3.RIGHT},1)
 	check(a.orders.is_empty(),"another player cannot issue a direction attack for this unit")
 	s.apply_command({"t":"direct_attack","units":[a.uid],"direction":Vector3(NAN,0,0)},0)
@@ -96,7 +101,7 @@ func _ready() -> void:
 	check(a.orders.is_empty(),"script block still refuses direct combat")
 	a.blocked=false
 	s.apply_command({"t":"direct_attack","units":[a.uid],"direction":Vector3.RIGHT},0)
-	check(a.orders.size()==1 and a.orders[0].type=="direct_attack","explicit direction attack is permitted in a village")
+	check(a.orders.size()==1 and a.orders[0].type=="direct_attack","explicit direction attack is permitted in the field")
 	a.orders.clear();a._attack_cd=1.0
 	s.apply_command({"t":"direct_attack","units":[a.uid],"direction":Vector3.RIGHT},0)
 	check(a.orders.is_empty(),"repeated requests cannot bypass weapon cooldown")

@@ -34,15 +34,33 @@ func _ready() -> void:
 	client.submit({"t":"direct_control","leader":own.uid});await frames()
 	check(not own.direct_controlled and not guest.direct_controlled,"client cannot seize the host hero")
 	client.submit({"t":"direct_attack","units":[guest.uid],"direction":Vector3.RIGHT});await frames()
-	check(guest.orders.size()==1 and guest.orders[0].type=="direct_attack","direction reaches authority over ENet in a village")
-	check(guest.orders[0].direction==Vector3.RIGHT,"authority preserves normalized aim")
+	check(guest.orders.is_empty(),"authority rejects guest direct attack in the real village")
+	guest.orders.clear()
+	# Send a valid known spell through the direct-cast alias too, so the
+	# safe-zone check, not the spell/ownership validator, must refuse it.
+	var spell := "healing{}"
+	guest.get_meta("hero").spells.append(spell)
+	client.submit({"t":"direct_cast","unit":guest.uid,"spell":spell,"target":guest.uid});await frames()
+	check(guest.orders.is_empty(),"authority rejects guest third-person spell in the real village")
 	guest.orders.clear()
 	client.submit({"t":"attack","units":[guest.uid],"target":own.uid});await frames()
 	check(guest.orders.is_empty(),"classic attack stays blocked in the same village")
+	await host.enter_zone("gz1g",1,false)
+	host.world.set_physics_process(false);host.world.set_process(false);host.world.vm.instances.clear()
+	require(await until(func():return client.zone_id=="gz1g" and not client.loading_game and not host.loading_game \
+		and not client._remote_loading and not client._zone_holding and client._pool_epoch==host._load_serial))
+	client.world.set_physics_process(false)
+	own=host.party_units(0)[0];guest=host.party_units(1)[0]
+	guest.blocked=false;guest.order={};guest.orders.clear();guest._anim_lock=0;guest._attack_cd=0
+	client.submit({"t":"direct_attack","units":[guest.uid],"direction":Vector3.RIGHT});await frames()
+	check(guest.orders.size()==1 and guest.orders[0].type=="direct_attack","guest direction attack reaches authority in the field")
+	check(not guest.orders.is_empty() and guest.orders[0].get("direction")==Vector3.RIGHT,"authority preserves normalized aim")
+	guest.orders.clear()
+	var own_orders := own.orders.duplicate(true)
 	client.submit({"t":"direct_attack","units":[own.uid],"direction":Vector3.RIGHT});await frames()
-	check(own.orders.is_empty(),"foreign-unit direct attack is rejected")
+	check(own.orders == own_orders,"foreign-unit direct attack cannot replace the host's arrival orders")
 	client._rpc_cmd.rpc_id(1,{"t":"direct_attack","units":[guest.uid],"direction":Vector3.RIGHT,
-		"_zone":"bz1g","_generation":host._load_serial-1});await frames()
+		"_zone":"gz1g","_generation":host._load_serial-1});await frames()
 	check(guest.orders.is_empty(),"previous load generation cannot attack in current area")
 	guest.blocked=true
 	client.submit({"t":"direct_attack","units":[guest.uid],"direction":Vector3.RIGHT});await frames()

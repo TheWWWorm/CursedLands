@@ -77,6 +77,24 @@ func _ready() -> void:
 	await frames()
 	check(game.rig.camera.global_transform==held and not direct._captured,"dialogue/cutscene view owns the camera and pointer")
 	game.rig.held=false;await frames()
+	hero.orders.clear();hero.order={};hero._attack_cd=0;hero._anim_lock=0
+	var click := InputEventMouseButton.new();click.button_index=MOUSE_BUTTON_LEFT;click.pressed=true
+	Input.parse_input_event(click);await frames()
+	click=InputEventMouseButton.new();click.button_index=MOUSE_BUTTON_LEFT;click.pressed=false
+	Input.parse_input_event(click);await frames()
+	check(hero.orders.is_empty() and hero._pending_hit.is_empty(),"mouse attack cannot swing in the safe zone")
+	GameData.options.pad_enabled=1
+	axis(JOY_AXIS_TRIGGER_RIGHT,1.0);await frames()
+	check(hero.orders.is_empty() and hero._pending_hit.is_empty(),"gamepad attack cannot swing in the safe zone")
+	axis(JOY_AXIS_TRIGGER_RIGHT,0.0);PadInput.release_all();await frames()
+	var spells: Array=hero.get_meta("hero").spells
+	spells.append("healing{}");game.begin_cast(spells.size()-1)
+	check(game.pending_spell.is_empty(),"third-person spell selection stays disabled in the safe zone")
+	# Continue the positive combat checks in a real field area.
+	await session.enter_zone("gz1h" if GameData.campaign_id==CampaignProfile.ASTRAL else "gz1g",1,false)
+	world=session.world;world.set_physics_process(false);world.set_process(false);world.vm.instances.clear()
+	hero=session.party_units(0)[0];hero.blocked=false
+	game.selected.assign([hero]);game.rig.release();await frames(12)
 	# Native attack animation schedules one actual impact without a target.
 	hero.orders.clear();hero.order={};hero._attack_cd=0;hero._anim_lock=0;hero.alert=true
 	hero.stance=GameUnit.STANCE_NONE;hero.facing=0;hero._update_pose();hero._anim_lock=0
@@ -92,8 +110,8 @@ func _ready() -> void:
 	hero._sync_transform(0.0);direct.heading=hero.facing
 	if DisplayServer.get_name()!="headless":
 		await frames(12);await RenderingServer.frame_post_draw
-		check(get_viewport().get_texture().get_image().save_png("user://third-person-camp.png")==OK,"shoulder view screenshot saved")
-		print("DIRECT_IMAGE ",ProjectSettings.globalize_path("user://third-person-camp.png"))
+		check(get_viewport().get_texture().get_image().save_png("user://third-person-field.png")==OK,"shoulder view screenshot saved")
+		print("DIRECT_IMAGE ",ProjectSettings.globalize_path("user://third-person-field.png"))
 	GameData.options.control_mode=1;await frames()
 	check(not hero.direct_controlled,"classic switch restores ordinary idle combat AI")
 	check(not direct.active() and not direct._captured,"classic switch releases captured mouse")

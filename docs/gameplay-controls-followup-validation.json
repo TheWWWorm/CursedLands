@@ -1,0 +1,265 @@
+{
+  "date": "2026-10-09",
+  "status": "local post-Experimental-6 correction; unpublished",
+  "findings": [
+    "The shipped control-mode option used Camera row 8; the camera_rotate_left key binding overwrote that row when the panel was built. The Windows archive contains the feature, but its selector was hidden.",
+    "The player requested peaceful-zone restrictions for third-person combat, superseding the original request for free attacks everywhere."
+  ],
+  "changes": [
+    "Move control_mode to free Camera row 10, retaining both camera key bindings.",
+    "Reject direct_attack/direct_cast in brief/safe zones in Session.command_allowed; mouse/gamepad attack entry and spell selection follow the same gate.",
+    "Update contextual input hints and English, Russian and German setting descriptions. Script-authored escape actions still execute."
+  ],
+  "package_audit": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/experimental6-reported-features-package-audit.json",
+  "baseline_runs": [
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/experimental6-audit/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--resolution",
+        "1600x900",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/control_mode_options.gd",
+        "--label=exp6-control-options-before-01"
+      ],
+      "exit_code": 1,
+      "stopped": false,
+      "seconds": 5.710389704996487,
+      "errors": [],
+      "warnings": [
+        "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+      ],
+      "log_sha256": "6ec5683fff8e9b4a7ef1c111e1957ac40fccb6803f55c07fdee08f93817391bf",
+      "name": "exp6-control-options-before-01",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/exp6-control-options-before-01.log",
+      "checks": 9,
+      "failures": 5
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps50/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/direct_combat.gd",
+        "--label=direct-peaceful-before-01"
+      ],
+      "exit_code": 1,
+      "stopped": false,
+      "seconds": 2.2097010069992393,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "fa1e5c4cfe0dc056e2ba435f396fde6d494bf15d2e3ee243e3a54e5231960fe9",
+      "name": "direct-peaceful-before-01",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/direct-peaceful-before-01.log",
+      "checks": 30,
+      "failures": 2
+    }
+  ],
+  "candidate_runs": [
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps49/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--resolution",
+        "1600x900",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/control_mode_options.gd",
+        "--label=control-options-after-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 5.810407007986214,
+      "errors": [],
+      "warnings": [
+        "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+      ],
+      "log_sha256": "0eaa43d5c7d48d805a2dd0009e7f3ce15b14de720bc8a80377b35473fc5d1908",
+      "name": "control-options-after-01",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/control-options-after-01.log",
+      "checks": 10,
+      "failures": 0
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps51/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/direct_combat.gd",
+        "--label=direct-peaceful-after-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 2.1069143940112554,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "c7cef6f839df2a3ac18e79f893cd010407278ffc15a90a82c8aa385b93a08629",
+      "name": "direct-peaceful-after-01",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/direct-peaceful-after-01.log",
+      "checks": 30,
+      "failures": 0
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps51/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--resolution",
+        "1600x900",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/direct_controls.gd",
+        "--label=direct-peaceful-controls-after-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 34.01130645800731,
+      "errors": [],
+      "warnings": [
+        "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+      ],
+      "log_sha256": "afcd11f3fb00b184be6e282464e8b60236f2fa536b74b1256f52786901389f5f",
+      "name": "direct-peaceful-controls-after-01",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/direct-peaceful-controls-after-01.log",
+      "checks": 34,
+      "failures": 0
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps51/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/direct_coop.gd",
+        "--label=direct-peaceful-net-after-03"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 28.748122794990195,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "288fa82de65e274e4aa90f5830a2bb0739a7f417112492674a022d11b46f8224",
+      "name": "direct-peaceful-net-after-03",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/direct-peaceful-net-after-03.log",
+      "checks": 13,
+      "failures": 0
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps51/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/slave_camp_escape.gd",
+        "--label=direct-peaceful-escape-after-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 12.135446920990944,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "809be507befdd8162980ba5ba665d9901341341717839734322b8ab25f10af49",
+      "name": "direct-peaceful-escape-after-01",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/direct-peaceful-escape-after-01.log",
+      "checks": 31,
+      "failures": 0
+    }
+  ],
+  "exports": {
+    "gameplay-gaps49": {
+      "seconds": 5.975095219997456,
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--headless",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+        "--export-release",
+        "Linux",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps49/CPU.x86_64"
+      ],
+      "engine_source": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/fast-runtime.x86_64",
+      "errors": [],
+      "sha256": {
+        "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+        "CPU.pck": "4fe5c5680a1d8b995a38e4e6b6fa5b4eb8e4b11e9d60c89fa9064ce886d57714",
+        "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+      }
+    },
+    "gameplay-gaps51": {
+      "seconds": 6.029419920989312,
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--headless",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+        "--export-release",
+        "Linux",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps51/CPU.x86_64"
+      ],
+      "engine_source": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/fast-runtime.x86_64",
+      "errors": [],
+      "sha256": {
+        "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+        "CPU.pck": "18002fc7c4d783d9761d7194311207bcadf0df11cd70d03232ce6890303c4e7d",
+        "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+      }
+    }
+  },
+  "excluded_attempts": [
+    {
+      "name": "direct-peaceful-net-after-01",
+      "reason": "Fixture parse error from a missing multiline continuation; no production failure."
+    },
+    {
+      "name": "direct-peaceful-net-after-02",
+      "reason": "Fixture incorrectly expected an empty host order queue despite the original field arrival animation. Corrected to verify that a foreign attack leaves the existing orders unchanged."
+    }
+  ],
+  "visual_review": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/control-options-after-01/godot/app_userdata/Cursed Lands/control-mode-options.png",
+  "limits": [
+    "Focused Linux functional checks; no new performance claim or Windows/Android runtime validation.",
+    "Published Experimental 6 remains unchanged."
+  ]
+}

@@ -1,0 +1,220 @@
+{
+  "date": "2026-10-09",
+  "status": "local post-Experimental-6 correction; unpublished",
+  "issue": "U35: Kel is missing after the LiA Masking/Disguise quest (Маскировка), blocking the next route.",
+  "findings": [
+    "Reproduced in single-player with the original Shelter scripts: b.bz2h.brief_6 removes FPrison::merc2 from the party, redeploys Kir, then hides Kel. The remake removed the live off-map mercenary (or removed its named-party actor during redeployment), leaving nothing for the later HideObject(merc2,0).",
+    "The shipped bz2h script places Kel at (83.5,233). b.merc8.brief_15 completion starts VCheck#1#2 and VCheck#1#2a: reveal Kel, transform the protagonist to FSusel, and offer b.merc2.n3_2. That conversation unlocks the elder; elder brief_18 opens z.gz1h_gz2h.",
+    "The party/member native lookup/removal oracle establishes roster record removal independently from the subsequent authored NPC hide/reveal calls. The field deletion in the remake was not a replacement for that original handoff."
+  ],
+  "changes": [
+    "Script RemoveUnitFromParty keeps its live NPC, including companions brought from another zone and older named-party roster representations. Ordinary mercenary dismissal/travel policy is retained.",
+    "Save and restore detached party NPC records before their mutable inventory/body and VM state. Preserve stats, equipment, hidden state and original actor identity in new saves.",
+    "For older Shelter saves with completed initial briefing and no detached-NPC schema, recover missing Kel from the verified original script contract. Respect existing live/dead actors, known death/removal flags and the original Trans reveal state. New saves retain the recovery without duplicating it."
+  ],
+  "original_contract": {
+    "path": "inspection/lost-in-astral/scripts/bz2h.txt",
+    "handlers": [
+      "Start",
+      "#OnBriefingComplete",
+      "VCheck#1#2",
+      "VCheck#1#2a"
+    ],
+    "native_roster_oracle": "local/lost-in-astral/native/party-lookup-golden.json"
+  },
+  "baseline": {
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps51/CPU.x86_64",
+      "--audio-driver",
+      "Dummy",
+      "--render-thread",
+      "safe",
+      "--headless",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/shelter_kel.gd",
+      "--label=kel-story-before-01",
+      "--single"
+    ],
+    "exit_code": 1,
+    "stopped": false,
+    "seconds": 28.54670021298807,
+    "errors": [],
+    "warnings": [],
+    "log_sha256": "f89a701ec87a192f30c57cd798bbe548280a206ad9277ed8ea2e819dc8bd888e",
+    "name": "kel-story-before-01",
+    "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/kel-story-before-01.log",
+    "checks": 24,
+    "failures": 8
+  },
+  "candidate_runs": [
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps52/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/shelter_kel.gd",
+        "--label=kel-story-after-01",
+        "--single"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 29.351219698990462,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "fa1ce2585f3c7cd43d0aa58a1653a839e0a688e99bc1fd267470b8d83ec67989",
+      "name": "kel-story-after-01",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/kel-story-after-01.log",
+      "checks": 24,
+      "failures": 0
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps52/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/shelter_kel.gd",
+        "--label=kel-story-named-after-01",
+        "--single",
+        "--named-roster"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 29.05050481800572,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "fef0666d074e3dfe57beef0abc083d66bd14250b998d61e5cbf50e86895d2dbf",
+      "name": "kel-story-named-after-01",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/kel-story-named-after-01.log",
+      "checks": 24,
+      "failures": 0
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps52/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/shelter_kel.gd",
+        "--label=kel-story-net-after-04"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 46.38366700100596,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "7789416af014f40abd8ce0892fee165635f039653852d67471e7bcb6bc83c8ac",
+      "name": "kel-story-net-after-04",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/kel-story-net-after-04.log",
+      "checks": 33,
+      "failures": 0
+    }
+  ],
+  "adjacent_regressions": [
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps52/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/added_actor_lifetime.gd",
+        "--label=kel-adjacent-actor-lifetime-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 18.432096131000435,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "bf08cccf07b6e782e10bef819c52ad6782c09d5f2855cff561c11b29b682f048",
+      "name": "kel-adjacent-actor-lifetime-01",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/kel-adjacent-actor-lifetime-01.log",
+      "checks": 17,
+      "failures": 0
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps52/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/campaign_roster.gd",
+        "--label=kel-adjacent-roster-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 1.8038555850216653,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "d33fc2d9a69c129a10f348a970db1b241b33885a0a2f4a8d05c6d6b29df2265e",
+      "name": "kel-adjacent-roster-01",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/kel-adjacent-roster-01.log",
+      "checks": 39,
+      "failures": 0
+    }
+  ],
+  "export": {
+    "seconds": 5.982051399012562,
+    "command": [
+      "/home/llm2x/.local/bin/godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+      "--export-release",
+      "Linux",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps52/CPU.x86_64"
+    ],
+    "engine_source": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/fast-runtime.x86_64",
+    "errors": [],
+    "sha256": {
+      "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+      "CPU.pck": "a3a6453cb9de4f0d2ce19f0d983a4b7ef188a948d78d43e29069e17bb74bcbf4",
+      "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+    }
+  },
+  "excluded_attempts": [
+    {
+      "name": "kel-story-net-after-01",
+      "reason": "Fixture expected all guests to become Hero2; permanent LiA chapter progression retains the class guest’s chosen body. This assertion did not match the implemented campaign co-op policy."
+    },
+    {
+      "name": [
+        "kel-story-net-after-02",
+        "kel-story-net-after-03"
+      ],
+      "reason": "Fresh-join readiness checked the zone before its separate roster state had arrived, so the initial guest prototype observation was empty. Final fixture waits for matching party identity and a linked playable guest."
+    }
+  ],
+  "scope": [
+    "81 passing assertions across actual native Shelter sequence in solo, alternate named-roster saves, and a real ENet host/guest.",
+    "Prepared quest completion followed by actual Shaina hand-in, both unmodified transformation threads, same-zone transfer, Kel/elder dialogue callbacks and next-route unlock.",
+    "Hidden-NPC save/load, generated older-format missing-Kel save, recovery with unchanged money/items, and repeated save/load without duplication.",
+    "17 adjacent added-actor lifecycle checks and 39 base campaign roster checks pass."
+  ],
+  "limits": [
+    "Prepared progression regression, not a full Masking quest or chapter playthrough; no user save was modified.",
+    "Old deleted actors have lost their previous mutable character record. Recovery uses the native Kel prototype and authored camp position; it cannot reconstruct historical NPC training that the old save no longer contains.",
+    "Linux functional checks only; Windows and physical Android were not run in this follow-up. Published Experimental 6 is unchanged."
+  ]
+}

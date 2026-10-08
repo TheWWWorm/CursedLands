@@ -115,6 +115,10 @@ static func recover(vm: ScriptVM) -> void:
 	preload("res://src/game/script/story_coop_traps.gd").recover(vm)
 	if vm.session.state.campaign_id != CampaignProfile.ASTRAL: return
 	var zone := String(vm.world.zone.get("id", ""))
+	if zone == "gz1h":
+		_recover_terror(vm)
+	if zone == "bz2h":
+		_recover_kel(vm)
 	if zone == "bz1h" and vm.instances.any(func(i): return i.sname == "VCheck#1#1a" and not i.killed):
 		# Old saves kept this arrival wait without guest escape orders.
 		var hero := vm._by_name("Hero") as GameUnit
@@ -133,3 +137,59 @@ static func recover(vm: ScriptVM) -> void:
 			u.command({"type":"move", "to":at, "run":false, "story_move":true})
 			u.set_meta("ai_state",1)
 			return
+
+
+## Old builds could reload zone1evil.mob after Terror's removal, then save
+## that resurrected actor as alive. Absence-based migration cannot repair
+## those saves. The original escape flag and despawn bodies establish that
+## this Portal actor has already left. A save in the seven-tick disappearance
+## animation still has a running removal frame; let that frame finish normally.
+static func _recover_terror(vm: ScriptVM) -> void:
+	if vm.session.state.get_var(0,"q.gz1h.q02h.2") != 2.0: return
+	if not vm.world.get_meta("added_mobs",[]).any(func(file): return String(file).to_lower() == "zone1evil.mob"): return
+	var target := [P.N_CALL,"GetObject",[[P.N_NUM,666666.0]]]
+	var done := [P.S_CALL,"GSSetVarMax",[[P.N_NUM,0.0],[P.N_STR,"q.gz1h.q02h.2"],[P.N_NUM,2.0]]]
+	var remove := [P.S_CALL,"RemoveUnitFromServer",[target]]
+	var names := ["VCheck#1#8a","VTriger#1#2"]
+	for name: String in names:
+		var blocks: Array = vm.ast.scripts.get(name,{}).get("blocks",[])
+		if blocks.size() != 1: return
+		var body: Array = blocks[0].body
+		var at := body.find(remove)
+		if not body.has(done) or at < 1 or body[at-1] != [P.S_CALL,"Sleep",[[P.N_NUM,7.0]]]: return
+	if vm.instances.any(func(i): return i.sname in names and not i.frames.is_empty()): return
+	var terror: GameUnit = vm.world.units.get(666666)
+	if terror:
+		vm.world.remove_unit(terror)
+		GameData.trace("restored completed Portal escape: removed resurrected Terror")
+
+
+## Older builds deleted Kel when the first Shelter briefing removed him
+## from FPrison. Native scripts keep that actor hidden, then reveal him when
+## Shaina's disguise hand-in finishes. Only repair this inspected old-save
+## contract; new snapshots explicitly track actors detached from a party.
+static func _recover_kel(vm: ScriptVM) -> void:
+	var st := vm.session.state
+	var saved: Dictionary = st.zones.get("bz2h", {})
+	if saved.has("detached") or st.get_var(0,"b.bz2h.brief_6") != 2.0 \
+			or st.get_var(0,"adeadn2") != 0.0 or vm._by_name("merc2") != null: return
+	var nid := ScriptVM.name_id("merc2")
+	if nid in saved.get("dead", []) or nid in saved.get("removed", []): return
+	var actor := [P.N_CALL,"GetObjectByName",[[P.N_STR,"merc2"]]]
+	var place := [P.S_CALL,"SetCP",[actor,[P.N_NUM,83.5],[P.N_NUM,233.0],[P.N_NUM,0.0]]]
+	var remove := [P.S_CALL,"RemoveUnitFromParty",[[P.N_NUM,0.0],[P.N_STR,"FPrison::merc2"]]]
+	var hide := [P.S_CALL,"HideObject",[actor,[P.N_NUM,1.0]]]
+	var reveal := [P.S_CALL,"HideObject",[actor,[P.N_NUM,0.0]]]
+	if not vm.ast.scripts.get("Start",{}).get("blocks",[]).any(func(b):return b.body.has(place)): return
+	if not vm.ast.scripts.get("#OnBriefingComplete",{}).get("blocks",[]).any(func(b):return b.body.has(remove) and b.body.has(hide)): return
+	if not vm.ast.scripts.get("VCheck#1#2",{}).get("blocks",[]).any(func(b):return b.body.has(reveal)): return
+	var rec := {"kind":"UNIT", "type":50, "nid":nid, "name":"merc2", "prototype":"merc2",
+		"parent_template":"merc2", "position":Vector3(83.5,233,0), "player":0}
+	var kel := vm.world.spawn_unit(rec)
+	if kel == null: return
+	kel.controller = -1
+	kel.set_meta("detached_party_npc", true)
+	kel.hidden = st.get_var(0,"Trans") < 1.0
+	kel.visible = not kel.hidden
+	kel.facing = atan2(-1.0, 1.0)
+	GameData.trace("restored missing Shelter Kel from the original briefing contract")

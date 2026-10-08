@@ -31,7 +31,9 @@ class Reticle extends Control:
 			draw_line(at+d*4.0,at+d*9.0,Color(1,1,1,0.9),1.0)
 		if PadInput.active != "pad":
 			var font := Interface800.font()
-			var text := RemakeText.t("WASD: move   Mouse: look   Left click: attack   E: interact   Tab: pointer")
+			var text := RemakeText.t("WASD: move   Mouse: look   Left click: attack   E: interact   Tab: pointer" \
+				if controls.game.session.command_allowed({"t":"direct_attack"}) else \
+				"WASD: move   Mouse: look   E: interact   Tab: pointer")
 			var k := size.y / 600.0
 			var fs := maxi(12,roundi(13.0*k))
 			var width := font.get_string_size(text,HORIZONTAL_ALIGNMENT_LEFT,-1,fs).x
@@ -237,6 +239,7 @@ func aim_point() -> Vector3:
 
 func attack() -> void:
 	if not usable() or pointer or _neutral or get_tree().paused: return
+	if not game.session.command_allowed({"t":"direct_cast" if game.pending_spell != "" else "direct_attack"}): return
 	var u := leader()
 	field()._stop_moving()
 	_repeat = 0.2

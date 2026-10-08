@@ -521,7 +521,7 @@ func hints() -> Array:
 		out.append([PadInput.button_of("cursor"), RemakeText.t("Leave pointer")])
 		return out
 	if game.direct and game.direct.active():
-		return [[PadInput.button_of("system"),RemakeText.t("Attack / cast")], [A,RemakeText.t("Interact")],
+		return [[PadInput.button_of("system"),RemakeText.t("Attack / cast"),game.session.command_allowed({"t":"direct_attack"})], [A,RemakeText.t("Interact")],
 			["RS",RemakeText.t("Look")], [PadInput.button_of("actions"),RemakeText.t("Spells")],
 			[PadInput.button_of("items"),RemakeText.t("Items")], [PadInput.button_of("cursor"),RemakeText.t("Pointer")]]
 	if game.pending_spell != "":

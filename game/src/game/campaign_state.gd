@@ -1018,7 +1018,7 @@ func store_zone(id: String, world: GameWorld) -> void:
 	if world == null or id.is_empty():
 		return
 	var z := {"dead": [], "removed": [], "units": {}, "levers": {}, "vm": {}, "loot": {}, "carried": {}, "blood_pools": {},
-		"added": world.get_meta("added_mobs", [])}
+		"added": world.get_meta("added_mobs", []), "detached": []}
 	var present := {}
 	for u: GameUnit in world.units.values():
 		if u.has_meta("hero") or is_pet(u):
@@ -1033,6 +1033,11 @@ func store_zone(id: String, world: GameWorld) -> void:
 				"owner": int(u.get_meta("lmp_owner")), "conn": int(u.get_meta("lmp_conn", 0)), "blood_pool": u.blood_pool_state()})
 			continue
 		present[u.uid] = true
+		if u.has_meta("detached_party_npc"):
+			var rec: Dictionary = u.info.duplicate(true)
+			rec.nid = u.uid
+			rec.position = Vector3(u.pos.x, u.pos.y, 0)
+			z.detached.append(rec)
 		if u.has_meta("script_control"):
 			z.get_or_add("controls", {})[u.uid] = u.controller
 		# Original unit saves keep the mutable carried bag, including script
@@ -1114,6 +1119,12 @@ func restore_zone(id: String, world: GameWorld) -> void:
 	if z.is_empty():
 		return
 	var removed: Array = Array(z.get("removed", [])).duplicate()
+	# Party members dismissed by scripts can stay in a zone whose base .mob
+	# never contained them. Restore them before mutable inventory/body/VM state.
+	for rec: Dictionary in z.get("detached", []):
+		if world.units.has(int(rec.get("nid", 0))): continue
+		var u := world.spawn_unit(rec.duplicate(true))
+		if u: u.set_meta("detached_party_npc", true)
 	var added_ids := {}
 	# Units that scripts added from extra .mob files come back first.
 	for file: String in z.get("added", []):
@@ -1122,10 +1133,16 @@ func restore_zone(id: String, world: GameWorld) -> void:
 			if o.kind != "UNIT": continue
 			var nid := int(o.get("nid", -1))
 			added_ids[nid] = true
-			# Existing saves with the complete carried-inventory snapshot
-			# also identify absent added actors, although their old writer
-			# omitted them from `removed`. Older saves lack that evidence.
-			if z.get("carried") is Dictionary and not z.carried.has(nid) and not z.carried.has(str(nid)):
+			# Earlier writers omitted added actors from `removed`. Their
+			# complete inventory snapshot proves absence; before that field
+			# existed, all living actors were in `units` and corpses in `dead`.
+			var absent := false
+			if z.get("carried") is Dictionary:
+				absent = not z.carried.has(nid) and not z.carried.has(str(nid))
+			elif z.get("units") is Dictionary and z.get("dead") is Array:
+				absent = not z.units.has(nid) and not z.units.has(str(nid)) \
+					and not z.dead.has(nid) and not z.dead.has(str(nid))
+			if absent:
 				if not removed.has(nid): removed.append(nid)
 			if not removed.has(nid) and not world.units.has(nid):
 				world.spawn_unit(o)

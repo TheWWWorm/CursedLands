@@ -2515,7 +2515,7 @@ func redeploy_party(player: int) -> void:
 ## `player`: the one who hired it in a conversation (
 ##  on that player), -1 = scripts (the remake's choice: the
 ## player with the fewest units).
-func merc_changed(n: int, hired: bool, player := -1, leave_npc := true) -> void:
+func merc_changed(n: int, hired: bool, player := -1, leave_npc := true, script_removal := false) -> void:
 	if world == null:
 		return
 	if not hired and player < 0 and state.mercs.get(n, {}).get("travel_waiting", false):
@@ -2555,10 +2555,11 @@ func merc_changed(n: int, hired: bool, player := -1, leave_npc := true) -> void:
 				for r: Dictionary in (world.map.unit_records if world.map else []):
 					if String(r.get("name", "")).to_lower() == "merc%d" % n:
 						home = true
-				if leave_npc and home and not u.dead:
+				if leave_npc and (home or script_removal) and not u.dead:
 					# n2 only destroys the party record (6620b0). The same mutable
 					# character stays for the authored walk back and later rehire.
 					_set_merc_control(u, m, false)
+					if not home: u.set_meta("detached_party_npc", true)
 					broadcast({"t": "merc_control", "uid": u.uid, "hired": false,
 						"character": m, "snap": u.snapshot(), "stats": u.stats})
 				else:
@@ -2566,6 +2567,22 @@ func merc_changed(n: int, hired: bool, player := -1, leave_npc := true) -> void:
 					broadcast({"t": "remove", "uid": u.uid})
 		broadcast({"t": "party"})
 		sync_state()
+
+
+## RemoveUnitFromParty removes membership, not the live script actor.
+## LiA removes Kel from FPrison, redeploys Kir, then hides Kel for a later
+## conversation. Actors brought from another zone need their own saved record.
+func remove_named_party_unit(ref: String) -> void:
+	var h := state.party_member(ref)
+	if h.is_empty(): return
+	for u: GameUnit in world.units.values():
+		if u.has_meta("hero") and is_same(u.get_meta("hero"), h):
+			_set_merc_control(u, h, false)
+			u.set_meta("detached_party_npc", true)
+			# Replace the client's party actor with the same authoritative NPC.
+			broadcast({"t":"remove", "uid":u.uid})
+			announce_unit(u)
+	state.remove_party_unit(ref)
 
 
 ## Mercenary membership changes on the existing server character. The host
@@ -2903,12 +2920,12 @@ func shop_available() -> bool:
 	return world != null and String(world.zone.get("type", "")) == "brief"
 
 
-## Classic safe-zone controls. Scripted attacks, casts and escape orders
+## Safe-zone controls for every input mode. Scripted attacks, casts and escape orders
 ## bypass player command dispatch and retain their authored behavior.
 func command_allowed(cmd: Dictionary) -> bool:
 	if not shop_available(): return true
 	match String(cmd.get("t", "")):
-		"attack", "cast", "steal", "use", "aggression": return false
+		"attack", "direct_attack", "cast", "direct_cast", "steal", "use", "aggression": return false
 		"gait": return int(cmd.get("gait",2)) >= 2
 		"move": return not bool(cmd.get("swarm",false))
 	return true
@@ -4553,18 +4570,28 @@ func load_game(slot: String) -> bool:
 	return _load_state(slot, s)
 
 
-## The menus' load: load_game with the loading screen put on screen first on
-## web / mobile (LoadingScreen.hold), before anything changes.
+## Cover the frontend before waiting for a local simulation service. Its
+## startup/request can yield many frames before the host sends load-prepare.
 func load_game_shown(slot: String) -> bool:
+	if not local_host.frontend and not _may_load():
+		return false
+	var info := SaveInfo.read(slot)
+	var zone := campaign.zone(info.zone)
+	LoadingScreen.prepare(get_tree(), zone, LoadingScreen.SAVED_ZONE)
+	await LoadingScreen.hold(get_tree(), zone, LoadingScreen.SAVED_ZONE)
 	if await _start_single_if_needed() == ERR_SKIP:
+		LoadingScreen.end()
 		return false
 	if local_host.frontend:
 		var answer := await local_host.request("load", {"slot": slot})
+		if not answer.get("ok", false): LoadingScreen.end()
 		return bool(answer.get("ok", false))
 	if not _may_load():
+		LoadingScreen.end()
 		return false
 	var s := _read_save(slot)
 	if s == null or not zone_exists(s.current_zone):
+		LoadingScreen.end()
 		return false
 	_begin_host_load(s.current_zone)
 	await _wait_load_clients()

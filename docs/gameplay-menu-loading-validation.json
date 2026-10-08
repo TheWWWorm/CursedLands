@@ -1,0 +1,151 @@
+{
+  "date": "2026-10-09",
+  "status": "local follow-up; unpublished",
+  "issue": "U34: Main-menu Load/Continue exposes the game HUD before showing the loading picture.",
+  "finding": "Main.start_game creates the HUD before Session.load_game_shown. That method previously awaited simulation-service startup before any LoadingScreen.prepare. An actual main-menu/worker baseline presents 42 uncovered HUD frames.",
+  "changes": [
+    "Prepare and hold the loading picture before starting or requesting the local simulation service. SaveInfo selects the progress movie; saves lacking that header get the generic native progress movie.",
+    "Keep the picture through the existing host load barrier and close it on startup cancellation or failed load."
+  ],
+  "baseline": {
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps51/CPU.x86_64",
+      "--audio-driver",
+      "Dummy",
+      "--render-thread",
+      "safe",
+      "--display-driver",
+      "x11",
+      "--rendering-method",
+      "forward_plus",
+      "--resolution",
+      "1600x900",
+      "--windowed",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/menu_loading_screen.gd",
+      "--label=menu-loading-before-02"
+    ],
+    "exit_code": 1,
+    "stopped": false,
+    "seconds": 37.65875990400673,
+    "errors": [],
+    "warnings": [
+      "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+    ],
+    "log_sha256": "7ebe97474a50cf5779be378858c47eb57782e3248096e73e20a4b9285eb5753c",
+    "name": "menu-loading-before-02",
+    "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/menu-loading-before-02.log",
+    "checks": 9,
+    "failures": 1,
+    "covered_presentations": 171,
+    "exposed_hud_presentations": 42
+  },
+  "candidate_runs": [
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps52/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--resolution",
+        "1600x900",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/menu_loading_screen.gd",
+        "--label=menu-loading-after-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 38.2666938539769,
+      "errors": [],
+      "warnings": [
+        "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+      ],
+      "log_sha256": "a1c66644db18e5a8542eec4a4f27bc572075aed1cd5aeb6cebfd35bde04374bf",
+      "name": "menu-loading-after-01",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/menu-loading-after-01.log",
+      "checks": 9,
+      "failures": 0,
+      "covered_presentations": 218,
+      "exposed_hud_presentations": 0
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps52/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--resolution",
+        "1600x900",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/menu_loading_screen.gd",
+        "--label=menu-continue-deferred-after-01",
+        "--continue",
+        "--loading-deferred",
+        "--legacy-info"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 36.76643646101002,
+      "errors": [],
+      "warnings": [
+        "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+      ],
+      "log_sha256": "07e05802c3d8211ea4a12a6c240c19540609bc8533a0c331b08bb16dd5edab34",
+      "name": "menu-continue-deferred-after-01",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/menu-continue-deferred-after-01.log",
+      "checks": 9,
+      "failures": 0,
+      "covered_presentations": 211,
+      "exposed_hud_presentations": 0
+    }
+  ],
+  "export": {
+    "seconds": 5.982051399012562,
+    "command": [
+      "/home/llm2x/.local/bin/godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+      "--export-release",
+      "Linux",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps52/CPU.x86_64"
+    ],
+    "engine_source": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/fast-runtime.x86_64",
+    "errors": [],
+    "sha256": {
+      "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+      "CPU.pck": "a3a6453cb9de4f0d2ce19f0d983a4b7ef188a948d78d43e29069e17bb74bcbf4",
+      "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+    }
+  },
+  "excluded_attempts": [
+    {
+      "name": "menu-loading-before-01",
+      "reason": "Fixture initially placed Session below a test Node, giving it a different RPC path from the production worker. Stopped explicitly. Corrected fixture uses the real Main.start_game and moves its observer outside Main cleanup."
+    }
+  ],
+  "scope": [
+    "Actual main menu Load and Continue, separate live single-player authority, every frame_post_draw before world readiness, successful load and missing-save cleanup.",
+    "Deferred presentation path is forced on Linux with --loading-deferred; the Continue test also removes the optional legacy save header."
+  ],
+  "limits": [
+    "Linux Xvfb functional validation, not an FPS benchmark. Windows and physical Android runtime were not tested in this follow-up.",
+    "Xvfb reports a missing XIM input-method warning. There are no game errors in accepted runs.",
+    "Published Experimental 6 is unchanged."
+  ]
+}

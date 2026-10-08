@@ -116,7 +116,8 @@ const OPTIONS := [
 	["cam_pan_speed", 0, 100, 16, 3, 50], ["cam_rotate_speed", 0, 100, 16, 4, 50],
 	["cam_zoom_speed", 0, 100, 16, 5, 50], ["cam_wasd", 1, 2, 16, 7, 1],
 	["village_start_view", 1, 2, 16, 6, 0],
-	["control_mode", 1, 3, 16, 8, 0],
+	# Rows 8 and 9 are occupied by EIKeymap's camera-turn bindings.
+	["control_mode", 1, 3, 16, 10, 0],
 	# Interface and controls (group 17).
 	# Small health bars over visible hostile units (EnemyBars): 0 off (the
 	# original, which shows a unit's health only in the unit panel), 1 auto
@@ -303,7 +304,7 @@ const REMAKE_OPTIONS := {
 	"phys_interp": ["Smooth motion", "Creatures are drawn between the game's 60 steps a second, so they move smoothly on screens faster than 60 Hz. Visual only."],
 	"render_scale": ["Render scale", "Resolution of the 3D view relative to the window: below 100 % faster, above it sharper (supersampling)."],
 	"gfx_far_view": ["Far view", "See 260 m instead of 100 m, with a long soft fade into the fog; off: the original 100 m view with its short fog band."],
-	"control_mode": ["Control mode", "Auto uses third person with a gamepad and classic controls with a mouse. Third person: WASD moves, mouse looks, left click attacks, E interacts, Tab releases the pointer. Gamepad: sticks move and look, RT attacks, A interacts, LT + RT opens the system wheel. Visible health bars stay on. Attacks can hit friendly characters, including in villages."],
+	"control_mode": ["Control mode", "Auto uses third person with a gamepad and classic controls with a mouse. Third person: WASD moves, mouse looks, left click attacks, E interacts, Tab releases the pointer. Gamepad: sticks move and look, RT attacks, A interacts, LT + RT opens the system wheel. Visible health bars stay on. Attacks can hit friendly characters outside safe zones. Attacks and spells are disabled in safe zones."],
 	"camera_style": ["Camera style", "Original: the 2000 game's camera. Modern: responsive pan, smooth zoom and terrain clearance. Middle drag turns; Alt + middle drag or right drag tilts; Shift + middle drag pans. Home centres; optional hero follow and see-through objects."],
 	"cam_pan_speed": ["Camera pan speed (modern)", "Speed of the modern camera's panning (keys, screen edges)."],
 	"cam_rotate_speed": ["Camera turn speed (modern)", "Speed of the modern camera's turning and tilting (drag, keys)."],

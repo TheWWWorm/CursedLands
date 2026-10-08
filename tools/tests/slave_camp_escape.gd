@@ -51,11 +51,11 @@ func _ready() -> void:
 	g.hud.set_move_mode("crawl")
 	check(guest.stance == GameUnit.STANCE_NONE,"client does not predict a refused crouch")
 	s.is_host = true
-	for kind in ["attack","cast","steal","use"]:
+	for kind in ["attack","cast","direct_attack","direct_cast","steal","use"]:
 		guest.order = {}; guest.orders.clear()
 		var spells: Array = guest.get_meta("hero").get("spells",[])
 		s.apply_command({"t":kind,"units":[guest.uid],"unit":guest.uid,"target":1001009,
-			"spell":spells[0] if not spells.is_empty() else "healing{}"},1)
+			"spell":spells[0] if not spells.is_empty() else "healing{}","direction":Vector3.RIGHT},1)
 		check(guest.orders.is_empty(),"authority rejects safe-zone "+kind)
 	var limit: Vector3 = w.zone.restrict
 	var escape_view := Vector3(400,0,-77)
