@@ -120,6 +120,7 @@ static func _copy_base(base: ShaderMaterial, target: ShaderMaterial) -> void:
 
 
 static func _replace(node: MeshInstance3D, material: ShaderMaterial) -> void:
+	SceneryBatches.changed(node)
 	if node.has_meta("cam_fade_mat"):
 		var alpha := 0.0
 		if Portability.compatibility() and node.material_override is ShaderMaterial:

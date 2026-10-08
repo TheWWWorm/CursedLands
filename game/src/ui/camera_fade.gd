@@ -160,6 +160,7 @@ func _set_alpha(i: int, a: float) -> void:
 		var g3 := gi as GeometryInstance3D
 		if a <= 0.0:
 			if g3.has_meta("cam_fade_mat"):
+				SceneryBatches.changed(g3)
 				g3.material_override = g3.get_meta("cam_fade_mat")
 				g3.remove_meta("cam_fade_mat")
 				if not Portability.compatibility():
@@ -169,6 +170,7 @@ func _set_alpha(i: int, a: float) -> void:
 			var m := _dither_material(g3.material_override)
 			if m == null:
 				continue
+			SceneryBatches.changed(g3)
 			g3.set_meta("cam_fade_mat", g3.material_override)
 			g3.material_override = m.duplicate() if Portability.compatibility() else m
 		if Portability.compatibility():

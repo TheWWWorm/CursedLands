@@ -9,6 +9,12 @@ var stats := {}
 var unit_records: Array[Dictionary] = []
 var object_nodes: Array[Node3D] = []
 var _spawn_units := true
+var scenery_batches: SceneryBatches
+
+
+func _ready() -> void:
+	if SceneryBatches.requested():
+		scenery_batches = SceneryBatches.create(self, object_nodes)
 
 
 static func load_map(map_name: String, mob_name := "", spawn_units := true) -> EIMapScene:
@@ -53,6 +59,8 @@ func place_object(o: Dictionary, parent: Node3D) -> Node3D:
 	parent.add_child(node)
 	if o.kind != "UNIT":
 		GroundContact.attach(node, terrain)
+	if is_instance_valid(scenery_batches):
+		scenery_batches.register(node)
 	return node
 
 

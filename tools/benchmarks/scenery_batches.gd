@@ -1,7 +1,7 @@
 extends Node
-## Diagnostic prototype only: compare frozen original map meshes with 16 m
-## MultiMesh groups. This intentionally does not implement gameplay lifetime,
-## fading, movement or light-membership updates and is not a production switch.
+## Frozen-map comparison: default uses the diagnostic prototype; pass
+## --scenery-batches to exercise the real map hook and production manager.
+## Gameplay lifetime is covered separately by tests/scenery_batches.gd.
 var view: SubViewport
 var map: EIMapScene
 var groups := {}
@@ -15,10 +15,18 @@ var no_wind := false
 var shadows := false
 var build_usec := 0
 var scene_warmup_frames := 0
+var runtime := false
+var contact := false
+var churn := false
+var idle_usec: Array[int] = []
+var movement_usec: Array[int] = []
+var movement_rebuilds: Array[int] = []
 
 func settle() -> void:
 	for i in 8:
 		RenderingServer.force_draw()
+		if runtime and is_instance_valid(map.scenery_batches) and map.scenery_batches._enabled:
+			idle_usec.append(map.scenery_batches.last_update_usec)
 		await get_tree().process_frame
 
 func capture(label: String) -> Dictionary:
@@ -87,6 +95,12 @@ func light_snapshot() -> Array:
 
 func batch() -> void:
 	var start := Time.get_ticks_usec()
+	if runtime:
+		if is_instance_valid(map.scenery_batches):
+			map.scenery_batches.set_enabled(true)
+			map.scenery_batches.flush()
+		build_usec = Time.get_ticks_usec() - start
+		return
 	var snapshot := light_snapshot()
 	var limit := int(ProjectSettings.get_setting_with_override("rendering/limits/opengl/max_lights_per_object"))
 	var total_limit := int(ProjectSettings.get_setting_with_override("rendering/limits/opengl/max_renderable_lights"))
@@ -130,6 +144,9 @@ func make_batch(members: Array, key: Array) -> void:
 	batches.append(node)
 
 func unbatch() -> void:
+	if runtime:
+		if is_instance_valid(map.scenery_batches): map.scenery_batches.set_enabled(false)
+		return
 	for node in batches:
 		node.free()
 	batches.clear()
@@ -149,6 +166,9 @@ func _ready() -> void:
 	GameData.options["gfx_volumetric"] = 0
 	GameData.options["gfx_ground_contact"] = 0
 	for arg in OS.get_cmdline_user_args():
+		if arg == "--scenery-batches": runtime = true
+		if arg == "--scenery-contact": contact = true; GameData.options["gfx_ground_contact"] = 1
+		if arg == "--scenery-churn": churn = true
 		if arg == "--scenery-light-partition": preserve_lights = true
 		if arg == "--scenery-ranked-lights": preserve_lights = true; rank_overflow = true
 		if arg == "--scenery-no-wind": no_wind = true
@@ -166,6 +186,7 @@ func _ready() -> void:
 		get_tree().quit(2)
 		return
 	view.add_child(map)
+	if runtime: unbatch()
 	var focus := collect()
 	var camera := Camera3D.new()
 	view.add_child(camera)
@@ -224,6 +245,9 @@ func _ready() -> void:
 			batch()
 			var count := batches.size()
 			var parts := originals.size()
+			if runtime and is_instance_valid(map.scenery_batches):
+				count = map.scenery_batches._batches.size()
+				for group: Dictionary in map.scenery_batches._batches.values(): parts += group.members.size()
 			var after := await capture(label + "-after")
 			unbatch()
 			var restored := await capture(label + "-restored")
@@ -231,9 +255,23 @@ func _ready() -> void:
 					"after_draws": after.draws, "restored_draws": restored.draws,
 					"difference": compare(before.image, after.image),
 					"restoration": compare(before.image, restored.image)})
+		if runtime and churn and lights == 4 and is_instance_valid(map.scenery_batches):
+			batch()
+			var origin := local_lights[0].position
+			for step in 32:
+				local_lights[0].position = origin + Vector3(sin(step * 0.2) * 3.0, 0, 0)
+				await get_tree().process_frame
+				RenderingServer.force_draw()
+				movement_usec.append(map.scenery_batches.last_update_usec)
+				movement_rebuilds.append(map.scenery_batches.last_rebuilt_groups)
+			unbatch()
 		for light in local_lights:
 			light.free()
-	var report := {"map": map_name, "focus": str(focus), "rows": rows, "light_partition":preserve_lights, "rank_overflow":rank_overflow, "no_wind":no_wind, "shadows":shadows,
+	idle_usec.sort()
+	var report := {"map": map_name, "focus": str(focus), "rows": rows, "runtime":runtime, "contact":contact,
+			"idle_update_usec":idle_usec,
+			"moving_light_update_usec":movement_usec, "moving_light_rebuilt_groups":movement_rebuilds,
+			"light_partition":preserve_lights, "rank_overflow":rank_overflow, "no_wind":no_wind, "shadows":shadows,
 			"scene_warmup_frames":scene_warmup_frames,
 			"light_limit":ProjectSettings.get_setting_with_override("rendering/limits/opengl/max_lights_per_object"),
 			"renderer": RenderingServer.get_current_rendering_method(), "editor": OS.has_feature("editor"),

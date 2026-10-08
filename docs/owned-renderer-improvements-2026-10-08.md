@@ -219,7 +219,7 @@ Logs under the QA directory: `scenery-resources-control.log`,
 build recorded in `p3-export.log`. Captures are
 `data/godot/app_userdata/Cursed Lands/foliage-materials-*.png`.
 
-### Explicit batching remains open
+### Batching constraints established at the material-reuse stage
 
 P3 is not complete. The next prototype must preserve individual fading and
 scripted movement/removal while keeping batches spatially bounded. Specific
@@ -291,9 +291,9 @@ diagnostic benchmark, not a passing fidelity test.
 
 ### Light membership: preserve complete sets and engine history
 
-The next standalone prototype resolves the large Compatibility mismatch in the
-frozen probe. **Production batching is still not enabled**: live object/fade and
-light lifecycle handling remains necessary. The reference renderer's immutable
+The standalone prototype at this checkpoint resolved the large Compatibility
+mismatch in the frozen probe. Live object/fade and light lifecycle handling
+was still pending; the subsequent opt-in runtime implementation is recorded below. The reference renderer's immutable
 compatible-submission groups remain the model; the light-selection rules below
 are specific to our pinned Godot build.
 
@@ -387,6 +387,150 @@ Next implementation requirements remain concrete:
 4. Measure ongoing CPU submission and GPU/culling cost with moving cameras,
    light churn and individual fades, then validate target devices. The current
    result solves a selection constraint; it is not completed P3 or an FPS claim.
+
+## P3: opt-in live Compatibility scenery batches
+
+The frozen planner now has a world-owned runtime manager. Enable it with
+`--scenery-batches` after the executable's `--` separator. It remains off by
+normal default, including Android/web, pending broader gameplay and device
+acceptance. Forward+, Mobile and headless automatic initialization bypass it.
+This is a live implementation checkpoint, not a claim that all P3 work is done.
+The reference basis remains R0 `Source/retained_static_scene.cpp:303`,
+`Source/retained_static_submission.cpp:394` and `Source/renderer.cpp:6851`:
+retain compatible immutable geometry while preserving logical identity.
+
+### Runtime ownership and integration contract
+
+- [scenery_batches.gd](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/game/src/game/fx/scenery_batches.gd)
+  owns 16 m cell groups, weak object/light references, dirty groups and draw
+  instances. It registers placed `OBJECT` figures only; units, levers and `ef`
+  effect carriers are excluded. Skins, blend shapes, fading meshes, overlays,
+  custom bounds, distance/parent visibility and unsupported materials stay on
+  their original path. A visible reflection/GI volume disables grouping because
+  its per-instance selection is not modeled by this first implementation.
+- [scenery_batch_watch.gd](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/game/src/game/fx/scenery_batch_watch.gd)
+  is a non-rendering child of each registered mesh. It observes inherited
+  transforms, visibility, tree exits and mesh-resource changes. The manager
+  never removes/reparents an authored mesh or changes its logical visibility,
+  layer mask or gameplay record. Only the original RenderingServer instance's
+  draw visibility is suppressed while a compatible MultiMesh represents it.
+  Picking, weather/navigation queries and camera obstruction still see the
+  individual original nodes and geometry.
+- [scenery_light_groups.gd](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/game/src/game/fx/scenery_light_groups.gd)
+  is the promoted complete-light-set policy. The former benchmark helper now
+  inherits this production helper, so boundary tests and diagnostics exercise
+  the same policy. Ranked overflow remains only a diagnostic negative control.
+  Runtime code never asks for it.
+- [map_scene.gd](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/game/src/ei/map_scene.gd)
+  creates the manager on ready when requested and registers later `place_object`
+  results. This includes quest `AddMob` scenery through the existing world API.
+  No character, visibility/LOS, script or zone-transfer code was changed.
+- [camera_fade.gd](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/game/src/ui/camera_fade.gd)
+  and [ground_contact.gd](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/game/src/game/fx/ground_contact.gd)
+  notify the manager **before** replacing a material. The first camera fade
+  restores the affected original immediately; continuing the fade does not
+  rebuild groups. Completion can rejoin a compatible group. Contact options
+  and replacements while faded preserve the existing material/fade contract.
+
+Future writers that replace a registered mesh's material, geometry or render
+state must call `SceneryBatches.changed(mesh)` **before** that replacement.
+A new mesh resource is then observed on the next flush. Shared material-uniform
+updates need no special notification because batches share that resource.
+The current placed-scenery material writers are hooked; this is not a generic
+interceptor for arbitrary third-party property changes.
+
+Once a registered object moves, it stays on its original renderer until the
+manager is torn down/reinitialized, even when batching is toggled off/on. The live control test
+exposed why: copying a freshly moved global transform into a new MultiMesh can
+jump ahead of Godot's retained/interpolated transform. This implementation is
+for static scenery and preserves the moving object's original render history.
+Parent movement also restores the affected original instances. A new manager
+can register the world's now-current placements after teardown/re-entry.
+
+Light snapshots are confined to the same `World3D`. Creation, deletion,
+visibility, bounds/range, position and cull-mask changes dirty intersecting
+logical groups, including the entire union where a light can enter a gap.
+Energy-only flicker deliberately does not rebuild or re-rank. A moving light
+whose complete-set partitions remain the same retains existing batch objects;
+the engine updates their light pairing. The manager polls tracked lights before
+drawing; it does not rescan the scene tree or poll all mesh transforms every
+frame. Exit restores original draws, disconnects signals, clears weak tables
+and frees watchers. Removed/re-added managers reinitialize their watches.
+
+### Rendered tests, observed savings and remaining limits
+
+[tools/tests/scenery_batches.gd](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/scenery_batches.gd)
+uses two separately rendered worlds with identical inputs; one never batches.
+The exported release passes **110 checks on each of Compatibility budget 8,
+Compatibility budget 4 and Forward+**, with zero pixels over 2/255 in all live
+comparison frames. Coverage includes camera movement, logical visibility,
+object/parent movement, hide/show, fade start/continuation/restore, a material
+replacement during a fade, shared mesh mutation, render-state replacement,
+light creation/movement/range/visibility/removal/energy, over-budget fallback,
+probe fallback, object creation/deletion/reparenting, off/on, manager re-entry
+and teardown. Forward+ keeps original draws throughout. The eight-mesh static
+fixture reduces eight draws to two only on Compatibility.
+
+The promoted planner's **15 boundary checks** pass against the exported runtime;
+the existing contact material/field regression also passes **35 checks**. The
+small fixture does not establish behavior for every gameplay script or asset.
+The Forward+ fixture reports seven leaked Texture RIDs at shutdown when it
+creates and frees a temporary ReflectionProbe. An otherwise identical fixture
+without that probe passes 105 checks with no leak warning; the production
+manager creates no textures and automatically bypasses Forward+. The probe
+warning is retained in the evidence, not counted as a clean shutdown result.
+
+The real-map benchmark's `--scenery-batches` route exercises `EIMapScene._ready`
+and the production manager, rather than its older diagnostic constructor.
+Original / batched / restored comparisons use a settled, frozen camera and
+scene, 800 × 600, original textures, Godot 4.7 `5b4e0cb0f`, Linux release,
+Compatibility, NVIDIA RTX 3090 / driver 580.178.04:
+
+| Scene | No added lights: original → batched draws | Twelve added lights | Changed pixels above 2/255, initial / energy change |
+|---|---:|---:|---:|
+| `bz2g`, budget 8 | 453 → 382 | 453 → 414 | 0 / 0 |
+| `bz4g`, budget 8 | 340 → 336 | 340 → 337 | 0 / 0 |
+| `bz13h`, budget 8 | 623 → 504 | 623 → 530 | 0 / 3 |
+| `bz13h`, budget 4 | 623 → 504 | 623 → 540 | 0 / 0 |
+| `bz13h`, sun/local shadows + contact blend | 1,558 → 1,247 | 1,865 → 1,607 | 9 / 9 |
+
+Normal `bz13h` restoration controls also differ by up to three pixels. The
+combined shadow/contact row has nine persistent differing pixels (maximum
+34/255 channel delta); restoration is exact in that run. Isolating the effects
+gives three persistent pixels with contact alone and up to nine with shadows
+alone; shadow-only restoration also differs by nine in one phase. The counts
+and maximum deltas match the prior restoration variation, but their exact
+cause is unresolved. Keep this residual visible rather than calling every
+real-map capture pixel-identical. Forward+ automatic bypass retains **898 → 898** draws and
+exact pixels for all four light/energy phases. One Forward+ attempt was excluded
+because grass streaming did not settle before the fixture limit; the retry
+settled and completed. Successful benchmark exit means measurement completed,
+not that image differences passed an acceptance threshold.
+
+In the isolated recorded `bz13h` cost sample, 32 idle updates measured a median
+**34 microseconds**, range **3–62 microseconds**. Moving one of four added lights
+through a 3 m sweep measured a median **746.5 microseconds**, maximum **928
+microseconds**, with zero to two affected groups rebuilt per frame. These are
+manager CPU durations, not GPU time or an FPS improvement. No other game/editor
+render process was present at the sample's start or end. Complete rebuilds in
+the map comparison samples took roughly **3.4–9.1 ms**. Initial loading,
+option-wide invalidation and local light churn therefore still have costs;
+retaining original nodes also means this is not a scene-memory reduction.
+
+Physical Android/browser performance, thermal behavior, long gameplay routes,
+additional GPUs, the shadow/contact residual and user-facing rollout remain
+open. The four-light override is a desktop engine-budget test only. Keep the
+flag opt-in until saved submission work outweighs CPU management cost on the
+intended target. The existing V1 effect stays off by default independently.
+
+Evidence, commands, source/build hashes, pixel deltas, warnings and the read-only
+integration check are retained in
+[scenery-runtime-2026-10-08.json](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/docs/validation/scenery-runtime-2026-10-08.json).
+Full per-frame reports/captures and rejected attempts are under
+`/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p3-runtime`.
+Reproduce the map/cost path through the existing exported `--tool` runner with
+`tools/benchmarks/scenery_batches.gd --scenery-batches --scenery-churn`;
+`--scenery-contact` and `--scenery-shadows` add those independent conditions.
 
 ## P5, first stage: stable local-shadow selection
 
@@ -907,27 +1051,30 @@ above and small hooks in `figure.gd`, `map_scene.gd`, `terrain.gd`, `gfx.gd`,
 `game_data.gd`, graphics defaults and `soft_ground_deform.gd`. It does not modify
 character/zone-transfer ownership, controls, combat or camera implementation.
 
-The latest read-only `git apply --check` includes the complete production source
-changes in this isolated branch plus the shader preparation optimization. It
-passed against active committed HEAD
-`ba584dfb1049818fca7a0f4544cad98f06a2d363`, including the other chat's uncommitted
-co-op progression work. `game_data.gd` is shared: preserve its newer control
-options when integrating. Its HEAD, status and hashes of all files touched
-by this branch were unchanged across the check. **No patch was applied.**
-Evidence is `integration-check-v1-preparation.json` in the QA directory; its
-record is also included in the preparation validation JSON. Recheck before integration
-because that checkout is still changing. Do not message or alter the other chat
-without human authorization.
+The P3 runtime adds only the new manager/watch/light-policy modules and small
+hooks in `map_scene.gd`, `camera_fade.gd` and `ground_contact.gd`, plus tests and
+the benchmark. It preserves individual object nodes and does not touch the
+other chat's newer creature visibility or story/co-op effect changes.
+
+The latest read-only `git apply --check` includes all production/tool changes
+from this branch's base through the P3 runtime checkpoint. It passed against
+active committed HEAD `5e4c0b0897df41f66a628664dd66deef8ebbc281`, including the
+other chat's uncommitted story/co-op script work. Its HEAD, status and hashes of
+all files touched by this branch were unchanged. **No patch was applied.**
+The result and exact target state are in the runtime validation JSON above.
+`game_data.gd` is shared by earlier commits: preserve its newer control/options
+changes when integrating. Recheck before integration because that checkout is
+still changing. Do not message or alter the other chat without human authorization.
 
 ## Next work in the established order
 
-1. **P3 static scenery batching:** material retention, a three-map resource
-   census and the frozen rendered-map probe are now recorded above. The probe
-   now preserves complete light sets within the renderer budget and records the
-   engine-history constraint above. Implement live lifetime/fading integration
-   and the listed consumers before a production batch. `map_scene.gd` and `figure.gd`
-   are the main entry points. Preserve the recent dialogue-obstruction work
-   before changing visual ownership.
+1. **P3 static scenery batching:** the opt-in live manager, complete-light guard,
+   movement/fade lifetime and real-map validation are now implemented above.
+   Finish long gameplay/device acceptance and investigate the nine-pixel
+   shadow/contact residual before enabling a default. Measure moving-light
+   management cost against saved submission time on Android/web. Preserve the
+   explicit material-change notification contract and logical mesh consumers;
+   do not replace this with a naive MultiMesh regrouping pass.
 2. **P4 occlusion:** after identifying hidden-geometry cost, evaluate Godot's
    existing facilities before a custom Hi-Z path. Keep world/gameplay visibility
    separate and verify camera movement, thin openings and shadows.
