@@ -1,0 +1,1511 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-08",
+  "scope": "Standalone batching probe and planner; no production batching enabled.",
+  "engine_commit": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+  "source_sha256": {
+    "tools/benchmarks/scenery_batches.gd": "77df805aeed800931db8789b1dcf22c475ef80bf5676d94a254764b5028f1f79",
+    "tools/benchmarks/scenery_batch_lights.gd": "71d4b39ccb77a277c6e3353c4ca9a382a0a4529e33b32cde571ecb2fd9b56856",
+    "tools/tests/scenery_batch_lights.gd": "1ee14c9613bd762abf4c267e5225dd7b3763c5567c1f02c3018a94dd5a7d5e71"
+  },
+  "engine_evidence": {
+    "servers/rendering/renderer_scene_cull.cpp:3019": "Selection updates only when FLAG_GEOM_LIGHTING_DIRTY is set; transformed-centre distance divided by range*energy chooses bounded per-type lights.",
+    "servers/rendering/renderer_scene_cull.h:829": "PairInstances uses exact transformed-AABB intersection after broad-phase query.",
+    "drivers/gles3/storage/light_storage.cpp:144": "Energy-only changes do not send a light dependency notification.",
+    "servers/rendering/rendering_server.cpp:3810": "Default light limit is eight; project mobile/web overrides use four.",
+    "sha256": {
+      "servers/rendering/renderer_scene_cull.cpp": "80f0761682f6df8abe683f843f6fc8fd1fc9a646783298491d597f2634b5e810",
+      "servers/rendering/renderer_scene_cull.h": "341e4f3da150bb91927479d55ef06baee2b212db96b3f548d92ef11ba3000f5e",
+      "drivers/gles3/storage/light_storage.cpp": "2aaae89b4d75abb1c91d5de3a85f094cc2d06a5f23fdcd288c78e22f3a8a3d24"
+    },
+    "servers/rendering/renderer_scene_cull.cpp:1046": "Visibility off unpairs geometry; restoring visibility can therefore reselect lights."
+  },
+  "export": {
+    "executable": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-preparation/export/CursedLands.x86_64",
+    "executable_sha256": "3154bb4465f616e24b811dd576e9230022872cd80f8d5ab854efed2716b926d4",
+    "pack_sha256": "c9273c16f0bda337d8e9ebfda4e912a270b0ef1328b1d7d33e0595b43aead7fb",
+    "tool_loading": "Live external benchmark/planner scripts against frozen exported game build."
+  },
+  "boundary_tests": {
+    "command": [
+      "CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--headless",
+      "--audio-driver",
+      "Dummy",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/scenery_batch_lights.gd"
+    ],
+    "checks": 15,
+    "failures": 0,
+    "return_code": 0,
+    "output_excerpt": "SCENERY_BATCH_LIGHTS checks=15 failures=0"
+  },
+  "four_light_override": {
+    "file": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p3-light-plan/limit4-export/override.cfg",
+    "contents": "[rendering]\nlimits/opengl/max_lights_per_object=4\n",
+    "executable_sha256": "3154bb4465f616e24b811dd576e9230022872cd80f8d5ab854efed2716b926d4",
+    "pack_sha256": "c9273c16f0bda337d8e9ebfda4e912a270b0ef1328b1d7d33e0595b43aead7fb",
+    "physical_mobile_or_web_test": false
+  },
+  "cases": [
+    {
+      "policy": "naive",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-preparation/export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/scenery_batches.gd"
+      ],
+      "return_code": 0,
+      "errors": [],
+      "report": {
+        "adapter": "NVIDIA GeForce RTX 3090",
+        "editor": false,
+        "focus": "(88.0, 16.81038, -56.0)",
+        "light_limit": 8,
+        "light_partition": false,
+        "map": "bz13h",
+        "no_wind": false,
+        "rank_overflow": false,
+        "renderer": "gl_compatibility",
+        "rows": [
+          {
+            "after_draws": 504,
+            "batches": 87,
+            "before_draws": 623,
+            "build_usec": 1829,
+            "difference": {
+              "max_byte_difference": 0,
+              "mean_channel_difference": 0.0,
+              "pixels_over_2": 0
+            },
+            "lights": 0,
+            "parts": 248,
+            "phase": "initial",
+            "restoration": {
+              "max_byte_difference": 4,
+              "mean_channel_difference": 4.86111111111111e-06,
+              "pixels_over_2": 1
+            },
+            "restored_draws": 623
+          },
+          {
+            "after_draws": 504,
+            "batches": 87,
+            "before_draws": 623,
+            "build_usec": 2108,
+            "difference": {
+              "max_byte_difference": 4,
+              "mean_channel_difference": 4.86111111111111e-06,
+              "pixels_over_2": 1
+            },
+            "lights": 4,
+            "parts": 248,
+            "phase": "initial",
+            "restoration": {
+              "max_byte_difference": 0,
+              "mean_channel_difference": 0.0,
+              "pixels_over_2": 0
+            },
+            "restored_draws": 623
+          },
+          {
+            "after_draws": 504,
+            "batches": 87,
+            "before_draws": 623,
+            "build_usec": 1938,
+            "difference": {
+              "max_byte_difference": 33,
+              "mean_channel_difference": 0.0265875,
+              "pixels_over_2": 1809
+            },
+            "lights": 12,
+            "parts": 248,
+            "phase": "initial",
+            "restoration": {
+              "max_byte_difference": 8,
+              "mean_channel_difference": 2.56944444444444e-05,
+              "pixels_over_2": 2
+            },
+            "restored_draws": 623
+          },
+          {
+            "after_draws": 504,
+            "batches": 87,
+            "before_draws": 623,
+            "build_usec": 1856,
+            "difference": {
+              "max_byte_difference": 40,
+              "mean_channel_difference": 0.0330881944444444,
+              "pixels_over_2": 2306
+            },
+            "lights": 12,
+            "parts": 248,
+            "phase": "energy_change",
+            "restoration": {
+              "max_byte_difference": 40,
+              "mean_channel_difference": 0.00522569444444444,
+              "pixels_over_2": 367
+            },
+            "restored_draws": 623
+          }
+        ],
+        "scene_warmup_frames": 22
+      },
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p3-light-plan/naive.log",
+      "png_sha256": {
+        "scenery-batches-gl_compatibility-12-initial-before.png": "33372bb205dd9040b71fd329e97a9ffa32cef95862ed0b3a71404bf7aee25505",
+        "scenery-batches-gl_compatibility-4-initial-before.png": "330016d07f78dfcb8f54bbf2b1ce916941a33a924c6be7ac7884d4d107e92cd9",
+        "scenery-batches-gl_compatibility-4-initial-restored.png": "330016d07f78dfcb8f54bbf2b1ce916941a33a924c6be7ac7884d4d107e92cd9",
+        "scenery-batches-gl_compatibility-12-energy_change-after.png": "5f1ac2385355c801eecfa3a50ad4d4e2e2f8711e85e56ed47c7103c14cedc63f",
+        "scenery-batches-gl_compatibility-4-initial-after.png": "327dbe6e98209c59c0846f0592e3dcb1e4e9bdd9a8cf3db1f8bb99282739b02a",
+        "scenery-batches-gl_compatibility-12-initial-after.png": "8f5d6e61d8aab0f1ed945a50932cb0168eb6ee8589050d990a0b3b3e1805e638",
+        "scenery-batches-gl_compatibility-12-initial-restored.png": "77d0523f07c9e9361253ae07a5f755cc8ae9c93800b2eadd96f4dfaf20bd8a79",
+        "scenery-batches-gl_compatibility-0-initial-before.png": "aaaeb2f7bb71940b1ebeb88127d51e9c604badf54633b698827838db78dd8a23",
+        "scenery-batches-gl_compatibility-0-initial-after.png": "aaaeb2f7bb71940b1ebeb88127d51e9c604badf54633b698827838db78dd8a23",
+        "scenery-batches-gl_compatibility-0-initial-restored.png": "9e2548679ecd0811e926b3db81bbaaa8c12cc1e6cdd2dfc102c3ec9975f16175",
+        "scenery-batches-gl_compatibility-12-energy_change-before.png": "165f6397765afa40afd77e68b7a11a766aaab99ac4f8552933c49d4e11bc97b5",
+        "scenery-batches-gl_compatibility-12-energy_change-restored.png": "bf1df244334e7d5bfe0e598fc5d17d7b31483543f03485d6c23ffc9e193de651"
+      },
+      "source_report": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p3-light-plan/comparison.json"
+    },
+    {
+      "policy": "ranked",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-preparation/export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/scenery_batches.gd",
+        "--scenery-ranked-lights"
+      ],
+      "return_code": 0,
+      "errors": [],
+      "report": {
+        "adapter": "NVIDIA GeForce RTX 3090",
+        "editor": false,
+        "focus": "(88.0, 16.81038, -56.0)",
+        "light_limit": 8,
+        "light_partition": true,
+        "map": "bz13h",
+        "no_wind": false,
+        "rank_overflow": true,
+        "renderer": "gl_compatibility",
+        "rows": [
+          {
+            "after_draws": 504,
+            "batches": 87,
+            "before_draws": 623,
+            "build_usec": 3139,
+            "difference": {
+              "max_byte_difference": 0,
+              "mean_channel_difference": 0.0,
+              "pixels_over_2": 0
+            },
+            "lights": 0,
+            "parts": 248,
+            "phase": "initial",
+            "restoration": {
+              "max_byte_difference": 4,
+              "mean_channel_difference": 4.86111111111111e-06,
+              "pixels_over_2": 1
+            },
+            "restored_draws": 623
+          },
+          {
+            "after_draws": 514,
+            "batches": 79,
+            "before_draws": 623,
+            "build_usec": 4196,
+            "difference": {
+              "max_byte_difference": 4,
+              "mean_channel_difference": 4.86111111111111e-06,
+              "pixels_over_2": 1
+            },
+            "lights": 4,
+            "parts": 230,
+            "phase": "initial",
+            "restoration": {
+              "max_byte_difference": 4,
+              "mean_channel_difference": 4.86111111111111e-06,
+              "pixels_over_2": 1
+            },
+            "restored_draws": 623
+          },
+          {
+            "after_draws": 528,
+            "batches": 72,
+            "before_draws": 623,
+            "build_usec": 5314,
+            "difference": {
+              "max_byte_difference": 0,
+              "mean_channel_difference": 0.0,
+              "pixels_over_2": 0
+            },
+            "lights": 12,
+            "parts": 209,
+            "phase": "initial",
+            "restoration": {
+              "max_byte_difference": 8,
+              "mean_channel_difference": 1.38888888888889e-05,
+              "pixels_over_2": 1
+            },
+            "restored_draws": 623
+          },
+          {
+            "after_draws": 527,
+            "batches": 73,
+            "before_draws": 623,
+            "build_usec": 4759,
+            "difference": {
+              "max_byte_difference": 40,
+              "mean_channel_difference": 0.00364861111111111,
+              "pixels_over_2": 295
+            },
+            "lights": 12,
+            "parts": 211,
+            "phase": "energy_change",
+            "restoration": {
+              "max_byte_difference": 40,
+              "mean_channel_difference": 0.00363472222222222,
+              "pixels_over_2": 294
+            },
+            "restored_draws": 623
+          }
+        ],
+        "scene_warmup_frames": 22
+      },
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p3-light-plan/ranked.log",
+      "png_sha256": {
+        "scenery-batches-gl_compatibility-12-initial-before.png": "1eb31af11dc0ec4b554f00b70b282fdb6dc6f34c76ec9b3fda9e3e7a90a451e9",
+        "scenery-batches-gl_compatibility-4-initial-before.png": "330016d07f78dfcb8f54bbf2b1ce916941a33a924c6be7ac7884d4d107e92cd9",
+        "scenery-batches-gl_compatibility-4-initial-restored.png": "327dbe6e98209c59c0846f0592e3dcb1e4e9bdd9a8cf3db1f8bb99282739b02a",
+        "scenery-batches-gl_compatibility-12-energy_change-after.png": "a5905b2e8f05c40368c7b224ef07bc151f236ae04ca9a37ae10f2b1855312284",
+        "scenery-batches-gl_compatibility-4-initial-after.png": "327dbe6e98209c59c0846f0592e3dcb1e4e9bdd9a8cf3db1f8bb99282739b02a",
+        "scenery-batches-gl_compatibility-12-initial-after.png": "1eb31af11dc0ec4b554f00b70b282fdb6dc6f34c76ec9b3fda9e3e7a90a451e9",
+        "scenery-batches-gl_compatibility-12-initial-restored.png": "0b2f557bb56594974a77e7a3f6abecfc06e00a1903040a42f03d222cc0de90d2",
+        "scenery-batches-gl_compatibility-0-initial-before.png": "aaaeb2f7bb71940b1ebeb88127d51e9c604badf54633b698827838db78dd8a23",
+        "scenery-batches-gl_compatibility-0-initial-after.png": "aaaeb2f7bb71940b1ebeb88127d51e9c604badf54633b698827838db78dd8a23",
+        "scenery-batches-gl_compatibility-0-initial-restored.png": "9e2548679ecd0811e926b3db81bbaaa8c12cc1e6cdd2dfc102c3ec9975f16175",
+        "scenery-batches-gl_compatibility-12-energy_change-before.png": "4155ff98b3358dee38a12ee7a332316241d177998182b19e46daddd24818ab55",
+        "scenery-batches-gl_compatibility-12-energy_change-restored.png": "72490130711d7e790b06b70e6f319840d54072983a9cbb4a3f4f7df4208a0db5"
+      },
+      "source_report": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p3-light-plan/comparison.json"
+    },
+    {
+      "policy": "guarded",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-preparation/export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/scenery_batches.gd",
+        "--scenery-light-partition"
+      ],
+      "return_code": 0,
+      "errors": [],
+      "report": {
+        "adapter": "NVIDIA GeForce RTX 3090",
+        "editor": false,
+        "focus": "(88.0, 16.81038, -56.0)",
+        "light_limit": 8,
+        "light_partition": true,
+        "map": "bz13h",
+        "no_wind": false,
+        "rank_overflow": false,
+        "renderer": "gl_compatibility",
+        "rows": [
+          {
+            "after_draws": 504,
+            "batches": 87,
+            "before_draws": 623,
+            "build_usec": 3044,
+            "difference": {
+              "max_byte_difference": 0,
+              "mean_channel_difference": 0.0,
+              "pixels_over_2": 0
+            },
+            "lights": 0,
+            "parts": 248,
+            "phase": "initial",
+            "restoration": {
+              "max_byte_difference": 4,
+              "mean_channel_difference": 4.86111111111111e-06,
+              "pixels_over_2": 1
+            },
+            "restored_draws": 623
+          },
+          {
+            "after_draws": 514,
+            "batches": 79,
+            "before_draws": 623,
+            "build_usec": 3624,
+            "difference": {
+              "max_byte_difference": 4,
+              "mean_channel_difference": 4.86111111111111e-06,
+              "pixels_over_2": 1
+            },
+            "lights": 4,
+            "parts": 230,
+            "phase": "initial",
+            "restoration": {
+              "max_byte_difference": 4,
+              "mean_channel_difference": 4.86111111111111e-06,
+              "pixels_over_2": 1
+            },
+            "restored_draws": 623
+          },
+          {
+            "after_draws": 530,
+            "batches": 70,
+            "before_draws": 623,
+            "build_usec": 4375,
+            "difference": {
+              "max_byte_difference": 0,
+              "mean_channel_difference": 0.0,
+              "pixels_over_2": 0
+            },
+            "lights": 12,
+            "parts": 205,
+            "phase": "initial",
+            "restoration": {
+              "max_byte_difference": 8,
+              "mean_channel_difference": 3.05555555555556e-05,
+              "pixels_over_2": 3
+            },
+            "restored_draws": 623
+          },
+          {
+            "after_draws": 530,
+            "batches": 70,
+            "before_draws": 623,
+            "build_usec": 4382,
+            "difference": {
+              "max_byte_difference": 8,
+              "mean_channel_difference": 3.05555555555556e-05,
+              "pixels_over_2": 3
+            },
+            "lights": 12,
+            "parts": 205,
+            "phase": "energy_change",
+            "restoration": {
+              "max_byte_difference": 0,
+              "mean_channel_difference": 0.0,
+              "pixels_over_2": 0
+            },
+            "restored_draws": 623
+          }
+        ],
+        "scene_warmup_frames": 22
+      },
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p3-light-plan/guarded.log",
+      "png_sha256": {
+        "scenery-batches-gl_compatibility-12-initial-before.png": "1eb31af11dc0ec4b554f00b70b282fdb6dc6f34c76ec9b3fda9e3e7a90a451e9",
+        "scenery-batches-gl_compatibility-4-initial-before.png": "330016d07f78dfcb8f54bbf2b1ce916941a33a924c6be7ac7884d4d107e92cd9",
+        "scenery-batches-gl_compatibility-4-initial-restored.png": "327dbe6e98209c59c0846f0592e3dcb1e4e9bdd9a8cf3db1f8bb99282739b02a",
+        "scenery-batches-gl_compatibility-12-energy_change-after.png": "61cb21bac05ff10d4f48de892984b130bbb7d7490df458ee0e7bf43476a92683",
+        "scenery-batches-gl_compatibility-4-initial-after.png": "327dbe6e98209c59c0846f0592e3dcb1e4e9bdd9a8cf3db1f8bb99282739b02a",
+        "scenery-batches-gl_compatibility-12-initial-after.png": "1eb31af11dc0ec4b554f00b70b282fdb6dc6f34c76ec9b3fda9e3e7a90a451e9",
+        "scenery-batches-gl_compatibility-12-initial-restored.png": "33372bb205dd9040b71fd329e97a9ffa32cef95862ed0b3a71404bf7aee25505",
+        "scenery-batches-gl_compatibility-0-initial-before.png": "aaaeb2f7bb71940b1ebeb88127d51e9c604badf54633b698827838db78dd8a23",
+        "scenery-batches-gl_compatibility-0-initial-after.png": "aaaeb2f7bb71940b1ebeb88127d51e9c604badf54633b698827838db78dd8a23",
+        "scenery-batches-gl_compatibility-0-initial-restored.png": "9e2548679ecd0811e926b3db81bbaaa8c12cc1e6cdd2dfc102c3ec9975f16175",
+        "scenery-batches-gl_compatibility-12-energy_change-before.png": "818725fc6ad0869957c3aee61897317cad3599b2d5894a15bd03cc3cd821c32c",
+        "scenery-batches-gl_compatibility-12-energy_change-restored.png": "818725fc6ad0869957c3aee61897317cad3599b2d5894a15bd03cc3cd821c32c"
+      },
+      "source_report": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p3-light-plan/comparison.json"
+    },
+    {
+      "policy": "bz2g",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-preparation/export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/scenery_batches.gd",
+        "--scenery-light-partition",
+        "--scenery-map=bz2g"
+      ],
+      "return_code": 0,
+      "errors": [],
+      "report": {
+        "adapter": "NVIDIA GeForce RTX 3090",
+        "editor": false,
+        "focus": "(72.0, 8.358096, -88.0)",
+        "light_limit": 8,
+        "light_partition": true,
+        "map": "bz2g",
+        "no_wind": false,
+        "rank_overflow": false,
+        "renderer": "gl_compatibility",
+        "rows": [
+          {
+            "after_draws": 382,
+            "batches": 91,
+            "before_draws": 453,
+            "build_usec": 3641,
+            "difference": {
+              "max_byte_difference": 0,
+              "mean_channel_difference": 0.0,
+              "pixels_over_2": 0
+            },
+            "lights": 0,
+            "parts": 200,
+            "phase": "initial",
+            "restoration": {
+              "max_byte_difference": 0,
+              "mean_channel_difference": 0.0,
+              "pixels_over_2": 0
+            },
+            "restored_draws": 453
+          },
+          {
+            "after_draws": 403,
+            "batches": 77,
+            "before_draws": 453,
+            "build_usec": 6276,
+            "difference": {
+              "max_byte_difference": 0,
+              "mean_channel_difference": 0.0,
+              "pixels_over_2": 0
+            },
+            "lights": 4,
+            "parts": 165,
+            "phase": "initial",
+            "restoration": {
+              "max_byte_difference": 0,
+              "mean_channel_difference": 0.0,
+              "pixels_over_2": 0
+            },
+            "restored_draws": 453
+          },
+          {
+            "after_draws": 414,
+            "batches": 72,
+            "before_draws": 453,
+            "build_usec": 4950,
+            "difference": {
+              "max_byte_difference": 0,
+              "mean_channel_difference": 0.0,
+              "pixels_over_2": 0
+            },
+            "lights": 12,
+            "parts": 149,
+            "phase": "initial",
+            "restoration": {
+              "max_byte_difference": 0,
+              "mean_channel_difference": 0.0,
+              "pixels_over_2": 0
+            },
+            "restored_draws": 453
+          },
+          {
+            "after_draws": 414,
+            "batches": 72,
+            "before_draws": 453,
+            "build_usec": 4934,
+            "difference": {
+              "max_byte_difference": 0,
+              "mean_channel_difference": 0.0,
+              "pixels_over_2": 0
+            },
+            "lights": 12,
+            "parts": 149,
+            "phase": "energy_change",
+            "restoration": {
+              "max_byte_difference": 0,
+              "mean_channel_difference": 0.0,
+              "pixels_over_2": 0
+            },
+            "restored_draws": 453
+          }
+        ],
+        "scene_warmup_frames": 23
+      },
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p3-light-plan/bz2g.log",
+      "png_sha256": {
+        "scenery-batches-gl_compatibility-12-initial-before.png": "defb6692aeb62e8b3c33b1ce52e910295fbb6eb78d7dc915734a6d0a12ef9512",
+        "scenery-batches-gl_compatibility-4-initial-before.png": "7546981a38823d7cbbdb273bf1412f5db194343369cd9d507a0236b0798364b9",
+        "scenery-batches-gl_compatibility-4-initial-restored.png": "7546981a38823d7cbbdb273bf1412f5db194343369cd9d507a0236b0798364b9",
+        "scenery-batches-gl_compatibility-12-energy_change-after.png": "89830070ce84b7f3f9405c14c0793492e5bc1ebb014884fad720839fe7092c44",
+        "scenery-batches-gl_compatibility-4-initial-after.png": "7546981a38823d7cbbdb273bf1412f5db194343369cd9d507a0236b0798364b9",
+        "scenery-batches-gl_compatibility-12-initial-after.png": "defb6692aeb62e8b3c33b1ce52e910295fbb6eb78d7dc915734a6d0a12ef9512",
+        "scenery-batches-gl_compatibility-12-initial-restored.png": "defb6692aeb62e8b3c33b1ce52e910295fbb6eb78d7dc915734a6d0a12ef9512",
+        "scenery-batches-gl_compatibility-0-initial-before.png": "8737dffc4d879163de35761ba5e2d2ab9a1684a32bdd4e44cf0ab0fe982dcfcd",
+        "scenery-batches-gl_compatibility-0-initial-after.png": "8737dffc4d879163de35761ba5e2d2ab9a1684a32bdd4e44cf0ab0fe982dcfcd",
+        "scenery-batches-gl_compatibility-0-initial-restored.png": "8737dffc4d879163de35761ba5e2d2ab9a1684a32bdd4e44cf0ab0fe982dcfcd",
+        "scenery-batches-gl_compatibility-12-energy_change-before.png": "89830070ce84b7f3f9405c14c0793492e5bc1ebb014884fad720839fe7092c44",
+        "scenery-batches-gl_compatibility-12-energy_change-restored.png": "89830070ce84b7f3f9405c14c0793492e5bc1ebb014884fad720839fe7092c44"
+      },
+      "source_report": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p3-light-plan/broader-comparison.json"
+    },
+    {
+      "policy": "bz4g",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-preparation/export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/scenery_batches.gd",
+        "--scenery-light-partition",
+        "--scenery-map=bz4g"
+      ],
+      "return_code": 0,
+      "errors": [],
+      "report": {
+        "adapter": "NVIDIA GeForce RTX 3090",
+        "editor": false,
+        "focus": "(72.0, 8.735028, -72.0)",
+        "light_limit": 8,
+        "light_partition": true,
+        "map": "bz4g",
+        "no_wind": false,
+        "rank_overflow": false,
+        "renderer": "gl_compatibility",
+        "rows": [
+          {
+            "after_draws": 336,
+            "batches": 4,
+            "before_draws": 340,
+            "build_usec": 1494,
+            "difference": {
+              "max_byte_difference": 0,
+              "mean_channel_difference": 0.0,
+              "pixels_over_2": 0
+            },
+            "lights": 0,
+            "parts": 8,
+            "phase": "initial",
+            "restoration": {
+              "max_byte_difference": 0,
+              "mean_channel_difference": 0.0,
+              "pixels_over_2": 0
+            },
+            "restored_draws": 340
+          },
+          {
+            "after_draws": 336,
+            "batches": 4,
+            "before_draws": 340,
+            "build_usec": 1931,
+            "difference": {
+              "max_byte_difference": 0,
+              "mean_channel_difference": 0.0,
+              "pixels_over_2": 0
+            },
+            "lights": 4,
+            "parts": 8,
+            "phase": "initial",
+            "restoration": {
+              "max_byte_difference": 0,
+              "mean_channel_difference": 0.0,
+              "pixels_over_2": 0
+            },
+            "restored_draws": 340
+          },
+          {
+            "after_draws": 337,
+            "batches": 3,
+            "before_draws": 340,
+            "build_usec": 2699,
+            "difference": {
+              "max_byte_difference": 0,
+              "mean_channel_difference": 0.0,
+              "pixels_over_2": 0
+            },
+            "lights": 12,
+            "parts": 6,
+            "phase": "initial",
+            "restoration": {
+              "max_byte_difference": 0,
+              "mean_channel_difference": 0.0,
+              "pixels_over_2": 0
+            },
+            "restored_draws": 340
+          },
+          {
+            "after_draws": 337,
+            "batches": 3,
+            "before_draws": 340,
+            "build_usec": 2365,
+            "difference": {
+              "max_byte_difference": 0,
+              "mean_channel_difference": 0.0,
+              "pixels_over_2": 0
+            },
+            "lights": 12,
+            "parts": 6,
+            "phase": "energy_change",
+            "restoration": {
+              "max_byte_difference": 0,
+              "mean_channel_difference": 0.0,
+              "pixels_over_2": 0
+            },
+            "restored_draws": 340
+          }
+        ],
+        "scene_warmup_frames": 23
+      },
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p3-light-plan/bz4g.log",
+      "png_sha256": {
+        "scenery-batches-gl_compatibility-12-initial-before.png": "1e0b4f527183a8480d9bf9413288e8cab148359f3578e6855e35011f7491063c",
+        "scenery-batches-gl_compatibility-4-initial-before.png": "530645e680c4d955a8fd857930d571d4c2eaf46cbfa12fe1f2fdd984f239e5f3",
+        "scenery-batches-gl_compatibility-4-initial-restored.png": "530645e680c4d955a8fd857930d571d4c2eaf46cbfa12fe1f2fdd984f239e5f3",
+        "scenery-batches-gl_compatibility-12-energy_change-after.png": "64c59eec7ccd3465e0c4d1c87c3a2db5356ba268e6c9276f09b62f8659079184",
+        "scenery-batches-gl_compatibility-4-initial-after.png": "530645e680c4d955a8fd857930d571d4c2eaf46cbfa12fe1f2fdd984f239e5f3",
+        "scenery-batches-gl_compatibility-12-initial-after.png": "1e0b4f527183a8480d9bf9413288e8cab148359f3578e6855e35011f7491063c",
+        "scenery-batches-gl_compatibility-12-initial-restored.png": "1e0b4f527183a8480d9bf9413288e8cab148359f3578e6855e35011f7491063c",
+        "scenery-batches-gl_compatibility-0-initial-before.png": "31b0f13fb7586f7a5787093bac597fbe10a2cb4ae326474152a03e6349a88bea",
+        "scenery-batches-gl_compatibility-0-initial-after.png": "31b0f13fb7586f7a5787093bac597fbe10a2cb4ae326474152a03e6349a88bea",
+        "scenery-batches-gl_compatibility-0-initial-restored.png": "31b0f13fb7586f7a5787093bac597fbe10a2cb4ae326474152a03e6349a88bea",
+        "scenery-batches-gl_compatibility-12-energy_change-before.png": "64c59eec7ccd3465e0c4d1c87c3a2db5356ba268e6c9276f09b62f8659079184",
+        "scenery-batches-gl_compatibility-12-energy_change-restored.png": "64c59eec7ccd3465e0c4d1c87c3a2db5356ba268e6c9276f09b62f8659079184"
+      },
+      "source_report": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p3-light-plan/broader-comparison.json"
+    },
+    {
+      "policy": "forward",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-preparation/export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/scenery_batches.gd",
+        "--scenery-light-partition"
+      ],
+      "return_code": 0,
+      "errors": [],
+      "report": {
+        "adapter": "NVIDIA GeForce RTX 3090",
+        "editor": false,
+        "focus": "(88.0, 16.81038, -56.0)",
+        "light_limit": 8,
+        "light_partition": true,
+        "map": "bz13h",
+        "no_wind": false,
+        "rank_overflow": false,
+        "renderer": "forward_plus",
+        "rows": [
+          {
+            "after_draws": 896,
+            "batches": 87,
+            "before_draws": 898,
+            "build_usec": 3164,
+            "difference": {
+              "max_byte_difference": 28,
+              "mean_channel_difference": 0.000408333333333333,
+              "pixels_over_2": 20
+            },
+            "lights": 0,
+            "parts": 248,
+            "phase": "initial",
+            "restoration": {
+              "max_byte_difference": 0,
+              "mean_channel_difference": 0.0,
+              "pixels_over_2": 0
+            },
+            "restored_draws": 898
+          },
+          {
+            "after_draws": 894,
+            "batches": 79,
+            "before_draws": 898,
+            "build_usec": 3971,
+            "difference": {
+              "max_byte_difference": 28,
+              "mean_channel_difference": 0.000361111111111111,
+              "pixels_over_2": 17
+            },
+            "lights": 4,
+            "parts": 230,
+            "phase": "initial",
+            "restoration": {
+              "max_byte_difference": 0,
+              "mean_channel_difference": 0.0,
+              "pixels_over_2": 0
+            },
+            "restored_draws": 898
+          },
+          {
+            "after_draws": 907,
+            "batches": 70,
+            "before_draws": 898,
+            "build_usec": 4440,
+            "difference": {
+              "max_byte_difference": 25,
+              "mean_channel_difference": 0.000313888888888889,
+              "pixels_over_2": 15
+            },
+            "lights": 12,
+            "parts": 205,
+            "phase": "initial",
+            "restoration": {
+              "max_byte_difference": 0,
+              "mean_channel_difference": 0.0,
+              "pixels_over_2": 0
+            },
+            "restored_draws": 898
+          },
+          {
+            "after_draws": 907,
+            "batches": 70,
+            "before_draws": 898,
+            "build_usec": 4375,
+            "difference": {
+              "max_byte_difference": 25,
+              "mean_channel_difference": 0.000305555555555556,
+              "pixels_over_2": 15
+            },
+            "lights": 12,
+            "parts": 205,
+            "phase": "energy_change",
+            "restoration": {
+              "max_byte_difference": 0,
+              "mean_channel_difference": 0.0,
+              "pixels_over_2": 0
+            },
+            "restored_draws": 898
+          }
+        ],
+        "scene_warmup_frames": 38
+      },
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p3-light-plan/forward.log",
+      "png_sha256": {
+        "scenery-batches-forward_plus-12-initial-after.png": "db2a9a11b67f365ce710c001931bc89c0300999ff91daa1cfa02e69720237d31",
+        "scenery-batches-forward_plus-0-initial-after.png": "4e479ea2b4d2f6c811f38a1ece92fc013cecb86560a722560d9503c7f06076ba",
+        "scenery-batches-forward_plus-12-energy_change-restored.png": "df692a8cf892186ceca73f58bcc4d65a39f345be7befa835e932712a70d01f41",
+        "scenery-batches-forward_plus-12-initial-restored.png": "9833150a9cf68d0ea43d2eae50efc4ee54df6756f731226929405e129137cb4f",
+        "scenery-batches-forward_plus-4-initial-restored.png": "ca15e9857cce5375877d05232370ac3a71b783947c3124136edd283108c8d445",
+        "scenery-batches-forward_plus-12-energy_change-after.png": "f4bcb25a0c6edaf04e703ebd13a5b5702fbe5ef9a4a55b32be54374dd963877b",
+        "scenery-batches-forward_plus-4-initial-after.png": "3b9d480e13bad330dc333ff180834d0e5512bf4419a7d89bd6ff460964896d19",
+        "scenery-batches-forward_plus-0-initial-before.png": "4bb3dbe691d591542dc9802363c0bb704660a09e80516e754bffbd8090f4081a",
+        "scenery-batches-forward_plus-0-initial-restored.png": "4bb3dbe691d591542dc9802363c0bb704660a09e80516e754bffbd8090f4081a",
+        "scenery-batches-forward_plus-4-initial-before.png": "ca15e9857cce5375877d05232370ac3a71b783947c3124136edd283108c8d445",
+        "scenery-batches-forward_plus-12-initial-before.png": "9833150a9cf68d0ea43d2eae50efc4ee54df6756f731226929405e129137cb4f",
+        "scenery-batches-forward_plus-12-energy_change-before.png": "df692a8cf892186ceca73f58bcc4d65a39f345be7befa835e932712a70d01f41"
+      },
+      "source_report": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p3-light-plan/broader-comparison.json"
+    },
+    {
+      "policy": "limit4-naive",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p3-light-plan/limit4-export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/scenery_batches.gd"
+      ],
+      "return_code": 0,
+      "errors": [],
+      "report": {
+        "adapter": "NVIDIA GeForce RTX 3090",
+        "editor": false,
+        "focus": "(88.0, 16.81038, -56.0)",
+        "light_limit": 4,
+        "light_partition": false,
+        "map": "bz13h",
+        "no_wind": false,
+        "rank_overflow": false,
+        "renderer": "gl_compatibility",
+        "rows": [
+          {
+            "after_draws": 504,
+            "batches": 87,
+            "before_draws": 623,
+            "build_usec": 1728,
+            "difference": {
+              "max_byte_difference": 0,
+              "mean_channel_difference": 0.0,
+              "pixels_over_2": 0
+            },
+            "lights": 0,
+            "parts": 248,
+            "phase": "initial",
+            "restoration": {
+              "max_byte_difference": 4,
+              "mean_channel_difference": 4.86111111111111e-06,
+              "pixels_over_2": 1
+            },
+            "restored_draws": 623
+          },
+          {
+            "after_draws": 504,
+            "batches": 87,
+            "before_draws": 623,
+            "build_usec": 1778,
+            "difference": {
+              "max_byte_difference": 4,
+              "mean_channel_difference": 4.86111111111111e-06,
+              "pixels_over_2": 1
+            },
+            "lights": 4,
+            "parts": 248,
+            "phase": "initial",
+            "restoration": {
+              "max_byte_difference": 0,
+              "mean_channel_difference": 0.0,
+              "pixels_over_2": 0
+            },
+            "restored_draws": 623
+          },
+          {
+            "after_draws": 504,
+            "batches": 87,
+            "before_draws": 623,
+            "build_usec": 2188,
+            "difference": {
+              "max_byte_difference": 65,
+              "mean_channel_difference": 0.0123430555555556,
+              "pixels_over_2": 1447
+            },
+            "lights": 12,
+            "parts": 248,
+            "phase": "initial",
+            "restoration": {
+              "max_byte_difference": 8,
+              "mean_channel_difference": 2.56944444444444e-05,
+              "pixels_over_2": 2
+            },
+            "restored_draws": 623
+          },
+          {
+            "after_draws": 504,
+            "batches": 87,
+            "before_draws": 623,
+            "build_usec": 1809,
+            "difference": {
+              "max_byte_difference": 126,
+              "mean_channel_difference": 0.0834180555555556,
+              "pixels_over_2": 2793
+            },
+            "lights": 12,
+            "parts": 248,
+            "phase": "energy_change",
+            "restoration": {
+              "max_byte_difference": 43,
+              "mean_channel_difference": 0.0101388888888889,
+              "pixels_over_2": 943
+            },
+            "restored_draws": 623
+          }
+        ],
+        "scene_warmup_frames": 22,
+        "shadows": false
+      },
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p3-light-plan/limit4-naive.log",
+      "png_sha256": {
+        "scenery-batches-gl_compatibility-12-initial-before.png": "9a4a2b63e129f2059466f6ca9fa8465640c622a653a8b4bfdc3f276acf0d308b",
+        "scenery-batches-gl_compatibility-4-initial-before.png": "330016d07f78dfcb8f54bbf2b1ce916941a33a924c6be7ac7884d4d107e92cd9",
+        "scenery-batches-gl_compatibility-4-initial-restored.png": "330016d07f78dfcb8f54bbf2b1ce916941a33a924c6be7ac7884d4d107e92cd9",
+        "scenery-batches-gl_compatibility-12-energy_change-after.png": "f5d0fe9d859a9fe1d87e88f2c1f03fc9284c09ab0a44ce4ed6bdb6e8d3da0cdb",
+        "scenery-batches-gl_compatibility-4-initial-after.png": "327dbe6e98209c59c0846f0592e3dcb1e4e9bdd9a8cf3db1f8bb99282739b02a",
+        "scenery-batches-gl_compatibility-12-initial-after.png": "d5d2f6a5352ec16ebf7683db3baa30e1d418d126cb66c3098c5687a0b0aa4080",
+        "scenery-batches-gl_compatibility-12-initial-restored.png": "4aa6770be7650fd51cddcba73b70e612e9e75fbba6371b77d30e0e93cdfe001e",
+        "scenery-batches-gl_compatibility-0-initial-before.png": "aaaeb2f7bb71940b1ebeb88127d51e9c604badf54633b698827838db78dd8a23",
+        "scenery-batches-gl_compatibility-0-initial-after.png": "aaaeb2f7bb71940b1ebeb88127d51e9c604badf54633b698827838db78dd8a23",
+        "scenery-batches-gl_compatibility-0-initial-restored.png": "9e2548679ecd0811e926b3db81bbaaa8c12cc1e6cdd2dfc102c3ec9975f16175",
+        "scenery-batches-gl_compatibility-12-energy_change-before.png": "36dc24d86bc28445ff2f7fbd55f1f00b877f10018c6ee5e5622e2bdb721157c8",
+        "scenery-batches-gl_compatibility-12-energy_change-restored.png": "1718d3ec463c2dfac50a55299cff3d2bf73dab807a2c4060306a8278ed7a9834"
+      },
+      "source_report": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p3-light-plan/limit4-comparison.json"
+    },
+    {
+      "policy": "limit4-guarded",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p3-light-plan/limit4-export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/scenery_batches.gd",
+        "--scenery-light-partition"
+      ],
+      "return_code": 0,
+      "errors": [],
+      "report": {
+        "adapter": "NVIDIA GeForce RTX 3090",
+        "editor": false,
+        "focus": "(88.0, 16.81038, -56.0)",
+        "light_limit": 4,
+        "light_partition": true,
+        "map": "bz13h",
+        "no_wind": false,
+        "rank_overflow": false,
+        "renderer": "gl_compatibility",
+        "rows": [
+          {
+            "after_draws": 504,
+            "batches": 87,
+            "before_draws": 623,
+            "build_usec": 3245,
+            "difference": {
+              "max_byte_difference": 0,
+              "mean_channel_difference": 0.0,
+              "pixels_over_2": 0
+            },
+            "lights": 0,
+            "parts": 248,
+            "phase": "initial",
+            "restoration": {
+              "max_byte_difference": 4,
+              "mean_channel_difference": 4.86111111111111e-06,
+              "pixels_over_2": 1
+            },
+            "restored_draws": 623
+          },
+          {
+            "after_draws": 514,
+            "batches": 79,
+            "before_draws": 623,
+            "build_usec": 3640,
+            "difference": {
+              "max_byte_difference": 4,
+              "mean_channel_difference": 4.86111111111111e-06,
+              "pixels_over_2": 1
+            },
+            "lights": 4,
+            "parts": 230,
+            "phase": "initial",
+            "restoration": {
+              "max_byte_difference": 4,
+              "mean_channel_difference": 4.86111111111111e-06,
+              "pixels_over_2": 1
+            },
+            "restored_draws": 623
+          },
+          {
+            "after_draws": 540,
+            "batches": 66,
+            "before_draws": 623,
+            "build_usec": 4193,
+            "difference": {
+              "max_byte_difference": 0,
+              "mean_channel_difference": 0.0,
+              "pixels_over_2": 0
+            },
+            "lights": 12,
+            "parts": 191,
+            "phase": "initial",
+            "restoration": {
+              "max_byte_difference": 0,
+              "mean_channel_difference": 0.0,
+              "pixels_over_2": 0
+            },
+            "restored_draws": 623
+          },
+          {
+            "after_draws": 540,
+            "batches": 66,
+            "before_draws": 623,
+            "build_usec": 4320,
+            "difference": {
+              "max_byte_difference": 0,
+              "mean_channel_difference": 0.0,
+              "pixels_over_2": 0
+            },
+            "lights": 12,
+            "parts": 191,
+            "phase": "energy_change",
+            "restoration": {
+              "max_byte_difference": 0,
+              "mean_channel_difference": 0.0,
+              "pixels_over_2": 0
+            },
+            "restored_draws": 623
+          }
+        ],
+        "scene_warmup_frames": 22,
+        "shadows": false
+      },
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p3-light-plan/limit4-guarded.log",
+      "png_sha256": {
+        "scenery-batches-gl_compatibility-12-initial-before.png": "2439c1fc2e8c89a9046726bdf446d5cefbc56ae6a1c7e4c92eac5f8a2124a235",
+        "scenery-batches-gl_compatibility-4-initial-before.png": "330016d07f78dfcb8f54bbf2b1ce916941a33a924c6be7ac7884d4d107e92cd9",
+        "scenery-batches-gl_compatibility-4-initial-restored.png": "327dbe6e98209c59c0846f0592e3dcb1e4e9bdd9a8cf3db1f8bb99282739b02a",
+        "scenery-batches-gl_compatibility-12-energy_change-after.png": "01a87c42ff26f68f7570ba72458b46d3bb26aa9f6b5f6fd9b4cadf6e8b524b26",
+        "scenery-batches-gl_compatibility-4-initial-after.png": "327dbe6e98209c59c0846f0592e3dcb1e4e9bdd9a8cf3db1f8bb99282739b02a",
+        "scenery-batches-gl_compatibility-12-initial-after.png": "2439c1fc2e8c89a9046726bdf446d5cefbc56ae6a1c7e4c92eac5f8a2124a235",
+        "scenery-batches-gl_compatibility-12-initial-restored.png": "2439c1fc2e8c89a9046726bdf446d5cefbc56ae6a1c7e4c92eac5f8a2124a235",
+        "scenery-batches-gl_compatibility-0-initial-before.png": "aaaeb2f7bb71940b1ebeb88127d51e9c604badf54633b698827838db78dd8a23",
+        "scenery-batches-gl_compatibility-0-initial-after.png": "aaaeb2f7bb71940b1ebeb88127d51e9c604badf54633b698827838db78dd8a23",
+        "scenery-batches-gl_compatibility-0-initial-restored.png": "9e2548679ecd0811e926b3db81bbaaa8c12cc1e6cdd2dfc102c3ec9975f16175",
+        "scenery-batches-gl_compatibility-12-energy_change-before.png": "01a87c42ff26f68f7570ba72458b46d3bb26aa9f6b5f6fd9b4cadf6e8b524b26",
+        "scenery-batches-gl_compatibility-12-energy_change-restored.png": "01a87c42ff26f68f7570ba72458b46d3bb26aa9f6b5f6fd9b4cadf6e8b524b26"
+      },
+      "source_report": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p3-light-plan/limit4-comparison.json"
+    },
+    {
+      "policy": "shadows-naive",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-preparation/export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/scenery_batches.gd",
+        "--scenery-shadows"
+      ],
+      "return_code": 0,
+      "errors": [],
+      "report": {
+        "adapter": "NVIDIA GeForce RTX 3090",
+        "editor": false,
+        "focus": "(88.0, 16.81038, -56.0)",
+        "light_limit": 8,
+        "light_partition": false,
+        "map": "bz13h",
+        "no_wind": false,
+        "rank_overflow": false,
+        "renderer": "gl_compatibility",
+        "rows": [
+          {
+            "after_draws": 1247,
+            "batches": 87,
+            "before_draws": 1558,
+            "build_usec": 1836,
+            "difference": {
+              "max_byte_difference": 0,
+              "mean_channel_difference": 0.0,
+              "pixels_over_2": 0
+            },
+            "lights": 0,
+            "parts": 248,
+            "phase": "initial",
+            "restoration": {
+              "max_byte_difference": 21,
+              "mean_channel_difference": 7.43055555555556e-05,
+              "pixels_over_2": 2
+            },
+            "restored_draws": 1558
+          },
+          {
+            "after_draws": 1523,
+            "batches": 87,
+            "before_draws": 1906,
+            "build_usec": 2241,
+            "difference": {
+              "max_byte_difference": 49,
+              "mean_channel_difference": 0.0837611111111111,
+              "pixels_over_2": 1498
+            },
+            "lights": 4,
+            "parts": 248,
+            "phase": "initial",
+            "restoration": {
+              "max_byte_difference": 0,
+              "mean_channel_difference": 0.0,
+              "pixels_over_2": 0
+            },
+            "restored_draws": 1906
+          },
+          {
+            "after_draws": 1496,
+            "batches": 87,
+            "before_draws": 1865,
+            "build_usec": 1890,
+            "difference": {
+              "max_byte_difference": 76,
+              "mean_channel_difference": 0.149613888888889,
+              "pixels_over_2": 3614
+            },
+            "lights": 12,
+            "parts": 248,
+            "phase": "initial",
+            "restoration": {
+              "max_byte_difference": 64,
+              "mean_channel_difference": 0.00871180555555556,
+              "pixels_over_2": 410
+            },
+            "restored_draws": 1865
+          },
+          {
+            "after_draws": 1492,
+            "batches": 87,
+            "before_draws": 1865,
+            "build_usec": 1880,
+            "difference": {
+              "max_byte_difference": 84,
+              "mean_channel_difference": 0.153027777777778,
+              "pixels_over_2": 3753
+            },
+            "lights": 12,
+            "parts": 248,
+            "phase": "energy_change",
+            "restoration": {
+              "max_byte_difference": 64,
+              "mean_channel_difference": 0.0114659722222222,
+              "pixels_over_2": 849
+            },
+            "restored_draws": 1857
+          }
+        ],
+        "scene_warmup_frames": 22,
+        "shadows": true
+      },
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p3-light-plan/shadows-naive.log",
+      "png_sha256": {
+        "scenery-batches-gl_compatibility-12-initial-before.png": "12a2e31c7ce1dd744c9250b68caf3733427f9ad22cb72aad8ab591c806bd0dee",
+        "scenery-batches-gl_compatibility-4-initial-before.png": "9c0299b8af3b8ebbe22d258b485df462f98d0f9b51bce8dafdc26bfb5b5a44aa",
+        "scenery-batches-gl_compatibility-4-initial-restored.png": "9c0299b8af3b8ebbe22d258b485df462f98d0f9b51bce8dafdc26bfb5b5a44aa",
+        "scenery-batches-gl_compatibility-12-energy_change-after.png": "db73c4ff5012816a0f0bfb4a46b695b87b327fc48196b5164bee12c68a6d22ed",
+        "scenery-batches-gl_compatibility-4-initial-after.png": "688687cd0e6cae0f501ab7be09d9dd6717db4b34b1760cce43e1106e19212fe4",
+        "scenery-batches-gl_compatibility-12-initial-after.png": "9a95b2f90e78101a5565fc410942529f24072923fd8d51398d39fb750587540f",
+        "scenery-batches-gl_compatibility-12-initial-restored.png": "3f5766bdb4f1fb34a993723a90c1fa5264e9f34552585a1a8214ad9d4f72ea4c",
+        "scenery-batches-gl_compatibility-0-initial-before.png": "70b28408ffcc8d9f515f481a5331d05f98ee0c264191036cb2f0c69a7fae9077",
+        "scenery-batches-gl_compatibility-0-initial-after.png": "70b28408ffcc8d9f515f481a5331d05f98ee0c264191036cb2f0c69a7fae9077",
+        "scenery-batches-gl_compatibility-0-initial-restored.png": "8f9a9e0b645a117fe76dca9895e44ef0d877d27755c1d34306c3e3031e70d19d",
+        "scenery-batches-gl_compatibility-12-energy_change-before.png": "63fb16edd29882fb9263ce9a948cde6bb76ab963efcce53603cc1e44314f7190",
+        "scenery-batches-gl_compatibility-12-energy_change-restored.png": "646c0f65b31c18b3fc2b4c80634a32c75e0351c4ccd035609d18de019eb89314"
+      },
+      "source_report": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p3-light-plan/shadow-comparison.json"
+    },
+    {
+      "policy": "shadows-guarded",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v1-preparation/export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/scenery_batches.gd",
+        "--scenery-light-partition",
+        "--scenery-shadows"
+      ],
+      "return_code": 0,
+      "errors": [],
+      "report": {
+        "adapter": "NVIDIA GeForce RTX 3090",
+        "editor": false,
+        "focus": "(88.0, 16.81038, -56.0)",
+        "light_limit": 8,
+        "light_partition": true,
+        "map": "bz13h",
+        "no_wind": false,
+        "rank_overflow": false,
+        "renderer": "gl_compatibility",
+        "rows": [
+          {
+            "after_draws": 1247,
+            "batches": 87,
+            "before_draws": 1558,
+            "build_usec": 3182,
+            "difference": {
+              "max_byte_difference": 0,
+              "mean_channel_difference": 0.0,
+              "pixels_over_2": 0
+            },
+            "lights": 0,
+            "parts": 248,
+            "phase": "initial",
+            "restoration": {
+              "max_byte_difference": 21,
+              "mean_channel_difference": 7.43055555555556e-05,
+              "pixels_over_2": 2
+            },
+            "restored_draws": 1558
+          },
+          {
+            "after_draws": 1568,
+            "batches": 79,
+            "before_draws": 1906,
+            "build_usec": 3902,
+            "difference": {
+              "max_byte_difference": 21,
+              "mean_channel_difference": 7.43055555555556e-05,
+              "pixels_over_2": 2
+            },
+            "lights": 4,
+            "parts": 230,
+            "phase": "initial",
+            "restoration": {
+              "max_byte_difference": 21,
+              "mean_channel_difference": 7.43055555555556e-05,
+              "pixels_over_2": 2
+            },
+            "restored_draws": 1906
+          },
+          {
+            "after_draws": 1607,
+            "batches": 70,
+            "before_draws": 1865,
+            "build_usec": 4577,
+            "difference": {
+              "max_byte_difference": 0,
+              "mean_channel_difference": 0.0,
+              "pixels_over_2": 0
+            },
+            "lights": 12,
+            "parts": 205,
+            "phase": "initial",
+            "restoration": {
+              "max_byte_difference": 34,
+              "mean_channel_difference": 0.000315277777777778,
+              "pixels_over_2": 9
+            },
+            "restored_draws": 1865
+          },
+          {
+            "after_draws": 1607,
+            "batches": 70,
+            "before_draws": 1865,
+            "build_usec": 4618,
+            "difference": {
+              "max_byte_difference": 34,
+              "mean_channel_difference": 0.000315277777777778,
+              "pixels_over_2": 9
+            },
+            "lights": 12,
+            "parts": 205,
+            "phase": "energy_change",
+            "restoration": {
+              "max_byte_difference": 0,
+              "mean_channel_difference": 0.0,
+              "pixels_over_2": 0
+            },
+            "restored_draws": 1865
+          }
+        ],
+        "scene_warmup_frames": 22,
+        "shadows": true
+      },
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p3-light-plan/shadows-guarded.log",
+      "png_sha256": {
+        "scenery-batches-gl_compatibility-12-initial-before.png": "d0770886175625dca04a59bd6096c7fec320d4cc98fc3e30b0036a5ccf135182",
+        "scenery-batches-gl_compatibility-4-initial-before.png": "9c0299b8af3b8ebbe22d258b485df462f98d0f9b51bce8dafdc26bfb5b5a44aa",
+        "scenery-batches-gl_compatibility-4-initial-restored.png": "3f198189a689f623e5d5bf98f0b0a2f23816c31d84056d2caed1b879d0be221d",
+        "scenery-batches-gl_compatibility-12-energy_change-after.png": "375af1f37d846595515135536a5c0ed26175bd8049750adc62b0f3e2424ad5fd",
+        "scenery-batches-gl_compatibility-4-initial-after.png": "3f198189a689f623e5d5bf98f0b0a2f23816c31d84056d2caed1b879d0be221d",
+        "scenery-batches-gl_compatibility-12-initial-after.png": "d0770886175625dca04a59bd6096c7fec320d4cc98fc3e30b0036a5ccf135182",
+        "scenery-batches-gl_compatibility-12-initial-restored.png": "12a2e31c7ce1dd744c9250b68caf3733427f9ad22cb72aad8ab591c806bd0dee",
+        "scenery-batches-gl_compatibility-0-initial-before.png": "70b28408ffcc8d9f515f481a5331d05f98ee0c264191036cb2f0c69a7fae9077",
+        "scenery-batches-gl_compatibility-0-initial-after.png": "70b28408ffcc8d9f515f481a5331d05f98ee0c264191036cb2f0c69a7fae9077",
+        "scenery-batches-gl_compatibility-0-initial-restored.png": "8f9a9e0b645a117fe76dca9895e44ef0d877d27755c1d34306c3e3031e70d19d",
+        "scenery-batches-gl_compatibility-12-energy_change-before.png": "2d28e05d9df816d63a361a113536bac0a3bef9d74ffbc8dc485e0cce94931e9c",
+        "scenery-batches-gl_compatibility-12-energy_change-restored.png": "2d28e05d9df816d63a361a113536bac0a3bef9d74ffbc8dc485e0cce94931e9c"
+      },
+      "source_report": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p3-light-plan/shadow-comparison.json"
+    }
+  ],
+  "integration": {
+    "scope": "Complete isolated production and tools diff, including staged light-partition probe; no patch applied",
+    "base": "3172ede12a5f41b0182c34a70b5eeda787c95e52",
+    "isolated_head": "9339302b98141bd27e71cb614f4ae17f5b15c4da",
+    "command": [
+      "git",
+      "apply",
+      "--check",
+      "-"
+    ],
+    "patch_sha256": "b9cd9f07234061ac55f342b93187862d5041ddcbb88e743fd20d2741a9cb9460",
+    "return_code": 0,
+    "stdout": "",
+    "stderr": "",
+    "before": {
+      "head": "702f522c367c54e201d5c3f0d848ee803389b6a6",
+      "status": " M game/src/game/unit_fog.gd\n?? tools/tests/unit_visibility.gd\n",
+      "touched_sha256": {
+        "game/src/ei/figure.gd": "5fd0c1d31f462a49914e0a619580ffbcc5344965c18798f5bf3f2f58c68bad8f",
+        "game/src/ei/game_data.gd": "6b978ec8cbc2ed07baf11f461ffdacb7e7239854cc1c588ca60bfb83040267c7",
+        "game/src/ei/map_scene.gd": "8c3ebb5dff18651be8d23c7b36d25f1c3e9bb90ace3d6fc27a70c697c8da1a5e",
+        "game/src/ei/mmp_texture.gd": "ea95f86058da0b18c5c411c4bb69cc9db00c5770501cd5efbf0125d3f2ca104b",
+        "game/src/ei/terrain.gd": "25b87e8fadf2bd7c68ebc963cb36db34788dc2e962ce6a736ba1c51db4c89361",
+        "game/src/ei/unit_model.gd": "f454fd48b39f318b8822a004129c65530ba4adf9b63f6bd5425bf68452824fe6",
+        "game/src/game/fx/ground_contact.gd": null,
+        "game/src/game/fx/ground_contact.gd.uid": null,
+        "game/src/game/fx/ground_contact_shader.gd": null,
+        "game/src/game/fx/ground_contact_shader.gd.uid": null,
+        "game/src/game/fx/ground_surface_data.gd": null,
+        "game/src/game/fx/ground_surface_data.gd.uid": null,
+        "game/src/game/fx/ground_surface_shader.gd": null,
+        "game/src/game/fx/ground_surface_shader.gd.uid": null,
+        "game/src/game/fx/local_lighting.gd": "be1570ca9e47eafcb48f0d4964a941066d521d63cc570ea8aff8333c20b1d34a",
+        "game/src/game/fx/soft_ground_deform.gd": "a9b5a1941d17ccf67716affb9e416c702d67c7405730109461ead2260fffe051",
+        "game/src/game/fx/soft_ground_field.gd": null,
+        "game/src/game/fx/soft_ground_field.gd.uid": null,
+        "game/src/game/game.gd": "ae6fbf51f89b6536cfa28505f544bb7ba22402b2eca1593400d5fb303d1ec08f",
+        "game/src/game/gfx.gd": "d4111e59b158111d2b5c0ab75feadde1f77db81e528773f23676fddd0e11cdb5",
+        "game/src/game/gfx_detect.gd": "bcbc43453022fd0718fa2ceed9f8cc1271b644dec2eda9f34e3fb78e269475dc",
+        "game/src/game/unit_wounds.gd": "8eea1966c2ac60d58e6d6d6b358cbcec28655a9b90423fd6663a29858fbaf41e",
+        "game/src/platform/portability.gd": "3afa19cb0340929d7e1034066b490568e2df52b5b1e3a9decb3c6c89b76a3735",
+        "game/src/ui/menu_scene.gd": "ac5780e52e21d66654fdf0ca49a786c45442958fab7814dc615b02712b604da1",
+        "tools/benchmarks/directional_shadows.gd": null,
+        "tools/benchmarks/ground_contact.gd": null,
+        "tools/benchmarks/ground_contact_preparation.py": null,
+        "tools/benchmarks/ground_contact_surface.gd": null,
+        "tools/benchmarks/scenery_batch_lights.gd": null,
+        "tools/benchmarks/scenery_batches.gd": null,
+        "tools/benchmarks/scenery_resources.gd": null,
+        "tools/tests/foliage_materials.gd": null,
+        "tools/tests/ground_contact.gd": null,
+        "tools/tests/local_shadow_selection.gd": null,
+        "tools/tests/material_shader_options.gd": "dff493bc1167c94ed445a3b18749914f39340b960a36a607d1785a2f3ff889e9",
+        "tools/tests/mmp_texture.gd": null,
+        "tools/tests/mmp_upload.gd": null,
+        "tools/tests/scenery_batch_lights.gd": null,
+        "tools/tests/soft_ground_field.gd": null,
+        "tools/tests/sun_aiming.gd": null,
+        "tools/tests/wound_source.gd": null
+      }
+    },
+    "after": {
+      "head": "702f522c367c54e201d5c3f0d848ee803389b6a6",
+      "status": " M game/src/game/unit_fog.gd\n?? tools/tests/unit_visibility.gd\n",
+      "touched_sha256": {
+        "game/src/ei/figure.gd": "5fd0c1d31f462a49914e0a619580ffbcc5344965c18798f5bf3f2f58c68bad8f",
+        "game/src/ei/game_data.gd": "6b978ec8cbc2ed07baf11f461ffdacb7e7239854cc1c588ca60bfb83040267c7",
+        "game/src/ei/map_scene.gd": "8c3ebb5dff18651be8d23c7b36d25f1c3e9bb90ace3d6fc27a70c697c8da1a5e",
+        "game/src/ei/mmp_texture.gd": "ea95f86058da0b18c5c411c4bb69cc9db00c5770501cd5efbf0125d3f2ca104b",
+        "game/src/ei/terrain.gd": "25b87e8fadf2bd7c68ebc963cb36db34788dc2e962ce6a736ba1c51db4c89361",
+        "game/src/ei/unit_model.gd": "f454fd48b39f318b8822a004129c65530ba4adf9b63f6bd5425bf68452824fe6",
+        "game/src/game/fx/ground_contact.gd": null,
+        "game/src/game/fx/ground_contact.gd.uid": null,
+        "game/src/game/fx/ground_contact_shader.gd": null,
+        "game/src/game/fx/ground_contact_shader.gd.uid": null,
+        "game/src/game/fx/ground_surface_data.gd": null,
+        "game/src/game/fx/ground_surface_data.gd.uid": null,
+        "game/src/game/fx/ground_surface_shader.gd": null,
+        "game/src/game/fx/ground_surface_shader.gd.uid": null,
+        "game/src/game/fx/local_lighting.gd": "be1570ca9e47eafcb48f0d4964a941066d521d63cc570ea8aff8333c20b1d34a",
+        "game/src/game/fx/soft_ground_deform.gd": "a9b5a1941d17ccf67716affb9e416c702d67c7405730109461ead2260fffe051",
+        "game/src/game/fx/soft_ground_field.gd": null,
+        "game/src/game/fx/soft_ground_field.gd.uid": null,
+        "game/src/game/game.gd": "ae6fbf51f89b6536cfa28505f544bb7ba22402b2eca1593400d5fb303d1ec08f",
+        "game/src/game/gfx.gd": "d4111e59b158111d2b5c0ab75feadde1f77db81e528773f23676fddd0e11cdb5",
+        "game/src/game/gfx_detect.gd": "bcbc43453022fd0718fa2ceed9f8cc1271b644dec2eda9f34e3fb78e269475dc",
+        "game/src/game/unit_wounds.gd": "8eea1966c2ac60d58e6d6d6b358cbcec28655a9b90423fd6663a29858fbaf41e",
+        "game/src/platform/portability.gd": "3afa19cb0340929d7e1034066b490568e2df52b5b1e3a9decb3c6c89b76a3735",
+        "game/src/ui/menu_scene.gd": "ac5780e52e21d66654fdf0ca49a786c45442958fab7814dc615b02712b604da1",
+        "tools/benchmarks/directional_shadows.gd": null,
+        "tools/benchmarks/ground_contact.gd": null,
+        "tools/benchmarks/ground_contact_preparation.py": null,
+        "tools/benchmarks/ground_contact_surface.gd": null,
+        "tools/benchmarks/scenery_batch_lights.gd": null,
+        "tools/benchmarks/scenery_batches.gd": null,
+        "tools/benchmarks/scenery_resources.gd": null,
+        "tools/tests/foliage_materials.gd": null,
+        "tools/tests/ground_contact.gd": null,
+        "tools/tests/local_shadow_selection.gd": null,
+        "tools/tests/material_shader_options.gd": "dff493bc1167c94ed445a3b18749914f39340b960a36a607d1785a2f3ff889e9",
+        "tools/tests/mmp_texture.gd": null,
+        "tools/tests/mmp_upload.gd": null,
+        "tools/tests/scenery_batch_lights.gd": null,
+        "tools/tests/soft_ground_field.gd": null,
+        "tools/tests/sun_aiming.gd": null,
+        "tools/tests/wound_source.gd": null
+      }
+    },
+    "other_checkout_unchanged": true
+  },
+  "limitations": [
+    "Prototype only: live transform/visibility/material/fade/light lifecycle updates are not implemented.",
+    "Ranked over-budget grouping is a negative control; it fails after energy-only changes even though the initial frozen twelve-light case matches.",
+    "The default guard retains original meshes whenever any complete per-type light set exceeds the budget, and checks the merged AABB as well as each member.",
+    "Compatibility still has up to three changed pixels without shadows and nine with shadows on bz13h; some original/restored controls also vary. This is not universal pixel identity.",
+    "Forward+ retains 15-20 changed pixels and can add draws (898 to 907 with twelve lights); do not enable this manual grouping there.",
+    "Recorded build time is one-time snapshot/planning/construction, not per-frame submission time or a gameplay FPS result.",
+    "Initial wider-map reports were invalidated by grass streaming and CPU water updates. Final cases wait for grass queues/jobs, disable map processing, then freeze all existing shader TIME uses.",
+    "Four-light limit was tested in the desktop exported renderer, not on Android/web hardware.",
+    "Failed first four-light trial lacked the native sidecar; it was corrected before recorded cases."
+  ]
+}

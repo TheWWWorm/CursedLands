@@ -289,6 +289,105 @@ tool through the same exported `--tool` entry point described above. It exits
 successfully when the measurement completes, even when pixels differ; it is a
 diagnostic benchmark, not a passing fidelity test.
 
+### Light membership: preserve complete sets and engine history
+
+The next standalone prototype resolves the large Compatibility mismatch in the
+frozen probe. **Production batching is still not enabled**: live object/fade and
+light lifecycle handling remains necessary. The reference renderer's immutable
+compatible-submission groups remain the model; the light-selection rules below
+are specific to our pinned Godot build.
+
+Implementation and evidence:
+
+- [scenery_batch_lights.gd](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/scenery_batch_lights.gd)
+  partitions an already mesh/material-compatible cell by complete light sets.
+  It checks each member's world AABB and the proposed merged AABB. A light in
+  the gap between two objects must not silently enter their combined set.
+  Per-type budgets and geometry/light masks are respected. Any truncated set
+  keeps its original mesh. A separate ranked mode is a **negative control**.
+- [scenery_batches.gd](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/scenery_batches.gd)
+  now accepts `--scenery-light-partition`, `--scenery-ranked-lights`,
+  `--scenery-map=<name>`, `--scenery-shadows` and `--scenery-no-wind`.
+  It adds an energy-only change after the twelve-light capture, records batch
+  construction time and JSON results, and includes expanded bounds when
+  building a MultiMesh AABB. Default invocation retains the naive control.
+- [scenery_batch_lights.gd (tests)](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/scenery_batch_lights.gd)
+  passes **15 headless boundary checks**, including a new light inside the merged
+  bounds, four/eight-light budgets, per-type limits, masks, ties, total-cap
+  ambiguity and caller-record preservation.
+- [scenery-light-groups-2026-10-08.json](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/docs/validation/scenery-light-groups-2026-10-08.json)
+  retains ten exported GPU cases, exact commands, 120 capture hashes, the
+  native-engine evidence, source/pack hashes and the integration check. Each
+  GPU case has four off/batched/restored triplets. These are measurements;
+  successful process exit alone is not a fidelity pass.
+
+Godot's
+[RendererSceneCull::_scene_cull, line 3019](/home/llm2x/Documents/EI/local/scratchpad/coop-performance-20261005/engine-profile/godot-5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88/servers/rendering/renderer_scene_cull.cpp:3019)
+updates a geometry's bounded light list only when its pairing is dirty. The score
+at line 3054 is transformed-AABB-centre distance divided by
+`max(light_range * light_energy, 0.01)`. Combining geometry changes that centre.
+More subtly,
+[LightStorage::light_set_param, line 144](/home/llm2x/Documents/EI/local/scratchpad/coop-performance-20261005/engine-profile/godot-5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88/drivers/gles3/storage/light_storage.cpp:144)
+does not notify a pairing change for energy alone. Recomputing the top eight
+from current values therefore need not match an existing mesh's retained list.
+[instance_set_visible, line 1046](/home/llm2x/Documents/EI/local/scratchpad/coop-performance-20261005/engine-profile/godot-5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88/servers/rendering/renderer_scene_cull.cpp:1046)
+unpairs hidden geometry, so restoring it can itself change the selected lights.
+
+The negative control makes this observable on `bz13h`: ranking current lights
+removes the initial twelve-light mismatch, but boosting the last light's energy
+changes **295 pixels**; restoring originals changes **294 pixels**. The guarded
+planner preserves full sets within the budget and leaves overloaded originals
+untouched. It reduces that energy-change difference to **three pixels**.
+
+Final Compatibility twelve-light results, pixels counted above 2/255:
+
+| Map / setup | Per-type budget | Original → batched draws | Initial changed pixels | After energy change |
+|---|---:|---:|---:|---:|
+| `bz2g` | 8 | 453 → 414 | 0 | 0 |
+| `bz4g` | 8 | 340 → 337 | 0 | 0 |
+| `bz13h` | 8 | 623 → 530 | 0 | 3 |
+| `bz13h`, four-light override | 4 | 623 → 540 | 0 | 0 |
+| `bz13h`, sun + four local shadows | 8 | 1,865 → 1,607 | 0 | 9 |
+
+The four-light result uses a separate exported runtime with `override.cfg`,
+loaded before renderer initialization. Its executable, pack and native sidecar
+match the desktop baseline; the report confirms a limit of four. This tests the
+budget used by Android/web, **not physical mobile/browser performance**.
+With no added lights, the three Compatibility maps reduce 453→382, 340→336 and
+623→504 draws respectively. The sparse `bz4g` fixture has little batching benefit.
+
+Residual `bz13h` differences are not hidden: up to three pixels without shadows
+and nine with shadows, with original/restored controls also varying in some rows.
+Forward+ still changes 15–20 pixels and can increase draws from 898 to 907 in the
+crowded guarded case. Its existing automatic instancing already does most of
+this work; do not enable this manual approach there based on these results.
+Construction of all batches took roughly 1.5–6.3 ms in these desktop samples.
+That includes snapshot/planning/node setup, is not frame submission time, and
+must not become an unconditional per-frame rebuild.
+
+The wider-map fixture needed a correction: grass continued arriving from workers
+and water changed between captures. Initial results with tens of thousands of
+changed pixels were invalid as batching evidence. Final runs wait for grass
+queues/jobs (22–38 frames here), stop map processing, then freeze shader `TIME`
+for all now-existing geometry. The invalid exploratory reports are retained only
+under `p3-light-plan/unsettled-*.json` in QA, not used in the table above.
+
+Next implementation requirements remain concrete:
+
+1. Build a Compatibility manager with spatially bounded groups and incremental
+   changes. Track creation/removal, visibility, transforms, bounds, range and
+   masks of relevant lights before the affected draw. Energy flutter alone does
+   not require repartitioning a complete set. Keep overloaded originals intact.
+2. Preserve each logical mesh for picking, dialogue obstruction, navigation,
+   weather and grass exclusion. Handle individual fade/material swaps explicitly;
+   temporarily returning an affected object to its original renderer is viable.
+3. Handle scripted movement/removal and world teardown without stale slots,
+   hidden originals or leaked shared resources. Cover ground-contact option
+   changes, wind and per-part height, shadow masks and all existing consumers.
+4. Measure ongoing CPU submission and GPU/culling cost with moving cameras,
+   light churn and individual fades, then validate target devices. The current
+   result solves a selection constraint; it is not completed P3 or an FPS claim.
+
 ## P5, first stage: stable local-shadow selection
 
 P4's production visibility changes overlap the other chat's active investigation,
@@ -824,8 +923,9 @@ without human authorization.
 
 1. **P3 static scenery batching:** material retention, a three-map resource
    census and the frozen rendered-map probe are now recorded above. The probe
-   found a crowded-light mismatch; resolve compatible light membership and the
-   listed consumers before a production batch. `map_scene.gd` and `figure.gd`
+   now preserves complete light sets within the renderer budget and records the
+   engine-history constraint above. Implement live lifetime/fading integration
+   and the listed consumers before a production batch. `map_scene.gd` and `figure.gd`
    are the main entry points. Preserve the recent dialogue-obstruction work
    before changing visual ownership.
 2. **P4 occlusion:** after identifying hidden-geometry cost, evaluate Godot's
