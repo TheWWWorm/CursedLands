@@ -10,7 +10,7 @@ The user explicitly requested: finish the current task, write the remaining work
 **Latest validated Linux export:** `gameplay-gaps57`  
 **Current network protocol:** **13**; all peers, including the local simulation service, must match.
 
-The full indexed tracker is [gameplay-gaps-2026-10-08.md](gameplay-gaps-2026-10-08.md): U01–U44 player reports and G01–G15 audit findings. It distinguishes implemented fixes from unverified playthrough/platform coverage. The original audit is `/home/llm2x/Documents/EI/local/implementation-gaps-2026-10-07.md`; it describes historical findings, many now fixed. Do not treat every item in that old audit as a new unfixed defect.
+The full indexed tracker is [gameplay-gaps-2026-10-08.md](gameplay-gaps-2026-10-08.md): U01–U45 player reports and G01–G15 audit findings. It distinguishes implemented fixes from unverified playthrough/platform coverage. The original audit is `/home/llm2x/Documents/EI/local/implementation-gaps-2026-10-07.md`; it describes historical findings, many now fixed. Do not treat every item in that old audit as a new unfixed defect.
 
 The previous long entry point, `/home/llm2x/Documents/EI/local/bugs-and-performance-handoff-2026-10-07.md`, now links here. This handoff supersedes its older current-work statements. Broad performance optimization remains deferred at the user's request.
 
@@ -25,7 +25,9 @@ The previous long entry point, `/home/llm2x/Documents/EI/local/bugs-and-performa
 | U43 | Materials such as rocks/stones have no hover description. | `game/src/game/items.gd`, original material records/localization and `item_view.gd`/`camp_view.gd` tooltips. Check material IDs and description keys rather than fabricating missing lore. |
 | U44 | The dragon in Dead City should remain grounded rather than flying. | Reference screenshot: `/home/llm2x/Documents/EI/local/bug-references/2026-10-09/dead-city-dragon-reference.png`. Compare that actor's original map placement, movement class, altitude and animation; inspect `game/src/game/unit.gd` and figure/animation selection. This is a separate report from Terror's disappearance and the amulet dragon's timed departure. Do not globally disable flying creatures or all dragon wing animation. |
 
-The dragon image is an unmodified copy of `/tmp/codex-clipboard-eac71246-209a-41e8-a778-b93f0695759f.png`. The durable local copy must accompany a handoff to another machine; it is deliberately outside release assets. There is no new screenshot for U39–U43.
+| U45 — priority progression blocker | In co-op, «Подземные твари»: players poisoned every source except the middle one; that middle objective unexpectedly showed failed. Killing the weakened queen did not advance the quest. User asks whether this is a softlock. | Not reproduced or diagnosed. Establish the exact campaign/map and inspect original poison-source completion/failure conditions, queen weakness/death gates, script order and shared co-op quest state. Look for a disposable copy of a pre-failure save; do not rewrite success flags or award completion merely from this report. Test the actual poisoning → queen-death route, host/guest parity and save/reload recovery after diagnosing the cause. |
+
+The dragon image is an unmodified copy of `/tmp/codex-clipboard-eac71246-209a-41e8-a778-b93f0695759f.png`. The durable local copy must accompany a handoff to another machine; it is deliberately outside release assets. There is no new screenshot for U39–U43 or U45.
 
 ## Unpublished fixes already available
 
@@ -58,6 +60,7 @@ These are not all confirmed unfixed code defects. Read the linked tracker/receip
 
 ### Priority reproductions and usability
 
+- **U45, «Подземные твари»:** newly reported possible co-op softlock; prioritize this progression blocker before cosmetic requests. Details and investigation boundary are in the table above.
 - **U36 / U11, 2× client freezes/teleports and walking in place:** local transport defects are fixed, but the reported multi-second internet/Windows symptom has not been fully reproduced and cleared. Latest measurements are short Linux loopback tests. Run a sustained busy LiA route at 1× and 2× with both peers on protocol 13; record authority tick progress, snapshot arrival gaps, packet sizes/loss, client presentation and freezes. Do not claim a blanket performance cure from isolated packet tests.
 - **U37, controller ergonomics:** rendered ENet tests cover actual input dispatch, but the latest self-cast/ally/body-part menu changes have not been tried with physical Retroid/gamepad controls.
 - **U08, ~4 FPS after Catacombs:** not reproduced by prepared Linux exit/reload/restart comparisons. User cannot remember whether reload or process restart fixed it. Windows original route, longer session and transition/cutscene presentation remain open.

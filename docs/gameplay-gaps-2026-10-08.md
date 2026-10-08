@@ -58,6 +58,7 @@ The additional [campaign audit](/home/llm2x/Documents/EI/local/implementation-ga
 | U42 | Hold the item-transfer button to add many copies to the shop offer, analogous to holding a skill upgrade button. | Newly requested 9 October; not implemented. Existing counted stacks and atomic trade validation must remain intact. |
 | U43 | Materials such as rocks/stones lack hover descriptions. | Newly reported 9 October; not investigated or fixed. Check material-specific tooltip lookup and localized text. |
 | U44 | The dragon in Dead City should remain grounded rather than flying. | Newly reported 9 October; not investigated or fixed. Original/reference screenshot retained at `/home/llm2x/Documents/EI/local/bug-references/2026-10-09/dead-city-dragon-reference.png`. Keep separate from Terror despawn and the amulet dragon departure fixes. |
+| U45 | «Подземные твари» co-op progression blocker: all sources except the middle one were poisoned; the middle objective unexpectedly became failed. Killing the already-weakened queen did not progress the quest. | Newly reported 9 October; possible softlock, not reproduced or diagnosed. Prioritize native quest success/failure gates, poison-source counters, queen death handling and shared co-op objective state. Exact map/campaign and trigger order remain to establish; preserve a pre-failure save if found. |
 
 ## Campaign audit findings
 
@@ -209,6 +210,6 @@ Export `gameplay-gaps56` uses protocol **13**, requiring matching peers. The spe
 
 ## Pausing handoff — 9 October
 
-At the user's request, finish the existing late-join trigger task and stop. New reports U39–U44 are queued for the next agent, not silently included as implemented fixes. The consolidated [handoff](gameplay-handoff-2026-10-09.md) separates unpublished code, new requests, unresolved reproductions and remaining validation.
+At the user's request, finish the existing late-join trigger task and stop. New reports U39–U45 are queued for the next agent, not silently included as implemented fixes. The consolidated [handoff](gameplay-handoff-2026-10-09.md) separates unpublished code, new requests, unresolved reproductions and remaining validation.
 
 [Prison late-join validation](gameplay-prison-late-join-validation.json) records the final code change before pausing: base `gz15h` shared quest/discovery checks accept a late guest without replaying startup or creating additional per-actor script threads. The actual ENet guest completes the native objective while the host stays away; both peers retain completion through save/load and reconnect. Export `gameplay-gaps57`, protocol 13. The 39 focused and 15 ENet checks pass; the preceding export fails 14 focused checks. This scoped adaptation does not complete the general campaign late-arrival audit. No public release or device installation changed.
