@@ -139,5 +139,62 @@
     "Prepared two-peer ENet fixture, not a complete chapter playthrough.",
     "No Windows or Retroid package validation; no FPS improvement claim.",
     "Temporary protagonist/disguise participation rules (G08) remain open."
-  ]
+  ],
+  "retroid_apk56": {
+    "apk": {
+      "private_instrumented": false,
+      "engine_sha256": "424eaf73630ec110faf614f550f8047c24a78e224211df45d8b957bf03b7cc79",
+      "native_sha256": "231ad722fd1f9eb0b5b47d7c9a386931a95b9f7ccb404fd7773a1fc651564fb7",
+      "apk_sha256": "77df7db2346e9d66adec25a5189b4469c0977d80490e1a5da1dddd7b1f559050",
+      "changes": [
+        "Full-size spell, template and rune slot artwork",
+        "Campaign-valid LiA guests and chapter progress merge",
+        "Shelter ordinary exit destination",
+        "Co-op preview capture cadence and cancellation",
+        "Wall-time client interpolation at changed game speeds"
+      ],
+      "baseline_apk": 55,
+      "accepted": true,
+      "acceptance_scope": "Focused gameplay regressions: 145 interpolation, 15 progress-preview and 25 campaign-class assertions. No new FPS acceptance or public release.",
+      "autorun": false,
+      "cleanup": {
+        "disabled_config": "files/bench.gameplay-gaps21-disabled.json",
+        "private_processes_stopped": true
+      }
+    },
+    "runs": {
+      "gameplay-coop-classes-56-01": {
+        "receipt": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/gameplay-coop-classes-56-01.receipt.json",
+        "receipt_sha256": "afec2d58b6412a4c89599bbf3f0d2461f889e6dee351eddd9bc5eaf05c1a4b06",
+        "log_sha256": "045f1fd47124c97f8287b56c8b52bceea9220592aa067d7e961ed074da7ca946",
+        "seconds": 51.31929063796997,
+        "errors": [
+          "10-08 16:18:24.257 31626 31655 E godot   : ERROR: Scene fixture setup or wait failed"
+        ],
+        "checks": null,
+        "failures": null
+      },
+      "gameplay-coop-classes-56-02": {
+        "receipt": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/runs/gameplay-coop-classes-56-02.receipt.json",
+        "receipt_sha256": "66c495e07873f384c217e27ef15776f02a78f32a615323b07db8d4e5cdf3d51b",
+        "log_sha256": "4c28a4999870a1850edca447161fef3bdce5787bfe7ab8446218bda5d07cd6c5",
+        "seconds": 108.2693305015564,
+        "errors": [],
+        "checks": 25,
+        "failures": 0
+      },
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/tests/coop_campaign_classes_android.gd",
+        "sha256": "a99954deed7b8d3e954c180689c623eb0f4563983c0ac56ad3254564d97e6303",
+        "base_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/tests/coop_story_android.gd",
+        "base_sha256": "a895206cb1529f3b9165183a5809437c80b37c7904d31c70851ff31f5a04acb8",
+        "adaptation": "90-second wait instead of 30; explicitly active guest viewport and state logging."
+      },
+      "limitations": [
+        "The first attempt timed out after the authority loaded. The diagnostic repeat completed 25 checks, but its initial guest load took roughly 48 seconds after authority readiness.",
+        "Both peers share one process with separate multiplayer overrides. NetStatus.keep_alive polls the default SceneTree API during world construction, so this setup does not establish shipping separate-process loading behavior.",
+        "Do not count either run as a performance acceptance or claim an initial-loading fix."
+      ]
+    }
+  }
 }

@@ -165,7 +165,13 @@
       "Wall-time client interpolation at changed game speeds"
     ],
     "baseline_apk": 55,
-    "accepted": false
+    "accepted": true,
+    "acceptance_scope": "Focused gameplay regressions: 145 interpolation, 15 progress-preview and 25 campaign-class assertions. No new FPS acceptance or public release.",
+    "autorun": false,
+    "cleanup": {
+      "disabled_config": "files/bench.gameplay-gaps21-disabled.json",
+      "private_processes_stopped": true
+    }
   },
   "coverage": [
     "Six samples of each received position/facing over its 100 ms arrival interval at 0.5x, 1x, 2x and 3x.",
