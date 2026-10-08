@@ -374,9 +374,10 @@ was performed for this policy change.
 
 ## P6 investigation: directional-shadow snapping
 
-The remake already separates the direct-light direction from its held shadow
-direction on Compatibility/mobile (`Game._aim_sun`, `Game.sun_basis`,
-`Portability.held_sun`). Desktop Forward+ keeps continuous aiming. The existing
+At the start of this batch, the remake separated direct lighting from a held
+shadow direction on all Compatibility renderers and on mobile/web
+(`Game._aim_sun`, `Game.sun_basis`, `Portability.held_sun`). Desktop Forward+
+kept continuous aiming. The existing
 held policy re-aims on zone/view changes, camera cuts, and a ten-degree lag cap.
 `shadow_diag.gd` already provides aim, roll, atlas, split and bias comparisons.
 
@@ -419,7 +420,8 @@ proof of smoother-looking animation. The maximum snapped direction error was
 trace, below its existing ten-degree re-aim threshold. The test does not assess
 that larger re-aim event, moving/zooming cameras, low sun, mobile GPUs or cascade
 coverage. Neither a quality improvement nor a speedup is established for a new
-production policy. Keep the current defaults pending stronger evidence.
+projection algorithm. These results do not justify replacing the constrained-
+device fallback with fine snapping, or enabling that fallback on desktop.
 
 The exported Linux build completed the probe on RTX 3090, OpenGL Compatibility
 and Vulkan Forward+. Logs: `directional-shadows-gl_compatibility.log` and
@@ -427,6 +429,42 @@ and Vulkan Forward+. Logs: `directional-shadows-gl_compatibility.log` and
 are `data/godot/app_userdata/Cursed Lands/directional-shadows-*.png`. The inspected
 pinned engine file is saved there as `godot-5b4e0cb-renderer_scene_cull.cpp`.
 P6 remains an investigation, not a completed shadow-caching implementation.
+
+### User clarification: constrain the fallback, not desktop sunlight
+
+The user clarified that holding was introduced for Android/web shimmer and
+cost, is unnecessary on desktop, and is optional even on Android if a better
+and cheaper implementation is demonstrated. Treat it as a fallback, not the
+desired universal rendering behavior. The frozen-direction probe above cannot
+establish mobile performance or choose a mobile replacement by itself.
+
+`Portability.held_sun` previously returned true for desktop Compatibility too.
+It now defaults to holding only on constrained platforms (mobile/Android/web),
+or with the existing explicit `--held-sun` diagnostic override. Desktop sunlight
+follows the clock on Compatibility, Forward+ and Mobile renderers. Game and
+menu paths both use this policy. Compatibility retains its projection roll and
+2.0 normal-bias correction independently of whether aiming is held; Forward+'s
+normal 1.2 bias is unchanged. The existing `--shadow-diag=continuous` can bypass
+holding for device comparisons. No Android/web default was removed without
+device evidence.
+
+Changed production files: `game/src/platform/portability.gd`,
+`game/src/game/game.gd` and `game/src/ui/menu_scene.gd`.
+[tools/tests/sun_aiming.gd](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/sun_aiming.gd)
+exercises actual game setup/aiming and menu clock changes, small clock motion,
+lag-cap catch-up, zone re-aims, preserved bias/roll, and the continuous diagnostic
+override. Ten checks pass per run in the exported Linux build on both renderer
+settings, normally and with `--held-sun` (four runs). The old exported build
+fails four relevant desktop-Compatibility expectations. These are headless
+policy checks, not GPU/mobile performance tests. The separate GPU direction
+trace above already evaluated continuous Compatibility with the retained roll
+and bias, but does not establish subjective quality on every device.
+
+Evidence: `sun-control.log`, `sun-gl.log`, `sun-gl-held.log`, `sun-forward.log`,
+`export-sun-gl_compatibility.log`, `export-sun-gl_compatibility-held.log`,
+`export-sun-forward_plus.log`, `export-sun-forward_plus-held.log`, plus
+`p6-export.log` and the isolated `p6-export/` release. No installed build or
+other chat's working files were changed.
 
 ## Integration
 
@@ -442,7 +480,9 @@ The first P3 stage changes only `figure.gd`, its resource census, regression
 fixture and this documentation. No object ownership or camera code was changed.
 The P3 probe is a standalone benchmark only (commit `3855cc4`). P5 changes only
 `local_lighting.gd` plus its regression fixture and documentation.
-The P6 comparison is a standalone benchmark and changes no runtime defaults.
+The P6 comparison is a standalone benchmark. The subsequent user-directed
+default correction changes only sun policy/setup and menu sun aiming, plus its
+test; it does not modify character visibility or zone-transition code.
 
 Read-only `git apply --check` of the combined P1, P2, P3 and P5 patch through
 `9bc5ce2` passed against the active checkout at

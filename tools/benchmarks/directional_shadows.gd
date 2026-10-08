@@ -81,7 +81,7 @@ func _ready() -> void:
 	sun.directional_shadow_blend_splits = true
 	sun.shadow_blur = 1.5
 	sun.shadow_bias = 0.04
-	sun.shadow_normal_bias = 2.0 if Portability.held_sun() else 1.2
+	sun.shadow_normal_bias = 2.0 if Portability.compatibility() or Portability.held_sun() else 1.2
 	Gfx.setup_sun_casters(sun)
 	Gfx.sync_sun_pass(sun)
 	Gfx.fit_shadows(sun, map.terrain.size_ei())
@@ -95,7 +95,7 @@ func _ready() -> void:
 			material.shader.code = material.shader.code.replace("TIME", "1.25")
 	game = Game.new() # Use the production aiming policy without starting gameplay.
 	game._sun = sun
-	game.sun_grid_lock = Portability.held_sun()
+	game.sun_grid_lock = Portability.compatibility() or Portability.held_sun()
 	var initial := Vector3(-0.4, -0.7, -0.5).normalized()
 	RenderingServer.global_shader_parameter_set(&"ei_sun_dir", -initial)
 	var rows := []

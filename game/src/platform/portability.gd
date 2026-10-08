@@ -11,11 +11,12 @@ static func compatibility() -> bool:
 	return RenderingServer.get_current_rendering_method() == "gl_compatibility"
 
 ## The sun's shadow is held and re-aimed (Game._aim_sun) instead of turned
-## every frame: phones and the web on any renderer (the texel grid's sweep
-## flickered there with every atlas size), Compatibility anywhere. Desktop
-## Forward+ / Mobile keep 0.1.7's sun. Tests: --held-sun on a PC.
+## every frame: a shimmer/cost fallback for phones and the web, on any
+## renderer. Desktop keeps continuous sunlight, including Compatibility.
+## Tests: --held-sun on a PC; --shadow-diag=continuous bypasses the fallback
+## for device comparisons before choosing a better constrained-device policy.
 static func held_sun() -> bool:
-	return constrained() or compatibility() or OS.get_cmdline_user_args().has("--held-sun")
+	return constrained() or OS.get_cmdline_user_args().has("--held-sun")
 
 static func threads() -> bool:
 	return not OS.has_feature("web") or OS.has_feature("threads")

@@ -33,17 +33,17 @@ var _sky_cave := false
 const ShadowDiag := preload("res://src/game/shadow_diag.gd")
 const QuestLights := preload("res://src/game/fx/quest_lights.gd")
 var _sky_spin := 0.0
-## Compatibility only (Android, web; _setup_env): the sun's shadow map rolled
-## with the ground (sun_basis). Desktop keeps 0.1.7's Basis.looking_at.
+## Compatibility and the constrained-device fallback: roll the shadow map
+## with the ground (sun_basis), independently of whether aiming is held.
 var sun_grid_lock := false
 ## The sun's shadow direction (_aim_sun): 0 held, re-aimed while the view is
-## hidden or after SUN_MAX_LAG (Compatibility); 1 every frame (desktop, as
+## hidden or after SUN_MAX_LAG (phones / web); 1 every frame (desktop, as
 ## 0.1.7); 2 never re-aimed after the zone load (ShadowDiag "freeze").
 var sun_aim_mode := 1
 ## Direction the sun's shadow map is aimed along (Godot space, as the light
 ## travels); ZERO = not aimed yet. Visual only, never saved or sent.
 var _held_sun := Vector3.ZERO
-## Compatibility: the clock's direction towards the sun sent as ei_sun_dir.
+## Held aiming: the clock's direction towards the sun sent as ei_sun_dir.
 var sun_light_dir := Vector3.ZERO
 var _sun_cam := Vector3.INF
 ## Re-aims so far and why the last one happened (probe / ShadowDiag).
@@ -154,9 +154,9 @@ func _setup_env() -> void:
 	# Direction and colour are set per frame (_update_daylight).
 	sun.rotation_degrees = Vector3(-55, 60, 0)
 	sun.light_energy = 1.0
-	# Desktop (Forward+) shadows were steady: the sun stays as in 0.1.7 there.
-	# On phones / web (any renderer) and Compatibility its shadow is held and
-	# rolled (_aim_sun) and marked so light() reads the clock's direction.
+	# Desktop follows the clock on every renderer. Keep Compatibility's
+	# projection roll independently of the phones / web held-sun fallback.
+	sun_grid_lock = Portability.compatibility()
 	if Portability.held_sun():
 		sun_aim_mode = 0
 		sun_grid_lock = true
@@ -177,7 +177,7 @@ func _setup_env() -> void:
 	# floors, pillars) showed striped self-shadow acne that crawled as the
 	# sun turned (Forward+ is clean there); 2.0 clears it
 	# (tools/shadow_shimmer_probe.gd). Phones on Vulkan go with the held sun.
-	sun.shadow_normal_bias = 2.0 if Portability.held_sun() else 1.2
+	sun.shadow_normal_bias = 2.0 if Portability.compatibility() or Portability.held_sun() else 1.2
 	add_child(sun)
 	Gfx.setup_sun_casters(sun)
 
@@ -506,7 +506,7 @@ func _update_daylight() -> void:
 		_env.volumetric_fog_albedo = sky.lerp(Color.WHITE, 0.5)
 
 
-## remake, phones / web on any renderer and Compatibility (Portability.held_sun; sun_aim_mode 0): the sun's
+## remake, phones / web on any renderer (Portability.held_sun; sun_aim_mode 0): the sun's
 ## shadow map is aimed along a held direction instead of the clock's. Desktop
 ## (sun_aim_mode 1) turns it every frame with Basis.looking_at, as 0.1.7. Turning it with the sun (15° per game hour, ≈ 0.3° a second)
 ## swept the map's texel grid over the land, since Godot snaps the cascades
