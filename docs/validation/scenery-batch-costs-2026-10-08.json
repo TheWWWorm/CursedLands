@@ -1,0 +1,4622 @@
+{
+  "date": "2026-10-08",
+  "description": "Cache static scenery group bounds; preserve boundary correctness; attribute a reproduced overlap residual and measure actual render cost. Batching remains experimental/default off: the sampled desktop total cost is worse despite fewer draws.",
+  "parent_commit": "32402510c714b9b0d497ee4f4a4ddb2394c20daf",
+  "reference_renderer": "d529d14e9bf3c960833a9d9633786fc4588ec6d2",
+  "engine": "Godot 4.7 stable 5b4e0cb0f",
+  "source_sha256": {
+    "game/src/game/fx/scenery_batches.gd": "84f0b413d9f1c11737de4b73a2bc806c4e8607c38c747a01cf1a6223f2d7baa6",
+    "game/src/game/fx/scenery_batch_watch.gd": "b0af74667003955c9d91f8c5141f494a0fc030f9fab560ecbd8dd66656e40f1c",
+    "game/src/game/fx/scenery_light_groups.gd": "db4961190b0e59a4e240915a00a6461d9f4fef21d9fa5f0c562692b1d28a91f0",
+    "tools/benchmarks/scenery_batches.gd": "ce353a61d1ad19651bf89bb41bb913961ae1cae5d3c7d0dbb72816f3ab47e941",
+    "tools/tests/scenery_batches.gd": "1deb225250c9387ea8029a382a184d4734c01811c77774275be63c4d89947f78"
+  },
+  "engine_source": {
+    "root": "/home/llm2x/Documents/EI/local/scratchpad/coop-performance-20261005/engine-profile/godot-5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+    "sha256": {
+      "drivers/gles3/rasterizer_scene_gles3.cpp": "991cc1664055810899c7002c9e2a92967ba8f3c5dbc3d69318167e200f19240e",
+      "drivers/gles3/rasterizer_scene_gles3.h": "4e3d4c1b13ec5982afb5f6ab477e317bb83b2b2dd7e631ae7738891ef35ffaf7"
+    },
+    "opaque_sort_refs": [
+      "rasterizer_scene_gles3.cpp:331",
+      "rasterizer_scene_gles3.cpp:2567",
+      "rasterizer_scene_gles3.h:695"
+    ]
+  },
+  "exports": {
+    "p3-runtime/export": {
+      "CursedLands.pck": "c39011959e1d92a00d14b81d2d962d5a0c89a03318ad73f7c279d107c35e5662",
+      "CursedLands.x86_64": "3154bb4465f616e24b811dd576e9230022872cd80f8d5ab854efed2716b926d4",
+      "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+    },
+    "p3-seams/export": {
+      "CursedLands.pck": "481571ce7e85bc227e026eb78803e81b963ac8ff61a0c0b8ba39b82797936861",
+      "CursedLands.x86_64": "3154bb4465f616e24b811dd576e9230022872cd80f8d5ab854efed2716b926d4",
+      "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+    },
+    "p3-seams/export4": {
+      "CursedLands.pck": "481571ce7e85bc227e026eb78803e81b963ac8ff61a0c0b8ba39b82797936861",
+      "CursedLands.x86_64": "3154bb4465f616e24b811dd576e9230022872cd80f8d5ab854efed2716b926d4",
+      "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82",
+      "override.cfg": "be6951696a2425addf0bd4c61627ef4a51be618cef82433754cbeedfb1457d3a"
+    }
+  },
+  "candidate_export_log": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p3-seams/export.log",
+    "sha256": "8d0e800a3fe926dd433a954ca2986f25f7693a462455d94b042886595c051cb8"
+  },
+  "runner": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p3-seams/run.py",
+    "sha256": "ea61036d23be4dcdf8ce43bf6ef914f5fc69f567e81177e635cb96b0be24da72",
+    "environment": {
+      "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p3-seams/data",
+      "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p3-seams/config",
+      "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p3-seams/cache"
+    },
+    "baseline_environment_note": "Same runner with p3-runtime in place of p3-seams. Exported game and external tool paths are recorded in each command. Isolated caches are reused within each runner directory; no cold-start claim."
+  },
+  "lifecycle": [
+    {
+      "folder": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p3-seams/lifecycle-cached",
+      "report_sha256": "95c22d7f095e4c9a85d1f2dfd9c4bbd3cfd5175da8076261ccb38696592d16f3",
+      "log_sha256": "c36d1ad4f569d05d68b5384663a6afd369253850573738093ff47eeda8b0a1cf",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p3-seams/export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/scenery_batches.gd"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 8.812348418025067,
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "errors": [],
+      "png_sha256": {
+        "scenery-runtime-initial-0-control.png": "1e35538c5d1c0563ac7e2e4474e49a57712ea8f537eeda4ec21d0e7fd8f72e56",
+        "scenery-runtime-initial-2-control.png": "1e35538c5d1c0563ac7e2e4474e49a57712ea8f537eeda4ec21d0e7fd8f72e56",
+        "scenery-runtime-initial-1-control.png": "1e35538c5d1c0563ac7e2e4474e49a57712ea8f537eeda4ec21d0e7fd8f72e56",
+        "scenery-runtime-initial-0-managed.png": "1e35538c5d1c0563ac7e2e4474e49a57712ea8f537eeda4ec21d0e7fd8f72e56",
+        "scenery-runtime-initial-2-managed.png": "1e35538c5d1c0563ac7e2e4474e49a57712ea8f537eeda4ec21d0e7fd8f72e56",
+        "scenery-runtime-initial-1-managed.png": "1e35538c5d1c0563ac7e2e4474e49a57712ea8f537eeda4ec21d0e7fd8f72e56"
+      },
+      "renderer": "gl_compatibility",
+      "startup_per_type_light_limit": 8,
+      "checks": 119,
+      "failures": 0,
+      "cases": [
+        {
+          "case": "initial",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              2
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 170
+        },
+        {
+          "case": "camera_moved",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              2
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 13
+        },
+        {
+          "case": "idle",
+          "max_usec": 7,
+          "median_usec": 1,
+          "samples": 80
+        },
+        {
+          "case": "move_between_cells",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              3
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 98
+        },
+        {
+          "case": "hide",
+          "frames": 2,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              7,
+              3
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 122
+        },
+        {
+          "case": "show",
+          "frames": 2,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              3
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 158
+        },
+        {
+          "case": "fade_start",
+          "frames": 2,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              4
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 84
+        },
+        {
+          "case": "fade_continues",
+          "frames": 2,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              4
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 6
+        },
+        {
+          "case": "material_while_fading",
+          "frames": 2,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              4
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 18
+        },
+        {
+          "case": "fade_restore",
+          "frames": 2,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              4
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 42
+        },
+        {
+          "case": "material_restore",
+          "frames": 2,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              3
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 138
+        },
+        {
+          "case": "mesh_resource_changed",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              3
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 168
+        },
+        {
+          "case": "render_state_changed",
+          "frames": 2,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              4
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 103
+        },
+        {
+          "case": "render_state_restored",
+          "frames": 2,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              3
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 117
+        },
+        {
+          "case": "new_light",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              3
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 78
+        },
+        {
+          "case": "same_light_membership",
+          "frames": 2,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              3
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 87
+        },
+        {
+          "case": "energy_only",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              3
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 16
+        },
+        {
+          "case": "range",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              5
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 216
+        },
+        {
+          "case": "moving_light",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              4
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 199
+        },
+        {
+          "case": "light_hidden",
+          "frames": 2,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              3
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 109
+        },
+        {
+          "case": "light_shown",
+          "frames": 2,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              4
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 106
+        },
+        {
+          "case": "light_freed",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              3
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 123
+        },
+        {
+          "case": "over_light_budget",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              8
+            ]
+          ],
+          "batch_counts": [
+            0
+          ],
+          "max_update_usec": 127
+        },
+        {
+          "case": "budget_cleared",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              3
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 155
+        },
+        {
+          "case": "probe_fallback",
+          "frames": 2,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              8
+            ]
+          ],
+          "batch_counts": [
+            0
+          ],
+          "max_update_usec": 71
+        },
+        {
+          "case": "probe_removed",
+          "frames": 2,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              3
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 209
+        },
+        {
+          "case": "reparent_outside_map",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              4
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 74
+        },
+        {
+          "case": "reparent_back",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              3
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 117
+        },
+        {
+          "case": "object_deleted",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              7,
+              3
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 98
+        },
+        {
+          "case": "object_created",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              3
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 108
+        },
+        {
+          "case": "disabled",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              8
+            ]
+          ],
+          "batch_counts": [
+            0
+          ],
+          "max_update_usec": 46
+        },
+        {
+          "case": "enabled",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              3
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 203
+        },
+        {
+          "case": "parent_transform",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              8
+            ]
+          ],
+          "batch_counts": [
+            0
+          ],
+          "max_update_usec": 34
+        },
+        {
+          "case": "manager_detached",
+          "frames": 2,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              8
+            ]
+          ],
+          "batch_counts": [
+            0
+          ],
+          "max_update_usec": 7
+        },
+        {
+          "case": "manager_reattached",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              2
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 199
+        },
+        {
+          "case": "bounds_seed",
+          "frames": 2,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              2
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 184
+        },
+        {
+          "case": "bounds_expanded",
+          "frames": 2,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              2
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 195
+        },
+        {
+          "case": "bounds_new_edge_lights",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              4
+            ]
+          ],
+          "batch_counts": [
+            1
+          ],
+          "max_update_usec": 108
+        }
+      ]
+    },
+    {
+      "folder": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p3-seams/lifecycle-cached-limit4",
+      "report_sha256": "5b3d8ed5b0facb923c3ccc059a4b2a01ad2a450d569db0b8f53391ffb9b4e966",
+      "log_sha256": "0118516f168ad93ca524be9d093d1008f173edcafa9f6acef39c6616fa7bb3d3",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p3-seams/export4/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/scenery_batches.gd"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 9.06725075902068,
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "errors": [],
+      "png_sha256": {
+        "scenery-runtime-initial-0-control.png": "1e35538c5d1c0563ac7e2e4474e49a57712ea8f537eeda4ec21d0e7fd8f72e56",
+        "scenery-runtime-initial-2-control.png": "1e35538c5d1c0563ac7e2e4474e49a57712ea8f537eeda4ec21d0e7fd8f72e56",
+        "scenery-runtime-initial-1-control.png": "1e35538c5d1c0563ac7e2e4474e49a57712ea8f537eeda4ec21d0e7fd8f72e56",
+        "scenery-runtime-initial-0-managed.png": "1e35538c5d1c0563ac7e2e4474e49a57712ea8f537eeda4ec21d0e7fd8f72e56",
+        "scenery-runtime-initial-2-managed.png": "1e35538c5d1c0563ac7e2e4474e49a57712ea8f537eeda4ec21d0e7fd8f72e56",
+        "scenery-runtime-initial-1-managed.png": "1e35538c5d1c0563ac7e2e4474e49a57712ea8f537eeda4ec21d0e7fd8f72e56"
+      },
+      "renderer": "gl_compatibility",
+      "startup_per_type_light_limit": 4,
+      "checks": 119,
+      "failures": 0,
+      "cases": [
+        {
+          "case": "initial",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              2
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 195
+        },
+        {
+          "case": "camera_moved",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              2
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 17
+        },
+        {
+          "case": "idle",
+          "max_usec": 7,
+          "median_usec": 1,
+          "samples": 80
+        },
+        {
+          "case": "move_between_cells",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              3
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 101
+        },
+        {
+          "case": "hide",
+          "frames": 2,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              7,
+              3
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 112
+        },
+        {
+          "case": "show",
+          "frames": 2,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              3
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 145
+        },
+        {
+          "case": "fade_start",
+          "frames": 2,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              4
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 86
+        },
+        {
+          "case": "fade_continues",
+          "frames": 2,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              4
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 7
+        },
+        {
+          "case": "material_while_fading",
+          "frames": 2,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              4
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 22
+        },
+        {
+          "case": "fade_restore",
+          "frames": 2,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              4
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 47
+        },
+        {
+          "case": "material_restore",
+          "frames": 2,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              3
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 143
+        },
+        {
+          "case": "mesh_resource_changed",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              3
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 195
+        },
+        {
+          "case": "render_state_changed",
+          "frames": 2,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              4
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 156
+        },
+        {
+          "case": "render_state_restored",
+          "frames": 2,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              3
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 154
+        },
+        {
+          "case": "new_light",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              3
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 126
+        },
+        {
+          "case": "same_light_membership",
+          "frames": 2,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              3
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 88
+        },
+        {
+          "case": "energy_only",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              3
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 22
+        },
+        {
+          "case": "range",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              5
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 201
+        },
+        {
+          "case": "moving_light",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              4
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 269
+        },
+        {
+          "case": "light_hidden",
+          "frames": 2,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              3
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 148
+        },
+        {
+          "case": "light_shown",
+          "frames": 2,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              4
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 164
+        },
+        {
+          "case": "light_freed",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              3
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 165
+        },
+        {
+          "case": "over_light_budget",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              8
+            ]
+          ],
+          "batch_counts": [
+            0
+          ],
+          "max_update_usec": 120
+        },
+        {
+          "case": "budget_cleared",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              3
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 194
+        },
+        {
+          "case": "probe_fallback",
+          "frames": 2,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              8
+            ]
+          ],
+          "batch_counts": [
+            0
+          ],
+          "max_update_usec": 81
+        },
+        {
+          "case": "probe_removed",
+          "frames": 2,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              3
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 220
+        },
+        {
+          "case": "reparent_outside_map",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              4
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 93
+        },
+        {
+          "case": "reparent_back",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              3
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 114
+        },
+        {
+          "case": "object_deleted",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              7,
+              3
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 80
+        },
+        {
+          "case": "object_created",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              3
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 126
+        },
+        {
+          "case": "disabled",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              8
+            ]
+          ],
+          "batch_counts": [
+            0
+          ],
+          "max_update_usec": 58
+        },
+        {
+          "case": "enabled",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              3
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 227
+        },
+        {
+          "case": "parent_transform",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              8
+            ]
+          ],
+          "batch_counts": [
+            0
+          ],
+          "max_update_usec": 33
+        },
+        {
+          "case": "manager_detached",
+          "frames": 2,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              8
+            ]
+          ],
+          "batch_counts": [
+            0
+          ],
+          "max_update_usec": 6
+        },
+        {
+          "case": "manager_reattached",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              2
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 194
+        },
+        {
+          "case": "bounds_seed",
+          "frames": 2,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              2
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 204
+        },
+        {
+          "case": "bounds_expanded",
+          "frames": 2,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              2
+            ]
+          ],
+          "batch_counts": [
+            2
+          ],
+          "max_update_usec": 179
+        },
+        {
+          "case": "bounds_new_edge_lights",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              8,
+              4
+            ]
+          ],
+          "batch_counts": [
+            1
+          ],
+          "max_update_usec": 87
+        }
+      ]
+    },
+    {
+      "folder": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p3-seams/lifecycle-cached-forward",
+      "report_sha256": "1f4acaeb774f9fe1a13a9e1d4a91b340b8407d3e93afe3feabc7fb293bf1593d",
+      "log_sha256": "36ecb745bb39f38354f98b872813c3dc28dc8e3ca75636ce85f0212370bec570",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p3-seams/export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/scenery_batches.gd"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 9.308996009989642,
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [],
+      "warnings": [
+        "WARNING: 7 RIDs of type \"Texture\" were leaked."
+      ],
+      "errors": [],
+      "png_sha256": {
+        "scenery-runtime-initial-0-control.png": "05c989632fa23328c8819b2c65474271a67d25835ae0ddf46a58d61bf4f8e91d",
+        "scenery-runtime-initial-2-control.png": "05c989632fa23328c8819b2c65474271a67d25835ae0ddf46a58d61bf4f8e91d",
+        "scenery-runtime-initial-1-control.png": "05c989632fa23328c8819b2c65474271a67d25835ae0ddf46a58d61bf4f8e91d",
+        "scenery-runtime-initial-0-managed.png": "05c989632fa23328c8819b2c65474271a67d25835ae0ddf46a58d61bf4f8e91d",
+        "scenery-runtime-initial-2-managed.png": "05c989632fa23328c8819b2c65474271a67d25835ae0ddf46a58d61bf4f8e91d",
+        "scenery-runtime-initial-1-managed.png": "05c989632fa23328c8819b2c65474271a67d25835ae0ddf46a58d61bf4f8e91d"
+      },
+      "renderer": "forward_plus",
+      "startup_per_type_light_limit": null,
+      "checks": 119,
+      "failures": 0,
+      "cases": [
+        {
+          "case": "initial",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              2,
+              2
+            ]
+          ],
+          "batch_counts": [
+            0
+          ],
+          "max_update_usec": 48
+        },
+        {
+          "case": "camera_moved",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              2,
+              2
+            ]
+          ],
+          "batch_counts": [
+            0
+          ],
+          "max_update_usec": 13
+        },
+        {
+          "case": "idle",
+          "max_usec": 8,
+          "median_usec": 1,
+          "samples": 80
+        },
+        {
+          "case": "move_between_cells",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              2,
+              2
+            ]
+          ],
+          "batch_counts": [
+            0
+          ],
+          "max_update_usec": 15
+        },
+        {
+          "case": "hide",
+          "frames": 2,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              2,
+              2
+            ]
+          ],
+          "batch_counts": [
+            0
+          ],
+          "max_update_usec": 17
+        },
+        {
+          "case": "show",
+          "frames": 2,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              2,
+              2
+            ]
+          ],
+          "batch_counts": [
+            0
+          ],
+          "max_update_usec": 18
+        },
+        {
+          "case": "fade_start",
+          "frames": 2,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              5,
+              5
+            ]
+          ],
+          "batch_counts": [
+            0
+          ],
+          "max_update_usec": 15
+        },
+        {
+          "case": "fade_continues",
+          "frames": 2,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              5,
+              5
+            ]
+          ],
+          "batch_counts": [
+            0
+          ],
+          "max_update_usec": 5
+        },
+        {
+          "case": "material_while_fading",
+          "frames": 2,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              5,
+              5
+            ]
+          ],
+          "batch_counts": [
+            0
+          ],
+          "max_update_usec": 15
+        },
+        {
+          "case": "fade_restore",
+          "frames": 2,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              5,
+              5
+            ]
+          ],
+          "batch_counts": [
+            0
+          ],
+          "max_update_usec": 11
+        },
+        {
+          "case": "material_restore",
+          "frames": 2,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              2,
+              2
+            ]
+          ],
+          "batch_counts": [
+            0
+          ],
+          "max_update_usec": 12
+        },
+        {
+          "case": "mesh_resource_changed",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              2,
+              2
+            ]
+          ],
+          "batch_counts": [
+            0
+          ],
+          "max_update_usec": 13
+        },
+        {
+          "case": "render_state_changed",
+          "frames": 2,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              2,
+              2
+            ]
+          ],
+          "batch_counts": [
+            0
+          ],
+          "max_update_usec": 13
+        },
+        {
+          "case": "render_state_restored",
+          "frames": 2,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              2,
+              2
+            ]
+          ],
+          "batch_counts": [
+            0
+          ],
+          "max_update_usec": 8
+        },
+        {
+          "case": "new_light",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              2,
+              2
+            ]
+          ],
+          "batch_counts": [
+            0
+          ],
+          "max_update_usec": 12
+        },
+        {
+          "case": "same_light_membership",
+          "frames": 2,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              2,
+              2
+            ]
+          ],
+          "batch_counts": [
+            0
+          ],
+          "max_update_usec": 13
+        },
+        {
+          "case": "energy_only",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              2,
+              2
+            ]
+          ],
+          "batch_counts": [
+            0
+          ],
+          "max_update_usec": 12
+        },
+        {
+          "case": "range",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              2,
+              2
+            ]
+          ],
+          "batch_counts": [
+            0
+          ],
+          "max_update_usec": 31
+        },
+        {
+          "case": "moving_light",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              2,
+              2
+            ]
+          ],
+          "batch_counts": [
+            0
+          ],
+          "max_update_usec": 21
+        },
+        {
+          "case": "light_hidden",
+          "frames": 2,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              2,
+              2
+            ]
+          ],
+          "batch_counts": [
+            0
+          ],
+          "max_update_usec": 10
+        },
+        {
+          "case": "light_shown",
+          "frames": 2,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              2,
+              2
+            ]
+          ],
+          "batch_counts": [
+            0
+          ],
+          "max_update_usec": 13
+        },
+        {
+          "case": "light_freed",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              2,
+              2
+            ]
+          ],
+          "batch_counts": [
+            0
+          ],
+          "max_update_usec": 9
+        },
+        {
+          "case": "over_light_budget",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              2,
+              2
+            ]
+          ],
+          "batch_counts": [
+            0
+          ],
+          "max_update_usec": 35
+        },
+        {
+          "case": "budget_cleared",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              2,
+              2
+            ]
+          ],
+          "batch_counts": [
+            0
+          ],
+          "max_update_usec": 23
+        },
+        {
+          "case": "probe_fallback",
+          "frames": 2,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              2,
+              2
+            ]
+          ],
+          "batch_counts": [
+            0
+          ],
+          "max_update_usec": 41
+        },
+        {
+          "case": "probe_removed",
+          "frames": 2,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              2,
+              2
+            ]
+          ],
+          "batch_counts": [
+            0
+          ],
+          "max_update_usec": 47
+        },
+        {
+          "case": "reparent_outside_map",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              2,
+              2
+            ]
+          ],
+          "batch_counts": [
+            0
+          ],
+          "max_update_usec": 13
+        },
+        {
+          "case": "reparent_back",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              2,
+              2
+            ]
+          ],
+          "batch_counts": [
+            0
+          ],
+          "max_update_usec": 16
+        },
+        {
+          "case": "object_deleted",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              2,
+              2
+            ]
+          ],
+          "batch_counts": [
+            0
+          ],
+          "max_update_usec": 17
+        },
+        {
+          "case": "object_created",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              2,
+              2
+            ]
+          ],
+          "batch_counts": [
+            0
+          ],
+          "max_update_usec": 16
+        },
+        {
+          "case": "disabled",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              2,
+              2
+            ]
+          ],
+          "batch_counts": [
+            0
+          ],
+          "max_update_usec": 29
+        },
+        {
+          "case": "enabled",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              2,
+              2
+            ]
+          ],
+          "batch_counts": [
+            0
+          ],
+          "max_update_usec": 41
+        },
+        {
+          "case": "parent_transform",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              2,
+              2
+            ]
+          ],
+          "batch_counts": [
+            0
+          ],
+          "max_update_usec": 32
+        },
+        {
+          "case": "manager_detached",
+          "frames": 2,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              2,
+              2
+            ]
+          ],
+          "batch_counts": [
+            0
+          ],
+          "max_update_usec": 6
+        },
+        {
+          "case": "manager_reattached",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              2,
+              2
+            ]
+          ],
+          "batch_counts": [
+            0
+          ],
+          "max_update_usec": 37
+        },
+        {
+          "case": "bounds_seed",
+          "frames": 2,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              2,
+              2
+            ]
+          ],
+          "batch_counts": [
+            0
+          ],
+          "max_update_usec": 20
+        },
+        {
+          "case": "bounds_expanded",
+          "frames": 2,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              2,
+              2
+            ]
+          ],
+          "batch_counts": [
+            0
+          ],
+          "max_update_usec": 24
+        },
+        {
+          "case": "bounds_new_edge_lights",
+          "frames": 3,
+          "max_pixels_over_2": 0,
+          "max_byte_difference": 0,
+          "draw_pairs": [
+            [
+              2,
+              2
+            ]
+          ],
+          "batch_counts": [
+            0
+          ],
+          "max_update_usec": 72
+        }
+      ]
+    }
+  ],
+  "timing_method": {
+    "scope": "Frozen 800x600 real-map SubViewport; synchronous render submission wall time, native viewport CPU/GPU time and manager callback component. Not whole-game frame time or portable FPS.",
+    "state_order": [
+      false,
+      true,
+      true,
+      false,
+      false,
+      true
+    ],
+    "warmup_frames_per_window": 24,
+    "measured_frames_per_window": 96,
+    "summary": "Median of three window medians for each condition/state; raw window distributions below.",
+    "moving_light": "One light moves 3 m on x with sin(step*0.2), for the four-light condition only.",
+    "control": "Disable batches and disconnect the manager frame_pre_draw callback during off windows. No pixel readback inside any measurement window. No other game/editor rendering process found at either boundary.",
+    "limitations": [
+      "Sequential desktop samples, with clock/load variation across runs.",
+      "The original/batched images are not universally identical; the cache itself preserves all six corresponding baseline/candidate PNGs.",
+      "Actual Android/browser cost and full gameplay remain unmeasured."
+    ]
+  },
+  "timing": {
+    "baseline_3240251": {
+      "folder": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p3-runtime/timing-base-repeat",
+      "report_sha256": "3e1538510429a4b4c149891720b59e83c15480e82bd85765582d5608dccd7e50",
+      "log_sha256": "6d4c7251eacb34899e08c2a7a0f91c7999d5186b0f25de647d902077e5c9b35e",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p3-runtime/export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/scenery_batches.gd",
+        "--scenery-batches",
+        "--scenery-game-camera",
+        "--scenery-timing",
+        "--scenery-lights=0,4"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 22.070572745986283,
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "errors": [],
+      "png_sha256": {
+        "scenery-batches-gl_compatibility-4-initial-before.png": "4f3bce7ac4b6b256f38bb480099ae57e33cfcbe2d128d06eef3aa7a2c94dbd8c",
+        "scenery-batches-gl_compatibility-4-initial-restored.png": "749367e1b479147e745ae07d0f1731e735584ef4a58c7ea83f19da573a840c6f",
+        "scenery-batches-gl_compatibility-4-initial-after.png": "053e69e7f7978baa32704825401f90ad46183cb373270459ef5a187cd54b066d",
+        "scenery-batches-gl_compatibility-0-initial-before.png": "ad4ac40bc974820aab74194229f3ea2098e8c3686544a1772a0db016876eae73",
+        "scenery-batches-gl_compatibility-0-initial-after.png": "91f31d432da9ad2d2cb5c912b8e8b29b0d3c60ccc59edec9664d175745c66554",
+        "scenery-batches-gl_compatibility-0-initial-restored.png": "fe67977957ea3ebc4fd0e01237a680cabb0648690aa8b4f058c6d8a82c70ed91"
+      },
+      "report": {
+        "adapter": "NVIDIA GeForce RTX 3090",
+        "camera_far": 260.0,
+        "camera_fov": 55.0,
+        "camera_near": 0.05,
+        "contact": false,
+        "editor": false,
+        "focus": "(88.0, 16.81038, -56.0)",
+        "game_camera": true,
+        "idle_update_usec": [
+          4,
+          4,
+          4,
+          4,
+          5,
+          5,
+          5,
+          7,
+          16,
+          22,
+          31,
+          32,
+          34,
+          38,
+          39,
+          48
+        ],
+        "light_limit": 8,
+        "light_partition": false,
+        "map": "bz13h",
+        "moving_light_rebuilt_groups": [],
+        "moving_light_update_usec": [],
+        "no_wind": false,
+        "rank_overflow": false,
+        "reinsert_control": false,
+        "reinserted_meshes": 0,
+        "renderer": "gl_compatibility",
+        "rows": [
+          {
+            "after_draws": 407,
+            "batches": 87,
+            "before_draws": 489,
+            "build_usec": 6388,
+            "difference": {
+              "max_byte_difference": 8,
+              "mean_channel_difference": 0.000108333333333333,
+              "pixels_over_2": 16
+            },
+            "lights": 0,
+            "parts": 248,
+            "phase": "initial",
+            "restoration": {
+              "max_byte_difference": 8,
+              "mean_channel_difference": 9.86111111111111e-05,
+              "pixels_over_2": 14
+            },
+            "restored_draws": 489
+          },
+          {
+            "after_draws": 417,
+            "batches": 79,
+            "before_draws": 489,
+            "build_usec": 6936,
+            "difference": {
+              "max_byte_difference": 7,
+              "mean_channel_difference": 9.72222222222222e-06,
+              "pixels_over_2": 2
+            },
+            "lights": 4,
+            "parts": 230,
+            "phase": "initial",
+            "restoration": {
+              "max_byte_difference": 8,
+              "mean_channel_difference": 9.86111111111111e-05,
+              "pixels_over_2": 14
+            },
+            "restored_draws": 489
+          }
+        ],
+        "runtime": true,
+        "scene_warmup_frames": 22,
+        "shadows": false,
+        "timing_rows": [
+          {
+            "case": "0",
+            "enabled": false,
+            "force_draw_usec": {
+              "max": 2701,
+              "median": 1428,
+              "min": 1303,
+              "p95": 2265,
+              "samples": 96
+            },
+            "manager_usec": {
+              "max": 0,
+              "median": 0,
+              "min": 0,
+              "p95": 0,
+              "samples": 96
+            },
+            "moving_light": false,
+            "viewport_cpu_ms": {
+              "max": 1.37800002098083,
+              "median": 0.718999981880188,
+              "min": 0.638000011444092,
+              "p95": 1.01699995994568,
+              "samples": 96
+            },
+            "viewport_gpu_ms": {
+              "max": 0.398999989032745,
+              "median": 0.335999995470047,
+              "min": 0.324999988079071,
+              "p95": 0.39300000667572,
+              "samples": 96
+            }
+          },
+          {
+            "case": "0",
+            "enabled": true,
+            "force_draw_usec": {
+              "max": 3353,
+              "median": 1724,
+              "min": 1548,
+              "p95": 2634,
+              "samples": 96
+            },
+            "manager_usec": {
+              "max": 13,
+              "median": 5,
+              "min": 3,
+              "p95": 10,
+              "samples": 96
+            },
+            "moving_light": false,
+            "viewport_cpu_ms": {
+              "max": 1.43700003623962,
+              "median": 0.955999970436096,
+              "min": 0.839999973773956,
+              "p95": 1.34200000762939,
+              "samples": 96
+            },
+            "viewport_gpu_ms": {
+              "max": 0.400999993085861,
+              "median": 0.386999994516373,
+              "min": 0.375999987125397,
+              "p95": 0.397000014781952,
+              "samples": 96
+            }
+          },
+          {
+            "case": "0",
+            "enabled": true,
+            "force_draw_usec": {
+              "max": 4067,
+              "median": 1704,
+              "min": 1574,
+              "p95": 2649,
+              "samples": 96
+            },
+            "manager_usec": {
+              "max": 21,
+              "median": 5,
+              "min": 4,
+              "p95": 9,
+              "samples": 96
+            },
+            "moving_light": false,
+            "viewport_cpu_ms": {
+              "max": 1.92299997806549,
+              "median": 0.912000000476837,
+              "min": 0.820999979972839,
+              "p95": 1.51400005817413,
+              "samples": 96
+            },
+            "viewport_gpu_ms": {
+              "max": 0.444999992847443,
+              "median": 0.397000014781952,
+              "min": 0.386999994516373,
+              "p95": 0.433999985456467,
+              "samples": 96
+            }
+          },
+          {
+            "case": "0",
+            "enabled": false,
+            "force_draw_usec": {
+              "max": 3160,
+              "median": 1462,
+              "min": 1375,
+              "p95": 2345,
+              "samples": 96
+            },
+            "manager_usec": {
+              "max": 0,
+              "median": 0,
+              "min": 0,
+              "p95": 0,
+              "samples": 96
+            },
+            "moving_light": false,
+            "viewport_cpu_ms": {
+              "max": 1.16400003433228,
+              "median": 0.704999983310699,
+              "min": 0.643999993801117,
+              "p95": 1.02499997615814,
+              "samples": 96
+            },
+            "viewport_gpu_ms": {
+              "max": 0.444999992847443,
+              "median": 0.38400000333786,
+              "min": 0.365000009536743,
+              "p95": 0.423000007867813,
+              "samples": 96
+            }
+          },
+          {
+            "case": "0",
+            "enabled": false,
+            "force_draw_usec": {
+              "max": 3013,
+              "median": 1414,
+              "min": 1317,
+              "p95": 2198,
+              "samples": 96
+            },
+            "manager_usec": {
+              "max": 0,
+              "median": 0,
+              "min": 0,
+              "p95": 0,
+              "samples": 96
+            },
+            "moving_light": false,
+            "viewport_cpu_ms": {
+              "max": 1.23599994182587,
+              "median": 0.689000010490417,
+              "min": 0.639999985694885,
+              "p95": 1.18599998950958,
+              "samples": 96
+            },
+            "viewport_gpu_ms": {
+              "max": 0.412999987602234,
+              "median": 0.368999987840652,
+              "min": 0.356000006198883,
+              "p95": 0.405000001192093,
+              "samples": 96
+            }
+          },
+          {
+            "case": "0",
+            "enabled": true,
+            "force_draw_usec": {
+              "max": 3146,
+              "median": 1652,
+              "min": 1527,
+              "p95": 2346,
+              "samples": 96
+            },
+            "manager_usec": {
+              "max": 15,
+              "median": 5,
+              "min": 3,
+              "p95": 9,
+              "samples": 96
+            },
+            "moving_light": false,
+            "viewport_cpu_ms": {
+              "max": 1.68299996852875,
+              "median": 0.907000005245209,
+              "min": 0.779999971389771,
+              "p95": 1.37699997425079,
+              "samples": 96
+            },
+            "viewport_gpu_ms": {
+              "max": 0.400999993085861,
+              "median": 0.388999998569489,
+              "min": 0.379999995231628,
+              "p95": 0.395999997854233,
+              "samples": 96
+            }
+          },
+          {
+            "case": "4",
+            "enabled": false,
+            "force_draw_usec": {
+              "max": 3806,
+              "median": 1715,
+              "min": 1622,
+              "p95": 2649,
+              "samples": 96
+            },
+            "manager_usec": {
+              "max": 0,
+              "median": 0,
+              "min": 0,
+              "p95": 0,
+              "samples": 96
+            },
+            "moving_light": false,
+            "viewport_cpu_ms": {
+              "max": 1.53699994087219,
+              "median": 0.815999984741211,
+              "min": 0.754000008106232,
+              "p95": 1.26900005340576,
+              "samples": 96
+            },
+            "viewport_gpu_ms": {
+              "max": 0.583999991416931,
+              "median": 0.514999985694885,
+              "min": 0.493999987840652,
+              "p95": 0.558000028133392,
+              "samples": 96
+            }
+          },
+          {
+            "case": "4",
+            "enabled": true,
+            "force_draw_usec": {
+              "max": 3955,
+              "median": 1981,
+              "min": 1683,
+              "p95": 3065,
+              "samples": 96
+            },
+            "manager_usec": {
+              "max": 66,
+              "median": 29,
+              "min": 19,
+              "p95": 54,
+              "samples": 96
+            },
+            "moving_light": false,
+            "viewport_cpu_ms": {
+              "max": 2.18099999427795,
+              "median": 1.04799997806549,
+              "min": 0.882000029087067,
+              "p95": 1.97000002861023,
+              "samples": 96
+            },
+            "viewport_gpu_ms": {
+              "max": 0.533999979496002,
+              "median": 0.47299998998642,
+              "min": 0.448000013828278,
+              "p95": 0.517000019550323,
+              "samples": 96
+            }
+          },
+          {
+            "case": "4",
+            "enabled": true,
+            "force_draw_usec": {
+              "max": 4082,
+              "median": 1798,
+              "min": 1695,
+              "p95": 2605,
+              "samples": 96
+            },
+            "manager_usec": {
+              "max": 41,
+              "median": 24,
+              "min": 19,
+              "p95": 39,
+              "samples": 96
+            },
+            "moving_light": false,
+            "viewport_cpu_ms": {
+              "max": 1.93900001049042,
+              "median": 0.947000026702881,
+              "min": 0.879999995231628,
+              "p95": 1.54200005531311,
+              "samples": 96
+            },
+            "viewport_gpu_ms": {
+              "max": 0.497000008821487,
+              "median": 0.46000000834465,
+              "min": 0.442999988794327,
+              "p95": 0.476999998092651,
+              "samples": 96
+            }
+          },
+          {
+            "case": "4",
+            "enabled": false,
+            "force_draw_usec": {
+              "max": 3889,
+              "median": 1604,
+              "min": 1514,
+              "p95": 2474,
+              "samples": 96
+            },
+            "manager_usec": {
+              "max": 0,
+              "median": 0,
+              "min": 0,
+              "p95": 0,
+              "samples": 96
+            },
+            "moving_light": false,
+            "viewport_cpu_ms": {
+              "max": 1.42200005054474,
+              "median": 0.825999975204468,
+              "min": 0.73199999332428,
+              "p95": 1.20000004768372,
+              "samples": 96
+            },
+            "viewport_gpu_ms": {
+              "max": 0.467000007629395,
+              "median": 0.435000002384186,
+              "min": 0.414000004529953,
+              "p95": 0.460999995470047,
+              "samples": 96
+            }
+          },
+          {
+            "case": "4",
+            "enabled": false,
+            "force_draw_usec": {
+              "max": 3606,
+              "median": 1659,
+              "min": 1561,
+              "p95": 2468,
+              "samples": 96
+            },
+            "manager_usec": {
+              "max": 0,
+              "median": 0,
+              "min": 0,
+              "p95": 0,
+              "samples": 96
+            },
+            "moving_light": false,
+            "viewport_cpu_ms": {
+              "max": 3.25300002098083,
+              "median": 0.837999999523163,
+              "min": 0.726999998092651,
+              "p95": 1.27199995517731,
+              "samples": 96
+            },
+            "viewport_gpu_ms": {
+              "max": 2.42000007629395,
+              "median": 0.458999991416931,
+              "min": 0.446000009775162,
+              "p95": 0.500999987125397,
+              "samples": 96
+            }
+          },
+          {
+            "case": "4",
+            "enabled": true,
+            "force_draw_usec": {
+              "max": 4009,
+              "median": 1821,
+              "min": 1719,
+              "p95": 2748,
+              "samples": 96
+            },
+            "manager_usec": {
+              "max": 47,
+              "median": 23,
+              "min": 18,
+              "p95": 34,
+              "samples": 96
+            },
+            "moving_light": false,
+            "viewport_cpu_ms": {
+              "max": 1.39600002765656,
+              "median": 0.922999978065491,
+              "min": 0.871999979019165,
+              "p95": 1.27600002288818,
+              "samples": 96
+            },
+            "viewport_gpu_ms": {
+              "max": 0.555999994277954,
+              "median": 0.497999995946884,
+              "min": 0.483000010251999,
+              "p95": 0.538999974727631,
+              "samples": 96
+            }
+          },
+          {
+            "case": "4",
+            "enabled": false,
+            "force_draw_usec": {
+              "max": 3283,
+              "median": 1641,
+              "min": 1467,
+              "p95": 2345,
+              "samples": 96
+            },
+            "manager_usec": {
+              "max": 0,
+              "median": 0,
+              "min": 0,
+              "p95": 0,
+              "samples": 96
+            },
+            "moving_light": true,
+            "viewport_cpu_ms": {
+              "max": 1.43400001525879,
+              "median": 0.839999973773956,
+              "min": 0.707000017166138,
+              "p95": 1.17400002479553,
+              "samples": 96
+            },
+            "viewport_gpu_ms": {
+              "max": 0.483999997377396,
+              "median": 0.44200000166893,
+              "min": 0.418999999761581,
+              "p95": 0.467000007629395,
+              "samples": 96
+            }
+          },
+          {
+            "case": "4",
+            "enabled": true,
+            "force_draw_usec": {
+              "max": 4374,
+              "median": 2562,
+              "min": 2271,
+              "p95": 3606,
+              "samples": 96
+            },
+            "manager_usec": {
+              "max": 1185,
+              "median": 774,
+              "min": 638,
+              "p95": 995,
+              "samples": 96
+            },
+            "moving_light": true,
+            "viewport_cpu_ms": {
+              "max": 1.33899998664856,
+              "median": 0.939000010490417,
+              "min": 0.825999975204468,
+              "p95": 1.26800000667572,
+              "samples": 96
+            },
+            "viewport_gpu_ms": {
+              "max": 0.500999987125397,
+              "median": 0.47299998998642,
+              "min": 0.449999988079071,
+              "p95": 0.486999988555908,
+              "samples": 96
+            }
+          },
+          {
+            "case": "4",
+            "enabled": true,
+            "force_draw_usec": {
+              "max": 4808,
+              "median": 2649,
+              "min": 2347,
+              "p95": 3703,
+              "samples": 96
+            },
+            "manager_usec": {
+              "max": 1178,
+              "median": 762,
+              "min": 653,
+              "p95": 1055,
+              "samples": 96
+            },
+            "moving_light": true,
+            "viewport_cpu_ms": {
+              "max": 1.41499996185303,
+              "median": 0.967999994754791,
+              "min": 0.842999994754791,
+              "p95": 1.35500001907349,
+              "samples": 96
+            },
+            "viewport_gpu_ms": {
+              "max": 0.547999978065491,
+              "median": 0.485000014305115,
+              "min": 0.456999987363815,
+              "p95": 0.513999998569489,
+              "samples": 96
+            }
+          },
+          {
+            "case": "4",
+            "enabled": false,
+            "force_draw_usec": {
+              "max": 3930,
+              "median": 1693,
+              "min": 1559,
+              "p95": 2834,
+              "samples": 96
+            },
+            "manager_usec": {
+              "max": 0,
+              "median": 0,
+              "min": 0,
+              "p95": 0,
+              "samples": 96
+            },
+            "moving_light": true,
+            "viewport_cpu_ms": {
+              "max": 1.35800004005432,
+              "median": 0.832000017166138,
+              "min": 0.76800000667572,
+              "p95": 1.09200000762939,
+              "samples": 96
+            },
+            "viewport_gpu_ms": {
+              "max": 0.515999972820282,
+              "median": 0.46399998664856,
+              "min": 0.44200000166893,
+              "p95": 0.497999995946884,
+              "samples": 96
+            }
+          },
+          {
+            "case": "4",
+            "enabled": false,
+            "force_draw_usec": {
+              "max": 3991,
+              "median": 1710,
+              "min": 1561,
+              "p95": 2455,
+              "samples": 96
+            },
+            "manager_usec": {
+              "max": 0,
+              "median": 0,
+              "min": 0,
+              "p95": 0,
+              "samples": 96
+            },
+            "moving_light": true,
+            "viewport_cpu_ms": {
+              "max": 1.5789999961853,
+              "median": 0.843999981880188,
+              "min": 0.776000022888184,
+              "p95": 1.25899994373322,
+              "samples": 96
+            },
+            "viewport_gpu_ms": {
+              "max": 0.537000000476837,
+              "median": 0.474000006914139,
+              "min": 0.437000006437302,
+              "p95": 0.513000011444092,
+              "samples": 96
+            }
+          },
+          {
+            "case": "4",
+            "enabled": true,
+            "force_draw_usec": {
+              "max": 7345,
+              "median": 3022,
+              "min": 2278,
+              "p95": 5218,
+              "samples": 96
+            },
+            "manager_usec": {
+              "max": 3247,
+              "median": 959,
+              "min": 612,
+              "p95": 1507,
+              "samples": 96
+            },
+            "moving_light": true,
+            "viewport_cpu_ms": {
+              "max": 3.47199988365173,
+              "median": 1.10399997234344,
+              "min": 0.810000002384186,
+              "p95": 2.32500004768372,
+              "samples": 96
+            },
+            "viewport_gpu_ms": {
+              "max": 2.90599989891052,
+              "median": 0.47299998998642,
+              "min": 0.455000013113022,
+              "p95": 0.495000004768372,
+              "samples": 96
+            }
+          }
+        ],
+        "traced_pixels": []
+      },
+      "summary": [
+        {
+          "added_lights": 0,
+          "moving_light": false,
+          "batches_enabled": false,
+          "median_of_window_medians": {
+            "force_draw_usec": 1428,
+            "viewport_cpu_ms": 0.704999983310699,
+            "viewport_gpu_ms": 0.368999987840652,
+            "manager_usec": 0
+          }
+        },
+        {
+          "added_lights": 0,
+          "moving_light": false,
+          "batches_enabled": true,
+          "median_of_window_medians": {
+            "force_draw_usec": 1704,
+            "viewport_cpu_ms": 0.912000000476837,
+            "viewport_gpu_ms": 0.388999998569489,
+            "manager_usec": 5
+          }
+        },
+        {
+          "added_lights": 4,
+          "moving_light": false,
+          "batches_enabled": false,
+          "median_of_window_medians": {
+            "force_draw_usec": 1659,
+            "viewport_cpu_ms": 0.825999975204468,
+            "viewport_gpu_ms": 0.458999991416931,
+            "manager_usec": 0
+          }
+        },
+        {
+          "added_lights": 4,
+          "moving_light": false,
+          "batches_enabled": true,
+          "median_of_window_medians": {
+            "force_draw_usec": 1821,
+            "viewport_cpu_ms": 0.947000026702881,
+            "viewport_gpu_ms": 0.47299998998642,
+            "manager_usec": 24
+          }
+        },
+        {
+          "added_lights": 4,
+          "moving_light": true,
+          "batches_enabled": false,
+          "median_of_window_medians": {
+            "force_draw_usec": 1693,
+            "viewport_cpu_ms": 0.839999973773956,
+            "viewport_gpu_ms": 0.46399998664856,
+            "manager_usec": 0
+          }
+        },
+        {
+          "added_lights": 4,
+          "moving_light": true,
+          "batches_enabled": true,
+          "median_of_window_medians": {
+            "force_draw_usec": 2649,
+            "viewport_cpu_ms": 0.967999994754791,
+            "viewport_gpu_ms": 0.47299998998642,
+            "manager_usec": 774
+          }
+        }
+      ]
+    },
+    "cached_candidate": {
+      "folder": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p3-seams/timing-candidate",
+      "report_sha256": "46d961078ad3e82f2ff47a2a45cc3c5dac2d09a44c2a68e028ef0922c9b242e3",
+      "log_sha256": "d63807509c1755e409ab20946526cf59b7544d3a9dde8c8d04ccd02b88500e58",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p3-seams/export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/scenery_batches.gd",
+        "--scenery-batches",
+        "--scenery-game-camera",
+        "--scenery-timing",
+        "--scenery-lights=0,4"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 31.577906098013045,
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "errors": [],
+      "png_sha256": {
+        "scenery-batches-gl_compatibility-4-initial-before.png": "4f3bce7ac4b6b256f38bb480099ae57e33cfcbe2d128d06eef3aa7a2c94dbd8c",
+        "scenery-batches-gl_compatibility-4-initial-restored.png": "749367e1b479147e745ae07d0f1731e735584ef4a58c7ea83f19da573a840c6f",
+        "scenery-batches-gl_compatibility-4-initial-after.png": "053e69e7f7978baa32704825401f90ad46183cb373270459ef5a187cd54b066d",
+        "scenery-batches-gl_compatibility-0-initial-before.png": "ad4ac40bc974820aab74194229f3ea2098e8c3686544a1772a0db016876eae73",
+        "scenery-batches-gl_compatibility-0-initial-after.png": "91f31d432da9ad2d2cb5c912b8e8b29b0d3c60ccc59edec9664d175745c66554",
+        "scenery-batches-gl_compatibility-0-initial-restored.png": "fe67977957ea3ebc4fd0e01237a680cabb0648690aa8b4f058c6d8a82c70ed91"
+      },
+      "report": {
+        "adapter": "NVIDIA GeForce RTX 3090",
+        "camera_far": 260.0,
+        "camera_fov": 55.0,
+        "camera_near": 0.05,
+        "contact": false,
+        "editor": false,
+        "focus": "(88.0, 16.81038, -56.0)",
+        "game_camera": true,
+        "idle_update_usec": [
+          3,
+          4,
+          4,
+          4,
+          4,
+          5,
+          5,
+          6,
+          13,
+          21,
+          21,
+          22,
+          22,
+          26,
+          49,
+          54
+        ],
+        "light_limit": 8,
+        "light_partition": false,
+        "map": "bz13h",
+        "moving_light_rebuilt_groups": [],
+        "moving_light_update_usec": [],
+        "no_wind": false,
+        "rank_overflow": false,
+        "reinsert_control": false,
+        "reinserted_meshes": 0,
+        "renderer": "gl_compatibility",
+        "rows": [
+          {
+            "after_draws": 407,
+            "batches": 87,
+            "before_draws": 489,
+            "build_usec": 5451,
+            "difference": {
+              "max_byte_difference": 8,
+              "mean_channel_difference": 0.000108333333333333,
+              "pixels_over_2": 16
+            },
+            "lights": 0,
+            "parts": 248,
+            "phase": "initial",
+            "restoration": {
+              "max_byte_difference": 8,
+              "mean_channel_difference": 9.86111111111111e-05,
+              "pixels_over_2": 14
+            },
+            "restored_draws": 489
+          },
+          {
+            "after_draws": 417,
+            "batches": 79,
+            "before_draws": 489,
+            "build_usec": 6102,
+            "difference": {
+              "max_byte_difference": 7,
+              "mean_channel_difference": 9.72222222222222e-06,
+              "pixels_over_2": 2
+            },
+            "lights": 4,
+            "parts": 230,
+            "phase": "initial",
+            "restoration": {
+              "max_byte_difference": 8,
+              "mean_channel_difference": 9.86111111111111e-05,
+              "pixels_over_2": 14
+            },
+            "restored_draws": 489
+          }
+        ],
+        "runtime": true,
+        "scene_warmup_frames": 22,
+        "shadows": false,
+        "timing_rows": [
+          {
+            "case": "0",
+            "enabled": false,
+            "force_draw_usec": {
+              "max": 2741,
+              "median": 1626,
+              "min": 1465,
+              "p95": 2508,
+              "samples": 96
+            },
+            "manager_usec": {
+              "max": 0,
+              "median": 0,
+              "min": 0,
+              "p95": 0,
+              "samples": 96
+            },
+            "moving_light": false,
+            "viewport_cpu_ms": {
+              "max": 1.22500002384186,
+              "median": 0.734000027179718,
+              "min": 0.644999980926514,
+              "p95": 1.192999958992,
+              "samples": 96
+            },
+            "viewport_gpu_ms": {
+              "max": 0.476999998092651,
+              "median": 0.441000014543533,
+              "min": 0.418999999761581,
+              "p95": 0.465999990701675,
+              "samples": 96
+            }
+          },
+          {
+            "case": "0",
+            "enabled": true,
+            "force_draw_usec": {
+              "max": 3609,
+              "median": 1760,
+              "min": 1475,
+              "p95": 2589,
+              "samples": 96
+            },
+            "manager_usec": {
+              "max": 10,
+              "median": 5,
+              "min": 4,
+              "p95": 9,
+              "samples": 96
+            },
+            "moving_light": false,
+            "viewport_cpu_ms": {
+              "max": 2.76900005340576,
+              "median": 0.96399998664856,
+              "min": 0.736000001430511,
+              "p95": 1.47000002861023,
+              "samples": 96
+            },
+            "viewport_gpu_ms": {
+              "max": 0.47299998998642,
+              "median": 0.395999997854233,
+              "min": 0.384999990463257,
+              "p95": 0.458000004291534,
+              "samples": 96
+            }
+          },
+          {
+            "case": "0",
+            "enabled": true,
+            "force_draw_usec": {
+              "max": 3690,
+              "median": 1665,
+              "min": 1500,
+              "p95": 2401,
+              "samples": 96
+            },
+            "manager_usec": {
+              "max": 9,
+              "median": 4,
+              "min": 3,
+              "p95": 7,
+              "samples": 96
+            },
+            "moving_light": false,
+            "viewport_cpu_ms": {
+              "max": 1.61800003051758,
+              "median": 0.896000027656555,
+              "min": 0.707000017166138,
+              "p95": 1.442999958992,
+              "samples": 96
+            },
+            "viewport_gpu_ms": {
+              "max": 0.45100000500679,
+              "median": 0.391999989748001,
+              "min": 0.38400000333786,
+              "p95": 0.426999986171722,
+              "samples": 96
+            }
+          },
+          {
+            "case": "0",
+            "enabled": false,
+            "force_draw_usec": {
+              "max": 3456,
+              "median": 1555,
+              "min": 1337,
+              "p95": 2190,
+              "samples": 96
+            },
+            "manager_usec": {
+              "max": 0,
+              "median": 0,
+              "min": 0,
+              "p95": 0,
+              "samples": 96
+            },
+            "moving_light": false,
+            "viewport_cpu_ms": {
+              "max": 1.4190000295639,
+              "median": 0.742999970912933,
+              "min": 0.637000024318695,
+              "p95": 1.12800002098083,
+              "samples": 96
+            },
+            "viewport_gpu_ms": {
+              "max": 0.44200000166893,
+              "median": 0.381000012159348,
+              "min": 0.360000014305115,
+              "p95": 0.428999990224838,
+              "samples": 96
+            }
+          },
+          {
+            "case": "0",
+            "enabled": false,
+            "force_draw_usec": {
+              "max": 3998,
+              "median": 1601,
+              "min": 1394,
+              "p95": 2520,
+              "samples": 96
+            },
+            "manager_usec": {
+              "max": 0,
+              "median": 0,
+              "min": 0,
+              "p95": 0,
+              "samples": 96
+            },
+            "moving_light": false,
+            "viewport_cpu_ms": {
+              "max": 1.59899997711182,
+              "median": 0.771000027656555,
+              "min": 0.643999993801117,
+              "p95": 1.22200000286102,
+              "samples": 96
+            },
+            "viewport_gpu_ms": {
+              "max": 0.421000003814697,
+              "median": 0.395000010728836,
+              "min": 0.379999995231628,
+              "p95": 0.409999996423721,
+              "samples": 96
+            }
+          },
+          {
+            "case": "0",
+            "enabled": true,
+            "force_draw_usec": {
+              "max": 3060,
+              "median": 1758,
+              "min": 1595,
+              "p95": 2711,
+              "samples": 96
+            },
+            "manager_usec": {
+              "max": 14,
+              "median": 5,
+              "min": 3,
+              "p95": 9,
+              "samples": 96
+            },
+            "moving_light": false,
+            "viewport_cpu_ms": {
+              "max": 1.64900004863739,
+              "median": 0.935000002384186,
+              "min": 0.732999980449677,
+              "p95": 1.33899998664856,
+              "samples": 96
+            },
+            "viewport_gpu_ms": {
+              "max": 0.462999999523163,
+              "median": 0.423000007867813,
+              "min": 0.412000000476837,
+              "p95": 0.435000002384186,
+              "samples": 96
+            }
+          },
+          {
+            "case": "4",
+            "enabled": false,
+            "force_draw_usec": {
+              "max": 3124,
+              "median": 1907,
+              "min": 1544,
+              "p95": 2628,
+              "samples": 96
+            },
+            "manager_usec": {
+              "max": 0,
+              "median": 0,
+              "min": 0,
+              "p95": 0,
+              "samples": 96
+            },
+            "moving_light": false,
+            "viewport_cpu_ms": {
+              "max": 1.77799999713898,
+              "median": 0.948000013828278,
+              "min": 0.679000020027161,
+              "p95": 1.56200003623962,
+              "samples": 96
+            },
+            "viewport_gpu_ms": {
+              "max": 0.620999991893768,
+              "median": 0.51800000667572,
+              "min": 0.500999987125397,
+              "p95": 0.578000009059906,
+              "samples": 96
+            }
+          },
+          {
+            "case": "4",
+            "enabled": true,
+            "force_draw_usec": {
+              "max": 3638,
+              "median": 1963,
+              "min": 1762,
+              "p95": 2820,
+              "samples": 96
+            },
+            "manager_usec": {
+              "max": 51,
+              "median": 27,
+              "min": 18,
+              "p95": 45,
+              "samples": 96
+            },
+            "moving_light": false,
+            "viewport_cpu_ms": {
+              "max": 1.67999994754791,
+              "median": 1.00300002098083,
+              "min": 0.850000023841858,
+              "p95": 1.36000001430511,
+              "samples": 96
+            },
+            "viewport_gpu_ms": {
+              "max": 0.589999973773956,
+              "median": 0.527999997138977,
+              "min": 0.483000010251999,
+              "p95": 0.570999979972839,
+              "samples": 96
+            }
+          },
+          {
+            "case": "4",
+            "enabled": true,
+            "force_draw_usec": {
+              "max": 3896,
+              "median": 1978,
+              "min": 1673,
+              "p95": 2978,
+              "samples": 96
+            },
+            "manager_usec": {
+              "max": 54,
+              "median": 33,
+              "min": 22,
+              "p95": 48,
+              "samples": 96
+            },
+            "moving_light": false,
+            "viewport_cpu_ms": {
+              "max": 2.09299993515015,
+              "median": 1.10000002384186,
+              "min": 0.847000002861023,
+              "p95": 1.71800005435944,
+              "samples": 96
+            },
+            "viewport_gpu_ms": {
+              "max": 0.532000005245209,
+              "median": 0.470999985933304,
+              "min": 0.453999996185303,
+              "p95": 0.5,
+              "samples": 96
+            }
+          },
+          {
+            "case": "4",
+            "enabled": false,
+            "force_draw_usec": {
+              "max": 2881,
+              "median": 1863,
+              "min": 1487,
+              "p95": 2735,
+              "samples": 96
+            },
+            "manager_usec": {
+              "max": 0,
+              "median": 0,
+              "min": 0,
+              "p95": 0,
+              "samples": 96
+            },
+            "moving_light": false,
+            "viewport_cpu_ms": {
+              "max": 2.04299998283386,
+              "median": 0.982999980449677,
+              "min": 0.716000020503998,
+              "p95": 1.62999999523163,
+              "samples": 96
+            },
+            "viewport_gpu_ms": {
+              "max": 0.48199999332428,
+              "median": 0.437999993562698,
+              "min": 0.423000007867813,
+              "p95": 0.453999996185303,
+              "samples": 96
+            }
+          },
+          {
+            "case": "4",
+            "enabled": false,
+            "force_draw_usec": {
+              "max": 3771,
+              "median": 1878,
+              "min": 1548,
+              "p95": 2767,
+              "samples": 96
+            },
+            "manager_usec": {
+              "max": 0,
+              "median": 0,
+              "min": 0,
+              "p95": 0,
+              "samples": 96
+            },
+            "moving_light": false,
+            "viewport_cpu_ms": {
+              "max": 3.21399998664856,
+              "median": 1.01199996471405,
+              "min": 0.750999987125397,
+              "p95": 1.60300004482269,
+              "samples": 96
+            },
+            "viewport_gpu_ms": {
+              "max": 2.25799989700317,
+              "median": 0.46000000834465,
+              "min": 0.430000007152557,
+              "p95": 0.476999998092651,
+              "samples": 96
+            }
+          },
+          {
+            "case": "4",
+            "enabled": true,
+            "force_draw_usec": {
+              "max": 3177,
+              "median": 1807,
+              "min": 1667,
+              "p95": 2543,
+              "samples": 96
+            },
+            "manager_usec": {
+              "max": 44,
+              "median": 22,
+              "min": 18,
+              "p95": 34,
+              "samples": 96
+            },
+            "moving_light": false,
+            "viewport_cpu_ms": {
+              "max": 1.52799999713898,
+              "median": 0.906000018119812,
+              "min": 0.810000002384186,
+              "p95": 1.09599995613098,
+              "samples": 96
+            },
+            "viewport_gpu_ms": {
+              "max": 0.545000016689301,
+              "median": 0.5,
+              "min": 0.48199999332428,
+              "p95": 0.532999992370605,
+              "samples": 96
+            }
+          },
+          {
+            "case": "4",
+            "enabled": false,
+            "force_draw_usec": {
+              "max": 3155,
+              "median": 1693,
+              "min": 1528,
+              "p95": 2544,
+              "samples": 96
+            },
+            "manager_usec": {
+              "max": 0,
+              "median": 0,
+              "min": 0,
+              "p95": 0,
+              "samples": 96
+            },
+            "moving_light": true,
+            "viewport_cpu_ms": {
+              "max": 1.33200001716614,
+              "median": 0.828000009059906,
+              "min": 0.758000016212463,
+              "p95": 1.21700000762939,
+              "samples": 96
+            },
+            "viewport_gpu_ms": {
+              "max": 0.528999984264374,
+              "median": 0.47299998998642,
+              "min": 0.421000003814697,
+              "p95": 0.512000024318695,
+              "samples": 96
+            }
+          },
+          {
+            "case": "4",
+            "enabled": true,
+            "force_draw_usec": {
+              "max": 3458,
+              "median": 2241,
+              "min": 1951,
+              "p95": 2883,
+              "samples": 96
+            },
+            "manager_usec": {
+              "max": 773,
+              "median": 453,
+              "min": 359,
+              "p95": 591,
+              "samples": 96
+            },
+            "moving_light": true,
+            "viewport_cpu_ms": {
+              "max": 1.72899997234344,
+              "median": 0.933000028133392,
+              "min": 0.805000007152557,
+              "p95": 1.24699997901917,
+              "samples": 96
+            },
+            "viewport_gpu_ms": {
+              "max": 0.513999998569489,
+              "median": 0.467999994754791,
+              "min": 0.449000000953674,
+              "p95": 0.499000012874603,
+              "samples": 96
+            }
+          },
+          {
+            "case": "4",
+            "enabled": true,
+            "force_draw_usec": {
+              "max": 4449,
+              "median": 2310,
+              "min": 2069,
+              "p95": 3180,
+              "samples": 96
+            },
+            "manager_usec": {
+              "max": 754,
+              "median": 464,
+              "min": 388,
+              "p95": 658,
+              "samples": 96
+            },
+            "moving_light": true,
+            "viewport_cpu_ms": {
+              "max": 3.08500003814697,
+              "median": 0.967999994754791,
+              "min": 0.846000015735626,
+              "p95": 1.45700001716614,
+              "samples": 96
+            },
+            "viewport_gpu_ms": {
+              "max": 2.11500000953674,
+              "median": 0.465999990701675,
+              "min": 0.444999992847443,
+              "p95": 0.488000005483627,
+              "samples": 96
+            }
+          },
+          {
+            "case": "4",
+            "enabled": false,
+            "force_draw_usec": {
+              "max": 3823,
+              "median": 1672,
+              "min": 1560,
+              "p95": 2192,
+              "samples": 96
+            },
+            "manager_usec": {
+              "max": 0,
+              "median": 0,
+              "min": 0,
+              "p95": 0,
+              "samples": 96
+            },
+            "moving_light": true,
+            "viewport_cpu_ms": {
+              "max": 1.54200005531311,
+              "median": 0.842999994754791,
+              "min": 0.765999972820282,
+              "p95": 1.23599994182587,
+              "samples": 96
+            },
+            "viewport_gpu_ms": {
+              "max": 0.509999990463257,
+              "median": 0.46000000834465,
+              "min": 0.437999993562698,
+              "p95": 0.474000006914139,
+              "samples": 96
+            }
+          },
+          {
+            "case": "4",
+            "enabled": false,
+            "force_draw_usec": {
+              "max": 2744,
+              "median": 1704,
+              "min": 1537,
+              "p95": 2250,
+              "samples": 96
+            },
+            "manager_usec": {
+              "max": 0,
+              "median": 0,
+              "min": 0,
+              "p95": 0,
+              "samples": 96
+            },
+            "moving_light": true,
+            "viewport_cpu_ms": {
+              "max": 1.29799997806549,
+              "median": 0.861999988555908,
+              "min": 0.734000027179718,
+              "p95": 0.994000017642975,
+              "samples": 96
+            },
+            "viewport_gpu_ms": {
+              "max": 0.532000005245209,
+              "median": 0.46399998664856,
+              "min": 0.442999988794327,
+              "p95": 0.512000024318695,
+              "samples": 96
+            }
+          },
+          {
+            "case": "4",
+            "enabled": true,
+            "force_draw_usec": {
+              "max": 3868,
+              "median": 2295,
+              "min": 2047,
+              "p95": 3090,
+              "samples": 96
+            },
+            "manager_usec": {
+              "max": 689,
+              "median": 469,
+              "min": 365,
+              "p95": 586,
+              "samples": 96
+            },
+            "moving_light": true,
+            "viewport_cpu_ms": {
+              "max": 1.77999997138977,
+              "median": 0.925999999046326,
+              "min": 0.823000013828278,
+              "p95": 1.21200001239777,
+              "samples": 96
+            },
+            "viewport_gpu_ms": {
+              "max": 0.52700001001358,
+              "median": 0.486000001430511,
+              "min": 0.448000013828278,
+              "p95": 0.518999993801117,
+              "samples": 96
+            }
+          }
+        ],
+        "traced_pixels": []
+      },
+      "summary": [
+        {
+          "added_lights": 0,
+          "moving_light": false,
+          "batches_enabled": false,
+          "median_of_window_medians": {
+            "force_draw_usec": 1601,
+            "viewport_cpu_ms": 0.742999970912933,
+            "viewport_gpu_ms": 0.395000010728836,
+            "manager_usec": 0
+          }
+        },
+        {
+          "added_lights": 0,
+          "moving_light": false,
+          "batches_enabled": true,
+          "median_of_window_medians": {
+            "force_draw_usec": 1758,
+            "viewport_cpu_ms": 0.935000002384186,
+            "viewport_gpu_ms": 0.395999997854233,
+            "manager_usec": 5
+          }
+        },
+        {
+          "added_lights": 4,
+          "moving_light": false,
+          "batches_enabled": false,
+          "median_of_window_medians": {
+            "force_draw_usec": 1878,
+            "viewport_cpu_ms": 0.982999980449677,
+            "viewport_gpu_ms": 0.46000000834465,
+            "manager_usec": 0
+          }
+        },
+        {
+          "added_lights": 4,
+          "moving_light": false,
+          "batches_enabled": true,
+          "median_of_window_medians": {
+            "force_draw_usec": 1963,
+            "viewport_cpu_ms": 1.00300002098083,
+            "viewport_gpu_ms": 0.5,
+            "manager_usec": 27
+          }
+        },
+        {
+          "added_lights": 4,
+          "moving_light": true,
+          "batches_enabled": false,
+          "median_of_window_medians": {
+            "force_draw_usec": 1693,
+            "viewport_cpu_ms": 0.842999994754791,
+            "viewport_gpu_ms": 0.46399998664856,
+            "manager_usec": 0
+          }
+        },
+        {
+          "added_lights": 4,
+          "moving_light": true,
+          "batches_enabled": true,
+          "median_of_window_medians": {
+            "force_draw_usec": 2295,
+            "viewport_cpu_ms": 0.933000028133392,
+            "viewport_gpu_ms": 0.467999994754791,
+            "manager_usec": 464
+          }
+        }
+      ]
+    },
+    "six_corresponding_pngs_byte_identical": true
+  },
+  "native_reinsertion_control": {
+    "folder": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p3-seams/reinsert-final",
+    "report_sha256": "68003930c0c155492c0fbb28518188995eee0e8bca3ca0b439327f4bce2328f0",
+    "log_sha256": "6b476a01f17d0e157647335fa4c1e1046ff68488e99ea146ff0e5047555881f6",
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p3-seams/export/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--rendering-method",
+      "gl_compatibility",
+      "--windowed",
+      "--resolution",
+      "256x144",
+      "--position",
+      "-10000,-10000",
+      "--audio-driver",
+      "Dummy",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/scenery_batches.gd",
+      "--scenery-reinsert-control",
+      "--scenery-shadows",
+      "--scenery-contact",
+      "--scenery-lights=0",
+      "--scenery-trace-pixels"
+    ],
+    "return_code": 0,
+    "elapsed_sec": 29.076731035020202,
+    "other_render_processes_at_start": [],
+    "other_render_processes_at_end": [],
+    "warnings": [
+      "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+    ],
+    "errors": [],
+    "png_sha256": {
+      "scenery-batches-gl_compatibility-0-initial-before.png": "15745f8085a1478bf18647dc5e6707061ad9bf93206f8827757df6d6e4c393c6",
+      "scenery-batches-gl_compatibility-0-initial-after.png": "d9a7145bc8a7e901bc26d71daec2124a6d94673768182864a2a60ed5d102f31f",
+      "scenery-batches-gl_compatibility-0-initial-restored.png": "d9a7145bc8a7e901bc26d71daec2124a6d94673768182864a2a60ed5d102f31f"
+    },
+    "report": {
+      "adapter": "NVIDIA GeForce RTX 3090",
+      "camera_far": 4000.0,
+      "camera_fov": 75.0,
+      "camera_near": 0.05,
+      "contact": true,
+      "editor": false,
+      "focus": "(88.0, 16.81038, -56.0)",
+      "game_camera": false,
+      "idle_update_usec": [],
+      "light_limit": 8,
+      "light_partition": false,
+      "map": "bz13h",
+      "moving_light_rebuilt_groups": [],
+      "moving_light_update_usec": [],
+      "no_wind": false,
+      "rank_overflow": false,
+      "reinsert_control": true,
+      "reinserted_meshes": 494,
+      "renderer": "gl_compatibility",
+      "rows": [
+        {
+          "after_draws": 1558,
+          "batches": 0,
+          "before_draws": 1558,
+          "build_usec": 1159,
+          "difference": {
+            "max_byte_difference": 34,
+            "mean_channel_difference": 0.000315277777777778,
+            "pixels_over_2": 9
+          },
+          "lights": 0,
+          "parts": 0,
+          "phase": "initial",
+          "restoration": {
+            "max_byte_difference": 34,
+            "mean_channel_difference": 0.000315277777777778,
+            "pixels_over_2": 9
+          },
+          "restored_draws": 1558
+        }
+      ],
+      "runtime": false,
+      "scene_warmup_frames": 22,
+      "shadows": true,
+      "timing_rows": [],
+      "traced_pixels": [
+        {
+          "hits": [
+            {
+              "distance": 92.0974655151367,
+              "nid": 43008,
+              "part": "wall2/@MeshInstance3D@317",
+              "template": "stwa13",
+              "texture": "hadoganwall01",
+              "triangle": 184,
+              "world": "(87.58205, 22.13926, -115.2226)"
+            },
+            {
+              "distance": 92.1021194458008,
+              "nid": 43007,
+              "part": "wall2/@MeshInstance3D@315",
+              "template": "stwa13",
+              "texture": "hadoganwall01",
+              "triangle": 70,
+              "world": "(87.58082, 22.13842, -115.227)"
+            },
+            {
+              "distance": 92.6695098876953,
+              "nid": 43008,
+              "part": "wall2/@MeshInstance3D@317",
+              "template": "stwa13",
+              "texture": "hadoganwall01",
+              "triangle": 51,
+              "world": "(87.43039, 22.03571, -115.7644)"
+            },
+            {
+              "distance": 93.2240905761719,
+              "nid": 43007,
+              "part": "wall2/@MeshInstance3D@315",
+              "template": "stwa13",
+              "texture": "hadoganwall01",
+              "triangle": 154,
+              "world": "(87.28336, 21.93532, -116.2896)"
+            }
+          ],
+          "pixel": [
+            586,
+            180
+          ]
+        },
+        {
+          "hits": [
+            {
+              "distance": 91.3647766113281,
+              "nid": 43003,
+              "part": "wall2/@MeshInstance3D@308",
+              "template": "stwa13",
+              "texture": "hadoganwall01",
+              "triangle": 69,
+              "world": "(90.74683, 22.5369, -115.3556)"
+            },
+            {
+              "distance": 91.3651580810547,
+              "nid": 43008,
+              "part": "wall2/@MeshInstance3D@317",
+              "template": "stwa13",
+              "texture": "hadoganwall01",
+              "triangle": 42,
+              "world": "(90.74673, 22.53683, -115.3559)"
+            },
+            {
+              "distance": 92.0299835205078,
+              "nid": 43003,
+              "part": "wall2/@MeshInstance3D@308",
+              "template": "stwa13",
+              "texture": "hadoganwall01",
+              "triangle": 50,
+              "world": "(90.59209, 22.41842, -115.9916)"
+            },
+            {
+              "distance": 92.0363693237305,
+              "nid": 43008,
+              "part": "wall2/@MeshInstance3D@317",
+              "template": "stwa13",
+              "texture": "hadoganwall01",
+              "triangle": 183,
+              "world": "(90.59059, 22.41728, -115.9977)"
+            }
+          ],
+          "pixel": [
+            603,
+            180
+          ]
+        },
+        {
+          "hits": [
+            {
+              "distance": 97.5502471923828,
+              "nid": 43006,
+              "part": "wall2/@MeshInstance3D@313",
+              "template": "stwa13",
+              "texture": "hadoganwall01",
+              "triangle": 125,
+              "world": "(71.90982, 19.89433, -114.8966)"
+            },
+            {
+              "distance": 97.5662536621094,
+              "nid": 43005,
+              "part": "wall2/@MeshInstance3D@311",
+              "template": "stwa13",
+              "texture": "hadoganwall01",
+              "triangle": 142,
+              "world": "(71.90324, 19.89122, -114.9108)"
+            },
+            {
+              "distance": 97.8740844726562,
+              "nid": 43006,
+              "part": "wall2/@MeshInstance3D@313",
+              "template": "stwa13",
+              "texture": "hadoganwall01",
+              "triangle": 119,
+              "world": "(71.77673, 19.83153, -115.185)"
+            },
+            {
+              "distance": 99.3422470092773,
+              "nid": 43005,
+              "part": "wall2/@MeshInstance3D@311",
+              "template": "stwa13",
+              "texture": "hadoganwall01",
+              "triangle": 152,
+              "world": "(71.17336, 19.54683, -116.4928)"
+            }
+          ],
+          "pixel": [
+            513,
+            181
+          ]
+        },
+        {
+          "hits": [
+            {
+              "distance": 91.3763275146484,
+              "nid": 43008,
+              "part": "wall2/@MeshInstance3D@317",
+              "template": "stwa13",
+              "texture": "hadoganwall01",
+              "triangle": 140,
+              "world": "(90.64909, 21.57337, -115.1588)"
+            },
+            {
+              "distance": 91.3779525756836,
+              "nid": 43003,
+              "part": "wall2/@MeshInstance3D@308",
+              "template": "stwa13",
+              "texture": "hadoganwall01",
+              "triangle": 125,
+              "world": "(90.64872, 21.57306, -115.1604)"
+            },
+            {
+              "distance": 92.1483535766602,
+              "nid": 43003,
+              "part": "wall2/@MeshInstance3D@308",
+              "template": "stwa13",
+              "texture": "hadoganwall01",
+              "triangle": 119,
+              "world": "(90.4687, 21.42774, -115.8952)"
+            },
+            {
+              "distance": 92.6284713745117,
+              "nid": 43008,
+              "part": "wall2/@MeshInstance3D@317",
+              "template": "stwa13",
+              "texture": "hadoganwall01",
+              "triangle": 104,
+              "world": "(90.35651, 21.33717, -116.3532)"
+            }
+          ],
+          "pixel": [
+            601,
+            185
+          ]
+        },
+        {
+          "hits": [
+            {
+              "distance": 97.6757583618164,
+              "nid": 43006,
+              "part": "wall2/@MeshInstance3D@313",
+              "template": "stwa13",
+              "texture": "hadoganwall01",
+              "triangle": 125,
+              "world": "(71.93212, 18.56401, -114.7479)"
+            },
+            {
+              "distance": 97.6916122436523,
+              "nid": 43005,
+              "part": "wall2/@MeshInstance3D@311",
+              "template": "stwa13",
+              "texture": "hadoganwall01",
+              "triangle": 142,
+              "world": "(71.92561, 18.56072, -114.762)"
+            },
+            {
+              "distance": 98.0544357299805,
+              "nid": 43006,
+              "part": "wall2/@MeshInstance3D@313",
+              "template": "stwa13",
+              "texture": "hadoganwall01",
+              "triangle": 119,
+              "world": "(71.77678, 18.48551, -115.0842)"
+            },
+            {
+              "distance": 99.8195953369141,
+              "nid": 43005,
+              "part": "wall2/@MeshInstance3D@311",
+              "template": "stwa13",
+              "texture": "hadoganwall01",
+              "triangle": 104,
+              "world": "(71.05269, 18.11963, -116.6519)"
+            }
+          ],
+          "pixel": [
+            512,
+            187
+          ]
+        },
+        {
+          "hits": [
+            {
+              "distance": 92.3908309936523,
+              "nid": 43008,
+              "part": "wall2/@MeshInstance3D@317",
+              "template": "stwa13",
+              "texture": "hadoganwall01",
+              "triangle": 125,
+              "world": "(87.59372, 18.94462, -114.8663)"
+            },
+            {
+              "distance": 92.3948822021484,
+              "nid": 43007,
+              "part": "wall2/@MeshInstance3D@315",
+              "template": "stwa13",
+              "texture": "hadoganwall01",
+              "triangle": 142,
+              "world": "(87.59265, 18.94375, -114.8701)"
+            },
+            {
+              "distance": 93.0087280273438,
+              "nid": 43008,
+              "part": "wall2/@MeshInstance3D@317",
+              "template": "stwa13",
+              "texture": "hadoganwall01",
+              "triangle": 120,
+              "world": "(87.4305, 18.81176, -115.4472)"
+            },
+            {
+              "distance": 94.3090515136719,
+              "nid": 43007,
+              "part": "wall2/@MeshInstance3D@315",
+              "template": "stwa13",
+              "texture": "hadoganwall01",
+              "triangle": 150,
+              "world": "(87.087, 18.53217, -116.6698)"
+            }
+          ],
+          "pixel": [
+            582,
+            196
+          ]
+        },
+        {
+          "hits": [
+            {
+              "distance": 92.4832305908203,
+              "nid": 43008,
+              "part": "wall2/@MeshInstance3D@317",
+              "template": "stwa13",
+              "texture": "hadoganwall01",
+              "triangle": 125,
+              "world": "(87.59673, 18.13, -114.7753)"
+            },
+            {
+              "distance": 92.4871444702148,
+              "nid": 43007,
+              "part": "wall2/@MeshInstance3D@315",
+              "template": "stwa13",
+              "texture": "hadoganwall01",
+              "triangle": 142,
+              "world": "(87.5957, 18.12912, -114.779)"
+            },
+            {
+              "distance": 93.1131057739258,
+              "nid": 43008,
+              "part": "wall2/@MeshInstance3D@317",
+              "template": "stwa13",
+              "texture": "hadoganwall01",
+              "triangle": 120,
+              "world": "(87.43053, 17.98915, -115.3663)"
+            },
+            {
+              "distance": 94.6065979003906,
+              "nid": 43007,
+              "part": "wall2/@MeshInstance3D@315",
+              "template": "stwa13",
+              "texture": "hadoganwall01",
+              "triangle": 150,
+              "world": "(87.03645, 17.65519, -116.7676)"
+            }
+          ],
+          "pixel": [
+            581,
+            200
+          ]
+        },
+        {
+          "hits": [
+            {
+              "distance": 92.5836486816406,
+              "nid": 43008,
+              "part": "wall2/@MeshInstance3D@317",
+              "template": "stwa13",
+              "texture": "hadoganwall01",
+              "triangle": 125,
+              "world": "(87.59977, 17.30882, -114.6836)"
+            },
+            {
+              "distance": 92.5874176025391,
+              "nid": 43007,
+              "part": "wall2/@MeshInstance3D@315",
+              "template": "stwa13",
+              "texture": "hadoganwall01",
+              "triangle": 142,
+              "world": "(87.59877, 17.30795, -114.6871)"
+            },
+            {
+              "distance": 93.2256698608398,
+              "nid": 43008,
+              "part": "wall2/@MeshInstance3D@317",
+              "template": "stwa13",
+              "texture": "hadoganwall01",
+              "triangle": 120,
+              "world": "(87.43056, 17.15972, -115.2847)"
+            },
+            {
+              "distance": 94.9152603149414,
+              "nid": 43007,
+              "part": "wall2/@MeshInstance3D@315",
+              "template": "stwa13",
+              "texture": "hadoganwall01",
+              "triangle": 150,
+              "world": "(86.98528, 16.76733, -116.8666)"
+            }
+          ],
+          "pixel": [
+            580,
+            204
+          ]
+        },
+        {
+          "hits": [
+            {
+              "distance": 92.6922988891602,
+              "nid": 43008,
+              "part": "wall2/@MeshInstance3D@317",
+              "template": "stwa13",
+              "texture": "hadoganwall01",
+              "triangle": 124,
+              "world": "(87.6028, 16.48101, -114.5912)"
+            },
+            {
+              "distance": 92.6958770751953,
+              "nid": 43007,
+              "part": "wall2/@MeshInstance3D@315",
+              "template": "stwa13",
+              "texture": "hadoganwall01",
+              "triangle": 141,
+              "world": "(87.60186, 16.48014, -114.5946)"
+            }
+          ],
+          "pixel": [
+            579,
+            208
+          ]
+        }
+      ]
+    },
+    "previous_batched_capture": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p3-runtime/map-shadow-contact/scenery-batches-gl_compatibility-0-initial-after.png",
+    "previous_batched_capture_sha256": "d9a7145bc8a7e901bc26d71daec2124a6d94673768182864a2a60ed5d102f31f",
+    "byte_identical_to_previous_batched_capture": true
+  },
+  "near_plane_diagnostics": [
+    {
+      "folder": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p3-runtime/depth-near-0.5",
+      "report_sha256": "9115dd29f972402da10e564f4c7d55627e5a879ac89043b1957359015e3b1ae0",
+      "log_sha256": "18d4bc64198d3778593a5ebeae1ab353ca87744e34f9112c98a6ad19a69a222b",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p3-runtime/export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/scenery_batches.gd",
+        "--scenery-batches",
+        "--scenery-shadows",
+        "--scenery-contact",
+        "--scenery-near=0.5"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 24.370827503997134,
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "errors": [],
+      "png_sha256": {
+        "scenery-batches-gl_compatibility-12-initial-before.png": "24c3c0e20c80b9b826a38c3b8057b214b90319a55bb3b561af1136eb3874d766",
+        "scenery-batches-gl_compatibility-4-initial-before.png": "13929ef16479ff120d7dd189b69ae319b6877c23c1ae9a0ffdb2b5d4bb2a282d",
+        "scenery-batches-gl_compatibility-4-initial-restored.png": "13929ef16479ff120d7dd189b69ae319b6877c23c1ae9a0ffdb2b5d4bb2a282d",
+        "scenery-batches-gl_compatibility-12-energy_change-after.png": "70f90b5947dc7a8363cfdc0639bfe3d73d9ed438e0f18e2e0a865d66755370c9",
+        "scenery-batches-gl_compatibility-4-initial-after.png": "df7435dc6fc8cae97de515f219d66952ad61f5a3962f5b23b81c2f0911776fdb",
+        "scenery-batches-gl_compatibility-12-initial-after.png": "aa80678c41b2a8ed5e3b30cefc068d8dab41caf02429c2f550705e4b2d7707d7",
+        "scenery-batches-gl_compatibility-12-initial-restored.png": "24c3c0e20c80b9b826a38c3b8057b214b90319a55bb3b561af1136eb3874d766",
+        "scenery-batches-gl_compatibility-0-initial-before.png": "b351e872e809877ccc42d7a11276027e0215c763527312bad87fc317ab05d634",
+        "scenery-batches-gl_compatibility-0-initial-after.png": "27238b5a183304221d53b01b1542c30ca90568c59d23dc2f181bbc9bc7592d1d",
+        "scenery-batches-gl_compatibility-0-initial-restored.png": "b351e872e809877ccc42d7a11276027e0215c763527312bad87fc317ab05d634",
+        "scenery-batches-gl_compatibility-12-energy_change-before.png": "1d016280ab6205880a90106f03e4b20b4fe3c24daff5b5e27198db18dac84d12",
+        "scenery-batches-gl_compatibility-12-energy_change-restored.png": "1d016280ab6205880a90106f03e4b20b4fe3c24daff5b5e27198db18dac84d12"
+      },
+      "report": {
+        "adapter": "NVIDIA GeForce RTX 3090",
+        "camera_near": 0.5,
+        "contact": true,
+        "editor": false,
+        "focus": "(88.0, 16.81038, -56.0)",
+        "idle_update_usec": [
+          4,
+          8,
+          9,
+          10,
+          10,
+          10,
+          11,
+          13,
+          21,
+          41,
+          43,
+          46,
+          57,
+          59,
+          59,
+          62,
+          62,
+          66,
+          68,
+          75,
+          83,
+          83,
+          84,
+          87,
+          94,
+          96,
+          101,
+          107,
+          114,
+          117,
+          121,
+          127
+        ],
+        "light_limit": 8,
+        "light_partition": false,
+        "map": "bz13h",
+        "moving_light_rebuilt_groups": [],
+        "moving_light_update_usec": [],
+        "no_wind": false,
+        "rank_overflow": false,
+        "renderer": "gl_compatibility",
+        "rows": [
+          {
+            "after_draws": 1247,
+            "batches": 87,
+            "before_draws": 1558,
+            "build_usec": 10293,
+            "difference": {
+              "max_byte_difference": 16,
+              "mean_channel_difference": 3.05555555555556e-05,
+              "pixels_over_2": 1
+            },
+            "lights": 0,
+            "parts": 248,
+            "phase": "initial",
+            "restoration": {
+              "max_byte_difference": 0,
+              "mean_channel_difference": 0.0,
+              "pixels_over_2": 0
+            },
+            "restored_draws": 1558
+          },
+          {
+            "after_draws": 1568,
+            "batches": 79,
+            "before_draws": 1906,
+            "build_usec": 9218,
+            "difference": {
+              "max_byte_difference": 16,
+              "mean_channel_difference": 3.05555555555556e-05,
+              "pixels_over_2": 1
+            },
+            "lights": 4,
+            "parts": 230,
+            "phase": "initial",
+            "restoration": {
+              "max_byte_difference": 0,
+              "mean_channel_difference": 0.0,
+              "pixels_over_2": 0
+            },
+            "restored_draws": 1906
+          },
+          {
+            "after_draws": 1607,
+            "batches": 70,
+            "before_draws": 1865,
+            "build_usec": 11573,
+            "difference": {
+              "max_byte_difference": 16,
+              "mean_channel_difference": 3.05555555555556e-05,
+              "pixels_over_2": 1
+            },
+            "lights": 12,
+            "parts": 205,
+            "phase": "initial",
+            "restoration": {
+              "max_byte_difference": 0,
+              "mean_channel_difference": 0.0,
+              "pixels_over_2": 0
+            },
+            "restored_draws": 1865
+          },
+          {
+            "after_draws": 1607,
+            "batches": 70,
+            "before_draws": 1865,
+            "build_usec": 11079,
+            "difference": {
+              "max_byte_difference": 16,
+              "mean_channel_difference": 3.05555555555556e-05,
+              "pixels_over_2": 1
+            },
+            "lights": 12,
+            "parts": 205,
+            "phase": "energy_change",
+            "restoration": {
+              "max_byte_difference": 0,
+              "mean_channel_difference": 0.0,
+              "pixels_over_2": 0
+            },
+            "restored_draws": 1865
+          }
+        ],
+        "runtime": true,
+        "scene_warmup_frames": 22,
+        "shadows": true
+      }
+    },
+    {
+      "folder": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p3-runtime/depth-near-2.0",
+      "report_sha256": "2ca5037f2f6bb90b8ae20676e77675793018495622c9e3d41ba146aed26c9246",
+      "log_sha256": "44e44785642fefe912f9e6bf55bafc8d1a00625d460c20d9aaac2f4a121ae429",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p3-runtime/export/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/scenery_batches.gd",
+        "--scenery-batches",
+        "--scenery-shadows",
+        "--scenery-contact",
+        "--scenery-near=2.0"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 24.37860196499969,
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "errors": [],
+      "png_sha256": {
+        "scenery-batches-gl_compatibility-12-initial-before.png": "5b724607cc5d7763d61b2970754f31adb451c44256847bb5f9368f069f647049",
+        "scenery-batches-gl_compatibility-4-initial-before.png": "2e9e87540c50a6b4da3bad1fbec0673e5e809bbbac6e64711c39689383c9dfba",
+        "scenery-batches-gl_compatibility-4-initial-restored.png": "2e9e87540c50a6b4da3bad1fbec0673e5e809bbbac6e64711c39689383c9dfba",
+        "scenery-batches-gl_compatibility-12-energy_change-after.png": "a513f90e53d02bc811171bcb8084d26e9fe11150d1592b78a7219becfd36c7c9",
+        "scenery-batches-gl_compatibility-4-initial-after.png": "0e6bcbdba0952d1b9c7ae966711f7c7976ee30f424251c5d97a55e18353a5dbe",
+        "scenery-batches-gl_compatibility-12-initial-after.png": "aa51f75d0864232a6ba4eaf1ce7814157a5c969cf7e8093d69261ba48c4256d7",
+        "scenery-batches-gl_compatibility-12-initial-restored.png": "5b724607cc5d7763d61b2970754f31adb451c44256847bb5f9368f069f647049",
+        "scenery-batches-gl_compatibility-0-initial-before.png": "16afe1918d2e4401c4989354f8762ff626448e40dfc60f5d72f98d3072370194",
+        "scenery-batches-gl_compatibility-0-initial-after.png": "8b193310db1163e0edacded2b36b3f858fefb9473ffedc79dbdc44d3f3f1d350",
+        "scenery-batches-gl_compatibility-0-initial-restored.png": "16afe1918d2e4401c4989354f8762ff626448e40dfc60f5d72f98d3072370194",
+        "scenery-batches-gl_compatibility-12-energy_change-before.png": "9938d712fad50cdc26720bf079da66f0334777fe364975c6fcf13563ba83d4b3",
+        "scenery-batches-gl_compatibility-12-energy_change-restored.png": "9938d712fad50cdc26720bf079da66f0334777fe364975c6fcf13563ba83d4b3"
+      },
+      "report": {
+        "adapter": "NVIDIA GeForce RTX 3090",
+        "camera_near": 2.0,
+        "contact": true,
+        "editor": false,
+        "focus": "(88.0, 16.81038, -56.0)",
+        "idle_update_usec": [
+          4,
+          7,
+          7,
+          7,
+          8,
+          8,
+          10,
+          10,
+          41,
+          48,
+          50,
+          53,
+          61,
+          62,
+          64,
+          65,
+          67,
+          67,
+          67,
+          71,
+          81,
+          95,
+          95,
+          106,
+          110,
+          110,
+          112,
+          122,
+          136,
+          145,
+          151,
+          156
+        ],
+        "light_limit": 8,
+        "light_partition": false,
+        "map": "bz13h",
+        "moving_light_rebuilt_groups": [],
+        "moving_light_update_usec": [],
+        "no_wind": false,
+        "rank_overflow": false,
+        "renderer": "gl_compatibility",
+        "rows": [
+          {
+            "after_draws": 1247,
+            "batches": 87,
+            "before_draws": 1558,
+            "build_usec": 8660,
+            "difference": {
+              "max_byte_difference": 11,
+              "mean_channel_difference": 0.000256944444444444,
+              "pixels_over_2": 21
+            },
+            "lights": 0,
+            "parts": 248,
+            "phase": "initial",
+            "restoration": {
+              "max_byte_difference": 0,
+              "mean_channel_difference": 0.0,
+              "pixels_over_2": 0
+            },
+            "restored_draws": 1558
+          },
+          {
+            "after_draws": 1568,
+            "batches": 79,
+            "before_draws": 1906,
+            "build_usec": 11678,
+            "difference": {
+              "max_byte_difference": 11,
+              "mean_channel_difference": 0.000256944444444444,
+              "pixels_over_2": 21
+            },
+            "lights": 4,
+            "parts": 230,
+            "phase": "initial",
+            "restoration": {
+              "max_byte_difference": 0,
+              "mean_channel_difference": 0.0,
+              "pixels_over_2": 0
+            },
+            "restored_draws": 1906
+          },
+          {
+            "after_draws": 1607,
+            "batches": 70,
+            "before_draws": 1865,
+            "build_usec": 12218,
+            "difference": {
+              "max_byte_difference": 11,
+              "mean_channel_difference": 0.000256944444444444,
+              "pixels_over_2": 21
+            },
+            "lights": 12,
+            "parts": 205,
+            "phase": "initial",
+            "restoration": {
+              "max_byte_difference": 0,
+              "mean_channel_difference": 0.0,
+              "pixels_over_2": 0
+            },
+            "restored_draws": 1865
+          },
+          {
+            "after_draws": 1607,
+            "batches": 70,
+            "before_draws": 1865,
+            "build_usec": 10589,
+            "difference": {
+              "max_byte_difference": 11,
+              "mean_channel_difference": 0.000256944444444444,
+              "pixels_over_2": 21
+            },
+            "lights": 12,
+            "parts": 205,
+            "phase": "energy_change",
+            "restoration": {
+              "max_byte_difference": 0,
+              "mean_channel_difference": 0.0,
+              "pixels_over_2": 0
+            },
+            "restored_draws": 1865
+          }
+        ],
+        "runtime": true,
+        "scene_warmup_frames": 22,
+        "shadows": true
+      }
+    }
+  ],
+  "parse_only_check": {
+    "log": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p3-seams/benchmark-parse.log",
+    "log_sha256": "5337b441489f07533ff696625999a13741318106b19dafd6735bce90d9647d67",
+    "result": "No script/compile errors; expected headless guard requests exit 2. Not a GPU validation run. The log also records the experimental separate-render-thread warning."
+  },
+  "integration_check": {
+    "recorded_at_utc": "2026-10-08T17:14:12.845246+00:00",
+    "command": [
+      "git",
+      "-C",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo",
+      "apply",
+      "--check",
+      "--whitespace=error-all",
+      "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p3-seams/integration.patch"
+    ],
+    "source_base": "3172ede12a5f41b0182c34a70b5eeda787c95e52",
+    "source_parent": "32402510c714b9b0d497ee4f4a4ddb2394c20daf",
+    "source_patch_sha256": "06c520fd454a4e5adc2a917c38ae1dbf7a20a90dee51f03b21d4b440a8d43628",
+    "touched_files": [
+      "game/src/ei/figure.gd",
+      "game/src/ei/game_data.gd",
+      "game/src/ei/map_scene.gd",
+      "game/src/ei/mmp_texture.gd",
+      "game/src/ei/terrain.gd",
+      "game/src/ei/unit_model.gd",
+      "game/src/game/fx/ground_contact.gd",
+      "game/src/game/fx/ground_contact.gd.uid",
+      "game/src/game/fx/ground_contact_shader.gd",
+      "game/src/game/fx/ground_contact_shader.gd.uid",
+      "game/src/game/fx/ground_surface_data.gd",
+      "game/src/game/fx/ground_surface_data.gd.uid",
+      "game/src/game/fx/ground_surface_shader.gd",
+      "game/src/game/fx/ground_surface_shader.gd.uid",
+      "game/src/game/fx/local_lighting.gd",
+      "game/src/game/fx/scenery_batch_watch.gd",
+      "game/src/game/fx/scenery_batch_watch.gd.uid",
+      "game/src/game/fx/scenery_batches.gd",
+      "game/src/game/fx/scenery_batches.gd.uid",
+      "game/src/game/fx/scenery_light_groups.gd",
+      "game/src/game/fx/scenery_light_groups.gd.uid",
+      "game/src/game/fx/soft_ground_deform.gd",
+      "game/src/game/fx/soft_ground_field.gd",
+      "game/src/game/fx/soft_ground_field.gd.uid",
+      "game/src/game/game.gd",
+      "game/src/game/gfx.gd",
+      "game/src/game/gfx_detect.gd",
+      "game/src/game/unit_wounds.gd",
+      "game/src/platform/portability.gd",
+      "game/src/ui/camera_fade.gd",
+      "game/src/ui/menu_scene.gd",
+      "tools/benchmarks/directional_shadows.gd",
+      "tools/benchmarks/ground_contact.gd",
+      "tools/benchmarks/ground_contact_preparation.py",
+      "tools/benchmarks/ground_contact_surface.gd",
+      "tools/benchmarks/scenery_batch_lights.gd",
+      "tools/benchmarks/scenery_batches.gd",
+      "tools/benchmarks/scenery_resources.gd",
+      "tools/tests/foliage_materials.gd",
+      "tools/tests/ground_contact.gd",
+      "tools/tests/local_shadow_selection.gd",
+      "tools/tests/material_shader_options.gd",
+      "tools/tests/mmp_texture.gd",
+      "tools/tests/mmp_upload.gd",
+      "tools/tests/scenery_batch_lights.gd",
+      "tools/tests/scenery_batches.gd",
+      "tools/tests/soft_ground_field.gd",
+      "tools/tests/sun_aiming.gd",
+      "tools/tests/wound_source.gd"
+    ],
+    "return_code": 0,
+    "stdout": "",
+    "stderr": "",
+    "before": {
+      "head": "a25b1fb18cae99a217cce21c9e720b35db09afd2",
+      "status": " M game/src/game/script/story_compat.gd\n M game/src/game/script/vm.gd\n?? game/src/game/script/story_coop_predicates.gd\n?? tools/tests/story_coop_predicates.gd\n?? tools/tests/story_coop_predicates_net.gd\n",
+      "touched_file_sha256": {
+        "game/src/ei/figure.gd": "5fd0c1d31f462a49914e0a619580ffbcc5344965c18798f5bf3f2f58c68bad8f",
+        "game/src/ei/game_data.gd": "6b978ec8cbc2ed07baf11f461ffdacb7e7239854cc1c588ca60bfb83040267c7",
+        "game/src/ei/map_scene.gd": "8c3ebb5dff18651be8d23c7b36d25f1c3e9bb90ace3d6fc27a70c697c8da1a5e",
+        "game/src/ei/mmp_texture.gd": "ea95f86058da0b18c5c411c4bb69cc9db00c5770501cd5efbf0125d3f2ca104b",
+        "game/src/ei/terrain.gd": "25b87e8fadf2bd7c68ebc963cb36db34788dc2e962ce6a736ba1c51db4c89361",
+        "game/src/ei/unit_model.gd": "f454fd48b39f318b8822a004129c65530ba4adf9b63f6bd5425bf68452824fe6",
+        "game/src/game/fx/ground_contact.gd": null,
+        "game/src/game/fx/ground_contact.gd.uid": null,
+        "game/src/game/fx/ground_contact_shader.gd": null,
+        "game/src/game/fx/ground_contact_shader.gd.uid": null,
+        "game/src/game/fx/ground_surface_data.gd": null,
+        "game/src/game/fx/ground_surface_data.gd.uid": null,
+        "game/src/game/fx/ground_surface_shader.gd": null,
+        "game/src/game/fx/ground_surface_shader.gd.uid": null,
+        "game/src/game/fx/local_lighting.gd": "be1570ca9e47eafcb48f0d4964a941066d521d63cc570ea8aff8333c20b1d34a",
+        "game/src/game/fx/scenery_batch_watch.gd": null,
+        "game/src/game/fx/scenery_batch_watch.gd.uid": null,
+        "game/src/game/fx/scenery_batches.gd": null,
+        "game/src/game/fx/scenery_batches.gd.uid": null,
+        "game/src/game/fx/scenery_light_groups.gd": null,
+        "game/src/game/fx/scenery_light_groups.gd.uid": null,
+        "game/src/game/fx/soft_ground_deform.gd": "a9b5a1941d17ccf67716affb9e416c702d67c7405730109461ead2260fffe051",
+        "game/src/game/fx/soft_ground_field.gd": null,
+        "game/src/game/fx/soft_ground_field.gd.uid": null,
+        "game/src/game/game.gd": "ae6fbf51f89b6536cfa28505f544bb7ba22402b2eca1593400d5fb303d1ec08f",
+        "game/src/game/gfx.gd": "d4111e59b158111d2b5c0ab75feadde1f77db81e528773f23676fddd0e11cdb5",
+        "game/src/game/gfx_detect.gd": "bcbc43453022fd0718fa2ceed9f8cc1271b644dec2eda9f34e3fb78e269475dc",
+        "game/src/game/unit_wounds.gd": "8eea1966c2ac60d58e6d6d6b358cbcec28655a9b90423fd6663a29858fbaf41e",
+        "game/src/platform/portability.gd": "3afa19cb0340929d7e1034066b490568e2df52b5b1e3a9decb3c6c89b76a3735",
+        "game/src/ui/camera_fade.gd": "00dca9e22b1d5cf21c073b82570353533f8f7fa9f98c3a9e478e7fec17bfa0fe",
+        "game/src/ui/menu_scene.gd": "ac5780e52e21d66654fdf0ca49a786c45442958fab7814dc615b02712b604da1",
+        "tools/benchmarks/directional_shadows.gd": null,
+        "tools/benchmarks/ground_contact.gd": null,
+        "tools/benchmarks/ground_contact_preparation.py": null,
+        "tools/benchmarks/ground_contact_surface.gd": null,
+        "tools/benchmarks/scenery_batch_lights.gd": null,
+        "tools/benchmarks/scenery_batches.gd": null,
+        "tools/benchmarks/scenery_resources.gd": null,
+        "tools/tests/foliage_materials.gd": null,
+        "tools/tests/ground_contact.gd": null,
+        "tools/tests/local_shadow_selection.gd": null,
+        "tools/tests/material_shader_options.gd": "dff493bc1167c94ed445a3b18749914f39340b960a36a607d1785a2f3ff889e9",
+        "tools/tests/mmp_texture.gd": null,
+        "tools/tests/mmp_upload.gd": null,
+        "tools/tests/scenery_batch_lights.gd": null,
+        "tools/tests/scenery_batches.gd": null,
+        "tools/tests/soft_ground_field.gd": null,
+        "tools/tests/sun_aiming.gd": null,
+        "tools/tests/wound_source.gd": null
+      }
+    },
+    "after": {
+      "head": "a25b1fb18cae99a217cce21c9e720b35db09afd2",
+      "status": " M game/src/game/script/story_compat.gd\n M game/src/game/script/vm.gd\n?? game/src/game/script/story_coop_predicates.gd\n?? tools/tests/story_coop_predicates.gd\n?? tools/tests/story_coop_predicates_net.gd\n",
+      "touched_file_sha256": {
+        "game/src/ei/figure.gd": "5fd0c1d31f462a49914e0a619580ffbcc5344965c18798f5bf3f2f58c68bad8f",
+        "game/src/ei/game_data.gd": "6b978ec8cbc2ed07baf11f461ffdacb7e7239854cc1c588ca60bfb83040267c7",
+        "game/src/ei/map_scene.gd": "8c3ebb5dff18651be8d23c7b36d25f1c3e9bb90ace3d6fc27a70c697c8da1a5e",
+        "game/src/ei/mmp_texture.gd": "ea95f86058da0b18c5c411c4bb69cc9db00c5770501cd5efbf0125d3f2ca104b",
+        "game/src/ei/terrain.gd": "25b87e8fadf2bd7c68ebc963cb36db34788dc2e962ce6a736ba1c51db4c89361",
+        "game/src/ei/unit_model.gd": "f454fd48b39f318b8822a004129c65530ba4adf9b63f6bd5425bf68452824fe6",
+        "game/src/game/fx/ground_contact.gd": null,
+        "game/src/game/fx/ground_contact.gd.uid": null,
+        "game/src/game/fx/ground_contact_shader.gd": null,
+        "game/src/game/fx/ground_contact_shader.gd.uid": null,
+        "game/src/game/fx/ground_surface_data.gd": null,
+        "game/src/game/fx/ground_surface_data.gd.uid": null,
+        "game/src/game/fx/ground_surface_shader.gd": null,
+        "game/src/game/fx/ground_surface_shader.gd.uid": null,
+        "game/src/game/fx/local_lighting.gd": "be1570ca9e47eafcb48f0d4964a941066d521d63cc570ea8aff8333c20b1d34a",
+        "game/src/game/fx/scenery_batch_watch.gd": null,
+        "game/src/game/fx/scenery_batch_watch.gd.uid": null,
+        "game/src/game/fx/scenery_batches.gd": null,
+        "game/src/game/fx/scenery_batches.gd.uid": null,
+        "game/src/game/fx/scenery_light_groups.gd": null,
+        "game/src/game/fx/scenery_light_groups.gd.uid": null,
+        "game/src/game/fx/soft_ground_deform.gd": "a9b5a1941d17ccf67716affb9e416c702d67c7405730109461ead2260fffe051",
+        "game/src/game/fx/soft_ground_field.gd": null,
+        "game/src/game/fx/soft_ground_field.gd.uid": null,
+        "game/src/game/game.gd": "ae6fbf51f89b6536cfa28505f544bb7ba22402b2eca1593400d5fb303d1ec08f",
+        "game/src/game/gfx.gd": "d4111e59b158111d2b5c0ab75feadde1f77db81e528773f23676fddd0e11cdb5",
+        "game/src/game/gfx_detect.gd": "bcbc43453022fd0718fa2ceed9f8cc1271b644dec2eda9f34e3fb78e269475dc",
+        "game/src/game/unit_wounds.gd": "8eea1966c2ac60d58e6d6d6b358cbcec28655a9b90423fd6663a29858fbaf41e",
+        "game/src/platform/portability.gd": "3afa19cb0340929d7e1034066b490568e2df52b5b1e3a9decb3c6c89b76a3735",
+        "game/src/ui/camera_fade.gd": "00dca9e22b1d5cf21c073b82570353533f8f7fa9f98c3a9e478e7fec17bfa0fe",
+        "game/src/ui/menu_scene.gd": "ac5780e52e21d66654fdf0ca49a786c45442958fab7814dc615b02712b604da1",
+        "tools/benchmarks/directional_shadows.gd": null,
+        "tools/benchmarks/ground_contact.gd": null,
+        "tools/benchmarks/ground_contact_preparation.py": null,
+        "tools/benchmarks/ground_contact_surface.gd": null,
+        "tools/benchmarks/scenery_batch_lights.gd": null,
+        "tools/benchmarks/scenery_batches.gd": null,
+        "tools/benchmarks/scenery_resources.gd": null,
+        "tools/tests/foliage_materials.gd": null,
+        "tools/tests/ground_contact.gd": null,
+        "tools/tests/local_shadow_selection.gd": null,
+        "tools/tests/material_shader_options.gd": "dff493bc1167c94ed445a3b18749914f39340b960a36a607d1785a2f3ff889e9",
+        "tools/tests/mmp_texture.gd": null,
+        "tools/tests/mmp_upload.gd": null,
+        "tools/tests/scenery_batch_lights.gd": null,
+        "tools/tests/scenery_batches.gd": null,
+        "tools/tests/soft_ground_field.gd": null,
+        "tools/tests/sun_aiming.gd": null,
+        "tools/tests/wound_source.gd": null
+      }
+    },
+    "target_unchanged": true,
+    "patch_applied": false
+  },
+  "conclusions": [
+    "Cached group unions reduce the sampled moving-light manager component from 774 to 464 microseconds (about 40%). Total desktop submission still favours original instances; keep batches off by default.",
+    "119 checks pass in each of Compatibility budget 8, budget 4 and Forward+ bypass; every paired live fixture frame is byte-exact.",
+    "The nine-pixel shadow/contact residual is reproduced without MultiMesh, solely by reinserting original render instances. The resulting image is byte-identical to the previous batched capture. All nine traced pixels meet overlapping stwa13/hadoganwall01 geometry.",
+    "This attributes the reproduced nine pixels only. Modern-camera timing captures still differ from originals by 16 pixels without added lights and 2 with four; 14 pixels persist after restoration. Their separate cause has not been established. The cache preserves those results exactly.",
+    "Near-plane changes are diagnostic only and do not justify changing production clipping.",
+    "Forward+ fixture with a temporary ReflectionProbe still reports 7 leaked Texture RIDs at shutdown. The production manager bypasses Forward+; this is not a leak-free acceptance claim.",
+    "Read-only apply check passed against the other active checkout, including uncommitted story/co-op work. No patch was applied and checked target state was unchanged.",
+    "This work makes no sun-policy change: desktop remains continuous; held Android/web remains a replaceable fallback per user direction."
+  ]
+}

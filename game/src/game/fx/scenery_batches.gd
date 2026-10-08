@@ -10,6 +10,7 @@ var _map: WeakRef
 var _roots := {} # weak roots retained for a manager/world re-entry
 var _entries := {} # mesh ID -> weak node/watch, last key/bounds, current batch ID
 var _groups := {} # mesh/material/state/cell key -> set of mesh IDs
+var _group_bounds := {} # lazy union, invalidated only by member changes
 var _dirty_entries := {}
 var _dirty_groups := {}
 var _batches := {} # batch ID -> node, member IDs, key
@@ -151,10 +152,14 @@ func _light_changes() -> void:
 	# This runs only when spatial membership can change, not on energy flicker.
 	# Test the full group bounds too: a new light can enter a gap between parts.
 	for key: Array in _groups:
-		var bounds := AABB(); var first := true
-		for id: int in _groups[key]:
-			var box: AABB = _entries[id].bounds
-			bounds = box if first else bounds.merge(box); first = false
+		if _groups[key].size() < 2: continue
+		if not _group_bounds.has(key):
+			var union := AABB(); var first := true
+			for id: int in _groups[key]:
+				var box: AABB = _entries[id].bounds
+				union = box if first else union.merge(box); first = false
+			_group_bounds[key] = union
+		var bounds: AABB = _group_bounds[key]
 		for box: AABB in changed_bounds:
 			if bounds.intersects(box):
 				_dirty_groups[key] = true
@@ -183,6 +188,7 @@ func _refresh_entry(id: int) -> void:
 	var entry: Dictionary = _entries[id]
 	var old_key: Array = entry.key
 	if not old_key.is_empty():
+		_group_bounds.erase(old_key)
 		_groups[old_key].erase(id)
 		if _groups[old_key].is_empty(): _groups.erase(old_key)
 		_dirty_groups[old_key] = true
@@ -202,6 +208,7 @@ func _refresh_entry(id: int) -> void:
 		node.cast_shadow, node.gi_mode, node.lod_bias, node.sorting_offset, node.sorting_use_aabb_center,
 		node.ignore_occlusion_culling]
 	entry.key = key
+	_group_bounds.erase(key)
 	if not _groups.has(key): _groups[key] = {}
 	_groups[key][id] = true
 	_dirty_groups[key] = true
@@ -216,7 +223,7 @@ func flush() -> void:
 	for id: int in dirty: _refresh_entry(id)
 	var keys := _dirty_groups.keys(); _dirty_groups.clear()
 	for key: Array in keys:
-		if not _groups.has(key) or not _enabled or _blocked_by_volume:
+		if not _groups.has(key) or _groups[key].size() < 2 or not _enabled or _blocked_by_volume:
 			for id: int in _group_batches.get(key, []).duplicate(): _remove_batch(id)
 			continue
 		var records := []
@@ -310,6 +317,7 @@ func _exit_tree() -> void:
 			observer.manager = null
 			observer.queue_free()
 	_entries.clear(); _groups.clear(); _dirty_entries.clear(); _dirty_groups.clear()
+	_group_bounds.clear()
 	_group_batches.clear(); _lights.clear(); _volumes.clear(); _light_rows.clear()
 	_world = null
 	request_ready()

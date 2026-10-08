@@ -203,6 +203,26 @@ func lifecycle() -> void:
 	check(difference(fixtures[0].view.get_texture().get_image(), fixtures[1].view.get_texture().get_image()).pixels_over_2 == 0,
 		"manager teardown restores final pixels")
 
+func cached_bounds_boundary() -> void:
+	# A group initially ends before x=25. Resize its shared mesh so it reaches
+	# x=29, then introduce an over-budget light set at x=28. Reusing the old
+	# union would miss the lights and leave the enlarged end pieces batched.
+	shared_mesh = BoxMesh.new(); shared_mesh.size = Vector3(1.5, 2, 1.5)
+	fixtures = [fixture(), fixture()]
+	manager = SceneryBatches.create(fixtures[1].map, fixtures[1].roots)
+	add_light(Vector3(100, 100, 100), 1)
+	await frame("bounds_seed", 2)
+	shared_mesh.size = Vector3(10, 2, 1.5)
+	await frame("bounds_expanded", 2)
+	for i in manager._limit + 1: add_light(Vector3(28, 1 + i * 0.2, -4), 2.2)
+	await frame("bounds_new_edge_lights", 3)
+	check(manager._entries[fixtures[1].meshes[7].get_instance_id()].batch == 0,
+		"lights beyond the previous bounds restore the enlarged end piece")
+	check(manager._batches.size() == (1 if compatible else 0), "only the unaffected cell remains batched")
+	for item: Dictionary in fixtures: item.view.free()
+	fixtures.clear(); manager = null
+	await get_tree().process_frame
+
 func _ready() -> void:
 	if DisplayServer.get_name() == "headless":
 		printerr("SCENERY_RUNTIME needs a real renderer"); get_tree().quit(2); return
@@ -222,6 +242,7 @@ func _ready() -> void:
 	await lifecycle()
 	for item: Dictionary in fixtures: item.view.free()
 	fixtures.clear()
+	await cached_bounds_boundary()
 	CameraFade._derived.clear(); CameraFade._shaders.clear()
 	base = null; shared_mesh = null
 	RenderingServer.force_draw()

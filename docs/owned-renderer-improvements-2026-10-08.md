@@ -532,6 +532,110 @@ Reproduce the map/cost path through the existing exported `--tool` runner with
 `tools/benchmarks/scenery_batches.gd --scenery-batches --scenery-churn`;
 `--scenery-contact` and `--scenery-shadows` add those independent conditions.
 
+## P3 acceptance follow-up: native overlap control and actual cost
+
+The previous nine-pixel shadow/contact residual is now reproduced **without
+constructing or drawing any MultiMesh**. The benchmark's
+`--scenery-reinsert-control` removes and immediately restores only the original
+scenery instances' RenderingServer visibility. All authored meshes, materials,
+transforms and logical nodes remain unchanged. In the same `bz13h` camera,
+reinserting 494 originals leaves the draw count at **1,558 → 1,558**, yet changes
+the exact same nine pixels. Its resulting PNG is byte-identical to the prior
+batched shadow/contact capture (SHA-256
+`d9a7145bc8a7e901bc26d71daec2124a6d94673768182864a2a60ed5d102f31f`).
+
+`--scenery-trace-pixels` attributes up to 16 changed pixel centres in the first
+comparison to original CPU triangles. All nine affected pixels hit overlapping
+`stwa13` / `hadoganwall01` wall pieces, notably nids 43003 and 43005–43008.
+The nearest two hits at pixel (603,180) are approximately 91.36478 and 91.36516 m
+from the camera: about 0.38 mm apart along the ray. This supports a depth/order
+sensitivity in existing overlapping geometry, rather than a contact-texture or
+complete-light-set mismatch. The pinned GLES3 renderer sorts opaque surfaces
+by material/shader/mesh/depth keys
+([key assignment, line 331](/home/llm2x/Documents/EI/local/scratchpad/coop-performance-20261005/engine-profile/godot-5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88/drivers/gles3/rasterizer_scene_gles3.cpp:331),
+[key comparator, line 695](/home/llm2x/Documents/EI/local/scratchpad/coop-performance-20261005/engine-profile/godot-5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88/drivers/gles3/rasterizer_scene_gles3.h:695));
+there is no unique placement key for otherwise equal surfaces.
+
+Keep this conclusion scoped to the reproduced pixels. Other cameras or future
+changes still need their own original/reinserted controls. Near-clip diagnostics
+(`--scenery-near=0.5` and `=2.0`) move or reduce some mismatches but expose others;
+no camera or authored-geometry change was made to production. The triangle
+tracer uses the fixed camera's global transform and local ray direction, avoiding
+an unpumped interpolated camera cache in manually forced render fixtures. It is
+an attribution aid for rigid geometry, not an oracle for GPU wind/deformation.
+
+### Cache immutable bounds; preserve membership invalidation
+
+[SceneryBatches](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/game/src/game/fx/scenery_batches.gd)
+now lazily caches each compatible group's union. Light movement reuses it;
+member insertion, removal, movement, mesh/material/state replacement and teardown
+invalidate or clear it. Singleton groups skip both light-change intersection
+work and complete-light planning, because they cannot make a batch. The light
+selection policy, originals, grouping keys and rendered output are unchanged.
+This is the retained-static principle from R0 `retained_static_scene.cpp:303`
+applied to the runtime manager's own CPU work.
+
+The expanded
+[live regression](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/scenery_batches.gd:206)
+passes **119 checks each** on Compatibility budget 8, Compatibility budget 4 and
+Forward+ bypass. The new boundary case populates the cached bounds, widens the
+shared meshes, then introduces over-budget lights beyond their old bounds.
+The enlarged affected pieces return to originals while the unaffected cell
+remains batched. All live comparison frames match the independent unbatched
+world. The earlier Forward+ temporary-probe shutdown warning remains recorded.
+
+### Fewer draws did not improve this desktop render sample
+
+The benchmark now measures render cost with `--scenery-timing`. Each condition
+uses six alternating windows (three per state), with 24 warmup and 96 measured
+frames per window. During the unbatched timing control the manager's draw
+callback is disconnected, so the baseline does not pay its light polling cost.
+`force_draw_usec` includes the manager callback and the synchronous render
+submission; viewport CPU/GPU measurements are also retained. No image readback
+or pixel comparison occurs inside a measured window. This is a frozen scene,
+not full gameplay frame time or a portable FPS result.
+
+`--scenery-game-camera` uses the current modern camera's 55° field of view and
+`Gfx.far_clip()` (260 m in these runs), retaining the 0.05 m near plane. The
+same scene then draws **489 → 407** with no added lights and **489 → 417** with
+four. Even so, its median window render-submission time is higher with batches:
+
+| Cached candidate, `bz13h`, RTX 3090 / Compatibility | Original instances | Batches | Manager component when batched |
+|---|---:|---:|---:|
+| No added lights | 1.601 ms | 1.758 ms | 0.005 ms |
+| Four stationary lights | 1.878 ms | 1.963 ms | 0.027 ms |
+| Four lights, one moving through a 3 m sweep | 1.693 ms | 2.295 ms | 0.464 ms |
+
+The prior manager's corresponding moving-light component was **0.774 ms**;
+caching reduces that sampled component by about **40%**. Its total moving-light
+submission time was 2.649 ms versus the same 1.693 ms original-instance control.
+All six old/new map PNGs are byte-identical. The other baseline window medians
+vary between runs, so do not interpret every old/new timing difference as a
+code effect. Native viewport CPU time also rises in several batched windows,
+and GPU timing does not establish a compensating benefit on this GPU.
+No other game/editor render process was present at these runs' start or end.
+
+Here “old/new” compares the previous manager with the cached candidate, not
+original instances with batches. With this modern lens the latter still differ
+by 16 pixels without added lights and two with four lights (maximum 8/255);
+14 pixels persist after restoring originals. Those pixels have not received
+their own reinsertion/triangle attribution, so the nine-pixel conclusion above
+must not be extended to them. The bounds cache preserves the previous results.
+
+**Rollout remains off by default.** The manager is cheaper, but this desktop
+measurement contradicts using draw count alone as evidence of a speedup.
+Android hardware and browsers may have different submission costs; they require an
+actual benefit before a default is justified. Avoid spending further desktop
+work on rollout without identifying a workload where batching wins. P4 should
+start with measured hidden-geometry cost and preserve the other chat's logical
+visibility/guard work; its recent changes are in story/co-op scripts.
+
+Commands, source/export hashes, timing windows, lifecycle results, the exact
+reinsertion control and the integration check are in
+[scenery-batch-costs-2026-10-08.json](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/docs/validation/scenery-batch-costs-2026-10-08.json).
+The cached export and full reports are under the isolated QA `p3-seams`
+directory; `p3-runtime/export` remains the frozen `3240251` reference.
+
 ## P5, first stage: stable local-shadow selection
 
 P4's production visibility changes overlap the other chat's active investigation,
@@ -1057,11 +1161,11 @@ the benchmark. It preserves individual object nodes and does not touch the
 other chat's newer creature visibility or story/co-op effect changes.
 
 The latest read-only `git apply --check` includes all production/tool changes
-from this branch's base through the P3 runtime checkpoint. It passed against
-active committed HEAD `5e4c0b0897df41f66a628664dd66deef8ebbc281`, including the
+from this branch's base through the P3 bounds-cache/cost checkpoint. It passed against
+active committed HEAD `a25b1fb18cae99a217cce21c9e720b35db09afd2`, including the
 other chat's uncommitted story/co-op script work. Its HEAD, status and hashes of
 all files touched by this branch were unchanged. **No patch was applied.**
-The result and exact target state are in the runtime validation JSON above.
+The result and exact target state are in the cost validation JSON above.
 `game_data.gd` is shared by earlier commits: preserve its newer control/options
 changes when integrating. Recheck before integration because that checkout is
 still changing. Do not message or alter the other chat without human authorization.
@@ -1070,9 +1174,11 @@ still changing. Do not message or alter the other chat without human authorizati
 
 1. **P3 static scenery batching:** the opt-in live manager, complete-light guard,
    movement/fade lifetime and real-map validation are now implemented above.
-   Finish long gameplay/device acceptance and investigate the nine-pixel
-   shadow/contact residual before enabling a default. Measure moving-light
-   management cost against saved submission time on Android/web. Preserve the
+   The nine-pixel residual is reproduced by the unchanged-renderer control.
+   Desktop timing does not establish a net gain despite fewer draws; keep this
+   experimental. Finish long gameplay/device acceptance and measure management
+   cost against saved submission time on actual Android devices and browsers
+   before rollout. Preserve the
    explicit material-change notification contract and logical mesh consumers;
    do not replace this with a naive MultiMesh regrouping pass.
 2. **P4 occlusion:** after identifying hidden-geometry cost, evaluate Godot's

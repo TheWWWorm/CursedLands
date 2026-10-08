@@ -21,6 +21,16 @@ var churn := false
 var idle_usec: Array[int] = []
 var movement_usec: Array[int] = []
 var movement_rebuilds: Array[int] = []
+var near_clip := 0.05
+var game_camera := false
+var timing := false
+var timing_rows: Array = []
+var light_counts := [0, 4, 12]
+var reinsert_control := false
+var reinserted_meshes := 0
+var trace_pixels := false
+var traced_pixels: Array = []
+var _face_cache := {}
 
 func settle() -> void:
 	for i in 8:
@@ -54,6 +64,78 @@ func compare(a: Image, b: Image) -> Dictionary:
 		changed += int(error > 2)
 	return {"pixels_over_2": changed, "max_byte_difference": maximum,
 			"mean_channel_difference": float(sum) / (a.get_width() * a.get_height() * 3)}
+
+func distribution(values: Array) -> Dictionary:
+	values.sort()
+	return {"median":values[values.size() / 2], "p95":values[int(values.size() * 0.95)],
+		"min":values.front(), "max":values.back(), "samples":values.size()}
+
+func trace_difference(first: Image, second: Image) -> void:
+	# Inspect at most 16 changed pixel centres against the original CPU faces.
+	# This is an attribution aid for rigid geometry, not an oracle for GPU wind.
+	var camera := view.get_camera_3d()
+	var transform := camera.global_transform
+	for y in first.get_height():
+		for x in first.get_width():
+			var a := first.get_pixel(x, y); var b := second.get_pixel(x, y)
+			if maxf(absf(a.r - b.r), maxf(absf(a.g - b.g), absf(a.b - b.b))) <= 2.0 / 255.0: continue
+			var origin := transform.origin
+			var direction := (transform.basis * camera.project_local_ray_normal(Vector2(x + 0.5, y + 0.5))).normalized()
+			var end := origin + direction * camera.far
+			var hits := []
+			for root: Node3D in map.object_nodes:
+				var record: Dictionary = root.get_meta("ei", {})
+				for node: MeshInstance3D in root.find_children("*", "MeshInstance3D", true, false):
+					if not node.is_visible_in_tree() or (node.global_transform * node.get_aabb()).intersects_segment(origin, end) == null: continue
+					if not _face_cache.has(node.mesh): _face_cache[node.mesh] = node.mesh.get_faces()
+					var faces: PackedVector3Array = _face_cache[node.mesh]
+					var inverse := node.global_transform.affine_inverse()
+					var local_start := inverse * origin; var local_end := inverse * end
+					for i in range(0, faces.size(), 3):
+						var local: Variant = Geometry3D.segment_intersects_triangle(local_start, local_end, faces[i], faces[i + 1], faces[i + 2])
+						if local == null: continue
+						var point: Vector3 = node.global_transform * local
+						hits.append({"nid":record.get("nid"), "template":record.get("template"), "texture":record.get("texture"),
+							"part":str(root.get_path_to(node)), "triangle":i / 3, "distance":origin.distance_to(point), "world":str(point)})
+			hits.sort_custom(func(a: Dictionary, b: Dictionary): return a.distance < b.distance)
+			traced_pixels.append({"pixel":[x, y], "hits":hits.slice(0, 4)})
+			if traced_pixels.size() >= 16: return
+
+func measure_runtime(label: String, local_lights: Array) -> void:
+	if not runtime or not is_instance_valid(map.scenery_batches): return
+	var owner := map.scenery_batches
+	var old_fps := Engine.max_fps; Engine.max_fps = 0
+	RenderingServer.viewport_set_measure_render_time(view.get_viewport_rid(), true)
+	var origin := Vector3.ZERO if local_lights.is_empty() else (local_lights[0] as Node3D).position
+	for moving in [false, true] if local_lights.size() == 4 else [false]:
+		for enabled: bool in [false, true, true, false, false, true]:
+			owner.set_enabled(enabled)
+			# Default-off maps have no manager. Disconnect its draw callback for
+			# the timing control so baseline does not pay even the light poll.
+			if enabled and not RenderingServer.frame_pre_draw.is_connected(owner.flush):
+				RenderingServer.frame_pre_draw.connect(owner.flush)
+			elif not enabled and RenderingServer.frame_pre_draw.is_connected(owner.flush):
+				RenderingServer.frame_pre_draw.disconnect(owner.flush)
+			var wall: Array = []; var cpu: Array = []; var gpu: Array = []; var updates: Array = []
+			for step in 120:
+				if moving: local_lights[0].position = origin + Vector3(sin(step * 0.2) * 3.0, 0, 0)
+				await get_tree().process_frame
+				var start := Time.get_ticks_usec()
+				RenderingServer.force_draw(false)
+				var elapsed := Time.get_ticks_usec() - start
+				if step < 24: continue
+				wall.append(elapsed)
+				cpu.append(RenderingServer.viewport_get_measured_render_time_cpu(view.get_viewport_rid()))
+				gpu.append(RenderingServer.viewport_get_measured_render_time_gpu(view.get_viewport_rid()))
+				updates.append(owner.last_update_usec if enabled else 0)
+			timing_rows.append({"case":label, "enabled":enabled, "moving_light":moving,
+				"force_draw_usec":distribution(wall), "viewport_cpu_ms":distribution(cpu),
+				"viewport_gpu_ms":distribution(gpu), "manager_usec":distribution(updates)})
+			print("SCENERY_TIMING ", JSON.stringify(timing_rows.back()))
+	if not local_lights.is_empty(): local_lights[0].position = origin
+	owner.set_enabled(false)
+	if not RenderingServer.frame_pre_draw.is_connected(owner.flush): RenderingServer.frame_pre_draw.connect(owner.flush)
+	Engine.max_fps = old_fps
 
 func collect() -> Vector3:
 	var density := {}
@@ -95,6 +177,19 @@ func light_snapshot() -> Array:
 
 func batch() -> void:
 	var start := Time.get_ticks_usec()
+	if reinsert_control:
+		reinserted_meshes = 0
+		# Change only renderer-tree insertion/order: no MultiMesh is created.
+		for root: Node3D in map.object_nodes:
+			var record: Dictionary = root.get_meta("ei", {})
+			if record.get("kind", "") != "OBJECT" or String(record.get("template", "")).begins_with("ef"): continue
+			for node: MeshInstance3D in root.find_children("*", "MeshInstance3D", true, false):
+				if not node.is_visible_in_tree(): continue
+				RenderingServer.instance_set_visible(node.get_instance(), false)
+				RenderingServer.instance_set_visible(node.get_instance(), true)
+				reinserted_meshes += 1
+		build_usec = Time.get_ticks_usec() - start
+		return
 	if runtime:
 		if is_instance_valid(map.scenery_batches):
 			map.scenery_batches.set_enabled(true)
@@ -174,7 +269,16 @@ func _ready() -> void:
 		if arg == "--scenery-no-wind": no_wind = true
 		if arg == "--scenery-shadows": shadows = true
 		if arg.begins_with("--scenery-map="): map_name = arg.trim_prefix("--scenery-map=")
-	light_plan = load(get_script().resource_path.get_base_dir().path_join("scenery_batch_lights.gd"))
+		if arg.begins_with("--scenery-near="): near_clip = float(arg.trim_prefix("--scenery-near="))
+		if arg == "--scenery-game-camera": game_camera = true
+		if arg == "--scenery-timing": timing = true
+		if arg == "--scenery-reinsert-control": reinsert_control = true
+		if arg == "--scenery-trace-pixels": trace_pixels = true
+		if arg.begins_with("--scenery-lights="):
+			light_counts = Array(arg.trim_prefix("--scenery-lights=").split(",")).map(func(value: String): return int(value))
+	if timing and reinsert_control:
+		printerr("SCENERY_BATCHES choose runtime timing or reinsertion control"); get_tree().quit(2); return
+	light_plan = SceneryLightGroups
 	if no_wind: EIFigure.set_wind(false)
 	view = SubViewport.new()
 	view.size = Vector2i(800, 600)
@@ -189,6 +293,10 @@ func _ready() -> void:
 	if runtime: unbatch()
 	var focus := collect()
 	var camera := Camera3D.new()
+	camera.near = near_clip
+	if game_camera:
+		camera.fov = CameraRig.MODERN_FOV
+		camera.far = Gfx.far_clip()
 	view.add_child(camera)
 	camera.position = focus + Vector3(24, 22, 28)
 	camera.look_at(focus + Vector3.UP * 2.0)
@@ -225,7 +333,7 @@ func _ready() -> void:
 			shaders[material.shader] = true
 			material.shader.code = material.shader.code.replace("TIME", "1.25")
 	var rows := []
-	for lights in [0, 4, 12]:
+	for lights in light_counts:
 		var local_lights: Array[OmniLight3D] = []
 		if lights > 0:
 			for i in lights:
@@ -255,6 +363,8 @@ func _ready() -> void:
 					"after_draws": after.draws, "restored_draws": restored.draws,
 					"difference": compare(before.image, after.image),
 					"restoration": compare(before.image, restored.image)})
+			if trace_pixels and rows.size() == 1: trace_difference(before.image, after.image)
+		if timing: await measure_runtime(str(lights), local_lights)
 		if runtime and churn and lights == 4 and is_instance_valid(map.scenery_batches):
 			batch()
 			var origin := local_lights[0].position
@@ -269,6 +379,9 @@ func _ready() -> void:
 			light.free()
 	idle_usec.sort()
 	var report := {"map": map_name, "focus": str(focus), "rows": rows, "runtime":runtime, "contact":contact,
+			"camera_near":near_clip, "camera_far":camera.far, "camera_fov":camera.fov, "game_camera":game_camera,
+			"timing_rows":timing_rows,
+			"reinsert_control":reinsert_control, "reinserted_meshes":reinserted_meshes, "traced_pixels":traced_pixels,
 			"idle_update_usec":idle_usec,
 			"moving_light_update_usec":movement_usec, "moving_light_rebuilt_groups":movement_rebuilds,
 			"light_partition":preserve_lights, "rank_overflow":rank_overflow, "no_wind":no_wind, "shadows":shadows,
