@@ -4,8 +4,8 @@ Baseline: performance checkpoint `329512c`. User reports were observed in publis
 
 Release scope update, 8 October: the user asked to defer performance work,
 finish the current fix, run minimal tests and publish a new Experimental build.
-Experimental 6 includes the accumulated fixes; remaining coverage below stays
-open. See [release notes](experimental6-release-notes.md) and
+Experimental 6 includes fixes committed through `7849891`; later local checkpoints
+below are unpublished. Remaining coverage stays open. See [release notes](experimental6-release-notes.md) and
 [focused validation](experimental6-validation.json).
 
 The additional [campaign audit](/home/llm2x/Documents/EI/local/implementation-gaps-2026-10-07.md) supplies findings G01–G10 and original-data probes. Its findings were investigations, not fixes. Preserve original campaign behavior where it is established; campaign co-op must extend story roles consistently to guests.
@@ -52,6 +52,12 @@ The additional [campaign audit](/home/llm2x/Documents/EI/local/implementation-ga
 | U36 | At 2×, co-op guests freeze/teleport and sometimes keep walking in place; worse on busy LiA maps. | Local transport fix uses real-time cadence, per-actor sequence ordering, repeated party state and compact visibility history. Lost-stop and reordered-packet checks pass. Real Portal simulation service/guest passes at both speeds; short 2× run has a 212 ms maximum packet gap. Full Windows/internet reproduction and long play remain open; not an FPS claim. |
 | U37 | Gamepad self-healing/buffing, radial menus and body-part targeting are awkward in co-op. | Local fix defaults friendly spells to self, adds X self-cast, honors D-pad ally selection with A/RT, and gives body parts six equal labelled sectors. Wheels support D-pad navigation, stick-boundary hysteresis and neutral-on-open. Nineteen rendered ENet checks pass; real device ergonomics remain untested. |
 | U38 | Resetting training leaves equipped spells usable despite unmet requirements. | Local fix keeps equipped spells but disables them until requirements are restored. Authority admission and queued execution recheck eligibility; HUD/radial entries show it. Actual co-op reset, invalid requests and restored training are covered; item and scripted spells remain separate. |
+| U39 | Healing produces effects that fly upward. Compare the original healing visual, attachment, orientation and lifetime. | Newly reported 9 October; not investigated or fixed. |
+| U40 | Finished spells should show their installed runes, as weapons already do. | Newly requested 9 October; not implemented. Preserve the full-slot coloured spell artwork while adding the installed-rune indication. |
+| U41 | Entering spell/weapon/armour constructors should select the relevant inventory filters automatically. | Newly requested 9 October; not implemented. Show relevant ingredients and equipment for the selected constructor. |
+| U42 | Hold the item-transfer button to add many copies to the shop offer, analogous to holding a skill upgrade button. | Newly requested 9 October; not implemented. Existing counted stacks and atomic trade validation must remain intact. |
+| U43 | Materials such as rocks/stones lack hover descriptions. | Newly reported 9 October; not investigated or fixed. Check material-specific tooltip lookup and localized text. |
+| U44 | The dragon in Dead City should remain grounded rather than flying. | Newly reported 9 October; not investigated or fixed. Original/reference screenshot retained at `/home/llm2x/Documents/EI/local/bug-references/2026-10-09/dead-city-dragon-reference.png`. Keep separate from Terror despawn and the amulet dragon departure fixes. |
 
 ## Campaign audit findings
 
@@ -71,6 +77,8 @@ The additional [campaign audit](/home/llm2x/Documents/EI/local/implementation-ga
 | G12 | Additional save/load finding: script timers survive while NPC follow/guard behavior and target ownership are lost. | Script-selected living NPC behavior, motivation overrides and gait now persist. Stable target references survive a guest being absent on load, reconnecting or receiving a replacement body. Actual dragon ENet checks pass; older saves cannot recover behavior they never stored. |
 | G13 | Additional captivity finding: approximate script equality treats neighbouring large actor IDs and different Objects as equal. | Whole-number IDs/counters compare exactly and Objects by identity; fractional tolerance remains. Base prison guard dispatch now admits eligible extra intruders through the original third-role priority and cooldown chain. The focused fixture passes 29 checks; the previous export fails 15. Full prison and general late-arrival script coverage remain open. |
 | G14 | Additional save/load finding: deployment recalculation erases a completed dialogue flag while a restored script still waits for it. | Local follow-up preserves flags on explicit restored-VM loads. An ordinary pre-escape save previously reset Kel's completion from 2 to 0 and stalled; the corrected save resumes through Terror to the next map. Fresh zones still recalculate party dialogue topics. Other dialogue sequences remain unaudited. |
+
+| G15 | Base prison per-character quest/discovery checks omit guests arriving after map setup. | Fixed locally in `gz15h`: eleven inspected shared checks consider current party members, with one shared event and original timers/bodies. Thirty-nine focused checks and fifteen real ENet checks pass; previous export fails fourteen focused checks. Full prison and other maps’ late-arrival scripts remain open. |
 
 ## Validation and checkpoints
 
@@ -198,3 +206,10 @@ The controlled Portal transport fixture retains 415 actors and an intentionally 
 A separate real simulation worker loads a copied ordinary Portal route save with normal simulation, plus host and guest frontends over ENet. Both eight-second movement phases pass: maximum guest packet gap 158 ms at 1× and 212 ms at 2×; simulated time advances 8.03 and 15.895 seconds respectively. These short loopback runs do not establish long-session, WAN or Windows behavior. No new performance target or platform acceptance is claimed.
 
 Export `gameplay-gaps56` uses protocol **13**, requiring matching peers. The spell/controller checks, packet recovery/ordering checks and existing 145 interpolation checks pass. The body-part wheel was visually inspected. Experimental 6 and device installations remain unchanged. Broad performance optimization is still deferred.
+
+
+## Pausing handoff — 9 October
+
+At the user's request, finish the existing late-join trigger task and stop. New reports U39–U44 are queued for the next agent, not silently included as implemented fixes. The consolidated [handoff](gameplay-handoff-2026-10-09.md) separates unpublished code, new requests, unresolved reproductions and remaining validation.
+
+[Prison late-join validation](gameplay-prison-late-join-validation.json) records the final code change before pausing: base `gz15h` shared quest/discovery checks accept a late guest without replaying startup or creating additional per-actor script threads. The actual ENet guest completes the native objective while the host stays away; both peers retain completion through save/load and reconnect. Export `gameplay-gaps57`, protocol 13. The 39 focused and 15 ENet checks pass; the preceding export fails 14 focused checks. This scoped adaptation does not complete the general campaign late-arrival audit. No public release or device installation changed.

@@ -6,6 +6,7 @@ static func apply(ast: ScriptParser, campaign: String, zone: String) -> void:
 	if campaign != CampaignProfile.ASTRAL:
 		if campaign == CampaignProfile.ORIGINAL:
 			preload("res://src/game/script/story_coop_predicates.gd").apply_original(ast,zone)
+			if zone == "gz15h": _prison_party_checks(ast)
 		if campaign == CampaignProfile.ORIGINAL and zone == "gz6g":
 			# The amulet dragon has three identical native follow/return
 			# cycles. Added guests use the third role's original cadence.
@@ -35,7 +36,33 @@ static func apply(ast: ScriptParser, campaign: String, zone: String) -> void:
 	for block: Dictionary in ast.scripts.get("VCheck#0#2", {}).get("blocks", []):
 		for condition: Array in block.conds:
 			if condition == check:
-				condition[2][0][2][1][1] = 300.5
+					condition[2][0][2][1][1] = 300.5
+
+
+## The original prison arms these shared quest/discovery checks once for
+## each deployed hero. A late guest otherwise has no thread. Mark only the
+## inspected registration loops; the VM also verifies that their complete
+## trigger chains never act on the individual. Native bodies and saved
+## instruction indexes remain unchanged.
+static func _prison_party_checks(ast: ScriptParser) -> void:
+	var parents := {
+		"VTriger#0#43":["VCheck#0#44"], "VTriger#0#48":["VCheck#0#49"],
+		"VTriger#0#109":["VCheck#0#106"], "VTriger#0#208":["VCheck#0#189"],
+		"VTriger#0#236":["VCheck#0#237"],
+		"VTriger#0#257":["VCheck#0#258","VCheck#0#352","VCheck#0#356"],
+		"VTriger#0#290":["VCheck#0#289"], "VTriger#0#294":["VCheck#0#296"],
+		"VTriger#0#295":["VCheck#0#297"],
+	}
+	for parent: String in parents:
+		var blocks: Array = ast.scripts.get(parent,{}).get("blocks",[])
+		if blocks.size() != 1 or not blocks[0].conds.is_empty(): continue
+		var calls := []
+		for child: String in parents[parent]: calls.append([P.S_CALL,child,[[P.N_VAR,"VSS#i#val"]]])
+		if blocks[0].body != [[P.S_CALL,"KillScript",[]],[P.S_FOR,"VSS#i#val",[P.N_VAR,"Heroes"],calls]]: continue
+		for child: String in parents[parent]:
+			var def: Dictionary = ast.scripts.get(child,{})
+			if def.get("params",[]) != ["this"] or def.blocks.size() != 1 or def.blocks[0].conds.is_empty(): continue
+			def.party_check = true
 
 
 ## The slave-camp escape predates co-op: only Kir and Kel receive its

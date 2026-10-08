@@ -1,0 +1,116 @@
+{
+  "date": "2026-10-09",
+  "scope": "G15: base campaign gz15h (zone15.mob) shared quest/discovery checks for late co-op participants",
+  "parent_commit": "2ff3d5a1e31a4c0cac2c905250ece42cfa1f6b1b",
+  "published": false,
+  "protocol": 13,
+  "implementation": "Mark eleven checks from nine inspected Heroes registration loops. Existing native waits consider the current living visible controlled party, preserving the native actor priority. Trigger-chain analysis excludes character-specific effects. Shared checks fire once across duplicate waiting copies. Conditions, bodies, script names and saved instruction indexes are unchanged; single-player and LMP keep existing behavior.",
+  "export": {
+    "seconds": 6.136434094980359,
+    "command": [
+      "/home/llm2x/.local/bin/godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+      "--export-release",
+      "Linux",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps57/CPU.x86_64"
+    ],
+    "engine_source": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/fast-runtime.x86_64",
+    "errors": [],
+    "sha256": {
+      "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+      "CPU.pck": "fa4d4dfdcf4b82553143275d7e7937d0dff41c6bd969b2c6ab2daf7b71854c47",
+      "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+    }
+  },
+  "files_sha256": {
+    "game/src/game/script/vm.gd": "234d811440e8ba582299169a086117beab6e0af55b6a1aae19b350b5eaf26cd4",
+    "game/src/game/script/story_compat.gd": "4f55a92ca14ae455eed81b08122ea5aef54e5ae449cdf1836526a8960886b2a1",
+    "tools/tests/prison_late_join.gd": "06c53d50b72774c54a8452c23537a389505556e6c74c9ab3251ded7c6154ce3e",
+    "tools/tests/prison_late_join_net.gd": "269065404d26b13253e4303713572525b017eea6c93ad2311f1f05f434d4798c"
+  },
+  "runs": {
+    "prison-late-join-before-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps56/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/prison_late_join.gd",
+        "--label=prison-late-join-before-01"
+      ],
+      "exit_code": 1,
+      "stopped": false,
+      "seconds": 2.3078693360148463,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "170de49cebe63f8dfd5d762c921150c49345b59b203f06e1a39110fc5b75e575",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/prison-late-join-before-01.log",
+      "result": "PRISON_LATE_JOIN 39 checks 14 failures"
+    },
+    "prison-late-join-after-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps57/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/prison_late_join.gd",
+        "--label=prison-late-join-after-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 2.0038020169886295,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "2b3be031ab077495f00ea4672cb69d16fb30521615d513c08d4e49a07c5fc8a7",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/prison-late-join-after-01.log",
+      "result": "PRISON_LATE_JOIN 39 checks 0 failures"
+    },
+    "prison-late-join-net-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps57/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/prison_late_join_net.gd",
+        "--label=prison-late-join-net-01",
+        "--ei-inline-host"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 21.737378779012943,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "cf267061858413ecab53dd59463fc7517e1beafb1171d100d7a7b55deea87778",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/prison-late-join-net-01.log",
+      "result": "STORY_COOP_TRAPS_NET 15 checks 0 failures"
+    }
+  },
+  "summary": {
+    "focused_checks": 39,
+    "focused_failures": 0,
+    "baseline_failures": 14,
+    "enet_checks": 15,
+    "enet_failures": 0
+  },
+  "limitations": [
+    "Focused tests use native script data with controlled actor positions and prepared campaign variables.",
+    "Real ENet test uses one process with two worlds. Native startup is run; unrelated AI/combat and quest/cutscene threads are then frozen or removed to inspect objective delivery before travel.",
+    "Tests cover late join, active old-save wait, duplicate suppression, inactive guests, save/load and reconnect; not an entire prison playthrough.",
+    "Only the inspected base prison registrations are adapted. General late-arrival scripts and remaining named/cosmetic teleports remain open.",
+    "No new Windows, Android, macOS, performance or public-release acceptance."
+  ]
+}

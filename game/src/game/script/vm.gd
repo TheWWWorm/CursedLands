@@ -209,7 +209,7 @@ func _run(inst: Instance) -> void:
 		inst.poll = time + POLL
 		for bi in inst.blocks.size():
 			var b: Dictionary = inst.blocks[bi]
-			if _all(b.conds, inst):
+			if _party_conditions(b.conds, inst):
 				inst.block_index = bi
 				inst.frames = [{"body": b.body, "i": 0}]
 				if not _once_per_world(inst):
@@ -264,6 +264,27 @@ func _all(conds: Array, inst: Instance) -> bool:
 		if not _truthy(_eval(c, inst)):
 			return false
 	return true
+
+
+## Inspected shared checks keep their original waiting threads, including
+## old saves, but can be satisfied by a newly arrived party member. Never
+## generalize an individual trap, movement order or character-specific chain.
+func _party_conditions(conds: Array, inst: Instance) -> bool:
+	var def: Dictionary = ast.scripts.get(inst.sname,{})
+	if not def.get("party_check",false) or session == null or not session.multiplayer_game \
+			or not session.lmp.is_empty() or not _world_event(inst.sname): return _all(conds,inst)
+	var param: String = def.params[0]
+	var original = inst.locals.get(param)
+	var party := _party_records().filter(func(u: GameUnit): return not u.dead and not u.hidden)
+	# Keep the native actor's priority whenever it is still present.
+	if original in party:
+		party.erase(original)
+		party.push_front(original)
+	for u: GameUnit in party:
+		inst.locals[param] = u
+		if _all(conds,inst): return true
+	inst.locals[param] = original
+	return false
 
 
 func spawn(name: String, args: Array, caller := "") -> void:
@@ -2104,7 +2125,8 @@ func _once_per_world(inst: Instance) -> bool:
 		return true
 	if not _world_event(inst.sname):
 		return true
-	if _world_done.has(inst.sname) and int(_world_done[inst.sname]) != me.controller:
+	var shared := bool(def.get("party_check",false))
+	if _world_done.has(inst.sname) and (shared or int(_world_done[inst.sname]) != me.controller):
 		inst.killed = true
 		inst.frames.clear()
 		return false
@@ -2114,7 +2136,7 @@ func _once_per_world(inst: Instance) -> bool:
 			continue
 		var other = o.locals.get(params[0])
 		if typeof(other) == TYPE_OBJECT and is_instance_valid(other) and other is GameUnit \
-				and other.has_meta("hero") and other.controller != me.controller:
+				and other.has_meta("hero") and (shared or other.controller != me.controller):
 			o.killed = true   # idle: dropped at the end of this tick, never runs
 	return true
 
