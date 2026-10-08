@@ -1,0 +1,861 @@
+{
+  "status": "Rejected and fully reverted: no repeated Retroid whole-game gain",
+  "base_commit": "7aa3d0762c0bd4e2c5021d20c2fb3ed64020dc1a",
+  "date": "2026-10-08",
+  "implementation": [
+    "Batch common authority placement after world ticks and lever draw, before ordinary unit animation callbacks",
+    "Read common terrain revisions once per roster, reuse placement cache and existing typed actor position/facing",
+    "Read immutable spline samples without creating Dictionary objects; retain custom/script/chunk-transition fallbacks",
+    "No simulation tick, animation cadence, graphics, actor population, sound or gameplay rules changed"
+  ],
+  "correctness": [
+    {
+      "name": "authority-placement-headless-01",
+      "checks": 12011,
+      "failures": 0,
+      "receipt_sha256": "a1d79ca8eb0ea02df0f91a77a09ed0b9fa4e8e193cfb52b08ee5085a6fbe129d",
+      "exit_code": 0,
+      "errors": []
+    },
+    {
+      "name": "authority-placement-client-regression-01",
+      "checks": 40969,
+      "failures": 0,
+      "receipt_sha256": "dfb55c5bf87a86e45722fa64394efc1ed9478d4b1435204cbf7d14d2ce7c56dc",
+      "exit_code": 0,
+      "errors": []
+    },
+    {
+      "name": "authority-placement-motion-regression-01",
+      "checks": 10221,
+      "failures": 0,
+      "receipt_sha256": "d420322629725b2aa9473b22a4e7ab7ce5e944cf6b3b5da42d7b412af79e636e",
+      "exit_code": 0,
+      "errors": []
+    },
+    {
+      "name": "authority-placement-forward-01",
+      "checks": 12011,
+      "failures": 0,
+      "receipt_sha256": "1b1833f773283dde6e642d66e941f1c028955b4ea1d2ecdc3e306e38626512c5",
+      "exit_code": 0,
+      "errors": []
+    },
+    {
+      "name": "authority-authority-placement-device-01",
+      "checks": 12011,
+      "failures": 0,
+      "receipt_sha256": "0aa60ccf7249390cdedb99ab91be03c994c63c360d65107fd784bcb2f68d5b87",
+      "apk_sha256": "c775c4441f724f91c4bf972c13b9d06092aac48341823c0b4574345915e110ae",
+      "errors": []
+    },
+    {
+      "name": "authority-unit-presentation-device-01",
+      "checks": 40969,
+      "failures": 0,
+      "receipt_sha256": "bc681c9b94053c09634ac6f8b833f85eb7eb9e6efb16c0fbc759a954d930c3f4",
+      "apk_sha256": "c775c4441f724f91c4bf972c13b9d06092aac48341823c0b4574345915e110ae",
+      "errors": []
+    },
+    {
+      "name": "authority-motion-records-device-01",
+      "checks": 10221,
+      "failures": 0,
+      "receipt_sha256": "b072a657fe86b0b0a32fe99fb6cf50cd0975782ee433b5fc06eebab29fc526af",
+      "apk_sha256": "c775c4441f724f91c4bf972c13b9d06092aac48341823c0b4574345915e110ae",
+      "errors": []
+    }
+  ],
+  "artifacts": {
+    "android": {
+      "private_instrumented": false,
+      "engine_sha256": "424eaf73630ec110faf614f550f8047c24a78e224211df45d8b957bf03b7cc79",
+      "native_sha256": "3c1339c9fe553725a75b81b0602018f9daaf2a13ae39508da9b224fa385b0f56",
+      "apk_sha256": "c775c4441f724f91c4bf972c13b9d06092aac48341823c0b4574345915e110ae",
+      "changes": [
+        "Experiment: native authority placement batch with shared terrain state and typed spline samples",
+        "Transforms, animation speed, tick cadence, graphics and production engine preserved",
+        "Custom scripts, missing native state, legacy smoothing and chunk transitions retain script fallbacks"
+      ],
+      "base_commit": "7aa3d0762c0bd4e2c5021d20c2fb3ed64020dc1a",
+      "accepted": false,
+      "decision": "Rejected: Original1x whole gameplay52.30FPS versus52.41control. Use productionAPK47."
+    },
+    "linux": {
+      "seconds": 5.972618875995977,
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--headless",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+        "--export-release",
+        "Linux",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/throughput-authority-placement01/CPU.x86_64"
+      ],
+      "engine_source": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/fast-runtime.x86_64",
+      "errors": [],
+      "sha256": {
+        "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+        "CPU.pck": "344b751b474750202b8f3b1559a5939c75ce6ecd88257d4eaa9319a905aecb24",
+        "libterrain_search.so": "7e68a39787f48b583e1db02c1dea915dfa91b906aa3b9eeb51fe7e696f54b223"
+      }
+    }
+  },
+  "source_freeze": "authority-placement-v1-source-freeze.json",
+  "acceptance_rule": "Repeated complete-gameplay gain required; exact numerical parity alone or a faster isolated placement stage is insufficient. Whole simulation test is a separate regression/throughput metric.",
+  "comparison": {
+    "order": [
+      "authority-original-loop-candidate-60-01",
+      "authority-original-loop-control-60-01",
+      "authority-original-loop-control-60-02",
+      "authority-original-loop-candidate-60-02"
+    ],
+    "control_median_fps": 52.4105280440932,
+    "candidate_median_fps": 52.3004723568777,
+    "change_percent": -0.20998774735280223,
+    "seconds_per_run": 60,
+    "runs": [
+      {
+        "name": "authority-original-loop-candidate-60-01",
+        "fps": 52.1454702968135,
+        "frame_ms": {
+          "max": 52.899,
+          "p50": 17.982,
+          "p95": 26.01,
+          "p99": 30.117
+        },
+        "sim_seconds": 59.8949999999997,
+        "wall_seconds": 60.005212
+      },
+      {
+        "name": "authority-original-loop-control-60-01",
+        "fps": 50.8727696027253,
+        "frame_ms": {
+          "max": 55.668,
+          "p50": 18.251,
+          "p95": 27.687,
+          "p99": 31.663
+        },
+        "sim_seconds": 59.8949999999997,
+        "wall_seconds": 60.012459
+      },
+      {
+        "name": "authority-original-loop-control-60-02",
+        "fps": 53.9482864854611,
+        "frame_ms": {
+          "max": 53.064,
+          "p50": 17.469,
+          "p95": 25.059,
+          "p99": 28.625
+        },
+        "sim_seconds": 59.9499999999997,
+        "wall_seconds": 60.020442
+      },
+      {
+        "name": "authority-original-loop-candidate-60-02",
+        "fps": 52.4554744169419,
+        "frame_ms": {
+          "max": 55.507,
+          "p50": 17.987,
+          "p95": 25.727,
+          "p99": 30.186
+        },
+        "sim_seconds": 59.9499999999997,
+        "wall_seconds": 60.012802
+      }
+    ]
+  },
+  "decision": "Do not retain the extra native presentation code. Exact placement tests pass, but Retroid median FPS is unchanged/slightly lower. The single Linux4K pair is insufficient to establish a separate desktop gain.",
+  "complete_simulation": "No new throughput claim or retained CPU implementation; all520game files are restored byte-for-byte to7aa3d07.",
+  "cleanup": {
+    "installed_private_apk": 47,
+    "apk_sha256": "a36d80d5cc26fc4c4e68585856bbf65006a1b887b744e9721fce13656ed5f21f",
+    "production_engine_sha256": "424eaf73630ec110faf614f550f8047c24a78e224211df45d8b957bf03b7cc79",
+    "benchmark_autorun_disabled": true,
+    "archived_benchmark": "files/bench-disabled-authority-placement48.json",
+    "private_processes_remaining": false,
+    "restored_source_files": 520,
+    "rejected_experiment_apk": 48,
+    "rejected_source": "authority-placement-experiment/rejected.patch",
+    "incremental_build_caches": "Linux/ARM output restored to accepted binaries; rejected nav_kernel.cpp.o objects removed so the next native build must recompile restored source."
+  },
+  "retroid_details": [
+    {
+      "name": "authority-original-loop-candidate-60-01",
+      "apk_sha256": "c775c4441f724f91c4bf972c13b9d06092aac48341823c0b4574345915e110ae",
+      "result_sha256": "8fdf40045c35b86bbe221b40fae470954d42875a692a156f763d0a3355c3efa8",
+      "receipt_sha256": "a22b2a18aa7de67088308115f842ec2efcc7e63bcbf968e8eddc5d6faf486fa9",
+      "all_party_alive": true,
+      "units": 415,
+      "options_sha256": "e13ff12b715cc3a42157ef1775511be6fc527e17a6abeddbb3831b0f8472e7ba",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "render_scale": 0.75,
+      "original_look": true,
+      "single_player_worker": true,
+      "renderer": "gl_compatibility",
+      "errors": []
+    },
+    {
+      "name": "authority-original-loop-control-60-01",
+      "apk_sha256": "a36d80d5cc26fc4c4e68585856bbf65006a1b887b744e9721fce13656ed5f21f",
+      "result_sha256": "98699d2401a089d93039b46871ff7a86c449437f8b009cef7e572868e530e4d3",
+      "receipt_sha256": "9055b8d9e46da2120d656bd030e64a8c5bec31441ed69d73f4d6cdb7357df118",
+      "all_party_alive": true,
+      "units": 415,
+      "options_sha256": "e13ff12b715cc3a42157ef1775511be6fc527e17a6abeddbb3831b0f8472e7ba",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "render_scale": 0.75,
+      "original_look": true,
+      "single_player_worker": true,
+      "renderer": "gl_compatibility",
+      "errors": []
+    },
+    {
+      "name": "authority-original-loop-control-60-02",
+      "apk_sha256": "a36d80d5cc26fc4c4e68585856bbf65006a1b887b744e9721fce13656ed5f21f",
+      "result_sha256": "684fcf1513ec1c8b33aa434cd4ceb8f184bd72338c72c8bae1032e04a46e795b",
+      "receipt_sha256": "1de319acf86e75cecf77c2315b7c7230adb5ccd4357b0c6dee882e3ba822312e",
+      "all_party_alive": true,
+      "units": 415,
+      "options_sha256": "e13ff12b715cc3a42157ef1775511be6fc527e17a6abeddbb3831b0f8472e7ba",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "render_scale": 0.75,
+      "original_look": true,
+      "single_player_worker": true,
+      "renderer": "gl_compatibility",
+      "errors": []
+    },
+    {
+      "name": "authority-original-loop-candidate-60-02",
+      "apk_sha256": "c775c4441f724f91c4bf972c13b9d06092aac48341823c0b4574345915e110ae",
+      "result_sha256": "5dd3cab31956b0898f76d0fec397ac0b84b973430ce1db88bff1f0b1a551c7a8",
+      "receipt_sha256": "633772c90a91918cfec54d80440c6749dcf0788661ac683860c171a863846132",
+      "all_party_alive": true,
+      "units": 415,
+      "options_sha256": "e13ff12b715cc3a42157ef1775511be6fc527e17a6abeddbb3831b0f8472e7ba",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "render_scale": 0.75,
+      "original_look": true,
+      "single_player_worker": true,
+      "renderer": "gl_compatibility",
+      "errors": []
+    }
+  ],
+  "desktop_pair": [
+    {
+      "name": "authority-desktop-4k-control-01",
+      "fps": 62.07441841227569,
+      "wall_seconds": 60.008617,
+      "sim_seconds": 119.790000000007,
+      "frame_ms": {
+        "max": 145.013,
+        "mean": 16.1096593288591,
+        "p50": 15.418,
+        "p95": 24.156
+      },
+      "ten_second_fps": [
+        46.9,
+        65.3,
+        64.8,
+        64.9,
+        65.0,
+        65.5
+      ],
+      "first_party_death_sim_seconds": 21.6699999999999,
+      "settings": {
+        "viewport_size": [
+          3840,
+          2160
+        ],
+        "render_scale": 1.0,
+        "speed": 2,
+        "players": 2,
+        "units": 415,
+        "renderer": "forward_plus",
+        "options": {
+          "aim_press_once": 1,
+          "auto_exit": 0,
+          "auto_graphics": 1,
+          "autosave": 0,
+          "brightness": 50,
+          "cam_follow": 1,
+          "cam_pan_speed": 50,
+          "cam_rotate_speed": 50,
+          "cam_see_through": 1,
+          "cam_wasd": 1,
+          "cam_zoom_speed": 50,
+          "camera_reverse_x": 0,
+          "camera_reverse_y": 0,
+          "camera_style": 1,
+          "confine_mouse": 0,
+          "contrast": 50,
+          "coop_clock": 1,
+          "coop_full_xp": 1,
+          "coop_player_names": 1,
+          "coop_scale": 2,
+          "coop_share_loot": 1,
+          "difficulty": 0,
+          "display_mode": 0,
+          "distant_ai": 0,
+          "enemy_hp_bars": 1,
+          "footprints": 1,
+          "fps_limit": 0,
+          "full_screen": 0,
+          "gamma": 50,
+          "gfx_bloom": 1,
+          "gfx_contact_shadows": 1,
+          "gfx_detailed_heads": 1,
+          "gfx_far_view": 1,
+          "gfx_firelight": 1,
+          "gfx_foliage_light": 1,
+          "gfx_grass": 1,
+          "gfx_hd_textures": 1,
+          "gfx_heat_haze": 1,
+          "gfx_lava_light": 1,
+          "gfx_lit_particles": 1,
+          "gfx_materials": 1,
+          "gfx_severed_limbs": 1,
+          "gfx_sharp_units": 1,
+          "gfx_sky": 1,
+          "gfx_soft_ground": 1,
+          "gfx_soft_particles": 1,
+          "gfx_ssao": 1,
+          "gfx_terrain": 1,
+          "gfx_torch_glow": 1,
+          "gfx_volumetric": 1,
+          "gfx_water": 1,
+          "gfx_water_reflections": 2,
+          "gfx_weather_surfaces": 1,
+          "gfx_wind": 1,
+          "item_icon_fit": 1,
+          "marks": 1,
+          "mechanism_motion": 0,
+          "merc_travel": 0,
+          "net_upnp": 0,
+          "net_websocket": 0,
+          "pad_cursor_speed": 50,
+          "pad_deadzone": 13,
+          "pad_enabled": 1,
+          "pad_glyphs": 0,
+          "pad_gyro": 0,
+          "pad_gyro_sensitivity": 50,
+          "pad_light": 1,
+          "pad_rumble": 70,
+          "pad_swap_sticks": 0,
+          "pad_target_radius": 6,
+          "pad_wheel_pause": 1,
+          "path_through": 1,
+          "phys_interp": 1,
+          "power_kbd": 25,
+          "power_mouse": 50,
+          "q_aa": 3,
+          "q_aniso": 4,
+          "q_shadow_fit": 1,
+          "q_shadows": 3,
+          "render_scale": 4,
+          "renderer": 0,
+          "resolution": 16,
+          "reverse_stereo": 0,
+          "revive": 1,
+          "rubber_select": 2,
+          "scroll_border": 0,
+          "select_type": 0,
+          "shadow_buildings": 1,
+          "shadow_flora": 1,
+          "show_flying_hp": 1,
+          "show_fps": 0,
+          "show_path": 1,
+          "show_tutorial": 1,
+          "smile_faces": 1,
+          "sp_death_notice": 1,
+          "sp_full_xp": 0,
+          "start_zones": 1,
+          "switch_filters": 1,
+          "tooltip_time": 2,
+          "trap_mouse": 0,
+          "ui_active_buttons": 1,
+          "unit_fog": 1,
+          "village_start_view": 0,
+          "volume_sfx": 100,
+          "volume_stream": 100,
+          "volume_voice": 100,
+          "vsync": 0
+        }
+      },
+      "performance_acceptance_eligible": true,
+      "pck_sha256": "c6532b25bc0da7b9803d38191a6c1dcd328bbaab66c740b3b3a2714c6d8b9edb",
+      "native_sha256": "459d0cdcb8c71e147cf5e0094cff43163dda93e4c8a6df64ff3efd13addb113b",
+      "result_sha256": "709535f58a55407962dc55edb835af6f3ebee47822b806ef1a9c4aeb69e2ecd4",
+      "receipt_sha256": "e8d1b9deb0ffd6569b1b10f2e4ffc5a581f995d1ea77f2ab57986cefe0c6f3de"
+    },
+    {
+      "name": "authority-desktop-4k-candidate-01",
+      "fps": 64.54313261069022,
+      "wall_seconds": 60.006384,
+      "sim_seconds": 119.900000000007,
+      "frame_ms": {
+        "max": 125.069,
+        "mean": 15.4934828298477,
+        "p50": 14.78,
+        "p95": 23.409
+      },
+      "ten_second_fps": [
+        49.6,
+        67.5,
+        67.1,
+        67.7,
+        67.7,
+        67.6
+      ],
+      "first_party_death_sim_seconds": 21.9449999999999,
+      "settings": {
+        "viewport_size": [
+          3840,
+          2160
+        ],
+        "render_scale": 1.0,
+        "speed": 2,
+        "players": 2,
+        "units": 415,
+        "renderer": "forward_plus",
+        "options": {
+          "aim_press_once": 1,
+          "auto_exit": 0,
+          "auto_graphics": 1,
+          "autosave": 0,
+          "brightness": 50,
+          "cam_follow": 1,
+          "cam_pan_speed": 50,
+          "cam_rotate_speed": 50,
+          "cam_see_through": 1,
+          "cam_wasd": 1,
+          "cam_zoom_speed": 50,
+          "camera_reverse_x": 0,
+          "camera_reverse_y": 0,
+          "camera_style": 1,
+          "confine_mouse": 0,
+          "contrast": 50,
+          "coop_clock": 1,
+          "coop_full_xp": 1,
+          "coop_player_names": 1,
+          "coop_scale": 2,
+          "coop_share_loot": 1,
+          "difficulty": 0,
+          "display_mode": 0,
+          "distant_ai": 0,
+          "enemy_hp_bars": 1,
+          "footprints": 1,
+          "fps_limit": 0,
+          "full_screen": 0,
+          "gamma": 50,
+          "gfx_bloom": 1,
+          "gfx_contact_shadows": 1,
+          "gfx_detailed_heads": 1,
+          "gfx_far_view": 1,
+          "gfx_firelight": 1,
+          "gfx_foliage_light": 1,
+          "gfx_grass": 1,
+          "gfx_hd_textures": 1,
+          "gfx_heat_haze": 1,
+          "gfx_lava_light": 1,
+          "gfx_lit_particles": 1,
+          "gfx_materials": 1,
+          "gfx_severed_limbs": 1,
+          "gfx_sharp_units": 1,
+          "gfx_sky": 1,
+          "gfx_soft_ground": 1,
+          "gfx_soft_particles": 1,
+          "gfx_ssao": 1,
+          "gfx_terrain": 1,
+          "gfx_torch_glow": 1,
+          "gfx_volumetric": 1,
+          "gfx_water": 1,
+          "gfx_water_reflections": 2,
+          "gfx_weather_surfaces": 1,
+          "gfx_wind": 1,
+          "item_icon_fit": 1,
+          "marks": 1,
+          "mechanism_motion": 0,
+          "merc_travel": 0,
+          "net_upnp": 0,
+          "net_websocket": 0,
+          "pad_cursor_speed": 50,
+          "pad_deadzone": 13,
+          "pad_enabled": 1,
+          "pad_glyphs": 0,
+          "pad_gyro": 0,
+          "pad_gyro_sensitivity": 50,
+          "pad_light": 1,
+          "pad_rumble": 70,
+          "pad_swap_sticks": 0,
+          "pad_target_radius": 6,
+          "pad_wheel_pause": 1,
+          "path_through": 1,
+          "phys_interp": 1,
+          "power_kbd": 25,
+          "power_mouse": 50,
+          "q_aa": 3,
+          "q_aniso": 4,
+          "q_shadow_fit": 1,
+          "q_shadows": 3,
+          "render_scale": 4,
+          "renderer": 0,
+          "resolution": 16,
+          "reverse_stereo": 0,
+          "revive": 1,
+          "rubber_select": 2,
+          "scroll_border": 0,
+          "select_type": 0,
+          "shadow_buildings": 1,
+          "shadow_flora": 1,
+          "show_flying_hp": 1,
+          "show_fps": 0,
+          "show_path": 1,
+          "show_tutorial": 1,
+          "smile_faces": 1,
+          "sp_death_notice": 1,
+          "sp_full_xp": 0,
+          "start_zones": 1,
+          "switch_filters": 1,
+          "tooltip_time": 2,
+          "trap_mouse": 0,
+          "ui_active_buttons": 1,
+          "unit_fog": 1,
+          "village_start_view": 0,
+          "volume_sfx": 100,
+          "volume_stream": 100,
+          "volume_voice": 100,
+          "vsync": 0
+        }
+      },
+      "performance_acceptance_eligible": true,
+      "pck_sha256": "344b751b474750202b8f3b1559a5939c75ce6ecd88257d4eaa9319a905aecb24",
+      "native_sha256": "7e68a39787f48b583e1db02c1dea915dfa91b906aa3b9eeb51fe7e696f54b223",
+      "result_sha256": "39246961cdfc9882d59d3590205f75500d20fe27488eab8cddaf1275c63ffa45",
+      "receipt_sha256": "375f9c200084ba85bc550009d7abaf4024fc4748c0a3cfcefce8a063cd1b2801"
+    }
+  ],
+  "desktop_pair_limit": "One pair, Linux RTX3090/Vulkan, not Windows RTX4090mobile/D3D12. Party death changes workload after the opening fight. Do not extrapolate its average to sustained living gameplay.",
+  "archived_experiment": {
+    "patch": "authority-placement-experiment/rejected.patch",
+    "patch_sha256": "9e8d7a9c10df5ad4191275a31dd03420b934aa72cc7b94f3ab752f08ca5dc1ac",
+    "fixture": "authority-placement-experiment/authority_placement.gd",
+    "fixture_sha256": "d99ce9dbe978485552166ead6b927a2305772406ce7d79deadb7e832a984d38f",
+    "candidate_source_freeze_sha256": "9c8630ebd0ddde44d78a0bb707fecdf1af9fef45d80a449fecb697762444f2bb"
+  },
+  "desktop_living_loop_attempts": [
+    {
+      "name": "redraw-desktop-4k-living-loop-180-01",
+      "eligible": false,
+      "exit_code": -15,
+      "foreign_games": {
+        "2327585": {
+          "exe": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "cmd": "godot-4 --headless --path remake --script tools/verify_resource_sites.gd ",
+          "ppid": 2327584,
+          "rss_kib": 55936
+        }
+      },
+      "receipt_sha256": "b20fb9602ad5db83050c601ac5f8fce6de50d6150747ce7fa81f5ff7b808b935"
+    },
+    {
+      "name": "redraw-desktop-4k-living-loop-180-02",
+      "started": false,
+      "performance_acceptance_eligible": false,
+      "reason": "An unrelated Godot process started between idle inspection and harness preflight; harness refused to launch."
+    },
+    {
+      "name": "redraw-desktop-4k-living-loop-180-03",
+      "eligible": false,
+      "exit_code": -15,
+      "foreign_games": {
+        "2332377": {
+          "exe": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "cmd": "godot-4 --headless --path remake --script tools/verify_first_shops.gd ",
+          "ppid": 2332374,
+          "rss_kib": 55976
+        },
+        "2332389": {
+          "exe": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "cmd": "godot-4 --headless --path remake --script tools/verify_rune_shops.gd ",
+          "ppid": 2332388,
+          "rss_kib": 56008
+        }
+      },
+      "receipt_sha256": "c24fe58fd23babf0f960bf07ffea45a49dff7b6f70b2e4b0d5bc9c572dfa660d"
+    }
+  ],
+  "foreground_profile": {
+    "name": "redraw-original-loop-script-profile-01",
+    "base_commit": "7aa3d07",
+    "diagnostic_only": true,
+    "acceptance_fps": false,
+    "sample_seconds": 30,
+    "main_thread_cpu_seconds": 26.94,
+    "samples": 5388,
+    "raw_sha256": "2211733ef09ae6344c01a9bfef9292718325445f5394fc5b731b9dcad2011a3d",
+    "summary_file": "profiles/redraw-original-loop-script-profile-01.summary.json",
+    "main_thread_summary": {
+      "samples": 5388,
+      "approx_cpu_seconds": 26.94,
+      "self": [
+        [
+          "[outside script]",
+          2180
+        ],
+        [
+          "res://src/game/unit.gd:anim_flush",
+          181
+        ],
+        [
+          "res://src/game/unit_sounds.gd:tick",
+          166
+        ],
+        [
+          "res://src/game/world.gd:_process",
+          109
+        ],
+        [
+          "res://src/game/fx/particle_system.gd:_draw",
+          97
+        ],
+        [
+          "res://src/game/fx/particle_system.gd:_tick",
+          82
+        ],
+        [
+          "res://src/game/gfx.gd:update_pass_lights",
+          69
+        ],
+        [
+          "res://src/game/fx/ground_marks.gd:_step_frames",
+          62
+        ],
+        [
+          "res://src/game/levers.gd:usable",
+          57
+        ],
+        [
+          "res://src/ei/anim_part.gd:_apply_key",
+          56
+        ],
+        [
+          "res://src/game/unit.gd:_present_frame",
+          53
+        ],
+        [
+          "res://src/ui/touch_actions.gd:_process",
+          52
+        ],
+        [
+          "res://src/ui/hud_dial.gd:_hand",
+          51
+        ],
+        [
+          "res://src/game/unit.gd:apply_snapshot",
+          50
+        ],
+        [
+          "res://src/ei/unit_model.gd:_match",
+          50
+        ],
+        [
+          "res://src/game/game.gd:pick_lever",
+          49
+        ],
+        [
+          "res://src/game/gfx.gd:<anonymous lambda>",
+          48
+        ],
+        [
+          "res://src/ui/hud_dial.gd:_disc",
+          47
+        ],
+        [
+          "res://src/ui/minimap.gd:_draw_marks",
+          47
+        ],
+        [
+          "res://src/game/world.gd:_step_hidden_presentations",
+          44
+        ],
+        [
+          "res://src/game/fx/ground_marks.gd:_drain_units",
+          38
+        ],
+        [
+          "res://src/game/unit.gd:_can_sleep_presentation",
+          35
+        ],
+        [
+          "res://src/ei/game_data.gd:option",
+          33
+        ],
+        [
+          "res://src/game/unit.gd:_update_pose",
+          33
+        ],
+        [
+          "res://src/ei/anim_part.gd:@animation_key_setter",
+          33
+        ],
+        [
+          "res://src/ei/keymap.gd:held",
+          32
+        ],
+        [
+          "res://src/game/unit.gd:_advance_sleeping_presentation",
+          31
+        ],
+        [
+          "res://src/game/unit.gd:client_tick_effects",
+          28
+        ],
+        [
+          "res://src/game/unit_fog.gd:_process",
+          27
+        ],
+        [
+          "res://src/ui/minimap.gd:_draw",
+          25
+        ]
+      ],
+      "inclusive": [
+        [
+          "res://src/game/world.gd:_process",
+          566
+        ],
+        [
+          "res://src/game/unit.gd:_present_frame",
+          489
+        ],
+        [
+          "res://src/game/world.gd:_step_hidden_presentations",
+          400
+        ],
+        [
+          "res://src/game/unit.gd:_advance_sleeping_presentation",
+          364
+        ],
+        [
+          "res://src/game/unit.gd:_step_sleeping_presentation",
+          356
+        ],
+        [
+          "res://src/game/game.gd:_process",
+          347
+        ],
+        [
+          "res://src/game/unit.gd:anim_flush",
+          292
+        ],
+        [
+          "res://src/game/fx/particle_system.gd:_process",
+          267
+        ],
+        [
+          "res://src/game/session.gd:_rpc_snap",
+          249
+        ],
+        [
+          "res://src/game/session.gd:_apply_snap",
+          249
+        ],
+        [
+          "res://src/game/unit.gd:apply_snapshot",
+          241
+        ],
+        [
+          "res://src/game/game_sound.gd:_process",
+          215
+        ],
+        [
+          "res://src/game/unit.gd:_process",
+          202
+        ],
+        [
+          "res://src/game/game.gd:_update_cursor",
+          187
+        ],
+        [
+          "res://src/game/unit_sounds.gd:tick",
+          174
+        ],
+        [
+          "res://src/game/game.gd:_update_daylight",
+          158
+        ],
+        [
+          "res://src/game/fx/particle_system.gd:_tick",
+          144
+        ],
+        [
+          "res://src/ui/minimap.gd:_draw",
+          133
+        ],
+        [
+          "res://src/game/fx/ground_marks.gd:_process",
+          131
+        ],
+        [
+          "res://src/ui/hud_dial.gd:_draw",
+          130
+        ],
+        [
+          "res://src/game/fx/particle_system.gd:_draw",
+          122
+        ],
+        [
+          "res://src/game/fx/ground_marks.gd:_drain_units",
+          119
+        ],
+        [
+          "res://src/game/gfx.gd:update_pass_lights",
+          117
+        ],
+        [
+          "res://src/game/game.gd:pick_lever",
+          97
+        ],
+        [
+          "res://src/ui/camera_rig.gd:_process",
+          94
+        ],
+        [
+          "res://src/game/unit_fog.gd:_process",
+          93
+        ],
+        [
+          "res://src/ui/camera_rig.gd:_process_modern",
+          91
+        ],
+        [
+          "res://src/game/fx/ground_marks.gd:_step_frames",
+          81
+        ],
+        [
+          "res://src/game/game.gd:pick_unit",
+          76
+        ],
+        [
+          "res://src/ei/unit_model.gd:pick",
+          66
+        ]
+      ]
+    },
+    "top_rows_per_category": 30,
+    "full_summary_sha256": "26f1f7e4bf5c3f6f54f519e16648091efc46215f31dc1fe74a572b63272787ed"
+  }
+}
