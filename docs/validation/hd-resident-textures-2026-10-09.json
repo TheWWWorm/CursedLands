@@ -1,0 +1,3071 @@
+{
+  "date": "2026-10-09",
+  "worktree": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008",
+  "branch": "improve/owned-renderer-wounds-textures",
+  "application_baseline": "ca0ab889955834846a551b1b67071415e246074f",
+  "qa_root": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident",
+  "engine_source_root": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-shadow-cache/engine-mobile-lock",
+  "engine_pinned_base": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+  "engine_note": "Same Linux engine on both sides, with the prior Mobile shader lifetime/lock patch. No new engine patch in this checkpoint.",
+  "candidate_pack_sha256": "c865b30128f1d790ece2e565c7638ec30df0f5899862008d42c710122752d21b",
+  "baseline_pack_sha256": "e0f0fd37d7c95eab2ba4305020efb2f9c2007b1cdc2267d84487c4d19d110f2d",
+  "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+  "source_sha256": {
+    "game/src/game/gfx.gd": "eecb46494bf78c59fbf80c3001b63e69fbd473bd6d2b9425450a7fbca28ff604",
+    "game/src/game/tex_upscale.gd": "8bf0fd60820485b40a4769dbd3943b940bdd635e099149281ac45ed55656fb63",
+    "game/src/game/tex_upscale_texture.gd": "8784786b9cd5a9c0b350b417325738807eea3c2b4655b4cd1da806dc6a190045",
+    "game/src/game/tex_upscale_texture.gd.uid": "ff5cb790ab9e61d3de44137063fa874a55bc504037b7f6f1fbb9c2eee39f6082",
+    "game/src/platform/data_switch.gd": "9e56b62e78aa15698fa43926044ed0abadc152534fefc9695599e7847dfb4867",
+    "tools/tests/hd_resident_texture.gd": "4423b7b5f59dc43d85a18f5edf56842a893d9862c30bb435653e7c80e552ac83",
+    "tools/benchmarks/hd_texture_scene.gd": "b5ddadc39a9e5482fb2420abba76e90068be38f7ba0b7ca2825004a91778600e"
+  },
+  "engine_source_sha256": {
+    "core/io/image.cpp": "e38d8ac2275202a8de9978fba3059ca9dc69b127c2536adab842fdc341095611",
+    "scene/resources/texture_rd.cpp": "559ae8d277275dbaffbd2dbfe35bfbcd6fd8efa67cfab100143128f17e38e043",
+    "servers/rendering/renderer_rd/storage_rd/texture_storage.cpp": "eba3d47108483c89106548b1af42f3754aaa1151301720cc67e102ec539d3f94",
+    "servers/rendering/rendering_server_default.h": "d6b8278026fbaf10e64fcec3a6b10b5c84730c7dac931d60d7c00b9a47933de5",
+    "core/object/worker_thread_pool.cpp": "34c2c18535ea8c6f86b658f07921e891becbdd6a9deec8c99fdb8e79b54b16a8"
+  },
+  "check_totals": {
+    "baseline": 30,
+    "candidate": 6405
+  },
+  "runs": [
+    {
+      "name": "bytes-forward-v3",
+      "side": "candidate",
+      "receipt": {
+        "tool_sha256_at_start": "4423b7b5f59dc43d85a18f5edf56842a893d9862c30bb435653e7c80e552ac83",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "c865b30128f1d790ece2e565c7638ec30df0f5899862008d42c710122752d21b",
+        "termination_reason": null,
+        "timeout_sec": 45,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/candidate/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "forward_plus",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/hd_resident_texture.gd"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 6.063053763995413,
+        "other_render_processes_at_start": [
+          {
+            "pid": 3872570,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 3872958,
+            "executable": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps56/CPU.x86_64"
+          },
+          {
+            "pid": 3873009,
+            "executable": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps56/CPU.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 3872570,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 3872958,
+            "executable": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps56/CPU.x86_64"
+          },
+          {
+            "pid": 3873009,
+            "executable": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps56/CPU.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/cache"
+        },
+        "warnings": [],
+        "errors": [],
+        "png_sha256": {}
+      },
+      "result": {
+        "checks": 127,
+        "failures": 0,
+        "renderer": "forward_plus",
+        "rows": [
+          {
+            "changed_bytes": 0,
+            "name": "(1, 1)",
+            "output_bytes": 20,
+            "peak_delta": 0,
+            "source_size": "(1, 1)",
+            "wrap": false
+          },
+          {
+            "changed_bytes": 0,
+            "name": "(1, 1)",
+            "output_bytes": 20,
+            "peak_delta": 0,
+            "source_size": "(1, 1)",
+            "wrap": true
+          },
+          {
+            "changed_bytes": 0,
+            "name": "(1, 7)",
+            "output_bytes": 156,
+            "peak_delta": 0,
+            "source_size": "(1, 7)",
+            "wrap": false
+          },
+          {
+            "changed_bytes": 0,
+            "name": "(1, 7)",
+            "output_bytes": 156,
+            "peak_delta": 0,
+            "source_size": "(1, 7)",
+            "wrap": true
+          },
+          {
+            "changed_bytes": 0,
+            "name": "(7, 1)",
+            "output_bytes": 156,
+            "peak_delta": 0,
+            "source_size": "(7, 1)",
+            "wrap": false
+          },
+          {
+            "changed_bytes": 0,
+            "name": "(7, 1)",
+            "output_bytes": 156,
+            "peak_delta": 0,
+            "source_size": "(7, 1)",
+            "wrap": true
+          },
+          {
+            "changed_bytes": 0,
+            "name": "(3, 5)",
+            "output_bytes": 312,
+            "peak_delta": 0,
+            "source_size": "(3, 5)",
+            "wrap": false
+          },
+          {
+            "changed_bytes": 0,
+            "name": "(3, 5)",
+            "output_bytes": 312,
+            "peak_delta": 0,
+            "source_size": "(3, 5)",
+            "wrap": true
+          },
+          {
+            "changed_bytes": 0,
+            "name": "(32, 64)",
+            "output_bytes": 43692,
+            "peak_delta": 0,
+            "source_size": "(32, 64)",
+            "wrap": false
+          },
+          {
+            "changed_bytes": 0,
+            "name": "(32, 64)",
+            "output_bytes": 43692,
+            "peak_delta": 0,
+            "source_size": "(32, 64)",
+            "wrap": true
+          },
+          {
+            "changed_bytes": 0,
+            "name": "govenorhouse00",
+            "output_bytes": 1398100,
+            "peak_delta": 0,
+            "source_size": "(256, 256)",
+            "wrap": true
+          },
+          {
+            "changed_bytes": 0,
+            "name": "tree02",
+            "output_bytes": 5592404,
+            "peak_delta": 0,
+            "source_size": "(512, 512)",
+            "wrap": true
+          },
+          {
+            "changed_bytes": 0,
+            "name": "rikarrowsmoke",
+            "output_bytes": 1398100,
+            "peak_delta": 0,
+            "source_size": "(256, 256)",
+            "wrap": true
+          },
+          {
+            "changed_bytes": 0,
+            "name": "after restart",
+            "output_bytes": 340,
+            "peak_delta": 0,
+            "source_size": "(4, 4)",
+            "wrap": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "bytes-mobile-v3",
+      "side": "candidate",
+      "receipt": {
+        "tool_sha256_at_start": "4423b7b5f59dc43d85a18f5edf56842a893d9862c30bb435653e7c80e552ac83",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "c865b30128f1d790ece2e565c7638ec30df0f5899862008d42c710122752d21b",
+        "termination_reason": null,
+        "timeout_sec": 45,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/candidate/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "mobile",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/hd_resident_texture.gd"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 6.061985214997549,
+        "other_render_processes_at_start": [
+          {
+            "pid": 3872570,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 3872958,
+            "executable": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps56/CPU.x86_64"
+          },
+          {
+            "pid": 3873009,
+            "executable": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps56/CPU.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 3872570,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 3872958,
+            "executable": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps56/CPU.x86_64"
+          },
+          {
+            "pid": 3873009,
+            "executable": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps56/CPU.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/cache"
+        },
+        "warnings": [],
+        "errors": [],
+        "png_sha256": {}
+      },
+      "result": {
+        "checks": 127,
+        "failures": 0,
+        "renderer": "mobile",
+        "rows": [
+          {
+            "changed_bytes": 0,
+            "name": "(1, 1)",
+            "output_bytes": 20,
+            "peak_delta": 0,
+            "source_size": "(1, 1)",
+            "wrap": false
+          },
+          {
+            "changed_bytes": 0,
+            "name": "(1, 1)",
+            "output_bytes": 20,
+            "peak_delta": 0,
+            "source_size": "(1, 1)",
+            "wrap": true
+          },
+          {
+            "changed_bytes": 0,
+            "name": "(1, 7)",
+            "output_bytes": 156,
+            "peak_delta": 0,
+            "source_size": "(1, 7)",
+            "wrap": false
+          },
+          {
+            "changed_bytes": 0,
+            "name": "(1, 7)",
+            "output_bytes": 156,
+            "peak_delta": 0,
+            "source_size": "(1, 7)",
+            "wrap": true
+          },
+          {
+            "changed_bytes": 0,
+            "name": "(7, 1)",
+            "output_bytes": 156,
+            "peak_delta": 0,
+            "source_size": "(7, 1)",
+            "wrap": false
+          },
+          {
+            "changed_bytes": 0,
+            "name": "(7, 1)",
+            "output_bytes": 156,
+            "peak_delta": 0,
+            "source_size": "(7, 1)",
+            "wrap": true
+          },
+          {
+            "changed_bytes": 0,
+            "name": "(3, 5)",
+            "output_bytes": 312,
+            "peak_delta": 0,
+            "source_size": "(3, 5)",
+            "wrap": false
+          },
+          {
+            "changed_bytes": 0,
+            "name": "(3, 5)",
+            "output_bytes": 312,
+            "peak_delta": 0,
+            "source_size": "(3, 5)",
+            "wrap": true
+          },
+          {
+            "changed_bytes": 0,
+            "name": "(32, 64)",
+            "output_bytes": 43692,
+            "peak_delta": 0,
+            "source_size": "(32, 64)",
+            "wrap": false
+          },
+          {
+            "changed_bytes": 0,
+            "name": "(32, 64)",
+            "output_bytes": 43692,
+            "peak_delta": 0,
+            "source_size": "(32, 64)",
+            "wrap": true
+          },
+          {
+            "changed_bytes": 0,
+            "name": "govenorhouse00",
+            "output_bytes": 1398100,
+            "peak_delta": 0,
+            "source_size": "(256, 256)",
+            "wrap": true
+          },
+          {
+            "changed_bytes": 0,
+            "name": "tree02",
+            "output_bytes": 5592404,
+            "peak_delta": 0,
+            "source_size": "(512, 512)",
+            "wrap": true
+          },
+          {
+            "changed_bytes": 0,
+            "name": "rikarrowsmoke",
+            "output_bytes": 1398100,
+            "peak_delta": 0,
+            "source_size": "(256, 256)",
+            "wrap": true
+          },
+          {
+            "changed_bytes": 0,
+            "name": "after restart",
+            "output_bytes": 340,
+            "peak_delta": 0,
+            "source_size": "(4, 4)",
+            "wrap": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "bytes-compat-v3",
+      "side": "candidate",
+      "receipt": {
+        "tool_sha256_at_start": "4423b7b5f59dc43d85a18f5edf56842a893d9862c30bb435653e7c80e552ac83",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "c865b30128f1d790ece2e565c7638ec30df0f5899862008d42c710122752d21b",
+        "termination_reason": null,
+        "timeout_sec": 45,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/candidate/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/hd_resident_texture.gd"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 3.308549667999614,
+        "other_render_processes_at_start": [
+          {
+            "pid": 3872570,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 3872958,
+            "executable": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps56/CPU.x86_64"
+          },
+          {
+            "pid": 3873009,
+            "executable": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps56/CPU.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 3872570,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 3872958,
+            "executable": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps56/CPU.x86_64"
+          },
+          {
+            "pid": 3873009,
+            "executable": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps56/CPU.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {}
+      },
+      "result": {
+        "checks": 7,
+        "failures": 0,
+        "renderer": "gl_compatibility",
+        "rows": []
+      }
+    },
+    {
+      "name": "bytes-headless-v3",
+      "side": "candidate",
+      "receipt": {
+        "tool_sha256_at_start": "4423b7b5f59dc43d85a18f5edf56842a893d9862c30bb435653e7c80e552ac83",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "c865b30128f1d790ece2e565c7638ec30df0f5899862008d42c710122752d21b",
+        "termination_reason": null,
+        "timeout_sec": 45,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/candidate/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/hd_resident_texture.gd"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 1.8077435110171791,
+        "other_render_processes_at_start": [
+          {
+            "pid": 3872570,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 3872958,
+            "executable": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps56/CPU.x86_64"
+          },
+          {
+            "pid": 3873009,
+            "executable": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps56/CPU.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 3872570,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 3872958,
+            "executable": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps56/CPU.x86_64"
+          },
+          {
+            "pid": 3873009,
+            "executable": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps56/CPU.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {}
+      },
+      "result": {
+        "checks": 6,
+        "failures": 0,
+        "renderer": "gl_compatibility",
+        "rows": []
+      }
+    },
+    {
+      "name": "bytes-separate-forward-v3",
+      "side": "candidate",
+      "receipt": {
+        "tool_sha256_at_start": "4423b7b5f59dc43d85a18f5edf56842a893d9862c30bb435653e7c80e552ac83",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "c865b30128f1d790ece2e565c7638ec30df0f5899862008d42c710122752d21b",
+        "termination_reason": null,
+        "timeout_sec": 45,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/candidate/CursedLands.x86_64",
+          "--render-thread",
+          "separate",
+          "--rendering-method",
+          "forward_plus",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/hd_resident_texture.gd"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 6.315288534999127,
+        "other_render_processes_at_start": [
+          {
+            "pid": 3872570,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 3872958,
+            "executable": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps56/CPU.x86_64"
+          },
+          {
+            "pid": 3873009,
+            "executable": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps56/CPU.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 3872570,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 3872958,
+            "executable": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps56/CPU.x86_64"
+          },
+          {
+            "pid": 3873009,
+            "executable": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps56/CPU.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/cache"
+        },
+        "warnings": [
+          "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+        ],
+        "errors": [],
+        "png_sha256": {}
+      },
+      "result": {
+        "checks": 127,
+        "failures": 0,
+        "renderer": "forward_plus",
+        "rows": [
+          {
+            "changed_bytes": 0,
+            "name": "(1, 1)",
+            "output_bytes": 20,
+            "peak_delta": 0,
+            "source_size": "(1, 1)",
+            "wrap": false
+          },
+          {
+            "changed_bytes": 0,
+            "name": "(1, 1)",
+            "output_bytes": 20,
+            "peak_delta": 0,
+            "source_size": "(1, 1)",
+            "wrap": true
+          },
+          {
+            "changed_bytes": 0,
+            "name": "(1, 7)",
+            "output_bytes": 156,
+            "peak_delta": 0,
+            "source_size": "(1, 7)",
+            "wrap": false
+          },
+          {
+            "changed_bytes": 0,
+            "name": "(1, 7)",
+            "output_bytes": 156,
+            "peak_delta": 0,
+            "source_size": "(1, 7)",
+            "wrap": true
+          },
+          {
+            "changed_bytes": 0,
+            "name": "(7, 1)",
+            "output_bytes": 156,
+            "peak_delta": 0,
+            "source_size": "(7, 1)",
+            "wrap": false
+          },
+          {
+            "changed_bytes": 0,
+            "name": "(7, 1)",
+            "output_bytes": 156,
+            "peak_delta": 0,
+            "source_size": "(7, 1)",
+            "wrap": true
+          },
+          {
+            "changed_bytes": 0,
+            "name": "(3, 5)",
+            "output_bytes": 312,
+            "peak_delta": 0,
+            "source_size": "(3, 5)",
+            "wrap": false
+          },
+          {
+            "changed_bytes": 0,
+            "name": "(3, 5)",
+            "output_bytes": 312,
+            "peak_delta": 0,
+            "source_size": "(3, 5)",
+            "wrap": true
+          },
+          {
+            "changed_bytes": 0,
+            "name": "(32, 64)",
+            "output_bytes": 43692,
+            "peak_delta": 0,
+            "source_size": "(32, 64)",
+            "wrap": false
+          },
+          {
+            "changed_bytes": 0,
+            "name": "(32, 64)",
+            "output_bytes": 43692,
+            "peak_delta": 0,
+            "source_size": "(32, 64)",
+            "wrap": true
+          },
+          {
+            "changed_bytes": 0,
+            "name": "govenorhouse00",
+            "output_bytes": 1398100,
+            "peak_delta": 0,
+            "source_size": "(256, 256)",
+            "wrap": true
+          },
+          {
+            "changed_bytes": 0,
+            "name": "tree02",
+            "output_bytes": 5592404,
+            "peak_delta": 0,
+            "source_size": "(512, 512)",
+            "wrap": true
+          },
+          {
+            "changed_bytes": 0,
+            "name": "rikarrowsmoke",
+            "output_bytes": 1398100,
+            "peak_delta": 0,
+            "source_size": "(256, 256)",
+            "wrap": true
+          },
+          {
+            "changed_bytes": 0,
+            "name": "after restart",
+            "output_bytes": 340,
+            "peak_delta": 0,
+            "source_size": "(4, 4)",
+            "wrap": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "map-baseline-bz2g-forward_plus-final",
+      "side": "baseline",
+      "receipt": {
+        "tool_sha256_at_start": "b5ddadc39a9e5482fb2420abba76e90068be38f7ba0b7ca2825004a91778600e",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "e0f0fd37d7c95eab2ba4305020efb2f9c2007b1cdc2267d84487c4d19d110f2d",
+        "termination_reason": null,
+        "timeout_sec": 50,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p1-wound-overlay/candidate/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "forward_plus",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/hd_texture_scene.gd",
+          "--hd-map=bz2g"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 5.3356493480096105,
+        "other_render_processes_at_start": [
+          {
+            "pid": 3873870,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 3873870,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/cache"
+        },
+        "warnings": [],
+        "errors": [],
+        "png_sha256": {
+          "hd-scene-bz2g-0.png": "9a435feb22ce6746fe2934e5bd73f630cf0f8d548b63f1c78cb0bc6e38db1e33",
+          "hd-scene-bz2g-1.png": "ae9448c34ca8db991ca1293a2446f1bd3e0eb8a284085cd8e1c3f18cbf61053f"
+        }
+      },
+      "result": {
+        "checks": 3,
+        "failures": 0,
+        "foliage_entries_after_clear": 3,
+        "live_after_clear": 0,
+        "live_after_figure_clear": 0,
+        "load_setup_us": 757276,
+        "map": "bz2g",
+        "renderer": "forward_plus",
+        "textures": {
+          "image_textures": 17,
+          "resident_textures": 0,
+          "rgba_mip_payload_bytes": 24816276
+        },
+        "views": [
+          {
+            "draws": 142,
+            "view": 0
+          },
+          {
+            "draws": 445,
+            "view": 1
+          }
+        ]
+      }
+    },
+    {
+      "name": "map-candidate-bz2g-forward_plus-final",
+      "side": "candidate",
+      "receipt": {
+        "tool_sha256_at_start": "b5ddadc39a9e5482fb2420abba76e90068be38f7ba0b7ca2825004a91778600e",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "c865b30128f1d790ece2e565c7638ec30df0f5899862008d42c710122752d21b",
+        "termination_reason": null,
+        "timeout_sec": 50,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/candidate/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "forward_plus",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/hd_texture_scene.gd",
+          "--hd-map=bz2g"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 5.847074807999888,
+        "other_render_processes_at_start": [
+          {
+            "pid": 3873870,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 3873870,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/cache"
+        },
+        "warnings": [],
+        "errors": [],
+        "png_sha256": {
+          "hd-scene-bz2g-0.png": "9a435feb22ce6746fe2934e5bd73f630cf0f8d548b63f1c78cb0bc6e38db1e33",
+          "hd-scene-bz2g-1.png": "ae9448c34ca8db991ca1293a2446f1bd3e0eb8a284085cd8e1c3f18cbf61053f"
+        }
+      },
+      "result": {
+        "checks": 6,
+        "failures": 0,
+        "foliage_entries_after_clear": 0,
+        "live_after_clear": 0,
+        "live_after_figure_clear": 0,
+        "load_setup_us": 887572,
+        "map": "bz2g",
+        "renderer": "forward_plus",
+        "textures": {
+          "image_textures": 0,
+          "resident_textures": 17,
+          "rgba_mip_payload_bytes": 24816276
+        },
+        "views": [
+          {
+            "draws": 142,
+            "view": 0
+          },
+          {
+            "draws": 445,
+            "view": 1
+          }
+        ]
+      }
+    },
+    {
+      "name": "map-baseline-bz4g-forward_plus-final",
+      "side": "baseline",
+      "receipt": {
+        "tool_sha256_at_start": "b5ddadc39a9e5482fb2420abba76e90068be38f7ba0b7ca2825004a91778600e",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "e0f0fd37d7c95eab2ba4305020efb2f9c2007b1cdc2267d84487c4d19d110f2d",
+        "termination_reason": null,
+        "timeout_sec": 50,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p1-wound-overlay/candidate/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "forward_plus",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/hd_texture_scene.gd",
+          "--hd-map=bz4g"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 5.332075195008656,
+        "other_render_processes_at_start": [
+          {
+            "pid": 3873870,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 3873870,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/cache"
+        },
+        "warnings": [],
+        "errors": [],
+        "png_sha256": {
+          "hd-scene-bz4g-0.png": "146bc4b166982a052aaf0b148e423b059e7b25c7437469689520b41fe44e3d1d",
+          "hd-scene-bz4g-1.png": "92085ef8aa4cbb41d4568e2fb957aafe0839602a346d371a33c868135e8f0201"
+        }
+      },
+      "result": {
+        "checks": 3,
+        "failures": 0,
+        "foliage_entries_after_clear": 2,
+        "live_after_clear": 0,
+        "live_after_figure_clear": 0,
+        "load_setup_us": 669669,
+        "map": "bz4g",
+        "renderer": "forward_plus",
+        "textures": {
+          "image_textures": 10,
+          "resident_textures": 0,
+          "rgba_mip_payload_bytes": 16078152
+        },
+        "views": [
+          {
+            "draws": 330,
+            "view": 0
+          },
+          {
+            "draws": 429,
+            "view": 1
+          }
+        ]
+      }
+    },
+    {
+      "name": "map-candidate-bz4g-forward_plus-final",
+      "side": "candidate",
+      "receipt": {
+        "tool_sha256_at_start": "b5ddadc39a9e5482fb2420abba76e90068be38f7ba0b7ca2825004a91778600e",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "c865b30128f1d790ece2e565c7638ec30df0f5899862008d42c710122752d21b",
+        "termination_reason": null,
+        "timeout_sec": 50,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/candidate/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "forward_plus",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/hd_texture_scene.gd",
+          "--hd-map=bz4g"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 5.088446662004571,
+        "other_render_processes_at_start": [
+          {
+            "pid": 3873870,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 3873870,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/cache"
+        },
+        "warnings": [],
+        "errors": [],
+        "png_sha256": {
+          "hd-scene-bz4g-0.png": "146bc4b166982a052aaf0b148e423b059e7b25c7437469689520b41fe44e3d1d",
+          "hd-scene-bz4g-1.png": "92085ef8aa4cbb41d4568e2fb957aafe0839602a346d371a33c868135e8f0201"
+        }
+      },
+      "result": {
+        "checks": 6,
+        "failures": 0,
+        "foliage_entries_after_clear": 0,
+        "live_after_clear": 0,
+        "live_after_figure_clear": 0,
+        "load_setup_us": 758128,
+        "map": "bz4g",
+        "renderer": "forward_plus",
+        "textures": {
+          "image_textures": 0,
+          "resident_textures": 10,
+          "rgba_mip_payload_bytes": 16078152
+        },
+        "views": [
+          {
+            "draws": 330,
+            "view": 0
+          },
+          {
+            "draws": 429,
+            "view": 1
+          }
+        ]
+      }
+    },
+    {
+      "name": "map-baseline-bz13h-forward_plus-final",
+      "side": "baseline",
+      "receipt": {
+        "tool_sha256_at_start": "b5ddadc39a9e5482fb2420abba76e90068be38f7ba0b7ca2825004a91778600e",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "e0f0fd37d7c95eab2ba4305020efb2f9c2007b1cdc2267d84487c4d19d110f2d",
+        "termination_reason": null,
+        "timeout_sec": 50,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p1-wound-overlay/candidate/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "forward_plus",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/hd_texture_scene.gd",
+          "--hd-map=bz13h"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 5.811938500002725,
+        "other_render_processes_at_start": [
+          {
+            "pid": 3873870,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 3873870,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/cache"
+        },
+        "warnings": [],
+        "errors": [],
+        "png_sha256": {
+          "hd-scene-bz13h-1.png": "d12500090c16bc5e095b241f71a656bd04ec19a973e9914020f2cc7ffefd6454",
+          "hd-scene-bz13h-0.png": "ca2dab408dcfb7b96d669a1e2ecc3d420498265f8f56fd5f37aed4cc58cb36aa"
+        }
+      },
+      "result": {
+        "checks": 3,
+        "failures": 0,
+        "foliage_entries_after_clear": 2,
+        "live_after_clear": 0,
+        "live_after_figure_clear": 0,
+        "load_setup_us": 1559719,
+        "map": "bz13h",
+        "renderer": "forward_plus",
+        "textures": {
+          "image_textures": 12,
+          "resident_textures": 0,
+          "rgba_mip_payload_bytes": 19922928
+        },
+        "views": [
+          {
+            "draws": 603,
+            "view": 0
+          },
+          {
+            "draws": 857,
+            "view": 1
+          }
+        ]
+      }
+    },
+    {
+      "name": "map-candidate-bz13h-forward_plus-final",
+      "side": "candidate",
+      "receipt": {
+        "tool_sha256_at_start": "b5ddadc39a9e5482fb2420abba76e90068be38f7ba0b7ca2825004a91778600e",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "c865b30128f1d790ece2e565c7638ec30df0f5899862008d42c710122752d21b",
+        "termination_reason": null,
+        "timeout_sec": 50,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/candidate/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "forward_plus",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/hd_texture_scene.gd",
+          "--hd-map=bz13h"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 5.335982009011786,
+        "other_render_processes_at_start": [
+          {
+            "pid": 3873870,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 3875473,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/cache"
+        },
+        "warnings": [],
+        "errors": [],
+        "png_sha256": {
+          "hd-scene-bz13h-1.png": "d12500090c16bc5e095b241f71a656bd04ec19a973e9914020f2cc7ffefd6454",
+          "hd-scene-bz13h-0.png": "ca2dab408dcfb7b96d669a1e2ecc3d420498265f8f56fd5f37aed4cc58cb36aa"
+        }
+      },
+      "result": {
+        "checks": 6,
+        "failures": 0,
+        "foliage_entries_after_clear": 0,
+        "live_after_clear": 0,
+        "live_after_figure_clear": 0,
+        "load_setup_us": 783881,
+        "map": "bz13h",
+        "renderer": "forward_plus",
+        "textures": {
+          "image_textures": 0,
+          "resident_textures": 12,
+          "rgba_mip_payload_bytes": 19922928
+        },
+        "views": [
+          {
+            "draws": 603,
+            "view": 0
+          },
+          {
+            "draws": 857,
+            "view": 1
+          }
+        ]
+      }
+    },
+    {
+      "name": "map-baseline-bz2g-mobile-final",
+      "side": "baseline",
+      "receipt": {
+        "tool_sha256_at_start": "b5ddadc39a9e5482fb2420abba76e90068be38f7ba0b7ca2825004a91778600e",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "e0f0fd37d7c95eab2ba4305020efb2f9c2007b1cdc2267d84487c4d19d110f2d",
+        "termination_reason": null,
+        "timeout_sec": 50,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p1-wound-overlay/candidate/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "mobile",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/hd_texture_scene.gd",
+          "--hd-map=bz2g"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 6.310165028000483,
+        "other_render_processes_at_start": [
+          {
+            "pid": 3875473,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 3875473,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/cache"
+        },
+        "warnings": [],
+        "errors": [],
+        "png_sha256": {
+          "hd-scene-bz2g-0.png": "a7832d3f4876a55e724ca52df8c923f8a78bf4e27195f4ee3ba50404e8fa2913",
+          "hd-scene-bz2g-1.png": "b072ec74ef625542d903c5a6334395bc436b45f912919e70610ca2301eb517dd"
+        }
+      },
+      "result": {
+        "checks": 3,
+        "failures": 0,
+        "foliage_entries_after_clear": 3,
+        "live_after_clear": 0,
+        "live_after_figure_clear": 0,
+        "load_setup_us": 680118,
+        "map": "bz2g",
+        "renderer": "mobile",
+        "textures": {
+          "image_textures": 17,
+          "resident_textures": 0,
+          "rgba_mip_payload_bytes": 24816276
+        },
+        "views": [
+          {
+            "draws": 83,
+            "view": 0
+          },
+          {
+            "draws": 290,
+            "view": 1
+          }
+        ]
+      }
+    },
+    {
+      "name": "map-candidate-bz2g-mobile-final",
+      "side": "candidate",
+      "receipt": {
+        "tool_sha256_at_start": "b5ddadc39a9e5482fb2420abba76e90068be38f7ba0b7ca2825004a91778600e",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "c865b30128f1d790ece2e565c7638ec30df0f5899862008d42c710122752d21b",
+        "termination_reason": null,
+        "timeout_sec": 50,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/candidate/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "mobile",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/hd_texture_scene.gd",
+          "--hd-map=bz2g"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 4.558933844004059,
+        "other_render_processes_at_start": [
+          {
+            "pid": 3875473,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 3875473,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/cache"
+        },
+        "warnings": [],
+        "errors": [],
+        "png_sha256": {
+          "hd-scene-bz2g-0.png": "3a171d053754916799b33986df60a7cb4d3764a91a648e3374b62eca68767236",
+          "hd-scene-bz2g-1.png": "b072ec74ef625542d903c5a6334395bc436b45f912919e70610ca2301eb517dd"
+        }
+      },
+      "result": {
+        "checks": 6,
+        "failures": 0,
+        "foliage_entries_after_clear": 0,
+        "live_after_clear": 0,
+        "live_after_figure_clear": 0,
+        "load_setup_us": 685049,
+        "map": "bz2g",
+        "renderer": "mobile",
+        "textures": {
+          "image_textures": 0,
+          "resident_textures": 17,
+          "rgba_mip_payload_bytes": 24816276
+        },
+        "views": [
+          {
+            "draws": 83,
+            "view": 0
+          },
+          {
+            "draws": 290,
+            "view": 1
+          }
+        ]
+      }
+    },
+    {
+      "name": "map-baseline-bz4g-mobile-final",
+      "side": "baseline",
+      "receipt": {
+        "tool_sha256_at_start": "b5ddadc39a9e5482fb2420abba76e90068be38f7ba0b7ca2825004a91778600e",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "e0f0fd37d7c95eab2ba4305020efb2f9c2007b1cdc2267d84487c4d19d110f2d",
+        "termination_reason": null,
+        "timeout_sec": 50,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p1-wound-overlay/candidate/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "mobile",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/hd_texture_scene.gd",
+          "--hd-map=bz4g"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 4.80870814199443,
+        "other_render_processes_at_start": [
+          {
+            "pid": 3875473,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 3875473,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/cache"
+        },
+        "warnings": [],
+        "errors": [],
+        "png_sha256": {
+          "hd-scene-bz4g-0.png": "9357e7b4c6721d566c049fb3453848ac0a9234cb1343aef483e2f854e357d755",
+          "hd-scene-bz4g-1.png": "e4d7e43e3d9ee167b1d8f700f9c7ebce55fa1827c648f7fc1c57745d7e8a997f"
+        }
+      },
+      "result": {
+        "checks": 3,
+        "failures": 0,
+        "foliage_entries_after_clear": 2,
+        "live_after_clear": 0,
+        "live_after_figure_clear": 0,
+        "load_setup_us": 713917,
+        "map": "bz4g",
+        "renderer": "mobile",
+        "textures": {
+          "image_textures": 10,
+          "resident_textures": 0,
+          "rgba_mip_payload_bytes": 16078152
+        },
+        "views": [
+          {
+            "draws": 182,
+            "view": 0
+          },
+          {
+            "draws": 235,
+            "view": 1
+          }
+        ]
+      }
+    },
+    {
+      "name": "map-candidate-bz4g-mobile-final",
+      "side": "candidate",
+      "receipt": {
+        "tool_sha256_at_start": "b5ddadc39a9e5482fb2420abba76e90068be38f7ba0b7ca2825004a91778600e",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "c865b30128f1d790ece2e565c7638ec30df0f5899862008d42c710122752d21b",
+        "termination_reason": null,
+        "timeout_sec": 50,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/candidate/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "mobile",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/hd_texture_scene.gd",
+          "--hd-map=bz4g"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 4.562861464015441,
+        "other_render_processes_at_start": [
+          {
+            "pid": 3875473,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 3875473,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/cache"
+        },
+        "warnings": [],
+        "errors": [],
+        "png_sha256": {
+          "hd-scene-bz4g-0.png": "9357e7b4c6721d566c049fb3453848ac0a9234cb1343aef483e2f854e357d755",
+          "hd-scene-bz4g-1.png": "e4d7e43e3d9ee167b1d8f700f9c7ebce55fa1827c648f7fc1c57745d7e8a997f"
+        }
+      },
+      "result": {
+        "checks": 6,
+        "failures": 0,
+        "foliage_entries_after_clear": 0,
+        "live_after_clear": 0,
+        "live_after_figure_clear": 0,
+        "load_setup_us": 697014,
+        "map": "bz4g",
+        "renderer": "mobile",
+        "textures": {
+          "image_textures": 0,
+          "resident_textures": 10,
+          "rgba_mip_payload_bytes": 16078152
+        },
+        "views": [
+          {
+            "draws": 182,
+            "view": 0
+          },
+          {
+            "draws": 235,
+            "view": 1
+          }
+        ]
+      }
+    },
+    {
+      "name": "map-baseline-bz13h-mobile-final",
+      "side": "baseline",
+      "receipt": {
+        "tool_sha256_at_start": "b5ddadc39a9e5482fb2420abba76e90068be38f7ba0b7ca2825004a91778600e",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "e0f0fd37d7c95eab2ba4305020efb2f9c2007b1cdc2267d84487c4d19d110f2d",
+        "termination_reason": null,
+        "timeout_sec": 50,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p1-wound-overlay/candidate/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "mobile",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/hd_texture_scene.gd",
+          "--hd-map=bz13h"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 4.80928068497451,
+        "other_render_processes_at_start": [
+          {
+            "pid": 3875473,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 3875473,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/cache"
+        },
+        "warnings": [],
+        "errors": [],
+        "png_sha256": {
+          "hd-scene-bz13h-1.png": "589d0004667c5d26b9f21ebae4604a2f185733543a58d8501c84a763e12c4de0",
+          "hd-scene-bz13h-0.png": "b05e022a9010061857861b3bf1213461ac3503ac1eeeadc5663f88f4c7896af7"
+        }
+      },
+      "result": {
+        "checks": 3,
+        "failures": 0,
+        "foliage_entries_after_clear": 2,
+        "live_after_clear": 0,
+        "live_after_figure_clear": 0,
+        "load_setup_us": 812077,
+        "map": "bz13h",
+        "renderer": "mobile",
+        "textures": {
+          "image_textures": 12,
+          "resident_textures": 0,
+          "rgba_mip_payload_bytes": 19922928
+        },
+        "views": [
+          {
+            "draws": 341,
+            "view": 0
+          },
+          {
+            "draws": 489,
+            "view": 1
+          }
+        ]
+      }
+    },
+    {
+      "name": "map-candidate-bz13h-mobile-final",
+      "side": "candidate",
+      "receipt": {
+        "tool_sha256_at_start": "b5ddadc39a9e5482fb2420abba76e90068be38f7ba0b7ca2825004a91778600e",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "c865b30128f1d790ece2e565c7638ec30df0f5899862008d42c710122752d21b",
+        "termination_reason": null,
+        "timeout_sec": 50,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/candidate/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "mobile",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/hd_texture_scene.gd",
+          "--hd-map=bz13h"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 5.060713307000697,
+        "other_render_processes_at_start": [
+          {
+            "pid": 3875473,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 3875473,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/cache"
+        },
+        "warnings": [],
+        "errors": [],
+        "png_sha256": {
+          "hd-scene-bz13h-1.png": "589d0004667c5d26b9f21ebae4604a2f185733543a58d8501c84a763e12c4de0",
+          "hd-scene-bz13h-0.png": "b05e022a9010061857861b3bf1213461ac3503ac1eeeadc5663f88f4c7896af7"
+        }
+      },
+      "result": {
+        "checks": 6,
+        "failures": 0,
+        "foliage_entries_after_clear": 0,
+        "live_after_clear": 0,
+        "live_after_figure_clear": 0,
+        "load_setup_us": 816999,
+        "map": "bz13h",
+        "renderer": "mobile",
+        "textures": {
+          "image_textures": 0,
+          "resident_textures": 12,
+          "rgba_mip_payload_bytes": 19922928
+        },
+        "views": [
+          {
+            "draws": 341,
+            "view": 0
+          },
+          {
+            "draws": 489,
+            "view": 1
+          }
+        ]
+      }
+    },
+    {
+      "name": "map-baseline-bz2g-gl_compatibility-final",
+      "side": "baseline",
+      "receipt": {
+        "tool_sha256_at_start": "b5ddadc39a9e5482fb2420abba76e90068be38f7ba0b7ca2825004a91778600e",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "e0f0fd37d7c95eab2ba4305020efb2f9c2007b1cdc2267d84487c4d19d110f2d",
+        "termination_reason": null,
+        "timeout_sec": 50,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p1-wound-overlay/candidate/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/hd_texture_scene.gd",
+          "--hd-map=bz2g"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 9.065658931009239,
+        "other_render_processes_at_start": [
+          {
+            "pid": 3875473,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 3876747,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {
+          "hd-scene-bz2g-0.png": "a065e359a800cae3b4dfd6c446217ed52dff9434ca21ac0a44e257f12d89058e",
+          "hd-scene-bz2g-1.png": "bce8005c313f7a39a63126fdd8732fe649a229578d5b5a034812ad431303cb5a"
+        }
+      },
+      "result": {
+        "checks": 3,
+        "failures": 0,
+        "foliage_entries_after_clear": 6,
+        "live_after_clear": 0,
+        "live_after_figure_clear": 0,
+        "load_setup_us": 741252,
+        "map": "bz2g",
+        "renderer": "gl_compatibility",
+        "textures": {
+          "image_textures": 17,
+          "resident_textures": 0,
+          "rgba_mip_payload_bytes": 24816276
+        },
+        "views": [
+          {
+            "draws": 83,
+            "view": 0
+          },
+          {
+            "draws": 290,
+            "view": 1
+          }
+        ]
+      }
+    },
+    {
+      "name": "map-candidate-bz2g-gl_compatibility-final",
+      "side": "candidate",
+      "receipt": {
+        "tool_sha256_at_start": "b5ddadc39a9e5482fb2420abba76e90068be38f7ba0b7ca2825004a91778600e",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "c865b30128f1d790ece2e565c7638ec30df0f5899862008d42c710122752d21b",
+        "termination_reason": null,
+        "timeout_sec": 50,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/candidate/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/hd_texture_scene.gd",
+          "--hd-map=bz2g"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 5.059792059997562,
+        "other_render_processes_at_start": [
+          {
+            "pid": 3876747,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 3876747,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {
+          "hd-scene-bz2g-0.png": "a065e359a800cae3b4dfd6c446217ed52dff9434ca21ac0a44e257f12d89058e",
+          "hd-scene-bz2g-1.png": "bce8005c313f7a39a63126fdd8732fe649a229578d5b5a034812ad431303cb5a"
+        }
+      },
+      "result": {
+        "checks": 6,
+        "failures": 0,
+        "foliage_entries_after_clear": 0,
+        "live_after_clear": 0,
+        "live_after_figure_clear": 0,
+        "load_setup_us": 735323,
+        "map": "bz2g",
+        "renderer": "gl_compatibility",
+        "textures": {
+          "image_textures": 17,
+          "resident_textures": 0,
+          "rgba_mip_payload_bytes": 24816276
+        },
+        "views": [
+          {
+            "draws": 83,
+            "view": 0
+          },
+          {
+            "draws": 290,
+            "view": 1
+          }
+        ]
+      }
+    },
+    {
+      "name": "map-baseline-bz4g-gl_compatibility-final",
+      "side": "baseline",
+      "receipt": {
+        "tool_sha256_at_start": "b5ddadc39a9e5482fb2420abba76e90068be38f7ba0b7ca2825004a91778600e",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "e0f0fd37d7c95eab2ba4305020efb2f9c2007b1cdc2267d84487c4d19d110f2d",
+        "termination_reason": null,
+        "timeout_sec": 50,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p1-wound-overlay/candidate/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/hd_texture_scene.gd",
+          "--hd-map=bz4g"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 5.310558397002751,
+        "other_render_processes_at_start": [
+          {
+            "pid": 3876747,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 3877225,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {
+          "hd-scene-bz4g-0.png": "fc9b6eb5a215c82ff07b41324c09457b5af6f43257d0f85dd5dcd2d3d86915d0",
+          "hd-scene-bz4g-1.png": "39d95272a5bcf1f6c6807997eda5109493a086475122cf5d39d9a6ca2bcb4499"
+        }
+      },
+      "result": {
+        "checks": 3,
+        "failures": 0,
+        "foliage_entries_after_clear": 4,
+        "live_after_clear": 0,
+        "live_after_figure_clear": 0,
+        "load_setup_us": 622150,
+        "map": "bz4g",
+        "renderer": "gl_compatibility",
+        "textures": {
+          "image_textures": 10,
+          "resident_textures": 0,
+          "rgba_mip_payload_bytes": 16078152
+        },
+        "views": [
+          {
+            "draws": 182,
+            "view": 0
+          },
+          {
+            "draws": 235,
+            "view": 1
+          }
+        ]
+      }
+    },
+    {
+      "name": "map-candidate-bz4g-gl_compatibility-final",
+      "side": "candidate",
+      "receipt": {
+        "tool_sha256_at_start": "b5ddadc39a9e5482fb2420abba76e90068be38f7ba0b7ca2825004a91778600e",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "c865b30128f1d790ece2e565c7638ec30df0f5899862008d42c710122752d21b",
+        "termination_reason": null,
+        "timeout_sec": 50,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/candidate/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/hd_texture_scene.gd",
+          "--hd-map=bz4g"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 4.06034814598388,
+        "other_render_processes_at_start": [
+          {
+            "pid": 3877225,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 3877660,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {
+          "hd-scene-bz4g-0.png": "fc9b6eb5a215c82ff07b41324c09457b5af6f43257d0f85dd5dcd2d3d86915d0",
+          "hd-scene-bz4g-1.png": "39d95272a5bcf1f6c6807997eda5109493a086475122cf5d39d9a6ca2bcb4499"
+        }
+      },
+      "result": {
+        "checks": 6,
+        "failures": 0,
+        "foliage_entries_after_clear": 0,
+        "live_after_clear": 0,
+        "live_after_figure_clear": 0,
+        "load_setup_us": 633944,
+        "map": "bz4g",
+        "renderer": "gl_compatibility",
+        "textures": {
+          "image_textures": 10,
+          "resident_textures": 0,
+          "rgba_mip_payload_bytes": 16078152
+        },
+        "views": [
+          {
+            "draws": 182,
+            "view": 0
+          },
+          {
+            "draws": 235,
+            "view": 1
+          }
+        ]
+      }
+    },
+    {
+      "name": "map-baseline-bz13h-gl_compatibility-final",
+      "side": "baseline",
+      "receipt": {
+        "tool_sha256_at_start": "b5ddadc39a9e5482fb2420abba76e90068be38f7ba0b7ca2825004a91778600e",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "e0f0fd37d7c95eab2ba4305020efb2f9c2007b1cdc2267d84487c4d19d110f2d",
+        "termination_reason": null,
+        "timeout_sec": 50,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p1-wound-overlay/candidate/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/hd_texture_scene.gd",
+          "--hd-map=bz13h"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 4.05962465601624,
+        "other_render_processes_at_start": [
+          {
+            "pid": 3877660,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 3877660,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {
+          "hd-scene-bz13h-1.png": "eecee4acf21c34c9b8a893cfd9a791bee3b338f3504e580057925c21d270964b",
+          "hd-scene-bz13h-0.png": "9813e4374c86ed10be9ab918a6f1033a9477b58de94c2ae0bc8b2d5cc51b5bac"
+        }
+      },
+      "result": {
+        "checks": 3,
+        "failures": 0,
+        "foliage_entries_after_clear": 4,
+        "live_after_clear": 0,
+        "live_after_figure_clear": 0,
+        "load_setup_us": 682474,
+        "map": "bz13h",
+        "renderer": "gl_compatibility",
+        "textures": {
+          "image_textures": 12,
+          "resident_textures": 0,
+          "rgba_mip_payload_bytes": 19922928
+        },
+        "views": [
+          {
+            "draws": 341,
+            "view": 0
+          },
+          {
+            "draws": 489,
+            "view": 1
+          }
+        ]
+      }
+    },
+    {
+      "name": "map-candidate-bz13h-gl_compatibility-final",
+      "side": "candidate",
+      "receipt": {
+        "tool_sha256_at_start": "b5ddadc39a9e5482fb2420abba76e90068be38f7ba0b7ca2825004a91778600e",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "c865b30128f1d790ece2e565c7638ec30df0f5899862008d42c710122752d21b",
+        "termination_reason": null,
+        "timeout_sec": 50,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/candidate/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/hd_texture_scene.gd",
+          "--hd-map=bz13h"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 3.8076989549736027,
+        "other_render_processes_at_start": [
+          {
+            "pid": 3877660,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 3877660,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {
+          "hd-scene-bz13h-1.png": "eecee4acf21c34c9b8a893cfd9a791bee3b338f3504e580057925c21d270964b",
+          "hd-scene-bz13h-0.png": "9813e4374c86ed10be9ab918a6f1033a9477b58de94c2ae0bc8b2d5cc51b5bac"
+        }
+      },
+      "result": {
+        "checks": 6,
+        "failures": 0,
+        "foliage_entries_after_clear": 0,
+        "live_after_clear": 0,
+        "live_after_figure_clear": 0,
+        "load_setup_us": 663653,
+        "map": "bz13h",
+        "renderer": "gl_compatibility",
+        "textures": {
+          "image_textures": 12,
+          "resident_textures": 0,
+          "rgba_mip_payload_bytes": 19922928
+        },
+        "views": [
+          {
+            "draws": 341,
+            "view": 0
+          },
+          {
+            "draws": 489,
+            "view": 1
+          }
+        ]
+      }
+    },
+    {
+      "name": "map-baseline-bz2g-mobile-repeat",
+      "side": "baseline",
+      "receipt": {
+        "tool_sha256_at_start": "b5ddadc39a9e5482fb2420abba76e90068be38f7ba0b7ca2825004a91778600e",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "e0f0fd37d7c95eab2ba4305020efb2f9c2007b1cdc2267d84487c4d19d110f2d",
+        "termination_reason": null,
+        "timeout_sec": 60,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p1-wound-overlay/candidate/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "mobile",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/hd_texture_scene.gd"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 5.065886750991922,
+        "other_render_processes_at_start": [
+          {
+            "pid": 3879327,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 3879627,
+            "executable": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps56/CPU.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 3879327,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 3879627,
+            "executable": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps56/CPU.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/cache"
+        },
+        "warnings": [],
+        "errors": [],
+        "png_sha256": {
+          "hd-scene-bz2g-0.png": "3a171d053754916799b33986df60a7cb4d3764a91a648e3374b62eca68767236",
+          "hd-scene-bz2g-1.png": "b072ec74ef625542d903c5a6334395bc436b45f912919e70610ca2301eb517dd"
+        }
+      },
+      "result": {
+        "checks": 3,
+        "failures": 0,
+        "foliage_entries_after_clear": 3,
+        "live_after_clear": 0,
+        "live_after_figure_clear": 0,
+        "load_setup_us": 911802,
+        "map": "bz2g",
+        "renderer": "mobile",
+        "textures": {
+          "image_textures": 17,
+          "resident_textures": 0,
+          "rgba_mip_payload_bytes": 24816276
+        },
+        "views": [
+          {
+            "draws": 83,
+            "view": 0
+          },
+          {
+            "draws": 290,
+            "view": 1
+          }
+        ]
+      }
+    },
+    {
+      "name": "map-candidate-bz2g-mobile-repeat",
+      "side": "candidate",
+      "receipt": {
+        "tool_sha256_at_start": "b5ddadc39a9e5482fb2420abba76e90068be38f7ba0b7ca2825004a91778600e",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "c865b30128f1d790ece2e565c7638ec30df0f5899862008d42c710122752d21b",
+        "termination_reason": null,
+        "timeout_sec": 60,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/candidate/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "mobile",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/hd_texture_scene.gd"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 5.064093735010829,
+        "other_render_processes_at_start": [
+          {
+            "pid": 3879627,
+            "executable": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps56/CPU.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 3879627,
+            "executable": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps56/CPU.x86_64"
+          },
+          {
+            "pid": 3879862,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/cache"
+        },
+        "warnings": [],
+        "errors": [],
+        "png_sha256": {
+          "hd-scene-bz2g-0.png": "3a171d053754916799b33986df60a7cb4d3764a91a648e3374b62eca68767236",
+          "hd-scene-bz2g-1.png": "b072ec74ef625542d903c5a6334395bc436b45f912919e70610ca2301eb517dd"
+        }
+      },
+      "result": {
+        "checks": 6,
+        "failures": 0,
+        "foliage_entries_after_clear": 0,
+        "live_after_clear": 0,
+        "live_after_figure_clear": 0,
+        "load_setup_us": 773301,
+        "map": "bz2g",
+        "renderer": "mobile",
+        "textures": {
+          "image_textures": 0,
+          "resident_textures": 17,
+          "rgba_mip_payload_bytes": 24816276
+        },
+        "views": [
+          {
+            "draws": 83,
+            "view": 0
+          },
+          {
+            "draws": 290,
+            "view": 1
+          }
+        ]
+      }
+    },
+    {
+      "name": "map-candidate-bz4g-mobile-separate",
+      "side": "candidate",
+      "receipt": {
+        "tool_sha256_at_start": "b5ddadc39a9e5482fb2420abba76e90068be38f7ba0b7ca2825004a91778600e",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "c865b30128f1d790ece2e565c7638ec30df0f5899862008d42c710122752d21b",
+        "termination_reason": null,
+        "timeout_sec": 60,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/candidate/CursedLands.x86_64",
+          "--render-thread",
+          "separate",
+          "--rendering-method",
+          "mobile",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/hd_texture_scene.gd",
+          "--hd-map=bz4g"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 4.813670239993371,
+        "other_render_processes_at_start": [
+          {
+            "pid": 3879627,
+            "executable": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps56/CPU.x86_64"
+          },
+          {
+            "pid": 3879862,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 3879627,
+            "executable": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps56/CPU.x86_64"
+          },
+          {
+            "pid": 3879862,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/cache"
+        },
+        "warnings": [
+          "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+        ],
+        "errors": [],
+        "png_sha256": {
+          "hd-scene-bz4g-0.png": "9357e7b4c6721d566c049fb3453848ac0a9234cb1343aef483e2f854e357d755",
+          "hd-scene-bz4g-1.png": "e4d7e43e3d9ee167b1d8f700f9c7ebce55fa1827c648f7fc1c57745d7e8a997f"
+        }
+      },
+      "result": {
+        "checks": 6,
+        "failures": 0,
+        "foliage_entries_after_clear": 0,
+        "live_after_clear": 0,
+        "live_after_figure_clear": 0,
+        "load_setup_us": 763700,
+        "map": "bz4g",
+        "renderer": "mobile",
+        "textures": {
+          "image_textures": 0,
+          "resident_textures": 10,
+          "rgba_mip_payload_bytes": 16078152
+        },
+        "views": [
+          {
+            "draws": 182,
+            "view": 0
+          },
+          {
+            "draws": 235,
+            "view": 1
+          }
+        ]
+      }
+    },
+    {
+      "name": "mmp-regression",
+      "side": "candidate",
+      "receipt": {
+        "tool_sha256_at_start": "358769b5ad83f39421e8bf016a2ec3881199ce7c0708d7acd072f229996adc98",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "c865b30128f1d790ece2e565c7638ec30df0f5899862008d42c710122752d21b",
+        "termination_reason": null,
+        "timeout_sec": 60,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/candidate/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/mmp_texture.gd"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 2.3106022640131414,
+        "other_render_processes_at_start": [
+          {
+            "pid": 3879627,
+            "executable": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps56/CPU.x86_64"
+          },
+          {
+            "pid": 3879862,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 3879627,
+            "executable": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps56/CPU.x86_64"
+          },
+          {
+            "pid": 3879862,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {}
+      },
+      "result": {
+        "assets": 628,
+        "checks": 5945,
+        "compressed_assets": 510,
+        "editor": false,
+        "failures": 0,
+        "payload_bytes": 95533640,
+        "rgba_bytes": 497794320,
+        "s3tc": true
+      }
+    }
+  ],
+  "initial_map_comparisons": [
+    {
+      "candidate": "map-candidate-bz13h-forward_plus-final/hd-scene-bz13h-0.png",
+      "baseline": "map-baseline-bz13h-forward_plus-final/hd-scene-bz13h-0.png",
+      "changed_pixels": 0,
+      "peak_delta": 0,
+      "over_2": 0
+    },
+    {
+      "candidate": "map-candidate-bz13h-forward_plus-final/hd-scene-bz13h-1.png",
+      "baseline": "map-baseline-bz13h-forward_plus-final/hd-scene-bz13h-1.png",
+      "changed_pixels": 0,
+      "peak_delta": 0,
+      "over_2": 0
+    },
+    {
+      "candidate": "map-candidate-bz13h-gl_compatibility-final/hd-scene-bz13h-0.png",
+      "baseline": "map-baseline-bz13h-gl_compatibility-final/hd-scene-bz13h-0.png",
+      "changed_pixels": 0,
+      "peak_delta": 0,
+      "over_2": 0
+    },
+    {
+      "candidate": "map-candidate-bz13h-gl_compatibility-final/hd-scene-bz13h-1.png",
+      "baseline": "map-baseline-bz13h-gl_compatibility-final/hd-scene-bz13h-1.png",
+      "changed_pixels": 0,
+      "peak_delta": 0,
+      "over_2": 0
+    },
+    {
+      "candidate": "map-candidate-bz13h-mobile-final/hd-scene-bz13h-0.png",
+      "baseline": "map-baseline-bz13h-mobile-final/hd-scene-bz13h-0.png",
+      "changed_pixels": 0,
+      "peak_delta": 0,
+      "over_2": 0
+    },
+    {
+      "candidate": "map-candidate-bz13h-mobile-final/hd-scene-bz13h-1.png",
+      "baseline": "map-baseline-bz13h-mobile-final/hd-scene-bz13h-1.png",
+      "changed_pixels": 0,
+      "peak_delta": 0,
+      "over_2": 0
+    },
+    {
+      "candidate": "map-candidate-bz2g-forward_plus-final/hd-scene-bz2g-0.png",
+      "baseline": "map-baseline-bz2g-forward_plus-final/hd-scene-bz2g-0.png",
+      "changed_pixels": 0,
+      "peak_delta": 0,
+      "over_2": 0
+    },
+    {
+      "candidate": "map-candidate-bz2g-forward_plus-final/hd-scene-bz2g-1.png",
+      "baseline": "map-baseline-bz2g-forward_plus-final/hd-scene-bz2g-1.png",
+      "changed_pixels": 0,
+      "peak_delta": 0,
+      "over_2": 0
+    },
+    {
+      "candidate": "map-candidate-bz2g-gl_compatibility-final/hd-scene-bz2g-0.png",
+      "baseline": "map-baseline-bz2g-gl_compatibility-final/hd-scene-bz2g-0.png",
+      "changed_pixels": 0,
+      "peak_delta": 0,
+      "over_2": 0
+    },
+    {
+      "candidate": "map-candidate-bz2g-gl_compatibility-final/hd-scene-bz2g-1.png",
+      "baseline": "map-baseline-bz2g-gl_compatibility-final/hd-scene-bz2g-1.png",
+      "changed_pixels": 0,
+      "peak_delta": 0,
+      "over_2": 0
+    },
+    {
+      "candidate": "map-candidate-bz2g-mobile-final/hd-scene-bz2g-0.png",
+      "baseline": "map-baseline-bz2g-mobile-final/hd-scene-bz2g-0.png",
+      "changed_pixels": 127,
+      "peak_delta": 7,
+      "over_2": 17
+    },
+    {
+      "candidate": "map-candidate-bz2g-mobile-final/hd-scene-bz2g-1.png",
+      "baseline": "map-baseline-bz2g-mobile-final/hd-scene-bz2g-1.png",
+      "changed_pixels": 0,
+      "peak_delta": 0,
+      "over_2": 0
+    },
+    {
+      "candidate": "map-candidate-bz4g-forward_plus-final/hd-scene-bz4g-0.png",
+      "baseline": "map-baseline-bz4g-forward_plus-final/hd-scene-bz4g-0.png",
+      "changed_pixels": 0,
+      "peak_delta": 0,
+      "over_2": 0
+    },
+    {
+      "candidate": "map-candidate-bz4g-forward_plus-final/hd-scene-bz4g-1.png",
+      "baseline": "map-baseline-bz4g-forward_plus-final/hd-scene-bz4g-1.png",
+      "changed_pixels": 0,
+      "peak_delta": 0,
+      "over_2": 0
+    },
+    {
+      "candidate": "map-candidate-bz4g-gl_compatibility-final/hd-scene-bz4g-0.png",
+      "baseline": "map-baseline-bz4g-gl_compatibility-final/hd-scene-bz4g-0.png",
+      "changed_pixels": 0,
+      "peak_delta": 0,
+      "over_2": 0
+    },
+    {
+      "candidate": "map-candidate-bz4g-gl_compatibility-final/hd-scene-bz4g-1.png",
+      "baseline": "map-baseline-bz4g-gl_compatibility-final/hd-scene-bz4g-1.png",
+      "changed_pixels": 0,
+      "peak_delta": 0,
+      "over_2": 0
+    },
+    {
+      "candidate": "map-candidate-bz4g-mobile-final/hd-scene-bz4g-0.png",
+      "baseline": "map-baseline-bz4g-mobile-final/hd-scene-bz4g-0.png",
+      "changed_pixels": 0,
+      "peak_delta": 0,
+      "over_2": 0
+    },
+    {
+      "candidate": "map-candidate-bz4g-mobile-final/hd-scene-bz4g-1.png",
+      "baseline": "map-baseline-bz4g-mobile-final/hd-scene-bz4g-1.png",
+      "changed_pixels": 0,
+      "peak_delta": 0,
+      "over_2": 0
+    }
+  ],
+  "repeat_and_separate_thread_comparisons": [
+    {
+      "a": "map-baseline-bz2g-mobile-final/hd-scene-bz2g-0.png",
+      "b": "map-baseline-bz2g-mobile-repeat/hd-scene-bz2g-0.png",
+      "changed_pixels": 127,
+      "peak_delta": 7,
+      "over_2": 17,
+      "bbox": [
+        0,
+        157,
+        395,
+        473
+      ]
+    },
+    {
+      "a": "map-baseline-bz2g-mobile-final/hd-scene-bz2g-1.png",
+      "b": "map-baseline-bz2g-mobile-repeat/hd-scene-bz2g-1.png",
+      "changed_pixels": 0,
+      "peak_delta": 0,
+      "over_2": 0,
+      "bbox": null
+    },
+    {
+      "a": "map-candidate-bz2g-mobile-final/hd-scene-bz2g-0.png",
+      "b": "map-candidate-bz2g-mobile-repeat/hd-scene-bz2g-0.png",
+      "changed_pixels": 0,
+      "peak_delta": 0,
+      "over_2": 0,
+      "bbox": null
+    },
+    {
+      "a": "map-candidate-bz2g-mobile-final/hd-scene-bz2g-1.png",
+      "b": "map-candidate-bz2g-mobile-repeat/hd-scene-bz2g-1.png",
+      "changed_pixels": 0,
+      "peak_delta": 0,
+      "over_2": 0,
+      "bbox": null
+    },
+    {
+      "a": "map-baseline-bz2g-mobile-repeat/hd-scene-bz2g-0.png",
+      "b": "map-candidate-bz2g-mobile-repeat/hd-scene-bz2g-0.png",
+      "changed_pixels": 0,
+      "peak_delta": 0,
+      "over_2": 0,
+      "bbox": null
+    },
+    {
+      "a": "map-baseline-bz2g-mobile-repeat/hd-scene-bz2g-1.png",
+      "b": "map-candidate-bz2g-mobile-repeat/hd-scene-bz2g-1.png",
+      "changed_pixels": 0,
+      "peak_delta": 0,
+      "over_2": 0,
+      "bbox": null
+    },
+    {
+      "a": "map-candidate-bz4g-mobile-final/hd-scene-bz4g-0.png",
+      "b": "map-candidate-bz4g-mobile-separate/hd-scene-bz4g-0.png",
+      "changed_pixels": 0,
+      "peak_delta": 0,
+      "over_2": 0,
+      "bbox": null
+    },
+    {
+      "a": "map-candidate-bz4g-mobile-final/hd-scene-bz4g-1.png",
+      "b": "map-candidate-bz4g-mobile-separate/hd-scene-bz4g-1.png",
+      "changed_pixels": 0,
+      "peak_delta": 0,
+      "over_2": 0,
+      "bbox": null
+    }
+  ],
+  "integration": {
+    "timestamp_unix": 1791499584.8533492,
+    "target": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo",
+    "base": "3172ede12a5f41b0182c34a70b5eeda787c95e52",
+    "before": {
+      "head": "9e4576fcca1da0816e0002bb56290cbaedd3a60c",
+      "status": " M docs/experimental-third-person.md\n M docs/gameplay-gaps-2026-10-08.md\n M game/src/ei/remake_text.gd\n M game/src/game/direct_control.gd\n M game/src/game/game.gd\n M game/src/game/lmp_travel.gd\n M game/src/game/local_host.gd\n M game/src/game/net_status.gd\n M game/src/game/pad_field.gd\n M game/src/game/session.gd\n M game/src/game/spells.gd\n M game/src/game/unit.gd\n M game/src/ui/pad_wheel.gd\n M game/src/ui/spell_slots.gd\n?? tools/tests/gamepad_coop_targets.gd\n?? tools/tests/snapshot_delivery.gd\n?? tools/tests/snapshot_recovery.gd\n?? tools/tests/spell_requirements_coop.gd\n?? tools/tests/worker_coop_delivery.gd\n",
+      "file_sha256": {
+        "engine_patches/godot-4.7/README.md": "f8588aac8b5ef191c3edefe573c2dd8b46e051b0d047dec19e87d75f4fe6b5bd",
+        "engine_patches/godot-4.7/mobile-shader-recompile-lock.patch": null,
+        "game/src/ei/figure.gd": "5fd0c1d31f462a49914e0a619580ffbcc5344965c18798f5bf3f2f58c68bad8f",
+        "game/src/ei/game_data.gd": "f536b2cf7684f8f1742afdd687d8e201d679b2afab647052b8dfa37d592aee7d",
+        "game/src/ei/map_scene.gd": "8502a6c669dc82c1586f8b12661e3c4c66eb5d68ca08d112e11274c361f0db8b",
+        "game/src/ei/mmp_texture.gd": "ea95f86058da0b18c5c411c4bb69cc9db00c5770501cd5efbf0125d3f2ca104b",
+        "game/src/ei/terrain.gd": "25b87e8fadf2bd7c68ebc963cb36db34788dc2e962ce6a736ba1c51db4c89361",
+        "game/src/ei/unit_model.gd": "f454fd48b39f318b8822a004129c65530ba4adf9b63f6bd5425bf68452824fe6",
+        "game/src/game/fx/ground_contact.gd": null,
+        "game/src/game/fx/ground_contact.gd.uid": null,
+        "game/src/game/fx/ground_contact_shader.gd": null,
+        "game/src/game/fx/ground_contact_shader.gd.uid": null,
+        "game/src/game/fx/ground_surface_data.gd": null,
+        "game/src/game/fx/ground_surface_data.gd.uid": null,
+        "game/src/game/fx/ground_surface_shader.gd": null,
+        "game/src/game/fx/ground_surface_shader.gd.uid": null,
+        "game/src/game/fx/local_light_shader.gd": null,
+        "game/src/game/fx/local_light_shader.gd.uid": null,
+        "game/src/game/fx/local_lighting.gd": "be1570ca9e47eafcb48f0d4964a941066d521d63cc570ea8aff8333c20b1d34a",
+        "game/src/game/fx/scenery_batch_watch.gd": null,
+        "game/src/game/fx/scenery_batch_watch.gd.uid": null,
+        "game/src/game/fx/scenery_batches.gd": null,
+        "game/src/game/fx/scenery_batches.gd.uid": null,
+        "game/src/game/fx/scenery_light_groups.gd": null,
+        "game/src/game/fx/scenery_light_groups.gd.uid": null,
+        "game/src/game/fx/soft_ground_deform.gd": "a9b5a1941d17ccf67716affb9e416c702d67c7405730109461ead2260fffe051",
+        "game/src/game/fx/soft_ground_field.gd": null,
+        "game/src/game/fx/soft_ground_field.gd.uid": null,
+        "game/src/game/game.gd": "121c0f1d0d9b800090dfbbe0a9d35a9756c2129adfc91d5abd7d5670078855a2",
+        "game/src/game/gfx.gd": "d4111e59b158111d2b5c0ab75feadde1f77db81e528773f23676fddd0e11cdb5",
+        "game/src/game/gfx_detect.gd": "bcbc43453022fd0718fa2ceed9f8cc1271b644dec2eda9f34e3fb78e269475dc",
+        "game/src/game/tex_upscale.gd": "d7e82c849dee04c888b089822e6ffb5b5074dd6a8048a37db04cf515d00311c8",
+        "game/src/game/tex_upscale_texture.gd": null,
+        "game/src/game/tex_upscale_texture.gd.uid": null,
+        "game/src/game/unit_wounds.gd": "8eea1966c2ac60d58e6d6d6b358cbcec28655a9b90423fd6663a29858fbaf41e",
+        "game/src/platform/data_switch.gd": "9a4b5cff438cdea7019d4ab3e8bc45348264848ef8038cec2c424ade2c08bbfd",
+        "game/src/platform/portability.gd": "3afa19cb0340929d7e1034066b490568e2df52b5b1e3a9decb3c6c89b76a3735",
+        "game/src/ui/camera_fade.gd": "00dca9e22b1d5cf21c073b82570353533f8f7fa9f98c3a9e478e7fec17bfa0fe",
+        "game/src/ui/menu_scene.gd": "ac5780e52e21d66654fdf0ca49a786c45442958fab7814dc615b02712b604da1",
+        "tools/benchmarks/directional_shadows.gd": null,
+        "tools/benchmarks/ground_contact.gd": null,
+        "tools/benchmarks/ground_contact_preparation.py": null,
+        "tools/benchmarks/ground_contact_surface.gd": null,
+        "tools/benchmarks/hd_texture_scene.gd": null,
+        "tools/benchmarks/local_shadow_cache.gd": null,
+        "tools/benchmarks/scenery_batch_lights.gd": null,
+        "tools/benchmarks/scenery_batches.gd": null,
+        "tools/benchmarks/scenery_resources.gd": null,
+        "tools/benchmarks/terrain_occlusion.gd": null,
+        "tools/benchmarks/wound_composition.gd": null,
+        "tools/benchmarks/wound_layers.gd": null,
+        "tools/tests/foliage_materials.gd": null,
+        "tools/tests/foliage_shadow_cache.gd": null,
+        "tools/tests/ground_contact.gd": null,
+        "tools/tests/hd_resident_texture.gd": null,
+        "tools/tests/local_light_passes.gd": null,
+        "tools/tests/local_shadow_fades.gd": null,
+        "tools/tests/local_shadow_importance.gd": null,
+        "tools/tests/local_shadow_selection.gd": null,
+        "tools/tests/material_shader_options.gd": "dff493bc1167c94ed445a3b18749914f39340b960a36a607d1785a2f3ff889e9",
+        "tools/tests/mmp_texture.gd": null,
+        "tools/tests/mmp_upload.gd": null,
+        "tools/tests/scenery_batch_lights.gd": null,
+        "tools/tests/scenery_batches.gd": null,
+        "tools/tests/soft_ground_field.gd": null,
+        "tools/tests/sun_aiming.gd": null,
+        "tools/tests/wound_cache.gd": null,
+        "tools/tests/wound_source.gd": null
+      }
+    },
+    "after": {
+      "head": "9e4576fcca1da0816e0002bb56290cbaedd3a60c",
+      "status": " M docs/experimental-third-person.md\n M docs/gameplay-gaps-2026-10-08.md\n M game/src/ei/remake_text.gd\n M game/src/game/direct_control.gd\n M game/src/game/game.gd\n M game/src/game/lmp_travel.gd\n M game/src/game/local_host.gd\n M game/src/game/net_status.gd\n M game/src/game/pad_field.gd\n M game/src/game/session.gd\n M game/src/game/spells.gd\n M game/src/game/unit.gd\n M game/src/ui/pad_wheel.gd\n M game/src/ui/spell_slots.gd\n?? tools/tests/gamepad_coop_targets.gd\n?? tools/tests/snapshot_delivery.gd\n?? tools/tests/snapshot_recovery.gd\n?? tools/tests/spell_requirements_coop.gd\n?? tools/tests/worker_coop_delivery.gd\n",
+      "file_sha256": {
+        "engine_patches/godot-4.7/README.md": "f8588aac8b5ef191c3edefe573c2dd8b46e051b0d047dec19e87d75f4fe6b5bd",
+        "engine_patches/godot-4.7/mobile-shader-recompile-lock.patch": null,
+        "game/src/ei/figure.gd": "5fd0c1d31f462a49914e0a619580ffbcc5344965c18798f5bf3f2f58c68bad8f",
+        "game/src/ei/game_data.gd": "f536b2cf7684f8f1742afdd687d8e201d679b2afab647052b8dfa37d592aee7d",
+        "game/src/ei/map_scene.gd": "8502a6c669dc82c1586f8b12661e3c4c66eb5d68ca08d112e11274c361f0db8b",
+        "game/src/ei/mmp_texture.gd": "ea95f86058da0b18c5c411c4bb69cc9db00c5770501cd5efbf0125d3f2ca104b",
+        "game/src/ei/terrain.gd": "25b87e8fadf2bd7c68ebc963cb36db34788dc2e962ce6a736ba1c51db4c89361",
+        "game/src/ei/unit_model.gd": "f454fd48b39f318b8822a004129c65530ba4adf9b63f6bd5425bf68452824fe6",
+        "game/src/game/fx/ground_contact.gd": null,
+        "game/src/game/fx/ground_contact.gd.uid": null,
+        "game/src/game/fx/ground_contact_shader.gd": null,
+        "game/src/game/fx/ground_contact_shader.gd.uid": null,
+        "game/src/game/fx/ground_surface_data.gd": null,
+        "game/src/game/fx/ground_surface_data.gd.uid": null,
+        "game/src/game/fx/ground_surface_shader.gd": null,
+        "game/src/game/fx/ground_surface_shader.gd.uid": null,
+        "game/src/game/fx/local_light_shader.gd": null,
+        "game/src/game/fx/local_light_shader.gd.uid": null,
+        "game/src/game/fx/local_lighting.gd": "be1570ca9e47eafcb48f0d4964a941066d521d63cc570ea8aff8333c20b1d34a",
+        "game/src/game/fx/scenery_batch_watch.gd": null,
+        "game/src/game/fx/scenery_batch_watch.gd.uid": null,
+        "game/src/game/fx/scenery_batches.gd": null,
+        "game/src/game/fx/scenery_batches.gd.uid": null,
+        "game/src/game/fx/scenery_light_groups.gd": null,
+        "game/src/game/fx/scenery_light_groups.gd.uid": null,
+        "game/src/game/fx/soft_ground_deform.gd": "a9b5a1941d17ccf67716affb9e416c702d67c7405730109461ead2260fffe051",
+        "game/src/game/fx/soft_ground_field.gd": null,
+        "game/src/game/fx/soft_ground_field.gd.uid": null,
+        "game/src/game/game.gd": "121c0f1d0d9b800090dfbbe0a9d35a9756c2129adfc91d5abd7d5670078855a2",
+        "game/src/game/gfx.gd": "d4111e59b158111d2b5c0ab75feadde1f77db81e528773f23676fddd0e11cdb5",
+        "game/src/game/gfx_detect.gd": "bcbc43453022fd0718fa2ceed9f8cc1271b644dec2eda9f34e3fb78e269475dc",
+        "game/src/game/tex_upscale.gd": "d7e82c849dee04c888b089822e6ffb5b5074dd6a8048a37db04cf515d00311c8",
+        "game/src/game/tex_upscale_texture.gd": null,
+        "game/src/game/tex_upscale_texture.gd.uid": null,
+        "game/src/game/unit_wounds.gd": "8eea1966c2ac60d58e6d6d6b358cbcec28655a9b90423fd6663a29858fbaf41e",
+        "game/src/platform/data_switch.gd": "9a4b5cff438cdea7019d4ab3e8bc45348264848ef8038cec2c424ade2c08bbfd",
+        "game/src/platform/portability.gd": "3afa19cb0340929d7e1034066b490568e2df52b5b1e3a9decb3c6c89b76a3735",
+        "game/src/ui/camera_fade.gd": "00dca9e22b1d5cf21c073b82570353533f8f7fa9f98c3a9e478e7fec17bfa0fe",
+        "game/src/ui/menu_scene.gd": "ac5780e52e21d66654fdf0ca49a786c45442958fab7814dc615b02712b604da1",
+        "tools/benchmarks/directional_shadows.gd": null,
+        "tools/benchmarks/ground_contact.gd": null,
+        "tools/benchmarks/ground_contact_preparation.py": null,
+        "tools/benchmarks/ground_contact_surface.gd": null,
+        "tools/benchmarks/hd_texture_scene.gd": null,
+        "tools/benchmarks/local_shadow_cache.gd": null,
+        "tools/benchmarks/scenery_batch_lights.gd": null,
+        "tools/benchmarks/scenery_batches.gd": null,
+        "tools/benchmarks/scenery_resources.gd": null,
+        "tools/benchmarks/terrain_occlusion.gd": null,
+        "tools/benchmarks/wound_composition.gd": null,
+        "tools/benchmarks/wound_layers.gd": null,
+        "tools/tests/foliage_materials.gd": null,
+        "tools/tests/foliage_shadow_cache.gd": null,
+        "tools/tests/ground_contact.gd": null,
+        "tools/tests/hd_resident_texture.gd": null,
+        "tools/tests/local_light_passes.gd": null,
+        "tools/tests/local_shadow_fades.gd": null,
+        "tools/tests/local_shadow_importance.gd": null,
+        "tools/tests/local_shadow_selection.gd": null,
+        "tools/tests/material_shader_options.gd": "dff493bc1167c94ed445a3b18749914f39340b960a36a607d1785a2f3ff889e9",
+        "tools/tests/mmp_texture.gd": null,
+        "tools/tests/mmp_upload.gd": null,
+        "tools/tests/scenery_batch_lights.gd": null,
+        "tools/tests/scenery_batches.gd": null,
+        "tools/tests/soft_ground_field.gd": null,
+        "tools/tests/sun_aiming.gd": null,
+        "tools/tests/wound_cache.gd": null,
+        "tools/tests/wound_source.gd": null
+      }
+    },
+    "unchanged": true,
+    "checked_file_count": 68,
+    "checks": [
+      {
+        "name": "focused checkpoint",
+        "command": [
+          "git",
+          "-C",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo",
+          "apply",
+          "--check",
+          "--whitespace=nowarn",
+          "-"
+        ],
+        "patch_sha256": "9ea62b27caf22f31916d918480950fc38ab100dbc7fcba037aef35e6fed7fb05",
+        "return_code": 0,
+        "output": ""
+      },
+      {
+        "name": "accumulated implementation",
+        "command": [
+          "git",
+          "-C",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo",
+          "apply",
+          "--check",
+          "--whitespace=nowarn",
+          "-"
+        ],
+        "patch_sha256": "1d8b2bacd2b72cf1d2ef4f40f5d57a4333078b8e88074da6596e0c23a63dbea4",
+        "return_code": 1,
+        "output": "error: patch failed: game/src/ei/map_scene.gd:9\nerror: game/src/ei/map_scene.gd: patch does not apply\n"
+      },
+      {
+        "name": "accumulated except known map overlap",
+        "command": [
+          "git",
+          "-C",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo",
+          "apply",
+          "--check",
+          "--whitespace=nowarn",
+          "--exclude=game/src/ei/map_scene.gd",
+          "-"
+        ],
+        "patch_sha256": "1d8b2bacd2b72cf1d2ef4f40f5d57a4333078b8e88074da6596e0c23a63dbea4",
+        "return_code": 0,
+        "output": ""
+      }
+    ],
+    "applied": false,
+    "messaged_other_chat": false
+  },
+  "superseded_runs": [
+    {
+      "name": "bytes-forward-final",
+      "receipt_path": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/bytes-forward-final/run.json",
+      "receipt_sha256": "1fc6695443233c751470a6dab320c671583ffdba4b164e6aac44aeaab4ca0ec9",
+      "return_code": -15,
+      "termination_reason": "script error",
+      "errors": [
+        "SCRIPT ERROR: Parse Error: Invalid operands \"Vector2\" and \"Vector2i\" for \"==\" operator.",
+        "ERROR: Failed to load script \"/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/hd_resident_texture.gd\" with error \"Parse error\".",
+        "ERROR: Required object \"rp_child\" is null."
+      ]
+    },
+    {
+      "name": "map-baseline-bz2g-v1",
+      "receipt_path": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/map-baseline-bz2g-v1/run.json",
+      "receipt_sha256": "666ca0ef3f9cd2090311d3199341ec1036650b305ef486b11bf6ac35cd855ab8",
+      "return_code": -15,
+      "termination_reason": null,
+      "errors": []
+    },
+    {
+      "name": "map-candidate-bz2g-cleanup-probe",
+      "receipt_path": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/map-candidate-bz2g-cleanup-probe/run.json",
+      "receipt_sha256": "a9ad3f14c8c6ed374cebb48b775e6f69cd4ab1cac3f6d80ce4f7a08830f3b7d6",
+      "return_code": 1,
+      "termination_reason": null,
+      "errors": [
+        "FAIL data-source cache clear releases resident textures"
+      ]
+    },
+    {
+      "name": "map-candidate-bz2g-v1",
+      "receipt_path": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/map-candidate-bz2g-v1/run.json",
+      "receipt_sha256": "4726237fb01559bf7c8cb86d20f1d33ca56436d7713e4eec16e76837f27e78a4",
+      "return_code": -15,
+      "termination_reason": "timeout",
+      "errors": [
+        "FAIL data-source cache clear releases resident textures"
+      ]
+    },
+    {
+      "name": "probe-compat-v2",
+      "receipt_path": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/probe-compat-v2/run.json",
+      "receipt_sha256": "5993aca196868a67c1164f402eaf6ccf91d74e04ea7120104e35ec7dfc458c3f",
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": []
+    },
+    {
+      "name": "probe-forward-v1",
+      "receipt_path": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/probe-forward-v1/run.json",
+      "receipt_sha256": "6d4cb990be4b2a5c52c1af078c9b92bd2dd0d770f9abe4a9e4cd5ba8d0406e72",
+      "return_code": 1,
+      "termination_reason": null,
+      "errors": [
+        "FAIL (1, 1) released backing texture",
+        "FAIL (1, 1) released backing texture",
+        "FAIL (1, 7) released backing texture",
+        "FAIL (1, 7) released backing texture",
+        "FAIL (7, 1) released backing texture",
+        "FAIL (7, 1) released backing texture",
+        "FAIL (3, 5) released backing texture",
+        "FAIL (3, 5) released backing texture",
+        "FAIL (32, 64) released backing texture",
+        "FAIL (32, 64) released backing texture",
+        "FAIL govenorhouse00 released backing texture",
+        "FAIL tree02 released backing texture",
+        "FAIL rikarrowsmoke released backing texture",
+        "FAIL after restart released backing texture"
+      ]
+    },
+    {
+      "name": "probe-forward-v2",
+      "receipt_path": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/probe-forward-v2/run.json",
+      "receipt_sha256": "3e63483eb3256cee7011ef09ad984a9b360b4bd72050c7d763c0c038023694e7",
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": []
+    },
+    {
+      "name": "probe-lifetime-trace",
+      "receipt_path": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/probe-lifetime-trace/run.json",
+      "receipt_sha256": "49a2d81b0d2f13ddda820b45ca212e0cbd19337800e3e426f80e4394378be7cc",
+      "return_code": 1,
+      "termination_reason": null,
+      "errors": [
+        "FAIL (1, 1) released backing texture",
+        "FAIL (1, 1) released backing texture",
+        "FAIL (1, 7) released backing texture",
+        "FAIL (1, 7) released backing texture",
+        "FAIL (7, 1) released backing texture",
+        "FAIL (7, 1) released backing texture",
+        "FAIL (3, 5) released backing texture",
+        "FAIL (3, 5) released backing texture",
+        "FAIL (32, 64) released backing texture",
+        "FAIL (32, 64) released backing texture",
+        "FAIL govenorhouse00 released backing texture",
+        "FAIL tree02 released backing texture",
+        "FAIL rikarrowsmoke released backing texture",
+        "FAIL after restart released backing texture"
+      ]
+    },
+    {
+      "name": "probe-lifetime-v1",
+      "receipt_path": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/probe-lifetime-v1/run.json",
+      "receipt_sha256": "d91b495b9a2c4c7e7277720c209177804417b6426508aa10a85fcd159fcdfa93",
+      "return_code": 1,
+      "termination_reason": null,
+      "errors": [
+        "FAIL (1, 1) released backing texture",
+        "FAIL (1, 1) released backing texture",
+        "FAIL (1, 7) released backing texture",
+        "FAIL (1, 7) released backing texture",
+        "FAIL (7, 1) released backing texture",
+        "FAIL (7, 1) released backing texture",
+        "FAIL (3, 5) released backing texture",
+        "FAIL (3, 5) released backing texture",
+        "FAIL (32, 64) released backing texture",
+        "FAIL (32, 64) released backing texture",
+        "FAIL govenorhouse00 released backing texture",
+        "FAIL tree02 released backing texture",
+        "FAIL rikarrowsmoke released backing texture",
+        "FAIL after restart released backing texture"
+      ]
+    },
+    {
+      "name": "probe-mobile-v2",
+      "receipt_path": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/probe-mobile-v2/run.json",
+      "receipt_sha256": "15d52b44b1274eb78e934c82c322cd2fbb79d4dd0be8736897ac1245a792643b",
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": []
+    },
+    {
+      "name": "production-bytes-forward-v1",
+      "receipt_path": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p2-resident/production-bytes-forward-v1/run.json",
+      "receipt_sha256": "f880c1a40adcf5cb0cb9f45e5e1a30e777aa79af9b4ef2e7542877da5454cc27",
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": []
+    }
+  ],
+  "initial_exit_issue": {
+    "status": "Pre-existing baseline issue, not fixed by this checkpoint.",
+    "observation": "The initial frozen baseline and initial candidate render both views but stall after the application clean-exit trace. First trace addresses resolved with matching-build symbols to WorkerThreadPool::exit_languages_threads and Main::cleanup. A follow-up GDB run reports PRE_EXIT_LANGUAGES, 1 of 4 idle acknowledgements, empty normal/low queues, and no low-priority tasks running.",
+    "fixture_change": "Explicit upscaler shutdown and 24 normal frames before quit. All final runs exit normally; this is not a production engine fix.",
+    "debug_artifacts": {
+      "baseline-exit-gdb-mi.log": "24e44f291b7039e8edb517e5750d484c50e880f63d9aeff1a3cc08b684db7168",
+      "baseline-exit-gdb-stack.log": "a0119649f78f8bbf1986a27a6153d050762dc8f367ddfdab7348e22695755a5a",
+      "baseline-exit-symbols-mi.log": "ac4e5087ff9a9749adc2da18e778c34a5e0ec28377d79aca9b41ddffc5a60616",
+      "baseline-exit-symbols-stack.log": "e4035ff7ffb0864b896903f020b53b8948979c71d7dd6cad28a91537185c705d",
+      "baseline-manual-stop.json": "0b464f74f68feccc1a4b53c154cc372754a994e936bbcce11e3fcffb0233136a"
+    },
+    "engine_build_id": "88b74a00bd21324fedb71274a218685a61eaa6c9"
+  },
+  "limits": [
+    "This removes cold/cache-miss scenery readback, CPU mip generation and final upload; original source upload, GPU filtering and final RGBA8 mip storage remain.",
+    "Terrain CPU Image/array construction retains the existing local-device path.",
+    "17 of 18 initial map pairs are exact. The Mobile residual is reproduced by an unchanged-baseline repeat; repeated baseline/candidate images are exact.",
+    "Overlapping other game processes and changed asynchronous completion timing prohibit controlled load/FPS claims.",
+    "Compatibility/headless and emulated main-device decline retain fallback. Physical Android, browsers, Windows and other drivers are untested.",
+    "The accumulated older map_scene integration still needs reconciliation; the focused new implementation/test patch applies in a read-only check. No target checkout, installed build, device or real save was changed."
+  ]
+}

@@ -1,14 +1,14 @@
 class_name TexUpscale
 extends RefCounted
 ## Remake option gfx_hd_textures: the original textures upscaled 2x once at
-## load, on the GPU (a compute shader on a local RenderingDevice): Lanczos-2
+## load, using a compute shader where available: Lanczos-2
 ## on premultiplied colour with a de-ringing clamp to the 2x2 source texels
 ## round each output pixel (edges stay crisp without halos), half of the
 ## Lanczos overshoot kept as light sharpening. Transparent texels keep the
 ## nearest source colour so alpha-tested edges and mipmaps do not darken.
 ## No GPU (headless, Compatibility renderer): Image.resize Lanczos instead.
-## A 256² texture takes well under a millisecond, so nothing is cached on
-## disk: decoding a cached 512² PNG would take longer than the upscale.
+## Scenery texture callers use texture_2d() to keep the upscale and mip chain
+## on the main device. CPU Image callers (terrain atlases) retain this path.
 
 const SHADER := """
 #version 450
@@ -76,7 +76,8 @@ static var _rd: RenderingDevice
 static var _shader: RID
 static var _pipeline: RID
 static var _tried := false
-## Total time spent upscaling (ms) and textures done, for the load report.
+## Foreground setup/upscale time (ms) and textures done, for the load report.
+## Resident GPU work completes through the normal render graph, not this timer.
 static var ms := 0.0
 static var count := 0
 
@@ -105,16 +106,20 @@ static func _init_gpu() -> bool:
 		# A driver that cannot build it (some phone Vulkan drivers fail
 		# Godot's own compute pipelines): the CPU Lanczos path instead.
 		push_warning("TexUpscale: no compute pipeline, upscaling on the CPU")
-		shutdown()
+		_shutdown_local()
 		_tried = true
 		return false
 	return true
 
 
-## Frees the local RenderingDevice. Called when Main leaves the tree: left to
-## the static teardown it would be freed after the RenderingServer, and the
-## process aborts on exit (rc 134).
+## Release resident scenery resources and the local image-processing device
+## while the RenderingServer still exists. Called when Main leaves the tree.
 static func shutdown() -> void:
+	TexUpscaleTexture.shutdown()
+	_shutdown_local()
+
+
+static func _shutdown_local() -> void:
 	if _rd:
 		if _pipeline.is_valid():
 			_rd.free_rid(_pipeline)
@@ -125,6 +130,23 @@ static func shutdown() -> void:
 	_pipeline = RID()
 	_shader = RID()
 	_tried = false
+
+
+## Scenery output: preserve the existing filter while avoiding local-device
+## readback, CPU mip generation and a second upload on RenderingDevice backends.
+## CPU/unsupported paths retain their existing image and filtering behavior.
+static func texture_2d(img: Image, wrap := true) -> Texture2D:
+	if img == null or img.is_empty():
+		return null
+	var t0 := Time.get_ticks_usec()
+	var texture := TexUpscaleTexture.create(img, wrap)
+	if texture:
+		ms += (Time.get_ticks_usec() - t0) / 1000.0
+		count += 1
+		return texture
+	var image := up2(img, wrap)
+	image.generate_mipmaps()
+	return ImageTexture.create_from_image(image)
 
 
 ## `img` 2x larger (RGBA8, no mipmaps); `wrap`: the texture repeats (else

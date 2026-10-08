@@ -279,6 +279,93 @@ directories point inside the QA directory, keeping real saves and settings out
 of the run. For GPU checks, use `--render-thread safe --audio-driver Dummy` and
 `--rendering-method gl_compatibility` or `forward_plus`; omit `--headless`.
 
+## P2 follow-up: keep HD scenery output on the main GPU — 9 October
+
+The first P2 step benefits textures used without HD upscaling. This follow-up
+addresses the default HD scenery path. Previously `Gfx.texture_3d` upscaled on
+a local RenderingDevice, read the enlarged image back, generated mipmaps on the
+CPU, and uploaded the completed image to the renderer. The new path uploads the
+original source once to the main device, runs the **same upscale shader**, builds
+the mip chain there, and exposes the result as an owned `Texture2DRD`.
+
+This is an adaptation of the P2 distinction between a texture ready for rendering
+and a CPU-processing image, not a port of an upstream HD upscaler. Reference R0:
+`Source/owned_asset_loader.cpp:1105/1297`,
+`Source/renderer.cpp:2887` (`get_native_owned_texture`) and `Source/texture_mips.h`.
+Their authored compressed-mip handling motivated the original P2 work; the HD
+filter here remains the remake's existing Lanczos/de-ringing implementation.
+
+### Implementation and ownership
+
+- [tex_upscale_texture.gd:50](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/game/src/game/tex_upscale_texture.gd:50): `create` prepares a private RGBA8 source and creates resources on the rendering thread. The semaphore waits for CPU setup and texture dimensions, **not GPU completion**. The normal rendering graph orders compute writes before texture sampling; production does not submit/sync a local device or read the result back.
+- [tex_upscale_texture.gd:7](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/game/src/game/tex_upscale_texture.gd:7): mip computation matches the pinned engine's encoded-byte `(a+b+c+d+2)>>2` average, including odd dimensions and one-pixel axes. UNORM storage and an sRGB-compatible shared view preserve the existing sampling semantics.
+- [tex_upscale_texture.gd:25](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/game/src/game/tex_upscale_texture.gd:25): the wrapper owns its backing RD texture. Its last-reference notification detaches RenderingServer views and queues the backing release. A weak registry supports explicit shutdown without keeping ordinary cache entries alive. Temporary inputs, mip views and uniform sets are released after recording their commands.
+- [tex_upscale.gd:138](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/game/src/game/tex_upscale.gd:138): `texture_2d` selects this path, with the existing `up2`/CPU-mip/ImageTexture fallback on unsupported backends or capability/pipeline decline. Null/empty sources return null. `shutdown` releases both resource types; `_shutdown_local` cannot invalidate resident scenery. Load-report milliseconds now explicitly describe foreground work, not completed GPU execution.
+- [gfx.gd:1075](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/game/src/game/gfx.gd:1075): the HD scenery cache calls this factory; names, cache identity and missing-texture behavior stay the same. Terrain atlas callers still request CPU Images through `up2`. The HD-off compressed path is unchanged.
+- [data_switch.gd:261](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/game/src/platform/data_switch.gd:261): include `_foliage` and `_foliage_local` in the existing data-source cache clear. A real-map test found three retained foliage material entries owning two resident textures; `EIFigure.clear_cache()` released them. Adding the two missing keys removes those references without changing scene loading or zone-transition ownership.
+
+The resource teardown is necessary: `Texture2DRD` frees its RenderingServer
+views, not the caller's backing RenderingDevice texture. An initial prototype
+that called `release()` through the dying Resource leaked 14 backing textures;
+the inline predelete cleanup passes last-reference and shutdown/restart tests.
+Do not replace it with a wrapper that assumes Godot takes backing ownership.
+The exact pinned engine files and hashes are recorded in the evidence below.
+
+### Validation and actual scope of the saving
+
+Frozen application baseline: `ca0ab88`. Both packs use the same patched Linux
+engine from the prior P5 Mobile-lifetime checkpoint. Candidate pack SHA-256:
+`c865b30128f1d790ece2e565c7638ec30df0f5899862008d42c710122752d21b`.
+
+- **6,405 candidate checks pass**, plus 30 baseline scene checks. This includes
+  394 texture/fallback/ownership checks, 66 candidate map checks and the existing
+  5,945-check MMP regression across 628 assets.
+- [hd_resident_texture.gd](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/tests/hd_resident_texture.gd) compares every byte of 14 output images and their complete mip chains on each of Forward+, Mobile and Forward+ with the production separate render thread: **42 exact outputs**. Fixtures cover wrapping/clamping, 1-pixel axes, odd and rectangular dimensions, opaque `govenorhouse00`, alpha foliage `tree02`, `rikarrowsmoke`, and restart. Additional checks exercise real `Gfx.texture_3d` caching, source immutability, last-reference ownership, local-device cleanup, forced resident decline, Compatibility and headless fallback. Headless checks do not claim rendered pixel validation.
+- [hd_texture_scene.gd](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/hd_texture_scene.gd) captures two frozen views of each of `bz2g`, `bz4g`, and `bz13h`, against both packs on all three rendering backends. **17/18 initial pairs are pixel-identical.** The remaining Mobile view differs at 127/480,000 pixels, at most 7/255; repeating the unchanged baseline reproduces that same image difference, while repeated baseline and candidate are exact. The candidate itself repeats exactly. A Mobile map on the separate render thread also matches its safe-thread capture exactly. All candidate cache clears leave zero resident textures and zero foliage material cache entries.
+
+| Map | HD scenery textures | Final RGBA mip payload / avoided final upload |
+|---|---:|---:|
+| `bz2g` | 17 | 24,816,276 bytes (23.67 MiB) |
+| `bz4g` | 10 | 16,078,152 bytes (15.33 MiB) |
+| `bz13h` | 12 | 19,922,928 bytes (19.00 MiB) |
+
+These are cold scenery-cache workloads, **not per-frame savings**. On the tested
+Vulkan backends each texture also avoids its enlarged top-level readback and CPU
+mip generation. The initial source upload and GPU filtering remain. Final GPU
+texture payload, dimensions, draw counts and filtering are unchanged. This does
+not compress HD output, reduce final VRAM, or eliminate terrain atlas readbacks.
+Compatibility retains its existing CPU path. Other agents' processes overlapped
+the runs, and the new load timer excludes asynchronous GPU completion: do not
+claim controlled load-time, FPS or device performance gains from these receipts.
+Android, browsers, Windows and other GPU drivers were not tested in this batch.
+
+### Baseline exit diagnostic and integration limits
+
+The initial baseline map run rendered correctly but hung after the application's
+`clean exit` trace; an initial candidate run did too. Matching-symbol inspection
+placed the main thread in `WorkerThreadPool::exit_languages_threads` with only
+one of four idle acknowledgements, empty queues, and sleeping workers. No engine
+fix is included here. The final fixture explicitly shuts down the upscaler and
+advances 24 normal frames while the renderer/pool still run; all final runs exit
+normally. That makes the comparison reproducible but **does not establish that
+the pre-existing production exit issue is fixed**. Failed/leaking prototypes,
+the two timeout cases, the corrected fixture parse error, and the native traces
+are retained rather than counted as successful validation.
+
+The current checkpoint changes production only in `gfx.gd`, `tex_upscale.gd`,
+the new `tex_upscale_texture.gd`, and the two data-source cache entries. No
+character, controller, combat, network, or zone-transition implementation was
+edited. The accumulated branch still requires reconciliation of the older
+`map_scene.gd` integration with the other chat's lift work; this checkpoint adds
+no new hook there. Fresh read-only applicability and target-preservation receipts,
+commands, source/engine/pack hashes, test counts and image comparisons are in
+[hd-resident-textures-2026-10-09.json](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/docs/validation/hd-resident-textures-2026-10-09.json).
+The focused implementation/test patch passes against
+`9e4576fcca1da0816e0002bb56290cbaedd3a60c`; the full accumulated implementation
+reports only the known `map_scene.gd` conflict, and passes with that path excluded.
+All 68 recorded implementation/test paths, target HEAD and status are unchanged.
+The target's active controller and co-op delivery edits were left untouched.
+
 ## P3, first stage: retain equivalent foliage materials
 
 Investigation confirmed `EIFigure.build_mesh` already caches figure geometry
@@ -1893,8 +1980,10 @@ once the active source owner can accept them, preserving their newer changes.
 
 P1 changes only `unit_model.gd` and `unit_wounds.gd` plus tests/documentation.
 The 9 October shared-layer follow-up changes production only in `unit_wounds.gd`.
-P2 changes only `mmp_texture.gd`, the texture-loading methods in `game_data.gd`,
-and `Gfx.texture_3d` plus its tests/documentation. No network, inventory,
+The first P2 stage changes only `mmp_texture.gd`, the texture-loading methods in
+`game_data.gd`, and `Gfx.texture_3d`. Its 9 October HD follow-up adds the resident
+texture helper, the `TexUpscale` factory/lifetime split, and two missing foliage
+entries in `DataSwitch.CACHES`, plus tests/documentation. No network, inventory,
 campaign-state, pricing or dialogue-camera behavior was edited.
 The first P3 stage changes only `figure.gd`, its resource census, regression
 fixture and this documentation. No object ownership or camera code was changed.
@@ -1942,9 +2031,12 @@ without human authorization. No patch was applied here.
    wound composition are implemented. Final wound-albedo blending/mips/uploads
    remain. The separate GPU sampler experiment changes filtered wound appearance;
    do not enable it without a justified visual contract and material-lifecycle
-   acceptance. P2's compressed path still excludes default HD upscaling. Further
-   work should measure the actual active texture path rather than count an
-   already cached operation as saved work.
+   acceptance. P2's HD scenery path now avoids the main-device round trip on
+   RenderingDevice backends, with byte/render/lifetime evidence above. Remaining
+   P2 work includes terrain atlas transfers and any justified HD memory policy,
+   plus actual device load/memory measurements. The final HD payload is still
+   RGBA8; do not count cached operations as per-frame savings. Keep the recorded
+   pre-existing native exit issue separate from the accepted texture results.
 2. **P3 static scenery batching:** the opt-in live manager, complete-light guard,
    movement/fade lifetime and real-map validation are now implemented above.
    The nine-pixel residual is reproduced by the unchanged-renderer control.

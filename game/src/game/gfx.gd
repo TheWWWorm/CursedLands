@@ -1080,9 +1080,7 @@ static func texture_3d(name: String) -> Texture2D:
 		var img := GameData.load_image(key)
 		var tex: Texture2D = null
 		if img:
-			var big := TexUpscale.up2(img, true)
-			big.generate_mipmaps()
-			tex = ImageTexture.create_from_image(big)
+			tex = TexUpscale.texture_2d(img, true)
 		_hd[key] = tex
 	return _hd[key]
 

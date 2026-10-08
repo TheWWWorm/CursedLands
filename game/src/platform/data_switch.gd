@@ -258,7 +258,7 @@ const CACHES := {
 	"res://src/ei/anim.gd": ["_libraries", "_morphs"],
 	"res://src/ei/acks.gd": ["_sets"],
 	"res://src/ei/ei_audio.gd": ["_dirs", "_music_reg"],
-	"res://src/ei/figure.gd": ["_models", "_materials", "_world", "_meshes", "_sways", "_sway_images"],
+	"res://src/ei/figure.gd": ["_models", "_materials", "_world", "_meshes", "_foliage", "_foliage_local", "_sways", "_sway_images"],
 	"res://src/game/unit.gd": ["_hit_frames"],
 	"res://src/game/side_quests.gd": ["_all", "_by_id"],
 	"res://src/game/gfx.gd": ["_hd"],
