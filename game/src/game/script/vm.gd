@@ -868,6 +868,7 @@ func _call(name: String, a: Array, inst: Instance):
 		# Builtin 0xdf FixItems(): every item the server holds (list at server
 		# ) gets its durability back to the maximum.
 		"FixItems":
+			session.coop.party_operation(name, v)
 			session.state.fix_items()
 			for u: GameUnit in world.units.values():
 				if u.has_meta("hero"):
@@ -879,6 +880,7 @@ func _call(name: String, a: Array, inst: Instance):
 		# `from` into it; AddLoot adds them (merges stacks).
 		"CopyLoot", "AddLoot":
 			if n >= 3:
+				session.coop.party_operation(name, v)
 				session.coop.with_campaign_purse(session.state.move_loot.bind(str(v[1]), str(v[2]), name == "CopyLoot"))
 				session.sync_state()
 		"Nop", "SetPlayerAggression":
@@ -958,16 +960,21 @@ func _call(name: String, a: Array, inst: Instance):
 		# (no members, an empty bag, no money) appended to the player's list.
 		# A repeated name continues to resolve the first party.
 		"CreateParty":
+			session.coop.party_operation(name, v)
 			session.state.create_party(str(v[1]))
 		"AddUnitToParty":
+			session.coop.party_operation(name, v)
 			var ref := str(v[1])
 			session.state.add_party_unit(ref.get_slice("::", 0) if "::" in ref else "",
 				ref.get_slice("::", 1) if "::" in ref else ref, str(v[2]))
 		"CopyStats":
+			session.coop.party_operation(name, v)
 			session.state.copy_stats(str(v[1]), str(v[2]))
 		"CopyItems":
+			session.coop.party_operation(name, v)
 			session.state.copy_items(str(v[1]), str(v[2]))
 		"SetCurrentParty":
+			session.coop.party_operation(name, v)
 			if session.coop.with_campaign_purse(session.state.set_current_party.bind(str(v[1]))):
 				session.sync_state()
 		"AddUnitUnderControl":
@@ -982,6 +989,7 @@ func _call(name: String, a: Array, inst: Instance):
 				u.set_meta("script_control", true)
 				session.broadcast({"t": "party"})
 		"RemoveUnitFromParty":
+			session.coop.party_operation(name, v)
 			var ref := str(v[1])
 			var h := session.state.party_member(ref)
 			if h.has("merc") and session.state.mercs.get(int(h.merc), {}) == h:

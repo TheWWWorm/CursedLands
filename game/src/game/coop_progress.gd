@@ -1,6 +1,7 @@
 class_name CoopProgress
 extends Node
 const TrainingRefund := preload("res://src/game/training_refund.gd")
+const PartyProgress := preload("res://src/game/coop_party_progress.gd")
 ## Remake-only co-op feature: bring your own hero, shared progression.
 ## (Not in the original: the original network game played separate LMP maps with
 ## network characters;.)
@@ -160,7 +161,7 @@ func client_hello() -> void:
 	var bag := main_bag(st)
 	_rpc_bring.rpc_id(1, {"campaign_id": st.campaign_id, "hero": main_hero(st), "vars": view, "visited": st.visited.keys(),
 		"side_quests": st.side_quests, "quest_items": st.quest_items, "zone": st.current_zone, "seq": seq,
-		"money": int(bag.money), "items": bag.items})
+		"money": int(bag.money), "items": bag.items, "party_context": PartyProgress.capture(st)})
 
 
 ## The campaign state the client brought (a fresh one for a new hero).
@@ -264,6 +265,11 @@ static func merge(st: CampaignState, pkg: Dictionary) -> void:
 	if not CampaignProfile.matches(pkg.get("campaign_id", CampaignProfile.ORIGINAL), st.campaign_id):
 		return
 	var move: Dictionary = pkg.get("move", {}) if pkg.get("move") is Dictionary else {}
+	var context := PartyProgress.read(pkg.get("party_context"))
+	if context != null and move and campaign_zone_ok(String(move.get("zone", ""))):
+		PartyProgress.apply(st, context)
+	else:
+		context = null
 	# Story vars credited to this player.
 	var cv: Dictionary = pkg.get("vars", {}) if pkg.get("vars") is Dictionary else {}
 	for k in cv:
@@ -303,6 +309,10 @@ static func merge(st: CampaignState, pkg: Dictionary) -> void:
 	# temporary substitute leaves the imported hero in a waiting party.
 	var hero_party := main_party(st)
 	var h := sanitize_hero(pkg.get("hero", {}))
+	if context != null and move:
+		# The context already combines personal progress with the authored
+		# chapter body, waiting-party positions and companion ownership.
+		h = main_hero(st).duplicate(true)
 	if not h.is_empty():
 		var roster: Array = st.heroes.get_or_add(0, []) if st.current_party == hero_party else st.parties.get_or_add(hero_party, [])
 		var old: Dictionary = roster[0] if not roster.is_empty() and roster[0] is Dictionary else {}
@@ -311,7 +321,7 @@ static func merge(st: CampaignState, pkg: Dictionary) -> void:
 			h.unit_name = old.unit_name
 		# Where the hero stands: the host's world when the save moves there,
 		# else where it was in the joiner's own game.
-		var src: Dictionary = pkg.hero if move and pkg.get("hero") is Dictionary else old
+		var src: Dictionary = pkg.hero if move and context == null and pkg.get("hero") is Dictionary else old
 		for k in ["pos", "mana", "gait"]:
 			if src.has(k):
 				h[k] = src[k]
@@ -388,6 +398,9 @@ func _rpc_bring(data: Dictionary) -> void:
 		h.erase(k)
 	_pending[pid] = {"hero": h, "vars": view, "visited": visited, "side_quests": sq, "quest_items": qi, "seq": seq,
 		"purse": {"money": clampi(int(_num(data.get("money", 0), 0.0)), 0, 99999999), "items": _items(data.get("items", []))}}
+	var context := PartyProgress.read(data.get("party_context"))
+	if context != null:
+		_pending[pid].party_context = PartyProgress.capture(context)
 	CampaignState.cap_belt(h, _pending[pid].purse.items)   # the belt's four; extras to its own bag
 
 
@@ -410,6 +423,10 @@ func on_hello(pid: int, idx: int, player_name: String) -> void:
 			for k in ["vars", "visited", "side_quests", "quest_items"]:
 				e[k] = data[k]
 			e.credits = {"vars": {}, "visited": {}, "side_quests": {}, "quest_items": {}, "zones": {}}
+			if data.has("party_context"):
+				e.party_context = data.party_context
+		if not e.has("party_context") and data.has("party_context"):
+			e.party_context = data.party_context
 		e.pid = pid
 		e.idx = idx
 		e.active = true
@@ -438,6 +455,8 @@ func on_hello(pid: int, idx: int, player_name: String) -> void:
 		"sid": "%08x%08x" % [randi(), Time.get_ticks_usec() & 0xffffffff], "seq": 0,
 	}
 	e.hero_in.name = player_name.strip_edges() if player_name.strip_edges() else String(e.orig_name)
+	if data.has("party_context"):
+		e.party_context = data.party_context
 	joiners[key] = e
 	if session.world:
 		# Late join: the hero comes in place of any old one of this slot.
@@ -917,6 +936,28 @@ func _settle() -> void:
 
 # ---------------------------------------------------------------- packages
 
+## Original party operations run on each eligible player's private story
+## copy before changing the host's party. This is event-driven, never part of
+## an actor tick. A behind/ahead guest keeps its own chapter untouched.
+func party_operation(op: String, args: Array) -> void:
+	if not _host_online() or _loading or not session.lmp.is_empty():
+		return
+	for e: Dictionary in joiners.values():
+		if not e.active or not e.in_sync or not e.clean or not e.present:
+			continue
+		var context := PartyProgress.read(e.get("party_context"))
+		if context == null or context.current_party != session.state.current_party:
+			continue
+		var roster: Array = session.state.heroes.get(int(e.idx), [])
+		var hero: Dictionary = roster[0] if not roster.is_empty() else e.hero_in
+		var purse: Dictionary = {"money": session.state.money, "items": session.state.items} \
+			if not _swap.is_empty() and int(_swap.e.idx) == int(e.idx) else e.purse
+		PartyProgress.personal(context, hero, purse, false)
+		PartyProgress.dependents(context, session.state, e)
+		PartyProgress.operation(context, op, args)
+		e.party_context = PartyProgress.capture(context)
+
+
 func package(e: Dictionary) -> Dictionary:
 	var st := session.state
 	var roster: Array = st.heroes.get(int(e.idx), [])
@@ -925,9 +966,34 @@ func package(e: Dictionary) -> Dictionary:
 	if e.in_sync and e.clean and e.present and session.world and session.zone_id:
 		zones[session.zone_id] = (st.zones.get(session.zone_id, {}) as Dictionary).duplicate(true)
 	var move := {}
-	if e.in_sync and session.zone_id:
+	if e.in_sync and e.clean and e.present and session.zone_id:
 		move = {"zone": session.zone_id, "world_time": st.world_time, "day": st.day}
 	var purse: Dictionary = e.get("purse", {})
+	var context := PartyProgress.read(e.get("party_context"))
+	var party_context := {}
+	if context == null:
+		move.clear()   # old tallies still return their hero/purse, never an incomplete chapter
+	else:
+		if context.current_party != st.current_party:
+			# A rejected/missed party change must not move this save into a
+			# location requiring a character it cannot deploy.
+			move.clear()
+		elif not move.is_empty():
+			PartyProgress.personal(context, hero, purse, true)
+			if e.clean and e.present:
+				PartyProgress.dependents(context, st, e)
+			party_context = PartyProgress.capture(context)
+			e.party_context = party_context.duplicate(true)
+			e.context_checkpoint = {"party_context": party_context.duplicate(true), "move": move.duplicate()}
+	if move.is_empty():
+		# Packages are cumulative from the original imported save. Leaving a
+		# credited chapter must not discard the last resumable checkpoint.
+		var previous: Dictionary = e.get("context_checkpoint", {})
+		var saved := PartyProgress.read(previous.get("party_context"))
+		if saved != null:
+			PartyProgress.personal(saved, hero, purse, false)
+			party_context = PartyProgress.capture(saved)
+			move = previous.get("move", {}).duplicate()
 	var host := "host"
 	for p in session.players.values():
 		if int(p.index) == 0:
@@ -936,7 +1002,7 @@ func package(e: Dictionary) -> Dictionary:
 		"visited": (e.credits.visited as Dictionary).keys(), "side_quests": (e.credits.side_quests as Dictionary).duplicate(),
 		"quest_items": (e.credits.quest_items as Dictionary).duplicate(), "zones": zones,
 		"purse": {"money": int(purse.get("money", 0)), "items": (purse.get("items", []) as Array).duplicate()},
-		"move": move}
+		"move": move, "party_context": party_context}
 
 
 ## Host: every connected joiner gets its package when it changed.
@@ -949,6 +1015,7 @@ func send_all() -> void:
 	_settle()
 	if session.world and session.zone_id:
 		session.state.store_party_positions(session.world)
+		session.state.collect_pets(session.world)
 		if joiners.values().any(func(e): return e.active and e.in_sync and e.clean and e.present):
 			session.state.store_zone(session.zone_id, session.world)
 	for key in joiners:

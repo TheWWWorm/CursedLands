@@ -1,0 +1,464 @@
+{
+  "baseline_commit": "ba584dfb1049818fca7a0f4544cad98f06a2d363",
+  "scope": "G02 complete personalized current/waiting party progress, bags, companions and cumulative resume destination.",
+  "protocol": 10,
+  "export": {
+    "seconds": 5.971139920002315,
+    "command": [
+      "/home/llm2x/.local/bin/godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+      "--export-release",
+      "Linux",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps27/CPU.x86_64"
+    ],
+    "engine_source": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/fast-runtime.x86_64",
+    "errors": [],
+    "sha256": {
+      "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+      "CPU.pck": "27a5c32dc97592a7ce386029ba39b50fb547a162fcb1611d194ad08d0e8533cd",
+      "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+    }
+  },
+  "runs": {
+    "gameplay-party-context-astral-before-03": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps23/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_progress_context.gd",
+        "--label=gameplay-party-context-astral-before-03"
+      ],
+      "exit_code": 1,
+      "stopped": false,
+      "seconds": 2.304585148987826,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "d362bccc7093b9277ff033b4ef9f014165cb9857e7b55fa086f9312361222796",
+      "checks": 72,
+      "failures": 25
+    },
+    "gameplay-party-context-base-before-03": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps23/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_progress_context.gd",
+        "--label=gameplay-party-context-base-before-03"
+      ],
+      "exit_code": 1,
+      "stopped": false,
+      "seconds": 1.9034320320060942,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "644e4f4b737459ef8c8482ad84eab9cf7578167bacf11dd16345911ef43108a7",
+      "checks": 69,
+      "failures": 20
+    },
+    "gameplay-party-context-astral-production-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps26/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_progress_context.gd",
+        "--label=gameplay-party-context-astral-production-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 2.4038105189974885,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "70fbac42e93d88b523f48bb700a7b3acac89c55952f2346e7b979c8bc9c1eaca",
+      "checks": 72,
+      "failures": 0
+    },
+    "gameplay-party-context-base-production-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps26/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_progress_context.gd",
+        "--label=gameplay-party-context-base-production-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 1.9032040559977759,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "59f697413419422029ff5a1ee73d96cba3f3678bc73e82ef989936bdab6b8919",
+      "checks": 69,
+      "failures": 0
+    },
+    "gameplay-party-context-network-astral-production-02": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps26/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_progress_context_network.gd",
+        "--label=gameplay-party-context-network-astral-production-02"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 76.01752547101933,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "6a650f251ecc9843f137e355718907e87f2d8be60f65ac89c98071f00607d5a7",
+      "checks": 33,
+      "failures": 0
+    },
+    "gameplay-party-context-network-base-production-02": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps26/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_progress_context_network.gd",
+        "--label=gameplay-party-context-network-base-production-02"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 42.06988528399961,
+      "errors": [],
+      "warnings": [
+        "WARNING: LanDiscovery: port 27016 is in use; this game is not listed on the local network."
+      ],
+      "log_sha256": "6a4b3b78d322606da2d32fa29d617332aff3a203147b6bcf76730fb8c3386386",
+      "checks": 40,
+      "failures": 0
+    },
+    "gameplay-party-context-resume-astral-production-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps26/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_progress_context_network.gd",
+        "--label=gameplay-party-context-resume-astral-production-01",
+        "--resume-path=/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/gameplay-party-context-network-astral-production-02/godot/app_userdata/Cursed Lands/saves/lost_in_astral"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 20.831635719019687,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "b858f4ad761b7ed71c48395369245617213d6cf6207c5e0d2d0625a2b3ab793d",
+      "checks": 21,
+      "failures": 0
+    },
+    "gameplay-party-context-resume-base-production-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps26/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_progress_context_network.gd",
+        "--label=gameplay-party-context-resume-base-production-01",
+        "--resume-path=/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/gameplay-party-context-network-base-production-02/godot/app_userdata/Cursed Lands/saves"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 14.426789838995319,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "ee89d02b95f3ad911573cf646294e489b138bbb2db0e9a6062c87f4c6373308f",
+      "checks": 28,
+      "failures": 0
+    },
+    "gameplay-party-context-chapter-regression-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps26/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_progress_chapters.gd",
+        "--label=gameplay-party-context-chapter-regression-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 1.7033692929835524,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "0511620a1d2a403ba248cdb28af7c66c840f6f21a59b8cf10433b75c3b936966",
+      "checks": 17,
+      "failures": 0
+    },
+    "gameplay-party-context-astral-production-02": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps27/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_progress_context.gd",
+        "--label=gameplay-party-context-astral-production-02"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 2.4052791060239542,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "aa0c7068849d241c73ef4bceef78ad00e0b6bd8e1b146819b1ed33a6e64a793c",
+      "checks": 73,
+      "failures": 0
+    },
+    "gameplay-party-context-base-production-02": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps27/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_progress_context.gd",
+        "--label=gameplay-party-context-base-production-02"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 2.003672485006973,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "6540c3709f4c4d0a7cc2c2bb63cd767adf63518906783be8c864899c73b2f12c",
+      "checks": 69,
+      "failures": 0
+    },
+    "gameplay-party-context-astral-waiting-before-01": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps26/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_progress_context.gd",
+        "--label=gameplay-party-context-astral-waiting-before-01"
+      ],
+      "exit_code": 1,
+      "stopped": false,
+      "seconds": 2.4040847519936506,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "78767b3c2f6ce474a19fed6753c22c1c4bad6747e42d912274a8e819e3d4f813",
+      "checks": 73,
+      "failures": 1
+    },
+    "gameplay-party-context-astral-before-04": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps23/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_progress_context.gd",
+        "--label=gameplay-party-context-astral-before-04"
+      ],
+      "exit_code": 1,
+      "stopped": false,
+      "seconds": 2.4045920569915324,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "88c288c866a93e403863dfaa577333ce7a8ae39ecb884c97d9e1c69517fdb689",
+      "checks": 73,
+      "failures": 26
+    }
+  },
+  "retroid": {
+    "apk": {
+      "private_instrumented": false,
+      "engine_sha256": "424eaf73630ec110faf614f550f8047c24a78e224211df45d8b957bf03b7cc79",
+      "native_sha256": "231ad722fd1f9eb0b5b47d7c9a386931a95b9f7ccb404fd7773a1fc651564fb7",
+      "apk_sha256": "f3e06ba359015986d22c0e2f1899efe9025a11672e610c4f987675ac8ce8418d",
+      "changes": [
+        "Keep unset waiting-party positions unset during personalized progress merge"
+      ],
+      "baseline_apk": 59,
+      "accepted": true,
+      "validation_scope": "73 LiA party-context checks on Retroid Original settings; functional validation only."
+    },
+    "run": {
+      "config": {
+        "name": "gameplay-party-context-60-01",
+        "save": "user://fixtures/portal.sav",
+        "data": "user://data/astral",
+        "speed": 1,
+        "seconds": 30,
+        "host": false,
+        "players": 1,
+        "terror": false,
+        "isolated": false,
+        "options": {},
+        "tool": "user://coop_progress_context.gd"
+      },
+      "renderer_requested": "gl_compatibility",
+      "workers_requested": 4,
+      "battery_before": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Max charging current: 1150000\n  Max charging voltage: 5000000\n  Charge counter: 5047000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4377\n  temperature: 307\n  technology: Li-ion\n",
+      "start": 1791471542.8945692,
+      "installed": "Activity Resolver Table:\n  Non-Data Actions:\n      android.intent.action.MAIN:\n        a8f1ded org.cursedlands.performance/com.godot.game.GodotAppLauncher filter c5c2422\n          Action: \"android.intent.action.MAIN\"\n          Category: \"android.intent.category.DEFAULT\"\n          Category: \"android.intent.category.LAUNCHER\"\n\nReceiver Resolver Table:\n  Non-Data Actions:\n      androidx.profileinstaller.action.SAVE_PROFILE:\n        a89eeb3 org.cursedlands.performance/androidx.profileinstaller.ProfileInstallReceiver filter 33c606e\n          Action: \"androidx.profileinstaller.action.SAVE_PROFILE\"\n      androidx.profileinstaller.action.INSTALL_PROFILE:\n        a89eeb3 org.cursedlands.performance/androidx.profileinstaller.ProfileInstallReceiver filter 4e75c70\n          Action: \"androidx.profileinstaller.action.INSTALL_PROFILE\"\n      androidx.profileinstaller.action.SKIP_FILE:\n        a89eeb3 org.cursedlands.performance/androidx.profileinstaller.ProfileInstallReceiver filter 34cabe9\n          Action: \"androidx.profileinstaller.action.SKIP_FILE\"\n      androidx.profileinstaller.action.BENCHMARK_OPERATION:\n        a89eeb3 org.cursedlands.performance/androidx.profileinstaller.ProfileInstallReceiver filter 92ac30f\n          Action: \"androidx.profileinstaller.action.BENCHMARK_OPERATION\"\n\nDomain verification status:\n\nRegistered ContentProviders:\n  org.cursedlands.performance/androidx.core.content.FileProvider:\n    Provider{5770d5a org.cursedlands.performance/androidx.core.content.FileProvider}\n  org.cursedlands.performance/androidx.startup.InitializationProvider:\n    Provider{75e4b8b org.cursedlands.performance/androidx.startup.InitializationProvider}\n\nContentProvider Authorities:\n  [org.cursedlands.performance.fileprovider]:\n    Provider{5770d5a org.cursedlands.performance/androidx.core.content.FileProvider}\n      applicationInfo=ApplicationInfo{6acb468 org.cursedlands.performance}\n\nKey Set Manager:\n  [org.cursedlands.performance]\n      Signing KeySets: 83\n\nPackages:\n  Package [org.cursedlands.performance] (6f0b081):\n    userId=10124\n    pkg=Package{f08a526 org.cursedlands.performance}\n    codePath=/data/app/~~-YGjsmO1pdoMwcOBcVHAdg==/org.cursedlands.performance-z4hj1TQZGeohTJf6Z6d1Wg==\n    resourcePath=/data/app/~~-YGjsmO1pdoMwcOBcVHAdg==/org.cursedlands.performance-z4hj1TQZGeohTJf6Z6d1Wg==\n    legacyNativeLibraryDir=/data/app/~~-YGjsmO1pdoMwcOBcVHAdg==/org.cursedlands.performance-z4hj1TQZGeohTJf6Z6d1Wg==/lib\n    extractNativeLibs=true\n    primaryCpuAbi=arm64-v8a\n    secondaryCpuAbi=null\n    cpuAbiOverride=null\n    versionCode=60 minSdk=24 targetSdk=36\n    minExtensionVersions=[]\n    versionName=portal60-private-service-60\n    usesNonSdkApi=false\n    splits=[base]\n    apkSigningVersion=4\n    flags=[ DEBUGGABLE HAS_CODE ALLOW_CLEAR_USER_DATA ]\n    privateFlags=[ PRIVATE_FLAG_ACTIVITIES_RESIZE_MODE_RESIZEABLE_VIA_SDK_VERSION ALLOW_AUDIO_PLAYBACK_CAPTURE PRIVATE_FLAG_ALLOW_NATIVE_HEAP_POINTER_TAGGING ]\n    forceQueryable=false\n    dataDir=/data/user/0/org.cursedlands.performance\n    supportsScreens=[small, medium, large, xlarge, resizeable, anyDensity]\n    timeStamp=2026-10-08 17:58:11\n    lastUpdateTime=2026-10-08 17:58:11\n    packageSource=0\n    signatures=PackageSignatures{eb91bc0 version:4, signatures:[dfaa785c], past signatures:[]}\n    installPermissionsFixed=true\n    pkgFlags=[ DEBUGGABLE HAS_CODE ALLOW_CLEAR_USER_DATA ]\n    requested permissions:\n      android.permission.INTERNET\n    install permissions:\n      android.permission.INTERNET: granted=true\n    User 0: ceDataInode=63516 installed=true hidden=false suspended=false distractionFlags=0 stopped=true notLaunched=false enabled=0 instant=false virtual=false\n      installReason=0\n      firstInstallTime=2026-10-07 15:18:08\n      uninstallReason=0\n      overlay paths:\n        /product/overlay/NavigationBarModeGestural/NavigationBarModeGesturalOverlay.apk\n        /data/resource-cache/com.android.systemui-neutral-dkLj.frro\n        /data/resource-cache/com.android.systemui-accent-3XZv.frro\n      legacy overlay paths:\n        /product/overlay/NavigationBarModeGestural/NavigationBarModeGesturalOverlay.apk\n      gids=[3003]\n      runtime permissions:\n\nQueries:\n  system apps queryable: false\n  queries via forceQueryable:\n  queries via package name:\n  queries via component:\n    com.android.settings.intelligence:\n      org.cursedlands.performance\n    com.infoldgames.infinitynikkien:\n      org.cursedlands.performance\n  queryable via interaction:\n    User 0:\n  queryable via uses-library:\n\nDexopt state:\n  [org.cursedlands.performance]\n    path: /data/app/~~-YGjsmO1pdoMwcOBcVHAdg==/org.cursedlands.performance-z4hj1TQZGeohTJf6Z6d1Wg==/base.apk\n      arm64: [status=run-from-apk] [reason=unknown]\n  BgDexopt state:\n    enabled:true\n    mDexOptThread:null\n    mDexOptCancellingThread:null\n    mFinishedPostBootUpdate:true\n    mLastExecutionStatus:0\n    mLastExecutionStartTimeMs:259248570\n    mLastExecutionDurationIncludingSleepMs:24382\n    mLastExecutionStartUptimeMs:189187302\n    mLastExecutionDurationMs:24382\n    now:372353095\n    mLastCancelledPackages:\n    mFailedPackageNamesPrimary:\n    mFailedPackageNamesSecondary:\n\nCompiler stats:\n  [org.cursedlands.performance]\n    (No recorded stats)\n",
+      "apk_sha256": "f3e06ba359015986d22c0e2f1899efe9025a11672e610c4f987675ac8ce8418d",
+      "battery_after": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Max charging current: 950000\n  Max charging voltage: 5000000\n  Charge counter: 5047000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4377\n  temperature: 307\n  technology: Li-ion\n",
+      "seconds": 7.700036525726318,
+      "errors": [],
+      "checks": 73,
+      "failures": 0
+    },
+    "cleanup": {
+      "package": "org.cursedlands.performance",
+      "autorun_present": false,
+      "processes": []
+    }
+  },
+  "source_sha256": {
+    "game/src/game/coop_progress.gd": "b380f6d78949d95f6beeeba36e858c56c63e440a8ff82d02ad7a35a567ef3716",
+    "game/src/game/coop_party_progress.gd": "5ad1dd52625e692115ad30b9ca2214d03a0b9f6ecff78e363ff76fafce730f5f",
+    "game/src/game/coop_party_progress.gd.uid": "3b0845a78907a8b2c41c0a60e60657dae91d7749d1b5c86996d70695790a0d91",
+    "game/src/game/script/vm.gd": "6cf638f037b5990c45382e887b3969d715f110645a696880e13e8497396a6050",
+    "game/src/game/net_status.gd": "cb7c2d58787cb9d24fb1db06f9bcc1bc06884a960dd659fca5802654a2d17472",
+    "tools/tests/coop_progress_context.gd": "27cfc9d142e65aa9bd43d1e3aba4776e404094333df101ed7aff95b662511934",
+    "tools/tests/coop_progress_context_network.gd": "41ee82fb39da34f961c889e3865e1a4a063a924585586975abd8c97cf27b1126"
+  },
+  "behavior": [
+    "Guest context starts from the imported save; original party instructions run against that private copy only at fully credited matching-party checkpoints.",
+    "Current and waiting party identities, personal bags, shared narrative companions, personally hired mercenaries and personally tamed animals travel in cumulative packages. Host private protagonist stats, money, bags, optional hires and animals are not copied.",
+    "Returned story protagonists keep their authored body/script identity with personal earned progress. Temporary Nalo/Shaina remain shared story roles and leave the personal protagonist waiting.",
+    "The last coherent location/context remains available when later areas cannot be credited. Repeated merges and rejoining from a merged save do not append bags/pets twice.",
+    "Context operations are event-driven at party instructions and save snapshots, not per actor tick."
+  ],
+  "validation_details": [
+    "Original-data instruction sequences cover FPrison, FSusel, Shaina out/return, Gipat, HeroAlone, Pretty rescue return, and JunParty.",
+    "Real ENet import/package RPCs cover FPrison -> FSusel -> Gipat and HeroAlone -> Pretty -> HeroAlone -> main. Initial independent-deployment network runs have 33/40 assertions; a subsequent resume-only invocation of the final fixture tests Session.load_game, restored positions, all local controllers and complete rosters in 21/28 assertions using those exact RPC-created saves.",
+    "The source fixture was extended with the resume-only load path after the 33/40-check network runs; production game code remained unchanged.",
+    "Original source save bytes are checked unchanged. Host-save persistence and reconnect baseline/pet identity are covered; reconnect here is bookkeeping rather than a full disconnect/import/live-party campaign playthrough.",
+    "Final export gameplay-gaps27/APK60 additionally preserves absent waiting-party positions. The added assertion fails in gameplay-gaps26 and passes in the final build; both campaign state suites and Retroid were rerun. ENet and full load-game-path coverage used gameplay-gaps26 before this one-line edge-case correction."
+  ],
+  "excluded_or_superseded": {
+    "gameplay-party-context-*-source-01": "Fixture parse errors fixed before game validation; no runtime evidence.",
+    "gameplay-party-context-*-before-01": "Same fixture parse errors; not a reproduced game failure.",
+    "gameplay-party-context-network-astral-source-01": "Fixture type inference parse error.",
+    "gameplay-party-context-network-astral-source-02": "Rendered two-world initial delivery exceeded the fixture wait; retained as loading observation, not a party-progress defect or timing benchmark.",
+    "gameplay-party-context-network-astral-production-01": "Fixture read an earlier queued cumulative save before its expected chapter package. The final predicate waits for both chapter and destination.",
+    "gameplay-gaps24/gameplay-gaps25": "Intermediate exports superseded by gameplay-gaps26."
+  },
+  "limitations": [
+    "Prepared chapter boundaries are not complete quest playthroughs. Jigran/later chapter routes and long reconnect play need coverage.",
+    "Live guest disguise/equipment participation policy remains G08; this fixes the guest standalone progress copy.",
+    "Initial delivery in the two-world fixture remains slow; no shipping Android-service timing conclusion.",
+    "Retroid tested state/serialization logic, not the complete network/solo chapter route.",
+    "No Windows runtime validation, public release, internet-latency result or new FPS/performance claim."
+  ],
+  "prior_export": {
+    "seconds": 5.918121324008098,
+    "command": [
+      "/home/llm2x/.local/bin/godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/candidate",
+      "--export-release",
+      "Linux",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/build/gameplay-gaps26/CPU.x86_64"
+    ],
+    "engine_source": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/fast-runtime.x86_64",
+    "errors": [],
+    "sha256": {
+      "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+      "CPU.pck": "8d2ad38d2f106f436eff8ebe8427c827d648b76cfbdc58d96a04f52bd87d897f",
+      "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+    }
+  },
+  "retroid_previous": {
+    "apk": {
+      "private_instrumented": false,
+      "engine_sha256": "424eaf73630ec110faf614f550f8047c24a78e224211df45d8b957bf03b7cc79",
+      "native_sha256": "231ad722fd1f9eb0b5b47d7c9a386931a95b9f7ccb404fd7773a1fc651564fb7",
+      "apk_sha256": "e277fedc092f1407704529e77b9f29eb641d9de77000edd3ea1ee53276cdc08c",
+      "changes": [
+        "Personalized campaign party progress, waiting bags, and companions; protocol 10"
+      ],
+      "baseline_apk": 58,
+      "accepted": true,
+      "validation_scope": "Focused party-context correctness: 72 LiA checks on Retroid Original settings; no FPS acceptance."
+    },
+    "run": {
+      "config": {
+        "name": "gameplay-party-context-59-01",
+        "save": "user://fixtures/portal.sav",
+        "data": "user://data/astral",
+        "speed": 1,
+        "seconds": 30,
+        "host": false,
+        "players": 1,
+        "terror": false,
+        "isolated": false,
+        "options": {},
+        "tool": "user://coop_progress_context.gd"
+      },
+      "renderer_requested": "gl_compatibility",
+      "workers_requested": 4,
+      "battery_before": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Max charging current: 950000\n  Max charging voltage: 5000000\n  Charge counter: 5047000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4377\n  temperature: 307\n  technology: Li-ion\n",
+      "start": 1791471090.8591695,
+      "installed": "Activity Resolver Table:\n  Non-Data Actions:\n      android.intent.action.MAIN:\n        48bbcd2 org.cursedlands.performance/com.godot.game.GodotAppLauncher filter f7391a3\n          Action: \"android.intent.action.MAIN\"\n          Category: \"android.intent.category.DEFAULT\"\n          Category: \"android.intent.category.LAUNCHER\"\n\nReceiver Resolver Table:\n  Non-Data Actions:\n      androidx.profileinstaller.action.SAVE_PROFILE:\n        1a6dca0 org.cursedlands.performance/androidx.profileinstaller.ProfileInstallReceiver filter 623a4ff\n          Action: \"androidx.profileinstaller.action.SAVE_PROFILE\"\n      androidx.profileinstaller.action.INSTALL_PROFILE:\n        1a6dca0 org.cursedlands.performance/androidx.profileinstaller.ProfileInstallReceiver filter f04e059\n          Action: \"androidx.profileinstaller.action.INSTALL_PROFILE\"\n      androidx.profileinstaller.action.SKIP_FILE:\n        1a6dca0 org.cursedlands.performance/androidx.profileinstaller.ProfileInstallReceiver filter f44d41e\n          Action: \"androidx.profileinstaller.action.SKIP_FILE\"\n      androidx.profileinstaller.action.BENCHMARK_OPERATION:\n        1a6dca0 org.cursedlands.performance/androidx.profileinstaller.ProfileInstallReceiver filter 5ad22cc\n          Action: \"androidx.profileinstaller.action.BENCHMARK_OPERATION\"\n\nDomain verification status:\n\nRegistered ContentProviders:\n  org.cursedlands.performance/androidx.core.content.FileProvider:\n    Provider{b6a11b8 org.cursedlands.performance/androidx.core.content.FileProvider}\n  org.cursedlands.performance/androidx.startup.InitializationProvider:\n    Provider{9dfcb91 org.cursedlands.performance/androidx.startup.InitializationProvider}\n\nContentProvider Authorities:\n  [org.cursedlands.performance.fileprovider]:\n    Provider{b6a11b8 org.cursedlands.performance/androidx.core.content.FileProvider}\n      applicationInfo=ApplicationInfo{7760af6 org.cursedlands.performance}\n\nKey Set Manager:\n  [org.cursedlands.performance]\n      Signing KeySets: 83\n\nPackages:\n  Package [org.cursedlands.performance] (4ddcef7):\n    userId=10124\n    pkg=Package{18a9164 org.cursedlands.performance}\n    codePath=/data/app/~~RR-H0ElBccyiQMJ5PDnMUw==/org.cursedlands.performance-oR3afOk-VWi-emJUb0REiQ==\n    resourcePath=/data/app/~~RR-H0ElBccyiQMJ5PDnMUw==/org.cursedlands.performance-oR3afOk-VWi-emJUb0REiQ==\n    legacyNativeLibraryDir=/data/app/~~RR-H0ElBccyiQMJ5PDnMUw==/org.cursedlands.performance-oR3afOk-VWi-emJUb0REiQ==/lib\n    extractNativeLibs=true\n    primaryCpuAbi=arm64-v8a\n    secondaryCpuAbi=null\n    cpuAbiOverride=null\n    versionCode=59 minSdk=24 targetSdk=36\n    minExtensionVersions=[]\n    versionName=portal60-private-service-59\n    usesNonSdkApi=false\n    splits=[base]\n    apkSigningVersion=4\n    flags=[ DEBUGGABLE HAS_CODE ALLOW_CLEAR_USER_DATA ]\n    privateFlags=[ PRIVATE_FLAG_ACTIVITIES_RESIZE_MODE_RESIZEABLE_VIA_SDK_VERSION ALLOW_AUDIO_PLAYBACK_CAPTURE PRIVATE_FLAG_ALLOW_NATIVE_HEAP_POINTER_TAGGING ]\n    forceQueryable=false\n    dataDir=/data/user/0/org.cursedlands.performance\n    supportsScreens=[small, medium, large, xlarge, resizeable, anyDensity]\n    timeStamp=2026-10-08 17:49:21\n    lastUpdateTime=2026-10-08 17:49:21\n    packageSource=0\n    signatures=PackageSignatures{eb91bc0 version:4, signatures:[dfaa785c], past signatures:[]}\n    installPermissionsFixed=true\n    pkgFlags=[ DEBUGGABLE HAS_CODE ALLOW_CLEAR_USER_DATA ]\n    requested permissions:\n      android.permission.INTERNET\n    install permissions:\n      android.permission.INTERNET: granted=true\n    User 0: ceDataInode=63516 installed=true hidden=false suspended=false distractionFlags=0 stopped=true notLaunched=false enabled=0 instant=false virtual=false\n      installReason=0\n      firstInstallTime=2026-10-07 15:18:08\n      uninstallReason=0\n      overlay paths:\n        /product/overlay/NavigationBarModeGestural/NavigationBarModeGesturalOverlay.apk\n        /data/resource-cache/com.android.systemui-neutral-dkLj.frro\n        /data/resource-cache/com.android.systemui-accent-3XZv.frro\n      legacy overlay paths:\n        /product/overlay/NavigationBarModeGestural/NavigationBarModeGesturalOverlay.apk\n      gids=[3003]\n      runtime permissions:\n\nQueries:\n  system apps queryable: false\n  queries via forceQueryable:\n  queries via package name:\n  queries via component:\n    com.android.settings.intelligence:\n      org.cursedlands.performance\n    com.infoldgames.infinitynikkien:\n      org.cursedlands.performance\n  queryable via interaction:\n    User 0:\n  queryable via uses-library:\n\nDexopt state:\n  [org.cursedlands.performance]\n    path: /data/app/~~RR-H0ElBccyiQMJ5PDnMUw==/org.cursedlands.performance-oR3afOk-VWi-emJUb0REiQ==/base.apk\n      arm64: [status=run-from-apk] [reason=unknown]\n  BgDexopt state:\n    enabled:true\n    mDexOptThread:null\n    mDexOptCancellingThread:null\n    mFinishedPostBootUpdate:true\n    mLastExecutionStatus:0\n    mLastExecutionStartTimeMs:259248570\n    mLastExecutionDurationIncludingSleepMs:24382\n    mLastExecutionStartUptimeMs:189187302\n    mLastExecutionDurationMs:24382\n    now:371901039\n    mLastCancelledPackages:\n    mFailedPackageNamesPrimary:\n    mFailedPackageNamesSecondary:\n\nCompiler stats:\n  [org.cursedlands.performance]\n    (No recorded stats)\n",
+      "apk_sha256": "e277fedc092f1407704529e77b9f29eb641d9de77000edd3ea1ee53276cdc08c",
+      "battery_after": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Max charging current: 1050000\n  Max charging voltage: 5000000\n  Charge counter: 5046998\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4376\n  temperature: 307\n  technology: Li-ion\n",
+      "seconds": 7.682538986206055,
+      "errors": [],
+      "checks": 72,
+      "failures": 0
+    },
+    "cleanup": {
+      "package": "org.cursedlands.performance",
+      "autorun_present": false,
+      "processes": [],
+      "apk_sha256": "e277fedc092f1407704529e77b9f29eb641d9de77000edd3ea1ee53276cdc08c"
+    }
+  }
+}
