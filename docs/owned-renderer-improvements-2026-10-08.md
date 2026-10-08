@@ -245,6 +245,49 @@ integration constraints found in current source:
 These findings explain the limited first stage. They are implementation work
 still to do, not a declaration that broader P3 or P4 is unnecessary.
 
+### Frozen spatial-batch probe
+
+[tools/benchmarks/scenery_batches.gd](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/tools/benchmarks/scenery_batches.gd)
+loads the real `bz13h` map, freezes shader time, and compares original meshes,
+16 m MultiMesh groups, and restored originals in an 800 × 600 viewport. It
+groups matching mesh/material/layer/shadow/part-height values, excludes effect
+carriers and deforming meshes, and replaces 248 parts with 87 batches. Original
+logical nodes remain visible; only their rendering-server instances are hidden.
+This is safe only inside the frozen fixture. No production batching is enabled.
+
+Exported Linux build, RTX 3090, driver 580.178.04, HD upscaling off:
+
+| Renderer | Added point lights | Visible draws before → batched | Changed pixels above 2/255 | Largest channel difference |
+|---|---:|---:|---:|---:|
+| Compatibility | 0 | 623 → 504 | 0 | 0/255 |
+| Compatibility | 4 | 623 → 504 | 3 | 8/255 |
+| Compatibility | 12 | 623 → 504 | 1,809 | 33/255 |
+| Forward+ | 0 | 898 → 893 | 20 | 28/255 |
+| Forward+ | 4 | 898 → 893 | 20 | 28/255 |
+| Forward+ | 12 | 898 → 893 | 20 | 25/255 |
+
+The Compatibility four-light difference is at the restoration-control noise
+level (three pixels); the twelve-light difference is substantially larger.
+This is consistent with Godot's documented per-object MultiMesh light limit
+and shows that this grouping does not preserve lighting in the crowded case.
+It is not a proof that every changed pixel has the same cause. Forward+'s
+small persistent differences remain unexplained, and its draw reduction here
+is only five calls. No GPU/CPU time gain is established on either renderer.
+
+Restoring original meshes restored the original draw count in every case.
+Pixel restoration was exact except the Compatibility zero-light row's three
+pixels. Do not declare the prototype visually equivalent or enable it globally.
+Next work needs compatible light membership as well as the lifecycle/fading
+constraints above. The other chat was also investigating disappearing creatures;
+leave P4 visibility/culling code alone while that investigation is active.
+
+Evidence: `scenery-batches-gl_compatibility.log` and
+`scenery-batches-forward_plus.log` under the QA directory, with
+`data/godot/app_userdata/Cursed Lands/scenery-batches-*.png` captures. Run the
+tool through the same exported `--tool` entry point described above. It exits
+successfully when the measurement completes, even when pixels differ; it is a
+diagnostic benchmark, not a passing fidelity test.
+
 ## Integration
 
 The implementation is in this isolated branch. Do not overwrite another agent's
@@ -266,10 +309,10 @@ checkout is still changing.
 
 ## Next work in the established order
 
-1. **P3 static scenery batching:** material retention and a three-map resource
-   census are now implemented above. Next, measure a dense rendered map and
-   prototype compatible static batches in bounded cells, addressing the listed
-   consumers and light-selection constraints. `map_scene.gd` and `figure.gd`
+1. **P3 static scenery batching:** material retention, a three-map resource
+   census and the frozen rendered-map probe are now recorded above. The probe
+   found a crowded-light mismatch; resolve compatible light membership and the
+   listed consumers before a production batch. `map_scene.gd` and `figure.gd`
    are the main entry points. Preserve the recent dialogue-obstruction work
    before changing visual ownership.
 2. **P4 occlusion:** after identifying hidden-geometry cost, evaluate Godot's
