@@ -137,9 +137,9 @@ func change_game_files(back: Callable, campaign := "") -> Control:
 func back_to_menu() -> void:
 	if _leaving:
 		return
+	_leaving = true
 	GameData.trace("back to main menu")
 	if session:
-		_leaving = true
 		var s := session
 		s.coop.flush()   # co-op: the joiners' last progress packages
 		# The others see "left the game", not "lost connection"; a joiner
@@ -148,13 +148,16 @@ func back_to_menu() -> void:
 		if s.local_host.frontend:
 			await s.local_host.stop()
 		s.multiplayer.multiplayer_peer = OfflineMultiplayerPeer.new()
-		_leaving = false
 	game = null
 	session = null
 	_clear()
+	# Session teardown restores the campaign database after original
+	# multiplayer. Complete it before the menu resolves creature skins.
+	await get_tree().process_frame
 	var menu := preload("res://src/ui/main_menu.gd").new()
 	menu.start_game.connect(start_game)
 	add_child(menu)
+	_leaving = false
 
 
 func open_viewer() -> void:

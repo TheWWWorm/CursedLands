@@ -113,6 +113,7 @@ var _load_serial := 0
 var _pool_epoch := -1
 var _load_waiting := {}
 var _remote_loading := false
+var _lmp_loading_generation := 0
 var _remote_load_end_serial := -1
 var _loading_world_mode := Node.PROCESS_MODE_PAUSABLE
 var _loading_zone_id := ""
@@ -1148,6 +1149,7 @@ func _rpc_zone(id: String, records: Array, diplo: PackedInt32Array, extra_mobs: 
 		_zone_held.append(_rpc_zone.bind(id, records, diplo, extra_mobs, mpr, levers, pool_epoch))
 		return
 	if game == null:
+		LoadingScreen.prepare(get_tree(), campaign.zone(id), LoadingScreen.CLIENT)
 		zone_received.emit()
 	if LoadingScreen.deferred():
 		# Web / mobile: the screen (frame 8) is presented before the build;
@@ -1212,6 +1214,7 @@ func _rpc_lmp_zone(id: String, generation: int, records: Array, diplo: PackedInt
 	await _rpc_zone(id, records, diplo, extra_mobs, mpr, levers)
 	if lmp_generation == generation and not _zone_holding:
 		loading_game = false
+		_lmp_loading_generation = 0
 
 
 @rpc("authority", "call_remote", "reliable")
@@ -3927,6 +3930,21 @@ func _rpc_event(event: Dictionary) -> void:
 
 func _on_event(event: Dictionary) -> void:
 	var t := String(event.get("t", ""))
+	if t == "lmp_load_begin":
+		var generation := int(event.get("generation", 0))
+		if not lmp.is_empty() and generation > lmp_generation:
+			_lmp_loading_generation = generation
+			loading_game = true
+			LoadingScreen.prepare(get_tree(), campaign.zone(String(event.get("zone", ""))), LoadingScreen.CLIENT)
+			if game: game.on_event({"t": "load_begin", "travel": true})
+		return
+	if t == "lmp_load_end":
+		if _lmp_loading_generation > 0 and int(event.get("generation", 0)) == _lmp_loading_generation:
+			_lmp_loading_generation = 0
+			loading_game = false
+			LoadingScreen.end()
+			if game: game.on_event({"t": "load_end"})
+		return
 	if t == "local_host_view":
 		local_host.restore_view(event.get("camera", {}))
 		return
@@ -4764,10 +4782,11 @@ func _cancel_remote_load() -> void:
 		game.on_event({"t": "load_end"})
 
 
-## Web / mobile, the menus: the loading screen for zone `id` on screen before
-## a synchronous start (new_lmp_game).
+## Menus: cover the view before either a synchronous start or a request to
+## the separate authority. Deferred platforms also await presentation.
 func hold_loading(id: String) -> void:
-	if LoadingScreen.deferred() and zone_exists(id):
+	if zone_exists(id):
+		LoadingScreen.prepare(get_tree(), campaign.zone(id), LoadingScreen.NEW_ZONE)
 		await LoadingScreen.hold(get_tree(), campaign.zone(id), LoadingScreen.NEW_ZONE)
 
 

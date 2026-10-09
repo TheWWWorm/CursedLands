@@ -274,6 +274,7 @@ func request(player: int, target: String, entrance: int) -> bool:
 		return false
 	var old := generation_of(player)
 	owners[player].loading = true   # refuse all further old-map orders immediately
+	_load_notice(player, target, old + 1, true)
 	_publish_locations()
 	call_deferred("_perform", player, target, maxi(1, entrance), old)
 	return true
@@ -285,10 +286,12 @@ func _perform(player: int, target: String, entrance: int, old_generation: int) -
 	var source := owner_world(player)
 	if source == null:
 		owners[player].loading = false
+		_load_notice(player, target, old_generation + 1, false)
 		return
 	var destination := ensure_world(target)
 	if destination == null:
 		owners[player].loading = false
+		_load_notice(player, target, old_generation + 1, false)
 		_publish_locations()
 		return
 	session.swap.cancel_player(player)
@@ -299,6 +302,8 @@ func _perform(player: int, target: String, entrance: int, old_generation: int) -
 	with_world(destination, _deploy_party.bind(player, entrance))
 	if player == 0:
 		_activate(destination)
+		if session.game and session._pid_of(player) <= 1:
+			_load_notice(player, target, old_generation + 1, false)
 	# A separated host still owns slot zero, but its view is a remote peer.
 	# Activate the authority context and send that view the new generation;
 	# commands stay held until its normal loaded acknowledgement arrives.
@@ -308,6 +313,21 @@ func _perform(player: int, target: String, entrance: int, old_generation: int) -
 	session._mp_send(player)
 	session.mark_dirty()
 	session.sync_state()
+
+
+## The visible owner is usually a separate process too. Send the loading
+## picture before ensure_world can block this authority building a new map.
+## Use the existing reliable, source-generation event stream; no RPC layout
+## or authoritative gameplay state changes are needed for the presentation.
+func _load_notice(player: int, target: String, generation: int, begin: bool) -> void:
+	var event := {"t": "lmp_load_begin" if begin else "lmp_load_end",
+		"zone": target, "generation": generation, "to": player}
+	var peer := session._pid_of(player)
+	if peer > 1:
+		session._rpc_lmp_event.rpc_id(peer, zone_of(player), generation_of(player), event)
+		session._flush_load_notice()
+	elif session.game and session.my_index == player:
+		session._on_event(event)
 
 
 func _activate(w: GameWorld) -> void:

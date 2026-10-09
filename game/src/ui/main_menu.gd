@@ -451,14 +451,20 @@ static func _port() -> int:
 func _start_coop() -> void:
 	if _net and _net.lmp_base and not _session.local_host.frontend and not _session.lmp_characters_ready():
 		return
-	start_game.emit(_session)
 	if _net and _net.lmp_base:   # the original's own multiplayer game (LmpMode)
-		await _session.hold_loading(_net.lmp_base.to_lower())
-		if _session.local_host.frontend:
-			await _session.local_host.request("lmp", {"base": _net.lmp_base})
+		var s := _session
+		var base := _net.lmp_base.to_lower()
+		await s.hold_loading(base)
+		start_game.emit(s)
+		var ok := false
+		if s.local_host.frontend:
+			var answer := await s.local_host.request("lmp", {"base": base})
+			ok = bool(answer.get("ok", false))
 		else:
-			_session.new_lmp_game(_net.lmp_base)
+			ok = s.new_lmp_game(base)
+		if not ok: LoadingScreen.end()
 		return
+	start_game.emit(_session)
 	if _net and _net.start_slot and await _session.load_game_shown(_net.start_slot):   # the host's save, continued
 		return
 	_session.new_campaign()

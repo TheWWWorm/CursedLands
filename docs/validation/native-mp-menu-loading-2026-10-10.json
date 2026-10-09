@@ -1,0 +1,933 @@
+{
+  "date": "2026-10-10",
+  "status": "Integrated after source review; no delivered package changes",
+  "base": "e002052",
+  "production_sources": {
+    "src/main.gd": {
+      "baseline_sha256": "56edded0e792d096cb506518b4cabe0f42103ee9c3648519cd0132b8a5320fc6",
+      "candidate_sha256": "4e45e5027f87c1b2503d228c73aeaae3afaed3f935b3d24f1e028cc6b7dc886f",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/windows-test-feedback-20261010/source/main.gd"
+    },
+    "src/ui/main_menu.gd": {
+      "baseline_sha256": "d7980fa1af1d897d8de0b2e603e06afe6451e6674e02a8ca53f7f25ebc76ea51",
+      "candidate_sha256": "dd177d091605f4cf1bae20c8d6106848365951cbef1892c61adb62260e60b072",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/windows-test-feedback-20261010/source/ui/main_menu.gd"
+    },
+    "src/game/lmp_travel.gd": {
+      "baseline_sha256": "a4103e4b054442c7fc4c2d2f7719e13d0e9d2aee8a73641808d13a5f36d7e49f",
+      "candidate_sha256": "e09735ba9536bbad4c2c47d517edfd2851026ffdb35c9f646bae70c6ad284b28",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/windows-test-feedback-20261010/source/game/lmp_travel.gd"
+    },
+    "src/game/session.gd": {
+      "baseline_sha256": "8c8fab59bf675bbb321eca6b19c65c319177a855af9f5e6a396454a0118a93c1",
+      "candidate_sha256": "39022ce3b9f223789ecb21a34609157c2d65b46c6421b769edde4a5ea0157495",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/windows-test-feedback-20261010/source/game/session.gd"
+    }
+  },
+  "export": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/windows-test-feedback-20261010/candidate01/export.json",
+    "sha256": "61553096ad26aeb314ec14ba3081ed3ffdada35b4fc4a841848184e5b217ab06"
+  },
+  "fixture": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/windows-test-feedback-20261010/menu_lmp_flow.gd",
+    "sha256": "c01452e95c4db9104b388783b223f11802118e570edab51c1cf8df0a3ee60285"
+  },
+  "behavior": [
+    "Original multiplayer prepares the loading picture before replacing menu UI or waiting on separate authority startup.",
+    "Accepted original multiplayer travel sends and flushes a reliable presentation notice before the authority builds the destination; cancellation and current generation bound its lifetime. Existing RPC event format retained.",
+    "Returning to menu completes old Session teardown and campaign-database restoration before resolving menu creature layers and textures."
+  ],
+  "final_qualification": {
+    "baseline": "menu-lmp-baseline04",
+    "candidate": "menu-lmp-candidate02",
+    "checks_each": 23,
+    "baseline_failures": 4,
+    "candidate_failures": 0,
+    "startup_exposed_frames_before_after": [
+      596,
+      0
+    ],
+    "loopback_request_to_first_loading_ms_before_after": [
+      6081,
+      237
+    ],
+    "travel_exposed_frames_after_one_second_before_after": [
+      585,
+      0
+    ],
+    "menu_layers_and_texture_bytes_restored_exactly": true
+  },
+  "limitations": [
+    "Linux Forward+ execution on RTX3090; reported Windows4090Mobile behavior was reproduced via the same shipped pack but not executed on Windows here.",
+    "Real menu, separate LocalHost authority and replicated hosting frontend. Ordinary quest/travel commands, not a physical walk through the exit.",
+    "Quest selection is native/random: final baseline z12q1, candidate z12q2. Request-to-cover observations validate the early notification; no map-load-speed comparison is claimed.",
+    "Headless and foreign rendered processes overlapped; no FPS or clean GPU cost claim.",
+    "Desktop loading path qualified. Deferred/web/mobile and failure-cancellation generation paths reviewed but not separately rendered this checkpoint."
+  ],
+  "historical_fixture_notes": [
+    "baseline01 used a host-only dialog route on the frontend; baseline02 finished dialog during STAGING. Their quest failures were fixture errors; both retained.",
+    "baseline03/candidate01 validate startup and texture fixes but their original pending-state observer missed worker preparation before the client loading flag. baseline04/candidate02 add an independent request-to-loading observer, exposing and then resolving that gap."
+  ],
+  "runs": {
+    "menu-lmp-baseline01": {
+      "run": "/home/llm2x/Documents/EI/local/scratchpad/windows-test-feedback-20261010/menu-lmp-baseline01/run.json",
+      "run_sha256": "69e1e42d740bc9515ad8d79543ab9470fc05cd5b13fa40022984ca78558fd2ac",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/windows-test-feedback-20261010/menu-lmp-baseline01/lmp-menu-flow.json",
+      "result_sha256": "e1c4e22c4335fc868c031f54768dbe5ffb4fde995ca6d38e87bca6bf305d923e",
+      "result_data": {
+        "checks": 17,
+        "failures": 4,
+        "frames": {
+          "start": {
+            "covered": 22,
+            "exposed": 605,
+            "transition": 0
+          }
+        },
+        "menu_creatures": {
+          "after": {
+            "Boar-87": {
+              "layers": "[\"unanwibo\", [\"skin_00\"]]",
+              "textures": [
+                "null"
+              ]
+            },
+            "OgreGipatF7-187": {
+              "layers": "[\"unmoog1\", [\"skin_00\"]]",
+              "textures": [
+                "null"
+              ]
+            },
+            "White Wolf-76": {
+              "layers": "[\"unanwiwo\", [\"skin_00\"]]",
+              "textures": [
+                "null"
+              ]
+            }
+          },
+          "before": {
+            "Boar-87": {
+              "layers": "[\"unanwibo\", [\"boar00\"]]",
+              "textures": [
+                "5e17d60a147f08e01a0da025e89941fd3f994a5ff1a747211fb4c551260946a0"
+              ]
+            },
+            "OgreGipatF7-187": {
+              "layers": "[\"unmoog1\", [\"ogre00\"]]",
+              "textures": [
+                "3ea19745f5e23dd60db0fb5851aee561bd4128ff8dc0124ab729961b5f40269b"
+              ]
+            },
+            "White Wolf-76": {
+              "layers": "[\"unanwiwo\", [\"wolf01\"]]",
+              "textures": [
+                "0178bed0093da941e84851ee5cf11648d85d7e39782e5bda5007bb82eddeb65d"
+              ]
+            }
+          }
+        },
+        "menu_database": [
+          {
+            "label": "before",
+            "lmp_db": false
+          },
+          {
+            "label": "after",
+            "lmp_db": false
+          }
+        ],
+        "scope": "Real menu and separate native multiplayer authority; controlled public quest/travel commands; presented loading frames and exact menu creature texture/layer retention. Linux execution, not Windows performance or physical exit-route validation."
+      },
+      "run_data": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261009.2-linux-x86_64/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "forward_plus",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/windows-test-feedback-20261010/menu-lmp-baseline01/tool-source.gd",
+          "--port=29939"
+        ],
+        "return_code": 1,
+        "seconds": 52.296864175004885,
+        "timeout_seconds": 180,
+        "termination_reason": null,
+        "errors": [
+          "FAIL no empty HUD before original multiplayer loading",
+          "FAIL quest briefing opens through ordinary topic command",
+          "FAIL original quest briefing completes",
+          "FAIL menu creatures retain original layers and texture bytes after multiplayer"
+        ],
+        "warnings": [],
+        "campaign": "base",
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/windows-test-feedback-20261010/menu_lmp_flow.gd": "2fc72dbef53d08bb90b9177aefe4002568c6525c995a6dca2f6d995769572ee1"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+          "CursedLands.pck": "f4411106f24b1b684e3c3a9788d0ab434cfe10607dd4fff9d4f6e969758e17fd",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "other_processes_at_start": [],
+        "other_processes_at_end": [],
+        "captures": {
+          "lmp-menu-after.png": "110f390d39a3a482d3df570468d8654825473f58c0b3245a4328334285ebb2cb",
+          "lmp-start-exposed.png": "883ff4aecb09ca0affd6b735a6a6e1d61803eae9d1aee786345747dfae279388",
+          "lmp-start-covered.png": "81a7d39c018e915cc6e1f1097bdbfcfae04feca31cce929de0bd6e5c5b049c0b",
+          "lmp-menu-before.png": "6dccb3591d3a7465789d071835455bddbedea4c93b82053371658c4812f635c3"
+        },
+        "input_profile": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/windows-test-feedback-20261010/menu-lmp-baseline01/isolated/data/godot/app_userdata/Cursed Lands/settings.cfg",
+          "contents": "[options]\ndisplay_mode=0\nresolution=1\nq_aa=0\nconfine_mouse=0\nauto_graphics=0\nshow_tutorial=0\n[display]\nresolution=\"800x600\"\n[remake]\ngfx=4\n",
+          "sha256": "933a57de3ff7460612be42856220531357074318728b5e66f907ac50e5f20cf0"
+        }
+      }
+    },
+    "menu-lmp-baseline02": {
+      "run": "/home/llm2x/Documents/EI/local/scratchpad/windows-test-feedback-20261010/menu-lmp-baseline02/run.json",
+      "run_sha256": "ae459ee32668c5aade82ff73adc6e1fe3bd66e1736a26d53e863fb5445d6af4a",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/windows-test-feedback-20261010/menu-lmp-baseline02/lmp-menu-flow.json",
+      "result_sha256": "24cb3bd258d9a5452022b93ab0053c2d80f044562f83b6507583bb791bef5222",
+      "result_data": {
+        "checks": 17,
+        "failures": 3,
+        "frames": {
+          "start": {
+            "covered": 22,
+            "exposed": 616,
+            "transition": 0
+          }
+        },
+        "menu_creatures": {
+          "after": {
+            "Boar-87": {
+              "layers": "[\"unanwibo\", [\"skin_00\"]]",
+              "textures": [
+                "null"
+              ]
+            },
+            "OgreGipatF7-187": {
+              "layers": "[\"unmoog1\", [\"skin_00\"]]",
+              "textures": [
+                "null"
+              ]
+            },
+            "White Wolf-76": {
+              "layers": "[\"unanwiwo\", [\"skin_00\"]]",
+              "textures": [
+                "null"
+              ]
+            }
+          },
+          "before": {
+            "Boar-87": {
+              "layers": "[\"unanwibo\", [\"boar00\"]]",
+              "textures": [
+                "5e17d60a147f08e01a0da025e89941fd3f994a5ff1a747211fb4c551260946a0"
+              ]
+            },
+            "OgreGipatF7-187": {
+              "layers": "[\"unmoog1\", [\"ogre00\"]]",
+              "textures": [
+                "3ea19745f5e23dd60db0fb5851aee561bd4128ff8dc0124ab729961b5f40269b"
+              ]
+            },
+            "White Wolf-76": {
+              "layers": "[\"unanwiwo\", [\"wolf01\"]]",
+              "textures": [
+                "0178bed0093da941e84851ee5cf11648d85d7e39782e5bda5007bb82eddeb65d"
+              ]
+            }
+          }
+        },
+        "menu_database": [
+          {
+            "label": "before",
+            "lmp_db": false
+          },
+          {
+            "label": "after",
+            "lmp_db": false
+          }
+        ],
+        "scope": "Real menu and separate native multiplayer authority; controlled public quest/travel commands; presented loading frames and exact menu creature texture/layer retention. Linux execution, not Windows performance or physical exit-route validation."
+      },
+      "run_data": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261009.2-linux-x86_64/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "forward_plus",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/windows-test-feedback-20261010/menu-lmp-baseline02/tool-source.gd",
+          "--port=29939"
+        ],
+        "return_code": 1,
+        "seconds": 43.289216858975124,
+        "timeout_seconds": 180,
+        "termination_reason": null,
+        "errors": [
+          "FAIL no empty HUD before original multiplayer loading",
+          "FAIL original quest briefing completes",
+          "FAIL menu creatures retain original layers and texture bytes after multiplayer"
+        ],
+        "warnings": [],
+        "campaign": "base",
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/windows-test-feedback-20261010/menu_lmp_flow.gd": "3810252d1e99c28acbeed0f84869ff665cda1211665b2d23e4197e962c6e51ad"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+          "CursedLands.pck": "f4411106f24b1b684e3c3a9788d0ab434cfe10607dd4fff9d4f6e969758e17fd",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "other_processes_at_start": [],
+        "other_processes_at_end": [],
+        "captures": {
+          "lmp-menu-after.png": "a5df2637bb058e8a73cf473138d1c0e189d3850521ef1e6d732da053c52a362a",
+          "lmp-start-exposed.png": "2b00bf532ce4f689f997263a28c60f4de459a642de1537c6cd500ed926844a8f",
+          "lmp-start-covered.png": "81a7d39c018e915cc6e1f1097bdbfcfae04feca31cce929de0bd6e5c5b049c0b",
+          "lmp-menu-before.png": "2a81ac3816a6b76c0953bcb3cf75bbd516ef5aad5348c57017a28671a37c7096"
+        },
+        "input_profile": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/windows-test-feedback-20261010/menu-lmp-baseline02/isolated/data/godot/app_userdata/Cursed Lands/settings.cfg",
+          "contents": "[options]\ndisplay_mode=0\nresolution=1\nq_aa=0\nconfine_mouse=0\nauto_graphics=0\nshow_tutorial=0\n[display]\nresolution=\"800x600\"\n[remake]\ngfx=4\n",
+          "sha256": "933a57de3ff7460612be42856220531357074318728b5e66f907ac50e5f20cf0"
+        }
+      }
+    },
+    "menu-lmp-baseline03": {
+      "run": "/home/llm2x/Documents/EI/local/scratchpad/windows-test-feedback-20261010/menu-lmp-baseline03/run.json",
+      "run_sha256": "d79420c6d11adde394c90cb40b5199c153fe98d94feea4768a6af8be0b0d2220",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/windows-test-feedback-20261010/menu-lmp-baseline03/lmp-menu-flow.json",
+      "result_sha256": "b8237420c828cbaeb49c4927ae51a21dde202ffd8aaa7dbe3d4ad818f4b4c135",
+      "result_data": {
+        "checks": 21,
+        "failures": 2,
+        "frames": {
+          "start": {
+            "covered": 22,
+            "exposed": 605,
+            "transition": 0
+          },
+          "travel": {
+            "covered": 10,
+            "exposed": 0,
+            "transition": 0
+          }
+        },
+        "menu_creatures": {
+          "after": {
+            "Boar-87": {
+              "layers": "[\"unanwibo\", [\"skin_00\"]]",
+              "textures": [
+                "null"
+              ]
+            },
+            "OgreGipatF7-187": {
+              "layers": "[\"unmoog1\", [\"skin_00\"]]",
+              "textures": [
+                "null"
+              ]
+            },
+            "White Wolf-76": {
+              "layers": "[\"unanwiwo\", [\"skin_00\"]]",
+              "textures": [
+                "null"
+              ]
+            }
+          },
+          "before": {
+            "Boar-87": {
+              "layers": "[\"unanwibo\", [\"boar00\"]]",
+              "textures": [
+                "5e17d60a147f08e01a0da025e89941fd3f994a5ff1a747211fb4c551260946a0"
+              ]
+            },
+            "OgreGipatF7-187": {
+              "layers": "[\"unmoog1\", [\"ogre00\"]]",
+              "textures": [
+                "3ea19745f5e23dd60db0fb5851aee561bd4128ff8dc0124ab729961b5f40269b"
+              ]
+            },
+            "White Wolf-76": {
+              "layers": "[\"unanwiwo\", [\"wolf01\"]]",
+              "textures": [
+                "0178bed0093da941e84851ee5cf11648d85d7e39782e5bda5007bb82eddeb65d"
+              ]
+            }
+          }
+        },
+        "menu_database": [
+          {
+            "label": "before",
+            "lmp_db": false
+          },
+          {
+            "label": "after",
+            "lmp_db": false
+          }
+        ],
+        "scope": "Real menu and separate native multiplayer authority; controlled public quest/travel commands; presented loading frames and exact menu creature texture/layer retention. Linux execution, not Windows performance or physical exit-route validation."
+      },
+      "run_data": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261009.2-linux-x86_64/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "forward_plus",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/windows-test-feedback-20261010/menu-lmp-baseline03/tool-source.gd",
+          "--port=29939"
+        ],
+        "return_code": 1,
+        "seconds": 43.29245797498152,
+        "timeout_seconds": 180,
+        "termination_reason": null,
+        "errors": [
+          "FAIL no empty HUD before original multiplayer loading",
+          "FAIL menu creatures retain original layers and texture bytes after multiplayer"
+        ],
+        "warnings": [
+          "WARNING: LanDiscovery: port 27016 is in use; this game is not listed on the local network."
+        ],
+        "campaign": "base",
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/windows-test-feedback-20261010/menu_lmp_flow.gd": "dd9c149295a78c9a9bf3dd40b2b3d8275eceab00a6fe21da098d75f20cb1afeb"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+          "CursedLands.pck": "f4411106f24b1b684e3c3a9788d0ab434cfe10607dd4fff9d4f6e969758e17fd",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "other_processes_at_start": [
+          {
+            "pid": 1939301,
+            "executable": "/home/llm2x/Documents/EI/local/scratchpad/lia-zone7-movement-audit-20261009/candidate01/CursedLands.x86_64",
+            "headless": true
+          },
+          {
+            "pid": 1939309,
+            "executable": "/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/baseline/CursedLands.x86_64",
+            "headless": true
+          },
+          {
+            "pid": 1939332,
+            "executable": "/home/llm2x/Documents/EI/local/scratchpad/third-person-kbm-20261010/candidate01/CursedLands.x86_64",
+            "headless": true
+          },
+          {
+            "pid": 1939364,
+            "executable": "/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/baseline/CursedLands.x86_64",
+            "headless": true
+          }
+        ],
+        "other_processes_at_end": [
+          {
+            "pid": 1940068,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": true
+          },
+          {
+            "pid": 1940448,
+            "executable": "/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/candidate02/CursedLands.x86_64",
+            "headless": true
+          },
+          {
+            "pid": 1940501,
+            "executable": "/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/candidate02/CursedLands.x86_64",
+            "headless": true
+          }
+        ],
+        "captures": {
+          "lmp-travel-covered.png": "81a7d39c018e915cc6e1f1097bdbfcfae04feca31cce929de0bd6e5c5b049c0b",
+          "lmp-menu-after.png": "625a3f668a10ef44bce012860ffa5a39cb54b905defe72998657f4b371d5aa25",
+          "lmp-start-exposed.png": "fdfefd722ffff3c36596395fab2508c63a1d5012857c94ea40858b3ecdb949af",
+          "lmp-start-covered.png": "81a7d39c018e915cc6e1f1097bdbfcfae04feca31cce929de0bd6e5c5b049c0b",
+          "lmp-menu-before.png": "0ccf8f9450954559572e968daa60c1b68d496273f765b63639b8393d460fdf1d"
+        },
+        "input_profile": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/windows-test-feedback-20261010/menu-lmp-baseline03/isolated/data/godot/app_userdata/Cursed Lands/settings.cfg",
+          "contents": "[options]\ndisplay_mode=0\nresolution=1\nq_aa=0\nconfine_mouse=0\nauto_graphics=0\nshow_tutorial=0\n[display]\nresolution=\"800x600\"\n[remake]\ngfx=4\n",
+          "sha256": "933a57de3ff7460612be42856220531357074318728b5e66f907ac50e5f20cf0"
+        }
+      }
+    },
+    "menu-lmp-candidate01": {
+      "run": "/home/llm2x/Documents/EI/local/scratchpad/windows-test-feedback-20261010/menu-lmp-candidate01/run.json",
+      "run_sha256": "ead572e3fa18087df5737ba286927626ea062eab702567b64ca8317ac5f5b81a",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/windows-test-feedback-20261010/menu-lmp-candidate01/lmp-menu-flow.json",
+      "result_sha256": "b180ae38aa46286983aa00393d2c4ee9f7c695fd3e15c28c0d99d17c16d381b6",
+      "result_data": {
+        "checks": 21,
+        "failures": 0,
+        "frames": {
+          "start": {
+            "covered": 594,
+            "exposed": 0,
+            "transition": 0
+          },
+          "travel": {
+            "covered": 584,
+            "exposed": 0,
+            "transition": 0
+          }
+        },
+        "menu_creatures": {
+          "after": {
+            "Boar-87": {
+              "layers": "[\"unanwibo\", [\"boar00\"]]",
+              "textures": [
+                "5e17d60a147f08e01a0da025e89941fd3f994a5ff1a747211fb4c551260946a0"
+              ]
+            },
+            "OgreGipatF7-187": {
+              "layers": "[\"unmoog1\", [\"ogre00\"]]",
+              "textures": [
+                "3ea19745f5e23dd60db0fb5851aee561bd4128ff8dc0124ab729961b5f40269b"
+              ]
+            },
+            "White Wolf-76": {
+              "layers": "[\"unanwiwo\", [\"wolf01\"]]",
+              "textures": [
+                "0178bed0093da941e84851ee5cf11648d85d7e39782e5bda5007bb82eddeb65d"
+              ]
+            }
+          },
+          "before": {
+            "Boar-87": {
+              "layers": "[\"unanwibo\", [\"boar00\"]]",
+              "textures": [
+                "5e17d60a147f08e01a0da025e89941fd3f994a5ff1a747211fb4c551260946a0"
+              ]
+            },
+            "OgreGipatF7-187": {
+              "layers": "[\"unmoog1\", [\"ogre00\"]]",
+              "textures": [
+                "3ea19745f5e23dd60db0fb5851aee561bd4128ff8dc0124ab729961b5f40269b"
+              ]
+            },
+            "White Wolf-76": {
+              "layers": "[\"unanwiwo\", [\"wolf01\"]]",
+              "textures": [
+                "0178bed0093da941e84851ee5cf11648d85d7e39782e5bda5007bb82eddeb65d"
+              ]
+            }
+          }
+        },
+        "menu_database": [
+          {
+            "label": "before",
+            "lmp_db": false
+          },
+          {
+            "label": "after",
+            "lmp_db": false
+          }
+        ],
+        "scope": "Real menu and separate native multiplayer authority; controlled public quest/travel commands; presented loading frames and exact menu creature texture/layer retention. Linux execution, not Windows performance or physical exit-route validation."
+      },
+      "run_data": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/windows-test-feedback-20261010/candidate01/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "forward_plus",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/windows-test-feedback-20261010/menu-lmp-candidate01/tool-source.gd",
+          "--port=29939"
+        ],
+        "return_code": 0,
+        "seconds": 42.2869332919945,
+        "timeout_seconds": 180,
+        "termination_reason": null,
+        "errors": [],
+        "warnings": [],
+        "campaign": "base",
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/windows-test-feedback-20261010/menu_lmp_flow.gd": "dd9c149295a78c9a9bf3dd40b2b3d8275eceab00a6fe21da098d75f20cb1afeb"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+          "CursedLands.pck": "e366b3b131d11b98923f3eb6222d64077902d06bd5d52f1eecdc34e3abb0fe27",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "other_processes_at_start": [
+          {
+            "pid": 1937510,
+            "executable": "/home/llm2x/Documents/EI/local/scratchpad/lia-zone7-movement-audit-20261009/candidate01/CursedLands.x86_64",
+            "headless": true
+          },
+          {
+            "pid": 1937643,
+            "executable": "/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/candidate02/CursedLands.x86_64",
+            "headless": true
+          },
+          {
+            "pid": 1937658,
+            "executable": "/home/llm2x/Documents/EI/local/scratchpad/third-person-kbm-20261010/candidate01/CursedLands.x86_64",
+            "headless": true
+          }
+        ],
+        "other_processes_at_end": [
+          {
+            "pid": 1938582,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": true
+          }
+        ],
+        "captures": {
+          "lmp-travel-covered.png": "81a7d39c018e915cc6e1f1097bdbfcfae04feca31cce929de0bd6e5c5b049c0b",
+          "lmp-menu-after.png": "3eb4c9d4399a29d13007c38d137073a7887ddaf7196e984189176f6763ce9100",
+          "lmp-start-covered.png": "e7fbf3adbac1cc909c33426ec3c963053d4958228a2476780f624701f01013f4",
+          "lmp-menu-before.png": "024809c714f48ed0e0cf15d6679e09dda6950ca25c1afe015ddc824dee9aa26e"
+        },
+        "input_profile": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/windows-test-feedback-20261010/menu-lmp-candidate01/isolated/data/godot/app_userdata/Cursed Lands/settings.cfg",
+          "contents": "[options]\ndisplay_mode=0\nresolution=1\nq_aa=0\nconfine_mouse=0\nauto_graphics=0\nshow_tutorial=0\n[display]\nresolution=\"800x600\"\n[remake]\ngfx=4\n",
+          "sha256": "933a57de3ff7460612be42856220531357074318728b5e66f907ac50e5f20cf0"
+        }
+      }
+    },
+    "menu-lmp-baseline04": {
+      "run": "/home/llm2x/Documents/EI/local/scratchpad/windows-test-feedback-20261010/menu-lmp-baseline04/run.json",
+      "run_sha256": "7679e0512fdec392e3da573e985a39115e9937e8be23c3e8782b33cfe8995fd3",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/windows-test-feedback-20261010/menu-lmp-baseline04/lmp-menu-flow.json",
+      "result_sha256": "6d08d4cba08269f73568e0905f2f983963cfa32a010bcc24f25640f5b74b6bec",
+      "result_data": {
+        "checks": 23,
+        "failures": 4,
+        "frames": {
+          "start": {
+            "covered": 22,
+            "exposed": 596,
+            "transition": 0
+          },
+          "travel": {
+            "covered": 10,
+            "exposed": 0,
+            "transition": 0
+          }
+        },
+        "menu_creatures": {
+          "after": {
+            "Boar-87": {
+              "layers": "[\"unanwibo\", [\"skin_00\"]]",
+              "textures": [
+                "null"
+              ]
+            },
+            "OgreGipatF7-187": {
+              "layers": "[\"unmoog1\", [\"skin_00\"]]",
+              "textures": [
+                "null"
+              ]
+            },
+            "White Wolf-76": {
+              "layers": "[\"unanwiwo\", [\"skin_00\"]]",
+              "textures": [
+                "null"
+              ]
+            }
+          },
+          "before": {
+            "Boar-87": {
+              "layers": "[\"unanwibo\", [\"boar00\"]]",
+              "textures": [
+                "5e17d60a147f08e01a0da025e89941fd3f994a5ff1a747211fb4c551260946a0"
+              ]
+            },
+            "OgreGipatF7-187": {
+              "layers": "[\"unmoog1\", [\"ogre00\"]]",
+              "textures": [
+                "3ea19745f5e23dd60db0fb5851aee561bd4128ff8dc0124ab729961b5f40269b"
+              ]
+            },
+            "White Wolf-76": {
+              "layers": "[\"unanwiwo\", [\"wolf01\"]]",
+              "textures": [
+                "0178bed0093da941e84851ee5cf11648d85d7e39782e5bda5007bb82eddeb65d"
+              ]
+            }
+          }
+        },
+        "menu_database": [
+          {
+            "label": "before",
+            "lmp_db": false
+          },
+          {
+            "label": "after",
+            "lmp_db": false
+          }
+        ],
+        "scope": "Real menu and separate native multiplayer authority; controlled public quest/travel commands; presented loading frames and exact menu creature texture/layer retention. Linux execution, not Windows performance or physical exit-route validation.",
+        "travel_exposed_frames_after_one_second": 585,
+        "travel_request_to_loading_ms": 6081
+      },
+      "run_data": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261009.2-linux-x86_64/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "forward_plus",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/windows-test-feedback-20261010/menu-lmp-baseline04/tool-source.gd",
+          "--port=29939"
+        ],
+        "return_code": 1,
+        "seconds": 44.796513965004124,
+        "timeout_seconds": 180,
+        "termination_reason": null,
+        "errors": [
+          "FAIL no empty HUD before original multiplayer loading",
+          "FAIL loopback host presents travel loading picture within one second of request",
+          "FAIL worker map preparation leaves no exposed travel view after loopback grace",
+          "FAIL menu creatures retain original layers and texture bytes after multiplayer"
+        ],
+        "warnings": [],
+        "campaign": "base",
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/windows-test-feedback-20261010/menu_lmp_flow.gd": "c01452e95c4db9104b388783b223f11802118e570edab51c1cf8df0a3ee60285"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+          "CursedLands.pck": "f4411106f24b1b684e3c3a9788d0ab434cfe10607dd4fff9d4f6e969758e17fd",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "other_processes_at_start": [
+          {
+            "pid": 1955740,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          },
+          {
+            "pid": 1956344,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": true
+          }
+        ],
+        "other_processes_at_end": [
+          {
+            "pid": 1959124,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          },
+          {
+            "pid": 1959610,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": true
+          }
+        ],
+        "captures": {
+          "lmp-travel-covered.png": "81a7d39c018e915cc6e1f1097bdbfcfae04feca31cce929de0bd6e5c5b049c0b",
+          "lmp-menu-after.png": "8faeea967d42377acc928a52c380137fa678eaedfc3c43cd502649452dad817b",
+          "lmp-start-exposed.png": "0576be587bc2325aad51d04618bcedfb96c9f724bc98d1c07d9d27bcba54e937",
+          "lmp-start-covered.png": "81a7d39c018e915cc6e1f1097bdbfcfae04feca31cce929de0bd6e5c5b049c0b",
+          "lmp-menu-before.png": "abbbea3c5d4bf33510e4a5e5321fb58ce329798481d6931f313acd53426bbb97"
+        },
+        "input_profile": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/windows-test-feedback-20261010/menu-lmp-baseline04/isolated/data/godot/app_userdata/Cursed Lands/settings.cfg",
+          "contents": "[options]\ndisplay_mode=0\nresolution=1\nq_aa=0\nconfine_mouse=0\nauto_graphics=0\nshow_tutorial=0\n[display]\nresolution=\"800x600\"\n[remake]\ngfx=4\n",
+          "sha256": "933a57de3ff7460612be42856220531357074318728b5e66f907ac50e5f20cf0"
+        }
+      }
+    },
+    "menu-lmp-candidate02": {
+      "run": "/home/llm2x/Documents/EI/local/scratchpad/windows-test-feedback-20261010/menu-lmp-candidate02/run.json",
+      "run_sha256": "65d1efeebf542a4f610d0a6c12ff9d36c6b2cabe74c82a848eb9303d402fdae5",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/windows-test-feedback-20261010/menu-lmp-candidate02/lmp-menu-flow.json",
+      "result_sha256": "08546874a60c128e8cfd5da3480c01e956803596abd9383489b347968bb7f759",
+      "result_data": {
+        "checks": 23,
+        "failures": 0,
+        "frames": {
+          "start": {
+            "covered": 610,
+            "exposed": 0,
+            "transition": 0
+          },
+          "travel": {
+            "covered": 596,
+            "exposed": 0,
+            "transition": 0
+          }
+        },
+        "menu_creatures": {
+          "after": {
+            "Boar-87": {
+              "layers": "[\"unanwibo\", [\"boar00\"]]",
+              "textures": [
+                "5e17d60a147f08e01a0da025e89941fd3f994a5ff1a747211fb4c551260946a0"
+              ]
+            },
+            "OgreGipatF7-187": {
+              "layers": "[\"unmoog1\", [\"ogre00\"]]",
+              "textures": [
+                "3ea19745f5e23dd60db0fb5851aee561bd4128ff8dc0124ab729961b5f40269b"
+              ]
+            },
+            "White Wolf-76": {
+              "layers": "[\"unanwiwo\", [\"wolf01\"]]",
+              "textures": [
+                "0178bed0093da941e84851ee5cf11648d85d7e39782e5bda5007bb82eddeb65d"
+              ]
+            }
+          },
+          "before": {
+            "Boar-87": {
+              "layers": "[\"unanwibo\", [\"boar00\"]]",
+              "textures": [
+                "5e17d60a147f08e01a0da025e89941fd3f994a5ff1a747211fb4c551260946a0"
+              ]
+            },
+            "OgreGipatF7-187": {
+              "layers": "[\"unmoog1\", [\"ogre00\"]]",
+              "textures": [
+                "3ea19745f5e23dd60db0fb5851aee561bd4128ff8dc0124ab729961b5f40269b"
+              ]
+            },
+            "White Wolf-76": {
+              "layers": "[\"unanwiwo\", [\"wolf01\"]]",
+              "textures": [
+                "0178bed0093da941e84851ee5cf11648d85d7e39782e5bda5007bb82eddeb65d"
+              ]
+            }
+          }
+        },
+        "menu_database": [
+          {
+            "label": "before",
+            "lmp_db": false
+          },
+          {
+            "label": "after",
+            "lmp_db": false
+          }
+        ],
+        "scope": "Real menu and separate native multiplayer authority; controlled public quest/travel commands; presented loading frames and exact menu creature texture/layer retention. Linux execution, not Windows performance or physical exit-route validation.",
+        "travel_exposed_frames_after_one_second": 0,
+        "travel_request_to_loading_ms": 237
+      },
+      "run_data": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/windows-test-feedback-20261010/candidate01/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "forward_plus",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/windows-test-feedback-20261010/menu-lmp-candidate02/tool-source.gd",
+          "--port=29939"
+        ],
+        "return_code": 0,
+        "seconds": 43.2909956240328,
+        "timeout_seconds": 180,
+        "termination_reason": null,
+        "errors": [],
+        "warnings": [],
+        "campaign": "base",
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/windows-test-feedback-20261010/menu_lmp_flow.gd": "c01452e95c4db9104b388783b223f11802118e570edab51c1cf8df0a3ee60285"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+          "CursedLands.pck": "e366b3b131d11b98923f3eb6222d64077902d06bd5d52f1eecdc34e3abb0fe27",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "other_processes_at_start": [
+          {
+            "pid": 1962346,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          },
+          {
+            "pid": 1962666,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": true
+          }
+        ],
+        "other_processes_at_end": [
+          {
+            "pid": 1964250,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": true
+          },
+          {
+            "pid": 1964329,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ],
+        "captures": {
+          "lmp-travel-covered.png": "81a7d39c018e915cc6e1f1097bdbfcfae04feca31cce929de0bd6e5c5b049c0b",
+          "lmp-menu-after.png": "514668028ae1b58efcf5b5ca8c1327fee32e39ba3c2af808f5d473a75623fc1a",
+          "lmp-start-covered.png": "e7fbf3adbac1cc909c33426ec3c963053d4958228a2476780f624701f01013f4",
+          "lmp-menu-before.png": "adc4deca66ca10b5922dcde36fa5c5b523c8c9de4442ad362534b56eeed7b5be"
+        },
+        "input_profile": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/windows-test-feedback-20261010/menu-lmp-candidate02/isolated/data/godot/app_userdata/Cursed Lands/settings.cfg",
+          "contents": "[options]\ndisplay_mode=0\nresolution=1\nq_aa=0\nconfine_mouse=0\nauto_graphics=0\nshow_tutorial=0\n[display]\nresolution=\"800x600\"\n[remake]\ngfx=4\n",
+          "sha256": "933a57de3ff7460612be42856220531357074318728b5e66f907ac50e5f20cf0"
+        }
+      }
+    }
+  },
+  "origin_receipt": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/windows-test-feedback-20261010/menu-loading-qualification.json",
+    "sha256": "0ccb19905f50fc32d0629baaf648da29e9a923e7f31bf709fd1d4f8296c78ae8"
+  }
+}
