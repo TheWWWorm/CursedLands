@@ -14,6 +14,8 @@ const WATER_POINT := Vector2(133.5,98.5)
 var point := Vector2.INF
 var water_height := 0.0
 var rows := []
+var cloud_quality := 1
+var terrain_quality := 0
 
 
 func configure_view() -> void:
@@ -92,6 +94,13 @@ func installed(label: String) -> void:
 		label+": mist resources belong to current terrain")
 	check(Gfx._cloud_owner==t.get_instance_id() and t._clouds!=null and Gfx._cloud_frame.state.w==1.0,
 		label+": current terrain owns enabled global clouds")
+	if cloud_quality>1:
+		if Gfx.Clouds.mode()>1:
+			check(Gfx._cloud_volume_noise!=null and Gfx._cloud_volume_noise.shape!=null \
+				and Gfx._cloud_volume_noise.detail!=null and Gfx._cloud_frame.volume.storm.z==1.0,
+				label+": actual active world has ready volume textures and cloud state")
+		else:
+			check(Gfx._cloud_volume_noise==null,label+": unsupported volume falls back without allocating volume resources")
 	check(g.rig.camera.attributes==lens._attributes and lens._attributes!=null,
 		label+": current camera owns the optional low-angle lens")
 	check(not ambient.flock.is_empty() or not ambient.residents.is_empty(),label+": original ambient models are present")
@@ -206,8 +215,10 @@ func options_release() -> void:
 		"live options release mist ownership, masks and volumes")
 	check(not old_ambient.visible and not old_mist.visible,"disabled local roots hide before deferred deletion")
 	check(Gfx._cloud_owner==0 and host.world.terrain._clouds==null,"live options release global cloud ownership")
+	if cloud_quality>1: check(Gfx._cloud_volume_noise==null,"live options also release volumetric cloud resources")
 	check(host.game.rig.camera.attributes==null,"live option restores original camera attributes")
 	for key: String in EFFECTS: GameData.options[key]=1
+	GameData.options.gfx_clouds=cloud_quality
 	GameData.options_changed.emit()
 	ambient.set_process(false); mist.set_process(false); lens.set_process(false)
 	advance(220)
@@ -237,9 +248,14 @@ func reload_world() -> void:
 
 func _ready() -> void:
 	process_mode=Node.PROCESS_MODE_ALWAYS
+	for arg: String in OS.get_cmdline_user_args():
+		if arg.begins_with("--cloud-quality="): cloud_quality=clampi(int(arg.trim_prefix("--cloud-quality=")),1,3)
+		elif arg.begins_with("--terrain-quality="): terrain_quality=clampi(int(arg.trim_prefix("--terrain-quality=")),0,2)
 	for option: Array in GameData.OPTIONS:
 		if String(option[0]).begins_with("gfx_"): GameData.options[option[0]]=0
 	for key: String in EFFECTS: GameData.options[key]=1
+	GameData.options.gfx_clouds=cloud_quality
+	GameData.options.gfx_terrain=terrain_quality
 	GameData.options.merge({"gfx_volumetric":1,"gfx_water":1,"gfx_wind":1,"autosave":0,"show_tutorial":0,
 		"net_upnp":0,"net_lan":0,"net_directory":0,"auto_graphics":0,"scroll_border":0,"unit_fog":0,
 		"camera_style":0,"q_aa":0,"q_shadows":0,"confine_mouse":0},true)
@@ -257,6 +273,7 @@ func _ready() -> void:
 	options_release()
 	await reload_world()
 	FileAccess.open("user://renderer-world-lifecycle.json",FileAccess.WRITE).store_string(JSON.stringify({
-		"checks":checks,"failures":failures,"rows":rows,"native_dof_guard":OS.has_feature("ei_far_dof_guard")},"\t"))
+		"checks":checks,"failures":failures,"rows":rows,"native_dof_guard":OS.has_feature("ei_far_dof_guard"),
+		"cloud_quality":cloud_quality,"terrain_quality":terrain_quality},"\t"))
 	print("RENDERER_WORLD_LIFECYCLE %d checks %d failures"%[checks,failures])
 	await finish()

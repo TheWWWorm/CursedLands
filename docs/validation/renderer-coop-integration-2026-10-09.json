@@ -1,0 +1,363 @@
+{
+  "date": "2026-10-09",
+  "status": "Accepted local integration of raised rounded cloud volumes, natural terrain transitions and compatible solo/co-op continuity.",
+  "scope": [
+    "Cloud High and Natural transitions compose with existing optional water, contact and weather effects on Forward+, qualified desktop Mobile and Compatibility fallback.",
+    "Actual Game/World/Map/Terrain ownership includes allocated volume resources, camera lens, mist and ambient life through pause, loading/travel/movie gates, live off/on, world reload and retired-owner rejection.",
+    "Five settings pages and both entry points are checked at 800x600 in English/Russian/German, including keyboard-controller routing and touch dispatch. Captures show the default Off cloud choice; new value-label widths are separately covered by the cloud-volume receipt.",
+    "The final source adds only the validated NEW-origin opening admission to the renderer-tested pack. Representative original-data ENet and independent solo-process regressions check compatible rejoin earnings, current chapter/location, pending delayed story actions and ordinary base fresh-start departure."
+  ],
+  "renderer_export": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/cloud-coop-integrated-01/export.json",
+    "sha256": "be16211552aa2f78af7b5382436d71ed0d54cbd4282eb290fe257e14cdc1e3ba",
+    "revision": "7c593aac1137b71e2a933704a944ffcf89b0c0a4",
+    "binaries": {
+      "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+      "CursedLands.pck": "c2b4641491e52a3b3d5f7da8f56edab171e9d7f985fcf5a121682dce59b38149",
+      "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+    }
+  },
+  "final_export": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/cloud-coop-final-01/export.json",
+    "sha256": "3c59781adce17fd0d31d932c1312d4b00d36e8dbf6f407769bb067166cc82f48",
+    "revision": "79bee8a56f7a27a9897ae9ebe44fa6000d94cf21",
+    "binaries": {
+      "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+      "CursedLands.pck": "4a6242634eb82c56ea3c2a9be79b565a190a210a05157348f91297e15dafd9ef",
+      "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+    }
+  },
+  "source_equivalence": {
+    "compared_files": 712,
+    "different_files": {
+      "src/game/coop_progress.gd": {
+        "renderer_export": "25a7fc2e0d7f3915b5c0791fc8d0e35543fe590e25fd6c5df533d70909545599",
+        "final_export": "cea1d9c7f804044f521d1825ed0db027753d145568c07cdefb48e7d05fdce239"
+      }
+    },
+    "note": "All other frozen application files and both native binaries match. Repeating unchanged renderer scenes on the final gameplay-only source change was unnecessary."
+  },
+  "runs": [
+    {
+      "label": "integrated-volume-lifecycle-forward-01",
+      "group": "renderer",
+      "checks": 72,
+      "failures": 0,
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/integrated-volume-lifecycle-forward-01/run.json",
+        "sha256": "37df94c7079fbe505b0e07aedfcf61a43373195d89552f6d056d562467d75c99"
+      },
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/integrated-volume-lifecycle-forward-01/run.log",
+        "sha256": "723b4773a91d45dafc7c2de6b637dfbb54b4399021ea80478ed7c3c431112d70"
+      },
+      "supplementary": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/integrated-volume-lifecycle-forward-01/renderer-world-lifecycle.json",
+          "sha256": "034bae2d76f15a083b05fa748c528b3ee14799e66aec2534b33c0fc781c1d6ab"
+        }
+      ],
+      "capture_count": 6,
+      "warnings": [],
+      "fixture_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/renderer_world_lifecycle.gd": "b4e36580c275505378665d4cea6ec1a88722a9a88b587b5a7e5519bd6802dc69",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_traps_net.gd": "467645c27cbfe2ce9130f22fe4ac7d68edfdf7e57a867685e212cff480fb35d4"
+      },
+      "other_processes_at_start": [],
+      "other_processes_at_end": []
+    },
+    {
+      "label": "integrated-volume-composed-forward-01",
+      "group": "renderer",
+      "checks": 28,
+      "failures": 0,
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/integrated-volume-composed-forward-01/run.json",
+        "sha256": "089594aaa0c5fb00b5d25fee4706581a36a0ada132e82ae9ac5121b6463ff53c"
+      },
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/integrated-volume-composed-forward-01/run.log",
+        "sha256": "c699aba5a8fd6316f4d43453c367840bd19476e7fdf1ec649752f3b7d3550f1d"
+      },
+      "supplementary": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/integrated-volume-composed-forward-01/renderer-followup-integration.json",
+          "sha256": "a10e14f8f787cd0b5519604952a65833cebc522891559ed144ae65172160df9a"
+        }
+      ],
+      "capture_count": 11,
+      "warnings": [],
+      "fixture_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/renderer_followup_integration.gd": "8a49b79b0af778beea3c346f1b0d7d7aab27415b2c5c295b51d1bc44b8a1178c",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_wave_render.gd": "d7973cb18160092527529f72ba4f522f2def839273f7cbb064648d631648b359",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_wave_field.gd": "e6fdbe12a7c8534706b1b917d8c27f7bb29b39821e534e97969cd2a605fc808b",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      },
+      "other_processes_at_start": [],
+      "other_processes_at_end": []
+    },
+    {
+      "label": "integrated-volume-composed-mobile-01",
+      "group": "renderer",
+      "checks": 28,
+      "failures": 0,
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/integrated-volume-composed-mobile-01/run.json",
+        "sha256": "0a98f0fdb4398e10f452e240496542ab51e07d599f4cddc2a15fe99a62acdeb4"
+      },
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/integrated-volume-composed-mobile-01/run.log",
+        "sha256": "140de8b0c298acec03c54db6f413712e10f8e7ffd5c365d0d470d14a787dd638"
+      },
+      "supplementary": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/integrated-volume-composed-mobile-01/renderer-followup-integration.json",
+          "sha256": "2aac214a590d044c7e55af460aa6ee4fdbb332a20a9ac092295995d878d5a6d2"
+        }
+      ],
+      "capture_count": 11,
+      "warnings": [],
+      "fixture_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/renderer_followup_integration.gd": "8a49b79b0af778beea3c346f1b0d7d7aab27415b2c5c295b51d1bc44b8a1178c",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_wave_render.gd": "d7973cb18160092527529f72ba4f522f2def839273f7cbb064648d631648b359",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_wave_field.gd": "e6fdbe12a7c8534706b1b917d8c27f7bb29b39821e534e97969cd2a605fc808b",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      },
+      "other_processes_at_start": [],
+      "other_processes_at_end": []
+    },
+    {
+      "label": "integrated-volume-composed-compatibility-01",
+      "group": "renderer",
+      "checks": 28,
+      "failures": 0,
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/integrated-volume-composed-compatibility-01/run.json",
+        "sha256": "f82179b1f32e9bafa5324ce6d6be5d3d59c11ea3e5b2ae29c7c2dc796d897519"
+      },
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/integrated-volume-composed-compatibility-01/run.log",
+        "sha256": "d126dd2ee61475d00abea4533ed6afc0bd29656d85714787849bc8d14d9d8411"
+      },
+      "supplementary": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/integrated-volume-composed-compatibility-01/renderer-followup-integration.json",
+          "sha256": "a87c302348e31b156f92ecfa61db7a13be95168568843a439115cf084005142e"
+        }
+      ],
+      "capture_count": 11,
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "fixture_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/renderer_followup_integration.gd": "8a49b79b0af778beea3c346f1b0d7d7aab27415b2c5c295b51d1bc44b8a1178c",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_wave_render.gd": "d7973cb18160092527529f72ba4f522f2def839273f7cbb064648d631648b359",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_wave_field.gd": "e6fdbe12a7c8534706b1b917d8c27f7bb29b39821e534e97969cd2a605fc808b",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 1193090,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        }
+      ],
+      "other_processes_at_end": []
+    },
+    {
+      "label": "integrated-volume-settings-forward-01",
+      "group": "settings",
+      "checks": 398,
+      "failures": 0,
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/integrated-volume-settings-forward-01/run.json",
+        "sha256": "a793ad2e86f2f56457ddfc37655fa14794e6e9a8c3dfad3e1a682e84cb3ada7e"
+      },
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/integrated-volume-settings-forward-01/run.log",
+        "sha256": "7997d3d915835799fa144f5123357358ca22933ed8163696e3a54dcfd9b8ed23"
+      },
+      "supplementary": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/integrated-volume-settings-forward-01/graphics-options.json",
+          "sha256": "229290f1f26e39f5b632ef7c9dcb82530d63046c165dcfc784e0f70ef49b98d7"
+        }
+      ],
+      "capture_count": 21,
+      "warnings": [],
+      "fixture_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/graphics_options.gd": "f3a6b76a7e683e1a6c11ff91a7e36332136328925074ef905883c05ceae9f7bb"
+      },
+      "other_processes_at_start": [],
+      "other_processes_at_end": []
+    },
+    {
+      "label": "integrated-final-solo-return-01",
+      "group": "gameplay",
+      "checks": 94,
+      "failures": 0,
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/integrated-final-solo-return-01/run.json",
+        "sha256": "2e72ed7f3b2295ec8f39f71871e2860501bdd082a9b1b8dfbe1bf770311ec376"
+      },
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/integrated-final-solo-return-01/run.log",
+        "sha256": "2651ad5301d9b277b720a369c9e9258852b9297aa03afd7d4e37f9d363b9dffc"
+      },
+      "supplementary": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/integrated-final-solo-return-01/rename-receipt.json",
+          "sha256": "2ea46e3dfec0fd142f78e25d8e9bc441f1aebd31f126abc7689ad72a7a69cb1a"
+        }
+      ],
+      "capture_count": 0,
+      "warnings": [],
+      "fixture_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_solo_return.gd": "8e89d3beb344183fb967323119ae2ff3bc9c26d1864931e21314e77b56257788",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_rename_reconnect.gd": "9857498a4bb0aa284e1183ecbf5c64bf8300ab0f7eb670036465f1bb0a8f6d93",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_progress_context.gd": "0971d4be7a9bb2521c2025903010d8bc159cea780b7b207431d2805e4171c9b1"
+      },
+      "other_processes_at_start": [],
+      "other_processes_at_end": []
+    },
+    {
+      "label": "integrated-final-solo-resume-01",
+      "group": "gameplay",
+      "checks": 21,
+      "failures": 0,
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/integrated-final-solo-resume-01/run.json",
+        "sha256": "8826397f872c46af404b5f2f35c245d8c572190e494b31e7fbc8b80c09ca7f0b"
+      },
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/integrated-final-solo-resume-01/run.log",
+        "sha256": "cec75822c5c67dd5695eeee5071f7f76d0ec81e5192545e1402eb316ec1e027b"
+      },
+      "supplementary": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/integrated-final-solo-resume-01/rename-receipt.json",
+          "sha256": "28af51e952dfee7c348a4bffb6602f3878b20d277ccbcc2006319c3238248dfe"
+        }
+      ],
+      "capture_count": 0,
+      "warnings": [],
+      "fixture_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_solo_return_resume.gd": "b557f45d438af027b94c4b83f05f0b81d44d37b03d1b4549cbb7fd1b791e58dd",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_rename_reconnect.gd": "9857498a4bb0aa284e1183ecbf5c64bf8300ab0f7eb670036465f1bb0a8f6d93"
+      },
+      "other_processes_at_start": [],
+      "other_processes_at_end": []
+    },
+    {
+      "label": "integrated-final-vm-delay-01",
+      "group": "gameplay",
+      "checks": 27,
+      "failures": 0,
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/integrated-final-vm-delay-01/run.json",
+        "sha256": "eca867cdbbc47e83d7fe8e2018d91a85a9adb5b68ca7bf26ad5e7389698c737c"
+      },
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/integrated-final-vm-delay-01/run.log",
+        "sha256": "ad1899b416e07314e5f9d91e6e68b8debd69cfa562f2e7c335943a55bbf2f801"
+      },
+      "supplementary": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/integrated-final-vm-delay-01/coop-vm-solo.json",
+          "sha256": "5cec2899fecd788a95724c48fd9e885fcb118f57f5c5c9568aaf9a26841249e1"
+        }
+      ],
+      "capture_count": 0,
+      "warnings": [],
+      "fixture_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_vm_solo.gd": "86358c0299ab6b3b02b805e6ecb7f4a0679b36f17dbc857f49a38557db838374",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_traps_net.gd": "467645c27cbfe2ce9130f22fe4ac7d68edfdf7e57a867685e212cff480fb35d4"
+      },
+      "other_processes_at_start": [],
+      "other_processes_at_end": []
+    },
+    {
+      "label": "integrated-final-fresh-base-01",
+      "group": "gameplay",
+      "checks": 15,
+      "failures": 0,
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/integrated-final-fresh-base-01/run.json",
+        "sha256": "45e541d16091b445616df324da2ab9b686bde67e2b79b96af3d7fade5a2c1c24"
+      },
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/integrated-final-fresh-base-01/run.log",
+        "sha256": "d08b88c4fb6c6ae32ef19cf7f31f88565f65692c455636c3f1abdc721037fd0c"
+      },
+      "supplementary": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/integrated-final-fresh-base-01/fresh-start-review.json",
+          "sha256": "fc36da82d7d9019ebe9c5b6750fe137990d63c535c75b29f8bac57368fd66e73"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/integrated-final-fresh-base-01/rename-receipt.json",
+          "sha256": "7d9bdf9c3541d40137fb57126391658f63fbcbcf3d3c11bfa42b1c923c46a2d4"
+        }
+      ],
+      "capture_count": 0,
+      "warnings": [],
+      "fixture_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_fresh_start.gd": "2f3adc178e2a271cf830a98a5afb5b709866e22e7bc4607ed9f9788bec996ed9",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_rename_reconnect.gd": "9857498a4bb0aa284e1183ecbf5c64bf8300ab0f7eb670036465f1bb0a8f6d93"
+      },
+      "other_processes_at_start": [],
+      "other_processes_at_end": []
+    }
+  ],
+  "totals": {
+    "checks": 711,
+    "failures": 0,
+    "captures": 60,
+    "by_group": {
+      "renderer": 156,
+      "settings": 398,
+      "gameplay": 157
+    }
+  },
+  "sampled_visual_review": [
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/integrated-volume-lifecycle-forward-01/lifecycle-all-on.png",
+      "sha256": "6bdc2db31dfb26990ebf96f54ca69fa328545a460198b01f689e93efaae6c1e9"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/integrated-volume-composed-mobile-01/water-interaction-wave-lingering.png",
+      "sha256": "1cae4e84de9a66fe6bac6730f663e991b49c8edf8d5512cc759f5c4676f5dfec"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/integrated-volume-settings-forward-01/graphics-options-en-r_effects.png",
+      "sha256": "49a1df71853fb5941236476c5b2176da7af92e4820eb6dd133c7a6c3e077a167"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/integrated-volume-settings-forward-01/graphics-options-ru-r_effects.png",
+      "sha256": "95a147ebc14a57bfd2f29049f950bf7aba31ad603f38fee99a9d4563ee4344d2"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/integrated-volume-settings-forward-01/graphics-options-de-r_effects.png",
+      "sha256": "e80d5cc7361aadd1b7da5c05c289dba554c0513c392345b60bcb14ffd69e763d"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-forward-01/volume-quality3.png",
+      "sha256": "c180dace59e743ad9a19c4cdaadc9750e1a22cbe360ca98dfdd873925815bc7e"
+    }
+  ],
+  "related_receipts": [
+    "cloud-volumes-2026-10-09.json",
+    "sky-subpass-alpha-2026-10-09.json",
+    "terrain-transitions-2026-10-09.json",
+    "coop-solo-return-2026-10-09.json",
+    "coop-vm-return-2026-10-09.json",
+    "coop-fresh-start-2026-10-09.json"
+  ],
+  "limits": [
+    "Functional Linux RTX 3090 and headless checks, not performance, Windows/internet or physical handheld acceptance. An independent headless editor import overlapped the Compatibility functional run; no GPU tests overlapped.",
+    "The existing Compatibility screen-space-AA warning is retained. No script/runtime errors or failed assertions occurred in the accepted runs.",
+    "Representative authored routes and disposable fixture saves, not full campaign playthroughs. Divergent independently played story state remains protected by strict checkpoint compatibility.",
+    "Full feature receipts retain their own rejected prototypes and limits, including faint LiA mist motion, missing verified neighbour layouts, temporal cloud reconstruction and cached solar projection.",
+    "Source version remains Experimental 6 and protocol 13. No user save repair, original asset change, installation, publication or device rollout."
+  ]
+}

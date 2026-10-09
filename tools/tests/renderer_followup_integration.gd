@@ -6,6 +6,8 @@ const COMPOSED := ["gfx_water", "gfx_water_interaction", "gfx_water_current",
 	"gfx_water_caustics", "gfx_waterfalls", "gfx_water_reflections", "gfx_terrain",
 	"gfx_terrain_cliffs", "gfx_ground_contact", "gfx_materials", "gfx_clouds",
 	"gfx_weather_surfaces", "gfx_wind"]
+var cloud_quality := 1
+var terrain_quality := 1
 
 
 func snap(view: SubViewport, label: String) -> Image:
@@ -16,9 +18,14 @@ func snap(view: SubViewport, label: String) -> Image:
 
 
 func _ready() -> void:
+	for arg: String in OS.get_cmdline_user_args():
+		if arg.begins_with("--cloud-quality="): cloud_quality=clampi(int(arg.trim_prefix("--cloud-quality=")),1,3)
+		elif arg.begins_with("--terrain-quality="): terrain_quality=clampi(int(arg.trim_prefix("--terrain-quality=")),0,2)
 	for option: Array in GameData.OPTIONS:
 		if String(option[0]).begins_with("gfx_"): GameData.options[option[0]]=0
 	for key in COMPOSED: GameData.options[key]=1
+	GameData.options.gfx_clouds=cloud_quality
+	GameData.options.gfx_terrain=terrain_quality
 	GameData.options.merge({"auto_graphics":0,"confine_mouse":0,"vsync":0,"fps_limit":3},true)
 	Gfx.ensure_globals(); Gfx.apply_surface_options()
 	Engine.time_scale=0; Engine.max_fps=120; process_mode=Node.PROCESS_MODE_ALWAYS
@@ -28,6 +35,7 @@ func _ready() -> void:
 	check(Gfx._cloud_owner==0,"combined map exit clears shared cloud ownership")
 	UnitWounds.shutdown(); TexUpscale.shutdown(); await frames(12)
 	FileAccess.open("user://renderer-followup-integration.json",FileAccess.WRITE).store_string(JSON.stringify({
-		"checks":checks,"failures":failures,"rows":rows,"options":COMPOSED},"\t"))
+		"checks":checks,"failures":failures,"rows":rows,"options":COMPOSED,
+		"cloud_quality":cloud_quality,"terrain_quality":terrain_quality},"\t"))
 	print("RENDERER_FOLLOWUP_INTEGRATION checks=",checks," failures=",failures)
 	get_tree().quit(1 if failures else 0)

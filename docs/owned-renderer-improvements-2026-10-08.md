@@ -18,10 +18,13 @@ Gameplay U39–U44 and the separate U45 removed-actor death-predicate correction
 are committed. The supplied U45 autosave contains two living required creatures;
 the original completion gates work when both die. `1b8b0f6` fixes a distinct
 script-added looted-actor reload defect with 137 passing candidate checks.
-The last combined-export production checkpoint is `57e49cb9c57e1a66b4d4aa0f7fb2353597b9d962`.
-Combined acceptance records 859 checks and 60 captures, with the separate LiA
-mist motion limitation retained. The Haburu first-conversation fix is also
-committed. V7 requires verified campaign placement data. Do not treat historical pause
+The current combined-export production checkpoint is `79bee8a56f7a27a9897ae9ebe44fa6000d94cf21`.
+[Current combined acceptance](validation/renderer-coop-integration-2026-10-09.json)
+records 711 checks and 60 captures for cloud High/natural terrain composition,
+actual Game ownership, localized settings and representative co-op/solo return.
+The earlier 859-check checkpoint and separate LiA mist motion limitation are
+retained. The Haburu first-conversation fix is also committed. V7 requires
+verified campaign placement data. Do not treat historical pause
 statements in older evidence as a current stop instruction.
 
 Subsequent gameplay checkpoints `fdf7885` and `82b749f` retain a renamed guest's
@@ -32,15 +35,16 @@ explicitly wants the systemic sync issue fixed, without repairing the particular
 latest save. `80c96d4` now preserves solo-earned character reimport and compatible
 checkpoint selection (803 checks). `ec79e3f` protects stable hero references, and
 `74c4804` restores pending scripted actions on solo return (149 acceptance checks
-plus 36 formatting rechecks). Whole-checkpoint compatibility remains conservative
-about unknown authored flags; the earlier combined-renderer receipt does not
-cover these later source changes.
+plus 36 formatting rechecks). `79bee8a` restores ordinary NEW-hero joins after
+original opening initialization, with 239 passing base/LiA checks. The current
+combined export includes all of these fixes. Whole-checkpoint compatibility
+remains conservative about unknown authored flags.
 
 The original worktree above is historical. Source version remains Experimental 6
 and protocol 13. This task uses private exports and isolated profiles. Installed
 builds, templates, original assets and real saves have not been replaced.
-Last combined acceptance export (later checkpoints have separate receipts):
-`/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/final-integrated`.
+Current combined acceptance export:
+`/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/cloud-coop-final-01`.
 The detailed gameplay tracker is `docs/gameplay-gaps-2026-10-08.md`; the incoming
 handoff is `/home/llm2x/Documents/EI/local/gameplay-handoff-2026-10-09.md`.
 
@@ -4343,7 +4347,49 @@ streamer was added. Resume with a verified layout for the actual mounted campaig
 then validate connected edges, independent materials/liquids, bounded residency
 and actor/script-free teardown against the audit's V7 acceptance list.
 
-## Combined follow-up acceptance — 9 October
+## Combined cloud and co-op acceptance — 9 October
+
+The current private Linux export freezes committed application revision
+`79bee8a56f7a27a9897ae9ebe44fa6000d94cf21` at `/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/cloud-coop-final-01`.
+Import/export completes without errors and excludes no working game changes.
+[Current combined evidence](validation/renderer-coop-integration-2026-10-09.json)
+records **711 passing checks and 60 captures**:
+
+- **156 renderer checks:** High cloud volumes and Natural terrain transitions
+  compose with the existing water/contact/weather effects on Forward+, qualified
+  desktop Mobile and Compatibility fallback (28 each). Actual Game/world lifecycle
+  adds 72 checks through pause, load/travel/movie gates, live options, volume
+  resource release, zone replacement and rejection of retired owners.
+- **398 settings checks:** five pages and both entry points fit 800×600 in English,
+  Russian and German, with mouse, controller-key and touch dispatch. The 21
+  captures show default choices; weather-page samples were inspected. Cloud value
+  label widths are separately recorded in the volume receipt.
+- **157 final-export gameplay checks:** LiA compatible personal reimport and
+  original chapter travel (94), fresh-process solo load of both network-produced
+  saves (21), original pending dragon action/cooldown on solo return (27), and
+  base NEW joining after opening initialization then returning at the first
+  village (15). Own hero, private purse, quests and actual position survive.
+
+The renderer/settings runs use the committed `7c593aa` pack. Comparing all 712
+frozen application files against the final export finds exactly one difference:
+`src/game/coop_progress.gd`, containing `79bee8a`'s bounded fresh-start fix. Every
+other file and both native binaries match, so unchanged renderer scenes were
+not repeated. Feature-specific evidence remains separate, including the fresh
+start fix's 239 checks and the main solo-return fix's 803 checks.
+
+| File | SHA-256 |
+|---|---|
+| `CursedLands.x86_64` | `fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5` |
+| `CursedLands.pck` | `4a6242634eb82c56ea3c2a9be79b565a190a210a05157348f91297e15dafd9ef` |
+| `libterrain_search.so` | `d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e` |
+
+There are no failed assertions or script/runtime errors in these runs. The
+existing Compatibility screen-space-AA warning is retained; one independent
+headless editor import overlapped that functional run. These are functional
+Linux checks, not performance, full campaign or Windows/internet acceptance.
+Original data and user saves remain untouched; no build was published or installed.
+
+## Earlier combined follow-up acceptance — 9 October
 
 The final private Linux export freezes committed application revision
 `57e49cb9c57e1a66b4d4aa0f7fb2353597b9d962`. No uncommitted game changes were
@@ -4473,9 +4519,12 @@ investigation is recorded in the gameplay handoff.
    fix are committed. The supplied queen autosave has two living required
    creatures; original death-gate completion is verified. A distinct looted,
    script-added actor reload defect is fixed in `1b8b0f6`. The new LiA
-   solo/co-op sync request has reproduced scripted travel and solo-return
-   baseline defects; shared travel is fixed in `82b749f`, with reimport and
-   compatible checkpoint checks next. `fdf7885` fixes renamed guest identity.
+   solo/co-op sync request is addressed by shared travel `82b749f`, compatible
+   reimport/checkpoints `80c96d4`, stable saved identity `ec79e3f`, pending story
+   actions `74c4804` and bounded opening admission `79bee8a`. The latter restores
+   NEW-hero joins after the original base startup flags, with 239 passing checks;
+   existing saves retain strict story compatibility. `fdf7885` fixes renamed
+   guest identity.
    `f3f1494` fixes the independently reproduced LiA Haburu
    camp approach issue; 379 source/command/map checks pass. All five missing
    authored helpers are reachable but absent from the supplied scripts and
