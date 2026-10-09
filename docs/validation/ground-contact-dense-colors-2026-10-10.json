@@ -1,0 +1,839 @@
+{
+  "current_candidate": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/dense-colors/candidate02",
+  "PCK_sha256": "21e930a70f4f81bc6403fb651a02b6fe85836413e211fec33bbd851d0b3597b3",
+  "lookup_receipt": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/dense-colors/receipt.json",
+    "sha256": "cf819c0df98a932962fa0c2c0fb632b1ffb170332afd70239d3ad6f54ce87e1c",
+    "data": {
+      "status": "Scratch exact dense COLOR lookup prototype. CPU/native and single Forward+ numeric qualification passed; no source promoted.",
+      "base_sources": {
+        "ground_surface_data.gd": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/shoreline/precision/ground_surface_data.gd",
+          "sha256": "8af5217bae745b1a2fecf2da7159b41d8c4ceade530887ab4b2f48edbe85ce5a"
+        },
+        "ground_contact_shader.gd": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/shoreline/precision/ground_contact_shader.gd",
+          "sha256": "9044631b736596932dd60b1f19dff9037568d50034ebb0727b94f9da7f098e56"
+        },
+        "soft_ground_field.gd": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/shoreline/candidate02/stage/src/game/fx/soft_ground_field.gd",
+          "sha256": "164c7d3be795256003b4d46465fec783033bc09f733594369bde33980e9e3d16"
+        }
+      },
+      "handoff_sources": {
+        "ground_dense_colors.gd": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/dense-colors/ground_dense_colors.gd",
+          "sha256": "4d5ce25dbcbd70ba58950d1cac1fa6e356e082589fa5a1f20f6c0c29891f84c3"
+        },
+        "ground_surface_data.gd": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/dense-colors/ground_surface_data.gd",
+          "sha256": "91863c204a4b23652ee1c9a6aa46713bd921ae519954d9068afec928f7a708ed"
+        },
+        "ground_contact_shader.gd": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/dense-colors/ground_contact_shader.gd",
+          "sha256": "3d88e72ad931f4dc363703efee1459fdcecec9201081eb38e6f514642fa8e341"
+        },
+        "soft_ground_field.gd": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/dense-colors/soft_ground_field.gd",
+          "sha256": "ff04e60936782bb80976279a7af28bfd5bb8d15d6795476fd751c0d1dc3c05fa"
+        },
+        "ground_dense_colors.gd.uid": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/dense-colors/ground_dense_colors.gd.uid",
+          "sha256": "09484ba4c54630297c5e2c333054ed998187fcaaf5f3ecd60a815a9a1b06a2b8"
+        }
+      },
+      "incremental_diff": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/dense-colors/changes-from-precision.diff",
+        "sha256": "83a8bdcc68a39618aeaf4a4375a0368065ea7e892a950ba90af9f17ce214b15d"
+      },
+      "field_fixture_compatibility_update": {
+        "source": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/dense-colors/soft_ground_field_test.gd",
+          "sha256": "465d9f6e4858f0d06165d314a9d659cb32dc11976bf42d976e06d35f3334dda6"
+        },
+        "diff": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/dense-colors/soft_ground_field_test.diff",
+          "sha256": "6f09a3fffd714ec20909c5bee457bd1eb199d71a76937d0242f11e90c4418d92"
+        },
+        "receipt": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/dense-colors/test-fixture-handoff.json",
+          "sha256": "4139212a95797a2e6f5544d7915b33855dfa9104fa670c765f9c05f999eac943"
+        },
+        "run": false,
+        "scope": "Only three [1] sentinels replaced with Mesh.ARRAY_MAX arrays and 8*153 PackedColorArray. Existing checks unchanged."
+      },
+      "candidate": {
+        "directory": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/dense-colors/candidate01",
+        "export": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/dense-colors/candidate01/export.json",
+          "sha256": "6868a20154d8c04025cd11b651cad6cd32377d9b2005433d1dbadcd0064f81b0"
+        },
+        "binaries": {
+          "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e",
+          "CursedLands.pck": "483cec489efc4b27c4479ea7b5dbf562b27f3d82e7cefe0e5df98573a18384a3"
+        },
+        "post_import_provenance": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/dense-colors/candidate01/post-import-provenance.json",
+          "sha256": "cdae77557f70febd4a9f5854dfa57f293612223b98b392123847cf602aa5e01f"
+        },
+        "initial_manifest": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/dense-colors/candidate01/source-manifest-initial.json",
+          "sha256": "b55f57f72b62344a8e479f695b10fddc655bea6191a02262a64c8646ee988ce3"
+        },
+        "post_import_manifest": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/dense-colors/candidate01/source-manifest-post-import.json",
+          "sha256": "c80574a3683fb9f79d99268ba740ffb5b787972fe2292d9acfcfcfe5715ca55f"
+        },
+        "generated_file": "src/game/fx/ground_dense_colors.gd.uid is the only post-import source change; its exact UID file is included above."
+      },
+      "mechanism": {
+        "source": "Accepted installed dense PackedColorArray handles from the native/script mesh job; same Image RGBA8 Color-float truncation as ArrayMesh. No GPU readback.",
+        "identity": "One texture layer per installed tile; 8 separate parent rows of 153 vertices. Shader uses original cell-derived parent and exact 16-way subdivision lattice index; shared-edge parent values remain separate.",
+        "lifecycle": "Field snapshots only accepted nonnull geometry; contact data is lazy, strongly owned by GroundSurfaceData and weakly owned by field. Upload palette before publishing addresses. Remove entries on uninstall, reuse holes, grow power-of-two up to native 128-tile cap, clear peak allocation when empty.",
+        "texture_cost": {
+          "RGBA8_bytes_per_tile": 4896,
+          "RGBA8_max_bytes": 626688,
+          "RGBA8_max_KiB": 612,
+          "RF_address_table": "4 bytes per world tile, allocated only when contact data is demanded",
+          "empty_placeholder_bytes": 4896,
+          "CPU_storage": "Same-sized packed palette Images plus retained immutable source COLOR handles; COW arrays are not explicitly copied by production code."
+        },
+        "shader_cost": "3 exact dense COLOR fetches replace 3 original COLOR fetches plus interpolation/repack; one additional nearest RF tile-address fetch. No timing claim.",
+        "missing_layer": "Returns zero rather than out-of-bounds; native lifecycle must ensure installed dense tiles have a matching layer. This guard is not a faithful absent-source reconstruction."
+      },
+      "headless": {
+        "run": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/dense-colors-inputs-headless01/run.json",
+          "sha256": "c32da9995117449f17f570ee0a09ae01086484610c6462086fef854ac70e9874"
+        },
+        "report": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/dense-colors-inputs-headless01/dense-inputs.json",
+          "sha256": "463a14e70b7fc6a11fbe9e4fd7a4814b56e2f8e200783460335c5bd7eeb66816"
+        },
+        "fixture": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/dense-colors/inputs_probe.gd",
+          "sha256": "667e5c29ce6badf48376ac3f8817219d0d2e71d36baeca8385ad5f4ca2eae336"
+        },
+        "checks": 63,
+        "failures": 0,
+        "packed_native_vertices": 14688,
+        "native_index_identity_checks": 73728,
+        "coverage": "All native ArrayMesh bytes; lazy join; pending exclusion; unchanged upload skip; 128-slot growth/address/reuse; weak-owner release and rebuild; uninstall/map/peak clearing; cover-to-contact lazy binding."
+      },
+      "Forward_plus": {
+        "run": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/dense-colors-lookup-forward01/run.json",
+          "sha256": "81329eb29ec24a40e8e861585896d929ca565b32f485f3a29647d25a93718638"
+        },
+        "report": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/dense-colors-lookup-forward01/dense-lookup-report.json",
+          "sha256": "d8bec32119f4534d16d27730eb37ef2e1640f3d7409fe83dc26fea577a19ef77"
+        },
+        "fixture": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/dense-colors/lookup_probe.gd",
+          "sha256": "e4674bbf4b98a3a2af35b708751b8f196627b727ad0453cc23df46ea376e91ea"
+        },
+        "checks": 121,
+        "failures": 0,
+        "passes": {
+          "address-markers": {
+            "exact_selected_vertices": 73728,
+            "mismatches": 0
+          },
+          "native-lookup": {
+            "exact_selected_vertices": 73728,
+            "mismatches": 0
+          },
+          "oracle-control": {
+            "exact_selected_vertices": 73728,
+            "mismatches": 0
+          }
+        },
+        "orientation_control": {
+          "flipped_mismatches": 73728,
+          "locked_flip_y": false,
+          "normal_mismatches": 0
+        },
+        "identity_coverage": "12 cases * 8 native parents * 256 native children * 3 selected vertices; native child centroids and original sector4_2 tile addresses. Every case deliberately occupies layer1 behind an independent sentinel layer0. Marker RGB identifies vertex+1,parent+1,layer+1 and tests all selected addresses.",
+        "captures": {
+          "dense-lookup-native-lookup.png": {
+            "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/dense-colors-lookup-forward01/dense-lookup-native-lookup.png",
+            "sha256": "1a3ca99315bcc4c9d0f45e365835b7d2b7ae17e8e2421a01d83521acb6afc58b"
+          },
+          "dense-lookup-address-markers.png": {
+            "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/dense-colors-lookup-forward01/dense-lookup-address-markers.png",
+            "sha256": "b3e7d69e5e42ef423a1820f9770267bf142233c134e6139b7851a52f00f9ce8e"
+          },
+          "dense-lookup-oracle-control.png": {
+            "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/dense-colors-lookup-forward01/dense-lookup-oracle-control.png",
+            "sha256": "1a3ca99315bcc4c9d0f45e365835b7d2b7ae17e8e2421a01d83521acb6afc58b"
+          }
+        },
+        "oracle_capture_equals_lookup_capture": true
+      },
+      "prior_failed_arithmetic_control_preserved": {
+        "run": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/shoreline-dense-color-forward01/run.json",
+          "sha256": "48aae941960c0fb2a871d6f610f47523df1b15d9f38c8d469147b54c75fd06fc"
+        },
+        "report": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/shoreline-dense-color-forward01/dense-color-report.json",
+          "sha256": "4fe89a5a057dfb43efecd8da68c87937dff71c0c1513e7c86fe10f83d34ff83a"
+        },
+        "source_CPU_attribution": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/shoreline-audit/dense-interpolation/attribution.json",
+          "sha256": "1fa228da68ad4c465e58a0639a51f66253b65012e2eace42216c4a033b2bdc03"
+        },
+        "CPU_models": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/shoreline-audit/dense-interpolation/cpu-models.json",
+          "sha256": "d9216e7606e8dda60f385a8cc16e6428abbd4df58ca3223ac1c7f275411ce15a"
+        },
+        "final_multiply_rejected_explanation": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/shoreline-audit/dense-color-pack-analysis.json",
+          "sha256": "8aa149d094e062bbdbf81c01db65e81357846b4268b83d50f1b24eda135d419b"
+        },
+        "summary": "Old arithmetic real alpha765/765 exact; synthetic169/1071 vertices failed by one byte (185 RGB components). Final multiply correction changes0 of676 retained native floats. Native separate float multiply/add model matches7344/7344 native bytes and676/676 retained floats; nested FMA model matches7344/7344 GPU bytes. This is source/CPU-supported attribution, not GPU instruction proof.",
+        "native_oracle_identity_and_lookup_resolution": [
+          {
+            "label": "real-alpha-[0, 0, 2]",
+            "all_parent_unique_vertices": 1224,
+            "selected_parent": 4,
+            "old_selected_parent_native_oracle_identical": true,
+            "old_arithmetic_mismatched_vertices": 0,
+            "lookup_mismatched_vertices": 0
+          },
+          {
+            "label": "real-alpha-[0, 0, 16]",
+            "all_parent_unique_vertices": 1224,
+            "selected_parent": 6,
+            "old_selected_parent_native_oracle_identical": true,
+            "old_arithmetic_mismatched_vertices": 0,
+            "lookup_mismatched_vertices": 0
+          },
+          {
+            "label": "real-alpha-[0, 2, 0]",
+            "all_parent_unique_vertices": 1224,
+            "selected_parent": 1,
+            "old_selected_parent_native_oracle_identical": true,
+            "old_arithmetic_mismatched_vertices": 0,
+            "lookup_mismatched_vertices": 0
+          },
+          {
+            "label": "real-alpha-[0, 49, 0]",
+            "all_parent_unique_vertices": 1224,
+            "selected_parent": 0,
+            "old_selected_parent_native_oracle_identical": true,
+            "old_arithmetic_mismatched_vertices": 0,
+            "lookup_mismatched_vertices": 0
+          },
+          {
+            "label": "real-alpha-[49, 0, 7]",
+            "all_parent_unique_vertices": 1224,
+            "selected_parent": 1,
+            "old_selected_parent_native_oracle_identical": true,
+            "old_arithmetic_mismatched_vertices": 0,
+            "lookup_mismatched_vertices": 0
+          },
+          {
+            "label": "synthetic-E-0",
+            "all_parent_unique_vertices": 1224,
+            "selected_parent": 1,
+            "old_selected_parent_native_oracle_identical": true,
+            "old_arithmetic_mismatched_vertices": 0,
+            "lookup_mismatched_vertices": 0
+          },
+          {
+            "label": "synthetic-E-1",
+            "all_parent_unique_vertices": 1224,
+            "selected_parent": 1,
+            "old_selected_parent_native_oracle_identical": true,
+            "old_arithmetic_mismatched_vertices": 22,
+            "lookup_mismatched_vertices": 0
+          },
+          {
+            "label": "synthetic-E-2",
+            "all_parent_unique_vertices": 1224,
+            "selected_parent": 1,
+            "old_selected_parent_native_oracle_identical": true,
+            "old_arithmetic_mismatched_vertices": 72,
+            "lookup_mismatched_vertices": 0
+          },
+          {
+            "label": "synthetic-E-3",
+            "all_parent_unique_vertices": 1224,
+            "selected_parent": 1,
+            "old_selected_parent_native_oracle_identical": true,
+            "old_arithmetic_mismatched_vertices": 0,
+            "lookup_mismatched_vertices": 0
+          },
+          {
+            "label": "synthetic-E-4",
+            "all_parent_unique_vertices": 1224,
+            "selected_parent": 1,
+            "old_selected_parent_native_oracle_identical": true,
+            "old_arithmetic_mismatched_vertices": 68,
+            "lookup_mismatched_vertices": 0
+          },
+          {
+            "label": "synthetic-E-5",
+            "all_parent_unique_vertices": 1224,
+            "selected_parent": 1,
+            "old_selected_parent_native_oracle_identical": true,
+            "old_arithmetic_mismatched_vertices": 1,
+            "lookup_mismatched_vertices": 0
+          },
+          {
+            "label": "synthetic-E-6",
+            "all_parent_unique_vertices": 1224,
+            "selected_parent": 1,
+            "old_selected_parent_native_oracle_identical": true,
+            "old_arithmetic_mismatched_vertices": 6,
+            "lookup_mismatched_vertices": 0
+          }
+        ],
+        "selected_real_native_vertices_exact": 765,
+        "selected_synthetic_native_vertices_exact": 1071,
+        "selected_synthetic_lookup_mismatches": 0
+      },
+      "remaining_limits": [
+        "Controlled numeric lookup; no physical footprint, authored route or visual-improvement claim.",
+        "Child centroids avoid raster shared-edge ambiguity. Full contact compiler/query winner and boundary behavior are separate qualifications.",
+        "Packed dense normals are not implemented by this change; existing dense normal interpolation/repacking discrepancy remains separate.",
+        "Does not resolve enhanced-light precision, ordinary Godot point/shadow adaptation, strict track filtering or other retained root/debug residuals.",
+        "Actual SoftGroundDeform install/expiry/cancel scene and normal regression are assigned to root, not duplicated here.",
+        "Forward+ on one NVIDIA RTX3090 only; no Mobile/OpenGL result or performance claim for this lookup."
+      ],
+      "usage": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/dense-colors/usage.txt",
+        "sha256": "156929b02d65b1b2d75b11a58bb89cae3bb14f1435e6b09a6fc05f3f41d23cdc"
+      },
+      "GPU": "Released to parent immediately after single run. No further rendered runs queued."
+    }
+  },
+  "capacity_receipt": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/dense-colors/capacity/receipt.json",
+    "sha256": "2c555972286a2f8e05c678e4f2841f675d46d93c1e93619003c1022398565e42",
+    "data": {
+      "status": "Scratch capacity correction qualified by narrow actual native dispatcher regression; no canonical/package adoption.",
+      "preserved_numeric_candidate01_receipt": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/dense-colors/receipt.json",
+        "sha256": "cf819c0df98a932962fa0c2c0fb632b1ffb170332afd70239d3ad6f54ce87e1c"
+      },
+      "base_source": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/dense-colors/capacity/base-source.json",
+        "sha256": "4fcef998d0dd9bffc0d3881f3bdb7ed0b27b18424a7de9294593f4b817a7c703"
+      },
+      "source": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/dense-colors/capacity/soft_ground_deform.gd",
+        "sha256": "860c690ced0636aea1c59988a6471aeb3987a96b651f9a2a448f13fe22e5151b"
+      },
+      "diff": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/dense-colors/capacity/soft_ground_deform.diff",
+        "sha256": "0bf51d87bee4339c44c4ea5a052c94143ca9447d35f1fb6f25257a5f2b11bb5a"
+      },
+      "source_change": "Reserve per-sector union of logical pending/ready rec.tiles and still-installed field._dense_sources. Revisit of expired-but-installed tile consumes existing reservation. Keep tile_count logical for callers; only _make_room uses union count.",
+      "source_evidence": {
+        "old_expiry": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/dense-colors/candidate01/stage/src/game/fx/soft_ground_deform.gd",
+          "line": 458,
+          "semantics": "Logical rec.tiles erased before asynchronous replacement acceptance."
+        },
+        "old_capacity": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/dense-colors/candidate01/stage/src/game/fx/soft_ground_deform.gd",
+          "line": 231,
+          "semantics": "Logical tile_count ignores still-installed expired tiles."
+        },
+        "acceptance": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/dense-colors/candidate01/stage/src/game/fx/soft_ground_deform.gd",
+          "line": 347,
+          "semantics": "Accepted actual mesh updates field/palette snapshot."
+        },
+        "completion_order": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/dense-colors/candidate01/stage/src/game/fx/soft_ground_deform.gd",
+          "line": 361,
+          "semantics": "Reverse worker completion scan can accept B before A."
+        }
+      },
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/dense-colors/capacity/capacity_probe.gd",
+        "sha256": "f5bf9561c1838acb8b01862398a81665a2acf0bc0f87cc6d843ffbb537d8b086"
+      },
+      "fixture_order_control": "Actual authored zone1 sectors4_2 and5_2, unchanged source meshes, actual SoftGroundDeform _add_mark/_process dispatcher, real SoftGroundMeshJob workers and _apply_mesh ArrayMesh installation. Hold the actual A job dictionary out of completion scan to represent delayed result acceptance, then reinsert/join it after B. No fake kernels or output arrays; direct marks isolate capacity rather than validate soft-material eligibility.",
+      "baseline": {
+        "run": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/dense-colors-capacity-baseline01/run.json",
+          "sha256": "ba72eb47be9c9ed87421ad33c829994766b152f29a54e0e51ceab6262a29d16c"
+        },
+        "report": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/dense-colors-capacity-baseline01/dense-capacity-report.json",
+          "sha256": "55333a88b944c862648a505bdf8ba34425922f86bda58571fe367a0df4bb12e0"
+        },
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/dense-colors-capacity-baseline01/run.log",
+          "sha256": "cf19ef3bffa8372331f8a4de0dbc5674af5677c42907a3622263404de475fd14"
+        },
+        "return_code": -11,
+        "completed_checks_before_crash": 14,
+        "failed_checks_before_crash": 2,
+        "result": "A127+B1 installed; expiry leaves logical A1+B1 but installed palette128; B request leaves logical3/installed128 instead of retiring A. Both pre-admission restoration checks fail; process then dies by SIGSEGV during B acceptance. No stack trace was collected; exact crashing instruction is not claimed."
+      },
+      "candidate02": {
+        "directory": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/dense-colors/candidate02",
+        "export": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/dense-colors/candidate02/export.json",
+          "sha256": "032d15b04aecfd43066ecd31feae2aef9f074c56bf531df9f9593637f8564877"
+        },
+        "binary_sha256": {
+          "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e",
+          "CursedLands.pck": "21e930a70f4f81bc6403fb651a02b6fe85836413e211fec33bbd851d0b3597b3"
+        },
+        "run": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/dense-colors-capacity-candidate02/run.json",
+          "sha256": "d735de95115f5b91c7fe905d76c13e41cc7bd83ad7461c2f3c6bbe1b792b3417"
+        },
+        "report": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/dense-colors-capacity-candidate02/dense-capacity-report.json",
+          "sha256": "82eaa90e75c961c1233651e7712952cc57c9040f564e508be77ab46e37d22dfc"
+        },
+        "checks": 24,
+        "failures": 0,
+        "return_code": 0,
+        "states": [
+          {
+            "installed_tiles": {
+              "(4, 2)": 127,
+              "(5, 2)": 1
+            },
+            "label": "initial-native128",
+            "logical_count": 128,
+            "logical_tiles": {
+              "(4, 2)": 127,
+              "(5, 2)": 1
+            },
+            "palette_count": 128,
+            "queued_jobs": 0,
+            "visible_meshes": [
+              "(4, 2)",
+              "(5, 2)"
+            ]
+          },
+          {
+            "installed_tiles": {
+              "(4, 2)": 127,
+              "(5, 2)": 1
+            },
+            "label": "A-removal-awaiting-acceptance",
+            "logical_count": 2,
+            "logical_tiles": {
+              "(4, 2)": 1,
+              "(5, 2)": 1
+            },
+            "palette_count": 128,
+            "queued_jobs": 0,
+            "visible_meshes": [
+              "(4, 2)",
+              "(5, 2)"
+            ]
+          },
+          {
+            "installed_tiles": {
+              "(5, 2)": 1
+            },
+            "label": "B-requested-before-A-result",
+            "logical_count": 2,
+            "logical_tiles": {
+              "(5, 2)": 2
+            },
+            "palette_count": 1,
+            "queued_jobs": 0,
+            "visible_meshes": [
+              "(5, 2)"
+            ]
+          },
+          {
+            "installed_tiles": {
+              "(5, 2)": 2
+            },
+            "label": "B-native-result-accepted-first",
+            "logical_count": 2,
+            "logical_tiles": {
+              "(5, 2)": 2
+            },
+            "palette_count": 2,
+            "queued_jobs": 0,
+            "visible_meshes": [
+              "(5, 2)"
+            ]
+          },
+          {
+            "installed_tiles": {
+              "(5, 2)": 2
+            },
+            "label": "late-A-result-rejoined",
+            "logical_count": 2,
+            "logical_tiles": {
+              "(5, 2)": 2
+            },
+            "palette_count": 2,
+            "queued_jobs": 0,
+            "visible_meshes": [
+              "(5, 2)"
+            ]
+          },
+          {
+            "installed_tiles": {},
+            "label": "cleared",
+            "logical_count": 0,
+            "logical_tiles": {},
+            "palette_count": 0,
+            "queued_jobs": 0,
+            "visible_meshes": []
+          }
+        ],
+        "manifest": "Full initial and post-import source manifests retained in export.json. Only soft_ground_deform.gd differs from candidate01; post-import source delta is empty; existing generated GroundDenseColors UID retained.",
+        "result": "Union capacity restores and removes A before B admission. B native result installs two exact COLOR layers. Late A result cannot revive geometry/colors. All jobs joined and clear restores both source meshes."
+      },
+      "test_limits": [
+        "Headless native dispatcher schedule, no GPU run.",
+        "One source-backed interleaving is controlled deterministically; not a randomized concurrency test.",
+        "No new shader or dense normal changes. Candidate01 numeric lookup qualification applies to byte-identical lookup sources; candidate02 has no new rendered qualification.",
+        "Root separately owns broader actual SoftGroundDeform native/script lifecycle and authored-scene checks.",
+        "Candidate01 failure and prior169 synthetic arithmetic failures retained unchanged."
+      ],
+      "GPU": "Remains released to root; no rendered runs queued."
+    }
+  },
+  "production_source_handoff": [
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/dense-colors/ground_dense_colors.gd",
+      "sha256": "4d5ce25dbcbd70ba58950d1cac1fa6e356e082589fa5a1f20f6c0c29891f84c3"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/dense-colors/ground_dense_colors.gd.uid",
+      "sha256": "09484ba4c54630297c5e2c333054ed998187fcaaf5f3ecd60a815a9a1b06a2b8"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/dense-colors/ground_surface_data.gd",
+      "sha256": "91863c204a4b23652ee1c9a6aa46713bd921ae519954d9068afec928f7a708ed"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/dense-colors/ground_contact_shader.gd",
+      "sha256": "3d88e72ad931f4dc363703efee1459fdcecec9201081eb38e6f514642fa8e341"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/dense-colors/soft_ground_field.gd",
+      "sha256": "ff04e60936782bb80976279a7af28bfd5bb8d15d6795476fd751c0d1dc3c05fa"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/dense-colors/capacity/soft_ground_deform.gd",
+      "sha256": "860c690ced0636aea1c59988a6471aeb3987a96b651f9a2a448f13fe22e5151b"
+    }
+  ],
+  "compatibility_test_handoff": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/dense-colors/soft_ground_field_test.gd",
+    "sha256": "465d9f6e4858f0d06165d314a9d659cb32dc11976bf42d976e06d35f3334dda6"
+  },
+  "compatibility_test_note": "Prepared minimal original fixture correction, not run by this subagent.",
+  "new_qualification_fixtures": [
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/dense-colors/inputs_probe.gd",
+      "sha256": "667e5c29ce6badf48376ac3f8817219d0d2e71d36baeca8385ad5f4ca2eae336"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/dense-colors/lookup_probe.gd",
+      "sha256": "e4674bbf4b98a3a2af35b708751b8f196627b727ad0453cc23df46ea376e91ea"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/dense-colors/capacity/capacity_probe.gd",
+      "sha256": "f5bf9561c1838acb8b01862398a81665a2acf0bc0f87cc6d843ffbb537d8b086"
+    }
+  ],
+  "canonical_or_delivered_package_mutated": false,
+  "origin_receipt": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/dense-colors/handoff.json",
+    "sha256": "030d85c4faed631cbce82ef27d4a81c65ad50f3ed47eefaa39e73c010b6e8170"
+  },
+  "root_dispatcher_runs": {
+    "dense-colors-dispatch-native-headless01": {
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/dense-colors-dispatch-native-headless01/run.json",
+        "sha256": "33ffe946af4400ec9d151868c857633f314253c9d6250a42a716b89e5b518585"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/dense-colors-dispatch-native-headless01/dense-dispatcher.json",
+        "sha256": "fbe394037d01a8f6db469791e335a3aea0fb1c19e7f21a7867cf6fb2e82063da"
+      },
+      "data": {
+        "checks": 85,
+        "compared_vertices": 19584,
+        "failures": 0,
+        "rows": [
+          {
+            "bad_addresses": 0,
+            "bad_color_tiles": 0,
+            "bad_visibility": 0,
+            "compared_vertices": 2448,
+            "drawn_tiles": 2,
+            "label": "late contact binding after coalesced jobs",
+            "logical_tiles": 2,
+            "palette_slots": 2,
+            "pending_jobs": 0,
+            "queued_tiles": 0
+          },
+          {
+            "bad_addresses": 0,
+            "bad_color_tiles": 0,
+            "bad_visibility": 0,
+            "compared_vertices": 2448,
+            "drawn_tiles": 2,
+            "label": "queued contact retains last installed bytes",
+            "logical_tiles": 3,
+            "palette_slots": 2,
+            "pending_jobs": 0,
+            "queued_tiles": 1
+          },
+          {
+            "bad_addresses": 0,
+            "bad_color_tiles": 0,
+            "bad_visibility": 0,
+            "compared_vertices": 2448,
+            "drawn_tiles": 2,
+            "label": "dispatched contact retains accepted bytes",
+            "logical_tiles": 3,
+            "palette_slots": 2,
+            "pending_jobs": 1,
+            "queued_tiles": 0
+          },
+          {
+            "bad_addresses": 0,
+            "bad_color_tiles": 0,
+            "bad_visibility": 0,
+            "compared_vertices": 3672,
+            "drawn_tiles": 3,
+            "label": "later snapshot installed",
+            "logical_tiles": 3,
+            "palette_slots": 3,
+            "pending_jobs": 0,
+            "queued_tiles": 0
+          },
+          {
+            "bad_addresses": 0,
+            "bad_color_tiles": 0,
+            "bad_visibility": 0,
+            "compared_vertices": 3672,
+            "drawn_tiles": 3,
+            "label": "rejoining consumer reconstructs installed state",
+            "logical_tiles": 3,
+            "palette_slots": 3,
+            "pending_jobs": 0,
+            "queued_tiles": 0
+          },
+          {
+            "bad_addresses": 0,
+            "bad_color_tiles": 0,
+            "bad_visibility": 0,
+            "compared_vertices": 1224,
+            "drawn_tiles": 1,
+            "label": "obsolete worker cannot revive retired contacts",
+            "logical_tiles": 1,
+            "palette_slots": 1,
+            "pending_jobs": 0,
+            "queued_tiles": 0
+          },
+          {
+            "bad_addresses": 0,
+            "bad_color_tiles": 0,
+            "bad_visibility": 0,
+            "compared_vertices": 1224,
+            "drawn_tiles": 1,
+            "label": "expiry pending replacement",
+            "logical_tiles": 0,
+            "palette_slots": 1,
+            "pending_jobs": 1,
+            "queued_tiles": 0
+          },
+          {
+            "bad_addresses": 0,
+            "bad_color_tiles": 0,
+            "bad_visibility": 0,
+            "compared_vertices": 0,
+            "drawn_tiles": 0,
+            "label": "expired geometry removed",
+            "logical_tiles": 0,
+            "palette_slots": 0,
+            "pending_jobs": 0,
+            "queued_tiles": 0
+          },
+          {
+            "bad_addresses": 0,
+            "bad_color_tiles": 0,
+            "bad_visibility": 0,
+            "compared_vertices": 1224,
+            "drawn_tiles": 1,
+            "label": "capacity reset accepts only new contacts",
+            "logical_tiles": 1,
+            "palette_slots": 1,
+            "pending_jobs": 0,
+            "queued_tiles": 0
+          },
+          {
+            "bad_addresses": 0,
+            "bad_color_tiles": 0,
+            "bad_visibility": 0,
+            "compared_vertices": 1224,
+            "drawn_tiles": 1,
+            "label": "new contacts after clear",
+            "logical_tiles": 1,
+            "palette_slots": 1,
+            "pending_jobs": 0,
+            "queued_tiles": 0
+          }
+        ],
+        "scope": "Controlled public add_step calls on real authored zone11 snow, actual native/script dispatcher and installed packed ArrayMesh COLOR oracle. Pending/coalesced work, late consumer, stale generation, expiry, capacity reset, clear and removal. No physical walking, rendered lighting or performance claim.",
+        "script_dispatch": false
+      }
+    },
+    "dense-colors-dispatch-script-headless01": {
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/dense-colors-dispatch-script-headless01/run.json",
+        "sha256": "fdd77f69967ef4f90bce73212e4d6678c46f57593fd661f4028b9de112b472be"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/dense-colors-dispatch-script-headless01/dense-dispatcher.json",
+        "sha256": "8a357b890ebc0b8687f47337b148fa0f90a090c541724d775236c843b847c9f5"
+      },
+      "data": {
+        "checks": 84,
+        "compared_vertices": 19584,
+        "failures": 0,
+        "rows": [
+          {
+            "bad_addresses": 0,
+            "bad_color_tiles": 0,
+            "bad_visibility": 0,
+            "compared_vertices": 2448,
+            "drawn_tiles": 2,
+            "label": "late contact binding after coalesced jobs",
+            "logical_tiles": 2,
+            "palette_slots": 2,
+            "pending_jobs": 0,
+            "queued_tiles": 0
+          },
+          {
+            "bad_addresses": 0,
+            "bad_color_tiles": 0,
+            "bad_visibility": 0,
+            "compared_vertices": 2448,
+            "drawn_tiles": 2,
+            "label": "queued contact retains last installed bytes",
+            "logical_tiles": 3,
+            "palette_slots": 2,
+            "pending_jobs": 0,
+            "queued_tiles": 1
+          },
+          {
+            "bad_addresses": 0,
+            "bad_color_tiles": 0,
+            "bad_visibility": 0,
+            "compared_vertices": 3672,
+            "drawn_tiles": 3,
+            "label": "dispatched contact retains accepted bytes",
+            "logical_tiles": 3,
+            "palette_slots": 3,
+            "pending_jobs": 0,
+            "queued_tiles": 0
+          },
+          {
+            "bad_addresses": 0,
+            "bad_color_tiles": 0,
+            "bad_visibility": 0,
+            "compared_vertices": 3672,
+            "drawn_tiles": 3,
+            "label": "later snapshot installed",
+            "logical_tiles": 3,
+            "palette_slots": 3,
+            "pending_jobs": 0,
+            "queued_tiles": 0
+          },
+          {
+            "bad_addresses": 0,
+            "bad_color_tiles": 0,
+            "bad_visibility": 0,
+            "compared_vertices": 3672,
+            "drawn_tiles": 3,
+            "label": "rejoining consumer reconstructs installed state",
+            "logical_tiles": 3,
+            "palette_slots": 3,
+            "pending_jobs": 0,
+            "queued_tiles": 0
+          },
+          {
+            "bad_addresses": 0,
+            "bad_color_tiles": 0,
+            "bad_visibility": 0,
+            "compared_vertices": 1224,
+            "drawn_tiles": 1,
+            "label": "obsolete worker cannot revive retired contacts",
+            "logical_tiles": 1,
+            "palette_slots": 1,
+            "pending_jobs": 0,
+            "queued_tiles": 0
+          },
+          {
+            "bad_addresses": 0,
+            "bad_color_tiles": 0,
+            "bad_visibility": 0,
+            "compared_vertices": 0,
+            "drawn_tiles": 0,
+            "label": "expiry pending replacement",
+            "logical_tiles": 0,
+            "palette_slots": 0,
+            "pending_jobs": 0,
+            "queued_tiles": 0
+          },
+          {
+            "bad_addresses": 0,
+            "bad_color_tiles": 0,
+            "bad_visibility": 0,
+            "compared_vertices": 0,
+            "drawn_tiles": 0,
+            "label": "expired geometry removed",
+            "logical_tiles": 0,
+            "palette_slots": 0,
+            "pending_jobs": 0,
+            "queued_tiles": 0
+          },
+          {
+            "bad_addresses": 0,
+            "bad_color_tiles": 0,
+            "bad_visibility": 0,
+            "compared_vertices": 1224,
+            "drawn_tiles": 1,
+            "label": "capacity reset accepts only new contacts",
+            "logical_tiles": 1,
+            "palette_slots": 1,
+            "pending_jobs": 0,
+            "queued_tiles": 0
+          },
+          {
+            "bad_addresses": 0,
+            "bad_color_tiles": 0,
+            "bad_visibility": 0,
+            "compared_vertices": 1224,
+            "drawn_tiles": 1,
+            "label": "new contacts after clear",
+            "logical_tiles": 1,
+            "palette_slots": 1,
+            "pending_jobs": 0,
+            "queued_tiles": 0
+          }
+        ],
+        "scope": "Controlled public add_step calls on real authored zone11 snow, actual native/script dispatcher and installed packed ArrayMesh COLOR oracle. Pending/coalesced work, late consumer, stale generation, expiry, capacity reset, clear and removal. No physical walking, rendered lighting or performance claim.",
+        "script_dispatch": true
+      }
+    }
+  },
+  "scope_note": "All changes remain scratch-only. Exact dense palette and capacity fix qualified separately; dispatcher runs use earlier candidate01. Combined full-surface/shadow/backend acceptance is still pending."
+}

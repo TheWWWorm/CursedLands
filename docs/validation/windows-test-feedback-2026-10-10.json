@@ -1,0 +1,133 @@
+{
+  "date": "2026-10-10",
+  "build": "Windows 1.0.3-local.20261009.2",
+  "gpu_user_report": "4090 mobile",
+  "renderer_user_report": "default, believes Forward+; not verified",
+  "controls": "keyboard and mouse",
+  "session": "Hosting original multiplayer",
+  "terminology": {
+    "multiplayer": "original native LMP",
+    "coop": "added cooperative campaign"
+  },
+  "screenshots": [
+    {
+      "order": 1,
+      "source": "/tmp/codex-clipboard-d4dbd064-a53e-489f-8818-6fc95a0d3939.png",
+      "retained": "/home/llm2x/Documents/EI/local/scratchpad/windows-test-feedback-20261010/user-evidence/01.png",
+      "sha256": "83085a518ab672561961329670c53d66028f9e3d0b36b73aa87499021f83e0cb"
+    },
+    {
+      "order": 2,
+      "source": "/tmp/codex-clipboard-9002bd4e-be1a-403b-a132-63a9afa5837b.png",
+      "retained": "/home/llm2x/Documents/EI/local/scratchpad/windows-test-feedback-20261010/user-evidence/02.png",
+      "sha256": "1ad6a9637e61262a4f27646ba661bc60a4b08bf1fa4279c4b11f427c81906562"
+    },
+    {
+      "order": 3,
+      "source": "/tmp/codex-clipboard-0b321c2f-e6c5-4f79-959c-6c22826afaf0.png",
+      "retained": "/home/llm2x/Documents/EI/local/scratchpad/windows-test-feedback-20261010/user-evidence/03.png",
+      "sha256": "cbf740a5b8c2c0c6fcb176ee58ba547e7b9f60c85aadd22fbf71ddaac07f22ea"
+    },
+    {
+      "order": 4,
+      "source": "/tmp/codex-clipboard-13eb9c79-3806-47c0-a465-b88eac082814.png",
+      "retained": "/home/llm2x/Documents/EI/local/scratchpad/windows-test-feedback-20261010/user-evidence/04.png",
+      "sha256": "861731e0b2fb294909f571570bc03c5f5208317b83c0defc0612ffa170efad9a"
+    },
+    {
+      "order": 5,
+      "source": "/tmp/codex-clipboard-923c93dc-f28f-480a-aeed-dc1776d1f7c3.png",
+      "retained": "/home/llm2x/Documents/EI/local/scratchpad/windows-test-feedback-20261010/user-evidence/05.png",
+      "sha256": "ef9f5f7fe0a9cd43b67168c09a52ae4af45da53079e40548cf5d35f1112a9f3b"
+    },
+    {
+      "order": 6,
+      "source": "/tmp/codex-clipboard-9b6fcb69-5517-4cbc-a785-ba1ffcdad824.png",
+      "retained": "/home/llm2x/Documents/EI/local/scratchpad/windows-test-feedback-20261010/user-evidence/06.png",
+      "sha256": "88f0c4175670a196adf18218785d2c0cd66cb36c5976f7a3abc5f2d48048f739"
+    },
+    {
+      "order": 7,
+      "source": "/tmp/codex-clipboard-fe3498a0-7d2f-4098-8481-3c562c6a4cc1.png",
+      "retained": "/home/llm2x/Documents/EI/local/scratchpad/windows-test-feedback-20261010/user-evidence/07.png",
+      "sha256": "aa71796150f43279d58efb7fd068772fec1edd51d9889dc57c6118987aa46293"
+    }
+  ],
+  "issues": [
+    {
+      "id": "W01",
+      "report": "Beach rocks look poor",
+      "image": 1,
+      "status": "Scratch low pebble geometry; visual acceptance pending"
+    },
+    {
+      "id": "W02",
+      "report": "Ground detail looks similar but is expensive, especially Natural transitions; optimize or cache per map",
+      "status": "Exact donor reuse prototype; receiver/backend qualification in progress"
+    },
+    {
+      "id": "W03",
+      "report": "Clouds very expensive",
+      "status": "Exact repeated solar-shadow reuse prototype; receiver/backend qualification in progress"
+    },
+    {
+      "id": "W04",
+      "report": "Third-person self-spell targeting is hard with keyboard and mouse",
+      "status": "Qualified source37f0dd4, awaiting package",
+      "evidence": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/third-person-kbm-2026-10-10.json"
+    },
+    {
+      "id": "W05",
+      "report": "Third-person ground-item pickup is hard with keyboard and mouse",
+      "status": "Qualified source37f0dd4, awaiting package",
+      "evidence": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/third-person-kbm-2026-10-10.json"
+    },
+    {
+      "id": "W06",
+      "report": "Grass does not cover the full visible range",
+      "image": 2,
+      "status": "Existing36m stream gaps fixed bcae3dd; distant sparse grass prototype in progress",
+      "evidence": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/grass-stream-envelope-2026-10-10.json"
+    },
+    {
+      "id": "W07",
+      "report": "Ingos NPCs repeatedly sit and stand every few seconds in original multiplayer, possibly single player too",
+      "image": 3,
+      "status": "Qualified source4a1a92a, awaiting package",
+      "evidence": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/native-mp-visibility-pose-2026-10-10.json"
+    },
+    {
+      "id": "W08",
+      "report": "Original multiplayer shows all enemies ignoring field of view",
+      "image": 4,
+      "status": "Qualified source4a1a92a, awaiting package",
+      "evidence": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/native-mp-visibility-pose-2026-10-10.json"
+    },
+    {
+      "id": "W09",
+      "report": "Menu creatures broken after leaving original multiplayer",
+      "image": 5,
+      "status": "Qualified source4d63428, awaiting package",
+      "evidence": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/native-mp-menu-loading-2026-10-10.json"
+    },
+    {
+      "id": "W10",
+      "report": "Loading into original multiplayer still exposes empty HUD before loading screen",
+      "image": 6,
+      "status": "Qualified source4d63428, awaiting package",
+      "evidence": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/native-mp-menu-loading-2026-10-10.json"
+    },
+    {
+      "id": "W11",
+      "report": "Leaving an area in original multiplayer freezes the character in a transition before the loading screen",
+      "image": 7,
+      "status": "Qualified source4d63428, awaiting package",
+      "evidence": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/native-mp-menu-loading-2026-10-10.json"
+    }
+  ],
+  "limits": "Screenshots are observations, not controlled performance comparisons. Source fixes tested on Linux; no Windows runtime reproduction here. Delivered .2 archives remain unchanged. Full-surface contact prototypes remain isolated.",
+  "origin_report": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/windows-test-feedback-20261010/user-feedback.json",
+    "sha256": "603f925a335b999847801701dc6a1ed7a8a38f44bd9af324bfe02780c1459714"
+  }
+}

@@ -1,0 +1,587 @@
+{
+  "date": "2026-10-10",
+  "status": "Scratch directional-shadow transfer qualified by one Forward+ authored witness; no canonical/package edits or promotion",
+  "scope_correction": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/shoreline/shadow-transfer/r1-scope-addendum-20261010.json",
+    "sha256": "b193482c758c7865d711c4fe617966e99b9e290146e0b12c8e3217321de696b6",
+    "disposition": "Supersedes independently relocated dual-context lighting as a V1 adoption gate; old audit remains historical and unchanged"
+  },
+  "source_change": {
+    "baseline": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/shoreline/shadow-transfer/baseline_ground_contact_shader.gd",
+    "baseline_sha256": "9044631b736596932dd60b1f19dff9037568d50034ebb0727b94f9da7f098e56",
+    "candidate": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/shoreline/shadow-transfer/ground_contact_shader.gd",
+    "candidate_sha256": "4e963b67f6bfb90b51d687713156cd5346600f02de514143c07ba8ecb0bb8a1a",
+    "diff": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/shoreline/shadow-transfer/ground_contact_shader.gd.diff",
+    "operation": "Only the directional ei_draw_factor call uses a new helper. It applies existing figure-facing shadow transfer to mesh RGB and terrain mix(0.5,1.0,ATTENUATION) to ground RGB before stored-RGB blend/darkening. Shared native object ATTENUATION and all receiver/light-list positions remain unchanged.",
+    "arithmetic_guard": "Zero ground weight or equal shadow factors call the original helper, preserving its exact arithmetic including out-of-colour-band contact darkening.",
+    "preserved": [
+      "existing figure-facing guard",
+      "cloud-sun specializations",
+      "point/local/fallback accumulation and highlight paths",
+      "fragment/normal/position/lookup code",
+      "all material, alpha, geometry and transform inputs"
+    ]
+  },
+  "headless": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/directional-shadow-source-forward-headless03/directional-shadow-source-contract.json",
+    "checks": 39,
+    "failures": 0,
+    "scope": "GDScript parse and exact full light-code restoration for clouds 0/1 and terrain wrap false/true; no GPU claim from these checks"
+  },
+  "rendered": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/directional-shadow-house-forward01/directional-shadow-scene.json",
+    "run": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/directional-shadow-house-forward01/run.json",
+    "checks": 96,
+    "failures": 0,
+    "renderer": "forward_plus",
+    "adapter": "NVIDIA GeForce RTX 3090",
+    "pack": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/shoreline/precision/candidate01",
+    "build_sha256": {
+      "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+      "CursedLands.pck": "38ca0c63b64aa630270be716d739cf947c8488b04b70fa660befccccdad0e2c6",
+      "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+    },
+    "execution": "Unchanged frozen precision pack; exact baseline.lighting() source match then candidate.lighting() replacement on actual authored object ShaderMaterials; no full export",
+    "fixture": {
+      "anchor": "(57.35189, 16.469, -43.69659)",
+      "anchor_witness": {
+        "bounds": "[P: (50.38366, 16.46896, -48.27792), S: (7.103333, 6.968002, 7.103333)]",
+        "closest_vertex_bilinear_gap": 0.0,
+        "dry_crossings": 13,
+        "edge": [
+          "(57.35189, 23.22796, -43.69659)",
+          "(57.35189, 16.46896, -43.69659)"
+        ],
+        "land_triangle": [
+          "(57.2024, 16.469, -44.2024)",
+          "(58.2103, 16.469, -43.2103)",
+          "(57.0, 16.469, -43.0)"
+        ],
+        "native_edges": 139,
+        "nearby_land_triangles": 128
+      },
+      "camera": "[X: (0.8, 0.0, -0.6), Y: (-0.172409, 0.957826, -0.229878), Z: (0.574696, 0.287348, 0.766261), O: (62.75189, 20.069, -36.49659)]",
+      "composed": false,
+      "coverage": {
+        "band_pixels": 20676,
+        "object_pixels": 213131,
+        "silhouette_mismatches": 0,
+        "upper_pixels": 132976
+      },
+      "map": "bz13h",
+      "nid": 42968,
+      "object": "HadoganHouse00-14473",
+      "parts": 1,
+      "placement": "[X: (0.5, 0.0, 0.866025), Y: (0.0, 1.0, 0.0), Z: (-0.866025, 0.0, 0.5), O: (53.93533, 16.46896, -44.72626)]",
+      "size": [
+        800,
+        600
+      ],
+      "span": 3.8,
+      "template": "stbuho42",
+      "texture": "hadoganhouse00"
+    },
+    "shadow_parameters": {
+      "bias": 0.0399999991059303,
+      "blur": 1.5,
+      "caster_mask": 4294049791,
+      "direction": "(-0.491539, 0.573462, -0.655386)",
+      "max_distance": 220.0,
+      "normal_bias": 1.20000004768372,
+      "quality_option": 0,
+      "shadow_enabled": true,
+      "source": "Game sun parameters; Gfx.setup_sun_casters; actual authored house only",
+      "splits": [
+        0.0599999986588955,
+        0.180000007152557,
+        0.449999988079071
+      ]
+    },
+    "native_fields": {
+      "encoding": "R=actual weight, G=smoothstep figure guard, B=native object ATTENUATION; 0..255 framebuffer bytes",
+      "joint_candidate_brighter_pixels": 0,
+      "joint_over_two_bytes": 2687,
+      "joint_peak_delta": 36,
+      "joint_witness_pixels": 2794,
+      "partial_weight_pixels": 3185,
+      "partial_with_attenuation_below_230": 3180,
+      "partial_with_guard_below_25": 2794,
+      "representatives": [
+        {
+          "candidate_rgb": [
+            5,
+            4,
+            3
+          ],
+          "old_rgb": [
+            8,
+            6,
+            4
+          ],
+          "peak_delta": 3,
+          "pixel": [
+            503,
+            217
+          ],
+          "weight_guard_attenuation_bytes": [
+            15,
+            0,
+            0
+          ]
+        },
+        {
+          "candidate_rgb": [
+            8,
+            6,
+            4
+          ],
+          "old_rgb": [
+            12,
+            10,
+            6
+          ],
+          "peak_delta": 4,
+          "pixel": [
+            507,
+            217
+          ],
+          "weight_guard_attenuation_bytes": [
+            32,
+            12,
+            0
+          ]
+        },
+        {
+          "candidate_rgb": [
+            8,
+            6,
+            5
+          ],
+          "old_rgb": [
+            11,
+            9,
+            6
+          ],
+          "peak_delta": 3,
+          "pixel": [
+            502,
+            218
+          ],
+          "weight_guard_attenuation_bytes": [
+            21,
+            0,
+            0
+          ]
+        },
+        {
+          "candidate_rgb": [
+            8,
+            7,
+            5
+          ],
+          "old_rgb": [
+            14,
+            11,
+            7
+          ],
+          "peak_delta": 6,
+          "pixel": [
+            503,
+            218
+          ],
+          "weight_guard_attenuation_bytes": [
+            32,
+            0,
+            0
+          ]
+        },
+        {
+          "candidate_rgb": [
+            15,
+            12,
+            7
+          ],
+          "old_rgb": [
+            27,
+            20,
+            12
+          ],
+          "peak_delta": 12,
+          "pixel": [
+            507,
+            218
+          ],
+          "weight_guard_attenuation_bytes": [
+            83,
+            12,
+            8
+          ]
+        },
+        {
+          "candidate_rgb": [
+            9,
+            8,
+            6
+          ],
+          "old_rgb": [
+            12,
+            10,
+            7
+          ],
+          "peak_delta": 3,
+          "pixel": [
+            501,
+            219
+          ],
+          "weight_guard_attenuation_bytes": [
+            19,
+            0,
+            0
+          ]
+        },
+        {
+          "candidate_rgb": [
+            10,
+            8,
+            6
+          ],
+          "old_rgb": [
+            16,
+            13,
+            8
+          ],
+          "peak_delta": 6,
+          "pixel": [
+            502,
+            219
+          ],
+          "weight_guard_attenuation_bytes": [
+            37,
+            0,
+            0
+          ]
+        },
+        {
+          "candidate_rgb": [
+            12,
+            9,
+            6
+          ],
+          "old_rgb": [
+            20,
+            16,
+            10
+          ],
+          "peak_delta": 8,
+          "pixel": [
+            503,
+            219
+          ],
+          "weight_guard_attenuation_bytes": [
+            54,
+            0,
+            0
+          ]
+        },
+        {
+          "candidate_rgb": [
+            8,
+            6,
+            4
+          ],
+          "old_rgb": [
+            13,
+            10,
+            6
+          ],
+          "peak_delta": 5,
+          "pixel": [
+            506,
+            219
+          ],
+          "weight_guard_attenuation_bytes": [
+            33,
+            2,
+            0
+          ]
+        },
+        {
+          "candidate_rgb": [
+            22,
+            17,
+            10
+          ],
+          "old_rgb": [
+            41,
+            32,
+            19
+          ],
+          "peak_delta": 19,
+          "pixel": [
+            507,
+            219
+          ],
+          "weight_guard_attenuation_bytes": [
+            135,
+            12,
+            0
+          ]
+        },
+        {
+          "candidate_rgb": [
+            12,
+            10,
+            7
+          ],
+          "old_rgb": [
+            18,
+            14,
+            10
+          ],
+          "peak_delta": 6,
+          "pixel": [
+            501,
+            220
+          ],
+          "weight_guard_attenuation_bytes": [
+            36,
+            0,
+            0
+          ]
+        },
+        {
+          "candidate_rgb": [
+            13,
+            10,
+            7
+          ],
+          "old_rgb": [
+            22,
+            17,
+            11
+          ],
+          "peak_delta": 9,
+          "pixel": [
+            502,
+            220
+          ],
+          "weight_guard_attenuation_bytes": [
+            56,
+            0,
+            0
+          ]
+        },
+        {
+          "candidate_rgb": [
+            16,
+            12,
+            8
+          ],
+          "old_rgb": [
+            28,
+            22,
+            13
+          ],
+          "peak_delta": 12,
+          "pixel": [
+            503,
+            220
+          ],
+          "weight_guard_attenuation_bytes": [
+            77,
+            0,
+            0
+          ]
+        },
+        {
+          "candidate_rgb": [
+            7,
+            6,
+            4
+          ],
+          "old_rgb": [
+            11,
+            9,
+            6
+          ],
+          "peak_delta": 4,
+          "pixel": [
+            504,
+            220
+          ],
+          "weight_guard_attenuation_bytes": [
+            25,
+            0,
+            0
+          ]
+        },
+        {
+          "candidate_rgb": [
+            7,
+            5,
+            4
+          ],
+          "old_rgb": [
+            11,
+            8,
+            6
+          ],
+          "peak_delta": 4,
+          "pixel": [
+            505,
+            220
+          ],
+          "weight_guard_attenuation_bytes": [
+            23,
+            0,
+            0
+          ]
+        },
+        {
+          "candidate_rgb": [
+            15,
+            11,
+            7
+          ],
+          "old_rgb": [
+            27,
+            21,
+            13
+          ],
+          "peak_delta": 12,
+          "pixel": [
+            506,
+            220
+          ],
+          "weight_guard_attenuation_bytes": [
+            84,
+            2,
+            0
+          ]
+        }
+      ]
+    },
+    "total_candidate_vs_old": {
+      "changed_pixels": 14292,
+      "mean_byte_delta": 0.755147916666667,
+      "over_two_bytes": 13688,
+      "peak_byte_delta": 39,
+      "pixels": 480000
+    },
+    "native_off_shadow_toggle": {
+      "changed_pixels": 111074,
+      "mean_byte_delta": 9.79916666666667,
+      "over_two_bytes": 107775,
+      "peak_byte_delta": 60,
+      "pixels": 480000
+    },
+    "exact_controls": [
+      "all three light modes: Off restore, zero-change held, upper and outside pixels",
+      "sun diagnostic exact Shader and image restore",
+      "sun old-transfer ablation exact Shader and image restore",
+      "sun shadow-disabled equal response",
+      "packed-point old-vs-new whole image",
+      "marked local-light old-vs-new whole image"
+    ],
+    "candidate_capture": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/directional-shadow-house-forward01/directional-shadow-scene-bz13h-sun-candidate.png",
+    "old_capture": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/directional-shadow-house-forward01/directional-shadow-scene-bz13h-sun-old-transfer.png",
+    "field_capture": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/directional-shadow-house-forward01/directional-shadow-scene-bz13h-sun-native-fields.png",
+    "field_encoding": "RGBA8 framebuffer: R actual partial contact weight, G smoothstep(0,.15,figure facing), B native object ATTENUATION; approximate scalar values after output quantization, not float readbacks"
+  },
+  "preserved_failed_evidence": [
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/directional-shadow-source-forward-headless01",
+      "disposition": "Initial headless fixture parse failure (untyped dynamic path) retained; fixed source used in headless02/03. No graphics run failed or was rerun."
+    }
+  ],
+  "limits": [
+    "One authored bz13h house on Forward+ NVIDIA; no new Mobile/Compatibility or hardware acceptance claim",
+    "Source substitution executed exact scratch code; this is not a newly exported build",
+    "No complete native terrain/figure RGB, independently relocated ground shadow, universal R1 fidelity or engine architecture claim",
+    "Prior strict normal/precision/track/backend failures remain recorded unchanged; this receipt neither relaxes nor reclassifies them",
+    "Overlapping foreign stock Godot processes retained untouched; no performance/timing conclusion"
+  ],
+  "other_processes": {
+    "other_processes_at_start": [
+      {
+        "pid": 1912141,
+        "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+        "headless": false
+      }
+    ],
+    "other_processes_at_end": [
+      {
+        "pid": 1913706,
+        "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+        "headless": false
+      },
+      {
+        "pid": 1914211,
+        "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+        "headless": true
+      }
+    ]
+  },
+  "frozen_artifact_sha256": {
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/directional-shadow-house-forward01/baseline_ground_contact_shader.gd": "9044631b736596932dd60b1f19dff9037568d50034ebb0727b94f9da7f098e56",
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/directional-shadow-house-forward01/directional-shadow-scene-bz13h-sun-shadow-disabled.png": "075e9683158ca3a19e31e5e898aee5c26f5682864b430cf39f95b30b25ca4e5f",
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/directional-shadow-house-forward01/directional-shadow-4359d23e3a0eac75d91f24fd7440f0798df1074ce288c111426eb2496ec1c4a2.gdshader": "4359d23e3a0eac75d91f24fd7440f0798df1074ce288c111426eb2496ec1c4a2",
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/directional-shadow-house-forward01/directional-shadow-scene-bz13h-sun-old-transfer.png": "fbc64b8f683fd145b9618c821d3327cb55e8a33040735b42dc30ae17f9904aa0",
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/directional-shadow-house-forward01/directional-shadow-scene-bz13h-sun-native-shadow-disabled.png": "13db073358aff10aa25df1ddfe46587da9acb44abdcbcbea02e8b65cefe6bc4e",
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/directional-shadow-house-forward01/directional-shadow-scene-bz13h-sun-shadow-disabled-old-transfer.png": "075e9683158ca3a19e31e5e898aee5c26f5682864b430cf39f95b30b25ca4e5f",
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/directional-shadow-house-forward01/directional-shadow-scene-bz13h-on-mask.png": "d132d828a44874f1ea10c2ead841d7441fc68ae83e7d1bf6869b975c19ea5c75",
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/directional-shadow-house-forward01/directional-shadow-scene-bz13h-sun-transfer-restored.png": "e89c3ed1d41d0602b0f83b9537ad3d218cf5d6cbed14e215c9d1b9bbc7215d15",
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/directional-shadow-house-forward01/directional-shadow-scene-bz13h-packed-point-held.png": "8b1b1a6401ca9b17dae6c48c8e30c340b9deff34bc8bb5b88dc42cef38e65d57",
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/directional-shadow-house-forward01/ground_contact_shader.gd": "4e963b67f6bfb90b51d687713156cd5346600f02de514143c07ba8ecb0bb8a1a",
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/directional-shadow-house-forward01/directional-shadow-scene-bz13h-sun-off-restored.png": "d61ccf691353894854e578117e60e2d9cab08a8e5cdd078c2461f0f5dc8f9db3",
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/directional-shadow-house-forward01/directional-shadow-scene-bz13h-off-mask.png": "170dc439c87bf8f50e002a90d81a6db87e021fa8ed179ae7fb17318e6c0482e2",
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/directional-shadow-house-forward01/directional-shadow-scene-bz13h-packed-point-off-restored.png": "aaf2643c693ce3fff40a9fb52814baa3ea81d312009fbdaede835f2d94b57061",
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/directional-shadow-house-forward01/directional-shadow-scene-bz13h-packed-point-transfer-restored.png": "8b1b1a6401ca9b17dae6c48c8e30c340b9deff34bc8bb5b88dc42cef38e65d57",
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/directional-shadow-house-forward01/directional-shadow-scene-bz13h-sun-shadow-disabled-restored.png": "075e9683158ca3a19e31e5e898aee5c26f5682864b430cf39f95b30b25ca4e5f",
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/directional-shadow-house-forward01/directional-shadow-scene-bz13h-local-light-off.png": "e3ae62c48270188f17f89005a9c1a92ccd7cbb92e5fc6aac8eab7f8d8ada781e",
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/directional-shadow-house-forward01/directional-shadow-a042fad0d421a35b797eb9c1247ce6bd8ff3a5e78d9502769ba6cafa1e3d7594.gdshader": "a042fad0d421a35b797eb9c1247ce6bd8ff3a5e78d9502769ba6cafa1e3d7594",
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/directional-shadow-house-forward01/directional-shadow-scene-bz13h-local-light-off-restored.png": "e3ae62c48270188f17f89005a9c1a92ccd7cbb92e5fc6aac8eab7f8d8ada781e",
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/directional-shadow-house-forward01/directional-shadow-scene-bz13h-sun-off.png": "d61ccf691353894854e578117e60e2d9cab08a8e5cdd078c2461f0f5dc8f9db3",
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/directional-shadow-house-forward01/directional-shadow-scene-bz13h-sun-candidate.png": "e89c3ed1d41d0602b0f83b9537ad3d218cf5d6cbed14e215c9d1b9bbc7215d15",
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/directional-shadow-house-forward01/directional-shadow-scene-bz13h-sun-fields-restored.png": "e89c3ed1d41d0602b0f83b9537ad3d218cf5d6cbed14e215c9d1b9bbc7215d15",
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/directional-shadow-house-forward01/directional-shadow-scene-bz13h-packed-point-old-transfer.png": "8b1b1a6401ca9b17dae6c48c8e30c340b9deff34bc8bb5b88dc42cef38e65d57",
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/directional-shadow-house-forward01/directional-shadow-b8d103aaceb1ff65f6ca5f35c29d6fdeb96612a2dad6a951828b75de68b123b6.gdshader": "b8d103aaceb1ff65f6ca5f35c29d6fdeb96612a2dad6a951828b75de68b123b6",
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/directional-shadow-house-forward01/tool-source.gd": "dd88d9a1fb7144353708e5f4f54963d77071d514d6bc4ce9665f25a36354f370",
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/directional-shadow-house-forward01/directional-shadow-scene-bz13h-local-light-candidate.png": "3b8a2be2ed6ab5086acbc33d49e2770a4065d4386600c5c1a9dfe24bd158051a",
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/directional-shadow-house-forward01/directional-shadow-2c5a912c0aae81d4feb03317050a4a57f095e6b37ef25ab6978327da287b435c.gdshader": "2c5a912c0aae81d4feb03317050a4a57f095e6b37ef25ab6978327da287b435c",
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/directional-shadow-house-forward01/run.log": "270298bf22a26cc9acb1d62b5e16d56aa0568e13dcc73e947440b81ec55f9b33",
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/directional-shadow-house-forward01/directional-shadow-scene-bz13h-local-light-held.png": "3b8a2be2ed6ab5086acbc33d49e2770a4065d4386600c5c1a9dfe24bd158051a",
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/directional-shadow-house-forward01/directional-shadow-f011c076f672d469bae744b5269e558e57a24635871e76c9a6a28fba7d561a0e.gdshader": "f011c076f672d469bae744b5269e558e57a24635871e76c9a6a28fba7d561a0e",
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/directional-shadow-house-forward01/directional-shadow-scene-bz13h-local-light-transfer-restored.png": "3b8a2be2ed6ab5086acbc33d49e2770a4065d4386600c5c1a9dfe24bd158051a",
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/directional-shadow-house-forward01/directional-shadow-scene-bz13h-local-light-old-transfer.png": "3b8a2be2ed6ab5086acbc33d49e2770a4065d4386600c5c1a9dfe24bd158051a",
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/directional-shadow-house-forward01/directional-shadow-scene-bz13h-sun-native-fields.png": "cb2d946be982e3c6503103b0f3e400233829a11185b02a56e8abc9df8f7378e9",
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/directional-shadow-house-forward01/run.json": "526952122444e613fda20dbc2fbd77f00de11efe39d3c40a9882f1525b25f3cc",
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/directional-shadow-house-forward01/directional-shadow-scene-bz13h-sun-held.png": "e89c3ed1d41d0602b0f83b9537ad3d218cf5d6cbed14e215c9d1b9bbc7215d15",
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/directional-shadow-house-forward01/directional-shadow-scene.json": "1cba659fe88016e99ce67caa0f233ab121e3a2b97327d2bcd578667b52887f6b",
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/directional-shadow-house-forward01/ground_contact_relief_scene.gd": "9b32fab752da6c4f87840e42b6c335d0857c7762cd5bd0ab04ac6ae922e7d4b5",
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/directional-shadow-house-forward01/directional-shadow-f036981430dd894ad29aa89cdd2ce4750f7c8b580510b40d1dae4abfe99aafa4.gdshader": "f036981430dd894ad29aa89cdd2ce4750f7c8b580510b40d1dae4abfe99aafa4",
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/directional-shadow-house-forward01/directional-shadow-scene-bz13h-packed-point-candidate.png": "8b1b1a6401ca9b17dae6c48c8e30c340b9deff34bc8bb5b88dc42cef38e65d57",
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/directional-shadow-house-forward01/directional-shadow-scene-bz13h-packed-point-off.png": "aaf2643c693ce3fff40a9fb52814baa3ea81d312009fbdaede835f2d94b57061",
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/directional-shadow-source-forward-headless03/baseline_ground_contact_shader.gd": "9044631b736596932dd60b1f19dff9037568d50034ebb0727b94f9da7f098e56",
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/directional-shadow-source-forward-headless03/directional-shadow-source-contract.json": "2f270c601a3eaabc684e5746d31cbb6c56d1d319f2b868ee8aa768df857090f9",
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/directional-shadow-source-forward-headless03/directional_shadow_scene.gd": "dd88d9a1fb7144353708e5f4f54963d77071d514d6bc4ce9665f25a36354f370",
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/directional-shadow-source-forward-headless03/ground_contact_shader.gd": "4e963b67f6bfb90b51d687713156cd5346600f02de514143c07ba8ecb0bb8a1a",
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/directional-shadow-source-forward-headless03/tool-source.gd": "46b2ab38eab4becce0799328da637ca7c619ee4348f905deb134f0be2d447635",
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/directional-shadow-source-forward-headless03/run.log": "2c22dad6986f99be2ba81706a771c702fa5c2e4e5c5356ffbc6abcca466b4224",
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/directional-shadow-source-forward-headless03/run.json": "850cab02879c254f233c7869e29cfbe6c7d71dd8c7e3359e260d6cd49bc830b0",
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/directional-shadow-source-forward-headless03/ground_contact_relief_scene.gd": "9b32fab752da6c4f87840e42b6c335d0857c7762cd5bd0ab04ac6ae922e7d4b5",
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/shoreline/shadow-transfer/r1-scope-addendum-20261010.json": "b193482c758c7865d711c4fe617966e99b9e290146e0b12c8e3217321de696b6",
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/shoreline/shadow-transfer/baseline_ground_contact_shader.gd": "9044631b736596932dd60b1f19dff9037568d50034ebb0727b94f9da7f098e56",
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/shoreline/shadow-transfer/baseline_ground_surface_data.gd": "8af5217bae745b1a2fecf2da7159b41d8c4ceade530887ab4b2f48edbe85ce5a",
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/shoreline/shadow-transfer/ground_contact_shader.gd": "4e963b67f6bfb90b51d687713156cd5346600f02de514143c07ba8ecb0bb8a1a",
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/shoreline/shadow-transfer/ground_contact_shader.gd.diff": "ce934c139e32bdb226c6af38b57d2c66a3edc9d032c4851dae25218d0f4c961e",
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/shoreline/shadow-transfer/make_variant.py": "17a97d4059a55697e1faebfb6df0980efde0c397110ccba974d7ad209133eb21",
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/shoreline/shadow-transfer/source_contract.gd": "46b2ab38eab4becce0799328da637ca7c619ee4348f905deb134f0be2d447635",
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/shoreline/shadow-transfer/directional_shadow_scene.gd": "dd88d9a1fb7144353708e5f4f54963d77071d514d6bc4ce9665f25a36354f370",
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/shoreline/shadow-transfer/ground_contact_relief_scene.gd": "9b32fab752da6c4f87840e42b6c335d0857c7762cd5bd0ab04ac6ae922e7d4b5"
+  },
+  "origin_receipt": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/shoreline/shadow-transfer/directional-shadow-transfer-receipt-20261010.json",
+    "sha256": "08681664c54b0eacffffd0de529b9c231be598ddcf3336bca47609b57fa007d7"
+  }
+}
