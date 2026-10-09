@@ -1,0 +1,1153 @@
+{
+  "state": "Integrated source after parent review; composed visual acceptance and packaging pending.",
+  "scope": "Only terrain_details.gd stream envelope/budget correction. Existing 36 m fade and 18 m near LOD retained; no new graphics setting or range increase. No canonical or installed package mutation.",
+  "baseline_source": "/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/candidate02/stage/src/game/fx/terrain_details.gd",
+  "baseline_source_sha256": "7a4e5d52bdd26b8bf414d5ef06920e58af5ac4af31648d200f6a06f76f8d0241",
+  "source_handoff": "/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/grass-stream/terrain_details.gd",
+  "source_sha256": "bd5832b22a67f2d42f383e7249479aa8b6c163bf4714f94fd5d03071f8e2369f",
+  "source_base_receipt": "/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/grass-stream/source-base.json",
+  "diff": "/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/grass-stream/terrain_details.gd.diff",
+  "diff_sha256": "a43d1ef14b98e307cfd10731fe13920924a5cb86f6d151eb178b08a0754f5227",
+  "fixture": "/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/grass-stream/grass_stream_envelope.gd",
+  "fixture_sha256": "d74c725775f5e1659b6ec29f4dfda441d10d5314830317a324e6c4938a5812e8",
+  "candidate_export": "/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/grass-stream/candidate01/export.json",
+  "candidate_export_sha256": "e4651df86c50651f8f374146585a3b9e47f5ab509cdb074b2baf02646996ca4e",
+  "candidate_binary_sha256": {
+    "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+    "CursedLands.pck": "b54cbcff190aa46168517a38d91aba470718d3fc23232e8c1a468ff88949a2a8",
+    "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+  },
+  "source_manifest_proof": {
+    "changed": {
+      "src/game/fx/terrain_details.gd": {
+        "before": "7a4e5d52bdd26b8bf414d5ef06920e58af5ac4af31648d200f6a06f76f8d0241",
+        "after": "bd5832b22a67f2d42f383e7249479aa8b6c163bf4714f94fd5d03071f8e2369f"
+      }
+    },
+    "initial_equals_post_import": true,
+    "generated_source_files": []
+  },
+  "cases": {
+    "grass-stream-baseline01": {
+      "checks": 117,
+      "failures": 17,
+      "report": "/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/grass-stream-baseline01/grass-stream-envelope.json",
+      "report_sha256": "5b883cfeeb5d886ad24a61cd24a5c451d34a22289605bc8f39d2b24bfe860d2e",
+      "run": "/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/grass-stream-baseline01/run.json",
+      "run_sha256": "46e23f60ffd90cc113ebe58a547023ffa18fd720ae07dfe8a62a04f1b5a2190c",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/candidate02/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/grass-stream-baseline01/tool-source.gd"
+      ],
+      "return_code": 1,
+      "errors": [
+        "FAIL complete continuous-focus cell envelope (30, 20)",
+        "FAIL live root boxes through focus motion (30, 20)",
+        "FAIL complete continuous-focus cell envelope (31, 20)",
+        "FAIL live root boxes through focus motion (31, 20)",
+        "FAIL complete continuous-focus cell envelope (30, 21)",
+        "FAIL live root boxes through focus motion (30, 21)",
+        "FAIL complete continuous-focus cell envelope (31, 21)",
+        "FAIL live root boxes through focus motion (31, 21)",
+        "FAIL complete continuous-focus cell envelope (0, 0)",
+        "FAIL live root boxes through focus motion (0, 0)",
+        "FAIL complete continuous-focus cell envelope (59, 0)",
+        "FAIL live root boxes through focus motion (59, 0)",
+        "FAIL complete continuous-focus cell envelope (0, 39)",
+        "FAIL live root boxes through focus motion (0, 39)",
+        "FAIL complete continuous-focus cell envelope (59, 39)",
+        "FAIL live root boxes through focus motion (59, 39)",
+        "FAIL every authored live-fade root witness is streamed"
+      ],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "binary_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "bb78fa5b7e0524b6566247e98c9586c50095b6016084463619ceb9a2b1ce8d5f",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      }
+    },
+    "grass-stream-candidate01": {
+      "checks": 117,
+      "failures": 0,
+      "report": "/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/grass-stream-candidate01/grass-stream-envelope.json",
+      "report_sha256": "7c16da940f916e16f7b5ae97f84daa2b92e1925f013a19b8bd72626f1c226b11",
+      "run": "/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/grass-stream-candidate01/run.json",
+      "run_sha256": "88ad8902f1c53bcff13da62eebbc606c44e5e4941894e7bd30d38e86096e750e",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/grass-stream/candidate01/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/grass-stream-candidate01/tool-source.gd"
+      ],
+      "return_code": 0,
+      "errors": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "binary_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "b54cbcff190aa46168517a38d91aba470718d3fc23232e8c1a468ff88949a2a8",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      }
+    }
+  },
+  "authored": {
+    "map": {
+      "mob": "zone7",
+      "mpr": "zone7",
+      "objects": 2581,
+      "scenery_buckets": 1332,
+      "size": [
+        480.0,
+        320.0
+      ],
+      "zone": "gz7g"
+    },
+    "original_files_sha256": {
+      "/home/llm2x/Documents/EI/inspection/extracted/app/maps/zone7.mpr": "ae2823ba57e4d755f4fdb3715441744a4b03e454645bafcf3d8e54da920f484a",
+      "/home/llm2x/Documents/EI/inspection/extracted/app/maps/zone7.mob": "0108df01a28982ace30c20ffc8c0fdfc6b7fd5bad0f6ad9ee2b571a737c14619"
+    },
+    "roots": 4263,
+    "sampled_chunks": 23,
+    "native_scalar_equal": true,
+    "cross_build_geometry_and_native_buffer_hashes_equal": true,
+    "terrain_input_sha256": "4d5d060a91bc1bd991685c606fbe7b6acbb5ab121fe48fcd13e472a4b2ce7aa4",
+    "native_terrain_inputs_unchanged": true,
+    "witnesses": [
+      {
+        "distance": 32.0710906982422,
+        "focus": [
+          239.998992919922,
+          127.999000549316
+        ],
+        "focus_key": [
+          29,
+          15
+        ],
+        "geometry_sha256": "091578901af0293d790c304210ea176c66cb47b3a6b83629cde43eadda104df6",
+        "height_fraction": 0.486671897534209,
+        "index": 4,
+        "key": [
+          30,
+          20
+        ],
+        "old_integer_disk_excludes": true,
+        "root": [
+          241.385620117188,
+          8.22918510437012,
+          -160.040100097656
+        ],
+        "wanted": true
+      },
+      {
+        "distance": 32.0101165771484,
+        "focus": [
+          192.0,
+          304.0
+        ],
+        "focus_key": [
+          24,
+          38
+        ],
+        "geometry_sha256": "47380d41276946f6e2f92a96f09e818d8b48f05bb7a3334a68a8c96ea3ed740c",
+        "height_fraction": 0.498103145829131,
+        "index": 359,
+        "key": [
+          19,
+          37
+        ],
+        "old_integer_disk_excludes": true,
+        "root": [
+          159.989883422852,
+          9.40107345581055,
+          -303.997680664062
+        ],
+        "wanted": true
+      },
+      {
+        "distance": 32.0399703979492,
+        "focus": [
+          336.0,
+          304.0
+        ],
+        "focus_key": [
+          42,
+          38
+        ],
+        "geometry_sha256": "4f4c0db62396c027f0c21f1e6cbbf740c383c1ee1a0c1d66f90324afd7e29bff",
+        "height_fraction": 0.492505799829894,
+        "index": 477,
+        "key": [
+          37,
+          37
+        ],
+        "old_integer_disk_excludes": true,
+        "root": [
+          303.980316162109,
+          8.22673606872559,
+          -302.859954833984
+        ],
+        "wanted": true
+      },
+      {
+        "distance": 32.06689453125,
+        "focus": [
+          455.998992919922,
+          280.0
+        ],
+        "focus_key": [
+          56,
+          35
+        ],
+        "geometry_sha256": "d298655ca53483575048a72a4700051d22ce29cae6a11e24b854a6b62ef79b65",
+        "height_fraction": 0.48745844470659,
+        "index": 146,
+        "key": [
+          57,
+          30
+        ],
+        "old_integer_disk_excludes": true,
+        "root": [
+          456.953338623047,
+          8.22673606872559,
+          -247.947311401367
+        ],
+        "wanted": true
+      },
+      {
+        "distance": 32.0578765869141,
+        "focus": [
+          456.0,
+          135.998992919922
+        ],
+        "focus_key": [
+          57,
+          16
+        ],
+        "geometry_sha256": "87c960b1506b0b2f4c0d467553c99341aae3162c8b69246978c6178839701964",
+        "height_fraction": 0.489148897255033,
+        "index": 5,
+        "key": [
+          56,
+          21
+        ],
+        "old_integer_disk_excludes": true,
+        "root": [
+          455.554473876953,
+          8.22673606872559,
+          -168.053771972656
+        ],
+        "wanted": true
+      },
+      {
+        "distance": 32.0259552001953,
+        "focus": [
+          40.0,
+          192.0
+        ],
+        "focus_key": [
+          5,
+          24
+        ],
+        "geometry_sha256": "0f5823e0bebe4b87aba8ca3276a81bc8667307f21e16cb4583b0f8748722023a",
+        "height_fraction": 0.495133468265342,
+        "index": 354,
+        "key": [
+          4,
+          19
+        ],
+        "old_integer_disk_excludes": true,
+        "root": [
+          39.882999420166,
+          8.22673606872559,
+          -159.974258422852
+        ],
+        "wanted": true
+      },
+      {
+        "distance": 32.0588035583496,
+        "focus": [
+          327.998992919922,
+          264.0
+        ],
+        "focus_key": [
+          40,
+          33
+        ],
+        "geometry_sha256": "03293c617f6c10b27eaefb134bde1dc97b164e95a25786f02dfbf4fe74f0c17b",
+        "height_fraction": 0.48897512708438,
+        "index": 63,
+        "key": [
+          41,
+          28
+        ],
+        "old_integer_disk_excludes": true,
+        "root": [
+          329.23486328125,
+          8.22673606872559,
+          -231.965026855469
+        ],
+        "wanted": true
+      },
+      {
+        "distance": 32.0381546020508,
+        "focus": [
+          40.0,
+          311.998992919922
+        ],
+        "focus_key": [
+          5,
+          38
+        ],
+        "geometry_sha256": "658e528afc34bf45bfabe39e97a5b2e502fcd430859d945368788e766955fe7e",
+        "height_fraction": 0.492846229086043,
+        "index": 38,
+        "key": [
+          0,
+          39
+        ],
+        "old_integer_disk_excludes": true,
+        "root": [
+          7.97061586380005,
+          7.44891929626465,
+          -312.748504638672
+        ],
+        "wanted": true
+      }
+    ],
+    "old_witnesses_omitted": 8,
+    "new_witnesses_omitted": 0
+  },
+  "continuous_envelope": {
+    "method": "The stream refreshes only on a changed 8 m cell. Independent rectangle-corner projection oracle exhausts every map chunk and proves the complete live-fade union over that focus cell; 25 within-cell positions per case additionally inspect live boxes. Four interior adjacent cells and four map corners.",
+    "focus_cells": 8,
+    "position_samples": 200,
+    "baseline_envelopes": [
+      {
+        "focus": [
+          30,
+          20
+        ],
+        "live_boxes": 2109,
+        "missing": [
+          [
+            27,
+            15
+          ],
+          [
+            28,
+            15
+          ],
+          [
+            29,
+            15
+          ],
+          [
+            30,
+            15
+          ],
+          [
+            31,
+            15
+          ],
+          [
+            32,
+            15
+          ],
+          [
+            33,
+            15
+          ],
+          [
+            26,
+            16
+          ],
+          [
+            34,
+            16
+          ],
+          [
+            25,
+            17
+          ],
+          [
+            35,
+            17
+          ],
+          [
+            25,
+            18
+          ],
+          [
+            35,
+            18
+          ],
+          [
+            25,
+            19
+          ],
+          [
+            35,
+            19
+          ],
+          [
+            25,
+            21
+          ],
+          [
+            35,
+            21
+          ],
+          [
+            25,
+            22
+          ],
+          [
+            35,
+            22
+          ],
+          [
+            25,
+            23
+          ],
+          [
+            35,
+            23
+          ],
+          [
+            26,
+            24
+          ],
+          [
+            34,
+            24
+          ],
+          [
+            27,
+            25
+          ],
+          [
+            28,
+            25
+          ],
+          [
+            29,
+            25
+          ],
+          [
+            31,
+            25
+          ],
+          [
+            32,
+            25
+          ],
+          [
+            33,
+            25
+          ]
+        ],
+        "required": 109,
+        "sample_misses": 218,
+        "samples": 25,
+        "wanted": 80
+      },
+      {
+        "focus": [
+          31,
+          20
+        ],
+        "live_boxes": 2109,
+        "missing": [
+          [
+            28,
+            15
+          ],
+          [
+            29,
+            15
+          ],
+          [
+            30,
+            15
+          ],
+          [
+            31,
+            15
+          ],
+          [
+            32,
+            15
+          ],
+          [
+            33,
+            15
+          ],
+          [
+            34,
+            15
+          ],
+          [
+            27,
+            16
+          ],
+          [
+            35,
+            16
+          ],
+          [
+            26,
+            17
+          ],
+          [
+            36,
+            17
+          ],
+          [
+            26,
+            18
+          ],
+          [
+            36,
+            18
+          ],
+          [
+            26,
+            19
+          ],
+          [
+            36,
+            19
+          ],
+          [
+            26,
+            21
+          ],
+          [
+            36,
+            21
+          ],
+          [
+            26,
+            22
+          ],
+          [
+            36,
+            22
+          ],
+          [
+            26,
+            23
+          ],
+          [
+            36,
+            23
+          ],
+          [
+            27,
+            24
+          ],
+          [
+            35,
+            24
+          ],
+          [
+            28,
+            25
+          ],
+          [
+            29,
+            25
+          ],
+          [
+            30,
+            25
+          ],
+          [
+            32,
+            25
+          ],
+          [
+            33,
+            25
+          ],
+          [
+            34,
+            25
+          ]
+        ],
+        "required": 109,
+        "sample_misses": 218,
+        "samples": 25,
+        "wanted": 80
+      },
+      {
+        "focus": [
+          30,
+          21
+        ],
+        "live_boxes": 2109,
+        "missing": [
+          [
+            27,
+            16
+          ],
+          [
+            28,
+            16
+          ],
+          [
+            29,
+            16
+          ],
+          [
+            30,
+            16
+          ],
+          [
+            31,
+            16
+          ],
+          [
+            32,
+            16
+          ],
+          [
+            33,
+            16
+          ],
+          [
+            26,
+            17
+          ],
+          [
+            34,
+            17
+          ],
+          [
+            25,
+            18
+          ],
+          [
+            35,
+            18
+          ],
+          [
+            25,
+            19
+          ],
+          [
+            35,
+            19
+          ],
+          [
+            25,
+            20
+          ],
+          [
+            35,
+            20
+          ],
+          [
+            25,
+            22
+          ],
+          [
+            35,
+            22
+          ],
+          [
+            25,
+            23
+          ],
+          [
+            35,
+            23
+          ],
+          [
+            25,
+            24
+          ],
+          [
+            35,
+            24
+          ],
+          [
+            26,
+            25
+          ],
+          [
+            34,
+            25
+          ],
+          [
+            27,
+            26
+          ],
+          [
+            28,
+            26
+          ],
+          [
+            29,
+            26
+          ],
+          [
+            31,
+            26
+          ],
+          [
+            32,
+            26
+          ],
+          [
+            33,
+            26
+          ]
+        ],
+        "required": 109,
+        "sample_misses": 218,
+        "samples": 25,
+        "wanted": 80
+      },
+      {
+        "focus": [
+          31,
+          21
+        ],
+        "live_boxes": 2109,
+        "missing": [
+          [
+            28,
+            16
+          ],
+          [
+            29,
+            16
+          ],
+          [
+            30,
+            16
+          ],
+          [
+            31,
+            16
+          ],
+          [
+            32,
+            16
+          ],
+          [
+            33,
+            16
+          ],
+          [
+            34,
+            16
+          ],
+          [
+            27,
+            17
+          ],
+          [
+            35,
+            17
+          ],
+          [
+            26,
+            18
+          ],
+          [
+            36,
+            18
+          ],
+          [
+            26,
+            19
+          ],
+          [
+            36,
+            19
+          ],
+          [
+            26,
+            20
+          ],
+          [
+            36,
+            20
+          ],
+          [
+            26,
+            22
+          ],
+          [
+            36,
+            22
+          ],
+          [
+            26,
+            23
+          ],
+          [
+            36,
+            23
+          ],
+          [
+            26,
+            24
+          ],
+          [
+            36,
+            24
+          ],
+          [
+            27,
+            25
+          ],
+          [
+            35,
+            25
+          ],
+          [
+            28,
+            26
+          ],
+          [
+            29,
+            26
+          ],
+          [
+            30,
+            26
+          ],
+          [
+            32,
+            26
+          ],
+          [
+            33,
+            26
+          ],
+          [
+            34,
+            26
+          ]
+        ],
+        "required": 109,
+        "sample_misses": 218,
+        "samples": 25,
+        "wanted": 80
+      },
+      {
+        "focus": [
+          0,
+          0
+        ],
+        "live_boxes": 656,
+        "missing": [
+          [
+            5,
+            1
+          ],
+          [
+            5,
+            2
+          ],
+          [
+            5,
+            3
+          ],
+          [
+            4,
+            4
+          ],
+          [
+            1,
+            5
+          ],
+          [
+            2,
+            5
+          ],
+          [
+            3,
+            5
+          ]
+        ],
+        "required": 33,
+        "sample_misses": 52,
+        "samples": 25,
+        "wanted": 26
+      },
+      {
+        "focus": [
+          59,
+          0
+        ],
+        "live_boxes": 656,
+        "missing": [
+          [
+            54,
+            1
+          ],
+          [
+            54,
+            2
+          ],
+          [
+            54,
+            3
+          ],
+          [
+            55,
+            4
+          ],
+          [
+            56,
+            5
+          ],
+          [
+            57,
+            5
+          ],
+          [
+            58,
+            5
+          ]
+        ],
+        "required": 33,
+        "sample_misses": 52,
+        "samples": 25,
+        "wanted": 26
+      },
+      {
+        "focus": [
+          0,
+          39
+        ],
+        "live_boxes": 656,
+        "missing": [
+          [
+            1,
+            34
+          ],
+          [
+            2,
+            34
+          ],
+          [
+            3,
+            34
+          ],
+          [
+            4,
+            35
+          ],
+          [
+            5,
+            36
+          ],
+          [
+            5,
+            37
+          ],
+          [
+            5,
+            38
+          ]
+        ],
+        "required": 33,
+        "sample_misses": 52,
+        "samples": 25,
+        "wanted": 26
+      },
+      {
+        "focus": [
+          59,
+          39
+        ],
+        "live_boxes": 656,
+        "missing": [
+          [
+            56,
+            34
+          ],
+          [
+            57,
+            34
+          ],
+          [
+            58,
+            34
+          ],
+          [
+            55,
+            35
+          ],
+          [
+            54,
+            36
+          ],
+          [
+            54,
+            37
+          ],
+          [
+            54,
+            38
+          ]
+        ],
+        "required": 33,
+        "sample_misses": 52,
+        "samples": 25,
+        "wanted": 26
+      }
+    ],
+    "candidate_envelopes": [
+      {
+        "focus": [
+          30,
+          20
+        ],
+        "live_boxes": 2109,
+        "missing": [],
+        "required": 109,
+        "sample_misses": 0,
+        "samples": 25,
+        "wanted": 109
+      },
+      {
+        "focus": [
+          31,
+          20
+        ],
+        "live_boxes": 2109,
+        "missing": [],
+        "required": 109,
+        "sample_misses": 0,
+        "samples": 25,
+        "wanted": 109
+      },
+      {
+        "focus": [
+          30,
+          21
+        ],
+        "live_boxes": 2109,
+        "missing": [],
+        "required": 109,
+        "sample_misses": 0,
+        "samples": 25,
+        "wanted": 109
+      },
+      {
+        "focus": [
+          31,
+          21
+        ],
+        "live_boxes": 2109,
+        "missing": [],
+        "required": 109,
+        "sample_misses": 0,
+        "samples": 25,
+        "wanted": 109
+      },
+      {
+        "focus": [
+          0,
+          0
+        ],
+        "live_boxes": 656,
+        "missing": [],
+        "required": 33,
+        "sample_misses": 0,
+        "samples": 25,
+        "wanted": 33
+      },
+      {
+        "focus": [
+          59,
+          0
+        ],
+        "live_boxes": 656,
+        "missing": [],
+        "required": 33,
+        "sample_misses": 0,
+        "samples": 25,
+        "wanted": 33
+      },
+      {
+        "focus": [
+          0,
+          39
+        ],
+        "live_boxes": 656,
+        "missing": [],
+        "required": 33,
+        "sample_misses": 0,
+        "samples": 25,
+        "wanted": 33
+      },
+      {
+        "focus": [
+          59,
+          39
+        ],
+        "live_boxes": 656,
+        "missing": [],
+        "required": 33,
+        "sample_misses": 0,
+        "samples": 25,
+        "wanted": 33
+      }
+    ],
+    "maximum_wanted": 109,
+    "cap": 128
+  },
+  "source_review": [
+    "The old <=25 key-centre disk has 81 keys and is truncated to 80. It loses 29 members of the 109-box union needed across a complete interior focus cell. Correct selection measures the gap between the two full 8 m rectangles; the extra enumeration ring is discarded by the exact 36 m bound.",
+    "GRASS_SHADER is byte-identical. Every executable line outside _stream and MAX_CHUNKS is identical after comments are removed. Four native jobs, 2500 us install budget, worker generation checks, root construction, seeds, atlas/scenery rejection and near/far meshes are unchanged.",
+    "The same owner streams optional biome cover; its 36 m fade is contained by this envelope, while mounds retain their smaller 32 m radius. Existing submission culling still hides retained boxes outside the current continuous-focus fade.",
+    "The 128 cap cannot truncate the current109-key 36 m union. A future range increase would require re-evaluating this cap; it is not authorized or included."
+  ],
+  "limitations": [
+    "CPU/headless selection and exact root identity are qualified, not rendered grass appearance or timing. Root owns the later composed visual check.",
+    "More correct retained chunks can require more total generation/storage than the old 80 cap; no performance claim, range extension or 260 m density promise.",
+    "Steady-state wanted/queue coverage is tested. Unchanged asynchronous streaming can still have a finite build latency after movement or load; no instantaneous populated-mesh guarantee.",
+    "World terrain uses its authored identity transform. This does not redesign streaming for transformed terrain.",
+    "Known headless screen-space AA warning is retained in both runs. Baseline 17 failures remain unchanged in its frozen output. Foreign process inventories are retained and untouched."
+  ],
+  "origin_receipt": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/grass-stream/handoff.json",
+    "sha256": "11513672e93378b32e3c6fd934c63301c12b7e134f995ea8e5a523cb14b15d55"
+  }
+}

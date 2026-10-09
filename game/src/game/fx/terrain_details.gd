@@ -7,7 +7,9 @@ extends Node3D
 const CHUNK := 8.0
 const SPACING := 0.30
 const RANGE := 36.0
-const MAX_CHUNKS := 80
+# The 36 m fade around every position in one focus cell needs at most 109
+# root rectangles. Leave room for that complete envelope without truncation.
+const MAX_CHUNKS := 128
 const BUILD_US := 2500
 const GRASS_TYPES := [0, 5, 11]
 const BLADES := 14
@@ -105,7 +107,7 @@ static var _wind_shader: Shader
 static var _interaction_shader: Shader
 const MAX_GRASS_JOBS := 4
 # A hidden root must return before entering its live fade. Cache that travel
-# allowance too, so ordinary camera motion need not scan 80 chunks each frame.
+# allowance too, so ordinary camera motion need not scan every retained chunk.
 const CULL_MAX_STEP := 0.5
 const CULL_MARGIN := 0.10
 var _cull_focus := Vector2.INF
@@ -434,12 +436,17 @@ func scenery_clear(p: Vector2, height: float) -> bool:
 func _stream(focus: Vector2i) -> void:
 	var wanted: Array[Vector2i] = []
 	var size := terrain.size_ei()
-	for y in range(focus.y - 5, focus.y + 6):
-		for x in range(focus.x - 5, focus.x + 6):
+	var reach := ceili(RANGE / CHUNK) + 1
+	for y in range(focus.y - reach, focus.y + reach + 1):
+		for x in range(focus.x - reach, focus.x + reach + 1):
 			var k := Vector2i(x, y)
 			if x < 0 or y < 0 or x * CHUNK >= size.x or y * CHUNK >= size.y:
 				continue
-			if Vector2(k - focus).length_squared() <= 25.0:
+			# Streaming refreshes only when the focus enters another cell, but
+			# the shader's focus moves continuously. Measure the gap between
+			# both full root rectangles so corners cannot lose live grass.
+			var gap := (Vector2(k - focus).abs() - Vector2.ONE).max(Vector2.ZERO) * CHUNK
+			if gap.length_squared() < RANGE * RANGE:
 				wanted.append(k)
 	wanted.sort_custom(func(a: Vector2i, b: Vector2i) -> bool:
 		return Vector2(a - focus).length_squared() < Vector2(b - focus).length_squared())
