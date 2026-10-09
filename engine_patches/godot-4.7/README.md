@@ -13,6 +13,7 @@ build instructions. Adding a patch here does not update installed templates.
 6. `cache-unobserved-track-eligibility.patch`
 7. `mobile-shader-recompile-lock.patch`
 8. `forward-shader-recompile-lifetime.patch`
+9. `far-dof-sharp-guard.patch`
 
 The first two patches repair separate-render-thread shutdown and snapshot
 mutable images for queued texture uploads. The third lets an unobserved looping
@@ -58,6 +59,23 @@ run passes without either. See
 for the frozen pack, engine build, controls and rendering-thread coverage.
 This changes no shader equations or cache policy. Platform template builds and
 validation remain separate work; installed templates are not changed here.
+
+The ninth guards far-only depth of field. Focused, foreground and clear-sky
+texels remain sharp, integer taps reject sharp foreground colour, and Mobile
+uses exact raster pixel centres. Far-only box/hexagonal blur runs at full
+resolution with at least Medium quality; a far-only Circle request uses the
+protected Hexagon filter. Near-enabled blur retains its original path, quality
+and shape. This deliberately changes far-only filtering and costs more than
+its old half-resolution path. It does not add render targets. The game's
+optional lens remains off by default and checks the native
+`OS.has_feature("ei_far_dof_guard")` capability before allocating a helper.
+That capability is defined by the patch, never by this project's export tags;
+stock and older runtimes leave the option inactive. Linux strict pixel checks,
+26 unchanged near-blur control images, the build recipe and four-file source
+manifest are recorded in
+[`camera-depth-of-field-2026-10-09.json`](../../docs/validation/camera-depth-of-field-2026-10-09.json).
+Other platform templates and representative performance still require
+validation; no installed template is changed here.
 
 macOS and Web use the official 4.7 templates. Experimental 5 Android ARM64 uses
 the first six common patches and `android-headless-service.patch`; earlier public

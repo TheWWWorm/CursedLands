@@ -85,6 +85,7 @@ static func tier_values(tier: int, base: Dictionary) -> Dictionary:
 	var v := base.duplicate()
 	if tier >= 1:
 		v.gfx_volumetric = 0
+		v.gfx_depth_of_field = 0
 		v.gfx_weather_mist = 0
 		v.gfx_torch_glow = 0
 		v.gfx_water_reflections = mini(v.gfx_water_reflections, 1)

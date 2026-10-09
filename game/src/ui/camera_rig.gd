@@ -156,6 +156,8 @@ var _opening_view: Variant = null
 ## Native slots 4–7 survive scenario.sav. Slots 6 / 7 capture village /
 ## field views before saving (FUN57a780); recall keeps the current yaw.
 var _internal_views: Array = []
+var _held_target := Vector3.ZERO
+var _depth_of_field: CameraDepthOfField
 
 
 func _ready() -> void:
@@ -168,6 +170,9 @@ func _ready() -> void:
 		distance = M_DEFAULT_DISTANCE
 		_snap()
 	_apply()
+	if get_parent() is Game and not get_parent().simulation_only and CameraDepthOfField.supported():
+		_depth_of_field = CameraDepthOfField.new(self)
+		add_child(_depth_of_field)
 
 
 ## The modern camera is on (option camera_style 1) for the game's own rig.
@@ -458,11 +463,25 @@ func followed() -> Node3D:
 func hold_view(eye: Vector3, target: Vector3) -> void:
 	_suspend_motion()
 	held = true
+	_held_target = target
 	if _fade:
 		_fade.clear()
 	if camera and not eye.is_equal_approx(target):
 		camera.global_position = eye
 		camera.look_at(target)
+
+
+## Presentation focus follows the actual orbit/dialogue/third-person target.
+## It is local to this view and never read from a campaign or network state.
+func presentation_focus() -> Vector3:
+	if held:
+		return _held_target
+	var game := get_parent() as Game
+	if game and game.direct and game.direct.active():
+		var u := game.direct.leader()
+		if is_instance_valid(u):
+			return u.global_position + Vector3.UP * clampf(u.figure_half_z * 1.6, 0.6, 2.8)
+	return global_position
 
 
 func release() -> void:

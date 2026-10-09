@@ -1,0 +1,190 @@
+--- a/core/os/os.cpp
++++ b/core/os/os.cpp
+@@ -469,6 +469,11 @@
+ }
+ 
+ bool OS::has_feature(const String &p_feature) {
++	// Native capability, never supplied by an export custom feature.
++	if (p_feature == "ei_far_dof_guard") {
++		return true;
++	}
++
+ 	// Feature tags are always lowercase for consistency.
+ 	if (p_feature == get_identifier()) {
+ 		return true;
+--- a/servers/rendering/renderer_rd/effects/bokeh_dof.cpp
++++ b/servers/rendering/renderer_rd/effects/bokeh_dof.cpp
+@@ -110,6 +110,15 @@
+ 	RSE::DOFBokehShape bokeh_shape = RSG::camera_attributes->camera_attributes_get_dof_blur_bokeh_shape();
+ 	RSE::DOFBlurQuality blur_quality = RSG::camera_attributes->camera_attributes_get_dof_blur_quality();
+ 
++	// Far-only blur must not downsample focused silhouettes into distant colour.
++	// The guarded box/hexagonal filters retain exact sharp texels at full size.
++	if (dof_far && !dof_near) {
++		blur_quality = MAX(blur_quality, RSE::DOF_BLUR_QUALITY_MEDIUM);
++		if (bokeh_shape == RSE::DOF_BOKEH_CIRCLE) {
++			bokeh_shape = RSE::DOF_BOKEH_HEXAGON;
++		}
++	}
++
+ 	// setup our push constant
+ 	memset(&bokeh.push_constant, 0, sizeof(BokehPushConstant));
+ 	bokeh.push_constant.blur_far_active = dof_far;
+@@ -314,6 +323,15 @@
+ 
+ 	RSE::DOFBokehShape bokeh_shape = RSG::camera_attributes->camera_attributes_get_dof_blur_bokeh_shape();
+ 	RSE::DOFBlurQuality blur_quality = RSG::camera_attributes->camera_attributes_get_dof_blur_quality();
++
++	// Far-only blur must not downsample focused silhouettes into distant colour.
++	// The guarded box/hexagonal filters retain exact sharp texels at full size.
++	if (dof_far && !dof_near) {
++		blur_quality = MAX(blur_quality, RSE::DOF_BLUR_QUALITY_MEDIUM);
++		if (bokeh_shape == RSE::DOF_BOKEH_CIRCLE) {
++			bokeh_shape = RSE::DOF_BOKEH_HEXAGON;
++		}
++	}
+ 
+ 	// setup our base push constant
+ 	memset(&bokeh.push_constant, 0, sizeof(BokehPushConstant));
+--- a/servers/rendering/renderer_rd/shaders/effects/bokeh_dof.glsl
++++ b/servers/rendering/renderer_rd/shaders/effects/bokeh_dof.glsl
+@@ -30,7 +30,14 @@
+ #ifdef MODE_GEN_BLUR_SIZE
+ 
+ float get_depth_at_pos(vec2 uv) {
+-	float depth = textureLod(source_depth, uv, 0.0).x * 2.0 - 1.0;
++	bool guarded_far = params.blur_far_active && !params.blur_near_active;
++	ivec2 size = textureSize(source_depth, 0);
++	float raw_depth = guarded_far ? texelFetch(source_depth, clamp(ivec2(uv * vec2(size)), ivec2(0), size - 1), 0).x : textureLod(source_depth, uv, 0.0).x;
++	// Reverse-Z clear depth is sky, whose sharp colour never enters the blur.
++	if (guarded_far && raw_depth == 0.0) {
++		return 0.0;
++	}
++	float depth = raw_depth * 2.0 - 1.0;
+ 	if (params.orthogonal) {
+ 		depth = -(depth * (params.z_far - params.z_near) - (params.z_far + params.z_near)) / 2.0;
+ 	} else {
+@@ -71,7 +78,15 @@
+ 
+ vec4 weighted_filter_dir(vec2 dir, vec2 uv, vec2 pixel_size) {
+ 	dir *= pixel_size;
+-	vec4 color = texture(color_texture, uv);
++	bool guarded_far = params.blur_far_active && !params.blur_near_active;
++	ivec2 size = textureSize(color_texture, 0);
++	ivec2 center = clamp(ivec2(uv * vec2(size)), ivec2(0), size - 1);
++	vec4 color = guarded_far ? texelFetch(color_texture, center, 0) : texture(color_texture, uv);
++	// smoothstep has a soft support at radius < 0.5 even for zero CoC.
++	// Skip that support completely for focused/foreground/sky texels.
++	if (guarded_far && color.a <= 0.0) {
++		return color;
++	}
+ 
+ 	vec4 accum = color;
+ 	float total = 1.0;
+@@ -90,7 +105,13 @@
+ 		vec2 suv = uv + dir * radius;
+ 		radius = abs(radius);
+ 
+-		vec4 sample_color = texture(color_texture, suv);
++		ivec2 sample_pos = clamp(ivec2(suv * vec2(size)), ivec2(0), size - 1);
++		vec4 sample_color = guarded_far ? texelFetch(color_texture, sample_pos, 0) : texture(color_texture, suv);
++		// Nearest texels and a zero-CoC rejection keep bilinear foreground
++		// colour out of distant samples, including the second filter pass.
++		if (guarded_far && sample_color.a <= 0.0) {
++			continue;
++		}
+ 		float limit;
+ 
+ 		if (sample_color.a < color.a) {
+--- a/servers/rendering/renderer_rd/shaders/effects/bokeh_dof_raster.glsl
++++ b/servers/rendering/renderer_rd/shaders/effects/bokeh_dof_raster.glsl
+@@ -64,7 +64,14 @@
+ #ifdef MODE_GEN_BLUR_SIZE
+ 
+ float get_depth_at_pos(vec2 uv) {
+-	float depth = textureLod(source_depth, uv, 0.0).x * 2.0 - 1.0;
++	bool guarded_far = params.blur_far_active && !params.blur_near_active;
++	ivec2 size = textureSize(source_depth, 0);
++	float raw_depth = guarded_far ? texelFetch(source_depth, clamp(ivec2(uv * vec2(size)), ivec2(0), size - 1), 0).x : textureLod(source_depth, uv, 0.0).x;
++	// Reverse-Z clear depth is sky, whose sharp colour never enters the blur.
++	if (guarded_far && raw_depth == 0.0) {
++		return 0.0;
++	}
++	float depth = raw_depth * 2.0 - 1.0;
+ 	if (params.orthogonal) {
+ 		depth = -(depth * (params.z_far - params.z_near) - (params.z_far + params.z_near)) / 2.0;
+ 	} else {
+@@ -105,8 +112,16 @@
+ 
+ vec4 weighted_filter_dir(vec2 dir, vec2 uv, vec2 pixel_size) {
+ 	dir *= pixel_size;
+-	vec4 color = texture(source_color, uv);
+-	color.a = texture(source_weight, uv).r;
++	bool guarded_far = params.blur_far_active && !params.blur_near_active;
++	ivec2 size = textureSize(source_color, 0);
++	ivec2 center = clamp(ivec2(uv * vec2(size)), ivec2(0), size - 1);
++	vec4 color = guarded_far ? texelFetch(source_color, center, 0) : texture(source_color, uv);
++	color.a = guarded_far ? texelFetch(source_weight, center, 0).r : texture(source_weight, uv).r;
++	// smoothstep has a soft support at radius < 0.5 even for zero CoC.
++	// Skip that support completely for focused/foreground/sky texels.
++	if (guarded_far && color.a <= 0.0) {
++		return color;
++	}
+ 
+ 	vec4 accum = color;
+ 	float total = 1.0;
+@@ -125,8 +140,14 @@
+ 		vec2 suv = uv + dir * radius;
+ 		radius = abs(radius);
+ 
+-		vec4 sample_color = texture(source_color, suv);
+-		sample_color.a = texture(source_weight, suv).r;
++		ivec2 sample_pos = clamp(ivec2(suv * vec2(size)), ivec2(0), size - 1);
++		vec4 sample_color = guarded_far ? texelFetch(source_color, sample_pos, 0) : texture(source_color, suv);
++		sample_color.a = guarded_far ? texelFetch(source_weight, sample_pos, 0).r : texture(source_weight, suv).r;
++		// Nearest texels and a zero-CoC rejection keep bilinear foreground
++		// colour out of distant samples, including the second filter pass.
++		if (guarded_far && sample_color.a <= 0.0) {
++			continue;
++		}
+ 		float limit;
+ 
+ 		if (sample_color.a < color.a) {
+@@ -152,10 +173,14 @@
+ void main() {
+ 	vec2 pixel_size = 1.0 / vec2(params.size);
+ 	vec2 uv = uv_interp;
++	bool guarded_far = params.blur_far_active && !params.blur_near_active;
++	// Raster interpolation already refers to pixel centres. Use the exact
++	// full-resolution centre for guarded far-only passes below.
++	vec2 guarded_uv = (floor(gl_FragCoord.xy) + 0.5) * pixel_size;
+ 
+ #ifdef MODE_GEN_BLUR_SIZE
+ 	uv += pixel_size * 0.5;
+-	float center_depth = get_depth_at_pos(uv);
++	float center_depth = get_depth_at_pos(guarded_far ? guarded_uv : uv);
+ 	weight = get_blur_size(center_depth);
+ #endif
+ 
+@@ -167,6 +192,10 @@
+ 		uv += pixel_size * 0.25; //half pixel to read centers from full res
+ 	}
+ 
++	if (guarded_far) {
++		uv = guarded_uv;
++	}
++
+ 	float alpha = texture(source_color, uv).a; // retain this
+ 	vec2 dir = (params.second_pass ? vec2(0.0, 1.0) : vec2(1.0, 0.0));
+ 
+@@ -189,6 +218,10 @@
+ 		uv += pixel_size * 0.25; //half pixel to read centers from full res
+ 	}
+ 
++	if (guarded_far) {
++		uv = guarded_uv;
++	}
++
+ 	float alpha = texture(source_color, uv).a; // retain this
+ 
+ 	vec2 dir = (params.second_pass ? normalize(vec2(1.0, 0.577350269189626)) : vec2(0.0, 1.0));

@@ -1,0 +1,1194 @@
+{
+  "status": "Implemented as a default-off camera-target adaptation, with Linux native capability and strict foreground/UI/horizon acceptance. Authored dialogue images inspected qualitatively; full R1 visual parity and broader platform/performance acceptance remain open.",
+  "date": "2026-10-09",
+  "reference": {
+    "repository": "/home/llm2x/Documents/evil-islands-owned-renderer",
+    "revision": "0092dc6e1d7c4aab3f74644a79e9bfca11ecf293",
+    "source": "Source/depth_of_field.h",
+    "source_sha256": "613fc4fa0f9cf0a8c140a53cf75b5ba3456f18dabfb9672cfaa5633a9ec31671",
+    "test": "Tests/depth_of_field_smoke.cpp",
+    "test_sha256": "8a962f332124606224e069296ca442dce0affdd8597c6e0876ac451fb0eec113",
+    "production_call": "Source/renderer.cpp:1006, actual default strength 0.2"
+  },
+  "adaptation": [
+    "R1 exact 25-to-50 degree smoothstep, strength 0.2, focus margin, distance-dependent aperture and log-space 0.3 second focus smoothing.",
+    "Focus follows actual local orbit pivot, held authored dialogue target or direct-control drawn hero pivot. No nine-sample median depth readback/compositor.",
+    "Godot far-only CameraAttributesPractical clone respects exact prior camera or world attributes, external replacement and physical-camera policy. Disabled, tactical, movie, unsupported backend and old runtime paths retain no blur attributes.",
+    "Native capability ei_far_dof_guard is supplied in OS.cpp, not export metadata. Compatibility and stock/older runtimes create no persistent effect node.",
+    "Far-only native kernel uses full-resolution existing box/hex targets, sharp-texel early return, integer taps, zero-CoC tap rejection and exact Mobile raster centers. Clear sky remains sharp; this is a conservative boundary, not R1 terrain-coverage horizon scatter. Near-enabled legacy path remains unchanged and passes 26 paired exact-image controls."
+  ],
+  "evidence": [
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/build-stock/CPU.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--ei-inline-host",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camera_depth_of_field.gd"
+      ],
+      "exit_code": 0,
+      "seconds": 2.3094562549958937,
+      "errors": [],
+      "log_sha256": "b4d8b41348662e3d2c139f613bdf3303dac65574036d5b6ab101773710afd2e4",
+      "fixture_sha256": "725dd4544085f41efad4936c5acbe2d808a5a1057826a2cef2d3f9f3994758d5",
+      "build_sha256": {
+        "CPU.x86_64": "3154bb4465f616e24b811dd576e9230022872cd80f8d5ab854efed2716b926d4",
+        "CPU.pck": "9ce8e9e509b86ecd71195b7b3f34b6473e1189bd39d02d70ed162957b728d537",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "name": "dof-policy-stock-gate-01",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/dof-policy-stock-gate-01.log",
+      "checks": 14,
+      "failures": 0
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/build-old/CPU.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--ei-inline-host",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camera_depth_of_field.gd"
+      ],
+      "exit_code": 0,
+      "seconds": 1.9036837599996943,
+      "errors": [],
+      "log_sha256": "eec8811d70c8a281d249fe8b64ec21291704d8d9083a7bf3d5dc900b6375eb18",
+      "fixture_sha256": "725dd4544085f41efad4936c5acbe2d808a5a1057826a2cef2d3f9f3994758d5",
+      "build_sha256": {
+        "CPU.x86_64": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+        "CPU.pck": "9ce8e9e509b86ecd71195b7b3f34b6473e1189bd39d02d70ed162957b728d537",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "name": "dof-policy-old-gate-01",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/dof-policy-old-gate-01.log",
+      "checks": 14,
+      "failures": 0
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/build-guarded/CPU.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--ei-inline-host",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camera_depth_of_field.gd"
+      ],
+      "exit_code": 0,
+      "seconds": 2.20437912401394,
+      "errors": [],
+      "log_sha256": "d2a26bfead0e26d77ab5857d98503d2205ac8a85873a43cf724d2e1434362b48",
+      "fixture_sha256": "725dd4544085f41efad4936c5acbe2d808a5a1057826a2cef2d3f9f3994758d5",
+      "build_sha256": {
+        "CPU.x86_64": "769dd027c0b444caca0d5fbbb6014eda80970e991e9f32fdb1f86ec385d20c3e",
+        "CPU.pck": "9ce8e9e509b86ecd71195b7b3f34b6473e1189bd39d02d70ed162957b728d537",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "name": "dof-policy-guarded-01",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/dof-policy-guarded-01.log",
+      "checks": 27,
+      "failures": 0
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/build-mistmeta/CPU.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--ei-inline-host",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/graphics_options.gd"
+      ],
+      "exit_code": 0,
+      "seconds": 2.708790817996487,
+      "errors": [],
+      "log_sha256": "5cb6169bf0c35a38e155be5d2091f61dcbbeb4bb32be25fdbc73a308d3ee187f",
+      "fixture_sha256": "f3a6b76a7e683e1a6c11ff91a7e36332136328925074ef905883c05ceae9f7bb",
+      "build_sha256": {
+        "CPU.x86_64": "769dd027c0b444caca0d5fbbb6014eda80970e991e9f32fdb1f86ec385d20c3e",
+        "CPU.pck": "95ddf6e32c7dc4fcd0b6a964d0b46aa1c22b4b1456e29e039cef0a754cd27070",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "name": "dof-mist-options-01",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/dof-mist-options-01.log",
+      "checks": 398,
+      "failures": 0
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/build-guarded/CPU.x86_64",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--ei-inline-host",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camera_depth_of_field_render.gd"
+      ],
+      "exit_code": 0,
+      "seconds": 7.127429588988889,
+      "errors": [],
+      "log_sha256": "31afdc620c43ff3049f491a7aed42956617754f6c57f643eaf19fc22ddbc8fe1",
+      "fixture_sha256": "556840932edbfc31108e1fb8c35183a000f2d6469cfdf932fc24d0bf810adb6f",
+      "build_sha256": {
+        "CPU.x86_64": "769dd027c0b444caca0d5fbbb6014eda80970e991e9f32fdb1f86ec385d20c3e",
+        "CPU.pck": "9ce8e9e509b86ecd71195b7b3f34b6473e1189bd39d02d70ed162957b728d537",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "name": "dof-render-guarded-forward-01",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/dof-render-guarded-forward-01.log",
+      "checks": 16,
+      "failures": 0,
+      "images": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-render-guarded-forward-01/godot/app_userdata/Cursed Lands/dof-low-off.png",
+          "sha256": "07713507c90de1907adac4d70f0486b9b3b185bbefb1c4d7f89c2140b371f601"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-render-guarded-forward-01/godot/app_userdata/Cursed Lands/dof-low-on.png",
+          "sha256": "c35d3430ce37ba6ca77647776c30f1040f9018161a68c3a56532db0dc48e9c81"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-render-guarded-forward-01/godot/app_userdata/Cursed Lands/dof-low-restored.png",
+          "sha256": "07713507c90de1907adac4d70f0486b9b3b185bbefb1c4d7f89c2140b371f601"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-render-guarded-forward-01/godot/app_userdata/Cursed Lands/dof-tactical-off.png",
+          "sha256": "07713507c90de1907adac4d70f0486b9b3b185bbefb1c4d7f89c2140b371f601"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-render-guarded-forward-01/godot/app_userdata/Cursed Lands/dof-tactical-on.png",
+          "sha256": "07713507c90de1907adac4d70f0486b9b3b185bbefb1c4d7f89c2140b371f601"
+        }
+      ]
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/build-guarded/CPU.x86_64",
+        "--rendering-method",
+        "mobile",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--ei-inline-host",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camera_depth_of_field_render.gd"
+      ],
+      "exit_code": 0,
+      "seconds": 5.311886562005384,
+      "errors": [],
+      "log_sha256": "0d73f76fb9348f5b322b36be5b21b47fecb31adfd7243176f67d277f1e0efc60",
+      "fixture_sha256": "556840932edbfc31108e1fb8c35183a000f2d6469cfdf932fc24d0bf810adb6f",
+      "build_sha256": {
+        "CPU.x86_64": "769dd027c0b444caca0d5fbbb6014eda80970e991e9f32fdb1f86ec385d20c3e",
+        "CPU.pck": "9ce8e9e509b86ecd71195b7b3f34b6473e1189bd39d02d70ed162957b728d537",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "name": "dof-render-guarded-mobile-01",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/dof-render-guarded-mobile-01.log",
+      "checks": 16,
+      "failures": 0,
+      "images": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-render-guarded-mobile-01/godot/app_userdata/Cursed Lands/dof-low-off.png",
+          "sha256": "21216376dc79c01344ee36ced20f160856b1fee6f4b6c3e7061ae583fe814b16"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-render-guarded-mobile-01/godot/app_userdata/Cursed Lands/dof-low-on.png",
+          "sha256": "c55d20c2c330f2f8b2cdfc4ce566e4581d9372b00cb5aece8045cb8c5e9ac306"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-render-guarded-mobile-01/godot/app_userdata/Cursed Lands/dof-low-restored.png",
+          "sha256": "21216376dc79c01344ee36ced20f160856b1fee6f4b6c3e7061ae583fe814b16"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-render-guarded-mobile-01/godot/app_userdata/Cursed Lands/dof-tactical-off.png",
+          "sha256": "21216376dc79c01344ee36ced20f160856b1fee6f4b6c3e7061ae583fe814b16"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-render-guarded-mobile-01/godot/app_userdata/Cursed Lands/dof-tactical-on.png",
+          "sha256": "21216376dc79c01344ee36ced20f160856b1fee6f4b6c3e7061ae583fe814b16"
+        }
+      ]
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/build-old/CPU.x86_64",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--ei-inline-host",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camera_depth_of_field_legacy.gd"
+      ],
+      "exit_code": 0,
+      "seconds": 7.313034164981218,
+      "errors": [],
+      "log_sha256": "9354007803a333c6779e03ec65c996128de4fa56c629c9ef85c7bd40a3533a3d",
+      "fixture_sha256": "60794ad1a6b9fa45eb823823f2ab34066f47b7bafd68a67cec29c081961ff760",
+      "build_sha256": {
+        "CPU.x86_64": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+        "CPU.pck": "9ce8e9e509b86ecd71195b7b3f34b6473e1189bd39d02d70ed162957b728d537",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "name": "dof-legacy-forward-old-01",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/dof-legacy-forward-old-01.log",
+      "checks": 13,
+      "failures": 0,
+      "images": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-legacy-forward-old-01/godot/app_userdata/Cursed Lands/dof-legacy-0-1-near-far.png",
+          "sha256": "b23c5ca420efbfac574f9805763c8ae11a4059dfaf61458e73239dbe4260dfe7"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-legacy-forward-old-01/godot/app_userdata/Cursed Lands/dof-legacy-0-1-near.png",
+          "sha256": "26b2cfbf853798b185c3ff409655eea7456fb8012ad00cde81550f281acaedf0"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-legacy-forward-old-01/godot/app_userdata/Cursed Lands/dof-legacy-0-2-near-far.png",
+          "sha256": "4869e7326cbcfcee701a39ba24a515ef9fadbf5b84537c88d439ae71a04c7261"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-legacy-forward-old-01/godot/app_userdata/Cursed Lands/dof-legacy-0-2-near.png",
+          "sha256": "de2840359e30c379655417ef295cf5c3ce357e07cb0c30f5631fb987a608ca61"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-legacy-forward-old-01/godot/app_userdata/Cursed Lands/dof-legacy-1-1-near-far.png",
+          "sha256": "1a76c133d530bb199c238f85c9e43986f14a55a20486a952fdaeb64f235f2c9d"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-legacy-forward-old-01/godot/app_userdata/Cursed Lands/dof-legacy-1-1-near.png",
+          "sha256": "9753dabcf78005e47db480a6e56e0bc46b0093a612f861a36598a24fc4d70303"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-legacy-forward-old-01/godot/app_userdata/Cursed Lands/dof-legacy-1-2-near-far.png",
+          "sha256": "b3b5af9af9980e82d04db46e7791a8b07585a16b8c975c4bb4a89e8ae08303f0"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-legacy-forward-old-01/godot/app_userdata/Cursed Lands/dof-legacy-1-2-near.png",
+          "sha256": "3c45b257f4cc0bc093706b4e13defa5f382cbc9d76946caed775c033e89899ed"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-legacy-forward-old-01/godot/app_userdata/Cursed Lands/dof-legacy-2-1-near-far.png",
+          "sha256": "6d4fcae3ef1d7e5ac035e234cd8870752007530cf3b71f4c0daeb3ed962e1d2b"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-legacy-forward-old-01/godot/app_userdata/Cursed Lands/dof-legacy-2-1-near.png",
+          "sha256": "62d32e49aa66224c228b52294d5b7872b5b37707f5dcc02444d0bb0cf810becf"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-legacy-forward-old-01/godot/app_userdata/Cursed Lands/dof-legacy-2-2-near-far.png",
+          "sha256": "fccab8ec38ea143935e74a68ca7823f3ddd8b57002332def31971a91001ed198"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-legacy-forward-old-01/godot/app_userdata/Cursed Lands/dof-legacy-2-2-near.png",
+          "sha256": "62d32e49aa66224c228b52294d5b7872b5b37707f5dcc02444d0bb0cf810becf"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-legacy-forward-old-01/godot/app_userdata/Cursed Lands/dof-legacy-off.png",
+          "sha256": "07713507c90de1907adac4d70f0486b9b3b185bbefb1c4d7f89c2140b371f601"
+        }
+      ]
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/build-guarded/CPU.x86_64",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--ei-inline-host",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camera_depth_of_field_legacy.gd",
+        "--dof-reference=/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-legacy-forward-old-01/godot/app_userdata/Cursed Lands"
+      ],
+      "exit_code": 0,
+      "seconds": 8.538034817000153,
+      "errors": [],
+      "log_sha256": "cefbb0d62927905c3d5bac8edda9f6565a6a7225a035c7c68f87cefdc3170a51",
+      "fixture_sha256": "60794ad1a6b9fa45eb823823f2ab34066f47b7bafd68a67cec29c081961ff760",
+      "build_sha256": {
+        "CPU.x86_64": "769dd027c0b444caca0d5fbbb6014eda80970e991e9f32fdb1f86ec385d20c3e",
+        "CPU.pck": "9ce8e9e509b86ecd71195b7b3f34b6473e1189bd39d02d70ed162957b728d537",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "name": "dof-legacy-forward-guarded-01",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/dof-legacy-forward-guarded-01.log",
+      "checks": 39,
+      "failures": 0,
+      "images": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-legacy-forward-guarded-01/godot/app_userdata/Cursed Lands/dof-legacy-0-1-near-far.png",
+          "sha256": "b23c5ca420efbfac574f9805763c8ae11a4059dfaf61458e73239dbe4260dfe7"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-legacy-forward-guarded-01/godot/app_userdata/Cursed Lands/dof-legacy-0-1-near.png",
+          "sha256": "26b2cfbf853798b185c3ff409655eea7456fb8012ad00cde81550f281acaedf0"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-legacy-forward-guarded-01/godot/app_userdata/Cursed Lands/dof-legacy-0-2-near-far.png",
+          "sha256": "4869e7326cbcfcee701a39ba24a515ef9fadbf5b84537c88d439ae71a04c7261"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-legacy-forward-guarded-01/godot/app_userdata/Cursed Lands/dof-legacy-0-2-near.png",
+          "sha256": "de2840359e30c379655417ef295cf5c3ce357e07cb0c30f5631fb987a608ca61"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-legacy-forward-guarded-01/godot/app_userdata/Cursed Lands/dof-legacy-1-1-near-far.png",
+          "sha256": "1a76c133d530bb199c238f85c9e43986f14a55a20486a952fdaeb64f235f2c9d"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-legacy-forward-guarded-01/godot/app_userdata/Cursed Lands/dof-legacy-1-1-near.png",
+          "sha256": "9753dabcf78005e47db480a6e56e0bc46b0093a612f861a36598a24fc4d70303"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-legacy-forward-guarded-01/godot/app_userdata/Cursed Lands/dof-legacy-1-2-near-far.png",
+          "sha256": "b3b5af9af9980e82d04db46e7791a8b07585a16b8c975c4bb4a89e8ae08303f0"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-legacy-forward-guarded-01/godot/app_userdata/Cursed Lands/dof-legacy-1-2-near.png",
+          "sha256": "3c45b257f4cc0bc093706b4e13defa5f382cbc9d76946caed775c033e89899ed"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-legacy-forward-guarded-01/godot/app_userdata/Cursed Lands/dof-legacy-2-1-near-far.png",
+          "sha256": "6d4fcae3ef1d7e5ac035e234cd8870752007530cf3b71f4c0daeb3ed962e1d2b"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-legacy-forward-guarded-01/godot/app_userdata/Cursed Lands/dof-legacy-2-1-near.png",
+          "sha256": "62d32e49aa66224c228b52294d5b7872b5b37707f5dcc02444d0bb0cf810becf"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-legacy-forward-guarded-01/godot/app_userdata/Cursed Lands/dof-legacy-2-2-near-far.png",
+          "sha256": "fccab8ec38ea143935e74a68ca7823f3ddd8b57002332def31971a91001ed198"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-legacy-forward-guarded-01/godot/app_userdata/Cursed Lands/dof-legacy-2-2-near.png",
+          "sha256": "62d32e49aa66224c228b52294d5b7872b5b37707f5dcc02444d0bb0cf810becf"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-legacy-forward-guarded-01/godot/app_userdata/Cursed Lands/dof-legacy-off.png",
+          "sha256": "07713507c90de1907adac4d70f0486b9b3b185bbefb1c4d7f89c2140b371f601"
+        }
+      ]
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/build-old/CPU.x86_64",
+        "--rendering-method",
+        "mobile",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--ei-inline-host",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camera_depth_of_field_legacy.gd"
+      ],
+      "exit_code": 0,
+      "seconds": 7.228489266010001,
+      "errors": [],
+      "log_sha256": "4a9e8cc39d3addbf704ee777cc37c850bdb04902bb271dcfb55785e5be269d98",
+      "fixture_sha256": "60794ad1a6b9fa45eb823823f2ab34066f47b7bafd68a67cec29c081961ff760",
+      "build_sha256": {
+        "CPU.x86_64": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+        "CPU.pck": "9ce8e9e509b86ecd71195b7b3f34b6473e1189bd39d02d70ed162957b728d537",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "name": "dof-legacy-mobile-old-01",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/dof-legacy-mobile-old-01.log",
+      "checks": 13,
+      "failures": 0,
+      "images": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-legacy-mobile-old-01/godot/app_userdata/Cursed Lands/dof-legacy-0-1-near-far.png",
+          "sha256": "56712b3a75fcc1f984816a7bf37652e54533880cb65a5e78b87ea2cd15ffcc7c"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-legacy-mobile-old-01/godot/app_userdata/Cursed Lands/dof-legacy-0-1-near.png",
+          "sha256": "3b14ed78133776221cdb9eff2dc3aecdcd03e93aa718fc0780b3b882a2b677d4"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-legacy-mobile-old-01/godot/app_userdata/Cursed Lands/dof-legacy-0-2-near-far.png",
+          "sha256": "4272bef85c5522bb33f2a54243fc75f21a69a6ebb3629ec8fea9f9cc43f65469"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-legacy-mobile-old-01/godot/app_userdata/Cursed Lands/dof-legacy-0-2-near.png",
+          "sha256": "b15357f3d82c6ea141506a2bcb413ca2eb6b6c706ef99a372a955c7c0d4ba19d"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-legacy-mobile-old-01/godot/app_userdata/Cursed Lands/dof-legacy-1-1-near-far.png",
+          "sha256": "6d2d6f4b7a72640e225c254227ba0b37cd287c892eefdd6791f980e1bf616ef7"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-legacy-mobile-old-01/godot/app_userdata/Cursed Lands/dof-legacy-1-1-near.png",
+          "sha256": "7d5ac672786e3786be0fd632e172fba20aa9a1bf4035c96b370a0edb68513da6"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-legacy-mobile-old-01/godot/app_userdata/Cursed Lands/dof-legacy-1-2-near-far.png",
+          "sha256": "3dcdaffebf4875799449c51c22086933915123626982810338a6c9983cea6494"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-legacy-mobile-old-01/godot/app_userdata/Cursed Lands/dof-legacy-1-2-near.png",
+          "sha256": "988bc808f8b9009693d3ae3a714fe00825e9273ab1c80a5f3d21eb0d7d0a73f5"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-legacy-mobile-old-01/godot/app_userdata/Cursed Lands/dof-legacy-2-1-near-far.png",
+          "sha256": "5be3cb9c1263036920d6001fcf1744cd88d31a567eb5182c5bc3dd64d746d3b5"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-legacy-mobile-old-01/godot/app_userdata/Cursed Lands/dof-legacy-2-1-near.png",
+          "sha256": "6830bdbabbda9b013191fd2e9b4d0960afd1706237655a399835696c7cca82fe"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-legacy-mobile-old-01/godot/app_userdata/Cursed Lands/dof-legacy-2-2-near-far.png",
+          "sha256": "9ebf7d4d603f2e0bc5a6f6b6c7cb44c27a822f1acee9f646ca6af5c4b1a46111"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-legacy-mobile-old-01/godot/app_userdata/Cursed Lands/dof-legacy-2-2-near.png",
+          "sha256": "c349a8d18e4084836abc9843617515abb221658eeab9e477caa01fb528f818f8"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-legacy-mobile-old-01/godot/app_userdata/Cursed Lands/dof-legacy-off.png",
+          "sha256": "21216376dc79c01344ee36ced20f160856b1fee6f4b6c3e7061ae583fe814b16"
+        }
+      ]
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/build-guarded/CPU.x86_64",
+        "--rendering-method",
+        "mobile",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--ei-inline-host",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camera_depth_of_field_legacy.gd",
+        "--dof-reference=/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-legacy-mobile-old-01/godot/app_userdata/Cursed Lands"
+      ],
+      "exit_code": 0,
+      "seconds": 7.426050294976449,
+      "errors": [],
+      "log_sha256": "a9e114c1cbeed517862d0c552feee8f21f8fd4d7a57b2f39aa9148c256a090a6",
+      "fixture_sha256": "60794ad1a6b9fa45eb823823f2ab34066f47b7bafd68a67cec29c081961ff760",
+      "build_sha256": {
+        "CPU.x86_64": "769dd027c0b444caca0d5fbbb6014eda80970e991e9f32fdb1f86ec385d20c3e",
+        "CPU.pck": "9ce8e9e509b86ecd71195b7b3f34b6473e1189bd39d02d70ed162957b728d537",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "name": "dof-legacy-mobile-guarded-01",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/dof-legacy-mobile-guarded-01.log",
+      "checks": 39,
+      "failures": 0,
+      "images": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-legacy-mobile-guarded-01/godot/app_userdata/Cursed Lands/dof-legacy-0-1-near-far.png",
+          "sha256": "56712b3a75fcc1f984816a7bf37652e54533880cb65a5e78b87ea2cd15ffcc7c"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-legacy-mobile-guarded-01/godot/app_userdata/Cursed Lands/dof-legacy-0-1-near.png",
+          "sha256": "3b14ed78133776221cdb9eff2dc3aecdcd03e93aa718fc0780b3b882a2b677d4"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-legacy-mobile-guarded-01/godot/app_userdata/Cursed Lands/dof-legacy-0-2-near-far.png",
+          "sha256": "4272bef85c5522bb33f2a54243fc75f21a69a6ebb3629ec8fea9f9cc43f65469"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-legacy-mobile-guarded-01/godot/app_userdata/Cursed Lands/dof-legacy-0-2-near.png",
+          "sha256": "b15357f3d82c6ea141506a2bcb413ca2eb6b6c706ef99a372a955c7c0d4ba19d"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-legacy-mobile-guarded-01/godot/app_userdata/Cursed Lands/dof-legacy-1-1-near-far.png",
+          "sha256": "6d2d6f4b7a72640e225c254227ba0b37cd287c892eefdd6791f980e1bf616ef7"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-legacy-mobile-guarded-01/godot/app_userdata/Cursed Lands/dof-legacy-1-1-near.png",
+          "sha256": "7d5ac672786e3786be0fd632e172fba20aa9a1bf4035c96b370a0edb68513da6"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-legacy-mobile-guarded-01/godot/app_userdata/Cursed Lands/dof-legacy-1-2-near-far.png",
+          "sha256": "3dcdaffebf4875799449c51c22086933915123626982810338a6c9983cea6494"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-legacy-mobile-guarded-01/godot/app_userdata/Cursed Lands/dof-legacy-1-2-near.png",
+          "sha256": "988bc808f8b9009693d3ae3a714fe00825e9273ab1c80a5f3d21eb0d7d0a73f5"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-legacy-mobile-guarded-01/godot/app_userdata/Cursed Lands/dof-legacy-2-1-near-far.png",
+          "sha256": "5be3cb9c1263036920d6001fcf1744cd88d31a567eb5182c5bc3dd64d746d3b5"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-legacy-mobile-guarded-01/godot/app_userdata/Cursed Lands/dof-legacy-2-1-near.png",
+          "sha256": "6830bdbabbda9b013191fd2e9b4d0960afd1706237655a399835696c7cca82fe"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-legacy-mobile-guarded-01/godot/app_userdata/Cursed Lands/dof-legacy-2-2-near-far.png",
+          "sha256": "9ebf7d4d603f2e0bc5a6f6b6c7cb44c27a822f1acee9f646ca6af5c4b1a46111"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-legacy-mobile-guarded-01/godot/app_userdata/Cursed Lands/dof-legacy-2-2-near.png",
+          "sha256": "c349a8d18e4084836abc9843617515abb221658eeab9e477caa01fb528f818f8"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-legacy-mobile-guarded-01/godot/app_userdata/Cursed Lands/dof-legacy-off.png",
+          "sha256": "21216376dc79c01344ee36ced20f160856b1fee6f4b6c3e7061ae583fe814b16"
+        }
+      ]
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/build-old/CPU.x86_64",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--ei-inline-host",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camera_depth_of_field_render.gd"
+      ],
+      "exit_code": 0,
+      "seconds": 6.111626981990412,
+      "errors": [],
+      "log_sha256": "fbbe79285c6951458e39a6b12fa32f1323dd463df0252dc3c1094470711ee838",
+      "fixture_sha256": "556840932edbfc31108e1fb8c35183a000f2d6469cfdf932fc24d0bf810adb6f",
+      "build_sha256": {
+        "CPU.x86_64": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+        "CPU.pck": "9ce8e9e509b86ecd71195b7b3f34b6473e1189bd39d02d70ed162957b728d537",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "name": "dof-render-old-gate-01",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/dof-render-old-gate-01.log",
+      "checks": 16,
+      "failures": 0,
+      "images": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-render-old-gate-01/godot/app_userdata/Cursed Lands/dof-low-off.png",
+          "sha256": "07713507c90de1907adac4d70f0486b9b3b185bbefb1c4d7f89c2140b371f601"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-render-old-gate-01/godot/app_userdata/Cursed Lands/dof-low-on.png",
+          "sha256": "07713507c90de1907adac4d70f0486b9b3b185bbefb1c4d7f89c2140b371f601"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-render-old-gate-01/godot/app_userdata/Cursed Lands/dof-low-restored.png",
+          "sha256": "07713507c90de1907adac4d70f0486b9b3b185bbefb1c4d7f89c2140b371f601"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-render-old-gate-01/godot/app_userdata/Cursed Lands/dof-tactical-off.png",
+          "sha256": "07713507c90de1907adac4d70f0486b9b3b185bbefb1c4d7f89c2140b371f601"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-render-old-gate-01/godot/app_userdata/Cursed Lands/dof-tactical-on.png",
+          "sha256": "07713507c90de1907adac4d70f0486b9b3b185bbefb1c4d7f89c2140b371f601"
+        }
+      ]
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/build-guarded/CPU.x86_64",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--ei-inline-host",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camera_depth_of_field_render.gd"
+      ],
+      "exit_code": 0,
+      "seconds": 3.4088779320009053,
+      "errors": [],
+      "log_sha256": "12cccf6aed8d52bf3a45cb5c53872d33db74f198bda16bcc32e212b5007d790e",
+      "fixture_sha256": "556840932edbfc31108e1fb8c35183a000f2d6469cfdf932fc24d0bf810adb6f",
+      "build_sha256": {
+        "CPU.x86_64": "769dd027c0b444caca0d5fbbb6014eda80970e991e9f32fdb1f86ec385d20c3e",
+        "CPU.pck": "9ce8e9e509b86ecd71195b7b3f34b6473e1189bd39d02d70ed162957b728d537",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "name": "dof-render-guarded-compatibility-01",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/dof-render-guarded-compatibility-01.log",
+      "checks": 16,
+      "failures": 0,
+      "images": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-render-guarded-compatibility-01/godot/app_userdata/Cursed Lands/dof-low-off.png",
+          "sha256": "99c60b330fb70e2b48e70e32391424e014bfabf9f3a2f3f959c42e61d5adcf54"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-render-guarded-compatibility-01/godot/app_userdata/Cursed Lands/dof-low-on.png",
+          "sha256": "99c60b330fb70e2b48e70e32391424e014bfabf9f3a2f3f959c42e61d5adcf54"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-render-guarded-compatibility-01/godot/app_userdata/Cursed Lands/dof-low-restored.png",
+          "sha256": "99c60b330fb70e2b48e70e32391424e014bfabf9f3a2f3f959c42e61d5adcf54"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-render-guarded-compatibility-01/godot/app_userdata/Cursed Lands/dof-tactical-off.png",
+          "sha256": "99c60b330fb70e2b48e70e32391424e014bfabf9f3a2f3f959c42e61d5adcf54"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-render-guarded-compatibility-01/godot/app_userdata/Cursed Lands/dof-tactical-on.png",
+          "sha256": "99c60b330fb70e2b48e70e32391424e014bfabf9f3a2f3f959c42e61d5adcf54"
+        }
+      ]
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/build-guarded/CPU.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--ei-inline-host",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camera_depth_of_field_scene.gd"
+      ],
+      "exit_code": 0,
+      "seconds": 4.608082060993183,
+      "errors": [],
+      "log_sha256": "785e238c68d302c5b67b8fa72f87e4aab09d6f46ef0f35923eebfe099057b70d",
+      "fixture_sha256": "68bc4cddf16bc5f998224cb87f6a18d349486e5bb8f48d726ce8a41c8f3d3ed5",
+      "build_sha256": {
+        "CPU.x86_64": "769dd027c0b444caca0d5fbbb6014eda80970e991e9f32fdb1f86ec385d20c3e",
+        "CPU.pck": "9ce8e9e509b86ecd71195b7b3f34b6473e1189bd39d02d70ed162957b728d537",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "name": "dof-scene-final-restore-01",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/dof-scene-final-restore-01.log",
+      "checks": 9,
+      "failures": 0
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/build-guarded/CPU.x86_64",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--ei-inline-host",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camera_depth_of_field_scene.gd"
+      ],
+      "exit_code": 0,
+      "seconds": 26.126876274996903,
+      "errors": [],
+      "log_sha256": "e06b78bc3a675779e31e1193a1f208b0af0c011985fcae42eb7e98e6a90c51f9",
+      "fixture_sha256": "0e6887239bd5190881ddfee4ccb8217f8fa8742d84fb6e00dec615938945cdf2",
+      "build_sha256": {
+        "CPU.x86_64": "769dd027c0b444caca0d5fbbb6014eda80970e991e9f32fdb1f86ec385d20c3e",
+        "CPU.pck": "9ce8e9e509b86ecd71195b7b3f34b6473e1189bd39d02d70ed162957b728d537",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "name": "dof-scene-rendered-01",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/dof-scene-rendered-01.log",
+      "checks": 11,
+      "failures": 0,
+      "images": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-scene-rendered-01/godot/app_userdata/Cursed Lands/dof-dialogue-off.png",
+          "sha256": "f2306dc12bc8dfb956342236da2be1cbc6f4da49a7a4e1638e8c1d83314ec754"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-scene-rendered-01/godot/app_userdata/Cursed Lands/dof-dialogue.png",
+          "sha256": "55079b3554799ab34f86372fba1eb00ea4b7fb6ef7eb51f568ed4b4252995747"
+        }
+      ]
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/build-guarded/CPU.x86_64",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--ei-inline-host",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camera_depth_of_field_render.gd"
+      ],
+      "exit_code": 0,
+      "seconds": 5.810683143994538,
+      "errors": [],
+      "log_sha256": "7c73667e6ff9ac9632e625061105c0ae1afa6a12c73d5784dd43cf7882cf2a41",
+      "fixture_sha256": "7b703f91782e3577a14b158a7ac8195b66d8769dcce1f9c8cbf4ee36a4e970f2",
+      "build_sha256": {
+        "CPU.x86_64": "769dd027c0b444caca0d5fbbb6014eda80970e991e9f32fdb1f86ec385d20c3e",
+        "CPU.pck": "9ce8e9e509b86ecd71195b7b3f34b6473e1189bd39d02d70ed162957b728d537",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "name": "dof-render-guarded-font-forward-01",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/dof-render-guarded-font-forward-01.log",
+      "checks": 16,
+      "failures": 0,
+      "images": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-render-guarded-font-forward-01/godot/app_userdata/Cursed Lands/dof-low-off.png",
+          "sha256": "dbd49afc078d06f7309a63f6fe3bac89cbde05ca6d041873b9c22de793eaef68"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-render-guarded-font-forward-01/godot/app_userdata/Cursed Lands/dof-low-on.png",
+          "sha256": "00e9b043e6597aa8505d918a71c868379cd653fbee918e14bf9b1575847cfd2f"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-render-guarded-font-forward-01/godot/app_userdata/Cursed Lands/dof-low-restored.png",
+          "sha256": "dbd49afc078d06f7309a63f6fe3bac89cbde05ca6d041873b9c22de793eaef68"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-render-guarded-font-forward-01/godot/app_userdata/Cursed Lands/dof-tactical-off.png",
+          "sha256": "dbd49afc078d06f7309a63f6fe3bac89cbde05ca6d041873b9c22de793eaef68"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/profiles/dof-render-guarded-font-forward-01/godot/app_userdata/Cursed Lands/dof-tactical-on.png",
+          "sha256": "dbd49afc078d06f7309a63f6fe3bac89cbde05ca6d041873b9c22de793eaef68"
+        }
+      ]
+    }
+  ],
+  "rejected_renderer_controls": [
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/build/CPU.x86_64",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--ei-inline-host",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camera_depth_of_field_render.gd"
+      ],
+      "exit_code": 1,
+      "seconds": 6.110970048001036,
+      "errors": [],
+      "log_sha256": "c48cc53ad91ff4dd357f6fdccff39c80fa57370c6ef2194eba3b470dfe8a0020",
+      "fixture_sha256": "45f44d69ba37be825e2e96ea56c20f92a0f2efc3ed2cb3cd633160cd6126ac6a",
+      "build_sha256": {
+        "CPU.x86_64": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+        "CPU.pck": "c46d0abfc71d40e56f4906c5561409d845ddd08a3f739915d7e92ae306847b19",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "name": "dof-render-forward-01",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/dof-render-forward-01.log",
+      "checks": 14,
+      "failures": 1
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/build/CPU.x86_64",
+        "--rendering-method",
+        "mobile",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--ei-inline-host",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camera_depth_of_field_render.gd"
+      ],
+      "exit_code": 0,
+      "seconds": 5.414221419981914,
+      "errors": [],
+      "log_sha256": "6bdfe0e26f979e6d650fd431cc4617fe3f6e82840746ecf2e121ddc863107e95",
+      "fixture_sha256": "45f44d69ba37be825e2e96ea56c20f92a0f2efc3ed2cb3cd633160cd6126ac6a",
+      "build_sha256": {
+        "CPU.x86_64": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+        "CPU.pck": "c46d0abfc71d40e56f4906c5561409d845ddd08a3f739915d7e92ae306847b19",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "name": "dof-render-mobile-01",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/dof-render-mobile-01.log",
+      "checks": 14,
+      "failures": 0
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/build/CPU.x86_64",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--ei-inline-host",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camera_depth_of_field_render.gd"
+      ],
+      "exit_code": 0,
+      "seconds": 2.8045478259737138,
+      "errors": [],
+      "log_sha256": "d6461aa9036c406823cdb967fe07022abfd792dd2ba05855090a5d12de4ce0a8",
+      "fixture_sha256": "45f44d69ba37be825e2e96ea56c20f92a0f2efc3ed2cb3cd633160cd6126ac6a",
+      "build_sha256": {
+        "CPU.x86_64": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+        "CPU.pck": "c46d0abfc71d40e56f4906c5561409d845ddd08a3f739915d7e92ae306847b19",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "name": "dof-render-compatibility-01",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/dof-render-compatibility-01.log",
+      "checks": 14,
+      "failures": 0
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/build/CPU.x86_64",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--ei-inline-host",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camera_depth_of_field_render.gd",
+        "--dof-quality=2"
+      ],
+      "exit_code": 1,
+      "seconds": 6.314676719979616,
+      "errors": [],
+      "log_sha256": "bca4bcb0d47528facac6223ce8d7b369294742268e0425355bb78c296523fdce",
+      "fixture_sha256": "46ab0230b6e1243513ab056ec3712b0334d71017213f4616679de08aec256faf",
+      "build_sha256": {
+        "CPU.x86_64": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+        "CPU.pck": "c46d0abfc71d40e56f4906c5561409d845ddd08a3f739915d7e92ae306847b19",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "name": "dof-render-forward-quality2-01",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/dof-render-forward-quality2-01.log",
+      "checks": 15,
+      "failures": 3
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/build/CPU.x86_64",
+        "--rendering-method",
+        "mobile",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--ei-inline-host",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camera_depth_of_field_render.gd",
+        "--dof-quality=2"
+      ],
+      "exit_code": 1,
+      "seconds": 5.0088658739987295,
+      "errors": [],
+      "log_sha256": "27363a2a3446eff24457a5fa0c3c7875a9d240e85922c2639ae13744d9036878",
+      "fixture_sha256": "46ab0230b6e1243513ab056ec3712b0334d71017213f4616679de08aec256faf",
+      "build_sha256": {
+        "CPU.x86_64": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+        "CPU.pck": "c46d0abfc71d40e56f4906c5561409d845ddd08a3f739915d7e92ae306847b19",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "name": "dof-render-mobile-quality2-01",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/dof-render-mobile-quality2-01.log",
+      "checks": 15,
+      "failures": 3
+    }
+  ],
+  "rejected_explanation": "Default half-resolution Forward+ leaked foreground red 4 pixels into far detail. Mobile initially passed the 3 pixel outside check but pixel inspection found 2 pixel foreground erosion. Strict fixture was expanded to the full foreground edge and first outside pixel. Full-resolution quality 2 still failed both backends: focused detail shifted, foreground edges eroded and red bled outside; no tolerance was relaxed.",
+  "engine_build": {
+    "recipe": {
+      "command": [
+        "nice",
+        "-n",
+        "10",
+        "python3",
+        "-m",
+        "SCons",
+        "-j2",
+        "platform=linuxbsd",
+        "target=template_release",
+        "debug_symbols=yes",
+        "lto=none",
+        "production=yes",
+        "optimize=speed",
+        "wayland=no",
+        "module_mono_enabled=no",
+        "module_openxr_enabled=no",
+        "module_jolt_physics_enabled=no",
+        "module_fbx_enabled=no",
+        "module_gltf_enabled=no",
+        "module_lightmapper_rd_enabled=no",
+        "module_csg_enabled=no",
+        "module_theora_enabled=no",
+        "module_webrtc_enabled=no",
+        "module_webxr_enabled=no",
+        "accesskit=no"
+      ],
+      "cwd": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/engine-far-guard",
+      "environment": {
+        "PYTHONPATH": "/home/llm2x/Documents/EI/local/scratchpad/coop-performance-20261005/engine-profile/scons"
+      },
+      "source_base_commit": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+      "patch": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/engine-proposal/far-dof-sharp-guard.patch",
+      "source_manifest": {
+        "core/os/os.cpp": {
+          "before": "9c5dab86487ea5dfa7391336510aec451717891f312cfec89aeb0a8b75a898f1",
+          "after": "155b6876a6e247fdf6fca8aee4845c9879ea7b3b1906e87292dd2f5b4c35d1d4"
+        },
+        "servers/rendering/renderer_rd/effects/bokeh_dof.cpp": {
+          "before": "f6c74e5d66380ec8aa21ddf7d8cec77e54b42b53b70413670c093dbc272e5cfb",
+          "after": "5c87417ca784c6f95cf88515718f3578f7c8e1ed43e7e3a0dbb66e94c882d328"
+        },
+        "servers/rendering/renderer_rd/shaders/effects/bokeh_dof.glsl": {
+          "before": "c52c5953a44ae01cde328ac08febbf081f2526f153b9b9ecc6a82d944445a851",
+          "after": "45a897218b3e9e7addc393511762be96af236ad693d58b4d9cb782485daee644"
+        },
+        "servers/rendering/renderer_rd/shaders/effects/bokeh_dof_raster.glsl": {
+          "before": "9a333542197d3dafe2f9d8171789128e22f6b15eade71a3098a8c16d7322ba5a",
+          "after": "878bede308e088c0270544c02c9e2563cb917304e372d33a9cee5088cb4a2536"
+        }
+      },
+      "base_runtime_sha256": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+      "base_patches": [
+        "render-thread-shutdown",
+        "queued-image-snapshot",
+        "unobserved-pose",
+        "preserve-character-track-caches",
+        "prepare-character-track-caches",
+        "cache-unobserved-track-eligibility",
+        "mobile-shader-recompile-lock",
+        "forward-shader-recompile-lifetime"
+      ],
+      "strip_output": {
+        "source": "bin/godot.linuxbsd.template_release.x86_64",
+        "command": [
+          "strip",
+          "--strip-unneeded",
+          "build-guarded/CPU.x86_64"
+        ],
+        "note": "Copy the release executable to the isolated build directory, then strip that copy. Never overwrite an installed template."
+      }
+    },
+    "return_code": 0,
+    "seconds": 67.41071993100923,
+    "log_sha256": "8f886211e9ee015d0c7877a9daf023716f8aaf2285f1654e6a4602498ed10f78",
+    "candidate": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/build-guarded/CPU.x86_64",
+      "sha256": "769dd027c0b444caca0d5fbbb6014eda80970e991e9f32fdb1f86ec385d20c3e"
+    }
+  },
+  "limits": [
+    "Linux-only isolated snapshots and disposable profiles; no publication or installed template changes.",
+    "No FPS or frame-time claim. The native full-resolution far-only branch costs more than the half-resolution default; the effect remains optional and off by default.",
+    "Focus is the actual camera target, not median rendered depth. Clear sky is protected sharp. No matched R1 reference image, nine-sample GPU depth focus, or full R1 horizon gather/coverage comparison is claimed.",
+    "No mobile-device, Windows, macOS, Android or browser validation. Compatibility used llvmpipe OpenGL; Forward+ and Mobile used Vulkan on RTX 3090.",
+    "Strict image checks use 1280x720, without MSAA, TAA or FSR. Render-scale checks cover parameter recalculation only. No all-AA/scale image matrix or long camera-route acceptance is claimed.",
+    "Authored Dead City Dr20 on/off captures retain live animation. They establish actor visibility, camera composition and legible UI qualitatively; they are not an exact actor-pixel comparison. No complete campaign or physical-input playthrough is claimed."
+  ],
+  "checks": {
+    "total": 657,
+    "failures": 0,
+    "legacy_paired_exact_images": 26,
+    "legacy_paired_exact_pixels": 23961600,
+    "retained_runs": 15
+  },
+  "native_patch": {
+    "path": "engine_patches/godot-4.7/far-dof-sharp-guard.patch",
+    "sha256": "c6070bfbfbf5e36014d37d2b58a74ae8ff156202aa063134cebd0b21610e7286",
+    "source_manifest": {
+      "core/os/os.cpp": {
+        "before": "9c5dab86487ea5dfa7391336510aec451717891f312cfec89aeb0a8b75a898f1",
+        "after": "155b6876a6e247fdf6fca8aee4845c9879ea7b3b1906e87292dd2f5b4c35d1d4"
+      },
+      "servers/rendering/renderer_rd/effects/bokeh_dof.cpp": {
+        "before": "f6c74e5d66380ec8aa21ddf7d8cec77e54b42b53b70413670c093dbc272e5cfb",
+        "after": "5c87417ca784c6f95cf88515718f3578f7c8e1ed43e7e3a0dbb66e94c882d328"
+      },
+      "servers/rendering/renderer_rd/shaders/effects/bokeh_dof.glsl": {
+        "before": "c52c5953a44ae01cde328ac08febbf081f2526f153b9b9ecc6a82d944445a851",
+        "after": "45a897218b3e9e7addc393511762be96af236ad693d58b4d9cb782485daee644"
+      },
+      "servers/rendering/renderer_rd/shaders/effects/bokeh_dof_raster.glsl": {
+        "before": "9a333542197d3dafe2f9d8171789128e22f6b15eade71a3098a8c16d7322ba5a",
+        "after": "878bede308e088c0270544c02c9e2563cb917304e372d33a9cee5088cb4a2536"
+      }
+    },
+    "apply_check": "patch --dry-run --batch -p1 against the prior 8-patch engine source: all four files applied cleanly."
+  },
+  "application_sources": {
+    "game/src/ui/camera_depth_of_field.gd": "2ceccd024e9c7fc514cf54dfffdaa081825da6c2bb562da0e2b87943939c09f1",
+    "game/src/ui/camera_rig.gd": "78eb49f736ad47bca35c0892f12f835c12d6be2f74628712419b27a158912e8a",
+    "game/src/ei/game_data.gd": "900bcc20a0b183736965dfa1da019deccdcaeeacb2c511bcac107d5847353ef2",
+    "game/src/ei/remake_text.gd": "4f88400301a8368caffea0d628aef0f8dbe81c92c7fd1c5c47810e35e3ffba78",
+    "game/src/game/gfx_detect.gd": "692119d0266d0bc3543ad689d338cb1b5a7a81d9c0f178b5b5e1e224b7028120"
+  },
+  "fixture_dependencies": {
+    "camera_depth_of_field_render.gd": "7b703f91782e3577a14b158a7ac8195b66d8769dcce1f9c8cbf4ee36a4e970f2",
+    "story_coop_traps_net.gd": "653b64334bee8ec40cd387805116a8c2154a2b03f14ee6c3c18e1aa6be0c5417",
+    "note": "Historical legacy image comparisons used render-fixture SHA 556840932edbfc31108e1fb8c35183a000f2d6469cfdf932fc24d0bf810adb6f. The final fixture adds real font UI only inside its own _ready; legacy setup and own _ready are unchanged."
+  },
+  "settings": {
+    "key": "gfx_depth_of_field",
+    "default": 0,
+    "graphics_group": 14,
+    "row": 8,
+    "page": "Lighting and shadows",
+    "first_lower_tier": 1,
+    "languages": [
+      "English",
+      "Russian",
+      "German"
+    ],
+    "metadata_test_note": "Latest 398-check metadata snapshot also contains independently committed cliff (13d8de0) and mist (8fcbde9) controls. Their effect implementation and rendering evidence belong to separate receipts.",
+    "value_at_first_lower_tier": 0
+  },
+  "strict_image_review": {
+    "forward_plus_and_mobile": "Both inspected synthetic views preserve the full sharp foreground rectangle and UI, soften only far pattern, and have no visible foreground or horizon fringe.",
+    "full_foreground_region": [
+      358,
+      144,
+      461,
+      518
+    ],
+    "full_foreground_exact_both": true,
+    "far_region_y": [
+      173,
+      425
+    ],
+    "far_region_x_ranges": [
+      [
+        38,
+        358
+      ],
+      [
+        461,
+        1242
+      ]
+    ],
+    "maximum_added_red_both": 0,
+    "note": "Additional independent Pillow analysis of the retained PNGs expands the native fixture's edge ROI to the complete foreground and all background texels on each side; not included in assertion total.",
+    "actual_font": "The additional Forward+ check draws DialogPanel.font() and TEXT_COLOR over a translucent black panel on focused detail. All checked pixels remain exactly equal with the lens enabled."
+  },
+  "excluded_fixture_development": [
+    {
+      "names": [
+        "dof-policy-01",
+        "dof-policy-final-01"
+      ],
+      "reason": "Headless root viewport had zero height, then exact float equality rejected valid 0.9 roundoff. Replaced with fixed SubViewport and approximate float check; no production acceptance from these attempts."
+    },
+    {
+      "names": [
+        "dof-scene-01"
+      ],
+      "reason": "Fixture used headless root viewport, wrong direct-control mode and UI close path, and compared actor state across authored dialogue staging. Corrected to actual branch viewport, mode 2, authoritative dialog_close, and lens-only state window."
+    },
+    {
+      "names": [
+        "dof-scene-rendered-frozen-01",
+        "dof-scene-rendered-frozen-02"
+      ],
+      "reason": "Lifecycle assertions passed, but attempts to freeze actor animation produced an absent dragon in both on/off images. These capture attempts are rejected as authored actor evidence; the live capture pair is retained only for qualitative review. No production unit/fog change was made for these fixture experiments."
+    }
+  ],
+  "authored_scene_review": {
+    "run": "dof-scene-rendered-01",
+    "scene": "Original base bz3g Dead City, Dr20 phrase 3, Old Dragon UID 1000002518",
+    "inspection": "Both retained on/off PNGs show the Old Dragon in its authored grounded dialogue pose. The nearby actor remains visually sharp, distant terrain softens slightly, and the actual dialogue panel remains legible. The playing clip advances between images; this pair does not establish exact actor pixels.",
+    "lifecycle": "Current restored live fixture passes the low-orbit, held dialogue target, live option-off restoration, tactical exit and third-person hero focus checks headlessly. Its headless result is recorded separately from the earlier rendered image source."
+  },
+  "test_sources": {
+    "tools/tests/camera_depth_of_field.gd": "725dd4544085f41efad4936c5acbe2d808a5a1057826a2cef2d3f9f3994758d5",
+    "tools/tests/camera_depth_of_field_legacy.gd": "60794ad1a6b9fa45eb823823f2ab34066f47b7bafd68a67cec29c081961ff760",
+    "tools/tests/camera_depth_of_field_render.gd": "7b703f91782e3577a14b158a7ac8195b66d8769dcce1f9c8cbf4ee36a4e970f2",
+    "tools/tests/camera_depth_of_field_scene.gd": "68bc4cddf16bc5f998224cb87f6a18d349486e5bb8f48d726ce8a41c8f3d3ed5",
+    "tools/tests/graphics_options.gd": "f3a6b76a7e683e1a6c11ff91a7e36332136328925074ef905883c05ceae9f7bb"
+  }
+}

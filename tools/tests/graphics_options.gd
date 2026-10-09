@@ -144,7 +144,7 @@ func localization_and_layout() -> void:
 		await capture(language + "-graphics")
 		panel._show_group(OptionsPanel.REMAKE_GROUP)
 		await capture(language + "-remake")
-		for key: String in ["gfx_water_waves","gfx_terrain_cliffs","gfx_weather_mist"]:
+		for key: String in ["gfx_water_waves","gfx_depth_of_field","gfx_terrain_cliffs","gfx_weather_mist"]:
 			var words: Array = GameData.REMAKE_OPTIONS[key]
 			check(language == "en" or (RemakeText.t(words[0]) != words[0] and RemakeText.t(words[1]) != words[1]),
 				"translated label and dependency help: " + language + " " + key)
@@ -154,7 +154,7 @@ func localization_and_layout() -> void:
 
 
 func presets_and_persistence() -> void:
-	for key: String in ["gfx_waterfalls","gfx_ambient_wildlife","gfx_ambient_particles","gfx_clouds","gfx_terrain_cliffs","gfx_weather_mist"]:
+	for key: String in ["gfx_waterfalls","gfx_ambient_wildlife","gfx_ambient_particles","gfx_clouds","gfx_depth_of_field","gfx_terrain_cliffs","gfx_weather_mist"]:
 		check(GameData.option(key)==0 and key in GameData.OPTIONS_APPLIED,"new effect is opt-in and registered: "+key)
 		for tier in GfxDetect.LAST+1:
 			check(int(GfxDetect.tier_values(tier,GfxDetect.base_values({})).get(key,-1))==0,"automatic tier %d leaves %s off"%[tier,key])
@@ -165,16 +165,19 @@ func presets_and_persistence() -> void:
 		check(GfxDetect.tier_values(tier, base).gfx_water_waves == 0, "automatic tier %d keeps waves opt-in" % tier)
 	base.gfx_water_waves = 1
 	check(GfxDetect.tier_values(2, base).gfx_water_waves == 0, "lower graphics tier clears explicitly enabled waves")
-	base.gfx_terrain_cliffs=1;base.gfx_weather_mist=1
+	base.gfx_depth_of_field=1;base.gfx_terrain_cliffs=1;base.gfx_weather_mist=1
 	check(GfxDetect.tier_values(1,base).gfx_weather_mist==0,"first lower tier clears mist together with required volumetric fog")
+	check(GfxDetect.tier_values(1,base).gfx_depth_of_field==0,"first lower tier clears explicitly enabled DOF")
 	check(GfxDetect.tier_values(2,base).gfx_terrain_cliffs==0,"second lower tier clears explicitly enabled cliff textures")
 	panel._show_group(OptionsPanel.WATER_GROUP)
 	panel._set_value("gfx_water_waves", 1)
+	panel._set_value("gfx_depth_of_field",1)
 	panel._set_value("gfx_weather_mist",1)
 	var quality := int(panel._values.q_aniso)
 	click(Vector2(580, 168 + 24 * OptionsPanel.PRESET_ROW))
 	check(GfxDetect.original_look_on(panel._values) and panel._values.gfx_water_waves == 0, "Original look covers all five pages and new waves")
 	check(panel._values.gfx_weather_mist==0,"Original look clears optional local water mist")
+	check(panel._values.gfx_depth_of_field==0,"Original look clears the optional camera lens")
 	check(panel._values.q_aniso == quality, "Original look keeps texture filtering")
 	click(Vector2(580, 168 + 24 * OptionsPanel.PRESET_ROW))
 	check(not GfxDetect.original_look_on(panel._values) and panel._values.gfx_water_waves == 0, "leaving Original look restores platform defaults with waves off")

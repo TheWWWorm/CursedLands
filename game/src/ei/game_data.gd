@@ -98,12 +98,12 @@ const OPTIONS := [
 	# Opt in until first-use compilation and wider device costs are resolved.
 	["gfx_ground_contact", 1, 2, 22, 6, 0],
 	["gfx_terrain_cliffs", 1, 2, 22, 7, 0],
-	# Lighting and shadows (group 14). Each effect is independent and defaults
-	# on for new and existing settings files.
+	# Lighting and shadows (group 14). Independent effects; DOF is opt in.
 	["gfx_firelight", 1, 2, 14, 0, 1], ["gfx_torch_glow", 1, 2, 14, 1, 1],
 	["gfx_lava_light", 1, 2, 14, 2, 1], ["gfx_foliage_light", 1, 2, 14, 3, 1],
 	["gfx_volumetric", 1, 2, 14, 4, 1], ["gfx_ssao", 1, 2, 14, 5, 1],
 	["gfx_contact_shadows", 1, 2, 14, 6, 1], ["gfx_bloom", 1, 2, 14, 7, 1],
+	["gfx_depth_of_field", 1, 2, 14, 8, 0],
 	# Shadow quality (not gfx_*; Gfx.apply_quality / fit_shadows).
 	["q_shadows", 1, 4, 14, 9, 2], ["q_shadow_fit", 1, 2, 14, 10, 1],
 	# Water (group 23): surface appearance and optional creature interaction.
@@ -311,6 +311,7 @@ const REMAKE_OPTIONS := {
 	"gfx_ssao": ["Ambient occlusion", "Soft contact shadows (SSAO)."],
 	"gfx_bloom": ["Bloom", "Glow around bright lights."],
 	"gfx_weather_mist": ["Local water mist", "Thin drifting mist above verified water and swamp surfaces, strongest on misty mornings and after rain. Requires Volumetric fog and the Forward+ renderer."],
+	"gfx_depth_of_field": ["Depth of field", "Softens the distant background at low camera angles, focusing on the camera target. Tactical views stay sharp. Requires a compatible Forward+ or Mobile build. Off by default."],
 	"gfx_terrain_cliffs": ["Steep rock textures", "Side-projected textures on verified natural rock cliffs. Requires Terrain detail. Preserves paths, other terrain artwork and geometry. Off by default."],
 	"gfx_severed_limbs": ["Severed limbs fly off", "A severed head, arm or leg is cut from the figure and thrown to the ground, where it lies for a while. Off: as the original, the part stays on the body, bloodied."],
 	"display_mode": ["Display mode", "Windowed, fullscreen, or a borderless window covering the screen."],
@@ -361,7 +362,7 @@ const OPTIONS_APPLIED := ["volume_sfx", "volume_stream", "volume_voice", "power_
 	"gfx_grass", "gfx_soft_ground", "gfx_ground_contact", "gfx_water_interaction", "gfx_water_caustics", "gfx_water_current", "gfx_water_waves", "gfx_waterfalls", "gfx_vegetation_interaction", "gfx_biome_cover",
 	"gfx_ambient_wildlife", "gfx_ambient_particles",
 	"gfx_clouds", "gfx_terrain_cliffs", "gfx_weather_mist",
-	"gfx_ssao", "gfx_bloom", "gfx_far_view", "gfx_severed_limbs",
+	"gfx_ssao", "gfx_bloom", "gfx_depth_of_field", "gfx_far_view", "gfx_severed_limbs",
 	"gfx_hd_textures", "gfx_soft_particles", "gfx_lit_particles", "gfx_contact_shadows", "gfx_torch_glow", "gfx_water_reflections",
 	"gfx_firelight", "gfx_materials", "gfx_foliage_light", "gfx_weather_surfaces", "gfx_lava_light", "gfx_detailed_heads",
 	"gfx_sharp_units", "q_aa", "q_shadows", "q_shadow_fit", "q_aniso", "confine_mouse",
