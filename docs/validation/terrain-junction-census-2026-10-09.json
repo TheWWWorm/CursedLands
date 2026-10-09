@@ -1,0 +1,461 @@
+{
+  "date": "2026-10-09",
+  "scope": "Read-only original-map prerequisites for a future three/four-family Natural terrain transition implementation. No production or shader changes.",
+  "production_changes": false,
+  "visual_acceptance": false,
+  "qualified_build": {
+    "directory": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-coop-final-01",
+    "production_revision": "63c16788f1bba2be73d1a00d534b310a4bf0fc98",
+    "sha256": {
+      "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+      "CursedLands.pck": "5a3847a25a7a46d99f63c2f13ef76331556fc6bdd6b504dada47dfab2d90dfcb",
+      "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+    }
+  },
+  "source_sha256": {
+    "game/src/ei/terrain.gd": "837d5f29977398b774789d855c32b69f4847616b57b8f2bd9bff86164beb7db1",
+    "game/src/game/fx/terrain_transition.gd": "0aa6d48bd994a50f77937d4ebc16dbec63fc36a5315a330e065663472ba19be4",
+    "game/src/game/fx/terrain_transition_tiles.gd": "752a5f38b3bdc1c92acdf5eb859262139f0ffdcfac81426f06f8b17e75f4086e",
+    "tools/benchmarks/terrain_junction_census.gd": "97994c65627203ca52f2b063df8b6ff619ece5c84d99b1b943753eea87358c71"
+  },
+  "reference": {
+    "revision": "0092dc6e1d7c4aab3f74644a79e9bfca11ecf293",
+    "paths": [
+      "Source/terrain_tile_presets.h",
+      "Source/shaders/terrain_tile_blend.hlsl",
+      "Tests/terrain_tile_blend_regression.cpp"
+    ]
+  },
+  "method": [
+    "Read original map headers, sector vertices and land codes through existing EITerrain parser methods; do not create map meshes, atlas arrays or transition textures.",
+    "Only exact registered original atlas identities and supported natural ground classes classify. Apply authored rotations and reject missing family metadata.",
+    "Only plain donors actually used on that map qualify, with existing frequency/lower-slot tie breaking. Every shared authored corner must be consistent; each candidate must pass existing finite/nonfolded geometry checks.",
+    "Classify three/four unique corner families and save separate bounded witnesses at exact original displaced center vertices. Original assets remain unchanged."
+  ],
+  "runs": [
+    {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-census-base-03",
+      "campaign": "cursed_lands",
+      "maps": 38,
+      "data_checks": 5198,
+      "failures": 0,
+      "classified_tile_occurrences": {
+        "1": 232381,
+        "2": 197849,
+        "3": 8617,
+        "4": 46
+      },
+      "candidate_tile_occurrences": {
+        "3": 8374,
+        "4": 36
+      },
+      "rejections_overlap": {
+        "conflicting_corner": 215,
+        "missing_donor": 66,
+        "invalid_geometry": 0
+      },
+      "selected_witnesses": {
+        "bz11k": {
+          "3": [
+            {
+              "donor_slots": [
+                28,
+                2,
+                218
+              ],
+              "families": [
+                "stone / black",
+                "stone / dark",
+                "sand / irregular"
+              ],
+              "focus_ei": [
+                95.0,
+                35.0,
+                11.5351753234863
+              ],
+              "original_code": 16676,
+              "tile": [
+                47,
+                17
+              ],
+              "world_corner_ids": [
+                29,
+                30,
+                23,
+                29
+              ]
+            }
+          ],
+          "4": [
+            {
+              "donor_slots": [
+                28,
+                24,
+                2,
+                14
+              ],
+              "families": [
+                "stone / black",
+                "rock / black",
+                "stone / dark",
+                "stone / dark green"
+              ],
+              "focus_ei": [
+                43.0,
+                113.0,
+                6.03167295455933
+              ],
+              "original_code": 49649,
+              "tile": [
+                21,
+                56
+              ],
+              "world_corner_ids": [
+                29,
+                13,
+                30,
+                32
+              ]
+            }
+          ]
+        },
+        "zone12": {
+          "3": [
+            {
+              "donor_slots": [
+                5,
+                2,
+                13
+              ],
+              "families": [
+                "snow / dark",
+                "snow / common",
+                "stone / gray"
+              ],
+              "focus_ei": [
+                137.265869140625,
+                11.2658729553223,
+                22.6223526000977
+              ],
+              "original_code": 168,
+              "tile": [
+                68,
+                5
+              ],
+              "world_corner_ids": [
+                27,
+                26,
+                26,
+                34
+              ]
+            }
+          ],
+          "4": [
+            {
+              "donor_slots": [
+                117,
+                2,
+                124,
+                13
+              ],
+              "families": [
+                "grass / winter normal",
+                "snow / common",
+                "grass / winter faded",
+                "stone / gray"
+              ],
+              "focus_ei": [
+                135.0,
+                255.0,
+                8.6818380355835
+              ],
+              "original_code": 16699,
+              "tile": [
+                67,
+                127
+              ],
+              "world_corner_ids": [
+                11,
+                26,
+                10,
+                34
+              ]
+            }
+          ]
+        },
+        "zone15": {
+          "3": [
+            {
+              "donor_slots": [
+                7,
+                64,
+                5
+              ],
+              "families": [
+                "stone / orange",
+                "sand / gravel",
+                "sand / common grayish"
+              ],
+              "focus_ei": [
+                138.865081787109,
+                39.0,
+                16.6655368804932
+              ],
+              "original_code": 16735,
+              "tile": [
+                69,
+                19
+              ],
+              "world_corner_ids": [
+                40,
+                40,
+                22,
+                17
+              ]
+            }
+          ],
+          "4": []
+        }
+      },
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-coop-final-01/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-census-base-03/tool-source.gd"
+      ],
+      "seconds": 6.255994185979944,
+      "errors": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "other_processes_at_start": [],
+      "other_processes_at_end": [],
+      "evidence_sha256": {
+        "run.json": "b9cb1f8af0c997f2ba25f838aebbceb06a08a4a55c5578dcaff045540b307ecb",
+        "run.log": "84c876fb90bf4da62920200a04b6d095d9c68cd2bde6537a04a6fd183de723ad",
+        "tool-source.gd": "97994c65627203ca52f2b063df8b6ff619ece5c84d99b1b943753eea87358c71",
+        "terrain-junction-census.json": "a4a3bde8718a6a18fa0951004c688ae99504e97ff5bca58ea48daec6611556bb"
+      }
+    },
+    {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-census-lia-02",
+      "campaign": "lost_in_astral",
+      "maps": 51,
+      "data_checks": 7771,
+      "failures": 0,
+      "classified_tile_occurrences": {
+        "1": 326993,
+        "2": 253938,
+        "3": 8956,
+        "4": 45
+      },
+      "candidate_tile_occurrences": {
+        "3": 8653,
+        "4": 35
+      },
+      "rejections_overlap": {
+        "conflicting_corner": 275,
+        "missing_donor": 72,
+        "invalid_geometry": 0
+      },
+      "selected_witnesses": {
+        "bz22k": {
+          "3": [
+            {
+              "donor_slots": [
+                5,
+                2,
+                13
+              ],
+              "families": [
+                "snow / dark",
+                "snow / common",
+                "stone / gray"
+              ],
+              "focus_ei": [
+                137.253967285156,
+                11.2579364776611,
+                22.6218490600586
+              ],
+              "original_code": 168,
+              "tile": [
+                68,
+                5
+              ],
+              "world_corner_ids": [
+                27,
+                26,
+                26,
+                34
+              ]
+            }
+          ],
+          "4": [
+            {
+              "donor_slots": [
+                117,
+                2,
+                124,
+                13
+              ],
+              "families": [
+                "grass / winter normal",
+                "snow / common",
+                "grass / winter faded",
+                "stone / gray"
+              ],
+              "focus_ei": [
+                135.0,
+                255.0,
+                8.68110752105713
+              ],
+              "original_code": 16699,
+              "tile": [
+                67,
+                127
+              ],
+              "world_corner_ids": [
+                11,
+                26,
+                10,
+                34
+              ]
+            }
+          ]
+        },
+        "zone2": {
+          "3": [
+            {
+              "donor_slots": [
+                0,
+                3,
+                48
+              ],
+              "families": [
+                "sand / common grayish",
+                "sand / dark",
+                "sand / grass"
+              ],
+              "focus_ei": [
+                317.0,
+                31.0,
+                9.99954319000244
+              ],
+              "original_code": 49582,
+              "tile": [
+                158,
+                15
+              ],
+              "world_corner_ids": [
+                17,
+                18,
+                17,
+                21
+              ]
+            }
+          ],
+          "4": []
+        },
+        "zone26": {
+          "3": [
+            {
+              "donor_slots": [
+                28,
+                218,
+                1
+              ],
+              "families": [
+                "stone / black",
+                "sand / irregular",
+                "stone / dark"
+              ],
+              "focus_ei": [
+                39.0,
+                117.0,
+                7.80836200714111
+              ],
+              "original_code": 49444,
+              "tile": [
+                19,
+                58
+              ],
+              "world_corner_ids": [
+                29,
+                23,
+                30,
+                29
+              ]
+            }
+          ],
+          "4": []
+        }
+      },
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-coop-final-01/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-census-lia-02/tool-source.gd"
+      ],
+      "seconds": 7.756963749998249,
+      "errors": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "other_processes_at_start": [],
+      "other_processes_at_end": [],
+      "evidence_sha256": {
+        "run.json": "ea04db64e8464287050a2b01965287c4381ba933d3d8b037549d3aaebbe94f77",
+        "run.log": "b7a95dbf23de0d341c60018281065444cf1df4c139935208839c74afd183cb41",
+        "tool-source.gd": "97994c65627203ca52f2b063df8b6ff619ece5c84d99b1b943753eea87358c71",
+        "terrain-junction-census.json": "3cdd105f044d450d826db76139663f9c3aa0ff655089610876b6ad9f560d7233"
+      }
+    }
+  ],
+  "limits": [
+    "Counts are map tile occurrences within each mounted campaign, not deduplicated assets or visible terrain pixels. Base/LiA share maps and art.",
+    "Existing eight-neighbour seam guards and domain-warp compatibility were not relaxed or redesigned. Every three/four-family junction remains unchanged in the game.",
+    "Actual visibility, liquid occlusion, path-edge preservation, shader composition, complete junction visual quality and cost require rendered controls before implementation acceptance.",
+    "Data checks mostly validate archive/header/sector structure; they are not thousands of independent visual or gameplay tests.",
+    "Both accepted headless runs report the existing irrelevant screen-space-AA startup warning; no script errors or additional Godot processes."
+  ],
+  "prior_runs_excluded": [
+    {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-census-base-01",
+      "reason": "First read-only scan stored only first eight witnesses combined, so it could omit four-family examples."
+    },
+    {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-census-base-02",
+      "reason": "Separate three/four witnesses, but focus X/Y omitted original vertex displacement; counts unchanged."
+    },
+    {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-census-lia-01",
+      "reason": "Focus X/Y omitted original vertex displacement; counts unchanged."
+    }
+  ],
+  "review": "Independent read-only review checked sector layout, production gate parity, all emitted atlas identities, map bounds and separate witnesses. Corrected nominal-center witness coordinates before the final two runs.",
+  "next_step": "Prototype a bounded multi-family shader only at these verified sites, preserving existing Original/Detailed and current two-family controls, path guards, live/contact/footprint/cache ownership and default-off policy. Compare complete-frame cost; do not assume reference four-material sampling is free."
+}

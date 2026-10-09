@@ -4478,6 +4478,39 @@ inferred metadata, broad stochastic anti-repetition, transition side projection,
 geometry rounding, long routes and physical-device cost acceptance remain open.
 No installed build, original asset, real save or published release was replaced.
 
+### Three/four-family candidate census
+
+The [read-only junction census](validation/terrain-junction-census-2026-10-09.json)
+now identifies original sites for the next material stage. It reads all 38 base
+and 51 LiA map headers, sector vertices and land codes without constructing map
+meshes or GPU textures. Exact atlas identities, allowed natural ground classes,
+authored rotations, present plain donors, consistent shared corners and valid
+original geometry remain prerequisites. No classification was inferred from a
+map name, nearby colour or a majority vote.
+
+| Mounted campaign | Three-family candidates | Four-family candidates |
+|---|---:|---:|
+| Base, 38 maps | 8,374 | 36 |
+| LiA, 51 maps | 8,653 | 35 |
+
+These are tile occurrences, not unique assets or visible pixels; campaigns
+reuse maps and artwork. Base excludes 215 junctions with conflicting corners
+and 66 with missing donors; LiA excludes 275 and 72 respectively, with overlap
+between reasons. The receipt saves separate three/four-family witnesses and
+their exact displaced original centre vertices. Useful starting sites include
+base zone15 tile `(69,19)` (orange stone/gravel/grayish sand), zone12 `(67,127)`
+(winter grass/snow/gray stone, four families), and LiA zone26 `(19,58)`
+(black/dark stone/irregular sand).
+
+The two final headless scans pass 12,969 archive/data assertions, mostly sector
+structure checks. This is not visual acceptance. Eight-neighbour seam guards,
+domain-warp compatibility, liquid/scenery occlusion and complete-frame cost
+still require rendered controls. All three/four-family tiles remain unchanged
+in production. Independent review corrected witness coordinates to include
+authored XY displacement; earlier scans retain identical counts but are excluded
+from the final witness record. The existing irrelevant headless screen-space-AA
+startup warning is retained explicitly.
+
 ## V8: guarded optional camera depth of field — 9 October
 
 Accepted in `a533078`. `CameraDepthOfField` applies the pinned R1 25-to-50-degree
@@ -4738,7 +4771,10 @@ release, installation, original asset or real save was modified.
    Forward+ adaptation above. Its LiA post-rain motion threshold remains unmet
    in one retained view, without changing the effect to fit the test.
    V6 now projects verified original rock art on steep faces without changing
-   geometry. V8 now applies the optional camera policy with a capability-gated
+   geometry. Its three/four-family transition follow-up now has a read-only
+   census and exact original witness sites in both campaigns; implement and
+   render the shared junction sampler before claiming those candidates supported.
+   V8 now applies the optional camera policy with a capability-gated
    native far-only guard. Their larger parity/device follow-ups are explicit in
    their receipts. V7 remains dependent on verified campaign layout data.
 7. **Gameplay continuation:** U39–U44 and the separate U45 premature-completion
