@@ -1,18 +1,10 @@
 # Gameplay handoff — 9 October 2026
 
-## Stop state and how to resume
+## Current continuation
 
-**Continuation update, 9 October:** the user authorized the renderer chat to
-continue the renderer list, then tackle this backlog, and confirmed that it is
-the only agent working on EI. Renderer changes through `7202b8e` and this
-handoff's gameplay source `09ffbf7` are now combined at `f6c8922` in the canonical
-checkout below. Protocol remains 13; no release or installation was made.
-See `docs/owned-renderer-improvements-2026-10-08.md` for integration evidence and
-remaining renderer work. U45 still takes priority when gameplay work starts.
-The following stop statement and export57 details describe the previous chat's
-handoff, not a new stop instruction for the authorized continuation.
+**Current handoff, 9 October:** the user resumed the renderer list and remaining gameplay reports, with coordinated subagents. Canonical renderer/gameplay work remains combined on protocol 13. No release or device installation was made.
 
-The user explicitly requested: finish the current task, write the remaining work and new reports into a handoff, then stop for now so another agent can continue. The current task is finished and committed; the overall backlog is **not complete**. Do not restart work without a new instruction to resume. No release or device installation was made during this final task.
+U45 was investigated first. The original one-of-three poison-source rule is confirmed and a separate premature queen-completion defect is fixed; the reported all-dead incomplete quest remains unreproduced. U39 healing, U40–U43 camp/inventory usability and U44 grounded dragon dialogue are locally fixed with dedicated evidence below. Renderer work continues from [OWNED_RENDERER_IMPROVEMENT_HANDOFF.md](/home/llm2x/Documents/EI/OWNED_RENDERER_IMPROVEMENT_HANDOFF.md); the earlier stop instruction is superseded by this resumption.
 
 **Canonical checkout:** `/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo`  
 **Branch:** `fix/catacomb-coop-deck`  
@@ -24,17 +16,17 @@ The full indexed tracker is [gameplay-gaps-2026-10-08.md](gameplay-gaps-2026-10-
 
 The previous long entry point, `/home/llm2x/Documents/EI/local/bugs-and-performance-handoff-2026-10-07.md`, now links here. This handoff supersedes its older current-work statements. Broad performance optimization remains deferred at the user's request.
 
-## New requests queued for the next agent — none implemented yet
+## Follow-up requests and current evidence
 
 | Tracker | User report / intended result | Useful starting points and checks |
 | --- | --- | --- |
-| U39 | Healing produces effects that fly upward. | Inspect `game/src/game/spell_fx.gd`, `spells.gd`, native spell-particle code and original healing effect data. Compare original attachment, height, velocity, coordinate space and lifetime before changing the art. Reproduce on host/client; exact healing spell and failing scene were not specified. |
-| U40 | Finished spells should display their installed runes, as weapons already do. | Inspect `game/src/ui/item_view.gd`, `camp_view.gd`, `spell_slots.gd`, and spell/item parsing. Preserve the already-fixed coloured artwork filling the slot. Derive markers from installed runes, not just the prototype. Check inventory, constructor and equipped spell displays as appropriate. |
-| U41 | Entering a spell constructor should automatically filter to spells/relevant ingredients; weapon/armour constructors should do the corresponding filtering. | `game/src/ui/camp_view.gd` and `inventory_panel.gd`: mode changes, `reset_filters`, filter selection and ingredient compatibility. Ensure switching constructors updates visible items and usable components remain accessible. |
-| U42 | Holding the item-transfer button should repeatedly add copies to the shop offer, like holding a skill-upgrade button. | `camp_view.gd`, `inventory_panel.gd`, the existing training repeat-button behavior. Stop on release, focus/mode change, unavailable inventory, or submitted trade. Preserve counted sale stacks, per-player inventory, wear/charge distinctions, and atomic authority validation. |
-| U43 | Materials such as rocks/stones have no hover description. | `game/src/game/items.gd`, original material records/localization and `item_view.gd`/`camp_view.gd` tooltips. Check material IDs and description keys rather than fabricating missing lore. |
-| U44 | The dragon in Dead City should remain grounded rather than flying. | Reference screenshot: `/home/llm2x/Documents/EI/local/bug-references/2026-10-09/dead-city-dragon-reference.png`. Compare that actor's original map placement, movement class, altitude and animation; inspect `game/src/game/unit.gd` and figure/animation selection. This is a separate report from Terror's disappearance and the amulet dragon's timed departure. Do not globally disable flying creatures or all dragon wing animation. |
-| U45 — priority progression blocker | In co-op, «Подземные твари»: players poisoned every source except the middle one; that middle objective unexpectedly showed failed. Killing the weakened queen did not advance the quest. User asks whether this is a softlock. | Not reproduced or diagnosed. Establish the exact campaign/map and inspect original poison-source completion/failure conditions, queen weakness/death gates, script order and shared co-op quest state. Look for a disposable copy of a pre-failure save; do not rewrite success flags or award completion merely from this report. Test the actual poisoning → queen-death route, host/guest parity and save/reload recovery after diagnosing the cause. |
+| U39 | Healing produces effects that fly upward. | Locally fixed in `1ee2336`: removed the extra billboard attached to the native rising light; original body-bound healing particles and light timing remain. [Receipt](/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/gameplay-healing-validation.json): 56 passing checks, 68 original-x86 light samples and viewed ENet before/after captures. The exact originally reported spell/scene was unspecified. |
+| U40 | Finished spells should display their installed runes, as weapons already do. | Implemented in `bd6ec28` / `e185314`: finished camp/equipped spells show original icons for actually installed runes, including duplicates, and name them in tooltips. Full spell artwork remains clear; empty legacy 3D previews no longer cover it. [Receipt](/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/gameplay-camp-inventory-validation.json). |
+| U41 | Entering a spell constructor should automatically filter to spells/relevant ingredients; weapon/armour constructors should do the corresponding filtering. | Implemented in `bd6ec28`: entering each constructor selects its combined matching bag/shop category, including compatible equipment, components and enchantment spells. Manual filters remain available. [Receipt](/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/gameplay-camp-inventory-validation.json). |
+| U42 | Holding the item-transfer button should repeatedly add copies to the shop offer, like holding a skill-upgrade button. | Implemented in `bd6ec28`: a held transfer captures the exact wear/charge item, starts repeating after 0.5 s and adds at most one per 0.075 s tick. Relevant input/UI/inventory changes cancel it; submission remains one atomic authority trade. [Receipt](/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/gameplay-camp-inventory-validation.json). |
+| U43 | Materials such as rocks/stones have no hover description. | Implemented in `bd6ec28`: material tooltips prefer the original localized MATERIAL description over the generic LITEM Material placeholder. [Receipt](/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/gameplay-camp-inventory-validation.json). |
+| U44 | The dragon in Dead City should remain grounded rather than flying. | Locally fixed in `8bb5ced`: the reference is a conversation, and original speaking/listening specials ground the Old Dragon there. Normal flight outside dialogue is preserved. [Receipt](/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/gameplay-dialogue-poses-validation.json): 131 checks and viewed native-camera before/after captures; both peers honor phrase animations, idle updates and dialogue close. |
+| U45 — priority progression blocker | In co-op, «Подземные твари»: players poisoned every source except the middle one; that middle objective unexpectedly showed failed. Killing the weakened queen did not advance the quest. User asks whether this is a softlock. | Original base `gz5g` / `q22g` requires poisoning one of three sources; unused alternatives intentionally fail. Fixed a separate premature-completion bug in `8f0070d`: removing the healthy queen no longer satisfies IsDead before her weakened replacement dies. [Receipt](/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/gameplay-cave-queen-validation.json): 290 passing checks across all three authored routes, host/guest, looted corpses and save/reload. The reported all-dead incomplete softlock remains unreproduced; no pre-failure user save found. |
 
 The dragon image is an unmodified copy of `/tmp/codex-clipboard-eac71246-209a-41e8-a778-b93f0695759f.png`. The durable local copy must accompany a handoff to another machine; it is deliberately outside release assets. There is no new screenshot for U39–U43 or U45.
 
@@ -69,7 +61,7 @@ These are not all confirmed unfixed code defects. Read the linked tracker/receip
 
 ### Priority reproductions and usability
 
-- **U45, «Подземные твари»:** newly reported possible co-op softlock; prioritize this progression blocker before cosmetic requests. Details and investigation boundary are in the table above.
+- **U45, «Подземные твари»:** the original one-of-three poison choices and all authored death gates pass. A separate premature-completion defect is fixed. The reported all-dead incomplete state remains open; reproduce it from a disposable pre-failure save before changing any further quest logic.
 - **U36 / U11, 2× client freezes/teleports and walking in place:** local transport defects are fixed, but the reported multi-second internet/Windows symptom has not been fully reproduced and cleared. Latest measurements are short Linux loopback tests. Run a sustained busy LiA route at 1× and 2× with both peers on protocol 13; record authority tick progress, snapshot arrival gaps, packet sizes/loss, client presentation and freezes. Do not claim a blanket performance cure from isolated packet tests.
 - **U37, controller ergonomics:** rendered ENet tests cover actual input dispatch, but the latest self-cast/ally/body-part menu changes have not been tried with physical Retroid/gamepad controls.
 - **U08, ~4 FPS after Catacombs:** not reproduced by prepared Linux exit/reload/restart comparisons. User cannot remember whether reload or process restart fixed it. Windows original route, longer session and transition/cutscene presentation remain open.
@@ -97,7 +89,20 @@ These are not all confirmed unfixed code defects. Read the linked tracker/receip
 - Broad FPS optimization stays deferred. User accepts **1×, original graphics, approximately 60 FPS on Retroid Pocket 5**. Earlier desktop 100+ FPS statements did not establish the user's case: latest Experimental, Ryzen 7945HX/RTX 4090 Mobile laptop, 4K, 100% render scale, max remake settings, 2× co-op, about 40 FPS. User said shipped defaults; renderer was not explicitly confirmed. Do not present mismatched Linux or virtual-display tests as a fix for that Windows case.
 - Keep useful service/terrain work, but any future CPU redesign must survive repeated complete-tick/simulation measurements. Rendering tests under Xvfb establish function, not FPS acceptance. Avoid overlapping unrelated project benchmarks.
 
-## Final-task evidence
+## Gameplay continuation evidence
+
+The [cave queen receipt](/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/gameplay-cave-queen-validation.json) records 290 passing checks across all three actual original poison routes, host/guest parity, looted corpses, save/reload and reconnect. The baseline source3 route completed the quest before the weakened queen died; `8f0070d` corrects native IsDead semantics. This does not resolve the separate reported incomplete softlock or migrate already-completed saves.
+
+The [dialogue receipt](/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/gameplay-dialogue-poses-validation.json) records 131 passing checks and viewed before/after shots from the original Dead City dialogue camera. `8bb5ced` restores native speaking/listening specials on both peers and releases them at dialogue close. Grounding is limited to conversation; normal flying movement and idle remain original.
+
+The [healing receipt](/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/gameplay-healing-validation.json) records 56 passing checks, 68 retained original-x86 light samples and viewed before/after ENet captures. `1ee2336` removes the extra rising billboard while preserving original particles and illumination. The precise originally reported spell/scene was unspecified. A historical broad scratch light fixture fails identically before/after and is retained as excluded evidence, not reported passing.
+
+All three use disposable Linux profiles and isolated exports; no user saves, shared release staging, publication, protocol/schema change or platform/performance claim. Full campaign and real-network/device coverage below remains open.
+
+
+U40–U43 are implemented in `bd6ec28` and `e185314`. [Camp/inventory evidence](/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/gameplay-camp-inventory-validation.json) records 480 passing assertions across six retained runs, including the latest base headless 88, LiA rendered 92 and a separate actual ENet trade 31. Screenshots were inspected. Held input uses a single-session fixture plus separate authority regression; physical touch/gamepad and Windows remain untested. LiA rendered Unicode-to-ASCII diagnostics are retained and not claimed fixed. No release or installation was made.
+
+## Earlier prison checkpoint evidence
 
 [Prison late-join receipt](gameplay-prison-late-join-validation.json) records export/source hashes and exact commands/logs:
 
@@ -125,7 +130,7 @@ LiA script text=/home/llm2x/Documents/EI/inspection/lost-in-astral/scripts
 LiA original-code analysis=/home/llm2x/Documents/EI/local/lost-in-astral/native/decompiled
 ```
 
-`C/game` is the canonical source. `R/candidate` is the export staging project; copy changed production files there before exporting. The two files changed in the final task match byte for byte. Export57 was built with the existing patched runtime and native library; no engine/native code changed this task. Do not use another stale checkout or assume `--path C/game` tests the exported production PCK.
+`C/game` is the canonical source. `R/candidate` is the export staging project; copy changed production files there before exporting. At the historical prison checkpoint, its two changed files matched export57 byte for byte. The current gameplay continuation used separate isolated snapshots and receipts above; those do not imply that shared staging has been refreshed. Export57 used the existing patched runtime and native library. Do not use another stale checkout or assume `--path C/game` tests the exported production PCK.
 
 Example commands after resumption (choose unused labels/output names; scripts intentionally refuse overwriting existing runs):
 
