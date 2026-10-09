@@ -12,20 +12,21 @@ The source audit and priorities are in
 gameplay goal. Continue on `fix/catacomb-coop-deck` in
 `/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo`.
 The earlier river-current checkpoint is `eda826d`; new checkpoints below cover
-propagating water waves, authored waterfalls, ambient life, clouds/shadows, verified
-rock projection, guarded camera blur and reorganized graphics settings.
+propagating water waves, authored waterfalls, ambient life, clouds/shadows, local
+water mist, verified rock projection, guarded camera blur and reorganized settings.
 Gameplay U39–U44 and the separate U45 removed-actor death-predicate correction
 are committed; the reported U45 incomplete quest remains unreproduced.
-V3, cloud/shadow V5, conservative V6 and camera-policy V8 adaptations are now
-committed. Local water mist and the final combined export are in progress. V7
-requires verified campaign placement data. Do not treat the historical pause
+The all-committed production checkpoint is `57e49cb9c57e1a66b4d4aa0f7fb2353597b9d962`.
+Combined acceptance records 859 checks and 60 captures, with the separate LiA
+mist motion limitation retained. The Haburu first-conversation fix is also
+committed. V7 requires verified campaign placement data. Do not treat historical pause
 statements in older evidence as a current stop instruction.
 
 The original worktree above is historical. Source version remains Experimental 6
 and protocol 13. This task uses private exports and isolated profiles. Installed
 builds, templates, original assets and real saves have not been replaced.
-Current wave acceptance export:
-`/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-final`.
+Current combined acceptance export:
+`/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/final-integrated`.
 The detailed gameplay tracker is `docs/gameplay-gaps-2026-10-08.md`; the incoming
 handoff is `/home/llm2x/Documents/EI/local/gameplay-handoff-2026-10-09.md`.
 
@@ -4046,7 +4047,7 @@ Implementation: `game/src/game/fx/clouds.gd`, `game/src/game/gfx.gd`,
 `game/src/game/sky.gd` and the terrain publication/lifecycle hooks. The option's
 EN/RU/DE metadata was validated and committed with `4a595dc`. Full volumetric
 clouds and physical-device costs remain separate work; localized weather mist
-is being validated as the next bounded atmosphere stage.
+is implemented in the following V5 section.
 
 [Cloud evidence](validation/clouds-2026-10-09.json) records **193 passing checks
 in five final private runs**, with 45 captures. Base and LiA headless policy/
@@ -4079,6 +4080,52 @@ records the baseline failure and **15 passing checks across three backends**:
 a uniform cloud shadow exactly matches reducing only the original sun, while
 ambient/local light and the zero-night-shadow control remain exact. The real
 combined terrain/contact captures are recorded with the subsequent V6 checkpoint.
+
+## V5: bounded local water mist — 9 October
+
+`gfx_weather_mist` adds local morning, night, swamp and lingering-rain mist
+through the existing native Forward+ volumetric pass. It requires
+`gfx_volumetric`; Compatibility and Mobile allocate no mist volumes. The option
+is default off on the Weather/effects page. No global environment density,
+original perimeter fog, gameplay unit, navigation or network state is changed.
+
+`weather_mist.gd` owns at most six FogVolume boxes in a local three-by-three
+12-metre cell neighbourhood. Boxes are at most eight metres high. Up to sixteen
+6² float source masks are cached; construction advances at most twelve texels
+per update with a soft two-millisecond budget. `weather_mist_sources.gd` reads
+actual authored non-emissive liquid triangles, mean heights and scripted flood
+offsets. Centre/corner coverage taps and boundary erosion give up narrow water
+and shore wisps; this is sampled conservative coverage, not a geometric proof
+for every point inside a texel. Caves, unknown regions, other liquid classes
+and Ingos open water are excluded. The shared habitat query skips its unnecessary scenery index.
+
+A pausable Game owner uses terrain time, the existing weather/wind state and
+bounded phase integration. Terrain replacement, held-clock floods, rewinds,
+loading/travel/movie gates and disable/reload are covered. Mist has no shader
+TIME or emission. This adaptation uses a 60% daily morning chance and a two-hour
+wetness decay scale, rather than the pinned reference's 35% and four-hour policy.
+Its maximum density is approximately 0.01429 per metre, below the reference's
+full-morning open-water 0.05. Disjoint cells bound the continuous-field added
+optical depth to one along any ray (a conservative 63.3% opacity ceiling).
+That mathematical ceiling is not a universal party-contrast guarantee.
+
+[Mist evidence](validation/weather-mist-2026-10-09.json) records **304 checks
+across seven wholly passing runs**, plus a separately retained LiA run with
+**52 of 53 checks passing**. Native history, empty-source and restoration
+controls remain within one or two channel levels in these views. Original
+figures remain visible; a character viewed through the mist at a 14.74-degree
+camera angle retains 96.9% dawn and 97.6% post-rain contrast in the sampled
+silhouette. Base swamp and unsupported-renderer controls pass. The LiA clear-noon
+motion comparison changes 19 channels above 2/255 against its strict threshold
+of more than 20; its presence, pause, restoration and readability controls pass.
+The failed criterion is preserved, with no further appearance tuning to cross it.
+Earlier ineffective density prototypes, a high-density diagnostic and invalid
+camera/figure fixtures are excluded and retained separately.
+
+The actual-Game integration also verifies visible mist alongside clouds,
+ambient life and the optional camera lens. Full regional routes, froxel artefacts
+outside the sampled shore rays and device costs remain open. This adds local
+weather fog; the separate full volumetric-cloud renderer remains unimplemented.
 
 ## V3: bounded ambient animals and regional particles — 9 October
 
@@ -4188,6 +4235,51 @@ streamer was added. Resume with a verified layout for the actual mounted campaig
 then validate connected edges, independent materials/liquids, bounded residency
 and actor/script-free teardown against the audit's V7 acceptance list.
 
+## Combined follow-up acceptance — 9 October
+
+The final private Linux export freezes committed application revision
+`57e49cb9c57e1a66b4d4aa0f7fb2353597b9d962`. No uncommitted game changes were
+excluded. Import and pack export complete without errors. The binaries are:
+
+| File | SHA-256 |
+|---|---|
+| `CursedLands.x86_64` | `769dd027c0b444caca0d5fbbb6014eda80970e991e9f32fdb1f86ec385d20c3e` |
+| `CursedLands.pck` | `ed5456d9423a8934d886a214d8b66234de4be0280ca38d36bc8b40c4b2a881de` |
+| `libterrain_search.so` | `d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e` |
+
+[Combined evidence](validation/renderer-followup-integration-2026-10-09.json)
+records **859 passing checks and 60 captures** across three complementary scopes:
+
+- The core renderer fixture deposits real actor wave history with the other
+  terrain, water, contact and atmosphere options enabled. Three backends pass
+  28 checks each; camp and corrected ENet queen fixtures bring this core scope
+  to 210 checks and 33 captures.
+- The actual `Game → World → Map → Terrain` lifecycle passes 125 checks and
+  six captures. Three decorative animals, 94 particles and six mist volumes
+  coexist with clouds and the real camera lens. Pause, loading/travel gates,
+  option changes and actual zone replacement retain correct ownership. Each
+  rendered toggle exceeds held-image variation. All 256 application GDScript
+  hashes and both native binaries match the final export exactly.
+- The final pack passes 398 settings checks, 88 camp checks and 38 original
+  poison-source-three ENet quest/save/reload/reconnect checks. All 21 settings
+  captures are 800×600; the five pages and both entry points fit in English,
+  Russian and German. Mouse, controller key routing and touch dispatch pass.
+  Remake localization is exercised over the mounted English original assets;
+  this is not acceptance of every original-language data pack or physical pad.
+
+Two failed setup runs are excluded explicitly: the first queen test closed its
+peer before clearing its online state, fixed only in the fixture by `b742ddc`;
+the first settings launch let the default display profile override the CLI
+resolution. Its replacement seeds the established private minimum-size profile,
+without changing production or test source. Feature-specific prototype failures
+and the LiA mist 52/53 partial result remain in their own receipts. These totals
+do not imply every feature matrix passed or that the broader backlog is complete.
+
+This is functional Linux validation. Original assets, real saves, installed
+builds, templates and published releases remain untouched; source Experimental 6
+and protocol 13 remain unchanged. Device costs, sustained playthroughs and the
+data-dependent V7/U45 work below are still open.
+
 ## Next work in the established order
 
 1. **P1/P2 remaining texture work:** retained outfit pixels and shared native
@@ -4259,14 +4351,18 @@ and actor/script-free teardown against the audit's V7 acceptance list.
    Mobile restoration limitation and construction-cost evidence. No visual effect
    was silently enabled. V3 now has bounded local wildlife/particles with
    visible-ground placement. V5 has shared clouds, sunlight-only shadows and
-   reflected cloud colour; localized water mist is undergoing validation.
+   reflected cloud colour; localized water mist is implemented with the bounded
+   Forward+ adaptation above. Its LiA post-rain motion threshold remains unmet
+   in one retained view, without changing the effect to fit the test.
    V6 now projects verified original rock art on steep faces without changing
    geometry. V8 now applies the optional camera policy with a capability-gated
    native far-only guard. Their larger parity/device follow-ups are explicit in
    their receipts. V7 remains dependent on verified campaign layout data.
 7. **Gameplay continuation:** U39–U44 and the separate U45 premature-completion
    fix are committed. The all-dead incomplete queen report still needs a
-   reproducing save. The LiA Haburu source audit and a newly reproduced authored
-   camp approach issue are being validated. Follow the current gameplay handoff
+   reproducing save. `f3f1494` fixes the independently reproduced LiA Haburu
+   camp approach issue; 379 source/command/map checks pass. All five missing
+   authored helpers are reachable but absent from the supplied scripts and
+   native table; no replacement behavior was invented. Follow the current gameplay handoff
    for original routes, missing-data boundaries and platform-specific reports;
    do not infer further quest fixes from unconfirmed player states.

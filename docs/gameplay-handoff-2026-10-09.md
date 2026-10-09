@@ -8,8 +8,10 @@ U45 was investigated first. The original one-of-three poison-source rule is conf
 
 **Canonical checkout:** `/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo`  
 **Branch:** `fix/catacomb-coop-deck`  
-**Final production-code checkpoint:** `ad52a200bd5f3dadbbf66bb678d95d1a1b6a924f` (`ad52a20`, shared prison triggers). A subsequent documentation-only commit contains this handoff; use `git log` for the checkout's current HEAD.  
-**Latest validated Linux export:** `gameplay-gaps57`  
+**Combined production checkpoint:** `57e49cb9c57e1a66b4d4aa0f7fb2353597b9d962`; later documentation commits may advance HEAD. Gameplay includes `8f0070d` (separate U45 premature completion), `bd6ec28` / `e185314` (U40–U43 camp), `8bb5ced` (U44 dialogue poses), `1ee2336` (U39 healing orb) and `f3f1494` (Haburu approach).
+
+**Latest private Linux export:** `/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/final-integrated`. Its final camp and original source-three ENet queen route pass 88 and 38 checks respectively. [Combined validation](/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/renderer-followup-integration-2026-10-09.json) records 859 checks and 60 captures across renderer/gameplay integration scopes, not a full campaign or resolution of the reported U45 softlock.
+
 **Current network protocol:** **13**; all peers, including the local simulation service, must match.
 
 The full indexed tracker is [gameplay-gaps-2026-10-08.md](gameplay-gaps-2026-10-08.md): U01–U45 player reports and G01–G15 audit findings. It distinguishes implemented fixes from unverified playthrough/platform coverage. The original audit is `/home/llm2x/Documents/EI/local/implementation-gaps-2026-10-07.md`; it describes historical findings, many now fixed. Do not treat every item in that old audit as a new unfixed defect.
