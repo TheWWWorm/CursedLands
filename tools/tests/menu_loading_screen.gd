@@ -7,6 +7,8 @@ var monitoring := false
 var exposed := 0
 var covered := 0
 var captured := false
+var covered_captured := false
+var new_game := false
 
 func check(ok: bool, label: String) -> void:
 	checks += 1
@@ -18,6 +20,9 @@ func presented() -> void:
 	if session.world != null and not session.loading_game and not session._remote_loading: return
 	if LoadingScreen._current != null:
 		covered += 1
+		if not covered_captured:
+			covered_captured = true
+			get_viewport().get_texture().get_image().save_png("user://menu-covered.png")
 	else:
 		exposed += 1
 		if not captured:
@@ -32,14 +37,16 @@ func _ready() -> void:
 	reparent(get_tree().root)
 	GameData.options.merge({"autosave":0,"show_tutorial":0,"net_upnp":0,"net_lan":0,
 		"net_directory":0,"auto_graphics":0,"control_mode":1,"scroll_border":0},true)
+	new_game = OS.get_cmdline_user_args().has("--new-game")
 	check(LocalHost.available(),"rendered single-player uses the simulation service")
-	var st:=CampaignState.new();st.ensure_hero(0,"Human Hero")
-	st.current_zone="bz1g";st.visited["bz1g"]=true
-	DirAccess.make_dir_recursive_absolute(SaveInfo.directory())
-	check(st.save(SaveInfo.path("quick"))==OK,"prepare disposable camp save")
-	SaveInfo.write("quick",st.get_var(0,"gtime"),"gipat","bz1g")
-	if OS.get_cmdline_user_args().has("--legacy-info"):
-		DirAccess.remove_absolute(SaveInfo.path("quick","info.sav"))
+	if not new_game:
+		var st:=CampaignState.new();st.ensure_hero(0,"Human Hero")
+		st.current_zone="bz1g";st.visited["bz1g"]=true
+		DirAccess.make_dir_recursive_absolute(SaveInfo.directory())
+		check(st.save(SaveInfo.path("quick"))==OK,"prepare disposable camp save")
+		SaveInfo.write("quick",st.get_var(0,"gtime"),"gipat","bz1g")
+		if OS.get_cmdline_user_args().has("--legacy-info"):
+			DirAccess.remove_absolute(SaveInfo.path("quick","info.sav"))
 	var menu:=load("res://src/ui/main_menu.gd").new() as Control
 	main.add_child(menu)
 	menu.start_game.connect(func(s: Session):session=s)
@@ -47,7 +54,14 @@ func _ready() -> void:
 	for i in 5:await get_tree().process_frame
 	RenderingServer.frame_post_draw.connect(presented)
 	monitoring=true
-	if OS.get_cmdline_user_args().has("--continue"):
+	if new_game:
+		# Exercise the actual board and accepted difficulty signal. The movie
+		# is skipped, as after Esc; the worker/load transition is unchanged.
+		MoviePlayer.enabled = false
+		await menu._on_board("new")
+		check(menu._difficulty.visible,"New Game opens its difficulty panel")
+		menu._difficulty._accept()
+	elif OS.get_cmdline_user_args().has("--continue"):
 		menu._continue()
 	else:
 		menu._load_slot("quick")
@@ -56,11 +70,14 @@ func _ready() -> void:
 		await get_tree().process_frame
 	monitoring=false
 	check(session != null and session.local_host.frontend and session.local_host.process_id>0,"menu starts a real separate simulation process")
-	check(session.world != null and session.zone_id=="bz1g" and not session.loading_game,"save reaches a playable camp")
+	check(session.world != null and session.zone_id==("gz1g" if new_game else "bz1g") and not session.loading_game,"menu reaches the requested playable zone")
 	check(covered>0,"loading picture covers service startup")
 	check(exposed==0,"no presented HUD frame before loading picture")
 	check(LoadingScreen._current==null,"loading picture closes after successful load")
 	print("MENU_LOADING_FRAMES covered=",covered," exposed=",exposed)
+	FileAccess.open("user://menu-loading-screen.json",FileAccess.WRITE).store_string(JSON.stringify({
+		"new_game":new_game,"deferred":LoadingScreen.deferred(),"covered":covered,"exposed":exposed,
+		"zone":session.zone_id,"worker":session.local_host.frontend,"worker_pid":session.local_host.process_id},"\t"))
 	check(not await session.load_game_shown("missing-slot"),"missing save returns failure")
 	check(LoadingScreen._current==null,"failed load cleans up loading picture")
 	await session.local_host.stop()

@@ -424,10 +424,18 @@ func _rpc_clock(enabled: bool, paused: bool, rate: int) -> void:
 ## player menu plays it before calling this with `intro` false; otherwise
 ## (co-op, **approx.**) every peer sees it once the first zone is built.
 func new_campaign(intro := true) -> void:
+	# The menu has finished the intro and is handing over to the game. Cover
+	# the first zone before worker startup can yield an empty game view.
+	var first_zone := campaign.zone("gz1g")
+	LoadingScreen.prepare(get_tree(), first_zone, LoadingScreen.NEW_ZONE)
+	await LoadingScreen.hold(get_tree(), first_zone, LoadingScreen.NEW_ZONE)
 	if await _start_single_if_needed() == ERR_SKIP:
+		LoadingScreen.end()
 		return
 	if local_host.frontend:
-		await local_host.request("campaign", {"intro": intro})
+		var answer := await local_host.request("campaign", {"intro": intro})
+		if not answer.get("ok", false):
+			LoadingScreen.end()
 		return
 	_clear_lmp_worlds()
 	if not lmp.is_empty():

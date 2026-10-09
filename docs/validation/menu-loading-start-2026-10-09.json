@@ -1,0 +1,193 @@
+{
+  "date": "2026-10-09",
+  "request": "Local Linux test: New Game exposes empty HUD before loading picture.",
+  "implementation": "Prepare and hold the original first-zone loading picture before starting or requesting the local simulation; close it if startup is cancelled or the worker request fails. Native intro order and load-stage screens remain.",
+  "source_sha256": {
+    "game/src/game/session.gd": "8c8fab59bf675bbb321eca6b19c65c319177a855af9f5e6a396454a0118a93c1",
+    "tools/tests/menu_loading_screen.gd": "9f3742d29ad2137ef4c9e9a82a536d64d4a2417a2f66ebd10e84bf90a88ff8a7"
+  },
+  "candidate_directory": "/home/llm2x/Documents/EI/local/scratchpad/menu-local-test-feedback-20261009/new-game01",
+  "candidate_changes_from_qualified": [
+    "src/game/session.gd"
+  ],
+  "baseline_failures": 1,
+  "candidate_checks": 18,
+  "candidate_failures": 0,
+  "runs": [
+    {
+      "label": "menu-new-baseline01",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/menu-new-baseline01",
+      "run_sha256": "9f301bf97d7e3b168d5927902dca9fa1578c1a903281ee9ec049508539484a5a",
+      "result_sha256": "97e605b8b236dcf9c7e58aa1a3b47a6f8601e6d0cee252e83286f06525eaf2b5",
+      "checks": 9,
+      "failures": 1,
+      "result": {
+        "covered": 6,
+        "deferred": false,
+        "exposed": 678,
+        "new_game": true,
+        "worker": true,
+        "worker_pid": 1663426,
+        "zone": "gz1g"
+      },
+      "errors": [
+        "FAIL no presented HUD frame before loading picture"
+      ],
+      "return_code": 1,
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "7e6353cfa6bb8eae28e322eb57da3398d06a409a591e3a15cba2df98ccf32c52",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "fixture_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/menu_loading_screen.gd": "3f8be6d69c368874fc936e0c42d5a55390d095eb5a879ed4cfd102b2db66f81f"
+      },
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261009-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/menu-new-baseline01/tool-source.gd",
+        "--new-game"
+      ],
+      "overlapping_processes": []
+    },
+    {
+      "label": "menu-new-candidate01",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/menu-local-test-feedback-20261009/menu-new-candidate01",
+      "run_sha256": "ad0a875ff24e89eaab22fda2fde37ecc42c81af5137ada58bf51dc2b6c6709d0",
+      "result_sha256": "4c54be43de19f7a9d20e34a2b472ec61b67540e564f225de5bcebce136495b9f",
+      "checks": 9,
+      "failures": 0,
+      "result": {
+        "covered": 734,
+        "deferred": false,
+        "exposed": 0,
+        "new_game": true,
+        "worker": true,
+        "worker_pid": 1673067,
+        "zone": "gz1g"
+      },
+      "errors": [],
+      "return_code": 0,
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "56c3f737af4856ef9c1e1e66b68276681e04eddbc06ffa5812d4382b550c1e67",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "fixture_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/menu_loading_screen.gd": "9f3742d29ad2137ef4c9e9a82a536d64d4a2417a2f66ebd10e84bf90a88ff8a7"
+      },
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/menu-local-test-feedback-20261009/new-game01/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/menu-local-test-feedback-20261009/menu-new-candidate01/tool-source.gd",
+        "--new-game"
+      ],
+      "overlapping_processes": [
+        {
+          "pid": 1672282,
+          "executable": "/home/llm2x/Documents/EI/local/scratchpad/prison-progression-late-join-20261009/candidate01/CursedLands.x86_64",
+          "headless": true
+        },
+        {
+          "pid": 1673202,
+          "executable": "/home/llm2x/Documents/EI/local/scratchpad/prison-progression-late-join-20261009/candidate01/CursedLands.x86_64",
+          "headless": true
+        }
+      ]
+    },
+    {
+      "label": "menu-new-deferred01",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/menu-local-test-feedback-20261009/menu-new-deferred01",
+      "run_sha256": "517300cdf80d617cb14018b191e22de1233bbd30d199bc0df88c459513799086",
+      "result_sha256": "e3b5bae1543a391679df11fdb96e0b27013961a791be701751f5617dc595234a",
+      "checks": 9,
+      "failures": 0,
+      "result": {
+        "covered": 722,
+        "deferred": true,
+        "exposed": 0,
+        "new_game": true,
+        "worker": true,
+        "worker_pid": 1673898,
+        "zone": "gz1g"
+      },
+      "errors": [],
+      "return_code": 0,
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "56c3f737af4856ef9c1e1e66b68276681e04eddbc06ffa5812d4382b550c1e67",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "fixture_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/menu_loading_screen.gd": "9f3742d29ad2137ef4c9e9a82a536d64d4a2417a2f66ebd10e84bf90a88ff8a7"
+      },
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/menu-local-test-feedback-20261009/new-game01/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/menu-local-test-feedback-20261009/menu-new-deferred01/tool-source.gd",
+        "--new-game",
+        "--loading-deferred"
+      ],
+      "overlapping_processes": [
+        {
+          "pid": 1673202,
+          "executable": "/home/llm2x/Documents/EI/local/scratchpad/prison-progression-late-join-20261009/candidate01/CursedLands.x86_64",
+          "headless": true
+        },
+        {
+          "pid": 1673202,
+          "executable": "/home/llm2x/Documents/EI/local/scratchpad/prison-progression-late-join-20261009/candidate01/CursedLands.x86_64",
+          "headless": true
+        }
+      ]
+    }
+  ],
+  "visual_review": {
+    "baseline": "Root viewed menu-uncovered.png: empty game HUD.",
+    "candidate": "Root viewed menu-covered.png: native loading picture."
+  },
+  "scope": [
+    "Actual New Game board and accepted difficulty signal; intro playback disabled in fixture, same post-intro handoff.",
+    "Real separate simulation process and original opening zone gz1g; every waiting presented frame monitored.",
+    "Normal desktop and forced deferred presentation on Linux Forward+; neither Android nor Windows runtime acceptance.",
+    "Each successful run also verifies missing-save cleanup.",
+    "No performance claim; headless gameplay test processes overlapped candidate runs.",
+    "Separate render thread and final combined-package checks will be recorded in the feedback package receipt."
+  ]
+}
