@@ -27,6 +27,8 @@ its 712-file candidate01 stage; only story_compat.gd and its generated UID diffe
 from the preceding prison-alarm candidate02. Graphics, settings and both native
 binaries retain the earlier qualification. The separate renderer candidate in
 the working tree is not part of this qualified gameplay export.
+**Linux local test requested by the user:** [`1.0.3-local.20261009`](/home/llm2x/Downloads/CursedLands-1.0.3-local.20261009-linux-x86_64.tar.gz) is available in Downloads, with an unpacked copy at `/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261009-linux-x86_64`. It uses production checkpoint `518c2b5`, protocol 13 and the qualified native binaries. All 262 compiled scripts and every packed resource except the displayed version settings are byte-identical to the qualified discovery export. The uncommitted terrain-contact lighting experiment is excluded. The actual package passes nine playable-camp/loading/service checks and a normal LiA launcher startup; archive readback and executable permissions are verified. Tests used isolated profiles. [Package evidence](validation/linux-local-test-2026-10-09.json). This is a local test, not a published stable release.
+
 [Previous junction evidence](validation/terrain-junctions-2026-10-09.json)
 qualifies exact three/four-family Natural transitions across both campaigns,
 with 19,911 GPU probes on three desktop backends and original-art controls.

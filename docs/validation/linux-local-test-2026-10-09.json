@@ -1,0 +1,141 @@
+{
+  "version": "1.0.3-local.20261009",
+  "source_commit": "518c2b59ececd0d2dc8c73496f49da5f24e49d76",
+  "folder": "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261009-linux-x86_64",
+  "archive": "/home/llm2x/Downloads/CursedLands-1.0.3-local.20261009-linux-x86_64.tar.gz",
+  "archive_bytes": 35847680,
+  "archive_sha256": "b5aee8e2277c4d2c89979ce03f5e88bc90a9dd87f7a4674d4c94ce76141b5851",
+  "archive_contents_exact": true,
+  "executable_modes_preserved": true,
+  "files": {
+    "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+    "SHA256SUMS.txt": "0dfb7fcd59f92676c406e455e6d7a13f60ed7f3bd034dd05b4e18f788841ee19",
+    "BUILD-INFO.json": "a60ae997d0bdc27200d182fd0b0a30d1eceea1210b7de0112699caf1b54b998c",
+    "Play.sh": "75835f261e9acd2b45973152790cabf255b05b649f0f059997c1de9ba4e3ec2b",
+    "LICENSE.md": "4d3172fe316bf440607488dc89cb6ef53ce476a46491367afc3d008211ac3f1c",
+    "GODOT_LICENSES.txt": "d7f4419c30e0d321f36745007fc0390e5f4095035e1eed15db5d6cd504d8c5f7",
+    "FONT_LICENSE.txt": "f32df582a2aab128c07b2f7e36e7b928dc5f6bd82657b905c04f91459f9e5cf9",
+    "CursedLands.pck": "7e6353cfa6bb8eae28e322eb57da3398d06a409a591e3a15cba2df98ccf32c52",
+    "README.txt": "fc6203ec741bc8147c2b02e8ae3daf8d10908e2d63628c7a0b384e49acd73f6e",
+    "NATIVE_NAVIGATION_NOTICES.txt": "a220aaa05ae0d52c1366e166da6aa114049e4e0327d156fbd268325d22aff517",
+    "THIRD_PARTY_NOTICES.md": "155e90bf4d7dfe7eae2a6d0db6ad3e4716fe78e3edb8223dca05db825f8e92ba",
+    "icon.svg": "25c9306728089c8108e2210b9a3cd8e3b378da90f26959722f2f2423540662d2",
+    "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e",
+    "licenses/LGPL-2.1.txt": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551"
+  },
+  "build": {
+    "output": "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261009-linux-x86_64",
+    "baseline": "/home/llm2x/Documents/EI/local/scratchpad/prison-discovery-late-join-20261009/candidate01",
+    "steps": [
+      {
+        "phase": "import",
+        "exit_code": 0,
+        "log_sha256": "c3cf03959846341dd43bd440da5d8cc3baa977bc418c3511aa45070dc7519fb3",
+        "errors": []
+      },
+      {
+        "phase": "export",
+        "exit_code": 0,
+        "log_sha256": "3cdc449dfeab7cb3b5fc1e3ac9760dd7908e40810b9a0c8de8d5cf9f0fe3d022",
+        "errors": []
+      }
+    ],
+    "info": {
+      "version": "1.0.3-local.20261009",
+      "source_commit": "518c2b59ececd0d2dc8c73496f49da5f24e49d76",
+      "protocol": 13,
+      "published": false,
+      "pck_resources": 673,
+      "compiled_scripts": 262,
+      "changed_pack_resources_from_qualified_build": [
+        "project.binary"
+      ],
+      "files": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "7e6353cfa6bb8eae28e322eb57da3398d06a409a591e3a15cba2df98ccf32c52",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      }
+    }
+  },
+  "menu_smoke": {
+    "command": [
+      "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261009-linux-x86_64/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--rendering-method",
+      "forward_plus",
+      "--windowed",
+      "--resolution",
+      "800x600",
+      "--position",
+      "-10000,-10000",
+      "--audio-driver",
+      "Dummy",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/linux-local-test-menu01/tool-source.gd",
+      "--continue"
+    ],
+    "return_code": 0,
+    "seconds": 41.79980308696395,
+    "timeout_seconds": 120,
+    "termination_reason": null,
+    "errors": [],
+    "warnings": [],
+    "campaign": "base",
+    "source_sha256": {
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/menu_loading_screen.gd": "4276ed3165885d2e226db5cb60d3b1a603c476c4d3d38e6de14ae794037e3257"
+    },
+    "build_sha256": {
+      "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+      "CursedLands.pck": "7e6353cfa6bb8eae28e322eb57da3398d06a409a591e3a15cba2df98ccf32c52",
+      "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+    },
+    "other_processes_at_start": [
+      {
+        "pid": 1642852,
+        "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+        "headless": false
+      }
+    ],
+    "other_processes_at_end": [
+      {
+        "pid": 1644171,
+        "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+        "headless": false
+      }
+    ],
+    "captures": {},
+    "input_profile": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/linux-local-test-menu01/isolated/data/godot/app_userdata/Cursed Lands/settings.cfg",
+      "contents": "[options]\ndisplay_mode=0\nresolution=1\nq_aa=0\nconfine_mouse=0\nauto_graphics=0\nshow_tutorial=0\n[display]\nresolution=\"800x600\"\n[remake]\ngfx=4\n",
+      "sha256": "933a57de3ff7460612be42856220531357074318728b5e66f907ac50e5f20cf0"
+    }
+  },
+  "lia_smoke": {
+    "command": [
+      "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261009-linux-x86_64/Play.sh",
+      "--rendering-method",
+      "forward_plus",
+      "--windowed",
+      "--resolution",
+      "800x600",
+      "--position",
+      "-10000,-10000",
+      "--audio-driver",
+      "Dummy",
+      "--quit-after",
+      "120",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+      "--no-movies"
+    ],
+    "cwd": "/tmp",
+    "exit_code": 0,
+    "seconds": 18.664838571974542,
+    "errors": [],
+    "local_version_logged": true,
+    "clean_exit_logged": true
+  },
+  "published": false
+}
