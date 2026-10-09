@@ -15,19 +15,19 @@
       "/home/llm2x/Documents/EI/local/scratchpad/gameplay-camp-ui-20261009/project/game",
       "--export-release",
       "Linux",
-      "/home/llm2x/Documents/EI/local/scratchpad/gameplay-camp-ui-20261009/build03/CPU.x86_64"
+      "/home/llm2x/Documents/EI/local/scratchpad/gameplay-camp-ui-20261009/build04/CPU.x86_64"
     ],
     "sha256": {
       "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
       "libterrain_search.so": "dfd05a2ac322886c759d1512d7ca830388a67cbac8e04c529312855ba1eb0b69",
-      "CPU.pck": "acddac09db5260059aaba3635c9bba620351f536b0fdcb4a61e540eab88bcbeb"
+      "CPU.pck": "03c862c538bba7fe7a98b07ca5722fe644d77f9ab5f402144015d73172cb1768"
     }
   },
   "source_sha256": {
     "game/src/game/items.gd": "813cfccd27403b8181991d7cebf04b40b87ea9ec4bb5c2b01c600dc6b5f69965",
-    "game/src/ui/camp_view.gd": "721084975e19016906da99baab1c7f686328db103d56ba37ae6198701d938f8a",
+    "game/src/ui/camp_view.gd": "8ad854276f2d8aef8de7d78089badc79c095c3627a530920e61235a48e69639c",
     "game/src/ui/spell_slots.gd": "7f3580fad220c6423ff730f21d46a51b673bb2003548e56ebc85f9f2f2fbd0f5",
-    "tools/tests/camp_inventory_ui.gd": "de9ae73e7818950fd6f58e44d7041cfe3ad7c40a43a03c42f9c0c4b45e886273"
+    "tools/tests/camp_inventory_ui.gd": "fa8e414dc1bf497bd4c56d7f42562430b76cc5ce209e11f00856700b0f800344"
   },
   "runs": [
     {
@@ -145,6 +145,68 @@
         "COOP_TRADE 31 checks 0 failures"
       ],
       "unicode_diagnostics": 0
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/gameplay-camp-ui-20261009/build04/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camp_inventory_ui.gd",
+        "--label=camp-inventory-ui-base-headless-06",
+        "--ei-inline-host"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 12.875033598975278,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "09c097577aff058f89c00f2817b0ab9e7f6eb9ded32b365d077ee55657ed17af",
+      "label": "camp-inventory-ui-base-headless-06",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/camp-inventory-ui-base-headless-06.log",
+      "summary": [
+        "CAMP_INVENTORY_UI cursed_lands 88 checks 0 failures"
+      ],
+      "unicode_diagnostics": 0
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/gameplay-camp-ui-20261009/build04/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--resolution",
+        "1600x900",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camp_inventory_ui.gd",
+        "--label=camp-inventory-ui-astral-rendered-06",
+        "--ei-inline-host"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 37.78151954599889,
+      "errors": [],
+      "warnings": [
+        "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+      ],
+      "log_sha256": "d8eb8f92028332336d53dec0d093a7df7357c5547d07ffe69a2f1f09b7d59a47",
+      "label": "camp-inventory-ui-astral-rendered-06",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/camp-inventory-ui-astral-rendered-06.log",
+      "summary": [
+        "CAMP_INVENTORY_UI lost_in_astral 92 checks 0 failures"
+      ],
+      "unicode_diagnostics": 36
     }
   ],
   "screenshots": [
@@ -177,6 +239,21 @@
       "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/camp-inventory-ui-astral-rendered-05/godot/app_userdata/Cursed Lands/spell-constructor-runes.png",
       "sha256": "889c97c905658d7eeccabe85c99a10048c0e387dde0855494dd406403db3e733",
       "inspected": true
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/camp-inventory-ui-astral-rendered-06/godot/app_userdata/Cursed Lands/equipped-spell-runes.png",
+      "sha256": "5672cf6ee657c93cd9c7ce4faa9ea63f79f843277c6233c9e55b3bd7111903fc",
+      "inspected": true
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/camp-inventory-ui-astral-rendered-06/godot/app_userdata/Cursed Lands/material-description.png",
+      "sha256": "17eddff02ba84a3f39674c9595fc215feb2e76fbfd9ddca643b187a63a84c8d2",
+      "inspected": true
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/camp-inventory-ui-astral-rendered-06/godot/app_userdata/Cursed Lands/spell-constructor-runes.png",
+      "sha256": "889c97c905658d7eeccabe85c99a10048c0e387dde0855494dd406403db3e733",
+      "inspected": true
     }
   ],
   "findings": {
@@ -192,6 +269,23 @@
   ],
   "iteration_notes": [
     "build01 passed base 80 checks; visual inspection caught rune/price overlap. build02 moves markers below camp prices and passed base rendered 81 checks (screenshots retained). build03 also restores installed-rune text in tooltips/plain info.",
-    "Early LiA fixture used absent bz2g and dereferenced null world in the release runtime (SIGSEGV). Corrected to authored bz1h and guarded absent world; no production/runtime fix inferred. Headless fixture frame waits were fixed before the final 91-check run."
-  ]
+    "Early LiA fixture used absent bz2g and dereferenced null world in the release runtime (SIGSEGV). Corrected to authored bz1h and guarded absent world; no production/runtime fix inferred. Headless fixture frame waits were fixed before the final 91-check run.",
+    "Full-size build03 Russian screenshot review exposed initial completed spell cards hidden by opaque empty legacy 3D viewports. build04 hides empty/spell-piece ItemViews, with a new invariant assertion, base headless 88/88 and Russian rendered 92/92; all three new screenshots inspected and spell card artwork visible. Earlier build03 screenshot records remain as iteration evidence, not final visual acceptance."
+  ],
+  "previous_export": {
+    "command": [
+      "/home/llm2x/.local/bin/godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/gameplay-camp-ui-20261009/project/game",
+      "--export-release",
+      "Linux",
+      "/home/llm2x/Documents/EI/local/scratchpad/gameplay-camp-ui-20261009/build03/CPU.x86_64"
+    ],
+    "sha256": {
+      "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+      "libterrain_search.so": "dfd05a2ac322886c759d1512d7ca830388a67cbac8e04c529312855ba1eb0b69",
+      "CPU.pck": "acddac09db5260059aaba3635c9bba620351f536b0fdcb4a61e540eab88bcbeb"
+    }
+  }
 }

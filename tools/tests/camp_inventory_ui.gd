@@ -109,6 +109,7 @@ func _ready() -> void:
 	var stock := camp.shop_items()
 	check(stock.has("keystone:fireball") and stock.has("rune:e1") and stock.has("spell:" + spell), "spell constructor also exposes all shop ingredient categories")
 	camp._process(0.0)
+	check(not camp._views.bag0.visible and not camp._views.bag1.visible, "legacy 3D viewports cannot cover the completed spell artwork")
 	await snapshot("spell-constructor-runes")
 	camp.set_mode("itemconstr")
 	bag = camp.bag_items(); stock = camp.shop_items()

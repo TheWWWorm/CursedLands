@@ -1446,6 +1446,9 @@ func _process(_dt: float) -> void:
 	for k in _views:
 		if _key_shown(k):
 			var id := String(_content.get(k, [""])[0])
+			# Spell cards are drawn directly below. An empty SubViewport can
+			# retain an opaque first frame, so it must not cover that artwork.
+			_views[k].visible = not id.is_empty() and not Items.is_spell_piece(id)
 			_views[k].show_item("" if Items.is_spell_piece(id) else id)
 	queue_redraw()
 
