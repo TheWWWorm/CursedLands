@@ -8,19 +8,21 @@ Starting commit: `3172ede12a5f41b0182c34a70b5eeda787c95e52`
 
 The source audit and priorities are in
 [OWNED_RENDERER_IMPROVEMENT_HANDOFF.md](/home/llm2x/Documents/EI/OWNED_RENDERER_IMPROVEMENT_HANDOFF.md).
-The renderer work was initially isolated from the concurrent work in
-[Optimize game performance](codex://threads/01a117f6-fd90-7190-be5e-9fc0c2bc06aa).
-That chat was addressing runes, dialogue cameras, Shelter co-op departure,
-party/pet persistence and ability pricing, then creature visibility and low FPS
-after a Catacombs transition during this batch. Its checkout is
-`/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo`.
-During that stage, only the renderer worktree and a separate QA directory were
-changed. On 9 October, with the other chat stopped and explicit user
-authorization, both histories were combined at `f6c8922` and the canonical
-checkout above was advanced to it. **Continue in that canonical checkout on
-`fix/catacomb-coop-deck`, with protocol 13.** The integration section records
-the validation. Installed builds, Android devices and real save profiles were
-not modified by this renderer work.
+**Handoff checkpoint — paused at the user's request, 9 October.**
+The current river-current task is complete at `eda826dd8722903a3c152a2d0fb7232560ef15c1`; the broader backlog
+is unfinished. Continue on `fix/catacomb-coop-deck` in `/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo` when requested.
+The canonical source already includes the `f6c8922` renderer/gameplay merge and
+protocol 13. No merge, active owner, or parallel-agent restriction is pending.
+The original worktree named above is historical. The latest private validation
+export is `/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/current-final`; its 238 production scripts and Linux helper
+match the checkpoint. Source version remains Experimental 6. Installed builds,
+engine templates, real saves and devices were not changed.
+
+Read **V4 river currents — final checkpoint** below before implementing more
+water features. Next are propagating waves and waterfalls; the remaining
+renderer priorities follow at the end. After that list, use
+`/home/llm2x/Documents/EI/local/gameplay-handoff-2026-10-09.md`, starting with **U45**.
+No U39–U45 gameplay fix was attempted in this checkpoint.
 
 P1 and P2 were selected in the audit's priority order because they can be
 implemented in texture-loading/composition code without changing those gameplay
@@ -146,7 +148,7 @@ Linux engine from the P5 cache checkpoint. Final candidate pack SHA-256:
   browser build. Adding a `web` feature tag to a desktop template failed to
   select this path because the template still advertises `threads`; those
   earlier runs are explicitly superseded.
-- Other agents' game processes overlapped final runs. Timings remain diagnostic;
+- Other game processes overlapped final runs. Timings remain diagnostic;
   no controlled frame-time, FPS or device-performance claim is made. Native work
   counts, byte comparisons and rendered captures are the accepted evidence.
 
@@ -339,7 +341,7 @@ Vulkan backends each texture also avoids its enlarged top-level readback and CPU
 mip generation. The initial source upload and GPU filtering remain. Final GPU
 texture payload, dimensions, draw counts and filtering are unchanged. This does
 not compress HD output, reduce final VRAM, or eliminate terrain atlas readbacks.
-Compatibility retains its existing CPU path. Other agents' processes overlapped
+Compatibility retains its existing CPU path. Other processes overlapped
 the runs, and the new load timer excludes asynchronous GPU completion: do not
 claim controlled load-time, FPS or device performance gains from these receipts.
 Android, browsers, Windows and other GPU drivers were not tested in this batch.
@@ -360,9 +362,8 @@ are retained rather than counted as successful validation.
 The current checkpoint changes production only in `gfx.gd`, `tex_upscale.gd`,
 the new `tex_upscale_texture.gd`, and the two data-source cache entries. No
 character, controller, combat, network, or zone-transition implementation was
-edited. The accumulated branch still requires reconciliation of the older
-`map_scene.gd` integration with the other chat's lift work; this checkpoint adds
-no new hook there. Fresh read-only applicability and target-preservation receipts,
+edited. The older `map_scene.gd` conflict was subsequently resolved in `f6c8922`;
+this texture checkpoint added no new hook there. Fresh read-only applicability and target-preservation receipts,
 commands, source/engine/pack hashes, test counts and image comparisons are in
 [hd-resident-textures-2026-10-09.json](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/docs/validation/hd-resident-textures-2026-10-09.json).
 The focused implementation/test patch passes against
@@ -509,8 +510,7 @@ scripted movement/removal while keeping batches spatially bounded. Specific
 integration constraints found in current source:
 
 - `CameraFade._build/_hides/_set_alpha` retains each object's mesh triangles
-  and changes only that object's material during a fade. The other chat's
-  new `DialogCamera` obstruction check likewise reads individual visible
+  and changes only that object's material during a fade. The `DialogCamera` obstruction check likewise reads individual visible
   `MeshInstance3D` nodes and triangle geometry.
 - `TerrainDetails._update_scenery`, `SurfaceWeather.rasterize_cover` and
   navigation inspect the logical mesh nodes. Hiding/removing those nodes to
@@ -562,8 +562,8 @@ Restoring original meshes restored the original draw count in every case.
 Pixel restoration was exact except the Compatibility zero-light row's three
 pixels. Do not declare the prototype visually equivalent or enable it globally.
 Next work needs compatible light membership as well as the lifecycle/fading
-constraints above. The other chat was also investigating disappearing creatures;
-leave P4 visibility/culling code alone while that investigation is active.
+constraints above. Preserve gameplay visibility when testing P4; rendering experiments must not
+change whether creatures exist or can be targeted.
 
 Evidence: `scenery-batches-gl_compatibility.log` and
 `scenery-batches-forward_plus.log` under the QA directory, with
@@ -910,8 +910,8 @@ measurement contradicts using draw count alone as evidence of a speedup.
 Android hardware and browsers may have different submission costs; they require an
 actual benefit before a default is justified. Avoid spending further desktop
 work on rollout without identifying a workload where batching wins. P4 should
-start with measured hidden-geometry cost and preserve the other chat's logical
-visibility/guard work; its recent changes are in story/co-op scripts.
+start with measured hidden-geometry cost and preserve logical
+visibility/guard behavior in the story/co-op scripts.
 
 Commands, source/export hashes, timing windows, lifecycle results, the exact
 reinsertion control and the integration check are in
@@ -1046,9 +1046,8 @@ and images are under the isolated QA `p4-occlusion` directory.
 
 ## P5, first stage: stable local-shadow selection
 
-At this first-stage checkpoint, P4's production visibility changes overlapped
-the other chat's investigation, so the independent change was the local-light
-selection policy. The original
+This first-stage checkpoint implemented the local-light selection policy;
+P4 visibility changes were evaluated separately. The original
 fire path already favored incumbents by 20%; lava shadow selection had no such
 bias. Both could still change abruptly at the eligibility distance, and fire
 could exchange shadows every 0.25-second scan when focus movement overcame its
@@ -1512,7 +1511,7 @@ shader path, but opacity writes and native shadow rendering still cost work.
 Some correctness runs overlapped unrelated Godot processes, recorded in the
 evidence; those processes were untouched. Physical Android testing, full-map
 and caster-aware selection acceptance, and static/dynamic map caching remain
-open. The Retroid, installed builds and the other chat's files were not modified.
+open. The Retroid and installed builds were not modified.
 
 Exact source/export hashes, commands, captures, platform-gate results,
 discarded attempt and read-only integration check are in
@@ -1726,8 +1725,7 @@ and bias, but does not establish subjective quality on every device.
 Evidence: `sun-control.log`, `sun-gl.log`, `sun-gl-held.log`, `sun-forward.log`,
 `export-sun-gl_compatibility.log`, `export-sun-gl_compatibility-held.log`,
 `export-sun-forward_plus.log`, `export-sun-forward_plus-held.log`, plus
-`p6-export.log` and the isolated `p6-export/` release. No installed build or
-other chat's working files were changed.
+`p6-export.log` and the isolated `p6-export/` release. No installed build was changed.
 
 ## V1: validate the terrain surface before blending objects
 
@@ -1963,8 +1961,8 @@ These are observed 24-frame warmups after shader changes, not a controlled drive
 cache-flush benchmark. Warm cached runs are much faster. Cold preparation is
 still unacceptable as an automatic new effect. The sampled viewport CPU/GPU
 costs are retained rather than converted into gameplay FPS claims; GPU clock/load
-variation matters, and one earlier exploratory run overlapped the other chat's
-GPU test. The exported validation records other game processes at each start.
+variation matters, and one earlier exploratory run overlapped another
+GPU process. The exported validation records other game processes at each start.
 
 Further work before treating V1 as finished:
 
@@ -2049,10 +2047,9 @@ requirements listed above remain open.
 
 ## Integration
 
-### Current combined checkpoint — 9 October
+### Completed combined checkpoint — 9 October
 
-The user confirmed that the other EI agent has stopped and explicitly
-authorized shared changes. The renderer branch through `7202b8e` is now
+The renderer branch through `7202b8e` was
 reconciled with the latest gameplay branch at
 `09ffbf7cc6e820907ad80040cc232bd3665f4060`, including its unpublished fixes and
 **protocol 13**. The one conflict in `game/src/ei/map_scene.gd` preserves
@@ -2080,58 +2077,14 @@ ground contact remain opt-in/off by default. Desktop sunlight remains continuous
 including Compatibility; held sunlight is the constrained-device fallback and
 explicit override. This merge does not establish a faster Android/web replacement.
 
-### Historical isolation and applicability checks
+### Historical applicability evidence
 
-The implementation is in this isolated branch. Do not overwrite another agent's
-working checkout or installed packages to test it. Integrate the focused commits
-once the active source owner can accept them, preserving their newer changes.
-
-P1 changes only `unit_model.gd` and `unit_wounds.gd` plus tests/documentation.
-The 9 October shared-layer follow-up changes production only in `unit_wounds.gd`.
-The first P2 stage changes only `mmp_texture.gd`, the texture-loading methods in
-`game_data.gd`, and `Gfx.texture_3d`. Its 9 October HD follow-up adds the resident
-texture helper, the `TexUpscale` factory/lifetime split, and two missing foliage
-entries in `DataSwitch.CACHES`, plus tests/documentation. No network, inventory,
-campaign-state, pricing or dialogue-camera behavior was edited.
-The first P3 stage changes only `figure.gd`, its resource census, regression
-fixture and this documentation. No object ownership or camera code was changed.
-The P3 probe is a standalone benchmark only (commit `3855cc4`). P5 changes
-`local_lighting.gd` and, in the Compatibility follow-up, `gfx.gd` and the new
-`local_light_shader.gd`, plus their regression fixtures and documentation.
-The P6 comparison is a standalone benchmark. The subsequent user-directed
-default correction changes only sun policy/setup and menu sun aiming, plus its
-test; it does not modify character visibility or zone-transition code.
-The V1 surface probe was standalone. The subsequent opt-in path adds the modules
-above and small hooks in `figure.gd`, `map_scene.gd`, `terrain.gd`, `gfx.gd`,
-`game_data.gd`, graphics defaults and `soft_ground_deform.gd`. It does not modify
-character/zone-transfer ownership, controls, combat or camera implementation.
-
-The P3 runtime adds only the new manager/watch/light-policy modules and small
-hooks in `map_scene.gd`, `camera_fade.gd` and `ground_contact.gd`, plus tests and
-the benchmark. It preserves individual object nodes and does not touch the
-other chat's newer creature visibility or story/co-op effect changes.
-
-The full stack through `851a843` previously passed a read-only check against
-clean `40ea5a981b992bda63d4e505f47747a7c60068f2`. The other chat has since
-committed its lift changes. The current accumulated patch needs reconciliation
-in `game/src/ei/map_scene.gd`; **do not apply the full patch blindly**. All
-remaining paths pass when that file is excluded. The latest check includes the
-new engine patch and P1 cache work. It records target HEAD/status and hashes
-before/after; it did not change any target file. The P1 check targets
-`a8eb6ffa42915acd849b6c9103ad6d24a841b5c3` with the other chat's active Kel,
-safe-zone control, co-op and loading changes. All 81 recorded file hashes,
-HEAD and status remain unchanged. Exact dirty files and commands are in the
-P1 cache evidence. The native engine patch separately passes a read-only check
-against the pinned engine source.
-
-The current foliage/cache changes add no new map-loading or gameplay hooks.
-The overlap is from this branch's earlier scenery/ground-contact integration,
-where the other chat now has lift initialization. Reconcile both owners' setup
-and teardown when integrating; preserve `catacomb_lift` as well as the
-experimental scenery manager. `game_data.gd` also contains earlier shared
-changes. Recheck the active checkout before integration and preserve its newer
-control/options/session/travel changes. Do not message or alter the other chat
-without human authorization. No patch was applied here.
+The checks against `40ea5a9`, `a8eb6ff` and `9e4576f` predate the completed
+`f6c8922` integration. They left their target source, HEAD and status untouched,
+with hashes retained in the P1/P2/P3 receipts. The former `map_scene.gd` conflict
+is resolved: preserve `CatacombLift.apply`, saved-position migration, the scenery
+manager and ground-contact lifetime together. No outstanding integration or
+separate-owner approval is implied by those older records.
 
 ## C1: rigid character batching experiment — 9 October
 
@@ -3848,9 +3801,125 @@ The regional categories are implemented; long gameplay routes, full visual
 review, device generation/upload/overdraw costs, survivor compaction and the
 older coastal depth and Mobile restoration limits remain open. Other reference
 shape variants are not asserted to have one-to-one parity. Continue the
-remaining renderer list, including V4 wave fields/currents/waterfall detail,
+remaining renderer list, including V4 wave fields and waterfall detail,
 then the gameplay handoff starting with U45. Do not enable defaults on the basis
 of these isolated tests.
+
+## V4 river currents — final checkpoint, 9 October
+
+**Implemented in `eda826d`.** **River currents** (`gfx_water_current`) defaults
+off on every platform and requires Water and lava effects. Visible sloping
+water receives downstream normal motion. With Water contact and wakes enabled,
+stationary/wading creatures also produce a short downstream foam streak.
+This is a surface shading effect, not a propagating wave or persistent trail.
+
+### Implementation map
+
+| File in the canonical checkout | Role |
+|---|---|
+| `game/src/game/fx/water_current.gd:38` | Snapshot the existing authored water meshes. Recover each two-metre tile origin before mapping its grid vertices: individual vertex XY jitter can exceed half a metre. Reject inconsistent/mixed copies, buried overlays, type-4 shores, swamp/lava/emissive surfaces and verified sea materials. Ground height only determines burial; water height determines flow. |
+| `game/src/game/fx/water_current.gd:77` | Reuse unchanged fields; main-thread texture upload; one worker plus the latest request on the script fallback. Pending work is joined on disable/retirement. Completed fallback fields can lag continuously changing flood levels by a build. |
+| `game/src/game/fx/water_current.gd:134` | Scalar mean-height differences, 5×5 tent smoothing, bend and bounded velocity. `sample` at line 192 exposes the same clamped grid field for future wave advection. This does not replace the exact deformed triangle query in `water_surface.gd`. |
+| `game/src/native/source/water_current.h` and `nav_kernel.cpp` | Optional `WaterCurrentKernel`, same packed-array result. No scene or navigation ownership. Rebuilt Linux library is checked in; existing Windows/Android libraries automatically use the script fallback until rebuilt. |
+| `game/src/game/fx/water_current_shader.gd` | Explicit four-tap vertex interpolation; two cross-faded 0.9-second advection phases, bend-limited displacement and derivative footprint. No cumulative `flow * time` stretching. |
+| `game/src/game/fx/water_interaction_shader.gd` | Combined variant adds bounded downstream foam and slope-aware height rejection. Keeps the original moving-wake reach; a larger culling envelope is only for the current tail. |
+| `game/src/ei/terrain.gd` | `apply_gfx`, `set_rain_cover`, deferred `_refresh_water_current`, `_process`, `_exit_tree` and `_update_wave_parameters`. One bounded phase uniform uses the existing pausable double terrain clock. Ordinary frames do not rebuild the map field. |
+| `game/src/ei/game_data.gd`, `remake_text.gd`, `game/src/game/gfx_detect.gd` | Default-off option, English/Russian/German text, applied-option registration and low-tier preset exclusion. |
+| `tools/tests/water_current.gd`, `water_current_render.gd` | Analytic/source rules, base/LiA native-script comparisons, flooding/coalescing/teardown, actual river/level-stream images, clocks and production shader diagnostics. |
+| `tools/tests/water_interaction.gd --with-current` | Existing contact/controller, liquid-material, weather/reflection and restoration regression with the combined shader. |
+
+The implementation deliberately omits verified sea profiles: their authored
+shore ramps are not a reason to turn breaking surf into river flow. It also
+omits contradictory material copies instead of inventing a join across shifted
+layers. This is conservative visual coverage, not a hydraulic simulation.
+
+### Reference map for this stage and the next
+
+Read **R1** through `git show 0092dc6e1d7c4aab3f74644a79e9bfca11ecf293:PATH`
+in `/home/llm2x/Documents/evil-islands-owned-renderer`. The checked-out R0 tree lacks
+some of these later files; do not switch or edit that reference checkout.
+
+- `Source/owned_terrain_front_end.cpp:152–325`: visible liquid height,
+  central/one-sided gradients, tent smoothing, bend and additional cascade/pit
+  fields. This stage implements current/bend, not the cascade or pit-fill model.
+- `Source/shaders/liquid_surface.hlsl`: `liquidRiverPhases`,
+  `liquidRiverSlope`, `liquidUnitContact` and the `liquid_surface` current block.
+  Bounded advection and smooth bend avoid long-play stretching/triangle seams.
+- **Next: propagating field**, `Source/liquid_waves.h` and
+  `Source/renderer_liquid.cpp:62–225`. R1 uses a 512² ping-pong field at 0.125 m,
+  1/30 s fixed steps, height/previous-height/trail channels, bounded substeps,
+  integer window shifts, edge damping, unit pressure and current-advection of
+  trails. Its D3D compute implementation needs a Godot/backend adaptation.
+  Reuse the existing 16-contact admission and this field's velocity. Verify
+  lingering waves after a unit leaves, pause/rewind/teleport, window shifts,
+  flooding and teardown. Analytical V wakes are not that simulation.
+- **Then waterfalls**, `Source/procedural_falls.h`,
+  `Source/renderer_ambient_particles.cpp:299` and
+  `Tests/procedural_falls_regression.cpp`. Detect coherent exposed liquid drops,
+  reject isolated spikes/buried/border artifacts, build the shell and then add
+  bounded lip/impact/mist emitters. Do not classify every slope as a waterfall
+  or assume this current field retains all mixed-material lip vertices.
+- `Tests/liquid_surface_smoke.cpp` and `Tests/liquid_waves_regression.cpp`
+  supply additional reference geometry/clock/pressure expectations.
+
+### Acceptance and practical limits
+
+Receipt: [water-currents-2026-10-09.json](/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/water-currents-2026-10-09.json).
+**Eight final runs pass 26,315 assertions.** The exported pack has all 238 current
+production GDScripts and the new Linux helper. Base zone1/8/15 and LiA
+zone1/8/9 fields match the scalar result with **zero measured component error**.
+Synthetic coverage includes planar/flat/buried/holey/mixed-level surfaces,
+sector-grid continuity, source XY jitter, excluded liquid families and malformed
+native dimensions. Fallback flooding coalesces, converges and releases its
+snapshot even when disabled with a worker running.
+
+The real zone8 focus is `(160, 12.4863577, -142)` in Godot space. All three
+desktop renderers pass clock reset, scene pause, inactive/LMP-held world,
+off/restored appearance and empty-contact controls. Zone1's level-stream
+control retains exact pixels. Isolated production normal detail is exactly
+periodic after ten phases and one hour of game time; phase-wrap comparisons
+peak at 1/255. A stationary body gains downstream foam in the river and none
+in the level stream. The combined existing water regression passes 75 checks.
+
+The accepted build's initial compiled calculation costs **0.261–5.929 ms** in
+these samples; scalar calculations cost **10.063–213.070 ms**. Total initial
+preparation includes mesh extraction and costs **18.661–147.438 ms** on native
+samples. The largest sampled RGBA32F field is **4,210,704 bytes** (513²), plus
+CPU snapshots and transient build/upload storage. These are diagnostic desktop
+costs with other processes present, not a controlled FPS, GPU-cost or device
+claim. Initial preparation is synchronous. The optional shader adds four
+vertex fetches and, on flowing fragments, four extra normal-texture samples.
+The fallback worker bounds the queue; it does not prove cheap browser execution.
+Actual Android/browser memory, visual and performance acceptance remains open.
+
+A prototype Mobile restore comparison differed at 38 pixels (peak 3/255). It
+was not reproduced in the final export or the unchanged-renderer control; its
+cause is not established, and that run is excluded from the accepted count.
+Earlier fixture/export failures and the corrected coroutine-retention control
+are retained in the receipt. The final pack and shader tests pass; do not turn
+that scoped result into a guarantee for every map/device or earlier cover issue.
+
+### Reproducible checkpoint
+
+- Export: `/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/current-final`.
+- Pack SHA-256: `ae40663739ab74265f6ffc0d76eaff5b3045bd0e6e04d7dceed11b38b67d85d2`.
+- Runtime SHA-256: `090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44`.
+- Linux helper SHA-256: `dfd05a2ac322886c759d1512d7ca830388a67cbac8e04c529312855ba1eb0b69`.
+- Runtime still carries the eight previously accepted common engine patches;
+  no new engine/template change was made. Linux helper uses the documented
+  clean godot-cpp `507ed9d840c01a3c5b2a39af8bb4000bfac30bf5`.
+- QA runner: `/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/run.py`. Always pass `--build=current-final`; its default
+  build is historical. Use `tests/water_current.gd gl_compatibility --headless`,
+  add `--ei-script-water-current` for fallback, or `--astral --current-astral`
+  for LiA. Use `tests/water_current_render.gd` with a desktop renderer and
+  `--current-flat` for the level-stream control. Runs use private XDG data,
+  an offscreen non-focusing window and a 150-second limit; run GPU checks serially.
+- Original assets/reference/save profiles and installed/published builds were
+  untouched. Six unrelated export-generated UID sidecars were archived under
+  `/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/export-generated-uids-current` and removed from the working tree.
+- At handoff there is no task-owned test/worker process to resume. The user
+  requested a stop after this checkpoint. The goal remains incomplete; resume
+  from the established order below, not from the old isolated branch.
 
 ## Next work in the established order
 
@@ -3859,7 +3928,7 @@ of these isolated tests.
    remain. The separate GPU sampler experiment changes filtered wound appearance;
    do not enable it without a justified visual contract and material-lifecycle
    acceptance. P2's HD scenery path now avoids the main-device round trip on
-   RenderingDevice backends, with byte/render/lifetime evidence above. Remaining
+   RenderingDevice backends, with byte/render/lifetime evidence above.
    P2's terrain follow-up also avoids enlarged atlas readback and final upload,
    with the unchanged fallback and byte/render evidence above. Remaining
    P2 work includes any justified HD memory policy or compressed raw atlases,
@@ -3906,8 +3975,8 @@ of these isolated tests.
    ground cover, then the remaining audit features. V1 now has shared production
    storage and an opt-in scenery blend, with the validation and limitations above.
    Resolve cold preparation and finish its lighting/visual acceptance before
-   enabling defaults. V4 now has optional contacts/wakes and terrain caustics;
-   wave fields, currents and waterfalls remain separate work. Both options stay
+   enabling defaults. V4 now has optional contacts/wakes, terrain caustics and river currents;
+   wave fields and waterfalls remain separate work. All three options stay
    off pending broader quality/device acceptance. V2 now has the optional
    grass-interaction, dry-land cover and soft-ground root attachment stages above.
    Dry river/swamp banks are now implemented with the conservative shore rules
