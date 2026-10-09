@@ -705,6 +705,7 @@ var _wind_key := []
 var _wind_frame := {}
 const Clouds = preload("res://src/game/fx/clouds.gd")
 var _clouds: Clouds
+var _cliffs: TerrainCliff
 var _land_mat: ShaderMaterial
 var _caustics: RefCounted
 var _current: RefCounted
@@ -1072,7 +1073,7 @@ func apply_gfx() -> void:
 		_caustics = null
 	if _caustics != null and _caustics.admitted > 0:
 		if _land_caustics_shader == null:
-			_land_caustics_shader = Gfx.make_shader(land_shader_source(),true,true)
+			_land_caustics_shader = Gfx.make_shader(WaterCaustics.source(TERRAIN_SHADER),true,true)
 		_land_mat.shader = _land_caustics_shader
 		_land_mat.set_shader_parameter("caustic_bed",_caustics.texture)
 		_land_mat.set_shader_parameter("caustic_pattern",WaterCaustics.pattern())
@@ -1080,6 +1081,16 @@ func apply_gfx() -> void:
 		_land_mat.set_shader_parameter("caustic_bed",null)
 		_land_mat.set_shader_parameter("caustic_pattern",null)
 		_land_mat.shader = _land_shader
+	if TerrainCliff.requested():
+		if _cliffs == null: _cliffs = TerrainCliff.new(self)
+	else:
+		_cliffs = null
+	if _cliffs != null and _cliffs.admitted > 0:
+		_land_mat.shader = _cliffs.shader(WaterCaustics.source(TERRAIN_SHADER) if _caustics != null and _caustics.admitted > 0 else TERRAIN_SHADER)
+		_cliffs.bind(_land_mat)
+	else:
+		_land_mat.set_shader_parameter("cliff_tiles",null)
+		_land_mat.set_shader_parameter("cliff_flatness",null)
 	_water_mat.shader = _water_fx_shader if fx else _water_shader
 	if fx and Gfx.on("gfx_water_interaction"):
 		if _water_interaction_shader == null:
@@ -1202,7 +1213,8 @@ func apply_gfx() -> void:
 ## The colour cache substitutes only immutable tile colour. Its live material
 ## must use the same optional terrain-receiver effects as ordinary sectors.
 func land_shader_source() -> String:
-	return WaterCaustics.source(TERRAIN_SHADER) if _caustics != null and _caustics.admitted > 0 else TERRAIN_SHADER
+	var code := WaterCaustics.source(TERRAIN_SHADER) if _caustics != null and _caustics.admitted > 0 else TERRAIN_SHADER
+	return _cliffs.source(code) if _cliffs != null else code
 
 
 ## SurfaceWeather's static cover map affects rendering only. Keep it across

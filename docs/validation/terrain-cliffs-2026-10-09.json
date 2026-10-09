@@ -1,0 +1,2169 @@
+{
+  "date": "2026-10-09",
+  "feature": "V6 optional steep natural-rock albedo projection",
+  "status": "validated locally; default off; not published or installed",
+  "source_reference": {
+    "repository": "/home/llm2x/Documents/evil-islands-owned-renderer",
+    "revision": "0092dc6e1d7c4aab3f74644a79e9bfca11ecf293",
+    "files": [
+      "Source/terrain_cliff.h",
+      "Source/shaders/terrain_cliff.hlsl",
+      "Source/native_shader.h",
+      "Source/terrain_tile_presets.h"
+    ],
+    "metadata_credit": "Pinned terrain_tile_presets.h credits ei-mapper-endurance af24d45 editor family metadata."
+  },
+  "scope": {
+    "change": "Side projection of the existing original tile artwork on verified plain natural-rock slopes; separate helpers keep EITerrain integration small.",
+    "existing_behavior": "Existing tile edge blending, ground families, painted relief, macro variation, wet-bank response and original triangle geometry remain authoritative.",
+    "classification": "Only original 512x512 RGBA8 atlas fingerprints and slots whose four nonzero authored corners are the same Stone/Rock family. Unknown/modified atlases, transitions, paving/path slots, unsupported packed flags, unknown/snow/ice/liquid ground types, invalid normals and folded/nonfinite geometry are neutral.",
+    "projection": "Original padded tile sampler and packed rotation, unwrapped derivatives, two side planes with two-metre repeat, slope fade from 40 to 55 degrees, distance fade 80 to 140 metres, adjacent-facet flat-ledge guard and symmetric eligible-neighbour blending. The stretched painted-normal relief fades with side albedo.",
+    "integration": "The terrain, native colour-cache live material and rigid-scenery contact sampler share the same optional helper source and fields. The underlying cache bake is unchanged. No extra draw calls or geometry, navigation, collision, save or network mutation.",
+    "lifetime": "World-scoped helper, two bounded R8 textures only when steep verified rock is admitted, source/material variants retired on disable, resources released with terrain. Unsupported fields return original shader source. Maximum inspected grid vertices 1100000.",
+    "not_implemented": [
+      "Broad corner-family transition reconstruction",
+      "Geometry rounding or edited terrain silhouettes",
+      "New animated-tile interpretation or animation tables",
+      "Feature inference from a texture name or visual resemblance"
+    ]
+  },
+  "metadata": {
+    "identities": 43,
+    "classified_original_atlas_slots": 127,
+    "ambiguous_slots_omitted": 0,
+    "generator": "tools/benchmarks/terrain_cliff_metadata.py",
+    "generator_sha256": "eb14a5b6d9052faef93304cffb8b948b82eb0fba3c26f8af67ea79f5bd837aaa",
+    "reproduction": {
+      "exact": true,
+      "sha256": "dfc06c159a77314746467e2479d0a4425677524e3c1aa9467fd96a6d2c361bbb"
+    },
+    "source_census": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-families-census-base/cover-family-census.json",
+    "options_commit": "13d8de0",
+    "key": "gfx_terrain_cliffs",
+    "group": 22,
+    "row": 7,
+    "default": 0,
+    "requires": "gfx_terrain",
+    "languages": [
+      "English",
+      "Russian",
+      "German"
+    ],
+    "preset": "Applied-option registration; tier-2 automatic/all-on clears this field. Custom opt-in only."
+  },
+  "build": {
+    "isolated_stage": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cliffs-20261009/accepted-source",
+    "base_revision": "4a595dc plus committed cloud integration/metadata and this isolated V6 work",
+    "build_notes": "Build5 has final cliff helper/contact/cache sources; build6 includes the parent cloud empty-material fallback in terrain. Build7 adds the parent contact-light cloud sun fix. All basic and cached render evidence uses build6; final census/composition uses build7. No production source changed during exports.",
+    "exports": {
+      "build5": {
+        "manifest": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cliffs-20261009/build5/export.json",
+        "manifest_sha256": "ea7809e3127cd1d2794a199f1eb5962e3eaf3a45a3c692d9fa1ce63339d2bc0d",
+        "sha256": {
+          "CursedLands.x86_64": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+          "CursedLands.pck": "63fc323e4df7693e3536976dfe44f8fbe3bc32fa79381c8b743879f87383ec1e",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "source_unchanged_during_export": true
+      },
+      "build6": {
+        "manifest": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cliffs-20261009/build6/export.json",
+        "manifest_sha256": "f1439c9d892f55e5b76fe1941b3c8516c61a5e50c244109d74df5786fb3df2ad",
+        "sha256": {
+          "CursedLands.x86_64": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+          "CursedLands.pck": "35f1e8463d1cb49d24e23ee298011917f6b4378f073d84526b4b0f7fba833a19",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "source_unchanged_during_export": true
+      },
+      "build7": {
+        "manifest": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cliffs-20261009/build7/export.json",
+        "manifest_sha256": "6f8fd6c5934845bd4030eb1408ee1569377854e06496a8641b95e879ec762dde",
+        "sha256": {
+          "CursedLands.x86_64": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+          "CursedLands.pck": "179cc7fd4af9b1489285b377325a6fe7bc119e3a902b0fd3255aabb2be3b69f7",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "source_unchanged_during_export": true
+      }
+    },
+    "owned_source_matches_final_frozen_export": true,
+    "owned_source_sha256": {
+      "game/src/ei/terrain.gd": "b6f25c5bb7c05514e7bb140110927b99ef6558d7cc517f487f75a0eba56d6c3a",
+      "game/src/game/fx/ground_contact.gd": "e2182dd1bef19a1d519c666410679273f7c55a7b8446399ef28f2e900207139c",
+      "game/src/game/fx/ground_contact_shader.gd": "28a0cc3816f4260725e86cb59e10efc710dee5bd3d656992cb6bbb4fd638e8d4",
+      "game/src/game/fx/ground_surface_data.gd": "5ddb9e7a7dbfd435bbdcfd1d9a9f65e33335d4e90a64a7dbe39ea342c905adf5",
+      "game/src/game/fx/terrain_color_cache.gd": "946a9245e4f4a5e412a06e1cc0cb21fe8b9359ed27b20ca658e4187f14d8f84f",
+      "game/src/game/fx/terrain_cliff.gd": "c7514da2f24d164c5df21bc2886add5072de9bc4ab32f654504a638f3b957ec1",
+      "game/src/game/fx/terrain_cliff_shader.gd": "47b1659665afc2d269811b341063e2f98f280b57c1f549df59e88530293a5b72",
+      "game/src/game/fx/terrain_cliff_tiles.gd": "dfc06c159a77314746467e2479d0a4425677524e3c1aa9467fd96a6d2c361bbb"
+    }
+  },
+  "accepted_checks": 888,
+  "accepted_capture_count": 117,
+  "accepted_runs": [
+    {
+      "name": "accept-base",
+      "build": "build7",
+      "checks": 142,
+      "failures": 0,
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cliffs-20261009/accept-base/run.json",
+      "manifest_sha256": "6b19517c58fcedcb08f22efaf7fec362b0eb333626ae28343b894c53501af64a",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cliffs-20261009/accept-base/terrain-cliffs.json",
+      "result_sha256": "e3b3d3e8b29262e18af5cf6099724c907c1d03bc599d5465ec5eaa8dd7900bae",
+      "test_sha256": "1f44c41f0f2631609ff5cdfe6103465593e3f9c78fdae487a07d1792d0dc6de7",
+      "captures": 0
+    },
+    {
+      "name": "accept-astral",
+      "build": "build7",
+      "checks": 232,
+      "failures": 0,
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cliffs-20261009/accept-astral/run.json",
+      "manifest_sha256": "9e634a81c172f11adfdca49719fe7a9993aed3ab6619def93cc8959be29e5cec",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cliffs-20261009/accept-astral/terrain-cliffs.json",
+      "result_sha256": "5057cccd36c28d3e8b0f5d9c72fc5835b2b22749eebd396b52b836af283f4625",
+      "test_sha256": "1f44c41f0f2631609ff5cdfe6103465593e3f9c78fdae487a07d1792d0dc6de7",
+      "captures": 0
+    },
+    {
+      "name": "contact-headless",
+      "build": "build5",
+      "checks": 25,
+      "failures": 0,
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cliffs-20261009/contact-headless/run.json",
+      "manifest_sha256": "0421e41d154ef698ca2ba358a153e7b05d1c2c3f2273899f8194b5d19d71a5fd",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cliffs-20261009/contact-headless/data/godot/app_userdata/Cursed Lands/ground-contact-gl_compatibility.json",
+      "result_sha256": "9f856aa6026957950068e73680bc5117b68e45841d30a084cfafce15695fc0ad",
+      "test_sha256": "a7b780097420ee871dae9c927e21b7a894b370bce724534e43f7afe57c2a86cd",
+      "captures": 0,
+      "rows": []
+    },
+    {
+      "name": "compile-combinations",
+      "build": "build5",
+      "checks": 4,
+      "failures": 0,
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cliffs-20261009/compile-combinations/run.json",
+      "manifest_sha256": "77fea076b849cbc3be8d1d31ba7c4b086c72c637c04c29092ae3448ec5dc1384",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cliffs-20261009/compile-combinations/run.log",
+      "result_sha256": "d611ccfafd9b233c70ebbd9494f0a3a670dc89eb041708ea8cb17ce16b70e0c1",
+      "test_sha256": "5caf939a3580e7e340e1ef6d5b6c8b449aca1161ecbc323f20660f5e581895f3",
+      "captures": 0
+    },
+    {
+      "name": "render-gl",
+      "build": "build6",
+      "checks": 48,
+      "failures": 0,
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cliffs-20261009/render-gl/run.json",
+      "manifest_sha256": "389ef90e998dbec94f38fdb1a8b52d55b83ad5858e9c41270efe3cda4a5e6da8",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cliffs-20261009/render-gl/terrain-cliffs-render.json",
+      "result_sha256": "8cffac4d319424f95793afb577a4555e4568feddb638dfdeda4dfa1506057165",
+      "test_sha256": "8a3ee6c9bc0e1ebfe7510a6a30a2d48164a898eb92c41c1c1f6be00d252a5617",
+      "captures": 21,
+      "rows": [
+        {
+          "cached_sectors": 0,
+          "difference": {
+            "changed_pixels": 39374,
+            "peak_byte_delta": 88,
+            "sum": 530008
+          },
+          "map": "zone1",
+          "positive": true,
+          "renderer": "gl_compatibility",
+          "site": {
+            "normal": "(-0.094806, 0.274645, 0.95686)",
+            "point": "(43.0, 9.75084, -117.0)",
+            "score": 9.16851242245831,
+            "tile": "(21, 58)"
+          }
+        },
+        {
+          "cached_sectors": 0,
+          "difference": {
+            "changed_pixels": 77008,
+            "peak_byte_delta": 94,
+            "sum": 503265
+          },
+          "map": "zone11",
+          "positive": true,
+          "renderer": "gl_compatibility",
+          "site": {
+            "normal": "(0.130028, 0.542118, 0.830181)",
+            "point": "(193.0, 1.932032, -275.0)",
+            "score": 7.44567474478244,
+            "tile": "(96, 137)"
+          }
+        },
+        {
+          "cached_sectors": 0,
+          "difference": {
+            "changed_pixels": 95903,
+            "peak_byte_delta": 106,
+            "sum": 1094512
+          },
+          "map": "zone15",
+          "positive": true,
+          "renderer": "gl_compatibility",
+          "site": {
+            "normal": "(0.074066, 0.566501, -0.820726)",
+            "point": "(211.0, 28.6265, -281.0)",
+            "score": 13.9668390666545,
+            "tile": "(105, 140)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "render-mobile",
+      "build": "build6",
+      "checks": 48,
+      "failures": 0,
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cliffs-20261009/render-mobile/run.json",
+      "manifest_sha256": "905b612a644487aa2b28000aafbe791485d88024204b82eeaa3600c94044d532",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cliffs-20261009/render-mobile/terrain-cliffs-render.json",
+      "result_sha256": "97ace6e270cbfe6cbc637bab68bca1e7e45f24084a8b8a30a5f313823e73af0f",
+      "test_sha256": "8a3ee6c9bc0e1ebfe7510a6a30a2d48164a898eb92c41c1c1f6be00d252a5617",
+      "captures": 21,
+      "rows": [
+        {
+          "cached_sectors": 0,
+          "difference": {
+            "changed_pixels": 29803,
+            "peak_byte_delta": 88,
+            "sum": 445843
+          },
+          "map": "zone1",
+          "positive": true,
+          "renderer": "mobile",
+          "site": {
+            "normal": "(-0.094806, 0.274645, 0.95686)",
+            "point": "(43.0, 9.75084, -117.0)",
+            "score": 9.16851242245831,
+            "tile": "(21, 58)"
+          }
+        },
+        {
+          "cached_sectors": 0,
+          "difference": {
+            "changed_pixels": 52763,
+            "peak_byte_delta": 80,
+            "sum": 449501
+          },
+          "map": "zone11",
+          "positive": true,
+          "renderer": "mobile",
+          "site": {
+            "normal": "(0.130028, 0.542118, 0.830181)",
+            "point": "(193.0, 1.932032, -275.0)",
+            "score": 7.44567474478244,
+            "tile": "(96, 137)"
+          }
+        },
+        {
+          "cached_sectors": 0,
+          "difference": {
+            "changed_pixels": 71407,
+            "peak_byte_delta": 87,
+            "sum": 829193
+          },
+          "map": "zone15",
+          "positive": true,
+          "renderer": "mobile",
+          "site": {
+            "normal": "(0.074066, 0.566501, -0.820726)",
+            "point": "(211.0, 28.6265, -281.0)",
+            "score": 13.9668390666545,
+            "tile": "(105, 140)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "render-forward",
+      "build": "build6",
+      "checks": 48,
+      "failures": 0,
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cliffs-20261009/render-forward/run.json",
+      "manifest_sha256": "ce02768070e0f5f47a2d4c9db6122abb9459d15dbf2140f8c3639a2c654c4fa1",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cliffs-20261009/render-forward/terrain-cliffs-render.json",
+      "result_sha256": "4ef3eebff309223d78992554573d902b6a566764beafa98ba0c9e51d3b710ead",
+      "test_sha256": "c5df7b9d92c4b3721772e82ef6f4e8c4921504b9dee38554e131555f9e8cbf8b",
+      "captures": 21,
+      "rows": [
+        {
+          "cached_sectors": 0,
+          "difference": {
+            "changed_pixels": 29922,
+            "peak_byte_delta": 87,
+            "sum": 443803
+          },
+          "map": "zone1",
+          "positive": true,
+          "renderer": "forward_plus",
+          "site": {
+            "normal": "(-0.094806, 0.274645, 0.95686)",
+            "point": "(43.0, 9.75084, -117.0)",
+            "score": 9.16851242245831,
+            "tile": "(21, 58)"
+          }
+        },
+        {
+          "cached_sectors": 0,
+          "difference": {
+            "changed_pixels": 56988,
+            "peak_byte_delta": 80,
+            "sum": 437058
+          },
+          "map": "zone11",
+          "positive": true,
+          "renderer": "forward_plus",
+          "site": {
+            "normal": "(0.130028, 0.542118, 0.830181)",
+            "point": "(193.0, 1.932032, -275.0)",
+            "score": 7.44567474478244,
+            "tile": "(96, 137)"
+          }
+        },
+        {
+          "cached_sectors": 0,
+          "difference": {
+            "changed_pixels": 72405,
+            "peak_byte_delta": 88,
+            "sum": 823221
+          },
+          "map": "zone15",
+          "positive": true,
+          "renderer": "forward_plus",
+          "site": {
+            "normal": "(0.074066, 0.566501, -0.820726)",
+            "point": "(211.0, 28.6265, -281.0)",
+            "score": 13.9668390666545,
+            "tile": "(105, 140)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "render-cached-settled",
+      "build": "build6",
+      "checks": 255,
+      "failures": 0,
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cliffs-20261009/render-cached-settled/run.json",
+      "manifest_sha256": "24326cd1d2a6c32b1a5b397b93c8091b3bf78e79c12dd5b6dc0005e1fc49bbd3",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cliffs-20261009/render-cached-settled/terrain-cliffs-render.json",
+      "result_sha256": "b27f6e84ab7cdcfa795dfe0aa2018aa39c15db4cfe664314fee71eab59fb471f",
+      "test_sha256": "8e4d44f02c1f245d54e8e5cbdd2bfcab111ffeeb3608354409e7b5448cab18be",
+      "captures": 21,
+      "rows": [
+        {
+          "cached_sectors": 12,
+          "difference": {
+            "changed_pixels": 39416,
+            "peak_byte_delta": 88,
+            "sum": 529803
+          },
+          "map": "zone1",
+          "positive": true,
+          "renderer": "gl_compatibility",
+          "site": {
+            "normal": "(-0.094806, 0.274645, 0.95686)",
+            "point": "(43.0, 9.75084, -117.0)",
+            "score": 9.16851242245831,
+            "tile": "(21, 58)"
+          }
+        },
+        {
+          "cached_sectors": 22,
+          "difference": {
+            "changed_pixels": 77052,
+            "peak_byte_delta": 94,
+            "sum": 503221
+          },
+          "map": "zone11",
+          "positive": true,
+          "renderer": "gl_compatibility",
+          "site": {
+            "normal": "(0.130028, 0.542118, 0.830181)",
+            "point": "(193.0, 1.932032, -275.0)",
+            "score": 7.44567474478244,
+            "tile": "(96, 137)"
+          }
+        },
+        {
+          "cached_sectors": 33,
+          "difference": {
+            "changed_pixels": 95966,
+            "peak_byte_delta": 106,
+            "sum": 1094484
+          },
+          "map": "zone15",
+          "positive": true,
+          "renderer": "gl_compatibility",
+          "site": {
+            "normal": "(0.074066, 0.566501, -0.820726)",
+            "point": "(211.0, 28.6265, -281.0)",
+            "score": 13.9668390666545,
+            "tile": "(105, 140)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "render-astral",
+      "build": "build6",
+      "checks": 29,
+      "failures": 0,
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cliffs-20261009/render-astral/run.json",
+      "manifest_sha256": "39eb9a5f7a2abe2b5be18792912ff8ad24fce022ddded1e10cf56900bf2001cb",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cliffs-20261009/render-astral/terrain-cliffs-render.json",
+      "result_sha256": "46441ba76a20295f6080dfa0f6868b032c5cc65efac3644f48da06a2b6a95b2b",
+      "test_sha256": "8e4d44f02c1f245d54e8e5cbdd2bfcab111ffeeb3608354409e7b5448cab18be",
+      "captures": 12,
+      "rows": [
+        {
+          "cached_sectors": 0,
+          "difference": {
+            "changed_pixels": 82531,
+            "peak_byte_delta": 112,
+            "sum": 1150658
+          },
+          "map": "zone26",
+          "positive": true,
+          "renderer": "gl_compatibility",
+          "site": {
+            "normal": "(-0.946862, 0.320953, -0.020997)",
+            "point": "(95.0, 23.82861, -153.0)",
+            "score": 16.2577286664524,
+            "tile": "(47, 76)"
+          }
+        },
+        {
+          "cached_sectors": 0,
+          "difference": {
+            "changed_pixels": 0,
+            "peak_byte_delta": 0,
+            "sum": 0
+          },
+          "map": "zone6",
+          "positive": false,
+          "renderer": "gl_compatibility",
+          "site": {
+            "normal": "(0.0, 0.0, 1.0)",
+            "point": "(64.0, 10.0, -48.0)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "accept-composed-gl",
+      "build": "build7",
+      "checks": 19,
+      "failures": 0,
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cliffs-20261009/accept-composed-gl/run.json",
+      "manifest_sha256": "428555ac4ffc1040e4937b29b99f2816d92d274815bc3ed1e77c30a1d792bb2b",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cliffs-20261009/accept-composed-gl/terrain-cliffs-render.json",
+      "result_sha256": "5bdd2e3b4c728f284879550f39d9674c4b2489a30dee6331dfa2002a68aec270",
+      "test_sha256": "814da6cdb6c948bd755223e995f7e6c5ff12d3e788de966633a264209e08c6df",
+      "captures": 7,
+      "rows": [
+        {
+          "cached_sectors": 0,
+          "difference": {
+            "changed_pixels": 60548,
+            "peak_byte_delta": 90,
+            "sum": 355457
+          },
+          "map": "zone11",
+          "positive": true,
+          "renderer": "gl_compatibility",
+          "site": {
+            "normal": "(0.130028, 0.542118, 0.830181)",
+            "point": "(193.0, 1.932032, -275.0)",
+            "score": 7.44567474478244,
+            "tile": "(96, 137)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "accept-composed-mobile",
+      "build": "build7",
+      "checks": 19,
+      "failures": 0,
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cliffs-20261009/accept-composed-mobile/run.json",
+      "manifest_sha256": "e59a39f73d291ae4e6e97fcd6639a67faba18c33ee2edda0fdcf2eb7e371511c",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cliffs-20261009/accept-composed-mobile/terrain-cliffs-render.json",
+      "result_sha256": "be57fa660ee8597f7f66a617bbaee69663f3f5afd8d50413990f465e288e79b5",
+      "test_sha256": "814da6cdb6c948bd755223e995f7e6c5ff12d3e788de966633a264209e08c6df",
+      "captures": 7,
+      "rows": [
+        {
+          "cached_sectors": 0,
+          "difference": {
+            "changed_pixels": 50977,
+            "peak_byte_delta": 81,
+            "sum": 361800
+          },
+          "map": "zone11",
+          "positive": true,
+          "renderer": "mobile",
+          "site": {
+            "normal": "(0.130028, 0.542118, 0.830181)",
+            "point": "(193.0, 1.932032, -275.0)",
+            "score": 7.44567474478244,
+            "tile": "(96, 137)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "accept-composed-forward",
+      "build": "build7",
+      "checks": 19,
+      "failures": 0,
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cliffs-20261009/accept-composed-forward/run.json",
+      "manifest_sha256": "3945b6aa3220a7146d539dfb2fd26d4820aab8297345573d093755f301dc1b0a",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cliffs-20261009/accept-composed-forward/terrain-cliffs-render.json",
+      "result_sha256": "9244cdcf529326958355c89fa8d12da3c506814123deea9fda7d8e04eb95d077",
+      "test_sha256": "814da6cdb6c948bd755223e995f7e6c5ff12d3e788de966633a264209e08c6df",
+      "captures": 7,
+      "rows": [
+        {
+          "cached_sectors": 0,
+          "difference": {
+            "changed_pixels": 55236,
+            "peak_byte_delta": 80,
+            "sum": 341515
+          },
+          "map": "zone11",
+          "positive": true,
+          "renderer": "forward_plus",
+          "site": {
+            "normal": "(0.130028, 0.542118, 0.830181)",
+            "point": "(193.0, 1.932032, -275.0)",
+            "score": 7.44567474478244,
+            "tile": "(96, 137)"
+          }
+        }
+      ]
+    }
+  ],
+  "independent_image_audit": {
+    "file": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cliffs-20261009/cliffs-image-audit.json",
+    "sha256": "e04d8fd1a2f66095abe8c50dc27ff9b864ce494205c36742e62de2827e53ccd2",
+    "checks": 83,
+    "failures": 0,
+    "method": "Pillow RGB decode; per-pixel maximum of all three channel deltas",
+    "runs": [
+      {
+        "run": "render-gl",
+        "rows": [
+          {
+            "map": "zone1",
+            "positive": true,
+            "comparisons": [
+              {
+                "first": "off",
+                "second": "on",
+                "policy": "visible",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 39374,
+                  "peak_byte_delta": 88,
+                  "sum": 530008
+                }
+              },
+              {
+                "first": "off",
+                "second": "unclassified",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              },
+              {
+                "first": "on",
+                "second": "restored",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              },
+              {
+                "first": "off",
+                "second": "disabled",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              },
+              {
+                "first": "original",
+                "second": "dependency",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              }
+            ]
+          },
+          {
+            "map": "zone11",
+            "positive": true,
+            "comparisons": [
+              {
+                "first": "off",
+                "second": "on",
+                "policy": "visible",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 77008,
+                  "peak_byte_delta": 94,
+                  "sum": 503265
+                }
+              },
+              {
+                "first": "off",
+                "second": "unclassified",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              },
+              {
+                "first": "on",
+                "second": "restored",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              },
+              {
+                "first": "off",
+                "second": "disabled",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              },
+              {
+                "first": "original",
+                "second": "dependency",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              }
+            ]
+          },
+          {
+            "map": "zone15",
+            "positive": true,
+            "comparisons": [
+              {
+                "first": "off",
+                "second": "on",
+                "policy": "visible",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 95903,
+                  "peak_byte_delta": 106,
+                  "sum": 1094512
+                }
+              },
+              {
+                "first": "off",
+                "second": "unclassified",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              },
+              {
+                "first": "on",
+                "second": "restored",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              },
+              {
+                "first": "off",
+                "second": "disabled",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              },
+              {
+                "first": "original",
+                "second": "dependency",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "run": "render-mobile",
+        "rows": [
+          {
+            "map": "zone1",
+            "positive": true,
+            "comparisons": [
+              {
+                "first": "off",
+                "second": "on",
+                "policy": "visible",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 39312,
+                  "peak_byte_delta": 88,
+                  "sum": 508280
+                }
+              },
+              {
+                "first": "off",
+                "second": "unclassified",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              },
+              {
+                "first": "on",
+                "second": "restored",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              },
+              {
+                "first": "off",
+                "second": "disabled",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              },
+              {
+                "first": "original",
+                "second": "dependency",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              }
+            ]
+          },
+          {
+            "map": "zone11",
+            "positive": true,
+            "comparisons": [
+              {
+                "first": "off",
+                "second": "on",
+                "policy": "visible",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 68495,
+                  "peak_byte_delta": 85,
+                  "sum": 515359
+                }
+              },
+              {
+                "first": "off",
+                "second": "unclassified",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              },
+              {
+                "first": "on",
+                "second": "restored",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              },
+              {
+                "first": "off",
+                "second": "disabled",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              },
+              {
+                "first": "original",
+                "second": "dependency",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              }
+            ]
+          },
+          {
+            "map": "zone15",
+            "positive": true,
+            "comparisons": [
+              {
+                "first": "off",
+                "second": "on",
+                "policy": "visible",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 94284,
+                  "peak_byte_delta": 87,
+                  "sum": 1049138
+                }
+              },
+              {
+                "first": "off",
+                "second": "unclassified",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              },
+              {
+                "first": "on",
+                "second": "restored",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              },
+              {
+                "first": "off",
+                "second": "disabled",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              },
+              {
+                "first": "original",
+                "second": "dependency",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "run": "render-forward",
+        "rows": [
+          {
+            "map": "zone1",
+            "positive": true,
+            "comparisons": [
+              {
+                "first": "off",
+                "second": "on",
+                "policy": "visible",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 39451,
+                  "peak_byte_delta": 87,
+                  "sum": 505249
+                }
+              },
+              {
+                "first": "off",
+                "second": "unclassified",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              },
+              {
+                "first": "on",
+                "second": "restored",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              },
+              {
+                "first": "off",
+                "second": "disabled",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              },
+              {
+                "first": "original",
+                "second": "dependency",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              }
+            ]
+          },
+          {
+            "map": "zone11",
+            "positive": true,
+            "comparisons": [
+              {
+                "first": "off",
+                "second": "on",
+                "policy": "visible",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 74249,
+                  "peak_byte_delta": 85,
+                  "sum": 495944
+                }
+              },
+              {
+                "first": "off",
+                "second": "unclassified",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              },
+              {
+                "first": "on",
+                "second": "restored",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              },
+              {
+                "first": "off",
+                "second": "disabled",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              },
+              {
+                "first": "original",
+                "second": "dependency",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              }
+            ]
+          },
+          {
+            "map": "zone15",
+            "positive": true,
+            "comparisons": [
+              {
+                "first": "off",
+                "second": "on",
+                "policy": "visible",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 95546,
+                  "peak_byte_delta": 88,
+                  "sum": 1040464
+                }
+              },
+              {
+                "first": "off",
+                "second": "unclassified",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              },
+              {
+                "first": "on",
+                "second": "restored",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              },
+              {
+                "first": "off",
+                "second": "disabled",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              },
+              {
+                "first": "original",
+                "second": "dependency",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "run": "render-cached-settled",
+        "rows": [
+          {
+            "map": "zone1",
+            "positive": true,
+            "comparisons": [
+              {
+                "first": "off",
+                "second": "on",
+                "policy": "visible",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 39416,
+                  "peak_byte_delta": 88,
+                  "sum": 529803
+                }
+              },
+              {
+                "first": "off",
+                "second": "unclassified",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              },
+              {
+                "first": "on",
+                "second": "restored",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              },
+              {
+                "first": "off",
+                "second": "disabled",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              },
+              {
+                "first": "original",
+                "second": "dependency",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              }
+            ]
+          },
+          {
+            "map": "zone11",
+            "positive": true,
+            "comparisons": [
+              {
+                "first": "off",
+                "second": "on",
+                "policy": "visible",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 77052,
+                  "peak_byte_delta": 94,
+                  "sum": 503221
+                }
+              },
+              {
+                "first": "off",
+                "second": "unclassified",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              },
+              {
+                "first": "on",
+                "second": "restored",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              },
+              {
+                "first": "off",
+                "second": "disabled",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              },
+              {
+                "first": "original",
+                "second": "dependency",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              }
+            ]
+          },
+          {
+            "map": "zone15",
+            "positive": true,
+            "comparisons": [
+              {
+                "first": "off",
+                "second": "on",
+                "policy": "visible",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 95966,
+                  "peak_byte_delta": 106,
+                  "sum": 1094484
+                }
+              },
+              {
+                "first": "off",
+                "second": "unclassified",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              },
+              {
+                "first": "on",
+                "second": "restored",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              },
+              {
+                "first": "off",
+                "second": "disabled",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              },
+              {
+                "first": "original",
+                "second": "dependency",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "run": "render-astral",
+        "rows": [
+          {
+            "map": "zone26",
+            "positive": true,
+            "comparisons": [
+              {
+                "first": "off",
+                "second": "on",
+                "policy": "visible",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 82531,
+                  "peak_byte_delta": 112,
+                  "sum": 1150658
+                }
+              },
+              {
+                "first": "off",
+                "second": "unclassified",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              },
+              {
+                "first": "on",
+                "second": "restored",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              },
+              {
+                "first": "off",
+                "second": "disabled",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              },
+              {
+                "first": "original",
+                "second": "dependency",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              }
+            ]
+          },
+          {
+            "map": "zone6",
+            "positive": false,
+            "comparisons": [
+              {
+                "first": "off",
+                "second": "on",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              },
+              {
+                "first": "off",
+                "second": "disabled",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              },
+              {
+                "first": "original",
+                "second": "dependency",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "run": "accept-composed-gl",
+        "rows": [
+          {
+            "map": "zone11",
+            "positive": true,
+            "comparisons": [
+              {
+                "first": "off",
+                "second": "on",
+                "policy": "visible",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 60548,
+                  "peak_byte_delta": 90,
+                  "sum": 355457
+                }
+              },
+              {
+                "first": "off",
+                "second": "unclassified",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              },
+              {
+                "first": "on",
+                "second": "restored",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              },
+              {
+                "first": "off",
+                "second": "disabled",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              },
+              {
+                "first": "original",
+                "second": "dependency",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "run": "accept-composed-mobile",
+        "rows": [
+          {
+            "map": "zone11",
+            "positive": true,
+            "comparisons": [
+              {
+                "first": "off",
+                "second": "on",
+                "policy": "visible",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 50977,
+                  "peak_byte_delta": 81,
+                  "sum": 361800
+                }
+              },
+              {
+                "first": "off",
+                "second": "unclassified",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              },
+              {
+                "first": "on",
+                "second": "restored",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              },
+              {
+                "first": "off",
+                "second": "disabled",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              },
+              {
+                "first": "original",
+                "second": "dependency",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "run": "accept-composed-forward",
+        "rows": [
+          {
+            "map": "zone11",
+            "positive": true,
+            "comparisons": [
+              {
+                "first": "off",
+                "second": "on",
+                "policy": "visible",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 55236,
+                  "peak_byte_delta": 80,
+                  "sum": 341515
+                }
+              },
+              {
+                "first": "off",
+                "second": "unclassified",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              },
+              {
+                "first": "on",
+                "second": "restored",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              },
+              {
+                "first": "off",
+                "second": "disabled",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              },
+              {
+                "first": "original",
+                "second": "dependency",
+                "policy": "exact",
+                "passed": true,
+                "difference": {
+                  "changed_pixels": 0,
+                  "peak_byte_delta": 0,
+                  "sum": 0
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "correction": "Initial basic Vulkan fixture captures were RGB8, while its difference loop assumed RGBA8. Original manifests and PNGs are preserved. This independent full-RGB PNG audit supersedes their pixel metrics and proves every strict control. The final fixture normalizes images to RGBA8 before comparing; final composed runs use that correction."
+  },
+  "real_map_census": [
+    {
+      "game": "base",
+      "maps": 22,
+      "maps_with_admitted_rock": 22,
+      "classified_tiles": 75350,
+      "admitted_tiles": 35474,
+      "rejected_geometry_tiles": 2,
+      "build_us_range": [
+        13179,
+        407061
+      ],
+      "rows": [
+        {
+          "map": "zone1",
+          "prefix": "zone1",
+          "size": "(257, 193)",
+          "classified": 195,
+          "admitted": 174,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zone10",
+          "prefix": "zone10",
+          "size": "(257, 193)",
+          "classified": 1553,
+          "admitted": 1047,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zone11",
+          "prefix": "zone11",
+          "size": "(513, 385)",
+          "classified": 2387,
+          "admitted": 485,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zone12",
+          "prefix": "zone12",
+          "size": "(321, 513)",
+          "classified": 1948,
+          "admitted": 495,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zone13",
+          "prefix": "zone13",
+          "size": "(449, 321)",
+          "classified": 270,
+          "admitted": 211,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zone14",
+          "prefix": "zone14",
+          "size": "(257, 193)",
+          "classified": 5304,
+          "admitted": 3520,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zone15",
+          "prefix": "zone15",
+          "size": "(321, 385)",
+          "classified": 7606,
+          "admitted": 4176,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zone16",
+          "prefix": "zone16",
+          "size": "(321, 161)",
+          "classified": 6088,
+          "admitted": 2481,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zone17",
+          "prefix": "zone17",
+          "size": "(385, 385)",
+          "classified": 3133,
+          "admitted": 2982,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zone18",
+          "prefix": "zone18",
+          "size": "(321, 385)",
+          "classified": 2750,
+          "admitted": 1302,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zone19",
+          "prefix": "zone19",
+          "size": "(513, 513)",
+          "classified": 7289,
+          "admitted": 932,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zone2",
+          "prefix": "zone2",
+          "size": "(129, 193)",
+          "classified": 81,
+          "admitted": 80,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zone20",
+          "prefix": "zone20",
+          "size": "(161, 161)",
+          "classified": 1904,
+          "admitted": 760,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zone3obr",
+          "prefix": "zone3obr",
+          "size": "(289, 321)",
+          "classified": 4184,
+          "admitted": 2183,
+          "rejected_geometry": 1
+        },
+        {
+          "map": "zone4",
+          "prefix": "zone4",
+          "size": "(513, 321)",
+          "classified": 5562,
+          "admitted": 4921,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zone5_1",
+          "prefix": "zone5_1",
+          "size": "(257, 161)",
+          "classified": 5494,
+          "admitted": 1787,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zone6",
+          "prefix": "zone6",
+          "size": "(225, 385)",
+          "classified": 1886,
+          "admitted": 1594,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zone6_2",
+          "prefix": "zone6_2",
+          "size": "(225, 385)",
+          "classified": 1939,
+          "admitted": 1658,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zone7",
+          "prefix": "zone7",
+          "size": "(481, 321)",
+          "classified": 9683,
+          "admitted": 627,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zone8",
+          "prefix": "zone8",
+          "size": "(353, 353)",
+          "classified": 3433,
+          "admitted": 1707,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zone9",
+          "prefix": "zone9",
+          "size": "(449, 321)",
+          "classified": 2574,
+          "admitted": 2311,
+          "rejected_geometry": 1
+        },
+        {
+          "map": "zonemainmenunew",
+          "prefix": "zonemainmenunew",
+          "size": "(65, 65)",
+          "classified": 87,
+          "admitted": 41,
+          "rejected_geometry": 0
+        }
+      ]
+    },
+    {
+      "game": "Lost in Astral",
+      "maps": 40,
+      "maps_with_admitted_rock": 25,
+      "classified_tiles": 79540,
+      "admitted_tiles": 41412,
+      "rejected_geometry_tiles": 2,
+      "build_us_range": [
+        3357,
+        470595
+      ],
+      "rows": [
+        {
+          "map": "zone1",
+          "prefix": "zone19",
+          "size": "(513, 513)",
+          "classified": 7289,
+          "admitted": 1492,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zone10",
+          "prefix": "zone3obr",
+          "size": "(289, 321)",
+          "classified": 4184,
+          "admitted": 2450,
+          "rejected_geometry": 1
+        },
+        {
+          "map": "zone11",
+          "prefix": "zone4",
+          "size": "(513, 321)",
+          "classified": 5562,
+          "admitted": 4953,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zone11dun1",
+          "prefix": "zone11dun1",
+          "size": "(129, 161)",
+          "classified": 0,
+          "admitted": 0,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zone11dun2",
+          "prefix": "zone11dun3",
+          "size": "(129, 129)",
+          "classified": 0,
+          "admitted": 0,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zone12",
+          "prefix": "zone5_1",
+          "size": "(257, 161)",
+          "classified": 5470,
+          "admitted": 2461,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zone13",
+          "prefix": "zone2",
+          "size": "(129, 193)",
+          "classified": 81,
+          "admitted": 81,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zone14",
+          "prefix": "zone10",
+          "size": "(257, 193)",
+          "classified": 1490,
+          "admitted": 1073,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zone15",
+          "prefix": "zone1",
+          "size": "(257, 193)",
+          "classified": 195,
+          "admitted": 169,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zone16",
+          "prefix": "zone7",
+          "size": "(481, 321)",
+          "classified": 9309,
+          "admitted": 584,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zone1dun1",
+          "prefix": "zone1dun1",
+          "size": "(33, 129)",
+          "classified": 0,
+          "admitted": 0,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zone1dun2",
+          "prefix": "zone1dun2",
+          "size": "(65, 161)",
+          "classified": 0,
+          "admitted": 0,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zone2",
+          "prefix": "zone18",
+          "size": "(321, 385)",
+          "classified": 2764,
+          "admitted": 1563,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zone21",
+          "prefix": "zone11",
+          "size": "(513, 385)",
+          "classified": 2387,
+          "admitted": 469,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zone22",
+          "prefix": "zone12",
+          "size": "(321, 513)",
+          "classified": 1948,
+          "admitted": 467,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zone22dun1",
+          "prefix": "zone22dun1",
+          "size": "(129, 161)",
+          "classified": 2328,
+          "admitted": 1844,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zone23",
+          "prefix": "zone13",
+          "size": "(449, 321)",
+          "classified": 270,
+          "admitted": 208,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zone24",
+          "prefix": "zone14",
+          "size": "(257, 193)",
+          "classified": 5317,
+          "admitted": 3904,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zone25",
+          "prefix": "zone25",
+          "size": "(257, 193)",
+          "classified": 1183,
+          "admitted": 86,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zone26",
+          "prefix": "zone26",
+          "size": "(129, 193)",
+          "classified": 2429,
+          "admitted": 2174,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zone3",
+          "prefix": "zone17",
+          "size": "(385, 385)",
+          "classified": 3082,
+          "admitted": 2931,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zone31",
+          "prefix": "zone31",
+          "size": "(321, 385)",
+          "classified": 0,
+          "admitted": 0,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zone32",
+          "prefix": "zone32",
+          "size": "(321, 257)",
+          "classified": 0,
+          "admitted": 0,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zone33",
+          "prefix": "zone33",
+          "size": "(385, 257)",
+          "classified": 0,
+          "admitted": 0,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zone34",
+          "prefix": "zone34",
+          "size": "(225, 321)",
+          "classified": 0,
+          "admitted": 0,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zone34dun1",
+          "prefix": "zone34dun1",
+          "size": "(129, 65)",
+          "classified": 0,
+          "admitted": 0,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zone35",
+          "prefix": "zone35",
+          "size": "(257, 257)",
+          "classified": 0,
+          "admitted": 0,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zone3dun1",
+          "prefix": "zone3dun1",
+          "size": "(97, 129)",
+          "classified": 0,
+          "admitted": 0,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zone4",
+          "prefix": "zone16",
+          "size": "(321, 161)",
+          "classified": 6088,
+          "admitted": 3100,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zone5",
+          "prefix": "zone15",
+          "size": "(321, 385)",
+          "classified": 7673,
+          "admitted": 4139,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zone6",
+          "prefix": "zone71",
+          "size": "(129, 97)",
+          "classified": 0,
+          "admitted": 0,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zone7",
+          "prefix": "zone9",
+          "size": "(449, 321)",
+          "classified": 2573,
+          "admitted": 2335,
+          "rejected_geometry": 1
+        },
+        {
+          "map": "zone7dun1",
+          "prefix": "zone7dun1",
+          "size": "(97, 65)",
+          "classified": 874,
+          "admitted": 506,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zone7dun2",
+          "prefix": "zone10dun2",
+          "size": "(65, 97)",
+          "classified": 829,
+          "admitted": 544,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zone8",
+          "prefix": "zone8",
+          "size": "(353, 353)",
+          "classified": 3433,
+          "admitted": 1707,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zone9",
+          "prefix": "zone6",
+          "size": "(225, 385)",
+          "classified": 1933,
+          "admitted": 1673,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zone9dun1",
+          "prefix": "zone9dun1",
+          "size": "(97, 65)",
+          "classified": 849,
+          "admitted": 499,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zonefinal",
+          "prefix": "zonefinal",
+          "size": "(97, 129)",
+          "classified": 0,
+          "admitted": 0,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zonemainmenunew",
+          "prefix": "zonemainmenunew",
+          "size": "(97, 97)",
+          "classified": 0,
+          "admitted": 0,
+          "rejected_geometry": 0
+        },
+        {
+          "map": "zonezero",
+          "prefix": "zonezero",
+          "size": "(129, 225)",
+          "classified": 0,
+          "admitted": 0,
+          "rejected_geometry": 0
+        }
+      ]
+    }
+  ],
+  "visual_review": [
+    "Base zone1 and zone11 Compatibility off/on, base zone15 Forward+ on: fine rock detail replaces severe stretching on eligible steep faces while neighbouring authored transition art remains original.",
+    "LiA zone26 off/on: steep coherent rock walls retain the original silhouettes with smaller side-projected grain. LiA zone6 unknown atlas: zero changed pixels and no feature textures.",
+    "Final composed zone11: clouds, material lighting, surface weather, water caustics/current/interaction/waves and contact blending compile and render together across Compatibility, Mobile and Forward+."
+  ],
+  "fixture_repairs": [
+    {
+      "run": "render-cached",
+      "accepted": false,
+      "cause": "Fixture captured its baseline before installing the native colour cache; load_map builds before tree entry. Explicit apply_gfx plus cache.prepare(camera) now runs before the baseline. Settled run passes 255 checks, including exact controls and texture release. No production cache change was needed."
+    },
+    {
+      "run": "composed-mobile",
+      "accepted": false,
+      "cause": "The initial off capture differed at 67 scattered water pixels, peak 4/255; later unclassified and disabled images were byte-identical, and on/restored were byte-identical. Increased the initial combined-program settle from 60 to 180 frames for asynchronous native Vulkan specialization, retained exact assertions, and reran all three renderers with the parent cloud/contact fix."
+    }
+  ],
+  "limitations": [
+    "Desktop NVIDIA RTX 3090 evidence; no Android, integrated-GPU, thermal, memory-pressure or performance/FPS claim.",
+    "Classification is synchronous on first opt-in per terrain and can cause a one-time hitch. Census build timings are diagnostics, not a frame-time benchmark.",
+    "Only verified plain original rock tiles participate. Transition artwork, unknown LiA art and custom textures deliberately receive no cliff projection.",
+    "Two additional terrain sampler fields and side atlas reads exist only for admitted opt-in worlds. Combination tests are fixed local shader/scene controls; parent integrated game lifecycle tests are separate.",
+    "No geometric rounding was attempted because preserving original grounding and winding is more important than speculative smoothing."
+  ]
+}

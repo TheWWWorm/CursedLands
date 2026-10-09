@@ -200,11 +200,19 @@ const FRAGMENT := """
 """
 
 
-static func source(original: String) -> String:
+static func source(original: String, cliffs := false) -> String:
 	var code := original.replace("shader_type spatial;", "shader_type spatial;\n#define EI_GROUND_CONTACT")
 	var helpers := GroundSurfaceShader.LAND_UNIFORMS + GroundSurfaceShader.SOFT_UNIFORMS \
 		+ GroundSurfaceShader.SOFT_FUNCTIONS + GroundSurfaceShader.TILE_FUNCTIONS \
 		+ GroundSurfaceShader.QUERY_SHADER + DECLARATIONS + FUNCTIONS
+	if cliffs:
+		code = code.replace("shader_type spatial;", "shader_type spatial;\n#define EI_TERRAIN_CLIFFS")
+		helpers = helpers.replace("// Dry terrain's native light model", TerrainCliff.CliffShader.FUNCTIONS + "\n// Dry terrain's native light model")
+		# Query normals use the same original triangle interpolation as land;
+		# cache the lighting result before albedo so both receive one projection.
+		helpers = helpers.replace("\tcontact_ground_light(grid,height,result.normal,result.diffuse,result.specular);", "")
+		helpers = helpers.replace("\tif (detail>0.0) {", "\tcontact_ground_light(grid,height,result.normal,result.diffuse,result.specular);\n\tif (detail>0.0) {")
+		helpers = helpers.replace("\t\tfloat macro=", "\t\tvec3 planes=cliff_weights(tile,local,result.normal,distance_to_eye)*detail;\n\t\talbedo=cliff_albedo(albedo,tile,local,vec3(folded.x,height,-folded.y),planes);\n\t\tfloat macro=")
 	code = code.replace("void vertex() {", helpers + "\nvoid vertex() {\n\tcontact_band=min(0.4,max(0.01,dot(abs(vec3(MODEL_MATRIX[0].y,MODEL_MATRIX[1].y,MODEL_MATRIX[2].y)),contact_extent)*0.125));")
 	# Eligible figure sources end with fragment(); keep the original alpha,
 	# normals, material response and alpha-to-coverage path in that function.

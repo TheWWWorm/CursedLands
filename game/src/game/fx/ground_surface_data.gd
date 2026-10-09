@@ -71,6 +71,8 @@ func bind(material: ShaderMaterial, triangle_only := false) -> void:
 		if triangle_only and key not in [&"terrain_tiles",&"terrain_cells",&"level",&"soft_ground"]: continue
 		material.set_shader_parameter(key, terrain._land_mat.get_shader_parameter(key))
 	if not triangle_only:
+		if terrain._cliffs != null and terrain._cliffs.admitted > 0:
+			terrain._cliffs.bind(material)
 		material.set_shader_parameter("blend_edges", Gfx.on("gfx_terrain"))
 		material.set_shader_parameter("query_cell_count", 9)
 		material.set_shader_parameter("contact_query_passes", 2)
