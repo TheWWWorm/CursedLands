@@ -1,0 +1,157 @@
+{
+  "date": "2026-10-09",
+  "feature": "V5 cloud attenuation in the independent ground-contact terrain-light function",
+  "status": "locally accepted, same default-off cloud option",
+  "problem": "GroundContactShader.contact_light reconstructs terrain sunlight separately; it missed the cloud factor already present on ordinary terrain and figure lighting. Blended bases could remain brighter than cloud-shadowed ground.",
+  "change": "Gfx.compose applies ei_cloud_sun(p) to the contact function sun term before native diffuse-byte packing; ambient/emissive/local terms remain independent.",
+  "test_scope": "Production contact-light function and production composer in a GPU probe. A uniform 28% cloud shadow must match reducing original ei_sun to 72%; no-sun, local-light and zero-night-shadow controls are exact. Actual composed terrain/contact maps are covered separately by V6/integration receipts.",
+  "accepted_checks": 15,
+  "accepted_captures": 24,
+  "runs": [
+    {
+      "name": "cloud-contact-before",
+      "accepted": false,
+      "checks": 5,
+      "failures": 1,
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/clouds/cloud-contact-before/cloud-contact.json",
+      "result_sha256": "d7a79c5e21b852a59b8e5eb4f6b4b612171bf3264c29e5382d2f15e92696f18a",
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/clouds/cloud-contact-before/run.json",
+      "manifest_sha256": "ca2bfb94bd4d81e1e18088cc21e4c12fb6fbc50d0d8ffb61c2554d77776da8a4",
+      "test_sha256": "975d179a5ac56d78aabe379b17d6b2def42313055d9fdf12decdfaaa71af098d",
+      "pack_sha256": "3fcc4ce093103ec85e79b3b5396f0a6cd921ec85442aff9b7d878461daee3d28",
+      "engine_sha256": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+      "errors": [
+        "FAIL contact band shares exact terrain cloud attenuation before native byte packing"
+      ],
+      "warnings": [],
+      "captures": 8,
+      "observations": [
+        {
+          "old_to_shadow": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "renderer": "mobile",
+          "shadow_to_reference": {
+            "changed_pixels": 4096,
+            "peak_delta": 57,
+            "pixels_over_2": 4096
+          }
+        }
+      ]
+    },
+    {
+      "name": "cloud-contact-final-gl",
+      "accepted": true,
+      "checks": 5,
+      "failures": 0,
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/clouds/cloud-contact-final-gl/cloud-contact.json",
+      "result_sha256": "4dbd0712e6d5fb7348b2f968cb839f1b5f79df7c4758b2fb1f8fb224d02b4518",
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/clouds/cloud-contact-final-gl/run.json",
+      "manifest_sha256": "8d7686a267b15bd49339ef6cfbd4a5691efcdc4e6a5b3064f894969c90a83ffa",
+      "test_sha256": "975d179a5ac56d78aabe379b17d6b2def42313055d9fdf12decdfaaa71af098d",
+      "pack_sha256": "d929fad7f98623ab23bc9361c11ca7a001249802b6c43a4634c0f6c934b71863",
+      "engine_sha256": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+      "errors": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "captures": 8,
+      "observations": [
+        {
+          "old_to_shadow": {
+            "changed_pixels": 4096,
+            "peak_delta": 80,
+            "pixels_over_2": 4096
+          },
+          "renderer": "gl_compatibility",
+          "shadow_to_reference": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        }
+      ]
+    },
+    {
+      "name": "cloud-contact-final-forward",
+      "accepted": true,
+      "checks": 5,
+      "failures": 0,
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/clouds/cloud-contact-final-forward/cloud-contact.json",
+      "result_sha256": "d3a90c9cff43ef34b27011d64b7c50762bba92c02d74d5fc7bca7c1ad1ce18ab",
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/clouds/cloud-contact-final-forward/run.json",
+      "manifest_sha256": "580bc8129ada8a982cb2aa12058ae4e7df02864e0664eb1326825e32cf477d47",
+      "test_sha256": "975d179a5ac56d78aabe379b17d6b2def42313055d9fdf12decdfaaa71af098d",
+      "pack_sha256": "d929fad7f98623ab23bc9361c11ca7a001249802b6c43a4634c0f6c934b71863",
+      "engine_sha256": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+      "errors": [],
+      "warnings": [],
+      "captures": 8,
+      "observations": [
+        {
+          "old_to_shadow": {
+            "changed_pixels": 4096,
+            "peak_delta": 57,
+            "pixels_over_2": 4096
+          },
+          "renderer": "forward_plus",
+          "shadow_to_reference": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        }
+      ]
+    },
+    {
+      "name": "cloud-contact-final-mobile",
+      "accepted": true,
+      "checks": 5,
+      "failures": 0,
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/clouds/cloud-contact-final-mobile/cloud-contact.json",
+      "result_sha256": "4904e98893d7da0e83cf019d0a181ded92a294e86017abecadf7f66ecf07a0ec",
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/clouds/cloud-contact-final-mobile/run.json",
+      "manifest_sha256": "30935c41e5ed561d75b69098ad80ac6d3e1a36e55ccceaca1003b191de419c45",
+      "test_sha256": "975d179a5ac56d78aabe379b17d6b2def42313055d9fdf12decdfaaa71af098d",
+      "pack_sha256": "d929fad7f98623ab23bc9361c11ca7a001249802b6c43a4634c0f6c934b71863",
+      "engine_sha256": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+      "errors": [],
+      "warnings": [],
+      "captures": 8,
+      "observations": [
+        {
+          "old_to_shadow": {
+            "changed_pixels": 4096,
+            "peak_delta": 57,
+            "pixels_over_2": 4096
+          },
+          "renderer": "mobile",
+          "shadow_to_reference": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        }
+      ]
+    }
+  ],
+  "source_sha256": {
+    "game/src/game/gfx.gd": "9c5dbfa775f49396c69e8a627ce551cf852cb20405dfd052b4c3a7c1aafba595",
+    "tools/tests/cloud_contact_light.gd": "975d179a5ac56d78aabe379b17d6b2def42313055d9fdf12decdfaaa71af098d"
+  },
+  "build": {
+    "directory": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/clouds/clouds-contact-fix",
+    "manifest_sha256": "67beb518dc4ccb14ab38db6e204f3a5bb60e41ee2d32491ccf84b782e8d2d6e0",
+    "sha256": {
+      "CursedLands.x86_64": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+      "CursedLands.pck": "d929fad7f98623ab23bc9361c11ca7a001249802b6c43a4634c0f6c934b71863",
+      "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+    }
+  },
+  "limits": [
+    "Functional Linux GPU checks; no frame-time or device claim.",
+    "No change to option defaults, topology, gameplay or original assets."
+  ]
+}

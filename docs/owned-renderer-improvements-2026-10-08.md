@@ -4065,6 +4065,37 @@ Reproduce with `clouds/run.py`, `tests/clouds.gd`, the selected renderer and
 `--clouds-materials` for the recorded variants. Tests and commands are frozen
 beside each manifest. Production and test source hashes are in the receipt.
 
+### Cloud correction: shared ground-contact light
+
+Combined V6 review found that `GroundContactShader.contact_light` independently
+reconstructs terrain illumination and had missed cloud attenuation. A blended
+object base could remain brighter than the cloud-shadowed ground. `Gfx.compose`
+now applies the same factor to that function's sun term, before native byte
+packing. The focused [contact-light receipt](validation/cloud-contact-light-2026-10-09.json)
+records the baseline failure and **15 passing checks across three backends**:
+a uniform cloud shadow exactly matches reducing only the original sun, while
+ambient/local light and the zero-night-shadow control remain exact. The real
+combined terrain/contact captures are recorded with the subsequent V6 checkpoint.
+
+## V7: neighbouring-map scenery requires verified placements
+
+The pinned R1 implementation reads `world-map-layouts.json` beside its addon.
+Its actual call site admits only a verified `deja-vu` resource profile identified
+by `databaseJmv.res`, then selects that profile from the layout. The parser accepts
+schema 1/2, layout algorithm 1 and `mpr-local-xy`, with explicit profile, allod,
+zone/component identities, origins and optional resource paths/dimensions.
+Those placements are external input; none is committed in the pinned source.
+
+A filename search under `/home/llm2x/Documents`, including both available game
+data roots and the reference repository, found no such layout. The user has been
+asked for its local path if available. Base and LiA map names, world-map icons or
+travel links do not establish geometric adjacency. Do not invent origins, reuse
+Deja-vu placements for a different campaign, or load neighbour gameplay worlds.
+This stage remains data-dependent; no inactive settings switch or speculative
+streamer was added. Resume with a verified layout for the actual mounted campaign,
+then validate connected edges, independent materials/liquids, bounded residency
+and actor/script-free teardown against the audit's V7 acceptance list.
+
 ## Next work in the established order
 
 1. **P1/P2 remaining texture work:** retained outfit pixels and shared native

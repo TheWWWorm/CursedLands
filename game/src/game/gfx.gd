@@ -228,6 +228,11 @@ static func compose(code: String, lit := true, wrap := false) -> String:
 		if LocalLightShader.enabled():
 			extra += LocalLightShader.COMMON
 	code = code.substr(0, i + 1) + LIGHT_COMMON + extra + code.substr(i + 1)
+	if lit and on("gfx_clouds"):
+		# Contact blending reconstructs terrain lighting independently of the
+		# figure's vertex path; its sampled band must share the ground shadow.
+		code = code.replace("ei_sun * max(dot(n,ei_sun_dir),0.0)",
+			"ei_sun * ei_cloud_sun(p) * max(dot(n,ei_sun_dir),0.0)")
 	if lit and on("gfx_clouds") and code.contains("#define EI_WATER_FX"):
 		# Enhanced water has its own Fresnel/SSR composition and bypasses
 		# Godot's sky IBL. Sample the same sheet on its reflected world ray.
