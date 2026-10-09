@@ -1,0 +1,2571 @@
+{
+  "date": "2026-10-09",
+  "feature": "V3 first stage: local original-asset wildlife and regional particles",
+  "status": "validated locally; opt-in defaults remain off; not published or installed",
+  "source_reference": {
+    "repository": "/home/llm2x/Documents/evil-islands-owned-renderer",
+    "revision": "0092dc6e1d7c4aab3f74644a79e9bfca11ecf293",
+    "files": [
+      "Source/critters.h",
+      "Source/renderer_critters.cpp",
+      "Source/ambient_particles.h",
+      "Source/renderer_ambient_particles.cpp"
+    ],
+    "adaptation": "Reuses region, original terrain category, authored tree, daylight and visible-threat evidence. This bounded first stage is not the reference complete species catalogue or flock/perching/carrion simulation."
+  },
+  "implementation": {
+    "options": {
+      "gfx_ambient_wildlife": {
+        "group": 13,
+        "row": 7,
+        "default": 0
+      },
+      "gfx_ambient_particles": {
+        "group": 13,
+        "row": 8,
+        "default": 0
+      }
+    },
+    "metadata_validation": "docs/validation/waterfalls-2026-10-09.json contains the coordinated EN/RU/DE metadata and grouped-UI validation; new options are excluded from automatic low-tier presets.",
+    "actual_sources": "Highest containing authored XY-jittered land triangle and its atlas terrain category; drawn non-wave liquid triangles including scripted owner offsets; actual visible scenery bounds and verified leafy model identities. Navigation water heights are never emission evidence. Base Gipat zone9 is Dead City; LiA Gipat2 zone9 remains outdoor.",
+    "visible_ground": "Ground models match the current visible loose-ground vertex elevation, including installed dense footprint mesh subdivision, existing CPU track images and lifetime, actual material profiles, original jittered triangles and the shader water cutoff. Option changes re-seat held poses; live tracks are sampled during ordinary movement. No duplicate footprint field or navigation changes. The new query is checked against the actual packed B/A material profile for all ten census maps and a real snow footprint with rendered animal visibility.",
+    "models": {
+      "rat": "unanwira / rat00, 0.23 m",
+      "snowmouse": "unanwira / rat00, pale original-texture tint, 0.16 m",
+      "spider": "unmosp / spider00, 0.19 m",
+      "frog": "unmoto / toad00, green original-texture tint, 0.16 m",
+      "bird": "unmobi / bird00, original cflight clip, 0.22 m"
+    },
+    "regional_particles": [
+      "day pollen over grass/dry ground",
+      "falling leaves near verified deciduous trees",
+      "Dead City grey motes",
+      "cave dust",
+      "embers above actual lava",
+      "Suslanger dust over sand/bare/dry ground",
+      "calm snow motes over snow",
+      "base Gipat night fireflies over grass/swamp"
+    ],
+    "clock_lifetime": "Pausable node after visible-unit fog, existing terrain game clock only. Held time changes neither placement nor pose. Rewinds, gaps greater than 0.5 seconds and world replacement create fresh local populations without integrating stale flee trails. Options disable frees local nodes; loading/zone holds/movies/LMP travel stop updates.",
+    "avoidance": "Only shown, living, unfogged, near-screen units contribute threats. Ground residents flee visible motion/combat; birds leave at night. Vertical floor separation avoids phantom threats and distant cave-rim animal admissions. Particle alpha suppresses overlap with visible units/combat.",
+    "simulation_boundary": "No GameUnit registration, collision, save/network state, navigation mutation or gameplay RNG. Original shared EIFigure/EIAnim resources supply only local presentation nodes."
+  },
+  "budgets": {
+    "ground_residents": 2,
+    "birds_in_one_flock": 3,
+    "max_live_original_mesh_parts": 61,
+    "particle_quads": 192,
+    "particle_multimesh_draws": 1,
+    "resident_radius_m": 42,
+    "particle_radius_m": 25,
+    "threat_records": 16,
+    "nearby_threat_candidates": 64,
+    "cooldowns": 128,
+    "water_query_cache_sectors": 16,
+    "placement": "32 m stable hashed animal cells; 8 m particle cells with four deterministic roots per cell; fixed physical animal sizes, no camera-distance rescaling.",
+    "admission_interval_seconds": 0.75,
+    "source_refresh_interval_seconds": 0.5,
+    "cost_limitations": "Original full animated figures retain 24 rat/snowmouse parts, 26 spider parts, 19 frog parts or 3 bird parts. Shared figure/clip/material caches and the map-dependent authored scenery index add memory and admission costs. Bounds are implementation limits, not a performance result; no frame-time or long-route performance acceptance is claimed."
+  },
+  "build": {
+    "baseline": "92d4941 with camp UI own commits; ambient files and metadata overlaid in isolated staging",
+    "directory": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-camp-ui-20261009/ambient-build08",
+    "sha256": {
+      "CPU.x86_64": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+      "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e",
+      "CPU.pck": "5b0dcf5aafb4243c637a16714f6f41e5e127f015be0185ffc5054dae588e66c1"
+    },
+    "source_sha256": {
+      "game/src/game/fx/ambient_habitats.gd": "914163580da0f04fba1c866f2aed2cc13da1328fd52ca487265534d9ce6dfd5f",
+      "game/src/game/fx/ambient_life.gd": "fd2d85901057d7ed835fcf1526b1011cf028a7cd79a1f38fc994cbb147766569",
+      "game/src/game/fx/ambient_models.gd": "d1e84944763337e305917431e8773a4a1fde6586436f842ea52064f7aac5084e",
+      "game/src/game/fx/ambient_particles.gd": "9e904a81183f23063dd3ffd27a897ff7efe83466c9dc2920deff18790032acf6",
+      "game/src/game/game.gd": "d0515b4d4952c2379a9eeb04c0587fe7694b8f9594172320d92d9fddcbc7e049",
+      "game/src/game/fx/ambient_ground.gd": "443d0e07738ef50f59c773a2b8125e9cb41bab25f894d11540c339823d5521fd"
+    },
+    "runtime_update": "New visible-ground query, same accepted090f runtime andd20a native."
+  },
+  "earlier_build": {
+    "baseline": "92d4941 with camp UI own commits; ambient files and metadata overlaid in isolated staging",
+    "directory": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-camp-ui-20261009/ambient-build07",
+    "sha256": {
+      "CPU.x86_64": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+      "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e",
+      "CPU.pck": "13070dcce1584f2e6302fb4af6a8c33c9fb6be2b558f97fb5a2f528cfb5df931"
+    },
+    "source_sha256": {
+      "game/src/game/fx/ambient_habitats.gd": "d27a97de9bd605831c4c2230be433e96204883f0235eb0a5f88e18723882bf5a",
+      "game/src/game/fx/ambient_life.gd": "f2d99103de8b8a2856d88eb5d30cb6a0fffab1be04d997cf441d864621efe9ca",
+      "game/src/game/fx/ambient_models.gd": "d1e84944763337e305917431e8773a4a1fde6586436f842ea52064f7aac5084e",
+      "game/src/game/fx/ambient_particles.gd": "9e904a81183f23063dd3ffd27a897ff7efe83466c9dc2920deff18790032acf6",
+      "game/src/game/game.gd": "d0515b4d4952c2379a9eeb04c0587fe7694b8f9594172320d92d9fddcbc7e049"
+    },
+    "runtime_update": "Unmodified build06 pack with current coordinated 090f engine and d20a native from waterfall accepted candidate. No shared staging modified."
+  },
+  "build_coverage": "Build07 supplies unaffected original-asset, bird, frog, regional particle and held-clock renderer evidence. Build08 adds the visible-ground placement fix and reruns the full base/LiA census, snow option/footprint regression, Compatibility frog and the remaining desert/LiA regional views. Both use the accepted090f runtime andd20a native. These are isolated snapshots based on92d4941; parent integration covers concurrent renderer changes.",
+  "test_fixture": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/ambient_life.gd",
+  "frozen_final_fixture": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-camp-ui-20261009/ambient_final_fixture13.gd",
+  "test_sha256": "078ec0a8278ba76dfee65b9f7ab2d048dfe9b91383106884ef844829c6e2ea5e",
+  "accepted_checks": 1088,
+  "accepted_runs": [
+    {
+      "name": "ambient-base-headless-13",
+      "build": "ambient-build08",
+      "checks": 111,
+      "failures": 0,
+      "fixture": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-camp-ui-20261009/ambient_final_fixture13.gd",
+      "fixture_sha256": "078ec0a8278ba76dfee65b9f7ab2d048dfe9b91383106884ef844829c6e2ea5e",
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/ambient-base-headless-13.json",
+      "manifest_sha256": "134270338f3ac704a559f7ea74ccf1831727833932ed98b834da25ae4aa7cd3e",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-base-headless-13/godot/app_userdata/Cursed Lands/ambient-receipt.json",
+      "result_sha256": "1eb5b28f956bbed21a626b72e8a7bd837ec5182b6f1781c9bb095b3ce44d62c0",
+      "warnings": [],
+      "rows": [
+        {
+          "case": "original-models",
+          "models": [
+            {
+              "body_length": 0.23,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack01",
+                "ei/uattack02",
+                "ei/udeath",
+                "ei/uhit"
+              ],
+              "kind": "rat",
+              "mesh_parts": 24
+            },
+            {
+              "body_length": 0.16,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack01",
+                "ei/uattack02",
+                "ei/udeath",
+                "ei/uhit"
+              ],
+              "kind": "snowmouse",
+              "mesh_parts": 24
+            },
+            {
+              "body_length": 0.19,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack",
+                "ei/udeath01",
+                "ei/udeath02",
+                "ei/uhit"
+              ],
+              "kind": "spider",
+              "mesh_parts": 26
+            },
+            {
+              "body_length": 0.16,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack",
+                "ei/udeath01",
+                "ei/udeath02",
+                "ei/uhit"
+              ],
+              "kind": "frog",
+              "mesh_parts": 19
+            },
+            {
+              "body_length": 0.22,
+              "clips": [
+                "ei/cflight"
+              ],
+              "kind": "bird",
+              "mesh_parts": 3
+            }
+          ]
+        },
+        {
+          "allod": "gipat",
+          "area_samples": {
+            "bare": 5,
+            "grass": 27,
+            "swamp": 5,
+            "water": 11
+          },
+          "biome": "gipat",
+          "case": "map-census",
+          "first": {},
+          "map": "zone1",
+          "navigation_wet_but_drawn_dry": 0,
+          "particles": {
+            "0": 27
+          },
+          "region": "outdoor",
+          "sky": "",
+          "species": {},
+          "zone": "gz1g"
+        },
+        {
+          "allod": "gipat",
+          "area_samples": {
+            "bare": 61,
+            "grass": 75,
+            "sand": 15,
+            "water": 9
+          },
+          "biome": "gipat",
+          "case": "map-census",
+          "first": {
+            "frog": "(293.1278, 54.25207)"
+          },
+          "map": "zone4",
+          "navigation_wet_but_drawn_dry": 0,
+          "particles": {
+            "0": 75
+          },
+          "region": "outdoor",
+          "sky": "",
+          "species": {
+            "frog": 1
+          },
+          "zone": "gz4g"
+        },
+        {
+          "allod": "gipat",
+          "area_samples": {
+            "bare": 37,
+            "water": 3
+          },
+          "biome": "cave",
+          "case": "map-census",
+          "first": {
+            "rat": "(4.726754, 10.589)",
+            "spider": "(211.9164, 16.26991)"
+          },
+          "map": "zone5_1",
+          "navigation_wet_but_drawn_dry": 0,
+          "particles": {
+            "3": 40
+          },
+          "region": "cave",
+          "sky": "cave",
+          "species": {
+            "rat": 12,
+            "spider": 4
+          },
+          "zone": "gz5g"
+        },
+        {
+          "allod": "gipat",
+          "area_samples": {
+            "bare": 11,
+            "grass": 2,
+            "lava": 3
+          },
+          "biome": "cave",
+          "case": "map-census",
+          "first": {
+            "rat": "(83.21835, 19.66646)",
+            "spider": "(55.61483, 14.43774)"
+          },
+          "map": "bz7g",
+          "navigation_wet_but_drawn_dry": 0,
+          "particles": {
+            "3": 13,
+            "4": 3
+          },
+          "region": "cave",
+          "sky": "cave",
+          "species": {
+            "rat": 4,
+            "spider": 3
+          },
+          "zone": "bz7g"
+        },
+        {
+          "allod": "gipat",
+          "area_samples": {
+            "bare": 65,
+            "grass": 67,
+            "sand": 4,
+            "swamp": 1,
+            "water": 3
+          },
+          "biome": "dead_city",
+          "case": "map-census",
+          "first": {
+            "spider": "(169.0364, 18.1205)"
+          },
+          "map": "zone9",
+          "navigation_wet_but_drawn_dry": 0,
+          "particles": {
+            "2": 140
+          },
+          "region": "dead_city",
+          "sky": "",
+          "species": {
+            "spider": 43
+          },
+          "zone": "gz9g"
+        },
+        {
+          "allod": "ingos",
+          "area_samples": {
+            "bare": 11,
+            "grass": 3,
+            "snow": 166,
+            "water": 12
+          },
+          "biome": "ingos",
+          "case": "map-census",
+          "first": {
+            "snowmouse": "(54.0645, 12.48834)"
+          },
+          "map": "zone11",
+          "navigation_wet_but_drawn_dry": 0,
+          "particles": {
+            "6": 166
+          },
+          "region": "snow",
+          "sky": "normal",
+          "species": {
+            "snowmouse": 96
+          },
+          "zone": "gz11k"
+        },
+        {
+          "allod": "suslanger",
+          "area_samples": {
+            "bare": 39,
+            "sand": 53,
+            "water": 28
+          },
+          "biome": "suslanger",
+          "case": "map-census",
+          "first": {},
+          "map": "zone18",
+          "navigation_wet_but_drawn_dry": 0,
+          "particles": {
+            "5": 92
+          },
+          "region": "desert",
+          "sky": "normal",
+          "species": {},
+          "zone": "gz18h"
+        },
+        {
+          "authored_light": false,
+          "case": "lifetime",
+          "hour": 12.0,
+          "leafy_source_buckets": 273,
+          "particle_kinds": {
+            "0": 23,
+            "1": 16,
+            "7": 17
+          },
+          "particles": 56,
+          "point": "(73.9768, 57.31923)",
+          "residents": [
+            {
+              "kind": "bird",
+              "parts": 3,
+              "point": "(75.77918, 6.154793, -56.4524)"
+            },
+            {
+              "kind": "bird",
+              "parts": 3,
+              "point": "(72.32491, 6.488225, -56.19173)"
+            },
+            {
+              "kind": "bird",
+              "parts": 3,
+              "point": "(73.82631, 6.560763, -59.31356)"
+            }
+          ],
+          "root_nodes": 28,
+          "solid_source_buckets": 385,
+          "step_us": 307,
+          "zone": "gz1g"
+        }
+      ],
+      "captures": []
+    },
+    {
+      "name": "ambient-astral-headless-13",
+      "build": "ambient-build08",
+      "checks": 83,
+      "failures": 0,
+      "fixture": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-camp-ui-20261009/ambient_final_fixture13.gd",
+      "fixture_sha256": "078ec0a8278ba76dfee65b9f7ab2d048dfe9b91383106884ef844829c6e2ea5e",
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/ambient-astral-headless-13.json",
+      "manifest_sha256": "26976876b16647978176676d9eab7f16e11c2b8f0a35e3a8afa48748ae33cb54",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-astral-headless-13/godot/app_userdata/Cursed Lands/ambient-receipt.json",
+      "result_sha256": "3535a267e0e88f78113d58f597b88584a670f9dddd95d8f7387f452a3273f159",
+      "warnings": [],
+      "rows": [
+        {
+          "case": "original-models",
+          "models": [
+            {
+              "body_length": 0.23,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack01",
+                "ei/uattack02",
+                "ei/udeath",
+                "ei/uhit"
+              ],
+              "kind": "rat",
+              "mesh_parts": 24
+            },
+            {
+              "body_length": 0.16,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack01",
+                "ei/uattack02",
+                "ei/udeath",
+                "ei/uhit"
+              ],
+              "kind": "snowmouse",
+              "mesh_parts": 24
+            },
+            {
+              "body_length": 0.19,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack",
+                "ei/udeath01",
+                "ei/udeath02",
+                "ei/uhit"
+              ],
+              "kind": "spider",
+              "mesh_parts": 26
+            },
+            {
+              "body_length": 0.16,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack",
+                "ei/udeath01",
+                "ei/udeath02",
+                "ei/uhit"
+              ],
+              "kind": "frog",
+              "mesh_parts": 19
+            },
+            {
+              "body_length": 0.22,
+              "clips": [
+                "ei/cflight"
+              ],
+              "kind": "bird",
+              "mesh_parts": 3
+            }
+          ]
+        },
+        {
+          "allod": "gipat2",
+          "area_samples": {
+            "bare": 5,
+            "grass": 1
+          },
+          "biome": "cave",
+          "case": "map-census",
+          "first": {
+            "spider": "(27.47832, 12.96156)"
+          },
+          "map": "zone7dun1",
+          "navigation_wet_but_drawn_dry": 0,
+          "particles": {
+            "3": 6
+          },
+          "region": "cave",
+          "sky": "cave",
+          "species": {
+            "spider": 3
+          },
+          "zone": "gz7d1"
+        },
+        {
+          "allod": "jigran",
+          "area_samples": {
+            "bare": 12
+          },
+          "biome": "cave",
+          "case": "map-census",
+          "first": {
+            "rat": "(24.4567, 7.950785)",
+            "spider": "(45.14398, 37.25281)"
+          },
+          "map": "zonefinal",
+          "navigation_wet_but_drawn_dry": 0,
+          "particles": {
+            "3": 12
+          },
+          "region": "cave",
+          "sky": "cave",
+          "species": {
+            "rat": 9,
+            "spider": 1
+          },
+          "zone": "gz36j"
+        },
+        {
+          "allod": "gipat2",
+          "area_samples": {
+            "bare": 34,
+            "grass": 49,
+            "water": 1
+          },
+          "biome": "gipat2",
+          "case": "map-census",
+          "first": {},
+          "map": "zone9",
+          "navigation_wet_but_drawn_dry": 0,
+          "particles": {
+            "0": 49
+          },
+          "region": "outdoor",
+          "sky": "",
+          "species": {},
+          "zone": "gz9g"
+        },
+        {
+          "authored_light": false,
+          "case": "lifetime",
+          "hour": 12.0,
+          "leafy_source_buckets": 559,
+          "particle_kinds": {
+            "0": 63,
+            "1": 16
+          },
+          "particles": 79,
+          "point": "(14.58302, 22.46641)",
+          "residents": [
+            {
+              "kind": "bird",
+              "parts": 3,
+              "point": "(16.52006, 10.78807, -21.96854)"
+            },
+            {
+              "kind": "bird",
+              "parts": 3,
+              "point": "(13.18333, 11.06108, -21.03782)"
+            },
+            {
+              "kind": "bird",
+              "parts": 3,
+              "point": "(14.04567, 11.21565, -24.39287)"
+            }
+          ],
+          "root_nodes": 28,
+          "solid_source_buckets": 1019,
+          "step_us": 327,
+          "zone": "gz9g"
+        }
+      ],
+      "captures": []
+    },
+    {
+      "name": "ambient-snow-headless-13",
+      "build": "ambient-build08",
+      "checks": 72,
+      "failures": 0,
+      "fixture": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/ambient_life.gd",
+      "fixture_sha256": "078ec0a8278ba76dfee65b9f7ab2d048dfe9b91383106884ef844829c6e2ea5e",
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/ambient-snow-headless-13.json",
+      "manifest_sha256": "1b510e7b60cca897c1ac990fd60a294e60d9df467320613ffb2282c9384191a7",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-snow-headless-13/godot/app_userdata/Cursed Lands/ambient-receipt.json",
+      "result_sha256": "ac301dd9447bba3683115bd6626981de7fac0bb26ffec5c122676e2f4f0d13fe",
+      "warnings": [],
+      "rows": [
+        {
+          "case": "original-models",
+          "models": [
+            {
+              "body_length": 0.23,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack01",
+                "ei/uattack02",
+                "ei/udeath",
+                "ei/uhit"
+              ],
+              "kind": "rat",
+              "mesh_parts": 24
+            },
+            {
+              "body_length": 0.16,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack01",
+                "ei/uattack02",
+                "ei/udeath",
+                "ei/uhit"
+              ],
+              "kind": "snowmouse",
+              "mesh_parts": 24
+            },
+            {
+              "body_length": 0.19,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack",
+                "ei/udeath01",
+                "ei/udeath02",
+                "ei/uhit"
+              ],
+              "kind": "spider",
+              "mesh_parts": 26
+            },
+            {
+              "body_length": 0.16,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack",
+                "ei/udeath01",
+                "ei/udeath02",
+                "ei/uhit"
+              ],
+              "kind": "frog",
+              "mesh_parts": 19
+            },
+            {
+              "body_length": 0.22,
+              "clips": [
+                "ei/cflight"
+              ],
+              "kind": "bird",
+              "mesh_parts": 3
+            }
+          ]
+        },
+        {
+          "authored_light": false,
+          "case": "lifetime",
+          "hour": 12.0,
+          "leafy_source_buckets": 713,
+          "particle_kinds": {
+            "6": 108
+          },
+          "particles": 108,
+          "point": "(179.9115, 17.83786)",
+          "residents": [
+            {
+              "kind": "snowmouse",
+              "parts": 24,
+              "point": "(179.6167, 10.97126, -18.04032)"
+            },
+            {
+              "kind": "snowmouse",
+              "parts": 24,
+              "point": "(169.7264, 10.5776, -36.71093)"
+            }
+          ],
+          "root_nodes": 107,
+          "solid_source_buckets": 2012,
+          "step_us": 358,
+          "zone": "gz11k"
+        },
+        {
+          "case": "snow-surface",
+          "compacted": 10.7252645492554,
+          "loose": 10.9712648391724,
+          "original": 10.7712650299072,
+          "restored": 10.9712648391724
+        }
+      ],
+      "captures": []
+    },
+    {
+      "name": "ambient-gipat-mobile-11",
+      "build": "ambient-build07",
+      "checks": 70,
+      "failures": 0,
+      "fixture": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-camp-ui-20261009/ambient_final_fixture.gd",
+      "fixture_sha256": "10ab96c91ffd3d541a71959c139d5e6115701e74767a739012103e6aa4ddcc8d",
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/ambient-gipat-mobile-11.json",
+      "manifest_sha256": "5e2b31229cf9d889a06d1d04407992fc570ac8ba3674aa5382c61e3e5e4d57aa",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-gipat-mobile-11/godot/app_userdata/Cursed Lands/ambient-receipt.json",
+      "result_sha256": "3a1aceb2b56cff8cc11b8f9464efe0ec70bb80d272c19ccb366f4c10118948b9",
+      "warnings": [
+        "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+      ],
+      "rows": [
+        {
+          "case": "original-models",
+          "models": [
+            {
+              "body_length": 0.23,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack01",
+                "ei/uattack02",
+                "ei/udeath",
+                "ei/uhit"
+              ],
+              "kind": "rat",
+              "mesh_parts": 24
+            },
+            {
+              "body_length": 0.16,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack01",
+                "ei/uattack02",
+                "ei/udeath",
+                "ei/uhit"
+              ],
+              "kind": "snowmouse",
+              "mesh_parts": 24
+            },
+            {
+              "body_length": 0.19,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack",
+                "ei/udeath01",
+                "ei/udeath02",
+                "ei/uhit"
+              ],
+              "kind": "spider",
+              "mesh_parts": 26
+            },
+            {
+              "body_length": 0.16,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack",
+                "ei/udeath01",
+                "ei/udeath02",
+                "ei/uhit"
+              ],
+              "kind": "frog",
+              "mesh_parts": 19
+            },
+            {
+              "body_length": 0.22,
+              "clips": [
+                "ei/cflight"
+              ],
+              "kind": "bird",
+              "mesh_parts": 3
+            }
+          ]
+        },
+        {
+          "authored_light": false,
+          "case": "lifetime",
+          "hour": 12.0,
+          "leafy_source_buckets": 273,
+          "particle_kinds": {
+            "0": 23,
+            "1": 16,
+            "7": 17
+          },
+          "particles": 56,
+          "point": "(73.9768, 57.31923)",
+          "residents": [
+            {
+              "kind": "bird",
+              "parts": 3,
+              "point": "(75.77918, 6.154793, -56.4524)"
+            },
+            {
+              "kind": "bird",
+              "parts": 3,
+              "point": "(72.32491, 6.488225, -56.19173)"
+            },
+            {
+              "kind": "bird",
+              "parts": 3,
+              "point": "(73.82631, 6.560763, -59.31356)"
+            }
+          ],
+          "root_nodes": 28,
+          "solid_source_buckets": 385,
+          "step_us": 530,
+          "zone": "gz1g"
+        },
+        {
+          "advanced_bytes": 1453,
+          "animals_bytes": 513,
+          "case": "render",
+          "held_exact_pixels": true,
+          "on_off_bytes": 800,
+          "particles_bytes": 327,
+          "paused_bytes": 0,
+          "renderer": "mobile",
+          "requested_kind": -1,
+          "zone": "gz1g"
+        }
+      ],
+      "captures": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-gipat-mobile-11/godot/app_userdata/Cursed Lands/ambient-advanced.png",
+          "sha256": "fe17c76845d9e005505fe2b20f2157bc459c80b0b6944f89aeb0e66bb33a84b9"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-gipat-mobile-11/godot/app_userdata/Cursed Lands/ambient-animals.png",
+          "sha256": "be7166f6811d412290cf45d4eeeab4a6a7697a7c5a96ff7eb0c3631fb93d1550"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-gipat-mobile-11/godot/app_userdata/Cursed Lands/ambient-held.png",
+          "sha256": "c2ded90f2044a97a2a0939eae0abf5f797880e618d9f576d0a4c4b4963fa8cf9"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-gipat-mobile-11/godot/app_userdata/Cursed Lands/ambient-off.png",
+          "sha256": "f8b65e95330e417c6e186685ae191c5105769cdae6cf76ce034c8df728689042"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-gipat-mobile-11/godot/app_userdata/Cursed Lands/ambient-on.png",
+          "sha256": "c2ded90f2044a97a2a0939eae0abf5f797880e618d9f576d0a4c4b4963fa8cf9"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-gipat-mobile-11/godot/app_userdata/Cursed Lands/ambient-particles.png",
+          "sha256": "9659d4f1a78d553996e6801e237e54272acb98501facae809ece03ccab08c1fd"
+        }
+      ]
+    },
+    {
+      "name": "ambient-cave-compatibility-11",
+      "build": "ambient-build07",
+      "checks": 69,
+      "failures": 0,
+      "fixture": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-camp-ui-20261009/ambient_final_fixture.gd",
+      "fixture_sha256": "10ab96c91ffd3d541a71959c139d5e6115701e74767a739012103e6aa4ddcc8d",
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/ambient-cave-compatibility-11.json",
+      "manifest_sha256": "d73c2f480bb2766b778f454b41a6c13ef1e4d6390e2dbb024de06f5c194dde88",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-cave-compatibility-11/godot/app_userdata/Cursed Lands/ambient-receipt.json",
+      "result_sha256": "5ba8481f48317674b43f592f57267ba0221bf964330962d54da984d1847ae93c",
+      "warnings": [
+        "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet.",
+        "WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.",
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "rows": [
+        {
+          "case": "original-models",
+          "models": [
+            {
+              "body_length": 0.23,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack01",
+                "ei/uattack02",
+                "ei/udeath",
+                "ei/uhit"
+              ],
+              "kind": "rat",
+              "mesh_parts": 24
+            },
+            {
+              "body_length": 0.16,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack01",
+                "ei/uattack02",
+                "ei/udeath",
+                "ei/uhit"
+              ],
+              "kind": "snowmouse",
+              "mesh_parts": 24
+            },
+            {
+              "body_length": 0.19,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack",
+                "ei/udeath01",
+                "ei/udeath02",
+                "ei/uhit"
+              ],
+              "kind": "spider",
+              "mesh_parts": 26
+            },
+            {
+              "body_length": 0.16,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack",
+                "ei/udeath01",
+                "ei/udeath02",
+                "ei/uhit"
+              ],
+              "kind": "frog",
+              "mesh_parts": 19
+            },
+            {
+              "body_length": 0.22,
+              "clips": [
+                "ei/cflight"
+              ],
+              "kind": "bird",
+              "mesh_parts": 3
+            }
+          ]
+        },
+        {
+          "authored_light": false,
+          "case": "lifetime",
+          "hour": 12.0,
+          "leafy_source_buckets": 0,
+          "particle_kinds": {
+            "3": 116
+          },
+          "particles": 116,
+          "point": "(57.97481, 39.12946)",
+          "residents": [
+            {
+              "kind": "spider",
+              "parts": 26,
+              "point": "(57.76939, 3.228137, -39.41594)"
+            },
+            {
+              "kind": "rat",
+              "parts": 24,
+              "point": "(80.43909, 3.69487, -44.00222)"
+            }
+          ],
+          "root_nodes": 111,
+          "solid_source_buckets": 12,
+          "step_us": 175,
+          "zone": "gz5g"
+        },
+        {
+          "advanced_bytes": 2014,
+          "animals_bytes": 61,
+          "case": "render",
+          "held_exact_pixels": true,
+          "on_off_bytes": 1031,
+          "particles_bytes": 970,
+          "paused_bytes": 0,
+          "renderer": "gl_compatibility",
+          "requested_kind": -1,
+          "zone": "gz5g"
+        }
+      ],
+      "captures": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-cave-compatibility-11/godot/app_userdata/Cursed Lands/ambient-advanced.png",
+          "sha256": "fd2f9cb3daa7c268a1d33ca5da188961aa4f58b898ea587dc6e80da2a9e4fa0d"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-cave-compatibility-11/godot/app_userdata/Cursed Lands/ambient-animals.png",
+          "sha256": "3f6fa9b2a8f966ad5d004117a943f4e18772fa35abe33aa41ebd5f9199886669"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-cave-compatibility-11/godot/app_userdata/Cursed Lands/ambient-held.png",
+          "sha256": "f4e17362b7126b898ed095b4b308fbe8a21496fa40359d0b62b2bdad373d6c16"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-cave-compatibility-11/godot/app_userdata/Cursed Lands/ambient-off.png",
+          "sha256": "a36fb240f04795a256947f1aee8bd193e75b591dc1d43bee125377694c9d78ef"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-cave-compatibility-11/godot/app_userdata/Cursed Lands/ambient-on.png",
+          "sha256": "f4e17362b7126b898ed095b4b308fbe8a21496fa40359d0b62b2bdad373d6c16"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-cave-compatibility-11/godot/app_userdata/Cursed Lands/ambient-particles.png",
+          "sha256": "3cf9ec77d56688a657becfab3ddf3cd9bcc51e151b8792c87dec6e823c5c71e0"
+        }
+      ]
+    },
+    {
+      "name": "ambient-frog-forward-11",
+      "build": "ambient-build07",
+      "checks": 71,
+      "failures": 0,
+      "fixture": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-camp-ui-20261009/ambient_final_fixture.gd",
+      "fixture_sha256": "10ab96c91ffd3d541a71959c139d5e6115701e74767a739012103e6aa4ddcc8d",
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/ambient-frog-forward-11.json",
+      "manifest_sha256": "e0836802a17d4ec40a007c313e847a3ee439831a048ca168e41c5504a231a3c3",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-frog-forward-11/godot/app_userdata/Cursed Lands/ambient-receipt.json",
+      "result_sha256": "cf47cb4b8e38607511cf19de2f953c4f62a39cd9a64d98902ac8db6b1073342d",
+      "warnings": [
+        "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+      ],
+      "rows": [
+        {
+          "case": "original-models",
+          "models": [
+            {
+              "body_length": 0.23,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack01",
+                "ei/uattack02",
+                "ei/udeath",
+                "ei/uhit"
+              ],
+              "kind": "rat",
+              "mesh_parts": 24
+            },
+            {
+              "body_length": 0.16,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack01",
+                "ei/uattack02",
+                "ei/udeath",
+                "ei/uhit"
+              ],
+              "kind": "snowmouse",
+              "mesh_parts": 24
+            },
+            {
+              "body_length": 0.19,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack",
+                "ei/udeath01",
+                "ei/udeath02",
+                "ei/uhit"
+              ],
+              "kind": "spider",
+              "mesh_parts": 26
+            },
+            {
+              "body_length": 0.16,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack",
+                "ei/udeath01",
+                "ei/udeath02",
+                "ei/uhit"
+              ],
+              "kind": "frog",
+              "mesh_parts": 19
+            },
+            {
+              "body_length": 0.22,
+              "clips": [
+                "ei/cflight"
+              ],
+              "kind": "bird",
+              "mesh_parts": 3
+            }
+          ]
+        },
+        {
+          "authored_light": false,
+          "case": "lifetime",
+          "hour": 12.0,
+          "leafy_source_buckets": 714,
+          "particle_kinds": {
+            "0": 22,
+            "1": 11,
+            "7": 23
+          },
+          "particles": 56,
+          "point": "(293.1278, 54.25207)",
+          "residents": [
+            {
+              "kind": "frog",
+              "parts": 19,
+              "point": "(293.1278, 5.907187, -54.25207)"
+            },
+            {
+              "kind": "bird",
+              "parts": 3,
+              "point": "(294.0655, 7.939253, -56.01864)"
+            },
+            {
+              "kind": "bird",
+              "parts": 3,
+              "point": "(294.1889, 7.676435, -52.55674)"
+            },
+            {
+              "kind": "bird",
+              "parts": 3,
+              "point": "(291.1291, 8.105871, -54.18083)"
+            }
+          ],
+          "root_nodes": 71,
+          "solid_source_buckets": 704,
+          "step_us": 754,
+          "zone": "gz4g"
+        },
+        {
+          "advanced_bytes": 704,
+          "animals_bytes": 60,
+          "case": "render",
+          "held_exact_pixels": true,
+          "on_off_bytes": 430,
+          "particles_bytes": 370,
+          "paused_bytes": 0,
+          "renderer": "forward_plus",
+          "requested_kind": -1,
+          "zone": "gz4g"
+        }
+      ],
+      "captures": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-frog-forward-11/godot/app_userdata/Cursed Lands/ambient-advanced.png",
+          "sha256": "5cab7a2049edebbdb8036a25870c4838adb3af2dfebda22b9382117367f7c59c"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-frog-forward-11/godot/app_userdata/Cursed Lands/ambient-animals.png",
+          "sha256": "5b87277ac64fae9f1b179a8b4b7d2da6b9a8aab8e0ee7a511f6424f2acbec3b7"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-frog-forward-11/godot/app_userdata/Cursed Lands/ambient-held.png",
+          "sha256": "bb9c6f6838061e63478d6aa0080868155e4a80a0a29cf351be3443eea5e96ced"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-frog-forward-11/godot/app_userdata/Cursed Lands/ambient-off.png",
+          "sha256": "e1eed71f157ef741738ef0e877edf5377487b8a469003d8306ab762a0cd1b2d1"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-frog-forward-11/godot/app_userdata/Cursed Lands/ambient-on.png",
+          "sha256": "bb9c6f6838061e63478d6aa0080868155e4a80a0a29cf351be3443eea5e96ced"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-frog-forward-11/godot/app_userdata/Cursed Lands/ambient-particles.png",
+          "sha256": "336a0453f9f97c0d3ddfd8cbcd7e597a0deffac98b0a02d3b59732e94b33234f"
+        }
+      ]
+    },
+    {
+      "name": "ambient-leaves-forward-12",
+      "build": "ambient-build07",
+      "checks": 64,
+      "failures": 0,
+      "fixture": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-camp-ui-20261009/ambient_final_fixture12.gd",
+      "fixture_sha256": "3de69bee774acaf7ead4d55549a3f701f2a23a310c54750713edb6d9548e6266",
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/ambient-leaves-forward-12.json",
+      "manifest_sha256": "a2322d2131bd5c110e64cee81a3e423139a19e5b9fa5d0e550be24a84fe972ba",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-leaves-forward-12/godot/app_userdata/Cursed Lands/ambient-receipt.json",
+      "result_sha256": "b9cad4f9d704327a954cb295a248508de2761a0d97d287d36832065fb1a119c7",
+      "warnings": [
+        "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+      ],
+      "rows": [
+        {
+          "case": "original-models",
+          "models": [
+            {
+              "body_length": 0.23,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack01",
+                "ei/uattack02",
+                "ei/udeath",
+                "ei/uhit"
+              ],
+              "kind": "rat",
+              "mesh_parts": 24
+            },
+            {
+              "body_length": 0.16,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack01",
+                "ei/uattack02",
+                "ei/udeath",
+                "ei/uhit"
+              ],
+              "kind": "snowmouse",
+              "mesh_parts": 24
+            },
+            {
+              "body_length": 0.19,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack",
+                "ei/udeath01",
+                "ei/udeath02",
+                "ei/uhit"
+              ],
+              "kind": "spider",
+              "mesh_parts": 26
+            },
+            {
+              "body_length": 0.16,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack",
+                "ei/udeath01",
+                "ei/udeath02",
+                "ei/uhit"
+              ],
+              "kind": "frog",
+              "mesh_parts": 19
+            },
+            {
+              "body_length": 0.22,
+              "clips": [
+                "ei/cflight"
+              ],
+              "kind": "bird",
+              "mesh_parts": 3
+            }
+          ]
+        },
+        {
+          "authored_light": false,
+          "case": "lifetime",
+          "hour": 12.0,
+          "leafy_source_buckets": 273,
+          "particle_kinds": {
+            "0": 34,
+            "1": 13,
+            "7": 48
+          },
+          "particles": 95,
+          "point": "(72.84054, 144.2106)",
+          "residents": [],
+          "root_nodes": 1,
+          "solid_source_buckets": 385,
+          "step_us": 17,
+          "zone": "gz1g"
+        },
+        {
+          "advanced_bytes": 3637,
+          "animals_bytes": 0,
+          "case": "render",
+          "held_exact_pixels": true,
+          "on_off_bytes": 2121,
+          "particles_bytes": 2121,
+          "paused_bytes": 0,
+          "renderer": "forward_plus",
+          "requested_kind": 1,
+          "zone": "gz1g"
+        }
+      ],
+      "captures": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-leaves-forward-12/godot/app_userdata/Cursed Lands/ambient-advanced.png",
+          "sha256": "5764beefb8b3bae2b9b6c0a09b023c9ed987b545e37fe98709e9f0652d7ee1a1"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-leaves-forward-12/godot/app_userdata/Cursed Lands/ambient-animals.png",
+          "sha256": "faab2bae06febd2db39ae867a42d40e434bd1226b1ee10c7cc6fd0bfa4ece781"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-leaves-forward-12/godot/app_userdata/Cursed Lands/ambient-held.png",
+          "sha256": "f08c9348073ea75a2e93b75e05a9f03c36f4214e4ac2b710fa195eb63fcdc12c"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-leaves-forward-12/godot/app_userdata/Cursed Lands/ambient-off.png",
+          "sha256": "faab2bae06febd2db39ae867a42d40e434bd1226b1ee10c7cc6fd0bfa4ece781"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-leaves-forward-12/godot/app_userdata/Cursed Lands/ambient-on.png",
+          "sha256": "f08c9348073ea75a2e93b75e05a9f03c36f4214e4ac2b710fa195eb63fcdc12c"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-leaves-forward-12/godot/app_userdata/Cursed Lands/ambient-particles.png",
+          "sha256": "f08c9348073ea75a2e93b75e05a9f03c36f4214e4ac2b710fa195eb63fcdc12c"
+        }
+      ]
+    },
+    {
+      "name": "ambient-fireflies-forward-12",
+      "build": "ambient-build07",
+      "checks": 64,
+      "failures": 0,
+      "fixture": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-camp-ui-20261009/ambient_final_fixture12.gd",
+      "fixture_sha256": "3de69bee774acaf7ead4d55549a3f701f2a23a310c54750713edb6d9548e6266",
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/ambient-fireflies-forward-12.json",
+      "manifest_sha256": "88e3fbab44fd1057c32a5b2f8527b1a4a662c3dff41ca6ef8083793bb5113154",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-fireflies-forward-12/godot/app_userdata/Cursed Lands/ambient-receipt.json",
+      "result_sha256": "8ad55620ffe29681c7fd6aa99137cb39e99f71c62f4762f55da951a455a825d6",
+      "warnings": [
+        "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+      ],
+      "rows": [
+        {
+          "case": "original-models",
+          "models": [
+            {
+              "body_length": 0.23,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack01",
+                "ei/uattack02",
+                "ei/udeath",
+                "ei/uhit"
+              ],
+              "kind": "rat",
+              "mesh_parts": 24
+            },
+            {
+              "body_length": 0.16,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack01",
+                "ei/uattack02",
+                "ei/udeath",
+                "ei/uhit"
+              ],
+              "kind": "snowmouse",
+              "mesh_parts": 24
+            },
+            {
+              "body_length": 0.19,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack",
+                "ei/udeath01",
+                "ei/udeath02",
+                "ei/uhit"
+              ],
+              "kind": "spider",
+              "mesh_parts": 26
+            },
+            {
+              "body_length": 0.16,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack",
+                "ei/udeath01",
+                "ei/udeath02",
+                "ei/uhit"
+              ],
+              "kind": "frog",
+              "mesh_parts": 19
+            },
+            {
+              "body_length": 0.22,
+              "clips": [
+                "ei/cflight"
+              ],
+              "kind": "bird",
+              "mesh_parts": 3
+            }
+          ]
+        },
+        {
+          "authored_light": true,
+          "case": "lifetime",
+          "hour": 0.0,
+          "leafy_source_buckets": 273,
+          "particle_kinds": {
+            "0": 29,
+            "1": 11,
+            "7": 25
+          },
+          "particles": 65,
+          "point": "(248.7996, 36.51324)",
+          "residents": [],
+          "root_nodes": 1,
+          "solid_source_buckets": 385,
+          "step_us": 22,
+          "zone": "gz1g"
+        },
+        {
+          "advanced_bytes": 434,
+          "animals_bytes": 0,
+          "case": "render",
+          "held_exact_pixels": true,
+          "on_off_bytes": 215,
+          "particles_bytes": 215,
+          "paused_bytes": 0,
+          "renderer": "forward_plus",
+          "requested_kind": 7,
+          "zone": "gz1g"
+        }
+      ],
+      "captures": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-fireflies-forward-12/godot/app_userdata/Cursed Lands/ambient-advanced.png",
+          "sha256": "e8757df3f4f1b038e5c821d3cf3fa90a17e491c52c91a49f21fa7a24219cb838"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-fireflies-forward-12/godot/app_userdata/Cursed Lands/ambient-animals.png",
+          "sha256": "0edb4a2d46efe9a126403ae74a2effc7c35a08b7a6f93527410ea35416dc1e90"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-fireflies-forward-12/godot/app_userdata/Cursed Lands/ambient-held.png",
+          "sha256": "a134815335011c85c4bcceb55ba194f04e2d2ea50b37c3037ef36f071244c03d"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-fireflies-forward-12/godot/app_userdata/Cursed Lands/ambient-off.png",
+          "sha256": "0edb4a2d46efe9a126403ae74a2effc7c35a08b7a6f93527410ea35416dc1e90"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-fireflies-forward-12/godot/app_userdata/Cursed Lands/ambient-on.png",
+          "sha256": "a134815335011c85c4bcceb55ba194f04e2d2ea50b37c3037ef36f071244c03d"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-fireflies-forward-12/godot/app_userdata/Cursed Lands/ambient-particles.png",
+          "sha256": "a134815335011c85c4bcceb55ba194f04e2d2ea50b37c3037ef36f071244c03d"
+        }
+      ]
+    },
+    {
+      "name": "ambient-dead-city-forward-12",
+      "build": "ambient-build07",
+      "checks": 69,
+      "failures": 0,
+      "fixture": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-camp-ui-20261009/ambient_final_fixture12.gd",
+      "fixture_sha256": "3de69bee774acaf7ead4d55549a3f701f2a23a310c54750713edb6d9548e6266",
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/ambient-dead-city-forward-12.json",
+      "manifest_sha256": "87b37c15ffdf35267b44f7a4ffa540b8bcd04b0055bd0f27b5e3e35d16ab2093",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-dead-city-forward-12/godot/app_userdata/Cursed Lands/ambient-receipt.json",
+      "result_sha256": "4c26e61b22c6236ecbb9cbd6f5ca58790cb3a96788e4f637d889f347f2b18a03",
+      "warnings": [
+        "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+      ],
+      "rows": [
+        {
+          "case": "original-models",
+          "models": [
+            {
+              "body_length": 0.23,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack01",
+                "ei/uattack02",
+                "ei/udeath",
+                "ei/uhit"
+              ],
+              "kind": "rat",
+              "mesh_parts": 24
+            },
+            {
+              "body_length": 0.16,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack01",
+                "ei/uattack02",
+                "ei/udeath",
+                "ei/uhit"
+              ],
+              "kind": "snowmouse",
+              "mesh_parts": 24
+            },
+            {
+              "body_length": 0.19,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack",
+                "ei/udeath01",
+                "ei/udeath02",
+                "ei/uhit"
+              ],
+              "kind": "spider",
+              "mesh_parts": 26
+            },
+            {
+              "body_length": 0.16,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack",
+                "ei/udeath01",
+                "ei/udeath02",
+                "ei/uhit"
+              ],
+              "kind": "frog",
+              "mesh_parts": 19
+            },
+            {
+              "body_length": 0.22,
+              "clips": [
+                "ei/cflight"
+              ],
+              "kind": "bird",
+              "mesh_parts": 3
+            }
+          ]
+        },
+        {
+          "authored_light": false,
+          "case": "lifetime",
+          "hour": 12.0,
+          "leafy_source_buckets": 376,
+          "particle_kinds": {
+            "2": 93
+          },
+          "particles": 93,
+          "point": "(169.0364, 18.1205)",
+          "residents": [
+            {
+              "kind": "spider",
+              "parts": 26,
+              "point": "(168.8681, 7.646361, -17.6747)"
+            }
+          ],
+          "root_nodes": 58,
+          "solid_source_buckets": 1375,
+          "step_us": 174,
+          "zone": "gz9g"
+        },
+        {
+          "advanced_bytes": 2388,
+          "animals_bytes": 66,
+          "case": "render",
+          "held_exact_pixels": true,
+          "on_off_bytes": 1408,
+          "particles_bytes": 1342,
+          "paused_bytes": 0,
+          "renderer": "forward_plus",
+          "requested_kind": -1,
+          "zone": "gz9g"
+        }
+      ],
+      "captures": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-dead-city-forward-12/godot/app_userdata/Cursed Lands/ambient-advanced.png",
+          "sha256": "8d9d124c4c7c290b2d141eda8c392b653cd868e2a1f85c4eb156cb4429d0ad60"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-dead-city-forward-12/godot/app_userdata/Cursed Lands/ambient-animals.png",
+          "sha256": "b159dfafad72ca7d6984996024b0435df5203561f9ef48630c695389eb46d8bb"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-dead-city-forward-12/godot/app_userdata/Cursed Lands/ambient-held.png",
+          "sha256": "32de46d95feef10a212c0320e76f740e5dd69c9ea49fc6bcc2a306250e3fcacc"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-dead-city-forward-12/godot/app_userdata/Cursed Lands/ambient-off.png",
+          "sha256": "94fc50204b91eb54641b092526056bf9095e745e0aba220148bc7f0acd1314c8"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-dead-city-forward-12/godot/app_userdata/Cursed Lands/ambient-on.png",
+          "sha256": "32de46d95feef10a212c0320e76f740e5dd69c9ea49fc6bcc2a306250e3fcacc"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-dead-city-forward-12/godot/app_userdata/Cursed Lands/ambient-particles.png",
+          "sha256": "21609c147dca4c6e3ac37734239aec4ed0b559de591172113445af543cc365c8"
+        }
+      ]
+    },
+    {
+      "name": "ambient-lava-forward-12",
+      "build": "ambient-build07",
+      "checks": 64,
+      "failures": 0,
+      "fixture": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-camp-ui-20261009/ambient_final_fixture12.gd",
+      "fixture_sha256": "3de69bee774acaf7ead4d55549a3f701f2a23a310c54750713edb6d9548e6266",
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/ambient-lava-forward-12.json",
+      "manifest_sha256": "460ce7ee8bbb262b3686a5bf3e2b8ac55ade355006a5a89a8543cb152642276a",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-lava-forward-12/godot/app_userdata/Cursed Lands/ambient-receipt.json",
+      "result_sha256": "bd3705ca53cf70f73530e8b3f6f0fc8d296056fd6c51324e0d3ffe3432586a32",
+      "warnings": [
+        "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+      ],
+      "rows": [
+        {
+          "case": "original-models",
+          "models": [
+            {
+              "body_length": 0.23,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack01",
+                "ei/uattack02",
+                "ei/udeath",
+                "ei/uhit"
+              ],
+              "kind": "rat",
+              "mesh_parts": 24
+            },
+            {
+              "body_length": 0.16,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack01",
+                "ei/uattack02",
+                "ei/udeath",
+                "ei/uhit"
+              ],
+              "kind": "snowmouse",
+              "mesh_parts": 24
+            },
+            {
+              "body_length": 0.19,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack",
+                "ei/udeath01",
+                "ei/udeath02",
+                "ei/uhit"
+              ],
+              "kind": "spider",
+              "mesh_parts": 26
+            },
+            {
+              "body_length": 0.16,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack",
+                "ei/udeath01",
+                "ei/udeath02",
+                "ei/uhit"
+              ],
+              "kind": "frog",
+              "mesh_parts": 19
+            },
+            {
+              "body_length": 0.22,
+              "clips": [
+                "ei/cflight"
+              ],
+              "kind": "bird",
+              "mesh_parts": 3
+            }
+          ]
+        },
+        {
+          "authored_light": false,
+          "case": "lifetime",
+          "hour": 12.0,
+          "leafy_source_buckets": 0,
+          "particle_kinds": {
+            "3": 90,
+            "4": 26
+          },
+          "particles": 116,
+          "point": "(51.84353, 49.01741)",
+          "residents": [],
+          "root_nodes": 1,
+          "solid_source_buckets": 21,
+          "step_us": 25,
+          "zone": "bz7g"
+        },
+        {
+          "advanced_bytes": 451,
+          "animals_bytes": 0,
+          "case": "render",
+          "held_exact_pixels": true,
+          "on_off_bytes": 154,
+          "particles_bytes": 154,
+          "paused_bytes": 0,
+          "renderer": "forward_plus",
+          "requested_kind": 4,
+          "zone": "bz7g"
+        }
+      ],
+      "captures": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-lava-forward-12/godot/app_userdata/Cursed Lands/ambient-advanced.png",
+          "sha256": "6df0a09c63c7e1bcd633498c86fd47123cafaba326409882483d5646428850f9"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-lava-forward-12/godot/app_userdata/Cursed Lands/ambient-animals.png",
+          "sha256": "a189e6c20224162314b9adb6bf2cfc1c9a2bfd1ec9417e274d0164e0ada4de4a"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-lava-forward-12/godot/app_userdata/Cursed Lands/ambient-held.png",
+          "sha256": "bcaf6c91f94265c5f4a38821c5bf8af7354d51e8a6f7a00244c306f1489df56d"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-lava-forward-12/godot/app_userdata/Cursed Lands/ambient-off.png",
+          "sha256": "a189e6c20224162314b9adb6bf2cfc1c9a2bfd1ec9417e274d0164e0ada4de4a"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-lava-forward-12/godot/app_userdata/Cursed Lands/ambient-on.png",
+          "sha256": "bcaf6c91f94265c5f4a38821c5bf8af7354d51e8a6f7a00244c306f1489df56d"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-lava-forward-12/godot/app_userdata/Cursed Lands/ambient-particles.png",
+          "sha256": "bcaf6c91f94265c5f4a38821c5bf8af7354d51e8a6f7a00244c306f1489df56d"
+        }
+      ]
+    },
+    {
+      "name": "ambient-frog-compatibility-13",
+      "build": "ambient-build08",
+      "checks": 71,
+      "failures": 0,
+      "fixture": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-camp-ui-20261009/ambient_final_fixture13.gd",
+      "fixture_sha256": "078ec0a8278ba76dfee65b9f7ab2d048dfe9b91383106884ef844829c6e2ea5e",
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/ambient-frog-compatibility-13.json",
+      "manifest_sha256": "893c77f849b5af43f31c6be30b5f18be593383a29c3cf1a2725e55eda3f9dbb7",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-frog-compatibility-13/godot/app_userdata/Cursed Lands/ambient-receipt.json",
+      "result_sha256": "1dbf50d7c6f67c612b913d18b8a8bdfe148c7acbd98e70b282d6e27e77dced49",
+      "warnings": [
+        "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet.",
+        "WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.",
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "rows": [
+        {
+          "case": "original-models",
+          "models": [
+            {
+              "body_length": 0.23,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack01",
+                "ei/uattack02",
+                "ei/udeath",
+                "ei/uhit"
+              ],
+              "kind": "rat",
+              "mesh_parts": 24
+            },
+            {
+              "body_length": 0.16,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack01",
+                "ei/uattack02",
+                "ei/udeath",
+                "ei/uhit"
+              ],
+              "kind": "snowmouse",
+              "mesh_parts": 24
+            },
+            {
+              "body_length": 0.19,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack",
+                "ei/udeath01",
+                "ei/udeath02",
+                "ei/uhit"
+              ],
+              "kind": "spider",
+              "mesh_parts": 26
+            },
+            {
+              "body_length": 0.16,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack",
+                "ei/udeath01",
+                "ei/udeath02",
+                "ei/uhit"
+              ],
+              "kind": "frog",
+              "mesh_parts": 19
+            },
+            {
+              "body_length": 0.22,
+              "clips": [
+                "ei/cflight"
+              ],
+              "kind": "bird",
+              "mesh_parts": 3
+            }
+          ]
+        },
+        {
+          "authored_light": false,
+          "case": "lifetime",
+          "hour": 12.0,
+          "leafy_source_buckets": 714,
+          "particle_kinds": {
+            "0": 22,
+            "1": 11,
+            "7": 23
+          },
+          "particles": 56,
+          "point": "(293.1278, 54.25207)",
+          "residents": [
+            {
+              "kind": "frog",
+              "parts": 19,
+              "point": "(293.1278, 5.907187, -54.25207)"
+            },
+            {
+              "kind": "bird",
+              "parts": 3,
+              "point": "(294.0655, 7.939253, -56.01864)"
+            },
+            {
+              "kind": "bird",
+              "parts": 3,
+              "point": "(294.1889, 7.676435, -52.55674)"
+            },
+            {
+              "kind": "bird",
+              "parts": 3,
+              "point": "(291.1291, 8.105871, -54.18083)"
+            }
+          ],
+          "root_nodes": 71,
+          "solid_source_buckets": 704,
+          "step_us": 719,
+          "zone": "gz4g"
+        },
+        {
+          "advanced_bytes": 477,
+          "animals_bytes": 56,
+          "case": "render",
+          "held_exact_pixels": true,
+          "on_off_bytes": 329,
+          "particles_bytes": 273,
+          "paused_bytes": 0,
+          "renderer": "gl_compatibility",
+          "requested_kind": -1,
+          "zone": "gz4g"
+        }
+      ],
+      "captures": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-frog-compatibility-13/godot/app_userdata/Cursed Lands/ambient-advanced.png",
+          "sha256": "aada87261d613db9c9134be686df9d38aff2699573685f9a3abcd3f4a8ad234a"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-frog-compatibility-13/godot/app_userdata/Cursed Lands/ambient-animals.png",
+          "sha256": "ddf1c8e0b3ae652f8fc5fb6446a4d4889d4dbb7e8a40bfc6a5879314375fb964"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-frog-compatibility-13/godot/app_userdata/Cursed Lands/ambient-held.png",
+          "sha256": "4c33e896d722954897b7e09b4f200e33f48e18d41af3ee9764510cd48756ef0c"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-frog-compatibility-13/godot/app_userdata/Cursed Lands/ambient-off.png",
+          "sha256": "ea7df72a320840d558ca5f44a775d7cb5e40d572b10ba0c37a45ba0d292e1290"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-frog-compatibility-13/godot/app_userdata/Cursed Lands/ambient-on.png",
+          "sha256": "4c33e896d722954897b7e09b4f200e33f48e18d41af3ee9764510cd48756ef0c"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-frog-compatibility-13/godot/app_userdata/Cursed Lands/ambient-particles.png",
+          "sha256": "fb67ee5b15ec8bfe7dafd1fdee77500ec504ebaa82cfb3079a760b25b970ea3d"
+        }
+      ]
+    },
+    {
+      "name": "ambient-snow-forward-13",
+      "build": "ambient-build08",
+      "checks": 78,
+      "failures": 0,
+      "fixture": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-camp-ui-20261009/ambient_final_fixture13.gd",
+      "fixture_sha256": "078ec0a8278ba76dfee65b9f7ab2d048dfe9b91383106884ef844829c6e2ea5e",
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/ambient-snow-forward-13.json",
+      "manifest_sha256": "5a35961e9fa8fb96bb56358b161c80318087010c05486452f31cf8a91a5fc04f",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-snow-forward-13/godot/app_userdata/Cursed Lands/ambient-receipt.json",
+      "result_sha256": "e16953491f6fc1ed8eb46d1ed66379969e9b93e3deb76621cb26cff7916da8a2",
+      "warnings": [
+        "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+      ],
+      "rows": [
+        {
+          "case": "original-models",
+          "models": [
+            {
+              "body_length": 0.23,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack01",
+                "ei/uattack02",
+                "ei/udeath",
+                "ei/uhit"
+              ],
+              "kind": "rat",
+              "mesh_parts": 24
+            },
+            {
+              "body_length": 0.16,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack01",
+                "ei/uattack02",
+                "ei/udeath",
+                "ei/uhit"
+              ],
+              "kind": "snowmouse",
+              "mesh_parts": 24
+            },
+            {
+              "body_length": 0.19,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack",
+                "ei/udeath01",
+                "ei/udeath02",
+                "ei/uhit"
+              ],
+              "kind": "spider",
+              "mesh_parts": 26
+            },
+            {
+              "body_length": 0.16,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack",
+                "ei/udeath01",
+                "ei/udeath02",
+                "ei/uhit"
+              ],
+              "kind": "frog",
+              "mesh_parts": 19
+            },
+            {
+              "body_length": 0.22,
+              "clips": [
+                "ei/cflight"
+              ],
+              "kind": "bird",
+              "mesh_parts": 3
+            }
+          ]
+        },
+        {
+          "authored_light": false,
+          "case": "lifetime",
+          "hour": 12.0,
+          "leafy_source_buckets": 713,
+          "particle_kinds": {
+            "6": 108
+          },
+          "particles": 108,
+          "point": "(179.9115, 17.83786)",
+          "residents": [
+            {
+              "kind": "snowmouse",
+              "parts": 24,
+              "point": "(179.6167, 10.97126, -18.04032)"
+            },
+            {
+              "kind": "snowmouse",
+              "parts": 24,
+              "point": "(169.7264, 10.5776, -36.71093)"
+            }
+          ],
+          "root_nodes": 107,
+          "solid_source_buckets": 2012,
+          "step_us": 485,
+          "zone": "gz11k"
+        },
+        {
+          "advanced_bytes": 1220,
+          "animals_bytes": 41,
+          "case": "render",
+          "held_exact_pixels": true,
+          "on_off_bytes": 476,
+          "particles_bytes": 435,
+          "paused_bytes": 0,
+          "renderer": "forward_plus",
+          "requested_kind": -1,
+          "zone": "gz11k"
+        },
+        {
+          "case": "snow-surface",
+          "compacted": 10.7281913757324,
+          "loose": 10.9741706848145,
+          "original": 10.7741708755493,
+          "restored": 10.9741706848145
+        }
+      ],
+      "captures": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-snow-forward-13/godot/app_userdata/Cursed Lands/ambient-advanced.png",
+          "sha256": "bf8a4a1761247c38d62e0dbfd7d291b3860a8458d50e8abf1520c0a08dbf34e4"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-snow-forward-13/godot/app_userdata/Cursed Lands/ambient-animals.png",
+          "sha256": "39dd073a1384cdcdeae81c95d8894b1e48bac764b3f2e71548678cf820238d23"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-snow-forward-13/godot/app_userdata/Cursed Lands/ambient-held.png",
+          "sha256": "d4be8fcd1c3974c5f9e52f9df4d86861586b78b2a6c9840d3d8e7620e41a27b0"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-snow-forward-13/godot/app_userdata/Cursed Lands/ambient-off.png",
+          "sha256": "dc1a53a31e5a8e3f101c40dcd72358025d9f43eb6cd431779407658dc03b028b"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-snow-forward-13/godot/app_userdata/Cursed Lands/ambient-on.png",
+          "sha256": "d4be8fcd1c3974c5f9e52f9df4d86861586b78b2a6c9840d3d8e7620e41a27b0"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-snow-forward-13/godot/app_userdata/Cursed Lands/ambient-particles.png",
+          "sha256": "e15e70d00dc9fc95cf2d35b692349ae0b60e44a6d39aa596cbd9ca94bfa1b8e2"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-snow-forward-13/godot/app_userdata/Cursed Lands/ambient-snow-track-animal.png",
+          "sha256": "a4e5ed2ab02152ba499e5c5ff14bb486fcaa30dd6d52b236257dc615851e36dd"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-snow-forward-13/godot/app_userdata/Cursed Lands/ambient-snow-track-off.png",
+          "sha256": "f185560e4c3fcd16ffe9b5b6a73892aaffad4f01dc71f5886a659dac1e7c2db6"
+        }
+      ]
+    },
+    {
+      "name": "ambient-desert-forward-13",
+      "build": "ambient-build08",
+      "checks": 63,
+      "failures": 0,
+      "fixture": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-camp-ui-20261009/ambient_final_fixture13.gd",
+      "fixture_sha256": "078ec0a8278ba76dfee65b9f7ab2d048dfe9b91383106884ef844829c6e2ea5e",
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/ambient-desert-forward-13.json",
+      "manifest_sha256": "e40975295afca42251599535e7d31caff7440f6a5876b049c542900715561f9f",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-desert-forward-13/godot/app_userdata/Cursed Lands/ambient-receipt.json",
+      "result_sha256": "cfce4d743762de1d31a31148b689f51a1e60000c79b3183918e1b04bb0dc0c94",
+      "warnings": [
+        "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+      ],
+      "rows": [
+        {
+          "case": "original-models",
+          "models": [
+            {
+              "body_length": 0.23,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack01",
+                "ei/uattack02",
+                "ei/udeath",
+                "ei/uhit"
+              ],
+              "kind": "rat",
+              "mesh_parts": 24
+            },
+            {
+              "body_length": 0.16,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack01",
+                "ei/uattack02",
+                "ei/udeath",
+                "ei/uhit"
+              ],
+              "kind": "snowmouse",
+              "mesh_parts": 24
+            },
+            {
+              "body_length": 0.19,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack",
+                "ei/udeath01",
+                "ei/udeath02",
+                "ei/uhit"
+              ],
+              "kind": "spider",
+              "mesh_parts": 26
+            },
+            {
+              "body_length": 0.16,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack",
+                "ei/udeath01",
+                "ei/udeath02",
+                "ei/uhit"
+              ],
+              "kind": "frog",
+              "mesh_parts": 19
+            },
+            {
+              "body_length": 0.22,
+              "clips": [
+                "ei/cflight"
+              ],
+              "kind": "bird",
+              "mesh_parts": 3
+            }
+          ]
+        },
+        {
+          "authored_light": false,
+          "case": "lifetime",
+          "hour": 12.0,
+          "leafy_source_buckets": 0,
+          "particle_kinds": {
+            "5": 58
+          },
+          "particles": 58,
+          "point": "(237.9557, 6.619116)",
+          "residents": [],
+          "root_nodes": 1,
+          "solid_source_buckets": 1073,
+          "step_us": 16,
+          "zone": "gz18h"
+        },
+        {
+          "advanced_bytes": 44664,
+          "animals_bytes": 0,
+          "case": "render",
+          "held_exact_pixels": true,
+          "on_off_bytes": 30112,
+          "particles_bytes": 30112,
+          "paused_bytes": 0,
+          "renderer": "forward_plus",
+          "requested_kind": -1,
+          "zone": "gz18h"
+        }
+      ],
+      "captures": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-desert-forward-13/godot/app_userdata/Cursed Lands/ambient-advanced.png",
+          "sha256": "d846ca916a9c92cbd305186c86420f32dc65ee2d6e5bb3b711d4abc09fbd69c6"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-desert-forward-13/godot/app_userdata/Cursed Lands/ambient-animals.png",
+          "sha256": "8a0919f45ac9025d6e306199649ddd6119bd6ef62e4504bf2d508557b9c78bdd"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-desert-forward-13/godot/app_userdata/Cursed Lands/ambient-held.png",
+          "sha256": "d75f76b07036f735173599d290ac30ac37886812dcae9730efee47f26fa200a0"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-desert-forward-13/godot/app_userdata/Cursed Lands/ambient-off.png",
+          "sha256": "8a0919f45ac9025d6e306199649ddd6119bd6ef62e4504bf2d508557b9c78bdd"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-desert-forward-13/godot/app_userdata/Cursed Lands/ambient-on.png",
+          "sha256": "d75f76b07036f735173599d290ac30ac37886812dcae9730efee47f26fa200a0"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-desert-forward-13/godot/app_userdata/Cursed Lands/ambient-particles.png",
+          "sha256": "d75f76b07036f735173599d290ac30ac37886812dcae9730efee47f26fa200a0"
+        }
+      ]
+    },
+    {
+      "name": "ambient-astral-forward-13",
+      "build": "ambient-build08",
+      "checks": 70,
+      "failures": 0,
+      "fixture": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-camp-ui-20261009/ambient_final_fixture13.gd",
+      "fixture_sha256": "078ec0a8278ba76dfee65b9f7ab2d048dfe9b91383106884ef844829c6e2ea5e",
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/ambient-astral-forward-13.json",
+      "manifest_sha256": "db03612f9188287522efb544e4195ca73794bb3be79002261696745712cae3eb",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-astral-forward-13/godot/app_userdata/Cursed Lands/ambient-receipt.json",
+      "result_sha256": "1aa95100be44c76b7a632422ae0934568bd49ffdb46b6ccadaf399e0ac6d937f",
+      "warnings": [
+        "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+      ],
+      "rows": [
+        {
+          "case": "original-models",
+          "models": [
+            {
+              "body_length": 0.23,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack01",
+                "ei/uattack02",
+                "ei/udeath",
+                "ei/uhit"
+              ],
+              "kind": "rat",
+              "mesh_parts": 24
+            },
+            {
+              "body_length": 0.16,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack01",
+                "ei/uattack02",
+                "ei/udeath",
+                "ei/uhit"
+              ],
+              "kind": "snowmouse",
+              "mesh_parts": 24
+            },
+            {
+              "body_length": 0.19,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack",
+                "ei/udeath01",
+                "ei/udeath02",
+                "ei/uhit"
+              ],
+              "kind": "spider",
+              "mesh_parts": 26
+            },
+            {
+              "body_length": 0.16,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack",
+                "ei/udeath01",
+                "ei/udeath02",
+                "ei/uhit"
+              ],
+              "kind": "frog",
+              "mesh_parts": 19
+            },
+            {
+              "body_length": 0.22,
+              "clips": [
+                "ei/cflight"
+              ],
+              "kind": "bird",
+              "mesh_parts": 3
+            }
+          ]
+        },
+        {
+          "authored_light": false,
+          "case": "lifetime",
+          "hour": 12.0,
+          "leafy_source_buckets": 559,
+          "particle_kinds": {
+            "0": 63,
+            "1": 16
+          },
+          "particles": 79,
+          "point": "(14.58302, 22.46641)",
+          "residents": [
+            {
+              "kind": "bird",
+              "parts": 3,
+              "point": "(16.52006, 10.78807, -21.96854)"
+            },
+            {
+              "kind": "bird",
+              "parts": 3,
+              "point": "(13.18333, 11.06108, -21.03782)"
+            },
+            {
+              "kind": "bird",
+              "parts": 3,
+              "point": "(14.04567, 11.21565, -24.39287)"
+            }
+          ],
+          "root_nodes": 28,
+          "solid_source_buckets": 1019,
+          "step_us": 306,
+          "zone": "gz9g"
+        },
+        {
+          "advanced_bytes": 1991,
+          "animals_bytes": 503,
+          "case": "render",
+          "held_exact_pixels": true,
+          "on_off_bytes": 1087,
+          "particles_bytes": 584,
+          "paused_bytes": 0,
+          "renderer": "forward_plus",
+          "requested_kind": -1,
+          "zone": "gz9g"
+        }
+      ],
+      "captures": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-astral-forward-13/godot/app_userdata/Cursed Lands/ambient-advanced.png",
+          "sha256": "59a842173785bfcccd8cd1cbf84bfee5ac4cc6b3035c59b39522893f598b6b36"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-astral-forward-13/godot/app_userdata/Cursed Lands/ambient-animals.png",
+          "sha256": "23a791acbb55dfb56df7c81ffd8b5204ef1c46c30ef9cbeb05c61770eb9b046a"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-astral-forward-13/godot/app_userdata/Cursed Lands/ambient-held.png",
+          "sha256": "f782ac16460d82c7e5605355c977dddb057ab53ae2d4fa6f885cec78d5a636a6"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-astral-forward-13/godot/app_userdata/Cursed Lands/ambient-off.png",
+          "sha256": "fda47ba5a5921f53fdd21d6e4e6da6f450db2f68f471f6e1d08cf96caea4cb1d"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-astral-forward-13/godot/app_userdata/Cursed Lands/ambient-on.png",
+          "sha256": "f782ac16460d82c7e5605355c977dddb057ab53ae2d4fa6f885cec78d5a636a6"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-astral-forward-13/godot/app_userdata/Cursed Lands/ambient-particles.png",
+          "sha256": "d871d78ba4e922802b166e7ec6eb3a397ee2dc21d42e6dd6123bb329826f4b72"
+        }
+      ]
+    },
+    {
+      "name": "ambient-astral-cave-forward-13",
+      "build": "ambient-build08",
+      "checks": 69,
+      "failures": 0,
+      "fixture": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-camp-ui-20261009/ambient_final_fixture13.gd",
+      "fixture_sha256": "078ec0a8278ba76dfee65b9f7ab2d048dfe9b91383106884ef844829c6e2ea5e",
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/ambient-astral-cave-forward-13.json",
+      "manifest_sha256": "2b26dcabfb96aa14c320047192cde7f9ae2836ddc63ae39d38520f98f3dd690b",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-astral-cave-forward-13/godot/app_userdata/Cursed Lands/ambient-receipt.json",
+      "result_sha256": "9f22fb8d9a1c899dbccfb363fe70f055147eb7dc0134ee80b003bce88768cf11",
+      "warnings": [
+        "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+      ],
+      "rows": [
+        {
+          "case": "original-models",
+          "models": [
+            {
+              "body_length": 0.23,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack01",
+                "ei/uattack02",
+                "ei/udeath",
+                "ei/uhit"
+              ],
+              "kind": "rat",
+              "mesh_parts": 24
+            },
+            {
+              "body_length": 0.16,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack01",
+                "ei/uattack02",
+                "ei/udeath",
+                "ei/uhit"
+              ],
+              "kind": "snowmouse",
+              "mesh_parts": 24
+            },
+            {
+              "body_length": 0.19,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack",
+                "ei/udeath01",
+                "ei/udeath02",
+                "ei/uhit"
+              ],
+              "kind": "spider",
+              "mesh_parts": 26
+            },
+            {
+              "body_length": 0.16,
+              "clips": [
+                "ei/cidle",
+                "ei/crun",
+                "ei/cwalk",
+                "ei/uattack",
+                "ei/udeath01",
+                "ei/udeath02",
+                "ei/uhit"
+              ],
+              "kind": "frog",
+              "mesh_parts": 19
+            },
+            {
+              "body_length": 0.22,
+              "clips": [
+                "ei/cflight"
+              ],
+              "kind": "bird",
+              "mesh_parts": 3
+            }
+          ]
+        },
+        {
+          "authored_light": false,
+          "case": "lifetime",
+          "hour": 12.0,
+          "leafy_source_buckets": 0,
+          "particle_kinds": {
+            "3": 92
+          },
+          "particles": 92,
+          "point": "(27.47832, 12.96156)",
+          "residents": [
+            {
+              "kind": "spider",
+              "parts": 26,
+              "point": "(27.14072, 3.256724, -12.58249)"
+            },
+            {
+              "kind": "spider",
+              "parts": 26,
+              "point": "(44.04758, 3.124895, -26.00404)"
+            }
+          ],
+          "root_nodes": 115,
+          "solid_source_buckets": 39,
+          "step_us": 455,
+          "zone": "gz7d1"
+        },
+        {
+          "advanced_bytes": 1298,
+          "animals_bytes": 44,
+          "case": "render",
+          "held_exact_pixels": true,
+          "on_off_bytes": 634,
+          "particles_bytes": 590,
+          "paused_bytes": 0,
+          "renderer": "forward_plus",
+          "requested_kind": -1,
+          "zone": "gz7d1"
+        }
+      ],
+      "captures": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-astral-cave-forward-13/godot/app_userdata/Cursed Lands/ambient-advanced.png",
+          "sha256": "a4b4906f28f07ad2702c58b4ba356ba820d8df69cce63a2d2a77b115b53e5b81"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-astral-cave-forward-13/godot/app_userdata/Cursed Lands/ambient-animals.png",
+          "sha256": "c5a4e18b84afcac95bd4d028ca23e0e2e26af5d4e7fea65ff15516ff88ce7e60"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-astral-cave-forward-13/godot/app_userdata/Cursed Lands/ambient-held.png",
+          "sha256": "3689d71cde0bc68d111882f980a71a914fdada464f2169f47ccc4456732345e5"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-astral-cave-forward-13/godot/app_userdata/Cursed Lands/ambient-off.png",
+          "sha256": "9b3da94bf3015e7f9eb35f85491a94d4b3e2ae41a85e882f593ccb40ab57b188"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-astral-cave-forward-13/godot/app_userdata/Cursed Lands/ambient-on.png",
+          "sha256": "3689d71cde0bc68d111882f980a71a914fdada464f2169f47ccc4456732345e5"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/ambient-astral-cave-forward-13/godot/app_userdata/Cursed Lands/ambient-particles.png",
+          "sha256": "36dfd05598e40039dc03745e8d19f1c3adea758cc4e74dd603dba90bdc7c6beb"
+        }
+      ]
+    }
+  ],
+  "visual_review": {
+    "method": "Native full-map off / animals-only / particles-only / on / held / advanced controls at 1280x900. Requested leaf, ember and firefly cases disable wildlife and suppress other particle kinds; the frog case suppresses other animal models. The night case uses original authored midnight lighting. Held control requires zero changed channels using a two-level channel tolerance and also reports exact pixel equality. CPU poses and particle field records are checked for exact equality. Each independent visible layer and advancing game time must change pixels. Screenshots inspected at native size. Snow also compares actual footprint animal-off and animal-on controls.",
+    "inspected_on_captures": [
+      "ambient-gipat-mobile-11",
+      "ambient-cave-compatibility-11",
+      "ambient-frog-forward-11",
+      "ambient-leaves-forward-12",
+      "ambient-fireflies-forward-12",
+      "ambient-dead-city-forward-12",
+      "ambient-lava-forward-12",
+      "ambient-frog-compatibility-13",
+      "ambient-snow-forward-13",
+      "ambient-desert-forward-13",
+      "ambient-astral-forward-13",
+      "ambient-astral-cave-forward-13"
+    ],
+    "limitations": "These are source-driven visibility probes, not composed gameplay beauty shots. Some authored map-edge/cave views expose existing cyan boundary fog and coarse original terrain; those surrounding render features were not retuned. Small physical-size animals remain deliberately subtle."
+  },
+  "diagnostic_iterations": [
+    {
+      "run": "ambient-snow-forward-12",
+      "reason": "The animal-only control found a real placement bug: the loose snow vertex layer rose above the original terrain triangle and buried the small model. Production now follows the exact visible loose-ground and live-track elevation. Build08 snow rendered78 and headless72 checks include option toggles, frozen poses, real footprint depression, restoration, unchanged navigation and independent visible animal controls."
+    },
+    {
+      "run": "ambient-leaves-forward-11",
+      "reason": "Leaves independently rendered and held exactly, but the generic animal control failed because the tree-specific view had its birds 24 m off-camera. Requested particle-only cases now use the actual wildlife-off control; dedicated bird, cave, frog and snow cases retain animal visibility assertions."
+    },
+    {
+      "run": "ambient-cave-compatibility-07",
+      "reason": "Independent animal-only control revealed a fixture camera on the high outer cave rim. Fixture selector now uses actual MOB play-floor proximity; production admissions also reject a ground-height difference above 4 m. Not accepted as visual evidence."
+    },
+    {
+      "run": "ambient-leaves-forward-07",
+      "reason": "32 m animal cell grid missed the small authored leafy tree footprint. Leaf visual selector now samples verified tree locations. The older5796 runtime hung after the failed fixture clean-exit trace and required terminating that exact isolated process; no native fix is attributed to this work. Final runs use the accepted090f runtime andd20a native."
+    }
+  ],
+  "remaining_scope": [
+    "Reference larvae, bats, lizards, snakes, insects, crabs, ravens, vultures and snow-bird variants are not implemented in this first stage.",
+    "Perching, corpse/carrion attraction, group steering, region-specific bird silhouettes and species-specific flee destinations remain follow-up work.",
+    "Cave drips, mushroom-source spores, separate lava ash and broader regional particle taxonomy remain follow-up work. Waterfall particles are handled by the separate V4 helper.",
+    "Dense gameplay, long camera routes, mobile hardware, Android/Web exports and cross-feature integrated release acceptance remain outside these isolated checks.",
+    "Existing global fog, terrain materials, environment lighting and gameplay weather are not retuned by V3."
+  ]
+}
