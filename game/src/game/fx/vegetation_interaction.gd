@@ -73,7 +73,7 @@ func contacts(details: TerrainDetails, world: GameWorld) -> Array[Dictionary]:
 	for i in mini(MAX_UNITS,nearby.size()):
 		var record: Dictionary = nearby[i]; var u: GameUnit = record.unit
 		var p := Vector2(record.root.x,-record.root.z)
-		if not details.grass_allowed(p,false): continue
+		if not details.vegetation_allowed(p): continue
 		var height: float = details.surface_sample(p).height
 		var box := posed_bounds(u)
 		# A navigation root on the land is insufficient for levitating models.

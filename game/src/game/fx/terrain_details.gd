@@ -18,6 +18,7 @@ const NEAR_RANGE := 18.0
 const SCENERY_RADIUS := 0.56
 const SCENERY_HEIGHT := 0.88
 const VegetationInteraction = preload("res://src/game/fx/vegetation_interaction.gd")
+const BiomeCover = preload("res://src/game/fx/biome_cover.gd")
 const GRASS_SHADER := """
 shader_type spatial;
 #define EI_TERRAIN_LIGHT
@@ -71,6 +72,10 @@ void fragment() {
 var terrain: EITerrain
 var soft_ground: SoftGroundDeform
 var _grass := false
+var _cover := false
+var _cover_field: BiomeCover
+var _cover_material: ShaderMaterial
+var _trees := {} # chunk -> immutable nearby authored tree records
 var _chunks := {} # Vector2i -> MultiMeshInstance3D
 var _queue: Array[Vector2i] = []
 var _images := {} # only original atlases actually visited by the grass
@@ -117,12 +122,16 @@ func _exit_tree() -> void:
 
 
 func apply_options() -> void:
-	_grass = Gfx.on("gfx_grass")
-	var interactive := _grass and Gfx.on("gfx_vegetation_interaction")
+	var grass := Gfx.on("gfx_grass")
+	var cover := Gfx.on("gfx_biome_cover")
+	if grass != _grass or cover != _cover:
+		_clear_grass()
+	_grass = grass; _cover = cover
+	var interactive := (_grass or _cover) and Gfx.on("gfx_vegetation_interaction")
 	if interactive != (interaction != null):
 		_clear_grass() # scenery clearance and the bent culling envelope change
 		interaction = VegetationInteraction.new() if interactive else null
-	if not _grass:
+	if not _grass and not _cover:
 		_clear_grass()
 	if _material:
 		_apply_grass_material()
@@ -154,7 +163,7 @@ func water_changed() -> void:
 
 
 func _process(_dt: float) -> void:
-	if not _grass or not is_instance_valid(terrain):
+	if not (_grass or _cover) or not is_instance_valid(terrain):
 		return
 	_update_scenery()
 	var camera := get_viewport().get_camera_3d()
@@ -174,6 +183,7 @@ func _process(_dt: float) -> void:
 		_stream(focus)
 	if _material:
 		_material.set_shader_parameter("view_position", p)
+		if _cover_material: _cover_material.set_shader_parameter("view_position",p)
 		_update_motion(p)
 	if _native_grass:
 		prepare_grass()
@@ -182,7 +192,7 @@ func _process(_dt: float) -> void:
 			var key: Vector2i = _queue.pop_front()
 			if _chunks.has(key) or _building_chunks.has(key):
 				continue
-			var job := _grass_job(key)
+			var job := _chunk_job(key)
 			if job == null:
 				_native_grass = false
 				_queue.push_front(key)
@@ -216,6 +226,8 @@ func _clear_grass() -> void:
 	_building_chunks.clear()
 	_wanted_chunks.clear()
 	_grass_field = null
+	_cover_field = null
+	_trees.clear()
 	for n: MultiMeshInstance3D in _chunks.values():
 		if is_instance_valid(n):
 			n.queue_free()
@@ -244,15 +256,23 @@ func _apply_grass_material() -> void:
 	_material.set_shader_parameter("vegetation_pressure",interaction.texture if interaction else null)
 	if interaction: _material.set_shader_parameter("vegetation_focus",interaction.focus)
 	_material.set_shader_parameter("wind_phase",fposmod(terrain._waves.time_ticks()*EIWaterWaves.TICK*1.6,TAU))
+	if _cover_material:
+		_cover_material.shader = BiomeCover.Geometry.shader(interaction != null,Gfx.on("gfx_wind"))
+		_cover_material.set_shader_parameter("breeze",float(Gfx.on("gfx_wind")))
+		_cover_material.set_shader_parameter("wind_phase",_material.get_shader_parameter("wind_phase"))
+		_cover_material.set_shader_parameter("vegetation_pressure",interaction.texture if interaction else null)
+		if interaction: _cover_material.set_shader_parameter("vegetation_focus",interaction.focus)
 
 
 func _update_motion(centre: Vector3) -> void:
 	var seconds := terrain._waves.time_ticks()*EIWaterWaves.TICK
 	if Gfx.on("gfx_wind"):
 		_material.set_shader_parameter("wind_phase",fposmod(seconds*1.6,TAU))
+		if _cover_material: _cover_material.set_shader_parameter("wind_phase",fposmod(seconds*1.6,TAU))
 	if interaction:
 		interaction.update(self,terrain.game_world(),Vector2(centre.x,centre.z),seconds)
 		_material.set_shader_parameter("vegetation_focus",interaction.focus)
+		if _cover_material: _cover_material.set_shader_parameter("vegetation_focus",interaction.focus)
 
 
 ## Keep a small spatial index of the placed scenery's individual mesh boxes.
@@ -265,12 +285,14 @@ func _update_scenery() -> void:
 	var world := map.get_parent() as GameWorld if map else null
 	var signature := [root.get_instance_id() if root else 0,
 		root.get_child_count() if root else 0, world.nav.map_rev if world else 0, terrain.surface_rev]
+	if _cover: signature.append(BiomeCover.region(terrain))
 	if signature == _scenery_signature:
 		return
 	if not _scenery_signature.is_empty():
 		_clear_grass()
 	else:
 		_scenery.clear()
+		_trees.clear()
 	_scenery_signature = signature
 	if root == null or not root.is_inside_tree() or not terrain.is_inside_tree():
 		return
@@ -282,10 +304,28 @@ func _update_scenery() -> void:
 		# Effect carriers are not solid scenery.
 		if String(info.get("template", "")).to_lower().begins_with("ef"):
 			continue
+		var shown := false
 		for mesh: MeshInstance3D in object.find_children("*", "MeshInstance3D", true, false):
 			if mesh.mesh == null or not mesh.is_visible_in_tree():
 				continue
 			_index_scenery_box(mesh.get_aabb(), land_inverse * mesh.global_transform)
+			shown = true
+		if _cover and shown:
+			var kind := BiomeCover.tree_kind(info)
+			if kind:
+				var centre := land_inverse*object.global_position
+				_index_tree(Vector2(centre.x,-centre.z),kind)
+
+
+func _index_tree(p: Vector2,kind: int) -> void:
+	var first := Vector2i(((p-Vector2.ONE*BiomeCover.TREE_RANGE)/CHUNK).floor())
+	var last := Vector2i(((p+Vector2.ONE*BiomeCover.TREE_RANGE)/CHUNK).floor())
+	var tree := {"p":p,"kind":kind}
+	for y in range(first.y,last.y+1):
+		for x in range(first.x,last.x+1):
+			var key := Vector2i(x,y)
+			if not _trees.has(key): _trees[key] = []
+			_trees[key].append(tree)
 
 
 func _index_scenery_box(box: AABB, transform: Transform3D) -> void:
@@ -445,37 +485,52 @@ func grass_allowed(p: Vector2, include_scenery := true) -> bool:
 	return green_colour(ground_colour(p.x, p.y)) and (not include_scenery or scenery_clear(p, h))
 
 
+func vegetation_allowed(p: Vector2) -> bool:
+	return (_grass and grass_allowed(p,false)) or (_cover_field != null and _cover_field.pressure_allowed(p))
+
+
 func _ensure_grass_resources() -> void:
+	var created_cover := false
+	if _cover and _cover_material == null:
+		_cover_material = ShaderMaterial.new()
+		created_cover = true
 	if _mesh == null:
 		_mesh = blade_mesh()
 		_far_mesh = blade_mesh(false)
 		_material = ShaderMaterial.new()
 		_apply_grass_material()
 		_material.set_shader_parameter("view_position", Vector3(_focus.x * CHUNK, 0.0, -_focus.y * CHUNK))
+	if created_cover:
+		_apply_grass_material()
+		_cover_material.set_shader_parameter("view_position",_material.get_shader_parameter("view_position"))
 
 
 ## Called under the loading screen. Geometry jobs subsequently need no scene
 ## access or texture loading. A changed map/water revision gets a new snapshot.
 func prepare_grass() -> void:
-	if not _grass or not is_instance_valid(terrain):
+	if not (_grass or _cover) or not is_instance_valid(terrain):
 		return
 	_update_scenery()
 	_ensure_grass_resources()
-	if not _native_grass or _grass_field:
+	if (not _native_grass or _grass_field) and (not _cover or _cover_field):
 		return
 	var images := {}
 	for code: int in terrain.land_tile:
 		var atlas := (code >> 6) & 255
 		if not images.has(atlas):
 			images[atlas] = _images.get(atlas) if _images.has(atlas) else GameData.load_image("%s%03d" % [terrain.resource_prefix, atlas])
-	var kernel: RefCounted = ClassDB.instantiate("GrassFieldKernel")
-	if kernel.configure({"size":Vector2i(terrain.size_ei()),"grid_w":terrain.grid_w,
+	if _native_grass and not _grass_field:
+		var kernel: RefCounted = ClassDB.instantiate("GrassFieldKernel")
+		if kernel.configure({"size":Vector2i(terrain.size_ei()),"grid_w":terrain.grid_w,
 			"texture_size":terrain.texture_size,"tile_size":terrain.tile_size,
 			"heights":terrain.heights,"surface":terrain.surface,"water":terrain.water,
 			"land_xy":terrain.land_xy,"land_tile":terrain.land_tile,"ground":terrain.ground}, images):
-		_grass_field = kernel
-	else:
-		_native_grass = false
+			_grass_field = kernel
+		else:
+			_native_grass = false
+	if _cover and not _cover_field:
+		_cover_field = BiomeCover.new()
+		_cover_field.configure(terrain,_grass_field,images,BiomeCover.region(terrain))
 
 
 func _grass_job(key: Vector2i) -> RefCounted:
@@ -483,6 +538,16 @@ func _grass_job(key: Vector2i) -> RefCounted:
 	if not job.configure(_grass_field, key, hash("%s:%d:%d" % [terrain.map_name, key.x, key.y]),
 			terrain.map_name.hash() & 0x7fffffff, _scenery.get(key, [])):
 		return null
+	return job
+
+
+func _chunk_job(key: Vector2i) -> RefCounted:
+	var grass := _grass_job(key) if _grass else null
+	if _grass and grass == null: return null
+	if not _cover: return grass
+	var job := BiomeCover.ChunkJob.new()
+	job.grass = grass; job.cover = _cover_field; job.key = key
+	job.boxes = _scenery.get(key,[]).duplicate(true); job.trees = _trees.get(key,[]).duplicate(true)
 	return job
 
 
@@ -495,15 +560,23 @@ func _finish_grass_jobs(wait := false) -> void:
 		WorkerThreadPool.wait_for_task_completion(record.task)
 		_grass_jobs.remove_at(i)
 		_building_chunks.erase(record.key)
-		if _grass and int(record.generation) == _grass_generation and _wanted_chunks.has(record.key) and not _chunks.has(record.key):
+		if (_grass or _cover) and int(record.generation) == _grass_generation and _wanted_chunks.has(record.key) and not _chunks.has(record.key):
 			_install_chunk(record.key, record.kernel.read_result())
 		if not wait and Time.get_ticks_usec() - start >= BUILD_US:
 			break
 
 
 func _build_chunk(key: Vector2i) -> void:
-	_ensure_grass_resources()
-	_install_chunk(key, instances_script(key))
+	prepare_grass()
+	var data := _chunk_script(key)
+	_install_chunk(key,data)
+
+
+func _chunk_script(key: Vector2i) -> Dictionary:
+	var transforms: Array[Transform3D] = []; var colours: Array[Color] = []; var custom: Array[Color] = []
+	var data := instances_script(key) if _grass else {"transforms":transforms,"colours":colours,"custom":custom}
+	if _cover_field: data.cover = _cover_field.build(key,_scenery.get(key,[]),_trees.get(key,[]))
+	return data
 
 
 func _install_chunk(key: Vector2i, data: Dictionary) -> void:
@@ -533,6 +606,15 @@ func _install_chunk(key: Vector2i, data: Dictionary) -> void:
 	# receiver/decal layers would silently suppress the grass shadows.
 	node.layers = 1
 	add_child(node)
+	if data.has("cover") and not data.cover.records.is_empty():
+		var mesh := ArrayMesh.new()
+		mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,data.cover.arrays)
+		var cover := MeshInstance3D.new(); cover.name = "BiomeCover"
+		cover.mesh = mesh; cover.material_override = _cover_material
+		cover.position = Vector3(key.x*CHUNK,0,-key.y*CHUNK)
+		cover.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_DOUBLE_SIDED
+		cover.extra_cull_margin = node.extra_cull_margin; cover.layers = 1
+		node.add_child(cover)
 	_chunks[key] = node
 
 
@@ -554,14 +636,14 @@ func growth(p: Vector2) -> float:
 
 
 func instances(key: Vector2i) -> Dictionary:
+	prepare_grass()
 	if _native_grass:
-		prepare_grass()
 		if _grass_field:
-			var job := _grass_job(key)
+			var job := _chunk_job(key)
 			if job:
 				job.run()
 				return job.read_result()
-	return instances_script(key)
+	return _chunk_script(key)
 
 
 ## Retained independent oracle and fallback for unsupported platforms.

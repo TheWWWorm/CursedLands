@@ -2613,6 +2613,128 @@ weather wind fronts are not implemented by this checkpoint.** Extend existing
 TerrainDetails generation for those next; do not replace it with another grass
 streamer. U45 remains first when the later gameplay handoff begins.
 
+## V2 follow-up: optional dry-land biome cover — 9 October
+
+`gfx_biome_cover` adds meadow flower patches, dry/sandy tufts, short snow straw,
+broadleaf litter, conifer needles, twigs, small stones and sparse dead bushes.
+It is **off by default on every platform**, in Remake → Water and effects, row
+10. It works independently of Grass blades. Grass interaction can now bend
+these flowers/tufts using the same pressure field; rigid litter remains rigid.
+This is a visual addition with extra geometry and shadow work, not a speedup.
+
+### Source map and placement contract
+
+The reference remains **R1 `0092dc6e1d7c4aab3f74644a79e9bfca11ecf293`** in
+`/home/llm2x/Documents/evil-islands-owned-renderer`. Read R1 with `git show`;
+the reference worktree itself is still at R0 and has not been changed.
+
+| Reference location | Adaptation and current implementation |
+| --- | --- |
+| `Source/ambient_particles.h:30–106` | Ground classes, authored tree families and zone context inform `game/src/game/fx/biome_cover.gd:28/45/145`. These are explicit model identities, not guesses from translated object names. Actual selected model parts are checked with `EIFigure.sways`; a `nafltr75` placement without its leafy crown contributes wood, not leaves. |
+| `Source/ground_cover.h:248–295` | Patchy meadow flowers, dry tufts, sparse snow straw and stones become the seven bounded species in `biome_cover.gd:145` and `biome_cover_mesh.gd:106`. Densities and geometry are new, conservative Godot implementations. The original grass distribution/RNG is unchanged. |
+| `Source/ground_cover.h:296–329` | Independent broadleaf/conifer/wood proximity fields become the 6 m tree index in `terrain_details.gd:282/320`, and `BiomeCover.tree_influence`. Snow has no broadleaf litter; the current Suslanger profile has no forest litter. |
+| `Source/ground_cover.h` far-density rules and `ground_cover_interaction.h` | New cover shrinks selected instances smoothly between 18–28 m and all cover fades at 28–36 m. It shares the existing pressure/wind owner. Original grass retains its previous mesh LOD policy; weather wind fronts are still separate work. |
+
+Important implementation locations in the canonical checkout:
+
+- `game/src/game/fx/biome_cover.gd:55`: immutable packed-array and atlas copies;
+  native triangle query when available, independent script fallback at line 76.
+  The UV lookup follows the actual jittered triangles and rotated original
+  atlas tiles. Generation never reads a live node from a worker.
+- `biome_cover.gd:112/168/181`: dry-surface and footprint tests, deterministic
+  candidates and scenery exclusion. Reject liquid coverage, roads, unknown
+  terrain, ice, high rocks and overlying floors. Flower footprints also need
+  painted green meadow pixels. Rigid litter follows the local surface normal
+  and rejects nearby terrain that departs too far from that plane.
+- `biome_cover_mesh.gd:5/64/106`: small opaque meshes, shared shader and
+  species shapes. One merged surface is attached to each existing grass
+  chunk, rather than a separate draw for each species. Wind and pressure mark
+  shadow animation through `TIME*0.0`; visible motion uses the held game clock.
+- `terrain_details.gd:124/510/544/582`: independent options, snapshot
+  preparation, composite grass/cover jobs and main-thread mesh installation.
+  Existing four-worker/80-chunk limits, camera queue, revision barriers and
+  `water_changed()` remain the owners of lifetime. Empty cover creates no mesh.
+- `terrain.gd:1109`: create TerrainDetails when cover alone is enabled.
+  `vegetation_interaction.gd` now calls `TerrainDetails.vegetation_allowed`, so
+  visible grounded creatures can press dry cover even with grass disabled.
+- `game_data.gd`, `remake_text.gd`, `gfx_detect.gd`: applied option, original-look
+  membership, English/Russian/German text and conservative automatic settings.
+- `tools/benchmarks/biome_cover_census.gd`: read-only campaign/tree census.
+  `tools/tests/biome_cover.gd`: placement, immutable workers, actual-map
+  rendering, clearance controls, shader shadows, pause, reload and option tests.
+
+Zone context comes from the owning GameWorld. Without it, map metadata is used
+only when one zone matches; reused MPRs remain conservative until a world is
+assigned. The LiA census observes `gipat2`, which currently gets general meadow,
+dry and stone rules but does not inherit the explicit Gipat/Ingos litter
+profile. A reused LiA `zone21` has only conservative stone cover in the detached
+terrain fixture. Extend campaign profiles from authored context, not a guessed
+map-name prefix.
+
+### Evidence and limitations
+
+[Biome-cover evidence](validation/biome-cover-2026-10-09.json) records accepted
+runs, frozen tool/source hashes, images, failed development controls and exact
+commands. The export is
+`/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/biome-validation`;
+PCK SHA-256: `0a35c3dfd13cc69e4051bd09ef330da086325bb01cd6e1a16cac2344c44fe32a`.
+It uses the same patched Godot runtime/native library as the interaction stage,
+with no additional engine/native changes. The tests cover authored base-game
+and LiA terrain, full-scene meadow rendering on three desktop backends,
+regional dry/snow views and the script fallback. Snapshot tests also exercise
+combined native grass/cover jobs while source terrain/images are mutated.
+
+**17,852 cover assertions pass** across ten accepted runs, plus **3,655**
+unchanged native/script grass assertions and **42** existing rendered
+interaction assertions. These totals include repeated fixture and per-placement
+checks. All **229 production scripts** match the accepted export manifest.
+The Compatibility mixed-grass capture keeps the meadow flowers visible among
+the original blades. Rigid forest litter remains fixed under pressure. Full
+scene off/restored, held-time and forced-shadow-refresh image pairs are exact
+in the accepted cases.
+
+The early worker test caught mutable packed-array aliases; explicit copies fix
+the mismatch. Cover-only loading also needed its own TerrainDetails creation
+gate. The first release fixture called the missing owner and crashed; the
+corrected fixture checks that owner before use. A forced-script fixture also
+incorrectly requested a native job without a native field; it now follows the
+supported fallback path. Those failed runs are not acceptance results.
+
+The first full-scene pause mismatch was entirely in old tree crowns above image
+row 123; off/on restoration had the same 21,042 changed background pixels.
+The standalone tool had bypassed Game's foliage-wind controller. An unchanged
+cover-off control reproduces that motion; disabling that existing wind input
+gives exact cover pause/restoration comparisons. A desert camera also initially
+sat behind a large rock. The fixture now checks the camera sightline against
+terrain and scenery instead of accepting an invisible feature.
+
+Enabling pressure expands scenery clearance to contain bent tips. Near walls,
+this deliberately removes some tufts even with an empty pressure texture. The
+fixture records that placement difference and compares the empty shader on
+**identical geometry**. This must not be hidden by loosening a pixel tolerance.
+
+The five-map native metadata sample builds 2,554 cover records in 392 sampled
+chunks; median chunk generation is about 0.45–0.67 ms, with a 4.18 ms maximum in
+that run. It does not include live scenery installation or GPU upload. These
+are diagnostic CPU samples, not a frame-rate or device claim. Other Godot
+processes were present for some rendered checks and were left alone; their
+identities are in the receipts. No exclusive GPU performance result is claimed.
+
+The new cover's far-density fade reduces visible/rasterized coverage but still
+submits all mesh vertices; do not describe it as a measured vertex/draw saving.
+The extra immutable terrain/atlas copies consume memory while enabled, and each
+nonempty chunk adds a main draw and potential shadow draws. Android/browser
+timing, memory and upload costs remain unmeasured.
+
+**Remaining V2 work:** reeds/swamp banks, verified sea shores and underwater
+plants, snow/sand mounds, wider species/Dead City/cave profiles, weather wind
+fronts and actual submission-efficient distance LOD. Cover currently follows
+the original terrain snapshot, so soft-ground shader deformation and footprint
+attachment need a follow-up before broad sand/snow acceptance; these image
+fixtures intentionally disable that separate option. Wider travel/streaming
+routes and actor sizes also remain. Keep defaults off. U45 remains the first
+gameplay investigation after the renderer work.
+
 ## Next work in the established order
 
 1. **P1/P2 remaining texture work:** retained outfit pixels and shared native
@@ -2668,5 +2790,6 @@ streamer. U45 remains first when the later gameplay handoff begins.
    enabling defaults. V4 now has optional contacts/wakes and terrain caustics;
    wave fields, currents and waterfalls remain separate work. Both options stay
    off pending broader quality/device acceptance. V2 now has the optional
-   grass-interaction stage above; continue with biome cover in the initial visual
-   sequence. No visual effect was silently enabled.
+   grass-interaction and dry-land cover stages above. Continue with soft-ground
+   attachment and the remaining shore/swamp/underwater/biome rules in the initial
+   visual sequence. No visual effect was silently enabled.

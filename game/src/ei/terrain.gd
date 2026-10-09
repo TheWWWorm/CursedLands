@@ -1106,7 +1106,7 @@ func apply_gfx() -> void:
 	_land_mat.set_shader_parameter("tiles_per_axis", float(texture_size) / tile_size)
 	_land_mat.set_shader_parameter("atlas_padding", float(TERRAIN_GUTTER) / tile_size if det else 0.0)
 	_land_mat.set_shader_parameter("source_texel", 1.0 / texture_size)
-	if not is_instance_valid(details) and (Gfx.on("gfx_grass") or Gfx.on("gfx_soft_ground")):
+	if not is_instance_valid(details) and (Gfx.on("gfx_grass") or Gfx.on("gfx_biome_cover") or Gfx.on("gfx_soft_ground")):
 		details = TerrainDetails.create(self)
 	elif is_instance_valid(details):
 		details.apply_options()
