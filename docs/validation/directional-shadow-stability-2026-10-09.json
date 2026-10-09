@@ -1,0 +1,666 @@
+{
+  "schema": 1,
+  "date": "2026-10-09",
+  "scope": "P6 bounded normal-frame directional-shadow stability and redraw-cost diagnostic",
+  "decision": "No production aiming/projection/native change is justified by this view. The stationary view and restoration are exact; moving camera and intentional continuous sunlight cause repeatable image/edge changes, without an established wrong state, basis jump or objectionable shimmer. Directional redraw work is measurable but modest on this desktop. Target-device, low-sun, zoom and broader cascade-boundary quality/cost acceptance remain open.",
+  "production_changes": false,
+  "engine_changes": false,
+  "cache_implemented": false,
+  "policy_candidate": false,
+  "prior_acceptance": {
+    "handoff": "docs/owned-renderer-improvements-2026-10-08.md P6 investigation and user clarification",
+    "fixture": "tools/benchmarks/directional_shadows.gd",
+    "distinction": "The earlier 31-sample artificial-azimuth/held/snapped test used forced draws and establishes a policy/pixel comparison, not normal-frame cost. This diagnostic does not repeat those policy alternatives. Desktop continuous aiming and the constrained-device fallback remain untouched."
+  },
+  "qualification": {
+    "build_directory": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-coop-final-01",
+    "game_source": "63c16788f1bba2be73d1a00d534b310a4bf0fc98 frozen qualified pack; same production/runtime as parent HEAD 8efe213",
+    "build_sha256": {
+      "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+      "CursedLands.pck": "5a3847a25a7a46d99f63c2f13ef76331556fc6bdd6b504dada47dfab2d90dfcb",
+      "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+    },
+    "fixture": "tools/benchmarks/directional_shadow_stability.gd",
+    "fixture_sha256": "7f452d4a2ed8a8a4278303e9ab79615d5863c1ad546ce09c03e8ede31537189c",
+    "frozen_source_sha256": {
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/benchmarks/directional_shadow_stability.gd": "7f452d4a2ed8a8a4278303e9ab79615d5863c1ad546ce09c03e8ede31537189c",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/benchmarks/local_shadow_cache.gd": "2619a5097e220caffdd60103ac1292f230b8857232c79916d644a73eb6a30945"
+    },
+    "native_source_root": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/engine-sky-alpha",
+    "native_source_base": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88 plus qualified common engine patches",
+    "native_source_findings": [
+      {
+        "file": "servers/rendering/renderer_scene_cull.cpp",
+        "sha256": "80f0761682f6df8abe683f843f6fc8fd1fc9a646783298491d597f2634b5e810",
+        "findings": [
+          "2150-2364: directional cascade setup fits camera-slice spheres, adds border texels and snaps XY bounds to its native texel grid",
+          "2677-2691: TAA phase defaults to zero unless camera jitter is active",
+          "3241-3259: directional caster collection per cascade",
+          "3387: directional setup runs for visible shadowed directional lights on each render",
+          "3475-3495: publishes cascade transform and instance list per pass, without the positional-light dirty/version reuse"
+        ]
+      },
+      {
+        "file": "servers/rendering/renderer_rd/shaders/scene_forward_lights_inc.glsl",
+        "sha256": "981c84d70c1f6e7d79709b3c815fad7ffd574e981fed742b86dbe6a0320c2146",
+        "findings": [
+          "312-336: directional PCF disk rotation hashes fragment position plus TAA phase; with TAA off and a fixed pixel it has no independent time animation"
+        ]
+      },
+      {
+        "file": "servers/rendering/renderer_rd/forward_clustered/render_forward_clustered.cpp",
+        "sha256": "2373770a9b4cc978ae0dd64df9c85343d70472f3456fd283e73cbdb0c8330dcd",
+        "findings": [
+          "Directional native shadow rendering is unchanged; fixture measures the qualified runtime, not a modified engine"
+        ]
+      }
+    ]
+  },
+  "accepted_execution": {
+    "directory": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/p6-directional-stability-02",
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-coop-final-01/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--rendering-method",
+      "forward_plus",
+      "--windowed",
+      "--resolution",
+      "800x600",
+      "--position",
+      "-10000,-10000",
+      "--audio-driver",
+      "Dummy",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/p6-directional-stability-02/tool-source.gd"
+    ],
+    "seconds": 31.31231419602409,
+    "return_code": 0,
+    "checks": 162,
+    "check_scope": "Includes 127 capture-write checks; remaining assertions cover authored data, continuous desktop policy, normal frame clock, expected shadow submissions, finite positive timestamps, uncapped rendering and exact held/restored outputs.",
+    "failures": 0,
+    "errors": [],
+    "warnings": [],
+    "captures": 127,
+    "other_godot_processes_at_start": [],
+    "other_godot_processes_at_end": [],
+    "isolation": "Root and P1 explicitly held rendering, imports/exports and CPU-heavy work during the two short leased runs. No GPU clocks or operating-system activity were locked; short desktop measurements are descriptive.",
+    "input_profile": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/p6-directional-stability-02/isolated/data/godot/app_userdata/Cursed Lands/settings.cfg",
+      "contents": "[options]\ndisplay_mode=0\nresolution=1\nq_aa=0\nconfine_mouse=0\nauto_graphics=0\nshow_tutorial=0\n[display]\nresolution=\"800x600\"\n[remake]\ngfx=4\n",
+      "sha256": "933a57de3ff7460612be42856220531357074318728b5e66f907ac50e5f20cf0"
+    }
+  },
+  "rejected_setup_run": {
+    "directory": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/p6-directional-stability-01",
+    "run_json_sha256": "cfbd49cdc164830fda96df16961566602b03ac3ed11256f46d43cbb4b886713c",
+    "return_code": 0,
+    "errors": [
+      "ERROR: Condition \"!is_inside_tree()\" is true. Returning: Transform3D()"
+    ],
+    "checks": 162,
+    "failures": 0,
+    "acceptance": "Rejected because setup logged an engine error despite passing assertions.",
+    "cause": "Node.reparent(view) tried to preserve the global transform of a sun created under a dummy Game that was not inside the tree.",
+    "fixture_fix": "Use child.reparent(view,false), preserving local state before scene_at explicitly assigns the complete sun basis. No production change.",
+    "evidence": "All 127 PNG hashes are identical between rejected setup run 01 and clean run 02; error correction did not alter the captured scene."
+  },
+  "scene": {
+    "map": "bz13h",
+    "zone": "bz13h",
+    "zone_sky": "",
+    "allod": "suslanger",
+    "renderer": "forward_plus",
+    "adapter": "NVIDIA GeForce RTX 3090",
+    "viewport": "(800, 600)",
+    "camera_start": "[X: (0.759257, 0.0, -0.650791), Y: (-0.310253, 0.879049, -0.361961), Z: (0.572078, 0.476731, 0.667424), O: (112.0, 38.81038, -28.0)]",
+    "fov": 55.0,
+    "near": 2.0,
+    "far": 100.0,
+    "base_hour": 10.0,
+    "hour_seconds": 49.5,
+    "continuous_aim": 1,
+    "grid_roll": false,
+    "atlas": 4096,
+    "depth_bits": 16,
+    "q_shadows": 1,
+    "shadow_fit": 1,
+    "shadow_distance": 100.0,
+    "splits": [
+      0.131999999284744,
+      0.395999997854233,
+      0.75
+    ],
+    "bias": 0.0399999991059303,
+    "normal_bias": 1.20000004768372,
+    "blur": 1.5,
+    "blend": true,
+    "caster_mask": 4294049791,
+    "wind": false,
+    "units": false,
+    "optional_fx": false,
+    "simulation": false,
+    "normal_loop": true
+  },
+  "method": {
+    "setup": "Original bz13h Suslanger fortress/palms and its authored outdoor metadata/light palette. Uses actual Game._setup_env, Gfx.apply_quality and Gfx.fit_shadows. Game itself is not started. Optional effects, wind and unit simulation are disabled; sky rendering is replaced with a constant background. Native terrain receiver/caster masks remain unchanged.",
+    "timing": "Six 240-frame blocks after 64-frame warmup: stationary shadows on/off/off/on, then shadowed slow pan and clock advance. Initial warmup 180 frames. Screenshot readback/encoding is outside all timed blocks. 1,440 retained GPU timestamps are finite and positive.",
+    "motion": "Camera translates along its own right axis at logical 0.3 m/s; clock advances via CampaignState.HOUR_SECONDS = 49.5 and EISky.light_dir_ei through the unchanged Game._aim_sun continuous policy. Timed poses use logical 1/60 s steps; image traces of 31 poses at 1/15 s cover 2 s, 0.6 m camera travel, or 0.040404 game hours. These are deterministic sampled paths, not a live gameplay/FPS measurement.",
+    "controls": "Held first/last 32 normal frames apart and restored initial state are byte-exact. Matched shadow-off image traces retain ordinary camera/raster/direct-light changes. All 127 captures also exactly repeat across independent process runs."
+  },
+  "timed_rows": [
+    {
+      "drawn_frames": 240,
+      "frame_wall_ms": {
+        "max": 1.523,
+        "median": 0.909,
+        "min": 0.849,
+        "p95": 1.163,
+        "samples": 240
+      },
+      "invalid_gpu_samples": 0,
+      "label": "held-on-0",
+      "mode": "held",
+      "sample_frames": 240,
+      "shadow_draws": {
+        "max": 776,
+        "median": 776,
+        "min": 776,
+        "p95": 776,
+        "samples": 240
+      },
+      "shadow_primitives": {
+        "max": 73589,
+        "median": 73589,
+        "min": 73589,
+        "p95": 73589,
+        "samples": 240
+      },
+      "shadows": true,
+      "viewport_cpu_ms": {
+        "max": 0.856000006198883,
+        "median": 0.433999985456467,
+        "min": 0.41499999165535,
+        "p95": 0.550999999046326,
+        "samples": 240
+      },
+      "viewport_gpu_ms": {
+        "max": 0.296000003814697,
+        "median": 0.263999998569489,
+        "min": 0.259999990463257,
+        "p95": 0.26800000667572,
+        "samples": 240
+      },
+      "visible_draws": {
+        "max": 871,
+        "median": 871,
+        "min": 871,
+        "p95": 871,
+        "samples": 240
+      },
+      "visible_primitives": {
+        "max": 60795,
+        "median": 60795,
+        "min": 60795,
+        "p95": 60795,
+        "samples": 240
+      },
+      "warmup_frames": 64
+    },
+    {
+      "drawn_frames": 240,
+      "frame_wall_ms": {
+        "max": 1.491,
+        "median": 0.643,
+        "min": 0.58,
+        "p95": 0.915,
+        "samples": 240
+      },
+      "invalid_gpu_samples": 0,
+      "label": "held-off-1",
+      "mode": "held",
+      "sample_frames": 240,
+      "shadow_draws": {
+        "max": 0,
+        "median": 0,
+        "min": 0,
+        "p95": 0,
+        "samples": 240
+      },
+      "shadow_primitives": {
+        "max": 0,
+        "median": 0,
+        "min": 0,
+        "p95": 0,
+        "samples": 240
+      },
+      "shadows": false,
+      "viewport_cpu_ms": {
+        "max": 0.546000003814697,
+        "median": 0.224000006914139,
+        "min": 0.214000001549721,
+        "p95": 0.328000009059906,
+        "samples": 240
+      },
+      "viewport_gpu_ms": {
+        "max": 0.178000003099442,
+        "median": 0.144999995827675,
+        "min": 0.14300000667572,
+        "p95": 0.145999997854233,
+        "samples": 240
+      },
+      "visible_draws": {
+        "max": 871,
+        "median": 871,
+        "min": 871,
+        "p95": 871,
+        "samples": 240
+      },
+      "visible_primitives": {
+        "max": 60795,
+        "median": 60795,
+        "min": 60795,
+        "p95": 60795,
+        "samples": 240
+      },
+      "warmup_frames": 64
+    },
+    {
+      "drawn_frames": 240,
+      "frame_wall_ms": {
+        "max": 1.189,
+        "median": 0.647,
+        "min": 0.591,
+        "p95": 0.906,
+        "samples": 240
+      },
+      "invalid_gpu_samples": 0,
+      "label": "held-off-2",
+      "mode": "held",
+      "sample_frames": 240,
+      "shadow_draws": {
+        "max": 0,
+        "median": 0,
+        "min": 0,
+        "p95": 0,
+        "samples": 240
+      },
+      "shadow_primitives": {
+        "max": 0,
+        "median": 0,
+        "min": 0,
+        "p95": 0,
+        "samples": 240
+      },
+      "shadows": false,
+      "viewport_cpu_ms": {
+        "max": 0.493999987840652,
+        "median": 0.225999996066093,
+        "min": 0.212999999523163,
+        "p95": 0.30799999833107,
+        "samples": 240
+      },
+      "viewport_gpu_ms": {
+        "max": 0.18299999833107,
+        "median": 0.144999995827675,
+        "min": 0.14300000667572,
+        "p95": 0.145999997854233,
+        "samples": 240
+      },
+      "visible_draws": {
+        "max": 871,
+        "median": 871,
+        "min": 871,
+        "p95": 871,
+        "samples": 240
+      },
+      "visible_primitives": {
+        "max": 60795,
+        "median": 60795,
+        "min": 60795,
+        "p95": 60795,
+        "samples": 240
+      },
+      "warmup_frames": 64
+    },
+    {
+      "drawn_frames": 240,
+      "frame_wall_ms": {
+        "max": 1.381,
+        "median": 0.915,
+        "min": 0.835,
+        "p95": 1.136,
+        "samples": 240
+      },
+      "invalid_gpu_samples": 0,
+      "label": "held-on-3",
+      "mode": "held",
+      "sample_frames": 240,
+      "shadow_draws": {
+        "max": 776,
+        "median": 776,
+        "min": 776,
+        "p95": 776,
+        "samples": 240
+      },
+      "shadow_primitives": {
+        "max": 73589,
+        "median": 73589,
+        "min": 73589,
+        "p95": 73589,
+        "samples": 240
+      },
+      "shadows": true,
+      "viewport_cpu_ms": {
+        "max": 0.681999981403351,
+        "median": 0.435999989509583,
+        "min": 0.416000008583069,
+        "p95": 0.555000007152557,
+        "samples": 240
+      },
+      "viewport_gpu_ms": {
+        "max": 0.29899999499321,
+        "median": 0.263999998569489,
+        "min": 0.259999990463257,
+        "p95": 0.268999993801117,
+        "samples": 240
+      },
+      "visible_draws": {
+        "max": 871,
+        "median": 871,
+        "min": 871,
+        "p95": 871,
+        "samples": 240
+      },
+      "visible_primitives": {
+        "max": 60795,
+        "median": 60795,
+        "min": 60795,
+        "p95": 60795,
+        "samples": 240
+      },
+      "warmup_frames": 64
+    },
+    {
+      "drawn_frames": 240,
+      "frame_wall_ms": {
+        "max": 1.487,
+        "median": 0.925,
+        "min": 0.888,
+        "p95": 1.179,
+        "samples": 240
+      },
+      "invalid_gpu_samples": 0,
+      "label": "slow-pan-on",
+      "mode": "pan",
+      "sample_frames": 240,
+      "shadow_draws": {
+        "max": 776,
+        "median": 774,
+        "min": 768,
+        "p95": 776,
+        "samples": 240
+      },
+      "shadow_primitives": {
+        "max": 73589,
+        "median": 73141,
+        "min": 72799,
+        "p95": 73589,
+        "samples": 240
+      },
+      "shadows": true,
+      "viewport_cpu_ms": {
+        "max": 0.742999970912933,
+        "median": 0.435000002384186,
+        "min": 0.416999995708466,
+        "p95": 0.565999984741211,
+        "samples": 240
+      },
+      "viewport_gpu_ms": {
+        "max": 0.296999990940094,
+        "median": 0.261999994516373,
+        "min": 0.257999986410141,
+        "p95": 0.28099998831749,
+        "samples": 240
+      },
+      "visible_draws": {
+        "max": 871,
+        "median": 864,
+        "min": 858,
+        "p95": 870,
+        "samples": 240
+      },
+      "visible_primitives": {
+        "max": 60795,
+        "median": 60795,
+        "min": 60507,
+        "p95": 60795,
+        "samples": 240
+      },
+      "warmup_frames": 64
+    },
+    {
+      "drawn_frames": 240,
+      "frame_wall_ms": {
+        "max": 3.577,
+        "median": 0.92,
+        "min": 0.868,
+        "p95": 1.212,
+        "samples": 240
+      },
+      "invalid_gpu_samples": 0,
+      "label": "clock-on",
+      "mode": "clock",
+      "sample_frames": 240,
+      "shadow_draws": {
+        "max": 777,
+        "median": 771,
+        "min": 764,
+        "p95": 777,
+        "samples": 240
+      },
+      "shadow_primitives": {
+        "max": 73589,
+        "median": 73495,
+        "min": 73352,
+        "p95": 73589,
+        "samples": 240
+      },
+      "shadows": true,
+      "viewport_cpu_ms": {
+        "max": 0.757000029087067,
+        "median": 0.430000007152557,
+        "min": 0.418999999761581,
+        "p95": 0.560000002384186,
+        "samples": 240
+      },
+      "viewport_gpu_ms": {
+        "max": 0.29899999499321,
+        "median": 0.263999998569489,
+        "min": 0.259999990463257,
+        "p95": 0.270999997854233,
+        "samples": 240
+      },
+      "visible_draws": {
+        "max": 871,
+        "median": 871,
+        "min": 871,
+        "p95": 871,
+        "samples": 240
+      },
+      "visible_primitives": {
+        "max": 60795,
+        "median": 60795,
+        "min": 60795,
+        "p95": 60795,
+        "samples": 240
+      },
+      "warmup_frames": 64
+    }
+  ],
+  "paired_median_deltas_ms": {
+    "viewport_cpu_ms": {
+      "first_on_minus_off": 0.20999997854232802,
+      "second_on_minus_off": 0.20999999344349002,
+      "on_a2_minus_a1": 0.0020000040531160113,
+      "off_b2_minus_b1": 0.0019999891519540125
+    },
+    "viewport_gpu_ms": {
+      "first_on_minus_off": 0.11900000274181402,
+      "second_on_minus_off": 0.11900000274181402,
+      "on_a2_minus_a1": 0.0,
+      "off_b2_minus_b1": 0.0
+    },
+    "frame_wall_ms": {
+      "first_on_minus_off": 0.266,
+      "second_on_minus_off": 0.268,
+      "on_a2_minus_a1": 0.006000000000000005,
+      "off_b2_minus_b1": 0.0040000000000000036
+    }
+  },
+  "observed_work": {
+    "stationary_shadow_primitives_every_frame": 73589,
+    "stationary_shadow_draws_every_frame": 776,
+    "stationary_color_primitives_every_frame": 60795,
+    "stationary_color_draws_every_frame": 871,
+    "shadow_off_primitives_and_draws": 0,
+    "slow_pan_shadow_primitives_median": 73141,
+    "slow_pan_shadow_draws_median": 774,
+    "clock_shadow_primitives_median": 73495,
+    "clock_shadow_draws_median": 771,
+    "interpretation": "Native directional passes redraw even when scene/camera/clock are stationary. Counts sum cascade submissions, not unique scenery triangles. Normal movement/clock rows have comparable work; the pan also changes culling and color draw counts."
+  },
+  "timing_interpretation": {
+    "stationary_gpu_on_off_ms": [
+      0.264,
+      0.145
+    ],
+    "paired_gpu_delta_ms": [
+      0.119,
+      0.119
+    ],
+    "paired_cpu_delta_ms": [
+      0.21,
+      0.21
+    ],
+    "gpu_full_arm_median_drift_ms": 0.0,
+    "limits": "These are whole-viewport shadow-enabled/disabled differences. Disabling shadows changes both depth passes and receiver shading/sampling; the delta is not isolated shadow-depth time or a cache saving. CPU/GPU times overlap and cannot be added. Unchanged exact depth retention would still need valid cascade ownership and invalidations, and continuous sun motion changes projection. This single modest desktop result does not warrant a native build or altered aiming policy."
+  },
+  "visual_analysis": {
+    "held_exact": true,
+    "restored_exact": true,
+    "cross_run_identical_png_hashes": 127,
+    "cross_run_total": 127,
+    "temporal_pixel_method": "Compare adjacent RGB PNG arrays using absolute channel differences. Count each pixel once when its largest RGB change exceeds 2/255. Exact images retain original 800x600 pixels.",
+    "trace_summary": [
+      {
+        "mode": "pan",
+        "shadows": true,
+        "median_over_2": 123099.0,
+        "max_over_2": 123518,
+        "endpoint": {
+          "pixels_over_2": 397850,
+          "changed_pixels": 438501,
+          "peak": 212,
+          "mean_rgb": 12.984870833333334
+        }
+      },
+      {
+        "mode": "pan",
+        "shadows": false,
+        "median_over_2": 119679.0,
+        "max_over_2": 120114,
+        "endpoint": {
+          "pixels_over_2": 396780,
+          "changed_pixels": 438493,
+          "peak": 212,
+          "mean_rgb": 12.723879166666666
+        }
+      },
+      {
+        "mode": "clock",
+        "shadows": true,
+        "median_over_2": 11613.0,
+        "max_over_2": 11895,
+        "endpoint": {
+          "pixels_over_2": 12754,
+          "changed_pixels": 226987,
+          "peak": 45,
+          "mean_rgb": 0.39336805555555554
+        }
+      },
+      {
+        "mode": "clock",
+        "shadows": false,
+        "median_over_2": 0.0,
+        "max_over_2": 0,
+        "endpoint": {
+          "pixels_over_2": 0,
+          "changed_pixels": 192982,
+          "peak": 2,
+          "mean_rgb": 0.21151180555555554
+        }
+      }
+    ],
+    "review": "Reviewed original held, pan and clock endpoints, their matched shadow-off control, and seven exact-pixel foreground-palm shadow crops per motion trace. Camera trace image differences are mostly ordinary scene movement; shadow-off trace changes almost as many pixels. Clock-only shadows show small changing edge shape/softness; no incorrect final state or obvious basis discontinuity was established. Raw temporal differences, including the larger shadow-on clock count, are not labeled objectionable shimmer. Parent independently inspected clock-on-30 and the crop sequence and agreed with this bounded conclusion.",
+    "selected_originals": {
+      "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/p6-directional-stability-02/directional-stability-held-first.png": "237a93200aeb8921c5268f83090d10eab52ea11bda21bfd7d7e2653851a581f8",
+      "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/p6-directional-stability-02/directional-stability-restored.png": "237a93200aeb8921c5268f83090d10eab52ea11bda21bfd7d7e2653851a581f8",
+      "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/p6-directional-stability-02/directional-stability-pan-on-00.png": "237a93200aeb8921c5268f83090d10eab52ea11bda21bfd7d7e2653851a581f8",
+      "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/p6-directional-stability-02/directional-stability-pan-on-15.png": "8cb0e184f11454cf384f31449afbaf501d228c299e87d5da1b64bd9cbfb0c5de",
+      "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/p6-directional-stability-02/directional-stability-pan-on-30.png": "0a937331ba5fda238a2748937793fd970cf252f6ff26c46a1fbfd07b1949b231",
+      "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/p6-directional-stability-02/directional-stability-clock-on-00.png": "237a93200aeb8921c5268f83090d10eab52ea11bda21bfd7d7e2653851a581f8",
+      "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/p6-directional-stability-02/directional-stability-clock-on-15.png": "0ca6f2f0d819e73ab92527f03b9eaebe24a9d650320e4b15d92e6560b8e04239",
+      "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/p6-directional-stability-02/directional-stability-clock-on-30.png": "e6bed3f7d23a5b00bdaa0d9d476980a3bf3c40b8d98c88442a7f4403d82efbe6",
+      "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/p6-directional-stability-02/directional-stability-clock-off-00.png": "06681eff6eaabedd55373a216ef74b71c11b02a16aff3315a77e854f88be4926"
+    },
+    "crop_sheet": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/p6-directional-stability-02/shadow-edge-sequence.png",
+      "sha256": "a02c0a8f9ea8cdbbd650ed1a0621419f2f6454daf9d607d778b67c42a689976e",
+      "source_rectangle": [
+        525,
+        452,
+        675,
+        565
+      ],
+      "source_steps": [
+        0,
+        5,
+        10,
+        15,
+        20,
+        25,
+        30
+      ],
+      "rows": [
+        "pan-on",
+        "clock-on"
+      ],
+      "operation": "Original crop pixels placed side by side with labels; no rescaling or color adjustment."
+    }
+  },
+  "remaining_acceptance": [
+    "No Android/web/constrained-device result, low-sun or zoom/cascade-crossing matrix, or subjective quality acceptance for all scenes.",
+    "Revisit for a concrete objectionable shadow trace or an expensive target-device workload. First distinguish intended continuous sun/camera motion from unstable projection/filtering, and preserve desktop continuous sunlight.",
+    "Any later retained-depth proposal must own per-view/cascade contents and invalidate for projection/sun/caster/material/mask/atlas changes. Existing XY snapping is already implemented and must not be replaced by a duplicate GDScript camera-snap approximation without evidence."
+  ],
+  "artifacts": {
+    "run.json": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/p6-directional-stability-02/run.json",
+      "sha256": "67683cd6fd3544262d35e012087b9c1dbad62f0f9e84942fffd3aa6cf92586e0"
+    },
+    "run.log": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/p6-directional-stability-02/run.log",
+      "sha256": "5572d877a81f5a5d31221719393a449561499e9a9d34322c0d3416676123d05f"
+    },
+    "directional-shadow-stability.json": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/p6-directional-stability-02/directional-shadow-stability.json",
+      "sha256": "c63a82125889d115e99dabc8a0285842f1b7060aba86051ea7a646aebdf88990"
+    },
+    "image-analysis.json": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/p6-directional-stability-02/image-analysis.json",
+      "sha256": "1ead9d52b1f2a41bd3937b5e84aaa2e510bd955dc793ba36aaa8ff767efa2d25"
+    }
+  }
+}
