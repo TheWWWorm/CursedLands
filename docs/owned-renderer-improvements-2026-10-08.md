@@ -3041,6 +3041,8 @@ rain rings, advancing during SceneTree pause and changing later comparisons.
 Keep this failing run. Resolve the water clock with a separate before/after
 fixture before claiming enhanced-water pause acceptance; do not suppress the
 assertions or change cover defaults to hide it.
+The subsequent water-clock correction below resolves this failure; the
+original failed captures remain part of the underwater checkpoint's evidence.
 
 Final pack: `.../owned-renderer-improvements-20261008-qa/v2-vegetation/cover-underwater-accepted`,
 SHA-256 `6427d895a7ee87284fe38bbcd5a8a27a0d285ad19e7d1ca4aec6f15f5960a358`.
@@ -3050,6 +3052,48 @@ No installed build, original asset or save was changed. Cover remains off.
 Mounds, richer campaign/atlas profiles, shared weather wind, actual submission
 LOD, long routes and Android/browser measurements remain open; U45 still starts
 the subsequent gameplay track.
+
+### V4 correction: enhanced-water details follow the terrain clock
+
+Follow-up to `ff9f382`, 9 October. Enhanced water previously kept scrolling
+normal maps, foam, rain rings and lava detail while SceneTree pause or an
+inactive/LMP-held world stopped the actual water geometry. The underwater
+cover fixture exposed this separate issue.
+
+`game/src/ei/terrain.gd:567`, inside `WATER_FX_SHADER.fragment`, now derives
+`water_time` from the existing per-material `wave_ticks` value using
+`EIWaterWaves.TICK` (0.055 seconds). All seven former shader `TIME` references
+use this value. `_update_wave_parameters` already publishes it, so there is
+no new uniform, callback, allocation or texture. The existing owning-world
+lookup and scheduling gates govern geometry and surface detail together.
+Original-water shading, sea-cover rules and desktop sun policy are unchanged.
+
+`tools/tests/water_detail_clock.gd` freezes wave geometry and observes actual
+water rendering in a World → Map → Terrain scene. Advancing only terrain time
+by seven seconds changes the image; resetting it restores the image exactly.
+SceneTree pause, a disabled world and an unregistered LMP world each hold both
+the CPU clock and the image. A real-time interval checks 1x/2x progression;
+the water-option round trip preserves phase. The test disables viewport
+physics interpolation to isolate the surface and checks initial stability.
+The same frozen test fails four rendering assertions on the prior `ff9f382`
+pack while its CPU holds pass, demonstrating the old clock mismatch.
+
+See [water-detail-clock-2026-10-09.json](/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/water-detail-clock-2026-10-09.json)
+for all commands, hashes, captures and results: **110 assertions pass in seven
+final runs**. Clock/image checks cover
+Compatibility, desktop Mobile and Forward+; the complete enhanced-water cover
+fixture and existing caustics regression provide integration coverage. The
+initial fixture mistakes (pause inheritance, assuming frame count implied a
+fixed elapsed time, and inherited physics interpolation) are recorded rather
+than counted as product regressions. No Android/browser performance or broad
+liquid/route acceptance is implied.
+
+The final clock-fix pack is `.../v2-vegetation/water-surface-clock`, SHA-256
+`3bfca3109fa9a98776f06aba30425f5db8d556f47b301e482783ac65f8c90455`;
+all 230 production scripts match its manifest. It uses the unchanged patched
+runtime/native library recorded in the receipt. Installed builds and defaults
+remain unchanged. Continue V2's remaining mounds/profiles/wind/LOD work and
+the renderer handoff, then start the gameplay handoff with U45.
 
 ## Next work in the established order
 
@@ -3108,7 +3152,7 @@ the subsequent gameplay track.
    off pending broader quality/device acceptance. V2 now has the optional
    grass-interaction, dry-land cover and soft-ground root attachment stages above.
    Dry river/swamp banks are now implemented with the conservative shore rules
-   above. Underwater cover/mean-depth lighting is now implemented; first resolve
-   the enhanced-water pause failure recorded above, then continue with authored
-   sandy-beach acceptance and the remaining biome rules. No visual effect
+   above. Underwater cover/mean-depth lighting and the enhanced-water pause
+   correction are now implemented. Continue with authored sandy-beach acceptance
+   and the remaining biome rules. No visual effect
    was silently enabled.

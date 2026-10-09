@@ -1,0 +1,1098 @@
+{
+  "date": "2026-10-09",
+  "status": "terrain-owned enhanced-water detail clock accepted in three desktop renderers; no device/FPS claim",
+  "parent_commit": "ff9f382bc7d497e3b7f91cd37fcbdc6d9099fee6",
+  "production_change": "game/src/ei/terrain.gd: WATER_FX_SHADER.fragment derives seconds from existing wave_ticks; replaces seven shader TIME references for normals, foam, rain and lava",
+  "test": "tools/tests/water_detail_clock.gd",
+  "export_directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/water-surface-clock",
+  "export_manifest_sha256": "aeb43099b64522e8b28dbfb5e724f8b7eebd38af0b9ffb80628b609977066c2a",
+  "export": {
+    "command": [
+      "/home/llm2x/.local/bin/godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/game",
+      "--export-pack",
+      "Linux",
+      "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/water-surface-clock/CursedLands.pck"
+    ],
+    "seconds": 5.040191152016632,
+    "return_code": 0,
+    "errors": [],
+    "source_unchanged_during_export": true,
+    "sha256": {
+      "CursedLands.x86_64": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+      "CursedLands.pck": "3bfca3109fa9a98776f06aba30425f5db8d556f47b301e482783ac65f8c90455",
+      "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+    }
+  },
+  "production_scripts_match_export": 230,
+  "total_checks": 110,
+  "runs": [
+    {
+      "label": "water-clock-final-gl",
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/water-clock-final-gl",
+      "run": {
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_detail_clock.gd",
+        "tool_sha256_at_start": "06b71ee88f69c06764dd3723f9fe90bb8ef26ec08d889e87d16e10ca51bd9a86",
+        "helper_sha256_at_start": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "3bfca3109fa9a98776f06aba30425f5db8d556f47b301e482783ac65f8c90455",
+        "termination_reason": null,
+        "timeout_sec": 150,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/water-surface-clock/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/water-clock-final-gl/tool-source.gd"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 6.068241600994952,
+        "other_render_processes_at_start": [
+          {
+            "pid": 224678,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 224970,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 224678,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 224970,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 225775,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {
+          "water-detail-inactive-world-later.png": "b9df16e86b3bbb1486ab2b19b80528421de9cca88fe99b4c40cfb32aeda860ed",
+          "water-detail-inactive-world.png": "b9df16e86b3bbb1486ab2b19b80528421de9cca88fe99b4c40cfb32aeda860ed",
+          "water-detail-reset.png": "b9df16e86b3bbb1486ab2b19b80528421de9cca88fe99b4c40cfb32aeda860ed",
+          "water-detail-tree-pause-later.png": "b9df16e86b3bbb1486ab2b19b80528421de9cca88fe99b4c40cfb32aeda860ed",
+          "water-detail-before-options.png": "b1e6aab193fea588084627b70a86536992b97f324723daacd2c8adcca5f53684",
+          "water-detail-tree-pause.png": "b9df16e86b3bbb1486ab2b19b80528421de9cca88fe99b4c40cfb32aeda860ed",
+          "water-detail-zero.png": "b9df16e86b3bbb1486ab2b19b80528421de9cca88fe99b4c40cfb32aeda860ed",
+          "water-detail-zero-stable.png": "b9df16e86b3bbb1486ab2b19b80528421de9cca88fe99b4c40cfb32aeda860ed",
+          "water-detail-seven-seconds.png": "5d72f882b679fb3148228ada2c9a5b76765ef70909cbe1e025dcb9263a1470be",
+          "water-detail-after-options.png": "b1e6aab193fea588084627b70a86536992b97f324723daacd2c8adcca5f53684",
+          "water-detail-lmp-hold-later.png": "b9df16e86b3bbb1486ab2b19b80528421de9cca88fe99b4c40cfb32aeda860ed",
+          "water-detail-lmp-hold.png": "b9df16e86b3bbb1486ab2b19b80528421de9cca88fe99b4c40cfb32aeda860ed"
+        }
+      },
+      "report": {
+        "checks": 12,
+        "failures": 0,
+        "rows": [
+          {
+            "case": "game-clock-advance",
+            "difference": {
+              "changed": 77951,
+              "over_2": 27933,
+              "peak": 42
+            }
+          },
+          {
+            "case": "tree-pause",
+            "difference": {
+              "changed": 0,
+              "over_2": 0,
+              "peak": 0
+            }
+          },
+          {
+            "case": "inactive-world",
+            "difference": {
+              "changed": 0,
+              "over_2": 0,
+              "peak": 0
+            }
+          },
+          {
+            "case": "lmp-hold",
+            "difference": {
+              "changed": 0,
+              "over_2": 0,
+              "peak": 0
+            }
+          },
+          {
+            "case": "speed",
+            "seconds_1x": 0.300342041664095,
+            "seconds_2x": 0.601709777777778
+          }
+        ]
+      }
+    },
+    {
+      "label": "water-clock-mobile-probe",
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/water-clock-mobile-probe",
+      "run": {
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_detail_clock.gd",
+        "tool_sha256_at_start": "06b71ee88f69c06764dd3723f9fe90bb8ef26ec08d889e87d16e10ca51bd9a86",
+        "helper_sha256_at_start": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "3bfca3109fa9a98776f06aba30425f5db8d556f47b301e482783ac65f8c90455",
+        "termination_reason": null,
+        "timeout_sec": 150,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/water-surface-clock/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "mobile",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/water-clock-mobile-probe/tool-source.gd"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 7.067739279009402,
+        "other_render_processes_at_start": [
+          {
+            "pid": 221668,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 223720,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 223720,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 224119,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cache"
+        },
+        "warnings": [],
+        "errors": [],
+        "png_sha256": {
+          "water-detail-inactive-world-later.png": "751d51fc783ab726de2223cc9762fe3c2e899a61b9090c90dc5f48504c9151b6",
+          "water-detail-inactive-world.png": "751d51fc783ab726de2223cc9762fe3c2e899a61b9090c90dc5f48504c9151b6",
+          "water-detail-reset.png": "751d51fc783ab726de2223cc9762fe3c2e899a61b9090c90dc5f48504c9151b6",
+          "water-detail-tree-pause-later.png": "751d51fc783ab726de2223cc9762fe3c2e899a61b9090c90dc5f48504c9151b6",
+          "water-detail-before-options.png": "6361c79642288663fb7bf04be086a315de1d078b55136d6d33b9c77068394e4c",
+          "water-detail-tree-pause.png": "751d51fc783ab726de2223cc9762fe3c2e899a61b9090c90dc5f48504c9151b6",
+          "water-detail-zero.png": "751d51fc783ab726de2223cc9762fe3c2e899a61b9090c90dc5f48504c9151b6",
+          "water-detail-zero-stable.png": "751d51fc783ab726de2223cc9762fe3c2e899a61b9090c90dc5f48504c9151b6",
+          "water-detail-seven-seconds.png": "0d25acae990a41a16ceff04be9083844cfd24a60254bb168ff098eb4324ca31b",
+          "water-detail-after-options.png": "6361c79642288663fb7bf04be086a315de1d078b55136d6d33b9c77068394e4c",
+          "water-detail-lmp-hold-later.png": "751d51fc783ab726de2223cc9762fe3c2e899a61b9090c90dc5f48504c9151b6",
+          "water-detail-lmp-hold.png": "751d51fc783ab726de2223cc9762fe3c2e899a61b9090c90dc5f48504c9151b6"
+        }
+      },
+      "report": {
+        "checks": 12,
+        "failures": 0,
+        "rows": [
+          {
+            "case": "game-clock-advance",
+            "difference": {
+              "changed": 126594,
+              "over_2": 77143,
+              "peak": 98
+            }
+          },
+          {
+            "case": "tree-pause",
+            "difference": {
+              "changed": 0,
+              "over_2": 0,
+              "peak": 0
+            }
+          },
+          {
+            "case": "inactive-world",
+            "difference": {
+              "changed": 0,
+              "over_2": 0,
+              "peak": 0
+            }
+          },
+          {
+            "case": "lmp-hold",
+            "difference": {
+              "changed": 0,
+              "over_2": 0,
+              "peak": 0
+            }
+          },
+          {
+            "case": "speed",
+            "seconds_1x": 0.301214777776247,
+            "seconds_2x": 0.601256444444444
+          }
+        ]
+      }
+    },
+    {
+      "label": "water-clock-final-forward",
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/water-clock-final-forward",
+      "run": {
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_detail_clock.gd",
+        "tool_sha256_at_start": "06b71ee88f69c06764dd3723f9fe90bb8ef26ec08d889e87d16e10ca51bd9a86",
+        "helper_sha256_at_start": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "3bfca3109fa9a98776f06aba30425f5db8d556f47b301e482783ac65f8c90455",
+        "termination_reason": null,
+        "timeout_sec": 150,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/water-surface-clock/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "forward_plus",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/water-clock-final-forward/tool-source.gd"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 10.372271021013148,
+        "other_render_processes_at_start": [
+          {
+            "pid": 224678,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 224970,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 225775,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 224678,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 225775,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 226045,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cache"
+        },
+        "warnings": [],
+        "errors": [],
+        "png_sha256": {
+          "water-detail-inactive-world-later.png": "c2ffa6b86487877c9aee2cead08d0cec1f4e5f1e6346ed957fed0c148ab886e0",
+          "water-detail-inactive-world.png": "c2ffa6b86487877c9aee2cead08d0cec1f4e5f1e6346ed957fed0c148ab886e0",
+          "water-detail-reset.png": "c2ffa6b86487877c9aee2cead08d0cec1f4e5f1e6346ed957fed0c148ab886e0",
+          "water-detail-tree-pause-later.png": "c2ffa6b86487877c9aee2cead08d0cec1f4e5f1e6346ed957fed0c148ab886e0",
+          "water-detail-before-options.png": "b5352b9e82ee35bfb9ba24b322548fe66f46ed0c3c44d0dd09a864bf6673929f",
+          "water-detail-tree-pause.png": "c2ffa6b86487877c9aee2cead08d0cec1f4e5f1e6346ed957fed0c148ab886e0",
+          "water-detail-zero.png": "c2ffa6b86487877c9aee2cead08d0cec1f4e5f1e6346ed957fed0c148ab886e0",
+          "water-detail-zero-stable.png": "c2ffa6b86487877c9aee2cead08d0cec1f4e5f1e6346ed957fed0c148ab886e0",
+          "water-detail-seven-seconds.png": "a5ae10d45e0a3635f252c7465dd2cd834dacac672b5a3fc81e41fc71ccb41efe",
+          "water-detail-after-options.png": "b5352b9e82ee35bfb9ba24b322548fe66f46ed0c3c44d0dd09a864bf6673929f",
+          "water-detail-lmp-hold-later.png": "c2ffa6b86487877c9aee2cead08d0cec1f4e5f1e6346ed957fed0c148ab886e0",
+          "water-detail-lmp-hold.png": "c2ffa6b86487877c9aee2cead08d0cec1f4e5f1e6346ed957fed0c148ab886e0"
+        }
+      },
+      "report": {
+        "checks": 12,
+        "failures": 0,
+        "rows": [
+          {
+            "case": "game-clock-advance",
+            "difference": {
+              "changed": 140885,
+              "over_2": 73892,
+              "peak": 98
+            }
+          },
+          {
+            "case": "tree-pause",
+            "difference": {
+              "changed": 0,
+              "over_2": 0,
+              "peak": 0
+            }
+          },
+          {
+            "case": "inactive-world",
+            "difference": {
+              "changed": 0,
+              "over_2": 0,
+              "peak": 0
+            }
+          },
+          {
+            "case": "lmp-hold",
+            "difference": {
+              "changed": 0,
+              "over_2": 0,
+              "peak": 0
+            }
+          },
+          {
+            "case": "speed",
+            "seconds_1x": 0.300405333333333,
+            "seconds_2x": 0.600794424242424
+          }
+        ]
+      }
+    },
+    {
+      "label": "water-clock-cover-gl",
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/water-clock-cover-gl",
+      "run": {
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/biome_cover.gd",
+        "tool_sha256_at_start": "487e214fa63b3f4384c4e6216b519543d1f630119e514cd3dcef769b112ae715",
+        "helper_sha256_at_start": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "3bfca3109fa9a98776f06aba30425f5db8d556f47b301e482783ac65f8c90455",
+        "termination_reason": null,
+        "timeout_sec": 150,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/water-surface-clock/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/water-clock-cover-gl/tool-source.gd",
+          "--cover-kind=13",
+          "--cover-authored-only",
+          "--cover-water-fx"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 12.825234124989947,
+        "other_render_processes_at_start": [
+          {
+            "pid": 216792,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 216792,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {
+          "cover-rebuilt.png": "38a1368e43fd090e8c9d431dda52b3295ea918d707e9e626891d1c89ec75d3d8",
+          "cover-original-wind-control.png": "6a838cf8b31b880634744a156c13fad4bedb5bc247a6cdf34833bf3d249fa199",
+          "cover-on.png": "38a1368e43fd090e8c9d431dda52b3295ea918d707e9e626891d1c89ec75d3d8",
+          "cover-empty-pressure-stable.png": "e3a9c250b3ee8508183ea70482dcc25355b32830601c0768970aa811337d743c",
+          "cover-pressed.png": "e3a9c250b3ee8508183ea70482dcc25355b32830601c0768970aa811337d743c",
+          "cover-interaction-clearance-control.png": "e3a9c250b3ee8508183ea70482dcc25355b32830601c0768970aa811337d743c",
+          "cover-paused.png": "0d274e11765b2bd1460c8a9f6f326393d5a0ef33140114bab100272bba3839db",
+          "cover-shadow-refresh.png": "e3a9c250b3ee8508183ea70482dcc25355b32830601c0768970aa811337d743c",
+          "cover-off.png": "89f667cc92b4146fd2561beb00183cb265f3f03a5e7a586112a267b1f2812942",
+          "cover-off-restored.png": "89f667cc92b4146fd2561beb00183cb265f3f03a5e7a586112a267b1f2812942",
+          "cover-paused-later.png": "0d274e11765b2bd1460c8a9f6f326393d5a0ef33140114bab100272bba3839db",
+          "cover-empty-pressure.png": "e3a9c250b3ee8508183ea70482dcc25355b32830601c0768970aa811337d743c",
+          "cover-original-wind-control-later.png": "d492d5f7e3be0106e423f4a42fb3b6a6dedbd15155c01b694a29d1d4350475bf",
+          "cover-off-stable.png": "89f667cc92b4146fd2561beb00183cb265f3f03a5e7a586112a267b1f2812942"
+        }
+      },
+      "report": {
+        "checks": 16,
+        "failures": 0,
+        "rows": [
+          {
+            "case": "original-wind-control",
+            "difference": {
+              "changed": 1531,
+              "over_2": 859,
+              "peak": 22
+            }
+          },
+          {
+            "case": "render",
+            "difference": {
+              "changed": 13712,
+              "over_2": 11617,
+              "peak": 67
+            },
+            "draws": 386,
+            "kind": 13,
+            "point": "(89.4077, 24.13672)",
+            "records": 177,
+            "vertices": 11661,
+            "zone": "gz1g"
+          },
+          {
+            "case": "interaction-clearance",
+            "difference": {
+              "changed": 32,
+              "over_2": 25,
+              "peak": 28
+            }
+          },
+          {
+            "case": "pressure",
+            "difference": {
+              "changed": 0,
+              "over_2": 0,
+              "peak": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "label": "water-clock-cover-mobile",
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/water-clock-cover-mobile",
+      "run": {
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/biome_cover.gd",
+        "tool_sha256_at_start": "487e214fa63b3f4384c4e6216b519543d1f630119e514cd3dcef769b112ae715",
+        "helper_sha256_at_start": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "3bfca3109fa9a98776f06aba30425f5db8d556f47b301e482783ac65f8c90455",
+        "termination_reason": null,
+        "timeout_sec": 150,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/water-surface-clock/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "mobile",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/water-clock-cover-mobile/tool-source.gd",
+          "--cover-kind=13",
+          "--cover-authored-only",
+          "--cover-water-fx"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 12.841657902987208,
+        "other_render_processes_at_start": [
+          {
+            "pid": 226045,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 226436,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 226834,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 226436,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 227071,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cache"
+        },
+        "warnings": [],
+        "errors": [],
+        "png_sha256": {
+          "cover-rebuilt.png": "a7c27d9d03c44c7b2ba14b2b4083b2d90ca83e61f03be070cf8dd87af5bfc295",
+          "cover-original-wind-control.png": "a04d7007b3021641ddd3ae520f73f6b32fc6d468511f7e6175c1f074b5458757",
+          "cover-on.png": "a7c27d9d03c44c7b2ba14b2b4083b2d90ca83e61f03be070cf8dd87af5bfc295",
+          "cover-empty-pressure-stable.png": "47a6508da31aaddff91a711b7ff9737b31dd7671f9b1629f136f6bba10f91901",
+          "cover-pressed.png": "47a6508da31aaddff91a711b7ff9737b31dd7671f9b1629f136f6bba10f91901",
+          "cover-interaction-clearance-control.png": "47a6508da31aaddff91a711b7ff9737b31dd7671f9b1629f136f6bba10f91901",
+          "cover-paused.png": "81951b3c3186c6e09ca652e821efec2d7aa6c11f41c487881d38cb1b051f5843",
+          "cover-shadow-refresh.png": "47a6508da31aaddff91a711b7ff9737b31dd7671f9b1629f136f6bba10f91901",
+          "cover-off.png": "644c3eee18a1d9b48818135f8b6ceb39dc5cc6d66e67aae45d1b43fb383d15b7",
+          "cover-off-restored.png": "644c3eee18a1d9b48818135f8b6ceb39dc5cc6d66e67aae45d1b43fb383d15b7",
+          "cover-paused-later.png": "81951b3c3186c6e09ca652e821efec2d7aa6c11f41c487881d38cb1b051f5843",
+          "cover-empty-pressure.png": "47a6508da31aaddff91a711b7ff9737b31dd7671f9b1629f136f6bba10f91901",
+          "cover-original-wind-control-later.png": "d776a657c3be650ebf2e2036051b7c7af3df27e3f4b0a82848e2dc23e46a46cd",
+          "cover-off-stable.png": "644c3eee18a1d9b48818135f8b6ceb39dc5cc6d66e67aae45d1b43fb383d15b7"
+        }
+      },
+      "report": {
+        "checks": 16,
+        "failures": 0,
+        "rows": [
+          {
+            "case": "original-wind-control",
+            "difference": {
+              "changed": 1262,
+              "over_2": 1095,
+              "peak": 29
+            }
+          },
+          {
+            "case": "render",
+            "difference": {
+              "changed": 13175,
+              "over_2": 11494,
+              "peak": 66
+            },
+            "draws": 68,
+            "kind": 13,
+            "point": "(89.4077, 24.13672)",
+            "records": 177,
+            "vertices": 11661,
+            "zone": "gz1g"
+          },
+          {
+            "case": "interaction-clearance",
+            "difference": {
+              "changed": 18,
+              "over_2": 18,
+              "peak": 24
+            }
+          },
+          {
+            "case": "pressure",
+            "difference": {
+              "changed": 0,
+              "over_2": 0,
+              "peak": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "label": "water-clock-cover-forward",
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/water-clock-cover-forward",
+      "run": {
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/biome_cover.gd",
+        "tool_sha256_at_start": "487e214fa63b3f4384c4e6216b519543d1f630119e514cd3dcef769b112ae715",
+        "helper_sha256_at_start": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "3bfca3109fa9a98776f06aba30425f5db8d556f47b301e482783ac65f8c90455",
+        "termination_reason": null,
+        "timeout_sec": 150,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/water-surface-clock/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "forward_plus",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/water-clock-cover-forward/tool-source.gd",
+          "--cover-kind=13",
+          "--cover-authored-only",
+          "--cover-water-fx"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 12.347592598991469,
+        "other_render_processes_at_start": [
+          {
+            "pid": 226436,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 227071,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 226436,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 227518,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 227923,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cache"
+        },
+        "warnings": [],
+        "errors": [],
+        "png_sha256": {
+          "cover-rebuilt.png": "42ea6438395ac7fc4fc7e1bc72b6f50a126e2a00c2c845da4dadb83b461c74b6",
+          "cover-original-wind-control.png": "ea114bf7584784b3606a80400d056275dcde85ad0e3c1fcc3592663c597afb71",
+          "cover-on.png": "42ea6438395ac7fc4fc7e1bc72b6f50a126e2a00c2c845da4dadb83b461c74b6",
+          "cover-empty-pressure-stable.png": "a3b23c4b7164efed8304bd6c0c43b54776fbb581a1d6791aed1c2247e9c8d9f0",
+          "cover-pressed.png": "a3b23c4b7164efed8304bd6c0c43b54776fbb581a1d6791aed1c2247e9c8d9f0",
+          "cover-interaction-clearance-control.png": "a3b23c4b7164efed8304bd6c0c43b54776fbb581a1d6791aed1c2247e9c8d9f0",
+          "cover-paused.png": "72d4bc41276311c89d381e3e2f00b5409db800b9a3a5059b5211a0d2dfeef5c4",
+          "cover-shadow-refresh.png": "a3b23c4b7164efed8304bd6c0c43b54776fbb581a1d6791aed1c2247e9c8d9f0",
+          "cover-off.png": "e216f9a50819c4694c7ea0a6f4bbf19c5a1df5d802aa6f26e4623839f453117a",
+          "cover-off-restored.png": "e216f9a50819c4694c7ea0a6f4bbf19c5a1df5d802aa6f26e4623839f453117a",
+          "cover-paused-later.png": "72d4bc41276311c89d381e3e2f00b5409db800b9a3a5059b5211a0d2dfeef5c4",
+          "cover-empty-pressure.png": "a3b23c4b7164efed8304bd6c0c43b54776fbb581a1d6791aed1c2247e9c8d9f0",
+          "cover-original-wind-control-later.png": "deb2d346a5d9337d188b991a820077dd2812c8e92f816c167cf2550371039462",
+          "cover-off-stable.png": "e216f9a50819c4694c7ea0a6f4bbf19c5a1df5d802aa6f26e4623839f453117a"
+        }
+      },
+      "report": {
+        "checks": 16,
+        "failures": 0,
+        "rows": [
+          {
+            "case": "original-wind-control",
+            "difference": {
+              "changed": 1359,
+              "over_2": 771,
+              "peak": 27
+            }
+          },
+          {
+            "case": "render",
+            "difference": {
+              "changed": 13542,
+              "over_2": 11683,
+              "peak": 67
+            },
+            "draws": 92,
+            "kind": 13,
+            "point": "(89.4077, 24.13672)",
+            "records": 177,
+            "vertices": 11661,
+            "zone": "gz1g"
+          },
+          {
+            "case": "interaction-clearance",
+            "difference": {
+              "changed": 18,
+              "over_2": 18,
+              "peak": 24
+            }
+          },
+          {
+            "case": "pressure",
+            "difference": {
+              "changed": 0,
+              "over_2": 0,
+              "peak": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "label": "water-clock-caustics",
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/water-clock-caustics",
+      "run": {
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_caustics.gd",
+        "tool_sha256_at_start": "fa80564ec99ac0914edd08ea3d9ff71b522a6b3733a61e1015344a0c64c1a6fd",
+        "helper_sha256_at_start": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "3bfca3109fa9a98776f06aba30425f5db8d556f47b301e482783ac65f8c90455",
+        "termination_reason": null,
+        "timeout_sec": 150,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/water-surface-clock/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/water-clock-caustics/tool-source.gd"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 11.833358919015154,
+        "other_render_processes_at_start": [
+          {
+            "pid": 224678,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 226045,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 226045,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 226436,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 226834,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {
+          "caustics-night-on.png": "b0c3ef7e21005b3d8fc6ba23a41d99f82a6e583393ede0efc5e169999e47748c",
+          "caustics-lowered-on.png": "f089de7971f8a82e9032aa1842b9d073a11107aacfe6f90eb35f0e0a19e677b1",
+          "caustics-excluded-14.png": "2a547afedd5be094165d98b0e41f7d976411ed45425684c2bcda5fe969ddfdaa",
+          "caustics-off-stable.png": "2a547afedd5be094165d98b0e41f7d976411ed45425684c2bcda5fe969ddfdaa",
+          "caustics-on.png": "474cc579a534684a2029b3613affdcdfb81df22f82d9fca30314cc3ebe95ce26",
+          "caustics-restored.png": "2a547afedd5be094165d98b0e41f7d976411ed45425684c2bcda5fe969ddfdaa",
+          "caustics-night-off.png": "b0c3ef7e21005b3d8fc6ba23a41d99f82a6e583393ede0efc5e169999e47748c",
+          "caustics-pattern.png": "0229d033bc125e8d48e264552a7dc4972636db7f59b4616e40a3a1ddc13b48ca",
+          "caustics-bed-on.png": "fc73d574693c9960327e21e6edcaa9e011cb8ecd03d810b2e5d5d199e2e57c96",
+          "caustics-off.png": "2a547afedd5be094165d98b0e41f7d976411ed45425684c2bcda5fe969ddfdaa",
+          "caustics-moved.png": "2bce352139459a72273da30253015cb522b3e8593796b3c061fc48d117ba7abe",
+          "caustics-bed-off.png": "f089de7971f8a82e9032aa1842b9d073a11107aacfe6f90eb35f0e0a19e677b1",
+          "caustics-held.png": "474cc579a534684a2029b3613affdcdfb81df22f82d9fca30314cc3ebe95ce26",
+          "caustics-excluded-13.png": "2a547afedd5be094165d98b0e41f7d976411ed45425684c2bcda5fe969ddfdaa",
+          "caustics-lowered-off.png": "f089de7971f8a82e9032aa1842b9d073a11107aacfe6f90eb35f0e0a19e677b1"
+        }
+      },
+      "report": {
+        "checks": 26,
+        "failures": 0,
+        "rows": [
+          {
+            "case": "original program is settled",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "admitted": 3564,
+            "bytes": 196608,
+            "case": "field",
+            "enable_us": 40756,
+            "tiles": 5649
+          },
+          {
+            "case": "visible",
+            "difference": {
+              "changed_pixels": 43370,
+              "peak_delta": 7,
+              "pixels_over_2": 6100
+            }
+          },
+          {
+            "case": "zero game time holds caustic animation",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "draws",
+            "off": 25,
+            "on": 25
+          },
+          {
+            "case": "off-on-off restores the image",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "animated",
+            "difference": {
+              "changed_pixels": 53434,
+              "peak_delta": 9,
+              "pixels_over_2": 6383
+            }
+          },
+          {
+            "case": "no caustics without sunlight",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "lowering water removes caustics from the exposed bed",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "excluded liquid keeps original terrain image 13",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "excluded liquid keeps original terrain image 14",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "clock",
+            "seconds_1x": 0.249983666666667,
+            "seconds_2x": 0.499982666666667
+          }
+        ]
+      }
+    }
+  ],
+  "baseline": {
+    "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/water-clock-reference",
+    "run": {
+      "tool_frozen": true,
+      "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_detail_clock.gd",
+      "tool_sha256_at_start": "06b71ee88f69c06764dd3723f9fe90bb8ef26ec08d889e87d16e10ca51bd9a86",
+      "helper_sha256_at_start": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+      "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+      "pack_sha256": "6427d895a7ee87284fe38bbcd5a8a27a0d285ad19e7d1ca4aec6f15f5960a358",
+      "termination_reason": null,
+      "timeout_sec": 150,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-underwater-accepted/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/water-clock-reference/tool-source.gd"
+      ],
+      "return_code": 1,
+      "elapsed_sec": 6.107110751006985,
+      "other_render_processes_at_start": [
+        {
+          "pid": 224678,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+        },
+        {
+          "pid": 224970,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+        },
+        {
+          "pid": 225316,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+        }
+      ],
+      "other_render_processes_at_end": [
+        {
+          "pid": 224678,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+        },
+        {
+          "pid": 224970,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+        }
+      ],
+      "xdg_directories": {
+        "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/data",
+        "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/config",
+        "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cache"
+      },
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "errors": [
+        "FAIL game-time advance moves detail with geometry and wall time frozen",
+        "FAIL tree-pause holds the rendered surface detail",
+        "FAIL inactive-world holds the rendered surface detail",
+        "FAIL lmp-hold holds the rendered surface detail"
+      ],
+      "png_sha256": {
+        "water-detail-inactive-world-later.png": "5bd8d2eb04eef424af15161a54fa6661ec3d7a2f4cda912873f5464bed0ab189",
+        "water-detail-inactive-world.png": "9fafe56560c1b0f9d30a11c9c084c3161243fcbf03a050bce536f2efd9111fcd",
+        "water-detail-reset.png": "b9df16e86b3bbb1486ab2b19b80528421de9cca88fe99b4c40cfb32aeda860ed",
+        "water-detail-tree-pause-later.png": "74206c47552aef2952d979f3af418172eb98569b51d95f9114473df4e2b9f7ab",
+        "water-detail-before-options.png": "eef8abebdd75e2e40f7510040e1775b9c56bb7507c9ec5658b9be2baaaff202a",
+        "water-detail-tree-pause.png": "414d75c5abcf2d81a521d2baa1614ea269348ab61b6b5690637451633410699d",
+        "water-detail-zero.png": "b9df16e86b3bbb1486ab2b19b80528421de9cca88fe99b4c40cfb32aeda860ed",
+        "water-detail-zero-stable.png": "b9df16e86b3bbb1486ab2b19b80528421de9cca88fe99b4c40cfb32aeda860ed",
+        "water-detail-seven-seconds.png": "b9df16e86b3bbb1486ab2b19b80528421de9cca88fe99b4c40cfb32aeda860ed",
+        "water-detail-after-options.png": "eef8abebdd75e2e40f7510040e1775b9c56bb7507c9ec5658b9be2baaaff202a",
+        "water-detail-lmp-hold-later.png": "f8ba329d3b407f8dc67696a78bae724474228fee66958f28850d1411b04e2bb8",
+        "water-detail-lmp-hold.png": "6f2240e7f626e15c3bce8a4968a329e802995c25dc55453f599803edbff44b49"
+      }
+    },
+    "report": {
+      "checks": 12,
+      "failures": 4,
+      "rows": [
+        {
+          "case": "game-clock-advance",
+          "difference": {
+            "changed": 0,
+            "over_2": 0,
+            "peak": 0
+          }
+        },
+        {
+          "case": "tree-pause",
+          "difference": {
+            "changed": 28896,
+            "over_2": 258,
+            "peak": 40
+          }
+        },
+        {
+          "case": "inactive-world",
+          "difference": {
+            "changed": 27691,
+            "over_2": 203,
+            "peak": 40
+          }
+        },
+        {
+          "case": "lmp-hold",
+          "difference": {
+            "changed": 27598,
+            "over_2": 200,
+            "peak": 41
+          }
+        },
+        {
+          "case": "speed",
+          "seconds_1x": 0.300442,
+          "seconds_2x": 0.600516
+        }
+      ]
+    }
+  },
+  "resolved_underwater_failure": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/underwater-final-water-fx",
+  "fixture_corrections": [
+    {
+      "run": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/water-clock-before",
+      "issue": "test root PROCESS_MODE_ALWAYS was inherited by world; set the fixture world to PAUSABLE"
+    },
+    {
+      "run": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/water-clock-baseline",
+      "issue": "startup did not maintain the test FPS cap; measure speed over a real-time timer instead of equating frame count to seconds"
+    },
+    {
+      "run": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/water-clock-validation-mobile",
+      "issue": "80 reset-image pixels differed, peak 3/255, under inherited physics interpolation; disabling viewport interpolation and adding an initial stable-image control restores exact agreement"
+    }
+  ],
+  "validation_scope": [
+    "The old pack fails game-time-only visual advance and tree/inactive/LMP visual holds while CPU clock holds pass.",
+    "Current clock, reset, option and hold image controls pass on Compatibility, desktop Mobile and Forward+.",
+    "Full cover plus enhanced-water integration passes 16 checks on each desktop backend; no numeric tolerance was relaxed.",
+    "The existing caustics fixture passes on Compatibility, including the same World->Map->Terrain ownership.",
+    "Normal-map/surf visuals are exercised directly; individual lava and rain cases are not separately certified.",
+    "No added per-frame callback, uniform, texture or allocation: the existing material wave_ticks is reused.",
+    "No original-water/sun-policy/default-option change; no installed build or publication."
+  ]
+}

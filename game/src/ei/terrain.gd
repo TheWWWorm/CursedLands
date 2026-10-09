@@ -563,9 +563,12 @@ void fragment() {
 	vec3 t = water_texture(own.rgb, dFdx(tgrid), dFdy(tgrid));
 	vec3 gn = normalize((INV_VIEW_MATRIX * vec4(NORMAL, 0.0)).xyz);
 	vec2 q = wpos.xz;
+	// EIWaterWaves.TICK: reuse the terrain-owned clock for surface detail,
+	// including pause, game speed and inactive/LMP-held worlds.
+	float water_time = wave_ticks * 0.055;
 	if (is_lava > 0.5) {
-		float n1 = texture(foam_tex, q * 0.045 + TIME * vec2(0.006, 0.004)).r;
-		float n2 = texture(foam_tex, q * 0.11 - TIME * vec2(0.004, 0.009)).r;
+		float n1 = texture(foam_tex, q * 0.045 + water_time * vec2(0.006, 0.004)).r;
+		float n2 = texture(foam_tex, q * 0.11 - water_time * vec2(0.004, 0.009)).r;
 		float heat = smoothstep(0.35, 0.85, n1 * 0.6 + n2 * 0.6 - 0.1);
 		ALBEDO = t * 0.35;
 		EMISSION = t * (0.6 + 2.2 * heat) * vec3(1.0, 0.75, 0.55) + vec3(1.0, 0.35, 0.05) * heat * heat * 0.8;
@@ -574,8 +577,8 @@ void fragment() {
 		vec2 cells_uv = vec2(wpos.x, -wpos.z) / vec2(textureSize(terrain_cells, 0));
 		bool swamp = int(texture(terrain_cells, cells_uv).b + 0.5) == 14;
 		// Ripples: two normal maps drifting across each other (world space).
-		vec3 na = texture(wave_a, q * 0.055 + TIME * vec2(0.010, 0.006)).rgb * 2.0 - 1.0;
-		vec3 nb = texture(wave_b, q * 0.13 + TIME * vec2(-0.008, 0.012)).rgb * 2.0 - 1.0;
+		vec3 na = texture(wave_a, q * 0.055 + water_time * vec2(0.010, 0.006)).rgb * 2.0 - 1.0;
+		vec3 nb = texture(wave_b, q * 0.13 + water_time * vec2(-0.008, 0.012)).rgb * 2.0 - 1.0;
 		vec2 slope = (na.xy * 0.6 + nb.xy * 0.4) * (swamp ? 0.18 : ripple_amount) * 0.35;
 		// Raindrops on open water; subpixel rings fade out with distance.
 		vec2 rain_slope = vec2(0.0);
@@ -584,7 +587,7 @@ void fragment() {
 			float exposed = 1.0 - smoothstep(0.08, 0.40, texture(rain_cover, cells_uv).r - wpos.y);
 			float near = 1.0 - smoothstep(18.0, 45.0, length(VERTEX));
 			if (exposed * near > 0.001) {
-				rain_slope = rain_rings(q, TIME) * rain * exposed * near * 0.28;
+				rain_slope = rain_rings(q, water_time) * rain * exposed * near * 0.28;
 			}
 		}
 		vec3 wn = normalize(gn + vec3(slope.x + rain_slope.x, 0.0, slope.y + rain_slope.y));
@@ -599,8 +602,8 @@ void fragment() {
 		float foam = 0.0;
 		if (surf_amount > 0.0 && !swamp) {
 			float band = 1.0 - smoothstep(0.0, 0.45, vdepth);
-			float fn = texture(foam_tex, q * 0.32 + TIME * vec2(0.015, -0.01)).r;
-			float fn2 = texture(foam_tex, q * 0.7 - TIME * vec2(0.01, 0.02)).r;
+			float fn = texture(foam_tex, q * 0.32 + water_time * vec2(0.015, -0.01)).r;
+			float fn2 = texture(foam_tex, q * 0.7 - water_time * vec2(0.01, 0.02)).r;
 			foam = smoothstep(0.55, 0.75, fn * 0.6 + fn2 * 0.5 + band * 0.45 - 0.25) * band * surf_amount;
 			foam *= smoothstep(0.0, 0.06, vdepth);
 			t = mix(t, vec3(0.85), foam * 0.7);
