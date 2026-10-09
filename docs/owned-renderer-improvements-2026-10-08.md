@@ -15,17 +15,27 @@ The earlier river-current checkpoint is `eda826d`; new checkpoints below cover
 propagating water waves, authored waterfalls, ambient life, clouds/shadows, local
 water mist, verified rock projection, guarded camera blur and reorganized settings.
 Gameplay U39–U44 and the separate U45 removed-actor death-predicate correction
-are committed; the reported U45 incomplete quest remains unreproduced.
-The all-committed production checkpoint is `57e49cb9c57e1a66b4d4aa0f7fb2353597b9d962`.
+are committed. The supplied U45 autosave contains two living required creatures;
+the original completion gates work when both die. `1b8b0f6` fixes a distinct
+script-added looted-actor reload defect with 137 passing candidate checks.
+The last combined-export production checkpoint is `57e49cb9c57e1a66b4d4aa0f7fb2353597b9d962`.
 Combined acceptance records 859 checks and 60 captures, with the separate LiA
 mist motion limitation retained. The Haburu first-conversation fix is also
 committed. V7 requires verified campaign placement data. Do not treat historical pause
 statements in older evidence as a current stop instruction.
 
+Subsequent gameplay checkpoints `fdf7885` and `82b749f` retain a renamed guest's
+identity and carry aligned guest campaigns through scripted field transfers.
+The shared-travel receipt records 152 passing checks, including actual ENet
+transfers and separate solo loads. The user supplied saves for diagnosis and
+explicitly wants the systemic sync issue fixed, without repairing the particular
+latest save. Solo-earned character reimport and compatible checkpoint selection
+are the next checks; the earlier combined-renderer receipt does not cover them.
+
 The original worktree above is historical. Source version remains Experimental 6
 and protocol 13. This task uses private exports and isolated profiles. Installed
 builds, templates, original assets and real saves have not been replaced.
-Current combined acceptance export:
+Last combined acceptance export (later checkpoints have separate receipts):
 `/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/final-integrated`.
 The detailed gameplay tracker is `docs/gameplay-gaps-2026-10-08.md`; the incoming
 handoff is `/home/llm2x/Documents/EI/local/gameplay-handoff-2026-10-09.md`.
@@ -4314,7 +4324,8 @@ do not imply every feature matrix passed or that the broader backlog is complete
 This is functional Linux validation. Original assets, real saves, installed
 builds, templates and published releases remain untouched; source Experimental 6
 and protocol 13 remain unchanged. Device costs, sustained playthroughs and the
-data-dependent V7/U45 work below are still open.
+data-dependent V7 work below are still open. The later supplied-save U45
+investigation is recorded in the gameplay handoff.
 
 ## Next work in the established order
 
@@ -4395,8 +4406,13 @@ data-dependent V7/U45 work below are still open.
    native far-only guard. Their larger parity/device follow-ups are explicit in
    their receipts. V7 remains dependent on verified campaign layout data.
 7. **Gameplay continuation:** U39–U44 and the separate U45 premature-completion
-   fix are committed. The all-dead incomplete queen report still needs a
-   reproducing save. `f3f1494` fixes the independently reproduced LiA Haburu
+   fix are committed. The supplied queen autosave has two living required
+   creatures; original death-gate completion is verified. A distinct looted,
+   script-added actor reload defect is fixed in `1b8b0f6`. The new LiA
+   solo/co-op sync request has reproduced scripted travel and solo-return
+   baseline defects; shared travel is fixed in `82b749f`, with reimport and
+   compatible checkpoint checks next. `fdf7885` fixes renamed guest identity.
+   `f3f1494` fixes the independently reproduced LiA Haburu
    camp approach issue; 379 source/command/map checks pass. All five missing
    authored helpers are reachable but absent from the supplied scripts and
    native table; no replacement behavior was invented. Follow the current gameplay handoff
