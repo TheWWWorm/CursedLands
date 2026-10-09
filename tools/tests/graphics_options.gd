@@ -144,16 +144,17 @@ func localization_and_layout() -> void:
 		await capture(language + "-graphics")
 		panel._show_group(OptionsPanel.REMAKE_GROUP)
 		await capture(language + "-remake")
-		var wave_text: Array = GameData.REMAKE_OPTIONS.gfx_water_waves
-		check(language == "en" or (RemakeText.t(wave_text[0]) != wave_text[0] and RemakeText.t(wave_text[1]) != wave_text[1]),
-			"translated wave label and dependency help: " + language)
-		check(panel.text_width(RemakeText.t(wave_text[0])) <= 260.0,
-			"wave setting label fits without ellipsis: " + language)
+		for key: String in ["gfx_water_waves","gfx_terrain_cliffs"]:
+			var words: Array = GameData.REMAKE_OPTIONS[key]
+			check(language == "en" or (RemakeText.t(words[0]) != words[0] and RemakeText.t(words[1]) != words[1]),
+				"translated label and dependency help: " + language + " " + key)
+			check(panel.text_width(RemakeText.t(words[0])) <= 260.0,
+				"setting label fits without ellipsis: " + language + " " + key)
 	RemakeText.lang = "en"
 
 
 func presets_and_persistence() -> void:
-	for key: String in ["gfx_waterfalls","gfx_ambient_wildlife","gfx_ambient_particles","gfx_clouds"]:
+	for key: String in ["gfx_waterfalls","gfx_ambient_wildlife","gfx_ambient_particles","gfx_clouds","gfx_terrain_cliffs"]:
 		check(GameData.option(key)==0 and key in GameData.OPTIONS_APPLIED,"new effect is opt-in and registered: "+key)
 		for tier in GfxDetect.LAST+1:
 			check(int(GfxDetect.tier_values(tier,GfxDetect.base_values({})).get(key,-1))==0,"automatic tier %d leaves %s off"%[tier,key])
@@ -164,6 +165,8 @@ func presets_and_persistence() -> void:
 		check(GfxDetect.tier_values(tier, base).gfx_water_waves == 0, "automatic tier %d keeps waves opt-in" % tier)
 	base.gfx_water_waves = 1
 	check(GfxDetect.tier_values(2, base).gfx_water_waves == 0, "lower graphics tier clears explicitly enabled waves")
+	base.gfx_terrain_cliffs=1
+	check(GfxDetect.tier_values(2,base).gfx_terrain_cliffs==0,"second lower tier clears explicitly enabled cliff textures")
 	panel._show_group(OptionsPanel.WATER_GROUP)
 	panel._set_value("gfx_water_waves", 1)
 	var quality := int(panel._values.q_aniso)

@@ -95,6 +95,7 @@ static func tier_values(tier: int, base: Dictionary) -> Dictionary:
 		v.gfx_ambient_wildlife = 0
 		v.gfx_ambient_particles = 0
 		v.gfx_clouds = 0
+		v.gfx_terrain_cliffs = 0
 	if tier >= 3:
 		for k in ["gfx_firelight", "gfx_lava_light", "gfx_bloom", "gfx_hd_textures", "gfx_materials",
 				"gfx_weather_surfaces", "gfx_contact_shadows", "gfx_soft_ground"]:

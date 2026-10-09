@@ -237,6 +237,8 @@ const TEXTS := {
 	"Soft contact shadows (SSAO).": ["Мягкие контактные тени (SSAO).", "Weiche Kontaktschatten (SSAO)."],
 	"Bloom": ["Ореолы", "Bloom"],
 	"Glow around bright lights.": ["Свечение вокруг ярких источников света.", "Leuchten um helle Lichter."],
+	"Steep rock textures": ["Текстуры отвесных скал", "Texturen steiler Felsen"],
+	"Side-projected textures on verified natural rock cliffs. Requires Terrain detail. Preserves paths, other terrain artwork and geometry. Off by default.": ["Боковая проекция текстур на подтверждённых природных скалах. Требуется детализация рельефа. Дорожки, остальной рисунок поверхности и геометрия сохраняются. По умолчанию выключено.", "Seitlich projizierte Texturen auf bestätigten natürlichen Felswänden. Benötigt Geländedetails. Wege, übrige Bodentexturen und Geometrie bleiben erhalten. Standardmäßig aus."],
 	"Severed limbs fly off": ["Отрубленные конечности отлетают", "Abgetrennte Gliedmaßen fliegen weg"],
 	"A severed head, arm or leg is cut from the figure and thrown to the ground, where it lies for a while. Off: as the original, the part stays on the body, bloodied.": ["Отрубленная голова, рука или нога отделяется от фигуры и падает на землю, где лежит некоторое время. Выкл.: как в оригинале, часть остаётся на теле, окровавленная.", "Ein abgetrennter Kopf, Arm oder ein Bein löst sich von der Figur und fällt zu Boden, wo es eine Weile liegt. Aus: wie im Original, der Körperteil bleibt blutig am Körper."],
 	"Display mode": ["Режим экрана", "Anzeigemodus"],

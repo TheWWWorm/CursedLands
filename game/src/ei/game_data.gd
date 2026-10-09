@@ -97,6 +97,7 @@ const OPTIONS := [
 	["gfx_vegetation_interaction", 1, 2, 22, 4, 0], ["gfx_soft_ground", 1, 2, 22, 5, 1],
 	# Opt in until first-use compilation and wider device costs are resolved.
 	["gfx_ground_contact", 1, 2, 22, 6, 0],
+	["gfx_terrain_cliffs", 1, 2, 22, 7, 0],
 	# Lighting and shadows (group 14). Each effect is independent and defaults
 	# on for new and existing settings files.
 	["gfx_firelight", 1, 2, 14, 0, 1], ["gfx_torch_glow", 1, 2, 14, 1, 1],
@@ -309,6 +310,7 @@ const REMAKE_OPTIONS := {
 	"gfx_heat_haze": ["Heat haze", "Air shimmering above torches and camp fires."],
 	"gfx_ssao": ["Ambient occlusion", "Soft contact shadows (SSAO)."],
 	"gfx_bloom": ["Bloom", "Glow around bright lights."],
+	"gfx_terrain_cliffs": ["Steep rock textures", "Side-projected textures on verified natural rock cliffs. Requires Terrain detail. Preserves paths, other terrain artwork and geometry. Off by default."],
 	"gfx_severed_limbs": ["Severed limbs fly off", "A severed head, arm or leg is cut from the figure and thrown to the ground, where it lies for a while. Off: as the original, the part stays on the body, bloodied."],
 	"display_mode": ["Display mode", "Windowed, fullscreen, or a borderless window covering the screen."],
 	"resolution": ["Resolution", "Window size when windowed; in fullscreen the 3D view is rendered at this size and scaled to the screen (the interface stays sharp)."],
@@ -357,7 +359,7 @@ const OPTIONS_APPLIED := ["volume_sfx", "volume_stream", "volume_voice", "power_
 	"gfx_sky", "gfx_water", "gfx_wind", "gfx_volumetric", "gfx_terrain", "gfx_heat_haze",
 	"gfx_grass", "gfx_soft_ground", "gfx_ground_contact", "gfx_water_interaction", "gfx_water_caustics", "gfx_water_current", "gfx_water_waves", "gfx_waterfalls", "gfx_vegetation_interaction", "gfx_biome_cover",
 	"gfx_ambient_wildlife", "gfx_ambient_particles",
-	"gfx_clouds",
+	"gfx_clouds", "gfx_terrain_cliffs",
 	"gfx_ssao", "gfx_bloom", "gfx_far_view", "gfx_severed_limbs",
 	"gfx_hd_textures", "gfx_soft_particles", "gfx_lit_particles", "gfx_contact_shadows", "gfx_torch_glow", "gfx_water_reflections",
 	"gfx_firelight", "gfx_materials", "gfx_foliage_light", "gfx_weather_surfaces", "gfx_lava_light", "gfx_detailed_heads",
