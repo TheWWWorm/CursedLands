@@ -1,0 +1,463 @@
+{
+  "date": "2026-10-09",
+  "item": "U25",
+  "status": "Full harpy quest route remains unverified.",
+  "production_changed": false,
+  "new_completed_route_milestones": 0,
+  "scope": "Original base campaign source/checkpoint audit plus bounded ordinary-command solo attempts from genuine prior checkpoints. Headless Linux only; no new rendered, ENet, Windows or performance acceptance.",
+  "build": {
+    "source_commit": "79bee8a",
+    "export": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/cloud-coop-final-01/export.json",
+      "sha256": "3c59781adce17fd0d31d932c1312d4b00d36e8dbf6f407769bb067166cc82f48"
+    },
+    "files": {
+      "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+      "CursedLands.pck": "4a6242634eb82c56ea3c2a9be79b565a190a210a05157348f91297e15dafd9ef",
+      "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+    }
+  },
+  "prior_prepared_acceptance": "docs/gameplay-dragon-validation.json remains native-timer/actual-map ENet coverage; it is not relabeled as full-route proof.",
+  "audit": {
+    "fixture": "tools/tests/harpy_route_audit.gd",
+    "fixture_sha256": "2e36e28fb08cb57d5867128c1b1933093ffd3804e606f65306289117c118156a",
+    "report": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/harpy-route-20261009/audit-final-02/data/godot/app_userdata/Cursed Lands/harpy-route-audit.json",
+      "sha256": "69607505bfdf5efde78cac37d276fcc81533265d5e04e38e08a6629ef54cd11f"
+    },
+    "log": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/harpy-route-20261009/audit-final-02/run.log",
+      "sha256": "4e366ea5c49b366178922ec6500da193302f54594f8259a3eb5f037da0b6a45f"
+    },
+    "command": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/harpy-route-20261009/audit-final-02/command.json",
+      "sha256": "2447910a55aa656638e4dfaa0b75b284b3f3b5d54190a6ddf77726a1b2f8b102"
+    },
+    "manifest": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/harpy-route-20261009/audit-final-02/sources.json",
+      "sha256": "0d185c75f66fd01fc5878c0dfe4dbb1867f1b3833147fcfcc2c4d729db0602f8"
+    },
+    "read_checks": 85,
+    "failures": 0,
+    "played_route_checks": 0,
+    "mechanism": "CampaignState.read_data on source copies and decrypted original MOB/briefing data; no Game, Session or active VM is instantiated."
+  },
+  "source_hashes": {
+    "basecam.mob": "ec832bb0f4f6350d352698db2b5328f2285f89d3b6bdd92acbdb69aa81a386c6",
+    "bz2g.mob": "16456d3aa156d19f57f954d597acd66819a099eef8a556ae795021574c593021",
+    "zone6.mob": "d4918cdc920bf7af06d0ea6402a6a080b47edcdb53f84e78263ceade605664c9",
+    "zone6dkin.mob": "647d6b5caa7f0695198e39ce2fc71878a83726379d51a93b6191d83648f638c3"
+  },
+  "source_findings": [
+    {
+      "gate": "Original prerequisite dialogue",
+      "evidence": "basecam VCheck#0#539 / VTriger#0#543; bz2g VCheck#0#59 / VTriger#0#60; original briefing rows",
+      "result": "Complete goblin-raid q.gz7g.q13g and preceding witch/elder dialogue to offer Z13_1. Z13_1 consumes NewGear00 and grants q14ag (Dragon amulet) and q17g (green crystal). Z14 is the separate letter-translation topic, not the amulet grant."
+    },
+    {
+      "gate": "Amulet",
+      "evidence": "zone6 VCheck#0#376 / VTriger#0#377, zone6dkin VCheck#5#4 / VCheck#5#7, zone6 VCheck#0#310 / VTriger#0#312",
+      "result": "q14ag starts Zone6Dkin. Authored Beastmaster 1000421 at (101.206,62.548) carries DragonAmulet; the two accompanying toads are 1000422/1000423. Native sight, death and actual item55 pickup advance its stages. Completion offers Z14_1."
+    },
+    {
+      "gate": "Intended route setup",
+      "evidence": "Original Z14_1 briefing and q17g/q18g quest text retained under scratch artifacts",
+      "result": "Z14_1 grants q18g and explains taking the amulet across the lake to lead the green dragon to the observatory harpies. The green crystal route allows the witch to freeze the lake; dialogue also directs the player to Babur to pacify the mountain-passage Lizards. An alternate shoreline shortcut was not validated."
+    },
+    {
+      "gate": "Dragon follow",
+      "evidence": "zone6 VCheck#0#390 / #393 / #404 and VTriger#0#328 / #394 / #401",
+      "result": "Actual item55, DFol not equal to1, and the applicable original hero role strictly within5 units begin the original3-tick sleep, then clear/fear/aggression/follow orders and GFol=1."
+    },
+    {
+      "gate": "Harpy completion",
+      "evidence": "zone6 VCheck#0#330 / #334 / #337, VTriger#0#338 / #341 and VCheck#0#342",
+      "result": "Harpies1163–1165 form Succubbus. All-dead advances stage7; observatory chest1390 state1 while q18g<2 awards DCBook and q18g=2. The completion watcher then grants DCWord/witch.z15. Z15 consumes DCBook and DragonAmulet. No direct success trigger was invoked."
+    },
+    {
+      "gate": "Departure is geographical, distinct from quest completion",
+      "evidence": "zone6 VCheck#0#362 / #396 / #402 and VTriger#0#366 / #398 / #406",
+      "result": "Dragon y<295 immediately issues Guard(YDragon,78,336,7), then Sleep150; GFol clears and the same role follow watcher is rearmed. This preserves the previously validated150-tick native departure wait."
+    }
+  ],
+  "checkpoint_feasibility": [
+    {
+      "kind": "Supplied archive",
+      "sources": [
+        "supplied-autosave",
+        "supplied-quick"
+      ],
+      "result": "Both already have q18g=2, witch.z15=2 and DCWord=1. Harpies1163–1165 are removed/looted, chest1390=[1,1,true], and amulet/book have been turned in. Dragon1155 is alive at (99.25,329.75), HP160. These saves cannot replay the earlier route unchanged."
+    },
+    {
+      "kind": "Historical assisted campaign",
+      "sources": [
+        "assisted-leg08",
+        "assisted-leg26"
+      ],
+      "driver": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/codex-backlog-20261004/combined-bench-candidate/tools/campaign_finish_test.gd",
+        "sha256": "e02409076459217f29ef61e49b8e384f514dad4396022e041c04e4948b7e0b39"
+      },
+      "result": "Explicit god/kill/visit/levers/all-party/in-place hooks and heroHP100000 exclude this campaign from ordinary-route proof. Leg26 already has harpies/chest completed while amulet quest is only newly active; it is not a clean pre-harpy checkpoint."
+    },
+    {
+      "kind": "Existing ordinary records",
+      "census": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/harpy-route-20261009/historical-ordinary-census.json",
+        "sha256": "0418c96b738d75af69a5d809b009d33f035d95189f2cd04086fefe092d9de774"
+      },
+      "records": 37,
+      "maximum_completed_phases": 10,
+      "result": "Latest successful ordinary milestone is hunt_return. In its save q0g/q1ag/q1g are complete; q2g/q3g are active. Amulet/harpy quests are absent and gz6g is unvisited. The earlier living partial knife checkpoint has only knife and28.337/42.386HP; the earlier pre-knife checkpoint has42.386/42.386HP. No successful ordinary record beyond hunt_return was found."
+    }
+  ],
+  "inputs": {
+    "supplied-autosave": {
+      "original": "/home/llm2x/Documents/EI/local/scratchpad/user-saves-20261009/source/saves/autosave.sav",
+      "copy": "/home/llm2x/Documents/EI/local/scratchpad/harpy-route-20261009/sources/supplied-autosave.sav",
+      "sha256": "4d64ccdce05e8b38b7320b3f8b7a9a6339f26fa0294ab8127e9b1b24c36b15ab"
+    },
+    "supplied-quick": {
+      "original": "/home/llm2x/Documents/EI/local/scratchpad/user-saves-20261009/source/saves/quick.sav",
+      "copy": "/home/llm2x/Documents/EI/local/scratchpad/harpy-route-20261009/sources/supplied-quick.sav",
+      "sha256": "6c21eb1cb172a5a9bba6f49bb87cdaa87ef4bbd7fda36f7c6371f39b28a15f80"
+    },
+    "ordinary-leg10": {
+      "original": "/home/llm2x/Documents/EI/local/scratchpad/codex-backlog-20261004/campaign_reports/ordinary-after-release/ordinary-solo33-iso/godot/app_userdata/Evil Islands Remake (PoC)/saves/ordinary_leg_10.sav",
+      "copy": "/home/llm2x/Documents/EI/local/scratchpad/harpy-route-20261009/sources/ordinary-leg10.sav",
+      "sha256": "0a0ddc664529165b1a6adef1a5351d62a70ad71f15ba8798afb748457393c7cb"
+    },
+    "assisted-leg08": {
+      "original": "/home/llm2x/Documents/EI/local/scratchpad/codex-backlog-20261004/campaign-solo-full2-iso/godot/app_userdata/Evil Islands Remake (PoC)/saves/campaign_leg_08.sav",
+      "copy": "/home/llm2x/Documents/EI/local/scratchpad/harpy-route-20261009/sources/assisted-leg08.sav",
+      "sha256": "a89f01c3516d2dd13dc40e6f6aa9f1c7ccf5e22cf6e8706dc2b0c6f21eae70f0"
+    },
+    "assisted-leg26": {
+      "original": "/home/llm2x/Documents/EI/local/scratchpad/codex-backlog-20261004/campaign-solo-full2-iso/godot/app_userdata/Evil Islands Remake (PoC)/saves/campaign_leg_26.sav",
+      "copy": "/home/llm2x/Documents/EI/local/scratchpad/harpy-route-20261009/sources/assisted-leg26.sav",
+      "sha256": "2047c12ef3c23efa76a9f8004dab13f09af67229bb35978d3607ef631880df26"
+    },
+    "ordinary-partial-knife": {
+      "original": "/home/llm2x/Documents/EI/local/scratchpad/codex-backlog-20261004/post102-gaps1/root-ordinary9/profile/godot/app_userdata/Evil Islands Remake (PoC)/saves/ordinary_partial_knife.sav",
+      "copy": "/home/llm2x/Documents/EI/local/scratchpad/harpy-route-20261009/sources/ordinary-partial-knife.sav",
+      "sha256": "e3a831ac8125e18c3e7b9490098d78d2ecba6080a05d1e596a684e52d8d93ca7",
+      "record": "/home/llm2x/Documents/EI/local/scratchpad/codex-backlog-20261004/post102-gaps1/root-ordinary9/profile/godot/app_userdata/Evil Islands Remake (PoC)/ordinary_partial_knife.json",
+      "record_sha256": "62e917a6739e01087c7bba4a90a294d926e8d9dff3f2055bbd2f65391a80e1ba"
+    },
+    "ordinary-before-knife": {
+      "original": "/home/llm2x/Documents/EI/local/scratchpad/codex-backlog-20261004/post102-gaps1/root-ordinary8/profile/godot/app_userdata/Evil Islands Remake (PoC)/saves/ordinary_failed_65222.sav",
+      "copy": "/home/llm2x/Documents/EI/local/scratchpad/harpy-route-20261009/sources/ordinary_failed_65222.sav",
+      "sha256": "091d6cbc0784a5b5f9d610479f58879904b2404c932f1069db0e9c99b517acf2",
+      "record": "/home/llm2x/Documents/EI/local/scratchpad/codex-backlog-20261004/post102-gaps1/root-ordinary8/profile/godot/app_userdata/Evil Islands Remake (PoC)/ordinary_failed_65222.json",
+      "record_sha256": "14d55d25f6ef0791fd42a177f7f1027148dbe5a74b49402bb6ae7d738ff08086"
+    },
+    "ordinary-living-approach": {
+      "copy": "/home/llm2x/Documents/EI/local/scratchpad/harpy-route-20261009/ordinary-07/data/godot/app_userdata/Cursed Lands/saves/harpy_partial_10_009.sav",
+      "sha256": "e93e9c53eff7b342eff4d4a9992cc2f4050c31969f41e8feed59b97688efb669",
+      "record": "/home/llm2x/Documents/EI/local/scratchpad/harpy-route-20261009/ordinary-07/data/godot/app_userdata/Cursed Lands/harpy_partial_10_009.json",
+      "record_sha256": "ddbc2000766c9fa2449c452691e761863d4156b6b3d419dda2e11eef4a1a7cff"
+    }
+  },
+  "archive_unchanged": {
+    "path": "/home/llm2x/Downloads/saves9oct.zip",
+    "sha256": "d88bab1f9d40884251328b77721a9c456918233d0fe3c84778171a33718baab4"
+  },
+  "ordinary_attempts": [
+    {
+      "run": "ordinary-01",
+      "input": "ordinary-leg10",
+      "meaning": "Load-only control: exact hunt-return checkpoint digest restored and hero alive; no new quest/route milestone.",
+      "checks": 7,
+      "failures": 0,
+      "runtime_errors": 0,
+      "assertion_failures": [],
+      "last_milestone": "hunt_return",
+      "new_completed_milestones": 0,
+      "hero_alive": true,
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/harpy-route-20261009/ordinary-01/run.log",
+        "sha256": "94264e07abad47a0d753e6349e8493377265306b48264ea1ab256fa83a920d63"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/harpy-route-20261009/ordinary-01/data/godot/app_userdata/Cursed Lands/ordinary_result_solo.json",
+        "sha256": "bf727d7071642dd6920c9af8b57728a8f34df7f40403360afb3a061561e09736"
+      },
+      "launch": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/harpy-route-20261009/ordinary-01/command.json",
+        "sha256": "f80eb2904857c404bbef58d47a0c6dbe0b5e40ea57629cb6638d3c6e7790cf9a"
+      },
+      "normal_clock": 1,
+      "driver_limit": "This initial load-only invocation referenced the subsequently edited working driver. No historical driver hash is asserted.",
+      "new_living_waypoints": 0
+    },
+    {
+      "run": "ordinary-02",
+      "input": "ordinary-leg10",
+      "meaning": "Excluded fixture mismatch: historical driver omitted the current validated village-exit click tag, so the normal village boundary clamped its move. Hero remained alive. Driver alone was corrected to use Session.open_exit_at, matching Game input; no production change.",
+      "checks": 9,
+      "failures": 2,
+      "runtime_errors": 0,
+      "assertion_failures": [
+        "ordinary move has no reachable continuation to (59.25, 42.0)",
+        "ordinary route reaches requested milestone theft"
+      ],
+      "last_milestone": "hunt_return",
+      "new_completed_milestones": 0,
+      "hero_alive": true,
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/harpy-route-20261009/ordinary-02/run.log",
+        "sha256": "1a0b246c1588d00aad8df7ae153bf8e911e0f59f09866cd2f0c7624f4b8c7e14"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/harpy-route-20261009/ordinary-02/data/godot/app_userdata/Cursed Lands/ordinary_result_solo.json",
+        "sha256": "e4fb7a2d3e1c548caf9aedbbf6f59c46a0e4144ea7c183f0a3d8326dd3d5d9c7"
+      },
+      "launch": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/harpy-route-20261009/ordinary-02/command.json",
+        "sha256": "22cff1b3fd87d40f890b8866cfe0ee46a360eb3d483dc7a71a02eb27637d57f2"
+      },
+      "normal_clock": 1,
+      "wall_seconds": 30.31624483905034,
+      "frozen_driver": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/harpy-route-20261009/ordinary-02/driver.gd",
+        "sha256": "90948e9c5644b5d65a5c23b4f1b389f3116d5720776a389e0c5080d7c39acc63"
+      },
+      "new_living_waypoints": 0
+    },
+    {
+      "run": "ordinary-03",
+      "input": "ordinary-leg10",
+      "meaning": "Normal northern route after exit-tag correction. Eight actual combat-and-loot encounters completed; later ranged-enemy pursuit reached another hostile group and the hero died while trying the owned Healing spell. Theft not reached.",
+      "checks": 54,
+      "failures": 3,
+      "runtime_errors": 0,
+      "assertion_failures": [
+        "ordinary healing completes",
+        "ordinary route reaches requested milestone theft",
+        "unmodified ordinary hero remains alive"
+      ],
+      "last_milestone": "hunt_return",
+      "new_completed_milestones": 0,
+      "hero_alive": false,
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/harpy-route-20261009/ordinary-03/run.log",
+        "sha256": "13aeec0e43953741a94bfe3f729c802e92265139090a8237a0dfd268efe81c8e"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/harpy-route-20261009/ordinary-03/data/godot/app_userdata/Cursed Lands/ordinary_result_solo.json",
+        "sha256": "98fe14b959651937e3358d15e5fa5cf731525902c9706db59e379b01879ef7a2"
+      },
+      "launch": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/harpy-route-20261009/ordinary-03/command.json",
+        "sha256": "c50fcaaec2befd8e680272e2bf461bc288d1a6f7a9446c2a9da44881b612ecd0"
+      },
+      "normal_clock": 1,
+      "wall_seconds": 508.2727598550264,
+      "frozen_driver": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/harpy-route-20261009/ordinary-03/driver.gd",
+        "sha256": "e6197c783f894cf5ae445bcd4709ca909c8365f28d2c0cbc7f8fa1c2b3fc028a"
+      },
+      "new_living_waypoints": 0
+    },
+    {
+      "run": "ordinary-04",
+      "input": "ordinary-partial-knife",
+      "meaning": "The earlier genuine knife checkpoint starts wounded beside both carriers. Ordinary crawl/steal of the remaining awl led to combat death before the native interaction callback.",
+      "checks": 13,
+      "failures": 3,
+      "runtime_errors": 0,
+      "assertion_failures": [
+        "ordinary theft action completes for awl",
+        "ordinary route reaches requested milestone theft",
+        "unmodified ordinary hero remains alive"
+      ],
+      "last_milestone": "hunt_return",
+      "new_completed_milestones": 0,
+      "hero_alive": false,
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/harpy-route-20261009/ordinary-04/run.log",
+        "sha256": "e16f6ee6618ab5a6b14606f61be0dce3bf1ed76c2ed357bb643b14b624e65b4b"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/harpy-route-20261009/ordinary-04/data/godot/app_userdata/Cursed Lands/ordinary_result_solo.json",
+        "sha256": "45e662575211ac8c84868163063aaa0df19d76a2f942c066faf8e1a7c60ea87e"
+      },
+      "launch": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/harpy-route-20261009/ordinary-04/launch.json",
+        "sha256": "f0b936df059a8729e51ddc0b1928586f3d3070b626a0fee69680a7c7e02eeb34"
+      },
+      "normal_clock": 1,
+      "wall_seconds": 13.136751777026802,
+      "frozen_driver": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/harpy-route-20261009/ordinary-04/driver.gd",
+        "sha256": "959f9771923a8bfc9057dfb550998fb7e61a00d2410eaa9fd0c9c0c4e4583026"
+      },
+      "runner_input_hashes_unchanged": true,
+      "new_living_waypoints": 0
+    },
+    {
+      "run": "ordinary-05",
+      "input": "ordinary-partial-knife",
+      "meaning": "Same wounded checkpoint with normal double-click run theft. Combat death before the awl callback.",
+      "checks": 13,
+      "failures": 3,
+      "runtime_errors": 0,
+      "assertion_failures": [
+        "ordinary theft action completes for awl",
+        "ordinary route reaches requested milestone theft",
+        "unmodified ordinary hero remains alive"
+      ],
+      "last_milestone": "hunt_return",
+      "new_completed_milestones": 0,
+      "hero_alive": false,
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/harpy-route-20261009/ordinary-05/run.log",
+        "sha256": "644499388eeda82df7a892a64eb5b83f68537ba82491d176984509f131ab51aa"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/harpy-route-20261009/ordinary-05/data/godot/app_userdata/Cursed Lands/ordinary_result_solo.json",
+        "sha256": "0efb5d51f84d693b24caec4a865b5e081c83ba8e3001292040a34fdb4bca19e4"
+      },
+      "launch": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/harpy-route-20261009/ordinary-05/launch.json",
+        "sha256": "2892180e5af6b4c9f2ea37307e9c397bf4c6041aaeaf18d48a6a8348b9b2ecb9"
+      },
+      "normal_clock": 1,
+      "wall_seconds": 11.834783872996923,
+      "frozen_driver": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/harpy-route-20261009/ordinary-05/driver.gd",
+        "sha256": "959f9771923a8bfc9057dfb550998fb7e61a00d2410eaa9fd0c9c0c4e4583026"
+      },
+      "runner_input_hashes_unchanged": true,
+      "new_living_waypoints": 0
+    },
+    {
+      "run": "ordinary-06",
+      "input": "ordinary-partial-knife",
+      "meaning": "Same wounded checkpoint with normal sprint retreat, stop and owned Healing. Retreat reached a living partial checkpoint; the pursuing Boss killed the hero during the heal attempt.",
+      "checks": 11,
+      "failures": 3,
+      "runtime_errors": 0,
+      "assertion_failures": [
+        "ordinary healing completes",
+        "ordinary route reaches requested milestone theft",
+        "unmodified ordinary hero remains alive"
+      ],
+      "last_milestone": "hunt_return",
+      "new_completed_milestones": 0,
+      "hero_alive": false,
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/harpy-route-20261009/ordinary-06/run.log",
+        "sha256": "c77dd6242f9035ad2bb264c1c1858333cb15ed62ae568f24f8c59a6d99a67b0f"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/harpy-route-20261009/ordinary-06/data/godot/app_userdata/Cursed Lands/ordinary_result_solo.json",
+        "sha256": "f934d4697ba9599760006a0740a9a8f82bb7fd2021bf2f8f1658902d2a2813b1"
+      },
+      "launch": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/harpy-route-20261009/ordinary-06/launch.json",
+        "sha256": "f3408c08bb5b5b181c51deaa785a9d679579da0d5a51700f417d5362b052558f"
+      },
+      "normal_clock": 1,
+      "wall_seconds": 16.44422756903805,
+      "frozen_driver": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/harpy-route-20261009/ordinary-06/driver.gd",
+        "sha256": "db194c68d54c8b94a4bb41f54b3f23bbac79d37ab6e3a58f47042243bb1076c3"
+      },
+      "runner_input_hashes_unchanged": true,
+      "new_living_waypoints": 1
+    },
+    {
+      "run": "ordinary-07",
+      "input": "ordinary-before-knife",
+      "meaning": "Earlier full-health genuine checkpoint; southern crawl approach, awl first, normal accelerated field dial. Nine living waypoint saves reached the carriers without HP loss; the native awl theft then led to combat death before the callback.",
+      "checks": 22,
+      "failures": 3,
+      "runtime_errors": 0,
+      "assertion_failures": [
+        "ordinary theft action completes for awl",
+        "ordinary route reaches requested milestone theft",
+        "unmodified ordinary hero remains alive"
+      ],
+      "last_milestone": "hunt_return",
+      "new_completed_milestones": 0,
+      "hero_alive": false,
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/harpy-route-20261009/ordinary-07/run.log",
+        "sha256": "9c8aaa5dc4716681a15b223a65502cd823a36532e67fa96f9f6c5eabc8bdeec4"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/harpy-route-20261009/ordinary-07/data/godot/app_userdata/Cursed Lands/ordinary_result_solo.json",
+        "sha256": "0686d85baafd1f4c92c758ff22e6c0704322ea68da96863cfdedc70a423f28a7"
+      },
+      "launch": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/harpy-route-20261009/ordinary-07/launch.json",
+        "sha256": "cc21042739d1e9afab53ac6dea6eb00c307909cfeb1e5a665c080836f93c5d69"
+      },
+      "normal_clock": 2,
+      "wall_seconds": 32.919662350963335,
+      "frozen_driver": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/harpy-route-20261009/ordinary-07/driver.gd",
+        "sha256": "5315061240b02bfa5984ce489652961c927a5a2f3e086b37471b49042529c145"
+      },
+      "runner_input_hashes_unchanged": true,
+      "new_living_waypoints": 9
+    }
+  ],
+  "new_living_checkpoints": {
+    "count": 10,
+    "manifest": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/harpy-route-20261009/living-checkpoints.json",
+      "sha256": "a7e6eab53974c6f5cd0b38a767c4777b0ec0a89309ce921a3c38a3f8e4a691f3"
+    },
+    "last_full_health_approach": {
+      "run": "ordinary-07",
+      "label": "waypoint_8",
+      "save": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/harpy-route-20261009/ordinary-07/data/godot/app_userdata/Cursed Lands/saves/harpy_partial_10_009.sav",
+        "sha256": "e93e9c53eff7b342eff4d4a9992cc2f4050c31969f41e8feed59b97688efb669"
+      },
+      "record": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/harpy-route-20261009/ordinary-07/data/godot/app_userdata/Cursed Lands/harpy_partial_10_009.json",
+        "sha256": "ddbc2000766c9fa2449c452691e761863d4156b6b3d419dda2e11eef4a1a7cff"
+      },
+      "party": [
+        {
+          "dead": false,
+          "hp": 42.3860311453231,
+          "max_hp": 42.3860311453231,
+          "max_stamina": 55.2861275808562,
+          "name": "Zak",
+          "owner": 0,
+          "position": [
+            146.698532104492,
+            189.207580566406
+          ],
+          "stamina": 55.2861275808562,
+          "uid": 1500000001
+        }
+      ],
+      "next_phase": 10,
+      "new_quest_completion": false
+    },
+    "limit": "Waypoints and the retreat save are living resumable attempts, not completed quest milestones. Prior partial-knife save remains a separate genuine progress point; it was not newly obtained in these runs."
+  },
+  "remaining_work": "Complete ordinary theft/turn-in and the remaining authored early campaign prerequisites from a living checkpoint, then complete the goblin raid, obtain the Dragon amulet through Z13_1/Beastmaster, take Z14_1 and its traversal preparations, lead the actual dragon through harpy combat/chest completion, and observe the y<295 return plus150-tick wait in that same ordinary route.",
+  "disposition": "Stop bounded tactical retries. Five current attempts ended in ordinary combat death; one earlier failed only because of a stale fixture exit command. No production defect or complete route acceptance is established. Do not alter source, quest flags, HP or actor placement to make this driver pass.",
+  "reproduction": {
+    "scratch_runner": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/harpy-route-20261009/run_route.py",
+      "sha256": "dce4b24899a988c31e13ae1046eb505426390d5a9a30ff375907e1bbace26c77"
+    },
+    "unfinished_driver": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/harpy-route-20261009/ordinary_route.gd",
+      "sha256": "5315061240b02bfa5984ce489652961c927a5a2f3e086b37471b49042529c145"
+    },
+    "policy": "The unfinished campaign bot/runner remain scratch evidence and are not added to production. Per-run frozen drivers, commands, logs and saves are retained. Exact cumulative combat/command history in save records is not counted as new work.",
+    "artifacts": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/harpy-route-20261009/artifacts.json",
+      "sha256": "f008ca40a1e515f0b99b39fafed5cb5163f0fc721ef58bb27dac48f82646ce2e"
+    }
+  }
+}
