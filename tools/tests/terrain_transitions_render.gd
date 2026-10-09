@@ -10,6 +10,23 @@ void fragment() {
 	ALBEDO=vec3(ground==1 || ground==4 || ground==7 ? 1.0 : 0.0);
 }
 """
+const JUNCTION_SCOPE_MASK := """shader_type spatial;
+render_mode unshaded, cull_disabled, fog_disabled;
+uniform sampler2D transition_tiles : filter_nearest, repeat_disable;
+uniform ivec2 transition_size;
+void fragment() {
+	int id=int(UV2.y+0.5); ivec2 cell=ivec2(id%transition_size.x,id/transition_size.x);
+	bool active=false;
+	// Conservative one-cell expansion also contains all painted-relief taps.
+	for (int y=-1;y<=1;y++) { for (int x=-1;x<=1;x++) {
+		ivec2 other=cell+ivec2(x,y);
+		if (all(greaterThanEqual(other,ivec2(0))) && all(lessThan(other,transition_size))) {
+			active=active || ((int(texelFetch(transition_tiles,other,0).b)>>20)&15)!=0;
+		}
+	} }
+	ALBEDO=vec3(active ? 1.0:0.0);
+}
+"""
 var checks := 0
 var failures := 0
 var records := []
@@ -101,6 +118,20 @@ func case(name: String,path_control := false) -> void:
 	var row:=field.rows[tile.y*field.tile_size.x+tile.x]
 	check(row.a==0 if path_control else row.a>0 and row.r!=row.g,"authored scene anchor has expected admission "+label)
 	var after:=await capture(view,label+"-natural")
+	if "--transition-scope" in OS.get_cmdline_user_args():
+		var saved:=terrain._land_mat.shader
+		var saved_water:=terrain._water_mat.shader
+		var mask_shader:=Shader.new();mask_shader.code=JUNCTION_SCOPE_MASK;terrain._land_mat.shader=mask_shader
+		# Transparent original water can cover a changed junction. Reveal its
+		# receiver in the classification pass; real captures keep water intact.
+		var hidden_liquid:=Shader.new()
+		hidden_liquid.code="shader_type spatial; void fragment() { discard; }"
+		terrain._water_mat.shader=hidden_liquid
+		terrain._land_mat.set_shader_parameter("transition_tiles",field.tiles)
+		terrain._land_mat.set_shader_parameter("transition_size",field.tile_size)
+		await capture(view,label+"-junction-scope")
+		terrain._land_mat.shader=saved
+		terrain._water_mat.shader=saved_water
 	var delta:=difference(before,after)
 	check(delta.changed_pixels>100 and delta.peak_byte_delta>5,"natural boundary visibly changes "+name)
 	check(terrain.heights==height and terrain.land_xy==xy and terrain.land_tile==codes,"visible transition leaves geometry and original rotations exact "+name)
@@ -125,9 +156,10 @@ func case(name: String,path_control := false) -> void:
 	if "--transition-composed" in OS.get_cmdline_user_args():
 		check(terrain._land_mat.shader.code.contains("ei_cloud_sun") and terrain._land_mat.shader.code.contains("caustic_bed") and terrain._land_mat.shader.code.contains("#define EI_TERRAIN_CLIFFS"),"natural sampler composes with cloud caustic and cliff receivers")
 		check(terrain._water_mat.shader.code.contains("water_current") and terrain._water_mat.shader.code.contains("water_wave_field"),"neighbouring water current and wave program remains installed")
-	var empty:=Image.create(field.tile_size.x,field.tile_size.y,false,Image.FORMAT_RGBAF);empty.fill(Color(0,0,0,0));field.tiles.update(empty)
+	var saved_pixels:=field.tiles.get_image()
+	var empty:=Image.create(saved_pixels.get_width(),saved_pixels.get_height(),false,Image.FORMAT_RGBAF);empty.fill(Color(0,0,0,0));field.tiles.update(empty)
 	check(difference(before,await capture(view,label+"-neutral")).changed_pixels==0,"unclassified field preserves exact original colour and relief "+name)
-	field.tiles.update(Image.create_from_data(field.tile_size.x,field.tile_size.y,false,Image.FORMAT_RGBAF,field.rows.to_byte_array()))
+	field.tiles.update(saved_pixels)
 	check(difference(after,await capture(view,label+"-restored")).changed_pixels==0,"static field restores exact natural image "+name)
 	var cached:=0
 	if is_instance_valid(terrain.color_cache):

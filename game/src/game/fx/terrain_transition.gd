@@ -1,5 +1,5 @@
 extends RefCounted
-## Reconstruct only exact, two-family natural transitions. The source geometry,
+## Reconstruct only exact, authored natural transitions. The source geometry,
 ## original tile codes and immutable colour cache are never changed.
 const Tiles = preload("res://src/game/fx/terrain_transition_tiles.gd")
 const TransitionShader = preload("res://src/game/fx/terrain_transition_shader.gd")
@@ -13,12 +13,18 @@ const NEIGHBOURS := [Vector2i(-1,0), Vector2i(1,0), Vector2i(0,-1), Vector2i(0,1
 var tiles: ImageTexture
 var tile_size := Vector2i.ZERO
 var rows := PackedColorArray()
+## Present only on maps with admitted junctions; appended below the legacy
+## rows in the same texture. Each integer occupies at most 24 exact float bits.
+var junction_rows := PackedColorArray()
 var donors := {}
 var classified := 0
 var admitted := 0
 var conflicting := 0
 var missing_donor := 0
 var rejected_geometry := 0
+var junctions := 0
+var rejected_support_geometry := 0
+var admitted_families := {2:0, 3:0, 4:0}
 var build_us := 0
 var _shaders := {}
 
@@ -72,7 +78,10 @@ func _build(terrain: EITerrain, verified: Dictionary) -> void:
 		if slot >= terrain.tile_types.size() or not ground_allowed(terrain.tile_types[slot]) \
 			or not rules.has(atlas) or rules[atlas].size() != 256: continue
 		var authored: PackedByteArray = rules[atlas].slice((slot & 63) * 4, ((slot & 63) + 1) * 4)
-		if authored.has(0): continue
+		var supported := true
+		for family in authored:
+			if family == 0 or family >= 64: supported = false
+		if not supported: continue
 		var local := world_corners(authored, code >> 14)
 		var tx := i % tile_size.x; var ty := int(i / tile_size.x)
 		for k in 4:
@@ -92,21 +101,24 @@ func _build(terrain: EITerrain, verified: Dictionary) -> void:
 	for i in count:
 		if corners[i * 4] == 0: continue
 		var local := corners.slice(i * 4, i * 4 + 4)
-		var a := int(local[0]); var b := a
-		for value in local: a = mini(a, value); b = maxi(b, value)
-		if local.count(a) + (local.count(b) if a != b else 0) != 4: continue
-		if a != b: classified += 1
-		if not donors.has(a) or not donors.has(b):
-			if a != b: missing_donor += 1
+		var families := _families(local)
+		var mixed := families.size() > 1
+		var a := int(families[0]); var b := int(families[mini(1, families.size() - 1)])
+		if mixed: classified += 1
+		var missing := false
+		for family in families:
+			if not donors.has(family): missing = true
+		if missing:
+			if mixed: missing_donor += 1
 			continue
 		var tx := i % tile_size.x; var ty := int(i / tile_size.x)
 		var consistent := true
 		for k in 4:
 			if shared[(ty + (k >> 1)) * (tile_size.x + 1) + tx + (k & 1)] == 255: consistent = false
 		if not consistent:
-			if a != b: conflicting += 1
+			if mixed: conflicting += 1
 			continue
-		if a != b and not _valid_tile(terrain, tx * 2, ty * 2):
+		if mixed and not _valid_tile(terrain, tx * 2, ty * 2):
 			rejected_geometry += 1
 			continue
 		var mask := 0
@@ -114,23 +126,105 @@ func _build(terrain: EITerrain, verified: Dictionary) -> void:
 			if local[k] == b: mask |= 1 << k
 		var donor_a: int = donors[a]; var donor_b: int = donors[b]
 		var packed := mask | (terrain.tile_types[donor_a] << 12) | (terrain.tile_types[donor_b] << 16)
-		rows[i] = Color(donor_a + 1, donor_b + 1, packed, a + b * 64)
-		if a != b: admitted += 1
+		rows[i] = Color(donor_a + 1, donor_b + 1, packed, a + b * 64 if families.size() <= 2 else -families.size())
+		if mixed:
+			admitted += 1
+			admitted_families[families.size()] += 1
+			if families.size() > 2: junctions += 1
 	if admitted == 0: return
 	for i in count:
 		var row := rows[i]
-		if row.a == 0 or row.r == row.g: continue
+		if row.a <= 0 or row.r == row.g: continue
 		var cell := Vector2i(i % tile_size.x, int(i / tile_size.x))
 		var packed := int(row.b)
 		for k in NEIGHBOURS.size():
 			if not _compatible(cell + NEIGHBOURS[k], int(row.a)): packed |= 1 << (k + 4)
 		row.b = packed; rows[i] = row
-	tiles = ImageTexture.create_from_image(Image.create_from_data(tile_size.x, tile_size.y, false, Image.FORMAT_RGBAF, rows.to_byte_array()))
+	if junctions > 0: _build_junction_rows(terrain, corners)
+	var pixels := rows.to_byte_array()
+	if junctions > 0: pixels.append_array(junction_rows.to_byte_array())
+	tiles = ImageTexture.create_from_image(Image.create_from_data(tile_size.x, tile_size.y * (2 if junctions > 0 else 1), false, Image.FORMAT_RGBAF, pixels))
+
+
+static func _families(corners: PackedByteArray) -> PackedByteArray:
+	var result := PackedByteArray()
+	for family in corners:
+		if not result.has(family): result.append(family)
+	result.sort()
+	return result
+
+
+func families_at(index: int) -> PackedByteArray:
+	if index < 0 or index >= rows.size() or rows[index].a == 0: return PackedByteArray()
+	if rows[index].a > 0:
+		var pair := int(rows[index].a)
+		return PackedByteArray([pair & 63]) if (pair & 63) == (pair >> 6) else PackedByteArray([pair & 63, pair >> 6])
+	var packed := int(junction_rows[index].r)
+	var result := PackedByteArray()
+	for k in -int(rows[index].a): result.append((packed >> (k * 6)) & 63)
+	return result
+
+
+func _build_junction_rows(terrain: EITerrain, corners: PackedByteArray) -> void:
+	var count := rows.size()
+	var vertices := PackedByteArray(); vertices.resize((tile_size.x + 1) * (tile_size.y + 1))
+	for i in count:
+		if rows[i].a >= 0: continue
+		for k in 4:
+			vertices[(int(i / tile_size.x) + (k >> 1)) * (tile_size.x + 1) + i % tile_size.x + (k & 1)] = 1
+	var support := PackedByteArray(); support.resize(count)
+	var valid := PackedByteArray(); valid.resize(count)
+	for i in count:
+		if rows[i].a == 0: continue
+		valid[i] = 1
+		var influence := 0
+		for k in 4:
+			influence |= int(vertices[(int(i / tile_size.x) + (k >> 1)) * (tile_size.x + 1) + i % tile_size.x + (k & 1)]) << k
+		var row := rows[i]; row.b = int(row.b) | (influence << 20); rows[i] = row
+		if influence == 0 or row.r == row.g: continue
+		# The bounded warp can read the next tile past the one-tile halo.
+		# Plain receivers remain original, but folded/nonfinite support must
+		# not feed a new field across a mixed receiver's edge.
+		var cell := Vector2i(i % tile_size.x, int(i / tile_size.x))
+		for dy in range(-1, 2):
+			for dx in range(-1, 2):
+				var other := cell + Vector2i(dx, dy)
+				if _inside(other): support[other.y * tile_size.x + other.x] = 1
+	for i in count:
+		if valid[i] == 1 and support[i] == 1 and rows[i].r == rows[i].g \
+			and not _valid_tile(terrain, (i % tile_size.x) * 2, int(i / tile_size.x) * 2):
+			valid[i] = 0
+			rejected_support_geometry += 1
+	junction_rows.resize(count); junction_rows.fill(Color(0,0,0,0))
+	for i in count:
+		if valid[i] == 0: continue
+		var local := corners.slice(i * 4, i * 4 + 4)
+		var families := _families(local)
+		var packed_families := 0; var packed_corners := 0
+		for k in families.size(): packed_families |= int(families[k]) << (k * 6)
+		for k in 4: packed_corners |= families.find(local[k]) << (k * 2)
+		var cell := Vector2i(i % tile_size.x, int(i / tile_size.x))
+		for k in NEIGHBOURS.size():
+			var other: Vector2i = cell + NEIGHBOURS[k]
+			if not _inside(other) or valid[other.y * tile_size.x + other.x] == 0:
+				packed_corners |= 1 << (k + 8)
+		var extra := [0, 0]
+		for k in range(2, families.size()):
+			var donor: int = donors[families[k]]
+			extra[k - 2] = (donor + 1) | (terrain.tile_types[donor] << 15)
+		# R: four exact six-bit family IDs; G: four two-bit corner indices
+		# and eight art-edge guards; B/A: third/fourth donor + 1 and type.
+		junction_rows[i] = Color(packed_families, packed_corners, extra[0], extra[1])
+
+
+func _inside(cell: Vector2i) -> bool:
+	return cell.x >= 0 and cell.y >= 0 and cell.x < tile_size.x and cell.y < tile_size.y
 
 
 func _compatible(cell: Vector2i, pair: int) -> bool:
-	if cell.x < 0 or cell.y < 0 or cell.x >= tile_size.x or cell.y >= tile_size.y: return false
+	if not _inside(cell): return false
 	var other := int(rows[cell.y * tile_size.x + cell.x].a)
+	if other <= 0: return false
 	if other == pair: return true
 	var family := other & 63
 	return family > 0 and family == (other >> 6) and family in [pair & 63, pair >> 6]
@@ -154,7 +248,7 @@ func _valid_tile(terrain: EITerrain, x: int, y: int) -> bool:
 
 
 func source(original: String) -> String:
-	return TransitionShader.source(original) if admitted > 0 else original
+	return TransitionShader.source(original, junctions > 0) if admitted > 0 else original
 
 
 func shader(original: String) -> Shader:

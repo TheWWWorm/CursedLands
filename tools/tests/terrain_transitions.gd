@@ -58,7 +58,7 @@ func analytical() -> void:
 	check((int(field.rows[8*16+7].b)&16)!=0,"unknown neighbour guards the original-art edge")
 	terrain.free(); terrain=fixture()
 	var three := rules(); three[0][11]=3
-	check(Field.new(terrain,three).admitted==0,"three-family artwork remains original")
+	check(Field.new(terrain,three).admitted==0,"junction without its own third-family donor remains original")
 	terrain.land_xy[16*33+15]=Vector2(4,0)
 	field=Field.new(terrain,rules())
 	check(field.rejected_geometry>0 and field.admitted<16,"folded authored XY geometry is not reconstructed")
@@ -109,16 +109,17 @@ func maps() -> void:
 		var slots := PackedInt32Array()
 		for i in field.rows.size():
 			var row := field.rows[i]
-			if row.a>0 and row.r!=row.g: slots.append(i)
+			if row.a!=0 and row.r!=row.g: slots.append(i)
 		var bad := 0
 		for i in slots:
 			var code := terrain.land_tile[i]; var row := field.rows[i]
 			if not Field.ground_allowed(terrain.tile_types[code&16383]): bad+=1
-			var pair := int(row.a)
-			if not field.donors.has(pair&63) or not field.donors.has(pair>>6): bad+=1
-		check(bad==0,"every admitted transition has allowed authored ground and both own donors "+name)
+			for family in field.families_at(i):
+				if not field.donors.has(family): bad+=1
+		check(bad==0,"every admitted transition has allowed authored ground and all own donors "+name)
 		var record := {"map":name,"classified":field.classified,"admitted":field.admitted,"conflicting":field.conflicting,
-			"missing_donor":field.missing_donor,"rejected_geometry":field.rejected_geometry,"build_us":field.build_us,"bytes":field.rows.size()*16,"donors":field.donors}
+			"missing_donor":field.missing_donor,"rejected_geometry":field.rejected_geometry,"junctions":field.junctions,
+			"build_us":field.build_us,"bytes":(field.rows.size()+field.junction_rows.size())*16,"donors":field.donors}
 		records.append(record); print("TRANSITION_MAP ",JSON.stringify(record))
 		terrain.free(); await get_tree().process_frame
 
