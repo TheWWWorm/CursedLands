@@ -2051,9 +2051,11 @@ func _ser(v):
 func _deser(v):
 	if v is Dictionary:
 		if v.has("h"):
-			var hu := _hero_by_key(v.h)
-			if hu:
-				return hu
+			# Stable hero identity is authoritative even when that player is
+			# absent. A new deployment can reuse its numeric id for another
+			# hero or actor; resolving that fallback would change the script's
+			# subject. Plain numeric references still preserve legacy actors.
+			return _hero_by_key(v.h)
 		if v.has("u"):   # a looted corpse taken off the world stays known (WasLooted)
 			return world.units.get(int(v.u), world.looted.get(int(v.u)))
 		if v.has("o"):
