@@ -5,11 +5,13 @@ const Geometry = preload("res://src/game/fx/biome_cover_mesh.gd")
 const Sea = preload("res://src/game/fx/biome_cover_water.gd")
 const Mounds = preload("res://src/game/fx/biome_mounds.gd")
 const Families = preload("res://src/game/fx/biome_cover_tiles.gd")
-enum Kind { FLOWER, DRY, LEAF, NEEDLES, TWIG, STONE, BUSH, REED, CATTAIL, WRACK, SHELL, SEAGRASS, KELP, SEA_SHELL }
+const Regions = preload("res://src/game/fx/biome_cover_regions.gd")
+enum Kind { FLOWER, DRY, LEAF, NEEDLES, TWIG, STONE, BUSH, REED, CATTAIL, WRACK, SHELL, SEAGRASS, KELP, SEA_SHELL,
+	ASH, SCORIA, OBSIDIAN, CRUST, MOSS, LICHEN, FERN, ROOTS, MUSHROOM, WET, SLAB, RUBBLE, BONES, SKULL, WEB, CRYSTAL }
 const DRY_KINDS := 7 # Preserve the original random stream when adding species.
 const SPACING := 0.8
 const TREE_RANGE := 6.0
-const RADII := [0.22,0.30,0.16,0.22,0.38,0.14,0.44,0.38,0.30,0.32,0.15,0.24,0.35,0.15]
+const RADII := [0.22,0.30,0.16,0.22,0.38,0.14,0.44,0.38,0.30,0.32,0.15,0.24,0.35,0.15]+Regions.RADII
 const BANK_HEIGHT := 2.0 # Tallest scaled cattail plus optional soft-ground lift.
 const SHORE_RANGE := 6.0
 const BROADLEAF := ["nafltr56","nafltr57","nafltr75","nafltr76"]
@@ -32,6 +34,7 @@ var native: RefCounted
 var shores := {} # Chunk -> immutable Vector4(water x, height, EI y, 1 river / 2 swamp / 3 sea).
 var sea := Sea.new()
 var mounds := Mounds.new()
+var regions := Regions.new()
 static var _campaign: CampaignMap
 static var _texts_id := 0
 
@@ -50,6 +53,8 @@ static func region(terrain: EITerrain) -> String:
 			if not zone.is_empty() and zone != candidate: return "unknown"
 			zone = candidate
 	if String(zone.get("sky","")).to_lower() == "cave": return "cave"
+	# LiA also has a zone9, on gipat2. It is not the base game's Dead City.
+	if zone.get("allod","")=="gipat" and zone.get("mpr","")=="zone9": return "dead_city"
 	return String(zone.get("allod","unknown")).to_lower()
 
 
@@ -63,7 +68,7 @@ static func tree_kind(info: Dictionary) -> int:
 	return 0
 
 
-func configure(terrain: EITerrain, field: RefCounted, atlases: Dictionary, context: String) -> void:
+func configure(terrain: EITerrain, field: RefCounted, atlases: Dictionary, context: String, scenery: Dictionary = {}) -> void:
 	size = Vector2i(terrain.size_ei()); grid_w = terrain.grid_w
 	map_name = terrain.map_name; biome = context; native = field
 	families.clear()
@@ -91,6 +96,7 @@ func configure(terrain: EITerrain, field: RefCounted, atlases: Dictionary, conte
 			var masks := Families.masks(copy)
 			if not masks.is_empty(): families[key] = masks
 	_prepare_shores(terrain)
+	regions.configure(terrain,self,scenery)
 	mounds.configure(terrain,self)
 
 
@@ -239,8 +245,9 @@ func dry_surface(p: Vector2) -> Dictionary:
 
 
 func pressure_allowed(p: Vector2) -> bool:
-	if biome in ["cave","unknown"]: return false
+	if biome == "unknown": return false
 	var hit := dry_surface(p)
+	if biome=="cave": return not hit.is_empty() and int(hit.type) in [0,1,2,3,4]
 	return not hit.is_empty() and (int(hit.type) in [0,3,5,9,11,12] or bank_weights(p,hit,shore(p)).x > 0.0)
 
 
@@ -270,7 +277,7 @@ func weights(hit: Dictionary, influence: Vector3, flowers: Vector3) -> PackedFlo
 	out[Kind.STONE] = 0.025 if snow else (0.12 if type in [1,2,4,5,11] else 0.025)
 	if biome in ["cave","unknown"]: return out
 	var green := TerrainDetails.green_colour(c)
-	var woods := biome in ["gipat","ingos"]
+	var woods := biome in ["gipat","ingos","dead_city"]
 	if type == 0 and green: out[Kind.FLOWER] = 0.85*flowers.x*(1.0-maxf(influence.x,influence.y)*0.8)
 	if type in [5,11] and not green: out[Kind.DRY] = 0.8
 	if type == 3: out[Kind.DRY] = 0.12
@@ -281,12 +288,16 @@ func weights(hit: Dictionary, influence: Vector3, flowers: Vector3) -> PackedFlo
 		out[Kind.NEEDLES] = influence.y*(0.12 if snow else 0.6)
 		out[Kind.TWIG] = maxf(influence.x,maxf(influence.y,influence.z))*(0.035 if not snow else 0.012)
 	if type in [1,5,11]: out[Kind.BUSH] = 0.008
+	if biome=="dead_city":
+		if type in [1,2,4,5,11] and not green: out[Kind.DRY]=0.65
+		if not snow: out[Kind.LEAF]=maxf(influence.x,influence.z)*(0.35 if type in [3,5,11] else 1.05)
+		if type in [1,2,4,5,11]: out[Kind.BUSH]=0.022
 	if type in [0,5,11]:
 		# Meadow/dry tufts fade toward verified soil, rock and paving corners.
 		# Snow straw, sand tufts and fallen litter retain their existing rules.
 		var meadow := 1.0-smoothstep(0.30,0.75,bare_share(hit))
 		out[Kind.FLOWER] *= meadow
-		out[Kind.DRY] *= meadow
+		if biome!="dead_city": out[Kind.DRY] *= meadow
 	return out
 
 
@@ -294,7 +305,7 @@ func footprint(p: Vector2, hit: Dictionary, kind: int, radius: float) -> bool:
 	for offset: Vector2 in [Vector2(-1,0),Vector2(1,0),Vector2(0,-1),Vector2(0,1)]:
 		var edge := dry_surface(p+offset*radius)
 		if edge.is_empty() or absf(float(edge.height)-float(hit.height)) > 0.12: return false
-		if kind in [Kind.LEAF,Kind.NEEDLES,Kind.TWIG,Kind.STONE,Kind.WRACK,Kind.SHELL]:
+		if kind in [Kind.LEAF,Kind.NEEDLES,Kind.TWIG,Kind.STONE,Kind.WRACK,Kind.SHELL] or kind>=Regions.FIRST:
 			var n: Vector3 = hit.normal
 			var plane := float(hit.height)-(n.x*offset.x-n.z*offset.y)*radius/n.y
 			if absf(float(edge.height)-plane) > 0.025: return false
@@ -359,13 +370,16 @@ func records(key: Vector2i, boxes: Array, trees: Array) -> Array[Dictionary]:
 			var density := weights(hit,tree_influence(p,trees),flowers)
 			var anchor := Vector4(-2,0,0,0)
 			for kind in DRY_KINDS:
-				if rolls[kind] >= density[kind]*SPACING*SPACING or not footprint(p,hit,kind,RADII[kind]*scale): continue
+				var fitted := scale/3.0 if biome=="dead_city" and kind==Kind.BUSH else scale
+				if rolls[kind] >= density[kind]*SPACING*SPACING or not footprint(p,hit,kind,RADII[kind]*fitted): continue
 				if anchor.x == -2: anchor = surface_anchor(p)
 				if not anchor.is_finite(): break
 				result.append({"kind":kind,"p":p,"height":float(hit.height),"normal":hit.normal,"colour":hit.colour,
-					"angle":angle,"scale":scale,"seed":seed,"snow":int(hit.type) in [9,12],"flower":flowers.y,"cold":biome=="ingos","anchor":anchor})
+					"angle":angle,"scale":fitted,"seed":seed,"snow":int(hit.type) in [9,12],"flower":flowers.y,"cold":biome=="ingos","anchor":anchor})
+				if biome=="dead_city": result[-1]["dead_city"]=true
 	result.append_array(bank_records(key,boxes))
 	result.append_array(sea_records(key,boxes))
+	result.append_array(regions.records(self,key,boxes))
 	return result
 
 
@@ -463,7 +477,7 @@ func sea_records(key: Vector2i, boxes: Array) -> Array[Dictionary]:
 func build(key: Vector2i, boxes: Array, trees: Array, mound_boxes: Array = []) -> Dictionary:
 	var placed := records(key,boxes,trees)
 	var geometry := Geometry.new()
-	var arrays := geometry.build(placed,key,sea if not sea.tiles.is_empty() else null)
+	var arrays := geometry.build(placed,key,sea if not sea.tiles.is_empty() else null,self if regions.cave else null)
 	return {"records":placed,"arrays":arrays,"lods":geometry.lods(),
 		"mounds":mounds.build(self,key,mound_boxes if not mound_boxes.is_empty() else boxes)}
 

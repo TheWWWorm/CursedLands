@@ -3719,10 +3719,138 @@ stop unrelated processes.
 **Remaining V2 work:** intermediate-range density thinning still submits its
 collapsed plants; there is no GPU survivor compaction. This implementation also
 does not widen far leaves or enlarge thinning survivors like the reference.
-Continue the remaining regional cover sets (especially cave/Dead City), then
-other renderer opportunities in the established order. Device/long-route
+The regional cave/Dead City checkpoint below now follows this submission work.
+Continue other renderer opportunities in the established order. Device/long-route
 acceptance and the older depth/restoration limits remain. The full goal also
 includes the gameplay handoff, starting with **U45**, after renderer work.
+
+## V2 regional cave and Dead City cover — 9 October
+
+This checkpoint extends the existing default-off `gfx_biome_cover` option. It
+adds cave habitats and base-game Dead City rules without creating another
+streamer, gameplay object or light. It does not enable cover, change the desktop
+continuous-sun policy, install a build or publish a release. The source remains
+protocol 13 / Experimental 6. The full renderer/gameplay goal is still active;
+U45 remains the first gameplay issue after renderer work.
+
+### Reference and campaign evidence
+
+Use reference R1 `0092dc6e1d7c4aab3f74644a79e9bfca11ecf293`, via `git show` in
+`/home/llm2x/Documents/evil-islands-owned-renderer`; the checked-out R0 lacks
+these later files. Do not switch or modify the reference checkout.
+
+| Reference location at R1 | Adapted behavior |
+|---|---|
+| `Source/ambient_particles.h:88–96`, `classify_zone` | Cave/outdoor/Dead City context. The reference's bare `zone9` test is insufficient for this remake: base `gz9g` is `gipat`, while LiA `gz9g` is `gipat2`, with different map dimensions, units and scenery. The remake requires base `gipat` + `zone9`, after checking the cave sky. Ambiguous ownerless maps remain conservative. |
+| `Source/ground_cover.h:240–373` | Dry/bare Dead City tufts, yellow litter near non-conifer wood including bare crowns, more but smaller dead bushes; cave lava, damp, rock, wall/corner and undead habitats, plus cave snow. Densities/scales are adapted to the existing bounded remake generator. |
+| `Source/renderer_ground_cover.cpp:240`, `gcCaveWall`, and damp-field construction around line 530 | Eight directions/four radii probe actual terrain and solid scenery; perpendicular contacts identify corners. Water, dark wall pockets and green original art contribute dampness. Nearby lava suppresses it. |
+| `Source/renderer_ground_cover.cpp:1428–1470`, `ground_cover_trees` | A 20 m affinity around original MOB undead unit records. These are decorative authored sites, never live combat/death/fog state. |
+| `Source/ground_cover_cave.h`, `cave_undead_site` and shape emitters | Sixteen regional shapes: ash, scoria, obsidian, crust, moss, lichen, ferns, roots, mushrooms, damp stains, slabs, rubble, bones, skulls, webs and crystals. |
+| `Source/renderer_ground_cover.cpp:931–935`, and line 994 | Native ground-art contribution for stone/patch materials, dark wet patches, and dim green mushroom emission without point lights. |
+
+The read-only inventories and probe scripts are under
+`/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation`.
+`regional-inventory-base` records all declared base caves and Dead City.
+`regional-inventory-astral-clean` records LiA cave owners separately and explicitly
+marks the declared-but-missing `zone17.mpr`; its earlier inventory run attempted
+that missing map and is retained as an unsuccessful control. Do not manufacture
+assets or infer that same-named campaign maps are the same location.
+
+### Implementation map
+
+| Remake file / entry point | Responsibility |
+|---|---|
+| `game/src/game/fx/biome_cover_regions.gd`, `configure`, `wall`, `habitat`, `weights`, `records` | New immutable habitat snapshot: actual authored liquid mesh centres/material emission, unexpanded placed-scenery bounds, original MOB sites and an independent regional RNG stream. No scene reads in jobs and no strong back-reference to the cover owner. |
+| `game/src/game/fx/biome_cover_region_mesh.gd`, `emit` and primitive helpers | New opaque low-poly regional shapes using the existing geometry builder, root anchors, culling and native lighting. Ferns bend; rigid debris stays fixed. No collision, picking, navigation or replicated actors. |
+| `game/src/game/fx/biome_cover.gd`, `region`, `weights`, `records`, `build` | Campaign-aware Dead City classification; yellow leaves exclude conifers, dead bushes are one-third size, dry tufts can occupy bare soil. Append regional records after the original dry/bank/sea streams. |
+| `game/src/game/fx/biome_cover_mesh.gd`, regional shader branch, `triangle`, `build` | Cave-only CUSTOM2 attributes hold original terrain UV/layer/material. Reuse the terrain's original or resident HD atlas, preserving padded-tile coordinates. Patches blend toward ground art at their opaque rims; mushrooms use the existing native material-emission term. Ordinary cover shader/buffer paths remain unchanged. |
+| `game/src/game/fx/terrain_details.gd`, `_index_scenery_box`, `prepare_grass`, `_apply_grass_material` | Capture original solid bounds only when cover is enabled, pass the snapshot to existing workers, and bind the cave atlas variant. No extra scenery record field when cover is off. Existing option/revision barriers own invalidation. |
+| `game/src/game/fx/biome_mounds.gd`, `configure`, `records` | Cave snow types 9/12 reuse dense original-triangle geometry and shared compaction; cave sand stays excluded. A separate 1 m candidate lattice at 0.04 candidates/m² finds small snow pockets. Original outdoor seeds/positions and the two-pile/4,096-vertex cap are preserved. |
+| `tools/tests/biome_cover_regions.gd` | Habitat rules, finite geometry and envelope checks at flat/limiting slopes, campaign identity, native/script agreement, immutable workers, authored scans and the inherited render/lifetime fixture. |
+| `tools/tests/biome_cover.gd` | Regional-aware isolated geometry and shader controls, fern pressure, mushroom emission negative control. The original meadow tests remain available. |
+
+Lava is classified from the liquid layer and material emission, rather than
+from ground beneath an overlay. The initial 1.2 m bank-height gate excluded
+all lava decoration on the sampled walkable ledges. A read-only scan found
+these ledges about 1.5–3 m above lava, with other platforms 7–16 m above it.
+The final lava band admits up to 3 m vertical separation; damp water banks
+retain 1.2 m. The horizontal field remains an approximation from authored
+2 m liquid centres, not an exact signed shoreline or collision query.
+
+New rigid shapes use conservative radii including slope tilt. Admission retains
+the dry, low-slope, scenery, supporting-plane and unique root-anchor gates,
+with additional eight-direction dry/UV checks. Ground-art primitives must stay
+within one compatible source code/UV interval. Large patch/web edges also check
+unexpanded solid scenery. These small rigid surfaces follow their root, not
+every point of a footprint trench; the older litter-edge limitation still
+applies. Snow piles continue to use the denser, conforming geometry.
+
+### Validation and costs
+
+The machine-readable receipt is
+`docs/validation/biome-cover-regions-2026-10-09.json`; it contains the precise
+accepted-run list, frozen scripts, source/pack/runtime hashes, images, earlier
+failed controls and commands. The final export is `cover-regional-final` under
+the QA directory. It uses the same eight-patch runtime/native library as the
+previous accepted checkpoints; release templates and installed builds stay
+unchanged. `prototype3` is a passing validation build retained in the receipt;
+its only production difference from final is that final omits the extra solid
+AABB field when cover is disabled. Final tests check both branches explicitly.
+
+**Sixteen accepted runs pass 59,182 assertions.** All 236 production GDScript
+source hashes match the final export.
+
+The frozen old/current oracle matches **3,247 prior cover records**, their mesh
+arrays and native LOD indices, plus sampled outdoor mound meshes, over six maps.
+Base and LiA scans validate cave habitats, base Dead City and the separate LiA
+zone9. Original-unit sites admit bones/skulls in LiA `gz7d1`/`gz36j`; the ordinary
+LiA zone9 receives no Dead City policy. Native and script samplers agree in the
+sampled jobs, and jobs preserve their frozen data after original water and MOB
+records are mutated in the fixture.
+
+Authored-scene captures cover Compatibility moss/Dead City leaves, Forward+
+ferns/lava crust, desktop Mobile mushrooms/LiA bones, and Mobile HD moss. Settled
+pause, empty pressure, shadow refresh, clear/reload and off-state restoration
+are exact in those accepted runs. The mushroom emission negative control
+changes 20 visible pixels (peak 24/255); restoring emission restores the exact
+image, with no new light. These are controlled scene checks, not full-game
+visual acceptance or Android measurements.
+
+Base `gz14k` contains 572 cells of actual snow; 465 tested cell centres are dry
+and low-slope, but only 56 admit the probe's normal-size full footprint. The
+old outdoor candidate lattice found no cave piles. The independent cave stream
+finds two in the metadata scan. A real placed-scenery Forward+ fixture selects
+one at `(28.45712,43.57837)`: 601 vertices / 929 triangles, zero UV error,
+original-height error below 0.6 micrometres, and exact whole-scene option/rebuild
+restoration. Fully compacted snow exposes 182 exact underlying trench pixels.
+The same fixture checks the existing shared deformation, queue/worker lifecycle
+and separate render thread.
+
+There is a cost: caves store another 16 bytes per cover vertex, plus bounded
+snapshot buckets for liquids, walls and authored sites. The new shapes add
+geometry and shadow work. Sample native record-generation medians are roughly
+1.5–6.5 ms per tested cave chunk, with maxima around 9.5 ms; source-data-only
+scans omit placed scenery and are not total build/upload/frame measurements.
+The script fallback is slower. A 25-chunk snow fixture finds one active chunk:
+its sampled mesh build costs about 8.8 ms, versus 52 microseconds median across
+all 25 mostly empty chunks. Other render processes may exist; do not turn these
+construction samples into an FPS claim. Cover stays off on all platforms.
+
+Earlier controls remain in the receipt: an overly strict normal-length fixture
+mistook scaled normals for degenerate triangles; the fern's small root ribbon
+is valid inside the existing 8 mm root offset; coarse lava sampling missed the
+only crust pocket; and the initial cave mound lattice missed small snow patches.
+A NUL literal used in an early name check emitted Unicode diagnostics and was
+replaced by code-point validation. None of those early runs is counted as a
+fully accepted final checkpoint.
+
+The regional categories are implemented; long gameplay routes, full visual
+review, device generation/upload/overdraw costs, survivor compaction and the
+older coastal depth and Mobile restoration limits remain open. Other reference
+shape variants are not asserted to have one-to-one parity. Continue the
+remaining renderer list, including V4 wave fields/currents/waterfall detail,
+then the gameplay handoff starting with U45. Do not enable defaults on the basis
+of these isolated tests.
 
 ## Next work in the established order
 
@@ -3789,8 +3917,8 @@ includes the gameplay handoff, starting with **U45**, after renderer work.
    with cover habitat kept separate from breaking surf. Verified atlas-family
    placement and shared vegetation weather wind are also implemented above.
    Native cover index LOD and fully faded submission culling are now implemented
-   above. Continue remaining regional cover sets; survivor compaction and device
-   acceptance remain separate work.
+   above, followed by the regional cave/Dead City checkpoint. Survivor compaction,
+   long routes and device acceptance remain separate work.
    Preserve the coastal mean-depth boundary limitation and the mound
    Mobile restoration limitation and construction-cost evidence. No visual effect
    was silently enabled.

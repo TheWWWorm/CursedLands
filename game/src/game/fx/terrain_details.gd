@@ -293,7 +293,12 @@ func _apply_grass_material() -> void:
 	if _cover_material:
 		var soft := Gfx.on("gfx_soft_ground") and is_instance_valid(soft_ground) and _cover_field != null and _cover_field.loose_tiles.has(1)
 		var aquatic := _cover_field != null and not _cover_field.sea.tiles.is_empty()
-		_cover_material.shader = BiomeCover.Geometry.shader(interaction != null,Gfx.on("gfx_wind"),soft,aquatic)
+		var regional := _cover_field != null and _cover_field.regions.cave
+		_cover_material.shader = BiomeCover.Geometry.shader(interaction != null,Gfx.on("gfx_wind"),soft,aquatic,regional)
+		if regional:
+			for parameter in [&"atlases",&"atlas_padding",&"tiles_per_axis"]:
+				_cover_material.set_shader_parameter(parameter,terrain._land_mat.get_shader_parameter(parameter))
+		else: _cover_material.set_shader_parameter("atlases",null)
 		if soft:
 			_cover_surface = terrain.ground_surface_data(true)
 			_cover_surface.bind(_cover_material,true)
@@ -405,6 +410,7 @@ func _index_scenery_box(box: AABB, transform: Transform3D) -> void:
 	var first := Vector2i((lo / CHUNK).floor())
 	var last := Vector2i((hi / CHUNK).floor())
 	var record := {"inverse": inverse, "box": expanded}
+	if _cover: record["solid"] = box
 	for y in range(first.y, last.y + 1):
 		for x in range(first.x, last.x + 1):
 			var key := Vector2i(x, y)
@@ -590,7 +596,7 @@ func prepare_grass() -> void:
 			_native_grass = false
 	if _cover and not _cover_field:
 		_cover_field = BiomeCover.new()
-		_cover_field.configure(terrain,_grass_field,images,BiomeCover.region(terrain))
+		_cover_field.configure(terrain,_grass_field,images,BiomeCover.region(terrain),_scenery)
 		# Only maps containing an actual loose tile need the optional geometry
 		# texture or animated deformation shader. Hard cave cover stays cheap.
 		_apply_grass_material()

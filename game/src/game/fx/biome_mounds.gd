@@ -75,15 +75,15 @@ static func shader(soft := true) -> Shader:
 
 func configure(terrain: EITerrain, field: RefCounted) -> void:
 	materials.resize(field.tiles.size())
-	if field.biome in ["cave","unknown"]: return
+	if field.biome == "unknown": return
 	var sand := {}
 	if terrain.texture_size==512 and terrain.tile_size==64:
 		for atlas: int in field.images: sand[atlas] = Sand.slots(field.images[atlas])
 	for i in materials.size():
 		var code: int = field.tiles[i]&0x3fff
 		var type := terrain.tile_types[code] if code<terrain.tile_types.size() else -1
-		if field.biome=="ingos" and type in [9,12]: materials[i] = 1
-		elif type==3 and (code&63) in sand.get(code>>6,[]): materials[i] = 2
+		if field.biome in ["ingos","cave"] and type in [9,12]: materials[i] = 1
+		elif field.biome!="cave" and type==3 and (code&63) in sand.get(code>>6,[]): materials[i] = 2
 	enabled = materials.has(1) or materials.has(2)
 	if enabled: normals = terrain.land_n.duplicate()
 
@@ -150,13 +150,18 @@ static func rise(delta: Vector2, radius: float, height: float, phase: float) -> 
 func records(field: RefCounted, key: Vector2i, boxes: Array) -> Array:
 	var out := []
 	if not enabled: return out
-	var rng := RandomNumberGenerator.new(); rng.seed = hash("%s:mounds:%d:%d" % [field.map_name,key.x,key.y])
-	for i in 4:
+	var cave: bool = field.biome=="cave"
+	var rng := RandomNumberGenerator.new(); rng.seed = hash("%s:%s:%d:%d" % [field.map_name,"cave-mounds" if cave else "mounds",key.x,key.y])
+	# Cave snow occupies narrow authored pockets. A metre lattice finds
+	# those pockets without moving outdoor candidates or relaxing the full
+	# triangle/footprint gates. 0.04 candidates/m², with the same two-pile cap.
+	for i in (64 if cave else 4):
 		var rx := rng.randf_range(-0.45,0.45); var ry := rng.randf_range(-0.45,0.45)
 		var p := Vector2(key)*8+Vector2(2+(i%2)*4,2+(i/2)*4)+Vector2(rx,ry)
+		if cave: p=Vector2(key)*8+Vector2(i%8+0.5,i/8+0.5)+Vector2(rx,ry)*0.4
 		var size_roll := rng.randf(); var height_roll := rng.randf(); var phase := rng.randf()*TAU; var chance := rng.randf()
 		var type := kind(field,Vector2i(p.floor()))
-		if not type or chance>0.60: continue
+		if not type or chance>(0.04 if cave else 0.60): continue
 		var radius := lerpf(0.55,0.9,size_roll) if type==1 else lerpf(0.4,0.75,size_roll)
 		var height := lerpf(0.14,0.23,height_roll) if type==1 else lerpf(0.06,0.10,height_roll)
 		var triangles := footprint(field,p,radius*1.17+0.10,type,boxes)

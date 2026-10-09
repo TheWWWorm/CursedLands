@@ -5,7 +5,31 @@ extends RefCounted
 ## CUSTOM1 (sea maps only): mean-water plane (X/Z slopes, intercept), depth coefficient.
 const Pressure = preload("res://src/game/fx/vegetation_interaction.gd")
 const WeatherWind = preload("res://src/game/fx/weather_wind.gd")
-const FORMAT := (Mesh.ARRAY_CUSTOM_RGBA_FLOAT << Mesh.ARRAY_FORMAT_CUSTOM0_SHIFT) | (Mesh.ARRAY_CUSTOM_RGBA_FLOAT << Mesh.ARRAY_FORMAT_CUSTOM1_SHIFT)
+const Regional = preload("res://src/game/fx/biome_cover_region_mesh.gd")
+const FORMAT := (Mesh.ARRAY_CUSTOM_RGBA_FLOAT << Mesh.ARRAY_FORMAT_CUSTOM0_SHIFT) | (Mesh.ARRAY_CUSTOM_RGBA_FLOAT << Mesh.ARRAY_FORMAT_CUSTOM1_SHIFT) | (Mesh.ARRAY_CUSTOM_RGBA_FLOAT << Mesh.ARRAY_FORMAT_CUSTOM2_SHIFT)
+const REGIONAL_UNIFORMS := """
+uniform sampler2DArray atlases : source_color, filter_linear_mipmap_anisotropic, repeat_disable;
+uniform float atlas_padding = 0.0;
+uniform float tiles_per_axis = 8.0;
+varying vec4 cover_art;
+"""
+const REGIONAL_FRAGMENT := """
+	float art_kind = floor(cover_art.w+0.001);
+	if (art_kind == 1.0 || art_kind >= 4.0) {
+		// UV was sampled from the original authored triangle. Adapt only its
+		// padding when the terrain binds the resident HD atlas array.
+		vec2 tile = cover_art.xy*tiles_per_axis;
+		vec2 uv = (floor(tile)+(fract(tile)+atlas_padding)/(1.0+2.0*atlas_padding))/tiles_per_axis;
+		vec3 ground = texture(atlases,vec3(uv,cover_art.z)).rgb;
+		ALBEDO = mix(ALBEDO,ground,0.35);
+		if (art_kind == 5.0) { ALBEDO *= 0.5; }
+		if (art_kind >= 4.0) {
+			// Opaque edge colour converges to the original painted floor;
+			// no alpha sorting, decal pass or per-fragment height search.
+			ALBEDO = mix(ground,ALBEDO,smoothstep(0.0,0.75,fract(cover_art.w)*2.5));
+		}
+	}
+"""
 const UNDERWATER := """
 	if (CUSTOM1.w > 0.0) {
 		float depth = max(dot(CUSTOM1.xy,VERTEX.xz)+CUSTOM1.z-VERTEX.y,0.0);
@@ -92,6 +116,10 @@ var uvs := PackedVector2Array()
 var roots := PackedVector2Array()
 var anchors := PackedFloat32Array()
 var water_planes := PackedFloat32Array()
+var regional_art := PackedFloat32Array() # CUSTOM2: original UV, layer, material.
+var regional_field: RefCounted
+var art_cache := {}
+var regional_material := 0
 var water: RefCounted
 var water_cache := {}
 var chunk_origin := Vector2.ZERO
@@ -106,8 +134,8 @@ var mobile := 0.0
 var anchor := Vector4(-1,0,0,0)
 
 
-static func shader(interactive: bool, wind: bool, soft := false, aquatic := false) -> Shader:
-	var key := int(aquatic)*8+int(soft)*4+int(interactive)*2+int(wind)
+static func shader(interactive: bool, wind: bool, soft := false, aquatic := false, regional := false) -> Shader:
+	var key := int(regional)*16+int(aquatic)*8+int(soft)*4+int(interactive)*2+int(wind)
 	if not _shaders.has(key):
 		var code := SHADER
 		if interactive or wind or soft: code = code.replace("vec4 phases = wind_phases;","vec4 phases = wind_phases + vec4(TIME*0.0);")
@@ -118,19 +146,35 @@ static func shader(interactive: bool, wind: bool, soft := false, aquatic := fals
 			code = code.replace("void vertex() {",SURFACE_UNIFORMS+GroundSurfaceShader.SOFT_UNIFORMS+GroundSurfaceShader.SOFT_FUNCTIONS+GroundSurfaceShader.TRIANGLE_QUERY+"\nvoid vertex() {")
 			code = code.replace("// SURFACE",ATTACH)
 		if aquatic: code = code.replace("ei_e = vec3(0.0); ei_k = 0.0;","ei_e = vec3(0.0); ei_k = 0.0;"+UNDERWATER)
+		if regional:
+			code = code.replace("void vertex() {",REGIONAL_UNIFORMS+"\nvoid vertex() {")
+			code = code.replace("ei_e = vec3(0.0); ei_k = 0.0;","ei_e = CUSTOM2.w >= 3.0 && CUSTOM2.w < 4.0 ? COLOR.rgb*vec3(0.08,0.24,0.17) : vec3(0.0); ei_k = 0.0; cover_art = CUSTOM2;")
+			code = code.replace("NORMAL = normalize(cover_normal)",REGIONAL_FRAGMENT+"\n\tNORMAL = normalize(cover_normal)")
 		_shaders[key] = Gfx.make_shader(code,true,true)
 	return _shaders[key]
 
 
-func triangle(a: Vector3,b: Vector3,c: Vector3,colour: Color) -> void:
+func triangle(a: Vector3,b: Vector3,c: Vector3,colour: Color,blend := Vector3.ONE) -> void:
 	var normal := (b-a).cross(c-a).normalized()
 	var at := vertices.size()
-	for p: Vector3 in [a,b,c]:
+	var corners := [a,b,c]
+	for i in 3:
+		var p: Vector3 = corners[i]
 		var position := transform*p+root
 		vertices.append(position); normals.append(transform.basis*normal)
 		colours.append(Color(colour.r,colour.g,colour.b,mobile))
 		uvs.append(Vector2(root.y,seed)); roots.append(Vector2(root.x,root.z))
 		anchors.append_array([anchor.x,anchor.y,anchor.z,anchor.w])
+		if regional_field:
+			var art := Vector4(0,0,0,regional_material)
+			if regional_material in [1,4,5]:
+				var point := Vector2(position.x,-position.z)+chunk_origin
+				if not art_cache.has(point): art_cache[point] = regional_field.sample(point)
+				var hit: Dictionary = art_cache[point]
+				assert(not hit.is_empty())
+				art = Vector4(hit.uv.x,hit.uv.y,(int(hit.code)>>6)&255,regional_material)
+			if regional_material>=4: art.w+=blend[i]*0.4
+			regional_art.append_array([art.x,art.y,art.z,art.w])
 		if water:
 			var plane := Vector4.ZERO
 			if submerged:
@@ -234,20 +278,21 @@ func sea_grass(colour: Color, tall: bool) -> void:
 		ribbon(a,b,0.025,colour*0.85); bent_ribbon(b,c,d,0.025,0.013,colour,colour*1.05)
 
 
-func build(records: Array[Dictionary], key: Vector2i, sea: RefCounted = null) -> Array:
-	water = sea; chunk_origin = Vector2(key)*8.0
+func build(records: Array[Dictionary], key: Vector2i, sea: RefCounted = null, field: RefCounted = null) -> Array:
+	water = sea; chunk_origin = Vector2(key)*8.0; regional_field = field
 	for record: Dictionary in records:
 		var p: Vector2 = record.p-Vector2(key)*8.0
 		root = Vector3(p.x,float(record.height)+0.008,-p.y); seed = record.seed
 		anchor = record.get("anchor",Vector4(-1,0,0,0))
 		submerged = record.get("underwater",false)
+		regional_material = int(record.get("regional_material",0))
 		transform = Transform3D(Basis(Vector3.UP,record.angle).scaled(Vector3.ONE*float(record.scale)),Vector3.ZERO)
-		if int(record.kind) in [2,3,4,5,9,10,13]:
+		if int(record.kind) in [2,3,4,5,9,10,13] or int(record.kind)>=14 and int(record.kind)!=Regional.K.FERN:
 			var n: Vector3 = record.normal
 			if n.y < 0: n = -n
 			transform.basis = Basis(Quaternion(Vector3.UP,n))*transform.basis
 		var c: Color = record.colour
-		mobile = 1.0 if int(record.kind) in [0,1,7,8,11,12] else 0.0
+		mobile = 1.0 if int(record.kind) in [0,1,7,8,11,12,Regional.K.FERN] else 0.0
 		match int(record.kind):
 			0: # Flowers: green stem and a small five-petal head, two patch colours.
 				var top := Vector3(0.04,0.49,0.02)
@@ -257,10 +302,10 @@ func build(records: Array[Dictionary], key: Vector2i, sea: RefCounted = null) ->
 				for i in 5:
 					var turn := Basis(Vector3.UP,i*TAU/5.0)
 					triangle(top,top+turn*Vector3(-0.035,0.012,0.07),top+turn*Vector3(0.035,0.012,0.07),petal)
-			1: tuft(c.lerp(Color(0.55,0.46,0.28),0.55) if not record.snow else Color(0.70,0.65,0.48),record.snow)
+			1: tuft(Color(0.56,0.50,0.32) if record.get("dead_city",false) else (c.lerp(Color(0.55,0.46,0.28),0.55) if not record.snow else Color(0.70,0.65,0.48)),record.snow)
 			2:
 				var autumn := Color(0.40,0.29,0.14) if not record.cold else Color(0.28,0.24,0.19)
-				leaf(Vector3(0,0.01,0),0.22,0.07,0,c.lerp(autumn,0.7))
+				leaf(Vector3(0,0.01,0),0.22,0.07,0,Color(0.66,0.53,0.20) if record.get("dead_city",false) else c.lerp(autumn,0.7))
 			3:
 				var tint := c.lerp(Color(0.23,0.22,0.13),0.65).lerp(Color(0.65,0.67,0.65),0.45 if record.snow else 0.0)
 				for i in 5: ribbon(Vector3(-0.07+i*0.028,0.018,-0.10),Vector3(-0.02+i*0.024,0.022,0.11),0.005,tint)
@@ -289,12 +334,14 @@ func build(records: Array[Dictionary], key: Vector2i, sea: RefCounted = null) ->
 					bent_ribbon(Vector3(0,0.008,0),middle,turn*Vector3(0.05,0.012,0.23),0.025,0.032,kelp*0.9,kelp)
 			10,13: shell(c.lerp(Color(0.76,0.70,0.55),0.65))
 			11,12: sea_grass(c.lerp(Color(0.16,0.30,0.19),0.80),int(record.kind)==12)
+			_: Regional.emit(self,record)
 	var arrays := []; arrays.resize(Mesh.ARRAY_MAX)
 	arrays[Mesh.ARRAY_VERTEX] = vertices; arrays[Mesh.ARRAY_NORMAL] = normals
 	arrays[Mesh.ARRAY_COLOR] = colours; arrays[Mesh.ARRAY_TEX_UV] = uvs
 	arrays[Mesh.ARRAY_TEX_UV2] = roots; arrays[Mesh.ARRAY_INDEX] = indices
 	arrays[Mesh.ARRAY_CUSTOM0] = anchors
 	if water: arrays[Mesh.ARRAY_CUSTOM1] = water_planes
+	if regional_field: arrays[Mesh.ARRAY_CUSTOM2] = regional_art
 	return arrays
 
 

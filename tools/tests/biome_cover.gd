@@ -193,7 +193,7 @@ func build(d: TerrainDetails,p: Vector2) -> Dictionary:
 			if only_kind>=0 and data.has("cover"):
 				data.cover.records = data.cover.records.filter(func(r: Dictionary): return int(r.kind)==only_kind)
 				var geometry := Geometry.new()
-				data.cover.arrays = geometry.build(data.cover.records,key,d._cover_field.sea if not d._cover_field.sea.tiles.is_empty() else null)
+				data.cover.arrays = geometry.build(data.cover.records,key,d._cover_field.sea if not d._cover_field.sea.tiles.is_empty() else null,d._cover_field if d._cover_field.regions.cave else null)
 				data.cover.lods = geometry.lods()
 			if data.has("cover"): records += data.cover.records.size(); vertices += (data.cover.arrays[Mesh.ARRAY_VERTEX] as PackedVector3Array).size()
 			if not d._chunks.has(key): d._install_chunk(key,data)
@@ -218,7 +218,7 @@ func choose_cover(d: TerrainDetails,requested: int) -> Dictionary:
 	# Keep temporary snapshot references out of the asynchronous render test.
 	var chosen := {}; var score := 0; var size := d.terrain.size_ei()
 	# Beach debris can be sparse enough to occupy only a single even chunk.
-	var step := 1 if requested in [Cover.Kind.WRACK,Cover.Kind.SHELL] else 2
+	var step := 1 if requested in [Cover.Kind.WRACK,Cover.Kind.SHELL] or requested>=Cover.Regions.FIRST else 2
 	var margin := step-1
 	for y in range(margin,int(size.y/8)-margin,step):
 		for x in range(margin,int(size.x/8)-margin,step):
@@ -276,6 +276,16 @@ func render_fixture() -> void:
 	var difference := delta(off,on); check(difference.over_2>30,"authored cover is visibly drawn")
 	rows.append({"case":"render","zone":id,"kind":requested,"point":str(p),"records":built.records,"vertices":built.vertices,"difference":difference,
 		"draws":view.get_render_info(Viewport.RENDER_INFO_TYPE_VISIBLE,Viewport.RENDER_INFO_DRAW_CALLS_IN_FRAME)})
+	if requested==Cover.Kind.MUSHROOM and only_kind==requested:
+		var original_shader:=d._cover_material.shader; var no_glow:=Shader.new()
+		check(original_shader.code.contains("COLOR.rgb*vec3(0.08,0.24,0.17)"),"mushroom shader has bounded material emission")
+		no_glow.code=original_shader.code.replace("COLOR.rgb*vec3(0.08,0.24,0.17)","vec3(0.0)")
+		d._cover_material.shader=no_glow
+		var control:=await snap(view,"no-glow")
+		check(delta(on,control).changed>0,"mushroom emission is visible without adding a light")
+		d._cover_material.shader=original_shader
+		check(delta(on,await snap(view,"glow-restored")).changed==0,"restoring material emission is exact")
+		rows.append({"case":"mushroom-emission","difference":delta(on,control)})
 	var grass_count := 0
 	for chunk: MultiMeshInstance3D in d._chunks.values(): grass_count += chunk.multimesh.instance_count
 	check(grass_count>0 if d._grass else grass_count==0,"grass and cover switches remain independent")
@@ -289,7 +299,7 @@ func render_fixture() -> void:
 	# Interaction expands scenery clearance to contain bent tips. Near walls
 	# that can remove plants before any pressure arrives. Compare the shader
 	# against the same geometry, and record that intended placement change.
-	d._cover_material.shader = Geometry.shader(false,false,false,not d._cover_field.sea.tiles.is_empty())
+	d._cover_material.shader = Geometry.shader(false,false,false,not d._cover_field.sea.tiles.is_empty(),d._cover_field.regions.cave)
 	var same_geometry := await snap(view,"interaction-clearance-control")
 	check(delta(same_geometry,empty_pressure).changed==0,"empty pressure preserves identical cover geometry")
 	rows.append({"case":"interaction-clearance","difference":delta(on,same_geometry)})
@@ -298,7 +308,7 @@ func render_fixture() -> void:
 	for i in 10: field.advance(contacts,Vector2(p.x,-p.y),0.05)
 	var pressed := await snap(view,"pressed")
 	difference = delta(same_geometry,pressed)
-	check(difference.over_2>10 if requested in [Cover.Kind.FLOWER,Cover.Kind.DRY,Cover.Kind.REED,Cover.Kind.CATTAIL] else difference.changed==0,"plants bend while rigid litter stays fixed")
+	check(difference.over_2>10 if requested in [Cover.Kind.FLOWER,Cover.Kind.DRY,Cover.Kind.REED,Cover.Kind.CATTAIL,Cover.Kind.FERN] else difference.changed==0,"plants bend while rigid litter stays fixed")
 	rows.append({"case":"pressure","difference":difference})
 	for node: MultiMeshInstance3D in d._chunks.values(): d.remove_child(node); d.add_child(node)
 	check(delta(pressed,await snap(view,"shadow-refresh")).changed==0,"cover shadows match forced refresh")
