@@ -237,6 +237,8 @@ const TEXTS := {
 	"Soft contact shadows (SSAO).": ["Мягкие контактные тени (SSAO).", "Weiche Kontaktschatten (SSAO)."],
 	"Bloom": ["Ореолы", "Bloom"],
 	"Glow around bright lights.": ["Свечение вокруг ярких источников света.", "Leuchten um helle Lichter."],
+	"Local water mist": ["Туман над водой", "Örtlicher Wassernebel"],
+	"Thin drifting mist above verified water and swamp surfaces, strongest on misty mornings and after rain. Requires Volumetric fog and the Forward+ renderer.": ["Тонкая дрейфующая дымка над подтверждёнными водоёмами и болотами, особенно по туманным утрам и после дождя. Требуются объёмный туман и рендерер Forward+.", "Dünner, treibender Nebel über bestätigten Wasser- und Sumpfflächen, besonders an nebligen Morgen und nach Regen. Benötigt volumetrischen Nebel und den Forward+-Renderer."],
 	"Steep rock textures": ["Текстуры отвесных скал", "Texturen steiler Felsen"],
 	"Side-projected textures on verified natural rock cliffs. Requires Terrain detail. Preserves paths, other terrain artwork and geometry. Off by default.": ["Боковая проекция текстур на подтверждённых природных скалах. Требуется детализация рельефа. Дорожки, остальной рисунок поверхности и геометрия сохраняются. По умолчанию выключено.", "Seitlich projizierte Texturen auf bestätigten natürlichen Felswänden. Benötigt Geländedetails. Wege, übrige Bodentexturen und Geometrie bleiben erhalten. Standardmäßig aus."],
 	"Severed limbs fly off": ["Отрубленные конечности отлетают", "Abgetrennte Gliedmaßen fliegen weg"],
