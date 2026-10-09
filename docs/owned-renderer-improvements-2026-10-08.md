@@ -2840,6 +2840,121 @@ regional profiles, shared weather wind and actual submission-efficient LOD.
 Wider camera/travel routes, rigid litter edges, device costs and artistic
 acceptance remain open. U45 still starts the subsequent gameplay track.
 
+### V2 follow-up: river and swamp banks, conservative sea debris
+
+Implementation checkpoint after `f2b952b`; source remains on
+`fix/catacomb-coop-deck`. The existing `gfx_biome_cover` option now adds sparse
+reeds to inland banks and cattails to swamp banks. It remains **off on every
+platform**. New wrack and shell geometry/rules require actual sand beside a
+verified sea; their coverage at this checkpoint is synthetic only. Underwater
+plants are **not implemented** by this change.
+
+Reference revision is still **R1
+`0092dc6e1d7c4aab3f74644a79e9bfca11ecf293`** in
+`/home/llm2x/Documents/evil-islands-owned-renderer` (read-only). The relevant
+locations are `Source/ground_cover.h:327-352` (swamp, river and sea rules),
+`Source/renderer_ground_cover.cpp:390-570` (admission) and `:697-728`
+(wet/shore fields). This is an independently authored adaptation to the existing
+Godot terrain streamer, not a new cover manager or a port of the compute pass.
+
+**Implementation map**
+
+- [biome_cover.gd:86](/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/game/src/game/fx/biome_cover.gd:86):
+  `_prepare_shores` reads each authored `Water_x_y` mesh once when the immutable
+  cover snapshot is built. It keeps submerged centre vertices from homogeneous
+  water/swamp tiles, applies current scripted water offsets, and excludes lava,
+  emissive liquids, mixed owners and water covered by a floor. Positions and
+  classification are packed into nearby 8 m chunk buckets; workers retain no
+  live water node, material or scene reference. The existing water/scenery/option
+  barriers join jobs and replace this snapshot.
+- [biome_cover.gd:126](/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/game/src/game/fx/biome_cover.gd:126):
+  `shore` and `bank_weights` use the nearest admitted water centre and its level.
+  Swamp reeds taper over a 3 m band, cattails over 2.2 m, inland reeds over
+  1.6 m. These are approximate bands based on the 2 m lattice with a 1 m
+  allowance, not exact wave/collision coverage. Roots must remain dry and only
+  0.06–0.8 m above nearby mean water, avoiding high cliffs. Stable 4 m patches
+  leave gaps instead of making uniform rows. Cave/unknown contexts stay excluded.
+- [biome_cover.gd:329](/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/game/src/game/fx/biome_cover.gd:329):
+  `bank_records` has a separate random sequence. The old seven-species sequence
+  remains fixed, so adding kinds does not reshuffle existing flowers or litter.
+  The existing dry footprint, atlas-alpha, floor, slope, scenery and unique
+  supporting-triangle checks still apply. A 2 m vertical exclusion contains the
+  tallest scaled cattail plus the possible 0.30 m soft-ground lift. The existing
+  pressure admission also permits reeds on otherwise bare ground.
+- [biome_cover_mesh.gd:134](/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/game/src/game/fx/biome_cover_mesh.gd:134):
+  `reed` builds a stalk with four curved leaves and either a seed head or a
+  capped cattail cylinder; `shell` makes a small ridged fan. `build` also adds
+  folded wrack ribbons. Reeds/cattails use existing wind and pressure; debris is
+  rigid and aligned to its supporting plane. All species share the existing
+  opaque chunk mesh, lighting, root attachment and shadow program. No new
+  shader sampler, material, per-frame manager or native/engine patch was added.
+
+**Important authored-data limitation:** `EITerrain.SEA_MATERIALS` still confirms
+only internal `zone1` material 2 as sea. Do not infer sea from map borders or
+waves. The starting map's dry sea coast is ground type 1, not sand type 3;
+R1's `Source/terrain_tile_presets.h` entry `Zone1` likewise has no Sand family.
+The reference's broader sand-corner support lives in
+`Source/terrain_tile_blend.h:161-170`; it is not imported here. Therefore this
+stage deliberately places **no wrack/shells on the observed zone1 coast**.
+Do not describe those two species as visually accepted on a real sandy beach,
+or relabel ordinary ground based on colour. A verified sandy sea map/profile
+and rendered acceptance are still needed.
+
+**Validation:** [biome-cover-shores-2026-10-09.json](/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/biome-cover-shores-2026-10-09.json)
+records **16,269 passing assertions in seven final runs**: focused native/script
+placement, Compatibility cattails, desktop Mobile/Forward+ reeds, and existing
+base/Lost in Astral cover regressions. The fixture uses complete authored zone1
+scenery. Settled empty-pressure, pause, forced shadow refresh, rebuild and
+off-restored image comparisons are exact on all three desktop renderers.
+All **533 sampled existing dry records** across zone1/zone11/zone15 match the
+previous `f2b952b` export byte-for-byte in both current sampler modes. The
+isolated placement scan finds 72 reeds and 17 cattails in zone1 before scenery
+exclusion; these counts are not full gameplay population measurements.
+
+Tests and reproducible controls:
+
+- `tools/tests/biome_cover_shores.gd`: actual liquid/sea identity, dry roots,
+  excluded materials/cliffs, mesh envelopes including soft-ground lift, tall
+  overhangs, immutable workers after water mesh removal/source mutation,
+  flood/drain/restore, covered water, and authored native/script placement.
+- `tools/tests/biome_cover.gd`: existing renderer/lifecycle fixture; accepts
+  `--cover-kind=7` for reeds and `=8` for cattails. The empty-pressure material
+  transition now receives the same settling interval as the initial on-state.
+- `tools/benchmarks/biome_cover_dry_fingerprint.gd`: runs against both old and
+  new packs; `biome_cover_shore_census.gd` records the authored classification.
+
+Final export is `.../owned-renderer-improvements-20261008-qa/v2-vegetation/cover-shores-accepted`.
+Pack SHA-256 is
+`92b827a43b610e9dcab07ad3f3a97d8cd1644559008c927287321fecdb4a9ce0`;
+all 229 current production script hashes match its manifest. The receipt links
+the exact frozen tools, runtime/native hashes, commands, logs and captures.
+The unchanged patched runtime is required for the existing native Mobile path.
+
+A first Mobile empty-pressure capture differed by seven pixels, maximum 3/255.
+Holding the same shader/geometry for 160 frames restores exact agreement;
+removing the y-deformation arithmetic did not remove the initial residual.
+`shores-empty-probe` preserves that comparison. This corrects fixture settling,
+not a proven engine or arithmetic defect. Earlier fixture-only type/membership
+errors are recorded in the receipt. No production failure was hidden by a
+relaxed image tolerance.
+
+**Cost and remaining work:** packed shoreline index payloads are 362,048 bytes
+in zone1, 247,440 in zone11 and 115,856 in zone15, excluding container overhead.
+Sampled bank-record generation in zone1 is about 0.182 ms median / 0.643 ms
+maximum with the native ground sampler and 0.621 / 1.343 ms with the script
+sampler. These are desktop construction samples, **not frame time or an
+Android/web benefit**. Additional populated chunks can add draws/shadow work;
+distance shrinking still submits vertices. Fine tuning density/shape, long
+camera routes, physical devices, actual sandy shores, underwater lighting and
+plants, mounds, richer biome profiles, shared weather wind and efficient LOD
+remain open. Next V2 implementation is underwater cover with correct original
+water attenuation, then the remaining regional/deformation work. Gameplay U45
+still begins the subsequent gameplay track.
+
+Desktop sunlight stays continuous on all renderers. Holding remains the
+Android/web fallback pending a better measured replacement. Nothing was
+installed, published or changed in original assets/saves/network protocol.
+
 ## Next work in the established order
 
 1. **P1/P2 remaining texture work:** retained outfit pixels and shared native
@@ -2896,5 +3011,7 @@ acceptance remain open. U45 still starts the subsequent gameplay track.
    wave fields, currents and waterfalls remain separate work. Both options stay
    off pending broader quality/device acceptance. V2 now has the optional
    grass-interaction, dry-land cover and soft-ground root attachment stages above.
-   Continue with the remaining shore/swamp/underwater/biome rules in the initial
-   visual sequence. No visual effect was silently enabled.
+   Dry river/swamp banks are now implemented with the conservative shore rules
+   above. Continue with underwater cover/lighting, authored sandy-beach acceptance
+   and the remaining biome rules in the initial visual sequence. No visual effect
+   was silently enabled.

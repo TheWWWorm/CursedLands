@@ -131,18 +131,52 @@ func tuft(colour: Color,short: bool) -> void:
 		ribbon(a,b,0.013,colour*0.85); ribbon(b,c,0.008,colour)
 
 
+func reed(colour: Color, cattail: bool) -> void:
+	var top := Vector3(0.07,1.25,0.03)
+	ribbon(Vector3.ZERO,top,0.012,colour*0.85)
+	for i in 4:
+		var turn := Basis(Vector3.UP,i*2.39996+seed)
+		var base := Vector3(0,0.12+i*0.11,0)
+		var elbow := base+turn*Vector3(0,0.45,0.16)
+		var tip := base+turn*Vector3(0,0.58,0.30)
+		ribbon(base,elbow,0.025,colour*0.85); ribbon(elbow,tip,0.010,colour)
+	if cattail:
+		var brown := Color(0.30,0.21,0.12)
+		var bottom := top-Vector3(0,0.14,0); var cap := top+Vector3(0,0.13,0)
+		for i in 6:
+			var a := Vector3(sin(i*TAU/6.0),0,cos(i*TAU/6.0))*0.043
+			var b := Vector3(sin((i+1)*TAU/6.0),0,cos((i+1)*TAU/6.0))*0.043
+			triangle(bottom+a,cap+a,bottom+b,brown); triangle(bottom+b,cap+a,cap+b,brown)
+			triangle(cap,cap+b,cap+a,brown*0.8)
+	else:
+		for i in 5:
+			var turn := Basis(Vector3.UP,i*2.39996)
+			ribbon(top-Vector3(0,0.16-i*0.025,0),top+turn*Vector3(0,0.08,0.08),0.016,colour.lerp(Color(0.58,0.48,0.28),0.7))
+
+
+func shell(colour: Color) -> void:
+	var hinge := Vector3(0,0.015,-0.075)
+	for i in 6:
+		var a := -1.2+float(i)*0.4; var b := a+0.4
+		var ridge := hinge+Vector3(sin((a+b)*0.5)*0.055,0.035,cos((a+b)*0.5)*0.09)
+		var left := hinge+Vector3(sin(a)*0.10,0,cos(a)*0.16)
+		var right := hinge+Vector3(sin(b)*0.10,0,cos(b)*0.16)
+		triangle(hinge,ridge,left,colour*0.85); triangle(hinge,right,ridge,colour)
+		triangle(left,ridge,right,colour*0.95)
+
+
 func build(records: Array[Dictionary], key: Vector2i) -> Array:
 	for record: Dictionary in records:
 		var p: Vector2 = record.p-Vector2(key)*8.0
 		root = Vector3(p.x,float(record.height)+0.008,-p.y); seed = record.seed
 		anchor = record.get("anchor",Vector4(-1,0,0,0))
 		transform = Transform3D(Basis(Vector3.UP,record.angle).scaled(Vector3.ONE*float(record.scale)),Vector3.ZERO)
-		if int(record.kind) in [2,3,4,5]:
+		if int(record.kind) in [2,3,4,5,9,10]:
 			var n: Vector3 = record.normal
 			if n.y < 0: n = -n
 			transform.basis = Basis(Quaternion(Vector3.UP,n))*transform.basis
 		var c: Color = record.colour
-		mobile = 1.0 if int(record.kind) in [0,1] else 0.0
+		mobile = 1.0 if int(record.kind) in [0,1,7,8] else 0.0
 		match int(record.kind):
 			0: # Flowers: green stem and a small five-petal head, two patch colours.
 				var top := Vector3(0.04,0.49,0.02)
@@ -175,6 +209,15 @@ func build(records: Array[Dictionary], key: Vector2i) -> Array:
 					var dir := Vector3(sin(i*2.4),0,cos(i*2.4))
 					var elbow := Vector3(0,0.25,0)+dir*0.15
 					ribbon(Vector3.ZERO,elbow,0.018,bark); ribbon(elbow,Vector3(0,0.55,0)+dir*0.3,0.008,bark)
+			7,8: reed(c.lerp(Color(0.28,0.34,0.13),0.65),int(record.kind)==8)
+			9:
+				var kelp := c.lerp(Color(0.22,0.25,0.10),0.80)
+				for i in 4:
+					var turn := Basis(Vector3.UP,i*1.9+seed)
+					var middle := turn*Vector3(0.02,0.035,0.10)
+					ribbon(Vector3(0,0.008,0),middle,0.025,kelp*0.9)
+					ribbon(middle,turn*Vector3(0.05,0.012,0.23),0.032,kelp)
+			10: shell(c.lerp(Color(0.76,0.70,0.55),0.65))
 	var arrays := []; arrays.resize(Mesh.ARRAY_MAX)
 	arrays[Mesh.ARRAY_VERTEX] = vertices; arrays[Mesh.ARRAY_NORMAL] = normals
 	arrays[Mesh.ARRAY_COLOR] = colours; arrays[Mesh.ARRAY_TEX_UV] = uvs

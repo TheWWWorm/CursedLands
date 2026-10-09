@@ -1,0 +1,1106 @@
+{
+  "date": "2026-10-09",
+  "status": "optional dry-bank reeds/cattails accepted in desktop fixtures; sea debris has synthetic placement coverage only; default remains off",
+  "parent_commit": "f2b952bdb64faee76db35fb425176ea78701e5c5",
+  "reference": {
+    "path": "/home/llm2x/Documents/evil-islands-owned-renderer",
+    "revision": "0092dc6e1d7c4aab3f74644a79e9bfca11ecf293",
+    "locations": [
+      "Source/ground_cover.h:327-352",
+      "Source/renderer_ground_cover.cpp:390-570,697-728",
+      "Source/terrain_tile_blend.h:161-170",
+      "Source/terrain_tile_presets.h:Zone1"
+    ]
+  },
+  "production_files": [
+    "game/src/game/fx/biome_cover.gd",
+    "game/src/game/fx/biome_cover_mesh.gd"
+  ],
+  "export_directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-shores-accepted",
+  "export_manifest_sha256": "3d41e1134de681289db3a4e08156d06329c3bc476b1288651d692edf90b6217c",
+  "export": {
+    "command": [
+      "/home/llm2x/.local/bin/godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/game",
+      "--export-pack",
+      "Linux",
+      "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-shores-accepted/CursedLands.pck"
+    ],
+    "seconds": 5.041978302993812,
+    "return_code": 0,
+    "errors": [],
+    "source_unchanged_during_export": true,
+    "sha256": {
+      "CursedLands.x86_64": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+      "CursedLands.pck": "92b827a43b610e9dcab07ad3f3a97d8cd1644559008c927287321fecdb4a9ce0",
+      "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+    }
+  },
+  "production_scripts_match_export": 229,
+  "total_checks": 16269,
+  "runs": [
+    {
+      "label": "shores-validation-headless",
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/shores-validation-headless",
+      "checks": 2011,
+      "run": {
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/biome_cover_shores.gd",
+        "tool_sha256_at_start": "f35b05d96013da306df0bcd05be0d2b625770f2639698b74594a84a34b44f1f3",
+        "helper_sha256_at_start": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "92b827a43b610e9dcab07ad3f3a97d8cd1644559008c927287321fecdb4a9ce0",
+        "termination_reason": null,
+        "timeout_sec": 150,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-shores-accepted/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/shores-validation-headless/tool-source.gd"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 4.06775003997609,
+        "other_render_processes_at_start": [
+          {
+            "pid": 164875,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 164875,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {}
+      },
+      "report": {
+        "checks": 2011,
+        "failures": 0,
+        "rows": [
+          {
+            "case": "synthetic",
+            "kinds": {
+              "7": 6,
+              "9": 2,
+              "10": 8
+            },
+            "shore_buckets": 18
+          },
+          {
+            "bank_counts": {
+              "7": 72,
+              "8": 17
+            },
+            "bank_job_max_us": 643,
+            "bank_job_median_us": 182,
+            "case": "authored",
+            "dry_count": 153,
+            "dry_hash": "7e8ba8df093b1314f93e67d93c4c4704cbbee96ed4eb2456461320aa40c19e97",
+            "focuses": {
+              "7": "(102.017, 79.40102)",
+              "8": "(132.5105, 34.0839)"
+            },
+            "index_bytes": 362048,
+            "load_and_prepare_us": 318341,
+            "map": "zone1",
+            "sampled_chunks": 434
+          },
+          {
+            "bank_counts": {},
+            "bank_job_max_us": 437,
+            "bank_job_median_us": 249,
+            "case": "authored",
+            "dry_count": 111,
+            "dry_hash": "f3522611ddf9194996fd7d1ae93b10d3ed1ace7dcac1297a1cb64a954c1f73b7",
+            "focuses": {},
+            "index_bytes": 247440,
+            "load_and_prepare_us": 716663,
+            "map": "zone11",
+            "sampled_chunks": 35
+          },
+          {
+            "bank_counts": {},
+            "bank_job_max_us": 413,
+            "bank_job_median_us": 235,
+            "case": "authored",
+            "dry_count": 269,
+            "dry_hash": "987a7bfa93e754eaf1247bd7c27a72efd017e10e1cb1ec029a3bb2f737adac3c",
+            "focuses": {},
+            "index_bytes": 115856,
+            "load_and_prepare_us": 546539,
+            "map": "zone15",
+            "sampled_chunks": 38
+          }
+        ]
+      }
+    },
+    {
+      "label": "shores-validation-script",
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/shores-validation-script",
+      "checks": 2011,
+      "run": {
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/biome_cover_shores.gd",
+        "tool_sha256_at_start": "f35b05d96013da306df0bcd05be0d2b625770f2639698b74594a84a34b44f1f3",
+        "helper_sha256_at_start": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "92b827a43b610e9dcab07ad3f3a97d8cd1644559008c927287321fecdb4a9ce0",
+        "termination_reason": null,
+        "timeout_sec": 150,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-shores-accepted/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/shores-validation-script/tool-source.gd",
+          "--ei-script-grass"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 4.308709754986921,
+        "other_render_processes_at_start": [
+          {
+            "pid": 164875,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 164875,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {}
+      },
+      "report": {
+        "checks": 2011,
+        "failures": 0,
+        "rows": [
+          {
+            "case": "synthetic",
+            "kinds": {
+              "7": 6,
+              "9": 2,
+              "10": 8
+            },
+            "shore_buckets": 18
+          },
+          {
+            "bank_counts": {
+              "7": 72,
+              "8": 17
+            },
+            "bank_job_max_us": 1343,
+            "bank_job_median_us": 621,
+            "case": "authored",
+            "dry_count": 153,
+            "dry_hash": "7e8ba8df093b1314f93e67d93c4c4704cbbee96ed4eb2456461320aa40c19e97",
+            "focuses": {
+              "7": "(102.017, 79.40102)",
+              "8": "(132.5105, 34.0839)"
+            },
+            "index_bytes": 362048,
+            "load_and_prepare_us": 365543,
+            "map": "zone1",
+            "sampled_chunks": 434
+          },
+          {
+            "bank_counts": {},
+            "bank_job_max_us": 944,
+            "bank_job_median_us": 756,
+            "case": "authored",
+            "dry_count": 111,
+            "dry_hash": "f3522611ddf9194996fd7d1ae93b10d3ed1ace7dcac1297a1cb64a954c1f73b7",
+            "focuses": {},
+            "index_bytes": 247440,
+            "load_and_prepare_us": 798173,
+            "map": "zone11",
+            "sampled_chunks": 35
+          },
+          {
+            "bank_counts": {},
+            "bank_job_max_us": 957,
+            "bank_job_median_us": 673,
+            "case": "authored",
+            "dry_count": 269,
+            "dry_hash": "987a7bfa93e754eaf1247bd7c27a72efd017e10e1cb1ec029a3bb2f737adac3c",
+            "focuses": {},
+            "index_bytes": 115856,
+            "load_and_prepare_us": 606447,
+            "map": "zone15",
+            "sampled_chunks": 38
+          }
+        ]
+      }
+    },
+    {
+      "label": "shores-validation-mobile",
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/shores-validation-mobile",
+      "checks": 1146,
+      "run": {
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/biome_cover.gd",
+        "tool_sha256_at_start": "84567a17fac22f7ee4cab95600ab2fb2123a974eea26c851ec2bdf7b1a576f50",
+        "helper_sha256_at_start": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "92b827a43b610e9dcab07ad3f3a97d8cd1644559008c927287321fecdb4a9ce0",
+        "termination_reason": null,
+        "timeout_sec": 150,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-shores-accepted/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "mobile",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/shores-validation-mobile/tool-source.gd",
+          "--cover-kind=7"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 9.348850865004351,
+        "other_render_processes_at_start": [
+          {
+            "pid": 161983,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 162591,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cache"
+        },
+        "warnings": [],
+        "errors": [],
+        "png_sha256": {
+          "cover-rebuilt.png": "70cc1c6b479e0c6f55bf0a813d4722138841f8c9fe173c7aaafee7eba93bbc1d",
+          "cover-original-wind-control.png": "3c54a5db4a2a0294fa40e4dd1c4fdf119790bdb4cda9c9332971db343593f87d",
+          "cover-on.png": "70cc1c6b479e0c6f55bf0a813d4722138841f8c9fe173c7aaafee7eba93bbc1d",
+          "cover-empty-pressure-stable.png": "70cc1c6b479e0c6f55bf0a813d4722138841f8c9fe173c7aaafee7eba93bbc1d",
+          "cover-pressed.png": "aecb20df43565714abda23156c139155ec8c631c74012c9d94e382adecfe2d19",
+          "cover-interaction-clearance-control.png": "70cc1c6b479e0c6f55bf0a813d4722138841f8c9fe173c7aaafee7eba93bbc1d",
+          "cover-paused.png": "1b5921128d15917999be1e52f7ece77cc05558e717ad0318ed63ce6c0bbf4f16",
+          "cover-shadow-refresh.png": "aecb20df43565714abda23156c139155ec8c631c74012c9d94e382adecfe2d19",
+          "cover-off.png": "9aa8858caa53cca6e5a0841e1fa515807e3adf2590f81a3e880672e0139e4a8c",
+          "cover-off-restored.png": "9aa8858caa53cca6e5a0841e1fa515807e3adf2590f81a3e880672e0139e4a8c",
+          "cover-paused-later.png": "1b5921128d15917999be1e52f7ece77cc05558e717ad0318ed63ce6c0bbf4f16",
+          "cover-empty-pressure.png": "70cc1c6b479e0c6f55bf0a813d4722138841f8c9fe173c7aaafee7eba93bbc1d",
+          "cover-original-wind-control-later.png": "2a464a92e1c1392bb1256f98161765b1e96c55441815506b4fe3cdfa5aae4a70",
+          "cover-off-stable.png": "9aa8858caa53cca6e5a0841e1fa515807e3adf2590f81a3e880672e0139e4a8c"
+        }
+      },
+      "report": {
+        "checks": 1146,
+        "failures": 0,
+        "rows": [
+          {
+            "case": "immutable-snapshot",
+            "kinds": {
+              "0": 29,
+              "1": 304,
+              "2": 48,
+              "3": 24,
+              "4": 3,
+              "5": 60,
+              "6": 2
+            },
+            "records": 470
+          },
+          {
+            "case": "original-wind-control",
+            "difference": {
+              "changed": 32729,
+              "over_2": 28195,
+              "peak": 98
+            }
+          },
+          {
+            "case": "render",
+            "difference": {
+              "changed": 5592,
+              "over_2": 5236,
+              "peak": 96
+            },
+            "draws": 440,
+            "kind": 7,
+            "point": "(155.3898, 58.04971)",
+            "records": 34,
+            "vertices": 1731,
+            "zone": "gz1g"
+          },
+          {
+            "case": "interaction-clearance",
+            "difference": {
+              "changed": 0,
+              "over_2": 0,
+              "peak": 0
+            }
+          },
+          {
+            "case": "pressure",
+            "difference": {
+              "changed": 5546,
+              "over_2": 5102,
+              "peak": 104
+            }
+          }
+        ]
+      }
+    },
+    {
+      "label": "shores-validation-forward",
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/shores-validation-forward",
+      "checks": 1146,
+      "run": {
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/biome_cover.gd",
+        "tool_sha256_at_start": "84567a17fac22f7ee4cab95600ab2fb2123a974eea26c851ec2bdf7b1a576f50",
+        "helper_sha256_at_start": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "92b827a43b610e9dcab07ad3f3a97d8cd1644559008c927287321fecdb4a9ce0",
+        "termination_reason": null,
+        "timeout_sec": 150,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-shores-accepted/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "forward_plus",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/shores-validation-forward/tool-source.gd",
+          "--cover-kind=7"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 9.085325872991234,
+        "other_render_processes_at_start": [
+          {
+            "pid": 162986,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 162986,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cache"
+        },
+        "warnings": [],
+        "errors": [],
+        "png_sha256": {
+          "cover-rebuilt.png": "76420fc339a91e0dc2dc1545874c2955cea5ca422f2c594f34ea3b4c5f046112",
+          "cover-original-wind-control.png": "bb887b92714a0d7efedd15e9c065561ec8c6a4eae217c2ddb947609571b25e7f",
+          "cover-on.png": "76420fc339a91e0dc2dc1545874c2955cea5ca422f2c594f34ea3b4c5f046112",
+          "cover-empty-pressure-stable.png": "76420fc339a91e0dc2dc1545874c2955cea5ca422f2c594f34ea3b4c5f046112",
+          "cover-pressed.png": "3aebd4f40638bbbcbefeaf03af3e67a3cc7af7128c656435bf0274d35ed1db39",
+          "cover-interaction-clearance-control.png": "76420fc339a91e0dc2dc1545874c2955cea5ca422f2c594f34ea3b4c5f046112",
+          "cover-paused.png": "95f7699ab0da5dd14b4845f0b80c1b65668b0076cd66e0410c65a400d82c3c67",
+          "cover-shadow-refresh.png": "3aebd4f40638bbbcbefeaf03af3e67a3cc7af7128c656435bf0274d35ed1db39",
+          "cover-off.png": "190c35b090914cd0fe351a56cb5b3e73403c02784874c77f4dd3be956035cac5",
+          "cover-off-restored.png": "190c35b090914cd0fe351a56cb5b3e73403c02784874c77f4dd3be956035cac5",
+          "cover-paused-later.png": "95f7699ab0da5dd14b4845f0b80c1b65668b0076cd66e0410c65a400d82c3c67",
+          "cover-empty-pressure.png": "76420fc339a91e0dc2dc1545874c2955cea5ca422f2c594f34ea3b4c5f046112",
+          "cover-original-wind-control-later.png": "0854548e265da7e2b63120d6c9b57de7ecbf6b5dc1d0a1d54c8bec70449347fe",
+          "cover-off-stable.png": "190c35b090914cd0fe351a56cb5b3e73403c02784874c77f4dd3be956035cac5"
+        }
+      },
+      "report": {
+        "checks": 1146,
+        "failures": 0,
+        "rows": [
+          {
+            "case": "immutable-snapshot",
+            "kinds": {
+              "0": 29,
+              "1": 304,
+              "2": 48,
+              "3": 24,
+              "4": 3,
+              "5": 60,
+              "6": 2
+            },
+            "records": 470
+          },
+          {
+            "case": "original-wind-control",
+            "difference": {
+              "changed": 50235,
+              "over_2": 15226,
+              "peak": 96
+            }
+          },
+          {
+            "case": "render",
+            "difference": {
+              "changed": 5897,
+              "over_2": 5050,
+              "peak": 95
+            },
+            "draws": 707,
+            "kind": 7,
+            "point": "(155.3898, 58.04971)",
+            "records": 34,
+            "vertices": 1731,
+            "zone": "gz1g"
+          },
+          {
+            "case": "interaction-clearance",
+            "difference": {
+              "changed": 0,
+              "over_2": 0,
+              "peak": 0
+            }
+          },
+          {
+            "case": "pressure",
+            "difference": {
+              "changed": 6150,
+              "over_2": 4694,
+              "peak": 98
+            }
+          }
+        ]
+      }
+    },
+    {
+      "label": "shores-validation-cattail-gl",
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/shores-validation-cattail-gl",
+      "checks": 1146,
+      "run": {
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/biome_cover.gd",
+        "tool_sha256_at_start": "84567a17fac22f7ee4cab95600ab2fb2123a974eea26c851ec2bdf7b1a576f50",
+        "helper_sha256_at_start": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "92b827a43b610e9dcab07ad3f3a97d8cd1644559008c927287321fecdb4a9ce0",
+        "termination_reason": null,
+        "timeout_sec": 150,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-shores-accepted/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/shores-validation-cattail-gl/tool-source.gd",
+          "--cover-kind=8"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 9.56756499299081,
+        "other_render_processes_at_start": [
+          {
+            "pid": 162986,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 164415,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {
+          "cover-rebuilt.png": "a0bc2566baf7a7439f12cb9bd008f4beebe58d19df5268145ce063af3f2b6820",
+          "cover-original-wind-control.png": "97fb8c088a8b935a020761263d3a37d4902927d138526711a7f4c360e0b0c552",
+          "cover-on.png": "a0bc2566baf7a7439f12cb9bd008f4beebe58d19df5268145ce063af3f2b6820",
+          "cover-empty-pressure-stable.png": "a0bc2566baf7a7439f12cb9bd008f4beebe58d19df5268145ce063af3f2b6820",
+          "cover-pressed.png": "8333d19c43feb5e4ef60af4835299197d88a02666d90131da0682a8d0d70595f",
+          "cover-interaction-clearance-control.png": "a0bc2566baf7a7439f12cb9bd008f4beebe58d19df5268145ce063af3f2b6820",
+          "cover-paused.png": "4378841fdab55f75eae8b54ee9c41b8433255278bfcfdf84d65d344a2917794d",
+          "cover-shadow-refresh.png": "8333d19c43feb5e4ef60af4835299197d88a02666d90131da0682a8d0d70595f",
+          "cover-off.png": "24743e87377924d7463798ed4aa1b9a61f7f97f1d84b0d5c896ed4503b0e7e3b",
+          "cover-off-restored.png": "24743e87377924d7463798ed4aa1b9a61f7f97f1d84b0d5c896ed4503b0e7e3b",
+          "cover-paused-later.png": "4378841fdab55f75eae8b54ee9c41b8433255278bfcfdf84d65d344a2917794d",
+          "cover-empty-pressure.png": "a0bc2566baf7a7439f12cb9bd008f4beebe58d19df5268145ce063af3f2b6820",
+          "cover-original-wind-control-later.png": "1f2fee87b8d302e2a27a1c87ab709acc2c54a135b409e2b76038d23791278109",
+          "cover-off-stable.png": "24743e87377924d7463798ed4aa1b9a61f7f97f1d84b0d5c896ed4503b0e7e3b"
+        }
+      },
+      "report": {
+        "checks": 1146,
+        "failures": 0,
+        "rows": [
+          {
+            "case": "immutable-snapshot",
+            "kinds": {
+              "0": 29,
+              "1": 304,
+              "2": 48,
+              "3": 24,
+              "4": 3,
+              "5": 60,
+              "6": 2
+            },
+            "records": 470
+          },
+          {
+            "case": "original-wind-control",
+            "difference": {
+              "changed": 65279,
+              "over_2": 34818,
+              "peak": 155
+            }
+          },
+          {
+            "case": "render",
+            "difference": {
+              "changed": 5340,
+              "over_2": 4728,
+              "peak": 136
+            },
+            "draws": 1170,
+            "kind": 8,
+            "point": "(154.7962, 57.41694)",
+            "records": 34,
+            "vertices": 1731,
+            "zone": "gz1g"
+          },
+          {
+            "case": "interaction-clearance",
+            "difference": {
+              "changed": 0,
+              "over_2": 0,
+              "peak": 0
+            }
+          },
+          {
+            "case": "pressure",
+            "difference": {
+              "changed": 5136,
+              "over_2": 4215,
+              "peak": 142
+            }
+          }
+        ]
+      }
+    },
+    {
+      "label": "shores-validation-regression",
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/shores-validation-regression",
+      "checks": 6352,
+      "run": {
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/biome_cover.gd",
+        "tool_sha256_at_start": "84567a17fac22f7ee4cab95600ab2fb2123a974eea26c851ec2bdf7b1a576f50",
+        "helper_sha256_at_start": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "92b827a43b610e9dcab07ad3f3a97d8cd1644559008c927287321fecdb4a9ce0",
+        "termination_reason": null,
+        "timeout_sec": 150,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-shores-accepted/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/shores-validation-regression/tool-source.gd"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 5.814207572984742,
+        "other_render_processes_at_start": [
+          {
+            "pid": 165904,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 165904,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {}
+      },
+      "report": {
+        "checks": 6352,
+        "failures": 0,
+        "rows": [
+          {
+            "case": "immutable-snapshot",
+            "kinds": {
+              "0": 29,
+              "1": 304,
+              "2": 48,
+              "3": 24,
+              "4": 3,
+              "5": 60,
+              "6": 2
+            },
+            "records": 470
+          },
+          {
+            "biome": "gipat",
+            "build_us_max": 3202,
+            "build_us_median": 819,
+            "case": "authored-metadata",
+            "chunks": 88,
+            "counts": {
+              "0": 102,
+              "2": 359,
+              "3": 160,
+              "4": 20,
+              "5": 75,
+              "6": 5,
+              "7": 6,
+              "8": 2
+            },
+            "id": "gz1g",
+            "map": "zone1",
+            "records": 729,
+            "scenery_loaded": false,
+            "serialized_mesh_bytes": 1225492
+          },
+          {
+            "biome": "gipat",
+            "build_us_max": 2826,
+            "build_us_median": 947,
+            "case": "authored-metadata",
+            "chunks": 88,
+            "counts": {
+              "0": 118,
+              "2": 530,
+              "3": 282,
+              "4": 37,
+              "5": 112,
+              "7": 23,
+              "8": 6
+            },
+            "id": "gz3g",
+            "map": "zone3obr",
+            "records": 1108,
+            "scenery_loaded": false,
+            "serialized_mesh_bytes": 1895128
+          },
+          {
+            "biome": "ingos",
+            "build_us_max": 4893,
+            "build_us_median": 745,
+            "case": "authored-metadata",
+            "chunks": 88,
+            "counts": {
+              "1": 58,
+              "3": 94,
+              "4": 12,
+              "5": 94,
+              "6": 2
+            },
+            "id": "gz11k",
+            "map": "zone11",
+            "records": 260,
+            "scenery_loaded": false,
+            "serialized_mesh_bytes": 611944
+          },
+          {
+            "biome": "suslanger",
+            "build_us_max": 1913,
+            "build_us_median": 498,
+            "case": "authored-metadata",
+            "chunks": 64,
+            "counts": {
+              "1": 117,
+              "5": 152
+            },
+            "id": "gz15h",
+            "map": "zone15",
+            "records": 269,
+            "scenery_loaded": false,
+            "serialized_mesh_bytes": 712432
+          },
+          {
+            "biome": "cave",
+            "build_us_max": 845,
+            "build_us_median": 485,
+            "case": "authored-metadata",
+            "chunks": 64,
+            "counts": {
+              "5": 225
+            },
+            "id": "gz5g",
+            "map": "zone5_1",
+            "records": 225,
+            "scenery_loaded": false,
+            "serialized_mesh_bytes": 262132
+          }
+        ]
+      }
+    },
+    {
+      "label": "shores-validation-astral",
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/shores-validation-astral",
+      "checks": 2457,
+      "run": {
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/biome_cover.gd",
+        "tool_sha256_at_start": "84567a17fac22f7ee4cab95600ab2fb2123a974eea26c851ec2bdf7b1a576f50",
+        "helper_sha256_at_start": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "92b827a43b610e9dcab07ad3f3a97d8cd1644559008c927287321fecdb4a9ce0",
+        "termination_reason": null,
+        "timeout_sec": 150,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-shores-accepted/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/shores-validation-astral/tool-source.gd",
+          "--cover-astral"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 5.827558691991726,
+        "other_render_processes_at_start": [
+          {
+            "pid": 165904,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 165904,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {}
+      },
+      "report": {
+        "checks": 2457,
+        "failures": 0,
+        "rows": [
+          {
+            "case": "immutable-snapshot",
+            "kinds": {
+              "0": 29,
+              "1": 304,
+              "2": 48,
+              "3": 24,
+              "4": 3,
+              "5": 60,
+              "6": 2
+            },
+            "records": 470
+          },
+          {
+            "biome": "gipat2",
+            "build_us_max": 5244,
+            "build_us_median": 838,
+            "case": "authored-metadata",
+            "chunks": 88,
+            "counts": {
+              "0": 80,
+              "1": 64,
+              "5": 100,
+              "7": 3
+            },
+            "id": "gz16g",
+            "map": "zone16",
+            "records": 247,
+            "scenery_loaded": false,
+            "serialized_mesh_bytes": 706336
+          },
+          {
+            "biome": "gipat2",
+            "build_us_max": 2109,
+            "build_us_median": 701,
+            "case": "authored-metadata",
+            "chunks": 88,
+            "counts": {
+              "0": 49,
+              "1": 6,
+              "5": 208,
+              "6": 7,
+              "7": 7,
+              "8": 6
+            },
+            "id": "gz7g",
+            "map": "zone7",
+            "records": 283,
+            "scenery_loaded": false,
+            "serialized_mesh_bytes": 559276
+          },
+          {
+            "biome": "unknown",
+            "build_us_max": 3008,
+            "build_us_median": 518,
+            "case": "authored-metadata",
+            "chunks": 88,
+            "counts": {
+              "5": 94
+            },
+            "id": "gz21k",
+            "map": "zone21",
+            "records": 94,
+            "scenery_loaded": false,
+            "serialized_mesh_bytes": 114904
+          }
+        ]
+      }
+    }
+  ],
+  "dry_distribution_control": {
+    "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/shores-dry-control",
+    "unchanged_records": 533,
+    "rows": [
+      {
+        "dry_count": 153,
+        "dry_hash": "7e8ba8df093b1314f93e67d93c4c4704cbbee96ed4eb2456461320aa40c19e97",
+        "map": "zone1"
+      },
+      {
+        "dry_count": 111,
+        "dry_hash": "f3522611ddf9194996fd7d1ae93b10d3ed1ace7dcac1297a1cb64a954c1f73b7",
+        "map": "zone11"
+      },
+      {
+        "dry_count": 269,
+        "dry_hash": "987a7bfa93e754eaf1247bd7c27a72efd017e10e1cb1ec029a3bb2f737adac3c",
+        "map": "zone15"
+      }
+    ]
+  },
+  "authored_shore_census": {
+    "liquids": {
+      "0:6": 3920,
+      "1:14": 5280,
+      "1:6": 40,
+      "255:255": 26556,
+      "2:14": 40,
+      "2:6": 13316
+    },
+    "markers": {
+      "1": 2131,
+      "2": 5210,
+      "3": 15287
+    },
+    "prefix": "zone1",
+    "roots": {
+      "0:high": 103,
+      "1:high": 317,
+      "1:low": 330,
+      "2:high": 53,
+      "2:low": 4
+    },
+    "samples": [
+      {
+        "above": 0.0918478471290585,
+        "code": 32769,
+        "distance": 0.515849590301514,
+        "p": "(71.37, 28.47)",
+        "type": 1
+      },
+      {
+        "above": 0.0920943083705588,
+        "code": 16385,
+        "distance": 1.41615653038025,
+        "p": "(69.37, 29.47)",
+        "type": 1
+      },
+      {
+        "above": 0.289377386860522,
+        "code": 32769,
+        "distance": 1.54907703399658,
+        "p": "(70.37, 29.47)",
+        "type": 1
+      },
+      {
+        "above": 0.26509735657801,
+        "code": 32769,
+        "distance": 1.49755859375,
+        "p": "(71.37, 29.47)",
+        "type": 1
+      },
+      {
+        "above": 0.195778681433731,
+        "code": 1,
+        "distance": 1.00942921638489,
+        "p": "(68.37, 30.47)",
+        "type": 1
+      },
+      {
+        "above": 0.369240643129682,
+        "code": 1,
+        "distance": 1.78887271881104,
+        "p": "(69.37, 30.47)",
+        "type": 1
+      },
+      {
+        "above": 0.451987204297893,
+        "code": 1,
+        "distance": 2.52672529220581,
+        "p": "(70.37, 30.47)",
+        "type": 1
+      },
+      {
+        "above": 0.373040141977526,
+        "code": 1,
+        "distance": 2.48967003822327,
+        "p": "(71.37, 30.47)",
+        "type": 1
+      },
+      {
+        "above": 0.13337112508829,
+        "code": 49153,
+        "distance": 0.448380827903748,
+        "p": "(66.37, 31.47)",
+        "type": 1
+      },
+      {
+        "above": 0.314972357286024,
+        "code": 49153,
+        "distance": 1.41615653038025,
+        "p": "(67.37, 31.47)",
+        "type": 1
+      },
+      {
+        "above": 0.483471636071884,
+        "code": 1,
+        "distance": 1.82450079917908,
+        "p": "(68.37, 31.47)",
+        "type": 1
+      },
+      {
+        "above": 0.652651700127757,
+        "code": 1,
+        "distance": 2.42312860488892,
+        "p": "(69.37, 31.47)",
+        "type": 1
+      }
+    ]
+  },
+  "development_findings": [
+    "Fixture parser repaired: tile_types is PackedInt32Array, not PackedByteArray; no production parser failure.",
+    "Fixture converted Vector3 classification to int for Array membership. Deterministic synthetic seed has no cattail draw despite positive eligibility; actual zone1 emits 17 cattails, and all four mesh envelopes are tested.",
+    "Zone1 dry coast is authored ground type 1, not sand; the reference Zone1 atlas profile also contains no Sand family. Do not broaden beach classification by colour or proximity. Sea wrack/shell rules remain unexercised in authored maps.",
+    "Desktop Mobile first empty-pressure image differed by 7 pixels (peak 3/255); same shader/geometry after 160 frames matched the static control exactly. Removing the y deformation line retained the first-frame residual. Fixture settling fixed; no production arithmetic or engine change claimed.",
+    "Review increased tall-bank scenery exclusion to 2 m to include the largest scaled cattail plus 0.30 m optional soft-ground lift; final acceptance uses that export."
+  ],
+  "limits": [
+    "Shore index uses submerged mean-level 2 m mesh centres and one-metre band allowance; it is approximate, excludes homogeneous failures and covered centres, and is not collision, exact wave coverage or underwater lighting.",
+    "Index payload counts omit Dictionary/allocator overhead. Timings are desktop bank-record generation, not whole-frame or Android/web performance.",
+    "Sea debris synthetic placement/geometry only; no general atlas family import, new sea classification or authored sandy-beach GPU acceptance.",
+    "Underwater plants, mounds, richer regional profiles, shared weather wind and submission-reducing LOD remain open.",
+    "No installed build, device, original asset, save, gameplay/network protocol or publication was changed. Desktop sunlight remains continuous; constrained held fallback remains."
+  ]
+}

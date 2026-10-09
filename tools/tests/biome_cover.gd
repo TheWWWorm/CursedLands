@@ -261,7 +261,11 @@ func render_fixture() -> void:
 	check(grass_count>0 if d._grass else grass_count==0,"grass and cover switches remain independent")
 	GameData.options["gfx_vegetation_interaction"] = 1; d.apply_options(); build(d,p)
 	var field := d.interaction; field.focus = Vector2(p.x,-p.y); d._cover_material.set_shader_parameter("vegetation_focus",field.focus)
+	# Mobile's first frames after changing the animated shader can differ in
+	# a few shadow pixels. Settle this transition just like the on-state above.
+	await frames(160)
 	var empty_pressure := await snap(view,"empty-pressure")
+	check(delta(empty_pressure,await snap(view,"empty-pressure-stable")).changed==0,"empty pressure settles before variant comparison")
 	# Interaction expands scenery clearance to contain bent tips. Near walls
 	# that can remove plants before any pressure arrives. Compare the shader
 	# against the same geometry, and record that intended placement change.
@@ -274,7 +278,7 @@ func render_fixture() -> void:
 	for i in 10: field.advance(contacts,Vector2(p.x,-p.y),0.05)
 	var pressed := await snap(view,"pressed")
 	difference = delta(same_geometry,pressed)
-	check(difference.over_2>10 if requested in [Cover.Kind.FLOWER,Cover.Kind.DRY] else difference.changed==0,"plants bend while rigid litter stays fixed")
+	check(difference.over_2>10 if requested in [Cover.Kind.FLOWER,Cover.Kind.DRY,Cover.Kind.REED,Cover.Kind.CATTAIL] else difference.changed==0,"plants bend while rigid litter stays fixed")
 	rows.append({"case":"pressure","difference":difference})
 	for node: MultiMeshInstance3D in d._chunks.values(): d.remove_child(node); d.add_child(node)
 	check(delta(pressed,await snap(view,"shadow-refresh")).changed==0,"cover shadows match forced refresh")
