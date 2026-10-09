@@ -5,7 +5,9 @@ const P := preload("res://src/game/script/script_parser.gd")
 static func apply(ast: ScriptParser, campaign: String, zone: String) -> void:
 	if campaign != CampaignProfile.ASTRAL:
 		if campaign == CampaignProfile.ORIGINAL:
-			if zone == "gz19h": preload("res://src/game/script/story_coop_traps.gd").apply_prison(ast)
+			if zone == "gz19h":
+				preload("res://src/game/script/story_coop_traps.gd").apply_prison(ast)
+				_prison_discovery_checks(ast)
 			preload("res://src/game/script/story_coop_predicates.gd").apply_original(ast,zone)
 			if zone == "gz15h": _prison_party_checks(ast)
 		if campaign == CampaignProfile.ORIGINAL and zone == "gz6g":
@@ -64,6 +66,64 @@ static func _prison_party_checks(ast: ScriptParser) -> void:
 			var def: Dictionary = ast.scripts.get(child,{})
 			if def.get("params",[]) != ["this"] or def.blocks.size() != 1 or def.blocks[0].conds.is_empty(): continue
 			def.party_check = true
+
+
+## These prison discoveries are shared quest state: the original For loops
+## give checks to initial heroes, but none to a late guest.
+## Keep the native waits and their saved positions; only their eligible
+## subjects expand, using the VM's existing once-per-world safety analysis.
+static func _prison_discovery_checks(ast: ScriptParser) -> void:
+	var chest := [P.S_SET,"HChest1",[P.N_CALL,"GetObjectByID",[[P.N_STR,"736257"]]]]
+	if ast.world.count(chest) != 1 or ast.world.filter(func(st):
+		return st[0] == P.S_SET and st[1] == "HChest1").size() != 1: return
+	var subject := [P.N_VAR,"this"]
+	var near_chest := [P.N_CALL,"IsLess",[[P.N_CALL,"DistanceUnitUnit",
+		[subject,[P.N_VAR,"HChest1"]]],[P.N_NUM,7.0]]]
+	var conditions := []
+	for point: Vector3 in [Vector3(98,476,7),Vector3(103,486,15),Vector3(109,476,7)]:
+		conditions.append([P.N_CALL,"IsLess",[[P.N_CALL,"DistanceUnitPoint",
+			[subject,[P.N_NUM,point.x],[P.N_NUM,point.y]]],[P.N_NUM,point.z]]])
+	conditions.append(near_chest)
+	_prison_discovery_family(ast,"VTriger#0#264",
+		["VCheck#0#265","VCheck#0#269","VCheck#0#271","VCheck#0#258"],conditions,
+		["VTriger#0#273","VTriger#0#261"],"q.gz19h.qk16h")
+	# The second discovery also names HChest1 in the shipped source. Its
+	# separate HChest2 opening/reward chain remains entirely untouched.
+	_prison_discovery_family(ast,"VTriger#0#278",["VCheck#0#279","VCheck#0#280"],
+		[[P.N_CALL,"UnitInSquare",[subject,[P.N_NUM,45.0],[P.N_NUM,306.0],
+			[P.N_NUM,113.0],[P.N_NUM,330.0]]],near_chest],
+		["VTriger#0#284","VTriger#0#285"],"q.gz19h.qk17h")
+
+
+static func _prison_discovery_family(ast: ScriptParser, root: String, names: Array,
+		conditions: Array, triggers: Array, quest: String) -> void:
+	if ast.world.count([P.S_CALL,root,[[P.N_VAR,"NULL"]]]) != 1 \
+			or ast.world.filter(func(st):return st[0] == P.S_CALL and st[1] == root).size() != 1: return
+	var subject := [P.N_VAR,"this"]
+	var kill := [P.S_CALL,"KillScript",[]]
+	var expected := {}
+	var calls := []
+	for i in names.size():
+		var trigger: String = triggers[1] if i == names.size()-1 else triggers[0]
+		expected[names[i]] = {"params":["this"],"blocks":[{"conds":[conditions[i]],
+			"body":[kill,[P.S_CALL,trigger,[subject]]]}]}
+		calls.append([P.S_CALL,names[i],[[P.N_VAR,"VSS#i#val"]]])
+	expected[root] = {"params":["this"],"blocks":[{"conds":[],"body":[kill,
+		[P.S_FOR,"VSS#i#val",[P.N_VAR,"Heroes"],calls]]}]}
+	var stages := {triggers[0]:[["",1.0],[".1",2.0],[".2",1.0]],
+		triggers[1]:[[".2",2.0],[".3",1.0]]}
+	for name: String in stages:
+		var body := [kill]
+		for stage: Array in stages[name]:
+			body.append([P.S_CALL,"GSSetVarMax",[[P.N_NUM,0.0],
+				[P.N_STR,quest+stage[0]],[P.N_NUM,stage[1]]]])
+		expected[name] = {"params":["this"],"blocks":[{"conds":[],"body":body}]}
+	# Validate the complete inspected family before marking any definition.
+	# A changed radius, actor action, reward or delay remains wholly authored.
+	for name: String in expected:
+		var actual: Dictionary = ast.scripts.get(name,{})
+		if actual.get("params",[]) != expected[name].params or actual.get("blocks",[]) != expected[name].blocks: return
+	for name: String in names: ast.scripts[name].party_check = true
 
 
 ## The slave-camp escape predates co-op: only Kir and Kel receive its
