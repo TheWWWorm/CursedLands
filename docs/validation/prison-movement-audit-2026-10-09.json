@@ -1,0 +1,1612 @@
+{
+  "date": "2026-10-09",
+  "purpose": "Read-only original gz19h named/cosmetic movement audit following individual prison-trap qualification.",
+  "result": "No omitted co-op hero staging or route-blocking named movement was reproduced. All inspected actor/object movement is explicitly mechanism- or NPC-specific. No production change is justified by this evidence.",
+  "scope": "Five mounted original MOB scripts: zone19, zone19q71h, zone19alarm1, zone19alarm2, and adjacent bz18h. Original map graph, relevant briefing casts/text/rewards, VM target resolution and party transfer source were inspected. The 33-check handler probe uses original mounted NPC records with controlled solo/four-hero rosters; it executes unmodified WorldScript and briefing handlers without scene navigation.",
+  "frozen_build": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/prison-damage-late-join-20261009/candidate02",
+    "sha256": {
+      "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+      "CursedLands.pck": "91e52617bf5fe35828ad7e3c1d9bf8825bb1b7daaf6b4ae7d6c0aa57aa3ddf75",
+      "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+    },
+    "game_source_comparison": {
+      "commit": "8195e68",
+      "matched_tracked_game_files": 613,
+      "differences": []
+    },
+    "source_status_at_receipt": " M game/src/game/fx/ground_contact_shader.gd\n M tools/tests/terrain_cliffs.gd\n?? tools/tests/ground_contact_relief.gd\n?? tools/tests/ground_contact_relief_scene.gd\n",
+    "dirty_renderer_excluded": true,
+    "production_files_changed": []
+  },
+  "findings": {
+    "prison_mechanisms": [
+      {
+        "binding": "MCK1",
+        "script": "VTriger#0#80",
+        "nid": 45621,
+        "kind": "LEVER",
+        "name": "MCK1",
+        "template": "stst115",
+        "position": [
+          392.0,
+          277.0,
+          -3.0
+        ],
+        "effect": "Remove original MC lever; raise matching replacement MCK from Z=-3 to Z=0 at unchanged XY; switch it on; unlock opposite MC lever; consume key 69."
+      },
+      {
+        "binding": "MCK3",
+        "script": "VTriger#0#81",
+        "nid": 45626,
+        "kind": "LEVER",
+        "name": "MCK3",
+        "template": "stst115",
+        "position": [
+          327.0,
+          119.0,
+          -3.0
+        ],
+        "effect": "Remove original MC lever; raise matching replacement MCK from Z=-3 to Z=0 at unchanged XY; switch it on; unlock opposite MC lever; consume key 69."
+      },
+      {
+        "binding": "MCK5",
+        "script": "VTriger#0#82",
+        "nid": 45630,
+        "kind": "LEVER",
+        "name": "MCK5",
+        "template": "stst115",
+        "position": [
+          467.0,
+          199.0,
+          -3.0
+        ],
+        "effect": "Remove original MC lever; raise matching replacement MCK from Z=-3 to Z=0 at unchanged XY; switch it on; unlock opposite MC lever; consume key 69."
+      }
+    ],
+    "npc_movement_groups": [
+      {
+        "map": "zone19",
+        "group": "a3",
+        "count": 10,
+        "ids": [
+          997053,
+          997055,
+          997057,
+          997047,
+          997054,
+          997056,
+          997058,
+          997048,
+          997051,
+          997052
+        ],
+        "prototypes": [
+          "Human Hadagan Guard Commander F17",
+          "Human Hadagan Guards A17",
+          "Human Hadagan Guards F17",
+          "Human Hadagan Guards M17"
+        ],
+        "authored_factions": [
+          1
+        ]
+      },
+      {
+        "map": "zone19alarm1",
+        "group": "a1",
+        "count": 8,
+        "ids": [
+          1000082,
+          1000095,
+          1000073,
+          1000096,
+          1000074,
+          1000097,
+          1000011,
+          1000099
+        ],
+        "prototypes": [
+          "Human Hadagan Guards F20",
+          "Human Hadagan Guards M20"
+        ],
+        "authored_factions": [
+          1
+        ]
+      },
+      {
+        "map": "zone19q71h",
+        "group": "s1",
+        "count": 22,
+        "ids": [
+          1000179,
+          1000181,
+          1000183,
+          1000185,
+          1000188,
+          1000170,
+          1000175,
+          1000177,
+          1000173,
+          1000171,
+          1000174,
+          1000178,
+          1000180,
+          1000182,
+          1000184,
+          1000186,
+          1000189,
+          1000176,
+          1000172,
+          1000187,
+          1000190,
+          1000105
+        ],
+        "prototypes": [
+          "Human Gipath NPC Elder F1",
+          "Human Hadagan Students A10",
+          "Human Hadagan Students F10",
+          "Human Hadagan Students M10"
+        ],
+        "authored_factions": [
+          13
+        ]
+      }
+    ],
+    "guard_dispatch": "zone19 #233/#234/#235 issue Run/UMSentry for a1 (eight added guards) toward the indexed story role. #381/#382 issue Run/UMSentry for a3 (ten guards) toward a portal control. zone19q71h #5 issues Run/UMSentry for s1 (21 students plus Starosta/Elder) toward the protagonist after one member dies. None moves a hero. Previously qualified alarm tests were not rerun.",
+    "elder_reveal": {
+      "actors": [
+        {
+          "nid": 1000054752,
+          "kind": "UNIT",
+          "name": "Elder",
+          "prototype": "Human Gipath NPC Elder F1",
+          "player": 0,
+          "position": [
+            54.5425987243652,
+            64.7979965209961,
+            0.0
+          ]
+        },
+        {
+          "nid": 1000013335,
+          "kind": "UNIT",
+          "name": "Zaku",
+          "prototype": "Human Hadagan NPC Rebel Zaku F1",
+          "player": 0,
+          "position": [
+            56.2162017822266,
+            63.382999420166,
+            0.0
+          ]
+        }
+      ],
+      "source": "bz18h #OnBriefingComplete(b.bz18h.s71) removes Zaku, sets Elder to Zaku's authored position, unhides Elder, offers s71_1, and waits 15 ticks. Completing s71_1 orders Elder alone to run to (51.4,38.4), SleepUntilIdle(Elder), then hide.",
+      "dialogue_context": "The s71 text presents a covered-face Zaku explaining the portal controls. s71_1 switches its cast to Hero/Elder and reveals the betrayer. This is an NPC identity reveal and departure, not party relocation.",
+      "briefings": {
+        "s71": {
+          "text_sha256": "d57da75b690cac41eccc352d7908c2e5fbb756ad75dce27878407f79ed311a2a",
+          "actors": [
+            "zaku",
+            "hero"
+          ],
+          "database_rewards": {}
+        },
+        "s71_1": {
+          "text_sha256": "a1a83c2791b2c778b79d2f178226c5729047f4829161999c1c4def44d2bb858a",
+          "actors": [
+            "hero",
+            "elder"
+          ],
+          "database_rewards": {
+            "bonus": 0,
+            "comment": "",
+            "give_items": [],
+            "give_quests": [
+              "q.gz19h.q72h",
+              "q.gz19h.q72h.1",
+              "q.gz19h.q72h.2"
+            ],
+            "give_quests2": [],
+            "money": 0.0,
+            "name": "s71_1",
+            "open_zones": [],
+            "take_items": [],
+            "unknown": 0.0,
+            "unknown2": []
+          }
+        },
+        "r72": {
+          "text_sha256": "f5cf30912977f74988823a2b0a577c18a23fbf9f8e9b5576d83fbb2803f4d0fa",
+          "actors": [
+            "hero",
+            "rick",
+            "deva"
+          ],
+          "database_rewards": {
+            "bonus": 0,
+            "comment": "",
+            "give_items": [],
+            "give_quests": [],
+            "give_quests2": [],
+            "money": 0.0,
+            "name": "R72",
+            "open_zones": [],
+            "take_items": [
+              "BrokenToy"
+            ],
+            "unknown": 0.0,
+            "unknown2": []
+          }
+        }
+      }
+    },
+    "portal_route": {
+      "authored_condition": "zone19 #12 requires PState>1 and GetUnitOfPlayer(0,0) inside x(454.6,458.6), y(59,63). #10 starts it after the authored 150-tick activation wait. There is no everyone-in-portal or companion-movement condition.",
+      "completion": "#15 completes q72h.27 and q72h; #35 completes its reward, offers b.bz7g.R72, broadcasts teleprt4.bik and LeaveToZone(0,bz7g,0). No prior hero SetCP or path completion is required.",
+      "vm_and_session": "VM LeaveToZone stores the requested named destination (1-based exit for Session). In campaign co-op Session.leave_zone -> _travel -> _complete_zone_travel -> _enter_zone -> _deploy_parties redeploys the connected player rosters; the source does not require extra heroes to copy the protagonist's portal approach.",
+      "map_sha256": "a385c0b699c487bc95fcb235fdb00a545b4633dbabdc3f61a167bd51107ffae0",
+      "zones": {
+        "bz18h": {
+          "allod": "suslanger",
+          "camera": "bz18h",
+          "exits": {
+            "1": {
+              "area": {
+                "position": [
+                  49.0,
+                  39.5
+                ],
+                "size": [
+                  6.0,
+                  4.70000076293945
+                ]
+              },
+              "deploy": {
+                "position": [
+                  51.5,
+                  44.2000007629395
+                ],
+                "size": [
+                  6.40000152587891,
+                  2.5
+                ]
+              },
+              "remove": {
+                "position": [
+                  49.0,
+                  39.5
+                ],
+                "size": [
+                  6.0,
+                  4.70000076293945
+                ]
+              },
+              "to": "gz19h_bz18h",
+              "to_exit": 1
+            }
+          },
+          "id": "bz18h",
+          "mob": "bz18h",
+          "mpr": "bz18h",
+          "position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "restrict": [
+            55.0,
+            60.0,
+            10.0
+          ],
+          "sky": "cave",
+          "type": "brief",
+          "weather": "none"
+        },
+        "bz7g": {
+          "allod": "gipat",
+          "camera": "bz7g",
+          "exits": {
+            "1": {
+              "area": {
+                "position": [
+                  36.2999992370605,
+                  94.0999984741211
+                ],
+                "size": [
+                  21.2999992370605,
+                  5.40000152587891
+                ]
+              },
+              "deploy": {
+                "position": [
+                  48.0,
+                  84.0
+                ],
+                "size": [
+                  6.0,
+                  6.0
+                ]
+              },
+              "remove": {
+                "position": [
+                  36.2999992370605,
+                  94.0999984741211
+                ],
+                "size": [
+                  21.2999992370605,
+                  5.40000152587891
+                ]
+              },
+              "to": "gz4g_bz7g",
+              "to_exit": 1
+            }
+          },
+          "figure": "ingm2rick",
+          "id": "bz7g",
+          "mob": "bz7g",
+          "mpr": "bz7g",
+          "position": [
+            -0.239999994635582,
+            0.690999984741211,
+            0.272000014781952
+          ],
+          "restrict": [
+            58.0,
+            72.0,
+            25.0
+          ],
+          "sky": "cave",
+          "type": "brief",
+          "weather": "none"
+        },
+        "gz18h_gz19h": {
+          "allod": "suslanger",
+          "exits": {
+            "1": {
+              "to": "gz18h",
+              "to_exit": 2
+            },
+            "2": {
+              "to": "gz19h",
+              "to_exit": 1
+            }
+          },
+          "id": "gz18h_gz19h",
+          "position": [
+            0.395000010728836,
+            0.0299999993294477,
+            -0.30799999833107
+          ],
+          "type": "edge"
+        },
+        "gz19h": {
+          "allod": "suslanger",
+          "exits": {
+            "1": {
+              "area": {
+                "position": [
+                  2.0,
+                  428.0
+                ],
+                "size": [
+                  12.0,
+                  9.0
+                ]
+              },
+              "deploy": {
+                "position": [
+                  2.0,
+                  428.0
+                ],
+                "size": [
+                  12.0,
+                  9.0
+                ]
+              },
+              "passtime": 8.0,
+              "to": "gz18h_gz19h",
+              "to_exit": 2,
+              "view": 254.724
+            },
+            "2": {
+              "area": {
+                "position": [
+                  400.0,
+                  428.200012207031
+                ],
+                "size": [
+                  9.5,
+                  4.5
+                ]
+              },
+              "deploy": {
+                "position": [
+                  400.0,
+                  423.5
+                ],
+                "size": [
+                  9.5,
+                  4.70001220703125
+                ]
+              },
+              "remove": {
+                "position": [
+                  400.0,
+                  428.200012207031
+                ],
+                "size": [
+                  9.5,
+                  4.5
+                ]
+              },
+              "to": "bz18h",
+              "to_exit": 1,
+              "view": 46.237
+            }
+          },
+          "figure": "ingm419",
+          "id": "gz19h",
+          "minimap": "zone19map",
+          "mob": "zone19",
+          "mpr": "zone19",
+          "objtex": "zone19quest",
+          "position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "size": "(16, 16)",
+          "sky": "normal",
+          "type": "game",
+          "weather": "tornado"
+        },
+        "gz19h_bz18h": {
+          "allod": "suslanger",
+          "exits": {
+            "1": {
+              "to": "gz19h",
+              "to_exit": 2
+            }
+          },
+          "id": "gz19h_bz18h",
+          "position": [
+            1.97099995613098,
+            -0.0540000014007092,
+            -0.331999987363815
+          ],
+          "type": "edge"
+        }
+      },
+      "coverage_boundary": "This is source evidence for the authored route contract, not a new played portal transfer, walking-path or ENet result."
+    },
+    "historical_scope": "The original G07 report cites Lost in Astral zone7:981 (SetCP(GetUnitOfPlayer(0,1),14.4,208,0)) as the concrete relocation lead. The residual named/cosmetic note was broader than gz19h. This audit does not close that LiA map or all G07 routes."
+  },
+  "source_inventory": [
+    {
+      "map": "bz18h",
+      "mob_sha256": "8ac85dcac4e0f3024924617dd27ec6f4ce86508a36729086d2188642f783f87c",
+      "script_sha256": "a6fa16301d10629cb95ef630fbe5d8d8e39ac3b424cffc38b13d6cab3c7c0938",
+      "object_count": 12,
+      "movement_calls": [
+        {
+          "block": 0,
+          "call": [
+            6,
+            "SetCP",
+            [
+              [
+                2,
+                "Elder"
+              ],
+              [
+                0,
+                56.2162
+              ],
+              [
+                0,
+                63.383
+              ],
+              [
+                0,
+                0.0
+              ]
+            ]
+          ],
+          "script": "#OnBriefingComplete",
+          "section": "body"
+        },
+        {
+          "block": 1,
+          "call": [
+            6,
+            "Run",
+            [
+              [
+                2,
+                "Elder"
+              ]
+            ]
+          ],
+          "script": "#OnBriefingComplete",
+          "section": "body"
+        },
+        {
+          "block": 1,
+          "call": [
+            6,
+            "UMSentry",
+            [
+              [
+                2,
+                "Elder"
+              ],
+              [
+                0,
+                51.4
+              ],
+              [
+                0,
+                38.4
+              ]
+            ]
+          ],
+          "script": "#OnBriefingComplete",
+          "section": "body"
+        }
+      ],
+      "builtin_names": [
+        "GSGetVar",
+        "GSSetVar",
+        "GetObjectByID",
+        "HideObject",
+        "IsEqual",
+        "IsEqualString",
+        "KillScript",
+        "RemoveUnitFromServer",
+        "Run",
+        "SendStringEvent",
+        "SetCP",
+        "Sleep",
+        "SleepUntilIdle",
+        "UMSentry"
+      ]
+    },
+    {
+      "map": "zone19",
+      "mob_sha256": "cb84eaf58818f6cea27fe71f3da0d678abc3cf8118b544f3dc0a59b957b1ab68",
+      "script_sha256": "be3563f125987345d54a84745d77d323a1ec990e52ca1db6bcd4440be210f38b",
+      "object_count": 3348,
+      "movement_calls": [
+        {
+          "block": 0,
+          "call": [
+            6,
+            "SetCPFast",
+            [
+              [
+                2,
+                "MCK1"
+              ],
+              [
+                3,
+                "GetX",
+                [
+                  [
+                    2,
+                    "MCK1"
+                  ]
+                ]
+              ],
+              [
+                3,
+                "GetY",
+                [
+                  [
+                    2,
+                    "MCK1"
+                  ]
+                ]
+              ],
+              [
+                0,
+                0.0
+              ]
+            ]
+          ],
+          "script": "VTriger#0#80",
+          "section": "body"
+        },
+        {
+          "block": 0,
+          "call": [
+            6,
+            "SetCPFast",
+            [
+              [
+                2,
+                "MCK3"
+              ],
+              [
+                3,
+                "GetX",
+                [
+                  [
+                    2,
+                    "MCK3"
+                  ]
+                ]
+              ],
+              [
+                3,
+                "GetY",
+                [
+                  [
+                    2,
+                    "MCK3"
+                  ]
+                ]
+              ],
+              [
+                0,
+                0.0
+              ]
+            ]
+          ],
+          "script": "VTriger#0#81",
+          "section": "body"
+        },
+        {
+          "block": 0,
+          "call": [
+            6,
+            "SetCPFast",
+            [
+              [
+                2,
+                "MCK5"
+              ],
+              [
+                3,
+                "GetX",
+                [
+                  [
+                    2,
+                    "MCK5"
+                  ]
+                ]
+              ],
+              [
+                3,
+                "GetY",
+                [
+                  [
+                    2,
+                    "MCK5"
+                  ]
+                ]
+              ],
+              [
+                0,
+                0.0
+              ]
+            ]
+          ],
+          "script": "VTriger#0#82",
+          "section": "body"
+        },
+        {
+          "block": 0,
+          "call": [
+            6,
+            "Run",
+            [
+              [
+                2,
+                "i"
+              ]
+            ]
+          ],
+          "script": "VTriger#0#233",
+          "section": "body"
+        },
+        {
+          "block": 0,
+          "call": [
+            6,
+            "UMSentry",
+            [
+              [
+                2,
+                "i"
+              ],
+              [
+                3,
+                "GetX",
+                [
+                  [
+                    3,
+                    "GetUnitOfPlayer",
+                    [
+                      [
+                        0,
+                        0.0
+                      ],
+                      [
+                        0,
+                        0.0
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              [
+                3,
+                "GetY",
+                [
+                  [
+                    3,
+                    "GetUnitOfPlayer",
+                    [
+                      [
+                        0,
+                        0.0
+                      ],
+                      [
+                        0,
+                        0.0
+                      ]
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ],
+          "script": "VTriger#0#233",
+          "section": "body"
+        },
+        {
+          "block": 0,
+          "call": [
+            6,
+            "Run",
+            [
+              [
+                2,
+                "i"
+              ]
+            ]
+          ],
+          "script": "VTriger#0#234",
+          "section": "body"
+        },
+        {
+          "block": 0,
+          "call": [
+            6,
+            "UMSentry",
+            [
+              [
+                2,
+                "i"
+              ],
+              [
+                3,
+                "GetX",
+                [
+                  [
+                    3,
+                    "GetUnitOfPlayer",
+                    [
+                      [
+                        0,
+                        0.0
+                      ],
+                      [
+                        0,
+                        1.0
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              [
+                3,
+                "GetY",
+                [
+                  [
+                    3,
+                    "GetUnitOfPlayer",
+                    [
+                      [
+                        0,
+                        0.0
+                      ],
+                      [
+                        0,
+                        1.0
+                      ]
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ],
+          "script": "VTriger#0#234",
+          "section": "body"
+        },
+        {
+          "block": 0,
+          "call": [
+            6,
+            "Run",
+            [
+              [
+                2,
+                "i"
+              ]
+            ]
+          ],
+          "script": "VTriger#0#235",
+          "section": "body"
+        },
+        {
+          "block": 0,
+          "call": [
+            6,
+            "UMSentry",
+            [
+              [
+                2,
+                "i"
+              ],
+              [
+                3,
+                "GetX",
+                [
+                  [
+                    3,
+                    "GetUnitOfPlayer",
+                    [
+                      [
+                        0,
+                        0.0
+                      ],
+                      [
+                        0,
+                        2.0
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              [
+                3,
+                "GetY",
+                [
+                  [
+                    3,
+                    "GetUnitOfPlayer",
+                    [
+                      [
+                        0,
+                        0.0
+                      ],
+                      [
+                        0,
+                        2.0
+                      ]
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ],
+          "script": "VTriger#0#235",
+          "section": "body"
+        },
+        {
+          "block": 0,
+          "call": [
+            6,
+            "Run",
+            [
+              [
+                2,
+                "i"
+              ]
+            ]
+          ],
+          "script": "VTriger#0#381",
+          "section": "body"
+        },
+        {
+          "block": 0,
+          "call": [
+            6,
+            "UMSentry",
+            [
+              [
+                2,
+                "i"
+              ],
+              [
+                3,
+                "Add",
+                [
+                  [
+                    0,
+                    425.0
+                  ],
+                  [
+                    3,
+                    "Random",
+                    [
+                      [
+                        0,
+                        1.0
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              [
+                3,
+                "Add",
+                [
+                  [
+                    0,
+                    78.0
+                  ],
+                  [
+                    3,
+                    "Random",
+                    [
+                      [
+                        0,
+                        1.0
+                      ]
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ],
+          "script": "VTriger#0#381",
+          "section": "body"
+        },
+        {
+          "block": 0,
+          "call": [
+            6,
+            "Run",
+            [
+              [
+                2,
+                "i"
+              ]
+            ]
+          ],
+          "script": "VTriger#0#382",
+          "section": "body"
+        },
+        {
+          "block": 0,
+          "call": [
+            6,
+            "UMSentry",
+            [
+              [
+                2,
+                "i"
+              ],
+              [
+                3,
+                "Add",
+                [
+                  [
+                    0,
+                    449.0
+                  ],
+                  [
+                    3,
+                    "Random",
+                    [
+                      [
+                        0,
+                        1.0
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              [
+                3,
+                "Add",
+                [
+                  [
+                    0,
+                    93.0
+                  ],
+                  [
+                    3,
+                    "Random",
+                    [
+                      [
+                        0,
+                        1.0
+                      ]
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ],
+          "script": "VTriger#0#382",
+          "section": "body"
+        }
+      ],
+      "builtin_names": [
+        "Add",
+        "AddMob",
+        "AddObject",
+        "AddRectToArea",
+        "AddRoundToArea",
+        "CastSpellPoint",
+        "CreateFXSource",
+        "CreateParticleSource",
+        "CreatePointLight",
+        "DistanceUnitPoint",
+        "DistanceUnitUnit",
+        "EraseQuestItem",
+        "Every",
+        "For",
+        "GSGetVar",
+        "GSSetVar",
+        "GSSetVarMax",
+        "GetFutureX",
+        "GetFutureY",
+        "GetLeverState",
+        "GetObject",
+        "GetObjectByID",
+        "GetObjectByName",
+        "GetObjectID",
+        "GetUnitOfPlayer",
+        "GetX",
+        "GetY",
+        "GiveItem",
+        "GiveMoney",
+        "GroupCross",
+        "GroupHas",
+        "GroupSee",
+        "GroupSize",
+        "HaveItem",
+        "InflictDamage",
+        "IsAlive",
+        "IsDead",
+        "IsEqual",
+        "IsGreater",
+        "IsInArea",
+        "IsLess",
+        "KillScript",
+        "LeaveToZone",
+        "Mul",
+        "Not",
+        "PlayMovie",
+        "PlayerSee",
+        "QuestComplete",
+        "Random",
+        "RemoveObjectFromServer",
+        "Run",
+        "SetCPFast",
+        "SetParticleSourceSize",
+        "SetScience",
+        "Sleep",
+        "SwitchLeverState",
+        "UMSentry",
+        "UnitInSquare"
+      ]
+    },
+    {
+      "map": "zone19alarm1",
+      "mob_sha256": "f816d51c3c63e208fa89058903ca3cd9787f5f4959a0304890bfcacb92dc1a47",
+      "script_sha256": "8cad875e9c312070390df74acdda11e8af04b92ddce1b4c42774be1ce4ef3109",
+      "object_count": 8,
+      "movement_calls": [],
+      "builtin_names": [
+        "AddObject",
+        "GetObject",
+        "Sleep"
+      ]
+    },
+    {
+      "map": "zone19alarm2",
+      "mob_sha256": "c3e583ff5d004113fc3e16a0c88d6b6daa8839701d1829c38954f3f84e5235e7",
+      "script_sha256": "dd7de37510a01a3fcdf2b3031bf36a9b0a3ca19c37ccbc0ab29acd61e2ed804e",
+      "object_count": 18,
+      "movement_calls": [],
+      "builtin_names": [
+        "Sleep"
+      ]
+    },
+    {
+      "map": "zone19q71h",
+      "mob_sha256": "f4071d6e6f102a4ce6fe55a1daee88001ff741056886886f9dc05b13d3f794cd",
+      "script_sha256": "5a3bad279f8af2b9fe307dbeb7e7717d80afefa2c397b045041ce44f0a6588de",
+      "object_count": 26,
+      "movement_calls": [
+        {
+          "block": 0,
+          "call": [
+            6,
+            "Run",
+            [
+              [
+                2,
+                "i"
+              ]
+            ]
+          ],
+          "script": "VTriger#2#5",
+          "section": "body"
+        },
+        {
+          "block": 0,
+          "call": [
+            6,
+            "UMSentry",
+            [
+              [
+                2,
+                "i"
+              ],
+              [
+                3,
+                "Add",
+                [
+                  [
+                    3,
+                    "GetX",
+                    [
+                      [
+                        3,
+                        "GetUnitOfPlayer",
+                        [
+                          [
+                            0,
+                            0.0
+                          ],
+                          [
+                            0,
+                            0.0
+                          ]
+                        ]
+                      ]
+                    ]
+                  ],
+                  [
+                    3,
+                    "Random",
+                    [
+                      [
+                        0,
+                        5.0
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              [
+                3,
+                "Add",
+                [
+                  [
+                    3,
+                    "GetY",
+                    [
+                      [
+                        3,
+                        "GetUnitOfPlayer",
+                        [
+                          [
+                            0,
+                            0.0
+                          ],
+                          [
+                            0,
+                            0.0
+                          ]
+                        ]
+                      ]
+                    ]
+                  ],
+                  [
+                    3,
+                    "Random",
+                    [
+                      [
+                        0,
+                        5.0
+                      ]
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ],
+          "script": "VTriger#2#5",
+          "section": "body"
+        }
+      ],
+      "builtin_names": [
+        "Add",
+        "AddObject",
+        "Any",
+        "Every",
+        "For",
+        "GSGetVar",
+        "GSSetVarMax",
+        "GetObject",
+        "GetObjectByID",
+        "GetUnitOfPlayer",
+        "GetX",
+        "GetY",
+        "GroupHas",
+        "IsDead",
+        "IsEqual",
+        "KillScript",
+        "Not",
+        "PlayerSee",
+        "Random",
+        "Run",
+        "SendStringEvent",
+        "Sleep",
+        "UMSentry"
+      ]
+    }
+  ],
+  "vm_references": [
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/game/src/game/script/vm.gd",
+      "line": 564,
+      "sha256": "2451c8c5bd1697411a94671b3e0b0e25f4cd1689d6276490c078220755813036"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/game/src/game/script/vm.gd",
+      "line": 702,
+      "sha256": "2451c8c5bd1697411a94671b3e0b0e25f4cd1689d6276490c078220755813036"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/game/src/game/script/vm.gd",
+      "line": 1099,
+      "sha256": "2451c8c5bd1697411a94671b3e0b0e25f4cd1689d6276490c078220755813036"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/game/src/game/script/vm.gd",
+      "line": 1239,
+      "sha256": "2451c8c5bd1697411a94671b3e0b0e25f4cd1689d6276490c078220755813036"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/game/src/game/script/vm.gd",
+      "line": 1456,
+      "sha256": "2451c8c5bd1697411a94671b3e0b0e25f4cd1689d6276490c078220755813036"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/game/src/game/script/briefings.gd",
+      "line": 538,
+      "sha256": "1bce15e0ff590015d67ea1ce9c229be87dba75c0847982f3f0f080ca6683d011"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/game/src/game/unit.gd",
+      "line": 439,
+      "sha256": "9f75c46c922cb0b919f547cd5c884fdb679e5b4a14c9787fffe821c160db3e8c"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/game/src/game/session.gd",
+      "line": 1850,
+      "sha256": "8c8fab59bf675bbb321eca6b19c65c319177a855af9f5e6a396454a0118a93c1"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/game/src/game/session.gd",
+      "line": 2053,
+      "sha256": "8c8fab59bf675bbb321eca6b19c65c319177a855af9f5e6a396454a0118a93c1"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/game/src/game/session.gd",
+      "line": 805,
+      "sha256": "8c8fab59bf675bbb321eca6b19c65c319177a855af9f5e6a396454a0118a93c1"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/game/src/game/session.gd",
+      "line": 1020,
+      "sha256": "8c8fab59bf675bbb321eca6b19c65c319177a855af9f5e6a396454a0118a93c1"
+    }
+  ],
+  "qualification": {
+    "checks": 33,
+    "failures": 0,
+    "handler_probe": {
+      "checks": 33,
+      "evidence": [
+        {
+          "casts": [
+            {
+              "cast": {
+                "a": 1000013335,
+                "b": 1500000001,
+                "names": {
+                  "hero": 1500000001,
+                  "zaku": 1000013335
+                }
+              },
+              "player": 0
+            }
+          ],
+          "elder_exit_point": [
+            51.4000015258789,
+            38.4000015258789
+          ],
+          "guest_positions": [
+            [
+              52.0,
+              46.0
+            ]
+          ],
+          "native_exit_hidden_after_dispatch": true,
+          "party_size": 1,
+          "reveal_position": [
+            56.2162017822266,
+            63.382999420166
+          ]
+        },
+        {
+          "casts": [
+            {
+              "cast": {
+                "a": 1000013335,
+                "b": 1500000001,
+                "names": {
+                  "hero": 1500000001,
+                  "zaku": 1000013335
+                }
+              },
+              "player": 0
+            },
+            {
+              "cast": {
+                "a": 1000013335,
+                "b": 1500000002,
+                "names": {
+                  "hero": 1500000002,
+                  "zaku": 1000013335
+                }
+              },
+              "player": 1
+            },
+            {
+              "cast": {
+                "a": 1000013335,
+                "b": 1500000003,
+                "names": {
+                  "hero": 1500000003,
+                  "zaku": 1000013335
+                }
+              },
+              "player": 2
+            },
+            {
+              "cast": {
+                "a": 1000013335,
+                "b": 1500000004,
+                "names": {
+                  "hero": 1500000004,
+                  "zaku": 1000013335
+                }
+              },
+              "player": 3
+            }
+          ],
+          "elder_exit_point": [
+            51.4000015258789,
+            38.4000015258789
+          ],
+          "guest_positions": [
+            [
+              52.0,
+              46.0
+            ],
+            [
+              53.0,
+              47.0
+            ],
+            [
+              54.0,
+              48.0
+            ],
+            [
+              55.0,
+              49.0
+            ]
+          ],
+          "native_exit_hidden_after_dispatch": true,
+          "party_size": 4,
+          "reveal_position": [
+            56.2162017822266,
+            63.382999420166
+          ]
+        }
+      ],
+      "failures": [],
+      "scope": "Unmodified native WorldScript and briefing-handler dispatch with mounted NPC records and controlled hero roster. No walking, navigation, rendered scene, full route, ENet or platform qualification."
+    },
+    "accepted_runs": [
+      {
+        "label": "source02",
+        "receipt_path": "/home/llm2x/Documents/EI/local/scratchpad/prison-movement-audit-20261009/source02/run.json",
+        "receipt_sha256": "dfe721cd74d6bffeb8d6454af2fd00b1c2f4a21c71a687eb7d81acd143bb683c",
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/prison-damage-late-join-20261009/candidate02/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/prison-movement-audit-20261009/source02/tool-source.gd"
+        ],
+        "return_code": 0,
+        "seconds": 2.756106841028668,
+        "timeout_seconds": 60,
+        "termination_reason": null,
+        "errors": [],
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "campaign": "base",
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/prison-movement-audit-20261009/source_audit.gd": "1208e20aa554a204182a0be685de224584ed37edf83a210824073088d9a196c1"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+          "CursedLands.pck": "91e52617bf5fe35828ad7e3c1d9bf8825bb1b7daaf6b4ae7d6c0aa57aa3ddf75",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "other_processes_at_start": [
+          {
+            "pid": 1764951,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": true
+          },
+          {
+            "pid": 1766304,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ],
+        "other_processes_at_end": [
+          {
+            "pid": 1764951,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": true
+          },
+          {
+            "pid": 1766304,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ],
+        "captures": {},
+        "input_profile": {}
+      },
+      {
+        "label": "actors02",
+        "receipt_path": "/home/llm2x/Documents/EI/local/scratchpad/prison-movement-audit-20261009/actors02/run.json",
+        "receipt_sha256": "4af49905491ca0e5ca361612dfbf84993bad5788f35542f61b581c30950f58cb",
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/prison-damage-late-join-20261009/candidate02/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/prison-movement-audit-20261009/actors02/tool-source.gd"
+        ],
+        "return_code": 0,
+        "seconds": 3.00879263196839,
+        "timeout_seconds": 60,
+        "termination_reason": null,
+        "errors": [],
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "campaign": "base",
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/prison-movement-audit-20261009/actor_scope.gd": "bdd08cc60ed7ae0d35de58809bc0d7f334ea452cb6bc956e614182df37ee8fc0"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+          "CursedLands.pck": "91e52617bf5fe35828ad7e3c1d9bf8825bb1b7daaf6b4ae7d6c0aa57aa3ddf75",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "other_processes_at_start": [
+          {
+            "pid": 1764951,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": true
+          },
+          {
+            "pid": 1766304,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ],
+        "other_processes_at_end": [
+          {
+            "pid": 1764951,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": true
+          },
+          {
+            "pid": 1766304,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ],
+        "captures": {},
+        "input_profile": {}
+      }
+    ]
+  },
+  "evidence_files": {
+    "/home/llm2x/Documents/EI/local/scratchpad/prison-movement-audit-20261009/source_audit.gd": "1208e20aa554a204182a0be685de224584ed37edf83a210824073088d9a196c1",
+    "/home/llm2x/Documents/EI/local/scratchpad/prison-movement-audit-20261009/actor_scope.gd": "bdd08cc60ed7ae0d35de58809bc0d7f334ea452cb6bc956e614182df37ee8fc0",
+    "/home/llm2x/Documents/EI/local/scratchpad/prison-movement-audit-20261009/source02/prison-movement-source.json": "2062413a570f79ae0b869d90113172038822757d38007455786d2cdaa38b16b4",
+    "/home/llm2x/Documents/EI/local/scratchpad/prison-movement-audit-20261009/actors02/prison-movement-actors.json": "3750bf62ca6d565394a5ff1cf914919a27ec8a4e45e4ca65f88b36b5d4775169",
+    "/home/llm2x/Documents/EI/local/scratchpad/prison-movement-audit-20261009/run.py": "602fed097746870c06714e1cfc4e2645d6c27a7934da453c2e6d4f7cf4d9d7e3"
+  },
+  "retained_iterations": [
+    {
+      "label": "source01",
+      "reason": "Successful first inventory omitted GetObject-style fixed group bindings; source02 includes both GetObject and GetObjectByID. Not used for group conclusions.",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/prison-movement-audit-20261009/source01"
+    },
+    {
+      "label": "actors01",
+      "reason": "Probe-only parse failure: check() was declared void but used as a guard. Corrected to return bool in actors02. No production execution or behavior result.",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/prison-movement-audit-20261009/actors01",
+      "receipt_sha256": "cfa6c7216a32af92f243164d48750ed86a94b01ff1363d4951076943b9cbc14b"
+    }
+  ],
+  "limitations": [
+    "No full physical prison or adjoining-village route playthrough.",
+    "No scene path, body-blocking, cutscene camera or actual Elder walk qualification.",
+    "No new ENet, Windows/Android, shipping-package, WAN or performance claim.",
+    "Other Godot processes overlapped and are listed in each run receipt.",
+    "No save repair, production edit, commit, release staging or user build replacement."
+  ],
+  "next_actionable_gap": "A real co-op physical route should cover the bz18h reveal and departure into the ambush, both prison control approaches, and the protagonist portal entry with other participants away from the trigger. For the broader named-relocation audit, the explicitly cited LiA zone7 companion placement is a separate source-specific lead; do not extend gz19h NPC moves to heroes.",
+  "root_review": {
+    "verified_source_receipt_sha256": "7cc4ff29224a584bc9b15526982f84a151524875be016605ffefa84f3a68c48b",
+    "evidence_file_hashes_verified": 5,
+    "accepted_run_receipts_verified": 2,
+    "committed_game_files_compared": 613,
+    "no_production_change": true,
+    "interpretation": "Mounted source and controlled original-handler calls support closing the specific gz19h/bz18h named-movement lead. This does not close full physical routes or the separate LiA zone7 lead."
+  }
+}
