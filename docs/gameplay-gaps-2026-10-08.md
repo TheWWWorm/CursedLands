@@ -24,7 +24,7 @@ The additional [campaign audit](/home/llm2x/Documents/EI/local/implementation-ga
 | U08 | Catacombs exit leaves client at ~4 FPS until reload; transfer/cutscene handoff is slow/buggy. Check retained worlds/resources and presentation lifecycle. | Prepared original exit/dialogue route passes in separate processes. Six matched 45-second 4K/max/2× Linux samples remain about 55–56 FPS across exit, reload and restart, with and without imported progress. No sustained 4 FPS reproduction; occasional long frames and Windows route remain open. |
 | U09 | Terror kills party/villagers after Catacombs; compare authored reset/despawn conditions. | Experimental 6 had the tombstone fix but missed saves that already contained a resurrected Terror. A local follow-up removes that actor only after the original escape removal has completed, preserving active escape/fade timers. An existing local route save reproduces the shipped failure; 50 checks cover real ENet late join, Catacombs revisit, reload and legacy corpse/live-actor persistence. It does not undo deaths already saved. |
 | U10 | LiA guest death offers reload options that both exit to menu. Use the appropriate client failure screen. | Fixed scripted LiA failure routing to co-op notice; guest has no reload action. Rendered ENet regression passes. |
-| U11 | Host and client characters lag, jump and catch up during ordinary co-op. Measure authority updates and interpolation under real load. | Fixed periodic co-op thumbnail capture and accelerated-time interpolation finishing each glide too early. Fifteen preview checks and 145 timing checks pass on desktop and Retroid; native placement regressions also pass. Internet jitter, repeated frame-time comparison and complete playthrough coverage remain open. |
+| U11 | Host and client characters lag, jump and catch up during ordinary co-op. Measure authority updates and interpolation under real load. | Fixed periodic co-op thumbnail capture and accelerated-time interpolation finishing each glide too early. Fifteen preview checks and 145 timing checks pass on desktop and Retroid; native placement regressions also pass. Current [120-second hardware follow-up](validation/sustained-coop-hardware-2026-10-09.json) passes 1×; 2× retains two isolated observed snapshot absences with prompt recovery and no multi-second gap. Internet/Windows and full playthrough coverage remain open. |
 | U12 | Shelter exit opens an empty travel map; verify intended departure. | Experimental 6 used an incorrect fallback route button. The local correction restores the original engine rule that reveals adjacent game regions when entering an edge; Portal/Shelter regain their outlined regions, hover panels and objective selection. Host/client travel, old-save recovery and both campaigns pass 73 checks; prior export fails eight. Full chapter/platform validation remains open. |
 | U13 | Selecting travel closes the map onto a frozen world before showing loading. Cover both desktop and deferred mobile presentation. | Loading overlay is prepared before travel UI closes; deferred presentation regression passes. |
 | U14 | Long paths have no preview line. | Fixed 90-metre anchor culling and route truncation. Long routes span the full length with the same 2,500-dot budget; short-route spacing and action stopping distance are preserved. Nine production checks and rendered destination review pass. |
@@ -49,7 +49,7 @@ The additional [campaign audit](/home/llm2x/Documents/EI/local/implementation-ga
 | U33 | LiA “Маскировка” advertises 1,130,758,144 money. | Local fix: the native float32 promised-money field was incorrectly decoded as int32. Original value is 230; experience stays 10. Sixteen base/LiA checks and a rendered review pass, including unchanged QuestComplete cash/experience accounting; previous export fails five. Not yet published. |
 | U34 | Main-menu Load/Continue briefly shows the game HUD before loading. | Local fix prepares the loading picture before simulation-service startup/request. The rendered baseline exposed 42 frames; Load and Continue now expose zero. Eighteen checks cover actual main-menu/worker startup, deferred presentation, a legacy save without metadata, and failed-load cleanup. Windows/Android runtime remains untested. |
 | U35 | After Маскировка, Kel fails to appear and blocks LiA progression. | Reproduced in solo: the first Shelter briefing deletes Kel while removing him from the party. Local fix keeps and persists the camp NPC and recovers proven older missing-Kel saves. Eighty-one solo/named-roster/real-ENet checks cover hand-in, transformation, reveal, Kel/elder conversation, route unlock and save/reload. Prepared quest state; full chapter play remains open. |
-| U36 | At 2×, co-op guests freeze/teleport and sometimes keep walking in place; worse on busy LiA maps. | Local transport fix uses real-time cadence, per-actor sequence ordering, repeated party state and compact visibility history. Lost-stop and reordered-packet checks pass. Real Portal simulation service/guest passes at both speeds; short 2× run has a 212 ms maximum packet gap. Full Windows/internet reproduction and long play remain open; not an FPS claim. |
+| U36 | At 2×, co-op guests freeze/teleport and sometimes keep walking in place; worse on busy LiA maps. | Local transport fixes retain wall-time cadence, per-actor ordering, repeated party state and compact visibility. Current [NVIDIA hardware follow-up](validation/sustained-coop-hardware-2026-10-09.json), two independent 120-second runs: 1× passes 52/52; 2× passes 51/52 because two broadcasts observed at the owner were absent at the guest. Both recover on the next received matching state; maximum guest gaps are 150/356 ms and frame gaps 60/76 ms. The strict 2× failure is retained. Multi-second Windows/internet freezes remain unreplicated; no blanket fix or FPS claim. |
 | U37 | Gamepad self-healing/buffing, radial menus and body-part targeting are awkward in co-op. | Local fix defaults friendly spells to self, adds X self-cast, honors D-pad ally selection with A/RT, and gives body parts six equal labelled sectors. Wheels support D-pad navigation, stick-boundary hysteresis and neutral-on-open. Nineteen rendered ENet checks pass; real device ergonomics remain untested. |
 | U38 | Resetting training leaves equipped spells usable despite unmet requirements. | Local fix keeps equipped spells but disables them until requirements are restored. Authority admission and queued execution recheck eligibility; HUD/radial entries show it. Actual co-op reset, invalid requests and restored training are covered; item and scripted spells remain separate. |
 | U39 | Healing produces effects that fly upward. Compare the original healing visual, attachment, orientation and lifetime. | Locally fixed in `1ee2336`: removed the extra billboard attached to the native rising light; original body-bound healing particles and light timing remain. [Receipt](gameplay-healing-validation.json): 56 passing checks, 68 original-x86 light samples and viewed ENet before/after captures. The exact originally reported spell/scene was unspecified. |
@@ -209,6 +209,42 @@ A separate real simulation worker loads a copied ordinary Portal route save with
 Export `gameplay-gaps56` uses protocol **13**, requiring matching peers. The spell/controller checks, packet recovery/ordering checks and existing 145 interpolation checks pass. The body-part wheel was visually inspected. Experimental 6 and device installations remain unchanged. Broad performance optimization is still deferred.
 
 
+## Sustained hardware transport follow-up — 9 October
+
+[Hardware evidence](validation/sustained-coop-hardware-2026-10-09.json) records
+104 executed checks in two independent 120-second runs using the final
+`79bee8a` application pack and qualified Linux runtime. Actual RenderingServer
+identity is NVIDIA RTX 3090 / Vulkan / Forward+. The original Portal map retains
+415 actors, normal simulation and a separate authority worker.
+
+| Speed | Checks | Maximum guest update gap | Observed broadcasts missing at guest | Maximum frontend frame gap |
+|---|---|---|---|---|
+| 1× | 52/52 pass | 150 ms | 0 | 60 ms |
+| 2× | 51/52 pass | 356 ms | 2 | 76 ms |
+
+The strict zero-missing-broadcast assertion at 2× remains failed. For serials
+4230 and 7652, the next guest state arrives 247 and 139 ms after the owner's
+missing observation, respectively; the next three observed positions/actions
+match across peers. The two surrounding guest-update gaps are 356 and 228 ms.
+These are isolated application-observed absences with recovery, not evidence
+of a persistent mismatch or a reproduced multi-second presentation freeze.
+The unreliable snapshot path repeats party state each update; no transport-cause
+inference or production change was made from these two observations.
+
+Actual capture dimensions are **5120×2880 for the owner** and **1280×720 for the
+guest SubViewport**: the default display profile superseded the CLI window size.
+Start captures retain transient loading/portrait UI; end views show the original
+actors and UI. Both frontend/worker pairs exit cleanly, inputs remain unchanged
+and process inventories show no foreign Godot activity. This is Linux loopback
+with two frontends in one process, not Windows/WAN, busy combat or full playthrough
+acceptance. It does not establish the user's 4K/max-settings FPS case.
+
+The earlier [llvmpipe failure](validation/sustained-coop-delivery-2026-10-09.json)
+remains: 1× had a 1,144 ms guest gap and 43 observed missing broadcasts; its 2×
+phase did not run. Hardware/backend/build/view differences preclude attributing
+that failure to software rendering from these follow-ups alone. Do not replace
+the retained strict partial result with the passing short headless probes.
+
 ## Earlier pausing checkpoint — 9 October
 
 At the earlier stop request, the late-join trigger task was completed and U39–U45 were queued. The user has since resumed renderer and gameplay work; the current table above and continuation receipts below supersede that paused status. The consolidated [handoff](gameplay-handoff-2026-10-09.md) separates unpublished code, new requests, unresolved reproductions and remaining validation.
@@ -217,7 +253,7 @@ At the earlier stop request, the late-join trigger task was completed and U39–
 
 ## Gameplay continuation — 9 October
 
-[U45 investigation](gameplay-cave-queen-validation.json), commit `8f0070d`, establishes the original one-of-three poison-source behavior and fixes removed actors counting as dead. All three actual authored poisoning routes pass on an ENet host and guest through save/reload. This is a separate premature-completion defect; the reported all-creatures-dead incomplete quest still needs its failing state to reproduce. No success flags or completed saves were rewritten.
+[U45 investigation](gameplay-cave-queen-validation.json), commit `8f0070d`, establishes the original one-of-three poison-source behavior and fixes removed actors counting as dead. All three actual authored poisoning routes pass on an ENet host and guest through save/reload. This is a separate premature-completion defect. The later [supplied-save investigation](validation/cave-queen-user-save-2026-10-09.json) finds two required creatures still alive and verifies original completion after both deaths; it does not demonstrate an all-dead softlock. No success flags or completed saves were rewritten.
 
 [U44 dialogue presentation](gameplay-dialogue-poses-validation.json), commit `8bb5ced`, restores native actor specials, including the Old Dragon's grounded conversation and return to airborne idle afterward. [U39 healing](gameplay-healing-validation.json), commit `1ee2336`, removes the separate orb attached to the original rising light while preserving the body particles and native light trajectory. Both changes have viewed before/after captures and actual host/guest checks. These Linux results add no full-campaign, WAN, target-device or performance acceptance. Protocol remains13; all changes remain unpublished.
 
