@@ -11,6 +11,8 @@ var failures := 0
 var seconds := 120.0
 var speeds := [1,2]
 var source := ""
+var required_adapter := ""
+var renderer_info := {}
 var host: ObservedSession
 var guest: ObservedSession
 var hg: Game
@@ -291,7 +293,8 @@ func finish() -> void:
 	await wait_real(0.2)
 	var report := {"checks":checks,"failures":failures,"network_protocol":NetStatus.PROTOCOL,
 		"seconds_per_speed":seconds,"worker_pid":worker_pid,"runs":runs,"options":GameData.options,"renderer":RenderingServer.get_current_rendering_method(),
-		"display":DisplayServer.get_name(),"scope":"Linux loopback live simulation service; two frontends share one process. No Windows, WAN or full-playthrough claim."}
+		"display":DisplayServer.get_name(),"renderer_info":renderer_info,
+		"scope":"Linux loopback live simulation service; two frontends share one process. No Windows, WAN or full-playthrough claim."}
 	FileAccess.open("user://sustained-coop-delivery.json",FileAccess.WRITE).store_string(JSON.stringify(report,"\t"))
 	print("SUSTAINED_COOP_DELIVERY %d checks %d failures"%[checks,failures])
 	get_tree().quit(1 if failures else 0)
@@ -306,6 +309,16 @@ func _ready() -> void:
 			for value in arg.trim_prefix("--speeds=").split(","):
 				if int(value) in [1,2]: speeds.append(int(value))
 		elif arg.begins_with("--route-save="): source=arg.trim_prefix("--route-save=")
+		elif arg.begins_with("--require-adapter="): required_adapter=arg.trim_prefix("--require-adapter=")
+	renderer_info={"method":RenderingServer.get_current_rendering_method(),
+		"driver":RenderingServer.get_current_rendering_driver_name(),"display":DisplayServer.get_name(),
+		"adapter":RenderingServer.get_video_adapter_name(),"vendor":RenderingServer.get_video_adapter_vendor(),
+		"api":RenderingServer.get_video_adapter_api_version()}
+	print("SUSTAINED_RENDERER ",JSON.stringify(renderer_info))
+	if not required_adapter.is_empty():
+		check(renderer_info.display!="headless" and renderer_info.method=="forward_plus" \
+			and required_adapter.to_lower() in String(renderer_info.adapter).to_lower(),
+			"actual Forward+ renderer uses required hardware adapter "+required_adapter)
 	check(NetStatus.PROTOCOL==13,"all frontend scripts require protocol13")
 	check(not source.is_empty() and FileAccess.file_exists(source),"explicit disposable source save exists")
 	if failures: await finish(); return
@@ -318,6 +331,7 @@ func _ready() -> void:
 	hg=Game.new(); hg.session=host; host.game=hg; get_parent().add_child(hg); get_parent().game=hg
 	check(await host.local_host.start(29942,2,false)==OK,"start unchanged co-op simulation service")
 	worker_pid=host.local_host.process_id
+	print("SUSTAINED_SERVICE ",worker_pid)
 	if failures: await finish(); return
 	viewport=SubViewport.new(); viewport.size=Vector2i(1280,720); viewport.own_world_3d=true
 	viewport.render_target_update_mode=SubViewport.UPDATE_ALWAYS; add_child(viewport)

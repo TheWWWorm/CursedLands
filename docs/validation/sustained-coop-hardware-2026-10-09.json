@@ -1,0 +1,937 @@
+{
+  "date": "2026-10-09",
+  "status": "hardware acceptance has failures; see independent results",
+  "production_changed": false,
+  "source_commit": "79bee8a",
+  "export_receipt": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/cloud-coop-final-01/export.json",
+  "export_receipt_sha256": "3c59781adce17fd0d31d932c1312d4b00d36e8dbf6f407769bb067166cc82f48",
+  "protocol": 13,
+  "fixture": "tools/tests/sustained_coop_delivery.gd",
+  "runner": "tools/tests/run_sustained_coop_delivery.py",
+  "runner_sha256": "1a80fb73b1d26355195ca1c90448a6e773e544b0c11ea0df0f7f03c52d903b1b",
+  "checks": 104,
+  "failures": 1,
+  "completed_sustained_speeds": [
+    1,
+    2
+  ],
+  "accepted_sustained_speeds": [
+    1
+  ],
+  "quiet_interval": true,
+  "runs": [
+    {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/transport-sustained-20261009/hardware-1x-01",
+      "runner_receipt": "/home/llm2x/Documents/EI/local/scratchpad/transport-sustained-20261009/hardware-1x-01/run.json",
+      "runner_receipt_sha256": "6b9665332d63bae8039ff31eb624bea92f1f26f81509b27f5554fb29d59688cf",
+      "passed": true,
+      "checks": 52,
+      "failures": 0,
+      "exit_code": 0,
+      "errors": [],
+      "worker_logs": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/transport-sustained-20261009/hardware-1x-01/profile/godot/app_userdata/Cursed Lands/local-host/1204552-4858558.cfg.log",
+          "sha256": "a13c3923216abaa59847f0852048c77532eb7a6f8de2b0fadc7983258c302108",
+          "errors": []
+        }
+      ],
+      "hardware_confirmed": true,
+      "renderer_info": {
+        "adapter": "NVIDIA GeForce RTX 3090",
+        "api": "1.4.312",
+        "display": "X11",
+        "driver": "vulkan",
+        "method": "forward_plus",
+        "vendor": "NVIDIA"
+      },
+      "inputs_unchanged": true,
+      "phase_completed": true,
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "4a6242634eb82c56ea3c2a9be79b565a190a210a05157348f91297e15dafd9ef",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "fixture_sha256": "c264686a5ebd753be562d75c1358a3afa03f3194c42e8c5e95e37135d4ddd6ff",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/cloud-coop-final-01/CursedLands.x86_64",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/transport-sustained-20261009/hardware-1x-01/sustained_coop_delivery.gd",
+        "--route-save=/home/llm2x/Documents/EI/local/scratchpad/transport-sustained-20261009/hardware-1x-01/route-source.sav",
+        "--seconds=120",
+        "--speeds=1",
+        "--require-adapter=NVIDIA"
+      ],
+      "foreign_engine_processes_seen": [],
+      "process_inventory": "/home/llm2x/Documents/EI/local/scratchpad/transport-sustained-20261009/hardware-1x-01/processes.json",
+      "assertion_failures": [],
+      "workload": {
+        "zone": "gz1h",
+        "speed": 1,
+        "wall_seconds": 120.006,
+        "population": 415,
+        "command_count": 334,
+        "census_samples": 119,
+        "moving_actor_range": [
+          104,
+          246
+        ],
+        "fighting_actor_range": [
+          0,
+          0
+        ],
+        "visible_model_range": [
+          7,
+          10
+        ],
+        "guest_anchor": [
+          407.0,
+          81.953125
+        ]
+      },
+      "guest": {
+        "authority_completed_55ms_ticks": 2294,
+        "authority_snapshot_seconds": 126.170000000009,
+        "duplicates": 0,
+        "gaps_over_1000ms": 0,
+        "gaps_over_250ms": 0,
+        "gaps_over_500ms": 0,
+        "initial_silence_ms": 21,
+        "observer_usec": 62323,
+        "party_arrival_gap_ms": {
+          "count": 1190,
+          "max": 150,
+          "p50": 100,
+          "p95": 122,
+          "p99": 142,
+          "sum": 119985
+        },
+        "party_uid": 1500000002,
+        "party_updates": 1191,
+        "received_snapshot_payload_bytes": {
+          "count": 10532,
+          "max": 1108,
+          "p50": 1100,
+          "p95": 1100,
+          "p99": 1108,
+          "sum": 10857452
+        },
+        "reordered": 0,
+        "trailing_silence_ms": 0
+      },
+      "owner_observer": {
+        "authority_completed_55ms_ticks": 2296,
+        "authority_snapshot_seconds": 126.280000000009,
+        "duplicates": 0,
+        "gaps_over_1000ms": 0,
+        "gaps_over_250ms": 0,
+        "gaps_over_500ms": 0,
+        "initial_silence_ms": 4,
+        "observer_usec": 75969,
+        "party_arrival_gap_ms": {
+          "count": 1190,
+          "max": 150,
+          "p50": 100,
+          "p95": 122,
+          "p99": 139,
+          "sum": 120000
+        },
+        "party_uid": 1500000002,
+        "party_updates": 1191,
+        "received_snapshot_payload_bytes": {
+          "count": 11676,
+          "max": 1108,
+          "p50": 1100,
+          "p95": 1100,
+          "p99": 1108,
+          "sum": 11213524
+        },
+        "reordered": 0,
+        "trailing_silence_ms": 0
+      },
+      "paired_delivery": {
+        "common": 1160,
+        "absent_at_guest_seen_by_owner_count": 0,
+        "absent_at_owner_seen_by_guest_count": 0,
+        "limit": "Paired observed broadcasts only; loss to both receivers is unobservable. ENet loss statistic is outbound, not snapshot loss."
+      },
+      "frontend_frame_gap_ms": {
+        "count": 6509,
+        "max": 60,
+        "p50": 18,
+        "p95": 25,
+        "p99": 28,
+        "sum": 119987
+      },
+      "actor_motion": {
+        "guest:1000059185": {
+          "dead_frames": 0,
+          "distance": 161.902136195451,
+          "draw_distance": 161.800887562393,
+          "frames": 6510,
+          "max_draw_step": 0.265625,
+          "max_pending": 0.875557839870453,
+          "max_pending_freeze_ms": 60,
+          "max_stop_mismatch_ms": 111,
+          "max_walk_stationary_ms": 60,
+          "owner": 0,
+          "pending_freeze_ms": 0,
+          "stop_mismatch_ms": 0,
+          "uid": 1000059185,
+          "view": "guest",
+          "visible_model_frames": 6510,
+          "walk_stationary_ms": 0
+        },
+        "guest:1500000001": {
+          "dead_frames": 0,
+          "distance": 158.101281225681,
+          "draw_distance": 158.094947843987,
+          "frames": 6510,
+          "max_draw_step": 0.29193115234375,
+          "max_pending": 0.796875,
+          "max_pending_freeze_ms": 60,
+          "max_stop_mismatch_ms": 86,
+          "max_walk_stationary_ms": 79,
+          "owner": 0,
+          "pending_freeze_ms": 0,
+          "stop_mismatch_ms": 0,
+          "uid": 1500000001,
+          "view": "guest",
+          "visible_model_frames": 6510,
+          "walk_stationary_ms": 0
+        },
+        "guest:1500000002": {
+          "dead_frames": 0,
+          "distance": 95.0723274275661,
+          "draw_distance": 94.810258012687,
+          "frames": 6510,
+          "max_draw_step": 0.132696539163589,
+          "max_pending": 0.362293571233749,
+          "max_pending_freeze_ms": 60,
+          "max_stop_mismatch_ms": 0,
+          "max_walk_stationary_ms": 79,
+          "owner": 1,
+          "pending_freeze_ms": 0,
+          "stop_mismatch_ms": 0,
+          "uid": 1500000002,
+          "view": "guest",
+          "visible_model_frames": 6510,
+          "walk_stationary_ms": 0
+        },
+        "owner:1000059185": {
+          "dead_frames": 0,
+          "distance": 162.056092984974,
+          "draw_distance": 161.994416230824,
+          "frames": 6510,
+          "max_draw_step": 0.265625,
+          "max_pending": 0.516551733016968,
+          "max_pending_freeze_ms": 60,
+          "max_stop_mismatch_ms": 77,
+          "max_walk_stationary_ms": 60,
+          "owner": 0,
+          "pending_freeze_ms": 0,
+          "stop_mismatch_ms": 0,
+          "uid": 1000059185,
+          "view": "owner",
+          "visible_model_frames": 6510,
+          "walk_stationary_ms": 0
+        },
+        "owner:1500000001": {
+          "dead_frames": 0,
+          "distance": 158.132249958813,
+          "draw_distance": 158.120371605455,
+          "frames": 6510,
+          "max_draw_step": 0.513645172119141,
+          "max_pending": 0.515625,
+          "max_pending_freeze_ms": 60,
+          "max_stop_mismatch_ms": 0,
+          "max_walk_stationary_ms": 60,
+          "owner": 0,
+          "pending_freeze_ms": 0,
+          "stop_mismatch_ms": 0,
+          "uid": 1500000001,
+          "view": "owner",
+          "visible_model_frames": 6510,
+          "walk_stationary_ms": 0
+        },
+        "owner:1500000002": {
+          "dead_frames": 0,
+          "distance": 95.0723274275661,
+          "draw_distance": 94.813822101918,
+          "frames": 6510,
+          "max_draw_step": 0.122430421411991,
+          "max_pending": 0.362353175878525,
+          "max_pending_freeze_ms": 60,
+          "max_stop_mismatch_ms": 23,
+          "max_walk_stationary_ms": 79,
+          "owner": 1,
+          "pending_freeze_ms": 0,
+          "stop_mismatch_ms": 0,
+          "uid": 1500000002,
+          "view": "owner",
+          "visible_model_frames": 6510,
+          "walk_stationary_ms": 0
+        }
+      },
+      "artifacts": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/transport-sustained-20261009/hardware-1x-01/profile/godot/app_userdata/Cursed Lands/transport-1x-end-owner.png",
+          "sha256": "e4cb8b6fbd78bc884766716d14d7b401ec24425422c53c74bf3f291543b6e6dd"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/transport-sustained-20261009/hardware-1x-01/profile/godot/app_userdata/Cursed Lands/transport-1x-start-owner.png",
+          "sha256": "26e56e020b591fcda91807d712798f66470b7917854d59a6b11eb5009d24975f"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/transport-sustained-20261009/hardware-1x-01/profile/godot/app_userdata/Cursed Lands/transport-1x-start-guest.png",
+          "sha256": "8ccf7233998d158fc8259e487b5aab0640f0fa5b8788ea316bdb8acd6f3cca83"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/transport-sustained-20261009/hardware-1x-01/profile/godot/app_userdata/Cursed Lands/sustained-coop-delivery.json",
+          "sha256": "feae9271ad4eec3f64a2aaf6a82de4f4fdb8cea2000e94a975c61f83d1fe1dee"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/transport-sustained-20261009/hardware-1x-01/profile/godot/app_userdata/Cursed Lands/transport-1x-end-guest.png",
+          "sha256": "a5eefe40fbbf7704aa751dd7a0995c0a3f77eed4283e96bb0e967ec6ad859066"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/transport-sustained-20261009/hardware-1x-01/profile/godot/app_userdata/Cursed Lands/transport-1x-packets.json",
+          "sha256": "389e432600df3feacae86b159facfa9d3c53a8dc9204d532b4f0a64b348bc9df"
+        }
+      ]
+    },
+    {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/transport-sustained-20261009/hardware-2x-01",
+      "runner_receipt": "/home/llm2x/Documents/EI/local/scratchpad/transport-sustained-20261009/hardware-2x-01/run.json",
+      "runner_receipt_sha256": "53f0c3982cd9e5287305a42f1650d8c0cff901205d50abe5a5d5886f9dc08ab9",
+      "passed": false,
+      "checks": 52,
+      "failures": 1,
+      "exit_code": 1,
+      "errors": [],
+      "worker_logs": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/transport-sustained-20261009/hardware-2x-01/profile/godot/app_userdata/Cursed Lands/local-host/1208042-4955769.cfg.log",
+          "sha256": "c90994fb21f765886810d5cf853e20e89aa187521ae2a4b87d99f24812a2824d",
+          "errors": []
+        }
+      ],
+      "hardware_confirmed": true,
+      "renderer_info": {
+        "adapter": "NVIDIA GeForce RTX 3090",
+        "api": "1.4.312",
+        "display": "X11",
+        "driver": "vulkan",
+        "method": "forward_plus",
+        "vendor": "NVIDIA"
+      },
+      "inputs_unchanged": true,
+      "phase_completed": true,
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "4a6242634eb82c56ea3c2a9be79b565a190a210a05157348f91297e15dafd9ef",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "fixture_sha256": "c264686a5ebd753be562d75c1358a3afa03f3194c42e8c5e95e37135d4ddd6ff",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/cloud-coop-final-01/CursedLands.x86_64",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/transport-sustained-20261009/hardware-2x-01/sustained_coop_delivery.gd",
+        "--route-save=/home/llm2x/Documents/EI/local/scratchpad/transport-sustained-20261009/hardware-2x-01/route-source.sav",
+        "--seconds=120",
+        "--speeds=2",
+        "--require-adapter=NVIDIA"
+      ],
+      "foreign_engine_processes_seen": [],
+      "process_inventory": "/home/llm2x/Documents/EI/local/scratchpad/transport-sustained-20261009/hardware-2x-01/processes.json",
+      "assertion_failures": [
+        "guest misses no jointly observed loopback party broadcast at 2x"
+      ],
+      "workload": {
+        "zone": "gz1h",
+        "speed": 2,
+        "wall_seconds": 120.007,
+        "population": 415,
+        "command_count": 373,
+        "census_samples": 119,
+        "moving_actor_range": [
+          107,
+          247
+        ],
+        "fighting_actor_range": [
+          0,
+          0
+        ],
+        "visible_model_range": [
+          7,
+          10
+        ],
+        "guest_anchor": [
+          407.0,
+          81.953125
+        ]
+      },
+      "guest": {
+        "authority_completed_55ms_ticks": 4586,
+        "authority_snapshot_seconds": 252.230000000024,
+        "duplicates": 0,
+        "gaps_over_1000ms": 0,
+        "gaps_over_250ms": 1,
+        "gaps_over_500ms": 0,
+        "initial_silence_ms": 23,
+        "observer_usec": 62206,
+        "party_arrival_gap_ms": {
+          "count": 1071,
+          "max": 356,
+          "p50": 111,
+          "p95": 140,
+          "p99": 149,
+          "sum": 119961
+        },
+        "party_uid": 1500000002,
+        "party_updates": 1072,
+        "received_snapshot_payload_bytes": {
+          "count": 10109,
+          "max": 1108,
+          "p50": 1100,
+          "p95": 1100,
+          "p99": 1108,
+          "sum": 10464940
+        },
+        "reordered": 0,
+        "trailing_silence_ms": 16
+      },
+      "owner_observer": {
+        "authority_completed_55ms_ticks": 4591,
+        "authority_snapshot_seconds": 252.505000000024,
+        "duplicates": 0,
+        "gaps_over_1000ms": 0,
+        "gaps_over_250ms": 0,
+        "gaps_over_500ms": 0,
+        "initial_silence_ms": 5,
+        "observer_usec": 78395,
+        "party_arrival_gap_ms": {
+          "count": 1072,
+          "max": 243,
+          "p50": 111,
+          "p95": 140,
+          "p99": 149,
+          "sum": 119976
+        },
+        "party_uid": 1500000002,
+        "party_updates": 1073,
+        "received_snapshot_payload_bytes": {
+          "count": 11761,
+          "max": 1108,
+          "p50": 1100,
+          "p95": 1100,
+          "p99": 1108,
+          "sum": 10986676
+        },
+        "reordered": 0,
+        "trailing_silence_ms": 19
+      },
+      "paired_delivery": {
+        "common": 1044,
+        "absent_at_guest_seen_by_owner_count": 2,
+        "absent_at_owner_seen_by_guest_count": 0,
+        "limit": "Paired observed broadcasts only; loss to both receivers is unobservable. ENet loss statistic is outbound, not snapshot loss."
+      },
+      "frontend_frame_gap_ms": {
+        "count": 5124,
+        "max": 76,
+        "p50": 23,
+        "p95": 32,
+        "p99": 36,
+        "sum": 119984
+      },
+      "actor_motion": {
+        "guest:1000059185": {
+          "dead_frames": 0,
+          "distance": 323.02227583155,
+          "draw_distance": 322.746715812362,
+          "frames": 5124,
+          "max_draw_step": 0.519399046897888,
+          "max_pending": 3.06285881996155,
+          "max_pending_freeze_ms": 76,
+          "max_stop_mismatch_ms": 105,
+          "max_walk_stationary_ms": 245,
+          "owner": 0,
+          "pending_freeze_ms": 0,
+          "stop_mismatch_ms": 0,
+          "uid": 1000059185,
+          "view": "guest",
+          "visible_model_frames": 5124,
+          "walk_stationary_ms": 0
+        },
+        "guest:1500000001": {
+          "dead_frames": 0,
+          "distance": 315.819019943476,
+          "draw_distance": 315.73802880384,
+          "frames": 5124,
+          "max_draw_step": 1.015625,
+          "max_pending": 2.34380197525024,
+          "max_pending_freeze_ms": 76,
+          "max_stop_mismatch_ms": 107,
+          "max_walk_stationary_ms": 135,
+          "owner": 0,
+          "pending_freeze_ms": 0,
+          "stop_mismatch_ms": 0,
+          "uid": 1500000001,
+          "view": "guest",
+          "visible_model_frames": 5124,
+          "walk_stationary_ms": 0
+        },
+        "guest:1500000002": {
+          "dead_frames": 0,
+          "distance": 247.937661485747,
+          "draw_distance": 244.373077016164,
+          "frames": 5124,
+          "max_draw_step": 0.466138571500778,
+          "max_pending": 1.51763725280762,
+          "max_pending_freeze_ms": 64,
+          "max_stop_mismatch_ms": 0,
+          "max_walk_stationary_ms": 245,
+          "owner": 1,
+          "pending_freeze_ms": 0,
+          "stop_mismatch_ms": 0,
+          "uid": 1500000002,
+          "view": "guest",
+          "visible_model_frames": 5124,
+          "walk_stationary_ms": 0
+        },
+        "owner:1000059185": {
+          "dead_frames": 0,
+          "distance": 323.921381946653,
+          "draw_distance": 323.247270825377,
+          "frames": 5124,
+          "max_draw_step": 0.625629961490631,
+          "max_pending": 1.04699158668518,
+          "max_pending_freeze_ms": 76,
+          "max_stop_mismatch_ms": 45,
+          "max_walk_stationary_ms": 41,
+          "owner": 0,
+          "pending_freeze_ms": 0,
+          "stop_mismatch_ms": 0,
+          "uid": 1000059185,
+          "view": "owner",
+          "visible_model_frames": 5124,
+          "walk_stationary_ms": 0
+        },
+        "owner:1500000001": {
+          "dead_frames": 0,
+          "distance": 316.001680411398,
+          "draw_distance": 315.854623380408,
+          "frames": 5124,
+          "max_draw_step": 1.03125,
+          "max_pending": 1.04699158668518,
+          "max_pending_freeze_ms": 76,
+          "max_stop_mismatch_ms": 0,
+          "max_walk_stationary_ms": 76,
+          "owner": 0,
+          "pending_freeze_ms": 0,
+          "stop_mismatch_ms": 0,
+          "uid": 1500000001,
+          "view": "owner",
+          "visible_model_frames": 5124,
+          "walk_stationary_ms": 0
+        },
+        "owner:1500000002": {
+          "dead_frames": 0,
+          "distance": 247.937702702358,
+          "draw_distance": 244.436381765467,
+          "frames": 5124,
+          "max_draw_step": 0.466138571500778,
+          "max_pending": 1.05627775192261,
+          "max_pending_freeze_ms": 64,
+          "max_stop_mismatch_ms": 35,
+          "max_walk_stationary_ms": 135,
+          "owner": 1,
+          "pending_freeze_ms": 0,
+          "stop_mismatch_ms": 0,
+          "uid": 1500000002,
+          "view": "owner",
+          "visible_model_frames": 5124,
+          "walk_stationary_ms": 0
+        }
+      },
+      "artifacts": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/transport-sustained-20261009/hardware-2x-01/profile/godot/app_userdata/Cursed Lands/transport-2x-end-guest.png",
+          "sha256": "19e5626c2af53d4021c931ddda34842d3e093f127d477f3eeb261bcfcab00fb7"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/transport-sustained-20261009/hardware-2x-01/profile/godot/app_userdata/Cursed Lands/transport-2x-start-guest.png",
+          "sha256": "b8007b9e9301890a7f82f359c2a01ea272059d262f392d2b3082e80f351f3092"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/transport-sustained-20261009/hardware-2x-01/profile/godot/app_userdata/Cursed Lands/transport-2x-packets.json",
+          "sha256": "f948f31d9f66f9e38e215562edcb547df4b9988ec9310452acd41bcc2663e846"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/transport-sustained-20261009/hardware-2x-01/profile/godot/app_userdata/Cursed Lands/transport-2x-start-owner.png",
+          "sha256": "f70045d99c023a55a089e3ebed6c64513a2813e5fc5b32136a033ab69dd2a049"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/transport-sustained-20261009/hardware-2x-01/profile/godot/app_userdata/Cursed Lands/sustained-coop-delivery.json",
+          "sha256": "0797957a99b6796ad1a8c08434038767903c3a125c9bf34d7ee9cee5e5c42832"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/transport-sustained-20261009/hardware-2x-01/profile/godot/app_userdata/Cursed Lands/transport-2x-end-owner.png",
+          "sha256": "4f03462b3db91783bb876f8fd35c10ba521b79550a91c1969a9a2a019c59ee90"
+        }
+      ]
+    }
+  ],
+  "snapshot_recovery": {
+    "source": "/home/llm2x/Documents/EI/local/scratchpad/transport-sustained-20261009/hardware-2x-01/profile/godot/app_userdata/Cursed Lands/transport-2x-packets.json",
+    "source_sha256": "f948f31d9f66f9e38e215562edcb547df4b9988ec9310452acd41bcc2663e846",
+    "absences": [
+      {
+        "serial": 4230,
+        "actor_uid": 1500000002,
+        "owner_observed_wall_ms": 27442,
+        "authority_time": 78.1550000000015,
+        "position": [
+          406.984375,
+          81.953125
+        ],
+        "action": "walk",
+        "serialized_payload_bytes": 328,
+        "actor_rows_in_packet": 2,
+        "guest_received_any_packet_with_this_serial": false,
+        "previous_guest_state": {
+          "wall_ms": 27333,
+          "uid": 1500000002,
+          "serial": 4216,
+          "authority_time": 77.9350000000014,
+          "x": 407.390625,
+          "y": 82.171875,
+          "action": "walk"
+        },
+        "next_guest_state": {
+          "wall_ms": 27689,
+          "uid": 1500000002,
+          "serial": 4257,
+          "authority_time": 78.6500000000015,
+          "x": 406.0625,
+          "y": 81.4375,
+          "action": "walk"
+        },
+        "next_guest_arrival_after_missing_owner_observation_ms": 247,
+        "guest_interval_across_absence_ms": 356,
+        "next_three_guest_states_match_owner_exactly_excluding_local_arrival_time": true,
+        "next_three_matching_serials": [
+          4257,
+          4270,
+          4286
+        ]
+      },
+      {
+        "serial": 7652,
+        "actor_uid": 1500000002,
+        "owner_observed_wall_ms": 62303,
+        "authority_time": 147.89500000001,
+        "position": [
+          408.5,
+          83.5
+        ],
+        "action": "idle",
+        "serialized_payload_bytes": 952,
+        "actor_rows_in_packet": 6,
+        "guest_received_any_packet_with_this_serial": false,
+        "previous_guest_state": {
+          "wall_ms": 62214,
+          "uid": 1500000002,
+          "serial": 7640,
+          "authority_time": 147.67500000001,
+          "x": 408.5,
+          "y": 83.5,
+          "action": "idle"
+        },
+        "next_guest_state": {
+          "wall_ms": 62442,
+          "uid": 1500000002,
+          "serial": 7663,
+          "authority_time": 148.11500000001,
+          "x": 408.5,
+          "y": 83.5,
+          "action": "idle"
+        },
+        "next_guest_arrival_after_missing_owner_observation_ms": 139,
+        "guest_interval_across_absence_ms": 228,
+        "next_three_guest_states_match_owner_exactly_excluding_local_arrival_time": true,
+        "next_three_matching_serials": [
+          7663,
+          7674,
+          7685
+        ]
+      }
+    ],
+    "finding": "Two isolated application-observed absences; subsequent absolute actor states promptly match across peers. The strict no-missing-broadcast assertion remains failed.",
+    "limit": "Observation is before per-actor application rejection, but it does not identify the transport cause or establish on-wire loss. No full snapshot payload or position/action history outside the watched party was recorded."
+  },
+  "startup_context": {
+    "fact": "Initial captured loading UI and a short burst of older authority timestamps show the measured window includes load catch-up. Reported complete-span native tick counts are retained unchanged. This read-only subwindow explains time progress after the first second; it is not a substitute acceptance run.",
+    "runs": [
+      {
+        "speed": 1,
+        "initial_party_packet": [
+          21,
+          1500000002,
+          986,
+          10.23,
+          407.0,
+          81.953125,
+          "idle"
+        ],
+        "post_first_second_first": [
+          1032,
+          1500000002,
+          1626,
+          17.4349999999999,
+          408.5,
+          83.0,
+          "walk"
+        ],
+        "last": [
+          120006,
+          1500000002,
+          13097,
+          136.400000000009,
+          406.984375,
+          82.1875,
+          "idle"
+        ],
+        "wall_span_seconds": 118.974,
+        "authority_span_seconds": 118.96500000000908,
+        "observed_game_seconds_per_wall_second": 0.9999243532201076
+      },
+      {
+        "speed": 2,
+        "initial_party_packet": [
+          23,
+          1500000002,
+          979,
+          11.0,
+          407.0,
+          81.953125,
+          "idle"
+        ],
+        "post_first_second_first": [
+          1047,
+          1500000002,
+          1644,
+          25.4099999999999,
+          408.5,
+          83.0,
+          "idle"
+        ],
+        "last": [
+          119984,
+          1500000002,
+          13229,
+          263.230000000024,
+          406.78125,
+          81.84375,
+          "idle"
+        ],
+        "wall_span_seconds": 118.937,
+        "authority_span_seconds": 237.8200000000241,
+        "observed_game_seconds_per_wall_second": 1.9995459781230744
+      }
+    ]
+  },
+  "visual_review": {
+    "inspected_images": 8,
+    "images": [
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/transport-sustained-20261009/hardware-1x-01/profile/godot/app_userdata/Cursed Lands/transport-1x-start-owner.png",
+        "sha256": "26e56e020b591fcda91807d712798f66470b7917854d59a6b11eb5009d24975f",
+        "speed": 1,
+        "phase": "start",
+        "view": "owner",
+        "pixels": [
+          5120,
+          2880
+        ],
+        "inspected": true,
+        "note": "Authored building, ground, lighting and original owner/companion figures visible; portrait previews have not populated yet."
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/transport-sustained-20261009/hardware-1x-01/profile/godot/app_userdata/Cursed Lands/transport-1x-start-guest.png",
+        "sha256": "8ccf7233998d158fc8259e487b5aab0640f0fa5b8788ea316bdb8acd6f3cca83",
+        "speed": 1,
+        "phase": "start",
+        "view": "guest",
+        "pixels": [
+          1280,
+          720
+        ],
+        "inspected": true,
+        "note": "Authored map renders but transient loading overlay and empty portrait remain; not counted as settled actor/UI acceptance."
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/transport-sustained-20261009/hardware-1x-01/profile/godot/app_userdata/Cursed Lands/transport-1x-end-owner.png",
+        "sha256": "e4cb8b6fbd78bc884766716d14d7b401ec24425422c53c74bf3f291543b6e6dd",
+        "speed": 1,
+        "phase": "end",
+        "view": "owner",
+        "pixels": [
+          5120,
+          2880
+        ],
+        "inspected": true,
+        "note": "Original actor figures and populated portrait/UI visible on the authored map; loading overlay is absent."
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/transport-sustained-20261009/hardware-1x-01/profile/godot/app_userdata/Cursed Lands/transport-1x-end-guest.png",
+        "sha256": "a5eefe40fbbf7704aa751dd7a0995c0a3f77eed4283e96bb0e967ec6ad859066",
+        "speed": 1,
+        "phase": "end",
+        "view": "guest",
+        "pixels": [
+          1280,
+          720
+        ],
+        "inspected": true,
+        "note": "Original actor figures and populated portrait/UI visible on the authored map; loading overlay is absent."
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/transport-sustained-20261009/hardware-2x-01/profile/godot/app_userdata/Cursed Lands/transport-2x-start-owner.png",
+        "sha256": "f70045d99c023a55a089e3ebed6c64513a2813e5fc5b32136a033ab69dd2a049",
+        "speed": 2,
+        "phase": "start",
+        "view": "owner",
+        "pixels": [
+          5120,
+          2880
+        ],
+        "inspected": true,
+        "note": "Authored building, ground, lighting and original owner/companion figures visible; portrait previews have not populated yet."
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/transport-sustained-20261009/hardware-2x-01/profile/godot/app_userdata/Cursed Lands/transport-2x-start-guest.png",
+        "sha256": "b8007b9e9301890a7f82f359c2a01ea272059d262f392d2b3082e80f351f3092",
+        "speed": 2,
+        "phase": "start",
+        "view": "guest",
+        "pixels": [
+          1280,
+          720
+        ],
+        "inspected": true,
+        "note": "Authored map renders but transient loading overlay and empty portrait remain; not counted as settled actor/UI acceptance."
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/transport-sustained-20261009/hardware-2x-01/profile/godot/app_userdata/Cursed Lands/transport-2x-end-owner.png",
+        "sha256": "4f03462b3db91783bb876f8fd35c10ba521b79550a91c1969a9a2a019c59ee90",
+        "speed": 2,
+        "phase": "end",
+        "view": "owner",
+        "pixels": [
+          5120,
+          2880
+        ],
+        "inspected": true,
+        "note": "Original actor figures and populated portrait/UI visible on the authored map; loading overlay is absent."
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/transport-sustained-20261009/hardware-2x-01/profile/godot/app_userdata/Cursed Lands/transport-2x-end-guest.png",
+        "sha256": "19e5626c2af53d4021c931ddda34842d3e093f127d477f3eeb261bcfcab00fb7",
+        "speed": 2,
+        "phase": "end",
+        "view": "guest",
+        "pixels": [
+          1280,
+          720
+        ],
+        "inspected": true,
+        "note": "Original actor figures and populated portrait/UI visible on the authored map; loading overlay is absent."
+      }
+    ],
+    "actual_views": {
+      "owner": [
+        5120,
+        2880
+      ],
+      "guest": [
+        1280,
+        720
+      ]
+    },
+    "correction": "The requested CLI window is 1280x720, but the game-selected owner render size is 5120x2880. These actual PNG dimensions describe the measured workload; no rerun or threshold change was made.",
+    "limit": "Start captures retain transient load/portrait UI and stale load-time latency labels. End captures establish rendered original actors. Stills do not establish continuous motion or freeze duration; those come from frame and actor telemetry."
+  },
+  "original_software_receipt": {
+    "path": "docs/validation/sustained-coop-delivery-2026-10-09.json",
+    "sha256": "7e68fdb19eb709ad744c2316f1b2f455d74fb1437081894a5560c6d493a6d1f7",
+    "status": "retained unchanged: 1x failed two delivery assertions under Compatibility llvmpipe; 2x was not reached"
+  },
+  "hardware_guard_control": {
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/coop-vm-solo-20261009/candidate07/CursedLands.x86_64",
+      "--headless",
+      "--audio-driver",
+      "Dummy",
+      "--render-thread",
+      "safe",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/sustained_coop_delivery.gd",
+      "--route-save=/home/llm2x/Documents/EI/local/scratchpad/transport-sustained-20261009/route-source.sav",
+      "--seconds=4",
+      "--speeds=1",
+      "--require-adapter=NVIDIA"
+    ],
+    "exit_code": 1,
+    "expected_rejection": true,
+    "checks": 3,
+    "failures": 1,
+    "service_started": false,
+    "renderer_info": {
+      "adapter": "",
+      "api": "",
+      "display": "headless",
+      "driver": "vulkan",
+      "method": "forward_plus",
+      "vendor": ""
+    },
+    "fixture_sha256": "c264686a5ebd753be562d75c1358a3afa03f3194c42e8c5e95e37135d4ddd6ff"
+  },
+  "method": [
+    "Each speed uses a fresh process/profile and a copied authored Portal checkpoint. A failure at one speed does not suppress the other.",
+    "Unchanged actual LocalHost authority service; distinct owner and guest ENet connections. The owner renders at 5120x2880 and the guest SubViewport at 1280x720 in one process, capped at 60 FPS, with original-look graphics. Actual PNG dimensions override the CLI window-size request.",
+    "Original scripts, AI and living population are retained. Repeated ordinary owner orders and a guest controller entrance loop provide movement; no actor teleport/health/population/cadence substitution.",
+    "The prior arrival-gap, packet budget, time-progress, paired delivery and presentation assertions are unchanged. Actual RenderingServer adapter confirmation is an additional prerequisite.",
+    "One-second inventories retain all Godot/CursedLands process identities during each run. Authority progress comes from received simulation timestamps divided by 55 ms, not rendering FPS."
+  ],
+  "limits": [
+    "Linux local loopback only; no Windows, WAN latency/loss or physical input acceptance.",
+    "The route is an authored populated LiA map with controlled repeated entrances. No attack/cast/hit actions appeared in the one-second censuses, so this is not a sustained combat or full-playthrough claim.",
+    "The final combined source differs from cc78028 used by the earlier software-rendering sample. This is hardware validation of the final build, not a controlled proof of the earlier failure cause.",
+    "Paired observer evidence cannot detect broadcasts missing at both receivers; ENet outbound loss counters are not inbound snapshot loss. Application payload sizes exclude wire overhead.",
+    "Screenshots establish actual rendered scenes; motion/freeze evidence comes from the recorded per-frame actor metrics.",
+    "No original assets, source saves, personal installed saves, installed runtime or release build were modified or published."
+  ]
+}
