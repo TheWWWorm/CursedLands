@@ -3525,11 +3525,11 @@ The pack is a QA artifact, not an installed or published release. Continue
 rest of the renderer handoff and gameplay **U45 first**. Shared wind for fog,
 clouds and ambient particles belongs to their later visual work.
 
-### Next V2 investigation: stop submitting fully faded chunks
+### V2 investigation notes recorded before implementation
 
-The next implementation has **not** been made. The source is clean at the
-shared-wind checkpoint. Start with exact removal of fully faded work before
-choosing a more approximate near/far cover mesh policy.
+These notes describe the clean shared-wind checkpoint `6c665f8`. The following
+implementation section supersedes their pending status. They explain why
+fully faded chunk removal and native cover geometry LOD were selected.
 
 - `terrain_details.gd:_stream` retains up to 80 chunks in a five-chunk radius.
   `_chunk_mesh` already swaps grass near/far blade meshes at 18 m, and
@@ -3564,6 +3564,165 @@ choosing a more approximate near/far cover mesh policy.
   projected-leaf far-mesh choice; `Source/renderer_ground_cover.cpp:584–595`
   chooses far meshes and `:2658` uses indexed indirect draws. Those decisions
   need an explicit Godot adaptation, not a direct shader-only port.
+
+## V2 native cover LOD and faded submission culling — 9 October
+
+Implemented after `6c665f8` in the canonical checkout. This is a local,
+unpublished checkpoint. Grass/cover remain controlled by their existing
+options; `gfx_biome_cover` is still off by default. No new engine patch,
+installed template, original asset, save, device installation or protocol
+change. Desktop sun aiming remains continuous on every backend; the held
+Android/web fallback is unchanged.
+
+### Reference and implementation map
+
+The inspected reference is R1 `0092dc6e1d7c4aab3f74644a79e9bfca11ecf293`:
+
+- `Source/ground_cover_interaction.h:6–22` separates distance-density thinning
+  from projected leaf size and far-mesh selection.
+- `Source/renderer_ground_cover.cpp:584–595` selects its simplified tuft meshes;
+  `:2658` issues indexed indirect draws. The reference also grows thinning
+  survivors and uses fewer, wider leaves. Those parts are **not** implemented
+  by this adaptation.
+- The existing Godot grass implementation already has near/far blade meshes
+  and native index LODs. Its layout, placement and LOD policy are unchanged.
+  Godot's selector was inspected in the pinned runtime source under
+  `p5-shadow-cache/engine-mobile-lock/drivers/gles3/storage/mesh_storage.h:386`
+  and `servers/rendering/renderer_rd/storage_rd/mesh_storage.h:480`.
+
+The production changes are confined to these owners:
+
+| File / symbol | Result and constraints |
+|---|---|
+| `game/src/game/fx/biome_cover_mesh.gd:154`, `bent_ribbon` | Joins the original end vertices of two curve segments: four triangles become two. Applied to dry tufts, reed leaves, dead bushes, wrack and the upper two sea-grass segments. It keeps every plant. |
+| Same file `:166`, `leaf`; `:210`, `shell` | Raised leaf diamonds use two far triangles instead of four; each shell ridge fan uses one instead of three. Needles, twigs, stones, stems, flower heads and cattail heads keep their existing faces. |
+| Same file `:237/301`, `build` / `lods` | Near arrays remain exact, including normals, colours, stable density seeds, root coordinates, ground anchors and per-vertex mean-water planes. The far mesh uses another index buffer into those vertices. The maximum per-chunk curve/detail size selects the native LOD; it is a visual heuristic, not a formal bound on shaded-pixel error. |
+| `game/src/game/fx/biome_cover.gd:463`, `build` | Publishes the LOD dictionary with the existing immutable chunk data. Worker ownership, placement RNG and mound generation stay unchanged. |
+| `game/src/game/fx/terrain_details.gd:656`, `_install_chunk` | Installs the cover's native index LOD. When interaction is enabled, `lod_bias = 4` delays simplification of bent silhouettes. Mounds retain their original dense topology. |
+| Same file `:719/725`, `_root_bounds` / `_cache_root_bounds` | Caches the complete 8 m root rectangle, including upright rotation/scale/translation. Tilted terrain retains its plants conservatively because root height can affect world XZ. Mound bounds use the shader's existing untransformed `CUSTOM1.xy` contract. |
+| Same file `:733/757`, `_cull_chunk` / `_update_submissions` | Suppresses plants only beyond their 36 m fade and mounds beyond 32 m, with a 10 cm hide margin. A parent needed by a mound stays visible while its faded grass instance count becomes zero. It avoids repeated visibility/instance-count writes. |
+
+Culling follows the material's ground focus, not camera-eye distance or the
+chunk center. A cached travel allowance permits at most 50 cm between scans,
+reduced by the closest hidden bound's distance to its live fade, retaining a
+5 cm safety margin. Distance to a rectangle changes by no more than camera
+travel. Delaying a hide submits extra already-faded work; entering a live fade
+must trigger a scan. New worker installs use the **latest** material focus,
+not the older scan focus, and invalidate the scan cache. Transform changes,
+water/option clears and world teardown are handled explicitly.
+
+Diagnostic controls are `--ei-no-cover-lod` and
+`--ei-no-vegetation-culling`. They do not add player-facing options. The timing
+fixture skips the new maintenance call in its baseline phase so that the
+control does not pay the culling scan it is meant to compare.
+
+### Accepted evidence and visible differences
+
+[Machine-readable receipt](validation/vegetation-submission-2026-10-09.json)
+contains the frozen tools, commands, source/pack/runtime hashes, measurements,
+failed controls and image hashes. Ten accepted runs pass **132,854 assertions**.
+A separate Compatibility whole-scene run retains **four failed exact-image
+assertions** and is not counted as fully passing.
+
+- `tools/tests/vegetation_submission.gd` compares against the frozen geometry
+  source from `6c665f8`, checks all 14 kinds, forbids triangles crossing plant
+  roots/seeds/anchors, and verifies every plant survives. It checks transformed
+  bounds, accumulated small movement, teleport/reappearance and new installs
+  during a skipped scan. Authored dry and sea arrays also match the old source.
+- Native and `--ei-script-grass` cover/worker regressions pass. The existing
+  species-filtered render tools now regenerate LODs whenever they filter and
+  rebuild arrays; retaining pre-filter indices would be invalid.
+- Full authored meadow culling is pixel-exact on Forward+ and desktop Mobile,
+  including separate render-thread execution. The Compatibility terrain and
+  vegetation control, with authored scenery hidden **after placement**, is
+  exact for all five focus positions. Placement exclusions remain in use.
+- All three backends restore their original full-detail captures exactly after
+  the automatic LOD comparison. The near meadow capture changes 0 pixels on
+  Forward+/Mobile and 2 on Compatibility; middle changes 6–8; wide changes
+  48–81 at 800×600, with peaks up to 39/255. These are intended geometry/lighting
+  differences, not a claim of identical distant rendering.
+- Interaction keeps the sampled near/middle/wide images exact relative to full
+  detail; the delayed LOD consequently saves very little geometry there.
+- The authored kelp scene is exact near, changes 39 middle pixels (peak 5/255)
+  and 2,004 wide pixels (peak 24/255). Its wide view reduces visible primitives
+  from 81,338 to 74,398 and shadow primitives from 103,859 to 94,435. Screenshots
+  were inspected; the prior shoreline mean-depth approximation remains open.
+- `tools/tests/biome_mounds.gd --mound-submissions` passes all **56** Forward+
+  checks. Its four culling image comparisons are exact; far mounds submit no
+  draws, near mounds return, and the existing footprint/ground-height,
+  exposed-trough, pause and restoration checks pass. The headless mound oracle
+  also passes. This does not resolve the older Mobile restoration limitation.
+
+The Compatibility differences are exactly five distant scenery pixels, with
+up to five changing in one comparison. `cover-cull-order-old3` uses the
+**unchanged** `cover-wind-final` application pack and native visibility calls.
+Its 13 focus positions reproduce **all five pixel coordinates and exact RGB
+pairs**. The isolated terrain/vegetation captures remain exact. This is
+consistent with pre-existing scenery draw-order sensitivity, not a demonstrated
+vegetation disappearance; the native renderer cause is not fixed here. Preserve
+that qualification when reporting or extending the work.
+
+### Removed work, costs and limits
+
+| Sample | Full / simplified indices | Reduction |
+|---|---:|---:|
+| Three plants of every kind | 2,250 / 1,422 | 36.8% |
+| Eligible meshes in the 80-chunk meadow | 12,477 / 9,711 | 22.2% |
+| Eligible meshes in the 55-chunk sea sample | 120,030 / 79,668 | 33.6% |
+
+These are index counts for affected meshes, not whole-scene speedups. The wide
+meadow view removes 800 visible and 1,332 shadow primitives from the full-detail
+control. Far indices require four extra bytes each in the builder: about
+38 KiB for that meadow sample and 311 KiB for the sea sample; vertices are
+shared. Paired geometry construction medians were about 150–164 µs before and
+160–177 µs after for meadow chunks, and 4.195 / 4.470 ms for the sea sample.
+Generation remains background work where threads are available.
+
+Culling removes 2–15 visible draws in three local ground-focus positions.
+Teleporting away from retained chunks removes 142 RD / 160 Compatibility draws;
+normal streaming separately retires those chunks, so those larger numbers are
+not a steady-state optimization claim. The first implementation scanned 80
+chunks in about 80 µs. Cached bounds reduced that to about 34 µs; the final
+travel cache runs 48 scans across 240 small moves, averaging about **8.7 µs per
+update** in the immediate loop. Its stationary median is below the microsecond
+timer resolution. The separate rendered-loop mean is approximately 17–23 µs.
+
+Viewport CPU/GPU timing is noisy and mixed. Other Godot processes were present,
+and the short three-mode samples do not establish a net FPS improvement. No
+Android/web, battery or thermal benefit is claimed. The Mobile backend was
+run on the desktop RTX 3090. Existing default-off visual effects remain off.
+
+The initial probe omitted an explicit Vector3 type; the first baseline control
+mixed indentation; one mound invocation omitted its required oracle. Later
+tests still expected a hide after 12 cm despite the new conservative travel
+cache; they now move beyond its allowance before asserting removal. The new
+mound subtest initially restored litter that the older fixture manually hides;
+it now reapplies that fixture mask before the original deformation checks.
+These failed invocations are retained in the receipt, not counted as passes.
+
+### Reproduction and continuation
+
+Final QA build:
+`/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-lod-final3`.
+All **234 production GDScript hashes** match its export. Pack SHA-256:
+`a7e1ea0d0c838bf1be4ff9ddda809cbc8b2de9b14991a4f653d155e0b18c33a5`.
+It reuses the already validated eight-patch runtime/native library; no runtime
+changes were made. The six unrelated export-generated UIDs were archived and
+removed; committed wind/biome UID files remain.
+
+Use the receipt's exact commands and isolated XDG directories. The runner
+freezes the external tool and its relative superclass; also retain the frozen
+`cover-geometry-before-lod.gd` and `submission-mound-oracle.gd` specified in the
+commands. GPU runs are serialized, offscreen, bounded to 150 seconds and do not
+stop unrelated processes.
+
+**Remaining V2 work:** intermediate-range density thinning still submits its
+collapsed plants; there is no GPU survivor compaction. This implementation also
+does not widen far leaves or enlarge thinning survivors like the reference.
+Continue the remaining regional cover sets (especially cave/Dead City), then
+other renderer opportunities in the established order. Device/long-route
+acceptance and the older depth/restoration limits remain. The full goal also
+includes the gameplay handoff, starting with **U45**, after renderer work.
 
 ## Next work in the established order
 
@@ -3629,7 +3788,9 @@ choosing a more approximate near/far cover mesh policy.
    Zone7/zone8 coastal profiles now provide authored sandy-beach acceptance,
    with cover habitat kept separate from breaking surf. Verified atlas-family
    placement and shared vegetation weather wind are also implemented above.
-   Continue actual geometry submission LOD and remaining regional cover sets.
+   Native cover index LOD and fully faded submission culling are now implemented
+   above. Continue remaining regional cover sets; survivor compaction and device
+   acceptance remain separate work.
    Preserve the coastal mean-depth boundary limitation and the mound
    Mobile restoration limitation and construction-cost evidence. No visual effect
    was silently enabled.

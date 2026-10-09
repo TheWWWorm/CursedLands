@@ -192,7 +192,9 @@ func build(d: TerrainDetails,p: Vector2) -> Dictionary:
 			var key := Vector2i(x,y); var data := d.instances(key)
 			if only_kind>=0 and data.has("cover"):
 				data.cover.records = data.cover.records.filter(func(r: Dictionary): return int(r.kind)==only_kind)
-				data.cover.arrays = Geometry.new().build(data.cover.records,key,d._cover_field.sea if not d._cover_field.sea.tiles.is_empty() else null)
+				var geometry := Geometry.new()
+				data.cover.arrays = geometry.build(data.cover.records,key,d._cover_field.sea if not d._cover_field.sea.tiles.is_empty() else null)
+				data.cover.lods = geometry.lods()
 			if data.has("cover"): records += data.cover.records.size(); vertices += (data.cover.arrays[Mesh.ARRAY_VERTEX] as PackedVector3Array).size()
 			if not d._chunks.has(key): d._install_chunk(key,data)
 			all[key] = data.get("cover",{})

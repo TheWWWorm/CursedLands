@@ -51,7 +51,9 @@ func build(d: TerrainDetails,p: Vector2,kind: int,metadata: bool) -> int:
 		for x in range(focus.x-1,focus.x+2):
 			var key:=Vector2i(x,y);var data:=d.instances(key)
 			data.cover.records=data.cover.records.filter(func(r: Dictionary):return int(r.kind)==kind)
-			data.cover.arrays=Geometry.new().build(data.cover.records,key,d._cover_field.sea if not d._cover_field.sea.tiles.is_empty() else null)
+			var geometry:=Geometry.new()
+			data.cover.arrays=geometry.build(data.cover.records,key,d._cover_field.sea if not d._cover_field.sea.tiles.is_empty() else null)
+			data.cover.lods=geometry.lods()
 			count+=data.cover.records.size();d._install_chunk(key,data)
 	var at:=Vector3(p.x,d.terrain.height_at(p.x,p.y),-p.y)
 	d._material.set_shader_parameter("view_position",at);d._cover_material.set_shader_parameter("view_position",at)

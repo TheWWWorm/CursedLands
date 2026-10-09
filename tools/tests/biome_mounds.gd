@@ -213,6 +213,8 @@ func run() -> void:
 	await frames(120); mound_node.hide(); var off := await snap(view,"off"); mound_node.show(); var base := await snap(view,"loose")
 	check(delta(base,await snap(view,"stable")).changed==0,"mound image settled")
 	var diff := delta(off,base); check(diff.over_2>30,"authored mound visibly changes ground"); rows.append({"case":"visible","difference":diff})
+	if OS.get_cmdline_user_args().has("--mound-submissions"):
+		await submissions(view,d,focus)
 	await probe(t,chosen.key,chosen.data,p,"loose"); await probe(t,chosen.key,chosen.data,p,"negative",true)
 	var soft := d.soft_ground; soft.add_step(p,Vector2(0.30,0.46),0.4)
 	check(not soft.sectors.is_empty(),"authored footstep admitted")
@@ -255,6 +257,30 @@ func run() -> void:
 	check(d._mound_material==null and snapshot.get_ref()==null and material.get_ref()==null,"cover off releases mound material and immutable snapshot")
 	restoration(off,await snap(view,"off-restored"),camera,chosen,"cover off restores original scene")
 	view.free(); await frames()
+func submissions(view:SubViewport,d:TerrainDetails,focus:Vector3) -> void:
+	var cover_visibility:= {}
+	for chunk:Node in d._chunks.values():
+		var cover:=chunk.get_node_or_null("BiomeCover") as MeshInstance3D
+		if cover:cover_visibility[cover]=cover.visible
+	for offset:Vector3 in [Vector3(32,0,0),Vector3(42,0,-7),Vector3(1000,0,1000),Vector3.ZERO]:
+		var at:=focus+offset
+		for material:ShaderMaterial in [d._material,d._cover_material,d._mound_material]:
+			if material:material.set_shader_parameter("view_position",at)
+		d._submission_culling=false;d._cull_focus=Vector2.INF;d._update_submissions(Vector2(at.x,at.z))
+		var before:=await snap(view,"cull-"+str(offset)+"-off")
+		var primitives:=view.get_render_info(Viewport.RENDER_INFO_TYPE_VISIBLE,Viewport.RENDER_INFO_PRIMITIVES_IN_FRAME)
+		d._submission_culling=true;d._cull_focus=Vector2.INF;d._update_submissions(Vector2(at.x,at.z))
+		var after:=await snap(view,"cull-"+str(offset)+"-on");var diff:=delta(before,after)
+		check(diff.changed==0,"faded mound culling preserves actual ground pixels")
+		var visible:=d._chunks.values().filter(func(n:MultiMeshInstance3D):return n.get_node_or_null("BiomeMounds")!=null and n.get_node("BiomeMounds").is_visible_in_tree()).size()
+		if offset.length()>500:check(visible==0,"distant mounds stop submitting")
+		elif offset==Vector3.ZERO:check(visible>0,"near mound submissions return")
+		rows.append({"case":"mound-submissions","offset":str(offset),"difference":diff,"visible_mound_chunks":visible,"before_primitives":primitives,"after_primitives":view.get_render_info(Viewport.RENDER_INFO_TYPE_VISIBLE,Viewport.RENDER_INFO_PRIMITIVES_IN_FRAME)})
+	# This fixture isolates mounds by manually hiding litter. Returning the
+	# stream to the near view also restores litter; reapply the fixture mask.
+	for cover:MeshInstance3D in cover_visibility:cover.visible=cover_visibility[cover]
+	await frames()
+
 func _ready() -> void:
 	print("MOUND_STAGE ready")
 	for option in ["gfx_hd_textures","gfx_terrain","gfx_ground_contact","gfx_grass","gfx_vegetation_interaction","gfx_wind","gfx_water","gfx_water_interaction","gfx_water_caustics","gfx_volumetric","gfx_ssao","gfx_bloom","confine_mouse","vsync"]: GameData.options[option]=0

@@ -104,6 +104,25 @@ static var _base_shader: Shader
 static var _wind_shader: Shader
 static var _interaction_shader: Shader
 const MAX_GRASS_JOBS := 4
+# A hidden root must return before entering its live fade. Cache that travel
+# allowance too, so ordinary camera motion need not scan 80 chunks each frame.
+const CULL_MAX_STEP := 0.5
+const CULL_MARGIN := 0.10
+var _cull_focus := Vector2.INF
+var _view_focus := Vector2.INF
+var _cull_transform := Transform3D.IDENTITY
+var _cull_step := CULL_MAX_STEP
+var _submission_culling := not OS.get_cmdline_user_args().has("--ei-no-vegetation-culling")
+var _cover_lods := not OS.get_cmdline_user_args().has("--ei-no-cover-lod")
+
+class Chunk extends MultiMeshInstance3D:
+	var cover: MeshInstance3D
+	var mounds: MeshInstance3D
+	var plant_bounds := Rect2()
+	var mound_bounds := Rect2()
+	var tilted := false
+	var plants_submitted := true
+	var mounds_submitted := true
 
 
 static func create(t: EITerrain) -> TerrainDetails:
@@ -193,6 +212,7 @@ func _process(_dt: float) -> void:
 		if _cover_material: _cover_material.set_shader_parameter("view_position",p)
 		if _mound_material: _mound_material.set_shader_parameter("view_position",p)
 		_update_motion(p)
+	_update_submissions(Vector2(p.x,p.z))
 	if _native_grass:
 		prepare_grass()
 		_finish_grass_jobs()
@@ -248,6 +268,8 @@ func _clear_grass() -> void:
 	_sample.clear()
 	_sample_p = Vector2(INF, INF)
 	_focus = Vector2i(-1000, -1000)
+	_cull_focus = Vector2.INF
+	_view_focus = Vector2.INF
 	_scenery.clear()
 	_scenery_signature.clear()
 	if interaction: interaction.clear()
@@ -648,7 +670,7 @@ func _install_chunk(key: Vector2i, data: Dictionary) -> void:
 			multi.set_instance_transform(i, transforms[i])
 			multi.set_instance_color(i, colours[i])
 			multi.set_instance_custom_data(i, custom[i])
-	var node := MultiMeshInstance3D.new()
+	var node := Chunk.new()
 	node.name = "Grass_%d_%d" % [key.x, key.y]
 	node.multimesh = multi
 	node.material_override = _material
@@ -660,15 +682,19 @@ func _install_chunk(key: Vector2i, data: Dictionary) -> void:
 	add_child(node)
 	if data.has("cover") and not data.cover.records.is_empty():
 		var mesh := ArrayMesh.new()
-		mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,data.cover.arrays,[],{},BiomeCover.Geometry.FORMAT)
+		mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,data.cover.arrays,[],data.cover.get("lods",{}) if _cover_lods else {},BiomeCover.Geometry.FORMAT)
 		var cover := MeshInstance3D.new(); cover.name = "BiomeCover"
 		cover.mesh = mesh; cover.material_override = _cover_material
+		# Pressure can curve a stem more than wind. Delay its native LOD so
+		# the bent silhouette keeps more detail at the same projected size.
+		cover.lod_bias = 4.0 if interaction else 1.0
 		cover.position = Vector3(key.x*CHUNK,0,-key.y*CHUNK)
 		cover.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_DOUBLE_SIDED
 		# Include the largest loose-layer/bank motion even if soft ground is
 		# enabled after this chunk was installed.
 		cover.extra_cull_margin = node.extra_cull_margin+SoftGroundDeform.DEPTH; cover.layers = 1
 		node.add_child(cover)
+		node.cover = cover
 	if data.has("cover") and not data.cover.mounds.records.is_empty():
 		var mesh := ArrayMesh.new()
 		mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,data.cover.mounds.arrays,[],{},BiomeCover.Mounds.FORMAT)
@@ -678,7 +704,64 @@ func _install_chunk(key: Vector2i, data: Dictionary) -> void:
 		mounds.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		mounds.extra_cull_margin = 0.65; mounds.layers = 1
 		node.add_child(mounds)
+		node.mounds = mounds
 	_chunks[key] = node
+	_cache_root_bounds(key,node,global_transform if is_inside_tree() else _cull_transform)
+	if _view_focus.is_finite():
+		# The latest material focus may have moved inside the cached travel
+		# allowance. A new chunk must not inherit the previous scan's focus.
+		_cull_chunk(node,_view_focus)
+		_cull_focus = Vector2.INF
+
+
+## The material fades around the camera's ground focus, not its eye position.
+## Use the complete root rectangle; chunk-center tests would pop edge plants.
+static func _root_bounds(key: Vector2i, transform: Transform3D) -> Rect2:
+	var box := AABB(Vector3(key.x*CHUNK,0,-(key.y+1)*CHUNK),Vector3(CHUNK,0,CHUNK))
+	box = transform*box
+	return Rect2(Vector2(box.position.x,box.position.z),Vector2(box.size.x,box.size.z))
+
+
+func _cache_root_bounds(key: Vector2i, node: Chunk, transform: Transform3D) -> void:
+	node.mound_bounds = Rect2(Vector2(key.x*CHUNK,-(key.y+1)*CHUNK),Vector2.ONE*CHUNK)
+	node.plant_bounds = _root_bounds(key,transform)
+	# Root heights affect XZ under a tilt. Without vertical root bounds,
+	# retaining that chunk is the conservative choice.
+	node.tilted = transform.basis.y.x != 0.0 or transform.basis.y.z != 0.0
+
+
+func _cull_chunk(node: Chunk, focus: Vector2) -> void:
+	var near_plant := focus.clamp(node.plant_bounds.position,node.plant_bounds.end)
+	var plant_distance := focus.distance_squared_to(near_plant)
+	var show_plants := not _submission_culling or node.tilted or plant_distance < (RANGE+CULL_MARGIN)*(RANGE+CULL_MARGIN)
+	# Mound CUSTOM1.xy contains untransformed root XZ, unlike the plants.
+	var near_mound := focus.clamp(node.mound_bounds.position,node.mound_bounds.end)
+	var mound_distance := focus.distance_squared_to(near_mound)
+	var show_mounds := node.mounds != null and (not _submission_culling or mound_distance < (32.0+CULL_MARGIN)*(32.0+CULL_MARGIN))
+	# Distance to a rectangle changes by at most the focus's travel. Retain
+	# a 5 cm safety margin; delaying a hide only submits already-faded work.
+	if not show_plants: _cull_step = minf(_cull_step,sqrt(plant_distance)-RANGE-0.05)
+	if node.mounds and not show_mounds: _cull_step = minf(_cull_step,sqrt(mound_distance)-32.0-0.05)
+	if show_plants == node.plants_submitted and show_mounds == node.mounds_submitted: return
+	node.plants_submitted = show_plants; node.mounds_submitted = show_mounds
+	var show_parent := show_plants or show_mounds
+	if node.visible != show_parent: node.visible = show_parent
+	# A transformed parent may need to retain its mound child while its own
+	# grass is faded. Do not let hiding the parent suppress that visible child.
+	var count := -1 if show_plants else 0
+	if node.multimesh.visible_instance_count != count: node.multimesh.visible_instance_count = count
+	if node.cover and node.cover.visible != show_plants: node.cover.visible = show_plants
+	if node.mounds and node.mounds.visible != show_mounds: node.mounds.visible = show_mounds
+
+
+func _update_submissions(focus: Vector2) -> void:
+	_view_focus = focus
+	var transform := global_transform
+	if _cull_focus.is_finite() and focus.distance_squared_to(_cull_focus) <= _cull_step*_cull_step and transform == _cull_transform: return
+	if transform != _cull_transform:
+		for key: Vector2i in _chunks: _cache_root_bounds(key,_chunks[key],transform)
+	_cull_focus = focus; _cull_transform = transform; _cull_step = CULL_MAX_STEP
+	for node: Chunk in _chunks.values(): _cull_chunk(node,focus)
 
 
 func _chunk_mesh(key: Vector2i) -> ArrayMesh:

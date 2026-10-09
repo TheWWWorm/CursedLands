@@ -462,7 +462,9 @@ func sea_records(key: Vector2i, boxes: Array) -> Array[Dictionary]:
 
 func build(key: Vector2i, boxes: Array, trees: Array, mound_boxes: Array = []) -> Dictionary:
 	var placed := records(key,boxes,trees)
-	return {"records":placed,"arrays":Geometry.new().build(placed,key,sea if not sea.tiles.is_empty() else null),
+	var geometry := Geometry.new()
+	var arrays := geometry.build(placed,key,sea if not sea.tiles.is_empty() else null)
+	return {"records":placed,"arrays":arrays,"lods":geometry.lods(),
 		"mounds":mounds.build(self,key,mound_boxes if not mound_boxes.is_empty() else boxes)}
 
 

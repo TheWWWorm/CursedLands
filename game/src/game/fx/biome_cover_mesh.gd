@@ -97,6 +97,8 @@ var water_cache := {}
 var chunk_origin := Vector2.ZERO
 var submerged := false
 var indices := PackedInt32Array()
+var far_indices := PackedInt32Array()
+var lod_error := 0.0
 var root := Vector3.ZERO
 var transform := Transform3D.IDENTITY
 var seed := 0.0
@@ -139,6 +141,7 @@ func triangle(a: Vector3,b: Vector3,c: Vector3,colour: Color) -> void:
 				plane.z += plane.x*chunk_origin.x-plane.y*chunk_origin.y
 			water_planes.append_array([plane.x,plane.y,plane.z,plane.w])
 	indices.append_array([at,at+1,at+2])
+	far_indices.append_array([at,at+1,at+2])
 
 
 func ribbon(a: Vector3,b: Vector3,width: float,colour: Color) -> void:
@@ -146,11 +149,29 @@ func ribbon(a: Vector3,b: Vector3,width: float,colour: Color) -> void:
 	triangle(a-side,b-side,a+side,colour); triangle(a+side,b-side,b+side,colour)
 
 
+## The far mesh joins the original end vertices. It retains every plant,
+## root, anchor and water-plane attribute without another vertex buffer.
+func bent_ribbon(a: Vector3,b: Vector3,c: Vector3,ab: float,bc: float,first: Color,last: Color) -> void:
+	var at := vertices.size(); var begin := far_indices.size()
+	ribbon(a,b,ab,first); ribbon(b,c,bc,last)
+	far_indices.resize(begin)
+	far_indices.append_array([at,at+7,at+2,at+2,at+7,at+11])
+	var t := clampf((b-a).dot(c-a)/maxf((c-a).length_squared(),1e-12),0.0,1.0)
+	# Detail size for the engine's projected-error selector:
+	# chord deviation, ribbon width, plus the small optional wind curvature.
+	var scale := transform.basis.get_scale().length()/sqrt(3.0)
+	lod_error=maxf(lod_error,((b-a.lerp(c,t)).length()+maxf(ab,bc))*scale+0.01*mobile)
+
+
 func leaf(centre: Vector3,length: float,width: float,angle: float,colour: Color) -> void:
+	var at := vertices.size(); var begin := far_indices.size()
 	var turn := Basis(Vector3.UP,angle)
 	var a := centre+turn*Vector3(0,0,-length*0.5); var b := centre+turn*Vector3(-width,0,0)
 	var c := centre+Vector3(0,0.012,0); var d := centre+turn*Vector3(width,0,0); var e := centre+turn*Vector3(0,0,length*0.5)
 	triangle(a,c,b,colour*0.9); triangle(a,d,c,colour); triangle(b,c,e,colour); triangle(c,d,e,colour*1.05)
+	far_indices.resize(begin)
+	far_indices.append_array([at,at+4,at+2,at+2,at+4,at+8])
+	lod_error=maxf(lod_error,0.035*transform.basis.get_scale().length()/sqrt(3.0)+0.01*mobile)
 
 
 func tuft(colour: Color,short: bool) -> void:
@@ -160,7 +181,7 @@ func tuft(colour: Color,short: bool) -> void:
 		var h := (0.37+0.12*sin(i*1.3+seed))*(0.45 if short else 1.0)
 		var bend := direction*(0.11+0.05*cos(i))
 		var a := direction*0.025; var b := Vector3(0,h*0.55,0)+bend*0.3; var c := Vector3(0,h,0)+bend
-		ribbon(a,b,0.013,colour*0.85); ribbon(b,c,0.008,colour)
+		bent_ribbon(a,b,c,0.013,0.008,colour*0.85,colour)
 
 
 func reed(colour: Color, cattail: bool) -> void:
@@ -171,7 +192,7 @@ func reed(colour: Color, cattail: bool) -> void:
 		var base := Vector3(0,0.12+i*0.11,0)
 		var elbow := base+turn*Vector3(0,0.45,0.16)
 		var tip := base+turn*Vector3(0,0.58,0.30)
-		ribbon(base,elbow,0.025,colour*0.85); ribbon(elbow,tip,0.010,colour)
+		bent_ribbon(base,elbow,tip,0.025,0.010,colour*0.85,colour)
 	if cattail:
 		var brown := Color(0.30,0.21,0.12)
 		var bottom := top-Vector3(0,0.14,0); var cap := top+Vector3(0,0.13,0)
@@ -189,12 +210,16 @@ func reed(colour: Color, cattail: bool) -> void:
 func shell(colour: Color) -> void:
 	var hinge := Vector3(0,0.015,-0.075)
 	for i in 6:
+		var at := vertices.size(); var begin := far_indices.size()
 		var a := -1.2+float(i)*0.4; var b := a+0.4
 		var ridge := hinge+Vector3(sin((a+b)*0.5)*0.055,0.035,cos((a+b)*0.5)*0.09)
 		var left := hinge+Vector3(sin(a)*0.10,0,cos(a)*0.16)
 		var right := hinge+Vector3(sin(b)*0.10,0,cos(b)*0.16)
 		triangle(hinge,ridge,left,colour*0.85); triangle(hinge,right,ridge,colour)
 		triangle(left,ridge,right,colour*0.95)
+		far_indices.resize(begin)
+		far_indices.append_array([at,at+4,at+2])
+	lod_error=maxf(lod_error,0.035*transform.basis.get_scale().length()/sqrt(3.0))
 
 
 func sea_grass(colour: Color, tall: bool) -> void:
@@ -206,7 +231,7 @@ func sea_grass(colour: Color, tall: bool) -> void:
 		var b := turn*Vector3(0.025,height*0.45,spread*0.3)
 		var c := turn*Vector3(-0.025,height*0.78,spread*0.7)
 		var d := turn*Vector3(0,height,spread)
-		ribbon(a,b,0.025,colour*0.85); ribbon(b,c,0.025,colour); ribbon(c,d,0.013,colour*1.05)
+		ribbon(a,b,0.025,colour*0.85); bent_ribbon(b,c,d,0.025,0.013,colour,colour*1.05)
 
 
 func build(records: Array[Dictionary], key: Vector2i, sea: RefCounted = null) -> Array:
@@ -254,15 +279,14 @@ func build(records: Array[Dictionary], key: Vector2i, sea: RefCounted = null) ->
 				for i in 4:
 					var dir := Vector3(sin(i*2.4),0,cos(i*2.4))
 					var elbow := Vector3(0,0.25,0)+dir*0.15
-					ribbon(Vector3.ZERO,elbow,0.018,bark); ribbon(elbow,Vector3(0,0.55,0)+dir*0.3,0.008,bark)
+					bent_ribbon(Vector3.ZERO,elbow,Vector3(0,0.55,0)+dir*0.3,0.018,0.008,bark,bark)
 			7,8: reed(c.lerp(Color(0.28,0.34,0.13),0.65),int(record.kind)==8)
 			9:
 				var kelp := c.lerp(Color(0.22,0.25,0.10),0.80)
 				for i in 4:
 					var turn := Basis(Vector3.UP,i*1.9+seed)
 					var middle := turn*Vector3(0.02,0.035,0.10)
-					ribbon(Vector3(0,0.008,0),middle,0.025,kelp*0.9)
-					ribbon(middle,turn*Vector3(0.05,0.012,0.23),0.032,kelp)
+					bent_ribbon(Vector3(0,0.008,0),middle,turn*Vector3(0.05,0.012,0.23),0.025,0.032,kelp*0.9,kelp)
 			10,13: shell(c.lerp(Color(0.76,0.70,0.55),0.65))
 			11,12: sea_grass(c.lerp(Color(0.16,0.30,0.19),0.80),int(record.kind)==12)
 	var arrays := []; arrays.resize(Mesh.ARRAY_MAX)
@@ -272,3 +296,7 @@ func build(records: Array[Dictionary], key: Vector2i, sea: RefCounted = null) ->
 	arrays[Mesh.ARRAY_CUSTOM0] = anchors
 	if water: arrays[Mesh.ARRAY_CUSTOM1] = water_planes
 	return arrays
+
+
+func lods() -> Dictionary:
+	return {lod_error:far_indices} if lod_error>0.0 and far_indices.size()<indices.size() else {}
