@@ -73,8 +73,11 @@ func definitions() -> void:
 			Compat.apply(changed,CampaignProfile.ORIGINAL,"gz19h")
 			check(marked(changed,cfg.checks).is_empty(),cfg.root+": fail closed on "+mode+" startup call")
 	var all_checks: Array = FAMILIES[0].checks+FAMILIES[1].checks
-	check(adapted.scripts.keys().filter(func(name):return adapted.scripts[name].get("party_check",false)).size() == all_checks.size(),
-		"no unrelated prison check gains shared eligibility")
+	var route_checks := ["VCheck#0#17","VCheck#0#295","VCheck#0#300","VCheck#0#338","VCheck#0#344",
+		"VCheck#0#348","VCheck#0#355","VCheck#0#357","VCheck#0#364"]
+	check(marked(adapted,adapted.scripts.keys()).size() == all_checks.size()+route_checks.size() \
+		and marked(adapted,all_checks+route_checks) == all_checks+route_checks,
+		"only the six discoveries and nine independently inspected route checks gain shared eligibility")
 	for mode: String in ["missing","duplicate","replacement","conflicting_assignment"]:
 		var changed := ScriptParser.parse(raw)
 		var binding := [ScriptParser.S_SET,"HChest1",[ScriptParser.N_CALL,"GetObjectByID",[[ScriptParser.N_STR,"736257"]]]]

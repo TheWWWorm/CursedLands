@@ -8,6 +8,7 @@ static func apply(ast: ScriptParser, campaign: String, zone: String) -> void:
 			if zone == "gz19h":
 				preload("res://src/game/script/story_coop_traps.gd").apply_prison(ast)
 				_prison_discovery_checks(ast)
+				_prison_route_checks(ast)
 			preload("res://src/game/script/story_coop_predicates.gd").apply_original(ast,zone)
 			if zone == "gz15h": _prison_party_checks(ast)
 		if campaign == CampaignProfile.ORIGINAL and zone == "gz6g":
@@ -124,6 +125,78 @@ static func _prison_discovery_family(ast: ScriptParser, root: String, names: Arr
 		var actual: Dictionary = ast.scripts.get(name,{})
 		if actual.get("params",[]) != expected[name].params or actual.get("blocks",[]) != expected[name].blocks: return
 	for name: String in names: ast.scripts[name].party_check = true
+
+
+## These remaining original prison loops also watch only startup heroes.
+## Their children advance shared route stages; no child moves the intruder,
+## opens a lever or gives a personal reward. The final portal's explicit
+## protagonist gate and the separate quest reward continuations stay native.
+static func _prison_route_checks(ast: ScriptParser) -> void:
+	var subject := [P.N_VAR,"this"]
+	var x := [P.N_CALL,"GetX",[subject]]
+	var y := [P.N_CALL,"GetY",[subject]]
+	_prison_route_family(ast,"VTriger#0#13",{
+		"VCheck#0#17":[[
+			[P.N_CALL,"IsLess",[x,[P.N_NUM,410.0]]],
+			[P.N_CALL,"IsLess",[y,[P.N_NUM,434.0]]],
+			[P.N_CALL,"IsGreater",[x,[P.N_NUM,400.0]]],
+			[P.N_CALL,"IsGreater",[y,[P.N_NUM,427.0]]]],
+			"VTriger#0#19",{"q.gz19h.q71h":2.0,"q.gz19h.q71h.1":2.0}]})
+	_prison_route_family(ast,"VTriger#0#296",{
+		"VCheck#0#295":[[[P.N_CALL,"UnitInSquare",[subject,[P.N_NUM,56.0],
+			[P.N_NUM,237.0],[P.N_NUM,147.0],[P.N_NUM,263.0]]]],
+			"VTriger#0#298",{"q.gz19h.q72h.2":2.0,"q.gz19h.q72h.3":1.0}],
+		"VCheck#0#300":[[[P.N_CALL,"UnitInSquare",[subject,[P.N_NUM,220.0],
+			[P.N_NUM,2.0],[P.N_NUM,260.0],[P.N_NUM,90.0]]]],
+			"VTriger#0#302",{"q.gz19h.q72h.3":2.0,"q.gz19h.q72h.20":1.0,"q.gz19h.q72h.34":2.0}]})
+	var checks := {}
+	for row: Array in [
+		["VCheck#0#338","MC3",7.0,"VTriger#0#326",{".10":2.0,".11":1.0,".8":1.0}],
+		["VCheck#0#344",Vector2(450,105),10.0,"VTriger#0#346",{".22":2.0}],
+		["VCheck#0#348",Vector2(410,170),10.0,"VTriger#0#350",{".16":2.0}],
+		["VCheck#0#355","TCP-B",7.0,"VTriger#0#359",{".23":2.0,".24":1.0}],
+		["VCheck#0#357","TCP-A",7.0,"VTriger#0#371",{".25":2.0,".26":1.0}],
+		["VCheck#0#364","MC1",7.0,"VTriger#0#366",{".6":2.0,".7":1.0,".4":1.0}],
+	]:
+		var distance: Array
+		if row[1] is Vector2:
+			distance = [P.N_CALL,"DistanceUnitPoint",[subject,[P.N_NUM,row[1].x],[P.N_NUM,row[1].y]]]
+		else: distance = [P.N_CALL,"DistanceUnitUnit",[subject,[P.N_VAR,row[1]]]]
+		var stages := {}
+		for suffix: String in row[4]: stages["q.gz19h.q72h"+suffix] = row[4][suffix]
+		checks[row[0]] = [[[P.N_CALL,"IsLess",[distance,[P.N_NUM,row[2]]]]],row[3],stages]
+	_prison_route_family(ast,"VTriger#0#333",checks,
+		{"MC3":"45627","TCP-B":"43974","TCP-A":"43968","MC1":"45622"})
+
+
+static func _prison_route_family(ast: ScriptParser, root: String, checks: Dictionary,
+		bindings := {}) -> void:
+	if ast.world.count([P.S_CALL,root,[[P.N_VAR,"NULL"]]]) != 1 \
+			or ast.world.filter(func(st):return st[0] == P.S_CALL and st[1] == root).size() != 1: return
+	for key: String in bindings:
+		var binding := [P.S_SET,key,[P.N_CALL,"GetObjectByID",[[P.N_STR,bindings[key]]]]]
+		if ast.world.count(binding) != 1 or ast.world.filter(func(st):
+			return st[0] == P.S_SET and st[1] == key).size() != 1: return
+	var kill := [P.S_CALL,"KillScript",[]]
+	var expected := {}
+	var calls := []
+	for name: String in checks:
+		var row: Array = checks[name]
+		expected[name] = {"params":["this"],"blocks":[{"conds":row[0],
+			"body":[kill,[P.S_CALL,row[1],[[P.N_VAR,"this"]]]]}]}
+		var body := [kill]
+		for key: String in row[2]:
+			body.append([P.S_CALL,"GSSetVarMax",[[P.N_NUM,0.0],[P.N_STR,key],[P.N_NUM,row[2][key]]]])
+		expected[row[1]] = {"params":["this"],"blocks":[{"conds":[],"body":body}]}
+		calls.append([P.S_CALL,name,[[P.N_VAR,"VSS#i#val"]]])
+	expected[root] = {"params":["this"],"blocks":[{"conds":[],"body":[kill,
+		[P.S_FOR,"VSS#i#val",[P.N_VAR,"Heroes"],calls]]}]}
+	# Admit each complete family atomically, including its original geometry,
+	# registration order, bindings and quest writes. Mods keep their own rules.
+	for name: String in expected:
+		var actual: Dictionary = ast.scripts.get(name,{})
+		if actual.get("params",[]) != expected[name].params or actual.get("blocks",[]) != expected[name].blocks: return
+	for name: String in checks: ast.scripts[name].party_check = true
 
 
 ## The slave-camp escape predates co-op: only Kir and Kel receive its

@@ -1,0 +1,609 @@
+{
+  "status": "implemented-and-focused-qualified",
+  "scope": "Original gz19h q71h completion rectangle and q72h route/landmark stages become eligible for late co-op guests through existing shared-check metadata. Full native conditions, bodies, registration, timers, indexes, rewards, levers and explicit protagonist portal remain authored.",
+  "baseline_checkpoint": "518c2b59ececd0d2dc8c73496f49da5f24e49d76",
+  "candidate_build": "/home/llm2x/Documents/EI/local/scratchpad/prison-progression-late-join-20261009/candidate01",
+  "candidate_build_sha256": {
+    "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+    "CursedLands.pck": "ae76023d35dd1d655f3d0150a6f3b15a5a1d8db9ba69fc8aacf56bbea203b585",
+    "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+  },
+  "production_source": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/game/src/game/script/story_compat.gd",
+  "production_source_sha256": "b6da3b387a2200655cc53617b9d170acf5f6482b1a2f864c3f68a1c6c3d899cf",
+  "changed_files": [
+    "game/src/game/script/story_compat.gd",
+    "tools/tests/prison_progression_state.gd",
+    "tools/tests/prison_progression_late_join.gd",
+    "tools/tests/prison_discovery_state.gd"
+  ],
+  "admitted_families": [
+    {
+      "root": "VTriger#0#13",
+      "checks": [
+        "VCheck#0#17"
+      ],
+      "descendants": [
+        "VTriger#0#19"
+      ],
+      "native_definition_count": 3
+    },
+    {
+      "root": "VTriger#0#296",
+      "checks": [
+        "VCheck#0#295",
+        "VCheck#0#300"
+      ],
+      "descendants": [
+        "VTriger#0#298",
+        "VTriger#0#302"
+      ],
+      "native_definition_count": 5
+    },
+    {
+      "root": "VTriger#0#333",
+      "checks": [
+        "VCheck#0#338",
+        "VCheck#0#344",
+        "VCheck#0#348",
+        "VCheck#0#355",
+        "VCheck#0#357",
+        "VCheck#0#364"
+      ],
+      "descendants": [
+        "VTriger#0#326",
+        "VTriger#0#346",
+        "VTriger#0#350",
+        "VTriger#0#359",
+        "VTriger#0#371",
+        "VTriger#0#366"
+      ],
+      "native_definition_count": 13,
+      "unique_bindings": {
+        "MC3": "45627",
+        "TCP-B": "43974",
+        "TCP-A": "43968",
+        "MC1": "45622"
+      }
+    }
+  ],
+  "original_script": {
+    "mounted_path": "maps/zone19.mob",
+    "sha256": "be3563f125987345d54a84745d77d323a1ec990e52ca1db6bcd4440be210f38b",
+    "identical_extracted_source": "/home/llm2x/Documents/EI/inspection/samples/scripts/zone19.txt"
+  },
+  "acceptance": {
+    "candidate_checks": 630,
+    "candidate_failures": 0,
+    "baseline_early": [
+      61,
+      0
+    ],
+    "baseline_late": [
+      61,
+      19
+    ],
+    "candidate_early": [
+      61,
+      0
+    ],
+    "candidate_late": [
+      61,
+      0
+    ],
+    "phase_comparisons": [
+      {
+        "candidate": "candidate-early01",
+        "baseline": "baseline-early01",
+        "all_11_labels_and_quest_value_snapshots_identical": true,
+        "walkable_points_identical": true
+      },
+      {
+        "candidate": "candidate-late01",
+        "baseline": "baseline-early01",
+        "all_11_labels_and_quest_value_snapshots_identical": true,
+        "walkable_points_identical": true
+      }
+    ]
+  },
+  "stage_comparison": {
+    "baseline": "/home/llm2x/Documents/EI/local/scratchpad/prison-discovery-late-join-20261009/candidate01",
+    "candidate": "/home/llm2x/Documents/EI/local/scratchpad/prison-progression-late-join-20261009/candidate01",
+    "baseline_count": 712,
+    "candidate_count": 712,
+    "differences": [
+      {
+        "file": "src/game/script/story_compat.gd",
+        "baseline": "b0b6937c1abc070c655c01ac8d3bf7c85efc4755b30194c34bb1eac038f7d4e9",
+        "candidate": "b6da3b387a2200655cc53617b9d170acf5f6482b1a2f864c3f68a1c6c3d899cf"
+      }
+    ],
+    "source_sha256": "b6da3b387a2200655cc53617b9d170acf5f6482b1a2f864c3f68a1c6c3d899cf",
+    "source_matches_candidate": true,
+    "scope": "Only source-admitted prison shared checks updated from qualified 518c2b5 discovery stage. No current session.gd or renderer work included."
+  },
+  "runs": [
+    {
+      "label": "baseline-early01",
+      "checks": 61,
+      "failures": 0,
+      "return_code": 0,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/prison-discovery-late-join-20261009/candidate01/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/prison-progression-late-join-20261009/baseline-early01/tool-source.gd",
+        "--ei-inline-host",
+        "--progression-arrival=early"
+      ],
+      "run_json": "/home/llm2x/Documents/EI/local/scratchpad/prison-progression-late-join-20261009/baseline-early01/run.json",
+      "run_json_sha256": "1a3ae2b1f31f0d7bb8f0a1b24457a2a0214dda09891a84e0a45508eef8cac06a",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/prison-progression-late-join-20261009/baseline-early01/run.log",
+      "log_sha256": "4b88bd410314d98bd45622875c1542414d5a275c8e6fab3ff7555e073a71ca7e",
+      "evidence": "/home/llm2x/Documents/EI/local/scratchpad/prison-progression-late-join-20261009/baseline-early01/prison-progression-late-join.json",
+      "evidence_sha256": "bc3950d1aba6300f499bd9bcb3c37ba5248e666b768a28c98a891c0b55f6f848",
+      "errors": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "349f32f5fa1fcc7f63ef5d9828b53a25fc155844c9c4e7cee8ccef69e724fc37",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/prison_progression_late_join.gd": "dff604a78e3b6df45246a0d94b19106e489ce0ddac059bdd09bd79776164f714",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_traps_net.gd": "467645c27cbfe2ce9130f22fe4ac7d68edfdf7e57a867685e212cff480fb35d4"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 1659339,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "other_processes_at_end": []
+    },
+    {
+      "label": "baseline-late01",
+      "checks": 61,
+      "failures": 19,
+      "return_code": 1,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/prison-discovery-late-join-20261009/candidate01/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/prison-progression-late-join-20261009/baseline-late01/tool-source.gd",
+        "--ei-inline-host",
+        "--progression-arrival=late"
+      ],
+      "run_json": "/home/llm2x/Documents/EI/local/scratchpad/prison-progression-late-join-20261009/baseline-late01/run.json",
+      "run_json_sha256": "eed4aa73fcc256e3cfcfac7fa5a8c12d6057f3fcbe3694076f8a2b6eaa7edb33",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/prison-progression-late-join-20261009/baseline-late01/run.log",
+      "log_sha256": "e7b407ec07796fcb4097764fe262b3eb6319d7b6d58d5189ffe3f8e864b84a1f",
+      "evidence": "/home/llm2x/Documents/EI/local/scratchpad/prison-progression-late-join-20261009/baseline-late01/prison-progression-late-join.json",
+      "evidence_sha256": "bfeb0baaebb7c64afa211141a9ae5fddfed20a20bcb9cf8173831a3bffe692d6",
+      "errors": [
+        "FAIL VCheck#0#17: guest advances every authored shared route stage",
+        "FAIL VCheck#0#17: native one-shot records the guest as its trigger owner",
+        "FAIL VCheck#0#295: guest advances every authored shared route stage",
+        "FAIL VCheck#0#295: native one-shot records the guest as its trigger owner",
+        "FAIL VCheck#0#300: guest advances every authored shared route stage",
+        "FAIL VCheck#0#300: native one-shot records the guest as its trigger owner",
+        "FAIL VCheck#0#338: guest advances every authored shared route stage",
+        "FAIL VCheck#0#338: native one-shot records the guest as its trigger owner",
+        "FAIL VCheck#0#344: guest advances every authored shared route stage",
+        "FAIL VCheck#0#344: native one-shot records the guest as its trigger owner",
+        "FAIL VCheck#0#348: guest advances every authored shared route stage",
+        "FAIL VCheck#0#348: native one-shot records the guest as its trigger owner",
+        "FAIL VCheck#0#355: guest advances every authored shared route stage",
+        "FAIL VCheck#0#355: native one-shot records the guest as its trigger owner",
+        "FAIL VCheck#0#357: guest advances every authored shared route stage",
+        "FAIL VCheck#0#357: native one-shot records the guest as its trigger owner",
+        "FAIL VCheck#0#364: guest advances every authored shared route stage",
+        "FAIL VCheck#0#364: native one-shot records the guest as its trigger owner",
+        "FAIL q71h reaches the unchanged native completion continuation"
+      ],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "349f32f5fa1fcc7f63ef5d9828b53a25fc155844c9c4e7cee8ccef69e724fc37",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/prison_progression_late_join.gd": "dff604a78e3b6df45246a0d94b19106e489ce0ddac059bdd09bd79776164f714",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_traps_net.gd": "467645c27cbfe2ce9130f22fe4ac7d68edfdf7e57a867685e212cff480fb35d4"
+      },
+      "other_processes_at_start": [],
+      "other_processes_at_end": []
+    },
+    {
+      "label": "state-candidate01",
+      "checks": 224,
+      "failures": 0,
+      "return_code": 0,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/prison-progression-late-join-20261009/candidate01/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/prison-progression-late-join-20261009/state-candidate01/tool-source.gd"
+      ],
+      "run_json": "/home/llm2x/Documents/EI/local/scratchpad/prison-progression-late-join-20261009/state-candidate01/run.json",
+      "run_json_sha256": "b7046bd0fe57281fa53689efa16fcc74f4d1bbe24e01743a5baf192629f32f09",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/prison-progression-late-join-20261009/state-candidate01/run.log",
+      "log_sha256": "00541c71237bb12e76df12cbc051f32e95480f96380a9532794f92306e677840",
+      "evidence": "/home/llm2x/Documents/EI/local/scratchpad/prison-progression-late-join-20261009/state-candidate01/prison-progression-state.json",
+      "evidence_sha256": "e34fe85fe3be3340de319401cfb03745cb30039e09f7d2bca233c802216dd382",
+      "errors": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "ae76023d35dd1d655f3d0150a6f3b15a5a1d8db9ba69fc8aacf56bbea203b585",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/prison_progression_state.gd": "5e23f9f4aa7ea2f1d9311994b26fefc61638bc6d1128b2c50ffa46b673e44f30",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/prison_late_join.gd": "06c53d50b72774c54a8452c23537a389505556e6c74c9ab3251ded7c6154ce3e"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 1664520,
+          "executable": "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261009-linux-x86_64/CursedLands.x86_64",
+          "headless": false
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 1664520,
+          "executable": "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261009-linux-x86_64/CursedLands.x86_64",
+          "headless": false
+        }
+      ]
+    },
+    {
+      "label": "candidate-early01",
+      "checks": 61,
+      "failures": 0,
+      "return_code": 0,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/prison-progression-late-join-20261009/candidate01/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/prison-progression-late-join-20261009/candidate-early01/tool-source.gd",
+        "--ei-inline-host",
+        "--progression-arrival=early"
+      ],
+      "run_json": "/home/llm2x/Documents/EI/local/scratchpad/prison-progression-late-join-20261009/candidate-early01/run.json",
+      "run_json_sha256": "d5410383baa6e5bcfef9af59977cfd4aa7042b28076eb1d7d4ca59d07864e0a8",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/prison-progression-late-join-20261009/candidate-early01/run.log",
+      "log_sha256": "bce7c2bdff1e728843aa175e2d5cf12cb514ee7cfc73f2ce326a4d00333c62fd",
+      "evidence": "/home/llm2x/Documents/EI/local/scratchpad/prison-progression-late-join-20261009/candidate-early01/prison-progression-late-join.json",
+      "evidence_sha256": "bc3950d1aba6300f499bd9bcb3c37ba5248e666b768a28c98a891c0b55f6f848",
+      "errors": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "ae76023d35dd1d655f3d0150a6f3b15a5a1d8db9ba69fc8aacf56bbea203b585",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/prison_progression_late_join.gd": "dff604a78e3b6df45246a0d94b19106e489ce0ddac059bdd09bd79776164f714",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_traps_net.gd": "467645c27cbfe2ce9130f22fe4ac7d68edfdf7e57a867685e212cff480fb35d4"
+      },
+      "other_processes_at_start": [],
+      "other_processes_at_end": [
+        {
+          "pid": 1672647,
+          "executable": "/home/llm2x/Documents/EI/local/scratchpad/menu-local-test-feedback-20261009/new-game01/CursedLands.x86_64",
+          "headless": false
+        }
+      ]
+    },
+    {
+      "label": "candidate-late01",
+      "checks": 61,
+      "failures": 0,
+      "return_code": 0,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/prison-progression-late-join-20261009/candidate01/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/prison-progression-late-join-20261009/candidate-late01/tool-source.gd",
+        "--ei-inline-host",
+        "--progression-arrival=late"
+      ],
+      "run_json": "/home/llm2x/Documents/EI/local/scratchpad/prison-progression-late-join-20261009/candidate-late01/run.json",
+      "run_json_sha256": "de7d6c2febec436f5b497334c5ae8ef1e19071dd9f78e529d3a576b5d7b6c4bd",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/prison-progression-late-join-20261009/candidate-late01/run.log",
+      "log_sha256": "7e678b773b5301424f3bf8b39f9ff0cdc3ee8d68401d8fa10714d27714af57a8",
+      "evidence": "/home/llm2x/Documents/EI/local/scratchpad/prison-progression-late-join-20261009/candidate-late01/prison-progression-late-join.json",
+      "evidence_sha256": "c7fbbe1952cc77bf282878df70196edf0a310757c21fd344e9a7cf09b8be004a",
+      "errors": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "ae76023d35dd1d655f3d0150a6f3b15a5a1d8db9ba69fc8aacf56bbea203b585",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/prison_progression_late_join.gd": "dff604a78e3b6df45246a0d94b19106e489ce0ddac059bdd09bd79776164f714",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_traps_net.gd": "467645c27cbfe2ce9130f22fe4ac7d68edfdf7e57a867685e212cff480fb35d4"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 1664520,
+          "executable": "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261009-linux-x86_64/CursedLands.x86_64",
+          "headless": false
+        }
+      ],
+      "other_processes_at_end": []
+    },
+    {
+      "label": "discovery-state-regression01",
+      "checks": 139,
+      "failures": 0,
+      "return_code": 0,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/prison-progression-late-join-20261009/candidate01/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/prison-progression-late-join-20261009/discovery-state-regression01/tool-source.gd"
+      ],
+      "run_json": "/home/llm2x/Documents/EI/local/scratchpad/prison-progression-late-join-20261009/discovery-state-regression01/run.json",
+      "run_json_sha256": "462e2fbf3940361128c76001963540b15584dd012cd2db67e8f46e1846858c9f",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/prison-progression-late-join-20261009/discovery-state-regression01/run.log",
+      "log_sha256": "bdc1938ad76ceb5923abe93d8e0ddc8cd7ba1f8052fd2534446d8dc7884217d2",
+      "evidence": "/home/llm2x/Documents/EI/local/scratchpad/prison-progression-late-join-20261009/discovery-state-regression01/prison-discovery-state.json",
+      "evidence_sha256": "6121202fb09af2f77189919c28f66cd789a03f348b63f842c720d86a8e17ba0c",
+      "errors": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "ae76023d35dd1d655f3d0150a6f3b15a5a1d8db9ba69fc8aacf56bbea203b585",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/prison_discovery_state.gd": "d225418eafb281cf6427addad1def300e9e2dc47e444a39730adae686e26d8c3",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/prison_late_join.gd": "06c53d50b72774c54a8452c23537a389505556e6c74c9ab3251ded7c6154ce3e"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 1672647,
+          "executable": "/home/llm2x/Documents/EI/local/scratchpad/menu-local-test-feedback-20261009/new-game01/CursedLands.x86_64",
+          "headless": false
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 1672647,
+          "executable": "/home/llm2x/Documents/EI/local/scratchpad/menu-local-test-feedback-20261009/new-game01/CursedLands.x86_64",
+          "headless": false
+        },
+        {
+          "pid": 1673067,
+          "executable": "/home/llm2x/Documents/EI/local/scratchpad/menu-local-test-feedback-20261009/new-game01/CursedLands.x86_64",
+          "headless": true
+        }
+      ]
+    },
+    {
+      "label": "alarm-state-regression01",
+      "checks": 70,
+      "failures": 0,
+      "return_code": 0,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/prison-progression-late-join-20261009/candidate01/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/prison-progression-late-join-20261009/alarm-state-regression01/tool-source.gd"
+      ],
+      "run_json": "/home/llm2x/Documents/EI/local/scratchpad/prison-progression-late-join-20261009/alarm-state-regression01/run.json",
+      "run_json_sha256": "bcbd85028716bf80b600f473616dfcaf2b48a1e97e3c9484caa823a563881a3e",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/prison-progression-late-join-20261009/alarm-state-regression01/run.log",
+      "log_sha256": "030c4c7ed7afd746da52aa6ad3bbc0122375061908f9a1629c231a73b7919154",
+      "evidence": "/home/llm2x/Documents/EI/local/scratchpad/prison-progression-late-join-20261009/alarm-state-regression01/prison-alarm-state.json",
+      "evidence_sha256": "f4db6d744c6adbd2c34d6246128006bcab9e9136c86f6fa3beddb143a106d2e5",
+      "errors": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "ae76023d35dd1d655f3d0150a6f3b15a5a1d8db9ba69fc8aacf56bbea203b585",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/prison_alarm_state.gd": "acebb8f79fe12bd2da69d79129f16fe710b8edef6aef5fa02bd9748c41bda96b",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_captivity.gd": "e5bf6a248a6b3992d3fa43b80f4a076b6bd3fba39e026a32d74a5ffce084282f"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 1672647,
+          "executable": "/home/llm2x/Documents/EI/local/scratchpad/menu-local-test-feedback-20261009/new-game01/CursedLands.x86_64",
+          "headless": false
+        },
+        {
+          "pid": 1673067,
+          "executable": "/home/llm2x/Documents/EI/local/scratchpad/menu-local-test-feedback-20261009/new-game01/CursedLands.x86_64",
+          "headless": true
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 1672647,
+          "executable": "/home/llm2x/Documents/EI/local/scratchpad/menu-local-test-feedback-20261009/new-game01/CursedLands.x86_64",
+          "headless": false
+        },
+        {
+          "pid": 1673067,
+          "executable": "/home/llm2x/Documents/EI/local/scratchpad/menu-local-test-feedback-20261009/new-game01/CursedLands.x86_64",
+          "headless": true
+        }
+      ]
+    },
+    {
+      "label": "alarm-net-regression01",
+      "checks": 75,
+      "failures": 0,
+      "return_code": 0,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/prison-progression-late-join-20261009/candidate01/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/prison-progression-late-join-20261009/alarm-net-regression01/tool-source.gd",
+        "--ei-inline-host",
+        "--alarm-arrival=late"
+      ],
+      "run_json": "/home/llm2x/Documents/EI/local/scratchpad/prison-progression-late-join-20261009/alarm-net-regression01/run.json",
+      "run_json_sha256": "9d9a08c87f954bcd72d03bddc3f5d305e9d76d7811a49ab87fea5d0046abd14d",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/prison-progression-late-join-20261009/alarm-net-regression01/run.log",
+      "log_sha256": "3b3c870e08fdbd7f71aa7bda6788aee582e99a6614c12113af4c104d6876e3e2",
+      "evidence": "/home/llm2x/Documents/EI/local/scratchpad/prison-progression-late-join-20261009/alarm-net-regression01/prison-alarm-late-join.json",
+      "evidence_sha256": "977ca54da512261ae1329f9c16a07e8ea844777c42151f1f773121a5f5bf8a1d",
+      "errors": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "ae76023d35dd1d655f3d0150a6f3b15a5a1d8db9ba69fc8aacf56bbea203b585",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/prison_alarm_late_join.gd": "a723d2ccda49acac5c3ffb196bcc97b9f9ab8ae3b52cd2a6fa2406cb72fcf19e",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_traps_net.gd": "467645c27cbfe2ce9130f22fe4ac7d68edfdf7e57a867685e212cff480fb35d4"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 1672647,
+          "executable": "/home/llm2x/Documents/EI/local/scratchpad/menu-local-test-feedback-20261009/new-game01/CursedLands.x86_64",
+          "headless": false
+        },
+        {
+          "pid": 1673067,
+          "executable": "/home/llm2x/Documents/EI/local/scratchpad/menu-local-test-feedback-20261009/new-game01/CursedLands.x86_64",
+          "headless": true
+        }
+      ],
+      "other_processes_at_end": []
+    }
+  ],
+  "remaining_and_boundaries": [
+    "No full physical prison route, navigation traversal, rendered, reward-economy or Windows/WAN acceptance is claimed. ENet tests prepare real walkable actor positions, pause AI/combat and explicitly tick native VM.",
+    "No campaign save schema, protocol, native binary or mounted original asset was changed. This is a private QA candidate, not a release or update to the user local test package.",
+    "Native q72h final VCheck#0#12 explicitly checks the story protagonist. This is different from shared For(Heroes) registration and was not broadened.",
+    "Native startup VTriger#0#76 also uses For(Heroes), but its children inflict individual damage and retain Sleep cooldowns. A future late-arrival investigation must preserve per-character registration, not shared eligibility; no new trap reproduction is claimed here.",
+    "Legacy VTriger#0#49 has no call statement in this mounted main map script; do not treat that unused-looking family as startup-reachable without additional evidence.",
+    "Foreign/headed Godot processes overlap some headless checks; all process inventories are retained and elapsed timings establish no performance result."
+  ],
+  "root_review": {
+    "source_and_retained_evidence_hashes_verified": true,
+    "native_early_candidate_early_and_late_quest_snapshots_independently_compared": true,
+    "production_review": "Each complete native registration/check/write family must match before metadata admission. No native AST body is replaced; the protagonist portal and individual traps are excluded."
+  }
+}
