@@ -1,0 +1,223 @@
+{
+  "date": "2026-10-09",
+  "status": "Verified generic persistence fix for explicitly looted actors from added .mob files.",
+  "base_commit": "cc78028",
+  "problem": "restore_zone skipped script-added actors listed as removed before its looted-corpse pass. Saved VM references therefore decoded as null instead of a retained dead actor. IsDead(null) correctly returns false, so a pending death predicate could remain incomplete after reload.",
+  "change": "Read the explicit looted list before restoring extra .mob actors. Instantiate an extra actor if it is explicitly looted even when removed; the existing removal pass immediately marks it dead and retains it off-tree. Absence alone never becomes death, intentionally removed living actors remain absent, and no quest flag is changed.",
+  "production_file": "game/src/game/campaign_state.gd",
+  "source_sha256": "b66f159c27dcaafd5ab389f04fe3038fbf45bb5de1cb5d9794fa1d8e6cb2dac0",
+  "reproduction": "Use the original Dr20 quest grant and source-three lever in gz5g; the authored poison replacement creates UID1000027. Invoke its ordinary death and loot paths and save before the next original VM poll. The current and two older serialization shapes all lose the tombstone on baseline; their original pending queen death gate stays incomplete.",
+  "baseline": {
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/queen-user-saves-20261009/build/CPU.x86_64",
+      "--headless",
+      "--audio-driver",
+      "Dummy",
+      "--render-thread",
+      "safe",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--ei-inline-host",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/added_actor_tombstones.gd"
+    ],
+    "exit_code": 1,
+    "seconds": 10.345905771973776,
+    "errors": [],
+    "log_sha256": "96cb9a7685627d1eec3852ad6d0aed2eadc48357813f5f238b9510434ef5230e",
+    "fixture_sha256": "cd675ad5f36730229abdcc0f56699d587741b08c613a11c91d61e14666850eff",
+    "build_sha256": {
+      "CPU.x86_64": "769dd027c0b444caca0d5fbbb6014eda80970e991e9f32fdb1f86ec385d20c3e",
+      "CPU.pck": "ed5456d9423a8934d886a214d8b66234de4be0280ca38d36bc8b40c4b2a881de",
+      "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+    },
+    "name": "tombstone-before-01",
+    "checks": 34,
+    "failures": 12,
+    "log": "/home/llm2x/Documents/EI/local/scratchpad/queen-user-saves-20261009/tombstone-before-01.log"
+  },
+  "candidate_checks": 137,
+  "candidate_failures": 0,
+  "candidate_runs": [
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/queen-user-saves-20261009/build-tombstone/CPU.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--ei-inline-host",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/added_actor_tombstones.gd"
+      ],
+      "exit_code": 0,
+      "seconds": 9.723205160000362,
+      "errors": [],
+      "log_sha256": "65153ec69c493c4cd2212041332b1eff165838f04395ebf6b98b02347ac73cd3",
+      "fixture_sha256": "cd675ad5f36730229abdcc0f56699d587741b08c613a11c91d61e14666850eff",
+      "build_sha256": {
+        "CPU.x86_64": "769dd027c0b444caca0d5fbbb6014eda80970e991e9f32fdb1f86ec385d20c3e",
+        "CPU.pck": "4d7e5206c2925b24a2ee9d0ed13816edeb88d425e2565fe98ecc8e2603281550",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "name": "tombstone-after-01",
+      "checks": 34,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/queen-user-saves-20261009/tombstone-after-01.log"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/queen-user-saves-20261009/build-tombstone/CPU.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--ei-inline-host",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/added_actor_lifetime.gd"
+      ],
+      "exit_code": 0,
+      "seconds": 23.16977250299533,
+      "errors": [],
+      "log_sha256": "7e2d8b5c4d39db2ac6e580c00b75618fba4cb85a6ab02368dc7ad8f8ec24aee2",
+      "fixture_sha256": "2d391985f8a3fb4deb1b831e7c1bff791af8b150192762a502471940ab5cf24f",
+      "build_sha256": {
+        "CPU.x86_64": "769dd027c0b444caca0d5fbbb6014eda80970e991e9f32fdb1f86ec385d20c3e",
+        "CPU.pck": "4d7e5206c2925b24a2ee9d0ed13816edeb88d425e2565fe98ecc8e2603281550",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "name": "added-lifetime-after-01",
+      "checks": 17,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/queen-user-saves-20261009/added-lifetime-after-01.log"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/queen-user-saves-20261009/build-tombstone/CPU.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--ei-inline-host",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/cave_queen_user_save.gd",
+        "--queen-save=/home/llm2x/Documents/EI/local/scratchpad/queen-user-saves-20261009/source/autosave.sav"
+      ],
+      "exit_code": 0,
+      "seconds": 8.426643657992827,
+      "errors": [],
+      "log_sha256": "0826e94da06560a2ff03d1df473d3245a4ab77e0ac8cefbee7603785d20c4001",
+      "fixture_sha256": "103344e0db241f64bac4a16a2fcfaf1886b46734a4d2fc4ea511e0416202a6c7",
+      "build_sha256": {
+        "CPU.x86_64": "769dd027c0b444caca0d5fbbb6014eda80970e991e9f32fdb1f86ec385d20c3e",
+        "CPU.pck": "4d7e5206c2925b24a2ee9d0ed13816edeb88d425e2565fe98ecc8e2603281550",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "name": "queen-supplied-after-01",
+      "checks": 48,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/queen-user-saves-20261009/queen-supplied-after-01.log"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/queen-user-saves-20261009/build-tombstone/CPU.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--ei-inline-host",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/cave_queen_route.gd",
+        "--source=3"
+      ],
+      "exit_code": 0,
+      "seconds": 11.65106648101937,
+      "errors": [],
+      "log_sha256": "9cacf42b54ff069b484cb53dc00b69f87f327c1fbc3fd9dfa32bed58a5c0097b",
+      "fixture_sha256": "7f5a0e774350fc3720cb36d865a53cb4fb0b9f995ca4c04d97b4866205f36be7",
+      "build_sha256": {
+        "CPU.x86_64": "769dd027c0b444caca0d5fbbb6014eda80970e991e9f32fdb1f86ec385d20c3e",
+        "CPU.pck": "4d7e5206c2925b24a2ee9d0ed13816edeb88d425e2565fe98ecc8e2603281550",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "name": "queen-enet-after-01",
+      "checks": 38,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/queen-user-saves-20261009/queen-enet-after-01.log"
+    }
+  ],
+  "export": {
+    "base": "cc78028",
+    "only_production_change": "game/src/game/campaign_state.gd",
+    "before_sha256": "5d4edbca2994299f73ad2658384ae830aee4a0aaaad4293951bf62a2b20d81e6",
+    "after_sha256": "b66f159c27dcaafd5ab389f04fe3038fbf45bb5de1cb5d9794fa1d8e6cb2dac0",
+    "steps": [
+      {
+        "command": [
+          "/home/llm2x/.local/bin/godot-4",
+          "--headless",
+          "--path",
+          "/home/llm2x/Documents/EI/local/scratchpad/queen-user-saves-20261009/tombstone-stage/game",
+          "--editor",
+          "--import"
+        ],
+        "return_code": 0,
+        "errors": [],
+        "seconds": 9.086544045974733,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/queen-user-saves-20261009/tombstone-import.log",
+        "sha256": "4fa19610a040943ffd5f01279eee1e4265c387d7be5225ced13e2a0aeff0aab4"
+      },
+      {
+        "command": [
+          "/home/llm2x/.local/bin/godot-4",
+          "--headless",
+          "--path",
+          "/home/llm2x/Documents/EI/local/scratchpad/queen-user-saves-20261009/tombstone-stage/game",
+          "--export-pack",
+          "Linux",
+          "/home/llm2x/Documents/EI/local/scratchpad/queen-user-saves-20261009/build-tombstone/CPU.pck"
+        ],
+        "return_code": 0,
+        "errors": [],
+        "seconds": 5.674058545992011,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/queen-user-saves-20261009/tombstone-pack.log",
+        "sha256": "ab6394539fd022d5bba60fac5c5e0d7db2793eb48f05f24e889f84ee9f56e2ea"
+      }
+    ],
+    "outputs": {
+      "CPU.x86_64": "769dd027c0b444caca0d5fbbb6014eda80970e991e9f32fdb1f86ec385d20c3e",
+      "CPU.pck": "4d7e5206c2925b24a2ee9d0ed13816edeb88d425e2565fe98ecc8e2603281550",
+      "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+    },
+    "compared_source_files": 259,
+    "changed_source_files": [
+      "game/src/game/campaign_state.gd"
+    ]
+  },
+  "coverage": [
+    "Explicit looted identity restores as dead and off-tree, never in the published live-unit registry.",
+    "Saved original VM reference resolves to the retained tombstone, and the original queen/overall predicates complete after polling.",
+    "Second save/reload preserves identity and completion.",
+    "Current removed-list and legacy absence inference from carried/units formats.",
+    "Living extra-mob actor and intentionally removed living actor controls; original IsDead(null)=false remains unchanged.",
+    "LiA Terror scripted removal, older save compatibility, living added actors and old lootable corpses remain correct.",
+    "Existing source-three real ENet guest, shared quest state, save/reload and reconnect remain correct."
+  ],
+  "supplied_save_boundary": {
+    "receipt": "cave-queen-user-save-2026-10-09.json",
+    "result": "The supplied autosave already has queen objective .1 complete and two living required small creatures. This fix retains its looted queen identity but does not change the initial quest state or remove those survivors. It is a separate proven defect, not an explanation of this actual saved incomplete quest."
+  },
+  "limits": [
+    "Linux local fixtures only; no Windows, internet, full combat or performance acceptance.",
+    "The focused before/after fixture deliberately places death, loot and save before the VM poll. It proves the serialization boundary rather than claiming that exact user input sequence was observed.",
+    "No changes to VM predicates, quest scripts, save schema, original assets, source archive, or personal installed saves.",
+    "Other concurrent Session/CoopProgress and renderer edits are excluded from the isolated candidate."
+  ]
+}

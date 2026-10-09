@@ -1119,6 +1119,7 @@ func restore_zone(id: String, world: GameWorld) -> void:
 	if z.is_empty():
 		return
 	var removed: Array = Array(z.get("removed", [])).duplicate()
+	var looted: Array = z.get("looted", [])
 	# Party members dismissed by scripts can stay in a zone whose base .mob
 	# never contained them. Restore them before mutable inventory/body/VM state.
 	for rec: Dictionary in z.get("detached", []):
@@ -1144,12 +1145,14 @@ func restore_zone(id: String, world: GameWorld) -> void:
 					and not z.dead.has(nid) and not z.dead.has(str(nid))
 			if absent:
 				if not removed.has(nid): removed.append(nid)
-			if not removed.has(nid) and not world.units.has(nid):
+			# Explicitly looted extra actors still need their original identity
+			# for saved VM references. The removal pass below immediately makes
+			# them dead, off-tree tombstones; removed living actors stay absent.
+			if (not removed.has(nid) or looted.has(nid)) and not world.units.has(nid):
 				world.spawn_unit(o)
 		world.add_mob_objects(file)
 	world.set_meta("added_mobs", z.get("added", []).duplicate())
 	world.set_meta("added_unit_ids", added_ids)
-	var looted: Array = z.get("looted", [])
 	# Looted script-added units are not in the base map's removed list.
 	# Restore their existing tombstones too, before publishing live units.
 	for nid in looted:
