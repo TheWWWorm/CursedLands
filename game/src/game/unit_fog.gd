@@ -27,8 +27,8 @@ extends Node
 ## and map units with script names (server
 ## ). The temporary player list is not yet reproduced
 ## only units are hidden, map objects never. Remake party sight (single
-## player option / campaign co-op) does not reveal script-named units merely
-## because they need to remain available to the server's scripts.
+## player option / campaign co-op) and original multiplayer presentation do
+## not reveal script-named units merely because the server retains them.
 ## Campaign sight clips both the nearby relevance radius and retained
 ## perception against geometry. Rendering samples the figures' width, not
 ## only the AI's single eye ray: a partially visible body must not disappear
@@ -69,7 +69,7 @@ func _process(dt: float) -> void:
 		return
 	_t = REFRESH
 	var on := active()
-	_always = sight_list_for(game.session, game.session.my_index) if on and game.session.lmp.is_empty() \
+	_always = sight_list_for(game.session, game.session.my_index) if on \
 		else always_for(game.session, game.session.my_index)
 	if not on and not _was_on:
 		return
@@ -146,15 +146,16 @@ static func noticed_for(s: Session, player: int, living_sources_only := false) -
 	return out
 
 
-## Rendering under remake party sight uses actual party perception, never
+## Rendering under party sight uses actual party perception, never
 ## the native server's script-name registration. Dead / hidden sources may
 ## retain native perception for scripts, but cannot reveal distant enemies.
 static func sight_list_for(s: Session, player: int) -> Dictionary:
 	var out := {}
 	if s == null or s.world == null: return out
-	var eyes := party_eyes_for(s.world, player, s.multiplayer_game)
+	var shared := s.multiplayer_game and s.lmp.is_empty()
+	var eyes := party_eyes_for(s.world, player, shared)
 	for u: GameUnit in noticed_for(s, player, true):
-		if u.controller >= 0 and (s.multiplayer_game or u.controller == player):
+		if u.controller >= 0 and (shared or u.controller == player):
 			out[u.uid] = true
 			continue
 		for e: Array in eyes:

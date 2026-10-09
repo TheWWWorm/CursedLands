@@ -1,0 +1,589 @@
+{
+  "state": "Integrated source after parent review; not packaged.",
+  "scope": "Original/native multiplayer Linux slot-zero hosting frontend. No Windows runtime, WAN or performance claim. No canonical or installed package changes.",
+  "source_handoff": {
+    "/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/unit.gd": "bd9592732cdb6ba8bc83521e2105c52a7f53c0763d23c4fb49542ca149bf9276",
+    "/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/unit_fog.gd": "7691960d72c2a2a03badb4326dba0876adf405d1362f70537b6dc154408f96a0"
+  },
+  "headless_receipt": "/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/qualification-headless.json",
+  "headless_receipt_sha256": "cd32b2c344fe4e92d19e5f57c94a09427bc348696a8794e5cbf04dddac7ad7c0",
+  "candidate_export": "/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/candidate02/export.json",
+  "candidate_export_sha256": "f3023bd2f6c7a48188c19c69d2c255d98ff52366e4ebb722217628f45d77a05d",
+  "rendered": {
+    "run": "/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/host-render-candidate02/run.json",
+    "run_sha256": "621d17c5635ce96edccd702471de52b0e91c20952c4c6c9ebfa448b5308d4dff",
+    "report": "/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/host-render-candidate02/lmp-host-view.json",
+    "report_sha256": "2d0effa5d4e016ebd742b7355f818966db64cddf66d7dfa0304942321b663649",
+    "checks": 32,
+    "failures": 0,
+    "errors": [],
+    "warnings": [],
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/candidate02/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--rendering-method",
+      "forward_plus",
+      "--windowed",
+      "--resolution",
+      "800x600",
+      "--position",
+      "-10000,-10000",
+      "--audio-driver",
+      "Dummy",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/host-render-candidate02/tool-source.gd"
+    ],
+    "build_sha256": {
+      "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+      "CursedLands.pck": "bb78fa5b7e0524b6566247e98c9586c50095b6016084463619ceb9a2b1ce8d5f",
+      "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+    },
+    "captures": {
+      "ingos-seated-host.png": "98e23e015d46d66c099363d41416ce7e5c5bf92bdeadbcbdda21f758ca204e70",
+      "royal-deer-host.png": "1b4508ef5f2cee759b9805461ce5add70db20accc1dee4672cddcd0da7aac0e6"
+    }
+  },
+  "capture_review": [
+    "Both original 800x600 Forward+ PNGs inspected. Royal Deer scene and minimap have no map-wide collection of enemy markers; nearby authored party/quest scene is rendered normally. Numeric fixture independently records 175 replicated units, 165 far-unnoticed witnesses and 3 nearby witnesses.",
+    "Ingos overview is dominated by a foreground roof and is not a close-up visual witness of all three seated NPCs. Stable seated animation is supported by per-frame model/action and real ENet event observations; this single still is only an environment/presentation sanity check.",
+    "No paired rendered baseline was captured in this bounded window. Frozen headless baseline retains the far-visibility and all-three sitting failures."
+  ],
+  "limitations": [
+    "Uses minimum/original graphics preset for an isolated presentation check; no general graphics quality acceptance.",
+    "Bounded village unhuma uspecial13/uspecial15 pose presentation rule; other one-shots and authority command readiness/timing remain controlled in the frozen headless fixture.",
+    "Known headless screen-space AA warning retained in headless receipt; the rendered run has no errors or warnings.",
+    "Foreign stock Godot process inventories are retained in run.json and were not touched."
+  ],
+  "origin_receipt": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/handoff.json",
+    "sha256": "c835b5a085e235549ad335b56cf4b658fa9f8104ff182755e6bb8ad2632178d6"
+  },
+  "headless_qualification": {
+    "baseline_commit": "e002052eac0c0e96681b7ecb9b67d00a092c8666",
+    "scope": "Scratch-only original/native MP host-facing visibility and seated village presentation correction. Not campaign co-op, Windows runtime, WAN, performance, or complete native presentation parity.",
+    "sources": {
+      "src/game/unit_fog.gd": {
+        "baseline": "60937cd284923a3f66f3829ced38025fbf522887a4296eda5d7fb4e508000421",
+        "candidate": "7691960d72c2a2a03badb4326dba0876adf405d1362f70537b6dc154408f96a0"
+      },
+      "src/game/unit.gd": {
+        "baseline": "9f75c46c922cb0b919f547cd5c884fdb679e5b4a14c9787fffe821c160db3e8c",
+        "candidate": "bd9592732cdb6ba8bc83521e2105c52a7f53c0763d23c4fb49542ca149bf9276"
+      }
+    },
+    "source_handoff": {
+      "/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/unit.gd": "bd9592732cdb6ba8bc83521e2105c52a7f53c0763d23c4fb49542ca149bf9276",
+      "/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/unit_fog.gd": "7691960d72c2a2a03badb4326dba0876adf405d1362f70537b6dc154408f96a0"
+    },
+    "candidate02_binary_sha256": {
+      "CursedLands.pck": "bb78fa5b7e0524b6566247e98c9586c50095b6016084463619ceb9a2b1ce8d5f",
+      "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+      "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+    },
+    "export_manifest": "/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/candidate02/export.json",
+    "export_manifest_sha256": "f3023bd2f6c7a48188c19c69d2c255d98ff52366e4ebb722217628f45d77a05d",
+    "baseline_export_manifest": "/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/baseline/export.json",
+    "fixtures": {
+      "/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/fixtures/lmp_seated_pose.gd": "80784dcf0e017b2b34a7bd8cddaff0c11109c5ac722f24262a0b69aabb402062",
+      "/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/fixtures/lmp_host_view.gd": "bca36d03f3dd1a4238a1b52a392ac8e68d9dcfe5a71dcb87549029774f652f2a"
+    },
+    "cases": {
+      "pose-baseline01": {
+        "checks": 25,
+        "failures": 3,
+        "report": "/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/pose-baseline01/lmp-seated-pose.json",
+        "report_sha256": "dcb94e724044a756c991f180c3a62ef89f9db135a8664777a8f1ee0d06e95634",
+        "run": "/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/pose-baseline01/run.json",
+        "run_sha256": "f4dc3c14f4f432ed6fa39e51d2865db59dc91542d70c41bcdb72290c25006a59",
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/baseline/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/pose-baseline01/tool-source.gd"
+        ],
+        "errors": [
+          "FAIL no standing idle inserted between seated repeats 420812",
+          "FAIL no standing idle inserted between seated repeats 137765",
+          "FAIL no standing idle inserted between seated repeats 506671"
+        ],
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "seats": {
+          "137765": {
+            "idle_frames": 4,
+            "idle_ready_frames": 6,
+            "starts": 3,
+            "restart_failures": 0
+          },
+          "420812": {
+            "idle_frames": 35,
+            "idle_ready_frames": 47,
+            "starts": 13,
+            "restart_failures": 0
+          },
+          "506671": {
+            "idle_frames": 35,
+            "idle_ready_frames": 47,
+            "starts": 13,
+            "restart_failures": 0
+          }
+        },
+        "other_one_shot_idle_frames": 8
+      },
+      "pose-candidate02": {
+        "checks": 25,
+        "failures": 0,
+        "report": "/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/pose-candidate02/lmp-seated-pose.json",
+        "report_sha256": "044a98a57e6ade0b53aafe225d1a14f3f984ebd202e11f66bc38efb101d2518f",
+        "run": "/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/pose-candidate02/run.json",
+        "run_sha256": "2001e52ed157f8dbeaf044f111ed4304ba72fb1843a6c9bfd8f01043f1c99578",
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/candidate02/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/pose-candidate02/tool-source.gd"
+        ],
+        "errors": [],
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "seats": {
+          "137765": {
+            "idle_frames": 0,
+            "idle_ready_frames": 6,
+            "starts": 3,
+            "restart_failures": 0
+          },
+          "420812": {
+            "idle_frames": 0,
+            "idle_ready_frames": 47,
+            "starts": 13,
+            "restart_failures": 0
+          },
+          "506671": {
+            "idle_frames": 0,
+            "idle_ready_frames": 47,
+            "starts": 13,
+            "restart_failures": 0
+          }
+        },
+        "other_one_shot_idle_frames": 8
+      },
+      "host-baseline01": {
+        "checks": 30,
+        "failures": 4,
+        "report": "/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/host-baseline01/lmp-host-view.json",
+        "report_sha256": "d0866cd03c26f467c4545d60c9fbde7b1d22ac06c5d2d0900f5af6346c56a853",
+        "run": "/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/host-baseline01/run.json",
+        "run_sha256": "e38d15b38a4db308f87a8cc21e0e0550721a4442e2c40e10b24f7001dd27d696",
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/baseline/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/host-baseline01/tool-source.gd"
+        ],
+        "errors": [
+          "FAIL host frontend has no standing frame between seated repeats 420812",
+          "FAIL host frontend has no standing frame between seated repeats 137765",
+          "FAIL host frontend has no standing frame between seated repeats 506671",
+          "FAIL far unnoticed NPCs are absent from world and minimap"
+        ],
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "visibility": {
+          "population": 175,
+          "range": 31.0,
+          "party_position": "(23.75, 260.25)",
+          "bad_uids": [
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            13,
+            14,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            30,
+            31,
+            32,
+            43,
+            44,
+            46,
+            49,
+            51,
+            53,
+            54,
+            55,
+            56,
+            57,
+            58,
+            78,
+            79,
+            4218,
+            4219,
+            4220,
+            4292,
+            4293,
+            4298,
+            4313,
+            4314,
+            4315,
+            4316,
+            4317,
+            4319,
+            4320,
+            4321,
+            4322,
+            4323,
+            4324,
+            4325,
+            4348,
+            4350,
+            4351,
+            4352,
+            4353,
+            4354,
+            4355,
+            4356,
+            4357,
+            4358,
+            4359,
+            4360,
+            4361,
+            4362,
+            4365,
+            4366,
+            4371,
+            4372,
+            4378,
+            4380,
+            4381,
+            4382,
+            4383,
+            4388,
+            4389,
+            4390,
+            4391,
+            4392,
+            4395,
+            4397,
+            4398,
+            4399,
+            4406,
+            4407,
+            4409,
+            4410,
+            4413,
+            4416,
+            4417,
+            4424,
+            4425,
+            4426,
+            4427,
+            4428,
+            4432,
+            4433,
+            4436,
+            4437,
+            4464,
+            4465,
+            4466,
+            4569,
+            4570,
+            4571,
+            4572,
+            4573,
+            4574,
+            4575,
+            4635,
+            1000118,
+            1000119,
+            1000120,
+            1000121,
+            1000122,
+            1000123,
+            1000124,
+            1000125,
+            1000126,
+            1000127,
+            1000128,
+            1000129,
+            1000130,
+            1000131,
+            1000132,
+            1000133,
+            1000134,
+            1000135,
+            1000136,
+            1000137,
+            1000138,
+            1000139,
+            1000140,
+            1000141,
+            1000142,
+            1000143,
+            1000144,
+            1000145,
+            1000146,
+            1000147,
+            1000148,
+            1000149,
+            1000150,
+            1000151,
+            1000152,
+            1000153,
+            1000154,
+            1000155,
+            1000156,
+            1000157,
+            1000158,
+            1000159,
+            1000160,
+            1000161,
+            1000162,
+            1000163,
+            1000164,
+            1000165,
+            1000166,
+            1000167,
+            1000168,
+            1000169,
+            1000170,
+            1000171
+          ],
+          "far_witnesses": 165,
+          "near_witnesses": 3
+        },
+        "seats": {
+          "137765": {
+            "idle_frames": 14,
+            "frames": 2100,
+            "distinct_animation_events": 2
+          },
+          "420812": {
+            "idle_frames": 72,
+            "frames": 2100,
+            "distinct_animation_events": 6
+          },
+          "506671": {
+            "idle_frames": 72,
+            "frames": 2100,
+            "distinct_animation_events": 6
+          }
+        }
+      },
+      "host-candidate02": {
+        "checks": 30,
+        "failures": 0,
+        "report": "/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/host-candidate02/lmp-host-view.json",
+        "report_sha256": "e630b6df272ad70c4b1f42e26815e56a68b0ca49f947079e383b96727beb0111",
+        "run": "/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/host-candidate02/run.json",
+        "run_sha256": "d282ad326d010f7758e8695ef1680a36ddc10f668f2c101a5ee146591019e005",
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/candidate02/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/host-candidate02/tool-source.gd"
+        ],
+        "errors": [],
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "visibility": {
+          "population": 175,
+          "range": 31.0,
+          "party_position": "(23.75, 260.25)",
+          "bad_uids": [],
+          "far_witnesses": 165,
+          "near_witnesses": 3
+        },
+        "seats": {
+          "137765": {
+            "idle_frames": 0,
+            "frames": 2100,
+            "distinct_animation_events": 2
+          },
+          "420812": {
+            "idle_frames": 0,
+            "frames": 2100,
+            "distinct_animation_events": 7
+          },
+          "506671": {
+            "idle_frames": 0,
+            "frames": 2100,
+            "distinct_animation_events": 7
+          }
+        }
+      }
+    },
+    "native_source_evidence": {
+      "/home/llm2x/Documents/EI/inspection/ghidra/decompiled/functions/00155/555700_FUN_00555700.c": "cb4dc7d95e19b400e9257ada1f84f8e7e55d6dce868459f95c9fd4023689c5a0",
+      "/home/llm2x/Documents/EI/inspection/ghidra/decompiled/functions/0014b/54b390_FUN_0054b390.c": "32dd4c0bdff1978b9246d79e59a20b46e32a3276119fd337524a84047d7a420e",
+      "/home/llm2x/Documents/EI/inspection/ghidra/decompiled/functions/00149/5499f0_FUN_005499f0.c": "2ea7945eab88f55bb7aefc6f3825715e244d1c670582f57c1ed2faa96616a38a"
+    },
+    "authored_script": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/diagnostics/bz8k-lmp-script.eis",
+      "sha256": "14abbec68de69700abd37f97e494d620260a39d1c8cad74cff3f9bb0f73cf791",
+      "sitter_police": "NID420812: PlayAnimation uspecial13/Sleep46",
+      "sitter_man": "NID137765: PlayAnimation uspecial15/Sleep206",
+      "eater": "NID506671: PlayAnimation uspecial13/Sleep46"
+    },
+    "findings": [
+      "UnitFog._process selected always_for for LMP; every nonempty authored NPC name bypassed party radius. Rendering now uses per-player noticed/party sight, preserving native radial visibility and the separate named authority relevance list.",
+      "Authored village one-shots reached their final seated pose, then the command-idle path inserted standing idle before the next scripted repeat. The bounded presentation guard preserves final pose only for non-party brief-world unhuma uspecial13/uspecial15, while is_idle/readiness, AI and queued orders continue. New seated animation commands restart once; replicas use the existing action generation to distinguish new events from repeated snapshots."
+    ],
+    "limits": [
+      "No claim that every native script one-shot should hold its final pose. Native555700 selects one-shot7/cycle8 by ADB bit31; native54b390 can issue idle after one-shot7. Broad scratch candidate01 was rejected before qualification, and remains frozen.",
+      "Final-frame hold is an explicit bounded presentation correction for the reproduced seated assets, not a change to script timers or a general one-shot timing emulation.",
+      "Headless LocalHost fixture uses actual authenticated owner transport and ordinary native travel submission; quest selected using existing lmp request parameter. Root independently owns menu/topic/dialogue and loading-path acceptance.",
+      "Rendered screenshots not part of this headless receipt. No canonical/package source changed."
+    ],
+    "authored_event_timing": {
+      "137765": {
+        "baseline_frames": [
+          3,
+          212,
+          421
+        ],
+        "candidate_frames": [
+          3,
+          212,
+          421
+        ]
+      },
+      "420812": {
+        "baseline_frames": [
+          3,
+          51,
+          100,
+          149,
+          198,
+          247,
+          296,
+          345,
+          394,
+          443,
+          492,
+          541,
+          590
+        ],
+        "candidate_frames": [
+          3,
+          51,
+          100,
+          149,
+          198,
+          247,
+          296,
+          345,
+          394,
+          443,
+          492,
+          541,
+          590
+        ]
+      },
+      "506671": {
+        "baseline_frames": [
+          3,
+          51,
+          100,
+          149,
+          198,
+          247,
+          296,
+          345,
+          394,
+          443,
+          492,
+          541,
+          590
+        ],
+        "candidate_frames": [
+          3,
+          51,
+          100,
+          149,
+          198,
+          247,
+          296,
+          345,
+          394,
+          443,
+          492,
+          541,
+          590
+        ]
+      }
+    },
+    "existing_regression": {
+      "name": "single_player_rules",
+      "checks": 52,
+      "failures": 0,
+      "run": "/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/single-player-rules-candidate02/run.json",
+      "sha256": "281733d79509901c2fe2819416969bebde5390c8b16a7914c366da649f3c8389"
+    }
+  }
+}

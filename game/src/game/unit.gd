@@ -1541,7 +1541,8 @@ func _tick(dt: float) -> void:
 	if _anim_lock > 0.0:
 		_anim_lock -= dt
 		return
-	_story_clip = ""
+	if action != "anim:" + _story_clip or not _seated_story_pose():
+		_story_clip = ""
 	if _talk_command == 10 and order.is_empty():
 		_talk_command = 11 if resting else 0
 	if resting and not (order.is_empty() and orders.is_empty()):
@@ -1553,7 +1554,11 @@ func _tick(dt: float) -> void:
 			if world.time >= ai_next:
 				world.ai.think(self)
 			if orders.is_empty():
-				_set_action("idle")
+				# Authored village sitters repeat their seated special after
+				# a Sleep. Keep its final pose across that gap. The command
+				# is idle; AI and queued orders still run and can replace it.
+				if _story_clip.is_empty():
+					_set_action("idle")
 				return
 		order = orders.pop_front()
 		_order_started_tick = roundi(world.time / TICK)
@@ -1573,6 +1578,7 @@ func _tick(dt: float) -> void:
 	elif controller >= 0 and order.get("type", "") == "follow" and not order.get("once", false) \
 			and world.ai.follow_engage(self):
 		return   # F order (Player motivation state 6): engages while following
+	_story_clip = ""
 	_talk_command = _talk_order_command(order)
 	_talk_posted = 9
 	match order.type:
@@ -1594,7 +1600,7 @@ func _tick(dt: float) -> void:
 		"anim":
 			_story_clip = String(order.name) if order.get("story", false) else ""
 			_anim_lock = model.act(order.name, int(order.get("variant", 1)), 0.1) if not model.has_anim(order.name) \
-				else _play_clip(order.name)
+				else _play_clip(order.name, _seated_story_pose())
 			action = "anim:" + String(order.name)
 			order = {}
 		"rotate":
@@ -1754,8 +1760,17 @@ func _clip_hit_ticks(clip: String) -> float:
 	return float(maxi(1, int(float(f) / k)))
 
 
-func _play_clip(clip: String) -> float:
-	model.play(clip, 0.1)
+## These unhuma ambient specials are seated throughout their authored clips.
+## Village scripts repeat them after Sleep, leaving a short command-idle gap.
+## This presentation hold is limited to NPC village seats, not other scripted
+## one-shots, party actions or gameplay maps. A new order still replaces it.
+func _seated_story_pose() -> bool:
+	return controller < 0 and world != null and world.zone.get("type", "") == "brief" \
+		and model != null and model.template == "unhuma" and _story_clip in ["uspecial13", "uspecial15"]
+
+
+func _play_clip(clip: String, restart := false) -> float:
+	model.play(clip, 0.1, restart)
 	return model.player.get_animation("ei/" + clip).length
 
 
