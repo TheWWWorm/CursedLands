@@ -12,9 +12,10 @@ The source audit and priorities are in
 gameplay goal. Continue on `fix/catacomb-coop-deck` in
 `/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo`.
 The earlier river-current checkpoint is `eda826d`; new checkpoints below cover
-propagating water waves and reorganized graphics settings. Parallel gameplay
-work has committed U40–U43 and the U45 removed-actor death-predicate correction.
-U44/U39 and V3/V4 waterfall/V5 follow-ups are in progress; do not treat the
+propagating water waves, authored waterfalls and reorganized graphics settings.
+Gameplay U39–U44 and the separate U45 removed-actor death-predicate correction
+are committed; the reported U45 incomplete quest remains unreproduced.
+V3/V5/V6/V8 follow-ups are in progress; do not treat the
 historical pause statements in older evidence as a current stop instruction.
 
 The original worktree above is historical. Source version remains Experimental 6
@@ -3992,6 +3993,78 @@ Use `tests/water_wave_render.gd` with each renderer; add `--with-current --wave-
 for zone8. Keep GPU runs serial. Sources, exports, tool snapshots, image hashes,
 rejected prototypes and exact commands are recorded in the receipt.
 
+## V4: authored waterfall foam, spray and mist — 9 October
+
+Accepted in `4a595dc`; `gfx_waterfalls` defaults off and requires enhanced water.
+The detector in `waterfall_field.gd` snapshots actual authored water geometry,
+including XY jitter and mixed liquid owners. It admits coherent, exposed,
+non-emissive steep drops and rejects shallow rapids, isolated spikes, buried
+surfaces, borders, contradictory copies, lava and swamp. The shell reuses the
+selected original water triangles and displacement, rather than replacing the
+authored flow with a ballistic sheet. `waterfalls.gd` owns at most 32 sites,
+24,576 shell vertices and 1,536 fixed spray/mist sprites, with two draws per site.
+The existing terrain clock pauses the effect. Level changes immediately hide
+stale geometry and coalesce reclassification; disable and map exit release it.
+
+[Waterfall evidence](validation/waterfalls-2026-10-09.json) records **1,201 passing
+checks in seven runs and 111 captures**, including the graphics metadata check.
+All 22 base and 40 LiA maps were classified; accepted base sites occur in
+zone11/zone13/zone3obr and LiA sites in zone10/zone21/zone23/zone26. Flat zone8
+adds zero draws. Compatibility, Forward+ and desktop Mobile verify visible
+foam/spray, exact pause/restoration, flooding and teardown. The source reference
+is R1 `0092dc6e1d7c4aab3f74644a79e9bfca11ecf293` `procedural_falls.h` and its
+renderer/geometry call sites. The receipt retains prototype exclusions and costs.
+Large-map classification and repeated flood changes can still hitch; this is
+not a device/FPS acceptance or a default rollout.
+
+## V5: shared moving clouds and soft sun shadows — 9 October
+
+`gfx_clouds` is optional, default off, on the Weather/effects page. This is a
+bounded two-dimensional cloud-sheet adaptation of R1's sky/atmosphere work,
+not the reference's volumetric raymarch. `clouds.gd` shares one seamless 256²
+mipmapped noise texture between two scales, the sky, sun-shadow projection and
+enhanced water's custom Fresnel reflection. The sheet sits at 160 m and fades
+at grazing angles to preserve authored perimeter fog. No scene draw is added.
+Sun occlusion is capped at 28%; ambient, local lights and emissive contributions
+remain unchanged. The same policy covers material highlights and leaf transmission.
+
+The terrain owner integrates the existing weather-wind direction against game
+time, with independently wrapped phases. Changing weather does not multiply a
+new direction by total elapsed time. Gipat, Ingos and Suslanger have distinct
+fair-weather coverage; current rain/snow increases it. Held clocks freeze coverage,
+motion and cloud-mode star twinkling. Caves clear immediately, night has no sun
+shadow, rewinds reset deterministically, and old/retained worlds cannot overwrite
+or clear the active view's globals. Global shader specialization removes the
+cloud samples when disabled. The shared texture uses the existing bounded noise
+cache; per-map phase ownership ends on disable/exit. Original cloud-off sky behavior
+and UI preview materials are preserved.
+
+Implementation: `game/src/game/fx/clouds.gd`, `game/src/game/gfx.gd`,
+`game/src/game/sky.gd` and the terrain publication/lifecycle hooks. The option's
+EN/RU/DE metadata was validated and committed with `4a595dc`. Full volumetric
+clouds and physical-device costs remain separate work; localized weather mist
+is the next bounded atmosphere stage.
+
+[Cloud evidence](validation/clouds-2026-10-09.json) records **193 passing checks
+in five final private runs**, with 45 captures. Base and LiA headless policy/
+lifecycle checks pass; Compatibility, Forward+ (material lighting enabled) and
+desktop Mobile pass rendered sky, sunlight-only occlusion, water reflection,
+exact held day/night, cave clearing, disable restoration and UI-preview controls.
+The scene adds zero draws. These are functional Linux checks, not FPS or device
+measurements; the LiA run is a profile/lifecycle check, not a rendered map census.
+A first Mobile post-recompile capture differed at two water pixels (peak 2/255),
+while later cleared/restored captures were exact. The final fixture waits for
+native asynchronous pipeline specialization before that strict comparison.
+The rejected run and earlier fixture/parse errors remain in the receipt.
+
+Accepted private export: `renderer-followup-20261009/clouds/clouds-final2`,
+runtime SHA-256 `090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44`,
+PCK `3fcc4ce093103ec85e79b3b5396f0a6cd921ec85442aff9b7d878461daee3d28`.
+Reproduce with `clouds/run.py`, `tests/clouds.gd`, the selected renderer and
+`--fresh-cache --build=clouds-final2`; add `--headless`, `--astral`, or
+`--clouds-materials` for the recorded variants. Tests and commands are frozen
+beside each manifest. Production and test source hashes are in the receipt.
+
 ## Next work in the established order
 
 1. **P1/P2 remaining texture work:** retained outfit pixels and shared native
@@ -4047,7 +4120,7 @@ rejected prototypes and exact commands are recorded in the receipt.
    storage and an opt-in scenery blend, with the validation and limitations above.
    Resolve cold preparation and finish its lighting/visual acceptance before
    enabling defaults. V4 now has optional contacts/wakes, terrain caustics and river currents;
-   propagating wave fields are now implemented above; waterfalls remain separate work. These options stay
+   propagating wave fields and authored waterfall detail are now implemented above. These options stay
    off pending broader quality/device acceptance. V2 now has the optional
    grass-interaction, dry-land cover and soft-ground root attachment stages above.
    Dry river/swamp banks are now implemented with the conservative shore rules

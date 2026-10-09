@@ -163,6 +163,7 @@ void sky() {
 
 ## The figure turns by ticks × 0.000333 rad; one tick is 55 ms.
 const SPIN_PER_SECOND := 0.00033333333 / 0.055
+const Clouds = preload("res://src/game/fx/clouds.gd")
 
 
 static func material(cave: bool) -> ShaderMaterial:
@@ -170,6 +171,7 @@ static func material(cave: bool) -> ShaderMaterial:
 	var m := ShaderMaterial.new()
 	m.shader = Shader.new()
 	m.shader.code = SHADER
+	m.set_meta("clouds",false)
 	var tex := GameData.get_texture("sky01" if cave else "sky00") if GameData.textures else null
 	if tex:
 		m.set_shader_parameter("tex", tex)
@@ -195,6 +197,10 @@ static func light_dir_ei(hour: float) -> Vector3:
 static func update(m: ShaderMaterial, lights: EILights, hour: float, cave: bool, fancy: bool) -> void:
 	if m == null:
 		return
+	var clouds := Gfx.on("gfx_clouds") and not cave
+	if bool(m.get_meta("clouds",false)) != clouds:
+		m.shader.code = Clouds.sky_source(SHADER) if clouds else SHADER
+		m.set_meta("clouds",clouds)
 	var sky := lights.sample("sky", hour) if lights else Color(0.18, 0.71, 0.85)
 	var amb := lights.sample("ambient", hour) if lights else Color(0.5, 0.53, 0.49)
 	var sun := lights.sample("sunlight", hour) if lights else Color.WHITE

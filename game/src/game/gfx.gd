@@ -8,6 +8,9 @@ extends RefCounted
 ## here.
 
 static var _noise_cache := {}
+const Clouds = preload("res://src/game/fx/clouds.gd")
+static var _cloud_owner := 0
+static var _cloud_frame := {"state":Vector4.ZERO,"phases":Vector4.ZERO,"twinkle":Vector2.ZERO}
 
 
 ## ---------------------------------------------------------------- original lighting
@@ -219,9 +222,18 @@ static func compose(code: String, lit := true, wrap := false) -> String:
 	var extra := "varying vec4 ei_surface_leaf;\n#define ei_surface ei_surface_leaf.rgb\n#define ei_leaf ei_surface_leaf.a\nvarying vec3 ei_vpos;\n" if lit else ""
 	if lit:
 		extra += VERTEX_LIGHT.replace("WRAP_TERM", _wrap_term(wrap))
+		if on("gfx_clouds"):
+			extra = Clouds.COMMON+Clouds.SHADOW+extra
+			extra = extra.replace("vec3 sun = ei_sun *", "vec3 sun = ei_sun * ei_cloud_sun(p) *")
 		if LocalLightShader.enabled():
 			extra += LocalLightShader.COMMON
 	code = code.substr(0, i + 1) + LIGHT_COMMON + extra + code.substr(i + 1)
+	if lit and on("gfx_clouds") and code.contains("#define EI_WATER_FX"):
+		# Enhanced water has its own Fresnel/SSR composition and bypasses
+		# Godot's sky IBL. Sample the same sheet on its reflected world ray.
+		code = code.replace("vec3 R = ei_lin(ei_sky);",
+			"vec3 R = ei_lin(ei_cloud_sky(ei_sky,wpos,reflect(normalize((INV_VIEW_MATRIX*vec4(vdir,0.0)).xyz),wn),ei_ambient,ei_sun));")
+		code = code.replace("G = ei_lin(min(ei_sun, vec3(1.0))) *", "G = ei_lin(min(ei_sun, vec3(1.0))) * ei_cloud_sun(wpos) *")
 	if lit:
 		code = _function_tail(code, "vertex", "\n\tvec3 ei_d; vec3 ei_s;\n\tei_vertex_colours((MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz, normalize(MODEL_NORMAL_MATRIX * NORMAL), ei_e, ei_k, ei_d, ei_s);\n\tei_vertex_diffuse = ei_d; ei_vertex_specular = ei_s;\n")
 		# Fragment-to-light varyings: absent profiles keep the exact original
@@ -281,6 +293,7 @@ static var _made: Array = []   # [WeakRef(Shader), code, lit, wrap]
 static var _vol_fog := false
 static var _material_mode := -1
 static var _terrain_mode := -1
+static var _cloud_mode := false
 static var _specialize_materials := not OS.get_cmdline_user_args().has("--ei-dynamic-material-shader")
 static var _foliage_wind := true
 
@@ -315,11 +328,13 @@ static func _set_vol_fog(v: bool) -> void:
 	var mode := int(on("gfx_materials")) if _specialize_materials else -2
 	var terrain_mode := (int(on("gfx_terrain")) | (int(on("gfx_soft_ground")) << 1) \
 		| (int(on("gfx_weather_surfaces")) << 2)) if _specialize_materials else -2
-	if v == _vol_fog and mode == _material_mode and terrain_mode == _terrain_mode:
+	var clouds := on("gfx_clouds")
+	if v == _vol_fog and mode == _material_mode and terrain_mode == _terrain_mode and clouds == _cloud_mode:
 		return
 	_vol_fog = v
 	_material_mode = mode
 	_terrain_mode = terrain_mode
+	_cloud_mode = clouds
 	var keep: Array = []
 	for r: Array in _made:
 		var sh := (r[0] as WeakRef).get_ref() as Shader
@@ -597,6 +612,11 @@ void light() {
 	if grass:
 		code = code.replace("\tif (ei_surface_fx.x > 0.5) {", "#ifndef EI_GRASS_LIGHT\n\tif (ei_surface_fx.x > 0.5) {")
 		code = code.replace("\n#ifdef EI_WATER_WAVES", "\n#endif\n#ifdef EI_WATER_WAVES")
+	if on("gfx_clouds"):
+		# Only sunlight is occluded. Local illumination, emissive surfaces,
+		# ambient light and the original per-light pass bookkeeping survive.
+		code = code.replace("float highlight = pow(", "float highlight = (LIGHT_IS_DIRECTIONAL ? ei_cloud_sun((INV_VIEW_MATRIX * vec4(ei_vpos,1.0)).xyz) : 1.0) * pow(")
+		code = code.replace("float transmission = pow(", "float transmission = (LIGHT_IS_DIRECTIONAL ? ei_cloud_sun((INV_VIEW_MATRIX * vec4(ei_vpos,1.0)).xyz) : 1.0) * pow(")
 	return code
 
 
@@ -620,6 +640,10 @@ static func ensure_globals() -> void:
 	RenderingServer.global_shader_parameter_add(&"ei_border", RenderingServer.GLOBAL_VAR_TYPE_VEC4, Vector4.ZERO)
 	RenderingServer.global_shader_parameter_add(&"ei_wind_state", RenderingServer.GLOBAL_VAR_TYPE_VEC4, Vector4(0.70710678,-0.70710678,0.0,0.0))
 	RenderingServer.global_shader_parameter_add(&"ei_wind_phases", RenderingServer.GLOBAL_VAR_TYPE_VEC4, Vector4.ZERO)
+	RenderingServer.global_shader_parameter_add(&"ei_cloud_state", RenderingServer.GLOBAL_VAR_TYPE_VEC4, Vector4.ZERO)
+	RenderingServer.global_shader_parameter_add(&"ei_cloud_phases", RenderingServer.GLOBAL_VAR_TYPE_VEC4, Vector4.ZERO)
+	RenderingServer.global_shader_parameter_add(&"ei_cloud_twinkle", RenderingServer.GLOBAL_VAR_TYPE_VEC2, Vector2.ZERO)
+	RenderingServer.global_shader_parameter_add(&"ei_cloud_noise", RenderingServer.GLOBAL_VAR_TYPE_SAMPLER2D, null)
 	for i in PASS_LIGHTS:
 		RenderingServer.global_shader_parameter_add(StringName("ei_pl%d" % i), RenderingServer.GLOBAL_VAR_TYPE_VEC4, Vector4.ZERO)
 		RenderingServer.global_shader_parameter_add(StringName("ei_plc%d" % i), RenderingServer.GLOBAL_VAR_TYPE_VEC4, Vector4.ZERO)
@@ -632,6 +656,22 @@ static func set_wind_frame(frame: Dictionary) -> void:
 	RenderingServer.global_shader_parameter_set(&"ei_wind_phases",frame.phases)
 
 
+static func set_cloud_frame(owner: int, frame: Dictionary) -> void:
+	ensure_globals()
+	_cloud_owner=owner; _cloud_frame=frame
+	RenderingServer.global_shader_parameter_set(&"ei_cloud_state",frame.state)
+	RenderingServer.global_shader_parameter_set(&"ei_cloud_phases",frame.phases)
+	RenderingServer.global_shader_parameter_set(&"ei_cloud_twinkle",frame.twinkle)
+	RenderingServer.global_shader_parameter_set(&"ei_cloud_noise",noise("clouds",256,0.018,3))
+
+
+static func clear_clouds(owner := 0) -> void:
+	if owner!=0 and owner!=_cloud_owner: return
+	_cloud_owner=0; _cloud_frame={"state":Vector4.ZERO,"phases":Vector4.ZERO,"twinkle":Vector2.ZERO}
+	if _globals:
+		RenderingServer.global_shader_parameter_set(&"ei_cloud_state",Vector4.ZERO)
+
+
 static func apply_surface_options() -> void:
 	ensure_globals()
 	_set_vol_fog(on("gfx_volumetric"))
@@ -640,6 +680,7 @@ static func apply_surface_options() -> void:
 		float(on("gfx_materials")), float(on("gfx_foliage_light")), float(on("gfx_weather_surfaces"))))
 	if not on("gfx_weather_surfaces"):
 		set_surface_weather(0.0, 0.0)
+	if not on("gfx_clouds"): clear_clouds()
 
 
 ## Option gfx_sharp_units: the unit texture fetch (EIUnitModel.SHARP_FETCH),

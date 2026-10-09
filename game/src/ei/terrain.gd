@@ -703,6 +703,8 @@ var _waves := WaveState.new()
 const WeatherWind = preload("res://src/game/fx/weather_wind.gd")
 var _wind_key := []
 var _wind_frame := {}
+const Clouds = preload("res://src/game/fx/clouds.gd")
+var _clouds: Clouds
 var _land_mat: ShaderMaterial
 var _caustics: RefCounted
 var _current: RefCounted
@@ -1060,6 +1062,7 @@ func _build_surface_data() -> void:
 func apply_gfx() -> void:
 	# Options can be changed while the scene tree is paused.
 	_update_wind_parameters()
+	_update_cloud_parameters()
 	if _water_mat == null:
 		return
 	var fx := GameData.option("gfx_water") != 0
@@ -1483,15 +1486,18 @@ func _process(dt: float) -> void:
 	if world and world.session and world.session.lmp_travel \
 			and not world.session.lmp_travel.can_tick(world):
 		_update_wind_parameters()
+		_update_cloud_parameters()
 		return
 	_waves.advance(dt)
 	_update_wave_parameters()
 	_update_wind_parameters()
+	_update_cloud_parameters()
 	if _current != null: _current.poll()
 
 
 func _exit_tree() -> void:
 	if _current != null: _current.clear()
+	Gfx.clear_clouds(get_instance_id())
 
 
 ## One visual state per terrain-clock sample. Weather/audio may keep ticking
@@ -1531,6 +1537,35 @@ func _update_wind_parameters(refresh := false) -> void:
 	# Hidden retained co-op worlds must never overwrite its wind.
 	if refresh: _wind_key.clear()
 	Gfx.set_wind_frame(wind_frame())
+
+
+func _update_cloud_parameters() -> void:
+	if not Gfx.on("gfx_clouds"):
+		_clouds=null; Gfx.clear_clouds(get_instance_id()); return
+	if not is_inside_tree() or not is_visible_in_tree(): return
+	var world := game_world()
+	var owner: Node = world.get_parent() if world else null
+	if world==null and get_parent() is EIMapScene: owner=get_parent().get_parent()
+	if owner is Game and (owner.world!=world or owner.simulation_only): return
+	var weather: Weather
+	var now := 0.0; var hour := 12.0; var allod := "Gipat"
+	var sheltered := world!=null and String(world.zone.get("sky","")).to_lower()=="cave"
+	if world:
+		allod=String(world.zone.get("allod",""))
+		if allod.is_empty(): allod=EILights.allod_of(String(world.zone.get("id","")))
+		if world.session and world.session.state: hour=world.session.state.world_time
+	if owner is Game and is_instance_valid(owner.sound):
+		if owner.sound.weather and owner.sound.weather.world==world:
+			weather=owner.sound.weather; now=owner.sound._ticks+owner.sound._tick_acc/GameSound.TICK
+	elif owner is MenuScene:
+		hour=owner.hour
+		if is_instance_valid(owner.sound):
+			weather=owner.sound.weather; now=owner.sound._ticks+owner.sound._tick_acc/GameSound.TICK
+	if _clouds==null: _clouds=Clouds.new()
+	Gfx.set_cloud_frame(get_instance_id(),_clouds.sample(_waves.time_ticks()*WaveState.TICK,
+		map_name,allod,wind_frame().state,WeatherWind.precipitation(weather,now,1),
+		WeatherWind.precipitation(weather,now,2),hour,sheltered))
+
 
 func _update_wave_parameters() -> void:
 	if _water_mat == null:

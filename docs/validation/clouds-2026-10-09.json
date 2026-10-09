@@ -1,0 +1,230 @@
+{
+  "date": "2026-10-09",
+  "feature": "V5 optional shared cloud sheet, moving soft sun shadows and water reflection",
+  "status": "validated locally; default off; not published or installed",
+  "source_reference": {
+    "repository": "/home/llm2x/Documents/evil-islands-owned-renderer",
+    "revision": "0092dc6e1d7c4aab3f74644a79e9bfca11ecf293",
+    "files": [
+      "Source/sky_clouds.h",
+      "Source/renderer_sky.cpp",
+      "Source/weather_wind.h"
+    ]
+  },
+  "implementation": {
+    "option": "gfx_clouds",
+    "group": 15,
+    "row": 7,
+    "default": 0,
+    "technique": "Two-scale seamless 2D cloud sheet, not volumetric raymarching",
+    "noise_size": [
+      256,
+      256
+    ],
+    "sheet_height_m": 160,
+    "coarse_scale_m": 384,
+    "detail_scale_m": 128,
+    "maximum_sun_occlusion": 0.28,
+    "extra_scene_draws": 0,
+    "lifetime": "Terrain game clock, integrated wrapped wind displacement, active-world global ownership; held clock freezes coverage/motion/twinkle, cave clears immediately, map reset/rewind resets deterministic phase, disable removes shader samples. Cached seamless noise belongs to the existing Gfx noise cache.",
+    "lighting": "Same density field in sky, surface sunlight and enhanced-water custom Fresnel reflection; ambient, emissive, local lights and UI previews unchanged.",
+    "coverage": "Regional fair-weather coverage, current rain/snow, daylight solar shadow envelope; horizon fade preserves original map-edge policy."
+  },
+  "build": {
+    "base_revision": "4a595dc",
+    "directory": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/clouds/clouds-final2",
+    "manifest": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/clouds/clouds-final2/export.json",
+    "manifest_sha256": "111735f523c2248f5af13e5735ffba8ad8855cf0adb7cc7a66fd6862dce6e7e0",
+    "sha256": {
+      "CursedLands.x86_64": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+      "CursedLands.pck": "3fcc4ce093103ec85e79b3b5396f0a6cd921ec85442aff9b7d878461daee3d28",
+      "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+    },
+    "isolation": "Frozen committed base + owned cloud source + default-off option metadata. Concurrent V3/V6/DOF implementations excluded. Terrain source staged from the saved cloud-only snapshot.",
+    "terrain_source_sha256": "15151ee53cfc775b51ad4fccdf42cf8d67b1d89d53b987d89936e77d785fb875"
+  },
+  "source_sha256": {
+    "game/src/game/fx/clouds.gd": "ab167ccb60d47353bb3b38d24929a8544911bdb3e9227cd3f66d84ea4bc1d8d3",
+    "game/src/game/gfx.gd": "57b3d4df1b7b62ec7b8a28384ebc2c340afc944420323744c8aa0dfb32df557c",
+    "game/src/game/sky.gd": "84529a568ec785e9e3887622f39b3948d1935ffde6f61d45f5a2bb3f6929f911",
+    "tools/tests/clouds.gd": "39124f216492c59d0d8245a370ec98e96070dd9dc21f1156d5765f2639a105da"
+  },
+  "accepted_checks": 193,
+  "accepted_runs": [
+    {
+      "name": "clouds-final-headless",
+      "checks": 29,
+      "failures": 0,
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/clouds/clouds-final-headless/run.json",
+      "manifest_sha256": "3f15644b74ea70f9f8068ebb4622bfcce0fa8a0a5119ba3ba9debfd900719362",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/clouds/clouds-final-headless/clouds.json",
+      "result_sha256": "21b7b1e851cef44d42342d420efbcf41a3437471e261bc97feece762ac9b3b48",
+      "test_sha256": "fcd23c4fa426a5eb2b487eff7ac86ce0ef6cfe35215249a109d6ab5e03ed0a18",
+      "captures": 0,
+      "observations": [
+        {
+          "case": "analytic",
+          "phase_after_wrap": "(0.996468, 0.99999, 0.00008, 0.010655)",
+          "wind_change_phase_distance": 0.000202417373657227
+        }
+      ],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ]
+    },
+    {
+      "name": "clouds-final-lia",
+      "checks": 29,
+      "failures": 0,
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/clouds/clouds-final-lia/run.json",
+      "manifest_sha256": "82cefdef2f99b4cc19c4624dd59a780dda2b275ed035c98c355dfc2deee27b5a",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/clouds/clouds-final-lia/clouds.json",
+      "result_sha256": "21b7b1e851cef44d42342d420efbcf41a3437471e261bc97feece762ac9b3b48",
+      "test_sha256": "fcd23c4fa426a5eb2b487eff7ac86ce0ef6cfe35215249a109d6ab5e03ed0a18",
+      "captures": 0,
+      "observations": [
+        {
+          "case": "analytic",
+          "phase_after_wrap": "(0.996468, 0.99999, 0.00008, 0.010655)",
+          "wind_change_phase_distance": 0.000202417373657227
+        }
+      ],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ]
+    },
+    {
+      "name": "clouds-final-gl",
+      "checks": 45,
+      "failures": 0,
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/clouds/clouds-final-gl/run.json",
+      "manifest_sha256": "5254709e145ad67801911c1e4550c19c0b3ca0813c37274a99eef78e742e66d2",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/clouds/clouds-final-gl/clouds.json",
+      "result_sha256": "2c8416758b6a55c1bc29dc4f65fedc1ac8a3ac3e766e875edf8afe4d4c31da1f",
+      "test_sha256": "fcd23c4fa426a5eb2b487eff7ac86ce0ef6cfe35215249a109d6ab5e03ed0a18",
+      "captures": 15,
+      "observations": [
+        {
+          "case": "analytic",
+          "phase_after_wrap": "(0.996468, 0.99999, 0.00008, 0.010655)",
+          "wind_change_phase_distance": 0.000202417373657227
+        },
+        {
+          "case": "rendered",
+          "draws": 51,
+          "initial": {
+            "changed_pixels": 179735,
+            "peak_delta": 124,
+            "pixels_over_2": 107064
+          },
+          "movement": {
+            "changed_pixels": 196820,
+            "peak_delta": 124,
+            "pixels_over_2": 121227
+          },
+          "renderer": "gl_compatibility"
+        }
+      ],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ]
+    },
+    {
+      "name": "clouds-final-forward",
+      "checks": 45,
+      "failures": 0,
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/clouds/clouds-final-forward/run.json",
+      "manifest_sha256": "88b7435e945c933af37032454692d4a5d03d4f214129c865d5021ddc09a84d28",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/clouds/clouds-final-forward/clouds.json",
+      "result_sha256": "384f57eefce6df9f3bb7d2a12834b9a06261ef5ac29d118cd2505e4bd8f10f4c",
+      "test_sha256": "fcd23c4fa426a5eb2b487eff7ac86ce0ef6cfe35215249a109d6ab5e03ed0a18",
+      "captures": 15,
+      "observations": [
+        {
+          "case": "analytic",
+          "phase_after_wrap": "(0.996468, 0.99999, 0.00008, 0.010655)",
+          "wind_change_phase_distance": 0.000202417373657227
+        },
+        {
+          "case": "rendered",
+          "draws": 68,
+          "initial": {
+            "changed_pixels": 179090,
+            "peak_delta": 126,
+            "pixels_over_2": 109329
+          },
+          "movement": {
+            "changed_pixels": 196252,
+            "peak_delta": 126,
+            "pixels_over_2": 123590
+          },
+          "renderer": "forward_plus"
+        }
+      ],
+      "warnings": [
+        "WARNING: Realtime Skies can only use a radiance size of 256. Radiance size will be set to 256 internally."
+      ]
+    },
+    {
+      "name": "clouds-final-mobile-settled",
+      "checks": 45,
+      "failures": 0,
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/clouds/clouds-final-mobile-settled/run.json",
+      "manifest_sha256": "12483946a4d3f40e14efedbc4af19f2ff8be78053f3a264f84387b560be12944",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/clouds/clouds-final-mobile-settled/clouds.json",
+      "result_sha256": "25a7b046aa69468b5e7937a6cecd0fb9d69eecbeee0138da5afcaf21a414e657",
+      "test_sha256": "39124f216492c59d0d8245a370ec98e96070dd9dc21f1156d5765f2639a105da",
+      "captures": 15,
+      "observations": [
+        {
+          "case": "analytic",
+          "phase_after_wrap": "(0.996468, 0.99999, 0.00008, 0.010655)",
+          "wind_change_phase_distance": 0.000202417373657227
+        },
+        {
+          "case": "rendered",
+          "draws": 51,
+          "initial": {
+            "changed_pixels": 170569,
+            "peak_delta": 126,
+            "pixels_over_2": 118570
+          },
+          "movement": {
+            "changed_pixels": 187649,
+            "peak_delta": 126,
+            "pixels_over_2": 133376
+          },
+          "renderer": "mobile"
+        }
+      ],
+      "warnings": [
+        "WARNING: Realtime Skies can only use a radiance size of 256. Radiance size will be set to 256 internally."
+      ]
+    }
+  ],
+  "diagnostics": [
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/clouds/clouds-final-mobile",
+      "reason": "First post-recompile empty capture differed from off at exactly two water pixels, peak2/255. Later cave-cleared and restored captures match off byte-for-byte. Retained two failed strict assertions; final Mobile comparison waits for asynchronous native pipeline specialization before empty capture."
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/clouds/clouds-render-gl2",
+      "reason": "Rejected prototype: shader-local detail name collided with the existing terrain uniform; renamed cloud_coarse/cloud_detail."
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/clouds/clouds-render-gl3",
+      "reason": "Rejected light-isolation fixture: BG_COLOR still retained the Sky resource. Final fixture also removes/restores environment.sky; ambient/local-only controls are exact."
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/clouds/clouds-final",
+      "reason": "Rejected export: an extra parenthesis in empty-allod fallback caused a parse error; fixed before accepted final2 export."
+    }
+  ],
+  "limits": [
+    "Functional desktop Linux captures, not physical Android/Windows/web or FPS acceptance.",
+    "The LiA run covers profile startup, analytic policy and owner lifecycle; it is not a rendered LiA map census.",
+    "No cloud geometry, volumetric raymarch, cloud self-shadowing or full atmospheric scattering.",
+    "Localized weather mist and broader integrated visual/device acceptance remain separate work.",
+    "Uses existing patched Linux runtime with eight accepted engine patches; no new engine patch in this cloud checkpoint."
+  ]
+}
