@@ -170,8 +170,12 @@ func authored() -> void:
 			bytes += var_to_bytes(data.arrays).size()
 			for record: Dictionary in data.records:
 				counts[record.kind] = int(counts.get(record.kind,0))+1; total+=1
-				check(terrain.water_at(record.p.x,record.p.y)<=float(record.height)-0.06,"authored dry-water gate "+id)
-				check(field.footprint(record.p,field.dry_surface(record.p),record.kind,Cover.RADII[record.kind]*float(record.scale)),"authored footprint "+id)
+				if record.get("underwater",false):
+					check(not field.sea_surface(record.p).is_empty(),"authored underwater root "+id)
+					check(is_finite(field.sea.ceiling(record.p,Cover.RADII[record.kind]*float(record.scale)+0.04)),"authored complete submerged footprint "+id)
+				else:
+					check(terrain.water_at(record.p.x,record.p.y)<=float(record.height)-0.06,"authored dry-water gate "+id)
+					check(field.footprint(record.p,field.dry_surface(record.p),record.kind,Cover.RADII[record.kind]*float(record.scale)),"authored footprint "+id)
 		times.sort()
 		check(total>0,"authored placements "+id)
 		rows.append({"case":"authored-metadata","id":id,"map":zone.mpr,"biome":field.biome,"chunks":keys.size(),"records":total,"counts":counts,
@@ -232,6 +236,8 @@ func render_fixture() -> void:
 	if chosen.is_empty(): view.free(); return
 	var p: Vector2 = chosen.p; var focus := Vector3(p.x,chosen.height,-p.y)
 	var camera := Camera3D.new(); view.add_child(camera); camera.position = focus+Vector3(2.7,2.8,3.5); camera.look_at(focus); camera.current = true
+	if chosen.get("underwater",false):
+		camera.position.y = maxf(camera.position.y,t.water_at(p.x,p.y)+2.8); camera.look_at(focus)
 	var env := WorldEnvironment.new(); env.environment = Environment.new(); Gfx.setup_original_env(env.environment)
 	env.environment.background_mode = Environment.BG_COLOR; env.environment.background_color = Color(0.13,0.20,0.28); view.add_child(env)
 	var sun := DirectionalLight3D.new(); sun.rotation_degrees = Vector3(-40,-35,0); sun.shadow_enabled = true; view.add_child(sun)
@@ -269,7 +275,7 @@ func render_fixture() -> void:
 	# Interaction expands scenery clearance to contain bent tips. Near walls
 	# that can remove plants before any pressure arrives. Compare the shader
 	# against the same geometry, and record that intended placement change.
-	d._cover_material.shader = Geometry.shader(false,false)
+	d._cover_material.shader = Geometry.shader(false,false,false,not d._cover_field.sea.tiles.is_empty())
 	var same_geometry := await snap(view,"interaction-clearance-control")
 	check(delta(same_geometry,empty_pressure).changed==0,"empty pressure preserves identical cover geometry")
 	rows.append({"case":"interaction-clearance","difference":delta(on,same_geometry)})
@@ -307,6 +313,7 @@ func _ready() -> void:
 	for option in ["gfx_hd_textures","gfx_terrain","gfx_soft_ground","gfx_ground_contact","gfx_grass","gfx_vegetation_interaction","gfx_wind","gfx_water","gfx_water_interaction","gfx_water_caustics","gfx_volumetric","gfx_ssao","gfx_bloom","confine_mouse","vsync"]: GameData.options[option] = 0
 	GameData.options["gfx_biome_cover"] = 1
 	if OS.get_cmdline_user_args().has("--cover-with-grass"): GameData.options["gfx_grass"] = 1
+	if OS.get_cmdline_user_args().has("--cover-water-fx"): GameData.options["gfx_water"] = 1
 	Engine.max_fps = 120; Engine.time_scale = 0; DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_NO_FOCUS,true)
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE; RenderingServer.set_render_loop_enabled(true); Gfx.ensure_globals()
 	if not OS.get_cmdline_user_args().has("--cover-authored-only"):

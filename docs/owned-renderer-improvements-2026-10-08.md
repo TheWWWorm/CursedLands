@@ -2955,6 +2955,102 @@ Desktop sunlight stays continuous on all renderers. Holding remains the
 Android/web fallback pending a better measured replacement. Nothing was
 installed, published or changed in original assets/saves/network protocol.
 
+### V2 follow-up: optional underwater vegetation and mean-depth lighting
+
+Implementation checkpoint after `a0c82da`, 9 October. The existing, default-off
+`gfx_biome_cover` option now includes short seagrass, taller kelp-like grass and
+small rigid shells under **verified sea water**. This is independent geometry
+using the existing TerrainDetails workers and merged chunk surfaces. The
+reference remains read-only R1 `0092dc6e1d7c4aab3f74644a79e9bfca11ecf293`:
+`Source/ground_cover.h:346-349` supplies the sea/depth rules;
+`Source/renderer_ground_cover.cpp:478-570` the admission context and
+`:1224` (`make_seagrass`) the curved-blade idea. Density and geometry here are
+adapted to the remake, not a direct port or a claimed performance improvement.
+
+**Implementation map**
+
+- `game/src/game/fx/biome_cover_water.gd:9`, `add_tile`: copies homogeneous,
+  non-emissive water geometry and current scripted offsets into immutable
+  records. It keeps no scene, material or clock references. An 8 m chunk index
+  avoids running sea placement candidates in wholly inland chunks.
+- `biome_cover_water.gd:37/72`, `sample`/`ceiling`: exact original mean-water
+  triangle planes, with a direct regular-grid path and barycentric fallback
+  for jittered vertices. The ceiling requires a complete same-material patch
+  over the leaf footprint plus maximum horizontal wave movement, and uses
+  its lowest vertex minus vertical wave drop. Missing or mixed water rejects
+  the plant. This is a conservative height envelope, not a live wave query.
+- `biome_cover.gd:88/364/376`: the existing water snapshot admits only
+  `EITerrain.SEA_MATERIALS[resource_prefix]`; currently this means **zone1,
+  material 2**, not every river or map edge. `sea_surface` checks the actual
+  seabed triangle, floor exclusion, original atlas opacity and slope.
+  `sea_records` uses an independent deterministic random stream. Short plants
+  occupy roughly 0.4–3.5 m mean depth, tall plants 1.5–6.5 m, and shells under
+  2 m. Sparse patches, four footprint probes, unique root anchors and existing
+  scenery exclusions still apply. Plants shorten to fit below the worst-wave
+  ceiling, reserving possible 0.30 m soft-ground lift; tilted shell height is
+  included. They do not emerge above the surface to satisfy a density target.
+- `biome_cover_mesh.gd:8/103/196`: five curved ribbons with three segments make
+  each grass tuft; shells reuse the ridged, ground-aligned geometry. CUSTOM1
+  stores each vertex's nominal water plane and depth coefficient. After motion
+  and root attachment, the shader sets `ei_k=min(depth²/(15*(1-alpha)),4)` for
+  the existing ambient/sun/point-light formula and attenuates extra leaf
+  transmission. Emissive water is excluded, so `ei_e` remains zero. Underwater
+  vertices ignore dry-ground pressure. Wind still uses the terrain-owned clock.
+- `terrain_details.gd:267`: select the aquatic shader variant for sea maps.
+  Existing job barriers, option/water rebuilds, chunk bounds, culling and
+  cleanup own the feature. No additional sampler, GPU texture, per-frame
+  manager, engine patch, navigation data or network state is introduced.
+
+**Validation and limits**
+
+[biome-cover-underwater-2026-10-09.json](/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/biome-cover-underwater-2026-10-09.json)
+records 307,299 passing assertions in ten final runs. The focused test
+`tools/tests/biome_cover_underwater.gd` compares authored planes with the
+independent `WaterSurface` query across zone1, including flood/drain/restore,
+source lifetime, shape envelopes and native/script sampling. Its GPU test
+executes the actual attenuation snippet: 12,288 positive vertex probes pass on
+Compatibility, desktop Mobile and Forward+, and 3,072 deliberately incorrect
+probes fail as intended. These are factor checks, not a pixel-perfect oracle
+for the entire lighting pipeline. Full-scene checks separately exercise each
+species, pressure exclusion, pause, shadow refresh, rebuild and off restoration
+with original water. Base-game/Lost in Astral and bank regressions pass. All
+535 sampled existing dry/bank records across three maps match the prior pack.
+
+The 192-chunk metadata scan, without full scenery exclusion, emits 872 short
+plants, 173 tall plants and 32 shells at the baseline level. The sea snapshot
+contains 3,329 admitted tiles: its copied vertex payload is 359,532 bytes,
+excluding dictionary/array headers and the chunk index. Sea-map cover meshes
+add **16 bytes per vertex**, including zero entries for dry cover: 1,781,952
+bytes over that scan. Native-sampler builds have medians 0.855–0.896 ms and
+maximum 8.051 ms; script-sampler medians are 1.654–1.692 ms and maximum
+10.281 ms. These are worker build samples, not frame-time, FPS or device claims.
+
+Lighting deliberately uses mean planes rather than moving wave geometry.
+Horizontal sway can cross a non-coplanar water triangle: the +0.65 m flood
+fixture observes up to **0.05254 m** of plane-extrapolation error (268 non-flat
+probes), while sampled baseline/drain states are flat. Treat exact animated
+water lighting and its cost as future work. Existing broad triangular water
+patches also reproduce with cover disabled in the old `a0c82da` pack; captures
+and controls are retained, without claiming their cause or repair.
+
+**Enhanced-water limitation found during this checkpoint:**
+`--cover-water-fx --cover-kind=13` passes draw/pressure/shadow controls but fails
+pause, rebuild-image and off-restoration checks. The existing
+`EITerrain.WATER_FX_SHADER` still uses shader `TIME` for foam, normal maps and
+rain rings, advancing during SceneTree pause and changing later comparisons.
+Keep this failing run. Resolve the water clock with a separate before/after
+fixture before claiming enhanced-water pause acceptance; do not suppress the
+assertions or change cover defaults to hide it.
+
+Final pack: `.../owned-renderer-improvements-20261008-qa/v2-vegetation/cover-underwater-accepted`,
+SHA-256 `6427d895a7ee87284fe38bbcd5a8a27a0d285ad19e7d1ca4aec6f15f5960a358`.
+All 230 production scripts match its export manifest. Frozen tools, commands,
+runtime/native hashes, failed development cases and captures are in the receipt.
+No installed build, original asset or save was changed. Cover remains off.
+Mounds, richer campaign/atlas profiles, shared weather wind, actual submission
+LOD, long routes and Android/browser measurements remain open; U45 still starts
+the subsequent gameplay track.
+
 ## Next work in the established order
 
 1. **P1/P2 remaining texture work:** retained outfit pixels and shared native
@@ -3012,6 +3108,7 @@ installed, published or changed in original assets/saves/network protocol.
    off pending broader quality/device acceptance. V2 now has the optional
    grass-interaction, dry-land cover and soft-ground root attachment stages above.
    Dry river/swamp banks are now implemented with the conservative shore rules
-   above. Continue with underwater cover/lighting, authored sandy-beach acceptance
-   and the remaining biome rules in the initial visual sequence. No visual effect
+   above. Underwater cover/mean-depth lighting is now implemented; first resolve
+   the enhanced-water pause failure recorded above, then continue with authored
+   sandy-beach acceptance and the remaining biome rules. No visual effect
    was silently enabled.

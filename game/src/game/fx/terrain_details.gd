@@ -263,7 +263,8 @@ func _apply_grass_material() -> void:
 	_material.set_shader_parameter("wind_phase",fposmod(terrain._waves.time_ticks()*EIWaterWaves.TICK*1.6,TAU))
 	if _cover_material:
 		var soft := Gfx.on("gfx_soft_ground") and is_instance_valid(soft_ground) and _cover_field != null and _cover_field.loose_tiles.has(1)
-		_cover_material.shader = BiomeCover.Geometry.shader(interaction != null,Gfx.on("gfx_wind"),soft)
+		var aquatic := _cover_field != null and not _cover_field.sea.tiles.is_empty()
+		_cover_material.shader = BiomeCover.Geometry.shader(interaction != null,Gfx.on("gfx_wind"),soft,aquatic)
 		if soft:
 			_cover_surface = terrain.ground_surface_data(true)
 			_cover_surface.bind(_cover_material,true)

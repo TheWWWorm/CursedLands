@@ -1,12 +1,13 @@
 extends RefCounted
-## Immutable, optional dry-land cover snapshot. TerrainDetails owns streaming,
+## Immutable, optional ground-cover snapshot. TerrainDetails owns streaming,
 ## workers, barriers and pressure; this class never reads live scene state in a job.
 const Geometry = preload("res://src/game/fx/biome_cover_mesh.gd")
-enum Kind { FLOWER, DRY, LEAF, NEEDLES, TWIG, STONE, BUSH, REED, CATTAIL, WRACK, SHELL }
+const Sea = preload("res://src/game/fx/biome_cover_water.gd")
+enum Kind { FLOWER, DRY, LEAF, NEEDLES, TWIG, STONE, BUSH, REED, CATTAIL, WRACK, SHELL, SEAGRASS, KELP, SEA_SHELL }
 const DRY_KINDS := 7 # Preserve the original random stream when adding species.
 const SPACING := 0.8
 const TREE_RANGE := 6.0
-const RADII := [0.22,0.30,0.16,0.22,0.38,0.14,0.44,0.38,0.30,0.32,0.15]
+const RADII := [0.22,0.30,0.16,0.22,0.38,0.14,0.44,0.38,0.30,0.32,0.15,0.24,0.35,0.15]
 const BANK_HEIGHT := 2.0 # Tallest scaled cattail plus optional soft-ground lift.
 const SHORE_RANGE := 6.0
 const BROADLEAF := ["nafltr56","nafltr57","nafltr75","nafltr76"]
@@ -26,6 +27,7 @@ var uv_table := {}
 var images := {}
 var native: RefCounted
 var shores := {} # Chunk -> immutable Vector4(water x, height, EI y, 1 river / 2 swamp / 3 sea).
+var sea := Sea.new()
 static var _campaign: CampaignMap
 static var _texts_id := 0
 
@@ -106,6 +108,8 @@ func _prepare_shores(terrain: EITerrain) -> void:
 			for i in 9:
 				if int(owners[first+i].y+0.5)%64 != m: same = false; break
 			if not same: continue # Shared vertices can belong to another liquid.
+			if type==6 and m in EITerrain.SEA_MATERIALS.get(terrain.resource_prefix,[]):
+				sea.add_tile(tile,vertices.slice(first,first+9),m,terrain.materials[m],float(terrain.water_offsets.get(m,0.0)))
 			var p := Vector2(centre.x,-centre.z)
 			var hit := sample(p)
 			var level := centre.y+float(terrain.water_offsets.get(m,0.0))
@@ -323,6 +327,7 @@ func records(key: Vector2i, boxes: Array, trees: Array) -> Array[Dictionary]:
 				result.append({"kind":kind,"p":p,"height":float(hit.height),"normal":hit.normal,"colour":hit.colour,
 					"angle":angle,"scale":scale,"seed":seed,"snow":int(hit.type) in [9,12],"flower":flowers.y,"cold":biome=="ingos","anchor":anchor})
 	result.append_array(bank_records(key,boxes))
+	result.append_array(sea_records(key,boxes))
 	return result
 
 
@@ -356,9 +361,70 @@ func bank_records(key: Vector2i, boxes: Array) -> Array[Dictionary]:
 	return result
 
 
+func sea_surface(p: Vector2) -> Dictionary:
+	var water_plane := sea.sample(p)
+	if water_plane.w <= 0.0: return {}
+	var hit := sample(p)
+	if hit.is_empty() or absf((hit.normal as Vector3).y)<0.90: return {}
+	var at := int(p.y)*size.x+int(p.x)
+	if surface[at]>float(hit.height)+0.08 or not int(ground[at]) in [0,1,2,3,4,5,9,11,12]: return {}
+	hit.colour = colour(hit); hit.depth = water_plane.x*p.x-water_plane.y*p.y+water_plane.z-float(hit.height)
+	if (hit.colour as Color).a<0.5 or hit.depth<0.12: return {}
+	return hit
+
+
+func sea_records(key: Vector2i, boxes: Array) -> Array[Dictionary]:
+	var result: Array[Dictionary] = []
+	if not sea.chunks.has(key): return result
+	var rng := RandomNumberGenerator.new(); rng.seed = hash("%s:sea-cover:%d:%d" % [map_name,key.x,key.y])
+	for y in 10:
+		for x in 10:
+			var p := Vector2(key)*8.0+Vector2(x+rng.randf_range(0.15,0.85),y+rng.randf_range(0.15,0.85))*SPACING
+			var rolls := Vector3(rng.randf(),rng.randf(),rng.randf())
+			var angle := rng.randf()*TAU; var scale := rng.randf_range(0.80,1.15); var seed := rng.randf()
+			var hit := sea_surface(p)
+			if hit.is_empty(): continue
+			var depth := float(hit.depth)
+			var patch := 0.25+0.75*patch(p).x
+			var density := Vector3(smoothstep(0.4,0.7,depth)*(1.0-smoothstep(2.5,3.5,depth))*0.85*patch,
+				smoothstep(1.5,2.0,depth)*(1.0-smoothstep(5.5,6.5,depth))*0.18*patch,
+				(1.0-smoothstep(1.0,2.0,depth))*0.08)
+			var anchor := Vector4(-2,0,0,0)
+			for i in 3:
+				if rolls[i]>=density[i]: continue
+				if anchor.x == -2: anchor=surface_anchor(p)
+				if not anchor.is_finite(): break
+				var kind := Kind.SEAGRASS+i
+				var radius: float = RADII[kind]*scale
+				var low := sea.ceiling(p,radius+0.04)
+				# Size plants below the worst-wave surface, including root lift.
+				var lift := SoftGroundDeform.DEPTH if anchor.x>=0 else 0.0
+				# The shell also tilts with a seabed normal down to y=0.90.
+				var plant_height: float = [0.70,1.40,0.13][i]
+				var fitted := minf(scale,(low-float(hit.height)-lift-0.03)/plant_height)
+				if fitted<0.25: continue
+				var clear := true
+				for offset: Vector2 in [Vector2(-1,0),Vector2(1,0),Vector2(0,-1),Vector2(0,1)]:
+					var edge := sea_surface(p+offset*radius)
+					if edge.is_empty() or absf(float(edge.height)-float(hit.height))>0.12: clear=false; break
+					if i==2:
+						var n: Vector3 = hit.normal
+						var plane: float = float(hit.height)-(n.x*offset.x-n.z*offset.y)*radius/n.y
+						if absf(float(edge.height)-plane)>0.025: clear=false; break
+				if not clear: continue
+				for box: Dictionary in boxes:
+					var inverse: Transform3D = box.inverse
+					if (box.box as AABB).intersects_segment(inverse*Vector3(p.x,float(hit.height)-0.025,-p.y),inverse*Vector3(p.x,float(hit.height)+BANK_HEIGHT,-p.y)) != null:
+						clear=false; break
+				if not clear: continue
+				result.append({"kind":kind,"p":p,"height":float(hit.height),"normal":hit.normal,"colour":hit.colour,
+					"angle":angle,"scale":fitted,"seed":seed,"snow":false,"flower":0.0,"cold":false,"anchor":anchor,"underwater":true})
+	return result
+
+
 func build(key: Vector2i, boxes: Array, trees: Array) -> Dictionary:
 	var placed := records(key,boxes,trees)
-	return {"records":placed,"arrays":Geometry.new().build(placed,key)}
+	return {"records":placed,"arrays":Geometry.new().build(placed,key,sea if not sea.tiles.is_empty() else null)}
 
 
 class ChunkJob extends RefCounted:

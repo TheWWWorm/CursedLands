@@ -2,8 +2,18 @@ extends RefCounted
 ## Small opaque geometry, merged into one surface per streamed grass chunk.
 ## UV: root height / stable thinning seed. UV2: chunk-local root XZ.
 ## CUSTOM0: supporting cell x*2+triangle, cell y, barycentric b/c weights.
+## CUSTOM1 (sea maps only): mean-water plane (X/Z slopes, intercept), depth coefficient.
 const Pressure = preload("res://src/game/fx/vegetation_interaction.gd")
-const FORMAT := Mesh.ARRAY_CUSTOM_RGBA_FLOAT << Mesh.ARRAY_FORMAT_CUSTOM0_SHIFT
+const FORMAT := (Mesh.ARRAY_CUSTOM_RGBA_FLOAT << Mesh.ARRAY_FORMAT_CUSTOM0_SHIFT) | (Mesh.ARRAY_CUSTOM_RGBA_FLOAT << Mesh.ARRAY_FORMAT_CUSTOM1_SHIFT)
+const UNDERWATER := """
+	if (CUSTOM1.w > 0.0) {
+		float depth = max(dot(CUSTOM1.xy,VERTEX.xz)+CUSTOM1.z-VERTEX.y,0.0);
+		ei_k = min(depth*depth*CUSTOM1.w,4.0);
+		// The native diffuse already attenuates ambient/sun/point lights.
+		// Thin-leaf transmission must not leave fully dark seabeds glowing.
+		cover_leaf *= max(1.0-ei_k,0.0);
+	}
+"""
 const SURFACE_UNIFORMS := """
 uniform sampler2D terrain_tiles : filter_nearest, repeat_disable;
 uniform sampler2D terrain_cells : filter_nearest, repeat_disable;
@@ -77,6 +87,11 @@ var colours := PackedColorArray()
 var uvs := PackedVector2Array()
 var roots := PackedVector2Array()
 var anchors := PackedFloat32Array()
+var water_planes := PackedFloat32Array()
+var water: RefCounted
+var water_cache := {}
+var chunk_origin := Vector2.ZERO
+var submerged := false
 var indices := PackedInt32Array()
 var root := Vector3.ZERO
 var transform := Transform3D.IDENTITY
@@ -85,15 +100,18 @@ var mobile := 0.0
 var anchor := Vector4(-1,0,0,0)
 
 
-static func shader(interactive: bool, wind: bool, soft := false) -> Shader:
-	var key := int(soft)*4+int(interactive)*2+int(wind)
+static func shader(interactive: bool, wind: bool, soft := false, aquatic := false) -> Shader:
+	var key := int(aquatic)*8+int(soft)*4+int(interactive)*2+int(wind)
 	if not _shaders.has(key):
 		var code := SHADER
 		if interactive or wind or soft: code = code.replace("sin(wind_phase+","sin(wind_phase+TIME*0.0+")
-		if interactive: code = code.replace("void vertex() {",Pressure.UNIFORMS+"\nvoid vertex() {").replace("// PRESSURE",DEFORM)
+		if interactive:
+			var deformation := "if (CUSTOM1.w <= 0.0) {"+DEFORM+"}" if aquatic else DEFORM
+			code = code.replace("void vertex() {",Pressure.UNIFORMS+"\nvoid vertex() {").replace("// PRESSURE",deformation)
 		if soft:
 			code = code.replace("void vertex() {",SURFACE_UNIFORMS+GroundSurfaceShader.SOFT_UNIFORMS+GroundSurfaceShader.SOFT_FUNCTIONS+GroundSurfaceShader.TRIANGLE_QUERY+"\nvoid vertex() {")
 			code = code.replace("// SURFACE",ATTACH)
+		if aquatic: code = code.replace("ei_e = vec3(0.0); ei_k = 0.0;","ei_e = vec3(0.0); ei_k = 0.0;"+UNDERWATER)
 		_shaders[key] = Gfx.make_shader(code,true,true)
 	return _shaders[key]
 
@@ -102,10 +120,20 @@ func triangle(a: Vector3,b: Vector3,c: Vector3,colour: Color) -> void:
 	var normal := (b-a).cross(c-a).normalized()
 	var at := vertices.size()
 	for p: Vector3 in [a,b,c]:
-		vertices.append(transform*p+root); normals.append(transform.basis*normal)
+		var position := transform*p+root
+		vertices.append(position); normals.append(transform.basis*normal)
 		colours.append(Color(colour.r,colour.g,colour.b,mobile))
 		uvs.append(Vector2(root.y,seed)); roots.append(Vector2(root.x,root.z))
 		anchors.append_array([anchor.x,anchor.y,anchor.z,anchor.w])
+		if water:
+			var plane := Vector4.ZERO
+			if submerged:
+				var point := Vector2(position.x,-position.z)+chunk_origin
+				if not water_cache.has(point): water_cache[point] = water.sample(point)
+				plane = water_cache[point]
+				assert(plane.w>0.0) # The admitted complete footprint has water.
+				plane.z += plane.x*chunk_origin.x-plane.y*chunk_origin.y
+			water_planes.append_array([plane.x,plane.y,plane.z,plane.w])
 	indices.append_array([at,at+1,at+2])
 
 
@@ -165,18 +193,32 @@ func shell(colour: Color) -> void:
 		triangle(left,ridge,right,colour*0.95)
 
 
-func build(records: Array[Dictionary], key: Vector2i) -> Array:
+func sea_grass(colour: Color, tall: bool) -> void:
+	for i in 5:
+		var turn := Basis(Vector3.UP,i*2.39996+seed)
+		var height := (0.52+0.035*i)*(2.0 if tall else 1.0)
+		var spread := 0.15 if not tall else 0.24
+		var a := turn*Vector3(0,0,0.015)
+		var b := turn*Vector3(0.025,height*0.45,spread*0.3)
+		var c := turn*Vector3(-0.025,height*0.78,spread*0.7)
+		var d := turn*Vector3(0,height,spread)
+		ribbon(a,b,0.025,colour*0.85); ribbon(b,c,0.025,colour); ribbon(c,d,0.013,colour*1.05)
+
+
+func build(records: Array[Dictionary], key: Vector2i, sea: RefCounted = null) -> Array:
+	water = sea; chunk_origin = Vector2(key)*8.0
 	for record: Dictionary in records:
 		var p: Vector2 = record.p-Vector2(key)*8.0
 		root = Vector3(p.x,float(record.height)+0.008,-p.y); seed = record.seed
 		anchor = record.get("anchor",Vector4(-1,0,0,0))
+		submerged = record.get("underwater",false)
 		transform = Transform3D(Basis(Vector3.UP,record.angle).scaled(Vector3.ONE*float(record.scale)),Vector3.ZERO)
-		if int(record.kind) in [2,3,4,5,9,10]:
+		if int(record.kind) in [2,3,4,5,9,10,13]:
 			var n: Vector3 = record.normal
 			if n.y < 0: n = -n
 			transform.basis = Basis(Quaternion(Vector3.UP,n))*transform.basis
 		var c: Color = record.colour
-		mobile = 1.0 if int(record.kind) in [0,1,7,8] else 0.0
+		mobile = 1.0 if int(record.kind) in [0,1,7,8,11,12] else 0.0
 		match int(record.kind):
 			0: # Flowers: green stem and a small five-petal head, two patch colours.
 				var top := Vector3(0.04,0.49,0.02)
@@ -217,10 +259,12 @@ func build(records: Array[Dictionary], key: Vector2i) -> Array:
 					var middle := turn*Vector3(0.02,0.035,0.10)
 					ribbon(Vector3(0,0.008,0),middle,0.025,kelp*0.9)
 					ribbon(middle,turn*Vector3(0.05,0.012,0.23),0.032,kelp)
-			10: shell(c.lerp(Color(0.76,0.70,0.55),0.65))
+			10,13: shell(c.lerp(Color(0.76,0.70,0.55),0.65))
+			11,12: sea_grass(c.lerp(Color(0.16,0.30,0.19),0.80),int(record.kind)==12)
 	var arrays := []; arrays.resize(Mesh.ARRAY_MAX)
 	arrays[Mesh.ARRAY_VERTEX] = vertices; arrays[Mesh.ARRAY_NORMAL] = normals
 	arrays[Mesh.ARRAY_COLOR] = colours; arrays[Mesh.ARRAY_TEX_UV] = uvs
 	arrays[Mesh.ARRAY_TEX_UV2] = roots; arrays[Mesh.ARRAY_INDEX] = indices
 	arrays[Mesh.ARRAY_CUSTOM0] = anchors
+	if water: arrays[Mesh.ARRAY_CUSTOM1] = water_planes
 	return arrays
