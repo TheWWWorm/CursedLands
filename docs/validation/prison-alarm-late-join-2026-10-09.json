@@ -1,0 +1,1512 @@
+{
+  "date": "2026-10-09",
+  "status": "qualified private Linux export; no publication or device installation",
+  "production_commit": "7e314707f92a1c0b530835cac9a02742736a71cc",
+  "scope": "G07/G13: original base gz19h area-1 alarm late registration and this admitted native continuation across guest absence; not full prison-route acceptance.",
+  "problem": "The original one-shot For(Heroes) registration omits later co-op arrivals. Their refreshed Heroes membership cannot activate area 1, because the native per-character wait was never created. Loading while a guest is absent can also erase the actor behind a pending continuation.",
+  "implementation": [
+    "Before the existing #230/#235 adaptation, admit only the exact canonical AST of 23 original definitions: area #415, registration #416, all 19 #417/alarm/pursuit/reset descendants, and reinforcement loading #180/#181; also require the original WorldScript registration call. Non-original campaigns, other maps, changed or missing definitions and LMP do not get the live registrar.",
+    "Add one parameterless persistent registration definition. Existing native #417 spawns record stable seen-character keys. While #416 still owns a pending For cursor, the registrar waits. Thereafter only an unseen living visible party actor receives the unmodified #417. No competing guard loop or native body/instruction index is added or changed by this registrar.",
+    "Keep already-spent registration keys through save/reload/reconnect; do not suppress the native reset calls back to #417. Original Sleep(20) is 20 native ticks = 1.1 seconds; original reset Sleep(1) is one native tick = 0.055 seconds.",
+    "For this source-admitted family only, retain raw stable hero references as runtime metadata. Missing actors hold existing native frames and remaining poll/Sleep. Save writes the retained reference back into the original serialized this field, so another absent save/reload still has identity. Generic _deser is unchanged.",
+    "Preserve a saved unresolved Try1 reference. Resolve it when its hero returns only while the live global remains null. A newly queued #48 does not discard it: the later original Try1 assignment wins when its body actually runs.",
+    "On a marked co-op-to-solo snapshot, explicitly project the shared registrar seen keys; native actor continuations continue through existing CoopVmState projection. The watcher has no host-bound parameter that could cause it to be discarded. Only recipient and retained named host-role identities survive; nonhero keys are retained.",
+    "Old saves recover only when an actual native registration/wait/pursuit/reset instance proves the family is active. Pending killed+nonempty-frame waits count as anchors. Seen identity can come from a retained raw reference when the actor is absent. No-history old saves are not guessed or rearmed."
+  ],
+  "original_data_sha256": {
+    "/home/llm2x/Documents/EI/inspection/extracted/app/maps/zone19.mob": "cb84eaf58818f6cea27fe71f3da0d678abc3cf8118b544f3dc0a59b957b1ab68",
+    "/home/llm2x/Documents/EI/inspection/extracted/app/maps/zone19alarm1.mob": "f816d51c3c63e208fa89058903ca3cd9787f5f4959a0304890bfcacb92dc1a47"
+  },
+  "source_gate": {
+    "sha256": "f8a52c0d6ecfd0749d7949a8963c296cd60dda87d936ed970f74f4d83a0ab813",
+    "method": "JSON.stringify(ordered [name, complete parsed definition] rows, empty indent, sort_keys=true, full_precision=true).sha256_text()",
+    "witness": "/home/llm2x/Documents/EI/local/scratchpad/prison-alarm-late-join-20261009/source-fingerprint-01/prison-alarm-fingerprint.json",
+    "command_and_hashes": "/home/llm2x/Documents/EI/local/scratchpad/prison-alarm-late-join-20261009/source-fingerprint-01/run.json"
+  },
+  "production_source_sha256": {
+    "game/src/game/script/story_compat.gd": "bb2ea8ee4a2f808c3723b21a23269e13bd6b2d30cb0ebfb02f493e05f2fbd0bb",
+    "game/src/game/script/story_coop_traps.gd": "98651ffff9581fe7c007712e734d7449c7c2f46b856be927dd156b1c7adf1da9",
+    "game/src/game/script/coop_vm_state.gd": "9b6f6017e5f705309bfa7cf944ba3b7c7dc7abc73cc2e302a35f98604e40dca7",
+    "game/src/game/script/vm.gd": "2451c8c5bd1697411a94671b3e0b0e25f4cd1689d6276490c078220755813036"
+  },
+  "private_export": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/prison-alarm-late-join-20261009/candidate02",
+    "build_sha256": {
+      "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+      "CursedLands.pck": "5aa8468558b68369fec6b4dcb777d47688643c48bc2b7944515c66d8fe28554e",
+      "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+    },
+    "export_receipt": "/home/llm2x/Documents/EI/local/scratchpad/prison-alarm-late-join-20261009/candidate02/export.json",
+    "export_receipt_sha256": "1c96ec231e32d81268d904c4efeb7b8b22a274e8bdb093f0c8a7a8c2f35eee11",
+    "steps": [
+      {
+        "command": [
+          "/home/llm2x/.local/bin/godot-4",
+          "--headless",
+          "--path",
+          "/home/llm2x/Documents/EI/local/scratchpad/prison-alarm-late-join-20261009/candidate02/stage",
+          "--editor",
+          "--import"
+        ],
+        "return_code": 0,
+        "seconds": 12.239932616997976,
+        "errors": []
+      },
+      {
+        "command": [
+          "/home/llm2x/.local/bin/godot-4",
+          "--headless",
+          "--path",
+          "/home/llm2x/Documents/EI/local/scratchpad/prison-alarm-late-join-20261009/candidate02/stage",
+          "--export-pack",
+          "Linux",
+          "/home/llm2x/Documents/EI/local/scratchpad/prison-alarm-late-join-20261009/candidate02/CursedLands.pck"
+        ],
+        "return_code": 0,
+        "seconds": 5.974739829020109,
+        "errors": []
+      }
+    ],
+    "baseline_path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-junctions-20261009/candidate09",
+    "stage_comparison": {
+      "baseline_stage_files": 712,
+      "candidate_stage_files": 712,
+      "changed_files": [
+        "src/game/script/coop_vm_state.gd",
+        "src/game/script/coop_vm_state.gd.uid",
+        "src/game/script/story_compat.gd",
+        "src/game/script/story_compat.gd.uid",
+        "src/game/script/story_coop_traps.gd",
+        "src/game/script/vm.gd"
+      ],
+      "tracked_game_files": 613,
+      "mismatches": []
+    },
+    "source_commit_note": "The frozen export was made before the source commit; all 613 tracked game files were byte-compared to the committed checkout."
+  },
+  "baseline_and_review_controls": {
+    "original_startup_baseline": [
+      {
+        "label": "baseline-early-02",
+        "checks": 45,
+        "failures": 0,
+        "return_code": 0,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/terrain-junctions-20261009/candidate09/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/prison-alarm-late-join-20261009/baseline-early-02/tool-source.gd",
+          "--ei-inline-host",
+          "--alarm-arrival=early"
+        ],
+        "run_receipt": "/home/llm2x/Documents/EI/local/scratchpad/prison-alarm-late-join-20261009/baseline-early-02/run.json",
+        "evidence": "/home/llm2x/Documents/EI/local/scratchpad/prison-alarm-late-join-20261009/baseline-early-02/prison-alarm-late-join.json",
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/prison_alarm_late_join.gd": "82bf1273be84435eacce3642fbd0c842bce369b603a8f7298eb78bd242b2cea5",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_traps_net.gd": "467645c27cbfe2ce9130f22fe4ac7d68edfdf7e57a867685e212cff480fb35d4"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+          "CursedLands.pck": "d215fd5e4b65376d8b224f5a61145f898bac422a1ed31cc1b6c3826510bc622b",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "failed_assertions": [],
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ]
+      },
+      {
+        "label": "baseline-late-01",
+        "checks": 45,
+        "failures": 8,
+        "return_code": 1,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/terrain-junctions-20261009/candidate09/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/prison-alarm-late-join-20261009/baseline-late-01/tool-source.gd",
+          "--ei-inline-host",
+          "--alarm-arrival=late"
+        ],
+        "run_receipt": "/home/llm2x/Documents/EI/local/scratchpad/prison-alarm-late-join-20261009/baseline-late-01/run.json",
+        "evidence": "/home/llm2x/Documents/EI/local/scratchpad/prison-alarm-late-join-20261009/baseline-late-01/prison-alarm-late-join.json",
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/prison_alarm_late_join.gd": "82bf1273be84435eacce3642fbd0c842bce369b603a8f7298eb78bd242b2cea5",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_traps_net.gd": "467645c27cbfe2ce9130f22fe4ac7d68edfdf7e57a867685e212cff480fb35d4"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+          "CursedLands.pck": "d215fd5e4b65376d8b224f5a61145f898bac422a1ed31cc1b6c3826510bc622b",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "failed_assertions": [
+          "FAIL after_join: guest has one native area-1 wait",
+          "FAIL after_reload: guest has one native area-1 wait",
+          "FAIL after_reconnect: guest has one native area-1 wait",
+          "FAIL guest entry activates the authored area-1 alarm",
+          "FAIL authored alarm selects the entering guest",
+          "FAIL original alarm loads its own reinforcement MOB",
+          "FAIL original reinforcement startup populates exactly its real a1 guards",
+          "FAIL all real a1 guards receive the original sentry target"
+        ],
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ]
+      }
+    ],
+    "ordering_correction": [
+      {
+        "label": "state-candidate01-04",
+        "checks": 70,
+        "failures": 1,
+        "return_code": 1,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/prison-alarm-late-join-20261009/candidate01/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/prison-alarm-late-join-20261009/state-candidate01-04/tool-source.gd",
+          "--ei-inline-host"
+        ],
+        "run_receipt": "/home/llm2x/Documents/EI/local/scratchpad/prison-alarm-late-join-20261009/state-candidate01-04/run.json",
+        "evidence": "/home/llm2x/Documents/EI/local/scratchpad/prison-alarm-late-join-20261009/state-candidate01-04/prison-alarm-state.json",
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/prison_alarm_state.gd": "acebb8f79fe12bd2da69d79129f16fe710b8edef6aef5fa02bd9748c41bda96b",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_captivity.gd": "8cb2207fffd1ed9eb9303ea16b046c39f536c2ddf71c2aab51a0bfdab3c79a11"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+          "CursedLands.pck": "ccf76936ea30c1954ecc465f30b78fc75c1c1c5fb0d8522a16fa4a109f78b34f",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "failed_assertions": [
+          "FAIL queued then absent newcomer cannot discard the saved intruder before assignment"
+        ],
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ]
+      },
+      {
+        "label": "state-candidate02-01",
+        "checks": 70,
+        "failures": 0,
+        "return_code": 0,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/prison-alarm-late-join-20261009/candidate02/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/prison-alarm-late-join-20261009/state-candidate02-01/tool-source.gd",
+          "--ei-inline-host"
+        ],
+        "run_receipt": "/home/llm2x/Documents/EI/local/scratchpad/prison-alarm-late-join-20261009/state-candidate02-01/run.json",
+        "evidence": "/home/llm2x/Documents/EI/local/scratchpad/prison-alarm-late-join-20261009/state-candidate02-01/prison-alarm-state.json",
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/prison_alarm_state.gd": "acebb8f79fe12bd2da69d79129f16fe710b8edef6aef5fa02bd9748c41bda96b",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_captivity.gd": "8cb2207fffd1ed9eb9303ea16b046c39f536c2ddf71c2aab51a0bfdab3c79a11"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+          "CursedLands.pck": "5aa8468558b68369fec6b4dcb777d47688643c48bc2b7944515c66d8fe28554e",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "failed_assertions": [],
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ]
+      }
+    ]
+  },
+  "preserved_excluded_attempts": [
+    {
+      "label": "baseline-early-01",
+      "reason": "Excluded setup: joined in lobby without new_campaign hero creation, so no guest actor was deployed; also incorrectly expected a1 before original alarm AddMob. Corrected without forcing any actor, watcher, group or success flag.",
+      "run_receipt": "/home/llm2x/Documents/EI/local/scratchpad/prison-alarm-late-join-20261009/baseline-early-01/run.json",
+      "return_code": 1,
+      "errors": [
+        "FAIL original startup resolves its real a1 guard group",
+        "FAIL after_join: guest is normally deployed"
+      ]
+    },
+    {
+      "label": "state-candidate01-01",
+      "reason": "Excluded fixture parse error: infer-from-Dictionary Array declaration. Fixed explicit Array type; no assertion executed.",
+      "run_receipt": "/home/llm2x/Documents/EI/local/scratchpad/prison-alarm-late-join-20261009/state-candidate01-01/run.json",
+      "return_code": -15,
+      "errors": [
+        "SCRIPT ERROR: Parse Error: Cannot infer the type of \"registrar\" variable because the value doesn't have a set type.",
+        "ERROR: Failed to load script \"/home/llm2x/Documents/EI/local/scratchpad/prison-alarm-late-join-20261009/state-candidate01-01/tool-source.gd\" with error \"Parse error\".",
+        "ERROR: Required object \"rp_child\" is null."
+      ]
+    },
+    {
+      "label": "state-candidate01-02",
+      "reason": "Excluded fixture native fatal before registration spawn while calling test helper named disconnect, shadowing Object.disconnect. Renamed to detach_actor with production unchanged.",
+      "run_receipt": "/home/llm2x/Documents/EI/local/scratchpad/prison-alarm-late-join-20261009/state-candidate01-02/run.json",
+      "return_code": -4,
+      "errors": [
+        "ERROR: FATAL: Index p_index = -1 is out of bounds (size() = 0)."
+      ]
+    },
+    {
+      "label": "state-candidate01-03",
+      "reason": "Preserved tracing retry located the same fatal before vm.spawn. Renaming only that helper permitted full clean execution; not classified as a gameplay registration failure.",
+      "run_receipt": "/home/llm2x/Documents/EI/local/scratchpad/prison-alarm-late-join-20261009/state-candidate01-03/run.json",
+      "return_code": -4,
+      "errors": [
+        "ERROR: FATAL: Index p_index = -1 is out of bounds (size() = 0)."
+      ]
+    }
+  ],
+  "acceptance": {
+    "checks": 331,
+    "failures": 0,
+    "runs": [
+      {
+        "label": "state-candidate02-01",
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/prison-alarm-late-join-20261009/state-candidate02-01",
+        "checks": 70,
+        "failures": 0,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/prison-alarm-late-join-20261009/candidate02/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/prison-alarm-late-join-20261009/state-candidate02-01/tool-source.gd",
+          "--ei-inline-host"
+        ],
+        "campaign": "base",
+        "seconds": 3.2554849089938216,
+        "return_code": 0,
+        "errors": [],
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "fixture_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/prison_alarm_state.gd": "acebb8f79fe12bd2da69d79129f16fe710b8edef6aef5fa02bd9748c41bda96b",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_captivity.gd": "8cb2207fffd1ed9eb9303ea16b046c39f536c2ddf71c2aab51a0bfdab3c79a11"
+        },
+        "files_sha256": {
+          "prison-alarm-state.json": "f4db6d744c6adbd2c34d6246128006bcab9e9136c86f6fa3beddb143a106d2e5",
+          "run.json": "86f85ca15bb314299c1fd5592e06ba1dc420d0c361a8510eadbc3a5c64520ba4",
+          "run.log": "9c19a918d49e431ebc855356e006cfc558601295990a7c92715ba25606e7772b",
+          "story_coop_captivity.gd": "8cb2207fffd1ed9eb9303ea16b046c39f536c2ddf71c2aab51a0bfdab3c79a11",
+          "tool-source.gd": "acebb8f79fe12bd2da69d79129f16fe710b8edef6aef5fa02bd9748c41bda96b"
+        },
+        "foreign_processes_at_start": [
+          {
+            "pid": 1527277,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ],
+        "foreign_processes_at_end": [
+          {
+            "pid": 1527277,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ]
+      },
+      {
+        "label": "prison-entry-late-final01",
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/prison-entry-late-final01",
+        "checks": 75,
+        "failures": 0,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/prison-alarm-late-join-20261009/candidate02/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/prison-entry-late-final01/tool-source.gd",
+          "--alarm-arrival=late"
+        ],
+        "campaign": "base",
+        "seconds": 79.06872337096138,
+        "return_code": 0,
+        "errors": [],
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "fixture_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/prison_alarm_late_join.gd": "a723d2ccda49acac5c3ffb196bcc97b9f9ab8ae3b52cd2a6fa2406cb72fcf19e",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_traps_net.gd": "467645c27cbfe2ce9130f22fe4ac7d68edfdf7e57a867685e212cff480fb35d4"
+        },
+        "files_sha256": {
+          "prison-alarm-late-join.json": "977ca54da512261ae1329f9c16a07e8ea844777c42151f1f773121a5f5bf8a1d",
+          "run.json": "1bf98acc2510a0c2e62f177fec50863a9d92aff3f3b93daf902e6c17598377f8",
+          "run.log": "944e320d58d8973e50de19db28c7dea1b9167a0913f78896c7497c5b44a13446",
+          "story_coop_traps_net.gd": "467645c27cbfe2ce9130f22fe4ac7d68edfdf7e57a867685e212cff480fb35d4",
+          "tool-source.gd": "a723d2ccda49acac5c3ffb196bcc97b9f9ab8ae3b52cd2a6fa2406cb72fcf19e"
+        },
+        "foreign_processes_at_start": [],
+        "foreign_processes_at_end": []
+      },
+      {
+        "label": "prison-entry-early-final01",
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/prison-entry-early-final01",
+        "checks": 75,
+        "failures": 0,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/prison-alarm-late-join-20261009/candidate02/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/prison-entry-early-final01/tool-source.gd",
+          "--alarm-arrival=early"
+        ],
+        "campaign": "base",
+        "seconds": 76.81514591298765,
+        "return_code": 0,
+        "errors": [],
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "fixture_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/prison_alarm_late_join.gd": "a723d2ccda49acac5c3ffb196bcc97b9f9ab8ae3b52cd2a6fa2406cb72fcf19e",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_traps_net.gd": "467645c27cbfe2ce9130f22fe4ac7d68edfdf7e57a867685e212cff480fb35d4"
+        },
+        "files_sha256": {
+          "prison-alarm-late-join.json": "ddb9c6fe03da8b9e378b4903ade407bcb8facad4519ddbd29dac599ab6ac49e9",
+          "run.json": "77dcfabb6e0a7c5a5cb7d03f48ee1478464f36a09ed5c612ef69d6a50b6433a6",
+          "run.log": "1b0d8d265157491fda3b58fe6f5ddf88c48fa66e1da03f35c121128339efb454",
+          "story_coop_traps_net.gd": "467645c27cbfe2ce9130f22fe4ac7d68edfdf7e57a867685e212cff480fb35d4",
+          "tool-source.gd": "a723d2ccda49acac5c3ffb196bcc97b9f9ab8ae3b52cd2a6fa2406cb72fcf19e"
+        },
+        "foreign_processes_at_start": [],
+        "foreign_processes_at_end": []
+      },
+      {
+        "label": "prison-captivity-regression01",
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/prison-captivity-regression01",
+        "checks": 30,
+        "failures": 0,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/prison-alarm-late-join-20261009/candidate02/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/prison-captivity-regression01/tool-source.gd"
+        ],
+        "campaign": "base",
+        "seconds": 2.5028610930312425,
+        "return_code": 0,
+        "errors": [],
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "fixture_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_captivity.gd": "8cb2207fffd1ed9eb9303ea16b046c39f536c2ddf71c2aab51a0bfdab3c79a11"
+        },
+        "files_sha256": {
+          "run.json": "1d54380b1876944f9fddcfdc4bd4cb1cb736960fc7b09c31866f4963a9f2a4b8",
+          "run.log": "5c6421582f0fea7f811764e9bfe70875a35e7934e265708216e20a26df5f1fa8",
+          "tool-source.gd": "8cb2207fffd1ed9eb9303ea16b046c39f536c2ddf71c2aab51a0bfdab3c79a11"
+        },
+        "foreign_processes_at_start": [],
+        "foreign_processes_at_end": []
+      },
+      {
+        "label": "prison-projection-base01",
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/prison-projection-base01",
+        "checks": 36,
+        "failures": 0,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/prison-alarm-late-join-20261009/candidate02/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/prison-projection-base01/tool-source.gd"
+        ],
+        "campaign": "base",
+        "seconds": 2.0024071790394373,
+        "return_code": 0,
+        "errors": [],
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "fixture_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_vm_projection.gd": "91ebe397d05ca17de9663fa1b4b4c5b8f34a516ba1345f2f0fcc469485bbcffc"
+        },
+        "files_sha256": {
+          "run.json": "ff075db5f497ed0a5dcded3755b20ddcc1e0fa1e88fb5390cf5f0c773fad52af",
+          "run.log": "24d784fb0610ce1648884e64298674f59f9d1e8103ecb26d036208ec742e1012",
+          "tool-source.gd": "91ebe397d05ca17de9663fa1b4b4c5b8f34a516ba1345f2f0fcc469485bbcffc"
+        },
+        "foreign_processes_at_start": [],
+        "foreign_processes_at_end": []
+      },
+      {
+        "label": "prison-projection-lia01",
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/prison-projection-lia01",
+        "checks": 21,
+        "failures": 0,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/prison-alarm-late-join-20261009/candidate02/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/prison-projection-lia01/tool-source.gd"
+        ],
+        "campaign": "astral",
+        "seconds": 2.5029099559760652,
+        "return_code": 0,
+        "errors": [],
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "fixture_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_vm_projection.gd": "91ebe397d05ca17de9663fa1b4b4c5b8f34a516ba1345f2f0fcc469485bbcffc"
+        },
+        "files_sha256": {
+          "run.json": "5edd4e39f77fa0d16865ea6c51e1a9fb8940a8def867df5d6abef64c2540e39f",
+          "run.log": "06ff8498205c89f02a0a00058b83883a92182fd313d0fd9fda467932d9031f3f",
+          "tool-source.gd": "91ebe397d05ca17de9663fa1b4b4c5b8f34a516ba1345f2f0fcc469485bbcffc"
+        },
+        "foreign_processes_at_start": [],
+        "foreign_processes_at_end": []
+      },
+      {
+        "label": "prison-solo-trap01",
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/prison-solo-trap01",
+        "checks": 24,
+        "failures": 0,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/prison-alarm-late-join-20261009/candidate02/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/prison-solo-trap01/tool-source.gd"
+        ],
+        "campaign": "base",
+        "seconds": 7.2568628959706984,
+        "return_code": 0,
+        "errors": [],
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "fixture_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_vm_solo_trap.gd": "15447be3a05e42954c9aeff9dab609c31c2edec83be296c46cd08437751583f8",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_traps_net.gd": "467645c27cbfe2ce9130f22fe4ac7d68edfdf7e57a867685e212cff480fb35d4"
+        },
+        "files_sha256": {
+          "coop-vm-solo-trap.json": "e9b619b68cfc10ec78f0da1be3a490180d4d47a45b839bf4252a0786d80bbb32",
+          "run.json": "500f1335a52beee6a1cf0fef45d793affa40b30c2986ba9ffbc3e9248d2a5564",
+          "run.log": "abf528dfaf9971f413fe89b1083a459413f8325a87011c712e0f642532ce53d6",
+          "story_coop_traps_net.gd": "467645c27cbfe2ce9130f22fe4ac7d68edfdf7e57a867685e212cff480fb35d4",
+          "tool-source.gd": "15447be3a05e42954c9aeff9dab609c31c2edec83be296c46cd08437751583f8"
+        },
+        "foreign_processes_at_start": [],
+        "foreign_processes_at_end": []
+      }
+    ],
+    "network_witnesses": {
+      "prison-entry-late-final01": {
+        "checks": 75,
+        "failures": 0,
+        "arrival": "late",
+        "expected_guard_ids": [
+          1000011,
+          1000073,
+          1000074,
+          1000082,
+          1000095,
+          1000096,
+          1000097,
+          1000099
+        ],
+        "rejoin_identity": {
+          "after_hero_key": [
+            1,
+            0
+          ],
+          "after_uid": 1500000002,
+          "before_uid": 1500000002,
+          "hero_key": [
+            1,
+            0
+          ],
+          "name": "Alarm Guest"
+        },
+        "phases": [
+          {
+            "alarm2": 0.0,
+            "alarm_mob_added": false,
+            "g1": 0.0,
+            "guard_ids": [],
+            "guest_uid": -1,
+            "guest_watchers": 0,
+            "hero_ids": [
+              1500000001
+            ],
+            "instance_count": 52,
+            "label": "after_startup",
+            "registrar_count": 1,
+            "saved_guest_waits": [],
+            "vm_time": 0.88,
+            "watchers": [
+              {
+                "controller": 0,
+                "uid": 1500000001
+              }
+            ],
+            "world_time": 0.88
+          },
+          {
+            "alarm2": 0.0,
+            "alarm_mob_added": false,
+            "g1": 0.0,
+            "guard_ids": [],
+            "guest_uid": 1500000002,
+            "guest_watchers": 1,
+            "hero_ids": [
+              1500000001,
+              1500000002
+            ],
+            "instance_count": 53,
+            "label": "after_join",
+            "registrar_count": 1,
+            "saved_guest_waits": [
+              {
+                "b": -1,
+                "f": [],
+                "i": 0,
+                "k": false,
+                "l": {
+                  "this": {
+                    "h": [
+                      1,
+                      0
+                    ],
+                    "u": 1500000002
+                  }
+                },
+                "p": 0.0549999999999999,
+                "s": "VCheck#0#417",
+                "w": 0.0
+              }
+            ],
+            "vm_time": 1.045,
+            "watchers": [
+              {
+                "controller": 0,
+                "uid": 1500000001
+              },
+              {
+                "controller": 1,
+                "uid": 1500000002
+              }
+            ],
+            "world_time": 1.045
+          },
+          {
+            "alarm2": 0.0,
+            "alarm_mob_added": false,
+            "g1": 0.0,
+            "guard_ids": [],
+            "guest_uid": 1500000002,
+            "guest_watchers": 1,
+            "hero_ids": [
+              1500000001,
+              1500000002
+            ],
+            "instance_count": 53,
+            "label": "after_reload",
+            "registrar_count": 1,
+            "saved_guest_waits": [
+              {
+                "b": -1,
+                "f": [],
+                "i": 0,
+                "k": false,
+                "l": {
+                  "this": {
+                    "h": [
+                      1,
+                      0
+                    ],
+                    "u": 1500000002
+                  }
+                },
+                "p": 0.055,
+                "s": "VCheck#0#417",
+                "w": 0.0
+              }
+            ],
+            "vm_time": 0.165,
+            "watchers": [
+              {
+                "controller": 0,
+                "uid": 1500000001
+              },
+              {
+                "controller": 1,
+                "uid": 1500000002
+              }
+            ],
+            "world_time": 0.165
+          },
+          {
+            "alarm2": 0.0,
+            "alarm_mob_added": false,
+            "g1": 0.0,
+            "guard_ids": [],
+            "guest_uid": 1500000002,
+            "guest_watchers": 1,
+            "hero_ids": [
+              1500000001,
+              1500000002
+            ],
+            "instance_count": 53,
+            "label": "after_reconnect",
+            "registrar_count": 1,
+            "saved_guest_waits": [
+              {
+                "b": -1,
+                "f": [],
+                "i": 0,
+                "k": false,
+                "l": {
+                  "this": {
+                    "h": [
+                      1,
+                      0
+                    ],
+                    "u": 1500000002
+                  }
+                },
+                "p": 0.055,
+                "s": "VCheck#0#417",
+                "w": 0.0
+              }
+            ],
+            "vm_time": 0.33,
+            "watchers": [
+              {
+                "controller": 0,
+                "uid": 1500000001
+              },
+              {
+                "controller": 1,
+                "uid": 1500000002
+              }
+            ],
+            "world_time": 0.33
+          },
+          {
+            "alarm2": 0.0,
+            "alarm_mob_added": false,
+            "g1": 0.0,
+            "guard_ids": [],
+            "guest_uid": -1,
+            "guest_watchers": 0,
+            "hero_ids": [
+              1500000001
+            ],
+            "instance_count": 53,
+            "label": "first_absent_reload",
+            "registrar_count": 1,
+            "saved_guest_waits": [
+              {
+                "b": -1,
+                "f": [],
+                "i": 0,
+                "k": false,
+                "l": {
+                  "this": {
+                    "h": [
+                      1,
+                      0
+                    ],
+                    "u": 1500000002
+                  }
+                },
+                "p": 0.0549999999999999,
+                "s": "VCheck#0#417",
+                "w": 0.0
+              }
+            ],
+            "vm_time": 1.375,
+            "watchers": [
+              {
+                "controller": 0,
+                "uid": 1500000001
+              },
+              {
+                "controller": -1,
+                "uid": -1
+              }
+            ],
+            "world_time": 1.375
+          },
+          {
+            "alarm2": 0.0,
+            "alarm_mob_added": false,
+            "g1": 0.0,
+            "guard_ids": [],
+            "guest_uid": -1,
+            "guest_watchers": 0,
+            "hero_ids": [
+              1500000001
+            ],
+            "instance_count": 53,
+            "label": "second_absent_reload",
+            "registrar_count": 1,
+            "saved_guest_waits": [
+              {
+                "b": -1,
+                "f": [],
+                "i": 0,
+                "k": false,
+                "l": {
+                  "this": {
+                    "h": [
+                      1,
+                      0
+                    ],
+                    "u": 1500000002
+                  }
+                },
+                "p": 0.0549999999999999,
+                "s": "VCheck#0#417",
+                "w": 0.0
+              }
+            ],
+            "vm_time": 1.375,
+            "watchers": [
+              {
+                "controller": 0,
+                "uid": 1500000001
+              },
+              {
+                "controller": -1,
+                "uid": -1
+              }
+            ],
+            "world_time": 1.375
+          },
+          {
+            "alarm2": 0.0,
+            "alarm_mob_added": false,
+            "g1": 0.0,
+            "guard_ids": [],
+            "guest_uid": 1500000002,
+            "guest_watchers": 1,
+            "hero_ids": [
+              1500000001,
+              1500000002
+            ],
+            "instance_count": 53,
+            "label": "after_absent_rejoin",
+            "registrar_count": 1,
+            "saved_guest_waits": [
+              {
+                "b": -1,
+                "f": [],
+                "i": 0,
+                "k": false,
+                "l": {
+                  "this": {
+                    "h": [
+                      1,
+                      0
+                    ],
+                    "u": 1500000002
+                  }
+                },
+                "p": 0.0549999999999999,
+                "s": "VCheck#0#417",
+                "w": 0.0
+              }
+            ],
+            "vm_time": 1.54,
+            "watchers": [
+              {
+                "controller": 0,
+                "uid": 1500000001
+              },
+              {
+                "controller": 1,
+                "uid": 1500000002
+              }
+            ],
+            "world_time": 1.54
+          },
+          {
+            "alarm2": 0.0,
+            "alarm_mob_added": true,
+            "g1": 3.0,
+            "guard_ids": [
+              1000082,
+              1000095,
+              1000073,
+              1000096,
+              1000074,
+              1000097,
+              1000011,
+              1000099
+            ],
+            "guest_uid": 1500000002,
+            "guest_watchers": 0,
+            "hero_ids": [
+              1500000001,
+              1500000002
+            ],
+            "instance_count": 54,
+            "label": "after_intrusion",
+            "registrar_count": 1,
+            "saved_guest_waits": [],
+            "vm_time": 6.21499999999999,
+            "watchers": [
+              {
+                "controller": 0,
+                "uid": 1500000001
+              }
+            ],
+            "world_time": 6.21499999999999
+          }
+        ],
+        "scope": "Actual original startup, real ENet registration and Session save/reload/reconnect, then disconnect, host-only reload, 25 native ticks, absent save, second host-only reload, 25 native ticks and normal rejoin before real alarm entry. Controlled positions and manual VM ticks, paused AI/combat. No full prison route, physical guard navigation or rendered acceptance."
+      },
+      "prison-entry-early-final01": {
+        "checks": 75,
+        "failures": 0,
+        "arrival": "early",
+        "expected_guard_ids": [
+          1000011,
+          1000073,
+          1000074,
+          1000082,
+          1000095,
+          1000096,
+          1000097,
+          1000099
+        ],
+        "rejoin_identity": {
+          "after_hero_key": [
+            1,
+            0
+          ],
+          "after_uid": 1500000002,
+          "before_uid": 1500000002,
+          "hero_key": [
+            1,
+            0
+          ],
+          "name": "Alarm Guest"
+        },
+        "phases": [
+          {
+            "alarm2": 0.0,
+            "alarm_mob_added": false,
+            "g1": 0.0,
+            "guard_ids": [],
+            "guest_uid": 1500000002,
+            "guest_watchers": 1,
+            "hero_ids": [
+              1500000001,
+              1500000002
+            ],
+            "instance_count": 79,
+            "label": "after_startup",
+            "registrar_count": 1,
+            "saved_guest_waits": [
+              {
+                "b": -1,
+                "f": [],
+                "i": 0,
+                "k": false,
+                "l": {
+                  "this": {
+                    "h": [
+                      1,
+                      0
+                    ],
+                    "u": 1500000002
+                  }
+                },
+                "p": 0.055,
+                "s": "VCheck#0#417",
+                "w": 0.0
+              }
+            ],
+            "vm_time": 0.88,
+            "watchers": [
+              {
+                "controller": 0,
+                "uid": 1500000001
+              },
+              {
+                "controller": 1,
+                "uid": 1500000002
+              }
+            ],
+            "world_time": 0.88
+          },
+          {
+            "alarm2": 0.0,
+            "alarm_mob_added": false,
+            "g1": 0.0,
+            "guard_ids": [],
+            "guest_uid": 1500000002,
+            "guest_watchers": 1,
+            "hero_ids": [
+              1500000001,
+              1500000002
+            ],
+            "instance_count": 79,
+            "label": "after_join",
+            "registrar_count": 1,
+            "saved_guest_waits": [
+              {
+                "b": -1,
+                "f": [],
+                "i": 0,
+                "k": false,
+                "l": {
+                  "this": {
+                    "h": [
+                      1,
+                      0
+                    ],
+                    "u": 1500000002
+                  }
+                },
+                "p": 0.0549999999999999,
+                "s": "VCheck#0#417",
+                "w": 0.0
+              }
+            ],
+            "vm_time": 1.045,
+            "watchers": [
+              {
+                "controller": 0,
+                "uid": 1500000001
+              },
+              {
+                "controller": 1,
+                "uid": 1500000002
+              }
+            ],
+            "world_time": 1.045
+          },
+          {
+            "alarm2": 0.0,
+            "alarm_mob_added": false,
+            "g1": 0.0,
+            "guard_ids": [],
+            "guest_uid": 1500000002,
+            "guest_watchers": 1,
+            "hero_ids": [
+              1500000001,
+              1500000002
+            ],
+            "instance_count": 79,
+            "label": "after_reload",
+            "registrar_count": 1,
+            "saved_guest_waits": [
+              {
+                "b": -1,
+                "f": [],
+                "i": 0,
+                "k": false,
+                "l": {
+                  "this": {
+                    "h": [
+                      1,
+                      0
+                    ],
+                    "u": 1500000002
+                  }
+                },
+                "p": 0.055,
+                "s": "VCheck#0#417",
+                "w": 0.0
+              }
+            ],
+            "vm_time": 0.165,
+            "watchers": [
+              {
+                "controller": 0,
+                "uid": 1500000001
+              },
+              {
+                "controller": 1,
+                "uid": 1500000002
+              }
+            ],
+            "world_time": 0.165
+          },
+          {
+            "alarm2": 0.0,
+            "alarm_mob_added": false,
+            "g1": 0.0,
+            "guard_ids": [],
+            "guest_uid": 1500000002,
+            "guest_watchers": 1,
+            "hero_ids": [
+              1500000001,
+              1500000002
+            ],
+            "instance_count": 79,
+            "label": "after_reconnect",
+            "registrar_count": 1,
+            "saved_guest_waits": [
+              {
+                "b": -1,
+                "f": [],
+                "i": 0,
+                "k": false,
+                "l": {
+                  "this": {
+                    "h": [
+                      1,
+                      0
+                    ],
+                    "u": 1500000002
+                  }
+                },
+                "p": 0.055,
+                "s": "VCheck#0#417",
+                "w": 0.0
+              }
+            ],
+            "vm_time": 0.33,
+            "watchers": [
+              {
+                "controller": 0,
+                "uid": 1500000001
+              },
+              {
+                "controller": 1,
+                "uid": 1500000002
+              }
+            ],
+            "world_time": 0.33
+          },
+          {
+            "alarm2": 0.0,
+            "alarm_mob_added": false,
+            "g1": 0.0,
+            "guard_ids": [],
+            "guest_uid": -1,
+            "guest_watchers": 0,
+            "hero_ids": [
+              1500000001
+            ],
+            "instance_count": 79,
+            "label": "first_absent_reload",
+            "registrar_count": 1,
+            "saved_guest_waits": [
+              {
+                "b": -1,
+                "f": [],
+                "i": 0,
+                "k": false,
+                "l": {
+                  "this": {
+                    "h": [
+                      1,
+                      0
+                    ],
+                    "u": 1500000002
+                  }
+                },
+                "p": 0.0549999999999999,
+                "s": "VCheck#0#417",
+                "w": 0.0
+              }
+            ],
+            "vm_time": 1.375,
+            "watchers": [
+              {
+                "controller": 0,
+                "uid": 1500000001
+              },
+              {
+                "controller": -1,
+                "uid": -1
+              }
+            ],
+            "world_time": 1.375
+          },
+          {
+            "alarm2": 0.0,
+            "alarm_mob_added": false,
+            "g1": 0.0,
+            "guard_ids": [],
+            "guest_uid": -1,
+            "guest_watchers": 0,
+            "hero_ids": [
+              1500000001
+            ],
+            "instance_count": 79,
+            "label": "second_absent_reload",
+            "registrar_count": 1,
+            "saved_guest_waits": [
+              {
+                "b": -1,
+                "f": [],
+                "i": 0,
+                "k": false,
+                "l": {
+                  "this": {
+                    "h": [
+                      1,
+                      0
+                    ],
+                    "u": 1500000002
+                  }
+                },
+                "p": 0.0549999999999999,
+                "s": "VCheck#0#417",
+                "w": 0.0
+              }
+            ],
+            "vm_time": 1.375,
+            "watchers": [
+              {
+                "controller": 0,
+                "uid": 1500000001
+              },
+              {
+                "controller": -1,
+                "uid": -1
+              }
+            ],
+            "world_time": 1.375
+          },
+          {
+            "alarm2": 0.0,
+            "alarm_mob_added": false,
+            "g1": 0.0,
+            "guard_ids": [],
+            "guest_uid": 1500000002,
+            "guest_watchers": 1,
+            "hero_ids": [
+              1500000001,
+              1500000002
+            ],
+            "instance_count": 79,
+            "label": "after_absent_rejoin",
+            "registrar_count": 1,
+            "saved_guest_waits": [
+              {
+                "b": -1,
+                "f": [],
+                "i": 0,
+                "k": false,
+                "l": {
+                  "this": {
+                    "h": [
+                      1,
+                      0
+                    ],
+                    "u": 1500000002
+                  }
+                },
+                "p": 0.0549999999999999,
+                "s": "VCheck#0#417",
+                "w": 0.0
+              }
+            ],
+            "vm_time": 1.54,
+            "watchers": [
+              {
+                "controller": 0,
+                "uid": 1500000001
+              },
+              {
+                "controller": 1,
+                "uid": 1500000002
+              }
+            ],
+            "world_time": 1.54
+          },
+          {
+            "alarm2": 0.0,
+            "alarm_mob_added": true,
+            "g1": 3.0,
+            "guard_ids": [
+              1000082,
+              1000095,
+              1000073,
+              1000096,
+              1000074,
+              1000097,
+              1000011,
+              1000099
+            ],
+            "guest_uid": 1500000002,
+            "guest_watchers": 0,
+            "hero_ids": [
+              1500000001,
+              1500000002
+            ],
+            "instance_count": 80,
+            "label": "after_intrusion",
+            "registrar_count": 1,
+            "saved_guest_waits": [],
+            "vm_time": 6.21499999999999,
+            "watchers": [
+              {
+                "controller": 0,
+                "uid": 1500000001
+              }
+            ],
+            "world_time": 6.21499999999999
+          }
+        ],
+        "scope": "Actual original startup, real ENet registration and Session save/reload/reconnect, then disconnect, host-only reload, 25 native ticks, absent save, second host-only reload, 25 native ticks and normal rejoin before real alarm entry. Controlled positions and manual VM ticks, paused AI/combat. No full prison route, physical guard navigation or rendered acceptance."
+      }
+    },
+    "state_witness": {
+      "pending_wait": {
+        "first_absent_save": {
+          "b": 0,
+          "f": [
+            {
+              "i": 2
+            }
+          ],
+          "i": 2,
+          "k": true,
+          "l": {
+            "this": {
+              "h": [
+                1,
+                0
+              ],
+              "u": 1500000011
+            }
+          },
+          "p": 0.055,
+          "s": "VTriger#0#242",
+          "w": 1.1
+        },
+        "initial": {
+          "b": 0,
+          "f": [
+            {
+              "i": 2
+            }
+          ],
+          "i": 2,
+          "k": true,
+          "l": {
+            "this": {
+              "h": [
+                1,
+                0
+              ],
+              "u": 1500000011
+            }
+          },
+          "p": 0.055,
+          "s": "VTriger#0#242",
+          "w": 1.1
+        },
+        "old_uid": 1500000011,
+        "return_uid": 1500000511,
+        "second_absent_save": {
+          "b": 0,
+          "f": [
+            {
+              "i": 2
+            }
+          ],
+          "i": 2,
+          "k": true,
+          "l": {
+            "this": {
+              "h": [
+                1,
+                0
+              ],
+              "u": 1500000011
+            }
+          },
+          "p": 0.055,
+          "s": "VTriger#0#242",
+          "w": 1.1
+        },
+        "third_absent_save": {
+          "b": 0,
+          "f": [
+            {
+              "i": 2
+            }
+          ],
+          "i": 2,
+          "k": true,
+          "l": {
+            "this": {
+              "h": [
+                1,
+                0
+              ],
+              "u": 1500000011
+            }
+          },
+          "p": 0.055,
+          "s": "VTriger#0#242",
+          "w": 1.1
+        }
+      },
+      "authored_rearm": [
+        {
+          "phase": "sleep",
+          "remaining": 0.0549999999999997,
+          "time": 4.455
+        },
+        {
+          "phase": "rearmed",
+          "time": 4.565,
+          "watchers": 1
+        }
+      ]
+    }
+  },
+  "limits": [
+    "Integration uses actual original map startup, actual Session hero creation and local protocol-13 ENet, but actor positions are controlled, AI/combat paused and VM ticks bounded explicitly. No full prison/captive/Nalo/Jun/Shaina route, guard pathfinding/combat, rendered acceptance, Windows, internet/WAN or timing/FPS claim.",
+    "State fixture uses prepared actor/guard doubles and synthetic serialized edge rows around original definitions. Its native For, dispatch, reset and Sleep instructions execute; its mocked guards are not proof of real reinforcement admission. The separate ENet startup control demonstrates original AddMob and orders on all eight authored guards.",
+    "The old host-side save with an idle protagonist #417 is recoverable while loading on the host. If solo projection of a pre-fix save removes that sole host-owned anchor, no guest history is invented; that ambiguity stays a documented limitation.",
+    "Raw saved references already lost by older saves cannot be reconstructed without remaining native identity/history.",
+    "The copied original assets and real user save archive were not edited. Every run used an isolated disposable profile. No build installed or published.",
+    "Every retained functional run has one startup screen-space-AA warning from headless Compatibility; no script/runtime error is counted as accepted. Other-process inventories are in each run.json and some runs saw an unrelated Godot process; elapsed run durations are logistics only, not performance evidence.",
+    "The stated m/u and retained named-role seen-key mapping follows the source implementation; the 70-check state run directly exercises recipient and host removal with actual pending/spent projection, not an additional named-role-key fixture.",
+    "The two final 75-check network runs use real ENet, Session loads and original WorldScript/reinforcement MOBs, with prepared positions, frozen unrelated AI and a controlled native VM clock. They are not complete physical prison playthroughs.",
+    "The 70 state checks include deliberately constructed serialized edge states; the two original-startup network controls establish actual late-join reachability separately.",
+    "Existing regression fixtures contribute 111 checks: captivity 30, base projection 36, LiA projection 21, and actual ENet/solo delayed trap 24. Their scope is retained; the dormant editor trap is a persistence control, not an asserted normal-route trigger.",
+    "The state candidate recorded a foreign rendered Godot process at both boundaries; this is functional acceptance only, with no timing comparison. The final network and regression runs retain their own process inventories.",
+    "No graphics or native binary change occurred. Prior cloud/terrain/settings acceptance is inherited, not rerun. No new performance, Windows/WAN, Android or full-chapter claim.",
+    "Protocol 13, save schema and source version remain unchanged. Original assets and the supplied user saves are untouched."
+  ],
+  "supporting_note": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/prison-alarm-late-join-20261009/evidence-note.json",
+    "sha256": "f4fc6864b35990bc5288aa129eb5357a4e99dba11565c19c608e2cabb51460df"
+  }
+}

@@ -19,16 +19,21 @@ are committed. The supplied U45 autosave contains two living required creatures;
 the original completion gates work when both die. `1b8b0f6` fixes a distinct
 script-added looted-actor reload defect with 137 passing candidate checks.
 The current qualified private export matches production checkpoint
-`e866a2a6509c1651a27b9197e68f47ec74f88c04`.
-[Current junction evidence](validation/terrain-junctions-2026-10-09.json)
+`7e314707f92a1c0b530835cac9a02742736a71cc`.
+[Prison alarm acceptance](validation/prison-alarm-late-join-2026-10-09.json) adds
+331 passing gameplay checks, including late arrival and two absent host reloads.
+All 613 committed game files match its 712-file candidate02 stage; four
+production scripts and two generated UID files differ from terrain candidate09.
+Graphics, settings and both native binaries retain the earlier qualification.
+[Previous junction evidence](validation/terrain-junctions-2026-10-09.json)
 qualifies exact three/four-family Natural transitions across both campaigns,
 with 19,911 GPU probes on three desktop backends and original-art controls.
 The existing setting/default/presets remain unchanged. The Compatibility
 neutral-field control retains the same one-pixel baseline residual; clean timing
 and physical-device/long-route acceptance remain open. All 613 tracked game
-files match candidate09; only two production scripts and their regenerated UID
-files differ from the prior 712-file stage. Gameplay, settings, clouds and native
-binaries are unchanged; their earlier evidence is inherited.
+files at that renderer checkpoint match candidate09; only two production scripts
+and their regenerated UID files differ from its prior 712-file stage. Its
+gameplay, settings, cloud and native-binary evidence is inherited.
 [The V1 normal-frame follow-up](validation/ground-contact-side-loop-2026-10-09.json)
 rejects a runtime two-triangle loop: 192 comparison checks and 12 exact RGB
 pairs pass, but cold preparation shows no convincing reduction and steady
@@ -72,7 +77,7 @@ The original worktree above is historical. Source version remains Experimental 6
 and protocol 13. This task uses private exports and isolated profiles. Installed
 builds, templates, original assets and real saves have not been replaced.
 Current qualified private export:
-`/home/llm2x/Documents/EI/local/scratchpad/terrain-junctions-20261009/candidate09`.
+`/home/llm2x/Documents/EI/local/scratchpad/prison-alarm-late-join-20261009/candidate02`.
 The detailed gameplay tracker is `docs/gameplay-gaps-2026-10-08.md`; the incoming
 handoff is `/home/llm2x/Documents/EI/local/gameplay-handoff-2026-10-09.md`.
 
@@ -4904,6 +4909,41 @@ material limits and P2 compressed/tail colour differences remain in their
 feature receipts. Source Experimental 6 and protocol 13 remain unchanged; no
 release, installation, original asset or real save was modified.
 
+## Original prison alarm: late arrival and absent reload — 9 October
+
+`7e31470` fixes a reproduced `gz19h` area-1 alarm gap. Original startup registers
+one native wait for each hero present at that moment; later guests entered the
+area without any wait to detect them. A persistent registrar now adds the same
+unaltered wait once for each newly eligible character. The exact 23-definition
+original AST and startup call must match before this adaptation is admitted.
+Native guard dispatch, delays and reset calls retain their original bodies and
+saved instruction indexes.
+
+A saved native continuation also retains its stable hero reference while that
+character is absent. Two host-only reloads preserve the pending wait and native
+remaining delay; a normal ENet return rebinds the same instance. Co-op-to-solo
+projection retains the recipient's pending/spent registration state. Legacy
+saves recover only when an actual native registration or continuation proves
+that the family was active; missing history is not guessed.
+
+[Prison alarm evidence](validation/prison-alarm-late-join-2026-10-09.json) records
+**331 passing candidate checks**: 70 state controls, 75 early-arrival and 75
+late-arrival ENet checks, plus 111 existing captivity/projection/solo-return
+regressions. The corrected original-startup baseline passes 45/45 early checks
+but fails 8/45 late checks. A reviewed pending-intruder ordering defect fails
+one of the same 70 state checks in candidate01 and passes in candidate02.
+The final network runs load the original reinforcement MOB and all eight real
+guards receive the authored target after the returning guest enters.
+
+These are prepared-position, controlled-clock network fixtures and serialized
+edge-state tests, not a full physical prison playthrough. Setup failures remain
+in the receipt. A foreign rendered process overlaps the state test, so its
+elapsed time is not a performance result. All 613 committed game files match
+the 712-file candidate02 stage; only four production scripts and two generated
+UID files differ from terrain candidate09. Native binaries, graphics, settings,
+protocol 13 and save schema are unchanged. No user save or installed build was
+modified.
+
 ## Next work in the established order
 
 1. **P1/P2 remaining texture work:** shipped unit/preview materials now share
@@ -5008,7 +5048,9 @@ release, installation, original asset or real save was modified.
    actions `74c4804` and bounded opening admission `79bee8a`. The latter restores
    NEW-hero joins after the original base startup flags, with 239 passing checks;
    existing saves retain strict story compatibility. `fdf7885` fixes renamed
-   guest identity.
+   guest identity. `7e31470` also fixes the reproduced original prison alarm
+   registration gap for late guests and preserves pending waits through absent
+   reloads; 331 checks pass in the current private export.
    `f3f1494` fixes the independently reproduced LiA Haburu
    camp approach issue; 379 source/command/map checks pass. All five missing
    authored helpers are reachable but absent from the supplied scripts and
