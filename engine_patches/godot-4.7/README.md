@@ -14,6 +14,7 @@ build instructions. Adding a patch here does not update installed templates.
 7. `mobile-shader-recompile-lock.patch`
 8. `forward-shader-recompile-lifetime.patch`
 9. `far-dof-sharp-guard.patch`
+10. `sky-subpass-alpha.patch`
 
 The first two patches repair separate-render-thread shutdown and snapshot
 mutable images for queued texture uploads. The third lets an unobserved looping
@@ -76,6 +77,22 @@ manifest are recorded in
 [`camera-depth-of-field-2026-10-09.json`](../../docs/validation/camera-depth-of-field-2026-10-09.json).
 Other platform templates and representative performance still require
 validation; no installed template is changed here.
+
+The tenth preserves data written to sky-subpass `ALPHA`: screen and radiance
+sampling unscale RGB only. Mobile's packed colour has two alpha bits, so only
+ALPHA-using half/quarter sky programs get RGBA16F subpass and radiance storage.
+Ordinary and RGB-only sky programs keep their original backend formats.
+Quality/format changes retire incompatible screen targets and invalidate the
+old radiance allocation. The native `ei_sky_subpass_alpha` capability is never
+an export tag; optional cloud volumes fall back to the moving layer on older
+Mobile runtimes. Linux Forward+/Mobile checks cover actual screen and baked
+radiance values, allocation formats, live quality changes and released RIDs.
+The old Mobile runtime reproduces ten alpha failures; all fourteen ordinary
+sky/RGB control images and five real-map Off/Moving-layer images remain exact.
+See [`sky-subpass-alpha-2026-10-09.json`](../../docs/validation/sky-subpass-alpha-2026-10-09.json)
+for the four-file source audit, inherited nine-patch audit, build and full RGB
+controls. XR/multiview and other platform templates still need execution tests;
+no installed template is changed here.
 
 macOS and Web use the official 4.7 templates. Experimental 5 Android ARM64 uses
 the first six common patches and `android-headless-service.patch`; earlier public

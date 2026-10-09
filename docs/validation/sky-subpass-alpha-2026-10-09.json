@@ -1,0 +1,1661 @@
+{
+  "date": "2026-10-09",
+  "scope": "Native ALPHA data in half/quarter sky screen and radiance passes; conditional precision and lifetime, no game cloud quality claim.",
+  "source_base_commit": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+  "native_before_sha256": "769dd027c0b444caca0d5fbbb6014eda80970e991e9f32fdb1f86ec385d20c3e",
+  "native_after_path": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision/CursedLands.x86_64",
+  "native_after_sha256": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+  "patch_sha256": "a2ba63fac3d1ec8804f96bf3cdeb45b7f2c1597e1ac410f1739df812d82f3a67",
+  "capability": "OS.has_feature(\"ei_sky_subpass_alpha\"); defined only by native source, never project export tags.",
+  "changes": [
+    "Unscale only subpass RGB. ALPHA is generic data and was never multiplied by scene luminance at write time.",
+    "Use RGBA16F for ALPHA-using half/quarter screen targets and their radiance data; retain original backend format for ordinary/RGB-only sky programs.",
+    "Retire old targets when quality, format or shader requirements change, and invalidate radiance when precision changes."
+  ],
+  "inherited_nine_patch_audit": {
+    "base_patches_reverse_audit": {
+      "far-dof-sharp-guard": {
+        "return_code": 0,
+        "output": "patching file core/os/os.cpp\npatching file servers/rendering/renderer_rd/effects/bokeh_dof.cpp\npatching file servers/rendering/renderer_rd/shaders/effects/bokeh_dof.glsl\npatching file servers/rendering/renderer_rd/shaders/effects/bokeh_dof_raster.glsl\n"
+      },
+      "forward-shader-recompile-lifetime": {
+        "return_code": 0,
+        "output": "patching file servers/rendering/renderer_rd/forward_clustered/scene_shader_forward_clustered.cpp\n"
+      },
+      "mobile-shader-recompile-lock": {
+        "return_code": 0,
+        "output": "patching file servers/rendering/renderer_rd/forward_mobile/scene_shader_forward_mobile.cpp\n"
+      },
+      "cache-unobserved-track-eligibility": {
+        "return_code": 0,
+        "output": "patching file scene/animation/animation_player.cpp\npatching file scene/animation/animation_mixer.cpp\npatching file scene/animation/animation_mixer.h\n"
+      },
+      "prepare-character-track-caches": {
+        "return_code": 0,
+        "output": "patching file scene/animation/animation_player.h\npatching file scene/animation/animation_player.cpp\n"
+      },
+      "preserve-character-track-caches": {
+        "return_code": 0,
+        "output": "patching file scene/animation/animation_player.h\npatching file scene/animation/animation_player.cpp\n"
+      },
+      "unobserved-pose": {
+        "return_code": 0,
+        "output": "patching file scene/animation/animation_player.h\npatching file scene/animation/animation_player.cpp\n"
+      },
+      "queued-image-snapshot": {
+        "return_code": 0,
+        "output": "patching file servers/rendering/rendering_server_default.h\n"
+      },
+      "render-thread-shutdown": {
+        "return_code": 0,
+        "output": "patching file servers/rendering/rendering_server_default.cpp\n"
+      }
+    },
+    "source_base_commit": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+    "inherited_source_sha256": {
+      "core/os/os.cpp": "155b6876a6e247fdf6fca8aee4845c9879ea7b3b1906e87292dd2f5b4c35d1d4",
+      "scene/animation/animation_mixer.cpp": "bd3555527ebf7384c149797fdabf32d8a48659d8f6a6815a663084fb3bfe0536",
+      "scene/animation/animation_mixer.h": "ffdcb29f9a10f43d86dd3c630605a15318e22d51b33d2d9ef5abd6a07cbee66b",
+      "scene/animation/animation_player.cpp": "7fd1fe3155041e8a9d8bc26d78c602ab7490a317b1f1650c7c6b3d86643e9993",
+      "scene/animation/animation_player.h": "885cefb1a2f46d52ee76b3adf04fa8108bca7b622fe992c70e4775222da76147",
+      "servers/rendering/renderer_rd/effects/bokeh_dof.cpp": "5c87417ca784c6f95cf88515718f3578f7c8e1ed43e7e3a0dbb66e94c882d328",
+      "servers/rendering/renderer_rd/forward_clustered/scene_shader_forward_clustered.cpp": "f4024ff284a33774563d45d2f38441a92fe9352262620832bcf65e1876c6ba9b",
+      "servers/rendering/renderer_rd/forward_mobile/scene_shader_forward_mobile.cpp": "5794a2ce0877fc519b757fd65dda4d2781c89cb62faa21f5170f5304e31a00fe",
+      "servers/rendering/renderer_rd/shaders/effects/bokeh_dof.glsl": "45a897218b3e9e7addc393511762be96af236ad693d58b4d9cb782485daee644",
+      "servers/rendering/renderer_rd/shaders/effects/bokeh_dof_raster.glsl": "878bede308e088c0270544c02c9e2563cb917304e372d33a9cee5088cb4a2536",
+      "servers/rendering/rendering_server_default.cpp": "6464c44575a0c0d3a51b1e76c895b93bfe89181ebe0bf29d36122832ded35dd8",
+      "servers/rendering/rendering_server_default.h": "d6b8278026fbaf10e64fcec3a6b10b5c84730c7dac931d60d7c00b9a47933de5"
+    },
+    "source": {
+      "core/os/os.cpp": {
+        "before": "155b6876a6e247fdf6fca8aee4845c9879ea7b3b1906e87292dd2f5b4c35d1d4",
+        "after": "6b0702eab6eaa737ea48c5ea6ad948c0190d58084b9358dcd9e6cdefe39b2b85"
+      },
+      "servers/rendering/renderer_rd/environment/sky.cpp": {
+        "before": "a635ee3ee80193b3586d7204c6cfea4a6fc4dd577bb8beb8be77d5ba8e72037f",
+        "after": "cabc000c0869650c050afc7b7e2c6f74f2a3c7f0f0f9b80969c6044fc7887890"
+      },
+      "servers/rendering/renderer_rd/environment/sky.h": {
+        "before": "579baf4a99c301b6865d4da3e83a6164696cb9aa12d365785b869943605bc438",
+        "after": "97279c5608d282cc14e79af7a2ebd7dfd173f024d27a4f6cf865f8bc8c6832e4"
+      },
+      "servers/rendering/renderer_rd/shaders/environment/sky.glsl": {
+        "before": "52ff4135d48e12d67027e67ba31fca13397db07e5118473eaea080a0c66c07d9",
+        "after": "01903e5f1aebcf2610e602368b4ff78522ed0a9f49ba0331504b39805054e9a8"
+      }
+    },
+    "patch_sha256": "a2ba63fac3d1ec8804f96bf3cdeb45b7f2c1597e1ac410f1739df812d82f3a67"
+  },
+  "patch_application": {
+    "return_code": 0,
+    "output": "patching file core/os/os.cpp\npatching file servers/rendering/renderer_rd/environment/sky.cpp\npatching file servers/rendering/renderer_rd/environment/sky.h\npatching file servers/rendering/renderer_rd/shaders/environment/sky.glsl\n",
+    "rows": [
+      {
+        "file": "core/os/os.cpp",
+        "matches_built_source": true,
+        "sha256": "6b0702eab6eaa737ea48c5ea6ad948c0190d58084b9358dcd9e6cdefe39b2b85"
+      },
+      {
+        "file": "servers/rendering/renderer_rd/environment/sky.h",
+        "matches_built_source": true,
+        "sha256": "97279c5608d282cc14e79af7a2ebd7dfd173f024d27a4f6cf865f8bc8c6832e4"
+      },
+      {
+        "file": "servers/rendering/renderer_rd/environment/sky.cpp",
+        "matches_built_source": true,
+        "sha256": "cabc000c0869650c050afc7b7e2c6f74f2a3c7f0f0f9b80969c6044fc7887890"
+      },
+      {
+        "file": "servers/rendering/renderer_rd/shaders/environment/sky.glsl",
+        "matches_built_source": true,
+        "sha256": "01903e5f1aebcf2610e602368b4ff78522ed0a9f49ba0331504b39805054e9a8"
+      }
+    ]
+  },
+  "build": {
+    "command": [
+      "nice",
+      "-n",
+      "10",
+      "python3",
+      "-m",
+      "SCons",
+      "-j2",
+      "platform=linuxbsd",
+      "target=template_release",
+      "debug_symbols=yes",
+      "lto=none",
+      "production=yes",
+      "optimize=speed",
+      "wayland=no",
+      "module_mono_enabled=no",
+      "module_openxr_enabled=no",
+      "module_jolt_physics_enabled=no",
+      "module_fbx_enabled=no",
+      "module_gltf_enabled=no",
+      "module_lightmapper_rd_enabled=no",
+      "module_csg_enabled=no",
+      "module_theora_enabled=no",
+      "module_webrtc_enabled=no",
+      "module_webxr_enabled=no",
+      "accesskit=no"
+    ],
+    "environment": {
+      "PYTHONPATH": "/home/llm2x/Documents/EI/local/scratchpad/coop-performance-20261005/engine-profile/scons"
+    },
+    "cwd": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/engine-sky-alpha",
+    "return_code": 0,
+    "seconds": 87.12041081499774,
+    "log_sha256": "1bf318c417ed33e1d9efc69426d8eefb11e2b433ac34b56067afa8553fc121e0"
+  },
+  "fixture_sha256": "d98cb84a93111242b8802ed9f048782365021baa4c81e0ed9fc9cda0e9653df4",
+  "runs": {
+    "native-before-mobile-final2": {
+      "run": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/volume06/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "mobile",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-before-mobile-final2/sky_subpass_alpha.gd"
+        ],
+        "return_code": 1,
+        "termination": null,
+        "seconds": 9.025170314009301,
+        "errors": [
+          "FAIL screen half alpha remains linear: 0.25",
+          "FAIL radiance half alpha remains linear: 0.25",
+          "FAIL screen quarter alpha remains linear: 0.25",
+          "FAIL radiance quarter alpha remains linear: 0.25",
+          "FAIL screen half alpha remains linear: 0.625",
+          "FAIL radiance half alpha remains linear: 0.625",
+          "FAIL screen quarter alpha remains linear: 0.625",
+          "FAIL radiance quarter alpha remains linear: 0.625",
+          "FAIL screen half alpha remains linear: 1.0",
+          "FAIL screen quarter alpha remains linear: 1.0"
+        ],
+        "xdg": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-before-mobile-final2/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-before-mobile-final2/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-before-mobile-final2/cache"
+        },
+        "test_sha256": {
+          "cloud_volume.gd": "f4edac3c10232e1665c83fac4fbd49843598ea86aef143b869988b3531eeb4b9",
+          "clouds.gd": "39124f216492c59d0d8245a370ec98e96070dd9dc21f1156d5765f2639a105da",
+          "water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72",
+          "sky_subpass_alpha.gd": "d98cb84a93111242b8802ed9f048782365021baa4c81e0ed9fc9cda0e9653df4"
+        },
+        "capture_sha256": {
+          "sky-alpha-half-1.0.png": "e4d4b0f17c680eb37e5d5af1508dc6138d0ad447e09c4643f5db0c94597b2303",
+          "sky-alpha-quarter-0.625.png": "e4d4b0f17c680eb37e5d5af1508dc6138d0ad447e09c4643f5db0c94597b2303",
+          "sky-alpha-radiance-half-0.625.png": "a0aa78279efe88071885dfc6770b6cf5a050ec41c3c462f061ed3c30b4cb4a5a",
+          "sky-alpha-quarter-0.25.png": "2a5322b05dd7c266869ddff2164d1675fe98e54806c5d8f104871599097dcd6c",
+          "sky-alpha-radiance-rgb-half.png": "22c0ef3d7efd1a1c436af02cf1c2f6cd7163e79c2fbce9a25e4fe7e2506b51c3",
+          "sky-alpha-half-0.625.png": "e4d4b0f17c680eb37e5d5af1508dc6138d0ad447e09c4643f5db0c94597b2303",
+          "sky-alpha-reference-0.625.png": "b38d5a7fc33bf443a2457db616eba62c01692e0f5a56093b5f7b500f901f3f57",
+          "sky-alpha-radiance-reference-0.0.png": "2afb5240e6243db5de493e466fb05c408a2fa47e649431265e698cc19b8d3948",
+          "sky-alpha-radiance-rgb-quarter.png": "22c0ef3d7efd1a1c436af02cf1c2f6cd7163e79c2fbce9a25e4fe7e2506b51c3",
+          "sky-alpha-rgb-reference.png": "fe115c4ba603a3481e4676d86522d2dfd31ce3faa477fbd3fca4526f72a6fcc4",
+          "sky-alpha-radiance-half-0.0.png": "2afb5240e6243db5de493e466fb05c408a2fa47e649431265e698cc19b8d3948",
+          "sky-alpha-radiance-quarter-0.625.png": "a0aa78279efe88071885dfc6770b6cf5a050ec41c3c462f061ed3c30b4cb4a5a",
+          "sky-alpha-radiance-reference-1.0.png": "27850a9f144ba944cfe7ab526ef649109cbcefdec341c6a2695ba0e549ee46d4",
+          "sky-alpha-rgb-quarter.png": "fe115c4ba603a3481e4676d86522d2dfd31ce3faa477fbd3fca4526f72a6fcc4",
+          "sky-alpha-rgb-half.png": "fe115c4ba603a3481e4676d86522d2dfd31ce3faa477fbd3fca4526f72a6fcc4",
+          "sky-alpha-reference-0.0.png": "95b42b941a7b3496e6113172eded4d5c1fd3b70f406f6e7089c76e183e0e1f33",
+          "sky-alpha-quarter-1.0.png": "e4d4b0f17c680eb37e5d5af1508dc6138d0ad447e09c4643f5db0c94597b2303",
+          "sky-alpha-radiance-rgb-reference.png": "22c0ef3d7efd1a1c436af02cf1c2f6cd7163e79c2fbce9a25e4fe7e2506b51c3",
+          "sky-alpha-radiance-reference-0.25.png": "22c0ef3d7efd1a1c436af02cf1c2f6cd7163e79c2fbce9a25e4fe7e2506b51c3",
+          "sky-alpha-reference-1.0.png": "1637f29cbbc363729b4d5e348ec798ccccb35ef20da6438acb181c5a92db74aa",
+          "sky-alpha-half-0.0.png": "95b42b941a7b3496e6113172eded4d5c1fd3b70f406f6e7089c76e183e0e1f33",
+          "sky-alpha-radiance-reference-0.625.png": "d67e1590d2c82dce4fb204f2efd8f0ea5f38aaa6ff3a327beb2e4f1200a7b4c7",
+          "sky-alpha-radiance-quarter-0.25.png": "c90277c8cb7c62c173ff28dc46d371e90ac23def3e5010d7e1482111ec749f73",
+          "sky-alpha-radiance-quarter-0.0.png": "2afb5240e6243db5de493e466fb05c408a2fa47e649431265e698cc19b8d3948",
+          "sky-alpha-radiance-half-1.0.png": "a0aa78279efe88071885dfc6770b6cf5a050ec41c3c462f061ed3c30b4cb4a5a",
+          "sky-alpha-radiance-half-0.25.png": "c90277c8cb7c62c173ff28dc46d371e90ac23def3e5010d7e1482111ec749f73",
+          "sky-alpha-half-0.25.png": "2a5322b05dd7c266869ddff2164d1675fe98e54806c5d8f104871599097dcd6c",
+          "sky-alpha-quarter-0.0.png": "95b42b941a7b3496e6113172eded4d5c1fd3b70f406f6e7089c76e183e0e1f33",
+          "sky-alpha-radiance-quarter-1.0.png": "a0aa78279efe88071885dfc6770b6cf5a050ec41c3c462f061ed3c30b4cb4a5a",
+          "sky-alpha-reference-0.25.png": "fe115c4ba603a3481e4676d86522d2dfd31ce3faa477fbd3fca4526f72a6fcc4"
+        }
+      },
+      "result": {
+        "checks": 52,
+        "failures": 10,
+        "native_capability": false,
+        "rows": [
+          {
+            "alpha": 0.0,
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "quality": "half",
+            "radiance_delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "alpha": 0.0,
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "quality": "quarter",
+            "radiance_delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "alpha": 0.25,
+            "delta": {
+              "changed_pixels": 16384,
+              "peak_delta": 76,
+              "pixels_over_2": 16384
+            },
+            "quality": "half",
+            "radiance_delta": {
+              "changed_pixels": 2048,
+              "peak_delta": 107,
+              "pixels_over_2": 2048
+            }
+          },
+          {
+            "alpha": 0.25,
+            "delta": {
+              "changed_pixels": 16384,
+              "peak_delta": 76,
+              "pixels_over_2": 16384
+            },
+            "quality": "quarter",
+            "radiance_delta": {
+              "changed_pixels": 2048,
+              "peak_delta": 107,
+              "pixels_over_2": 2048
+            }
+          },
+          {
+            "alpha": 0.625,
+            "delta": {
+              "changed_pixels": 16384,
+              "peak_delta": 62,
+              "pixels_over_2": 16384
+            },
+            "quality": "half",
+            "radiance_delta": {
+              "changed_pixels": 2048,
+              "peak_delta": 96,
+              "pixels_over_2": 2048
+            }
+          },
+          {
+            "alpha": 0.625,
+            "delta": {
+              "changed_pixels": 16384,
+              "peak_delta": 62,
+              "pixels_over_2": 16384
+            },
+            "quality": "quarter",
+            "radiance_delta": {
+              "changed_pixels": 2048,
+              "peak_delta": 96,
+              "pixels_over_2": 2048
+            }
+          },
+          {
+            "alpha": 1.0,
+            "delta": {
+              "changed_pixels": 616,
+              "peak_delta": 18,
+              "pixels_over_2": 616
+            },
+            "quality": "half",
+            "radiance_delta": {
+              "changed_pixels": 2048,
+              "peak_delta": 1,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "alpha": 1.0,
+            "delta": {
+              "changed_pixels": 616,
+              "peak_delta": 18,
+              "pixels_over_2": 616
+            },
+            "quality": "quarter",
+            "radiance_delta": {
+              "changed_pixels": 2048,
+              "peak_delta": 1,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "buffers": {
+              "half_texture": {
+                "format": 63,
+                "height": 64,
+                "rid": "RID(3917010174067)",
+                "width": 64
+              },
+              "quarter_texture": {
+                "format": 63,
+                "height": 32,
+                "rid": "RID(4002909519988)",
+                "width": 32
+              }
+            },
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "radiance_delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "rgb_quality": "half"
+          },
+          {
+            "buffers": {
+              "half_texture": {
+                "format": 63,
+                "height": 64,
+                "rid": "RID(3917010174067)",
+                "width": 64
+              },
+              "quarter_texture": {
+                "format": 63,
+                "height": 32,
+                "rid": "RID(4002909519988)",
+                "width": 32
+              }
+            },
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "radiance_delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "rgb_quality": "quarter"
+          }
+        ]
+      }
+    },
+    "native-precision-mobile-03": {
+      "run": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "mobile",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/sky_subpass_alpha.gd"
+        ],
+        "return_code": 0,
+        "termination": null,
+        "seconds": 8.767206380987773,
+        "errors": [],
+        "xdg": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/cache"
+        },
+        "test_sha256": {
+          "cloud_volume.gd": "6199a4c8aabbaae215c366e46181027380d0aac7035876287c8914c57e0c3243",
+          "clouds.gd": "39124f216492c59d0d8245a370ec98e96070dd9dc21f1156d5765f2639a105da",
+          "water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72",
+          "sky_subpass_alpha.gd": "d98cb84a93111242b8802ed9f048782365021baa4c81e0ed9fc9cda0e9653df4"
+        },
+        "capture_sha256": {
+          "sky-alpha-half-1.0.png": "1d0c6acf6b2b18388bea26dc82a9168aeb2ea8929d510e2dc2001a70d3f40176",
+          "sky-alpha-quarter-0.625.png": "7f1d5292c4d56c9fdf8d4c59ec1188305c3c657511f8cca0bf20a22436a64450",
+          "sky-alpha-radiance-half-0.625.png": "d67e1590d2c82dce4fb204f2efd8f0ea5f38aaa6ff3a327beb2e4f1200a7b4c7",
+          "sky-alpha-quarter-0.25.png": "162d1bb24809bbaa35b75246e4ed34f428ff5403e9682187b0556105b26fae4b",
+          "sky-alpha-radiance-rgb-half.png": "22c0ef3d7efd1a1c436af02cf1c2f6cd7163e79c2fbce9a25e4fe7e2506b51c3",
+          "sky-alpha-half-0.625.png": "7f1d5292c4d56c9fdf8d4c59ec1188305c3c657511f8cca0bf20a22436a64450",
+          "sky-alpha-reference-0.625.png": "b38d5a7fc33bf443a2457db616eba62c01692e0f5a56093b5f7b500f901f3f57",
+          "sky-alpha-radiance-reference-0.0.png": "2afb5240e6243db5de493e466fb05c408a2fa47e649431265e698cc19b8d3948",
+          "sky-alpha-radiance-rgb-quarter.png": "22c0ef3d7efd1a1c436af02cf1c2f6cd7163e79c2fbce9a25e4fe7e2506b51c3",
+          "sky-alpha-rgb-reference.png": "fe115c4ba603a3481e4676d86522d2dfd31ce3faa477fbd3fca4526f72a6fcc4",
+          "sky-alpha-radiance-half-0.0.png": "2afb5240e6243db5de493e466fb05c408a2fa47e649431265e698cc19b8d3948",
+          "sky-alpha-radiance-quarter-0.625.png": "d67e1590d2c82dce4fb204f2efd8f0ea5f38aaa6ff3a327beb2e4f1200a7b4c7",
+          "sky-alpha-radiance-reference-1.0.png": "27850a9f144ba944cfe7ab526ef649109cbcefdec341c6a2695ba0e549ee46d4",
+          "sky-alpha-rgb-quarter.png": "fe115c4ba603a3481e4676d86522d2dfd31ce3faa477fbd3fca4526f72a6fcc4",
+          "sky-alpha-rgb-half.png": "fe115c4ba603a3481e4676d86522d2dfd31ce3faa477fbd3fca4526f72a6fcc4",
+          "sky-alpha-reference-0.0.png": "95b42b941a7b3496e6113172eded4d5c1fd3b70f406f6e7089c76e183e0e1f33",
+          "sky-alpha-quarter-1.0.png": "1d0c6acf6b2b18388bea26dc82a9168aeb2ea8929d510e2dc2001a70d3f40176",
+          "sky-alpha-radiance-rgb-reference.png": "22c0ef3d7efd1a1c436af02cf1c2f6cd7163e79c2fbce9a25e4fe7e2506b51c3",
+          "sky-alpha-radiance-reference-0.25.png": "22c0ef3d7efd1a1c436af02cf1c2f6cd7163e79c2fbce9a25e4fe7e2506b51c3",
+          "sky-alpha-reference-1.0.png": "1637f29cbbc363729b4d5e348ec798ccccb35ef20da6438acb181c5a92db74aa",
+          "sky-alpha-half-0.0.png": "95b42b941a7b3496e6113172eded4d5c1fd3b70f406f6e7089c76e183e0e1f33",
+          "sky-alpha-radiance-reference-0.625.png": "d67e1590d2c82dce4fb204f2efd8f0ea5f38aaa6ff3a327beb2e4f1200a7b4c7",
+          "sky-alpha-radiance-quarter-0.25.png": "22c0ef3d7efd1a1c436af02cf1c2f6cd7163e79c2fbce9a25e4fe7e2506b51c3",
+          "sky-alpha-radiance-quarter-0.0.png": "2afb5240e6243db5de493e466fb05c408a2fa47e649431265e698cc19b8d3948",
+          "sky-alpha-radiance-half-1.0.png": "a0aa78279efe88071885dfc6770b6cf5a050ec41c3c462f061ed3c30b4cb4a5a",
+          "sky-alpha-radiance-half-0.25.png": "22c0ef3d7efd1a1c436af02cf1c2f6cd7163e79c2fbce9a25e4fe7e2506b51c3",
+          "sky-alpha-half-0.25.png": "162d1bb24809bbaa35b75246e4ed34f428ff5403e9682187b0556105b26fae4b",
+          "sky-alpha-quarter-0.0.png": "95b42b941a7b3496e6113172eded4d5c1fd3b70f406f6e7089c76e183e0e1f33",
+          "sky-alpha-radiance-quarter-1.0.png": "a0aa78279efe88071885dfc6770b6cf5a050ec41c3c462f061ed3c30b4cb4a5a",
+          "sky-alpha-reference-0.25.png": "fe115c4ba603a3481e4676d86522d2dfd31ce3faa477fbd3fca4526f72a6fcc4"
+        }
+      },
+      "result": {
+        "checks": 84,
+        "failures": 0,
+        "native_capability": true,
+        "rows": [
+          {
+            "alpha": 0.0,
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "quality": "half",
+            "radiance_delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "alpha": 0.0,
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "quality": "quarter",
+            "radiance_delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "alpha": 0.25,
+            "delta": {
+              "changed_pixels": 211,
+              "peak_delta": 1,
+              "pixels_over_2": 0
+            },
+            "quality": "half",
+            "radiance_delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "alpha": 0.25,
+            "delta": {
+              "changed_pixels": 211,
+              "peak_delta": 1,
+              "pixels_over_2": 0
+            },
+            "quality": "quarter",
+            "radiance_delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "alpha": 0.625,
+            "delta": {
+              "changed_pixels": 235,
+              "peak_delta": 1,
+              "pixels_over_2": 0
+            },
+            "quality": "half",
+            "radiance_delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "alpha": 0.625,
+            "delta": {
+              "changed_pixels": 235,
+              "peak_delta": 1,
+              "pixels_over_2": 0
+            },
+            "quality": "quarter",
+            "radiance_delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "alpha": 1.0,
+            "delta": {
+              "changed_pixels": 14,
+              "peak_delta": 1,
+              "pixels_over_2": 0
+            },
+            "quality": "half",
+            "radiance_delta": {
+              "changed_pixels": 2048,
+              "peak_delta": 1,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "alpha": 1.0,
+            "delta": {
+              "changed_pixels": 14,
+              "peak_delta": 1,
+              "pixels_over_2": 0
+            },
+            "quality": "quarter",
+            "radiance_delta": {
+              "changed_pixels": 2048,
+              "peak_delta": 1,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "buffers": {
+              "half_texture": {
+                "format": 63,
+                "height": 64,
+                "rid": "RID(11888469475402)",
+                "width": 64
+              }
+            },
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "radiance_delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "rgb_quality": "half"
+          },
+          {
+            "buffers": {
+              "quarter_texture": {
+                "format": 63,
+                "height": 32,
+                "rid": "RID(11974368821322)",
+                "width": 32
+              }
+            },
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "radiance_delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "rgb_quality": "quarter"
+          }
+        ]
+      }
+    },
+    "native-precision-forward-final": {
+      "run": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "forward_plus",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-forward-final/sky_subpass_alpha.gd"
+        ],
+        "return_code": 0,
+        "termination": null,
+        "seconds": 9.761688183993101,
+        "errors": [],
+        "xdg": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-forward-final/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-forward-final/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-forward-final/cache"
+        },
+        "test_sha256": {
+          "cloud_volume.gd": "b167a6a1c724ea882e7d9383804592d2c92b3dc84e0e7d7718e3841107c935ca",
+          "clouds.gd": "39124f216492c59d0d8245a370ec98e96070dd9dc21f1156d5765f2639a105da",
+          "water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72",
+          "sky_subpass_alpha.gd": "d98cb84a93111242b8802ed9f048782365021baa4c81e0ed9fc9cda0e9653df4"
+        },
+        "capture_sha256": {
+          "sky-alpha-half-1.0.png": "e4d4b0f17c680eb37e5d5af1508dc6138d0ad447e09c4643f5db0c94597b2303",
+          "sky-alpha-quarter-0.625.png": "60648fad2d2b777e516387acc3a009f877a5da4a49c7bfa8ab77e30946b7c147",
+          "sky-alpha-radiance-half-0.625.png": "d67e1590d2c82dce4fb204f2efd8f0ea5f38aaa6ff3a327beb2e4f1200a7b4c7",
+          "sky-alpha-quarter-0.25.png": "e3f23026f2fbc6881a2995a0be478ca4d692fb67fcad1db78c7625cf8a1415c6",
+          "sky-alpha-radiance-rgb-half.png": "22c0ef3d7efd1a1c436af02cf1c2f6cd7163e79c2fbce9a25e4fe7e2506b51c3",
+          "sky-alpha-half-0.625.png": "60648fad2d2b777e516387acc3a009f877a5da4a49c7bfa8ab77e30946b7c147",
+          "sky-alpha-reference-0.625.png": "60648fad2d2b777e516387acc3a009f877a5da4a49c7bfa8ab77e30946b7c147",
+          "sky-alpha-radiance-reference-0.0.png": "2afb5240e6243db5de493e466fb05c408a2fa47e649431265e698cc19b8d3948",
+          "sky-alpha-radiance-rgb-quarter.png": "22c0ef3d7efd1a1c436af02cf1c2f6cd7163e79c2fbce9a25e4fe7e2506b51c3",
+          "sky-alpha-rgb-reference.png": "e3f23026f2fbc6881a2995a0be478ca4d692fb67fcad1db78c7625cf8a1415c6",
+          "sky-alpha-radiance-half-0.0.png": "2afb5240e6243db5de493e466fb05c408a2fa47e649431265e698cc19b8d3948",
+          "sky-alpha-radiance-quarter-0.625.png": "d67e1590d2c82dce4fb204f2efd8f0ea5f38aaa6ff3a327beb2e4f1200a7b4c7",
+          "sky-alpha-radiance-reference-1.0.png": "a0aa78279efe88071885dfc6770b6cf5a050ec41c3c462f061ed3c30b4cb4a5a",
+          "sky-alpha-rgb-quarter.png": "e3f23026f2fbc6881a2995a0be478ca4d692fb67fcad1db78c7625cf8a1415c6",
+          "sky-alpha-rgb-half.png": "e3f23026f2fbc6881a2995a0be478ca4d692fb67fcad1db78c7625cf8a1415c6",
+          "sky-alpha-reference-0.0.png": "95b42b941a7b3496e6113172eded4d5c1fd3b70f406f6e7089c76e183e0e1f33",
+          "sky-alpha-quarter-1.0.png": "e4d4b0f17c680eb37e5d5af1508dc6138d0ad447e09c4643f5db0c94597b2303",
+          "sky-alpha-radiance-rgb-reference.png": "22c0ef3d7efd1a1c436af02cf1c2f6cd7163e79c2fbce9a25e4fe7e2506b51c3",
+          "sky-alpha-radiance-reference-0.25.png": "22c0ef3d7efd1a1c436af02cf1c2f6cd7163e79c2fbce9a25e4fe7e2506b51c3",
+          "sky-alpha-reference-1.0.png": "e4d4b0f17c680eb37e5d5af1508dc6138d0ad447e09c4643f5db0c94597b2303",
+          "sky-alpha-half-0.0.png": "95b42b941a7b3496e6113172eded4d5c1fd3b70f406f6e7089c76e183e0e1f33",
+          "sky-alpha-radiance-reference-0.625.png": "d67e1590d2c82dce4fb204f2efd8f0ea5f38aaa6ff3a327beb2e4f1200a7b4c7",
+          "sky-alpha-radiance-quarter-0.25.png": "22c0ef3d7efd1a1c436af02cf1c2f6cd7163e79c2fbce9a25e4fe7e2506b51c3",
+          "sky-alpha-radiance-quarter-0.0.png": "2afb5240e6243db5de493e466fb05c408a2fa47e649431265e698cc19b8d3948",
+          "sky-alpha-radiance-half-1.0.png": "a0aa78279efe88071885dfc6770b6cf5a050ec41c3c462f061ed3c30b4cb4a5a",
+          "sky-alpha-radiance-half-0.25.png": "22c0ef3d7efd1a1c436af02cf1c2f6cd7163e79c2fbce9a25e4fe7e2506b51c3",
+          "sky-alpha-half-0.25.png": "e3f23026f2fbc6881a2995a0be478ca4d692fb67fcad1db78c7625cf8a1415c6",
+          "sky-alpha-quarter-0.0.png": "95b42b941a7b3496e6113172eded4d5c1fd3b70f406f6e7089c76e183e0e1f33",
+          "sky-alpha-radiance-quarter-1.0.png": "a0aa78279efe88071885dfc6770b6cf5a050ec41c3c462f061ed3c30b4cb4a5a",
+          "sky-alpha-reference-0.25.png": "e3f23026f2fbc6881a2995a0be478ca4d692fb67fcad1db78c7625cf8a1415c6"
+        }
+      },
+      "result": {
+        "checks": 84,
+        "failures": 0,
+        "native_capability": true,
+        "rows": [
+          {
+            "alpha": 0.0,
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "quality": "half",
+            "radiance_delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "alpha": 0.0,
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "quality": "quarter",
+            "radiance_delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "alpha": 0.25,
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "quality": "half",
+            "radiance_delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "alpha": 0.25,
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "quality": "quarter",
+            "radiance_delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "alpha": 0.625,
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "quality": "half",
+            "radiance_delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "alpha": 0.625,
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "quality": "quarter",
+            "radiance_delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "alpha": 1.0,
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "quality": "half",
+            "radiance_delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "alpha": 1.0,
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "quality": "quarter",
+            "radiance_delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "buffers": {
+              "half_texture": {
+                "format": 96,
+                "height": 64,
+                "rid": "RID(13640816132172)",
+                "width": 64
+              }
+            },
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "radiance_delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "rgb_quality": "half"
+          },
+          {
+            "buffers": {
+              "quarter_texture": {
+                "format": 96,
+                "height": 32,
+                "rid": "RID(13726715478092)",
+                "width": 32
+              }
+            },
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "radiance_delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "rgb_quality": "quarter"
+          }
+        ]
+      }
+    }
+  },
+  "independent_full_rgb": {
+    "checks": 59,
+    "failures": 0,
+    "rows": [
+      {
+        "case": "native-precision-mobile-03: half alpha 0.0",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/sky-alpha-reference-0.0.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/sky-alpha-half-0.0.png",
+        "sha256": [
+          "95b42b941a7b3496e6113172eded4d5c1fd3b70f406f6e7089c76e183e0e1f33",
+          "95b42b941a7b3496e6113172eded4d5c1fd3b70f406f6e7089c76e183e0e1f33"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "native-precision-mobile-03: radiance-half alpha 0.0",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/sky-alpha-radiance-reference-0.0.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/sky-alpha-radiance-half-0.0.png",
+        "sha256": [
+          "2afb5240e6243db5de493e466fb05c408a2fa47e649431265e698cc19b8d3948",
+          "2afb5240e6243db5de493e466fb05c408a2fa47e649431265e698cc19b8d3948"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "native-precision-mobile-03: quarter alpha 0.0",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/sky-alpha-reference-0.0.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/sky-alpha-quarter-0.0.png",
+        "sha256": [
+          "95b42b941a7b3496e6113172eded4d5c1fd3b70f406f6e7089c76e183e0e1f33",
+          "95b42b941a7b3496e6113172eded4d5c1fd3b70f406f6e7089c76e183e0e1f33"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "native-precision-mobile-03: radiance-quarter alpha 0.0",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/sky-alpha-radiance-reference-0.0.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/sky-alpha-radiance-quarter-0.0.png",
+        "sha256": [
+          "2afb5240e6243db5de493e466fb05c408a2fa47e649431265e698cc19b8d3948",
+          "2afb5240e6243db5de493e466fb05c408a2fa47e649431265e698cc19b8d3948"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "native-precision-mobile-03: half alpha 0.25",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/sky-alpha-reference-0.25.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/sky-alpha-half-0.25.png",
+        "sha256": [
+          "fe115c4ba603a3481e4676d86522d2dfd31ce3faa477fbd3fca4526f72a6fcc4",
+          "162d1bb24809bbaa35b75246e4ed34f428ff5403e9682187b0556105b26fae4b"
+        ],
+        "changed_pixels": 211,
+        "pixels_over_2": 0,
+        "peak_delta": 1,
+        "passed": true
+      },
+      {
+        "case": "native-precision-mobile-03: radiance-half alpha 0.25",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/sky-alpha-radiance-reference-0.25.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/sky-alpha-radiance-half-0.25.png",
+        "sha256": [
+          "22c0ef3d7efd1a1c436af02cf1c2f6cd7163e79c2fbce9a25e4fe7e2506b51c3",
+          "22c0ef3d7efd1a1c436af02cf1c2f6cd7163e79c2fbce9a25e4fe7e2506b51c3"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "native-precision-mobile-03: quarter alpha 0.25",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/sky-alpha-reference-0.25.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/sky-alpha-quarter-0.25.png",
+        "sha256": [
+          "fe115c4ba603a3481e4676d86522d2dfd31ce3faa477fbd3fca4526f72a6fcc4",
+          "162d1bb24809bbaa35b75246e4ed34f428ff5403e9682187b0556105b26fae4b"
+        ],
+        "changed_pixels": 211,
+        "pixels_over_2": 0,
+        "peak_delta": 1,
+        "passed": true
+      },
+      {
+        "case": "native-precision-mobile-03: radiance-quarter alpha 0.25",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/sky-alpha-radiance-reference-0.25.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/sky-alpha-radiance-quarter-0.25.png",
+        "sha256": [
+          "22c0ef3d7efd1a1c436af02cf1c2f6cd7163e79c2fbce9a25e4fe7e2506b51c3",
+          "22c0ef3d7efd1a1c436af02cf1c2f6cd7163e79c2fbce9a25e4fe7e2506b51c3"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "native-precision-mobile-03: half alpha 0.625",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/sky-alpha-reference-0.625.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/sky-alpha-half-0.625.png",
+        "sha256": [
+          "b38d5a7fc33bf443a2457db616eba62c01692e0f5a56093b5f7b500f901f3f57",
+          "7f1d5292c4d56c9fdf8d4c59ec1188305c3c657511f8cca0bf20a22436a64450"
+        ],
+        "changed_pixels": 235,
+        "pixels_over_2": 0,
+        "peak_delta": 1,
+        "passed": true
+      },
+      {
+        "case": "native-precision-mobile-03: radiance-half alpha 0.625",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/sky-alpha-radiance-reference-0.625.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/sky-alpha-radiance-half-0.625.png",
+        "sha256": [
+          "d67e1590d2c82dce4fb204f2efd8f0ea5f38aaa6ff3a327beb2e4f1200a7b4c7",
+          "d67e1590d2c82dce4fb204f2efd8f0ea5f38aaa6ff3a327beb2e4f1200a7b4c7"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "native-precision-mobile-03: quarter alpha 0.625",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/sky-alpha-reference-0.625.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/sky-alpha-quarter-0.625.png",
+        "sha256": [
+          "b38d5a7fc33bf443a2457db616eba62c01692e0f5a56093b5f7b500f901f3f57",
+          "7f1d5292c4d56c9fdf8d4c59ec1188305c3c657511f8cca0bf20a22436a64450"
+        ],
+        "changed_pixels": 235,
+        "pixels_over_2": 0,
+        "peak_delta": 1,
+        "passed": true
+      },
+      {
+        "case": "native-precision-mobile-03: radiance-quarter alpha 0.625",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/sky-alpha-radiance-reference-0.625.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/sky-alpha-radiance-quarter-0.625.png",
+        "sha256": [
+          "d67e1590d2c82dce4fb204f2efd8f0ea5f38aaa6ff3a327beb2e4f1200a7b4c7",
+          "d67e1590d2c82dce4fb204f2efd8f0ea5f38aaa6ff3a327beb2e4f1200a7b4c7"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "native-precision-mobile-03: half alpha 1.0",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/sky-alpha-reference-1.0.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/sky-alpha-half-1.0.png",
+        "sha256": [
+          "1637f29cbbc363729b4d5e348ec798ccccb35ef20da6438acb181c5a92db74aa",
+          "1d0c6acf6b2b18388bea26dc82a9168aeb2ea8929d510e2dc2001a70d3f40176"
+        ],
+        "changed_pixels": 14,
+        "pixels_over_2": 0,
+        "peak_delta": 1,
+        "passed": true
+      },
+      {
+        "case": "native-precision-mobile-03: radiance-half alpha 1.0",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/sky-alpha-radiance-reference-1.0.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/sky-alpha-radiance-half-1.0.png",
+        "sha256": [
+          "27850a9f144ba944cfe7ab526ef649109cbcefdec341c6a2695ba0e549ee46d4",
+          "a0aa78279efe88071885dfc6770b6cf5a050ec41c3c462f061ed3c30b4cb4a5a"
+        ],
+        "changed_pixels": 2048,
+        "pixels_over_2": 0,
+        "peak_delta": 1,
+        "passed": true
+      },
+      {
+        "case": "native-precision-mobile-03: quarter alpha 1.0",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/sky-alpha-reference-1.0.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/sky-alpha-quarter-1.0.png",
+        "sha256": [
+          "1637f29cbbc363729b4d5e348ec798ccccb35ef20da6438acb181c5a92db74aa",
+          "1d0c6acf6b2b18388bea26dc82a9168aeb2ea8929d510e2dc2001a70d3f40176"
+        ],
+        "changed_pixels": 14,
+        "pixels_over_2": 0,
+        "peak_delta": 1,
+        "passed": true
+      },
+      {
+        "case": "native-precision-mobile-03: radiance-quarter alpha 1.0",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/sky-alpha-radiance-reference-1.0.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/sky-alpha-radiance-quarter-1.0.png",
+        "sha256": [
+          "27850a9f144ba944cfe7ab526ef649109cbcefdec341c6a2695ba0e549ee46d4",
+          "a0aa78279efe88071885dfc6770b6cf5a050ec41c3c462f061ed3c30b4cb4a5a"
+        ],
+        "changed_pixels": 2048,
+        "pixels_over_2": 0,
+        "peak_delta": 1,
+        "passed": true
+      },
+      {
+        "case": "native-precision-mobile-03: half RGB",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/sky-alpha-rgb-reference.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/sky-alpha-rgb-half.png",
+        "sha256": [
+          "fe115c4ba603a3481e4676d86522d2dfd31ce3faa477fbd3fca4526f72a6fcc4",
+          "fe115c4ba603a3481e4676d86522d2dfd31ce3faa477fbd3fca4526f72a6fcc4"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "native-precision-mobile-03: radiance-half RGB",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/sky-alpha-radiance-rgb-reference.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/sky-alpha-radiance-rgb-half.png",
+        "sha256": [
+          "22c0ef3d7efd1a1c436af02cf1c2f6cd7163e79c2fbce9a25e4fe7e2506b51c3",
+          "22c0ef3d7efd1a1c436af02cf1c2f6cd7163e79c2fbce9a25e4fe7e2506b51c3"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "native-precision-mobile-03: quarter RGB",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/sky-alpha-rgb-reference.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/sky-alpha-rgb-quarter.png",
+        "sha256": [
+          "fe115c4ba603a3481e4676d86522d2dfd31ce3faa477fbd3fca4526f72a6fcc4",
+          "fe115c4ba603a3481e4676d86522d2dfd31ce3faa477fbd3fca4526f72a6fcc4"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "native-precision-mobile-03: radiance-quarter RGB",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/sky-alpha-radiance-rgb-reference.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/sky-alpha-radiance-rgb-quarter.png",
+        "sha256": [
+          "22c0ef3d7efd1a1c436af02cf1c2f6cd7163e79c2fbce9a25e4fe7e2506b51c3",
+          "22c0ef3d7efd1a1c436af02cf1c2f6cd7163e79c2fbce9a25e4fe7e2506b51c3"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "native-precision-forward-final: half alpha 0.0",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-forward-final/sky-alpha-reference-0.0.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-forward-final/sky-alpha-half-0.0.png",
+        "sha256": [
+          "95b42b941a7b3496e6113172eded4d5c1fd3b70f406f6e7089c76e183e0e1f33",
+          "95b42b941a7b3496e6113172eded4d5c1fd3b70f406f6e7089c76e183e0e1f33"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "native-precision-forward-final: radiance-half alpha 0.0",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-forward-final/sky-alpha-radiance-reference-0.0.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-forward-final/sky-alpha-radiance-half-0.0.png",
+        "sha256": [
+          "2afb5240e6243db5de493e466fb05c408a2fa47e649431265e698cc19b8d3948",
+          "2afb5240e6243db5de493e466fb05c408a2fa47e649431265e698cc19b8d3948"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "native-precision-forward-final: quarter alpha 0.0",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-forward-final/sky-alpha-reference-0.0.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-forward-final/sky-alpha-quarter-0.0.png",
+        "sha256": [
+          "95b42b941a7b3496e6113172eded4d5c1fd3b70f406f6e7089c76e183e0e1f33",
+          "95b42b941a7b3496e6113172eded4d5c1fd3b70f406f6e7089c76e183e0e1f33"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "native-precision-forward-final: radiance-quarter alpha 0.0",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-forward-final/sky-alpha-radiance-reference-0.0.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-forward-final/sky-alpha-radiance-quarter-0.0.png",
+        "sha256": [
+          "2afb5240e6243db5de493e466fb05c408a2fa47e649431265e698cc19b8d3948",
+          "2afb5240e6243db5de493e466fb05c408a2fa47e649431265e698cc19b8d3948"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "native-precision-forward-final: half alpha 0.25",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-forward-final/sky-alpha-reference-0.25.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-forward-final/sky-alpha-half-0.25.png",
+        "sha256": [
+          "e3f23026f2fbc6881a2995a0be478ca4d692fb67fcad1db78c7625cf8a1415c6",
+          "e3f23026f2fbc6881a2995a0be478ca4d692fb67fcad1db78c7625cf8a1415c6"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "native-precision-forward-final: radiance-half alpha 0.25",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-forward-final/sky-alpha-radiance-reference-0.25.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-forward-final/sky-alpha-radiance-half-0.25.png",
+        "sha256": [
+          "22c0ef3d7efd1a1c436af02cf1c2f6cd7163e79c2fbce9a25e4fe7e2506b51c3",
+          "22c0ef3d7efd1a1c436af02cf1c2f6cd7163e79c2fbce9a25e4fe7e2506b51c3"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "native-precision-forward-final: quarter alpha 0.25",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-forward-final/sky-alpha-reference-0.25.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-forward-final/sky-alpha-quarter-0.25.png",
+        "sha256": [
+          "e3f23026f2fbc6881a2995a0be478ca4d692fb67fcad1db78c7625cf8a1415c6",
+          "e3f23026f2fbc6881a2995a0be478ca4d692fb67fcad1db78c7625cf8a1415c6"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "native-precision-forward-final: radiance-quarter alpha 0.25",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-forward-final/sky-alpha-radiance-reference-0.25.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-forward-final/sky-alpha-radiance-quarter-0.25.png",
+        "sha256": [
+          "22c0ef3d7efd1a1c436af02cf1c2f6cd7163e79c2fbce9a25e4fe7e2506b51c3",
+          "22c0ef3d7efd1a1c436af02cf1c2f6cd7163e79c2fbce9a25e4fe7e2506b51c3"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "native-precision-forward-final: half alpha 0.625",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-forward-final/sky-alpha-reference-0.625.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-forward-final/sky-alpha-half-0.625.png",
+        "sha256": [
+          "60648fad2d2b777e516387acc3a009f877a5da4a49c7bfa8ab77e30946b7c147",
+          "60648fad2d2b777e516387acc3a009f877a5da4a49c7bfa8ab77e30946b7c147"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "native-precision-forward-final: radiance-half alpha 0.625",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-forward-final/sky-alpha-radiance-reference-0.625.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-forward-final/sky-alpha-radiance-half-0.625.png",
+        "sha256": [
+          "d67e1590d2c82dce4fb204f2efd8f0ea5f38aaa6ff3a327beb2e4f1200a7b4c7",
+          "d67e1590d2c82dce4fb204f2efd8f0ea5f38aaa6ff3a327beb2e4f1200a7b4c7"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "native-precision-forward-final: quarter alpha 0.625",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-forward-final/sky-alpha-reference-0.625.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-forward-final/sky-alpha-quarter-0.625.png",
+        "sha256": [
+          "60648fad2d2b777e516387acc3a009f877a5da4a49c7bfa8ab77e30946b7c147",
+          "60648fad2d2b777e516387acc3a009f877a5da4a49c7bfa8ab77e30946b7c147"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "native-precision-forward-final: radiance-quarter alpha 0.625",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-forward-final/sky-alpha-radiance-reference-0.625.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-forward-final/sky-alpha-radiance-quarter-0.625.png",
+        "sha256": [
+          "d67e1590d2c82dce4fb204f2efd8f0ea5f38aaa6ff3a327beb2e4f1200a7b4c7",
+          "d67e1590d2c82dce4fb204f2efd8f0ea5f38aaa6ff3a327beb2e4f1200a7b4c7"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "native-precision-forward-final: half alpha 1.0",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-forward-final/sky-alpha-reference-1.0.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-forward-final/sky-alpha-half-1.0.png",
+        "sha256": [
+          "e4d4b0f17c680eb37e5d5af1508dc6138d0ad447e09c4643f5db0c94597b2303",
+          "e4d4b0f17c680eb37e5d5af1508dc6138d0ad447e09c4643f5db0c94597b2303"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "native-precision-forward-final: radiance-half alpha 1.0",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-forward-final/sky-alpha-radiance-reference-1.0.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-forward-final/sky-alpha-radiance-half-1.0.png",
+        "sha256": [
+          "a0aa78279efe88071885dfc6770b6cf5a050ec41c3c462f061ed3c30b4cb4a5a",
+          "a0aa78279efe88071885dfc6770b6cf5a050ec41c3c462f061ed3c30b4cb4a5a"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "native-precision-forward-final: quarter alpha 1.0",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-forward-final/sky-alpha-reference-1.0.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-forward-final/sky-alpha-quarter-1.0.png",
+        "sha256": [
+          "e4d4b0f17c680eb37e5d5af1508dc6138d0ad447e09c4643f5db0c94597b2303",
+          "e4d4b0f17c680eb37e5d5af1508dc6138d0ad447e09c4643f5db0c94597b2303"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "native-precision-forward-final: radiance-quarter alpha 1.0",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-forward-final/sky-alpha-radiance-reference-1.0.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-forward-final/sky-alpha-radiance-quarter-1.0.png",
+        "sha256": [
+          "a0aa78279efe88071885dfc6770b6cf5a050ec41c3c462f061ed3c30b4cb4a5a",
+          "a0aa78279efe88071885dfc6770b6cf5a050ec41c3c462f061ed3c30b4cb4a5a"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "native-precision-forward-final: half RGB",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-forward-final/sky-alpha-rgb-reference.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-forward-final/sky-alpha-rgb-half.png",
+        "sha256": [
+          "e3f23026f2fbc6881a2995a0be478ca4d692fb67fcad1db78c7625cf8a1415c6",
+          "e3f23026f2fbc6881a2995a0be478ca4d692fb67fcad1db78c7625cf8a1415c6"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "native-precision-forward-final: radiance-half RGB",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-forward-final/sky-alpha-radiance-rgb-reference.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-forward-final/sky-alpha-radiance-rgb-half.png",
+        "sha256": [
+          "22c0ef3d7efd1a1c436af02cf1c2f6cd7163e79c2fbce9a25e4fe7e2506b51c3",
+          "22c0ef3d7efd1a1c436af02cf1c2f6cd7163e79c2fbce9a25e4fe7e2506b51c3"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "native-precision-forward-final: quarter RGB",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-forward-final/sky-alpha-rgb-reference.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-forward-final/sky-alpha-rgb-quarter.png",
+        "sha256": [
+          "e3f23026f2fbc6881a2995a0be478ca4d692fb67fcad1db78c7625cf8a1415c6",
+          "e3f23026f2fbc6881a2995a0be478ca4d692fb67fcad1db78c7625cf8a1415c6"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "native-precision-forward-final: radiance-quarter RGB",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-forward-final/sky-alpha-radiance-rgb-reference.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-forward-final/sky-alpha-radiance-rgb-quarter.png",
+        "sha256": [
+          "22c0ef3d7efd1a1c436af02cf1c2f6cd7163e79c2fbce9a25e4fe7e2506b51c3",
+          "22c0ef3d7efd1a1c436af02cf1c2f6cd7163e79c2fbce9a25e4fe7e2506b51c3"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "native-before-mobile-final2/native-precision-mobile-03: unchanged sky-alpha-radiance-rgb-half.png",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-before-mobile-final2/sky-alpha-radiance-rgb-half.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/sky-alpha-radiance-rgb-half.png",
+        "sha256": [
+          "22c0ef3d7efd1a1c436af02cf1c2f6cd7163e79c2fbce9a25e4fe7e2506b51c3",
+          "22c0ef3d7efd1a1c436af02cf1c2f6cd7163e79c2fbce9a25e4fe7e2506b51c3"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "native-before-mobile-final2/native-precision-mobile-03: unchanged sky-alpha-reference-0.625.png",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-before-mobile-final2/sky-alpha-reference-0.625.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/sky-alpha-reference-0.625.png",
+        "sha256": [
+          "b38d5a7fc33bf443a2457db616eba62c01692e0f5a56093b5f7b500f901f3f57",
+          "b38d5a7fc33bf443a2457db616eba62c01692e0f5a56093b5f7b500f901f3f57"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "native-before-mobile-final2/native-precision-mobile-03: unchanged sky-alpha-radiance-reference-0.0.png",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-before-mobile-final2/sky-alpha-radiance-reference-0.0.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/sky-alpha-radiance-reference-0.0.png",
+        "sha256": [
+          "2afb5240e6243db5de493e466fb05c408a2fa47e649431265e698cc19b8d3948",
+          "2afb5240e6243db5de493e466fb05c408a2fa47e649431265e698cc19b8d3948"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "native-before-mobile-final2/native-precision-mobile-03: unchanged sky-alpha-radiance-rgb-quarter.png",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-before-mobile-final2/sky-alpha-radiance-rgb-quarter.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/sky-alpha-radiance-rgb-quarter.png",
+        "sha256": [
+          "22c0ef3d7efd1a1c436af02cf1c2f6cd7163e79c2fbce9a25e4fe7e2506b51c3",
+          "22c0ef3d7efd1a1c436af02cf1c2f6cd7163e79c2fbce9a25e4fe7e2506b51c3"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "native-before-mobile-final2/native-precision-mobile-03: unchanged sky-alpha-rgb-reference.png",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-before-mobile-final2/sky-alpha-rgb-reference.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/sky-alpha-rgb-reference.png",
+        "sha256": [
+          "fe115c4ba603a3481e4676d86522d2dfd31ce3faa477fbd3fca4526f72a6fcc4",
+          "fe115c4ba603a3481e4676d86522d2dfd31ce3faa477fbd3fca4526f72a6fcc4"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "native-before-mobile-final2/native-precision-mobile-03: unchanged sky-alpha-radiance-reference-1.0.png",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-before-mobile-final2/sky-alpha-radiance-reference-1.0.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/sky-alpha-radiance-reference-1.0.png",
+        "sha256": [
+          "27850a9f144ba944cfe7ab526ef649109cbcefdec341c6a2695ba0e549ee46d4",
+          "27850a9f144ba944cfe7ab526ef649109cbcefdec341c6a2695ba0e549ee46d4"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "native-before-mobile-final2/native-precision-mobile-03: unchanged sky-alpha-rgb-quarter.png",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-before-mobile-final2/sky-alpha-rgb-quarter.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/sky-alpha-rgb-quarter.png",
+        "sha256": [
+          "fe115c4ba603a3481e4676d86522d2dfd31ce3faa477fbd3fca4526f72a6fcc4",
+          "fe115c4ba603a3481e4676d86522d2dfd31ce3faa477fbd3fca4526f72a6fcc4"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "native-before-mobile-final2/native-precision-mobile-03: unchanged sky-alpha-rgb-half.png",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-before-mobile-final2/sky-alpha-rgb-half.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/sky-alpha-rgb-half.png",
+        "sha256": [
+          "fe115c4ba603a3481e4676d86522d2dfd31ce3faa477fbd3fca4526f72a6fcc4",
+          "fe115c4ba603a3481e4676d86522d2dfd31ce3faa477fbd3fca4526f72a6fcc4"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "native-before-mobile-final2/native-precision-mobile-03: unchanged sky-alpha-reference-0.0.png",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-before-mobile-final2/sky-alpha-reference-0.0.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/sky-alpha-reference-0.0.png",
+        "sha256": [
+          "95b42b941a7b3496e6113172eded4d5c1fd3b70f406f6e7089c76e183e0e1f33",
+          "95b42b941a7b3496e6113172eded4d5c1fd3b70f406f6e7089c76e183e0e1f33"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "native-before-mobile-final2/native-precision-mobile-03: unchanged sky-alpha-radiance-rgb-reference.png",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-before-mobile-final2/sky-alpha-radiance-rgb-reference.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/sky-alpha-radiance-rgb-reference.png",
+        "sha256": [
+          "22c0ef3d7efd1a1c436af02cf1c2f6cd7163e79c2fbce9a25e4fe7e2506b51c3",
+          "22c0ef3d7efd1a1c436af02cf1c2f6cd7163e79c2fbce9a25e4fe7e2506b51c3"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "native-before-mobile-final2/native-precision-mobile-03: unchanged sky-alpha-radiance-reference-0.25.png",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-before-mobile-final2/sky-alpha-radiance-reference-0.25.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/sky-alpha-radiance-reference-0.25.png",
+        "sha256": [
+          "22c0ef3d7efd1a1c436af02cf1c2f6cd7163e79c2fbce9a25e4fe7e2506b51c3",
+          "22c0ef3d7efd1a1c436af02cf1c2f6cd7163e79c2fbce9a25e4fe7e2506b51c3"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "native-before-mobile-final2/native-precision-mobile-03: unchanged sky-alpha-reference-1.0.png",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-before-mobile-final2/sky-alpha-reference-1.0.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/sky-alpha-reference-1.0.png",
+        "sha256": [
+          "1637f29cbbc363729b4d5e348ec798ccccb35ef20da6438acb181c5a92db74aa",
+          "1637f29cbbc363729b4d5e348ec798ccccb35ef20da6438acb181c5a92db74aa"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "native-before-mobile-final2/native-precision-mobile-03: unchanged sky-alpha-radiance-reference-0.625.png",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-before-mobile-final2/sky-alpha-radiance-reference-0.625.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/sky-alpha-radiance-reference-0.625.png",
+        "sha256": [
+          "d67e1590d2c82dce4fb204f2efd8f0ea5f38aaa6ff3a327beb2e4f1200a7b4c7",
+          "d67e1590d2c82dce4fb204f2efd8f0ea5f38aaa6ff3a327beb2e4f1200a7b4c7"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "native-before-mobile-final2/native-precision-mobile-03: unchanged sky-alpha-reference-0.25.png",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-before-mobile-final2/sky-alpha-reference-0.25.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/native-precision-mobile-03/sky-alpha-reference-0.25.png",
+        "sha256": [
+          "fe115c4ba603a3481e4676d86522d2dfd31ce3faa477fbd3fca4526f72a6fcc4",
+          "fe115c4ba603a3481e4676d86522d2dfd31ce3faa477fbd3fca4526f72a6fcc4"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "final-old-mobile-01/final-mobile-01: unchanged volume-off.png",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-old-mobile-01/volume-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-mobile-01/volume-off.png",
+        "sha256": [
+          "21c26a4c9e7e4547671d682cf5bb0cd7a99b57f7e74e8479aebac57b4a3916d0",
+          "21c26a4c9e7e4547671d682cf5bb0cd7a99b57f7e74e8479aebac57b4a3916d0"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "final-old-mobile-01/final-mobile-01: unchanged volume-quality1.png",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-old-mobile-01/volume-quality1.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-mobile-01/volume-quality1.png",
+        "sha256": [
+          "4fb76f074c96a0741e7541687b1e02e2684a35fbfbbd571d7e741eafe468cee5",
+          "4fb76f074c96a0741e7541687b1e02e2684a35fbfbbd571d7e741eafe468cee5"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "final-old-mobile-01/final-mobile-01: unchanged volume-quality1-held.png",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-old-mobile-01/volume-quality1-held.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-mobile-01/volume-quality1-held.png",
+        "sha256": [
+          "4fb76f074c96a0741e7541687b1e02e2684a35fbfbbd571d7e741eafe468cee5",
+          "4fb76f074c96a0741e7541687b1e02e2684a35fbfbbd571d7e741eafe468cee5"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "final-old-mobile-01/final-mobile-01: unchanged volume-restored.png",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-old-mobile-01/volume-restored.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-mobile-01/volume-restored.png",
+        "sha256": [
+          "21c26a4c9e7e4547671d682cf5bb0cd7a99b57f7e74e8479aebac57b4a3916d0",
+          "21c26a4c9e7e4547671d682cf5bb0cd7a99b57f7e74e8479aebac57b4a3916d0"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "final-old-mobile-01/final-mobile-01: unchanged volume-cave-cleared.png",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-old-mobile-01/volume-cave-cleared.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-mobile-01/volume-cave-cleared.png",
+        "sha256": [
+          "21c26a4c9e7e4547671d682cf5bb0cd7a99b57f7e74e8479aebac57b4a3916d0",
+          "21c26a4c9e7e4547671d682cf5bb0cd7a99b57f7e74e8479aebac57b4a3916d0"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      }
+    ]
+  },
+  "accepted": {
+    "native_checks": 168,
+    "independent_rgb_assertions": 59,
+    "before_reproduced_failures": 10,
+    "ordinary_and_rgb_only_exact_pairs": 14,
+    "real_map_off_and_sheet_exact_pairs": 5,
+    "bounds": "Screen subpass at128x128: only active64x64 half or32x32 quarter RGBA16F target; RGB-only Mobile retains A2B10G10R10. Probe reads actual RenderSceneBuffersRD formats/RIDs on rendering thread. Switching ordinary/quality and viewport teardown invalidate prior RIDs."
+  },
+  "real_map_controls": {
+    "before": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-old-mobile-01",
+    "after": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-mobile-01",
+    "pck_sha256": "8de7632bc7ecdca2971196d92b0b633a2fc6927adfc6538c05f13b376fd512ee",
+    "empty_density": "Fair Low, fair High and storm High preserve original sky and water within2/255; zero pixels above tolerance. Existing0/1 controls are exact fullRGB."
+  },
+  "excluded_attempts": [
+    "Earlier probe iterations that assigned an untyped ShaderMaterial to Sky rendered black; positive screen and baked-radiance assertions replaced those invalid controls.",
+    "RGB-only intermediate runtime f58fd414... still quantized Mobile ALPHA to four values. It is retained as failed evidence and is not qualified.",
+    "One subsequent allocation-probe parse error was fixed before the two accepted84-check runs."
+  ],
+  "limits": [
+    "Linux Vulkan RTX3090 validated. No Windows/macOS/Android/Web or XR/multiview execution claim.",
+    "All six shader sampling paths retain RGB correction and pass raw ALPHA; multiview branches have static review only.",
+    "Installed templates and release packages are unchanged. Other inherited patches were source-audited, not broadly retested by this focused sky fixture."
+  ]
+}

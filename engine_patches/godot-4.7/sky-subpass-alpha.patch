@@ -1,0 +1,177 @@
+--- a/core/os/os.cpp
++++ b/core/os/os.cpp
+@@ -469,6 +469,11 @@
+ }
+ 
+ bool OS::has_feature(const String &p_feature) {
++	// Sky subpass alpha is independent of exposure and Mobile RGB scaling.
++	if (p_feature == "ei_sky_subpass_alpha") {
++		return true;
++	}
++
+ 	// Native capability, never supplied by an export custom feature.
+ 	if (p_feature == "ei_far_dof_guard") {
+ 		return true;
+--- a/servers/rendering/renderer_rd/environment/sky.cpp
++++ b/servers/rendering/renderer_rd/environment/sky.cpp
+@@ -72,12 +72,14 @@
+ 	uses_time = false;
+ 	uses_half_res = false;
+ 	uses_quarter_res = false;
++	uses_alpha = false;
+ 	uses_position = false;
+ 	uses_light = false;
+ 
+ 	actions.render_mode_flags["use_half_res_pass"] = &uses_half_res;
+ 	actions.render_mode_flags["use_quarter_res_pass"] = &uses_quarter_res;
+ 
++	actions.usage_flag_pointers["ALPHA"] = &uses_alpha;
+ 	actions.usage_flag_pointers["TIME"] = &uses_time;
+ 	actions.usage_flag_pointers["POSITION"] = &uses_position;
+ 	actions.usage_flag_pointers["LIGHT0_ENABLED"] = &uses_light;
+@@ -1024,6 +1026,26 @@
+ 			sky->internal_mode = sky_mode;
+ 		}
+ 
++		// Packed Mobile colour has only two alpha bits. Preserve shader data
++		// only for subpasses that actually write it; ordinary skies retain
++		// their original format. Quality/sky changes retire the old targets.
++		const bool high_precision_alpha = shader_data->uses_alpha && (shader_data->uses_half_res || shader_data->uses_quarter_res);
++		if (sky->high_precision_alpha != high_precision_alpha) {
++			sky->high_precision_alpha = high_precision_alpha;
++			if (sky->radiance.is_valid()) {
++				RD::get_singleton()->free_rid(sky->radiance);
++				sky->radiance = RID();
++			}
++			sky->reflection.clear_reflection_data();
++		}
++		const RD::DataFormat subpass_format = high_precision_alpha ? RD::DATA_FORMAT_R16G16B16A16_SFLOAT : texture_format;
++		const bool has_half = p_render_data->render_buffers->has_texture(RB_SCOPE_SKY, RB_HALF_TEXTURE);
++		const bool has_quarter = p_render_data->render_buffers->has_texture(RB_SCOPE_SKY, RB_QUARTER_TEXTURE);
++		if ((has_half && (!shader_data->uses_half_res || p_render_data->render_buffers->get_texture_format(RB_SCOPE_SKY, RB_HALF_TEXTURE).format != subpass_format)) ||
++				(has_quarter && (!shader_data->uses_quarter_res || p_render_data->render_buffers->get_texture_format(RB_SCOPE_SKY, RB_QUARTER_TEXTURE).format != subpass_format))) {
++			p_render_data->render_buffers->clear_context(RB_SCOPE_SKY);
++		}
++
+ 		// Trigger updating radiance buffers.
+ 		if (sky->radiance.is_null()) {
+ 			invalidate_sky(sky);
+@@ -1429,7 +1451,7 @@
+ 		// Grab texture and framebuffer from cache, create if needed...
+ 		uint32_t usage_bits = RD::TEXTURE_USAGE_SAMPLING_BIT | RD::TEXTURE_USAGE_COLOR_ATTACHMENT_BIT;
+ 		Size2i quarter_size = sky->screen_size / 4;
+-		RID texture = p_render_buffers->create_texture(RB_SCOPE_SKY, RB_QUARTER_TEXTURE, texture_format, usage_bits, RD::TEXTURE_SAMPLES_1, quarter_size);
++		RID texture = p_render_buffers->create_texture(RB_SCOPE_SKY, RB_QUARTER_TEXTURE, shader_data->uses_alpha ? RD::DATA_FORMAT_R16G16B16A16_SFLOAT : texture_format, usage_bits, RD::TEXTURE_SAMPLES_1, quarter_size);
+ 		RID framebuffer = FramebufferCacheRD::get_singleton()->get_cache_multiview(sky_scene_state.view_count, texture);
+ 
+ 		RID texture_uniform_set = sky->get_textures(SKY_TEXTURE_SET_QUARTER_RES, sky_shader.default_shader_rd, p_render_buffers);
+@@ -1445,7 +1467,7 @@
+ 		// Grab texture and framebuffer from cache, create if needed...
+ 		uint32_t usage_bits = RD::TEXTURE_USAGE_SAMPLING_BIT | RD::TEXTURE_USAGE_COLOR_ATTACHMENT_BIT;
+ 		Size2i half_size = sky->screen_size / 2;
+-		RID texture = p_render_buffers->create_texture(RB_SCOPE_SKY, RB_HALF_TEXTURE, texture_format, usage_bits, RD::TEXTURE_SAMPLES_1, half_size);
++		RID texture = p_render_buffers->create_texture(RB_SCOPE_SKY, RB_HALF_TEXTURE, shader_data->uses_alpha ? RD::DATA_FORMAT_R16G16B16A16_SFLOAT : texture_format, usage_bits, RD::TEXTURE_SAMPLES_1, half_size);
+ 		RID framebuffer = FramebufferCacheRD::get_singleton()->get_cache_multiview(sky_scene_state.view_count, texture);
+ 
+ 		RID texture_uniform_set = sky->get_textures(SKY_TEXTURE_SET_HALF_RES, sky_shader.default_shader_rd, p_render_buffers);
+@@ -1559,7 +1581,7 @@
+ 				// Array (higher quality, more memory).
+ 				RD::TextureFormat tf;
+ 				tf.array_layers = layers;
+-				tf.format = texture_format;
++				tf.format = sky->high_precision_alpha ? RD::DATA_FORMAT_R16G16B16A16_SFLOAT : texture_format;
+ 				tf.texture_type = RD::TEXTURE_TYPE_2D_ARRAY;
+ 				tf.mipmaps = mipmaps;
+ 				tf.width = w;
+@@ -1571,7 +1593,7 @@
+ 
+ 				sky->radiance = RD::get_singleton()->texture_create(tf, RD::TextureView());
+ 
+-				sky->reflection.update_reflection_data(w, mipmaps, true, sky->radiance, 0, use_realtime, roughness_layers, texture_format, sky->uv_border_size);
++				sky->reflection.update_reflection_data(w, mipmaps, true, sky->radiance, 0, use_realtime, roughness_layers, tf.format, sky->uv_border_size);
+ 			} else {
+ 				// Double size to approximate texel density of cubemaps + add border for proper filtering/mipmapping.
+ 				uint32_t padding_pixels = (1 << (MIN(mipmaps, layers) - 1));
+@@ -1581,7 +1603,7 @@
+ 
+ 				// Single texture (lower quality, less memory).
+ 				RD::TextureFormat tf;
+-				tf.format = texture_format;
++				tf.format = sky->high_precision_alpha ? RD::DATA_FORMAT_R16G16B16A16_SFLOAT : texture_format;
+ 				tf.mipmaps = MIN(mipmaps, layers);
+ 				tf.width = w;
+ 				tf.height = h;
+@@ -1592,7 +1614,7 @@
+ 
+ 				sky->radiance = RD::get_singleton()->texture_create(tf, RD::TextureView());
+ 
+-				sky->reflection.update_reflection_data(w, MIN(mipmaps, layers), false, sky->radiance, 0, use_realtime, roughness_layers, texture_format, sky->uv_border_size);
++				sky->reflection.update_reflection_data(w, MIN(mipmaps, layers), false, sky->radiance, 0, use_realtime, roughness_layers, tf.format, sky->uv_border_size);
+ 			}
+ 		}
+ 
+--- a/servers/rendering/renderer_rd/environment/sky.h
++++ b/servers/rendering/renderer_rd/environment/sky.h
+@@ -122,6 +122,7 @@
+ 		bool uses_position = false;
+ 		bool uses_half_res = false;
+ 		bool uses_quarter_res = false;
++		bool uses_alpha = false;
+ 		bool uses_light = false;
+ 
+ 		virtual void set_code(const String &p_Code);
+@@ -249,6 +250,7 @@
+ 		static inline const int REAL_TIME_ROUGHNESS_LAYERS = 7;
+ 
+ 		RID radiance;
++		bool high_precision_alpha = false;
+ 		RID quarter_res_pass;
+ 		RID quarter_res_framebuffer;
+ 		Size2i screen_size;
+--- a/servers/rendering/renderer_rd/shaders/environment/sky.glsl
++++ b/servers/rendering/renderer_rd/shaders/environment/sky.glsl
+@@ -240,31 +240,36 @@
+ #ifdef USE_CUBEMAP_PASS
+ 
+ #ifdef USES_HALF_RES_COLOR
+-	half_res_color = texture(sampler2D(half_res, SAMPLER_LINEAR_WITH_MIPMAPS_CLAMP), vec3_to_oct_with_border(cube_normal, params.border_size)) / params.luminance_multiplier;
++	half_res_color = texture(sampler2D(half_res, SAMPLER_LINEAR_WITH_MIPMAPS_CLAMP), vec3_to_oct_with_border(cube_normal, params.border_size));
+ #endif
+ #ifdef USES_QUARTER_RES_COLOR
+-	quarter_res_color = texture(sampler2D(quarter_res, SAMPLER_LINEAR_WITH_MIPMAPS_CLAMP), vec3_to_oct_with_border(cube_normal, params.border_size)) / params.luminance_multiplier;
++	quarter_res_color = texture(sampler2D(quarter_res, SAMPLER_LINEAR_WITH_MIPMAPS_CLAMP), vec3_to_oct_with_border(cube_normal, params.border_size));
+ #endif
+ 
+ #else
+ 
+ #ifdef USES_HALF_RES_COLOR
+ #ifdef USE_MULTIVIEW
+-	half_res_color = textureLod(sampler2DArray(half_res, SAMPLER_LINEAR_CLAMP), vec3(uv, ViewIndex), 0.0) / params.luminance_multiplier;
+-#else
+-	half_res_color = textureLod(sampler2D(half_res, SAMPLER_LINEAR_CLAMP), uv, 0.0) / params.luminance_multiplier;
++	half_res_color = textureLod(sampler2DArray(half_res, SAMPLER_LINEAR_CLAMP), vec3(uv, ViewIndex), 0.0);
++#else
++	half_res_color = textureLod(sampler2D(half_res, SAMPLER_LINEAR_CLAMP), uv, 0.0);
+ #endif // USE_MULTIVIEW
+ #endif // USES_HALF_RES_COLOR
+ 
+ #ifdef USES_QUARTER_RES_COLOR
+ #ifdef USE_MULTIVIEW
+-	quarter_res_color = textureLod(sampler2DArray(quarter_res, SAMPLER_LINEAR_CLAMP), vec3(uv, ViewIndex), 0.0) / params.luminance_multiplier;
+-#else
+-	quarter_res_color = textureLod(sampler2D(quarter_res, SAMPLER_LINEAR_CLAMP), uv, 0.0) / params.luminance_multiplier;
++	quarter_res_color = textureLod(sampler2DArray(quarter_res, SAMPLER_LINEAR_CLAMP), vec3(uv, ViewIndex), 0.0);
++#else
++	quarter_res_color = textureLod(sampler2D(quarter_res, SAMPLER_LINEAR_CLAMP), uv, 0.0);
+ #endif // USE_MULTIVIEW
+ #endif // USES_QUARTER_RES_COLOR
+ 
+ #endif //USE_CUBEMAP_PASS
++
++	// Only RGB was scaled when the subpass was written. Alpha is generic
++	// shader data (for example cloud transmittance), not scene luminance.
++	half_res_color.rgb /= params.luminance_multiplier;
++	quarter_res_color.rgb /= params.luminance_multiplier;
+ 
+ 	{
+ #CODE : SKY
