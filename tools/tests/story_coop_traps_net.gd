@@ -116,7 +116,14 @@ func _ready() -> void:
 
 func finish() -> void:
 	for s: Session in [client,host]:
-		if is_instance_valid(s) and s.multiplayer.multiplayer_peer: s.multiplayer.multiplayer_peer.close()
+		if is_instance_valid(s) and s.multiplayer.multiplayer_peer:
+			# A queued branch can still tick before deletion. Match menu teardown:
+			# detach the transport before closing it, so status/ack callbacks do
+			# not observe an online Session with an already-closed ENet peer.
+			var peer := s.multiplayer.multiplayer_peer
+			s.online = false
+			s.multiplayer.multiplayer_peer = OfflineMultiplayerPeer.new()
+			peer.close()
 	for root: Node in branches:
 		if is_instance_valid(root): root.queue_free()
 	await frames(8)

@@ -1,0 +1,178 @@
+{
+  "date": "2026-10-09",
+  "status": "Fixture-only teardown corrected; source-3 queen quest rerun and forced pending-tick control complete without errors.",
+  "scope": [
+    "tools/tests/story_coop_traps_net.gd finish() now marks its sessions offline and replaces their transport with OfflineMultiplayerPeer before closing retained sockets and queuing roots for deletion.",
+    "This change occurs only after acceptance assertions. The authored poison, queen death, looting, save/reload and intentional disconnect/reconnect steps remain unchanged.",
+    "No Session, NetStatus or gameplay logic is changed. This does not close the separately unreproduced U45 all-dead softlock report."
+  ],
+  "diagnosis": {
+    "initial_parent_run": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/core-queen/run.json",
+    "initial_errors": [
+      "ERROR: Trying to call an RPC via a multiplayer peer which is not connected."
+    ],
+    "initial_quest_checks": 38,
+    "initial_log_sha256": "dd02eb516feee9c666075e477406ae7b3eff927a5a33a9cd4215ab47df0c8ccd",
+    "finding": "Raw peer.close() leaves an online Session and its child callbacks in-tree until deferred deletion. One normal callback tick in that window attempts RPCs through an already-disconnected peer. Ordinary menu teardown replaces the transport before removing the session.",
+    "reproduction": "An instrumented disposable copy forces one pending status/physics tick after close and before deletion. It logs online=true and connection=0, then disconnected RPC errors. The identical forced tick after corrected teardown produces no errors. An unforced old-harness rerun can pass, so the original symptom is timing-dependent.",
+    "limits": "The probe reproduces the unsafe callback window and a NetStatus status broadcast within it; it does not identify the exact callback of the single original integration warning. No separate production graceful-disconnect bug is established."
+  },
+  "build_sha256": {
+    "CursedLands.x86_64": "769dd027c0b444caca0d5fbbb6014eda80970e991e9f32fdb1f86ec385d20c3e",
+    "CursedLands.pck": "fdd1a67984861c308bb947cad4fef3f0b5f104ecac1417b36c56960304199356",
+    "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+  },
+  "rejected_control": {
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/core-integrated/CursedLands.x86_64",
+      "--headless",
+      "--render-thread",
+      "safe",
+      "--rendering-method",
+      "gl_compatibility",
+      "--windowed",
+      "--resolution",
+      "800x600",
+      "--position",
+      "-10000,-10000",
+      "--audio-driver",
+      "Dummy",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/queen-teardown-20261009/raw/cave_queen_route.gd",
+      "--source=3",
+      "--cleanup-tick"
+    ],
+    "return_code": 0,
+    "seconds": 9.13873072800925,
+    "errors": [
+      "ERROR: Trying to call an RPC via a multiplayer peer which is not connected.",
+      "ERROR: Condition \"!_is_active()\" is true. Returning: nullptr",
+      "ERROR: Trying to call an RPC via a multiplayer peer which is not connected."
+    ],
+    "source_sha256": {
+      "cave_queen_route.gd": "7f5a0e774350fc3720cb36d865a53cb4fb0b9f995ca4c04d97b4866205f36be7",
+      "story_coop_traps_net.gd": "6c7d6b96e68c852753c643aa0bb19cc7f0f882b9b03e5a48334cb42bd62b2159"
+    },
+    "log_sha256": "872bf700aa1a9675504c0e976b6cac0312be1db77495e39a1eaf59fed80cdbd7",
+    "name": "raw-forced-01",
+    "log": "/home/llm2x/Documents/EI/local/scratchpad/queen-teardown-20261009/raw-forced-01/run.log",
+    "checks": 38,
+    "failures": 0
+  },
+  "timing_control": {
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/core-integrated/CursedLands.x86_64",
+      "--headless",
+      "--render-thread",
+      "safe",
+      "--rendering-method",
+      "gl_compatibility",
+      "--windowed",
+      "--resolution",
+      "800x600",
+      "--position",
+      "-10000,-10000",
+      "--audio-driver",
+      "Dummy",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/queen-teardown-20261009/raw/cave_queen_route.gd",
+      "--source=3"
+    ],
+    "return_code": 0,
+    "seconds": 8.97922042501159,
+    "errors": [],
+    "source_sha256": {
+      "cave_queen_route.gd": "7f5a0e774350fc3720cb36d865a53cb4fb0b9f995ca4c04d97b4866205f36be7",
+      "story_coop_traps_net.gd": "076a08cb8b29cee0ee2d68a12f12d5ad69fc5f5d4d72b0b25c15d70a7915a1a3"
+    },
+    "log_sha256": "73ea8ebbf1ffccfeba8b4ea827ad46d076c459a3fe1ea73612c6d98dd8bfdc71",
+    "name": "raw-01",
+    "log": "/home/llm2x/Documents/EI/local/scratchpad/queen-teardown-20261009/raw-01/run.log",
+    "checks": 38,
+    "failures": 0
+  },
+  "accepted": [
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/core-integrated/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/queen-teardown-20261009/fixed/cave_queen_route.gd",
+        "--source=3",
+        "--cleanup-tick"
+      ],
+      "return_code": 0,
+      "seconds": 10.40172139101196,
+      "errors": [],
+      "source_sha256": {
+        "cave_queen_route.gd": "7f5a0e774350fc3720cb36d865a53cb4fb0b9f995ca4c04d97b4866205f36be7",
+        "story_coop_traps_net.gd": "f89917613aed22ac9c0874366118cbe6fc4670c39868d5b0c27ac8c5f495a2df"
+      },
+      "log_sha256": "ce0f94699f7406c902c961d19c6d881bb10e816bffc6292cd398feae755a475e",
+      "name": "fixed-forced-01",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/queen-teardown-20261009/fixed-forced-01/run.log",
+      "checks": 38,
+      "failures": 0
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/core-integrated/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/queen-teardown-20261009/final/cave_queen_route.gd",
+        "--source=3"
+      ],
+      "return_code": 0,
+      "seconds": 14.032601819984848,
+      "errors": [],
+      "source_sha256": {
+        "cave_queen_route.gd": "7f5a0e774350fc3720cb36d865a53cb4fb0b9f995ca4c04d97b4866205f36be7",
+        "story_coop_traps_net.gd": "467645c27cbfe2ce9130f22fe4ac7d68edfdf7e57a867685e212cff480fb35d4"
+      },
+      "log_sha256": "629e9344db54fc61bfcdcf0d6231eb7f81823bcd81272b54a9e954023e2907b5",
+      "name": "final-01",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/queen-teardown-20261009/final-01/run.log",
+      "checks": 38,
+      "failures": 0
+    }
+  ],
+  "checks": {
+    "accepted": 76,
+    "failures": 0,
+    "runtime_errors": 0
+  },
+  "source_sha256": {
+    "tools/tests/story_coop_traps_net.gd": "467645c27cbfe2ce9130f22fe4ac7d68edfdf7e57a867685e212cff480fb35d4",
+    "tools/tests/cave_queen_route.gd": "7f5a0e774350fc3720cb36d865a53cb4fb0b9f995ca4c04d97b4866205f36be7"
+  },
+  "limits": [
+    "Linux headless integration pack; source 3 is the targeted cleanup rerun. Earlier all-three authored route acceptance remains in docs/gameplay-cave-queen-validation.json.",
+    "Disposable profiles only; no saves from a player were modified. No installed or published build changed."
+  ]
+}
