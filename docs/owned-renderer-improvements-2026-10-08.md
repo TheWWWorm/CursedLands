@@ -3525,6 +3525,46 @@ The pack is a QA artifact, not an installed or published release. Continue
 rest of the renderer handoff and gameplay **U45 first**. Shared wind for fog,
 clouds and ambient particles belongs to their later visual work.
 
+### Next V2 investigation: stop submitting fully faded chunks
+
+The next implementation has **not** been made. The source is clean at the
+shared-wind checkpoint. Start with exact removal of fully faded work before
+choosing a more approximate near/far cover mesh policy.
+
+- `terrain_details.gd:_stream` retains up to 80 chunks in a five-chunk radius.
+  `_chunk_mesh` already swaps grass near/far blade meshes at 18 m, and
+  `blade_mesh` already installs screen-space index LODs. Preserve that existing
+  grass LOD; it is not a missing feature to implement again.
+- `biome_cover_mesh.gd:SHADER` currently collapses geometry over 28–36 m and
+  thins seeds above 0.35 over 18–28 m, but all cover indices are still submitted.
+  `biome_mounds.gd:VERTEX` lowers mounds over 24–32 m and the fragment shader
+  discards the buried result. `_install_chunk` creates one grass MultiMesh
+  parent with `BiomeCover` and `BiomeMounds` mesh children.
+- A conservative first candidate can suppress the grass/cover parent once
+  every possible root in its 8 m chunk is beyond the 36 m fade end, and suppress
+  the mound child beyond 32 m. Use distance to the entire root rectangle, not
+  its center. Whole-chunk bounds avoid scanning every native grass transform
+  again on the main thread. Validate movement within a chunk, chunk edges,
+  teleport, exact reappearance, shadows, streaming completion, water/option
+  rebuilds and cleanup. Visibility of a parent must not hide a still-visible
+  mound child accidentally.
+- Match the actual shader coordinate contract: grass/cover root distances use
+  `MODEL_MATRIX` world XZ; mound `CUSTOM1.xy` currently stores its own XZ center.
+  Handle transforms conservatively, with a fallback for tilted terrain if
+  relying only on XZ chunk bounds. A small conservative margin can permit
+  skipping repeated culling work for sub-centimeter camera movement.
+- This would remove genuinely invisible submissions without extra near draw
+  calls or duplicated vertex buffers. It does not by itself implement the
+  reference's survivor compaction or simpler intermediate cover geometry.
+  Do not use automatic screen-space density LOD if it can drop cover before
+  the current shader has faded it; material focus and renderer camera distance
+  are different quantities. Measure main-thread maintenance cost as well as
+  visible/shadow primitive and draw reductions before accepting a net gain.
+- Reference R1 `Source/ground_cover_interaction.h:6–22` separates density from
+  projected-leaf far-mesh choice; `Source/renderer_ground_cover.cpp:584–595`
+  chooses far meshes and `:2658` uses indexed indirect draws. Those decisions
+  need an explicit Godot adaptation, not a direct shader-only port.
+
 ## Next work in the established order
 
 1. **P1/P2 remaining texture work:** retained outfit pixels and shared native
