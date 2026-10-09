@@ -29,6 +29,12 @@ and physical-device/long-route acceptance remain open. All 613 tracked game
 files match candidate09; only two production scripts and their regenerated UID
 files differ from the prior 712-file stage. Gameplay, settings, clouds and native
 binaries are unchanged; their earlier evidence is inherited.
+[The V1 normal-frame follow-up](validation/ground-contact-side-loop-2026-10-09.json)
+rejects a runtime two-triangle loop: 192 comparison checks and 12 exact RGB
+pairs pass, but cold preparation shows no convincing reduction and steady
+cost has an adverse signal. Foreign rendered processes overlap every timing
+run. The two production edits were reverted exactly; the improved benchmark
+separates synchronous setup, first draw, settling and steady viewport cost.
 [Previous P1 retention evidence](validation/wound-source-retention-2026-10-09.json)
 records 1,729 candidate checks and 15 captures, including 134 actual
 GameUnit/Paperdoll/cloud/terrain lifecycle checks. It removes 6.875–7.125 MiB
@@ -2353,6 +2359,43 @@ validation, source/pack hashes and integration check are retained in
 [ground-contact-preparation-2026-10-08.json](/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008/docs/validation/ground-contact-preparation-2026-10-08.json).
 The broader lighting, animated-camera, cross-sector prop and physical-device
 requirements listed above remain open.
+
+### V1 normal-frame preparation follow-up — 9 October
+
+The remaining fixed two-triangle loop was tested with a private runtime bound
+of two, leaving all eighteen candidate triangles, their order, highest-surface
+selection, deformation and UV/Jacobian calculations unchanged. Only full
+contact queries received the new parameter; cover/mound sources stayed exact.
+The experiment is **rejected and reverted**, not a new production checkpoint.
+
+`tools/benchmarks/ground_contact_cost.gd` now measures normal frames with
+explicitly held graphics settings, 96 warmup frames and 240 steady samples in
+off/on/repeated-on/restored order. It separately records synchronous material/
+surface refresh and the first rendered frame. Its Python wrapper freezes the
+fixture, isolates Godot/NVIDIA caches, verifies the cold-to-warm cache handoff,
+samples foreign engine processes throughout and rejects capture mismatches.
+The historical forced-draw benchmark remains available unchanged.
+
+In the held 800×600 `bz2g` Compatibility view, cold near-contact refresh was
+55.7/56.7 ms for baseline/candidate; first drawing was 14,336.8/14,101.6 ms.
+Warm near GPU medians were 1.617/1.619 ms for baseline and 1.825/1.745 ms for
+candidate; far medians were 0.564/0.564 versus 0.586/0.586 ms. Every run observed
+foreign rendered processes, so these are diagnostic signals rather than a
+clean causal performance comparison. They do not justify retaining the change.
+
+All **192 comparison checks pass**, with **12 exact RGB baseline/candidate
+pairs**, 24 captures and exact cold/warm PNG sets. A separate initial functional
+baseline adds 48 passing checks; one earlier fixture parse failure is excluded.
+The candidate differed from the 712-file qualified stage in exactly the two
+experimental scripts. Both now match the qualified source again. No broader
+renderer/device rerun was made for this rejected change. Do not repeat this
+loop experiment, the earlier five/six-colour loops or already-existing
+disabled-deformation specialization without a new basis.
+
+[ground-contact-side-loop-2026-10-09.json](validation/ground-contact-side-loop-2026-10-09.json)
+retains source/build hashes, frozen reports, process observations and exact
+image comparisons. V1 preparation, broader lighting and route/device acceptance
+remain open; defaults stay off.
 
 ## Integration
 
