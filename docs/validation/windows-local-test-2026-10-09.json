@@ -1,0 +1,211 @@
+{
+  "date": "2026-10-09",
+  "purpose": "User-requested Windows counterpart of the qualified Linux local test; no publication.",
+  "version": "1.0.3-local.20261009.2",
+  "source_commit": "e2e7e0af17d0a7cd7f7de20eea2e910e33038204",
+  "protocol": 13,
+  "delivered": {
+    "folder": "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261009.2-windows-x86_64",
+    "archive": "/home/llm2x/Downloads/CursedLands-1.0.3-local.20261009.2-windows-x86_64.zip",
+    "archive_bytes": 37058234,
+    "archive_sha256": "82ed3f56dd4468066b6ae46e7ac5910ab7860b6bf90722de9382cd99bd553e21",
+    "archive_readback_exact": true
+  },
+  "binary_sha256": {
+    "CursedLands.exe": "a42bb1bd94afc58726b6eb5bb09619a66a6cae5f28c71dcc0c2f4875f8462354",
+    "CursedLands.pck": "f4411106f24b1b684e3c3a9788d0ab434cfe10607dd4fff9d4f6e969758e17fd",
+    "libterrain_search.dll": "14906b040d4b6a5e1e217b9bfb21214f48700b6709163be584cc98e584f45106"
+  },
+  "game_pack": {
+    "resources": 673,
+    "compiled_scripts": 262,
+    "pack_sha256": "f4411106f24b1b684e3c3a9788d0ab434cfe10607dd4fff9d4f6e969758e17fd",
+    "linux_pack_sha256": "f4411106f24b1b684e3c3a9788d0ab434cfe10607dd4fff9d4f6e969758e17fd",
+    "changed_resources_from_linux": [],
+    "scene_preserved": [
+      ".godot/exported/133200997/export-3ad5c15c4f3250da0cc7c1af1770d85f-main.scn"
+    ],
+    "all_game_scripts_and_assets_match_linux": true,
+    "forbidden_release_assets_absent": true
+  },
+  "source_parity": "All 712 source-stage files match the frozen Linux .2 stage. The entire final Windows PCK is byte-identical to Linux .2; regenerated main-scene metadata was restored from that qualified pack before directory/hash verification.",
+  "engine": {
+    "base_commit": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+    "patches": [
+      {
+        "name": "render-thread-shutdown",
+        "committed_path": "engine_patches/godot-4.7/render-thread-shutdown.patch",
+        "sha256": "0d7dc8b88c8708df9948002477f7bf14d9cf6e718251b0dc798606c5572b712e"
+      },
+      {
+        "name": "queued-image-snapshot",
+        "committed_path": "engine_patches/godot-4.7/queued-image-snapshot.patch",
+        "sha256": "e747f95b3d324582130e1e0ba24a3f17e2a3a2da350474fca61e4970243a4fe3"
+      },
+      {
+        "name": "unobserved-pose",
+        "committed_path": "engine_patches/godot-4.7/unobserved-pose.patch",
+        "sha256": "fdef4bafc6d2c9a94ef628fd692b7845fd9ed0e1ffd168b21a6a0c8e1ea45978"
+      },
+      {
+        "name": "preserve-character-track-caches",
+        "committed_path": "engine_patches/godot-4.7/preserve-character-track-caches.patch",
+        "sha256": "5b938580ef002448d35f0c1535dcde2021032f6eb1385be56815f157aa99a3b8"
+      },
+      {
+        "name": "prepare-character-track-caches",
+        "committed_path": "engine_patches/godot-4.7/prepare-character-track-caches.patch",
+        "sha256": "693f6eac8fee284b4493a8eb49c7bf9a2426d4e0c8a9f2ef3f96d4147c0ce1bb"
+      },
+      {
+        "name": "cache-unobserved-track-eligibility",
+        "committed_path": "engine_patches/godot-4.7/cache-unobserved-track-eligibility.patch",
+        "sha256": "788b24561c8f377f1f4f8aea4a33b05d9b21f31b6bc1772699156131a80173b8"
+      },
+      {
+        "name": "mobile-shader-recompile-lock",
+        "committed_path": "engine_patches/godot-4.7/mobile-shader-recompile-lock.patch",
+        "sha256": "02bc97dd57f9b3388d71837b30b036e814ae5bf6e6fca3b3cf3948d260c746b6"
+      },
+      {
+        "name": "forward-shader-recompile-lifetime",
+        "committed_path": "engine_patches/godot-4.7/forward-shader-recompile-lifetime.patch",
+        "sha256": "6620cefedded50733fa65e71164dc8918c8a0ac02387d54252aedf6f185b701e"
+      },
+      {
+        "name": "far-dof-sharp-guard",
+        "committed_path": "engine_patches/godot-4.7/far-dof-sharp-guard.patch",
+        "sha256": "c6070bfbfbf5e36014d37d2b58a74ae8ff156202aa063134cebd0b21610e7286"
+      },
+      {
+        "name": "sky-subpass-alpha",
+        "committed_path": "engine_patches/godot-4.7/sky-subpass-alpha.patch",
+        "sha256": "a2ba63fac3d1ec8804f96bf3cdeb45b7f2c1597e1ac410f1739df812d82f3a67"
+      }
+    ],
+    "tracked_source_files_audited": 13979,
+    "source_policy": "Build exact upstream-plus-ten-patch source; exclude the validated tree Android-only edits and build outputs.",
+    "settings": {
+      "platform": "windows",
+      "arch": "x86_64",
+      "target": "template_release",
+      "debug_symbols": false,
+      "lto": "none",
+      "production": true,
+      "optimize": "speed",
+      "use_mingw": true,
+      "use_static_cpp": true,
+      "vulkan": true,
+      "d3d12": true,
+      "opengl3": true,
+      "angle": false,
+      "winrt": false,
+      "accesskit": false,
+      "module_mono_enabled": false,
+      "module_openxr_enabled": false
+    },
+    "manifest_sha256": "368d49da9c0d61d9db504eeb96a0cc7b29ee4df93280ab26122d201a1a70d755"
+  },
+  "native_helper": {
+    "source_commit": "e2e7e0af17d0a7cd7f7de20eea2e910e33038204",
+    "manifest_sha256": "4e45a7e265f932abd83e2ca9c0b35e31408788cd963fab4a90387a82d1c07720",
+    "entry_export": "terrain_search_init",
+    "registered_classes_present": 25,
+    "ffp_contract_off": true
+  },
+  "static_binary_checks": {
+    "engine": {
+      "sha256": "a42bb1bd94afc58726b6eb5bb09619a66a6cae5f28c71dcc0c2f4875f8462354",
+      "bytes": 93990400,
+      "architecture": "PE x86_64",
+      "imports": [
+        "ADVAPI32.dll",
+        "AVRT.dll",
+        "bcrypt.dll",
+        "CRYPT32.dll",
+        "dwmapi.dll",
+        "DWrite.dll",
+        "GDI32.dll",
+        "HID.DLL",
+        "IMM32.dll",
+        "IPHLPAPI.DLL",
+        "KERNEL32.dll",
+        "api-ms-win-core-processthreads-l1-1-3.dll",
+        "api-ms-win-security-base-l1-2-1.dll",
+        "api-ms-win-security-lsalookup-l2-1-0.dll",
+        "msvcrt.dll",
+        "ntdll.dll",
+        "ole32.dll",
+        "OLEAUT32.dll",
+        "SHCORE.dll",
+        "SHELL32.dll",
+        "SHLWAPI.dll",
+        "USER32.dll",
+        "WINMM.dll",
+        "WS2_32.dll",
+        "WSOCK32.dll"
+      ]
+    },
+    "native": {
+      "sha256": "14906b040d4b6a5e1e217b9bfb21214f48700b6709163be584cc98e584f45106",
+      "bytes": 2352640,
+      "architecture": "PE x86_64",
+      "imports": [
+        "KERNEL32.dll",
+        "msvcrt.dll"
+      ]
+    }
+  },
+  "checks": {
+    "cross_build_commands_succeeded": true,
+    "source_manifests_unchanged": {
+      "engine": [],
+      "native_helper": []
+    },
+    "engine_capability_strings": [
+      "ei_far_dof_guard",
+      "ei_sky_subpass_alpha"
+    ],
+    "native_registered_classes_and_graphics_methods": true,
+    "external_mingw_runtime_dependencies_absent": true,
+    "zip_crc_and_every_file_sha256_readback": "pass",
+    "windows_executed": false
+  },
+  "inherited_linux_acceptance": {
+    "receipt": "linux-local-test-feedback-2026-10-09.json",
+    "actual_package_checks": 73,
+    "scope": "Linux only: live menu graphics refresh, base New Game, Continue and LiA New Game. No Windows behavior or performance result is inferred."
+  },
+  "excluded_unfinished_work": [
+    "Ground-contact lighting candidate",
+    "Individual prison damage/Sleep continuation changes"
+  ],
+  "evidence": {
+    "package": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/windows-local-test-20261009/package.json",
+      "sha256": "97365e6edc6a47164d878c971408a84ef8705487c7b6c22ccbe9d593ccb6259e"
+    },
+    "export": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/windows-local-test-20261009/export.json",
+      "sha256": "944240fdd110a92616b87be628a6971dc2e4bf70a47da283d1b9b802bb14a696"
+    },
+    "native_build": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/windows-local-test-20261009/native/windows-native-receipt.json",
+      "sha256": "633636f84a450c0e9bdd89a5222fe6b0093479fb4fd4f052bd790be90b4cf0d3"
+    },
+    "engine_source_audit": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/windows-local-test-20261009/native/engine-source-audit.json",
+      "sha256": "1abaf13f87b902df03fb8482ac804c428a124ec4270e7c1d1aa119dc7fdfc554"
+    }
+  },
+  "limits": [
+    "Windows binaries were not executed; Wine is unavailable. No Windows rendering/gameplay/performance qualification is claimed.",
+    "Ten desktop patches exactly match the committed patch set. Three inherited Android-only source differences in the validated Linux tree are excluded from this clean desktop build.",
+    "The established Windows feature configuration is retained: Vulkan, Direct3D 12 and OpenGL enabled; ANGLE, WinRT/OneCore and AccessKit disabled because optional dependencies are not installed.",
+    "Godot archive builds have an empty embedded version hash, as did the validated Linux tree. External source and patch manifests provide provenance.",
+    "PE import checks cover static imports; operating-system graphics drivers and dynamically loaded Direct3D/Vulkan support require a real Windows runtime test.",
+    "No Windows execution or performance claim; no Windows host or Wine was available.",
+    "Unfinished renderer and prison-trap work is excluded from the exact delivered game checkpoint."
+  ],
+  "user_state": "No player saves, original game assets, existing profiles, installed builds or shared templates changed. Archive contains no original game assets or saves."
+}

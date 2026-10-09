@@ -26,6 +26,8 @@ discovery/alarm, renderer and native-binary evidence is inherited.
 
 **Updated Linux local test:** [`1.0.3-local.20261009.2`](/home/llm2x/Downloads/CursedLands-1.0.3-local.20261009.2-linux-x86_64.tar.gz), unpacked at `/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261009.2-linux-x86_64`, uses checkpoint `e2e7e0a` and protocol 13. It fixes disappearing stone-menu labels after live graphics changes and the empty HUD before New Game loading, and includes the newly qualified prison route progression fix. All 262 compiled scripts and 673 resources match the combined export except its displayed version setting; only three production scripts differ from the prior discovery export. The actual package passes **73 checks** across live menu settings, base New Game, Continue and LiA New Game using the separate rendering thread. All loading runs show zero exposed HUD frames. Archive contents and executable permissions are verified. Isolated profiles preserve user settings and saves. The unfinished terrain-contact lighting experiment is excluded. [Package evidence](validation/linux-local-test-feedback-2026-10-09.json). The preceding [local test](validation/linux-local-test-2026-10-09.json) remains historical; neither package is a published stable release.
 
+**Windows local test:** [`1.0.3-local.20261009.2`](/home/llm2x/Downloads/CursedLands-1.0.3-local.20261009.2-windows-x86_64.zip) is the Windows x86_64 counterpart of the updated Linux package, using the same `e2e7e0a` checkpoint and protocol 13. Its entire game pack is byte-identical (673 resources, 262 compiled scripts). The runtime was cross-built from Godot `5b4e0cb0f` with all ten committed desktop patches, and the native helper was rebuilt from the matching source. PE architecture, imports, native entry point, source provenance and full ZIP readback pass. **Windows execution remains untested**; this is a local test build. The unfinished terrain-contact lighting and prison damage/Sleep experiments are excluded. [Package evidence](validation/windows-local-test-2026-10-09.json).
+
 [Previous junction evidence](validation/terrain-junctions-2026-10-09.json)
 qualifies exact three/four-family Natural transitions across both campaigns,
 with 19,911 GPU probes on three desktop backends and original-art controls.
@@ -5111,8 +5113,10 @@ full routes and platform coverage remain open; they are not part of this fix.
    guest identity. `7e31470` also fixes the reproduced original prison alarm
    registration gap for late guests and preserves pending waits through absent
    reloads; its earlier acceptance has 331 checks. `518c2b5` additionally fixes
-   the two inspected prison discovery families for late guests; 431 checks pass
-   in the current export, including the alarm regressions.
+   the two inspected prison discovery families for late guests (431 checks).
+   `d13bac0` extends nine original q71h/q72h route checks to late arrivals
+   (630 checks, including discovery/alarm regressions). Individual damage/Sleep
+   traps in startup family #76 remain a distinct investigation.
    `f3f1494` fixes the independently reproduced LiA Haburu
    camp approach issue; 379 source/command/map checks pass. All five missing
    authored helpers are reachable but absent from the supplied scripts and
