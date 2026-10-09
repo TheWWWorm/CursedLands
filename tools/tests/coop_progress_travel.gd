@@ -67,6 +67,7 @@ func _ready() -> void:
 	e.clean = false
 	e.present = false
 	e.vars["z." + destination] = 1.0
+	s.state.set_var(0, "z." + destination, 1.0)
 	pkg = travel(e)
 	check(e.in_sync and e.clean and pkg.move.get("zone") == destination, "independently unlocked solo progress can join a compatible destination")
 	e = entry()

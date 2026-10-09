@@ -4249,6 +4249,10 @@ func _rpc_hello(player_name: String, hero_class: String, protocol := 0, maps_md5
 			and MpCharacter.accept(_lmp_character(pid)).is_empty():
 		net.refuse_character(pid)
 		return
+	# Preserve this fact before a same-address reconnect retires its previous
+	# transport. An active copy may reconnect, but cannot replace its hero/bag.
+	var replacing_live := players.values().any(func(p): return int(p.index) > 0 \
+		and String(p.name).strip_edges().to_lower() == player_name.strip_edges().to_lower())
 	_drop_stale_peer(pid, player_name)
 	if net.refuse(pid, protocol, maps_md5, player_name, pw):
 		return
@@ -4271,7 +4275,7 @@ func _rpc_hello(player_name: String, hero_class: String, protocol := 0, maps_md5
 			_spawn_late_joiner(idx, pid)
 		players_changed.emit()
 		return
-	coop.on_hello(pid, idx, player_name)
+	coop.on_hello(pid, idx, player_name, replacing_live)
 	if in_game:
 		state.ensure_hero(idx, _hero_proto(idx), player_name)
 		if loading_game:
@@ -4323,8 +4327,12 @@ func _drop_stale_peer(pid: int, player_name: String) -> void:
 			continue
 		var op := enet.get_peer(old)
 		if op and op.get_remote_address() == addr:
+			coop._on_peer_gone(old)
 			_on_peer_disconnected(old)
-			op.peer_disconnect_now()
+			# Remove the SceneMultiplayer peer/path cache and its transport.
+			# Dropping only ENetPacketPeer leaves a null peer in broadcasts.
+			# This wrapper suppresses peer_disconnected, handled above once.
+			(multiplayer as SceneMultiplayer).disconnect_peer(old)
 
 
 ## Host: a player joined a running game. Units it left behind when it

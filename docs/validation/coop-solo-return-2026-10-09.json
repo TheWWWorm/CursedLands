@@ -1,0 +1,2728 @@
+{
+  "scope": "Preserve acknowledged solo-earned personal data and exact compatible campaign continuity on return to co-op, and establish that continuity for a new independently matched solo import. Keep divergent or unproven sources protected. Includes narrow connection cleanup and temporary-role/dependent ownership corrections discovered by the actual return path.",
+  "date": "2026-10-09",
+  "protocol": 13,
+  "result": {
+    "accepted_checks": 803,
+    "accepted_runs": 18,
+    "assertion_failures": 0,
+    "logged_errors": 0,
+    "logged_warnings": 0,
+    "rendered_captures": 0,
+    "public_or_user_save_writes": false
+  },
+  "prior_commits": {
+    "u26_rename": "fdf7885",
+    "shared_unflagged_travel": "82b749f",
+    "stable_saved_hero_reference": "ec79e3f",
+    "pending_vm_projection": "74c4804"
+  },
+  "production_policy": [
+    "Only an inactive unique tally with a positive same-SID acknowledgement at least as new as the host can replace an existing reserved personal hero/purse. A restored older host may legitimately see the normal final goodbye package N+1; resume sequence monotonically. Different-name U26 alias migration still requires exact latest sequence.",
+    "An acknowledged new personal baseline replaces hero_in, orig_name, purse and private party context; clears stale context_checkpoint and personal companion markers; authored body changes use the ordinary late-join spawn path. Same-body reuse refreshes the existing orphan actor metadata/model.",
+    "Both a rebased existing participant and a new solo source can be clean/present at arrival only when current zone, authored active party/protagonist and bidirectional nonexcluded story variables, side quests and quest items match. No host story is copied to force a match.",
+    "Zone re-entry/load repeats the story compatibility guard before granting full checkpoint eligibility, so a rejected behind/conflicting source cannot become eligible merely because it visited the map.",
+    "A bring-save deploys its main hero. Incoming personal pets and optional base hires remain private in its solo save; only that inactive owner's obsolete live copies are retired with existing removal/dismissal bookkeeping. Other owners and LiA authored/shared companion roles remain intact.",
+    "For matching temporary authored roles, restore only sanitized matching protagonist rows and bags inside the inspected seeded hierarchy. Preserve host deployment identity and location/body fields, own role earnings and separately parked main-protagonist earnings. Never deploy raw private context.",
+    "Active same-name transport replacement remembers activity before retiring the previous connection, so it cannot import altered personal data over a live participant. SceneMultiplayer.disconnect_peer removes transport and high-level peer/path ownership; explicit co-op and Session departure handlers run once because that API suppresses the signal."
+  ],
+  "actual_data_and_path": {
+    "campaign_paths": {
+      "base": "/home/llm2x/Documents/EI/inspection/extracted/app",
+      "astral": "/home/llm2x/Documents/EI/inspection/lost-in-astral/game"
+    },
+    "chapter": "Parse original LiA maps/bz1h.mob party instructions to prepare FPrison; actual host/guest body becomes Hero1. Discover gz1h actual mob alias zone1 via campaign metadata, then authored quest q.gz1h.q01h.",
+    "shared_progression": "Normal GSSetVar dispatch advances q.gz1h.q01h from 1 to 2. Extract the original bz1h LeaveToZone(0,\"gz1h\",1) call and tick original VM. Ann and Fresh have no fabricated gz1h visited/unlock flag; both receive their own completed quest and shared FPrison/gz1h checkpoint.",
+    "network": "Normal MainMenu character selection and Join/confirmed Exit input, independent SceneMultiplayer frontends over real loopback ENet in one process, host save/package RPC, original scene loads; fresh separate process then offline-loads only the actual received personal saves.",
+    "final_rows": [
+      {
+        "hero": {
+          "armors": [
+            "hadagan medium pants.wool"
+          ],
+          "dex": 25.0,
+          "exp": 0.0,
+          "exp_total": 1.0,
+          "int": 25.0,
+          "perks": [],
+          "prototype": "Hero1",
+          "quick": [],
+          "skills": {
+            "astral": 12.0,
+            "science": 2.0
+          },
+          "spells": [
+            "healing {}"
+          ],
+          "str": 44.0,
+          "weapons": []
+        },
+        "party": "FPrison",
+        "player": "Ann",
+        "purse": {
+          "items": [
+            "rune:e1",
+            "rune:e2",
+            "rune:ic"
+          ],
+          "money": 777
+        },
+        "quest": "q.gz1h.q01h",
+        "quest_value": 2.0,
+        "slot": 1,
+        "zone": "gz1h"
+      },
+      {
+        "hero": {
+          "armors": [
+            "hadagan medium pants.wool"
+          ],
+          "dex": 25.0,
+          "exp": 0.0,
+          "exp_total": 1.0,
+          "int": 25.0,
+          "perks": [],
+          "prototype": "Hero1",
+          "quick": [],
+          "skills": {
+            "astral": 12.0,
+            "science": 2.0
+          },
+          "spells": [
+            "healing {}"
+          ],
+          "str": 44.0,
+          "weapons": []
+        },
+        "party": "FPrison",
+        "player": "Fresh",
+        "purse": {
+          "items": [
+            "rune:e1",
+            "rune:e2",
+            "rune:ic"
+          ],
+          "money": 777
+        },
+        "quest": "q.gz1h.q01h",
+        "quest_value": 2.0,
+        "slot": 6,
+        "zone": "gz1h"
+      }
+    ],
+    "fresh_slot_note": "Fresh is slot 6 because four deliberately distinct negative-control participants retain their own reserved slots 2-5; these are not rename ghosts."
+  },
+  "baseline": {
+    "manifest": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/baseline/baseline.json",
+    "data": {
+      "commit": "82b749f",
+      "copied_from": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/progression-sync-01",
+      "sha256": {
+        "CPU.x86_64": "769dd027c0b444caca0d5fbbb6014eda80970e991e9f32fdb1f86ec385d20c3e",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e",
+        "CPU.pck": "3304f43b1f84a05e0f27785e2c8f2605fcb3ebd6aa0b941a6d78bcda4a8a1eb8"
+      }
+    },
+    "clean_reproduction_label": "sreturn-baseline-rebase-final",
+    "checks": 30,
+    "failures": 7,
+    "candidate_comparison": "The matching first 30 assertions pass in sreturn-final-main (94 total)."
+  },
+  "final_export": {
+    "manifest": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/candidate05/export.json",
+    "sha256": "600ced8d0bc6d9cda282e12bafd57ca378496fc50f2b3721c38026ff3561a605",
+    "data": {
+      "baseline": "82b749f",
+      "overlays": {
+        "game/src/game/coop_progress.gd": "25a7fc2e0d7f3915b5c0791fc8d0e35543fe590e25fd6c5df533d70909545599",
+        "game/src/game/session.gd": "b2909220b7a36c104a59b913b96a64833c7af22088117be09ed2c2b589738fdd",
+        "game/src/game/coop_guest_roles.gd": "31eb28ddd70629dd73877bdbd65e72eda1839f4a088da63ef94eaf6f6e43c7f8",
+        "game/src/game/script/vm.gd": "74e57f35a6dfbf6b49d6a80064a72e01d461cc1d42c2eabde23e52a52f6f6efa",
+        "game/src/game/script/coop_vm_state.gd": "32089a73ff993335c99a688cd30076342fe87b4b187bffd6880214a5ecbfe41a"
+      },
+      "steps": [
+        {
+          "command": [
+            "/home/llm2x/.local/bin/godot-4",
+            "--headless",
+            "--path",
+            "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/candidate05/stage",
+            "--editor",
+            "--import"
+          ],
+          "return_code": 0,
+          "seconds": 10.098306127008982,
+          "errors": []
+        },
+        {
+          "command": [
+            "/home/llm2x/.local/bin/godot-4",
+            "--headless",
+            "--path",
+            "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/candidate05/stage",
+            "--export-pack",
+            "Linux",
+            "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/candidate05/CPU.pck"
+          ],
+          "return_code": 0,
+          "seconds": 6.184115504991496,
+          "errors": []
+        }
+      ],
+      "peer_scope": "frozen VM projection + root ec79e3f stable reference guard included",
+      "sha256": {
+        "export.log": "9a6a7a6e7a567eab32ead560d0b864c71c940784dfeb8825d342b34b61dff9d6",
+        "CPU.x86_64": "769dd027c0b444caca0d5fbbb6014eda80970e991e9f32fdb1f86ec385d20c3e",
+        "import.log": "ad8b9fbeb05271908acba6633d7d690b7e59c7430b677611b7462ae514ea20b3",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e",
+        "CPU.pck": "396982eb3dd39db43896c926a681308f876978987a007ae467234ba29d48dc7f"
+      }
+    }
+  },
+  "accepted_runs": [
+    {
+      "label": "sreturn-final-context-astral",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-final-context-astral.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-final-context-astral.log",
+      "log_sha256": "f7f6e8e5b0e9f447dbce622d643715a02d0f432d089c05099550626b3a4b86fb",
+      "checks": 76,
+      "failures": 0,
+      "exit_code": 0,
+      "stopped": false,
+      "errors": [],
+      "warnings": [],
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/fixture20/coop_progress_context.gd",
+        "sha256": "0971d4be7a9bb2521c2025903010d8bc159cea780b7b207431d2805e4171c9b1"
+      },
+      "failed_assertions": [],
+      "scope": "Existing original-data party-context regression; reconnect eligibility now comes from actual on_hello policy, without manually setting clean/present."
+    },
+    {
+      "label": "sreturn-final-context-base",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-final-context-base.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-final-context-base.log",
+      "log_sha256": "249ebe72bec1ecbbed73aedb027ff250172c4348391ab931cff85afe0d8ad8bb",
+      "checks": 72,
+      "failures": 0,
+      "exit_code": 0,
+      "stopped": false,
+      "errors": [],
+      "warnings": [],
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/fixture20/coop_progress_context.gd",
+        "sha256": "0971d4be7a9bb2521c2025903010d8bc159cea780b7b207431d2805e4171c9b1"
+      },
+      "failed_assertions": [],
+      "scope": "Existing original-data party-context regression; reconnect eligibility now comes from actual on_hello policy, without manually setting clean/present."
+    },
+    {
+      "label": "sreturn-final-dependents-astral",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-final-dependents-astral.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-final-dependents-astral.log",
+      "log_sha256": "4dce7a7e3b3ebc414d23c869f3064724d5870bef13d5d76519b62d8b35f9e0b2",
+      "checks": 10,
+      "failures": 0,
+      "exit_code": 0,
+      "stopped": false,
+      "errors": [],
+      "warnings": [],
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/fixture20/coop_solo_return_dependents.gd",
+        "sha256": "a39987a5cc5aa8fbb9112204a3368d677c24de6e34dc65b075af7df5f11e743f"
+      },
+      "failed_assertions": [],
+      "scope": "Focused package/state and GameWorld actor-registry ownership control; synthetic mutable dependent records. Keeps newly changed private pet/base hire, retires only stale personal live copies, preserves other owners and LiA shared roles, repeated-package idempotence."
+    },
+    {
+      "label": "sreturn-final-dependents-base",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-final-dependents-base.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-final-dependents-base.log",
+      "log_sha256": "a29a4a5a9a2050e3d4677f2b2eb4028abf309a22d9465e174fb7dc7d5177f7fb",
+      "checks": 10,
+      "failures": 0,
+      "exit_code": 0,
+      "stopped": false,
+      "errors": [],
+      "warnings": [],
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/fixture20/coop_solo_return_dependents.gd",
+        "sha256": "a39987a5cc5aa8fbb9112204a3368d677c24de6e34dc65b075af7df5f11e743f"
+      },
+      "failed_assertions": [],
+      "scope": "Focused package/state and GameWorld actor-registry ownership control; synthetic mutable dependent records. Keeps newly changed private pet/base hire, retires only stale personal live copies, preserves other owners and LiA shared roles, repeated-package idempotence."
+    },
+    {
+      "label": "sreturn-final-guards-astral",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-final-guards-astral.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-final-guards-astral.log",
+      "log_sha256": "101d0e01394ef287cacf477e28a3b56c94f770fd16adf3a09ede369a62a72543",
+      "checks": 18,
+      "failures": 0,
+      "exit_code": 0,
+      "stopped": false,
+      "errors": [],
+      "warnings": [],
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/fixture20/coop_solo_return_guards.gd",
+        "sha256": "7e959345bae4ef5e32dd84222809d33b0a23df388f97748dedf290548968c1f2"
+      },
+      "failed_assertions": [],
+      "scope": "Focused checkpoint policy controls for ahead, behind, nonquest flag conflict, party mismatch, quest-item mismatch and side-quest mismatch, both arrival and load/re-entry."
+    },
+    {
+      "label": "sreturn-final-guards-base",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-final-guards-base.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-final-guards-base.log",
+      "log_sha256": "c7f914d26b934974caba6e08871f5cc2132c0d868f9cb64a44e5b3ecc39b59ff",
+      "checks": 18,
+      "failures": 0,
+      "exit_code": 0,
+      "stopped": false,
+      "errors": [],
+      "warnings": [],
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/fixture20/coop_solo_return_guards.gd",
+        "sha256": "7e959345bae4ef5e32dd84222809d33b0a23df388f97748dedf290548968c1f2"
+      },
+      "failed_assertions": [],
+      "scope": "Focused checkpoint policy controls for ahead, behind, nonquest flag conflict, party mismatch, quest-item mismatch and side-quest mismatch, both arrival and load/re-entry."
+    },
+    {
+      "label": "sreturn-final-main",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-final-main.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-final-main.log",
+      "log_sha256": "5f1b427e1c9fbbcb2afdc5484dcae3c593f9a0e07bf385a83df908d1388836dd",
+      "checks": 94,
+      "failures": 0,
+      "exit_code": 0,
+      "stopped": false,
+      "errors": [],
+      "warnings": [],
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/fixture20/coop_solo_return.gd",
+        "sha256": "270fb1a95a3b7999b2d4214df8ad9db894dd90693a8c379cc4137c5a8a808b62"
+      },
+      "failed_assertions": [],
+      "scope": "Actual menu-selected brought saves, loopback ENet and original LiA maps. Existing acknowledged Ann and new matched Fresh retain personal earnings, body, party and own quest completion through the original unflagged field transfer. Four divergent newcomers retain their own chapter. Selected source files stay byte-identical.",
+      "detail_receipt": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/sreturn-final-main/godot/app_userdata/Cursed Lands/rename-receipt.json",
+        "sha256": "2ea46e3dfec0fd142f78e25d8e9bc441f1aebd31f126abc7689ad72a7a69cb1a",
+        "data": {
+          "campaign": "lost_in_astral",
+          "checks": 94,
+          "failures": 0,
+          "rows": [
+            {
+              "hero": {
+                "armors": [
+                  "hadagan medium pants.wool"
+                ],
+                "dex": 25.0,
+                "exp": 0.0,
+                "exp_total": 1.0,
+                "int": 25.0,
+                "perks": [],
+                "prototype": "Hero1",
+                "quick": [],
+                "skills": {
+                  "astral": 12.0,
+                  "science": 2.0
+                },
+                "spells": [
+                  "healing {}"
+                ],
+                "str": 44.0,
+                "weapons": []
+              },
+              "party": "FPrison",
+              "player": "Ann",
+              "purse": {
+                "items": [
+                  "rune:e1",
+                  "rune:e2",
+                  "rune:ic"
+                ],
+                "money": 777
+              },
+              "quest": "q.gz1h.q01h",
+              "quest_value": 2.0,
+              "slot": 1,
+              "zone": "gz1h"
+            },
+            {
+              "hero": {
+                "armors": [
+                  "hadagan medium pants.wool"
+                ],
+                "dex": 25.0,
+                "exp": 0.0,
+                "exp_total": 1.0,
+                "int": 25.0,
+                "perks": [],
+                "prototype": "Hero1",
+                "quick": [],
+                "skills": {
+                  "astral": 12.0,
+                  "science": 2.0
+                },
+                "spells": [
+                  "healing {}"
+                ],
+                "str": 44.0,
+                "weapons": []
+              },
+              "party": "FPrison",
+              "player": "Fresh",
+              "purse": {
+                "items": [
+                  "rune:e1",
+                  "rune:e2",
+                  "rune:ic"
+                ],
+                "money": 777
+              },
+              "quest": "q.gz1h.q01h",
+              "quest_value": 2.0,
+              "slot": 6,
+              "zone": "gz1h"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "label": "sreturn-final-older",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-final-older.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-final-older.log",
+      "log_sha256": "61646645fa4c07c41eb65f802abb02bd519183844819746b90c0a57ecd022109",
+      "checks": 21,
+      "failures": 0,
+      "exit_code": 0,
+      "stopped": false,
+      "errors": [],
+      "warnings": [],
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/fixture20/coop_solo_return_older_host.gd",
+        "sha256": "7f3b36cc3e77304ab851e3417f90f06c9244a6d478d871527f4e670105dbe7c2"
+      },
+      "failed_assertions": [],
+      "scope": "Actual host disk save N, normal guest Exit/package N+1, normal host exit/reload, then same-name personal reimport with new earnings. Neither SID nor acknowledgement sequence is fabricated.",
+      "detail_receipt": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/sreturn-final-older/godot/app_userdata/Cursed Lands/rename-receipt.json",
+        "sha256": "4d140d2d56e0f2efd0d82e07427dbbe335aefefc55aac82b5d5b9567c31579f8",
+        "data": {
+          "campaign": "lost_in_astral",
+          "checks": 21,
+          "failures": 0,
+          "rows": [
+            {
+              "client_flush_seq": 2,
+              "hero": {
+                "armors": [
+                  "hadagan medium pants.wool"
+                ],
+                "dex": 25.0,
+                "exp": 0.0,
+                "exp_total": 1.0,
+                "int": 25.0,
+                "perks": [],
+                "prototype": "Human Hero",
+                "quick": [],
+                "skills": {
+                  "astral": 12.0,
+                  "science": 2.0
+                },
+                "spells": [
+                  "healing {}"
+                ],
+                "str": 44.0,
+                "weapons": [
+                  "cheat dagger.bronze"
+                ]
+              },
+              "host_disk_seq": 1,
+              "purse": {
+                "items": [
+                  "rune:e1",
+                  "rune:e2"
+                ],
+                "money": 777
+              },
+              "resumed_host_seq": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "label": "sreturn-final-rename-astral",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-final-rename-astral.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-final-rename-astral.log",
+      "log_sha256": "be1d5cd2eda9380887469fa76085677383ba99d03ecba7ad1f829c7fb2fd63c1",
+      "checks": 145,
+      "failures": 0,
+      "exit_code": 0,
+      "stopped": false,
+      "errors": [],
+      "warnings": [],
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/fixture20/coop_rename_reconnect.gd",
+        "sha256": "9857498a4bb0aa284e1183ecbf5c64bf8300ab0f7eb670036465f1bb0a8f6d93"
+      },
+      "failed_assertions": [],
+      "scope": "Existing U26 Ann/Alice/Ally normal menu and ENet regression, including exact-proof identity, active/ambiguous/unrelated/stale/future/invalid negative controls and repeated package identity.",
+      "detail_receipt": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/sreturn-final-rename-astral/godot/app_userdata/Cursed Lands/rename-receipt.json",
+        "sha256": "d677a27336ddbe7af031df5453050ee9f0eb09475c2ae938f999e0c9bbc604b1",
+        "data": {
+          "campaign": "lost_in_astral",
+          "checks": 145,
+          "failures": 0,
+          "rows": [
+            {
+              "deployment": "Ann",
+              "display_name": "Ann",
+              "hero": {
+                "armors": [
+                  "hadagan medium pants.wool"
+                ],
+                "dex": 43.0,
+                "exp": 0.0,
+                "exp_total": 1.0,
+                "int": 59.0,
+                "perks": [],
+                "prototype": "Human Hero",
+                "quick": [],
+                "skills": {
+                  "astral": 12.0,
+                  "science": 2.0
+                },
+                "spells": [
+                  "healing {}"
+                ],
+                "str": 31.0,
+                "weapons": [
+                  "cheat dagger.bronze"
+                ]
+              },
+              "hero_name": "Ann",
+              "phase": "ann-host",
+              "player": "Ann",
+              "preview_label": "Ann\nЗдоровье 17/17   Запас сил 23/23\nСил 31  Лов 43  Раз 59\nАтака 23  Защита 18\nУрон 20-21   Броня 0.0\nВес 35/372\nОпыт 1 (свободно 0)Заклинания: Лечение",
+              "slot": 1,
+              "unit": 1500000002
+            },
+            {
+              "deployment": "Ann",
+              "display_name": "Ann",
+              "hero": {
+                "armors": [
+                  "hadagan medium pants.wool"
+                ],
+                "dex": 43.0,
+                "exp": 0.0,
+                "exp_total": 1.0,
+                "int": 59.0,
+                "perks": [],
+                "prototype": "Human Hero",
+                "quick": [],
+                "skills": {
+                  "astral": 12.0,
+                  "science": 2.0
+                },
+                "spells": [
+                  "healing {}"
+                ],
+                "str": 31.0,
+                "weapons": [
+                  "cheat dagger.bronze"
+                ]
+              },
+              "hero_name": "Ann",
+              "phase": "ann-guest",
+              "player": "Ann",
+              "preview_label": "Ann\nЗдоровье 17/17   Запас сил 23/23\nСил 31  Лов 43  Раз 59\nАтака 23  Защита 18\nУрон 20-21   Броня 0.0\nВес 35/372\nОпыт 1 (свободно 0)Заклинания: Лечение",
+              "slot": 1,
+              "unit": 1500000002
+            },
+            {
+              "deployment": "Ann",
+              "display_name": "Alice",
+              "hero": {
+                "armors": [
+                  "hadagan medium pants.wool"
+                ],
+                "dex": 43.0,
+                "exp": 0.0,
+                "exp_total": 1.0,
+                "int": 59.0,
+                "perks": [],
+                "prototype": "Human Hero",
+                "quick": [],
+                "skills": {
+                  "astral": 12.0,
+                  "science": 2.0
+                },
+                "spells": [
+                  "healing {}"
+                ],
+                "str": 33.0,
+                "weapons": [
+                  "cheat dagger.bronze"
+                ]
+              },
+              "hero_name": "Alice",
+              "phase": "alice-host",
+              "player": "Alice",
+              "preview_label": "Alice\nЗдоровье 18/18   Запас сил 23/23\nСил 33  Лов 43  Раз 59\nАтака 23  Защита 18\nУрон 20-21   Броня 0.0\nВес 35/396\nОпыт 1 (свободно 0)Заклинания: Лечение",
+              "slot": 1,
+              "unit": 1500000002
+            },
+            {
+              "deployment": "Ann",
+              "display_name": "Alice",
+              "hero": {
+                "armors": [
+                  "hadagan medium pants.wool"
+                ],
+                "dex": 43.0,
+                "exp": 0.0,
+                "exp_total": 1.0,
+                "int": 59.0,
+                "perks": [],
+                "prototype": "Human Hero",
+                "quick": [],
+                "skills": {
+                  "astral": 12.0,
+                  "science": 2.0
+                },
+                "spells": [
+                  "healing {}"
+                ],
+                "str": 33.0,
+                "weapons": [
+                  "cheat dagger.bronze"
+                ]
+              },
+              "hero_name": "Alice",
+              "phase": "alice-guest",
+              "player": "Alice",
+              "preview_label": "Alice\nЗдоровье 18/18   Запас сил 23/23\nСил 33  Лов 43  Раз 59\nАтака 23  Защита 18\nУрон 20-21   Броня 0.0\nВес 35/396\nОпыт 1 (свободно 0)Заклинания: Лечение",
+              "slot": 1,
+              "unit": 1500000002
+            },
+            {
+              "deployment": "Ann",
+              "display_name": "Alice",
+              "hero": {
+                "armors": [
+                  "hadagan medium pants.wool"
+                ],
+                "dex": 43.0,
+                "exp": 0.0,
+                "exp_total": 1.0,
+                "int": 59.0,
+                "perks": [],
+                "prototype": "Human Hero",
+                "quick": [],
+                "skills": {
+                  "astral": 12.0,
+                  "science": 2.0
+                },
+                "spells": [
+                  "healing {}"
+                ],
+                "str": 33.0,
+                "weapons": [
+                  "cheat dagger.bronze"
+                ]
+              },
+              "hero_name": "Alice",
+              "phase": "reload-host",
+              "player": "Alice",
+              "preview_label": "Alice\nЗдоровье 18/18   Запас сил 23/23\nСил 33  Лов 43  Раз 59\nАтака 23  Защита 18\nУрон 20-21   Броня 0.0\nВес 35/396\nОпыт 1 (свободно 0)Заклинания: Лечение",
+              "slot": 1,
+              "unit": 1500000002
+            },
+            {
+              "deployment": "Ann",
+              "display_name": "Alice",
+              "hero": {
+                "armors": [
+                  "hadagan medium pants.wool"
+                ],
+                "dex": 43.0,
+                "exp": 0.0,
+                "exp_total": 1.0,
+                "int": 59.0,
+                "perks": [],
+                "prototype": "Human Hero",
+                "quick": [],
+                "skills": {
+                  "astral": 12.0,
+                  "science": 2.0
+                },
+                "spells": [
+                  "healing {}"
+                ],
+                "str": 33.0,
+                "weapons": [
+                  "cheat dagger.bronze"
+                ]
+              },
+              "hero_name": "Alice",
+              "phase": "reload-guest",
+              "player": "Alice",
+              "preview_label": "Alice\nЗдоровье 18/18   Запас сил 23/23\nСил 33  Лов 43  Раз 59\nАтака 23  Защита 18\nУрон 20-21   Броня 0.0\nВес 35/396\nОпыт 1 (свободно 0)Заклинания: Лечение",
+              "slot": 1,
+              "unit": 1500000002
+            },
+            {
+              "deployment": "Ann",
+              "display_name": "Ally",
+              "hero": {
+                "armors": [
+                  "hadagan medium pants.wool"
+                ],
+                "dex": 43.0,
+                "exp": 0.0,
+                "exp_total": 1.0,
+                "int": 59.0,
+                "perks": [],
+                "prototype": "Human Hero",
+                "quick": [],
+                "skills": {
+                  "astral": 12.0,
+                  "science": 2.0
+                },
+                "spells": [
+                  "healing {}"
+                ],
+                "str": 33.0,
+                "weapons": [
+                  "cheat dagger.bronze"
+                ]
+              },
+              "hero_name": "Ally",
+              "phase": "ally-host",
+              "player": "Ally",
+              "preview_label": "Ally\nЗдоровье 18/18   Запас сил 23/23\nСил 33  Лов 43  Раз 59\nАтака 23  Защита 18\nУрон 20-21   Броня 0.0\nВес 35/396\nОпыт 1 (свободно 0)Заклинания: Лечение",
+              "slot": 1,
+              "unit": 1500000002
+            },
+            {
+              "deployment": "Ann",
+              "display_name": "Ally",
+              "hero": {
+                "armors": [
+                  "hadagan medium pants.wool"
+                ],
+                "dex": 43.0,
+                "exp": 0.0,
+                "exp_total": 1.0,
+                "int": 59.0,
+                "perks": [],
+                "prototype": "Human Hero",
+                "quick": [],
+                "skills": {
+                  "astral": 12.0,
+                  "science": 2.0
+                },
+                "spells": [
+                  "healing {}"
+                ],
+                "str": 33.0,
+                "weapons": [
+                  "cheat dagger.bronze"
+                ]
+              },
+              "hero_name": "Ally",
+              "phase": "ally-guest",
+              "player": "Ally",
+              "preview_label": "Ally\nЗдоровье 18/18   Запас сил 23/23\nСил 33  Лов 43  Раз 59\nАтака 23  Защита 18\nУрон 20-21   Броня 0.0\nВес 35/396\nОпыт 1 (свободно 0)Заклинания: Лечение",
+              "slot": 1,
+              "unit": 1500000002
+            },
+            {
+              "deployment": "Ann",
+              "display_name": "Ally",
+              "hero": {
+                "armors": [
+                  "hadagan medium pants.wool"
+                ],
+                "dex": 43.0,
+                "exp": 0.0,
+                "exp_total": 1.0,
+                "int": 59.0,
+                "perks": [],
+                "prototype": "Human Hero",
+                "quick": [],
+                "skills": {
+                  "astral": 12.0,
+                  "science": 2.0
+                },
+                "spells": [
+                  "healing {}"
+                ],
+                "str": 33.0,
+                "weapons": [
+                  "cheat dagger.bronze"
+                ]
+              },
+              "hero_name": "Ally",
+              "phase": "repeat-host",
+              "player": "Ally",
+              "preview_label": "Ally\nЗдоровье 18/18   Запас сил 23/23\nСил 33  Лов 43  Раз 59\nАтака 23  Защита 18\nУрон 20-21   Броня 1.0\nВес 35/396\nОпыт 1 (свободно 0)Заклинания: Лечение",
+              "slot": 1,
+              "unit": 1500000002
+            },
+            {
+              "deployment": "Ann",
+              "display_name": "Ally",
+              "hero": {
+                "armors": [
+                  "hadagan medium pants.wool"
+                ],
+                "dex": 43.0,
+                "exp": 0.0,
+                "exp_total": 1.0,
+                "int": 59.0,
+                "perks": [],
+                "prototype": "Human Hero",
+                "quick": [],
+                "skills": {
+                  "astral": 12.0,
+                  "science": 2.0
+                },
+                "spells": [
+                  "healing {}"
+                ],
+                "str": 33.0,
+                "weapons": [
+                  "cheat dagger.bronze"
+                ]
+              },
+              "hero_name": "Ally",
+              "phase": "repeat-guest",
+              "player": "Ally",
+              "preview_label": "Ally\nЗдоровье 18/18   Запас сил 23/23\nСил 33  Лов 43  Раз 59\nАтака 23  Защита 18\nУрон 20-21   Броня 1.0\nВес 35/396\nОпыт 1 (свободно 0)Заклинания: Лечение",
+              "slot": 1,
+              "unit": 1500000002
+            },
+            {
+              "active_original": true,
+              "case": "active",
+              "keys": [
+                "ally",
+                "tactive"
+              ],
+              "new_slot": 2,
+              "original_slot": 1,
+              "original_uid": 1500000002,
+              "sid": "703605040094f699"
+            },
+            {
+              "active_original": false,
+              "case": "unrelated",
+              "keys": [
+                "ally",
+                "tactive",
+                "tunrelated"
+              ],
+              "new_slot": 3,
+              "original_slot": 1,
+              "original_uid": 1500000002,
+              "sid": "703605040094f699"
+            },
+            {
+              "active_original": false,
+              "case": "ambiguous",
+              "keys": [
+                "ally",
+                "tactive",
+                "tunrelated",
+                "duplicate_fixture",
+                "tambiguous"
+              ],
+              "new_slot": 4,
+              "original_slot": 1,
+              "original_uid": 1500000002,
+              "sid": "703605040094f699"
+            },
+            {
+              "active_original": false,
+              "case": "stale",
+              "keys": [
+                "ally",
+                "tactive",
+                "tunrelated",
+                "tambiguous",
+                "tstale"
+              ],
+              "new_slot": 5,
+              "original_slot": 1,
+              "original_uid": 1500000002,
+              "sid": "703605040094f699"
+            },
+            {
+              "active_original": false,
+              "case": "future",
+              "keys": [
+                "ally",
+                "tactive",
+                "tunrelated",
+                "tambiguous",
+                "tstale",
+                "tfuture"
+              ],
+              "new_slot": 6,
+              "original_slot": 1,
+              "original_uid": 1500000002,
+              "sid": "703605040094f699"
+            },
+            {
+              "active_original": false,
+              "case": "invalid",
+              "keys": [
+                "ally",
+                "tactive",
+                "tunrelated",
+                "tambiguous",
+                "tstale",
+                "tfuture",
+                "tinvalid"
+              ],
+              "new_slot": 7,
+              "original_slot": 1,
+              "original_uid": 1500000002,
+              "sid": "703605040094f699"
+            },
+            {
+              "case": "identity",
+              "expected_hero": {
+                "armors": [
+                  "hadagan medium pants.wool"
+                ],
+                "dex": 43.0,
+                "exp": 0.0,
+                "exp_total": 1.0,
+                "int": 59.0,
+                "perks": [],
+                "prototype": "Human Hero",
+                "quick": [],
+                "skills": {
+                  "astral": 12.0,
+                  "science": 2.0
+                },
+                "spells": [
+                  "healing {}"
+                ],
+                "str": 33.0,
+                "weapons": [
+                  "cheat dagger.bronze"
+                ]
+              },
+              "expected_purse": {
+                "items": [
+                  "rune:e1",
+                  "rune:e2"
+                ],
+                "money": 359
+              },
+              "hero_slots_after_controls": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "joiner_keys_after_controls": [
+                "ally",
+                "tactive",
+                "tunrelated",
+                "tambiguous",
+                "tstale",
+                "tfuture",
+                "tinvalid"
+              ],
+              "merged_slot": "coop_rename_host_20261009_161329",
+              "original_slot": 1,
+              "original_uid": 1500000002,
+              "rejoined_slot": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "label": "sreturn-final-rename-base",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-final-rename-base.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-final-rename-base.log",
+      "log_sha256": "da92c85da36d447d0d2d775138ab55c904ed16f48444f59be89f17aa99d3a7b1",
+      "checks": 145,
+      "failures": 0,
+      "exit_code": 0,
+      "stopped": false,
+      "errors": [],
+      "warnings": [],
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/fixture20/coop_rename_reconnect.gd",
+        "sha256": "9857498a4bb0aa284e1183ecbf5c64bf8300ab0f7eb670036465f1bb0a8f6d93"
+      },
+      "failed_assertions": [],
+      "scope": "Existing U26 Ann/Alice/Ally normal menu and ENet regression, including exact-proof identity, active/ambiguous/unrelated/stale/future/invalid negative controls and repeated package identity.",
+      "detail_receipt": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/sreturn-final-rename-base/godot/app_userdata/Cursed Lands/rename-receipt.json",
+        "sha256": "6cce3650c45d30ec81087a0649b1fb6bdce221f5041f00626343fdd337377b43",
+        "data": {
+          "campaign": "cursed_lands",
+          "checks": 145,
+          "failures": 0,
+          "rows": [
+            {
+              "deployment": "Ann",
+              "display_name": "Ann",
+              "hero": {
+                "armors": [
+                  "hadagan low shirt.wool",
+                  "hadagan low pants.wool",
+                  "hadagan low boots.wool",
+                  "hadagan low gloves.wool"
+                ],
+                "dex": 43.0,
+                "exp": 0.0,
+                "exp_total": 271.0,
+                "int": 59.0,
+                "perks": [
+                  "bs1"
+                ],
+                "prototype": "Human Hero",
+                "quick": [],
+                "skills": {
+                  "astral": 9.0,
+                  "melee": 10.0,
+                  "science": 3.0,
+                  "sense": 12.0
+                },
+                "spells": [
+                  "healing",
+                  "eagle_sight"
+                ],
+                "str": 31.0,
+                "weapons": [
+                  "cheat dagger.bronze"
+                ]
+              },
+              "hero_name": "Ann",
+              "phase": "ann-host",
+              "player": "Ann",
+              "preview_label": "Ann\nHealth 52/52   Stamina 72/72\nStr 31  Dex 43  Int 59\nAttack 33  Defense 28\nDamage 9-14   Armor 2.3\nLoad 60/372\nExperience 271 (free 0)Spells: Healing, Eagle sightAbilities: Backstab (Increased)",
+              "slot": 1,
+              "unit": 1500000002
+            },
+            {
+              "deployment": "Ann",
+              "display_name": "Ann",
+              "hero": {
+                "armors": [
+                  "hadagan low shirt.wool",
+                  "hadagan low pants.wool",
+                  "hadagan low boots.wool",
+                  "hadagan low gloves.wool"
+                ],
+                "dex": 43.0,
+                "exp": 0.0,
+                "exp_total": 271.0,
+                "int": 59.0,
+                "perks": [
+                  "bs1"
+                ],
+                "prototype": "Human Hero",
+                "quick": [],
+                "skills": {
+                  "astral": 9.0,
+                  "melee": 10.0,
+                  "science": 3.0,
+                  "sense": 12.0
+                },
+                "spells": [
+                  "healing",
+                  "eagle_sight"
+                ],
+                "str": 31.0,
+                "weapons": [
+                  "cheat dagger.bronze"
+                ]
+              },
+              "hero_name": "Ann",
+              "phase": "ann-guest",
+              "player": "Ann",
+              "preview_label": "Ann\nHealth 52/52   Stamina 72/72\nStr 31  Dex 43  Int 59\nAttack 33  Defense 28\nDamage 9-14   Armor 2.3\nLoad 60/372\nExperience 271 (free 0)Spells: Healing, Eagle sightAbilities: Backstab (Increased)",
+              "slot": 1,
+              "unit": 1500000002
+            },
+            {
+              "deployment": "Ann",
+              "display_name": "Alice",
+              "hero": {
+                "armors": [
+                  "hadagan low shirt.wool",
+                  "hadagan low pants.wool",
+                  "hadagan low boots.wool",
+                  "hadagan low gloves.wool"
+                ],
+                "dex": 43.0,
+                "exp": 0.0,
+                "exp_total": 271.0,
+                "int": 59.0,
+                "perks": [
+                  "bs1"
+                ],
+                "prototype": "Human Hero",
+                "quick": [],
+                "skills": {
+                  "astral": 9.0,
+                  "melee": 10.0,
+                  "science": 3.0,
+                  "sense": 12.0
+                },
+                "spells": [
+                  "healing",
+                  "eagle_sight"
+                ],
+                "str": 33.0,
+                "weapons": [
+                  "cheat dagger.bronze"
+                ]
+              },
+              "hero_name": "Alice",
+              "phase": "alice-host",
+              "player": "Alice",
+              "preview_label": "Alice\nHealth 55/55   Stamina 72/72\nStr 33  Dex 43  Int 59\nAttack 33  Defense 28\nDamage 9-14   Armor 2.3\nLoad 60/396\nExperience 271 (free 0)Spells: Healing, Eagle sightAbilities: Backstab (Increased)",
+              "slot": 1,
+              "unit": 1500000002
+            },
+            {
+              "deployment": "Ann",
+              "display_name": "Alice",
+              "hero": {
+                "armors": [
+                  "hadagan low shirt.wool",
+                  "hadagan low pants.wool",
+                  "hadagan low boots.wool",
+                  "hadagan low gloves.wool"
+                ],
+                "dex": 43.0,
+                "exp": 0.0,
+                "exp_total": 271.0,
+                "int": 59.0,
+                "perks": [
+                  "bs1"
+                ],
+                "prototype": "Human Hero",
+                "quick": [],
+                "skills": {
+                  "astral": 9.0,
+                  "melee": 10.0,
+                  "science": 3.0,
+                  "sense": 12.0
+                },
+                "spells": [
+                  "healing",
+                  "eagle_sight"
+                ],
+                "str": 33.0,
+                "weapons": [
+                  "cheat dagger.bronze"
+                ]
+              },
+              "hero_name": "Alice",
+              "phase": "alice-guest",
+              "player": "Alice",
+              "preview_label": "Alice\nHealth 55/55   Stamina 72/72\nStr 33  Dex 43  Int 59\nAttack 33  Defense 28\nDamage 9-14   Armor 2.3\nLoad 60/396\nExperience 271 (free 0)Spells: Healing, Eagle sightAbilities: Backstab (Increased)",
+              "slot": 1,
+              "unit": 1500000002
+            },
+            {
+              "deployment": "Ann",
+              "display_name": "Alice",
+              "hero": {
+                "armors": [
+                  "hadagan low shirt.wool",
+                  "hadagan low pants.wool",
+                  "hadagan low boots.wool",
+                  "hadagan low gloves.wool"
+                ],
+                "dex": 43.0,
+                "exp": 0.0,
+                "exp_total": 271.0,
+                "int": 59.0,
+                "perks": [
+                  "bs1"
+                ],
+                "prototype": "Human Hero",
+                "quick": [],
+                "skills": {
+                  "astral": 9.0,
+                  "melee": 10.0,
+                  "science": 3.0,
+                  "sense": 12.0
+                },
+                "spells": [
+                  "healing",
+                  "eagle_sight"
+                ],
+                "str": 33.0,
+                "weapons": [
+                  "cheat dagger.bronze"
+                ]
+              },
+              "hero_name": "Alice",
+              "phase": "reload-host",
+              "player": "Alice",
+              "preview_label": "Alice\nHealth 55/55   Stamina 72/72\nStr 33  Dex 43  Int 59\nAttack 33  Defense 28\nDamage 9-14   Armor 2.3\nLoad 60/396\nExperience 271 (free 0)Spells: Healing, Eagle sightAbilities: Backstab (Increased)",
+              "slot": 1,
+              "unit": 1500000002
+            },
+            {
+              "deployment": "Ann",
+              "display_name": "Alice",
+              "hero": {
+                "armors": [
+                  "hadagan low shirt.wool",
+                  "hadagan low pants.wool",
+                  "hadagan low boots.wool",
+                  "hadagan low gloves.wool"
+                ],
+                "dex": 43.0,
+                "exp": 0.0,
+                "exp_total": 271.0,
+                "int": 59.0,
+                "perks": [
+                  "bs1"
+                ],
+                "prototype": "Human Hero",
+                "quick": [],
+                "skills": {
+                  "astral": 9.0,
+                  "melee": 10.0,
+                  "science": 3.0,
+                  "sense": 12.0
+                },
+                "spells": [
+                  "healing",
+                  "eagle_sight"
+                ],
+                "str": 33.0,
+                "weapons": [
+                  "cheat dagger.bronze"
+                ]
+              },
+              "hero_name": "Alice",
+              "phase": "reload-guest",
+              "player": "Alice",
+              "preview_label": "Alice\nHealth 55/55   Stamina 72/72\nStr 33  Dex 43  Int 59\nAttack 33  Defense 28\nDamage 9-14   Armor 2.3\nLoad 60/396\nExperience 271 (free 0)Spells: Healing, Eagle sightAbilities: Backstab (Increased)",
+              "slot": 1,
+              "unit": 1500000002
+            },
+            {
+              "deployment": "Ann",
+              "display_name": "Ally",
+              "hero": {
+                "armors": [
+                  "hadagan low shirt.wool",
+                  "hadagan low pants.wool",
+                  "hadagan low boots.wool",
+                  "hadagan low gloves.wool"
+                ],
+                "dex": 43.0,
+                "exp": 0.0,
+                "exp_total": 271.0,
+                "int": 59.0,
+                "perks": [
+                  "bs1"
+                ],
+                "prototype": "Human Hero",
+                "quick": [],
+                "skills": {
+                  "astral": 9.0,
+                  "melee": 10.0,
+                  "science": 3.0,
+                  "sense": 12.0
+                },
+                "spells": [
+                  "healing",
+                  "eagle_sight"
+                ],
+                "str": 33.0,
+                "weapons": [
+                  "cheat dagger.bronze"
+                ]
+              },
+              "hero_name": "Ally",
+              "phase": "ally-host",
+              "player": "Ally",
+              "preview_label": "Ally\nHealth 55/55   Stamina 72/72\nStr 33  Dex 43  Int 59\nAttack 33  Defense 28\nDamage 9-14   Armor 2.3\nLoad 60/396\nExperience 271 (free 0)Spells: Healing, Eagle sightAbilities: Backstab (Increased)",
+              "slot": 1,
+              "unit": 1500000002
+            },
+            {
+              "deployment": "Ann",
+              "display_name": "Ally",
+              "hero": {
+                "armors": [
+                  "hadagan low shirt.wool",
+                  "hadagan low pants.wool",
+                  "hadagan low boots.wool",
+                  "hadagan low gloves.wool"
+                ],
+                "dex": 43.0,
+                "exp": 0.0,
+                "exp_total": 271.0,
+                "int": 59.0,
+                "perks": [
+                  "bs1"
+                ],
+                "prototype": "Human Hero",
+                "quick": [],
+                "skills": {
+                  "astral": 9.0,
+                  "melee": 10.0,
+                  "science": 3.0,
+                  "sense": 12.0
+                },
+                "spells": [
+                  "healing",
+                  "eagle_sight"
+                ],
+                "str": 33.0,
+                "weapons": [
+                  "cheat dagger.bronze"
+                ]
+              },
+              "hero_name": "Ally",
+              "phase": "ally-guest",
+              "player": "Ally",
+              "preview_label": "Ally\nHealth 55/55   Stamina 72/72\nStr 33  Dex 43  Int 59\nAttack 33  Defense 28\nDamage 9-14   Armor 2.3\nLoad 60/396\nExperience 271 (free 0)Spells: Healing, Eagle sightAbilities: Backstab (Increased)",
+              "slot": 1,
+              "unit": 1500000002
+            },
+            {
+              "deployment": "Ann",
+              "display_name": "Ally",
+              "hero": {
+                "armors": [
+                  "hadagan low shirt.wool",
+                  "hadagan low pants.wool",
+                  "hadagan low boots.wool",
+                  "hadagan low gloves.wool"
+                ],
+                "dex": 43.0,
+                "exp": 0.0,
+                "exp_total": 271.0,
+                "int": 59.0,
+                "perks": [
+                  "bs1"
+                ],
+                "prototype": "Human Hero",
+                "quick": [],
+                "skills": {
+                  "astral": 9.0,
+                  "melee": 10.0,
+                  "science": 3.0,
+                  "sense": 12.0
+                },
+                "spells": [
+                  "healing",
+                  "eagle_sight"
+                ],
+                "str": 33.0,
+                "weapons": [
+                  "cheat dagger.bronze"
+                ]
+              },
+              "hero_name": "Ally",
+              "phase": "repeat-host",
+              "player": "Ally",
+              "preview_label": "Ally\nHealth 55/55   Stamina 72/72\nStr 33  Dex 43  Int 59\nAttack 33  Defense 28\nDamage 9-14   Armor 9.3\nLoad 60/396\nExperience 271 (free 0)Spells: Healing, Eagle sightAbilities: Backstab (Increased)",
+              "slot": 1,
+              "unit": 1500000002
+            },
+            {
+              "deployment": "Ann",
+              "display_name": "Ally",
+              "hero": {
+                "armors": [
+                  "hadagan low shirt.wool",
+                  "hadagan low pants.wool",
+                  "hadagan low boots.wool",
+                  "hadagan low gloves.wool"
+                ],
+                "dex": 43.0,
+                "exp": 0.0,
+                "exp_total": 271.0,
+                "int": 59.0,
+                "perks": [
+                  "bs1"
+                ],
+                "prototype": "Human Hero",
+                "quick": [],
+                "skills": {
+                  "astral": 9.0,
+                  "melee": 10.0,
+                  "science": 3.0,
+                  "sense": 12.0
+                },
+                "spells": [
+                  "healing",
+                  "eagle_sight"
+                ],
+                "str": 33.0,
+                "weapons": [
+                  "cheat dagger.bronze"
+                ]
+              },
+              "hero_name": "Ally",
+              "phase": "repeat-guest",
+              "player": "Ally",
+              "preview_label": "Ally\nHealth 55/55   Stamina 72/72\nStr 33  Dex 43  Int 59\nAttack 33  Defense 28\nDamage 9-14   Armor 9.3\nLoad 60/396\nExperience 271 (free 0)Spells: Healing, Eagle sightAbilities: Backstab (Increased)",
+              "slot": 1,
+              "unit": 1500000002
+            },
+            {
+              "active_original": true,
+              "case": "active",
+              "keys": [
+                "ally",
+                "tactive"
+              ],
+              "new_slot": 2,
+              "original_slot": 1,
+              "original_uid": 1500000002,
+              "sid": "83c4e87b00a6dc12"
+            },
+            {
+              "active_original": false,
+              "case": "unrelated",
+              "keys": [
+                "ally",
+                "tactive",
+                "tunrelated"
+              ],
+              "new_slot": 3,
+              "original_slot": 1,
+              "original_uid": 1500000002,
+              "sid": "83c4e87b00a6dc12"
+            },
+            {
+              "active_original": false,
+              "case": "ambiguous",
+              "keys": [
+                "ally",
+                "tactive",
+                "tunrelated",
+                "duplicate_fixture",
+                "tambiguous"
+              ],
+              "new_slot": 4,
+              "original_slot": 1,
+              "original_uid": 1500000002,
+              "sid": "83c4e87b00a6dc12"
+            },
+            {
+              "active_original": false,
+              "case": "stale",
+              "keys": [
+                "ally",
+                "tactive",
+                "tunrelated",
+                "tambiguous",
+                "tstale"
+              ],
+              "new_slot": 5,
+              "original_slot": 1,
+              "original_uid": 1500000002,
+              "sid": "83c4e87b00a6dc12"
+            },
+            {
+              "active_original": false,
+              "case": "future",
+              "keys": [
+                "ally",
+                "tactive",
+                "tunrelated",
+                "tambiguous",
+                "tstale",
+                "tfuture"
+              ],
+              "new_slot": 6,
+              "original_slot": 1,
+              "original_uid": 1500000002,
+              "sid": "83c4e87b00a6dc12"
+            },
+            {
+              "active_original": false,
+              "case": "invalid",
+              "keys": [
+                "ally",
+                "tactive",
+                "tunrelated",
+                "tambiguous",
+                "tstale",
+                "tfuture",
+                "tinvalid"
+              ],
+              "new_slot": 7,
+              "original_slot": 1,
+              "original_uid": 1500000002,
+              "sid": "83c4e87b00a6dc12"
+            },
+            {
+              "case": "identity",
+              "expected_hero": {
+                "armors": [
+                  "hadagan low shirt.wool",
+                  "hadagan low pants.wool",
+                  "hadagan low boots.wool",
+                  "hadagan low gloves.wool"
+                ],
+                "dex": 43.0,
+                "exp": 0.0,
+                "exp_total": 271.0,
+                "int": 59.0,
+                "perks": [
+                  "bs1"
+                ],
+                "prototype": "Human Hero",
+                "quick": [],
+                "skills": {
+                  "astral": 9.0,
+                  "melee": 10.0,
+                  "science": 3.0,
+                  "sense": 12.0
+                },
+                "spells": [
+                  "healing",
+                  "eagle_sight"
+                ],
+                "str": 33.0,
+                "weapons": [
+                  "cheat dagger.bronze"
+                ]
+              },
+              "expected_purse": {
+                "items": [
+                  "rune:e1",
+                  "rune:e2"
+                ],
+                "money": 359
+              },
+              "hero_slots_after_controls": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "joiner_keys_after_controls": [
+                "ally",
+                "tactive",
+                "tunrelated",
+                "tambiguous",
+                "tstale",
+                "tfuture",
+                "tinvalid"
+              ],
+              "merged_slot": "coop_rename_host_20261009_161303",
+              "original_slot": 1,
+              "original_uid": 1500000002,
+              "rejoined_slot": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "label": "sreturn-final-resume",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-final-resume.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-final-resume.log",
+      "log_sha256": "4fb41db199347b95c52b6b0ad23a56b92cdf0560cac8ec5184ab720dff50989b",
+      "checks": 21,
+      "failures": 0,
+      "exit_code": 0,
+      "stopped": false,
+      "errors": [],
+      "warnings": [],
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/fixture20/coop_solo_return_resume.gd",
+        "sha256": "b557f45d438af027b94c4b83f05f0b81d44d37b03d1b4549cbb7fd1b791e58dd"
+      },
+      "failed_assertions": [],
+      "scope": "Fresh independent process copies only actual RPC-produced Ann/Fresh saves into a new disposable profile and loads both offline; correct FPrison/gz1h body, stats, inventory, own journal and local ownership.",
+      "detail_receipt": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/sreturn-final-resume/godot/app_userdata/Cursed Lands/rename-receipt.json",
+        "sha256": "28af51e952dfee7c348a4bffb6602f3878b20d277ccbcc2006319c3238248dfe",
+        "data": {
+          "campaign": "lost_in_astral",
+          "checks": 21,
+          "failures": 0,
+          "rows": []
+        }
+      }
+    },
+    {
+      "label": "sreturn-final-role-regression-astral",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-final-role-regression-astral.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-final-role-regression-astral.log",
+      "log_sha256": "bac6fbbdb3169573962e8ea92f597cf7fcf2a09d071b7de63c623c500a0de4c7",
+      "checks": 38,
+      "failures": 0,
+      "exit_code": 0,
+      "stopped": false,
+      "errors": [],
+      "warnings": [],
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/fixture20/coop_guest_roles.gd",
+        "sha256": "be08f73018774c4c6c286f5b4cd6d211503fc2f282fab9c73666d241920c801e"
+      },
+      "failed_assertions": [],
+      "scope": "Existing original-data guest-role regression."
+    },
+    {
+      "label": "sreturn-final-role-regression-base",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-final-role-regression-base.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-final-role-regression-base.log",
+      "log_sha256": "f45fac3c327553aa28b2e48922e22385780cebc0af9b5ae0e5741433a2b15e0c",
+      "checks": 51,
+      "failures": 0,
+      "exit_code": 0,
+      "stopped": false,
+      "errors": [],
+      "warnings": [],
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/fixture20/coop_guest_roles.gd",
+        "sha256": "be08f73018774c4c6c286f5b4cd6d211503fc2f282fab9c73666d241920c801e"
+      },
+      "failed_assertions": [],
+      "scope": "Existing original-data guest-role regression."
+    },
+    {
+      "label": "sreturn-final-roles-astral",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-final-roles-astral.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-final-roles-astral.log",
+      "log_sha256": "7de2e94feab2afd94291dbc7702df1e510c324c0a6575acc5d350dfd797fdfb4",
+      "checks": 12,
+      "failures": 0,
+      "exit_code": 0,
+      "stopped": false,
+      "errors": [],
+      "warnings": [],
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/fixture20/coop_solo_return_roles.gd",
+        "sha256": "29088a92d2b38a130df2664ae4ce726efaeabef90d0a5b3194e88fcf3b82b17a"
+      },
+      "failed_assertions": [],
+      "scope": "Original authored Nalo/Shaina instructions prepare temporary roles; acknowledged reimport preserves own role and parked main-protagonist stats/bags and generated deployment identity."
+    },
+    {
+      "label": "sreturn-final-roles-base",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-final-roles-base.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-final-roles-base.log",
+      "log_sha256": "fdd1fef03affe127ba8d976a8540fb82d37e736dcd23b1517929b7bb3ca2a79f",
+      "checks": 10,
+      "failures": 0,
+      "exit_code": 0,
+      "stopped": false,
+      "errors": [],
+      "warnings": [],
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/fixture20/coop_solo_return_roles.gd",
+        "sha256": "29088a92d2b38a130df2664ae4ce726efaeabef90d0a5b3194e88fcf3b82b17a"
+      },
+      "failed_assertions": [],
+      "scope": "Original authored Nalo/Shaina instructions prepare temporary roles; acknowledged reimport preserves own role and parked main-protagonist stats/bags and generated deployment identity."
+    },
+    {
+      "label": "sreturn-final-transport",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-final-transport.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-final-transport.log",
+      "log_sha256": "a0e560b44a21761b73f0bfa9cf295a1aa57a5eec8f6fd7337f6ffd2a12f717d5",
+      "checks": 32,
+      "failures": 0,
+      "exit_code": 0,
+      "stopped": false,
+      "errors": [],
+      "warnings": [],
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/fixture20/coop_solo_return_transport.gd",
+        "sha256": "0d5c171ef5a81aa2667608c05e117db41d49fa60bcc972833544db31a1fc3244"
+      },
+      "failed_assertions": [],
+      "scope": "Actual independent SceneMultiplayer frontends and menu joins. Active same-name replacement retains actor/purse, retires old peer/path once, then stale and uncredited sources cannot replace the baseline.",
+      "detail_receipt": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/sreturn-final-transport/godot/app_userdata/Cursed Lands/rename-receipt.json",
+        "sha256": "b375a46c985bcf393f9c8f76c85b939de35146698f586384b991a030ad3e5326",
+        "data": {
+          "campaign": "lost_in_astral",
+          "checks": 32,
+          "failures": 0,
+          "rows": []
+        }
+      }
+    },
+    {
+      "label": "sreturn-final-travel-astral",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-final-travel-astral.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-final-travel-astral.log",
+      "log_sha256": "0cb0a8e3d5abaf0a69328479f4bef432385f57137bffaac67ef6004c6d118a0b",
+      "checks": 15,
+      "failures": 0,
+      "exit_code": 0,
+      "stopped": false,
+      "errors": [],
+      "warnings": [],
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/fixture20/coop_progress_travel.gd",
+        "sha256": "2f75b009a3fa2f695ad094ff575e14e8fa1b0d01f17526ae7f505952d961bd78"
+      },
+      "failed_assertions": [],
+      "scope": "Existing shared-travel policy regression with an actually matched independent checkpoint."
+    },
+    {
+      "label": "sreturn-final-travel-base",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-final-travel-base.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-final-travel-base.log",
+      "log_sha256": "1e406f06afc5b8ae196863e3c1f7de517aa008edf268681fd406fe3baa6c5260",
+      "checks": 15,
+      "failures": 0,
+      "exit_code": 0,
+      "stopped": false,
+      "errors": [],
+      "warnings": [],
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/fixture20/coop_progress_travel.gd",
+        "sha256": "2f75b009a3fa2f695ad094ff575e14e8fa1b0d01f17526ae7f505952d961bd78"
+      },
+      "failed_assertions": [],
+      "scope": "Existing shared-travel policy regression with an actually matched independent checkpoint."
+    }
+  ],
+  "prototype_exports": {
+    "candidate01": {
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/candidate01/export.json",
+      "sha256": "568f46c17fef724028f1b3f384e63ccefd8dc00351d26c529562becc74cbf976",
+      "data": {
+        "baseline": "82b749f",
+        "overlays": [
+          "game/src/game/coop_progress.gd",
+          "game/src/game/session.gd"
+        ],
+        "steps": [
+          {
+            "command": [
+              "/home/llm2x/.local/bin/godot-4",
+              "--headless",
+              "--path",
+              "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/candidate01/stage",
+              "--editor",
+              "--import"
+            ],
+            "return_code": 0,
+            "seconds": 5.873568139009876,
+            "errors": []
+          },
+          {
+            "command": [
+              "/home/llm2x/.local/bin/godot-4",
+              "--headless",
+              "--path",
+              "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/candidate01/stage",
+              "--export-pack",
+              "Linux",
+              "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/candidate01/CPU.pck"
+            ],
+            "return_code": 0,
+            "seconds": 6.153922572004376,
+            "errors": []
+          }
+        ],
+        "sha256": {
+          "export.log": "ab6394539fd022d5bba60fac5c5e0d7db2793eb48f05f24e889f84ee9f56e2ea",
+          "CPU.x86_64": "769dd027c0b444caca0d5fbbb6014eda80970e991e9f32fdb1f86ec385d20c3e",
+          "import.log": "6f8c4ed74d0b23f8cc0008fcd91f9e8abb200ad3078c4a032ee939731951374f",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e",
+          "CPU.pck": "9d3c4c788365c68e72a45f98f4707e3765b6df28f9ce77b5cd0a682c0d75c2c2"
+        }
+      }
+    },
+    "candidate02": {
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/candidate02/export.json",
+      "sha256": "3f2fcb3a1d2d06fc6e9b167818a615e13ea672fef5f78b3053f5648dea837f95",
+      "data": {
+        "baseline": "82b749f",
+        "overlays": {
+          "game/src/game/coop_progress.gd": "f5d616bbb6d410cd7cdcd5b16bca6aa1a69fcabee6b9a0f748c4f4e300b70195",
+          "game/src/game/session.gd": "62f6d521be96df8e989ff5796a7de09c4afc18d25d9489a987a5589124a459fc"
+        },
+        "steps": [
+          {
+            "command": [
+              "/home/llm2x/.local/bin/godot-4",
+              "--headless",
+              "--path",
+              "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/candidate02/stage",
+              "--editor",
+              "--import"
+            ],
+            "return_code": 0,
+            "seconds": 11.159605013992405,
+            "errors": []
+          },
+          {
+            "command": [
+              "/home/llm2x/.local/bin/godot-4",
+              "--headless",
+              "--path",
+              "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/candidate02/stage",
+              "--export-pack",
+              "Linux",
+              "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/candidate02/CPU.pck"
+            ],
+            "return_code": 0,
+            "seconds": 6.839898807986174,
+            "errors": []
+          }
+        ],
+        "sha256": {
+          "export.log": "ab6394539fd022d5bba60fac5c5e0d7db2793eb48f05f24e889f84ee9f56e2ea",
+          "CPU.x86_64": "769dd027c0b444caca0d5fbbb6014eda80970e991e9f32fdb1f86ec385d20c3e",
+          "import.log": "4fa19610a040943ffd5f01279eee1e4265c387d7be5225ced13e2a0aeff0aab4",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e",
+          "CPU.pck": "218dc1f0a3fd1fca62246b9775671e0ba02031f1e17946e9624113ef400bca42"
+        }
+      }
+    },
+    "candidate03": {
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/candidate03/export.json",
+      "sha256": "da3d3dd74b3ce49f10e04d10704f4053f8e62e30df4ae99fedaad84376cdc3e7",
+      "data": {
+        "baseline": "82b749f",
+        "overlays": {
+          "game/src/game/coop_progress.gd": {
+            "working_sha256": "fd1788fa061d713e691121516fbb080095820e70b21503d2969f599f29eb848f",
+            "staged_sha256": "f6df3c93c4096b977cf1d36b6260db7d38a601a5e07545bba69b6720b98ed986"
+          },
+          "game/src/game/session.gd": {
+            "working_sha256": "b2909220b7a36c104a59b913b96a64833c7af22088117be09ed2c2b589738fdd",
+            "staged_sha256": "b2909220b7a36c104a59b913b96a64833c7af22088117be09ed2c2b589738fdd"
+          },
+          "game/src/game/coop_guest_roles.gd": {
+            "working_sha256": "31eb28ddd70629dd73877bdbd65e72eda1839f4a088da63ef94eaf6f6e43c7f8",
+            "staged_sha256": "31eb28ddd70629dd73877bdbd65e72eda1839f4a088da63ef94eaf6f6e43c7f8"
+          }
+        },
+        "steps": [
+          {
+            "command": [
+              "/home/llm2x/.local/bin/godot-4",
+              "--headless",
+              "--path",
+              "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/candidate03/stage",
+              "--editor",
+              "--import"
+            ],
+            "return_code": 0,
+            "seconds": 10.298631324025337,
+            "errors": []
+          },
+          {
+            "command": [
+              "/home/llm2x/.local/bin/godot-4",
+              "--headless",
+              "--path",
+              "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/candidate03/stage",
+              "--export-pack",
+              "Linux",
+              "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/candidate03/CPU.pck"
+            ],
+            "return_code": 0,
+            "seconds": 6.430348224006593,
+            "errors": []
+          }
+        ],
+        "omitted_pending_peer_hook": "package mark_zones line only; peer owns separate pending helper/integration",
+        "sha256": {
+          "export.log": "ab6394539fd022d5bba60fac5c5e0d7db2793eb48f05f24e889f84ee9f56e2ea",
+          "CPU.x86_64": "769dd027c0b444caca0d5fbbb6014eda80970e991e9f32fdb1f86ec385d20c3e",
+          "import.log": "4fa19610a040943ffd5f01279eee1e4265c387d7be5225ced13e2a0aeff0aab4",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e",
+          "CPU.pck": "2ba49a5cc5965fe1ea99a80ff3f50a0c8ebca8a556a0d6b7e36896287b96e07f"
+        }
+      }
+    },
+    "candidate04": {
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/candidate04/export.json",
+      "sha256": "2112db2d2fbd6f6951001f992d94f87f525b9ede4f53d3c769f86c073e65fee4",
+      "data": {
+        "baseline": "82b749f",
+        "overlays": {
+          "game/src/game/coop_progress.gd": {
+            "working_sha256": "25a7fc2e0d7f3915b5c0791fc8d0e35543fe590e25fd6c5df533d70909545599",
+            "staged_sha256": "13c7ee620f2922b31b16cff181a0e210c7ca2fb0f7990873a62bb1049e00cbe0"
+          },
+          "game/src/game/session.gd": {
+            "working_sha256": "b2909220b7a36c104a59b913b96a64833c7af22088117be09ed2c2b589738fdd",
+            "staged_sha256": "b2909220b7a36c104a59b913b96a64833c7af22088117be09ed2c2b589738fdd"
+          },
+          "game/src/game/coop_guest_roles.gd": {
+            "working_sha256": "31eb28ddd70629dd73877bdbd65e72eda1839f4a088da63ef94eaf6f6e43c7f8",
+            "staged_sha256": "31eb28ddd70629dd73877bdbd65e72eda1839f4a088da63ef94eaf6f6e43c7f8"
+          }
+        },
+        "steps": [
+          {
+            "command": [
+              "/home/llm2x/.local/bin/godot-4",
+              "--headless",
+              "--path",
+              "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/candidate04/stage",
+              "--editor",
+              "--import"
+            ],
+            "return_code": 0,
+            "seconds": 10.140490969992243,
+            "errors": []
+          },
+          {
+            "command": [
+              "/home/llm2x/.local/bin/godot-4",
+              "--headless",
+              "--path",
+              "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/candidate04/stage",
+              "--export-pack",
+              "Linux",
+              "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/candidate04/CPU.pck"
+            ],
+            "return_code": 0,
+            "seconds": 6.173845790995983,
+            "errors": []
+          }
+        ],
+        "omitted_pending_peer_hook": "package mark_zones line only; peer owns separate pending helper/integration",
+        "sha256": {
+          "export.log": "ab6394539fd022d5bba60fac5c5e0d7db2793eb48f05f24e889f84ee9f56e2ea",
+          "CPU.x86_64": "769dd027c0b444caca0d5fbbb6014eda80970e991e9f32fdb1f86ec385d20c3e",
+          "import.log": "4fa19610a040943ffd5f01279eee1e4265c387d7be5225ced13e2a0aeff0aab4",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e",
+          "CPU.pck": "90aaa7c309ee340b45810bb3dcd1e797be4c72873bd909f04befc47583ac3320"
+        }
+      }
+    }
+  },
+  "intermediate_and_rejected_runs": [
+    {
+      "label": "sreturn-baseline-rebase-final",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-baseline-rebase-final.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-baseline-rebase-final.log",
+      "log_sha256": "5f0df4f65af4806f8fa555719f4b1379ccc81b70ceed7d6a139f45f5c462b977",
+      "checks": 30,
+      "failures": 7,
+      "exit_code": 1,
+      "stopped": false,
+      "errors": [],
+      "warnings": [
+        "WARNING: LanDiscovery: port 27016 is in use; this game is not listed on the local network."
+      ],
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/fixture21/coop_solo_return.gd",
+        "sha256": "8e89d3beb344183fb967323119ae2ff3bc9c26d1864931e21314e77b56257788"
+      },
+      "failed_assertions": [
+        "acknowledged solo return imports newly earned hero stats/equipment",
+        "live peer deploys the returned authored protagonist body and stats",
+        "live peer deploys the returned authored protagonist body and stats",
+        "acknowledged solo return imports its new private purse once",
+        "matching acknowledged return restores shared checkpoint continuity",
+        "old checkpoint cannot rewind the newer compatible source chapter/location",
+        "returned package retains new solo earnings"
+      ],
+      "disposition": "Clean compact baseline against 82b749f: first 30 assertions of the final main flow, seven real rebase/body/purse/continuity/checkpoint failures. One LAN-discovery port warning arose from concurrent loopback tests on different game ports; no ENet or assertion failure is attributed to that warning."
+    },
+    {
+      "label": "sreturn-context-base-after-02",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-context-base-after-02.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-context-base-after-02.log",
+      "log_sha256": "a1b2000d3b5227d777d405e6d510fb45ad0c663722d06924d1ec07ff9b76e092",
+      "checks": 72,
+      "failures": 0,
+      "exit_code": 0,
+      "stopped": false,
+      "errors": [],
+      "warnings": [],
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/fixture12/coop_progress_context.gd",
+        "sha256": "0971d4be7a9bb2521c2025903010d8bc159cea780b7b207431d2805e4171c9b1"
+      },
+      "failed_assertions": [],
+      "disposition": "Passing intermediate prototype regression, superseded by final candidate05; excluded from final acceptance count."
+    },
+    {
+      "label": "sreturn-context-lia-after-02",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-context-lia-after-02.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-context-lia-after-02.log",
+      "log_sha256": "7410cdbcbdcf5ed78d9aee1baca41b962c9c1e9b2f204b673e1fa0c1a17293b7",
+      "checks": 76,
+      "failures": 0,
+      "exit_code": 0,
+      "stopped": false,
+      "errors": [],
+      "warnings": [],
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/fixture12/coop_progress_context.gd",
+        "sha256": "0971d4be7a9bb2521c2025903010d8bc159cea780b7b207431d2805e4171c9b1"
+      },
+      "failed_assertions": [],
+      "disposition": "Passing intermediate prototype regression, superseded by final candidate05; excluded from final acceptance count."
+    },
+    {
+      "label": "sreturn-dependents-base-after-02",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-dependents-base-after-02.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-dependents-base-after-02.log",
+      "log_sha256": "46418215c3a731c6d53e8c92b01408cdb95017f96050ad3b0608c3f94c53b5f6",
+      "checks": 10,
+      "failures": 0,
+      "exit_code": 0,
+      "stopped": false,
+      "errors": [],
+      "warnings": [],
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/fixture12/coop_solo_return_dependents.gd",
+        "sha256": "a39987a5cc5aa8fbb9112204a3368d677c24de6e34dc65b075af7df5f11e743f"
+      },
+      "failed_assertions": [],
+      "disposition": "Passing intermediate prototype regression, superseded by final candidate05; excluded from final acceptance count."
+    },
+    {
+      "label": "sreturn-dependents-before-01",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-dependents-before-01.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-dependents-before-01.log",
+      "log_sha256": "e835e4acbcf614d94e744a3c7e2e93c79b9a666a3004fa791c474fbb241f3460",
+      "checks": 6,
+      "failures": 2,
+      "exit_code": 1,
+      "stopped": false,
+      "errors": [],
+      "warnings": [],
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/fixture09/coop_solo_return_dependents.gd",
+        "sha256": "b1f4a519c5dd11b6ff1ccd7ee841084738dc77fa39ec7af0d4c0c847bd535535"
+      },
+      "failed_assertions": [
+        "changed solo dependent retains its mutable state without a stale host duplicate",
+        "independently trained personal hire is not replaced by its stale host record"
+      ],
+      "disposition": "Valid candidate01 reproduction: changed private pet was duplicated and optional base hire overwritten by stale host records. Two failures of six."
+    },
+    {
+      "label": "sreturn-dependents-lia-after-02",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-dependents-lia-after-02.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-dependents-lia-after-02.log",
+      "log_sha256": "0f7a0c4218d63125ef4ef170b025438b87496e4b2abef84a547826ec5a2587a6",
+      "checks": 10,
+      "failures": 0,
+      "exit_code": 0,
+      "stopped": false,
+      "errors": [],
+      "warnings": [],
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/fixture12/coop_solo_return_dependents.gd",
+        "sha256": "a39987a5cc5aa8fbb9112204a3368d677c24de6e34dc65b075af7df5f11e743f"
+      },
+      "failed_assertions": [],
+      "disposition": "Passing intermediate prototype regression, superseded by final candidate05; excluded from final acceptance count."
+    },
+    {
+      "label": "sreturn-guards-astral-after-02",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-guards-astral-after-02.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-guards-astral-after-02.log",
+      "log_sha256": "1d7a6b0604b7ff42c2fc79f996682f66d2548d1e39329c71ad242bc66cd4f963",
+      "checks": 18,
+      "failures": 0,
+      "exit_code": 0,
+      "stopped": false,
+      "errors": [],
+      "warnings": [],
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/fixture17/coop_solo_return_guards.gd",
+        "sha256": "7e959345bae4ef5e32dd84222809d33b0a23df388f97748dedf290548968c1f2"
+      },
+      "failed_assertions": [],
+      "disposition": "Passing intermediate prototype regression, superseded by final candidate05; excluded from final acceptance count."
+    },
+    {
+      "label": "sreturn-guards-base-after-02",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-guards-base-after-02.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-guards-base-after-02.log",
+      "log_sha256": "82e79b3abd833738310839aaaf9fece547adfe5da09872fbefb026be50109d1c",
+      "checks": 18,
+      "failures": 0,
+      "exit_code": 0,
+      "stopped": false,
+      "errors": [],
+      "warnings": [],
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/fixture17/coop_solo_return_guards.gd",
+        "sha256": "7e959345bae4ef5e32dd84222809d33b0a23df388f97748dedf290548968c1f2"
+      },
+      "failed_assertions": [],
+      "disposition": "Passing intermediate prototype regression, superseded by final candidate05; excluded from final acceptance count."
+    },
+    {
+      "label": "sreturn-guards-before-01",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-guards-before-01.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-guards-before-01.log",
+      "log_sha256": "1f99bc1dd8e30f8efe967cd3aa4ea95f836761321cf09fa013b8d3c945aba833",
+      "checks": 18,
+      "failures": 10,
+      "exit_code": 1,
+      "stopped": false,
+      "errors": [],
+      "warnings": [],
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/fixture15/coop_solo_return_guards.gd",
+        "sha256": "7e959345bae4ef5e32dd84222809d33b0a23df388f97748dedf290548968c1f2"
+      },
+      "failed_assertions": [
+        "behind re-entry cannot adopt a full story checkpoint",
+        "behind host reload cannot adopt a full story checkpoint",
+        "conflict re-entry cannot adopt a full story checkpoint",
+        "conflict host reload cannot adopt a full story checkpoint",
+        "party re-entry cannot adopt a full story checkpoint",
+        "party host reload cannot adopt a full story checkpoint",
+        "quest_item re-entry cannot adopt a full story checkpoint",
+        "quest_item host reload cannot adopt a full story checkpoint",
+        "side_quest re-entry cannot adopt a full story checkpoint",
+        "side_quest host reload cannot adopt a full story checkpoint"
+      ],
+      "disposition": "Valid candidate03 policy reproduction: behind/flag/quest-item/side-quest divergence could adopt host checkpoint on re-entry/load (eight movement failures). Party mismatch already blocked movement but incorrectly became clean (two eligibility failures)."
+    },
+    {
+      "label": "sreturn-inspect-01",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-inspect-01.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-inspect-01.log",
+      "log_sha256": "415275ff8e8f82af7e5c48f1b957eb43b24875754e3c67aa0c115020faadf789",
+      "checks": null,
+      "failures": null,
+      "exit_code": 0,
+      "stopped": false,
+      "errors": [],
+      "warnings": [],
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/inspect_script.gd",
+        "sha256": "dc58053fd76097daecaecd434b7b8b84cfdfbc29352097dd507d814e1b8aa23b"
+      },
+      "failed_assertions": [],
+      "disposition": "Read-only original-data alias/quest inspection; no acceptance assertions."
+    },
+    {
+      "label": "sreturn-lia-after-05",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-lia-after-05.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-lia-after-05.log",
+      "log_sha256": "a7a348442daf3d5ecc13314a26acd1a9cf5f93c14d97fbc208416cb7c42bb5d4",
+      "checks": null,
+      "failures": null,
+      "exit_code": -15,
+      "stopped": true,
+      "errors": [
+        "SCRIPT ERROR: Parse Error: Cannot infer the type of \"slot\" variable because the value doesn't have a set type.",
+        "ERROR: Failed to load script \"/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/fixture05/coop_solo_return.gd\" with error \"Parse error\".",
+        "ERROR: Required object \"rp_child\" is null."
+      ],
+      "warnings": [],
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/fixture05/coop_solo_return.gd",
+        "sha256": "d2888a896408a87b1fd3b76e1395b8fa16fb11978f1e28695c93d4391470a960"
+      },
+      "failed_assertions": [],
+      "disposition": "Rejected fixture parse failure from inferred variable kind; terminated by harness, then fixed explicitly."
+    },
+    {
+      "label": "sreturn-lia-after-06",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-lia-after-06.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-lia-after-06.log",
+      "log_sha256": "8bc91925d20bdef5ee6f3ed0d8e479daf02be90f5107c8be0ac52ad32a968ae9",
+      "checks": null,
+      "failures": null,
+      "exit_code": -11,
+      "stopped": false,
+      "errors": [
+        "ERROR: Parameter \"peer\" is null.",
+        "ERROR: Parameter \"peer\" is null.",
+        "ERROR: Parameter \"peer\" is null.",
+        "ERROR: Parameter \"peer\" is null."
+      ],
+      "warnings": [],
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/fixture06/coop_solo_return.gd",
+        "sha256": "d608474071a2c861b9082ed58cbebbcfd4d64a8fb026a4fb2aa983e34bff8528"
+      },
+      "failed_assertions": [],
+      "disposition": "Incomplete candidate01 run: positive rebase path progressed; four null-peer send errors during active handoff plus later fixture null-source crash. These are separate causes; not acceptance."
+    },
+    {
+      "label": "sreturn-lia-after-08",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-lia-after-08.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-lia-after-08.log",
+      "log_sha256": "b00955b4c3758b26bfd19ccf24d59c66a8215ccce6be6b4e52b6a681dad8aeab",
+      "checks": null,
+      "failures": null,
+      "exit_code": -11,
+      "stopped": false,
+      "errors": [],
+      "warnings": [],
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/fixture13/coop_solo_return.gd",
+        "sha256": "5be0f40f44c3c24ea1c2dbcf84b0a950715ed20060d064dc3a2f115ae5769b4a"
+      },
+      "failed_assertions": [],
+      "disposition": "Incomplete candidate03: main positives and active guard passed with no send errors, then same fixture null-source SIGSEGV. Not acceptance and no engine fix claimed."
+    },
+    {
+      "label": "sreturn-lia-before-01",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-lia-before-01.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-lia-before-01.log",
+      "log_sha256": "a8bf70403bf8319251a0225c24321b3d8e067ce289e50e46aef6e1cb235b08a7",
+      "checks": 14,
+      "failures": 1,
+      "exit_code": 1,
+      "stopped": false,
+      "errors": [],
+      "warnings": [],
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/fixture01/coop_solo_return.gd",
+        "sha256": "66f9f0834ba3be32fdc2e08e7a2b332d50f5284bd2d69189d2a0d9cf09b1f1fa"
+      },
+      "failed_assertions": [
+        "select a real authored chapter quest variable"
+      ],
+      "disposition": "Rejected fixture setup: attempted to discover chapter quest variable in bz1h; no valid test of rebase yet."
+    },
+    {
+      "label": "sreturn-lia-before-02",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-lia-before-02.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-lia-before-02.log",
+      "log_sha256": "9c0e73191923743909a2b9ffdd4cea2ffc08114369e351774200f7866ecc2dd2",
+      "checks": 14,
+      "failures": 1,
+      "exit_code": 1,
+      "stopped": false,
+      "errors": [],
+      "warnings": [],
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/fixture02/coop_solo_return.gd",
+        "sha256": "3bb752f2d7250eaa994181dde4493036c423af8685908c8761de0aebb5d88970"
+      },
+      "failed_assertions": [
+        "select a real authored chapter quest variable"
+      ],
+      "disposition": "Rejected fixture setup: quest discovery still used the wrong map/script path."
+    },
+    {
+      "label": "sreturn-lia-before-03",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-lia-before-03.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-lia-before-03.log",
+      "log_sha256": "d3d665363cf87edbde6ea9ac07fece1a423d430a8f7595795d821e0ee4a6cbfe",
+      "checks": 14,
+      "failures": 1,
+      "exit_code": 1,
+      "stopped": false,
+      "errors": [],
+      "warnings": [],
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/fixture03/coop_solo_return.gd",
+        "sha256": "7ca91bead876bb410a805413d6fd8e08560a7fe83bf920cc24ed9f5e12c9fd83"
+      },
+      "failed_assertions": [
+        "select a real authored chapter quest variable"
+      ],
+      "disposition": "Rejected fixture setup: LiA gz1h aliases original mob zone1, not gz1h.mob. Corrected via campaign zone metadata."
+    },
+    {
+      "label": "sreturn-lia-before-04",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-lia-before-04.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-lia-before-04.log",
+      "log_sha256": "9e94e900098a8a0a1f40591621439be0429aa93b740e5c3e8e8213fda5e55d25",
+      "checks": 92,
+      "failures": 15,
+      "exit_code": 1,
+      "stopped": false,
+      "errors": [],
+      "warnings": [],
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/fixture04/coop_solo_return.gd",
+        "sha256": "149bba2b89897119e98b6f654b36aef34320b01c0571a78537e7da8c282d42f2"
+      },
+      "failed_assertions": [
+        "acknowledged solo return imports newly earned hero stats/equipment",
+        "live peer deploys the returned authored protagonist body and stats",
+        "live peer deploys the returned authored protagonist body and stats",
+        "acknowledged solo return imports its new private purse once",
+        "matching acknowledged return restores shared checkpoint continuity",
+        "old checkpoint cannot rewind the newer compatible source chapter/location",
+        "returned package retains new solo earnings",
+        "new matching solo import establishes its own compatible checkpoint",
+        "matching solo participant retains eligibility through unflagged field travel",
+        "solo_final_ann arrives through package RPC",
+        "participant can resume solo at shared chapter/field",
+        "shared progression retains each participant's own solo earnings",
+        "matching solo participant retains eligibility through unflagged field travel",
+        "solo_final_fresh arrives through package RPC",
+        "participant can resume solo at shared chapter/field"
+      ],
+      "disposition": "Exploratory full baseline: 13 real old-behavior failures plus two rejected fixture waits demanding another merge count for an already delivered identical package. Clean exit; compact final baseline avoids those false waits."
+    },
+    {
+      "label": "sreturn-lia-before-07",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-lia-before-07.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-lia-before-07.log",
+      "log_sha256": "430f8487cdd1126e8fa7456b28aa35ca8285f78eb8c4c89b4ab597bcb28daad1",
+      "checks": null,
+      "failures": null,
+      "exit_code": -11,
+      "stopped": false,
+      "errors": [
+        "ERROR: Parameter \"peer\" is null.",
+        "ERROR: Parameter \"peer\" is null.",
+        "ERROR: Parameter \"peer\" is null.",
+        "ERROR: Parameter \"peer\" is null."
+      ],
+      "warnings": [],
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/fixture13/coop_solo_return.gd",
+        "sha256": "5be0f40f44c3c24ea1c2dbcf84b0a950715ed20060d064dc3a2f115ae5769b4a"
+      },
+      "failed_assertions": [
+        "acknowledged solo return imports newly earned hero stats/equipment",
+        "live peer deploys the returned authored protagonist body and stats",
+        "live peer deploys the returned authored protagonist body and stats",
+        "acknowledged solo return imports its new private purse once",
+        "matching acknowledged return restores shared checkpoint continuity",
+        "old checkpoint cannot rewind the newer compatible source chapter/location",
+        "returned package retains new solo earnings",
+        "new matching solo import establishes its own compatible checkpoint",
+        "matching solo participant retains eligibility through unflagged field travel",
+        "participant can resume solo at shared chapter/field",
+        "shared progression retains each participant's own solo earnings",
+        "matching solo participant retains eligibility through unflagged field travel",
+        "participant can resume solo at shared chapter/field",
+        "active same-name copy cannot replace the participant's hero or purse",
+        "stale source cannot replace the reserved personal baseline"
+      ],
+      "disposition": "Incomplete exploratory baseline: active handoff logged four null-peer send errors, then the separate fixture null-source SIGSEGV. Not counted as complete baseline."
+    },
+    {
+      "label": "sreturn-lia-resume-01",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-lia-resume-01.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-lia-resume-01.log",
+      "log_sha256": "c33a242d4b60e390d644bae2127186a59e8819b6e005ac148f459bb555dfda4e",
+      "checks": 21,
+      "failures": 0,
+      "exit_code": 0,
+      "stopped": false,
+      "errors": [],
+      "warnings": [],
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/fixture07/coop_solo_return_resume.gd",
+        "sha256": "b557f45d438af027b94c4b83f05f0b81d44d37b03d1b4549cbb7fd1b791e58dd"
+      },
+      "failed_assertions": [],
+      "disposition": "Earlier candidate01 fresh-process solo resume passed; retained as intermediate evidence, not added to final count."
+    },
+    {
+      "label": "sreturn-older-before-01",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-older-before-01.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-older-before-01.log",
+      "log_sha256": "48ae8802f31421472d86cb5ead340b5b2bd11e9f4945c910d74bee0bf300378b",
+      "checks": null,
+      "failures": null,
+      "exit_code": -11,
+      "stopped": false,
+      "errors": [
+        "ERROR: Trying to call an RPC via a multiplayer peer which is not connected.",
+        "ERROR: Condition \"!_is_active()\" is true. Returning: nullptr"
+      ],
+      "warnings": [],
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/fixture08/coop_solo_return_older_host.gd",
+        "sha256": "2c631cdf92b7cdf5f93c08f3bdeeabbe1ef4cff58ad9dff7a8eeacf6a62864c7"
+      },
+      "failed_assertions": [
+        "host's ordinary final flush reaches the client",
+        "legitimate client acknowledgement is newer than the host disk checkpoint"
+      ],
+      "disposition": "Rejected fixture ordering: host left before client final flush, followed by disconnected-RPC errors and invalid fixture input crash."
+    },
+    {
+      "label": "sreturn-older-before-02",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-older-before-02.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-older-before-02.log",
+      "log_sha256": "547fdcfd9797c93c9cb5013009e94511cc8d503e389e54e12dd984cfc5d58888",
+      "checks": null,
+      "failures": null,
+      "exit_code": -15,
+      "stopped": false,
+      "errors": [
+        "ERROR: Node not found: \"Session/NetStatus\" (relative to \"/root/OlderHost/Frontend\").",
+        "ERROR: Parameter \"node\" is null.",
+        "ERROR: Node not found: \"Session/NetStatus\" (relative to \"/root/OlderHost/Frontend\").",
+        "ERROR: Failed to get path from RPC: Session/NetStatus.",
+        "ERROR: Invalid packet received. Requested node was not found.",
+        "ERROR: Node not found: \"Session/CoopProgress\" (relative to \"/root/OlderHost/Frontend\").",
+        "ERROR: Parameter \"node\" is null.",
+        "ERROR: Node not found: \"Session/CoopProgress\" (relative to \"/root/OlderHost/Frontend\").",
+        "ERROR: Failed to get path from RPC: Session/CoopProgress.",
+        "ERROR: Invalid packet received. Requested node was not found.",
+        "ERROR: Node not found: \"Session\" (relative to \"/root/OlderHost/Frontend\").",
+        "ERROR: Parameter \"node\" is null.",
+        "ERROR: Node not found: \"Session\" (relative to \"/root/OlderHost/Frontend\").",
+        "ERROR: Failed to get path from RPC: Session.",
+        "ERROR: Invalid packet received. Requested node was not found."
+      ],
+      "warnings": [
+        "WARNING: LanDiscovery: port 27016 is in use; this game is not listed on the local network."
+      ],
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/fixture10/coop_solo_return_older_host.gd",
+        "sha256": "9678c43c58dd76a02fe5264b5cc1912255290d6007937be9dc2fd81a743d9eac"
+      },
+      "failed_assertions": [],
+      "disposition": "Rejected fixture lifecycle: new Session was added before queued old Session released its RPC node name. Exact disposable process terminated; corrected with frame barrier."
+    },
+    {
+      "label": "sreturn-older-before-03",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-older-before-03.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-older-before-03.log",
+      "log_sha256": "5c95cf9840a77111c963c96484d57e981bfd6e91c5e183010d26ce22d6b2b798",
+      "checks": 21,
+      "failures": 3,
+      "exit_code": 1,
+      "stopped": false,
+      "errors": [],
+      "warnings": [],
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/fixture11/coop_solo_return_older_host.gd",
+        "sha256": "7f3b36cc3e77304ab851e3417f90f06c9244a6d478d871527f4e670105dbe7c2"
+      },
+      "failed_assertions": [
+        "older host checkpoint cannot roll back newer personal stats or purse",
+        "host sequence resumes beyond the client's acknowledged baseline",
+        "received solo save retains new personal earnings after host restart"
+      ],
+      "disposition": "Valid reproduction on candidate01 exact-sequence prototype: real host N/client N+1 caused three personal-earnings/sequence failures. Fixed same-name acknowledgement >= policy while rename stays exact."
+    },
+    {
+      "label": "sreturn-roles-astral-after-02",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-roles-astral-after-02.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-roles-astral-after-02.log",
+      "log_sha256": "bba43d65d91f9a2fa292a1d8f0312216739226c8b1ad7be8ac31fbf1145daaa2",
+      "checks": 12,
+      "failures": 0,
+      "exit_code": 0,
+      "stopped": false,
+      "errors": [],
+      "warnings": [],
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/fixture14/coop_solo_return_roles.gd",
+        "sha256": "29088a92d2b38a130df2664ae4ce726efaeabef90d0a5b3194e88fcf3b82b17a"
+      },
+      "failed_assertions": [],
+      "disposition": "Passing intermediate prototype regression, superseded by final candidate05; excluded from final acceptance count."
+    },
+    {
+      "label": "sreturn-roles-astral-before-01",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-roles-astral-before-01.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-roles-astral-before-01.log",
+      "log_sha256": "6f140247d8503b9604653a34e024eba8ee6dd3c66b356c7fb6081dc95874f401",
+      "checks": 12,
+      "failures": 3,
+      "exit_code": 1,
+      "stopped": false,
+      "errors": [],
+      "warnings": [],
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/fixture14/coop_solo_return_roles.gd",
+        "sha256": "29088a92d2b38a130df2664ae4ce726efaeabef90d0a5b3194e88fcf3b82b17a"
+      },
+      "failed_assertions": [
+        "returned temporary body keeps its independently earned statistics",
+        "returned temporary role keeps its own earned purse",
+        "next progress package cannot reset imported temporary-role earnings"
+      ],
+      "disposition": "Same temporary-role defect using original LiA Shaina hierarchy, three failures."
+    },
+    {
+      "label": "sreturn-roles-base-after-02",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-roles-base-after-02.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-roles-base-after-02.log",
+      "log_sha256": "df9cd283be39abc0df94b66a6cda5ed4c013a6a94bc6f2a61cc764cdd5fff2dc",
+      "checks": 10,
+      "failures": 0,
+      "exit_code": 0,
+      "stopped": false,
+      "errors": [],
+      "warnings": [],
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/fixture14/coop_solo_return_roles.gd",
+        "sha256": "29088a92d2b38a130df2664ae4ce726efaeabef90d0a5b3194e88fcf3b82b17a"
+      },
+      "failed_assertions": [],
+      "disposition": "Passing intermediate prototype regression, superseded by final candidate05; excluded from final acceptance count."
+    },
+    {
+      "label": "sreturn-roles-base-before-01",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-roles-base-before-01.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-roles-base-before-01.log",
+      "log_sha256": "971571958a9410b556c0a1e413fc2cbf6199d4b6fbbb210372a36be066f4ad11",
+      "checks": 10,
+      "failures": 3,
+      "exit_code": 1,
+      "stopped": false,
+      "errors": [],
+      "warnings": [],
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/fixture14/coop_solo_return_roles.gd",
+        "sha256": "29088a92d2b38a130df2664ae4ce726efaeabef90d0a5b3194e88fcf3b82b17a"
+      },
+      "failed_assertions": [
+        "returned temporary body keeps its independently earned statistics",
+        "returned temporary role keeps its own earned purse",
+        "next progress package cannot reset imported temporary-role earnings"
+      ],
+      "disposition": "Valid candidate02 reproduction: clearing stale guest-role journal then ordinary reseeding dropped independently earned temporary-role stats and bag. Three failures."
+    },
+    {
+      "label": "sreturn-transport-lia-after-03",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-transport-lia-after-03.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-transport-lia-after-03.log",
+      "log_sha256": "e2d1aebce07a41dcbcff7827d375a8fa526842e6af52bcc280559a282a11d71d",
+      "checks": 30,
+      "failures": 0,
+      "exit_code": 0,
+      "stopped": false,
+      "errors": [],
+      "warnings": [],
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/fixture19/coop_solo_return_transport.gd",
+        "sha256": "0d5c171ef5a81aa2667608c05e117db41d49fa60bcc972833544db31a1fc3244"
+      },
+      "failed_assertions": [],
+      "disposition": "Candidate04 compact transport passed after normal package-delivery barrier and explicit nonnull checks. Final run adds two input-validity assertions; intermediate count excluded."
+    },
+    {
+      "label": "sreturn-travel-astral-after-03",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-travel-astral-after-03.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-travel-astral-after-03.log",
+      "log_sha256": "6b77c82fcd5f40022eba0d23a19595a0cc3f26a97200cfd6b91876cbbcccf8e8",
+      "checks": 15,
+      "failures": 0,
+      "exit_code": 0,
+      "stopped": false,
+      "errors": [],
+      "warnings": [],
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/fixture17/coop_progress_travel.gd",
+        "sha256": "2f75b009a3fa2f695ad094ff575e14e8fa1b0d01f17526ae7f505952d961bd78"
+      },
+      "failed_assertions": [],
+      "disposition": "Passing intermediate prototype regression, superseded by final candidate05; excluded from final acceptance count."
+    },
+    {
+      "label": "sreturn-travel-base-after-03",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-travel-base-after-03.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/sreturn-travel-base-after-03.log",
+      "log_sha256": "31a53e00cf4070a6998da4b885eb69da17699b736dd622650a471940747ef6a0",
+      "checks": 15,
+      "failures": 0,
+      "exit_code": 0,
+      "stopped": false,
+      "errors": [],
+      "warnings": [],
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/fixture17/coop_progress_travel.gd",
+        "sha256": "2f75b009a3fa2f695ad094ff575e14e8fa1b0d01f17526ae7f505952d961bd78"
+      },
+      "failed_assertions": [],
+      "disposition": "Passing intermediate prototype regression, superseded by final candidate05; excluded from final acceptance count."
+    }
+  ],
+  "crash_and_transport_diagnosis": {
+    "gdb": [
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/transport-gdb-01",
+        "run": {
+          "command": [
+            "gdb",
+            "--batch",
+            "-ex",
+            "set pagination off",
+            "-ex",
+            "run",
+            "-ex",
+            "thread apply all bt 16",
+            "--args",
+            "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/candidate04/CPU.x86_64",
+            "--audio-driver",
+            "Dummy",
+            "--render-thread",
+            "safe",
+            "--headless",
+            "--",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+            "--tool=/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/fixture17/coop_solo_return_transport.gd",
+            "--label=transport-gdb-01"
+          ],
+          "gdb_exit": 0,
+          "seconds": 16.836823734018253,
+          "log_sha256": "6ead8b3fd09f1d21f49005775b5f5cbe1b07efd1a4ce59a410fbdbc57b504fe4"
+        },
+        "log_sha256": "6ead8b3fd09f1d21f49005775b5f5cbe1b07efd1a4ce59a410fbdbc57b504fe4",
+        "symbols_sha256": "b09a5b2ebce1119d9c013cda9a5699d60dc24ed16b92636f8d5d4641f7bb32ed"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/transport-gdb-02",
+        "run": {
+          "command": [
+            "gdb",
+            "--batch",
+            "-ex",
+            "set pagination off",
+            "-ex",
+            "set debuginfod enabled off",
+            "-ex",
+            "symbol-file /home/llm2x/Documents/EI/local/scratchpad/camera-dof-20261009/engine-far-guard/bin/godot.linuxbsd.template_release.x86_64",
+            "-ex",
+            "run",
+            "-ex",
+            "bt 25",
+            "-ex",
+            "frame 2",
+            "-ex",
+            "info locals",
+            "-ex",
+            "p this->name",
+            "-ex",
+            "p this->source",
+            "-ex",
+            "x/ws this->name._data->name._cowdata._ptr",
+            "-ex",
+            "x/ws this->source._data->name._cowdata._ptr",
+            "--args",
+            "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/candidate04/CPU.x86_64",
+            "--audio-driver",
+            "Dummy",
+            "--render-thread",
+            "safe",
+            "--headless",
+            "--",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+            "--tool=/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/fixture18/coop_solo_return_transport.gd",
+            "--label=transport-gdb-02"
+          ],
+          "gdb_exit": 1,
+          "seconds": 20.92666789199575,
+          "log_sha256": "fa06f956efd35e36b2b7c529b26faed5f5eb07e54f6afb8365a9aff516638e8f"
+        },
+        "log_sha256": "fa06f956efd35e36b2b7c529b26faed5f5eb07e54f6afb8365a9aff516638e8f"
+      }
+    ],
+    "runtime_build_id": "729838cd0df1f364d33e3acd07ce3f5185c696cc",
+    "fixture_crash": "The old common leave helper captured last_merged before normal leave. On the active replacement's first join no package had arrived yet, so the fixture loaded an empty save slot and passed null to typed main_hero. Matching-symbol GDB stopped in Array::is_empty through a GDScript static call. The corrected fixture waits for the normal delivered host-save package before leave and asserts loaded source nonnull. No runtime patch or unrelated native-exit fix is claimed.",
+    "real_transport_defect": "Separately, ENetPacketPeer.peer_disconnect_now cleared a raw peer while ENetMultiplayerPeer still retained it; later broadcast produced four null-peer send errors. The public SceneMultiplayer disconnect API removes high-level peer/path plus transport state. Final active-copy test observes unchanged live actor/purse, no old peer, exactly two players_changed notifications (one departure, one replacement join), and no logged errors.",
+    "refcounted_fixture_hygiene": "ScriptVM is RefCounted. advance_solo clears its reciprocal world reference and releases the local reference with null; it does not call free on a retained RefCounted."
+  },
+  "source_sha256": {
+    "game/src/game/coop_progress.gd": "25a7fc2e0d7f3915b5c0791fc8d0e35543fe590e25fd6c5df533d70909545599",
+    "game/src/game/session.gd": "b2909220b7a36c104a59b913b96a64833c7af22088117be09ed2c2b589738fdd",
+    "game/src/game/coop_guest_roles.gd": "31eb28ddd70629dd73877bdbd65e72eda1839f4a088da63ef94eaf6f6e43c7f8",
+    "tools/tests/coop_progress_context.gd": "0971d4be7a9bb2521c2025903010d8bc159cea780b7b207431d2805e4171c9b1",
+    "tools/tests/coop_progress_travel.gd": "2f75b009a3fa2f695ad094ff575e14e8fa1b0d01f17526ae7f505952d961bd78",
+    "tools/tests/coop_solo_return.gd": "8e89d3beb344183fb967323119ae2ff3bc9c26d1864931e21314e77b56257788",
+    "tools/tests/coop_solo_return_dependents.gd": "a39987a5cc5aa8fbb9112204a3368d677c24de6e34dc65b075af7df5f11e743f",
+    "tools/tests/coop_solo_return_guards.gd": "7e959345bae4ef5e32dd84222809d33b0a23df388f97748dedf290548968c1f2",
+    "tools/tests/coop_solo_return_older_host.gd": "7f3b36cc3e77304ab851e3417f90f06c9244a6d478d871527f4e670105dbe7c2",
+    "tools/tests/coop_solo_return_resume.gd": "b557f45d438af027b94c4b83f05f0b81d44d37b03d1b4549cbb7fd1b791e58dd",
+    "tools/tests/coop_solo_return_roles.gd": "29088a92d2b38a130df2664ae4ce726efaeabef90d0a5b3194e88fcf3b82b17a",
+    "tools/tests/coop_solo_return_transport.gd": "0d5c171ef5a81aa2667608c05e117db41d49fa60bcc972833544db31a1fc3244"
+  },
+  "fixture_frozen_comparison": {
+    "tools/tests/coop_progress_context.gd": {
+      "frozen_sha256": "0971d4be7a9bb2521c2025903010d8bc159cea780b7b207431d2805e4171c9b1",
+      "current_sha256": "0971d4be7a9bb2521c2025903010d8bc159cea780b7b207431d2805e4171c9b1",
+      "equal": true
+    },
+    "tools/tests/coop_progress_travel.gd": {
+      "frozen_sha256": "2f75b009a3fa2f695ad094ff575e14e8fa1b0d01f17526ae7f505952d961bd78",
+      "current_sha256": "2f75b009a3fa2f695ad094ff575e14e8fa1b0d01f17526ae7f505952d961bd78",
+      "equal": true
+    },
+    "tools/tests/coop_solo_return.gd": {
+      "frozen_sha256": "270fb1a95a3b7999b2d4214df8ad9db894dd90693a8c379cc4137c5a8a808b62",
+      "current_sha256": "8e89d3beb344183fb967323119ae2ff3bc9c26d1864931e21314e77b56257788",
+      "equal": false
+    },
+    "tools/tests/coop_solo_return_dependents.gd": {
+      "frozen_sha256": "a39987a5cc5aa8fbb9112204a3368d677c24de6e34dc65b075af7df5f11e743f",
+      "current_sha256": "a39987a5cc5aa8fbb9112204a3368d677c24de6e34dc65b075af7df5f11e743f",
+      "equal": true
+    },
+    "tools/tests/coop_solo_return_guards.gd": {
+      "frozen_sha256": "7e959345bae4ef5e32dd84222809d33b0a23df388f97748dedf290548968c1f2",
+      "current_sha256": "7e959345bae4ef5e32dd84222809d33b0a23df388f97748dedf290548968c1f2",
+      "equal": true
+    },
+    "tools/tests/coop_solo_return_older_host.gd": {
+      "frozen_sha256": "7f3b36cc3e77304ab851e3417f90f06c9244a6d478d871527f4e670105dbe7c2",
+      "current_sha256": "7f3b36cc3e77304ab851e3417f90f06c9244a6d478d871527f4e670105dbe7c2",
+      "equal": true
+    },
+    "tools/tests/coop_solo_return_resume.gd": {
+      "frozen_sha256": "b557f45d438af027b94c4b83f05f0b81d44d37b03d1b4549cbb7fd1b791e58dd",
+      "current_sha256": "b557f45d438af027b94c4b83f05f0b81d44d37b03d1b4549cbb7fd1b791e58dd",
+      "equal": true
+    },
+    "tools/tests/coop_solo_return_roles.gd": {
+      "frozen_sha256": "29088a92d2b38a130df2664ae4ce726efaeabef90d0a5b3194e88fcf3b82b17a",
+      "current_sha256": "29088a92d2b38a130df2664ae4ce726efaeabef90d0a5b3194e88fcf3b82b17a",
+      "equal": true
+    },
+    "tools/tests/coop_solo_return_transport.gd": {
+      "frozen_sha256": "0d5c171ef5a81aa2667608c05e117db41d49fa60bcc972833544db31a1fc3244",
+      "current_sha256": "0d5c171ef5a81aa2667608c05e117db41d49fa60bcc972833544db31a1fc3244",
+      "equal": true
+    }
+  },
+  "fixture_delta_notes": "The committed main fixture adds only optional --rebase-only early completion after the first 30 assertions; the full default path is unchanged from final fixture20. Baseline fixture21 uses that option and a separate game port 29948. All other owned test files match final fixture20.",
+  "peer_dependency_note": {
+    "candidate05_helper_sha256": "32089a73ff993335c99a688cd30076342fe87b4b187bffd6880214a5ecbfe41a",
+    "committed_helper_sha256": "9486b5a68558b91c9dce2620f6128c326276840064f1ec0dcfca11fbbee81c61",
+    "difference": "Only equivalent line wrapping of _actor_calls condition in committed 74c4804; peer separately verified 36 formatting checks. Our three production files and the VM restore hook match candidate05 byte-for-byte. Parent will perform the final combined frozen-source integration run."
+  },
+  "limits": [
+    "Compatibility deliberately requires equality of all nonexcluded authored variables, not only the visible quest journal. Random/nonquest state such as LiA rchest can make independently played same-quest saves incompatible. Unknown authored flags are not silently discarded.",
+    "The fixture prepares matched independently played story states explicitly and executes original party/transfer instructions. This is not a full multi-hour campaign or every quest branch playthrough.",
+    "Only the protagonist is deployed by a brought source; personal pets/base hires remain in the player's solo save. LiA shared authored companions retain host authority.",
+    "New role/dependent controls use original authored role operations plus focused constructed mutable records and GameWorld registry actors; they are not a full pet-taming or companion-hiring playthrough.",
+    "No repair of arbitrary old or incomplete saves is claimed. This fixes forward sync and supported reimport paths; missing history is not reconstructed.",
+    "All final checks are headless. Live host/guest original EIUnitModel/body metadata is verified, but no new visual screenshot acceptance is claimed. Prior U26 rendered evidence remains a separate receipt.",
+    "The actual transport is local ENet with independent frontends in one process. No internet, Windows, handheld, packet-loss or sustained timing/performance acceptance is claimed.",
+    "Test durations are descriptive and not performance measurements. Earlier incomplete, crashing and setup-error runs are retained above and excluded from the 803 accepted checks.",
+    "Only disposable profiles/private exports were used. Existing public builds, user saves and selected personal fixture files were not overwritten."
+  ]
+}

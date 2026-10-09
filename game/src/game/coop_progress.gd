@@ -401,6 +401,8 @@ func _rpc_bring(data: Dictionary) -> void:
 		h.erase(k)
 	_pending[pid] = {"hero": h, "vars": view, "visited": visited, "side_quests": sq, "quest_items": qi, "seq": seq,
 		"purse": {"money": clampi(int(_num(data.get("money", 0), 0.0)), 0, 99999999), "items": _items(data.get("items", []))}}
+	var source_zone := String(data.get("zone", ""))
+	_pending[pid].zone = source_zone if campaign_zone_ok(source_zone) else ""
 	var context := PartyProgress.read(data.get("party_context"))
 	if context != null:
 		_pending[pid].party_context = PartyProgress.capture(context)
@@ -443,8 +445,115 @@ func renamed_slot(pid: int, player_name: String) -> int:
 	return idx
 
 
+## The saved source independently represents this exact story checkpoint.
+## Same quest titles alone are insufficient: unknown authored flags may
+## control future scripts. Never copy host progress to make a source match.
+func _matches_checkpoint(data: Dictionary) -> bool:
+	if session.world == null or String(data.get("zone", "")) != session.zone_id:
+		return false
+	return _story_matches(data)
+
+
+func _story_matches(data: Dictionary) -> bool:
+	var context := PartyProgress.read(data.get("party_context"))
+	if context == null or context.current_party != session.state.current_party:
+		return false
+	var own: Array = context.heroes.get(0, [])
+	var lead: Array = session.state.heroes.get(0, [])
+	if own.is_empty() or lead.is_empty() or own[0].get("prototype") != lead[0].get("prototype") \
+			or String(own[0].get("unit_name", "Hero")) != String(lead[0].get("unit_name", "Hero")):
+		return false
+	var vars: Dictionary = data.get("vars", {})
+	for key: String in vars:
+		if not excluded(key) and not is_equal_approx(float(vars[key]), session.state.get_var(0, key)):
+			return false
+	for key: String in session.state.vars:
+		if key.begins_with("0:") and not excluded(key.substr(2)) \
+				and not is_equal_approx(float(session.state.vars[key]), float(vars.get(key.substr(2), 0.0))):
+			return false
+	return data.get("side_quests", {}) == session.state.side_quests \
+		and data.get("quest_items", {}) == session.state.quest_items
+
+
+func _acknowledged_source(e: Dictionary, data: Dictionary) -> bool:
+	var sid := String(e.get("sid", ""))
+	if data.is_empty() or bool(e.get("active", false)) or sid.is_empty() or int(e.get("seq", 0)) <= 0 \
+			or int(data.get("seq", {}).get(sid, -1)) < int(e.seq):
+		return false
+	# The host may have restored a save preceding the client's final leave
+	# package. Same-name personal rebasing accepts that newer acknowledgement;
+	# migration to a different lobby name still needs renamed_slot's exact proof.
+	# A corrupt/ambiguous host tally cannot prove which reserved character
+	# this source updates, including when its lobby alias did not change.
+	return joiners.values().filter(func(other): return String(other.get("sid", "")) == sid \
+		or int(other.get("idx", -1)) == int(e.idx)).size() == 1
+
+
+## A selected personal source brings its protagonist; its companions remain
+## private, as on a fresh import. Retire only this inactive owner's previous
+## personal copies so mutable solo animals/hires cannot be duplicated or
+## overwritten by obsolete records. Authored LiA companions stay shared.
+func _retire_personal_dependents(e: Dictionary) -> void:
+	var idx := int(e.idx)
+	var st := session.state
+	if session.world:
+		for u: GameUnit in session.world.units.values().duplicate():
+			var owner := int(u.get_meta("lent_of", u.get_meta("orphan_of", u.controller)))
+			if owner == idx and CampaignState.is_pet(u):
+				session.world.remove_unit(u)
+				session.broadcast({"t": "remove", "uid": u.uid})
+	st.pets = st.pets.filter(func(p: Dictionary): return int(p.get("controller", 0)) != idx)
+	if st.campaign_id == CampaignProfile.ORIGINAL:
+		for n in st.mercs.keys():
+			if int(st.mercs[n].get("controller", 0)) != idx:
+				continue
+			# The usual dismissal retains an authored village NPC when present;
+			# it does not invent a death or a quest/conversation completion.
+			if session.world: session.merc_changed(int(n), false, idx)
+			else: st.mercs.erase(n)
+			st.set_var(0, "apartyn%d" % int(n), 0.0)
+	e.erase("context_pets")
+	e.erase("context_mercs")
+
+
+## A newly selected acknowledged personal source supersedes the old personal
+## baseline. Keep deployment/location identity in this world, while an authored
+## protagonist body change goes through the ordinary late-join spawn path.
+func _replace_personal_source(e: Dictionary, data: Dictionary, player_name: String) -> void:
+	var idx := int(e.idx)
+	var roster: Array = session.state.heroes.get(idx, [])
+	var previous: Dictionary = roster[0] if not roster.is_empty() else {}
+	var hero: Dictionary = (data.hero as Dictionary).duplicate(true)
+	_retire_personal_dependents(e)
+	e.orig_name = hero.name
+	hero.name = player_name.strip_edges()
+	e.hero_in = hero.duplicate(true)
+	e.purse = (data.purse as Dictionary).duplicate(true)
+	e.erase("context_checkpoint")
+	# Fresh imports enforce the host's temporary-role rules through ensure().
+	# A journal from the superseded source must not override the new earnings.
+	var roles: Dictionary = session.state.coop.get(GuestRoles.KEY, {})
+	var had_role := roles.has(idx)
+	roles.erase(idx)
+	for key in ["unit_name", "pos", "hp", "mana", "body", "dead", "blood_pool", "follow", "follow_live"]:
+		if previous.has(key): hero[key] = previous[key]
+	session.state.heroes[idx] = [hero]
+	var restored_role := GuestRoles.restore_import(session, idx, data.get("party_context"))
+	if session.world == null:
+		return
+	if had_role or restored_role or previous.get("prototype") != hero.prototype:
+		_drop_old_units(idx)
+		return
+	for u: GameUnit in session.world.units.values():
+		if int(u.get_meta("orphan_of", -1)) == idx and u.has_meta("hero") and not u.get_meta("hero").has("merc"):
+			u.set_meta("hero", hero)
+			Combat.set_complexion(u, hero, hero.complexion)
+			session._refresh_hero(u)
+
+
 ## Host: a player said hello and got slot `idx` (before its hero is made).
-func on_hello(pid: int, idx: int, player_name: String) -> void:
+## replacing_live remembers activity before Session's stale-connection handoff.
+func on_hello(pid: int, idx: int, player_name: String, replacing_live := false) -> void:
 	if not session.is_host or idx == 0:
 		return
 	var key := player_name.strip_edges().to_lower()
@@ -455,23 +564,26 @@ func on_hello(pid: int, idx: int, player_name: String) -> void:
 		# in the host's world and what was credited so far.
 		var e: Dictionary = joiners[key]
 		_sent_hash.erase(key)   # its client may have restarted: send the package again
-		if not data.is_empty() and int(e.get("seq", 0)) > 0 \
-				and int((data.seq as Dictionary).get(String(e.get("sid", "")), -1)) >= int(e.seq):
+		var rebased := not replacing_live and _acknowledged_source(e, data)
+		if rebased:
 			# It brings a save made from every package of this tally (its
 			# co-op save): that save is its game now, the tally goes on from it.
 			for k in ["vars", "visited", "side_quests", "quest_items"]:
 				e[k] = data[k]
 			e.credits = {"vars": {}, "visited": {}, "side_quests": {}, "quest_items": {}, "zones": {}}
+			e.seq = int(data.seq[String(e.sid)])
 			if data.has("party_context"):
 				e.party_context = data.party_context
+			_replace_personal_source(e, data, player_name)
 		if not e.has("party_context") and data.has("party_context"):
 			e.party_context = data.party_context
 		e.pid = pid
 		e.idx = idx
 		e.active = true
-		e.present = false
-		e.clean = false
-		e.in_sync = session.world != null and _reached(e, session.zone_id)
+		var matching := rebased and _matches_checkpoint(data)
+		e.present = matching
+		e.clean = matching
+		e.in_sync = matching or (session.world != null and _reached(e, session.zone_id))
 		if not e.has("purse") and not data.is_empty():
 			e.purse = data.purse
 		if not session.state.heroes.has(idx):
@@ -496,13 +608,17 @@ func on_hello(pid: int, idx: int, player_name: String) -> void:
 	e.hero_in.name = player_name.strip_edges() if player_name.strip_edges() else String(e.orig_name)
 	if data.has("party_context"):
 		e.party_context = data.party_context
+	var matching := _matches_checkpoint(data)
+	e.present = matching
+	e.clean = matching
 	joiners[key] = e
 	session.state.coop.get(GuestRoles.KEY, {}).erase(idx)
 	if session.world:
 		# Late join: the hero comes in place of any old one of this slot.
 		_drop_old_units(idx)
-		e.in_sync = _reached(e, session.zone_id)
+		e.in_sync = matching or _reached(e, session.zone_id)
 	session.state.heroes[idx] = [(e.hero_in as Dictionary).duplicate(true)]
+	GuestRoles.restore_import(session, idx, data.get("party_context"))
 	session.message.emit(RemakeText.t("%s brings their own hero.") % player_name)
 
 
@@ -540,7 +656,9 @@ func zone_entered(id: String) -> void:
 		e.in_sync = e.active and (_reached(e, id) or shared_travel \
 			or (was and String(session.campaign.zone(id).get("type", "")) == "brief"))
 		e.present = e.active
-		e.clean = e.in_sync and not _ahead_in(e, id)
+		# Reload/re-entry must not upgrade a divergent imported story into a
+		# complete checkpoint merely because its destination was visited.
+		e.clean = e.in_sync and not _ahead_in(e, id) and _story_matches(e)
 		if e.in_sync and not e.visited.has(id):
 			e.visited[id] = true
 			e.credits.visited[id] = true

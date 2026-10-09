@@ -152,23 +152,28 @@ func _ready() -> void:
 	var with_pet := clone(origin)
 	CoopProgress.merge(with_pet,s.coop.package(entry))
 	check(with_pet.pets.size() == 1 and with_pet.pets[0].controller == 0 and with_pet.pets[0].hp == 17.0, "personal animal keeps body/ownership; host animal stays private")
-	# Rejoining with a merged save resets the credit baseline, while keeping
-	# the identity of dependents already returned by this same session.
+	# Rejoining with a merged save resets the credit baseline. Like a fresh
+	# import, its personal companions stay private in that source save.
 	entry.sid = "context-reconnect"
 	entry.seq = 4
+	entry.active = false
 	s.coop._pending[72] = {"hero":CoopProgress.main_hero(with_pet), "vars":{}, "visited":{s.zone_id:true},
 		"side_quests":{}, "quest_items":{}, "seq":{"context-reconnect":4}, "purse":entry.purse,
-		"party_context":capture(with_pet)}
+		"party_context":capture(with_pet), "zone":s.zone_id}
 	s.coop.on_hello(72,1,"Guest")
-	entry.clean = true
-	entry.present = true
+	check(entry.clean and entry.present,"acknowledged matching checkpoint restores reconnect continuity")
 	var rebased := clone(with_pet)
 	CoopProgress.merge(rebased,s.coop.package(entry))
 	check(rebased.pets.size() == 1, "reconnecting from merged save does not duplicate the personal animal")
 	check(CoopProgress.main_bag(rebased) == CoopProgress.main_bag(with_pet), "reconnecting from merged save does not add the purse again")
-	s.state.pets.clear()
+	check(s.state.pets.size()==1 and s.state.pets[0].controller==0,"reimport retires only the inactive guest's old host animal")
+	var new_pet:=pet.duplicate(true); new_pet.rec.name="New co-op pet"; new_pet.hp=19.0
+	s.state.pets.append(new_pet)
 	CoopProgress.merge(with_pet,s.coop.package(entry))
-	check(with_pet.pets.is_empty(), "departed personal animal is removed from cumulative package")
+	check(with_pet.pets.size()==2,"new co-op animal is credited alongside the private imported animal")
+	s.state.pets=s.state.pets.filter(func(p):return p.controller!=1)
+	CoopProgress.merge(with_pet,s.coop.package(entry))
+	check(with_pet.pets.size()==1 and with_pet.pets[0].hp==17.0, "departed new animal is removed while imported animal stays private")
 	var credited := s.coop.package(entry)
 	entry.in_sync = false
 	s.zone_id = "gz99unknown"

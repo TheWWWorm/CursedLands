@@ -125,6 +125,40 @@ static func ensure(s: Session, player: int) -> bool:
 	return true
 
 
+## An accepted personal source may already have played this temporary role.
+## Seed the inspected authored hierarchy first; then restore only matching
+## protagonist rows and sanitized bags. Never deploy raw private context or
+## let an imported row choose another role/body or network script identity.
+static func restore_import(s: Session, player: int, value: Variant) -> bool:
+	var source := Progress.read(value)
+	if source == null or source.current_party != s.state.current_party \
+			or not temporary(s.state, s.state.current_party):
+		return false
+	ensure(s, player)
+	var r := row(s.state, player)
+	if r.is_empty(): return false
+	var st := context(s, r)
+	for party: String in [st.current_party] + st.parties.keys():
+		var dest := st._party_roster(party)
+		var own := source._party_roster(party)
+		# Every seeded guest role has one protagonist, never story companions.
+		if dest.size() != 1 or own.is_empty() or dest[0].prototype != own[0].prototype \
+				or String(dest[0].get("unit_name", "Hero")) != String(own[0].get("unit_name", "Hero")):
+			continue
+		var h := CoopProgress.sanitize_hero(own[0])
+		for key in ["name", "unit_name", "guest_unit_name", "pos", "hp", "mana", "body", "dead", "blood_pool", "follow", "follow_live"]:
+			if dest[0].has(key): h[key] = dest[0][key]
+			else: h.erase(key)
+		dest[0] = h
+		var bag := source._bag(party)
+		var items := CoopProgress._items(bag.items)
+		var money := clampi(int(bag.money), 0, 99999999)
+		if party == st.current_party: st.items = items; st.money = money
+		else: st.party_bags[party] = {"items":items,"money":money}
+	remember(s, r, st, true)
+	return true
+
+
 static func relevant(s: Session, r: Dictionary, op: String, args: Array) -> bool:
 	if s.state.campaign_id != CampaignProfile.ASTRAL: return true
 	if temporary(s.state, s.state.current_party): return true
