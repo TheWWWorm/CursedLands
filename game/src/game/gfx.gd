@@ -226,7 +226,29 @@ static func compose(code: String, lit := true, wrap := false) -> String:
 		extra += VERTEX_LIGHT.replace("WRAP_TERM", _wrap_term(wrap))
 		if on("gfx_clouds"):
 			extra = Clouds.common_source()+Clouds.shadow_source()+extra
-			extra = extra.replace("vec3 sun = ei_sun *", "vec3 sun = ei_sun * ei_cloud_sun(p) *")
+			# Limit reuse to the qualified Forward+ path for this test build.
+			if RenderingServer.get_current_rendering_method() == "forward_plus":
+				# Vertex calls keep their own shadow evaluation. Fragment light calls
+				# can supply the same value already evaluated for this exact receiver.
+				extra = extra.replace("void ei_vertex_colours(vec3 p, vec3 n, vec3 e, float kw, out vec3 d, out vec3 s)",
+					"void ei_vertex_colours_cloud(vec3 p, vec3 n, vec3 e, float kw, float cloud_sun, out vec3 d, out vec3 s)")
+				extra = extra.replace("vec3 sun = ei_sun *", "vec3 sun = ei_sun * cloud_sun *")
+				extra += """
+void ei_vertex_colours(vec3 p, vec3 n, vec3 e, float kw, out vec3 d, out vec3 s) {
+	float cloud_sun=dot(ei_sun_dir,ei_sun_dir)>0.5 ? ei_cloud_sun(p) : 1.0;
+	ei_vertex_colours_cloud(p,n,e,kw,cloud_sun,d,s);
+}
+float ei_cloud_sun_cached(vec3 p,inout vec4 sample_) {
+	// Exact position key: contact ground highlights can use a different
+	// receiver, so their factor must never reuse the figure's result.
+	if (sample_.w<0.0 || any(notEqual(sample_.xyz,p))) {
+		sample_=vec4(p,ei_cloud_sun(p));
+	}
+	return sample_.w;
+}
+"""
+			else:
+				extra = extra.replace("vec3 sun = ei_sun *", "vec3 sun = ei_sun * ei_cloud_sun(p) *")
 		if LocalLightShader.enabled():
 			extra += LocalLightShader.COMMON
 	code = code.substr(0, i + 1) + LIGHT_COMMON + extra + code.substr(i + 1)
@@ -620,10 +642,24 @@ void light() {
 		code = code.replace("\tif (ei_surface_fx.x > 0.5) {", "#ifndef EI_GRASS_LIGHT\n\tif (ei_surface_fx.x > 0.5) {")
 		code = code.replace("\n#ifdef EI_WATER_WAVES", "\n#endif\n#ifdef EI_WATER_WAVES")
 	if on("gfx_clouds"):
-		# Only sunlight is occluded. Local illumination, emissive surfaces,
-		# ambient light and the original per-light pass bookkeeping survive.
-		code = code.replace("float highlight = pow(", "float highlight = (LIGHT_IS_DIRECTIONAL ? ei_cloud_sun((INV_VIEW_MATRIX * vec4(ei_vpos,1.0)).xyz) : 1.0) * pow(")
-		code = code.replace("float transmission = pow(", "float transmission = (LIGHT_IS_DIRECTIONAL ? ei_cloud_sun((INV_VIEW_MATRIX * vec4(ei_vpos,1.0)).xyz) : 1.0) * pow(")
+		if RenderingServer.get_current_rendering_method() == "forward_plus":
+			# One local cache per light invocation. No new varying, temporal state,
+			# lowered sample count or interpolation: equal positions reuse a value.
+			code = code.replace("vec3 ei_alb = ALBEDO;", "vec3 ei_alb = ALBEDO;\n\tvec4 ei_cloud_sample=vec4(0.0,0.0,0.0,-1.0);")
+			code = code.replace("""ei_vertex_colours((INV_VIEW_MATRIX * vec4(ei_vpos, 1.0)).xyz,
+			normalize((INV_VIEW_MATRIX * vec4(NORMAL, 0.0)).xyz), ei_e, ei_k, d, s);""", """vec3 ei_cloud_position=(INV_VIEW_MATRIX * vec4(ei_vpos,1.0)).xyz;
+		float ei_cloud_factor=dot(ei_sun_dir,ei_sun_dir)>0.5 ? ei_cloud_sun_cached(ei_cloud_position,ei_cloud_sample) : 1.0;
+		ei_vertex_colours_cloud(ei_cloud_position,
+			normalize((INV_VIEW_MATRIX * vec4(NORMAL,0.0)).xyz),ei_e,ei_k,ei_cloud_factor,d,s);""")
+			# Only sunlight is occluded. Each copied contact highlight retains its
+			# own exact receiver key; local/ambient/emissive bookkeeping is intact.
+			code = code.replace("float highlight = pow(", "float highlight = (LIGHT_IS_DIRECTIONAL ? ei_cloud_sun_cached((INV_VIEW_MATRIX * vec4(ei_vpos,1.0)).xyz,ei_cloud_sample) : 1.0) * pow(")
+			code = code.replace("float transmission = pow(", "float transmission = (LIGHT_IS_DIRECTIONAL ? ei_cloud_sun_cached((INV_VIEW_MATRIX * vec4(ei_vpos,1.0)).xyz,ei_cloud_sample) : 1.0) * pow(")
+		else:
+			# Only sunlight is occluded. Local illumination, emissive surfaces,
+			# ambient light and the original per-light pass bookkeeping survive.
+			code = code.replace("float highlight = pow(", "float highlight = (LIGHT_IS_DIRECTIONAL ? ei_cloud_sun((INV_VIEW_MATRIX * vec4(ei_vpos,1.0)).xyz) : 1.0) * pow(")
+			code = code.replace("float transmission = pow(", "float transmission = (LIGHT_IS_DIRECTIONAL ? ei_cloud_sun((INV_VIEW_MATRIX * vec4(ei_vpos,1.0)).xyz) : 1.0) * pow(")
 	return code
 
 

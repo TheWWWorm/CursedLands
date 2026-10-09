@@ -1,0 +1,54 @@
+{
+  "date": "2026-10-10",
+  "status": "Integrated guarded Forward+ reuse; no release package or Windows runtime qualification yet.",
+  "source_sha256": {
+    "game/src/game/gfx.gd": "ef0b871b81f4fd4b5e4768f2108bfad225d68f1c0cebfe430a17110ce3ffea7f",
+    "game/src/game/fx/terrain_transition_shader.gd": "ed5e006288e9071f62086224c7d4b109239aabe4da51f3f4e4db7bb229b3e20d"
+  },
+  "changes": [
+    "Reuse exact original/donor samples shared by Natural transition pair and junction calculations.",
+    "Reuse cloud sunlight calculation only for the same exact receiver XYZ within one light invocation.",
+    "Forward+ only; Mobile/Compatibility generated shader programs remain byte-identical to the baseline."
+  ],
+  "qualification": {
+    "generated_shader_checks": 987,
+    "generated_shader_failures": 0,
+    "forward_plus_receivers": {
+      "checks": 96,
+      "failures": 0,
+      "image_equivalence": "candidate, held, restored byte-identical for four real receiver types and all four cloud settings"
+    },
+    "natural_and_wet_scene": {
+      "checks": 45,
+      "failures": 0,
+      "image_equivalence": "three full-resolution authored views byte-identical"
+    },
+    "unguarded_mobile": {
+      "checks": 58,
+      "strict_failures": 4,
+      "status": "retained, not enabled in this integration"
+    },
+    "unguarded_compatibility": {
+      "checks": 58,
+      "failures": 0,
+      "status": "guard still retains baseline for this test build"
+    }
+  },
+  "performance": "ABBA GPU observations retained in scratch receipt. Foreign rendering overlapped; no clean speedup or Windows FPS claim. No persistent terrain/cloud cache added.",
+  "cache_assessment": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-cost-triage-20261010/cache-assessment/assessment-20261010.json",
+    "summary": "Whole-map Natural colour/traits cache has excessive memory growth; any future cache should use bounded resident sectors. Cloud-only directional cache requires explicit origin/parallax/colour validation."
+  },
+  "receipt": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-cost-triage-20261010/reuse-receivers-guard-receipt-20261010.json",
+    "sha256": "8c54281365550500eab535d76f42771bb98e066c95da8a41c09881bfc7516e52"
+  },
+  "prior_receipt": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-cost-triage-20261010/reuse-receipt-20261010.json",
+    "sha256": "66b48a92512c2d18d6a743e0acb98ffb7649883f62693201fb619a1eb167ccdf"
+  },
+  "limits": [
+    "Only Forward+/Vulkan was rendered for the enabled optimization; Windows defaults to Forward+/D3D12 and remains user-test work.",
+    "This reduces duplicate work; it does not complete all reported cloud/terrain performance work."
+  ]
+}

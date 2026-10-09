@@ -246,6 +246,44 @@ const SHARED_RELIEF := """vec3 left; vec3 right; vec3 down; vec3 up;
 			transition_relief_samples(tile,local,step_uv,dx,dy,left,right,down,up);"""
 
 
+# Retain byte-identical legacy programs outside the qualified Forward+ path.
+static func _reuse_junction_functions() -> String:
+	var code := JUNCTION_FUNCTIONS
+	code = code.replace("""vec3 transition_junction_sample(ivec2 cell,vec2 p,vec2 dx,vec2 dy,vec4 row,vec4 metadata,
+		vec3 original,vec4 original_traits,out vec4 traits) {""", """vec3 transition_cached_fill(float slot,vec2 grid,vec2 dx,vec2 dy,
+		vec2 cached_slots,vec3 cached_a,vec3 cached_b) {
+	// Both fields use the identical grid and explicit gradients. Only an
+	// exact donor-slot match can reuse color; a warped extra family samples.
+	if (slot==cached_slots.x) { return cached_a; }
+	if (slot==cached_slots.y) { return cached_b; }
+	return transition_fill(slot,grid,dx,dy);
+}
+vec3 transition_junction_sample(ivec2 cell,vec2 p,vec2 dx,vec2 dy,vec4 row,vec4 metadata,
+		vec3 original,vec4 original_traits,vec2 cached_slots,vec3 cached_a,vec3 cached_b,out vec4 traits) {""")
+	code = code.replace("""colors[i]=transition_fill(slots[i],grid,dx,dy);""", """colors[i]=transition_cached_fill(slots[i],grid,dx,dy,cached_slots,cached_a,cached_b);""")
+	code = code.replace("""	// One call site avoids expanding the entire legacy program for each
+	// mutually exclusive fallback. Zero influence returns it exactly.
+	vec4 legacy_traits=vec4(0.0); vec3 legacy=vec3(0.0);
+	if (blend<1.0) {
+		legacy=transition_pair_sample(cell,p,dx,dy,legacy_traits);
+		if (blend<=0.0) { traits=legacy_traits; return legacy; }
+	}
+	vec4 original_traits;
+	vec3 original=transition_original_sample(cell,p,dx,dy,original_traits);
+	vec3 junction=transition_junction_sample(cell,p,dx,dy,row,metadata,original,original_traits,traits);""", """	// The two fields share this immutable original sample. Keep each
+	// field's scoring, traits and interpolation order unchanged.
+	vec4 original_traits;
+	vec3 original=transition_original_sample(cell,p,dx,dy,original_traits);
+	vec4 legacy_traits=original_traits; vec3 legacy=vec3(0.0);
+	vec2 cached_slots=vec2(-1.0); vec3 cached_a=vec3(0.0); vec3 cached_b=vec3(0.0);
+	if (blend<1.0) {
+		legacy=transition_pair_sample(cell,p,dx,dy,row,original,legacy_traits,cached_slots,cached_a,cached_b);
+		if (blend<=0.0) { traits=legacy_traits; return legacy; }
+	}
+	vec3 junction=transition_junction_sample(cell,p,dx,dy,row,metadata,original,original_traits,cached_slots,cached_a,cached_b,traits);""")
+	return code
+
+
 static func source(original: String, junctions := false) -> String:
 	var code := original.replace("shader_type spatial;", "shader_type spatial;\n#define EI_TERRAIN_TRANSITIONS")
 	code = code.replace("vec3 ground_sample(", "vec3 transition_original_sample(")
@@ -254,7 +292,23 @@ static func source(original: String, junctions := false) -> String:
 		functions = functions.replace("textureSize(transition_tiles,0)", "ivec2(textureSize(transition_tiles,0).x,textureSize(transition_tiles,0).y/2)")
 		functions = functions.replace("int(row.b+0.5)", "int(row.b)")
 		functions = functions.replace("vec3 ground_sample(", "vec3 transition_pair_sample(")
-		functions += JUNCTION_FUNCTIONS
+		# Mobile retains strict residuals; this test build limits reuse to Forward+.
+		if RenderingServer.get_current_rendering_method() == "forward_plus":
+			# Partial junction halos evaluate both fields at the same original point.
+			# Pass the original/row and exact donor samples through once; relief taps
+			# and the different pair/junction noise hashes remain independent.
+			functions = functions.replace("""vec3 transition_pair_sample(ivec2 cell,vec2 p,vec2 dx,vec2 dy,out vec4 traits) {
+	vec3 original=transition_original_sample(cell,p,dx,dy,traits);
+	ivec2 shift=ivec2(floor(p)); cell+=shift; p-=vec2(shift);
+	vec4 row=transition_row(cell);""", """vec3 transition_pair_sample(ivec2 cell,vec2 p,vec2 dx,vec2 dy,vec4 row,vec3 original,
+		inout vec4 traits,out vec2 cached_slots,out vec3 cached_a,out vec3 cached_b) {
+	// The caller has already resolved this exact cell, original and metadata.
+	cached_slots=vec2(-1.0); cached_a=vec3(0.0); cached_b=vec3(0.0);""")
+			functions = functions.replace("""	vec3 a=transition_fill(row.r,grid,dx,dy); vec3 b=transition_fill(row.g,grid,dx,dy);""", """	vec3 a=transition_fill(row.r,grid,dx,dy); vec3 b=transition_fill(row.g,grid,dx,dy);
+	cached_slots=row.rg; cached_a=a; cached_b=b;""")
+			functions += _reuse_junction_functions()
+		else:
+			functions += JUNCTION_FUNCTIONS
 		# These exact blocks keep their four coordinates and downstream math.
 		# Pair-only programs retain their original relief source byte-for-byte.
 		code = code.replace(TERRAIN_RELIEF, SHARED_RELIEF).replace(CONTACT_RELIEF, SHARED_RELIEF)
