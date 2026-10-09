@@ -18,11 +18,19 @@ Gameplay U39–U44 and the separate U45 removed-actor death-predicate correction
 are committed. The supplied U45 autosave contains two living required creatures;
 the original completion gates work when both die. `1b8b0f6` fixes a distinct
 script-added looted-actor reload defect with 137 passing candidate checks.
-The current combined-export production checkpoint is `63c16788f1bba2be73d1a00d534b310a4bf0fc98`.
-[Current texture integration](validation/renderer-texture-integration-2026-10-09.json)
+The current qualified private export matches production checkpoint
+`05600699529b6b4cd3b7666146cadf66977db5c7`.
+[Current P1 retention evidence](validation/wound-source-retention-2026-10-09.json)
+records 1,729 candidate checks and 15 captures, including 134 actual
+GameUnit/Paperdoll/cloud/terrain lifecycle checks. It removes 6.875–7.125 MiB
+of unused CPU source copies in a controlled appearance sample; all 39 uploaded
+textures and mip chains remain exact. All 613 committed game files match the
+tested stage; 99 generated import/UID files match the previous accepted stage.
+[Previous texture integration](validation/renderer-texture-integration-2026-10-09.json)
 records 190 runtime checks, 23 independent image comparisons and 37 captures for
 the wound-only and compressed-terrain changes alongside existing cloud/effects.
-All 712 post-import files match the qualified P1 candidate. The previous
+At that checkpoint, all 712 post-import files matched its qualified wound-shader
+candidate. The previous
 [711-check/60-capture acceptance](validation/renderer-coop-integration-2026-10-09.json)
 covers localized settings and representative co-op/solo return; gameplay source
 and both native binaries are unchanged by the subsequent four rendering files.
@@ -47,8 +55,8 @@ remains conservative about unknown authored flags.
 The original worktree above is historical. Source version remains Experimental 6
 and protocol 13. This task uses private exports and isolated profiles. Installed
 builds, templates, original assets and real saves have not been replaced.
-Current combined acceptance export:
-`/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-coop-final-01`.
+Current qualified private export:
+`/home/llm2x/Documents/EI/local/scratchpad/wound-retention-20261009/candidate01`.
 The detailed gameplay tracker is `docs/gameplay-gaps-2026-10-08.md`; the incoming
 handoff is `/home/llm2x/Documents/EI/local/gameplay-handoff-2026-10-09.md`.
 
@@ -60,7 +68,8 @@ and target-device acceptance remain distinct.
 
 ## P1: retain outfit pixels for wounds
 
-Implemented the first P1 step. `EIUnitModel._compose` retains the final,
+Historical first P1 step, superseded for shipped materials by the shader path
+and source-retention removal below. `EIUnitModel._compose` retained the final,
 mip-free CPU source image on its newly created texture. `UnitWounds._wounded`
 shares that immutable image with its worker instead of calling
 `Texture2D.get_image`. The worker still owns and blends a duplicate, so the
@@ -257,8 +266,10 @@ Unsupported custom `StandardMaterial3D` keeps its existing per-albedo bake.
 The existing collector supports instance material overrides and surface
 overrides; it does not extend support to mesh-owned materials with no instance
 override. All shipped unit figures use overrides. Detailed-head exclusions,
-armour suppression, paired limbs and health thresholds are unchanged. Retained
-`SOURCE_IMAGE` CPU pixels still exist; their memory is not counted as eliminated.
+armour suppression, paired limbs and health thresholds are unchanged. At this
+shader checkpoint, `SOURCE_IMAGE` CPU pixels still existed; its receipt does not
+count their memory as eliminated. The following retention checkpoint removes
+that now-unused owner from the shipped outfit producer.
 
 ### Evidence and limits
 
@@ -286,6 +297,52 @@ excluding outfit construction; they do not establish combat FPS or device
 performance. The old baked appearance and independent sampling differ visibly
 at some wound edges, as quantified in the receipt. Target-device and extended
 gameplay acceptance remain separate.
+
+## P1 follow-up: release unused outfit CPU source images — 9 October
+
+The [retention receipt](validation/wound-source-retention-2026-10-09.json) closes
+the remaining eager source-copy step for shipped figures. `EIUnitModel._compose`
+now uploads the same composed image and mip chain without duplicating its base
+pixels into `SOURCE_IMAGE` metadata. Shipped world, preview and selection
+materials already use the wound-only shader and never consume those pixels.
+No shader, sampling, native compositor, cache policy or graphics setting changes.
+
+Custom `StandardMaterial3D` still uses the existing lazy base readback and cache;
+an external texture producer can still supply immutable `SOURCE_IMAGE` metadata
+to avoid that readback. The retained-source, absent-source and pending-publication
+controls remain covered. A job retains its source across cache eviction; this
+does not assert that its worker was still running at the exact eviction instant
+or that fixture-held references had already been destroyed at shutdown.
+
+The controlled corpus creates 16 distinct authored human appearances and eight
+creature masks, then world/preview copies, selection, damage, healing, model
+disposal, wound shutdown and equipment replacement. Its 38 distinct source
+images previously retained **7,208,960 bytes (6.875 MiB)** after model disposal;
+one redress increases this to 39 images / **7,471,104 bytes (7.125 MiB)**. Both
+candidate checkpoints retain zero such images. This measures explicit metadata
+ownership, not RSS, a whole-game census or the renderer's internal headless data.
+The 39 uploaded base textures and their full mip chains remain byte-identical
+(9,961,420 bytes), as do the real custom-material source and wound outputs.
+Native wound layers and other asset caches remain outside this saving.
+
+Focused headless and Compatibility tests confirm no readback or replacement
+source cache on shipped wound requests, one readback per cached custom base,
+zero readbacks with external metadata, immutable pixels and normal ownership.
+The actual Forward+ GameUnit/Paperdoll lifecycle passes 134 checks with 15
+captures while High clouds and Natural terrain are enabled, including actual
+bright-material installation, healing, equipment replacement and retired owners.
+Independent review confirms the unchanged upload/fallback bytes; world wound
+and redressed Paperdoll images were inspected. Shader/settings/gameplay suites
+are inherited where their source is unchanged, rather than counted again.
+
+The candidate and previous combined export each contain 712 post-import files;
+only `src/ei/unit_model.gd` and `src/game/unit_wounds.gd` differ. Both native
+binaries match. All 613 Git-tracked game files match committed production
+`0560069`; the remaining 69 `.import` files and 30 `.gd.uid` files match the
+previous accepted stage. The source-comparison record and SHA-256 are appended
+to the retention receipt. The existing tested export is qualified directly,
+without rebuilding an identical pack. This is a private Linux checkpoint, without device/FPS claims,
+publication, installation or changes to original assets or user saves.
 
 ## P2: preserve authored mip levels and eligible compressed textures
 
@@ -1929,6 +1986,45 @@ Evidence: `sun-control.log`, `sun-gl.log`, `sun-gl-held.log`, `sun-forward.log`,
 `export-sun-gl_compatibility.log`, `export-sun-gl_compatibility-held.log`,
 `export-sun-forward_plus.log`, `export-sun-forward_plus-held.log`, plus
 `p6-export.log` and the isolated `p6-export/` release. No installed build was changed.
+
+### P6 normal-frame stability and redraw control — 9 October
+
+The [normal-frame diagnostic](validation/directional-shadow-stability-2026-10-09.json)
+uses the current qualified `texture-coop-final-01` pack on one original `bz13h`
+fortress/palm view. Forward+ runs at 800×600 on RTX 3090 with the actual desktop
+continuous aiming policy, Medium 4096 D16 shadows, fitted four cascades and
+production bias/filter settings. Wind, units, optional effects and simulation
+are held. This is separate from the older artificial-angle/forced-draw probe.
+
+The clean run passes 162 fixture checks and saves 127 images without errors or
+warnings. Stationary camera/clock images are exact, and returning all inputs
+after the pan/clock traces restores the initial image exactly. Four held ABBA
+blocks each sample 240 ordinary rendered frames after warmup. Shadow-enabled
+frames repeatedly submit 73,589 shadow primitives and 776 draws; shadow-off
+frames submit none. Both enabled/disabled viewport GPU median differences are
+0.119 ms (0.264 versus 0.145 ms), and both CPU differences are 0.210 ms. These
+are whole-viewport differences, not isolated depth cost or achievable cache
+savings; no depth-copy, invalidation or cache-maintenance costs were simulated.
+
+The short logical traces replay a 0.3 m/s camera pan and two seconds of authored
+clock advance through the real aiming path, with shadow-off controls. Pan image
+changes are mostly ordinary texture/raster motion. Clock-on changes show small
+moving shadow edges; the clock-off endpoint stays within 2/255, with no pixels
+exceeding that threshold, rather than being byte-identical. Inspected original frames
+and exact-pixel edge crops show no demonstrated wrong state or basis jump; raw
+temporal pixel counts alone do not establish objectionable shimmer. Fixed
+PCF disk rotation with TAA off is not a random stationary jitter policy.
+
+An earlier run logged a fixture-only pre-tree global-transform error while
+reparenting the dummy Game's sun. Explicitly retaining its local transform
+before the complete aiming assignment fixes setup; all 127 images match the
+clean rerun byte-for-byte. The first run remains excluded from acceptance.
+
+No production setting, sun policy or native renderer changed. Godot already
+snaps cascade bounds; this stable held view and its modest measured cost do not
+justify a larger projection/cache adaptation. Low sun, zoom, moving casters,
+cascade crossings, long routes and actual target devices remain separate P6
+acceptance work. No Windows/Android/browser or FPS result is implied.
 
 ## V1: validate the terrain surface before blending objects
 
@@ -4561,7 +4657,7 @@ and actor/script-free teardown against the audit's V7 acceptance list.
 
 ## Combined cloud and co-op acceptance — 9 October
 
-The current private Linux export freezes committed application revision
+That earlier private Linux export freezes committed application revision
 `79bee8a56f7a27a9897ae9ebe44fa6000d94cf21` at `/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/cloud-coop-final-01`.
 Import/export completes without errors and excludes no working game changes.
 [That checkpoint's evidence](validation/renderer-coop-integration-2026-10-09.json)
@@ -4694,7 +4790,9 @@ release, installation, original asset or real save was modified.
 1. **P1/P2 remaining texture work:** shipped unit/preview materials now share
    native-size wound-only textures over unchanged bases, under the explicit
    sampling/lifecycle contract above. Unsupported custom materials keep their
-   legacy bake; source-image retention and target-device measurements remain.
+   legacy bake; eager CPU source retention is now removed from shipped outfit
+   producers, with exact uploaded-base/mip and custom-readback controls above.
+   Target-device measurements remain.
    Do not claim original two-pass or old baked-pixel equivalence. P2's HD scenery path now avoids the main-device round trip on
    RenderingDevice backends, with byte/render/lifetime evidence above.
    P2's terrain follow-up also avoids enlarged atlas readback and final upload,
@@ -4737,8 +4835,11 @@ release, installation, original asset or real save was modified.
    Compatibility probe confirms repeated shadow submissions, but its small,
    noisy viewport delta does not justify the unmeasured depth-copy/cache costs.
    Use a costly target-device workload before building that larger engine path.
-   For P6, identify actual shimmer/redraw cost and renderer capabilities
-   before changing cascade settings or planning engine-level projection reuse.
+   For P6, a normal-frame Forward+ fortress probe now retains exact held/return
+   images and measures a 0.119 ms whole-viewport shadow-on/off GPU difference.
+   It does not justify a larger projection/cache change. Use an actual costly
+   or visibly unstable target workload before changing cascade settings;
+   low-sun/zoom/moving-caster/cascade/device acceptance remains open.
 5. **C1 character batching/skinning:** the rigid prototype above now measures
    submission savings, extra palette cost, light-selection differences and
    changed picking. It loses total frame time in the sampled desktop workload;

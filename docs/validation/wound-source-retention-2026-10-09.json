@@ -484,5 +484,23 @@
     "Controlled 24-record base-campaign appearance sample and one prepared GameUnit/Paperdoll scene, not exhaustive campaign appearance, combat, mobile-device, handheld or FPS evidence.",
     "Focused Compatibility readback and Forward+ actual-scene controls are sufficient for the unchanged shaders; prior P1 numerical/alpha/backend evidence remains historical and was not rewritten.",
     "No install, release publication, native/runtime modification or unrelated cleanup."
-  ]
+  ],
+  "committed_source_qualification": {
+    "production_revision": "05600699529b6b4cd3b7666146cadf66977db5c7",
+    "comparison_path": "/home/llm2x/Documents/EI/local/scratchpad/wound-retention-20261009/candidate01/source-comparison.json",
+    "comparison_sha256": "5a7b28381f536e610108386c86941c778506603b1b9dea0ede998fb9369da11d",
+    "committed_files_exact": 613,
+    "post_import_files": 712,
+    "unchanged_generated_files": {
+      "gd_uid": 30,
+      "import": 69
+    },
+    "changed_files_from_previous": [
+      "src/ei/unit_model.gd",
+      "src/game/unit_wounds.gd"
+    ],
+    "native_binaries_unchanged": true,
+    "initial_comparison_correction": "All committed source hashes passed immediately; an overly narrow generated-file assertion accepted only .gd.uid extras. Inspection also found 69 unchanged .import files. The corrected assertion accepts exactly those two generated classes, each byte-identical to the previous accepted stage. No source/build/test changed.",
+    "inherited_evidence": "Previous cloud/terrain composition, settings and systemic solo/co-op acceptance remain valid for unchanged source. They were not rerun or added to these totals. No additional export was needed to qualify the already tested bytes."
+  }
 }
