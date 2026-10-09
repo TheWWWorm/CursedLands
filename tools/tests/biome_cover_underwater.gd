@@ -121,15 +121,22 @@ void fragment() { ALBEDO=vec3(failed,1.0-failed,0.0); }
 	view.free(); await frames()
 
 func authored() -> void:
-	var t := EITerrain.load_map("zone1"); add_child(t); t.set_process(false); t.details.set_process(false)
+	var name := "zone1"
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--underwater-map="): name=arg.trim_prefix("--underwater-map=")
+	var owner: int = {"zone1":2,"zone7":0,"zone8":4}[name]
+	# Zone8 has few eligible shallow patches; scan all chunks to retain the
+	# same minimum probe coverage as the larger starting/island seas.
+	var step := 1 if name=="zone8" else 2
+	var t := EITerrain.load_map(name); add_child(t); t.set_process(false); t.details.set_process(false)
 	t._water_mat.set_shader_parameter("waves",0.0)
 	var surface := Surface.new(t); var baseline := {}; var retained: RefCounted
 	for offset in [0.0,0.65,-0.35,0.0]:
-		t.set_water_offset(2,offset); t.details.prepare_grass(); surface.begin_frame()
+		t.set_water_offset(owner,offset); t.details.prepare_grass(); surface.begin_frame()
 		var f := t.details._cover_field; var captures: Array[Dictionary] = []; var counts := {}; var timings := []; var visited := 0
 		var dry := []; var point_count := 0; var nonflat := 0; var wind_plane_error := 0.0; var custom_bytes := 0
-		for y in range(0,int(t.size_ei().y/8),2):
-			for x in range(0,int(t.size_ei().x/8),2):
+		for y in range(0,int(t.size_ei().y/8),step):
+			for x in range(0,int(t.size_ei().x/8),step):
 				var key := Vector2i(x,y); var started := Time.get_ticks_usec(); var data := f.build(key,[],[]); timings.append(Time.get_ticks_usec()-started)
 				for r: Dictionary in data.records:
 					if not r.get("underwater",false): dry.append(r); continue
@@ -147,7 +154,7 @@ func authored() -> void:
 					var i := submerged[int(float(pick)*submerged.size()/mini(64,submerged.size()))]
 					var vertex := verts[i]; var p := Vector2(vertex.x+x*8,vertex.z-y*8)
 					var actual := surface.sample(p)
-					check(not actual.is_empty() and actual.material==2,"actual water triangles cover emitted sea vertices")
+					check(not actual.is_empty() and actual.material==owner,"actual water triangles cover emitted sea vertices")
 					if actual.is_empty(): continue
 					var level: float = actual.height; var plane := Vector4(planes[i*4],planes[i*4+1],planes[i*4+2],planes[i*4+3])
 					nonflat+=int(absf(plane.x)+absf(plane.y)>0.000001)
@@ -161,7 +168,7 @@ func authored() -> void:
 						check(not moved.is_empty(),"maximum cover sway retains authored water coverage")
 						if not moved.is_empty(): wind_plane_error=maxf(wind_plane_error,absf(plane.x*(vertex.x+move.x)+plane.y*(vertex.z+move.y)+plane.z-moved.height))
 					var lift := 0.10 if point_count%2==0 else 0.0
-					var expected := minf(pow(maxf(level-vertex.y-lift,0),2)/(15.0*(1.0-(t.materials[2].color as Color).a)),4.0)
+					var expected := minf(pow(maxf(level-vertex.y-lift,0),2)/(15.0*(1.0-(t.materials[owner].color as Color).a)),4.0)
 					captures.append({"vertex":vertex,"plane":plane,"expected":expected,"lift":lift}); point_count+=1
 				visited+=1
 		check(counts.has(11) and counts.has(12) and counts.has(13),"authored sea emits short/tall vegetation and shells")
@@ -169,7 +176,7 @@ func authored() -> void:
 		var stamp := str(offset)+"-"+str(rows.size())
 		if baseline.is_empty(): baseline={"dry":dry,"counts":counts}; retained=f.sea
 		elif offset==0.0: check(dry==baseline.dry and counts==baseline.counts,"flood/drain/restore preserves deterministic distribution")
-		timings.sort(); rows.append({"case":"authored","offset":offset,"counts":counts,"points":point_count,"nonflat_points":nonflat,"wind_plane_error_m":wind_plane_error,"custom1_bytes":custom_bytes,"chunks":visited,"build_us_median":timings[timings.size()/2],"build_us_max":timings[-1],"sea_tiles":f.sea.tiles.size()})
+		timings.sort(); rows.append({"case":"authored","map":name,"owner":owner,"offset":offset,"counts":counts,"points":point_count,"nonflat_points":nonflat,"wind_plane_error_m":wind_plane_error,"custom1_bytes":custom_bytes,"chunks":visited,"build_us_median":timings[timings.size()/2],"build_us_max":timings[-1],"sea_tiles":f.sea.tiles.size()})
 		if DisplayServer.get_name()!="headless": await gpu(captures,stamp)
 		if offset==0.65 and DisplayServer.get_name()!="headless": await gpu(captures,"wrong",true)
 	var probe := Vector2(retained.tiles.keys()[0])*2+Vector2.ONE

@@ -110,7 +110,7 @@ func synthetic() -> void:
 	terrain.free(); d.free()
 
 func authored() -> void:
-	for name in ["zone1","zone11","zone15"]:
+	for name in ["zone1","zone11","zone15","zone7","zone8"]:
 		var started := Time.get_ticks_usec(); var t := EITerrain.load_map(name); var d := t.details
 		d.set_process(false); d.prepare_grass(); var field: Variant = d._cover_field
 		var prep_us := Time.get_ticks_usec()-started
@@ -120,13 +120,14 @@ func authored() -> void:
 				var key := Vector2i((x+0.5)*t.size_ei().x/64.0,(y+0.5)*t.size_ei().y/64.0)
 				for r: Dictionary in field.records(key,[],[]):
 					if r.kind<7: original.append(r)
-		var row := {"case":"authored","map":name,"dry_count":original.size(),"dry_hash":hash_data(original),"load_and_prepare_us":prep_us}
+		check((field.native==null)==OS.get_cmdline_user_args().has("--ei-script-grass"),"requested native/script sampler is active "+name)
+		var row := {"case":"authored","map":name,"native_sampler":field.native!=null,"dry_count":original.size(),"dry_hash":hash_data(original),"load_and_prepare_us":prep_us}
 		var counts := {}; var focuses := {}; var times := []; var points := 0
 		var keys: Array = field.shores.keys(); keys.sort()
 		for key: Vector2i in keys:
 			points += (field.shores[key] as PackedVector4Array).size()
 			if key.x<0 or key.y<0 or key.x*8>=t.size_ei().x or key.y*8>=t.size_ei().y: continue
-			if name!="zone1" and posmod(key.x+key.y*3,11)!=0: continue
+			if name in ["zone11","zone15"] and posmod(key.x+key.y*3,11)!=0: continue
 			started = Time.get_ticks_usec()
 			var records: Array = field.bank_records(key,[]); times.append(Time.get_ticks_usec()-started)
 			for r: Dictionary in records:
@@ -141,6 +142,22 @@ func authored() -> void:
 		if name=="zone1":
 			check(counts.has(7) and counts.has(8),"authored starting map supplies reeds and cattails")
 			check(not counts.has(9) and not counts.has(10),"zone1's ground-tagged coast is not silently relabelled as sand")
+		if name in ["zone7","zone8"]:
+			check(int(counts.get(10,0))>0,"authored sandy coast admits shells "+name)
+			if name=="zone7": check(int(counts.get(9,0))>0,"island coast also admits wrack")
+			var expected := 0 if name=="zone7" else 4
+			check(not field.sea.tiles.is_empty() and field.sea.tiles.values().all(func(tile: Dictionary): return tile.owner==expected),"sea snapshot excludes inland/swamp owners "+name)
+			check(Array(t._surf).all(func(strength: float): return strength==0.0),"cover habitat does not opt this map into unvalidated surf "+name)
+			row["sea_tiles"] = field.sea.tiles.size()
+			if name=="zone8":
+				var river := false
+				for y in range(1,int(t.size_ei().y),2):
+					for x in range(1,int(t.size_ei().x),2):
+						var at := y*int(t.size_ei().x)+x
+						if t.water_mat[at]!=5 or t.water[at]<=t.height_at(x,y)+0.1: continue
+						if field.shore(Vector2(x,y)).z==1: river=true; break
+					if river: break
+				check(river,"connected inland material retains river classification")
 		rows.append(row); print("BANK_AUTHORED ",JSON.stringify(row)); t.free()
 
 func _ready() -> void:

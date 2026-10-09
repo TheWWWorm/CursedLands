@@ -5,6 +5,7 @@ const Geometry = preload("res://src/game/fx/biome_cover_mesh.gd")
 var checks := 0
 var failures := 0
 var rows := []
+var only_kind := -1 # Isolate a species while retaining the authored map/scenery.
 
 func check(ok: bool,label: String) -> void:
 	checks += 1
@@ -189,6 +190,9 @@ func build(d: TerrainDetails,p: Vector2) -> Dictionary:
 	for y in range(focus.y-1,focus.y+2):
 		for x in range(focus.x-1,focus.x+2):
 			var key := Vector2i(x,y); var data := d.instances(key)
+			if only_kind>=0 and data.has("cover"):
+				data.cover.records = data.cover.records.filter(func(r: Dictionary): return int(r.kind)==only_kind)
+				data.cover.arrays = Geometry.new().build(data.cover.records,key,d._cover_field.sea if not d._cover_field.sea.tiles.is_empty() else null)
 			if data.has("cover"): records += data.cover.records.size(); vertices += (data.cover.arrays[Mesh.ARRAY_VERTEX] as PackedVector3Array).size()
 			if not d._chunks.has(key): d._install_chunk(key,data)
 			all[key] = data.get("cover",{})
@@ -208,6 +212,22 @@ func camera_clear(d: TerrainDetails,focus: Vector3) -> bool:
 			if (record.box as AABB).intersects_segment(inverse*from,inverse*to)!=null: return false
 	return true
 
+func choose_cover(d: TerrainDetails,requested: int) -> Dictionary:
+	# Keep temporary snapshot references out of the asynchronous render test.
+	var chosen := {}; var score := 0; var size := d.terrain.size_ei()
+	# Beach debris can be sparse enough to occupy only a single even chunk.
+	var step := 1 if requested in [Cover.Kind.WRACK,Cover.Kind.SHELL] else 2
+	var margin := step-1
+	for y in range(margin,int(size.y/8)-margin,step):
+		for x in range(margin,int(size.x/8)-margin,step):
+			var key := Vector2i(x,y); var records := d._cover_field.records(key,d._scenery.get(key,[]),d._trees.get(key,[]))
+			var flowers := records.filter(func(r: Dictionary): return int(r.kind)==requested)
+			if flowers.size()>score:
+				for candidate: Dictionary in flowers:
+					if camera_clear(d,Vector3(candidate.p.x,candidate.height,-candidate.p.y)):
+						chosen = candidate; score = flowers.size(); break
+	return chosen
+
 func render_fixture() -> void:
 	var id := "gz1g"; var requested := Cover.Kind.FLOWER
 	for arg in OS.get_cmdline_user_args():
@@ -223,15 +243,7 @@ func render_fixture() -> void:
 	check(d!=null,"cover-only render creates its streamer")
 	if d==null: view.free(); return
 	d.set_process(false); d.prepare_grass()
-	var chosen := {}; var score := 0; var size := t.size_ei()
-	for y in range(1,int(size.y/8)-1,2):
-		for x in range(1,int(size.x/8)-1,2):
-			var key := Vector2i(x,y); var records := d._cover_field.records(key,d._scenery.get(key,[]),d._trees.get(key,[]))
-			var flowers := records.filter(func(r: Dictionary): return int(r.kind)==requested)
-			if flowers.size()>score:
-				for candidate: Dictionary in flowers:
-					if camera_clear(d,Vector3(candidate.p.x,candidate.height,-candidate.p.y)):
-						chosen = candidate; score = flowers.size(); break
+	var chosen := choose_cover(d,requested)
 	check(not chosen.is_empty(),"authored cover survives complete scenery exclusion")
 	if chosen.is_empty(): view.free(); return
 	var p: Vector2 = chosen.p; var focus := Vector3(p.x,chosen.height,-p.y)
@@ -312,6 +324,9 @@ func render_fixture() -> void:
 func _ready() -> void:
 	for option in ["gfx_hd_textures","gfx_terrain","gfx_soft_ground","gfx_ground_contact","gfx_grass","gfx_vegetation_interaction","gfx_wind","gfx_water","gfx_water_interaction","gfx_water_caustics","gfx_volumetric","gfx_ssao","gfx_bloom","confine_mouse","vsync"]: GameData.options[option] = 0
 	GameData.options["gfx_biome_cover"] = 1
+	if OS.get_cmdline_user_args().has("--cover-kind-only"):
+		for arg in OS.get_cmdline_user_args():
+			if arg.begins_with("--cover-kind="): only_kind = int(arg.trim_prefix("--cover-kind="))
 	if OS.get_cmdline_user_args().has("--cover-with-grass"): GameData.options["gfx_grass"] = 1
 	if OS.get_cmdline_user_args().has("--cover-water-fx"): GameData.options["gfx_water"] = 1
 	Engine.max_fps = 120; Engine.time_scale = 0; DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_NO_FOCUS,true)

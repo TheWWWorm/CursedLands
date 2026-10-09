@@ -724,11 +724,15 @@ const WaterInteractionShader = preload("res://src/game/fx/water_interaction_shad
 const WaterCaustics = preload("res://src/game/fx/water_caustics.gd")
 
 ## The .mp format has generic liquid materials, not ocean/river/lake tags.
-## Only confirmed sea materials get breaking surf. On the starting map,
+## Confirmed sea habitats for optional coastal cover. On the starting map,
 ## 2 is the western sea, 0 the inland stream, 1 the bog. Unknown water stays
-## calm; neither touching a map edge nor having waves proves it is a sea.
+## unclassified; neither touching a map edge nor having waves proves sea identity.
+## Zone7's 0 surrounds the islands; zone8's 4 is its open coast. Zone8's
+## connected material 5 continues inland and deliberately retains river cover.
 ## Profiles are local to the remake; the original material shader is intact.
-const SEA_MATERIALS := {"zone1": [2]}
+const SEA_MATERIALS := {"zone1": [2], "zone7": [0], "zone8": [4]}
+## Breaking-surf appearance has separate visual acceptance from cover habitat.
+const SURF_MATERIALS := {"zone1": [2]}
 
 
 func ground_surface_data(triangle_only := false) -> GroundSurfaceData:
@@ -1032,7 +1036,7 @@ func _build_surface_data() -> void:
 	_ripple.fill(0.35)
 	for m in mini(materials.size(), 64):
 		_ripple[m] = clampf(0.25 + float(materials[m].get("wave", 0.0)) * 0.65, 0.25, 1.0)
-		if m in SEA_MATERIALS.get(resource_prefix, []) and _lava[m] == 0.0:
+		if m in SURF_MATERIALS.get(resource_prefix, []) and _lava[m] == 0.0:
 			_surf[m] = 1.0
 			_ripple[m] = 1.0
 

@@ -3226,6 +3226,98 @@ The native library is unchanged. No release, installed build, original asset
 or save was changed. Continue the remaining renderer work; U45 remains first
 when the gameplay track starts.
 
+### V2: authored coastal habitats and beach-debris acceptance
+
+Follow-up to `da1c325`, 9 October. The default-off cover option now recognizes
+the island sea on **zone7, material 0**, and the open coast on **zone8, material
+4**. These are the first verified authored sandy beaches for the existing
+wrack/shell rules. The same immutable sea snapshots also admit the existing
+underwater species. Zone8's connected material 5 remains an inland channel;
+zone1 material 2 keeps its prior classification. Density, meshes, placement
+exclusions, defaults and desktop sunlight are unchanged.
+
+Reference R1 `0092dc6e1d7c4aab3f74644a79e9bfca11ecf293`:
+
+- `Source/renderer_ground_cover.cpp:1331–1351`, `ground_cover_sea_mask`, labels
+  edge-connected components with at least 2,048 open-water tiles as sea. This
+  is a heuristic, not an authored ocean tag. `update_ground_cover_maps` uses
+  it around line 1720. Our diagnostic used this to identify candidates, then
+  inspected actual maps and water-material ownership. Directly copying it
+  would combine zone8's coast and inland channel.
+- `Source/ground_cover.h:327–352` contains shore and underwater cover rules;
+  `Source/renderer_ground_cover.cpp:510–570` contains beach masks and height/
+  slope admission. `Source/terrain_tile_blend.h:161–170` also permits atlas
+  slots containing any sand-family corner. That wider atlas rule is **not
+  implemented by this checkpoint**. The soft-sand mound family test at
+  lines 193–211 is separate and must not be substituted for beach identity.
+
+Implementation entry points:
+
+- `game/src/ei/terrain.gd`, `SEA_MATERIALS`: the three explicit cover habitat
+  profiles. New `SURF_MATERIALS` retains only zone1 material 2; `_build_surface_data`
+  uses it for breaking surf/ripple strength. Extending cover habitat therefore
+  does not enable unvalidated surf on new maps.
+- `game/src/game/fx/biome_cover.gd`, `_prepare_shores`: existing sea snapshot
+  and shore-channel consumers. Its dry type-3 sand, height, slope, footprint
+  and scenery rules are unchanged. There is no new streamer or worker path.
+- `tools/tests/biome_cover_shores.gd`: actual zone7/zone8 material and beach
+  admission, inland-channel separation and unchanged surf controls. Reports
+  whether native sampling or `--ei-script-grass` was actually active.
+- `tools/tests/biome_cover.gd`: `--cover-kind-only` isolates one species in the
+  existing authored World/Map/scenery fixture. Beach search visits every chunk
+  because zone8's only admitted shell is in an even chunk. The synchronous
+  `choose_cover` helper releases temporary snapshot references before awaits.
+- `tools/tests/biome_cover_underwater.gd`: `--underwater-map=zone7|zone8` selects
+  literal expected water owners and independently checks original water
+  geometry, shader attenuation, flood/drain/restore and snapshot lifetime.
+  Zone8 scans all chunks to retain the original 1,024-probe minimum.
+
+The [coastal receipt](/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/biome-cover-coasts-2026-10-09.json)
+records frozen tools, commands, hashes, images and retained failed controls.
+The QA root is `.../owned-renderer-improvements-20261008-qa/v2-vegetation`.
+`coast-components-base` records the component census; `coast-overviews` shows
+actual maps; `coast-materials-unfogged` distinguishes zone8's water owners.
+The earlier material-color view was obscured by fog and is not identification
+evidence. The original reference checkout remains clean at R0.
+
+Before complete scenery exclusions, the full bank scan admits 20 wrack and 58
+shells on zone7, and one shell on zone8. Full authored render fixtures retain
+two wrack or ten shells in the chosen zone7 views, and that shell on zone8.
+These deliberately sparse results are not grounds for weakening footprint
+checks. Compatibility, desktop Mobile and Forward+ captures verify visibility,
+rigidity under pressure, pause, rebuild, shadow refresh and exact off restoration.
+The species-only fixtures do not establish full mixed-cover visual acceptance.
+
+Native/script shore distributions agree, with all 865 sampled prior dry-cover
+records unchanged from the previous pack. The prior pack fails exactly the
+five new coastal presence/snapshot assertions. GPU attenuation checks on both
+new maps pass 8,192 positive samples and detect all 2,048 deliberately wrong
+samples. Eight original/enhanced-water overhead/shore captures with cover off
+are byte-identical between old and new packs on Compatibility. Existing large
+triangular enhanced-water patches at zone8's outer edge are visible in that
+unchanged baseline; this change does not fix them.
+
+**Remaining limits:** the sea snapshots contain 21,605 tiles on zone7 and 5,312
+on zone8. The existing shore-index payloads are about 1.44 MB and 0.56 MB,
+excluding container overhead and sea snapshots. Underwater custom attributes
+still add 16 bytes per cover vertex on these maps. No memory/FPS improvement or
+Android/browser acceptance is claimed. During the artificial +0.65 m flood,
+the fixed-plane lighting approximation crosses steep outer-boundary triangles:
+zone8's conservative full-sway probe reaches 0.411 m error. A diagnostic using
+the shader's actual vertex amplitude reaches 0.178 m. The largest sampled
+attenuation error is 0.0149 (about 1.5 percentage points, at another vertex).
+The receipt records both cases. Original water levels in the sampled cases are
+flat and have zero measured sway-plane error. This is mean-plane lighting,
+not dynamic wave lighting or a complete sloped-water solution.
+
+Final application/runtime evidence is in `cover-coasts-probe/export.json`:
+all 232 production scripts match the tested pack, SHA-256
+`65da01d177ddfa7dc50eaa24e81b6243e670d4677a2d55f99adc41dd2c715672`.
+It uses the prior patched runtime `090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44`
+and unchanged native library. No template, installed build, original asset or
+save changed. Continue broader biome/atlas profiles, shared weather wind and
+actual submission LOD; U45 remains first on the later gameplay track.
+
 ## Next work in the established order
 
 1. **P1/P2 remaining texture work:** retained outfit pixels and shared native
@@ -3287,7 +3379,9 @@ when the gameplay track starts.
    Dry river/swamp banks are now implemented with the conservative shore rules
    above. Underwater cover/mean-depth lighting and the enhanced-water pause
    correction are now implemented, followed by sparse snow/verified-sand mounds.
-   Continue with authored sandy-beach acceptance, broader biome/atlas profiles,
-   shared weather wind and actual geometry submission LOD. Preserve the mound
+   Zone7/zone8 coastal profiles now provide authored sandy-beach acceptance,
+   with cover habitat kept separate from breaking surf. Continue broader
+   biome/atlas profiles, shared weather wind and actual geometry submission LOD.
+   Preserve the coastal mean-depth boundary limitation and the mound
    Mobile restoration limitation and construction-cost evidence. No visual effect
    was silently enabled.
