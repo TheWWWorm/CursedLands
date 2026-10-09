@@ -1,0 +1,4551 @@
+{
+  "date": "2026-10-09",
+  "status": "Diagnostic checkpoint only; reject runtime rollout of this prototype. No production code changed.",
+  "source_base": "cc61e55df934af757ec338edea403461fa6be8c4",
+  "canonical_checkout": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo",
+  "qa_root": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/c1-rigid",
+  "reference": {
+    "revision": "d529d14e9bf3c960833a9d9633786fc4588ec6d2",
+    "file": "Source/retained_static_submission.cpp",
+    "symbols": [
+      "merge_part_eligible",
+      "merge_parts_compatible",
+      "retained_visual_merged_groups"
+    ],
+    "inspiration": "Group compatible rigid parts while retaining each part pose identity; authored smooth skinning was not implemented in the reference."
+  },
+  "diagnostic_sources": {
+    "tools/benchmarks/rigid_characters.gd": "6973568fe774278f7804b21db1fc4ef7fc4c5a99bda26ba5e81f03a5ea527c44",
+    "tools/benchmarks/rigid_part_batch.gd": "74a0462e0a9fbdd679c9426ea2148ae551bd83ef7dfa1f79b4d4059ebdb871d6"
+  },
+  "frozen_native_sha256": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82",
+  "scope": {
+    "geometry": "One bone per original body part with weight 1. No smooth weights. Keep authored EIAnimPart nodes and original interpolation-before-composition. Copy tangents/normals/UV/indices; group exact material/layer/shadow mode. Keep head/attachments/morphs and translucent wisp separate.",
+    "views": "Eight figures, two camera/pose states, idle/walk/attack/death when present. Second state rotates figure, enables detailed head and applies native wounds. Sixty views per broad suite.",
+    "timing": "32 manually animated human figures, 512x512 offscreen world, original/merged/merged/original, 160 measured samples per case after warmup. Normal frame loop; no force_draw/readback in measurement. Options plus engine cap/VSync disabled and asserted. Linux RTX 3090, desktop backends. No AI/network/full map/shadow workload.",
+    "acceptance": "Checks assert geometry/expected bypass and timing configuration, not pixel equality or gameplay readiness."
+  },
+  "checks_total": 902,
+  "runs": [
+    {
+      "label": "suite-compat-final2",
+      "folder": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/c1-rigid/suite-compat-final2",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/c1-rigid/candidate/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/benchmarks/rigid_characters.gd",
+        "--rigid-suite"
+      ],
+      "return_code": 0,
+      "termination": null,
+      "errors": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "checks": 144,
+      "failures": 0,
+      "report_sha256": "214aa8dc0e43edc2f5a2dd57c7faa8fec80a9e14530f021f1f54e8bdb8e64ec4",
+      "run_receipt_sha256": "a2f90875118a3f0d57185fcd871ac49c845face021279572d50fd10a0ea626d0",
+      "fixture_sha256": "6973568fe774278f7804b21db1fc4ef7fc4c5a99bda26ba5e81f03a5ea527c44",
+      "helper_sha256_at_start": "74a0462e0a9fbdd679c9426ea2148ae551bd83ef7dfa1f79b4d4059ebdb871d6",
+      "helper_provenance_note": null,
+      "pack_sha256": "c3707d425197a2ede8ee12b972cfd429dd2d14eefa4578f7b98f070d488f956e",
+      "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [],
+      "summary": {
+        "dragon": {
+          "render_pairs": 6,
+          "draws_original": [
+            42
+          ],
+          "draws_candidate": [
+            4
+          ],
+          "merged_meshes": 39,
+          "surfaces": 1,
+          "max_position_error_m": 2.18514242078527e-06,
+          "max_normal_error": 3.86282238196145e-07,
+          "exact_pairs": 1,
+          "worst_pixels_over_2": 9,
+          "peak_delta": 69
+        },
+        "human": {
+          "render_pairs": 8,
+          "draws_original": [
+            16,
+            17
+          ],
+          "draws_candidate": [
+            3,
+            4
+          ],
+          "merged_meshes": 14,
+          "surfaces": 1,
+          "max_position_error_m": 1.71201307352931e-07,
+          "max_normal_error": 3.8165595128703e-07,
+          "exact_pairs": 6,
+          "worst_pixels_over_2": 1,
+          "peak_delta": 100
+        },
+        "human-complexion": {
+          "render_pairs": 8,
+          "draws_original": [
+            16,
+            17
+          ],
+          "draws_candidate": [
+            3,
+            4
+          ],
+          "merged_meshes": 14,
+          "surfaces": 1,
+          "max_position_error_m": 1.46000971312787e-07,
+          "max_normal_error": 3.8165595128703e-07,
+          "exact_pairs": 6,
+          "worst_pixels_over_2": 2,
+          "peak_delta": 23
+        },
+        "human-female": {
+          "render_pairs": 8,
+          "draws_original": [
+            19,
+            20
+          ],
+          "draws_candidate": [
+            6,
+            7
+          ],
+          "merged_meshes": 14,
+          "surfaces": 1,
+          "max_position_error_m": 1.26440539816031e-07,
+          "max_normal_error": 3.86282238196145e-07,
+          "exact_pairs": 7,
+          "worst_pixels_over_2": 0,
+          "peak_delta": 1
+        },
+        "orc-bow": {
+          "render_pairs": 8,
+          "draws_original": [
+            19
+          ],
+          "draws_candidate": [
+            6
+          ],
+          "merged_meshes": 14,
+          "surfaces": 1,
+          "max_position_error_m": 1.44664113577164e-07,
+          "max_normal_error": 3.33200091517938e-07,
+          "exact_pairs": 6,
+          "worst_pixels_over_2": 0,
+          "peak_delta": 1
+        },
+        "troll": {
+          "render_pairs": 8,
+          "draws_original": [
+            15
+          ],
+          "draws_candidate": [
+            2
+          ],
+          "merged_meshes": 14,
+          "surfaces": 1,
+          "max_position_error_m": 5.96046447753906e-07,
+          "max_normal_error": 3.4012532523775e-07,
+          "exact_pairs": 2,
+          "worst_pixels_over_2": 1,
+          "peak_delta": 5
+        },
+        "wisp": {
+          "render_pairs": 6,
+          "draws_original": [
+            5
+          ],
+          "draws_candidate": [
+            5
+          ],
+          "merged_meshes": 0,
+          "surfaces": 0,
+          "max_position_error_m": 0.0,
+          "max_normal_error": 0.0,
+          "exact_pairs": 6,
+          "worst_pixels_over_2": 0,
+          "peak_delta": 0
+        },
+        "wolf": {
+          "render_pairs": 8,
+          "draws_original": [
+            24
+          ],
+          "draws_candidate": [
+            2
+          ],
+          "merged_meshes": 23,
+          "surfaces": 1,
+          "max_position_error_m": 2.66560078898692e-07,
+          "max_normal_error": 3.20980831247653e-07,
+          "exact_pairs": 8,
+          "worst_pixels_over_2": 0,
+          "peak_delta": 0
+        }
+      },
+      "skipped_actions": [
+        {
+          "action": "walk",
+          "available": [
+            "cflight01",
+            "cflight02",
+            "cidle",
+            "scross01",
+            "scross02",
+            "uattack",
+            "ubriefing01",
+            "ubriefing02",
+            "ubriefing03",
+            "ubriefing04",
+            "ubriefing05",
+            "udeath",
+            "uhit"
+          ],
+          "label": "dragon"
+        },
+        {
+          "action": "walk",
+          "available": [
+            "cflight01",
+            "cflight02",
+            "cidle",
+            "uattack",
+            "udeath",
+            "uhit"
+          ],
+          "label": "wisp"
+        }
+      ],
+      "timing": []
+    },
+    {
+      "label": "suite-forward",
+      "folder": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/c1-rigid/suite-forward",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/c1-rigid/candidate/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/benchmarks/rigid_characters.gd",
+        "--rigid-suite"
+      ],
+      "return_code": 0,
+      "termination": null,
+      "errors": [],
+      "warnings": [],
+      "checks": 144,
+      "failures": 0,
+      "report_sha256": "fe2d8594643dc2df8929532262de36eadc0e881339e80e55b3792a45fa5614cf",
+      "run_receipt_sha256": "b0d4d508fca8eb80bd8d99c06a5f05b73c9b4f7a56f575021cdaadb9722017e0",
+      "fixture_sha256": "1bc41ee35fa4918bdaef2219fe3883094b7198c618127ef714d9fda1de5c3e4c",
+      "helper_sha256_at_start": null,
+      "helper_provenance_note": "Early exploratory run did not snapshot helper. The same helper was retained throughout this experiment; later final runs capture its hash. Do not treat this receipt as a complete at-start source archive.",
+      "pack_sha256": "c3707d425197a2ede8ee12b972cfd429dd2d14eefa4578f7b98f070d488f956e",
+      "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [],
+      "summary": {
+        "dragon": {
+          "render_pairs": 6,
+          "draws_original": [
+            84
+          ],
+          "draws_candidate": [
+            8
+          ],
+          "merged_meshes": 39,
+          "surfaces": 1,
+          "max_position_error_m": 2.18514242078527e-06,
+          "max_normal_error": 3.86282238196145e-07,
+          "exact_pairs": 3,
+          "worst_pixels_over_2": 1,
+          "peak_delta": 5
+        },
+        "human": {
+          "render_pairs": 8,
+          "draws_original": [
+            32,
+            34
+          ],
+          "draws_candidate": [
+            6,
+            8
+          ],
+          "merged_meshes": 14,
+          "surfaces": 1,
+          "max_position_error_m": 1.71201307352931e-07,
+          "max_normal_error": 3.8165595128703e-07,
+          "exact_pairs": 3,
+          "worst_pixels_over_2": 12,
+          "peak_delta": 114
+        },
+        "human-complexion": {
+          "render_pairs": 8,
+          "draws_original": [
+            32,
+            34
+          ],
+          "draws_candidate": [
+            6,
+            8
+          ],
+          "merged_meshes": 14,
+          "surfaces": 1,
+          "max_position_error_m": 1.46000971312787e-07,
+          "max_normal_error": 3.8165595128703e-07,
+          "exact_pairs": 3,
+          "worst_pixels_over_2": 9,
+          "peak_delta": 59
+        },
+        "human-female": {
+          "render_pairs": 8,
+          "draws_original": [
+            38,
+            40
+          ],
+          "draws_candidate": [
+            12,
+            14
+          ],
+          "merged_meshes": 14,
+          "surfaces": 1,
+          "max_position_error_m": 1.26440539816031e-07,
+          "max_normal_error": 3.86282238196145e-07,
+          "exact_pairs": 5,
+          "worst_pixels_over_2": 5,
+          "peak_delta": 63
+        },
+        "orc-bow": {
+          "render_pairs": 8,
+          "draws_original": [
+            38
+          ],
+          "draws_candidate": [
+            12
+          ],
+          "merged_meshes": 14,
+          "surfaces": 1,
+          "max_position_error_m": 1.44664113577164e-07,
+          "max_normal_error": 3.33200091517938e-07,
+          "exact_pairs": 4,
+          "worst_pixels_over_2": 10,
+          "peak_delta": 40
+        },
+        "troll": {
+          "render_pairs": 8,
+          "draws_original": [
+            30
+          ],
+          "draws_candidate": [
+            4
+          ],
+          "merged_meshes": 14,
+          "surfaces": 1,
+          "max_position_error_m": 5.96046447753906e-07,
+          "max_normal_error": 3.4012532523775e-07,
+          "exact_pairs": 2,
+          "worst_pixels_over_2": 11,
+          "peak_delta": 45
+        },
+        "wisp": {
+          "render_pairs": 6,
+          "draws_original": [
+            5
+          ],
+          "draws_candidate": [
+            5
+          ],
+          "merged_meshes": 0,
+          "surfaces": 0,
+          "max_position_error_m": 0.0,
+          "max_normal_error": 0.0,
+          "exact_pairs": 6,
+          "worst_pixels_over_2": 0,
+          "peak_delta": 0
+        },
+        "wolf": {
+          "render_pairs": 8,
+          "draws_original": [
+            48
+          ],
+          "draws_candidate": [
+            4
+          ],
+          "merged_meshes": 23,
+          "surfaces": 1,
+          "max_position_error_m": 2.66560078898692e-07,
+          "max_normal_error": 3.20980831247653e-07,
+          "exact_pairs": 5,
+          "worst_pixels_over_2": 5,
+          "peak_delta": 19
+        }
+      },
+      "skipped_actions": [
+        {
+          "action": "walk",
+          "available": [
+            "cflight01",
+            "cflight02",
+            "cidle",
+            "scross01",
+            "scross02",
+            "uattack",
+            "ubriefing01",
+            "ubriefing02",
+            "ubriefing03",
+            "ubriefing04",
+            "ubriefing05",
+            "udeath",
+            "uhit"
+          ],
+          "label": "dragon"
+        },
+        {
+          "action": "walk",
+          "available": [
+            "cflight01",
+            "cflight02",
+            "cidle",
+            "uattack",
+            "udeath",
+            "uhit"
+          ],
+          "label": "wisp"
+        }
+      ],
+      "timing": []
+    },
+    {
+      "label": "suite-mobile",
+      "folder": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/c1-rigid/suite-mobile",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/c1-rigid/candidate/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "mobile",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/benchmarks/rigid_characters.gd",
+        "--rigid-suite"
+      ],
+      "return_code": 0,
+      "termination": null,
+      "errors": [],
+      "warnings": [],
+      "checks": 144,
+      "failures": 0,
+      "report_sha256": "3158a39aa283e5e65b3b26165dcbc0e9a64bdf58c906deb0cebd45db313ddcf5",
+      "run_receipt_sha256": "a6ac9ac98df5eb2584cd80e044c562e7d10f64d1511365a573096f97aa22f4a6",
+      "fixture_sha256": "1bc41ee35fa4918bdaef2219fe3883094b7198c618127ef714d9fda1de5c3e4c",
+      "helper_sha256_at_start": null,
+      "helper_provenance_note": "Early exploratory run did not snapshot helper. The same helper was retained throughout this experiment; later final runs capture its hash. Do not treat this receipt as a complete at-start source archive.",
+      "pack_sha256": "c3707d425197a2ede8ee12b972cfd429dd2d14eefa4578f7b98f070d488f956e",
+      "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [],
+      "summary": {
+        "dragon": {
+          "render_pairs": 6,
+          "draws_original": [
+            42
+          ],
+          "draws_candidate": [
+            4
+          ],
+          "merged_meshes": 39,
+          "surfaces": 1,
+          "max_position_error_m": 2.18514242078527e-06,
+          "max_normal_error": 3.86282238196145e-07,
+          "exact_pairs": 2,
+          "worst_pixels_over_2": 5,
+          "peak_delta": 52
+        },
+        "human": {
+          "render_pairs": 8,
+          "draws_original": [
+            16,
+            17
+          ],
+          "draws_candidate": [
+            3,
+            4
+          ],
+          "merged_meshes": 14,
+          "surfaces": 1,
+          "max_position_error_m": 1.71201307352931e-07,
+          "max_normal_error": 3.8165595128703e-07,
+          "exact_pairs": 3,
+          "worst_pixels_over_2": 13,
+          "peak_delta": 116
+        },
+        "human-complexion": {
+          "render_pairs": 8,
+          "draws_original": [
+            16,
+            17
+          ],
+          "draws_candidate": [
+            3,
+            4
+          ],
+          "merged_meshes": 14,
+          "surfaces": 1,
+          "max_position_error_m": 1.46000971312787e-07,
+          "max_normal_error": 3.8165595128703e-07,
+          "exact_pairs": 2,
+          "worst_pixels_over_2": 11,
+          "peak_delta": 59
+        },
+        "human-female": {
+          "render_pairs": 8,
+          "draws_original": [
+            19,
+            20
+          ],
+          "draws_candidate": [
+            6,
+            7
+          ],
+          "merged_meshes": 14,
+          "surfaces": 1,
+          "max_position_error_m": 1.26440539816031e-07,
+          "max_normal_error": 3.86282238196145e-07,
+          "exact_pairs": 4,
+          "worst_pixels_over_2": 5,
+          "peak_delta": 64
+        },
+        "orc-bow": {
+          "render_pairs": 8,
+          "draws_original": [
+            19
+          ],
+          "draws_candidate": [
+            6
+          ],
+          "merged_meshes": 14,
+          "surfaces": 1,
+          "max_position_error_m": 1.44664113577164e-07,
+          "max_normal_error": 3.33200091517938e-07,
+          "exact_pairs": 4,
+          "worst_pixels_over_2": 10,
+          "peak_delta": 40
+        },
+        "troll": {
+          "render_pairs": 8,
+          "draws_original": [
+            15
+          ],
+          "draws_candidate": [
+            2
+          ],
+          "merged_meshes": 14,
+          "surfaces": 1,
+          "max_position_error_m": 5.96046447753906e-07,
+          "max_normal_error": 3.4012532523775e-07,
+          "exact_pairs": 1,
+          "worst_pixels_over_2": 11,
+          "peak_delta": 47
+        },
+        "wisp": {
+          "render_pairs": 6,
+          "draws_original": [
+            5
+          ],
+          "draws_candidate": [
+            5
+          ],
+          "merged_meshes": 0,
+          "surfaces": 0,
+          "max_position_error_m": 0.0,
+          "max_normal_error": 0.0,
+          "exact_pairs": 6,
+          "worst_pixels_over_2": 0,
+          "peak_delta": 0
+        },
+        "wolf": {
+          "render_pairs": 8,
+          "draws_original": [
+            24
+          ],
+          "draws_candidate": [
+            2
+          ],
+          "merged_meshes": 23,
+          "surfaces": 1,
+          "max_position_error_m": 2.66560078898692e-07,
+          "max_normal_error": 3.20980831247653e-07,
+          "exact_pairs": 4,
+          "worst_pixels_over_2": 5,
+          "peak_delta": 19
+        }
+      },
+      "skipped_actions": [
+        {
+          "action": "walk",
+          "available": [
+            "cflight01",
+            "cflight02",
+            "cidle",
+            "scross01",
+            "scross02",
+            "uattack",
+            "ubriefing01",
+            "ubriefing02",
+            "ubriefing03",
+            "ubriefing04",
+            "ubriefing05",
+            "udeath",
+            "uhit"
+          ],
+          "label": "dragon"
+        },
+        {
+          "action": "walk",
+          "available": [
+            "cflight01",
+            "cflight02",
+            "cidle",
+            "uattack",
+            "udeath",
+            "uhit"
+          ],
+          "label": "wisp"
+        }
+      ],
+      "timing": []
+    },
+    {
+      "label": "suite-control-compat",
+      "folder": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/c1-rigid/suite-control-compat",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/c1-rigid/candidate/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/benchmarks/rigid_characters.gd",
+        "--rigid-suite",
+        "--rigid-control"
+      ],
+      "return_code": 0,
+      "termination": null,
+      "errors": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "checks": 136,
+      "failures": 0,
+      "report_sha256": "669cdf03d353fc9a21ef1d6a6b9fee896f59bb2f4c0b8ed6ece54bbaaf33d6ad",
+      "run_receipt_sha256": "04d373a8a0eedd2fb48880ba0754fd6619157af003e929867ed2eac5435a5ff1",
+      "fixture_sha256": "1bc41ee35fa4918bdaef2219fe3883094b7198c618127ef714d9fda1de5c3e4c",
+      "helper_sha256_at_start": null,
+      "helper_provenance_note": "Early exploratory run did not snapshot helper. The same helper was retained throughout this experiment; later final runs capture its hash. Do not treat this receipt as a complete at-start source archive.",
+      "pack_sha256": "c3707d425197a2ede8ee12b972cfd429dd2d14eefa4578f7b98f070d488f956e",
+      "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [],
+      "summary": {
+        "dragon": {
+          "render_pairs": 6,
+          "draws_original": [
+            42
+          ],
+          "draws_candidate": [
+            42
+          ],
+          "merged_meshes": 0,
+          "surfaces": 0,
+          "max_position_error_m": 0.0,
+          "max_normal_error": 0.0,
+          "exact_pairs": 6,
+          "worst_pixels_over_2": 0,
+          "peak_delta": 0
+        },
+        "human": {
+          "render_pairs": 8,
+          "draws_original": [
+            16,
+            17
+          ],
+          "draws_candidate": [
+            16,
+            17
+          ],
+          "merged_meshes": 0,
+          "surfaces": 0,
+          "max_position_error_m": 0.0,
+          "max_normal_error": 0.0,
+          "exact_pairs": 8,
+          "worst_pixels_over_2": 0,
+          "peak_delta": 0
+        },
+        "human-complexion": {
+          "render_pairs": 8,
+          "draws_original": [
+            16,
+            17
+          ],
+          "draws_candidate": [
+            16,
+            17
+          ],
+          "merged_meshes": 0,
+          "surfaces": 0,
+          "max_position_error_m": 0.0,
+          "max_normal_error": 0.0,
+          "exact_pairs": 8,
+          "worst_pixels_over_2": 0,
+          "peak_delta": 0
+        },
+        "human-female": {
+          "render_pairs": 8,
+          "draws_original": [
+            19,
+            20
+          ],
+          "draws_candidate": [
+            19,
+            20
+          ],
+          "merged_meshes": 0,
+          "surfaces": 0,
+          "max_position_error_m": 0.0,
+          "max_normal_error": 0.0,
+          "exact_pairs": 8,
+          "worst_pixels_over_2": 0,
+          "peak_delta": 0
+        },
+        "orc-bow": {
+          "render_pairs": 8,
+          "draws_original": [
+            19
+          ],
+          "draws_candidate": [
+            19
+          ],
+          "merged_meshes": 0,
+          "surfaces": 0,
+          "max_position_error_m": 0.0,
+          "max_normal_error": 0.0,
+          "exact_pairs": 8,
+          "worst_pixels_over_2": 0,
+          "peak_delta": 0
+        },
+        "troll": {
+          "render_pairs": 8,
+          "draws_original": [
+            15
+          ],
+          "draws_candidate": [
+            15
+          ],
+          "merged_meshes": 0,
+          "surfaces": 0,
+          "max_position_error_m": 0.0,
+          "max_normal_error": 0.0,
+          "exact_pairs": 8,
+          "worst_pixels_over_2": 0,
+          "peak_delta": 0
+        },
+        "wisp": {
+          "render_pairs": 6,
+          "draws_original": [
+            5
+          ],
+          "draws_candidate": [
+            5
+          ],
+          "merged_meshes": 0,
+          "surfaces": 0,
+          "max_position_error_m": 0.0,
+          "max_normal_error": 0.0,
+          "exact_pairs": 6,
+          "worst_pixels_over_2": 0,
+          "peak_delta": 0
+        },
+        "wolf": {
+          "render_pairs": 8,
+          "draws_original": [
+            24
+          ],
+          "draws_candidate": [
+            24
+          ],
+          "merged_meshes": 0,
+          "surfaces": 0,
+          "max_position_error_m": 0.0,
+          "max_normal_error": 0.0,
+          "exact_pairs": 8,
+          "worst_pixels_over_2": 0,
+          "peak_delta": 0
+        }
+      },
+      "skipped_actions": [
+        {
+          "action": "walk",
+          "available": [
+            "cflight01",
+            "cflight02",
+            "cidle",
+            "scross01",
+            "scross02",
+            "uattack",
+            "ubriefing01",
+            "ubriefing02",
+            "ubriefing03",
+            "ubriefing04",
+            "ubriefing05",
+            "udeath",
+            "uhit"
+          ],
+          "label": "dragon"
+        },
+        {
+          "action": "walk",
+          "available": [
+            "cflight01",
+            "cflight02",
+            "cidle",
+            "uattack",
+            "udeath",
+            "uhit"
+          ],
+          "label": "wisp"
+        }
+      ],
+      "timing": []
+    },
+    {
+      "label": "suite-control-forward",
+      "folder": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/c1-rigid/suite-control-forward",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/c1-rigid/candidate/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/benchmarks/rigid_characters.gd",
+        "--rigid-suite",
+        "--rigid-control"
+      ],
+      "return_code": 0,
+      "termination": null,
+      "errors": [],
+      "warnings": [],
+      "checks": 136,
+      "failures": 0,
+      "report_sha256": "558d60b011a5c008728073b15abcd9126cb9b8df1930f9414575c710a5dfc763",
+      "run_receipt_sha256": "5ecada1faa22b8fd767854d807e254e0437871118a14c506fc4a0991f5e22a60",
+      "fixture_sha256": "6973568fe774278f7804b21db1fc4ef7fc4c5a99bda26ba5e81f03a5ea527c44",
+      "helper_sha256_at_start": "74a0462e0a9fbdd679c9426ea2148ae551bd83ef7dfa1f79b4d4059ebdb871d6",
+      "helper_provenance_note": null,
+      "pack_sha256": "c3707d425197a2ede8ee12b972cfd429dd2d14eefa4578f7b98f070d488f956e",
+      "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [],
+      "summary": {
+        "dragon": {
+          "render_pairs": 6,
+          "draws_original": [
+            84
+          ],
+          "draws_candidate": [
+            84
+          ],
+          "merged_meshes": 0,
+          "surfaces": 0,
+          "max_position_error_m": 0.0,
+          "max_normal_error": 0.0,
+          "exact_pairs": 6,
+          "worst_pixels_over_2": 0,
+          "peak_delta": 0
+        },
+        "human": {
+          "render_pairs": 8,
+          "draws_original": [
+            32,
+            34
+          ],
+          "draws_candidate": [
+            32,
+            34
+          ],
+          "merged_meshes": 0,
+          "surfaces": 0,
+          "max_position_error_m": 0.0,
+          "max_normal_error": 0.0,
+          "exact_pairs": 8,
+          "worst_pixels_over_2": 0,
+          "peak_delta": 0
+        },
+        "human-complexion": {
+          "render_pairs": 8,
+          "draws_original": [
+            32,
+            34
+          ],
+          "draws_candidate": [
+            32,
+            34
+          ],
+          "merged_meshes": 0,
+          "surfaces": 0,
+          "max_position_error_m": 0.0,
+          "max_normal_error": 0.0,
+          "exact_pairs": 8,
+          "worst_pixels_over_2": 0,
+          "peak_delta": 0
+        },
+        "human-female": {
+          "render_pairs": 8,
+          "draws_original": [
+            38,
+            40
+          ],
+          "draws_candidate": [
+            38,
+            40
+          ],
+          "merged_meshes": 0,
+          "surfaces": 0,
+          "max_position_error_m": 0.0,
+          "max_normal_error": 0.0,
+          "exact_pairs": 8,
+          "worst_pixels_over_2": 0,
+          "peak_delta": 0
+        },
+        "orc-bow": {
+          "render_pairs": 8,
+          "draws_original": [
+            38
+          ],
+          "draws_candidate": [
+            38
+          ],
+          "merged_meshes": 0,
+          "surfaces": 0,
+          "max_position_error_m": 0.0,
+          "max_normal_error": 0.0,
+          "exact_pairs": 8,
+          "worst_pixels_over_2": 0,
+          "peak_delta": 0
+        },
+        "troll": {
+          "render_pairs": 8,
+          "draws_original": [
+            30
+          ],
+          "draws_candidate": [
+            30
+          ],
+          "merged_meshes": 0,
+          "surfaces": 0,
+          "max_position_error_m": 0.0,
+          "max_normal_error": 0.0,
+          "exact_pairs": 8,
+          "worst_pixels_over_2": 0,
+          "peak_delta": 0
+        },
+        "wisp": {
+          "render_pairs": 6,
+          "draws_original": [
+            5
+          ],
+          "draws_candidate": [
+            5
+          ],
+          "merged_meshes": 0,
+          "surfaces": 0,
+          "max_position_error_m": 0.0,
+          "max_normal_error": 0.0,
+          "exact_pairs": 6,
+          "worst_pixels_over_2": 0,
+          "peak_delta": 0
+        },
+        "wolf": {
+          "render_pairs": 8,
+          "draws_original": [
+            48
+          ],
+          "draws_candidate": [
+            48
+          ],
+          "merged_meshes": 0,
+          "surfaces": 0,
+          "max_position_error_m": 0.0,
+          "max_normal_error": 0.0,
+          "exact_pairs": 8,
+          "worst_pixels_over_2": 0,
+          "peak_delta": 0
+        }
+      },
+      "skipped_actions": [
+        {
+          "action": "walk",
+          "available": [
+            "cflight01",
+            "cflight02",
+            "cidle",
+            "scross01",
+            "scross02",
+            "uattack",
+            "ubriefing01",
+            "ubriefing02",
+            "ubriefing03",
+            "ubriefing04",
+            "ubriefing05",
+            "udeath",
+            "uhit"
+          ],
+          "label": "dragon"
+        },
+        {
+          "action": "walk",
+          "available": [
+            "cflight01",
+            "cflight02",
+            "cidle",
+            "uattack",
+            "udeath",
+            "uhit"
+          ],
+          "label": "wisp"
+        }
+      ],
+      "timing": []
+    },
+    {
+      "label": "suite-control-mobile",
+      "folder": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/c1-rigid/suite-control-mobile",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/c1-rigid/candidate/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "mobile",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/benchmarks/rigid_characters.gd",
+        "--rigid-suite",
+        "--rigid-control"
+      ],
+      "return_code": 0,
+      "termination": null,
+      "errors": [],
+      "warnings": [],
+      "checks": 136,
+      "failures": 0,
+      "report_sha256": "7d8eab0111fd8a1ac215b72fb407f46181198de838adfdbea54a51ed66d5eb15",
+      "run_receipt_sha256": "527c3f99042be44c5e496be28bb1c649cd89a1ff83a79fe0f3763044a80ac7ba",
+      "fixture_sha256": "6973568fe774278f7804b21db1fc4ef7fc4c5a99bda26ba5e81f03a5ea527c44",
+      "helper_sha256_at_start": "74a0462e0a9fbdd679c9426ea2148ae551bd83ef7dfa1f79b4d4059ebdb871d6",
+      "helper_provenance_note": null,
+      "pack_sha256": "c3707d425197a2ede8ee12b972cfd429dd2d14eefa4578f7b98f070d488f956e",
+      "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [],
+      "summary": {
+        "dragon": {
+          "render_pairs": 6,
+          "draws_original": [
+            42
+          ],
+          "draws_candidate": [
+            42
+          ],
+          "merged_meshes": 0,
+          "surfaces": 0,
+          "max_position_error_m": 0.0,
+          "max_normal_error": 0.0,
+          "exact_pairs": 6,
+          "worst_pixels_over_2": 0,
+          "peak_delta": 0
+        },
+        "human": {
+          "render_pairs": 8,
+          "draws_original": [
+            16,
+            17
+          ],
+          "draws_candidate": [
+            16,
+            17
+          ],
+          "merged_meshes": 0,
+          "surfaces": 0,
+          "max_position_error_m": 0.0,
+          "max_normal_error": 0.0,
+          "exact_pairs": 8,
+          "worst_pixels_over_2": 0,
+          "peak_delta": 0
+        },
+        "human-complexion": {
+          "render_pairs": 8,
+          "draws_original": [
+            16,
+            17
+          ],
+          "draws_candidate": [
+            16,
+            17
+          ],
+          "merged_meshes": 0,
+          "surfaces": 0,
+          "max_position_error_m": 0.0,
+          "max_normal_error": 0.0,
+          "exact_pairs": 8,
+          "worst_pixels_over_2": 0,
+          "peak_delta": 0
+        },
+        "human-female": {
+          "render_pairs": 8,
+          "draws_original": [
+            19,
+            20
+          ],
+          "draws_candidate": [
+            19,
+            20
+          ],
+          "merged_meshes": 0,
+          "surfaces": 0,
+          "max_position_error_m": 0.0,
+          "max_normal_error": 0.0,
+          "exact_pairs": 8,
+          "worst_pixels_over_2": 0,
+          "peak_delta": 0
+        },
+        "orc-bow": {
+          "render_pairs": 8,
+          "draws_original": [
+            19
+          ],
+          "draws_candidate": [
+            19
+          ],
+          "merged_meshes": 0,
+          "surfaces": 0,
+          "max_position_error_m": 0.0,
+          "max_normal_error": 0.0,
+          "exact_pairs": 8,
+          "worst_pixels_over_2": 0,
+          "peak_delta": 0
+        },
+        "troll": {
+          "render_pairs": 8,
+          "draws_original": [
+            15
+          ],
+          "draws_candidate": [
+            15
+          ],
+          "merged_meshes": 0,
+          "surfaces": 0,
+          "max_position_error_m": 0.0,
+          "max_normal_error": 0.0,
+          "exact_pairs": 8,
+          "worst_pixels_over_2": 0,
+          "peak_delta": 0
+        },
+        "wisp": {
+          "render_pairs": 6,
+          "draws_original": [
+            5
+          ],
+          "draws_candidate": [
+            5
+          ],
+          "merged_meshes": 0,
+          "surfaces": 0,
+          "max_position_error_m": 0.0,
+          "max_normal_error": 0.0,
+          "exact_pairs": 6,
+          "worst_pixels_over_2": 0,
+          "peak_delta": 0
+        },
+        "wolf": {
+          "render_pairs": 8,
+          "draws_original": [
+            24
+          ],
+          "draws_candidate": [
+            24
+          ],
+          "merged_meshes": 0,
+          "surfaces": 0,
+          "max_position_error_m": 0.0,
+          "max_normal_error": 0.0,
+          "exact_pairs": 8,
+          "worst_pixels_over_2": 0,
+          "peak_delta": 0
+        }
+      },
+      "skipped_actions": [
+        {
+          "action": "walk",
+          "available": [
+            "cflight01",
+            "cflight02",
+            "cidle",
+            "scross01",
+            "scross02",
+            "uattack",
+            "ubriefing01",
+            "ubriefing02",
+            "ubriefing03",
+            "ubriefing04",
+            "ubriefing05",
+            "udeath",
+            "uhit"
+          ],
+          "label": "dragon"
+        },
+        {
+          "action": "walk",
+          "available": [
+            "cflight01",
+            "cflight02",
+            "cidle",
+            "uattack",
+            "udeath",
+            "uhit"
+          ],
+          "label": "wisp"
+        }
+      ],
+      "timing": []
+    },
+    {
+      "label": "lights4-compat",
+      "folder": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/c1-rigid/lights4-compat",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/c1-rigid/candidate/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/benchmarks/rigid_characters.gd",
+        "--rigid-lights=4"
+      ],
+      "return_code": 0,
+      "termination": null,
+      "errors": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "checks": 19,
+      "failures": 0,
+      "report_sha256": "3922eee798fbd1c67887c78a70d61961934b4487b0fe13e4c399b6e45098618f",
+      "run_receipt_sha256": "5d9a61aefc5fa1a122b4a53d8e87044af2e917a8f5e819b0f4dc0f2744bf79b2",
+      "fixture_sha256": "1bc41ee35fa4918bdaef2219fe3883094b7198c618127ef714d9fda1de5c3e4c",
+      "helper_sha256_at_start": null,
+      "helper_provenance_note": "Early exploratory run did not snapshot helper. The same helper was retained throughout this experiment; later final runs capture its hash. Do not treat this receipt as a complete at-start source archive.",
+      "pack_sha256": "c3707d425197a2ede8ee12b972cfd429dd2d14eefa4578f7b98f070d488f956e",
+      "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [],
+      "summary": {
+        "human": {
+          "render_pairs": 8,
+          "draws_original": [
+            16,
+            17
+          ],
+          "draws_candidate": [
+            3,
+            4
+          ],
+          "merged_meshes": 14,
+          "surfaces": 1,
+          "max_position_error_m": 1.71201307352931e-07,
+          "max_normal_error": 3.8165595128703e-07,
+          "exact_pairs": 1,
+          "worst_pixels_over_2": 1,
+          "peak_delta": 230
+        }
+      },
+      "skipped_actions": [],
+      "timing": []
+    },
+    {
+      "label": "lights12-compat",
+      "folder": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/c1-rigid/lights12-compat",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/c1-rigid/candidate/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/benchmarks/rigid_characters.gd",
+        "--rigid-lights=12"
+      ],
+      "return_code": 0,
+      "termination": null,
+      "errors": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "checks": 19,
+      "failures": 0,
+      "report_sha256": "48f1bcfb69cec7d9b9cddf4778e4928a353abcb18ff66fa7e89952a685e360e5",
+      "run_receipt_sha256": "be22017f145159f84c13a35d6a6144060db40952ac43449302bc7a68b9c288a2",
+      "fixture_sha256": "1bc41ee35fa4918bdaef2219fe3883094b7198c618127ef714d9fda1de5c3e4c",
+      "helper_sha256_at_start": null,
+      "helper_provenance_note": "Early exploratory run did not snapshot helper. The same helper was retained throughout this experiment; later final runs capture its hash. Do not treat this receipt as a complete at-start source archive.",
+      "pack_sha256": "c3707d425197a2ede8ee12b972cfd429dd2d14eefa4578f7b98f070d488f956e",
+      "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [],
+      "summary": {
+        "human": {
+          "render_pairs": 8,
+          "draws_original": [
+            16,
+            17
+          ],
+          "draws_candidate": [
+            3,
+            4
+          ],
+          "merged_meshes": 14,
+          "surfaces": 1,
+          "max_position_error_m": 1.71201307352931e-07,
+          "max_normal_error": 3.8165595128703e-07,
+          "exact_pairs": 0,
+          "worst_pixels_over_2": 14738,
+          "peak_delta": 230
+        }
+      },
+      "skipped_actions": [],
+      "timing": []
+    },
+    {
+      "label": "timing32-compat-uncapped",
+      "folder": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/c1-rigid/timing32-compat-uncapped",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/c1-rigid/candidate/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/benchmarks/rigid_characters.gd",
+        "--rigid-timing=32"
+      ],
+      "return_code": 0,
+      "termination": null,
+      "errors": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "checks": 8,
+      "failures": 0,
+      "report_sha256": "cfb9a7446e789933f903127ea79b58f2459cb7f3726b412eaf733a5b328515d6",
+      "run_receipt_sha256": "f5085e2ae6bbdd533f66e81e1cc346ad5aa44fde05b9d7a4a748fd679ad0498f",
+      "fixture_sha256": "6973568fe774278f7804b21db1fc4ef7fc4c5a99bda26ba5e81f03a5ea527c44",
+      "helper_sha256_at_start": "74a0462e0a9fbdd679c9426ea2148ae551bd83ef7dfa1f79b4d4059ebdb871d6",
+      "helper_provenance_note": null,
+      "pack_sha256": "c3707d425197a2ede8ee12b972cfd429dd2d14eefa4578f7b98f070d488f956e",
+      "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [],
+      "summary": {},
+      "skipped_actions": [],
+      "timing": [
+        {
+          "animation_ms": {
+            "median": 0.741,
+            "p95": 0.761,
+            "samples": 160
+          },
+          "build_usec": 1158116,
+          "count": 32,
+          "draws": {
+            "median": 544,
+            "p95": 544,
+            "samples": 160
+          },
+          "frame_ms": {
+            "median": 1.637,
+            "p95": 1.681,
+            "samples": 160
+          },
+          "max_fps": 0,
+          "merged": false,
+          "palette_ms": {
+            "median": 0.0,
+            "p95": 0.001,
+            "samples": 160
+          },
+          "viewport_cpu_ms": {
+            "median": 0.476000010967255,
+            "p95": 0.500999987125397,
+            "samples": 160
+          },
+          "viewport_gpu_ms": {
+            "median": 0.104000002145767,
+            "p95": 0.118000000715256,
+            "samples": 160
+          },
+          "vsync": 0
+        },
+        {
+          "animation_ms": {
+            "median": 0.724,
+            "p95": 0.926,
+            "samples": 160
+          },
+          "build_usec": 381595,
+          "count": 32,
+          "draws": {
+            "median": 128,
+            "p95": 128,
+            "samples": 160
+          },
+          "frame_ms": {
+            "median": 1.687,
+            "p95": 2.146,
+            "samples": 160
+          },
+          "max_fps": 0,
+          "merged": true,
+          "palette_ms": {
+            "median": 0.263,
+            "p95": 0.339,
+            "samples": 160
+          },
+          "viewport_cpu_ms": {
+            "median": 0.27700001001358,
+            "p95": 0.347000002861023,
+            "samples": 160
+          },
+          "viewport_gpu_ms": {
+            "median": 0.63400000333786,
+            "p95": 0.884999990463257,
+            "samples": 160
+          },
+          "vsync": 0
+        },
+        {
+          "animation_ms": {
+            "median": 0.734,
+            "p95": 0.966,
+            "samples": 160
+          },
+          "build_usec": 386937,
+          "count": 32,
+          "draws": {
+            "median": 128,
+            "p95": 128,
+            "samples": 160
+          },
+          "frame_ms": {
+            "median": 1.707,
+            "p95": 2.219,
+            "samples": 160
+          },
+          "max_fps": 0,
+          "merged": true,
+          "palette_ms": {
+            "median": 0.268,
+            "p95": 0.344,
+            "samples": 160
+          },
+          "viewport_cpu_ms": {
+            "median": 0.268999993801117,
+            "p95": 0.407000005245209,
+            "samples": 160
+          },
+          "viewport_gpu_ms": {
+            "median": 0.662000000476837,
+            "p95": 0.879000008106232,
+            "samples": 160
+          },
+          "vsync": 0
+        },
+        {
+          "animation_ms": {
+            "median": 0.746,
+            "p95": 0.825,
+            "samples": 160
+          },
+          "build_usec": 334175,
+          "count": 32,
+          "draws": {
+            "median": 544,
+            "p95": 544,
+            "samples": 160
+          },
+          "frame_ms": {
+            "median": 1.641,
+            "p95": 1.837,
+            "samples": 160
+          },
+          "max_fps": 0,
+          "merged": false,
+          "palette_ms": {
+            "median": 0.0,
+            "p95": 0.001,
+            "samples": 160
+          },
+          "viewport_cpu_ms": {
+            "median": 0.451999992132187,
+            "p95": 0.504999995231628,
+            "samples": 160
+          },
+          "viewport_gpu_ms": {
+            "median": 0.101999998092651,
+            "p95": 0.103000000119209,
+            "samples": 160
+          },
+          "vsync": 0
+        }
+      ]
+    },
+    {
+      "label": "timing32-forward-uncapped",
+      "folder": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/c1-rigid/timing32-forward-uncapped",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/c1-rigid/candidate/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/benchmarks/rigid_characters.gd",
+        "--rigid-timing=32"
+      ],
+      "return_code": 0,
+      "termination": null,
+      "errors": [],
+      "warnings": [],
+      "checks": 8,
+      "failures": 0,
+      "report_sha256": "d7f533b5084bbbe4816d84469652d501a631544f37386076acb897c8fa026f6d",
+      "run_receipt_sha256": "219dd6b3c813eb7ef51183cffa33a59ab7e21b2b1fab4ffb8c0608dee8fe791c",
+      "fixture_sha256": "6973568fe774278f7804b21db1fc4ef7fc4c5a99bda26ba5e81f03a5ea527c44",
+      "helper_sha256_at_start": "74a0462e0a9fbdd679c9426ea2148ae551bd83ef7dfa1f79b4d4059ebdb871d6",
+      "helper_provenance_note": null,
+      "pack_sha256": "c3707d425197a2ede8ee12b972cfd429dd2d14eefa4578f7b98f070d488f956e",
+      "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [],
+      "summary": {},
+      "skipped_actions": [],
+      "timing": [
+        {
+          "animation_ms": {
+            "median": 0.744,
+            "p95": 0.834,
+            "samples": 160
+          },
+          "build_usec": 1134506,
+          "count": 32,
+          "draws": {
+            "median": 1088,
+            "p95": 1088,
+            "samples": 160
+          },
+          "frame_ms": {
+            "median": 1.452,
+            "p95": 1.798,
+            "samples": 160
+          },
+          "max_fps": 0,
+          "merged": false,
+          "palette_ms": {
+            "median": 0.0,
+            "p95": 0.001,
+            "samples": 160
+          },
+          "viewport_cpu_ms": {
+            "median": 0.211999997496605,
+            "p95": 0.257999986410141,
+            "samples": 160
+          },
+          "viewport_gpu_ms": {
+            "median": 0.100000001490116,
+            "p95": 0.101999998092651,
+            "samples": 160
+          },
+          "vsync": 0
+        },
+        {
+          "animation_ms": {
+            "median": 0.738,
+            "p95": 0.901,
+            "samples": 160
+          },
+          "build_usec": 455618,
+          "count": 32,
+          "draws": {
+            "median": 256,
+            "p95": 256,
+            "samples": 160
+          },
+          "frame_ms": {
+            "median": 1.582,
+            "p95": 1.945,
+            "samples": 160
+          },
+          "max_fps": 0,
+          "merged": true,
+          "palette_ms": {
+            "median": 0.261,
+            "p95": 0.328,
+            "samples": 160
+          },
+          "viewport_cpu_ms": {
+            "median": 0.104999996721745,
+            "p95": 0.141000002622604,
+            "samples": 160
+          },
+          "viewport_gpu_ms": {
+            "median": 0.0670000016689301,
+            "p95": 0.0689999982714653,
+            "samples": 160
+          },
+          "vsync": 0
+        },
+        {
+          "animation_ms": {
+            "median": 0.731,
+            "p95": 0.813,
+            "samples": 160
+          },
+          "build_usec": 420268,
+          "count": 32,
+          "draws": {
+            "median": 256,
+            "p95": 256,
+            "samples": 160
+          },
+          "frame_ms": {
+            "median": 1.539,
+            "p95": 1.797,
+            "samples": 160
+          },
+          "max_fps": 0,
+          "merged": true,
+          "palette_ms": {
+            "median": 0.258,
+            "p95": 0.287,
+            "samples": 160
+          },
+          "viewport_cpu_ms": {
+            "median": 0.103000000119209,
+            "p95": 0.123999997973442,
+            "samples": 160
+          },
+          "viewport_gpu_ms": {
+            "median": 0.0670000016689301,
+            "p95": 0.0689999982714653,
+            "samples": 160
+          },
+          "vsync": 0
+        },
+        {
+          "animation_ms": {
+            "median": 0.747,
+            "p95": 0.81,
+            "samples": 160
+          },
+          "build_usec": 352535,
+          "count": 32,
+          "draws": {
+            "median": 1088,
+            "p95": 1088,
+            "samples": 160
+          },
+          "frame_ms": {
+            "median": 1.483,
+            "p95": 1.595,
+            "samples": 160
+          },
+          "max_fps": 0,
+          "merged": false,
+          "palette_ms": {
+            "median": 0.0,
+            "p95": 0.001,
+            "samples": 160
+          },
+          "viewport_cpu_ms": {
+            "median": 0.222000002861023,
+            "p95": 0.243000000715256,
+            "samples": 160
+          },
+          "viewport_gpu_ms": {
+            "median": 0.100000001490116,
+            "p95": 0.101999998092651,
+            "samples": 160
+          },
+          "vsync": 0
+        }
+      ]
+    },
+    {
+      "label": "timing32-mobile-uncapped",
+      "folder": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/c1-rigid/timing32-mobile-uncapped",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/c1-rigid/candidate/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "mobile",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/benchmarks/rigid_characters.gd",
+        "--rigid-timing=32"
+      ],
+      "return_code": 0,
+      "termination": null,
+      "errors": [],
+      "warnings": [],
+      "checks": 8,
+      "failures": 0,
+      "report_sha256": "186521b5adca8b00c750eca71659e944c23326331aed87b1d76f3dc05872e39a",
+      "run_receipt_sha256": "5de8ddf2b165cb080b02ffa2b5374d9482b230789693f12bfdbd8c40c1c4228e",
+      "fixture_sha256": "6973568fe774278f7804b21db1fc4ef7fc4c5a99bda26ba5e81f03a5ea527c44",
+      "helper_sha256_at_start": "74a0462e0a9fbdd679c9426ea2148ae551bd83ef7dfa1f79b4d4059ebdb871d6",
+      "helper_provenance_note": null,
+      "pack_sha256": "c3707d425197a2ede8ee12b972cfd429dd2d14eefa4578f7b98f070d488f956e",
+      "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [],
+      "summary": {},
+      "skipped_actions": [],
+      "timing": [
+        {
+          "animation_ms": {
+            "median": 0.737,
+            "p95": 0.893,
+            "samples": 160
+          },
+          "build_usec": 1161778,
+          "count": 32,
+          "draws": {
+            "median": 544,
+            "p95": 544,
+            "samples": 160
+          },
+          "frame_ms": {
+            "median": 1.358,
+            "p95": 1.864,
+            "samples": 160
+          },
+          "max_fps": 0,
+          "merged": false,
+          "palette_ms": {
+            "median": 0.0,
+            "p95": 0.001,
+            "samples": 160
+          },
+          "viewport_cpu_ms": {
+            "median": 0.136999994516373,
+            "p95": 0.167999997735023,
+            "samples": 160
+          },
+          "viewport_gpu_ms": {
+            "median": 0.11599999666214,
+            "p95": 0.282999992370605,
+            "samples": 160
+          },
+          "vsync": 0
+        },
+        {
+          "animation_ms": {
+            "median": 0.72,
+            "p95": 0.885,
+            "samples": 160
+          },
+          "build_usec": 436639,
+          "count": 32,
+          "draws": {
+            "median": 128,
+            "p95": 128,
+            "samples": 160
+          },
+          "frame_ms": {
+            "median": 1.471,
+            "p95": 1.771,
+            "samples": 160
+          },
+          "max_fps": 0,
+          "merged": true,
+          "palette_ms": {
+            "median": 0.257,
+            "p95": 0.297,
+            "samples": 160
+          },
+          "viewport_cpu_ms": {
+            "median": 0.0670000016689301,
+            "p95": 0.0820000022649765,
+            "samples": 160
+          },
+          "viewport_gpu_ms": {
+            "median": 0.0320000015199184,
+            "p95": 0.034000001847744,
+            "samples": 160
+          },
+          "vsync": 0
+        },
+        {
+          "animation_ms": {
+            "median": 0.742,
+            "p95": 0.985,
+            "samples": 160
+          },
+          "build_usec": 455008,
+          "count": 32,
+          "draws": {
+            "median": 128,
+            "p95": 128,
+            "samples": 160
+          },
+          "frame_ms": {
+            "median": 1.521,
+            "p95": 1.962,
+            "samples": 160
+          },
+          "max_fps": 0,
+          "merged": true,
+          "palette_ms": {
+            "median": 0.268,
+            "p95": 0.385,
+            "samples": 160
+          },
+          "viewport_cpu_ms": {
+            "median": 0.0719999969005585,
+            "p95": 0.104999996721745,
+            "samples": 160
+          },
+          "viewport_gpu_ms": {
+            "median": 0.0320000015199184,
+            "p95": 0.034000001847744,
+            "samples": 160
+          },
+          "vsync": 0
+        },
+        {
+          "animation_ms": {
+            "median": 0.746,
+            "p95": 0.933,
+            "samples": 160
+          },
+          "build_usec": 349260,
+          "count": 32,
+          "draws": {
+            "median": 544,
+            "p95": 544,
+            "samples": 160
+          },
+          "frame_ms": {
+            "median": 1.371,
+            "p95": 1.788,
+            "samples": 160
+          },
+          "max_fps": 0,
+          "merged": false,
+          "palette_ms": {
+            "median": 0.0,
+            "p95": 0.001,
+            "samples": 160
+          },
+          "viewport_cpu_ms": {
+            "median": 0.142000004649162,
+            "p95": 0.180000007152557,
+            "samples": 160
+          },
+          "viewport_gpu_ms": {
+            "median": 0.0430000014603138,
+            "p95": 0.270000010728836,
+            "samples": 160
+          },
+          "vsync": 0
+        }
+      ]
+    }
+  ],
+  "picking": {
+    "query": "MeshScreenRect.of_context, same production per-part rectangles and inclusive/exclusive integer edges; coverage restricted to 512x512 fixture.",
+    "rows": [
+      {
+        "label": "human",
+        "action": "idle",
+        "state": 0,
+        "rects_original": 8,
+        "rects_candidate": 1,
+        "new_priority_pixels": 34390,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": [
+          178,
+          140
+        ]
+      },
+      {
+        "label": "human",
+        "action": "idle",
+        "state": 1,
+        "rects_original": 16,
+        "rects_candidate": 3,
+        "new_priority_pixels": 1152,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": [
+          235,
+          285
+        ]
+      },
+      {
+        "label": "human",
+        "action": "walk",
+        "state": 0,
+        "rects_original": 17,
+        "rects_candidate": 4,
+        "new_priority_pixels": 19802,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": [
+          203,
+          331
+        ]
+      },
+      {
+        "label": "human",
+        "action": "walk",
+        "state": 1,
+        "rects_original": 16,
+        "rects_candidate": 3,
+        "new_priority_pixels": 1255,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": [
+          272,
+          274
+        ]
+      },
+      {
+        "label": "human",
+        "action": "attack",
+        "state": 0,
+        "rects_original": 17,
+        "rects_candidate": 4,
+        "new_priority_pixels": 21977,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": [
+          330,
+          262
+        ]
+      },
+      {
+        "label": "human",
+        "action": "attack",
+        "state": 1,
+        "rects_original": 16,
+        "rects_candidate": 3,
+        "new_priority_pixels": 970,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": [
+          268,
+          286
+        ]
+      },
+      {
+        "label": "human",
+        "action": "death",
+        "state": 0,
+        "rects_original": 17,
+        "rects_candidate": 4,
+        "new_priority_pixels": 41902,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": [
+          163,
+          321
+        ]
+      },
+      {
+        "label": "human",
+        "action": "death",
+        "state": 1,
+        "rects_original": 16,
+        "rects_candidate": 3,
+        "new_priority_pixels": 3205,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": [
+          225,
+          265
+        ]
+      },
+      {
+        "label": "human-complexion",
+        "action": "idle",
+        "state": 0,
+        "rects_original": 17,
+        "rects_candidate": 4,
+        "new_priority_pixels": 23213,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": [
+          145,
+          358
+        ]
+      },
+      {
+        "label": "human-complexion",
+        "action": "idle",
+        "state": 1,
+        "rects_original": 16,
+        "rects_candidate": 3,
+        "new_priority_pixels": 1244,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": [
+          234,
+          284
+        ]
+      },
+      {
+        "label": "human-complexion",
+        "action": "walk",
+        "state": 0,
+        "rects_original": 17,
+        "rects_candidate": 4,
+        "new_priority_pixels": 20273,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": [
+          341,
+          342
+        ]
+      },
+      {
+        "label": "human-complexion",
+        "action": "walk",
+        "state": 1,
+        "rects_original": 16,
+        "rects_candidate": 3,
+        "new_priority_pixels": 1264,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": [
+          277,
+          275
+        ]
+      },
+      {
+        "label": "human-complexion",
+        "action": "attack",
+        "state": 0,
+        "rects_original": 17,
+        "rects_candidate": 4,
+        "new_priority_pixels": 16509,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": [
+          186,
+          346
+        ]
+      },
+      {
+        "label": "human-complexion",
+        "action": "attack",
+        "state": 1,
+        "rects_original": 16,
+        "rects_candidate": 3,
+        "new_priority_pixels": 1173,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": [
+          229,
+          289
+        ]
+      },
+      {
+        "label": "human-complexion",
+        "action": "death",
+        "state": 0,
+        "rects_original": 17,
+        "rects_candidate": 4,
+        "new_priority_pixels": 41750,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": [
+          389,
+          335
+        ]
+      },
+      {
+        "label": "human-complexion",
+        "action": "death",
+        "state": 1,
+        "rects_original": 16,
+        "rects_candidate": 3,
+        "new_priority_pixels": 1976,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": [
+          234,
+          273
+        ]
+      },
+      {
+        "label": "human-female",
+        "action": "idle",
+        "state": 0,
+        "rects_original": 20,
+        "rects_candidate": 7,
+        "new_priority_pixels": 21746,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": [
+          110,
+          354
+        ]
+      },
+      {
+        "label": "human-female",
+        "action": "idle",
+        "state": 1,
+        "rects_original": 19,
+        "rects_candidate": 6,
+        "new_priority_pixels": 1179,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": [
+          233,
+          280
+        ]
+      },
+      {
+        "label": "human-female",
+        "action": "walk",
+        "state": 0,
+        "rects_original": 20,
+        "rects_candidate": 7,
+        "new_priority_pixels": 16060,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": [
+          272,
+          355
+        ]
+      },
+      {
+        "label": "human-female",
+        "action": "walk",
+        "state": 1,
+        "rects_original": 19,
+        "rects_candidate": 6,
+        "new_priority_pixels": 1130,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": [
+          254,
+          276
+        ]
+      },
+      {
+        "label": "human-female",
+        "action": "attack",
+        "state": 0,
+        "rects_original": 20,
+        "rects_candidate": 7,
+        "new_priority_pixels": 21773,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": [
+          166,
+          306
+        ]
+      },
+      {
+        "label": "human-female",
+        "action": "attack",
+        "state": 1,
+        "rects_original": 19,
+        "rects_candidate": 6,
+        "new_priority_pixels": 887,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": [
+          234,
+          284
+        ]
+      },
+      {
+        "label": "human-female",
+        "action": "death",
+        "state": 0,
+        "rects_original": 20,
+        "rects_candidate": 7,
+        "new_priority_pixels": 36474,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": [
+          349,
+          334
+        ]
+      },
+      {
+        "label": "human-female",
+        "action": "death",
+        "state": 1,
+        "rects_original": 19,
+        "rects_candidate": 6,
+        "new_priority_pixels": 1768,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": [
+          221,
+          279
+        ]
+      },
+      {
+        "label": "orc-bow",
+        "action": "idle",
+        "state": 0,
+        "rects_original": 19,
+        "rects_candidate": 6,
+        "new_priority_pixels": 15943,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": [
+          129,
+          378
+        ]
+      },
+      {
+        "label": "orc-bow",
+        "action": "idle",
+        "state": 1,
+        "rects_original": 19,
+        "rects_candidate": 6,
+        "new_priority_pixels": 953,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": [
+          230,
+          293
+        ]
+      },
+      {
+        "label": "orc-bow",
+        "action": "walk",
+        "state": 0,
+        "rects_original": 19,
+        "rects_candidate": 6,
+        "new_priority_pixels": 12939,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": [
+          246,
+          364
+        ]
+      },
+      {
+        "label": "orc-bow",
+        "action": "walk",
+        "state": 1,
+        "rects_original": 19,
+        "rects_candidate": 6,
+        "new_priority_pixels": 1276,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": [
+          228,
+          283
+        ]
+      },
+      {
+        "label": "orc-bow",
+        "action": "attack",
+        "state": 0,
+        "rects_original": 19,
+        "rects_candidate": 6,
+        "new_priority_pixels": 20191,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": [
+          159,
+          216
+        ]
+      },
+      {
+        "label": "orc-bow",
+        "action": "attack",
+        "state": 1,
+        "rects_original": 19,
+        "rects_candidate": 6,
+        "new_priority_pixels": 763,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": [
+          255,
+          292
+        ]
+      },
+      {
+        "label": "orc-bow",
+        "action": "death",
+        "state": 0,
+        "rects_original": 19,
+        "rects_candidate": 6,
+        "new_priority_pixels": 38821,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": [
+          359,
+          339
+        ]
+      },
+      {
+        "label": "orc-bow",
+        "action": "death",
+        "state": 1,
+        "rects_original": 19,
+        "rects_candidate": 6,
+        "new_priority_pixels": 1613,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": [
+          261,
+          272
+        ]
+      },
+      {
+        "label": "troll",
+        "action": "idle",
+        "state": 0,
+        "rects_original": 13,
+        "rects_candidate": 2,
+        "new_priority_pixels": 23897,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": [
+          119,
+          329
+        ]
+      },
+      {
+        "label": "troll",
+        "action": "idle",
+        "state": 1,
+        "rects_original": 13,
+        "rects_candidate": 2,
+        "new_priority_pixels": 2767,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": [
+          297,
+          283
+        ]
+      },
+      {
+        "label": "troll",
+        "action": "walk",
+        "state": 0,
+        "rects_original": 13,
+        "rects_candidate": 2,
+        "new_priority_pixels": 21980,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": [
+          384,
+          348
+        ]
+      },
+      {
+        "label": "troll",
+        "action": "walk",
+        "state": 1,
+        "rects_original": 13,
+        "rects_candidate": 2,
+        "new_priority_pixels": 1566,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": [
+          287,
+          297
+        ]
+      },
+      {
+        "label": "troll",
+        "action": "attack",
+        "state": 0,
+        "rects_original": 13,
+        "rects_candidate": 2,
+        "new_priority_pixels": 23591,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": [
+          124,
+          332
+        ]
+      },
+      {
+        "label": "troll",
+        "action": "attack",
+        "state": 1,
+        "rects_original": 13,
+        "rects_candidate": 2,
+        "new_priority_pixels": 2243,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": [
+          290,
+          265
+        ]
+      },
+      {
+        "label": "troll",
+        "action": "death",
+        "state": 0,
+        "rects_original": 13,
+        "rects_candidate": 2,
+        "new_priority_pixels": 39136,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": [
+          359,
+          292
+        ]
+      },
+      {
+        "label": "troll",
+        "action": "death",
+        "state": 1,
+        "rects_original": 13,
+        "rects_candidate": 2,
+        "new_priority_pixels": 1649,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": [
+          207,
+          272
+        ]
+      },
+      {
+        "label": "wolf",
+        "action": "idle",
+        "state": 0,
+        "rects_original": 24,
+        "rects_candidate": 2,
+        "new_priority_pixels": 1665,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": [
+          214,
+          324
+        ]
+      },
+      {
+        "label": "wolf",
+        "action": "idle",
+        "state": 1,
+        "rects_original": 24,
+        "rects_candidate": 2,
+        "new_priority_pixels": 1185,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": [
+          224,
+          278
+        ]
+      },
+      {
+        "label": "wolf",
+        "action": "walk",
+        "state": 0,
+        "rects_original": 24,
+        "rects_candidate": 2,
+        "new_priority_pixels": 1546,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": [
+          220,
+          328
+        ]
+      },
+      {
+        "label": "wolf",
+        "action": "walk",
+        "state": 1,
+        "rects_original": 24,
+        "rects_candidate": 2,
+        "new_priority_pixels": 1856,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": [
+          244,
+          282
+        ]
+      },
+      {
+        "label": "wolf",
+        "action": "attack",
+        "state": 0,
+        "rects_original": 24,
+        "rects_candidate": 2,
+        "new_priority_pixels": 1227,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": [
+          215,
+          326
+        ]
+      },
+      {
+        "label": "wolf",
+        "action": "attack",
+        "state": 1,
+        "rects_original": 24,
+        "rects_candidate": 2,
+        "new_priority_pixels": 1176,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": [
+          285,
+          274
+        ]
+      },
+      {
+        "label": "wolf",
+        "action": "death",
+        "state": 0,
+        "rects_original": 24,
+        "rects_candidate": 2,
+        "new_priority_pixels": 3396,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": [
+          291,
+          313
+        ]
+      },
+      {
+        "label": "wolf",
+        "action": "death",
+        "state": 1,
+        "rects_original": 24,
+        "rects_candidate": 2,
+        "new_priority_pixels": 893,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": [
+          229,
+          268
+        ]
+      },
+      {
+        "label": "dragon",
+        "action": "idle",
+        "state": 0,
+        "rects_original": 42,
+        "rects_candidate": 4,
+        "new_priority_pixels": 9130,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": [
+          176,
+          284
+        ]
+      },
+      {
+        "label": "dragon",
+        "action": "idle",
+        "state": 1,
+        "rects_original": 42,
+        "rects_candidate": 4,
+        "new_priority_pixels": 581,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": [
+          265,
+          281
+        ]
+      },
+      {
+        "label": "dragon",
+        "action": "attack",
+        "state": 0,
+        "rects_original": 42,
+        "rects_candidate": 4,
+        "new_priority_pixels": 10322,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": [
+          349,
+          274
+        ]
+      },
+      {
+        "label": "dragon",
+        "action": "attack",
+        "state": 1,
+        "rects_original": 42,
+        "rects_candidate": 4,
+        "new_priority_pixels": 513,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": [
+          249,
+          238
+        ]
+      },
+      {
+        "label": "dragon",
+        "action": "death",
+        "state": 0,
+        "rects_original": 42,
+        "rects_candidate": 4,
+        "new_priority_pixels": 12837,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": [
+          383,
+          291
+        ]
+      },
+      {
+        "label": "dragon",
+        "action": "death",
+        "state": 1,
+        "rects_original": 42,
+        "rects_candidate": 4,
+        "new_priority_pixels": 350,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": [
+          281,
+          253
+        ]
+      },
+      {
+        "label": "wisp",
+        "action": "idle",
+        "state": 0,
+        "rects_original": 5,
+        "rects_candidate": 5,
+        "new_priority_pixels": 0,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": null
+      },
+      {
+        "label": "wisp",
+        "action": "idle",
+        "state": 1,
+        "rects_original": 5,
+        "rects_candidate": 5,
+        "new_priority_pixels": 0,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": null
+      },
+      {
+        "label": "wisp",
+        "action": "attack",
+        "state": 0,
+        "rects_original": 5,
+        "rects_candidate": 5,
+        "new_priority_pixels": 0,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": null
+      },
+      {
+        "label": "wisp",
+        "action": "attack",
+        "state": 1,
+        "rects_original": 5,
+        "rects_candidate": 5,
+        "new_priority_pixels": 0,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": null
+      },
+      {
+        "label": "wisp",
+        "action": "death",
+        "state": 0,
+        "rects_original": 5,
+        "rects_candidate": 5,
+        "new_priority_pixels": 0,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": null
+      },
+      {
+        "label": "wisp",
+        "action": "death",
+        "state": 1,
+        "rects_original": 5,
+        "rects_candidate": 5,
+        "new_priority_pixels": 0,
+        "lost_priority_pixels": 0,
+        "example_new_priority_pixel": null
+      }
+    ]
+  },
+  "pixel_attribution": {
+    "interpretation": "Descriptive image gradient adjacency only; exact renderer cause unresolved.",
+    "rows": [
+      {
+        "run": "suite-compat",
+        "specimen": "human",
+        "action": "idle",
+        "state": 0,
+        "pixels_over_2": 1,
+        "adjacent_image_gradient_above_10": 1,
+        "first_coords_xy": [
+          [
+            165,
+            203
+          ]
+        ]
+      },
+      {
+        "run": "suite-compat",
+        "specimen": "human-complexion",
+        "action": "death",
+        "state": 0,
+        "pixels_over_2": 2,
+        "adjacent_image_gradient_above_10": 1,
+        "first_coords_xy": [
+          [
+            259,
+            110
+          ],
+          [
+            272,
+            111
+          ]
+        ]
+      },
+      {
+        "run": "suite-compat",
+        "specimen": "troll",
+        "action": "attack",
+        "state": 1,
+        "pixels_over_2": 1,
+        "adjacent_image_gradient_above_10": 0,
+        "first_coords_xy": [
+          [
+            225,
+            233
+          ]
+        ]
+      },
+      {
+        "run": "suite-compat",
+        "specimen": "dragon",
+        "action": "idle",
+        "state": 0,
+        "pixels_over_2": 2,
+        "adjacent_image_gradient_above_10": 2,
+        "first_coords_xy": [
+          [
+            181,
+            194
+          ],
+          [
+            208,
+            202
+          ]
+        ]
+      },
+      {
+        "run": "suite-compat",
+        "specimen": "dragon",
+        "action": "idle",
+        "state": 1,
+        "pixels_over_2": 4,
+        "adjacent_image_gradient_above_10": 4,
+        "first_coords_xy": [
+          [
+            269,
+            260
+          ],
+          [
+            272,
+            265
+          ],
+          [
+            269,
+            266
+          ],
+          [
+            274,
+            267
+          ]
+        ]
+      },
+      {
+        "run": "suite-compat",
+        "specimen": "dragon",
+        "action": "attack",
+        "state": 1,
+        "pixels_over_2": 2,
+        "adjacent_image_gradient_above_10": 2,
+        "first_coords_xy": [
+          [
+            228,
+            240
+          ],
+          [
+            231,
+            244
+          ]
+        ]
+      },
+      {
+        "run": "suite-compat",
+        "specimen": "dragon",
+        "action": "death",
+        "state": 1,
+        "pixels_over_2": 9,
+        "adjacent_image_gradient_above_10": 9,
+        "first_coords_xy": [
+          [
+            274,
+            239
+          ],
+          [
+            290,
+            239
+          ],
+          [
+            274,
+            241
+          ],
+          [
+            279,
+            242
+          ],
+          [
+            277,
+            243
+          ],
+          [
+            271,
+            247
+          ],
+          [
+            269,
+            248
+          ],
+          [
+            263,
+            249
+          ],
+          [
+            265,
+            250
+          ]
+        ]
+      },
+      {
+        "run": "suite-forward",
+        "specimen": "human",
+        "action": "idle",
+        "state": 0,
+        "pixels_over_2": 9,
+        "adjacent_image_gradient_above_10": 4,
+        "first_coords_xy": [
+          [
+            225,
+            140
+          ],
+          [
+            223,
+            145
+          ],
+          [
+            165,
+            203
+          ],
+          [
+            272,
+            264
+          ],
+          [
+            271,
+            269
+          ],
+          [
+            206,
+            312
+          ],
+          [
+            204,
+            325
+          ],
+          [
+            324,
+            340
+          ],
+          [
+            321,
+            419
+          ]
+        ]
+      },
+      {
+        "run": "suite-forward",
+        "specimen": "human",
+        "action": "walk",
+        "state": 0,
+        "pixels_over_2": 12,
+        "adjacent_image_gradient_above_10": 0,
+        "first_coords_xy": [
+          [
+            288,
+            135
+          ],
+          [
+            245,
+            237
+          ],
+          [
+            245,
+            238
+          ],
+          [
+            247,
+            239
+          ],
+          [
+            246,
+            240
+          ],
+          [
+            247,
+            240
+          ],
+          [
+            244,
+            241
+          ],
+          [
+            246,
+            241
+          ],
+          [
+            244,
+            242
+          ],
+          [
+            245,
+            243
+          ],
+          [
+            247,
+            244
+          ],
+          [
+            242,
+            409
+          ]
+        ]
+      },
+      {
+        "run": "suite-forward",
+        "specimen": "human",
+        "action": "attack",
+        "state": 0,
+        "pixels_over_2": 4,
+        "adjacent_image_gradient_above_10": 1,
+        "first_coords_xy": [
+          [
+            190,
+            77
+          ],
+          [
+            195,
+            96
+          ],
+          [
+            199,
+            140
+          ],
+          [
+            197,
+            143
+          ]
+        ]
+      },
+      {
+        "run": "suite-forward",
+        "specimen": "human",
+        "action": "death",
+        "state": 0,
+        "pixels_over_2": 6,
+        "adjacent_image_gradient_above_10": 5,
+        "first_coords_xy": [
+          [
+            224,
+            144
+          ],
+          [
+            224,
+            148
+          ],
+          [
+            258,
+            202
+          ],
+          [
+            286,
+            202
+          ],
+          [
+            248,
+            203
+          ],
+          [
+            309,
+            334
+          ]
+        ]
+      },
+      {
+        "run": "suite-forward",
+        "specimen": "human-complexion",
+        "action": "idle",
+        "state": 0,
+        "pixels_over_2": 9,
+        "adjacent_image_gradient_above_10": 2,
+        "first_coords_xy": [
+          [
+            216,
+            139
+          ],
+          [
+            215,
+            141
+          ],
+          [
+            214,
+            143
+          ],
+          [
+            299,
+            148
+          ],
+          [
+            170,
+            189
+          ],
+          [
+            194,
+            313
+          ],
+          [
+            342,
+            339
+          ],
+          [
+            200,
+            412
+          ],
+          [
+            210,
+            418
+          ]
+        ]
+      },
+      {
+        "run": "suite-forward",
+        "specimen": "human-complexion",
+        "action": "walk",
+        "state": 0,
+        "pixels_over_2": 1,
+        "adjacent_image_gradient_above_10": 0,
+        "first_coords_xy": [
+          [
+            221,
+            148
+          ]
+        ]
+      },
+      {
+        "run": "suite-forward",
+        "specimen": "human-complexion",
+        "action": "attack",
+        "state": 0,
+        "pixels_over_2": 6,
+        "adjacent_image_gradient_above_10": 6,
+        "first_coords_xy": [
+          [
+            194,
+            93
+          ],
+          [
+            184,
+            106
+          ],
+          [
+            184,
+            152
+          ],
+          [
+            227,
+            180
+          ],
+          [
+            221,
+            183
+          ],
+          [
+            221,
+            184
+          ]
+        ]
+      },
+      {
+        "run": "suite-forward",
+        "specimen": "human-complexion",
+        "action": "death",
+        "state": 0,
+        "pixels_over_2": 6,
+        "adjacent_image_gradient_above_10": 0,
+        "first_coords_xy": [
+          [
+            218,
+            144
+          ],
+          [
+            214,
+            309
+          ],
+          [
+            209,
+            310
+          ],
+          [
+            201,
+            313
+          ],
+          [
+            319,
+            327
+          ],
+          [
+            323,
+            415
+          ]
+        ]
+      },
+      {
+        "run": "suite-forward",
+        "specimen": "human-female",
+        "action": "walk",
+        "state": 0,
+        "pixels_over_2": 5,
+        "adjacent_image_gradient_above_10": 4,
+        "first_coords_xy": [
+          [
+            277,
+            211
+          ],
+          [
+            210,
+            260
+          ],
+          [
+            293,
+            265
+          ],
+          [
+            217,
+            266
+          ],
+          [
+            224,
+            407
+          ]
+        ]
+      },
+      {
+        "run": "suite-forward",
+        "specimen": "human-female",
+        "action": "death",
+        "state": 0,
+        "pixels_over_2": 2,
+        "adjacent_image_gradient_above_10": 2,
+        "first_coords_xy": [
+          [
+            290,
+            183
+          ],
+          [
+            278,
+            271
+          ]
+        ]
+      },
+      {
+        "run": "suite-forward",
+        "specimen": "human-female",
+        "action": "death",
+        "state": 1,
+        "pixels_over_2": 2,
+        "adjacent_image_gradient_above_10": 2,
+        "first_coords_xy": [
+          [
+            271,
+            246
+          ],
+          [
+            266,
+            247
+          ]
+        ]
+      },
+      {
+        "run": "suite-forward",
+        "specimen": "orc-bow",
+        "action": "idle",
+        "state": 0,
+        "pixels_over_2": 9,
+        "adjacent_image_gradient_above_10": 8,
+        "first_coords_xy": [
+          [
+            252,
+            150
+          ],
+          [
+            248,
+            152
+          ],
+          [
+            251,
+            158
+          ],
+          [
+            172,
+            159
+          ],
+          [
+            252,
+            159
+          ],
+          [
+            117,
+            206
+          ],
+          [
+            162,
+            339
+          ],
+          [
+            262,
+            418
+          ],
+          [
+            260,
+            419
+          ]
+        ]
+      },
+      {
+        "run": "suite-forward",
+        "specimen": "orc-bow",
+        "action": "walk",
+        "state": 0,
+        "pixels_over_2": 4,
+        "adjacent_image_gradient_above_10": 1,
+        "first_coords_xy": [
+          [
+            286,
+            149
+          ],
+          [
+            287,
+            150
+          ],
+          [
+            214,
+            172
+          ],
+          [
+            211,
+            180
+          ]
+        ]
+      },
+      {
+        "run": "suite-forward",
+        "specimen": "orc-bow",
+        "action": "attack",
+        "state": 0,
+        "pixels_over_2": 7,
+        "adjacent_image_gradient_above_10": 4,
+        "first_coords_xy": [
+          [
+            140,
+            148
+          ],
+          [
+            258,
+            199
+          ],
+          [
+            175,
+            348
+          ],
+          [
+            161,
+            349
+          ],
+          [
+            164,
+            350
+          ],
+          [
+            174,
+            355
+          ],
+          [
+            284,
+            367
+          ]
+        ]
+      },
+      {
+        "run": "suite-forward",
+        "specimen": "orc-bow",
+        "action": "death",
+        "state": 0,
+        "pixels_over_2": 10,
+        "adjacent_image_gradient_above_10": 8,
+        "first_coords_xy": [
+          [
+            269,
+            272
+          ],
+          [
+            268,
+            273
+          ],
+          [
+            267,
+            274
+          ],
+          [
+            266,
+            275
+          ],
+          [
+            265,
+            276
+          ],
+          [
+            264,
+            277
+          ],
+          [
+            263,
+            278
+          ],
+          [
+            262,
+            279
+          ],
+          [
+            257,
+            285
+          ],
+          [
+            290,
+            350
+          ]
+        ]
+      },
+      {
+        "run": "suite-forward",
+        "specimen": "troll",
+        "action": "idle",
+        "state": 0,
+        "pixels_over_2": 9,
+        "adjacent_image_gradient_above_10": 7,
+        "first_coords_xy": [
+          [
+            194,
+            153
+          ],
+          [
+            130,
+            208
+          ],
+          [
+            336,
+            315
+          ],
+          [
+            212,
+            332
+          ],
+          [
+            238,
+            352
+          ],
+          [
+            343,
+            370
+          ],
+          [
+            164,
+            372
+          ],
+          [
+            172,
+            375
+          ],
+          [
+            183,
+            378
+          ]
+        ]
+      },
+      {
+        "run": "suite-forward",
+        "specimen": "troll",
+        "action": "walk",
+        "state": 0,
+        "pixels_over_2": 11,
+        "adjacent_image_gradient_above_10": 9,
+        "first_coords_xy": [
+          [
+            115,
+            179
+          ],
+          [
+            126,
+            196
+          ],
+          [
+            103,
+            246
+          ],
+          [
+            181,
+            329
+          ],
+          [
+            182,
+            329
+          ],
+          [
+            192,
+            329
+          ],
+          [
+            150,
+            334
+          ],
+          [
+            143,
+            341
+          ],
+          [
+            219,
+            349
+          ],
+          [
+            282,
+            350
+          ],
+          [
+            331,
+            377
+          ]
+        ]
+      },
+      {
+        "run": "suite-forward",
+        "specimen": "troll",
+        "action": "attack",
+        "state": 0,
+        "pixels_over_2": 5,
+        "adjacent_image_gradient_above_10": 4,
+        "first_coords_xy": [
+          [
+            159,
+            290
+          ],
+          [
+            199,
+            315
+          ],
+          [
+            185,
+            356
+          ],
+          [
+            195,
+            356
+          ],
+          [
+            320,
+            374
+          ]
+        ]
+      },
+      {
+        "run": "suite-forward",
+        "specimen": "troll",
+        "action": "death",
+        "state": 0,
+        "pixels_over_2": 4,
+        "adjacent_image_gradient_above_10": 3,
+        "first_coords_xy": [
+          [
+            210,
+            284
+          ],
+          [
+            321,
+            288
+          ],
+          [
+            226,
+            297
+          ],
+          [
+            309,
+            304
+          ]
+        ]
+      },
+      {
+        "run": "suite-forward",
+        "specimen": "wolf",
+        "action": "idle",
+        "state": 0,
+        "pixels_over_2": 2,
+        "adjacent_image_gradient_above_10": 2,
+        "first_coords_xy": [
+          [
+            237,
+            245
+          ],
+          [
+            240,
+            260
+          ]
+        ]
+      },
+      {
+        "run": "suite-forward",
+        "specimen": "wolf",
+        "action": "walk",
+        "state": 0,
+        "pixels_over_2": 5,
+        "adjacent_image_gradient_above_10": 5,
+        "first_coords_xy": [
+          [
+            275,
+            243
+          ],
+          [
+            269,
+            250
+          ],
+          [
+            252,
+            329
+          ],
+          [
+            250,
+            330
+          ],
+          [
+            247,
+            331
+          ]
+        ]
+      },
+      {
+        "run": "suite-forward",
+        "specimen": "wolf",
+        "action": "death",
+        "state": 0,
+        "pixels_over_2": 1,
+        "adjacent_image_gradient_above_10": 1,
+        "first_coords_xy": [
+          [
+            267,
+            235
+          ]
+        ]
+      },
+      {
+        "run": "suite-forward",
+        "specimen": "dragon",
+        "action": "idle",
+        "state": 0,
+        "pixels_over_2": 1,
+        "adjacent_image_gradient_above_10": 1,
+        "first_coords_xy": [
+          [
+            208,
+            202
+          ]
+        ]
+      },
+      {
+        "run": "suite-mobile",
+        "specimen": "human",
+        "action": "idle",
+        "state": 0,
+        "pixels_over_2": 10,
+        "adjacent_image_gradient_above_10": 6,
+        "first_coords_xy": [
+          [
+            225,
+            140
+          ],
+          [
+            223,
+            145
+          ],
+          [
+            165,
+            203
+          ],
+          [
+            274,
+            251
+          ],
+          [
+            272,
+            264
+          ],
+          [
+            271,
+            269
+          ],
+          [
+            206,
+            312
+          ],
+          [
+            204,
+            325
+          ],
+          [
+            324,
+            340
+          ],
+          [
+            321,
+            419
+          ]
+        ]
+      },
+      {
+        "run": "suite-mobile",
+        "specimen": "human",
+        "action": "walk",
+        "state": 0,
+        "pixels_over_2": 13,
+        "adjacent_image_gradient_above_10": 0,
+        "first_coords_xy": [
+          [
+            288,
+            135
+          ],
+          [
+            245,
+            237
+          ],
+          [
+            245,
+            238
+          ],
+          [
+            247,
+            239
+          ],
+          [
+            246,
+            240
+          ],
+          [
+            247,
+            240
+          ],
+          [
+            244,
+            241
+          ],
+          [
+            246,
+            241
+          ],
+          [
+            244,
+            242
+          ],
+          [
+            244,
+            243
+          ],
+          [
+            245,
+            243
+          ],
+          [
+            247,
+            244
+          ],
+          [
+            242,
+            409
+          ]
+        ]
+      },
+      {
+        "run": "suite-mobile",
+        "specimen": "human",
+        "action": "attack",
+        "state": 0,
+        "pixels_over_2": 4,
+        "adjacent_image_gradient_above_10": 2,
+        "first_coords_xy": [
+          [
+            190,
+            77
+          ],
+          [
+            195,
+            96
+          ],
+          [
+            199,
+            140
+          ],
+          [
+            197,
+            143
+          ]
+        ]
+      },
+      {
+        "run": "suite-mobile",
+        "specimen": "human",
+        "action": "death",
+        "state": 0,
+        "pixels_over_2": 6,
+        "adjacent_image_gradient_above_10": 5,
+        "first_coords_xy": [
+          [
+            224,
+            144
+          ],
+          [
+            224,
+            148
+          ],
+          [
+            258,
+            202
+          ],
+          [
+            286,
+            202
+          ],
+          [
+            248,
+            203
+          ],
+          [
+            309,
+            334
+          ]
+        ]
+      },
+      {
+        "run": "suite-mobile",
+        "specimen": "human",
+        "action": "death",
+        "state": 1,
+        "pixels_over_2": 1,
+        "adjacent_image_gradient_above_10": 1,
+        "first_coords_xy": [
+          [
+            260,
+            246
+          ]
+        ]
+      },
+      {
+        "run": "suite-mobile",
+        "specimen": "human-complexion",
+        "action": "idle",
+        "state": 0,
+        "pixels_over_2": 11,
+        "adjacent_image_gradient_above_10": 3,
+        "first_coords_xy": [
+          [
+            216,
+            139
+          ],
+          [
+            215,
+            141
+          ],
+          [
+            214,
+            143
+          ],
+          [
+            213,
+            145
+          ],
+          [
+            212,
+            147
+          ],
+          [
+            299,
+            148
+          ],
+          [
+            170,
+            189
+          ],
+          [
+            194,
+            313
+          ],
+          [
+            342,
+            339
+          ],
+          [
+            200,
+            412
+          ],
+          [
+            210,
+            418
+          ]
+        ]
+      },
+      {
+        "run": "suite-mobile",
+        "specimen": "human-complexion",
+        "action": "walk",
+        "state": 0,
+        "pixels_over_2": 1,
+        "adjacent_image_gradient_above_10": 0,
+        "first_coords_xy": [
+          [
+            221,
+            148
+          ]
+        ]
+      },
+      {
+        "run": "suite-mobile",
+        "specimen": "human-complexion",
+        "action": "walk",
+        "state": 1,
+        "pixels_over_2": 2,
+        "adjacent_image_gradient_above_10": 2,
+        "first_coords_xy": [
+          [
+            254,
+            244
+          ],
+          [
+            256,
+            245
+          ]
+        ]
+      },
+      {
+        "run": "suite-mobile",
+        "specimen": "human-complexion",
+        "action": "attack",
+        "state": 0,
+        "pixels_over_2": 6,
+        "adjacent_image_gradient_above_10": 6,
+        "first_coords_xy": [
+          [
+            194,
+            93
+          ],
+          [
+            184,
+            106
+          ],
+          [
+            184,
+            152
+          ],
+          [
+            227,
+            180
+          ],
+          [
+            221,
+            183
+          ],
+          [
+            221,
+            184
+          ]
+        ]
+      },
+      {
+        "run": "suite-mobile",
+        "specimen": "human-complexion",
+        "action": "death",
+        "state": 0,
+        "pixels_over_2": 7,
+        "adjacent_image_gradient_above_10": 1,
+        "first_coords_xy": [
+          [
+            218,
+            144
+          ],
+          [
+            214,
+            158
+          ],
+          [
+            214,
+            309
+          ],
+          [
+            209,
+            310
+          ],
+          [
+            201,
+            313
+          ],
+          [
+            319,
+            327
+          ],
+          [
+            323,
+            415
+          ]
+        ]
+      },
+      {
+        "run": "suite-mobile",
+        "specimen": "human-female",
+        "action": "walk",
+        "state": 0,
+        "pixels_over_2": 5,
+        "adjacent_image_gradient_above_10": 4,
+        "first_coords_xy": [
+          [
+            277,
+            211
+          ],
+          [
+            210,
+            260
+          ],
+          [
+            293,
+            265
+          ],
+          [
+            217,
+            266
+          ],
+          [
+            224,
+            407
+          ]
+        ]
+      },
+      {
+        "run": "suite-mobile",
+        "specimen": "human-female",
+        "action": "walk",
+        "state": 1,
+        "pixels_over_2": 1,
+        "adjacent_image_gradient_above_10": 1,
+        "first_coords_xy": [
+          [
+            247,
+            257
+          ]
+        ]
+      },
+      {
+        "run": "suite-mobile",
+        "specimen": "human-female",
+        "action": "death",
+        "state": 0,
+        "pixels_over_2": 2,
+        "adjacent_image_gradient_above_10": 2,
+        "first_coords_xy": [
+          [
+            290,
+            183
+          ],
+          [
+            278,
+            271
+          ]
+        ]
+      },
+      {
+        "run": "suite-mobile",
+        "specimen": "human-female",
+        "action": "death",
+        "state": 1,
+        "pixels_over_2": 2,
+        "adjacent_image_gradient_above_10": 2,
+        "first_coords_xy": [
+          [
+            271,
+            246
+          ],
+          [
+            266,
+            247
+          ]
+        ]
+      },
+      {
+        "run": "suite-mobile",
+        "specimen": "orc-bow",
+        "action": "idle",
+        "state": 0,
+        "pixels_over_2": 9,
+        "adjacent_image_gradient_above_10": 8,
+        "first_coords_xy": [
+          [
+            252,
+            150
+          ],
+          [
+            248,
+            152
+          ],
+          [
+            251,
+            158
+          ],
+          [
+            172,
+            159
+          ],
+          [
+            252,
+            159
+          ],
+          [
+            117,
+            206
+          ],
+          [
+            162,
+            339
+          ],
+          [
+            262,
+            418
+          ],
+          [
+            260,
+            419
+          ]
+        ]
+      },
+      {
+        "run": "suite-mobile",
+        "specimen": "orc-bow",
+        "action": "walk",
+        "state": 0,
+        "pixels_over_2": 4,
+        "adjacent_image_gradient_above_10": 1,
+        "first_coords_xy": [
+          [
+            286,
+            149
+          ],
+          [
+            287,
+            150
+          ],
+          [
+            214,
+            172
+          ],
+          [
+            211,
+            180
+          ]
+        ]
+      },
+      {
+        "run": "suite-mobile",
+        "specimen": "orc-bow",
+        "action": "attack",
+        "state": 0,
+        "pixels_over_2": 7,
+        "adjacent_image_gradient_above_10": 4,
+        "first_coords_xy": [
+          [
+            140,
+            148
+          ],
+          [
+            258,
+            199
+          ],
+          [
+            175,
+            348
+          ],
+          [
+            161,
+            349
+          ],
+          [
+            164,
+            350
+          ],
+          [
+            174,
+            355
+          ],
+          [
+            284,
+            367
+          ]
+        ]
+      },
+      {
+        "run": "suite-mobile",
+        "specimen": "orc-bow",
+        "action": "death",
+        "state": 0,
+        "pixels_over_2": 10,
+        "adjacent_image_gradient_above_10": 8,
+        "first_coords_xy": [
+          [
+            269,
+            272
+          ],
+          [
+            268,
+            273
+          ],
+          [
+            267,
+            274
+          ],
+          [
+            266,
+            275
+          ],
+          [
+            265,
+            276
+          ],
+          [
+            264,
+            277
+          ],
+          [
+            263,
+            278
+          ],
+          [
+            262,
+            279
+          ],
+          [
+            257,
+            285
+          ],
+          [
+            290,
+            350
+          ]
+        ]
+      },
+      {
+        "run": "suite-mobile",
+        "specimen": "troll",
+        "action": "idle",
+        "state": 0,
+        "pixels_over_2": 8,
+        "adjacent_image_gradient_above_10": 7,
+        "first_coords_xy": [
+          [
+            194,
+            153
+          ],
+          [
+            130,
+            208
+          ],
+          [
+            336,
+            315
+          ],
+          [
+            212,
+            332
+          ],
+          [
+            238,
+            352
+          ],
+          [
+            343,
+            370
+          ],
+          [
+            164,
+            372
+          ],
+          [
+            172,
+            375
+          ]
+        ]
+      },
+      {
+        "run": "suite-mobile",
+        "specimen": "troll",
+        "action": "idle",
+        "state": 1,
+        "pixels_over_2": 1,
+        "adjacent_image_gradient_above_10": 0,
+        "first_coords_xy": [
+          [
+            226,
+            295
+          ]
+        ]
+      },
+      {
+        "run": "suite-mobile",
+        "specimen": "troll",
+        "action": "walk",
+        "state": 0,
+        "pixels_over_2": 11,
+        "adjacent_image_gradient_above_10": 9,
+        "first_coords_xy": [
+          [
+            115,
+            179
+          ],
+          [
+            126,
+            196
+          ],
+          [
+            103,
+            246
+          ],
+          [
+            181,
+            329
+          ],
+          [
+            182,
+            329
+          ],
+          [
+            192,
+            329
+          ],
+          [
+            150,
+            334
+          ],
+          [
+            143,
+            341
+          ],
+          [
+            219,
+            349
+          ],
+          [
+            282,
+            350
+          ],
+          [
+            331,
+            377
+          ]
+        ]
+      },
+      {
+        "run": "suite-mobile",
+        "specimen": "troll",
+        "action": "attack",
+        "state": 0,
+        "pixels_over_2": 5,
+        "adjacent_image_gradient_above_10": 4,
+        "first_coords_xy": [
+          [
+            159,
+            290
+          ],
+          [
+            199,
+            315
+          ],
+          [
+            185,
+            356
+          ],
+          [
+            195,
+            356
+          ],
+          [
+            320,
+            374
+          ]
+        ]
+      },
+      {
+        "run": "suite-mobile",
+        "specimen": "troll",
+        "action": "death",
+        "state": 0,
+        "pixels_over_2": 7,
+        "adjacent_image_gradient_above_10": 7,
+        "first_coords_xy": [
+          [
+            210,
+            284
+          ],
+          [
+            321,
+            288
+          ],
+          [
+            226,
+            297
+          ],
+          [
+            309,
+            304
+          ],
+          [
+            208,
+            329
+          ],
+          [
+            191,
+            353
+          ],
+          [
+            192,
+            353
+          ]
+        ]
+      },
+      {
+        "run": "suite-mobile",
+        "specimen": "wolf",
+        "action": "idle",
+        "state": 0,
+        "pixels_over_2": 2,
+        "adjacent_image_gradient_above_10": 2,
+        "first_coords_xy": [
+          [
+            237,
+            245
+          ],
+          [
+            240,
+            260
+          ]
+        ]
+      },
+      {
+        "run": "suite-mobile",
+        "specimen": "wolf",
+        "action": "walk",
+        "state": 0,
+        "pixels_over_2": 5,
+        "adjacent_image_gradient_above_10": 4,
+        "first_coords_xy": [
+          [
+            275,
+            243
+          ],
+          [
+            269,
+            250
+          ],
+          [
+            252,
+            329
+          ],
+          [
+            250,
+            330
+          ],
+          [
+            247,
+            331
+          ]
+        ]
+      },
+      {
+        "run": "suite-mobile",
+        "specimen": "wolf",
+        "action": "death",
+        "state": 0,
+        "pixels_over_2": 1,
+        "adjacent_image_gradient_above_10": 1,
+        "first_coords_xy": [
+          [
+            267,
+            235
+          ]
+        ]
+      },
+      {
+        "run": "suite-mobile",
+        "specimen": "dragon",
+        "action": "idle",
+        "state": 0,
+        "pixels_over_2": 1,
+        "adjacent_image_gradient_above_10": 1,
+        "first_coords_xy": [
+          [
+            208,
+            202
+          ]
+        ]
+      },
+      {
+        "run": "suite-mobile",
+        "specimen": "dragon",
+        "action": "idle",
+        "state": 1,
+        "pixels_over_2": 5,
+        "adjacent_image_gradient_above_10": 5,
+        "first_coords_xy": [
+          [
+            266,
+            257
+          ],
+          [
+            269,
+            260
+          ],
+          [
+            269,
+            265
+          ],
+          [
+            272,
+            265
+          ],
+          [
+            269,
+            266
+          ]
+        ]
+      }
+    ]
+  },
+  "rejected_or_superseded_runs": [
+    {
+      "label": "probe-compat",
+      "reason": "Eligibility incorrectly rejected generated tangent arrays; independent idle/death picks also chose different native clips."
+    },
+    {
+      "label": "probe-compat-v2",
+      "reason": "Original/original pixels exact after resolving clips once, but tangent eligibility still rejected every merge."
+    },
+    {
+      "label": "suite-compat",
+      "reason": "Two assertions incorrectly required authored walk clips from dragon and wisp; all geometry checks passed. Final fixture records these as unsupported/skipped."
+    },
+    {
+      "label": "suite-compat-final",
+      "reason": "Parse failure: production MeshScreenRect is locally preloaded, not a global class. Fixed the fixture preload before any valid final measurement."
+    },
+    {
+      "label": "timing32-compat",
+      "reason": "Delayed saved window settings restored a frame cap. Not valid for uncapped frame comparisons; replaced by explicit option+engine cap checks."
+    }
+  ],
+  "verdict": {
+    "renderer_correctness": "All 180 independent-original control pairs are exact. Candidate broad views show sparse residuals, up to 9/12/13 pixels above 2/255 on Compatibility/Forward+/Mobile; precise cause unproven. Twelve-point-light Compatibility case changes up to 14738 pixels above 2/255 versus at most one with four lights. Per-instance light scoring depends on the mesh centre; source support in renderer_scene_cull.cpp:3049.",
+    "picking": "Exact production rectangle query confirms merged rectangles turn loose union hits into high-priority part hits. Up to 41902 viewport pixels change classification for the human fixture. Preserve logical per-part rectangles before integration.",
+    "performance": "Uncapped original and merged frame medians respectively: Compatibility 1.637-1.641 vs 1.687-1.707 ms; Forward+ 1.452-1.483 vs 1.539-1.582 ms; Mobile 1.358-1.371 vs 1.471-1.521 ms. Palette sync adds 0.257-0.268 ms in this crowd. No performance gain or device/FPS claim. Cold build totals include asymmetric first asset warmup and are not comparable.",
+    "pending_contracts": [
+      "Batched/native pose upload without redundant per-part transform work",
+      "Per-part visibility/severing and descendants; 0.001 scale is not full removal",
+      "Per-part picking rectangles and original hit priority",
+      "Per-instance light budget equivalence under movement/lighting changes",
+      "Immutable merged geometry sharing across characters and material/redress lifetime",
+      "Hidden/deferred animation, gear/helmet/weapon changes, shadows, portraits, particle attachment, corpse limbs and selection highlight",
+      "Full gameplay/device measurements only after correctness and a net controlled benefit"
+    ]
+  }
+}

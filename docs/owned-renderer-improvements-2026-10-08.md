@@ -2133,6 +2133,88 @@ changes. Recheck the active checkout before integration and preserve its newer
 control/options/session/travel changes. Do not message or alter the other chat
 without human authorization. No patch was applied here.
 
+## C1: rigid character batching experiment — 9 October
+
+The independently authored prototype is now in
+`tools/benchmarks/rigid_part_batch.gd` and `rigid_characters.gd`. It is a
+diagnostic only: no production character code, option or default changed.
+The reference is R0 `Source/retained_static_submission.cpp`, especially
+`merge_part_eligible`, `merge_parts_compatible` and
+`retained_visual_merged_groups` around lines 2250–2273. That implementation
+preserves a pose identity for each merged component; it does not establish
+smooth skinning as an upstream feature.
+
+Each source vertex follows exactly one original part. Original `EIAnimPart`
+nodes and interpolation-before-parent-composition remain. Compatible material,
+layer and shadow groups become skinned surfaces with flat, identity-rest bones.
+Heads, weapons, morphs and the translucent wisp remain separate. The helper
+updates the palette once after the original pose pass, avoiding the optional
+`_weld` path's per-attachment override/forced skeleton updates. Original normals,
+tangents and UVs are retained. Logical part metadata remains available to
+geometry/particle consumers, but that alone does not cover gameplay integration.
+
+The [validation receipt](validation/rigid-character-batching-2026-10-09.json)
+records the frozen integrated PCK, patched engine/native hashes, commands,
+source snapshots, screenshots and rejected fixture attempts. Eleven successful
+diagnostic runs contain **902 assertions**. These check geometry, merge/bypass
+policy and timing configuration; **they do not assert visual acceptance**.
+Eight real figures, two views/pose phases and available idle/walk/attack/death
+clips produce 60 broad comparison pairs per backend. The second state includes
+rotation, detailed-head switching and native wound application. Dragon/wisp
+have no resolved authored walk clip in this sample; those four views are
+explicitly skipped. All 180 independent-original control pairs are exact.
+
+Human body submission drops from 14 meshes to one surface, or 17→4 total visible
+draws on Compatibility/Mobile and 34→8 on Forward+. Merged vertex positions
+remain within 2.2 micrometres of the reference in the sampled figures. Sparse
+image residuals remain: at most 9/12/13 pixels above 2/255 on
+Compatibility/Forward+/Mobile. Their exact cause is unresolved; proximity to
+image edges is not proof of a rasterization cause.
+
+Two correctness problems prevent runtime adoption:
+
+- **Light selection changes.** With twelve nearby point lights, Compatibility
+  changes up to 14,738 pixels above 2/255, versus at most one with four lights.
+  The torso/leg shading difference is visible. The pinned engine's
+  `renderer_scene_cull.cpp` around line 3049 ranks lights using each mesh centre,
+  energy and range. A whole-body bound cannot assume the old parts' light sets.
+  The P3 complete-light guard is useful precedent, but repeatedly regrouping
+  animated bodies would itself need a cost and lifetime evaluation.
+- **Picking changes.** `GameUnit.screen_rects` and `MeshScreenRect.of_context`
+  currently return one rectangle per drawn mesh. `Game._pick_unit` prioritizes
+  these over loose union hits. The exact production query confirms that a
+  merged body promotes gaps between limbs to precise hits; up to 41,902 pixels
+  change classification in the 512² human fixture. Retain logical part
+  rectangles independently of render batching before changing this path.
+
+Uncapped desktop measurements use 32 walking human figures, normal rendered
+frames and an original/merged/merged/original sequence, with 160 measured
+samples per case after warmup. Linux RTX 3090 results:
+
+| Renderer | Original frame median, ms | Merged frame median, ms | Visible draws |
+| --- | --- | --- | --- |
+| Compatibility | 1.637–1.641 | 1.687–1.707 | 544→128 |
+| Forward+ | 1.452–1.483 | 1.539–1.582 | 1,088→256 |
+| Mobile (desktop Vulkan) | 1.358–1.371 | 1.471–1.521 | 544→128 |
+
+Palette synchronization adds 0.257–0.268 ms. Saved submission work does not
+offset it in this fixture; Compatibility GPU time also increases. These are
+isolated character-rendering measurements, without AI/network/full maps or
+shadows, not gameplay FPS or Android results. No other Godot render process was
+seen at run boundaries; clocks/background load were not locked. The earlier
+8.33 ms timing was capped by delayed saved window settings and is rejected.
+The final fixture sets both options and engine state and asserts an uncapped
+configuration. First-build asset warmup makes construction totals incomparable.
+
+**Decision:** retain the experiment; do not enable it in gameplay. A useful next
+attempt must first remove redundant pose/palette work, preserve per-part picking
+and light selection, and share immutable merged geometry. It must then cover
+part visibility/severing (shrinking a bone to 0.001 is not full removal), gear
+and material replacement, selection highlights, deferred/hidden poses, shadows,
+portraits, particle attachments, limb copies and lifecycle cleanup. The current
+helper's `weld_mesh` metadata is preparation, not proof of those contracts.
+Enabling `smooth_joints` remains unrelated and would change authored shapes.
+
 ## Next work in the established order
 
 1. **P1/P2 remaining texture work:** retained outfit pixels and shared native
@@ -2176,11 +2258,11 @@ without human authorization. No patch was applied here.
    and real device performance remain open.
    For P6, identify actual shimmer/redraw cost and renderer capabilities
    before changing cascade settings or planning engine-level projection reuse.
-5. **C1 character batching/skinning:** the other agent has stopped and the latest
-   character/gameplay code is now integrated, so a controlled prototype can
-   proceed on that base. The active remake still animates rigid
-   figure parts. Converting to a skinned mesh was an author suggestion, not an
-   implemented upstream feature or a demonstrated speedup.
+5. **C1 character batching/skinning:** the rigid prototype above now measures
+   submission savings, extra palette cost, light-selection differences and
+   changed picking. It loses total frame time in the sampled desktop workload;
+   do not enable it or repeat the naive merge as an untested opportunity. The
+   concrete requirements for a different implementation are recorded above.
 6. **Visual track:** V1 ground-contact blending, V4 water interaction, V2 biome
    ground cover, then the remaining audit features. V1 now has shared production
    storage and an opt-in scenery blend, with the validation and limitations above.
