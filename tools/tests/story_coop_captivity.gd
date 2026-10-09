@@ -93,7 +93,11 @@ func _ready() -> void:
 	step(vm,30); check(vm.actions.any(func(a):return a[0]=="sentry" and a[1].point==party[3].pos),"saved guest pursuit resumes with same target")
 	var pristine:=ScriptParser.parse(raw); var adapted:=vm_for().ast
 	check(pristine.world==adapted.world,"original startup remains unchanged")
-	check(pristine.scripts.keys()==adapted.scripts.keys(),"no competing guard scripts are introduced")
+	var registrar := "VTriger#0#416#RemakeParticipants"
+	check(adapted.scripts.size()==pristine.scripts.size()+1 and adapted.scripts.has(registrar),
+		"only one registration watcher is added, with no competing guard dispatch")
+	check(pristine.scripts.keys().all(func(name):return name in ["VCheck#0#230","VTriger#0#235"] \
+		or pristine.scripts[name]==adapted.scripts[name]),"every other native definition and saved instruction index is unchanged")
 	check(pristine.scripts["VCheck#0#12"]==adapted.scripts["VCheck#0#12"],"authored protagonist-only portal gate stays unchanged")
 	var again:=adapted.scripts.duplicate(true); Compat.apply(adapted,CampaignProfile.ORIGINAL,"gz19h")
 	check(again==adapted.scripts,"captivity adaptation is idempotent")

@@ -208,6 +208,11 @@ static func _participant_rows(vm: ScriptVM, rows: Array, player: int) -> Array:
 	var out := []
 	for original: Dictionary in rows:
 		var name := String(original.get("s",""))
+		if vm.ast.scripts.get(name,{}).has("registration"):
+			var row := original.duplicate(true)
+			row.get_or_add("l",{})[traps.SEEN] = _registration_seen(vm,row.get("l",{}).get(traps.SEEN,[]),player)
+			out.append(row)
+			continue
 		if replaced.has(name) or watchers.has(name): continue
 		var key := String(original.get("l",{}).get(traps.KEY,""))
 		if name.ends_with(traps.COPY) and key.begins_with("h:"):
@@ -219,6 +224,23 @@ static func _participant_rows(vm: ScriptVM, rows: Array, player: int) -> Array:
 				row.s = translated[key][base]; row.l.erase(traps.KEY)
 				out.append(row); continue
 		out.append(original)
+	return out
+
+
+## Native per-character waits need no copied-role conversion. Their shared
+## registrar keeps only the returning player's and retained narrative roles'
+## spent identities; a host's ordinary protagonist cannot spend a guest's wait.
+static func _registration_seen(vm: ScriptVM, keys: Array, player: int) -> Array:
+	var story := _story_roles(vm)
+	var out := []
+	for key: String in keys:
+		var projected := key
+		var parts := key.split(":")
+		if parts.size() == 3 and parts[0] == "h":
+			var owner := int(parts[1]); var index := int(parts[2])
+			if owner == player: projected = "h:0:%d" % index
+			elif owner != 0 or not index in story: continue
+		if not projected in out: out.append(projected)
 	return out
 
 

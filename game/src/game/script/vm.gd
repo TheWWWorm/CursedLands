@@ -203,6 +203,8 @@ func _tick(dt: float) -> void:
 
 
 func _run(inst: Instance) -> void:
+	if inst.has_meta(&"prison_actor_reference") or has_meta(&"prison_intruder_reference"):
+		if preload("res://src/game/script/story_coop_traps.gd").hold_registration(self,inst): return
 	if inst.frames.is_empty():
 		if inst.killed or time < inst.poll:
 			return
@@ -1835,13 +1837,14 @@ func save_state() -> Dictionary:
 		if inst.wait_unit != null and is_instance_valid(inst.wait_unit):
 			d.wu = _ser(inst.wait_unit)
 		insts.append(d)
-	return {"globals": g, "instances": insts, "areas": areas, "alarms": _alarm_save(), "qobjs": qobjs, "sciences": sciences,
+	var saved := {"globals": g, "instances": insts, "areas": areas, "alarms": _alarm_save(), "qobjs": qobjs, "sciences": sciences,
 		"story_orders": _save_story_orders(),
 		"script_ai": _save_script_ai(),
 		"briefing_queue": _ser(briefings._after_movie) if briefings else [],
 		"world_done": _world_done.duplicate(),
 		"fx_auto": _fx_auto,   # the replayed CreateFXSource(-1) sources keep their ids (zone "fx")
 		"quest": String(world.get_meta("quest_mob", "")) if world.has_meta("quest_mob") else ""}
+	return preload("res://src/game/script/story_coop_traps.gd").save_registration(self,saved)
 
 
 func _alarm_save() -> Array:
@@ -1957,6 +1960,7 @@ func _restore(d: Dictionary) -> void:
 			var wu = _deser(s.wu)
 			inst.wait_unit = wu if wu is GameUnit else null
 		instances.append(inst)
+	preload("res://src/game/script/story_coop_traps.gd").restore_registration(self,d)
 
 
 ## Script-selected NPC follow/guard/motivation state outlives the instruction

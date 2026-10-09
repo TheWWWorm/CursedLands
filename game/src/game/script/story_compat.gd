@@ -5,6 +5,7 @@ const P := preload("res://src/game/script/script_parser.gd")
 static func apply(ast: ScriptParser, campaign: String, zone: String) -> void:
 	if campaign != CampaignProfile.ASTRAL:
 		if campaign == CampaignProfile.ORIGINAL:
+			if zone == "gz19h": preload("res://src/game/script/story_coop_traps.gd").apply_prison(ast)
 			preload("res://src/game/script/story_coop_predicates.gd").apply_original(ast,zone)
 			if zone == "gz15h": _prison_party_checks(ast)
 		if campaign == CampaignProfile.ORIGINAL and zone == "gz6g":
