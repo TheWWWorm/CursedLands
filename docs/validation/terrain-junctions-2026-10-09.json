@@ -1,0 +1,1626 @@
+{
+  "date": "2026-10-09",
+  "scope": "V6 verified three/four-family Natural terrain junctions; existing gfx_terrain=2, default/presets remain1.",
+  "status": "Local renderer/data qualification with retained baseline Compatibility neutralization residual; physical-device and long-route acceptance remain open.",
+  "source_parent": "58918a01b0188dc53eff1ee72d7e62e4f9b7551e",
+  "qualified_source_commit": "e866a2a6509c1651a27b9197e68f47ec74f88c04",
+  "source_sha256": {
+    "game/src/game/fx/terrain_transition.gd": "544da8af5746146c423ead675556b9f658b2f4b58b3d8fcc20b646dccaaf0e41",
+    "game/src/game/fx/terrain_transition_shader.gd": "6e70617e982f6c2c2e2b5eb6e0c5f97893402dc4083a940513d804bb414e10cb",
+    "tools/tests/terrain_transitions.gd": "4d53840418f7c16adb49f5e787eb614d594d4dff1e8632c49a24cdc582c4e348",
+    "tools/tests/terrain_transitions_render.gd": "10580f909f8b5485fabe35b8bc2d3aea99cbe42b46470833a2f3911f844fda92",
+    "tools/tests/terrain_junctions.gd": "ce5a010b27345e10a5e36ce3e30f6a8026963d7a3724a3cf28064bbfe1638f89",
+    "tools/tests/terrain_junctions_render.gd": "0a4f446fb02c4f2567062810ad8dc2629fc5464b76092aee2cb856434023e6d7",
+    "tools/tests/terrain_junctions_shader.gd": "294d3f25ae40af12135a4e7b2ad584754d01a08bdcaa4844fcb1e4e997d5c894",
+    "tools/benchmarks/terrain_junction_admission.gd": "6bba147157d1c1a8303959d5a4893539a53c65ac1e26f2623c3293e831436f77",
+    "tools/benchmarks/terrain_junction_cost.gd": "2a36f07833980beb3393837794c5cbc5145492339a192376beb6b63c56c9dd0e"
+  },
+  "final_export": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-junctions-20261009/candidate09",
+    "manifest": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-junctions-20261009/candidate09/export.json",
+      "sha256": "450efdd15c4edf5305d0ca393a1c3ce873067a5a5525b0fd8f01b131d09a78db"
+    },
+    "sha256": {
+      "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+      "CursedLands.pck": "d215fd5e4b65376d8b224f5a61145f898bac422a1ed31cc1b6c3826510bc622b",
+      "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+    },
+    "steps": [
+      {
+        "command": [
+          "/home/llm2x/.local/bin/godot-4",
+          "--headless",
+          "--path",
+          "/home/llm2x/Documents/EI/local/scratchpad/terrain-junctions-20261009/candidate09/stage",
+          "--editor",
+          "--import"
+        ],
+        "return_code": 0,
+        "seconds": 10.182766712037846,
+        "errors": []
+      },
+      {
+        "command": [
+          "/home/llm2x/.local/bin/godot-4",
+          "--headless",
+          "--path",
+          "/home/llm2x/Documents/EI/local/scratchpad/terrain-junctions-20261009/candidate09/stage",
+          "--export-pack",
+          "Linux",
+          "/home/llm2x/Documents/EI/local/scratchpad/terrain-junctions-20261009/candidate09/CursedLands.pck"
+        ],
+        "return_code": 0,
+        "seconds": 6.477272022981197,
+        "errors": []
+      }
+    ]
+  },
+  "source_qualification": {
+    "tracked_game_files": 613,
+    "tracked_mismatches": [],
+    "baseline_post_import_files": 712,
+    "candidate_post_import_files": 712,
+    "changed_stage_files": [
+      "src/game/fx/terrain_transition.gd",
+      "src/game/fx/terrain_transition.gd.uid",
+      "src/game/fx/terrain_transition_shader.gd",
+      "src/game/fx/terrain_transition_shader.gd.uid"
+    ],
+    "generated_files": "99 generated files: 69 import files and30 UID files. Two transition script UID files regenerated; other97 generated files are unchanged. All613 tracked game files match the tested stage. Only two production scripts differ from the prior qualified stage.",
+    "cpu_field_sha256": "544da8af5746146c423ead675556b9f658b2f4b58b3d8fcc20b646dccaaf0e41",
+    "cpu_field_identical_to_candidate03": true,
+    "legacy_functions_sha256": "ad3e029e56b4d0a3f00b0a37d493d0f4b054331d74f90d71c677c827bdf81f82",
+    "native_binaries_unchanged": true
+  },
+  "design": [
+    "Every exact authored family is retained, with a present plain donor from the same family and unchanged native corner rotations. No min/max pair reduction or inferred related donor.",
+    "One optional nearest RGBAF sampler: legacy W x H plane plus a second W x H plane only on maps with admitted junctions. First row keeps donor A/B, legacy guards/types and four vertex influence bits; alpha -3/-4 marks junctions. Extra row packs four 6-bit family IDs, four 2-bit corner indices plus 8 guard bits, and donor C/D + type. Exact integer-valued channels decode without +0.5.",
+    "A shared per-vertex influence field makes a bounded one-tile halo. The warped lookup consumes the entire neighbor family set. Plain art stays original; unsupported/path/unknown/invalid geometry receives the original-art guard. That guard also damps the warp before invalid support.",
+    "All active families compete using warped bilinear weights, family-seeded spatial noise and original donor texel luminance. Normalized positive shares blend colors and terrain traits. Continuous weighted material softness avoids top-two membership jumps. Unwarped and warped dominance preserve authored endpoints.",
+    "Generalized warp and material noise use a stable integer corner hash followed by smooth interpolation. Legacy FUNCTIONS remains byte-for-byte unchanged, including its noise; its SHA256 is ad3e029e56b4d0a3f00b0a37d493d0f4b054331d74f90d71c677c827bdf81f82.",
+    "Terrain, contact, footprints and color-cache receivers consume the same existing Field.source/bind interface; no extra sampler is introduced.",
+    "The new wrapper computes eligibility/blend once and evaluates the legacy pair sampler at one guarded call site only when influence is below one. Zero influence returns the legacy color and traits directly; partial influence uses the same weighted mix. Invalid/pure/metadata-missing fallbacks and input normalization remain exact.",
+    "Only junction-enabled terrain/contact source rewrites the exact four L/R/D/U relief calls to transition_relief_samples. An internal default 4 runtime loop preserves each original coordinate operator, dx/dy and local discarded traits. All downstream sum/min/max/height math stays unchanged. Pair-only source has no helper or rewrite.",
+    "Both transition_junction_materials and transition_relief_passes are private internal shader uniforms whose production defaults remain 4; no application writes or settings expose them. The shader uses these runtime bounds directly, avoiding known maxima that caused excessive GL expansion. At those owned defaults, every call processes exactly four material slots/four relief taps."
+  ],
+  "bounds_and_limits": [
+    "At most four own-family donor samples per generalized call, plus the existing original-art sample. Full junction path uses four metadata fetches; partial halo may also evaluate the accepted pair branch. Existing painted-relief calls multiply these per-call costs, so complete viewport measurements remain required.",
+    "MAX_TILES remains 262144. Texture storage and retained PackedColorArray payload are each at most 32 bytes per tile (8 MiB apiece) when junctions exist, excluding temporary arrays and driver/RSS costs. Pair-only maps retain the prior one-plane allocation.",
+    "Analytical fixture validates metadata and topology; independent actual-shader GPU harness and original-art rendered fixtures are required for shader continuity, visible quality and composed receiver claims.",
+    "No full R1 parity, new cliff geometry, texture asset replacement, global arbitrary-art reconstruction, temporal behavior, portable/device performance, or whole-process memory claim.",
+    "No canonical handoff or receipt edited by this agent; root owns combined V6 receipt and rendered/admission/cost fixtures. No Git staging performed."
+  ],
+  "check_totals": {
+    "fresh_candidate_checks": 8002,
+    "fresh_candidate_failures": 1,
+    "inherited_data_checks": 13293,
+    "final_capture_count": 119,
+    "gpu_individual_probes": 19911,
+    "meaning": "Most metadata checks iterate packed rows/topology. GPU probe count is separate from grouped checks, not added twice. One unchanged baseline neutralization failure is retained."
+  },
+  "cost_diagnostic": {
+    "viewport": [
+      1920,
+      1080
+    ],
+    "renderer": "forward_plus",
+    "adapter": "NVIDIA GeForce RTX 3090",
+    "warmup_frames_per_arm": 96,
+    "sample_frames_per_arm": 240,
+    "draws_and_primitives_exact": true,
+    "rows": [
+      {
+        "label": "three-families",
+        "arm": 0,
+        "mode": 1,
+        "baseline_gpu_ms": 0.451999992132187,
+        "candidate_gpu_ms": 0.435000002384186,
+        "baseline_cpu_ms": 0.0549999997019768,
+        "candidate_cpu_ms": 0.0399999991059303,
+        "draws": 1,
+        "primitives": 2048
+      },
+      {
+        "label": "three-families",
+        "arm": 1,
+        "mode": 2,
+        "baseline_gpu_ms": 0.772000014781952,
+        "candidate_gpu_ms": 1.18099999427795,
+        "baseline_cpu_ms": 0.0410000011324883,
+        "candidate_cpu_ms": 0.0430000014603138,
+        "draws": 1,
+        "primitives": 2048
+      },
+      {
+        "label": "three-families",
+        "arm": 2,
+        "mode": 2,
+        "baseline_gpu_ms": 0.691999971866608,
+        "candidate_gpu_ms": 1.40499997138977,
+        "baseline_cpu_ms": 0.0469999983906746,
+        "candidate_cpu_ms": 0.0419999994337559,
+        "draws": 1,
+        "primitives": 2048
+      },
+      {
+        "label": "three-families",
+        "arm": 3,
+        "mode": 1,
+        "baseline_gpu_ms": 0.416999995708466,
+        "candidate_gpu_ms": 0.43299999833107,
+        "baseline_cpu_ms": 0.0579999983310699,
+        "candidate_cpu_ms": 0.0430000014603138,
+        "draws": 1,
+        "primitives": 2048
+      },
+      {
+        "label": "four-families",
+        "arm": 0,
+        "mode": 1,
+        "baseline_gpu_ms": 0.421999990940094,
+        "candidate_gpu_ms": 0.42399999499321,
+        "baseline_cpu_ms": 0.046000000089407,
+        "candidate_cpu_ms": 0.0439999997615814,
+        "draws": 4,
+        "primitives": 8192
+      },
+      {
+        "label": "four-families",
+        "arm": 1,
+        "mode": 2,
+        "baseline_gpu_ms": 0.615000009536743,
+        "candidate_gpu_ms": 1.53299999237061,
+        "baseline_cpu_ms": 0.0419999994337559,
+        "candidate_cpu_ms": 0.0450000017881393,
+        "draws": 4,
+        "primitives": 8192
+      },
+      {
+        "label": "four-families",
+        "arm": 2,
+        "mode": 2,
+        "baseline_gpu_ms": 0.648999989032745,
+        "candidate_gpu_ms": 1.51400005817413,
+        "baseline_cpu_ms": 0.0410000011324883,
+        "candidate_cpu_ms": 0.0410000011324883,
+        "draws": 4,
+        "primitives": 8192
+      },
+      {
+        "label": "four-families",
+        "arm": 3,
+        "mode": 1,
+        "baseline_gpu_ms": 0.419999986886978,
+        "candidate_gpu_ms": 0.423000007867813,
+        "baseline_cpu_ms": 0.0500000007450581,
+        "candidate_cpu_ms": 0.0439999997615814,
+        "draws": 4,
+        "primitives": 8192
+      },
+      {
+        "label": "existing-pair",
+        "arm": 0,
+        "mode": 1,
+        "baseline_gpu_ms": 0.421999990940094,
+        "candidate_gpu_ms": 0.428000003099442,
+        "baseline_cpu_ms": 0.0469999983906746,
+        "candidate_cpu_ms": 0.0430000014603138,
+        "draws": 1,
+        "primitives": 2048
+      },
+      {
+        "label": "existing-pair",
+        "arm": 1,
+        "mode": 2,
+        "baseline_gpu_ms": 0.952000021934509,
+        "candidate_gpu_ms": 0.958999991416931,
+        "baseline_cpu_ms": 0.0450000017881393,
+        "candidate_cpu_ms": 0.0419999994337559,
+        "draws": 1,
+        "primitives": 2048
+      },
+      {
+        "label": "existing-pair",
+        "arm": 2,
+        "mode": 2,
+        "baseline_gpu_ms": 0.83899998664856,
+        "candidate_gpu_ms": 0.949000000953674,
+        "baseline_cpu_ms": 0.0450000017881393,
+        "candidate_cpu_ms": 0.0450000017881393,
+        "draws": 1,
+        "primitives": 2048
+      },
+      {
+        "label": "existing-pair",
+        "arm": 3,
+        "mode": 1,
+        "baseline_gpu_ms": 0.425999999046326,
+        "candidate_gpu_ms": 0.428999990224838,
+        "baseline_cpu_ms": 0.0439999997615814,
+        "candidate_cpu_ms": 0.0399999991059303,
+        "draws": 1,
+        "primitives": 2048
+      }
+    ],
+    "images": [
+      {
+        "file": "junction-cost-existing-pair-mode1.png",
+        "changed_pixels": 0,
+        "peak_byte_delta": 0
+      },
+      {
+        "file": "junction-cost-existing-pair-mode2.png",
+        "changed_pixels": 0,
+        "peak_byte_delta": 0
+      },
+      {
+        "file": "junction-cost-four-families-mode1.png",
+        "changed_pixels": 0,
+        "peak_byte_delta": 0
+      },
+      {
+        "file": "junction-cost-four-families-mode2.png",
+        "changed_pixels": 253667,
+        "peak_byte_delta": 132
+      },
+      {
+        "file": "junction-cost-three-families-mode1.png",
+        "changed_pixels": 0,
+        "peak_byte_delta": 0
+      },
+      {
+        "file": "junction-cost-three-families-mode2.png",
+        "changed_pixels": 90559,
+        "peak_byte_delta": 93
+      }
+    ],
+    "scope": "Descriptive complete-viewport ABBA diagnostic only. Other rendered Godot processes observed during BOTH runs. Not clean timing, standalone sampler cost, full-game FPS, target-device or cold-load acceptance."
+  },
+  "final_analytical": {
+    "seconds": 2.002159521973226,
+    "return_code": 0,
+    "termination_reason": null,
+    "errors": [],
+    "warnings": [
+      "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+    ],
+    "build_sha256": {
+      "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+      "CursedLands.pck": "d215fd5e4b65376d8b224f5a61145f898bac422a1ed31cc1b6c3826510bc622b",
+      "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+    },
+    "source_sha256": {
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/terrain_junctions.gd": "ce5a010b27345e10a5e36ce3e30f6a8026963d7a3724a3cf28064bbfe1638f89"
+    },
+    "other_processes_at_start": [],
+    "other_processes_at_end": [],
+    "role": "final candidate09 metadata/source checks",
+    "manifest": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-junctions-20261009/analytical09/run.json",
+      "sha256": "92a23e08748d92631f1de1bf91cf5564b9236107fd39d2dde800b49e74546a42"
+    },
+    "capture_count": 0,
+    "outputs": {},
+    "checks": 7515,
+    "failures": 0
+  },
+  "final_runs": [
+    {
+      "seconds": 10.011769168020692,
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [],
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "d215fd5e4b65376d8b224f5a61145f898bac422a1ed31cc1b6c3826510bc622b",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/terrain_junctions_shader.gd": "294d3f25ae40af12135a4e7b2ad584754d01a08bdcaa4844fcb1e4e997d5c894"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 1431841,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 1432761,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        },
+        {
+          "pid": 1433231,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        }
+      ],
+      "role": "final candidate09",
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-shader-final-forward-02/run.json",
+        "sha256": "3a63b13f0c1592ebe8ab19297ac5558375f29d9bb58a6a7d2c4a1d3ad376aca7"
+      },
+      "capture_count": 2,
+      "outputs": {
+        "terrain-junctions-shader.json": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-shader-final-forward-02/terrain-junctions-shader.json",
+          "sha256": "22ff128c811b9a6c431e951755db9e75e4c6bff170a12bcf1265fa1a5f2573f8"
+        }
+      },
+      "checks": 60,
+      "failures": 0,
+      "gpu_probes": 6637
+    },
+    {
+      "seconds": 27.52697399200406,
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "d215fd5e4b65376d8b224f5a61145f898bac422a1ed31cc1b6c3826510bc622b",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/terrain_junctions_shader.gd": "294d3f25ae40af12135a4e7b2ad584754d01a08bdcaa4844fcb1e4e997d5c894"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 1433424,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        },
+        {
+          "pid": 1434236,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 1435846,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        },
+        {
+          "pid": 1436303,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        }
+      ],
+      "role": "final candidate09",
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-shader-final-gl-01/run.json",
+        "sha256": "89a6dfbd3271ceda3945a912d226a8fb25a8833adcb754cdfd550e436a88fe0c"
+      },
+      "capture_count": 2,
+      "outputs": {
+        "terrain-junctions-shader.json": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-shader-final-gl-01/terrain-junctions-shader.json",
+          "sha256": "4db7ff2d7f8df79d53a696dca785a97d69956143c83117889c0d038a46f10648"
+        }
+      },
+      "checks": 60,
+      "failures": 0,
+      "gpu_probes": 6637
+    },
+    {
+      "seconds": 7.006826686032582,
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [],
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "d215fd5e4b65376d8b224f5a61145f898bac422a1ed31cc1b6c3826510bc622b",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/terrain_junctions_shader.gd": "294d3f25ae40af12135a4e7b2ad584754d01a08bdcaa4844fcb1e4e997d5c894"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 1436401,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        },
+        {
+          "pid": 1437043,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 1437190,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        },
+        {
+          "pid": 1437490,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        }
+      ],
+      "role": "final candidate09",
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-shader-final-mobile-01/run.json",
+        "sha256": "c38572c0872c0fa913caa7df12b030f4245b1d8a438fb833c5159ebc9d7156a0"
+      },
+      "capture_count": 2,
+      "outputs": {
+        "terrain-junctions-shader.json": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-shader-final-mobile-01/terrain-junctions-shader.json",
+          "sha256": "d95e40812b2e1767e903b674525436c43356ff36803c2715b6005306581cb9eb"
+        }
+      },
+      "checks": 60,
+      "failures": 0,
+      "gpu_probes": 6637
+    },
+    {
+      "seconds": 26.53559776500333,
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [],
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "d215fd5e4b65376d8b224f5a61145f898bac422a1ed31cc1b6c3826510bc622b",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/terrain_junctions_render.gd": "0a4f446fb02c4f2567062810ad8dc2629fc5464b76092aee2cb856434023e6d7",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/terrain_transitions_render.gd": "840a3ad33a08171b82a5ecedb896b0d37a9a9152450260d996b8f5e5a13b6a52"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 1439572,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        },
+        {
+          "pid": 1440532,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 1441903,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        },
+        {
+          "pid": 1442177,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        }
+      ],
+      "role": "final candidate09",
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-render-final-base-01/run.json",
+        "sha256": "e751555b70e5444f201f8fc4415e52f24160add0ba5153c9ffbd893127aff8c4"
+      },
+      "capture_count": 32,
+      "outputs": {
+        "candidate05-parity.json": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-render-final-base-01/candidate05-parity.json",
+          "sha256": "d877cd1972fc8e8b0e8913836a416be94c78548f2ac27d4ebe6e370fa807edc7"
+        },
+        "image-comparison.json": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-render-final-base-01/image-comparison.json",
+          "sha256": "fdd1fd83f759014b9ae4065e3db7f5aa58fbfb569b7e7da3b1764556f8fe6db3"
+        },
+        "terrain-junctions-render.json": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-render-final-base-01/terrain-junctions-render.json",
+          "sha256": "2ab2ff8b67bd06059bfbf4550e624a267b454d0d741529bd6eb5798d1f58d502"
+        }
+      },
+      "checks": 64,
+      "failures": 0
+    },
+    {
+      "seconds": 23.527888001990505,
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [],
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "d215fd5e4b65376d8b224f5a61145f898bac422a1ed31cc1b6c3826510bc622b",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/terrain_junctions_render.gd": "0a4f446fb02c4f2567062810ad8dc2629fc5464b76092aee2cb856434023e6d7",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/terrain_transitions_render.gd": "840a3ad33a08171b82a5ecedb896b0d37a9a9152450260d996b8f5e5a13b6a52"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 1441903,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        },
+        {
+          "pid": 1442177,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 1443270,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        },
+        {
+          "pid": 1443417,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "role": "final candidate09",
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-render-final-lia-01/run.json",
+        "sha256": "85255f723b1dcbcb8366bdd2c0fbdf3fa9969fb533648db1f4fcceddbf507ca8"
+      },
+      "capture_count": 24,
+      "outputs": {
+        "image-comparison.json": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-render-final-lia-01/image-comparison.json",
+          "sha256": "952eea2bfcc39eea5056c4764c5023e90ac2b32a0dd83a318fd1951d4256ecb3"
+        },
+        "terrain-junctions-render.json": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-render-final-lia-01/terrain-junctions-render.json",
+          "sha256": "efdbe0261349c92f7c0687e347507532eb9103c047dfd401e7ac44afce775f51"
+        }
+      },
+      "checks": 48,
+      "failures": 0
+    },
+    {
+      "seconds": 59.80156496097334,
+      "return_code": 1,
+      "termination_reason": null,
+      "errors": [
+        "FAIL neutral field restores exact Detailed color and relief zone12-67-127"
+      ],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "d215fd5e4b65376d8b224f5a61145f898bac422a1ed31cc1b6c3826510bc622b",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/terrain_junctions_render.gd": "0a4f446fb02c4f2567062810ad8dc2629fc5464b76092aee2cb856434023e6d7",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/terrain_transitions_render.gd": "840a3ad33a08171b82a5ecedb896b0d37a9a9152450260d996b8f5e5a13b6a52"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 1424604,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        }
+      ],
+      "other_processes_at_end": [],
+      "role": "final candidate09",
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-composed-candidate-gl05/run.json",
+        "sha256": "528bc6d9e1e7012edc3bf571583842f2a2bb2d5009db23426e238634fa52788a"
+      },
+      "capture_count": 8,
+      "outputs": {
+        "compiler-comparison.json": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-composed-candidate-gl05/compiler-comparison.json",
+          "sha256": "e63d8fb67165139734a69c8461c37ac7c18b5a20b90d5400ac991395496eb640"
+        },
+        "image-comparison.json": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-composed-candidate-gl05/image-comparison.json",
+          "sha256": "5157756aa8a34b0c1bb28d49b2a44b6f0440fd23242f4b6275cb6dc5c9ae8e26"
+        },
+        "neutral-residual.json": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-composed-candidate-gl05/neutral-residual.json",
+          "sha256": "cfc8a56cbe7d5996a4faf9b339ed6bf0174e4fdb6ed749eb5687e63d8d63fdaf"
+        },
+        "terrain-junctions-render.json": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-composed-candidate-gl05/terrain-junctions-render.json",
+          "sha256": "86d434245d478dc3835dcf204539b78ffe677bb6ea98b1ac9343060408dda308"
+        }
+      },
+      "checks": 52,
+      "failures": 1
+    },
+    {
+      "seconds": 19.033472036011517,
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [],
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "d215fd5e4b65376d8b224f5a61145f898bac422a1ed31cc1b6c3826510bc622b",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/terrain_junctions_render.gd": "0a4f446fb02c4f2567062810ad8dc2629fc5464b76092aee2cb856434023e6d7",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/terrain_transitions_render.gd": "10580f909f8b5485fabe35b8bc2d3aea99cbe42b46470833a2f3911f844fda92"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 1448548,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        },
+        {
+          "pid": 1449904,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 1448548,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        },
+        {
+          "pid": 1449904,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "role": "final candidate09",
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-composed-final-mobile01/run.json",
+        "sha256": "feee1279cd3cb79ac946fdce3b279ebf6bc6d04248b37f5d9e41df1dfd3c092c"
+      },
+      "capture_count": 8,
+      "outputs": {
+        "image-comparison.json": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-composed-final-mobile01/image-comparison.json",
+          "sha256": "fe57c209ac5b08e16574ac4e468a74dfbf5c42fbc647e2657f447f8f24b1b1a2"
+        },
+        "terrain-junctions-render.json": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-composed-final-mobile01/terrain-junctions-render.json",
+          "sha256": "e7eb140e44d13070366c46154d69f84e0612497fe8a800b1e9907bb73542567c"
+        }
+      },
+      "checks": 19,
+      "failures": 0
+    },
+    {
+      "seconds": 23.046484594000503,
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [],
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "d215fd5e4b65376d8b224f5a61145f898bac422a1ed31cc1b6c3826510bc622b",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/terrain_junctions_render.gd": "0a4f446fb02c4f2567062810ad8dc2629fc5464b76092aee2cb856434023e6d7",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/terrain_transitions_render.gd": "10580f909f8b5485fabe35b8bc2d3aea99cbe42b46470833a2f3911f844fda92"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 1448548,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        },
+        {
+          "pid": 1449904,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 1448548,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        },
+        {
+          "pid": 1449904,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "role": "final candidate09",
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-footprints-final-01/run.json",
+        "sha256": "d4f9e364cbd7c7b46192fb6302d9e0ee510b904495ada2aa86b74092d08e5a72"
+      },
+      "capture_count": 7,
+      "outputs": {
+        "image-comparison.json": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-footprints-final-01/image-comparison.json",
+          "sha256": "3f1e1930608b4772bf7df71fe89b7db341a2839f22e8e7da9371d78f380dcba5"
+        },
+        "terrain-junctions-render.json": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-footprints-final-01/terrain-junctions-render.json",
+          "sha256": "98b01e9cc06a5441723d9caace1008c626db70519eb52e2e3bb8b7d6e73cc224"
+        }
+      },
+      "checks": 21,
+      "failures": 0
+    },
+    {
+      "seconds": 23.789319128962234,
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [],
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "d215fd5e4b65376d8b224f5a61145f898bac422a1ed31cc1b6c3826510bc622b",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/terrain_transitions_render.gd": "10580f909f8b5485fabe35b8bc2d3aea99cbe42b46470833a2f3911f844fda92"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 1446390,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        },
+        {
+          "pid": 1447284,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 1448112,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        },
+        {
+          "pid": 1448548,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        }
+      ],
+      "role": "final candidate09",
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-pairs-final-scope-02/run.json",
+        "sha256": "5629d5be7f24d4cb6df1636c9c10a704b235f62a596aeac81e3d31304baff4d4"
+      },
+      "capture_count": 21,
+      "outputs": {
+        "image-comparison.json": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-pairs-final-scope-02/image-comparison.json",
+          "sha256": "74883550fbc223676cb5783a6b5961c284cf0d65cbade377500586fac3fc7105"
+        },
+        "terrain-transitions-render.json": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-pairs-final-scope-02/terrain-transitions-render.json",
+          "sha256": "fcfd2ceed7fd6c5975a9fefdf6f6dff4137a7be1bc67e46e6472cc1b1ba03248"
+        }
+      },
+      "checks": 36,
+      "failures": 0
+    },
+    {
+      "seconds": 13.513642303994857,
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [],
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "d215fd5e4b65376d8b224f5a61145f898bac422a1ed31cc1b6c3826510bc622b",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/terrain_transitions_render.gd": "10580f909f8b5485fabe35b8bc2d3aea99cbe42b46470833a2f3911f844fda92"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 1448548,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        },
+        {
+          "pid": 1448728,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 1448548,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        },
+        {
+          "pid": 1449904,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "role": "final candidate09",
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-path-final-01/run.json",
+        "sha256": "7ffd0ea4c45a05d923955003e7d187bbc6fdc2bd5beed6b829d4f93a76dab735"
+      },
+      "capture_count": 7,
+      "outputs": {
+        "image-comparison.json": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-path-final-01/image-comparison.json",
+          "sha256": "cc18e1b53c63c5e40c7237be866f63db86809e0e7cd14276988b5522b43fa86f"
+        },
+        "terrain-transitions-render.json": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-path-final-01/terrain-transitions-render.json",
+          "sha256": "8e48c70afe194859588906061b8801a99c80f612e5dbec74a025ae22b7b732cc"
+        }
+      },
+      "checks": 13,
+      "failures": 0
+    },
+    {
+      "seconds": 20.520535319985356,
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [],
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "d215fd5e4b65376d8b224f5a61145f898bac422a1ed31cc1b6c3826510bc622b",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/benchmarks/terrain_junction_cost.gd": "2a36f07833980beb3393837794c5cbc5145492339a192376beb6b63c56c9dd0e"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 1451378,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        },
+        {
+          "pid": 1451528,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 1451528,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        },
+        {
+          "pid": 1452202,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        }
+      ],
+      "role": "final candidate09",
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-cost-final-01/run.json",
+        "sha256": "5472477507163ed8c52c9696b8e307c80eb5535a8e514ed95b644ab2a49c3e22"
+      },
+      "capture_count": 6,
+      "outputs": {
+        "cost-comparison.json": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-cost-final-01/cost-comparison.json",
+          "sha256": "ad2722f391405d5dd492a11adea34a458d582900b16a726fb6b285071f788709"
+        },
+        "process-observations.json": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-cost-final-01/process-observations.json",
+          "sha256": "d20f9874f81112df7d6f7fab8a0fdacdcf341dedd5c4acfb4aadb18dba1017c0"
+        },
+        "terrain-junction-cost.json": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-cost-final-01/terrain-junction-cost.json",
+          "sha256": "216deaedddb845c066d9600e251f52e495b8c04604fb920e1c57bd0e89abc76e"
+        }
+      },
+      "checks": 54,
+      "failures": 0
+    }
+  ],
+  "inherited_data_runs": [
+    {
+      "seconds": 11.760796382965054,
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "3903fa73daf94942f7ce4079d0655f19e67947e84aa1d861669115394c8fda1a",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/benchmarks/terrain_junction_admission.gd": "6bba147157d1c1a8303959d5a4893539a53c65ac1e26f2623c3293e831436f77",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/benchmarks/terrain_junction_census.gd": "97994c65627203ca52f2b063df8b6ff619ece5c84d99b1b943753eea87358c71"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 1370824,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 1370824,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "role": "inherited: identical production CPU Field",
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-admission-base-01/run.json",
+        "sha256": "fd3f0d482ec5ec75d5d1a9b89a68f1763bc8f494a9484ed782d9d6773362f914"
+      },
+      "capture_count": 0,
+      "outputs": {
+        "terrain-junction-admission.json": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-admission-base-01/terrain-junction-admission.json",
+          "sha256": "6b3c8fa60e76a83a6c9be940d932c4e1fa2569808237a32e119fd3a56923bf8a"
+        }
+      },
+      "checks": 5275,
+      "failures": 0
+    },
+    {
+      "seconds": 15.765297072008252,
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "3903fa73daf94942f7ce4079d0655f19e67947e84aa1d861669115394c8fda1a",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/benchmarks/terrain_junction_admission.gd": "6bba147157d1c1a8303959d5a4893539a53c65ac1e26f2623c3293e831436f77",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/benchmarks/terrain_junction_census.gd": "97994c65627203ca52f2b063df8b6ff619ece5c84d99b1b943753eea87358c71"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 1370824,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 1370824,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        },
+        {
+          "pid": 1373682,
+          "executable": "/home/llm2x/Documents/EI/local/scratchpad/terrain-junctions-20261009/candidate03/CursedLands.x86_64",
+          "headless": false
+        }
+      ],
+      "role": "inherited: identical production CPU Field",
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-admission-lia-01/run.json",
+        "sha256": "ecfb114f57e44922eb1fdb6aeec849c7a9a610fdd1a0e84ba39f1c0588c9ac04"
+      },
+      "capture_count": 0,
+      "outputs": {
+        "terrain-junction-admission.json": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-admission-lia-01/terrain-junction-admission.json",
+          "sha256": "00813580097326e78f1de835566769ba8a7bfce0c42535d050ee11fd5b39290b"
+        }
+      },
+      "checks": 7874,
+      "failures": 0
+    },
+    {
+      "seconds": 5.004960705991834,
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "3903fa73daf94942f7ce4079d0655f19e67947e84aa1d861669115394c8fda1a",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/terrain_transitions.gd": "4d53840418f7c16adb49f5e787eb614d594d4dff1e8632c49a24cdc582c4e348"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 1370824,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 1370824,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "role": "inherited: identical production CPU Field",
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-junctions-20261009/analytical-base03/run.json",
+        "sha256": "37b4b4cfd563b06eb08d21db9e6b047d8b13fce835203404be654832f77d3f97"
+      },
+      "capture_count": 0,
+      "outputs": {
+        "terrain-transitions.json": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-junctions-20261009/analytical-base03/terrain-transitions.json",
+          "sha256": "fd306606be66ecfa3bbcb37c135d9e69331ab5028d05b3694018f9f46231936f"
+        }
+      },
+      "checks": 75,
+      "failures": 0
+    },
+    {
+      "seconds": 2.753240622987505,
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "3903fa73daf94942f7ce4079d0655f19e67947e84aa1d861669115394c8fda1a",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/terrain_transitions.gd": "4d53840418f7c16adb49f5e787eb614d594d4dff1e8632c49a24cdc582c4e348"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 1370824,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 1370824,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        },
+        {
+          "pid": 1371930,
+          "executable": "/home/llm2x/Documents/EI/local/scratchpad/terrain-junctions-20261009/candidate03/CursedLands.x86_64",
+          "headless": true
+        }
+      ],
+      "role": "inherited: identical production CPU Field",
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-junctions-20261009/analytical-astral03/run.json",
+        "sha256": "6910256bafddbf8fea958f4aae64ced9db2c827f2e83126af62ebc01cbdc25f0"
+      },
+      "capture_count": 0,
+      "outputs": {
+        "terrain-transitions.json": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-junctions-20261009/analytical-astral03/terrain-transitions.json",
+          "sha256": "8e72efa69a584b04f7dbdd9cca67b4b0c511eac85b4206392999245bdf4e2fa0"
+        }
+      },
+      "checks": 69,
+      "failures": 0
+    }
+  ],
+  "baseline_runs": [
+    {
+      "seconds": 29.8112394749769,
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [],
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "baecb35e25dd99c684c66d3d9b726facf79d743080e65b768219197eba5989fd",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/terrain_junctions_render.gd": "5c70dafbacbd370e7d261d25c3ab88cca9d7fd2a5639c73ad98b22fbd8eae3b8",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/terrain_transitions_render.gd": "9a84e29c8ba5dae4394c6ba6f74e35348dab1c03d76f419388c0f47915fa6fca"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 1346488,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        },
+        {
+          "pid": 1347895,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 1346488,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        },
+        {
+          "pid": 1347895,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "role": "qualified baseline comparison",
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-render-baseline-base-02/run.json",
+        "sha256": "ac2e0f53cfc3f2932ac14f3e9fc8de7154d70600d75ab93bc4f5d29a179dced8"
+      },
+      "capture_count": 32,
+      "outputs": {
+        "terrain-junctions-render.json": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-render-baseline-base-02/terrain-junctions-render.json",
+          "sha256": "db01d2e5ba07c49dbff464408ac279176e06211c5bb6d4982938bce7b9bb7999"
+        }
+      },
+      "checks": 64,
+      "failures": 0
+    },
+    {
+      "seconds": 22.52392631600378,
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [],
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "baecb35e25dd99c684c66d3d9b726facf79d743080e65b768219197eba5989fd",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/terrain_junctions_render.gd": "5c70dafbacbd370e7d261d25c3ab88cca9d7fd2a5639c73ad98b22fbd8eae3b8",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/terrain_transitions_render.gd": "9a84e29c8ba5dae4394c6ba6f74e35348dab1c03d76f419388c0f47915fa6fca"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 1349239,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        },
+        {
+          "pid": 1349395,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 1349395,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        },
+        {
+          "pid": 1350055,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        }
+      ],
+      "role": "qualified baseline comparison",
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-render-baseline-lia-01/run.json",
+        "sha256": "4445312948d218c2405842666bc7b3f29d68c19fca88b3532bdbbc64959365d6"
+      },
+      "capture_count": 24,
+      "outputs": {
+        "terrain-junctions-render.json": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-render-baseline-lia-01/terrain-junctions-render.json",
+          "sha256": "61091503151f6e86ed4b643860bf771e997e215bbf7c9db72439607846f08d4f"
+        }
+      },
+      "checks": 48,
+      "failures": 0
+    },
+    {
+      "seconds": 48.80542545899516,
+      "return_code": 1,
+      "termination_reason": null,
+      "errors": [
+        "FAIL neutral field restores exact Detailed color and relief zone12-67-127"
+      ],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "baecb35e25dd99c684c66d3d9b726facf79d743080e65b768219197eba5989fd",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/terrain_junctions_render.gd": "5c70dafbacbd370e7d261d25c3ab88cca9d7fd2a5639c73ad98b22fbd8eae3b8",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/terrain_transitions_render.gd": "31abaeb3d21fb325046ba5a9a5809d84a82c8d0ab64996f2812cf71c4835ee3b"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 1352871,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        },
+        {
+          "pid": 1355673,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 1356447,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "role": "qualified baseline comparison",
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-composed-baseline-gl01/run.json",
+        "sha256": "869cb24fb7ac53ce13495d5cc2546ed31e37d2440c9b10dd4b52449c959f01d7"
+      },
+      "capture_count": 8,
+      "outputs": {
+        "terrain-junctions-render.json": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-composed-baseline-gl01/terrain-junctions-render.json",
+          "sha256": "9b643192e79feba2786c0d7ad06151164216f38f337274716040796971837c6f"
+        }
+      },
+      "checks": 52,
+      "failures": 1
+    },
+    {
+      "seconds": 15.76935797301121,
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [],
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "baecb35e25dd99c684c66d3d9b726facf79d743080e65b768219197eba5989fd",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/terrain_junctions_render.gd": "5c70dafbacbd370e7d261d25c3ab88cca9d7fd2a5639c73ad98b22fbd8eae3b8",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/terrain_transitions_render.gd": "31abaeb3d21fb325046ba5a9a5809d84a82c8d0ab64996f2812cf71c4835ee3b"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 1360572,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 1361590,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "role": "qualified baseline comparison",
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-composed-baseline-mobile01/run.json",
+        "sha256": "2c33149249ae4f90d1162f995a6c463df57099dd055e0af82ef23c8a9edce1c8"
+      },
+      "capture_count": 8,
+      "outputs": {
+        "terrain-junctions-render.json": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-composed-baseline-mobile01/terrain-junctions-render.json",
+          "sha256": "46c67c7ad993a22ccee5adec8cd2712c8b0c0f567736f07b3f6025591d0722a3"
+        }
+      },
+      "checks": 19,
+      "failures": 0
+    },
+    {
+      "seconds": 17.26830756297568,
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [],
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "baecb35e25dd99c684c66d3d9b726facf79d743080e65b768219197eba5989fd",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/terrain_junctions_render.gd": "5c70dafbacbd370e7d261d25c3ab88cca9d7fd2a5639c73ad98b22fbd8eae3b8",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/terrain_transitions_render.gd": "31abaeb3d21fb325046ba5a9a5809d84a82c8d0ab64996f2812cf71c4835ee3b"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 1361590,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 1361590,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "role": "qualified baseline comparison",
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-footprints-baseline-01/run.json",
+        "sha256": "91a88c731bbc1adb188c1d073c27cd57301d76693c5bb0784e20712bfd415b73"
+      },
+      "capture_count": 7,
+      "outputs": {
+        "terrain-junctions-render.json": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-footprints-baseline-01/terrain-junctions-render.json",
+          "sha256": "13abe37d52a29273cd3d8088a58702f3913f0f4b06c01bfaa05536e80af40553"
+        }
+      },
+      "checks": 21,
+      "failures": 0
+    },
+    {
+      "seconds": 21.774603509984445,
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [],
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "baecb35e25dd99c684c66d3d9b726facf79d743080e65b768219197eba5989fd",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/terrain_transitions_render.gd": "9a84e29c8ba5dae4394c6ba6f74e35348dab1c03d76f419388c0f47915fa6fca"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 1352871,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        },
+        {
+          "pid": 1353150,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 1352871,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        },
+        {
+          "pid": 1353852,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "role": "qualified baseline comparison",
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-pairs-baseline-01/run.json",
+        "sha256": "3340b2fd10ec7ebf52d30fc8a07c05057a6cc724707f606fbb89e3cf12b79f2e"
+      },
+      "capture_count": 18,
+      "outputs": {
+        "terrain-transitions-render.json": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-pairs-baseline-01/terrain-transitions-render.json",
+          "sha256": "1e078933beb9566d64d26428b3e2ddaae9a947b49c1b3d76ae161e45ef5a7164"
+        }
+      },
+      "checks": 36,
+      "failures": 0
+    },
+    {
+      "seconds": 13.513773471000604,
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [],
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "baecb35e25dd99c684c66d3d9b726facf79d743080e65b768219197eba5989fd",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/terrain_transitions_render.gd": "31abaeb3d21fb325046ba5a9a5809d84a82c8d0ab64996f2812cf71c4835ee3b"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 1352871,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        },
+        {
+          "pid": 1354579,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 1352871,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        },
+        {
+          "pid": 1355085,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "role": "qualified baseline comparison",
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-path-baseline-01/run.json",
+        "sha256": "16d36ec048ba33662ce665ef10a8366f739aba310390033519449830fffdd6f5"
+      },
+      "capture_count": 7,
+      "outputs": {
+        "terrain-transitions-render.json": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-path-baseline-01/terrain-transitions-render.json",
+          "sha256": "ee534d58aee7df1fd811b69efc3a3eb2da3926616c89a4eff5499e524a2d68c0"
+        }
+      },
+      "checks": 13,
+      "failures": 0
+    },
+    {
+      "seconds": 21.038187853002455,
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [],
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "baecb35e25dd99c684c66d3d9b726facf79d743080e65b768219197eba5989fd",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/benchmarks/terrain_junction_cost.gd": "2a36f07833980beb3393837794c5cbc5145492339a192376beb6b63c56c9dd0e"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 1448548,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        },
+        {
+          "pid": 1449904,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 1451378,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        },
+        {
+          "pid": 1451528,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "role": "qualified baseline comparison",
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-cost-baseline-01/run.json",
+        "sha256": "fc6611197ebdd0c9408e3d6ffbe12ec0a54fb8be4680ad34c02cfd93ef311097"
+      },
+      "capture_count": 6,
+      "outputs": {
+        "process-observations.json": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-cost-baseline-01/process-observations.json",
+          "sha256": "2e5f0607b448887f2e3f082a837ee4c2fc07f093c9eade4e1212d42d7a4d7b73"
+        },
+        "terrain-junction-cost.json": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-cost-baseline-01/terrain-junction-cost.json",
+          "sha256": "253f8e375e30e38413819d53c6800a84b9f1e34a6be9bbe82d81871fb85397ea"
+        }
+      },
+      "checks": 54,
+      "failures": 0
+    }
+  ],
+  "admission": {
+    "base_maps": 38,
+    "lia_maps": 51,
+    "base_three": 8374,
+    "base_four": 36,
+    "lia_three": 8653,
+    "lia_four": 35,
+    "largest_actual_texture_bytes": 2097152,
+    "meaning": "Campaign tile placements, not deduplicated art or visible pixels. All are verified original corners with present own-family plain donors, coherent vertices and valid geometry."
+  },
+  "retained_failures": [
+    "candidate01 import inferred Variant failure repaired before valid export.",
+    "candidate03 GPU dense continuity failed6probes; direct old float/sin noise diagnostic failed6witnesses. Stable integer noise corrects only the new generalized path; old pair noise stays unchanged.",
+    "Early oblique-camera baseline could sit inside a cliff; excluded in favor of exact displaced target and overhead orthographic view.",
+    "Initial old-pair scope mask omitted fog_disabled, causing false outside-mask changes at the fogged horizon. A second mask still left transparent water over two changed terrain pixels (one byte each). Final classification hides only water during the mask pass and removes fog; actual rendered images retain the original water and are not modified.",
+    "candidate05 and06 full composed Compatibility runs timed out at180s;07 consolidates legacy fallback calls,08 consolidates relief calls,09 removes the material-loop shader-side clamp. All07/08/09 composed images are exact; elapsed diagnostic times are120.43/71.32/59.80s, not FPS or clean isolated compilation timings.",
+    "Final shader fixture first run passed allGPUprobes but failed2setup assertions because ShaderMaterial.get_shader_parameter returns only explicit overrides. Corrected to RenderingServer.shader_get_parameter_default without setting overrides; retained run junction-shader-final-forward-01.",
+    "Baseline and final composed Compatibility/cache/contact neutral-field control each retain exactly1pixel at(379,229), peakRGBdelta70, relative to Detailed. Their neutral images match each other exactly; this strict failure is retained, not counted as a fully passing run or hidden by a tolerance."
+  ],
+  "historical_manifests": {
+    "junction-render-baseline-base-01": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-render-baseline-base-01/run.json",
+      "sha256": "908913b0b5bef382b6adffe70db15cb71423fbf47ea4172d0d7ab3bf0922b7d8"
+    },
+    "junction-shader-forward-01": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-shader-forward-01/run.json",
+      "sha256": "2e28d8974f21effa7903e41798cd06edc667f15116b8e11e099a3f5d314b4178"
+    },
+    "junction-shader-noise-forward-01": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-shader-noise-forward-01/run.json",
+      "sha256": "b874389d4888ae7c1173c6eed04573bd19bb20228d8334d59644aa4784cdf74b"
+    },
+    "junction-pairs-scope-01": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-pairs-scope-01/run.json",
+      "sha256": "11a7701e33a6c2d923e4ed37234a97dbaa1a5ff2738f0abf57aeb9cfe9d1bfe5"
+    },
+    "junction-pairs-final-scope-01": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-pairs-final-scope-01/run.json",
+      "sha256": "599299fee1e63f4ecfba6ff2f175c36dd2ed2390e49c2514972d9e3e121be800"
+    },
+    "junction-composed-candidate-gl01": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-composed-candidate-gl01/run.json",
+      "sha256": "aa840c103837d889c1d161dec531b1f1e9c9e99c4236409a6ac44f39f6a87f7d"
+    },
+    "junction-composed-candidate-gl02": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-composed-candidate-gl02/run.json",
+      "sha256": "b73dbd99d75cb4d2a5f61cc5216a041996a2511af40673486bece37fe0ab0c7a"
+    },
+    "junction-composed-candidate-gl03": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-composed-candidate-gl03/run.json",
+      "sha256": "9ee7b316fe4b1c7502d86e45054d4e4c28e4c86fae5f5e4a42d09d2f0d1e527f"
+    },
+    "junction-composed-nocontact-gl01": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-composed-nocontact-gl01/run.json",
+      "sha256": "2fa44b6d164c85e706d5a4a9ee1fa7569d10b5aff43a79eb31d14905e8b50dca"
+    },
+    "junction-composed-candidate-gl04": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-composed-candidate-gl04/run.json",
+      "sha256": "e3e5ce91267ad9947c83b75401f8082a1f6fcc6e5e3ffdcb6f157aad90c919db"
+    },
+    "junction-shader-final-forward-01": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/junction-shader-final-forward-01/run.json",
+      "sha256": "fa1633333ee2c40a98633d7ec285cbbd96b6c6fdab7c5706889915c12b2b8abf"
+    }
+  },
+  "unchanged_scope": "Cloud corrections, gameplay synchronization, settings/localizations, character wound textures, atlas data, geometry/navigation/collision, protocol13, Experimental6 and both native binaries are unchanged. Prior qualified gameplay/settings/cloud receipts are inherited, not new tests. No user save, installed build, original archive or published release was replaced.",
+  "runners": {
+    "snapshot.py": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-junctions-20261009/snapshot.py",
+      "sha256": "53133d8cd43a30fb94aa537de413b8a61b13b1744a6c09584d45b806fea68253"
+    },
+    "run.py": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/run.py",
+      "sha256": "1c0799f66ea6e3e187f9a23438322074304cf59d2b5d42411c536e823e5ec747"
+    },
+    "compare_images.py": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-junctions-20261009/compare_images.py",
+      "sha256": "c17db5b6f0676890a4f10580dd0524c6ad3c355ef9d50fe84c162b28bf767e10"
+    },
+    "collect_receipt.py": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-junctions-20261009/collect_receipt.py",
+      "sha256": "f957622ac081b9263dde25398e2c96e71be60edb79a6b4f9f7fdd1897c977bf4"
+    }
+  }
+}

@@ -19,13 +19,23 @@ are committed. The supplied U45 autosave contains two living required creatures;
 the original completion gates work when both die. `1b8b0f6` fixes a distinct
 script-added looted-actor reload defect with 137 passing candidate checks.
 The current qualified private export matches production checkpoint
-`05600699529b6b4cd3b7666146cadf66977db5c7`.
-[Current P1 retention evidence](validation/wound-source-retention-2026-10-09.json)
+`e866a2a6509c1651a27b9197e68f47ec74f88c04`.
+[Current junction evidence](validation/terrain-junctions-2026-10-09.json)
+qualifies exact three/four-family Natural transitions across both campaigns,
+with 19,911 GPU probes on three desktop backends and original-art controls.
+The existing setting/default/presets remain unchanged. The Compatibility
+neutral-field control retains the same one-pixel baseline residual; clean timing
+and physical-device/long-route acceptance remain open. All 613 tracked game
+files match candidate09; only two production scripts and their regenerated UID
+files differ from the prior 712-file stage. Gameplay, settings, clouds and native
+binaries are unchanged; their earlier evidence is inherited.
+[Previous P1 retention evidence](validation/wound-source-retention-2026-10-09.json)
 records 1,729 candidate checks and 15 captures, including 134 actual
 GameUnit/Paperdoll/cloud/terrain lifecycle checks. It removes 6.875–7.125 MiB
 of unused CPU source copies in a controlled appearance sample; all 39 uploaded
-textures and mip chains remain exact. All 613 committed game files match the
-tested stage; 99 generated import/UID files match the previous accepted stage.
+textures and mip chains remain exact. At that P1 checkpoint, all 613 committed
+game files matched the tested stage; all 99 generated import/UID files matched
+the preceding accepted stage.
 [Previous texture integration](validation/renderer-texture-integration-2026-10-09.json)
 records 190 runtime checks, 23 independent image comparisons and 37 captures for
 the wound-only and compressed-terrain changes alongside existing cloud/effects.
@@ -33,7 +43,7 @@ At that checkpoint, all 712 post-import files matched its qualified wound-shader
 candidate. The previous
 [711-check/60-capture acceptance](validation/renderer-coop-integration-2026-10-09.json)
 covers localized settings and representative co-op/solo return; gameplay source
-and both native binaries are unchanged by the subsequent four rendering files.
+and both native binaries are unchanged by subsequent renderer-only edits.
 The earlier 859-check checkpoint and separate LiA mist motion limitation are
 retained. The Haburu first-conversation fix is also committed. V7 requires
 verified campaign placement data. Do not treat historical pause
@@ -56,7 +66,7 @@ The original worktree above is historical. Source version remains Experimental 6
 and protocol 13. This task uses private exports and isolated profiles. Installed
 builds, templates, original assets and real saves have not been replaced.
 Current qualified private export:
-`/home/llm2x/Documents/EI/local/scratchpad/wound-retention-20261009/candidate01`.
+`/home/llm2x/Documents/EI/local/scratchpad/terrain-junctions-20261009/candidate09`.
 The detailed gameplay tracker is `docs/gameplay-gaps-2026-10-08.md`; the incoming
 handoff is `/home/llm2x/Documents/EI/local/gameplay-handoff-2026-10-09.md`.
 
@@ -4545,8 +4555,8 @@ Natural transitions (2), with English, Russian and German choices. Detailed
 remains the default and the automatic preset value. Original and Detailed are
 PNG-identical to the untouched build in all three fixed reference scenes.
 
-`terrain_transition.gd` and its shared shader reconstruct only verified pairs
-of natural grass, snow, sand and rock families. Exact original atlas hashes,
+At this historical checkpoint, `terrain_transition.gd` and its shared shader
+reconstruct only verified pairs of natural grass, snow, sand and rock families. Exact original atlas hashes,
 authored rotated corners and present plain tiles from each exact family are
 required. Conflicting corners are rejected without voting or borrowing a nearby
 material. Paths, liquid/bed families, unknown/modified atlases and three-family
@@ -4569,15 +4579,16 @@ footprint receivers, and composed cloud/caustic/cliff/water/contact shaders pass
 restore and resource-release controls. The five-map Base/LiA check deliberately
 leaves most conflicting LiA zone26 transitions unchanged and zone6 neutral.
 
-This is the conservative two-family material stage. Three/four-family junctions,
-inferred metadata, broad stochastic anti-repetition, transition side projection,
-geometry rounding, long routes and physical-device cost acceptance remain open.
+This was the conservative two-family material stage, extended below. At that
+checkpoint, three/four-family junctions, inferred metadata, broad stochastic
+anti-repetition, transition side projection, geometry rounding, long routes and
+physical-device cost acceptance remained open.
 No installed build, original asset, real save or published release was replaced.
 
 ### Three/four-family candidate census
 
 The [read-only junction census](validation/terrain-junction-census-2026-10-09.json)
-now identifies original sites for the next material stage. It reads all 38 base
+identified original sites for the junction stage below. It reads all 38 base
 and 51 LiA map headers, sector vertices and land codes without constructing map
 meshes or GPU textures. Exact atlas identities, allowed natural ground classes,
 authored rotations, present plain donors, consistent shared corners and valid
@@ -4601,11 +4612,76 @@ base zone15 tile `(69,19)` (orange stone/gravel/grayish sand), zone12 `(67,127)`
 The two final headless scans pass 12,969 archive/data assertions, mostly sector
 structure checks. This is not visual acceptance. Eight-neighbour seam guards,
 domain-warp compatibility, liquid/scenery occlusion and complete-frame cost
-still require rendered controls. All three/four-family tiles remain unchanged
-in production. Independent review corrected witness coordinates to include
+required rendered controls at this census checkpoint. Its shader follow-up is
+qualified below. Independent review corrected witness coordinates to include
 authored XY displacement; earlier scans retain identical counts but are excluded
 from the final witness record. The existing irrelevant headless screen-space-AA
 startup warning is retained explicitly.
+
+### Verified three/four-family junctions
+
+`e866a2a` extends the existing Natural transitions value to every verified
+three/four-family candidate in the census: 8,374/36 base placements and
+8,653/35 LiA placements. Exact original families, rotated corner identities,
+present plain donors, shared-vertex agreement and valid original geometry remain
+required. A family is never dropped to manufacture a pair, and missing or
+conflicting metadata still leaves original artwork intact.
+
+The optional second metadata plane shares the existing nearest RGBAF sampler.
+A continuous one-tile vertex influence field joins the new path to accepted
+pair shading; all plain tiles stay authored. The warped lookup consumes the
+whole neighbouring family set. Original/warped dominance, guarded displacement,
+normalized material shares and continuous softness preserve endpoints and avoid
+rank changes at soft/hard boundaries. New-path noise uses stable integer lattice
+hashes: actual GPU probes found six discontinuities with a floating sine hash.
+Pair-only maps retain the byte-identical legacy program and noise. Junction
+maps reuse its math with adjusted metadata bounds/decoding. Exact 24-bit packed
+channels decode without adding a floating half, which would corrupt high odd
+integers. Contact, footprints and cached land use this same program and texture.
+
+Repeated shader expansion initially stalled composed Compatibility beyond 180
+seconds. One legacy call site and one four-tap relief loop preserve the exact
+coordinates, gradients and downstream arithmetic. Internal uniforms always
+default to four; there is no new graphics option. The final composed test takes
+59.80 seconds in its private profile, versus 120.43 before relief consolidation;
+all eight images are exact between those variants. These are whole-test
+elapsed times, not isolated compile timing or gameplay FPS.
+
+[The junction receipt](validation/terrain-junctions-2026-10-09.json) separates:
+
+- **7,515** final metadata/source assertions. **13,149** all-map admission and
+  **144** prior analytical assertions carry forward because the production CPU
+  field is byte-identical to the tested candidate03 source.
+- **180** final shader checks on Forward+, Compatibility and desktop Mobile,
+  containing **19,911 individual GPU probes**. These include independent core
+  edges, distinct field representations, dense traces, absent families, packed
+  metadata, endpoint/guard controls and 240 patterned relief-tap comparisons.
+- **252/253** original-map rendering checks and **107** captures. Original,
+  Detailed, neutral and disabled controls match the earlier build. The sole
+  strict failure is the same Compatibility contact-edge pixel `(379,229)`,
+  peak RGB delta 70, also present in the baseline neutral-versus-Detailed check;
+  both builds' neutral images match exactly. It is retained, not relaxed.
+- **19,000** path pixels remain exact. All changed pixels in the old pair views
+  lie within the junction influence area plus one tile for relief taps. The
+  classification pass disables fog and hides transparent water so it can label
+  the underlying terrain; actual comparison images keep the original water.
+- **54** complete-viewport cost checks at 1920×1080: Detailed/Natural/Natural/
+  Detailed, 96 warm-up and 240 sampled frames per arm. Geometry submissions and
+  Detailed images stay exact; the existing-pair Natural cost image is exact too.
+  Final three/four-family Natural GPU medians range 1.181–1.533 ms in these
+  close views. Other rendered processes were observed during both runs, so these
+  are descriptive diagnostics, not clean cost acceptance.
+
+There are **119 final captures** including the shader and timing fixtures.
+The largest actual field texture is 2 MiB; texture and retained packed row
+payload are each bounded at 8 MiB for the maximum tile count. These are payload
+bounds, not total process/driver memory. Pair-only maps retain one plane and the
+old program. The final private pack is candidate09, with all 613 committed game
+files matched; among 99 generated files, only the two transition script UIDs
+were regenerated. Both native binaries and all gameplay/settings/cloud sources
+remain unchanged. Full R1 parity, inferred atlas metadata, general anti-repetition,
+transition side projection, geometry rounding and clean device/long-route costs
+remain separate work.
 
 ## V8: guarded optional camera depth of field — 9 October
 
@@ -4872,9 +4948,11 @@ release, installation, original asset or real save was modified.
    Forward+ adaptation above. Its LiA post-rain motion threshold remains unmet
    in one retained view, without changing the effect to fit the test.
    V6 now projects verified original rock art on steep faces without changing
-   geometry. Its three/four-family transition follow-up now has a read-only
-   census and exact original witness sites in both campaigns; implement and
-   render the shared junction sampler before claiming those candidates supported.
+   geometry. Verified three/four-family transitions now share terrain/contact/
+   footprint/cache shading, with the original-map/GPU evidence above. Keep
+   the one-pixel baseline Compatibility residual and contaminated timing explicit;
+   clean device/long-route cost, wider anti-repetition, transition side projection
+   and geometry rounding remain open.
    V8 now applies the optional camera policy with a capability-gated
    native far-only guard. Their larger parity/device follow-ups are explicit in
    their receipts. V7 remains dependent on verified campaign layout data.
