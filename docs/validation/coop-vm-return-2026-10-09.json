@@ -1,0 +1,362 @@
+{
+  "status": "implemented; bounded original-data acceptance passed; not a full campaign or internet-platform claim",
+  "date": "2026-10-09",
+  "scope": "Co-op-to-solo VM recipient projection for newly returned, eligible checkpoint snapshots; no repair of the supplied user saves.",
+  "baseline": {
+    "source": "ec79e3f with the separate stable-hero-reference guard; earlier two reproductions use the unchanged preceding serialization code",
+    "failed_cases": [
+      {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/progression-sync-01/CursedLands.x86_64",
+          "--headless",
+          "--audio-driver",
+          "Dummy",
+          "--render-thread",
+          "safe",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--ei-inline-host",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/coop-vm-solo-20261009/fixtures/coop_vm_solo.gd"
+        ],
+        "exit_code": 1,
+        "seconds": 29.448991713987198,
+        "errors": [],
+        "log_sha256": "63fde5bea773dd34c1b4ed4c1170e3e68c504ef425d8352747fc34f17c28f4af",
+        "fixture_sha256": "624890f0ee13dc0cc7bad99a0a0deb8c45be8ffe4f2ad1da7a37f957b387aea8",
+        "build_sha256": {
+          "CursedLands.x86_64": "769dd027c0b444caca0d5fbbb6014eda80970e991e9f32fdb1f86ec385d20c3e",
+          "CursedLands.pck": "3304f43b1f84a05e0f27785e2c8f2605fcb3ebd6aa0b941a6d78bcda4a8a1eb8",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "label": "baseline03",
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/coop-vm-solo-20261009/baseline03.log",
+        "checks": 25,
+        "failures": 2,
+        "frozen_fixture": "/home/llm2x/Documents/EI/local/scratchpad/coop-vm-solo-20261009/fixtures/dragon-baseline03.gd"
+      },
+      {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/progression-sync-01/CursedLands.x86_64",
+          "--headless",
+          "--audio-driver",
+          "Dummy",
+          "--render-thread",
+          "safe",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--ei-inline-host",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/coop-vm-solo-20261009/fixtures/trap_vm_solo.gd"
+        ],
+        "exit_code": 1,
+        "seconds": 7.915221422008472,
+        "errors": [],
+        "log_sha256": "1ff9bae74596940a98c83dc7312294a4c589a5afc1bfecfb6513982904db5f0e",
+        "fixture_sha256": "cc4a1614d19d4c75a2388051b8774e39a3a4b5696cefe881259f81b03b84ad7f",
+        "build_sha256": {
+          "CursedLands.x86_64": "769dd027c0b444caca0d5fbbb6014eda80970e991e9f32fdb1f86ec385d20c3e",
+          "CursedLands.pck": "3304f43b1f84a05e0f27785e2c8f2605fcb3ebd6aa0b941a6d78bcda4a8a1eb8",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "label": "trap-baseline01",
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/coop-vm-solo-20261009/trap-baseline01.log",
+        "checks": 23,
+        "failures": 2,
+        "frozen_fixture": "/home/llm2x/Documents/EI/local/scratchpad/coop-vm-solo-20261009/fixtures/trap-baseline01.gd"
+      },
+      {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/hero-refs-02/CursedLands.x86_64",
+          "--headless",
+          "--audio-driver",
+          "Dummy",
+          "--render-thread",
+          "safe",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--ei-inline-host",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/coop-vm-solo-20261009/fixtures/coop_vm_solo.gd",
+          "--capture-delay"
+        ],
+        "exit_code": 1,
+        "seconds": 41.40734413798782,
+        "errors": [],
+        "log_sha256": "6e8202aa64983eded4e85cf37d72f328dbbb007c10dc193480aa21b356bd5a61",
+        "fixture_sha256": "38a8236f7b482ca2a307112b4a3ead1ca0bf0db74117c6a8ee399405031153d2",
+        "build_sha256": {
+          "CursedLands.x86_64": "769dd027c0b444caca0d5fbbb6014eda80970e991e9f32fdb1f86ec385d20c3e",
+          "CursedLands.pck": "2ffc960819b4eb7e4e6f0872544041bad951f1ca6f065c447be18e7b973f9c74",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "label": "delay-baseline04",
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/coop-vm-solo-20261009/delay-baseline04.log",
+        "checks": 22,
+        "failures": 1,
+        "frozen_fixture": "/home/llm2x/Documents/EI/local/scratchpad/coop-vm-solo-20261009/fixtures/dragon-delay-baseline04.gd"
+      }
+    ]
+  },
+  "reproduced_behavior": [
+    "Actual original gz6g startup, all pending map scripts retained: native dragon follows imported ENet guest. Normal progress RPC copies target {u:1500000002,h:[1,0]} verbatim; independent solo hero is 1500000001/[0,0]. Follow mode remains but target is null immediately and after 50 script polls.",
+    "Original gz2g native trap registration For(Heroes) is directly activated as a persistence control. Guest triggers its original 15-tick Sleep; returned solo continuation loses locals.this and never inflicts the pending 30 damage. The shipped registration is dormant in WorldScript; this is not a claimed ordinary playthrough trigger.",
+    "Actual gz6g guest follow chain captured inside original three-tick Sleep also loses its character after return. Verified native-family translation resumes that saved body once on the solo role, including original departure and 150-tick cooldown."
+  ],
+  "implementation": [
+    "CoopProgress.package adds one versioned recipient marker to each copied zone VM. Only containing dictionaries are cloned; existing snapshot arrays remain read-only. Historical credit snapshots and live authority VM are not modified.",
+    "ScriptVM._restore projects marked VM data through a separate helper using the real merged original AST. The returned projection owns a deep copy and consumes its marker.",
+    "Recipient hero refs become local slot0. Native UID/object refs remain unchanged. Other absent peer refs do not select a recycled UID; the independent ec79e3f guard stays intact.",
+    "Per-character pending actions select recipient work. Shared narrative aliases collapse across owners, while deliberate duplicates from one owner remain. Named authored party roles are retained; temporary-role aliases prefer the recipient chain without discarding unique role work.",
+    "Saved For cursors retain current recipient instruction/wait, skip discarded participant work, and do not replay already completed recipient iterations. Native NPC iterations and older b/i-only save shapes are preserved.",
+    "Generated participant trap/follow branches translate only when the complete called native family structurally matches the recipient role. Body indexes/waits stay unchanged; original idle duplicates and spent activations cannot rearm twice. Changed/modded counterparts are not guessed."
+  ],
+  "candidate": {
+    "directory": "/home/llm2x/Documents/EI/local/scratchpad/coop-vm-solo-20261009/candidate07",
+    "frozen_source_base": "ec79e3f",
+    "overlays": [
+      "game/src/game/script/coop_vm_state.gd",
+      "game/src/game/script/vm.gd",
+      "package marker only in game/src/game/coop_progress.gd"
+    ],
+    "export_receipt": "/home/llm2x/Documents/EI/local/scratchpad/coop-vm-solo-20261009/candidate07/export.json",
+    "sha256": {
+      "CursedLands.x86_64": "769dd027c0b444caca0d5fbbb6014eda80970e991e9f32fdb1f86ec385d20c3e",
+      "CursedLands.pck": "69222846ae26a3227333354886e986ed67dcb200df9af8d01028973e12dd8169",
+      "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+    },
+    "formatting_validation": "The six runtime/structural cases passed 149 checks on candidate06. Final review split one long _actor_calls elif into continued lines without changing expressions. Candidate07 imports/exports cleanly and passes the same 36 base structural controls; no other source differs between these private candidates. The unchanged runtime cases were not redundantly repeated."
+  },
+  "acceptance": {
+    "passing_assertions": 185,
+    "runs": [
+      {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/coop-vm-solo-20261009/candidate06/CursedLands.x86_64",
+          "--headless",
+          "--audio-driver",
+          "Dummy",
+          "--render-thread",
+          "safe",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--ei-inline-host",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_vm_projection.gd"
+        ],
+        "exit_code": 0,
+        "seconds": 2.2043638000031933,
+        "errors": [],
+        "log_sha256": "a500bf36b64fb614f016086dd5900b7a327a3dbec322425db9dfdb72ae6a9d7a",
+        "fixture_sha256": "91ebe397d05ca17de9663fa1b4b4c5b8f34a516ba1345f2f0fcc469485bbcffc",
+        "build_sha256": {
+          "CursedLands.x86_64": "769dd027c0b444caca0d5fbbb6014eda80970e991e9f32fdb1f86ec385d20c3e",
+          "CursedLands.pck": "bd8fcf7060406379008a22c9657ce3525faa2136695fffc066b206104c4eac84",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "label": "accepted-base-controls",
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/coop-vm-solo-20261009/accepted-base-controls.log",
+        "checks": 36,
+        "failures": 0
+      },
+      {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/coop-vm-solo-20261009/candidate06/CursedLands.x86_64",
+          "--headless",
+          "--audio-driver",
+          "Dummy",
+          "--render-thread",
+          "safe",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+          "--ei-inline-host",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_vm_projection.gd"
+        ],
+        "exit_code": 0,
+        "seconds": 3.0108886350062676,
+        "errors": [],
+        "log_sha256": "dd93ade70109fdafff11a868b1a0c462d284a51addc6632bd8ba0d8fa39a27cd",
+        "fixture_sha256": "91ebe397d05ca17de9663fa1b4b4c5b8f34a516ba1345f2f0fcc469485bbcffc",
+        "build_sha256": {
+          "CursedLands.x86_64": "769dd027c0b444caca0d5fbbb6014eda80970e991e9f32fdb1f86ec385d20c3e",
+          "CursedLands.pck": "bd8fcf7060406379008a22c9657ce3525faa2136695fffc066b206104c4eac84",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "label": "accepted-lia-controls",
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/coop-vm-solo-20261009/accepted-lia-controls.log",
+        "checks": 21,
+        "failures": 0
+      },
+      {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/coop-vm-solo-20261009/candidate06/CursedLands.x86_64",
+          "--headless",
+          "--audio-driver",
+          "Dummy",
+          "--render-thread",
+          "safe",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--ei-inline-host",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_vm_solo.gd"
+        ],
+        "exit_code": 0,
+        "seconds": 30.99301649001427,
+        "errors": [],
+        "log_sha256": "4b396a870bb5653b5b3e0a6c8e7a97955598b76c1d08727ba4f4af37d80e3b15",
+        "fixture_sha256": "86358c0299ab6b3b02b805e6ecb7f4a0679b36f17dbc857f49a38557db838374",
+        "build_sha256": {
+          "CursedLands.x86_64": "769dd027c0b444caca0d5fbbb6014eda80970e991e9f32fdb1f86ec385d20c3e",
+          "CursedLands.pck": "bd8fcf7060406379008a22c9657ce3525faa2136695fffc066b206104c4eac84",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "label": "accepted-dragon-active",
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/coop-vm-solo-20261009/accepted-dragon-active.log",
+        "checks": 30,
+        "failures": 0
+      },
+      {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/coop-vm-solo-20261009/candidate06/CursedLands.x86_64",
+          "--headless",
+          "--audio-driver",
+          "Dummy",
+          "--render-thread",
+          "safe",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--ei-inline-host",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_vm_solo.gd",
+          "--capture-delay"
+        ],
+        "exit_code": 0,
+        "seconds": 31.085258025006624,
+        "errors": [],
+        "log_sha256": "fa3c5b6058119c947ea999d7f2c41b0c828c42e3c0537a1c622bf4c51ec07262",
+        "fixture_sha256": "86358c0299ab6b3b02b805e6ecb7f4a0679b36f17dbc857f49a38557db838374",
+        "build_sha256": {
+          "CursedLands.x86_64": "769dd027c0b444caca0d5fbbb6014eda80970e991e9f32fdb1f86ec385d20c3e",
+          "CursedLands.pck": "bd8fcf7060406379008a22c9657ce3525faa2136695fffc066b206104c4eac84",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "label": "accepted-dragon-delay",
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/coop-vm-solo-20261009/accepted-dragon-delay.log",
+        "checks": 27,
+        "failures": 0
+      },
+      {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/coop-vm-solo-20261009/candidate06/CursedLands.x86_64",
+          "--headless",
+          "--audio-driver",
+          "Dummy",
+          "--render-thread",
+          "safe",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--ei-inline-host",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_vm_solo_trap.gd"
+        ],
+        "exit_code": 0,
+        "seconds": 8.627758090005955,
+        "errors": [],
+        "log_sha256": "7ac15942a169fbf1d8c01855276506c2aafe03570090a08c28860aab642f9e12",
+        "fixture_sha256": "15447be3a05e42954c9aeff9dab609c31c2edec83be296c46cd08437751583f8",
+        "build_sha256": {
+          "CursedLands.x86_64": "769dd027c0b444caca0d5fbbb6014eda80970e991e9f32fdb1f86ec385d20c3e",
+          "CursedLands.pck": "bd8fcf7060406379008a22c9657ce3525faa2136695fffc066b206104c4eac84",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "label": "accepted-native-trap",
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/coop-vm-solo-20261009/accepted-native-trap.log",
+        "checks": 24,
+        "failures": 0
+      },
+      {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/coop-vm-solo-20261009/candidate06/CursedLands.x86_64",
+          "--headless",
+          "--audio-driver",
+          "Dummy",
+          "--render-thread",
+          "safe",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--ei-inline-host",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/script_hero_references.gd"
+        ],
+        "exit_code": 0,
+        "seconds": 2.3071675059909467,
+        "errors": [],
+        "log_sha256": "dee117f6f141604c5484a3d6c3648bc70751f2b26cdddc3e3b86973e5769ee9b",
+        "fixture_sha256": "4ed8f447a3a483cd10b2e302f5e6c1a0968ec741a63ebc4d655d0fa2a2e17959",
+        "build_sha256": {
+          "CursedLands.x86_64": "769dd027c0b444caca0d5fbbb6014eda80970e991e9f32fdb1f86ec385d20c3e",
+          "CursedLands.pck": "bd8fcf7060406379008a22c9657ce3525faa2136695fffc066b206104c4eac84",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "label": "accepted-reference-guard",
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/coop-vm-solo-20261009/accepted-reference-guard.log",
+        "checks": 11,
+        "failures": 0
+      },
+      {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/coop-vm-solo-20261009/candidate07/CursedLands.x86_64",
+          "--headless",
+          "--audio-driver",
+          "Dummy",
+          "--render-thread",
+          "safe",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--ei-inline-host",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_vm_projection.gd"
+        ],
+        "exit_code": 0,
+        "seconds": 2.2042338920000475,
+        "errors": [],
+        "log_sha256": "e6e5670d8ad2fa3ab651cbcc519e274143e8d4954a1fa96e7c26f944ac1bfd9a",
+        "fixture_sha256": "91ebe397d05ca17de9663fa1b4b4c5b8f34a516ba1345f2f0fcc469485bbcffc",
+        "build_sha256": {
+          "CursedLands.x86_64": "769dd027c0b444caca0d5fbbb6014eda80970e991e9f32fdb1f86ec385d20c3e",
+          "CursedLands.pck": "69222846ae26a3227333354886e986ed67dcb200df9af8d01028973e12dd8169",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "label": "accepted-format-controls",
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/coop-vm-solo-20261009/accepted-format-controls.log",
+        "checks": 36,
+        "failures": 0
+      }
+    ],
+    "coverage": [
+      "Base and LiA structural controls with real original ASTs: individual/shared classification; full source immutability; aliases versus same-owner duplicates; native actor refs; named primary/non-primary roles; temporary Nalo aliases; For cursors; old save shape; story orders; all four installed generated families and modded negative controls.",
+      "Real localhost ENet import and exact package-sequence receipt, then independent offline Session.load_game. Original VM instances remain present throughout capture; personal stats/purse and origin save bytes remain unchanged.",
+      "Active dragon follow and pre-follow Sleep both finish the original departure/cooldown and rearm exactly one native follow. Directly selected native trap resumes exactly 30 damage once.",
+      "Separate stable-reference guard regression confirms absent hero refs cannot fall through to an unrelated raw unit ID."
+    ]
+  },
+  "source_sha256": {
+    "game/src/game/script/coop_vm_state.gd": "9486b5a68558b91c9dce2620f6128c326276840064f1ec0dcfca11fbbee81c61",
+    "game/src/game/script/vm.gd": "74e57f35a6dfbf6b49d6a80064a72e01d461cc1d42c2eabde23e52a52f6f6efa",
+    "tools/tests/coop_vm_projection.gd": "91ebe397d05ca17de9663fa1b4b4c5b8f34a516ba1345f2f0fcc469485bbcffc",
+    "tools/tests/coop_vm_solo.gd": "86358c0299ab6b3b02b805e6ecb7f4a0679b36f17dbc857f49a38557db838374",
+    "tools/tests/coop_vm_solo_trap.gd": "15447be3a05e42954c9aeff9dab609c31c2edec83be296c46cd08437751583f8"
+  },
+  "supplied_save_audit": {
+    "directory": "/home/llm2x/Documents/EI/local/scratchpad/user-saves-20261009/inspect-lia-02/data/godot/app_userdata/Cursed Lands",
+    "saves_checked": 12,
+    "finding": "Guest stable hero refs in these supplied LiA zone VMs occur only in globals (Heroes/i); no guest-bound pending instances, frames, story orders or script AI were found. These reproductions do not establish the cause of the supplied save symptoms."
+  },
+  "excluded_development": [
+    "baseline01/02 used a StringName visited-zone fixture key rejected by the String-only bring validation; corrected fixture uses ordinary String keys.",
+    "controls-candidate01 accidentally named a fixture constant Projection, a built-in type; renamed to Snapshot.",
+    "candidate02 had helper declaration/API compile errors during development; not an accepted build.",
+    "delay-candidate05 consumed an older queued RPC checkpoint because the initial fixture waited only for an incremented package count. Final fixtures require the exact emitted tally sequence.",
+    "controls-final-lia initially hardcoded the wrong gz36j .mob; final controls resolve the actual CampaignMap entry."
+  ],
+  "limits": [
+    "Linux headless original-data fixtures, with two actual ENet peers in one process and independent solo Sessions. No Windows, internet latency/loss or physical input acceptance is claimed.",
+    "Prepared party/inventory/positions and bounded explicit VM polls isolate persistence. This is not a full traversal/combat playthrough, performance result, or blanket campaign completion guarantee.",
+    "Unmarked old returned snapshots are left unchanged; old raw-UID-only hero references are not guessed. No retroactive user-save repair is performed.",
+    "Generated family conversion covers structurally verified installed hero-key adaptations. Unknown/modded counterpart definitions retain their original data rather than inferred rewrites.",
+    "Camp agent systemic return/reimport changes are excluded from this isolated candidate. Parent will run combined integration after both source changes are committed.",
+    "No original assets, archived user save sources, personal installed saves, installed runtime or release build were modified or published."
+  ]
+}

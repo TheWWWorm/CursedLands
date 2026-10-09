@@ -1048,6 +1048,7 @@ func package(e: Dictionary) -> Dictionary:
 	var zones: Dictionary = (e.credits.zones as Dictionary).duplicate()
 	if e.in_sync and e.clean and e.present and session.world and session.zone_id:
 		zones[session.zone_id] = (st.zones.get(session.zone_id, {}) as Dictionary).duplicate(true)
+	zones = preload("res://src/game/script/coop_vm_state.gd").mark_zones(zones, int(e.idx))
 	var move := {}
 	if e.in_sync and e.clean and e.present and session.zone_id:
 		move = {"zone": session.zone_id, "world_time": st.world_time, "day": st.day}

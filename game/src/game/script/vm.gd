@@ -1873,6 +1873,7 @@ func _alarm_load(al) -> void:
 
 
 func _restore(d: Dictionary) -> void:
+	d = preload("res://src/game/script/coop_vm_state.gd").restore(self,d)
 	for row: Dictionary in d.get("script_ai", []):
 		var u = _deser(row.get("actor"))
 		if not u is GameUnit or u.dead or u.has_meta("hero"): continue
