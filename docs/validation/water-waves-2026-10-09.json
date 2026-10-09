@@ -1,0 +1,1162 @@
+{
+  "date": "2026-10-09",
+  "status": "Accepted optional desktop correctness checkpoint; default off; cold preparation and device acceptance remain open",
+  "checks": 304,
+  "failures": 0,
+  "reference": {
+    "repo": "/home/llm2x/Documents/evil-islands-owned-renderer",
+    "commit": "0092dc6e1d7c4aab3f74644a79e9bfca11ecf293",
+    "paths": [
+      "Source/liquid_waves.h",
+      "Source/renderer_liquid.cpp",
+      "Tests/liquid_waves_regression.cpp"
+    ]
+  },
+  "implementation": {
+    "grid": [
+      128,
+      128
+    ],
+    "cell_m": 0.25,
+    "span_m": 32,
+    "step_seconds": 0.03333333333333333,
+    "max_catchup_steps": 8,
+    "max_sources": 16,
+    "texture_bytes": 262144,
+    "draws_added": 0,
+    "quiet_expiry_game_seconds": 25,
+    "domain": "Bounded one-metre authored-water triangle samples and plane gradients; conservative material, ground and mean-height rejection. Cached samples survive overlapping window shifts. Navigation upper-corner heights are not used for visible river height."
+  },
+  "export": {
+    "directory": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-final",
+    "manifest": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-final/export.json",
+    "steps": [
+      {
+        "command": [
+          "/home/llm2x/.local/bin/godot-4",
+          "--headless",
+          "--path",
+          "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-final/stage",
+          "--editor",
+          "--import"
+        ],
+        "returncode": 0,
+        "errors": [],
+        "seconds": 12.284642529994017
+      },
+      {
+        "command": [
+          "/home/llm2x/.local/bin/godot-4",
+          "--headless",
+          "--path",
+          "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-final/stage",
+          "--export-pack",
+          "Linux",
+          "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-final/CursedLands.pck"
+        ],
+        "returncode": 0,
+        "errors": [],
+        "seconds": 7.9018846139952075
+      }
+    ],
+    "sha256": {
+      "CursedLands.x86_64": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+      "CursedLands.pck": "f7133c90809df1cfb8420e197f7971c2e5d5ab60b9b64402020fb69ef8448110",
+      "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+    }
+  },
+  "sources": {
+    "game/src/ei/terrain.gd": "a55aafd9cd55204a51d566b1eb5d449926d4104b114b1b14926ffbae4030dbcd",
+    "game/src/game/fx/water_interaction.gd": "c691ff44ef64ce326050852bdc2852ac5c3b7f538149d98a383d734ebafdcb18",
+    "game/src/game/fx/water_surface.gd": "59b3f5ad390a58805e5b7dc73f21a68785f125ab766ec6295edecf3010c225c2",
+    "game/src/game/fx/water_wave_field.gd": "9b975bc8380a9c3a44b6d49611a3c60db6254fdbfdbb18c0814137d52cc38670",
+    "game/src/game/fx/water_wave_shader.gd": "1ad74048746e5b2a39f7e8bc0d38f1fa97ebeeb8059f216f54a36e97715757c2",
+    "game/src/native/source/nav_kernel.cpp": "f119af9291eb73034075796874d213567ddafa3f595f7fdae2dbf62527eef17b",
+    "game/src/native/source/water_wave.h": "b0d2f1393b6fc5c8379179c1e2115736e12f2a95afed388f3b6ac3a37bc0f4d5",
+    "game/src/native/source/README.md": "a1710cdc7b9b93ecadb8823eaf837b8927687991c64c6c85514476a1f176089b",
+    "game/src/native/bin/libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e",
+    "tools/tests/water_wave_field.gd": "e6fdbe12a7c8534706b1b917d8c27f7bb29b39821e534e97969cd2a605fc808b",
+    "tools/tests/water_wave_render.gd": "d7973cb18160092527529f72ba4f522f2def839273f7cbb064648d631648b359"
+  },
+  "runs": [
+    {
+      "label": "waves-surface-base",
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-base",
+      "run": {
+        "inherited_source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+        },
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_wave_field.gd",
+        "tool_sha256_at_start": "e6fdbe12a7c8534706b1b917d8c27f7bb29b39821e534e97969cd2a605fc808b",
+        "helper_sha256_at_start": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "engine_sha256": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+        "pack_sha256": "f7133c90809df1cfb8420e197f7971c2e5d5ab60b9b64402020fb69ef8448110",
+        "termination_reason": null,
+        "timeout_sec": 150,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-final/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-base/tool-source.gd"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 5.3525225759949535,
+        "other_render_processes_at_start": [
+          {
+            "pid": 724015,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 724054,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 730113,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 724015,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 724054,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 730113,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-base/isolated/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-base/isolated/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-base/isolated/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {}
+      },
+      "reports": {
+        "water-wave-field.json": {
+          "checks": 31,
+          "failures": 0,
+          "rows": [
+            {
+              "case": "analytic",
+              "decayed_peak": 7.74259387981147e-05,
+              "native_available": true
+            },
+            {
+              "campaign": "base",
+              "case": "lifetime",
+              "domain_us": 52945,
+              "focus": "(133.5, 5.758586, -98.5)",
+              "native": true,
+              "step_us": 663,
+              "worker_on_clear": false
+            }
+          ]
+        }
+      }
+    },
+    {
+      "label": "waves-surface-script",
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-script",
+      "run": {
+        "inherited_source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+        },
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_wave_field.gd",
+        "tool_sha256_at_start": "e6fdbe12a7c8534706b1b917d8c27f7bb29b39821e534e97969cd2a605fc808b",
+        "helper_sha256_at_start": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "engine_sha256": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+        "pack_sha256": "f7133c90809df1cfb8420e197f7971c2e5d5ab60b9b64402020fb69ef8448110",
+        "termination_reason": null,
+        "timeout_sec": 150,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-final/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-script/tool-source.gd",
+          "--ei-script-water-waves"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 5.352072412002599,
+        "other_render_processes_at_start": [
+          {
+            "pid": 724015,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 724054,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 730113,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 724015,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 724054,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 730113,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-script/isolated/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-script/isolated/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-script/isolated/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {}
+      },
+      "reports": {
+        "water-wave-field.json": {
+          "checks": 31,
+          "failures": 0,
+          "rows": [
+            {
+              "case": "analytic",
+              "decayed_peak": 7.74259387981147e-05,
+              "native_available": true
+            },
+            {
+              "campaign": "base",
+              "case": "lifetime",
+              "domain_us": 55216,
+              "focus": "(133.5, 5.758586, -98.5)",
+              "native": false,
+              "step_us": 42909,
+              "worker_on_clear": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "label": "waves-surface-astral",
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-astral",
+      "run": {
+        "inherited_source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+        },
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_wave_field.gd",
+        "tool_sha256_at_start": "e6fdbe12a7c8534706b1b917d8c27f7bb29b39821e534e97969cd2a605fc808b",
+        "helper_sha256_at_start": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "engine_sha256": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+        "pack_sha256": "f7133c90809df1cfb8420e197f7971c2e5d5ab60b9b64402020fb69ef8448110",
+        "termination_reason": null,
+        "timeout_sec": 150,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-final/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-astral/tool-source.gd",
+          "--wave-astral"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 6.59394541598158,
+        "other_render_processes_at_start": [
+          {
+            "pid": 724015,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 724054,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 730113,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 724015,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 724054,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 730113,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-astral/isolated/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-astral/isolated/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-astral/isolated/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {}
+      },
+      "reports": {
+        "water-wave-field.json": {
+          "checks": 31,
+          "failures": 0,
+          "rows": [
+            {
+              "case": "analytic",
+              "decayed_peak": 7.74259387981147e-05,
+              "native_available": true
+            },
+            {
+              "campaign": "astral",
+              "case": "lifetime",
+              "domain_us": 80906,
+              "focus": "(230.5, 9.818977, -230.5)",
+              "native": true,
+              "step_us": 1280,
+              "worker_on_clear": false
+            }
+          ]
+        }
+      }
+    },
+    {
+      "label": "waves-surface-river2",
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-river2",
+      "run": {
+        "inherited_source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_wave_field.gd": "e6fdbe12a7c8534706b1b917d8c27f7bb29b39821e534e97969cd2a605fc808b",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+        },
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_wave_render.gd",
+        "tool_sha256_at_start": "d7973cb18160092527529f72ba4f522f2def839273f7cbb064648d631648b359",
+        "helper_sha256_at_start": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "engine_sha256": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+        "pack_sha256": "f7133c90809df1cfb8420e197f7971c2e5d5ab60b9b64402020fb69ef8448110",
+        "termination_reason": null,
+        "timeout_sec": 150,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-final/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-river2/tool-source.gd",
+          "--with-current",
+          "--wave-river"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 15.827616007998586,
+        "other_render_processes_at_start": [
+          {
+            "pid": 730113,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 730113,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 739563,
+            "executable": "/home/llm2x/Documents/EI/local/scratchpad/waterfalls-20261009/candidate/CursedLands.x86_64"
+          },
+          {
+            "pid": 739656,
+            "executable": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/build-healing/CPU.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-river2/isolated/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-river2/isolated/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-river2/isolated/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {
+          "water-interaction-wave-history-control.png": "e4abf191981d0d88f018f3f07ae7b0b345cac73b9b5dd9be5db2ac15b107c9bd",
+          "water-interaction-wave-off.png": "238160fa0a0e4f0dec7a308fdd103d9cd45ea8b17fe2c79278b444495b149f3b",
+          "water-interaction-wave-clock-held.png": "1fcb83196eeff9913e3f81e42ec4ba29ab904762863c52c86556a3621ac3ed58",
+          "water-interaction-wave-swamp-control.png": "31ad110cdffd433ce2c8285c62a55814c9bed799767465cfa69a332c1d88b981",
+          "water-interaction-wave-lava-control.png": "39eb7d7c32b3344a7ca1d3914596b514885402fdadc990eba894ad5403fc5255",
+          "water-interaction-wave-lingering.png": "1fcb83196eeff9913e3f81e42ec4ba29ab904762863c52c86556a3621ac3ed58",
+          "water-interaction-wave-empty.png": "238160fa0a0e4f0dec7a308fdd103d9cd45ea8b17fe2c79278b444495b149f3b",
+          "water-interaction-wave-lava.png": "39eb7d7c32b3344a7ca1d3914596b514885402fdadc990eba894ad5403fc5255",
+          "water-interaction-wave-reenabled-empty.png": "e4abf191981d0d88f018f3f07ae7b0b345cac73b9b5dd9be5db2ac15b107c9bd",
+          "water-interaction-wave-disabled.png": "e4abf191981d0d88f018f3f07ae7b0b345cac73b9b5dd9be5db2ac15b107c9bd",
+          "water-interaction-wave-swamp.png": "31ad110cdffd433ce2c8285c62a55814c9bed799767465cfa69a332c1d88b981"
+        }
+      },
+      "reports": {
+        "water-wave-render.json": {
+          "checks": 28,
+          "failures": 0,
+          "rows": [
+            {
+              "case": "game-clock",
+              "elapsed_1x": 0.25,
+              "elapsed_2x": 0.500000000000001
+            },
+            {
+              "case": "rendered-lingering",
+              "difference": {
+                "changed_pixels": 2558,
+                "peak_delta": 3,
+                "pixels_over_2": 1
+              },
+              "focus": "(160.0, 12.48636, -142.0)",
+              "map": "zone8",
+              "peak_trail": 0.319237679243088,
+              "renderer": "gl_compatibility",
+              "steps": 39
+            }
+          ]
+        }
+      }
+    },
+    {
+      "label": "waves-surface-gl",
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-gl",
+      "run": {
+        "inherited_source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_wave_field.gd": "e6fdbe12a7c8534706b1b917d8c27f7bb29b39821e534e97969cd2a605fc808b",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+        },
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_wave_render.gd",
+        "tool_sha256_at_start": "d7973cb18160092527529f72ba4f522f2def839273f7cbb064648d631648b359",
+        "helper_sha256_at_start": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "engine_sha256": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+        "pack_sha256": "f7133c90809df1cfb8420e197f7971c2e5d5ab60b9b64402020fb69ef8448110",
+        "termination_reason": null,
+        "timeout_sec": 150,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-final/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-gl/tool-source.gd"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 15.325419929984491,
+        "other_render_processes_at_start": [
+          {
+            "pid": 730113,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 739563,
+            "executable": "/home/llm2x/Documents/EI/local/scratchpad/waterfalls-20261009/candidate/CursedLands.x86_64"
+          },
+          {
+            "pid": 739656,
+            "executable": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/build-healing/CPU.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 730113,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 740063,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-gl/isolated/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-gl/isolated/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-gl/isolated/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {
+          "water-interaction-wave-history-control.png": "c437e379a8b97678d2f48ca0e2fb550847e9da3fad5f825d07de048fd47cf092",
+          "water-interaction-wave-off.png": "cdbf896502b1503a6151f613ad9fc37aee49c9a1fbac0594d42c8623163de01c",
+          "water-interaction-wave-clock-held.png": "0b7ef99b8bf46e4f8fb6173ead725a0d89af45d5e7f6da843427be53567f8a62",
+          "water-interaction-wave-swamp-control.png": "7ee44dec6a3c4a3504cb91ca155524fd34f3ac844b3a8e1bbc0056ace3302ba5",
+          "water-interaction-wave-lava-control.png": "5ae55a5f11570ad8bef0806eba1ba46d5312f5e1de2ab42a51be7660075511b8",
+          "water-interaction-wave-lingering.png": "0b7ef99b8bf46e4f8fb6173ead725a0d89af45d5e7f6da843427be53567f8a62",
+          "water-interaction-wave-empty.png": "cdbf896502b1503a6151f613ad9fc37aee49c9a1fbac0594d42c8623163de01c",
+          "water-interaction-wave-lava.png": "5ae55a5f11570ad8bef0806eba1ba46d5312f5e1de2ab42a51be7660075511b8",
+          "water-interaction-wave-reenabled-empty.png": "c437e379a8b97678d2f48ca0e2fb550847e9da3fad5f825d07de048fd47cf092",
+          "water-interaction-wave-disabled.png": "c437e379a8b97678d2f48ca0e2fb550847e9da3fad5f825d07de048fd47cf092",
+          "water-interaction-wave-swamp.png": "7ee44dec6a3c4a3504cb91ca155524fd34f3ac844b3a8e1bbc0056ace3302ba5"
+        }
+      },
+      "reports": {
+        "water-wave-render.json": {
+          "checks": 27,
+          "failures": 0,
+          "rows": [
+            {
+              "case": "game-clock",
+              "elapsed_1x": 0.249990333333334,
+              "elapsed_2x": 0.499972666666667
+            },
+            {
+              "case": "rendered-lingering",
+              "difference": {
+                "changed_pixels": 801,
+                "peak_delta": 3,
+                "pixels_over_2": 122
+              },
+              "focus": "(133.5, 5.758586, -98.5)",
+              "map": "zone1",
+              "peak_trail": 0.580379545688629,
+              "renderer": "gl_compatibility",
+              "steps": 39
+            }
+          ]
+        }
+      }
+    },
+    {
+      "label": "waves-surface-forward",
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-forward",
+      "run": {
+        "inherited_source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_wave_field.gd": "e6fdbe12a7c8534706b1b917d8c27f7bb29b39821e534e97969cd2a605fc808b",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+        },
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_wave_render.gd",
+        "tool_sha256_at_start": "d7973cb18160092527529f72ba4f522f2def839273f7cbb064648d631648b359",
+        "helper_sha256_at_start": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "engine_sha256": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+        "pack_sha256": "f7133c90809df1cfb8420e197f7971c2e5d5ab60b9b64402020fb69ef8448110",
+        "termination_reason": null,
+        "timeout_sec": 150,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-final/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "forward_plus",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-forward/tool-source.gd",
+          "--with-current"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 15.082531227992149,
+        "other_render_processes_at_start": [
+          {
+            "pid": 730113,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 740063,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 730113,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 740566,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-forward/isolated/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-forward/isolated/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-forward/isolated/cache"
+        },
+        "warnings": [],
+        "errors": [],
+        "png_sha256": {
+          "water-interaction-wave-history-control.png": "b5bfe4f751115fed5b4175af36302b4775242af34514ca9d1f2cee8e770a643f",
+          "water-interaction-wave-off.png": "7f7aaacbcff27681c85ab708b87622d90d0a4785dbe523c8fea1b7269ad253e6",
+          "water-interaction-wave-clock-held.png": "3b768ccdf079c34acac3f6de2b71937049a20a4eed8fa5cc977949163d946f66",
+          "water-interaction-wave-swamp-control.png": "2b038db1da397e7dfdad3b27f7fd03d82e1ab9e15d0616e46cedd2257076c43e",
+          "water-interaction-wave-lava-control.png": "1ecd6f7f901046e53a0ea74bae07022adfa53bd55cb4fa987933a23561a8ec5d",
+          "water-interaction-wave-lingering.png": "3b768ccdf079c34acac3f6de2b71937049a20a4eed8fa5cc977949163d946f66",
+          "water-interaction-wave-empty.png": "7f7aaacbcff27681c85ab708b87622d90d0a4785dbe523c8fea1b7269ad253e6",
+          "water-interaction-wave-lava.png": "1ecd6f7f901046e53a0ea74bae07022adfa53bd55cb4fa987933a23561a8ec5d",
+          "water-interaction-wave-reenabled-empty.png": "b5bfe4f751115fed5b4175af36302b4775242af34514ca9d1f2cee8e770a643f",
+          "water-interaction-wave-disabled.png": "b5bfe4f751115fed5b4175af36302b4775242af34514ca9d1f2cee8e770a643f",
+          "water-interaction-wave-swamp.png": "2b038db1da397e7dfdad3b27f7fd03d82e1ab9e15d0616e46cedd2257076c43e"
+        }
+      },
+      "reports": {
+        "water-wave-render.json": {
+          "checks": 27,
+          "failures": 0,
+          "rows": [
+            {
+              "case": "game-clock",
+              "elapsed_1x": 0.249986666666667,
+              "elapsed_2x": 0.499980000000001
+            },
+            {
+              "case": "rendered-lingering",
+              "difference": {
+                "changed_pixels": 1476,
+                "peak_delta": 10,
+                "pixels_over_2": 575
+              },
+              "focus": "(133.5, 5.758586, -98.5)",
+              "map": "zone1",
+              "peak_trail": 0.580379545688629,
+              "renderer": "forward_plus",
+              "steps": 39
+            }
+          ]
+        }
+      }
+    },
+    {
+      "label": "waves-surface-mobile",
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-mobile",
+      "run": {
+        "inherited_source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_wave_field.gd": "e6fdbe12a7c8534706b1b917d8c27f7bb29b39821e534e97969cd2a605fc808b",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+        },
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_wave_render.gd",
+        "tool_sha256_at_start": "d7973cb18160092527529f72ba4f522f2def839273f7cbb064648d631648b359",
+        "helper_sha256_at_start": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "engine_sha256": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+        "pack_sha256": "f7133c90809df1cfb8420e197f7971c2e5d5ab60b9b64402020fb69ef8448110",
+        "termination_reason": null,
+        "timeout_sec": 150,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-final/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "mobile",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-mobile/tool-source.gd"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 11.825710126984632,
+        "other_render_processes_at_start": [
+          {
+            "pid": 730113,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 740566,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 730113,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 740566,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 741022,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-mobile/isolated/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-mobile/isolated/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-mobile/isolated/cache"
+        },
+        "warnings": [],
+        "errors": [],
+        "png_sha256": {
+          "water-interaction-wave-history-control.png": "8d87c19073b0993d26149d76c5e8d6d5f41fb452280ed7f6e8d3256967b4ab29",
+          "water-interaction-wave-off.png": "ae5cd956b815e6470745e20bcd7dcb0c7df934ae370b1ee322166de20c915c00",
+          "water-interaction-wave-clock-held.png": "f746125050e32faf31d93352afc01b06f93acbb618c5a548062af8312fb32598",
+          "water-interaction-wave-swamp-control.png": "6f06f8c94b96a6f6448a8fb8811a24f8c6e8dc6a7877ebf81c06e3c2268f9e25",
+          "water-interaction-wave-lava-control.png": "3424b5d6a54a1707fdc33d0dfad4f2a428c77b2efd32877f14c82e20b65f66ac",
+          "water-interaction-wave-lingering.png": "f746125050e32faf31d93352afc01b06f93acbb618c5a548062af8312fb32598",
+          "water-interaction-wave-empty.png": "ae5cd956b815e6470745e20bcd7dcb0c7df934ae370b1ee322166de20c915c00",
+          "water-interaction-wave-lava.png": "3424b5d6a54a1707fdc33d0dfad4f2a428c77b2efd32877f14c82e20b65f66ac",
+          "water-interaction-wave-reenabled-empty.png": "8d87c19073b0993d26149d76c5e8d6d5f41fb452280ed7f6e8d3256967b4ab29",
+          "water-interaction-wave-disabled.png": "8d87c19073b0993d26149d76c5e8d6d5f41fb452280ed7f6e8d3256967b4ab29",
+          "water-interaction-wave-swamp.png": "6f06f8c94b96a6f6448a8fb8811a24f8c6e8dc6a7877ebf81c06e3c2268f9e25"
+        }
+      },
+      "reports": {
+        "water-wave-render.json": {
+          "checks": 27,
+          "failures": 0,
+          "rows": [
+            {
+              "case": "game-clock",
+              "elapsed_1x": 0.250757575757576,
+              "elapsed_2x": 0.500000000000001
+            },
+            {
+              "case": "rendered-lingering",
+              "difference": {
+                "changed_pixels": 1137,
+                "peak_delta": 10,
+                "pixels_over_2": 651
+              },
+              "focus": "(133.5, 5.758586, -98.5)",
+              "map": "zone1",
+              "peak_trail": 0.580379545688629,
+              "renderer": "mobile",
+              "steps": 39
+            }
+          ]
+        }
+      }
+    },
+    {
+      "label": "waves-surface-fallback-render",
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-fallback-render",
+      "run": {
+        "inherited_source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_wave_field.gd": "e6fdbe12a7c8534706b1b917d8c27f7bb29b39821e534e97969cd2a605fc808b",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+        },
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_wave_render.gd",
+        "tool_sha256_at_start": "d7973cb18160092527529f72ba4f522f2def839273f7cbb064648d631648b359",
+        "helper_sha256_at_start": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "engine_sha256": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+        "pack_sha256": "f7133c90809df1cfb8420e197f7971c2e5d5ab60b9b64402020fb69ef8448110",
+        "termination_reason": null,
+        "timeout_sec": 150,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-final/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-fallback-render/tool-source.gd",
+          "--ei-script-water-waves"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 16.587134422006784,
+        "other_render_processes_at_start": [
+          {
+            "pid": 730113,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 740566,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 730113,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 740566,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-fallback-render/isolated/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-fallback-render/isolated/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-fallback-render/isolated/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {
+          "water-interaction-wave-history-control.png": "c437e379a8b97678d2f48ca0e2fb550847e9da3fad5f825d07de048fd47cf092",
+          "water-interaction-wave-off.png": "cdbf896502b1503a6151f613ad9fc37aee49c9a1fbac0594d42c8623163de01c",
+          "water-interaction-wave-clock-held.png": "0b7ef99b8bf46e4f8fb6173ead725a0d89af45d5e7f6da843427be53567f8a62",
+          "water-interaction-wave-swamp-control.png": "7ee44dec6a3c4a3504cb91ca155524fd34f3ac844b3a8e1bbc0056ace3302ba5",
+          "water-interaction-wave-lava-control.png": "5ae55a5f11570ad8bef0806eba1ba46d5312f5e1de2ab42a51be7660075511b8",
+          "water-interaction-wave-lingering.png": "0b7ef99b8bf46e4f8fb6173ead725a0d89af45d5e7f6da843427be53567f8a62",
+          "water-interaction-wave-empty.png": "cdbf896502b1503a6151f613ad9fc37aee49c9a1fbac0594d42c8623163de01c",
+          "water-interaction-wave-lava.png": "5ae55a5f11570ad8bef0806eba1ba46d5312f5e1de2ab42a51be7660075511b8",
+          "water-interaction-wave-reenabled-empty.png": "c437e379a8b97678d2f48ca0e2fb550847e9da3fad5f825d07de048fd47cf092",
+          "water-interaction-wave-disabled.png": "c437e379a8b97678d2f48ca0e2fb550847e9da3fad5f825d07de048fd47cf092",
+          "water-interaction-wave-swamp.png": "7ee44dec6a3c4a3504cb91ca155524fd34f3ac844b3a8e1bbc0056ace3302ba5"
+        }
+      },
+      "reports": {
+        "water-wave-render.json": {
+          "checks": 27,
+          "failures": 0,
+          "rows": [
+            {
+              "case": "game-clock",
+              "elapsed_1x": 0.249992,
+              "elapsed_2x": 0.499986000000001
+            },
+            {
+              "case": "rendered-lingering",
+              "difference": {
+                "changed_pixels": 801,
+                "peak_delta": 3,
+                "pixels_over_2": 122
+              },
+              "focus": "(133.5, 5.758586, -98.5)",
+              "map": "zone1",
+              "peak_trail": 0.580379545688629,
+              "renderer": "gl_compatibility",
+              "steps": 39
+            }
+          ]
+        }
+      }
+    },
+    {
+      "label": "waves-surface-regression",
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-regression",
+      "run": {
+        "inherited_source_sha256": {},
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd",
+        "tool_sha256_at_start": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72",
+        "helper_sha256_at_start": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "engine_sha256": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+        "pack_sha256": "f7133c90809df1cfb8420e197f7971c2e5d5ab60b9b64402020fb69ef8448110",
+        "termination_reason": null,
+        "timeout_sec": 150,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-final/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-regression/tool-source.gd",
+          "--with-current"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 30.364799896022305,
+        "other_render_processes_at_start": [
+          {
+            "pid": 730113,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 740566,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 730113,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 742267,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-regression/isolated/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-regression/isolated/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-regression/isolated/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {
+          "water-interaction-turning.png": "dea2756c73039b61b9f5d403ce5024da2e9316e2fad8df1d1a2fb5ed956add62",
+          "water-interaction-rain-true-control.png": "0f85a4c607a73ebd3aaa278ffd417aacc40c156828f6fcee338a4999d712020a",
+          "water-interaction-off-warm.png": "431d1e722412ecca06ee31286a4e74af2f2e6421be54db833812552f278ee432",
+          "water-interaction-empty.png": "431d1e722412ecca06ee31286a4e74af2f2e6421be54db833812552f278ee432",
+          "water-interaction-moving-control.png": "2b47f22fe31dd1fffa1847c0d441a2130e07c0a04dab2686443effcb074295aa",
+          "water-interaction-rain-true-stable.png": "0f85a4c607a73ebd3aaa278ffd417aacc40c156828f6fcee338a4999d712020a",
+          "water-interaction-rain-false.png": "f46174dff504edaf46e2e3d00d30c04ee5213c7bb7da334075c60d1e94f87f5c",
+          "water-interaction-rain-false-initial.png": "f46174dff504edaf46e2e3d00d30c04ee5213c7bb7da334075c60d1e94f87f5c",
+          "water-interaction-rain-false-control.png": "f46174dff504edaf46e2e3d00d30c04ee5213c7bb7da334075c60d1e94f87f5c",
+          "water-interaction-standing.png": "fd138322cb9736ccb39f5f0916c76048a4a069fdde679954dfdf526f9de3c41f",
+          "water-interaction-rain-true.png": "0f85a4c607a73ebd3aaa278ffd417aacc40c156828f6fcee338a4999d712020a",
+          "water-interaction-lava.png": "ae9204e8675ed60c98034d951b4cb126484b6aa161a3c8911c587d868830f592",
+          "water-interaction-lava-control.png": "ae9204e8675ed60c98034d951b4cb126484b6aa161a3c8911c587d868830f592",
+          "water-interaction-rain-true-initial.png": "0f85a4c607a73ebd3aaa278ffd417aacc40c156828f6fcee338a4999d712020a",
+          "water-interaction-restored.png": "431d1e722412ecca06ee31286a4e74af2f2e6421be54db833812552f278ee432",
+          "water-interaction-rain-true-restored.png": "0f85a4c607a73ebd3aaa278ffd417aacc40c156828f6fcee338a4999d712020a",
+          "water-interaction-moving.png": "f738a5427c370854e882fd0b5d209bf61253be34b7669ccd8a9b2c687414f30b",
+          "water-interaction-swamp-control.png": "e9d557653c2031aaf7cf6589b798aa9dfc9d509d47f73b94c55dfc978b2cf9b5",
+          "water-interaction-swamp.png": "e9d557653c2031aaf7cf6589b798aa9dfc9d509d47f73b94c55dfc978b2cf9b5",
+          "water-interaction-off.png": "431d1e722412ecca06ee31286a4e74af2f2e6421be54db833812552f278ee432",
+          "water-interaction-rain-false-restored.png": "f46174dff504edaf46e2e3d00d30c04ee5213c7bb7da334075c60d1e94f87f5c",
+          "water-interaction-rain-false-stable.png": "f46174dff504edaf46e2e3d00d30c04ee5213c7bb7da334075c60d1e94f87f5c",
+          "water-interaction-off-initial.png": "431d1e722412ecca06ee31286a4e74af2f2e6421be54db833812552f278ee432"
+        }
+      },
+      "reports": {
+        "water-interaction.json": {
+          "checks": 75,
+          "failures": 0,
+          "renderer": "gl_compatibility",
+          "rows": [
+            {
+              "case": "original-stabilization",
+              "initial_to_warm": {
+                "changed_pixels": 0,
+                "peak_delta": 0,
+                "pixels_over_2": 0
+              },
+              "warm_to_final": {
+                "changed_pixels": 0,
+                "peak_delta": 0,
+                "pixels_over_2": 0
+              }
+            },
+            {
+              "case": "empty",
+              "difference": {
+                "changed_pixels": 0,
+                "peak_delta": 0,
+                "pixels_over_2": 0
+              }
+            },
+            {
+              "bounds": "(5.166689, 6.839273)",
+              "case": "placement",
+              "contact_position": "(133.5, 5.75279, -98.5)",
+              "figure_radius": 0.449999988079071,
+              "focus": "(133.5, 5.758586, -98.5)",
+              "radius": 0.269999992847443,
+              "root": "(133.5, 5.158587, -98.5)",
+              "surface": {
+                "height": 5.75279060435469,
+                "lava": false,
+                "material": 0,
+                "slope": "(-0.00429, -0.028936)"
+              }
+            },
+            {
+              "case": "standing",
+              "difference": {
+                "changed_pixels": 167,
+                "peak_delta": 6,
+                "pixels_over_2": 53
+              }
+            },
+            {
+              "case": "moving",
+              "difference": {
+                "changed_pixels": 1738,
+                "peak_delta": 22,
+                "pixels_over_2": 155
+              }
+            },
+            {
+              "case": "18-candidates",
+              "contacts": 16,
+              "surface_sectors": 1,
+              "update_us": [
+                10628,
+                2674,
+                2659,
+                2762,
+                2739,
+                2732,
+                2749,
+                2734,
+                2739,
+                2720,
+                1829,
+                1542
+              ]
+            },
+            {
+              "case": "restored",
+              "difference": {
+                "changed_pixels": 0,
+                "peak_delta": 0,
+                "pixels_over_2": 0
+              }
+            },
+            {
+              "case": "forced-material-lava",
+              "difference": {
+                "changed_pixels": 0,
+                "peak_delta": 0,
+                "pixels_over_2": 0
+              }
+            },
+            {
+              "case": "forced-material-swamp",
+              "difference": {
+                "changed_pixels": 0,
+                "peak_delta": 0,
+                "pixels_over_2": 0
+              }
+            },
+            {
+              "case": "rain-reflection-roof-false",
+              "difference": {
+                "changed_pixels": 0,
+                "peak_delta": 0,
+                "pixels_over_2": 0
+              },
+              "initial_to_stable": {
+                "changed_pixels": 0,
+                "peak_delta": 0,
+                "pixels_over_2": 0
+              },
+              "restoration": {
+                "changed_pixels": 0,
+                "peak_delta": 0,
+                "pixels_over_2": 0
+              }
+            },
+            {
+              "case": "rain-reflection-roof-true",
+              "difference": {
+                "changed_pixels": 0,
+                "peak_delta": 0,
+                "pixels_over_2": 0
+              },
+              "initial_to_stable": {
+                "changed_pixels": 0,
+                "peak_delta": 0,
+                "pixels_over_2": 0
+              },
+              "restoration": {
+                "changed_pixels": 0,
+                "peak_delta": 0,
+                "pixels_over_2": 0
+              }
+            },
+            {
+              "case": "game-clock",
+              "elapsed_1x": 0.249999666666667,
+              "elapsed_2x": 0.499980666666667
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "visual_inspection": [
+    "waves-surface-river2/water-interaction-wave-lingering.png",
+    "waves-surface-mobile/water-interaction-wave-lingering.png"
+  ],
+  "rejected_or_revised": [
+    "Early prototype parse error (flow_changed inference) and shader name collision (level) corrected before acceptance.",
+    "Early rendering fixtures placed actors too high and did not await visibility; corrected to real submerged posed actors.",
+    "waves-final passed its flat-water suite, but extra zone8 river test exposed navigation height 14.02447 versus visible authored height 12.48636. Replaced domain sampling, retained this failed evidence.",
+    "waves-surface-river showed 2558 changed pixels, peak 3/255, but only one above 2/255. Final fixture proves actual domain height and retained trail and requires over100 changed pixels with peak>=2 rather than a still-water-specific count above2. Production was unchanged between these two river runs."
+  ],
+  "limitations": [
+    "New field affects normals and stirred-water/foam shading only; it does not displace liquid geometry or affect navigation.",
+    "Cold actual-surface preparation measured 52.945/55.216/80.906ms in these three headless samples. Window overlaps reuse cached cells; first-use/flood cost still needs improvement and device measurements.",
+    "Sampled native solver calls were 0.663/1.280ms; scalar fallback was42.909ms on a bounded worker. These are not controlled whole-frame/FPS comparisons.",
+    "Only Linux native helper rebuilt. Older Windows/Android helpers use the checked scalar fallback; devices and browsers untested.",
+    "RGBA32F texture and several normal samples add opt-in bandwidth; no default rollout.",
+    "Subtle river trail intentionally differs less per pixel than still water. Wider art approval and long routes remain.",
+    "Private exports, isolated profiles, unchanged original assets, real saves, protocol13 and Experimental6 release version."
+  ]
+}

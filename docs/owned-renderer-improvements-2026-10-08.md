@@ -8,21 +8,22 @@ Starting commit: `3172ede12a5f41b0182c34a70b5eeda787c95e52`
 
 The source audit and priorities are in
 [OWNED_RENDERER_IMPROVEMENT_HANDOFF.md](/home/llm2x/Documents/EI/OWNED_RENDERER_IMPROVEMENT_HANDOFF.md).
-**Handoff checkpoint — paused at the user's request, 9 October.**
-The current river-current task is complete at `eda826dd8722903a3c152a2d0fb7232560ef15c1`; the broader backlog
-is unfinished. Continue on `fix/catacomb-coop-deck` in `/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo` when requested.
-The canonical source already includes the `f6c8922` renderer/gameplay merge and
-protocol 13. No merge, active owner, or parallel-agent restriction is pending.
-The original worktree named above is historical. The latest private validation
-export is `/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/current-final`; its 238 production scripts and Linux helper
-match the checkpoint. Source version remains Experimental 6. Installed builds,
-engine templates, real saves and devices were not changed.
+**Active follow-up — 9 October 2026.** The user resumed the larger renderer and
+gameplay goal. Continue on `fix/catacomb-coop-deck` in
+`/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo`.
+The earlier river-current checkpoint is `eda826d`; new checkpoints below cover
+propagating water waves and reorganized graphics settings. Parallel gameplay
+work has committed U40–U43 and the U45 removed-actor death-predicate correction.
+U44/U39 and V3/V4 waterfall/V5 follow-ups are in progress; do not treat the
+historical pause statements in older evidence as a current stop instruction.
 
-Read **V4 river currents — final checkpoint** below before implementing more
-water features. Next are propagating waves and waterfalls; the remaining
-renderer priorities follow at the end. After that list, use
-`/home/llm2x/Documents/EI/local/gameplay-handoff-2026-10-09.md`, starting with **U45**.
-No U39–U45 gameplay fix was attempted in this checkpoint.
+The original worktree above is historical. Source version remains Experimental 6
+and protocol 13. This task uses private exports and isolated profiles. Installed
+builds, templates, original assets and real saves have not been replaced.
+Current wave acceptance export:
+`/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/waves/waves-surface-final`.
+The detailed gameplay tracker is `docs/gameplay-gaps-2026-10-08.md`; the incoming
+handoff is `/home/llm2x/Documents/EI/local/gameplay-handoff-2026-10-09.md`.
 
 P1 and P2 were selected in the audit's priority order because they can be
 implemented in texture-loading/composition code without changing those gameplay
@@ -3921,6 +3922,76 @@ that scoped result into a guarantee for every map/device or earlier cover issue.
   requested a stop after this checkpoint. The goal remains incomplete; resume
   from the established order below, not from the old isolated branch.
 
+## V4 propagating water field — 9 October follow-up
+
+`gfx_water_waves` adds persistent spreading ripples and stirred-water trails from
+currently visible, posed wading creatures. It requires enhanced water and water
+contacts, and defaults **off on every platform**. Settings are now separated into
+World/textures, Terrain/vegetation, Lighting/shadows, Water, and Weather/effects
+(`41d67e0`); the existing 110 controls retained their values and defaults.
+
+### Implementation and ownership
+
+- `game/src/game/fx/water_wave_field.gd`: 128×128 quarter-metre cells over 32 m,
+  30 Hz fixed steps, at most eight catch-up steps and 16 current contact sources.
+  RGBA32F stores height, previous height, trail and mean surface (256 KiB).
+  Pressure propagates without a source; trails follow the existing optional
+  current field and expire after 25 quiet game seconds. Borders absorb energy.
+- `game/src/native/source/water_wave.h`, registered in `nav_kernel.cpp`: pure
+  packed-array Linux solver. The identical scalar fallback owns one worker job,
+  immutable snapshots and bounded elapsed time; it cannot grow a work queue.
+  Teardown joins the worker, discards its Callable and releases the histories.
+- `water_surface.gd` permits an unposed query. The field samples actual authored
+  triangles and their gradients through a bounded one-metre cache. Navigation's
+  upper-corner water height was metres above the visible zone8 river, so using
+  navigation here was rejected. Overlapping window shifts reuse cached samples;
+  flood/rewind/teleport clears stale state. Fine shore/material edges remain
+  conservative and the shader also rejects incompatible surface heights.
+- `water_interaction.gd` supplies admitted contacts and the terrain clock.
+  Hidden/leaving actors stop stamping immediately while existing water history
+  continues. Pause, travel, movie holds, world switches and disable follow the
+  established controller lifetime. Neither actors nor field enter save/network data.
+- `water_wave_shader.gd` and the two cached terrain variants add normal gradients
+  and faint stirred-water/foam shading in the existing water pass. Current/no-current
+  combinations, late rain-cover publication and existing lava/swamp branches are
+  covered. This is shading, not displacement of authored water geometry.
+
+Reference: R1 `0092dc6e1d7c4aab3f74644a79e9bfca11ecf293`,
+`Source/liquid_waves.h`, `Source/renderer_liquid.cpp`, and
+`Tests/liquid_waves_regression.cpp`. The smaller grid is an explicit Godot budget
+adaptation; it does not claim parity with the reference's 512² field.
+
+### Validation and limits
+
+[Wave receipt](validation/water-waves-2026-10-09.json): **304 assertions pass in
+nine final private exported runs**, covering native/scalar analytical parity,
+16 varied sources, source-free propagation/advection/decay, dry and separate-level
+boundaries, real base/LiA data, fallback pending-job cleanup, Compatibility,
+Forward+ and desktop Mobile. The existing contact regression contributes 75.
+Empty/disabled/restored views and held-clock views are exact; active history
+leaves lava and swamp exact and adds no water draws. Actual paused/travel/movie/
+loading schedules and accelerated time are exercised. The extra real sloping-river
+case caught and corrected the navigation-height coverage defect before acceptance.
+
+The effect is intentionally subtle: the river history changes 2,558 pixels at
+up to 3/255, while the Forward+ still-water case changes 1,476 at up to 10/255.
+These are deterministic paired captures, not visibility or performance guarantees
+for every camera. The final fixture also verifies surface height and retained trail.
+
+Cold authored-surface coverage cost **52.945–80.906 ms** in three sampled headless
+cases. Sampled solver calls cost **0.663–1.280 ms native** and **42.909 ms scalar**
+(on its bounded worker). These are diagnostic call timings, not whole-frame/FPS
+comparisons. Cold/flood preparation cost and physical-device bandwidth remain
+open. Only the Linux helper was rebuilt; older platform helpers use the scalar
+fallback. No platform/default rollout is justified by this checkpoint.
+
+Reproduce with the private `waves/run.py` and `--build=waves-surface-final`:
+`tests/water_wave_field.gd gl_compatibility --headless --fresh-cache`, adding
+`--ei-script-water-waves` for fallback or `--astral --wave-astral` for LiA.
+Use `tests/water_wave_render.gd` with each renderer; add `--with-current --wave-river`
+for zone8. Keep GPU runs serial. Sources, exports, tool snapshots, image hashes,
+rejected prototypes and exact commands are recorded in the receipt.
+
 ## Next work in the established order
 
 1. **P1/P2 remaining texture work:** retained outfit pixels and shared native
@@ -3976,7 +4047,7 @@ that scoped result into a guarantee for every map/device or earlier cover issue.
    storage and an opt-in scenery blend, with the validation and limitations above.
    Resolve cold preparation and finish its lighting/visual acceptance before
    enabling defaults. V4 now has optional contacts/wakes, terrain caustics and river currents;
-   wave fields and waterfalls remain separate work. All three options stay
+   propagating wave fields are now implemented above; waterfalls remain separate work. These options stay
    off pending broader quality/device acceptance. V2 now has the optional
    grass-interaction, dry-land cover and soft-ground root attachment stages above.
    Dry river/swamp banks are now implemented with the conservative shore rules

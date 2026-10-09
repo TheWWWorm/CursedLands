@@ -151,6 +151,16 @@ also remain active automatically on platforms without the extension.
 
 ## Build
 
+`WaterWaveKernel` advances a separate optional visual wave/trail field. It uses
+the same 128², 25-cm, fixed-30-Hz scalar solver as `water_wave_field.gd`, with
+at most eight substeps and sixteen visible pressure sources. The caller owns
+the window, terrain coverage, pausable clock, flooding invalidation and texture.
+It changes no navigation, authoritative actor, save or network state.
+`-- --ei-script-water-waves` selects the bounded single-worker script fallback;
+old libraries select it automatically. The 9 October wave checkpoint updates
+the Linux library only; Windows/Android exports need a rebuild to use this
+helper. Actual device performance has not been established.
+
 `WaterCurrentKernel` calculates the optional river-current field from immutable
 authored water heights, vertex material owners, terrain heights and current
 material offsets. It has no scene, navigation or graphics state. The script

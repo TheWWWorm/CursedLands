@@ -727,10 +727,13 @@ static var _water_fx_shader: Shader
 static var _water_interaction_shader: Shader
 static var _water_current_shader: Shader
 static var _water_current_contact_shader: Shader
+static var _water_wave_shader: Shader
+static var _water_current_wave_shader: Shader
 const WaterInteractionShader = preload("res://src/game/fx/water_interaction_shader.gd")
 const WaterCaustics = preload("res://src/game/fx/water_caustics.gd")
 const WaterCurrent = preload("res://src/game/fx/water_current.gd")
 const WaterCurrentShader = preload("res://src/game/fx/water_current_shader.gd")
+const WaterWaveShader = preload("res://src/game/fx/water_wave_shader.gd")
 
 ## The .mp format has generic liquid materials, not ocean/river/lake tags.
 ## Confirmed sea habitats for optional coastal cover. On the starting map,
@@ -1092,6 +1095,18 @@ func apply_gfx() -> void:
 		_water_mat.set_shader_parameter("water_current",null)
 		if _current != null: _current.clear()
 		_current = null
+	if fx and Gfx.on("gfx_water_interaction") and Gfx.on("gfx_water_waves"):
+		if Gfx.on("gfx_water_current"):
+			if _water_current_wave_shader == null:
+				_water_current_wave_shader = Gfx.make_shader(WaterWaveShader.source(WaterInteractionShader.source(WaterCurrentShader.source(WATER_FX_SHADER),true)),true,true)
+			_water_mat.shader = _water_current_wave_shader
+		else:
+			if _water_wave_shader == null:
+				_water_wave_shader = Gfx.make_shader(WaterWaveShader.source(WaterInteractionShader.source(WATER_FX_SHADER)),true,true)
+			_water_mat.shader = _water_wave_shader
+	else:
+		_water_mat.set_shader_parameter("water_wave_field",null)
+		_water_mat.set_shader_parameter("water_wave_window",Vector4.ZERO)
 	_current_dirty = false
 	_water_mat.set_shader_parameter("atlases", _atlases)
 	_water_mat.set_shader_parameter("level", _level)
@@ -1185,7 +1200,7 @@ func set_rain_cover(image: Image) -> void:
 		_land_mat.set_shader_parameter("rain_cover", _rain_cover)
 	if is_instance_valid(color_cache):
 		color_cache.sync_parameter("rain_cover", _rain_cover)
-	if _water_mat and _water_mat.shader in [_water_fx_shader,_water_interaction_shader,_water_current_shader,_water_current_contact_shader]:
+	if _water_mat and _water_mat.shader in [_water_fx_shader,_water_interaction_shader,_water_current_shader,_water_current_contact_shader,_water_wave_shader,_water_current_wave_shader]:
 		_water_mat.set_shader_parameter("rain_cover", _rain_cover)
 	if is_instance_valid(details) and is_instance_valid(details.soft_ground):
 		details.soft_ground.refresh_rain_cover()

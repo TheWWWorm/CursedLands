@@ -2,6 +2,7 @@ extends Node
 ## Optional local visual water contacts. No simulation actors, collision,
 ## save data, network packets or additional water draws are introduced.
 const Surface = preload("res://src/game/fx/water_surface.gd")
+const WaveField = preload("res://src/game/fx/water_wave_field.gd")
 const MAX_UNITS := 16
 const MAX_CANDIDATES := 32
 const DISTANCE := 55.0
@@ -15,6 +16,7 @@ var _contacts := {}
 var _clock := 0.0
 var _enabled := false
 var last_update_us := 0
+var _field: WaveField
 
 class Contact:
 	var unit: WeakRef
@@ -47,13 +49,23 @@ func _exit_tree() -> void:
 func refresh() -> void:
 	_enabled = Gfx.on("gfx_water_interaction") and Gfx.on("gfx_water")
 	if not _enabled: clear()
+	elif not Gfx.on("gfx_water_waves"): _clear_field()
 	set_process(_enabled and DisplayServer.get_name() != "headless")
 
 
 func clear() -> void:
 	if is_instance_valid(_world) and is_instance_valid(_world.terrain) and _world.terrain._water_mat:
 		_world.terrain._water_mat.set_shader_parameter("water_contact_count",0)
+	_clear_field()
 	_contacts.clear(); _surface = null; _world = null; _clock = 0.0
+
+
+func _clear_field() -> void:
+	if _field != null: _field.clear()
+	_field = null
+	if is_instance_valid(_world) and is_instance_valid(_world.terrain) and _world.terrain._water_mat:
+		_world.terrain._water_mat.set_shader_parameter("water_wave_window",Vector4.ZERO)
+		_world.terrain._water_mat.set_shader_parameter("water_wave_field",null)
 
 
 func _process(dt: float) -> void:
@@ -119,7 +131,7 @@ func step(world: GameWorld, camera: Camera3D, dt: float) -> void:
 	if not is_instance_valid(world) or not is_instance_valid(world.terrain) or camera == null: return
 	if not _enabled or dt <= 0.0 or not is_finite(dt): return
 	if dt > 0.5:
-		_contacts.clear(); dt = 0.0 # resume without a long stale motion segment
+		_contacts.clear(); _clear_field(); dt = 0.0 # resume without a long stale motion segment
 	var started := Time.get_ticks_usec()
 	_clock += dt
 	if _surface == null: _surface = Surface.new(world.terrain)
@@ -175,6 +187,19 @@ func step(world: GameWorld, camera: Camera3D, dt: float) -> void:
 			_contacts[id] = contact
 		advance(_contacts[id],input.root,float(input.height),dt)
 	_bind()
+	if Gfx.on("gfx_water_waves"):
+		if _field == null: _field = WaveField.new()
+		var sources := PackedVector4Array(); var weights := PackedVector2Array()
+		var centre := Vector2.ZERO; var nearest := INF
+		for id: int in inputs:
+			if not _contacts.has(id): continue
+			var c: Contact = _contacts[id]
+			sources.append(Vector4(c.position.x,c.position.z,c.radius,c.speed*c.motion))
+			weights.append(Vector2(c.presence,c.phase))
+			if float(inputs[id].score) < nearest:
+				nearest=inputs[id].score; centre=Vector2(c.position.x,c.position.z)
+		_field.advance(world.terrain,world.terrain._waves.time_ticks()*EIWaterWaves.TICK,centre,sources,weights)
+		_field.bind(world.terrain._water_mat)
 	last_update_us = Time.get_ticks_usec()-started
 
 

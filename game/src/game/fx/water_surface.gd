@@ -26,10 +26,10 @@ func clear() -> void:
 	_sectors.clear()
 
 
-func begin_frame() -> void:
+func begin_frame(deformed := true) -> void:
 	_frame += 1
 	var value: Variant = terrain._water_mat.get_shader_parameter("waves") if terrain._water_mat else null
-	_waves = value == null or float(value) > 0.5
+	_waves = deformed and (value == null or float(value) > 0.5)
 
 
 func _sector(key: Vector2i) -> Dictionary:
