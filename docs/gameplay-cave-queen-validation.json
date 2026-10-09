@@ -296,5 +296,11 @@
       "name": "cave-farthest-before-final",
       "reason": "Mistyped nonexistent fixture argument tools-unused. Stopped the isolated child; no checks run. Superseded by cave-farthest-before-final-02."
     }
-  ]
+  ],
+  "supplied_save_followup": {
+    "date": "2026-10-09",
+    "receipt": "validation/cave-queen-user-save-2026-10-09.json",
+    "result": "The later supplied autosave has two living required small creatures (22/23), not an all-dead incomplete state. 100 checks confirm loaded state, diagnostic visibility and original completion after real death events; no user save modifications.",
+    "separate_generic_fix": "1b8b0f6; validation/added-actor-tombstones-2026-10-09.json"
+  }
 }

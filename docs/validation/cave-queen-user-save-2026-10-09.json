@@ -1,0 +1,192 @@
+{
+  "date": "2026-10-09",
+  "status": "Supplied queen autosave is incomplete because two required creatures are still alive; no all-dead softlock is demonstrated by this save.",
+  "base_commit": "cc78028",
+  "production_changed": false,
+  "source": {
+    "archive": "/home/llm2x/Downloads/saves9oct.zip",
+    "archive_sha256": "d88bab1f9d40884251328b77721a9c456918233d0fe3c84778171a33718baab4",
+    "autosave_sha256": "4d64ccdce05e8b38b7320b3f8b7a9a6339f26fa0294ab8127e9b1b24c36b15ab",
+    "quick_sha256": "6c21eb1cb172a5a9bba6f49bb87cdaa87ef4bbd7fda36f7c6371f39b28a15f80",
+    "policy": "Original archive and extracted source remain untouched; tests load and save independent disposable copies only."
+  },
+  "raw_save": {
+    "autosave_zone": "bz3g",
+    "autosave_quest": [
+      1,
+      2,
+      1,
+      2,
+      2,
+      2,
+      3,
+      0,
+      0
+    ],
+    "quick_zone": "gz5g",
+    "quick_state": "Earlier pre-poison save: healthy queen UID 14 has 500 HP and all 11 required small creatures are present.",
+    "poison": "Source 1 (lever 4525) selected; F1=1, F2=F3=0, SourceP=AlreadySMP=ScrabMP=1. Middle alternative failure is original one-of-three behavior.",
+    "dead_required": [
+      19,
+      20,
+      15,
+      16,
+      17,
+      39,
+      41,
+      40,
+      21
+    ],
+    "survivors": [
+      {
+        "uid": 22,
+        "name": "Baby armadillo",
+        "pos": [
+          95.004997253418,
+          75.495002746582
+        ],
+        "hp": 60
+      },
+      {
+        "uid": 23,
+        "name": "Baby armadillo",
+        "pos": [
+          103.091217041016,
+          91.4724578857422
+        ],
+        "hp": 60
+      }
+    ],
+    "queen": "Saved replacement queen UID 1000027 is looted/removed; objective .1 is already complete. Baseline loses this added-actor tombstone on restore. The separate generic follow-up fixes identity without changing this save's pending small-creature objective.",
+    "vm": "Original VCheck#0#81 Every(Scrabs, IsDead) remains active; saved iterator is UID 22. No quest or VM state was prepared for the supplied-save test."
+  },
+  "live_validation": {
+    "checks": 100,
+    "failures": 0,
+    "load": "Actual Session.load_game followed by normal enter_zone(gz5g,1,false). All nine other required creatures restore as dead looted actors; exact two survivors remain alive and not script-hidden.",
+    "navigation": "Native attack searches from the authored entrance return 277/238 path points, exact endpoints, and lengths 153.36/134.03 m. This is path-search acceptance, not a successful combat traversal.",
+    "visibility": "Place only the observer on each verified attack path at (91.75, 75.25) / (99.75, 90.25), keep NPC positions/health and sight settings unchanged; both real UnitFog sight rays are 1.0, both actors are listed and their models visible.",
+    "causal": "Reload untouched disposable source before causal proof. Ordinary die events: after UID 22 alone the quest stays [1,2,1]; after UID 23 it becomes [2,2,2], with original b.SKD.Dr22=1 and z.gz5g=2. Save/reload preserves completion. No success flags or replacement scripts inserted."
+  },
+  "evidence": [
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/queen-user-saves-20261009/build/CPU.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--ei-inline-host",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/cave_queen_user_save.gd",
+        "--queen-save=/home/llm2x/Documents/EI/local/scratchpad/queen-user-saves-20261009/source/autosave.sav"
+      ],
+      "exit_code": 0,
+      "seconds": 8.2201223539887,
+      "errors": [],
+      "log_sha256": "d5209355f6c57f1a74350436648c9ed00b2c98933a593d63306caaf08663f389",
+      "fixture_sha256": "103344e0db241f64bac4a16a2fcfaf1886b46734a4d2fc4ea511e0416202a6c7",
+      "build_sha256": {
+        "CPU.x86_64": "769dd027c0b444caca0d5fbbb6014eda80970e991e9f32fdb1f86ec385d20c3e",
+        "CPU.pck": "ed5456d9423a8934d886a214d8b66234de4be0280ca38d36bc8b40c4b2a881de",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "name": "actual-headless-04",
+      "checks": 48,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/queen-user-saves-20261009/actual-headless-04.log",
+      "report": "/home/llm2x/Documents/EI/local/scratchpad/queen-user-saves-20261009/profiles/actual-headless-04/godot/app_userdata/Cursed Lands/queen-user-save.json",
+      "report_sha256": "a74ef732627c89d0d70f998cad815bc0167ef23665b1ee1c381a7c92db78e08f"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/queen-user-saves-20261009/build/CPU.x86_64",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--ei-inline-host",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/cave_queen_user_save.gd",
+        "--queen-save=/home/llm2x/Documents/EI/local/scratchpad/queen-user-saves-20261009/source/autosave.sav"
+      ],
+      "exit_code": 0,
+      "seconds": 94.06110729498323,
+      "errors": [],
+      "log_sha256": "0b0036d39e6e989e1dc8b3db850625c0f515e82b9d5c440c489272b899f512d3",
+      "fixture_sha256": "103344e0db241f64bac4a16a2fcfaf1886b46734a4d2fc4ea511e0416202a6c7",
+      "build_sha256": {
+        "CPU.x86_64": "769dd027c0b444caca0d5fbbb6014eda80970e991e9f32fdb1f86ec385d20c3e",
+        "CPU.pck": "ed5456d9423a8934d886a214d8b66234de4be0280ca38d36bc8b40c4b2a881de",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "name": "actual-visible-04",
+      "checks": 52,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/queen-user-saves-20261009/actual-visible-04.log",
+      "report": "/home/llm2x/Documents/EI/local/scratchpad/queen-user-saves-20261009/profiles/actual-visible-04/godot/app_userdata/Cursed Lands/queen-user-save.json",
+      "report_sha256": "ee4cf4560aa106957017e8c71bd9aded778d9d981fd5599abddc618a2917e143"
+    }
+  ],
+  "images": [
+    {
+      "uid": 22,
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/queen-user-saves-20261009/profiles/actual-visible-04/godot/app_userdata/Cursed Lands/queen-survivor-22.png",
+      "sha256": "be1868786fb17020ce0bf90e087ab69b8e82e58898f5b82ff8f006f0dbcd396c",
+      "inspected": true,
+      "observation": "Original Baby armadillo rendered at its saved position; actor 22 is partly occluded by the foreground cliff, actor 23 is clearly visible near the river. Both original hover panels show 60 HP."
+    },
+    {
+      "uid": 23,
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/queen-user-saves-20261009/profiles/actual-visible-04/godot/app_userdata/Cursed Lands/queen-survivor-23.png",
+      "sha256": "11ba3f33d3f79c24bde3eaeed585ed8f23e60c54678da6ebe3f1e13ca8fe3862",
+      "inspected": true,
+      "observation": "Original Baby armadillo rendered at its saved position; actor 22 is partly occluded by the foreground cliff, actor 23 is clearly visible near the river. Both original hover panels show 60 HP."
+    }
+  ],
+  "raw_reports": [
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/queen-user-saves-20261009/profiles/inspect-raw-01/godot/app_userdata/Cursed Lands/autosave-raw.json",
+      "sha256": "cd5a4c169a68ce24a8b2c3e52d78126d8dc574212c153528c29d4a78077dd2a7"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/queen-user-saves-20261009/profiles/inspect-raw-01/godot/app_userdata/Cursed Lands/quick-raw.json",
+      "sha256": "f9559c76bd04681f98ffe9e316260f59c846d0b056a9768206985f56042b8831"
+    }
+  ],
+  "excluded_attempts": [
+    {
+      "name": "actual-headless-01",
+      "reason": "Development fixture incorrectly expected an added queen tombstone and attempted hero-only walking; 3 failures, retained."
+    },
+    {
+      "name": "actual-headless-02",
+      "reason": "Full-world diagnostic reached survivor 23 but its first long order towards 22 stopped mid-cave; 1 visibility failure, retained."
+    },
+    {
+      "name": "actual-visible-03",
+      "reason": "Repeated full-world walking sent the lone hero into remaining cave enemies; the hero died before reaching both targets. 2 visibility failures; those images are not acceptance."
+    }
+  ],
+  "limits": [
+    "Linux frozen baseline only. Supplied-save investigation does not claim full co-op combat or Windows/internet acceptance.",
+    "Final visibility capture uses diagnostic observer placement and paused unrelated simulation; original creature placement/health/visibility logic remain unchanged.",
+    "Controlled death proof does not distribute a repaired/completed save to the user. No installed or original save was changed.",
+    "Generic extra-mob looted tombstone loss is distinct from this supplied save and receives separate regression/fix evidence."
+  ],
+  "generic_followup": {
+    "receipt": "added-actor-tombstones-2026-10-09.json",
+    "checks": 48,
+    "failures": 0,
+    "result": "After the separate generic fix, the same supplied-save fixture still passes: two living survivors and original initial/completion gates remain unchanged, while the looted queen now has its dead off-tree identity.",
+    "commit": "1b8b0f6"
+  }
+}
