@@ -27,7 +27,9 @@ const GuestRoles := preload("res://src/game/coop_guest_roles.gd")
 ##   had exactly the host's old value (same point).
 ## - A zone counts as reached when the joiner's game has visited it or opened
 ##   it on the travel map (z.<zone> ≥ 1), or when the party walks into a
-##   village straight from a zone that counted as reached.
+##   village straight from a zone that counted as reached. A player present
+##   for all credited progress in the preceding zone also follows scripted
+##   field transfers, which need not write a separate travel-map unlock.
 ## - Zone map state (dead units, gates, chests, the zone script) is copied
 ##   for a zone only when the joiner was there from the party's arrival,
 ##   was not ahead in that zone's quests, and every change made there was
@@ -529,7 +531,14 @@ func zone_entered(id: String) -> void:
 		if not _loading and e.active and _zone and e.clean and e.in_sync and e.present:
 			e.credits.zones[_zone] = (session.state.zones.get(_zone, {}) as Dictionary).duplicate(true)
 		var was: bool = e.in_sync and not _loading and _zone != ""
-		e.in_sync = e.active and (_reached(e, id) or (was and String(session.campaign.zone(id).get("type", "")) == "brief"))
+		# Original chapter scripts can LeaveToZone without setting z.<id>
+		# (LiA's bz1h -> gz1h prison transfer does exactly that). A guest who
+		# shared the preceding progress must carry on with the same party.
+		# Late arrivals, missed/conflicting changes and host save loads have
+		# no such continuity; their own reached-zone rules still apply.
+		var shared_travel: bool = was and e.clean and e.present
+		e.in_sync = e.active and (_reached(e, id) or shared_travel \
+			or (was and String(session.campaign.zone(id).get("type", "")) == "brief"))
 		e.present = e.active
 		e.clean = e.in_sync and not _ahead_in(e, id)
 		if e.in_sync and not e.visited.has(id):

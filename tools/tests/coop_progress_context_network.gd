@@ -71,18 +71,19 @@ func _ready() -> void:
 	if failures: get_tree().quit(2); return
 	var helper: Node = load(get_script().resource_path.get_base_dir() + "/coop_progress_context.gd").new()
 	helper.s = host
-	var transitions := [["bz1h","FPrison","bz1h"],["bz2h","FSusel","bz2h"],["bz7h","Gipat","gz7g"]] if astral else [["bz7g","HeroAlone","bz13h"],["bz13h","Pretty","gz15h"],["zone15","HeroAlone","bz13h"],["bz13h","","gz15h"]]
+	var transitions := [["bz1h","FPrison","gz1h"],["bz2h","FSusel","bz2h"],["bz7h","Gipat","gz7g"]] if astral else [["bz7g","HeroAlone","bz13h"],["bz13h","Pretty","gz15h"],["zone15","HeroAlone","bz13h"],["bz13h","","gz15h"]]
 	var slots: Array[String] = []
 	for step: Array in transitions:
 		helper.vm = host.world.vm
 		helper.transition(step[0],step[1])
-		# Destination access was granted by the omitted surrounding quest;
-		# fixture covers its original party operations and normal transport.
-		entry.visited[step[2]] = true
+		# Original scripts can transfer directly into a field without writing
+		# z.<destination>. Do not manufacture that unlock in this regression.
 		var old_count := client.coop.merged_count
 		await host.enter_zone(step[2],1,false)
 		freeze(host)
 		check(await until(func():return client.zone_id == step[2] and not client._remote_loading), "network transfer to " + step[2])
+		check(entry.in_sync and entry.clean and entry.present, "shared chapter transfer retains guest progression eligibility")
+		if failures: break
 		host.coop.send_all()
 		check(await until(func():
 			if client.coop.merged_count <= old_count or client.coop.last_merged.is_empty(): return false
@@ -103,10 +104,14 @@ func _ready() -> void:
 	var stored := CampaignState.load_from(SaveInfo.path("context_host"))
 	check(stored != null and stored.coop.host.joiners["context guest"].has("party_context"), "host save retains context journal")
 	client.online = false
-	client.multiplayer.multiplayer_peer.close()
+	var client_peer := client.multiplayer.multiplayer_peer
+	client.multiplayer.multiplayer_peer = OfflineMultiplayerPeer.new()
+	client_peer.close()
 	check(await until(func():return host.players.size() == 1), "guest disconnect completes")
 	host.online = false
-	host.multiplayer.multiplayer_peer.close()
+	var host_peer := host.multiplayer.multiplayer_peer
+	host.multiplayer.multiplayer_peer = OfflineMultiplayerPeer.new()
+	host_peer.close()
 	for root in branches: root.queue_free()
 	for i in 5: await get_tree().process_frame
 	branches.clear()
