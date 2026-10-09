@@ -22,6 +22,9 @@ func frames(count := 6) -> void:
 
 func fixture(record: Dictionary) -> Dictionary:
 	var view := SubViewport.new(); view.size = Vector2i(512,512); view.own_world_3d = true
+	# Frozen/manual diagnostic poses must have the same camera transform in
+	# CPU picking and the renderer, without an unpumped interpolation cache.
+	view.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
 	view.render_target_update_mode = SubViewport.UPDATE_ALWAYS; view.msaa_3d = Viewport.MSAA_DISABLED
 	if not Portability.compatibility(): view.screen_space_aa = Viewport.SCREEN_SPACE_AA_DISABLED
 	add_child(view)

@@ -2155,8 +2155,8 @@ geometry/particle consumers, but that alone does not cover gameplay integration.
 
 The [validation receipt](validation/rigid-character-batching-2026-10-09.json)
 records the frozen integrated PCK, patched engine/native hashes, commands,
-source snapshots, screenshots and rejected fixture attempts. Eleven successful
-diagnostic runs contain **902 assertions**. These check geometry, merge/bypass
+source snapshots, screenshots and rejected fixture attempts. Twelve successful
+diagnostic runs contain **1,046 assertions**. These check geometry, merge/bypass
 policy and timing configuration; **they do not assert visual acceptance**.
 Eight real figures, two views/pose phases and available idle/walk/attack/death
 clips produce 60 broad comparison pairs per backend. The second state includes
@@ -2201,7 +2201,9 @@ Palette synchronization adds 0.257–0.268 ms. Saved submission work does not
 offset it in this fixture; Compatibility GPU time also increases. These are
 isolated character-rendering measurements, without AI/network/full maps or
 shadows, not gameplay FPS or Android results. No other Godot render process was
-seen at run boundaries; clocks/background load were not locked. The earlier
+seen at run boundaries; clocks/background load were not locked. A later frozen-camera check explicitly disables inherited physics interpolation
+so CPU picking queries use the rendered camera transform; all 120 repeated
+Compatibility image hashes match and the picking verdict is unchanged. The earlier
 8.33 ms timing was capped by delayed saved window settings and is rejected.
 The final fixture sets both options and engine state and asserts an uncapped
 configuration. First-build asset warmup makes construction totals incomparable.

@@ -15,7 +15,7 @@
     "inspiration": "Group compatible rigid parts while retaining each part pose identity; authored smooth skinning was not implemented in the reference."
   },
   "diagnostic_sources": {
-    "tools/benchmarks/rigid_characters.gd": "6973568fe774278f7804b21db1fc4ef7fc4c5a99bda26ba5e81f03a5ea527c44",
+    "tools/benchmarks/rigid_characters.gd": "162ed73133a227a48ffb5d097fbd2cdc5419734d0ca09880f726cd42a68cf5e4",
     "tools/benchmarks/rigid_part_batch.gd": "74a0462e0a9fbdd679c9426ea2148ae551bd83ef7dfa1f79b4d4059ebdb871d6"
   },
   "frozen_native_sha256": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82",
@@ -25,7 +25,7 @@
     "timing": "32 manually animated human figures, 512x512 offscreen world, original/merged/merged/original, 160 measured samples per case after warmup. Normal frame loop; no force_draw/readback in measurement. Options plus engine cap/VSync disabled and asserted. Linux RTX 3090, desktop backends. No AI/network/full map/shadow workload.",
     "acceptance": "Checks assert geometry/expected bypass and timing configuration, not pixel equality or gameplay readiness."
   },
-  "checks_total": 902,
+  "checks_total": 1046,
   "runs": [
     {
       "label": "suite-compat-final2",
@@ -1969,19 +1969,19 @@
     }
   ],
   "picking": {
-    "query": "MeshScreenRect.of_context, same production per-part rectangles and inclusive/exclusive integer edges; coverage restricted to 512x512 fixture.",
+    "query": "Production rectangle query with explicit interpolation disabled for the frozen/manual fixture, so camera ray/picking queries match the rendered view.",
     "rows": [
       {
         "label": "human",
         "action": "idle",
         "state": 0,
-        "rects_original": 8,
-        "rects_candidate": 1,
-        "new_priority_pixels": 34390,
+        "rects_original": 17,
+        "rects_candidate": 4,
+        "new_priority_pixels": 23615,
         "lost_priority_pixels": 0,
         "example_new_priority_pixel": [
-          178,
-          140
+          157,
+          344
         ]
       },
       {
@@ -4547,5 +4547,36 @@
       "Hidden/deferred animation, gear/helmet/weapon changes, shadows, portraits, particle attachment, corpse limbs and selection highlight",
       "Full gameplay/device measurements only after correctness and a net controlled benefit"
     ]
+  },
+  "camera_followup": {
+    "folder": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/c1-rigid/picking-camera-final",
+    "checks": 144,
+    "failures": 0,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/c1-rigid/candidate/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--rendering-method",
+      "gl_compatibility",
+      "--windowed",
+      "--resolution",
+      "256x144",
+      "--position",
+      "-10000,-10000",
+      "--audio-driver",
+      "Dummy",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/benchmarks/rigid_characters.gd",
+      "--rigid-suite"
+    ],
+    "errors": [],
+    "tool_sha256_at_start": "162ed73133a227a48ffb5d097fbd2cdc5419734d0ca09880f726cd42a68cf5e4",
+    "helper_sha256_at_start": "74a0462e0a9fbdd679c9426ea2148ae551bd83ef7dfa1f79b4d4059ebdb871d6",
+    "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+    "pack_sha256": "c3707d425197a2ede8ee12b972cfd429dd2d14eefa4578f7b98f070d488f956e",
+    "report_sha256": "b967fce9ee52d402fb9bdd1cf827d18708d3f78c7298eef77e5e0225a345c394",
+    "render_image_hashes_equal_previous_compatibility_run": true,
+    "reason": "A frozen/manual diagnostic must disable inherited interpolation: Camera3D.get_camera_transform can otherwise read an unpumped cached transform on the first CPU query. The new query is tied to the rendered camera. Picking conclusion and maximum affected area stay unchanged."
   }
 }
