@@ -1,0 +1,219 @@
+{
+  "status": "qualified material ownership correction",
+  "diagnosis": "The menu replaces registered figure materials with its labelled StandardMaterial3D boards. GroundContact.refresh restored the original captured scenery material on every option signal, replacing all six labels with the stone atlas even while contact was off.",
+  "behavior": "GroundContact records its last applied material, recognizes active CameraFade logical ownership, adopts later eligible scenery bases, and relinquishes later unrelated/custom overrides. Parameter refresh only binds its own active fade materials.",
+  "source_sha256": {
+    "game/src/game/fx/ground_contact.gd": "9848ef8bac68727317168d1e97bcdb3652b26981e24850eed7b3edb6263e20f7",
+    "tools/tests/ground_contact.gd": "b46dbe85edda92e4f2c43f478a532046c0207666ab3ec02e4e16b3cc5275a90d",
+    "tools/tests/menu_material_refresh.gd": "4726a4cb53983aa7968a9ebd902aae7b64f1568d014b5d3c99f6bdcfa9a15ad7"
+  },
+  "candidate": "material-ownership02",
+  "export": {
+    "base": "/home/llm2x/Documents/EI/local/scratchpad/prison-discovery-late-join-20261009/candidate01",
+    "head": "d13bac0b6ab53f576f0109a2b6a38b6d15e695d5",
+    "overlays": {
+      "src/game/fx/ground_contact.gd": "9848ef8bac68727317168d1e97bcdb3652b26981e24850eed7b3edb6263e20f7"
+    },
+    "steps": [
+      {
+        "command": [
+          "/home/llm2x/.local/bin/godot-4",
+          "--headless",
+          "--path",
+          "/home/llm2x/Documents/EI/local/scratchpad/menu-rocks-20261009/material-ownership02/stage",
+          "--editor",
+          "--import"
+        ],
+        "return_code": 0,
+        "seconds": 12.06767585396301,
+        "errors": []
+      },
+      {
+        "command": [
+          "/home/llm2x/.local/bin/godot-4",
+          "--headless",
+          "--path",
+          "/home/llm2x/Documents/EI/local/scratchpad/menu-rocks-20261009/material-ownership02/stage",
+          "--export-pack",
+          "Linux",
+          "/home/llm2x/Documents/EI/local/scratchpad/menu-rocks-20261009/material-ownership02/CursedLands.pck"
+        ],
+        "return_code": 0,
+        "seconds": 7.869959909992758,
+        "errors": []
+      }
+    ],
+    "sha256": {
+      "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+      "CursedLands.pck": "77b7dc3f4bca1fc9474251c4213afac2f7eaf30eb7d3934fb5f34d27500adbe3",
+      "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+    },
+    "changed_from_base": [
+      "src/game/fx/ground_contact.gd"
+    ]
+  },
+  "tests": [
+    {
+      "run": "ownership-headless02",
+      "checks": 33,
+      "failures": 0,
+      "scope": "material sharing, replacement ownership, option lifecycle, active fade replacement, wind/water updates, cache lifetime",
+      "receipt": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/menu-rocks-20261009/ownership-headless02/run.json",
+        "sha256": "52d6343d1f367efaa8ebe82543701578c83eede141dd7412f51a8603267febe9"
+      }
+    },
+    {
+      "run": "ownership-headless-gl02",
+      "checks": 33,
+      "failures": 0,
+      "scope": "same ownership contract through Compatibility material-copy fade path",
+      "warning": "Preexisting startup screen-space AA warning under Compatibility; no engine errors.",
+      "receipt": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/menu-rocks-20261009/ownership-headless-gl02/run.json",
+        "sha256": "bac48a985d9b1d969d3082caeddee9c9c4f5742de7143d175d607745165c35a1"
+      }
+    },
+    {
+      "run": "menu-labels-candidate02",
+      "checks": 46,
+      "failures": 0,
+      "scope": "actual menu using actual option setters with contact initially Off and On; six label references, live graphics sequence, hover animation, contact Off and On again; ten saved captures",
+      "rows": [
+        {
+          "animation": "ei/cidle",
+          "changed": [],
+          "contact": 0,
+          "hover_references": 6,
+          "label": "startup-off-initial",
+          "labels": 6,
+          "wrong_labels": []
+        },
+        {
+          "animation": "ei/cidle",
+          "changed": [],
+          "contact": 1,
+          "hover_references": 6,
+          "label": "startup-off-live-options",
+          "labels": 6,
+          "wrong_labels": []
+        },
+        {
+          "animation": "ei/uspecial01",
+          "changed": [],
+          "contact": 1,
+          "hover_references": 6,
+          "label": "startup-off-hover",
+          "labels": 6,
+          "wrong_labels": []
+        },
+        {
+          "animation": "ei/uspecial01",
+          "changed": [],
+          "contact": 0,
+          "hover_references": 6,
+          "label": "startup-off-contact-off",
+          "labels": 6,
+          "wrong_labels": []
+        },
+        {
+          "animation": "ei/uspecial01",
+          "changed": [],
+          "contact": 1,
+          "hover_references": 6,
+          "label": "startup-off-contact-on-again",
+          "labels": 6,
+          "wrong_labels": []
+        },
+        {
+          "animation": "ei/cidle",
+          "changed": [],
+          "contact": 1,
+          "hover_references": 6,
+          "label": "startup-on-initial",
+          "labels": 6,
+          "wrong_labels": []
+        },
+        {
+          "animation": "ei/cidle",
+          "changed": [],
+          "contact": 1,
+          "hover_references": 6,
+          "label": "startup-on-live-options",
+          "labels": 6,
+          "wrong_labels": []
+        },
+        {
+          "animation": "ei/uspecial01",
+          "changed": [],
+          "contact": 1,
+          "hover_references": 6,
+          "label": "startup-on-hover",
+          "labels": 6,
+          "wrong_labels": []
+        },
+        {
+          "animation": "ei/uspecial01",
+          "changed": [],
+          "contact": 0,
+          "hover_references": 6,
+          "label": "startup-on-contact-off",
+          "labels": 6,
+          "wrong_labels": []
+        },
+        {
+          "animation": "ei/uspecial01",
+          "changed": [],
+          "contact": 1,
+          "hover_references": 6,
+          "label": "startup-on-contact-on-again",
+          "labels": 6,
+          "wrong_labels": []
+        }
+      ],
+      "receipt": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/menu-rocks-20261009/menu-labels-candidate02/run.json",
+        "sha256": "d23d953691ac0240a925d66aa8df43e65d799c69da55c6d4260f4e65a39bffa3"
+      }
+    }
+  ],
+  "controls": [
+    {
+      "run": "ownership-baseline02",
+      "checks": 33,
+      "failures": 8,
+      "interpretation": "Delivered pack fails all eight newly added ownership/replacement assertions; same corrected fixture passes candidate."
+    },
+    {
+      "run": "menu-labels-baseline01",
+      "checks": 46,
+      "failures": 18,
+      "interpretation": "Six labels are replaced in both startup modes, including disabling contact afterward. Raw receipt has 16 label assertions plus two fixture-only hover assertions: current_animation is empty after the short animation finishes. Corrected fixture checks assigned_animation; failed baseline evidence is retained unchanged."
+    }
+  ],
+  "failed_candidate_evidence": {
+    "run": "ownership-headless01",
+    "interpretation": "First candidate produced three missing-metadata logs in the new guard. Fixed by explicit has_meta check. Its additional fade test used wind on an object shader lacking that uniform; corrected to a foliage material. Candidate01 export and all failed evidence retained."
+  },
+  "limits": [
+    "No terrain style or shader changes; the ground-contact painted-relief experiment is excluded.",
+    "Menu captures used Forward+ with safe rendering thread; parent will test final combined package with separate rendering thread.",
+    "Runs used isolated XDG profiles and read-only installed game assets. Shader compilation timings are not performance claims; an unrelated Etherlords test engine ran during parts of the captures and was never controlled."
+  ],
+  "before_capture": "/home/llm2x/Documents/EI/local/scratchpad/menu-rocks-20261009/menu-labels-baseline01/menu-material-startup-off-live-options.png",
+  "after_capture": "/home/llm2x/Documents/EI/local/scratchpad/menu-rocks-20261009/menu-labels-candidate02/menu-material-startup-off-live-options.png",
+  "gpu_released": true,
+  "final_other_processes": [],
+  "full_scratch_receipt": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/menu-rocks-20261009/material-ownership-summary.json",
+    "sha256": "ced340935235544e3ca64152f05158e28e9fb2eb94ef36aa11dea3785c61c3b9"
+  },
+  "root_review": {
+    "stage_files": 712,
+    "only_changed_file": "src/game/fx/ground_contact.gd",
+    "actual_pack_and_source_verified": true,
+    "source_and_fixture_reviewed": true,
+    "matching_before_after_screenshots_viewed": true,
+    "final_combined_package_separate_thread_check": "recorded separately in local feedback package receipt"
+  }
+}

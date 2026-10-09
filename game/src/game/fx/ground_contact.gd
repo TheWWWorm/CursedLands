@@ -5,7 +5,7 @@ extends Node
 ## on their original materials. Identical base/bounds pairs share one variant.
 var terrain: EITerrain
 var surface: GroundSurfaceData
-var _meshes := {} # instance id -> weak node, original material, local bounds
+var _meshes := {} # instance id -> weak node, current base/owned material, local bounds
 var _variants := {} # base material -> {extent: ShaderMaterial}
 var _shaders := {} # raw figure source -> Shader
 var _queued := false
@@ -42,10 +42,11 @@ func register(root: Node3D) -> void:
 		var original := node.material_override as ShaderMaterial
 		if original == null or not original.has_meta("ground_contact_source") or node.mesh == null:
 			continue
-		var entry := {"node": weakref(node), "base": original, "extent": node.mesh.get_aabb().size}
+		var entry := {"node": weakref(node), "base": original, "applied": original, "extent": node.mesh.get_aabb().size}
 		_meshes[node.get_instance_id()] = entry
 		if Gfx.on("gfx_ground_contact"):
 			node.material_override = _variant(original, entry.extent)
+			entry.applied = node.material_override
 
 
 func queue_refresh() -> void:
@@ -78,8 +79,12 @@ func refresh() -> void:
 		if node == null:
 			_meshes.erase(id)
 			continue
+		if not _retain_material(node, entry):
+			_meshes.erase(id)
+			continue
 		var material := _variant(entry.base, entry.extent) if enabled else entry.base as ShaderMaterial
 		_replace(node, material)
+		entry.applied = material
 	if not enabled:
 		_variants.clear()
 		_shaders.clear()
@@ -99,8 +104,25 @@ func refresh_parameters() -> void:
 	# already share updates, while water levels/option uniforms need a rebind.
 	for entry: Dictionary in _meshes.values():
 		var node := (entry.node as WeakRef).get_ref() as MeshInstance3D
-		if node and node.has_meta("cam_fade_mat") and node.material_override is ShaderMaterial:
+		if node and node.has_meta("cam_fade_mat") and node.get_meta("cam_fade_mat") == entry.applied and node.material_override is ShaderMaterial:
 			surface.bind(node.material_override)
+
+
+func _retain_material(node: MeshInstance3D, entry: Dictionary) -> bool:
+	# The menu replaces placed figure materials with its labelled boards.
+	# Other callers can also install a new material after registration. Only
+	# replace the material we last applied; adopt a new eligible scenery base
+	# and leave unrelated overrides in their caller's ownership. Camera fades
+	# keep that underlying material in metadata while drawing a dither copy.
+	var current := (node.get_meta("cam_fade_mat") if node.has_meta("cam_fade_mat") else node.material_override) as Material
+	if current == entry.applied:
+		return true
+	var base := current as ShaderMaterial
+	if base == null or not base.has_meta("ground_contact_source"):
+		return false
+	entry.base = base
+	entry.applied = base
+	return true
 
 
 func _variant(base: ShaderMaterial, extent: Vector3) -> ShaderMaterial:
