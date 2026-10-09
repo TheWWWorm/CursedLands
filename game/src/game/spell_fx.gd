@@ -21,6 +21,7 @@ var _height := 0.0
 var _light_id := ""
 var _bound: WeakRef
 var _bound_required := false
+var _visible_halo := true
 
 
 ## Tick numbers include state-3 cleanup (67e690).58dcd0 advances existing
@@ -118,6 +119,10 @@ static func spawn_event(w: GameWorld, event: Dictionary) -> SpellFx:
 	if sp.code == "teleport" and bool(ev.get("teleport_ok", false)):
 		fx._move_tick = 31
 	fx._speed = float(p.speed)
+	# The native healing light rises to fade its ground illumination. It is
+	# not a visible projectile: only the carrier-bound healing particles
+	# spiral up the body. A billboard on this cleanup light flies overhead.
+	fx._visible_halo = sp.code != "healing"
 	fx._light_id = String(ev.get("light_id", ""))
 	if sp.code == "clairvoyence":
 		fx._bound_required = true
@@ -169,11 +174,12 @@ func _ready() -> void:
 	_light.add_to_group(&"gfx_torch_glow")
 	add_child(_light)
 	if light_radius > 0.0:
-		var halo := Gfx.torch_halo(light_radius, light_color)
-		_light.add_child(halo)
 		_local_light = {"light": _light, "kind": "spell", "until": -1,
-			"pos": global_position, "energy": light_energy, "external_energy": true,
-			"halo": halo.material_override}
+			"pos": global_position, "energy": light_energy, "external_energy": true}
+		if _visible_halo:
+			var halo := Gfx.torch_halo(light_radius, light_color)
+			_light.add_child(halo)
+			_local_light.halo = halo.material_override
 		LocalLighting.prepare_particle(_local_light)
 		_light.set_meta(&"ei_local_light", _local_light)
 		_light.add_to_group(&"ei_local_spell")
@@ -210,5 +216,5 @@ func advance(age: int) -> void:
 	if not _local_light.is_empty():
 		_local_light.pos = global_position
 	# Native RGB/range stay constant; attenuation changes with position.
-	if _local_light.get("enhanced", false):
+	if _local_light.get("enhanced", false) and _local_light.has("halo"):
 		_local_light.halo.set_shader_parameter("strength", float(_local_light.halo_strength))

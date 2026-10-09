@@ -1,0 +1,362 @@
+{
+  "date": "2026-10-09",
+  "status": "U39 extra upward healing orb reproduced and locally removed; original body-bound particles and rising illumination preserved.",
+  "base_commit": "8bb5ced",
+  "branch": "fix/catacomb-coop-deck",
+  "summary": "Healing no longer attaches an additive billboard to its native moving cleanup light. Original healing particles still spiral around the healed actor, while the invisible point light retains its position, colour, radius, age and cleanup. Other spell halos retain existing behavior.",
+  "original_evidence": {
+    "dispatch": "Base native67f830 case0x18 spawns particle type0x2006 with the healed unit as carrier, and independently creates the spell light with upward speed row light radius / max(fadeout,1).",
+    "particles": "Native48b630 obtains carrier center/radius via485280, starts near center minus radius, and spirals upward over36 control ticks with short particle tails. Existing FxTypes.sp_healing and ParticleFx carrier transforms already implement this body-relative presentation; they are unchanged.",
+    "light": "The native light is illumination, not a particle billboard. With the original Healing row, radius2/fadeout10 gives vertical speed0.2 per tick. It begins at ground+0.3, reaches6.7 above ground at tick32 and expires at33. Attaching Gfx.torch_halo made that moving light a visible high orb.",
+    "oracle": "The retained independently executed original-x86 fixture contains two healing cases with radius5/fadeout4 and durations1/8. The narrow test consumes those original records without rewriting expectations, and compares every one of68 position/colour/range/lifetime samples."
+  },
+  "reproduction": "On real base gz1g, ordinary healing restores the host hero and delivers original particles/light to an ENet guest. At light age20 with glow/firelight enabled, the baseline has a separate bright orb well above the character; the candidate removes that orb and leaves the blue body particles visible.",
+  "checks": {
+    "candidate_total": 56,
+    "candidate_failures": 0,
+    "headless_actual_healing": 22,
+    "rendered_actual_healing": 23,
+    "native_oracle_and_other_spell": 11,
+    "native_oracle_ticks": 68,
+    "baseline_headless_failures": 3,
+    "baseline_rendered_failures": 3,
+    "baseline_oracle_failures": 1
+  },
+  "limits": [
+    "The original report did not identify an exact spell configuration, scene or screenshot. This closes the reproduced extra billboard cause in ordinary healing; it does not assert that every possible reported upward effect is explained.",
+    "Original healing particles intentionally rise around the body. Their art, orientation, attachment, lifetime and spiral remain unchanged. Native rising light, other spell effects and volumetric fog behavior also remain unchanged.",
+    "Actual original map and ENet host/guest branches on Linux, with unrelated simulation frozen and effect ages manually stepped. The fixture does not exercise pointer input, full combat or a complete campaign playthrough.",
+    "Final visual comparison used Forward+ on the local RTX3090. No device compatibility or performance claim.",
+    "Disposable profiles and isolated snapshot only; no user saves, shared export staging, new graphics setting, protocol/schema change, install or publication."
+  ],
+  "staging": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009",
+    "baseline": "build-dialogue (U45/U44 fixes already applied)",
+    "candidate": "build-healing (adds only U39 spell_fx.gd change)",
+    "method": "Same isolated snapshot, extension and patched runtime; stock Godot export.",
+    "export_log": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/export-healing.log",
+    "export_errors": []
+  },
+  "evidence": [
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/build-dialogue/CPU.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--ei-inline-host",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/healing_presentation.gd"
+      ],
+      "exit_code": 1,
+      "seconds": 11.352787283016369,
+      "errors": [],
+      "log_sha256": "34435fdd6e945a6f0913b481c862984d95c155dc86872b8798d144d64f36a345",
+      "fixture_sha256": "50802c880358260db11176675b8b2712950e48bbfe0760565b857f73d6812315",
+      "build_sha256": {
+        "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+        "CPU.pck": "f4fb191a43059156fe0030492e2abac92ed55863dbb9d8c3114bc8a91c0e795d",
+        "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+      },
+      "name": "healing-before-final-01",
+      "checks": 22,
+      "failures": 3,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/healing-before-final-01.log"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/build-healing/CPU.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--ei-inline-host",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/healing_presentation.gd"
+      ],
+      "exit_code": 0,
+      "seconds": 8.815203949983697,
+      "errors": [],
+      "log_sha256": "ae9f4e47d2c2c5b596e61ba5c5c624122e1828fcf757ba08c4de992d3481ad6c",
+      "fixture_sha256": "50802c880358260db11176675b8b2712950e48bbfe0760565b857f73d6812315",
+      "build_sha256": {
+        "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+        "CPU.pck": "f2fa5449f0ea81a6dfbd202ac2396007ec45f8ffafce5dbbbd1f2dac4f9936d1",
+        "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+      },
+      "name": "healing-after-01",
+      "checks": 22,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/healing-after-01.log"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/build-dialogue/CPU.x86_64",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--ei-inline-host",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/healing_presentation.gd"
+      ],
+      "exit_code": 1,
+      "seconds": 30.189861266000662,
+      "errors": [],
+      "log_sha256": "1963383ab3792a41c799a8818a5b7c493c42bd130aca430bb2cc8e8000335de5",
+      "fixture_sha256": "50802c880358260db11176675b8b2712950e48bbfe0760565b857f73d6812315",
+      "build_sha256": {
+        "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+        "CPU.pck": "f4fb191a43059156fe0030492e2abac92ed55863dbb9d8c3114bc8a91c0e795d",
+        "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+      },
+      "name": "healing-render-before-01",
+      "checks": 23,
+      "failures": 3,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/healing-render-before-01.log"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/build-healing/CPU.x86_64",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--ei-inline-host",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/healing_presentation.gd"
+      ],
+      "exit_code": 0,
+      "seconds": 27.569598907983163,
+      "errors": [],
+      "log_sha256": "30ba1eddaf55fd5690b531ec0aec3e94826d65bc4db947c05bab25d7f37f8a70",
+      "fixture_sha256": "50802c880358260db11176675b8b2712950e48bbfe0760565b857f73d6812315",
+      "build_sha256": {
+        "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+        "CPU.pck": "f2fa5449f0ea81a6dfbd202ac2396007ec45f8ffafce5dbbbd1f2dac4f9936d1",
+        "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+      },
+      "name": "healing-render-after-01",
+      "checks": 23,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/healing-render-after-01.log"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/build-dialogue/CPU.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--ei-inline-host",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/healing_light_oracle.gd",
+        "--fixture=/home/llm2x/Documents/EI/local/scratchpad/codex-backlog-20261004/original_spell_light_expected.json"
+      ],
+      "exit_code": 1,
+      "seconds": 1.903728309989674,
+      "errors": [],
+      "log_sha256": "e87ab88e05d8f44b1346095180da566b952d02dd23f68360b328cb86749f9ae4",
+      "fixture_sha256": "5ea81b1063f1a32faeb0a1dcbe8b7850dc25bf5087c6bcb8e531bd39db6fa012",
+      "build_sha256": {
+        "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+        "CPU.pck": "f4fb191a43059156fe0030492e2abac92ed55863dbb9d8c3114bc8a91c0e795d",
+        "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+      },
+      "name": "healing-light-oracle-before-01",
+      "checks": 11,
+      "failures": 1,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/healing-light-oracle-before-01.log"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/build-healing/CPU.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--ei-inline-host",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/healing_light_oracle.gd",
+        "--fixture=/home/llm2x/Documents/EI/local/scratchpad/codex-backlog-20261004/original_spell_light_expected.json"
+      ],
+      "exit_code": 0,
+      "seconds": 1.8034399329917505,
+      "errors": [],
+      "log_sha256": "3e8c232cff3e28b3c9b124f5f9d854b337e92998d8e745840772d4e4dc1a75da",
+      "fixture_sha256": "5ea81b1063f1a32faeb0a1dcbe8b7850dc25bf5087c6bcb8e531bd39db6fa012",
+      "build_sha256": {
+        "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+        "CPU.pck": "f2fa5449f0ea81a6dfbd202ac2396007ec45f8ffafce5dbbbd1f2dac4f9936d1",
+        "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+      },
+      "name": "healing-light-oracle-after-01",
+      "checks": 11,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/healing-light-oracle-after-01.log"
+    }
+  ],
+  "images": [
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/profiles/healing-render-before-01/godot/app_userdata/Cursed Lands/healing-age20.png",
+      "sha256": "d2b2228b1d71f5d17ad31a58efbbb389b42a8b940331544315c41d6f3722a7a3",
+      "inspection": "Viewed matching camera at native light age20; baseline has an orb near upper-middle sky, candidate removes it and retains body particles."
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/profiles/healing-render-after-01/godot/app_userdata/Cursed Lands/healing-age20.png",
+      "sha256": "f78b03205666fa6831c7ff38d7dcaa45e687828f5f5bec5595bc0e7baaee2819",
+      "inspection": "Viewed matching camera at native light age20; baseline has an orb near upper-middle sky, candidate removes it and retains body particles."
+    }
+  ],
+  "sources": [
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/game/src/game/spell_fx.gd",
+      "sha256": "9aa6e92621304450964f73df6434fba007c9032a97077ec4f446be3b1798dc13"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/game/src/game/fx/fx_types.gd",
+      "sha256": "137211d3b919a506fcf25692aca56923af12d6db69c5f1fd46e279c27de0c0a9"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/game/src/game/fx/particle_system.gd",
+      "sha256": "9a45f450e348a1eca912a8c45ea534b8e256c0950c0c107e84b9a1b13e79c359"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/game/src/game/fx/local_lighting.gd",
+      "sha256": "84b98d94aa2427fc43c92db3e5c7c3abac340f70a3919b3aa19875e68500966f"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/healing_presentation.gd",
+      "sha256": "50802c880358260db11176675b8b2712950e48bbfe0760565b857f73d6812315"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/healing_light_oracle.gd",
+      "sha256": "5ea81b1063f1a32faeb0a1dcbe8b7850dc25bf5087c6bcb8e531bd39db6fa012"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/inspection/ghidra/decompiled/functions/0027f/67f830_FUN_0067f830.c",
+      "sha256": "f1ca6a6a0919ac087048f406ab98b94a6db55a654ac836a3c78a5bb6b3490f3f"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/inspection/ghidra/decompiled/functions/0008b/48b630_FUN_0048b630.c",
+      "sha256": "57c2633da1e48f8f826d1fce3e824e2198aa9fe5dd9aa9eb3e57e7ac0220366e"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/inspection/ghidra/decompiled/functions/00085/485280_FUN_00485280.c",
+      "sha256": "2350160c386ef2e0b59b4c9719f416ea716416f55f8e079744880cf383badf2e"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/inspection/extracted/app/game.exe",
+      "sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/codex-backlog-20261004/original_spell_light_expected.json",
+      "sha256": "645f10d73732651480416372cfd42c7809e974a4e07fb6fddf5126e94cdf6309"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/healing-inspect-01.log",
+      "sha256": "012210bd708cf95bcf071f42f66c7c2cb75d6c6d8a9d052aea7b824f0b4d2ffa"
+    }
+  ],
+  "excluded_attempts": [
+    {
+      "name": "healing-before-01",
+      "reason": "First fixture mistakenly equated an empty particle wrapper retained to tick60 with live particles. It had three actual halo failures plus two fixture-only cleanup failures. Final fixture checks living particles; baseline then has only three expected halo failures."
+    },
+    {
+      "name": "healing-inspect-01",
+      "reason": "Diagnostic inspection of actual carrier/particle/light positions; not counted as assertions."
+    },
+    {
+      "name": "spell-light-regression-before-01 and spell-light-regression-01",
+      "reason": "The historical broad scratch spell_light_test.gd is not clean against this checkout: baseline and candidate identically have126 checks,7 failures and3 read-only dictionary errors. These include artificial unit setup, lightning/curse and clairvoyance cases. No acceptance claimed from this suite; no unrelated production behavior changed. Narrow healing oracle above uses current setup and passes.",
+      "baseline": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/build-dialogue/CPU.x86_64",
+          "--headless",
+          "--audio-driver",
+          "Dummy",
+          "--render-thread",
+          "safe",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--ei-inline-host",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-gameplay-20261006/control/tools/spell_light_test.gd",
+          "--fixture=/home/llm2x/Documents/EI/local/scratchpad/codex-backlog-20261004/original_spell_light_expected.json"
+        ],
+        "exit_code": 1,
+        "seconds": 3.8124266210070346,
+        "errors": [
+          "ERROR: Dictionary is in read-only state.",
+          "ERROR: Dictionary is in read-only state.",
+          "ERROR: Dictionary is in read-only state."
+        ],
+        "log_sha256": "52e83ece340e25ee817932a98532b4012185d7efe3adb31e8157c1b5fb453e77",
+        "fixture_sha256": "d567ce574f8576e218dbcc0745e030a919429aea27a8a7d11ab88df465213fc3",
+        "build_sha256": {
+          "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+          "CPU.pck": "f4fb191a43059156fe0030492e2abac92ed55863dbb9d8c3114bc8a91c0e795d",
+          "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+        },
+        "name": "spell-light-regression-before-01",
+        "checks": 126,
+        "failures": 7,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/spell-light-regression-before-01.log"
+      },
+      "candidate": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/build-healing/CPU.x86_64",
+          "--headless",
+          "--audio-driver",
+          "Dummy",
+          "--render-thread",
+          "safe",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--ei-inline-host",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-gameplay-20261006/control/tools/spell_light_test.gd",
+          "--fixture=/home/llm2x/Documents/EI/local/scratchpad/codex-backlog-20261004/original_spell_light_expected.json"
+        ],
+        "exit_code": 1,
+        "seconds": 4.427585367986467,
+        "errors": [
+          "ERROR: Dictionary is in read-only state.",
+          "ERROR: Dictionary is in read-only state.",
+          "ERROR: Dictionary is in read-only state."
+        ],
+        "log_sha256": "a93798b9602a915035469513904b780b8c2c10c69c753246de8eba81704487b0",
+        "fixture_sha256": "d567ce574f8576e218dbcc0745e030a919429aea27a8a7d11ab88df465213fc3",
+        "build_sha256": {
+          "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+          "CPU.pck": "f2fa5449f0ea81a6dfbd202ac2396007ec45f8ffafce5dbbbd1f2dac4f9936d1",
+          "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+        },
+        "name": "spell-light-regression-01",
+        "checks": 126,
+        "failures": 7,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/spell-light-regression-01.log"
+      }
+    }
+  ]
+}
