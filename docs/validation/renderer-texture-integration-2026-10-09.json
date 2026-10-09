@@ -1,0 +1,544 @@
+{
+  "date": "2026-10-09",
+  "status": "Accepted local committed-pack P1/P2 integration with the existing cloud/effect and co-op fixes.",
+  "revision": "63c16788f1bba2be73d1a00d534b310a4bf0fc98",
+  "final_export": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-coop-final-01/export.json",
+    "sha256": "2520f36575b364ebd23ff35c378488572371128334ec2b8c843115f6651ab66c"
+  },
+  "build_sha256": {
+    "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+    "CursedLands.pck": "5a3847a25a7a46d99f63c2f13ef76331556fc6bdd6b504dada47dfab2d90dfcb",
+    "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+  },
+  "source_equivalence": {
+    "evidence": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-coop-final-01/source-comparison.json",
+      "sha256": "29170f11ac9ff56f2e745f18905d1fda5629cb1a36ccded4eb74e8efdfec0450"
+    },
+    "files_compared": 712,
+    "qualified_wound_candidate_post_import_differences": [],
+    "previous_combined_changed_files": {
+      "src/ei/terrain.gd": {
+        "previous": "4b9fe3591819be7bfbea89caf579e33ee29e727d833ebfd58057270aa1153184",
+        "current": "837d5f29977398b774789d855c32b69f4847616b57b8f2bd9bff86164beb7db1"
+      },
+      "src/ei/unit_model.gd": {
+        "previous": "747e37b28ae267f3a729d172ad95c94cac109f9f606a2764bd9252ad02f7e2f8",
+        "current": "8c89865084003723964f2a55726b7af665baaebcc9d484f736dfd5b0608b7848"
+      },
+      "src/game/order_marks.gd": {
+        "previous": "64f199b953db467775df4a0763c2b8a2a5ffc8355cb55260428d4b9e0ba5d5e7",
+        "current": "f1383e4b136d93f263ee7f3bde10a064218ad98c791d1d84b1f0e3067a69b96c"
+      },
+      "src/game/unit_wounds.gd": {
+        "previous": "4edb31e88d784fec0739a674e43733da7fda3a4cb8ca4a8e12573d130a15615e",
+        "current": "f51b89c9aa846c9ae167b6f4edb07137a249ae54bc069eff68f38e3b5bd13299"
+      }
+    },
+    "manifest_boundary": "Candidate manifest records pre-import sources; it omits 30 automatically generated .gd.uid sidecars. Initial unfiltered manifest equality assertion therefore failed; all non-UID source hashes match. The separate post-import stage comparison below covers every exported source file including sidecars."
+  },
+  "scope": [
+    "Actual Game/World/Terrain owns a DXT1 raw atlas through pause, loading/travel/movie gates, effect off/on and zone replacement.",
+    "Actual GameUnit and Paperdoll share native wounds without replacing bases; normal asynchronous publication, visible selection, healing and authored equipment replacement pass.",
+    "The world wound comparison excludes HUD health pixels and uses an explicitly posed actor on verified clear walkable ground. It is prepared presentation coverage, not combat.",
+    "Forward+ active clouds/mist/ambient/camera effects and Compatibility/Mobile composed numerical water controls pass on the final committed pack.",
+    "Every post-import source file matches the accepted P1 candidate. Compared with the earlier combined 79bee8a pack, only terrain.gd, unit_model.gd, unit_wounds.gd and order_marks.gd change. Gameplay synchronization code and both native binaries are unchanged; its prior receipts are inherited, not rerun or added to this check count."
+  ],
+  "totals": {
+    "runtime_checks": 190,
+    "runtime_failures": 0,
+    "independent_saved_image_checks": 23,
+    "saved_image_failures": 0,
+    "captures": 37
+  },
+  "runs": [
+    {
+      "label": "texture-life-final-forward-02",
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-life-final-forward-02/run.json",
+        "sha256": "6c357f815dd229cf4b06ec674465b993d16ea2f165dfa4aee036404cefef809e"
+      },
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-life-final-forward-02/run.log",
+        "sha256": "e3aa7be0da679fa1639375b518334d26f0253b53bcb5b22c9fab7bdfef7e0082"
+      },
+      "report": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-life-final-forward-02/renderer-world-lifecycle.json",
+        "sha256": "4915b7f777217864e30a0830c6633e26ace9e13bb12fdc9b3ac718f0b9a2e90c"
+      },
+      "checks": 134,
+      "failures": 0,
+      "seconds": 30.531328276032582,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-coop-final-01/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-life-final-forward-02/tool-source.gd",
+        "--cloud-quality=3",
+        "--terrain-quality=2"
+      ],
+      "warnings": [],
+      "captures": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-life-final-forward-02/lifecycle-all-on.png",
+          "sha256": "43a895384b33e6088af71855f7754da120a7e35db128b58fecc112825877bf50"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-life-final-forward-02/lifecycle-ambient-off.png",
+          "sha256": "7fdd97a1f2d5a87e36b7ce4de19116f322d8df42d2d677fa2c60bf1eb7843dea"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-life-final-forward-02/lifecycle-clouds-off.png",
+          "sha256": "59466044e6bdaff7ca55f4ec55ee2be07486d5e946c2047be3ac9072e66a7474"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-life-final-forward-02/lifecycle-held.png",
+          "sha256": "43a9a9bc89df1052e652ea80d39756a5c5d2bf07a064ed19b76a4a5eb3381269"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-life-final-forward-02/lifecycle-lens-off.png",
+          "sha256": "f64602343892c687e8e43a2028081f4c68e028da03f85a3ad9128685eb4bb9aa"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-life-final-forward-02/lifecycle-mist-off.png",
+          "sha256": "35f3c676999149e2b24b6fa82957b1592802bc8d2e0561c28e2b9fdc87634343"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-life-final-forward-02/texture-integration-paperdoll-healed.png",
+          "sha256": "815c1e1112ddaff8e01522c0c1566453613ea3806086c8a681fdeb081a0882b7"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-life-final-forward-02/texture-integration-paperdoll-healthy.png",
+          "sha256": "815c1e1112ddaff8e01522c0c1566453613ea3806086c8a681fdeb081a0882b7"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-life-final-forward-02/texture-integration-paperdoll-redressed.png",
+          "sha256": "8502f7c8259b8a0e2b71d7bab0f676ebe497dae7cd23a6bf8c9d13f7c89f10e0"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-life-final-forward-02/texture-integration-paperdoll-wounded.png",
+          "sha256": "4c91a4ff83c42d69ef2acadadc1cd02c6bfb701af5168c066bd3acadc7e1b7e7"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-life-final-forward-02/texture-integration-world-healed.png",
+          "sha256": "0a16a4a452c165f6bb6642946d4d7bc7b8dc38703963e0021de808f1cc44fbb7"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-life-final-forward-02/texture-integration-world-healthy.png",
+          "sha256": "c9c16d54a385106955ac36507571bf4714ac2d619d2b77397056b98e6579da58"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-life-final-forward-02/texture-integration-world-held.png",
+          "sha256": "11b2f4964d1cebc026e37c288e8e3897d21ef59c3ed06a212864dac5474d9222"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-life-final-forward-02/texture-integration-world-selected.png",
+          "sha256": "35ee806d4873b57008ff674f5dda70e773645f27404d2e92a4ec8c5b3d2a8837"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-life-final-forward-02/texture-integration-world-wounded.png",
+          "sha256": "0cb40f826e8e8b62ac251741560550813355657994f56739b74b6e942c0a3786"
+        }
+      ],
+      "fixture_sources": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/renderer_texture_integration.gd": "871d46eadc1d2ec4d16449cb8c832e5f3f846c78bf0617491753022f1930f918",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/renderer_world_lifecycle.gd": "b4e36580c275505378665d4cea6ec1a88722a9a88b587b5a7e5519bd6802dc69",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_traps_net.gd": "467645c27cbfe2ce9130f22fe4ac7d68edfdf7e57a867685e212cff480fb35d4"
+      },
+      "other_processes_at_start": [],
+      "other_processes_at_end": [],
+      "rows": [
+        {
+          "ambient_models": 3,
+          "case": "initial",
+          "cloud_owner": 293601283212,
+          "focus": 30.0,
+          "mist_cell_size": 12.0,
+          "mist_volumes": 6,
+          "particles": 94,
+          "point": "(154.6365, 79.43075)",
+          "terrain": 293601283212,
+          "water_height": 5.71068477630615,
+          "world": 293316068943
+        },
+        {
+          "case": "rendered_composition",
+          "comparison": {
+            "ambient": {
+              "channels_over_2": 156,
+              "peak": 116
+            },
+            "clouds": {
+              "channels_over_2": 1224501,
+              "peak": 85
+            },
+            "lens": {
+              "channels_over_2": 105,
+              "peak": 16
+            },
+            "mist": {
+              "channels_over_2": 10766,
+              "peak": 7
+            }
+          },
+          "held": {
+            "channels_over_2": 0,
+            "peak": 1
+          },
+          "minimum_changed_channels": 32,
+          "renderer": "forward_plus"
+        },
+        {
+          "case": "actual-texture-owners",
+          "held": {
+            "channels_over_2": 0,
+            "peak": 1
+          },
+          "highlighted_parts": 17,
+          "paperdoll_delta": {
+            "channels_over_2": 20504,
+            "peak": 147
+          },
+          "raw_format": 17,
+          "scope": "Prepared real GameUnit, equipment replacement and Paperdoll; no combat or performance claim.",
+          "world_delta": {
+            "channels_over_2": 27855,
+            "peak": 94
+          }
+        },
+        {
+          "ambient_models": 3,
+          "case": "re-enabled",
+          "cloud_owner": 293601283212,
+          "focus": 30.0,
+          "mist_cell_size": 12.0,
+          "mist_volumes": 6,
+          "particles": 94,
+          "point": "(154.6365, 79.43075)",
+          "terrain": 293601283212,
+          "water_height": 5.75858640670776,
+          "world": 293316068943
+        },
+        {
+          "ambient_models": 3,
+          "case": "reloaded",
+          "cloud_owner": 740412111663,
+          "focus": 30.0,
+          "mist_cell_size": 12.0,
+          "mist_volumes": 6,
+          "particles": 94,
+          "point": "(154.6365, 79.43075)",
+          "terrain": 740412111663,
+          "water_height": 5.75858640670776,
+          "world": 740126899142
+        }
+      ]
+    },
+    {
+      "label": "texture-composed-final-gl-01",
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-composed-final-gl-01/run.json",
+        "sha256": "3ef4a8fa85f2a31c8a59d9eadfd91528a93159c04fa6374f7e24d975b1f076dd"
+      },
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-composed-final-gl-01/run.log",
+        "sha256": "dfcd7ba97f29ed7a5b53b4fbf7305ff7f994231939d31ca41c6a0aaf6f511bad"
+      },
+      "report": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-composed-final-gl-01/renderer-followup-integration.json",
+        "sha256": "5e74e3d5d6155cab15e7dc578de6549cb36731598d8a6446f29c6972a823e2c3"
+      },
+      "checks": 28,
+      "failures": 0,
+      "seconds": 25.273223338008393,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-coop-final-01/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-composed-final-gl-01/tool-source.gd",
+        "--cloud-quality=3",
+        "--terrain-quality=2"
+      ],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "captures": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-composed-final-gl-01/water-interaction-wave-clock-held.png",
+          "sha256": "074f23a5609abb9d1df1c406f11ecb34bdceb78a710a4a7b0c3e7a2cc6e19f22"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-composed-final-gl-01/water-interaction-wave-disabled.png",
+          "sha256": "eddcc9fe32c3a701b065b555efdf767188d3020404927ec5ccef7a8336538df1"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-composed-final-gl-01/water-interaction-wave-empty.png",
+          "sha256": "2510d5ddd58663f424a74bb11da07da3a8676627c41fc13a97f38c950af61913"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-composed-final-gl-01/water-interaction-wave-history-control.png",
+          "sha256": "f2605d6f2b9c6663530e4d65397f6decc1abdca11fa79ef9fc86374bcb19fd0b"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-composed-final-gl-01/water-interaction-wave-lava-control.png",
+          "sha256": "7bd2abc1534f8dc42d142a036363067ef21d92e39a3f461afa22e36ed2a33c9e"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-composed-final-gl-01/water-interaction-wave-lava.png",
+          "sha256": "7bd2abc1534f8dc42d142a036363067ef21d92e39a3f461afa22e36ed2a33c9e"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-composed-final-gl-01/water-interaction-wave-lingering.png",
+          "sha256": "074f23a5609abb9d1df1c406f11ecb34bdceb78a710a4a7b0c3e7a2cc6e19f22"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-composed-final-gl-01/water-interaction-wave-off.png",
+          "sha256": "2510d5ddd58663f424a74bb11da07da3a8676627c41fc13a97f38c950af61913"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-composed-final-gl-01/water-interaction-wave-reenabled-empty.png",
+          "sha256": "eddcc9fe32c3a701b065b555efdf767188d3020404927ec5ccef7a8336538df1"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-composed-final-gl-01/water-interaction-wave-swamp-control.png",
+          "sha256": "e9539786d99dfdd3ffd7f6c596fc788b15f463ed0769f4a243114dc219fe58b1"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-composed-final-gl-01/water-interaction-wave-swamp.png",
+          "sha256": "e9539786d99dfdd3ffd7f6c596fc788b15f463ed0769f4a243114dc219fe58b1"
+        }
+      ],
+      "fixture_sources": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/renderer_followup_integration.gd": "8a49b79b0af778beea3c346f1b0d7d7aab27415b2c5c295b51d1bc44b8a1178c",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_wave_render.gd": "d7973cb18160092527529f72ba4f522f2def839273f7cbb064648d631648b359",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_wave_field.gd": "e6fdbe12a7c8534706b1b917d8c27f7bb29b39821e534e97969cd2a605fc808b",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      },
+      "other_processes_at_start": [],
+      "other_processes_at_end": [],
+      "rows": [
+        {
+          "case": "game-clock",
+          "elapsed_1x": 0.250172931216934,
+          "elapsed_2x": 0.499986000000001
+        },
+        {
+          "case": "rendered-lingering",
+          "difference": {
+            "changed_pixels": 860,
+            "peak_delta": 3,
+            "pixels_over_2": 115
+          },
+          "focus": "(133.5, 5.758586, -98.5)",
+          "map": "zone1",
+          "peak_trail": 0.580379545688629,
+          "renderer": "gl_compatibility",
+          "steps": 39
+        }
+      ]
+    },
+    {
+      "label": "texture-composed-final-mobile-01",
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-composed-final-mobile-01/run.json",
+        "sha256": "845f0fcd7587c6765fdda8f1bd8721f65466454f03ab8fb4847ad55d2a5ed982"
+      },
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-composed-final-mobile-01/run.log",
+        "sha256": "945ce948729424d91802a9369f080fe44771dc5ea4bad88b8658dd4d1809c0d0"
+      },
+      "report": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-composed-final-mobile-01/renderer-followup-integration.json",
+        "sha256": "2b9e11ca05bb4887073eae68d946c22af21f23473ace2c855d9bdb121d594895"
+      },
+      "checks": 28,
+      "failures": 0,
+      "seconds": 17.016687655996066,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-coop-final-01/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "mobile",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-composed-final-mobile-01/tool-source.gd",
+        "--cloud-quality=3",
+        "--terrain-quality=2"
+      ],
+      "warnings": [],
+      "captures": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-composed-final-mobile-01/water-interaction-wave-clock-held.png",
+          "sha256": "dde952d42580ae1fc9beaa9a6dbcb45bb4ffedacc813a0f278d2efa31e364b7e"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-composed-final-mobile-01/water-interaction-wave-disabled.png",
+          "sha256": "ff7ed336343f4a256c8099184c414d23b72da6fee6b5b566663a4ed5081eb5b4"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-composed-final-mobile-01/water-interaction-wave-empty.png",
+          "sha256": "1710c5f2cdc8339c666fdf18529a0fa375f90c1318fcd8eb3a5b1d26677f3816"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-composed-final-mobile-01/water-interaction-wave-history-control.png",
+          "sha256": "7a84244cafb9eaa6854d62969a8c51a81130f9d74e75da336833e66508b65a92"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-composed-final-mobile-01/water-interaction-wave-lava-control.png",
+          "sha256": "ddc2ccd82b19bfcd39dc72028099235aa4dbb59b121eda8eb689c6cf6d9286f1"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-composed-final-mobile-01/water-interaction-wave-lava.png",
+          "sha256": "ddc2ccd82b19bfcd39dc72028099235aa4dbb59b121eda8eb689c6cf6d9286f1"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-composed-final-mobile-01/water-interaction-wave-lingering.png",
+          "sha256": "dde952d42580ae1fc9beaa9a6dbcb45bb4ffedacc813a0f278d2efa31e364b7e"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-composed-final-mobile-01/water-interaction-wave-off.png",
+          "sha256": "1710c5f2cdc8339c666fdf18529a0fa375f90c1318fcd8eb3a5b1d26677f3816"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-composed-final-mobile-01/water-interaction-wave-reenabled-empty.png",
+          "sha256": "ff7ed336343f4a256c8099184c414d23b72da6fee6b5b566663a4ed5081eb5b4"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-composed-final-mobile-01/water-interaction-wave-swamp-control.png",
+          "sha256": "fba4ec7b3b7e4ba9a15cffab6de2e54f91648a4ba7b642874cb27f277a832590"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-composed-final-mobile-01/water-interaction-wave-swamp.png",
+          "sha256": "fba4ec7b3b7e4ba9a15cffab6de2e54f91648a4ba7b642874cb27f277a832590"
+        }
+      ],
+      "fixture_sources": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/renderer_followup_integration.gd": "8a49b79b0af778beea3c346f1b0d7d7aab27415b2c5c295b51d1bc44b8a1178c",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_wave_render.gd": "d7973cb18160092527529f72ba4f522f2def839273f7cbb064648d631648b359",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_wave_field.gd": "e6fdbe12a7c8534706b1b917d8c27f7bb29b39821e534e97969cd2a605fc808b",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      },
+      "other_processes_at_start": [],
+      "other_processes_at_end": [],
+      "rows": [
+        {
+          "case": "game-clock",
+          "elapsed_1x": 0.249984666666667,
+          "elapsed_2x": 0.499986000000001
+        },
+        {
+          "case": "rendered-lingering",
+          "difference": {
+            "changed_pixels": 1127,
+            "peak_delta": 18,
+            "pixels_over_2": 651
+          },
+          "focus": "(133.5, 5.758586, -98.5)",
+          "map": "zone1",
+          "peak_trail": 0.580379545688629,
+          "renderer": "mobile",
+          "steps": 39
+        }
+      ]
+    }
+  ],
+  "saved_image_audit": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-coop-final-01/saved-image-audit.json",
+    "sha256": "f8d302382388caacca6879a8ff2fc9d6ba499b40562812689e173dd98ffa9e4c"
+  },
+  "excluded_setup_runs": [
+    {
+      "label": "texture-life-proto-forward-01",
+      "reason": "Setup-only 162-check pass on the feature candidate. World comparison still included HUD health pixels, and new held equipment figures had not explicitly sampled idle. Excluded from final acceptance; fixture now hides HUD, samples native idle and verifies clear walkable placement.",
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-life-proto-forward-01/run.json",
+        "sha256": "b4e29f7e52a2f44fa9f2ee0a184ef713a1369e9159fd18831f0c20d1ea860111"
+      },
+      "report": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-life-proto-forward-01/renderer-world-lifecycle.json",
+        "sha256": "fb242398448bd0ad48341d0b25fd5e782b3eab52464f2d4b146656518da3c2e3"
+      },
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-life-proto-forward-01/run.log",
+        "sha256": "55aa26096d69761ad1d12f9971eba9ef1ae0b4a3b1398ed476b2b48130643d6c"
+      }
+    },
+    {
+      "label": "texture-life-final-forward-01",
+      "reason": "133 checks with one failure: the prepared hero remained on the ambient test patch, correctly preventing animal re-admission after off/on. The fixture now restores its original position/facing and camera before resuming the inherited owner lifecycle controls. No production change or relaxed acceptance.",
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-life-final-forward-01/run.json",
+        "sha256": "ba6b30516c93bbdc2109684c1751ba1a9f72d12a115821cee91dd0802a83a298"
+      },
+      "report": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-life-final-forward-01/renderer-world-lifecycle.json",
+        "sha256": "c2138a6658510b0be98b379c0316f711f994e66490f1bcc93629289c399909ad"
+      },
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-life-final-forward-01/run.log",
+        "sha256": "fbf55255b5512f5c40bcbcc9dae74c410449c866289cd47b6633fd6e117c98ef"
+      }
+    }
+  ],
+  "feature_receipts": [
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/wound-gpu-2026-10-09.json",
+      "sha256": "8804cac09cf5c1aae05ace81c47ef386632faed80feb4b82dbfc839f6f1848f0"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/compressed-terrain-2026-10-09.json",
+      "sha256": "db56520319316a7e6e543dd8afc9bbb92ab9a2d1ae843c884ce7d112409618e5"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/renderer-coop-integration-2026-10-09.json",
+      "sha256": "dfe0ded086f0ee455e3ce0326494c5a938523d001f9c10a2a31d34bb90fac435"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/local-shadow-overlay-opportunity-2026-10-09.json",
+      "sha256": "27396805aab8bf580a07153757dcf35fd494f6700765ebc8b2d66599a61776ee"
+    }
+  ],
+  "visual_review": "Root inspected world wounded/selected/healed, actual redressed Paperdoll, all-on atmosphere and both backend wave captures. Wounds stay on the posed figure; healing removes them and selection preserves them. No missing terrain, changed orientation or new obvious fringe was observed.",
+  "limits": [
+    "Linux RTX 3090 functional integration only, not Windows/Android/browser acceptance or FPS evidence.",
+    "P1 separate filtering, ordinary Mobile precision boundaries, custom material fallback and retained source memory remain explicit in its receipt.",
+    "P2 compressed block and generated-tail differences remain explicit; HD/padded arrays retain RGBA payload.",
+    "No new gameplay/network validation is claimed here. Ordinary harpy, extended campaign, target-device and WAN coverage remain open.",
+    "Source Experimental 6 and protocol 13 remain unchanged. No install, publication, original asset or real save modification."
+  ],
+  "receipt_generator": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture_receipt.py",
+    "sha256": "79f89c1f73939067cfaf07607db333eccfc7dd65644e7fbf301e1860b238507e"
+  }
+}

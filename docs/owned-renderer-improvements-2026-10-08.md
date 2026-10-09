@@ -18,10 +18,14 @@ Gameplay U39–U44 and the separate U45 removed-actor death-predicate correction
 are committed. The supplied U45 autosave contains two living required creatures;
 the original completion gates work when both die. `1b8b0f6` fixes a distinct
 script-added looted-actor reload defect with 137 passing candidate checks.
-The current combined-export production checkpoint is `79bee8a56f7a27a9897ae9ebe44fa6000d94cf21`.
-[Current combined acceptance](validation/renderer-coop-integration-2026-10-09.json)
-records 711 checks and 60 captures for cloud High/natural terrain composition,
-actual Game ownership, localized settings and representative co-op/solo return.
+The current combined-export production checkpoint is `63c16788f1bba2be73d1a00d534b310a4bf0fc98`.
+[Current texture integration](validation/renderer-texture-integration-2026-10-09.json)
+records 190 runtime checks, 23 independent image comparisons and 37 captures for
+the wound-only and compressed-terrain changes alongside existing cloud/effects.
+All 712 post-import files match the qualified P1 candidate. The previous
+[711-check/60-capture acceptance](validation/renderer-coop-integration-2026-10-09.json)
+covers localized settings and representative co-op/solo return; gameplay source
+and both native binaries are unchanged by the subsequent four rendering files.
 The earlier 859-check checkpoint and separate LiA mist motion limitation are
 retained. The Haburu first-conversation fix is also committed. V7 requires
 verified campaign placement data. Do not treat historical pause
@@ -44,14 +48,15 @@ The original worktree above is historical. Source version remains Experimental 6
 and protocol 13. This task uses private exports and isolated profiles. Installed
 builds, templates, original assets and real saves have not been replaced.
 Current combined acceptance export:
-`/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/cloud-coop-final-01`.
+`/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/texture-coop-final-01`.
 The detailed gameplay tracker is `docs/gameplay-gaps-2026-10-08.md`; the incoming
 handoff is `/home/llm2x/Documents/EI/local/gameplay-handoff-2026-10-09.md`.
 
 P1 and P2 were selected in the audit's priority order because they can be
 implemented in texture-loading/composition code without changing those gameplay
-systems. Both are focused first steps; this document does not mark the larger
-wound-overlay proposal or the other audit opportunities complete.
+systems. The initial steps below are followed by the separately qualified P1
+wound-only shader path and P2 terrain/scenery work. Other audit opportunities
+and target-device acceptance remain distinct.
 
 ## P1: retain outfit pixels for wounds
 
@@ -102,7 +107,9 @@ Cost: one additional mip-free RGBA8 source per cached outfit texture
 The first P1 step removed normal outfit readback. This follow-up also avoids
 repeating native wound-layer composition for every outfit with the same mask,
 human/creature limb layout and six damage levels. The complete GPU-overlay
-proposal was evaluated first and remains unshipped for the filtering reason below.
+proposal was evaluated first and was not shipped at this checkpoint for the
+filtering reason below. The later shader checkpoint adopts an explicit different
+filtering contract rather than claiming equality with the baked image.
 
 ### Accepted implementation
 
@@ -211,12 +218,74 @@ conversion to approximate the remake's byte-color blend. The deliberately wrong
 linear-blend control reaches 67/255 error on Forward+. Neither a naive second
 sampler nor unconditional sRGB conversion is a qualified replacement.
 
-Future GPU work must explicitly choose and validate its filtering/visual
+The experiment established that GPU work must explicitly choose and validate its filtering/visual
 contract, then preserve late-job ownership, detailed-head exclusions, soft-alpha
 creatures and detached selection copies. If material state moves from the
 albedo texture to new uniforms, `OrderMarks._bright_of` must synchronize those
-uniforms too; it currently resynchronizes only albedo. The current CPU cache is
-a reusable first stage, not completion of full-albedo/upload elimination.
+uniforms too; at this checkpoint it resynchronized only albedo. This CPU cache
+is the reusable first stage used by the later implementation below.
+
+## P1 follow-up: shared wound-only shader textures — 9 October
+
+Shipped `EIUnitModel.LitMaterial` and `PreviewMaterial` now retain their original
+base textures and sample one shared native-size wound texture. Cold damage
+states still compose the native PNT3/ARGB4444 wound bytes on a worker, generate
+the wound's own mip chain and upload it. They no longer resize/blend that layer
+into a replacement albedo for each outfit. A warm wound state reused by a new
+outfit requires no additional wound job or upload. No graphics option was added.
+
+### Sampling and ownership contract
+
+The original reference uses a separate wound texture/pass; the prior remake
+bake is documented as an approximation. This adaptation preserves the existing
+base fetch, samples wound bytes as raw UNORM, applies encoded-colour straight
+source-over RGB/texture alpha, and applies material opacity once. Each texture
+keeps its own dimensions, LOD and sharpening. Native-size box mips are an
+explicit remake antialiasing policy, not a claim about the original mip allocator.
+Filtering before blending intentionally differs from the old baked result;
+this is not complete native two-pass emulation or baked-pixel equivalence.
+
+`UnitWounds._overlay` shares its native producer with any simultaneous legacy
+job. The 64-entry/4 MiB CPU layer LRU also evicts its GPU mip texture; active
+materials and pending jobs retain their own references. Weak pending consumers
+check both current base identity and newest damage request. Healing clears the
+binding immediately; changing an albedo cancels an old pending request. Actual
+equipment/complexion changes rebuild models, and `OrderMarks` keeps active and
+detached bright copies synchronized. Shutdown drains workers and drops caches.
+
+Unsupported custom `StandardMaterial3D` keeps its existing per-albedo bake.
+The existing collector supports instance material overrides and surface
+overrides; it does not extend support to mesh-owned materials with no instance
+override. All shipped unit figures use overrides. Detailed-head exclusions,
+armour suppression, paired limbs and health thresholds are unchanged. Retained
+`SOURCE_IMAGE` CPU pixels still exist; their memory is not counted as eliminated.
+
+### Evidence and limits
+
+The [P1 shader receipt](validation/wound-gpu-2026-10-09.json) retains independent
+native-byte and CPU sampling oracles, real human/boar/wisp world and preview
+figures, sharpening, healing, selection, stale ownership, cache eviction and
+custom fallback controls. Final Compatibility, Forward+ and Mobile runs each
+pass 174 controls. Mobile uses HDR only for the strict numerical oracle; its
+ordinary material/figure controls use the usual target. Ordinary Mobile
+cross-program comparisons retain small dark-colour quantization differences,
+so the HDR result is not presented as a passing 2/255 ordinary-target oracle.
+
+The first production wrapper changed two healthy Forward+ silhouette pixels.
+Keeping the original base-fetch statement in the fragment shader removes that
+regression; saved pre-integration comparisons pass without widening tolerance.
+Earlier filter/oracle setup failures, the Mobile precision control and the
+failed comparisons remain in the receipt. Independent visual inspection found
+no new fringe or silhouette damage in the accepted human, boar and wisp views.
+
+For eight distinct 256×256 outfit identities sharing one authored human damage
+state, cold output falls from eight replacement textures / **2,796,192 bytes**
+to one native wound texture / **87,380 bytes**. Warm new outfits upload zero
+additional wound bytes. These are bounded upload/allocation observations,
+excluding outfit construction; they do not establish combat FPS or device
+performance. The old baked appearance and independent sampling differ visibly
+at some wound edges, as quantified in the receipt. Target-device and extended
+gameplay acceptance remain separate.
 
 ## P2: preserve authored mip levels and eligible compressed textures
 
@@ -1727,6 +1796,44 @@ Correctness runs overlapped unrelated Godot work; timing fields are diagnostic
 only. No Android/browser hardware, installed build or real save was used. This
 is a native-cache eligibility improvement, not the upstream split-depth cache,
 a directional-shadow optimization or a demonstrated device/FPS speedup.
+
+## P5 diagnostic: moving unit beside static local-shadow casters — 9 October
+
+The separate static-depth/dynamic-overlay cache remains unimplemented. A bounded
+Compatibility diagnostic now measures the actual work that a moving unit causes
+beside the authored `zone3obr` camp fire. It uses an original Human Hero figure,
+walk animation and walkable original navigation cells, one unchanged radius-five
+light, a fixed 800×600 camera and the production light selector. The actor's
+placement/pose is controlled; this is not a gameplay simulation benchmark.
+
+The full/static-excluded ABBA sequence retains all visible meshes but deliberately
+removes scenery shadows in the excluded arms. **44 checks pass**, with six
+inspected captures: the body moves visibly, its own shadow remains, held shadow
+primitive counts are zero, and restoring caster flags restores the exact image.
+Every moving full arm submits 15,863 median shadow primitives versus 930 without
+the static casters: 14,933 repeated primitives and 27 GLES draws. Colour-pass
+geometry distributions remain unchanged across the four arms.
+
+The two observed whole-viewport GPU differences are only **0.042 and 0.025 ms**;
+CPU differences are **0.052 and 0.058 ms**. The 0.016 ms GPU drift between the
+full arms is material. These are not isolated static-shadow costs: removing
+static depth also changes dynamic-caster occlusion and the colour pass's shadow
+values. No frame-rate improvement or cache performance is established.
+
+A source-qualified Compatibility prototype could retain a static depth cube,
+copy its six faces into the sampled cube and draw dynamic casters without
+clearing it. This scene would add 786,432 depth-payload bytes and at least
+1,572,864 theoretical read/write bytes per moving frame; copy latency is
+unmeasured. Correct implementation also needs conservative caster eligibility,
+separate invalidation versions, old/new bounds, full-light static coverage,
+material/texture/LOD invalidation, bounded residency and complete owner/atlas
+teardown. The [diagnostic receipt](validation/local-shadow-overlay-opportunity-2026-10-09.json)
+records the pinned engine/reference source map and limits.
+
+The small, noisy viewport difference does not justify that engine work for this
+workload. Keep the fixture and investigate an expensive target-device workload
+before implementation. No production switch, engine change or longer timing
+matrix was added. The run has no other Godot process at either endpoint.
 
 ## P6 investigation: directional-shadow snapping
 
@@ -4424,7 +4531,7 @@ and actor/script-free teardown against the audit's V7 acceptance list.
 The current private Linux export freezes committed application revision
 `79bee8a56f7a27a9897ae9ebe44fa6000d94cf21` at `/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/cloud-coop-final-01`.
 Import/export completes without errors and excludes no working game changes.
-[Current combined evidence](validation/renderer-coop-integration-2026-10-09.json)
+[That checkpoint's evidence](validation/renderer-coop-integration-2026-10-09.json)
 records **711 passing checks and 60 captures**:
 
 - **156 renderer checks:** High cloud volumes and Natural terrain transitions
@@ -4507,13 +4614,55 @@ and protocol 13 remain unchanged. Device costs, sustained playthroughs and the
 data-dependent V7 work below are still open. The later supplied-save U45
 investigation is recorded in the gameplay handoff.
 
+## Combined P1/P2 texture acceptance — 9 October
+
+The private `texture-coop-final-01` export freezes committed source
+`63c16788f1bba2be73d1a00d534b310a4bf0fc98`, with the qualified `fa2a3139…`
+runtime and `d20a296e…` native helper unchanged. Its PCK SHA-256 is
+`5a3847a25a7a46d99f63c2f13ef76331556fc6bdd6b504dada47dfab2d90dfcb`.
+[Combined evidence](validation/renderer-texture-integration-2026-10-09.json)
+records **190 runtime checks, 23 independent saved-image comparisons and 37
+captures**, with no runtime errors or foreign Godot processes.
+
+The actual Forward+ Game/World/Terrain test passes 134 checks. Compressed raw
+arrays survive effect toggles and world replacement; cloud volumes, mist,
+ambient life and camera ownership retain their earlier controls. A real posed
+GameUnit and Paperdoll share wounds through ordinary asynchronous publication,
+selection, healing and authored equipment replacement. World images exclude
+HUD health pixels. The old figure is retired while the Paperdoll viewport is
+retained, framed and paired with the new model. Compatibility and Mobile each
+pass 28 composed terrain/water/cloud shader controls, including persistent waves,
+held clocks, alternate liquid branches and exact off/re-enable restoration.
+Full-RGBA image comparisons independently confirm the saved control images.
+
+All 712 frozen post-import files match the accepted P1 candidate. Its manifest
+was captured before import and omitted 30 generated `.gd.uid` sidecars; a
+separate hash comparison of the actual post-import stages resolves that initial
+manifest-only mismatch. Relative to the earlier `79bee8a` combined pack, only
+`terrain.gd`, `unit_model.gd`, `unit_wounds.gd` and `order_marks.gd` differ.
+Gameplay source is unchanged: the previous co-op/solo evidence is retained,
+not rerun or added to these totals.
+
+Two setup runs are excluded. The first prototype included HUD health changes
+and held replacement figures before explicitly posing them. The first revised
+run passed wound presentation but correctly lost ambient re-admission because
+the prepared hero remained on its habitat patch. Restoring the original actor
+position/camera before the inherited lifecycle checks fixes the fixture; no
+production code or tolerance changed. Both records remain linked.
+
+This is Linux RTX 3090 functional acceptance. It does not establish Windows,
+Android, browser, sustained combat or FPS results. P1 Mobile precision/custom
+material limits and P2 compressed/tail colour differences remain in their
+feature receipts. Source Experimental 6 and protocol 13 remain unchanged; no
+release, installation, original asset or real save was modified.
+
 ## Next work in the established order
 
-1. **P1/P2 remaining texture work:** retained outfit pixels and shared native
-   wound composition are implemented. Final wound-albedo blending/mips/uploads
-   remain. The separate GPU sampler experiment changes filtered wound appearance;
-   do not enable it without a justified visual contract and material-lifecycle
-   acceptance. P2's HD scenery path now avoids the main-device round trip on
+1. **P1/P2 remaining texture work:** shipped unit/preview materials now share
+   native-size wound-only textures over unchanged bases, under the explicit
+   sampling/lifecycle contract above. Unsupported custom materials keep their
+   legacy bake; source-image retention and target-device measurements remain.
+   Do not claim original two-pass or old baked-pixel equivalence. P2's HD scenery path now avoids the main-device round trip on
    RenderingDevice backends, with byte/render/lifetime evidence above.
    P2's terrain follow-up also avoids enlarged atlas readback and final upload,
    with the unchanged fallback and byte/render evidence above. HD-off raw
@@ -4551,7 +4700,10 @@ investigation is recorded in the gameplay handoff.
    engine lifetime/lock patch. Forward+ live shader changes now also require
    the eighth common shader-lifetime patch validated in the mound section.
    The upstream static-depth/dynamic-overlay cache
-   and real device performance remain open.
+   and real device performance remain open. The new moving-unit/static-scenery
+   Compatibility probe confirms repeated shadow submissions, but its small,
+   noisy viewport delta does not justify the unmeasured depth-copy/cache costs.
+   Use a costly target-device workload before building that larger engine path.
    For P6, identify actual shimmer/redraw cost and renderer capabilities
    before changing cascade settings or planning engine-level projection reuse.
 5. **C1 character batching/skinning:** the rigid prototype above now measures
