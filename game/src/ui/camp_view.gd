@@ -145,10 +145,9 @@ const REFUND_RECT := Rect2(20, 355, 160, 28)
 ##   skills screens a bag item goes on the hero, a hero's item into the bag
 ##   (_press), in the other screens between the goods / bag and the pile
 ##   (_move); a refused press plays messbox\cancel.wav;
-## Rows start on filter 5: "all" for the bag
-## "ready-made" for items and spells, even when that category is empty.
-##  builds separate item and spell rows; shows
-## those existing rows when switching modes, retaining each row's filter.
+## Rows start on filter 5: "all" for the bag, "ready-made" for traders.
+## The remake's constructors select a combined relevant-items filter on entry;
+## other modes keep the separate item/spell rows and their selected filters.
 
 signal picked(id: String, where: String)
 ## Yes pressed in a trade screen: items to buy from the trader, items to sell.
@@ -292,6 +291,12 @@ var _perk_scroll := 0    # known abilities
 var _avail_scroll := 0   # available abilities
 var _hold_cmd := {}      # the held skill row's command
 var _hold_t := 0.0
+## Shop transfer repeats only the captured item, even when its row scrolls.
+## It stages copies locally; Accept still sends one atomic trade command.
+const TRANSFER_DELAY := 0.5
+const TRANSFER_INTERVAL := 0.075
+var _transfer_hold := {}
+var _transfer_t := 0.0
 ## Swap screen: the money field's text and when this player last changed
 ## its offer (the host's table wins again after a quiet moment).
 var swap_money := ""
@@ -464,6 +469,7 @@ func set_mode(m: String) -> void:
 	_touch_spell_info = false
 	var changed := m != mode
 	if changed:
+		_stop_transfer_hold()
 		var rows := _row_counts()
 		buy_pile.clear()
 		sell_pile.clear()
@@ -481,6 +487,13 @@ func set_mode(m: String) -> void:
 		var row: Dictionary = _shop_rows["spells" if spell_shop() else "items"]
 		shop_filter = int(row.filter)
 		shop_scroll = int(row.scroll)
+	if changed and mode in ["spellconstr", "itemconstr"]:
+		# Start with every usable category, including ready items to dismantle
+		# and spells to enchant with. The other filters remain available.
+		_set_bag_filter(0)
+		_set_shop_filter(5)
+		scroll = 0
+		shop_scroll = 0
 	_doll.visible = mode == "weapons"
 	for k in _views:
 		_views[k].visible = _key_shown(k)
@@ -549,6 +562,18 @@ func _r(r: Rect2) -> Rect2:
 func touch_hold(point: Vector2) -> void:
 	var p := (point - _o()) / _s()
 	_update_hover(p)
+	if trading():
+		for key: String in _content:
+			if _key_shown(key) and _slot_rect(key).has_point(p):
+				var id := String(_content[key][0])
+				var where := String(_content[key][1])
+				if _transfer_available(id, where):
+					selected_id = id
+					selected_where = where
+					_move(id, where)
+					_start_transfer_hold(id, where)
+					picked.emit(id, "info")
+				return
 	# Hold the equipped weapon to make it active, without first unequipping it.
 	if mode == "weapons" and _unit:
 		for i in TURN_RECTS.size():
@@ -569,6 +594,7 @@ func touch_hold(point: Vector2) -> void:
 func touch_release() -> void:
 	_turn_dir = 0
 	_hold_cmd = {}
+	_stop_transfer_hold()
 
 
 func touch_scroll(point: Vector2, delta: Vector2) -> void:
@@ -681,17 +707,17 @@ func bag_items() -> Array:
 	var out := []
 	if mode in ["spellconstr", "itemconstr"]:
 		for sp: String in hero_spells():
-			if bag_count("spell:" + sp) > 0 and _passes("spell:" + sp, false, FILTER_SETS.bag[2][filter]):
+			if bag_count("spell:" + sp) > 0 and _passes("spell:" + sp, false, _filter_set(500)[2][filter]):
 				out.append("spell:" + sp)
 	for it: String in _unique(st.items + ([] if mode == "swap" else st.quest_items.keys())):
-		if not it in out and bag_count(it) > 0 and _passes(it, it in st.quest_items, FILTER_SETS.bag[2][filter]):
+		if not it in out and bag_count(it) > 0 and _passes(it, it in st.quest_items, _filter_set(500)[2][filter]):
 			out.append(it)
 	return out
 
 
 ## The trader's goods of this screen through the trader's filter.
 func shop_items() -> Array:
-	var set: Array = FILTER_SETS["spells" if spell_shop() else "items"][2]
+	var set: Array = _filter_set(0)[2]
 	var out := []
 	for it: String in hud.game.session.shop_stock({"shop": shop_id}):
 		var spellish := Items.is_spell_piece(it)
@@ -738,6 +764,12 @@ func _unique(a: Array) -> Array:
 func _passes(it: String, quest: bool, f: String) -> bool:
 	var k := Items.kind(it)
 	match f:
+		"constructor":
+			if quest:
+				return false
+			if mode == "spellconstr":
+				return Items.is_spell_piece(it)
+			return k in ["blueprint", "material"] or Items.can_deconstruct(it) or Items.is_spell_container(it)
 		"make": return k == "blueprint" or k == "material"
 		"runes": return k == "rune"
 		"ready": return k in ["weapon", "armor", "quick"] or it.begins_with("spell:")
@@ -927,7 +959,7 @@ func _row_received(row: String, it: String) -> void:
 
 func _bag_received(it: String) -> void:
 	var quest: bool = it in hud.game.session.state.quest_items
-	var kinds: Array = FILTER_SETS.bag[2]
+	var kinds: Array = _filter_set(500)[2]
 	if kinds[filter] != "all" and GameData.option("switch_filters") and not _passes(it, quest, kinds[filter]):
 		for f in kinds.size():
 			if kinds[f] != "all" and _passes(it, quest, kinds[f]):
@@ -951,7 +983,7 @@ func _shop_received(it: String) -> void:
 	if shown:
 		row.filter = shop_filter
 		row.scroll = shop_scroll
-	var kinds: Array = FILTER_SETS[name][2]
+	var kinds: Array = _filter_set(0)[2] if shown else FILTER_SETS[name][2]
 	if GameData.option("switch_filters") and not _passes(it, false, kinds[int(row.filter)]):
 		for f in kinds.size():
 			if _passes(it, false, kinds[f]):
@@ -978,12 +1010,14 @@ func _shop_received(it: String) -> void:
 
 ##  keeps a scroll offset for every filter.
 func _set_bag_filter(f: int) -> void:
+	_stop_transfer_hold()
 	_bag_scrolls[filter] = scroll
 	filter = f
 	scroll = int(_bag_scrolls[f])
 
 
 func _set_shop_filter(f: int) -> void:
+	_stop_transfer_hold()
 	var row: Dictionary = _shop_rows["spells" if spell_shop() else "items"]
 	row.scrolls[shop_filter] = shop_scroll
 	shop_filter = f
@@ -1149,6 +1183,7 @@ func constr_cost() -> int:
 
 
 func _on_yes() -> void:
+	_stop_transfer_hold()
 	if not deal_info()[2]:
 		return
 	if mode == "weapons":
@@ -1217,6 +1252,7 @@ func _on_yes() -> void:
 ## A map transfer can invalidate a request before the host accepts it.
 ## Drop its local offer and ignore any late result from that world.
 func reset_transactions() -> void:
+	_stop_transfer_hold()
 	trade_wait = false
 	_trade_req += 1
 	_s_req += 1
@@ -1266,6 +1302,7 @@ func constr_result(e: Dictionary) -> void:
 
 
 func _on_cancel() -> void:
+	_stop_transfer_hold()
 	if trade_wait: return
 	var rows := _row_counts()
 	var returns: Array[Array] = []
@@ -1294,6 +1331,8 @@ func _on_cancel() -> void:
 
 
 func refresh(u: GameUnit) -> void:
+	if u != _unit:
+		_stop_transfer_hold()
 	_unit = u
 	_sig = ""
 	if _ready_done:
@@ -1301,6 +1340,7 @@ func refresh(u: GameUnit) -> void:
 
 
 func _process(_dt: float) -> void:
+	_process_transfer_hold(_dt)
 	if _turn_dir != 0:
 		if not is_visible_in_tree() or mode != "weapons" or tutorial_visible() \
 				or not (Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) or TouchInput.holding(self)):
@@ -1529,6 +1569,8 @@ func _notification(what: int) -> void:
 	if what in [NOTIFICATION_APPLICATION_FOCUS_OUT, NOTIFICATION_WM_WINDOW_FOCUS_OUT] \
 			or (what == NOTIFICATION_VISIBILITY_CHANGED and not is_visible_in_tree()):
 		_turn_dir = 0
+		_hold_cmd = {}
+		_stop_transfer_hold()
 
 
 func _input(e: InputEvent) -> void:
@@ -1536,6 +1578,8 @@ func _input(e: InputEvent) -> void:
 	# outside the arrow. Catch release before another control can consume it.
 	if e is InputEventMouseButton and e.button_index == MOUSE_BUTTON_LEFT and not e.pressed:
 		_turn_dir = 0
+		_hold_cmd = {}
+		_stop_transfer_hold()
 
 
 func _gui_input(e: InputEvent) -> void:
@@ -1563,6 +1607,7 @@ func _gui_input(e: InputEvent) -> void:
 				return
 	if not (e is InputEventMouseButton and e.pressed and e.button_index == MOUSE_BUTTON_LEFT):
 		return
+	_stop_transfer_hold()
 	var p: Vector2 = (e.position - _o()) / _s()
 	if mode == "weapons":
 		for i in TURN_RECTS.size():
@@ -1641,6 +1686,7 @@ func _gui_input(e: InputEvent) -> void:
 			picked.emit(id, where if where == "bag" else "info")
 		else:
 			_move(id, where)
+			_start_transfer_hold(id, where)
 			picked.emit(id, "info")
 		queue_redraw()
 		accept_event()
@@ -1830,6 +1876,48 @@ func _pile_accepts(pile: Array, id: String) -> bool:
 		and (pile.has(id) or _unique(pile).size() < PILE_CELLS)
 
 
+func _transfer_available(id: String, where: String) -> bool:
+	if id.is_empty() or hud == null or trade_wait or not trading():
+		return false
+	if where == "shop":
+		return _row_accepts(id, true) and shop_left(id) > 0 and _pile_accepts(buy_pile, id)
+	if where == "bag":
+		return _row_accepts(id, false) and not id in hud.game.session.state.quest_items \
+			and bag_count(id) > 0 and _pile_accepts(sell_pile, id)
+	return false
+
+
+func _start_transfer_hold(id: String, where: String) -> void:
+	if not _transfer_available(id, where):
+		return
+	_transfer_hold = {"item": id, "where": where, "mode": mode, "shop": shop_id}
+	_transfer_t = -TRANSFER_DELAY
+
+
+func _stop_transfer_hold() -> void:
+	_transfer_hold = {}
+	_transfer_t = 0.0
+
+
+func _process_transfer_hold(dt: float) -> void:
+	if _transfer_hold.is_empty():
+		return
+	var held := _transfer_hold
+	if not is_visible_in_tree() or tutorial_visible() or held.mode != mode or held.shop != shop_id \
+			or not (Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) or TouchInput.holding(self)) \
+			or not _transfer_available(held.item, held.where):
+		_stop_transfer_hold()
+		return
+	_transfer_t += dt
+	if _transfer_t < 0.0:
+		return
+	# One copy per tick at most: a stalled frame must not dump a whole stack.
+	_transfer_t = TRANSFER_INTERVAL * -1.0
+	_move(held.item, held.where)
+	if not _transfer_available(held.item, held.where):
+		_stop_transfer_hold()
+
+
 ## Trade screens: goods -> buy pile, bag -> sell pile, a pile -> back.
 func _move(id: String, where: String) -> void:
 	var rows := _row_counts()
@@ -1970,9 +2058,11 @@ func _mat_fits(bp: String, mat: String) -> bool:
 
 
 func _filter_set(y0: float) -> Array:
-	if y0 > 0:
-		return FILTER_SETS.bag
-	return FILTER_SETS["spells" if spell_shop() else "items"]
+	var fset: Array = FILTER_SETS["bag" if y0 > 0 else ("spells" if spell_shop() else "items")]
+	if mode in ["itemconstr", "spellconstr"]:
+		fset = fset.duplicate(true)
+		fset[2][0 if y0 > 0 else 5] = "constructor"
+	return fset
 
 
 func _get_tooltip(pos: Vector2) -> String:
@@ -1984,6 +2074,8 @@ func _get_tooltip(pos: Vector2) -> String:
 	for y0 in ([500.0, 0.0] if shop_row() else [500.0]):
 		var hit := _row_hit(p, y0)
 		if hit >= 0 and hit < 10:
+			if _filter_set(y0)[2][hit] == "constructor":
+				return _str(MODE_TITLES[mode])
 			return GameData.text("tip %d" % (int(_filter_set(y0)[1]) + hit)).strip_edges()
 		if hit >= 10:
 			return GameData.text("tip 20400").strip_edges()
@@ -2076,7 +2168,7 @@ func _draw() -> void:
 			_region("campslots", Rect2(i * 100, 0, 100, 100), TOP_CELL_UV[0 if i < 4 else 1])
 		for q in 4:
 			_region("camp%d" % (q + 1), Rect2(200 + (q % 2) * 200, 100 + (q / 2) * 200, 200, 200), Rect2(28, 28, 200, 200))
-	_draw_row(500, "inventory01", FILTER_SETS.bag, filter)
+	_draw_row(500, "inventory01", _filter_set(500), filter)
 	_draw_side()
 	var d := deal_info()
 	for b: String in side_buttons():
@@ -2099,7 +2191,13 @@ func _draw() -> void:
 		if not _key_shown(k) or not Items.is_spell_piece(id): continue
 		var texture := String(Items.look(id).get("texture", ""))
 		var picture := SpellSlots.icon(texture) if not texture.is_empty() else null
-		if picture: draw_texture_rect(picture, _r(_slot_rect(k).grow(-10.0)), false)
+		if picture:
+			var rect := _r(_slot_rect(k).grow(-10.0))
+			draw_texture_rect(picture, rect, false)
+			if Items.is_spell_container(id):
+				# Keep the shop price and stack count clear. Camp cells have room
+				# for one strip below the price; the small HUD uses two rows.
+				SpellSlots.draw_runes(self, Items.spell_code(id), rect.grow_individual(0, 0, 0, 10.0 * s), Color.WHITE, 8)
 	# Selection.
 	for k in _content:
 		if _key_shown(k) and _content[k][0] != "" and _content[k][0] == selected_id and _content[k][1] == selected_where:
@@ -2713,6 +2811,9 @@ func item_info_text(id: String) -> String:
 	if not (inf.tail as PackedStringArray).is_empty():
 		out.append("")
 		out.append_array(inf.tail)
+	if inf.has("wrap"):
+		out.append("")
+		out.append(String(inf.wrap))
 	return "\n".join(out)
 
 

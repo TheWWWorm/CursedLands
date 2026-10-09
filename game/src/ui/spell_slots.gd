@@ -55,6 +55,33 @@ static func icon(name: String) -> Texture2D:
 	return _icons[name]
 
 
+## Keep duplicates and order: these are the runes installed in this spell,
+## not the modifier types allowed by its prototype. Reuse the original art.
+static func rune_icons(spell: String) -> Array[Texture2D]:
+	var out: Array[Texture2D] = []
+	for code: String in Spells.mods_of(spell).slice(0, Spells.MAX_MODS):
+		var name := String(Items.look("rune:" + code).get("texture", ""))
+		out.append(icon(name) if not name.is_empty() else null)
+	return out
+
+
+## A compact strip along the lower edge preserves the full-colour spell art.
+## Two rows keep eight installed runes readable even in the small HUD slots.
+static func draw_runes(canvas: CanvasItem, spell: String, rect: Rect2, tint := Color.WHITE, columns := 4) -> void:
+	var runes := rune_icons(spell)
+	if runes.is_empty():
+		return
+	var side := rect.size.x / float(maxi(5, columns))
+	var cols := mini(columns, runes.size())
+	var rows := ceili(runes.size() / float(columns))
+	var origin := Vector2(rect.end.x - cols * side, rect.end.y - rows * side)
+	for i in runes.size():
+		var cell := Rect2(origin + Vector2(i % columns, i / columns) * side, Vector2.ONE * side)
+		canvas.draw_rect(cell, Color(0.03, 0.03, 0.04, 0.85))
+		if runes[i]:
+			canvas.draw_texture_rect(runes[i], cell.grow(-side * 0.07), false, tint)
+
+
 ## Additive pass for the picked cell: + (0x40, 0x40, 0x40) where the picture is.
 var _glow: Control
 var _glow_rect := Rect2()
@@ -143,10 +170,9 @@ func _get_tooltip(p: Vector2) -> String:
 	var i := _slot_at(p)
 	if i < 0:
 		return ""
-	var sp := Spells.parse(_entries[i][0])
-	var t := GameData.text("spell " + String(sp.code)).get_slice("\n", 0).strip_edges()
+	var spell := String(_entries[i][0])
 	# hotkey 0x1e + slot (spell1..8).
-	var tip := GameData.tip_key(BeltStrip.spell_rows(t if t else String(sp.name), _entries[i][0]), 30 + i)
+	var tip := GameData.tip_key(BeltStrip.spell_rows(Spells.title(spell), spell), 30 + i)
 	return tip if _usable[i] else tip + "\n" + RemakeText.t("Spell requirements are not met.")
 
 
@@ -224,6 +250,7 @@ func _draw() -> void:
 			if _usable[i] and game and game.pending_spell == String(e[0]):
 				_glow_tex = tex
 				_glow_rect = r
+		draw_runes(self, String(e[0]), r, Color.WHITE if _usable[i] else Color(0.4, 0.4, 0.4))
 	_glow.queue_redraw()
 	if TouchInput.enabled and _entries.size() > _capacity():
 		var x := size.x * 0.5

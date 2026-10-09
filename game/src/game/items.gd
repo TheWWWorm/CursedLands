@@ -397,7 +397,9 @@ static func flavor(id: String) -> String:
 		"loot_items": "litem"}.get(i.table, "")
 	var keys := ["%s %s %s" % [prefix, key_base, key_mat], "%s %s" % [prefix, key_base]]
 	if i.base == "material" and i.material:
-		keys.append("material " + key_mat)
+		# The generic "litem material" entry is only "Material\n." in the
+		# original data. As for the title, prefer this material's own text.
+		keys.push_front("material " + key_mat)
 	for key: String in keys:
 		var t := GameData.text(key)
 		if t:

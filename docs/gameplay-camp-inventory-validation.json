@@ -1,0 +1,197 @@
+{
+  "date": "2026-10-09",
+  "scope": [
+    "U40",
+    "U41",
+    "U42",
+    "U43"
+  ],
+  "baseline_commit": "92d4941",
+  "export": {
+    "command": [
+      "/home/llm2x/.local/bin/godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/gameplay-camp-ui-20261009/project/game",
+      "--export-release",
+      "Linux",
+      "/home/llm2x/Documents/EI/local/scratchpad/gameplay-camp-ui-20261009/build03/CPU.x86_64"
+    ],
+    "sha256": {
+      "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+      "libterrain_search.so": "dfd05a2ac322886c759d1512d7ca830388a67cbac8e04c529312855ba1eb0b69",
+      "CPU.pck": "acddac09db5260059aaba3635c9bba620351f536b0fdcb4a61e540eab88bcbeb"
+    }
+  },
+  "source_sha256": {
+    "game/src/game/items.gd": "813cfccd27403b8181991d7cebf04b40b87ea9ec4bb5c2b01c600dc6b5f69965",
+    "game/src/ui/camp_view.gd": "721084975e19016906da99baab1c7f686328db103d56ba37ae6198701d938f8a",
+    "game/src/ui/spell_slots.gd": "7f3580fad220c6423ff730f21d46a51b673bb2003548e56ebc85f9f2f2fbd0f5",
+    "tools/tests/camp_inventory_ui.gd": "de9ae73e7818950fd6f58e44d7041cfe3ad7c40a43a03c42f9c0c4b45e886273"
+  },
+  "runs": [
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/gameplay-camp-ui-20261009/build03/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camp_inventory_ui.gd",
+        "--label=camp-inventory-ui-base-headless-05",
+        "--ei-inline-host"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 9.016501017002156,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "12e374525c72fb35904fe6fd2d0f7964db3ee3940500ca64d7ce771a35faae6c",
+      "label": "camp-inventory-ui-base-headless-05",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/camp-inventory-ui-base-headless-05.log",
+      "summary": [
+        "CAMP_INVENTORY_UI cursed_lands 87 checks 0 failures"
+      ],
+      "unicode_diagnostics": 0
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/gameplay-camp-ui-20261009/build03/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camp_inventory_ui.gd",
+        "--label=camp-inventory-ui-astral-headless-05",
+        "--ei-inline-host"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 11.222119439975359,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "4306f4e998eb9e84fc0975cc0d6dc2b418c2c27ff28a3e0c0d4c9f77ea93481c",
+      "label": "camp-inventory-ui-astral-headless-05",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/camp-inventory-ui-astral-headless-05.log",
+      "summary": [
+        "CAMP_INVENTORY_UI lost_in_astral 91 checks 0 failures"
+      ],
+      "unicode_diagnostics": 0
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/gameplay-camp-ui-20261009/build03/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--resolution",
+        "1600x900",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camp_inventory_ui.gd",
+        "--label=camp-inventory-ui-astral-rendered-05",
+        "--ei-inline-host"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 26.251090631005354,
+      "errors": [],
+      "warnings": [
+        "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+      ],
+      "log_sha256": "3eea48e5972c3d61c356d2b2eac324aaaba5b9b626255732b97c3036e1c7aea6",
+      "label": "camp-inventory-ui-astral-rendered-05",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/camp-inventory-ui-astral-rendered-05.log",
+      "summary": [
+        "CAMP_INVENTORY_UI lost_in_astral 91 checks 0 failures"
+      ],
+      "unicode_diagnostics": 36
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/gameplay-camp-ui-20261009/build03/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_trade.gd",
+        "--label=camp-inventory-coop-trade-05",
+        "--ei-inline-host"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 26.24633238199749,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "8d361070269ef991983d023206f0296eea8ae54a394c84185293cbd0ce920702",
+      "label": "camp-inventory-coop-trade-05",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/camp-inventory-coop-trade-05.log",
+      "summary": [
+        "COOP_TRADE 31 checks 0 failures"
+      ],
+      "unicode_diagnostics": 0
+    }
+  ],
+  "screenshots": [
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/camp-inventory-ui-base-02/godot/app_userdata/Cursed Lands/equipped-spell-runes.png",
+      "sha256": "a43f2a7a98051382d45a06aba0dc021d36a65789783c92feb3b2e9f85719375b",
+      "inspected": true
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/camp-inventory-ui-base-02/godot/app_userdata/Cursed Lands/material-description.png",
+      "sha256": "b46914053c226c9beecdb9f3940a57dbdf18597f5cf6aee3c6793f76dcc82d73",
+      "inspected": true
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/camp-inventory-ui-base-02/godot/app_userdata/Cursed Lands/spell-constructor-runes.png",
+      "sha256": "363003cde39b4a8dfb6c4be262ae91c73fbbc508e9b5ef540e1a3dbea2dfbfcc",
+      "inspected": true
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/camp-inventory-ui-astral-rendered-05/godot/app_userdata/Cursed Lands/equipped-spell-runes.png",
+      "sha256": "0ddffc384e2474df0bb30a3c639e4869a2e4ba650aa1bd7c56c368b8797303ed",
+      "inspected": true
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/camp-inventory-ui-astral-rendered-05/godot/app_userdata/Cursed Lands/material-description.png",
+      "sha256": "281556bc68bf67e006b8088bf76a6936d8f454b3d7453f2d3705fef03d80b96d",
+      "inspected": true
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/camp-inventory-ui-astral-rendered-05/godot/app_userdata/Cursed Lands/spell-constructor-runes.png",
+      "sha256": "889c97c905658d7eeccabe85c99a10048c0e387dde0855494dd406403db3e733",
+      "inspected": true
+    }
+  ],
+  "findings": {
+    "U40": "Camp and equipped spell icons show authored modifier art from installed rune IDs, including repeated runes; full spell art stays intact. Equipped tooltip and inventory plain text preserve rune names. Camp markers use the space below price text.",
+    "U41": "Entering either constructor selects combined relevant inventory and shop categories, including keystones/runes/finished spells or blueprints/materials/dismantlable equipment/enchantment spells. Native manual filters remain available. Both weapon and armour families share the item constructor.",
+    "U42": "A captured shop/bag item repeats after 0.5s at most once per 0.075s tick. Capture keeps full wear/charge ID and stops on release, stock/inventory exhaustion, focus loss, hide, mode/filter/hero/shop change, cancellation or trade submission. Mouse and touch input path assertions pass; trade stays one authority transaction.",
+    "U43": "Original LITEM Material contains a placeholder period. MATERIAL <name> carries the actual localized description. Flavor lookup now prioritizes that material record, matching the existing title lookup."
+  },
+  "limitations": [
+    "Linux focused fixture validation; no physical gamepad/touch-device or Windows/macOS runtime acceptance. No release or installation.",
+    "Existing real ENet regression covers private guest inventory, stacked offers, and atomic validation. Held input is checked through live mouse/touch UI in single-session fixtures; extended internet latency and simultaneous held peer gestures were not separately exercised.",
+    "Russian rendered run emits Unicode-to-ASCII diagnostics while its checked strings and localized screenshots remain correct. This work does not claim to fix those diagnostics."
+  ],
+  "iteration_notes": [
+    "build01 passed base 80 checks; visual inspection caught rune/price overlap. build02 moves markers below camp prices and passed base rendered 81 checks (screenshots retained). build03 also restores installed-rune text in tooltips/plain info.",
+    "Early LiA fixture used absent bz2g and dereferenced null world in the release runtime (SIGSEGV). Corrected to authored bz1h and guarded absent world; no production/runtime fix inferred. Headless fixture frame waits were fixed before the final 91-check run."
+  ]
+}
