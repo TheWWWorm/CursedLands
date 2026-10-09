@@ -1386,8 +1386,16 @@ static func wave_sine_texture() -> ImageTexture:
 			512,1,false,Image.FORMAT_RF,WaveState.sine_table().to_byte_array()))
 	return _sine_tex
 
+## Gameplay owns World -> Map -> Terrain; standalone tools may put terrain
+## directly under a world. Menus have a map without a gameplay world.
+func game_world() -> GameWorld:
+	var parent := get_parent()
+	if parent is EIMapScene: parent = parent.get_parent()
+	return parent as GameWorld
+
+
 func _process(dt: float) -> void:
-	var world := get_parent() as GameWorld
+	var world := game_world()
 	if world and world.session and world.session.lmp_travel \
 			and not world.session.lmp_travel.can_tick(world):
 		return
@@ -1406,6 +1414,8 @@ func _update_wave_parameters() -> void:
 		var scroll := WaterCaustics.scroll(_waves.time_ticks()*WaveState.TICK)
 		_land_mat.set_shader_parameter("caustic_scroll",scroll)
 		if is_instance_valid(color_cache): color_cache.sync_parameter("caustic_scroll",scroll)
+		if is_instance_valid(details) and is_instance_valid(details.soft_ground):
+			details.soft_ground.sync_parameter(&"caustic_scroll",scroll)
 
 
 ## E of a map material: min(1, self-illumination × colour) (

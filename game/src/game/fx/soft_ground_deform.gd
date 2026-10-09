@@ -97,6 +97,13 @@ func refresh_rain_cover() -> void:
 		rec.material.set_shader_parameter("rain_cover", terrain._rain_cover)
 
 
+## Deformation duplicates the whole sector material. Live terrain effects
+## must update those receivers too, including untouched ground in the sector.
+func sync_parameter(parameter: StringName, value: Variant) -> void:
+	for rec: Dictionary in sectors.values():
+		rec.material.set_shader_parameter(parameter, value)
+
+
 func step_allowed(p: Vector2) -> bool:
 	var size := terrain.size_ei()
 	if p.x < 0.0 or p.y < 0.0 or p.x >= size.x or p.y >= size.y:

@@ -1,0 +1,946 @@
+{
+  "date": "2026-10-09",
+  "base_commit": "8409adf",
+  "qa_root": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics",
+  "scope": "Owning-world lookup and caustic phase forwarding to soft-ground copies; default-off policy unchanged.",
+  "changed_source_sha256": {
+    "game/src/ei/terrain.gd": "e03f4c5d59e80eacc0edcf875fc79d11ceb7598b171d1b2a088bd2d85e49595c",
+    "game/src/game/fx/soft_ground_deform.gd": "1238762b94c652bb550d2fe2e7bbedda99701399039710bf156d89e2eb9f7096",
+    "tools/tests/water_caustics.gd": "fa80564ec99ac0914edd08ea3d9ff71b522a6b3733a61e1015344a0c64c1a6fd"
+  },
+  "export": {
+    "manifest_path": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/caustics-clock-receivers/export.json",
+    "manifest_sha256": "fc7a6ceeae7dc1713469c8648ded754969fa8e2edadf05b4602a343d20966fe0",
+    "source_scripts_matched": 226,
+    "artifacts": {
+      "CursedLands.x86_64": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+      "CursedLands.pck": "32d990836a9bd78ab0ce8be66979d499c658956cd0bfbc752d5ccaea80332efa",
+      "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+    },
+    "return_code": 0,
+    "errors": []
+  },
+  "accepted_assertions": 86,
+  "accepted_runs": [
+    {
+      "label": "clock-receivers-headless",
+      "run": {
+        "tool_sha256_at_start": "fa80564ec99ac0914edd08ea3d9ff71b522a6b3733a61e1015344a0c64c1a6fd",
+        "helper_sha256_at_start": "06e1f5bd38b838f9296eab74bf168dd60b8e4736fd0da26e1ebd67661dbec7d6",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "32d990836a9bd78ab0ce8be66979d499c658956cd0bfbc752d5ccaea80332efa",
+        "termination_reason": null,
+        "timeout_sec": 100,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/caustics-clock-receivers/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_caustics.gd",
+          "--caustic-soft-ground"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 3.8134020880097523,
+        "other_render_processes_at_start": [
+          {
+            "pid": 4144420,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 4144843,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {}
+      },
+      "results": {
+        "checks": 20,
+        "failures": 0,
+        "rows": [
+          {
+            "admitted": 5682,
+            "bytes": 491520,
+            "case": "field",
+            "enable_us": 34680,
+            "tiles": 6739
+          },
+          {
+            "case": "soft-receiver",
+            "point": "(151.5, 191.5)",
+            "receiver": "(155.0, 173.0)",
+            "receivers": 1
+          },
+          {
+            "case": "clock",
+            "seconds_1x": 0.249991333333334,
+            "seconds_2x": 0.499975333333334
+          }
+        ]
+      }
+    },
+    {
+      "label": "clock-receivers-gl",
+      "run": {
+        "tool_sha256_at_start": "fa80564ec99ac0914edd08ea3d9ff71b522a6b3733a61e1015344a0c64c1a6fd",
+        "helper_sha256_at_start": "06e1f5bd38b838f9296eab74bf168dd60b8e4736fd0da26e1ebd67661dbec7d6",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "32d990836a9bd78ab0ce8be66979d499c658956cd0bfbc752d5ccaea80332efa",
+        "termination_reason": null,
+        "timeout_sec": 100,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/caustics-clock-receivers/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_caustics.gd",
+          "--caustic-soft-ground"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 9.820442661992274,
+        "other_render_processes_at_start": [
+          {
+            "pid": 4143989,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 4144420,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {
+          "caustics-night-on.png": "3f3f89a6e1d6829aed63221a1e43f9bfd5442e5d3503c385376c36c894d04424",
+          "caustics-lowered-on.png": "afa81083175091e084336519bbe12f42c0076f98236166248cd7826892eba367",
+          "caustics-excluded-14.png": "1c458ef34dd58c14af6731e467409f21715e1cf92c3c2d22d13895746a2e3eea",
+          "caustics-off-stable.png": "1c458ef34dd58c14af6731e467409f21715e1cf92c3c2d22d13895746a2e3eea",
+          "caustics-on.png": "3fa7d83ea5ae0478ec389db0fc985565051fc44093dd3a69a198641e2f6cfb0c",
+          "caustics-restored.png": "1c458ef34dd58c14af6731e467409f21715e1cf92c3c2d22d13895746a2e3eea",
+          "caustics-soft-explicit.png": "e0dede30c38430a77f1fa9a932dd7c18fe72535df50262702d459f361541503a",
+          "caustics-night-off.png": "3f3f89a6e1d6829aed63221a1e43f9bfd5442e5d3503c385376c36c894d04424",
+          "caustics-pattern.png": "0229d033bc125e8d48e264552a7dc4972636db7f59b4616e40a3a1ddc13b48ca",
+          "caustics-bed-on.png": "98a23e794a1a115f30c8df60e681aecee58213973296a3eaa41b32deea27ec8b",
+          "caustics-soft-automatic.png": "e0dede30c38430a77f1fa9a932dd7c18fe72535df50262702d459f361541503a",
+          "caustics-off.png": "1c458ef34dd58c14af6731e467409f21715e1cf92c3c2d22d13895746a2e3eea",
+          "caustics-moved.png": "e233afb99103831cd8c5df81e36adfb6a870122e2f9fe4ab4fef65301c58289b",
+          "caustics-bed-off.png": "afa81083175091e084336519bbe12f42c0076f98236166248cd7826892eba367",
+          "caustics-held.png": "3fa7d83ea5ae0478ec389db0fc985565051fc44093dd3a69a198641e2f6cfb0c",
+          "caustics-excluded-13.png": "1c458ef34dd58c14af6731e467409f21715e1cf92c3c2d22d13895746a2e3eea",
+          "caustics-lowered-off.png": "afa81083175091e084336519bbe12f42c0076f98236166248cd7826892eba367"
+        }
+      },
+      "results": {
+        "checks": 33,
+        "failures": 0,
+        "rows": [
+          {
+            "case": "original program is settled",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "admitted": 5682,
+            "bytes": 491520,
+            "case": "field",
+            "enable_us": 31293,
+            "tiles": 6739
+          },
+          {
+            "case": "visible",
+            "difference": {
+              "changed_pixels": 55329,
+              "peak_delta": 11,
+              "pixels_over_2": 6484
+            }
+          },
+          {
+            "case": "zero game time holds caustic animation",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "draws",
+            "off": 29,
+            "on": 29
+          },
+          {
+            "case": "off-on-off restores the image",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "animated",
+            "difference": {
+              "changed_pixels": 62865,
+              "peak_delta": 11,
+              "pixels_over_2": 7267
+            }
+          },
+          {
+            "case": "no caustics without sunlight",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "lowering water removes caustics from the exposed bed",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "excluded liquid keeps original terrain image 13",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "excluded liquid keeps original terrain image 14",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "deformed caustics match explicit phase binding",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "soft-receiver",
+            "point": "(151.5, 191.5)",
+            "receiver": "(155.0, 173.0)",
+            "receivers": 1
+          },
+          {
+            "case": "clock",
+            "seconds_1x": 0.249989,
+            "seconds_2x": 0.499982666666668
+          }
+        ]
+      }
+    },
+    {
+      "label": "clock-receivers-mobile",
+      "run": {
+        "tool_sha256_at_start": "fa80564ec99ac0914edd08ea3d9ff71b522a6b3733a61e1015344a0c64c1a6fd",
+        "helper_sha256_at_start": "06e1f5bd38b838f9296eab74bf168dd60b8e4736fd0da26e1ebd67661dbec7d6",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "32d990836a9bd78ab0ce8be66979d499c658956cd0bfbc752d5ccaea80332efa",
+        "termination_reason": null,
+        "timeout_sec": 100,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/caustics-clock-receivers/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "mobile",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_caustics.gd",
+          "--caustic-soft-ground"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 10.577142635011114,
+        "other_render_processes_at_start": [
+          {
+            "pid": 4145717,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 4145717,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/cache"
+        },
+        "warnings": [],
+        "errors": [],
+        "png_sha256": {
+          "caustics-night-on.png": "d35940277c8ff5f4e2a5b96e01866c71db22b5e72b4656d81721fd31a9320854",
+          "caustics-lowered-on.png": "1ba0d9d9a06146c6cf97ace5a523d3d51402ff9ed204bf98ac733c18ba4826ec",
+          "caustics-excluded-14.png": "a912f77aa24105bdefd9e5605c50c418e94b5b6d64cc0a01df31d93b012bb478",
+          "caustics-off-stable.png": "a912f77aa24105bdefd9e5605c50c418e94b5b6d64cc0a01df31d93b012bb478",
+          "caustics-on.png": "15da175a8103c89fbd9e997ba593c576b2c969674a07ef46f6de9444e457822c",
+          "caustics-restored.png": "a912f77aa24105bdefd9e5605c50c418e94b5b6d64cc0a01df31d93b012bb478",
+          "caustics-soft-explicit.png": "36b593e945784cf8119c70e83ced024728933b052738bce654d6aa34da818598",
+          "caustics-night-off.png": "d35940277c8ff5f4e2a5b96e01866c71db22b5e72b4656d81721fd31a9320854",
+          "caustics-pattern.png": "0229d033bc125e8d48e264552a7dc4972636db7f59b4616e40a3a1ddc13b48ca",
+          "caustics-bed-on.png": "806c6c7a16ba84631e112fd9f836df412fe847646d056fc8bd478143319b7d50",
+          "caustics-soft-automatic.png": "36b593e945784cf8119c70e83ced024728933b052738bce654d6aa34da818598",
+          "caustics-off.png": "a912f77aa24105bdefd9e5605c50c418e94b5b6d64cc0a01df31d93b012bb478",
+          "caustics-moved.png": "c39051dd122735417498ebf6917c9ad8766ba744995d9be3874c087905ddbbdb",
+          "caustics-bed-off.png": "f92c919282aa8846be826402260ad87436ab3de47221ea13c1a2be2c72cf1817",
+          "caustics-held.png": "15da175a8103c89fbd9e997ba593c576b2c969674a07ef46f6de9444e457822c",
+          "caustics-excluded-13.png": "a912f77aa24105bdefd9e5605c50c418e94b5b6d64cc0a01df31d93b012bb478",
+          "caustics-lowered-off.png": "1ba0d9d9a06146c6cf97ace5a523d3d51402ff9ed204bf98ac733c18ba4826ec"
+        }
+      },
+      "results": {
+        "checks": 33,
+        "failures": 0,
+        "rows": [
+          {
+            "case": "original program is settled",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "admitted": 5682,
+            "bytes": 491520,
+            "case": "field",
+            "enable_us": 73762,
+            "tiles": 6739
+          },
+          {
+            "case": "visible",
+            "difference": {
+              "changed_pixels": 17550,
+              "peak_delta": 8,
+              "pixels_over_2": 8454
+            }
+          },
+          {
+            "case": "zero game time holds caustic animation",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "draws",
+            "off": 29,
+            "on": 29
+          },
+          {
+            "case": "off-on-off restores the image",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "animated",
+            "difference": {
+              "changed_pixels": 19438,
+              "peak_delta": 8,
+              "pixels_over_2": 9479
+            }
+          },
+          {
+            "case": "no caustics without sunlight",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "lowering water removes caustics from the exposed bed",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "excluded liquid keeps original terrain image 13",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "excluded liquid keeps original terrain image 14",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "deformed caustics match explicit phase binding",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "soft-receiver",
+            "point": "(151.5, 191.5)",
+            "receiver": "(155.0, 173.0)",
+            "receivers": 1
+          },
+          {
+            "case": "clock",
+            "seconds_1x": 0.249991999999999,
+            "seconds_2x": 0.499973333333333
+          }
+        ]
+      }
+    }
+  ],
+  "negative_controls": [
+    {
+      "label": "nested-world-baseline",
+      "run": {
+        "tool_sha256_at_start": "01fa6f4b9675aaedfe6188c082b05dafc8a9351403d586e5a9bdb30de256da92",
+        "helper_sha256_at_start": "06e1f5bd38b838f9296eab74bf168dd60b8e4736fd0da26e1ebd67661dbec7d6",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "1e32c7e4522af89fccc23710f7fecf5fb2612173af9fd8507f9ad3d43713ea54",
+        "termination_reason": null,
+        "timeout_sec": 120,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/caustics-final/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_caustics.gd"
+        ],
+        "return_code": 1,
+        "elapsed_sec": 3.3092514780000784,
+        "other_render_processes_at_start": [],
+        "other_render_processes_at_end": [],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [
+          "FAIL unregistered LMP world holds the terrain clock"
+        ],
+        "png_sha256": {}
+      },
+      "results": {
+        "checks": 14,
+        "failures": 1,
+        "rows": [
+          {
+            "admitted": 3564,
+            "bytes": 196608,
+            "case": "field",
+            "enable_us": 24972,
+            "tiles": 5649
+          },
+          {
+            "case": "clock",
+            "seconds_1x": 0.25,
+            "seconds_2x": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "label": "soft-sector-zone15-baseline",
+      "run": {
+        "tool_sha256_at_start": "7400297fd2cfd2350878a43fbd075fb95ea95c4d301dae845269828940e24b86",
+        "helper_sha256_at_start": "06e1f5bd38b838f9296eab74bf168dd60b8e4736fd0da26e1ebd67661dbec7d6",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "6cf7543f16853a750ede92c0440d7f436a2f00199f3b37a9fcc1e636bc05dce2",
+        "termination_reason": null,
+        "timeout_sec": 100,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/caustics-world-clock/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_caustics.gd",
+          "--caustic-soft-ground",
+          "--caustic-zone15"
+        ],
+        "return_code": 1,
+        "elapsed_sec": 9.817205111990916,
+        "other_render_processes_at_start": [],
+        "other_render_processes_at_end": [],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [
+          "FAIL deformed receiver follows the live terrain phase",
+          "FAIL deformed caustics match explicit phase binding"
+        ],
+        "png_sha256": {
+          "caustics-night-on.png": "3f3f89a6e1d6829aed63221a1e43f9bfd5442e5d3503c385376c36c894d04424",
+          "caustics-lowered-on.png": "afa81083175091e084336519bbe12f42c0076f98236166248cd7826892eba367",
+          "caustics-excluded-14.png": "1c458ef34dd58c14af6731e467409f21715e1cf92c3c2d22d13895746a2e3eea",
+          "caustics-off-stable.png": "1c458ef34dd58c14af6731e467409f21715e1cf92c3c2d22d13895746a2e3eea",
+          "caustics-on.png": "3fa7d83ea5ae0478ec389db0fc985565051fc44093dd3a69a198641e2f6cfb0c",
+          "caustics-restored.png": "1c458ef34dd58c14af6731e467409f21715e1cf92c3c2d22d13895746a2e3eea",
+          "caustics-soft-explicit.png": "e0dede30c38430a77f1fa9a932dd7c18fe72535df50262702d459f361541503a",
+          "caustics-night-off.png": "3f3f89a6e1d6829aed63221a1e43f9bfd5442e5d3503c385376c36c894d04424",
+          "caustics-pattern.png": "0229d033bc125e8d48e264552a7dc4972636db7f59b4616e40a3a1ddc13b48ca",
+          "caustics-bed-on.png": "98a23e794a1a115f30c8df60e681aecee58213973296a3eaa41b32deea27ec8b",
+          "caustics-soft-automatic.png": "2fe678fcfb6809210d8b967a4df46077bcbb89e3b367353cf78c00be282ffb62",
+          "caustics-off.png": "1c458ef34dd58c14af6731e467409f21715e1cf92c3c2d22d13895746a2e3eea",
+          "caustics-moved.png": "e233afb99103831cd8c5df81e36adfb6a870122e2f9fe4ab4fef65301c58289b",
+          "caustics-bed-off.png": "afa81083175091e084336519bbe12f42c0076f98236166248cd7826892eba367",
+          "caustics-held.png": "3fa7d83ea5ae0478ec389db0fc985565051fc44093dd3a69a198641e2f6cfb0c",
+          "caustics-excluded-13.png": "1c458ef34dd58c14af6731e467409f21715e1cf92c3c2d22d13895746a2e3eea",
+          "caustics-lowered-off.png": "afa81083175091e084336519bbe12f42c0076f98236166248cd7826892eba367"
+        }
+      },
+      "results": {
+        "checks": 31,
+        "failures": 2,
+        "rows": [
+          {
+            "case": "original program is settled",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "admitted": 5682,
+            "bytes": 491520,
+            "case": "field",
+            "enable_us": 31803,
+            "tiles": 6739
+          },
+          {
+            "case": "visible",
+            "difference": {
+              "changed_pixels": 55329,
+              "peak_delta": 11,
+              "pixels_over_2": 6484
+            }
+          },
+          {
+            "case": "zero game time holds caustic animation",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "draws",
+            "off": 29,
+            "on": 29
+          },
+          {
+            "case": "off-on-off restores the image",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "animated",
+            "difference": {
+              "changed_pixels": 62865,
+              "peak_delta": 11,
+              "pixels_over_2": 7267
+            }
+          },
+          {
+            "case": "no caustics without sunlight",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "lowering water removes caustics from the exposed bed",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "excluded liquid keeps original terrain image 13",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "excluded liquid keeps original terrain image 14",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "deformed caustics match explicit phase binding",
+            "difference": {
+              "changed_pixels": 171863,
+              "peak_delta": 30,
+              "pixels_over_2": 50487
+            }
+          },
+          {
+            "case": "soft-receiver",
+            "point": "(151.5, 191.5)",
+            "receiver": "(155.0, 173.0)",
+            "receivers": 1
+          },
+          {
+            "case": "clock",
+            "seconds_1x": 0.249998333333334,
+            "seconds_2x": 0.499977999999999
+          }
+        ]
+      }
+    }
+  ],
+  "earlier_clock_only_runs": [
+    {
+      "label": "nested-world-fixed-headless",
+      "run": {
+        "tool_sha256_at_start": "01fa6f4b9675aaedfe6188c082b05dafc8a9351403d586e5a9bdb30de256da92",
+        "helper_sha256_at_start": "06e1f5bd38b838f9296eab74bf168dd60b8e4736fd0da26e1ebd67661dbec7d6",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "6cf7543f16853a750ede92c0440d7f436a2f00199f3b37a9fcc1e636bc05dce2",
+        "termination_reason": null,
+        "timeout_sec": 120,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/caustics-world-clock/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_caustics.gd"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 3.3160435759928077,
+        "other_render_processes_at_start": [
+          {
+            "pid": 4129320,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 4129320,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {}
+      },
+      "results": {
+        "checks": 14,
+        "failures": 0,
+        "rows": [
+          {
+            "admitted": 3564,
+            "bytes": 196608,
+            "case": "field",
+            "enable_us": 24146,
+            "tiles": 5649
+          },
+          {
+            "case": "clock",
+            "seconds_1x": 0.249947666666667,
+            "seconds_2x": 0.499988
+          }
+        ]
+      }
+    },
+    {
+      "label": "nested-world-fixed-gl",
+      "run": {
+        "tool_sha256_at_start": "01fa6f4b9675aaedfe6188c082b05dafc8a9351403d586e5a9bdb30de256da92",
+        "helper_sha256_at_start": "06e1f5bd38b838f9296eab74bf168dd60b8e4736fd0da26e1ebd67661dbec7d6",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "6cf7543f16853a750ede92c0440d7f436a2f00199f3b37a9fcc1e636bc05dce2",
+        "termination_reason": null,
+        "timeout_sec": 120,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/caustics-world-clock/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_caustics.gd"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 8.817943999980344,
+        "other_render_processes_at_start": [
+          {
+            "pid": 4129320,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 4129680,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {
+          "caustics-night-on.png": "b0c3ef7e21005b3d8fc6ba23a41d99f82a6e583393ede0efc5e169999e47748c",
+          "caustics-lowered-on.png": "f089de7971f8a82e9032aa1842b9d073a11107aacfe6f90eb35f0e0a19e677b1",
+          "caustics-excluded-14.png": "2a547afedd5be094165d98b0e41f7d976411ed45425684c2bcda5fe969ddfdaa",
+          "caustics-off-stable.png": "2a547afedd5be094165d98b0e41f7d976411ed45425684c2bcda5fe969ddfdaa",
+          "caustics-on.png": "474cc579a534684a2029b3613affdcdfb81df22f82d9fca30314cc3ebe95ce26",
+          "caustics-restored.png": "2a547afedd5be094165d98b0e41f7d976411ed45425684c2bcda5fe969ddfdaa",
+          "caustics-night-off.png": "b0c3ef7e21005b3d8fc6ba23a41d99f82a6e583393ede0efc5e169999e47748c",
+          "caustics-pattern.png": "0229d033bc125e8d48e264552a7dc4972636db7f59b4616e40a3a1ddc13b48ca",
+          "caustics-bed-on.png": "fc73d574693c9960327e21e6edcaa9e011cb8ecd03d810b2e5d5d199e2e57c96",
+          "caustics-off.png": "2a547afedd5be094165d98b0e41f7d976411ed45425684c2bcda5fe969ddfdaa",
+          "caustics-moved.png": "2bce352139459a72273da30253015cb522b3e8593796b3c061fc48d117ba7abe",
+          "caustics-bed-off.png": "f089de7971f8a82e9032aa1842b9d073a11107aacfe6f90eb35f0e0a19e677b1",
+          "caustics-held.png": "474cc579a534684a2029b3613affdcdfb81df22f82d9fca30314cc3ebe95ce26",
+          "caustics-excluded-13.png": "2a547afedd5be094165d98b0e41f7d976411ed45425684c2bcda5fe969ddfdaa",
+          "caustics-lowered-off.png": "f089de7971f8a82e9032aa1842b9d073a11107aacfe6f90eb35f0e0a19e677b1"
+        }
+      },
+      "results": {
+        "checks": 26,
+        "failures": 0,
+        "rows": [
+          {
+            "case": "original program is settled",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "admitted": 3564,
+            "bytes": 196608,
+            "case": "field",
+            "enable_us": 26699,
+            "tiles": 5649
+          },
+          {
+            "case": "visible",
+            "difference": {
+              "changed_pixels": 43370,
+              "peak_delta": 7,
+              "pixels_over_2": 6100
+            }
+          },
+          {
+            "case": "zero game time holds caustic animation",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "draws",
+            "off": 25,
+            "on": 25
+          },
+          {
+            "case": "off-on-off restores the image",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "animated",
+            "difference": {
+              "changed_pixels": 53434,
+              "peak_delta": 9,
+              "pixels_over_2": 6383
+            }
+          },
+          {
+            "case": "no caustics without sunlight",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "lowering water removes caustics from the exposed bed",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "excluded liquid keeps original terrain image 13",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "excluded liquid keeps original terrain image 14",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "clock",
+            "seconds_1x": 0.249992,
+            "seconds_2x": 0.499979333333333
+          }
+        ]
+      }
+    }
+  ],
+  "fixture_notes": [
+    "Prior caustics clock fixture parented Terrain directly to GameWorld; it did not verify the gameplay World -> EIMapScene -> EITerrain hierarchy. This test now does.",
+    "Zone1 has no eligible dry soft-ground sectors in this fixture; early soft probes stopped at setup and do not demonstrate the material bug.",
+    "Final optional soft test selects zone15. A real footprint at (151.5,191.5) replaces sector (4,5); its caustic receiver is (155,173), elsewhere in that same sector. No terrain types, positions or water levels are fabricated for this case.",
+    "Hide Water meshes only while comparing bed materials. Baseline automatic vs explicit phase differs by 50487 pixels above 2/255; maximum channel difference 30/255. Fixed Compatibility and Mobile pairs match every pixel.",
+    "One runtime warning on Compatibility/headless: screen-space AA only supported by Forward+/Mobile. No script/runtime errors in accepted runs.",
+    "Other render processes present in acceptance receipts: no controlled performance claim, no Android/web or full gameplay-route claim. Original files, saves, installed builds and reference repository untouched."
+  ],
+  "remaining": "Broader terrain-deformation and water visual acceptance remains open. Continue V2 biome cover and unit interaction."
+}

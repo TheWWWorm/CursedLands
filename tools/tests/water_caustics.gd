@@ -74,6 +74,69 @@ func scheduling(t: EITerrain,world: GameWorld) -> void:
 	world.session = null; session.free(); t.set_process(false); Engine.time_scale = 0
 	process_mode = Node.PROCESS_MODE_INHERIT
 
+func soft_receivers(t: EITerrain,camera: Camera3D,view: SubViewport) -> void:
+	GameData.options["gfx_soft_ground"] = 1; t.apply_gfx()
+	var soft := t.details.soft_ground; soft.set_process(false)
+	var field: Image = t._caustics.texture.get_image()
+	var steps := {}
+	var width := t.sectors_x*32
+	for i in t.ground.size():
+		if not t.ground[i] in SoftGroundDeform.TYPES: continue
+		var p := Vector2(i%width+0.5,i/width+0.5)
+		if soft.step_allowed(p): steps[Vector2i((p/32.0).floor())] = p
+	var point := Vector2.INF; var receiver := Vector2.INF; var score := INF
+	for y in field.get_height():
+		for x in field.get_width():
+			var mask := field.get_pixel(x,y)
+			if mask.a < 0.5: continue
+			var p := Vector2(x*2+1,y*2+1)
+			var key := Vector2i((p/32.0).floor())
+			if not steps.has(key): continue
+			var depth := mask.r-t.height_at(p.x,p.y)
+			if depth < 0.3 or depth > 2.0: continue
+			var distance := p.distance_squared_to(Vector2(camera.position.x,-camera.position.z))
+			if distance < score: score = distance; point = steps[key]; receiver = p
+	check(point.is_finite(),"dry soft ground shares a sector with an authored caustic receiver")
+	if not point.is_finite():
+		rows.append({"case":"soft-census","dry_soft_sectors":steps.size()})
+		return
+	# A footprint replaces its whole sector's material, including nearby wet
+	# ground. The sampled caustics need not lie under the footprint itself.
+	soft.add_step(point,Vector2(0.12,0.2),0.3)
+	for i in 5: soft._process(0.0); soft._finish_mesh_jobs(true)
+	check(not soft.sectors.is_empty() and soft._mesh_jobs.is_empty(),"real soft-ground footstep installs its receiver material")
+	var saved := camera.transform
+	var focus := Vector3(receiver.x,t.height_at(receiver.x,receiver.y),-receiver.y)
+	camera.position = focus+Vector3(2,4,3); camera.look_at(focus)
+	for node in t.get_children():
+		if node is MeshInstance3D and String(node.name).begins_with("Water_"): node.visible = false
+	t._waves.advance(6.0); t._update_wave_parameters()
+	var phase: Vector4 = t._land_mat.get_shader_parameter("caustic_scroll")
+	var receivers := 0
+	for record: Dictionary in soft.sectors.values():
+		var node := (record.node as WeakRef).get_ref() as MeshInstance3D
+		check(node != null and node.mesh != record.source and node.mesh.surface_get_material(0) == record.material,"caustics use an installed deformed receiver")
+		check(record.material.get_shader_parameter("caustic_scroll").is_equal_approx(phase),"deformed receiver follows the live terrain phase")
+		receivers += 1
+	var automatic: Image
+	if DisplayServer.get_name() != "headless": automatic = await snap(view,"soft-automatic")
+	# The explicit binding is an independent control for the duplicated
+	# material. Without forwarding, the automatically updated image differs.
+	for record: Dictionary in soft.sectors.values(): record.material.set_shader_parameter("caustic_scroll",phase)
+	if automatic: matching(automatic,await snap(view,"soft-explicit"),"deformed caustics match explicit phase binding")
+	rows.append({"case":"soft-receiver","point":str(point),"receiver":str(receiver),"receivers":receivers})
+	enable(t,false)
+	for record: Dictionary in soft.sectors.values():
+		check(record.material.shader == EITerrain._land_shader and record.material.get_shader_parameter("caustic_bed") == null,"deformed receiver releases caustics on disable")
+	enable(t,true)
+	t._waves.advance(1.0); t._update_wave_parameters()
+	for record: Dictionary in soft.sectors.values():
+		check(record.material.get_shader_parameter("caustic_bed") == t._caustics.texture and record.material.get_shader_parameter("caustic_scroll").is_equal_approx(t._land_mat.get_shader_parameter("caustic_scroll")),"re-enabled deformed receiver follows the live field and clock")
+	GameData.options["gfx_soft_ground"] = 0; t.apply_gfx()
+	camera.transform = saved
+	for node in t.get_children():
+		if node is MeshInstance3D and String(node.name).begins_with("Water_"): node.visible = true
+
 func fixture() -> void:
 	var rendered := DisplayServer.get_name() != "headless"
 	var view := SubViewport.new(); view.size = Vector2i(800,600); view.own_world_3d = true
@@ -81,8 +144,11 @@ func fixture() -> void:
 	view.render_target_update_mode = SubViewport.UPDATE_ALWAYS; view.msaa_3d = Viewport.MSAA_DISABLED
 	add_child(view)
 	var world := GameWorld.new(); view.add_child(world); world.set_process(false); world.set_physics_process(false)
-	var map_name := "zone15" if OS.get_cmdline_user_args().has("--caustic-zone15") else "zone1"
-	var t := EITerrain.load_map(map_name); world.terrain = t; world.add_child(t); t.set_process(false)
+	var map_name := "zone15" if OS.get_cmdline_user_args().has("--caustic-zone15") or OS.get_cmdline_user_args().has("--caustic-soft-ground") else "zone1"
+	# Mirror gameplay's World -> Map -> Terrain hierarchy. A direct child
+	# accidentally hides bugs in terrain's owning-world lookup.
+	var map := EIMapScene.new(); world.add_child(map); world.map = map
+	var t := EITerrain.load_map(map_name); world.terrain = t; map.terrain = t; map.add_child(t); t.set_process(false)
 	check(t._caustics == null and t._land_mat.shader == EITerrain._land_shader,"default-off terrain uses the original program")
 	var focus := Vector3(151.5,3.591615,-176.5) if map_name == "zone15" else Vector3(132.5,5.758586,-98.5)
 	var camera := Camera3D.new(); camera.far = 50.0; view.add_child(camera)
@@ -162,6 +228,7 @@ func fixture() -> void:
 	for m: Dictionary in t.materials: m.self_illum = 1.0
 	enable(t,true); check(t._caustics.admitted == 0,"emissive liquid metadata excludes receivers")
 	enable(t,false); t.materials = original_materials; enable(t,true)
+	if OS.get_cmdline_user_args().has("--caustic-soft-ground"): await soft_receivers(t,camera,view)
 	await scheduling(t,world)
 	GameData.options["gfx_water"] = 0; t.apply_gfx()
 	check(t._caustics == null and t._land_mat.shader == EITerrain._land_shader,"original-water mode disables caustics")

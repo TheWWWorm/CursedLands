@@ -2443,8 +2443,9 @@ headless, Compatibility's resident-colour path, and the second map's water-fille
 canyon (`--caustic-zone15`). Paired off/on/off captures restore exactly. Frozen
 phase is exact; animation is visible; no-sun and lowered-water controls are exact.
 Forced lava/swamp metadata retains the original image, and emissive liquid is
-excluded. Real callbacks verify tree pause, disabled travel worlds, unregistered
-LMP worlds and 1×/2× timing. Field/texture weak references clear on disable;
+excluded. Real callbacks verify tree pause, disabled travel worlds and 1×/2× timing.
+The original unregistered-LMP assertion used a direct World→Terrain fixture;
+the gameplay-hierarchy correction is recorded below. Field/texture weak references clear on disable;
 resident materials change shader and follow the live phase correctly. The count
 includes repeated assertions for individual resident materials, not 347 distinct
 features. No complete co-op or gameplay route is claimed.
@@ -2473,6 +2474,39 @@ Wave-equation propagation, current advection, refraction changes and waterfall
 shells/spray/mist remain separate V4 work. **V2 biome ground cover is next in the
 initial visual sequence.** U45 remains the first gameplay investigation after
 the renderer list.
+
+### Terrain clock and deformed receiver correction — 9 October
+
+Two integration defects were found while preparing V2 to share terrain time:
+
+- Gameplay uses `GameWorld → EIMapScene → EITerrain`. The earlier direct-parent
+  lookup missed the owning world and bypassed the LMP `can_tick` guard. Terrain's
+  new `game_world()` resolves both gameplay and direct tool ownership. The
+  corrected fixture fails against `8409adf` and passes with this lookup.
+- A soft-ground footprint duplicates its entire sector material. Caustics on
+  nearby wet terrain then froze at the copied phase. Terrain now forwards the
+  live phase through `SoftGroundDeform.sync_parameter()` to its at most eight
+  resident sectors. Option refresh still owns full material replacement.
+
+`tools/tests/water_caustics.gd --caustic-soft-ground` uses zone15: a real dry
+footprint at `(151.5,191.5)` changes the same sector as the underwater receiver
+at `(155,173)`. It leaves authored types and water levels intact. The baseline
+image differs from explicit phase binding by 50,487 pixels above 2/255; the
+corrected Compatibility and desktop Mobile images match exactly. The option
+disable/re-enable checks verify field release and renewed animation on those
+copies. Zone1 has no eligible dry soft sectors in this fixture; the earlier
+attempts there were setup failures, not evidence of the material defect.
+
+**86 assertions pass** across the final headless, Compatibility and desktop
+Mobile runs, including actual-hierarchy pause, travel holds and 1×/2× timing.
+The final pack SHA-256 is
+`32d990836a9bd78ab0ce8be66979d499c658956cd0bfbc752d5ccaea80332efa`;
+all 226 production scripts match its export manifest. See
+[clock/receiver evidence](validation/water-caustic-clocks-2026-10-09.json) for
+the negative controls, commands, hashes and images. No new shader or default
+policy change is involved. Full gameplay/device and broader deformation
+acceptance remain open; other renderer processes overlapped these runs, and
+no performance claim is made.
 
 ## Next work in the established order
 
