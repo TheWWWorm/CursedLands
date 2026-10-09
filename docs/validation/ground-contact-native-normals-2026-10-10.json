@@ -1,0 +1,329 @@
+{
+  "status": "Scratch native-normal prototype. No canonical production or package adoption.",
+  "parent": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/shoreline/candidate02/export.json",
+    "sha256": "8f7c05b076b6e7ae7b3a94176d79a14db04dee997592a4095f3ed6f5b41006fa"
+  },
+  "build": {
+    "export": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/shoreline/precision/candidate01/export.json",
+      "sha256": "60f334ff804e29beeea8274f3a522df4596b40d71708ef984b756684210fcbe2"
+    },
+    "verified_source_count": 712,
+    "binary_sha256": {
+      "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+      "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e",
+      "CursedLands.pck": "38ca0c63b64aa630270be716d739cf947c8488b04b70fa660befccccdad0e2c6"
+    }
+  },
+  "sources": {
+    "qualify.py": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/shoreline/precision/qualify.py",
+      "sha256": "95bae3feb4e9f3e28e25a682ba8e2a41cf7478804dd5f5ee49535e64d37e5dfa"
+    },
+    "export.py": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/shoreline/precision/export.py",
+      "sha256": "96284a06658e2d43dd93d65b048681e1a8f6c41b38015a60d542e7a3e02ba857"
+    },
+    "ground_surface_data.gd": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/shoreline/precision/ground_surface_data.gd",
+      "sha256": "8af5217bae745b1a2fecf2da7159b41d8c4ceade530887ab4b2f48edbe85ce5a"
+    },
+    "ground_contact_shader.gd": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/shoreline/precision/ground_contact_shader.gd",
+      "sha256": "9044631b736596932dd60b1f19dff9037568d50034ebb0727b94f9da7f098e56"
+    },
+    "ground_surface_data.gd.diff": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/shoreline/precision/ground_surface_data.gd.diff",
+      "sha256": "bd0212aa1fca9c1be6b516dddde6a03e5b141b4f9430bd9bf0fff88c9623bb26"
+    },
+    "ground_contact_shader.gd.diff": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/shoreline/precision/ground_contact_shader.gd.diff",
+      "sha256": "394000323276d2d860a8e23ca39db547b0fe405e0e443ef793466889985b224a"
+    },
+    "normal_inputs_probe.gd": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/shoreline/precision/normal_inputs_probe.gd",
+      "sha256": "e20cb232812a3e9023a5e2d195d495c4dd25db42e0e4f795ca7365efb4759883"
+    },
+    "enhanced_inputs_probe.gd": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/shoreline/precision/enhanced_inputs_probe.gd",
+      "sha256": "4bc93f3ff8a71a4363d4d0c11e40ed1e344aedf1d37c63e9e2ce960f50e19454"
+    },
+    "native_normals_probe.gd": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/shoreline/precision/native_normals_probe.gd",
+      "sha256": "4866619ac1d36a1e359e1ab0bd5a15a701b5d58bbc9560bb77006f75c2b02b0c"
+    }
+  },
+  "runs": {
+    "full-surface-shoreline-enhanced-inputs-forward01": {
+      "role": "diagnostic input isolation",
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-shoreline-enhanced-inputs-forward01/run.json",
+        "sha256": "31aa3261bc1a45da42d8be8b26071dd1d32aa1aab41bbf2c9269318fc88a026c"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-shoreline-enhanced-inputs-forward01/shoreline-light.json",
+        "sha256": "7bd4727b1f798214cbc3b47acfbff7af763545ea1f861404d7ec480fc2f415eb"
+      },
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-shoreline-enhanced-inputs-forward01/run.log",
+        "sha256": "9f5445dd43f07bb7dc37a055ee5c1c647833b0846d2990e9a361435d88469e7f"
+      },
+      "checks": 59,
+      "failures": 10,
+      "capture_count": 24,
+      "errors": [
+        "FAIL enhanced-sun strict shoreline comparison 0 {\"active_pixels\":32308,\"component_tolerance\":0.002,\"failure_examples\":[[127,1],[149,1],[139,2],[102,4],[145,4],[154,4],[140,5],[76,7]],\"inactive_pixels\":32208,\"normal_failures\":230,\"raster_holes\":0}",
+        "FAIL enhanced-sun strict shoreline comparison 8 {\"active_pixels\":32308,\"component_tolerance\":0.002,\"failure_examples\":[[90,175]],\"inactive_pixels\":32208,\"normal_failures\":1,\"raster_holes\":0}",
+        "FAIL enhanced-sun strict shoreline comparison 9 {\"active_pixels\":32308,\"component_tolerance\":0.002,\"failure_examples\":[[127,1],[149,1],[139,2],[102,4],[145,4],[154,4],[140,5],[76,7]],\"inactive_pixels\":32208,\"normal_failures\":230,\"raster_holes\":0}",
+        "FAIL enhanced-sun strict shoreline comparison 10 {\"active_pixels\":32308,\"component_tolerance\":0.002,\"failure_examples\":[[127,1],[149,1],[139,2],[102,4],[145,4],[154,4],[140,5],[76,7]],\"inactive_pixels\":32208,\"normal_failures\":229,\"raster_holes\":0}",
+        "FAIL enhanced-sun strict shoreline comparison 12 {\"active_pixels\":32308,\"component_tolerance\":0.00001,\"failure_examples\":[[1,1],[2,1],[3,1],[4,1],[5,1],[6,1],[7,1],[8,1]],\"inactive_pixels\":0,\"normal_failures\":31271,\"raster_holes\":32208}",
+        "FAIL enhanced-points strict shoreline comparison 0 {\"active_pixels\":32308,\"component_tolerance\":0.002,\"failure_examples\":[[77,1],[87,2],[105,3],[129,3],[95,4],[80,5],[113,5],[147,5]],\"inactive_pixels\":32208,\"normal_failures\":217,\"raster_holes\":0}",
+        "FAIL enhanced-points strict shoreline comparison 8 {\"active_pixels\":32308,\"component_tolerance\":0.002,\"failure_examples\":[[71,10],[105,37],[101,39],[122,70],[128,109],[119,126],[2,130],[93,151]],\"inactive_pixels\":32208,\"normal_failures\":17,\"raster_holes\":0}",
+        "FAIL enhanced-points strict shoreline comparison 9 {\"active_pixels\":32308,\"component_tolerance\":0.002,\"failure_examples\":[[77,1],[87,2],[105,3],[129,3],[95,4],[80,5],[113,5],[147,5]],\"inactive_pixels\":32208,\"normal_failures\":220,\"raster_holes\":0}",
+        "FAIL enhanced-points strict shoreline comparison 10 {\"active_pixels\":32308,\"component_tolerance\":0.002,\"failure_examples\":[[77,1],[87,2],[105,3],[129,3],[95,4],[80,5],[113,5],[147,5]],\"inactive_pixels\":32208,\"normal_failures\":216,\"raster_holes\":0}",
+        "FAIL enhanced-points strict shoreline comparison 12 {\"active_pixels\":32308,\"component_tolerance\":0.00001,\"failure_examples\":[[1,1],[2,1],[3,1],[4,1],[5,1],[6,1],[7,1],[8,1]],\"inactive_pixels\":0,\"normal_failures\":31271,\"raster_holes\":32208}"
+      ],
+      "warnings": []
+    },
+    "full-surface-shoreline-native-normals-forward01": {
+      "role": "invalid: substituted owner released before render",
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-shoreline-native-normals-forward01/run.json",
+        "sha256": "6bcb160b657d77d94a1f47df46fc4ef45f24b93bd13f28fc6cbd56c8b8b3995b"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-shoreline-native-normals-forward01/shoreline-light.json",
+        "sha256": "9663620326d7ec59cc12174aa66e0134bc48d9e617ec4b829c5b34dd465ecb46"
+      },
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-shoreline-native-normals-forward01/run.log",
+        "sha256": "bf2cecd5a17553afe9cf81349a81ca1e45615cbee7666667708fa0587864e7b0"
+      },
+      "checks": 75,
+      "failures": 6,
+      "capture_count": 8,
+      "errors": [
+        "FAIL enhanced-sun strict shoreline comparison 0 {\"active_pixels\":32308,\"component_tolerance\":0.002,\"failure_examples\":[[127,1],[149,1],[139,2],[102,4],[145,4],[154,4],[140,5],[76,7]],\"inactive_pixels\":32208,\"normal_failures\":230,\"raster_holes\":0}",
+        "FAIL enhanced-sun strict shoreline comparison 8 {\"active_pixels\":32308,\"component_tolerance\":0.002,\"failure_examples\":[[90,175]],\"inactive_pixels\":32208,\"normal_failures\":1,\"raster_holes\":0}",
+        "FAIL enhanced-sun strict shoreline comparison 12 {\"active_pixels\":32308,\"component_tolerance\":0.00001,\"failure_examples\":[[1,1],[2,1],[3,1],[4,1],[5,1],[6,1],[7,1],[8,1]],\"inactive_pixels\":0,\"normal_failures\":31271,\"raster_holes\":32208}",
+        "FAIL enhanced-points strict shoreline comparison 0 {\"active_pixels\":32308,\"component_tolerance\":0.002,\"failure_examples\":[[77,1],[87,2],[105,3],[129,3],[95,4],[80,5],[113,5],[147,5]],\"inactive_pixels\":32208,\"normal_failures\":217,\"raster_holes\":0}",
+        "FAIL enhanced-points strict shoreline comparison 8 {\"active_pixels\":32308,\"component_tolerance\":0.002,\"failure_examples\":[[71,10],[105,37],[101,39],[122,70],[128,109],[119,126],[2,130],[93,151]],\"inactive_pixels\":32208,\"normal_failures\":17,\"raster_holes\":0}",
+        "FAIL enhanced-points strict shoreline comparison 12 {\"active_pixels\":32308,\"component_tolerance\":0.00001,\"failure_examples\":[[1,1],[2,1],[3,1],[4,1],[5,1],[6,1],[7,1],[8,1]],\"inactive_pixels\":0,\"normal_failures\":31271,\"raster_holes\":32208}"
+      ],
+      "warnings": []
+    },
+    "full-surface-shoreline-native-normals-forward02": {
+      "role": "diagnostic retained native-normal substitution",
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-shoreline-native-normals-forward02/run.json",
+        "sha256": "33d261d4d73026df220a9cffa80eef3a99e37f0ba33f5d31bdbc3768c1abe50f"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-shoreline-native-normals-forward02/shoreline-light.json",
+        "sha256": "e292bd344d6843ce70d2a5842e04ef32163820de898899191d80751a11adf566"
+      },
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-shoreline-native-normals-forward02/run.log",
+        "sha256": "598f303a093cb7f88d197a7f419db6cb88970f0bf0173fb45f5ea378db12b61f"
+      },
+      "checks": 77,
+      "failures": 6,
+      "capture_count": 8,
+      "errors": [
+        "FAIL enhanced-sun strict shoreline comparison 0 {\"active_pixels\":32308,\"component_tolerance\":0.002,\"failure_examples\":[[158,22],[60,55],[133,74],[91,80],[149,80],[106,104],[10,113],[98,116]],\"inactive_pixels\":32208,\"normal_failures\":19,\"raster_holes\":0}",
+        "FAIL enhanced-sun strict shoreline comparison 8 {\"active_pixels\":32308,\"component_tolerance\":0.002,\"failure_examples\":[[90,175]],\"inactive_pixels\":32208,\"normal_failures\":1,\"raster_holes\":0}",
+        "FAIL enhanced-sun strict shoreline comparison 12 {\"active_pixels\":32308,\"component_tolerance\":0.00001,\"failure_examples\":[[151,3],[145,15],[138,18],[156,18],[85,28],[89,28],[90,31],[89,36]],\"inactive_pixels\":0,\"normal_failures\":47,\"raster_holes\":32208}",
+        "FAIL enhanced-points strict shoreline comparison 0 {\"active_pixels\":32308,\"component_tolerance\":0.002,\"failure_examples\":[[71,10],[83,65],[132,65],[128,109],[119,126],[86,129],[2,130],[112,134]],\"inactive_pixels\":32208,\"normal_failures\":16,\"raster_holes\":0}",
+        "FAIL enhanced-points strict shoreline comparison 8 {\"active_pixels\":32308,\"component_tolerance\":0.002,\"failure_examples\":[[71,10],[105,37],[101,39],[122,70],[128,109],[119,126],[2,130],[93,151]],\"inactive_pixels\":32208,\"normal_failures\":17,\"raster_holes\":0}",
+        "FAIL enhanced-points strict shoreline comparison 12 {\"active_pixels\":32308,\"component_tolerance\":0.00001,\"failure_examples\":[[151,3],[145,15],[138,18],[156,18],[85,28],[89,28],[90,31],[89,36]],\"inactive_pixels\":0,\"normal_failures\":47,\"raster_holes\":32208}"
+      ],
+      "warnings": []
+    },
+    "full-surface-normal-inputs-headless01": {
+      "role": "candidate original mesh data and lifecycle",
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-normal-inputs-headless01/run.json",
+        "sha256": "7ec5cae7aa162afa4f4f023f0bd604260f43fc785da269144f6b3387c8e96a85"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-normal-inputs-headless01/shoreline-inputs.json",
+        "sha256": "e42e4eb3ac7c33ef7d7b0771929ff2e89a9b06546edce9b83c9b3d56c9f08c1f"
+      },
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-normal-inputs-headless01/run.log",
+        "sha256": "98eec65f43ed91aafa22e6682923b1609d6c2a5e524d544a64086bb120c832e4"
+      },
+      "checks": 85,
+      "failures": 0,
+      "capture_count": 0,
+      "errors": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ]
+    },
+    "full-surface-native-normal-light-forward01": {
+      "role": "candidate original/enhanced shoreline light",
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-native-normal-light-forward01/run.json",
+        "sha256": "702bad76b0ffddc8e85ca896e35f335759ccbfb30b731b7229e7ad6cf03bbeff"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-native-normal-light-forward01/shoreline-light.json",
+        "sha256": "72c91434f5361516b4d080ec0df2979073bb7009cc806c49dc944f165442f064"
+      },
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-native-normal-light-forward01/run.log",
+        "sha256": "2628d443e5e01640266b79b6997458bc60dfc522167f4a24065f744dd855a7ca"
+      },
+      "checks": 65,
+      "failures": 2,
+      "capture_count": 32,
+      "errors": [
+        "FAIL enhanced-sun strict shoreline comparison 0 {\"active_pixels\":32308,\"component_tolerance\":0.002,\"failure_examples\":[[158,22],[60,55],[133,74],[91,80],[149,80],[106,104],[10,113],[98,116]],\"inactive_pixels\":32208,\"normal_failures\":19,\"raster_holes\":0}",
+        "FAIL enhanced-points strict shoreline comparison 0 {\"active_pixels\":32308,\"component_tolerance\":0.002,\"failure_examples\":[[71,10],[83,65],[132,65],[128,109],[119,126],[86,129],[2,130],[112,134]],\"inactive_pixels\":32208,\"normal_failures\":16,\"raster_holes\":0}"
+      ],
+      "warnings": []
+    },
+    "full-surface-native-normal-ordinary-forward01": {
+      "role": "candidate ordinary normal/rain regression",
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-native-normal-ordinary-forward01/run.json",
+        "sha256": "cd1f71ad8076d889889db63e7639c3852089e91c8f42a900569b18785aabe04e"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-native-normal-ordinary-forward01/ground-contact-relief.json",
+        "sha256": "e9cfea946de5cc394411e37a910cbc07ea27dc781c357c62e1bd1fc7799fcdf5"
+      },
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-native-normal-ordinary-forward01/run.log",
+        "sha256": "f5b61fa751d94e9b0dabd7c66add78702eb6f6be5d4c8864f3e2ad7ef3fa32a7"
+      },
+      "checks": 247,
+      "failures": 0,
+      "capture_count": 42,
+      "errors": [],
+      "warnings": []
+    },
+    "full-surface-native-normal-bridge-forward01": {
+      "role": "invalid: wrong command-line option names",
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-native-normal-bridge-forward01/run.json",
+        "sha256": "b257666a39b617cee604b97f0d17f626fff1d16c57ceb879095c92bf3a1ee82b"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-native-normal-bridge-forward01/ground-contact-relief-scene.json",
+        "sha256": "0b46a7eebdd346b779f1cbb9b516c931c44001759540856543e9e952f6a95973"
+      },
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-native-normal-bridge-forward01/run.log",
+        "sha256": "a1dfa3c36ce819f1c5da7aebedc02942743396b6679ee00a3c18b2266dcbbd76"
+      },
+      "checks": 9,
+      "failures": 2,
+      "capture_count": 0,
+      "errors": [
+        "FAIL selected original bridge edge is unchanged",
+        "ERROR: Node not found: \"Sector_4_2\" (relative to \"/root/Main/@Node@8/@SubViewport@9/bz13h/Terrain\").",
+        "FAIL selected original shoreline sector"
+      ],
+      "warnings": []
+    },
+    "full-surface-native-normal-bridge-forward02": {
+      "role": "candidate authored Original-mode bridge",
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-native-normal-bridge-forward02/run.json",
+        "sha256": "5b0dbe48097a9d634a6a0129ab55b88aae85e67dbddc96730ec55ac8cd0db986"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-native-normal-bridge-forward02/ground-contact-relief-scene.json",
+        "sha256": "b38572f3771730de84ac38a401b9fc0984f0b2ab46724859049d4ccbbff6b200"
+      },
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-native-normal-bridge-forward02/run.log",
+        "sha256": "09181433696d71986695b758559b4ba8113662312b5ccd1f43885d21778af28e"
+      },
+      "checks": 72,
+      "failures": 0,
+      "capture_count": 24,
+      "errors": [],
+      "warnings": []
+    }
+  },
+  "interpretation": [
+    "Godot packs ordinary mesh normals as two octahedral uint16 values. The old contact atlas used uncompressed terrain.land_n. The new atlas reproduces upload/decode from retained sector arrays, without GPU readback, and preserves separate sector-border ownership.",
+    "Diagnostic native-normal substitution reduces enhanced shoreline sun/point mismatches from 230/217 to 19/16. Native fragment-normal substitution reduces them to 1/17, and all-native position/normal/E/k inputs clear both. Normal packing explains most, not all, of the retained strict differences.",
+    "The first texture-substitution diagnostic released its only GroundSurfaceData owner before rendering, so subsequent binding rebuilt the original atlas. Its unchanged output is invalid evidence for the proposed correction. The second run retains that exact owner and asserts its identity at binding.",
+    "Headless data acceptance passes 85 checks: all 147456 original mesh COLOR and decoded NORMAL entries on zone1/bz13h match exactly; lazy contact upgrade preserves the shared vertex RID and baked water-offset behavior. Normal textures use 836352 and 278784 bytes, respectively.",
+    "The candidate passes all 247 ordinary normal/rain checks. Original shoreline light is exact at the retained 0.002 threshold; enhanced light retains 19 sun and 16 point pixels across two failed checks of 65. Twelve independent native images remain byte-identical.",
+    "The authored dry bridge passes all 72 Original-mode scene checks, including unchanged outside-band/upper/silhouette, held and restoration controls. Its off/on images were inspected. The first bridge invocation passed unrecognized argument names and selected the default house: its 9-check/two-failure result is an invalid bridge fixture, retained separately."
+  ],
+  "remaining": [
+    "Enhanced numerical residuals remain. Exact CPU normal packing does not prove exact GPU interpolation, projected-input or light-byte equivalence.",
+    "Dense meshes decode, interpolate, normalize and repack normals again; that second packing stage is not implemented here. Dense E/k lookup is a separate follow-up.",
+    "Reference-policy near-light/shadow controls, composed backends, actual routes, device and preparation/runtime cost acceptance remain open. R1 keeps the object light/shadow position: an independent folded-ground native light context would be an additional engine feature, not a V1 acceptance requirement. No timing claim; foreign rendering was observed.",
+    "Both delivered .2 packages and canonical production are unchanged."
+  ],
+  "unchanged_native_images": [
+    {
+      "filename": "ground-contact-relief-shore-original-sun-1.png",
+      "sha256": "4a57a7a47de90773623ecc7de1bb98f1c6b4ebde0f6c1be90ee18e8674d3bd35",
+      "exact": true
+    },
+    {
+      "filename": "ground-contact-relief-shore-original-sun-3.png",
+      "sha256": "0b8f36d2f643254395c989b21ef4a504aab2b75c4d51f1536b9dc9907846aa3b",
+      "exact": true
+    },
+    {
+      "filename": "ground-contact-relief-shore-original-sun-6.png",
+      "sha256": "1f198a053d609eb4da27af36aba457163a6efd0ffb83857c1cb6010df00b7606",
+      "exact": true
+    },
+    {
+      "filename": "ground-contact-relief-shore-enhanced-sun-1.png",
+      "sha256": "a4cdb3204fb7bdc0d5150f7887bfd078c37f6f3ce3b04b4524bac99756115228",
+      "exact": true
+    },
+    {
+      "filename": "ground-contact-relief-shore-enhanced-sun-3.png",
+      "sha256": "0b8f36d2f643254395c989b21ef4a504aab2b75c4d51f1536b9dc9907846aa3b",
+      "exact": true
+    },
+    {
+      "filename": "ground-contact-relief-shore-enhanced-sun-6.png",
+      "sha256": "b5c9761046359b6bdcd92a5ca0fd42779ac8713c6fecdeaf2403bb6a2337607f",
+      "exact": true
+    },
+    {
+      "filename": "ground-contact-relief-shore-original-points-1.png",
+      "sha256": "a5fc93a7d5ebc979eeb1e414c867c3285ab1cbe406a0fedc064b937a280057eb",
+      "exact": true
+    },
+    {
+      "filename": "ground-contact-relief-shore-original-points-3.png",
+      "sha256": "0b8f36d2f643254395c989b21ef4a504aab2b75c4d51f1536b9dc9907846aa3b",
+      "exact": true
+    },
+    {
+      "filename": "ground-contact-relief-shore-original-points-6.png",
+      "sha256": "7fd8ba5cf58572c01f23b692531f8d6134cb672dfc045882763ff02d04ad2c39",
+      "exact": true
+    },
+    {
+      "filename": "ground-contact-relief-shore-enhanced-points-1.png",
+      "sha256": "a7eed1f44129f26d6883f890fa64b5d1fc11733b990d1a29e8c1328dac5cf1d9",
+      "exact": true
+    },
+    {
+      "filename": "ground-contact-relief-shore-enhanced-points-3.png",
+      "sha256": "0b8f36d2f643254395c989b21ef4a504aab2b75c4d51f1536b9dc9907846aa3b",
+      "exact": true
+    },
+    {
+      "filename": "ground-contact-relief-shore-enhanced-points-6.png",
+      "sha256": "f837a1ebcd84297196ce0a7ac72f268b2b43b90fddb2f1156adf9b9fdca4eb55",
+      "exact": true
+    }
+  ]
+}

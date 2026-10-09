@@ -2572,6 +2572,38 @@ scratch stage, not the older dirty canonical shader. Enhanced precision,
 synthetic emissive interpolation, composed/backend and device/cost acceptance
 remain open. Neither delivered `.2` package contains these prototypes.
 
+### V1 native mesh normals — 9–10 October
+
+The next scratch stage, `full-surface/shoreline/precision/candidate01`, fixes a
+source mismatch in the reconstructed normals. ArrayMesh packs ordinary normals
+as two octahedral uint16 values; the contact atlas previously used uncompressed
+`terrain.land_n`. The candidate reproduces the native packing and CPU decode
+from retained sector arrays, preserving each sector's border ownership without
+GPU readback. All **147,456** checked mesh NORMAL and COLOR entries match exactly
+on `zone1`/`bz13h`; the data/lifecycle fixture passes **85 checks**.
+
+The existing **247 ordinary normal/rain checks** and **72 Original-mode authored
+bridge checks** pass. Enhanced shoreline light improves from 230/217 mismatching
+sun/point pixels to **19/16**, retaining both strict failures in the 65-check
+light comparison. All twelve native-light/input/ablation images remain exact.
+The remaining differences are not hidden by new tolerances. Dense terrain also
+re-packs its interpolated normals; that second packing stage remains separate.
+[Normal evidence](validation/ground-contact-native-normals-2026-10-10.json)
+retains the failed owner-lifetime diagnostic and wrong-argument bridge attempt
+as invalid fixtures, alongside their corrected runs.
+
+Re-reading pinned R1 clarified the acceptance scope: its contact receiver copies
+the object and changes the normal/material, retaining the object's world/shadow
+position (`native_shader.h:1639–1643`). It blends completed material colours and
+reuses object sun/cloud visibility. A proposed independent folded-ground light
+and shadow context would be a larger renderer extension, not a V1 requirement.
+The reconstruction diagnostics remain useful for the chosen Godot adaptation;
+they do not imply that R1 copies a complete terrain lighting response at another
+position. The [pinned R1 scope correction](validation/ground-contact-r1-scope-2026-10-10.json)
+retains the earlier backend audit as optional-extension evidence. The bounded
+figure-versus-ground directional shadow transfer is being qualified separately.
+Canonical production and both delivered packages are unchanged.
+
 ## Integration
 
 ### Completed combined checkpoint — 9 October

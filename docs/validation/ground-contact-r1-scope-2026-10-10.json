@@ -1,0 +1,131 @@
+{
+  "date": "2026-10-10",
+  "status": "Frozen R1 scope correction; supersedes the inferred V1 requirements in the earlier dual-context audit, preserving its backend source facts.",
+  "supersedes_as_v1_gate": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/shoreline/light-context-source-audit-20261009.json",
+    "sha256": "b8389d41222a157900d09dbf018899b685560bae5e7ef0b9be1e7998a3e74793",
+    "sections": [
+      "smallest_faithful_route",
+      "required_regressions",
+      "authored_witness ground-position expectation"
+    ],
+    "disposition": "Those sections describe an optional independently positioned ground-lighting extension. They are not prerequisites for the requested bounded R1 contact adaptation. The old receipt is retained unchanged."
+  },
+  "pinned_reference": {
+    "clone": "/home/llm2x/Documents/evil-islands-owned-renderer",
+    "revision": "0092dc6e1d7c4aab3f74644a79e9bfca11ecf293",
+    "frozen_sources": [
+      {
+        "original_git_ref": "0092dc6e1d7c4aab3f74644a79e9bfca11ecf293:Source/contact_blend.h",
+        "frozen_path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/shoreline/shadow-transfer/frozen-r1/Source/contact_blend.h",
+        "sha256": "880d782a2f02fffc853388e55101d97a51fd31f6ebdde3b42bb5c3f5a664001a",
+        "lines": [
+          58,
+          78,
+          80,
+          85
+        ]
+      },
+      {
+        "original_git_ref": "0092dc6e1d7c4aab3f74644a79e9bfca11ecf293:Source/native_shader.h",
+        "frozen_path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/shoreline/shadow-transfer/frozen-r1/Source/native_shader.h",
+        "sha256": "184c7826a77f489bdd7298d5f89b1c385bad389d38eadab46379c2373fd50530",
+        "lines": [
+          40,
+          44,
+          1108,
+          1120,
+          1184,
+          1187,
+          1191,
+          1200,
+          1209,
+          1211,
+          1491,
+          1497,
+          1504,
+          1626,
+          1632,
+          1639,
+          1640,
+          1641,
+          1643,
+          1647,
+          1648,
+          1651,
+          1652,
+          1661,
+          1663,
+          1673
+        ]
+      },
+      {
+        "original_git_ref": "0092dc6e1d7c4aab3f74644a79e9bfca11ecf293:Source/ground_cover_surface.h",
+        "frozen_path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/shoreline/shadow-transfer/frozen-r1/Source/ground_cover_surface.h",
+        "sha256": "e7d500735afde6a508d86031cee6f51506a18d7879747876de4732759eaa5e5e",
+        "lines": [
+          10,
+          17
+        ]
+      },
+      {
+        "original_git_ref": "0092dc6e1d7c4aab3f74644a79e9bfca11ecf293:Source/point_light_grid.h",
+        "frozen_path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/shoreline/shadow-transfer/frozen-r1/Source/point_light_grid.h",
+        "sha256": "c23db1f9c9f85e8ec4f978e0ebe263b2265efe221095cc7e832c621ab453e8d0",
+        "lines": [
+          5,
+          13,
+          66,
+          120
+        ]
+      },
+      {
+        "original_git_ref": "0092dc6e1d7c4aab3f74644a79e9bfca11ecf293:Source/renderer.cpp",
+        "frozen_path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/shoreline/shadow-transfer/frozen-r1/Source/renderer.cpp",
+        "sha256": "2fa1c560429e31062021def60f8313fa8d162b24b95814eac6017763a4338923",
+        "lines": [
+          2444,
+          2451,
+          6821,
+          6829,
+          6885
+        ]
+      },
+      {
+        "original_git_ref": "0092dc6e1d7c4aab3f74644a79e9bfca11ecf293:Tests/contact_blend_regression.cpp",
+        "frozen_path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/shoreline/shadow-transfer/frozen-r1/Tests/contact_blend_regression.cpp",
+        "sha256": "115b34d0c7291a8187a0cda171d90b95044c5d8342e6b6a5294e3a203ac2bb83",
+        "lines": [
+          27,
+          105,
+          108,
+          117,
+          122
+        ]
+      }
+    ]
+  },
+  "contract": [
+    "R1 blends completed mesh and ground total/direct RGB after object material modulation, not albedo or normals before a shared object-light calculation.",
+    "Ground art comes from the folded strip. The ground receiver is a copy of NativeOutput i with only worldNormal and pointMaterial=1 changed. Position, shadow position, light-list location, emissive shadow-bypass policy and other receiver flags remain those of the object.",
+    "The ground normal is the height-field gradient at the object\u2019s unfolded XY, using height samples at +/-0.5 m. It is not a complete copy of native terrain fragment relief/BSDF.",
+    "Point-light direction, squared-distance falloff and world-XY light-grid selection therefore remain at the object. The grid preserves all intersecting frame lights in ascending order by coarsening cells rather than truncating lists.",
+    "Point-shadow lookup retains object shadowPosition but recalculates bias/incidence with the copied ground normal. Sun and cloud visibility are reused from the object; they are not resampled at folded ground.",
+    "Ground material is neutral and uses terrain-facing response. Ground total=art*(saturate(max(ambient,directional)+local)+glow); direct omits ambient. Both completed RGB branches use lerp(mesh,ground,weight)*dark.",
+    "The blend uses existing native combiner RGB with no contact-specific transfer conversion. Ordinary native textures use non-sRGB UNORM formats. Water/bed transmission, alpha test, ambient-share extraction, fog and AO processing remain after this colour blend; object alpha is preserved."
+  ],
+  "v1_scope_judgment": [
+    "Required: bounded folded texture integration, object-material-independent ground weight/colour, ground-specific normal/material response, unchanged alpha/upper surfaces, and meaningful near-light/shadow visual controls.",
+    "Actual bounded adaptation issue: the copied ground currently inherits the figure-facing directional shadow guard. Give it the terrain shadow transfer using the same object ATTENUATION; retain the original figure guard. No light-position/list/engine change is required.",
+    "The explicit four native EI light channels and precise normal/E/k/rain/track reconstruction are remake integration choices. Their strict data/normal tests remain useful and failures remain recorded, but they do not imply pixel-identical complete terrain rendering at a different receiver position.",
+    "Optional additional work: independent folded-ground light/shadow position, projected-ground clustered/instance light lists, exact native terrain shadow-bias interpolation across Godot backends, independent full accumulation/fog/BSDF parity. Do not make these V1 adoption gates.",
+    "R1\u2019s separate point-shadow normal bias is an exact-fidelity difference from reusing Godot ATTENUATION. Record that approximation and inspect visible behavior; this does not justify the larger displaced-receiver architecture.",
+    "The earlier below-wall point-light example must not demand illumination as if the band were a separate ground receiver: R1 also evaluates direction and falloff at the wall. Near-light controls should test material/normal response and bounded stable shadows."
+  ],
+  "new_work_authorized": "Scratch directional-only shadow-transfer variant and fixture preparation. No canonical changes, package edits, or rendered run in this receipt.",
+  "scratch_baseline": {
+    "baseline_ground_contact_shader.gd": "9044631b736596932dd60b1f19dff9037568d50034ebb0727b94f9da7f098e56",
+    "baseline_ground_surface_data.gd": "8af5217bae745b1a2fecf2da7159b41d8c4ceade530887ab4b2f48edbe85ce5a",
+    "ground_contact_relief_scene.gd": "9b32fab752da6c4f87840e42b6c335d0857c7762cd5bd0ab04ac6ae922e7d4b5"
+  }
+}
