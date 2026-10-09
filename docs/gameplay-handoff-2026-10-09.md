@@ -8,13 +8,13 @@ U45 supplied-save follow-up confirms two required small creatures remain alive; 
 
 **Canonical checkout:** `/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo`  
 **Branch:** `fix/catacomb-coop-deck`  
-**Current qualified private-export production checkpoint:** `7e314707f92a1c0b530835cac9a02742736a71cc`. Adds source-gated original prison alarm registration for late arrivals, preserves native pending waits while a guest is absent, and carries registration state through solo return. Includes the existing systemic solo/co-op fixes, cloud correction, wound/terrain texture work and Natural terrain junctions.
+**Current qualified private-export production checkpoint:** `518c2b59ececd0d2dc8c73496f49da5f24e49d76`. Adds source-gated original prison qk16h/qk17h discovery checks for late co-op arrivals. Includes the earlier native alarm/reload fix, systemic solo/co-op fixes, cloud correction, texture work and Natural terrain junctions.
 
-**Current qualified private Linux export:** `/home/llm2x/Documents/EI/local/scratchpad/prison-alarm-late-join-20261009/candidate02`. [Prison alarm evidence](validation/prison-alarm-late-join-2026-10-09.json) records **331 passing checks**, including actual early/late ENet arrivals, two absent host reloads and existing base/LiA projection/solo-return regressions. All 613 committed game files match the tested 712-file stage; four production scripts and two generated UID files differ from terrain candidate09. Native binaries, graphics, settings and save schema are unchanged. Full route and platform acceptance remain open.
+**Current qualified private Linux export:** `/home/llm2x/Documents/EI/local/scratchpad/prison-discovery-late-join-20261009/candidate01`. [Discovery acceptance](validation/prison-discovery-late-join-2026-10-09.json) records **431 passing checks**, including actual early/late ENet arrivals for both quests and the earlier alarm's absent-reload/rejoin scenario. All 613 committed game files match the tested 712-file stage; only `story_compat.gd` and its generated UID differ from the previous prison-alarm candidate02. Native binaries, graphics, settings and save schema are unchanged. The preceding [331-check alarm acceptance](validation/prison-alarm-late-join-2026-10-09.json), including base/LiA projection and solo return, remains valid as scoped there. Full route and platform acceptance remain open.
 
 The preceding [junction evidence](validation/terrain-junctions-2026-10-09.json) retains 7,515 metadata/source checks, 180 GPU checks covering 19,911 probes, 252/253 original-map rendering checks, 54 cost-fixture checks and 119 captures. Its sole strict rendering residual is one pixel also present in the baseline Compatibility neutralization control. [P1 retention evidence](validation/wound-source-retention-2026-10-09.json) retains 1,729 checks and 15 captures. The earlier [711-check/60-capture validation](validation/renderer-coop-integration-2026-10-09.json) includes representative LiA reimport/travel and fresh-process solo return. These renderer and earlier integration results are inherited, not rerun.
 
-**Included accepted source checkpoints:** `7e31470` fixes original prison alarm late registration and absent pending waits (331 checks). `fdf7885` retains renamed guest identity (393 checks), `82b749f` fixes shared campaign travel (152 checks), `5c548be` adds optional natural terrain transitions, and `1b8b0f6` retains looted script-added actor identity (137 checks). `ec79e3f` protects stable saved hero references (106 checks), `74c4804` restores pending story actions on co-op-to-solo return (149 acceptance checks plus 36 formatting rechecks), and `80c96d4` preserves acknowledged solo earnings and compatible campaign checkpoints on rejoin (803 checks). `79bee8a` restores normal NEW joins after original opening initialization ([239 checks](validation/coop-fresh-start-2026-10-09.json)). Feature-specific receipts complement the current combined acceptance.
+**Included accepted source checkpoints:** `518c2b5` fixes two original prison discoveries for late guests (431 checks including alarm regressions). `7e31470` fixes original prison alarm late registration and absent pending waits (331 checks). `fdf7885` retains renamed guest identity (393 checks), `82b749f` fixes shared campaign travel (152 checks), `5c548be` adds optional natural terrain transitions, and `1b8b0f6` retains looted script-added actor identity (137 checks). `ec79e3f` protects stable saved hero references (106 checks), `74c4804` restores pending story actions on co-op-to-solo return (149 acceptance checks plus 36 formatting rechecks), and `80c96d4` preserves acknowledged solo earnings and compatible campaign checkpoints on rejoin (803 checks). `79bee8a` restores normal NEW joins after original opening initialization ([239 checks](validation/coop-fresh-start-2026-10-09.json)). Feature-specific receipts complement the current combined acceptance.
 
 **Latest user scope:** fix systemic LiA solo/co-op progression sync. `coop_67_fps_20261008_224534.sav` is the latest client save and its matching host save is not supplied; the user explicitly says no exact-save repair is needed. Continue implementation and validation without treating the missing host save as a blocker.
 
@@ -83,7 +83,7 @@ These are not all confirmed unfixed code defects. Read the linked tracker/receip
 
 ### Campaign and world coverage
 
-- **G07/G15:** the base `gz15h` late-join case is now fixed. Audit other startup per-character rectangles/timers only where reachable behavior justifies it. The final change is deliberately limited to eleven inspected shared checks on this one map; individual traps and named/cosmetic teleports remain separate.
+- **G07/G15:** eleven original `gz15h` shared checks and, in `518c2b5`, six `gz19h` qk16h/qk17h discovery checks now include late guests. [431 checks](validation/prison-discovery-late-join-2026-10-09.json) cover the latter and alarm regressions. Native chest rewards and completion are unchanged. Other q71h/q72h source leads, individual traps, named/cosmetic moves and full routes remain separate.
 - **G07/G08/G13:** `7e31470` fixes the reproduced `gz19h` area-1 alarm registration gap and preserves its pending native continuation through absence/reload/solo return ([331 checks](validation/prison-alarm-late-join-2026-10-09.json)). Full prison and temporary Nalo/Jun/captive/Shaina chapters, other base captivity predicates, and co-op participants omitted from authored named/cosmetic moves still need broader route coverage.
 - **G02:** later LiA Jigran/finale progression, extended reconnect and independent resumed guest saves have not received full chapter playthroughs. Prepared party/bag/companion/pet progress tests already pass.
 - **Haburu authored-call audit:** all five `BuyHaburuMain#2#N#0` calls are reached by the shipped `bz23k` WorldScript. Independent decryption and the current parser agree across all 130 supplied MOB scripts; none defines these helpers, and the pinned original executable has no matching entry among 227 native commands. This confirms absent authored procedures, not a demonstrated parser/builtin defect. No replacement routine was invented. Their intended optional-quest/shop behavior remains unverified. Base `Portal1`/`Portal2` are supplied by merged parent scripts and are not missing builtins.
@@ -113,6 +113,45 @@ All three use disposable Linux profiles and isolated exports; no user saves, sha
 
 
 U40–U43 are implemented in `bd6ec28` and `e185314`. [Camp/inventory evidence](/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/gameplay-camp-inventory-validation.json) records 480 passing assertions across six retained runs, including the latest base headless 88, LiA rendered 92 and a separate actual ENet trade 31. Screenshots were inspected. Held input uses a single-session fixture plus separate authority regression; physical touch/gamepad and Windows remain untested. LiA rendered Unicode-to-ASCII diagnostics are retained and not claimed fixed. No release or installation was made.
+
+## Original prison treasure discoveries: late arrival — 9 October
+
+`518c2b5` fixes two further original `gz19h` startup gaps. The native `qk16h`
+and `qk17h` discovery checks only watched heroes present during map startup;
+late co-op guests could reach the same areas without advancing shared discovery.
+The early baselines pass 27/27 and 29/29 checks; the late baselines fail five
+checks each (22/27 and 24/29). These are discovery stages, not chest rewards.
+
+Only six original check definitions gain shared-party metadata: qk16h
+#265/#269/#271/#258 and qk17h #279/#280. Complete native families, their exact
+WorldScript calls and the original unique HChest1 binding are validated before
+admission. Changed definitions reject their own family independently. The
+original qk17h reference to HChest1 is retained; HChest2 completion and all chest
+opening/reward bodies remain unchanged. Existing shared-check machinery keeps
+original instructions and timers and handles absent owners, old waits, spent
+checks and solo-return projection. Dead, hidden and disconnected actors do not
+trigger discovery. Separate native approach checks may still repeat an
+idempotent stage assignment, as originally authored.
+
+[Discovery acceptance](validation/prison-discovery-late-join-2026-10-09.json)
+records **431 passing checks**: 139 source/state controls, four 29-check actual
+ENet discovery runs (two quests, early and late), 31 captivity checks, 70 alarm
+state controls and the 75-check alarm network/reload regression. The last
+retains two absent host reloads and normal rejoin before all eight original
+guards receive their orders. Discovery runs use original WorldScript and normal
+network registration, with controlled actor positions, paused unrelated combat
+and explicit native ticks; they do not establish a full physical prison route.
+The first state attempt had a fixture-only type-inference parse error; it is
+preserved separately and excluded from acceptance. Foreign stock Godot jobs
+overlap some headless runs; no timing or performance claim is made.
+
+All 613 committed game files at this checkpoint match its 712-file candidate01
+stage. Only `story_compat.gd` and its generated UID differ from the prior
+qualified prison-alarm candidate02. Native binaries, graphics, settings,
+protocol 13 and save schema are unchanged. The separate in-progress renderer
+candidate is excluded from this qualified gameplay export. No supplied save,
+original asset or installed build was modified. Other q71h/q72h source leads,
+full routes and platform coverage remain open; they are not part of this fix.
 
 ## Original prison alarm: late arrival and absent reload — 9 October
 

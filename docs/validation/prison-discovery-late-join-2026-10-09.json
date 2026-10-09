@@ -1,0 +1,1634 @@
+{
+  "date": "2026-10-09",
+  "status": "qualified private Linux export; no release or device installation",
+  "production_commit": "518c2b59ececd0d2dc8c73496f49da5f24e49d76",
+  "scope": "Original base gz19h qk16h/qk17h shared treasure discovery; not their reward/completion stages or a full prison playthrough.",
+  "problem": "Original startup snapshots Heroes once into four/two per-character discovery waits. A later real ENet guest can satisfy the original approach and chest-distance predicates, but none of the waiting instances evaluates that guest. The host remains distant and shared quest flags stay zero.",
+  "implementation": [
+    "The complete seven-definition qk16h and five-definition qk17h registration/check/setter families are admitted independently, with exact parameters and native blocks. Require one inspected WorldScript registration call and the exact HChest1 binding; duplicate/conflicting calls or assignments reject the relevant adaptation.",
+    "Only six native check definitions gain existing party_check metadata. The existing VM safety analysis expands their subjects to the current eligible party and preserves the native actor priority. Bodies, native instruction indexes, script names and saved format remain unchanged. No new registrar or per-character thread is added.",
+    "Per-check single-shot ownership and spent state use the existing once-per-world implementation. Different original approach checks may still reach the same idempotent GSSetVarMax body; this is preserved native behavior.",
+    "Dead, hidden and disconnected actors do not satisfy expanded predicates. Single-player and LMP retain original per-character eligibility. Existing shared-event projection retains old pending waits for a returned solo recipient.",
+    "The qk17h discovery really names HChest1; preserve it. qk16h #222/#223/#224 and qk17h #286/#281/#288 opening/reward/completion definitions are unchanged. The separate accepted alarm registrar/fingerprint and guard dispatch are unchanged."
+  ],
+  "production_source_sha256": {
+    "game/src/game/script/story_compat.gd": "b0b6937c1abc070c655c01ac8d3bf7c85efc4755b30194c34bb1eac038f7d4e9"
+  },
+  "private_export": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/prison-discovery-late-join-20261009/candidate01",
+    "build_sha256": {
+      "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+      "CursedLands.pck": "349f32f5fa1fcc7f63ef5d9828b53a25fc155844c9c4e7cee8ccef69e724fc37",
+      "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+    },
+    "export_receipt": "/home/llm2x/Documents/EI/local/scratchpad/prison-discovery-late-join-20261009/candidate01/export.json",
+    "export_receipt_sha256": "0248346e7d474f80784cc6651dfcd8cc3d47a6a8d84dfdc67a332e111a499690",
+    "steps": [
+      {
+        "command": [
+          "/home/llm2x/.local/bin/godot-4",
+          "--headless",
+          "--path",
+          "/home/llm2x/Documents/EI/local/scratchpad/prison-discovery-late-join-20261009/candidate01/stage",
+          "--editor",
+          "--import"
+        ],
+        "return_code": 0,
+        "seconds": 9.984556280018296,
+        "errors": []
+      },
+      {
+        "command": [
+          "/home/llm2x/.local/bin/godot-4",
+          "--headless",
+          "--path",
+          "/home/llm2x/Documents/EI/local/scratchpad/prison-discovery-late-join-20261009/candidate01/stage",
+          "--export-pack",
+          "Linux",
+          "/home/llm2x/Documents/EI/local/scratchpad/prison-discovery-late-join-20261009/candidate01/CursedLands.pck"
+        ],
+        "return_code": 0,
+        "seconds": 6.074213599029463,
+        "errors": []
+      }
+    ],
+    "baseline_path": "/home/llm2x/Documents/EI/local/scratchpad/prison-alarm-late-join-20261009/candidate02",
+    "stage_comparison": {
+      "baseline_stage_files": 712,
+      "candidate_stage_files": 712,
+      "changed_files": [
+        "src/game/script/story_compat.gd",
+        "src/game/script/story_compat.gd.uid"
+      ],
+      "tracked_game_files": 613,
+      "mismatches": [],
+      "compared_committed_tree": "518c2b59ececd0d2dc8c73496f49da5f24e49d76"
+    }
+  },
+  "original_mob_sha256": "cb84eaf58818f6cea27fe71f3da0d678abc3cf8118b544f3dc0a59b957b1ab68",
+  "reproduction": {
+    "scope": "Bounded original-startup ENet reproduction, no production change. Controlled positions and native VM ticks with AI/combat paused; not a full route or rendered acceptance.",
+    "runs": {
+      "baseline-early-01": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/prison-alarm-late-join-20261009/candidate02/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/prison-discovery-late-join-20261009/baseline-early-01/tool-source.gd",
+          "--discovery-arrival=early"
+        ],
+        "return_code": 0,
+        "seconds": 23.519750348001253,
+        "termination_reason": null,
+        "errors": [],
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/prison_discovery_late_join.gd": "df734283c056af26013e772db7321dd96d4309cfc4e8c3f7f545ee2a79d1c7f5",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_traps_net.gd": "467645c27cbfe2ce9130f22fe4ac7d68edfdf7e57a867685e212cff480fb35d4"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+          "CursedLands.pck": "5aa8468558b68369fec6b4dcb777d47688643c48bc2b7944515c66d8fe28554e",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "other_processes_at_start": [],
+        "other_processes_at_end": [],
+        "checks": 27,
+        "failures": 0,
+        "arrival": "early",
+        "points": {
+          "approach": [
+            95.0,
+            478.0
+          ],
+          "chest": [
+            111.592155456543,
+            499.527008056641
+          ],
+          "near_chest": [
+            112.75,
+            500.25
+          ]
+        },
+        "original_script_sha256": "be3563f125987345d54a84745d77d323a1ec990e52ca1db6bcd4440be210f38b",
+        "final_quest": {
+          "q.gz19h.qk16h": 1.0,
+          "q.gz19h.qk16h.1": 2.0,
+          "q.gz19h.qk16h.2": 2.0,
+          "q.gz19h.qk16h.3": 1.0
+        },
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/prison-discovery-late-join-20261009/baseline-early-01",
+        "files_sha256": {
+          "prison-discovery-late-join.json": "2edd803950b2c67287b154b19529cbcc812337821babf0fb6d8c8a82b625f7fe",
+          "run.json": "47ff8b63aa4a3efac441fb17bdbcf0591cfb6cc52fd443762312a50502d6d1dd",
+          "run.log": "395e4720a750d822774760a24bd21efbc92a970ba465a378b2a3385f9a82ea48",
+          "story_coop_traps_net.gd": "467645c27cbfe2ce9130f22fe4ac7d68edfdf7e57a867685e212cff480fb35d4",
+          "tool-source.gd": "df734283c056af26013e772db7321dd96d4309cfc4e8c3f7f545ee2a79d1c7f5"
+        }
+      },
+      "baseline-late-01": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/prison-alarm-late-join-20261009/candidate02/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/prison-discovery-late-join-20261009/baseline-late-01/tool-source.gd",
+          "--discovery-arrival=late"
+        ],
+        "return_code": 1,
+        "seconds": 23.51973043102771,
+        "termination_reason": null,
+        "errors": [
+          "FAIL guest approach activates the original shared quest",
+          "FAIL guest approach completes the original first discovery stage",
+          "FAIL guest approach activates only the authored chest search stage",
+          "FAIL guest alone completes the original chest-discovery stage",
+          "FAIL guest chest discovery activates the authored opening stage"
+        ],
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/prison_discovery_late_join.gd": "df734283c056af26013e772db7321dd96d4309cfc4e8c3f7f545ee2a79d1c7f5",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_traps_net.gd": "467645c27cbfe2ce9130f22fe4ac7d68edfdf7e57a867685e212cff480fb35d4"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+          "CursedLands.pck": "5aa8468558b68369fec6b4dcb777d47688643c48bc2b7944515c66d8fe28554e",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "other_processes_at_start": [],
+        "other_processes_at_end": [],
+        "checks": 27,
+        "failures": 5,
+        "arrival": "late",
+        "points": {
+          "approach": [
+            95.0,
+            478.0
+          ],
+          "chest": [
+            111.592155456543,
+            499.527008056641
+          ],
+          "near_chest": [
+            112.75,
+            500.25
+          ]
+        },
+        "original_script_sha256": "be3563f125987345d54a84745d77d323a1ec990e52ca1db6bcd4440be210f38b",
+        "final_quest": {
+          "q.gz19h.qk16h": 0.0,
+          "q.gz19h.qk16h.1": 0.0,
+          "q.gz19h.qk16h.2": 0.0,
+          "q.gz19h.qk16h.3": 0.0
+        },
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/prison-discovery-late-join-20261009/baseline-late-01",
+        "files_sha256": {
+          "prison-discovery-late-join.json": "c37d827fe6acbf578f168af63f136000a31fa91e8cbfd9d8dc60994aaa150292",
+          "run.json": "138bff741dd0beb44f6e67531368be4e08dbbabca3baa806902f60383b9a304b",
+          "run.log": "af29428b8162447baf50775db964e4943cf5aee88dd175d6bd3bcbc65c3ba1ed",
+          "story_coop_traps_net.gd": "467645c27cbfe2ce9130f22fe4ac7d68edfdf7e57a867685e212cff480fb35d4",
+          "tool-source.gd": "df734283c056af26013e772db7321dd96d4309cfc4e8c3f7f545ee2a79d1c7f5"
+        }
+      },
+      "qk17-baseline-early-01": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/prison-alarm-late-join-20261009/candidate02/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/prison-discovery-late-join-20261009/qk17-baseline-early-01/tool-source.gd",
+          "--discovery-arrival=early",
+          "--discovery-quest=qk17h"
+        ],
+        "return_code": 0,
+        "seconds": 23.51955618301872,
+        "termination_reason": null,
+        "errors": [],
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/prison_discovery_late_join.gd": "db4009b8442a1785c510bcaee778ce94efefbc1a31fa3398ba3b0767f589653e",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_traps_net.gd": "467645c27cbfe2ce9130f22fe4ac7d68edfdf7e57a867685e212cff480fb35d4"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+          "CursedLands.pck": "5aa8468558b68369fec6b4dcb777d47688643c48bc2b7944515c66d8fe28554e",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "other_processes_at_start": [],
+        "other_processes_at_end": [],
+        "checks": 29,
+        "failures": 0,
+        "arrival": "early",
+        "quest_case": "qk17h",
+        "points": {
+          "approach": [
+            71.0,
+            310.0
+          ],
+          "chest": [
+            111.592155456543,
+            499.527008056641
+          ],
+          "near_chest": [
+            112.75,
+            500.25
+          ]
+        },
+        "original_script_sha256": "be3563f125987345d54a84745d77d323a1ec990e52ca1db6bcd4440be210f38b",
+        "final_quest": {
+          "q.gz19h.qk17h": 1.0,
+          "q.gz19h.qk17h.1": 2.0,
+          "q.gz19h.qk17h.2": 2.0,
+          "q.gz19h.qk17h.3": 1.0
+        },
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/prison-discovery-late-join-20261009/qk17-baseline-early-01",
+        "files_sha256": {
+          "prison-discovery-late-join.json": "c65cbc7420ae8160f5f52b5ae50244daaab1318783a1e256ecc864614097c913",
+          "run.json": "17219dd74e365e2305cf66cfb022fcd3bd8b42e15f4d84940c395443689f7629",
+          "run.log": "0af2827ae82eea468054616a9fe3ac45dd304826180e0cec422e963518883b34",
+          "story_coop_traps_net.gd": "467645c27cbfe2ce9130f22fe4ac7d68edfdf7e57a867685e212cff480fb35d4",
+          "tool-source.gd": "db4009b8442a1785c510bcaee778ce94efefbc1a31fa3398ba3b0767f589653e"
+        }
+      },
+      "qk17-baseline-late-01": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/prison-alarm-late-join-20261009/candidate02/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/prison-discovery-late-join-20261009/qk17-baseline-late-01/tool-source.gd",
+          "--discovery-arrival=late",
+          "--discovery-quest=qk17h"
+        ],
+        "return_code": 1,
+        "seconds": 24.020746832014993,
+        "termination_reason": null,
+        "errors": [
+          "FAIL guest approach activates the original shared quest",
+          "FAIL guest approach completes the original first discovery stage",
+          "FAIL guest approach activates only the authored chest search stage",
+          "FAIL guest alone completes the original chest-discovery stage",
+          "FAIL guest chest discovery activates the authored opening stage"
+        ],
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/prison_discovery_late_join.gd": "db4009b8442a1785c510bcaee778ce94efefbc1a31fa3398ba3b0767f589653e",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_traps_net.gd": "467645c27cbfe2ce9130f22fe4ac7d68edfdf7e57a867685e212cff480fb35d4"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+          "CursedLands.pck": "5aa8468558b68369fec6b4dcb777d47688643c48bc2b7944515c66d8fe28554e",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "other_processes_at_start": [
+          {
+            "pid": 1553032,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ],
+        "other_processes_at_end": [
+          {
+            "pid": 1553032,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ],
+        "checks": 29,
+        "failures": 5,
+        "arrival": "late",
+        "quest_case": "qk17h",
+        "points": {
+          "approach": [
+            71.0,
+            310.0
+          ],
+          "chest": [
+            111.592155456543,
+            499.527008056641
+          ],
+          "near_chest": [
+            112.75,
+            500.25
+          ]
+        },
+        "original_script_sha256": "be3563f125987345d54a84745d77d323a1ec990e52ca1db6bcd4440be210f38b",
+        "final_quest": {
+          "q.gz19h.qk17h": 0.0,
+          "q.gz19h.qk17h.1": 0.0,
+          "q.gz19h.qk17h.2": 0.0,
+          "q.gz19h.qk17h.3": 0.0
+        },
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/prison-discovery-late-join-20261009/qk17-baseline-late-01",
+        "files_sha256": {
+          "prison-discovery-late-join.json": "102c9135f7b99bbae410335ea1c759d636ffb68d15c575e9f1fe25281a8e2f2d",
+          "run.json": "00d802eac7096eb509d19d0007d699b61606e15aed339070129aa60a114b6e65",
+          "run.log": "4b0bdaed3ba7c4eb012090b0ee6cb856f2b2118e533efd3750e801c207feb7cd",
+          "story_coop_traps_net.gd": "467645c27cbfe2ce9130f22fe4ac7d68edfdf7e57a867685e212cff480fb35d4",
+          "tool-source.gd": "db4009b8442a1785c510bcaee778ce94efefbc1a31fa3398ba3b0767f589653e"
+        }
+      }
+    },
+    "finding": "Both original gz19h treasure-discovery families reproduce the same late-arrival gap. qk16h #264 gives #265/#269/#271/#258 only to initial Heroes; qk17h #278 gives #279/#280 only to initial Heroes. Early arrivals reach both authored stages. Late arrivals satisfy the same actual-map predicates but all four respective quest values remain zero.",
+    "minimal_fix_recommendation": "Validate each complete original registration/condition/quest-trigger family and the native WorldScript call plus HChest1 binding, then mark only its shared discovery checks party_check. Reuse existing VM shared-event evaluation; preserve native bodies/indexes, separate HChest2 rewards and solo/LMP. No new per-character registrar.",
+    "limits": [
+      "Headless deterministic actor-position/native-tick controls are not a full route, rendered acceptance or timing claim.",
+      "The qk17 late run recorded a foreign stock Godot process (PID1553032) throughout; it was not touched. The original native-thread/quest failure was directly observed, with matching early source/control.",
+      "Historical qk16 baselines retain their earlier 27-check frozen fixture; the selector/HChest2 controls in the subsequent qk17 fixture bring that version to29 checks."
+    ]
+  },
+  "acceptance": {
+    "checks": 431,
+    "failures": 0,
+    "groups": {
+      "discovery_state": 139,
+      "actual_discovery_enet": 116,
+      "existing_captivity": 31,
+      "existing_alarm_state": 70,
+      "existing_alarm_absent_reload_enet": 75
+    },
+    "runs": [
+      {
+        "label": "prison-discovery-state-final02",
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/prison-discovery-state-final02",
+        "checks": 139,
+        "failures": 0,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/prison-discovery-late-join-20261009/candidate01/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/prison-discovery-state-final02/tool-source.gd"
+        ],
+        "return_code": 0,
+        "seconds": 3.25356261304114,
+        "errors": [],
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/prison_discovery_state.gd": "746e4b91f7e6bbe45091da64a47660721d1ac76403ba4944c484e04121be9a3e",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/prison_late_join.gd": "06c53d50b72774c54a8452c23537a389505556e6c74c9ab3251ded7c6154ce3e"
+        },
+        "other_processes_at_start": [
+          {
+            "pid": 1569246,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          },
+          {
+            "pid": 1569647,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": true
+          }
+        ],
+        "other_processes_at_end": [
+          {
+            "pid": 1569742,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          },
+          {
+            "pid": 1570027,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": true
+          }
+        ],
+        "files_sha256": {
+          "prison-discovery-state.json": "6121202fb09af2f77189919c28f66cd789a03f348b63f842c720d86a8e17ba0c",
+          "prison_late_join.gd": "06c53d50b72774c54a8452c23537a389505556e6c74c9ab3251ded7c6154ce3e",
+          "run.json": "57adda61632dcc23dfc16aae445bf9e43985837f63e5e3d4d77cfc200f034389",
+          "run.log": "83d27cce4b2692a796cf7e4ff851f2fe2386442ce5da5f9c70e62905ad88d43d",
+          "tool-source.gd": "746e4b91f7e6bbe45091da64a47660721d1ac76403ba4944c484e04121be9a3e"
+        }
+      },
+      {
+        "label": "discovery-captivity-regression01",
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/discovery-captivity-regression01",
+        "checks": 31,
+        "failures": 0,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/prison-discovery-late-join-20261009/candidate01/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/discovery-captivity-regression01/tool-source.gd"
+        ],
+        "return_code": 0,
+        "seconds": 2.7537768839974888,
+        "errors": [],
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_captivity.gd": "e5bf6a248a6b3992d3fa43b80f4a076b6bd3fba39e026a32d74a5ffce084282f"
+        },
+        "other_processes_at_start": [
+          {
+            "pid": 1571397,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": true
+          },
+          {
+            "pid": 1571534,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ],
+        "other_processes_at_end": [
+          {
+            "pid": 1571397,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": true
+          },
+          {
+            "pid": 1571534,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ],
+        "files_sha256": {
+          "run.json": "3d03f89d065d299d8e52ee00f3c3c97f90f9daad76c85ea31b9ec29087fa9a3a",
+          "run.log": "9679ef0b3c48d591bc08e011dae1b56cb3118b5c5fea93e1c51323c9a332f548",
+          "tool-source.gd": "e5bf6a248a6b3992d3fa43b80f4a076b6bd3fba39e026a32d74a5ffce084282f"
+        }
+      },
+      {
+        "label": "discovery-alarm-state01",
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/discovery-alarm-state01",
+        "checks": 70,
+        "failures": 0,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/prison-discovery-late-join-20261009/candidate01/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/discovery-alarm-state01/tool-source.gd"
+        ],
+        "return_code": 0,
+        "seconds": 2.7532538839732297,
+        "errors": [],
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/prison_alarm_state.gd": "acebb8f79fe12bd2da69d79129f16fe710b8edef6aef5fa02bd9748c41bda96b",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_captivity.gd": "e5bf6a248a6b3992d3fa43b80f4a076b6bd3fba39e026a32d74a5ffce084282f"
+        },
+        "other_processes_at_start": [
+          {
+            "pid": 1571397,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": true
+          },
+          {
+            "pid": 1571534,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ],
+        "other_processes_at_end": [
+          {
+            "pid": 1571990,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          },
+          {
+            "pid": 1572259,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": true
+          }
+        ],
+        "files_sha256": {
+          "prison-alarm-state.json": "f4db6d744c6adbd2c34d6246128006bcab9e9136c86f6fa3beddb143a106d2e5",
+          "run.json": "002bf02729c4d8fd53a083d54467643b68c547b5af8e91d7aec2557071d6e30e",
+          "run.log": "dc3ba5c97ee716d42ed1a1992c182c73d13aba493790f1519344de796096cde7",
+          "story_coop_captivity.gd": "e5bf6a248a6b3992d3fa43b80f4a076b6bd3fba39e026a32d74a5ffce084282f",
+          "tool-source.gd": "acebb8f79fe12bd2da69d79129f16fe710b8edef6aef5fa02bd9748c41bda96b"
+        }
+      },
+      {
+        "label": "discovery-qk16h-early-final01",
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/discovery-qk16h-early-final01",
+        "checks": 29,
+        "failures": 0,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/prison-discovery-late-join-20261009/candidate01/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/discovery-qk16h-early-final01/tool-source.gd",
+          "--discovery-quest=qk16h",
+          "--discovery-arrival=early"
+        ],
+        "return_code": 0,
+        "seconds": 26.028898577962536,
+        "errors": [],
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/prison_discovery_late_join.gd": "db4009b8442a1785c510bcaee778ce94efefbc1a31fa3398ba3b0767f589653e",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_traps_net.gd": "467645c27cbfe2ce9130f22fe4ac7d68edfdf7e57a867685e212cff480fb35d4"
+        },
+        "other_processes_at_start": [
+          {
+            "pid": 1571990,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          },
+          {
+            "pid": 1572259,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": true
+          }
+        ],
+        "other_processes_at_end": [
+          {
+            "pid": 1572789,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          },
+          {
+            "pid": 1573169,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": true
+          }
+        ],
+        "files_sha256": {
+          "prison-discovery-late-join.json": "a1fd76963bda53a42e6daf870c48c9b5a1277f6042500eaa2237fa30039b9f0a",
+          "run.json": "552da7be59f9b8bcab13d5f8f37cf7f636a892b13ad2aa3e12d6ccabeab568a8",
+          "run.log": "d916eeb688dd24d77f4cd6798ce2f514c092100c44012c313b2da4e6ddc9c7ae",
+          "story_coop_traps_net.gd": "467645c27cbfe2ce9130f22fe4ac7d68edfdf7e57a867685e212cff480fb35d4",
+          "tool-source.gd": "db4009b8442a1785c510bcaee778ce94efefbc1a31fa3398ba3b0767f589653e"
+        },
+        "discovery_result": {
+          "arrival": "early",
+          "quest_case": "qk16h",
+          "points": {
+            "approach": [
+              95.0,
+              478.0
+            ],
+            "chest": [
+              111.592155456543,
+              499.527008056641
+            ],
+            "near_chest": [
+              112.75,
+              500.25
+            ]
+          },
+          "phases": [
+            {
+              "alarm2": 0.0,
+              "chest_state": 0,
+              "g1": 0.0,
+              "guest_uid": 1500000002,
+              "hero_ids": [
+                1500000001,
+                1500000002
+              ],
+              "label": "after_startup",
+              "money": 0,
+              "quest": {
+                "q.gz19h.qk16h": 0.0,
+                "q.gz19h.qk16h.1": 0.0,
+                "q.gz19h.qk16h.2": 0.0,
+                "q.gz19h.qk16h.3": 0.0
+              },
+              "vm_time": 0.88,
+              "waits": [
+                {
+                  "controller": 0,
+                  "script": "VCheck#0#265",
+                  "uid": 1500000001
+                },
+                {
+                  "controller": 0,
+                  "script": "VCheck#0#269",
+                  "uid": 1500000001
+                },
+                {
+                  "controller": 0,
+                  "script": "VCheck#0#271",
+                  "uid": 1500000001
+                },
+                {
+                  "controller": 0,
+                  "script": "VCheck#0#258",
+                  "uid": 1500000001
+                },
+                {
+                  "controller": 1,
+                  "script": "VCheck#0#265",
+                  "uid": 1500000002
+                },
+                {
+                  "controller": 1,
+                  "script": "VCheck#0#269",
+                  "uid": 1500000002
+                },
+                {
+                  "controller": 1,
+                  "script": "VCheck#0#271",
+                  "uid": 1500000002
+                },
+                {
+                  "controller": 1,
+                  "script": "VCheck#0#258",
+                  "uid": 1500000002
+                }
+              ]
+            },
+            {
+              "alarm2": 0.0,
+              "chest_state": 0,
+              "g1": 0.0,
+              "guest_uid": 1500000002,
+              "hero_ids": [
+                1500000001,
+                1500000002
+              ],
+              "label": "after_join",
+              "money": 0,
+              "quest": {
+                "q.gz19h.qk16h": 0.0,
+                "q.gz19h.qk16h.1": 0.0,
+                "q.gz19h.qk16h.2": 0.0,
+                "q.gz19h.qk16h.3": 0.0
+              },
+              "vm_time": 1.045,
+              "waits": [
+                {
+                  "controller": 0,
+                  "script": "VCheck#0#265",
+                  "uid": 1500000001
+                },
+                {
+                  "controller": 0,
+                  "script": "VCheck#0#269",
+                  "uid": 1500000001
+                },
+                {
+                  "controller": 0,
+                  "script": "VCheck#0#271",
+                  "uid": 1500000001
+                },
+                {
+                  "controller": 0,
+                  "script": "VCheck#0#258",
+                  "uid": 1500000001
+                },
+                {
+                  "controller": 1,
+                  "script": "VCheck#0#265",
+                  "uid": 1500000002
+                },
+                {
+                  "controller": 1,
+                  "script": "VCheck#0#269",
+                  "uid": 1500000002
+                },
+                {
+                  "controller": 1,
+                  "script": "VCheck#0#271",
+                  "uid": 1500000002
+                },
+                {
+                  "controller": 1,
+                  "script": "VCheck#0#258",
+                  "uid": 1500000002
+                }
+              ]
+            },
+            {
+              "alarm2": 0.0,
+              "chest_state": 0,
+              "g1": 0.0,
+              "guest_uid": 1500000002,
+              "hero_ids": [
+                1500000001,
+                1500000002
+              ],
+              "label": "after_approach",
+              "money": 0,
+              "quest": {
+                "q.gz19h.qk16h": 1.0,
+                "q.gz19h.qk16h.1": 2.0,
+                "q.gz19h.qk16h.2": 1.0,
+                "q.gz19h.qk16h.3": 0.0
+              },
+              "vm_time": 1.265,
+              "waits": [
+                {
+                  "controller": 0,
+                  "script": "VCheck#0#271",
+                  "uid": 1500000001
+                },
+                {
+                  "controller": 0,
+                  "script": "VCheck#0#258",
+                  "uid": 1500000001
+                },
+                {
+                  "controller": 1,
+                  "script": "VCheck#0#271",
+                  "uid": 1500000002
+                },
+                {
+                  "controller": 1,
+                  "script": "VCheck#0#258",
+                  "uid": 1500000002
+                }
+              ]
+            },
+            {
+              "alarm2": 0.0,
+              "chest_state": 0,
+              "g1": 0.0,
+              "guest_uid": 1500000002,
+              "hero_ids": [
+                1500000001,
+                1500000002
+              ],
+              "label": "after_chest_discovery",
+              "money": 0,
+              "quest": {
+                "q.gz19h.qk16h": 1.0,
+                "q.gz19h.qk16h.1": 2.0,
+                "q.gz19h.qk16h.2": 2.0,
+                "q.gz19h.qk16h.3": 1.0
+              },
+              "vm_time": 1.485,
+              "waits": [
+                {
+                  "controller": 0,
+                  "script": "VCheck#0#271",
+                  "uid": 1500000001
+                },
+                {
+                  "controller": 1,
+                  "script": "VCheck#0#271",
+                  "uid": 1500000002
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "label": "discovery-qk16h-late-final01",
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/discovery-qk16h-late-final01",
+        "checks": 29,
+        "failures": 0,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/prison-discovery-late-join-20261009/candidate01/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/discovery-qk16h-late-final01/tool-source.gd",
+          "--discovery-quest=qk16h",
+          "--discovery-arrival=late"
+        ],
+        "return_code": 0,
+        "seconds": 28.796733074996155,
+        "errors": [],
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/prison_discovery_late_join.gd": "db4009b8442a1785c510bcaee778ce94efefbc1a31fa3398ba3b0767f589653e",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_traps_net.gd": "467645c27cbfe2ce9130f22fe4ac7d68edfdf7e57a867685e212cff480fb35d4"
+        },
+        "other_processes_at_start": [
+          {
+            "pid": 1572789,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          },
+          {
+            "pid": 1573169,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": true
+          }
+        ],
+        "other_processes_at_end": [
+          {
+            "pid": 1573425,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": true
+          },
+          {
+            "pid": 1573503,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ],
+        "files_sha256": {
+          "prison-discovery-late-join.json": "f01b7f0276a9eba49c0c69866e8699e524674b4c121d63d368072f8588c505b6",
+          "run.json": "833410923a04cc6d5a968a0e405348cfc96e5c0ffde9c766ab080cb5e81226f2",
+          "run.log": "e79153fc8eb0cfb0f81f560eacaa5e4894df2ae0ee6969730c0a5e61ccbe6a3c",
+          "story_coop_traps_net.gd": "467645c27cbfe2ce9130f22fe4ac7d68edfdf7e57a867685e212cff480fb35d4",
+          "tool-source.gd": "db4009b8442a1785c510bcaee778ce94efefbc1a31fa3398ba3b0767f589653e"
+        },
+        "discovery_result": {
+          "arrival": "late",
+          "quest_case": "qk16h",
+          "points": {
+            "approach": [
+              95.0,
+              478.0
+            ],
+            "chest": [
+              111.592155456543,
+              499.527008056641
+            ],
+            "near_chest": [
+              112.75,
+              500.25
+            ]
+          },
+          "phases": [
+            {
+              "alarm2": 0.0,
+              "chest_state": 0,
+              "g1": 0.0,
+              "guest_uid": -1,
+              "hero_ids": [
+                1500000001
+              ],
+              "label": "after_startup",
+              "money": 0,
+              "quest": {
+                "q.gz19h.qk16h": 0.0,
+                "q.gz19h.qk16h.1": 0.0,
+                "q.gz19h.qk16h.2": 0.0,
+                "q.gz19h.qk16h.3": 0.0
+              },
+              "vm_time": 0.88,
+              "waits": [
+                {
+                  "controller": 0,
+                  "script": "VCheck#0#265",
+                  "uid": 1500000001
+                },
+                {
+                  "controller": 0,
+                  "script": "VCheck#0#269",
+                  "uid": 1500000001
+                },
+                {
+                  "controller": 0,
+                  "script": "VCheck#0#271",
+                  "uid": 1500000001
+                },
+                {
+                  "controller": 0,
+                  "script": "VCheck#0#258",
+                  "uid": 1500000001
+                }
+              ]
+            },
+            {
+              "alarm2": 0.0,
+              "chest_state": 0,
+              "g1": 0.0,
+              "guest_uid": 1500000002,
+              "hero_ids": [
+                1500000001,
+                1500000002
+              ],
+              "label": "after_join",
+              "money": 0,
+              "quest": {
+                "q.gz19h.qk16h": 0.0,
+                "q.gz19h.qk16h.1": 0.0,
+                "q.gz19h.qk16h.2": 0.0,
+                "q.gz19h.qk16h.3": 0.0
+              },
+              "vm_time": 1.045,
+              "waits": [
+                {
+                  "controller": 0,
+                  "script": "VCheck#0#265",
+                  "uid": 1500000001
+                },
+                {
+                  "controller": 0,
+                  "script": "VCheck#0#269",
+                  "uid": 1500000001
+                },
+                {
+                  "controller": 0,
+                  "script": "VCheck#0#271",
+                  "uid": 1500000001
+                },
+                {
+                  "controller": 0,
+                  "script": "VCheck#0#258",
+                  "uid": 1500000001
+                }
+              ]
+            },
+            {
+              "alarm2": 0.0,
+              "chest_state": 0,
+              "g1": 0.0,
+              "guest_uid": 1500000002,
+              "hero_ids": [
+                1500000001,
+                1500000002
+              ],
+              "label": "after_approach",
+              "money": 0,
+              "quest": {
+                "q.gz19h.qk16h": 1.0,
+                "q.gz19h.qk16h.1": 2.0,
+                "q.gz19h.qk16h.2": 1.0,
+                "q.gz19h.qk16h.3": 0.0
+              },
+              "vm_time": 1.265,
+              "waits": [
+                {
+                  "controller": 0,
+                  "script": "VCheck#0#271",
+                  "uid": 1500000001
+                },
+                {
+                  "controller": 0,
+                  "script": "VCheck#0#258",
+                  "uid": 1500000001
+                }
+              ]
+            },
+            {
+              "alarm2": 0.0,
+              "chest_state": 0,
+              "g1": 0.0,
+              "guest_uid": 1500000002,
+              "hero_ids": [
+                1500000001,
+                1500000002
+              ],
+              "label": "after_chest_discovery",
+              "money": 0,
+              "quest": {
+                "q.gz19h.qk16h": 1.0,
+                "q.gz19h.qk16h.1": 2.0,
+                "q.gz19h.qk16h.2": 2.0,
+                "q.gz19h.qk16h.3": 1.0
+              },
+              "vm_time": 1.485,
+              "waits": [
+                {
+                  "controller": 0,
+                  "script": "VCheck#0#271",
+                  "uid": 1500000001
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "label": "discovery-qk17h-early-final01",
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/discovery-qk17h-early-final01",
+        "checks": 29,
+        "failures": 0,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/prison-discovery-late-join-20261009/candidate01/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/discovery-qk17h-early-final01/tool-source.gd",
+          "--discovery-quest=qk17h",
+          "--discovery-arrival=early"
+        ],
+        "return_code": 0,
+        "seconds": 27.789599334006198,
+        "errors": [],
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/prison_discovery_late_join.gd": "db4009b8442a1785c510bcaee778ce94efefbc1a31fa3398ba3b0767f589653e",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_traps_net.gd": "467645c27cbfe2ce9130f22fe4ac7d68edfdf7e57a867685e212cff480fb35d4"
+        },
+        "other_processes_at_start": [
+          {
+            "pid": 1573425,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": true
+          },
+          {
+            "pid": 1573503,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ],
+        "other_processes_at_end": [
+          {
+            "pid": 1573503,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          },
+          {
+            "pid": 1574718,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": true
+          }
+        ],
+        "files_sha256": {
+          "prison-discovery-late-join.json": "c65cbc7420ae8160f5f52b5ae50244daaab1318783a1e256ecc864614097c913",
+          "run.json": "518be3eb3ef2615928a53c3aaaab731da1bfa97f43d953ddde9261cbbe4b3357",
+          "run.log": "1efa75e5c3a43d06b9e063790c3db6531770d9a2a301ab053dc2741cbca5300e",
+          "story_coop_traps_net.gd": "467645c27cbfe2ce9130f22fe4ac7d68edfdf7e57a867685e212cff480fb35d4",
+          "tool-source.gd": "db4009b8442a1785c510bcaee778ce94efefbc1a31fa3398ba3b0767f589653e"
+        },
+        "discovery_result": {
+          "arrival": "early",
+          "quest_case": "qk17h",
+          "points": {
+            "approach": [
+              71.0,
+              310.0
+            ],
+            "chest": [
+              111.592155456543,
+              499.527008056641
+            ],
+            "near_chest": [
+              112.75,
+              500.25
+            ]
+          },
+          "phases": [
+            {
+              "alarm2": 0.0,
+              "chest_state": 0,
+              "g1": 0.0,
+              "guest_uid": 1500000002,
+              "hero_ids": [
+                1500000001,
+                1500000002
+              ],
+              "label": "after_startup",
+              "money": 0,
+              "quest": {
+                "q.gz19h.qk17h": 0.0,
+                "q.gz19h.qk17h.1": 0.0,
+                "q.gz19h.qk17h.2": 0.0,
+                "q.gz19h.qk17h.3": 0.0
+              },
+              "vm_time": 0.88,
+              "waits": [
+                {
+                  "controller": 0,
+                  "script": "VCheck#0#279",
+                  "uid": 1500000001
+                },
+                {
+                  "controller": 0,
+                  "script": "VCheck#0#280",
+                  "uid": 1500000001
+                },
+                {
+                  "controller": 1,
+                  "script": "VCheck#0#279",
+                  "uid": 1500000002
+                },
+                {
+                  "controller": 1,
+                  "script": "VCheck#0#280",
+                  "uid": 1500000002
+                }
+              ]
+            },
+            {
+              "alarm2": 0.0,
+              "chest_state": 0,
+              "g1": 0.0,
+              "guest_uid": 1500000002,
+              "hero_ids": [
+                1500000001,
+                1500000002
+              ],
+              "label": "after_join",
+              "money": 0,
+              "quest": {
+                "q.gz19h.qk17h": 0.0,
+                "q.gz19h.qk17h.1": 0.0,
+                "q.gz19h.qk17h.2": 0.0,
+                "q.gz19h.qk17h.3": 0.0
+              },
+              "vm_time": 1.045,
+              "waits": [
+                {
+                  "controller": 0,
+                  "script": "VCheck#0#279",
+                  "uid": 1500000001
+                },
+                {
+                  "controller": 0,
+                  "script": "VCheck#0#280",
+                  "uid": 1500000001
+                },
+                {
+                  "controller": 1,
+                  "script": "VCheck#0#279",
+                  "uid": 1500000002
+                },
+                {
+                  "controller": 1,
+                  "script": "VCheck#0#280",
+                  "uid": 1500000002
+                }
+              ]
+            },
+            {
+              "alarm2": 0.0,
+              "chest_state": 0,
+              "g1": 0.0,
+              "guest_uid": 1500000002,
+              "hero_ids": [
+                1500000001,
+                1500000002
+              ],
+              "label": "after_approach",
+              "money": 0,
+              "quest": {
+                "q.gz19h.qk17h": 1.0,
+                "q.gz19h.qk17h.1": 2.0,
+                "q.gz19h.qk17h.2": 1.0,
+                "q.gz19h.qk17h.3": 0.0
+              },
+              "vm_time": 1.265,
+              "waits": [
+                {
+                  "controller": 0,
+                  "script": "VCheck#0#280",
+                  "uid": 1500000001
+                },
+                {
+                  "controller": 1,
+                  "script": "VCheck#0#280",
+                  "uid": 1500000002
+                }
+              ]
+            },
+            {
+              "alarm2": 0.0,
+              "chest_state": 0,
+              "g1": 0.0,
+              "guest_uid": 1500000002,
+              "hero_ids": [
+                1500000001,
+                1500000002
+              ],
+              "label": "after_chest_discovery",
+              "money": 0,
+              "quest": {
+                "q.gz19h.qk17h": 1.0,
+                "q.gz19h.qk17h.1": 2.0,
+                "q.gz19h.qk17h.2": 2.0,
+                "q.gz19h.qk17h.3": 1.0
+              },
+              "vm_time": 1.485,
+              "waits": []
+            }
+          ]
+        }
+      },
+      {
+        "label": "discovery-qk17h-late-final01",
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/discovery-qk17h-late-final01",
+        "checks": 29,
+        "failures": 0,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/prison-discovery-late-join-20261009/candidate01/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/discovery-qk17h-late-final01/tool-source.gd",
+          "--discovery-quest=qk17h",
+          "--discovery-arrival=late"
+        ],
+        "return_code": 0,
+        "seconds": 26.283681274973787,
+        "errors": [],
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/prison_discovery_late_join.gd": "db4009b8442a1785c510bcaee778ce94efefbc1a31fa3398ba3b0767f589653e",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_traps_net.gd": "467645c27cbfe2ce9130f22fe4ac7d68edfdf7e57a867685e212cff480fb35d4"
+        },
+        "other_processes_at_start": [
+          {
+            "pid": 1573503,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          },
+          {
+            "pid": 1574718,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": true
+          }
+        ],
+        "other_processes_at_end": [
+          {
+            "pid": 1575854,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": true
+          },
+          {
+            "pid": 1575994,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ],
+        "files_sha256": {
+          "prison-discovery-late-join.json": "5964c376e83c2c7abdd1f4e6115af820e3dda7a794d397b1e857a6d0df3f1113",
+          "run.json": "b31f45789b641adffa8dd3abe3a9f5bcf74b3139b03178c3a21b1466529c657a",
+          "run.log": "3e1983f6e9c5295de22eac1efe11742b0c4b9008c8aebead7708482ea6190e4b",
+          "story_coop_traps_net.gd": "467645c27cbfe2ce9130f22fe4ac7d68edfdf7e57a867685e212cff480fb35d4",
+          "tool-source.gd": "db4009b8442a1785c510bcaee778ce94efefbc1a31fa3398ba3b0767f589653e"
+        },
+        "discovery_result": {
+          "arrival": "late",
+          "quest_case": "qk17h",
+          "points": {
+            "approach": [
+              71.0,
+              310.0
+            ],
+            "chest": [
+              111.592155456543,
+              499.527008056641
+            ],
+            "near_chest": [
+              112.75,
+              500.25
+            ]
+          },
+          "phases": [
+            {
+              "alarm2": 0.0,
+              "chest_state": 0,
+              "g1": 0.0,
+              "guest_uid": -1,
+              "hero_ids": [
+                1500000001
+              ],
+              "label": "after_startup",
+              "money": 0,
+              "quest": {
+                "q.gz19h.qk17h": 0.0,
+                "q.gz19h.qk17h.1": 0.0,
+                "q.gz19h.qk17h.2": 0.0,
+                "q.gz19h.qk17h.3": 0.0
+              },
+              "vm_time": 0.88,
+              "waits": [
+                {
+                  "controller": 0,
+                  "script": "VCheck#0#279",
+                  "uid": 1500000001
+                },
+                {
+                  "controller": 0,
+                  "script": "VCheck#0#280",
+                  "uid": 1500000001
+                }
+              ]
+            },
+            {
+              "alarm2": 0.0,
+              "chest_state": 0,
+              "g1": 0.0,
+              "guest_uid": 1500000002,
+              "hero_ids": [
+                1500000001,
+                1500000002
+              ],
+              "label": "after_join",
+              "money": 0,
+              "quest": {
+                "q.gz19h.qk17h": 0.0,
+                "q.gz19h.qk17h.1": 0.0,
+                "q.gz19h.qk17h.2": 0.0,
+                "q.gz19h.qk17h.3": 0.0
+              },
+              "vm_time": 1.045,
+              "waits": [
+                {
+                  "controller": 0,
+                  "script": "VCheck#0#279",
+                  "uid": 1500000001
+                },
+                {
+                  "controller": 0,
+                  "script": "VCheck#0#280",
+                  "uid": 1500000001
+                }
+              ]
+            },
+            {
+              "alarm2": 0.0,
+              "chest_state": 0,
+              "g1": 0.0,
+              "guest_uid": 1500000002,
+              "hero_ids": [
+                1500000001,
+                1500000002
+              ],
+              "label": "after_approach",
+              "money": 0,
+              "quest": {
+                "q.gz19h.qk17h": 1.0,
+                "q.gz19h.qk17h.1": 2.0,
+                "q.gz19h.qk17h.2": 1.0,
+                "q.gz19h.qk17h.3": 0.0
+              },
+              "vm_time": 1.265,
+              "waits": [
+                {
+                  "controller": 0,
+                  "script": "VCheck#0#280",
+                  "uid": 1500000001
+                }
+              ]
+            },
+            {
+              "alarm2": 0.0,
+              "chest_state": 0,
+              "g1": 0.0,
+              "guest_uid": 1500000002,
+              "hero_ids": [
+                1500000001,
+                1500000002
+              ],
+              "label": "after_chest_discovery",
+              "money": 0,
+              "quest": {
+                "q.gz19h.qk17h": 1.0,
+                "q.gz19h.qk17h.1": 2.0,
+                "q.gz19h.qk17h.2": 2.0,
+                "q.gz19h.qk17h.3": 1.0
+              },
+              "vm_time": 1.485,
+              "waits": []
+            }
+          ]
+        }
+      },
+      {
+        "label": "discovery-alarm-net01",
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/discovery-alarm-net01",
+        "checks": 75,
+        "failures": 0,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/prison-discovery-late-join-20261009/candidate01/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/discovery-alarm-net01/tool-source.gd",
+          "--alarm-arrival=late"
+        ],
+        "return_code": 0,
+        "seconds": 86.10683462000452,
+        "errors": [],
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/prison_alarm_late_join.gd": "a723d2ccda49acac5c3ffb196bcc97b9f9ab8ae3b52cd2a6fa2406cb72fcf19e",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_traps_net.gd": "467645c27cbfe2ce9130f22fe4ac7d68edfdf7e57a867685e212cff480fb35d4"
+        },
+        "other_processes_at_start": [
+          {
+            "pid": 1575854,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": true
+          },
+          {
+            "pid": 1575994,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ],
+        "other_processes_at_end": [
+          {
+            "pid": 1575854,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": true
+          },
+          {
+            "pid": 1577136,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ],
+        "files_sha256": {
+          "prison-alarm-late-join.json": "977ca54da512261ae1329f9c16a07e8ea844777c42151f1f773121a5f5bf8a1d",
+          "run.json": "9fc9a419e931da5e06922136a89ff2fd0fe183b3924bd1764f37024bb48dc25d",
+          "run.log": "660d38e32d41fa680e17e8db66965bcc19e73ef579865b1053663226dd10383b",
+          "story_coop_traps_net.gd": "467645c27cbfe2ce9130f22fe4ac7d68edfdf7e57a867685e212cff480fb35d4",
+          "tool-source.gd": "a723d2ccda49acac5c3ffb196bcc97b9f9ab8ae3b52cd2a6fa2406cb72fcf19e"
+        }
+      }
+    ]
+  },
+  "preserved_excluded_attempt": [
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/prison-discovery-state-final01",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/prison-discovery-late-join-20261009/candidate01/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/prison-discovery-state-final01/tool-source.gd"
+      ],
+      "return_code": -15,
+      "termination_reason": "script error",
+      "errors": [
+        "SCRIPT ERROR: Parse Error: Cannot infer the type of \"chest\" variable because the value doesn't have a set type.",
+        "ERROR: Failed to load script \"/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/prison-discovery-state-final01/tool-source.gd\" with error \"Parse error\".",
+        "ERROR: Required object \"rp_child\" is null."
+      ],
+      "fixture_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/prison_discovery_state.gd": "f6fc8ffe82dcfe03bdeecc434a48dc93fae1787bdcbf041b6c239210c956a053",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/prison_late_join.gd": "06c53d50b72774c54a8452c23537a389505556e6c74c9ab3251ded7c6154ce3e"
+      },
+      "files_sha256": {
+        "prison_late_join.gd": "06c53d50b72774c54a8452c23537a389505556e6c74c9ab3251ded7c6154ce3e",
+        "run.json": "97a532f17729df827e1ffa2f105adee39fd78eaf9148c354c13ed7dc813cdeff",
+        "run.log": "d93b139d7a9c0db37d506333537837eab67bfff40355284d62f2a41236899e4b",
+        "tool-source.gd": "f6fc8ffe82dcfe03bdeecc434a48dc93fae1787bdcbf041b6c239210c956a053"
+      },
+      "correction": "Fixture only: declare the dictionary-derived chest-stage Boolean explicitly. No production change or tolerance adjustment."
+    }
+  ],
+  "limits": [
+    "Actual discovery ENet fixtures run original WorldScript and normal guest registration with controlled positions, paused unrelated AI/combat and explicit native VM ticks. They advance discovery; they do not open/reward either chest or prove a complete physical route.",
+    "The 139 source/state controls use synthetic actors and a chest at a prepared position, including explicit native registration and serialized old/spent state. Reachability is proven separately by the matched actual-startup ENet runs.",
+    "The first qk16h early/late baseline has 27 checks. The retained expanded fixture adds explicit quest selection and the HChest2 invariant; qk17h baselines and all four final discovery runs have 29 checks. Frozen source hashes identify each exact version.",
+    "Foreign stock Godot processes overlap some headless controls, including the qk17 late baseline and candidate state tests. Each run retains its observed processes. No timing, CPU/FPS improvement, Windows/WAN, Android or physical-controller claim.",
+    "Graphics, settings and both native binaries in this qualified gameplay export are inherited unchanged. A separate renderer candidate exists in the working tree; committed-tree comparison proves that it is excluded from this gameplay PCK.",
+    "Protocol 13 and save schema are unchanged. Original assets, private supplied saves and installed/published builds are untouched.",
+    "Other source-backed q71h/q72h registration leads are not changed or claimed validated by this checkpoint. Full prison/temporary-character/later-campaign coverage remains in the handoff."
+  ]
+}

@@ -71,7 +71,7 @@ The additional [campaign audit](/home/llm2x/Documents/EI/local/implementation-ga
 | G04 | Disconnect/death changes script protagonist; abandoned guest counts as mercenary. Keep narrative identity independent of connection/liveness. | Fixed protagonist/mercenary identity independent of guest disconnect or protagonist death; state tests and real Nalo disconnect pass. |
 | G05 | `Heroes` drops dead story members before authored party-death predicates run. Preserve required story roster for those predicates. | Fixed required story corpses in Heroes; actual LiA CheckFail predicate tests pass. Optional guest death stays separate. |
 | G06 | Named parties disable LiA camp catch-up for late joiners/partial receipts. | Fixed named-party camp catch-up; six branches and saved idempotence pass. |
-| G07 | Co-op ownership/order changes the meaning of fixed story-roster indexes. Separate narrative roles from added guests; audit effects intended for everyone. | Stable story-role indexes are fixed. Four maps' paired party spells and two maps' shared spell traps now include extra participants; desktop, real ENet, old-save and Retroid checks pass. Independent frontier/lift traps and per-character acid cycles also include extra participants, preserving late join, revival, reconnect and saved cooldowns. Guard detection, unseen-party gates, nearest-target attacks, zone22 interactions and Green proximity explosions now include extra participants. The base amulet dragon also follows eligible added guests, retaining native gates and departure timing. Desktop/Retroid original-script and desktop real ENet save/load checks pass. The base prison guard dispatch also admits extra intruders (G13); `7e31470` adds missing native alarm registration for late arrivals and preserves pending waits across absent reloads (331 checks). Named/cosmetic teleports, full prison play and other late-arrival scripts remain open. |
+| G07 | Co-op ownership/order changes the meaning of fixed story-roster indexes. Separate narrative roles from added guests; audit effects intended for everyone. | Stable story-role indexes are fixed. Four maps' paired party spells and two maps' shared spell traps now include extra participants; desktop, real ENet, old-save and Retroid checks pass. Independent frontier/lift traps and per-character acid cycles also include extra participants, preserving late join, revival, reconnect and saved cooldowns. Guard detection, unseen-party gates, nearest-target attacks, zone22 interactions and Green proximity explosions now include extra participants. The base amulet dragon also follows eligible added guests, retaining native gates and departure timing. Desktop/Retroid original-script and desktop real ENet save/load checks pass. The base prison guard dispatch also admits extra intruders (G13); `7e31470` adds missing native alarm registration for late arrivals and preserves pending waits across absent reloads (331 checks). `518c2b5` also admits late guests to the two inspected gz19h treasure discoveries (G15; 431 checks with regressions). Named/cosmetic teleports, full prison play and other late-arrival scripts remain open. |
 | G08 | Define/test guest participation in temporary protagonist chapters, including equipment, disguise and script constraints. | Guests now receive matching temporary captive, Nalo, Jun and Shaina roles. Their original heroes and bags wait independently; return follows the original stat/item transfers. Base/LiA state and actual Nalo/Shaina network checks cover save/reload/reconnect, old saves, late guests and private/shared inventory. Full quest playthroughs and remaining base captivity predicates stay open. |
 | G09 | Pets are suppressed and later forgotten in named parties. Distinguish accompanying pets from persistent waiting pets. | Fixed party-scoped pet persistence, LiA travelling group versus Shaina waiting group, wounds and original guest ownership. Original-data save/transfer regressions pass. |
 | G10 | In-place party redeployment fails to reconcile guest-owned companions. | Fixed campaign redeployment of guest-owned mercenaries and pets. Original Shaina switch/return over ENet passes. |
@@ -79,7 +79,7 @@ The additional [campaign audit](/home/llm2x/Documents/EI/local/implementation-ga
 | G12 | Additional save/load finding: script timers survive while NPC follow/guard behavior and target ownership are lost. | Script-selected living NPC behavior, motivation overrides and gait now persist. Stable target references survive a guest being absent on load, reconnecting or receiving a replacement body. Actual dragon ENet checks pass; older saves cannot recover behavior they never stored. |
 | G13 | Additional captivity finding: approximate script equality treats neighbouring large actor IDs and different Objects as equal. | Whole-number IDs/counters compare exactly and Objects by identity; fractional tolerance remains. Base prison guard dispatch now admits eligible extra intruders through the original third-role priority and cooldown chain. The earlier focused fixture passes 29 checks; its previous export fails 15. `7e31470` separately fixes actual late-join alarm registration and absent pending waits: 331 candidate checks pass, against eight original-startup late-join baseline failures. Full prison and other late-arrival scripts remain open. |
 | G14 | Additional save/load finding: deployment recalculation erases a completed dialogue flag while a restored script still waits for it. | Local follow-up preserves flags on explicit restored-VM loads. An ordinary pre-escape save previously reset Kel's completion from 2 to 0 and stalled; the corrected save resumes through Terror to the next map. Fresh zones still recalculate party dialogue topics. Other dialogue sequences remain unaudited. |
-| G15 | Base prison per-character quest/discovery checks omit guests arriving after map setup. | Fixed locally in `gz15h`: eleven inspected shared checks consider current party members, with one shared event and original timers/bodies. Thirty-nine focused checks and fifteen real ENet checks pass; previous export fails fourteen focused checks. Full prison and other maps’ late-arrival scripts remain open. |
+| G15 | Base prison per-character quest/discovery checks omit guests arriving after map setup. | Fixed locally in `gz15h`: eleven inspected shared checks consider current party members, with original timers/bodies (39 focused and 15 ENet checks). `518c2b5` additionally admits late guests to six original gz19h qk16h/qk17h discovery checks, preserving chest rewards and completion. The matched late baselines each fail five checks; 431 candidate checks pass including state, four ENet discovery cases and alarm regressions. Other q71h/q72h source leads and full routes remain open. |
 
 ## Validation and checkpoints
 
@@ -298,3 +298,42 @@ the 712-file candidate02 stage; only four production scripts and two generated
 UID files differ from terrain candidate09. Native binaries, graphics, settings,
 protocol 13 and save schema are unchanged. No user save or installed build was
 modified.
+
+## Original prison treasure discoveries: late arrival — 9 October
+
+`518c2b5` fixes two further original `gz19h` startup gaps. The native `qk16h`
+and `qk17h` discovery checks only watched heroes present during map startup;
+late co-op guests could reach the same areas without advancing shared discovery.
+The early baselines pass 27/27 and 29/29 checks; the late baselines fail five
+checks each (22/27 and 24/29). These are discovery stages, not chest rewards.
+
+Only six original check definitions gain shared-party metadata: qk16h
+#265/#269/#271/#258 and qk17h #279/#280. Complete native families, their exact
+WorldScript calls and the original unique HChest1 binding are validated before
+admission. Changed definitions reject their own family independently. The
+original qk17h reference to HChest1 is retained; HChest2 completion and all chest
+opening/reward bodies remain unchanged. Existing shared-check machinery keeps
+original instructions and timers and handles absent owners, old waits, spent
+checks and solo-return projection. Dead, hidden and disconnected actors do not
+trigger discovery. Separate native approach checks may still repeat an
+idempotent stage assignment, as originally authored.
+
+[Discovery acceptance](validation/prison-discovery-late-join-2026-10-09.json)
+records **431 passing checks**: 139 source/state controls, four 29-check actual
+ENet discovery runs (two quests, early and late), 31 captivity checks, 70 alarm
+state controls and the 75-check alarm network/reload regression. The last
+retains two absent host reloads and normal rejoin before all eight original
+guards receive their orders. Discovery runs use original WorldScript and normal
+network registration, with controlled actor positions, paused unrelated combat
+and explicit native ticks; they do not establish a full physical prison route.
+The first state attempt had a fixture-only type-inference parse error; it is
+preserved separately and excluded from acceptance. Foreign stock Godot jobs
+overlap some headless runs; no timing or performance claim is made.
+
+All 613 committed game files at this checkpoint match its 712-file candidate01
+stage. Only `story_compat.gd` and its generated UID differ from the prior
+qualified prison-alarm candidate02. Native binaries, graphics, settings,
+protocol 13 and save schema are unchanged. The separate in-progress renderer
+candidate is excluded from this qualified gameplay export. No supplied save,
+original asset or installed build was modified. Other q71h/q72h source leads,
+full routes and platform coverage remain open; they are not part of this fix.

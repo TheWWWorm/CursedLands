@@ -19,12 +19,14 @@ are committed. The supplied U45 autosave contains two living required creatures;
 the original completion gates work when both die. `1b8b0f6` fixes a distinct
 script-added looted-actor reload defect with 137 passing candidate checks.
 The current qualified private export matches production checkpoint
-`7e314707f92a1c0b530835cac9a02742736a71cc`.
-[Prison alarm acceptance](validation/prison-alarm-late-join-2026-10-09.json) adds
-331 passing gameplay checks, including late arrival and two absent host reloads.
-All 613 committed game files match its 712-file candidate02 stage; four
-production scripts and two generated UID files differ from terrain candidate09.
-Graphics, settings and both native binaries retain the earlier qualification.
+`518c2b59ececd0d2dc8c73496f49da5f24e49d76`.
+[Prison discovery acceptance](validation/prison-discovery-late-join-2026-10-09.json) adds
+431 passing gameplay checks, including both quests' early/late ENet arrivals and
+the earlier alarm's two absent host reloads. All 613 committed game files match
+its 712-file candidate01 stage; only story_compat.gd and its generated UID differ
+from the preceding prison-alarm candidate02. Graphics, settings and both native
+binaries retain the earlier qualification. The separate renderer candidate in
+the working tree is not part of this qualified gameplay export.
 [Previous junction evidence](validation/terrain-junctions-2026-10-09.json)
 qualifies exact three/four-family Natural transitions across both campaigns,
 with 19,911 GPU probes on three desktop backends and original-art controls.
@@ -77,7 +79,7 @@ The original worktree above is historical. Source version remains Experimental 6
 and protocol 13. This task uses private exports and isolated profiles. Installed
 builds, templates, original assets and real saves have not been replaced.
 Current qualified private export:
-`/home/llm2x/Documents/EI/local/scratchpad/prison-alarm-late-join-20261009/candidate02`.
+`/home/llm2x/Documents/EI/local/scratchpad/prison-discovery-late-join-20261009/candidate01`.
 The detailed gameplay tracker is `docs/gameplay-gaps-2026-10-08.md`; the incoming
 handoff is `/home/llm2x/Documents/EI/local/gameplay-handoff-2026-10-09.md`.
 
@@ -4944,6 +4946,45 @@ UID files differ from terrain candidate09. Native binaries, graphics, settings,
 protocol 13 and save schema are unchanged. No user save or installed build was
 modified.
 
+## Original prison treasure discoveries: late arrival — 9 October
+
+`518c2b5` fixes two further original `gz19h` startup gaps. The native `qk16h`
+and `qk17h` discovery checks only watched heroes present during map startup;
+late co-op guests could reach the same areas without advancing shared discovery.
+The early baselines pass 27/27 and 29/29 checks; the late baselines fail five
+checks each (22/27 and 24/29). These are discovery stages, not chest rewards.
+
+Only six original check definitions gain shared-party metadata: qk16h
+#265/#269/#271/#258 and qk17h #279/#280. Complete native families, their exact
+WorldScript calls and the original unique HChest1 binding are validated before
+admission. Changed definitions reject their own family independently. The
+original qk17h reference to HChest1 is retained; HChest2 completion and all chest
+opening/reward bodies remain unchanged. Existing shared-check machinery keeps
+original instructions and timers and handles absent owners, old waits, spent
+checks and solo-return projection. Dead, hidden and disconnected actors do not
+trigger discovery. Separate native approach checks may still repeat an
+idempotent stage assignment, as originally authored.
+
+[Discovery acceptance](validation/prison-discovery-late-join-2026-10-09.json)
+records **431 passing checks**: 139 source/state controls, four 29-check actual
+ENet discovery runs (two quests, early and late), 31 captivity checks, 70 alarm
+state controls and the 75-check alarm network/reload regression. The last
+retains two absent host reloads and normal rejoin before all eight original
+guards receive their orders. Discovery runs use original WorldScript and normal
+network registration, with controlled actor positions, paused unrelated combat
+and explicit native ticks; they do not establish a full physical prison route.
+The first state attempt had a fixture-only type-inference parse error; it is
+preserved separately and excluded from acceptance. Foreign stock Godot jobs
+overlap some headless runs; no timing or performance claim is made.
+
+All 613 committed game files at this checkpoint match its 712-file candidate01
+stage. Only `story_compat.gd` and its generated UID differ from the prior
+qualified prison-alarm candidate02. Native binaries, graphics, settings,
+protocol 13 and save schema are unchanged. The separate in-progress renderer
+candidate is excluded from this qualified gameplay export. No supplied save,
+original asset or installed build was modified. Other q71h/q72h source leads,
+full routes and platform coverage remain open; they are not part of this fix.
+
 ## Next work in the established order
 
 1. **P1/P2 remaining texture work:** shipped unit/preview materials now share
@@ -5050,7 +5091,9 @@ modified.
    existing saves retain strict story compatibility. `fdf7885` fixes renamed
    guest identity. `7e31470` also fixes the reproduced original prison alarm
    registration gap for late guests and preserves pending waits through absent
-   reloads; 331 checks pass in the current private export.
+   reloads; its earlier acceptance has 331 checks. `518c2b5` additionally fixes
+   the two inspected prison discovery families for late guests; 431 checks pass
+   in the current export, including the alarm regressions.
    `f3f1494` fixes the independently reproduced LiA Haburu
    camp approach issue; 379 source/command/map checks pass. All five missing
    authored helpers are reachable but absent from the supplied scripts and
