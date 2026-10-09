@@ -18,16 +18,13 @@ Gameplay U39–U44 and the separate U45 removed-actor death-predicate correction
 are committed. The supplied U45 autosave contains two living required creatures;
 the original completion gates work when both die. `1b8b0f6` fixes a distinct
 script-added looted-actor reload defect with 137 passing candidate checks.
-The current qualified private export matches production checkpoint
-`518c2b59ececd0d2dc8c73496f49da5f24e49d76`.
-[Prison discovery acceptance](validation/prison-discovery-late-join-2026-10-09.json) adds
-431 passing gameplay checks, including both quests' early/late ENet arrivals and
-the earlier alarm's two absent host reloads. All 613 committed game files match
-its 712-file candidate01 stage; only story_compat.gd and its generated UID differ
-from the preceding prison-alarm candidate02. Graphics, settings and both native
-binaries retain the earlier qualification. The separate renderer candidate in
-the working tree is not part of this qualified gameplay export.
-**Linux local test requested by the user:** [`1.0.3-local.20261009`](/home/llm2x/Downloads/CursedLands-1.0.3-local.20261009-linux-x86_64.tar.gz) is available in Downloads, with an unpacked copy at `/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261009-linux-x86_64`. It uses production checkpoint `518c2b5`, protocol 13 and the qualified native binaries. All 262 compiled scripts and every packed resource except the displayed version settings are byte-identical to the qualified discovery export. The uncommitted terrain-contact lighting experiment is excluded. The actual package passes nine playable-camp/loading/service checks and a normal LiA launcher startup; archive readback and executable permissions are verified. Tests used isolated profiles. [Package evidence](validation/linux-local-test-2026-10-09.json). This is a local test, not a published stable release.
+The current qualified private export is `/home/llm2x/Documents/EI/local/scratchpad/menu-local-test-feedback-20261009/combined01`,
+matching production checkpoint `e2e7e0af17d0a7cd7f7de20eea2e910e33038204`.
+The latest original prison q71h/q72h route fix (`d13bac0`) passes
+[630 checks](validation/prison-progression-late-join-2026-10-09.json); the earlier
+discovery/alarm, renderer and native-binary evidence is inherited.
+
+**Updated Linux local test:** [`1.0.3-local.20261009.2`](/home/llm2x/Downloads/CursedLands-1.0.3-local.20261009.2-linux-x86_64.tar.gz), unpacked at `/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261009.2-linux-x86_64`, uses checkpoint `e2e7e0a` and protocol 13. It fixes disappearing stone-menu labels after live graphics changes and the empty HUD before New Game loading, and includes the newly qualified prison route progression fix. All 262 compiled scripts and 673 resources match the combined export except its displayed version setting; only three production scripts differ from the prior discovery export. The actual package passes **73 checks** across live menu settings, base New Game, Continue and LiA New Game using the separate rendering thread. All loading runs show zero exposed HUD frames. Archive contents and executable permissions are verified. Isolated profiles preserve user settings and saves. The unfinished terrain-contact lighting experiment is excluded. [Package evidence](validation/linux-local-test-feedback-2026-10-09.json). The preceding [local test](validation/linux-local-test-2026-10-09.json) remains historical; neither package is a published stable release.
 
 [Previous junction evidence](validation/terrain-junctions-2026-10-09.json)
 qualifies exact three/four-family Natural transitions across both campaigns,
@@ -90,6 +87,26 @@ implemented in texture-loading/composition code without changing those gameplay
 systems. The initial steps below are followed by the separately qualified P1
 wound-only shader path and P2 terrain/scenery work. Other audit opportunities
 and target-device acceptance remain distinct.
+
+## Linux test feedback: menu labels and New Game loading — 9 October
+
+`e2e7e0a` fixes all six menu labels disappearing when graphics settings refresh.
+GroundContact had restored captured scenery materials after MenuScene installed
+its labelled boards. It now tracks the material it owns, adopts eligible new
+scenery bases and leaves unrelated replacements with their caller. Active
+camera fades retain their underlying material and opacity. [Material evidence](validation/menu-material-refresh-2026-10-09.json)
+records 112 passing checks, actual live option setters and viewed before/after
+captures. The old build fails eight material-ownership checks and visibly loses
+all labels. The screenshot's surrounding striped terrain was also isolated;
+the optional clarification is unanswered and no terrain-style fix is claimed.
+
+`eca50c0` prepares and presents the first-zone loading picture before awaiting
+New Game's simulation worker. The old package showed 678 empty HUD frames;
+both safe and forced-deferred candidate runs show zero (18 passing checks).
+Failure paths release the loading picture. [Startup evidence](validation/menu-loading-start-2026-10-09.json)
+distinguishes New Game from the previously tested Continue path. Final separate
+render-thread package checks are in the package receipt above. The fixture
+skips movie playback but uses the real menu, difficulty panel and worker.
 
 ## P1: retain outfit pixels for wounds
 

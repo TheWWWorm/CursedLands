@@ -8,17 +8,17 @@ U45 supplied-save follow-up confirms two required small creatures remain alive; 
 
 **Canonical checkout:** `/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo`  
 **Branch:** `fix/catacomb-coop-deck`  
-**Current qualified private-export production checkpoint:** `518c2b59ececd0d2dc8c73496f49da5f24e49d76`. Adds source-gated original prison qk16h/qk17h discovery checks for late co-op arrivals. Includes the earlier native alarm/reload fix, systemic solo/co-op fixes, cloud correction, texture work and Natural terrain junctions.
+**Current qualified production checkpoint:** `e2e7e0af17d0a7cd7f7de20eea2e910e33038204`. Includes `e2e7e0a` menu material ownership, `eca50c0` New Game loading, `d13bac0` shared prison route progression, and the earlier renderer/gameplay work.
 
-**Current qualified private Linux export:** `/home/llm2x/Documents/EI/local/scratchpad/prison-discovery-late-join-20261009/candidate01`. [Discovery acceptance](validation/prison-discovery-late-join-2026-10-09.json) records **431 passing checks**, including actual early/late ENet arrivals for both quests and the earlier alarm's absent-reload/rejoin scenario. All 613 committed game files match the tested 712-file stage; only `story_compat.gd` and its generated UID differ from the previous prison-alarm candidate02. Native binaries, graphics, settings and save schema are unchanged. The preceding [331-check alarm acceptance](validation/prison-alarm-late-join-2026-10-09.json), including base/LiA projection and solo return, remains valid as scoped there. Full route and platform acceptance remain open.
+**Current qualified private Linux export:** `/home/llm2x/Documents/EI/local/scratchpad/menu-local-test-feedback-20261009/combined01`. Feature-specific acceptance retains 112 menu-material, 18 New Game startup and 630 prison-route checks. Full route and platform acceptance remain open.
 
-**Linux local test requested by the user:** [`1.0.3-local.20261009`](/home/llm2x/Downloads/CursedLands-1.0.3-local.20261009-linux-x86_64.tar.gz) is available in Downloads, with an unpacked copy at `/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261009-linux-x86_64`. It uses production checkpoint `518c2b5`, protocol 13 and the qualified native binaries. All 262 compiled scripts and every packed resource except the displayed version settings are byte-identical to the qualified discovery export. The uncommitted terrain-contact lighting experiment is excluded. The actual package passes nine playable-camp/loading/service checks and a normal LiA launcher startup; archive readback and executable permissions are verified. Tests used isolated profiles. [Package evidence](validation/linux-local-test-2026-10-09.json). This is a local test, not a published stable release.
+**Updated Linux local test:** [`1.0.3-local.20261009.2`](/home/llm2x/Downloads/CursedLands-1.0.3-local.20261009.2-linux-x86_64.tar.gz), unpacked at `/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261009.2-linux-x86_64`, uses checkpoint `e2e7e0a` and protocol 13. It fixes disappearing stone-menu labels after live graphics changes and the empty HUD before New Game loading, and includes the newly qualified prison route progression fix. All 262 compiled scripts and 673 resources match the combined export except its displayed version setting; only three production scripts differ from the prior discovery export. The actual package passes **73 checks** across live menu settings, base New Game, Continue and LiA New Game using the separate rendering thread. All loading runs show zero exposed HUD frames. Archive contents and executable permissions are verified. Isolated profiles preserve user settings and saves. The unfinished terrain-contact lighting experiment is excluded. [Package evidence](validation/linux-local-test-feedback-2026-10-09.json). The preceding [local test](validation/linux-local-test-2026-10-09.json) remains historical; neither package is a published stable release.
 
 The preceding [junction evidence](validation/terrain-junctions-2026-10-09.json) retains 7,515 metadata/source checks, 180 GPU checks covering 19,911 probes, 252/253 original-map rendering checks, 54 cost-fixture checks and 119 captures. Its sole strict rendering residual is one pixel also present in the baseline Compatibility neutralization control. [P1 retention evidence](validation/wound-source-retention-2026-10-09.json) retains 1,729 checks and 15 captures. The earlier [711-check/60-capture validation](validation/renderer-coop-integration-2026-10-09.json) includes representative LiA reimport/travel and fresh-process solo return. These renderer and earlier integration results are inherited, not rerun.
 
-**Included accepted source checkpoints:** `518c2b5` fixes two original prison discoveries for late guests (431 checks including alarm regressions). `7e31470` fixes original prison alarm late registration and absent pending waits (331 checks). `fdf7885` retains renamed guest identity (393 checks), `82b749f` fixes shared campaign travel (152 checks), `5c548be` adds optional natural terrain transitions, and `1b8b0f6` retains looted script-added actor identity (137 checks). `ec79e3f` protects stable saved hero references (106 checks), `74c4804` restores pending story actions on co-op-to-solo return (149 acceptance checks plus 36 formatting rechecks), and `80c96d4` preserves acknowledged solo earnings and compatible campaign checkpoints on rejoin (803 checks). `79bee8a` restores normal NEW joins after original opening initialization ([239 checks](validation/coop-fresh-start-2026-10-09.json)). Feature-specific receipts complement the current combined acceptance.
+**Included accepted source checkpoints:** `d13bac0` fixes original q71h/q72h route stages for late guests (630 checks). `e2e7e0a` and `eca50c0` fix the latest menu feedback. `518c2b5` fixes two original prison discoveries for late guests (431 checks including alarm regressions). `7e31470` fixes original prison alarm late registration and absent pending waits (331 checks). `fdf7885` retains renamed guest identity (393 checks), `82b749f` fixes shared campaign travel (152 checks), `5c548be` adds optional natural terrain transitions, and `1b8b0f6` retains looted script-added actor identity (137 checks). `ec79e3f` protects stable saved hero references (106 checks), `74c4804` restores pending story actions on co-op-to-solo return (149 acceptance checks plus 36 formatting rechecks), and `80c96d4` preserves acknowledged solo earnings and compatible campaign checkpoints on rejoin (803 checks). `79bee8a` restores normal NEW joins after original opening initialization ([239 checks](validation/coop-fresh-start-2026-10-09.json)). Feature-specific receipts complement the current combined acceptance.
 
-**Latest user scope:** fix systemic LiA solo/co-op progression sync. `coop_67_fps_20261008_224534.sav` is the latest client save and its matching host save is not supplied; the user explicitly says no exact-save repair is needed. Continue implementation and validation without treating the missing host save as a blocker.
+**Co-op continuity scope:** fix systemic LiA solo/co-op progression sync. `coop_67_fps_20261008_224534.sav` is the latest client save and its matching host save is not supplied; the user explicitly says no exact-save repair is needed. Continue implementation and validation without treating the missing host save as a blocker.
 
 **Current network protocol:** **13**; all peers, including the local simulation service, must match.
 
@@ -85,7 +85,7 @@ These are not all confirmed unfixed code defects. Read the linked tracker/receip
 
 ### Campaign and world coverage
 
-- **G07/G15:** eleven original `gz15h` shared checks and, in `518c2b5`, six `gz19h` qk16h/qk17h discovery checks now include late guests. [431 checks](validation/prison-discovery-late-join-2026-10-09.json) cover the latter and alarm regressions. Native chest rewards and completion are unchanged. Other q71h/q72h source leads, individual traps, named/cosmetic moves and full routes remain separate.
+- **G07/G15:** eleven original `gz15h` shared checks and, in `518c2b5`, six `gz19h` qk16h/qk17h discovery checks now include late guests. [431 checks](validation/prison-discovery-late-join-2026-10-09.json) cover the latter and alarm regressions. Native chest rewards and completion are unchanged. Nine q71h/q72h route checks are now covered by `d13bac0` ([630 checks](validation/prison-progression-late-join-2026-10-09.json)). Individual startup traps (#76), named/cosmetic moves and full routes remain separate.
 - **G07/G08/G13:** `7e31470` fixes the reproduced `gz19h` area-1 alarm registration gap and preserves its pending native continuation through absence/reload/solo return ([331 checks](validation/prison-alarm-late-join-2026-10-09.json)). Full prison and temporary Nalo/Jun/captive/Shaina chapters, other base captivity predicates, and co-op participants omitted from authored named/cosmetic moves still need broader route coverage.
 - **G02:** later LiA Jigran/finale progression, extended reconnect and independent resumed guest saves have not received full chapter playthroughs. Prepared party/bag/companion/pet progress tests already pass.
 - **Haburu authored-call audit:** all five `BuyHaburuMain#2#N#0` calls are reached by the shipped `bz23k` WorldScript. Independent decryption and the current parser agree across all 130 supplied MOB scripts; none defines these helpers, and the pinned original executable has no matching entry among 227 native commands. This confirms absent authored procedures, not a demonstrated parser/builtin defect. No replacement routine was invented. Their intended optional-quest/shop behavior remains unverified. Base `Portal1`/`Portal2` are supplied by merged parent scripts and are not missing builtins.
@@ -115,6 +115,48 @@ All three use disposable Linux profiles and isolated exports; no user saves, sha
 
 
 U40–U43 are implemented in `bd6ec28` and `e185314`. [Camp/inventory evidence](/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/gameplay-camp-inventory-validation.json) records 480 passing assertions across six retained runs, including the latest base headless 88, LiA rendered 92 and a separate actual ENet trade 31. Screenshots were inspected. Held input uses a single-session fixture plus separate authority regression; physical touch/gamepad and Windows remain untested. LiA rendered Unicode-to-ASCII diagnostics are retained and not claimed fixed. No release or installation was made.
+
+## Linux test feedback: menu labels and New Game loading — 9 October
+
+`e2e7e0a` fixes all six menu labels disappearing when graphics settings refresh.
+GroundContact had restored captured scenery materials after MenuScene installed
+its labelled boards. It now tracks the material it owns, adopts eligible new
+scenery bases and leaves unrelated replacements with their caller. Active
+camera fades retain their underlying material and opacity. [Material evidence](validation/menu-material-refresh-2026-10-09.json)
+records 112 passing checks, actual live option setters and viewed before/after
+captures. The old build fails eight material-ownership checks and visibly loses
+all labels. The screenshot's surrounding striped terrain was also isolated;
+the optional clarification is unanswered and no terrain-style fix is claimed.
+
+`eca50c0` prepares and presents the first-zone loading picture before awaiting
+New Game's simulation worker. The old package showed 678 empty HUD frames;
+both safe and forced-deferred candidate runs show zero (18 passing checks).
+Failure paths release the loading picture. [Startup evidence](validation/menu-loading-start-2026-10-09.json)
+distinguishes New Game from the previously tested Continue path. Final separate
+render-thread package checks are in the package receipt above. The fixture
+skips movie playback but uses the real menu, difficulty panel and worker.
+
+## Original prison route progression: late arrival — 9 October
+
+`d13bac0` extends nine exact original `gz19h` shared checks to late guests: the
+q71h completion rectangle and q72h route/landmark stages. Complete native
+families, their startup calls and four unique landmark bindings are validated
+before admission. Conditions, actions, timers, rewards, lever behavior and the
+explicit protagonist-only final portal remain authored.
+
+[Route acceptance](validation/prison-progression-late-join-2026-10-09.json)
+records **630 passing checks**: 224 source/state controls, 122 early/late ENet
+checks, 139 discovery controls and 145 alarm regressions. The old early route
+passes 61/61; its late-arrival control fails 19 checks. Both candidate arrivals
+pass 61/61 and all eleven recorded quest states match the original early
+route. Tests use prepared walkable positions, paused unrelated combat and
+explicit native VM ticks; full physical routes remain unverified.
+
+The next distinct source lead is startup family #76: its children inflict
+individual damage with Sleep cooldowns. It needs per-character registration
+evidence, not shared-check eligibility. Legacy family #49 has no discovered
+startup call. Neither is a newly reproduced defect. Native binaries, protocol
+13, save schema and original assets are unchanged.
 
 ## Original prison treasure discoveries: late arrival — 9 October
 
@@ -152,8 +194,8 @@ stage. Only `story_compat.gd` and its generated UID differ from the prior
 qualified prison-alarm candidate02. Native binaries, graphics, settings,
 protocol 13 and save schema are unchanged. The separate in-progress renderer
 candidate is excluded from this qualified gameplay export. No supplied save,
-original asset or installed build was modified. Other q71h/q72h source leads,
-full routes and platform coverage remain open; they are not part of this fix.
+original asset or installed build was modified. The q71h/q72h follow-up is
+qualified separately above; full routes and platform coverage remain open.
 
 ## Original prison alarm: late arrival and absent reload — 9 October
 
