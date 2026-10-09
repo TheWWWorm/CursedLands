@@ -1,6 +1,6 @@
 {
   "date": "2026-10-10",
-  "status": "Integrated for the next local test build, not yet packaged for the user.",
+  "status": "Models/root occupancy integrated. Latest lighting feedback addressed by the separate beach-pebble-lighting-2026-10-10.json receipt; next local package pending.",
   "changes": [
     "Four rounded smooth-normal Blender models replace the pointed stone primitive.",
     "One shared generated stone texture with mipmaps is used by the existing chunk surface/material; no per-stone nodes or draw calls.",

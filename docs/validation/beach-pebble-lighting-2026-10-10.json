@@ -1,0 +1,274 @@
+{
+  "date": "2026-10-10",
+  "status": "Source correction ready for the next local test build; Windows runtime acceptance remains open.",
+  "base_commit": "1cf5c82",
+  "candidate_pack_sha256": "dbc7697596d5bd05ce438613d8353cf1a9684198fc7d7e9bcb998830900be38e",
+  "source_sha256": {
+    "game/src/game/gfx.gd": "6cb93413c925c7081014179d557d5a4b3de630f49615a03bf508585fa49ab73c",
+    "game/src/game/fx/biome_cover_mesh.gd": "e18d15737606991fcdda7602b2844c8280bc88baac2112d765f654f3b54ff9af",
+    "game/src/game/fx/terrain_details.gd": "d8dc1756c2c3c100c6d39b34f21a69e4efd7d1d01303c8d259cede390474b391",
+    "game/src/game/fx/biome_cover.gd": "ea3cabcb47f52dadf69c37cf4bbadb0e9d758bf5fcb69939f532d8164878f9ae",
+    "game/src/game/fx/biome_cover_contact.gd": "0010a9b2ee1a6f9946351f14f307f551fec634283d4f75141a38c80b7b56eaf3",
+    "game/src/game/fx/biome_cover_contact.gd.uid": "4d800770384b45beca18e000bd34310c03f84051c294eafc811efad150053310",
+    "game/src/ei/game_data.gd": "30c2e279f30083a44f1a97506f77b573d07161bd3fa8e9e5dd78754a122a6714",
+    "game/src/ei/remake_text.gd": "9a720f32b5e5928aade69eaf84eddd6b46d4ca7df4cd361a3b725fea96de677b",
+    "tools/tests/biome_cover_contact.gd": "71043c0d35d478fc34d6e7c7f2e5de9eae56f22b84a8746c145942f9f5217372"
+  },
+  "changes": [
+    "Stone-only material profile and shallow relief reuse the existing materials option; grass keeps its vertex-light path.",
+    "Static contact occlusion is batched per occupied cover chunk under the existing contact-shadows option. No per-stone nodes, new textures or new settings.",
+    "Contact polygons clip to original authored terrain and its dense footprint topology, with barycentric soft-ground attachments.",
+    "Existing directional shadow bias, normal bias, cascades and terrain-caster exclusions remain unchanged."
+  ],
+  "runs": [
+    {
+      "label": "contact-geometry08",
+      "checks": 44,
+      "failures": 0,
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/beach-pebbles-20261010/contact-geometry08/run.json",
+      "receipt_sha256": "a967dfe0adc0358e85b49cd0be64c0ca8243e29a3729b14855c545944af69766",
+      "result_sha256": "dc3facd9706ed75652969dc4ea98c22dd605eb033cf45f835e7ca42e32a12da2",
+      "errors": [],
+      "warnings": [],
+      "captures": {},
+      "overlapping_processes": [
+        {
+          "pid": 2057508,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        },
+        {
+          "pid": 2062337,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        },
+        {
+          "pid": 2057508,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        },
+        {
+          "pid": 2062337,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ]
+    },
+    {
+      "label": "contact-soft08",
+      "checks": 75,
+      "failures": 0,
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/beach-pebbles-20261010/contact-soft08/run.json",
+      "receipt_sha256": "68c7e169ae6c37e373259df5dd4fe8c58e1580163da6c0b71fa21fa75abb92e8",
+      "result_sha256": "9e8a16660cc7f4b68f095f94e114f86ae2c05b7d1fbae27f572cf6baadede494",
+      "errors": [],
+      "warnings": [],
+      "captures": {
+        "cover-stone-light-09-after.png": "6c759611126f0946c3bc05bfb4882367d4238e0dac12d04954cc7c09082adec5",
+        "cover-stone-light-09-restored.png": "126531031b8bbaa5c7d7184d92707a654cf41fa81b51909f0539249a8ab5a4ef",
+        "cover-stone-light-00-after.png": "9d398cd5c2da6900781635ef8d0fab898e3b6bdc731985aa42c99a165b76cca4",
+        "cover-stone-light-00-contact-off.png": "c4950ca6d39816ee5fe5dec69ef9f46966eddcac5ddfc8d6d8f055480ea9b242",
+        "cover-stone-light-09-before.png": "126531031b8bbaa5c7d7184d92707a654cf41fa81b51909f0539249a8ab5a4ef",
+        "cover-stone-light-00-restored.png": "a91aa226226e6fafcb2c918edc6f420fb8521b4381acdf620639febe734faf15",
+        "cover-stone-light-00-before.png": "a91aa226226e6fafcb2c918edc6f420fb8521b4381acdf620639febe734faf15",
+        "cover-stone-light-15-contact-off.png": "722f8f96d3b641a732c7e2929754db7af531654a4ac31af08ed57314d19b4ba6",
+        "cover-stone-light-15-restored.png": "5aef14f2ecd69b657fdf66688a7a2a0463c0b93feecbc01d9a69b44641273ff3",
+        "cover-stone-light-15-held.png": "37ad9015dfe987f39ac14d98109df4bfb873988398a6014e98a8a2843c816aa3",
+        "cover-stone-light-00-held.png": "9d398cd5c2da6900781635ef8d0fab898e3b6bdc731985aa42c99a165b76cca4",
+        "cover-stone-light-09-held.png": "6c759611126f0946c3bc05bfb4882367d4238e0dac12d04954cc7c09082adec5",
+        "cover-stone-light-15-after.png": "37ad9015dfe987f39ac14d98109df4bfb873988398a6014e98a8a2843c816aa3",
+        "cover-stone-light-15-before.png": "5aef14f2ecd69b657fdf66688a7a2a0463c0b93feecbc01d9a69b44641273ff3",
+        "cover-stone-light-09-contact-off.png": "2648e28865b337be1dd4818df7a8586c78a9d9894e0e4659897471909f0872af"
+      },
+      "overlapping_processes": [
+        {
+          "pid": 2057508,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        },
+        {
+          "pid": 2064455,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        },
+        {
+          "pid": 2057508,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        },
+        {
+          "pid": 2064455,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ]
+    },
+    {
+      "label": "contact-mobile08",
+      "checks": 73,
+      "failures": 0,
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/beach-pebbles-20261010/contact-mobile08/run.json",
+      "receipt_sha256": "2a30e93ffef3055246b90f3dc4990b3a603002b8c55ee3a544d7edd228e1ce2e",
+      "result_sha256": "32ed39f7c8a20de220b0634cd8f5b621d29f38fec322d587a57cb3acac390c93",
+      "errors": [],
+      "warnings": [],
+      "captures": {
+        "cover-stone-light-09-after.png": "ee520fc0d34f9026efb823babaa85cd88f160f5854281248220ee985ddb2c69c",
+        "cover-stone-light-09-restored.png": "58e1857744ddcbdaa3a13246930109c48f63c5a3558ec04bdc09db19de34c890",
+        "cover-stone-light-00-after.png": "1c0c49cfc879f8ee7abddee7ce2261fa92c9efd34ed773634724dc8e197836c6",
+        "cover-stone-light-00-contact-off.png": "c7cefb1ded5e24b92aef37a29fc8aa557d191a1f481eb5bb8123368ee712a701",
+        "cover-stone-light-09-before.png": "58e1857744ddcbdaa3a13246930109c48f63c5a3558ec04bdc09db19de34c890",
+        "cover-stone-light-00-restored.png": "b7eb61c07ddfbc380d8548c9173f1fbe31074ca92e87a8fdb856a521c4dac9c2",
+        "cover-stone-light-00-before.png": "b7eb61c07ddfbc380d8548c9173f1fbe31074ca92e87a8fdb856a521c4dac9c2",
+        "cover-stone-light-15-contact-off.png": "01a157ea3d46e69c973ea77a4d85e2ab4b97b45a9e894016d98ef6075e84e5f9",
+        "cover-stone-light-15-restored.png": "ff94b3c97332e55ef80d9067c1c8ce1334d701fd60cf3acf4567fa65a72ae8de",
+        "cover-stone-light-15-held.png": "2c0e7b958886bd96ec690c5521cd90354d2e6e409316e7476fc5649c6747445a",
+        "cover-stone-light-00-held.png": "1c0c49cfc879f8ee7abddee7ce2261fa92c9efd34ed773634724dc8e197836c6",
+        "cover-stone-light-09-held.png": "ee520fc0d34f9026efb823babaa85cd88f160f5854281248220ee985ddb2c69c",
+        "cover-stone-light-15-after.png": "2c0e7b958886bd96ec690c5521cd90354d2e6e409316e7476fc5649c6747445a",
+        "cover-stone-light-15-before.png": "ff94b3c97332e55ef80d9067c1c8ce1334d701fd60cf3acf4567fa65a72ae8de",
+        "cover-stone-light-09-contact-off.png": "2b21302e8dc7d42b2a45905482b0be1d67f12aa732218a2b48095eeaf14ca8e6"
+      },
+      "overlapping_processes": [
+        {
+          "pid": 2057508,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        },
+        {
+          "pid": 2064455,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        },
+        {
+          "pid": 2057508,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        }
+      ]
+    },
+    {
+      "label": "contact-gl08",
+      "checks": 73,
+      "failures": 0,
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/beach-pebbles-20261010/contact-gl08/run.json",
+      "receipt_sha256": "c175c8c736867843f6241b0bf1c02536cca10d676f9e8a198eafd9d2988536fd",
+      "result_sha256": "d33c4b57a01183a91823c127a53a9bc5e7e594cb3fc778be63a598446d8795a4",
+      "errors": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "captures": {
+        "cover-stone-light-09-after.png": "394b7f51cb1113cac956c6073d7fc139a5029698c2c042d85ba1a074b9e91ea0",
+        "cover-stone-light-09-restored.png": "e995bb6b5fef282590eef9c6c9c57e5bb7887db3f092f227d607512409884f20",
+        "cover-stone-light-00-after.png": "e77000d0638abe4f14bdc4f5803ab7f9dd555c96258637984b44c1fec14a7d22",
+        "cover-stone-light-00-contact-off.png": "d102226e98bd4899687be84601a219d86a120e701079e02ee4085753ecb0c4b1",
+        "cover-stone-light-09-before.png": "e995bb6b5fef282590eef9c6c9c57e5bb7887db3f092f227d607512409884f20",
+        "cover-stone-light-00-restored.png": "8ff7a8ecf75b5f192c1449ce6adc564ed141e7291ba6f380d51a2c042d65a5ee",
+        "cover-stone-light-00-before.png": "8ff7a8ecf75b5f192c1449ce6adc564ed141e7291ba6f380d51a2c042d65a5ee",
+        "cover-stone-light-15-contact-off.png": "e28e779ee1342e9b0383f19735d959cb8211abf52d5339ed65f4bb588eb70aa0",
+        "cover-stone-light-15-restored.png": "0a834bfd94315d02564a9d84c2f6503ecebb2f56518fca5b3ae742b2d804b9ce",
+        "cover-stone-light-15-held.png": "8b55def43a5dc4e1ea62bb8b938a6ae35dcee90c8965eb0cfdf2e356de63c9cc",
+        "cover-stone-light-00-held.png": "e77000d0638abe4f14bdc4f5803ab7f9dd555c96258637984b44c1fec14a7d22",
+        "cover-stone-light-09-held.png": "394b7f51cb1113cac956c6073d7fc139a5029698c2c042d85ba1a074b9e91ea0",
+        "cover-stone-light-15-after.png": "8b55def43a5dc4e1ea62bb8b938a6ae35dcee90c8965eb0cfdf2e356de63c9cc",
+        "cover-stone-light-15-before.png": "0a834bfd94315d02564a9d84c2f6503ecebb2f56518fca5b3ae742b2d804b9ce",
+        "cover-stone-light-09-contact-off.png": "d30df785d837d5c402e3ef9b6348771d09d524fc562fb190354366b82ab66ee4"
+      },
+      "overlapping_processes": [
+        {
+          "pid": 2057508,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        },
+        {
+          "pid": 2057508,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        }
+      ]
+    },
+    {
+      "label": "contact-options08",
+      "checks": 67,
+      "failures": 0,
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/beach-pebbles-20261010/contact-options08/run.json",
+      "receipt_sha256": "815a557116f17f9b3cefe4e1c4faf2a5ee85688f488faa5b55aafcd5b07ddb1f",
+      "result_sha256": "ecf306d80fd453916bc6775169912833678f5b9a07ce4bbb5b8d82138bb2ac0c",
+      "errors": [],
+      "warnings": [],
+      "captures": {
+        "cover-stone-native-after.png": "e6897b423aa30cbc2e26f24c20039bec31211138301b228a68d81906aefc128c",
+        "cover-stone-light-09-after.png": "c6abed20f8cf4a65a7ad41f397f73a8c84625e085f2f152a7f056e26d0cb0adf",
+        "cover-stone-native-before.png": "e6897b423aa30cbc2e26f24c20039bec31211138301b228a68d81906aefc128c",
+        "cover-stone-light-09-restored.png": "15311bd032bbc7952097b9a75305c1d9c6abf3fe9b8a3d7d9ac050f3dce5560f",
+        "cover-stone-light-09-before.png": "15311bd032bbc7952097b9a75305c1d9c6abf3fe9b8a3d7d9ac050f3dce5560f",
+        "cover-stone-options-restored.png": "c6abed20f8cf4a65a7ad41f397f73a8c84625e085f2f152a7f056e26d0cb0adf",
+        "cover-stone-light-09-held.png": "c6abed20f8cf4a65a7ad41f397f73a8c84625e085f2f152a7f056e26d0cb0adf",
+        "cover-stone-light-09-contact-off.png": "0144cdd294c7693646d182604c2abb81c39429b97ddbd099f9f5fdefdcb057cf"
+      },
+      "overlapping_processes": [
+        {
+          "pid": 2057508,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        },
+        {
+          "pid": 2067132,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        },
+        {
+          "pid": 2057508,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        },
+        {
+          "pid": 2067931,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ]
+    }
+  ],
+  "scene_budget": {
+    "batches": 3,
+    "kind": "contact_budget",
+    "new_textures": 0,
+    "per_stone_nodes": 0,
+    "triangles": 379,
+    "vertices": 847
+  },
+  "validation": [
+    "Daylight at 09:00/15:00 and night under original Gipat lighting on Forward+, Mobile and Compatibility.",
+    "Real soft-ground footprint installation under the pebble passes with exact held and restoration images.",
+    "Existing live contact/material options preserve shared shader/material identities; switching both off reproduces previous lighting exactly.",
+    "Synthetic clipped area tests cross original and dense terrain seams; map snapshot releases after generation."
+  ],
+  "retained_diagnostics": [
+    {
+      "label": "shadow-probe01",
+      "finding": "Zero global bias restores contact but introduces self-shadow acne. Rejected; no global bias change."
+    },
+    {
+      "label": "lighting-baseline01",
+      "finding": "Invalid macro near plane clipped the witness; corrected in baseline02."
+    },
+    {
+      "labels": [
+        "lighting-contact05",
+        "contact-soft05",
+        "contact-geometry05",
+        "contact-geometry06",
+        "contact-geometry07"
+      ],
+      "finding": "Assertions passed but external fixture dynamic call with untyped empty array retained one map snapshot at exit. Using the same typed empty Array[Dictionary] as production releases it; explicit weak-reference lifetime assertion and clean runs retained."
+    }
+  ],
+  "limits": [
+    "Linux GPU renders only; no Windows D3D12 runtime qualification.",
+    "Foreign engine processes overlapped; these runs establish correctness, not FPS or generation-time acceptance.",
+    "The contact patch approximates local ambient occlusion; normal sun shadows remain enabled.",
+    "No new user package has been delivered."
+  ]
+}

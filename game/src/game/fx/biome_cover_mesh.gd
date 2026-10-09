@@ -62,6 +62,7 @@ const SHADER := """
 shader_type spatial;
 #define EI_TERRAIN_LIGHT
 #define EI_GRASS_LIGHT
+#define EI_SOLID_COVER_LIGHT
 render_mode cull_disabled, ambient_light_disabled;
 uniform vec3 view_position;
 uniform float breeze = 0.0;
@@ -72,7 +73,7 @@ varying vec3 cover_normal;
 varying float cover_leaf;
 varying vec3 ei_e;
 varying float ei_k;
-""" + WeatherWind.UNIFORMS + WeatherWind.SWAY + """
+""" + WeatherWind.UNIFORMS + WeatherWind.SWAY + SurfaceMaterials.RELIEF_SHADER + """
 void vertex() {
 	vec3 root = vec3(UV2.x,UV.x,UV2.y);
 	vec3 origin = (MODEL_MATRIX*vec4(root,1.0)).xyz;
@@ -101,6 +102,12 @@ void fragment() {
 	if (cover_art.w < -0.5) { ALBEDO *= texture(cover_stone_texture,cover_art.xy).rgb; }
 	NORMAL = normalize(cover_normal)*(FRONT_FACING ? 1.0 : -1.0);
 	ROUGHNESS = 1.0; SPECULAR = 0.0; ei_leaf = cover_leaf;
+	if (cover_art.w < -0.5 && ei_surface_fx.x > 0.5) {
+		// Share the existing stone surface response. No leaf transmission or
+		// per-pixel material work for the surrounding grass and litter.
+		ei_surface = vec3(0.20,0.84,0.0); ROUGHNESS = 0.84;
+		NORMAL = ei_relief_normal(cover_stone_texture,cover_art.xy,VERTEX,NORMAL,0.70);
+	}
 }
 """
 const DEFORM := """

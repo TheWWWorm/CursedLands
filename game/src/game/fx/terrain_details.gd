@@ -80,6 +80,7 @@ var _grass := false
 var _cover := false
 var _cover_field: BiomeCover
 var _cover_material: ShaderMaterial
+var _cover_contact_material: ShaderMaterial
 var _cover_surface: GroundSurfaceData
 var _mound_material: ShaderMaterial
 var _trees := {} # chunk -> immutable nearby authored tree records
@@ -212,6 +213,7 @@ func _process(_dt: float) -> void:
 	if _material:
 		_material.set_shader_parameter("view_position", p)
 		if _cover_material: _cover_material.set_shader_parameter("view_position",p)
+		if _cover_contact_material: _cover_contact_material.set_shader_parameter("view_position",p)
 		if _mound_material: _mound_material.set_shader_parameter("view_position",p)
 		_update_motion(p)
 	_update_submissions(Vector2(p.x,p.z))
@@ -258,6 +260,7 @@ func _clear_grass() -> void:
 	_grass_field = null
 	_cover_field = null
 	_cover_material = null
+	_cover_contact_material = null
 	_cover_surface = null
 	_mound_material = null
 	_trees.clear()
@@ -297,6 +300,14 @@ func _apply_grass_material() -> void:
 		var aquatic := _cover_field != null and not _cover_field.sea.tiles.is_empty()
 		var regional := _cover_field != null and _cover_field.regions.cave
 		_cover_material.shader = BiomeCover.Geometry.shader(interaction != null,Gfx.on("gfx_wind"),soft,aquatic,regional)
+		if _cover_contact_material == null: _cover_contact_material = ShaderMaterial.new()
+		_cover_contact_material.shader = BiomeCover.Contact.shader(soft)
+		_cover_contact_material.set_shader_parameter("view_position",_material.get_shader_parameter("view_position"))
+		if soft:
+			terrain.ground_surface_data(true).bind(_cover_contact_material,true)
+		else:
+			for parameter in [&"query_vertices",&"query_normals",&"query_tiles",&"query_tracks",&"query_clock"]:
+				_cover_contact_material.set_shader_parameter(parameter,null)
 		if regional:
 			for parameter in [&"atlases",&"atlas_padding",&"tiles_per_axis"]:
 				_cover_material.set_shader_parameter(parameter,terrain._land_mat.get_shader_parameter(parameter))
@@ -708,6 +719,17 @@ func _install_chunk(key: Vector2i, data: Dictionary) -> void:
 		cover.extra_cull_margin = node.extra_cull_margin+SoftGroundDeform.DEPTH; cover.layers = 1
 		node.add_child(cover)
 		node.cover = cover
+		var contacts: Array = data.cover.get("contacts",[])
+		if not contacts.is_empty():
+			var contact_mesh := ArrayMesh.new()
+			contact_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,contacts,[],{},BiomeCover.Contact.FORMAT)
+			var contact := MeshInstance3D.new(); contact.name = "StoneContacts"
+			contact.mesh = contact_mesh; contact.material_override = _cover_contact_material
+			contact.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+			contact.extra_cull_margin = SoftGroundDeform.DEPTH; contact.layers = 1
+			contact.visible = Gfx.on("gfx_contact_shadows")
+			contact.add_to_group(&"gfx_contact_shadows")
+			cover.add_child(contact)
 	if data.has("cover") and not data.cover.mounds.records.is_empty():
 		var mesh := ArrayMesh.new()
 		mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,data.cover.mounds.arrays,[],{},BiomeCover.Mounds.FORMAT)

@@ -269,7 +269,7 @@ float ei_cloud_sun_cached(vec3 p,inout vec4 sample_) {
 		# diffuse response. x = highlight strength, y = roughness, z = metal.
 		code = code.replace("void fragment() {", "void fragment() {\n\tei_surface_leaf = vec4(0.0, 1.0, 0.0, 0.0);\n\tei_vpos = VERTEX;")
 	if lit:
-		var lighting := light_code(wrap, code.contains("#define EI_GRASS_LIGHT"))
+		var lighting := light_code(wrap, code.contains("#define EI_GRASS_LIGHT"), code.contains("#define EI_SOLID_COVER_LIGHT"))
 		if code.contains("#define EI_GROUND_CONTACT"):
 			lighting = GroundContactShader.lighting(lighting)
 		code += lighting
@@ -502,7 +502,7 @@ const SUN_MARK := 0.371
 
 
 ## light() of the original model. Needs varyings `ei_e` (vec3) and `ei_k` (float).
-static func light_code(wrap: bool, grass := false) -> String:
+static func light_code(wrap: bool, grass := false, solid_cover := false) -> String:
 	var code := """
 // D3D adds the packed specular after texture modulation, in stored sRGB.
 // Clamping precedes the silhouette overlay; its alpha halves this whole draw.
@@ -638,7 +638,11 @@ void light() {
 	code = code.replace("/*EI_LOCAL_END*/", LocalLightShader.END if LocalLightShader.enabled() else "")
 	# New grass keeps its baked ground/upward diffuse. Its real leaf normal
 	# still drives transmission and shadows. Other shader text is unchanged.
-	if grass:
+	if grass and solid_cover:
+		# Only the stone material supplies a nonzero surface profile. Grass
+		# retains its upward vertex light without per-pixel native relighting.
+		code = code.replace("\tif (ei_surface_fx.x > 0.5) {", "\tif (ei_surface_fx.x > 0.5 && ei_surface.x > 0.001) {")
+	elif grass:
 		code = code.replace("\tif (ei_surface_fx.x > 0.5) {", "#ifndef EI_GRASS_LIGHT\n\tif (ei_surface_fx.x > 0.5) {")
 		code = code.replace("\n#ifdef EI_WATER_WAVES", "\n#endif\n#ifdef EI_WATER_WAVES")
 	if on("gfx_clouds"):

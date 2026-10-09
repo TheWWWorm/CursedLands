@@ -1,6 +1,7 @@
 extends RefCounted
 ## Immutable, optional ground-cover snapshot. TerrainDetails owns streaming,
 ## workers, barriers and pressure; this class never reads live scene state in a job.
+const Contact = preload("res://src/game/fx/biome_cover_contact.gd")
 const Geometry = preload("res://src/game/fx/biome_cover_mesh.gd")
 const Sea = preload("res://src/game/fx/biome_cover_water.gd")
 const Mounds = preload("res://src/game/fx/biome_mounds.gd")
@@ -486,7 +487,7 @@ func build(key: Vector2i, boxes: Array, trees: Array, mound_boxes: Array = []) -
 	var placed := records(key,boxes,trees)
 	var geometry := Geometry.new()
 	var arrays := geometry.build(placed,key,sea if not sea.tiles.is_empty() else null,self if regions.cave else null)
-	return {"records":placed,"arrays":arrays,"lods":geometry.lods(),
+	return {"records":placed,"arrays":arrays,"lods":geometry.lods(),"contacts":Contact.build(self,placed,key),
 		"mounds":mounds.build(self,key,mound_boxes if not mound_boxes.is_empty() else boxes)}
 
 

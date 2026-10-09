@@ -284,7 +284,7 @@ const REMAKE_OPTIONS := {
 	"gfx_hd_textures": ["HD textures", "The original ground and object textures upscaled 2x once at load (edge-preserving Lanczos on the GPU): sharper up close, same colours. Applies from the next zone load."],
 	"gfx_soft_particles": ["Soft particles", "Smoke, fire and magic fade softly where they meet the ground and walls instead of cutting through them with a hard line."],
 	"gfx_lit_particles": ["Lit smoke and dust", "Smoke, dust and blood take the scene's light: unchanged in daylight, darker at night and in caves instead of glowing."],
-	"gfx_contact_shadows": ["Contact shadows", "A soft shadow on the ground under every creature, so figures sit on the ground also in shade, at night and in caves."],
+	"gfx_contact_shadows": ["Contact shadows", "Soft ground shadows beneath creatures and small stones, including in shade, at night and in caves."],
 	"q_aa": ["Anti-aliasing", "Smooths jagged edges. SMAA (default): cheap and clean. MSAA 4× + SMAA: sharpest, but costly at high resolutions. TAA and FSR 2 smooth foliage and thin lines best but soften textures slightly and can ghost on fast motion. FSR 2 draws the 3D view at 67 % (its Quality mode) and upscales it, faster than native; a lower Render scale goes further. On a Mac, Apple's MetalFX takes the place of FSR."],
 	"q_shadows": ["Shadow quality", "Softness and resolution of sun and torch shadows (Ultra: widest soft filter, largest shadow maps)."],
 	"q_shadow_fit": ["Shadows fitted to the view", "The sun's shadow cascades span only the visible distance and the zone's size, so near shadows get sharper; off: a fixed 220 m."],
