@@ -1,0 +1,2348 @@
+{
+  "date": "2026-10-09",
+  "status": "Verified optional atlas-family placement; unchanged default-off biome cover. Shared weather wind, submission LOD, remaining regional cover sets and device acceptance remain open.",
+  "parent_commit": "5a50b5f6cdb6e5682f680e1ba0e875219bed70d8",
+  "default_option": {
+    "gfx_biome_cover": 0,
+    "desktop_sun_policy": "continuous on every renderer; unchanged"
+  },
+  "source_sha256": {
+    "game/src/game/fx/biome_cover.gd": "20b5dc0a653169aeb1da4709bf385bec34fe757954d12dd456a104697b086b7f",
+    "game/src/game/fx/biome_cover_tiles.gd": "bc3f3f77f83e8a75b5d59f8acffff13d9c13642ccbeaf956844d2e6bc96f3d68",
+    "game/src/game/fx/biome_cover_tiles.gd.uid": "0738828be4ea81186030c6655bade81e1cbccdf2ce174fedf5860f0a4dc6f7a8",
+    "tools/benchmarks/biome_cover_metadata.py": "2aee6546f5f560d777396e53eea765f2514431aa59cc0373830e16313f470bf3",
+    "tools/tests/biome_cover_families.gd": "6100636b519b14e6a5422b5f483c23e9c26cb5fc98f7900d8f57d035c29b1894",
+    "tools/tests/biome_cover_families_render.gd": "ee363a05c159289c631ba83ce3814f09ed1d3dd2470bc6ace595eec92ed2d16c"
+  },
+  "reference": {
+    "repository": "/home/llm2x/Documents/evil-islands-owned-renderer",
+    "checked_out_revision": "d529d14e9bf3c960833a9d9633786fc4588ec6d2",
+    "inspected_revision": "0092dc6e1d7c4aab3f74644a79e9bfca11ecf293",
+    "entry_points": {
+      "Source/terrain_tile_presets.h": "3-9 metadata provenance: ei-mapper-endurance af24d45, original UV convention, NW/NE/SE/SW signatures",
+      "Source/terrain_tile_blend.h": "48-64 material classes;146-170 rotated corners and beach sand;173-190 bare corners",
+      "Source/renderer_ground_cover.cpp": "197-225 sea sand override and bare interpolation;500-508 grass/road thinning;2044-2062 family-mask publication"
+    },
+    "adaptation": "Same original-pixel verified material classes. Noisy reference thinning becomes deterministic density scaling through our existing seeded candidates. Full bare corners suppress flowers/dry tufts rather than leaving 3% residue; existing snow/sand/litter rules remain unchanged."
+  },
+  "generation": {
+    "census_directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-families-census-base",
+    "census_tool_sha256": "1020ff79d6f58323ebcacf3e8b690b9e0d57c6f994043d9b914ee2736bdd624f",
+    "census_manifest_sha256": "25eed5db8fbac37777e7a22b5ddaf298531517da263c7793269842467eabb5d6",
+    "profiles": 38,
+    "atlas_images": 259,
+    "unique_images": 196,
+    "classified_slots": 10044,
+    "ambiguous_slots_omitted": 4,
+    "conflicts": [
+      {
+        "sha256": "e455180f7e1e0e123bba2f79da5ce6c444418b04cd7910a28ee0f86860e50b6e",
+        "first": "bz3g:4",
+        "second": "zone9:4",
+        "different_slots": [
+          19
+        ],
+        "mask_pairs": [
+          [
+            19,
+            11,
+            3
+          ]
+        ]
+      },
+      {
+        "sha256": "eda21d2921436a581b38b0b861455e93537490e1d27084ef19bc21182fa70d5d",
+        "first": "bz3g:5",
+        "second": "zone9:5",
+        "different_slots": [
+          7
+        ],
+        "mask_pairs": [
+          [
+            7,
+            0,
+            8
+          ]
+        ]
+      },
+      {
+        "sha256": "e73564c4f16aa310ff9ce2afcee1f2b768f1cf2fe36f978964b1c50b9726d8a0",
+        "first": "bz3g:7",
+        "second": "zone9:7",
+        "different_slots": [
+          8,
+          28
+        ],
+        "mask_pairs": [
+          [
+            8,
+            0,
+            8
+          ],
+          [
+            28,
+            15,
+            13
+          ]
+        ]
+      }
+    ],
+    "regeneration": {
+      "command": [
+        "python3",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/benchmarks/biome_cover_metadata.py",
+        "/home/llm2x/Documents/evil-islands-owned-renderer",
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-families-census-base/cover-family-census.json",
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-families-metadata-regenerated.gd"
+      ],
+      "output": "{\"identities\": 196, \"classified_slots\": 10044, \"ambiguous_slots_omitted\": 4}",
+      "byte_identical": true,
+      "generator_sha256": "2aee6546f5f560d777396e53eea765f2514431aa59cc0373830e16313f470bf3",
+      "census_sha256": "5f21c1df2ef0450ccf64be8f4fac87e6b7a1b431e4f5828c3782add7c04cf8ed",
+      "output_sha256": "bc3f3f77f83e8a75b5d59f8acffff13d9c13642ccbeaf956844d2e6bc96f3d68"
+    },
+    "policy": "An exact original 512x512 RGBA8 no-mip fingerprint is required; unknown/modified art, unsupported dimensions and disputed whole slots have no additional rules. No texture bytes are embedded."
+  },
+  "design": {
+    "snapshot": "64-byte per-atlas immutable corner-mask payload, decoded once during optional cover preparation; no new shader, streamed object or per-frame update. Eight-atlas sample maps retain 512 bytes before Dictionary overhead.",
+    "coordinates": "Use existing actual triangle/rotation-aware hit UV, reverse the decoded image V flip, remove original 8-pixel gutter from each 64-pixel slot and bilinearly interpolate NW/NE/SE/SW bare corners.",
+    "dry_cover": "Flowers/dry tufts on ground types0/5/11 multiply by 1-smoothstep(.30,.75,bare_share). Flower footprint also rejects edges over.75 bare share. No new random stream.",
+    "beaches": "Existing sand type3 OR a verified atlas slot with any sand-family corner; existing admitted ground types, sea habitat, dry/slope/scenery/full footprint checks remain. Mound soft-sand metadata remains separate."
+  },
+  "application_export": {
+    "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-families-probe",
+    "manifest_sha256": "cc44840f80369ffb0e3d256f2bbdcf74d665781ce2155b4b89c10d68624ddd9a",
+    "source_scripts_match": 233,
+    "command": [
+      "/home/llm2x/.local/bin/godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/game",
+      "--export-pack",
+      "Linux",
+      "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-families-probe/CursedLands.pck"
+    ],
+    "artifacts": {
+      "CursedLands.x86_64": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+      "CursedLands.pck": "816c8045e87b813fc4a36476618dffa98b7d84fb2f371cbd949ca89f50be9710",
+      "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+    },
+    "installed_builds_or_templates_changed": false
+  },
+  "acceptance": {
+    "runs": 10,
+    "assertions": 44102,
+    "authored_comparison": [
+      {
+        "map": "zone1",
+        "chunks": 64,
+        "kept_records": 497,
+        "kept_hash": "6b987046e81a0a18ca8ae260f4b4e45dd0f74cf40e9a141eea6a35a685963a12",
+        "added": {},
+        "removed": {
+          "0": 2
+        },
+        "native_script_equal": true,
+        "metadata_payload_bytes": 512
+      },
+      {
+        "map": "zone7",
+        "chunks": 1508,
+        "kept_records": 13375,
+        "kept_hash": "87ebf78e450380308a8c3f919d3864a48205aa3c2b2eda1c9b3605b68921570b",
+        "added": {
+          "10": 4
+        },
+        "removed": {
+          "0": 32,
+          "1": 80
+        },
+        "native_script_equal": true,
+        "metadata_payload_bytes": 512
+      },
+      {
+        "map": "zone8",
+        "chunks": 681,
+        "kept_records": 1135,
+        "kept_hash": "3ab7df2bf7da29b2609820ebfdd053d7dfd1b91ec02b24d4006d8622fdb017e5",
+        "added": {},
+        "removed": {
+          "0": 12
+        },
+        "native_script_equal": true,
+        "metadata_payload_bytes": 512
+      },
+      {
+        "map": "zone9",
+        "chunks": 64,
+        "kept_records": 232,
+        "kept_hash": "1b807da17b0822716af75b231e050d57ea9104040361271a0f9ada71d2597a10",
+        "added": {},
+        "removed": {
+          "0": 5
+        },
+        "native_script_equal": true,
+        "metadata_payload_bytes": 512
+      },
+      {
+        "map": "zone11",
+        "chunks": 64,
+        "kept_records": 111,
+        "kept_hash": "017ab5d691a5d271f5161063ebac1e573e26d79d1dc0d99d89ac47b1b88f7573",
+        "added": {},
+        "removed": {},
+        "native_script_equal": true,
+        "metadata_payload_bytes": 512
+      },
+      {
+        "map": "zone15",
+        "chunks": 64,
+        "kept_records": 269,
+        "kept_hash": "bae1e0d5e3d2a75be6db9410658788ad17affeb9b29391c508520b715ca87e46",
+        "added": {},
+        "removed": {},
+        "native_script_equal": true,
+        "metadata_payload_bytes": 512
+      }
+    ],
+    "preserved_records": 15619,
+    "removed_flowers_tufts": 131,
+    "added_shells": 4,
+    "comparison_scope": "Native/script scans use actual maps with empty scenery exclusions. Render tests separately load complete authored World/Map/scenery; isolate flower/shell geometry. Counterfactual before images disable only family masks within the same candidate pack.",
+    "render_controls": "On each of Compatibility/Mobile/Forward+, local flower count10->7, shell count13->14; visible changes and byte-exact per-renderer family-mask restoration. Existing meadow/shell fixtures also pass pause, pressure, shadow refresh, snapshot release, rebuild and option-off restoration. No whole mixed-cover/device acceptance claimed."
+  },
+  "accepted_runs": [
+    {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-families-native-final",
+      "manifest_sha256": "267a17cf2c5ce388bafd80ec7c499308b80b4a05ec25794654c0b2eadac318fc",
+      "run": {
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/biome_cover_families.gd",
+        "tool_sha256_at_start": "6100636b519b14e6a5422b5f483c23e9c26cb5fc98f7900d8f57d035c29b1894",
+        "helper_sha256_at_start": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "engine_sha256": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+        "pack_sha256": "816c8045e87b813fc4a36476618dffa98b7d84fb2f371cbd949ca89f50be9710",
+        "termination_reason": null,
+        "timeout_sec": 150,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-families-probe/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-families-native-final/tool-source.gd"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 11.064933131012367,
+        "other_render_processes_at_start": [
+          {
+            "pid": 378726,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {}
+      },
+      "reports": {
+        "biome-cover-families.json": {
+          "checks": 15815,
+          "failures": 0,
+          "rows": [
+            {
+              "added": {},
+              "case": "authored",
+              "chunks": 64,
+              "examples": [
+                {
+                  "bare_share": 0.781150817871094,
+                  "change": "removed",
+                  "record": {
+                    "anchor": "(-1.0, 0.0, 0.0, 0.0)",
+                    "angle": 4.1576043803621,
+                    "cold": false,
+                    "colour": "(0.1608, 0.2549, 0.0, 1.0)",
+                    "flower": 1.0,
+                    "height": 16.3278024308672,
+                    "kind": 0,
+                    "normal": "(-0.016216, 0.999358, 0.031938)",
+                    "p": "(244.2584, 10.97599)",
+                    "scale": 1.04344069957733,
+                    "seed": 0.381980180740356,
+                    "snow": false
+                  }
+                },
+                {
+                  "bare_share": 0.744509539600244,
+                  "change": "removed",
+                  "record": {
+                    "anchor": "(-1.0, 0.0, 0.0, 0.0)",
+                    "angle": 6.16029569443681,
+                    "cold": false,
+                    "colour": "(0.1412, 0.2706, 0.0, 1.0)",
+                    "flower": 0.0,
+                    "height": 15.7365955461567,
+                    "kind": 0,
+                    "normal": "(-0.085259, 0.98972, 0.114826)",
+                    "p": "(212.2899, 36.26086)",
+                    "scale": 1.10361075401306,
+                    "seed": 0.324957489967346,
+                    "snow": false
+                  }
+                }
+              ],
+              "kept": 497,
+              "kept_hash": "6b987046e81a0a18ca8ae260f4b4e45dd0f74cf40e9a141eea6a35a685963a12",
+              "load_prepare_us": 466621,
+              "map": "zone1",
+              "metadata_payload_bytes": 512,
+              "native_sampler": true,
+              "removed": {
+                "0": 2
+              }
+            },
+            {
+              "added": {
+                "10": 4
+              },
+              "case": "authored",
+              "chunks": 1508,
+              "examples": [
+                {
+                  "bare_share": 0.732010276084445,
+                  "change": "removed",
+                  "record": {
+                    "anchor": "(-1.0, 0.0, 0.0, 0.0)",
+                    "angle": 5.31972178506807,
+                    "cold": false,
+                    "colour": "(0.3647, 0.3804, 0.0863, 1.0)",
+                    "flower": 0.0,
+                    "height": 8.23473644256592,
+                    "kind": 1,
+                    "normal": "(0.0, 1.0, 0.0)",
+                    "p": "(452.1534, 176.398)",
+                    "scale": 1.06708168983459,
+                    "seed": 0.194275841116905,
+                    "snow": false
+                  }
+                },
+                {
+                  "bare_share": 0.334089073185599,
+                  "change": "removed",
+                  "record": {
+                    "anchor": "(-1.0, 0.0, 0.0, 0.0)",
+                    "angle": 5.96282600306582,
+                    "cold": false,
+                    "colour": "(0.2902, 0.2863, 0.0627, 1.0)",
+                    "flower": 0.0,
+                    "height": 8.23473644256592,
+                    "kind": 1,
+                    "normal": "(0.0, 1.0, 0.0)",
+                    "p": "(454.9182, 177.4463)",
+                    "scale": 1.09808731079102,
+                    "seed": 0.401528477668762,
+                    "snow": false
+                  }
+                },
+                {
+                  "bare_share": 0.723103225231171,
+                  "change": "removed",
+                  "record": {
+                    "anchor": "(-1.0, 0.0, 0.0, 0.0)",
+                    "angle": 3.63953570037925,
+                    "cold": false,
+                    "colour": "(0.1608, 0.2549, 0.0, 1.0)",
+                    "flower": 0.0,
+                    "height": 22.2789669381341,
+                    "kind": 0,
+                    "normal": "(-0.223471, 0.969224, 0.103272)",
+                    "p": "(210.5315, 259.3417)",
+                    "scale": 0.924408435821533,
+                    "seed": 0.0566074475646019,
+                    "snow": false
+                  }
+                },
+                {
+                  "bare_share": 0.636766655998719,
+                  "change": "removed",
+                  "record": {
+                    "anchor": "(-1.0, 0.0, 0.0, 0.0)",
+                    "angle": 0.74476939392612,
+                    "cold": false,
+                    "colour": "(0.098, 0.2235, 0.0, 1.0)",
+                    "flower": 1.0,
+                    "height": 9.08711730058318,
+                    "kind": 0,
+                    "normal": "(-0.110739, 0.904851, 0.411075)",
+                    "p": "(389.4523, 300.2557)",
+                    "scale": 0.918540894985199,
+                    "seed": 0.778025925159454,
+                    "snow": false
+                  }
+                },
+                {
+                  "change": "added",
+                  "family_mask": 120,
+                  "record": {
+                    "anchor": "(483.0, 71.0, 0.041726, 0.525764)",
+                    "angle": 5.68389841149204,
+                    "cold": false,
+                    "colour": "(0.8078, 0.7137, 0.6118, 1.0)",
+                    "flower": 0.0,
+                    "height": 5.91763041381557,
+                    "kind": 10,
+                    "normal": "(-0.004784, 0.999881, -0.014661)",
+                    "p": "(241.9519, 71.57383)",
+                    "scale": 0.925841093063354,
+                    "seed": 0.641306281089783,
+                    "snow": false
+                  },
+                  "type": 3
+                },
+                {
+                  "change": "added",
+                  "family_mask": 74,
+                  "record": {
+                    "anchor": "(844.0, 159.0, 0.108726, 0.477852)",
+                    "angle": 5.10397914677264,
+                    "cold": false,
+                    "colour": "(0.5176, 0.5176, 0.5059, 1.0)",
+                    "flower": 0.0,
+                    "height": 6.05662027670914,
+                    "kind": 10,
+                    "normal": "(0.19072, 0.981645, 0.0)",
+                    "p": "(422.1096, 159.4134)",
+                    "scale": 0.967139601707458,
+                    "seed": 0.693135142326355,
+                    "snow": false
+                  },
+                  "type": 0
+                },
+                {
+                  "change": "added",
+                  "family_mask": 74,
+                  "record": {
+                    "anchor": "(849.0, 155.0, 0.678169, 0.020767)",
+                    "angle": 1.78287684811417,
+                    "cold": false,
+                    "colour": "(0.4941, 0.5098, 0.4824, 1.0)",
+                    "flower": 0.0,
+                    "height": 6.11215312875432,
+                    "kind": 10,
+                    "normal": "(-0.054772, 0.998339, 0.017873)",
+                    "p": "(424.4344, 155.8115)",
+                    "scale": 0.986830532550812,
+                    "seed": 0.988936007022858,
+                    "snow": false
+                  },
+                  "type": 0
+                },
+                {
+                  "change": "added",
+                  "family_mask": 74,
+                  "record": {
+                    "anchor": "(822.0, 169.0, 0.410249, 0.434751)",
+                    "angle": 1.368032978579,
+                    "cold": false,
+                    "colour": "(0.5804, 0.6039, 0.451, 1.0)",
+                    "flower": 0.0,
+                    "height": 6.00470227897464,
+                    "kind": 10,
+                    "normal": "(-0.294279, 0.950883, 0.096028)",
+                    "p": "(411.3942, 169.1389)",
+                    "scale": 0.832281649112701,
+                    "seed": 0.74449098110199,
+                    "snow": false
+                  },
+                  "type": 0
+                }
+              ],
+              "kept": 13375,
+              "kept_hash": "87ebf78e450380308a8c3f919d3864a48205aa3c2b2eda1c9b3605b68921570b",
+              "load_prepare_us": 1202240,
+              "map": "zone7",
+              "metadata_payload_bytes": 512,
+              "native_sampler": true,
+              "removed": {
+                "0": 32,
+                "1": 80
+              }
+            },
+            {
+              "added": {},
+              "case": "authored",
+              "chunks": 681,
+              "examples": [
+                {
+                  "bare_share": 0.0,
+                  "change": "removed",
+                  "record": {
+                    "anchor": "(-1.0, 0.0, 0.0, 0.0)",
+                    "angle": 5.27686657131354,
+                    "cold": false,
+                    "colour": "(0.2275, 0.349, 0.0, 1.0)",
+                    "flower": 1.0,
+                    "height": 17.4278392791748,
+                    "kind": 0,
+                    "normal": "(0.0, 1.0, 0.0)",
+                    "p": "(57.83138, 169.0889)",
+                    "scale": 1.02009534835815,
+                    "seed": 0.0238968580961227,
+                    "snow": false
+                  }
+                },
+                {
+                  "bare_share": 0.74030813574791,
+                  "change": "removed",
+                  "record": {
+                    "anchor": "(-1.0, 0.0, 0.0, 0.0)",
+                    "angle": 0.120558400118418,
+                    "cold": false,
+                    "colour": "(0.1843, 0.302, 0.0, 1.0)",
+                    "flower": 1.0,
+                    "height": 17.4278392791748,
+                    "kind": 0,
+                    "normal": "(0.0, 1.0, 0.0)",
+                    "p": "(58.57011, 170.2776)",
+                    "scale": 0.98522424697876,
+                    "seed": 0.473832100629807,
+                    "snow": false
+                  }
+                },
+                {
+                  "bare_share": 0.800493881106377,
+                  "change": "removed",
+                  "record": {
+                    "anchor": "(-1.0, 0.0, 0.0, 0.0)",
+                    "angle": 4.64658435044343,
+                    "cold": false,
+                    "colour": "(0.2588, 0.3961, 0.0, 1.0)",
+                    "flower": 0.0,
+                    "height": 16.425968995177,
+                    "kind": 0,
+                    "normal": "(-0.210677, 0.977245, 0.024654)",
+                    "p": "(139.336, 163.642)",
+                    "scale": 0.925723671913147,
+                    "seed": 0.341521590948105,
+                    "snow": false
+                  }
+                },
+                {
+                  "bare_share": 0.741158813238144,
+                  "change": "removed",
+                  "record": {
+                    "anchor": "(-1.0, 0.0, 0.0, 0.0)",
+                    "angle": 2.7656546339423,
+                    "cold": false,
+                    "colour": "(0.1843, 0.298, 0.0, 1.0)",
+                    "flower": 0.0,
+                    "height": 16.6525738880627,
+                    "kind": 0,
+                    "normal": "(-0.271845, 0.962158, 0.018792)",
+                    "p": "(140.5214, 163.4391)",
+                    "scale": 1.09109377861023,
+                    "seed": 0.722920000553131,
+                    "snow": false
+                  }
+                }
+              ],
+              "kept": 1135,
+              "kept_hash": "3ab7df2bf7da29b2609820ebfdd053d7dfd1b91ec02b24d4006d8622fdb017e5",
+              "load_prepare_us": 699178,
+              "map": "zone8",
+              "metadata_payload_bytes": 512,
+              "native_sampler": true,
+              "removed": {
+                "0": 12
+              }
+            },
+            {
+              "added": {},
+              "case": "authored",
+              "chunks": 64,
+              "examples": [
+                {
+                  "bare_share": 0.478645949493512,
+                  "change": "removed",
+                  "record": {
+                    "anchor": "(-1.0, 0.0, 0.0, 0.0)",
+                    "angle": 3.98644156068649,
+                    "cold": false,
+                    "colour": "(0.1294, 0.2588, 0.0, 1.0)",
+                    "flower": 1.0,
+                    "height": 18.4303073883057,
+                    "kind": 0,
+                    "normal": "(0.0, 1.0, 0.0)",
+                    "p": "(308.4111, 18.795)",
+                    "scale": 1.06158101558685,
+                    "seed": 0.93462723493576,
+                    "snow": false
+                  }
+                },
+                {
+                  "bare_share": 0.150356449043683,
+                  "change": "removed",
+                  "record": {
+                    "anchor": "(-1.0, 0.0, 0.0, 0.0)",
+                    "angle": 2.38549554557891,
+                    "cold": false,
+                    "colour": "(0.1412, 0.2627, 0.0, 1.0)",
+                    "flower": 1.0,
+                    "height": 7.7007955003802,
+                    "kind": 0,
+                    "normal": "(-0.180356, 0.98311, 0.031085)",
+                    "p": "(25.99767, 98.23932)",
+                    "scale": 0.842499196529388,
+                    "seed": 0.540812492370605,
+                    "snow": false
+                  }
+                },
+                {
+                  "bare_share": 0.624017031391702,
+                  "change": "removed",
+                  "record": {
+                    "anchor": "(-1.0, 0.0, 0.0, 0.0)",
+                    "angle": 0.688602187410804,
+                    "cold": false,
+                    "colour": "(0.098, 0.2235, 0.0, 1.0)",
+                    "flower": 0.0,
+                    "height": 16.2413894374899,
+                    "kind": 0,
+                    "normal": "(-0.14861, 0.985218, -0.08521)",
+                    "p": "(84.61989, 138.2146)",
+                    "scale": 0.874178528785706,
+                    "seed": 0.171921268105507,
+                    "snow": false
+                  }
+                },
+                {
+                  "bare_share": 0.594713265943938,
+                  "change": "removed",
+                  "record": {
+                    "anchor": "(-1.0, 0.0, 0.0, 0.0)",
+                    "angle": 3.68272422538895,
+                    "cold": false,
+                    "colour": "(0.0627, 0.1765, 0.0, 1.0)",
+                    "flower": 0.0,
+                    "height": 16.1392072578093,
+                    "kind": 0,
+                    "normal": "(-0.14861, 0.985218, -0.08521)",
+                    "p": "(84.20197, 138.6672)",
+                    "scale": 1.06003034114838,
+                    "seed": 0.54989629983902,
+                    "snow": false
+                  }
+                }
+              ],
+              "kept": 232,
+              "kept_hash": "1b807da17b0822716af75b231e050d57ea9104040361271a0f9ada71d2597a10",
+              "load_prepare_us": 556785,
+              "map": "zone9",
+              "metadata_payload_bytes": 512,
+              "native_sampler": true,
+              "removed": {
+                "0": 5
+              }
+            },
+            {
+              "added": {},
+              "case": "authored",
+              "chunks": 64,
+              "examples": [],
+              "kept": 111,
+              "kept_hash": "017ab5d691a5d271f5161063ebac1e573e26d79d1dc0d99d89ac47b1b88f7573",
+              "load_prepare_us": 809652,
+              "map": "zone11",
+              "metadata_payload_bytes": 512,
+              "native_sampler": true,
+              "removed": {}
+            },
+            {
+              "added": {},
+              "case": "authored",
+              "chunks": 64,
+              "examples": [],
+              "kept": 269,
+              "kept_hash": "bae1e0d5e3d2a75be6db9410658788ad17affeb9b29391c508520b715ca87e46",
+              "load_prepare_us": 611777,
+              "map": "zone15",
+              "metadata_payload_bytes": 512,
+              "native_sampler": true,
+              "removed": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-families-script-final",
+      "manifest_sha256": "118a3a13e91af5ec35a1e477ddbf6df2128166b2d31f9c11dc72465a1c645900",
+      "run": {
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/biome_cover_families.gd",
+        "tool_sha256_at_start": "6100636b519b14e6a5422b5f483c23e9c26cb5fc98f7900d8f57d035c29b1894",
+        "helper_sha256_at_start": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "engine_sha256": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+        "pack_sha256": "816c8045e87b813fc4a36476618dffa98b7d84fb2f371cbd949ca89f50be9710",
+        "termination_reason": null,
+        "timeout_sec": 150,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-families-probe/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-families-script-final/tool-source.gd",
+          "--ei-script-grass"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 17.57207291800296,
+        "other_render_processes_at_start": [],
+        "other_render_processes_at_end": [
+          {
+            "pid": 379412,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {}
+      },
+      "reports": {
+        "biome-cover-families.json": {
+          "checks": 15815,
+          "failures": 0,
+          "rows": [
+            {
+              "added": {},
+              "case": "authored",
+              "chunks": 64,
+              "examples": [
+                {
+                  "bare_share": 0.781150817871094,
+                  "change": "removed",
+                  "record": {
+                    "anchor": "(-1.0, 0.0, 0.0, 0.0)",
+                    "angle": 4.1576043803621,
+                    "cold": false,
+                    "colour": "(0.1608, 0.2549, 0.0, 1.0)",
+                    "flower": 1.0,
+                    "height": 16.3278024308672,
+                    "kind": 0,
+                    "normal": "(-0.016216, 0.999358, 0.031938)",
+                    "p": "(244.2584, 10.97599)",
+                    "scale": 1.04344069957733,
+                    "seed": 0.381980180740356,
+                    "snow": false
+                  }
+                },
+                {
+                  "bare_share": 0.744509539600244,
+                  "change": "removed",
+                  "record": {
+                    "anchor": "(-1.0, 0.0, 0.0, 0.0)",
+                    "angle": 6.16029569443681,
+                    "cold": false,
+                    "colour": "(0.1412, 0.2706, 0.0, 1.0)",
+                    "flower": 0.0,
+                    "height": 15.7365955461567,
+                    "kind": 0,
+                    "normal": "(-0.085259, 0.98972, 0.114826)",
+                    "p": "(212.2899, 36.26086)",
+                    "scale": 1.10361075401306,
+                    "seed": 0.324957489967346,
+                    "snow": false
+                  }
+                }
+              ],
+              "kept": 497,
+              "kept_hash": "6b987046e81a0a18ca8ae260f4b4e45dd0f74cf40e9a141eea6a35a685963a12",
+              "load_prepare_us": 510005,
+              "map": "zone1",
+              "metadata_payload_bytes": 512,
+              "native_sampler": false,
+              "removed": {
+                "0": 2
+              }
+            },
+            {
+              "added": {
+                "10": 4
+              },
+              "case": "authored",
+              "chunks": 1508,
+              "examples": [
+                {
+                  "bare_share": 0.732010276084445,
+                  "change": "removed",
+                  "record": {
+                    "anchor": "(-1.0, 0.0, 0.0, 0.0)",
+                    "angle": 5.31972178506807,
+                    "cold": false,
+                    "colour": "(0.3647, 0.3804, 0.0863, 1.0)",
+                    "flower": 0.0,
+                    "height": 8.23473644256592,
+                    "kind": 1,
+                    "normal": "(0.0, 1.0, 0.0)",
+                    "p": "(452.1534, 176.398)",
+                    "scale": 1.06708168983459,
+                    "seed": 0.194275841116905,
+                    "snow": false
+                  }
+                },
+                {
+                  "bare_share": 0.334089073185599,
+                  "change": "removed",
+                  "record": {
+                    "anchor": "(-1.0, 0.0, 0.0, 0.0)",
+                    "angle": 5.96282600306582,
+                    "cold": false,
+                    "colour": "(0.2902, 0.2863, 0.0627, 1.0)",
+                    "flower": 0.0,
+                    "height": 8.23473644256592,
+                    "kind": 1,
+                    "normal": "(0.0, 1.0, 0.0)",
+                    "p": "(454.9182, 177.4463)",
+                    "scale": 1.09808731079102,
+                    "seed": 0.401528477668762,
+                    "snow": false
+                  }
+                },
+                {
+                  "bare_share": 0.723103225231171,
+                  "change": "removed",
+                  "record": {
+                    "anchor": "(-1.0, 0.0, 0.0, 0.0)",
+                    "angle": 3.63953570037925,
+                    "cold": false,
+                    "colour": "(0.1608, 0.2549, 0.0, 1.0)",
+                    "flower": 0.0,
+                    "height": 22.2789669381341,
+                    "kind": 0,
+                    "normal": "(-0.223471, 0.969224, 0.103272)",
+                    "p": "(210.5315, 259.3417)",
+                    "scale": 0.924408435821533,
+                    "seed": 0.0566074475646019,
+                    "snow": false
+                  }
+                },
+                {
+                  "bare_share": 0.636766655998719,
+                  "change": "removed",
+                  "record": {
+                    "anchor": "(-1.0, 0.0, 0.0, 0.0)",
+                    "angle": 0.74476939392612,
+                    "cold": false,
+                    "colour": "(0.098, 0.2235, 0.0, 1.0)",
+                    "flower": 1.0,
+                    "height": 9.08711730058318,
+                    "kind": 0,
+                    "normal": "(-0.110739, 0.904851, 0.411075)",
+                    "p": "(389.4523, 300.2557)",
+                    "scale": 0.918540894985199,
+                    "seed": 0.778025925159454,
+                    "snow": false
+                  }
+                },
+                {
+                  "change": "added",
+                  "family_mask": 120,
+                  "record": {
+                    "anchor": "(483.0, 71.0, 0.041726, 0.525764)",
+                    "angle": 5.68389841149204,
+                    "cold": false,
+                    "colour": "(0.8078, 0.7137, 0.6118, 1.0)",
+                    "flower": 0.0,
+                    "height": 5.91763041381557,
+                    "kind": 10,
+                    "normal": "(-0.004784, 0.999881, -0.014661)",
+                    "p": "(241.9519, 71.57383)",
+                    "scale": 0.925841093063354,
+                    "seed": 0.641306281089783,
+                    "snow": false
+                  },
+                  "type": 3
+                },
+                {
+                  "change": "added",
+                  "family_mask": 74,
+                  "record": {
+                    "anchor": "(844.0, 159.0, 0.108726, 0.477852)",
+                    "angle": 5.10397914677264,
+                    "cold": false,
+                    "colour": "(0.5176, 0.5176, 0.5059, 1.0)",
+                    "flower": 0.0,
+                    "height": 6.05662027670914,
+                    "kind": 10,
+                    "normal": "(0.19072, 0.981645, 0.0)",
+                    "p": "(422.1096, 159.4134)",
+                    "scale": 0.967139601707458,
+                    "seed": 0.693135142326355,
+                    "snow": false
+                  },
+                  "type": 0
+                },
+                {
+                  "change": "added",
+                  "family_mask": 74,
+                  "record": {
+                    "anchor": "(849.0, 155.0, 0.678169, 0.020767)",
+                    "angle": 1.78287684811417,
+                    "cold": false,
+                    "colour": "(0.4941, 0.5098, 0.4824, 1.0)",
+                    "flower": 0.0,
+                    "height": 6.11215312875432,
+                    "kind": 10,
+                    "normal": "(-0.054772, 0.998339, 0.017873)",
+                    "p": "(424.4344, 155.8115)",
+                    "scale": 0.986830532550812,
+                    "seed": 0.988936007022858,
+                    "snow": false
+                  },
+                  "type": 0
+                },
+                {
+                  "change": "added",
+                  "family_mask": 74,
+                  "record": {
+                    "anchor": "(822.0, 169.0, 0.410249, 0.434751)",
+                    "angle": 1.368032978579,
+                    "cold": false,
+                    "colour": "(0.5804, 0.6039, 0.451, 1.0)",
+                    "flower": 0.0,
+                    "height": 6.00470227897464,
+                    "kind": 10,
+                    "normal": "(-0.294279, 0.950883, 0.096028)",
+                    "p": "(411.3942, 169.1389)",
+                    "scale": 0.832281649112701,
+                    "seed": 0.74449098110199,
+                    "snow": false
+                  },
+                  "type": 0
+                }
+              ],
+              "kept": 13375,
+              "kept_hash": "87ebf78e450380308a8c3f919d3864a48205aa3c2b2eda1c9b3605b68921570b",
+              "load_prepare_us": 1376198,
+              "map": "zone7",
+              "metadata_payload_bytes": 512,
+              "native_sampler": false,
+              "removed": {
+                "0": 32,
+                "1": 80
+              }
+            },
+            {
+              "added": {},
+              "case": "authored",
+              "chunks": 681,
+              "examples": [
+                {
+                  "bare_share": 0.0,
+                  "change": "removed",
+                  "record": {
+                    "anchor": "(-1.0, 0.0, 0.0, 0.0)",
+                    "angle": 5.27686657131354,
+                    "cold": false,
+                    "colour": "(0.2275, 0.349, 0.0, 1.0)",
+                    "flower": 1.0,
+                    "height": 17.4278392791748,
+                    "kind": 0,
+                    "normal": "(0.0, 1.0, 0.0)",
+                    "p": "(57.83138, 169.0889)",
+                    "scale": 1.02009534835815,
+                    "seed": 0.0238968580961227,
+                    "snow": false
+                  }
+                },
+                {
+                  "bare_share": 0.74030813574791,
+                  "change": "removed",
+                  "record": {
+                    "anchor": "(-1.0, 0.0, 0.0, 0.0)",
+                    "angle": 0.120558400118418,
+                    "cold": false,
+                    "colour": "(0.1843, 0.302, 0.0, 1.0)",
+                    "flower": 1.0,
+                    "height": 17.4278392791748,
+                    "kind": 0,
+                    "normal": "(0.0, 1.0, 0.0)",
+                    "p": "(58.57011, 170.2776)",
+                    "scale": 0.98522424697876,
+                    "seed": 0.473832100629807,
+                    "snow": false
+                  }
+                },
+                {
+                  "bare_share": 0.800493881106377,
+                  "change": "removed",
+                  "record": {
+                    "anchor": "(-1.0, 0.0, 0.0, 0.0)",
+                    "angle": 4.64658435044343,
+                    "cold": false,
+                    "colour": "(0.2588, 0.3961, 0.0, 1.0)",
+                    "flower": 0.0,
+                    "height": 16.425968995177,
+                    "kind": 0,
+                    "normal": "(-0.210677, 0.977245, 0.024654)",
+                    "p": "(139.336, 163.642)",
+                    "scale": 0.925723671913147,
+                    "seed": 0.341521590948105,
+                    "snow": false
+                  }
+                },
+                {
+                  "bare_share": 0.741158813238144,
+                  "change": "removed",
+                  "record": {
+                    "anchor": "(-1.0, 0.0, 0.0, 0.0)",
+                    "angle": 2.7656546339423,
+                    "cold": false,
+                    "colour": "(0.1843, 0.298, 0.0, 1.0)",
+                    "flower": 0.0,
+                    "height": 16.6525738880627,
+                    "kind": 0,
+                    "normal": "(-0.271845, 0.962158, 0.018792)",
+                    "p": "(140.5214, 163.4391)",
+                    "scale": 1.09109377861023,
+                    "seed": 0.722920000553131,
+                    "snow": false
+                  }
+                }
+              ],
+              "kept": 1135,
+              "kept_hash": "3ab7df2bf7da29b2609820ebfdd053d7dfd1b91ec02b24d4006d8622fdb017e5",
+              "load_prepare_us": 751009,
+              "map": "zone8",
+              "metadata_payload_bytes": 512,
+              "native_sampler": false,
+              "removed": {
+                "0": 12
+              }
+            },
+            {
+              "added": {},
+              "case": "authored",
+              "chunks": 64,
+              "examples": [
+                {
+                  "bare_share": 0.478645949493512,
+                  "change": "removed",
+                  "record": {
+                    "anchor": "(-1.0, 0.0, 0.0, 0.0)",
+                    "angle": 3.98644156068649,
+                    "cold": false,
+                    "colour": "(0.1294, 0.2588, 0.0, 1.0)",
+                    "flower": 1.0,
+                    "height": 18.4303073883057,
+                    "kind": 0,
+                    "normal": "(0.0, 1.0, 0.0)",
+                    "p": "(308.4111, 18.795)",
+                    "scale": 1.06158101558685,
+                    "seed": 0.93462723493576,
+                    "snow": false
+                  }
+                },
+                {
+                  "bare_share": 0.150356449043683,
+                  "change": "removed",
+                  "record": {
+                    "anchor": "(-1.0, 0.0, 0.0, 0.0)",
+                    "angle": 2.38549554557891,
+                    "cold": false,
+                    "colour": "(0.1412, 0.2627, 0.0, 1.0)",
+                    "flower": 1.0,
+                    "height": 7.7007955003802,
+                    "kind": 0,
+                    "normal": "(-0.180356, 0.98311, 0.031085)",
+                    "p": "(25.99767, 98.23932)",
+                    "scale": 0.842499196529388,
+                    "seed": 0.540812492370605,
+                    "snow": false
+                  }
+                },
+                {
+                  "bare_share": 0.624017031391702,
+                  "change": "removed",
+                  "record": {
+                    "anchor": "(-1.0, 0.0, 0.0, 0.0)",
+                    "angle": 0.688602187410804,
+                    "cold": false,
+                    "colour": "(0.098, 0.2235, 0.0, 1.0)",
+                    "flower": 0.0,
+                    "height": 16.2413894374899,
+                    "kind": 0,
+                    "normal": "(-0.14861, 0.985218, -0.08521)",
+                    "p": "(84.61989, 138.2146)",
+                    "scale": 0.874178528785706,
+                    "seed": 0.171921268105507,
+                    "snow": false
+                  }
+                },
+                {
+                  "bare_share": 0.594713265943938,
+                  "change": "removed",
+                  "record": {
+                    "anchor": "(-1.0, 0.0, 0.0, 0.0)",
+                    "angle": 3.68272422538895,
+                    "cold": false,
+                    "colour": "(0.0627, 0.1765, 0.0, 1.0)",
+                    "flower": 0.0,
+                    "height": 16.1392072578093,
+                    "kind": 0,
+                    "normal": "(-0.14861, 0.985218, -0.08521)",
+                    "p": "(84.20197, 138.6672)",
+                    "scale": 1.06003034114838,
+                    "seed": 0.54989629983902,
+                    "snow": false
+                  }
+                }
+              ],
+              "kept": 232,
+              "kept_hash": "1b807da17b0822716af75b231e050d57ea9104040361271a0f9ada71d2597a10",
+              "load_prepare_us": 561358,
+              "map": "zone9",
+              "metadata_payload_bytes": 512,
+              "native_sampler": false,
+              "removed": {
+                "0": 5
+              }
+            },
+            {
+              "added": {},
+              "case": "authored",
+              "chunks": 64,
+              "examples": [],
+              "kept": 111,
+              "kept_hash": "017ab5d691a5d271f5161063ebac1e573e26d79d1dc0d99d89ac47b1b88f7573",
+              "load_prepare_us": 794907,
+              "map": "zone11",
+              "metadata_payload_bytes": 512,
+              "native_sampler": false,
+              "removed": {}
+            },
+            {
+              "added": {},
+              "case": "authored",
+              "chunks": 64,
+              "examples": [],
+              "kept": 269,
+              "kept_hash": "bae1e0d5e3d2a75be6db9410658788ad17affeb9b29391c508520b715ca87e46",
+              "load_prepare_us": 657437,
+              "map": "zone15",
+              "metadata_payload_bytes": 512,
+              "native_sampler": false,
+              "removed": {}
+            }
+          ]
+        }
+      }
+    },
+    {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-families-shores",
+      "manifest_sha256": "f22b98f07d34bb4247bef369ced6703387dd669dc2353b2ed7d014a5e6cd0d6c",
+      "run": {
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/biome_cover_shores.gd",
+        "tool_sha256_at_start": "9b8a4a621f20522f9d0642da4cfd18da7a5d7e0bcc0136bd02cb834dd14f1860",
+        "helper_sha256_at_start": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "engine_sha256": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+        "pack_sha256": "816c8045e87b813fc4a36476618dffa98b7d84fb2f371cbd949ca89f50be9710",
+        "termination_reason": null,
+        "timeout_sec": 150,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-families-probe/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-families-shores/tool-source.gd"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 6.560148318996653,
+        "other_render_processes_at_start": [
+          {
+            "pid": 379412,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 379412,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {}
+      },
+      "reports": {
+        "biome-cover-shores.json": {
+          "checks": 2291,
+          "failures": 0,
+          "rows": [
+            {
+              "case": "synthetic",
+              "kinds": {
+                "7": 6,
+                "9": 2,
+                "10": 8
+              },
+              "shore_buckets": 18
+            },
+            {
+              "bank_counts": {
+                "7": 72,
+                "8": 17
+              },
+              "bank_job_max_us": 628,
+              "bank_job_median_us": 184,
+              "case": "authored",
+              "dry_count": 151,
+              "dry_hash": "6900cf60ca609703e0984e1bf3c48fc45675dc54d8ec6986f9cdfa10e0501631",
+              "focuses": {
+                "7": "(102.017, 79.40102)",
+                "8": "(132.5105, 34.0839)"
+              },
+              "index_bytes": 362048,
+              "load_and_prepare_us": 401129,
+              "map": "zone1",
+              "native_sampler": true,
+              "sampled_chunks": 434
+            },
+            {
+              "bank_counts": {},
+              "bank_job_max_us": 433,
+              "bank_job_median_us": 250,
+              "case": "authored",
+              "dry_count": 111,
+              "dry_hash": "f3522611ddf9194996fd7d1ae93b10d3ed1ace7dcac1297a1cb64a954c1f73b7",
+              "focuses": {},
+              "index_bytes": 247440,
+              "load_and_prepare_us": 833213,
+              "map": "zone11",
+              "native_sampler": true,
+              "sampled_chunks": 35
+            },
+            {
+              "bank_counts": {},
+              "bank_job_max_us": 409,
+              "bank_job_median_us": 235,
+              "case": "authored",
+              "dry_count": 269,
+              "dry_hash": "987a7bfa93e754eaf1247bd7c27a72efd017e10e1cb1ec029a3bb2f737adac3c",
+              "focuses": {},
+              "index_bytes": 115856,
+              "load_and_prepare_us": 617795,
+              "map": "zone15",
+              "native_sampler": true,
+              "sampled_chunks": 38
+            },
+            {
+              "bank_counts": {
+                "7": 5,
+                "8": 1,
+                "9": 20,
+                "10": 62
+              },
+              "bank_job_max_us": 696,
+              "bank_job_median_us": 159,
+              "case": "authored",
+              "dry_count": 144,
+              "dry_hash": "c6a2621117121fc5c2ec9864206023655bfadfbc324bb95a6cc10d7078071c2f",
+              "focuses": {
+                "7": "(9.457814, 312.5628)",
+                "8": "(9.396801, 281.3629)",
+                "9": "(238.2392, 70.25772)",
+                "10": "(237.8134, 61.38283)"
+              },
+              "index_bytes": 1437616,
+              "load_and_prepare_us": 1188733,
+              "map": "zone7",
+              "native_sampler": true,
+              "sampled_chunks": 1482,
+              "sea_tiles": 21605
+            },
+            {
+              "bank_counts": {
+                "10": 1
+              },
+              "bank_job_max_us": 465,
+              "bank_job_median_us": 151,
+              "case": "authored",
+              "dry_count": 184,
+              "dry_hash": "828707f5f5c3059eb9276e8990d39db2fe8714fdd15e630bdfa233c047274fe8",
+              "focuses": {
+                "10": "(39.47206, 22.64972)"
+              },
+              "index_bytes": 558848,
+              "load_and_prepare_us": 689626,
+              "map": "zone8",
+              "native_sampler": true,
+              "sampled_chunks": 640,
+              "sea_tiles": 5312
+            }
+          ]
+        }
+      }
+    },
+    {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-families-base",
+      "manifest_sha256": "289a0e8af6864e81829a89e93608595118a1c1f05db7653a43c7850ad23d2ab4",
+      "run": {
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/biome_cover.gd",
+        "tool_sha256_at_start": "34e6f081586f29a8763fd8e362ba0c547ec1ce4186a674b63cdb394197139518",
+        "helper_sha256_at_start": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "engine_sha256": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+        "pack_sha256": "816c8045e87b813fc4a36476618dffa98b7d84fb2f371cbd949ca89f50be9710",
+        "termination_reason": null,
+        "timeout_sec": 150,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-families-probe/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-families-base/tool-source.gd"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 6.059641997999279,
+        "other_render_processes_at_start": [
+          {
+            "pid": 379412,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 379412,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {}
+      },
+      "reports": {
+        "biome-cover.json": {
+          "checks": 7032,
+          "failures": 0,
+          "rows": [
+            {
+              "case": "immutable-snapshot",
+              "kinds": {
+                "0": 29,
+                "1": 304,
+                "2": 48,
+                "3": 24,
+                "4": 3,
+                "5": 60,
+                "6": 2
+              },
+              "records": 470
+            },
+            {
+              "biome": "gipat",
+              "build_us_max": 8243,
+              "build_us_median": 1138,
+              "case": "authored-metadata",
+              "chunks": 88,
+              "counts": {
+                "0": 100,
+                "2": 359,
+                "3": 160,
+                "4": 20,
+                "5": 75,
+                "6": 5,
+                "7": 6,
+                "8": 2,
+                "11": 291,
+                "12": 47,
+                "13": 6
+              },
+              "id": "gz1g",
+              "map": "zone1",
+              "records": 1071,
+              "scenery_loaded": false,
+              "serialized_mesh_bytes": 4302380
+            },
+            {
+              "biome": "gipat",
+              "build_us_max": 2975,
+              "build_us_median": 1034,
+              "case": "authored-metadata",
+              "chunks": 88,
+              "counts": {
+                "0": 116,
+                "2": 530,
+                "3": 282,
+                "4": 37,
+                "5": 112,
+                "7": 23,
+                "8": 6
+              },
+              "id": "gz3g",
+              "map": "zone3obr",
+              "records": 1106,
+              "scenery_loaded": false,
+              "serialized_mesh_bytes": 1888288
+            },
+            {
+              "biome": "ingos",
+              "build_us_max": 12836,
+              "build_us_median": 1202,
+              "case": "authored-metadata",
+              "chunks": 88,
+              "counts": {
+                "1": 58,
+                "3": 94,
+                "4": 12,
+                "5": 94,
+                "6": 2
+              },
+              "id": "gz11k",
+              "map": "zone11",
+              "records": 260,
+              "scenery_loaded": false,
+              "serialized_mesh_bytes": 611944
+            },
+            {
+              "biome": "suslanger",
+              "build_us_max": 9201,
+              "build_us_median": 499,
+              "case": "authored-metadata",
+              "chunks": 64,
+              "counts": {
+                "1": 117,
+                "5": 152
+              },
+              "id": "gz15h",
+              "map": "zone15",
+              "records": 269,
+              "scenery_loaded": false,
+              "serialized_mesh_bytes": 712432
+            },
+            {
+              "biome": "cave",
+              "build_us_max": 864,
+              "build_us_median": 484,
+              "case": "authored-metadata",
+              "chunks": 64,
+              "counts": {
+                "5": 225
+              },
+              "id": "gz5g",
+              "map": "zone5_1",
+              "records": 225,
+              "scenery_loaded": false,
+              "serialized_mesh_bytes": 262132
+            }
+          ]
+        }
+      }
+    },
+    {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-families-astral",
+      "manifest_sha256": "58389675b21e949e3651e15f5128a537891d120e13c3198f3d37b61cf548d2cb",
+      "run": {
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/biome_cover.gd",
+        "tool_sha256_at_start": "34e6f081586f29a8763fd8e362ba0c547ec1ce4186a674b63cdb394197139518",
+        "helper_sha256_at_start": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "engine_sha256": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+        "pack_sha256": "816c8045e87b813fc4a36476618dffa98b7d84fb2f371cbd949ca89f50be9710",
+        "termination_reason": null,
+        "timeout_sec": 150,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-families-probe/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-families-astral/tool-source.gd",
+          "--cover-astral"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 5.558732990990393,
+        "other_render_processes_at_start": [
+          {
+            "pid": 379412,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 380023,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {}
+      },
+      "reports": {
+        "biome-cover.json": {
+          "checks": 3093,
+          "failures": 0,
+          "rows": [
+            {
+              "case": "immutable-snapshot",
+              "kinds": {
+                "0": 29,
+                "1": 304,
+                "2": 48,
+                "3": 24,
+                "4": 3,
+                "5": 60,
+                "6": 2
+              },
+              "records": 470
+            },
+            {
+              "biome": "gipat2",
+              "build_us_max": 7744,
+              "build_us_median": 1275,
+              "case": "authored-metadata",
+              "chunks": 88,
+              "counts": {
+                "0": 78,
+                "1": 64,
+                "5": 100,
+                "7": 2,
+                "11": 225,
+                "12": 88,
+                "13": 9
+              },
+              "id": "gz16g",
+              "map": "zone16",
+              "records": 566,
+              "scenery_loaded": false,
+              "serialized_mesh_bytes": 3474104
+            },
+            {
+              "biome": "gipat2",
+              "build_us_max": 1837,
+              "build_us_median": 817,
+              "case": "authored-metadata",
+              "chunks": 88,
+              "counts": {
+                "0": 48,
+                "1": 6,
+                "5": 208,
+                "6": 7,
+                "7": 7,
+                "8": 6
+              },
+              "id": "gz7g",
+              "map": "zone7",
+              "records": 282,
+              "scenery_loaded": false,
+              "serialized_mesh_bytes": 555856
+            },
+            {
+              "biome": "unknown",
+              "build_us_max": 3121,
+              "build_us_median": 547,
+              "case": "authored-metadata",
+              "chunks": 88,
+              "counts": {
+                "5": 94
+              },
+              "id": "gz21k",
+              "map": "zone21",
+              "records": 94,
+              "scenery_loaded": false,
+              "serialized_mesh_bytes": 114904
+            }
+          ]
+        }
+      }
+    },
+    {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-families-views-gl2",
+      "manifest_sha256": "aa0b00bb34c05f1a5a9107a4cfd461f77551375eaa9a5aa7080b0cf0fca02125",
+      "run": {
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/biome_cover_families_render.gd",
+        "tool_sha256_at_start": "ee363a05c159289c631ba83ce3814f09ed1d3dd2470bc6ace595eec92ed2d16c",
+        "helper_sha256_at_start": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "engine_sha256": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+        "pack_sha256": "816c8045e87b813fc4a36476618dffa98b7d84fb2f371cbd949ca89f50be9710",
+        "termination_reason": null,
+        "timeout_sec": 150,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-families-probe/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-families-views-gl2/tool-source.gd"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 10.326476578018628,
+        "other_render_processes_at_start": [
+          {
+            "pid": 386715,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 387174,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {
+          "families-gz7g-before.png": "32665b5b85265dd44a792a85680edfa97bab6d185c35166f0db62fe15b85820a",
+          "families-gz7g-after.png": "c4b545340c74396fc50abc9d3da158b8fd9118f41048ef115f176cace27e0dad",
+          "families-gz1g-after.png": "d9863df22525da391e3c2ba989c53ea50449a5da137e968a5f7f85097d56d6e0",
+          "families-gz7g-restored.png": "32665b5b85265dd44a792a85680edfa97bab6d185c35166f0db62fe15b85820a",
+          "families-gz1g-before.png": "f4668d99c0f06cf94fc5cebb6aa52c6417953d2d186f7892b17e7187df05e135",
+          "families-gz1g-restored.png": "f4668d99c0f06cf94fc5cebb6aa52c6417953d2d186f7892b17e7187df05e135"
+        }
+      },
+      "reports": {
+        "biome-cover-families-render.json": {
+          "checks": 8,
+          "failures": 0,
+          "rows": [
+            {
+              "after_records": 7,
+              "before_records": 10,
+              "case": "render",
+              "changed_pixels": 254,
+              "chosen": {
+                "anchor": "(-1.0, 0.0, 0.0, 0.0)",
+                "angle": 4.1576043803621,
+                "camera_offset": "(2.7, 2.8, 3.5)",
+                "cold": false,
+                "colour": "(0.1608, 0.2549, 0.0, 1.0)",
+                "flower": 1.0,
+                "height": 16.3278024308672,
+                "kind": 0,
+                "normal": "(-0.016216, 0.999358, 0.031938)",
+                "p": "(244.2584, 10.97599)",
+                "scale": 1.04344069957733,
+                "seed": 0.381980180740356,
+                "snow": false
+              },
+              "kind": 0,
+              "restoration_pixels": 0,
+              "zone": "gz1g"
+            },
+            {
+              "after_records": 14,
+              "before_records": 13,
+              "case": "render",
+              "changed_pixels": 85,
+              "chosen": {
+                "anchor": "(483.0, 71.0, 0.041726, 0.525764)",
+                "angle": 5.68389841149204,
+                "camera_offset": "(-2.7, 2.8, 3.5)",
+                "cold": false,
+                "colour": "(0.8078, 0.7137, 0.6118, 1.0)",
+                "flower": 0.0,
+                "height": 5.91763041381557,
+                "kind": 10,
+                "normal": "(-0.004784, 0.999881, -0.014661)",
+                "p": "(241.9519, 71.57383)",
+                "scale": 0.925841093063354,
+                "seed": 0.641306281089783,
+                "snow": false
+              },
+              "kind": 10,
+              "restoration_pixels": 0,
+              "zone": "gz7g"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-families-views-mobile",
+      "manifest_sha256": "5a8cbfcbf64404dc7a52f55b2dac94e63a82d53d166df3e5810e8643684c8767",
+      "run": {
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/biome_cover_families_render.gd",
+        "tool_sha256_at_start": "ee363a05c159289c631ba83ce3814f09ed1d3dd2470bc6ace595eec92ed2d16c",
+        "helper_sha256_at_start": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "engine_sha256": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+        "pack_sha256": "816c8045e87b813fc4a36476618dffa98b7d84fb2f371cbd949ca89f50be9710",
+        "termination_reason": null,
+        "timeout_sec": 150,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-families-probe/CursedLands.x86_64",
+          "--render-thread",
+          "separate",
+          "--rendering-method",
+          "mobile",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-families-views-mobile/tool-source.gd"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 10.815398264006944,
+        "other_render_processes_at_start": [
+          {
+            "pid": 387174,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cache"
+        },
+        "warnings": [
+          "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+        ],
+        "errors": [],
+        "png_sha256": {
+          "families-gz7g-before.png": "e7982d50ebf1e60cc257298aa3d4edf423d6aac929c520d7f9cf21c027007acc",
+          "families-gz7g-after.png": "a203b51dc6ea64b0a2d2757496ace4d01342df6b4c294b3727b44d090c14d433",
+          "families-gz1g-after.png": "1bd17264644159983cec3f281cf9ab720866e2b2ec4a5ad94d861c547568ca9e",
+          "families-gz7g-restored.png": "e7982d50ebf1e60cc257298aa3d4edf423d6aac929c520d7f9cf21c027007acc",
+          "families-gz1g-before.png": "86997408b72c37110a405329fc37c2df9b90a57974cb47b8a25513a1b88bc83a",
+          "families-gz1g-restored.png": "86997408b72c37110a405329fc37c2df9b90a57974cb47b8a25513a1b88bc83a"
+        }
+      },
+      "reports": {
+        "biome-cover-families-render.json": {
+          "checks": 8,
+          "failures": 0,
+          "rows": [
+            {
+              "after_records": 7,
+              "before_records": 10,
+              "case": "render",
+              "changed_pixels": 263,
+              "chosen": {
+                "anchor": "(-1.0, 0.0, 0.0, 0.0)",
+                "angle": 4.1576043803621,
+                "camera_offset": "(2.7, 2.8, 3.5)",
+                "cold": false,
+                "colour": "(0.1608, 0.2549, 0.0, 1.0)",
+                "flower": 1.0,
+                "height": 16.3278024308672,
+                "kind": 0,
+                "normal": "(-0.016216, 0.999358, 0.031938)",
+                "p": "(244.2584, 10.97599)",
+                "scale": 1.04344069957733,
+                "seed": 0.381980180740356,
+                "snow": false
+              },
+              "kind": 0,
+              "restoration_pixels": 0,
+              "zone": "gz1g"
+            },
+            {
+              "after_records": 14,
+              "before_records": 13,
+              "case": "render",
+              "changed_pixels": 54,
+              "chosen": {
+                "anchor": "(483.0, 71.0, 0.041726, 0.525764)",
+                "angle": 5.68389841149204,
+                "camera_offset": "(-2.7, 2.8, 3.5)",
+                "cold": false,
+                "colour": "(0.8078, 0.7137, 0.6118, 1.0)",
+                "flower": 0.0,
+                "height": 5.91763041381557,
+                "kind": 10,
+                "normal": "(-0.004784, 0.999881, -0.014661)",
+                "p": "(241.9519, 71.57383)",
+                "scale": 0.925841093063354,
+                "seed": 0.641306281089783,
+                "snow": false
+              },
+              "kind": 10,
+              "restoration_pixels": 0,
+              "zone": "gz7g"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-families-views-forward",
+      "manifest_sha256": "a6e369f0f95f267f5394183ed54e6d6fc11b0a8b4ee43b28e8a9edc1278e1409",
+      "run": {
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/biome_cover_families_render.gd",
+        "tool_sha256_at_start": "ee363a05c159289c631ba83ce3814f09ed1d3dd2470bc6ace595eec92ed2d16c",
+        "helper_sha256_at_start": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "engine_sha256": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+        "pack_sha256": "816c8045e87b813fc4a36476618dffa98b7d84fb2f371cbd949ca89f50be9710",
+        "termination_reason": null,
+        "timeout_sec": 150,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-families-probe/CursedLands.x86_64",
+          "--render-thread",
+          "separate",
+          "--rendering-method",
+          "forward_plus",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-families-views-forward/tool-source.gd"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 11.316822629974922,
+        "other_render_processes_at_start": [],
+        "other_render_processes_at_end": [
+          {
+            "pid": 388070,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cache"
+        },
+        "warnings": [
+          "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+        ],
+        "errors": [],
+        "png_sha256": {
+          "families-gz7g-before.png": "9601534c18d9cab7007dc957906508a101018802b4327c637e06095f7b98dc7e",
+          "families-gz7g-after.png": "a2dac137948b60baa60b1e495fb143bf51ce86a565297115e24cfc533fffd8fe",
+          "families-gz1g-after.png": "9a34095889a23d7104cb481a2f7208c1e1c883b7904a83282ed881e1422efc86",
+          "families-gz7g-restored.png": "9601534c18d9cab7007dc957906508a101018802b4327c637e06095f7b98dc7e",
+          "families-gz1g-before.png": "e3c5130013d8dd0b2b0257b05e79f942df158606f66b07bd8222b9781970fd3a",
+          "families-gz1g-restored.png": "e3c5130013d8dd0b2b0257b05e79f942df158606f66b07bd8222b9781970fd3a"
+        }
+      },
+      "reports": {
+        "biome-cover-families-render.json": {
+          "checks": 8,
+          "failures": 0,
+          "rows": [
+            {
+              "after_records": 7,
+              "before_records": 10,
+              "case": "render",
+              "changed_pixels": 280,
+              "chosen": {
+                "anchor": "(-1.0, 0.0, 0.0, 0.0)",
+                "angle": 4.1576043803621,
+                "camera_offset": "(2.7, 2.8, 3.5)",
+                "cold": false,
+                "colour": "(0.1608, 0.2549, 0.0, 1.0)",
+                "flower": 1.0,
+                "height": 16.3278024308672,
+                "kind": 0,
+                "normal": "(-0.016216, 0.999358, 0.031938)",
+                "p": "(244.2584, 10.97599)",
+                "scale": 1.04344069957733,
+                "seed": 0.381980180740356,
+                "snow": false
+              },
+              "kind": 0,
+              "restoration_pixels": 0,
+              "zone": "gz1g"
+            },
+            {
+              "after_records": 14,
+              "before_records": 13,
+              "case": "render",
+              "changed_pixels": 54,
+              "chosen": {
+                "anchor": "(483.0, 71.0, 0.041726, 0.525764)",
+                "angle": 5.68389841149204,
+                "camera_offset": "(-2.7, 2.8, 3.5)",
+                "cold": false,
+                "colour": "(0.8078, 0.7137, 0.6118, 1.0)",
+                "flower": 0.0,
+                "height": 5.91763041381557,
+                "kind": 10,
+                "normal": "(-0.004784, 0.999881, -0.014661)",
+                "p": "(241.9519, 71.57383)",
+                "scale": 0.925841093063354,
+                "seed": 0.641306281089783,
+                "snow": false
+              },
+              "kind": 10,
+              "restoration_pixels": 0,
+              "zone": "gz7g"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-families-meadow",
+      "manifest_sha256": "f6381f9b0b52fcec67b5521409c18cf027ef43a844f0516fd272dc95815943b5",
+      "run": {
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/biome_cover.gd",
+        "tool_sha256_at_start": "34e6f081586f29a8763fd8e362ba0c547ec1ce4186a674b63cdb394197139518",
+        "helper_sha256_at_start": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "engine_sha256": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+        "pack_sha256": "816c8045e87b813fc4a36476618dffa98b7d84fb2f371cbd949ca89f50be9710",
+        "termination_reason": null,
+        "timeout_sec": 150,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-families-probe/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-families-meadow/tool-source.gd",
+          "--cover-authored-only"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 9.823347289988305,
+        "other_render_processes_at_start": [
+          {
+            "pid": 388070,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 388625,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {
+          "cover-rebuilt.png": "d8cc1cac5440151ae4478b339977d9b19c53d6d62cdef56f81ae340c8f21823c",
+          "cover-original-wind-control.png": "d5665e61c34a9dcb8922bf08802e286cb83c8f69459e5a747482a28e0469f54a",
+          "cover-on.png": "d8cc1cac5440151ae4478b339977d9b19c53d6d62cdef56f81ae340c8f21823c",
+          "cover-empty-pressure-stable.png": "d8cc1cac5440151ae4478b339977d9b19c53d6d62cdef56f81ae340c8f21823c",
+          "cover-pressed.png": "4bace1d6d20d9e9c78c1944f5755d06f0965fa8e53a23fe6529e07b40a410f21",
+          "cover-interaction-clearance-control.png": "d8cc1cac5440151ae4478b339977d9b19c53d6d62cdef56f81ae340c8f21823c",
+          "cover-paused.png": "ef0a493d91e37095eb93d0a53cc2e062ed3d7b026967d119d0a3db4b6f31a309",
+          "cover-shadow-refresh.png": "4bace1d6d20d9e9c78c1944f5755d06f0965fa8e53a23fe6529e07b40a410f21",
+          "cover-off.png": "fc59c126de95db2a7fc5eefba73b379b92518493303b6caa5be9c82bcd10b8de",
+          "cover-off-restored.png": "fc59c126de95db2a7fc5eefba73b379b92518493303b6caa5be9c82bcd10b8de",
+          "cover-paused-later.png": "ef0a493d91e37095eb93d0a53cc2e062ed3d7b026967d119d0a3db4b6f31a309",
+          "cover-empty-pressure.png": "d8cc1cac5440151ae4478b339977d9b19c53d6d62cdef56f81ae340c8f21823c",
+          "cover-original-wind-control-later.png": "202372e3bff93a0edcc4a0675062b12408edb3131d3d0182d6740d67bbdce3e1",
+          "cover-off-stable.png": "fc59c126de95db2a7fc5eefba73b379b92518493303b6caa5be9c82bcd10b8de"
+        }
+      },
+      "reports": {
+        "biome-cover.json": {
+          "checks": 16,
+          "failures": 0,
+          "rows": [
+            {
+              "case": "original-wind-control",
+              "difference": {
+                "changed": 18564,
+                "over_2": 5580,
+                "peak": 193
+              }
+            },
+            {
+              "case": "render",
+              "difference": {
+                "changed": 2052,
+                "over_2": 1794,
+                "peak": 155
+              },
+              "draws": 1574,
+              "kind": 0,
+              "point": "(204.5785, 75.87177)",
+              "records": 54,
+              "vertices": 1950,
+              "zone": "gz1g"
+            },
+            {
+              "case": "interaction-clearance",
+              "difference": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              }
+            },
+            {
+              "case": "pressure",
+              "difference": {
+                "changed": 1038,
+                "over_2": 792,
+                "peak": 141
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-families-shell",
+      "manifest_sha256": "ce0b65ecd19ecd63ff756df3d720d14c94f3e4cbb1d123406c0547f68ea7b4a5",
+      "run": {
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/biome_cover.gd",
+        "tool_sha256_at_start": "34e6f081586f29a8763fd8e362ba0c547ec1ce4186a674b63cdb394197139518",
+        "helper_sha256_at_start": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "engine_sha256": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+        "pack_sha256": "816c8045e87b813fc4a36476618dffa98b7d84fb2f371cbd949ca89f50be9710",
+        "termination_reason": null,
+        "timeout_sec": 150,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-families-probe/CursedLands.x86_64",
+          "--render-thread",
+          "separate",
+          "--rendering-method",
+          "forward_plus",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-families-shell/tool-source.gd",
+          "--cover-authored-only",
+          "--cover-kind-only",
+          "--cover-zone=gz7g",
+          "--cover-kind=10",
+          "--cover-water-fx"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 14.576730042987037,
+        "other_render_processes_at_start": [
+          {
+            "pid": 388625,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 389064,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cache"
+        },
+        "warnings": [
+          "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+        ],
+        "errors": [],
+        "png_sha256": {
+          "cover-rebuilt.png": "9b6e4cb9e98e7ccc0de2c811ad62b202ab3862a71091a958050d55f76c9c3148",
+          "cover-original-wind-control.png": "7448a01d01169a04fd4de7076044548e64396a1aabcdda7c28bd9fcc6c03e80b",
+          "cover-on.png": "9b6e4cb9e98e7ccc0de2c811ad62b202ab3862a71091a958050d55f76c9c3148",
+          "cover-empty-pressure-stable.png": "9b6e4cb9e98e7ccc0de2c811ad62b202ab3862a71091a958050d55f76c9c3148",
+          "cover-pressed.png": "9b6e4cb9e98e7ccc0de2c811ad62b202ab3862a71091a958050d55f76c9c3148",
+          "cover-interaction-clearance-control.png": "9b6e4cb9e98e7ccc0de2c811ad62b202ab3862a71091a958050d55f76c9c3148",
+          "cover-paused.png": "9b6e4cb9e98e7ccc0de2c811ad62b202ab3862a71091a958050d55f76c9c3148",
+          "cover-shadow-refresh.png": "9b6e4cb9e98e7ccc0de2c811ad62b202ab3862a71091a958050d55f76c9c3148",
+          "cover-off.png": "78283516001768af8e77d316ac7ad5625d216389fabdc936fac6267e00f6d8f8",
+          "cover-off-restored.png": "78283516001768af8e77d316ac7ad5625d216389fabdc936fac6267e00f6d8f8",
+          "cover-paused-later.png": "9b6e4cb9e98e7ccc0de2c811ad62b202ab3862a71091a958050d55f76c9c3148",
+          "cover-empty-pressure.png": "9b6e4cb9e98e7ccc0de2c811ad62b202ab3862a71091a958050d55f76c9c3148",
+          "cover-original-wind-control-later.png": "7772fe3404de52f7e0f9f18244106f3dc22f3a87303a466e4105e07e9091e702",
+          "cover-off-stable.png": "78283516001768af8e77d316ac7ad5625d216389fabdc936fac6267e00f6d8f8"
+        }
+      },
+      "reports": {
+        "biome-cover.json": {
+          "checks": 16,
+          "failures": 0,
+          "rows": [
+            {
+              "case": "original-wind-control",
+              "difference": {
+                "changed": 11193,
+                "over_2": 4368,
+                "peak": 135
+              }
+            },
+            {
+              "case": "render",
+              "difference": {
+                "changed": 515,
+                "over_2": 515,
+                "peak": 52
+              },
+              "draws": 2402,
+              "kind": 10,
+              "point": "(237.1966, 66.76669)",
+              "records": 11,
+              "vertices": 594,
+              "zone": "gz7g"
+            },
+            {
+              "case": "interaction-clearance",
+              "difference": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              }
+            },
+            {
+              "case": "pressure",
+              "difference": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "retained_failed_view": {
+    "evidence": {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-families-views-gl",
+      "manifest_sha256": "7958a0bac07cafcd6bd3f7b25ab5a099fcfdcbece6ef65aae56c7a1bf47d039c",
+      "run": {
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/biome_cover_families_render.gd",
+        "tool_sha256_at_start": "d1f773796dfbf720d35033f14223c2b8b74613c5309a55004824b430ff7a6b89",
+        "helper_sha256_at_start": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "engine_sha256": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+        "pack_sha256": "816c8045e87b813fc4a36476618dffa98b7d84fb2f371cbd949ca89f50be9710",
+        "termination_reason": null,
+        "timeout_sec": 150,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-families-probe/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-families-views-gl/tool-source.gd"
+        ],
+        "return_code": 1,
+        "elapsed_sec": 9.81216017898987,
+        "other_render_processes_at_start": [],
+        "other_render_processes_at_end": [],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [
+          "FAIL metadata changes visible authored cover gz7g"
+        ],
+        "png_sha256": {
+          "families-gz7g-before.png": "a90aea5cb578261ddf5d7d784a0540f882851efce3a322a28e7f422967dc595e",
+          "families-gz7g-after.png": "a90aea5cb578261ddf5d7d784a0540f882851efce3a322a28e7f422967dc595e",
+          "families-gz1g-after.png": "d9863df22525da391e3c2ba989c53ea50449a5da137e968a5f7f85097d56d6e0",
+          "families-gz7g-restored.png": "a90aea5cb578261ddf5d7d784a0540f882851efce3a322a28e7f422967dc595e",
+          "families-gz1g-before.png": "f4668d99c0f06cf94fc5cebb6aa52c6417953d2d186f7892b17e7187df05e135",
+          "families-gz1g-restored.png": "f4668d99c0f06cf94fc5cebb6aa52c6417953d2d186f7892b17e7187df05e135"
+        }
+      },
+      "reports": {
+        "biome-cover-families-render.json": {
+          "checks": 8,
+          "failures": 1,
+          "rows": [
+            {
+              "after_records": 7,
+              "before_records": 10,
+              "case": "render",
+              "changed_pixels": 254,
+              "chosen": {
+                "anchor": "(-1.0, 0.0, 0.0, 0.0)",
+                "angle": 4.1576043803621,
+                "cold": false,
+                "colour": "(0.1608, 0.2549, 0.0, 1.0)",
+                "flower": 1.0,
+                "height": 16.3278024308672,
+                "kind": 0,
+                "normal": "(-0.016216, 0.999358, 0.031938)",
+                "p": "(244.2584, 10.97599)",
+                "scale": 1.04344069957733,
+                "seed": 0.381980180740356,
+                "snow": false
+              },
+              "kind": 0,
+              "restoration_pixels": 0,
+              "zone": "gz1g"
+            },
+            {
+              "after_records": 14,
+              "before_records": 13,
+              "case": "render",
+              "changed_pixels": 0,
+              "chosen": {
+                "anchor": "(483.0, 71.0, 0.041726, 0.525764)",
+                "angle": 5.68389841149204,
+                "cold": false,
+                "colour": "(0.8078, 0.7137, 0.6118, 1.0)",
+                "flower": 0.0,
+                "height": 5.91763041381557,
+                "kind": 10,
+                "normal": "(-0.004784, 0.999881, -0.014661)",
+                "p": "(241.9519, 71.57383)",
+                "scale": 0.925841093063354,
+                "seed": 0.641306281089783,
+                "snow": false
+              },
+              "kind": 10,
+              "restoration_pixels": 0,
+              "zone": "gz7g"
+            }
+          ]
+        }
+      }
+    },
+    "explanation": "The first shell camera was inside a cliff. One visible-change assertion failed despite the placement count changing. Added actual terrain/scenery line-of-sight selection for the fixture; opposite-side camera verifies shell visibility. Production placement was unchanged."
+  },
+  "limits": [
+    "Only exact catalogued original atlases receive these additional rules. Per-map custom ei_atlas_profile metadata is not imported.",
+    "Atlas hash work occurs when rebuilding the cover snapshot; no isolated frame/FPS or device-cost improvement is claimed. Some manifests record unrelated Godot processes, which were left untouched.",
+    "Reference cave/Dead City cover sets and new species are not implemented here. Shared weather wind and actual submission LOD remain open.",
+    "Earlier coastal mean-plane flood-lighting and Mobile distant-tree mound-restoration limits remain as recorded in their receipts."
+  ]
+}

@@ -3318,6 +3318,85 @@ and unchanged native library. No template, installed build, original asset or
 save changed. Continue broader biome/atlas profiles, shared weather wind and
 actual submission LOD; U45 remains first on the later gameplay track.
 
+### V2: verified atlas families for cover placement
+
+Follow-up to `5a50b5f`, 9 October. Optional cover now uses original atlas-family
+metadata to thin flowers/dry tufts toward soil, rock and paving corners, and
+to admit beach debris on eligible ground whose actual atlas slot contains a
+sand family. It still requires the verified sea habitats and existing dry,
+slope, footprint and scenery checks. No default, shader, wind, sea identity,
+breaking-surf or gameplay rule changed.
+
+Reference R1 `0092dc6e1d7c4aab3f74644a79e9bfca11ecf293` entry points:
+`Source/terrain_tile_presets.h:3–9` documents editor `af24d45` provenance and
+NW/NE/SE/SW signatures, with preview top at smaller original atlas V.
+`Source/terrain_tile_blend.h:146–190` maps rotation, sand slots and bare corners.
+`Source/renderer_ground_cover.cpp:197–225,500–508,2044–2062` consumes those
+families, interpolates bare share and thins cover along grass/road transitions.
+Our existing seeded placement provides the variation; no new reference noise
+field or random stream is introduced. Fully bare art suppresses meadow/dry
+tufts rather than retaining the reference's small residual density.
+
+Implementation map:
+
+- `tools/benchmarks/biome_cover_metadata.py` reads pinned reference metadata
+  and an original-atlas fingerprint census. It generates only semantic masks,
+  with no original texture bytes. The reproducible command is in the receipt.
+- `game/src/game/fx/biome_cover_tiles.gd` recognizes 196 distinct original
+  512×512 RGBA8 images across 38 metadata profiles / 259 atlas references.
+  Each slot byte holds bare corners in bits 0–3 and sand corners in bits 4–7.
+  There are 10,044 classified slots. Modified/unknown textures or unsupported
+  dimensions retain the earlier ground-type rules; there is no guessed match.
+- Four slots have conflicting labels for identical pixels in `bz3g` versus
+  `zone9`: atlas 4 slot 19, atlas 5 slot 7, atlas 7 slots 8 and 28. The generator
+  leaves each entire disputed slot neutral. This was caught by its initial
+  consistency assertion; do not silently select whichever profile loads first.
+- `game/src/game/fx/biome_cover.gd` publishes masks with its immutable snapshot.
+  `bare_share` uses the actual sampled triangle UV, including rotation/jitter,
+  reverses decoded-image V once, removes the original 8-pixel tile gutter and
+  interpolates the corners. `weights` thins ground types 0/5/11 with
+  `1-smoothstep(.30,.75,bare_share)`; flower footprints also reject strongly bare
+  edges. `beach_sand`, `bank_weights` and `footprint` use the sand-family rule.
+  Mound soft-sand identity, snow straw, sand tufts and litter remain separate.
+- `tools/tests/biome_cover_families.gd` checks explicit rotated-corner oracles,
+  altered/unknown images, disputed slots and native/script authored deltas.
+  `tools/tests/biome_cover_families_render.gd` loads complete scenery and
+  compares identical scenes with family masks disabled/enabled/restored. Its
+  fixture chooses a camera with actual terrain/scenery clearance.
+
+See [biome-cover-families-2026-10-09.json](/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/biome-cover-families-2026-10-09.json)
+for all commands, hashes, images and the retained failure. **44,102 assertions
+pass in ten final runs**, including base/Lost in Astral regressions and three
+desktop renderers. Native/script scans of six actual maps agree exactly:
+131 flowers/tufts are omitted, four shells are added, and all 15,619 surviving
+records keep their values and hashes. These counts omit scenery exclusions;
+they are not counts of visible gameplay objects.
+
+The full-scene visual comparisons confirm local flower counts 10→7 at a rock
+transition and shells 13→14 at a sandy edge. The first shell camera was inside
+a cliff and correctly failed the visibility assertion; its evidence remains
+in `cover-families-views-gl`. Clear opposite-side views pass on Compatibility,
+Mobile and Forward+, with exact restoration on each renderer. These before
+images disable only the family masks in the same candidate pack, making the
+placement difference explicit. Existing mixed meadow and isolated shell tests
+also pass pressure, pause, shadow refresh, snapshot release, rebuild and exact
+option-off restoration. This is scoped visual acceptance, not a complete
+mixed-biome or device assessment.
+
+Eight-atlas sample maps retain 512 bytes of mask payload, excluding containers.
+Fingerprinting occurs during optional snapshot preparation; no new per-frame
+work, shader sampler or GPU upload is added. This is a placement improvement,
+not a demonstrated FPS gain. Custom per-map `ei_atlas_profile` metadata and
+the reference's remaining cave/Dead City cover sets are not imported.
+
+Final pack: `.../v2-vegetation/cover-families-probe`, SHA-256
+`816c8045e87b813fc4a36476618dffa98b7d84fb2f371cbd949ca89f50be9710`;
+all 233 production scripts match its manifest. The prior patched runtime and
+native library are unchanged. Cover stays off by default; the earlier coastal
+flood-lighting and Mobile mound-restoration limits remain open. Continue shared
+weather wind, actual submission LOD and remaining regional sets, then the rest
+of the renderer handoff and gameplay U45 first.
+
 ## Next work in the established order
 
 1. **P1/P2 remaining texture work:** retained outfit pixels and shared native
@@ -3380,8 +3459,9 @@ actual submission LOD; U45 remains first on the later gameplay track.
    above. Underwater cover/mean-depth lighting and the enhanced-water pause
    correction are now implemented, followed by sparse snow/verified-sand mounds.
    Zone7/zone8 coastal profiles now provide authored sandy-beach acceptance,
-   with cover habitat kept separate from breaking surf. Continue broader
-   biome/atlas profiles, shared weather wind and actual geometry submission LOD.
+   with cover habitat kept separate from breaking surf. Verified atlas-family
+   placement is also implemented above. Continue shared weather wind, actual
+   geometry submission LOD and remaining regional cover sets.
    Preserve the coastal mean-depth boundary limitation and the mound
    Mobile restoration limitation and construction-cost evidence. No visual effect
    was silently enabled.

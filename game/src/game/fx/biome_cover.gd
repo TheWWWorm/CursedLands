@@ -4,6 +4,7 @@ extends RefCounted
 const Geometry = preload("res://src/game/fx/biome_cover_mesh.gd")
 const Sea = preload("res://src/game/fx/biome_cover_water.gd")
 const Mounds = preload("res://src/game/fx/biome_mounds.gd")
+const Families = preload("res://src/game/fx/biome_cover_tiles.gd")
 enum Kind { FLOWER, DRY, LEAF, NEEDLES, TWIG, STONE, BUSH, REED, CATTAIL, WRACK, SHELL, SEAGRASS, KELP, SEA_SHELL }
 const DRY_KINDS := 7 # Preserve the original random stream when adding species.
 const SPACING := 0.8
@@ -26,6 +27,7 @@ var water := PackedFloat32Array()
 var surface := PackedFloat32Array()
 var uv_table := {}
 var images := {}
+var families := {} # Original atlas -> immutable per-slot bare/sand corner masks.
 var native: RefCounted
 var shores := {} # Chunk -> immutable Vector4(water x, height, EI y, 1 river / 2 swamp / 3 sea).
 var sea := Sea.new()
@@ -64,6 +66,7 @@ static func tree_kind(info: Dictionary) -> int:
 func configure(terrain: EITerrain, field: RefCounted, atlases: Dictionary, context: String) -> void:
 	size = Vector2i(terrain.size_ei()); grid_w = terrain.grid_w
 	map_name = terrain.map_name; biome = context; native = field
+	families.clear()
 	# GDScript packed-array Variants can share the same mutable wrapper. Copy
 	# explicitly before workers publish; a flood may call fill() on the source.
 	heights = terrain.heights.duplicate(); xy = terrain.land_xy.duplicate(); tiles = terrain.land_tile.duplicate()
@@ -84,6 +87,9 @@ func configure(terrain: EITerrain, field: RefCounted, atlases: Dictionary, conte
 		var copy := original.duplicate() as Image
 		if copy.is_compressed(): copy.decompress()
 		images[key] = copy
+		if terrain.texture_size==512 and terrain.tile_size==64:
+			var masks := Families.masks(copy)
+			if not masks.is_empty(): families[key] = masks
 	_prepare_shores(terrain)
 	mounds.configure(terrain,self)
 
@@ -157,10 +163,33 @@ func bank_weights(p: Vector2, hit: Dictionary, nearby: Vector3) -> Vector4:
 		out.y = (1.0-smoothstep(0.7,2.2,nearby.x))*patch*0.30
 	elif nearby.z == 1:
 		out.x = (1.0-smoothstep(0.4,1.6,nearby.x))*patch*0.55
-	elif nearby.z == 3 and int(hit.type) == 3 and absf((hit.normal as Vector3).y) >= 0.94:
+	elif nearby.z == 3 and beach_sand(hit) and absf((hit.normal as Vector3).y) >= 0.94:
 		out.z = smoothstep(0.1,0.4,nearby.x)*(1.0-smoothstep(1.0,2.0,nearby.x))*patch*0.80
 		out.w = (1.0-smoothstep(2.0,5.0,nearby.x))*0.12
 	return out
+
+
+func family_mask(hit: Dictionary) -> int:
+	var code := int(hit.get("code",-1))
+	var slots: PackedByteArray = families.get((code>>6)&255,PackedByteArray())
+	return int(slots[code&63]) if code>=0 and not slots.is_empty() else 0
+
+
+func beach_sand(hit: Dictionary) -> bool:
+	return int(hit.type)==3 or (family_mask(hit)&0xf0)!=0
+
+
+func bare_share(hit: Dictionary) -> float:
+	var mask := family_mask(hit)&15
+	if mask==0: return 0.0
+	if mask==15: return 1.0
+	var slot := int(hit.code)&63
+	# Metadata corners use the original atlas V direction; our decoded image
+	# and hit UV use flipped V. Invert once, then remove the 8-pixel tile gutter.
+	# The sampled UV already includes rotation and authored triangle jitter.
+	var uv: Vector2 = hit.uv
+	var p := ((Vector2(uv.x,1.0-uv.y)*512.0-Vector2(slot%8,slot/8)*64.0-Vector2.ONE*8.0)/48.0).clamp(Vector2.ZERO,Vector2.ONE)
+	return lerpf(lerpf(float(mask&1),float((mask>>1)&1),p.x),lerpf(float((mask>>3)&1),float((mask>>2)&1),p.x),p.y)
 
 
 func sample(p: Vector2) -> Dictionary:
@@ -252,6 +281,12 @@ func weights(hit: Dictionary, influence: Vector3, flowers: Vector3) -> PackedFlo
 		out[Kind.NEEDLES] = influence.y*(0.12 if snow else 0.6)
 		out[Kind.TWIG] = maxf(influence.x,maxf(influence.y,influence.z))*(0.035 if not snow else 0.012)
 	if type in [1,5,11]: out[Kind.BUSH] = 0.008
+	if type in [0,5,11]:
+		# Meadow/dry tufts fade toward verified soil, rock and paving corners.
+		# Snow straw, sand tufts and fallen litter retain their existing rules.
+		var meadow := 1.0-smoothstep(0.30,0.75,bare_share(hit))
+		out[Kind.FLOWER] *= meadow
+		out[Kind.DRY] *= meadow
 	return out
 
 
@@ -264,8 +299,8 @@ func footprint(p: Vector2, hit: Dictionary, kind: int, radius: float) -> bool:
 			var plane := float(hit.height)-(n.x*offset.x-n.z*offset.y)*radius/n.y
 			if absf(float(edge.height)-plane) > 0.025: return false
 		if int(edge.type) in [6,7,8,10,13,14,15]: return false
-		if kind == Kind.FLOWER and (int(edge.type) != 0 or not TerrainDetails.green_colour(edge.colour)): return false
-		if kind in [Kind.WRACK,Kind.SHELL] and int(edge.type) != 3: return false
+		if kind == Kind.FLOWER and (int(edge.type) != 0 or not TerrainDetails.green_colour(edge.colour) or bare_share(edge)>0.75): return false
+		if kind in [Kind.WRACK,Kind.SHELL] and not beach_sand(edge): return false
 	return true
 
 
