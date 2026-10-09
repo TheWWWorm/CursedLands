@@ -19,6 +19,7 @@ var _return_actors: Array = []
 ## publishes the first phrase only after its ordinary walk/turn tick finishes.
 var _pending_dialog: Dictionary = {}
 var _after_movie: Array = []
+var _original_village_topics := {} # player -> [NPC id, hero id]; transient host context
 
 
 func _init(v: ScriptVM) -> void:
@@ -62,7 +63,8 @@ func tick() -> void:
 ## 607320 scans a temporary copy of the raw GS hash (460ee0), sorted only
 ## online by byte _stricmp. Old saves can only reconstruct their discarded
 ## spelling/insertion order from the dictionary they still contain.
-func interact(_unit: GameUnit, target: Object, player: int) -> void:
+func interact(_unit: GameUnit, target: Object, player: int, original_stage := false) -> void:
+	clear_original_topics(player)
 	if not active.is_empty() or not (target is GameUnit):
 		return
 	var t: GameUnit = target
@@ -84,11 +86,22 @@ func interact(_unit: GameUnit, target: Object, player: int) -> void:
 		options.append({"var": "b.%s.%s" % constr, "title": title})
 	if options.is_empty():
 		return
+	# Host-only, per-player topic context. It is never saved or supplied by a
+	# client; another player's topic list must not overwrite this choice.
+	if original_stage: _original_village_topics[player]=[t.uid, _unit.uid]
 	vm.session.broadcast({"t": "topics", "player": player, "uid": t.uid, "name": t.display_name, "options": options})
+
+
+## Another command replaces this topic flow, including an approach that has
+## not reached its target yet. A local Goodbye alone starts no conversation.
+func clear_original_topics(player: int) -> void:
+	_original_village_topics.erase(player)
 
 
 ## The player picked conversation `var_name` from unit `uid`'s topic list.
 func topic(player: int, var_name: String, uid: int) -> void:
+	var context: Array = _original_village_topics.get(player, [])
+	clear_original_topics(player)
 	var t: GameUnit = vm.world.units.get(uid)
 	if not active.is_empty() or t == null or t.dead:
 		return
@@ -107,7 +120,11 @@ func topic(player: int, var_name: String, uid: int) -> void:
 				vm.session.open_shop(n)
 				vm.session.broadcast({"t": "shop", "player": player, "constr": n})
 				return
-			play_named(id, var_name, player, t, false, true)
+			var original := context.size()==2 and int(context[0])==uid \
+				and var_name==preload("res://src/game/script/authored_village_talk.gd").TOPIC \
+				and preload("res://src/game/script/authored_village_talk.gd").original_stage( \
+					vm.session, vm.world.units.get(int(context[1])), t, player)
+			play_named(id, var_name, player, t, original, not original)
 			return
 
 

@@ -2176,6 +2176,8 @@ static func group_offset(i: int) -> Vector2:
 func apply_command(cmd: Dictionary, player: int) -> void:
 	if world == null or movie_active() or not command_allowed(cmd):
 		return
+	if world.vm and String(cmd.get("t", "")) != "topic":
+		world.vm.briefings.clear_original_topics(player)
 	var mine: Array[GameUnit] = []
 	for id in cmd.get("units", []):
 		var u: GameUnit = world.units.get(int(id))
@@ -2293,6 +2295,10 @@ func apply_command(cmd: Dictionary, player: int) -> void:
 					return
 			if target and not mine.is_empty():
 				var talker := _interaction_unit(mine, target)
+				if preload("res://src/game/script/authored_village_talk.gd").original_stage(self,talker,target,player):
+					talker.command({"type":"wait", "t":0.0})
+					world.vm.briefings.interact(talker,target,player,true)
+					return
 				_double_stand(talker, cmd, target.pos, TALK_REACH)
 				talker.command({"type": "follow", "target": target, "dist": TALK_REACH, "once": true, "run": bool(cmd.get("run", false)), "path_notice": true})
 				talker.set_meta("interact", [target, player])

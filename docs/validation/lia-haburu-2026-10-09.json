@@ -1,0 +1,344 @@
+{
+  "title": "LiA Haburu authored-call audit and village approach compatibility",
+  "date": "2026-10-09",
+  "status": "accepted locally; unpublished",
+  "summary": [
+    "The shipped bz23k WorldScript reaches all five BuyHaburuMain#2#N#0 calls. They have no declaration/body in any of the 130 supplied MOB scripts and no native command-table entry in the pinned LiA executable. Missing authored content remains unchanged.",
+    "A distinct regression prevented the first Haburu topic: remake village walk-to-talk could not reach the authored display placement. Both endpoints are open, but even an all-actor-stamps-ignored route is empty.",
+    "The exact original expansion/bz23k/Haburu/fq15/display-position/static-disconnection case now opens normal topics and uses existing authored instant conversation staging. Reachable and field interactions retain ordinary cancellable approaches."
+  ],
+  "counts": {
+    "accepted_runtime_checks": 355,
+    "accepted_independent_source_checks": 24,
+    "accepted_total_checks": 379,
+    "runtime_failures": 0,
+    "runtime_errors": 0,
+    "original_map_scripts": 130,
+    "native_commands": 227,
+    "new_rendered_captures": 0
+  },
+  "production": {
+    "authored_case": {
+      "campaign": "lost_in_astral",
+      "zone": "bz23k",
+      "topic": "b.Haburu.fq15",
+      "npc_name": "Haburu",
+      "npc_id": 1000276495,
+      "display_xy": [
+        41.93026,
+        84.56726
+      ],
+      "position_tolerance_metres": 0.02,
+      "requires": "village, available first topic, living owned hero, living idle NPC, out of talk reach, no static route after ignoring all actors"
+    },
+    "behavior": "The fallback posts a zero-time wait to replace old movement/interactions, publishes the existing topics event, and records host-only player/NPC/hero context. Any replacement command or any topic attempt consumes that context. Selection rechecks exact eligibility and availability before existing instant authored staging. Context is not serialized.",
+    "unchanged": [
+      "original scripts and five missing function calls",
+      "navigation/collision/map assets",
+      "shared quest values and completion rules",
+      "ordinary approach cancellation/path failure",
+      "existing save format and network protocol 13"
+    ],
+    "source": {
+      "game/src/game/script/authored_village_talk.gd": "ee5c38d85cc63048a983d2e88072976e09f37291851b0c72cf87682b9d1d7c50",
+      "game/src/game/script/briefings.gd": "1bce15e0ff590015d67ea1ce9c229be87dba75c0847982f3f0f080ca6683d011",
+      "game/src/game/session.gd": "f1d068f6871d53726d06318c766547b7cc6145d39fdf08a837252ff98f0869e0"
+    }
+  },
+  "source_audit": {
+    "checks": 24,
+    "report": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/haburu-audit-20261009/source-audit.json",
+      "sha256": "1b9975899b00cd0f7308ab8bcab97d8e3f14d0288947c912b0d34fda408bfcc0"
+    },
+    "command": [
+      "python3",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/lia_haburu_source_audit.py",
+      "/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+      "/home/llm2x/Documents/EI/local/scratchpad/haburu-audit-20261009/source-audit.json"
+    ],
+    "script_count": 130,
+    "map_count": 130,
+    "bz23k": {
+      "name": "bz23k.mob",
+      "sha256": "9479b1db4408194977fbc4ab560d7718298655823dc6997c7fe22f2eed4c37d9",
+      "script_bytes": 10118,
+      "script_ascii_sha256": "83502b74396298c0795d1c74465d85025c88d566f4fbac7b50255b1d47e1a5dd",
+      "declarations": 10,
+      "definitions": 10
+    },
+    "references": {
+      "BuyHaburuMain#2#1#0": [
+        {
+          "map": "bz23k.mob",
+          "line": 267,
+          "source": "BuyHaburuMain#2#1#0 ( NULL )"
+        }
+      ],
+      "BuyHaburuMain#2#2#0": [
+        {
+          "map": "bz23k.mob",
+          "line": 268,
+          "source": "BuyHaburuMain#2#2#0 ( NULL )"
+        }
+      ],
+      "BuyHaburuMain#2#3#0": [
+        {
+          "map": "bz23k.mob",
+          "line": 269,
+          "source": "BuyHaburuMain#2#3#0 ( NULL )"
+        }
+      ],
+      "BuyHaburuMain#2#4#0": [
+        {
+          "map": "bz23k.mob",
+          "line": 270,
+          "source": "BuyHaburuMain#2#4#0 ( NULL )"
+        }
+      ],
+      "BuyHaburuMain#2#5#0": [
+        {
+          "map": "bz23k.mob",
+          "line": 271,
+          "source": "BuyHaburuMain#2#5#0 ( NULL )"
+        }
+      ]
+    },
+    "native": {
+      "executable": "/home/llm2x/Documents/EI/inspection/lost-in-astral/game/game.exe",
+      "sha256": "f04a305b77c84ea29c18ad2996d23072ccef1c0c46876c9b93bae4ce9351d1ff",
+      "table_address": "0x66c078",
+      "commands": 227,
+      "matching_command_prefixes": [],
+      "resolver": "0x477e30"
+    },
+    "native_resolution_evidence": [
+      {
+        "path": "/home/llm2x/Documents/EI/local/lost-in-astral/native/decompiled/functions/00049/4499c0_FUN_004499c0.c",
+        "sha256": "e003e646b9a515d34d425cabfe7b4b21929afb36de92c46f711b7abfed3bd5ea"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/lost-in-astral/native/decompiled/functions/00077/477e30_FUN_00477e30.c",
+        "sha256": "47dbe983a810346d94e3ca267c00c41151caf327ccc98d9d09e82021b458dfe0"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/lost-in-astral/native/decompiled/functions/00075/475480_FUN_00475480.c",
+        "sha256": "8573ac21e75bc53ac45c32947053509e56f5cfd99e31d931a0c12a418733baa4"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/lost-in-astral/native/decompiled/functions/00075/475340_FUN_00475340.c",
+        "sha256": "4a454d5af086945922199c6b86fb70f43a6fe5297c1b3c95afdfeb681ad5a94a"
+      }
+    ],
+    "reading": "Independent root-bounded MOB decryption agrees byte-for-byte after the current reader ASCII mapping for all 130 scripts. Current parser accepts every script and all five calls appear unconditionally in bz23k WorldScript after Start. Native 0x477e30 checks its command table and explicit declared procedures; no implicit Haburu procedure library was found. This is code/table evidence, not native full-scene playback.",
+    "historical_evidence": [
+      {
+        "path": "/home/llm2x/Documents/EI/local/lost-in-astral/checks/haburu-receipt.json",
+        "sha256": "1b5e01ed5d2a51702f36b4325dd03df80c16ebf7b9ecc41935e47a0174857e1b"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/lost-in-astral/STATUS.txt",
+        "sha256": "b3b7faac2225a67b359697645dbfb62ba512d782e9c19855a2cd88ffc476851a"
+      }
+    ],
+    "conclusion": "Reachability is established. No missing parser/builtin implementation is demonstrated. Intended optional-quest/shop behavior of absent authored procedures remains unverified; no replacement behavior was invented."
+  },
+  "baseline_reproduction": {
+    "label": "current-04",
+    "checks": 277,
+    "failures": [
+      "ordinary interaction opens real topics"
+    ],
+    "errors": [],
+    "manifest": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/haburu-audit-20261009/current-04/run.json",
+      "sha256": "31e9c30e6b0545ea9d45e06e176af6393d24620da3abfea17e9185b9ac6c2893"
+    },
+    "log": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/haburu-audit-20261009/current-04/run.log",
+      "sha256": "30cf4084de33bb02dcb2ad4ed6c6580d6e7ca60f2ff30244050736c0642670dd"
+    },
+    "result": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/haburu-audit-20261009/current-04/lia-haburu-audit.json",
+      "sha256": "1b7c8aafcce1c2e1782304b236fa004b870d72d40f3c5ede25da0ac4af6ea384"
+    },
+    "source_match": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/haburu-audit-20261009/gameplay-source-match.json",
+      "sha256": "38ae3c4b392cbeb8e0b8b6d28ca26b052c82e6ebfb73614d40a03e65b4eade99"
+    },
+    "pck_sha256": "179cc7fd4af9b1489285b377325a6fe7bc119e3a902b0fd3255aabb2be3b69f7",
+    "evidence": "The ordinary Game.issue -> Session interact posts follow/interact; its real path fails without moving the hero, interaction clears and topics never open. Earlier diagnostic attempts current-01..03 and the navigation-probe are retained but excluded from acceptance totals."
+  },
+  "real_world": {
+    "placement": {
+      "haburu": [
+        41.9302635192871,
+        84.5672607421875
+      ],
+      "hero": [
+        32.5,
+        66.0
+      ],
+      "ignored_actors": 31,
+      "ordinary_path_points": 0,
+      "static_path_points": 0
+    },
+    "entry_unknown_calls": {
+      "BuyHaburuMain#2#1#0": 1,
+      "BuyHaburuMain#2#2#0": 1,
+      "BuyHaburuMain#2#3#0": 1,
+      "BuyHaburuMain#2#4#0": 1,
+      "BuyHaburuMain#2#5#0": 1
+    },
+    "resumed_unknown_calls": {},
+    "flow": "Fresh isolated expansion profile; direct bz23k entry with normal startup and actual hero/NPC. Game.issue opens real topics; save pending topic, normal Goodbye, actual Session.load_game, reopen and choose fq15 through DialogPanel, finish actual authored dialogue through UI, save/reload completion and confirm fq15 absent. No route/quest-variable or combat shortcuts were added.",
+    "saved_profiles": "/home/llm2x/Documents/EI/local/scratchpad/haburu-audit-20261009/reload-01/data/godot/app_userdata/Cursed Lands",
+    "limits": "Direct village entry, not a complete campaign route or optional-quest chain. Headless UI dispatch; no new visual/device/native-playthrough acceptance."
+  },
+  "guard_scope": [
+    "Exact identity, campaign, village, topic availability, NPC readiness, liveness, ownership, original position and static-path controls.",
+    "Host and guest command dispatch each receive their own topic flow; guest cannot command host hero. Context survives the other player opening, but is consumed only by the selecting player. A completed shared topic cannot replay.",
+    "Prior movement/interactions stop before fallback topics. Reachable reopen waits for arrival and uses D15 in-place staging. Replacement movement, failed path and field failure clear interactions without instant dialogue.",
+    "Changed target, replacement movement, invalid/changed topic and active dialogue consume context. Exact placement and static route are revalidated on selection. Rebuilt Briefings has no saved context.",
+    "The focused player-0/player-1 controls run the real host command and Briefings boundary with a controlled navigation result and captured play_named arguments. They are not two-peer ENet coverage. Actual single-player staging/completion/reload uses the original map in the separate fixture."
+  ],
+  "accepted_runs": [
+    {
+      "label": "reload-01",
+      "checks": 295,
+      "failures": 0,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/haburu-audit-20261009/candidate/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/haburu-audit-20261009/reload-01/lia_haburu_audit.gd",
+        "--haburu-source-audit=/home/llm2x/Documents/EI/local/scratchpad/haburu-audit-20261009/source-audit.json"
+      ],
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/haburu-audit-20261009/reload-01/run.json",
+        "sha256": "6673725801b25ad4a4ffc93557d2e72dc1fa55cbd01727b68832d97c5162624b"
+      },
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/haburu-audit-20261009/reload-01/run.log",
+        "sha256": "d9842bffc847eadbc3a5cbf5e83ef74f0287c6285d7db8adab92d89294429805"
+      },
+      "fixture_sha256": "062ec6f25458f309f5a444d2d8d80db8d64c25a4783c820e5dccd37afb1615c0",
+      "expected_warnings": [
+        "WARNING: script: unknown function BuyHaburuMain#2#1#0",
+        "WARNING: script: unknown function BuyHaburuMain#2#2#0",
+        "WARNING: script: unknown function BuyHaburuMain#2#3#0",
+        "WARNING: script: unknown function BuyHaburuMain#2#4#0",
+        "WARNING: script: unknown function BuyHaburuMain#2#5#0"
+      ],
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/haburu-audit-20261009/reload-01/lia-haburu-audit.json",
+        "sha256": "038d47d3db664cdf6017c417ea6a81d253d8961a61fe4f564bb40df6fd2e5415"
+      }
+    },
+    {
+      "label": "guards-01",
+      "checks": 44,
+      "failures": 0,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/haburu-audit-20261009/candidate/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/haburu-audit-20261009/guards-01/lia_haburu_audit.gd",
+        "--haburu-source-audit=/home/llm2x/Documents/EI/local/scratchpad/haburu-audit-20261009/source-audit.json"
+      ],
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/haburu-audit-20261009/guards-01/run.json",
+        "sha256": "f7f31e37ca0ebf3cbdd508909c6261c178638a89cdb257d6d6b61ded674d6e14"
+      },
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/haburu-audit-20261009/guards-01/run.log",
+        "sha256": "33f7704023c9b43905ffe7c3106eccb36d2271c2e3b4ea36e94f3dba190228c0"
+      },
+      "fixture_sha256": "65ccc6dded2a0bbd17b06a9378a3a765bc45b9b031ae98f2006814c971c07b9f",
+      "expected_warnings": [],
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/haburu-audit-20261009/guards-01/lia-haburu-guards.json",
+        "sha256": "ccee5513097d583ebfb69ad87919529c3172140c0bca74f3de423318e6b80630"
+      }
+    },
+    {
+      "label": "d15-regression-01",
+      "checks": 16,
+      "failures": 0,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/haburu-audit-20261009/candidate/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/haburu-audit-20261009/d15-regression-01/lia_haburu_audit.gd",
+        "--haburu-source-audit=/home/llm2x/Documents/EI/local/scratchpad/haburu-audit-20261009/source-audit.json"
+      ],
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/haburu-audit-20261009/d15-regression-01/run.json",
+        "sha256": "1d9f17bb4e64fc0b08776b17d0a21d46589d1a47043655b9687d3f083e0a280a"
+      },
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/haburu-audit-20261009/d15-regression-01/run.log",
+        "sha256": "9c60640aba1b81de563cf3533e86495d37b40bfe992c6ef3e99836864753aae5"
+      },
+      "fixture_sha256": "97bfb01d86ba39456118c42510261a364f26d3dedcf8fffbc7b1e12f9170b4c8",
+      "expected_warnings": []
+    }
+  ],
+  "accepted_export": {
+    "manifest": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/haburu-audit-20261009/fix-build2/export.json",
+      "sha256": "64c55661da27a9449553e675bf20ee2db0255024dab32859856eaae293e6e7a0"
+    },
+    "log": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/haburu-audit-20261009/fix-build2/export.log",
+      "sha256": "2117e56d12eaffccd260129679c16d7d605906c03f675f3dc1c1123cf9fa398b"
+    },
+    "source_unchanged_during_export": true,
+    "command": [
+      "/home/llm2x/.local/bin/godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/haburu-audit-20261009/accepted-source/game",
+      "--export-pack",
+      "Linux",
+      "/home/llm2x/Documents/EI/local/scratchpad/haburu-audit-20261009/candidate/CursedLands.pck"
+    ],
+    "sha256": {
+      "CursedLands.x86_64": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+      "CursedLands.pck": "c5752e80dc3f81f05df82d2426d3df5bd42a30741aabc329b415263fe491580b",
+      "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+    }
+  },
+  "test_source": {
+    "tools/tests/lia_haburu_source_audit.py": "5851f8bc12f2955802c9e844645194dcabb33a11bb240bf10f60c24448dd8ce5",
+    "tools/tests/lia_haburu_audit.gd": "062ec6f25458f309f5a444d2d8d80db8d64c25a4783c820e5dccd37afb1615c0",
+    "tools/tests/authored_village_talk.gd": "65ccc6dded2a0bbd17b06a9378a3a765bc45b9b031ae98f2006814c971c07b9f",
+    "tools/tests/dialogue_approach.gd": "97bfb01d86ba39456118c42510261a364f26d3dedcf8fffbc7b1e12f9170b4c8"
+  },
+  "earlier_passing_run_excluded": {
+    "label": "fixed-01",
+    "checks": 281,
+    "reason": "Earlier minimal fallback before final lifecycle guards and reload coverage; superseded by fix-build2 acceptance."
+  },
+  "boundaries": [
+    "No release, device install, save migration, performance claim or save/protocol change.",
+    "No change to the five missing authored routines.",
+    "Full campaign route, absent optional shop/quest intent, actual guest transport/reconnect, and Windows/mobile rendering remain outside this checkpoint."
+  ],
+  "qa_root": "/home/llm2x/Documents/EI/local/scratchpad/haburu-audit-20261009"
+}
