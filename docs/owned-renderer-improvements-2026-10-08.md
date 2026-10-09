@@ -29,8 +29,12 @@ identity and carry aligned guest campaigns through scripted field transfers.
 The shared-travel receipt records 152 passing checks, including actual ENet
 transfers and separate solo loads. The user supplied saves for diagnosis and
 explicitly wants the systemic sync issue fixed, without repairing the particular
-latest save. Solo-earned character reimport and compatible checkpoint selection
-are the next checks; the earlier combined-renderer receipt does not cover them.
+latest save. `80c96d4` now preserves solo-earned character reimport and compatible
+checkpoint selection (803 checks). `ec79e3f` protects stable hero references, and
+`74c4804` restores pending scripted actions on solo return (149 acceptance checks
+plus 36 formatting rechecks). Whole-checkpoint compatibility remains conservative
+about unknown authored flags; the earlier combined-renderer receipt does not
+cover these later source changes.
 
 The original worktree above is historical. Source version remains Experimental 6
 and protocol 13. This task uses private exports and isolated profiles. Installed
