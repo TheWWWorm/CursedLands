@@ -2362,10 +2362,117 @@ co-op/play routes, camera distances and actual constrained-device cost. Existing
 authored terrain uses axis-aligned transforms and immutable water meshes;
 in-place editing of the same `ArrayMesh` is outside this cache's current contract.
 The effect is an analytic rim/wake in shading. Wave-equation propagation,
-river-current advection, underwater caustics, refraction changes and waterfall
-shells/spray/mist remain separate, unimplemented V4 work. V2 should extend the
-existing terrain-details manager after the next selected V4 step. The gameplay
+river-current advection, refraction changes and waterfall shells/spray/mist
+remain separate, unimplemented V4 work. Terrain caustics are implemented in the
+follow-up below. V2 should next extend the existing terrain-details manager. The gameplay
 handoff's U45 progression report remains first when starting the gameplay track.
+
+## V4: optional underwater caustics — 9 October
+
+The new **Underwater caustics** option (`gfx_water_caustics`, Remake group 15,
+row 8) defaults **off on every platform** and requires Water and lava effects.
+It animates sunlight patterns on eligible terrain beneath clear water. This
+checkpoint uses the canonical checkout on top of `cae07dc`; protocol 13 and the
+user's desktop continuous-sun policy remain unchanged. Nothing was installed
+or published.
+
+### Reference and implementation map
+
+Read the reference at **R1 `0092dc6e1d7c4aab3f74644a79e9bfca11ecf293`** with
+`git show`; the reference worktree remains at R0. Relevant locations:
+
+- `Source/native_shader.h:689/745/757`: signed bed depth, live liquid-level
+  shifts, and exclusion of the liquid surface itself from bed effects.
+- `Source/native_shader.h:1655–1658`: positive-depth/non-emissive terrain
+  admission, upward-normal and sunlight weighting, and bed-colour modulation.
+- `Source/shaders/liquid_surface.hlsl:737–747`: two moving vein layers and
+  depth attenuation. `Source/renderer_liquid.cpp:190–205` supplies game time.
+
+The Godot implementation and its generated texture are independently authored:
+
+- `game/src/game/fx/water_caustics.gd:15` builds a small, immutable two-metre
+  coverage field from the actual nine-vertex water tiles. Each admitted texel
+  requires a homogeneous clear-water material ring large enough to cover its
+  entire filtering footprint at maximum horizontal wave displacement, including
+  authored land XY offsets for type-4 liquid. The ring's minimum height minus
+  the vertical wave bound gates lighting; its maximum height controls depth
+  fade. Lava, swamp, emissive liquid and mixed-material edges are excluded.
+  This is a conservative shading mask, **not an exact surface-height query**.
+  The validated `water_surface.gd` query remains the contact/wake owner.
+- `water_caustics.gd:81/111/134/151` provides four bounded metadata samples,
+  two layers of a mipmapped 256² cellular vein texture, normal/sun/distance
+  weighting, and the optional terrain shader source. Pattern strength fades
+  with depth and from 35 to 65 m. It modifies terrain albedo in the existing
+  opaque pass; original underwater attenuation and lighting/shadows still apply.
+  Sun gating follows the reference's global sun strength, not a new optical
+  focusing or per-pixel sunlight-occlusion calculation.
+- `game/src/ei/terrain.gd:1028/1129/1397` owns the field, lazy shader variant,
+  option restoration and phase bindings. Fractional texture translations use
+  the terrain's existing scaled wave clock, so they pause with the world and
+  avoid shader `TIME` or a discontinuous clock reset. Shared `level[64]` keeps
+  scripted flooding live without rebuilding the field. Disabling the option
+  or Water and lava effects restores the original shader and releases map data.
+- `game/src/game/fx/terrain_color_cache.gd:44/72/81` selects the matching live
+  shader for resident baked-colour sectors, copies the field and level uniforms,
+  and synchronizes the phase. Animation is never baked into tile colours.
+- `game_data.gd`, `remake_text.gd` and `gfx_detect.gd` add the applied option,
+  English/Russian/German text, and conservative automatic-tier handling.
+
+### Evidence and remaining limits
+
+[water-caustics-2026-10-09.json](validation/water-caustics-2026-10-09.json)
+records commands, source/pack/runtime hashes, all accepted results, process
+observations and the rejected prototype. QA root:
+`/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics`.
+The frozen `caustics-final` pack has SHA-256
+`1e32c7e4522af89fccc23710f7fecf5fb2612173af9fd8507f9ad3d43713ea54`;
+all 226 production script hashes match the validated source. It uses the
+previously patched runtime; no new engine patch is required by this effect.
+
+**347 assertions pass in twelve acceptance runs.**
+`tools/benchmarks/water_bed_depth.gd` compares the shader mask with actual land
+triangles and the previously GPU-validated deformed-water query. Two views on
+each of zone1 and zone15, four independently reset wave/level states, and three
+desktop backends give **48 configurations / 424,128 examined receiver pixels**,
+with no detected dry-ground leaks at the diagnostic mask cutoff of 0.02. Each
+view also has a nonempty lit region. These are coverage checks, not claims that
+the conservative height equals the live surface.
+
+`tools/tests/water_caustics.gd` passes on Compatibility, Forward+, Mobile,
+headless, Compatibility's resident-colour path, and the second map's water-filled
+canyon (`--caustic-zone15`). Paired off/on/off captures restore exactly. Frozen
+phase is exact; animation is visible; no-sun and lowered-water controls are exact.
+Forced lava/swamp metadata retains the original image, and emissive liquid is
+excluded. Real callbacks verify tree pause, disabled travel worlds, unregistered
+LMP worlds and 1×/2× timing. Field/texture weak references clear on disable;
+resident materials change shader and follow the live phase correctly. The count
+includes repeated assertions for individual resident materials, not 347 distinct
+features. No complete co-op or gameplay route is claimed.
+
+The first paired-vertex signed-depth prototype was **rejected**: subtracting
+only a vertical wave margin still lit dry ground under sideways waves and at
+raised water boundaries. Its frozen receipt includes 55 leaking pixels in one
+wind view and 231 in one raised-water view. Do not restore that approximation.
+Its initial fixture also carried wave state between cases; the receipt preserves
+that limitation, and the final fixture resets each state and fixes both camera
+foci before changing levels.
+
+Map texture payload is 192 KiB on zone1 and 480 KiB on zone15, plus the shared
+pattern; these are not whole-game memory figures. Draw counts stay 25 off/on in
+the zone1 fixture and 29 in the zone15 fixture. Four metadata fetches, two pattern
+samples and live uniform updates are additional work when enabled. Other Godot
+processes overlapped many runs, so this checkpoint makes **no controlled GPU,
+frame-time, FPS, Android or web performance claim**.
+
+Keep the option off by default. The mask deliberately loses narrow pools,
+mixed edges and detail on steep flows. It assumes immutable authored water
+meshes and the existing axis-aligned map layout; arbitrary runtime geometry or
+material edits require rebuilding/adapting it. Wider shorelines, deformation,
+underwater-camera gameplay, artistic tuning and device cost remain open.
+Wave-equation propagation, current advection, refraction changes and waterfall
+shells/spray/mist remain separate V4 work. **V2 biome ground cover is next in the
+initial visual sequence.** U45 remains the first gameplay investigation after
+the renderer list.
 
 ## Next work in the established order
 
@@ -2419,6 +2526,7 @@ handoff's U45 progression report remains first when starting the gameplay track.
    ground cover, then the remaining audit features. V1 now has shared production
    storage and an opt-in scenery blend, with the validation and limitations above.
    Resolve cold preparation and finish its lighting/visual acceptance before
-   enabling defaults. V4 now has the optional contacts/wakes above; its caustics,
-   wave field, currents and waterfalls remain separate work. Keep it off until
-   broader quality/device acceptance. No visual effect was silently enabled.
+   enabling defaults. V4 now has optional contacts/wakes and terrain caustics;
+   wave fields, currents and waterfalls remain separate work. Both options stay
+   off pending broader quality/device acceptance. Continue with V2 biome ground
+   cover in the initial visual sequence. No visual effect was silently enabled.

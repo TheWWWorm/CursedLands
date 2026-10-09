@@ -698,6 +698,7 @@ const TERRAIN_GUTTER := 8
 var _water_mat: ShaderMaterial
 var _waves := WaveState.new()
 var _land_mat: ShaderMaterial
+var _caustics: RefCounted
 var _level := PackedFloat32Array()
 var _lava := PackedFloat32Array()
 var _surf := PackedFloat32Array()
@@ -711,10 +712,12 @@ var _rain_cover: ImageTexture
 var details: TerrainDetails
 var color_cache: TerrainColorCache
 static var _land_shader: Shader
+static var _land_caustics_shader: Shader
 static var _water_shader: Shader
 static var _water_fx_shader: Shader
 static var _water_interaction_shader: Shader
 const WaterInteractionShader = preload("res://src/game/fx/water_interaction_shader.gd")
+const WaterCaustics = preload("res://src/game/fx/water_caustics.gd")
 
 ## The .mp format has generic liquid materials, not ocean/river/lake tags.
 ## Only confirmed sea materials get breaking surf. On the starting map,
@@ -1026,6 +1029,20 @@ func apply_gfx() -> void:
 	if _water_mat == null:
 		return
 	var fx := GameData.option("gfx_water") != 0
+	if fx and Gfx.on("gfx_water_caustics"):
+		if _caustics == null: _caustics = WaterCaustics.new(self)
+	else:
+		_caustics = null
+	if _caustics != null and _caustics.admitted > 0:
+		if _land_caustics_shader == null:
+			_land_caustics_shader = Gfx.make_shader(land_shader_source(),true,true)
+		_land_mat.shader = _land_caustics_shader
+		_land_mat.set_shader_parameter("caustic_bed",_caustics.texture)
+		_land_mat.set_shader_parameter("caustic_pattern",WaterCaustics.pattern())
+	else:
+		_land_mat.set_shader_parameter("caustic_bed",null)
+		_land_mat.set_shader_parameter("caustic_pattern",null)
+		_land_mat.shader = _land_shader
 	_water_mat.shader = _water_fx_shader if fx else _water_shader
 	if fx and Gfx.on("gfx_water_interaction"):
 		if _water_interaction_shader == null:
@@ -1105,6 +1122,12 @@ func apply_gfx() -> void:
 		color_cache.refresh()
 	if is_instance_valid(contact):
 		contact.queue_refresh()
+
+
+## The colour cache substitutes only immutable tile colour. Its live material
+## must use the same optional terrain-receiver effects as ordinary sectors.
+func land_shader_source() -> String:
+	return WaterCaustics.source(TERRAIN_SHADER) if _caustics != null and _caustics.admitted > 0 else TERRAIN_SHADER
 
 
 ## SurfaceWeather's static cover map affects rendering only. Keep it across
@@ -1379,6 +1402,10 @@ func _update_wave_parameters() -> void:
 	_water_mat.set_shader_parameter("wave_amplitude",_waves.amplitude)
 	_water_mat.set_shader_parameter("wave_gradient",_waves.gradient)
 	_water_mat.set_shader_parameter("wind",_waves.force)
+	if _caustics != null and _caustics.admitted > 0:
+		var scroll := WaterCaustics.scroll(_waves.time_ticks()*WaveState.TICK)
+		_land_mat.set_shader_parameter("caustic_scroll",scroll)
+		if is_instance_valid(color_cache): color_cache.sync_parameter("caustic_scroll",scroll)
 
 
 ## E of a map material: min(1, self-illumination × colour) (

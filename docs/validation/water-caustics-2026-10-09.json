@@ -1,0 +1,2047 @@
+{
+  "date": "2026-10-09",
+  "status": "Optional independently authored terrain caustics; default off on every platform. No installation or publication. Device and wider gameplay acceptance remains open.",
+  "source_base": "cae07dc6602105048fb73418fc24c91b5587f577",
+  "canonical_checkout": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo",
+  "qa_root": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics",
+  "reference": {
+    "revision": "0092dc6e1d7c4aab3f74644a79e9bfca11ecf293",
+    "terrain_depth": "Source/native_shader.h:689/745/757",
+    "bed_shading": "Source/native_shader.h:1655-1658",
+    "animated_veins": "Source/shaders/liquid_surface.hlsl:737-747",
+    "clock": "Source/renderer_liquid.cpp:190-205",
+    "scope": "Behavior reference only; no copied renderer/HLSL code or textures. Reference checkout remains read-only at R0."
+  },
+  "source_sha256": {
+    "game/src/game/fx/water_caustics.gd": "06e1f5bd38b838f9296eab74bf168dd60b8e4736fd0da26e1ebd67661dbec7d6",
+    "game/src/game/fx/water_caustics.gd.uid": "20ee13973ea5637e1e1da3db8889c353ab53b04c2a790cc25e164e141997de42",
+    "game/src/ei/terrain.gd": "6a5e73a92e70eb77a6541e887e648e81786ce4f7110dcf9395965ed4bc3fff1a",
+    "game/src/game/fx/terrain_color_cache.gd": "6023b13f5e78a5faa3c54b0a6e85df2ce51d1e550bbeeef33fce2e45977f7ef2",
+    "game/src/ei/game_data.gd": "8947cf531923477b6f912999709b470db1d1c7626b87e751ff39c52fa9ab0ab5",
+    "game/src/ei/remake_text.gd": "5c8ac80c601e98888e5dd6d8705d8a2fa107c1f335914015005065223436e996",
+    "game/src/game/gfx_detect.gd": "2f06c5f3414834b89e91cb8155fdfc4d919e6ba9dc56953cad031dd600616c7b",
+    "tools/tests/water_caustics.gd": "8734d32520ec0c0ef50250efc8b65b136f83a603ad65c2f3a6ab942b4619645b",
+    "tools/benchmarks/water_bed_depth.gd": "ce588498d0fd4593cfc79bbe3cce7a9e8f8542daccc21666078415c67529f8cc"
+  },
+  "export": {
+    "manifest_path": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/caustics-final/export.json",
+    "manifest_sha256": "f7f6728dd0d5061c4e8f80b990de8500ff3405e8ddb33f7e39370ba6da0e7350",
+    "command": [
+      "/home/llm2x/.local/bin/godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/game",
+      "--export-pack",
+      "Linux",
+      "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/caustics-final/CursedLands.pck"
+    ],
+    "return_code": 0,
+    "errors": [],
+    "sha256": {
+      "CursedLands.x86_64": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+      "CursedLands.pck": "1e32c7e4522af89fccc23710f7fecf5fb2612173af9fd8507f9ad3d43713ea54",
+      "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+    },
+    "source_unchanged_during_export": true,
+    "production_scripts_matched": 226,
+    "all_match_current_source": true
+  },
+  "summary": {
+    "accepted_assertions": 347,
+    "depth_configurations": 48,
+    "receiver_pixels_examined": 424128,
+    "dry_leaks": 0,
+    "field_zone1_bytes": 196608,
+    "field_zone15_bytes": 491520,
+    "default": "gfx_water_caustics=0",
+    "option": "Underwater caustics, Remake group 15 row 8; requires gfx_water",
+    "draws": "25 off/on in the zone1 fixture on all desktop backends and cached colour, 29 off/on in the zone15 fixture. This is not a timing or FPS result.",
+    "depth_mask_positive_threshold": 0.02
+  },
+  "accepted_runs": [
+    {
+      "label": "final-depth-zone1-gl_compatibility",
+      "run": {
+        "tool_sha256_at_start": "ce588498d0fd4593cfc79bbe3cce7a9e8f8542daccc21666078415c67529f8cc",
+        "helper_sha256_at_start": "06e1f5bd38b838f9296eab74bf168dd60b8e4736fd0da26e1ebd67661dbec7d6",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "1e32c7e4522af89fccc23710f7fecf5fb2612173af9fd8507f9ad3d43713ea54",
+        "termination_reason": null,
+        "timeout_sec": 120,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/caustics-final/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/benchmarks/water_bed_depth.gd",
+          "--bed-map=zone1"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 8.570718051982112,
+        "other_render_processes_at_start": [
+          {
+            "pid": 4106392,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 4106392,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {
+          "bed-depth-zone1-centre-raised-true.png": "baaa1e09e6b665286712410ce07b1edaeef39a35544ea837de5192fbd694bab2",
+          "bed-depth-zone1-slope-lowered-true.png": "eb3e9bd24051b22cee732262259b5eaac19137fe9dfd9d7d788076fb3c58fbeb",
+          "bed-depth-zone1-centre-rest-true.png": "758407e475909c7b7a8b7aa31b80b80e2e4496643f4f14d1818f41733c7e7d36",
+          "bed-depth-zone1-slope-wind-true.png": "3efe680eab3bb8712e36fb72a35431090cd7d05f7f55fd4211b08cfa074ce8d2",
+          "bed-depth-zone1-centre-lowered-true.png": "93f63c2b942065b5a0a205684fde10679dfac11119070c3ebc3e988390eb7223",
+          "bed-depth-zone1-slope-raised-true.png": "faa194a851b44e3925041f195b492b2fdd22a764630c2110fe29a2c65b230ffd",
+          "bed-depth-zone1-slope-rest-true.png": "deb6b64ce6ab9c70ba9756dc3c8ddbc9b08cff1ad83651949310343e18c6ee8a",
+          "bed-depth-zone1-centre-wind-true.png": "5866ae0316f32357aab613415185dc84b9e05c1aac8805abfc402cb8ae87f30f"
+        }
+      },
+      "results": {
+        "checks": 19,
+        "failures": 0,
+        "rows": [
+          {
+            "dry_leaks": 0,
+            "field_admitted": 3564,
+            "field_build_us": 16347,
+            "field_bytes": 196608,
+            "field_tiles": 5649,
+            "focus": "(132.5, 5.758586, -98.5)",
+            "label": "zone1-centre-rest-true",
+            "lit_pixels": 2827,
+            "max_depth_error_m_capped": 0.084313727915287,
+            "most_negative_receiver_depth": 0.0
+          },
+          {
+            "dry_leaks": 0,
+            "field_admitted": 3564,
+            "field_build_us": 16347,
+            "field_bytes": 196608,
+            "field_tiles": 5649,
+            "focus": "(132.5, 5.758586, -98.5)",
+            "label": "zone1-centre-wind-true",
+            "lit_pixels": 2827,
+            "max_depth_error_m_capped": 0.119607843458652,
+            "most_negative_receiver_depth": 0.0
+          },
+          {
+            "dry_leaks": 0,
+            "field_admitted": 3564,
+            "field_build_us": 16347,
+            "field_bytes": 196608,
+            "field_tiles": 5649,
+            "focus": "(132.5, 5.758586, -98.5)",
+            "label": "zone1-centre-raised-true",
+            "lit_pixels": 3415,
+            "max_depth_error_m_capped": 0.119607843458652,
+            "most_negative_receiver_depth": 0.0
+          },
+          {
+            "dry_leaks": 0,
+            "field_admitted": 3564,
+            "field_build_us": 16347,
+            "field_bytes": 196608,
+            "field_tiles": 5649,
+            "focus": "(132.5, 5.758586, -98.5)",
+            "label": "zone1-centre-lowered-true",
+            "lit_pixels": 2462,
+            "max_depth_error_m_capped": 0.119607843458652,
+            "most_negative_receiver_depth": 0.0
+          },
+          {
+            "dry_leaks": 0,
+            "field_admitted": 3564,
+            "field_build_us": 16347,
+            "field_bytes": 196608,
+            "field_tiles": 5649,
+            "focus": "(114.5, 5.758586, -190.5)",
+            "label": "zone1-slope-rest-true",
+            "lit_pixels": 598,
+            "max_depth_error_m_capped": 0.25,
+            "most_negative_receiver_depth": 0.0
+          },
+          {
+            "dry_leaks": 0,
+            "field_admitted": 3564,
+            "field_build_us": 16347,
+            "field_bytes": 196608,
+            "field_tiles": 5649,
+            "focus": "(114.5, 5.758586, -190.5)",
+            "label": "zone1-slope-wind-true",
+            "lit_pixels": 598,
+            "max_depth_error_m_capped": 0.25,
+            "most_negative_receiver_depth": 0.0
+          },
+          {
+            "dry_leaks": 0,
+            "field_admitted": 3564,
+            "field_build_us": 16347,
+            "field_bytes": 196608,
+            "field_tiles": 5649,
+            "focus": "(114.5, 5.758586, -190.5)",
+            "label": "zone1-slope-raised-true",
+            "lit_pixels": 593,
+            "max_depth_error_m_capped": 0.25,
+            "most_negative_receiver_depth": 0.0
+          },
+          {
+            "dry_leaks": 0,
+            "field_admitted": 3564,
+            "field_build_us": 16347,
+            "field_bytes": 196608,
+            "field_tiles": 5649,
+            "focus": "(114.5, 5.758586, -190.5)",
+            "label": "zone1-slope-lowered-true",
+            "lit_pixels": 600,
+            "max_depth_error_m_capped": 0.25,
+            "most_negative_receiver_depth": 0.0
+          }
+        ]
+      }
+    },
+    {
+      "label": "final-depth-zone15-gl_compatibility",
+      "run": {
+        "tool_sha256_at_start": "ce588498d0fd4593cfc79bbe3cce7a9e8f8542daccc21666078415c67529f8cc",
+        "helper_sha256_at_start": "06e1f5bd38b838f9296eab74bf168dd60b8e4736fd0da26e1ebd67661dbec7d6",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "1e32c7e4522af89fccc23710f7fecf5fb2612173af9fd8507f9ad3d43713ea54",
+        "termination_reason": null,
+        "timeout_sec": 120,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/caustics-final/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/benchmarks/water_bed_depth.gd",
+          "--bed-map=zone15"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 9.566872913012048,
+        "other_render_processes_at_start": [
+          {
+            "pid": 4106392,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {
+          "bed-depth-zone15-centre-lowered-true.png": "830beb4230e6330fd52e878e219e8335e4e6458197adb07a9244a41ff3a84ff1",
+          "bed-depth-zone15-slope-raised-true.png": "e694396d891ba81b1b1bdba5fe0a50a7e71cdf7835d268b62635b5a293ba622d",
+          "bed-depth-zone15-slope-rest-true.png": "132d82f11ebc5a794b2c6f5b192acd4df958a1b356cc261cc771b3e16ba229f8",
+          "bed-depth-zone15-slope-wind-true.png": "1b746ec992f2c42282398c85b3dc465127723e6b6f07f17e73ffcee2f3e562ea",
+          "bed-depth-zone15-centre-rest-true.png": "5519bb583c71bab225264134e44338d3b41d116ee98e7cb86ab9c684bf1c44ba",
+          "bed-depth-zone15-centre-raised-true.png": "779270963ee505e5cb10ddff3e87726813b85d20047f1695fd1b0021416f6b3e",
+          "bed-depth-zone15-centre-wind-true.png": "21bbe10920dbccbc54b8dc561b35b2c30b7b732505e134c338a5dd5f83118198",
+          "bed-depth-zone15-slope-lowered-true.png": "c2ca15d6fc8806a03369f28ea4fa544ebfa4ce3f54ea02f12ad7d36822199c0c"
+        }
+      },
+      "results": {
+        "checks": 19,
+        "failures": 0,
+        "rows": [
+          {
+            "dry_leaks": 0,
+            "field_admitted": 5682,
+            "field_build_us": 21385,
+            "field_bytes": 491520,
+            "field_tiles": 6739,
+            "focus": "(151.5, 3.591615, -176.5)",
+            "label": "zone15-centre-rest-true",
+            "lit_pixels": 3852,
+            "max_depth_error_m_capped": 0.0392156876623631,
+            "most_negative_receiver_depth": 0.0
+          },
+          {
+            "dry_leaks": 0,
+            "field_admitted": 5682,
+            "field_build_us": 21385,
+            "field_bytes": 491520,
+            "field_tiles": 6739,
+            "focus": "(151.5, 3.591615, -176.5)",
+            "label": "zone15-centre-wind-true",
+            "lit_pixels": 3852,
+            "max_depth_error_m_capped": 0.0774509832262993,
+            "most_negative_receiver_depth": 0.0
+          },
+          {
+            "dry_leaks": 0,
+            "field_admitted": 5682,
+            "field_build_us": 21385,
+            "field_bytes": 491520,
+            "field_tiles": 6739,
+            "focus": "(151.5, 3.591615, -176.5)",
+            "label": "zone15-centre-raised-true",
+            "lit_pixels": 3898,
+            "max_depth_error_m_capped": 0.0774509832262993,
+            "most_negative_receiver_depth": 0.0
+          },
+          {
+            "dry_leaks": 0,
+            "field_admitted": 5682,
+            "field_build_us": 21385,
+            "field_bytes": 491520,
+            "field_tiles": 6739,
+            "focus": "(151.5, 3.591615, -176.5)",
+            "label": "zone15-centre-lowered-true",
+            "lit_pixels": 3748,
+            "max_depth_error_m_capped": 0.0764705911278725,
+            "most_negative_receiver_depth": 0.0
+          },
+          {
+            "dry_leaks": 0,
+            "field_admitted": 5682,
+            "field_build_us": 21385,
+            "field_bytes": 491520,
+            "field_tiles": 6739,
+            "focus": "(187.5, 3.591615, -382.5)",
+            "label": "zone15-slope-rest-true",
+            "lit_pixels": 998,
+            "max_depth_error_m_capped": 0.25,
+            "most_negative_receiver_depth": 0.0
+          },
+          {
+            "dry_leaks": 0,
+            "field_admitted": 5682,
+            "field_build_us": 21385,
+            "field_bytes": 491520,
+            "field_tiles": 6739,
+            "focus": "(187.5, 3.591615, -382.5)",
+            "label": "zone15-slope-wind-true",
+            "lit_pixels": 998,
+            "max_depth_error_m_capped": 0.25,
+            "most_negative_receiver_depth": 0.0
+          },
+          {
+            "dry_leaks": 0,
+            "field_admitted": 5682,
+            "field_build_us": 21385,
+            "field_bytes": 491520,
+            "field_tiles": 6739,
+            "focus": "(187.5, 3.591615, -382.5)",
+            "label": "zone15-slope-raised-true",
+            "lit_pixels": 1045,
+            "max_depth_error_m_capped": 0.25,
+            "most_negative_receiver_depth": 0.0
+          },
+          {
+            "dry_leaks": 0,
+            "field_admitted": 5682,
+            "field_build_us": 21385,
+            "field_bytes": 491520,
+            "field_tiles": 6739,
+            "focus": "(187.5, 3.591615, -382.5)",
+            "label": "zone15-slope-lowered-true",
+            "lit_pixels": 973,
+            "max_depth_error_m_capped": 0.25,
+            "most_negative_receiver_depth": 0.0
+          }
+        ]
+      }
+    },
+    {
+      "label": "final-visual-gl_compatibility",
+      "run": {
+        "tool_sha256_at_start": "27cbf485d717a4b83a7b45b837682eb86e88d8070cb5e05c9b64e5853e6deb20",
+        "helper_sha256_at_start": "06e1f5bd38b838f9296eab74bf168dd60b8e4736fd0da26e1ebd67661dbec7d6",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "1e32c7e4522af89fccc23710f7fecf5fb2612173af9fd8507f9ad3d43713ea54",
+        "termination_reason": null,
+        "timeout_sec": 120,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/caustics-final/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_caustics.gd"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 10.315773153997725,
+        "other_render_processes_at_start": [],
+        "other_render_processes_at_end": [],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {
+          "caustics-night-on.png": "b0c3ef7e21005b3d8fc6ba23a41d99f82a6e583393ede0efc5e169999e47748c",
+          "caustics-lowered-on.png": "f089de7971f8a82e9032aa1842b9d073a11107aacfe6f90eb35f0e0a19e677b1",
+          "caustics-excluded-14.png": "2a547afedd5be094165d98b0e41f7d976411ed45425684c2bcda5fe969ddfdaa",
+          "caustics-off-stable.png": "2a547afedd5be094165d98b0e41f7d976411ed45425684c2bcda5fe969ddfdaa",
+          "caustics-on.png": "474cc579a534684a2029b3613affdcdfb81df22f82d9fca30314cc3ebe95ce26",
+          "caustics-restored.png": "2a547afedd5be094165d98b0e41f7d976411ed45425684c2bcda5fe969ddfdaa",
+          "caustics-night-off.png": "b0c3ef7e21005b3d8fc6ba23a41d99f82a6e583393ede0efc5e169999e47748c",
+          "caustics-pattern.png": "0229d033bc125e8d48e264552a7dc4972636db7f59b4616e40a3a1ddc13b48ca",
+          "caustics-bed-on.png": "fc73d574693c9960327e21e6edcaa9e011cb8ecd03d810b2e5d5d199e2e57c96",
+          "caustics-off.png": "2a547afedd5be094165d98b0e41f7d976411ed45425684c2bcda5fe969ddfdaa",
+          "caustics-moved.png": "2bce352139459a72273da30253015cb522b3e8593796b3c061fc48d117ba7abe",
+          "caustics-bed-off.png": "f089de7971f8a82e9032aa1842b9d073a11107aacfe6f90eb35f0e0a19e677b1",
+          "caustics-held.png": "474cc579a534684a2029b3613affdcdfb81df22f82d9fca30314cc3ebe95ce26",
+          "caustics-excluded-13.png": "2a547afedd5be094165d98b0e41f7d976411ed45425684c2bcda5fe969ddfdaa",
+          "caustics-lowered-off.png": "f089de7971f8a82e9032aa1842b9d073a11107aacfe6f90eb35f0e0a19e677b1"
+        }
+      },
+      "results": {
+        "checks": 26,
+        "failures": 0,
+        "rows": [
+          {
+            "case": "original program is settled",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "admitted": 3564,
+            "bytes": 196608,
+            "case": "field",
+            "enable_us": 25738,
+            "tiles": 5649
+          },
+          {
+            "case": "visible",
+            "difference": {
+              "changed_pixels": 43370,
+              "peak_delta": 7,
+              "pixels_over_2": 6100
+            }
+          },
+          {
+            "case": "zero game time holds caustic animation",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "draws",
+            "off": 25,
+            "on": 25
+          },
+          {
+            "case": "off-on-off restores the image",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "animated",
+            "difference": {
+              "changed_pixels": 53434,
+              "peak_delta": 9,
+              "pixels_over_2": 6383
+            }
+          },
+          {
+            "case": "no caustics without sunlight",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "lowering water removes caustics from the exposed bed",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "excluded liquid keeps original terrain image 13",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "excluded liquid keeps original terrain image 14",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "clock",
+            "seconds_1x": 0.249982333333333,
+            "seconds_2x": 0.499994666666667
+          }
+        ]
+      }
+    },
+    {
+      "label": "final-depth-zone1-forward_plus",
+      "run": {
+        "tool_sha256_at_start": "ce588498d0fd4593cfc79bbe3cce7a9e8f8542daccc21666078415c67529f8cc",
+        "helper_sha256_at_start": "06e1f5bd38b838f9296eab74bf168dd60b8e4736fd0da26e1ebd67661dbec7d6",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "1e32c7e4522af89fccc23710f7fecf5fb2612173af9fd8507f9ad3d43713ea54",
+        "termination_reason": null,
+        "timeout_sec": 120,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/caustics-final/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "forward_plus",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/benchmarks/water_bed_depth.gd",
+          "--bed-map=zone1"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 9.31574018401443,
+        "other_render_processes_at_start": [],
+        "other_render_processes_at_end": [],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/cache"
+        },
+        "warnings": [],
+        "errors": [],
+        "png_sha256": {
+          "bed-depth-zone1-centre-raised-true.png": "4deb0fb220cc347739d9061aa53f3686f9e1c334f304a7242f59fd4f2cc9a42a",
+          "bed-depth-zone1-slope-lowered-true.png": "7621570acde28ce8b46c2a3f34b4797876a6e3cd39c5d8bd3001d44d6a5f23e1",
+          "bed-depth-zone1-centre-rest-true.png": "6916912511ce6419318d62242d569173af65bd228f60e2f5daa5439bec48b0e5",
+          "bed-depth-zone1-slope-wind-true.png": "492d32e3cac1263bb8e7ee0e17c2cc210dd9eb9e7e14d4e75718ca07eb72e336",
+          "bed-depth-zone1-centre-lowered-true.png": "183441ec1f88ba2f5f73252a53f25862fbcb342a00165b065f1f98a0bd439bb5",
+          "bed-depth-zone1-slope-raised-true.png": "4b31981a722bca0c8ce09dcb1deb93e4e9fa576f19177418e243be844c0be6bf",
+          "bed-depth-zone1-slope-rest-true.png": "6af556810cd70b37e8c7a98497d7c714bf0d9d1385c0f5eebcb67a6fc4917cac",
+          "bed-depth-zone1-centre-wind-true.png": "8b13a6c2acaba69edc216e1a6fdd903fffc34d16b717cb43b0d0e75bd02821d7"
+        }
+      },
+      "results": {
+        "checks": 19,
+        "failures": 0,
+        "rows": [
+          {
+            "dry_leaks": 0,
+            "field_admitted": 3564,
+            "field_build_us": 24901,
+            "field_bytes": 196608,
+            "field_tiles": 5649,
+            "focus": "(132.5, 5.758586, -98.5)",
+            "label": "zone1-centre-rest-true",
+            "lit_pixels": 2827,
+            "max_depth_error_m_capped": 0.0833333358168602,
+            "most_negative_receiver_depth": 0.0
+          },
+          {
+            "dry_leaks": 0,
+            "field_admitted": 3564,
+            "field_build_us": 24901,
+            "field_bytes": 196608,
+            "field_tiles": 5649,
+            "focus": "(132.5, 5.758586, -98.5)",
+            "label": "zone1-centre-wind-true",
+            "lit_pixels": 2827,
+            "max_depth_error_m_capped": 0.119607843458652,
+            "most_negative_receiver_depth": 0.0
+          },
+          {
+            "dry_leaks": 0,
+            "field_admitted": 3564,
+            "field_build_us": 24901,
+            "field_bytes": 196608,
+            "field_tiles": 5649,
+            "focus": "(132.5, 5.758586, -98.5)",
+            "label": "zone1-centre-raised-true",
+            "lit_pixels": 3415,
+            "max_depth_error_m_capped": 0.119607843458652,
+            "most_negative_receiver_depth": 0.0
+          },
+          {
+            "dry_leaks": 0,
+            "field_admitted": 3564,
+            "field_build_us": 24901,
+            "field_bytes": 196608,
+            "field_tiles": 5649,
+            "focus": "(132.5, 5.758586, -98.5)",
+            "label": "zone1-centre-lowered-true",
+            "lit_pixels": 2462,
+            "max_depth_error_m_capped": 0.119607843458652,
+            "most_negative_receiver_depth": 0.0
+          },
+          {
+            "dry_leaks": 0,
+            "field_admitted": 3564,
+            "field_build_us": 24901,
+            "field_bytes": 196608,
+            "field_tiles": 5649,
+            "focus": "(114.5, 5.758586, -190.5)",
+            "label": "zone1-slope-rest-true",
+            "lit_pixels": 598,
+            "max_depth_error_m_capped": 0.25,
+            "most_negative_receiver_depth": 0.0
+          },
+          {
+            "dry_leaks": 0,
+            "field_admitted": 3564,
+            "field_build_us": 24901,
+            "field_bytes": 196608,
+            "field_tiles": 5649,
+            "focus": "(114.5, 5.758586, -190.5)",
+            "label": "zone1-slope-wind-true",
+            "lit_pixels": 598,
+            "max_depth_error_m_capped": 0.25,
+            "most_negative_receiver_depth": 0.0
+          },
+          {
+            "dry_leaks": 0,
+            "field_admitted": 3564,
+            "field_build_us": 24901,
+            "field_bytes": 196608,
+            "field_tiles": 5649,
+            "focus": "(114.5, 5.758586, -190.5)",
+            "label": "zone1-slope-raised-true",
+            "lit_pixels": 593,
+            "max_depth_error_m_capped": 0.25,
+            "most_negative_receiver_depth": 0.0
+          },
+          {
+            "dry_leaks": 0,
+            "field_admitted": 3564,
+            "field_build_us": 24901,
+            "field_bytes": 196608,
+            "field_tiles": 5649,
+            "focus": "(114.5, 5.758586, -190.5)",
+            "label": "zone1-slope-lowered-true",
+            "lit_pixels": 600,
+            "max_depth_error_m_capped": 0.25,
+            "most_negative_receiver_depth": 0.0
+          }
+        ]
+      }
+    },
+    {
+      "label": "final-depth-zone15-forward_plus",
+      "run": {
+        "tool_sha256_at_start": "ce588498d0fd4593cfc79bbe3cce7a9e8f8542daccc21666078415c67529f8cc",
+        "helper_sha256_at_start": "06e1f5bd38b838f9296eab74bf168dd60b8e4736fd0da26e1ebd67661dbec7d6",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "1e32c7e4522af89fccc23710f7fecf5fb2612173af9fd8507f9ad3d43713ea54",
+        "termination_reason": null,
+        "timeout_sec": 120,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/caustics-final/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "forward_plus",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/benchmarks/water_bed_depth.gd",
+          "--bed-map=zone15"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 9.813603628019337,
+        "other_render_processes_at_start": [],
+        "other_render_processes_at_end": [],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/cache"
+        },
+        "warnings": [],
+        "errors": [],
+        "png_sha256": {
+          "bed-depth-zone15-centre-lowered-true.png": "1a19df33e1d7db7ae51280bbf27a3d33c61c6525b8c556d4eaa35fffdf76f7e5",
+          "bed-depth-zone15-slope-raised-true.png": "d2e9e08c51c82b21ebd61e6dc34b418a925ac37ae00981460261611b51601a5e",
+          "bed-depth-zone15-slope-rest-true.png": "b6a3e17c842ebbf8a3e1182e068ae0ed2a86469f4de58ac20e6ff25f016111a0",
+          "bed-depth-zone15-slope-wind-true.png": "dcd2531b11e18b1a31f2a6a551046da9183676cb9bf78c004290b4943cb43355",
+          "bed-depth-zone15-centre-rest-true.png": "bbb8c2d6d3ada5e28ecc35a803225dcb8d29069b3062bc9edba13c03ce3e0bdd",
+          "bed-depth-zone15-centre-raised-true.png": "b622b2aaa18ea668afac475dcebe09dad90b7f209f52efefd2fc39c91daadd25",
+          "bed-depth-zone15-centre-wind-true.png": "35d3c92d7a5f76557de944a7af9cda0fead3fd722a366e8eed6d7219019bb01f",
+          "bed-depth-zone15-slope-lowered-true.png": "b68dce5b7749d03a4e75c0b01cc36e524e17176fb9c38fabac9cad069bc05d23"
+        }
+      },
+      "results": {
+        "checks": 19,
+        "failures": 0,
+        "rows": [
+          {
+            "dry_leaks": 0,
+            "field_admitted": 5682,
+            "field_build_us": 31169,
+            "field_bytes": 491520,
+            "field_tiles": 6739,
+            "focus": "(151.5, 3.591615, -176.5)",
+            "label": "zone15-centre-rest-true",
+            "lit_pixels": 3852,
+            "max_depth_error_m_capped": 0.0401960797607899,
+            "most_negative_receiver_depth": 0.0
+          },
+          {
+            "dry_leaks": 0,
+            "field_admitted": 5682,
+            "field_build_us": 31169,
+            "field_bytes": 491520,
+            "field_tiles": 6739,
+            "focus": "(151.5, 3.591615, -176.5)",
+            "label": "zone15-centre-wind-true",
+            "lit_pixels": 3852,
+            "max_depth_error_m_capped": 0.0774509832262993,
+            "most_negative_receiver_depth": 0.0
+          },
+          {
+            "dry_leaks": 0,
+            "field_admitted": 5682,
+            "field_build_us": 31169,
+            "field_bytes": 491520,
+            "field_tiles": 6739,
+            "focus": "(151.5, 3.591615, -176.5)",
+            "label": "zone15-centre-raised-true",
+            "lit_pixels": 3898,
+            "max_depth_error_m_capped": 0.0774509832262993,
+            "most_negative_receiver_depth": 0.0
+          },
+          {
+            "dry_leaks": 0,
+            "field_admitted": 5682,
+            "field_build_us": 31169,
+            "field_bytes": 491520,
+            "field_tiles": 6739,
+            "focus": "(151.5, 3.591615, -176.5)",
+            "label": "zone15-centre-lowered-true",
+            "lit_pixels": 3748,
+            "max_depth_error_m_capped": 0.0764705911278725,
+            "most_negative_receiver_depth": 0.0
+          },
+          {
+            "dry_leaks": 0,
+            "field_admitted": 5682,
+            "field_build_us": 31169,
+            "field_bytes": 491520,
+            "field_tiles": 6739,
+            "focus": "(187.5, 3.591615, -382.5)",
+            "label": "zone15-slope-rest-true",
+            "lit_pixels": 998,
+            "max_depth_error_m_capped": 0.25,
+            "most_negative_receiver_depth": 0.0
+          },
+          {
+            "dry_leaks": 0,
+            "field_admitted": 5682,
+            "field_build_us": 31169,
+            "field_bytes": 491520,
+            "field_tiles": 6739,
+            "focus": "(187.5, 3.591615, -382.5)",
+            "label": "zone15-slope-wind-true",
+            "lit_pixels": 998,
+            "max_depth_error_m_capped": 0.25,
+            "most_negative_receiver_depth": 0.0
+          },
+          {
+            "dry_leaks": 0,
+            "field_admitted": 5682,
+            "field_build_us": 31169,
+            "field_bytes": 491520,
+            "field_tiles": 6739,
+            "focus": "(187.5, 3.591615, -382.5)",
+            "label": "zone15-slope-raised-true",
+            "lit_pixels": 1045,
+            "max_depth_error_m_capped": 0.25,
+            "most_negative_receiver_depth": 0.0
+          },
+          {
+            "dry_leaks": 0,
+            "field_admitted": 5682,
+            "field_build_us": 31169,
+            "field_bytes": 491520,
+            "field_tiles": 6739,
+            "focus": "(187.5, 3.591615, -382.5)",
+            "label": "zone15-slope-lowered-true",
+            "lit_pixels": 973,
+            "max_depth_error_m_capped": 0.25,
+            "most_negative_receiver_depth": 0.0
+          }
+        ]
+      }
+    },
+    {
+      "label": "final-visual-forward_plus",
+      "run": {
+        "tool_sha256_at_start": "27cbf485d717a4b83a7b45b837682eb86e88d8070cb5e05c9b64e5853e6deb20",
+        "helper_sha256_at_start": "06e1f5bd38b838f9296eab74bf168dd60b8e4736fd0da26e1ebd67661dbec7d6",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "1e32c7e4522af89fccc23710f7fecf5fb2612173af9fd8507f9ad3d43713ea54",
+        "termination_reason": null,
+        "timeout_sec": 120,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/caustics-final/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "forward_plus",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_caustics.gd"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 10.316250832984224,
+        "other_render_processes_at_start": [],
+        "other_render_processes_at_end": [],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/cache"
+        },
+        "warnings": [],
+        "errors": [],
+        "png_sha256": {
+          "caustics-night-on.png": "d8e6a47ff57aa4881a2cd19bb6cea52c9c796238f3e5600b5ae7c9d1f25742cd",
+          "caustics-lowered-on.png": "d19a82eba08307a5e56e9d0dd19ce764548750c89992a12d119ff5f437b8b34d",
+          "caustics-excluded-14.png": "3d73636e97b9b33a8af6a754168b091b609b2ddb35953fe0eb97ae3ccd025f4e",
+          "caustics-off-stable.png": "3d73636e97b9b33a8af6a754168b091b609b2ddb35953fe0eb97ae3ccd025f4e",
+          "caustics-on.png": "d2653facd676343121d851662d075d8bc7ffb103cbc0ef5c07be8fcf37ca9aa7",
+          "caustics-restored.png": "3d73636e97b9b33a8af6a754168b091b609b2ddb35953fe0eb97ae3ccd025f4e",
+          "caustics-night-off.png": "d8e6a47ff57aa4881a2cd19bb6cea52c9c796238f3e5600b5ae7c9d1f25742cd",
+          "caustics-pattern.png": "0229d033bc125e8d48e264552a7dc4972636db7f59b4616e40a3a1ddc13b48ca",
+          "caustics-bed-on.png": "be2d03cae5b3fa370d94b7d5808ced0d5cd4f09dae6e0b7068d7d541d96cb155",
+          "caustics-off.png": "3d73636e97b9b33a8af6a754168b091b609b2ddb35953fe0eb97ae3ccd025f4e",
+          "caustics-moved.png": "7b0ccecee5d0bbe2f8dff4c9e107aed1d8361411b2ce75f745ac1cbdb0c548be",
+          "caustics-bed-off.png": "d19a82eba08307a5e56e9d0dd19ce764548750c89992a12d119ff5f437b8b34d",
+          "caustics-held.png": "d2653facd676343121d851662d075d8bc7ffb103cbc0ef5c07be8fcf37ca9aa7",
+          "caustics-excluded-13.png": "3d73636e97b9b33a8af6a754168b091b609b2ddb35953fe0eb97ae3ccd025f4e",
+          "caustics-lowered-off.png": "d19a82eba08307a5e56e9d0dd19ce764548750c89992a12d119ff5f437b8b34d"
+        }
+      },
+      "results": {
+        "checks": 26,
+        "failures": 0,
+        "rows": [
+          {
+            "case": "original program is settled",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "admitted": 3564,
+            "bytes": 196608,
+            "case": "field",
+            "enable_us": 31958,
+            "tiles": 5649
+          },
+          {
+            "case": "visible",
+            "difference": {
+              "changed_pixels": 29740,
+              "peak_delta": 5,
+              "pixels_over_2": 1417
+            }
+          },
+          {
+            "case": "zero game time holds caustic animation",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "draws",
+            "off": 25,
+            "on": 25
+          },
+          {
+            "case": "off-on-off restores the image",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "animated",
+            "difference": {
+              "changed_pixels": 36363,
+              "peak_delta": 6,
+              "pixels_over_2": 1498
+            }
+          },
+          {
+            "case": "no caustics without sunlight",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "lowering water removes caustics from the exposed bed",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "excluded liquid keeps original terrain image 13",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "excluded liquid keeps original terrain image 14",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "clock",
+            "seconds_1x": 0.249992333333333,
+            "seconds_2x": 0.499959333333333
+          }
+        ]
+      }
+    },
+    {
+      "label": "final-depth-zone1-mobile",
+      "run": {
+        "tool_sha256_at_start": "ce588498d0fd4593cfc79bbe3cce7a9e8f8542daccc21666078415c67529f8cc",
+        "helper_sha256_at_start": "06e1f5bd38b838f9296eab74bf168dd60b8e4736fd0da26e1ebd67661dbec7d6",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "1e32c7e4522af89fccc23710f7fecf5fb2612173af9fd8507f9ad3d43713ea54",
+        "termination_reason": null,
+        "timeout_sec": 120,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/caustics-final/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "mobile",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/benchmarks/water_bed_depth.gd",
+          "--bed-map=zone1"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 9.317982859007316,
+        "other_render_processes_at_start": [],
+        "other_render_processes_at_end": [],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/cache"
+        },
+        "warnings": [],
+        "errors": [],
+        "png_sha256": {
+          "bed-depth-zone1-centre-raised-true.png": "f199b0a60d556e233268e09fd43b2bf3ef20934662cfdc7218ac75ad7679c6ac",
+          "bed-depth-zone1-slope-lowered-true.png": "0ec509f482ae09c40b70337bc3545b8ded03c9460239d56bf06bc7e3a18871f1",
+          "bed-depth-zone1-centre-rest-true.png": "b6189a9391f5fd36024450567c509dd67efb64d93b98d03d74ae625e8d177ee7",
+          "bed-depth-zone1-slope-wind-true.png": "fb82e47d2aca3c131963a2ceb08f91063286b7f622ee01ea85fdf91621189ea1",
+          "bed-depth-zone1-centre-lowered-true.png": "901303c935655809930a99d49d033442d10d1e9667dbb0680ccfc9c69cae608a",
+          "bed-depth-zone1-slope-raised-true.png": "d2eb11f829ec3edfb33f077e8778086c24f83e1f17ca3e71e425f8250d00d3e9",
+          "bed-depth-zone1-slope-rest-true.png": "9a56d6f4fd66f27389672ec339985c8e4747b58584060ee015a602bb57987e4a",
+          "bed-depth-zone1-centre-wind-true.png": "9b3673dacfd5dfd36d564724f4fb0f8da6b36d6ff69a1361e79db566dc50719d"
+        }
+      },
+      "results": {
+        "checks": 19,
+        "failures": 0,
+        "rows": [
+          {
+            "dry_leaks": 0,
+            "field_admitted": 3564,
+            "field_build_us": 27032,
+            "field_bytes": 196608,
+            "field_tiles": 5649,
+            "focus": "(132.5, 5.758586, -98.5)",
+            "label": "zone1-centre-rest-true",
+            "lit_pixels": 2827,
+            "max_depth_error_m_capped": 0.0833333358168602,
+            "most_negative_receiver_depth": 0.0
+          },
+          {
+            "dry_leaks": 0,
+            "field_admitted": 3564,
+            "field_build_us": 27032,
+            "field_bytes": 196608,
+            "field_tiles": 5649,
+            "focus": "(132.5, 5.758586, -98.5)",
+            "label": "zone1-centre-wind-true",
+            "lit_pixels": 2827,
+            "max_depth_error_m_capped": 0.119607843458652,
+            "most_negative_receiver_depth": 0.0
+          },
+          {
+            "dry_leaks": 0,
+            "field_admitted": 3564,
+            "field_build_us": 27032,
+            "field_bytes": 196608,
+            "field_tiles": 5649,
+            "focus": "(132.5, 5.758586, -98.5)",
+            "label": "zone1-centre-raised-true",
+            "lit_pixels": 3415,
+            "max_depth_error_m_capped": 0.119607843458652,
+            "most_negative_receiver_depth": 0.0
+          },
+          {
+            "dry_leaks": 0,
+            "field_admitted": 3564,
+            "field_build_us": 27032,
+            "field_bytes": 196608,
+            "field_tiles": 5649,
+            "focus": "(132.5, 5.758586, -98.5)",
+            "label": "zone1-centre-lowered-true",
+            "lit_pixels": 2462,
+            "max_depth_error_m_capped": 0.119607843458652,
+            "most_negative_receiver_depth": 0.0
+          },
+          {
+            "dry_leaks": 0,
+            "field_admitted": 3564,
+            "field_build_us": 27032,
+            "field_bytes": 196608,
+            "field_tiles": 5649,
+            "focus": "(114.5, 5.758586, -190.5)",
+            "label": "zone1-slope-rest-true",
+            "lit_pixels": 598,
+            "max_depth_error_m_capped": 0.25,
+            "most_negative_receiver_depth": 0.0
+          },
+          {
+            "dry_leaks": 0,
+            "field_admitted": 3564,
+            "field_build_us": 27032,
+            "field_bytes": 196608,
+            "field_tiles": 5649,
+            "focus": "(114.5, 5.758586, -190.5)",
+            "label": "zone1-slope-wind-true",
+            "lit_pixels": 598,
+            "max_depth_error_m_capped": 0.25,
+            "most_negative_receiver_depth": 0.0
+          },
+          {
+            "dry_leaks": 0,
+            "field_admitted": 3564,
+            "field_build_us": 27032,
+            "field_bytes": 196608,
+            "field_tiles": 5649,
+            "focus": "(114.5, 5.758586, -190.5)",
+            "label": "zone1-slope-raised-true",
+            "lit_pixels": 593,
+            "max_depth_error_m_capped": 0.25,
+            "most_negative_receiver_depth": 0.0
+          },
+          {
+            "dry_leaks": 0,
+            "field_admitted": 3564,
+            "field_build_us": 27032,
+            "field_bytes": 196608,
+            "field_tiles": 5649,
+            "focus": "(114.5, 5.758586, -190.5)",
+            "label": "zone1-slope-lowered-true",
+            "lit_pixels": 600,
+            "max_depth_error_m_capped": 0.25,
+            "most_negative_receiver_depth": 0.0
+          }
+        ]
+      }
+    },
+    {
+      "label": "final-depth-zone15-mobile",
+      "run": {
+        "tool_sha256_at_start": "ce588498d0fd4593cfc79bbe3cce7a9e8f8542daccc21666078415c67529f8cc",
+        "helper_sha256_at_start": "06e1f5bd38b838f9296eab74bf168dd60b8e4736fd0da26e1ebd67661dbec7d6",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "1e32c7e4522af89fccc23710f7fecf5fb2612173af9fd8507f9ad3d43713ea54",
+        "termination_reason": null,
+        "timeout_sec": 120,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/caustics-final/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "mobile",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/benchmarks/water_bed_depth.gd",
+          "--bed-map=zone15"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 9.814928456005873,
+        "other_render_processes_at_start": [],
+        "other_render_processes_at_end": [],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/cache"
+        },
+        "warnings": [],
+        "errors": [],
+        "png_sha256": {
+          "bed-depth-zone15-centre-lowered-true.png": "5f97762f483539b7d06738e4a1d100371577684b000cff85f08226c9ee492bfd",
+          "bed-depth-zone15-slope-raised-true.png": "60801ed25768d44108892478097d60562e4c32402485c3ec314f07eb224b02ac",
+          "bed-depth-zone15-slope-rest-true.png": "00c91007c58f2df47fd7af01bb0990277d423e35733f6c4bdbb6f8fe01362f53",
+          "bed-depth-zone15-slope-wind-true.png": "c9831801283c24976892abeb1653d479874a7d3e638e05e83bba166daf7266d5",
+          "bed-depth-zone15-centre-rest-true.png": "a2bfff6615f0f799397b4f8bf56cd17a3698ac973446e1a11000c8ed5436ba24",
+          "bed-depth-zone15-centre-raised-true.png": "11941a4534a2774371c6ed02e9543639ca70f6d5fe5d2c3953fd58f21acbdaf8",
+          "bed-depth-zone15-centre-wind-true.png": "1d9ddce47f727afd2b367785374900d13ede3b775d451f8093b65e0035d7904a",
+          "bed-depth-zone15-slope-lowered-true.png": "f416a6ba693c137704893a4661ee7954d7a146b2bc344958bc0a8b83978ff8d3"
+        }
+      },
+      "results": {
+        "checks": 19,
+        "failures": 0,
+        "rows": [
+          {
+            "dry_leaks": 0,
+            "field_admitted": 5682,
+            "field_build_us": 32449,
+            "field_bytes": 491520,
+            "field_tiles": 6739,
+            "focus": "(151.5, 3.591615, -176.5)",
+            "label": "zone15-centre-rest-true",
+            "lit_pixels": 3852,
+            "max_depth_error_m_capped": 0.0411764718592167,
+            "most_negative_receiver_depth": 0.0
+          },
+          {
+            "dry_leaks": 0,
+            "field_admitted": 5682,
+            "field_build_us": 32449,
+            "field_bytes": 491520,
+            "field_tiles": 6739,
+            "focus": "(151.5, 3.591615, -176.5)",
+            "label": "zone15-centre-wind-true",
+            "lit_pixels": 3852,
+            "max_depth_error_m_capped": 0.0774509832262993,
+            "most_negative_receiver_depth": 0.0
+          },
+          {
+            "dry_leaks": 0,
+            "field_admitted": 5682,
+            "field_build_us": 32449,
+            "field_bytes": 491520,
+            "field_tiles": 6739,
+            "focus": "(151.5, 3.591615, -176.5)",
+            "label": "zone15-centre-raised-true",
+            "lit_pixels": 3898,
+            "max_depth_error_m_capped": 0.0774509832262993,
+            "most_negative_receiver_depth": 0.0
+          },
+          {
+            "dry_leaks": 0,
+            "field_admitted": 5682,
+            "field_build_us": 32449,
+            "field_bytes": 491520,
+            "field_tiles": 6739,
+            "focus": "(151.5, 3.591615, -176.5)",
+            "label": "zone15-centre-lowered-true",
+            "lit_pixels": 3748,
+            "max_depth_error_m_capped": 0.0764705911278725,
+            "most_negative_receiver_depth": 0.0
+          },
+          {
+            "dry_leaks": 0,
+            "field_admitted": 5682,
+            "field_build_us": 32449,
+            "field_bytes": 491520,
+            "field_tiles": 6739,
+            "focus": "(187.5, 3.591615, -382.5)",
+            "label": "zone15-slope-rest-true",
+            "lit_pixels": 998,
+            "max_depth_error_m_capped": 0.25,
+            "most_negative_receiver_depth": 0.0
+          },
+          {
+            "dry_leaks": 0,
+            "field_admitted": 5682,
+            "field_build_us": 32449,
+            "field_bytes": 491520,
+            "field_tiles": 6739,
+            "focus": "(187.5, 3.591615, -382.5)",
+            "label": "zone15-slope-wind-true",
+            "lit_pixels": 998,
+            "max_depth_error_m_capped": 0.25,
+            "most_negative_receiver_depth": 0.0
+          },
+          {
+            "dry_leaks": 0,
+            "field_admitted": 5682,
+            "field_build_us": 32449,
+            "field_bytes": 491520,
+            "field_tiles": 6739,
+            "focus": "(187.5, 3.591615, -382.5)",
+            "label": "zone15-slope-raised-true",
+            "lit_pixels": 1045,
+            "max_depth_error_m_capped": 0.25,
+            "most_negative_receiver_depth": 0.0
+          },
+          {
+            "dry_leaks": 0,
+            "field_admitted": 5682,
+            "field_build_us": 32449,
+            "field_bytes": 491520,
+            "field_tiles": 6739,
+            "focus": "(187.5, 3.591615, -382.5)",
+            "label": "zone15-slope-lowered-true",
+            "lit_pixels": 973,
+            "max_depth_error_m_capped": 0.25,
+            "most_negative_receiver_depth": 0.0
+          }
+        ]
+      }
+    },
+    {
+      "label": "final-visual-mobile",
+      "run": {
+        "tool_sha256_at_start": "27cbf485d717a4b83a7b45b837682eb86e88d8070cb5e05c9b64e5853e6deb20",
+        "helper_sha256_at_start": "06e1f5bd38b838f9296eab74bf168dd60b8e4736fd0da26e1ebd67661dbec7d6",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "1e32c7e4522af89fccc23710f7fecf5fb2612173af9fd8507f9ad3d43713ea54",
+        "termination_reason": null,
+        "timeout_sec": 120,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/caustics-final/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "mobile",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_caustics.gd"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 10.069116161001148,
+        "other_render_processes_at_start": [],
+        "other_render_processes_at_end": [],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/cache"
+        },
+        "warnings": [],
+        "errors": [],
+        "png_sha256": {
+          "caustics-night-on.png": "e7cf1d0d72d9c462484b2867cd265682ef040d225bb57ef2293571c5d0ac14f0",
+          "caustics-lowered-on.png": "374ea516dcbbbfffcc89e54a97ce1420d65bee7e6a125b87593f34a8669f6847",
+          "caustics-excluded-14.png": "e0600b1500400c0e461fd68d6dcd6f1cd358e102d46a60b26c7ad85f146e7ad1",
+          "caustics-off-stable.png": "e0600b1500400c0e461fd68d6dcd6f1cd358e102d46a60b26c7ad85f146e7ad1",
+          "caustics-on.png": "0f4125d515f5305a861c884cc1a85d983ac900ac6cc71d8008e43a3d9ed10bdb",
+          "caustics-restored.png": "e0600b1500400c0e461fd68d6dcd6f1cd358e102d46a60b26c7ad85f146e7ad1",
+          "caustics-night-off.png": "e7cf1d0d72d9c462484b2867cd265682ef040d225bb57ef2293571c5d0ac14f0",
+          "caustics-pattern.png": "0229d033bc125e8d48e264552a7dc4972636db7f59b4616e40a3a1ddc13b48ca",
+          "caustics-bed-on.png": "b6dcc24a944399342f4901908a5be49e0093c3e2785332940740c7625997067d",
+          "caustics-off.png": "e0600b1500400c0e461fd68d6dcd6f1cd358e102d46a60b26c7ad85f146e7ad1",
+          "caustics-moved.png": "b9c9548c17951a20e8b6354520c52271bc446f6b1c124ef791c8d9e96741dd7b",
+          "caustics-bed-off.png": "2d0524c4921339361482130ac9d15d9259fa243c5b8e8d2b6c6fde36fe3570b7",
+          "caustics-held.png": "0f4125d515f5305a861c884cc1a85d983ac900ac6cc71d8008e43a3d9ed10bdb",
+          "caustics-excluded-13.png": "e0600b1500400c0e461fd68d6dcd6f1cd358e102d46a60b26c7ad85f146e7ad1",
+          "caustics-lowered-off.png": "374ea516dcbbbfffcc89e54a97ce1420d65bee7e6a125b87593f34a8669f6847"
+        }
+      },
+      "results": {
+        "checks": 26,
+        "failures": 0,
+        "rows": [
+          {
+            "case": "original program is settled",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "admitted": 3564,
+            "bytes": 196608,
+            "case": "field",
+            "enable_us": 30556,
+            "tiles": 5649
+          },
+          {
+            "case": "visible",
+            "difference": {
+              "changed_pixels": 18356,
+              "peak_delta": 6,
+              "pixels_over_2": 7511
+            }
+          },
+          {
+            "case": "zero game time holds caustic animation",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "draws",
+            "off": 25,
+            "on": 25
+          },
+          {
+            "case": "off-on-off restores the image",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "animated",
+            "difference": {
+              "changed_pixels": 22606,
+              "peak_delta": 6,
+              "pixels_over_2": 8379
+            }
+          },
+          {
+            "case": "no caustics without sunlight",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "lowering water removes caustics from the exposed bed",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "excluded liquid keeps original terrain image 13",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "excluded liquid keeps original terrain image 14",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "clock",
+            "seconds_1x": 0.249995,
+            "seconds_2x": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "label": "final-baked",
+      "run": {
+        "tool_sha256_at_start": "27cbf485d717a4b83a7b45b837682eb86e88d8070cb5e05c9b64e5853e6deb20",
+        "helper_sha256_at_start": "06e1f5bd38b838f9296eab74bf168dd60b8e4736fd0da26e1ebd67661dbec7d6",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "1e32c7e4522af89fccc23710f7fecf5fb2612173af9fd8507f9ad3d43713ea54",
+        "termination_reason": null,
+        "timeout_sec": 120,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/caustics-final/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_caustics.gd",
+          "--ei-baked-terrain"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 12.068904830986867,
+        "other_render_processes_at_start": [],
+        "other_render_processes_at_end": [],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {
+          "caustics-night-on.png": "dcb93285ce07dfbb470f1b6055adcd12e8e0d52cdff324e06771c007dc85707d",
+          "caustics-lowered-on.png": "6519eec398db9876793e4296e07b1606e9b98c17def3c99e1ab3870a9be70bf4",
+          "caustics-excluded-14.png": "470f29beedfa44c80947c4bc913c1c30a2adc01804b867383ecda3280b18449b",
+          "caustics-off-stable.png": "470f29beedfa44c80947c4bc913c1c30a2adc01804b867383ecda3280b18449b",
+          "caustics-on.png": "ad24978d44e5c8115e066ed587a441639f08080d3427e9d74708e318f232b832",
+          "caustics-restored.png": "470f29beedfa44c80947c4bc913c1c30a2adc01804b867383ecda3280b18449b",
+          "caustics-night-off.png": "dcb93285ce07dfbb470f1b6055adcd12e8e0d52cdff324e06771c007dc85707d",
+          "caustics-pattern.png": "0229d033bc125e8d48e264552a7dc4972636db7f59b4616e40a3a1ddc13b48ca",
+          "caustics-bed-on.png": "d156b9498d96ae8bc99c6a826bfeaa557349d3727fc440f61b869e2b99b3ab9b",
+          "caustics-off.png": "470f29beedfa44c80947c4bc913c1c30a2adc01804b867383ecda3280b18449b",
+          "caustics-moved.png": "ce9274e5035f835c45c4699cdc211525c0f1b8fd0276bfb3a6eaa3444408db2b",
+          "caustics-bed-off.png": "0238b0278689482951d56eeee7b39d1ce6d1602fc0fa8bdca8042bd201506eae",
+          "caustics-held.png": "ad24978d44e5c8115e066ed587a441639f08080d3427e9d74708e318f232b832",
+          "caustics-excluded-13.png": "470f29beedfa44c80947c4bc913c1c30a2adc01804b867383ecda3280b18449b",
+          "caustics-lowered-off.png": "6519eec398db9876793e4296e07b1606e9b98c17def3c99e1ab3870a9be70bf4"
+        }
+      },
+      "results": {
+        "checks": 115,
+        "failures": 0,
+        "rows": [
+          {
+            "case": "original program is settled",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "admitted": 3564,
+            "bytes": 196608,
+            "case": "field",
+            "enable_us": 36052,
+            "tiles": 5649
+          },
+          {
+            "case": "visible",
+            "difference": {
+              "changed_pixels": 43004,
+              "peak_delta": 13,
+              "pixels_over_2": 6336
+            }
+          },
+          {
+            "case": "zero game time holds caustic animation",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "draws",
+            "off": 25,
+            "on": 25
+          },
+          {
+            "case": "off-on-off restores the image",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "animated",
+            "difference": {
+              "changed_pixels": 52781,
+              "peak_delta": 12,
+              "pixels_over_2": 6842
+            }
+          },
+          {
+            "case": "no caustics without sunlight",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "lowering water removes caustics from the exposed bed",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "excluded liquid keeps original terrain image 13",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "excluded liquid keeps original terrain image 14",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "clock",
+            "seconds_1x": 0.249989666666667,
+            "seconds_2x": 0.49998
+          }
+        ]
+      }
+    },
+    {
+      "label": "final-zone15",
+      "run": {
+        "tool_sha256_at_start": "8734d32520ec0c0ef50250efc8b65b136f83a603ad65c2f3a6ab942b4619645b",
+        "helper_sha256_at_start": "06e1f5bd38b838f9296eab74bf168dd60b8e4736fd0da26e1ebd67661dbec7d6",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "1e32c7e4522af89fccc23710f7fecf5fb2612173af9fd8507f9ad3d43713ea54",
+        "termination_reason": null,
+        "timeout_sec": 120,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/caustics-final/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_caustics.gd",
+          "--caustic-zone15"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 9.853877065004781,
+        "other_render_processes_at_start": [
+          {
+            "pid": 4109998,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 4111317,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 4111692,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {
+          "caustics-night-on.png": "3f3f89a6e1d6829aed63221a1e43f9bfd5442e5d3503c385376c36c894d04424",
+          "caustics-lowered-on.png": "afa81083175091e084336519bbe12f42c0076f98236166248cd7826892eba367",
+          "caustics-excluded-14.png": "1c458ef34dd58c14af6731e467409f21715e1cf92c3c2d22d13895746a2e3eea",
+          "caustics-off-stable.png": "1c458ef34dd58c14af6731e467409f21715e1cf92c3c2d22d13895746a2e3eea",
+          "caustics-on.png": "3fa7d83ea5ae0478ec389db0fc985565051fc44093dd3a69a198641e2f6cfb0c",
+          "caustics-restored.png": "1c458ef34dd58c14af6731e467409f21715e1cf92c3c2d22d13895746a2e3eea",
+          "caustics-night-off.png": "3f3f89a6e1d6829aed63221a1e43f9bfd5442e5d3503c385376c36c894d04424",
+          "caustics-pattern.png": "0229d033bc125e8d48e264552a7dc4972636db7f59b4616e40a3a1ddc13b48ca",
+          "caustics-bed-on.png": "98a23e794a1a115f30c8df60e681aecee58213973296a3eaa41b32deea27ec8b",
+          "caustics-off.png": "1c458ef34dd58c14af6731e467409f21715e1cf92c3c2d22d13895746a2e3eea",
+          "caustics-moved.png": "e233afb99103831cd8c5df81e36adfb6a870122e2f9fe4ab4fef65301c58289b",
+          "caustics-bed-off.png": "afa81083175091e084336519bbe12f42c0076f98236166248cd7826892eba367",
+          "caustics-held.png": "3fa7d83ea5ae0478ec389db0fc985565051fc44093dd3a69a198641e2f6cfb0c",
+          "caustics-excluded-13.png": "1c458ef34dd58c14af6731e467409f21715e1cf92c3c2d22d13895746a2e3eea",
+          "caustics-lowered-off.png": "afa81083175091e084336519bbe12f42c0076f98236166248cd7826892eba367"
+        }
+      },
+      "results": {
+        "checks": 26,
+        "failures": 0,
+        "rows": [
+          {
+            "case": "original program is settled",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "admitted": 5682,
+            "bytes": 491520,
+            "case": "field",
+            "enable_us": 30721,
+            "tiles": 6739
+          },
+          {
+            "case": "visible",
+            "difference": {
+              "changed_pixels": 55329,
+              "peak_delta": 11,
+              "pixels_over_2": 6484
+            }
+          },
+          {
+            "case": "zero game time holds caustic animation",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "draws",
+            "off": 29,
+            "on": 29
+          },
+          {
+            "case": "off-on-off restores the image",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "animated",
+            "difference": {
+              "changed_pixels": 62865,
+              "peak_delta": 11,
+              "pixels_over_2": 7267
+            }
+          },
+          {
+            "case": "no caustics without sunlight",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "lowering water removes caustics from the exposed bed",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "excluded liquid keeps original terrain image 13",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "excluded liquid keeps original terrain image 14",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "clock",
+            "seconds_1x": 0.249990666666667,
+            "seconds_2x": 0.499976666666667
+          }
+        ]
+      }
+    },
+    {
+      "label": "final-headless",
+      "run": {
+        "tool_sha256_at_start": "27cbf485d717a4b83a7b45b837682eb86e88d8070cb5e05c9b64e5853e6deb20",
+        "helper_sha256_at_start": "06e1f5bd38b838f9296eab74bf168dd60b8e4736fd0da26e1ebd67661dbec7d6",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "1e32c7e4522af89fccc23710f7fecf5fb2612173af9fd8507f9ad3d43713ea54",
+        "termination_reason": null,
+        "timeout_sec": 120,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/caustics-final/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_caustics.gd"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 3.3073169039853383,
+        "other_render_processes_at_start": [],
+        "other_render_processes_at_end": [],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {}
+      },
+      "results": {
+        "checks": 14,
+        "failures": 0,
+        "rows": [
+          {
+            "admitted": 3564,
+            "bytes": 196608,
+            "case": "field",
+            "enable_us": 24220,
+            "tiles": 5649
+          },
+          {
+            "case": "clock",
+            "seconds_1x": 0.25,
+            "seconds_2x": 0.499934
+          }
+        ]
+      }
+    }
+  ],
+  "rejected_experiment": {
+    "label": "signed-depth-zone1",
+    "run": {
+      "tool_sha256_at_start": "bf9303db4ddd4c48c63f015c9a228b35b54eade49e5fa9460dac8bb3feb67a74",
+      "helper_sha256_at_start": "56a76a1128baec53ee6253f9ee10d67fb1bee0115a831d8d4b0ebf3782850a0e",
+      "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+      "pack_sha256": "d741cbcd17214a8670896a4da8e34c5a76b6d17c8f9f585794bfaf8f1e4330ab",
+      "termination_reason": null,
+      "timeout_sec": 120,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-water/contacts-edge-final/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/benchmarks/water_bed_depth.gd"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 8.067513559013605,
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [],
+      "xdg_directories": {
+        "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/data",
+        "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/config",
+        "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-caustics/cache"
+      },
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "errors": [],
+      "png_sha256": {
+        "bed-depth-zone1-centre-raised-true.png": "d46b52479c6a7e509edf1bb53121d4d732746a7fa8ade75a35401391e48b6e9e",
+        "bed-depth-zone1-slope-wind-false.png": "1b7946401b383261cddbfc4ceecb773e60ccd999fdaaf41dd8114ed6ebd10ee9",
+        "bed-depth-zone1-slope-raised-false.png": "85a089041cae30b62fc5391d6dbe8be21c734e842fa46c5c4bd595e670b0d5f1",
+        "bed-depth-zone1-centre-rest-true.png": "77de623c83e437b2e6be6dbcd5cf1d3d3b057d4f06265d6ee0218c2884101ab5",
+        "bed-depth-zone1-slope-wind-true.png": "2108382483c4d69c8b036e7586788ba018e3673ae64b7f0194c33721be133157",
+        "bed-depth-zone1-centre-wind-false.png": "13313b19b6772e0ff349e86bbbf51372907539d68e82046c23352cbdec0693b2",
+        "bed-depth-zone1-slope-raised-true.png": "43f5d57740ca063bfa1b04299c89b5f5a62d8f72327bc668f9532590ff98aa3c",
+        "bed-depth-zone1-slope-rest-true.png": "27494e47c70f4cb6fe17e992943eab20e0eda6055d567290dd8fb0ef7c8e7fa6",
+        "bed-depth-zone1-slope-rest-false.png": "c87ea90aa29489759c27a3f0837e9b53148af9429f9c4b9266126ffb4f3938b5",
+        "bed-depth-zone1-centre-wind-true.png": "238d5db8ddc63bbf96071ac76b675e69e25dc9d8215ea071d3c1a41c0177f990",
+        "bed-depth-zone1-centre-rest-false.png": "d52fd526b43d5b6402a526494bd72c943fbd9872ff1f760ad7c70063fdf12a67",
+        "bed-depth-zone1-centre-raised-false.png": "262339fbb589c1ae83bc9d8a71a8fdb3b0151456d2593db5747beda9ff4ec35f"
+      }
+    },
+    "results": {
+      "checks": 15,
+      "failures": 0,
+      "rows": [
+        {
+          "dry_leaks": 0,
+          "field_build_us": 64468,
+          "field_bytes": 1769472,
+          "field_tiles": 5649,
+          "focus": "(132.5, 5.758586, -98.5)",
+          "label": "zone1-centre-rest-false",
+          "lit_pixels": 2879,
+          "max_depth_error_m_capped": 0.0205882359296083,
+          "most_negative_receiver_depth": 0.0
+        },
+        {
+          "dry_leaks": 0,
+          "field_build_us": 64468,
+          "field_bytes": 1769472,
+          "field_tiles": 5649,
+          "focus": "(132.5, 5.758586, -98.5)",
+          "label": "zone1-centre-rest-true",
+          "lit_pixels": 2841,
+          "max_depth_error_m_capped": 0.084313727915287,
+          "most_negative_receiver_depth": 0.0
+        },
+        {
+          "dry_leaks": 0,
+          "field_build_us": 64468,
+          "field_bytes": 1769472,
+          "field_tiles": 5649,
+          "focus": "(132.5, 5.758586, -98.5)",
+          "label": "zone1-centre-wind-false",
+          "lit_pixels": 2879,
+          "max_depth_error_m_capped": 0.0588235296308994,
+          "most_negative_receiver_depth": 0.0
+        },
+        {
+          "dry_leaks": 0,
+          "field_build_us": 64468,
+          "field_bytes": 1769472,
+          "field_tiles": 5649,
+          "focus": "(132.5, 5.758586, -98.5)",
+          "label": "zone1-centre-wind-true",
+          "lit_pixels": 2841,
+          "max_depth_error_m_capped": 0.119607843458652,
+          "most_negative_receiver_depth": 0.0
+        },
+        {
+          "dry_leaks": 65,
+          "field_build_us": 64468,
+          "field_bytes": 1769472,
+          "field_tiles": 5649,
+          "focus": "(132.5, 5.758586, -98.5)",
+          "label": "zone1-centre-raised-false",
+          "lit_pixels": 3912,
+          "max_depth_error_m_capped": 0.0588235296308994,
+          "most_negative_receiver_depth": -10000.0
+        },
+        {
+          "dry_leaks": 29,
+          "field_build_us": 64468,
+          "field_bytes": 1769472,
+          "field_tiles": 5649,
+          "focus": "(132.5, 5.758586, -98.5)",
+          "label": "zone1-centre-raised-true",
+          "lit_pixels": 3659,
+          "max_depth_error_m_capped": 0.119607843458652,
+          "most_negative_receiver_depth": -10000.0
+        },
+        {
+          "dry_leaks": 0,
+          "field_build_us": 64468,
+          "field_bytes": 1769472,
+          "field_tiles": 5649,
+          "focus": "(114.5, 6.408587, -190.5)",
+          "label": "zone1-slope-rest-false",
+          "lit_pixels": 1220,
+          "max_depth_error_m_capped": 0.25,
+          "most_negative_receiver_depth": 0.0
+        },
+        {
+          "dry_leaks": 0,
+          "field_build_us": 64468,
+          "field_bytes": 1769472,
+          "field_tiles": 5649,
+          "focus": "(114.5, 6.408587, -190.5)",
+          "label": "zone1-slope-rest-true",
+          "lit_pixels": 1214,
+          "max_depth_error_m_capped": 0.25,
+          "most_negative_receiver_depth": 0.0
+        },
+        {
+          "dry_leaks": 59,
+          "field_build_us": 64468,
+          "field_bytes": 1769472,
+          "field_tiles": 5649,
+          "focus": "(114.5, 6.408587, -190.5)",
+          "label": "zone1-slope-wind-false",
+          "lit_pixels": 1220,
+          "max_depth_error_m_capped": 0.25,
+          "most_negative_receiver_depth": -0.343173921108246
+        },
+        {
+          "dry_leaks": 55,
+          "field_build_us": 64468,
+          "field_bytes": 1769472,
+          "field_tiles": 5649,
+          "focus": "(114.5, 6.408587, -190.5)",
+          "label": "zone1-slope-wind-true",
+          "lit_pixels": 1214,
+          "max_depth_error_m_capped": 0.25,
+          "most_negative_receiver_depth": -0.305574506521225
+        },
+        {
+          "dry_leaks": 231,
+          "field_build_us": 64468,
+          "field_bytes": 1769472,
+          "field_tiles": 5649,
+          "focus": "(114.5, 6.408587, -190.5)",
+          "label": "zone1-slope-raised-false",
+          "lit_pixels": 1598,
+          "max_depth_error_m_capped": 0.25,
+          "most_negative_receiver_depth": -10000.0
+        },
+        {
+          "dry_leaks": 231,
+          "field_build_us": 64468,
+          "field_bytes": 1769472,
+          "field_tiles": 5649,
+          "focus": "(114.5, 6.408587, -190.5)",
+          "label": "zone1-slope-raised-true",
+          "lit_pixels": 1598,
+          "max_depth_error_m_capped": 0.25,
+          "most_negative_receiver_depth": -10000.0
+        }
+      ]
+    },
+    "conclusion": "Paired land/water vertex depth is not a safe wet mask: horizontal displacement and coverage changes cause dry-ground lighting. A vertical wave margin leaves 55 dry pixels in one wind view and 231 in a raised-water view. Do not restore this approximation.",
+    "fixture_limit": "The initial probe carried wave state between successive views and chose the second focus after raised water. Its rest/wind labels do not form an independent timing comparison. It still establishes actual false-wet receivers in that frozen state; final probes reset wave state for every case and capture both foci before changing levels."
+  },
+  "supporting_runs": [
+    "conservative-zone1",
+    "conservative-zone15",
+    "prototype-visual",
+    "prototype-baked",
+    "prototype-forward",
+    "prototype-mobile",
+    "final-lake"
+  ],
+  "test_interface_note": "The final zone15 run replaces the earlier final-lake run after renaming its diagnostic switch from --caustic-lake to --caustic-zone15. The sampled zone15 scene is a water-filled canyon. Other final test bodies are unchanged; snapshots preserve their exact tool source.",
+  "limitations": [
+    "Conservative, view-independent receiver mask, not exact instantaneous liquid depth or a wave/refraction simulation. Homogeneous material rings intentionally omit narrow pools and mixed edges; minimum heights attenuate steep flows.",
+    "Metadata assumes immutable, axis-aligned authored terrain/water meshes with the existing 9-vertex tile layout. Dynamic water levels and bounded original waves are supported. Arbitrary runtime water topology/material edits or transformed terrain require rebuilding/adapting the field.",
+    "Terrain receivers only. Existing underwater attenuation and shadowing still shade the multiplied albedo. Sun gating is global, following the reference behavior; this is not optical focusing or an added per-pixel sunlight occlusion calculation.",
+    "Four metadata fetches and two mipmapped pattern samples in the opt-in nearby sunlit terrain variant, plus live phase bindings to resident terrain materials. No measured GPU/frame-time/device benefit is claimed.",
+    "Graphics runs are Linux RTX 3090 with the previously patched runtime. Other Godot processes were recorded at many boundaries, so observed field/enable times are diagnostic, not controlled performance evidence.",
+    "The visual fixtures are two water-filled map channels, not whole-map or real co-op routes. Wider shorelines, viewpoints, underwater-camera play, deformed terrain, Android/web cost and artistic acceptance remain open.",
+    "Lava/swamp/emission checks deliberately change classification metadata in the fixture. They establish exclusion logic, not broad visual coverage of all non-water maps.",
+    "Wave-equation propagation, current advection, refraction changes and waterfall shells/spray/mist remain separate unimplemented V4 adaptations. V2 ground cover is next in the initial visual sequence; gameplay U45 remains first when entering the gameplay track."
+  ]
+}

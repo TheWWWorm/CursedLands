@@ -10,6 +10,7 @@ const GUTTER_TILES:=1
 var terrain:EITerrain
 var _field:RefCounted
 var _shader:Shader
+var _shader_source := ""
 var _sectors:Array[Dictionary]=[]
 var _wanted:Array[Dictionary]=[]
 var _wanted_keys:Dictionary={}
@@ -54,17 +55,24 @@ func refresh()->void:
 		_field=ClassDB.instantiate("TerrainColorField")
 		if not _field.configure(images,terrain.land_tile,Vector2i(terrain.sectors_x*16,terrain.sectors_y*16),terrain.texture_size,terrain.tile_size,EITerrain.TERRAIN_GUTTER,false):
 			_field=null;_enabled=false;return
-		_shader=Gfx.make_shader(EITerrain.TERRAIN_SHADER.replace("shader_type spatial;","shader_type spatial;\n#define EI_BAKED_TERRAIN"),true,true)
 		_sectors.clear()
 		for node in terrain.get_children():
 			if not (node is EITerrainSector or node is MeshInstance3D) or not String(node.name).begins_with("Sector_"):continue
 			var parts:=String(node.name).split("_");var key:=Vector2i(int(parts[1]),int(parts[2]))
 			_sectors.append({"key":key,"node":node,"box":node.global_transform*node.get_aabb()})
+	var source := terrain.land_shader_source()
+	if source != _shader_source:
+		_shader_source=source
+		_shader=Gfx.make_shader(source.replace("shader_type spatial;","shader_type spatial;\n#define EI_BAKED_TERRAIN"),true,true)
 	for record:Dictionary in _resident.values():
+		record.material.shader=_shader
 		_copy_parameters(record.material)
 	_poll=0.0
 
 func _copy_parameters(material:ShaderMaterial)->void:
+	if terrain._caustics==null or terrain._caustics.admitted==0:
+		material.set_shader_parameter("caustic_bed",null)
+		material.set_shader_parameter("caustic_pattern",null)
 	for parameter in terrain._land_mat.shader.get_shader_uniform_list():
 		var key:StringName=parameter.name
 		var value:Variant=terrain._land_mat.get_shader_parameter(key)
@@ -160,6 +168,6 @@ func clear()->void:
 	_jobs.clear();_building.clear();_failed.clear();_wanted.clear();_wanted_keys.clear()
 	for row:Dictionary in _resident.values():
 		if is_instance_valid(row.node) and row.node.get_surface_override_material(0)==row.material:row.node.set_surface_override_material(0,null)
-	_resident.clear();_bytes=0;_field=null;_shader=null;_sectors.clear()
+	_resident.clear();_bytes=0;_field=null;_shader=null;_shader_source="";_sectors.clear()
 
 func _exit_tree()->void:clear()
