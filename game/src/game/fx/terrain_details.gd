@@ -76,6 +76,7 @@ var _cover := false
 var _cover_field: BiomeCover
 var _cover_material: ShaderMaterial
 var _cover_surface: GroundSurfaceData
+var _mound_material: ShaderMaterial
 var _trees := {} # chunk -> immutable nearby authored tree records
 var _chunks := {} # Vector2i -> MultiMeshInstance3D
 var _queue: Array[Vector2i] = []
@@ -187,6 +188,7 @@ func _process(_dt: float) -> void:
 	if _material:
 		_material.set_shader_parameter("view_position", p)
 		if _cover_material: _cover_material.set_shader_parameter("view_position",p)
+		if _mound_material: _mound_material.set_shader_parameter("view_position",p)
 		_update_motion(p)
 	if _native_grass:
 		prepare_grass()
@@ -232,6 +234,7 @@ func _clear_grass() -> void:
 	_cover_field = null
 	_cover_material = null
 	_cover_surface = null
+	_mound_material = null
 	_trees.clear()
 	for n: MultiMeshInstance3D in _chunks.values():
 		if is_instance_valid(n):
@@ -276,6 +279,22 @@ func _apply_grass_material() -> void:
 		_cover_material.set_shader_parameter("wind_phase",_material.get_shader_parameter("wind_phase"))
 		_cover_material.set_shader_parameter("vegetation_pressure",interaction.texture if interaction else null)
 		if interaction: _cover_material.set_shader_parameter("vegetation_focus",interaction.focus)
+	if _cover_field and _cover_field.mounds.enabled:
+		var soft := Gfx.on("gfx_soft_ground") and is_instance_valid(soft_ground)
+		if _mound_material == null:
+			_mound_material = ShaderMaterial.new()
+		_mound_material.shader = BiomeCover.Mounds.shader(soft)
+		if soft:
+			_cover_surface = terrain.ground_surface_data(true)
+			_cover_surface.bind(_mound_material,true)
+		else:
+			for parameter in [&"query_vertices",&"query_tiles",&"query_tracks",&"query_clock"]:
+				_mound_material.set_shader_parameter(parameter,null)
+		for parameter in GroundSurfaceData.LAND_PARAMETERS+[&"detail_nm"]:
+			_mound_material.set_shader_parameter(parameter,terrain._land_mat.get_shader_parameter(parameter))
+		_mound_material.set_shader_parameter("blend_edges",Gfx.on("gfx_terrain"))
+		_mound_material.set_shader_parameter("soft_tracks",false)
+		_mound_material.set_shader_parameter("view_position",_material.get_shader_parameter("view_position"))
 
 
 func _update_motion(centre: Vector3) -> void:
@@ -565,7 +584,18 @@ func _chunk_job(key: Vector2i) -> RefCounted:
 	var job := BiomeCover.ChunkJob.new()
 	job.grass = grass; job.cover = _cover_field; job.key = key
 	job.boxes = _scenery.get(key,[]).duplicate(true); job.trees = _trees.get(key,[]).duplicate(true)
+	job.mound_boxes = _mound_boxes(key)
 	return job
+
+
+func _mound_boxes(key: Vector2i) -> Array:
+	# Piles are wider than grass. Include neighbouring buckets without
+	# widening the existing grass/litter exclusions or changing their RNG.
+	var boxes := []
+	if _cover_field == null or not _cover_field.mounds.enabled: return boxes
+	for y in range(-1,2):
+		for x in range(-1,2): boxes.append_array(_scenery.get(key+Vector2i(x,y),[]))
+	return boxes.duplicate(true)
 
 
 func _finish_grass_jobs(wait := false) -> void:
@@ -592,7 +622,7 @@ func _build_chunk(key: Vector2i) -> void:
 func _chunk_script(key: Vector2i) -> Dictionary:
 	var transforms: Array[Transform3D] = []; var colours: Array[Color] = []; var custom: Array[Color] = []
 	var data := instances_script(key) if _grass else {"transforms":transforms,"colours":colours,"custom":custom}
-	if _cover_field: data.cover = _cover_field.build(key,_scenery.get(key,[]),_trees.get(key,[]))
+	if _cover_field: data.cover = _cover_field.build(key,_scenery.get(key,[]),_trees.get(key,[]),_mound_boxes(key))
 	return data
 
 
@@ -634,6 +664,15 @@ func _install_chunk(key: Vector2i, data: Dictionary) -> void:
 		# enabled after this chunk was installed.
 		cover.extra_cull_margin = node.extra_cull_margin+SoftGroundDeform.DEPTH; cover.layers = 1
 		node.add_child(cover)
+	if data.has("cover") and not data.cover.mounds.records.is_empty():
+		var mesh := ArrayMesh.new()
+		mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,data.cover.mounds.arrays,[],{},BiomeCover.Mounds.FORMAT)
+		var mounds := MeshInstance3D.new(); mounds.name = "BiomeMounds"
+		mounds.mesh = mesh; mounds.material_override = _mound_material
+		mounds.position = Vector3(key.x*CHUNK,0,-key.y*CHUNK)
+		mounds.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		mounds.extra_cull_margin = 0.65; mounds.layers = 1
+		node.add_child(mounds)
 	_chunks[key] = node
 
 

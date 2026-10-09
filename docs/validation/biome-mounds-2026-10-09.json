@@ -1,0 +1,3968 @@
+{
+  "date": "2026-10-09",
+  "status": "Optional mound implementation with desktop validation; biome cover stays off. Mobile whole-scene restoration, route/device cost and template rollout remain open.",
+  "parent_commit": "bcd48d59a7a00a40a948cdf5c8c8d9fd0f4922ad",
+  "default_option": {
+    "gfx_biome_cover": 0,
+    "desktop_sun_policy": "continuous on every renderer; unchanged"
+  },
+  "source_sha256": {
+    "game/src/game/fx/biome_cover.gd": "3b14486478c3d222c6951193fee19c3828f6c15f26e2d9fe27dba0d9d7a5b694",
+    "game/src/game/fx/terrain_details.gd": "65256b6a500c304ad7c6b389fb5ac6c73ea9d3af5a13c90396c1757237ad99ea",
+    "game/src/game/fx/biome_mounds.gd": "ee080dccb3018f82e8668d3e96987c2d63cabe22054a21f1b38b18b0000b025a",
+    "game/src/game/fx/biome_sand_tiles.gd": "6d4b1c9378c1cf146404db4286a48ad7286ae5d30962979529224f1911a30b8a",
+    "tools/tests/biome_mounds.gd": "24913e980286271b9f2a959cd9b46d05861d7cc9720817bf3dfbc0fa67c2dee8",
+    "tools/benchmarks/biome_sand_metadata.py": "4399c798a953f71c769b4a3e777fccf7d3fdb982ac8a5d0274b63d61d1817a58",
+    "tools/benchmarks/terrain_option_restore.gd": "2f3f4cc85cfdc736bef8046cc4fe3c521758edb2b0eeb572a3bd8319baad88df",
+    "engine_patches/godot-4.7/forward-shader-recompile-lifetime.patch": "6620cefedded50733fa65e71164dc8918c8a0ac02387d54252aedf6f185b701e"
+  },
+  "reference": {
+    "repository": "/home/llm2x/Documents/evil-islands-owned-renderer",
+    "checked_out_revision": "d529d14e9bf3c960833a9d9633786fc4588ec6d2",
+    "inspected_revision": "0092dc6e1d7c4aab3f74644a79e9bfca11ecf293",
+    "clean_and_unchanged": true,
+    "entry_points": {
+      "Source/ground_cover.h": "319-326: snow/sand mound placement rules",
+      "Source/ground_cover_snow.h": "10-30: irregular dome shape",
+      "Source/ground_cover_surface.h": "32-52: compaction and current terrain attachment",
+      "Source/renderer_ground_cover.cpp": "343-355, 567, 623, 729-809, 914 onward: family mask, footprint admission, deformation and shading",
+      "Source/terrain_tile_blend.h": "193-211: exact soft-sand family names",
+      "Source/terrain_tile_presets.h": "editor af24d45 built-in-material-atlas-v2 per-slot family signatures"
+    }
+  },
+  "design": {
+    "placement": "Ingos snow types 9/12; sand type 3 only with verified full soft-sand atlas slot; full footprint rejects water, wrong materials, steep/folded geometry and scenery including neighboring chunks",
+    "shape": "independent seeded four candidates, at most two mounds and 4096 vertices per chunk; source-triangle 16-way lattice and original rotated atlas UVs",
+    "surface": "existing optional shared geometry/soft-ground tracks; no second trail texture or per-frame vertex upload; cut applies only after dense terrain is installed; receive-only shadows",
+    "limits": "smaller/sparser than reference; original painted atlas rather than smoothed center; no additional mass-conserving berm simulation; distance height fade is not submission LOD"
+  },
+  "application_export": {
+    "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-mounds-final",
+    "manifest_sha256": "d8a2a7441e51e48930be48de34b444497f77ad4b33d734a7eebdb5fa055c2771",
+    "command": [
+      "/home/llm2x/.local/bin/godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/game",
+      "--export-pack",
+      "Linux",
+      "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-mounds-final/CursedLands.pck"
+    ],
+    "source_unchanged_during_export": true,
+    "source_scripts_match": 232,
+    "artifacts": {
+      "CursedLands.x86_64": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+      "CursedLands.pck": "4bc9b171e4e5bd9eec047d8296593fe3042512152cacfb0ffdfd15e6c5e9fdea",
+      "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+    }
+  },
+  "engine_final_export": {
+    "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-mounds-engine-final",
+    "manifest_sha256": "0ed7455513a5df385594549de5f729b7ac0e3c10b31e85cb88565f9992d0d747",
+    "artifacts": {
+      "CursedLands.x86_64": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+      "CursedLands.pck": "4bc9b171e4e5bd9eec047d8296593fe3042512152cacfb0ffdfd15e6c5e9fdea",
+      "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+    },
+    "application_and_native_unchanged": true,
+    "installed_templates_changed": false
+  },
+  "engine_fix": {
+    "source_base_commit": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+    "patch": "engine_patches/godot-4.7/forward-shader-recompile-lifetime.patch",
+    "build_directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/engine-forward-lock",
+    "build": {
+      "before_binary_sha256": "1d8d965e92e6a5d5385d5b03b1bd918345c54e1805b5a105f4f0802e93fc5772",
+      "recipe": {
+        "command": [
+          "python3",
+          "-m",
+          "SCons",
+          "-j2",
+          "platform=linuxbsd",
+          "target=template_release",
+          "debug_symbols=yes",
+          "lto=none",
+          "production=yes",
+          "optimize=speed",
+          "wayland=no",
+          "module_mono_enabled=no",
+          "module_openxr_enabled=no",
+          "module_jolt_physics_enabled=no",
+          "module_fbx_enabled=no",
+          "module_gltf_enabled=no",
+          "module_lightmapper_rd_enabled=no",
+          "module_csg_enabled=no",
+          "module_theora_enabled=no",
+          "module_webrtc_enabled=no",
+          "module_webxr_enabled=no",
+          "accesskit=no"
+        ],
+        "cwd": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-shadow-cache/engine-mobile-lock",
+        "source_before_sha256": "14cfb5dd1f47bf52f295f5f3062cde496a011b4c9c79b0804c174407eeaddeba",
+        "source_after_sha256": "f4024ff284a33774563d45d2f38441a92fe9352262620832bcf65e1876c6ba9b",
+        "environment": {
+          "PYTHONPATH": "/home/llm2x/Documents/EI/local/scratchpad/coop-performance-20261005/engine-profile/scons"
+        },
+        "source_file": "servers/rendering/renderer_rd/forward_clustered/scene_shader_forward_clustered.cpp",
+        "source_base_commit": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+        "patch": "--- a/servers/rendering/renderer_rd/forward_clustered/scene_shader_forward_clustered.cpp\n+++ b/servers/rendering/renderer_rd/forward_clustered/scene_shader_forward_clustered.cpp\n@@ -39,6 +39,10 @@\n using namespace RendererSceneRenderImplementation;\n \n void SceneShaderForwardClustered::ShaderData::set_code(const String &p_code) {\n+\t// Finish jobs while the old version is valid. Otherwise a variant lookup\n+\t// in a pending worker can free obsolete shader RIDs from the wrong thread.\n+\tpipeline_hash_map.clear_pipelines();\n+\n \t//compile\n \n \tcode = p_code;\n@@ -233,8 +237,6 @@\n \tubo_size = gen_code.uniform_total_size;\n \tubo_offsets = gen_code.uniform_offsets;\n \ttexture_uniforms = gen_code.texture_uniforms;\n-\n-\tpipeline_hash_map.clear_pipelines();\n \n \t// If any form of Alpha Antialiasing is enabled, set the blend mode to alpha to coverage.\n \tif (alpha_antialiasing_mode != ALPHA_ANTIALIASING_OFF) {\n"
+      },
+      "return_code": 0,
+      "seconds": 31.217713982012356,
+      "after_binary_sha256": "95f5dbc19130fcc3628366b16dc1d8d4c2999868330c57e18487fed0b1b5edc6"
+    },
+    "patch_check": {
+      "return_code": 0,
+      "output": "patching file servers/rendering/renderer_rd/forward_clustered/scene_shader_forward_clustered.cpp\n",
+      "patch_sha256": "6620cefedded50733fa65e71164dc8918c8a0ac02387d54252aedf6f185b701e",
+      "patched_matches_built_source": true,
+      "pristine_base_source": "/home/llm2x/Documents/EI/local/scratchpad/coop-performance-20261005/engine-profile/godot-5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88/servers/rendering/renderer_rd/forward_clustered/scene_shader_forward_clustered.cpp",
+      "pristine_base_sha256": "14cfb5dd1f47bf52f295f5f3062cde496a011b4c9c79b0804c174407eeaddeba",
+      "before_matches_pristine": true
+    },
+    "paired_comparisons": [
+      {
+        "before": "mound-final-forward-cold",
+        "after": "mound-forward-fixed-cold",
+        "same_pack": true,
+        "same_frozen_fixture": true,
+        "common_images": 23,
+        "exact_images": [
+          "mounds-clear.png",
+          "mounds-expired.png",
+          "mounds-loose.png",
+          "mounds-off-restored.png",
+          "mounds-off.png",
+          "mounds-paused-later.png",
+          "mounds-paused.png",
+          "mounds-pending.png",
+          "mounds-pressed-ground-control.png",
+          "mounds-pressed.png",
+          "mounds-probe-expired.png",
+          "mounds-probe-fading.png",
+          "mounds-probe-installed.png",
+          "mounds-probe-loose.png",
+          "mounds-probe-negative.png",
+          "mounds-probe-pending.png",
+          "mounds-rebuilt.png",
+          "mounds-soft-off-restored.png",
+          "mounds-soft-off.png",
+          "mounds-soft-restored.png",
+          "mounds-stable.png",
+          "mounds-trough-overhead-ground.png",
+          "mounds-trough-overhead.png"
+        ],
+        "different_images": [],
+        "before_errors": 50,
+        "after_errors": 0
+      },
+      {
+        "before": "mound-final-snow-mobile",
+        "after": "mound-mobile-fixed-cold",
+        "same_pack": true,
+        "same_frozen_fixture": true,
+        "common_images": 23,
+        "exact_images": [
+          "mounds-clear.png",
+          "mounds-expired.png",
+          "mounds-loose.png",
+          "mounds-off-restored.png",
+          "mounds-off.png",
+          "mounds-paused-later.png",
+          "mounds-paused.png",
+          "mounds-pending.png",
+          "mounds-pressed-ground-control.png",
+          "mounds-pressed.png",
+          "mounds-probe-expired.png",
+          "mounds-probe-fading.png",
+          "mounds-probe-installed.png",
+          "mounds-probe-loose.png",
+          "mounds-probe-negative.png",
+          "mounds-probe-pending.png",
+          "mounds-rebuilt.png",
+          "mounds-soft-off-restored.png",
+          "mounds-soft-off.png",
+          "mounds-soft-restored.png",
+          "mounds-stable.png",
+          "mounds-trough-overhead-ground.png",
+          "mounds-trough-overhead.png"
+        ],
+        "different_images": [],
+        "before_errors": 0,
+        "after_errors": 0
+      },
+      {
+        "before": "mound-final-snow-gl",
+        "after": "mound-gl-fixed-cold",
+        "same_pack": true,
+        "same_frozen_fixture": true,
+        "common_images": 23,
+        "exact_images": [
+          "mounds-clear.png",
+          "mounds-expired.png",
+          "mounds-loose.png",
+          "mounds-off-restored.png",
+          "mounds-off.png",
+          "mounds-paused-later.png",
+          "mounds-paused.png",
+          "mounds-pending.png",
+          "mounds-pressed-ground-control.png",
+          "mounds-pressed.png",
+          "mounds-probe-expired.png",
+          "mounds-probe-fading.png",
+          "mounds-probe-installed.png",
+          "mounds-probe-loose.png",
+          "mounds-probe-negative.png",
+          "mounds-probe-pending.png",
+          "mounds-rebuilt.png",
+          "mounds-soft-off-restored.png",
+          "mounds-soft-off.png",
+          "mounds-soft-restored.png",
+          "mounds-stable.png",
+          "mounds-trough-overhead-ground.png",
+          "mounds-trough-overhead.png"
+        ],
+        "different_images": [],
+        "before_errors": 0,
+        "after_errors": 0
+      }
+    ],
+    "root_cause": "Forward+ changed shader version and mutable state before waiting for pending pipeline workers. Dirty-version lookup in a pending worker could free obsolete RD shader RIDs from outside the render thread. Move clear_pipelines before mutation; compiler mutex was already scoped correctly.",
+    "before_evidence": {
+      "label": "mound-final-forward-cold",
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-final-forward-cold",
+      "run_manifest_sha256": "5a08bac094afe8f99e7ca3e49e1ba832a76cb4f863b94b635dcdff91dc0ed02d",
+      "run": {
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/biome_mounds.gd",
+        "tool_sha256_at_start": "24913e980286271b9f2a959cd9b46d05861d7cc9720817bf3dfbc0fa67c2dee8",
+        "helper_sha256_at_start": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "4bc9b171e4e5bd9eec047d8296593fe3042512152cacfb0ffdfd15e6c5e9fdea",
+        "termination_reason": null,
+        "timeout_sec": 150,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-mounds-final/CursedLands.x86_64",
+          "--render-thread",
+          "separate",
+          "--rendering-method",
+          "forward_plus",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-final-forward-cold/tool-source.gd",
+          "--mound-zone=gz15h",
+          "--mound-detail",
+          "--mound-hd",
+          "--mound-oracle=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-surface-oracle.gd"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 21.835359068994876,
+        "other_render_processes_at_start": [
+          {
+            "pid": 298308,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 299113,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-final-forward-cold/isolated/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-final-forward-cold/isolated/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-final-forward-cold/isolated/cache"
+        },
+        "warnings": [
+          "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature.",
+          "WARNING: 50 RIDs of type \"Shader\" were leaked."
+        ],
+        "errors": [
+          "ERROR: This function (free_rid) can only be called from the render thread. ",
+          "ERROR: This function (free_rid) can only be called from the render thread. ",
+          "ERROR: This function (free_rid) can only be called from the render thread. ",
+          "ERROR: This function (free_rid) can only be called from the render thread. ",
+          "ERROR: This function (free_rid) can only be called from the render thread. ",
+          "ERROR: This function (free_rid) can only be called from the render thread. ",
+          "ERROR: This function (free_rid) can only be called from the render thread. ",
+          "ERROR: This function (free_rid) can only be called from the render thread. ",
+          "ERROR: This function (free_rid) can only be called from the render thread. ",
+          "ERROR: This function (free_rid) can only be called from the render thread. ",
+          "ERROR: This function (free_rid) can only be called from the render thread. ",
+          "ERROR: This function (free_rid) can only be called from the render thread. ",
+          "ERROR: This function (free_rid) can only be called from the render thread. ",
+          "ERROR: This function (free_rid) can only be called from the render thread. ",
+          "ERROR: This function (free_rid) can only be called from the render thread. ",
+          "ERROR: This function (free_rid) can only be called from the render thread. ",
+          "ERROR: This function (free_rid) can only be called from the render thread. ",
+          "ERROR: This function (free_rid) can only be called from the render thread. ",
+          "ERROR: This function (free_rid) can only be called from the render thread. ",
+          "ERROR: This function (free_rid) can only be called from the render thread. ",
+          "ERROR: This function (free_rid) can only be called from the render thread. ",
+          "ERROR: This function (free_rid) can only be called from the render thread. ",
+          "ERROR: This function (free_rid) can only be called from the render thread. ",
+          "ERROR: This function (free_rid) can only be called from the render thread. ",
+          "ERROR: This function (free_rid) can only be called from the render thread. ",
+          "ERROR: This function (free_rid) can only be called from the render thread. ",
+          "ERROR: This function (free_rid) can only be called from the render thread. ",
+          "ERROR: This function (free_rid) can only be called from the render thread. ",
+          "ERROR: This function (free_rid) can only be called from the render thread. ",
+          "ERROR: This function (free_rid) can only be called from the render thread. ",
+          "ERROR: This function (free_rid) can only be called from the render thread. ",
+          "ERROR: This function (free_rid) can only be called from the render thread. ",
+          "ERROR: This function (free_rid) can only be called from the render thread. ",
+          "ERROR: This function (free_rid) can only be called from the render thread. ",
+          "ERROR: This function (free_rid) can only be called from the render thread. ",
+          "ERROR: This function (free_rid) can only be called from the render thread. ",
+          "ERROR: This function (free_rid) can only be called from the render thread. ",
+          "ERROR: This function (free_rid) can only be called from the render thread. ",
+          "ERROR: This function (free_rid) can only be called from the render thread. ",
+          "ERROR: This function (free_rid) can only be called from the render thread. ",
+          "ERROR: This function (free_rid) can only be called from the render thread. ",
+          "ERROR: This function (free_rid) can only be called from the render thread. ",
+          "ERROR: This function (free_rid) can only be called from the render thread. ",
+          "ERROR: This function (free_rid) can only be called from the render thread. ",
+          "ERROR: This function (free_rid) can only be called from the render thread. ",
+          "ERROR: This function (free_rid) can only be called from the render thread. ",
+          "ERROR: This function (free_rid) can only be called from the render thread. ",
+          "ERROR: This function (free_rid) can only be called from the render thread. ",
+          "ERROR: This function (free_rid) can only be called from the render thread. ",
+          "ERROR: This function (free_rid) can only be called from the render thread. "
+        ],
+        "png_sha256": {
+          "mounds-rebuilt.png": "2e89cdb6e33ac6a39b79ced6437784bb3099577371b8a4deda12c86467ea1189",
+          "mounds-paused.png": "490812ec7bbfa0e07a9b30c7679fe230e9a2dddd61aca1afcc43daa25d960d9e",
+          "mounds-paused-later.png": "490812ec7bbfa0e07a9b30c7679fe230e9a2dddd61aca1afcc43daa25d960d9e",
+          "mounds-soft-off.png": "0d546774a56e2eb40adae375d617691ec92b3b29e2057bb9d6d5154538c3e05d",
+          "mounds-off.png": "d41c96445c5b591abd4e9fa1e9745dc818164570195805f22ea7926316a5d3f1",
+          "mounds-pressed-ground-control.png": "09aee3e449052f410147ff11548be914e719ae33a49e231f104f9ede6766b8cb",
+          "mounds-soft-off-restored.png": "0d546774a56e2eb40adae375d617691ec92b3b29e2057bb9d6d5154538c3e05d",
+          "mounds-probe-pending.png": "5174da25f1838b37b0ed48b5eec7e7f4f0ab401057bbfeaa35abd192fa4fc07e",
+          "mounds-expired.png": "2e89cdb6e33ac6a39b79ced6437784bb3099577371b8a4deda12c86467ea1189",
+          "mounds-pending.png": "2e89cdb6e33ac6a39b79ced6437784bb3099577371b8a4deda12c86467ea1189",
+          "mounds-trough-overhead-ground.png": "4e312ff7478928a6085f039a9445697f0d5d0bd5ead4bd50b43e8d41ab3c8677",
+          "mounds-probe-loose.png": "5174da25f1838b37b0ed48b5eec7e7f4f0ab401057bbfeaa35abd192fa4fc07e",
+          "mounds-pressed.png": "490812ec7bbfa0e07a9b30c7679fe230e9a2dddd61aca1afcc43daa25d960d9e",
+          "mounds-probe-expired.png": "5174da25f1838b37b0ed48b5eec7e7f4f0ab401057bbfeaa35abd192fa4fc07e",
+          "mounds-clear.png": "2e89cdb6e33ac6a39b79ced6437784bb3099577371b8a4deda12c86467ea1189",
+          "mounds-loose.png": "2e89cdb6e33ac6a39b79ced6437784bb3099577371b8a4deda12c86467ea1189",
+          "mounds-probe-fading.png": "5174da25f1838b37b0ed48b5eec7e7f4f0ab401057bbfeaa35abd192fa4fc07e",
+          "mounds-soft-restored.png": "2e89cdb6e33ac6a39b79ced6437784bb3099577371b8a4deda12c86467ea1189",
+          "mounds-off-restored.png": "d41c96445c5b591abd4e9fa1e9745dc818164570195805f22ea7926316a5d3f1",
+          "mounds-probe-installed.png": "5174da25f1838b37b0ed48b5eec7e7f4f0ab401057bbfeaa35abd192fa4fc07e",
+          "mounds-trough-overhead.png": "325be9de0f64d96fd9e5e1601709d189075689de676460426e2fb23ee42b1aa2",
+          "mounds-probe-negative.png": "4ef8fa2fd00b59061feda1031777acf9c57f318b0154033d7a43682d097e0aaa",
+          "mounds-stable.png": "2e89cdb6e33ac6a39b79ced6437784bb3099577371b8a4deda12c86467ea1189"
+        }
+      },
+      "reports": {
+        "biome-mounds.json": {
+          "checks": 50,
+          "failures": 0,
+          "rows": [
+            {
+              "case": "prepare",
+              "us": 204963
+            },
+            {
+              "case": "mesh",
+              "height_error": 1.9073486328125e-06,
+              "key": "(17, 24)",
+              "records": 1,
+              "sha256": "6d395fbb23614d20f91bff5555faff5f372887b040db51b43c410cca4439de96",
+              "triangles": 456,
+              "uv_error": 0.0,
+              "vertices": 308
+            },
+            {
+              "case": "chosen",
+              "key": "(17, 24)",
+              "record": "{ \"p\": (137.8777, 194.0213), \"kind\": 2, \"radius\": 0.52145202457905, \"height\": 0.08975559473038, \"phase\": 1.45437950627561 }",
+              "zone": "gz15h"
+            },
+            {
+              "active_chunks": 4,
+              "active_median_us": 7471,
+              "case": "build-cost",
+              "chunks": 25,
+              "max_us": 9364,
+              "median_us": 19,
+              "mounds": 6,
+              "vertices": 2270
+            },
+            {
+              "case": "visible",
+              "difference": {
+                "changed": 1717,
+                "over_2": 665,
+                "peak": 11
+              }
+            },
+            {
+              "bad": 0,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 0,
+              "label": "loose",
+              "negative": false,
+              "samples": 308
+            },
+            {
+              "bad": 308,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 0,
+              "label": "negative",
+              "negative": true,
+              "samples": 308
+            },
+            {
+              "bad": 0,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 0,
+              "label": "pending",
+              "negative": false,
+              "samples": 308
+            },
+            {
+              "bad": 0,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 103,
+              "label": "installed",
+              "negative": false,
+              "samples": 308
+            },
+            {
+              "case": "footprint",
+              "difference": {
+                "changed": 2495,
+                "over_2": 765,
+                "peak": 42
+              }
+            },
+            {
+              "case": "exposed-trough",
+              "changed": 0,
+              "pixels": 117
+            },
+            {
+              "bad": 0,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 90,
+              "label": "fading",
+              "negative": false,
+              "samples": 308
+            },
+            {
+              "bad": 0,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 0,
+              "label": "expired",
+              "negative": false,
+              "samples": 308
+            },
+            {
+              "area": "[P: (350, 234), S: (103, 128)]",
+              "case": "restoration",
+              "label": "soft-ground round trip restores mound",
+              "patch": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              },
+              "region_only": false,
+              "whole_scene": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              }
+            },
+            {
+              "area": "[P: (350, 234), S: (103, 128)]",
+              "case": "restoration",
+              "label": "soft-off static shader restores exact pixels",
+              "patch": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              },
+              "region_only": false,
+              "whole_scene": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              }
+            },
+            {
+              "area": "[P: (350, 234), S: (103, 128)]",
+              "case": "restoration",
+              "label": "rebuild restores original mound scene",
+              "patch": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              },
+              "region_only": false,
+              "whole_scene": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              }
+            },
+            {
+              "area": "[P: (350, 234), S: (103, 128)]",
+              "case": "restoration",
+              "label": "cover off restores original scene",
+              "patch": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              },
+              "region_only": false,
+              "whole_scene": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              }
+            }
+          ]
+        }
+      }
+    },
+    "before_leaks": 50,
+    "after_error_and_leak_count": 0,
+    "scope": "Linux Vulkan cold cache, safe and separate render threads; Compatibility/Mobile regressions. No installed/runtime templates or platform packages updated."
+  },
+  "sand_metadata": {
+    "generator": "tools/benchmarks/biome_sand_metadata.py",
+    "generation_result": {
+      "identities": 27,
+      "slots": 287
+    },
+    "reproduced_exactly": true,
+    "census_directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-atlas-base",
+    "census_sha256": "a292477fdc06f9ad4bfaddce9b037fc89857ac5af59fc3e1e0ecce12ae1ebea2",
+    "collector": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-atlas-census.gd",
+    "collector_sha256": "ab6cccf4612a414db551e94a09d4e182a54d5d8c3beff31f958730c8f04f74be",
+    "admitted_families": [
+      "sand / yellow",
+      "sand / dark",
+      "sand / common grayish"
+    ],
+    "pixel_format": "original 512x512 RGBA8, no mipmaps",
+    "profiles": [
+      "bz13h",
+      "bz16h",
+      "Zone13",
+      "Zone15",
+      "Zone18",
+      "Zone19"
+    ],
+    "unknown_or_modified_atlases": "excluded"
+  },
+  "surface_oracle": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-surface-oracle.gd",
+    "sha256": "1d1d8eace8dab1eccedb0c14a8f9ff73dad84e63a3a5d2cf4acebd7a3802c683",
+    "source": "Frozen bcd48d5 tools/tests/biome_cover_surface.gd; index_surface/raster_height evaluate actual installed terrain triangles independently of mound shader"
+  },
+  "acceptance_totals": {
+    "runs": 11,
+    "checks": 8782,
+    "failed_checks": 0,
+    "positive_gpu_height_samples": 23560,
+    "positive_bad_samples": 0,
+    "negative_gpu_height_samples": 4712,
+    "negative_detected": 4712,
+    "height_tolerance_m": 0.002,
+    "negative_offset_m": 0.02,
+    "exact_trench_floor_pixels": 1164,
+    "note": "Totals include repeat engine controls. Mobile restoration is explicitly limited to conservative mound area; full-scene differences remain in each report."
+  },
+  "runs": [
+    {
+      "label": "mound-final-snow-gl",
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-final-snow-gl",
+      "run_manifest_sha256": "87de964193a21a61910966848ee62a15e5bd8b812c19eebb8f67d8a910b085ff",
+      "run": {
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/biome_mounds.gd",
+        "tool_sha256_at_start": "24913e980286271b9f2a959cd9b46d05861d7cc9720817bf3dfbc0fa67c2dee8",
+        "helper_sha256_at_start": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "4bc9b171e4e5bd9eec047d8296593fe3042512152cacfb0ffdfd15e6c5e9fdea",
+        "termination_reason": null,
+        "timeout_sec": 150,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-mounds-final/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-final-snow-gl/tool-source.gd",
+          "--mound-oracle=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-surface-oracle.gd"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 10.568611416994827,
+        "other_render_processes_at_start": [
+          {
+            "pid": 291060,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 291060,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {
+          "mounds-rebuilt.png": "4991143d03829e8c534318ae92e18d8d2d691104268647a28b3fdb5d09171990",
+          "mounds-paused.png": "17fd13e6e2bd3e28c73c78a2c4766b61ef9d21fcc0317751076c1f2b7fc41bc6",
+          "mounds-paused-later.png": "17fd13e6e2bd3e28c73c78a2c4766b61ef9d21fcc0317751076c1f2b7fc41bc6",
+          "mounds-soft-off.png": "f3e8ac7ed1db6f5339a723dacda1eb4acd9a9ceff98cd364e39cf87253cc2227",
+          "mounds-off.png": "82802a8601f184744bf0a41c1d8f13684f85b20fd6f7863588df96362e7e315b",
+          "mounds-pressed-ground-control.png": "c764fd5884f1385d82f9b308f30f61eca4f8f3a980c5c02a31f19ac78b58d04e",
+          "mounds-soft-off-restored.png": "f3e8ac7ed1db6f5339a723dacda1eb4acd9a9ceff98cd364e39cf87253cc2227",
+          "mounds-probe-pending.png": "224f4b073ffdb0d6692404fb06d097a4cd0af07e38851562f933f5b7470befa0",
+          "mounds-expired.png": "4991143d03829e8c534318ae92e18d8d2d691104268647a28b3fdb5d09171990",
+          "mounds-pending.png": "4991143d03829e8c534318ae92e18d8d2d691104268647a28b3fdb5d09171990",
+          "mounds-trough-overhead-ground.png": "e5043e64409053d8e1c8d7c319ccb3ef2df2a30c628ba77af91f1f71bcc7d648",
+          "mounds-probe-loose.png": "224f4b073ffdb0d6692404fb06d097a4cd0af07e38851562f933f5b7470befa0",
+          "mounds-pressed.png": "17fd13e6e2bd3e28c73c78a2c4766b61ef9d21fcc0317751076c1f2b7fc41bc6",
+          "mounds-probe-expired.png": "224f4b073ffdb0d6692404fb06d097a4cd0af07e38851562f933f5b7470befa0",
+          "mounds-clear.png": "4991143d03829e8c534318ae92e18d8d2d691104268647a28b3fdb5d09171990",
+          "mounds-loose.png": "4991143d03829e8c534318ae92e18d8d2d691104268647a28b3fdb5d09171990",
+          "mounds-probe-fading.png": "224f4b073ffdb0d6692404fb06d097a4cd0af07e38851562f933f5b7470befa0",
+          "mounds-soft-restored.png": "4991143d03829e8c534318ae92e18d8d2d691104268647a28b3fdb5d09171990",
+          "mounds-off-restored.png": "82802a8601f184744bf0a41c1d8f13684f85b20fd6f7863588df96362e7e315b",
+          "mounds-probe-installed.png": "224f4b073ffdb0d6692404fb06d097a4cd0af07e38851562f933f5b7470befa0",
+          "mounds-trough-overhead.png": "272506daa1552ad1e9f947c0b46cbbcb63689bbe147423976a5249a35f9ac6f6",
+          "mounds-probe-negative.png": "cbb2156de3794ccb6d5a6a3d7bb38db571439dca2a2d3493ff744f18738e89b4",
+          "mounds-stable.png": "4991143d03829e8c534318ae92e18d8d2d691104268647a28b3fdb5d09171990"
+        }
+      },
+      "reports": {
+        "biome-mounds.json": {
+          "checks": 50,
+          "failures": 0,
+          "rows": [
+            {
+              "case": "prepare",
+              "us": 143432
+            },
+            {
+              "case": "mesh",
+              "height_error": 2.14576721191406e-06,
+              "key": "(49, 21)",
+              "records": 1,
+              "sha256": "f39c52ea8c37b9f04b38f8d1ea670715af1046f2ff8c19f043f5db6604be9864",
+              "triangles": 1359,
+              "uv_error": 0.0,
+              "vertices": 870
+            },
+            {
+              "case": "chosen",
+              "key": "(49, 21)",
+              "record": "{ \"p\": (393.7135, 169.7135), \"kind\": 1, \"radius\": 0.89145184457302, \"height\": 0.15704026833177, \"phase\": 4.22717505297987 }",
+              "zone": "gz11k"
+            },
+            {
+              "active_chunks": 8,
+              "active_median_us": 5534,
+              "case": "build-cost",
+              "chunks": 25,
+              "max_us": 10306,
+              "median_us": 263,
+              "mounds": 10,
+              "vertices": 6222
+            },
+            {
+              "case": "visible",
+              "difference": {
+                "changed": 4550,
+                "over_2": 3083,
+                "peak": 81
+              }
+            },
+            {
+              "bad": 0,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 0,
+              "label": "loose",
+              "negative": false,
+              "samples": 870
+            },
+            {
+              "bad": 870,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 0,
+              "label": "negative",
+              "negative": true,
+              "samples": 870
+            },
+            {
+              "bad": 0,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 0,
+              "label": "pending",
+              "negative": false,
+              "samples": 870
+            },
+            {
+              "bad": 0,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 119,
+              "label": "installed",
+              "negative": false,
+              "samples": 870
+            },
+            {
+              "case": "footprint",
+              "difference": {
+                "changed": 3914,
+                "over_2": 2576,
+                "peak": 114
+              }
+            },
+            {
+              "case": "exposed-trough",
+              "changed": 0,
+              "pixels": 174
+            },
+            {
+              "bad": 0,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 88,
+              "label": "fading",
+              "negative": false,
+              "samples": 870
+            },
+            {
+              "bad": 0,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 0,
+              "label": "expired",
+              "negative": false,
+              "samples": 870
+            },
+            {
+              "area": "[P: (319, 231), S: (151, 154)]",
+              "case": "restoration",
+              "label": "soft-ground round trip restores mound",
+              "patch": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              },
+              "region_only": false,
+              "whole_scene": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              }
+            },
+            {
+              "area": "[P: (319, 231), S: (151, 154)]",
+              "case": "restoration",
+              "label": "soft-off static shader restores exact pixels",
+              "patch": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              },
+              "region_only": false,
+              "whole_scene": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              }
+            },
+            {
+              "area": "[P: (319, 231), S: (151, 154)]",
+              "case": "restoration",
+              "label": "rebuild restores original mound scene",
+              "patch": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              },
+              "region_only": false,
+              "whole_scene": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              }
+            },
+            {
+              "area": "[P: (319, 231), S: (151, 154)]",
+              "case": "restoration",
+              "label": "cover off restores original scene",
+              "patch": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              },
+              "region_only": false,
+              "whole_scene": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "label": "mound-final-snow-mobile",
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-final-snow-mobile",
+      "run_manifest_sha256": "0923bed5c52a8f94a9ea4d653f255fea637343d9bd599965b745b0ef47f8c6a7",
+      "run": {
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/biome_mounds.gd",
+        "tool_sha256_at_start": "24913e980286271b9f2a959cd9b46d05861d7cc9720817bf3dfbc0fa67c2dee8",
+        "helper_sha256_at_start": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "4bc9b171e4e5bd9eec047d8296593fe3042512152cacfb0ffdfd15e6c5e9fdea",
+        "termination_reason": null,
+        "timeout_sec": 150,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-mounds-final/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "mobile",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-final-snow-mobile/tool-source.gd",
+          "--mound-oracle=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-surface-oracle.gd",
+          "--mound-region-restoration"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 10.819886184006464,
+        "other_render_processes_at_start": [
+          {
+            "pid": 291060,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 292114,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cache"
+        },
+        "warnings": [],
+        "errors": [],
+        "png_sha256": {
+          "mounds-rebuilt.png": "4171e8191e5e63e478f02ff4df79a028562cfb97fb69e5e4d85dc55b305e2ded",
+          "mounds-paused.png": "04334c9cd181484e49c9d1e4aa54b2236ed03dfff89b83bdea1736af1734a277",
+          "mounds-paused-later.png": "04334c9cd181484e49c9d1e4aa54b2236ed03dfff89b83bdea1736af1734a277",
+          "mounds-soft-off.png": "dfffc7708e1c99a19435bdf6adaa2e3f58a995b1f96f25c99358163b45243b29",
+          "mounds-off.png": "a2542070aa47caa53d343762dbdbeb03586594dc11f965462acab961d1c76906",
+          "mounds-pressed-ground-control.png": "5e11956c3a445426017082568637c832f20619837ec098433dc9b984ec5321dd",
+          "mounds-soft-off-restored.png": "dfffc7708e1c99a19435bdf6adaa2e3f58a995b1f96f25c99358163b45243b29",
+          "mounds-probe-pending.png": "9875a3e848c4b17d0d225d99658b9a7cea71c801f85b8092031040bab3417f9a",
+          "mounds-expired.png": "075011673687b8a29ca8a74db6dde8d77d1e3ecfa393ed4cac5c4760eadc0dec",
+          "mounds-pending.png": "075011673687b8a29ca8a74db6dde8d77d1e3ecfa393ed4cac5c4760eadc0dec",
+          "mounds-trough-overhead-ground.png": "0c65f2b26501d744554078898df7d7f6ad3809a0a9f639f2dc040d03f9b5a08f",
+          "mounds-probe-loose.png": "9875a3e848c4b17d0d225d99658b9a7cea71c801f85b8092031040bab3417f9a",
+          "mounds-pressed.png": "04334c9cd181484e49c9d1e4aa54b2236ed03dfff89b83bdea1736af1734a277",
+          "mounds-probe-expired.png": "9875a3e848c4b17d0d225d99658b9a7cea71c801f85b8092031040bab3417f9a",
+          "mounds-clear.png": "075011673687b8a29ca8a74db6dde8d77d1e3ecfa393ed4cac5c4760eadc0dec",
+          "mounds-loose.png": "075011673687b8a29ca8a74db6dde8d77d1e3ecfa393ed4cac5c4760eadc0dec",
+          "mounds-probe-fading.png": "9875a3e848c4b17d0d225d99658b9a7cea71c801f85b8092031040bab3417f9a",
+          "mounds-soft-restored.png": "4171e8191e5e63e478f02ff4df79a028562cfb97fb69e5e4d85dc55b305e2ded",
+          "mounds-off-restored.png": "a2542070aa47caa53d343762dbdbeb03586594dc11f965462acab961d1c76906",
+          "mounds-probe-installed.png": "9875a3e848c4b17d0d225d99658b9a7cea71c801f85b8092031040bab3417f9a",
+          "mounds-trough-overhead.png": "6ed12053a4eee243a1bdc8f86bdd5c55c13304b2fcfbe7ee8fa4dde97f926dac",
+          "mounds-probe-negative.png": "e638da535e5a403caeab9438ba61ed4d0bfa050f6f044635262d82ad66d28c2e",
+          "mounds-stable.png": "075011673687b8a29ca8a74db6dde8d77d1e3ecfa393ed4cac5c4760eadc0dec"
+        }
+      },
+      "reports": {
+        "biome-mounds.json": {
+          "checks": 50,
+          "failures": 0,
+          "rows": [
+            {
+              "case": "prepare",
+              "us": 252194
+            },
+            {
+              "case": "mesh",
+              "height_error": 2.14576721191406e-06,
+              "key": "(49, 21)",
+              "records": 1,
+              "sha256": "f39c52ea8c37b9f04b38f8d1ea670715af1046f2ff8c19f043f5db6604be9864",
+              "triangles": 1359,
+              "uv_error": 0.0,
+              "vertices": 870
+            },
+            {
+              "case": "chosen",
+              "key": "(49, 21)",
+              "record": "{ \"p\": (393.7135, 169.7135), \"kind\": 1, \"radius\": 0.89145184457302, \"height\": 0.15704026833177, \"phase\": 4.22717505297987 }",
+              "zone": "gz11k"
+            },
+            {
+              "active_chunks": 8,
+              "active_median_us": 5677,
+              "case": "build-cost",
+              "chunks": 25,
+              "max_us": 10275,
+              "median_us": 237,
+              "mounds": 10,
+              "vertices": 6222
+            },
+            {
+              "case": "visible",
+              "difference": {
+                "changed": 4508,
+                "over_2": 3236,
+                "peak": 79
+              }
+            },
+            {
+              "bad": 0,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 0,
+              "label": "loose",
+              "negative": false,
+              "samples": 870
+            },
+            {
+              "bad": 870,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 0,
+              "label": "negative",
+              "negative": true,
+              "samples": 870
+            },
+            {
+              "bad": 0,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 0,
+              "label": "pending",
+              "negative": false,
+              "samples": 870
+            },
+            {
+              "bad": 0,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 119,
+              "label": "installed",
+              "negative": false,
+              "samples": 870
+            },
+            {
+              "case": "footprint",
+              "difference": {
+                "changed": 4147,
+                "over_2": 2642,
+                "peak": 122
+              }
+            },
+            {
+              "case": "exposed-trough",
+              "changed": 0,
+              "pixels": 174
+            },
+            {
+              "bad": 0,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 88,
+              "label": "fading",
+              "negative": false,
+              "samples": 870
+            },
+            {
+              "bad": 0,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 0,
+              "label": "expired",
+              "negative": false,
+              "samples": 870
+            },
+            {
+              "area": "[P: (319, 231), S: (151, 154)]",
+              "case": "restoration",
+              "label": "soft-ground round trip restores mound",
+              "patch": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              },
+              "region_only": true,
+              "whole_scene": {
+                "changed": 165,
+                "over_2": 8,
+                "peak": 4
+              }
+            },
+            {
+              "area": "[P: (319, 231), S: (151, 154)]",
+              "case": "restoration",
+              "label": "soft-off static shader restores exact pixels",
+              "patch": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              },
+              "region_only": true,
+              "whole_scene": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              }
+            },
+            {
+              "area": "[P: (319, 231), S: (151, 154)]",
+              "case": "restoration",
+              "label": "rebuild restores original mound scene",
+              "patch": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              },
+              "region_only": true,
+              "whole_scene": {
+                "changed": 165,
+                "over_2": 8,
+                "peak": 4
+              }
+            },
+            {
+              "area": "[P: (319, 231), S: (151, 154)]",
+              "case": "restoration",
+              "label": "cover off restores original scene",
+              "patch": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              },
+              "region_only": true,
+              "whole_scene": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "label": "mound-final-sand-forward",
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-final-sand-forward",
+      "run_manifest_sha256": "ed022969d35b5fb2b00d3002d559cc0665d77c52af40b57940f12e2b8306409a",
+      "run": {
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/biome_mounds.gd",
+        "tool_sha256_at_start": "24913e980286271b9f2a959cd9b46d05861d7cc9720817bf3dfbc0fa67c2dee8",
+        "helper_sha256_at_start": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "4bc9b171e4e5bd9eec047d8296593fe3042512152cacfb0ffdfd15e6c5e9fdea",
+        "termination_reason": null,
+        "timeout_sec": 150,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-mounds-final/CursedLands.x86_64",
+          "--render-thread",
+          "separate",
+          "--rendering-method",
+          "forward_plus",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-final-sand-forward/tool-source.gd",
+          "--mound-oracle=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-surface-oracle.gd",
+          "--mound-zone=gz15h",
+          "--mound-detail",
+          "--mound-hd"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 10.569057932996657,
+        "other_render_processes_at_start": [
+          {
+            "pid": 292114,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 292114,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cache"
+        },
+        "warnings": [
+          "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+        ],
+        "errors": [],
+        "png_sha256": {
+          "mounds-rebuilt.png": "2e89cdb6e33ac6a39b79ced6437784bb3099577371b8a4deda12c86467ea1189",
+          "mounds-paused.png": "490812ec7bbfa0e07a9b30c7679fe230e9a2dddd61aca1afcc43daa25d960d9e",
+          "mounds-paused-later.png": "490812ec7bbfa0e07a9b30c7679fe230e9a2dddd61aca1afcc43daa25d960d9e",
+          "mounds-soft-off.png": "0d546774a56e2eb40adae375d617691ec92b3b29e2057bb9d6d5154538c3e05d",
+          "mounds-off.png": "d41c96445c5b591abd4e9fa1e9745dc818164570195805f22ea7926316a5d3f1",
+          "mounds-pressed-ground-control.png": "09aee3e449052f410147ff11548be914e719ae33a49e231f104f9ede6766b8cb",
+          "mounds-soft-off-restored.png": "0d546774a56e2eb40adae375d617691ec92b3b29e2057bb9d6d5154538c3e05d",
+          "mounds-probe-pending.png": "5174da25f1838b37b0ed48b5eec7e7f4f0ab401057bbfeaa35abd192fa4fc07e",
+          "mounds-expired.png": "2e89cdb6e33ac6a39b79ced6437784bb3099577371b8a4deda12c86467ea1189",
+          "mounds-pending.png": "2e89cdb6e33ac6a39b79ced6437784bb3099577371b8a4deda12c86467ea1189",
+          "mounds-trough-overhead-ground.png": "4e312ff7478928a6085f039a9445697f0d5d0bd5ead4bd50b43e8d41ab3c8677",
+          "mounds-probe-loose.png": "5174da25f1838b37b0ed48b5eec7e7f4f0ab401057bbfeaa35abd192fa4fc07e",
+          "mounds-pressed.png": "490812ec7bbfa0e07a9b30c7679fe230e9a2dddd61aca1afcc43daa25d960d9e",
+          "mounds-probe-expired.png": "5174da25f1838b37b0ed48b5eec7e7f4f0ab401057bbfeaa35abd192fa4fc07e",
+          "mounds-clear.png": "2e89cdb6e33ac6a39b79ced6437784bb3099577371b8a4deda12c86467ea1189",
+          "mounds-loose.png": "2e89cdb6e33ac6a39b79ced6437784bb3099577371b8a4deda12c86467ea1189",
+          "mounds-probe-fading.png": "5174da25f1838b37b0ed48b5eec7e7f4f0ab401057bbfeaa35abd192fa4fc07e",
+          "mounds-soft-restored.png": "2e89cdb6e33ac6a39b79ced6437784bb3099577371b8a4deda12c86467ea1189",
+          "mounds-off-restored.png": "d41c96445c5b591abd4e9fa1e9745dc818164570195805f22ea7926316a5d3f1",
+          "mounds-probe-installed.png": "5174da25f1838b37b0ed48b5eec7e7f4f0ab401057bbfeaa35abd192fa4fc07e",
+          "mounds-trough-overhead.png": "325be9de0f64d96fd9e5e1601709d189075689de676460426e2fb23ee42b1aa2",
+          "mounds-probe-negative.png": "4ef8fa2fd00b59061feda1031777acf9c57f318b0154033d7a43682d097e0aaa",
+          "mounds-stable.png": "2e89cdb6e33ac6a39b79ced6437784bb3099577371b8a4deda12c86467ea1189"
+        }
+      },
+      "reports": {
+        "biome-mounds.json": {
+          "checks": 50,
+          "failures": 0,
+          "rows": [
+            {
+              "case": "prepare",
+              "us": 189825
+            },
+            {
+              "case": "mesh",
+              "height_error": 1.9073486328125e-06,
+              "key": "(17, 24)",
+              "records": 1,
+              "sha256": "6d395fbb23614d20f91bff5555faff5f372887b040db51b43c410cca4439de96",
+              "triangles": 456,
+              "uv_error": 0.0,
+              "vertices": 308
+            },
+            {
+              "case": "chosen",
+              "key": "(17, 24)",
+              "record": "{ \"p\": (137.8777, 194.0213), \"kind\": 2, \"radius\": 0.52145202457905, \"height\": 0.08975559473038, \"phase\": 1.45437950627561 }",
+              "zone": "gz15h"
+            },
+            {
+              "active_chunks": 4,
+              "active_median_us": 6876,
+              "case": "build-cost",
+              "chunks": 25,
+              "max_us": 9475,
+              "median_us": 16,
+              "mounds": 6,
+              "vertices": 2270
+            },
+            {
+              "case": "visible",
+              "difference": {
+                "changed": 1717,
+                "over_2": 665,
+                "peak": 11
+              }
+            },
+            {
+              "bad": 0,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 0,
+              "label": "loose",
+              "negative": false,
+              "samples": 308
+            },
+            {
+              "bad": 308,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 0,
+              "label": "negative",
+              "negative": true,
+              "samples": 308
+            },
+            {
+              "bad": 0,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 0,
+              "label": "pending",
+              "negative": false,
+              "samples": 308
+            },
+            {
+              "bad": 0,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 103,
+              "label": "installed",
+              "negative": false,
+              "samples": 308
+            },
+            {
+              "case": "footprint",
+              "difference": {
+                "changed": 2495,
+                "over_2": 765,
+                "peak": 42
+              }
+            },
+            {
+              "case": "exposed-trough",
+              "changed": 0,
+              "pixels": 117
+            },
+            {
+              "bad": 0,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 90,
+              "label": "fading",
+              "negative": false,
+              "samples": 308
+            },
+            {
+              "bad": 0,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 0,
+              "label": "expired",
+              "negative": false,
+              "samples": 308
+            },
+            {
+              "area": "[P: (350, 234), S: (103, 128)]",
+              "case": "restoration",
+              "label": "soft-ground round trip restores mound",
+              "patch": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              },
+              "region_only": false,
+              "whole_scene": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              }
+            },
+            {
+              "area": "[P: (350, 234), S: (103, 128)]",
+              "case": "restoration",
+              "label": "soft-off static shader restores exact pixels",
+              "patch": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              },
+              "region_only": false,
+              "whole_scene": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              }
+            },
+            {
+              "area": "[P: (350, 234), S: (103, 128)]",
+              "case": "restoration",
+              "label": "rebuild restores original mound scene",
+              "patch": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              },
+              "region_only": false,
+              "whole_scene": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              }
+            },
+            {
+              "area": "[P: (350, 234), S: (103, 128)]",
+              "case": "restoration",
+              "label": "cover off restores original scene",
+              "patch": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              },
+              "region_only": false,
+              "whole_scene": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "label": "mound-final-sand-gl",
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-final-sand-gl",
+      "run_manifest_sha256": "019d8bc68635b03d54d3b12ba314f5962e491f8ed53af0148cbd71628f70fd83",
+      "run": {
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/biome_mounds.gd",
+        "tool_sha256_at_start": "24913e980286271b9f2a959cd9b46d05861d7cc9720817bf3dfbc0fa67c2dee8",
+        "helper_sha256_at_start": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "4bc9b171e4e5bd9eec047d8296593fe3042512152cacfb0ffdfd15e6c5e9fdea",
+        "termination_reason": null,
+        "timeout_sec": 150,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-mounds-final/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-final-sand-gl/tool-source.gd",
+          "--mound-oracle=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-surface-oracle.gd",
+          "--mound-zone=gz15h",
+          "--ei-script-grass",
+          "--ei-script-soft-ground"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 10.821099368011346,
+        "other_render_processes_at_start": [
+          {
+            "pid": 292114,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 292114,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {
+          "mounds-rebuilt.png": "245e0b2338d26ed857e89dc8d4f8cd27383091c125aaca6e8ba41ed62c02ad5f",
+          "mounds-paused.png": "4da8d047f87847796398e775c64c511b1c583284c53cbe9b97b57e2a2c986e89",
+          "mounds-paused-later.png": "4da8d047f87847796398e775c64c511b1c583284c53cbe9b97b57e2a2c986e89",
+          "mounds-soft-off.png": "aeeacd27012681724651cd8b0ccd5be830c9cf2fbdbb650270458b5c49bf4d35",
+          "mounds-off.png": "35cf07d42ab2478096f9c3302d78e886567f4bf8ab57bfb052575efae4d7938a",
+          "mounds-pressed-ground-control.png": "4dcfa89c2a53ad3c82ba83051918e3f71ff2a1f28cd1073e36301f0c6c1fd592",
+          "mounds-soft-off-restored.png": "aeeacd27012681724651cd8b0ccd5be830c9cf2fbdbb650270458b5c49bf4d35",
+          "mounds-probe-pending.png": "8ad6eb327b44fe7d7cecb35e298a1af3190ab51228b1ea700e077e61ff4e473a",
+          "mounds-expired.png": "245e0b2338d26ed857e89dc8d4f8cd27383091c125aaca6e8ba41ed62c02ad5f",
+          "mounds-pending.png": "245e0b2338d26ed857e89dc8d4f8cd27383091c125aaca6e8ba41ed62c02ad5f",
+          "mounds-trough-overhead-ground.png": "f0b6b59046871cae8703f30ce27d63a7263a2bee5821f3a49af8bf62a21d4d7e",
+          "mounds-probe-loose.png": "8ad6eb327b44fe7d7cecb35e298a1af3190ab51228b1ea700e077e61ff4e473a",
+          "mounds-pressed.png": "4da8d047f87847796398e775c64c511b1c583284c53cbe9b97b57e2a2c986e89",
+          "mounds-probe-expired.png": "8ad6eb327b44fe7d7cecb35e298a1af3190ab51228b1ea700e077e61ff4e473a",
+          "mounds-clear.png": "245e0b2338d26ed857e89dc8d4f8cd27383091c125aaca6e8ba41ed62c02ad5f",
+          "mounds-loose.png": "245e0b2338d26ed857e89dc8d4f8cd27383091c125aaca6e8ba41ed62c02ad5f",
+          "mounds-probe-fading.png": "8ad6eb327b44fe7d7cecb35e298a1af3190ab51228b1ea700e077e61ff4e473a",
+          "mounds-soft-restored.png": "245e0b2338d26ed857e89dc8d4f8cd27383091c125aaca6e8ba41ed62c02ad5f",
+          "mounds-off-restored.png": "35cf07d42ab2478096f9c3302d78e886567f4bf8ab57bfb052575efae4d7938a",
+          "mounds-probe-installed.png": "8ad6eb327b44fe7d7cecb35e298a1af3190ab51228b1ea700e077e61ff4e473a",
+          "mounds-trough-overhead.png": "9cf8a1bc920f5806319b60dafb93b24a72de697cc4d9de6573eda6e31c0cdb91",
+          "mounds-probe-negative.png": "eac619350e465d131408457f16798328b53d5af22a488c6b61176c085e836b7b",
+          "mounds-stable.png": "245e0b2338d26ed857e89dc8d4f8cd27383091c125aaca6e8ba41ed62c02ad5f"
+        }
+      },
+      "reports": {
+        "biome-mounds.json": {
+          "checks": 50,
+          "failures": 0,
+          "rows": [
+            {
+              "case": "prepare",
+              "us": 148601
+            },
+            {
+              "case": "mesh",
+              "height_error": 1.9073486328125e-06,
+              "key": "(17, 24)",
+              "records": 1,
+              "sha256": "6d395fbb23614d20f91bff5555faff5f372887b040db51b43c410cca4439de96",
+              "triangles": 456,
+              "uv_error": 0.0,
+              "vertices": 308
+            },
+            {
+              "case": "chosen",
+              "key": "(17, 24)",
+              "record": "{ \"p\": (137.8777, 194.0213), \"kind\": 2, \"radius\": 0.52145202457905, \"height\": 0.08975559473038, \"phase\": 1.45437950627561 }",
+              "zone": "gz15h"
+            },
+            {
+              "active_chunks": 4,
+              "active_median_us": 6896,
+              "case": "build-cost",
+              "chunks": 25,
+              "max_us": 9135,
+              "median_us": 16,
+              "mounds": 6,
+              "vertices": 2270
+            },
+            {
+              "case": "visible",
+              "difference": {
+                "changed": 1839,
+                "over_2": 1173,
+                "peak": 26
+              }
+            },
+            {
+              "bad": 0,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 0,
+              "label": "loose",
+              "negative": false,
+              "samples": 308
+            },
+            {
+              "bad": 308,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 0,
+              "label": "negative",
+              "negative": true,
+              "samples": 308
+            },
+            {
+              "bad": 0,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 0,
+              "label": "pending",
+              "negative": false,
+              "samples": 308
+            },
+            {
+              "bad": 0,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 103,
+              "label": "installed",
+              "negative": false,
+              "samples": 308
+            },
+            {
+              "case": "footprint",
+              "difference": {
+                "changed": 4403,
+                "over_2": 1355,
+                "peak": 91
+              }
+            },
+            {
+              "case": "exposed-trough",
+              "changed": 0,
+              "pixels": 117
+            },
+            {
+              "bad": 0,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 90,
+              "label": "fading",
+              "negative": false,
+              "samples": 308
+            },
+            {
+              "bad": 0,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 0,
+              "label": "expired",
+              "negative": false,
+              "samples": 308
+            },
+            {
+              "area": "[P: (350, 234), S: (103, 128)]",
+              "case": "restoration",
+              "label": "soft-ground round trip restores mound",
+              "patch": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              },
+              "region_only": false,
+              "whole_scene": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              }
+            },
+            {
+              "area": "[P: (350, 234), S: (103, 128)]",
+              "case": "restoration",
+              "label": "soft-off static shader restores exact pixels",
+              "patch": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              },
+              "region_only": false,
+              "whole_scene": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              }
+            },
+            {
+              "area": "[P: (350, 234), S: (103, 128)]",
+              "case": "restoration",
+              "label": "rebuild restores original mound scene",
+              "patch": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              },
+              "region_only": false,
+              "whole_scene": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              }
+            },
+            {
+              "area": "[P: (350, 234), S: (103, 128)]",
+              "case": "restoration",
+              "label": "cover off restores original scene",
+              "patch": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              },
+              "region_only": false,
+              "whole_scene": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "label": "mound-build-cost-after",
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-build-cost-after",
+      "run_manifest_sha256": "97ac36367dc022f01b43cd50a3533f3b95979eb6cbb76f60f1e32286823a5fae",
+      "run": {
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/biome_mounds.gd",
+        "tool_sha256_at_start": "24913e980286271b9f2a959cd9b46d05861d7cc9720817bf3dfbc0fa67c2dee8",
+        "helper_sha256_at_start": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "4bc9b171e4e5bd9eec047d8296593fe3042512152cacfb0ffdfd15e6c5e9fdea",
+        "termination_reason": null,
+        "timeout_sec": 150,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-mounds-final/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-build-cost-after/tool-source.gd",
+          "--mound-oracle=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-surface-oracle.gd"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 3.308017062023282,
+        "other_render_processes_at_start": [],
+        "other_render_processes_at_end": [
+          {
+            "pid": 295220,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {}
+      },
+      "reports": {
+        "biome-mounds.json": {
+          "checks": 15,
+          "failures": 0,
+          "rows": [
+            {
+              "case": "prepare",
+              "us": 147592
+            },
+            {
+              "case": "mesh",
+              "height_error": 2.14576721191406e-06,
+              "key": "(49, 21)",
+              "records": 1,
+              "sha256": "f39c52ea8c37b9f04b38f8d1ea670715af1046f2ff8c19f043f5db6604be9864",
+              "triangles": 1359,
+              "uv_error": 0.0,
+              "vertices": 870
+            },
+            {
+              "case": "chosen",
+              "key": "(49, 21)",
+              "record": "{ \"p\": (393.7135, 169.7135), \"kind\": 1, \"radius\": 0.89145184457302, \"height\": 0.15704026833177, \"phase\": 4.22717505297987 }",
+              "zone": "gz11k"
+            },
+            {
+              "active_chunks": 8,
+              "active_median_us": 5486,
+              "case": "build-cost",
+              "chunks": 25,
+              "max_us": 10256,
+              "median_us": 267,
+              "mounds": 10,
+              "vertices": 6222
+            }
+          ]
+        }
+      }
+    },
+    {
+      "label": "mound-regression-base",
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-regression-base",
+      "run_manifest_sha256": "8b414f7bf2333e2470dfc76ab0520fc1fec0df609d03ca907f75d3208a8907b4",
+      "run": {
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/biome_cover.gd",
+        "tool_sha256_at_start": "487e214fa63b3f4384c4e6216b519543d1f630119e514cd3dcef769b112ae715",
+        "helper_sha256_at_start": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "4bc9b171e4e5bd9eec047d8296593fe3042512152cacfb0ffdfd15e6c5e9fdea",
+        "termination_reason": null,
+        "timeout_sec": 150,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-mounds-final/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-regression-base/tool-source.gd",
+          "--mound-oracle=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-surface-oracle.gd"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 5.559253133018501,
+        "other_render_processes_at_start": [],
+        "other_render_processes_at_end": [],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {}
+      },
+      "reports": {
+        "biome-cover.json": {
+          "checks": 7040,
+          "failures": 0,
+          "rows": [
+            {
+              "case": "immutable-snapshot",
+              "kinds": {
+                "0": 29,
+                "1": 304,
+                "2": 48,
+                "3": 24,
+                "4": 3,
+                "5": 60,
+                "6": 2
+              },
+              "records": 470
+            },
+            {
+              "biome": "gipat",
+              "build_us_max": 8309,
+              "build_us_median": 1003,
+              "case": "authored-metadata",
+              "chunks": 88,
+              "counts": {
+                "0": 102,
+                "2": 359,
+                "3": 160,
+                "4": 20,
+                "5": 75,
+                "6": 5,
+                "7": 6,
+                "8": 2,
+                "11": 291,
+                "12": 47,
+                "13": 6
+              },
+              "id": "gz1g",
+              "map": "zone1",
+              "records": 1073,
+              "scenery_loaded": false,
+              "serialized_mesh_bytes": 4310660
+            },
+            {
+              "biome": "gipat",
+              "build_us_max": 2826,
+              "build_us_median": 928,
+              "case": "authored-metadata",
+              "chunks": 88,
+              "counts": {
+                "0": 118,
+                "2": 530,
+                "3": 282,
+                "4": 37,
+                "5": 112,
+                "7": 23,
+                "8": 6
+              },
+              "id": "gz3g",
+              "map": "zone3obr",
+              "records": 1108,
+              "scenery_loaded": false,
+              "serialized_mesh_bytes": 1895128
+            },
+            {
+              "biome": "ingos",
+              "build_us_max": 12415,
+              "build_us_median": 1181,
+              "case": "authored-metadata",
+              "chunks": 88,
+              "counts": {
+                "1": 58,
+                "3": 94,
+                "4": 12,
+                "5": 94,
+                "6": 2
+              },
+              "id": "gz11k",
+              "map": "zone11",
+              "records": 260,
+              "scenery_loaded": false,
+              "serialized_mesh_bytes": 611944
+            },
+            {
+              "biome": "suslanger",
+              "build_us_max": 8997,
+              "build_us_median": 491,
+              "case": "authored-metadata",
+              "chunks": 64,
+              "counts": {
+                "1": 117,
+                "5": 152
+              },
+              "id": "gz15h",
+              "map": "zone15",
+              "records": 269,
+              "scenery_loaded": false,
+              "serialized_mesh_bytes": 712432
+            },
+            {
+              "biome": "cave",
+              "build_us_max": 844,
+              "build_us_median": 515,
+              "case": "authored-metadata",
+              "chunks": 64,
+              "counts": {
+                "5": 225
+              },
+              "id": "gz5g",
+              "map": "zone5_1",
+              "records": 225,
+              "scenery_loaded": false,
+              "serialized_mesh_bytes": 262132
+            }
+          ]
+        }
+      }
+    },
+    {
+      "label": "mound-regression-astral",
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-regression-astral",
+      "run_manifest_sha256": "dfec9a0e08647558374f18122e7f2b2dd4a40e215949d6baf5316fe799ad4e35",
+      "run": {
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/biome_cover.gd",
+        "tool_sha256_at_start": "487e214fa63b3f4384c4e6216b519543d1f630119e514cd3dcef769b112ae715",
+        "helper_sha256_at_start": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "4bc9b171e4e5bd9eec047d8296593fe3042512152cacfb0ffdfd15e6c5e9fdea",
+        "termination_reason": null,
+        "timeout_sec": 150,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-mounds-final/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-regression-astral/tool-source.gd",
+          "--mound-oracle=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-surface-oracle.gd",
+          "--cover-astral",
+          "--cover-authored-only"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 5.061998825985938,
+        "other_render_processes_at_start": [],
+        "other_render_processes_at_end": [],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {}
+      },
+      "reports": {
+        "biome-cover.json": {
+          "checks": 1327,
+          "failures": 0,
+          "rows": [
+            {
+              "biome": "gipat2",
+              "build_us_max": 3617,
+              "build_us_median": 828,
+              "case": "authored-metadata",
+              "chunks": 88,
+              "counts": {
+                "0": 80,
+                "1": 64,
+                "5": 100,
+                "7": 3
+              },
+              "id": "gz16g",
+              "map": "zone16",
+              "records": 247,
+              "scenery_loaded": false,
+              "serialized_mesh_bytes": 706336
+            },
+            {
+              "biome": "gipat2",
+              "build_us_max": 3220,
+              "build_us_median": 708,
+              "case": "authored-metadata",
+              "chunks": 88,
+              "counts": {
+                "0": 49,
+                "1": 6,
+                "5": 208,
+                "6": 7,
+                "7": 7,
+                "8": 6
+              },
+              "id": "gz7g",
+              "map": "zone7",
+              "records": 283,
+              "scenery_loaded": false,
+              "serialized_mesh_bytes": 559276
+            },
+            {
+              "biome": "unknown",
+              "build_us_max": 2943,
+              "build_us_median": 531,
+              "case": "authored-metadata",
+              "chunks": 88,
+              "counts": {
+                "5": 94
+              },
+              "id": "gz21k",
+              "map": "zone21",
+              "records": 94,
+              "scenery_loaded": false,
+              "serialized_mesh_bytes": 114904
+            }
+          ]
+        }
+      }
+    },
+    {
+      "label": "mound-forward-fixed-cold",
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-forward-fixed-cold",
+      "run_manifest_sha256": "2cf5c4c71de8645faed2102c269c2e20cdd3158c846c27933387ccc70c45af9e",
+      "run": {
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/biome_mounds.gd",
+        "tool_sha256_at_start": "24913e980286271b9f2a959cd9b46d05861d7cc9720817bf3dfbc0fa67c2dee8",
+        "helper_sha256_at_start": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "engine_sha256": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+        "pack_sha256": "4bc9b171e4e5bd9eec047d8296593fe3042512152cacfb0ffdfd15e6c5e9fdea",
+        "termination_reason": null,
+        "timeout_sec": 150,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-mounds-engine-final/CursedLands.x86_64",
+          "--render-thread",
+          "separate",
+          "--rendering-method",
+          "forward_plus",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-forward-fixed-cold/tool-source.gd",
+          "--mound-zone=gz15h",
+          "--mound-detail",
+          "--mound-hd",
+          "--mound-oracle=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-surface-oracle.gd"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 21.368758760014316,
+        "other_render_processes_at_start": [],
+        "other_render_processes_at_end": [
+          {
+            "pid": 309805,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-forward-fixed-cold/isolated/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-forward-fixed-cold/isolated/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-forward-fixed-cold/isolated/cache"
+        },
+        "warnings": [
+          "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+        ],
+        "errors": [],
+        "png_sha256": {
+          "mounds-rebuilt.png": "2e89cdb6e33ac6a39b79ced6437784bb3099577371b8a4deda12c86467ea1189",
+          "mounds-paused.png": "490812ec7bbfa0e07a9b30c7679fe230e9a2dddd61aca1afcc43daa25d960d9e",
+          "mounds-paused-later.png": "490812ec7bbfa0e07a9b30c7679fe230e9a2dddd61aca1afcc43daa25d960d9e",
+          "mounds-soft-off.png": "0d546774a56e2eb40adae375d617691ec92b3b29e2057bb9d6d5154538c3e05d",
+          "mounds-off.png": "d41c96445c5b591abd4e9fa1e9745dc818164570195805f22ea7926316a5d3f1",
+          "mounds-pressed-ground-control.png": "09aee3e449052f410147ff11548be914e719ae33a49e231f104f9ede6766b8cb",
+          "mounds-soft-off-restored.png": "0d546774a56e2eb40adae375d617691ec92b3b29e2057bb9d6d5154538c3e05d",
+          "mounds-probe-pending.png": "5174da25f1838b37b0ed48b5eec7e7f4f0ab401057bbfeaa35abd192fa4fc07e",
+          "mounds-expired.png": "2e89cdb6e33ac6a39b79ced6437784bb3099577371b8a4deda12c86467ea1189",
+          "mounds-pending.png": "2e89cdb6e33ac6a39b79ced6437784bb3099577371b8a4deda12c86467ea1189",
+          "mounds-trough-overhead-ground.png": "4e312ff7478928a6085f039a9445697f0d5d0bd5ead4bd50b43e8d41ab3c8677",
+          "mounds-probe-loose.png": "5174da25f1838b37b0ed48b5eec7e7f4f0ab401057bbfeaa35abd192fa4fc07e",
+          "mounds-pressed.png": "490812ec7bbfa0e07a9b30c7679fe230e9a2dddd61aca1afcc43daa25d960d9e",
+          "mounds-probe-expired.png": "5174da25f1838b37b0ed48b5eec7e7f4f0ab401057bbfeaa35abd192fa4fc07e",
+          "mounds-clear.png": "2e89cdb6e33ac6a39b79ced6437784bb3099577371b8a4deda12c86467ea1189",
+          "mounds-loose.png": "2e89cdb6e33ac6a39b79ced6437784bb3099577371b8a4deda12c86467ea1189",
+          "mounds-probe-fading.png": "5174da25f1838b37b0ed48b5eec7e7f4f0ab401057bbfeaa35abd192fa4fc07e",
+          "mounds-soft-restored.png": "2e89cdb6e33ac6a39b79ced6437784bb3099577371b8a4deda12c86467ea1189",
+          "mounds-off-restored.png": "d41c96445c5b591abd4e9fa1e9745dc818164570195805f22ea7926316a5d3f1",
+          "mounds-probe-installed.png": "5174da25f1838b37b0ed48b5eec7e7f4f0ab401057bbfeaa35abd192fa4fc07e",
+          "mounds-trough-overhead.png": "325be9de0f64d96fd9e5e1601709d189075689de676460426e2fb23ee42b1aa2",
+          "mounds-probe-negative.png": "4ef8fa2fd00b59061feda1031777acf9c57f318b0154033d7a43682d097e0aaa",
+          "mounds-stable.png": "2e89cdb6e33ac6a39b79ced6437784bb3099577371b8a4deda12c86467ea1189"
+        }
+      },
+      "reports": {
+        "biome-mounds.json": {
+          "checks": 50,
+          "failures": 0,
+          "rows": [
+            {
+              "case": "prepare",
+              "us": 231999
+            },
+            {
+              "case": "mesh",
+              "height_error": 1.9073486328125e-06,
+              "key": "(17, 24)",
+              "records": 1,
+              "sha256": "6d395fbb23614d20f91bff5555faff5f372887b040db51b43c410cca4439de96",
+              "triangles": 456,
+              "uv_error": 0.0,
+              "vertices": 308
+            },
+            {
+              "case": "chosen",
+              "key": "(17, 24)",
+              "record": "{ \"p\": (137.8777, 194.0213), \"kind\": 2, \"radius\": 0.52145202457905, \"height\": 0.08975559473038, \"phase\": 1.45437950627561 }",
+              "zone": "gz15h"
+            },
+            {
+              "active_chunks": 4,
+              "active_median_us": 6943,
+              "case": "build-cost",
+              "chunks": 25,
+              "max_us": 8637,
+              "median_us": 24,
+              "mounds": 6,
+              "vertices": 2270
+            },
+            {
+              "case": "visible",
+              "difference": {
+                "changed": 1717,
+                "over_2": 665,
+                "peak": 11
+              }
+            },
+            {
+              "bad": 0,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 0,
+              "label": "loose",
+              "negative": false,
+              "samples": 308
+            },
+            {
+              "bad": 308,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 0,
+              "label": "negative",
+              "negative": true,
+              "samples": 308
+            },
+            {
+              "bad": 0,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 0,
+              "label": "pending",
+              "negative": false,
+              "samples": 308
+            },
+            {
+              "bad": 0,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 103,
+              "label": "installed",
+              "negative": false,
+              "samples": 308
+            },
+            {
+              "case": "footprint",
+              "difference": {
+                "changed": 2495,
+                "over_2": 765,
+                "peak": 42
+              }
+            },
+            {
+              "case": "exposed-trough",
+              "changed": 0,
+              "pixels": 117
+            },
+            {
+              "bad": 0,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 90,
+              "label": "fading",
+              "negative": false,
+              "samples": 308
+            },
+            {
+              "bad": 0,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 0,
+              "label": "expired",
+              "negative": false,
+              "samples": 308
+            },
+            {
+              "area": "[P: (350, 234), S: (103, 128)]",
+              "case": "restoration",
+              "label": "soft-ground round trip restores mound",
+              "patch": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              },
+              "region_only": false,
+              "whole_scene": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              }
+            },
+            {
+              "area": "[P: (350, 234), S: (103, 128)]",
+              "case": "restoration",
+              "label": "soft-off static shader restores exact pixels",
+              "patch": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              },
+              "region_only": false,
+              "whole_scene": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              }
+            },
+            {
+              "area": "[P: (350, 234), S: (103, 128)]",
+              "case": "restoration",
+              "label": "rebuild restores original mound scene",
+              "patch": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              },
+              "region_only": false,
+              "whole_scene": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              }
+            },
+            {
+              "area": "[P: (350, 234), S: (103, 128)]",
+              "case": "restoration",
+              "label": "cover off restores original scene",
+              "patch": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              },
+              "region_only": false,
+              "whole_scene": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "label": "mound-forward-fixed-safe",
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-forward-fixed-safe",
+      "run_manifest_sha256": "e4c9bd88d9929638fbac9f921ca9c3b769a40fdbdba8bb009abbcac74fbbe224",
+      "run": {
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/biome_mounds.gd",
+        "tool_sha256_at_start": "24913e980286271b9f2a959cd9b46d05861d7cc9720817bf3dfbc0fa67c2dee8",
+        "helper_sha256_at_start": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "engine_sha256": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+        "pack_sha256": "4bc9b171e4e5bd9eec047d8296593fe3042512152cacfb0ffdfd15e6c5e9fdea",
+        "termination_reason": null,
+        "timeout_sec": 150,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-mounds-engine-final/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "forward_plus",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-forward-fixed-safe/tool-source.gd",
+          "--mound-oracle=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-surface-oracle.gd",
+          "--mound-zone=gz15h",
+          "--mound-detail",
+          "--mound-hd"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 20.581845536013134,
+        "other_render_processes_at_start": [
+          {
+            "pid": 310149,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 310149,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-forward-fixed-safe/isolated/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-forward-fixed-safe/isolated/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-forward-fixed-safe/isolated/cache"
+        },
+        "warnings": [],
+        "errors": [],
+        "png_sha256": {
+          "mounds-rebuilt.png": "2e89cdb6e33ac6a39b79ced6437784bb3099577371b8a4deda12c86467ea1189",
+          "mounds-paused.png": "490812ec7bbfa0e07a9b30c7679fe230e9a2dddd61aca1afcc43daa25d960d9e",
+          "mounds-paused-later.png": "490812ec7bbfa0e07a9b30c7679fe230e9a2dddd61aca1afcc43daa25d960d9e",
+          "mounds-soft-off.png": "0d546774a56e2eb40adae375d617691ec92b3b29e2057bb9d6d5154538c3e05d",
+          "mounds-off.png": "d41c96445c5b591abd4e9fa1e9745dc818164570195805f22ea7926316a5d3f1",
+          "mounds-pressed-ground-control.png": "09aee3e449052f410147ff11548be914e719ae33a49e231f104f9ede6766b8cb",
+          "mounds-soft-off-restored.png": "0d546774a56e2eb40adae375d617691ec92b3b29e2057bb9d6d5154538c3e05d",
+          "mounds-probe-pending.png": "5174da25f1838b37b0ed48b5eec7e7f4f0ab401057bbfeaa35abd192fa4fc07e",
+          "mounds-expired.png": "2e89cdb6e33ac6a39b79ced6437784bb3099577371b8a4deda12c86467ea1189",
+          "mounds-pending.png": "2e89cdb6e33ac6a39b79ced6437784bb3099577371b8a4deda12c86467ea1189",
+          "mounds-trough-overhead-ground.png": "4e312ff7478928a6085f039a9445697f0d5d0bd5ead4bd50b43e8d41ab3c8677",
+          "mounds-probe-loose.png": "5174da25f1838b37b0ed48b5eec7e7f4f0ab401057bbfeaa35abd192fa4fc07e",
+          "mounds-pressed.png": "490812ec7bbfa0e07a9b30c7679fe230e9a2dddd61aca1afcc43daa25d960d9e",
+          "mounds-probe-expired.png": "5174da25f1838b37b0ed48b5eec7e7f4f0ab401057bbfeaa35abd192fa4fc07e",
+          "mounds-clear.png": "2e89cdb6e33ac6a39b79ced6437784bb3099577371b8a4deda12c86467ea1189",
+          "mounds-loose.png": "2e89cdb6e33ac6a39b79ced6437784bb3099577371b8a4deda12c86467ea1189",
+          "mounds-probe-fading.png": "5174da25f1838b37b0ed48b5eec7e7f4f0ab401057bbfeaa35abd192fa4fc07e",
+          "mounds-soft-restored.png": "2e89cdb6e33ac6a39b79ced6437784bb3099577371b8a4deda12c86467ea1189",
+          "mounds-off-restored.png": "d41c96445c5b591abd4e9fa1e9745dc818164570195805f22ea7926316a5d3f1",
+          "mounds-probe-installed.png": "5174da25f1838b37b0ed48b5eec7e7f4f0ab401057bbfeaa35abd192fa4fc07e",
+          "mounds-trough-overhead.png": "325be9de0f64d96fd9e5e1601709d189075689de676460426e2fb23ee42b1aa2",
+          "mounds-probe-negative.png": "4ef8fa2fd00b59061feda1031777acf9c57f318b0154033d7a43682d097e0aaa",
+          "mounds-stable.png": "2e89cdb6e33ac6a39b79ced6437784bb3099577371b8a4deda12c86467ea1189"
+        }
+      },
+      "reports": {
+        "biome-mounds.json": {
+          "checks": 50,
+          "failures": 0,
+          "rows": [
+            {
+              "case": "prepare",
+              "us": 150950
+            },
+            {
+              "case": "mesh",
+              "height_error": 1.9073486328125e-06,
+              "key": "(17, 24)",
+              "records": 1,
+              "sha256": "6d395fbb23614d20f91bff5555faff5f372887b040db51b43c410cca4439de96",
+              "triangles": 456,
+              "uv_error": 0.0,
+              "vertices": 308
+            },
+            {
+              "case": "chosen",
+              "key": "(17, 24)",
+              "record": "{ \"p\": (137.8777, 194.0213), \"kind\": 2, \"radius\": 0.52145202457905, \"height\": 0.08975559473038, \"phase\": 1.45437950627561 }",
+              "zone": "gz15h"
+            },
+            {
+              "active_chunks": 4,
+              "active_median_us": 7010,
+              "case": "build-cost",
+              "chunks": 25,
+              "max_us": 8413,
+              "median_us": 15,
+              "mounds": 6,
+              "vertices": 2270
+            },
+            {
+              "case": "visible",
+              "difference": {
+                "changed": 1717,
+                "over_2": 665,
+                "peak": 11
+              }
+            },
+            {
+              "bad": 0,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 0,
+              "label": "loose",
+              "negative": false,
+              "samples": 308
+            },
+            {
+              "bad": 308,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 0,
+              "label": "negative",
+              "negative": true,
+              "samples": 308
+            },
+            {
+              "bad": 0,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 0,
+              "label": "pending",
+              "negative": false,
+              "samples": 308
+            },
+            {
+              "bad": 0,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 103,
+              "label": "installed",
+              "negative": false,
+              "samples": 308
+            },
+            {
+              "case": "footprint",
+              "difference": {
+                "changed": 2495,
+                "over_2": 765,
+                "peak": 42
+              }
+            },
+            {
+              "case": "exposed-trough",
+              "changed": 0,
+              "pixels": 117
+            },
+            {
+              "bad": 0,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 90,
+              "label": "fading",
+              "negative": false,
+              "samples": 308
+            },
+            {
+              "bad": 0,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 0,
+              "label": "expired",
+              "negative": false,
+              "samples": 308
+            },
+            {
+              "area": "[P: (350, 234), S: (103, 128)]",
+              "case": "restoration",
+              "label": "soft-ground round trip restores mound",
+              "patch": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              },
+              "region_only": false,
+              "whole_scene": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              }
+            },
+            {
+              "area": "[P: (350, 234), S: (103, 128)]",
+              "case": "restoration",
+              "label": "soft-off static shader restores exact pixels",
+              "patch": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              },
+              "region_only": false,
+              "whole_scene": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              }
+            },
+            {
+              "area": "[P: (350, 234), S: (103, 128)]",
+              "case": "restoration",
+              "label": "rebuild restores original mound scene",
+              "patch": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              },
+              "region_only": false,
+              "whole_scene": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              }
+            },
+            {
+              "area": "[P: (350, 234), S: (103, 128)]",
+              "case": "restoration",
+              "label": "cover off restores original scene",
+              "patch": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              },
+              "region_only": false,
+              "whole_scene": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "label": "mound-mobile-fixed-cold",
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-mobile-fixed-cold",
+      "run_manifest_sha256": "1d3f767a979427a89d9fa04903e6ce4a4fb387e6c8c37dbc133a9be49e9c6018",
+      "run": {
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/biome_mounds.gd",
+        "tool_sha256_at_start": "24913e980286271b9f2a959cd9b46d05861d7cc9720817bf3dfbc0fa67c2dee8",
+        "helper_sha256_at_start": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "engine_sha256": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+        "pack_sha256": "4bc9b171e4e5bd9eec047d8296593fe3042512152cacfb0ffdfd15e6c5e9fdea",
+        "termination_reason": null,
+        "timeout_sec": 150,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-mounds-engine-final/CursedLands.x86_64",
+          "--render-thread",
+          "separate",
+          "--rendering-method",
+          "mobile",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-mobile-fixed-cold/tool-source.gd",
+          "--mound-oracle=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-surface-oracle.gd",
+          "--mound-region-restoration"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 16.824402428988833,
+        "other_render_processes_at_start": [
+          {
+            "pid": 310149,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 311034,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 310149,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 311670,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-mobile-fixed-cold/isolated/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-mobile-fixed-cold/isolated/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-mobile-fixed-cold/isolated/cache"
+        },
+        "warnings": [
+          "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+        ],
+        "errors": [],
+        "png_sha256": {
+          "mounds-rebuilt.png": "4171e8191e5e63e478f02ff4df79a028562cfb97fb69e5e4d85dc55b305e2ded",
+          "mounds-paused.png": "04334c9cd181484e49c9d1e4aa54b2236ed03dfff89b83bdea1736af1734a277",
+          "mounds-paused-later.png": "04334c9cd181484e49c9d1e4aa54b2236ed03dfff89b83bdea1736af1734a277",
+          "mounds-soft-off.png": "dfffc7708e1c99a19435bdf6adaa2e3f58a995b1f96f25c99358163b45243b29",
+          "mounds-off.png": "a2542070aa47caa53d343762dbdbeb03586594dc11f965462acab961d1c76906",
+          "mounds-pressed-ground-control.png": "5e11956c3a445426017082568637c832f20619837ec098433dc9b984ec5321dd",
+          "mounds-soft-off-restored.png": "dfffc7708e1c99a19435bdf6adaa2e3f58a995b1f96f25c99358163b45243b29",
+          "mounds-probe-pending.png": "9875a3e848c4b17d0d225d99658b9a7cea71c801f85b8092031040bab3417f9a",
+          "mounds-expired.png": "075011673687b8a29ca8a74db6dde8d77d1e3ecfa393ed4cac5c4760eadc0dec",
+          "mounds-pending.png": "075011673687b8a29ca8a74db6dde8d77d1e3ecfa393ed4cac5c4760eadc0dec",
+          "mounds-trough-overhead-ground.png": "0c65f2b26501d744554078898df7d7f6ad3809a0a9f639f2dc040d03f9b5a08f",
+          "mounds-probe-loose.png": "9875a3e848c4b17d0d225d99658b9a7cea71c801f85b8092031040bab3417f9a",
+          "mounds-pressed.png": "04334c9cd181484e49c9d1e4aa54b2236ed03dfff89b83bdea1736af1734a277",
+          "mounds-probe-expired.png": "9875a3e848c4b17d0d225d99658b9a7cea71c801f85b8092031040bab3417f9a",
+          "mounds-clear.png": "075011673687b8a29ca8a74db6dde8d77d1e3ecfa393ed4cac5c4760eadc0dec",
+          "mounds-loose.png": "075011673687b8a29ca8a74db6dde8d77d1e3ecfa393ed4cac5c4760eadc0dec",
+          "mounds-probe-fading.png": "9875a3e848c4b17d0d225d99658b9a7cea71c801f85b8092031040bab3417f9a",
+          "mounds-soft-restored.png": "4171e8191e5e63e478f02ff4df79a028562cfb97fb69e5e4d85dc55b305e2ded",
+          "mounds-off-restored.png": "a2542070aa47caa53d343762dbdbeb03586594dc11f965462acab961d1c76906",
+          "mounds-probe-installed.png": "9875a3e848c4b17d0d225d99658b9a7cea71c801f85b8092031040bab3417f9a",
+          "mounds-trough-overhead.png": "6ed12053a4eee243a1bdc8f86bdd5c55c13304b2fcfbe7ee8fa4dde97f926dac",
+          "mounds-probe-negative.png": "e638da535e5a403caeab9438ba61ed4d0bfa050f6f044635262d82ad66d28c2e",
+          "mounds-stable.png": "075011673687b8a29ca8a74db6dde8d77d1e3ecfa393ed4cac5c4760eadc0dec"
+        }
+      },
+      "reports": {
+        "biome-mounds.json": {
+          "checks": 50,
+          "failures": 0,
+          "rows": [
+            {
+              "case": "prepare",
+              "us": 287841
+            },
+            {
+              "case": "mesh",
+              "height_error": 2.14576721191406e-06,
+              "key": "(49, 21)",
+              "records": 1,
+              "sha256": "f39c52ea8c37b9f04b38f8d1ea670715af1046f2ff8c19f043f5db6604be9864",
+              "triangles": 1359,
+              "uv_error": 0.0,
+              "vertices": 870
+            },
+            {
+              "case": "chosen",
+              "key": "(49, 21)",
+              "record": "{ \"p\": (393.7135, 169.7135), \"kind\": 1, \"radius\": 0.89145184457302, \"height\": 0.15704026833177, \"phase\": 4.22717505297987 }",
+              "zone": "gz11k"
+            },
+            {
+              "active_chunks": 8,
+              "active_median_us": 5693,
+              "case": "build-cost",
+              "chunks": 25,
+              "max_us": 10517,
+              "median_us": 246,
+              "mounds": 10,
+              "vertices": 6222
+            },
+            {
+              "case": "visible",
+              "difference": {
+                "changed": 4508,
+                "over_2": 3236,
+                "peak": 79
+              }
+            },
+            {
+              "bad": 0,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 0,
+              "label": "loose",
+              "negative": false,
+              "samples": 870
+            },
+            {
+              "bad": 870,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 0,
+              "label": "negative",
+              "negative": true,
+              "samples": 870
+            },
+            {
+              "bad": 0,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 0,
+              "label": "pending",
+              "negative": false,
+              "samples": 870
+            },
+            {
+              "bad": 0,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 119,
+              "label": "installed",
+              "negative": false,
+              "samples": 870
+            },
+            {
+              "case": "footprint",
+              "difference": {
+                "changed": 4147,
+                "over_2": 2642,
+                "peak": 122
+              }
+            },
+            {
+              "case": "exposed-trough",
+              "changed": 0,
+              "pixels": 174
+            },
+            {
+              "bad": 0,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 88,
+              "label": "fading",
+              "negative": false,
+              "samples": 870
+            },
+            {
+              "bad": 0,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 0,
+              "label": "expired",
+              "negative": false,
+              "samples": 870
+            },
+            {
+              "area": "[P: (319, 231), S: (151, 154)]",
+              "case": "restoration",
+              "label": "soft-ground round trip restores mound",
+              "patch": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              },
+              "region_only": true,
+              "whole_scene": {
+                "changed": 165,
+                "over_2": 8,
+                "peak": 4
+              }
+            },
+            {
+              "area": "[P: (319, 231), S: (151, 154)]",
+              "case": "restoration",
+              "label": "soft-off static shader restores exact pixels",
+              "patch": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              },
+              "region_only": true,
+              "whole_scene": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              }
+            },
+            {
+              "area": "[P: (319, 231), S: (151, 154)]",
+              "case": "restoration",
+              "label": "rebuild restores original mound scene",
+              "patch": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              },
+              "region_only": true,
+              "whole_scene": {
+                "changed": 165,
+                "over_2": 8,
+                "peak": 4
+              }
+            },
+            {
+              "area": "[P: (319, 231), S: (151, 154)]",
+              "case": "restoration",
+              "label": "cover off restores original scene",
+              "patch": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              },
+              "region_only": true,
+              "whole_scene": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "label": "mound-gl-fixed-cold",
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-gl-fixed-cold",
+      "run_manifest_sha256": "24f12a301b2ec300ab9292bcc0d457d19d2f064dd8044856b3063e10f5d9d8dc",
+      "run": {
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/biome_mounds.gd",
+        "tool_sha256_at_start": "24913e980286271b9f2a959cd9b46d05861d7cc9720817bf3dfbc0fa67c2dee8",
+        "helper_sha256_at_start": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "engine_sha256": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+        "pack_sha256": "4bc9b171e4e5bd9eec047d8296593fe3042512152cacfb0ffdfd15e6c5e9fdea",
+        "termination_reason": null,
+        "timeout_sec": 150,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-mounds-engine-final/CursedLands.x86_64",
+          "--render-thread",
+          "separate",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-gl-fixed-cold/tool-source.gd",
+          "--mound-oracle=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-surface-oracle.gd"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 29.118294718995458,
+        "other_render_processes_at_start": [
+          {
+            "pid": 310149,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 311670,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 312796,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          },
+          {
+            "pid": 312903,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-gl-fixed-cold/isolated/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-gl-fixed-cold/isolated/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-gl-fixed-cold/isolated/cache"
+        },
+        "warnings": [
+          "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature.",
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {
+          "mounds-rebuilt.png": "4991143d03829e8c534318ae92e18d8d2d691104268647a28b3fdb5d09171990",
+          "mounds-paused.png": "17fd13e6e2bd3e28c73c78a2c4766b61ef9d21fcc0317751076c1f2b7fc41bc6",
+          "mounds-paused-later.png": "17fd13e6e2bd3e28c73c78a2c4766b61ef9d21fcc0317751076c1f2b7fc41bc6",
+          "mounds-soft-off.png": "f3e8ac7ed1db6f5339a723dacda1eb4acd9a9ceff98cd364e39cf87253cc2227",
+          "mounds-off.png": "82802a8601f184744bf0a41c1d8f13684f85b20fd6f7863588df96362e7e315b",
+          "mounds-pressed-ground-control.png": "c764fd5884f1385d82f9b308f30f61eca4f8f3a980c5c02a31f19ac78b58d04e",
+          "mounds-soft-off-restored.png": "f3e8ac7ed1db6f5339a723dacda1eb4acd9a9ceff98cd364e39cf87253cc2227",
+          "mounds-probe-pending.png": "224f4b073ffdb0d6692404fb06d097a4cd0af07e38851562f933f5b7470befa0",
+          "mounds-expired.png": "4991143d03829e8c534318ae92e18d8d2d691104268647a28b3fdb5d09171990",
+          "mounds-pending.png": "4991143d03829e8c534318ae92e18d8d2d691104268647a28b3fdb5d09171990",
+          "mounds-trough-overhead-ground.png": "e5043e64409053d8e1c8d7c319ccb3ef2df2a30c628ba77af91f1f71bcc7d648",
+          "mounds-probe-loose.png": "224f4b073ffdb0d6692404fb06d097a4cd0af07e38851562f933f5b7470befa0",
+          "mounds-pressed.png": "17fd13e6e2bd3e28c73c78a2c4766b61ef9d21fcc0317751076c1f2b7fc41bc6",
+          "mounds-probe-expired.png": "224f4b073ffdb0d6692404fb06d097a4cd0af07e38851562f933f5b7470befa0",
+          "mounds-clear.png": "4991143d03829e8c534318ae92e18d8d2d691104268647a28b3fdb5d09171990",
+          "mounds-loose.png": "4991143d03829e8c534318ae92e18d8d2d691104268647a28b3fdb5d09171990",
+          "mounds-probe-fading.png": "224f4b073ffdb0d6692404fb06d097a4cd0af07e38851562f933f5b7470befa0",
+          "mounds-soft-restored.png": "4991143d03829e8c534318ae92e18d8d2d691104268647a28b3fdb5d09171990",
+          "mounds-off-restored.png": "82802a8601f184744bf0a41c1d8f13684f85b20fd6f7863588df96362e7e315b",
+          "mounds-probe-installed.png": "224f4b073ffdb0d6692404fb06d097a4cd0af07e38851562f933f5b7470befa0",
+          "mounds-trough-overhead.png": "272506daa1552ad1e9f947c0b46cbbcb63689bbe147423976a5249a35f9ac6f6",
+          "mounds-probe-negative.png": "cbb2156de3794ccb6d5a6a3d7bb38db571439dca2a2d3493ff744f18738e89b4",
+          "mounds-stable.png": "4991143d03829e8c534318ae92e18d8d2d691104268647a28b3fdb5d09171990"
+        }
+      },
+      "reports": {
+        "biome-mounds.json": {
+          "checks": 50,
+          "failures": 0,
+          "rows": [
+            {
+              "case": "prepare",
+              "us": 139381
+            },
+            {
+              "case": "mesh",
+              "height_error": 2.14576721191406e-06,
+              "key": "(49, 21)",
+              "records": 1,
+              "sha256": "f39c52ea8c37b9f04b38f8d1ea670715af1046f2ff8c19f043f5db6604be9864",
+              "triangles": 1359,
+              "uv_error": 0.0,
+              "vertices": 870
+            },
+            {
+              "case": "chosen",
+              "key": "(49, 21)",
+              "record": "{ \"p\": (393.7135, 169.7135), \"kind\": 1, \"radius\": 0.89145184457302, \"height\": 0.15704026833177, \"phase\": 4.22717505297987 }",
+              "zone": "gz11k"
+            },
+            {
+              "active_chunks": 8,
+              "active_median_us": 5548,
+              "case": "build-cost",
+              "chunks": 25,
+              "max_us": 10364,
+              "median_us": 239,
+              "mounds": 10,
+              "vertices": 6222
+            },
+            {
+              "case": "visible",
+              "difference": {
+                "changed": 4550,
+                "over_2": 3083,
+                "peak": 81
+              }
+            },
+            {
+              "bad": 0,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 0,
+              "label": "loose",
+              "negative": false,
+              "samples": 870
+            },
+            {
+              "bad": 870,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 0,
+              "label": "negative",
+              "negative": true,
+              "samples": 870
+            },
+            {
+              "bad": 0,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 0,
+              "label": "pending",
+              "negative": false,
+              "samples": 870
+            },
+            {
+              "bad": 0,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 119,
+              "label": "installed",
+              "negative": false,
+              "samples": 870
+            },
+            {
+              "case": "footprint",
+              "difference": {
+                "changed": 3914,
+                "over_2": 2576,
+                "peak": 114
+              }
+            },
+            {
+              "case": "exposed-trough",
+              "changed": 0,
+              "pixels": 174
+            },
+            {
+              "bad": 0,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 88,
+              "label": "fading",
+              "negative": false,
+              "samples": 870
+            },
+            {
+              "bad": 0,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 0,
+              "label": "expired",
+              "negative": false,
+              "samples": 870
+            },
+            {
+              "area": "[P: (319, 231), S: (151, 154)]",
+              "case": "restoration",
+              "label": "soft-ground round trip restores mound",
+              "patch": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              },
+              "region_only": false,
+              "whole_scene": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              }
+            },
+            {
+              "area": "[P: (319, 231), S: (151, 154)]",
+              "case": "restoration",
+              "label": "soft-off static shader restores exact pixels",
+              "patch": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              },
+              "region_only": false,
+              "whole_scene": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              }
+            },
+            {
+              "area": "[P: (319, 231), S: (151, 154)]",
+              "case": "restoration",
+              "label": "rebuild restores original mound scene",
+              "patch": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              },
+              "region_only": false,
+              "whole_scene": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              }
+            },
+            {
+              "area": "[P: (319, 231), S: (151, 154)]",
+              "case": "restoration",
+              "label": "cover off restores original scene",
+              "patch": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              },
+              "region_only": false,
+              "whole_scene": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "prior_cover_records": {
+    "before": {
+      "label": "mound-cover-fingerprint-before",
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-cover-fingerprint-before",
+      "run_manifest_sha256": "a7c12a8a00298e5425c3d686e428bd0accf79369b422fdcf822a7a2b9714433d",
+      "run": {
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-prior-cover-fingerprint.gd",
+        "tool_sha256_at_start": "b0a5205ae2f09df41fecf8262dd152d0f6e155dddaab1603624495ea2f0a6e5c",
+        "helper_sha256_at_start": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "3bfca3109fa9a98776f06aba30425f5db8d556f47b301e482783ac65f8c90455",
+        "termination_reason": null,
+        "timeout_sec": 150,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/water-surface-clock/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-cover-fingerprint-before/tool-source.gd",
+          "--mound-oracle=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-surface-oracle.gd"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 3.8100531390227843,
+        "other_render_processes_at_start": [
+          {
+            "pid": 295220,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 295220,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {}
+      },
+      "reports": {
+        "biome-cover-dry-fingerprint.json": [
+          {
+            "dry_count": 499,
+            "dry_hash": "2e3824e5853ed1d4b23fb83bf8899845192876716855c4d28aa1e8c7735565e5",
+            "map": "zone1"
+          },
+          {
+            "dry_count": 111,
+            "dry_hash": "f3522611ddf9194996fd7d1ae93b10d3ed1ace7dcac1297a1cb64a954c1f73b7",
+            "map": "zone11"
+          },
+          {
+            "dry_count": 269,
+            "dry_hash": "987a7bfa93e754eaf1247bd7c27a72efd017e10e1cb1ec029a3bb2f737adac3c",
+            "map": "zone15"
+          }
+        ]
+      }
+    },
+    "after": {
+      "label": "mound-cover-fingerprint-after",
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-cover-fingerprint-after",
+      "run_manifest_sha256": "ddba4e96a6a3164fc8168de35b73f3015dd4f88ac9a2a2b5822c7439b5bc8f65",
+      "run": {
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-prior-cover-fingerprint.gd",
+        "tool_sha256_at_start": "b0a5205ae2f09df41fecf8262dd152d0f6e155dddaab1603624495ea2f0a6e5c",
+        "helper_sha256_at_start": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "4bc9b171e4e5bd9eec047d8296593fe3042512152cacfb0ffdfd15e6c5e9fdea",
+        "termination_reason": null,
+        "timeout_sec": 150,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-mounds-final/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-cover-fingerprint-after/tool-source.gd",
+          "--mound-oracle=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-surface-oracle.gd"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 3.8114003899972886,
+        "other_render_processes_at_start": [
+          {
+            "pid": 295220,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 295220,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {}
+      },
+      "reports": {
+        "biome-cover-dry-fingerprint.json": [
+          {
+            "dry_count": 499,
+            "dry_hash": "2e3824e5853ed1d4b23fb83bf8899845192876716855c4d28aa1e8c7735565e5",
+            "map": "zone1"
+          },
+          {
+            "dry_count": 111,
+            "dry_hash": "f3522611ddf9194996fd7d1ae93b10d3ed1ace7dcac1297a1cb64a954c1f73b7",
+            "map": "zone11"
+          },
+          {
+            "dry_count": 269,
+            "dry_hash": "987a7bfa93e754eaf1247bd7c27a72efd017e10e1cb1ec029a3bb2f737adac3c",
+            "map": "zone15"
+          }
+        ]
+      }
+    },
+    "count": 879,
+    "all_exact": true,
+    "scope": "All pre-existing kinds 0-13; frozen diagnostic JSON retains historical dry_count/dry_hash keys"
+  },
+  "build_cost": {
+    "before": {
+      "label": "mound-build-cost-before",
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-build-cost-before",
+      "run_manifest_sha256": "ae2ba6ebbb5acffc6d7322708334f7278ae2ae8d2efc104c89727ab70ebc6769",
+      "run": {
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/biome_mounds.gd",
+        "tool_sha256_at_start": "24913e980286271b9f2a959cd9b46d05861d7cc9720817bf3dfbc0fa67c2dee8",
+        "helper_sha256_at_start": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "df329b43d01357d68c5f4a5007c17eaf1898f776f0e2dadc2d36b1ba29caeba1",
+        "termination_reason": null,
+        "timeout_sec": 150,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-mounds-probe6/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-build-cost-before/tool-source.gd",
+          "--mound-oracle=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-surface-oracle.gd"
+        ],
+        "return_code": 1,
+        "elapsed_sec": 3.5569377139909193,
+        "other_render_processes_at_start": [],
+        "other_render_processes_at_end": [],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [
+          "FAIL direct cover builder preserves its supplied scenery exclusions"
+        ],
+        "png_sha256": {}
+      },
+      "reports": {
+        "biome-mounds.json": {
+          "checks": 15,
+          "failures": 1,
+          "rows": [
+            {
+              "case": "prepare",
+              "us": 144535
+            },
+            {
+              "case": "mesh",
+              "height_error": 2.14576721191406e-06,
+              "key": "(49, 21)",
+              "records": 1,
+              "sha256": "f39c52ea8c37b9f04b38f8d1ea670715af1046f2ff8c19f043f5db6604be9864",
+              "triangles": 1359,
+              "uv_error": 0.0,
+              "vertices": 870
+            },
+            {
+              "case": "chosen",
+              "key": "(49, 21)",
+              "record": "{ \"p\": (393.7135, 169.7135), \"kind\": 1, \"radius\": 0.89145184457302, \"height\": 0.15704026833177, \"phase\": 4.22717505297987 }",
+              "zone": "gz11k"
+            },
+            {
+              "active_chunks": 8,
+              "active_median_us": 13024,
+              "case": "build-cost",
+              "chunks": 25,
+              "max_us": 24721,
+              "median_us": 241,
+              "mounds": 10,
+              "vertices": 6222
+            }
+          ]
+        }
+      }
+    },
+    "after_label": "mound-build-cost-after",
+    "before_warning": "Timing-only control; direct-builder scenery exclusion assertion fails on pre-fix pack, retained and not counted in passing totals.",
+    "same_selected_mesh_hash": true,
+    "active_median_us_before": 13024,
+    "active_median_us_after": 5486,
+    "max_us_before": 24721,
+    "max_us_after": 10256,
+    "scope": "25 sampled snow chunks, 8 active, 10 mounds, 6222 vertices. Precompute shape once per lattice point; selected mesh identical. Worker construction, not frame time or device/FPS acceptance."
+  },
+  "mobile_restoration": {
+    "strict_failed_run": {
+      "label": "mound-snow-mobile-final",
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-snow-mobile-final",
+      "run_manifest_sha256": "2eb1be1caaf10f82e3f61fcee10ba7b55ff0d5a85e74007e1a72b5de1a87b111",
+      "run": {
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/biome_mounds.gd",
+        "tool_sha256_at_start": "1c67a3218ab66ca8c85415d90e625610642545ce2e839adf9f6e7d976720d73b",
+        "helper_sha256_at_start": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "82cbb5562667f1a3663fb66eed34d86cb959460e317f84317820215141bfd904",
+        "termination_reason": null,
+        "timeout_sec": 150,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-mounds-accepted/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "mobile",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-snow-mobile-final/tool-source.gd",
+          "--mound-oracle=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-surface-oracle.gd"
+        ],
+        "return_code": 1,
+        "elapsed_sec": 12.318353050010046,
+        "other_render_processes_at_start": [],
+        "other_render_processes_at_end": [
+          {
+            "pid": 277153,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cache"
+        },
+        "warnings": [],
+        "errors": [
+          "FAIL soft-ground round trip restores mound",
+          "FAIL soft-off static shader restores exact pixels",
+          "FAIL rebuild restores original mound scene",
+          "FAIL cover off restores original scene"
+        ],
+        "png_sha256": {
+          "mounds-rebuilt.png": "4171e8191e5e63e478f02ff4df79a028562cfb97fb69e5e4d85dc55b305e2ded",
+          "mounds-paused.png": "04334c9cd181484e49c9d1e4aa54b2236ed03dfff89b83bdea1736af1734a277",
+          "mounds-paused-later.png": "04334c9cd181484e49c9d1e4aa54b2236ed03dfff89b83bdea1736af1734a277",
+          "mounds-soft-off.png": "49b1318fa855915feaaed27e0155f84cd9dcd024b702f770690e529325dfa82e",
+          "mounds-off.png": "7a656821820058d52c59559987114e1d1a4ff43ed5efed0d12131a7e074a9182",
+          "mounds-pressed-ground-control.png": "5e11956c3a445426017082568637c832f20619837ec098433dc9b984ec5321dd",
+          "mounds-soft-off-restored.png": "dfffc7708e1c99a19435bdf6adaa2e3f58a995b1f96f25c99358163b45243b29",
+          "mounds-probe-pending.png": "9875a3e848c4b17d0d225d99658b9a7cea71c801f85b8092031040bab3417f9a",
+          "mounds-expired.png": "075011673687b8a29ca8a74db6dde8d77d1e3ecfa393ed4cac5c4760eadc0dec",
+          "mounds-pending.png": "075011673687b8a29ca8a74db6dde8d77d1e3ecfa393ed4cac5c4760eadc0dec",
+          "mounds-trough-overhead-ground.png": "0c65f2b26501d744554078898df7d7f6ad3809a0a9f639f2dc040d03f9b5a08f",
+          "mounds-probe-loose.png": "9875a3e848c4b17d0d225d99658b9a7cea71c801f85b8092031040bab3417f9a",
+          "mounds-pressed.png": "04334c9cd181484e49c9d1e4aa54b2236ed03dfff89b83bdea1736af1734a277",
+          "mounds-probe-expired.png": "9875a3e848c4b17d0d225d99658b9a7cea71c801f85b8092031040bab3417f9a",
+          "mounds-clear.png": "075011673687b8a29ca8a74db6dde8d77d1e3ecfa393ed4cac5c4760eadc0dec",
+          "mounds-loose.png": "075011673687b8a29ca8a74db6dde8d77d1e3ecfa393ed4cac5c4760eadc0dec",
+          "mounds-probe-fading.png": "9875a3e848c4b17d0d225d99658b9a7cea71c801f85b8092031040bab3417f9a",
+          "mounds-soft-restored.png": "4171e8191e5e63e478f02ff4df79a028562cfb97fb69e5e4d85dc55b305e2ded",
+          "mounds-off-restored.png": "a2542070aa47caa53d343762dbdbeb03586594dc11f965462acab961d1c76906",
+          "mounds-probe-installed.png": "9875a3e848c4b17d0d225d99658b9a7cea71c801f85b8092031040bab3417f9a",
+          "mounds-trough-overhead.png": "6ed12053a4eee243a1bdc8f86bdd5c55c13304b2fcfbe7ee8fa4dde97f926dac",
+          "mounds-probe-negative.png": "e638da535e5a403caeab9438ba61ed4d0bfa050f6f044635262d82ad66d28c2e",
+          "mounds-stable.png": "075011673687b8a29ca8a74db6dde8d77d1e3ecfa393ed4cac5c4760eadc0dec"
+        }
+      },
+      "reports": {
+        "biome-mounds.json": {
+          "checks": 49,
+          "failures": 4,
+          "rows": [
+            {
+              "case": "prepare",
+              "us": 226014
+            },
+            {
+              "case": "mesh",
+              "height_error": 2.14576721191406e-06,
+              "key": "(49, 21)",
+              "records": 1,
+              "sha256": "f39c52ea8c37b9f04b38f8d1ea670715af1046f2ff8c19f043f5db6604be9864",
+              "triangles": 1359,
+              "uv_error": 0.0,
+              "vertices": 870
+            },
+            {
+              "case": "chosen",
+              "key": "(49, 21)",
+              "record": "{ \"p\": (393.7135, 169.7135), \"kind\": 1, \"radius\": 0.89145184457302, \"height\": 0.15704026833177, \"phase\": 4.22717505297987 }",
+              "zone": "gz11k"
+            },
+            {
+              "active_chunks": 8,
+              "active_median_us": 5564,
+              "case": "build-cost",
+              "chunks": 25,
+              "max_us": 10326,
+              "median_us": 234,
+              "mounds": 10,
+              "vertices": 6222
+            },
+            {
+              "case": "visible",
+              "difference": {
+                "changed": 4555,
+                "over_2": 3239,
+                "peak": 79
+              }
+            },
+            {
+              "bad": 0,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 0,
+              "label": "loose",
+              "negative": false,
+              "samples": 870
+            },
+            {
+              "bad": 870,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 0,
+              "label": "negative",
+              "negative": true,
+              "samples": 870
+            },
+            {
+              "bad": 0,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 0,
+              "label": "pending",
+              "negative": false,
+              "samples": 870
+            },
+            {
+              "bad": 0,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 119,
+              "label": "installed",
+              "negative": false,
+              "samples": 870
+            },
+            {
+              "case": "footprint",
+              "difference": {
+                "changed": 4147,
+                "over_2": 2642,
+                "peak": 122
+              }
+            },
+            {
+              "case": "exposed-trough",
+              "changed": 0,
+              "pixels": 174
+            },
+            {
+              "bad": 0,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 88,
+              "label": "fading",
+              "negative": false,
+              "samples": 870
+            },
+            {
+              "bad": 0,
+              "case": "probe",
+              "fully_cut_positive_height_samples": 0,
+              "label": "expired",
+              "negative": false,
+              "samples": 870
+            }
+          ]
+        }
+      }
+    },
+    "baseline_control": {
+      "label": "mound-mobile-restore-baseline",
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-mobile-restore-baseline",
+      "run_manifest_sha256": "455106c4a6d2a94e2104728f8d8de48090f0cd93ec87538cf7897ee3fec9ed79",
+      "run": {
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/benchmarks/terrain_option_restore.gd",
+        "tool_sha256_at_start": "87d9d3ce5d29b6425e1183c7c7e161359c52fd0237ac101493e9131924ba59a8",
+        "helper_sha256_at_start": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "3bfca3109fa9a98776f06aba30425f5db8d556f47b301e482783ac65f8c90455",
+        "termination_reason": null,
+        "timeout_sec": 150,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/water-surface-clock/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "mobile",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-mobile-restore-baseline/tool-source.gd"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 8.824554097023793,
+        "other_render_processes_at_start": [
+          {
+            "pid": 280841,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 280841,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cache"
+        },
+        "warnings": [],
+        "errors": [],
+        "png_sha256": {
+          "terrain-restore-base.png": "a2542070aa47caa53d343762dbdbeb03586594dc11f965462acab961d1c76906",
+          "terrain-restore-stable.png": "a2542070aa47caa53d343762dbdbeb03586594dc11f965462acab961d1c76906",
+          "terrain-restore-1.png": "7a656821820058d52c59559987114e1d1a4ff43ed5efed0d12131a7e074a9182",
+          "terrain-restore-3.png": "7a656821820058d52c59559987114e1d1a4ff43ed5efed0d12131a7e074a9182",
+          "terrain-restore-2.png": "3f5ac47a47bd18f704aadaa361010235b3c64a6ecaa5fb997f6c6bb9edc1f4a9",
+          "terrain-restore-0.png": "7f2d8f398e35656a9e7b9e39485db0fdc29830ee1cb766278bb4171b3cb8fa87"
+        }
+      },
+      "reports": {
+        "terrain-option-restore.json": {
+          "point": [
+            393.713500976562,
+            169.713531494141
+          ],
+          "rows": [
+            {
+              "case": "stable",
+              "difference": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              }
+            },
+            {
+              "case": "0",
+              "difference": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              }
+            },
+            {
+              "case": "1",
+              "difference": {
+                "changed": 47,
+                "over_2": 3,
+                "peak": 4
+              }
+            },
+            {
+              "case": "2",
+              "difference": {
+                "changed": 47,
+                "over_2": 3,
+                "peak": 4
+              }
+            },
+            {
+              "case": "3",
+              "difference": {
+                "changed": 47,
+                "over_2": 3,
+                "peak": 4
+              }
+            }
+          ]
+        }
+      }
+    },
+    "candidate_control": {
+      "label": "mound-mobile-restore-candidate",
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-mobile-restore-candidate",
+      "run_manifest_sha256": "3afea226edaaa9e2e69b4fac6af62f817fd91e86bd6645d47a9f1bbd4f28a2c3",
+      "run": {
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/benchmarks/terrain_option_restore.gd",
+        "tool_sha256_at_start": "87d9d3ce5d29b6425e1183c7c7e161359c52fd0237ac101493e9131924ba59a8",
+        "helper_sha256_at_start": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "82cbb5562667f1a3663fb66eed34d86cb959460e317f84317820215141bfd904",
+        "termination_reason": null,
+        "timeout_sec": 150,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-mounds-accepted/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "mobile",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-mobile-restore-candidate/tool-source.gd"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 8.581617218995234,
+        "other_render_processes_at_start": [
+          {
+            "pid": 280841,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 280841,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cache"
+        },
+        "warnings": [],
+        "errors": [],
+        "png_sha256": {
+          "terrain-restore-base.png": "a2542070aa47caa53d343762dbdbeb03586594dc11f965462acab961d1c76906",
+          "terrain-restore-stable.png": "a2542070aa47caa53d343762dbdbeb03586594dc11f965462acab961d1c76906",
+          "terrain-restore-1.png": "7a656821820058d52c59559987114e1d1a4ff43ed5efed0d12131a7e074a9182",
+          "terrain-restore-3.png": "a2542070aa47caa53d343762dbdbeb03586594dc11f965462acab961d1c76906",
+          "terrain-restore-2.png": "3f5ac47a47bd18f704aadaa361010235b3c64a6ecaa5fb997f6c6bb9edc1f4a9",
+          "terrain-restore-0.png": "3f5ac47a47bd18f704aadaa361010235b3c64a6ecaa5fb997f6c6bb9edc1f4a9"
+        }
+      },
+      "reports": {
+        "terrain-option-restore.json": {
+          "point": [
+            393.713500976562,
+            169.713531494141
+          ],
+          "rows": [
+            {
+              "case": "stable",
+              "difference": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              }
+            },
+            {
+              "case": "0",
+              "difference": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              }
+            },
+            {
+              "case": "1",
+              "difference": {
+                "changed": 47,
+                "over_2": 3,
+                "peak": 4
+              }
+            },
+            {
+              "case": "2",
+              "difference": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              }
+            },
+            {
+              "case": "3",
+              "difference": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              }
+            }
+          ]
+        }
+      }
+    },
+    "comparison": {
+      "baseline_and_candidate_initial_images_equal": false,
+      "whole_image_restoration_difference_equal": false,
+      "baseline_signed_difference_sha256": "548a79e2b00f0b9fe2f1e1590d90155b320ed543a3dcc08cdf8a13e4a156de7e",
+      "candidate_signed_difference_sha256": "edd9037016d2892b6df7c08fb0efeda0ef910b073654dfcd25c1db74fa133adf",
+      "note": "The old pack reproduces the same small off-state counts, but neither initial images nor signed residuals are identical. Do not claim byte-for-byte attribution; larger intermediate residuals remain unverified."
+    },
+    "current_limited_runs": [
+      "mound-final-snow-mobile",
+      "mound-mobile-fixed-cold"
+    ],
+    "remaining": "Current soft-roundtrip/rebuild: 165 far-tree pixels differ, eight over 2/255, peak 4/255; mound area exact. Old baseline reproduces comparable 47-pixel residual, but initial images and signed residuals are not identical; larger intermediate residual not attributed. Do not claim whole-scene pass."
+  },
+  "forward_baseline_controls": [
+    {
+      "label": "mound-forward-hd-baseline",
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-forward-hd-baseline",
+      "run_manifest_sha256": "43d361ca5d61fb9222e85357e6291c344f0fdfac963c24995c1d8eea1d568d3c",
+      "run": {
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/benchmarks/terrain_option_restore.gd",
+        "tool_sha256_at_start": "6661acba5b7e9cc813499c4584d04a5ee6aee87cd3f767cabd65f6f3b96f70fd",
+        "helper_sha256_at_start": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "3bfca3109fa9a98776f06aba30425f5db8d556f47b301e482783ac65f8c90455",
+        "termination_reason": null,
+        "timeout_sec": 150,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/water-surface-clock/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "forward_plus",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-forward-hd-baseline/tool-source.gd",
+          "--mound-oracle=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-surface-oracle.gd",
+          "--restore-hd",
+          "--restore-desert"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 6.817690868017962,
+        "other_render_processes_at_start": [
+          {
+            "pid": 288371,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 288371,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cache"
+        },
+        "warnings": [],
+        "errors": [],
+        "png_sha256": {
+          "terrain-restore-base.png": "2b4ab78fef22cf6a774c76d3e8198367fdcbabcd3fffe4ad28208869fe615810",
+          "terrain-restore-stable.png": "2b4ab78fef22cf6a774c76d3e8198367fdcbabcd3fffe4ad28208869fe615810",
+          "terrain-restore-1.png": "2b4ab78fef22cf6a774c76d3e8198367fdcbabcd3fffe4ad28208869fe615810",
+          "terrain-restore-3.png": "2b4ab78fef22cf6a774c76d3e8198367fdcbabcd3fffe4ad28208869fe615810",
+          "terrain-restore-2.png": "493223a28837aa2534133c9f86b4d10e10b6ac1fcfdd08fd579b0c34a136efba",
+          "terrain-restore-0.png": "493223a28837aa2534133c9f86b4d10e10b6ac1fcfdd08fd579b0c34a136efba"
+        }
+      },
+      "reports": {
+        "terrain-option-restore.json": {
+          "point": [
+            137.877685546875,
+            194.02131652832
+          ],
+          "rows": [
+            {
+              "case": "stable",
+              "difference": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              }
+            },
+            {
+              "case": "0",
+              "difference": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              }
+            },
+            {
+              "case": "1",
+              "difference": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              }
+            },
+            {
+              "case": "2",
+              "difference": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              }
+            },
+            {
+              "case": "3",
+              "difference": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "label": "mound-forward-detail-hd-baseline",
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-forward-detail-hd-baseline",
+      "run_manifest_sha256": "41f8e9df64b2ef6fddf26257f04176fd0e92fe4879539d7f746c418397ce30f7",
+      "run": {
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/benchmarks/terrain_option_restore.gd",
+        "tool_sha256_at_start": "2f3f4cc85cfdc736bef8046cc4fe3c521758edb2b0eeb572a3bd8319baad88df",
+        "helper_sha256_at_start": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "3bfca3109fa9a98776f06aba30425f5db8d556f47b301e482783ac65f8c90455",
+        "termination_reason": null,
+        "timeout_sec": 150,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/water-surface-clock/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "forward_plus",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-forward-detail-hd-baseline/tool-source.gd",
+          "--mound-oracle=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-surface-oracle.gd",
+          "--restore-hd",
+          "--restore-desert",
+          "--restore-detail"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 7.064438286994118,
+        "other_render_processes_at_start": [
+          {
+            "pid": 292114,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 292114,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cache"
+        },
+        "warnings": [],
+        "errors": [],
+        "png_sha256": {
+          "terrain-restore-base.png": "d41c96445c5b591abd4e9fa1e9745dc818164570195805f22ea7926316a5d3f1",
+          "terrain-restore-stable.png": "d41c96445c5b591abd4e9fa1e9745dc818164570195805f22ea7926316a5d3f1",
+          "terrain-restore-1.png": "d41c96445c5b591abd4e9fa1e9745dc818164570195805f22ea7926316a5d3f1",
+          "terrain-restore-3.png": "d41c96445c5b591abd4e9fa1e9745dc818164570195805f22ea7926316a5d3f1",
+          "terrain-restore-2.png": "f318512c45d2ed9b67ca990e8c1319dd19ad6f79c4afcaa7c30c6abc55c8edbd",
+          "terrain-restore-0.png": "f318512c45d2ed9b67ca990e8c1319dd19ad6f79c4afcaa7c30c6abc55c8edbd"
+        }
+      },
+      "reports": {
+        "terrain-option-restore.json": {
+          "point": [
+            137.877685546875,
+            194.02131652832
+          ],
+          "rows": [
+            {
+              "case": "stable",
+              "difference": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              }
+            },
+            {
+              "case": "0",
+              "difference": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              }
+            },
+            {
+              "case": "1",
+              "difference": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              }
+            },
+            {
+              "case": "2",
+              "difference": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              }
+            },
+            {
+              "case": "3",
+              "difference": {
+                "changed": 0,
+                "over_2": 0,
+                "peak": 0
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "development_failures": [
+    {
+      "runs": [
+        "mound-snow-headless-probe"
+      ],
+      "cause": "nonexistent Geometry2D.is_point_in_triangle; use is_point_in_polygon"
+    },
+    {
+      "runs": [
+        "mound-snow-headless-probe2",
+        "mound-snow-headless-probe3",
+        "mound-snow-headless-probe4",
+        "mound-dispatch",
+        "mound-instrumented",
+        "mound-instrumented2"
+      ],
+      "cause": "conditional untyped Array into Array[Vector2i] caused release crash; debug editor diagnosed assignment; fixed typed initialization and assign",
+      "diagnostic_logs": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-headless-gdb.log",
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/mound-editor2.log"
+      ]
+    },
+    {
+      "runs": [
+        "mound-snow-headless-probe5"
+      ],
+      "cause": "custom FLOAT attributes used byte arrays; fixed PackedFloat32Array"
+    },
+    {
+      "runs": [
+        "mound-snow-gl-probe"
+      ],
+      "cause": "cached soft-on shader did not refresh global Gfx specialization; fixed cache-return path; fixture also propagates view_position to grass"
+    },
+    {
+      "runs": [
+        "mound-snow-gl-final"
+      ],
+      "cause": "oblique camera sees uncut trench side wall; floor comparison moved overhead, independent vertex-height checks retained"
+    },
+    {
+      "runs": [
+        "mound-sand-forward-final",
+        "mound-final-forward-cold"
+      ],
+      "cause": "Forward+ shader-version lifetime ordering; this checkpoint adds/tested engine patch. Warm separate-thread success alone did not resolve cold-cache failure."
+    }
+  ],
+  "untested_or_open": [
+    "Unknown/custom atlas families and broader campaigns/routes",
+    "True geometry submission LOD; mound height fade alone still submits triangles",
+    "Mobile far-tree restoration residual after option changes",
+    "Actual Android/browser load, memory and steady-frame cost",
+    "Windows/macOS/Android/Web engine builds and platform acceptance",
+    "Animated water exact lighting, broader V2 weather wind/profile work",
+    "Renderer handoff remains active; gameplay U45 still first after renderer work"
+  ],
+  "side_effects": {
+    "installed_builds_changed": false,
+    "release_published": false,
+    "original_assets_or_saves_changed": false,
+    "protocol": 13
+  }
+}

@@ -3,6 +3,7 @@ extends RefCounted
 ## workers, barriers and pressure; this class never reads live scene state in a job.
 const Geometry = preload("res://src/game/fx/biome_cover_mesh.gd")
 const Sea = preload("res://src/game/fx/biome_cover_water.gd")
+const Mounds = preload("res://src/game/fx/biome_mounds.gd")
 enum Kind { FLOWER, DRY, LEAF, NEEDLES, TWIG, STONE, BUSH, REED, CATTAIL, WRACK, SHELL, SEAGRASS, KELP, SEA_SHELL }
 const DRY_KINDS := 7 # Preserve the original random stream when adding species.
 const SPACING := 0.8
@@ -28,6 +29,7 @@ var images := {}
 var native: RefCounted
 var shores := {} # Chunk -> immutable Vector4(water x, height, EI y, 1 river / 2 swamp / 3 sea).
 var sea := Sea.new()
+var mounds := Mounds.new()
 static var _campaign: CampaignMap
 static var _texts_id := 0
 
@@ -83,6 +85,7 @@ func configure(terrain: EITerrain, field: RefCounted, atlases: Dictionary, conte
 		if copy.is_compressed(): copy.decompress()
 		images[key] = copy
 	_prepare_shores(terrain)
+	mounds.configure(terrain,self)
 
 
 func _prepare_shores(terrain: EITerrain) -> void:
@@ -422,9 +425,10 @@ func sea_records(key: Vector2i, boxes: Array) -> Array[Dictionary]:
 	return result
 
 
-func build(key: Vector2i, boxes: Array, trees: Array) -> Dictionary:
+func build(key: Vector2i, boxes: Array, trees: Array, mound_boxes: Array = []) -> Dictionary:
 	var placed := records(key,boxes,trees)
-	return {"records":placed,"arrays":Geometry.new().build(placed,key,sea if not sea.tiles.is_empty() else null)}
+	return {"records":placed,"arrays":Geometry.new().build(placed,key,sea if not sea.tiles.is_empty() else null),
+		"mounds":mounds.build(self,key,mound_boxes if not mound_boxes.is_empty() else boxes)}
 
 
 class ChunkJob extends RefCounted:
@@ -433,12 +437,13 @@ class ChunkJob extends RefCounted:
 	var key: Vector2i
 	var boxes: Array
 	var trees: Array
+	var mound_boxes: Array
 	var result := {}
 	func run() -> void:
 		if grass: grass.run(); result = grass.read_result()
 		else:
 			var transforms: Array[Transform3D] = []; var colours: Array[Color] = []; var custom: Array[Color] = []
 			result = {"transforms":transforms,"colours":colours,"custom":custom}
-		result.cover = cover.build(key,boxes,trees)
+		result.cover = cover.build(key,boxes,trees,mound_boxes)
 	func read_result() -> Dictionary:
 		return result

@@ -1,0 +1,22 @@
+--- a/servers/rendering/renderer_rd/forward_clustered/scene_shader_forward_clustered.cpp
++++ b/servers/rendering/renderer_rd/forward_clustered/scene_shader_forward_clustered.cpp
+@@ -39,6 +39,10 @@
+ using namespace RendererSceneRenderImplementation;
+ 
+ void SceneShaderForwardClustered::ShaderData::set_code(const String &p_code) {
++	// Finish jobs while the old version is valid. Otherwise a variant lookup
++	// in a pending worker can free obsolete shader RIDs from the wrong thread.
++	pipeline_hash_map.clear_pipelines();
++
+ 	//compile
+ 
+ 	code = p_code;
+@@ -233,8 +237,6 @@
+ 	ubo_size = gen_code.uniform_total_size;
+ 	ubo_offsets = gen_code.uniform_offsets;
+ 	texture_uniforms = gen_code.texture_uniforms;
+-
+-	pipeline_hash_map.clear_pipelines();
+ 
+ 	// If any form of Alpha Antialiasing is enabled, set the blend mode to alpha to coverage.
+ 	if (alpha_antialiasing_mode != ALPHA_ANTIALIASING_OFF) {

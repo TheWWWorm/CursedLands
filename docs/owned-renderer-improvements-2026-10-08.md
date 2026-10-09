@@ -3095,6 +3095,137 @@ runtime/native library recorded in the receipt. Installed builds and defaults
 remain unchanged. Continue V2's remaining mounds/profiles/wind/LOD work and
 the renderer handoff, then start the gameplay handoff with U45.
 
+### V2: optional snow and sand mounds; Forward+ shader lifetime correction
+
+Follow-up to `bcd48d5`, 9 October. The existing default-off `gfx_biome_cover`
+option now includes sparse snow piles in Ingos and lower sand piles on verified
+soft-sand atlas slots. Mounds use the original painted terrain material and
+compact into the actual footprint surface. No gameplay height, navigation,
+save format, desktop sunlight policy or default option changed.
+
+**Reference provenance:** use `git show` at R1
+`0092dc6e1d7c4aab3f74644a79e9bfca11ecf293`; these files are not all in the
+checked-out R0 tree. `Source/ground_cover.h:319–326` defines the snow/sand
+rules, `Source/ground_cover_snow.h:10–30` the irregular dome, and
+`Source/ground_cover_surface.h:32–52` the terrain/trail relationship.
+`Source/renderer_ground_cover.cpp:343–355,567,623,729–809` contains soft-sand
+admission and vertex deformation/shading. `Source/terrain_tile_blend.h:193–211`
+names the three soft-sand families; `Source/terrain_tile_presets.h` credits
+editor metadata from `ei-mapper-endurance` commit `af24d45`. The reference
+checkout remains clean at R0 `d529d14e9bf3c960833a9d9633786fc4588ec6d2`.
+
+Implementation entry points in the canonical checkout:
+
+- `game/src/game/fx/biome_mounds.gd`: immutable placement mask/normal snapshot,
+  seeded candidates, full-footprint admission, cropped terrain-lattice geometry
+  and two cached shaders. Each 8 m chunk admits at most two piles / 4,096
+  vertices. Snow requires Ingos and original tile type 9/12; sand requires
+  type 3 plus a verified atlas slot. Water, mixed materials, folded/steep
+  triangles, excessive height range and neighboring scenery exclude a pile.
+- `game/src/game/fx/biome_sand_tiles.gd`: 27 exact original image fingerprints,
+  with 287 admitted full soft-sand slots across six profiles. The identities
+  use canonical 512×512 RGBA8 pixels without mips. All four corners must be
+  `Sand / Yellow`, `Sand / Dark` or `Sand / Common grayish`. Unknown, modified,
+  mixed, wet, paved and other sand families remain unclassified. These rules
+  classify mounds only; they do not finish the separate beach-debris audit.
+- `tools/benchmarks/biome_sand_metadata.py`: reproducible generator reading
+  pinned reference metadata and the original-atlas census. The collector,
+  census, generation command/hashes and byte-identical regeneration are in
+  `.../owned-renderer-improvements-20261008-qa/v2-vegetation` and the receipt.
+  No original texture bytes are embedded in source.
+- `game/src/game/fx/biome_cover.gd`: publishes a separate `mounds` payload through
+  the existing chunk job. Existing cover records and random streams remain
+  intact. Direct builder calls retain their supplied scenery exclusions.
+- `game/src/game/fx/terrain_details.gd`: gathers neighboring exclusion buckets,
+  binds the original/HD terrain material and existing optional surface data,
+  and installs receive-only `BiomeMounds` meshes through existing worker,
+  streaming, invalidation and shutdown paths.
+- `tools/tests/biome_mounds.gd`: real World → Map → Terrain fixture and GPU
+  vertex-height comparisons against an independently indexed installed terrain
+  mesh. Pass `--mound-oracle=/absolute/path/to/frozen/biome_cover_surface.gd`;
+  the receipt identifies the frozen copy and its hash. `--mound-zone=gz15h`
+  selects sand; default `gz11k` selects snow. HD/detail and script fallbacks
+  are explicit arguments in the recorded commands.
+
+The dome uses the reference's irregular radial falloff, with smaller/sparser
+placement. Its topology is a subset of the original triangles subdivided 16
+ways, preserving rotated atlas UVs. Every vertex queries the actual installed
+terrain surface; pending dense-mesh work cannot compact a pile early. Existing
+shared track texture and recovery clock lower its thickness, and buried
+fragments reveal the trench. No second trail field, texture readback or
+per-frame vertex upload is added. Soft-ground off releases the optional surface
+holder and uses baked original heights. Returning to a cached shader also
+refreshes Gfx specialization, preventing the terrain from remaining compiled
+for the prior soft-ground option.
+
+The implementation preserves painted texture detail rather than the reference's
+smoothed center colour. It shares existing berm deformation rather than adding
+a separate mound-volume conservation model. Distance fading at 24–32 m lowers
+the pile; **it does not remove geometry submission**. Actual submission LOD and
+memory/route/device acceptance remain open.
+
+See [biome-mounds-2026-10-09.json](/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/biome-mounds-2026-10-09.json)
+for frozen source/runtime/pack hashes, commands, images and retained failures.
+**8,782 assertions pass across 11 final runs**, including repeated engine
+controls. There are 23,560 positive GPU vertex samples within 2 mm of the
+independently evaluated surface, 4,712 deliberately wrong samples detected,
+and 1,164 exact overhead trench-floor pixel comparisons. Tests cover pending
+work, compaction/recovery, pause, clear, water invalidation, option restoration,
+worker snapshots, HD/detail, native/script sampling and base/Lost in Astral
+regressions. All 879 sampled pre-existing cover records, kinds 0–13, retain
+their prior hashes.
+
+**Mobile restoration limitation:** whole-scene restoration passes on the tested
+Compatibility and Forward+ scenes. Mobile's explicit
+`--mound-region-restoration` run checks a conservative projected mound area,
+which restores exactly, and still records full-frame differences. After a
+soft-ground round trip/rebuild, 165 distant tree pixels differ, eight by more
+than 2/255 and at most 4/255. `tools/benchmarks/terrain_option_restore.gd`
+reproduces a comparable 47-pixel residual with the old `bcd48d5` pack and no
+cover. Initial images and signed residuals differ between that control and
+candidate; the larger intermediate residual is **not attributed or resolved**.
+The prior strict failed run is preserved. Do not label these scoped checks a
+whole-scene Mobile pass or enable defaults on their strength.
+
+Construction cost remains material: for 25 sampled snow chunks, eight active
+chunks produce ten mounds / 6,222 vertices. Precomputing shape values once per
+lattice point reduces the sampled active-chunk median from 13.024 to 5.486 ms
+and maximum from 24.721 to 10.256 ms, with the same selected mesh hash. The
+before timing pack still fails the subsequently fixed direct-builder scenery
+check and is not counted among passing runs. Final sand samples take roughly
+6.9 ms per active chunk. These are worker construction measurements, not frame
+time or a demonstrated FPS gain. Long routes and actual Android/browser cost
+must inform density/default decisions.
+
+**Required Forward+ engine correction:** the first warm separate-thread run
+passed, but repeating with fresh shader caches exposed 50 wrong-thread shader
+frees and 50 leaked shader RIDs. The game assertions alone did not catch this.
+`engine_patches/godot-4.7/forward-shader-recompile-lifetime.patch` moves
+`pipeline_hash_map.clear_pipelines()` to the beginning of
+`SceneShaderForwardClustered::ShaderData::set_code`, before mutable shader and
+version state changes. The shared compiler mutex was already correctly scoped.
+This is the same lifetime ordering needed by the earlier Mobile patch; the
+Forward+ patch changes no shader equations or cache policy. It applies exactly
+to the pinned Godot `5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88` source.
+
+The rebuilt Linux runtime passes cold-cache Forward+ with both safe and
+separate rendering threads, plus cold Compatibility/Mobile controls, without
+shader errors or leaks. All 69 paired captured images are exact across the
+old/new runtime comparison. The PCK, native library and frozen fixture are
+unchanged in each pair. The simpler old-pack Forward+ option controls did not
+reproduce the failure, so do not claim that baseline reproduction. The patch
+is the eighth common engine patch in the template README; installed templates
+and platform packages have not been updated.
+
+Final application export: `.../v2-vegetation/cover-mounds-final`, PCK SHA-256
+`4bc9b171e4e5bd9eec047d8296593fe3042512152cacfb0ffdfd15e6c5e9fdea`;
+all 232 production scripts match its manifest. Use the paired
+`.../v2-vegetation/cover-mounds-engine-final` runtime for further tests,
+SHA-256 `090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44`.
+The native library is unchanged. No release, installed build, original asset
+or save was changed. Continue the remaining renderer work; U45 remains first
+when the gameplay track starts.
+
 ## Next work in the established order
 
 1. **P1/P2 remaining texture work:** retained outfit pixels and shared native
@@ -3134,7 +3265,9 @@ the renderer handoff, then start the gameplay handoff with U45.
    and caster-aware selection acceptance remain open. Disabled wind and rigid
    foliage now permit native whole-map shadow reuse; live fade/contact shaders
    follow the same specialization. Native Mobile requires the accompanying
-   engine lifetime/lock patch. The upstream static-depth/dynamic-overlay cache
+   engine lifetime/lock patch. Forward+ live shader changes now also require
+   the eighth common shader-lifetime patch validated in the mound section.
+   The upstream static-depth/dynamic-overlay cache
    and real device performance remain open.
    For P6, identify actual shimmer/redraw cost and renderer capabilities
    before changing cascade settings or planning engine-level projection reuse.
@@ -3153,6 +3286,8 @@ the renderer handoff, then start the gameplay handoff with U45.
    grass-interaction, dry-land cover and soft-ground root attachment stages above.
    Dry river/swamp banks are now implemented with the conservative shore rules
    above. Underwater cover/mean-depth lighting and the enhanced-water pause
-   correction are now implemented. Continue with authored sandy-beach acceptance
-   and the remaining biome rules. No visual effect
+   correction are now implemented, followed by sparse snow/verified-sand mounds.
+   Continue with authored sandy-beach acceptance, broader biome/atlas profiles,
+   shared weather wind and actual geometry submission LOD. Preserve the mound
+   Mobile restoration limitation and construction-cost evidence. No visual effect
    was silently enabled.

@@ -12,6 +12,7 @@ build instructions. Adding a patch here does not update installed templates.
 5. `prepare-character-track-caches.patch`
 6. `cache-unobserved-track-eligibility.patch`
 7. `mobile-shader-recompile-lock.patch`
+8. `forward-shader-recompile-lifetime.patch`
 
 The first two patches repair separate-render-thread shutdown and snapshot
 mutable images for queued texture uploads. The third lets an unobserved looping
@@ -45,6 +46,18 @@ equations, cache policy, or Compatibility/Forward+ code. Linux validation and
 the paired engine controls are recorded in
 [`local-shadow-cache-2026-10-08.json`](../../docs/validation/local-shadow-cache-2026-10-08.json).
 Windows, Android and macOS builds of this patch still need platform validation.
+
+The eighth applies the shader-version lifetime ordering to Forward+: finish
+pending pipeline jobs before changing shader code, uniforms or version state.
+Its compiler mutex already had the correct scope. Without this ordering, a
+cold-cache live option change can let a pending worker free obsolete shader
+RIDs from outside the render thread. The same game pack reproduced 50 invalid
+frees and 50 leaked shader RIDs before this patch; the paired Linux cold-cache
+run passes without either. See
+[`biome-mounds-2026-10-09.json`](../../docs/validation/biome-mounds-2026-10-09.json)
+for the frozen pack, engine build, controls and rendering-thread coverage.
+This changes no shader equations or cache policy. Platform template builds and
+validation remain separate work; installed templates are not changed here.
 
 macOS and Web use the official 4.7 templates. Experimental 5 Android ARM64 uses
 the first six common patches and `android-headless-service.patch`; earlier public
