@@ -1,0 +1,578 @@
+{
+  "schema": 1,
+  "date": "2026-10-09",
+  "scope": "P5 static-depth plus dynamic-overlay opportunity evaluation; no implementation or rollout",
+  "decision": "Do not build a native pilot for this measured workload now. Static work exists, but small whole-viewport timing deltas with material GPU drift do not establish a useful net benefit after unmeasured copy/management costs. P5 separate static/dynamic caching and target-device acceptance remain open.",
+  "production_changes": false,
+  "engine_changes": false,
+  "cache_implemented": false,
+  "prior_evidence": {
+    "receipt": "docs/validation/local-shadow-cache-2026-10-08.json",
+    "handoff": "docs/owned-renderer-improvements-2026-10-08.md:1619 and Next work:4541",
+    "distinction": "Whole-map reuse and wind specialization were already implemented. This run adds a real moving GameUnit so that existing whole-map caching cannot avoid static redraws. Prior all-static timings are not reused as a gain.",
+    "scene_choice": "zone3obr is a real gameplay map with an authored radius-5 camp fire previously contributing 14,933 static shadow primitives; chosen over the slightly larger menu-only scene."
+  },
+  "qualification": {
+    "build_directory": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/terrain-compressed-proto-01",
+    "game_source": "abda715 with exact terrain overlay subsequently committed c618cc0; application/native bytes otherwise match cloud-coop-final-01",
+    "build_sha256": {
+      "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+      "CursedLands.pck": "1b510c6468e9a8790b441d874b5d02a8e7524dae683462fe4d5d3e241835407e",
+      "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+    },
+    "engine_source_base": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88 plus qualified repository engine patches",
+    "engine_source_path": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/engine-sky-alpha",
+    "fixture": "tools/benchmarks/local_shadow_overlay.gd",
+    "fixture_sha256": "ee0740fd96a5d8fc7b1c6bb705541b81e6518e16f6ca425e26e20329a52d6831",
+    "frozen_sources": {
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/benchmarks/local_shadow_overlay.gd": "ee0740fd96a5d8fc7b1c6bb705541b81e6518e16f6ca425e26e20329a52d6831",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/benchmarks/local_shadow_cache.gd": "2619a5097e220caffdd60103ac1292f230b8857232c79916d644a73eb6a30945"
+    },
+    "runtime_identity": {
+      "build": "custom_build",
+      "hash": "unknown",
+      "hex": 263936,
+      "major": 4,
+      "minor": 7,
+      "patch": 0,
+      "status": "stable",
+      "string": "4.7-stable (custom_build)",
+      "timestamp": 0
+    }
+  },
+  "execution": {
+    "directory": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/p5-overlay-calibration-01",
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/terrain-compressed-proto-01/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--rendering-method",
+      "gl_compatibility",
+      "--windowed",
+      "--resolution",
+      "800x600",
+      "--position",
+      "-10000,-10000",
+      "--audio-driver",
+      "Dummy",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/p5-overlay-calibration-01/tool-source.gd",
+      "--overlay-samples=240"
+    ],
+    "return_code": 0,
+    "seconds": 15.514807655999903,
+    "checks": 44,
+    "failures": 0,
+    "errors": [],
+    "warnings": [
+      "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+    ],
+    "other_godot_processes_at_start": [],
+    "other_godot_processes_at_end": [],
+    "coordination": "Root/P1 granted exclusive short GPU window and held imports/exports; lease released immediately after this one run. No longer run or scene/backend matrix performed.",
+    "timing_isolation_limits": "One RTX 3090/Linux desktop run. Other Godot processes were absent and agents held heavy work; GPU clocks, operating-system activity and driver scheduling were not locked or measured. ABBA exposes drift, it does not eliminate it.",
+    "profile": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/p5-overlay-calibration-01/isolated/data/godot/app_userdata/Cursed Lands/settings.cfg",
+      "contents": "[options]\ndisplay_mode=0\nresolution=1\nq_aa=0\nconfine_mouse=0\nauto_graphics=0\nshow_tutorial=0\n[display]\nresolution=\"800x600\"\n[remake]\ngfx=4\n",
+      "sha256": "933a57de3ff7460612be42856220531357074318728b5e66f907ac50e5f20cf0"
+    }
+  },
+  "workload": {
+    "map": "zone3obr",
+    "renderer": "gl_compatibility",
+    "adapter": "NVIDIA GeForce RTX 3090",
+    "viewport": "(800, 600)",
+    "camera_transform": "[X: (0.768221, 0.0, -0.640184), Y: (-0.345164, 0.842201, -0.414197), Z: (0.539164, 0.539164, 0.646997), O: (161.6989, 16.27012, -172.1135)]",
+    "camera_fov": 55.0,
+    "selected_lights": [
+      {
+        "energy": 1.70000004768372,
+        "mode": 1,
+        "opacity": 1.0,
+        "position": "(151.6989, 6.270124, -184.1135)",
+        "range": 5.0
+      }
+    ],
+    "static_caster_nodes": 1843,
+    "static_caster_nodes_in_sphere": 8,
+    "unit_prototype": "Human Hero",
+    "animation": "cwalk01",
+    "clip_length": 1.32,
+    "period_frames": 120,
+    "sample_frames": 240,
+    "warmup_frames": 96,
+    "initial_warmup": 180,
+    "manual_animation_and_placement": true,
+    "gameplay_simulation": false,
+    "wind": false,
+    "directional_shadows": false,
+    "normal_render_loop": true
+  },
+  "method": "One unchanged camera/light/viewport and original map. Actual Human Hero figure follows a fully walkable 120-pose route inside the authored light and manually samples original cwalk01 animation every normal rendered frame. All other scene simulation is held. ABBA uses 240 measured frames per arm after 96 moving warmup frames. Excluded arms change only map geometries cast_shadow flags; their color meshes and the unit remain. This intentionally removes static shadow depth and is not a cache implementation. No GPU static-depth restore or cache-management work is present.",
+  "held_shadow_rows": [
+    {
+      "label": "full",
+      "shadow_primitives": {
+        "max": 0,
+        "median": 0,
+        "min": 0,
+        "p95": 0,
+        "samples": 24
+      }
+    },
+    {
+      "label": "static-excluded",
+      "shadow_primitives": {
+        "max": 0,
+        "median": 0,
+        "min": 0,
+        "p95": 0,
+        "samples": 24
+      }
+    }
+  ],
+  "timed_rows": [
+    {
+      "drawn_frames": 240,
+      "frame_wall_ms": {
+        "max": 1.109,
+        "median": 0.837,
+        "min": 0.778,
+        "p95": 1.006,
+        "samples": 240
+      },
+      "invalid_gpu_samples": 0,
+      "label": "full-0",
+      "pose_update_ms": {
+        "max": 0.071,
+        "median": 0.05,
+        "min": 0.048,
+        "p95": 0.062,
+        "samples": 240
+      },
+      "samples": 240,
+      "shadow_primitives": {
+        "max": 15995,
+        "median": 15863,
+        "min": 15863,
+        "p95": 15863,
+        "samples": 240
+      },
+      "static_casters_enabled": true,
+      "viewport_cpu_ms": {
+        "max": 0.842000007629395,
+        "median": 0.476000010967255,
+        "min": 0.462000012397766,
+        "p95": 0.572000026702881,
+        "samples": 240
+      },
+      "viewport_gpu_ms": {
+        "max": 0.202999994158745,
+        "median": 0.156000003218651,
+        "min": 0.153999999165535,
+        "p95": 0.180000007152557,
+        "samples": 240
+      },
+      "visible_draws_including_gles_shadows": {
+        "max": 254,
+        "median": 251,
+        "min": 251,
+        "p95": 251,
+        "samples": 240
+      },
+      "visible_primitives": {
+        "max": 58975,
+        "median": 58975,
+        "min": 58975,
+        "p95": 58975,
+        "samples": 240
+      },
+      "zero_shadow_frames": 0
+    },
+    {
+      "drawn_frames": 240,
+      "frame_wall_ms": {
+        "max": 1.044,
+        "median": 0.778,
+        "min": 0.722,
+        "p95": 0.827,
+        "samples": 240
+      },
+      "invalid_gpu_samples": 0,
+      "label": "static-excluded-1",
+      "pose_update_ms": {
+        "max": 0.061,
+        "median": 0.05,
+        "min": 0.048,
+        "p95": 0.056,
+        "samples": 240
+      },
+      "samples": 240,
+      "shadow_primitives": {
+        "max": 1062,
+        "median": 930,
+        "min": 930,
+        "p95": 930,
+        "samples": 240
+      },
+      "static_casters_enabled": false,
+      "viewport_cpu_ms": {
+        "max": 0.517000019550323,
+        "median": 0.42399999499321,
+        "min": 0.412999987602234,
+        "p95": 0.444000005722046,
+        "samples": 240
+      },
+      "viewport_gpu_ms": {
+        "max": 0.158000007271767,
+        "median": 0.114000000059605,
+        "min": 0.112000003457069,
+        "p95": 0.11599999666214,
+        "samples": 240
+      },
+      "visible_draws_including_gles_shadows": {
+        "max": 227,
+        "median": 224,
+        "min": 224,
+        "p95": 224,
+        "samples": 240
+      },
+      "visible_primitives": {
+        "max": 58975,
+        "median": 58975,
+        "min": 58975,
+        "p95": 58975,
+        "samples": 240
+      },
+      "zero_shadow_frames": 0
+    },
+    {
+      "drawn_frames": 240,
+      "frame_wall_ms": {
+        "max": 1.367,
+        "median": 0.779,
+        "min": 0.735,
+        "p95": 0.892,
+        "samples": 240
+      },
+      "invalid_gpu_samples": 0,
+      "label": "static-excluded-2",
+      "pose_update_ms": {
+        "max": 0.142,
+        "median": 0.05,
+        "min": 0.048,
+        "p95": 0.058,
+        "samples": 240
+      },
+      "samples": 240,
+      "shadow_primitives": {
+        "max": 1062,
+        "median": 930,
+        "min": 930,
+        "p95": 930,
+        "samples": 240
+      },
+      "static_casters_enabled": false,
+      "viewport_cpu_ms": {
+        "max": 0.855000019073486,
+        "median": 0.421999990940094,
+        "min": 0.409000009298325,
+        "p95": 0.479999989271164,
+        "samples": 240
+      },
+      "viewport_gpu_ms": {
+        "max": 0.164000004529953,
+        "median": 0.115000002086163,
+        "min": 0.112000003457069,
+        "p95": 0.116999998688698,
+        "samples": 240
+      },
+      "visible_draws_including_gles_shadows": {
+        "max": 227,
+        "median": 224,
+        "min": 224,
+        "p95": 224,
+        "samples": 240
+      },
+      "visible_primitives": {
+        "max": 58975,
+        "median": 58975,
+        "min": 58975,
+        "p95": 58975,
+        "samples": 240
+      },
+      "zero_shadow_frames": 0
+    },
+    {
+      "drawn_frames": 240,
+      "frame_wall_ms": {
+        "max": 1.122,
+        "median": 0.837,
+        "min": 0.775,
+        "p95": 1.039,
+        "samples": 240
+      },
+      "invalid_gpu_samples": 0,
+      "label": "full-3",
+      "pose_update_ms": {
+        "max": 0.076,
+        "median": 0.05,
+        "min": 0.048,
+        "p95": 0.064,
+        "samples": 240
+      },
+      "samples": 240,
+      "shadow_primitives": {
+        "max": 15995,
+        "median": 15863,
+        "min": 15863,
+        "p95": 15863,
+        "samples": 240
+      },
+      "static_casters_enabled": true,
+      "viewport_cpu_ms": {
+        "max": 0.674000024795532,
+        "median": 0.479999989271164,
+        "min": 0.460999995470047,
+        "p95": 0.579999983310699,
+        "samples": 240
+      },
+      "viewport_gpu_ms": {
+        "max": 0.18299999833107,
+        "median": 0.140000000596046,
+        "min": 0.136999994516373,
+        "p95": 0.14300000667572,
+        "samples": 240
+      },
+      "visible_draws_including_gles_shadows": {
+        "max": 254,
+        "median": 251,
+        "min": 251,
+        "p95": 251,
+        "samples": 240
+      },
+      "visible_primitives": {
+        "max": 58975,
+        "median": 58975,
+        "min": 58975,
+        "p95": 58975,
+        "samples": 240
+      },
+      "zero_shadow_frames": 0
+    }
+  ],
+  "median_drift_and_deltas": {
+    "frame_wall_ms": {
+      "excluded_b2_minus_b1": 0.001,
+      "first_full_minus_excluded": 0.0589999999999999,
+      "full_a2_minus_a1": 0.0,
+      "second_full_minus_excluded": 0.0579999999999999
+    },
+    "viewport_cpu_ms": {
+      "excluded_b2_minus_b1": -0.00200000405311584,
+      "first_full_minus_excluded": 0.0520000159740448,
+      "full_a2_minus_a1": 0.0039999783039093,
+      "second_full_minus_excluded": 0.0579999983310699
+    },
+    "viewport_gpu_ms": {
+      "excluded_b2_minus_b1": 0.00100000202655792,
+      "first_full_minus_excluded": 0.0420000031590462,
+      "full_a2_minus_a1": -0.0160000026226044,
+      "second_full_minus_excluded": 0.0249999985098839
+    }
+  },
+  "observed_work": {
+    "full_shadow_primitives_median": 15863,
+    "excluded_shadow_primitives_median": 930,
+    "static_shadow_primitives_per_moving_frame": 14933,
+    "static_shadow_draws_per_moving_frame_gles_counter_difference": 27,
+    "all_arms_color_primitives": 58975,
+    "moving_frames_with_zero_shadow_work": 0,
+    "held_full_and_excluded_shadow_primitives": 0,
+    "valid_finite_positive_gpu_samples": 960,
+    "interpretation": "Static submission opportunity is real: all paired ABBA combinations differ by the same 14,933 primitives and 27 draws. GLES reports shadow draws in its visible draw counter. Counts include per-face submissions, not unique triangle counts."
+  },
+  "timing_interpretation": {
+    "metric": "Observed whole-viewport full-minus-static-excluded median delta, not isolated static-shadow GPU time or measured cache gain",
+    "pair_gpu_ms": [
+      0.042,
+      0.025
+    ],
+    "pair_cpu_ms": [
+      0.052,
+      0.058
+    ],
+    "pair_frame_wall_ms": [
+      0.059,
+      0.058
+    ],
+    "repeat_gpu_full_a2_minus_a1_ms": -0.016,
+    "repeat_gpu_excluded_b2_minus_b1_ms": 0.001,
+    "limits": "Changed depth occlusion and final color-shadow values contribute to the viewport delta. Samples are short; full-arm GPU drift is material relative to the 25-42 microsecond deltas. CPU and GPU timings overlap and must not be added. Do not extrapolate linearly to four lights or claim gameplay FPS/device gains."
+  },
+  "visual_controls": {
+    "metrics": {
+      "held": {
+        "changed_pixels": 0,
+        "mean_rgb_delta": 0.0,
+        "peak_delta": 0,
+        "pixels_over_2": 0
+      },
+      "moving_actor": {
+        "changed_pixels": 1367,
+        "mean_rgb_delta": 0.0356638888888889,
+        "peak_delta": 87,
+        "pixels_over_2": 1141
+      },
+      "removed_static_shadows": {
+        "changed_pixels": 3763,
+        "mean_rgb_delta": 0.0504979166666667,
+        "peak_delta": 141,
+        "pixels_over_2": 2214
+      },
+      "restored": {
+        "changed_pixels": 0,
+        "mean_rgb_delta": 0.0,
+        "peak_delta": 0,
+        "pixels_over_2": 0
+      },
+      "unit_shadow": {
+        "changed_pixels": 483,
+        "mean_rgb_delta": 0.00198472222222222,
+        "peak_delta": 53,
+        "pixels_over_2": 239
+      }
+    },
+    "captures": {
+      "local-shadow-overlay-full-held.png": "e890750af0ee7a01c67b31943c1fe3adb14bfaf418af7b48031db8659ab18fe2",
+      "local-shadow-overlay-full-moved.png": "887d41a3a699158505c92e2309885fc82bd375f2406b0e7dce1425fed5f132a7",
+      "local-shadow-overlay-static-excluded.png": "9ef6f96f684452f57ba9ea2e296783c180fbff810133840a256314f036eb6694",
+      "local-shadow-overlay-restored.png": "e890750af0ee7a01c67b31943c1fe3adb14bfaf418af7b48031db8659ab18fe2",
+      "local-shadow-overlay-full.png": "e890750af0ee7a01c67b31943c1fe3adb14bfaf418af7b48031db8659ab18fe2",
+      "local-shadow-overlay-static-excluded-unit-shadow-off.png": "8927b2a92026b6f8f50a6b7863f9aa7a634f98784f5a6fae8ae93d8e8bcc21b8"
+    },
+    "manual_review": "Inspected full, full-moved, static-excluded and static-excluded-unit-shadow-off originals at 800x600. The actual bare-torso original hero is visible beside the camp fire and changes position/pose. Removing static casters loses evident firewood/scenery shadows. The separately disabled unit-shadow comparison changes only the local shadow at the same pose; held and restored images are byte-exact.",
+    "capture_count": 6,
+    "no_visual_parity_claim": true
+  },
+  "hypothetical_copy_budget": {
+    "atlas": 2048,
+    "depth_bits": 16,
+    "quadrant_subdivisions": [
+      4,
+      4,
+      0,
+      0
+    ],
+    "cube_face_pixels": [
+      256,
+      256
+    ],
+    "extra_static_cube_payload_bytes_per_light": 786432,
+    "extra_static_cube_mib_per_light": 0.75,
+    "copy_time_measured": false,
+    "limits": "Derived logical uncompressed texel payload from current GLES allocation, not measured physical GPU/DRAM traffic or prototype allocation. Excludes driver padding/metadata/FBOs, synchronization, six copy calls, texture transitions, allocation and classification/invalidation costs. No static cache has been allocated.",
+    "six_copy_logical_read_plus_write_bytes_per_dynamic_frame": 1572864,
+    "six_copy_logical_read_plus_write_mib_per_dynamic_frame": 1.5
+  },
+  "source_feasibility": {
+    "reference_repository": "/home/llm2x/Documents/evil-islands-owned-renderer",
+    "reference_commit": "0092dc6e1d7c4aab3f74644a79e9bfca11ecf293",
+    "reference_files": [
+      {
+        "path": "Source/engine_bridge.cpp",
+        "sha256": "eaa7874845112fafddfc4b08e1792f1a99e6d763b7ecebccbd01562f1721a246",
+        "lines_and_purpose": "17019-17362: per-light static/dynamic membership, caster journal, old/new bounds and lifecycle revisions"
+      },
+      {
+        "path": "Source/point_shadow_policy.h",
+        "sha256": "6244101eb334c47ffae53e5bffe5a5f65abdd56787f270c02562c0589516154d",
+        "lines_and_purpose": "245-373: static/overlay/replacement slots, validity, budget pressure, fade and publication"
+      },
+      {
+        "path": "Source/renderer_point_shadows.cpp",
+        "sha256": "3d4e5b66e2bdd1c014fea29a6ead33034320fb400d30628b85782d0f422a41e8",
+        "lines_and_purpose": "28-126: separate static/dynamic cube pages, pool generation, exact growth copies and release"
+      },
+      {
+        "path": "Source/native_shader.h",
+        "sha256": "184c7826a77f489bdd7298d5f89b1c385bad389d38eadab46379c2373fd50530",
+        "lines_and_purpose": "1135-1178: static and overlay PCF depth comparison; R1 uses separate sampled layers"
+      }
+    ],
+    "qualified_native_files": [
+      {
+        "path": "servers/rendering/renderer_scene_cull.h",
+        "sha256": "341e4f3da150bb91927479d55ef06baee2b212db96b3f548d92ef11ba3000f5e",
+        "lines_and_purpose": "491: resource dependencies; 699-766: whole-light dirty/version and multi-camera handling"
+      },
+      {
+        "path": "servers/rendering/renderer_scene_cull.cpp",
+        "sha256": "80f0761682f6df8abe683f843f6fc8fd1fc9a646783298491d597f2634b5e810",
+        "lines_and_purpose": "199/324 pairing; 952 layers; 1566 instance uniforms; 1624/1714 transforms; 2367-2540 shadow culling; 3607-3641 whole-map redraw; 4322 casting changes"
+      },
+      {
+        "path": "servers/rendering/renderer_scene_render.h",
+        "sha256": "837ddd498991466d69ac90082246265ea75c3c3be898fa48c41a9669caa68151",
+        "lines_and_purpose": "283: one RenderShadowData instance list per light/pass"
+      },
+      {
+        "path": "drivers/gles3/storage/light_storage.h",
+        "sha256": "9368ac5f60ef49ac093c2369195b97a7a1689806664854896bed5e2bd6ee14c1",
+        "lines_and_purpose": "243: virtual atlas per-light texture/FBO ownership"
+      },
+      {
+        "path": "drivers/gles3/storage/light_storage.cpp",
+        "sha256": "2aaae89b4d75abb1c91d5de3a85f094cc2d06a5f23fdcd288c78e22f3a8a3d24",
+        "lines_and_purpose": "1338/1383 atlas resize/subdivision; 1451 versions; 1570-1615 cube allocation; 1690 invalidation"
+      },
+      {
+        "path": "drivers/gles3/rasterizer_scene_gles3.cpp",
+        "sha256": "991cc1664055810899c7002c9e2a92967ba8f3c5dbc3d69318167e200f19240e",
+        "lines_and_purpose": "1429: camera-driven geometry LOD; 2192-2350: per-face depth rendering, reverse-Z clear"
+      },
+      {
+        "path": "drivers/gles3/storage/material_storage.cpp",
+        "sha256": "30eaa494b089e793db12950dca62efc757cc304833b8ac46bceffe3c42da41d5",
+        "lines_and_purpose": "2519: parameter updates do not publish general shadow dependency changes"
+      }
+    ],
+    "smallest_honest_endpoint": "Default-off desktop Compatibility omni-light native pilot: retain a full-light-volume static D16 cube, copy its six faces into the current sampled cube, then render dynamic casters without clearing. This adapts the genuine static-depth/dynamic-overlay endpoint while retaining current Godot sampling/fades; it is not R1 two-sampler PCF parity. No GDScript-only implementation is sufficient.",
+    "required_native_surfaces": [
+      "RenderingServer capability and queued light/static-candidate invalidation API, with safe no-op/ordinary rendering on unsupported backends",
+      "RendererSceneCull static/dynamic membership and separate revisions, plus RenderShadowData lists/mode",
+      "GLES LightStorage bounded static cube ownership/generation and cleanup",
+      "GLES RasterizerScene per-face static bake, six depth copies, dynamic render and complete fallback"
+    ],
+    "required_lifecycle": [
+      "Default all instances to dynamic. Explicitly admitted static geometry must exclude animated/deformed/skeleton/particle or mutable-LOD consumers unless all relevant inputs are tracked.",
+      "Bake the full light volume, not camera-tight culling. Separate static-content revision from dynamic redraw; movement/removal must invalidate previous static membership and old/new light bounds before publishing replacement depth.",
+      "Track geometry/visibility/layers/casting, mesh/material/alpha texture content and light transform/range/bias. Current instance shader uniforms and material parameter uploads do not generically publish all required shadow invalidations; application deformation/terrain revisions need explicit notification or dynamic classification.",
+      "Key ownership by light RID, atlas owner/generation, face size/depth format and relevant view masks/LOD decisions. Native geometry LOD uses the main camera; exclude it from a first static cache or make LOD decisions part of the key.",
+      "Publish a static cube only after all six faces complete. Restore all six faces even when the last dynamic caster disappears, so previous moving shadows cannot remain.",
+      "Bound residency separately from bake scheduling. On allocation failure, invalid data, unsupported backend or exhausted budget use complete ordinary shadow rendering. Preserve selected-light fade and opacity semantics.",
+      "Release/replace state for light/caster removal, atlas stealing/resize/subdivision/depth-format changes, viewport/world teardown and cache disable. Do not confuse R1 static bake budget with residency."
+    ],
+    "why_not_small_patch": "The existing dirty flag/version and RenderShadowData represent complete shadow maps. Safely splitting revisions, collecting complete static light volumes, adding cache ownership and handling mutable shader inputs crosses the scene culler, RenderingServer API and GLES light/render storage. RD backends additionally use scratch cubemaps and dual-paraboloid atlas copies; they are outside this bounded endpoint."
+  },
+  "remaining_acceptance": [
+    "A demonstrated expensive moving-unit/static-shadow workload on an intended target device with controlled repeated whole-frame measurements, actual copy time and extra memory; this run does not justify a build by itself.",
+    "If a pilot is later built: cache-on/off image parity, static and dynamic move/remove/hide/birth, last-dynamic removal, material/alpha/wind/soft-ground changes, light movement/range/bias, multiple cameras/layers/LOD, atlas resize/steal/slot reuse, teardown and allocation fallback.",
+    "Counters must distinguish static bakes, dynamic redraws and restore copies; net benefit must include classification, invalidation, cache memory and copy costs. Existing whole-map caching is not completion of this endpoint."
+  ],
+  "artifacts": {
+    "run_json": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/p5-overlay-calibration-01/run.json",
+      "sha256": "383597443a3d3222456674d2d7c8788582dcf95633d61a8c3affced8815da869"
+    },
+    "measurements_json": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/p5-overlay-calibration-01/local-shadow-overlay.json",
+      "sha256": "bda0c0a8f8244025f5916a34d28b5ddb0ba10db2cae32d4e5997aab66733eb7e"
+    },
+    "run_log": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/p5-overlay-calibration-01/run.log",
+      "sha256": "891c7295bda688869288f1906e70b249c5a3598ecd5d23c21ab8d1e523c62375"
+    }
+  }
+}
