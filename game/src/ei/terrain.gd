@@ -734,6 +734,8 @@ const WaterCaustics = preload("res://src/game/fx/water_caustics.gd")
 const WaterCurrent = preload("res://src/game/fx/water_current.gd")
 const WaterCurrentShader = preload("res://src/game/fx/water_current_shader.gd")
 const WaterWaveShader = preload("res://src/game/fx/water_wave_shader.gd")
+const Waterfalls = preload("res://src/game/fx/waterfalls.gd")
+var _waterfalls: Waterfalls
 
 ## The .mp format has generic liquid materials, not ocean/river/lake tags.
 ## Confirmed sea habitats for optional coastal cover. On the starting map,
@@ -1182,6 +1184,16 @@ func apply_gfx() -> void:
 		color_cache.refresh()
 	if is_instance_valid(contact):
 		contact.queue_refresh()
+	if Gfx.on("gfx_water") and Gfx.on("gfx_waterfalls"):
+		if not is_instance_valid(_waterfalls):
+			_waterfalls = Waterfalls.new()
+			add_child(_waterfalls)
+			_waterfalls.configure(self)
+		else:
+			_waterfalls.sync_parameters()
+	elif is_instance_valid(_waterfalls):
+		_waterfalls.free()
+		_waterfalls = null
 
 
 ## The colour cache substitutes only immutable tile colour. Its live material
@@ -1349,6 +1361,7 @@ func set_water_offset(mat: int, offset: float) -> Rect2i:
 				_level[m] = water_offsets[m]
 		_water_mat.set_shader_parameter("level", _level)
 		_land_mat.set_shader_parameter("level", _level)
+	if is_instance_valid(_waterfalls): _waterfalls.request_refresh()
 	if _current != null and not _current_dirty:
 		_current_dirty = true
 		# Several materials/55-ms ticks may change in one frame. Rebuild once
@@ -1535,6 +1548,7 @@ func _update_wave_parameters() -> void:
 		if is_instance_valid(color_cache): color_cache.sync_parameter("caustic_scroll",scroll)
 		if is_instance_valid(details) and is_instance_valid(details.soft_ground):
 			details.soft_ground.sync_parameter(&"caustic_scroll",scroll)
+	if is_instance_valid(_waterfalls): _waterfalls.advance()
 
 
 ## E of a map material: min(1, self-illumination × colour) (

@@ -1,0 +1,646 @@
+{
+  "date": "2026-10-09",
+  "feature": "V4 optional authored waterfall foam, spray and mist; grouped graphics metadata follow-up",
+  "status": "validated locally; default off; not published or installed",
+  "source_reference": {
+    "repository": "/home/llm2x/Documents/evil-islands-owned-renderer",
+    "revision": "0092dc6e1d7c4aab3f74644a79e9bfca11ecf293",
+    "files": [
+      "Source/procedural_falls.h",
+      "Source/owned_terrain_front_end.h",
+      "Source/renderer_ambient_particles.cpp",
+      "Tests/procedural_falls_regression.cpp"
+    ]
+  },
+  "implementation": {
+    "detection": "Independent snapshot of authored water vertices, including type-4 XY jitter and mixed per-vertex owners. Only exposed non-emissive water; no navigation-water heights or smoothed current texture. Contradictory copies, swamp, lava, nonfinite levels, isolated spikes, shallow rapids, border clusters and overwide candidates are rejected.",
+    "classification": {
+      "edge_drop_m": 0.9,
+      "minimum_drop_m": 2.5,
+      "minimum_steepness": 1.4,
+      "maximum_width_m": 30,
+      "maximum_sites": 32,
+      "snapshot_maximum_vertices": 4194304
+    },
+    "reference_adaptation": "Keeps coherent edge/ring/median-drop rules. The Godot foam shell reuses selected original triangles and the original WATER_SHADER vertex displacement with a 0.045m normal lift. It does not port the reference smoothed/ballistic sheet, which would diverge from EI vertex jitter/waves. Bounds and depth testing keep existing terrain and liquid authoritative.",
+    "geometry_limits": {
+      "global_shell_vertices": 24576,
+      "per_site_shell_vertices": 2046,
+      "global_fixed_billboards": 1536,
+      "maximum_draws_per_site": 2,
+      "visibility_range_end_m": 110
+    },
+    "clock_and_lifetime": "Existing terrain clock drives bounded 16s shader phases. Quiet frames update uniforms only. Level writes hide stale geometry and coalesce one deferred reclassification, then rebuild shell/emitter anchors from exact mean triangles. Disable frees nodes, fields and materials. No independent TIME/particle clock, actors, collision, save or network state.",
+    "options": {
+      "gfx_waterfalls": {
+        "group": 23,
+        "row": 6,
+        "default": 0,
+        "requires": "gfx_water"
+      },
+      "gfx_ambient_wildlife": {
+        "group": 13,
+        "row": 7,
+        "default": 0
+      },
+      "gfx_ambient_particles": {
+        "group": 13,
+        "row": 8,
+        "default": 0
+      },
+      "gfx_clouds": {
+        "group": 15,
+        "row": 7,
+        "default": 0
+      }
+    },
+    "metadata_scope": "Ambient wildlife/particles and cloud helpers are separate concurrent work. This receipt validates their default-off metadata, EN/RU/DE text, page placement, applied registration and preset exclusion only."
+  },
+  "build": {
+    "base_revision": "3f1b5a0",
+    "isolated_stage": "/home/llm2x/Documents/EI/local/scratchpad/waterfalls-20261009/accepted-source",
+    "directory": "/home/llm2x/Documents/EI/local/scratchpad/waterfalls-20261009/candidate",
+    "manifest": "/home/llm2x/Documents/EI/local/scratchpad/waterfalls-20261009/build2/export.json",
+    "manifest_sha256": "2084fdcbef948a9dc36922b639b36a0629064647b59b0b9ac9d3dd282a34c18b",
+    "sha256": {
+      "CursedLands.x86_64": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+      "CursedLands.pck": "2cbfbb9a284e8fba8e1a3d1d79114a22c906ebbad0f551ea9307b78077b2b9fb",
+      "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+    },
+    "production_scripts_in_pack": 243,
+    "source_unchanged_during_export": true,
+    "owned_source_matches_frozen_export": true
+  },
+  "accepted_checks": 1201,
+  "accepted_runs": [
+    {
+      "name": "final-base",
+      "checks": 258,
+      "failures": 0,
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/waterfalls-20261009/final-base/run.json",
+      "manifest_sha256": "a6e23fc4bc513dc449d37f56ac268318942374e92b895320a8561fbf05ee7063",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/waterfalls-20261009/final-base/waterfalls.json",
+      "result_sha256": "e49adaa3fd8b5d8c9e70c34636b36743924ac0f93f9e542d09d4188765de96cb",
+      "test_sha256": "78609af637f7fb9d8b4b9245a440fe911cc1b696b6495cf7f32d294a86b9e4f5",
+      "captures": 0
+    },
+    {
+      "name": "final-astral",
+      "checks": 444,
+      "failures": 0,
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/waterfalls-20261009/final-astral/run.json",
+      "manifest_sha256": "82e4f7e8247ebb60302f14b3ff961c32333f4ddfb9d86bf07103b59e284cc082",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/waterfalls-20261009/final-astral/waterfalls.json",
+      "result_sha256": "28a38a6946a98ad0683131a9dfe1d3a6c5365e37bc89245ac550ff4d5366d158",
+      "test_sha256": "78609af637f7fb9d8b4b9245a440fe911cc1b696b6495cf7f32d294a86b9e4f5",
+      "captures": 0
+    },
+    {
+      "name": "final-gl",
+      "checks": 43,
+      "failures": 0,
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/waterfalls-20261009/final-gl/run.json",
+      "manifest_sha256": "95d40821e2901c85d57455cbe5416144c3252fb3bde20784bdc942352a801f03",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/waterfalls-20261009/final-gl/waterfalls-render.json",
+      "result_sha256": "07fd234aa49fdd05bd6214fd575fc0e8dd27b72d08f4856c8570bba0204b99c3",
+      "test_sha256": "10adc191d0b30f22f989b367b5f67395c7a22537bad60ad0720327618226f170",
+      "captures": 24
+    },
+    {
+      "name": "final-mobile",
+      "checks": 43,
+      "failures": 0,
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/waterfalls-20261009/final-mobile/run.json",
+      "manifest_sha256": "0cee6e25cc7434334034cade8ec4ed7630426317550aefe343efe080ac574fda",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/waterfalls-20261009/final-mobile/waterfalls-render.json",
+      "result_sha256": "3367abec76a9cca910870ad533c382058a98075c9f6a7fb1c4b7d7b2466e3f3d",
+      "test_sha256": "10adc191d0b30f22f989b367b5f67395c7a22537bad60ad0720327618226f170",
+      "captures": 24
+    },
+    {
+      "name": "final-forward",
+      "checks": 43,
+      "failures": 0,
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/waterfalls-20261009/final-forward/run.json",
+      "manifest_sha256": "30b0e551ead7eaab8ec5bf5d3f7d50b270fabe2bdd38cb4b36bac5658485a8bb",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/waterfalls-20261009/final-forward/waterfalls-render.json",
+      "result_sha256": "f0c4ecd836a9fbfa7a9ae68bdd614400844ca859b94714bf8d1a6f99f72f019b",
+      "test_sha256": "10adc191d0b30f22f989b367b5f67395c7a22537bad60ad0720327618226f170",
+      "captures": 24
+    },
+    {
+      "name": "final-astral-gl",
+      "checks": 34,
+      "failures": 0,
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/waterfalls-20261009/final-astral-gl/run.json",
+      "manifest_sha256": "abf9373a3f2237587d4d65d7f161263f59246491cd16d729f0400201bed60715",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/waterfalls-20261009/final-astral-gl/waterfalls-render.json",
+      "result_sha256": "3c43f868318e5e1051415163131da866decb0e461b95864649e176d293a14809",
+      "test_sha256": "94e0b31e6a4305ba4198842430635238144065407250c2f150ec93622e0ed677",
+      "captures": 18
+    },
+    {
+      "name": "final-ui",
+      "checks": 336,
+      "failures": 0,
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/waterfalls-20261009/final-ui/run.json",
+      "manifest_sha256": "3fe510735cd2bc1f9b6d2346a79133ee5889e8d5585254da644e1d0b7900fdc1",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/waterfalls-20261009/final-ui/graphics-options.json",
+      "result_sha256": "93acae4525918c1abd95fef2b1388294eee4f7141d889bce0330d16feb3d50ce",
+      "test_sha256": "b2b6eca82a6789629647e7a5106248acd286231268b5aac93acab75a93fa7aa6",
+      "captures": 21
+    }
+  ],
+  "census": [
+    {
+      "edition": "base",
+      "maps": 22,
+      "names": [
+        "zone1",
+        "zone10",
+        "zone11",
+        "zone12",
+        "zone13",
+        "zone14",
+        "zone15",
+        "zone16",
+        "zone17",
+        "zone18",
+        "zone19",
+        "zone2",
+        "zone20",
+        "zone3obr",
+        "zone4",
+        "zone5_1",
+        "zone6",
+        "zone6_2",
+        "zone7",
+        "zone8",
+        "zone9",
+        "zonemainmenunew"
+      ],
+      "sites": [
+        {
+          "map": "zone11",
+          "falls": [
+            {
+              "bottom": 7.16857099533081,
+              "bottom_owner": 1,
+              "direction": "(0.396653, 0.917969)",
+              "id": 50861,
+              "lip": "(74.53577, 98.7685)",
+              "run": 3.94386291503906,
+              "steepness": 1.55427923026329,
+              "top": 13.2984352111816,
+              "top_owner": 1,
+              "vertices": 12,
+              "width": 3.75390625
+            }
+          ],
+          "geometry": [
+            {
+              "bounds": "[P: (73.0, 6.640803, -104.0), S: (5.0, 7.047029, 7.0)]",
+              "id": 50861,
+              "impact": 23,
+              "lip": 17,
+              "mist": 9,
+              "shell_vertices": 150,
+              "sprites": 49
+            }
+          ],
+          "snapshot_conflicts": 0
+        },
+        {
+          "map": "zone13",
+          "falls": [
+            {
+              "bottom": 9.2119026184082,
+              "bottom_owner": 2,
+              "direction": "(0.467888, -0.883788)",
+              "id": 121069,
+              "lip": "(288.4027, 269.6838)",
+              "run": 1.767578125,
+              "steepness": 2.32670655645718,
+              "top": 13.324538230896,
+              "top_owner": 2,
+              "vertices": 4,
+              "width": 2.3516845703125
+            }
+          ],
+          "geometry": [
+            {
+              "bounds": "[P: (287.0, 8.366014, -271.0), S: (4.0, 4.925493, 5.0)]",
+              "id": 121069,
+              "impact": 19,
+              "lip": 14,
+              "mist": 8,
+              "shell_vertices": 78,
+              "sprites": 41
+            }
+          ],
+          "snapshot_conflicts": 0
+        },
+        {
+          "map": "zone3obr",
+          "falls": [
+            {
+              "bottom": 4.77108478546143,
+              "bottom_owner": 2,
+              "direction": "(0.455316, -0.89033)",
+              "id": 68938,
+              "lip": "(155.3964, 240.2027)",
+              "run": 2.67098999023438,
+              "steepness": 2.3561410286439,
+              "top": 11.0643138885498,
+              "top_owner": 2,
+              "vertices": 11,
+              "width": 4.58163452148438
+            }
+          ],
+          "geometry": [
+            {
+              "bounds": "[P: (153.0, 4.006146, -242.0), S: (6.0, 7.383789, 7.0)]",
+              "id": 68938,
+              "impact": 31,
+              "lip": 29,
+              "mist": 12,
+              "shell_vertices": 174,
+              "sprites": 72
+            }
+          ],
+          "snapshot_conflicts": 6
+        }
+      ],
+      "diagnostic_snapshot_detect_us": [
+        1216,
+        381793
+      ]
+    },
+    {
+      "edition": "Lost in Astral",
+      "maps": 40,
+      "names": [
+        "zone1",
+        "zone10",
+        "zone11",
+        "zone11dun1",
+        "zone11dun2",
+        "zone12",
+        "zone13",
+        "zone14",
+        "zone15",
+        "zone16",
+        "zone1dun1",
+        "zone1dun2",
+        "zone2",
+        "zone21",
+        "zone22",
+        "zone22dun1",
+        "zone23",
+        "zone24",
+        "zone25",
+        "zone26",
+        "zone3",
+        "zone31",
+        "zone32",
+        "zone33",
+        "zone34",
+        "zone34dun1",
+        "zone35",
+        "zone3dun1",
+        "zone4",
+        "zone5",
+        "zone6",
+        "zone7",
+        "zone7dun1",
+        "zone7dun2",
+        "zone8",
+        "zone9",
+        "zone9dun1",
+        "zonefinal",
+        "zonemainmenunew",
+        "zonezero"
+      ],
+      "sites": [
+        {
+          "map": "zone10",
+          "falls": [
+            {
+              "bottom": 4.77041149139404,
+              "bottom_owner": 2,
+              "direction": "(0.455316, -0.89033)",
+              "id": 68938,
+              "lip": "(155.3964, 240.2027)",
+              "run": 2.67098999023438,
+              "steepness": 2.35620351221965,
+              "top": 11.0638074874878,
+              "top_owner": 2,
+              "vertices": 11,
+              "width": 4.58163452148438
+            }
+          ],
+          "geometry": [
+            {
+              "bounds": "[P: (153.0, 4.005508, -242.0), S: (6.0, 7.383906, 7.0)]",
+              "id": 68938,
+              "impact": 31,
+              "lip": 29,
+              "mist": 12,
+              "shell_vertices": 174,
+              "sprites": 72
+            }
+          ],
+          "snapshot_conflicts": 6
+        },
+        {
+          "map": "zone21",
+          "falls": [
+            {
+              "bottom": 7.16857099533081,
+              "bottom_owner": 1,
+              "direction": "(0.396653, 0.917969)",
+              "id": 50861,
+              "lip": "(74.53577, 98.7685)",
+              "run": 3.94386291503906,
+              "steepness": 1.55427923026329,
+              "top": 13.2984352111816,
+              "top_owner": 1,
+              "vertices": 12,
+              "width": 3.75390625
+            }
+          ],
+          "geometry": [
+            {
+              "bounds": "[P: (73.0, 6.640803, -104.0), S: (5.0, 7.046562, 7.0)]",
+              "id": 50861,
+              "impact": 23,
+              "lip": 17,
+              "mist": 9,
+              "shell_vertices": 150,
+              "sprites": 49
+            }
+          ],
+          "snapshot_conflicts": 0
+        },
+        {
+          "map": "zone23",
+          "falls": [
+            {
+              "bottom": 9.2119026184082,
+              "bottom_owner": 2,
+              "direction": "(0.467888, -0.883788)",
+              "id": 121069,
+              "lip": "(288.4027, 269.6838)",
+              "run": 1.767578125,
+              "steepness": 2.32616486101519,
+              "top": 13.3235807418823,
+              "top_owner": 2,
+              "vertices": 4,
+              "width": 2.3516845703125
+            }
+          ],
+          "geometry": [
+            {
+              "bounds": "[P: (287.0, 8.366014, -271.0), S: (4.0, 4.924536, 5.0)]",
+              "id": 121069,
+              "impact": 19,
+              "lip": 14,
+              "mist": 8,
+              "shell_vertices": 78,
+              "sprites": 41
+            }
+          ],
+          "snapshot_conflicts": 0
+        },
+        {
+          "map": "zone26",
+          "falls": [
+            {
+              "bottom": 7.6125431060791,
+              "bottom_owner": 1,
+              "direction": "(0.749838, 0.661622)",
+              "id": 14215,
+              "lip": "(25.04379, 109.9504)",
+              "run": 7.05729675292969,
+              "steepness": 1.6868952794228,
+              "top": 19.517463684082,
+              "top_owner": 1,
+              "vertices": 12,
+              "width": 3.33773040771484
+            }
+          ],
+          "geometry": [
+            {
+              "bounds": "[P: (24.0, 7.416098, -117.0), S: (9.0, 12.29468, 9.0)]",
+              "id": 14215,
+              "impact": 25,
+              "lip": 17,
+              "mist": 10,
+              "shell_vertices": 204,
+              "sprites": 52
+            }
+          ],
+          "snapshot_conflicts": 129
+        }
+      ],
+      "diagnostic_snapshot_detect_us": [
+        208,
+        392779
+      ]
+    }
+  ],
+  "rendered_results": [
+    {
+      "name": "final-gl",
+      "results": [
+        {
+          "added_draws": 2,
+          "difference": {
+            "changed_pixels": 9297,
+            "peak_byte_delta": 112,
+            "sum": 179183
+          },
+          "focus": "(75.31795, 10.2335, -100.5787)",
+          "map": "zone11",
+          "positive": true,
+          "renderer": "gl_compatibility"
+        },
+        {
+          "added_draws": 2,
+          "difference": {
+            "changed_pixels": 5904,
+            "peak_byte_delta": 118,
+            "sum": 94137
+          },
+          "focus": "(288.8163, 11.26822, -268.9027)",
+          "map": "zone13",
+          "positive": true,
+          "renderer": "gl_compatibility"
+        },
+        {
+          "added_draws": 0,
+          "difference": {
+            "changed_pixels": 0,
+            "peak_byte_delta": 0,
+            "sum": 0
+          },
+          "focus": "(160.0, 12.5, -142.0)",
+          "map": "zone8",
+          "positive": false,
+          "renderer": "gl_compatibility"
+        }
+      ]
+    },
+    {
+      "name": "final-mobile",
+      "results": [
+        {
+          "added_draws": 2,
+          "difference": {
+            "changed_pixels": 7031,
+            "peak_byte_delta": 143,
+            "sum": 210018
+          },
+          "focus": "(75.31795, 10.2335, -100.5787)",
+          "map": "zone11",
+          "positive": true,
+          "renderer": "mobile"
+        },
+        {
+          "added_draws": 2,
+          "difference": {
+            "changed_pixels": 4499,
+            "peak_byte_delta": 153,
+            "sum": 120368
+          },
+          "focus": "(288.8163, 11.26822, -268.9027)",
+          "map": "zone13",
+          "positive": true,
+          "renderer": "mobile"
+        },
+        {
+          "added_draws": 0,
+          "difference": {
+            "changed_pixels": 0,
+            "peak_byte_delta": 0,
+            "sum": 0
+          },
+          "focus": "(160.0, 12.5, -142.0)",
+          "map": "zone8",
+          "positive": false,
+          "renderer": "mobile"
+        }
+      ]
+    },
+    {
+      "name": "final-forward",
+      "results": [
+        {
+          "added_draws": 2,
+          "difference": {
+            "changed_pixels": 7141,
+            "peak_byte_delta": 142,
+            "sum": 208851
+          },
+          "focus": "(75.31795, 10.2335, -100.5787)",
+          "map": "zone11",
+          "positive": true,
+          "renderer": "forward_plus"
+        },
+        {
+          "added_draws": 2,
+          "difference": {
+            "changed_pixels": 4582,
+            "peak_byte_delta": 152,
+            "sum": 120085
+          },
+          "focus": "(288.8163, 11.26822, -268.9027)",
+          "map": "zone13",
+          "positive": true,
+          "renderer": "forward_plus"
+        },
+        {
+          "added_draws": 0,
+          "difference": {
+            "changed_pixels": 0,
+            "peak_byte_delta": 0,
+            "sum": 0
+          },
+          "focus": "(160.0, 12.5, -142.0)",
+          "map": "zone8",
+          "positive": false,
+          "renderer": "forward_plus"
+        }
+      ]
+    },
+    {
+      "name": "final-astral-gl",
+      "results": [
+        {
+          "added_draws": 2,
+          "difference": {
+            "changed_pixels": 11709,
+            "peak_byte_delta": 102,
+            "sum": 261618
+          },
+          "focus": "(156.0044, 7.917109, -239.0137)",
+          "map": "zone10",
+          "positive": true,
+          "renderer": "gl_compatibility"
+        },
+        {
+          "added_draws": 2,
+          "difference": {
+            "changed_pixels": 11609,
+            "peak_byte_delta": 81,
+            "sum": 178548
+          },
+          "focus": "(27.6897, 13.565, -112.285)",
+          "map": "zone26",
+          "positive": true,
+          "renderer": "gl_compatibility"
+        }
+      ]
+    }
+  ],
+  "visual_review": [
+    "Base zone11/13 images inspected on Compatibility and zone11 on desktop Mobile; LiA10/26 inspected on Compatibility. Foam follows the authored canyon drop, with small lip/impact spray and mist near the visible pool.",
+    "Graphics: 21 images at800x600 across EN/RU/DE. New Water, World and Weather controls fit with existing controller/touch navigation and Original look/Back rows."
+  ],
+  "evidence": [
+    "Analytic6m coherent step admits one drop; .75m/cell rapid, isolated spike, burial, map border, excessive width and nonfinite levels reject. Flooding/removal/restoration is deterministic.",
+    "Synthetic type4 half-metre XY jitter recovers the complete authored tile; mixed owner/sign-bit decoding retained, lava owner and swamp tile omitted.",
+    "62 complete zone*.mpr map loads; seven matched sites admit lip, impact and mist roles. Ground and navigation arrays stay unchanged during detection.",
+    "All three desktop renderers pass held-clock pixels, flow visibility, flood coalescing, disable/dependency restoration and retirement. Negative zone8 adds0 draws and changes0 pixels. Positive sites add2 draws.",
+    "Graphics UI336 assertions cover all effect reachability, mouse/controller/touch navigation, translated labels/help, default/preset exclusion and existing wave/cover setting persistence."
+  ],
+  "limitations": [
+    "Desktop RTX3090 only. No Android, Windows, handheld or browser execution claim and no FPS/device-cost claim.",
+    "Census timings are non-isolated diagnostic construction costs, not frame benchmarks. Detection/rebuild is script-based, synchronous and only on enable/level changes; large or frequently flooded maps may hitch with this opt-in effect.",
+    "Conservative classification can miss unusual hand-authored falls. It is a visual overlay over existing water, not hydraulic simulation or terrain geometry replacement.",
+    "Rendered fixtures load real terrain with controlled camera/light; full gameplay scenery/crowds and every newly detected campaign alias were not separately rendered.",
+    "Compatibility emits the existing screen-space-AA availability warning at boot; accepted runs have no shader/script/runtime errors.",
+    "Frozen QA base includes the wave checkpoint plus owned changes. Parallel ambient, cloud and dialogue changes are excluded from this isolated pack and need their own integration validation."
+  ],
+  "exploratory_runs": {
+    "census1": "Initial simple-zone-name base census; superseded by final-base complete zone*.mpr list.",
+    "astral-census1": "Initial simple-zone-name expansion census; superseded by final-astral.",
+    "geometry1": "Direct helper smoke before production terrain hooks.",
+    "production-base1": "80 passing production-hook assertions before expanded census.",
+    "render-gl1": "43 passing Compatibility checks before final source guard/role accounting/help cleanup. No failed acceptance assertion or runtime error in this waterfall work."
+  },
+  "source_sha256": {
+    "game/src/ei/terrain.gd": "da96b576eb04ce1eb98b017cca6bb32b828de43de0d96192efd788520d118c64",
+    "game/src/ei/game_data.gd": "c382ba50fedb9add5e36c2754302b58e514635e6c6d9bed749e68212c7f4b88c",
+    "game/src/ei/remake_text.gd": "f8ee81a234a1be2a362065f44329bb71e451003dc1b7d82d3172b3212330e4da",
+    "game/src/game/gfx_detect.gd": "42cd1ef79ab89bc20cfece0e067a7d87eceb52cc61a22db3d63fcceac056b982",
+    "game/src/game/fx/waterfall_field.gd": "499b4bfaabae4565bd35ff9178c4b4b4d6d20f4da9a2a64df9a89a6f8bc53bdf",
+    "game/src/game/fx/waterfall_shader.gd": "d26f34c0fc2467e5a328737b4d8873d07ca81394d950df2fda3658f5703155f1",
+    "game/src/game/fx/waterfalls.gd": "fa3f0920a283b53c0944d0c45340fc732694f5ef151323f52237d70dfc87b590"
+  },
+  "test_sha256": {
+    "tools/tests/waterfalls.gd": "78609af637f7fb9d8b4b9245a440fe911cc1b696b6495cf7f32d294a86b9e4f5",
+    "tools/tests/waterfall_render.gd": "94e0b31e6a4305ba4198842430635238144065407250c2f150ec93622e0ed677",
+    "tools/tests/graphics_options.gd": "b2b6eca82a6789629647e7a5106248acd286231268b5aac93acab75a93fa7aa6"
+  }
+}
