@@ -8,9 +8,9 @@ U45 supplied-save follow-up confirms two required small creatures remain alive; 
 
 **Canonical checkout:** `/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo`  
 **Branch:** `fix/catacomb-coop-deck`  
-**Current qualified production checkpoint:** `e2e7e0af17d0a7cd7f7de20eea2e910e33038204`. Includes `e2e7e0a` menu material ownership, `eca50c0` New Game loading, `d13bac0` shared prison route progression, and the earlier renderer/gameplay work.
+**Current qualified production checkpoint:** `8195e6814fd1ae608f9a1c0b86741f96c4317e3d`. Adds `8195e68` individual prison trap registration/reload to `e2e7e0a` menu material ownership, `eca50c0` New Game loading, `d13bac0` shared prison route progression, and the earlier renderer/gameplay work.
 
-**Current qualified private Linux export:** `/home/llm2x/Documents/EI/local/scratchpad/menu-local-test-feedback-20261009/combined01`. Feature-specific acceptance retains 112 menu-material, 18 New Game startup and 630 prison-route checks. Full route and platform acceptance remain open.
+**Current qualified private gameplay export:** `/home/llm2x/Documents/EI/local/scratchpad/prison-damage-late-join-20261009/candidate02`. Its 918 checks cover individual prison traps and shared route/discovery/alarm regressions. The unchanged menu/renderer source inherits the preceding combined acceptance; the delivered Linux/Windows `.2` packages remain at `e2e7e0a`. Full route and platform acceptance remain open.
 
 **Updated Linux local test:** [`1.0.3-local.20261009.2`](/home/llm2x/Downloads/CursedLands-1.0.3-local.20261009.2-linux-x86_64.tar.gz), unpacked at `/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261009.2-linux-x86_64`, uses checkpoint `e2e7e0a` and protocol 13. It fixes disappearing stone-menu labels after live graphics changes and the empty HUD before New Game loading, and includes the newly qualified prison route progression fix. All 262 compiled scripts and 673 resources match the combined export except its displayed version setting; only three production scripts differ from the prior discovery export. The actual package passes **73 checks** across live menu settings, base New Game, Continue and LiA New Game using the separate rendering thread. All loading runs show zero exposed HUD frames. Archive contents and executable permissions are verified. Isolated profiles preserve user settings and saves. The unfinished terrain-contact lighting experiment is excluded. [Package evidence](validation/linux-local-test-feedback-2026-10-09.json). The preceding [local test](validation/linux-local-test-2026-10-09.json) remains historical; neither package is a published stable release.
 
@@ -18,7 +18,7 @@ U45 supplied-save follow-up confirms two required small creatures remain alive; 
 
 The preceding [junction evidence](validation/terrain-junctions-2026-10-09.json) retains 7,515 metadata/source checks, 180 GPU checks covering 19,911 probes, 252/253 original-map rendering checks, 54 cost-fixture checks and 119 captures. Its sole strict rendering residual is one pixel also present in the baseline Compatibility neutralization control. [P1 retention evidence](validation/wound-source-retention-2026-10-09.json) retains 1,729 checks and 15 captures. The earlier [711-check/60-capture validation](validation/renderer-coop-integration-2026-10-09.json) includes representative LiA reimport/travel and fresh-process solo return. These renderer and earlier integration results are inherited, not rerun.
 
-**Included accepted source checkpoints:** `d13bac0` fixes original q71h/q72h route stages for late guests (630 checks). `e2e7e0a` and `eca50c0` fix the latest menu feedback. `518c2b5` fixes two original prison discoveries for late guests (431 checks including alarm regressions). `7e31470` fixes original prison alarm late registration and absent pending waits (331 checks). `fdf7885` retains renamed guest identity (393 checks), `82b749f` fixes shared campaign travel (152 checks), `5c548be` adds optional natural terrain transitions, and `1b8b0f6` retains looted script-added actor identity (137 checks). `ec79e3f` protects stable saved hero references (106 checks), `74c4804` restores pending story actions on co-op-to-solo return (149 acceptance checks plus 36 formatting rechecks), and `80c96d4` preserves acknowledged solo earnings and compatible campaign checkpoints on rejoin (803 checks). `79bee8a` restores normal NEW joins after original opening initialization ([239 checks](validation/coop-fresh-start-2026-10-09.json)). Feature-specific receipts complement the current combined acceptance.
+**Included accepted source checkpoints:** `8195e68` retains all eleven individual prison damage/Sleep cycles for late and returning guests (918 checks). `d13bac0` fixes original q71h/q72h route stages for late guests (630 checks). `e2e7e0a` and `eca50c0` fix the latest menu feedback. `518c2b5` fixes two original prison discoveries for late guests (431 checks including alarm regressions). `7e31470` fixes original prison alarm late registration and absent pending waits (331 checks). `fdf7885` retains renamed guest identity (393 checks), `82b749f` fixes shared campaign travel (152 checks), `5c548be` adds optional natural terrain transitions, and `1b8b0f6` retains looted script-added actor identity (137 checks). `ec79e3f` protects stable saved hero references (106 checks), `74c4804` restores pending story actions on co-op-to-solo return (149 acceptance checks plus 36 formatting rechecks), and `80c96d4` preserves acknowledged solo earnings and compatible campaign checkpoints on rejoin (803 checks). `79bee8a` restores normal NEW joins after original opening initialization ([239 checks](validation/coop-fresh-start-2026-10-09.json)). Feature-specific receipts complement the current combined acceptance.
 
 **Co-op continuity scope:** fix systemic LiA solo/co-op progression sync. `coop_67_fps_20261008_224534.sav` is the latest client save and its matching host save is not supplied; the user explicitly says no exact-save repair is needed. Continue implementation and validation without treating the missing host save as a blocker.
 
@@ -87,7 +87,7 @@ These are not all confirmed unfixed code defects. Read the linked tracker/receip
 
 ### Campaign and world coverage
 
-- **G07/G15:** eleven original `gz15h` shared checks and, in `518c2b5`, six `gz19h` qk16h/qk17h discovery checks now include late guests. [431 checks](validation/prison-discovery-late-join-2026-10-09.json) cover the latter and alarm regressions. Native chest rewards and completion are unchanged. Nine q71h/q72h route checks are now covered by `d13bac0` ([630 checks](validation/prison-progression-late-join-2026-10-09.json)). Individual startup traps (#76), named/cosmetic moves and full routes remain separate.
+- **G07/G15:** eleven original `gz15h` shared checks and, in `518c2b5`, six `gz19h` qk16h/qk17h discovery checks now include late guests. [431 checks](validation/prison-discovery-late-join-2026-10-09.json) cover the latter and alarm regressions. Native chest rewards and completion are unchanged. Nine q71h/q72h route checks are now covered by `d13bac0` ([630 checks](validation/prison-progression-late-join-2026-10-09.json)). `8195e68` also qualifies all eleven individual startup traps (#76), including absent reload and normal follower cadence ([918 checks](validation/prison-damage-late-join-2026-10-09.json)). Named/cosmetic moves and full physical routes remain separate.
 - **G07/G08/G13:** `7e31470` fixes the reproduced `gz19h` area-1 alarm registration gap and preserves its pending native continuation through absence/reload/solo return ([331 checks](validation/prison-alarm-late-join-2026-10-09.json)). Full prison and temporary Nalo/Jun/captive/Shaina chapters, other base captivity predicates, and co-op participants omitted from authored named/cosmetic moves still need broader route coverage.
 - **G02:** later LiA Jigran/finale progression, extended reconnect and independent resumed guest saves have not received full chapter playthroughs. Prepared party/bag/companion/pet progress tests already pass.
 - **Haburu authored-call audit:** all five `BuyHaburuMain#2#N#0` calls are reached by the shipped `bz23k` WorldScript. Independent decryption and the current parser agree across all 130 supplied MOB scripts; none defines these helpers, and the pinned original executable has no matching entry among 227 native commands. This confirms absent authored procedures, not a demonstrated parser/builtin defect. No replacement routine was invented. Their intended optional-quest/shop behavior remains unverified. Base `Portal1`/`Portal2` are supplied by merged parent scripts and are not missing builtins.
@@ -154,11 +154,36 @@ pass 61/61 and all eleven recorded quest states match the original early
 route. Tests use prepared walkable positions, paused unrelated combat and
 explicit native VM ticks; full physical routes remain unverified.
 
-The next distinct source lead is startup family #76: its children inflict
-individual damage with Sleep cooldowns. It needs per-character registration
-evidence, not shared-check eligibility. Legacy family #49 has no discovered
-startup call. Neither is a newly reproduced defect. Native binaries, protocol
-13, save schema and original assets are unchanged.
+The subsequent individual startup-family #76 defect is qualified below.
+Legacy family #49 still has no discovered startup call and is not a reproduced
+defect. Native binaries, protocol 13, save schema and original assets are unchanged.
+
+## Original prison individual traps: late arrival and absent reload — 9 October
+
+`8195e68` arms all eleven original damage/Sleep cycles once for each late guest.
+The complete 24-definition startup family #76, its WorldScript call and three
+lever bindings must match. Original conditions, damage, spells, levers, native
+instruction frames and Sleep(60) remain unchanged. A genuinely absent actor's
+pending continuation retains its remaining cooldown through two host-only loads
+and ordinary rejoin. A disconnected character still present as an AI follower
+continues the original damage cadence, including the authored dead-state behavior.
+
+[Damage acceptance](validation/prison-damage-late-join-2026-10-09.json) records
+**918 passing checks**, including 165 state controls, 107 early and 107 late ENet
+checks, and 539 alarm/captivity/discovery/route regressions. Final-fixture baselines
+retain 6/107 absent-reload failures and 31/89 late-arrival failures. All fifteen
+pre-absence snapshots (22 native actor rows each), disconnected-follower state
+and eight damage/spell actions match the early original execution exactly after
+excluding only the new registrar. Recipient-specific VM projection retains the
+returning solo actor's own timer; numeric UID reuse cannot steal that identity.
+
+These are controlled-clock/position functional tests with real ENet, Session
+saves and reloads, not a full physical prison route or target-platform result.
+The early candidate's incorrect follower hold and fixture teardown audio leak
+are retained in the receipt. Final runs let native delayed sounds finish and
+exit cleanly. Production audio and VM-core files are unchanged. The frozen
+candidate changes only two production scripts from `c6dbcdd`; the unfinished
+renderer remains excluded. Delivered `.2` packages are unchanged.
 
 ## Original prison treasure discoveries: late arrival — 9 October
 
