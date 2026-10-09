@@ -59,6 +59,9 @@ func _ready() -> void:
 	# create() lights its detached island before the caller adds it. Refresh
 	# view-owned point uniforms only after the camera has entered the tree.
 	set_hour(hour)
+	for child in get_children():
+		if child is EIMapScene and child.terrain:
+			child.terrain._update_wind_parameters(true)
 
 
 func _process(dt: float) -> void:

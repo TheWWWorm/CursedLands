@@ -77,6 +77,7 @@ func test_material(situation: String) -> void:
 	var step := 0
 	for enabled in [false,true,false,true]:
 		EIFigure.set_wind(enabled)
+		Gfx.set_wind_frame(terrain.wind_frame())
 		await wait_frames(16)
 		check(tree.material_override == retained and retained.shader == program,
 				"wind toggle preserves " + situation + " resource identities")
@@ -88,6 +89,8 @@ func test_material(situation: String) -> void:
 		var minimum := 2147483647; var maximum := 0
 		var start := Engine.get_frames_drawn()
 		for i in 48:
+			terrain._waves.advance(1.0/60.0)
+			Gfx.set_wind_frame(terrain.wind_frame())
 			await frame()
 			var count := view.get_render_info(Viewport.RENDER_INFO_TYPE_SHADOW, Viewport.RENDER_INFO_PRIMITIVES_IN_FRAME)
 			minimum = mini(minimum,count); maximum = maxi(maximum,count)

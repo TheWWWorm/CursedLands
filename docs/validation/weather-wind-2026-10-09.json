@@ -1,0 +1,2946 @@
+{
+  "date": "2026-10-09",
+  "status": "Shared vegetation weather wind implemented; full Mobile exact-restoration acceptance and device cost remain open.",
+  "source_parent": "fcc154130b8b82747676022e2f08488539286301",
+  "reference_commit": "0092dc6e1d7c4aab3f74644a79e9bfca11ecf293",
+  "reference_sources": [
+    "Source/weather_wind.h:17-185",
+    "Source/ground_cover.h:435-449",
+    "Source/ground_cover_interaction.h:23-35",
+    "Source/renderer_ground_cover.cpp:2391-2399"
+  ],
+  "pack": {
+    "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-final",
+    "sha256": {
+      "CursedLands.x86_64": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+      "CursedLands.pck": "cef82e76da9e113687413b963cd969b0b9cf5ce869fbc86f4f509628afdd04f5",
+      "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+    },
+    "production_scripts": 234,
+    "all_production_sources_match_export": true
+  },
+  "accepted_runs": [
+    {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-release-headless",
+      "tool_sha256": "2e38e9fbbeece267531364f6578b8fe04fdfb51c506d884aef024621ec62f980",
+      "pack_sha256": "cef82e76da9e113687413b963cd969b0b9cf5ce869fbc86f4f509628afdd04f5",
+      "engine_sha256": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-final/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-release-headless/tool-source.gd"
+      ],
+      "return_code": 0,
+      "errors": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "seconds": 3.5621854699857067,
+      "other_render_processes_at_start": [
+        {
+          "pid": 432672,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+        }
+      ],
+      "report": "weather-wind.json",
+      "checks": 6053,
+      "failures": 0,
+      "rows": [
+        {
+          "case": "pure",
+          "max_analytic_sway_m": 0.04,
+          "sampled_frames": 1000
+        },
+        {
+          "case": "ownership",
+          "cave": "(0.818904, -0.573931, 0.1105, 0.1)",
+          "dry": "(0.81892, -0.573908, 0.5525, 0.1)",
+          "rain": "(0.886683, -0.462378, 0.80441, 0.7)"
+        },
+        {
+          "case": "clock",
+          "elapsed": [
+            0.305555555555556,
+            0.611111111111111
+          ]
+        }
+      ]
+    },
+    {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-release-gl",
+      "tool_sha256": "2e38e9fbbeece267531364f6578b8fe04fdfb51c506d884aef024621ec62f980",
+      "pack_sha256": "cef82e76da9e113687413b963cd969b0b9cf5ce869fbc86f4f509628afdd04f5",
+      "engine_sha256": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-final/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-release-gl/tool-source.gd"
+      ],
+      "return_code": 0,
+      "errors": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "seconds": 4.562235317018349,
+      "other_render_processes_at_start": [
+        {
+          "pid": 432672,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+        }
+      ],
+      "report": "weather-wind.json",
+      "checks": 6069,
+      "failures": 0,
+      "rows": [
+        {
+          "case": "pure",
+          "max_analytic_sway_m": 0.04,
+          "sampled_frames": 1000
+        },
+        {
+          "case": "ownership",
+          "cave": "(0.818904, -0.573931, 0.1105, 0.1)",
+          "dry": "(0.81892, -0.573908, 0.5525, 0.1)",
+          "rain": "(0.886683, -0.462378, 0.80441, 0.7)"
+        },
+        {
+          "case": "tree-motion",
+          "difference": {
+            "changed": 27609,
+            "over_2": 17101,
+            "peak": 116
+          }
+        },
+        {
+          "case": "reset",
+          "difference": {
+            "changed": 0,
+            "over_2": 0,
+            "peak": 0
+          }
+        },
+        {
+          "case": "tree-pause",
+          "difference": {
+            "changed": 0,
+            "over_2": 0,
+            "peak": 0
+          }
+        },
+        {
+          "case": "inactive-world",
+          "difference": {
+            "changed": 0,
+            "over_2": 0,
+            "peak": 0
+          }
+        },
+        {
+          "case": "lmp-hold",
+          "difference": {
+            "changed": 0,
+            "over_2": 0,
+            "peak": 0
+          }
+        },
+        {
+          "case": "clock",
+          "elapsed": [
+            0.300258,
+            0.600044
+          ]
+        }
+      ]
+    },
+    {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-release-forward",
+      "tool_sha256": "2e38e9fbbeece267531364f6578b8fe04fdfb51c506d884aef024621ec62f980",
+      "pack_sha256": "cef82e76da9e113687413b963cd969b0b9cf5ce869fbc86f4f509628afdd04f5",
+      "engine_sha256": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-final/CursedLands.x86_64",
+        "--render-thread",
+        "separate",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-release-forward/tool-source.gd"
+      ],
+      "return_code": 0,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "seconds": 10.828783617005683,
+      "other_render_processes_at_start": [
+        {
+          "pid": 432672,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+        }
+      ],
+      "report": "weather-wind.json",
+      "checks": 6069,
+      "failures": 0,
+      "rows": [
+        {
+          "case": "pure",
+          "max_analytic_sway_m": 0.04,
+          "sampled_frames": 1000
+        },
+        {
+          "case": "ownership",
+          "cave": "(0.818904, -0.573931, 0.1105, 0.1)",
+          "dry": "(0.81892, -0.573908, 0.5525, 0.1)",
+          "rain": "(0.886683, -0.462378, 0.80441, 0.7)"
+        },
+        {
+          "case": "tree-motion",
+          "difference": {
+            "changed": 26477,
+            "over_2": 13037,
+            "peak": 133
+          }
+        },
+        {
+          "case": "reset",
+          "difference": {
+            "changed": 0,
+            "over_2": 0,
+            "peak": 0
+          }
+        },
+        {
+          "case": "tree-pause",
+          "difference": {
+            "changed": 0,
+            "over_2": 0,
+            "peak": 0
+          }
+        },
+        {
+          "case": "inactive-world",
+          "difference": {
+            "changed": 0,
+            "over_2": 0,
+            "peak": 0
+          }
+        },
+        {
+          "case": "lmp-hold",
+          "difference": {
+            "changed": 0,
+            "over_2": 0,
+            "peak": 0
+          }
+        },
+        {
+          "case": "clock",
+          "elapsed": [
+            0.30130501388687,
+            0.603872666666666
+          ]
+        }
+      ]
+    },
+    {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-pressure",
+      "tool_sha256": "8df89b9696186c6c07358439b606c7ecf85358184c865daf63af43f9003f8199",
+      "pack_sha256": "cef82e76da9e113687413b963cd969b0b9cf5ce869fbc86f4f509628afdd04f5",
+      "engine_sha256": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-final/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-pressure/tool-source.gd"
+      ],
+      "return_code": 0,
+      "errors": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "seconds": 10.572192229999928,
+      "other_render_processes_at_start": [
+        {
+          "pid": 432672,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+        }
+      ],
+      "report": "vegetation-interaction.json",
+      "checks": 42,
+      "failures": 0,
+      "rows": [
+        {
+          "case": "pressure-history",
+          "payload_bytes": 65536,
+          "updates": 62
+        },
+        {
+          "case": "baseline-settling",
+          "difference": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "case": "baseline-stable",
+          "difference": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "case": "empty",
+          "difference": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "case": "empty-refresh",
+          "difference": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "bounds": "[P: (132.092, 6.413195, -92.87636), S: (0.845428, 1.672584, 0.897385)]",
+          "case": "admission",
+          "contacts": 1,
+          "point": "(132.5, 6.405092, -92.5)"
+        },
+        {
+          "case": "standing",
+          "difference": {
+            "changed_pixels": 2891,
+            "peak_delta": 118,
+            "pixels_over_2": 2139
+          }
+        },
+        {
+          "case": "shadow-refresh",
+          "difference": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "case": "paused-wind",
+          "difference": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "case": "restored",
+          "difference": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        }
+      ]
+    },
+    {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-meadow-forward",
+      "tool_sha256": "14f313f4730bce058af137305ce1f3b354f9d45becf7dc597e1a562264ced987",
+      "pack_sha256": "cef82e76da9e113687413b963cd969b0b9cf5ce869fbc86f4f509628afdd04f5",
+      "engine_sha256": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-final/CursedLands.x86_64",
+        "--render-thread",
+        "separate",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-meadow-forward/tool-source.gd",
+        "--cover-kind=0",
+        "--cover-kind-only",
+        "--cover-with-grass"
+      ],
+      "return_code": 0,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "seconds": 14.829324114019983,
+      "other_render_processes_at_start": [
+        {
+          "pid": 432672,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+        },
+        {
+          "pid": 442305,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+        }
+      ],
+      "report": "biome-cover.json",
+      "checks": 1146,
+      "failures": 0,
+      "rows": [
+        {
+          "case": "immutable-snapshot",
+          "kinds": {
+            "0": 29,
+            "1": 304,
+            "2": 48,
+            "3": 24,
+            "4": 3,
+            "5": 60,
+            "6": 2
+          },
+          "records": 470
+        },
+        {
+          "case": "original-wind-control",
+          "difference": {
+            "changed": 0,
+            "over_2": 0,
+            "peak": 0
+          }
+        },
+        {
+          "case": "render",
+          "difference": {
+            "changed": 904,
+            "over_2": 744,
+            "peak": 106
+          },
+          "draws": 825,
+          "kind": 0,
+          "point": "(204.5785, 75.87177)",
+          "records": 38,
+          "vertices": 1710,
+          "zone": "gz1g"
+        },
+        {
+          "case": "interaction-clearance",
+          "difference": {
+            "changed": 42252,
+            "over_2": 36596,
+            "peak": 58
+          }
+        },
+        {
+          "case": "pressure",
+          "difference": {
+            "changed": 14495,
+            "over_2": 9197,
+            "peak": 100
+          }
+        }
+      ]
+    },
+    {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-shadow-gl",
+      "tool_sha256": "1e01488c2ccb69e85841b6acfef66f564cc6f8f3ba5ff1d65ff55d3699864c41",
+      "pack_sha256": "cef82e76da9e113687413b963cd969b0b9cf5ce869fbc86f4f509628afdd04f5",
+      "engine_sha256": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-final/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-shadow-gl/tool-source.gd"
+      ],
+      "return_code": 0,
+      "errors": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "seconds": 54.11732998798834,
+      "other_render_processes_at_start": [
+        {
+          "pid": 432672,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+        },
+        {
+          "pid": 443109,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+        }
+      ],
+      "report": "foliage-shadow-cache-gl_compatibility.json",
+      "checks": 141,
+      "failures": 0,
+      "rows": [
+        {
+          "case": "base",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": false,
+          "wind": false
+        },
+        {
+          "case": "base",
+          "moving_pixels": true,
+          "pixel_delta": {
+            "max_channel_delta": 109,
+            "pixels_over_2": 12194
+          },
+          "shadow_primitives_max": 14,
+          "shadow_primitives_min": 14,
+          "still": false,
+          "wind": true
+        },
+        {
+          "case": "base",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": false,
+          "wind": false
+        },
+        {
+          "case": "base",
+          "moving_pixels": true,
+          "pixel_delta": {
+            "max_channel_delta": 107,
+            "pixels_over_2": 11087
+          },
+          "shadow_primitives_max": 14,
+          "shadow_primitives_min": 14,
+          "still": false,
+          "wind": true
+        },
+        {
+          "case": "fade",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": false,
+          "wind": false
+        },
+        {
+          "case": "fade",
+          "moving_pixels": true,
+          "pixel_delta": {
+            "max_channel_delta": 125,
+            "pixels_over_2": 9316
+          },
+          "shadow_primitives_max": 14,
+          "shadow_primitives_min": 14,
+          "still": false,
+          "wind": true
+        },
+        {
+          "case": "fade",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": false,
+          "wind": false
+        },
+        {
+          "case": "fade",
+          "moving_pixels": true,
+          "pixel_delta": {
+            "max_channel_delta": 127,
+            "pixels_over_2": 8692
+          },
+          "shadow_primitives_max": 14,
+          "shadow_primitives_min": 14,
+          "still": false,
+          "wind": true
+        },
+        {
+          "case": "contact",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": false,
+          "wind": false
+        },
+        {
+          "case": "contact",
+          "moving_pixels": true,
+          "pixel_delta": {
+            "max_channel_delta": 109,
+            "pixels_over_2": 11859
+          },
+          "shadow_primitives_max": 14,
+          "shadow_primitives_min": 14,
+          "still": false,
+          "wind": true
+        },
+        {
+          "case": "contact",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": false,
+          "wind": false
+        },
+        {
+          "case": "contact",
+          "moving_pixels": true,
+          "pixel_delta": {
+            "max_channel_delta": 107,
+            "pixels_over_2": 10813
+          },
+          "shadow_primitives_max": 14,
+          "shadow_primitives_min": 14,
+          "still": false,
+          "wind": true
+        },
+        {
+          "case": "contact-fade",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": false,
+          "wind": false
+        },
+        {
+          "case": "contact-fade",
+          "moving_pixels": true,
+          "pixel_delta": {
+            "max_channel_delta": 125,
+            "pixels_over_2": 9201
+          },
+          "shadow_primitives_max": 14,
+          "shadow_primitives_min": 14,
+          "still": false,
+          "wind": true
+        },
+        {
+          "case": "contact-fade",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": false,
+          "wind": false
+        },
+        {
+          "case": "contact-fade",
+          "moving_pixels": true,
+          "pixel_delta": {
+            "max_channel_delta": 127,
+            "pixels_over_2": 8561
+          },
+          "shadow_primitives_max": 14,
+          "shadow_primitives_min": 14,
+          "still": false,
+          "wind": true
+        },
+        {
+          "case": "still",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": true,
+          "wind": false
+        },
+        {
+          "case": "still",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": true,
+          "wind": true
+        },
+        {
+          "case": "still",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": true,
+          "wind": false
+        },
+        {
+          "case": "still",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": true,
+          "wind": true
+        },
+        {
+          "case": "still-fade",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": true,
+          "wind": false
+        },
+        {
+          "case": "still-fade",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": true,
+          "wind": true
+        },
+        {
+          "case": "still-fade",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": true,
+          "wind": false
+        },
+        {
+          "case": "still-fade",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": true,
+          "wind": true
+        },
+        {
+          "case": "still-contact-fade",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": true,
+          "wind": false
+        },
+        {
+          "case": "still-contact-fade",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": true,
+          "wind": true
+        },
+        {
+          "case": "still-contact-fade",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": true,
+          "wind": false
+        },
+        {
+          "case": "still-contact-fade",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": true,
+          "wind": true
+        }
+      ]
+    },
+    {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-shadow-mobile",
+      "tool_sha256": "1e01488c2ccb69e85841b6acfef66f564cc6f8f3ba5ff1d65ff55d3699864c41",
+      "pack_sha256": "cef82e76da9e113687413b963cd969b0b9cf5ce869fbc86f4f509628afdd04f5",
+      "engine_sha256": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-final/CursedLands.x86_64",
+        "--render-thread",
+        "separate",
+        "--rendering-method",
+        "mobile",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-shadow-mobile/tool-source.gd"
+      ],
+      "return_code": 0,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "seconds": 57.878187147987774,
+      "other_render_processes_at_start": [
+        {
+          "pid": 432672,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+        },
+        {
+          "pid": 445438,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+        }
+      ],
+      "report": "foliage-shadow-cache-mobile.json",
+      "checks": 141,
+      "failures": 0,
+      "rows": [
+        {
+          "case": "base",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": false,
+          "wind": false
+        },
+        {
+          "case": "base",
+          "moving_pixels": true,
+          "pixel_delta": {
+            "max_channel_delta": 95,
+            "pixels_over_2": 13002
+          },
+          "shadow_primitives_max": 14,
+          "shadow_primitives_min": 14,
+          "still": false,
+          "wind": true
+        },
+        {
+          "case": "base",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": false,
+          "wind": false
+        },
+        {
+          "case": "base",
+          "moving_pixels": true,
+          "pixel_delta": {
+            "max_channel_delta": 93,
+            "pixels_over_2": 11841
+          },
+          "shadow_primitives_max": 14,
+          "shadow_primitives_min": 14,
+          "still": false,
+          "wind": true
+        },
+        {
+          "case": "fade",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": false,
+          "wind": false
+        },
+        {
+          "case": "fade",
+          "moving_pixels": true,
+          "pixel_delta": {
+            "max_channel_delta": 89,
+            "pixels_over_2": 8601
+          },
+          "shadow_primitives_max": 14,
+          "shadow_primitives_min": 14,
+          "still": false,
+          "wind": true
+        },
+        {
+          "case": "fade",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": false,
+          "wind": false
+        },
+        {
+          "case": "fade",
+          "moving_pixels": true,
+          "pixel_delta": {
+            "max_channel_delta": 93,
+            "pixels_over_2": 7575
+          },
+          "shadow_primitives_max": 14,
+          "shadow_primitives_min": 14,
+          "still": false,
+          "wind": true
+        },
+        {
+          "case": "contact",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": false,
+          "wind": false
+        },
+        {
+          "case": "contact",
+          "moving_pixels": true,
+          "pixel_delta": {
+            "max_channel_delta": 95,
+            "pixels_over_2": 12860
+          },
+          "shadow_primitives_max": 14,
+          "shadow_primitives_min": 14,
+          "still": false,
+          "wind": true
+        },
+        {
+          "case": "contact",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": false,
+          "wind": false
+        },
+        {
+          "case": "contact",
+          "moving_pixels": true,
+          "pixel_delta": {
+            "max_channel_delta": 93,
+            "pixels_over_2": 11716
+          },
+          "shadow_primitives_max": 14,
+          "shadow_primitives_min": 14,
+          "still": false,
+          "wind": true
+        },
+        {
+          "case": "contact-fade",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": false,
+          "wind": false
+        },
+        {
+          "case": "contact-fade",
+          "moving_pixels": true,
+          "pixel_delta": {
+            "max_channel_delta": 89,
+            "pixels_over_2": 8518
+          },
+          "shadow_primitives_max": 14,
+          "shadow_primitives_min": 14,
+          "still": false,
+          "wind": true
+        },
+        {
+          "case": "contact-fade",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": false,
+          "wind": false
+        },
+        {
+          "case": "contact-fade",
+          "moving_pixels": true,
+          "pixel_delta": {
+            "max_channel_delta": 93,
+            "pixels_over_2": 7494
+          },
+          "shadow_primitives_max": 14,
+          "shadow_primitives_min": 14,
+          "still": false,
+          "wind": true
+        },
+        {
+          "case": "still",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": true,
+          "wind": false
+        },
+        {
+          "case": "still",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": true,
+          "wind": true
+        },
+        {
+          "case": "still",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": true,
+          "wind": false
+        },
+        {
+          "case": "still",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": true,
+          "wind": true
+        },
+        {
+          "case": "still-fade",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": true,
+          "wind": false
+        },
+        {
+          "case": "still-fade",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": true,
+          "wind": true
+        },
+        {
+          "case": "still-fade",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": true,
+          "wind": false
+        },
+        {
+          "case": "still-fade",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": true,
+          "wind": true
+        },
+        {
+          "case": "still-contact-fade",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": true,
+          "wind": false
+        },
+        {
+          "case": "still-contact-fade",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": true,
+          "wind": true
+        },
+        {
+          "case": "still-contact-fade",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": true,
+          "wind": false
+        },
+        {
+          "case": "still-contact-fade",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": true,
+          "wind": true
+        }
+      ]
+    },
+    {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-shadow-forward",
+      "tool_sha256": "1e01488c2ccb69e85841b6acfef66f564cc6f8f3ba5ff1d65ff55d3699864c41",
+      "pack_sha256": "cef82e76da9e113687413b963cd969b0b9cf5ce869fbc86f4f509628afdd04f5",
+      "engine_sha256": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-final/CursedLands.x86_64",
+        "--render-thread",
+        "separate",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-shadow-forward/tool-source.gd"
+      ],
+      "return_code": 0,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "seconds": 59.11769885200192,
+      "other_render_processes_at_start": [
+        {
+          "pid": 432672,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+        }
+      ],
+      "report": "foliage-shadow-cache-forward_plus.json",
+      "checks": 141,
+      "failures": 0,
+      "rows": [
+        {
+          "case": "base",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": false,
+          "wind": false
+        },
+        {
+          "case": "base",
+          "moving_pixels": true,
+          "pixel_delta": {
+            "max_channel_delta": 81,
+            "pixels_over_2": 8629
+          },
+          "shadow_primitives_max": 14,
+          "shadow_primitives_min": 14,
+          "still": false,
+          "wind": true
+        },
+        {
+          "case": "base",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": false,
+          "wind": false
+        },
+        {
+          "case": "base",
+          "moving_pixels": true,
+          "pixel_delta": {
+            "max_channel_delta": 87,
+            "pixels_over_2": 7184
+          },
+          "shadow_primitives_max": 14,
+          "shadow_primitives_min": 14,
+          "still": false,
+          "wind": true
+        },
+        {
+          "case": "fade",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": false,
+          "wind": false
+        },
+        {
+          "case": "fade",
+          "moving_pixels": true,
+          "pixel_delta": {
+            "max_channel_delta": 81,
+            "pixels_over_2": 5785
+          },
+          "shadow_primitives_max": 14,
+          "shadow_primitives_min": 14,
+          "still": false,
+          "wind": true
+        },
+        {
+          "case": "fade",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": false,
+          "wind": false
+        },
+        {
+          "case": "fade",
+          "moving_pixels": true,
+          "pixel_delta": {
+            "max_channel_delta": 87,
+            "pixels_over_2": 4633
+          },
+          "shadow_primitives_max": 14,
+          "shadow_primitives_min": 14,
+          "still": false,
+          "wind": true
+        },
+        {
+          "case": "contact",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": false,
+          "wind": false
+        },
+        {
+          "case": "contact",
+          "moving_pixels": true,
+          "pixel_delta": {
+            "max_channel_delta": 87,
+            "pixels_over_2": 8539
+          },
+          "shadow_primitives_max": 14,
+          "shadow_primitives_min": 14,
+          "still": false,
+          "wind": true
+        },
+        {
+          "case": "contact",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": false,
+          "wind": false
+        },
+        {
+          "case": "contact",
+          "moving_pixels": true,
+          "pixel_delta": {
+            "max_channel_delta": 87,
+            "pixels_over_2": 7179
+          },
+          "shadow_primitives_max": 14,
+          "shadow_primitives_min": 14,
+          "still": false,
+          "wind": true
+        },
+        {
+          "case": "contact-fade",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": false,
+          "wind": false
+        },
+        {
+          "case": "contact-fade",
+          "moving_pixels": true,
+          "pixel_delta": {
+            "max_channel_delta": 87,
+            "pixels_over_2": 5731
+          },
+          "shadow_primitives_max": 14,
+          "shadow_primitives_min": 14,
+          "still": false,
+          "wind": true
+        },
+        {
+          "case": "contact-fade",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": false,
+          "wind": false
+        },
+        {
+          "case": "contact-fade",
+          "moving_pixels": true,
+          "pixel_delta": {
+            "max_channel_delta": 87,
+            "pixels_over_2": 4633
+          },
+          "shadow_primitives_max": 14,
+          "shadow_primitives_min": 14,
+          "still": false,
+          "wind": true
+        },
+        {
+          "case": "still",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": true,
+          "wind": false
+        },
+        {
+          "case": "still",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": true,
+          "wind": true
+        },
+        {
+          "case": "still",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": true,
+          "wind": false
+        },
+        {
+          "case": "still",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": true,
+          "wind": true
+        },
+        {
+          "case": "still-fade",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": true,
+          "wind": false
+        },
+        {
+          "case": "still-fade",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": true,
+          "wind": true
+        },
+        {
+          "case": "still-fade",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": true,
+          "wind": false
+        },
+        {
+          "case": "still-fade",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": true,
+          "wind": true
+        },
+        {
+          "case": "still-contact-fade",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": true,
+          "wind": false
+        },
+        {
+          "case": "still-contact-fade",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": true,
+          "wind": true
+        },
+        {
+          "case": "still-contact-fade",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": true,
+          "wind": false
+        },
+        {
+          "case": "still-contact-fade",
+          "moving_pixels": false,
+          "pixel_delta": {
+            "max_channel_delta": 0,
+            "pixels_over_2": 0
+          },
+          "shadow_primitives_max": 0,
+          "shadow_primitives_min": 0,
+          "still": true,
+          "wind": true
+        }
+      ]
+    },
+    {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-underwater8",
+      "tool_sha256": "6873e4806d79529a38f7b7ff3c548904ee19a4c9a5501fcbbc51f1ad742bcf13",
+      "pack_sha256": "cef82e76da9e113687413b963cd969b0b9cf5ce869fbc86f4f509628afdd04f5",
+      "engine_sha256": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-final/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-underwater8/tool-source.gd",
+        "--underwater-map=zone8"
+      ],
+      "return_code": 0,
+      "errors": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "seconds": 16.336986134992912,
+      "other_render_processes_at_start": [
+        {
+          "pid": 449753,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+        },
+        {
+          "pid": 450114,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+        }
+      ],
+      "report": "biome-cover-underwater.json",
+      "checks": 138583,
+      "failures": 0,
+      "rows": [
+        {
+          "build_us_max": 4298,
+          "build_us_median": 730,
+          "case": "authored",
+          "chunks": 1936,
+          "counts": {
+            "11": 167,
+            "12": 34,
+            "13": 42
+          },
+          "custom1_bytes": 3468720,
+          "map": "zone8",
+          "nonflat_points": 0,
+          "offset": 0.0,
+          "owner": 4,
+          "points": 2688,
+          "sea_tiles": 5312,
+          "wind_plane_error_m": 0.0
+        },
+        {
+          "bad": 0,
+          "case": "gpu-depth",
+          "good": 1024,
+          "label": "0.0-0",
+          "points": 1024,
+          "wrong_control": false
+        },
+        {
+          "build_us_max": 4292,
+          "build_us_median": 722,
+          "case": "authored",
+          "chunks": 1936,
+          "counts": {
+            "11": 213,
+            "12": 49,
+            "13": 20
+          },
+          "custom1_bytes": 3536592,
+          "map": "zone8",
+          "nonflat_points": 878,
+          "offset": 0.65,
+          "owner": 4,
+          "points": 3758,
+          "sea_tiles": 5312,
+          "wind_plane_error_m": 0.469438284493293
+        },
+        {
+          "bad": 0,
+          "case": "gpu-depth",
+          "good": 1024,
+          "label": "0.65-2",
+          "points": 1024,
+          "wrong_control": false
+        },
+        {
+          "bad": 1024,
+          "case": "gpu-depth",
+          "good": 0,
+          "label": "wrong",
+          "points": 1024,
+          "wrong_control": true
+        },
+        {
+          "build_us_max": 4251,
+          "build_us_median": 743,
+          "case": "authored",
+          "chunks": 1936,
+          "counts": {
+            "11": 170,
+            "12": 33,
+            "13": 48
+          },
+          "custom1_bytes": 3491472,
+          "map": "zone8",
+          "nonflat_points": 0,
+          "offset": -0.35,
+          "owner": 4,
+          "points": 2890,
+          "sea_tiles": 5312,
+          "wind_plane_error_m": 0.0
+        },
+        {
+          "bad": 0,
+          "case": "gpu-depth",
+          "good": 1024,
+          "label": "-0.35-5",
+          "points": 1024,
+          "wrong_control": false
+        },
+        {
+          "build_us_max": 4254,
+          "build_us_median": 748,
+          "case": "authored",
+          "chunks": 1936,
+          "counts": {
+            "11": 167,
+            "12": 34,
+            "13": 42
+          },
+          "custom1_bytes": 3468720,
+          "map": "zone8",
+          "nonflat_points": 0,
+          "offset": 0.0,
+          "owner": 4,
+          "points": 2688,
+          "sea_tiles": 5312,
+          "wind_plane_error_m": 0.0
+        },
+        {
+          "bad": 0,
+          "case": "gpu-depth",
+          "good": 1024,
+          "label": "0.0-7",
+          "points": 1024,
+          "wrong_control": false
+        }
+      ]
+    },
+    {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-kelp-mobile",
+      "tool_sha256": "14f313f4730bce058af137305ce1f3b354f9d45becf7dc597e1a562264ced987",
+      "pack_sha256": "cef82e76da9e113687413b963cd969b0b9cf5ce869fbc86f4f509628afdd04f5",
+      "engine_sha256": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-final/CursedLands.x86_64",
+        "--render-thread",
+        "separate",
+        "--rendering-method",
+        "mobile",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-kelp-mobile/tool-source.gd",
+        "--cover-kind=12",
+        "--cover-kind-only"
+      ],
+      "return_code": 0,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "seconds": 16.105218950018752,
+      "other_render_processes_at_start": [
+        {
+          "pid": 454957,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+        },
+        {
+          "pid": 456423,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+        }
+      ],
+      "report": "biome-cover.json",
+      "checks": 1146,
+      "failures": 0,
+      "rows": [
+        {
+          "case": "immutable-snapshot",
+          "kinds": {
+            "0": 29,
+            "1": 304,
+            "2": 48,
+            "3": 24,
+            "4": 3,
+            "5": 60,
+            "6": 2
+          },
+          "records": 470
+        },
+        {
+          "case": "original-wind-control",
+          "difference": {
+            "changed": 0,
+            "over_2": 0,
+            "peak": 0
+          }
+        },
+        {
+          "case": "render",
+          "difference": {
+            "changed": 20444,
+            "over_2": 13718,
+            "peak": 12
+          },
+          "draws": 17,
+          "kind": 12,
+          "point": "(12.42187, 57.84248)",
+          "records": 57,
+          "vertices": 5130,
+          "zone": "gz1g"
+        },
+        {
+          "case": "interaction-clearance",
+          "difference": {
+            "changed": 0,
+            "over_2": 0,
+            "peak": 0
+          }
+        },
+        {
+          "case": "pressure",
+          "difference": {
+            "changed": 0,
+            "over_2": 0,
+            "peak": 0
+          }
+        }
+      ]
+    },
+    {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-meadow-only",
+      "tool_sha256": "14f313f4730bce058af137305ce1f3b354f9d45becf7dc597e1a562264ced987",
+      "pack_sha256": "cef82e76da9e113687413b963cd969b0b9cf5ce869fbc86f4f509628afdd04f5",
+      "engine_sha256": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-final/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-meadow-only/tool-source.gd",
+        "--cover-authored-only",
+        "--cover-kind=0",
+        "--cover-kind-only"
+      ],
+      "return_code": 0,
+      "errors": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "seconds": 10.836440320010297,
+      "other_render_processes_at_start": [
+        {
+          "pid": 462205,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+        }
+      ],
+      "report": "biome-cover.json",
+      "checks": 16,
+      "failures": 0,
+      "rows": [
+        {
+          "case": "original-wind-control",
+          "difference": {
+            "changed": 0,
+            "over_2": 0,
+            "peak": 0
+          }
+        },
+        {
+          "case": "render",
+          "difference": {
+            "changed": 1692,
+            "over_2": 1454,
+            "peak": 155
+          },
+          "draws": 1569,
+          "kind": 0,
+          "point": "(204.5785, 75.87177)",
+          "records": 38,
+          "vertices": 1710,
+          "zone": "gz1g"
+        },
+        {
+          "case": "interaction-clearance",
+          "difference": {
+            "changed": 0,
+            "over_2": 0,
+            "peak": 0
+          }
+        },
+        {
+          "case": "pressure",
+          "difference": {
+            "changed": 1038,
+            "over_2": 792,
+            "peak": 141
+          }
+        }
+      ]
+    },
+    {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-shell7",
+      "tool_sha256": "14f313f4730bce058af137305ce1f3b354f9d45becf7dc597e1a562264ced987",
+      "pack_sha256": "cef82e76da9e113687413b963cd969b0b9cf5ce869fbc86f4f509628afdd04f5",
+      "engine_sha256": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-final/CursedLands.x86_64",
+        "--render-thread",
+        "separate",
+        "--rendering-method",
+        "mobile",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-shell7/tool-source.gd",
+        "--cover-authored-only",
+        "--cover-zone=gz7g",
+        "--cover-kind=10",
+        "--cover-kind-only",
+        "--cover-water-fx"
+      ],
+      "return_code": 0,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "seconds": 18.11864056601189,
+      "other_render_processes_at_start": [
+        {
+          "pid": 462741,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+        }
+      ],
+      "report": "biome-cover.json",
+      "checks": 16,
+      "failures": 0,
+      "rows": [
+        {
+          "case": "original-wind-control",
+          "difference": {
+            "changed": 0,
+            "over_2": 0,
+            "peak": 0
+          }
+        },
+        {
+          "case": "render",
+          "difference": {
+            "changed": 515,
+            "over_2": 514,
+            "peak": 54
+          },
+          "draws": 2052,
+          "kind": 10,
+          "point": "(237.1966, 66.76669)",
+          "records": 11,
+          "vertices": 594,
+          "zone": "gz7g"
+        },
+        {
+          "case": "interaction-clearance",
+          "difference": {
+            "changed": 0,
+            "over_2": 0,
+            "peak": 0
+          }
+        },
+        {
+          "case": "pressure",
+          "difference": {
+            "changed": 0,
+            "over_2": 0,
+            "peak": 0
+          }
+        }
+      ]
+    },
+    {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-depth-envelope",
+      "tool_sha256": "3b8fc8ae55e59b674a8c46fc436231757689361e818f7946c1e35b517ed4205c",
+      "pack_sha256": "cef82e76da9e113687413b963cd969b0b9cf5ce869fbc86f4f509628afdd04f5",
+      "engine_sha256": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-final/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-depth-envelope/tool-source.gd",
+        "--underwater-map=zone8"
+      ],
+      "return_code": 0,
+      "errors": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "seconds": 22.627519135014154,
+      "other_render_processes_at_start": [
+        {
+          "pid": 462741,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+        }
+      ],
+      "report": "biome-cover-underwater.json",
+      "checks": 138578,
+      "failures": 0,
+      "rows": [
+        {
+          "build_us_max": 5033,
+          "build_us_median": 726,
+          "case": "authored",
+          "chunks": 1936,
+          "counts": {
+            "11": 167,
+            "12": 34,
+            "13": 42
+          },
+          "custom1_bytes": 3468720,
+          "map": "zone8",
+          "nonflat_points": 0,
+          "offset": 0.0,
+          "owner": 4,
+          "points": 2688,
+          "sea_tiles": 5312,
+          "wind_plane_error_m": 0.0
+        },
+        {
+          "build_us_max": 6031,
+          "build_us_median": 880,
+          "case": "authored",
+          "chunks": 1936,
+          "counts": {
+            "11": 213,
+            "12": 49,
+            "13": 20
+          },
+          "custom1_bytes": 3536592,
+          "map": "zone8",
+          "nonflat_points": 878,
+          "offset": 0.65,
+          "owner": 4,
+          "points": 3758,
+          "sea_tiles": 5312,
+          "wind_plane_error_m": 0.469438284493293
+        },
+        {
+          "build_us_max": 4081,
+          "build_us_median": 719,
+          "case": "authored",
+          "chunks": 1936,
+          "counts": {
+            "11": 170,
+            "12": 33,
+            "13": 48
+          },
+          "custom1_bytes": 3491472,
+          "map": "zone8",
+          "nonflat_points": 0,
+          "offset": -0.35,
+          "owner": 4,
+          "points": 2890,
+          "sea_tiles": 5312,
+          "wind_plane_error_m": 0.0
+        },
+        {
+          "build_us_max": 4186,
+          "build_us_median": 707,
+          "case": "authored",
+          "chunks": 1936,
+          "counts": {
+            "11": 167,
+            "12": 34,
+            "13": 42
+          },
+          "custom1_bytes": 3468720,
+          "map": "zone8",
+          "nonflat_points": 0,
+          "offset": 0.0,
+          "owner": 4,
+          "points": 2688,
+          "sea_tiles": 5312,
+          "wind_plane_error_m": 0.0
+        },
+        {
+          "case": "worst-wind",
+          "fixed_bound": {
+            "actual_error_m": 0.0,
+            "actual_moved": {
+              "height": 0.649999976158142,
+              "lava": false,
+              "material": 4,
+              "slope": "(0.0, 0.0)"
+            },
+            "attenuation_error": 0.0,
+            "colour": "(0.1361, 0.2633, 0.1839, 1.0)",
+            "error_m": 0.469438284493293,
+            "local_vertex": "(0.999972, 0.006162, -2.146803)",
+            "offset": 0.65,
+            "plane": "(0.0, 0.0, 0.65, 0.166667)",
+            "point": "(0.999972, -194.1468)",
+            "root": "(0.008, 0.950785)",
+            "tip": 0.0,
+            "water_before": {
+              "height": 0.649999976158142,
+              "lava": false,
+              "material": 4,
+              "slope": "(0.0, 0.0)"
+            },
+            "water_moved": {
+              "height": 1.11943826065144,
+              "lava": false,
+              "material": 4,
+              "slope": "(11.74416, 0.0)"
+            }
+          },
+          "peak_attenuation": {
+            "actual_error_m": 0.199920424643935,
+            "actual_moved": {
+              "height": 0.849920400802077,
+              "lava": false,
+              "material": 4,
+              "slope": "(0.0, -11.74416)"
+            },
+            "attenuation_error": 0.0210436496738075,
+            "colour": "(0.1772, 0.3368, 0.2337, 1.0)",
+            "error_m": 0.432676748976235,
+            "local_vertex": "(3.752748, 0.43418, -0.996842)",
+            "offset": 0.65,
+            "plane": "(0.0, 0.0, 0.65, 0.166667)",
+            "point": "(51.75275, -0.996842)",
+            "root": "(0.008, 0.775053)",
+            "tip": 0.710299637479087,
+            "water_before": {
+              "height": 0.649999976158142,
+              "lava": false,
+              "material": 4,
+              "slope": "(0.0, 0.0)"
+            },
+            "water_moved": {
+              "height": 1.08267672513438,
+              "lava": false,
+              "material": 4,
+              "slope": "(0.0, -11.74416)"
+            }
+          },
+          "shader_amplitude": {
+            "actual_error_m": 0.206243027504346,
+            "actual_moved": {
+              "height": 0.649999976158142,
+              "lava": false,
+              "material": 4,
+              "slope": "(0.0, 0.0)"
+            },
+            "attenuation_error": 0.00819948783724396,
+            "colour": "(0.2159, 0.3953, 0.2881, 1.0)",
+            "error_m": 0.446252081589812,
+            "local_vertex": "(1.002002, 0.427609, -0.14559)",
+            "offset": 0.65,
+            "plane": "(11.74416, 0.0, -11.09416, 0.166667)",
+            "point": "(1.002002, -8.14559)",
+            "root": "(0.008, 0.740557)",
+            "tip": 0.699348575435579,
+            "water_before": {
+              "height": 0.673514590772527,
+              "lava": false,
+              "material": 4,
+              "slope": "(11.74416, 0.0)"
+            },
+            "water_moved": {
+              "height": 0.649999976158142,
+              "lava": false,
+              "material": 4,
+              "slope": "(0.0, 0.0)"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "limited_runs": [
+    {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-release-mobile",
+      "tool_sha256": "2e38e9fbbeece267531364f6578b8fe04fdfb51c506d884aef024621ec62f980",
+      "pack_sha256": "cef82e76da9e113687413b963cd969b0b9cf5ce869fbc86f4f509628afdd04f5",
+      "engine_sha256": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-final/CursedLands.x86_64",
+        "--render-thread",
+        "separate",
+        "--rendering-method",
+        "mobile",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-release-mobile/tool-source.gd"
+      ],
+      "return_code": 1,
+      "errors": [
+        "FAIL resetting terrain clock exactly restores tree and shadows"
+      ],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "seconds": 8.316389240993885,
+      "other_render_processes_at_start": [
+        {
+          "pid": 432672,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+        }
+      ],
+      "report": "weather-wind.json",
+      "checks": 6069,
+      "failures": 1,
+      "rows": [
+        {
+          "case": "pure",
+          "max_analytic_sway_m": 0.04,
+          "sampled_frames": 1000
+        },
+        {
+          "case": "ownership",
+          "cave": "(0.818904, -0.573931, 0.1105, 0.1)",
+          "dry": "(0.81892, -0.573908, 0.5525, 0.1)",
+          "rain": "(0.886683, -0.462378, 0.80441, 0.7)"
+        },
+        {
+          "case": "tree-motion",
+          "difference": {
+            "changed": 24705,
+            "over_2": 18183,
+            "peak": 113
+          }
+        },
+        {
+          "case": "reset",
+          "difference": {
+            "changed": 922,
+            "over_2": 38,
+            "peak": 7
+          }
+        },
+        {
+          "case": "tree-pause",
+          "difference": {
+            "changed": 0,
+            "over_2": 0,
+            "peak": 0
+          }
+        },
+        {
+          "case": "inactive-world",
+          "difference": {
+            "changed": 0,
+            "over_2": 0,
+            "peak": 0
+          }
+        },
+        {
+          "case": "lmp-hold",
+          "difference": {
+            "changed": 0,
+            "over_2": 0,
+            "peak": 0
+          }
+        },
+        {
+          "case": "clock",
+          "elapsed": [
+            0.301464537880219,
+            0.602655878787879
+          ]
+        }
+      ]
+    },
+    {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-meadow-gl",
+      "tool_sha256": "14f313f4730bce058af137305ce1f3b354f9d45becf7dc597e1a562264ced987",
+      "pack_sha256": "cef82e76da9e113687413b963cd969b0b9cf5ce869fbc86f4f509628afdd04f5",
+      "engine_sha256": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-final/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-meadow-gl/tool-source.gd",
+        "--cover-kind=0",
+        "--cover-kind-only",
+        "--cover-with-grass"
+      ],
+      "return_code": 1,
+      "errors": [
+        "FAIL clear/reload restores the cover image"
+      ],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "seconds": 17.07899250902119,
+      "other_render_processes_at_start": [
+        {
+          "pid": 432672,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+        }
+      ],
+      "report": "biome-cover.json",
+      "checks": 1146,
+      "failures": 1,
+      "rows": [
+        {
+          "case": "immutable-snapshot",
+          "kinds": {
+            "0": 29,
+            "1": 304,
+            "2": 48,
+            "3": 24,
+            "4": 3,
+            "5": 60,
+            "6": 2
+          },
+          "records": 470
+        },
+        {
+          "case": "original-wind-control",
+          "difference": {
+            "changed": 0,
+            "over_2": 0,
+            "peak": 0
+          }
+        },
+        {
+          "case": "render",
+          "difference": {
+            "changed": 925,
+            "over_2": 734,
+            "peak": 155
+          },
+          "draws": 1611,
+          "kind": 0,
+          "point": "(204.5785, 75.87177)",
+          "records": 38,
+          "vertices": 1710,
+          "zone": "gz1g"
+        },
+        {
+          "case": "interaction-clearance",
+          "difference": {
+            "changed": 41597,
+            "over_2": 36801,
+            "peak": 76
+          }
+        },
+        {
+          "case": "pressure",
+          "difference": {
+            "changed": 14812,
+            "over_2": 10085,
+            "peak": 147
+          }
+        }
+      ]
+    }
+  ],
+  "controls": [
+    {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-mobile-old-control",
+      "tool_sha256": "c535453188f1c0030105d1724823d5a6a48755be364cc9bb2a7545997f48c798",
+      "pack_sha256": "816c8045e87b813fc4a36476618dffa98b7d84fb2f371cbd949ca89f50be9710",
+      "engine_sha256": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-families-probe/CursedLands.x86_64",
+        "--render-thread",
+        "separate",
+        "--rendering-method",
+        "mobile",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-mobile-old-control/tool-source.gd"
+      ],
+      "return_code": 0,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "seconds": 6.576795753004262,
+      "other_render_processes_at_start": [
+        {
+          "pid": 422601,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+        },
+        {
+          "pid": 432672,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+        }
+      ],
+      "control": {
+        "moved": {
+          "changed": 42250,
+          "over_2": 30086,
+          "peak": 147
+        },
+        "reset": {
+          "changed": 880,
+          "over_2": 40,
+          "peak": 7
+        },
+        "stable": {
+          "changed": 0,
+          "over_2": 0,
+          "peak": 0
+        }
+      }
+    },
+    {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-mobile-old-still",
+      "tool_sha256": "bc3ab3c47872ddf0428e311d35449f760f136fe6d3121298c23e1374dea0288e",
+      "pack_sha256": "816c8045e87b813fc4a36476618dffa98b7d84fb2f371cbd949ca89f50be9710",
+      "engine_sha256": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-families-probe/CursedLands.x86_64",
+        "--render-thread",
+        "separate",
+        "--rendering-method",
+        "mobile",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-mobile-old-still/tool-source.gd",
+        "--no-wind"
+      ],
+      "return_code": 0,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "seconds": 7.318790457997238,
+      "other_render_processes_at_start": [
+        {
+          "pid": 432672,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+        }
+      ],
+      "control": {
+        "moved": {
+          "changed": 89166,
+          "over_2": 79038,
+          "peak": 151
+        },
+        "reset": {
+          "changed": 0,
+          "over_2": 0,
+          "peak": 0
+        },
+        "stable": {
+          "changed": 0,
+          "over_2": 0,
+          "peak": 0
+        }
+      }
+    },
+    {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-mobile-new-still",
+      "tool_sha256": "4d2f83214a6f8784deb99a824ea4e4d6d37b142f3e11e7fbd511191f033d2916",
+      "pack_sha256": "cef82e76da9e113687413b963cd969b0b9cf5ce869fbc86f4f509628afdd04f5",
+      "engine_sha256": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-final/CursedLands.x86_64",
+        "--render-thread",
+        "separate",
+        "--rendering-method",
+        "mobile",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-mobile-new-still/tool-source.gd",
+        "--no-wind"
+      ],
+      "return_code": 0,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "seconds": 8.847931660013273,
+      "other_render_processes_at_start": [
+        {
+          "pid": 432672,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+        },
+        {
+          "pid": 441026,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+        }
+      ],
+      "control": {
+        "moved": {
+          "changed": 89166,
+          "over_2": 79038,
+          "peak": 151
+        },
+        "reset": {
+          "changed": 0,
+          "over_2": 0,
+          "peak": 0
+        },
+        "stable": {
+          "changed": 0,
+          "over_2": 0,
+          "peak": 0
+        }
+      }
+    },
+    {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-paused-tree-old",
+      "tool_sha256": "c6e48dd3fe0e69194870743e58229b7fd5e0b0cdd732d61763a841bd2220cd91",
+      "pack_sha256": "816c8045e87b813fc4a36476618dffa98b7d84fb2f371cbd949ca89f50be9710",
+      "engine_sha256": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-families-probe/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-paused-tree-old/tool-source.gd",
+        "--wall-clock"
+      ],
+      "return_code": 0,
+      "errors": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "seconds": 3.8461142119776923,
+      "other_render_processes_at_start": [
+        {
+          "pid": 453720,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+        },
+        {
+          "pid": 454957,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+        }
+      ],
+      "control": {
+        "moved": {
+          "changed": 27343,
+          "over_2": 17065,
+          "peak": 113
+        },
+        "reset": {
+          "changed": 31291,
+          "over_2": 22571,
+          "peak": 117
+        },
+        "stable": {
+          "changed": 18414,
+          "over_2": 5660,
+          "peak": 111
+        }
+      }
+    },
+    {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-paused-tree-new",
+      "tool_sha256": "c6e48dd3fe0e69194870743e58229b7fd5e0b0cdd732d61763a841bd2220cd91",
+      "pack_sha256": "cef82e76da9e113687413b963cd969b0b9cf5ce869fbc86f4f509628afdd04f5",
+      "engine_sha256": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-final/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-paused-tree-new/tool-source.gd",
+        "--wall-clock"
+      ],
+      "return_code": 0,
+      "errors": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "seconds": 4.075460203981493,
+      "other_render_processes_at_start": [
+        {
+          "pid": 453720,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+        },
+        {
+          "pid": 454957,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+        }
+      ],
+      "control": {
+        "moved": {
+          "changed": 27937,
+          "over_2": 17782,
+          "peak": 118
+        },
+        "reset": {
+          "changed": 0,
+          "over_2": 0,
+          "peak": 0
+        },
+        "stable": {
+          "changed": 0,
+          "over_2": 0,
+          "peak": 0
+        }
+      }
+    }
+  ],
+  "limitations": [
+    "Mobile with a real alpha-tested tree has a nonexact 7-second/reset round trip: 922 changed pixels, 38 > 2/255, peak 7/255. Initial and held frames are exactly stable. The previous build with an explicitly controlled original foliage clock has a similar residual (880 pixels, 40 > 2/255, peak 7/255); it is not an identical-geometry pixel match. No fix of that renderer behavior is claimed.",
+    "The combined grass/cover Compatibility rebuild changes one pixel at (433,70), RGB (25,16,8) to (22,17,12). The unchanged previous build reproduces that exact pixel and values. The cover-only view and the combined Forward+ view restore exactly.",
+    "Eight 4 cm radial probes retain water coverage, but the pre-existing flooded outer-map mean-plane extrapolation is approximate: 0.469438 m for the full envelope, 0.206243 m after vertex-tip weighting; peak tip-weighted attenuation error 0.02104365 at a different vertex. These are conservative envelopes, not a measured specific weather frame. The worst full-envelope point has tip=0 and is fixed by the real shader. Flat sampled water has zero extrapolation error.",
+    "All GPU tests are desktop RTX 3090 runs. Mobile means the desktop Vulkan Mobile renderer, not an Android device. Other user Godot processes were left untouched and listed per run. No FPS, battery, Android/web, or memory-bandwidth win is claimed.",
+    "The helper covers vegetation only. Original rain/snow trajectories, water geometry, weather events and gameplay randomness remain unchanged. Cloud/fog/ambient-particle wind, actual submission LOD and regional cover sets remain separate work. Desktop sun policy remains continuous; handheld/web held policy is unchanged."
+  ],
+  "diagnostics": {
+    "still_before_after_pack_comparison": {
+      "wind-control-zero.png": {
+        "identical": true,
+        "sha256": "19554b5ac9d72d408b7f9ac4cc7cb6a477bad1a01a2a8d74bf2612e4a9582dae"
+      },
+      "wind-control-stable.png": {
+        "identical": true,
+        "sha256": "19554b5ac9d72d408b7f9ac4cc7cb6a477bad1a01a2a8d74bf2612e4a9582dae"
+      },
+      "wind-control-reset.png": {
+        "identical": true,
+        "sha256": "19554b5ac9d72d408b7f9ac4cc7cb6a477bad1a01a2a8d74bf2612e4a9582dae"
+      },
+      "wind-control-seven.png": {
+        "identical": true,
+        "sha256": "586b93b896574639a272485f53a898691f8d8940d96f44bd9789a39f3d0ceffc"
+      }
+    },
+    "grass_cover_baseline_residual": {
+      "cover-wind-meadow-gl": [
+        {
+          "x": 433,
+          "y": 70,
+          "before": [
+            25,
+            16,
+            8
+          ],
+          "after": [
+            22,
+            17,
+            12
+          ]
+        }
+      ],
+      "cover-wind-meadow-old": [
+        {
+          "x": 433,
+          "y": 70,
+          "before": [
+            25,
+            16,
+            8
+          ],
+          "after": [
+            22,
+            17,
+            12
+          ]
+        }
+      ]
+    },
+    "previous_grass_cover_run": {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-meadow-old",
+      "tool_sha256": "34e6f081586f29a8763fd8e362ba0c547ec1ce4186a674b63cdb394197139518",
+      "pack_sha256": "816c8045e87b813fc4a36476618dffa98b7d84fb2f371cbd949ca89f50be9710",
+      "engine_sha256": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-families-probe/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-meadow-old/tool-source.gd",
+        "--cover-kind=0",
+        "--cover-kind-only",
+        "--cover-with-grass"
+      ],
+      "return_code": 1,
+      "errors": [
+        "FAIL clear/reload restores the cover image"
+      ],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "seconds": 14.134716066997498,
+      "other_render_processes_at_start": [
+        {
+          "pid": 453720,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+        },
+        {
+          "pid": 454957,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+        }
+      ],
+      "report": "biome-cover.json",
+      "checks": 1146,
+      "failures": 1,
+      "rows": [
+        {
+          "case": "immutable-snapshot",
+          "kinds": {
+            "0": 29,
+            "1": 304,
+            "2": 48,
+            "3": 24,
+            "4": 3,
+            "5": 60,
+            "6": 2
+          },
+          "records": 470
+        },
+        {
+          "case": "original-wind-control",
+          "difference": {
+            "changed": 19904,
+            "over_2": 7448,
+            "peak": 153
+          }
+        },
+        {
+          "case": "render",
+          "difference": {
+            "changed": 925,
+            "over_2": 734,
+            "peak": 155
+          },
+          "draws": 1611,
+          "kind": 0,
+          "point": "(204.5785, 75.87177)",
+          "records": 38,
+          "vertices": 1710,
+          "zone": "gz1g"
+        },
+        {
+          "case": "interaction-clearance",
+          "difference": {
+            "changed": 41597,
+            "over_2": 36801,
+            "peak": 76
+          }
+        },
+        {
+          "case": "pressure",
+          "difference": {
+            "changed": 14812,
+            "over_2": 10085,
+            "peak": 147
+          }
+        }
+      ]
+    }
+  },
+  "retained_iteration_failures": [
+    {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-probe",
+      "reason": "Initial helper parse failed due to generic floor() type inference; repaired to floorf(). This pack is not accepted."
+    },
+    {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-headless",
+      "reason": "QA runner omitted a relative test superclass; runner now freezes and hashes inherited source files."
+    },
+    {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-headless2",
+      "reason": "Headless global_shader_parameter_get returns an empty Variant; invalid ownership witness."
+    },
+    {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-gl",
+      "reason": "Exported global_shader_parameter_get is editor-only; replaced with actual canvas-shader pixel readback."
+    },
+    {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-gl2",
+      "reason": "Menu test omitted EIMapScene.terrain. Fixture now sets it and disables map processing so real MenuScene._ready must publish the initial state."
+    },
+    {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-mobile-no-reparent",
+      "reason": "Removing scene-instance recreation does not remove the Mobile reset residual."
+    },
+    {
+      "directories": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-pause-old",
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-pause-new"
+      ],
+      "reason": "Engine.time_scale=0 also holds shader TIME, so this did not reproduce a scene-tree pause. Correct controls use time_scale=1 and paused=true."
+    },
+    {
+      "directories": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-shell-mobile",
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-seashell-mobile"
+      ],
+      "reason": "Fixture searched the default starting zone, which has no admitted authored wrack/shell under full scenery. Correct shell acceptance uses gz7g. No production placement was weakened."
+    }
+  ],
+  "accepted_run_count": 13,
+  "accepted_assertions": 298141,
+  "limited_assertions": 7215,
+  "limited_failed_assertions": 2
+}

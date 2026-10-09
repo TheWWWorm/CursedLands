@@ -10,6 +10,7 @@ extends RefCounted
 const FIG_MAGIC := "FIG"
 const SurfaceResponse = preload("res://src/game/surface_materials.gd")
 const FigureMaterial = preload("res://src/ei/figure_material.gd")
+const WeatherWind = preload("res://src/game/fx/weather_wind.gd")
 
 ## template -> {"parts": {name: Dictionary}, "links": [[name, parent]], "bones": {name: PackedFloat32Array}}
 static var _models := {}
@@ -36,10 +37,11 @@ varying float ei_k;
 uniform sampler2D albedo_tex : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform sampler2D foliage_mask : hint_default_black, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform float wind = 1.0;
-uniform vec2 wind_dir = vec2(0.8, 0.6);
+global uniform vec4 ei_wind_state;
+global uniform vec4 ei_wind_phases;
 uniform float stiff = 0.0;
 instance uniform float part_y = 0.0;
-""" + SurfaceResponse.RELIEF_SHADER + """
+""" + SurfaceResponse.RELIEF_SHADER + WeatherWind.SWAY + """
 const float STIFF_K = 0.2;
 const float STIFF_TOP = 2.5;
 void vertex() {
@@ -49,12 +51,16 @@ void vertex() {
 	float hgt = max(part_y + VERTEX.y, 0.0);
 	if (wind > 0.0 && hgt > 0.05) {
 		vec3 o = NODE_POSITION_WORLD;
-		float ph = dot(o.xz, wind_dir) * 0.12 + o.x * 0.05;
-		float gust = sin(TIME * 0.9 - ph) * 0.55 + sin(TIME * 2.1 - ph * 1.7) * 0.25 + 0.45;
-		float bend = (0.012 * hgt + 0.0006 * hgt * hgt) * gust * wind;
+		// Keep Godot's animated-caster invalidation while actual motion follows
+		// the shared pausable clock. This whole branch is absent with wind off.
+		vec4 phases = ei_wind_phases + vec4(TIME * 0.0);
+		vec2 wind_dir = ei_wind_state.xy;
+		float gust = ei_vegetation_sway(o.xz, o.x * 0.05, ei_wind_state, phases);
+		float drive = wind * ei_wind_state.z;
+		float bend = (0.012 * hgt + 0.0006 * hgt * hgt) * gust * drive;
 		bend *= mix(1.0, STIFF_K * clamp(hgt / STIFF_TOP, 0.0, 1.0), stiff);
 		vec3 w = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
-		float flutter = sin(TIME * 7.0 + dot(w, vec3(1.7, 2.3, 1.1))) * 0.018 * min(hgt, 2.0) * wind * (1.0 - stiff);
+		float flutter = sin(phases.w + dot(w, vec3(1.7, 2.3, 1.1))) * 0.018 * min(hgt, 2.0) * drive * (1.0 - stiff);
 		vec3 dw = vec3(wind_dir.x * bend, -bend * bend * 0.3 + flutter * 0.5, wind_dir.y * bend) + vec3(flutter, 0.0, -flutter) * 0.6;
 		// world offset into the model's space (objects are scaled 1, rotated)
 		VERTEX += (inverse(mat3(MODEL_MATRIX)) * dw);

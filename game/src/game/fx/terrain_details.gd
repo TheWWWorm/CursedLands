@@ -19,6 +19,7 @@ const SCENERY_RADIUS := 0.56
 const SCENERY_HEIGHT := 0.88
 const VegetationInteraction = preload("res://src/game/fx/vegetation_interaction.gd")
 const BiomeCover = preload("res://src/game/fx/biome_cover.gd")
+const WeatherWind = preload("res://src/game/fx/weather_wind.gd")
 const GRASS_SHADER := """
 shader_type spatial;
 #define EI_TERRAIN_LIGHT
@@ -26,11 +27,11 @@ shader_type spatial;
 render_mode cull_disabled, ambient_light_disabled;
 uniform vec3 view_position;
 uniform float breeze = 1.0;
-uniform float wind_phase = 0.0;
 varying vec3 blade_colour;
 varying vec3 blade_normal;
 varying vec3 ei_e;
 varying float ei_k;
+""" + WeatherWind.UNIFORMS + WeatherWind.SWAY + """
 void vertex() {
 	vec3 origin = (MODEL_MATRIX * vec4(vec3(0.0), 1.0)).xyz;
 	float fade = 1.0 - smoothstep(28.0, 36.0, distance(origin.xz, view_position.xz));
@@ -47,8 +48,10 @@ void vertex() {
 	VERTEX.xz += lean * tip * tip * max(INSTANCE_CUSTOM.z, 0.04);
 	float present = step(blade + 0.5, clamp(INSTANCE_CUSTOM.y, 10.0, 14.0));
 	VERTEX *= fade * present;
-	VERTEX.xz += vec2(1.0, 0.35) * sin(wind_phase + origin.x * 0.8 + origin.z * 0.6 + seed * 4.0)
-		* tip * tip * 0.035 * breeze * fade * present;
+	vec4 phases = wind_phases;
+	vec2 sway = wind_state.xy * ei_vegetation_sway(origin.xz, seed * 4.0, wind_state, phases)
+		* tip * tip * 0.04 * wind_state.z * breeze * fade * present;
+	VERTEX += transpose(MODEL_NORMAL_MATRIX) * vec3(sway.x, 0.0, sway.y);
 	// A grass bed follows the ground's diffuse palette. Keep the actual
 	// curved normal for the two-sided leaf response and transmission.
 	blade_normal = normalize((VIEW_MATRIX * vec4(MODEL_NORMAL_MATRIX * NORMAL, 0.0)).xyz);
@@ -255,7 +258,7 @@ func _apply_grass_material() -> void:
 	# Godot detects animated shadow casters from TIME usage. Uniform and
 	# texture updates alone do not mark cached local shadow maps dirty. Keep
 	# that animation dependency while the visible phase uses pausable time.
-	var animated := GRASS_SHADER.replace("sin(wind_phase +","sin(wind_phase + TIME*0.0 +")
+	var animated := GRASS_SHADER.replace("vec4 phases = wind_phases;","vec4 phases = wind_phases + vec4(TIME*0.0);")
 	if Gfx.on("gfx_wind") and _wind_shader == null: _wind_shader = Gfx.make_shader(animated,true,true)
 	if interaction and _interaction_shader == null:
 		_interaction_shader = Gfx.make_shader(VegetationInteraction.source(animated),true,true)
@@ -263,7 +266,8 @@ func _apply_grass_material() -> void:
 	_material.set_shader_parameter("breeze",float(Gfx.on("gfx_wind")))
 	_material.set_shader_parameter("vegetation_pressure",interaction.texture if interaction else null)
 	if interaction: _material.set_shader_parameter("vegetation_focus",interaction.focus)
-	_material.set_shader_parameter("wind_phase",fposmod(terrain._waves.time_ticks()*EIWaterWaves.TICK*1.6,TAU))
+	var wind_frame := terrain.wind_frame()
+	WeatherWind.bind(_material,wind_frame)
 	if _cover_material:
 		var soft := Gfx.on("gfx_soft_ground") and is_instance_valid(soft_ground) and _cover_field != null and _cover_field.loose_tiles.has(1)
 		var aquatic := _cover_field != null and not _cover_field.sea.tiles.is_empty()
@@ -276,7 +280,7 @@ func _apply_grass_material() -> void:
 				_cover_material.set_shader_parameter(parameter,null)
 			_cover_surface = null
 		_cover_material.set_shader_parameter("breeze",float(Gfx.on("gfx_wind")))
-		_cover_material.set_shader_parameter("wind_phase",_material.get_shader_parameter("wind_phase"))
+		WeatherWind.bind(_cover_material,wind_frame)
 		_cover_material.set_shader_parameter("vegetation_pressure",interaction.texture if interaction else null)
 		if interaction: _cover_material.set_shader_parameter("vegetation_focus",interaction.focus)
 	if _cover_field and _cover_field.mounds.enabled:
@@ -300,8 +304,9 @@ func _apply_grass_material() -> void:
 func _update_motion(centre: Vector3) -> void:
 	var seconds := terrain._waves.time_ticks()*EIWaterWaves.TICK
 	if Gfx.on("gfx_wind"):
-		_material.set_shader_parameter("wind_phase",fposmod(seconds*1.6,TAU))
-		if _cover_material: _cover_material.set_shader_parameter("wind_phase",fposmod(seconds*1.6,TAU))
+		var wind_frame := terrain.wind_frame()
+		WeatherWind.bind(_material,wind_frame)
+		if _cover_material: WeatherWind.bind(_cover_material,wind_frame)
 	if interaction:
 		interaction.update(self,terrain.game_world(),Vector2(centre.x,centre.z),seconds)
 		_material.set_shader_parameter("vegetation_focus",interaction.focus)

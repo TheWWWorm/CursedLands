@@ -4,6 +4,7 @@ extends RefCounted
 ## CUSTOM0: supporting cell x*2+triangle, cell y, barycentric b/c weights.
 ## CUSTOM1 (sea maps only): mean-water plane (X/Z slopes, intercept), depth coefficient.
 const Pressure = preload("res://src/game/fx/vegetation_interaction.gd")
+const WeatherWind = preload("res://src/game/fx/weather_wind.gd")
 const FORMAT := (Mesh.ARRAY_CUSTOM_RGBA_FLOAT << Mesh.ARRAY_FORMAT_CUSTOM0_SHIFT) | (Mesh.ARRAY_CUSTOM_RGBA_FLOAT << Mesh.ARRAY_FORMAT_CUSTOM1_SHIFT)
 const UNDERWATER := """
 	if (CUSTOM1.w > 0.0) {
@@ -40,12 +41,12 @@ shader_type spatial;
 render_mode cull_disabled, ambient_light_disabled;
 uniform vec3 view_position;
 uniform float breeze = 0.0;
-uniform float wind_phase = 0.0;
 varying vec3 cover_colour;
 varying vec3 cover_normal;
 varying float cover_leaf;
 varying vec3 ei_e;
 varying float ei_k;
+""" + WeatherWind.UNIFORMS + WeatherWind.SWAY + """
 void vertex() {
 	vec3 root = vec3(UV2.x,UV.x,UV2.y);
 	vec3 origin = (MODEL_MATRIX*vec4(root,1.0)).xyz;
@@ -56,7 +57,10 @@ void vertex() {
 	fade *= density;
 	float tip = clamp((VERTEX.y-root.y)/0.6,0.0,1.0)*COLOR.a;
 	VERTEX = root+(VERTEX-root)*fade;
-	VERTEX.xz += vec2(1.0,0.35)*sin(wind_phase+origin.x*0.8+origin.z*0.6+UV.y*4.0)*tip*tip*0.035*breeze*fade;
+	vec4 phases = wind_phases;
+	vec2 sway = wind_state.xy * ei_vegetation_sway(origin.xz,UV.y*4.0,wind_state,phases)
+		*tip*tip*0.04*wind_state.z*breeze*fade;
+	VERTEX += transpose(MODEL_NORMAL_MATRIX)*vec3(sway.x,0.0,sway.y);
 	// PRESSURE
 	// SURFACE
 	cover_normal = normalize((VIEW_MATRIX*vec4(MODEL_NORMAL_MATRIX*NORMAL,0.0)).xyz);
@@ -104,7 +108,7 @@ static func shader(interactive: bool, wind: bool, soft := false, aquatic := fals
 	var key := int(aquatic)*8+int(soft)*4+int(interactive)*2+int(wind)
 	if not _shaders.has(key):
 		var code := SHADER
-		if interactive or wind or soft: code = code.replace("sin(wind_phase+","sin(wind_phase+TIME*0.0+")
+		if interactive or wind or soft: code = code.replace("vec4 phases = wind_phases;","vec4 phases = wind_phases + vec4(TIME*0.0);")
 		if interactive:
 			var deformation := "if (CUSTOM1.w <= 0.0) {"+DEFORM+"}" if aquatic else DEFORM
 			code = code.replace("void vertex() {",Pressure.UNIFORMS+"\nvoid vertex() {").replace("// PRESSURE",deformation)

@@ -225,10 +225,10 @@ func fixture() -> void:
 	session.lmp_travel = null; world.session = null; session.free()
 	GameData.options["gfx_wind"] = 1; details.apply_options()
 	t._waves.advance(0.25); details._update_motion(focus)
-	var phase: float = details._material.get_shader_parameter("wind_phase")
-	check(is_equal_approx(phase,fposmod(t._waves.time_ticks()*EIWaterWaves.TICK*1.6,TAU)),"grass wind uses the terrain game clock")
+	var phase: Vector4 = details._material.get_shader_parameter("wind_phases")
+	check(phase==t.wind_frame().phases,"grass wind uses the terrain game clock")
 	await frames()
-	check(is_equal_approx(phase,details._material.get_shader_parameter("wind_phase")),"wall time alone does not move grass wind")
+	check(phase==details._material.get_shader_parameter("wind_phases"),"wall time alone does not move grass wind")
 	if rendered:
 		# TIME still marks a dynamic shadow caster, but contributes zero to
 		# vertex position. Real wall time may advance during a scene-tree pause.

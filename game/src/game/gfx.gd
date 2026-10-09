@@ -618,10 +618,18 @@ static func ensure_globals() -> void:
 		var c: Color = GLOBALS[k]
 		RenderingServer.global_shader_parameter_add(k, RenderingServer.GLOBAL_VAR_TYPE_VEC3, Vector3(c.r, c.g, c.b))
 	RenderingServer.global_shader_parameter_add(&"ei_border", RenderingServer.GLOBAL_VAR_TYPE_VEC4, Vector4.ZERO)
+	RenderingServer.global_shader_parameter_add(&"ei_wind_state", RenderingServer.GLOBAL_VAR_TYPE_VEC4, Vector4(0.70710678,-0.70710678,0.0,0.0))
+	RenderingServer.global_shader_parameter_add(&"ei_wind_phases", RenderingServer.GLOBAL_VAR_TYPE_VEC4, Vector4.ZERO)
 	for i in PASS_LIGHTS:
 		RenderingServer.global_shader_parameter_add(StringName("ei_pl%d" % i), RenderingServer.GLOBAL_VAR_TYPE_VEC4, Vector4.ZERO)
 		RenderingServer.global_shader_parameter_add(StringName("ei_plc%d" % i), RenderingServer.GLOBAL_VAR_TYPE_VEC4, Vector4.ZERO)
 	apply_surface_options()
+
+
+static func set_wind_frame(frame: Dictionary) -> void:
+	ensure_globals()
+	RenderingServer.global_shader_parameter_set(&"ei_wind_state",frame.state)
+	RenderingServer.global_shader_parameter_set(&"ei_wind_phases",frame.phases)
 
 
 static func apply_surface_options() -> void:

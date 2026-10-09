@@ -666,6 +666,9 @@ func attach_world(w: GameWorld) -> void:
 	sound.on_world(w)
 	if simulation_only:
 		return
+	# A newly attached view may begin paused or held for co-op arrival.
+	# Publish its own environment before it renders using the old world's wind.
+	if w.terrain: w.terrain._update_wind_parameters(true)
 	_apply_shadows(w)
 	_fit_shadows()
 	var pfx := ParticleFx.of(w)

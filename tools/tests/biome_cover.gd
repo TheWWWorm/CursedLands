@@ -301,8 +301,8 @@ func render_fixture() -> void:
 	for node: MultiMeshInstance3D in d._chunks.values(): d.remove_child(node); d.add_child(node)
 	check(delta(pressed,await snap(view,"shadow-refresh")).changed==0,"cover shadows match forced refresh")
 	GameData.options["gfx_wind"] = 1; d.apply_options(); t._waves.advance(0.3); d._update_motion(focus)
-	var phase: float = d._cover_material.get_shader_parameter("wind_phase")
-	check(is_equal_approx(phase,d._material.get_shader_parameter("wind_phase")),"both generators share the pausable wind phase")
+	var phase: Vector4 = d._cover_material.get_shader_parameter("wind_phases")
+	check(phase==d._material.get_shader_parameter("wind_phases") and d._cover_material.get_shader_parameter("wind_state")==d._material.get_shader_parameter("wind_state"),"both generators share the pausable weather wind")
 	process_mode = Node.PROCESS_MODE_ALWAYS; get_tree().paused = true; Engine.time_scale = 1
 	var held := await snap(view,"paused")
 	check(delta(held,await snap(view,"paused-later")).changed==0,"paused cover remains fixed while wall time advances")

@@ -3397,6 +3397,134 @@ flood-lighting and Mobile mound-restoration limits remain open. Continue shared
 weather wind, actual submission LOD and remaining regional sets, then the rest
 of the renderer handoff and gameplay U45 first.
 
+## V2 shared vegetation weather wind — 9 October
+
+Trees, grass and optional biome cover now sample one terrain-owned wind state.
+The existing `gfx_wind` switch controls it; no new effect default is enabled.
+This also fixes foliage continuing to sway during a scene-tree pause. The
+original water vertices, precipitation trajectories, weather events and random
+simulation are unchanged. Desktop sun aiming remains continuous on every
+backend; this change does not alter the Android/web held-sun fallback.
+
+Reference source is **R1 `0092dc6e1d7c4aab3f74644a79e9bfca11ecf293`**, inspected
+without changing the R0 reference checkout:
+
+| Reference location at R1 | Applied idea |
+|---|---|
+| `Source/weather_wind.h:87–128`, `update_weather_wind:130–182` | Deterministic smooth spells, force floor, saturating storm strength and slow direction wander. |
+| `Source/ground_cover.h:435–449`, `sway_drive` | Stronger weather bends farther; travelling phase rate stays constant at 0.6375 radians per game second. Multiplying elapsed time by changing speed would race the phase. |
+| `Source/ground_cover_interaction.h:23–35`, `gcWindSway` | Broad fronts shared in world space. The remake uses two broad harmonics; trees retain separate leaf flutter. |
+| `Source/renderer_ground_cover.cpp:2391–2399` | Cover consumes the same environment as foliage. |
+
+Read these with `git -C /home/llm2x/Documents/evil-islands-owned-renderer show
+0092dc6e1d7c4aab3f74644a79e9bfca11ecf293:Source/weather_wind.h` (substitute the
+other source paths). These R1 files need not exist in the working R0 tree.
+
+Implementation map:
+
+- [weather_wind.gd](/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/game/src/game/fx/weather_wind.gd:1)
+  owns the pure sampler and shared shader function. Its 32-bit hash multiplication
+  avoids signed 64-bit overflow. Map-name seeds keep a map stable without tying
+  the noise seed to a changing force. The existing client cosine precipitation
+  fade supplies rain/snow; snow contributes 80% storm strength and caves ignore
+  precipitation and reduce sway to 20%. This deliberately adapts the reference's
+  longer fog/weather ramp. The reference's separate pulse/wisp integration is
+  not imported. Each phase is wrapped independently, avoiding an hourly jump.
+- [terrain.gd](/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/game/src/ei/terrain.gd:1420)
+  caches one sample per terrain-clock/owner state. Original water wind supplies
+  direction/force read-only; EI horizontal coordinates are converted to Godot XZ.
+  The normal World → Map → Terrain ownership resolves the current client's
+  weather. Held terrain time also holds its sampled weather, even if GameSound
+  continues processing under an ALWAYS parent. Hidden, non-current and server-only
+  worlds cannot publish foliage globals. A held arrival can publish its initial
+  state without advancing the clock.
+- [gfx.gd](/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/game/src/game/gfx.gd:613)
+  registers two shared vec4 uniforms. Terrain supplies those to
+  [figure.gd](/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/game/src/ei/figure.gd:30).
+  Trees retain root/part height, cactus stiffness and the wind-off/rigid shader
+  specialization. `TIME * 0.0` remains only in animated vertex paths so Godot
+  invalidates local caster shadows even though visible motion uses game time.
+- [terrain_details.gd](/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/game/src/game/fx/terrain_details.gd:20)
+  and [biome_cover_mesh.gd](/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/game/src/game/fx/biome_cover_mesh.gd:39)
+  bind the same state to grass and cover. World-space sway is transformed back
+  into each model's coordinates. Grass/cover displacement is bounded by 4 cm
+  before tip/fade weighting, retaining the existing submerged-cover admission
+  allowance. Rigid litter's zero tip weight remains fixed. Underwater mean-depth
+  lighting still runs after the actual deformation.
+- [game.gd](/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/game/src/game/game.gd:666)
+  publishes the incoming world's state after attaching its sound/weather owner.
+  [menu_scene.gd](/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/game/src/ui/menu_scene.gd:58)
+  does likewise before its first rendered frame. Terrain `apply_gfx` also publishes
+  current wind when the option is enabled while paused.
+
+Validation is recorded in
+[weather-wind-2026-10-09.json](/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/weather-wind-2026-10-09.json).
+Thirteen accepted runs pass **298,141 assertions**. Two additional candidate
+runs retain one failed exact-restoration assertion each; they are not counted
+as fully passing runs. All artifacts, frozen tools and logs live under
+`.../owned-renderer-improvements-20261008-qa/v2-vegetation/cover-wind-*`.
+
+- [weather_wind.gd test](/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/weather_wind.gd:1)
+  checks independent unsigned-hash oracles, 1,000 deterministic weather samples,
+  the analytical displacement bound, rain/snow fade endpoints, frame partition,
+  phase wrap/hour/day continuity, ownership, paused option changes, menu entry,
+  LMP holds and speed scaling. A canvas shader reads the actual uploaded globals;
+  exported `global_shader_parameter_get` is editor-only and cannot be used here.
+  A real multipart `nafltr56` tree verifies motion, exact held images and shadow
+  refresh on Compatibility, desktop Mobile and Forward+.
+- The unchanged previous pack reproduces continued tree motion with
+  `SceneTree.paused=true`, `Engine.time_scale=1`: 18,414 pixels change in its
+  paired held captures. The candidate changes zero. Setting time_scale to zero
+  also freezes Godot shader TIME, so the earlier zero-scale controls are expressly
+  discarded as a reproduction of scene-tree pause.
+- Updated [foliage_shadow_cache.gd](/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/foliage_shadow_cache.gd:1)
+  passes 141 assertions on each backend across all seven base/fade/contact/rigid
+  cases. Inactive cases submit zero shadow primitives; active cases submit 14
+  and visibly move. All four wind-disabled control captures match the previous
+  pack byte for byte on desktop Mobile.
+- Grass/cover pressure, real meadow, kelp, Gipat zone7 beach shells, rigid litter,
+  pause and option restoration are exercised. The underwater zone8 test probes
+  eight directions at the full 4 cm radius, retains authored water coverage,
+  passes 4,096 real GPU depth samples, and detects all 1,024 deliberately wrong
+  bindings. Native placement records are unchanged by the wind implementation.
+
+Limits to carry forward:
+
+1. A full real-tree wind/reset round trip on desktop Mobile changes **922 pixels,
+   38 over 2/255, peak 7/255**; each held image itself is exact. A controlled-clock
+   version of the original foliage shader on the previous pack has a similar
+   residual (**880 pixels, 40 over 2/255, peak 7/255**). That comparison uses different
+   wind geometry and does not prove pixel identity or fix the underlying renderer
+   behavior. Removing scene-instance recreation does not remove it. Wind-disabled
+   transforms restore exactly in both packs. Keep full Mobile exact-restoration
+   acceptance open.
+2. The combined grass/cover Compatibility rebuild changes one pixel at (433,70),
+   from RGB (25,16,8) to (22,17,12). The unchanged previous pack reproduces the
+   exact same pixel and values. Cover-only Compatibility and combined Forward+
+   restoration are exact. Preserve the failing combined fixture and its control.
+3. On zone8 flooded by +0.65 m, the existing outer-map mean-plane approximation
+   has a conservative all-direction error of **0.469438 m** at full 4 cm sway.
+   That worst point is a fixed root. With actual vertex tip weights, the maximum
+   envelope error is **0.206243 m**; the largest attenuation error, **0.02104365**,
+   occurs at a different vertex. These probe the displacement envelope rather
+   than a specific weather/time state. Sampled flat water has zero error. Do not
+   label this dynamic-wave lighting or claim the earlier boundary limit is fixed.
+4. These are desktop correctness tests. No Android/web timing, battery or FPS
+   gain is established. The extra shared CPU sampling and second broad grass
+   harmonic have not received device performance acceptance. Other user Godot
+   processes were left alone; their PIDs are recorded. The original weather,
+   water geometry and precipitation simulation remain intact. Global light/wind
+   ownership still assumes one current main view, as the existing renderer does.
+
+Final pack: `.../v2-vegetation/cover-wind-final`, SHA-256
+`cef82e76da9e113687413b963cd969b0b9cf5ce869fbc86f4f509628afdd04f5`.
+All **234** production scripts match its export manifest. It uses the previously
+validated Mobile and Forward+ engine patches; no new engine patch was added.
+The pack is a QA artifact, not an installed or published release. Continue
+**actual geometry submission LOD**, remaining regional cover sets, then the
+rest of the renderer handoff and gameplay **U45 first**. Shared wind for fog,
+clouds and ambient particles belongs to their later visual work.
+
 ## Next work in the established order
 
 1. **P1/P2 remaining texture work:** retained outfit pixels and shared native
@@ -3460,8 +3588,8 @@ of the renderer handoff and gameplay U45 first.
    correction are now implemented, followed by sparse snow/verified-sand mounds.
    Zone7/zone8 coastal profiles now provide authored sandy-beach acceptance,
    with cover habitat kept separate from breaking surf. Verified atlas-family
-   placement is also implemented above. Continue shared weather wind, actual
-   geometry submission LOD and remaining regional cover sets.
+   placement and shared vegetation weather wind are also implemented above.
+   Continue actual geometry submission LOD and remaining regional cover sets.
    Preserve the coastal mean-depth boundary limitation and the mound
    Mobile restoration limitation and construction-cost evidence. No visual effect
    was silently enabled.

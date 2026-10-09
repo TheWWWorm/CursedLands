@@ -162,8 +162,8 @@ func authored() -> void:
 					check(vertex.y<level-0.01,"complete plant is underwater")
 					# Motion can cross a non-coplanar water triangle: measure the
 					# static plane extrapolation error, without calling it wave lighting.
-					for direction: float in [-1.0,1.0]:
-						var move := Vector2(0.035,0.035*0.35)*direction
+					for direction in 8:
+						var move := Vector2.from_angle(float(direction)*TAU/8.0)*0.04
 						var moved := surface.sample(p+move)
 						check(not moved.is_empty(),"maximum cover sway retains authored water coverage")
 						if not moved.is_empty(): wind_plane_error=maxf(wind_plane_error,absf(plane.x*(vertex.x+move.x)+plane.y*(vertex.z+move.y)+plane.z-moved.height))

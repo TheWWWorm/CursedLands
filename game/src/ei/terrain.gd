@@ -700,6 +700,9 @@ var _atlas_hd := false
 const TERRAIN_GUTTER := 8
 var _water_mat: ShaderMaterial
 var _waves := WaveState.new()
+const WeatherWind = preload("res://src/game/fx/weather_wind.gd")
+var _wind_key := []
+var _wind_frame := {}
 var _land_mat: ShaderMaterial
 var _caustics: RefCounted
 var _level := PackedFloat32Array()
@@ -1044,6 +1047,8 @@ func _build_surface_data() -> void:
 ## Remake rendering options (gfx_water, gfx_terrain) on the terrain and water
 ## materials; parameters are set again after a shader swap.
 func apply_gfx() -> void:
+	# Options can be changed while the scene tree is paused.
+	_update_wind_parameters()
 	if _water_mat == null:
 		return
 	var fx := GameData.option("gfx_water") != 0
@@ -1416,9 +1421,50 @@ func _process(dt: float) -> void:
 	var world := game_world()
 	if world and world.session and world.session.lmp_travel \
 			and not world.session.lmp_travel.can_tick(world):
+		_update_wind_parameters()
 		return
 	_waves.advance(dt)
 	_update_wave_parameters()
+	_update_wind_parameters()
+
+
+## One visual state per terrain-clock sample. Weather/audio may keep ticking
+## under a paused Game parent: repeated samples at held terrain time must not
+## move vegetation. An owner change invalidates the initial detached-map frame.
+func wind_frame() -> Dictionary:
+	var world := game_world()
+	var owner: Node = world.get_parent() if world else null
+	if world == null and get_parent() is EIMapScene: owner = get_parent().get_parent()
+	var seconds := _waves.time_ticks()*WaveState.TICK
+	var sheltered := world != null and String(world.zone.get("sky","")).to_lower()=="cave"
+	var key := [seconds,world.get_instance_id() if world else 0,owner.get_instance_id() if owner else 0,
+		map_name,_waves.gradient,_waves.force,sheltered]
+	if key == _wind_key: return _wind_frame
+	var weather: Weather
+	var now := 0.0
+	if owner is Game and owner.world == world and not owner.simulation_only:
+		var sound: GameSound = owner.sound
+		if is_instance_valid(sound) and sound.weather and sound.weather.world == world:
+			weather = sound.weather; now = sound._ticks+sound._tick_acc/GameSound.TICK
+	elif owner is MenuScene:
+		weather = owner.sound.weather; now = owner.sound._ticks+owner.sound._tick_acc/GameSound.TICK
+	_wind_key = key
+	_wind_frame = WeatherWind.sample(seconds,WeatherWind.map_seed(map_name),
+		Vector2(_waves.gradient.x,-_waves.gradient.y),_waves.force,
+		WeatherWind.precipitation(weather,now,1),WeatherWind.precipitation(weather,now,2),sheltered)
+	return _wind_frame
+
+
+func _update_wind_parameters(refresh := false) -> void:
+	if not Gfx.on("gfx_wind") or not is_inside_tree() or not is_visible_in_tree(): return
+	var world := game_world()
+	if world and world.get_parent() is Game:
+		var game := world.get_parent() as Game
+		if game.world != world or game.simulation_only: return
+	# Like the light globals, foliage belongs to the current visible view.
+	# Hidden retained co-op worlds must never overwrite its wind.
+	if refresh: _wind_key.clear()
+	Gfx.set_wind_frame(wind_frame())
 
 func _update_wave_parameters() -> void:
 	if _water_mat == null:
