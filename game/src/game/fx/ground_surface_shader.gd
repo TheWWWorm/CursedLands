@@ -178,7 +178,7 @@ vec3 ground_sample(ivec2 cell, vec2 p, vec2 dx, vec2 dy, out vec4 traits) {
 
 ## Exact drawn-surface lookup, including authored xy offsets, folded cells
 ## and the installed (not merely requested) footprint tessellation.
-const QUERY_SHADER := """
+const TRIANGLE_QUERY := """
 uniform sampler2D query_vertices : filter_nearest, repeat_disable;
 uniform sampler2D query_tiles : filter_nearest, repeat_disable;
 uniform sampler2DArray query_tracks : filter_linear, repeat_disable;
@@ -257,6 +257,9 @@ float query_elevation(vec3 a, vec3 b, vec3 c, vec3 w, ivec2 cell) {
 	}
 	return height;
 }
+"""
+
+const QUERY_SHADER := TRIANGLE_QUERY + """
 bool query_surface(vec2 p, out float height, out vec2 grid, out ivec2 tile, out mat2 jacobian) {
 	height = -1e10; grid = vec2(0.0); tile = ivec2(0);
 	jacobian = mat2(1.0);

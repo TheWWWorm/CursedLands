@@ -705,6 +705,7 @@ var _surf := PackedFloat32Array()
 var _ripple := PackedFloat32Array()
 var _height_tex: ImageTexture
 var contact: GroundContact
+var _ground_surface: WeakRef
 var _cell_tex: ImageTexture
 var _tile_tex: ImageTexture
 var _water_tile_tex: ImageTexture
@@ -725,6 +726,16 @@ const WaterCaustics = preload("res://src/game/fx/water_caustics.gd")
 ## calm; neither touching a map edge nor having waves proves it is a sea.
 ## Profiles are local to the remake; the original material shader is intact.
 const SEA_MATERIALS := {"zone1": [2]}
+
+
+func ground_surface_data(triangle_only := false) -> GroundSurfaceData:
+	# Optional consumers share one immutable geometry snapshot. The terrain
+	# keeps only a weak reference, so disabling the last effect releases it.
+	var data := _ground_surface.get_ref() as GroundSurfaceData if _ground_surface else null
+	if data == null:
+		data = GroundSurfaceData.new(self,not triangle_only)
+		_ground_surface = weakref(data)
+	return data
 
 
 static func load_map(name: String) -> EITerrain:

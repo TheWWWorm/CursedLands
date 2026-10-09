@@ -16,6 +16,7 @@ var heights := PackedFloat32Array()
 var xy := PackedVector2Array()
 var tiles := PackedInt32Array()
 var ground := PackedByteArray()
+var loose_tiles := PackedByteArray()
 var water := PackedFloat32Array()
 var surface := PackedFloat32Array()
 var uv_table := {}
@@ -59,6 +60,10 @@ func configure(terrain: EITerrain, field: RefCounted, atlases: Dictionary, conte
 	# explicitly before workers publish; a flood may call fill() on the source.
 	heights = terrain.heights.duplicate(); xy = terrain.land_xy.duplicate(); tiles = terrain.land_tile.duplicate()
 	ground = terrain.ground.duplicate(); water = terrain.water.duplicate(); surface = terrain.surface.duplicate()
+	loose_tiles.resize(tiles.size())
+	for i in tiles.size():
+		var type_id := tiles[i]&0x3fff
+		loose_tiles[i] = int(type_id<terrain.tile_types.size() and terrain.tile_types[type_id] in SoftGroundDeform.TYPES)
 	for code: int in tiles:
 		if uv_table.has(code): continue
 		var uvs := PackedVector2Array()
@@ -178,6 +183,39 @@ func footprint(p: Vector2, hit: Dictionary, kind: int, radius: float) -> bool:
 	return true
 
 
+func surface_anchor(p: Vector2) -> Vector4:
+	# Most cover never touches loose terrain: retain the cheap original shader
+	# path there. Include neighbouring cells and their authored vertex offsets.
+	var cell := Vector2i(p.floor())
+	var near_soft := false
+	for y in range(maxi(0,(cell.y-3)/2),mini(size.y/2-1,(cell.y+3)/2)+1):
+		for x in range(maxi(0,(cell.x-3)/2),mini(size.x/2-1,(cell.x+3)/2)+1):
+			if loose_tiles[y*(size.x/2)+x]: near_soft = true; break
+		if near_soft: break
+	if not near_soft: return Vector4(-1,0,0,0)
+	var anchor := Vector4.INF
+	for dy in range(-1,2):
+		for dx in range(-1,2):
+			var q := cell+Vector2i(dx,dy)
+			if q.x<0 or q.y<0 or q.x>=size.x or q.y>=size.y: continue
+			var corners := [q,q+Vector2i(1,0),q+Vector2i(0,1),q+Vector2i.ONE]
+			var points: Array[Vector2] = []
+			for c: Vector2i in corners: points.append(Vector2(c)+xy[c.y*grid_w+c.x])
+			for side in 2:
+				var tri := [2,1,0] if side==0 else [1,2,3]
+				var a: Vector2 = points[tri[0]]; var b: Vector2 = points[tri[1]]; var c: Vector2 = points[tri[2]]
+				var determinant := (b-a).cross(c-a)
+				if absf(determinant)<1e-7: continue
+				var u := (p-a).cross(c-a)/determinant; var v := (b-a).cross(p-a)/determinant
+				if u< -1e-5 or v< -1e-5 or u+v>1.00001: continue
+				# Folded/overlapping triangles can exchange the topmost surface
+				# after a footprint. Omit these rare ambiguous roots instead of
+				# performing the scenery effect's nine-cell search per vertex.
+				if anchor.is_finite(): return Vector4.INF
+				anchor = Vector4(q.x*2+side,q.y,u,v)
+	return anchor
+
+
 func records(key: Vector2i, boxes: Array, trees: Array) -> Array[Dictionary]:
 	var result: Array[Dictionary] = []
 	var rng := RandomNumberGenerator.new(); rng.seed = hash("%s:cover:%d:%d" % [map_name,key.x,key.y])
@@ -198,10 +236,13 @@ func records(key: Vector2i, boxes: Array, trees: Array) -> Array[Dictionary]:
 			if blocked: continue
 			var flowers := patch(p)
 			var density := weights(hit,tree_influence(p,trees),flowers)
+			var anchor := Vector4(-2,0,0,0)
 			for kind in Kind.size():
 				if rolls[kind] >= density[kind]*SPACING*SPACING or not footprint(p,hit,kind,RADII[kind]*scale): continue
+				if anchor.x == -2: anchor = surface_anchor(p)
+				if not anchor.is_finite(): break
 				result.append({"kind":kind,"p":p,"height":float(hit.height),"normal":hit.normal,"colour":hit.colour,
-					"angle":angle,"scale":scale,"seed":seed,"snow":int(hit.type) in [9,12],"flower":flowers.y,"cold":biome=="ingos"})
+					"angle":angle,"scale":scale,"seed":seed,"snow":int(hit.type) in [9,12],"flower":flowers.y,"cold":biome=="ingos","anchor":anchor})
 	return result
 
 

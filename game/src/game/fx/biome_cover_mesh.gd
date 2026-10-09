@@ -1,7 +1,28 @@
 extends RefCounted
 ## Small opaque geometry, merged into one surface per streamed grass chunk.
 ## UV: root height / stable thinning seed. UV2: chunk-local root XZ.
+## CUSTOM0: supporting cell x*2+triangle, cell y, barycentric b/c weights.
 const Pressure = preload("res://src/game/fx/vegetation_interaction.gd")
+const FORMAT := Mesh.ARRAY_CUSTOM_RGBA_FLOAT << Mesh.ARRAY_FORMAT_CUSTOM0_SHIFT
+const SURFACE_UNIFORMS := """
+uniform sampler2D terrain_tiles : filter_nearest, repeat_disable;
+uniform sampler2D terrain_cells : filter_nearest, repeat_disable;
+"""
+const ATTACH := """
+	if (CUSTOM0.x >= 0.0 && fade > 0.0) {
+		int packed = int(CUSTOM0.x+0.5);
+		ivec2 cell = ivec2(packed/2,int(CUSTOM0.y+0.5));
+		bool upper = (packed%2) != 0;
+		vec3 a = query_vertex(cell+(upper ? ivec2(1,0) : ivec2(0,1)));
+		vec3 b = query_vertex(cell+(upper ? ivec2(0,1) : ivec2(1,0)));
+		vec3 c = query_vertex(cell+(upper ? ivec2(1) : ivec2(0)));
+		vec3 weights = vec3(1.0-CUSTOM0.z-CUSTOM0.w,CUSTOM0.zw);
+		// Lift/compact the whole plant after wind/pressure/fade. Its root
+		// follows the actual coarse or installed dense triangle, not a
+		// continuous field that the visible mesh has not yet adopted.
+		VERTEX.y += query_elevation(a,b,c,weights,cell)-(UV.x-0.008);
+	}
+"""
 const SHADER := """
 shader_type spatial;
 #define EI_TERRAIN_LIGHT
@@ -27,6 +48,7 @@ void vertex() {
 	VERTEX = root+(VERTEX-root)*fade;
 	VERTEX.xz += vec2(1.0,0.35)*sin(wind_phase+origin.x*0.8+origin.z*0.6+UV.y*4.0)*tip*tip*0.035*breeze*fade;
 	// PRESSURE
+	// SURFACE
 	cover_normal = normalize((VIEW_MATRIX*vec4(MODEL_NORMAL_MATRIX*NORMAL,0.0)).xyz);
 	NORMAL = normalize(mix(NORMAL,vec3(0.0,1.0,0.0),0.80*COLOR.a));
 	cover_colour = COLOR.rgb;
@@ -54,19 +76,24 @@ var normals := PackedVector3Array()
 var colours := PackedColorArray()
 var uvs := PackedVector2Array()
 var roots := PackedVector2Array()
+var anchors := PackedFloat32Array()
 var indices := PackedInt32Array()
 var root := Vector3.ZERO
 var transform := Transform3D.IDENTITY
 var seed := 0.0
 var mobile := 0.0
+var anchor := Vector4(-1,0,0,0)
 
 
-static func shader(interactive: bool, wind: bool) -> Shader:
-	var key := int(interactive)*2+int(wind)
+static func shader(interactive: bool, wind: bool, soft := false) -> Shader:
+	var key := int(soft)*4+int(interactive)*2+int(wind)
 	if not _shaders.has(key):
 		var code := SHADER
-		if interactive or wind: code = code.replace("sin(wind_phase+","sin(wind_phase+TIME*0.0+")
+		if interactive or wind or soft: code = code.replace("sin(wind_phase+","sin(wind_phase+TIME*0.0+")
 		if interactive: code = code.replace("void vertex() {",Pressure.UNIFORMS+"\nvoid vertex() {").replace("// PRESSURE",DEFORM)
+		if soft:
+			code = code.replace("void vertex() {",SURFACE_UNIFORMS+GroundSurfaceShader.SOFT_UNIFORMS+GroundSurfaceShader.SOFT_FUNCTIONS+GroundSurfaceShader.TRIANGLE_QUERY+"\nvoid vertex() {")
+			code = code.replace("// SURFACE",ATTACH)
 		_shaders[key] = Gfx.make_shader(code,true,true)
 	return _shaders[key]
 
@@ -78,6 +105,7 @@ func triangle(a: Vector3,b: Vector3,c: Vector3,colour: Color) -> void:
 		vertices.append(transform*p+root); normals.append(transform.basis*normal)
 		colours.append(Color(colour.r,colour.g,colour.b,mobile))
 		uvs.append(Vector2(root.y,seed)); roots.append(Vector2(root.x,root.z))
+		anchors.append_array([anchor.x,anchor.y,anchor.z,anchor.w])
 	indices.append_array([at,at+1,at+2])
 
 
@@ -107,6 +135,7 @@ func build(records: Array[Dictionary], key: Vector2i) -> Array:
 	for record: Dictionary in records:
 		var p: Vector2 = record.p-Vector2(key)*8.0
 		root = Vector3(p.x,float(record.height)+0.008,-p.y); seed = record.seed
+		anchor = record.get("anchor",Vector4(-1,0,0,0))
 		transform = Transform3D(Basis(Vector3.UP,record.angle).scaled(Vector3.ONE*float(record.scale)),Vector3.ZERO)
 		if int(record.kind) in [2,3,4,5]:
 			var n: Vector3 = record.normal
@@ -150,4 +179,5 @@ func build(records: Array[Dictionary], key: Vector2i) -> Array:
 	arrays[Mesh.ARRAY_VERTEX] = vertices; arrays[Mesh.ARRAY_NORMAL] = normals
 	arrays[Mesh.ARRAY_COLOR] = colours; arrays[Mesh.ARRAY_TEX_UV] = uvs
 	arrays[Mesh.ARRAY_TEX_UV2] = roots; arrays[Mesh.ARRAY_INDEX] = indices
+	arrays[Mesh.ARRAY_CUSTOM0] = anchors
 	return arrays

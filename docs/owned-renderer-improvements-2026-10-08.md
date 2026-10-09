@@ -2728,12 +2728,117 @@ timing, memory and upload costs remain unmeasured.
 
 **Remaining V2 work:** reeds/swamp banks, verified sea shores and underwater
 plants, snow/sand mounds, wider species/Dead City/cave profiles, weather wind
-fronts and actual submission-efficient distance LOD. Cover currently follows
-the original terrain snapshot, so soft-ground shader deformation and footprint
-attachment need a follow-up before broad sand/snow acceptance; these image
-fixtures intentionally disable that separate option. Wider travel/streaming
+fronts and actual submission-efficient distance LOD. The original cover-stage
+image fixtures intentionally disabled soft-ground deformation. The follow-up
+below adds root attachment; wider sand/snow gameplay acceptance remains open. Wider travel/streaming
 routes and actor sizes also remain. Keep defaults off. U45 remains the first
 gameplay investigation after the renderer work.
+
+## V2 follow-up: cover roots on deformed sand and snow — 9 October
+
+This follows `cbf09e6`. With **Biome ground cover** and **Soft ground** enabled,
+cover now follows the drawn loose layer, compressed footprints and their fade.
+Previously the new plants stayed at the original terrain height: snow could
+bury short straw, and compression could leave roots above the surface. The
+existing default-off cover option, desktop continuous sunlight and Android/web
+held-sun fallback are unchanged. No new option or engine/native patch is needed.
+
+### Reference and implementation map
+
+At R1 `0092dc6e1d7c4aab3f74644a79e9bfca11ecf293`,
+`Source/ground_cover_surface.h:4–19` shares drawn triangle heights between cover
+and object contact. Lines 28–43 also apply trails to snow-pile geometry;
+`Source/renderer_ground_cover.cpp:340–355` classifies snow and soft sand. The
+remake reuses its own existing deformation and exact surface-query contract.
+Snow-pile geometry and the reference's D3D compute path are not implemented here.
+
+- `game/src/game/fx/biome_cover.gd:186`: `surface_anchor` records the supporting
+  authored triangle, including XY offsets, its side and barycentric weights.
+  Its immutable loose-tile mask comes from actual tile types. This search runs
+  during chunk generation, not in every rendered vertex. Hard areas get an
+  inactive marker. Competing/folded triangles and exact shared-edge roots near
+  loose ground are omitted conservatively; deformation could otherwise change
+  which overlapping surface is highest. Ordinary sampled map counts are unchanged.
+- `biome_cover_mesh.gd:11/88`: four float32 `CUSTOM0` values carry each anchor.
+  The shader reads three original vertices and calls `query_elevation`, after
+  wind, pressure and distance fading. Whole plants/litter translate vertically
+  at their roots; their original orientation/normals remain. This does not make
+  every point of a wide leaf or stone conform to a narrow footprint.
+- `ground_surface_shader.gd:181/262`: exposes the existing triangle query as
+  `TRIANGLE_QUERY`; `QUERY_SHADER` still adds the full scenery search. The
+  actual installed tile table chooses original versus 16-way subdivided
+  triangles. Pending jobs therefore cannot move cover before terrain changes.
+  `SoftGroundField` supplies its existing texture array, layer table and clock;
+  cover adds no track image, per-frame geometry upload or GPU readback.
+- `game/src/ei/terrain.gd:731`, `ground_surface_data.gd:20/65`, and
+  `ground_contact.gd:97`: a weak per-terrain cache shares one geometry resource
+  among enabled consumers. Cover alone skips contact-light normals and upper
+  bounds. A later contact bind adds them while preserving the bound vertex RID.
+  Turning off the last consumer releases the resource. If contact has already
+  upgraded the snapshot, its normals remain until that shared resource releases.
+- `terrain_details.gd:250/523/598`: binds after the soft-ground owner exists,
+  installs the custom mesh format, expands the culling margin by 0.30 m, and
+  drops material/field references at stream/rebuild barriers. Maps containing
+  no loose tile allocate no cover geometry texture. Disabling soft ground
+  selects the original cover shader and releases the optional texture bindings.
+  Water changes reuse the existing placement rebuild. `TIME*0.0` preserves
+  local-shadow invalidation while visible motion uses the existing game clocks.
+
+### Validation and costs
+
+The reproducible fixture is `tools/tests/biome_cover_surface.gd`. It loads full
+authored zone11 and zone15 scenes, places actual generated cover, installs real
+footprints and compares GPU root heights with an independent oracle built from
+the **currently drawn mesh arrays**. Options include `--surface-zone=gz15h`,
+`--ei-script-grass --surface-script-mesh`, and `--surface-timing`.
+
+The final export is
+`/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-surface-final`.
+PCK SHA-256:
+`bdef5155bb519af2ccfbeaee3b095f0f3f7b9f238d1606c32e0413a7bdda7e00`.
+All 229 production script hashes match the final export manifest. The receipt
+records the earlier matrix pack and the single formatting-only source difference. The
+[surface evidence](validation/biome-cover-surface-2026-10-09.json) preserves
+commands, frozen tools, runtime/native hashes, images and failed controls.
+
+**59,387 assertions pass** across the seven-run matrix and a final 35-check
+ground-contact rerun after normalizing one indentation tab. Totals are 49,384
+new surface assertions, 6,278 existing cover checks, 70 ground-contact checks
+and 3,655 existing grass checks. These include repeated per-point/per-backend
+checks, not 59,387 unique unit tests. The GPU validates **45,044 positive root
+samples within 2 mm** of the drawn triangle plus the existing **8 mm root offset**;
+another 4,096 deliberately wrong heights all fail the diagnostic as expected.
+Compatibility, desktop Mobile and Forward+ pass; the Compatibility snow run
+also forces both script generators. Coverage includes pending/installed work,
+fading/expiry, sector borders and eviction, clear/reallocation with stable
+texture RID, shared-contact upgrade, real water-level rebinding, option
+round trips, combined wind/pressure/tracks and tree pause. Final restored and
+shadow-refresh images are exact. No tolerance was relaxed for startup differences.
+
+Development failures are retained in the receipt. One fixture incorrectly
+inherited `ALWAYS` into its world, a probe assumed render-target Y orientation,
+and an absent water material was initially used. The combined wind fixture
+also needed to restore its water clock before image comparisons. A first
+Mobile image had 265 differing background pixels compared with later restored
+images; added setup/settled controls pass, but its precise initial-state cause
+is not established. One Vulkan launch failed before the test started and the
+single retry passed. None is reported as a passing production test or a fixed
+engine defect.
+
+Cost: 16 additional bytes per cover vertex, plus one 16-byte-per-grid-vertex
+texture on maps with loose ground and a one-byte-per-tile placement mask. The
+sampled snow map uses 3,160,080 bytes for that texture; the sand map uses
+1,977,360. Contact can share it. Cover alone avoids the initial design's second
+normal texture and bound preparation. Final complete cover preparation took
+about 51–102 ms in these desktop fixtures; this includes other snapshot work,
+not just attachment. Local shadows remain animated when deformation is enabled,
+even with no current tracks. Single-order desktop viewport timings are noisy
+and establish no speedup or Android/browser performance result. Defaults stay off.
+
+Next V2 work is shore/swamp/underwater cover, snow/sand mounds, richer authored
+regional profiles, shared weather wind and actual submission-efficient LOD.
+Wider camera/travel routes, rigid litter edges, device costs and artistic
+acceptance remain open. U45 still starts the subsequent gameplay track.
 
 ## Next work in the established order
 
@@ -2790,6 +2895,6 @@ gameplay investigation after the renderer work.
    enabling defaults. V4 now has optional contacts/wakes and terrain caustics;
    wave fields, currents and waterfalls remain separate work. Both options stay
    off pending broader quality/device acceptance. V2 now has the optional
-   grass-interaction and dry-land cover stages above. Continue with soft-ground
-   attachment and the remaining shore/swamp/underwater/biome rules in the initial
+   grass-interaction, dry-land cover and soft-ground root attachment stages above.
+   Continue with the remaining shore/swamp/underwater/biome rules in the initial
    visual sequence. No visual effect was silently enabled.

@@ -75,6 +75,7 @@ var _grass := false
 var _cover := false
 var _cover_field: BiomeCover
 var _cover_material: ShaderMaterial
+var _cover_surface: GroundSurfaceData
 var _trees := {} # chunk -> immutable nearby authored tree records
 var _chunks := {} # Vector2i -> MultiMeshInstance3D
 var _queue: Array[Vector2i] = []
@@ -133,8 +134,6 @@ func apply_options() -> void:
 		interaction = VegetationInteraction.new() if interactive else null
 	if not _grass and not _cover:
 		_clear_grass()
-	if _material:
-		_apply_grass_material()
 	if Gfx.on("gfx_soft_ground"):
 		if not is_instance_valid(soft_ground):
 			soft_ground = SoftGroundDeform.new()
@@ -146,6 +145,10 @@ func apply_options() -> void:
 		soft_ground.clear()
 		soft_ground.queue_free()
 		soft_ground = null
+	# Bind after the track owner exists (or has been retired). All installed
+	# cover chunks share the material and pick up option changes together.
+	if _material:
+		_apply_grass_material()
 
 
 func add_step(x: float, y: float, a: float, b: float, angle: float, owner := 0, centre := Vector2.INF) -> void:
@@ -227,6 +230,8 @@ func _clear_grass() -> void:
 	_wanted_chunks.clear()
 	_grass_field = null
 	_cover_field = null
+	_cover_material = null
+	_cover_surface = null
 	_trees.clear()
 	for n: MultiMeshInstance3D in _chunks.values():
 		if is_instance_valid(n):
@@ -257,7 +262,15 @@ func _apply_grass_material() -> void:
 	if interaction: _material.set_shader_parameter("vegetation_focus",interaction.focus)
 	_material.set_shader_parameter("wind_phase",fposmod(terrain._waves.time_ticks()*EIWaterWaves.TICK*1.6,TAU))
 	if _cover_material:
-		_cover_material.shader = BiomeCover.Geometry.shader(interaction != null,Gfx.on("gfx_wind"))
+		var soft := Gfx.on("gfx_soft_ground") and is_instance_valid(soft_ground) and _cover_field != null and _cover_field.loose_tiles.has(1)
+		_cover_material.shader = BiomeCover.Geometry.shader(interaction != null,Gfx.on("gfx_wind"),soft)
+		if soft:
+			_cover_surface = terrain.ground_surface_data(true)
+			_cover_surface.bind(_cover_material,true)
+		else:
+			for parameter in [&"query_vertices",&"query_normals",&"query_tiles",&"query_tracks",&"query_clock"]:
+				_cover_material.set_shader_parameter(parameter,null)
+			_cover_surface = null
 		_cover_material.set_shader_parameter("breeze",float(Gfx.on("gfx_wind")))
 		_cover_material.set_shader_parameter("wind_phase",_material.get_shader_parameter("wind_phase"))
 		_cover_material.set_shader_parameter("vegetation_pressure",interaction.texture if interaction else null)
@@ -531,6 +544,9 @@ func prepare_grass() -> void:
 	if _cover and not _cover_field:
 		_cover_field = BiomeCover.new()
 		_cover_field.configure(terrain,_grass_field,images,BiomeCover.region(terrain))
+		# Only maps containing an actual loose tile need the optional geometry
+		# texture or animated deformation shader. Hard cave cover stays cheap.
+		_apply_grass_material()
 
 
 func _grass_job(key: Vector2i) -> RefCounted:
@@ -608,12 +624,14 @@ func _install_chunk(key: Vector2i, data: Dictionary) -> void:
 	add_child(node)
 	if data.has("cover") and not data.cover.records.is_empty():
 		var mesh := ArrayMesh.new()
-		mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,data.cover.arrays)
+		mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,data.cover.arrays,[],{},BiomeCover.Geometry.FORMAT)
 		var cover := MeshInstance3D.new(); cover.name = "BiomeCover"
 		cover.mesh = mesh; cover.material_override = _cover_material
 		cover.position = Vector3(key.x*CHUNK,0,-key.y*CHUNK)
 		cover.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_DOUBLE_SIDED
-		cover.extra_cull_margin = node.extra_cull_margin; cover.layers = 1
+		# Include the largest loose-layer/bank motion even if soft ground is
+		# enabled after this chunk was installed.
+		cover.extra_cull_margin = node.extra_cull_margin+SoftGroundDeform.DEPTH; cover.layers = 1
 		node.add_child(cover)
 	_chunks[key] = node
 

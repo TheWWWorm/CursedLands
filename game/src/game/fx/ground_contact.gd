@@ -94,7 +94,7 @@ func refresh_parameters() -> void:
 
 func _variant(base: ShaderMaterial, extent: Vector3) -> ShaderMaterial:
 	if surface == null:
-		surface = GroundSurfaceData.new(terrain)
+		surface = terrain.ground_surface_data()
 	var variants: Dictionary = _variants.get(base, {})
 	if variants.has(extent):
 		return variants[extent]
