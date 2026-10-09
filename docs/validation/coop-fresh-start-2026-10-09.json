@@ -1,0 +1,799 @@
+{
+  "date": "2026-10-09",
+  "scope": "Restore normal base New-hero late joining at the untouched opening after 80c96d4 added strict campaign checkpoint compatibility. Keep existing saved-origin and divergent-campaign protections.",
+  "result": {
+    "checks": 239,
+    "runs": 8,
+    "failures": 0,
+    "errors": 0,
+    "warnings": 0,
+    "rendered_captures": 0
+  },
+  "reproduction": {
+    "same_final_fixture": {
+      "label": "fresh-before-80-base",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/fresh-before-80-base.json",
+      "log_sha256": "3efe96226eb6884973296cd42d3d5a5676462be29f71a5a70188bc5dcf7fc3c6",
+      "checks": 15,
+      "failures": 3,
+      "exit_code": 1,
+      "errors": [],
+      "warnings": [],
+      "phase_receipt": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/fresh-before-80-base/godot/app_userdata/Cursed Lands/fresh-start-review.json",
+        "sha256": "e2327063c42dddb5bded0146ea416d9af7bbfad49219fc33353957a4f8a08c13"
+      },
+      "phases": [
+        {
+          "label": "host-startup-before-hello",
+          "zone": "gz1g",
+          "host_party": "",
+          "guest_party": "<none>",
+          "clean": false,
+          "present": false,
+          "in_sync": false,
+          "differences": {
+            "AnimPray": {
+              "guest": 0.0,
+              "host": 1.0
+            },
+            "Said1": {
+              "guest": 0.0,
+              "host": 1.0
+            },
+            "ZT1": {
+              "guest": 0.0,
+              "host": 1.0
+            },
+            "b.bz2g.z0": {
+              "guest": 0.0,
+              "host": 1.0
+            },
+            "z.gz1g_gz2g": {
+              "guest": 0.0,
+              "host": 1.0
+            },
+            "z.gz2g_gz3g": {
+              "guest": 0.0,
+              "host": 1.0
+            }
+          }
+        },
+        {
+          "label": "opening-after-hello",
+          "zone": "gz1g",
+          "host_party": "",
+          "guest_party": "",
+          "clean": false,
+          "present": false,
+          "in_sync": true,
+          "differences": {
+            "AnimPray": {
+              "guest": 0.0,
+              "host": 1.0
+            },
+            "Said1": {
+              "guest": 0.0,
+              "host": 1.0
+            },
+            "ZT1": {
+              "guest": 0.0,
+              "host": 1.0
+            },
+            "b.bz2g.z0": {
+              "guest": 0.0,
+              "host": 1.0
+            },
+            "z.gz1g_gz2g": {
+              "guest": 0.0,
+              "host": 1.0
+            },
+            "z.gz2g_gz3g": {
+              "guest": 0.0,
+              "host": 1.0
+            }
+          }
+        },
+        {
+          "label": "village-before-startup",
+          "zone": "bz1g",
+          "host_party": "",
+          "guest_party": "",
+          "clean": false,
+          "present": true,
+          "in_sync": true,
+          "differences": {
+            "AnimPray": {
+              "guest": 0.0,
+              "host": 1.0
+            },
+            "Said1": {
+              "guest": 0.0,
+              "host": 1.0
+            },
+            "ZT1": {
+              "guest": 0.0,
+              "host": 1.0
+            },
+            "b.bz2g.z0": {
+              "guest": 0.0,
+              "host": 1.0
+            },
+            "z.gz1g_gz2g": {
+              "guest": 0.0,
+              "host": 1.0
+            },
+            "z.gz2g_gz3g": {
+              "guest": 0.0,
+              "host": 1.0
+            }
+          }
+        },
+        {
+          "label": "village-after-startup",
+          "zone": "bz1g",
+          "host_party": "",
+          "guest_party": "",
+          "clean": false,
+          "present": true,
+          "in_sync": true,
+          "differences": {
+            "AnimPray": {
+              "guest": 0.0,
+              "host": 1.0
+            },
+            "Said1": {
+              "guest": 0.0,
+              "host": 1.0
+            },
+            "ZT1": {
+              "guest": 0.0,
+              "host": 1.0
+            },
+            "b.bz2g.z0": {
+              "guest": 0.0,
+              "host": 1.0
+            },
+            "z.gz1g_gz2g": {
+              "guest": 0.0,
+              "host": 1.0
+            },
+            "z.gz2g_gz3g": {
+              "guest": 0.0,
+              "host": 1.0
+            }
+          }
+        },
+        {
+          "label": "received-save",
+          "zone": "gz1g",
+          "party": ""
+        }
+      ],
+      "failed_assertions": [
+        "New hero has the exact opening old-value baseline for later credits",
+        "starting-together guest can resume at the first shared village",
+        "fresh shared progression remains eligible after ordinary departure"
+      ]
+    },
+    "finding": "On normal New Campaign, original base gz1g initializes six story variables before a friend finishes joining. A menu NEW origin has none. 80c96d4 therefore keeps the first village in_sync but not clean, and its actual returned personal save stays in gz1g. Same final 15 checks have 3 failures before and 0 after. Prior 82b749f 13-check control returned the village despite missing those six flags. LiA has no such opening variables and already passed both late and lobby timing."
+  },
+  "authored_evidence": {
+    "base": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/fresh-start-candidate-base04/godot/app_userdata/Cursed Lands/opening-script.txt",
+      "sha256": "2012ec23ba73153b02b1272fd118dcce7789219c58ec16b7afbed1ad098856b2",
+      "mob": "gz1g via original campaign map metadata",
+      "startup_values": {
+        "Said1": 1,
+        "ZT1": 1,
+        "b.bz2g.z0": 1,
+        "z.gz1g_gz2g": 1,
+        "z.gz2g_gz3g": 1,
+        "AnimPray": 1
+      },
+      "source_locations": [
+        {
+          "lines": [
+            1034,
+            1040
+          ],
+          "script": "VTriger#0#183",
+          "meaning": "delayed opening voice acknowledgement"
+        },
+        {
+          "lines": [
+            1177,
+            1181
+          ],
+          "script": "VTriger#0#199",
+          "meaning": "first tutorial prompt"
+        },
+        {
+          "lines": [
+            1219,
+            1224
+          ],
+          "script": "VTriger#0#205",
+          "meaning": "delayed initial briefing and locked route flags"
+        },
+        {
+          "lines": [
+            2062,
+            2066
+          ],
+          "script": "VTriger#0#317",
+          "meaning": "initial NPC prayer animation"
+        },
+        {
+          "lines": [
+            2094,
+            2170
+          ],
+          "script": "WorldScript",
+          "meaning": "startup roots for these threads"
+        }
+      ]
+    },
+    "lia": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/fresh-start-candidate-lia03/godot/app_userdata/Cursed Lands/opening-script.txt",
+      "sha256": "1f01946fa4342c46730f85d698d051373797da4c7d0df86b539859a461c6edfc",
+      "finding": "Opening WorldScript starts tutorial threads; no GS state changes before movement/dialogue triggers. First authored LeaveToZone is bz1r; no physical map exit leads there."
+    }
+  },
+  "policy": [
+    "Normal client bring RPC carries an explicit new_origin bit from the menu NEW selection. The server validates the entire transmitted origin against the current campaign fresh_state, including hero/kit, private party data, empty progress/sequence, purse and initial zone/visit. Only display names are normalized for localization.",
+    "Admission applies only to a new participant at gz1g with the initial unnamed party, single authored Human Hero, no other visited or saved zones, no waiting parties/bags, companions/pets, quest journal, quest items or side quests, and no host-load operation in progress.",
+    "Every nonexcluded host variable must be one of the six evidenced base startup keys at exactly 1. LiA permits no nonexcluded startup variables. Unknown flags, later values and any advanced/completed quest prevent special admission. This is not a general exclusion of nonquest flags.",
+    "Credit the accepted opening vars so subsequent old-value updates align. Normal send_all/package captures the current zone and VM. Preserve the new source hero and purse; never copy the host personal character or inventory.",
+    "The existing-reserved-character branch runs before new-origin admission. NEW without acknowledgement cannot replace that participant. Saved origins, missing markers, forged progressed sources and unrelated campaigns retain strict compatibility rules."
+  ],
+  "fixture_method": [
+    "Actual menu keyboard NEW selection and reliable bring/hello/package traffic over local ENet with independent SceneMultiplayer frontends. Host calls normal new_campaign(false), skipping only intro movie playback.",
+    "Original opening VM receives 100 native 0.055-second steps. Tests do not seed or copy story flags. In-process fixtures explicitly route the static CampaignState.watch callback to the host, matching separate real processes.",
+    "Base uses the opening map's authored bz1g exit record and ordinary Session.leave_zone. LiA dispatches the exact original bz1r LeaveToZone call from parsed script; tutorial movement/combat conditions are not played through. Both peers load the actual first village, then a normal host save emits the returned personal checkpoint.",
+    "Four final network cases cover NEW after host initialization and NEW in lobby before Start, in base and LiA. Source hero stats/kit and purse remain their own.",
+    "Focused forged-source tests call the tree-bound actual RPC receiver with local sender 0 after validating raw payloads, not a network impersonation test. They cover absent/false/numeric opt-in, changed hero/health/kit/purse/context, story/quests/visits/sequence, wrong campaign and extra state; host-bound checks cover history/body/chapter/items/unknown vars/later values/load. Real positive cases separately exercise the wire path.",
+    "Existing divergent-source arrival/re-entry/load guards are rerun unchanged for both campaigns."
+  ],
+  "accepted_runs": [
+    {
+      "label": "fresh-accepted-guards-base",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/fresh-accepted-guards-base.json",
+      "log_sha256": "978505e6f74f8864a77b8a3d69676c0901286b5ea95582a9a55649457a2149da",
+      "checks": 72,
+      "failures": 0,
+      "exit_code": 0,
+      "errors": [],
+      "warnings": [],
+      "failed_assertions": []
+    },
+    {
+      "label": "fresh-accepted-guards-astral",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/fresh-accepted-guards-astral.json",
+      "log_sha256": "f7e145d0696bd269f0c054b1810b23a6e2e6452de26e4837518e20a9be1220b2",
+      "checks": 71,
+      "failures": 0,
+      "exit_code": 0,
+      "errors": [],
+      "warnings": [],
+      "failed_assertions": []
+    },
+    {
+      "label": "fresh-final-divergence-base",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/fresh-final-divergence-base.json",
+      "log_sha256": "0331bd3b3bfdefd15e7f37e7642b84d2058121e30f03b7af1e2836465f2d3b03",
+      "checks": 18,
+      "failures": 0,
+      "exit_code": 0,
+      "errors": [],
+      "warnings": [],
+      "failed_assertions": []
+    },
+    {
+      "label": "fresh-final-divergence-astral",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/fresh-final-divergence-astral.json",
+      "log_sha256": "85651ca0d822a6ddbf0696b4c0c539ae9f486fbd0720fc7f499bc55ce5c921fc",
+      "checks": 18,
+      "failures": 0,
+      "exit_code": 0,
+      "errors": [],
+      "warnings": [],
+      "failed_assertions": []
+    },
+    {
+      "label": "fresh-accepted-late-base",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/fresh-accepted-late-base.json",
+      "log_sha256": "2e4c987f1eadfe4c4f904714ff253eaf88281a3d77aaa34cd3d986e3cb26bfea",
+      "checks": 15,
+      "failures": 0,
+      "exit_code": 0,
+      "errors": [],
+      "warnings": [],
+      "phase_receipt": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/fresh-accepted-late-base/godot/app_userdata/Cursed Lands/fresh-start-review.json",
+        "sha256": "fc36da82d7d9019ebe9c5b6750fe137990d63c535c75b29f8bac57368fd66e73"
+      },
+      "phases": [
+        {
+          "label": "host-startup-before-hello",
+          "zone": "gz1g",
+          "host_party": "",
+          "guest_party": "<none>",
+          "clean": false,
+          "present": false,
+          "in_sync": false,
+          "differences": {
+            "AnimPray": {
+              "guest": 0.0,
+              "host": 1.0
+            },
+            "Said1": {
+              "guest": 0.0,
+              "host": 1.0
+            },
+            "ZT1": {
+              "guest": 0.0,
+              "host": 1.0
+            },
+            "b.bz2g.z0": {
+              "guest": 0.0,
+              "host": 1.0
+            },
+            "z.gz1g_gz2g": {
+              "guest": 0.0,
+              "host": 1.0
+            },
+            "z.gz2g_gz3g": {
+              "guest": 0.0,
+              "host": 1.0
+            }
+          }
+        },
+        {
+          "label": "opening-after-hello",
+          "zone": "gz1g",
+          "host_party": "",
+          "guest_party": "",
+          "clean": true,
+          "present": true,
+          "in_sync": true,
+          "differences": {}
+        },
+        {
+          "label": "village-before-startup",
+          "zone": "bz1g",
+          "host_party": "",
+          "guest_party": "",
+          "clean": true,
+          "present": true,
+          "in_sync": true,
+          "differences": {}
+        },
+        {
+          "label": "village-after-startup",
+          "zone": "bz1g",
+          "host_party": "",
+          "guest_party": "",
+          "clean": true,
+          "present": true,
+          "in_sync": true,
+          "differences": {}
+        },
+        {
+          "label": "received-save",
+          "zone": "bz1g",
+          "party": ""
+        }
+      ],
+      "failed_assertions": []
+    },
+    {
+      "label": "fresh-accepted-late-astral",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/fresh-accepted-late-astral.json",
+      "log_sha256": "0b8c353a3040bff841495ac3840c4046b1c43fc060cfdc4c3b05d992ff0b1bdd",
+      "checks": 15,
+      "failures": 0,
+      "exit_code": 0,
+      "errors": [],
+      "warnings": [],
+      "phase_receipt": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/fresh-accepted-late-astral/godot/app_userdata/Cursed Lands/fresh-start-review.json",
+        "sha256": "00f3061399b375e3c1a03a9dd69222a1ed7e8fab42ff3d7329ba207092c2b5b0"
+      },
+      "phases": [
+        {
+          "label": "host-startup-before-hello",
+          "zone": "gz1g",
+          "host_party": "",
+          "guest_party": "<none>",
+          "clean": false,
+          "present": false,
+          "in_sync": false,
+          "differences": {}
+        },
+        {
+          "label": "opening-after-hello",
+          "zone": "gz1g",
+          "host_party": "",
+          "guest_party": "",
+          "clean": true,
+          "present": true,
+          "in_sync": true,
+          "differences": {}
+        },
+        {
+          "label": "village-before-startup",
+          "zone": "bz1r",
+          "host_party": "",
+          "guest_party": "",
+          "clean": true,
+          "present": true,
+          "in_sync": true,
+          "differences": {}
+        },
+        {
+          "label": "village-after-startup",
+          "zone": "bz1r",
+          "host_party": "",
+          "guest_party": "",
+          "clean": true,
+          "present": true,
+          "in_sync": true,
+          "differences": {}
+        },
+        {
+          "label": "received-save",
+          "zone": "bz1r",
+          "party": ""
+        }
+      ],
+      "failed_assertions": []
+    },
+    {
+      "label": "fresh-accepted-lobby-base",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/fresh-accepted-lobby-base.json",
+      "log_sha256": "8d50fefef1ab2413d819b89d2c8d803a90fff7d0b3cf1cad9a6e4f0bd7e26a82",
+      "checks": 15,
+      "failures": 0,
+      "exit_code": 0,
+      "errors": [],
+      "warnings": [],
+      "phase_receipt": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/fresh-accepted-lobby-base/godot/app_userdata/Cursed Lands/fresh-start-review.json",
+        "sha256": "440f7d1538d0e9ce31db97e1eaa5c828cf53ae706215ac0f3a2ed4177b0bdb29"
+      },
+      "phases": [
+        {
+          "label": "opening-after-hello",
+          "zone": "gz1g",
+          "host_party": "",
+          "guest_party": "",
+          "clean": true,
+          "present": true,
+          "in_sync": true,
+          "differences": {}
+        },
+        {
+          "label": "village-before-startup",
+          "zone": "bz1g",
+          "host_party": "",
+          "guest_party": "",
+          "clean": true,
+          "present": true,
+          "in_sync": true,
+          "differences": {}
+        },
+        {
+          "label": "village-after-startup",
+          "zone": "bz1g",
+          "host_party": "",
+          "guest_party": "",
+          "clean": true,
+          "present": true,
+          "in_sync": true,
+          "differences": {}
+        },
+        {
+          "label": "received-save",
+          "zone": "bz1g",
+          "party": ""
+        }
+      ],
+      "failed_assertions": []
+    },
+    {
+      "label": "fresh-accepted-lobby-astral",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/fresh-accepted-lobby-astral.json",
+      "log_sha256": "0baec90980e7e98e2f40cdcfbbf7b846841dfeb06da2b728fde870430f4bae2c",
+      "checks": 15,
+      "failures": 0,
+      "exit_code": 0,
+      "errors": [],
+      "warnings": [],
+      "phase_receipt": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/fresh-accepted-lobby-astral/godot/app_userdata/Cursed Lands/fresh-start-review.json",
+        "sha256": "69c346bfd29e1c5a4732a7d9af8f2d665b63be60aab1482386933ccf14dbe2b7"
+      },
+      "phases": [
+        {
+          "label": "opening-after-hello",
+          "zone": "gz1g",
+          "host_party": "",
+          "guest_party": "",
+          "clean": true,
+          "present": true,
+          "in_sync": true,
+          "differences": {}
+        },
+        {
+          "label": "village-before-startup",
+          "zone": "bz1r",
+          "host_party": "",
+          "guest_party": "",
+          "clean": true,
+          "present": true,
+          "in_sync": true,
+          "differences": {}
+        },
+        {
+          "label": "village-after-startup",
+          "zone": "bz1r",
+          "host_party": "",
+          "guest_party": "",
+          "clean": true,
+          "present": true,
+          "in_sync": true,
+          "differences": {}
+        },
+        {
+          "label": "received-save",
+          "zone": "bz1r",
+          "party": ""
+        }
+      ],
+      "failed_assertions": []
+    }
+  ],
+  "earlier_runs": [
+    {
+      "label": "fresh-start-after-lia01",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/fresh-start-after-lia01.json",
+      "log_sha256": "3b9b4e12e9956d5cdc84f4173ab489bb34b0c403c94eaf615d36864c35a74632",
+      "checks": 7,
+      "failures": 2,
+      "exit_code": 1,
+      "errors": [],
+      "warnings": [],
+      "failed_assertions": [
+        "keyboard menu selects Fresh Start and the requested brought character",
+        "opening data defines an ordinary village departure"
+      ],
+      "disposition": "Rejected setup: a name containing spaces did not match the menu-filtered lobby name, and the fixture assumed a physical exit. LiA uses a scripted departure."
+    },
+    {
+      "label": "fresh-start-after-lia02",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/fresh-start-after-lia02.json",
+      "log_sha256": "bf74469e6661a1764e638750cad757c3c376c34e522cb1dd5840ae88663b7ac1",
+      "checks": 7,
+      "failures": 1,
+      "exit_code": 1,
+      "errors": [],
+      "warnings": [],
+      "failed_assertions": [
+        "opening data defines an ordinary village departure"
+      ],
+      "disposition": "Correctly showed the late LiA NEW origin already matches empty opening vars, but still assumed a physical exit. Not acceptance."
+    },
+    {
+      "label": "fresh-start-candidate-lia03",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/fresh-start-candidate-lia03.json",
+      "log_sha256": "573129f6254dfce7c75830c1c3913f17d9c16f539507421bfe6f54748ccc7adc",
+      "checks": 13,
+      "failures": 0,
+      "exit_code": 0,
+      "errors": [],
+      "warnings": [],
+      "failed_assertions": [],
+      "disposition": "Initial LiA late-NEW control passed 13; original scripted bz1r departure selected. Superseded by final 15 checks."
+    },
+    {
+      "label": "fresh-start-baseline-lia03",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/fresh-start-baseline-lia03.json",
+      "log_sha256": "0b9f99598826e26a4437a37bf17a08f586fadfbf40a478e43ad3e7a676065e32",
+      "checks": 13,
+      "failures": 0,
+      "exit_code": 0,
+      "errors": [],
+      "warnings": [],
+      "failed_assertions": [],
+      "disposition": "Prior82b749f LiA late-NEW comparison passed 13; no startup GS mismatch in this opening map."
+    },
+    {
+      "label": "fresh-start-lobby-lia03",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/fresh-start-lobby-lia03.json",
+      "log_sha256": "a94af21c22137f14fbfb620ce80ceef52a057010ee8393fe382717bca2eb715f",
+      "checks": null,
+      "failures": null,
+      "exit_code": -15,
+      "errors": [],
+      "warnings": [],
+      "failed_assertions": [],
+      "disposition": "Rejected fixture: captured frontend.session while still in lobby instead of MainMenu._session. Terminated exact disposable process. No production issue."
+    },
+    {
+      "label": "fresh-start-candidate-base03",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/fresh-start-candidate-base03.json",
+      "log_sha256": "4d387363e52832fc20a226a6ac333668dd03d776e3cea806ddc776d0ae3d9e6d",
+      "checks": null,
+      "failures": null,
+      "exit_code": -15,
+      "errors": [
+        "ERROR: Couldn't create an ENet host."
+      ],
+      "warnings": [],
+      "failed_assertions": [
+        "open actual ENet authority"
+      ],
+      "disposition": "Rejected scheduling/setup error: started before the preceding lobby probe exited, reusing its ENet port; host bind failed and a wrong-campaign peer was refused. Exact disposable process terminated; all accepted network runs were serial."
+    },
+    {
+      "label": "fresh-start-candidate-base04",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/fresh-start-candidate-base04.json",
+      "log_sha256": "ab1e0e73c164bb54b5f637cd1979506245cd3480510d50f3e9548fd30f567ec4",
+      "checks": 13,
+      "failures": 2,
+      "exit_code": 1,
+      "errors": [],
+      "warnings": [],
+      "failed_assertions": [
+        "starting-together guest can resume at the first shared village",
+        "fresh shared progression remains eligible after ordinary departure"
+      ],
+      "disposition": "Clean actual base regression on 80c96d4 behavior: 13 checks, 2 failures, first-village eligibility/save location. Six original startup vars are missing in the new guest."
+    },
+    {
+      "label": "fresh-start-baseline-base04",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/fresh-start-baseline-base04.json",
+      "log_sha256": "23bb0c841a1052045ea13e0c3bc11a78b88039c1403be40744aa6f97bd129444",
+      "checks": 13,
+      "failures": 0,
+      "exit_code": 0,
+      "errors": [],
+      "warnings": [],
+      "failed_assertions": [],
+      "disposition": "Clean prior82b749f control passed 13 but still lacked the six startup variables; it allowed the village snapshot despite the mismatch. The new fix also credits those values for future old-value transitions."
+    },
+    {
+      "label": "fresh-start-lobby-lia04",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/fresh-start-lobby-lia04.json",
+      "log_sha256": "5ddbe325dee9b55557432ca14470eb3b901c339cf7c7db2453847873255d21b2",
+      "checks": 13,
+      "failures": 0,
+      "exit_code": 0,
+      "errors": [],
+      "warnings": [],
+      "failed_assertions": [],
+      "disposition": "Corrected pre-Start LiA lobby control passed 13 on 80c96d4 behavior, before the fix."
+    },
+    {
+      "label": "fresh-start-lobby-base04",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/fresh-start-lobby-base04.json",
+      "log_sha256": "173ecc76c8a9c30396aebe06652668e103fa5170560be3cda8aaf8e75e3e6769",
+      "checks": 13,
+      "failures": 0,
+      "exit_code": 0,
+      "errors": [],
+      "warnings": [],
+      "failed_assertions": [],
+      "disposition": "Corrected pre-Start base lobby control passed 13 on 80c96d4 behavior; all six startup values were credited live because the guest was present before ScriptVM startup."
+    },
+    {
+      "label": "fresh-final-guards-base",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/fresh-final-guards-base.json",
+      "log_sha256": "7ff7aaff74c4e19b98b2d4c8ed69adcf5fa792e5c46cc246842ad250457bd2f3",
+      "checks": 70,
+      "failures": 0,
+      "exit_code": 0,
+      "errors": [],
+      "warnings": [],
+      "failed_assertions": [],
+      "disposition": "First receiver/host-bound fixture passed 70, before adding reserved-character negative controls; excluded duplicate."
+    },
+    {
+      "label": "fresh-final-guards-astral",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/fresh-final-guards-astral.json",
+      "log_sha256": "872c61b4c3131e125b0e51f5685427bbee65dc5c64e13d5b889c383435ed9901",
+      "checks": 69,
+      "failures": 0,
+      "exit_code": 0,
+      "errors": [],
+      "warnings": [],
+      "failed_assertions": [],
+      "disposition": "First receiver/host-bound fixture passed 69, before adding reserved-character negative controls; excluded duplicate."
+    },
+    {
+      "label": "fresh-final-late-base",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/fresh-final-late-base.json",
+      "log_sha256": "4cf58177424e75414751d9f837d85c1dfe04bf5c5fad7ac72c72d2ea9dbbf0aa",
+      "checks": 15,
+      "failures": 1,
+      "exit_code": 1,
+      "errors": [],
+      "warnings": [],
+      "failed_assertions": [
+        "opening admission retains the new guest's own hero and purse"
+      ],
+      "disposition": "Production fix succeeded; one fixture comparison falsely compared raw NPC skill ints with the normally sanitized floats. Corrected expected origin through the existing sanitizer, without changing production or relaxing values."
+    },
+    {
+      "label": "fresh-inspect-personal01",
+      "run_record": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/fresh-inspect-personal01.json",
+      "log_sha256": "ed27be2002b718120e30715536dbf6fc2b09e788f6f119f7135775466ed1c14a",
+      "checks": null,
+      "failures": null,
+      "exit_code": 0,
+      "errors": [],
+      "warnings": [],
+      "failed_assertions": [],
+      "disposition": "Read-only actual received host-save inspection confirmed identical personal skill values, kit and purse; only raw-versus-sanitized numeric representation differed."
+    }
+  ],
+  "export": {
+    "manifest": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/fresh-candidate01/export.json",
+    "data": {
+      "base": "candidate05",
+      "overlays": {
+        "game/src/game/coop_progress.gd": "cea1d9c7f804044f521d1825ed0db027753d145568c07cdefb48e7d05fdce239",
+        "game/src/game/script/coop_vm_state.gd": "9486b5a68558b91c9dce2620f6128c326276840064f1ec0dcfca11fbbee81c61"
+      },
+      "steps": [
+        {
+          "command": [
+            "/home/llm2x/.local/bin/godot-4",
+            "--headless",
+            "--path",
+            "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/fresh-candidate01/stage",
+            "--editor",
+            "--import"
+          ],
+          "return_code": 0,
+          "seconds": 5.169467435014667,
+          "errors": []
+        },
+        {
+          "command": [
+            "/home/llm2x/.local/bin/godot-4",
+            "--headless",
+            "--path",
+            "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/fresh-candidate01/stage",
+            "--export-pack",
+            "Linux",
+            "/home/llm2x/Documents/EI/local/scratchpad/gameplay-solo-return-20261009/fresh-candidate01/CPU.pck"
+          ],
+          "return_code": 0,
+          "seconds": 5.186951392999617,
+          "errors": []
+        }
+      ],
+      "sha256": {
+        "CPU.x86_64": "769dd027c0b444caca0d5fbbb6014eda80970e991e9f32fdb1f86ec385d20c3e",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e",
+        "CPU.pck": "db7ff6c456499a9d7db84153b04f227552123c15ef506676b5fb5b618abcbb3d",
+        "import.log": "12f8aedaa709eacfbbf0a435a476ef342c50e39fbdb24ebdaff122b139e7f248",
+        "export.log": "9a6a7a6e7a567eab32ead560d0b864c71c940784dfeb8825d342b34b61dff9d6"
+      }
+    }
+  },
+  "source_sha256": {
+    "game/src/game/coop_progress.gd": "cea1d9c7f804044f521d1825ed0db027753d145568c07cdefb48e7d05fdce239",
+    "tools/tests/coop_fresh_start.gd": "2f3adc178e2a271cf830a98a5afb5b709866e22e7bc4607ed9f9788bec996ed9",
+    "tools/tests/coop_fresh_start_guards.gd": "092f534164c6987f97bcfaba0a94507099a7baf106177f370f4b6bfea57e6703"
+  },
+  "limits": [
+    "Opening admission is deliberately narrow and data-specific. A host who has progressed past the initial opening variables does not receive a broad NEW-origin story override.",
+    "Existing saved campaigns still require exact nonexcluded story compatibility. The fix does not infer compatibility merely from a matching quest journal.",
+    "An older client that omits the new optional origin marker uses ordinary strict matching. No protocol bump or existing-save schema rewrite is required.",
+    "Headless local tests only; no new screenshots, internet transport, Windows or performance acceptance. Original movie presentation and full tutorial movement/combat are outside this fixture.",
+    "Only private exports/disposable profiles were used; no public build, user save or original game data changed."
+  ]
+}

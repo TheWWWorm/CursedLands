@@ -164,7 +164,7 @@ func client_hello() -> void:
 	var bag := main_bag(st)
 	_rpc_bring.rpc_id(1, {"campaign_id": st.campaign_id, "hero": main_hero(st), "vars": view, "visited": st.visited.keys(),
 		"side_quests": st.side_quests, "quest_items": st.quest_items, "zone": st.current_zone, "seq": seq,
-		"money": int(bag.money), "items": bag.items, "party_context": PartyProgress.capture(st)})
+		"money": int(bag.money), "items": bag.items, "party_context": PartyProgress.capture(st), "new_origin": _origin_new})
 
 
 ## The campaign state the client brought (a fresh one for a new hero).
@@ -406,6 +406,7 @@ func _rpc_bring(data: Dictionary) -> void:
 	var context := PartyProgress.read(data.get("party_context"))
 	if context != null:
 		_pending[pid].party_context = PartyProgress.capture(context)
+	_pending[pid].new_origin = _pristine_new_origin(data)
 	CampaignState.cap_belt(h, _pending[pid].purse.items)   # the belt's four; extras to its own bag
 
 
@@ -443,6 +444,58 @@ func renamed_slot(pid: int, player_name: String) -> int:
 	e.name = player_name
 	joiners[key] = e
 	return idx
+
+
+## The menu's New hero has no personal progress to overwrite. Validate the
+## complete transmitted origin, not its opt-in bit alone. Only the display
+## name may differ by the client's language; stats, kit and context may not.
+static func _pristine_new_origin(data: Dictionary) -> bool:
+	if data.get("new_origin") != true or not data.get("hero") is Dictionary \
+			or not data.hero.get("name") is String:
+		return false
+	var context := PartyProgress.read(data.get("party_context"))
+	if context == null or context.heroes[0].size() != 1 or not context.heroes[0][0].get("name") is String:
+		return false
+	var fresh := fresh_state()
+	var expected := {"campaign_id": fresh.campaign_id, "hero": main_hero(fresh), "vars": {}, "visited": ["gz1g"],
+		"side_quests": {}, "quest_items": {}, "zone": "gz1g", "seq": {}, "money": 0, "items": [],
+		"party_context": PartyProgress.capture(fresh), "new_origin": true}
+	var source := data.duplicate(true)
+	source.hero.name = expected.hero.name
+	source.party_context.roster[0].name = expected.party_context.roster[0].name
+	return source == expected
+
+
+## Base gz1g's original VTriger183/199/205/317 initialize these before a
+## friend can finish joining: opening speech, tutorial, locked route flags
+## and prayer animation. LiA's opening initializes no story vars. No other
+## flag or later value is an opening baseline, even in this same map.
+const OPENING_VARS := ["Said1", "ZT1", "b.bz2g.z0", "z.gz1g_gz2g", "z.gz2g_gz3g", "AnimPray"]
+
+func _admit_new_origin(e: Dictionary, data: Dictionary) -> bool:
+	var st := session.state
+	if not bool(data.get("new_origin", false)) or session.world == null or _loading \
+			or session.zone_id != "gz1g" or st.current_zone != "gz1g" or st.current_party != "" \
+			or not st.parties.is_empty() or not st.party_bags.is_empty() or not st.mercs.is_empty() or not st.pets.is_empty() \
+			or not st.quests.is_empty() or not st.quest_items.is_empty() or not st.side_quests.is_empty():
+		return false
+	var lead: Array = st.heroes.get(0, [])
+	if lead.size() != 1 or lead[0].get("prototype") != "Human Hero" or String(lead[0].get("unit_name", "Hero")) != "Hero":
+		return false
+	for zone: String in st.visited.keys() + st.zones.keys():
+		if zone != "gz1g": return false
+	var opening := {}
+	for key: String in st.vars:
+		if not key.begins_with("0:") or excluded(key.substr(2)): continue
+		var name := key.substr(2)
+		if st.campaign_id != CampaignProfile.ORIGINAL or not name in OPENING_VARS or st.vars[key] != 1.0:
+			return false
+		opening[name] = st.vars[key]
+	for key: String in opening:
+		_credit(e, key, opening[key])
+	# Normal send_all/package captures the current opening zone/VM. Never
+	# replace the new guest's hero, purse or private party with the host's.
+	return true
 
 
 ## The saved source independently represents this exact story checkpoint.
@@ -608,7 +661,7 @@ func on_hello(pid: int, idx: int, player_name: String, replacing_live := false) 
 	e.hero_in.name = player_name.strip_edges() if player_name.strip_edges() else String(e.orig_name)
 	if data.has("party_context"):
 		e.party_context = data.party_context
-	var matching := _matches_checkpoint(data)
+	var matching := _admit_new_origin(e, data) or _matches_checkpoint(data)
 	e.present = matching
 	e.clean = matching
 	joiners[key] = e
