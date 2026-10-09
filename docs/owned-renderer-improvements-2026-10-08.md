@@ -463,8 +463,80 @@ times do not measure asynchronous GPU completion.
 if it is enabled on Vulkan later, its layer readbacks must be accounted for.
 The previously documented native worker-pool exit issue remains separate:
 fixtures release upscaler resources and drain frames before quitting, and this
-checkpoint does not fix the engine issue. Compressed HD-off terrain arrays,
-any HD memory policy and actual Android/browser acceptance remain open.
+checkpoint does not fix the engine issue. The following HD-off follow-up now
+handles compressed raw arrays; HD memory policy and Android/browser acceptance
+remain separate work.
+
+## P2 follow-up: preserve compressed raw terrain arrays — 9 October
+
+With HD textures off, `_load_atlases` now uses the existing authored-mip MMP
+decoder for original land/water arrays. Eligible opaque DXT1/DXT3 levels stay
+compressed. This preserves the original authored levels instead of replacing
+them with new averages of mip zero. The existing tiny-tail encoder, alpha
+fallback, S3TC capability check and source-color sampling remain in force.
+There is no new option or engine patch.
+
+An array requires a uniform format. If any layer needs a different format
+(for example transparency, a missing atlas or a large missing mip tail), the
+loader decodes the other layers to RGBA without regenerating their authored
+mips. Already generated BC1 tail blocks remain decoded from those blocks in
+this mixed case. Both atlas loaders also reject incorrect heights as well as
+widths and retain magenta placeholders. HD upscaling, lazy padded detail,
+gutter extrusion and the per-layer CPU fallback remain on decoded pixels.
+`TerrainColorCache` reads the padded array, which is unchanged.
+
+The source is `game/src/ei/terrain.gd`. Focused fixtures are
+`tools/tests/terrain_compressed.gd`, `terrain_compressed_upload.gd`,
+`tools/benchmarks/terrain_compressed_scene.gd` and `terrain_array_memory.gd`.
+Evidence, frozen source/build hashes and commands are in
+[`validation/compressed-terrain-2026-10-09.json`](validation/compressed-terrain-2026-10-09.json).
+
+The accepted Linux exported-runtime runs pass **20,845 candidate checks**;
+baseline controls pass 16. They cover all **89 maps / 588 layers** in the two
+installed campaigns, complete Vulkan layer/mip readback, explicit shader LODs
+on all three desktop renderers, mixed/transparent/missing/single-layer cases,
+latched detail, 501 existing HD guards and allocation release. The map census
+finds 88 compressible maps. LiA `zonefinal001` has only four authored levels,
+so its three-layer array takes the RGBA path. LiA `zone3dun1` has one complete
+ten-level DXT1 layer and stays compressed. All authored payloads/pixels checked
+in the Vulkan readbacks are exact.
+
+Godot's GLES `texture_2d_layer_get` renders only mip zero and regenerates its
+readback mips. The first test incorrectly treated those as the uploaded chain;
+its failed output is retained. Corrected GLES checks use explicit shader LODs,
+with independent authored RGBA pixels and CPU-decoded candidate tail blocks.
+The existing 6/255 allowance for hardware BC decoding is unchanged; the raw
+sampling maximum is **3/255**. No production change was needed for this test
+oracle correction.
+
+There are 96 accepted captures, including 32 complete-scene pairs against the
+authored-RGBA control. Forward+/Compatibility `bz2g` differs by at most 3/255.
+The RGBA final-map control has three far pixels at 1/255 due to its quantized
+generated tails. Mobile `zone1` repeats exactly. Matching its generated tail
+blocks removes two distant pixels that differ by up to 15/255; four close
+dark-blue pixels remain at 7/255 after native BC decoding and the existing
+spatial material/color pipeline. These small measured differences are retained
+as limits, not reported as exact image equality. Padded detail without visible
+water is exact; all reference-pair draw counts agree. Inspected near/far land,
+lava and coastal-water images show no missing tiles, orientation changes or
+new visible seams.
+
+The sum of **per-map raw array payloads** is 45,266,984 bytes instead of
+362,107,900 for base maps, and 61,171,276 instead of 459,974,900 for LiA. These
+are not simultaneous residency or a deduplicated corpus. On the RTX 3090,
+engine-reported raw allocation for eight-layer LiA `zone1` falls from
+11,206,656 to 1,441,792 bytes on Vulkan and 11,184,800 to 1,398,208 on GLES.
+Padded detail allocation is unchanged, and all measured arrays return to the
+same allocation baseline after release.
+
+This is a texture-memory result, not an FPS or general load-speed claim.
+Preserving/scanning more authored data can add load work: the recorded Vulkan
+final-map raw load was 1.8 ms before and 5.0 ms after. These single observations
+do not isolate OS cache or the concurrently running headless gameplay route.
+The HD payload remains RGBA8; other vendors, Android, Web and non-Linux targets
+still need their own acceptance. The private test pack is not an installed or
+published build. Independent source review found no actionable production or
+lifecycle issue.
 
 ## P3, first stage: retain equivalent foliage materials
 
@@ -4444,9 +4516,11 @@ investigation is recorded in the gameplay handoff.
    acceptance. P2's HD scenery path now avoids the main-device round trip on
    RenderingDevice backends, with byte/render/lifetime evidence above.
    P2's terrain follow-up also avoids enlarged atlas readback and final upload,
-   with the unchanged fallback and byte/render evidence above. Remaining
-   P2 work includes any justified HD memory policy or compressed raw atlases,
-   plus actual device load/memory measurements. The final HD payload is still
+   with the unchanged fallback and byte/render evidence above. HD-off raw
+   arrays now preserve eligible compression and authored mips, with full
+   campaign-corpus, sampling and desktop allocation evidence above. Remaining
+   P2 work includes any justified HD memory policy and target-device load/memory
+   measurements. The final HD payload is still
    RGBA8; do not count cached operations as per-frame savings. Keep the recorded
    pre-existing native exit issue separate from the accepted texture results.
 2. **P3 static scenery batching:** the opt-in live manager, complete-light guard,

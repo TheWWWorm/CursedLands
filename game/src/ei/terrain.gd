@@ -861,8 +861,10 @@ func _load_atlases() -> void:
 	var resident := _atlas_hd and TexUpscaleTexture.can_try_array(int(get_meta("textures_count")))
 	var images: Array[Image] = []
 	for i in int(get_meta("textures_count")):
-		var img := GameData.load_image("%s%03d" % [resource_prefix, i])
-		if img == null or img.get_width() != texture_size:
+		# These atlases are sampled unchanged. Keep authored mips and eligible
+		# compressed blocks; HD and padded detail still need decoded pixels.
+		var img := GameData.load_image("%s%03d" % [resource_prefix, i], not _atlas_hd)
+		if img == null or img.get_width() != texture_size or img.get_height() != texture_size:
 			push_warning("Missing terrain atlas %s%03d" % [resource_prefix, i])
 			var n := texture_size * (2 if _atlas_hd and not resident else 1)
 			img = Image.create(n, n, false, Image.FORMAT_RGBA8)
@@ -871,11 +873,20 @@ func _load_atlases() -> void:
 			img = TexUpscale.up2(img, false)
 		# Keep the CPU path per-layer: retaining all raw sources would add
 		# temporary image memory on constrained/Compatibility backends.
-		if not resident: img.generate_mipmaps()
+		if not resident and not img.has_mipmaps(): img.generate_mipmaps()
 		images.append(img)
 	if resident:
 		_atlases = TexUpscale.texture_array(images,true,false)
 	else:
+		# Texture arrays require one format. A missing/transparent layer or a
+		# large missing mip tail can require RGBA even on an S3TC backend.
+		# Decode the other layers without regenerating their authored levels.
+		for img: Image in images:
+			if img.get_format() != images[0].get_format():
+				for layer: Image in images:
+					if layer.is_compressed(): layer.decompress()
+					layer.convert(Image.FORMAT_RGBA8)
+				break
 		var texture := Texture2DArray.new(); texture.create_from_images(images)
 		_atlases = texture
 
@@ -914,7 +925,7 @@ func _ensure_detail_atlases() -> void:
 	var images: Array[Image] = []
 	for i in int(get_meta("textures_count")):
 		var source := GameData.load_image("%s%03d" % [resource_prefix, i])
-		if source == null or source.get_width() != texture_size:
+		if source == null or source.get_width() != texture_size or source.get_height() != texture_size:
 			source = Image.create(texture_size, texture_size, false, Image.FORMAT_RGBA8)
 			source.fill(Color.MAGENTA)
 		var img := padded_atlas(source, tile_size, TERRAIN_GUTTER)
