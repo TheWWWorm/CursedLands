@@ -2215,6 +2215,45 @@ portraits, particle attachments, limb copies and lifecycle cleanup. The current
 helper's `weld_mesh` metadata is preparation, not proof of those contracts.
 Enabling `smooth_joints` remains unrelated and would change authored shapes.
 
+### V4 source preflight for the next implementation
+
+No water code changed in the C1 checkpoint. The next visual task remains
+bounded unit contact/wakes in the existing water pass. Source inspection found:
+
+- R1 `Source/engine_bridge.cpp:24288`, `build_liquid_ripples`, rejects invisible,
+  dead and undetected units, emissive liquids, dry/buried water and figures whose
+  posed bounds do not actually reach the surface. Do not infer contact solely
+  from a unit's navigation position or flying class.
+- R1 `renderer_liquid.cpp:62/141/190` owns fixed game-time wave steps, bounded
+  unit inputs, motion/presence easing and GPU-buffer lifetime. Contact/wake
+  shading is in `shaders/liquid_surface.hlsl:386/420`. The 512² compute field is
+  a reference design, not a requirement for our Compatibility/web path.
+- Our `EITerrain.WATER_FX_SHADER` already combines original water colour with
+  procedural/rain slopes, reflections, glints and shore foam. Contact slopes
+  must affect both the reflected ray and glint normal; a separate overlay can
+  conflict with the established unit→water→particle draw order. Preserve the
+  original-water shader and lava/swamp branches.
+- `EITerrain.water_at` is a cell lookup using the maximum of two authored
+  corners, not the rendered triangle height. `Water_x_y` meshes retain the
+  actual vertices and material indices; waves and `SetWaterLevel` offsets move
+  them in the shader. Contact admission needs to account for this distinction,
+  especially beside sloping water, bridges and flooding. Do not reuse the cell
+  lookup as an exact visual-surface oracle.
+- `GameWorld.visible_units` supplies an existing visible roster, and units have
+  presented transforms for co-op smoothing. `UnitFog` must run before a visual
+  contact is admitted; hidden units must not reveal themselves through wakes.
+  `GroundMarks` already owns step events but does not implement unit-water wakes.
+- `Game` processes while paused. A new child effect needs an explicit pause,
+  loading/zone-hold and lifecycle policy. `GameWorld.draw_time` follows the
+  authority logic accumulator; remote client effects have a separate clock.
+  Do not use snapshot time or shader `TIME` as a universal game-time source.
+
+Start with an independently authored, bounded contact implementation and
+controlled standing/moving/turning/entry/exit views. Validate pause, 2× time,
+hidden/flying/bridge units, water-level changes and option/world teardown before
+rollout. Caustics, the wave-equation field and waterfall shells remain separate
+parts of V4; no part of that additional behavior is implemented by C1.
+
 ## Next work in the established order
 
 1. **P1/P2 remaining texture work:** retained outfit pixels and shared native
