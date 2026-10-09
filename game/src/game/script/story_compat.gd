@@ -7,6 +7,7 @@ static func apply(ast: ScriptParser, campaign: String, zone: String) -> void:
 		if campaign == CampaignProfile.ORIGINAL:
 			if zone == "gz19h":
 				preload("res://src/game/script/story_coop_traps.gd").apply_prison(ast)
+				preload("res://src/game/script/story_coop_traps.gd").apply_prison_damage(ast)
 				_prison_discovery_checks(ast)
 				_prison_route_checks(ast)
 			preload("res://src/game/script/story_coop_predicates.gd").apply_original(ast,zone)

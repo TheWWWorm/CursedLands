@@ -2,8 +2,9 @@ extends Node
 ## Actual prison instructions, controlled actor positions and recorded orders.
 ## Compares extra intruders with the original third-role dispatch/cooldown.
 const Compat := preload("res://src/game/script/story_compat.gd")
-const DISCOVERY_CHECKS := ["VCheck#0#265","VCheck#0#269","VCheck#0#271","VCheck#0#258",
-	"VCheck#0#279","VCheck#0#280"]
+const SHARED_CHECKS := ["VCheck#0#265","VCheck#0#269","VCheck#0#271","VCheck#0#258",
+	"VCheck#0#279","VCheck#0#280","VCheck#0#17","VCheck#0#295","VCheck#0#300",
+	"VCheck#0#338","VCheck#0#344","VCheck#0#348","VCheck#0#355","VCheck#0#357","VCheck#0#364"]
 var checks := 0
 var failures := 0
 var raw := ""
@@ -69,9 +70,9 @@ func trace(role: int, adapt: bool) -> Array:
 	var vm:=vm_for(adapt); vm.spawn("VCheck#0#417",[party[role]]); step(vm,85)
 	return vm.actions.duplicate(true)
 
-func without_discovery_metadata(scripts: Dictionary) -> Dictionary:
+func without_shared_metadata(scripts: Dictionary) -> Dictionary:
 	var out := scripts.duplicate(true)
-	for name: String in DISCOVERY_CHECKS:
+	for name: String in SHARED_CHECKS:
 		if out.get(name,{}).get("party_check") == true: out[name].erase("party_check")
 	return out
 
@@ -102,20 +103,22 @@ func _ready() -> void:
 	var pristine:=ScriptParser.parse(raw); var adapted:=vm_for().ast
 	check(pristine.world==adapted.world,"original startup remains unchanged")
 	var registrar := "VTriger#0#416#RemakeParticipants"
-	check(adapted.scripts.size()==pristine.scripts.size()+1 and adapted.scripts.has(registrar),
-		"only one registration watcher is added, with no competing guard dispatch")
-	var native := without_discovery_metadata(adapted.scripts)
+	var damage_registrar := "VTriger#0#76#RemakeParticipants"
+	check(adapted.scripts.size()==pristine.scripts.size()+2 and adapted.scripts.has(registrar) \
+		and adapted.scripts.has(damage_registrar),"only the two named native-family registrars are added")
+	var native := without_shared_metadata(adapted.scripts)
 	check(pristine.scripts.keys().all(func(name):return name in ["VCheck#0#230","VTriger#0#235"] \
-		or pristine.scripts[name]==native[name]),"every other native definition and saved instruction index is unchanged; only named discovery tags are allowed")
+		or pristine.scripts[name]==native[name]),"every other native definition and saved instruction index is unchanged; only fifteen named shared tags are allowed")
 	check(pristine.scripts["VCheck#0#12"]==adapted.scripts["VCheck#0#12"],"authored protagonist-only portal gate stays unchanged")
 	var again:=adapted.scripts.duplicate(true); Compat.apply(adapted,CampaignProfile.ORIGINAL,"gz19h")
 	check(again==adapted.scripts,"captivity adaptation is idempotent")
 	var changed:=ScriptParser.parse(raw); changed.scripts["VCheck#0#230"].blocks[0].conds.append([ScriptParser.N_NUM,0.0])
 	var before:=changed.scripts.duplicate(true); Compat.apply(changed,CampaignProfile.ORIGINAL,"gz19h")
-	check(before==without_discovery_metadata(changed.scripts),
-		"changed modded dispatch retains all native definitions and cannot install an alarm registrar")
-	check(DISCOVERY_CHECKS.all(func(name):return changed.scripts[name].get("party_check",false)),
-		"independently inspected treasure discovery remains available with changed alarm dispatch")
+	var changed_native := without_shared_metadata(changed.scripts); changed_native.erase(damage_registrar)
+	check(before==changed_native and not changed.scripts.has(registrar) and changed.scripts.has(damage_registrar),
+		"changed alarm dispatch retains native definitions and the independently admitted damage registrar")
+	check(SHARED_CHECKS.all(func(name):return changed.scripts[name].get("party_check",false)),
+		"independently inspected discoveries and route stages remain available with changed alarm dispatch")
 	for row: Array in [[1500000001.0,1500000002.0,0.0],[1500000001.0,1500000001.0,1.0],
 		[1.25,1.2500001,1.0],[1.25,1.26,0.0],[party[0],party[1],0.0],[party[0],party[0],1.0],[party[0],0.0,0.0]]:
 		vm.globals.lhs=row[0]; vm.globals.rhs=row[1]

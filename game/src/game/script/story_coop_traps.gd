@@ -15,6 +15,15 @@ const PRISON_CHAIN := [PRISON_WAIT,"VTriger#0#48","VCheck#0#227","VCheck#0#229",
 	"VTriger#0#219","VTriger#0#241","VTriger#0#242","VTriger#0#408","VCheck#0#410",
 	"VTriger#0#413","VCheck#0#422","VTriger#0#425"]
 const PRISON_SIGNATURE := "f8a52c0d6ecfd0749d7949a8963c296cd60dda87d936ed970f74f4d83a0ab813"
+const PRISON_DAMAGE_REGISTER := "VTriger#0#76"
+const PRISON_DAMAGE_CHILDREN := ["VCheck#0#86","VCheck#0#87","VCheck#0#88","VTriger#0#113"]
+const PRISON_DAMAGE_CHAIN := ["VTriger#0#113",
+	"VCheck#0#86","VTriger#0#150","VCheck#0#87","VTriger#0#90","VCheck#0#88","VTriger#0#95",
+	"VCheck#0#115","VTriger#0#153","VCheck#0#116","VTriger#0#154","VCheck#0#117","VTriger#0#155",
+	"VCheck#0#118","VTriger#0#156","VCheck#0#119","VTriger#0#157","VCheck#0#120","VTriger#0#158",
+	"VCheck#0#121","VTriger#0#159","VCheck#0#122","VTriger#0#160"]
+const PRISON_DAMAGE_SIGNATURE := "bbf53da90e2290af92114110db2fd0f1b4dcca3541a1b3a9e0d8366d26617394"
+const NATIVE_REGISTRATIONS := [PRISON_REGISTER,PRISON_DAMAGE_REGISTER]
 const PRISON_ACTOR := &"prison_actor_reference"
 const PRISON_LAST := &"prison_actor_tick"
 const PRISON_INTRUDER := &"prison_intruder_reference"
@@ -53,7 +62,29 @@ static func apply_prison(ast: ScriptParser) -> void:
 	# individual continuation. CoopVmState projects its seen identities.
 	ast.scripts[PRISON_REGISTER+WATCH] = {"params":[],"blocks":[{"conds":[],
 		"body":[[P.S_CALL,"RemakeTrapJoin",[[P.N_STR,PRISON_REGISTER]]]]}],
-		"registration":{"child":PRISON_WAIT,"caller":"WorldScript","family":PRISON_CHAIN}}
+		"registration":{"children":[PRISON_WAIT],"caller":"WorldScript","family":PRISON_CHAIN}}
+
+
+## Eleven individual prison traps were also armed only for startup Heroes.
+## New arrivals need all four native registration calls, including the nested
+## eight-trap setup. Their damage, lever gates and Sleep(60) rearm stay native.
+## Keep this source admission independent of the alarm/guard family above.
+static func apply_prison_damage(ast: ScriptParser) -> void:
+	var root := PRISON_DAMAGE_REGISTER
+	if ast.scripts.has(root+WATCH): return
+	var definitions := []
+	for name: String in [root]+PRISON_DAMAGE_CHAIN:
+		definitions.append([name,ast.scripts.get(name,{})])
+	if JSON.stringify(definitions,"",true,true).sha256_text() != PRISON_DAMAGE_SIGNATURE: return
+	if ast.world.count([P.S_CALL,root,[[P.N_VAR,"NULL"]]]) != 1 \
+			or ast.world.filter(func(st):return st[0] == P.S_CALL and st[1] == root).size() != 1: return
+	for binding: Array in [["MCK1","45621"],["MCK3","45626"],["MCK5","45630"]]:
+		var assignment := [P.S_SET,binding[0],[P.N_CALL,"GetObjectByID",[[P.N_STR,binding[1]]]]]
+		if ast.world.count(assignment) != 1 or ast.world.filter(func(st):
+			return st[0] == P.S_SET and st[1] == binding[0]).size() != 1: return
+	ast.scripts[root+WATCH] = {"params":[],"blocks":[{"conds":[],
+		"body":[[P.S_CALL,"RemakeTrapJoin",[[P.N_STR,root]]]]}],
+		"registration":{"children":PRISON_DAMAGE_CHILDREN,"caller":"WorldScript","family":PRISON_DAMAGE_CHAIN}}
 
 
 static func apply_family(ast: ScriptParser, cfg: Dictionary) -> void:
@@ -96,9 +127,10 @@ static func apply_family(ast: ScriptParser, cfg: Dictionary) -> void:
 
 
 static func arm(vm: ScriptVM, name: String, args: Array, caller: String) -> void:
-	if _prison_enabled(vm):
-		if name == PRISON_WAIT: _note_prison_wait(vm,args)
-		if name in PRISON_CHAIN and not args.is_empty() and args[0] is GameUnit:
+	var root := _registration_root(vm,name)
+	if not root.is_empty():
+		if name in vm.ast.scripts[root+WATCH].registration.children: _note_registration(vm,root,args)
+		if not args.is_empty() and args[0] is GameUnit:
 			_remember_prison_actor(vm,vm.instances.back(),vm._ser(args[0]))
 	var def: Dictionary = vm.ast.scripts.get(name+WATCH,{})
 	if def.is_empty() or not vm.session.lmp.is_empty(): return
@@ -113,14 +145,22 @@ static func arm(vm: ScriptVM, name: String, args: Array, caller: String) -> void
 	join(vm,name,args,vm.instances.back())
 
 
-static func _note_prison_wait(vm: ScriptVM, args: Array) -> void:
+static func _note_registration(vm: ScriptVM, root: String, args: Array) -> void:
 	if args.is_empty() or not args[0] is GameUnit or not is_instance_valid(args[0]): return
 	for inst: ScriptVM.Instance in vm.instances:
-		if inst.sname != PRISON_REGISTER+WATCH or inst.killed: continue
+		if inst.sname != root+WATCH or inst.killed: continue
 		var seen: Array = inst.locals.get(SEEN,[])
 		var key := _key(vm,args[0])
 		if not key in seen: seen.append(key)
 		inst.locals[SEEN] = seen
+
+
+static func _registration_root(vm: ScriptVM, name: String) -> String:
+	if vm.ast == null or vm.session == null or not vm.session.lmp.is_empty(): return ""
+	for root: String in NATIVE_REGISTRATIONS:
+		var registration: Dictionary = vm.ast.scripts.get(root+WATCH,{}).get("registration",{})
+		if name in registration.get("family",[]): return root
+	return ""
 
 
 static func _prison_enabled(vm: ScriptVM) -> bool:
@@ -136,12 +176,11 @@ static func _remember_prison_actor(vm: ScriptVM, inst: ScriptVM.Instance, refere
 	inst.set_meta(PRISON_LAST,vm.time)
 
 
-## A disconnected hero can be absent from a loaded map. Keep only this
-## source-admitted family's exact continuation dormant until its actor
+## A disconnected hero can be absent from a loaded map. Keep only these
+## source-admitted families' exact continuations dormant until their actor
 ## returns, including the remaining native poll/Sleep and existing frames.
 static func hold_registration(vm: ScriptVM, inst: ScriptVM.Instance) -> bool:
-	if not _prison_enabled(vm): return false
-	if vm.has_meta(PRISON_INTRUDER):
+	if _prison_enabled(vm) and vm.has_meta(PRISON_INTRUDER):
 		if vm.globals.get("Try1") != null:
 			vm.remove_meta(PRISON_INTRUDER)
 		else:
@@ -150,9 +189,20 @@ static func hold_registration(vm: ScriptVM, inst: ScriptVM.Instance) -> bool:
 				vm.globals.Try1 = intruder
 				vm.remove_meta(PRISON_INTRUDER)
 	if not inst.has_meta(PRISON_ACTOR): return false
+	var root := _registration_root(vm,inst.sname)
+	if root.is_empty(): return false
 	var last := float(inst.get_meta(PRISON_LAST,vm.time))
 	inst.set_meta(PRISON_LAST,vm.time)
-	var actor = vm._deser(inst.get_meta(PRISON_ACTOR))
+	var reference: Dictionary = inst.get_meta(PRISON_ACTOR)
+	var actor = vm._deser(reference)
+	if actor == null and root == PRISON_DAMAGE_REGISTER:
+		# Normal disconnect leaves the actor in this map as an AI follower.
+		# Its native damage/Sleep loop keeps running, including while dead.
+		# Resolve that exact roster identity, never a recycled numeric UID.
+		for u: GameUnit in vm.world.units.values():
+			if u.controller < 0 and u.has_meta("orphan_of") and vm._hero_key(u) == reference.h:
+				actor = u
+				break
 	if actor is GameUnit:
 		inst.locals.this = actor
 		return false
@@ -163,29 +213,27 @@ static func hold_registration(vm: ScriptVM, inst: ScriptVM.Instance) -> bool:
 
 
 static func save_registration(vm: ScriptVM, saved: Dictionary) -> Dictionary:
-	if not _prison_enabled(vm): return saved
 	for i in vm.instances.size():
 		var inst: ScriptVM.Instance = vm.instances[i]
 		if inst.has_meta(PRISON_ACTOR) and saved.instances[i].l.get("this") == null:
 			saved.instances[i].l.this = inst.get_meta(PRISON_ACTOR).duplicate(true)
-	if vm.has_meta(PRISON_INTRUDER) and saved.globals.get("Try1") == null:
+	if _prison_enabled(vm) and vm.has_meta(PRISON_INTRUDER) and saved.globals.get("Try1") == null:
 		saved.globals.Try1 = vm.get_meta(PRISON_INTRUDER).duplicate(true)
 	return saved
 
 
 static func restore_registration(vm: ScriptVM, saved: Dictionary) -> void:
-	if not _prison_enabled(vm): return
 	# Every admitted native definition exists, so per-name instance order
 	# matches the saved order even when unrelated missing scripts were skipped.
 	var rows := {}
 	for row: Dictionary in saved.get("instances",[]):
-		if row.get("s") in PRISON_CHAIN: rows.get_or_add(row.s,[]).append(row)
+		if not _registration_root(vm,String(row.get("s",""))).is_empty(): rows.get_or_add(row.s,[]).append(row)
 	for inst: ScriptVM.Instance in vm.instances:
 		if not rows.has(inst.sname) or rows[inst.sname].is_empty(): continue
 		var row: Dictionary = rows[inst.sname].pop_front()
 		_remember_prison_actor(vm,inst,row.get("l",{}).get("this"))
 	var intruder = saved.get("globals",{}).get("Try1")
-	if intruder is Dictionary and intruder.get("h") is Array and vm.globals.get("Try1") == null:
+	if _prison_enabled(vm) and intruder is Dictionary and intruder.get("h") is Array and vm.globals.get("Try1") == null:
 		vm.set_meta(PRISON_INTRUDER,intruder.duplicate(true))
 
 
@@ -199,7 +247,7 @@ static func _join_registration(vm: ScriptVM, root: String, inst: ScriptVM.Instan
 		var key := _key(vm,u)
 		if key in seen: continue
 		seen.append(key)
-		vm.spawn(String(vm.ast.scripts[root+WATCH].registration.child),[u])
+		for child: String in vm.ast.scripts[root+WATCH].registration.children: vm.spawn(child,[u])
 
 
 static func _key(vm: ScriptVM, u: GameUnit) -> String:

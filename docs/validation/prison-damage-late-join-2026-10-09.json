@@ -1,0 +1,909 @@
+{
+  "task": "Original gz19h startup family VTriger#0#76: per-character damage and Sleep registration",
+  "status": "Accepted after root review for the source-admitted original prison damage family; not included in the delivered Linux/Windows .2 packages.",
+  "baseline_commit": "c6dbcdd24ec2af266a1cb96dd9c4ee09cea59ea3",
+  "canonical_head_at_receipt": "9cc480cd29b83388ac8f41b687a46ba88a4f01f9",
+  "source_evidence": {
+    "mounted_original_map": "/home/llm2x/Documents/EI/inspection/extracted/app (GameData maps/zone19.mob)",
+    "extracted_script": "/home/llm2x/Documents/EI/inspection/samples/scripts/zone19.txt",
+    "script_sha256": "be3563f125987345d54a84745d77d323a1ec990e52ca1db6bcd4440be210f38b",
+    "ordered_native_24_definition_ast_sha256": "bbf53da90e2290af92114110db2fd0f1b4dcca3541a1b3a9e0d8366d26617394",
+    "authored_behavior": "Startup For(Heroes) calls checks 86,87,88 and nested setup 113 (checks 115..122). Each actor has eleven separate native damage/Sleep(60)/rearm cycles. Three checks retain original MCK1/MCK3/MCK5 lever gates.",
+    "native_disconnected_behavior": "Normal Session disconnect retains the same actor as controller -1/orphan_of owner AI follower. Early baseline real ENet and unmodified VM trace prove its damage/Sleep cadence continues, including native dead-state rearming."
+  },
+  "production_sha256": {
+    "game/src/game/script/story_compat.gd": "fd7982c71df5d806738d5661893d11c00eee95e445d5b66e5cd0f6f39793c482",
+    "game/src/game/script/story_coop_traps.gd": "5684907db40588bcb8fbbc1a53e0e31701bb8b37cefa5e5d887ea7aafbc57c46"
+  },
+  "fixture_sha256": {
+    "tools/tests/prison_damage_late_join.gd": "57835b110076dc3fa2eb1fbc17161988910156e1ec35cfd803dd94d7b659bf5c",
+    "tools/tests/prison_damage_state.gd": "9ec11bd2d56e24673172c60dbc1322caee8c8c27d4609627ddc1def3bd49f0c2",
+    "tools/tests/story_coop_captivity.gd": "7b7e91f3a632acec634763c177b0e4519d00874265dcbd6d14ca0bdac1223fee"
+  },
+  "candidate_export": "/home/llm2x/Documents/EI/local/scratchpad/prison-damage-late-join-20261009/candidate02/export.json",
+  "candidate_export_sha256": "4599596b1f47193c03d70d887514d381e25aa99876edf14c69e5564227f77fa9",
+  "baseline_export": "/home/llm2x/Documents/EI/local/scratchpad/prison-damage-late-join-20261009/baseline/export.json",
+  "stage_comparison": {
+    "baseline_commit": "c6dbcdd24ec2af266a1cb96dd9c4ee09cea59ea3",
+    "baseline_tracked_files_matched": 613,
+    "stage_files_each": 712,
+    "only_changes": {
+      "src/game/script/story_compat.gd": {
+        "baseline": "b6da3b387a2200655cc53617b9d170acf5f6482b1a2f864c3f68a1c6c3d899cf",
+        "candidate": "fd7982c71df5d806738d5661893d11c00eee95e445d5b66e5cd0f6f39793c482"
+      },
+      "src/game/script/story_coop_traps.gd": {
+        "baseline": "98651ffff9581fe7c007712e734d7449c7c2f46b856be927dd156b1c7adf1da9",
+        "candidate": "5684907db40588bcb8fbbc1a53e0e31701bb8b37cefa5e5d887ea7aafbc57c46"
+      }
+    },
+    "canonical_sources_match_candidate": true
+  },
+  "implementation": [
+    "An independent, source-gated registrar calls the four original per-character setup children once for every newly eligible roster identity.",
+    "All 24 native conditions, bodies, frame indexes, damage, spell calls, lever gates and Sleep durations remain unchanged. No individual trap is marked party_check.",
+    "Existing admitted native registration hooks now support multiple children and both independent prison families.",
+    "Genuinely absent actor continuations preserve exact remaining wait/poll, stack frames, killed state and stable hero reference across reloads; returning actors resume the same thread.",
+    "Damage-family-only orphan resolution preserves the authored cadence of a still-present disconnected follower, using roster identity rather than numeric UID.",
+    "Existing native alarm eligibility, generic deserializer, VM core, co-op snapshot projection, protagonist-only portal and personal rewards are unchanged.",
+    "The captivity source control explicitly admits the fifteen previously qualified shared tags and exactly the two named registrars; unexpected changes still fail exact native comparison."
+  ],
+  "reproductions": {
+    "early_original_behavior": {
+      "label": "baseline-early04",
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/prison-damage-late-join-20261009/baseline-early04/run.json",
+      "receipt_sha256": "ffb93f278c3343724259d967015204195ba12e36210afbdbf0989b083b15aa28",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/prison-damage-late-join-20261009/baseline-early04/run.log",
+      "log_sha256": "628254fae5c948a5019621600b586c1dace90bd4f54db48b2526c726c43cfbcd",
+      "result": {
+        "name": "PRISON_DAMAGE_LATE_JOIN",
+        "checks": 84,
+        "failures": 0
+      },
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "seconds": 24.520862174977083,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/prison_damage_late_join.gd": "465d1b99997e936f7739d2b26038f8903e77480c513ee58785233efce8dd73b3",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_traps_net.gd": "467645c27cbfe2ce9130f22fe4ac7d68edfdf7e57a867685e212cff480fb35d4"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "07e9b1b17d6fb13f51244d027082a1729be06db6f50597e0e2109123dc8a9418",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 1720061,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 1720061,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        }
+      ]
+    },
+    "early_absent_reload_failure_final_fixture": {
+      "label": "baseline-early-reload02",
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/prison-damage-late-join-20261009/baseline-early-reload02/run.json",
+      "receipt_sha256": "044d82edb16be6f3ae4a5c341f6e6bd1e95fd5d1c22b0646b5d411d6541b9f93",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/prison-damage-late-join-20261009/baseline-early-reload02/run.log",
+      "log_sha256": "18b32e6a0ed01f8878fd6136884dfe52f69ec7302d57f05d8d373df5da1e5253",
+      "result": {
+        "name": "PRISON_DAMAGE_LATE_JOIN",
+        "checks": 107,
+        "failures": 6
+      },
+      "return_code": 1,
+      "termination_reason": null,
+      "errors": [
+        "FAIL first real absent load preserves exact native frame and remaining Sleep",
+        "FAIL first absent map retains all eleven distinct actor continuations",
+        "FAIL second real absent load retains the original pending cooldown",
+        "FAIL real rejoin binds the same restored sleeping instance to its original character",
+        "FAIL actual rejoin resumes remaining time without resetting or spending the native Sleep",
+        "FAIL returned guest completes exactly one native damage cycle after the preserved Sleep"
+      ],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "seconds": 63.56169365596725,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/prison_damage_late_join.gd": "57835b110076dc3fa2eb1fbc17161988910156e1ec35cfd803dd94d7b659bf5c",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_traps_net.gd": "467645c27cbfe2ce9130f22fe4ac7d68edfdf7e57a867685e212cff480fb35d4"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "07e9b1b17d6fb13f51244d027082a1729be06db6f50597e0e2109123dc8a9418",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 1738156,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "other_processes_at_end": []
+    },
+    "late_registration_failure_final_fixture": {
+      "label": "baseline-late02",
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/prison-damage-late-join-20261009/baseline-late02/run.json",
+      "receipt_sha256": "ff70c165e10071d75d4119a6021cc4974ea1d52581f8de323ec7ef247768ef66",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/prison-damage-late-join-20261009/baseline-late02/run.log",
+      "log_sha256": "56f7196016fa4e631981bfc6289655fac038cdd3798dcdf72c398186141f40f8",
+      "result": {
+        "name": "PRISON_DAMAGE_LATE_JOIN",
+        "checks": 89,
+        "failures": 31
+      },
+      "return_code": 1,
+      "termination_reason": null,
+      "errors": [
+        "FAIL guest has one native waiting instance of every individual trap",
+        "FAIL VCheck#0#86: original InflictDamage kills the entering guest",
+        "FAIL VCheck#0#86: that guest keeps exactly one original Sleep(60) continuation",
+        "FAIL VCheck#0#87: original InflictDamage kills the entering guest",
+        "FAIL VCheck#0#87: that guest keeps exactly one original Sleep(60) continuation",
+        "FAIL VCheck#0#88: original InflictDamage kills the entering guest",
+        "FAIL VCheck#0#88: that guest keeps exactly one original Sleep(60) continuation",
+        "FAIL VCheck#0#115: original InflictDamage kills the entering guest",
+        "FAIL VCheck#0#115: that guest keeps exactly one original Sleep(60) continuation",
+        "FAIL VCheck#0#116: original InflictDamage kills the entering guest",
+        "FAIL VCheck#0#116: that guest keeps exactly one original Sleep(60) continuation",
+        "FAIL VCheck#0#117: original InflictDamage kills the entering guest",
+        "FAIL VCheck#0#117: that guest keeps exactly one original Sleep(60) continuation",
+        "FAIL VCheck#0#118: original InflictDamage kills the entering guest",
+        "FAIL VCheck#0#118: that guest keeps exactly one original Sleep(60) continuation",
+        "FAIL VCheck#0#119: original InflictDamage kills the entering guest",
+        "FAIL VCheck#0#119: that guest keeps exactly one original Sleep(60) continuation",
+        "FAIL VCheck#0#120: original InflictDamage kills the entering guest",
+        "FAIL VCheck#0#120: that guest keeps exactly one original Sleep(60) continuation",
+        "FAIL VCheck#0#121: original InflictDamage kills the entering guest",
+        "FAIL VCheck#0#121: that guest keeps exactly one original Sleep(60) continuation",
+        "FAIL VCheck#0#122: original InflictDamage kills the entering guest",
+        "FAIL VCheck#0#122: that guest keeps exactly one original Sleep(60) continuation",
+        "FAIL original dead-actor trap continues its native Sleep/rearm cadence without a second life",
+        "FAIL guest independently starts its own damage/Sleep cycle",
+        "FAIL staggered actors keep different native cooldown deadlines",
+        "FAIL first actor's second hit preserves the exact second actor's sleeping instance",
+        "FAIL second actor rearms on its own original deadline without sharing damage",
+        "FAIL present disconnected actor keeps its original running cooldown",
+        "FAIL present disconnected follower receives the next native trap hit on schedule",
+        "FAIL normal reconnect retains a pending native Sleep before saving"
+      ],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "seconds": 33.0290860030218,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/prison_damage_late_join.gd": "57835b110076dc3fa2eb1fbc17161988910156e1ec35cfd803dd94d7b659bf5c",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_traps_net.gd": "467645c27cbfe2ce9130f22fe4ac7d68edfdf7e57a867685e212cff480fb35d4"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "07e9b1b17d6fb13f51244d027082a1729be06db6f50597e0e2109123dc8a9418",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 1732567,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 1733178,
+          "executable": "/home/llm2x/Documents/EI/local/scratchpad/prison-damage-late-join-20261009/candidate02/CursedLands.x86_64",
+          "headless": true
+        }
+      ]
+    },
+    "late_limit": "The baseline late case completes 89 checks then stops the dependent reload branch because no native Sleep ever exists. Its first 23 failures establish all eleven missing traps; later cooldown/dead/disconnect failures follow from that omission."
+  },
+  "qualified_runs": [
+    {
+      "label": "candidate02-state01",
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/prison-damage-late-join-20261009/candidate02-state01/run.json",
+      "receipt_sha256": "2431af5713b3c3dfb2621c87d46e7f4813a1fddd68ea979a98fe8d809a40b7a7",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/prison-damage-late-join-20261009/candidate02-state01/run.log",
+      "log_sha256": "86f8df69b420c21e4c84da4172c929b479979393a088d0478fc23282b4fa8602",
+      "result": {
+        "name": "PRISON_DAMAGE_STATE",
+        "checks": 165,
+        "failures": 0
+      },
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "seconds": 4.254372945986688,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/prison_damage_state.gd": "9ec11bd2d56e24673172c60dbc1322caee8c8c27d4609627ddc1def3bd49f0c2"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "91e52617bf5fe35828ad7e3c1d9bf8825bb1b7daaf6b4ae7d6c0aa57aa3ddf75",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 1720061,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 1720061,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        }
+      ]
+    },
+    {
+      "label": "candidate02-early-reload02",
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/prison-damage-late-join-20261009/candidate02-early-reload02/run.json",
+      "receipt_sha256": "4af93e2e3397a2ce30980ced4b0538afb3fe7f67d9692027c813e24ca2e4a976",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/prison-damage-late-join-20261009/candidate02-early-reload02/run.log",
+      "log_sha256": "36b402f478c3263df72f115c9f0a2015fd3616f7a32b78611960a62fb7d1bfed",
+      "result": {
+        "name": "PRISON_DAMAGE_LATE_JOIN",
+        "checks": 107,
+        "failures": 0
+      },
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "seconds": 78.62481991102686,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/prison_damage_late_join.gd": "57835b110076dc3fa2eb1fbc17161988910156e1ec35cfd803dd94d7b659bf5c",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_traps_net.gd": "467645c27cbfe2ce9130f22fe4ac7d68edfdf7e57a867685e212cff480fb35d4"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "91e52617bf5fe35828ad7e3c1d9bf8825bb1b7daaf6b4ae7d6c0aa57aa3ddf75",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 1733178,
+          "executable": "/home/llm2x/Documents/EI/local/scratchpad/prison-damage-late-join-20261009/candidate02/CursedLands.x86_64",
+          "headless": true
+        },
+        {
+          "pid": 1733361,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 1735163,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        },
+        {
+          "pid": 1736318,
+          "executable": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/candidate02/CursedLands.x86_64",
+          "headless": false
+        }
+      ]
+    },
+    {
+      "label": "candidate02-late-reload02",
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/prison-damage-late-join-20261009/candidate02-late-reload02/run.json",
+      "receipt_sha256": "5cf55e0c75bb00113f2a2eadf71403cf63e39ad1694824f831b8045097fc4245",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/prison-damage-late-join-20261009/candidate02-late-reload02/run.log",
+      "log_sha256": "57c5a16a8aefaa1ed0f118a6e3274f16ae4c8a633887fb4fed094896b499efff",
+      "result": {
+        "name": "PRISON_DAMAGE_LATE_JOIN",
+        "checks": 107,
+        "failures": 0
+      },
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "seconds": 70.35024045198224,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/prison_damage_late_join.gd": "57835b110076dc3fa2eb1fbc17161988910156e1ec35cfd803dd94d7b659bf5c",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_traps_net.gd": "467645c27cbfe2ce9130f22fe4ac7d68edfdf7e57a867685e212cff480fb35d4"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "91e52617bf5fe35828ad7e3c1d9bf8825bb1b7daaf6b4ae7d6c0aa57aa3ddf75",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 1735163,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 1738156,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ]
+    },
+    {
+      "label": "candidate02-alarm-state01",
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/prison-damage-late-join-20261009/candidate02-alarm-state01/run.json",
+      "receipt_sha256": "74b8697806136d81e168208db8a6cfd66e484484fa3ea225cfa6c62a149727cc",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/prison-damage-late-join-20261009/candidate02-alarm-state01/run.log",
+      "log_sha256": "b7415749ccf94f9cb079b81673c9410f6044fc0ce8b7e5c9091fd63e1d4fc9e1",
+      "result": {
+        "name": "PRISON_ALARM_STATE",
+        "checks": 70,
+        "failures": 0
+      },
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "seconds": 3.0042492040083744,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/prison_alarm_state.gd": "acebb8f79fe12bd2da69d79129f16fe710b8edef6aef5fa02bd9748c41bda96b",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_captivity.gd": "7b7e91f3a632acec634763c177b0e4519d00874265dcbd6d14ca0bdac1223fee"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "91e52617bf5fe35828ad7e3c1d9bf8825bb1b7daaf6b4ae7d6c0aa57aa3ddf75",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 1720061,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        },
+        {
+          "pid": 1723848,
+          "executable": "/home/llm2x/Documents/EI/local/scratchpad/prison-damage-late-join-20261009/candidate02/CursedLands.x86_64",
+          "headless": true
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 1720061,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        },
+        {
+          "pid": 1723848,
+          "executable": "/home/llm2x/Documents/EI/local/scratchpad/prison-damage-late-join-20261009/candidate02/CursedLands.x86_64",
+          "headless": true
+        },
+        {
+          "pid": 1724043,
+          "executable": "/home/llm2x/Documents/EI/local/scratchpad/prison-damage-late-join-20261009/candidate02/CursedLands.x86_64",
+          "headless": true
+        }
+      ]
+    },
+    {
+      "label": "candidate02-captivity01",
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/prison-damage-late-join-20261009/candidate02-captivity01/run.json",
+      "receipt_sha256": "cd7066f76f6b09ee2532944850aa41ccade8149953b0484c554da7a038a9b37f",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/prison-damage-late-join-20261009/candidate02-captivity01/run.log",
+      "log_sha256": "b483b2266f9579649829614cba1fec24d1cd598ede0fed22e7a1a1cfa542194b",
+      "result": {
+        "name": "STORY_COOP_CAPTIVITY",
+        "checks": 31,
+        "failures": 0
+      },
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "seconds": 2.7529595469823107,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_captivity.gd": "7b7e91f3a632acec634763c177b0e4519d00874265dcbd6d14ca0bdac1223fee"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "91e52617bf5fe35828ad7e3c1d9bf8825bb1b7daaf6b4ae7d6c0aa57aa3ddf75",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 1720061,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        },
+        {
+          "pid": 1723848,
+          "executable": "/home/llm2x/Documents/EI/local/scratchpad/prison-damage-late-join-20261009/candidate02/CursedLands.x86_64",
+          "headless": true
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 1720061,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        },
+        {
+          "pid": 1723848,
+          "executable": "/home/llm2x/Documents/EI/local/scratchpad/prison-damage-late-join-20261009/candidate02/CursedLands.x86_64",
+          "headless": true
+        },
+        {
+          "pid": 1724043,
+          "executable": "/home/llm2x/Documents/EI/local/scratchpad/prison-damage-late-join-20261009/candidate02/CursedLands.x86_64",
+          "headless": true
+        }
+      ]
+    },
+    {
+      "label": "candidate02-progression-state01",
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/prison-damage-late-join-20261009/candidate02-progression-state01/run.json",
+      "receipt_sha256": "fff18d583f5e1cb347e00772143f4c63d6e19aee60a240f6bdc2e0db80deb236",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/prison-damage-late-join-20261009/candidate02-progression-state01/run.log",
+      "log_sha256": "cfaa7859fd04d690150fcc78b0e29de8de715df711f63ac810fb530361f7a2f2",
+      "result": {
+        "name": "PRISON_PROGRESSION_STATE",
+        "checks": 224,
+        "failures": 0
+      },
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "seconds": 4.2544447960099205,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/prison_progression_state.gd": "5e23f9f4aa7ea2f1d9311994b26fefc61638bc6d1128b2c50ffa46b673e44f30",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/prison_late_join.gd": "06c53d50b72774c54a8452c23537a389505556e6c74c9ab3251ded7c6154ce3e"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "91e52617bf5fe35828ad7e3c1d9bf8825bb1b7daaf6b4ae7d6c0aa57aa3ddf75",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 1720061,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        },
+        {
+          "pid": 1723848,
+          "executable": "/home/llm2x/Documents/EI/local/scratchpad/prison-damage-late-join-20261009/candidate02/CursedLands.x86_64",
+          "headless": true
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 1720061,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        },
+        {
+          "pid": 1723848,
+          "executable": "/home/llm2x/Documents/EI/local/scratchpad/prison-damage-late-join-20261009/candidate02/CursedLands.x86_64",
+          "headless": true
+        }
+      ]
+    },
+    {
+      "label": "candidate02-discovery-state01",
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/prison-damage-late-join-20261009/candidate02-discovery-state01/run.json",
+      "receipt_sha256": "2b1e34ba2e4c87e35cb979745f9deb5513f39cdbd5f600566d8b168aa4d7f4f3",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/prison-damage-late-join-20261009/candidate02-discovery-state01/run.log",
+      "log_sha256": "c8a568ff3ecd75e4e7009c34c56d0b18207668545bd8c41a21fda63df2c5ee6a",
+      "result": {
+        "name": "PRISON_DISCOVERY_STATE",
+        "checks": 139,
+        "failures": 0
+      },
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "seconds": 3.5039180489839055,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/prison_discovery_state.gd": "d225418eafb281cf6427addad1def300e9e2dc47e444a39730adae686e26d8c3",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/prison_late_join.gd": "06c53d50b72774c54a8452c23537a389505556e6c74c9ab3251ded7c6154ce3e"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "91e52617bf5fe35828ad7e3c1d9bf8825bb1b7daaf6b4ae7d6c0aa57aa3ddf75",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 1732699,
+          "executable": "/home/llm2x/Documents/EI/local/scratchpad/prison-damage-late-join-20261009/baseline/CursedLands.x86_64",
+          "headless": true
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 1732699,
+          "executable": "/home/llm2x/Documents/EI/local/scratchpad/prison-damage-late-join-20261009/baseline/CursedLands.x86_64",
+          "headless": true
+        },
+        {
+          "pid": 1733178,
+          "executable": "/home/llm2x/Documents/EI/local/scratchpad/prison-damage-late-join-20261009/candidate02/CursedLands.x86_64",
+          "headless": true
+        }
+      ]
+    },
+    {
+      "label": "candidate02-alarm-net01",
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/prison-damage-late-join-20261009/candidate02-alarm-net01/run.json",
+      "receipt_sha256": "9f2a1a1145210233a3938ce69adf196859b729453cb8113cbd6fde8f1b4502c1",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/prison-damage-late-join-20261009/candidate02-alarm-net01/run.log",
+      "log_sha256": "b0cf2075cc302ab02904c228a3aabf37b27bdf085403c280f7926699b9a8ef1c",
+      "result": {
+        "name": "PRISON_ALARM_LATE_JOIN",
+        "checks": 75,
+        "failures": 0
+      },
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer.",
+        "WARNING: LanDiscovery: port 27016 is in use; this game is not listed on the local network."
+      ],
+      "seconds": 90.86689809901873,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/prison_alarm_late_join.gd": "a723d2ccda49acac5c3ffb196bcc97b9f9ab8ae3b52cd2a6fa2406cb72fcf19e",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_traps_net.gd": "467645c27cbfe2ce9130f22fe4ac7d68edfdf7e57a867685e212cff480fb35d4"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "91e52617bf5fe35828ad7e3c1d9bf8825bb1b7daaf6b4ae7d6c0aa57aa3ddf75",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 1732699,
+          "executable": "/home/llm2x/Documents/EI/local/scratchpad/prison-damage-late-join-20261009/baseline/CursedLands.x86_64",
+          "headless": true
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 1734854,
+          "executable": "/home/llm2x/Documents/EI/local/scratchpad/prison-damage-late-join-20261009/candidate02/CursedLands.x86_64",
+          "headless": true
+        },
+        {
+          "pid": 1735163,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ]
+    }
+  ],
+  "qualified_check_total": 918,
+  "qualified_failure_total": 0,
+  "early_native_vs_candidate_exact_parity": {
+    "normalization": "Remove only VTriger#0#76#RemakeParticipants rows; compare every other phase field and complete serialized native rows with exact equality (no float tolerance).",
+    "phases": [
+      {
+        "phase": "after_startup",
+        "native_rows": 22,
+        "exact_equality": true,
+        "canonical_json_sha256": "20cccf8bfef7eec2818e0339dd91a6feeb15a65ad75a78c3671dcdf6abe8034d"
+      },
+      {
+        "phase": "after_join",
+        "native_rows": 22,
+        "exact_equality": true,
+        "canonical_json_sha256": "5e8c1a667349668804086a97f2f5a27e63638728a8ed6f8425467a0cc10dadf3"
+      },
+      {
+        "phase": "VCheck#0#86",
+        "native_rows": 22,
+        "exact_equality": true,
+        "canonical_json_sha256": "291b3d54562aac130fbba96c0c4a0fa5f51ee5b8ed3bcbfef86ce14bb440a11d"
+      },
+      {
+        "phase": "VCheck#0#87",
+        "native_rows": 22,
+        "exact_equality": true,
+        "canonical_json_sha256": "90d3369151334ac6e1749cec70ce379d2c917b05e01d9323c80cbe5209792d28"
+      },
+      {
+        "phase": "VCheck#0#88",
+        "native_rows": 22,
+        "exact_equality": true,
+        "canonical_json_sha256": "f3dd57a3118079f7061b8174ba92d16ab3f1ab2f006fdd837d8fb502f355b8af"
+      },
+      {
+        "phase": "VCheck#0#115",
+        "native_rows": 22,
+        "exact_equality": true,
+        "canonical_json_sha256": "69e757039f7863f4eb25ae4d5664437525765f92e98cbc6df025fbc8820009cc"
+      },
+      {
+        "phase": "VCheck#0#116",
+        "native_rows": 22,
+        "exact_equality": true,
+        "canonical_json_sha256": "19ea4140299a42694ce287a8ab98dab30cced900d1abf4f552ed98efd45d88be"
+      },
+      {
+        "phase": "VCheck#0#117",
+        "native_rows": 22,
+        "exact_equality": true,
+        "canonical_json_sha256": "f075b995008214b1f7e4c18f0f33bdbe6318c245c5f2b424107798533415b384"
+      },
+      {
+        "phase": "VCheck#0#118",
+        "native_rows": 22,
+        "exact_equality": true,
+        "canonical_json_sha256": "bad36467552387bc7cd78e63c66f200da5015984f5650d4af8c535afea63abda"
+      },
+      {
+        "phase": "VCheck#0#119",
+        "native_rows": 22,
+        "exact_equality": true,
+        "canonical_json_sha256": "a09036fde9a0a3c02d373443e3208224bffe727496c7dc32cd9c155d3b86039e"
+      },
+      {
+        "phase": "VCheck#0#120",
+        "native_rows": 22,
+        "exact_equality": true,
+        "canonical_json_sha256": "ddbd9ea1296edbc6bef2e71a8a92f7fb8e78c9a3c85f793ab22ced4f06f1b567"
+      },
+      {
+        "phase": "VCheck#0#121",
+        "native_rows": 22,
+        "exact_equality": true,
+        "canonical_json_sha256": "1d46086b5ef3bff1ff7bdbea30b17f5939c81c5944ff5e17eda9302551fad1df"
+      },
+      {
+        "phase": "VCheck#0#122",
+        "native_rows": 22,
+        "exact_equality": true,
+        "canonical_json_sha256": "4c83ead8c7136dbfeeca3d745ad66cdf500cdf6e926653b8523de3863eae6010"
+      },
+      {
+        "phase": "native_dead_cadence",
+        "native_rows": 22,
+        "exact_equality": true,
+        "canonical_json_sha256": "eeaa6d082c9ef3675d78a5230f680507f33e1b1de551abd2fe07099402b17e00"
+      },
+      {
+        "phase": "independent_cooldowns",
+        "native_rows": 22,
+        "exact_equality": true,
+        "canonical_json_sha256": "0c8b2bc42ffde8981911c76300f166489adfd323d1855ad427871880f48f415a"
+      }
+    ],
+    "actual_disconnected_follower": {
+      "exact_equality": true,
+      "canonical_json_sha256": "2c468add05c147dc7223ebda5d00552c3b85b19b0010d70909485191b587155c"
+    },
+    "recorded_native_vm_actions": {
+      "exact_equality": true,
+      "count": 8,
+      "canonical_json_sha256": "c416ec71c07ea4c7eecdf0f59051284c52d0c1d836c5f31ee26ab4d7d17b1fe1",
+      "evidence": "/home/llm2x/Documents/EI/local/scratchpad/prison-damage-late-join-20261009/candidate02-state01/prison-damage-state.json"
+    }
+  },
+  "coverage": [
+    "Actual mounted unmodified WorldScript startup; real ENet early and late arrival; native InflictDamage and Sleep for all eleven authored walkable trigger locations.",
+    "Staggered real host/guest cooldowns: one actor entering or rearming cannot reset, consume or share another actor's pending Sleep.",
+    "Real dead-actor native rearm, actual disconnect retaining an AI follower, reconnect reclaiming the same actor, two real host-only Session loads, resave while absent, and rejoin binding the identical sleeping instance.",
+    "Final guest damage/position delivered through real ENet; both peers finish their queued native spell audio before fixture teardown.",
+    "Source mutation controls (each of 24 definitions, exact startup call and three object bindings), campaign/zone/LMP scope and independent alarm admission.",
+    "Controlled VM fixtures for exact absent frames/timers, stable identity across recycled UID, legacy recovery, immutable recipient-specific solo projection and no duplicate native cycles.",
+    "Existing alarm state/pursuit traces and actual reinforcement MOB/guard dispatch after repeated absent Session reloads; existing shared discoveries and route progression controls."
+  ],
+  "excluded_diagnostics": {
+    "baseline-early02": {
+      "label": "baseline-early02",
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/prison-damage-late-join-20261009/baseline-early02/run.json",
+      "receipt_sha256": "290a0041b204100840bbcab88f06d45cfe8af4fadfce54afedec8cb696ca0698",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/prison-damage-late-join-20261009/baseline-early02/run.log",
+      "log_sha256": "de56178bd1d95eb85eb6e6cd087c10a265597b618e144a37a58fa45606e51725",
+      "result": null,
+      "return_code": -15,
+      "termination_reason": "script error",
+      "errors": [
+        "SCRIPT ERROR: Parse Error: Cannot infer the type of \"leader\" variable because the value doesn't have a set type.",
+        "ERROR: Failed to load script \"/home/llm2x/Documents/EI/local/scratchpad/prison-damage-late-join-20261009/baseline-early02/tool-source.gd\" with error \"Parse error\".",
+        "ERROR: Required object \"rp_child\" is null."
+      ],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "seconds": 1.8156838190043345,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/prison_damage_late_join.gd": "9e0e48f8c5ed4adac0c2c00307865b7db0f4ba21b9b5fe41cbdd8a4f17eb5278",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_traps_net.gd": "467645c27cbfe2ce9130f22fe4ac7d68edfdf7e57a867685e212cff480fb35d4"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "07e9b1b17d6fb13f51244d027082a1729be06db6f50597e0e2109123dc8a9418",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "other_processes_at_start": [],
+      "other_processes_at_end": []
+    },
+    "candidate01-state01": {
+      "label": "candidate01-state01",
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/prison-damage-late-join-20261009/candidate01-state01/run.json",
+      "receipt_sha256": "4c966f4a40692b08cfe4dd60276bf03c1dc628c8b84ed9f83db84941c30a8d46",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/prison-damage-late-join-20261009/candidate01-state01/run.log",
+      "log_sha256": "a0c015eae8cc9ba7d71a71efab03512e5b1f134dd30e39f20aab172f15b4b611",
+      "result": {
+        "name": "PRISON_DAMAGE_STATE",
+        "checks": 165,
+        "failures": 1
+      },
+      "return_code": 1,
+      "termination_reason": null,
+      "errors": [
+        "FAIL present disconnected follower retains complete native damage and cooldown trace"
+      ],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "seconds": 4.254676080949139,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/prison_damage_state.gd": "9ec11bd2d56e24673172c60dbc1322caee8c8c27d4609627ddc1def3bd49f0c2"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "6110e466f823519b54f8402e494d2c535beaff684661c3355e2cb9d779ef77d7",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 1720061,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 1720061,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        }
+      ]
+    },
+    "candidate02-early-reload01": {
+      "label": "candidate02-early-reload01",
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/prison-damage-late-join-20261009/candidate02-early-reload01/run.json",
+      "receipt_sha256": "3ec444125916be87db1db8566d4f0220c0704ac6a67d3c9f2ea459552039379c",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/prison-damage-late-join-20261009/candidate02-early-reload01/run.log",
+      "log_sha256": "940b41fbc1dea439f2714d61755894e12c18160a3597a03c8b1e09c2bb6edc1a",
+      "result": {
+        "name": "PRISON_DAMAGE_LATE_JOIN",
+        "checks": 105,
+        "failures": 0
+      },
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [
+        "ERROR: 1 resources still in use at exit (run with --verbose for details)."
+      ],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer.",
+        "WARNING: 3 ObjectDB instances were leaked at exit (run with `--verbose` for details)."
+      ],
+      "seconds": 61.55369451100705,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/prison_damage_late_join.gd": "11d6fa430c9245e8278c195e3188b0dc7f79c486411f32f4a2c55eeea4c848ff",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_traps_net.gd": "467645c27cbfe2ce9130f22fe4ac7d68edfdf7e57a867685e212cff480fb35d4"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "91e52617bf5fe35828ad7e3c1d9bf8825bb1b7daaf6b4ae7d6c0aa57aa3ddf75",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 1720061,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        }
+      ],
+      "other_processes_at_end": []
+    },
+    "candidate02-late-reload01": {
+      "label": "candidate02-late-reload01",
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/prison-damage-late-join-20261009/candidate02-late-reload01/run.json",
+      "receipt_sha256": "22d66f13c70f6e6dae0cb714021d91429293fb4aa30fe20677badb1e27ef127d",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/prison-damage-late-join-20261009/candidate02-late-reload01/run.log",
+      "log_sha256": "bc5cad56b090d1bb31be8acec3858c9d7b2808fbd14f1aa5991632d9c5e989d9",
+      "result": {
+        "name": "PRISON_DAMAGE_LATE_JOIN",
+        "checks": 105,
+        "failures": 0
+      },
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [
+        "ERROR: 1 resources still in use at exit."
+      ],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer.",
+        "WARNING: 3 ObjectDB instances were leaked at exit (run with `--verbose` for details)."
+      ],
+      "seconds": 62.057935906981584,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/prison_damage_late_join.gd": "11d6fa430c9245e8278c195e3188b0dc7f79c486411f32f4a2c55eeea4c848ff",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_traps_net.gd": "467645c27cbfe2ce9130f22fe4ac7d68edfdf7e57a867685e212cff480fb35d4"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "91e52617bf5fe35828ad7e3c1d9bf8825bb1b7daaf6b4ae7d6c0aa57aa3ddf75",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 1726028,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 1728810,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        }
+      ]
+    }
+  },
+  "diagnostic_explanations": {
+    "baseline-early02": "Fixture-only GDScript type inference error before checks; corrected the leader variable to GameUnit. Retained, excluded.",
+    "candidate01-state01": "Meaningful candidate failure: existing alarm resolver held a disconnected but still-present damage actor. Candidate02 adds only damage-family stable orphan resolution; the same 165 state checks then pass.",
+    "candidate02-early-reload01 and candidate02-late-reload01": "Both 105 behavioral assertions pass, but immediate teardown after the final native fireball retained one SpellSounds delayed callback/self-reference (verbose names spell_sounds.gd). These are not clean acceptance runs. Final fixture additionally synchronizes damage and lets normal audio callbacks complete, then passes cleanly; no audio production changes or callback clearing were used."
+  },
+  "limits": [
+    "Headless gl_compatibility functional qualification only; positions and native VM ticks are controlled, unrelated AI/combat paused. This is not a full physical prison playthrough, visual acceptance or a performance result.",
+    "Actual damage/death/spell invocation is exercised; world spell-flight simulation and full reward economy are outside this prepared route.",
+    "Solo return is qualified at existing co-op VM projection/restore level with controlled actors, not an additional complete client-save-to-solo playthrough.",
+    "Original gz19h only; no claim that unrelated original, LiA or LMP quests are newly solved.",
+    "Recorded overlap with other headless/rendered engines. One alarm run reports LAN discovery port 27016 busy; its private ENet port and all 75 checks pass. No LAN listing acceptance.",
+    "Known screen-space AA availability warning under headless gl_compatibility retained. Qualified runs have no ERROR or failed assertions.",
+    "Immediate audio teardown with a pending fireball callback remains a separate existing lifetime lead; production spell/audio files were not modified."
+  ],
+  "delivery": "The five implementation/fixture files and this receipt are committed together. Delivered Linux/Windows .2 packages remain at e2e7e0a; no installation, publication or user-save changes.",
+  "root_review": {
+    "qualification_receipt": "/home/llm2x/Documents/EI/local/scratchpad/prison-damage-late-join-20261009/qualification.json",
+    "qualification_receipt_sha256": "2f4f3ba29df000716ff0d76254119823f0f5e3dabe179feae160410922ae7f94",
+    "source_diff_reviewed": true,
+    "current_production_and_fixture_hashes_match": true,
+    "all_eight_qualified_log_and_receipt_hashes_verified": true,
+    "exact_native_trace_and_fifteen_phase_comparisons_independently_recomputed": true,
+    "scope": "Original gz19h individual trap registration/reload; full physical routes and platform acceptance remain open."
+  }
+}
