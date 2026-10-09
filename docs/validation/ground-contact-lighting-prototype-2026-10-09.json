@@ -1,0 +1,3107 @@
+{
+  "status": "Scratch lighting prototypes; not a production acceptance or shipped build.",
+  "scope": "Procedural terrain detail, rain profiles/highlights, native footprint normals/interpolated compression and original-material fragment normal response.",
+  "production_baseline": "e2e7e0a frozen Windows/Linux .2 stage; only contact shader and shared detail_nm binding differ in these prototypes.",
+  "builds": {
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/candidate01": {
+      "export": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/candidate01/export.json",
+        "sha256": "a8443ec3191588cd6a5e58654555888fcdf2b1c8275601fcf9884f0c0e3bdc56"
+      },
+      "source_files_verified": 712,
+      "changed_from_qualified_linux": [
+        "src/game/fx/ground_contact_shader.gd",
+        "src/game/fx/ground_surface_data.gd"
+      ],
+      "binary_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e",
+        "CursedLands.pck": "668ebdc9450e445ae95d06a6b3e33e466bf303fff7c18254cd8872991a6f58d6"
+      }
+    },
+    "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/tracks/candidate01": {
+      "export": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/tracks/candidate01/export.json",
+        "sha256": "229485d33e3c45c61f77460d5c9ccf7530c352eee3828f948284c0b8ae857d5f"
+      },
+      "source_files_verified": 712,
+      "changed_from_qualified_linux": [
+        "src/game/fx/ground_contact_shader.gd",
+        "src/game/fx/ground_surface_data.gd"
+      ],
+      "binary_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e",
+        "CursedLands.pck": "9e34d5a8af341ae7ead4489f1025c76fdca28a8b8cc3ad06d3afb0c20fb1f5a2"
+      }
+    }
+  },
+  "sources": {
+    "ground_contact_shader.gd": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/ground_contact_shader.gd",
+      "sha256": "a7869f34532825123a69e988bb010a285c833815b7cf959fcf6696d0c6b62947"
+    },
+    "ground_surface_data.gd": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/ground_surface_data.gd",
+      "sha256": "a6a35bdebb9189e569a5da6483f0d974675d7c14ffb1fbc204f48a22db51627d"
+    },
+    "ground_contact_shader.diff": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/ground_contact_shader.diff",
+      "sha256": "604d6ce4b3fca25c075a63b1fcebfa111acc596ec0b9ad3bd37fce2ec3af0ea1"
+    },
+    "tracks/ground_contact_shader.gd": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/tracks/ground_contact_shader.gd",
+      "sha256": "3a10008f4b3a4e87f2efca12a86dd873b7c6e359be28f67534cffa4e4953ed93"
+    },
+    "tracks/ground_contact_shader.diff": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/tracks/ground_contact_shader.diff",
+      "sha256": "7435d045cd0e7a55156a6f1507fb7eefac8881589ae5a4fef2f6f130d808295b"
+    },
+    "tracks/full_surface_probe.gd": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/tracks/full_surface_probe.gd",
+      "sha256": "60010d4a65eea691d09ec47a65b1cae6c1a7667de8586a30e050fd65feee296e"
+    },
+    "wet_scene_probe.gd": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/wet_scene_probe.gd",
+      "sha256": "03497c6d8f9f8e83d42a65c62b8b704f7d6f46fb1035bb16877edbf977a515fd"
+    },
+    "track_scene_probe.gd": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/track_scene_probe.gd",
+      "sha256": "c4b85b4ccbb95e884e25734a01a1182ecb8010187c664b28f8d1f92253cc0245"
+    }
+  },
+  "runs": {
+    "full-surface-candidate01-forward01": {
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-candidate01-forward01/run.json",
+        "sha256": "a6d66a0aa1e62381c58c9033e9ce8f623604f49f14e51e17e9eb40a1b885f24f"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-candidate01-forward01/ground-contact-relief.json",
+        "sha256": "cea48a1acdb3c30796659bf2c6cfed786be65d50f26d8f52f5d05a1a9b2073e1"
+      },
+      "executed_source": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-candidate01-forward01/tool-source.gd",
+        "sha256": "d610aa38b0bef87cde948ace30f03678210ca8299d075eb3a847d3298ee0e908"
+      },
+      "pck_sha256": "668ebdc9450e445ae95d06a6b3e33e466bf303fff7c18254cd8872991a6f58d6",
+      "checks": 243,
+      "failures": 1,
+      "return_code": 1,
+      "engine_errors": [],
+      "strict_assertions": [
+        "FAIL painted-azimuth-0 strict normal parity/control {\"active_pixels\":64516,\"azimuth\":0.0,\"camera_side\":\"above\",\"component_tolerance\":0.002,\"constant_atlas\":false,\"detail\":true,\"failure_examples\":[[128,82]],\"inactive_pixels\":0,\"label\":\"painted-azimuth-0\",\"map\":\"bz2g\",\"materials\":true,\"normal_failures\":1,\"point\":[8.35000038146973,13.4499998092651],\"projection\":\"orthographic\",\"raster_holes\":0,\"triangles\":32768}"
+      ],
+      "warnings": [],
+      "verified_capture_count": 40,
+      "foreign_rendering_observed": false,
+      "rows": [
+        {
+          "active_pixels": 64516,
+          "azimuth": 0.0,
+          "camera_side": "above",
+          "component_tolerance": 0.002,
+          "constant_atlas": false,
+          "contact_wet_pixels": 64516,
+          "detail": true,
+          "failure_examples": [
+            [
+              128,
+              82
+            ]
+          ],
+          "inactive_pixels": 0,
+          "label": "painted-azimuth-0",
+          "map": "bz2g",
+          "materials": true,
+          "native_procedural_response_pixels": 2849,
+          "native_wet_pixels": 64516,
+          "normal_failures": 1,
+          "point": [
+            8.35000038146973,
+            13.4499998092651
+          ],
+          "projection": "orthographic",
+          "raster_holes": 0,
+          "triangles": 32768,
+          "visible_native_rotations": {
+            "0": 11043,
+            "1": 23345,
+            "2": 21480,
+            "3": 8648
+          },
+          "wet_profile": {
+            "active_pixels": 64516,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 0,
+            "normal_failures": 0,
+            "raster_holes": 0
+          }
+        },
+        {
+          "active_pixels": 64516,
+          "azimuth": 3.14159265358979,
+          "camera_side": "above",
+          "component_tolerance": 0.002,
+          "constant_atlas": false,
+          "contact_wet_pixels": 64516,
+          "detail": true,
+          "failure_examples": [],
+          "inactive_pixels": 0,
+          "label": "painted-azimuth-pi",
+          "map": "bz2g",
+          "materials": true,
+          "native_wet_pixels": 64516,
+          "normal_failures": 0,
+          "point": [
+            8.35000038146973,
+            13.4499998092651
+          ],
+          "projection": "orthographic",
+          "raster_holes": 0,
+          "triangles": 32768,
+          "wet_profile": {
+            "active_pixels": 64516,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 0,
+            "normal_failures": 0,
+            "raster_holes": 0
+          }
+        },
+        {
+          "active_pixels": 64516,
+          "azimuth": 0.0,
+          "camera_side": "above",
+          "component_tolerance": 0.002,
+          "constant_atlas": false,
+          "contact_wet_pixels": 64516,
+          "detail": true,
+          "failure_examples": [],
+          "inactive_pixels": 0,
+          "label": "painted-perspective",
+          "map": "bz2g",
+          "materials": true,
+          "native_wet_pixels": 64516,
+          "normal_failures": 0,
+          "point": [
+            8.35000038146973,
+            13.4499998092651
+          ],
+          "projection": "perspective",
+          "raster_holes": 0,
+          "triangles": 32768,
+          "wet_profile": {
+            "active_pixels": 64516,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 0,
+            "normal_failures": 0,
+            "raster_holes": 0
+          }
+        },
+        {
+          "active_pixels": 64516,
+          "azimuth": 0.0,
+          "camera_side": "below",
+          "component_tolerance": 0.002,
+          "constant_atlas": false,
+          "contact_wet_pixels": 64516,
+          "detail": true,
+          "failure_examples": [],
+          "inactive_pixels": 0,
+          "label": "painted-below",
+          "map": "bz2g",
+          "materials": true,
+          "native_wet_pixels": 64516,
+          "normal_failures": 0,
+          "point": [
+            8.35000038146973,
+            13.4499998092651
+          ],
+          "projection": "orthographic",
+          "raster_holes": 0,
+          "triangles": 32768,
+          "wet_profile": {
+            "active_pixels": 64516,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 0,
+            "normal_failures": 0,
+            "raster_holes": 0
+          }
+        },
+        {
+          "active_pixels": 64516,
+          "azimuth": 0.0,
+          "camera_side": "below",
+          "component_tolerance": 0.002,
+          "constant_atlas": false,
+          "contact_wet_pixels": 64516,
+          "detail": false,
+          "failure_examples": [
+            [
+              1,
+              1
+            ],
+            [
+              2,
+              1
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              1
+            ],
+            [
+              5,
+              1
+            ],
+            [
+              6,
+              1
+            ],
+            [
+              7,
+              1
+            ],
+            [
+              8,
+              1
+            ]
+          ],
+          "inactive_pixels": 0,
+          "label": "detail-off-below",
+          "map": "bz2g",
+          "materials": true,
+          "native_wet_pixels": 64516,
+          "normal_failures": 64516,
+          "point": [
+            8.35000038146973,
+            13.4499998092651
+          ],
+          "projection": "orthographic",
+          "raster_holes": 0,
+          "triangles": 32768,
+          "wet_profile": {
+            "active_pixels": 64516,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 0,
+            "normal_failures": 0,
+            "raster_holes": 0
+          }
+        },
+        {
+          "active_pixels": 64516,
+          "azimuth": 0.0,
+          "camera_side": "above",
+          "component_tolerance": 0.002,
+          "constant_atlas": false,
+          "contact_wet_pixels": 64516,
+          "detail": false,
+          "failure_examples": [],
+          "inactive_pixels": 0,
+          "label": "detail-off",
+          "map": "bz2g",
+          "materials": true,
+          "native_wet_pixels": 64516,
+          "normal_failures": 0,
+          "point": [
+            8.35000038146973,
+            13.4499998092651
+          ],
+          "projection": "orthographic",
+          "raster_holes": 0,
+          "triangles": 32768,
+          "wet_profile": {
+            "active_pixels": 64516,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 0,
+            "normal_failures": 0,
+            "raster_holes": 0
+          }
+        },
+        {
+          "active_pixels": 64516,
+          "azimuth": 0.0,
+          "camera_side": "above",
+          "component_tolerance": 0.002,
+          "constant_atlas": false,
+          "detail": true,
+          "failure_examples": [],
+          "inactive_pixels": 0,
+          "label": "materials-off",
+          "map": "bz2g",
+          "materials": false,
+          "normal_failures": 0,
+          "point": [
+            8.35000038146973,
+            13.4499998092651
+          ],
+          "projection": "orthographic",
+          "raster_holes": 0,
+          "triangles": 32768
+        },
+        {
+          "active_pixels": 64516,
+          "azimuth": 0.0,
+          "camera_side": "above",
+          "component_tolerance": 0.002,
+          "constant_atlas": true,
+          "contact_wet_pixels": 64516,
+          "detail": true,
+          "failure_examples": [],
+          "inactive_pixels": 0,
+          "label": "constant-art",
+          "map": "bz2g",
+          "materials": true,
+          "native_wet_pixels": 64516,
+          "normal_failures": 0,
+          "point": [
+            8.35000038146973,
+            13.4499998092651
+          ],
+          "projection": "orthographic",
+          "raster_holes": 0,
+          "triangles": 32768,
+          "wet_profile": {
+            "active_pixels": 64516,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 0,
+            "normal_failures": 0,
+            "raster_holes": 0
+          }
+        }
+      ]
+    },
+    "full-surface-wet-scene-forward01": {
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-wet-scene-forward01/run.json",
+        "sha256": "ababc9a122558dd0d35f43cfdeb8889fa0fabc253505267eaab8379d2797b7ec"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-wet-scene-forward01/ground-contact-relief-scene.json",
+        "sha256": "e098e26ce243a2710ed6f40362b24f2a45e7ba5ab53ec38e3efea1fc9759c237"
+      },
+      "executed_source": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-wet-scene-forward01/tool-source.gd",
+        "sha256": "03497c6d8f9f8e83d42a65c62b8b704f7d6f46fb1035bb16877edbf977a515fd"
+      },
+      "pck_sha256": "668ebdc9450e445ae95d06a6b3e33e466bf303fff7c18254cd8872991a6f58d6",
+      "checks": 63,
+      "failures": 0,
+      "return_code": 0,
+      "engine_errors": [],
+      "strict_assertions": [],
+      "warnings": [],
+      "verified_capture_count": 21,
+      "foreign_rendering_observed": true,
+      "rows": [
+        {
+          "band": {
+            "changed_pixels": 18214,
+            "mean_byte_delta": 13.0,
+            "over_two_bytes": 15306,
+            "peak_byte_delta": 61,
+            "pixels": 20676
+          },
+          "held": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 480000
+          },
+          "light": "sun",
+          "outside_band": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 459324
+          },
+          "restored": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 480000
+          },
+          "upper": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 132976
+          }
+        },
+        {
+          "band_highlight": {
+            "changed_pixels": 13791,
+            "mean_byte_delta": 3.31679241632811,
+            "over_two_bytes": 10324,
+            "peak_byte_delta": 10,
+            "pixels": 20676
+          },
+          "controlled_cover_height": -10000.0,
+          "light": "rain-exposed",
+          "outside_band": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 459324
+          },
+          "reflection_normal": "(0.0, 1.0, 0.0)",
+          "sun_direction": "(-0.557086, 0.371391, -0.742781)",
+          "wetness": 0.8
+        },
+        {
+          "band_highlight": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 20676
+          },
+          "controlled_cover_height": 10000.0,
+          "light": "rain-covered",
+          "outside_band": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 459324
+          },
+          "reflection_normal": "(0.0, 1.0, 0.0)",
+          "sun_direction": "(-0.557086, 0.371391, -0.742781)",
+          "wetness": 0.8
+        },
+        {
+          "band": {
+            "changed_pixels": 17705,
+            "mean_byte_delta": 23.5006771135616,
+            "over_two_bytes": 15128,
+            "peak_byte_delta": 58,
+            "pixels": 20676
+          },
+          "held": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 480000
+          },
+          "light": "packed-point",
+          "outside_band": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 459324
+          },
+          "restored": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 480000
+          },
+          "upper": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 132976
+          }
+        },
+        {
+          "band": {
+            "changed_pixels": 16718,
+            "mean_byte_delta": 3.4298703811182,
+            "over_two_bytes": 12899,
+            "peak_byte_delta": 14,
+            "pixels": 20676
+          },
+          "held": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 480000
+          },
+          "light": "local-light",
+          "light_contribution": {
+            "changed_pixels": 18995,
+            "mean_byte_delta": 12.9291932675566,
+            "over_two_bytes": 16811,
+            "peak_byte_delta": 28,
+            "pixels": 20676
+          },
+          "outside_band": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 459324
+          },
+          "restored": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 480000
+          },
+          "upper": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 132976
+          }
+        }
+      ]
+    },
+    "full-surface-tracks-original-forward01": {
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-tracks-original-forward01/run.json",
+        "sha256": "a2ebbdd5b6132d34c4c63eef630b9ed87db6242fa599696115da92ebe25f734d"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-tracks-original-forward01/ground-contact-relief.json",
+        "sha256": "ccb5742951ba1e96ebfd5964c2d4bc19a0bf179bce0d2b051f86a4b91f41b791"
+      },
+      "executed_source": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-tracks-original-forward01/tool-source.gd",
+        "sha256": "95c9df8dee10578ca72e9fae414d3f0db3cc02e3a19c135d8a6a666e1bc56ab4"
+      },
+      "pck_sha256": "9e34d5a8af341ae7ead4489f1025c76fdca28a8b8cc3ad06d3afb0c20fb1f5a2",
+      "checks": 247,
+      "failures": 0,
+      "return_code": 0,
+      "engine_errors": [],
+      "strict_assertions": [],
+      "warnings": [],
+      "verified_capture_count": 42,
+      "foreign_rendering_observed": true,
+      "rows": [
+        {
+          "active_pixels": 64516,
+          "azimuth": 0.0,
+          "camera_side": "above",
+          "component_tolerance": 0.002,
+          "constant_atlas": false,
+          "contact_wet_pixels": 64516,
+          "detail": true,
+          "failure_examples": [],
+          "inactive_pixels": 0,
+          "label": "painted-azimuth-0",
+          "map": "bz2g",
+          "materials": true,
+          "native_procedural_response_pixels": 2849,
+          "native_wet_pixels": 64516,
+          "normal_failures": 0,
+          "point": [
+            8.35000038146973,
+            13.4499998092651
+          ],
+          "projection": "orthographic",
+          "raster_holes": 0,
+          "triangles": 32768,
+          "visible_native_rotations": {
+            "0": 11043,
+            "1": 23345,
+            "2": 21480,
+            "3": 8648
+          },
+          "wet_profile": {
+            "active_pixels": 64516,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 0,
+            "normal_failures": 0,
+            "raster_holes": 0
+          }
+        },
+        {
+          "active_pixels": 64516,
+          "azimuth": 3.14159265358979,
+          "camera_side": "above",
+          "component_tolerance": 0.002,
+          "constant_atlas": false,
+          "contact_wet_pixels": 64516,
+          "detail": true,
+          "failure_examples": [],
+          "inactive_pixels": 0,
+          "label": "painted-azimuth-pi",
+          "map": "bz2g",
+          "materials": true,
+          "native_wet_pixels": 64516,
+          "normal_failures": 0,
+          "point": [
+            8.35000038146973,
+            13.4499998092651
+          ],
+          "projection": "orthographic",
+          "raster_holes": 0,
+          "triangles": 32768,
+          "wet_profile": {
+            "active_pixels": 64516,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 0,
+            "normal_failures": 0,
+            "raster_holes": 0
+          }
+        },
+        {
+          "active_pixels": 64516,
+          "azimuth": 0.0,
+          "camera_side": "above",
+          "component_tolerance": 0.002,
+          "constant_atlas": false,
+          "contact_wet_pixels": 64516,
+          "detail": true,
+          "failure_examples": [],
+          "inactive_pixels": 0,
+          "label": "painted-perspective",
+          "map": "bz2g",
+          "materials": true,
+          "native_wet_pixels": 64516,
+          "normal_failures": 0,
+          "point": [
+            8.35000038146973,
+            13.4499998092651
+          ],
+          "projection": "perspective",
+          "raster_holes": 0,
+          "triangles": 32768,
+          "wet_profile": {
+            "active_pixels": 64516,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 0,
+            "normal_failures": 0,
+            "raster_holes": 0
+          }
+        },
+        {
+          "active_pixels": 64516,
+          "azimuth": 0.0,
+          "camera_side": "below",
+          "component_tolerance": 0.002,
+          "constant_atlas": false,
+          "contact_wet_pixels": 64516,
+          "detail": true,
+          "failure_examples": [],
+          "inactive_pixels": 0,
+          "label": "painted-below",
+          "map": "bz2g",
+          "materials": true,
+          "native_wet_pixels": 64516,
+          "normal_failures": 0,
+          "point": [
+            8.35000038146973,
+            13.4499998092651
+          ],
+          "projection": "orthographic",
+          "raster_holes": 0,
+          "triangles": 32768,
+          "wet_profile": {
+            "active_pixels": 64516,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 0,
+            "normal_failures": 0,
+            "raster_holes": 0
+          }
+        },
+        {
+          "active_pixels": 64516,
+          "azimuth": 0.0,
+          "camera_side": "below",
+          "component_tolerance": 0.002,
+          "constant_atlas": false,
+          "contact_wet_pixels": 64516,
+          "detail": false,
+          "failure_examples": [],
+          "inactive_pixels": 0,
+          "label": "detail-off-below",
+          "map": "bz2g",
+          "materials": true,
+          "native_wet_pixels": 64516,
+          "normal_failures": 0,
+          "point": [
+            8.35000038146973,
+            13.4499998092651
+          ],
+          "projection": "orthographic",
+          "raster_holes": 0,
+          "triangles": 32768,
+          "wet_profile": {
+            "active_pixels": 64516,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 0,
+            "normal_failures": 0,
+            "raster_holes": 0
+          }
+        },
+        {
+          "active_pixels": 64516,
+          "azimuth": 0.0,
+          "camera_side": "above",
+          "component_tolerance": 0.002,
+          "constant_atlas": false,
+          "contact_wet_pixels": 64516,
+          "detail": false,
+          "failure_examples": [],
+          "inactive_pixels": 0,
+          "label": "detail-off",
+          "map": "bz2g",
+          "materials": true,
+          "native_wet_pixels": 64516,
+          "normal_failures": 0,
+          "point": [
+            8.35000038146973,
+            13.4499998092651
+          ],
+          "projection": "orthographic",
+          "raster_holes": 0,
+          "triangles": 32768,
+          "wet_profile": {
+            "active_pixels": 64516,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 0,
+            "normal_failures": 0,
+            "raster_holes": 0
+          }
+        },
+        {
+          "active_pixels": 64516,
+          "azimuth": 0.0,
+          "camera_side": "above",
+          "component_tolerance": 0.002,
+          "constant_atlas": false,
+          "contact_wet_pixels": 64516,
+          "detail": true,
+          "failure_examples": [],
+          "inactive_pixels": 0,
+          "label": "materials-off",
+          "map": "bz2g",
+          "materials": false,
+          "native_wet_pixels": 64516,
+          "normal_failures": 0,
+          "point": [
+            8.35000038146973,
+            13.4499998092651
+          ],
+          "projection": "orthographic",
+          "raster_holes": 0,
+          "triangles": 32768,
+          "wet_profile": {
+            "active_pixels": 64516,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 0,
+            "normal_failures": 0,
+            "raster_holes": 0
+          }
+        },
+        {
+          "active_pixels": 64516,
+          "azimuth": 0.0,
+          "camera_side": "above",
+          "component_tolerance": 0.002,
+          "constant_atlas": true,
+          "contact_wet_pixels": 64516,
+          "detail": true,
+          "failure_examples": [],
+          "inactive_pixels": 0,
+          "label": "constant-art",
+          "map": "bz2g",
+          "materials": true,
+          "native_wet_pixels": 64516,
+          "normal_failures": 0,
+          "point": [
+            8.35000038146973,
+            13.4499998092651
+          ],
+          "projection": "orthographic",
+          "raster_holes": 0,
+          "triangles": 32768,
+          "wet_profile": {
+            "active_pixels": 64516,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 0,
+            "normal_failures": 0,
+            "raster_holes": 0
+          }
+        }
+      ]
+    },
+    "full-surface-tracks-soft-forward01": {
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-tracks-soft-forward01/run.json",
+        "sha256": "70e96bfc4268751bfecc306408262f30fcb0f7e3268f07bb67bb63d16e123969"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-tracks-soft-forward01/ground-contact-relief.json",
+        "sha256": "f77a22a1991a22696e57be2141857ec2fb932b6e4954f2abf6ffcf9dc8b1def2"
+      },
+      "executed_source": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-tracks-soft-forward01/tool-source.gd",
+        "sha256": "95c9df8dee10578ca72e9fae414d3f0db3cc02e3a19c135d8a6a666e1bc56ab4"
+      },
+      "pck_sha256": "9e34d5a8af341ae7ead4489f1025c76fdca28a8b8cc3ad06d3afb0c20fb1f5a2",
+      "checks": 1659,
+      "failures": 9,
+      "return_code": 1,
+      "engine_errors": [],
+      "strict_assertions": [
+        "FAIL painted-azimuth-0 strict native normal parity {\"active_pixels\":64515,\"azimuth\":0.0,\"camera_side\":\"above\",\"component_tolerance\":0.002,\"constant_atlas\":false,\"detail\":true,\"failure_examples\":[[171,79],[175,79],[177,79],[177,80],[177,81],[171,82],[177,82],[171,83]],\"inactive_pixels\":0,\"label\":\"painted-azimuth-0\",\"map\":\"zone11\",\"materials\":true,\"normal_failures\":93,\"point\":[148.350006103516,130.449996948242],\"projection\":\"orthographic\",\"raster_holes\":1,\"triangles\":401376}",
+        "FAIL actual terrain noise has a non-vacuous independent normal response",
+        "FAIL painted-azimuth-pi strict native normal parity {\"active_pixels\":64515,\"azimuth\":3.14159265358979,\"camera_side\":\"above\",\"component_tolerance\":0.002,\"constant_atlas\":false,\"detail\":true,\"failure_examples\":[[120,124],[110,125],[104,129],[121,129],[128,129],[115,130],[120,130],[129,131]],\"inactive_pixels\":0,\"label\":\"painted-azimuth-pi\",\"map\":\"zone11\",\"materials\":true,\"normal_failures\":82,\"point\":[148.350006103516,130.449996948242],\"projection\":\"orthographic\",\"raster_holes\":1,\"triangles\":401376}",
+        "FAIL painted-perspective strict native normal parity {\"active_pixels\":64516,\"azimuth\":0.0,\"camera_side\":\"above\",\"component_tolerance\":0.002,\"constant_atlas\":false,\"detail\":true,\"failure_examples\":[[182,81],[170,83],[166,88],[167,91],[175,91],[175,92],[185,92],[178,93]],\"inactive_pixels\":0,\"label\":\"painted-perspective\",\"map\":\"zone11\",\"materials\":true,\"normal_failures\":46,\"point\":[148.350006103516,130.449996948242],\"projection\":\"perspective\",\"raster_holes\":0,\"triangles\":401376}",
+        "FAIL painted-below strict native normal parity {\"active_pixels\":64515,\"azimuth\":0.0,\"camera_side\":\"below\",\"component_tolerance\":0.002,\"constant_atlas\":false,\"detail\":true,\"failure_examples\":[[135,124],[133,125],[135,125],[134,128],[134,129],[129,133],[156,133],[129,134]],\"inactive_pixels\":0,\"label\":\"painted-below\",\"map\":\"zone11\",\"materials\":true,\"normal_failures\":67,\"point\":[148.350006103516,130.449996948242],\"projection\":\"orthographic\",\"raster_holes\":1,\"triangles\":401376}",
+        "FAIL detail-off-below strict native normal parity {\"active_pixels\":64515,\"azimuth\":0.0,\"camera_side\":\"below\",\"component_tolerance\":0.002,\"constant_atlas\":false,\"detail\":false,\"failure_examples\":[[135,124],[133,125],[135,125],[134,128],[134,129],[129,133],[156,133],[129,134]],\"inactive_pixels\":0,\"label\":\"detail-off-below\",\"map\":\"zone11\",\"materials\":true,\"normal_failures\":66,\"point\":[148.350006103516,130.449996948242],\"projection\":\"orthographic\",\"raster_holes\":1,\"triangles\":401376}",
+        "FAIL detail-off strict native normal parity {\"active_pixels\":64515,\"azimuth\":0.0,\"camera_side\":\"above\",\"component_tolerance\":0.002,\"constant_atlas\":false,\"detail\":false,\"failure_examples\":[[171,79],[175,79],[177,79],[177,80],[177,81],[171,82],[177,82],[171,83]],\"inactive_pixels\":0,\"label\":\"detail-off\",\"map\":\"zone11\",\"materials\":true,\"normal_failures\":93,\"point\":[148.350006103516,130.449996948242],\"projection\":\"orthographic\",\"raster_holes\":1,\"triangles\":401376}",
+        "FAIL materials-off strict native normal parity {\"active_pixels\":64515,\"azimuth\":0.0,\"camera_side\":\"above\",\"component_tolerance\":0.002,\"constant_atlas\":false,\"detail\":true,\"failure_examples\":[[171,79],[175,79],[177,79],[177,80],[177,81],[171,82],[177,82],[171,83]],\"inactive_pixels\":0,\"label\":\"materials-off\",\"map\":\"zone11\",\"materials\":false,\"normal_failures\":93,\"point\":[148.350006103516,130.449996948242],\"projection\":\"orthographic\",\"raster_holes\":1,\"triangles\":401376}",
+        "FAIL constant-art strict native normal parity {\"active_pixels\":64515,\"azimuth\":0.0,\"camera_side\":\"above\",\"component_tolerance\":0.002,\"constant_atlas\":true,\"detail\":true,\"failure_examples\":[[171,79],[175,79],[177,79],[177,80],[177,81],[171,82],[177,82],[171,83]],\"inactive_pixels\":0,\"label\":\"constant-art\",\"map\":\"zone11\",\"materials\":true,\"normal_failures\":93,\"point\":[148.350006103516,130.449996948242],\"projection\":\"orthographic\",\"raster_holes\":1,\"triangles\":401376}"
+      ],
+      "warnings": [],
+      "verified_capture_count": 43,
+      "foreign_rendering_observed": true,
+      "rows": [
+        {
+          "active_pixels": 64515,
+          "azimuth": 0.0,
+          "camera_side": "above",
+          "component_tolerance": 0.002,
+          "constant_atlas": false,
+          "contact_wet_pixels": 0,
+          "detail": true,
+          "failure_examples": [
+            [
+              171,
+              79
+            ],
+            [
+              175,
+              79
+            ],
+            [
+              177,
+              79
+            ],
+            [
+              177,
+              80
+            ],
+            [
+              177,
+              81
+            ],
+            [
+              171,
+              82
+            ],
+            [
+              177,
+              82
+            ],
+            [
+              171,
+              83
+            ]
+          ],
+          "inactive_pixels": 0,
+          "label": "painted-azimuth-0",
+          "map": "zone11",
+          "materials": true,
+          "native_procedural_response_pixels": 292,
+          "native_track_normal_response_pixels": 3135,
+          "native_wet_pixels": 1,
+          "normal_failures": 93,
+          "point": [
+            148.350006103516,
+            130.449996948242
+          ],
+          "projection": "orthographic",
+          "raster_holes": 1,
+          "triangles": 401376,
+          "visible_native_rotations": {
+            "0": 7880,
+            "1": 13387,
+            "2": 23305,
+            "3": 19943
+          },
+          "wet_profile": {
+            "active_pixels": 64515,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 0,
+            "normal_failures": 0,
+            "raster_holes": 1
+          }
+        },
+        {
+          "active_pixels": 64515,
+          "azimuth": 3.14159265358979,
+          "camera_side": "above",
+          "component_tolerance": 0.002,
+          "constant_atlas": false,
+          "contact_wet_pixels": 0,
+          "detail": true,
+          "failure_examples": [
+            [
+              120,
+              124
+            ],
+            [
+              110,
+              125
+            ],
+            [
+              104,
+              129
+            ],
+            [
+              121,
+              129
+            ],
+            [
+              128,
+              129
+            ],
+            [
+              115,
+              130
+            ],
+            [
+              120,
+              130
+            ],
+            [
+              129,
+              131
+            ]
+          ],
+          "inactive_pixels": 0,
+          "label": "painted-azimuth-pi",
+          "map": "zone11",
+          "materials": true,
+          "native_wet_pixels": 1,
+          "normal_failures": 82,
+          "point": [
+            148.350006103516,
+            130.449996948242
+          ],
+          "projection": "orthographic",
+          "raster_holes": 1,
+          "triangles": 401376,
+          "wet_profile": {
+            "active_pixels": 64515,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 0,
+            "normal_failures": 0,
+            "raster_holes": 1
+          }
+        },
+        {
+          "active_pixels": 64516,
+          "azimuth": 0.0,
+          "camera_side": "above",
+          "component_tolerance": 0.002,
+          "constant_atlas": false,
+          "contact_wet_pixels": 0,
+          "detail": true,
+          "failure_examples": [
+            [
+              182,
+              81
+            ],
+            [
+              170,
+              83
+            ],
+            [
+              166,
+              88
+            ],
+            [
+              167,
+              91
+            ],
+            [
+              175,
+              91
+            ],
+            [
+              175,
+              92
+            ],
+            [
+              185,
+              92
+            ],
+            [
+              178,
+              93
+            ]
+          ],
+          "inactive_pixels": 0,
+          "label": "painted-perspective",
+          "map": "zone11",
+          "materials": true,
+          "native_wet_pixels": 0,
+          "normal_failures": 46,
+          "point": [
+            148.350006103516,
+            130.449996948242
+          ],
+          "projection": "perspective",
+          "raster_holes": 0,
+          "triangles": 401376,
+          "wet_profile": {
+            "active_pixels": 64516,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 0,
+            "normal_failures": 0,
+            "raster_holes": 0
+          }
+        },
+        {
+          "active_pixels": 64515,
+          "azimuth": 0.0,
+          "camera_side": "below",
+          "component_tolerance": 0.002,
+          "constant_atlas": false,
+          "contact_wet_pixels": 0,
+          "detail": true,
+          "failure_examples": [
+            [
+              135,
+              124
+            ],
+            [
+              133,
+              125
+            ],
+            [
+              135,
+              125
+            ],
+            [
+              134,
+              128
+            ],
+            [
+              134,
+              129
+            ],
+            [
+              129,
+              133
+            ],
+            [
+              156,
+              133
+            ],
+            [
+              129,
+              134
+            ]
+          ],
+          "inactive_pixels": 0,
+          "label": "painted-below",
+          "map": "zone11",
+          "materials": true,
+          "native_wet_pixels": 1,
+          "normal_failures": 67,
+          "point": [
+            148.350006103516,
+            130.449996948242
+          ],
+          "projection": "orthographic",
+          "raster_holes": 1,
+          "triangles": 401376,
+          "wet_profile": {
+            "active_pixels": 64515,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 0,
+            "normal_failures": 0,
+            "raster_holes": 1
+          }
+        },
+        {
+          "active_pixels": 64515,
+          "azimuth": 0.0,
+          "camera_side": "below",
+          "component_tolerance": 0.002,
+          "constant_atlas": false,
+          "contact_wet_pixels": 0,
+          "detail": false,
+          "failure_examples": [
+            [
+              135,
+              124
+            ],
+            [
+              133,
+              125
+            ],
+            [
+              135,
+              125
+            ],
+            [
+              134,
+              128
+            ],
+            [
+              134,
+              129
+            ],
+            [
+              129,
+              133
+            ],
+            [
+              156,
+              133
+            ],
+            [
+              129,
+              134
+            ]
+          ],
+          "inactive_pixels": 0,
+          "label": "detail-off-below",
+          "map": "zone11",
+          "materials": true,
+          "native_wet_pixels": 1,
+          "normal_failures": 66,
+          "point": [
+            148.350006103516,
+            130.449996948242
+          ],
+          "projection": "orthographic",
+          "raster_holes": 1,
+          "triangles": 401376,
+          "wet_profile": {
+            "active_pixels": 64515,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 0,
+            "normal_failures": 0,
+            "raster_holes": 1
+          }
+        },
+        {
+          "active_pixels": 64515,
+          "azimuth": 0.0,
+          "camera_side": "above",
+          "component_tolerance": 0.002,
+          "constant_atlas": false,
+          "contact_wet_pixels": 0,
+          "detail": false,
+          "failure_examples": [
+            [
+              171,
+              79
+            ],
+            [
+              175,
+              79
+            ],
+            [
+              177,
+              79
+            ],
+            [
+              177,
+              80
+            ],
+            [
+              177,
+              81
+            ],
+            [
+              171,
+              82
+            ],
+            [
+              177,
+              82
+            ],
+            [
+              171,
+              83
+            ]
+          ],
+          "inactive_pixels": 0,
+          "label": "detail-off",
+          "map": "zone11",
+          "materials": true,
+          "native_wet_pixels": 1,
+          "normal_failures": 93,
+          "point": [
+            148.350006103516,
+            130.449996948242
+          ],
+          "projection": "orthographic",
+          "raster_holes": 1,
+          "triangles": 401376,
+          "wet_profile": {
+            "active_pixels": 64515,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 0,
+            "normal_failures": 0,
+            "raster_holes": 1
+          }
+        },
+        {
+          "active_pixels": 64515,
+          "azimuth": 0.0,
+          "camera_side": "above",
+          "component_tolerance": 0.002,
+          "constant_atlas": false,
+          "contact_wet_pixels": 0,
+          "detail": true,
+          "failure_examples": [
+            [
+              171,
+              79
+            ],
+            [
+              175,
+              79
+            ],
+            [
+              177,
+              79
+            ],
+            [
+              177,
+              80
+            ],
+            [
+              177,
+              81
+            ],
+            [
+              171,
+              82
+            ],
+            [
+              177,
+              82
+            ],
+            [
+              171,
+              83
+            ]
+          ],
+          "inactive_pixels": 0,
+          "label": "materials-off",
+          "map": "zone11",
+          "materials": false,
+          "native_wet_pixels": 1,
+          "normal_failures": 93,
+          "point": [
+            148.350006103516,
+            130.449996948242
+          ],
+          "projection": "orthographic",
+          "raster_holes": 1,
+          "triangles": 401376,
+          "wet_profile": {
+            "active_pixels": 64515,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 0,
+            "normal_failures": 0,
+            "raster_holes": 1
+          }
+        },
+        {
+          "active_pixels": 64515,
+          "azimuth": 0.0,
+          "camera_side": "above",
+          "component_tolerance": 0.002,
+          "constant_atlas": true,
+          "contact_wet_pixels": 0,
+          "detail": true,
+          "failure_examples": [
+            [
+              171,
+              79
+            ],
+            [
+              175,
+              79
+            ],
+            [
+              177,
+              79
+            ],
+            [
+              177,
+              80
+            ],
+            [
+              177,
+              81
+            ],
+            [
+              171,
+              82
+            ],
+            [
+              177,
+              82
+            ],
+            [
+              171,
+              83
+            ]
+          ],
+          "inactive_pixels": 0,
+          "label": "constant-art",
+          "map": "zone11",
+          "materials": true,
+          "native_wet_pixels": 1,
+          "normal_failures": 93,
+          "point": [
+            148.350006103516,
+            130.449996948242
+          ],
+          "projection": "orthographic",
+          "raster_holes": 1,
+          "triangles": 401376,
+          "wet_profile": {
+            "active_pixels": 64515,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 0,
+            "normal_failures": 0,
+            "raster_holes": 1
+          }
+        }
+      ]
+    },
+    "full-surface-tracks-wet-scene-forward01": {
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-tracks-wet-scene-forward01/run.json",
+        "sha256": "333f887f23dc5923a568817bf8419ba50fe40579d8ea2597fe468e0f6ac7dd9e"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-tracks-wet-scene-forward01/ground-contact-relief-scene.json",
+        "sha256": "e098e26ce243a2710ed6f40362b24f2a45e7ba5ab53ec38e3efea1fc9759c237"
+      },
+      "executed_source": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-tracks-wet-scene-forward01/tool-source.gd",
+        "sha256": "03497c6d8f9f8e83d42a65c62b8b704f7d6f46fb1035bb16877edbf977a515fd"
+      },
+      "pck_sha256": "9e34d5a8af341ae7ead4489f1025c76fdca28a8b8cc3ad06d3afb0c20fb1f5a2",
+      "checks": 63,
+      "failures": 0,
+      "return_code": 0,
+      "engine_errors": [],
+      "strict_assertions": [],
+      "warnings": [],
+      "verified_capture_count": 21,
+      "foreign_rendering_observed": true,
+      "rows": [
+        {
+          "band": {
+            "changed_pixels": 18214,
+            "mean_byte_delta": 13.0,
+            "over_two_bytes": 15306,
+            "peak_byte_delta": 61,
+            "pixels": 20676
+          },
+          "held": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 480000
+          },
+          "light": "sun",
+          "outside_band": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 459324
+          },
+          "restored": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 480000
+          },
+          "upper": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 132976
+          }
+        },
+        {
+          "band_highlight": {
+            "changed_pixels": 13791,
+            "mean_byte_delta": 3.31679241632811,
+            "over_two_bytes": 10324,
+            "peak_byte_delta": 10,
+            "pixels": 20676
+          },
+          "controlled_cover_height": -10000.0,
+          "light": "rain-exposed",
+          "outside_band": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 459324
+          },
+          "reflection_normal": "(0.0, 1.0, 0.0)",
+          "sun_direction": "(-0.557086, 0.371391, -0.742781)",
+          "wetness": 0.8
+        },
+        {
+          "band_highlight": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 20676
+          },
+          "controlled_cover_height": 10000.0,
+          "light": "rain-covered",
+          "outside_band": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 459324
+          },
+          "reflection_normal": "(0.0, 1.0, 0.0)",
+          "sun_direction": "(-0.557086, 0.371391, -0.742781)",
+          "wetness": 0.8
+        },
+        {
+          "band": {
+            "changed_pixels": 17705,
+            "mean_byte_delta": 23.5006771135616,
+            "over_two_bytes": 15128,
+            "peak_byte_delta": 58,
+            "pixels": 20676
+          },
+          "held": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 480000
+          },
+          "light": "packed-point",
+          "outside_band": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 459324
+          },
+          "restored": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 480000
+          },
+          "upper": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 132976
+          }
+        },
+        {
+          "band": {
+            "changed_pixels": 16718,
+            "mean_byte_delta": 3.4298703811182,
+            "over_two_bytes": 12899,
+            "peak_byte_delta": 14,
+            "pixels": 20676
+          },
+          "held": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 480000
+          },
+          "light": "local-light",
+          "light_contribution": {
+            "changed_pixels": 18995,
+            "mean_byte_delta": 12.9291932675566,
+            "over_two_bytes": 16811,
+            "peak_byte_delta": 28,
+            "pixels": 20676
+          },
+          "outside_band": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 459324
+          },
+          "restored": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 480000
+          },
+          "upper": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 132976
+          }
+        }
+      ]
+    },
+    "full-surface-tracks-soft-baseline01": {
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-tracks-soft-baseline01/run.json",
+        "sha256": "7085d410ad98abeb2fd6e9829a63d69d12fab90007a173556bbe26f19ddd8e23"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-tracks-soft-baseline01/ground-contact-relief.json",
+        "sha256": "46bdb457e46a1468feeb9d10b4e3ea929140568318cc305a0932e15f0025cbc4"
+      },
+      "executed_source": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-tracks-soft-baseline01/tool-source.gd",
+        "sha256": "60010d4a65eea691d09ec47a65b1cae6c1a7667de8586a30e050fd65feee296e"
+      },
+      "pck_sha256": "668ebdc9450e445ae95d06a6b3e33e466bf303fff7c18254cd8872991a6f58d6",
+      "checks": 1659,
+      "failures": 8,
+      "return_code": 1,
+      "engine_errors": [],
+      "strict_assertions": [
+        "FAIL painted-azimuth-0 strict native normal parity {\"active_pixels\":64515,\"azimuth\":0.0,\"camera_side\":\"above\",\"component_tolerance\":0.002,\"constant_atlas\":false,\"detail\":true,\"failure_examples\":[[170,71],[171,71],[172,71],[173,71],[169,72],[170,72],[171,72],[172,72]],\"inactive_pixels\":0,\"label\":\"painted-azimuth-0\",\"map\":\"zone11\",\"materials\":true,\"normal_failures\":3379,\"point\":[148.350006103516,130.449996948242],\"projection\":\"orthographic\",\"raster_holes\":1,\"triangles\":401376}",
+        "FAIL painted-azimuth-pi strict native normal parity {\"active_pixels\":64515,\"azimuth\":3.14159265358979,\"camera_side\":\"above\",\"component_tolerance\":0.002,\"constant_atlas\":false,\"detail\":true,\"failure_examples\":[[107,117],[108,117],[109,117],[110,117],[111,117],[104,118],[105,118],[106,118]],\"inactive_pixels\":0,\"label\":\"painted-azimuth-pi\",\"map\":\"zone11\",\"materials\":true,\"normal_failures\":2494,\"point\":[148.350006103516,130.449996948242],\"projection\":\"orthographic\",\"raster_holes\":1,\"triangles\":401376}",
+        "FAIL painted-perspective strict native normal parity {\"active_pixels\":64516,\"azimuth\":0.0,\"camera_side\":\"above\",\"component_tolerance\":0.002,\"constant_atlas\":false,\"detail\":true,\"failure_examples\":[[171,70],[172,70],[170,71],[171,71],[172,71],[173,71],[174,71],[167,72]],\"inactive_pixels\":0,\"label\":\"painted-perspective\",\"map\":\"zone11\",\"materials\":true,\"normal_failures\":3445,\"point\":[148.350006103516,130.449996948242],\"projection\":\"perspective\",\"raster_holes\":0,\"triangles\":401376}",
+        "FAIL painted-below strict native normal parity {\"active_pixels\":64515,\"azimuth\":0.0,\"camera_side\":\"below\",\"component_tolerance\":0.002,\"constant_atlas\":false,\"detail\":true,\"failure_examples\":[[144,117],[145,117],[146,117],[147,117],[148,117],[142,118],[143,118],[144,118]],\"inactive_pixels\":0,\"label\":\"painted-below\",\"map\":\"zone11\",\"materials\":true,\"normal_failures\":2488,\"point\":[148.350006103516,130.449996948242],\"projection\":\"orthographic\",\"raster_holes\":1,\"triangles\":401376}",
+        "FAIL detail-off-below strict native normal parity {\"active_pixels\":64515,\"azimuth\":0.0,\"camera_side\":\"below\",\"component_tolerance\":0.002,\"constant_atlas\":false,\"detail\":false,\"failure_examples\":[[1,1],[2,1],[3,1],[4,1],[5,1],[6,1],[7,1],[8,1]],\"inactive_pixels\":0,\"label\":\"detail-off-below\",\"map\":\"zone11\",\"materials\":true,\"normal_failures\":64515,\"point\":[148.350006103516,130.449996948242],\"projection\":\"orthographic\",\"raster_holes\":1,\"triangles\":401376}",
+        "FAIL detail-off strict native normal parity {\"active_pixels\":64515,\"azimuth\":0.0,\"camera_side\":\"above\",\"component_tolerance\":0.002,\"constant_atlas\":false,\"detail\":false,\"failure_examples\":[[170,71],[171,71],[172,71],[173,71],[169,72],[170,72],[171,72],[172,72]],\"inactive_pixels\":0,\"label\":\"detail-off\",\"map\":\"zone11\",\"materials\":true,\"normal_failures\":3380,\"point\":[148.350006103516,130.449996948242],\"projection\":\"orthographic\",\"raster_holes\":1,\"triangles\":401376}",
+        "FAIL materials-off strict native normal parity {\"active_pixels\":64515,\"azimuth\":0.0,\"camera_side\":\"above\",\"component_tolerance\":0.002,\"constant_atlas\":false,\"detail\":true,\"failure_examples\":[[1,1],[2,1],[3,1],[4,1],[5,1],[6,1],[7,1],[8,1]],\"inactive_pixels\":0,\"label\":\"materials-off\",\"map\":\"zone11\",\"materials\":false,\"normal_failures\":44110,\"point\":[148.350006103516,130.449996948242],\"projection\":\"orthographic\",\"raster_holes\":1,\"triangles\":401376}",
+        "FAIL constant-art strict native normal parity {\"active_pixels\":64515,\"azimuth\":0.0,\"camera_side\":\"above\",\"component_tolerance\":0.002,\"constant_atlas\":true,\"detail\":true,\"failure_examples\":[[170,71],[171,71],[172,71],[173,71],[169,72],[170,72],[171,72],[172,72]],\"inactive_pixels\":0,\"label\":\"constant-art\",\"map\":\"zone11\",\"materials\":true,\"normal_failures\":3378,\"point\":[148.350006103516,130.449996948242],\"projection\":\"orthographic\",\"raster_holes\":1,\"triangles\":401376}"
+      ],
+      "warnings": [],
+      "verified_capture_count": 43,
+      "foreign_rendering_observed": true,
+      "rows": [
+        {
+          "active_pixels": 64515,
+          "azimuth": 0.0,
+          "camera_side": "above",
+          "component_tolerance": 0.002,
+          "constant_atlas": false,
+          "contact_wet_pixels": 0,
+          "detail": true,
+          "failure_examples": [
+            [
+              170,
+              71
+            ],
+            [
+              171,
+              71
+            ],
+            [
+              172,
+              71
+            ],
+            [
+              173,
+              71
+            ],
+            [
+              169,
+              72
+            ],
+            [
+              170,
+              72
+            ],
+            [
+              171,
+              72
+            ],
+            [
+              172,
+              72
+            ]
+          ],
+          "inactive_pixels": 0,
+          "label": "painted-azimuth-0",
+          "map": "zone11",
+          "materials": true,
+          "native_procedural_response_pixels": 292,
+          "native_track_normal_response_pixels": 3135,
+          "native_wet_pixels": 0,
+          "normal_failures": 3379,
+          "point": [
+            148.350006103516,
+            130.449996948242
+          ],
+          "projection": "orthographic",
+          "raster_holes": 1,
+          "triangles": 401376,
+          "visible_native_rotations": {
+            "0": 7880,
+            "1": 13387,
+            "2": 23305,
+            "3": 19943
+          },
+          "wet_profile": {
+            "active_pixels": 64515,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 0,
+            "normal_failures": 0,
+            "raster_holes": 1
+          }
+        },
+        {
+          "active_pixels": 64515,
+          "azimuth": 3.14159265358979,
+          "camera_side": "above",
+          "component_tolerance": 0.002,
+          "constant_atlas": false,
+          "contact_wet_pixels": 0,
+          "detail": true,
+          "failure_examples": [
+            [
+              107,
+              117
+            ],
+            [
+              108,
+              117
+            ],
+            [
+              109,
+              117
+            ],
+            [
+              110,
+              117
+            ],
+            [
+              111,
+              117
+            ],
+            [
+              104,
+              118
+            ],
+            [
+              105,
+              118
+            ],
+            [
+              106,
+              118
+            ]
+          ],
+          "inactive_pixels": 0,
+          "label": "painted-azimuth-pi",
+          "map": "zone11",
+          "materials": true,
+          "native_wet_pixels": 0,
+          "normal_failures": 2494,
+          "point": [
+            148.350006103516,
+            130.449996948242
+          ],
+          "projection": "orthographic",
+          "raster_holes": 1,
+          "triangles": 401376,
+          "wet_profile": {
+            "active_pixels": 64515,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 0,
+            "normal_failures": 0,
+            "raster_holes": 1
+          }
+        },
+        {
+          "active_pixels": 64516,
+          "azimuth": 0.0,
+          "camera_side": "above",
+          "component_tolerance": 0.002,
+          "constant_atlas": false,
+          "contact_wet_pixels": 0,
+          "detail": true,
+          "failure_examples": [
+            [
+              171,
+              70
+            ],
+            [
+              172,
+              70
+            ],
+            [
+              170,
+              71
+            ],
+            [
+              171,
+              71
+            ],
+            [
+              172,
+              71
+            ],
+            [
+              173,
+              71
+            ],
+            [
+              174,
+              71
+            ],
+            [
+              167,
+              72
+            ]
+          ],
+          "inactive_pixels": 0,
+          "label": "painted-perspective",
+          "map": "zone11",
+          "materials": true,
+          "native_wet_pixels": 0,
+          "normal_failures": 3445,
+          "point": [
+            148.350006103516,
+            130.449996948242
+          ],
+          "projection": "perspective",
+          "raster_holes": 0,
+          "triangles": 401376,
+          "wet_profile": {
+            "active_pixels": 64516,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 0,
+            "normal_failures": 0,
+            "raster_holes": 0
+          }
+        },
+        {
+          "active_pixels": 64515,
+          "azimuth": 0.0,
+          "camera_side": "below",
+          "component_tolerance": 0.002,
+          "constant_atlas": false,
+          "contact_wet_pixels": 0,
+          "detail": true,
+          "failure_examples": [
+            [
+              144,
+              117
+            ],
+            [
+              145,
+              117
+            ],
+            [
+              146,
+              117
+            ],
+            [
+              147,
+              117
+            ],
+            [
+              148,
+              117
+            ],
+            [
+              142,
+              118
+            ],
+            [
+              143,
+              118
+            ],
+            [
+              144,
+              118
+            ]
+          ],
+          "inactive_pixels": 0,
+          "label": "painted-below",
+          "map": "zone11",
+          "materials": true,
+          "native_wet_pixels": 0,
+          "normal_failures": 2488,
+          "point": [
+            148.350006103516,
+            130.449996948242
+          ],
+          "projection": "orthographic",
+          "raster_holes": 1,
+          "triangles": 401376,
+          "wet_profile": {
+            "active_pixels": 64515,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 0,
+            "normal_failures": 0,
+            "raster_holes": 1
+          }
+        },
+        {
+          "active_pixels": 64515,
+          "azimuth": 0.0,
+          "camera_side": "below",
+          "component_tolerance": 0.002,
+          "constant_atlas": false,
+          "contact_wet_pixels": 0,
+          "detail": false,
+          "failure_examples": [
+            [
+              1,
+              1
+            ],
+            [
+              2,
+              1
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              1
+            ],
+            [
+              5,
+              1
+            ],
+            [
+              6,
+              1
+            ],
+            [
+              7,
+              1
+            ],
+            [
+              8,
+              1
+            ]
+          ],
+          "inactive_pixels": 0,
+          "label": "detail-off-below",
+          "map": "zone11",
+          "materials": true,
+          "native_wet_pixels": 0,
+          "normal_failures": 64515,
+          "point": [
+            148.350006103516,
+            130.449996948242
+          ],
+          "projection": "orthographic",
+          "raster_holes": 1,
+          "triangles": 401376,
+          "wet_profile": {
+            "active_pixels": 64515,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 0,
+            "normal_failures": 0,
+            "raster_holes": 1
+          }
+        },
+        {
+          "active_pixels": 64515,
+          "azimuth": 0.0,
+          "camera_side": "above",
+          "component_tolerance": 0.002,
+          "constant_atlas": false,
+          "contact_wet_pixels": 0,
+          "detail": false,
+          "failure_examples": [
+            [
+              170,
+              71
+            ],
+            [
+              171,
+              71
+            ],
+            [
+              172,
+              71
+            ],
+            [
+              173,
+              71
+            ],
+            [
+              169,
+              72
+            ],
+            [
+              170,
+              72
+            ],
+            [
+              171,
+              72
+            ],
+            [
+              172,
+              72
+            ]
+          ],
+          "inactive_pixels": 0,
+          "label": "detail-off",
+          "map": "zone11",
+          "materials": true,
+          "native_wet_pixels": 0,
+          "normal_failures": 3380,
+          "point": [
+            148.350006103516,
+            130.449996948242
+          ],
+          "projection": "orthographic",
+          "raster_holes": 1,
+          "triangles": 401376,
+          "wet_profile": {
+            "active_pixels": 64515,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 0,
+            "normal_failures": 0,
+            "raster_holes": 1
+          }
+        },
+        {
+          "active_pixels": 64515,
+          "azimuth": 0.0,
+          "camera_side": "above",
+          "component_tolerance": 0.002,
+          "constant_atlas": false,
+          "contact_wet_pixels": 0,
+          "detail": true,
+          "failure_examples": [
+            [
+              1,
+              1
+            ],
+            [
+              2,
+              1
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              1
+            ],
+            [
+              5,
+              1
+            ],
+            [
+              6,
+              1
+            ],
+            [
+              7,
+              1
+            ],
+            [
+              8,
+              1
+            ]
+          ],
+          "inactive_pixels": 0,
+          "label": "materials-off",
+          "map": "zone11",
+          "materials": false,
+          "native_wet_pixels": 0,
+          "normal_failures": 44110,
+          "point": [
+            148.350006103516,
+            130.449996948242
+          ],
+          "projection": "orthographic",
+          "raster_holes": 1,
+          "triangles": 401376,
+          "wet_profile": {
+            "active_pixels": 64515,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 0,
+            "normal_failures": 0,
+            "raster_holes": 1
+          }
+        },
+        {
+          "active_pixels": 64515,
+          "azimuth": 0.0,
+          "camera_side": "above",
+          "component_tolerance": 0.002,
+          "constant_atlas": true,
+          "contact_wet_pixels": 0,
+          "detail": true,
+          "failure_examples": [
+            [
+              170,
+              71
+            ],
+            [
+              171,
+              71
+            ],
+            [
+              172,
+              71
+            ],
+            [
+              173,
+              71
+            ],
+            [
+              169,
+              72
+            ],
+            [
+              170,
+              72
+            ],
+            [
+              171,
+              72
+            ],
+            [
+              172,
+              72
+            ]
+          ],
+          "inactive_pixels": 0,
+          "label": "constant-art",
+          "map": "zone11",
+          "materials": true,
+          "native_wet_pixels": 0,
+          "normal_failures": 3378,
+          "point": [
+            148.350006103516,
+            130.449996948242
+          ],
+          "projection": "orthographic",
+          "raster_holes": 1,
+          "triangles": 401376,
+          "wet_profile": {
+            "active_pixels": 64515,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 0,
+            "normal_failures": 0,
+            "raster_holes": 1
+          }
+        }
+      ]
+    },
+    "full-surface-tracks-soft-forward02": {
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-tracks-soft-forward02/run.json",
+        "sha256": "77ce35039ccd69aeac995cd8ace93316bbbab3e174f8bf0b10845118a1e95ffa"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-tracks-soft-forward02/ground-contact-relief.json",
+        "sha256": "3ff2b33dc6d1c92549e64e7cfadf58a105e2de2d16661a7faa247e486bd0b364"
+      },
+      "executed_source": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-tracks-soft-forward02/tool-source.gd",
+        "sha256": "60010d4a65eea691d09ec47a65b1cae6c1a7667de8586a30e050fd65feee296e"
+      },
+      "pck_sha256": "9e34d5a8af341ae7ead4489f1025c76fdca28a8b8cc3ad06d3afb0c20fb1f5a2",
+      "checks": 1659,
+      "failures": 8,
+      "return_code": 1,
+      "engine_errors": [],
+      "strict_assertions": [
+        "FAIL painted-azimuth-0 strict native normal parity {\"active_pixels\":64515,\"azimuth\":0.0,\"camera_side\":\"above\",\"component_tolerance\":0.002,\"constant_atlas\":false,\"detail\":true,\"failure_examples\":[[171,79],[175,79],[177,79],[177,80],[177,81],[171,82],[177,82],[171,83]],\"inactive_pixels\":0,\"label\":\"painted-azimuth-0\",\"map\":\"zone11\",\"materials\":true,\"normal_failures\":93,\"point\":[148.350006103516,130.449996948242],\"projection\":\"orthographic\",\"raster_holes\":1,\"triangles\":401376}",
+        "FAIL painted-azimuth-pi strict native normal parity {\"active_pixels\":64515,\"azimuth\":3.14159265358979,\"camera_side\":\"above\",\"component_tolerance\":0.002,\"constant_atlas\":false,\"detail\":true,\"failure_examples\":[[120,124],[110,125],[104,129],[121,129],[128,129],[115,130],[120,130],[129,131]],\"inactive_pixels\":0,\"label\":\"painted-azimuth-pi\",\"map\":\"zone11\",\"materials\":true,\"normal_failures\":82,\"point\":[148.350006103516,130.449996948242],\"projection\":\"orthographic\",\"raster_holes\":1,\"triangles\":401376}",
+        "FAIL painted-perspective strict native normal parity {\"active_pixels\":64516,\"azimuth\":0.0,\"camera_side\":\"above\",\"component_tolerance\":0.002,\"constant_atlas\":false,\"detail\":true,\"failure_examples\":[[182,81],[170,83],[166,88],[167,91],[175,91],[175,92],[185,92],[178,93]],\"inactive_pixels\":0,\"label\":\"painted-perspective\",\"map\":\"zone11\",\"materials\":true,\"normal_failures\":46,\"point\":[148.350006103516,130.449996948242],\"projection\":\"perspective\",\"raster_holes\":0,\"triangles\":401376}",
+        "FAIL painted-below strict native normal parity {\"active_pixels\":64515,\"azimuth\":0.0,\"camera_side\":\"below\",\"component_tolerance\":0.002,\"constant_atlas\":false,\"detail\":true,\"failure_examples\":[[135,124],[133,125],[135,125],[134,128],[134,129],[129,133],[156,133],[129,134]],\"inactive_pixels\":0,\"label\":\"painted-below\",\"map\":\"zone11\",\"materials\":true,\"normal_failures\":67,\"point\":[148.350006103516,130.449996948242],\"projection\":\"orthographic\",\"raster_holes\":1,\"triangles\":401376}",
+        "FAIL detail-off-below strict native normal parity {\"active_pixels\":64515,\"azimuth\":0.0,\"camera_side\":\"below\",\"component_tolerance\":0.002,\"constant_atlas\":false,\"detail\":false,\"failure_examples\":[[135,124],[133,125],[135,125],[134,128],[134,129],[129,133],[156,133],[129,134]],\"inactive_pixels\":0,\"label\":\"detail-off-below\",\"map\":\"zone11\",\"materials\":true,\"normal_failures\":66,\"point\":[148.350006103516,130.449996948242],\"projection\":\"orthographic\",\"raster_holes\":1,\"triangles\":401376}",
+        "FAIL detail-off strict native normal parity {\"active_pixels\":64515,\"azimuth\":0.0,\"camera_side\":\"above\",\"component_tolerance\":0.002,\"constant_atlas\":false,\"detail\":false,\"failure_examples\":[[171,79],[175,79],[177,79],[177,80],[177,81],[171,82],[177,82],[171,83]],\"inactive_pixels\":0,\"label\":\"detail-off\",\"map\":\"zone11\",\"materials\":true,\"normal_failures\":93,\"point\":[148.350006103516,130.449996948242],\"projection\":\"orthographic\",\"raster_holes\":1,\"triangles\":401376}",
+        "FAIL materials-off strict native normal parity {\"active_pixels\":64515,\"azimuth\":0.0,\"camera_side\":\"above\",\"component_tolerance\":0.002,\"constant_atlas\":false,\"detail\":true,\"failure_examples\":[[171,79],[175,79],[177,79],[177,80],[177,81],[171,82],[177,82],[171,83]],\"inactive_pixels\":0,\"label\":\"materials-off\",\"map\":\"zone11\",\"materials\":false,\"normal_failures\":93,\"point\":[148.350006103516,130.449996948242],\"projection\":\"orthographic\",\"raster_holes\":1,\"triangles\":401376}",
+        "FAIL constant-art strict native normal parity {\"active_pixels\":64515,\"azimuth\":0.0,\"camera_side\":\"above\",\"component_tolerance\":0.002,\"constant_atlas\":true,\"detail\":true,\"failure_examples\":[[171,79],[175,79],[177,79],[177,80],[177,81],[171,82],[177,82],[171,83]],\"inactive_pixels\":0,\"label\":\"constant-art\",\"map\":\"zone11\",\"materials\":true,\"normal_failures\":93,\"point\":[148.350006103516,130.449996948242],\"projection\":\"orthographic\",\"raster_holes\":1,\"triangles\":401376}"
+      ],
+      "warnings": [],
+      "verified_capture_count": 43,
+      "foreign_rendering_observed": true,
+      "rows": [
+        {
+          "active_pixels": 64515,
+          "azimuth": 0.0,
+          "camera_side": "above",
+          "component_tolerance": 0.002,
+          "constant_atlas": false,
+          "contact_wet_pixels": 0,
+          "detail": true,
+          "failure_examples": [
+            [
+              171,
+              79
+            ],
+            [
+              175,
+              79
+            ],
+            [
+              177,
+              79
+            ],
+            [
+              177,
+              80
+            ],
+            [
+              177,
+              81
+            ],
+            [
+              171,
+              82
+            ],
+            [
+              177,
+              82
+            ],
+            [
+              171,
+              83
+            ]
+          ],
+          "inactive_pixels": 0,
+          "label": "painted-azimuth-0",
+          "map": "zone11",
+          "materials": true,
+          "native_procedural_response_pixels": 292,
+          "native_track_normal_response_pixels": 3135,
+          "native_wet_pixels": 0,
+          "normal_failures": 93,
+          "point": [
+            148.350006103516,
+            130.449996948242
+          ],
+          "projection": "orthographic",
+          "raster_holes": 1,
+          "triangles": 401376,
+          "visible_native_rotations": {
+            "0": 7880,
+            "1": 13387,
+            "2": 23305,
+            "3": 19943
+          },
+          "wet_profile": {
+            "active_pixels": 64515,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 0,
+            "normal_failures": 0,
+            "raster_holes": 1
+          }
+        },
+        {
+          "active_pixels": 64515,
+          "azimuth": 3.14159265358979,
+          "camera_side": "above",
+          "component_tolerance": 0.002,
+          "constant_atlas": false,
+          "contact_wet_pixels": 0,
+          "detail": true,
+          "failure_examples": [
+            [
+              120,
+              124
+            ],
+            [
+              110,
+              125
+            ],
+            [
+              104,
+              129
+            ],
+            [
+              121,
+              129
+            ],
+            [
+              128,
+              129
+            ],
+            [
+              115,
+              130
+            ],
+            [
+              120,
+              130
+            ],
+            [
+              129,
+              131
+            ]
+          ],
+          "inactive_pixels": 0,
+          "label": "painted-azimuth-pi",
+          "map": "zone11",
+          "materials": true,
+          "native_wet_pixels": 0,
+          "normal_failures": 82,
+          "point": [
+            148.350006103516,
+            130.449996948242
+          ],
+          "projection": "orthographic",
+          "raster_holes": 1,
+          "triangles": 401376,
+          "wet_profile": {
+            "active_pixels": 64515,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 0,
+            "normal_failures": 0,
+            "raster_holes": 1
+          }
+        },
+        {
+          "active_pixels": 64516,
+          "azimuth": 0.0,
+          "camera_side": "above",
+          "component_tolerance": 0.002,
+          "constant_atlas": false,
+          "contact_wet_pixels": 0,
+          "detail": true,
+          "failure_examples": [
+            [
+              182,
+              81
+            ],
+            [
+              170,
+              83
+            ],
+            [
+              166,
+              88
+            ],
+            [
+              167,
+              91
+            ],
+            [
+              175,
+              91
+            ],
+            [
+              175,
+              92
+            ],
+            [
+              185,
+              92
+            ],
+            [
+              178,
+              93
+            ]
+          ],
+          "inactive_pixels": 0,
+          "label": "painted-perspective",
+          "map": "zone11",
+          "materials": true,
+          "native_wet_pixels": 0,
+          "normal_failures": 46,
+          "point": [
+            148.350006103516,
+            130.449996948242
+          ],
+          "projection": "perspective",
+          "raster_holes": 0,
+          "triangles": 401376,
+          "wet_profile": {
+            "active_pixels": 64516,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 0,
+            "normal_failures": 0,
+            "raster_holes": 0
+          }
+        },
+        {
+          "active_pixels": 64515,
+          "azimuth": 0.0,
+          "camera_side": "below",
+          "component_tolerance": 0.002,
+          "constant_atlas": false,
+          "contact_wet_pixels": 0,
+          "detail": true,
+          "failure_examples": [
+            [
+              135,
+              124
+            ],
+            [
+              133,
+              125
+            ],
+            [
+              135,
+              125
+            ],
+            [
+              134,
+              128
+            ],
+            [
+              134,
+              129
+            ],
+            [
+              129,
+              133
+            ],
+            [
+              156,
+              133
+            ],
+            [
+              129,
+              134
+            ]
+          ],
+          "inactive_pixels": 0,
+          "label": "painted-below",
+          "map": "zone11",
+          "materials": true,
+          "native_wet_pixels": 0,
+          "normal_failures": 67,
+          "point": [
+            148.350006103516,
+            130.449996948242
+          ],
+          "projection": "orthographic",
+          "raster_holes": 1,
+          "triangles": 401376,
+          "wet_profile": {
+            "active_pixels": 64515,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 0,
+            "normal_failures": 0,
+            "raster_holes": 1
+          }
+        },
+        {
+          "active_pixels": 64515,
+          "azimuth": 0.0,
+          "camera_side": "below",
+          "component_tolerance": 0.002,
+          "constant_atlas": false,
+          "contact_wet_pixels": 0,
+          "detail": false,
+          "failure_examples": [
+            [
+              135,
+              124
+            ],
+            [
+              133,
+              125
+            ],
+            [
+              135,
+              125
+            ],
+            [
+              134,
+              128
+            ],
+            [
+              134,
+              129
+            ],
+            [
+              129,
+              133
+            ],
+            [
+              156,
+              133
+            ],
+            [
+              129,
+              134
+            ]
+          ],
+          "inactive_pixels": 0,
+          "label": "detail-off-below",
+          "map": "zone11",
+          "materials": true,
+          "native_wet_pixels": 0,
+          "normal_failures": 66,
+          "point": [
+            148.350006103516,
+            130.449996948242
+          ],
+          "projection": "orthographic",
+          "raster_holes": 1,
+          "triangles": 401376,
+          "wet_profile": {
+            "active_pixels": 64515,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 0,
+            "normal_failures": 0,
+            "raster_holes": 1
+          }
+        },
+        {
+          "active_pixels": 64515,
+          "azimuth": 0.0,
+          "camera_side": "above",
+          "component_tolerance": 0.002,
+          "constant_atlas": false,
+          "contact_wet_pixels": 0,
+          "detail": false,
+          "failure_examples": [
+            [
+              171,
+              79
+            ],
+            [
+              175,
+              79
+            ],
+            [
+              177,
+              79
+            ],
+            [
+              177,
+              80
+            ],
+            [
+              177,
+              81
+            ],
+            [
+              171,
+              82
+            ],
+            [
+              177,
+              82
+            ],
+            [
+              171,
+              83
+            ]
+          ],
+          "inactive_pixels": 0,
+          "label": "detail-off",
+          "map": "zone11",
+          "materials": true,
+          "native_wet_pixels": 0,
+          "normal_failures": 93,
+          "point": [
+            148.350006103516,
+            130.449996948242
+          ],
+          "projection": "orthographic",
+          "raster_holes": 1,
+          "triangles": 401376,
+          "wet_profile": {
+            "active_pixels": 64515,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 0,
+            "normal_failures": 0,
+            "raster_holes": 1
+          }
+        },
+        {
+          "active_pixels": 64515,
+          "azimuth": 0.0,
+          "camera_side": "above",
+          "component_tolerance": 0.002,
+          "constant_atlas": false,
+          "contact_wet_pixels": 0,
+          "detail": true,
+          "failure_examples": [
+            [
+              171,
+              79
+            ],
+            [
+              175,
+              79
+            ],
+            [
+              177,
+              79
+            ],
+            [
+              177,
+              80
+            ],
+            [
+              177,
+              81
+            ],
+            [
+              171,
+              82
+            ],
+            [
+              177,
+              82
+            ],
+            [
+              171,
+              83
+            ]
+          ],
+          "inactive_pixels": 0,
+          "label": "materials-off",
+          "map": "zone11",
+          "materials": false,
+          "native_wet_pixels": 0,
+          "normal_failures": 93,
+          "point": [
+            148.350006103516,
+            130.449996948242
+          ],
+          "projection": "orthographic",
+          "raster_holes": 1,
+          "triangles": 401376,
+          "wet_profile": {
+            "active_pixels": 64515,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 0,
+            "normal_failures": 0,
+            "raster_holes": 1
+          }
+        },
+        {
+          "active_pixels": 64515,
+          "azimuth": 0.0,
+          "camera_side": "above",
+          "component_tolerance": 0.002,
+          "constant_atlas": true,
+          "contact_wet_pixels": 0,
+          "detail": true,
+          "failure_examples": [
+            [
+              171,
+              79
+            ],
+            [
+              175,
+              79
+            ],
+            [
+              177,
+              79
+            ],
+            [
+              177,
+              80
+            ],
+            [
+              177,
+              81
+            ],
+            [
+              171,
+              82
+            ],
+            [
+              177,
+              82
+            ],
+            [
+              171,
+              83
+            ]
+          ],
+          "inactive_pixels": 0,
+          "label": "constant-art",
+          "map": "zone11",
+          "materials": true,
+          "native_wet_pixels": 0,
+          "normal_failures": 93,
+          "point": [
+            148.350006103516,
+            130.449996948242
+          ],
+          "projection": "orthographic",
+          "raster_holes": 1,
+          "triangles": 401376,
+          "wet_profile": {
+            "active_pixels": 64515,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 0,
+            "normal_failures": 0,
+            "raster_holes": 1
+          }
+        }
+      ]
+    },
+    "full-surface-tracks-snow-scene-forward02": {
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-tracks-snow-scene-forward02/run.json",
+        "sha256": "3c609fc794b7f11c482402a861c34e8f77d27006f888d208b7323b4a93aa678c"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-tracks-snow-scene-forward02/ground-contact-relief-scene.json",
+        "sha256": "fc7e714b717d9990d62e9c3fe120e8dcf360a685116d6cae2a5e3a9022c984f1"
+      },
+      "executed_source": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-tracks-snow-scene-forward02/tool-source.gd",
+        "sha256": "c4b85b4ccbb95e884e25734a01a1182ecb8010187c664b28f8d1f92253cc0245"
+      },
+      "pck_sha256": "9e34d5a8af341ae7ead4489f1025c76fdca28a8b8cc3ad06d3afb0c20fb1f5a2",
+      "checks": 112,
+      "failures": 0,
+      "return_code": 0,
+      "engine_errors": [],
+      "strict_assertions": [],
+      "warnings": [],
+      "verified_capture_count": 24,
+      "foreign_rendering_observed": true,
+      "rows": [
+        {
+          "band": {
+            "changed_pixels": 21909,
+            "mean_byte_delta": 25.5477998203935,
+            "over_two_bytes": 19844,
+            "peak_byte_delta": 95,
+            "pixels": 24498
+          },
+          "held": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 480000
+          },
+          "light": "sun",
+          "outside_band": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 455502
+          },
+          "restored": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 480000
+          },
+          "upper": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 168364
+          }
+        },
+        {
+          "band_normal_response": {
+            "changed_pixels": 2464,
+            "mean_byte_delta": 0.835986611151931,
+            "over_two_bytes": 1746,
+            "peak_byte_delta": 38,
+            "pixels": 24498
+          },
+          "light": "tracks-sun",
+          "outside_band": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 455502
+          },
+          "scope": "Native field stamps and installed terrain; only copied-ground normal ablated, no geometry or colour change."
+        },
+        {
+          "band": {
+            "changed_pixels": 21172,
+            "mean_byte_delta": 37.5036737692873,
+            "over_two_bytes": 18174,
+            "peak_byte_delta": 105,
+            "pixels": 24498
+          },
+          "held": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 480000
+          },
+          "light": "packed-point",
+          "outside_band": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 455502
+          },
+          "restored": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 480000
+          },
+          "upper": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 168364
+          }
+        },
+        {
+          "band_normal_response": {
+            "changed_pixels": 2310,
+            "mean_byte_delta": 0.525634745693526,
+            "over_two_bytes": 1389,
+            "peak_byte_delta": 37,
+            "pixels": 24498
+          },
+          "light": "tracks-packed-point",
+          "outside_band": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 455502
+          },
+          "scope": "Native field stamps and installed terrain; only copied-ground normal ablated, no geometry or colour change."
+        },
+        {
+          "band": {
+            "changed_pixels": 20675,
+            "mean_byte_delta": 5.93403543146379,
+            "over_two_bytes": 16034,
+            "peak_byte_delta": 39,
+            "pixels": 24498
+          },
+          "held": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 480000
+          },
+          "light": "local-light",
+          "light_contribution": {
+            "changed_pixels": 19540,
+            "mean_byte_delta": 13.7901461343783,
+            "over_two_bytes": 18169,
+            "peak_byte_delta": 55,
+            "pixels": 24498
+          },
+          "outside_band": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 455502
+          },
+          "restored": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 480000
+          },
+          "upper": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 168364
+          }
+        },
+        {
+          "band_normal_response": {
+            "changed_pixels": 2229,
+            "mean_byte_delta": 0.580496367050371,
+            "over_two_bytes": 1455,
+            "peak_byte_delta": 22,
+            "pixels": 24498
+          },
+          "light": "tracks-local-light",
+          "outside_band": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 455502
+          },
+          "scope": "Native field stamps and installed terrain; only copied-ground normal ablated, no geometry or colour change."
+        }
+      ]
+    }
+  },
+  "independent_controls": {
+    "unchanged_native_normal_captures": [
+      {
+        "name": "ground-contact-relief-constant-art-land-normal.png",
+        "sha256": "5c02ade1330cf0d86d76cc92f3cb24cf2568cd888b9fa3d9deffc676b9f05987",
+        "exact": true
+      },
+      {
+        "name": "ground-contact-relief-detail-off-below-land-normal.png",
+        "sha256": "68058157b48f6ee352a89f76d1f4db23f2a5fbb9f3e99fd5ab031510134e4c92",
+        "exact": true
+      },
+      {
+        "name": "ground-contact-relief-detail-off-land-normal.png",
+        "sha256": "9e704c1ecd5fec467c26a318222a7fade4f21f7c640586af77402592d4777c62",
+        "exact": true
+      },
+      {
+        "name": "ground-contact-relief-painted-azimuth-0-land-normal.png",
+        "sha256": "6515243ed801218344937f5b67491ed12418d85b7e50175e66baded420046103",
+        "exact": true
+      },
+      {
+        "name": "ground-contact-relief-painted-azimuth-pi-land-normal.png",
+        "sha256": "214add39b7f28506d51db5dbd5a2c0ace5e467b7686cdc30318561f1e2767325",
+        "exact": true
+      },
+      {
+        "name": "ground-contact-relief-painted-below-land-normal.png",
+        "sha256": "9d1004f2a26b8e91e02484a30e328c1110eed0a4d4f8688a36d1926e5a28202d",
+        "exact": true
+      },
+      {
+        "name": "ground-contact-relief-painted-perspective-land-normal.png",
+        "sha256": "7104403f453e53a501b059304f4b47c8f86bdf4a8d4e4b39fa3615e04fac49dd",
+        "exact": true
+      }
+    ],
+    "unchanged_authored_house_captures": [
+      {
+        "name": "ground-contact-relief-scene-bz13h-local-light-disabled.png",
+        "sha256": "4250f329c18fd0551d36ccf74a95f06cd5c84096a03662fa5f4ca1d457927cbd",
+        "exact": true
+      },
+      {
+        "name": "ground-contact-relief-scene-bz13h-local-light-held.png",
+        "sha256": "3122d0e8425d02da8c9aa796070fae87921083d66cd15f2c8a5a1cbdc8ce9d36",
+        "exact": true
+      },
+      {
+        "name": "ground-contact-relief-scene-bz13h-local-light-off.png",
+        "sha256": "0b5a6532a0254246430fb02bec7421a19106ed05aa9e32452c762c1ff54d6edc",
+        "exact": true
+      },
+      {
+        "name": "ground-contact-relief-scene-bz13h-local-light-on.png",
+        "sha256": "3122d0e8425d02da8c9aa796070fae87921083d66cd15f2c8a5a1cbdc8ce9d36",
+        "exact": true
+      },
+      {
+        "name": "ground-contact-relief-scene-bz13h-local-light-restored.png",
+        "sha256": "0b5a6532a0254246430fb02bec7421a19106ed05aa9e32452c762c1ff54d6edc",
+        "exact": true
+      },
+      {
+        "name": "ground-contact-relief-scene-bz13h-off-mask.png",
+        "sha256": "170dc439c87bf8f50e002a90d81a6db87e021fa8ed179ae7fb17318e6c0482e2",
+        "exact": true
+      },
+      {
+        "name": "ground-contact-relief-scene-bz13h-on-mask.png",
+        "sha256": "d132d828a44874f1ea10c2ead841d7441fc68ae83e7d1bf6869b975c19ea5c75",
+        "exact": true
+      },
+      {
+        "name": "ground-contact-relief-scene-bz13h-packed-point-held.png",
+        "sha256": "6bef432314808b4a086f2f0d943c0f65fdc3b11cfc18251c43b6b29a89124683",
+        "exact": true
+      },
+      {
+        "name": "ground-contact-relief-scene-bz13h-packed-point-off.png",
+        "sha256": "3babffa9c5426978714faa401caa62f9bd77a922e8f58857d2c2efe6ffb4e49e",
+        "exact": true
+      },
+      {
+        "name": "ground-contact-relief-scene-bz13h-packed-point-on.png",
+        "sha256": "6bef432314808b4a086f2f0d943c0f65fdc3b11cfc18251c43b6b29a89124683",
+        "exact": true
+      },
+      {
+        "name": "ground-contact-relief-scene-bz13h-packed-point-restored.png",
+        "sha256": "3babffa9c5426978714faa401caa62f9bd77a922e8f58857d2c2efe6ffb4e49e",
+        "exact": true
+      },
+      {
+        "name": "ground-contact-relief-scene-bz13h-rain-covered-highlight-disabled.png",
+        "sha256": "5e756935d555ebe42f50a2f1aacd20164931c0bbbd0288928caf01221f5d37de",
+        "exact": true
+      },
+      {
+        "name": "ground-contact-relief-scene-bz13h-rain-covered-highlight-restored.png",
+        "sha256": "5e756935d555ebe42f50a2f1aacd20164931c0bbbd0288928caf01221f5d37de",
+        "exact": true
+      },
+      {
+        "name": "ground-contact-relief-scene-bz13h-rain-covered-on.png",
+        "sha256": "5e756935d555ebe42f50a2f1aacd20164931c0bbbd0288928caf01221f5d37de",
+        "exact": true
+      },
+      {
+        "name": "ground-contact-relief-scene-bz13h-rain-exposed-highlight-disabled.png",
+        "sha256": "958b10bd64250f96733800c468bfc1606eecb5b96977b780de08f8f19f0e357c",
+        "exact": true
+      },
+      {
+        "name": "ground-contact-relief-scene-bz13h-rain-exposed-highlight-restored.png",
+        "sha256": "5784d306309dd68601da17ba8f67818d7a483cf351a5ad649c82931c4daa8489",
+        "exact": true
+      },
+      {
+        "name": "ground-contact-relief-scene-bz13h-rain-exposed-on.png",
+        "sha256": "5784d306309dd68601da17ba8f67818d7a483cf351a5ad649c82931c4daa8489",
+        "exact": true
+      },
+      {
+        "name": "ground-contact-relief-scene-bz13h-sun-held.png",
+        "sha256": "992548580aa117dfc0c0d70c4fa788b581e777571925d125f77b553e931ace8e",
+        "exact": true
+      },
+      {
+        "name": "ground-contact-relief-scene-bz13h-sun-off.png",
+        "sha256": "68527812ecef86863bbb68977f0411585fc6aa2959dfb0cf8dd68d751876fde9",
+        "exact": true
+      },
+      {
+        "name": "ground-contact-relief-scene-bz13h-sun-on.png",
+        "sha256": "992548580aa117dfc0c0d70c4fa788b581e777571925d125f77b553e931ace8e",
+        "exact": true
+      },
+      {
+        "name": "ground-contact-relief-scene-bz13h-sun-restored.png",
+        "sha256": "68527812ecef86863bbb68977f0411585fc6aa2959dfb0cf8dd68d751876fde9",
+        "exact": true
+      }
+    ]
+  },
+  "precision_diagnoses": [
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/query-input-precision-diagnosis-20261009.json",
+      "sha256": "87df64018306d8347a6e85380abc1e259b8b85e123c6681eb8d88827a1ea1805"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/camera-relative-final-20261009.json",
+      "sha256": "c36301ca41789f0a77a221aa0dcc83dcfa9a76e8c581587d756bf3f8ca84677b"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/track-values-diagnosis-20261009.json",
+      "sha256": "cd4532a4d907770e80a6da0455d44ce42d565ce16dae9b138047d0216a2a3d49"
+    }
+  ],
+  "soft_scene_census": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/soft-scene-census/selected.json",
+    "sha256": "5271a3a3ddf76fa897abdde34bebfb01ed4c8e4c5d6b195fd532d2435823905b"
+  },
+  "retained_invalid_scene_attempt": {
+    "run": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-tracks-snow-scene-forward01/run.json",
+      "sha256": "7ba2e2ea019db098dd75ba2bebe6b3bc9f2c28e0a8a7f8b41bebd1f5f4bd1cb8"
+    },
+    "reason": "Probe passed two arguments to the one-argument step_allowed method. Parse failure only; no scene result. Corrected before the final authored barrack probe."
+  },
+  "interpretation": [
+    "The old painted oracle used interpolated wpos, unlike the actual production view-space reconstruction. Correct production input clears all three historical pixels but retains a distinct soft perspective error. No tolerance/epsilon change or query variant is adopted.",
+    "The camera-relative derivative variant is deferred: actual production soft captures are identical, and +4096 coordinates retain widespread strict differences despite a three-pixel perspective improvement.",
+    "The first full-surface ordinary run retains the old wpos oracle edge. With production input and native normals in both material modes, the tracks prototype passes all 247 ordinary checks and all eight rain profiles.",
+    "Authored-house rain tests prove a visible copied-ground highlight inside the contact band, a zero covered-ground highlight, exact restoration and unchanged outside/upper/silhouette controls. Cover texture is diagnostic +/-10000; this is not an authored roof-placement or full terrain/figure lighting equivalence claim.",
+    "The first snow-track run has eight strict normal failures plus one invalid grass-specific noise-density assertion. The snow response is 292 pixels and track response 3135 pixels. The subsequent fixture requires a nonzero snow response while retaining >1000 for the original grass case; normal tolerance remains 0.002. Clear-magenta native holes are excluded from wet-response counts.",
+    "The unchanged-input final snow pair reduces ordinary/reversed/perspective/below strict pixels from 3379/2494/3445/2488 to 93/82/46/67. Eight strict case failures remain, also in original-material, detail-off and constant-art controls. No tolerance relaxation or precision variant is used.",
+    "One bounded readback diagnosis explains representative track-edge residuals from float-coordinate differences crossing measured texture-filter coefficient boundaries. Compression and pre-track normal agree closely; raw texels, independently fitted coefficients and captured taps reconstruct the differing slopes/normals. This is observed Forward+/RTX3090 evidence, not a universal hardware model or a proposed snapping fix.",
+    "Actual zone11 Barrack00-6 NID1651 with five controlled native footprint stamps passes 112 checks. Native placement/meshes and support are preserved. Isolating copied-ground track normals changes 1746/1389/1455 band pixels by more than 2 bytes for sun/native point/local light respectively; outside-band and restoration controls are exact. This is a fixed authored-object rendering fixture, not physical walking or full terrain/object light equivalence."
+  ],
+  "review": {
+    "normal_semantics": "Read-only review found native triplanar axes, reconstructed height-gradient signs, strengths and shared sampler binding consistent.",
+    "view_semantics": "The validated mono Godot VIEW is -normalize(vertex_interp) in Forward+, Mobile and GLES, including orthographic. Do not replace the copied-ground view ray with a constant orthographic ray.",
+    "known_positional_light_limit": "Copied highlights reconstruct view at sampled ground while LIGHT/ATTENUATION describe the object fragment. Directional direction is coherent; nearby point direction, attenuation and ground-position shadows remain approximate."
+  },
+  "remaining": [
+    "Strict footprint-edge sampling and soft-triangle precision residuals remain explicit; not full numerical parity.",
+    "Original terrain shoreline per-vertex emissive/underwater attenuation is still not reconstructed.",
+    "Nearby point/optional local light and sampled-ground shadow equivalence remain approximate.",
+    "This batch uses Forward+ only. Composed Natural/cliff/cloud/fog settings, physical walking trails, additional wall/track views and scales, other backends and device acceptance remain open.",
+    "Shader startup/steady costs remain unqualified; foreign rendered processes were observed."
+  ],
+  "unchanged": "Canonical production, delivered Linux/Windows .2 packages, settings defaults and user saves/profiles are unchanged by these scratch prototypes.",
+  "root_review": {
+    "scope": "Scratch evidence checkpoint only; no production shader or package adoption.",
+    "source_receipt": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/qualification.json",
+      "sha256": "f13f7a57b030ee2c6e144807097e3f9581e714eaaa7f3ead556664683cad0ded"
+    },
+    "checks": "Verified both 712-file export manifests and binary hashes, all recorded PNG hashes, 21 identical house pairs, seven identical native-normal pairs and 19 track-diagnosis source/evidence hashes. Inspected authored rain and snow barrack image pairs.",
+    "retained_limits": "Eight strict footprint-normal case failures remain. Controlled stamps are not physical walking. Shoreline, sampled-ground point/shadow equivalence, other-backend/composed/device and uncontaminated cost acceptance remain open."
+  }
+}

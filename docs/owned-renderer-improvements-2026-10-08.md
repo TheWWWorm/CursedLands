@@ -24,11 +24,11 @@ The latest original prison q71h/q72h route fix (`d13bac0`) passes
 [630 checks](validation/prison-progression-late-join-2026-10-09.json); the earlier
 discovery/alarm, renderer and native-binary evidence is inherited.
 
-**Latest gameplay source:** `8195e68` adds per-character registration and absent-reload continuity for all eleven original prison damage/Sleep traps. [918 focused checks pass](validation/prison-damage-late-join-2026-10-09.json), with exact early-native traces and original disconnected-follower cadence. Its private `prison-damage-late-join-20261009/candidate02` export changes only two gameplay scripts from the preceding qualified source. The delivered Linux/Windows `.2` packages below remain at `e2e7e0a`; renderer lighting work is still separate and uncommitted.
+**Latest gameplay source:** `0cc6cdc` adds the original Gipat arrival effect for extra LiA co-op heroes, with [281 focused checks](validation/lia-zone7-arrival-2026-10-09.json). Its private `lia-zone7-movement-audit-20261009/candidate01` export changes only two gameplay scripts from `8195e68`, which preserves all eleven original prison damage/Sleep cycles for late and returning guests ([918 checks](validation/prison-damage-late-join-2026-10-09.json)). Arrival positions, original NPC movement, saved waits and quest behavior remain unchanged. The delivered Linux/Windows `.2` packages below remain at `e2e7e0a`; renderer lighting work is still separate and uncommitted.
 
 **Updated Linux local test:** [`1.0.3-local.20261009.2`](/home/llm2x/Downloads/CursedLands-1.0.3-local.20261009.2-linux-x86_64.tar.gz), unpacked at `/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261009.2-linux-x86_64`, uses checkpoint `e2e7e0a` and protocol 13. It fixes disappearing stone-menu labels after live graphics changes and the empty HUD before New Game loading, and includes the newly qualified prison route progression fix. All 262 compiled scripts and 673 resources match the combined export except its displayed version setting; only three production scripts differ from the prior discovery export. The actual package passes **73 checks** across live menu settings, base New Game, Continue and LiA New Game using the separate rendering thread. All loading runs show zero exposed HUD frames. Archive contents and executable permissions are verified. Isolated profiles preserve user settings and saves. The unfinished terrain-contact lighting experiment is excluded. [Package evidence](validation/linux-local-test-feedback-2026-10-09.json). The preceding [local test](validation/linux-local-test-2026-10-09.json) remains historical; neither package is a published stable release.
 
-**Windows local test:** [`1.0.3-local.20261009.2`](/home/llm2x/Downloads/CursedLands-1.0.3-local.20261009.2-windows-x86_64.zip) is the Windows x86_64 counterpart of the updated Linux package, using the same `e2e7e0a` checkpoint and protocol 13. Its entire game pack is byte-identical (673 resources, 262 compiled scripts). The runtime was cross-built from Godot `5b4e0cb0f` with all ten committed desktop patches, and the native helper was rebuilt from the matching source. PE architecture, imports, native entry point, source provenance and full ZIP readback pass. **Windows execution remains untested**; this is a local test build. The unfinished terrain-contact lighting and prison damage/Sleep experiments are excluded. [Package evidence](validation/windows-local-test-2026-10-09.json).
+**Windows local test:** [`1.0.3-local.20261009.2`](/home/llm2x/Downloads/CursedLands-1.0.3-local.20261009.2-windows-x86_64.zip) is the Windows x86_64 counterpart of the updated Linux package, using the same `e2e7e0a` checkpoint and protocol 13. Its entire game pack is byte-identical (673 resources, 262 compiled scripts). The runtime was cross-built from Godot `5b4e0cb0f` with all ten committed desktop patches, and the native helper was rebuilt from the matching source. PE architecture, imports, native entry point, source provenance and full ZIP readback pass. **Windows execution remains untested**; this is a local test build. The later prison damage/Sleep and guest-arrival fixes and the unfinished terrain-contact lighting experiment are excluded. [Package evidence](validation/windows-local-test-2026-10-09.json).
 
 [Previous junction evidence](validation/terrain-junctions-2026-10-09.json)
 qualifies exact three/four-family Natural transitions across both campaigns,
@@ -2426,6 +2426,77 @@ disabled-deformation specialization without a new basis.
 retains source/build hashes, frozen reports, process observations and exact
 image comparisons. V1 preparation, broader lighting and route/device acceptance
 remain open; defaults stay off.
+
+### V1 lighting prototype and corrected oracle — 9 October
+
+The private `ground-contact-relief-20261009/full-surface` prototypes extend the
+painted-normal candidate with the terrain's actual procedural normal texture,
+rain material profile and copied-ground highlight. The later `tracks` prototype
+also reconstructs the installed triangle's interpolated, pre-displacement
+compression and native aged footprint normals. Original material mode retains
+its vertex lighting while using terrain fragment normals for rain and tracks.
+Only the contact shader and shared `detail_nm` binding differ from the frozen
+`e2e7e0a` game stage. **These are not promoted or shipped changes.**
+
+The old normal oracle passed interpolated `wpos` to the contact sampler; actual
+production uses `(INV_VIEW_MATRIX * vec4(VERTEX, 1)).xyz`. The latter clears all
+three old ordinary/soft residual pixels without changing production code. One
+different soft perspective error remains at `(139,121)`, with component error
+`0.00218877` against the unchanged `0.002` threshold. A camera-relative derivative
+variant leaves those actual-input captures exact and improves only three of
+109 perspective failures at a synthetic +4096 offset. It is deferred, not a
+qualified precision fix. Earlier stress receipts remain retained.
+
+The expanded prototype passes **247 ordinary normal/profile checks**, including
+both material modes and above/below, perspective, rotated and constant-art
+controls. Seven unchanged native normal captures are byte-identical to the
+preceding prototype. The actual authored `bz13h` house passes **63 checks**:
+rain highlights affect 13,791 band pixels (10,324 by more than two bytes), a
+controlled roof mask suppresses them exactly, and upper/outside/silhouette,
+held and restoration controls stay exact. All 21 scene captures also remain
+byte-identical after the separate footprint implementation. The roof textures
+are explicit diagnostic controls, not a natural roof-placement validation.
+
+With real installed snow footprints, strict errors fall from 3,379 to 93 in the
+ordinary view, 2,494 to 82 after rotation, 3,445 to 46 in perspective and 2,488
+to 67 below. The final run is **1,659 checks with eight retained strict normal
+failures**, not complete parity. Original-material and detail-off controls also
+retain track-edge errors. The native fragment-only ablation independently
+affects 3,135 pixels. The first run additionally used a grass-specific >1000
+procedural-response assertion on snow: snow has 292 affected pixels. The final
+fixture retains the grass requirement, requires nonzero snow response and
+keeps the normal tolerance unchanged. Native raster holes are excluded from
+wet-response counts.
+
+A bounded readback diagnosis explains the sampled footprint-edge residuals:
+one-to-two-ULP coordinate differences cross measured bilinear filter coefficient
+boundaries. Compression and pre-track normals agree closely, while independently
+fitted coefficients reconstruct the differing track taps and final normals.
+The measured model matches all 520 captured channels within `2.67e-8` on this
+Forward+/RTX 3090 run. This neither establishes a universal hardware model nor
+justifies snapping coordinates or relaxing the strict comparison.
+
+The unchanged snow-covered `zone11` barrack, `Barrack00-6` / NID 1651, passes
+**112 checks** with five controlled native footprint stamps at its wall root.
+Isolating copied-ground track normals changes 1,746/1,389/1,455 contact-band
+pixels by more than two bytes under sunlight/native point/local light,
+respectively. Every outside-band pixel and restoration control remains exact.
+Original meshes and placement are preserved. These are controlled stamps,
+not a physical walking route or proof of complete terrain/object light parity.
+
+The read-only lighting review confirms the triplanar axes, height-plane signs,
+sampler binding, cloud/fog composition and mono view-vector convention. Nearby
+point highlights remain approximate: their copied view ray is evaluated at
+ground, but light direction/attenuation and shadows still describe the object
+fragment. Shoreline vertex emissive/underwater terms, physical walking trails,
+broader composition/backends, startup/steady cost and device
+acceptance remain open. Foreign rendered processes were observed; no timing
+claim is made. Settings and both delivered `.2` packages remain unchanged.
+
+[ground-contact-lighting-prototype-2026-10-09.json](validation/ground-contact-lighting-prototype-2026-10-09.json)
+records the frozen sources, builds, failed and passing runs, image checks and
+precision diagnoses. Continue from the `full-surface/tracks` scratch stage;
+do not mistake the older dirty canonical painted-only shader for that stage.
 
 ## Integration
 
@@ -5120,6 +5191,10 @@ full routes and platform coverage remain open; they are not part of this fix.
    (630 checks, including discovery/alarm regressions). `8195e68` then fixes
    individual damage/Sleep registration and absent reloads in startup family
    #76 (918 checks); authored follower cadence is preserved. Full routes remain open.
+   `0cc6cdc` adds only the missing original Gipat entry effect for extra LiA
+   heroes (281 checks); the `zone7:981` lead does not reproduce a movement or
+   quest-progression defect. Original positions, NPC movement and saved waits
+   remain unchanged. Full physical routes and platform acceptance remain open.
    `f3f1494` fixes the independently reproduced LiA Haburu
    camp approach issue; 379 source/command/map checks pass. All five missing
    authored helpers are reachable but absent from the supplied scripts and
