@@ -19,9 +19,10 @@ extends RefCounted
 ##   (each paired layer is listed twice, as in the original).
 ## The wound images live in redress.res (characters, 128²) or textures.res
 ## (creatures, 64²); a missing layer is skipped (the original logs it).
-## Remake: a native-size wound composite is shared across outfits, then
-## blended into each albedo before mip generation. This preserves the remake's
-## filtering; separate GPU texture sampling is not equivalent at wound edges.
+## Remake: shipped world/preview materials sample one shared native-size wound
+## texture over their unchanged base. Its independent box mips intentionally
+## replace the old blend-before-filter appearance (see EIUnitModel.WOUND_FETCH).
+## Unsupported custom StandardMaterial3D keeps the legacy per-albedo bake below.
 ## The levels come from the part health, which co-op clients get
 ## in the unit snapshots, so every peer shows them. The unit panel figure
 ## (Paperdoll) gets the same layer. The composer (renderer
@@ -37,7 +38,10 @@ const OTHER_CODES := ["hd", "bd", "h", "h", "l", "l"]
 ## force another GPU readback of an otherwise unchanged outfit.
 const SOURCE_IMAGE := &"ei_wound_source"
 ## Native-size, mip-free wound layers are shared by all outfits and previews.
-## Limit both entries (including failed decodes) and retained pixel memory.
+## Limit both entries (including failed decodes) and retained CPU pixel memory.
+## Their cached RGBA8 GPU mip chains add at most 4/3 of this byte budget plus
+## the final texel per entry. Active materials and in-flight jobs own their
+## references independently of these cache limits.
 const LAYER_CACHE_LIMIT := 64
 const LAYER_CACHE_BYTES := 4 * 1024 * 1024
 
@@ -45,6 +49,7 @@ static var _images := {}      # layer file -> Image (or null)
 static var _layer_data := {}  # layer file -> original bytes, including PNT3 block skips
 static var _composites := {}  # "base instance id|mask|human|levels" -> Texture2D
 static var _wound_layers := {} # "mask|human|levels" -> immutable Image (or null), LRU
+static var _layer_textures := {} # same key -> shared GPU wound Texture2D (or null)
 static var _wound_layer_bytes := 0
 static var _layer_jobs := {}  # layer key -> first composite job producing that layer
 ## Base texture instance id -> its immutable RGBA8 image without mipmaps.
@@ -58,6 +63,9 @@ static var _jobs := {}
 ## [material, key] waiting for a job (the material's meta "wound_pend" names
 ## the newest request; an older job finishing late does not overwrite it).
 static var _waiting := []
+## [weak material, request identity, base, job]. The job owns its result even
+## when a later completed layer evicts it from the bounded cache in this poll.
+static var _overlay_waiting := []
 static var _polling := false
 
 
@@ -126,6 +134,11 @@ static func apply(model: EIUnitModel, lv: PackedByteArray, human: bool) -> void:
 	for m in _materials(model):
 		if m.albedo_texture == null:
 			continue
+		if m is EIUnitModel.LitMaterial or m is EIUnitModel.PreviewMaterial:
+			_apply_overlay(m, mask, lv, human)
+			continue
+		# Legacy/custom StandardMaterial3D has no wound shader contract. Keep
+		# its prior bake rather than replacing an arbitrary custom material.
 		# The unwounded texture; a material that already shows wounds keeps it.
 		var base: Texture2D = m.albedo_texture
 		if m.has_meta("wound_base") and m.has_meta("wound_tex") and m.albedo_texture == m.get_meta("wound_tex"):
@@ -139,6 +152,63 @@ static func apply(model: EIUnitModel, lv: PackedByteArray, human: bool) -> void:
 			_start_poll()
 			continue
 		_put(m, tex)
+
+
+static func _apply_overlay(m, mask: String, lv: PackedByteArray, human: bool) -> void:
+	var base: Texture2D = m.albedo_texture
+	var request := _key(base, mask, lv, human)
+	m.set_meta("wound_overlay_pend", request)
+	if lv == PackedByteArray([0, 0, 0, 0, 0, 0]):
+		m.wound_texture = null
+		m.remove_meta("wound_overlay_pend")
+		return
+	var job := _overlay(mask, lv, human)
+	if job.finished:
+		m.wound_texture = job.tex
+		m.remove_meta("wound_overlay_pend")
+	else:
+		_overlay_waiting.append([weakref(m), request, base, job])
+		_start_poll()
+
+
+## A native wound layer, independent of outfit identity and dimensions. The
+## existing producer can be shared with a simultaneous legacy/custom bake.
+static func _overlay(mask: String, lv: PackedByteArray, human: bool) -> Dictionary:
+	var layer_key := _layer_key(mask, lv, human)
+	if _layer_textures.has(layer_key):
+		var image = _wound_layers[layer_key]
+		_wound_layers.erase(layer_key)
+		_wound_layers[layer_key] = image
+		return {"finished": true, "tex": _layer_textures[layer_key]}
+	var key := "gpu|" + layer_key
+	if _jobs.has(key):
+		return _jobs[key]
+	var job := {"base": null, "src": null, "out": null, "wound": null,
+			"decoded": {}, "task": -1, "finished": false, "tex": null,
+			"overlay": true, "layer_key": layer_key}
+	if _wound_layers.has(layer_key):
+		job.wound = _wound_layers[layer_key]
+		_wound_layers.erase(layer_key)
+		_wound_layers[layer_key] = job.wound
+		_launch(job)
+	elif _layer_jobs.has(layer_key):
+		job.layer_job = _layer_jobs[layer_key]
+	else:
+		var layers := []
+		var codes: Array = HUMAN_CODES if human else OTHER_CODES
+		for i in 6:
+			if lv[i] == 0:
+				continue
+			var name := "%s%sw%d" % [mask, codes[i], lv[i]]
+			if not _layer_data.has(name):
+				_layer_data[name] = _layer_bytes(name)
+			layers.append([name, _images.get(name), _layer_data[name]])
+		job.layers = layers
+		job.compose_layer = true
+		_layer_jobs[layer_key] = job
+		_launch(job)
+	_jobs[key] = job
+	return job
 
 
 static func _put(m, tex: Texture2D) -> void:
@@ -194,7 +264,13 @@ static func _poll(wait := false) -> void:
 		var tex: Texture2D = job.base
 		if job.out != null:
 			tex = ImageTexture.create_from_image(job.out)
-		_composites[key] = tex
+		if job.get("overlay", false):
+			job.tex = tex
+			# Oversized custom layers finish their consumers without retention.
+			if _wound_layers.has(job.layer_key):
+				_layer_textures[job.layer_key] = tex
+		else:
+			_composites[key] = tex
 	var i := 0
 	while i < _waiting.size():
 		var w: Array = _waiting[i]
@@ -205,7 +281,19 @@ static func _poll(wait := false) -> void:
 		var m = w[0]
 		if is_instance_valid(m) and String(m.get_meta("wound_pend", "")) == w[1] and _composites.has(w[1]):
 			_put(m, _composites[w[1]])
-	if _jobs.is_empty() and _waiting.is_empty() and _polling:
+	i = 0
+	while i < _overlay_waiting.size():
+		var w: Array = _overlay_waiting[i]
+		var job: Dictionary = w[3]
+		if not job.finished:
+			i += 1
+			continue
+		_overlay_waiting.remove_at(i)
+		var m = (w[0] as WeakRef).get_ref()
+		if m != null and String(m.get_meta("wound_overlay_pend", "")) == w[1] and m.albedo_texture == w[2]:
+			m.wound_texture = job.tex
+			m.remove_meta("wound_overlay_pend")
+	if _jobs.is_empty() and _waiting.is_empty() and _overlay_waiting.is_empty() and _polling:
 		_polling = false
 		var tree := Engine.get_main_loop() as SceneTree
 		if tree and tree.process_frame.is_connected(_poll):
@@ -228,8 +316,10 @@ static func shutdown() -> void:
 	_jobs.clear()
 	_layer_jobs.clear()
 	_wound_layers.clear()
+	_layer_textures.clear()
 	_wound_layer_bytes = 0
 	_waiting.clear()
+	_overlay_waiting.clear()
 	_composites.clear()
 	_bases.clear()
 	_images.clear()
@@ -338,22 +428,34 @@ static func _cache_layer(key: String, image: Image) -> void:
 	var bytes := image.get_data_size() if image else 0
 	if bytes > LAYER_CACHE_BYTES:
 		return # An oversized custom asset may finish its requests without retention.
+	if _wound_layers.has(key):
+		var previous: Image = _wound_layers[key]
+		_wound_layer_bytes -= previous.get_data_size() if previous else 0
+		_wound_layers.erase(key)
+		_layer_textures.erase(key)
 	while _wound_layers.size() >= LAYER_CACHE_LIMIT or _wound_layer_bytes + bytes > LAYER_CACHE_BYTES:
 		var oldest = _wound_layers.keys()[0]
 		var previous: Image = _wound_layers[oldest]
 		_wound_layer_bytes -= previous.get_data_size() if previous else 0
 		_wound_layers.erase(oldest)
+		_layer_textures.erase(oldest)
 	_wound_layers[key] = image
 	_wound_layer_bytes += bytes
 
 
-## Worker: retain the original blend-before-filter result, including mipmaps.
-## Shared wound/base images are immutable; only private copies are resized or
-## blended. Sampling two independent GPU textures changes filtered wound edges.
+## Worker: shipped shaders need only wound mips. The branch below that retains
+## the legacy blend-before-filter result for unsupported custom materials.
+## Shared source images stay immutable; all mip/resize/blend work is private.
 static func _build(job: Dictionary) -> void:
 	if job.has("layers"):
 		job.wound = _compose_layer(job)
 	var comp: Image = job.wound
+	if job.get("overlay", false):
+		if comp:
+			var upload := comp.duplicate() as Image
+			upload.generate_mipmaps()
+			job.out = upload
+		return
 	var src: Image = job.src
 	if comp == null or src == null:
 		return

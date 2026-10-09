@@ -205,6 +205,9 @@ func _lighten(root: Node, on: bool) -> void:
 			elif mi.material_override not in _bright.values():
 				mi.set_meta("unlit", mi.material_override)
 				mi.material_override = _bright_of(mi.material_override)
+			elif mi.has_meta("unlit"):
+				# A wound job can finish after selection made this copy.
+				_bright_of(mi.get_meta("unlit"))
 			continue
 		if mi.mesh == null:
 			continue
@@ -216,6 +219,7 @@ func _lighten(root: Node, on: bool) -> void:
 					mi.remove_meta("unlit%d" % i)
 				continue
 			if cur in _bright.values():
+				_bright_of(_bright.find_key(cur))
 				continue
 			var base := cur if cur else mi.mesh.surface_get_material(i)
 			mi.set_meta("unlit%d" % i, cur)
@@ -232,6 +236,8 @@ func _bright_of(base: Material) -> Material:
 		var lit: EIUnitModel.LitMaterial = _bright[base]
 		if lit.albedo_texture != base.albedo_texture:
 			lit.albedo_texture = base.albedo_texture
+		if lit.wound_texture != base.wound_texture:
+			lit.wound_texture = base.wound_texture
 		return lit
 	var sm := base as StandardMaterial3D
 	if sm == null:

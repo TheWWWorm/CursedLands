@@ -1,6 +1,7 @@
 extends Node
-## Diagnostic: compare wound-only sampling with the current baked albedo.
+## Historical diagnostic: compare sRGB wound sampling with legacy baked albedo.
 ## No gameplay/material ownership changes. Layer composition stays byte-native.
+## Production raw-UNORM acceptance is tools/tests/wound_gpu_contract.gd.
 
 const CONVERSIONS := """
 uniform sampler2D wound_tex : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
@@ -77,6 +78,11 @@ func baked(base: Image, inputs: Array) -> Image:
 func material(base: Texture2D, wound: Texture2D, mode: String) -> ShaderMaterial:
 	if not programs.has(mode):
 		var source := EIUnitModel.PREVIEW_SHADER.replace("cull_back, diffuse_lambert, specular_disabled, alpha_to_coverage","unshaded, cull_disabled")
+		# Keep this rejected candidate reproducible after shipping the separate
+		# raw-UNORM sampler; do not blend two wound stages or redeclare its sampler.
+		var constants: Dictionary = load("res://src/ei/unit_model.gd").get_script_constant_map()
+		if constants.has("WOUND_FETCH"):
+			source = source.replace(constants.WOUND_FETCH, "").replace("\tif (wound_enabled) { t = ei_unit_wound(t, ei_unit_tex(wound_tex, UV)); }\n", "")
 		if mode != "baked":
 			var encoded := mode in ["encoded","sized"]
 			var blend := BLEND.replace("BASE_COLOUR","wound_encoded(t.rgb)" if encoded else "t.rgb")

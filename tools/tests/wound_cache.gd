@@ -1,5 +1,6 @@
 extends Node
-## Shared native wounds must preserve material ownership and every output mip.
+## Legacy/custom StandardMaterial3D bakes retain ownership and every output mip.
+## Shipped unit/preview shader ownership is checked in wound_gpu.gd instead.
 var checks := 0
 var failures := 0
 
@@ -93,7 +94,7 @@ func test_material_changes() -> void:
 	UnitWounds.shutdown(); seed_layers()
 	var lv := PackedByteArray([1,0,0,0,0,0]); var healed := PackedByteArray([0,0,0,0,0,0])
 	var models := []
-	var materials := [StandardMaterial3D.new(),EIUnitModel.LitMaterial.new(),EIUnitModel.PreviewMaterial.new()]
+	var materials := [StandardMaterial3D.new(),StandardMaterial3D.new(),StandardMaterial3D.new()]
 	var bases := []
 	for m: Material in materials:
 		var base := texture(4); bases.append(base)

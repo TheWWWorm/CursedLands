@@ -94,6 +94,30 @@ vec4 ei_unit_tex(sampler2D tex, vec2 uv) {
 ## Bias of option gfx_sharp_units (see SHARP_FETCH).
 const SHARP_MIP_BIAS := -0.5
 
+## Wounds retain their native ARGB4444-expanded bytes and independent mip chain.
+## Sampling raw UNORM preserves the authored encoded-color interpolation; an
+## sRGB sampler followed by encoding would instead interpolate linear colors.
+## The base keeps its existing fetch. This explicitly replaces the old baked
+## wound filtering, while retaining source-over texture alpha and applying the
+## material opacity once in UNIT_SHADER. It is not a full D3D two-pass emulation.
+const WOUND_FETCH := """
+uniform sampler2D wound_tex : filter_linear_mipmap_anisotropic, repeat_enable;
+uniform bool wound_enabled = false;
+vec3 wound_to_encoded(vec3 c) {
+	if (OUTPUT_IS_SRGB) { return c; }
+	return mix(c * 12.92, 1.055 * pow(max(c, vec3(0.0)), vec3(1.0 / 2.4)) - 0.055, step(vec3(0.0031308), c));
+}
+vec3 wound_to_render(vec3 c) {
+	if (OUTPUT_IS_SRGB) { return c; }
+	return mix(c / 12.92, pow(max((c + 0.055) / 1.055, vec3(0.0)), vec3(2.4)), step(vec3(0.04045), c));
+}
+vec4 ei_unit_wound(vec4 base, vec4 wound) {
+	float a = wound.a + base.a * (1.0 - wound.a);
+	vec3 rgb = (wound.rgb * wound.a + wound_to_encoded(base.rgb) * base.a * (1.0 - wound.a)) / max(a, 1e-8);
+	return vec4(wound_to_render(rgb), a);
+}
+"""
+
 ## One shader for all world units, using the world's hourly light uniforms,
 ## point lights, shadow darkening and view-depth fog. Figure emissive is added
 ## after max(ambient, sun, point lights), before the shadow (TLP 1000d910).
@@ -106,7 +130,7 @@ varying float ei_k;
 uniform sampler2D albedo_tex : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform sampler2D surface_tex : hint_default_black, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform vec3 unit_emission = vec3(0.0);
-""" + SHARP_FETCH + """
+""" + SHARP_FETCH + WOUND_FETCH + """
 void vertex() {
 	ei_e = max(unit_emission, ei_material_emissive);
 	ei_k = 0.0;
@@ -114,6 +138,7 @@ void vertex() {
 void fragment() {
 	FOG = ei_fog_of(VERTEX, (INV_VIEW_MATRIX * vec4(VERTEX, 1.0)).xyz);
 	vec4 t = ei_unit_tex(albedo_tex, UV);
+	if (wound_enabled) { t = ei_unit_wound(t, ei_unit_tex(wound_tex, UV)); }
 	ALBEDO = t.rgb;
 	ALPHA = t.a * ei_material_diffuse.a;
 	ALPHA_SCISSOR_THRESHOLD = 0.5;
@@ -136,7 +161,16 @@ class LitMaterial extends ShaderMaterial:
 		get:
 			return get_shader_parameter("albedo_tex")
 		set(value):
+			if value != albedo_texture:
+				wound_texture = null
+				remove_meta("wound_overlay_pend")
 			set_shader_parameter("albedo_tex", value)
+	@export var wound_texture: Texture2D:
+		get:
+			return get_shader_parameter("wound_tex")
+		set(value):
+			set_shader_parameter("wound_tex", value)
+			set_shader_parameter("wound_enabled", value != null)
 
 	func _init() -> void:
 		if EIUnitModel._unit_shader == null:
@@ -152,9 +186,10 @@ const PREVIEW_SHADER := """
 shader_type spatial;
 render_mode cull_back, diffuse_lambert, specular_disabled, alpha_to_coverage;
 uniform sampler2D albedo_tex : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
-""" + SHARP_FETCH + """
+""" + SHARP_FETCH + WOUND_FETCH + """
 void fragment() {
 	vec4 t = ei_unit_tex(albedo_tex, UV);
+	if (wound_enabled) { t = ei_unit_wound(t, ei_unit_tex(wound_tex, UV)); }
 	ALBEDO = t.rgb;
 	ALPHA = t.a;
 	ALPHA_SCISSOR_THRESHOLD = 0.5;
@@ -174,7 +209,16 @@ class PreviewMaterial extends ShaderMaterial:
 		get:
 			return get_shader_parameter("albedo_tex")
 		set(value):
+			if value != albedo_texture:
+				wound_texture = null
+				remove_meta("wound_overlay_pend")
 			set_shader_parameter("albedo_tex", value)
+	@export var wound_texture: Texture2D:
+		get:
+			return get_shader_parameter("wound_tex")
+		set(value):
+			set_shader_parameter("wound_tex", value)
+			set_shader_parameter("wound_enabled", value != null)
 
 	func _init() -> void:
 		if EIUnitModel._preview_shader == null:

@@ -1,0 +1,4572 @@
+{
+  "date": "2026-10-09",
+  "scope": "P1 wound-only GPU composition on every shipped world and preview material; custom StandardMaterial3D legacy fallback retained.",
+  "qa_root": "/home/llm2x/Documents/EI/local/scratchpad/wound-gpu-20261009",
+  "source_parent": "02633d09410b81bf3a59466ce74c3364fb488db6",
+  "source_sha256": {
+    "game/src/ei/unit_model.gd": "8c89865084003723964f2a55726b7af665baaebcc9d484f736dfd5b0608b7848",
+    "game/src/game/unit_wounds.gd": "f51b89c9aa846c9ae167b6f4edb07137a249ae54bc069eff68f38e3b5bd13299",
+    "game/src/game/order_marks.gd": "f1383e4b136d93f263ee7f3bde10a064218ad98c791d1d84b1f0e3067a69b96c",
+    "tools/tests/wound_gpu.gd": "73bcc325082c137e09de69546acb57becb1c0cd9098d0c2e0417e7ea7e99fe12",
+    "tools/tests/wound_gpu_contract.gd": "53d4e62b7a09609722d133d46d98737395f9ca2f0cc00b89876b539f28fcb846",
+    "tools/tests/wound_gpu_workload.gd": "00eca4f4c02f231d6a0b2d9fdf9b5fef6ab933a8b5ef8986d1f07cf0004c007e",
+    "tools/tests/wound_cache.gd": "02c5b6711cf24cd6c2346b294e6579ac795eabf9fe1fe5da8f8c8ea2868caa0a",
+    "tools/benchmarks/wound_gpu_images.py": "beadb51543b861cfae54e1b94034bf4d8e59d2e2f97597a56c16b2463328a3ea",
+    "tools/benchmarks/wound_layers.gd": "24b96546bdd80a2bfb1f35bc5331e4c541d520e96d29cd1a40644352b3cfc530"
+  },
+  "runner_sha256": {
+    "run.py": "0fe2f6231013bf1e260844836cfd30420b92452d749fe0586494a6bd250f4486",
+    "snapshot.py": "53133d8cd43a30fb94aa537de413b8a61b13b1744a6c09584d45b806fea68253",
+    "collect_receipt.py": "4bc83ec7046a23bca81a757a10b0bd765eac34b28e16f66d5756909baa51c70c"
+  },
+  "qualified_runtime": {
+    "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+    "CursedLands.pck": "067f4ef101a6de328a712efa2fda00b1ea30a524f32017dd6ddf2f7293a380cc",
+    "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+  },
+  "final_export": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-gpu-20261009/candidate02",
+    "export_receipt_sha256": "5f8d801f974876584221f41caa64bf870c516dc102672ed21f975b48236ad68a",
+    "steps": [
+      {
+        "command": [
+          "/home/llm2x/.local/bin/godot-4",
+          "--headless",
+          "--path",
+          "/home/llm2x/Documents/EI/local/scratchpad/wound-gpu-20261009/candidate02/stage",
+          "--editor",
+          "--import"
+        ],
+        "return_code": 0,
+        "seconds": 8.979240112996195,
+        "errors": []
+      },
+      {
+        "command": [
+          "/home/llm2x/.local/bin/godot-4",
+          "--headless",
+          "--path",
+          "/home/llm2x/Documents/EI/local/scratchpad/wound-gpu-20261009/candidate02/stage",
+          "--export-pack",
+          "Linux",
+          "/home/llm2x/Documents/EI/local/scratchpad/wound-gpu-20261009/candidate02/CursedLands.pck"
+        ],
+        "return_code": 0,
+        "seconds": 5.4732593929511495,
+        "errors": []
+      }
+    ]
+  },
+  "contract": {
+    "explicit_visual_change": "Replace blend-before-filter full-albedo bakes on shipped materials with separate native-size raw-UNORM wound sampling. Baked-pixel equivalence is intentionally not the acceptance contract.",
+    "native_invariants": [
+      "Existing health boundaries, authored armor suppression and paired nonhuman limb order unchanged.",
+      "Native MMX saturated source + floor(destination*(255-alpha)/256), PNT3 skip/first-pixel behavior and ARGB4444 truncation unchanged.",
+      "Six authored layer DLL oracle checksum 39ff45f61a681cbf03e73b32bbeb4d36c583e0da4413304d6614c114cf7a2b5a remains exact; real mixed human/boar native byte hashes retained in rendered reports."
+    ],
+    "sampling": "Keep original base texture identity and its existing source-color/sharpness fetch statement in fragment. Wound sampler has no source_color hint: encoded UNORM interpolation; independent box mip chain and existing sharpness fetch. Blend straight RGB in encoded space using Aw + Ab*(1-Aw), then convert RGB back to the renderer domain.",
+    "alpha": "Texture alpha uses source-over; world material opacity is applied once by the unchanged world fragment; preview retains its own opacity policy. This preserves remake material coverage, not the original two-pass D3D light/opacity semantics.",
+    "unwounded": "No-wound branch keeps base fetch; no-wound wisp and healthy/healed captures exact within each final run. Cross-program GL/Forward comparisons against the accepted pre-integration probe are at most one byte step, including healthy/healed.",
+    "mip_limit": "Independent wound box mips are an explicit remake antialiasing policy. R0/R1 call sites do not establish original wound mip generation; do not claim full native filtering equivalence."
+  },
+  "reference_evidence": [
+    {
+      "revision": "d529d14e9bf3c960833a9d9633786fc4588ec6d2",
+      "files": [
+        "Source/renderer.cpp:5528-5533",
+        "Source/renderer.cpp:918"
+      ],
+      "finding": "Separate wound texture pass on figure geometry, source-alpha/inverse-source-alpha, ordinary UNORM surface sampling."
+    },
+    {
+      "revision": "0092dc6e1d7c4aab3f74644a79e9bfca11ecf293",
+      "files": [
+        "Source/renderer.cpp:5481-5486",
+        "Source/renderer.cpp:2994-2997",
+        "Source/engine_bridge.cpp:7023-7038",
+        "Source/engine_bridge.cpp:7202-7209",
+        "Source/surface_upload.cpp:192-216",
+        "Source/native_shader.h:1578",
+        "Source/native_shader.h:1626",
+        "Source/world_texture_sampler.h:18-19",
+        "Source/surface_upload.cpp:421",
+        "Source/proxy.cpp:1117"
+      ],
+      "finding": "Independent world and preview wound passes, raw UNORM sampling and source-over target blend. World sampler upgrades are explicit; static-hint mip generation cannot be assumed for every wound surface."
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/remake/docs/original_reference.md:3871-3887",
+      "finding": "Original wound stage and native DLL byte compositor already documented; prior bake is explicitly approximate at alpha/mip/filter edges."
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/lost-in-astral/checks/base-use-baseline/tools/ui_native_parity_test.gd:748-781",
+      "finding": "Executed DLL synthetic and six-real-layer byte oracles; production byte code unchanged."
+    }
+  ],
+  "implementation": {
+    "uploads": "One wound image + native-size mip chain per mask/layout/level state, shared across outfits and world/paperdoll materials. No shipped material replacement-albedo job, readback, resize, blend_rect, cache or upload.",
+    "ownership": "Native producer shared with a simultaneous legacy custom bake in either request order. Deferred GPU consumers use weak material references, newest-request/base identity guards and job-owned result references surviving LRU eviction. Base replacement invalidates pending wounds.",
+    "selection": "Continuously selected override/surface-override copies refresh newly completed wound textures; selecting while pending, worsening while selected and heal/deselect/reselect are covered.",
+    "cache": {
+      "entries": 64,
+      "native_cpu_bytes": 4194304,
+      "gpu_cached_rgba_mips_bound": "At most 4/3 of native byte budget plus final texel per cache entry. Active material/in-flight references are outside cache bounds.",
+      "scope": "Existing encoded/decoded archive caches and retained SOURCE_IMAGE outfit pixels are not removed or included in this bound."
+    }
+  },
+  "headless": [
+    {
+      "name": "wound_gpu-headless04",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-gpu-20261009/wound_gpu-headless04",
+      "checks": 50,
+      "run_sha256": "02bb21fb910e070fa62d8725cf1444be540bd54d9538c0afa009ccdc31d18f04",
+      "log_sha256": "dad6b0ce528647670871b8c1ec3e3d53391eac5ff5e50a7d3ced873b26e1bc4b",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/wound-gpu-20261009/candidate01/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/wound-gpu-20261009/wound_gpu-headless04/tool-source.gd"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 2.003153422032483,
+      "termination": null,
+      "errors": [],
+      "source_sha256": "73bcc325082c137e09de69546acb57becb1c0cd9098d0c2e0417e7ea7e99fe12",
+      "bundle_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "269292e0a3e5f29c3d92902cb39f7e5e30123d5ab9904189b4b48297b5bcbe91",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "png_sha256": {}
+    },
+    {
+      "name": "wound_gpu-sync01",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-gpu-20261009/wound_gpu-sync01",
+      "checks": 50,
+      "run_sha256": "b608d8821c6c1b8b068f1af261b6c37a556030973dabcbf22cd4aad9ba4bef81",
+      "log_sha256": "0976a734318e645bf5f0f02ab564ffab5659f8643a9e891a4dfb68befe9f5d4b",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/wound-gpu-20261009/candidate-sync01/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/wound-gpu-20261009/wound_gpu-sync01/tool-source.gd"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 2.0028472500271164,
+      "termination": null,
+      "errors": [],
+      "source_sha256": "73bcc325082c137e09de69546acb57becb1c0cd9098d0c2e0417e7ea7e99fe12",
+      "bundle_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "68edd443579e1eeddb0830390de3843190eb909e171dc4932d5a495fd1a78fee",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "png_sha256": {}
+    },
+    {
+      "name": "wound_cache-headless01",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-gpu-20261009/wound_cache-headless01",
+      "checks": 43,
+      "run_sha256": "a460c807e4e1f097fdab25db3d87340bee279e9498655b9866b26e2a703be7d5",
+      "log_sha256": "4418d63e0e4123ebc06dd6f79fb37e007e4314dfb90d5e87ed9f70340a736631",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/wound-gpu-20261009/candidate01/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/wound-gpu-20261009/wound_cache-headless01/tool-source.gd"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 2.002529453020543,
+      "termination": null,
+      "errors": [],
+      "source_sha256": "02c5b6711cf24cd6c2346b294e6579ac795eabf9fe1fe5da8f8c8ea2868caa0a",
+      "bundle_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "269292e0a3e5f29c3d92902cb39f7e5e30123d5ab9904189b4b48297b5bcbe91",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "png_sha256": {}
+    },
+    {
+      "name": "wound_source-headless01",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-gpu-20261009/wound_source-headless01",
+      "checks": 39,
+      "run_sha256": "c7db0d29e498deaed4119fc053e257695fe6f5732be1a545f50e3ca0e9aae869",
+      "log_sha256": "f85175d227030b5dc1a7cae233eba16be5df81a6ef9c224d5ff76912de6938b4",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/wound-gpu-20261009/candidate01/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/wound-gpu-20261009/wound_source-headless01/tool-source.gd"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 2.00234648300102,
+      "termination": null,
+      "errors": [],
+      "source_sha256": "46a5034c05a92afecd84a80d603d26df7ee8c4ff1af1a3ddff5c4e106ce96443",
+      "bundle_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "269292e0a3e5f29c3d92902cb39f7e5e30123d5ab9904189b4b48297b5bcbe91",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "png_sha256": {}
+    },
+    {
+      "name": "production-contract-native01",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-gpu-20261009/production-contract-native01",
+      "checks": 1,
+      "run_sha256": "64304b64cbeb26b12337f5b6f27c79031bb6426efaa5d3ed1df626ddb36a1d49",
+      "log_sha256": "ea84cc53b93da934400a5681bd94180e4688d6511c2c29e62f5913651473a963",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/wound-gpu-20261009/candidate01/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/wound-gpu-20261009/production-contract-native01/tool-source.gd",
+        "--production"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 2.002441535994876,
+      "termination": null,
+      "errors": [],
+      "source_sha256": "7765065ae8d86e5df697d1a170a8f1732d89a7bb9dc46023bd4ee9d423dba1fe",
+      "bundle_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "269292e0a3e5f29c3d92902cb39f7e5e30123d5ab9904189b4b48297b5bcbe91",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "png_sha256": {}
+    }
+  ],
+  "headless_reuse_qualification": "Ownership/cache/legacy tests use candidate01 (and isolated synchronous candidate-sync01). UnitWounds and OrderMarks are byte-identical in candidate02; only shader call shape changed afterward. Final shaders are independently exercised by all three final rendered runs.",
+  "final_rendered_checks": 522,
+  "final_capture_count": 264,
+  "final_independent_rgb_comparisons": 180,
+  "final_runs": [
+    {
+      "name": "final-gl01",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-gpu-20261009/final-gl01",
+      "checks": 174,
+      "failures": 0,
+      "capture_count": 88,
+      "renderer": "gl_compatibility",
+      "precision_oracle": false,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/wound-gpu-20261009/candidate02/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/wound-gpu-20261009/final-gl01/tool-source.gd",
+        "--production",
+        "--composed"
+      ],
+      "source_sha256": "53d4e62b7a09609722d133d46d98737395f9ca2f0cc00b89876b539f28fcb846",
+      "pack_sha256": "067f4ef101a6de328a712efa2fda00b1ea30a524f32017dd6ddf2f7293a380cc",
+      "evidence_sha256": {
+        "run.log": "2535bd1defa9ebc39fe375e749e5811e8d45a6b5f11e846a78da3ce06810cfa9",
+        "run.json": "e2482f81b69c812801ea2d56cb4b2064c250b729dee2112d7880a1aab5101346",
+        "wound-gpu-contract.json": "6f92062662940ca6a1baac65bd1f59c79dd1b3080d253d482393c45e0e169be4",
+        "image-audit.json": "eff108549bcb41b77267d112425da5842cdd1484da4ec98bcd05a8eebf7b46e2"
+      },
+      "png_sha256": {
+        "wound-contract-human-mixed-lod1.0-alpha.png": "94d72edc0d17fd5795fd948f3a0ef51455886639c36619f93fdaa6e45663c044",
+        "wound-contract-material-preview0-soft1-opacity1.0-actual.png": "593745fce3236b30c2268c360330db635c8dda7a3a2b3fe9c69fdf0f0b20472c",
+        "wound-contract-synthetic-alpha-lod1.0-alpha-oracle-display.png": "3bbf57b543c61d013c1f01ebd7cf63702d353ba258dc075193b1122fc9ea4c42",
+        "wound-contract-material-preview1-soft0-opacity0.4-reference.png": "ac5baa8653f4587af5a451e82ed002c967f4c7c121c40e2a6a97088eb9dc1ea5",
+        "wound-contract-synthetic-alpha-lod1.0-rgb-oracle.png": "b136ad603053ebf23d36fcb5745009fe635fc96882e33c86c47f88c7d2fab857",
+        "wound-contract-material-preview0-soft1-opacity0.4-reference.png": "dc5dfacb1b00f0b431591a30738b8946697003d01cc52141bdeffd3847e672ec",
+        "wound-contract-human-mixed-lod1.0-rgb.png": "5b9ad0e5fe54fe907753f2ebc4789492c785ad1920c8a303c84e26046a83ffef",
+        "wound-contract-unmowi-sharp1-size6.6-healthy.png": "0824104643b4fdd9879c08bbf8f398318982ccf3e095fb7dc31162f3519821c7",
+        "wound-contract-unanwibo-sharp1-size6.6-candidate.png": "ca984482180af74069aacc5148205745b5f02380314da5c3821bd4953e431abe",
+        "wound-contract-human-mixed-lod0.0-alpha-oracle.png": "94d72edc0d17fd5795fd948f3a0ef51455886639c36619f93fdaa6e45663c044",
+        "wound-contract-unanwibo-sharp1-size2.2-healthy.png": "dd5e000864eede1641997a7efc9a282cfe63c09546c1c553b66b1f9d66f96eed",
+        "wound-contract-material-preview0-soft1-opacity0.4-actual.png": "dc5dfacb1b00f0b431591a30738b8946697003d01cc52141bdeffd3847e672ec",
+        "wound-contract-material-preview0-soft0-opacity0.4-actual.png": "0185b1cbc8d3e9a60b3c0266d8c6f15f685cd47d7ba181c724da047c7967cfda",
+        "wound-contract-human-mixed-lod1.0-alpha-oracle.png": "94d72edc0d17fd5795fd948f3a0ef51455886639c36619f93fdaa6e45663c044",
+        "wound-contract-synthetic-alpha-lod0.0-alpha-oracle-display.png": "3fb697e5a9e0001714747345b2ac7505f7e1bca51b2870aa14d2377bae8c66bb",
+        "wound-contract-human-mixed-lod0.0-alpha-oracle-display.png": "94d72edc0d17fd5795fd948f3a0ef51455886639c36619f93fdaa6e45663c044",
+        "wound-contract-unanwibo-sharp1-size6.6-healthy.png": "be06f6de6a11fca8ab61029b52bb96182586fc7be8766eb780c82b713c098026",
+        "wound-contract-unhuma-sharp1-size2.2-healed.png": "4c553cf969851b2a6160ee7a1701a00c1c7f740bf185dc04c11103ccda9f7ecd",
+        "wound-contract-unhuma-sharp0-size6.6-healed.png": "01add452aee707c9feed9f0ecb273141128b84f0fc0eab1c3761180daaa44859",
+        "wound-contract-unhuma-sharp0-size2.2-healthy.png": "1d82fbe489c331a8b8c33325a87c81304f9e57033176007456d750f2c6f4092a",
+        "wound-contract-synthetic-alpha-lod0.0-rgb-oracle.png": "efa8d0765e8111db3355760858c61bfb9df58cc1ce4d2e112a1a99b60026144e",
+        "wound-contract-unmowi-sharp1-size2.2-candidate.png": "91d279ff9a362152a97eb5fcd44cf30db3ebdb26d1d5dbf9a6198596ffd4d245",
+        "wound-contract-unhuma-sharp1-size6.6-candidate.png": "97554f9440a1671b48eab9f2d94a15e709536e58c2adff5fd5f42f3b33a8edd5",
+        "wound-contract-material-preview1-soft0-opacity1.0-reference.png": "ac5baa8653f4587af5a451e82ed002c967f4c7c121c40e2a6a97088eb9dc1ea5",
+        "wound-contract-unmowi-sharp1-size6.6-healed.png": "0824104643b4fdd9879c08bbf8f398318982ccf3e095fb7dc31162f3519821c7",
+        "wound-contract-unanwibo-sharp0-size2.2-healthy.png": "29c2ccdbc3184148b43d8b3b5b61bdbfbdfa60e0aaa2f0f40d5c1313505166db",
+        "wound-contract-material-preview1-soft0-opacity0.4-actual.png": "ac5baa8653f4587af5a451e82ed002c967f4c7c121c40e2a6a97088eb9dc1ea5",
+        "wound-contract-human-mixed-lod0.0-rgb.png": "d0989109c3ba96ede81b105881f6a04db1a70342a72ee2d758252ba0a12cbc19",
+        "wound-contract-unanwibo-sharp0-size2.2-candidate.png": "c62af938f0110a56ee695e244843c7e358c15b884351ea4788ca9c1dc4e87749",
+        "wound-contract-unanwibo-sharp0-size2.2-healed.png": "29c2ccdbc3184148b43d8b3b5b61bdbfbdfa60e0aaa2f0f40d5c1313505166db",
+        "wound-contract-unhuma-sharp0-size6.6-candidate.png": "476385fa56d34b4256a83a2e12d4a641c33a730d43e2a640916c32c882b3a046",
+        "wound-contract-human-mixed-lod2.4-rgb.png": "9d7caba5d554338e9ea2459c4d86dd8b56f93356fcf713cde1728f2622e00db0",
+        "wound-contract-unmowi-sharp1-size2.2-healed.png": "91d279ff9a362152a97eb5fcd44cf30db3ebdb26d1d5dbf9a6198596ffd4d245",
+        "wound-contract-unhuma-sharp0-size2.2-candidate.png": "4f548280b77a4a04a243fe9194015b0ec4de533d1056a0d6b1e861b7dbbbcd6d",
+        "wound-contract-material-preview1-soft0-opacity1.0-actual.png": "ac5baa8653f4587af5a451e82ed002c967f4c7c121c40e2a6a97088eb9dc1ea5",
+        "wound-contract-synthetic-alpha-lod0.0-rgb.png": "39bbae5b0c1a45e6990e78a9df3e80c8a40c5704c7266e177024df94643ca815",
+        "wound-contract-material-preview1-soft1-opacity1.0-actual.png": "c4b4f2232fe3d601185d957324c0e9602767323501abeeb1165b37e8cd6f65ff",
+        "wound-contract-human-mixed-lod2.4-alpha-oracle.png": "94d72edc0d17fd5795fd948f3a0ef51455886639c36619f93fdaa6e45663c044",
+        "wound-contract-unmowi-sharp0-size2.2-healed.png": "99b224e86a4f6193e359ec1c3e1316c3c9e76e994d90a72006e55e8add09da4c",
+        "wound-contract-unanwibo-sharp0-size6.6-healed.png": "1482d7fce85fd225d6a74a8d9f62024fdcbc0e74dcb54e5d782a4fab79c8bef7",
+        "wound-contract-unmowi-sharp0-size2.2-candidate.png": "99b224e86a4f6193e359ec1c3e1316c3c9e76e994d90a72006e55e8add09da4c",
+        "wound-contract-synthetic-alpha-lod2.4-rgb-oracle.png": "7423da09e6da62ce651dfd9db7d3503ee7fe8fc334726fe9ef750392f36a2647",
+        "wound-contract-synthetic-alpha-lod1.0-alpha.png": "177db7d63547d322fb77ccae562f48acebe41a90f81e281e060818f82a8bd517",
+        "wound-contract-synthetic-alpha-lod2.4-rgb-oracle-display.png": "1a5f54d3cbec5ff3b58b4157e9893e2790c76c82325417f992ffc066a8b9de7e",
+        "wound-contract-unanwibo-sharp1-size6.6-healed.png": "be06f6de6a11fca8ab61029b52bb96182586fc7be8766eb780c82b713c098026",
+        "wound-contract-human-mixed-lod1.0-rgb-oracle.png": "a352b71ee57a470ea85dc4ce2ba953759b3cff170c77b496183fc3ad52f4199e",
+        "wound-contract-material-preview1-soft1-opacity1.0-reference.png": "c4b4f2232fe3d601185d957324c0e9602767323501abeeb1165b37e8cd6f65ff",
+        "wound-contract-synthetic-alpha-lod1.0-alpha-oracle.png": "dd7f5c2bb4b8f5d11fa65a27efbd3f90144bd96a9629768ba91108c51506d59b",
+        "wound-contract-unhuma-sharp1-size6.6-healthy.png": "77312d831968da033a1b27d3dc34b624c8eb28125ec3572ab64d99cde2f68be2",
+        "wound-contract-unanwibo-sharp0-size6.6-healthy.png": "1482d7fce85fd225d6a74a8d9f62024fdcbc0e74dcb54e5d782a4fab79c8bef7",
+        "wound-contract-unanwibo-sharp1-size2.2-healed.png": "dd5e000864eede1641997a7efc9a282cfe63c09546c1c553b66b1f9d66f96eed",
+        "wound-contract-unmowi-sharp1-size6.6-candidate.png": "0824104643b4fdd9879c08bbf8f398318982ccf3e095fb7dc31162f3519821c7",
+        "wound-contract-unmowi-sharp0-size6.6-healed.png": "65c08f54ede69541ce444896118c98caf0bedaaf14df3bc2d39c8859235b5da4",
+        "wound-contract-human-mixed-lod0.0-rgb-oracle-display.png": "919b70137f2196ce23fc772c3ddb34ef5c2dd45036b8652ff1f742c9d4e18fdc",
+        "wound-contract-synthetic-alpha-lod0.0-alpha.png": "bb6c786d90c95d6586d3203d5fa469602dbab45524bfe1003bd6f24fbb55eefa",
+        "wound-contract-unanwibo-sharp0-size6.6-candidate.png": "27a7976dc85f212a694bcd7dc29acac1d9fab35d555efd66f75d82e3b1f4eb61",
+        "wound-contract-unhuma-sharp1-size6.6-healed.png": "77312d831968da033a1b27d3dc34b624c8eb28125ec3572ab64d99cde2f68be2",
+        "wound-contract-material-preview0-soft1-opacity1.0-reference.png": "593745fce3236b30c2268c360330db635c8dda7a3a2b3fe9c69fdf0f0b20472c",
+        "wound-contract-synthetic-alpha-lod2.4-alpha.png": "0fac24fdbde728a1236fdf4810b472cee90a25dd93da5a7f2f93988053454f83",
+        "wound-contract-material-preview0-soft0-opacity1.0-actual.png": "2c4a8d6aa972f4bb9562b3812e8e918f7f909856bba02870d95e6e03fc62e3ff",
+        "wound-contract-synthetic-alpha-lod2.4-rgb.png": "60aeeaa13a4b630b33785b14f159a7541d044fc901c12a4aa001553b3bc83d5c",
+        "wound-contract-unmowi-sharp1-size2.2-healthy.png": "91d279ff9a362152a97eb5fcd44cf30db3ebdb26d1d5dbf9a6198596ffd4d245",
+        "wound-contract-synthetic-alpha-lod0.0-rgb-oracle-display.png": "1a521f3c1970647b0895e99ec74f79c7cfc19d6752bf5ad20969c17d134acdf1",
+        "wound-contract-human-mixed-lod1.0-alpha-oracle-display.png": "94d72edc0d17fd5795fd948f3a0ef51455886639c36619f93fdaa6e45663c044",
+        "wound-contract-synthetic-alpha-lod2.4-alpha-oracle-display.png": "f557dd31a305952e3528e09228d0d6bb53b1b77e3c3e339916cf716212cbc2de",
+        "wound-contract-unhuma-sharp0-size6.6-healthy.png": "01add452aee707c9feed9f0ecb273141128b84f0fc0eab1c3761180daaa44859",
+        "wound-contract-human-mixed-lod0.0-alpha.png": "94d72edc0d17fd5795fd948f3a0ef51455886639c36619f93fdaa6e45663c044",
+        "wound-contract-human-mixed-lod2.4-rgb-oracle.png": "e47c7f82abdca9fef6a6e1b13f2151f45fe2d3c7a3ef56544080fa097fa88db3",
+        "wound-contract-human-mixed-lod2.4-alpha.png": "94d72edc0d17fd5795fd948f3a0ef51455886639c36619f93fdaa6e45663c044",
+        "wound-contract-unhuma-sharp1-size2.2-healthy.png": "4c553cf969851b2a6160ee7a1701a00c1c7f740bf185dc04c11103ccda9f7ecd",
+        "wound-contract-unhuma-sharp0-size2.2-healed.png": "1d82fbe489c331a8b8c33325a87c81304f9e57033176007456d750f2c6f4092a",
+        "wound-contract-material-preview0-soft0-opacity0.4-reference.png": "0185b1cbc8d3e9a60b3c0266d8c6f15f685cd47d7ba181c724da047c7967cfda",
+        "wound-contract-synthetic-alpha-lod1.0-rgb.png": "5d468883517956160e79319c62b20abc38696b81b4c84139c5087543298c7f40",
+        "wound-contract-human-mixed-lod2.4-alpha-oracle-display.png": "94d72edc0d17fd5795fd948f3a0ef51455886639c36619f93fdaa6e45663c044",
+        "wound-contract-unhuma-sharp1-size2.2-candidate.png": "4a0a882a68394a822d03652c62f863c5a169e005b575b3d450f44f8541ef226b",
+        "wound-contract-synthetic-alpha-lod0.0-alpha-oracle.png": "0e4470a4754f2614ce24a9153b8ef49f6d7e98e1ec9ba1d0296aa786c54b967a",
+        "wound-contract-unmowi-sharp0-size2.2-healthy.png": "99b224e86a4f6193e359ec1c3e1316c3c9e76e994d90a72006e55e8add09da4c",
+        "wound-contract-synthetic-alpha-lod2.4-alpha-oracle.png": "f557dd31a305952e3528e09228d0d6bb53b1b77e3c3e339916cf716212cbc2de",
+        "wound-contract-unmowi-sharp0-size6.6-candidate.png": "65c08f54ede69541ce444896118c98caf0bedaaf14df3bc2d39c8859235b5da4",
+        "wound-contract-material-preview1-soft1-opacity0.4-actual.png": "c4b4f2232fe3d601185d957324c0e9602767323501abeeb1165b37e8cd6f65ff",
+        "wound-contract-unmowi-sharp0-size6.6-healthy.png": "65c08f54ede69541ce444896118c98caf0bedaaf14df3bc2d39c8859235b5da4",
+        "wound-contract-material-preview1-soft1-opacity0.4-reference.png": "c4b4f2232fe3d601185d957324c0e9602767323501abeeb1165b37e8cd6f65ff",
+        "wound-contract-human-mixed-lod2.4-rgb-oracle-display.png": "04419386a6179ee03232b898facf69de8af877329812cb580ee0c369479d9f28",
+        "wound-contract-human-mixed-lod0.0-rgb-oracle.png": "69cdfff93b9d995ae7bfa735da8145956e582452d703bb7d1feb0eb59da8bfc5",
+        "wound-contract-material-preview0-soft0-opacity1.0-reference.png": "2c4a8d6aa972f4bb9562b3812e8e918f7f909856bba02870d95e6e03fc62e3ff",
+        "wound-contract-unanwibo-sharp1-size2.2-candidate.png": "78100f1d6d3ba53e6be463fac47d5e7a5f2311611eadfc0d030525cca080cb1e",
+        "wound-contract-synthetic-alpha-lod1.0-rgb-oracle-display.png": "5cd65452263bfc1da32e012e98c1c2c88fd078cfee0ddb6f818993b6abbb73d9",
+        "wound-contract-human-mixed-lod1.0-rgb-oracle-display.png": "649eca323336651ead8e76008fe77b779b3713924f928fafb81f90ae1491fa08"
+      },
+      "independent_image_audit": {
+        "run": "/home/llm2x/Documents/EI/local/scratchpad/wound-gpu-20261009/final-gl01",
+        "probe": "/home/llm2x/Documents/EI/local/scratchpad/wound-gpu-20261009/probe-gl02",
+        "comparisons": 72,
+        "failures": 0,
+        "rows": [
+          {
+            "name": "wound-contract-synthetic-alpha-lod0.0-rgb",
+            "peak": 2,
+            "changed": 3735,
+            "over2": 0,
+            "rgb_absolute_sum": 7003
+          },
+          {
+            "name": "wound-contract-synthetic-alpha-lod0.0-alpha",
+            "peak": 2,
+            "changed": 2051,
+            "over2": 0,
+            "rgb_absolute_sum": 6177
+          },
+          {
+            "name": "wound-contract-synthetic-alpha-lod1.0-rgb",
+            "peak": 2,
+            "changed": 3641,
+            "over2": 0,
+            "rgb_absolute_sum": 6332
+          },
+          {
+            "name": "wound-contract-synthetic-alpha-lod1.0-alpha",
+            "peak": 2,
+            "changed": 1818,
+            "over2": 0,
+            "rgb_absolute_sum": 5469
+          },
+          {
+            "name": "wound-contract-synthetic-alpha-lod2.4-rgb",
+            "peak": 1,
+            "changed": 3861,
+            "over2": 0,
+            "rgb_absolute_sum": 6424
+          },
+          {
+            "name": "wound-contract-synthetic-alpha-lod2.4-alpha",
+            "peak": 1,
+            "changed": 1755,
+            "over2": 0,
+            "rgb_absolute_sum": 5265
+          },
+          {
+            "name": "wound-contract-human-mixed-lod0.0-rgb",
+            "peak": 2,
+            "changed": 3165,
+            "over2": 0,
+            "rgb_absolute_sum": 6631
+          },
+          {
+            "name": "wound-contract-human-mixed-lod0.0-alpha",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-human-mixed-lod1.0-rgb",
+            "peak": 2,
+            "changed": 3242,
+            "over2": 0,
+            "rgb_absolute_sum": 6557
+          },
+          {
+            "name": "wound-contract-human-mixed-lod1.0-alpha",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-human-mixed-lod2.4-rgb",
+            "peak": 2,
+            "changed": 3636,
+            "over2": 0,
+            "rgb_absolute_sum": 7543
+          },
+          {
+            "name": "wound-contract-human-mixed-lod2.4-alpha",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-material-preview0-soft0-opacity1.0",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-material-preview0-soft0-opacity0.4",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-material-preview0-soft1-opacity1.0",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-material-preview0-soft1-opacity0.4",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-material-preview1-soft0-opacity1.0",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-material-preview1-soft0-opacity0.4",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-material-preview1-soft1-opacity1.0",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-material-preview1-soft1-opacity0.4",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-unhuma-sharp0-size2.2-healed",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unhuma-sharp0-size2.2-healthy.png",
+            "peak": 1,
+            "changed": 47,
+            "over2": 0,
+            "rgb_absolute_sum": 72
+          },
+          {
+            "name": "pre-integration-wound-contract-unhuma-sharp0-size2.2-candidate.png",
+            "peak": 1,
+            "changed": 51,
+            "over2": 0,
+            "rgb_absolute_sum": 69
+          },
+          {
+            "name": "pre-integration-wound-contract-unhuma-sharp0-size2.2-healed.png",
+            "peak": 1,
+            "changed": 47,
+            "over2": 0,
+            "rgb_absolute_sum": 72
+          },
+          {
+            "name": "wound-contract-unhuma-sharp0-size6.6-healed",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unhuma-sharp0-size6.6-healthy.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unhuma-sharp0-size6.6-candidate.png",
+            "peak": 1,
+            "changed": 1,
+            "over2": 0,
+            "rgb_absolute_sum": 1
+          },
+          {
+            "name": "pre-integration-wound-contract-unhuma-sharp0-size6.6-healed.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-unhuma-sharp1-size2.2-healed",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unhuma-sharp1-size2.2-healthy.png",
+            "peak": 1,
+            "changed": 59,
+            "over2": 0,
+            "rgb_absolute_sum": 82
+          },
+          {
+            "name": "pre-integration-wound-contract-unhuma-sharp1-size2.2-candidate.png",
+            "peak": 1,
+            "changed": 54,
+            "over2": 0,
+            "rgb_absolute_sum": 71
+          },
+          {
+            "name": "pre-integration-wound-contract-unhuma-sharp1-size2.2-healed.png",
+            "peak": 1,
+            "changed": 59,
+            "over2": 0,
+            "rgb_absolute_sum": 82
+          },
+          {
+            "name": "wound-contract-unhuma-sharp1-size6.6-healed",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unhuma-sharp1-size6.6-healthy.png",
+            "peak": 1,
+            "changed": 1,
+            "over2": 0,
+            "rgb_absolute_sum": 1
+          },
+          {
+            "name": "pre-integration-wound-contract-unhuma-sharp1-size6.6-candidate.png",
+            "peak": 1,
+            "changed": 2,
+            "over2": 0,
+            "rgb_absolute_sum": 3
+          },
+          {
+            "name": "pre-integration-wound-contract-unhuma-sharp1-size6.6-healed.png",
+            "peak": 1,
+            "changed": 1,
+            "over2": 0,
+            "rgb_absolute_sum": 1
+          },
+          {
+            "name": "wound-contract-unanwibo-sharp0-size2.2-healed",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unanwibo-sharp0-size2.2-healthy.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unanwibo-sharp0-size2.2-candidate.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unanwibo-sharp0-size2.2-healed.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-unanwibo-sharp0-size6.6-healed",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unanwibo-sharp0-size6.6-healthy.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unanwibo-sharp0-size6.6-candidate.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unanwibo-sharp0-size6.6-healed.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-unanwibo-sharp1-size2.2-healed",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unanwibo-sharp1-size2.2-healthy.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unanwibo-sharp1-size2.2-candidate.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unanwibo-sharp1-size2.2-healed.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-unanwibo-sharp1-size6.6-healed",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unanwibo-sharp1-size6.6-healthy.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unanwibo-sharp1-size6.6-candidate.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unanwibo-sharp1-size6.6-healed.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-unmowi-sharp0-size2.2-healed",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-unmowi-sharp0-size2.2-no-wound",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unmowi-sharp0-size2.2-healthy.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unmowi-sharp0-size2.2-candidate.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unmowi-sharp0-size2.2-healed.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-unmowi-sharp0-size6.6-healed",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-unmowi-sharp0-size6.6-no-wound",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unmowi-sharp0-size6.6-healthy.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unmowi-sharp0-size6.6-candidate.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unmowi-sharp0-size6.6-healed.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-unmowi-sharp1-size2.2-healed",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-unmowi-sharp1-size2.2-no-wound",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unmowi-sharp1-size2.2-healthy.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unmowi-sharp1-size2.2-candidate.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unmowi-sharp1-size2.2-healed.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-unmowi-sharp1-size6.6-healed",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-unmowi-sharp1-size6.6-no-wound",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unmowi-sharp1-size6.6-healthy.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unmowi-sharp1-size6.6-candidate.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unmowi-sharp1-size6.6-healed.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          }
+        ]
+      },
+      "measured_rows": [
+        {
+          "changed": 3735,
+          "kind": "independent_cpu_oracle",
+          "label": "synthetic-alpha-lod0.0-rgb",
+          "over2": 0,
+          "peak": 2,
+          "raw_encoded_png_difference": {
+            "changed": 3854,
+            "over2": 785,
+            "peak": 7,
+            "rgb_absolute_sum": 10639
+          },
+          "rgb_absolute_sum": 7003
+        },
+        {
+          "changed": 2051,
+          "kind": "independent_cpu_oracle",
+          "label": "synthetic-alpha-lod0.0-alpha",
+          "over2": 0,
+          "peak": 2,
+          "raw_encoded_png_difference": {
+            "changed": 1858,
+            "over2": 16,
+            "peak": 3,
+            "rgb_absolute_sum": 5928
+          },
+          "rgb_absolute_sum": 6177
+        },
+        {
+          "changed": 3641,
+          "kind": "independent_cpu_oracle",
+          "label": "synthetic-alpha-lod1.0-rgb",
+          "over2": 0,
+          "peak": 2,
+          "raw_encoded_png_difference": {
+            "changed": 3297,
+            "over2": 0,
+            "peak": 1,
+            "rgb_absolute_sum": 4871
+          },
+          "rgb_absolute_sum": 6332
+        },
+        {
+          "changed": 1818,
+          "kind": "independent_cpu_oracle",
+          "label": "synthetic-alpha-lod1.0-alpha",
+          "over2": 0,
+          "peak": 2,
+          "raw_encoded_png_difference": {
+            "changed": 1580,
+            "over2": 0,
+            "peak": 1,
+            "rgb_absolute_sum": 4740
+          },
+          "rgb_absolute_sum": 5469
+        },
+        {
+          "changed": 3861,
+          "kind": "independent_cpu_oracle",
+          "label": "synthetic-alpha-lod2.4-rgb",
+          "over2": 0,
+          "peak": 1,
+          "raw_encoded_png_difference": {
+            "changed": 3416,
+            "over2": 0,
+            "peak": 1,
+            "rgb_absolute_sum": 5682
+          },
+          "rgb_absolute_sum": 6424
+        },
+        {
+          "changed": 1755,
+          "kind": "independent_cpu_oracle",
+          "label": "synthetic-alpha-lod2.4-alpha",
+          "over2": 0,
+          "peak": 1,
+          "raw_encoded_png_difference": {
+            "changed": 1755,
+            "over2": 0,
+            "peak": 1,
+            "rgb_absolute_sum": 5265
+          },
+          "rgb_absolute_sum": 5265
+        },
+        {
+          "changed": 3165,
+          "kind": "independent_cpu_oracle",
+          "label": "human-mixed-lod0.0-rgb",
+          "over2": 0,
+          "peak": 2,
+          "raw_encoded_png_difference": {
+            "changed": 3188,
+            "over2": 327,
+            "peak": 7,
+            "rgb_absolute_sum": 8401
+          },
+          "rgb_absolute_sum": 6631
+        },
+        {
+          "changed": 0,
+          "kind": "independent_cpu_oracle",
+          "label": "human-mixed-lod0.0-alpha",
+          "over2": 0,
+          "peak": 0,
+          "raw_encoded_png_difference": {
+            "changed": 0,
+            "over2": 0,
+            "peak": 0,
+            "rgb_absolute_sum": 0
+          },
+          "rgb_absolute_sum": 0
+        },
+        {
+          "changed": 3242,
+          "kind": "independent_cpu_oracle",
+          "label": "human-mixed-lod1.0-rgb",
+          "over2": 0,
+          "peak": 2,
+          "raw_encoded_png_difference": {
+            "changed": 3274,
+            "over2": 308,
+            "peak": 7,
+            "rgb_absolute_sum": 8407
+          },
+          "rgb_absolute_sum": 6557
+        },
+        {
+          "changed": 0,
+          "kind": "independent_cpu_oracle",
+          "label": "human-mixed-lod1.0-alpha",
+          "over2": 0,
+          "peak": 0,
+          "raw_encoded_png_difference": {
+            "changed": 0,
+            "over2": 0,
+            "peak": 0,
+            "rgb_absolute_sum": 0
+          },
+          "rgb_absolute_sum": 0
+        },
+        {
+          "changed": 3636,
+          "kind": "independent_cpu_oracle",
+          "label": "human-mixed-lod2.4-rgb",
+          "over2": 0,
+          "peak": 2,
+          "raw_encoded_png_difference": {
+            "changed": 3654,
+            "over2": 172,
+            "peak": 6,
+            "rgb_absolute_sum": 8430
+          },
+          "rgb_absolute_sum": 7543
+        },
+        {
+          "changed": 0,
+          "kind": "independent_cpu_oracle",
+          "label": "human-mixed-lod2.4-alpha",
+          "over2": 0,
+          "peak": 0,
+          "raw_encoded_png_difference": {
+            "changed": 0,
+            "over2": 0,
+            "peak": 0,
+            "rgb_absolute_sum": 0
+          },
+          "rgb_absolute_sum": 0
+        },
+        {
+          "changed": 0,
+          "kind": "production_material_alpha",
+          "label": "material-preview0-soft0-opacity1.0",
+          "over2": 0,
+          "peak": 0,
+          "rgb_absolute_sum": 0
+        },
+        {
+          "changed": 0,
+          "kind": "production_material_alpha",
+          "label": "material-preview0-soft0-opacity0.4",
+          "over2": 0,
+          "peak": 0,
+          "rgb_absolute_sum": 0
+        },
+        {
+          "changed": 0,
+          "kind": "production_material_alpha",
+          "label": "material-preview0-soft1-opacity1.0",
+          "over2": 0,
+          "peak": 0,
+          "rgb_absolute_sum": 0
+        },
+        {
+          "changed": 0,
+          "kind": "production_material_alpha",
+          "label": "material-preview0-soft1-opacity0.4",
+          "over2": 0,
+          "peak": 0,
+          "rgb_absolute_sum": 0
+        },
+        {
+          "changed": 0,
+          "kind": "production_material_alpha",
+          "label": "material-preview1-soft0-opacity1.0",
+          "over2": 0,
+          "peak": 0,
+          "rgb_absolute_sum": 0
+        },
+        {
+          "changed": 0,
+          "kind": "production_material_alpha",
+          "label": "material-preview1-soft0-opacity0.4",
+          "over2": 0,
+          "peak": 0,
+          "rgb_absolute_sum": 0
+        },
+        {
+          "changed": 0,
+          "kind": "production_material_alpha",
+          "label": "material-preview1-soft1-opacity1.0",
+          "over2": 0,
+          "peak": 0,
+          "rgb_absolute_sum": 0
+        },
+        {
+          "changed": 0,
+          "kind": "production_material_alpha",
+          "label": "material-preview1-soft1-opacity0.4",
+          "over2": 0,
+          "peak": 0,
+          "rgb_absolute_sum": 0
+        },
+        {
+          "changed": 32977,
+          "kind": "production_wound_signal",
+          "label": "unhuma-sharp0-size2.2",
+          "over2": 31915,
+          "peak": 199,
+          "rgb_absolute_sum": 3746468,
+          "wound_signal": {
+            "changed": 32977,
+            "over2": 31915,
+            "peak": 199,
+            "rgb_absolute_sum": 3746468
+          }
+        },
+        {
+          "changed": 3686,
+          "kind": "production_wound_signal",
+          "label": "unhuma-sharp0-size6.6",
+          "over2": 3556,
+          "peak": 171,
+          "rgb_absolute_sum": 415929,
+          "wound_signal": {
+            "changed": 3686,
+            "over2": 3556,
+            "peak": 171,
+            "rgb_absolute_sum": 415929
+          }
+        },
+        {
+          "changed": 32993,
+          "kind": "production_wound_signal",
+          "label": "unhuma-sharp1-size2.2",
+          "over2": 31910,
+          "peak": 199,
+          "rgb_absolute_sum": 3748254,
+          "wound_signal": {
+            "changed": 32993,
+            "over2": 31910,
+            "peak": 199,
+            "rgb_absolute_sum": 3748254
+          }
+        },
+        {
+          "changed": 3668,
+          "kind": "production_wound_signal",
+          "label": "unhuma-sharp1-size6.6",
+          "over2": 3548,
+          "peak": 170,
+          "rgb_absolute_sum": 416016,
+          "wound_signal": {
+            "changed": 3668,
+            "over2": 3548,
+            "peak": 170,
+            "rgb_absolute_sum": 416016
+          }
+        },
+        {
+          "changed": 21360,
+          "kind": "production_wound_signal",
+          "label": "unanwibo-sharp0-size2.2",
+          "over2": 20279,
+          "peak": 94,
+          "rgb_absolute_sum": 1047602,
+          "wound_signal": {
+            "changed": 21360,
+            "over2": 20279,
+            "peak": 94,
+            "rgb_absolute_sum": 1047602
+          }
+        },
+        {
+          "changed": 2431,
+          "kind": "production_wound_signal",
+          "label": "unanwibo-sharp0-size6.6",
+          "over2": 2285,
+          "peak": 92,
+          "rgb_absolute_sum": 116121,
+          "wound_signal": {
+            "changed": 2431,
+            "over2": 2285,
+            "peak": 92,
+            "rgb_absolute_sum": 116121
+          }
+        },
+        {
+          "changed": 21365,
+          "kind": "production_wound_signal",
+          "label": "unanwibo-sharp1-size2.2",
+          "over2": 20289,
+          "peak": 101,
+          "rgb_absolute_sum": 1049560,
+          "wound_signal": {
+            "changed": 21365,
+            "over2": 20289,
+            "peak": 101,
+            "rgb_absolute_sum": 1049560
+          }
+        },
+        {
+          "changed": 2406,
+          "kind": "production_wound_signal",
+          "label": "unanwibo-sharp1-size6.6",
+          "over2": 2272,
+          "peak": 96,
+          "rgb_absolute_sum": 116106,
+          "wound_signal": {
+            "changed": 2406,
+            "over2": 2272,
+            "peak": 96,
+            "rgb_absolute_sum": 116106
+          }
+        },
+        {
+          "changed": 0,
+          "kind": "production_wound_signal",
+          "label": "unmowi-sharp0-size2.2",
+          "over2": 0,
+          "peak": 0,
+          "rgb_absolute_sum": 0,
+          "wound_signal": {
+            "changed": 0,
+            "over2": 0,
+            "peak": 0,
+            "rgb_absolute_sum": 0
+          }
+        },
+        {
+          "changed": 0,
+          "kind": "production_wound_signal",
+          "label": "unmowi-sharp0-size6.6",
+          "over2": 0,
+          "peak": 0,
+          "rgb_absolute_sum": 0,
+          "wound_signal": {
+            "changed": 0,
+            "over2": 0,
+            "peak": 0,
+            "rgb_absolute_sum": 0
+          }
+        },
+        {
+          "changed": 0,
+          "kind": "production_wound_signal",
+          "label": "unmowi-sharp1-size2.2",
+          "over2": 0,
+          "peak": 0,
+          "rgb_absolute_sum": 0,
+          "wound_signal": {
+            "changed": 0,
+            "over2": 0,
+            "peak": 0,
+            "rgb_absolute_sum": 0
+          }
+        },
+        {
+          "changed": 0,
+          "kind": "production_wound_signal",
+          "label": "unmowi-sharp1-size6.6",
+          "over2": 0,
+          "peak": 0,
+          "rgb_absolute_sum": 0,
+          "wound_signal": {
+            "changed": 0,
+            "over2": 0,
+            "peak": 0,
+            "rgb_absolute_sum": 0
+          }
+        }
+      ]
+    },
+    {
+      "name": "final-forward01",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-gpu-20261009/final-forward01",
+      "checks": 174,
+      "failures": 0,
+      "capture_count": 88,
+      "renderer": "forward_plus",
+      "precision_oracle": false,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/wound-gpu-20261009/candidate02/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/wound-gpu-20261009/final-forward01/tool-source.gd",
+        "--production"
+      ],
+      "source_sha256": "53d4e62b7a09609722d133d46d98737395f9ca2f0cc00b89876b539f28fcb846",
+      "pack_sha256": "067f4ef101a6de328a712efa2fda00b1ea30a524f32017dd6ddf2f7293a380cc",
+      "evidence_sha256": {
+        "run.log": "c310f4f76187f365fb213125272440bd0ef466427c6aff8422bc0d473e2cc383",
+        "run.json": "c95d89db8d82edde6feb66e9e8b01e62e57f88446b3feb182198d6281dc3f9d2",
+        "wound-gpu-contract.json": "3ac93619031e08d02bb326adeca33db15b52c01068231f89be1f58bbb70e2670",
+        "image-audit.json": "62f40c11ffb5e7673e2ac1f66e51c86683514c80b2ab0c8fe4070aac76149c85"
+      },
+      "png_sha256": {
+        "wound-contract-human-mixed-lod1.0-alpha.png": "94d72edc0d17fd5795fd948f3a0ef51455886639c36619f93fdaa6e45663c044",
+        "wound-contract-material-preview0-soft1-opacity1.0-actual.png": "0188ba2fac643f518a071ed1198b372a59e7224d1c377b1aebec2b2ce432a462",
+        "wound-contract-synthetic-alpha-lod1.0-alpha-oracle-display.png": "dd7f5c2bb4b8f5d11fa65a27efbd3f90144bd96a9629768ba91108c51506d59b",
+        "wound-contract-material-preview1-soft0-opacity0.4-reference.png": "733e8cb5ce59b7edc63880685d7b561bb54c5c3e3a0491be9f9705439e60d824",
+        "wound-contract-synthetic-alpha-lod1.0-rgb-oracle.png": "6a421ab681ef1ab9edfe0d776bb9683ae408b968d4aa26c69824af164a58a46a",
+        "wound-contract-material-preview0-soft1-opacity0.4-reference.png": "0188ba2fac643f518a071ed1198b372a59e7224d1c377b1aebec2b2ce432a462",
+        "wound-contract-human-mixed-lod1.0-rgb.png": "64d45befe6a6d588db0390c6a7c8d684f8a1ec7bff60bf0c8bd14ae0b21a5e55",
+        "wound-contract-unmowi-sharp1-size6.6-healthy.png": "5153729c8f189d4938abba94116b82c2d67ab754c22eb4abb8b6aaa89e5655ce",
+        "wound-contract-unanwibo-sharp1-size6.6-candidate.png": "a5653234ac28fb3388ba412ee2aafbebddd734efc6b8e0375bfbe567bf060441",
+        "wound-contract-human-mixed-lod0.0-alpha-oracle.png": "94d72edc0d17fd5795fd948f3a0ef51455886639c36619f93fdaa6e45663c044",
+        "wound-contract-unanwibo-sharp1-size2.2-healthy.png": "d58c4d1406ccd656d8bc33c7f3878eae53edc0e4d878e47eb798a0414dac703d",
+        "wound-contract-material-preview0-soft1-opacity0.4-actual.png": "0188ba2fac643f518a071ed1198b372a59e7224d1c377b1aebec2b2ce432a462",
+        "wound-contract-material-preview0-soft0-opacity0.4-actual.png": "733e8cb5ce59b7edc63880685d7b561bb54c5c3e3a0491be9f9705439e60d824",
+        "wound-contract-human-mixed-lod1.0-alpha-oracle.png": "94d72edc0d17fd5795fd948f3a0ef51455886639c36619f93fdaa6e45663c044",
+        "wound-contract-synthetic-alpha-lod0.0-alpha-oracle-display.png": "0e4470a4754f2614ce24a9153b8ef49f6d7e98e1ec9ba1d0296aa786c54b967a",
+        "wound-contract-human-mixed-lod0.0-alpha-oracle-display.png": "94d72edc0d17fd5795fd948f3a0ef51455886639c36619f93fdaa6e45663c044",
+        "wound-contract-unanwibo-sharp1-size6.6-healthy.png": "6d43ff2e7007dfd014c8d52cafeb36b5eaf9a55e4daa7eab4f374ac71c5a297e",
+        "wound-contract-unhuma-sharp1-size2.2-healed.png": "8287a991808b7083c7fc954a850b158c15abfea5c65d5a415e4c046f7bbe557d",
+        "wound-contract-unhuma-sharp0-size6.6-healed.png": "b8ac19c0a8d9880f41907a3680f149b626e7addbd68476b9cc9ed17618abd969",
+        "wound-contract-unhuma-sharp0-size2.2-healthy.png": "b67ccadaa237c32cbabd656246c4e7ac15775b63b1a616ad5552e6e4baca4a0b",
+        "wound-contract-synthetic-alpha-lod0.0-rgb-oracle.png": "ebe1d3cd162d0c9846219f9fc89f1c42998e77769b43a486433c443fdcae04bc",
+        "wound-contract-unmowi-sharp1-size2.2-candidate.png": "bcdf86181d31ffe180dfd43580d93f78ef0f0b2eb7c79339cd02121ac606e375",
+        "wound-contract-unhuma-sharp1-size6.6-candidate.png": "810b83bbaf17603933eed1ac70eb73a790329e25e1baf78346d07dd0733e0837",
+        "wound-contract-material-preview1-soft0-opacity1.0-reference.png": "733e8cb5ce59b7edc63880685d7b561bb54c5c3e3a0491be9f9705439e60d824",
+        "wound-contract-unmowi-sharp1-size6.6-healed.png": "5153729c8f189d4938abba94116b82c2d67ab754c22eb4abb8b6aaa89e5655ce",
+        "wound-contract-unanwibo-sharp0-size2.2-healthy.png": "29a252776c0afe62f627dae264fb1b66a93b55fbcf0da242f03252dcb62d93a6",
+        "wound-contract-material-preview1-soft0-opacity0.4-actual.png": "733e8cb5ce59b7edc63880685d7b561bb54c5c3e3a0491be9f9705439e60d824",
+        "wound-contract-human-mixed-lod0.0-rgb.png": "06c0f81cc0e3d7b23f0986c1105e061f61bf8de020a53a0084355b073d7c70ab",
+        "wound-contract-unanwibo-sharp0-size2.2-candidate.png": "a50237c73581ac0f3265f19e90deca0c1865b6b20c86e7b42f5b0160e90bdba0",
+        "wound-contract-unanwibo-sharp0-size2.2-healed.png": "29a252776c0afe62f627dae264fb1b66a93b55fbcf0da242f03252dcb62d93a6",
+        "wound-contract-unhuma-sharp0-size6.6-candidate.png": "2f472d463f3234dc6f8fda1a5f84376317286cee983d54949e5b3001e77500d3",
+        "wound-contract-human-mixed-lod2.4-rgb.png": "360ec11d43e91feab6dcac94c0aec8e992dd061e7be4b8bd0deead2090327fdc",
+        "wound-contract-unmowi-sharp1-size2.2-healed.png": "bcdf86181d31ffe180dfd43580d93f78ef0f0b2eb7c79339cd02121ac606e375",
+        "wound-contract-unhuma-sharp0-size2.2-candidate.png": "7554cb82181e6ed5902b618c7cd940429d8f266c4851c4add92163faaaaaed17",
+        "wound-contract-material-preview1-soft0-opacity1.0-actual.png": "733e8cb5ce59b7edc63880685d7b561bb54c5c3e3a0491be9f9705439e60d824",
+        "wound-contract-synthetic-alpha-lod0.0-rgb.png": "d10ad6cd88573fee18ca13284928ace04f16f713dd40fd4bdf549a6bcb76afbc",
+        "wound-contract-material-preview1-soft1-opacity1.0-actual.png": "e80f7b42f2ee9280e244d867e6fed38c75847d330c54913bf49a657d1a84d86a",
+        "wound-contract-human-mixed-lod2.4-alpha-oracle.png": "94d72edc0d17fd5795fd948f3a0ef51455886639c36619f93fdaa6e45663c044",
+        "wound-contract-unmowi-sharp0-size2.2-healed.png": "3a0294ea0be558cf3ace07dc1a855ca637c9ec1aced161856164a2326c71dd09",
+        "wound-contract-unanwibo-sharp0-size6.6-healed.png": "6d356b3300d96c9f276150c5a58a97a861903979fa6d4f7e0a33d7f2da48a9b6",
+        "wound-contract-unmowi-sharp0-size2.2-candidate.png": "3a0294ea0be558cf3ace07dc1a855ca637c9ec1aced161856164a2326c71dd09",
+        "wound-contract-synthetic-alpha-lod2.4-rgb-oracle.png": "c7335e504cf37d20bd56fe2f62c7da0faf119634f7e1ff164adb215fdf22a498",
+        "wound-contract-synthetic-alpha-lod1.0-alpha.png": "40ec939f968197c9cbc778de8b1ae47f8703c5bca52b08c7bf64b5df8ecd80ae",
+        "wound-contract-synthetic-alpha-lod2.4-rgb-oracle-display.png": "c7335e504cf37d20bd56fe2f62c7da0faf119634f7e1ff164adb215fdf22a498",
+        "wound-contract-unanwibo-sharp1-size6.6-healed.png": "6d43ff2e7007dfd014c8d52cafeb36b5eaf9a55e4daa7eab4f374ac71c5a297e",
+        "wound-contract-human-mixed-lod1.0-rgb-oracle.png": "5efc2f73ab40850541bc55ed7626f7e936af239d23b350712aa748ce49dcbb50",
+        "wound-contract-material-preview1-soft1-opacity1.0-reference.png": "e80f7b42f2ee9280e244d867e6fed38c75847d330c54913bf49a657d1a84d86a",
+        "wound-contract-synthetic-alpha-lod1.0-alpha-oracle.png": "dd7f5c2bb4b8f5d11fa65a27efbd3f90144bd96a9629768ba91108c51506d59b",
+        "wound-contract-unhuma-sharp1-size6.6-healthy.png": "29bd2bb1d1c35a788e71492c7bae26fde1784ff0c06499befa03e5a4c87af774",
+        "wound-contract-unanwibo-sharp0-size6.6-healthy.png": "6d356b3300d96c9f276150c5a58a97a861903979fa6d4f7e0a33d7f2da48a9b6",
+        "wound-contract-unanwibo-sharp1-size2.2-healed.png": "d58c4d1406ccd656d8bc33c7f3878eae53edc0e4d878e47eb798a0414dac703d",
+        "wound-contract-unmowi-sharp1-size6.6-candidate.png": "5153729c8f189d4938abba94116b82c2d67ab754c22eb4abb8b6aaa89e5655ce",
+        "wound-contract-unmowi-sharp0-size6.6-healed.png": "9d73f0f7469e4a2dc23d7969b1b51c75fa6730c904de5277ab9f8ef710f1c394",
+        "wound-contract-human-mixed-lod0.0-rgb-oracle-display.png": "9d37fc672405fe6192d6dfa968a796771d1b7566a6517c8a766c247f586aea2a",
+        "wound-contract-synthetic-alpha-lod0.0-alpha.png": "57a8906908afc7886516bca7f0ee603694f73bfeb46aac8a7a7131a5d0e161e7",
+        "wound-contract-unanwibo-sharp0-size6.6-candidate.png": "66cdbb885d73f798b2436f214868b60842e60069d538c920c0822837e21e1ed9",
+        "wound-contract-unhuma-sharp1-size6.6-healed.png": "29bd2bb1d1c35a788e71492c7bae26fde1784ff0c06499befa03e5a4c87af774",
+        "wound-contract-material-preview0-soft1-opacity1.0-reference.png": "0188ba2fac643f518a071ed1198b372a59e7224d1c377b1aebec2b2ce432a462",
+        "wound-contract-synthetic-alpha-lod2.4-alpha.png": "e55494ace6fb1fbc6b8ae69ff422828081b04719e7240c7b965bc3b353381044",
+        "wound-contract-material-preview0-soft0-opacity1.0-actual.png": "733e8cb5ce59b7edc63880685d7b561bb54c5c3e3a0491be9f9705439e60d824",
+        "wound-contract-synthetic-alpha-lod2.4-rgb.png": "ca4c74f9aea2f1a41a7c49042c01546b2d7d7dff7f2a9567580af4d0341e6ea9",
+        "wound-contract-unmowi-sharp1-size2.2-healthy.png": "bcdf86181d31ffe180dfd43580d93f78ef0f0b2eb7c79339cd02121ac606e375",
+        "wound-contract-synthetic-alpha-lod0.0-rgb-oracle-display.png": "ebe1d3cd162d0c9846219f9fc89f1c42998e77769b43a486433c443fdcae04bc",
+        "wound-contract-human-mixed-lod1.0-alpha-oracle-display.png": "94d72edc0d17fd5795fd948f3a0ef51455886639c36619f93fdaa6e45663c044",
+        "wound-contract-synthetic-alpha-lod2.4-alpha-oracle-display.png": "f557dd31a305952e3528e09228d0d6bb53b1b77e3c3e339916cf716212cbc2de",
+        "wound-contract-unhuma-sharp0-size6.6-healthy.png": "b8ac19c0a8d9880f41907a3680f149b626e7addbd68476b9cc9ed17618abd969",
+        "wound-contract-human-mixed-lod0.0-alpha.png": "94d72edc0d17fd5795fd948f3a0ef51455886639c36619f93fdaa6e45663c044",
+        "wound-contract-human-mixed-lod2.4-rgb-oracle.png": "87579de6c301d840b45d1a7bb1bfec3eae586d78f2e16baf3ac2b8aacc4d3e17",
+        "wound-contract-human-mixed-lod2.4-alpha.png": "94d72edc0d17fd5795fd948f3a0ef51455886639c36619f93fdaa6e45663c044",
+        "wound-contract-unhuma-sharp1-size2.2-healthy.png": "8287a991808b7083c7fc954a850b158c15abfea5c65d5a415e4c046f7bbe557d",
+        "wound-contract-unhuma-sharp0-size2.2-healed.png": "b67ccadaa237c32cbabd656246c4e7ac15775b63b1a616ad5552e6e4baca4a0b",
+        "wound-contract-material-preview0-soft0-opacity0.4-reference.png": "733e8cb5ce59b7edc63880685d7b561bb54c5c3e3a0491be9f9705439e60d824",
+        "wound-contract-synthetic-alpha-lod1.0-rgb.png": "88f2c151f077abcf826e15d2b809a7dc03e764e19c6e187dc27a22ae11ca34e0",
+        "wound-contract-human-mixed-lod2.4-alpha-oracle-display.png": "94d72edc0d17fd5795fd948f3a0ef51455886639c36619f93fdaa6e45663c044",
+        "wound-contract-unhuma-sharp1-size2.2-candidate.png": "def3da5de0b3932eb40a1d691372348f0e926f065e894408b89effacd19e7a7b",
+        "wound-contract-synthetic-alpha-lod0.0-alpha-oracle.png": "0e4470a4754f2614ce24a9153b8ef49f6d7e98e1ec9ba1d0296aa786c54b967a",
+        "wound-contract-unmowi-sharp0-size2.2-healthy.png": "3a0294ea0be558cf3ace07dc1a855ca637c9ec1aced161856164a2326c71dd09",
+        "wound-contract-synthetic-alpha-lod2.4-alpha-oracle.png": "f557dd31a305952e3528e09228d0d6bb53b1b77e3c3e339916cf716212cbc2de",
+        "wound-contract-unmowi-sharp0-size6.6-candidate.png": "9d73f0f7469e4a2dc23d7969b1b51c75fa6730c904de5277ab9f8ef710f1c394",
+        "wound-contract-material-preview1-soft1-opacity0.4-actual.png": "e80f7b42f2ee9280e244d867e6fed38c75847d330c54913bf49a657d1a84d86a",
+        "wound-contract-unmowi-sharp0-size6.6-healthy.png": "9d73f0f7469e4a2dc23d7969b1b51c75fa6730c904de5277ab9f8ef710f1c394",
+        "wound-contract-material-preview1-soft1-opacity0.4-reference.png": "e80f7b42f2ee9280e244d867e6fed38c75847d330c54913bf49a657d1a84d86a",
+        "wound-contract-human-mixed-lod2.4-rgb-oracle-display.png": "87579de6c301d840b45d1a7bb1bfec3eae586d78f2e16baf3ac2b8aacc4d3e17",
+        "wound-contract-human-mixed-lod0.0-rgb-oracle.png": "9d37fc672405fe6192d6dfa968a796771d1b7566a6517c8a766c247f586aea2a",
+        "wound-contract-material-preview0-soft0-opacity1.0-reference.png": "733e8cb5ce59b7edc63880685d7b561bb54c5c3e3a0491be9f9705439e60d824",
+        "wound-contract-unanwibo-sharp1-size2.2-candidate.png": "d4dfee3e5adb66c6d403fd54398dc423c1442d9f043fdaeb4ba52de6a16b58aa",
+        "wound-contract-synthetic-alpha-lod1.0-rgb-oracle-display.png": "6a421ab681ef1ab9edfe0d776bb9683ae408b968d4aa26c69824af164a58a46a",
+        "wound-contract-human-mixed-lod1.0-rgb-oracle-display.png": "5efc2f73ab40850541bc55ed7626f7e936af239d23b350712aa748ce49dcbb50"
+      },
+      "independent_image_audit": {
+        "run": "/home/llm2x/Documents/EI/local/scratchpad/wound-gpu-20261009/final-forward01",
+        "probe": "/home/llm2x/Documents/EI/local/scratchpad/wound-gpu-20261009/probe-forward03",
+        "comparisons": 72,
+        "failures": 0,
+        "rows": [
+          {
+            "name": "wound-contract-synthetic-alpha-lod0.0-rgb",
+            "peak": 2,
+            "changed": 2964,
+            "over2": 0,
+            "rgb_absolute_sum": 4406
+          },
+          {
+            "name": "wound-contract-synthetic-alpha-lod0.0-alpha",
+            "peak": 1,
+            "changed": 1876,
+            "over2": 0,
+            "rgb_absolute_sum": 5628
+          },
+          {
+            "name": "wound-contract-synthetic-alpha-lod1.0-rgb",
+            "peak": 1,
+            "changed": 3489,
+            "over2": 0,
+            "rgb_absolute_sum": 5781
+          },
+          {
+            "name": "wound-contract-synthetic-alpha-lod1.0-alpha",
+            "peak": 1,
+            "changed": 1857,
+            "over2": 0,
+            "rgb_absolute_sum": 5571
+          },
+          {
+            "name": "wound-contract-synthetic-alpha-lod2.4-rgb",
+            "peak": 1,
+            "changed": 3556,
+            "over2": 0,
+            "rgb_absolute_sum": 5510
+          },
+          {
+            "name": "wound-contract-synthetic-alpha-lod2.4-alpha",
+            "peak": 1,
+            "changed": 2057,
+            "over2": 0,
+            "rgb_absolute_sum": 6171
+          },
+          {
+            "name": "wound-contract-human-mixed-lod0.0-rgb",
+            "peak": 1,
+            "changed": 2716,
+            "over2": 0,
+            "rgb_absolute_sum": 4760
+          },
+          {
+            "name": "wound-contract-human-mixed-lod0.0-alpha",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-human-mixed-lod1.0-rgb",
+            "peak": 2,
+            "changed": 2802,
+            "over2": 0,
+            "rgb_absolute_sum": 4686
+          },
+          {
+            "name": "wound-contract-human-mixed-lod1.0-alpha",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-human-mixed-lod2.4-rgb",
+            "peak": 1,
+            "changed": 3076,
+            "over2": 0,
+            "rgb_absolute_sum": 5130
+          },
+          {
+            "name": "wound-contract-human-mixed-lod2.4-alpha",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-material-preview0-soft0-opacity1.0",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-material-preview0-soft0-opacity0.4",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-material-preview0-soft1-opacity1.0",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-material-preview0-soft1-opacity0.4",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-material-preview1-soft0-opacity1.0",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-material-preview1-soft0-opacity0.4",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-material-preview1-soft1-opacity1.0",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-material-preview1-soft1-opacity0.4",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-unhuma-sharp0-size2.2-healed",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unhuma-sharp0-size2.2-healthy.png",
+            "peak": 1,
+            "changed": 4,
+            "over2": 0,
+            "rgb_absolute_sum": 4
+          },
+          {
+            "name": "pre-integration-wound-contract-unhuma-sharp0-size2.2-candidate.png",
+            "peak": 1,
+            "changed": 4,
+            "over2": 0,
+            "rgb_absolute_sum": 4
+          },
+          {
+            "name": "pre-integration-wound-contract-unhuma-sharp0-size2.2-healed.png",
+            "peak": 1,
+            "changed": 4,
+            "over2": 0,
+            "rgb_absolute_sum": 4
+          },
+          {
+            "name": "wound-contract-unhuma-sharp0-size6.6-healed",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unhuma-sharp0-size6.6-healthy.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unhuma-sharp0-size6.6-candidate.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unhuma-sharp0-size6.6-healed.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-unhuma-sharp1-size2.2-healed",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unhuma-sharp1-size2.2-healthy.png",
+            "peak": 1,
+            "changed": 4,
+            "over2": 0,
+            "rgb_absolute_sum": 4
+          },
+          {
+            "name": "pre-integration-wound-contract-unhuma-sharp1-size2.2-candidate.png",
+            "peak": 1,
+            "changed": 3,
+            "over2": 0,
+            "rgb_absolute_sum": 3
+          },
+          {
+            "name": "pre-integration-wound-contract-unhuma-sharp1-size2.2-healed.png",
+            "peak": 1,
+            "changed": 4,
+            "over2": 0,
+            "rgb_absolute_sum": 4
+          },
+          {
+            "name": "wound-contract-unhuma-sharp1-size6.6-healed",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unhuma-sharp1-size6.6-healthy.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unhuma-sharp1-size6.6-candidate.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unhuma-sharp1-size6.6-healed.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-unanwibo-sharp0-size2.2-healed",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unanwibo-sharp0-size2.2-healthy.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unanwibo-sharp0-size2.2-candidate.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unanwibo-sharp0-size2.2-healed.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-unanwibo-sharp0-size6.6-healed",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unanwibo-sharp0-size6.6-healthy.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unanwibo-sharp0-size6.6-candidate.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unanwibo-sharp0-size6.6-healed.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-unanwibo-sharp1-size2.2-healed",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unanwibo-sharp1-size2.2-healthy.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unanwibo-sharp1-size2.2-candidate.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unanwibo-sharp1-size2.2-healed.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-unanwibo-sharp1-size6.6-healed",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unanwibo-sharp1-size6.6-healthy.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unanwibo-sharp1-size6.6-candidate.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unanwibo-sharp1-size6.6-healed.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-unmowi-sharp0-size2.2-healed",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-unmowi-sharp0-size2.2-no-wound",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unmowi-sharp0-size2.2-healthy.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unmowi-sharp0-size2.2-candidate.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unmowi-sharp0-size2.2-healed.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-unmowi-sharp0-size6.6-healed",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-unmowi-sharp0-size6.6-no-wound",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unmowi-sharp0-size6.6-healthy.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unmowi-sharp0-size6.6-candidate.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unmowi-sharp0-size6.6-healed.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-unmowi-sharp1-size2.2-healed",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-unmowi-sharp1-size2.2-no-wound",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unmowi-sharp1-size2.2-healthy.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unmowi-sharp1-size2.2-candidate.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unmowi-sharp1-size2.2-healed.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-unmowi-sharp1-size6.6-healed",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-unmowi-sharp1-size6.6-no-wound",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unmowi-sharp1-size6.6-healthy.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unmowi-sharp1-size6.6-candidate.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "pre-integration-wound-contract-unmowi-sharp1-size6.6-healed.png",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          }
+        ]
+      },
+      "measured_rows": [
+        {
+          "changed": 2964,
+          "kind": "independent_cpu_oracle",
+          "label": "synthetic-alpha-lod0.0-rgb",
+          "over2": 0,
+          "peak": 2,
+          "raw_encoded_png_difference": {
+            "changed": 2964,
+            "over2": 0,
+            "peak": 2,
+            "rgb_absolute_sum": 4406
+          },
+          "rgb_absolute_sum": 4406
+        },
+        {
+          "changed": 1876,
+          "kind": "independent_cpu_oracle",
+          "label": "synthetic-alpha-lod0.0-alpha",
+          "over2": 0,
+          "peak": 1,
+          "raw_encoded_png_difference": {
+            "changed": 1876,
+            "over2": 0,
+            "peak": 1,
+            "rgb_absolute_sum": 5628
+          },
+          "rgb_absolute_sum": 5628
+        },
+        {
+          "changed": 3489,
+          "kind": "independent_cpu_oracle",
+          "label": "synthetic-alpha-lod1.0-rgb",
+          "over2": 0,
+          "peak": 1,
+          "raw_encoded_png_difference": {
+            "changed": 3489,
+            "over2": 0,
+            "peak": 1,
+            "rgb_absolute_sum": 5781
+          },
+          "rgb_absolute_sum": 5781
+        },
+        {
+          "changed": 1857,
+          "kind": "independent_cpu_oracle",
+          "label": "synthetic-alpha-lod1.0-alpha",
+          "over2": 0,
+          "peak": 1,
+          "raw_encoded_png_difference": {
+            "changed": 1857,
+            "over2": 0,
+            "peak": 1,
+            "rgb_absolute_sum": 5571
+          },
+          "rgb_absolute_sum": 5571
+        },
+        {
+          "changed": 3556,
+          "kind": "independent_cpu_oracle",
+          "label": "synthetic-alpha-lod2.4-rgb",
+          "over2": 0,
+          "peak": 1,
+          "raw_encoded_png_difference": {
+            "changed": 3556,
+            "over2": 0,
+            "peak": 1,
+            "rgb_absolute_sum": 5510
+          },
+          "rgb_absolute_sum": 5510
+        },
+        {
+          "changed": 2057,
+          "kind": "independent_cpu_oracle",
+          "label": "synthetic-alpha-lod2.4-alpha",
+          "over2": 0,
+          "peak": 1,
+          "raw_encoded_png_difference": {
+            "changed": 2057,
+            "over2": 0,
+            "peak": 1,
+            "rgb_absolute_sum": 6171
+          },
+          "rgb_absolute_sum": 6171
+        },
+        {
+          "changed": 2716,
+          "kind": "independent_cpu_oracle",
+          "label": "human-mixed-lod0.0-rgb",
+          "over2": 0,
+          "peak": 1,
+          "raw_encoded_png_difference": {
+            "changed": 2716,
+            "over2": 0,
+            "peak": 1,
+            "rgb_absolute_sum": 4760
+          },
+          "rgb_absolute_sum": 4760
+        },
+        {
+          "changed": 0,
+          "kind": "independent_cpu_oracle",
+          "label": "human-mixed-lod0.0-alpha",
+          "over2": 0,
+          "peak": 0,
+          "raw_encoded_png_difference": {
+            "changed": 0,
+            "over2": 0,
+            "peak": 0,
+            "rgb_absolute_sum": 0
+          },
+          "rgb_absolute_sum": 0
+        },
+        {
+          "changed": 2802,
+          "kind": "independent_cpu_oracle",
+          "label": "human-mixed-lod1.0-rgb",
+          "over2": 0,
+          "peak": 2,
+          "raw_encoded_png_difference": {
+            "changed": 2802,
+            "over2": 0,
+            "peak": 2,
+            "rgb_absolute_sum": 4686
+          },
+          "rgb_absolute_sum": 4686
+        },
+        {
+          "changed": 0,
+          "kind": "independent_cpu_oracle",
+          "label": "human-mixed-lod1.0-alpha",
+          "over2": 0,
+          "peak": 0,
+          "raw_encoded_png_difference": {
+            "changed": 0,
+            "over2": 0,
+            "peak": 0,
+            "rgb_absolute_sum": 0
+          },
+          "rgb_absolute_sum": 0
+        },
+        {
+          "changed": 3076,
+          "kind": "independent_cpu_oracle",
+          "label": "human-mixed-lod2.4-rgb",
+          "over2": 0,
+          "peak": 1,
+          "raw_encoded_png_difference": {
+            "changed": 3076,
+            "over2": 0,
+            "peak": 1,
+            "rgb_absolute_sum": 5130
+          },
+          "rgb_absolute_sum": 5130
+        },
+        {
+          "changed": 0,
+          "kind": "independent_cpu_oracle",
+          "label": "human-mixed-lod2.4-alpha",
+          "over2": 0,
+          "peak": 0,
+          "raw_encoded_png_difference": {
+            "changed": 0,
+            "over2": 0,
+            "peak": 0,
+            "rgb_absolute_sum": 0
+          },
+          "rgb_absolute_sum": 0
+        },
+        {
+          "changed": 0,
+          "kind": "production_material_alpha",
+          "label": "material-preview0-soft0-opacity1.0",
+          "over2": 0,
+          "peak": 0,
+          "rgb_absolute_sum": 0
+        },
+        {
+          "changed": 0,
+          "kind": "production_material_alpha",
+          "label": "material-preview0-soft0-opacity0.4",
+          "over2": 0,
+          "peak": 0,
+          "rgb_absolute_sum": 0
+        },
+        {
+          "changed": 0,
+          "kind": "production_material_alpha",
+          "label": "material-preview0-soft1-opacity1.0",
+          "over2": 0,
+          "peak": 0,
+          "rgb_absolute_sum": 0
+        },
+        {
+          "changed": 0,
+          "kind": "production_material_alpha",
+          "label": "material-preview0-soft1-opacity0.4",
+          "over2": 0,
+          "peak": 0,
+          "rgb_absolute_sum": 0
+        },
+        {
+          "changed": 0,
+          "kind": "production_material_alpha",
+          "label": "material-preview1-soft0-opacity1.0",
+          "over2": 0,
+          "peak": 0,
+          "rgb_absolute_sum": 0
+        },
+        {
+          "changed": 0,
+          "kind": "production_material_alpha",
+          "label": "material-preview1-soft0-opacity0.4",
+          "over2": 0,
+          "peak": 0,
+          "rgb_absolute_sum": 0
+        },
+        {
+          "changed": 0,
+          "kind": "production_material_alpha",
+          "label": "material-preview1-soft1-opacity1.0",
+          "over2": 0,
+          "peak": 0,
+          "rgb_absolute_sum": 0
+        },
+        {
+          "changed": 0,
+          "kind": "production_material_alpha",
+          "label": "material-preview1-soft1-opacity0.4",
+          "over2": 0,
+          "peak": 0,
+          "rgb_absolute_sum": 0
+        },
+        {
+          "changed": 32993,
+          "kind": "production_wound_signal",
+          "label": "unhuma-sharp0-size2.2",
+          "over2": 31926,
+          "peak": 198,
+          "rgb_absolute_sum": 3690709,
+          "wound_signal": {
+            "changed": 32993,
+            "over2": 31926,
+            "peak": 198,
+            "rgb_absolute_sum": 3690709
+          }
+        },
+        {
+          "changed": 3693,
+          "kind": "production_wound_signal",
+          "label": "unhuma-sharp0-size6.6",
+          "over2": 3563,
+          "peak": 169,
+          "rgb_absolute_sum": 410182,
+          "wound_signal": {
+            "changed": 3693,
+            "over2": 3563,
+            "peak": 169,
+            "rgb_absolute_sum": 410182
+          }
+        },
+        {
+          "changed": 32977,
+          "kind": "production_wound_signal",
+          "label": "unhuma-sharp1-size2.2",
+          "over2": 31897,
+          "peak": 198,
+          "rgb_absolute_sum": 3684209,
+          "wound_signal": {
+            "changed": 32977,
+            "over2": 31897,
+            "peak": 198,
+            "rgb_absolute_sum": 3684209
+          }
+        },
+        {
+          "changed": 3682,
+          "kind": "production_wound_signal",
+          "label": "unhuma-sharp1-size6.6",
+          "over2": 3545,
+          "peak": 169,
+          "rgb_absolute_sum": 410312,
+          "wound_signal": {
+            "changed": 3682,
+            "over2": 3545,
+            "peak": 169,
+            "rgb_absolute_sum": 410312
+          }
+        },
+        {
+          "changed": 21390,
+          "kind": "production_wound_signal",
+          "label": "unanwibo-sharp0-size2.2",
+          "over2": 20271,
+          "peak": 86,
+          "rgb_absolute_sum": 1025939,
+          "wound_signal": {
+            "changed": 21390,
+            "over2": 20271,
+            "peak": 86,
+            "rgb_absolute_sum": 1025939
+          }
+        },
+        {
+          "changed": 2438,
+          "kind": "production_wound_signal",
+          "label": "unanwibo-sharp0-size6.6",
+          "over2": 2295,
+          "peak": 88,
+          "rgb_absolute_sum": 114594,
+          "wound_signal": {
+            "changed": 2438,
+            "over2": 2295,
+            "peak": 88,
+            "rgb_absolute_sum": 114594
+          }
+        },
+        {
+          "changed": 21378,
+          "kind": "production_wound_signal",
+          "label": "unanwibo-sharp1-size2.2",
+          "over2": 20275,
+          "peak": 93,
+          "rgb_absolute_sum": 1026485,
+          "wound_signal": {
+            "changed": 21378,
+            "over2": 20275,
+            "peak": 93,
+            "rgb_absolute_sum": 1026485
+          }
+        },
+        {
+          "changed": 2405,
+          "kind": "production_wound_signal",
+          "label": "unanwibo-sharp1-size6.6",
+          "over2": 2273,
+          "peak": 89,
+          "rgb_absolute_sum": 114125,
+          "wound_signal": {
+            "changed": 2405,
+            "over2": 2273,
+            "peak": 89,
+            "rgb_absolute_sum": 114125
+          }
+        },
+        {
+          "changed": 0,
+          "kind": "production_wound_signal",
+          "label": "unmowi-sharp0-size2.2",
+          "over2": 0,
+          "peak": 0,
+          "rgb_absolute_sum": 0,
+          "wound_signal": {
+            "changed": 0,
+            "over2": 0,
+            "peak": 0,
+            "rgb_absolute_sum": 0
+          }
+        },
+        {
+          "changed": 0,
+          "kind": "production_wound_signal",
+          "label": "unmowi-sharp0-size6.6",
+          "over2": 0,
+          "peak": 0,
+          "rgb_absolute_sum": 0,
+          "wound_signal": {
+            "changed": 0,
+            "over2": 0,
+            "peak": 0,
+            "rgb_absolute_sum": 0
+          }
+        },
+        {
+          "changed": 0,
+          "kind": "production_wound_signal",
+          "label": "unmowi-sharp1-size2.2",
+          "over2": 0,
+          "peak": 0,
+          "rgb_absolute_sum": 0,
+          "wound_signal": {
+            "changed": 0,
+            "over2": 0,
+            "peak": 0,
+            "rgb_absolute_sum": 0
+          }
+        },
+        {
+          "changed": 0,
+          "kind": "production_wound_signal",
+          "label": "unmowi-sharp1-size6.6",
+          "over2": 0,
+          "peak": 0,
+          "rgb_absolute_sum": 0,
+          "wound_signal": {
+            "changed": 0,
+            "over2": 0,
+            "peak": 0,
+            "rgb_absolute_sum": 0
+          }
+        }
+      ]
+    },
+    {
+      "name": "final-mobile01",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-gpu-20261009/final-mobile01",
+      "checks": 174,
+      "failures": 0,
+      "capture_count": 88,
+      "renderer": "mobile",
+      "precision_oracle": true,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/wound-gpu-20261009/candidate02/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "mobile",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/wound-gpu-20261009/final-mobile01/tool-source.gd",
+        "--production",
+        "--precision-oracle"
+      ],
+      "source_sha256": "53d4e62b7a09609722d133d46d98737395f9ca2f0cc00b89876b539f28fcb846",
+      "pack_sha256": "067f4ef101a6de328a712efa2fda00b1ea30a524f32017dd6ddf2f7293a380cc",
+      "evidence_sha256": {
+        "run.log": "ebdc02dcbad60701111bd7316ace5065f37a414e3bef9e11d1c91e459de5c534",
+        "run.json": "9b983e233d42af3f393b58a0bd607bebd4e17668a35e67a028ce036ebb66e792",
+        "wound-gpu-contract.json": "72620a50007aa344c0c65224c329b188247d782f0724303c779a896e321df2c2",
+        "image-audit.json": "df48fbc615b96197421edded62855f955f0950e64d17c0ff362430b6fd4d5077"
+      },
+      "png_sha256": {
+        "wound-contract-human-mixed-lod1.0-alpha.png": "74e3eebb966906e7396077c9c2024ae40c7b8ea21979909411a0914c34dc4e8a",
+        "wound-contract-material-preview0-soft1-opacity1.0-actual.png": "1c10b1a6102d505a24eb98fcad2558b67ca4230e78cdb3cfdc61670bc6868f1d",
+        "wound-contract-synthetic-alpha-lod1.0-alpha-oracle-display.png": "7d23b9690f115f7964dfa563fb793c3c7b395d5e364e7308884e59e62578bbdb",
+        "wound-contract-material-preview1-soft0-opacity0.4-reference.png": "7912429a90147bf35379e3779a96ee0ee398b0145133f979942dd3e9fe605923",
+        "wound-contract-synthetic-alpha-lod1.0-rgb-oracle.png": "6a421ab681ef1ab9edfe0d776bb9683ae408b968d4aa26c69824af164a58a46a",
+        "wound-contract-material-preview0-soft1-opacity0.4-reference.png": "1c10b1a6102d505a24eb98fcad2558b67ca4230e78cdb3cfdc61670bc6868f1d",
+        "wound-contract-human-mixed-lod1.0-rgb.png": "63920ed1cfc8b00eee8d44acbc16909295d057621b2d236b99c3f842def91c64",
+        "wound-contract-unmowi-sharp1-size6.6-healthy.png": "181a0326bfd781cf43ff949e95305e5ae6258a327d9a70be21233b3c1d9d822e",
+        "wound-contract-unanwibo-sharp1-size6.6-candidate.png": "cf7068e934f54af45fc2538d452c1dbce60b20ff254c08a4a6a9042dd4641af2",
+        "wound-contract-human-mixed-lod0.0-alpha-oracle.png": "94d72edc0d17fd5795fd948f3a0ef51455886639c36619f93fdaa6e45663c044",
+        "wound-contract-unanwibo-sharp1-size2.2-healthy.png": "f5a34cfd0554fca4ed0824b7b2b7371999498200c5d986f62133a83d0b572523",
+        "wound-contract-material-preview0-soft1-opacity0.4-actual.png": "1c10b1a6102d505a24eb98fcad2558b67ca4230e78cdb3cfdc61670bc6868f1d",
+        "wound-contract-material-preview0-soft0-opacity0.4-actual.png": "7912429a90147bf35379e3779a96ee0ee398b0145133f979942dd3e9fe605923",
+        "wound-contract-human-mixed-lod1.0-alpha-oracle.png": "94d72edc0d17fd5795fd948f3a0ef51455886639c36619f93fdaa6e45663c044",
+        "wound-contract-synthetic-alpha-lod0.0-alpha-oracle-display.png": "9ddbca9b397465d088331f0e83cfd61982956ed93c5d5b4fc3d6f6f4754ef2eb",
+        "wound-contract-human-mixed-lod0.0-alpha-oracle-display.png": "74e3eebb966906e7396077c9c2024ae40c7b8ea21979909411a0914c34dc4e8a",
+        "wound-contract-unanwibo-sharp1-size6.6-healthy.png": "38c04c1a4b9a692718b9dc58bbe71b709f8de2184261941f2306764218307ed0",
+        "wound-contract-unhuma-sharp1-size2.2-healed.png": "f9bfb126060e4ad75d8c8d714a79e6c93d700b7252f4bb3ab45fdb0e1fcdef26",
+        "wound-contract-unhuma-sharp0-size6.6-healed.png": "c5a17a624a42b17ebad1743a8e009f68983dc71e336035332317c86b27bfd759",
+        "wound-contract-unhuma-sharp0-size2.2-healthy.png": "20d39f8943773c4d018656312447241c4a8cc115c6508e301ae19c7c9c7554ed",
+        "wound-contract-synthetic-alpha-lod0.0-rgb-oracle.png": "ebe1d3cd162d0c9846219f9fc89f1c42998e77769b43a486433c443fdcae04bc",
+        "wound-contract-unmowi-sharp1-size2.2-candidate.png": "20b1b2b22b68d95ed578866020ec92f050f9a99f2b30fe2154b86225cf5e68af",
+        "wound-contract-unhuma-sharp1-size6.6-candidate.png": "7fa8d86a85129fa3458e675c8c8cf20c8ab593372995fe30de29a15fa1205acc",
+        "wound-contract-material-preview1-soft0-opacity1.0-reference.png": "7912429a90147bf35379e3779a96ee0ee398b0145133f979942dd3e9fe605923",
+        "wound-contract-unmowi-sharp1-size6.6-healed.png": "181a0326bfd781cf43ff949e95305e5ae6258a327d9a70be21233b3c1d9d822e",
+        "wound-contract-unanwibo-sharp0-size2.2-healthy.png": "f892c9e0934f25cf39c0124820f7a2145f9c33044575f83ecf1f7c6ed701460f",
+        "wound-contract-material-preview1-soft0-opacity0.4-actual.png": "7912429a90147bf35379e3779a96ee0ee398b0145133f979942dd3e9fe605923",
+        "wound-contract-human-mixed-lod0.0-rgb.png": "597bbe3f00b648343706f6e92c618a3b9cdd6f6d7f27ba2e886981ccd421b7b8",
+        "wound-contract-unanwibo-sharp0-size2.2-candidate.png": "8a6d860bf45b5dc032cd0a6eab33747f1d33eb680dc9c7b072bae93bced61906",
+        "wound-contract-unanwibo-sharp0-size2.2-healed.png": "f892c9e0934f25cf39c0124820f7a2145f9c33044575f83ecf1f7c6ed701460f",
+        "wound-contract-unhuma-sharp0-size6.6-candidate.png": "eedcccdd58006886e5b4f3cb050277a97d755f79e6a2d403788c3454cc2236c7",
+        "wound-contract-human-mixed-lod2.4-rgb.png": "200394b3fee433d89132db7d7f52377ebd008c940ccbbde9eff7a0efdb631f4b",
+        "wound-contract-unmowi-sharp1-size2.2-healed.png": "20b1b2b22b68d95ed578866020ec92f050f9a99f2b30fe2154b86225cf5e68af",
+        "wound-contract-unhuma-sharp0-size2.2-candidate.png": "887fb96d01056fed7f4c2393e791329ae1e02600257b42371939f4fb113ba47a",
+        "wound-contract-material-preview1-soft0-opacity1.0-actual.png": "7912429a90147bf35379e3779a96ee0ee398b0145133f979942dd3e9fe605923",
+        "wound-contract-synthetic-alpha-lod0.0-rgb.png": "250a8c9fba5f2341fa5cc28d70cf02f4587a40b64a7cd7ef9c9468e844040a60",
+        "wound-contract-material-preview1-soft1-opacity1.0-actual.png": "16e842c7f420d2674673cd86c2dca38e3582971353aa0a63f1120cde87617f5b",
+        "wound-contract-human-mixed-lod2.4-alpha-oracle.png": "94d72edc0d17fd5795fd948f3a0ef51455886639c36619f93fdaa6e45663c044",
+        "wound-contract-unmowi-sharp0-size2.2-healed.png": "764bc65ee2ba06ea9231470b9bd46f7cd08a4404e4ca4baf23fb3963a0b6c0af",
+        "wound-contract-unanwibo-sharp0-size6.6-healed.png": "12a3c41790b599e89b4cd0bbe1ac6e7ef1184612d714ba46366565eb2fd7c9ff",
+        "wound-contract-unmowi-sharp0-size2.2-candidate.png": "764bc65ee2ba06ea9231470b9bd46f7cd08a4404e4ca4baf23fb3963a0b6c0af",
+        "wound-contract-synthetic-alpha-lod2.4-rgb-oracle.png": "c7335e504cf37d20bd56fe2f62c7da0faf119634f7e1ff164adb215fdf22a498",
+        "wound-contract-synthetic-alpha-lod1.0-alpha.png": "ca2c2998647c644bd708061f488220d0f1e179220071a9971ea1fbabc58d019f",
+        "wound-contract-synthetic-alpha-lod2.4-rgb-oracle-display.png": "d2556059f36fdf21e4d308d1db6087bcb24755fb6bec2188c0e1d963755f80f4",
+        "wound-contract-unanwibo-sharp1-size6.6-healed.png": "38c04c1a4b9a692718b9dc58bbe71b709f8de2184261941f2306764218307ed0",
+        "wound-contract-human-mixed-lod1.0-rgb-oracle.png": "5efc2f73ab40850541bc55ed7626f7e936af239d23b350712aa748ce49dcbb50",
+        "wound-contract-material-preview1-soft1-opacity1.0-reference.png": "16e842c7f420d2674673cd86c2dca38e3582971353aa0a63f1120cde87617f5b",
+        "wound-contract-synthetic-alpha-lod1.0-alpha-oracle.png": "dd7f5c2bb4b8f5d11fa65a27efbd3f90144bd96a9629768ba91108c51506d59b",
+        "wound-contract-unhuma-sharp1-size6.6-healthy.png": "73341a555e6297f14173de121fe8605b3550eba5f087fc906928ecff3a813c6c",
+        "wound-contract-unanwibo-sharp0-size6.6-healthy.png": "12a3c41790b599e89b4cd0bbe1ac6e7ef1184612d714ba46366565eb2fd7c9ff",
+        "wound-contract-unanwibo-sharp1-size2.2-healed.png": "f5a34cfd0554fca4ed0824b7b2b7371999498200c5d986f62133a83d0b572523",
+        "wound-contract-unmowi-sharp1-size6.6-candidate.png": "181a0326bfd781cf43ff949e95305e5ae6258a327d9a70be21233b3c1d9d822e",
+        "wound-contract-unmowi-sharp0-size6.6-healed.png": "c26e30dd23ccfc3eb680a86b363c4b6eb4ff2c38ef7440973dc544a1ca8f4f91",
+        "wound-contract-human-mixed-lod0.0-rgb-oracle-display.png": "56b4393f112176dd8f0e4ce588c715167cc9d855121d6ce7eeb76e1ce7742ca4",
+        "wound-contract-synthetic-alpha-lod0.0-alpha.png": "48fd6929154ebf00112ac74d5e9c7d2fea06b1003a4c792407a1a2e329cfccf6",
+        "wound-contract-unanwibo-sharp0-size6.6-candidate.png": "b1b55fcd78a4127391a4321a9886317362b3cb0fbc9e1ebfc05910270d081e7e",
+        "wound-contract-unhuma-sharp1-size6.6-healed.png": "73341a555e6297f14173de121fe8605b3550eba5f087fc906928ecff3a813c6c",
+        "wound-contract-material-preview0-soft1-opacity1.0-reference.png": "1c10b1a6102d505a24eb98fcad2558b67ca4230e78cdb3cfdc61670bc6868f1d",
+        "wound-contract-synthetic-alpha-lod2.4-alpha.png": "be93a11942114741ad22352a95341b25a12ca2684324c029d7ad9a299f824d4f",
+        "wound-contract-material-preview0-soft0-opacity1.0-actual.png": "7912429a90147bf35379e3779a96ee0ee398b0145133f979942dd3e9fe605923",
+        "wound-contract-synthetic-alpha-lod2.4-rgb.png": "20a251b2981efc3a5483058b1aca992a24c7c8f21e365c0743c01995ad0c3f61",
+        "wound-contract-unmowi-sharp1-size2.2-healthy.png": "20b1b2b22b68d95ed578866020ec92f050f9a99f2b30fe2154b86225cf5e68af",
+        "wound-contract-synthetic-alpha-lod0.0-rgb-oracle-display.png": "b908b44956faaee1e6abdb064c5caf6285eb64b9719ee2075140ae146f3c6969",
+        "wound-contract-human-mixed-lod1.0-alpha-oracle-display.png": "74e3eebb966906e7396077c9c2024ae40c7b8ea21979909411a0914c34dc4e8a",
+        "wound-contract-synthetic-alpha-lod2.4-alpha-oracle-display.png": "da93d80347a3229da2cf1abdf049faf5d5f9c698e5076e6ef540a04703597c78",
+        "wound-contract-unhuma-sharp0-size6.6-healthy.png": "c5a17a624a42b17ebad1743a8e009f68983dc71e336035332317c86b27bfd759",
+        "wound-contract-human-mixed-lod0.0-alpha.png": "74e3eebb966906e7396077c9c2024ae40c7b8ea21979909411a0914c34dc4e8a",
+        "wound-contract-human-mixed-lod2.4-rgb-oracle.png": "87579de6c301d840b45d1a7bb1bfec3eae586d78f2e16baf3ac2b8aacc4d3e17",
+        "wound-contract-human-mixed-lod2.4-alpha.png": "74e3eebb966906e7396077c9c2024ae40c7b8ea21979909411a0914c34dc4e8a",
+        "wound-contract-unhuma-sharp1-size2.2-healthy.png": "f9bfb126060e4ad75d8c8d714a79e6c93d700b7252f4bb3ab45fdb0e1fcdef26",
+        "wound-contract-unhuma-sharp0-size2.2-healed.png": "20d39f8943773c4d018656312447241c4a8cc115c6508e301ae19c7c9c7554ed",
+        "wound-contract-material-preview0-soft0-opacity0.4-reference.png": "7912429a90147bf35379e3779a96ee0ee398b0145133f979942dd3e9fe605923",
+        "wound-contract-synthetic-alpha-lod1.0-rgb.png": "b07617bdeb95ce209ed3882097a2236749894071898f26981fe804d281b21bb2",
+        "wound-contract-human-mixed-lod2.4-alpha-oracle-display.png": "74e3eebb966906e7396077c9c2024ae40c7b8ea21979909411a0914c34dc4e8a",
+        "wound-contract-unhuma-sharp1-size2.2-candidate.png": "509dbafd64d8100c94b66eecf86c12a43f0652ad0419e903a7ad6f0a0c53fe9e",
+        "wound-contract-synthetic-alpha-lod0.0-alpha-oracle.png": "0e4470a4754f2614ce24a9153b8ef49f6d7e98e1ec9ba1d0296aa786c54b967a",
+        "wound-contract-unmowi-sharp0-size2.2-healthy.png": "764bc65ee2ba06ea9231470b9bd46f7cd08a4404e4ca4baf23fb3963a0b6c0af",
+        "wound-contract-synthetic-alpha-lod2.4-alpha-oracle.png": "f557dd31a305952e3528e09228d0d6bb53b1b77e3c3e339916cf716212cbc2de",
+        "wound-contract-unmowi-sharp0-size6.6-candidate.png": "c26e30dd23ccfc3eb680a86b363c4b6eb4ff2c38ef7440973dc544a1ca8f4f91",
+        "wound-contract-material-preview1-soft1-opacity0.4-actual.png": "16e842c7f420d2674673cd86c2dca38e3582971353aa0a63f1120cde87617f5b",
+        "wound-contract-unmowi-sharp0-size6.6-healthy.png": "c26e30dd23ccfc3eb680a86b363c4b6eb4ff2c38ef7440973dc544a1ca8f4f91",
+        "wound-contract-material-preview1-soft1-opacity0.4-reference.png": "16e842c7f420d2674673cd86c2dca38e3582971353aa0a63f1120cde87617f5b",
+        "wound-contract-human-mixed-lod2.4-rgb-oracle-display.png": "9527064e133f136c5ec6b313c5f986eedc70deb8ddfe31ab9673c7e199bb090a",
+        "wound-contract-human-mixed-lod0.0-rgb-oracle.png": "9d37fc672405fe6192d6dfa968a796771d1b7566a6517c8a766c247f586aea2a",
+        "wound-contract-material-preview0-soft0-opacity1.0-reference.png": "7912429a90147bf35379e3779a96ee0ee398b0145133f979942dd3e9fe605923",
+        "wound-contract-unanwibo-sharp1-size2.2-candidate.png": "eda0ec5f204cc4d347444986cc0fa33427aeb1f003c0bc6b6a02475f4e6c35d4",
+        "wound-contract-synthetic-alpha-lod1.0-rgb-oracle-display.png": "191a477b431161bb87d616b5bef2d97976126346133326689027f8b6f504d0f6",
+        "wound-contract-human-mixed-lod1.0-rgb-oracle-display.png": "11c12ce04384b9add108939017dfd663fd3f36a051e645fc886062deb59e6a23"
+      },
+      "independent_image_audit": {
+        "run": "/home/llm2x/Documents/EI/local/scratchpad/wound-gpu-20261009/final-mobile01",
+        "probe": null,
+        "comparisons": 36,
+        "failures": 0,
+        "rows": [
+          {
+            "name": "wound-contract-synthetic-alpha-lod0.0-rgb",
+            "peak": 2,
+            "changed": 3464,
+            "over2": 0,
+            "rgb_absolute_sum": 5892
+          },
+          {
+            "name": "wound-contract-synthetic-alpha-lod0.0-alpha",
+            "peak": 2,
+            "changed": 3326,
+            "over2": 0,
+            "rgb_absolute_sum": 6307
+          },
+          {
+            "name": "wound-contract-synthetic-alpha-lod1.0-rgb",
+            "peak": 2,
+            "changed": 3636,
+            "over2": 0,
+            "rgb_absolute_sum": 6464
+          },
+          {
+            "name": "wound-contract-synthetic-alpha-lod1.0-alpha",
+            "peak": 2,
+            "changed": 3365,
+            "over2": 0,
+            "rgb_absolute_sum": 6344
+          },
+          {
+            "name": "wound-contract-synthetic-alpha-lod2.4-rgb",
+            "peak": 2,
+            "changed": 3595,
+            "over2": 0,
+            "rgb_absolute_sum": 6144
+          },
+          {
+            "name": "wound-contract-synthetic-alpha-lod2.4-alpha",
+            "peak": 2,
+            "changed": 3329,
+            "over2": 0,
+            "rgb_absolute_sum": 6158
+          },
+          {
+            "name": "wound-contract-human-mixed-lod0.0-rgb",
+            "peak": 2,
+            "changed": 3754,
+            "over2": 0,
+            "rgb_absolute_sum": 6969
+          },
+          {
+            "name": "wound-contract-human-mixed-lod0.0-alpha",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-human-mixed-lod1.0-rgb",
+            "peak": 2,
+            "changed": 3711,
+            "over2": 0,
+            "rgb_absolute_sum": 6986
+          },
+          {
+            "name": "wound-contract-human-mixed-lod1.0-alpha",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-human-mixed-lod2.4-rgb",
+            "peak": 2,
+            "changed": 3730,
+            "over2": 0,
+            "rgb_absolute_sum": 7176
+          },
+          {
+            "name": "wound-contract-human-mixed-lod2.4-alpha",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-material-preview0-soft0-opacity1.0",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-material-preview0-soft0-opacity0.4",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-material-preview0-soft1-opacity1.0",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-material-preview0-soft1-opacity0.4",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-material-preview1-soft0-opacity1.0",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-material-preview1-soft0-opacity0.4",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-material-preview1-soft1-opacity1.0",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-material-preview1-soft1-opacity0.4",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-unhuma-sharp0-size2.2-healed",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-unhuma-sharp0-size6.6-healed",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-unhuma-sharp1-size2.2-healed",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-unhuma-sharp1-size6.6-healed",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-unanwibo-sharp0-size2.2-healed",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-unanwibo-sharp0-size6.6-healed",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-unanwibo-sharp1-size2.2-healed",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-unanwibo-sharp1-size6.6-healed",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-unmowi-sharp0-size2.2-healed",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-unmowi-sharp0-size2.2-no-wound",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-unmowi-sharp0-size6.6-healed",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-unmowi-sharp0-size6.6-no-wound",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-unmowi-sharp1-size2.2-healed",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-unmowi-sharp1-size2.2-no-wound",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-unmowi-sharp1-size6.6-healed",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          },
+          {
+            "name": "wound-contract-unmowi-sharp1-size6.6-no-wound",
+            "peak": 0,
+            "changed": 0,
+            "over2": 0,
+            "rgb_absolute_sum": 0
+          }
+        ]
+      },
+      "measured_rows": [
+        {
+          "changed": 3464,
+          "kind": "independent_cpu_oracle",
+          "label": "synthetic-alpha-lod0.0-rgb",
+          "over2": 0,
+          "peak": 2,
+          "raw_encoded_png_difference": {
+            "changed": 2290,
+            "over2": 3,
+            "peak": 3,
+            "rgb_absolute_sum": 3003
+          },
+          "rgb_absolute_sum": 5892
+        },
+        {
+          "changed": 3326,
+          "kind": "independent_cpu_oracle",
+          "label": "synthetic-alpha-lod0.0-alpha",
+          "over2": 0,
+          "peak": 2,
+          "raw_encoded_png_difference": {
+            "changed": 1262,
+            "over2": 0,
+            "peak": 1,
+            "rgb_absolute_sum": 1845
+          },
+          "rgb_absolute_sum": 6307
+        },
+        {
+          "changed": 3636,
+          "kind": "independent_cpu_oracle",
+          "label": "synthetic-alpha-lod1.0-rgb",
+          "over2": 0,
+          "peak": 2,
+          "raw_encoded_png_difference": {
+            "changed": 1621,
+            "over2": 0,
+            "peak": 1,
+            "rgb_absolute_sum": 1905
+          },
+          "rgb_absolute_sum": 6464
+        },
+        {
+          "changed": 3365,
+          "kind": "independent_cpu_oracle",
+          "label": "synthetic-alpha-lod1.0-alpha",
+          "over2": 0,
+          "peak": 2,
+          "raw_encoded_png_difference": {
+            "changed": 1073,
+            "over2": 0,
+            "peak": 1,
+            "rgb_absolute_sum": 1510
+          },
+          "rgb_absolute_sum": 6344
+        },
+        {
+          "changed": 3595,
+          "kind": "independent_cpu_oracle",
+          "label": "synthetic-alpha-lod2.4-rgb",
+          "over2": 0,
+          "peak": 2,
+          "raw_encoded_png_difference": {
+            "changed": 1373,
+            "over2": 0,
+            "peak": 1,
+            "rgb_absolute_sum": 1558
+          },
+          "rgb_absolute_sum": 6144
+        },
+        {
+          "changed": 3329,
+          "kind": "independent_cpu_oracle",
+          "label": "synthetic-alpha-lod2.4-alpha",
+          "over2": 0,
+          "peak": 2,
+          "raw_encoded_png_difference": {
+            "changed": 1178,
+            "over2": 0,
+            "peak": 1,
+            "rgb_absolute_sum": 1678
+          },
+          "rgb_absolute_sum": 6158
+        },
+        {
+          "changed": 3754,
+          "kind": "independent_cpu_oracle",
+          "label": "human-mixed-lod0.0-rgb",
+          "over2": 0,
+          "peak": 2,
+          "raw_encoded_png_difference": {
+            "changed": 1479,
+            "over2": 0,
+            "peak": 2,
+            "rgb_absolute_sum": 1773
+          },
+          "rgb_absolute_sum": 6969
+        },
+        {
+          "changed": 0,
+          "kind": "independent_cpu_oracle",
+          "label": "human-mixed-lod0.0-alpha",
+          "over2": 0,
+          "peak": 0,
+          "raw_encoded_png_difference": {
+            "changed": 3866,
+            "over2": 0,
+            "peak": 1,
+            "rgb_absolute_sum": 7616
+          },
+          "rgb_absolute_sum": 0
+        },
+        {
+          "changed": 3711,
+          "kind": "independent_cpu_oracle",
+          "label": "human-mixed-lod1.0-rgb",
+          "over2": 0,
+          "peak": 2,
+          "raw_encoded_png_difference": {
+            "changed": 1516,
+            "over2": 0,
+            "peak": 2,
+            "rgb_absolute_sum": 1896
+          },
+          "rgb_absolute_sum": 6986
+        },
+        {
+          "changed": 0,
+          "kind": "independent_cpu_oracle",
+          "label": "human-mixed-lod1.0-alpha",
+          "over2": 0,
+          "peak": 0,
+          "raw_encoded_png_difference": {
+            "changed": 3866,
+            "over2": 0,
+            "peak": 1,
+            "rgb_absolute_sum": 7616
+          },
+          "rgb_absolute_sum": 0
+        },
+        {
+          "changed": 3730,
+          "kind": "independent_cpu_oracle",
+          "label": "human-mixed-lod2.4-rgb",
+          "over2": 0,
+          "peak": 2,
+          "raw_encoded_png_difference": {
+            "changed": 1504,
+            "over2": 0,
+            "peak": 2,
+            "rgb_absolute_sum": 1867
+          },
+          "rgb_absolute_sum": 7176
+        },
+        {
+          "changed": 0,
+          "kind": "independent_cpu_oracle",
+          "label": "human-mixed-lod2.4-alpha",
+          "over2": 0,
+          "peak": 0,
+          "raw_encoded_png_difference": {
+            "changed": 3866,
+            "over2": 0,
+            "peak": 1,
+            "rgb_absolute_sum": 7616
+          },
+          "rgb_absolute_sum": 0
+        },
+        {
+          "changed": 0,
+          "kind": "production_material_alpha",
+          "label": "material-preview0-soft0-opacity1.0",
+          "over2": 0,
+          "peak": 0,
+          "rgb_absolute_sum": 0
+        },
+        {
+          "changed": 0,
+          "kind": "production_material_alpha",
+          "label": "material-preview0-soft0-opacity0.4",
+          "over2": 0,
+          "peak": 0,
+          "rgb_absolute_sum": 0
+        },
+        {
+          "changed": 0,
+          "kind": "production_material_alpha",
+          "label": "material-preview0-soft1-opacity1.0",
+          "over2": 0,
+          "peak": 0,
+          "rgb_absolute_sum": 0
+        },
+        {
+          "changed": 0,
+          "kind": "production_material_alpha",
+          "label": "material-preview0-soft1-opacity0.4",
+          "over2": 0,
+          "peak": 0,
+          "rgb_absolute_sum": 0
+        },
+        {
+          "changed": 0,
+          "kind": "production_material_alpha",
+          "label": "material-preview1-soft0-opacity1.0",
+          "over2": 0,
+          "peak": 0,
+          "rgb_absolute_sum": 0
+        },
+        {
+          "changed": 0,
+          "kind": "production_material_alpha",
+          "label": "material-preview1-soft0-opacity0.4",
+          "over2": 0,
+          "peak": 0,
+          "rgb_absolute_sum": 0
+        },
+        {
+          "changed": 0,
+          "kind": "production_material_alpha",
+          "label": "material-preview1-soft1-opacity1.0",
+          "over2": 0,
+          "peak": 0,
+          "rgb_absolute_sum": 0
+        },
+        {
+          "changed": 0,
+          "kind": "production_material_alpha",
+          "label": "material-preview1-soft1-opacity0.4",
+          "over2": 0,
+          "peak": 0,
+          "rgb_absolute_sum": 0
+        },
+        {
+          "changed": 32922,
+          "kind": "production_wound_signal",
+          "label": "unhuma-sharp0-size2.2",
+          "over2": 32109,
+          "peak": 198,
+          "rgb_absolute_sum": 3698411,
+          "wound_signal": {
+            "changed": 32922,
+            "over2": 32109,
+            "peak": 198,
+            "rgb_absolute_sum": 3698411
+          }
+        },
+        {
+          "changed": 3690,
+          "kind": "production_wound_signal",
+          "label": "unhuma-sharp0-size6.6",
+          "over2": 3575,
+          "peak": 170,
+          "rgb_absolute_sum": 411113,
+          "wound_signal": {
+            "changed": 3690,
+            "over2": 3575,
+            "peak": 170,
+            "rgb_absolute_sum": 411113
+          }
+        },
+        {
+          "changed": 32908,
+          "kind": "production_wound_signal",
+          "label": "unhuma-sharp1-size2.2",
+          "over2": 32054,
+          "peak": 198,
+          "rgb_absolute_sum": 3691998,
+          "wound_signal": {
+            "changed": 32908,
+            "over2": 32054,
+            "peak": 198,
+            "rgb_absolute_sum": 3691998
+          }
+        },
+        {
+          "changed": 3677,
+          "kind": "production_wound_signal",
+          "label": "unhuma-sharp1-size6.6",
+          "over2": 3564,
+          "peak": 169,
+          "rgb_absolute_sum": 411271,
+          "wound_signal": {
+            "changed": 3677,
+            "over2": 3564,
+            "peak": 169,
+            "rgb_absolute_sum": 411271
+          }
+        },
+        {
+          "changed": 21191,
+          "kind": "production_wound_signal",
+          "label": "unanwibo-sharp0-size2.2",
+          "over2": 20559,
+          "peak": 88,
+          "rgb_absolute_sum": 1030224,
+          "wound_signal": {
+            "changed": 21191,
+            "over2": 20559,
+            "peak": 88,
+            "rgb_absolute_sum": 1030224
+          }
+        },
+        {
+          "changed": 2425,
+          "kind": "production_wound_signal",
+          "label": "unanwibo-sharp0-size6.6",
+          "over2": 2310,
+          "peak": 87,
+          "rgb_absolute_sum": 115050,
+          "wound_signal": {
+            "changed": 2425,
+            "over2": 2310,
+            "peak": 87,
+            "rgb_absolute_sum": 115050
+          }
+        },
+        {
+          "changed": 21178,
+          "kind": "production_wound_signal",
+          "label": "unanwibo-sharp1-size2.2",
+          "over2": 20562,
+          "peak": 93,
+          "rgb_absolute_sum": 1030616,
+          "wound_signal": {
+            "changed": 21178,
+            "over2": 20562,
+            "peak": 93,
+            "rgb_absolute_sum": 1030616
+          }
+        },
+        {
+          "changed": 2384,
+          "kind": "production_wound_signal",
+          "label": "unanwibo-sharp1-size6.6",
+          "over2": 2297,
+          "peak": 90,
+          "rgb_absolute_sum": 114399,
+          "wound_signal": {
+            "changed": 2384,
+            "over2": 2297,
+            "peak": 90,
+            "rgb_absolute_sum": 114399
+          }
+        },
+        {
+          "changed": 0,
+          "kind": "production_wound_signal",
+          "label": "unmowi-sharp0-size2.2",
+          "over2": 0,
+          "peak": 0,
+          "rgb_absolute_sum": 0,
+          "wound_signal": {
+            "changed": 0,
+            "over2": 0,
+            "peak": 0,
+            "rgb_absolute_sum": 0
+          }
+        },
+        {
+          "changed": 0,
+          "kind": "production_wound_signal",
+          "label": "unmowi-sharp0-size6.6",
+          "over2": 0,
+          "peak": 0,
+          "rgb_absolute_sum": 0,
+          "wound_signal": {
+            "changed": 0,
+            "over2": 0,
+            "peak": 0,
+            "rgb_absolute_sum": 0
+          }
+        },
+        {
+          "changed": 0,
+          "kind": "production_wound_signal",
+          "label": "unmowi-sharp1-size2.2",
+          "over2": 0,
+          "peak": 0,
+          "rgb_absolute_sum": 0,
+          "wound_signal": {
+            "changed": 0,
+            "over2": 0,
+            "peak": 0,
+            "rgb_absolute_sum": 0
+          }
+        },
+        {
+          "changed": 0,
+          "kind": "production_wound_signal",
+          "label": "unmowi-sharp1-size6.6",
+          "over2": 0,
+          "peak": 0,
+          "rgb_absolute_sum": 0,
+          "wound_signal": {
+            "changed": 0,
+            "over2": 0,
+            "peak": 0,
+            "rgb_absolute_sum": 0
+          }
+        }
+      ]
+    }
+  ],
+  "preintegration_contract_probes": [
+    {
+      "name": "probe-gl02",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-gpu-20261009/probe-gl02",
+      "checks": 150,
+      "capture_count": 84,
+      "source_sha256": "bb896d4cf325801b3a5e3f8784a97a6796e39bfc452efa62db0285e9d080e36e",
+      "report_sha256": "ff0d68318efd85b8e213dccf4c0292baf613a92331f697fa2d400a70e75d3c2c",
+      "run_sha256": "59827dea9f0391568a1b4b41d9a97f77375b98c8c12315adb9150c93fc35af92",
+      "rows": [
+        {
+          "changed": 3735,
+          "kind": "independent_cpu_oracle",
+          "label": "synthetic-alpha-lod0.0-rgb",
+          "over2": 0,
+          "peak": 2,
+          "raw_encoded_png_difference": {
+            "changed": 3854,
+            "over2": 785,
+            "peak": 7,
+            "rgb_absolute_sum": 10639
+          },
+          "rgb_absolute_sum": 7003
+        },
+        {
+          "changed": 2051,
+          "kind": "independent_cpu_oracle",
+          "label": "synthetic-alpha-lod0.0-alpha",
+          "over2": 0,
+          "peak": 2,
+          "raw_encoded_png_difference": {
+            "changed": 1858,
+            "over2": 16,
+            "peak": 3,
+            "rgb_absolute_sum": 5928
+          },
+          "rgb_absolute_sum": 6177
+        },
+        {
+          "changed": 3641,
+          "kind": "independent_cpu_oracle",
+          "label": "synthetic-alpha-lod1.0-rgb",
+          "over2": 0,
+          "peak": 2,
+          "raw_encoded_png_difference": {
+            "changed": 3297,
+            "over2": 0,
+            "peak": 1,
+            "rgb_absolute_sum": 4871
+          },
+          "rgb_absolute_sum": 6332
+        },
+        {
+          "changed": 1818,
+          "kind": "independent_cpu_oracle",
+          "label": "synthetic-alpha-lod1.0-alpha",
+          "over2": 0,
+          "peak": 2,
+          "raw_encoded_png_difference": {
+            "changed": 1580,
+            "over2": 0,
+            "peak": 1,
+            "rgb_absolute_sum": 4740
+          },
+          "rgb_absolute_sum": 5469
+        },
+        {
+          "changed": 3861,
+          "kind": "independent_cpu_oracle",
+          "label": "synthetic-alpha-lod2.4-rgb",
+          "over2": 0,
+          "peak": 1,
+          "raw_encoded_png_difference": {
+            "changed": 3416,
+            "over2": 0,
+            "peak": 1,
+            "rgb_absolute_sum": 5682
+          },
+          "rgb_absolute_sum": 6424
+        },
+        {
+          "changed": 1755,
+          "kind": "independent_cpu_oracle",
+          "label": "synthetic-alpha-lod2.4-alpha",
+          "over2": 0,
+          "peak": 1,
+          "raw_encoded_png_difference": {
+            "changed": 1755,
+            "over2": 0,
+            "peak": 1,
+            "rgb_absolute_sum": 5265
+          },
+          "rgb_absolute_sum": 5265
+        },
+        {
+          "changed": 3165,
+          "kind": "independent_cpu_oracle",
+          "label": "human-mixed-lod0.0-rgb",
+          "over2": 0,
+          "peak": 2,
+          "raw_encoded_png_difference": {
+            "changed": 3188,
+            "over2": 327,
+            "peak": 7,
+            "rgb_absolute_sum": 8401
+          },
+          "rgb_absolute_sum": 6631
+        },
+        {
+          "changed": 0,
+          "kind": "independent_cpu_oracle",
+          "label": "human-mixed-lod0.0-alpha",
+          "over2": 0,
+          "peak": 0,
+          "raw_encoded_png_difference": {
+            "changed": 0,
+            "over2": 0,
+            "peak": 0,
+            "rgb_absolute_sum": 0
+          },
+          "rgb_absolute_sum": 0
+        },
+        {
+          "changed": 3242,
+          "kind": "independent_cpu_oracle",
+          "label": "human-mixed-lod1.0-rgb",
+          "over2": 0,
+          "peak": 2,
+          "raw_encoded_png_difference": {
+            "changed": 3274,
+            "over2": 308,
+            "peak": 7,
+            "rgb_absolute_sum": 8407
+          },
+          "rgb_absolute_sum": 6557
+        },
+        {
+          "changed": 0,
+          "kind": "independent_cpu_oracle",
+          "label": "human-mixed-lod1.0-alpha",
+          "over2": 0,
+          "peak": 0,
+          "raw_encoded_png_difference": {
+            "changed": 0,
+            "over2": 0,
+            "peak": 0,
+            "rgb_absolute_sum": 0
+          },
+          "rgb_absolute_sum": 0
+        },
+        {
+          "changed": 3636,
+          "kind": "independent_cpu_oracle",
+          "label": "human-mixed-lod2.4-rgb",
+          "over2": 0,
+          "peak": 2,
+          "raw_encoded_png_difference": {
+            "changed": 3654,
+            "over2": 172,
+            "peak": 6,
+            "rgb_absolute_sum": 8430
+          },
+          "rgb_absolute_sum": 7543
+        },
+        {
+          "changed": 0,
+          "kind": "independent_cpu_oracle",
+          "label": "human-mixed-lod2.4-alpha",
+          "over2": 0,
+          "peak": 0,
+          "raw_encoded_png_difference": {
+            "changed": 0,
+            "over2": 0,
+            "peak": 0,
+            "rgb_absolute_sum": 0
+          },
+          "rgb_absolute_sum": 0
+        },
+        {
+          "changed": 24358,
+          "kind": "baked_vs_candidate",
+          "label": "unhuma-sharp0-size2.2",
+          "over2": 2760,
+          "peak": 23,
+          "rgb_absolute_sum": 71048,
+          "wound_signal": {
+            "changed": 33574,
+            "over2": 32157,
+            "peak": 198,
+            "rgb_absolute_sum": 3777155
+          }
+        },
+        {
+          "changed": 2940,
+          "kind": "baked_vs_candidate",
+          "label": "unhuma-sharp0-size6.6",
+          "over2": 542,
+          "peak": 18,
+          "rgb_absolute_sum": 10813,
+          "wound_signal": {
+            "changed": 3791,
+            "over2": 3592,
+            "peak": 170,
+            "rgb_absolute_sum": 418949
+          }
+        },
+        {
+          "changed": 25687,
+          "kind": "baked_vs_candidate",
+          "label": "unhuma-sharp1-size2.2",
+          "over2": 4201,
+          "peak": 16,
+          "rgb_absolute_sum": 75757,
+          "wound_signal": {
+            "changed": 33586,
+            "over2": 32065,
+            "peak": 198,
+            "rgb_absolute_sum": 3780674
+          }
+        },
+        {
+          "changed": 2929,
+          "kind": "baked_vs_candidate",
+          "label": "unhuma-sharp1-size6.6",
+          "over2": 579,
+          "peak": 19,
+          "rgb_absolute_sum": 10051,
+          "wound_signal": {
+            "changed": 3745,
+            "over2": 3574,
+            "peak": 170,
+            "rgb_absolute_sum": 419455
+          }
+        },
+        {
+          "changed": 15625,
+          "kind": "baked_vs_candidate",
+          "label": "unanwibo-sharp0-size2.2",
+          "over2": 279,
+          "peak": 16,
+          "rgb_absolute_sum": 27509,
+          "wound_signal": {
+            "changed": 21737,
+            "over2": 20500,
+            "peak": 92,
+            "rgb_absolute_sum": 1060315
+          }
+        },
+        {
+          "changed": 1918,
+          "kind": "baked_vs_candidate",
+          "label": "unanwibo-sharp0-size6.6",
+          "over2": 168,
+          "peak": 32,
+          "rgb_absolute_sum": 5052,
+          "wound_signal": {
+            "changed": 2528,
+            "over2": 2325,
+            "peak": 90,
+            "rgb_absolute_sum": 118267
+          }
+        },
+        {
+          "changed": 16386,
+          "kind": "baked_vs_candidate",
+          "label": "unanwibo-sharp1-size2.2",
+          "over2": 1762,
+          "peak": 12,
+          "rgb_absolute_sum": 34004,
+          "wound_signal": {
+            "changed": 21672,
+            "over2": 20483,
+            "peak": 96,
+            "rgb_absolute_sum": 1061038
+          }
+        },
+        {
+          "changed": 1909,
+          "kind": "baked_vs_candidate",
+          "label": "unanwibo-sharp1-size6.6",
+          "over2": 230,
+          "peak": 20,
+          "rgb_absolute_sum": 4590,
+          "wound_signal": {
+            "changed": 2489,
+            "over2": 2302,
+            "peak": 90,
+            "rgb_absolute_sum": 117668
+          }
+        },
+        {
+          "changed": 0,
+          "kind": "baked_vs_candidate",
+          "label": "unmowi-sharp0-size2.2",
+          "over2": 0,
+          "peak": 0,
+          "rgb_absolute_sum": 0,
+          "wound_signal": {
+            "changed": 0,
+            "over2": 0,
+            "peak": 0,
+            "rgb_absolute_sum": 0
+          }
+        },
+        {
+          "changed": 0,
+          "kind": "baked_vs_candidate",
+          "label": "unmowi-sharp0-size6.6",
+          "over2": 0,
+          "peak": 0,
+          "rgb_absolute_sum": 0,
+          "wound_signal": {
+            "changed": 0,
+            "over2": 0,
+            "peak": 0,
+            "rgb_absolute_sum": 0
+          }
+        },
+        {
+          "changed": 0,
+          "kind": "baked_vs_candidate",
+          "label": "unmowi-sharp1-size2.2",
+          "over2": 0,
+          "peak": 0,
+          "rgb_absolute_sum": 0,
+          "wound_signal": {
+            "changed": 0,
+            "over2": 0,
+            "peak": 0,
+            "rgb_absolute_sum": 0
+          }
+        },
+        {
+          "changed": 0,
+          "kind": "baked_vs_candidate",
+          "label": "unmowi-sharp1-size6.6",
+          "over2": 0,
+          "peak": 0,
+          "rgb_absolute_sum": 0,
+          "wound_signal": {
+            "changed": 0,
+            "over2": 0,
+            "peak": 0,
+            "rgb_absolute_sum": 0
+          }
+        }
+      ]
+    },
+    {
+      "name": "probe-forward02",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-gpu-20261009/probe-forward02",
+      "checks": 150,
+      "capture_count": 84,
+      "source_sha256": "bb896d4cf325801b3a5e3f8784a97a6796e39bfc452efa62db0285e9d080e36e",
+      "report_sha256": "70d86c9c5e09b67e8e12b2ed23375b664651615a4bc0605102d9e5cf0809e4f1",
+      "run_sha256": "358d2cdc5fdf60cf1c42c0162c555faef2ca77c1bc7b158fbea2c4d7aeabafea",
+      "rows": [
+        {
+          "changed": 2964,
+          "kind": "independent_cpu_oracle",
+          "label": "synthetic-alpha-lod0.0-rgb",
+          "over2": 0,
+          "peak": 2,
+          "raw_encoded_png_difference": {
+            "changed": 2964,
+            "over2": 0,
+            "peak": 2,
+            "rgb_absolute_sum": 4406
+          },
+          "rgb_absolute_sum": 4406
+        },
+        {
+          "changed": 1876,
+          "kind": "independent_cpu_oracle",
+          "label": "synthetic-alpha-lod0.0-alpha",
+          "over2": 0,
+          "peak": 1,
+          "raw_encoded_png_difference": {
+            "changed": 1876,
+            "over2": 0,
+            "peak": 1,
+            "rgb_absolute_sum": 5628
+          },
+          "rgb_absolute_sum": 5628
+        },
+        {
+          "changed": 3489,
+          "kind": "independent_cpu_oracle",
+          "label": "synthetic-alpha-lod1.0-rgb",
+          "over2": 0,
+          "peak": 1,
+          "raw_encoded_png_difference": {
+            "changed": 3489,
+            "over2": 0,
+            "peak": 1,
+            "rgb_absolute_sum": 5781
+          },
+          "rgb_absolute_sum": 5781
+        },
+        {
+          "changed": 1857,
+          "kind": "independent_cpu_oracle",
+          "label": "synthetic-alpha-lod1.0-alpha",
+          "over2": 0,
+          "peak": 1,
+          "raw_encoded_png_difference": {
+            "changed": 1857,
+            "over2": 0,
+            "peak": 1,
+            "rgb_absolute_sum": 5571
+          },
+          "rgb_absolute_sum": 5571
+        },
+        {
+          "changed": 3556,
+          "kind": "independent_cpu_oracle",
+          "label": "synthetic-alpha-lod2.4-rgb",
+          "over2": 0,
+          "peak": 1,
+          "raw_encoded_png_difference": {
+            "changed": 3556,
+            "over2": 0,
+            "peak": 1,
+            "rgb_absolute_sum": 5510
+          },
+          "rgb_absolute_sum": 5510
+        },
+        {
+          "changed": 2057,
+          "kind": "independent_cpu_oracle",
+          "label": "synthetic-alpha-lod2.4-alpha",
+          "over2": 0,
+          "peak": 1,
+          "raw_encoded_png_difference": {
+            "changed": 2057,
+            "over2": 0,
+            "peak": 1,
+            "rgb_absolute_sum": 6171
+          },
+          "rgb_absolute_sum": 6171
+        },
+        {
+          "changed": 2716,
+          "kind": "independent_cpu_oracle",
+          "label": "human-mixed-lod0.0-rgb",
+          "over2": 0,
+          "peak": 1,
+          "raw_encoded_png_difference": {
+            "changed": 2716,
+            "over2": 0,
+            "peak": 1,
+            "rgb_absolute_sum": 4760
+          },
+          "rgb_absolute_sum": 4760
+        },
+        {
+          "changed": 0,
+          "kind": "independent_cpu_oracle",
+          "label": "human-mixed-lod0.0-alpha",
+          "over2": 0,
+          "peak": 0,
+          "raw_encoded_png_difference": {
+            "changed": 0,
+            "over2": 0,
+            "peak": 0,
+            "rgb_absolute_sum": 0
+          },
+          "rgb_absolute_sum": 0
+        },
+        {
+          "changed": 2802,
+          "kind": "independent_cpu_oracle",
+          "label": "human-mixed-lod1.0-rgb",
+          "over2": 0,
+          "peak": 2,
+          "raw_encoded_png_difference": {
+            "changed": 2802,
+            "over2": 0,
+            "peak": 2,
+            "rgb_absolute_sum": 4686
+          },
+          "rgb_absolute_sum": 4686
+        },
+        {
+          "changed": 0,
+          "kind": "independent_cpu_oracle",
+          "label": "human-mixed-lod1.0-alpha",
+          "over2": 0,
+          "peak": 0,
+          "raw_encoded_png_difference": {
+            "changed": 0,
+            "over2": 0,
+            "peak": 0,
+            "rgb_absolute_sum": 0
+          },
+          "rgb_absolute_sum": 0
+        },
+        {
+          "changed": 3076,
+          "kind": "independent_cpu_oracle",
+          "label": "human-mixed-lod2.4-rgb",
+          "over2": 0,
+          "peak": 1,
+          "raw_encoded_png_difference": {
+            "changed": 3076,
+            "over2": 0,
+            "peak": 1,
+            "rgb_absolute_sum": 5130
+          },
+          "rgb_absolute_sum": 5130
+        },
+        {
+          "changed": 0,
+          "kind": "independent_cpu_oracle",
+          "label": "human-mixed-lod2.4-alpha",
+          "over2": 0,
+          "peak": 0,
+          "raw_encoded_png_difference": {
+            "changed": 0,
+            "over2": 0,
+            "peak": 0,
+            "rgb_absolute_sum": 0
+          },
+          "rgb_absolute_sum": 0
+        },
+        {
+          "changed": 24886,
+          "kind": "baked_vs_candidate",
+          "label": "unhuma-sharp0-size2.2",
+          "over2": 3057,
+          "peak": 25,
+          "rgb_absolute_sum": 76552,
+          "wound_signal": {
+            "changed": 33559,
+            "over2": 32185,
+            "peak": 194,
+            "rgb_absolute_sum": 3715762
+          }
+        },
+        {
+          "changed": 3107,
+          "kind": "baked_vs_candidate",
+          "label": "unhuma-sharp0-size6.6",
+          "over2": 703,
+          "peak": 28,
+          "rgb_absolute_sum": 13972,
+          "wound_signal": {
+            "changed": 3819,
+            "over2": 3606,
+            "peak": 168,
+            "rgb_absolute_sum": 411918
+          }
+        },
+        {
+          "changed": 26120,
+          "kind": "baked_vs_candidate",
+          "label": "unhuma-sharp1-size2.2",
+          "over2": 4428,
+          "peak": 25,
+          "rgb_absolute_sum": 79411,
+          "wound_signal": {
+            "changed": 33612,
+            "over2": 32078,
+            "peak": 194,
+            "rgb_absolute_sum": 3713496
+          }
+        },
+        {
+          "changed": 3020,
+          "kind": "baked_vs_candidate",
+          "label": "unhuma-sharp1-size6.6",
+          "over2": 635,
+          "peak": 24,
+          "rgb_absolute_sum": 11290,
+          "wound_signal": {
+            "changed": 3763,
+            "over2": 3574,
+            "peak": 168,
+            "rgb_absolute_sum": 412578
+          }
+        },
+        {
+          "changed": 16618,
+          "kind": "baked_vs_candidate",
+          "label": "unanwibo-sharp0-size2.2",
+          "over2": 337,
+          "peak": 26,
+          "rgb_absolute_sum": 33596,
+          "wound_signal": {
+            "changed": 21791,
+            "over2": 20508,
+            "peak": 84,
+            "rgb_absolute_sum": 1043457
+          }
+        },
+        {
+          "changed": 2080,
+          "kind": "baked_vs_candidate",
+          "label": "unanwibo-sharp0-size6.6",
+          "over2": 250,
+          "peak": 62,
+          "rgb_absolute_sum": 6768,
+          "wound_signal": {
+            "changed": 2541,
+            "over2": 2344,
+            "peak": 83,
+            "rgb_absolute_sum": 116508
+          }
+        },
+        {
+          "changed": 17088,
+          "kind": "baked_vs_candidate",
+          "label": "unanwibo-sharp1-size2.2",
+          "over2": 1660,
+          "peak": 25,
+          "rgb_absolute_sum": 39290,
+          "wound_signal": {
+            "changed": 21676,
+            "over2": 20490,
+            "peak": 88,
+            "rgb_absolute_sum": 1042301
+          }
+        },
+        {
+          "changed": 2037,
+          "kind": "baked_vs_candidate",
+          "label": "unanwibo-sharp1-size6.6",
+          "over2": 253,
+          "peak": 58,
+          "rgb_absolute_sum": 6292,
+          "wound_signal": {
+            "changed": 2495,
+            "over2": 2309,
+            "peak": 83,
+            "rgb_absolute_sum": 116149
+          }
+        },
+        {
+          "changed": 0,
+          "kind": "baked_vs_candidate",
+          "label": "unmowi-sharp0-size2.2",
+          "over2": 0,
+          "peak": 0,
+          "rgb_absolute_sum": 0,
+          "wound_signal": {
+            "changed": 0,
+            "over2": 0,
+            "peak": 0,
+            "rgb_absolute_sum": 0
+          }
+        },
+        {
+          "changed": 0,
+          "kind": "baked_vs_candidate",
+          "label": "unmowi-sharp0-size6.6",
+          "over2": 0,
+          "peak": 0,
+          "rgb_absolute_sum": 0,
+          "wound_signal": {
+            "changed": 0,
+            "over2": 0,
+            "peak": 0,
+            "rgb_absolute_sum": 0
+          }
+        },
+        {
+          "changed": 0,
+          "kind": "baked_vs_candidate",
+          "label": "unmowi-sharp1-size2.2",
+          "over2": 0,
+          "peak": 0,
+          "rgb_absolute_sum": 0,
+          "wound_signal": {
+            "changed": 0,
+            "over2": 0,
+            "peak": 0,
+            "rgb_absolute_sum": 0
+          }
+        },
+        {
+          "changed": 0,
+          "kind": "baked_vs_candidate",
+          "label": "unmowi-sharp1-size6.6",
+          "over2": 0,
+          "peak": 0,
+          "rgb_absolute_sum": 0,
+          "wound_signal": {
+            "changed": 0,
+            "over2": 0,
+            "peak": 0,
+            "rgb_absolute_sum": 0
+          }
+        }
+      ]
+    },
+    {
+      "name": "probe-forward03",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-gpu-20261009/probe-forward03",
+      "checks": 150,
+      "capture_count": 84,
+      "source_sha256": "fe96aaf746571d502e80efcef16cb968fc53df85aece35ac05a2dc23d240a932",
+      "report_sha256": "e64939573b0df911f273afa8f528523d8159a43f41c41e2122e9277a63c7296a",
+      "run_sha256": "5b0ec0e676f497bd6aa5cdee00c04d2cab5998896752b5ad24f85b882a4b2dd2",
+      "rows": [
+        {
+          "changed": 2964,
+          "kind": "independent_cpu_oracle",
+          "label": "synthetic-alpha-lod0.0-rgb",
+          "over2": 0,
+          "peak": 2,
+          "raw_encoded_png_difference": {
+            "changed": 2964,
+            "over2": 0,
+            "peak": 2,
+            "rgb_absolute_sum": 4406
+          },
+          "rgb_absolute_sum": 4406
+        },
+        {
+          "changed": 1876,
+          "kind": "independent_cpu_oracle",
+          "label": "synthetic-alpha-lod0.0-alpha",
+          "over2": 0,
+          "peak": 1,
+          "raw_encoded_png_difference": {
+            "changed": 1876,
+            "over2": 0,
+            "peak": 1,
+            "rgb_absolute_sum": 5628
+          },
+          "rgb_absolute_sum": 5628
+        },
+        {
+          "changed": 3489,
+          "kind": "independent_cpu_oracle",
+          "label": "synthetic-alpha-lod1.0-rgb",
+          "over2": 0,
+          "peak": 1,
+          "raw_encoded_png_difference": {
+            "changed": 3489,
+            "over2": 0,
+            "peak": 1,
+            "rgb_absolute_sum": 5781
+          },
+          "rgb_absolute_sum": 5781
+        },
+        {
+          "changed": 1857,
+          "kind": "independent_cpu_oracle",
+          "label": "synthetic-alpha-lod1.0-alpha",
+          "over2": 0,
+          "peak": 1,
+          "raw_encoded_png_difference": {
+            "changed": 1857,
+            "over2": 0,
+            "peak": 1,
+            "rgb_absolute_sum": 5571
+          },
+          "rgb_absolute_sum": 5571
+        },
+        {
+          "changed": 3556,
+          "kind": "independent_cpu_oracle",
+          "label": "synthetic-alpha-lod2.4-rgb",
+          "over2": 0,
+          "peak": 1,
+          "raw_encoded_png_difference": {
+            "changed": 3556,
+            "over2": 0,
+            "peak": 1,
+            "rgb_absolute_sum": 5510
+          },
+          "rgb_absolute_sum": 5510
+        },
+        {
+          "changed": 2057,
+          "kind": "independent_cpu_oracle",
+          "label": "synthetic-alpha-lod2.4-alpha",
+          "over2": 0,
+          "peak": 1,
+          "raw_encoded_png_difference": {
+            "changed": 2057,
+            "over2": 0,
+            "peak": 1,
+            "rgb_absolute_sum": 6171
+          },
+          "rgb_absolute_sum": 6171
+        },
+        {
+          "changed": 2716,
+          "kind": "independent_cpu_oracle",
+          "label": "human-mixed-lod0.0-rgb",
+          "over2": 0,
+          "peak": 1,
+          "raw_encoded_png_difference": {
+            "changed": 2716,
+            "over2": 0,
+            "peak": 1,
+            "rgb_absolute_sum": 4760
+          },
+          "rgb_absolute_sum": 4760
+        },
+        {
+          "changed": 0,
+          "kind": "independent_cpu_oracle",
+          "label": "human-mixed-lod0.0-alpha",
+          "over2": 0,
+          "peak": 0,
+          "raw_encoded_png_difference": {
+            "changed": 0,
+            "over2": 0,
+            "peak": 0,
+            "rgb_absolute_sum": 0
+          },
+          "rgb_absolute_sum": 0
+        },
+        {
+          "changed": 2802,
+          "kind": "independent_cpu_oracle",
+          "label": "human-mixed-lod1.0-rgb",
+          "over2": 0,
+          "peak": 2,
+          "raw_encoded_png_difference": {
+            "changed": 2802,
+            "over2": 0,
+            "peak": 2,
+            "rgb_absolute_sum": 4686
+          },
+          "rgb_absolute_sum": 4686
+        },
+        {
+          "changed": 0,
+          "kind": "independent_cpu_oracle",
+          "label": "human-mixed-lod1.0-alpha",
+          "over2": 0,
+          "peak": 0,
+          "raw_encoded_png_difference": {
+            "changed": 0,
+            "over2": 0,
+            "peak": 0,
+            "rgb_absolute_sum": 0
+          },
+          "rgb_absolute_sum": 0
+        },
+        {
+          "changed": 3076,
+          "kind": "independent_cpu_oracle",
+          "label": "human-mixed-lod2.4-rgb",
+          "over2": 0,
+          "peak": 1,
+          "raw_encoded_png_difference": {
+            "changed": 3076,
+            "over2": 0,
+            "peak": 1,
+            "rgb_absolute_sum": 5130
+          },
+          "rgb_absolute_sum": 5130
+        },
+        {
+          "changed": 0,
+          "kind": "independent_cpu_oracle",
+          "label": "human-mixed-lod2.4-alpha",
+          "over2": 0,
+          "peak": 0,
+          "raw_encoded_png_difference": {
+            "changed": 0,
+            "over2": 0,
+            "peak": 0,
+            "rgb_absolute_sum": 0
+          },
+          "rgb_absolute_sum": 0
+        },
+        {
+          "changed": 24886,
+          "kind": "baked_vs_candidate",
+          "label": "unhuma-sharp0-size2.2",
+          "over2": 3057,
+          "peak": 25,
+          "rgb_absolute_sum": 76550,
+          "wound_signal": {
+            "changed": 33559,
+            "over2": 32185,
+            "peak": 194,
+            "rgb_absolute_sum": 3715761
+          }
+        },
+        {
+          "changed": 3107,
+          "kind": "baked_vs_candidate",
+          "label": "unhuma-sharp0-size6.6",
+          "over2": 703,
+          "peak": 28,
+          "rgb_absolute_sum": 13972,
+          "wound_signal": {
+            "changed": 3819,
+            "over2": 3606,
+            "peak": 168,
+            "rgb_absolute_sum": 411918
+          }
+        },
+        {
+          "changed": 26120,
+          "kind": "baked_vs_candidate",
+          "label": "unhuma-sharp1-size2.2",
+          "over2": 4428,
+          "peak": 25,
+          "rgb_absolute_sum": 79409,
+          "wound_signal": {
+            "changed": 33612,
+            "over2": 32078,
+            "peak": 194,
+            "rgb_absolute_sum": 3713495
+          }
+        },
+        {
+          "changed": 3020,
+          "kind": "baked_vs_candidate",
+          "label": "unhuma-sharp1-size6.6",
+          "over2": 635,
+          "peak": 24,
+          "rgb_absolute_sum": 11290,
+          "wound_signal": {
+            "changed": 3763,
+            "over2": 3574,
+            "peak": 168,
+            "rgb_absolute_sum": 412578
+          }
+        },
+        {
+          "changed": 16618,
+          "kind": "baked_vs_candidate",
+          "label": "unanwibo-sharp0-size2.2",
+          "over2": 337,
+          "peak": 26,
+          "rgb_absolute_sum": 33596,
+          "wound_signal": {
+            "changed": 21791,
+            "over2": 20508,
+            "peak": 84,
+            "rgb_absolute_sum": 1043457
+          }
+        },
+        {
+          "changed": 2080,
+          "kind": "baked_vs_candidate",
+          "label": "unanwibo-sharp0-size6.6",
+          "over2": 250,
+          "peak": 62,
+          "rgb_absolute_sum": 6768,
+          "wound_signal": {
+            "changed": 2541,
+            "over2": 2344,
+            "peak": 83,
+            "rgb_absolute_sum": 116508
+          }
+        },
+        {
+          "changed": 17088,
+          "kind": "baked_vs_candidate",
+          "label": "unanwibo-sharp1-size2.2",
+          "over2": 1660,
+          "peak": 25,
+          "rgb_absolute_sum": 39290,
+          "wound_signal": {
+            "changed": 21676,
+            "over2": 20490,
+            "peak": 88,
+            "rgb_absolute_sum": 1042301
+          }
+        },
+        {
+          "changed": 2037,
+          "kind": "baked_vs_candidate",
+          "label": "unanwibo-sharp1-size6.6",
+          "over2": 253,
+          "peak": 58,
+          "rgb_absolute_sum": 6292,
+          "wound_signal": {
+            "changed": 2495,
+            "over2": 2309,
+            "peak": 83,
+            "rgb_absolute_sum": 116149
+          }
+        },
+        {
+          "changed": 0,
+          "kind": "baked_vs_candidate",
+          "label": "unmowi-sharp0-size2.2",
+          "over2": 0,
+          "peak": 0,
+          "rgb_absolute_sum": 0,
+          "wound_signal": {
+            "changed": 0,
+            "over2": 0,
+            "peak": 0,
+            "rgb_absolute_sum": 0
+          }
+        },
+        {
+          "changed": 0,
+          "kind": "baked_vs_candidate",
+          "label": "unmowi-sharp0-size6.6",
+          "over2": 0,
+          "peak": 0,
+          "rgb_absolute_sum": 0,
+          "wound_signal": {
+            "changed": 0,
+            "over2": 0,
+            "peak": 0,
+            "rgb_absolute_sum": 0
+          }
+        },
+        {
+          "changed": 0,
+          "kind": "baked_vs_candidate",
+          "label": "unmowi-sharp1-size2.2",
+          "over2": 0,
+          "peak": 0,
+          "rgb_absolute_sum": 0,
+          "wound_signal": {
+            "changed": 0,
+            "over2": 0,
+            "peak": 0,
+            "rgb_absolute_sum": 0
+          }
+        },
+        {
+          "changed": 0,
+          "kind": "baked_vs_candidate",
+          "label": "unmowi-sharp1-size6.6",
+          "over2": 0,
+          "peak": 0,
+          "rgb_absolute_sum": 0,
+          "wound_signal": {
+            "changed": 0,
+            "over2": 0,
+            "peak": 0,
+            "rgb_absolute_sum": 0
+          }
+        }
+      ]
+    }
+  ],
+  "workload": {
+    "before": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-gpu-20261009/workload-before01",
+      "run_sha256": "43daf9015a39e52e0149f484110db890a613bb4a314a916891259e7b91967ebf",
+      "report_sha256": "1124b632aca076b3114e169151d12773be297b2ddae7c3310078cd753aabf235",
+      "result": {
+        "checks": 37,
+        "failures": 0,
+        "production": false,
+        "renderer": "gl_compatibility",
+        "rows": [
+          {
+            "jobs": 8,
+            "label": "0-cold",
+            "native_compositions": 1,
+            "publication_frames": 4,
+            "publication_us": 44131,
+            "submission_us": 295,
+            "texture_memory_delta": 2796192,
+            "unchanged_base_textures": 0,
+            "unique_result_textures": 8,
+            "uploaded_mip_bytes": 2796192,
+            "uploads": 8
+          },
+          {
+            "jobs": 8,
+            "label": "0-warm",
+            "native_compositions": 0,
+            "publication_frames": 1,
+            "publication_us": 19270,
+            "submission_us": 195,
+            "texture_memory_delta": 2796192,
+            "unchanged_base_textures": 0,
+            "unique_result_textures": 8,
+            "uploaded_mip_bytes": 2796192,
+            "uploads": 8
+          },
+          {
+            "jobs": 8,
+            "label": "1-cold",
+            "native_compositions": 1,
+            "publication_frames": 3,
+            "publication_us": 36324,
+            "submission_us": 276,
+            "texture_memory_delta": 2796192,
+            "unchanged_base_textures": 0,
+            "unique_result_textures": 8,
+            "uploaded_mip_bytes": 2796192,
+            "uploads": 8
+          },
+          {
+            "jobs": 8,
+            "label": "1-warm",
+            "native_compositions": 0,
+            "publication_frames": 1,
+            "publication_us": 19197,
+            "submission_us": 230,
+            "texture_memory_delta": 2796192,
+            "unchanged_base_textures": 0,
+            "unique_result_textures": 8,
+            "uploaded_mip_bytes": 2796192,
+            "uploads": 8
+          },
+          {
+            "jobs": 8,
+            "label": "2-cold",
+            "native_compositions": 1,
+            "publication_frames": 3,
+            "publication_us": 35809,
+            "submission_us": 291,
+            "texture_memory_delta": 2796192,
+            "unchanged_base_textures": 0,
+            "unique_result_textures": 8,
+            "uploaded_mip_bytes": 2796192,
+            "uploads": 8
+          },
+          {
+            "jobs": 8,
+            "label": "2-warm",
+            "native_compositions": 0,
+            "publication_frames": 1,
+            "publication_us": 19431,
+            "submission_us": 211,
+            "texture_memory_delta": 2796192,
+            "unchanged_base_textures": 0,
+            "unique_result_textures": 8,
+            "uploaded_mip_bytes": 2796192,
+            "uploads": 8
+          }
+        ],
+        "scope": "Eight controlled 256px outfit identities per batch, authored unhuma wound bytes; normal asynchronous frame publication. Allocation/work-submission evidence, not device or FPS performance."
+      },
+      "run": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/cloud-coop-final-01/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/wound-gpu-20261009/workload-before01/tool-source.gd"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 4.205244203971233,
+        "termination": null,
+        "errors": [],
+        "source_sha256": "00eca4f4c02f231d6a0b2d9fdf9b5fef6ab933a8b5ef8986d1f07cf0004c007e",
+        "bundle_sha256": {
+          "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+          "CursedLands.pck": "4a6242634eb82c56ea3c2a9be79b565a190a210a05157348f91297e15dafd9ef",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "png_sha256": {}
+      },
+      "medians": {
+        "cold": {
+          "submission_us": 291,
+          "publication_us": 36324,
+          "publication_frames": 3,
+          "uploaded_mip_bytes": 2796192,
+          "texture_memory_delta": 2796192
+        },
+        "warm": {
+          "submission_us": 211,
+          "publication_us": 19270,
+          "publication_frames": 1,
+          "uploaded_mip_bytes": 2796192,
+          "texture_memory_delta": 2796192
+        }
+      }
+    },
+    "after": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-gpu-20261009/workload-after01",
+      "run_sha256": "ee3975d279919f6274dc8c06a825e7bbf451c18ef54c7f6bcbea746066f5ea16",
+      "report_sha256": "257de083fb60c9f9a647dc281217ec7e80d91ae38e50df38f5cf81a9397c13d2",
+      "result": {
+        "checks": 43,
+        "failures": 0,
+        "production": true,
+        "renderer": "gl_compatibility",
+        "rows": [
+          {
+            "jobs": 1,
+            "label": "0-cold",
+            "native_compositions": 1,
+            "publication_frames": 1,
+            "publication_us": 16908,
+            "submission_us": 279,
+            "texture_memory_delta": 87380,
+            "unchanged_base_textures": 8,
+            "unique_result_textures": 1,
+            "uploaded_mip_bytes": 87380,
+            "uploads": 1
+          },
+          {
+            "jobs": 0,
+            "label": "0-warm",
+            "native_compositions": 0,
+            "publication_frames": 0,
+            "publication_us": 154,
+            "submission_us": 151,
+            "texture_memory_delta": 0,
+            "unchanged_base_textures": 8,
+            "unique_result_textures": 1,
+            "uploaded_mip_bytes": 0,
+            "uploads": 0
+          },
+          {
+            "jobs": 1,
+            "label": "1-cold",
+            "native_compositions": 1,
+            "publication_frames": 1,
+            "publication_us": 16935,
+            "submission_us": 235,
+            "texture_memory_delta": 87380,
+            "unchanged_base_textures": 8,
+            "unique_result_textures": 1,
+            "uploaded_mip_bytes": 87380,
+            "uploads": 1
+          },
+          {
+            "jobs": 0,
+            "label": "1-warm",
+            "native_compositions": 0,
+            "publication_frames": 0,
+            "publication_us": 143,
+            "submission_us": 141,
+            "texture_memory_delta": 0,
+            "unchanged_base_textures": 8,
+            "unique_result_textures": 1,
+            "uploaded_mip_bytes": 0,
+            "uploads": 0
+          },
+          {
+            "jobs": 1,
+            "label": "2-cold",
+            "native_compositions": 1,
+            "publication_frames": 1,
+            "publication_us": 16407,
+            "submission_us": 260,
+            "texture_memory_delta": 87380,
+            "unchanged_base_textures": 8,
+            "unique_result_textures": 1,
+            "uploaded_mip_bytes": 87380,
+            "uploads": 1
+          },
+          {
+            "jobs": 0,
+            "label": "2-warm",
+            "native_compositions": 0,
+            "publication_frames": 0,
+            "publication_us": 142,
+            "submission_us": 140,
+            "texture_memory_delta": 0,
+            "unchanged_base_textures": 8,
+            "unique_result_textures": 1,
+            "uploaded_mip_bytes": 0,
+            "uploads": 0
+          }
+        ],
+        "scope": "Eight controlled 256px outfit identities per batch, authored unhuma wound bytes; normal asynchronous frame publication. Allocation/work-submission evidence, not device or FPS performance."
+      },
+      "run": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/wound-gpu-20261009/candidate01/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/wound-gpu-20261009/workload-after01/tool-source.gd",
+          "--production"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 4.205112700990867,
+        "termination": null,
+        "errors": [],
+        "source_sha256": "00eca4f4c02f231d6a0b2d9fdf9b5fef6ab933a8b5ef8986d1f07cf0004c007e",
+        "bundle_sha256": {
+          "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+          "CursedLands.pck": "269292e0a3e5f29c3d92902cb39f7e5e30123d5ab9904189b4b48297b5bcbe91",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "png_sha256": {}
+      },
+      "medians": {
+        "cold": {
+          "submission_us": 260,
+          "publication_us": 16908,
+          "publication_frames": 1,
+          "uploaded_mip_bytes": 87380,
+          "texture_memory_delta": 87380
+        },
+        "warm": {
+          "submission_us": 141,
+          "publication_us": 143,
+          "publication_frames": 0,
+          "uploaded_mip_bytes": 0,
+          "texture_memory_delta": 0
+        }
+      }
+    }
+  },
+  "workload_conclusion": {
+    "cold_before_uploaded_bytes": 2796192,
+    "cold_after_uploaded_bytes": 87380,
+    "cold_before_uploads": 8,
+    "cold_after_uploads": 1,
+    "warm_after_uploads": 0,
+    "warm_after_uploaded_bytes": 0,
+    "unchanged_base_identities_after": 8,
+    "measured_rendering_server_memory_delta_matches_upload_bytes": true,
+    "claim": "About 32x less new texture data for eight controlled 256px outfit identities sharing one 128px authored wound state; warm outfits reuse it without upload. No overall FPS or device claim."
+  },
+  "mobile_precision_boundary": {
+    "ordinary_target_failure": "production-mobile01: 5 of12 CPU-oracle comparisons fail the unchanged2/255 gate, maximum7/255 in dark channels. Keep as failed ordinary-target numerical control.",
+    "cause_evidence": "Godot Mobile render_forward_mobile.cpp:459-461 uses A2B10G10R10_UNORM_PACK32; scene_forward_mobile.glsl:2355-2382 applies its luminance multiplier and supports fixed 10-bit dither. One stored linear code step after the default 2x luminance decode is up to about6.45/255 near black, consistent with the observed7/255 display steps. The same production shader/math in an HDR16 subviewport passes all strict2/255 oracle comparisons. Float readback is encoded before RGBA8 quantization. No engine or production target change.",
+    "accepted_scope": "Final Mobile numerical oracle uses explicit --precision-oracle only. Before actual material/figure checks the viewport returns to the ordinary production target; all8 actual alpha controls,12 healthy/healed pairs and4 no-wound wisp controls are exact.",
+    "additional_diagnostic": "Old-pack probe-mobile02 is not accepted: first no-wound injected wisp specialization changes24pixels (peak5) before later sharp/distance captures settle; cross-program ordinary Mobile human comparison reaches5/255. Do not substitute this diagnostic for a strict ordinary-target oracle or claim cross-program byte parity."
+  },
+  "fixed_regression": {
+    "failed_control": "production-forward02 vs probe-forward03: at near human healthy pixels(243,373) and(262,416), peaks47 and4; all neighboring pixels stable. Wrapping the existing base texture fetch in a new helper perturbed the unwounded silhouette.",
+    "correction": "Keep original ei_unit_tex(albedo_tex,UV) statement in fragment and conditionally compose the independent wound sample afterward, matching the accepted probe structure. No threshold or coverage policy change.",
+    "proof": "final-forward01 passes all72 independently recomputed RGB comparisons; previous silhouette pixels now pass, all36 pre-integration figure comparisons peak1/255."
+  },
+  "retained_failed_controls": [
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-gpu-20261009/probe-gl01",
+      "reason": "Initial probe compared raw encoded PNG to GLES approximate display transform, used template-only boar instead of race data, and assumed wisp wound assets. Corrected fixture; native math unchanged."
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-gpu-20261009/wound_gpu-headless01",
+      "reason": "Test PackedByteArray constants are not constant expressions; no production failure."
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-gpu-20261009/wound_gpu-headless02",
+      "reason": "Counting test texture had no valid RID, so ShaderMaterial deliberately erased its sampler parameter. Fixed test backing RID, retaining readback counter."
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-gpu-20261009/wound_gpu-headless03",
+      "reason": "Fixture loop variable held last material reference; fixed test ownership. Weak production consumer already correct."
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-gpu-20261009/production-gl01",
+      "reason": "Explicit numerical probe mixed anisotropic/non-anisotropic sampler hints in one function; shader compile rejected fixture. Actual figure controls passed."
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-gpu-20261009/production-gl02",
+      "reason": "Anisotropic sampler is outside explicit trilinear CPU oracle; one comparison failed. Production figure anisotropy retained; isolated numerical probe now uses matching explicit trilinear filters."
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-gpu-20261009/production-forward01",
+      "reason": "Same anisotropy/explicit-LOD oracle mismatch; no tolerance change."
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-gpu-20261009/production-forward02",
+      "reason": "All174 within-run checks passed, but cross-program image audit discovered the two healthy silhouette pixels; superseded by corrected fetch shape."
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-gpu-20261009/production-mobile01",
+      "reason": "Ordinary Mobile RGB10A2 dark-color numerical gate failure retained, not counted as accepted."
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-gpu-20261009/probe-mobile02",
+      "reason": "Optional old-pack injection diagnostic fails first wisp exact control; not counted as accepted."
+    }
+  ],
+  "historical_diagnostic_compatibility": {
+    "file": "tools/benchmarks/wound_layers.gd",
+    "change": "Strip the now-shipped raw wound stage before constructing its historical rejected sRGB candidates, avoiding duplicate samplers/double composition. All4 generated shader parameter lists parse in historical-smoke01; old visual experiment is not rerun or reclassified."
+  },
+  "limits": [
+    "Custom StandardMaterial3D retains legacy full-albedo bake; no universal custom-material elimination claim.",
+    "Existing collection excludes mesh-owned surface materials without instance overrides; shipped figures use the covered overrides.",
+    "Original base SOURCE_IMAGE CPU pixels remain retained.",
+    "The second texture adds sampling/shader work; upload/work-submission savings are not a whole-game FPS claim.",
+    "No phone/browser/device-performance test, install or publication.",
+    "Original D3D two-pass lighting/opacity semantics and original wound mip generation are not claimed.",
+    "Root owns final actual Game/equipment/Paperdoll integration in a separate receipt; it is not counted here."
+  ]
+}
