@@ -497,9 +497,9 @@
         {
           "added_draws": 2,
           "difference": {
-            "changed_pixels": 7031,
-            "peak_byte_delta": 143,
-            "sum": 210018
+            "changed_pixels": 9237,
+            "peak_byte_delta": 144,
+            "sum": 267074
           },
           "focus": "(75.31795, 10.2335, -100.5787)",
           "map": "zone11",
@@ -509,9 +509,9 @@
         {
           "added_draws": 2,
           "difference": {
-            "changed_pixels": 4499,
+            "changed_pixels": 5890,
             "peak_byte_delta": 153,
-            "sum": 120368
+            "sum": 154723
           },
           "focus": "(288.8163, 11.26822, -268.9027)",
           "map": "zone13",
@@ -538,9 +538,9 @@
         {
           "added_draws": 2,
           "difference": {
-            "changed_pixels": 7141,
-            "peak_byte_delta": 142,
-            "sum": 208851
+            "changed_pixels": 9401,
+            "peak_byte_delta": 144,
+            "sum": 265566
           },
           "focus": "(75.31795, 10.2335, -100.5787)",
           "map": "zone11",
@@ -550,9 +550,9 @@
         {
           "added_draws": 2,
           "difference": {
-            "changed_pixels": 4582,
+            "changed_pixels": 6011,
             "peak_byte_delta": 152,
-            "sum": 120085
+            "sum": 154326
           },
           "focus": "(288.8163, 11.26822, -268.9027)",
           "map": "zone13",
@@ -642,5 +642,73 @@
     "tools/tests/waterfalls.gd": "78609af637f7fb9d8b4b9245a440fe911cc1b696b6495cf7f32d294a86b9e4f5",
     "tools/tests/waterfall_render.gd": "94e0b31e6a4305ba4198842430635238144065407250c2f150ec93622e0ed677",
     "tools/tests/graphics_options.gd": "b2b6eca82a6789629647e7a5106248acd286231268b5aac93acab75a93fa7aa6"
+  },
+  "independent_image_audit": {
+    "checks": 49,
+    "failures": 0,
+    "result": "/home/llm2x/Documents/EI/local/scratchpad/waterfalls-20261009/waterfalls-image-audit.json",
+    "result_sha256": "f0590ed5425b7a33bc9187cabfd9d35330af7b1c885613f6ffe4bfcbd3f936b5",
+    "script": "tools/tests/renderer_png_controls.py",
+    "script_sha256": "33c219e842cd03df7aeaa171256e837df1f036e683e1fb7018a7e52569d57b98",
+    "updated_fixture_sha256": "7128c186cf51bfad0b36b1d563bb5700096fc1bfdb4d9e2a8ee3ea7f05eff172",
+    "reason": "Vulkan viewport readbacks are RGB8 while Compatibility returns RGBA8. The render fixture now converts captures to RGBA8 before its four-byte loop. All49 image assertions were independently repeated on decoded full RGB data from the unchanged accepted PNGs; they pass. Original runtime manifests/results remain preserved with their original hashes. The corrected displayed Vulkan metrics below replace the old stride-based counts; production code and images are unchanged.",
+    "corrected_metrics": [
+      {
+        "run": "final-mobile",
+        "map": "zone11",
+        "original_fixture_difference": {
+          "changed_pixels": 7031,
+          "peak_byte_delta": 143,
+          "sum": 210018
+        },
+        "full_rgb_difference": {
+          "changed_pixels": 9237,
+          "peak_byte_delta": 144,
+          "sum": 267074
+        }
+      },
+      {
+        "run": "final-mobile",
+        "map": "zone13",
+        "original_fixture_difference": {
+          "changed_pixels": 4499,
+          "peak_byte_delta": 153,
+          "sum": 120368
+        },
+        "full_rgb_difference": {
+          "changed_pixels": 5890,
+          "peak_byte_delta": 153,
+          "sum": 154723
+        }
+      },
+      {
+        "run": "final-forward",
+        "map": "zone11",
+        "original_fixture_difference": {
+          "changed_pixels": 7141,
+          "peak_byte_delta": 142,
+          "sum": 208851
+        },
+        "full_rgb_difference": {
+          "changed_pixels": 9401,
+          "peak_byte_delta": 144,
+          "sum": 265566
+        }
+      },
+      {
+        "run": "final-forward",
+        "map": "zone13",
+        "original_fixture_difference": {
+          "changed_pixels": 4582,
+          "peak_byte_delta": 152,
+          "sum": 120085
+        },
+        "full_rgb_difference": {
+          "changed_pixels": 6011,
+          "peak_byte_delta": 152,
+          "sum": 154326
+        }
+      }
+    ]
   }
 }

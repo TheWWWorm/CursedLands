@@ -14,6 +14,7 @@ func frames(count := 4) -> void:
 func snap(view: SubViewport, name: String) -> Image:
 	await frames(4); await RenderingServer.frame_post_draw
 	var image := view.get_texture().get_image()
+	image.convert(Image.FORMAT_RGBA8) # Vulkan readbacks can be RGB8.
 	image.save_png("user://waterfalls-"+name+".png")
 	return image
 
