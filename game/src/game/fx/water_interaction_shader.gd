@@ -48,8 +48,38 @@ vec3 water_unit_contact(vec3 position, float footprint) {
 }
 """
 
-static func source(original: String) -> String:
-	var source := original.replace("void fragment() {",CODE+"\nvoid fragment() {")
+const CURRENT_CONTACT := """
+		// Standing creatures also disturb moving water. This is a bounded
+		// downstream foam streak, not a stored or propagating wave field.
+		vec2 velocity = river_velocity(current);
+		float flow_speed = length(velocity);
+		if (flow_speed > 0.001) {
+			vec2 direction = velocity / flow_speed;
+			float along = dot(q,direction);
+			float tail = min(4.0,max(0.4,body.w * 6.0));
+			float run = smoothstep(0.015,0.08,length(current));
+			if (along > body.w * 0.6 && along < body.w + tail) {
+				float side = dot(q,vec2(-direction.y,direction.x));
+				float band = max(body.w * 0.45 + along * 0.08,footprint * 1.5);
+				float shape = exp(-side * side / (band * band));
+				float fade = smoothstep(body.w * 0.6,body.w * 1.3,along) * (1.0-smoothstep(body.w+tail*0.3,body.w+tail,along));
+				float pa = fract(river_phase); float pb = fract(river_phase + 0.5);
+				float a = 0.65+0.35*cos((along-flow_speed*(pa-0.5)*0.9)*15.0+presence.y);
+				float b = 0.65+0.35*cos((along-flow_speed*(pb-0.5)*0.9)*15.0+presence.y+2.7);
+				float streak = shape * fade * mix(a,b,abs(1.0-2.0*pa)) * run * presence.x;
+				foam = max(foam,streak * 0.32);
+			}
+		}
+"""
+
+static func source(original: String, currents := false) -> String:
+	var contact := CODE
+	if currents:
+		contact = contact.replace("float footprint)","float footprint, vec2 current, float seconds)")
+		contact = contact.replace("abs(position.y - body.z)","abs(position.y - body.z + dot(current,q))")
+		contact = contact.replace("max(abs(q.x), abs(q.y)) > reach", "max(abs(q.x), abs(q.y)) > max(reach, body.w + min(4.0,max(0.4,body.w*6.0)))")
+		contact = contact.replace("\t\t// Diverging crests",CURRENT_CONTACT+"\t\t// Diverging crests")
+	var source := original.replace("void fragment() {",contact+"\nvoid fragment() {")
 	var marker := "\t\t// Raindrops on open water; subpixel rings fade out with distance."
 	assert(source.contains(marker),"water normal insertion point changed")
 	source = source.replace(marker,"""
@@ -60,6 +90,7 @@ static func source(original: String) -> String:
 			slope += unit_contact.xy;
 		}
 """+marker)
+	if currents: source = source.replace("water_unit_contact(wpos,footprint)","water_unit_contact(wpos,footprint,river_flow.xy,water_time)")
 	marker = "\t\t// Reflection weight: Schlick's Fresnel term without its 2 % floor,"
 	assert(source.contains(marker),"water colour insertion point changed")
 	return source.replace(marker,"""

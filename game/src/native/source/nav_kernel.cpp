@@ -25,6 +25,7 @@
 #include "unit_query.h"
 #include "perception_batch.h"
 #include "terrain_color.h"
+#include "water_current.h"
 #include "particle_draw.h"
 #include "unit_presentation.h"
 #include "motion_spline.h"
@@ -550,6 +551,7 @@ static void initialize_kernel(ModuleInitializationLevel level) {
         GDREGISTER_CLASS(UnitNoticeLifetime); GDREGISTER_CLASS(UnitQueryKernel);
         GDREGISTER_CLASS(PerceptionKernel);
         GDREGISTER_CLASS(TerrainColorField);
+        GDREGISTER_CLASS(WaterCurrentKernel);
         GDREGISTER_CLASS(ParticleDrawBuffer);
         GDREGISTER_CLASS(ScreenRectKernel);
         GDREGISTER_CLASS(NavigationBuildKernel); GDREGISTER_CLASS(AIActivityKernel);

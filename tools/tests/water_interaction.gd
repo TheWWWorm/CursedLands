@@ -343,6 +343,7 @@ func _ready() -> void:
 	for key: String in ["gfx_hd_textures","gfx_ground_contact","gfx_soft_ground","gfx_grass","gfx_terrain","confine_mouse","gfx_volumetric","gfx_ssao","gfx_bloom","gfx_water_reflections","gfx_weather_surfaces","vsync"]:
 		GameData.options[key] = 0
 	GameData.options["gfx_water"] = 1; Gfx.ensure_globals()
+	GameData.options["gfx_water_current"] = int("--with-current" in OS.get_cmdline_user_args())
 	GameData.options["fps_limit"] = 3 # option index: 120 Hz, also used by deferred window setup
 	Engine.time_scale = 0; Engine.max_fps = 120
 	if DisplayServer.get_name() != "headless":

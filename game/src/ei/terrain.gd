@@ -705,6 +705,8 @@ var _wind_key := []
 var _wind_frame := {}
 var _land_mat: ShaderMaterial
 var _caustics: RefCounted
+var _current: RefCounted
+var _current_dirty := false
 var _level := PackedFloat32Array()
 var _lava := PackedFloat32Array()
 var _surf := PackedFloat32Array()
@@ -723,8 +725,12 @@ static var _land_caustics_shader: Shader
 static var _water_shader: Shader
 static var _water_fx_shader: Shader
 static var _water_interaction_shader: Shader
+static var _water_current_shader: Shader
+static var _water_current_contact_shader: Shader
 const WaterInteractionShader = preload("res://src/game/fx/water_interaction_shader.gd")
 const WaterCaustics = preload("res://src/game/fx/water_caustics.gd")
+const WaterCurrent = preload("res://src/game/fx/water_current.gd")
+const WaterCurrentShader = preload("res://src/game/fx/water_current_shader.gd")
 
 ## The .mp format has generic liquid materials, not ocean/river/lake tags.
 ## Confirmed sea habitats for optional coastal cover. On the starting map,
@@ -1071,6 +1077,22 @@ func apply_gfx() -> void:
 		if _water_interaction_shader == null:
 			_water_interaction_shader = Gfx.make_shader(WaterInteractionShader.source(WATER_FX_SHADER),true,true)
 		_water_mat.shader = _water_interaction_shader
+	if fx and Gfx.on("gfx_water_current"):
+		if _current == null: _current = WaterCurrent.new(self)
+		else: _current.refresh(_level)
+		if _water_current_shader == null:
+			_water_current_shader = Gfx.make_shader(WaterCurrentShader.source(WATER_FX_SHADER),true,true)
+		_water_mat.shader = _water_current_shader
+		if Gfx.on("gfx_water_interaction"):
+			if _water_current_contact_shader == null:
+				_water_current_contact_shader = Gfx.make_shader(WaterInteractionShader.source(WaterCurrentShader.source(WATER_FX_SHADER),true),true,true)
+			_water_mat.shader = _water_current_contact_shader
+		_water_mat.set_shader_parameter("water_current",_current.texture)
+	else:
+		_water_mat.set_shader_parameter("water_current",null)
+		if _current != null: _current.clear()
+		_current = null
+	_current_dirty = false
 	_water_mat.set_shader_parameter("atlases", _atlases)
 	_water_mat.set_shader_parameter("level", _level)
 	_land_mat.set_shader_parameter("level", _level)
@@ -1163,7 +1185,7 @@ func set_rain_cover(image: Image) -> void:
 		_land_mat.set_shader_parameter("rain_cover", _rain_cover)
 	if is_instance_valid(color_cache):
 		color_cache.sync_parameter("rain_cover", _rain_cover)
-	if _water_mat and _water_mat.shader in [_water_fx_shader,_water_interaction_shader]:
+	if _water_mat and _water_mat.shader in [_water_fx_shader,_water_interaction_shader,_water_current_shader,_water_current_contact_shader]:
 		_water_mat.set_shader_parameter("rain_cover", _rain_cover)
 	if is_instance_valid(details) and is_instance_valid(details.soft_ground):
 		details.soft_ground.refresh_rain_cover()
@@ -1312,6 +1334,11 @@ func set_water_offset(mat: int, offset: float) -> Rect2i:
 				_level[m] = water_offsets[m]
 		_water_mat.set_shader_parameter("level", _level)
 		_land_mat.set_shader_parameter("level", _level)
+	if _current != null and not _current_dirty:
+		_current_dirty = true
+		# Several materials/55-ms ticks may change in one frame. Rebuild once
+		# from the final levels before rendering, with no work on quiet frames.
+		_refresh_water_current.call_deferred()
 	if is_instance_valid(color_cache):
 		color_cache.sync_parameter("level", _level)
 	if is_instance_valid(contact):
@@ -1330,6 +1357,12 @@ func set_water_offset(mat: int, offset: float) -> Rect2i:
 	if is_instance_valid(details):
 		details.water_changed()
 	return Rect2i(lo, hi - lo + Vector2i.ONE)
+
+
+func _refresh_water_current() -> void:
+	if not _current_dirty: return
+	_current_dirty = false
+	if _current != null: _current.refresh(_level,true)
 
 
 func water_at(x: float, y: float) -> float:
@@ -1426,6 +1459,11 @@ func _process(dt: float) -> void:
 	_waves.advance(dt)
 	_update_wave_parameters()
 	_update_wind_parameters()
+	if _current != null: _current.poll()
+
+
+func _exit_tree() -> void:
+	if _current != null: _current.clear()
 
 
 ## One visual state per terrain-clock sample. Weather/audio may keep ticking
@@ -1474,6 +1512,8 @@ func _update_wave_parameters() -> void:
 	_water_mat.set_shader_parameter("wave_amplitude",_waves.amplitude)
 	_water_mat.set_shader_parameter("wave_gradient",_waves.gradient)
 	_water_mat.set_shader_parameter("wind",_waves.force)
+	if _current != null:
+		_water_mat.set_shader_parameter("river_phase",fposmod(_waves.time_ticks()*WaveState.TICK/0.9,1.0))
 	if _caustics != null and _caustics.admitted > 0:
 		var scroll := WaterCaustics.scroll(_waves.time_ticks()*WaveState.TICK)
 		_land_mat.set_shader_parameter("caustic_scroll",scroll)

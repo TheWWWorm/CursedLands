@@ -151,6 +151,18 @@ also remain active automatically on platforms without the extension.
 
 ## Build
 
+`WaterCurrentKernel` calculates the optional river-current field from immutable
+authored water heights, vertex material owners, terrain heights and current
+material offsets. It has no scene, navigation or graphics state. The script
+oracle in `water_current.gd` remains available with older/absent libraries or
+`-- --ei-script-water-current`. Initial preparation is synchronous; later
+script-fallback flooding calculations use one coalesced worker and publish
+textures on the main thread. Turning the option off or retiring the terrain
+joins pending work. Desktop tests cover numeric parity and that lifecycle;
+they do not establish Android/browser cost. The River currents option defaults
+off. See `tools/tests/water_current.gd`, `water_current_render.gd`, and the
+renderer handoff for acceptance evidence and remaining water work.
+
 Use CMake 3.22+, a C++17 compiler, Python 3, and the MIT-licensed
 [godot-cpp bindings](https://github.com/godotengine/godot-cpp) at commit
 `507ed9d840c01a3c5b2a39af8bb4000bfac30bf5`. The extension targets Godot 4.7.
