@@ -2256,6 +2256,117 @@ hidden/flying/bridge units, water-level changes and option/world teardown before
 rollout. Caustics, the wave-equation field and waterfall shells remain separate
 parts of V4; no part of that additional behavior is implemented by C1.
 
+## V4: optional water contacts and wakes — 9 October
+
+Implemented the first bounded contact/wake adaptation in the canonical checkout.
+The new **Water contact and wakes** option (`gfx_water_interaction`, Remake
+group 15, row 7) defaults **off on every platform**, requires Water and lava
+effects, and is also disabled by the lower automatic graphics tiers. Nothing
+was installed or published. Desktop continuous sunlight and the Android/web
+held fallback remain unchanged.
+
+### Reference and implementation map
+
+The design follows R1 `Source/engine_bridge.cpp:24288` (`build_liquid_ripples`),
+`Source/renderer_liquid.cpp:62/141/190` (game-time stepping and motion/presence
+easing), and `Source/shaders/liquid_surface.hlsl:386/420` (contacts and wakes).
+This Godot implementation is independently authored. It does not port the
+512² compute field or add a new transparent overlay.
+
+- `game/src/game/fx/water_surface.gd`: lazy visual-surface query over the actual
+  `Water_x_y` mesh triangles. Reuses `EIWaterWaves` and authored material/phase
+  data, applies `SetWaterLevel` before wave displacement, and selects the highest
+  containing deformed triangle. The coarse `water_at` grid is only a broad phase.
+  Two-metre buckets and cached deformed vertices bound repeated query work;
+  a 16-sector LRU owns CPU arrays with weak mesh/node identities. Replacement
+  and removal invalidate the entry. Clearing the option/world releases it.
+- `game/src/game/fx/water_interaction.gd`: a `Game` child with explicit pausable
+  processing and priority 3, after visible unit presentation/fog. The existing
+  visible roster supplies candidates. Up to 32 nearby candidates are queried
+  to fill 16 contact slots within 55 m of the camera. Actual posed mesh bounds
+  must cross the surface; script-hidden, fogged, dead, fully submerged and
+  hovering models are rejected. Lava/swamp are excluded. Entries hold weak
+  unit references, ease presence/motion/direction, fade at their last position
+  after leaving water, and reset instead of drawing across teleports.
+- The controller uses scaled process delta, not authority `draw_time` or shader
+  `TIME`. Tree pause, loading, zone holds, movies, disabled travel-map worlds
+  and unregistered LMP worlds hold the history. Remote presentation has its own
+  visual clock. World changes, removed units and option disable clear state.
+- `game/src/game/fx/water_interaction_shader.gd`: bounded contact rim/foam and
+  divergent wake slopes in the existing water program. Their normals feed the
+  existing reflection/glint path. Slopes and foam fade with camera distance;
+  the existing depth/shore/lava/swamp handling remains. No added water draw,
+  vertex displacement, targetable actor, navigation state, save field or packet.
+- `game/src/ei/terrain.gd:1025`, `apply_gfx`, lazily creates a separate opt-in
+  shader and restores the original program on disable. `set_rain_cover` also
+  binds the current roof texture to this variant. `game/src/game/game.gd`
+  constructs the controller; `game_data.gd`, `remake_text.gd` and `gfx_detect.gd`
+  supply the option, translations, apply hook and conservative tier policy.
+
+### Evidence and limits
+
+The complete commands, source/pack/runtime hashes, results, rejected trials and
+process-boundary observations are in
+[water-contacts-2026-10-09.json](validation/water-contacts-2026-10-09.json).
+QA directory:
+`/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v4-water`.
+Final frozen build: `contacts-edge-final`, PCK SHA-256
+`d741cbcd17214a8670896a4da8e34c5a76b6d17c8f9f585794bfaf8f1e4330ab`.
+It uses the existing patched runtime and native library recorded in the receipt;
+no new engine patch is required by these scripts.
+
+`tools/tests/water_surface.gd` compares the CPU query with the actual water
+vertex shader, not another copy of the interpolation formula. On Compatibility,
+Forward+ and Mobile, all 3,844 interior samples in each of four authored-water
+states agree within 2 mm, with no missing coverage: 46,128 covered samples total.
+The states include moving waves, waves disabled and scripted level offsets.
+Reported zero error means below this image capture's quantization, not exact
+real-number equality. Eight synthetic checks cover overlap ownership, holes,
+negative coordinates, offsets, mesh replacement/removal, lava and release.
+
+`tools/tests/water_interaction.gd` uses original human figures on real zone1
+terrain with controlled presented poses. It checks standing/motion/turning,
+entry/exit, high roots, hovering model bounds, full submersion, visibility/death,
+flooding, the 16-contact cap, release, travel/loading/movie/LMP guards and actual
+pause/1×/2× callbacks. A diagonal water-cell boundary remains a candidate for
+the exact deformed-surface query. Final acceptance: **360 assertions**, across
+headless and the three desktop renderer backends. This is not a full gameplay
+route or a real host/guest session.
+
+Settled empty-program and off/on/off captures are exact on all three backends.
+Forced lava/swamp branch controls and rain/SSR controls under open/covered skies
+are also exact. These classification controls do not establish broad artistic
+coverage of whole swamp/lava maps. Fresh-cache Mobile initially changed 34
+pixels (maximum 2/255) in the original water program and 30 (maximum 4/255)
+after enabling the original rain/SSR path. Original/original controls reproduce
+those startup changes; after settling, original/candidate/restored pairs match.
+Do not attribute that transient to a contact regression or weaken the final
+image comparison to hide it. Frozen diagnostic cameras disable physics
+interpolation so CPU rays match the actual rendered camera.
+
+The fixture's optional `--water-timing` mode runs an uncapped off/on/on/off
+comparison at 1280×720, with 18 posed figures and 16 moving contacts. Linux
+RTX 3090 samples showed controller medians around **1.31–1.35 ms** with contacts
+enabled. Complete fixture-frame medians were about 2.0–2.12 ms enabled versus
+0.81–1.40 ms off, depending on backend/pass. Draw counts stayed 325 on
+Compatibility/Mobile and 586 on Forward+. Two-metre buckets reduced the earlier
+stationary crowded update sample from about 2.0 ms to 1.3 ms while preserving
+captures. The first sector build still cost roughly 5–7 ms in these samples.
+These are fixture costs, not gameplay FPS or Android/web predictions. The Mobile
+timing run overlapped another project's Godot process by its end; lower measured
+GPU times under the slower CPU cadence do not establish a GPU optimization.
+
+**Keep the option off by default.** Remaining acceptance includes broader
+creature shapes/poses, large or differently sloped water bodies, sustained
+co-op/play routes, camera distances and actual constrained-device cost. Existing
+authored terrain uses axis-aligned transforms and immutable water meshes;
+in-place editing of the same `ArrayMesh` is outside this cache's current contract.
+The effect is an analytic rim/wake in shading. Wave-equation propagation,
+river-current advection, underwater caustics, refraction changes and waterfall
+shells/spray/mist remain separate, unimplemented V4 work. V2 should extend the
+existing terrain-details manager after the next selected V4 step. The gameplay
+handoff's U45 progression report remains first when starting the gameplay track.
+
 ## Next work in the established order
 
 1. **P1/P2 remaining texture work:** retained outfit pixels and shared native
@@ -2308,4 +2419,6 @@ parts of V4; no part of that additional behavior is implemented by C1.
    ground cover, then the remaining audit features. V1 now has shared production
    storage and an opt-in scenery blend, with the validation and limitations above.
    Resolve cold preparation and finish its lighting/visual acceptance before
-   enabling defaults. No visual effect was silently enabled in this batch.
+   enabling defaults. V4 now has the optional contacts/wakes above; its caustics,
+   wave field, currents and waterfalls remain separate work. Keep it off until
+   broader quality/device acceptance. No visual effect was silently enabled.

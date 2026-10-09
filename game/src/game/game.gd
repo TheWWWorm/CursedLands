@@ -33,6 +33,7 @@ var _sky_shader: ShaderMaterial
 var _sky_cave := false
 const ShadowDiag := preload("res://src/game/shadow_diag.gd")
 const QuestLights := preload("res://src/game/fx/quest_lights.gd")
+const WaterInteraction := preload("res://src/game/fx/water_interaction.gd")
 var _sky_spin := 0.0
 ## Compatibility and the constrained-device fallback: roll the shadow map
 ## with the ground (sun_basis), independently of whether aiming is held.
@@ -94,6 +95,7 @@ func _ready() -> void:
 	add_child(ContactShadows.new(self))   # option gfx_contact_shadows
 	add_child(LocalLighting.new(self))   # firelight and lava lighting, bounded shadow budget
 	add_child(SurfaceWeather.new(self))   # rain wetness, roof cover and water ripples
+	add_child(WaterInteraction.new(self)) # optional contacts/wakes on the existing water pass
 	cursor = GameCursor.new()
 	add_child(cursor)
 	add_child(UnitFog.new(self))   # units out of the party's range are not drawn (online)

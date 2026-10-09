@@ -51,6 +51,8 @@ static func tl(list: Array) -> Array:
 
 ## English → [Russian, German].
 const TEXTS := {
+	"Water contact and wakes": ["Следы и пена на воде", "Wasserkontakt und Kielwasser"],
+	"Ripples and contact foam around visible creatures wading in water. Requires Water and lava effects. Off by default.": ["Рябь и пена вокруг видимых существ, идущих по воде. Требует эффектов воды и лавы. По умолчанию выключено.", "Wellen und Kontaktschaum um sichtbare Kreaturen im Wasser. Benötigt Wasser- und Lavaeffekte. Standardmäßig aus."],
 	"Cast on self": ["На себя", "Auf sich selbst wirken"],
 	"Previous page": ["Предыдущая", "Vorherige Seite"],
 	"Next page": ["Следующая", "Nächste Seite"],

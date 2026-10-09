@@ -713,6 +713,8 @@ var color_cache: TerrainColorCache
 static var _land_shader: Shader
 static var _water_shader: Shader
 static var _water_fx_shader: Shader
+static var _water_interaction_shader: Shader
+const WaterInteractionShader = preload("res://src/game/fx/water_interaction_shader.gd")
 
 ## The .mp format has generic liquid materials, not ocean/river/lake tags.
 ## Only confirmed sea materials get breaking surf. On the starting map,
@@ -1025,6 +1027,10 @@ func apply_gfx() -> void:
 		return
 	var fx := GameData.option("gfx_water") != 0
 	_water_mat.shader = _water_fx_shader if fx else _water_shader
+	if fx and Gfx.on("gfx_water_interaction"):
+		if _water_interaction_shader == null:
+			_water_interaction_shader = Gfx.make_shader(WaterInteractionShader.source(WATER_FX_SHADER),true,true)
+		_water_mat.shader = _water_interaction_shader
 	_water_mat.set_shader_parameter("atlases", _atlases)
 	_water_mat.set_shader_parameter("level", _level)
 	_land_mat.set_shader_parameter("level", _level)
@@ -1111,7 +1117,7 @@ func set_rain_cover(image: Image) -> void:
 		_land_mat.set_shader_parameter("rain_cover", _rain_cover)
 	if is_instance_valid(color_cache):
 		color_cache.sync_parameter("rain_cover", _rain_cover)
-	if _water_mat and _water_mat.shader == _water_fx_shader:
+	if _water_mat and _water_mat.shader in [_water_fx_shader,_water_interaction_shader]:
 		_water_mat.set_shader_parameter("rain_cover", _rain_cover)
 	if is_instance_valid(details) and is_instance_valid(details.soft_ground):
 		details.soft_ground.refresh_rain_cover()
