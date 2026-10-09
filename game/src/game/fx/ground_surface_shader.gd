@@ -173,6 +173,7 @@ vec3 ground_sample(ivec2 cell, vec2 p, vec2 dx, vec2 dy, out vec4 traits) {
 	return c;
 }
 #endif
+// END_GROUND_TILE_SAMPLER
 
 """
 

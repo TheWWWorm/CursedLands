@@ -1,0 +1,759 @@
+{
+  "date": "2026-10-09",
+  "feature": "V6 opt-in authored natural material transitions",
+  "status": "validated locally; existing default preserved; not published or installed",
+  "source_reference": {
+    "repository": "/home/llm2x/Documents/evil-islands-owned-renderer",
+    "revision": "0092dc6e1d7c4aab3f74644a79e9bfca11ecf293",
+    "files": [
+      "Source/terrain_tile_blend.h",
+      "Source/shaders/terrain_tile_blend.hlsl",
+      "Source/terrain_tile_map_families.h",
+      "Source/terrain_tile_presets.h",
+      "Source/native_shader.h",
+      "Tests/terrain_tile_blend_regression.cpp"
+    ],
+    "metadata_credit": "Pinned terrain_tile_presets.h credits ei-mapper-endurance af24d45 editor family metadata.",
+    "adaptation": "Two-family authored corner field, exact own-family plain donors, bounded domain warp and texture-brightness mixing. No R1 majority votes, inferred material labels or missing-donor borrowing."
+  },
+  "implementation": {
+    "setting": {
+      "key": "gfx_terrain",
+      "group": 22,
+      "row": 0,
+      "choices": [
+        "Original",
+        "Detailed",
+        "Natural transitions"
+      ],
+      "values": [
+        0,
+        1,
+        2
+      ],
+      "default": 1,
+      "automatic_presets": "retain existing0/1 values;2 requires explicit selection",
+      "languages": [
+        "en",
+        "ru",
+        "de"
+      ],
+      "existing_key_persistence": true
+    },
+    "admission": "Exact original512x512 RGBA8 atlas identity, nonzero authored corners naming one/two supported natural families, allowed original ground type, consistent shared rotated corners, and a present plain tile from each exact family. Reconstruct only mixed pairs. Reject conflicting, unknown, liquid/bed, path/dirt/paving, three-family, unsupported packed flags and invalid/folded geometry.",
+    "sampling": "Original padded sampler and material textures; mirrored continuous donor coordinates, at most0.28tile warp per axis, bilinear authored ownership, restrained texture-brightness/noise edge mixing, original material endpoints, and a0.15tile untouched band next to unsupported art (wider than painted-relief gradient taps).",
+    "integration": "Same wrapper and texture for land, rigid scenery contact, installed soft-ground receivers and native colour-cache live material. Native immutable bake unchanged. Explicit source/variant refresh handles1-to2 while the global boolean terrain signature stays true. Contact coarse mean uses separate traits so it cannot overwrite the primary sample.",
+    "bounds": "One RGBAF tile field, maximum262144 tiles /4MiB GPU pixels plus matching CPU rows; no new geometry, draw submissions, navigation, collision, simulation, save or network behavior. World helper allocated only in mode2 on a rendered backend; no field texture when no transition is admitted.",
+    "clock": "Static field and texture; no TIME or wall-clock animation. Fixtures freeze Engine.time_scale and terrain process. Disable releases helper and material texture references."
+  },
+  "metadata": {
+    "families": 43,
+    "identities": 196,
+    "ambiguous_slots_omitted": 6,
+    "exact_reproduction": true,
+    "generated_sha256": "752a5f38b3bdc1c92acdf5eb859262139f0ffdcfac81426f06f8b17e75f4086e",
+    "generator": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/benchmarks/terrain_transition_metadata.py",
+      "sha256": "b9774c2cbdab571b00e9615c77889057d5d451869722ccf1ac16bbad081af9b2"
+    },
+    "source_census": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cover-families-census-base/cover-family-census.json",
+      "sha256": "5f21c1df2ef0450ccf64be8f4fac87e6b7a1b431e4f5828c3782add7c04cf8ed"
+    }
+  },
+  "build": {
+    "base_revision": "cc78028 (production57e49cb)",
+    "isolated_stage": "/home/llm2x/Documents/EI/local/scratchpad/terrain-transitions-20261009/accepted-source",
+    "accepted_source_matches_frozen_export": true,
+    "owned_source_sha256": {
+      "game/src/ei/terrain.gd": "4b9fe3591819be7bfbea89caf579e33ee29e727d833ebfd58057270aa1153184",
+      "game/src/game/fx/ground_contact.gd": "86637f1625d59ad91140645ac9f2cfae610f4070fd4ca70c21c65a479bd2dfbc",
+      "game/src/game/fx/ground_contact_shader.gd": "41c42bba60547606920370b9abbade0c2e31ff1c00ffed56ea37b5b938b10f6e",
+      "game/src/game/fx/ground_surface_data.gd": "d5b291567a3a97b16fa679b5c8b0935ad2d1dc56b41e00ab5528cbceca469e80",
+      "game/src/game/fx/ground_surface_shader.gd": "2b386991ff213a41d1df8589d0f347ca17ec6932dfde03f9d1b30f61032f347d",
+      "game/src/game/fx/terrain_color_cache.gd": "d4f3c4054bc10900cf6886a3b79bea7e3fa1c7c74e8534dcfb10f8028726977e",
+      "game/src/game/fx/terrain_transition.gd": "0aa6d48bd994a50f77937d4ebc16dbec63fc36a5315a330e065663472ba19be4",
+      "game/src/game/fx/terrain_transition_shader.gd": "a310f2bf4a5e851c3a886a9b11fb4534061ec5be5739579fbbfd42f1b7fa72d2",
+      "game/src/game/fx/terrain_transition_tiles.gd": "752a5f38b3bdc1c92acdf5eb859262139f0ffdcfac81426f06f8b17e75f4086e"
+    },
+    "exports": {
+      "build-01": {
+        "manifest": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-transitions-20261009/build-01/export.json",
+          "sha256": "433954b3e2492fa6473e36c6c5fe27ff182bac8b9f56cec9df173eef04e7f520"
+        },
+        "return_code": 0,
+        "errors": [],
+        "source_unchanged_during_export": true,
+        "sha256": {
+          "CursedLands.x86_64": "769dd027c0b444caca0d5fbbb6014eda80970e991e9f32fdb1f86ec385d20c3e",
+          "CursedLands.pck": "895974c0c3aac8f89d4e18e61676ca6736f685c6ea1b1a731b6fa444beda5d75",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        }
+      },
+      "build-02": {
+        "manifest": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-transitions-20261009/build-02/export.json",
+          "sha256": "af087bd51ec83797651be2684987e5d7005c7d0e5c21afcff737f010cda6875c"
+        },
+        "return_code": 0,
+        "errors": [],
+        "source_unchanged_during_export": true,
+        "sha256": {
+          "CursedLands.x86_64": "769dd027c0b444caca0d5fbbb6014eda80970e991e9f32fdb1f86ec385d20c3e",
+          "CursedLands.pck": "c5371ae765d2beebc490c992005f34150e9b83960513bc2296bf11e32ec27e95",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        }
+      }
+    },
+    "notes": "Build-02 adds only the contact mean-traits preservation to build-01. Prototype has no contact object, so its baseline and natural terrain images remain applicable. Cloud volume WIP was not included; cloud0/legacy1 use the previously accepted implementation. Shared settings files also contained parent cloud choice metadata, whose unrelated hunks are excluded from this V6 commit. Original assets, installed builds and saves were untouched."
+  },
+  "accepted_checks": 624,
+  "accepted_runs": [
+    {
+      "name": "analytic-final-base",
+      "build": "build-02",
+      "checks": 75,
+      "failures": 0,
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-transitions-20261009/analytic-final-base/run.json",
+        "sha256": "ae4018b0b9fabf7d999890e3ab41be0a1abb0de03beacd1fecff00b0e96f98e0"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-transitions-20261009/analytic-final-base/terrain-transitions.json",
+        "sha256": "0415ded795e64122254e1df10c4f4ae8d94247aa217c88567a3ebd10e1e128e3"
+      },
+      "test_sha256": "b8f882f07bc6b04659d05cd020d4859ccc4ac2020cb09fb34f82c7fb52472be1",
+      "captures": 0,
+      "rows": [
+        {
+          "admitted": 3753,
+          "build_us": 100859,
+          "bytes": 196608,
+          "classified": 3801,
+          "conflicting": 43,
+          "donors": {
+            "2": 5,
+            "3": 2,
+            "6": 470,
+            "38": 48
+          },
+          "map": "zone1",
+          "missing_donor": 0,
+          "rejected_geometry": 5
+        },
+        {
+          "admitted": 22147,
+          "build_us": 557395,
+          "bytes": 786432,
+          "classified": 22353,
+          "conflicting": 156,
+          "donors": {
+            "10": 159,
+            "11": 254,
+            "12": 148,
+            "26": 5,
+            "27": 0,
+            "34": 3
+          },
+          "map": "zone11",
+          "missing_donor": 49,
+          "rejected_geometry": 1
+        },
+        {
+          "admitted": 9618,
+          "build_us": 217972,
+          "bytes": 491520,
+          "classified": 9674,
+          "conflicting": 56,
+          "donors": {
+            "17": 5,
+            "18": 10,
+            "22": 64,
+            "25": 11,
+            "40": 7,
+            "43": 4
+          },
+          "map": "zone15",
+          "missing_donor": 0,
+          "rejected_geometry": 0
+        }
+      ]
+    },
+    {
+      "name": "analytic-final-astral",
+      "build": "build-02",
+      "checks": 69,
+      "failures": 0,
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-transitions-20261009/analytic-final-astral/run.json",
+        "sha256": "9bbdd510074c549d8d77195ce54c033c49080675dad8e3b2ffc97eb9fcc6e1af"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-transitions-20261009/analytic-final-astral/terrain-transitions.json",
+        "sha256": "830b5665c7ea12b881d340d6495d9a369220abd2cfa838ca0f7fc3e6acbfb104"
+      },
+      "test_sha256": "b8f882f07bc6b04659d05cd020d4859ccc4ac2020cb09fb34f82c7fb52472be1",
+      "captures": 0,
+      "rows": [
+        {
+          "admitted": 49,
+          "build_us": 43537,
+          "bytes": 98304,
+          "classified": 1869,
+          "conflicting": 1721,
+          "donors": {
+            "23": 218,
+            "29": 28,
+            "30": 1
+          },
+          "map": "zone26",
+          "missing_donor": 99,
+          "rejected_geometry": 0
+        },
+        {
+          "admitted": 0,
+          "build_us": 32208,
+          "bytes": 49152,
+          "classified": 0,
+          "conflicting": 0,
+          "donors": {
+            "16": 57
+          },
+          "map": "zone6",
+          "missing_donor": 0,
+          "rejected_geometry": 0
+        }
+      ]
+    },
+    {
+      "name": "prototype-gl-01",
+      "build": "build-01",
+      "checks": 33,
+      "failures": 0,
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-transitions-20261009/prototype-gl-01/run.json",
+        "sha256": "f2a4803abd1538cb0f83352cd3d76c10687a44b43e142ad05dd763558acf7e4f"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-transitions-20261009/prototype-gl-01/terrain-transitions-render.json",
+        "sha256": "bdd66941154ef267d9251a675bf7e833c70a1bdd2ab5af6dba4c4da79ecaa469"
+      },
+      "test_sha256": "64e831347fcff828ec5e8e4843b577f2d6cfebdd1c417379970cb4aa314ecd42",
+      "captures": 18,
+      "rows": [
+        {
+          "cached_sectors": 0,
+          "difference": {
+            "changed_pixels": 126758,
+            "peak_byte_delta": 118,
+            "sum": 2301750
+          },
+          "focus": "(241.0, 12.50535, -29.0)",
+          "map": "zone1",
+          "renderer": "gl_compatibility",
+          "row": "(6.0, 49.0, 131082.0, 2434.0)",
+          "tile": "(120, 14)"
+        },
+        {
+          "cached_sectors": 0,
+          "difference": {
+            "changed_pixels": 122073,
+            "peak_byte_delta": 141,
+            "sum": 1874196
+          },
+          "focus": "(139.0, 20.04675, -175.0)",
+          "map": "zone11",
+          "renderer": "gl_compatibility",
+          "row": "(6.0, 4.0, 167948.0, 2202.0)",
+          "tile": "(69, 87)"
+        },
+        {
+          "cached_sectors": 0,
+          "difference": {
+            "changed_pixels": 148798,
+            "peak_byte_delta": 71,
+            "sum": 949038
+          },
+          "focus": "(111.0, 16.60937, -109.0)",
+          "map": "zone15",
+          "renderer": "gl_compatibility",
+          "row": "(6.0, 11.0, 208906.0, 1169.0)",
+          "tile": "(55, 54)"
+        }
+      ]
+    },
+    {
+      "name": "path-gl-final",
+      "build": "build-02",
+      "checks": 13,
+      "failures": 0,
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-transitions-20261009/path-gl-final/run.json",
+        "sha256": "c3eca1d81a34074ddf31865396f25b025316bb2170a20141bb3a1e55e1047212"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-transitions-20261009/path-gl-final/terrain-transitions-render.json",
+        "sha256": "140ccb41a450512bfb48e970ceb60407f9d51dd312baf4d34f838ed9addf79b8"
+      },
+      "test_sha256": "c2cc399d8f9a56f69b997b66f33bcc6e5e990a56368bc7f8857dd6520c879b33",
+      "captures": 7,
+      "rows": [
+        {
+          "cached_sectors": 0,
+          "difference": {
+            "changed_pixels": 79574,
+            "peak_byte_delta": 126,
+            "sum": 1242423
+          },
+          "focus": "(53.0, 11.81966, -137.0)",
+          "label": "zone1-path",
+          "map": "zone1",
+          "path_pixels": 19000,
+          "renderer": "gl_compatibility",
+          "row": "(0.0, 0.0, 0.0, 0.0)",
+          "tile": "(26, 68)"
+        }
+      ]
+    },
+    {
+      "name": "contact-soft-gl-final",
+      "build": "build-02",
+      "checks": 45,
+      "failures": 0,
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-transitions-20261009/contact-soft-gl-final/run.json",
+        "sha256": "a7853473d3c25cc51e492caf9798227d99caa562a7c4704f10ee3be4be956567"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-transitions-20261009/contact-soft-gl-final/terrain-transitions-render.json",
+        "sha256": "30d86429d00d64d26b6819277b7dd7fd6a7ae773395eab6f299458f8488b065a"
+      },
+      "test_sha256": "c2cc399d8f9a56f69b997b66f33bcc6e5e990a56368bc7f8857dd6520c879b33",
+      "captures": 18,
+      "rows": [
+        {
+          "cached_sectors": 0,
+          "difference": {
+            "changed_pixels": 125217,
+            "peak_byte_delta": 118,
+            "sum": 2273861
+          },
+          "focus": "(241.0, 12.50535, -29.0)",
+          "label": "zone1",
+          "map": "zone1",
+          "path_pixels": 0,
+          "renderer": "gl_compatibility",
+          "row": "(6.0, 49.0, 131082.0, 2434.0)",
+          "tile": "(120, 14)"
+        },
+        {
+          "cached_sectors": 0,
+          "difference": {
+            "changed_pixels": 119825,
+            "peak_byte_delta": 138,
+            "sum": 1831246
+          },
+          "focus": "(139.0, 20.04675, -175.0)",
+          "label": "zone11",
+          "map": "zone11",
+          "path_pixels": 0,
+          "renderer": "gl_compatibility",
+          "row": "(6.0, 4.0, 167948.0, 2202.0)",
+          "tile": "(69, 87)"
+        },
+        {
+          "cached_sectors": 0,
+          "difference": {
+            "changed_pixels": 147111,
+            "peak_byte_delta": 72,
+            "sum": 937843
+          },
+          "focus": "(111.0, 16.60937, -109.0)",
+          "label": "zone15",
+          "map": "zone15",
+          "path_pixels": 0,
+          "renderer": "gl_compatibility",
+          "row": "(6.0, 11.0, 208906.0, 1169.0)",
+          "tile": "(55, 54)"
+        }
+      ]
+    },
+    {
+      "name": "cached-gl-final",
+      "build": "build-02",
+      "checks": 246,
+      "failures": 0,
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-transitions-20261009/cached-gl-final/run.json",
+        "sha256": "c98d53db14d8d58b966007748bf557fa0ada046dfcb9ec21e7287a3fecf07e99"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-transitions-20261009/cached-gl-final/terrain-transitions-render.json",
+        "sha256": "35a746d1f3e25ed202210400e9f5df7fabdf13d1bd8667acc5ba5fc673809eaf"
+      },
+      "test_sha256": "c2cc399d8f9a56f69b997b66f33bcc6e5e990a56368bc7f8857dd6520c879b33",
+      "captures": 18,
+      "rows": [
+        {
+          "cached_sectors": 33,
+          "difference": {
+            "changed_pixels": 125175,
+            "peak_byte_delta": 118,
+            "sum": 2273344
+          },
+          "focus": "(241.0, 12.50535, -29.0)",
+          "label": "zone1",
+          "map": "zone1",
+          "path_pixels": 0,
+          "renderer": "gl_compatibility",
+          "row": "(6.0, 49.0, 131082.0, 2434.0)",
+          "tile": "(120, 14)"
+        },
+        {
+          "cached_sectors": 33,
+          "difference": {
+            "changed_pixels": 120297,
+            "peak_byte_delta": 141,
+            "sum": 1832114
+          },
+          "focus": "(139.0, 20.04675, -175.0)",
+          "label": "zone11",
+          "map": "zone11",
+          "path_pixels": 0,
+          "renderer": "gl_compatibility",
+          "row": "(6.0, 4.0, 167948.0, 2202.0)",
+          "tile": "(69, 87)"
+        },
+        {
+          "cached_sectors": 33,
+          "difference": {
+            "changed_pixels": 147039,
+            "peak_byte_delta": 71,
+            "sum": 937771
+          },
+          "focus": "(111.0, 16.60937, -109.0)",
+          "label": "zone15",
+          "map": "zone15",
+          "path_pixels": 0,
+          "renderer": "gl_compatibility",
+          "row": "(6.0, 11.0, 208906.0, 1169.0)",
+          "tile": "(55, 54)"
+        }
+      ]
+    },
+    {
+      "name": "contact-mobile-final",
+      "build": "build-02",
+      "checks": 45,
+      "failures": 0,
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-transitions-20261009/contact-mobile-final/run.json",
+        "sha256": "47f11e7a36c2c21999f342f49bb132efa1c2e4e29a17aa0da3569c958f671e2e"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-transitions-20261009/contact-mobile-final/terrain-transitions-render.json",
+        "sha256": "2a07281a7eb5984a9b8ba2c75ad5fade4e1f692718c38102886117250970be9f"
+      },
+      "test_sha256": "c2cc399d8f9a56f69b997b66f33bcc6e5e990a56368bc7f8857dd6520c879b33",
+      "captures": 18,
+      "rows": [
+        {
+          "cached_sectors": 0,
+          "difference": {
+            "changed_pixels": 120313,
+            "peak_byte_delta": 118,
+            "sum": 2606102
+          },
+          "focus": "(241.0, 12.50535, -29.0)",
+          "label": "zone1",
+          "map": "zone1",
+          "path_pixels": 0,
+          "renderer": "mobile",
+          "row": "(6.0, 49.0, 131082.0, 2434.0)",
+          "tile": "(120, 14)"
+        },
+        {
+          "cached_sectors": 0,
+          "difference": {
+            "changed_pixels": 120721,
+            "peak_byte_delta": 125,
+            "sum": 1758574
+          },
+          "focus": "(139.0, 20.04675, -175.0)",
+          "label": "zone11",
+          "map": "zone11",
+          "path_pixels": 0,
+          "renderer": "mobile",
+          "row": "(6.0, 4.0, 167948.0, 2202.0)",
+          "tile": "(69, 87)"
+        },
+        {
+          "cached_sectors": 0,
+          "difference": {
+            "changed_pixels": 146032,
+            "peak_byte_delta": 72,
+            "sum": 972087
+          },
+          "focus": "(111.0, 16.60937, -109.0)",
+          "label": "zone15",
+          "map": "zone15",
+          "path_pixels": 0,
+          "renderer": "mobile",
+          "row": "(6.0, 11.0, 208906.0, 1169.0)",
+          "tile": "(55, 54)"
+        }
+      ]
+    },
+    {
+      "name": "contact-forward-final",
+      "build": "build-02",
+      "checks": 45,
+      "failures": 0,
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-transitions-20261009/contact-forward-final/run.json",
+        "sha256": "93883b3033145b6638f3077793435601b0baa434c260e0e93a885c66e7960bef"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-transitions-20261009/contact-forward-final/terrain-transitions-render.json",
+        "sha256": "5db015baba42c2d52e45e94e1581fc679ed644f653e7db0977b1ec34f1acef03"
+      },
+      "test_sha256": "9a84e29c8ba5dae4394c6ba6f74e35348dab1c03d76f419388c0f47915fa6fca",
+      "captures": 18,
+      "rows": [
+        {
+          "cached_sectors": 0,
+          "deformed_sectors": 0,
+          "difference": {
+            "changed_pixels": 125497,
+            "peak_byte_delta": 115,
+            "sum": 2586118
+          },
+          "focus": "(241.0, 12.50535, -29.0)",
+          "label": "zone1",
+          "map": "zone1",
+          "path_pixels": 0,
+          "renderer": "forward_plus",
+          "row": "(6.0, 49.0, 131082.0, 2434.0)",
+          "tile": "(120, 14)"
+        },
+        {
+          "cached_sectors": 0,
+          "deformed_sectors": 0,
+          "difference": {
+            "changed_pixels": 120965,
+            "peak_byte_delta": 125,
+            "sum": 1756363
+          },
+          "focus": "(139.0, 20.04675, -175.0)",
+          "label": "zone11",
+          "map": "zone11",
+          "path_pixels": 0,
+          "renderer": "forward_plus",
+          "row": "(6.0, 4.0, 167948.0, 2202.0)",
+          "tile": "(69, 87)"
+        },
+        {
+          "cached_sectors": 0,
+          "deformed_sectors": 0,
+          "difference": {
+            "changed_pixels": 146382,
+            "peak_byte_delta": 71,
+            "sum": 967557
+          },
+          "focus": "(111.0, 16.60937, -109.0)",
+          "label": "zone15",
+          "map": "zone15",
+          "path_pixels": 0,
+          "renderer": "forward_plus",
+          "row": "(6.0, 11.0, 208906.0, 1169.0)",
+          "tile": "(55, 54)"
+        }
+      ]
+    },
+    {
+      "name": "tracks-gl-final",
+      "build": "build-02",
+      "checks": 36,
+      "failures": 0,
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-transitions-20261009/tracks-gl-final/run.json",
+        "sha256": "6755c6a4888d7aa6c2d2521153499cbc348895dd72d752e813ca0c0f369bf6b6"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-transitions-20261009/tracks-gl-final/terrain-transitions-render.json",
+        "sha256": "291b2b1e6e911dd92adce0f46c47a2687f08b5e78c3f62afd3aabde028b3a12e"
+      },
+      "test_sha256": "9a84e29c8ba5dae4394c6ba6f74e35348dab1c03d76f419388c0f47915fa6fca",
+      "captures": 12,
+      "rows": [
+        {
+          "cached_sectors": 0,
+          "deformed_sectors": 1,
+          "difference": {
+            "changed_pixels": 119809,
+            "peak_byte_delta": 138,
+            "sum": 1831062
+          },
+          "focus": "(139.0, 20.04675, -175.0)",
+          "label": "zone11",
+          "map": "zone11",
+          "path_pixels": 0,
+          "renderer": "gl_compatibility",
+          "row": "(6.0, 4.0, 167948.0, 2202.0)",
+          "tile": "(69, 87)"
+        },
+        {
+          "cached_sectors": 0,
+          "deformed_sectors": 1,
+          "difference": {
+            "changed_pixels": 147111,
+            "peak_byte_delta": 72,
+            "sum": 937856
+          },
+          "focus": "(111.0, 16.60937, -109.0)",
+          "label": "zone15",
+          "map": "zone15",
+          "path_pixels": 0,
+          "renderer": "gl_compatibility",
+          "row": "(6.0, 11.0, 208906.0, 1169.0)",
+          "tile": "(55, 54)"
+        }
+      ]
+    },
+    {
+      "name": "composed-gl-final",
+      "build": "build-02",
+      "checks": 17,
+      "failures": 0,
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-transitions-20261009/composed-gl-final/run.json",
+        "sha256": "7e353844ba1d3e33e52658dbde9103ab4b8c1694c7d817caa7f000ce3207d229"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-transitions-20261009/composed-gl-final/terrain-transitions-render.json",
+        "sha256": "b09e60d17720f90780a7f54d47e29525f9ff6adec3f25f67b31e36dc481619f1"
+      },
+      "test_sha256": "9a84e29c8ba5dae4394c6ba6f74e35348dab1c03d76f419388c0f47915fa6fca",
+      "captures": 6,
+      "rows": [
+        {
+          "cached_sectors": 0,
+          "deformed_sectors": 0,
+          "difference": {
+            "changed_pixels": 120369,
+            "peak_byte_delta": 131,
+            "sum": 1817770
+          },
+          "focus": "(139.0, 20.04675, -175.0)",
+          "label": "zone11",
+          "map": "zone11",
+          "path_pixels": 0,
+          "renderer": "gl_compatibility",
+          "row": "(6.0, 4.0, 167948.0, 2202.0)",
+          "tile": "(69, 87)"
+        }
+      ]
+    }
+  ],
+  "independent_image_checks": 102,
+  "independent_image_audit": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-transitions-20261009/transitions-image-audit.json",
+    "sha256": "307ad381ace0713ad8f36d25ea56fff9cabff7ccfe3c226f7ff05607c16c60e7"
+  },
+  "baseline_image_audit": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-transitions-20261009/baseline-image-audit.json",
+    "sha256": "c272a149f7fd0b0b6afa4937c6598655375ff44810cc8d85f9aa202365c965b1"
+  },
+  "baseline_captures": [
+    {
+      "run": "baseline-01",
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-transitions-20261009/baseline-01/run.json",
+        "sha256": "4e42fe383ee3b6de804faede028a61a9794b68372a8372a0890457887aadb2b1"
+      },
+      "pack_sha256": "ed5456d9423a8934d886a214d8b66234de4be0280ca38d36bc8b40c4b2a881de",
+      "captures": 3
+    },
+    {
+      "run": "baseline-original-02",
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-transitions-20261009/baseline-original-02/run.json",
+        "sha256": "b14eed569bc0e971697cf81c99e37802a9c91c2a41cfa82c8c6f9d2e7ecc2b78"
+      },
+      "pack_sha256": "ed5456d9423a8934d886a214d8b66234de4be0280ca38d36bc8b40c4b2a881de",
+      "captures": 3
+    }
+  ],
+  "accepted_capture_count": 121,
+  "visual_review": {
+    "before_after_scenes": {
+      "zone1": {
+        "tile": [
+          120,
+          14
+        ],
+        "pair": [
+          "Grass / Common",
+          "Stone / Lime"
+        ]
+      },
+      "zone11": {
+        "tile": [
+          69,
+          87
+        ],
+        "pair": [
+          "Snow / Common",
+          "Stone / Gray"
+        ]
+      },
+      "zone15": {
+        "tile": [
+          55,
+          54
+        ],
+        "pair": [
+          "Sand / Common grayish",
+          "Sand / Dark"
+        ]
+      }
+    },
+    "result": "Zone15 light/dark sand loses repeated square fronts. Zone11 snow/stone forms softer irregular edges; zone1 retains recognizable limestone artwork. Modes0/1 match the untouched pack exactly in all three views. Dedicated original ground-type mask confirms19000 dirt/path/paving pixels unchanged while79574 nearby pixels change.",
+    "scope": "Terrain-only original-map scenes and diagnostic rigid boxes; actual installed footprint receiver and cached variants inspected. These are not a full playthrough or physical-device benchmark."
+  },
+  "test_sources": {
+    "tools/tests/terrain_transitions.gd": "b8f882f07bc6b04659d05cd020d4859ccc4ac2020cb09fb34f82c7fb52472be1",
+    "tools/tests/terrain_transitions_render.gd": "9a84e29c8ba5dae4394c6ba6f74e35348dab1c03d76f419388c0f47915fa6fca",
+    "tools/tests/renderer_png_controls.py": "d4de8a0a94b958440a1f5f619bb36f048504905a652273b125d191a3c339d66f"
+  },
+  "image_auditor_regression": {
+    "waterfall": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-transitions-20261009/auditor-regression/waterfalls-image-audit.json",
+      "sha256": "ab3ec34f433ee1b6163912edcf307984323ec0beb469ccbba1836efb02a64dc4",
+      "checks": 13,
+      "failures": 0
+    },
+    "cliff": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-transitions-20261009/auditor-regression/cliffs-image-audit.json",
+      "sha256": "ff83e0ed1382628d768422d095955d2d422e838a1d421825fbf5ae57b240a827",
+      "checks": 15,
+      "failures": 0
+    },
+    "note": "Read existing PNGs through a new private audit root; prior evidence manifests were not overwritten."
+  },
+  "fixture_repairs": {
+    "options-width-01": "Headless viewport had not been sized/settled: all existing and new labels falsely failed width checks. Set800x600 and await3 frames; all widths pass. No production change.",
+    "baseline-original-01": "Hardened runtime rejects --main-pack overrides before startup. Repeated successfully from a private sibling runtime folder with the untouched PCK; no production change.",
+    "soft_layer_vs_tracks": "Initial soft fixture covered the loose layer only. Added real add_step calls and joined native mesh jobs; final tracks run verifies installed dense snow/sand receivers, exact restore and released textures."
+  },
+  "limitations": [
+    "Two-family natural transitions only; three/four-family junctions and ground/dirt/path families remain original.",
+    "Unrecognized or conflicting metadata is not inferred; LiA zone26 intentionally admits only49 of1869 candidate pairs, zone6 remains neutral.",
+    "No full R1 stochastic anti-repetition, transition side projection or geometry rounding.",
+    "Original atlas fingerprinting does not add animated-tile interpretation; unsupported artwork/dimensions remain unchanged.",
+    "Three desktop renderer backends on NVIDIA RTX3090 are functional evidence, not Android/Web/handheld cost or thermal acceptance.",
+    "One GL composed receiver scene; broader feature matrices and long routes remain parent integration work.",
+    "Base/LiA headless checks cover five chosen maps; do not conflate with the earlier62-map cliff census."
+  ]
+}

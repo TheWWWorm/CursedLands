@@ -92,7 +92,7 @@ const OPTIONS := [
 	["gfx_sky", 1, 2, 13, 4, 1], ["gfx_far_view", 1, 2, 13, 5, 1],
 	["q_aniso", 1, 5, 13, 6, 4],
 	# Terrain and vegetation (group 22): ground detail, cover and interaction.
-	["gfx_terrain", 1, 2, 22, 0, 1], ["gfx_wind", 1, 2, 22, 1, 1],
+	["gfx_terrain", 1, 3, 22, 0, 1], ["gfx_wind", 1, 2, 22, 1, 1],
 	["gfx_grass", 1, 2, 22, 2, 1], ["gfx_biome_cover", 1, 2, 22, 3, 0],
 	["gfx_vegetation_interaction", 1, 2, 22, 4, 0], ["gfx_soft_ground", 1, 2, 22, 5, 1],
 	# Opt in until first-use compilation and wider device costs are resolved.
@@ -213,6 +213,7 @@ const DISPLAY_CHOICES := {
 	"q_shadows": ["Low", "Medium", "High", "Ultra"],
 	"q_aniso": ["Off", "2×", "4×", "8×", "16×"],
 	"gfx_water_reflections": ["Off", "Natural", "Mirror"],
+	"gfx_terrain": ["Original", "Detailed", "Natural transitions"],
 	"coop_scale": ["Off", "Light", "Normal", "Strong"],
 	"enemy_hp_bars": ["Off", "Auto", "Always"],
 	"pad_glyphs": ["Automatic", "Xbox", "PlayStation", "Nintendo", "Steam Deck"],
@@ -301,7 +302,7 @@ const REMAKE_OPTIONS := {
 	"gfx_clouds": ["Moving clouds and shadows", "Wind-driven clouds and soft sunlight shadows, synchronized with game time and weather. Off by default."],
 	"gfx_wind": ["Wind in foliage", "Trees and bushes sway in the wind."],
 	"gfx_volumetric": ["Volumetric fog / light shafts", "Light mist lit by the sun (shafts through the trees at dawn and dusk) and the torches."],
-	"gfx_terrain": ["Terrain detail", "Sharper original ground textures with fewer tile seams; relief follows painted rock and path patterns, with softer sand and snow, fine grass and damp banks."],
+	"gfx_terrain": ["Terrain detail", "Detailed keeps the sharper original ground textures and painted relief. Natural transitions also blends verified snow, grass, sand and rock families with irregular edges. Paths, unknown artwork and geometry stay unchanged."],
 	"gfx_grass": ["Grass blades", "Adds grass blades on green ground, with wind and shadows when shadow quality is enabled. Automatic settings enable this on capable desktops; off by default on Android."],
 	"gfx_vegetation_interaction": ["Grass interaction", "Visible creatures part grass and flowers, which gradually spring back. Requires Grass blades or Ground cover. Off by default."],
 	"gfx_biome_cover": ["Ground cover", "Meadow flowers, dry tufts, tree litter and small stones on suitable ground. Off by default."],

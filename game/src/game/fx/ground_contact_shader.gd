@@ -138,7 +138,8 @@ ContactResult contact_prepare(vec3 world,vec3 wn,float band,float distance_to_ey
 	vec2 dy=jacobian*dFdy(folded)*0.5;
 	vec4 traits;
 	vec3 albedo=ground_sample(tile,uv-vec2(tile),dx,dy,traits);
-	vec3 mean=ground_sample(tile,uv-vec2(tile),dx*4.0,dy*4.0,traits);
+	vec4 mean_traits;
+	vec3 mean=ground_sample(tile,uv-vec2(tile),dx*4.0,dy*4.0,mean_traits);
 	float grass=clamp((mean.g-max(mean.r,mean.b))*8.0/max(mean.g,0.05),0.0,1.0);
 	vec2 blend=contact_weight(rise,band,wn.y,contact_noise(folded),grass,dot(albedo-mean,vec3(0.2126,0.7152,0.0722)));
 	if (detail>0.0) {

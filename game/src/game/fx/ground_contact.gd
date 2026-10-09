@@ -10,6 +10,7 @@ var _variants := {} # base material -> {extent: ShaderMaterial}
 var _shaders := {} # raw figure source -> Shader
 var _queued := false
 var _cliffs := false
+var _transitions := false
 
 
 static func attach(root: Node3D, ground: EITerrain) -> void:
@@ -58,12 +59,14 @@ func refresh() -> void:
 	_clear_derived()
 	var enabled := Gfx.on("gfx_ground_contact")
 	var cliffs := terrain._cliffs != null and terrain._cliffs.admitted > 0
-	if _cliffs != cliffs:
-		# Projection is compiled only for worlds with admitted rock. Rebuild
-		# the small material cache after a toggle; keep normal/fade ownership.
+	var transitions := terrain._transitions != null and terrain._transitions.admitted > 0
+	if _cliffs != cliffs or _transitions != transitions:
+		# Optional samplers exist only for admitted worlds. Rebuild variants
+		# after either mode changes; keep normal/fade ownership unchanged.
 		_variants.clear()
 		_shaders.clear()
 		_cliffs = cliffs
+		_transitions = transitions
 	for base: ShaderMaterial in _variants:
 		for material: ShaderMaterial in _variants[base].values():
 			_copy_base(base, material)
@@ -104,12 +107,15 @@ func _variant(base: ShaderMaterial, extent: Vector3) -> ShaderMaterial:
 	if surface == null:
 		surface = terrain.ground_surface_data()
 		_cliffs = terrain._cliffs != null and terrain._cliffs.admitted > 0
+		_transitions = terrain._transitions != null and terrain._transitions.admitted > 0
 	var variants: Dictionary = _variants.get(base, {})
 	if variants.has(extent):
 		return variants[extent]
 	var source: String = base.get_meta("ground_contact_source")
 	if not _shaders.has(source):
-		_shaders[source] = Gfx.make_shader(GroundContactShader.source(source, _cliffs))
+		var code := GroundContactShader.source(source, _cliffs)
+		if _transitions: code = terrain._transitions.source(code)
+		_shaders[source] = Gfx.make_shader(code)
 	var material := ShaderMaterial.new()
 	material.shader = _shaders[source]
 	_copy_base(base, material)

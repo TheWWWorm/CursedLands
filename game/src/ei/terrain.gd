@@ -706,6 +706,8 @@ var _wind_frame := {}
 const Clouds = preload("res://src/game/fx/clouds.gd")
 var _clouds: Clouds
 var _cliffs: TerrainCliff
+const Transitions = preload("res://src/game/fx/terrain_transition.gd")
+var _transitions: Transitions
 var _land_mat: ShaderMaterial
 var _caustics: RefCounted
 var _current: RefCounted
@@ -1091,6 +1093,19 @@ func apply_gfx() -> void:
 	else:
 		_land_mat.set_shader_parameter("cliff_tiles",null)
 		_land_mat.set_shader_parameter("cliff_flatness",null)
+	if Transitions.requested():
+		if _transitions == null: _transitions = Transitions.new(self)
+	else:
+		_transitions = null
+	if _transitions != null and _transitions.admitted > 0:
+		# Mode 1 and 2 share Gfx's terrain-detail define, but have different
+		# live samplers. An explicit source swap also works while paused.
+		var transition_base := WaterCaustics.source(TERRAIN_SHADER) if _caustics != null and _caustics.admitted > 0 else TERRAIN_SHADER
+		if _cliffs != null: transition_base = _cliffs.source(transition_base)
+		_land_mat.shader = _transitions.shader(transition_base)
+		_transitions.bind(_land_mat)
+	else:
+		_land_mat.set_shader_parameter("transition_tiles", null)
 	_water_mat.shader = _water_fx_shader if fx else _water_shader
 	if fx and Gfx.on("gfx_water_interaction"):
 		if _water_interaction_shader == null:
@@ -1214,7 +1229,8 @@ func apply_gfx() -> void:
 ## must use the same optional terrain-receiver effects as ordinary sectors.
 func land_shader_source() -> String:
 	var code := WaterCaustics.source(TERRAIN_SHADER) if _caustics != null and _caustics.admitted > 0 else TERRAIN_SHADER
-	return _cliffs.source(code) if _cliffs != null else code
+	if _cliffs != null: code = _cliffs.source(code)
+	return _transitions.source(code) if _transitions != null else code
 
 
 ## SurfaceWeather's static cover map affects rendering only. Keep it across

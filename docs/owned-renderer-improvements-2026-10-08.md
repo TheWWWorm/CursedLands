@@ -4187,6 +4187,42 @@ sunlight path described above. The initial Mobile async-specialization residual
 is retained separately; settled comparisons pass. Functional Linux validation
 does not establish device or frame-time acceptance.
 
+## V6: opt-in authored natural transitions — 9 October
+
+The existing **Terrain detail** row now offers Original (0), Detailed (1), and
+Natural transitions (2), with English, Russian and German choices. Detailed
+remains the default and the automatic preset value. Original and Detailed are
+PNG-identical to the untouched build in all three fixed reference scenes.
+
+`terrain_transition.gd` and its shared shader reconstruct only verified pairs
+of natural grass, snow, sand and rock families. Exact original atlas hashes,
+authored rotated corners and present plain tiles from each exact family are
+required. Conflicting corners are rejected without voting or borrowing a nearby
+material. Paths, liquid/bed families, unknown/modified atlases and three-family
+art remain unchanged. An untouched edge strip also preserves the original
+painted relief beside unsupported tiles. The improvement is visible in the
+light/dark sand boundary in zone15, with grass/limestone and snow/gray stone
+controls; original geometry, navigation and collision are unchanged.
+
+The same sampler and bounded per-map texture serve ordinary terrain, rigid
+object contact, installed snow/sand footprint meshes and the native colour
+cache's live material. Mode 1→2 explicitly refreshes those programs despite
+Gfx's shared boolean terrain-detail signature. The contact coarse-colour probe
+uses its own traits output so it cannot overwrite the primary sample's traits.
+
+[Transition evidence](validation/terrain-transitions-2026-10-09.json) records
+**624 passing runtime checks**, **102 independent RGB image assertions** and
+**121 captures**. All 19,000 classified dirt/path/paving pixels remain exact in
+the dedicated path view. Three desktop backends, cached terrain, actual installed
+footprint receivers, and composed cloud/caustic/cliff/water/contact shaders pass
+restore and resource-release controls. The five-map Base/LiA check deliberately
+leaves most conflicting LiA zone26 transitions unchanged and zone6 neutral.
+
+This is the conservative two-family material stage. Three/four-family junctions,
+inferred metadata, broad stochastic anti-repetition, transition side projection,
+geometry rounding, long routes and physical-device cost acceptance remain open.
+No installed build, original asset, real save or published release was replaced.
+
 ## V8: guarded optional camera depth of field — 9 October
 
 Accepted in `a533078`. `CameraDepthOfField` applies the pinned R1 25-to-50-degree
