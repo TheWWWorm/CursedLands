@@ -4,6 +4,7 @@ extends Node3D
 ## the view and casts the normal sun shadows. Tracks use the existing animated
 ## footfalls on every peer. Neither effect changes terrain/navigation data.
 
+const FarGrass = preload("res://src/game/fx/far_grass.gd")
 const CHUNK := 8.0
 const SPACING := 0.30
 const RANGE := 36.0
@@ -74,6 +75,7 @@ void fragment() {
 }
 """
 
+var _far_grass := FarGrass.new()
 var terrain: EITerrain
 var soft_ground: SoftGroundDeform
 var _grass := false
@@ -217,6 +219,7 @@ func _process(_dt: float) -> void:
 		if _mound_material: _mound_material.set_shader_parameter("view_position",p)
 		_update_motion(p)
 	_update_submissions(Vector2(p.x,p.z))
+	_far_grass.tick(self,camera,p,_dt)
 	if _native_grass:
 		prepare_grass()
 		_finish_grass_jobs()
@@ -249,6 +252,7 @@ func _process(_dt: float) -> void:
 
 
 func _clear_grass() -> void:
+	_far_grass.clear()
 	# Only immutable data is in flight. Joining also makes option changes,
 	# flooding, scenery replacement and world destruction explicit barriers.
 	_grass_generation += 1

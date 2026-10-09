@@ -86,8 +86,9 @@
       "id": "W06",
       "report": "Grass does not cover the full visible range",
       "image": 2,
-      "status": "Existing36m stream gaps fixed bcae3dd; distant sparse grass prototype in progress",
-      "evidence": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/grass-stream-envelope-2026-10-10.json"
+      "status": "Existing near-stream gaps fixed bcae3dd; bounded distant coverage qualified for local test on 10 October. Camera-turn planning, lifecycle, authored maps, actual meadow and three-renderer LOD/arrival controls pass. Windows acceptance pending.",
+      "evidence": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/grass-stream-envelope-2026-10-10.json",
+      "far_evidence": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/far-grass-2026-10-10.json"
     },
     {
       "id": "W07",

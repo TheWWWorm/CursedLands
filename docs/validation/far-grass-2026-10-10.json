@@ -1,0 +1,690 @@
+{
+  "status": "Source qualified for a local test; Windows D3D12 and user acceptance pending.",
+  "base_commit": "4f0faf2",
+  "scope": "Supplement existing near grass through the actual camera frustum; no new setting, native field, shadow pass or near-root changes.",
+  "changes": [
+    "24m bounded quadtree tiles with 0.6m fine root spacing, six opaque triangles per patch and at most 128 resident tiles.",
+    "Far view off/on follows the existing camera 100m/260m range. Explicit coarsening retains coverage instead of dropping view corners.",
+    "Parent roots are an exact subset of fine roots. Fine-only grass fades before the 96m replacement; newly visible roots grow over 0.25s.",
+    "12m frustum prefetch margin and immediate planning for camera turns over three degrees.",
+    "Near work keeps priority; at most one far worker, four atomic child uploads and five queued buffers. Existing water, option, scenery and world barriers clear all work."
+  ],
+  "source_sha256": {
+    "game/src/game/fx/far_grass.gd": "cd7af9c10436e57a1d80e37c8e33f3e163498a8bd53b97adc49b61994db6ba75",
+    "game/src/game/fx/far_grass.gd.uid": "2ad6cd61a42e4327f250ec0bc00d35684db5470c5896f1072279722621d097e5",
+    "game/src/game/fx/terrain_details.gd": "0a1b7173858218b44f6d505546aad89759428c71fbdc3dfe39cc1be548e7d2ff"
+  },
+  "only_difference_from_qualified_production_overlay": "Introductory comment replaces prototype with bounded distant grass; executable source identical.",
+  "checks": 31513,
+  "failures": 0,
+  "runs": [
+    {
+      "name": "main-core03",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/far-grass-prototype-20261010/main-core03",
+      "receipt_sha256": "585e6d5c7505f4e1f4f6e386edce740f044cfb69ab106016c3f6020fe55ab58f",
+      "checks": 1687,
+      "failures": 0,
+      "result_sha256": "f1400315395a1cf8014469115e42cd6150ea8e703aca5052dba5935563110ce6",
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "58f61d53951f883e3b26d0ee365d94405883bf75b036f84aafe89bc429648e8f",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/far-grass-prototype-20261010/far_grass_main03.gd": "01f525e1c6339306ac25110fd86a6d76a98ea95b03b92a935721d5813c3228eb"
+      },
+      "warnings": [],
+      "captures": {},
+      "observations": [
+        {
+          "case": "green-snapshot",
+          "owned_bytes": 1102340,
+          "us": 303
+        },
+        {
+          "accepted": 1364,
+          "attempted": 1600,
+          "case": "green-job",
+          "packed_bytes": 109120,
+          "us": 49714
+        },
+        {
+          "case": "one-pixel-path-approximation",
+          "eligible_root": true,
+          "limitation": "Root plus modest perimeter checks can miss a one-pixel interior stripe; native grass uses root eligibility. No claim of all-pixel masking.",
+          "patch_admitted": true
+        },
+        {
+          "case": "260m-plan",
+          "diagnostic": {
+            "candidate_limit": 88000,
+            "coarsen_bias": 0,
+            "coarsened": false,
+            "far_plane": 260.0,
+            "limit": 128,
+            "packed_byte_limit": 7040000,
+            "tiles": 55,
+            "triangle_limit": 528000
+          },
+          "uncovered": 0,
+          "visible_ground_samples": 1701
+        },
+        {
+          "case": "forced-coarsening",
+          "diagnostic": {
+            "candidate_limit": 3200,
+            "coarsen_bias": 4,
+            "coarsened": true,
+            "far_plane": 260.0,
+            "limit": 4,
+            "packed_byte_limit": 256000,
+            "tiles": 2,
+            "triangle_limit": 19200
+          }
+        }
+      ]
+    },
+    {
+      "name": "main-turn03",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/far-grass-prototype-20261010/main-turn03",
+      "receipt_sha256": "1250d15a66179b44c5bf8088933e14aa77473dc9715735b48d9f414d488fdf40",
+      "checks": 1513,
+      "failures": 0,
+      "result_sha256": "303efa191ec67aab562960285003b5d92f3ee417c1c72b0a031cd7e66d4315ef",
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "58f61d53951f883e3b26d0ee365d94405883bf75b036f84aafe89bc429648e8f",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/far-grass-prototype-20261010/far_grass_stream03.gd": "8136ffba7da661c074d6faed9a79db1d46e4292cbe8699885f4e11277bc3027c",
+        "/home/llm2x/Documents/EI/local/scratchpad/far-grass-prototype-20261010/far_grass_main03.gd": "01f525e1c6339306ac25110fd86a6d76a98ea95b03b92a935721d5813c3228eb"
+      },
+      "warnings": [],
+      "captures": {},
+      "observations": [
+        {
+          "case": "initial",
+          "diagnostic": {
+            "active_jobs": 0,
+            "borrowed_cover": false,
+            "candidate_limit": 51200,
+            "coarsen_bias": 0,
+            "coarsened": false,
+            "discarded": 0,
+            "far_plane": 260.0,
+            "instance_bytes": 2884160,
+            "instances": 36052,
+            "jobs": 32,
+            "limit": 128,
+            "max_upload_tiles": 1,
+            "max_upload_us": 230,
+            "packed_byte_limit": 4096000,
+            "pending_tiles": 0,
+            "resident_tiles": 32,
+            "snapshot_owned_bytes": 1262596,
+            "tiles": 32,
+            "triangle_limit": 307200
+          },
+          "ticks": 263
+        },
+        {
+          "case": "camera-turn-return",
+          "diagnostic": {
+            "active_jobs": 0,
+            "borrowed_cover": false,
+            "candidate_limit": 51200,
+            "coarsen_bias": 0,
+            "coarsened": false,
+            "discarded": 1,
+            "far_plane": 260.0,
+            "instance_bytes": 2884160,
+            "instances": 36052,
+            "jobs": 42,
+            "limit": 128,
+            "max_upload_tiles": 1,
+            "max_upload_us": 230,
+            "packed_byte_limit": 4096000,
+            "pending_tiles": 0,
+            "resident_tiles": 32,
+            "snapshot_owned_bytes": 1262596,
+            "tiles": 32,
+            "triangle_limit": 307200
+          },
+          "ticks": 63
+        },
+        {
+          "case": "perspective-return",
+          "diagnostic": {
+            "active_jobs": 0,
+            "borrowed_cover": false,
+            "candidate_limit": 51200,
+            "coarsen_bias": 0,
+            "coarsened": false,
+            "discarded": 2,
+            "far_plane": 260.0,
+            "instance_bytes": 2884160,
+            "instances": 36052,
+            "jobs": 47,
+            "limit": 128,
+            "max_upload_tiles": 1,
+            "max_upload_us": 230,
+            "packed_byte_limit": 4096000,
+            "pending_tiles": 0,
+            "resident_tiles": 32,
+            "snapshot_owned_bytes": 1262596,
+            "tiles": 32,
+            "triangle_limit": 307200
+          },
+          "ticks": 27
+        },
+        {
+          "case": "coarsen",
+          "diagnostic": {
+            "active_jobs": 0,
+            "borrowed_cover": false,
+            "candidate_limit": 1600,
+            "coarsen_bias": 3,
+            "coarsened": true,
+            "discarded": 2,
+            "far_plane": 260.0,
+            "instance_bytes": 50880,
+            "instances": 636,
+            "jobs": 48,
+            "limit": 2,
+            "max_upload_tiles": 1,
+            "max_upload_us": 311,
+            "packed_byte_limit": 128000,
+            "pending_tiles": 0,
+            "resident_tiles": 1,
+            "snapshot_owned_bytes": 1262596,
+            "tiles": 1,
+            "triangle_limit": 9600
+          },
+          "ticks": 45
+        },
+        {
+          "case": "refine",
+          "diagnostic": {
+            "active_jobs": 0,
+            "borrowed_cover": false,
+            "candidate_limit": 51200,
+            "coarsen_bias": 0,
+            "coarsened": false,
+            "discarded": 2,
+            "far_plane": 260.0,
+            "instance_bytes": 2884160,
+            "instances": 36052,
+            "jobs": 93,
+            "limit": 128,
+            "max_upload_tiles": 4,
+            "max_upload_us": 444,
+            "packed_byte_limit": 4096000,
+            "pending_tiles": 0,
+            "resident_tiles": 32,
+            "snapshot_owned_bytes": 1262596,
+            "tiles": 32,
+            "triangle_limit": 307200
+          },
+          "ticks": 299
+        },
+        {
+          "case": "flood",
+          "diagnostic": {
+            "active_jobs": 0,
+            "borrowed_cover": false,
+            "candidate_limit": 51200,
+            "coarsen_bias": 0,
+            "coarsened": false,
+            "discarded": 2,
+            "far_plane": 260.0,
+            "instance_bytes": 0,
+            "instances": 0,
+            "jobs": 125,
+            "limit": 128,
+            "max_upload_tiles": 4,
+            "max_upload_us": 444,
+            "packed_byte_limit": 4096000,
+            "pending_tiles": 0,
+            "resident_tiles": 32,
+            "snapshot_owned_bytes": 1262596,
+            "tiles": 32,
+            "triangle_limit": 307200
+          },
+          "ticks": 49
+        }
+      ]
+    },
+    {
+      "name": "main-authored03",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/far-grass-prototype-20261010/main-authored03",
+      "receipt_sha256": "cfad9d7f41a36681ecd944c7d460e5d0770b8eda8e6220d092801ed4bcc39ac0",
+      "checks": 23952,
+      "failures": 0,
+      "result_sha256": "07d18c55818b3ef420093747ee7abf37a76712866194faf21997eebd228a90c1",
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "58f61d53951f883e3b26d0ee365d94405883bf75b036f84aafe89bc429648e8f",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/far-grass-prototype-20261010/far_grass_authored.gd": "8a7c15c202f1ed212261163b503147e62a43f87f060e4babb340124fe715505a",
+        "/home/llm2x/Documents/EI/local/scratchpad/far-grass-prototype-20261010/far_grass.gd": "dd5cffaf35ea7c0b5e9a7c24dc9f286a5558cfee284175ac6f3f3536bf56c7a6"
+      },
+      "warnings": [],
+      "captures": {},
+      "observations": [
+        {
+          "accepted": 4430,
+          "candidates": 40000,
+          "case": "original-map",
+          "job_max_us": 29578,
+          "job_median_us": 14083,
+          "job_sum_us": 374429,
+          "mpr": "bz2g",
+          "packed_bytes": 354400,
+          "plan": {
+            "candidate_limit": 40000,
+            "coarsen_bias": 0,
+            "coarsened": false,
+            "far_plane": 260.0,
+            "limit": 128,
+            "packed_byte_limit": 3200000,
+            "tiles": 25,
+            "triangle_limit": 240000
+          },
+          "scenery_buckets": 218,
+          "selected_tiles": 25,
+          "size": "(128, 128)",
+          "snapshot_owned_bytes": 8602628,
+          "snapshot_us": 5928,
+          "triangles": 26580,
+          "zone": "bz2g"
+        },
+        {
+          "accepted": 7504,
+          "candidates": 40000,
+          "case": "original-map",
+          "job_max_us": 56916,
+          "job_median_us": 13093,
+          "job_sum_us": 472589,
+          "mpr": "bz4g",
+          "packed_bytes": 600320,
+          "plan": {
+            "candidate_limit": 40000,
+            "coarsen_bias": 0,
+            "coarsened": false,
+            "far_plane": 260.0,
+            "limit": 128,
+            "packed_byte_limit": 3200000,
+            "tiles": 25,
+            "triangle_limit": 240000
+          },
+          "scenery_buckets": 109,
+          "selected_tiles": 25,
+          "size": "(128, 128)",
+          "snapshot_owned_bytes": 8602628,
+          "snapshot_us": 3182,
+          "triangles": 45024,
+          "zone": "bz4g"
+        }
+      ]
+    },
+    {
+      "name": "main-meadow03",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/far-grass-prototype-20261010/main-meadow03",
+      "receipt_sha256": "a41d0df0df044e7f39b415c0556627217c4116fd8f430e60a598d2e88f676d98",
+      "checks": 152,
+      "failures": 0,
+      "result_sha256": "9b7a1165e78e8c2b7af6d03747913f9c68bec2388343db7f542dbbab85f34c94",
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "58f61d53951f883e3b26d0ee365d94405883bf75b036f84aafe89bc429648e8f",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/far-grass-prototype-20261010/far_grass_meadow03.gd": "3a52b54f91bb52e40901abae819904758636297f25e18e47f271c4caef203196",
+        "/home/llm2x/Documents/EI/local/scratchpad/far-grass-prototype-20261010/far_grass.gd": "dd5cffaf35ea7c0b5e9a7c24dc9f286a5558cfee284175ac6f3f3536bf56c7a6"
+      },
+      "warnings": [],
+      "captures": {
+        "far-grass-meadow-low-baseline.png": "708bb9d65970403b363b3a735d09149f85806d0ebff2031fe9ac3e74855bb32b",
+        "far-grass-meadow-baseline.png": "d1a81fa497cbcbd23d3ed038c177d5dc9400fed8faeea8615cb3164f40ea7466",
+        "far-grass-meadow-low-on.png": "df1b4afef192ef372f19c5649e257f677f8b5237943da3c6c15f3b6fd314db47",
+        "far-grass-meadow-on.png": "6df559397796b50cd1ce157289f48ae6a8b323f8c3ea761f5e541cec1a7e4cb7"
+      },
+      "observations": [
+        {
+          "case": "meadow_selection",
+          "eligible_ring_samples": 29,
+          "focus": "(72.0, 192.0)"
+        },
+        {
+          "camera": "[X: (-1.0, 0.0, 0.0), Y: (0.0, 0.707107, 0.707107), Z: (-0.0, 0.707107, -0.707107), O: (72.0, 53.23474, -237.0)]",
+          "case": "far-grass-meadow-baseline",
+          "counts": {
+            "shadow_draws": 536,
+            "shadow_primitives": 102491,
+            "visible_draws": 1876,
+            "visible_primitives": 274821
+          },
+          "diagnostic": {
+            "active_jobs": 0,
+            "borrowed_cover": false,
+            "candidate_limit": 115200,
+            "coarsen_bias": 0,
+            "coarsened": false,
+            "discarded": 0,
+            "far_plane": 260.0,
+            "instance_bytes": 2119840,
+            "instances": 26498,
+            "jobs": 72,
+            "limit": 128,
+            "max_upload_tiles": 1,
+            "max_upload_us": 181,
+            "packed_byte_limit": 9216000,
+            "pending_tiles": 0,
+            "resident_tiles": 72,
+            "snapshot_owned_bytes": 10388612,
+            "tiles": 72,
+            "triangle_limit": 691200
+          },
+          "focus": "(72.00001, 8.234737, -192.0)",
+          "levels": {
+            "0": 59,
+            "1": 13
+          },
+          "median_viewport_cpu_ms": 0.908999979496002,
+          "median_viewport_gpu_ms": 2.14000010490417,
+          "packed_bytes": 2119840
+        },
+        {
+          "camera": "[X: (-1.0, 0.0, 0.0), Y: (0.0, 0.707107, 0.707107), Z: (-0.0, 0.707107, -0.707107), O: (72.0, 53.23474, -237.0)]",
+          "case": "far-grass-meadow-on",
+          "counts": {
+            "shadow_draws": 536,
+            "shadow_primitives": 102491,
+            "visible_draws": 1935,
+            "visible_primitives": 404241
+          },
+          "diagnostic": {
+            "active_jobs": 0,
+            "borrowed_cover": false,
+            "candidate_limit": 115200,
+            "coarsen_bias": 0,
+            "coarsened": false,
+            "discarded": 0,
+            "far_plane": 260.0,
+            "instance_bytes": 2119840,
+            "instances": 26498,
+            "jobs": 72,
+            "limit": 128,
+            "max_upload_tiles": 1,
+            "max_upload_us": 181,
+            "packed_byte_limit": 9216000,
+            "pending_tiles": 0,
+            "resident_tiles": 72,
+            "snapshot_owned_bytes": 10388612,
+            "tiles": 72,
+            "triangle_limit": 691200
+          },
+          "focus": "(72.00001, 8.234737, -192.0)",
+          "levels": {
+            "0": 59,
+            "1": 13
+          },
+          "median_viewport_cpu_ms": 1.14699995517731,
+          "median_viewport_gpu_ms": 2.28099989891052,
+          "packed_bytes": 2119840
+        },
+        {
+          "camera": "[X: (-1.0, 0.0, 0.0), Y: (0.0, 0.970295, 0.241923), Z: (-0.0, 0.241923, -0.970295), O: (72.0, 20.23474, -242.0)]",
+          "case": "far-grass-meadow-low-baseline",
+          "counts": {
+            "shadow_draws": 793,
+            "shadow_primitives": 165969,
+            "visible_draws": 1910,
+            "visible_primitives": 283543
+          },
+          "diagnostic": {
+            "active_jobs": 0,
+            "borrowed_cover": false,
+            "candidate_limit": 112000,
+            "coarsen_bias": 0,
+            "coarsened": false,
+            "discarded": 0,
+            "far_plane": 260.0,
+            "instance_bytes": 1957120,
+            "instances": 24464,
+            "jobs": 74,
+            "limit": 128,
+            "max_upload_tiles": 1,
+            "max_upload_us": 181,
+            "packed_byte_limit": 8960000,
+            "pending_tiles": 0,
+            "resident_tiles": 70,
+            "snapshot_owned_bytes": 10388612,
+            "tiles": 70,
+            "triangle_limit": 672000
+          },
+          "focus": "(72.00001, 8.234736, -193.8709)",
+          "levels": {
+            "0": 55,
+            "1": 15
+          },
+          "median_viewport_cpu_ms": 1.34500002861023,
+          "median_viewport_gpu_ms": 2.33999991416931,
+          "packed_bytes": 1957120
+        },
+        {
+          "camera": "[X: (-1.0, 0.0, 0.0), Y: (0.0, 0.970295, 0.241923), Z: (-0.0, 0.241923, -0.970295), O: (72.0, 20.23474, -242.0)]",
+          "case": "far-grass-meadow-low-on",
+          "counts": {
+            "shadow_draws": 793,
+            "shadow_primitives": 165969,
+            "visible_draws": 1968,
+            "visible_primitives": 405217
+          },
+          "diagnostic": {
+            "active_jobs": 0,
+            "borrowed_cover": false,
+            "candidate_limit": 112000,
+            "coarsen_bias": 0,
+            "coarsened": false,
+            "discarded": 0,
+            "far_plane": 260.0,
+            "instance_bytes": 1957120,
+            "instances": 24464,
+            "jobs": 74,
+            "limit": 128,
+            "max_upload_tiles": 1,
+            "max_upload_us": 181,
+            "packed_byte_limit": 8960000,
+            "pending_tiles": 0,
+            "resident_tiles": 70,
+            "snapshot_owned_bytes": 10388612,
+            "tiles": 70,
+            "triangle_limit": 672000
+          },
+          "focus": "(72.00001, 8.234736, -193.8709)",
+          "levels": {
+            "0": 55,
+            "1": 15
+          },
+          "median_viewport_cpu_ms": 1.00999999046326,
+          "median_viewport_gpu_ms": 2.47699999809265,
+          "packed_bytes": 1957120
+        }
+      ]
+    },
+    {
+      "name": "main-lod03",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/far-grass-prototype-20261010/main-lod03",
+      "receipt_sha256": "5b67ba34864ec3de75ed145159cf5ddb77e109f3c015e8cb33c6df8aa77f8f2f",
+      "checks": 1403,
+      "failures": 0,
+      "result_sha256": "a5b6645496c72bfe765194a6b02003f1bc018cf6ccab0fe482123f5d1f5f905c",
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "58f61d53951f883e3b26d0ee365d94405883bf75b036f84aafe89bc429648e8f",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/far-grass-prototype-20261010/far_grass_lod03.gd": "f0c31388f6b2dd104abfbff0f08454c2f67e4dd39c274662551718853b1e5199",
+        "/home/llm2x/Documents/EI/local/scratchpad/far-grass-prototype-20261010/far_grass_main03.gd": "01f525e1c6339306ac25110fd86a6d76a98ea95b03b92a935721d5813c3228eb"
+      },
+      "warnings": [],
+      "captures": {
+        "far-lod-arrival-middle.png": "6daab1f27bdff9f51c4dc88d72261413e3f17c72ebf785d7353897a6540dd84d",
+        "far-lod-coarse.png": "ecb8ca15bd0095805b9cf2a4e4b6a0d6c406aca560bd1c70709c8b287165fead",
+        "far-lod-empty.png": "0c95e592578101b1c0efdc3697de9930ba1d40347ab1ec4bfc8f2af497d9da5c",
+        "far-lod-fine.png": "ecb8ca15bd0095805b9cf2a4e4b6a0d6c406aca560bd1c70709c8b287165fead",
+        "far-lod-arrival-start.png": "0c95e592578101b1c0efdc3697de9930ba1d40347ab1ec4bfc8f2af497d9da5c",
+        "far-lod-arrival-end.png": "ecb8ca15bd0095805b9cf2a4e4b6a0d6c406aca560bd1c70709c8b287165fead"
+      },
+      "observations": [
+        {
+          "difference": {
+            "changed": 0,
+            "over_2": 0,
+            "peak": 0
+          },
+          "kind": "distance_swap"
+        },
+        {
+          "kind": "arrival",
+          "middle_end": {
+            "changed": 14970,
+            "over_2": 14846,
+            "peak": 129
+          },
+          "start_middle": {
+            "changed": 5863,
+            "over_2": 5863,
+            "peak": 127
+          }
+        }
+      ]
+    },
+    {
+      "name": "main-lod-mobile03",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/far-grass-prototype-20261010/main-lod-mobile03",
+      "receipt_sha256": "cc200ae8366f1573734ba79c494e7aaa0b5d452862e1d3731fc8c34dfdf15a80",
+      "checks": 1403,
+      "failures": 0,
+      "result_sha256": "380000594ec4977967cd0a71118b6254232da928b164194cdbff8bc8ec864064",
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "58f61d53951f883e3b26d0ee365d94405883bf75b036f84aafe89bc429648e8f",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/far-grass-prototype-20261010/far_grass_lod03.gd": "f0c31388f6b2dd104abfbff0f08454c2f67e4dd39c274662551718853b1e5199",
+        "/home/llm2x/Documents/EI/local/scratchpad/far-grass-prototype-20261010/far_grass_main03.gd": "01f525e1c6339306ac25110fd86a6d76a98ea95b03b92a935721d5813c3228eb"
+      },
+      "warnings": [],
+      "captures": {
+        "far-lod-arrival-middle.png": "57c2af74852dff5f556d183e9f296f6772044bf1025d6c644412c79a43d0a1e9",
+        "far-lod-coarse.png": "e742b06e6799ef98a3d3dbf47ef65fcdde4ea55be9c14a998b1022ebf289f700",
+        "far-lod-empty.png": "231288ed81b2952492261b10a99b5af484b96a0db7c8c11e3fb1d38c11cc4752",
+        "far-lod-fine.png": "e742b06e6799ef98a3d3dbf47ef65fcdde4ea55be9c14a998b1022ebf289f700",
+        "far-lod-arrival-start.png": "231288ed81b2952492261b10a99b5af484b96a0db7c8c11e3fb1d38c11cc4752",
+        "far-lod-arrival-end.png": "e742b06e6799ef98a3d3dbf47ef65fcdde4ea55be9c14a998b1022ebf289f700"
+      },
+      "observations": [
+        {
+          "difference": {
+            "changed": 0,
+            "over_2": 0,
+            "peak": 0
+          },
+          "kind": "distance_swap"
+        },
+        {
+          "kind": "arrival",
+          "middle_end": {
+            "changed": 14888,
+            "over_2": 14809,
+            "peak": 128
+          },
+          "start_middle": {
+            "changed": 5863,
+            "over_2": 5863,
+            "peak": 126
+          }
+        }
+      ]
+    },
+    {
+      "name": "main-lod-gl03",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/far-grass-prototype-20261010/main-lod-gl03",
+      "receipt_sha256": "01eb3dc66e9c58ed0390ed2103e5d8ff14c261d0bc76a1f64b14c5c11eba2ccd",
+      "checks": 1403,
+      "failures": 0,
+      "result_sha256": "3da077c77ca13cf17eae648e2b037632a7982ae97b51ff9c1c32b3f45a00f18e",
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "58f61d53951f883e3b26d0ee365d94405883bf75b036f84aafe89bc429648e8f",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/far-grass-prototype-20261010/far_grass_lod03.gd": "f0c31388f6b2dd104abfbff0f08454c2f67e4dd39c274662551718853b1e5199",
+        "/home/llm2x/Documents/EI/local/scratchpad/far-grass-prototype-20261010/far_grass_main03.gd": "01f525e1c6339306ac25110fd86a6d76a98ea95b03b92a935721d5813c3228eb"
+      },
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "captures": {
+        "far-lod-arrival-middle.png": "fff76ee6854723daaf8c76f5defe77ea7cc86962ccf49a7549f33665ca7033d9",
+        "far-lod-coarse.png": "7266939dfaba87a3244adb8c9e5b1d6c4a71e9c76d9996d7e2000e4fd00fa57f",
+        "far-lod-empty.png": "3cf6c98581d9a2c9634bbbb6ea965ea31e2d0afec5fd042a97ae9fc3dd05e7b8",
+        "far-lod-fine.png": "7266939dfaba87a3244adb8c9e5b1d6c4a71e9c76d9996d7e2000e4fd00fa57f",
+        "far-lod-arrival-start.png": "3cf6c98581d9a2c9634bbbb6ea965ea31e2d0afec5fd042a97ae9fc3dd05e7b8",
+        "far-lod-arrival-end.png": "7266939dfaba87a3244adb8c9e5b1d6c4a71e9c76d9996d7e2000e4fd00fa57f"
+      },
+      "observations": [
+        {
+          "difference": {
+            "changed": 0,
+            "over_2": 0,
+            "peak": 0
+          },
+          "kind": "distance_swap"
+        },
+        {
+          "kind": "arrival",
+          "middle_end": {
+            "changed": 14913,
+            "over_2": 14794,
+            "peak": 98
+          },
+          "start_middle": {
+            "changed": 5863,
+            "over_2": 5863,
+            "peak": 96
+          }
+        }
+      ]
+    }
+  ],
+  "bounded_cost": {
+    "max_resident_tiles": 128,
+    "max_candidates_per_tile": 1600,
+    "max_resident_instance_bytes": 16384000,
+    "max_active_and_staged_instance_bytes": 640000,
+    "triangles_per_patch": 6,
+    "added_shadow_draws": 0,
+    "meadow_resident_patches": 26498,
+    "meadow_instance_bytes": 2119840,
+    "meadow_visible_added_draws": 59,
+    "meadow_visible_added_triangles": 129420,
+    "meadow_visible_changed_pixels": 44998
+  },
+  "limits": [
+    "Performance timings overlapped other engine processes and are diagnostic only; no clean speed or Windows FPS claim.",
+    "The changed-pixel meadow witness is on Linux Forward+. LOD and arrival controls also pass Mobile and Compatibility.",
+    "The root plus eight perimeter samples reject broad paths, water, slope and expanded scenery bounds but can miss a one-pixel interior painted stripe.",
+    "Distant grass deliberately adds no sun-shadow casters; existing near grass shadows are unchanged.",
+    "Rendered sustained camera-travel acceptance on the user Windows device remains open."
+  ]
+}
