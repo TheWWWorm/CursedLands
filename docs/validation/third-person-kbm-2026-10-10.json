@@ -1,0 +1,366 @@
+{
+  "date": "2026-10-10",
+  "status": "integrated_source_after_parent_review; not packaged",
+  "root": "/home/llm2x/Documents/EI/local/scratchpad/third-person-kbm-20261010",
+  "base_commit": "e002052eac0c0e96681b7ecb9b67d00a092c8666",
+  "request": "Keyboard/mouse third-person self-spell targeting and nearby ground/corpse loot usability; multiplayer means original/native LMP, coop means campaign co-op.",
+  "source_files_checked": 613,
+  "changed_production_files": {
+    "src/ei/remake_text.gd": {
+      "sha256": "a777d7d72ee605dc0f7abad1f11683cc4fdfdcda2385521f26f99d83d491beaa",
+      "baseline_sha256": "a4c666a47f0c23319034bceb083c3a37391c6a1dce24f0660e528baded5c7aa7",
+      "ready_path": "/home/llm2x/Documents/EI/local/scratchpad/third-person-kbm-20261010/candidate01/stage/src/ei/remake_text.gd"
+    },
+    "src/game/direct_control.gd": {
+      "sha256": "c0656b614c02527d5c8c60b3421934d390ae23bea2bf902d9c15caa8e6e0d4c7",
+      "baseline_sha256": "cd83b453ef54ab6b193e32efa88589d76dfcba564164fb61265c17c24cf489a5",
+      "ready_path": "/home/llm2x/Documents/EI/local/scratchpad/third-person-kbm-20261010/candidate01/stage/src/game/direct_control.gd"
+    }
+  },
+  "fixtures": {
+    "third_person_kbm.gd": {
+      "ready_path": "/home/llm2x/Documents/EI/local/scratchpad/third-person-kbm-20261010/third_person_kbm.gd",
+      "sha256": "e102ccfddea5c0cc197f67b9165a8de48b1378529f2522ec7b602c2b38dd5c21"
+    },
+    "third_person_kbm_scene.gd": {
+      "ready_path": "/home/llm2x/Documents/EI/local/scratchpad/third-person-kbm-20261010/third_person_kbm_scene.gd",
+      "sha256": "51dcab959ccf3fd772034c83725102c76293bbcd3c346fc4f78971639c114db6"
+    }
+  },
+  "behavior": [
+    "While a friendly spell or belt item is selected, E explicitly targets the owned leader through existing pending_target/cast_portrait and normal authority commands. Left-click still targets the aimed ally.",
+    "E retains explicit unit/lever priority, then offers the nearest eligible visible corpse/pile within 3 metres through the ordinary approach/use/loot path. Native geometry blocks proximity selection across solid walls or large floor differences.",
+    "The reticle names E: Cast on self or E: Loot plus target name; pending spells show cast/cancel mouse hints. Existing Russian/German translations are reused with one new localized footer.",
+    "Native multiplayer corpse ownership/connection, spell training/stamina, potion holder and wand-charge validation are retained. Safe-zone, loading, focus, pointer/HUD, pause and script-block checks fence input.",
+    "The proximity query reuses the existing bounded world.units_near broadphase. Controller interaction keeps its existing exact-target behavior."
+  ],
+  "qualification": [
+    {
+      "label": "baseline08",
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/third-person-kbm-20261010/baseline08/run.json",
+      "manifest_sha256": "4eb550647189bb15a34d46ec2726691715ffd4d3f68319f14f67c46945c73858",
+      "fixture_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/third-person-kbm-20261010/third_person_kbm.gd": "e102ccfddea5c0cc197f67b9165a8de48b1378529f2522ec7b602c2b38dd5c21"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "5bb49355b5770be7bc04ef62d922630c781c66dbd552e0ae97ac95357dbcb207",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "exit_code": 1,
+      "errors": [
+        "FAIL campaign: self action is named in the reticle prompt",
+        "FAIL campaign: E queues a self-cast through authority without aiming at a portrait",
+        "FAIL campaign: successful self-cast ends targeting and keeps selection",
+        "FAIL campaign: queued self-cast reaches native execution and pays stamina",
+        "FAIL campaign: E targets selected belt item at its holder: tiny potion 1",
+        "FAIL campaign: item execution consumes potion/charge through normal native rule: tiny potion 1",
+        "FAIL campaign: E targets selected belt item at its holder: wand 1.rock|healing{}",
+        "FAIL campaign: item execution consumes potion/charge through normal native rule: wand 1.rock|healing{}",
+        "FAIL campaign: E posts ordinary loot approach despite missing exact silhouette",
+        "FAIL campaign: nearby loot action has a visible named prompt",
+        "FAIL campaign: ordinary approach/use animation collects loot once",
+        "FAIL campaign: own original-multiplayer body remains eligible",
+        "FAIL original multiplayer Ingos: self action is named in the reticle prompt",
+        "FAIL original multiplayer Ingos: E queues a self-cast through authority without aiming at a portrait",
+        "FAIL original multiplayer Ingos: successful self-cast ends targeting and keeps selection",
+        "FAIL original multiplayer Ingos: queued self-cast reaches native execution and pays stamina",
+        "FAIL original multiplayer Ingos: E targets selected belt item at its holder: tiny potion 1",
+        "FAIL original multiplayer Ingos: item execution consumes potion/charge through normal native rule: tiny potion 1",
+        "FAIL original multiplayer Ingos: E targets selected belt item at its holder: wand 1.rock|healing{}",
+        "FAIL original multiplayer Ingos: item execution consumes potion/charge through normal native rule: wand 1.rock|healing{}",
+        "FAIL original multiplayer Ingos: E posts ordinary loot approach despite missing exact silhouette",
+        "FAIL original multiplayer Ingos: nearby loot action has a visible named prompt",
+        "FAIL original multiplayer Ingos: ordinary approach/use animation collects loot once",
+        "FAIL original multiplayer Ingos: own original-multiplayer body remains eligible"
+      ],
+      "other_processes_at_start": [
+        {
+          "pid": 1943871,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 1943871,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        },
+        {
+          "pid": 1945225,
+          "executable": "/home/llm2x/Documents/EI/local/scratchpad/third-person-kbm-20261010/candidate01/CursedLands.x86_64",
+          "headless": true
+        }
+      ],
+      "checks": 97,
+      "failures": [
+        "campaign: self action is named in the reticle prompt",
+        "campaign: E queues a self-cast through authority without aiming at a portrait",
+        "campaign: successful self-cast ends targeting and keeps selection",
+        "campaign: queued self-cast reaches native execution and pays stamina",
+        "campaign: E targets selected belt item at its holder: tiny potion 1",
+        "campaign: item execution consumes potion/charge through normal native rule: tiny potion 1",
+        "campaign: E targets selected belt item at its holder: wand 1.rock|healing{}",
+        "campaign: item execution consumes potion/charge through normal native rule: wand 1.rock|healing{}",
+        "campaign: E posts ordinary loot approach despite missing exact silhouette",
+        "campaign: nearby loot action has a visible named prompt",
+        "campaign: ordinary approach/use animation collects loot once",
+        "campaign: own original-multiplayer body remains eligible",
+        "original multiplayer Ingos: self action is named in the reticle prompt",
+        "original multiplayer Ingos: E queues a self-cast through authority without aiming at a portrait",
+        "original multiplayer Ingos: successful self-cast ends targeting and keeps selection",
+        "original multiplayer Ingos: queued self-cast reaches native execution and pays stamina",
+        "original multiplayer Ingos: E targets selected belt item at its holder: tiny potion 1",
+        "original multiplayer Ingos: item execution consumes potion/charge through normal native rule: tiny potion 1",
+        "original multiplayer Ingos: E targets selected belt item at its holder: wand 1.rock|healing{}",
+        "original multiplayer Ingos: item execution consumes potion/charge through normal native rule: wand 1.rock|healing{}",
+        "original multiplayer Ingos: E posts ordinary loot approach despite missing exact silhouette",
+        "original multiplayer Ingos: nearby loot action has a visible named prompt",
+        "original multiplayer Ingos: ordinary approach/use animation collects loot once",
+        "original multiplayer Ingos: own original-multiplayer body remains eligible"
+      ],
+      "evidence_path": "/home/llm2x/Documents/EI/local/scratchpad/third-person-kbm-20261010/baseline08/third-person-kbm.json"
+    },
+    {
+      "label": "candidate-test07",
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/third-person-kbm-20261010/candidate-test07/run.json",
+      "manifest_sha256": "c65278a6f6528176a668fc02c7957e2c92f3b1d8a30644067446cc017aee81a8",
+      "fixture_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/third-person-kbm-20261010/third_person_kbm.gd": "e102ccfddea5c0cc197f67b9165a8de48b1378529f2522ec7b602c2b38dd5c21"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "a6fee6c698c24513d03ecb801a8bc53893ea8a37400b716edbf6a692bea0c426",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "exit_code": 0,
+      "errors": [],
+      "other_processes_at_start": [
+        {
+          "pid": 1943871,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        },
+        {
+          "pid": 1945190,
+          "executable": "/home/llm2x/Documents/EI/local/scratchpad/lia-zone7-movement-audit-20261009/candidate01/CursedLands.x86_64",
+          "headless": true
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 1943871,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "checks": 97,
+      "failures": [],
+      "evidence_path": "/home/llm2x/Documents/EI/local/scratchpad/third-person-kbm-20261010/candidate-test07/third-person-kbm.json"
+    },
+    {
+      "label": "scene01",
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/third-person-kbm-20261010/scene01/run.json",
+      "manifest_sha256": "efd2c22c9268fc440a7135fad5810796162cce9b40b401d0106be00cf0137022",
+      "fixture_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/third-person-kbm-20261010/third_person_kbm_scene.gd": "51dcab959ccf3fd772034c83725102c76293bbcd3c346fc4f78971639c114db6",
+        "/home/llm2x/Documents/EI/local/scratchpad/third-person-kbm-20261010/third_person_kbm.gd": "e102ccfddea5c0cc197f67b9165a8de48b1378529f2522ec7b602c2b38dd5c21"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "a6fee6c698c24513d03ecb801a8bc53893ea8a37400b716edbf6a692bea0c426",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "exit_code": 0,
+      "errors": [],
+      "other_processes_at_start": [
+        {
+          "pid": 1943871,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 1946673,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        }
+      ],
+      "checks": 11,
+      "failures": [],
+      "evidence_path": "/home/llm2x/Documents/EI/local/scratchpad/third-person-kbm-20261010/scene01/third-person-kbm-scene.json"
+    },
+    {
+      "label": "direct-regression-baseline01",
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/third-person-kbm-20261010/direct-regression-baseline01/run.json",
+      "manifest_sha256": "7ea680e3da489b9c1249182ef2026be8ba5597ed8a9bc43a65c531de6a6c78e9",
+      "fixture_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/direct_controls.gd": "542576203705e5f94955cb9a0f4e9769eb274d99e8eb8b414dbe2ea8e6b0eb4a"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "5bb49355b5770be7bc04ef62d922630c781c66dbd552e0ae97ac95357dbcb207",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "exit_code": 1,
+      "errors": [
+        "FAIL mouse motion turns shoulder view"
+      ],
+      "other_processes_at_start": [
+        {
+          "pid": 1940448,
+          "executable": "/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/candidate02/CursedLands.x86_64",
+          "headless": true
+        },
+        {
+          "pid": 1940501,
+          "executable": "/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/candidate02/CursedLands.x86_64",
+          "headless": true
+        },
+        {
+          "pid": 1940548,
+          "executable": "/home/llm2x/Documents/EI/local/scratchpad/third-person-kbm-20261010/candidate01/CursedLands.x86_64",
+          "headless": true
+        },
+        {
+          "pid": 1940585,
+          "executable": "/home/llm2x/Documents/EI/local/scratchpad/lia-zone7-movement-audit-20261009/candidate01/CursedLands.x86_64",
+          "headless": true
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 1940448,
+          "executable": "/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/candidate02/CursedLands.x86_64",
+          "headless": true
+        },
+        {
+          "pid": 1940501,
+          "executable": "/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/candidate02/CursedLands.x86_64",
+          "headless": true
+        },
+        {
+          "pid": 1940883,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ]
+    },
+    {
+      "label": "direct-regression01",
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/third-person-kbm-20261010/direct-regression01/run.json",
+      "manifest_sha256": "17251eb974f51efe6b0116e8ad48c59b8ccab3192ffed636977cdc3ea91e7e66",
+      "fixture_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/direct_controls.gd": "542576203705e5f94955cb9a0f4e9769eb274d99e8eb8b414dbe2ea8e6b0eb4a"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "850d348af1257e4a6468f04403b047b290db4866e374e6f26049c6e48cc81e13",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "exit_code": 1,
+      "errors": [
+        "FAIL mouse motion turns shoulder view"
+      ],
+      "other_processes_at_start": [
+        {
+          "pid": 1939309,
+          "executable": "/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/baseline/CursedLands.x86_64",
+          "headless": true
+        },
+        {
+          "pid": 1939364,
+          "executable": "/home/llm2x/Documents/EI/local/scratchpad/windows-mp-visibility-pose-20261010/baseline/CursedLands.x86_64",
+          "headless": true
+        },
+        {
+          "pid": 1939623,
+          "executable": "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261009.2-linux-x86_64/CursedLands.x86_64",
+          "headless": false
+        },
+        {
+          "pid": 1939943,
+          "executable": "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261009.2-linux-x86_64/CursedLands.x86_64",
+          "headless": true
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 1939623,
+          "executable": "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261009.2-linux-x86_64/CursedLands.x86_64",
+          "headless": false
+        },
+        {
+          "pid": 1939943,
+          "executable": "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261009.2-linux-x86_64/CursedLands.x86_64",
+          "headless": true
+        },
+        {
+          "pid": 1940068,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        }
+      ]
+    }
+  ],
+  "coverage": {
+    "headless": 97,
+    "rendered": 11,
+    "campaign_zones": [
+      "gz1g",
+      "bz1g"
+    ],
+    "native_lmp_zones": [
+      "bz2mpg",
+      "z12q1"
+    ],
+    "real_data": "Mounted original models, database, databaseLMP, terrain and native-mode maps. Controlled hero skill/spell records and cloned native-model corpses/ally, not an organic campaign route.",
+    "authority": "Session/Game normal local authority and original LmpTravel command path. No ENet/client transport in this task.",
+    "headless_input": "Input.parse_input_event with frame waits. Headless fixture marks captured mouse routing without changing OS capture; rendered fixture verifies actual Input.MOUSE_MODE_CAPTURED.",
+    "core_controls": [
+      "Heal and friendly potion/wand to self",
+      "Native spell stamina and potion/charge consumption",
+      "Offensive, untrained, no-cast, exhausted, missing-item and spent-wand rejection",
+      "Safe-zone spell selection and already-pending rejection",
+      "Pointer/loading/focus/pause/script-block/echo/neutral/panel input fences",
+      "Real posed native ally picked by mouse; target/selection retained",
+      "Proximity ordinary approach plus use animation and money collection once",
+      "Hidden/fogged/invisible/looted/out-of-radius/foreign-owner and solid-navigation-span rejection",
+      "Own LMP body eligibility",
+      "Explicit farther-body crosshair target precedes nearer loot",
+      "Rendered captured mouse look, aimed click, E actions, pointer mode and right-click cancel"
+    ]
+  },
+  "images": {
+    "third-person-nearby-loot.png": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/third-person-kbm-20261010/scene01/third-person-nearby-loot.png",
+      "sha256": "bc0063a8449fcec31f9b50fcbfcf0511097b82cd60e4cdce8b2e70e3ef562c42",
+      "review": "Readable at 800x600, contextual E prompt below reticle and footer above party portrait; no clipping or overlap."
+    },
+    "third-person-self-cast.png": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/third-person-kbm-20261010/scene01/third-person-self-cast.png",
+      "sha256": "d2ecb38219fc582e11741f56d7a3e547b53fa27fb887329994edf29ee501500c",
+      "review": "Readable at 800x600, contextual E prompt below reticle and footer above party portrait; no clipping or overlap."
+    }
+  },
+  "retained_failed_explorations": {
+    "audit01": "Read-only source/data audit had one missing hero metadata diagnostic while observing a deferred LMP transfer too early; audit02 corrected wait and succeeded.",
+    "baseline01": "Invalid initial input harness omitted frame waits for buffered injected keys. Not used for defect counts.",
+    "baseline02_and_candidate-test01": "Prepared ally was revived and still changing pose; changed to a living native-model fixture and captured mouse routing.",
+    "baseline03_and_candidate-test02": "79-check earlier scope, baseline16 failures/candidate0; final scope adds item and target-priority cases.",
+    "baseline04_to_baseline07_and_candidate-test03_to_candidate-test06": "Retained all logs/frozen fixtures. Additional exact-corpse target controls exposed test aiming between native pose/projection updates; final fixture freezes its prepared pose and waits frames after camera projection changes. Do not use these unstable control failures as product regressions.",
+    "direct_controls": "Existing unmodified fixture gives exactly one identical failure on baseline and candidate: headless mouse motion turns shoulder view. The other32 pass. Final rendered captured-mouse case passes explicitly; no claim that the old headless fixture was repaired."
+  },
+  "limits": [
+    "No Windows runtime, hardware keyboard/mouse, ENet or campaign co-op client qualification. Rendered Linux uses injected keyboard/mouse events through normal handlers.",
+    "No full physical quest/campaign route, original/user-save modification, package replacement or publication.",
+    "Some headless runs overlapped other engines; scene01 was coordinated and its engine was released to relief_debug before receipt work. No performance claim.",
+    "Canonical production and handoffs remain unmodified by this task. Parent integrated the separate lever fix as567bd64; this candidate stays frozen at e002052 except its two owned UI/input files."
+  ],
+  "origin_receipt": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/third-person-kbm-20261010/qualification.json",
+    "sha256": "bb60b8310802f2e786ddc972ba84d2109b3c91cf3b1be6ae14357adf3b39ace8"
+  }
+}

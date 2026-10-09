@@ -31,18 +31,22 @@ class Reticle extends Control:
 			draw_line(at+d*4.0,at+d*9.0,Color(1,1,1,0.9),1.0)
 		if PadInput.active != "pad":
 			var font := Interface800.font()
-			var text := RemakeText.t("WASD: move   Mouse: look   Left click: attack   E: interact   Tab: pointer" \
-				if controls.game.session.command_allowed({"t":"direct_attack"}) else \
-				"WASD: move   Mouse: look   E: interact   Tab: pointer")
+			var text := controls.keyboard_hint()
 			var k := size.y / 600.0
-			var fs := maxi(12,roundi(13.0*k))
-			var width := font.get_string_size(text,HORIZONTAL_ALIGNMENT_LEFT,-1,fs).x
-			if width > size.x-100.0*k:
-				fs = maxi(10,floori(fs*(size.x-100.0*k)/width))
-				width = font.get_string_size(text,HORIZONTAL_ALIGNMENT_LEFT,-1,fs).x
-			var from := Vector2((size.x-width)*0.5,size.y-128.0*k)
-			draw_rect(Rect2(from-Vector2(8,fs+4),Vector2(width+16,fs+10)),Color(0,0,0,0.65))
-			draw_string(font,from,text,HORIZONTAL_ALIGNMENT_LEFT,-1,fs,Interface800.TEXT)
+			_draw_hint(font,text,size.y-128.0*k,k)
+			var action := controls.interaction_hint()
+			if not action.is_empty():
+				_draw_hint(font,action.text,size.y*0.5+36.0*k,k,
+					Interface800.TEXT if action.enabled else Interface800.GREY)
+	func _draw_hint(font: Font,text: String,y: float,k: float,colour := Interface800.TEXT) -> void:
+		var fs := maxi(12,roundi(13.0*k))
+		var width := font.get_string_size(text,HORIZONTAL_ALIGNMENT_LEFT,-1,fs).x
+		if width > size.x-100.0*k:
+			fs = maxi(10,floori(fs*(size.x-100.0*k)/width))
+			width = font.get_string_size(text,HORIZONTAL_ALIGNMENT_LEFT,-1,fs).x
+		var from := Vector2((size.x-width)*0.5,y)
+		draw_rect(Rect2(from-Vector2(8,fs+4),Vector2(width+16,fs+10)),Color(0,0,0,0.65))
+		draw_string(font,from,text,HORIZONTAL_ALIGNMENT_LEFT,-1,fs,colour)
 
 
 func _init(g: Game = null) -> void:
@@ -185,7 +189,9 @@ func handle_input(e: InputEvent) -> bool:
 	if e is InputEventKey:
 		if e.physical_keycode in [KEY_W,KEY_A,KEY_S,KEY_D]: return true
 		if e.physical_keycode == KEY_E:
-			if e.pressed and not e.echo: interact()
+			if e.pressed and not e.echo:
+				if game.has_spell_target(): cast_self()
+				else: interact()
 			return true
 	return false
 
@@ -262,29 +268,116 @@ func attack() -> void:
 	game.issue({"t":"direct_attack","units":[u.uid],"direction":d})
 
 
-func interact() -> void:
-	if not usable(): return
+## Keyboard E has an explicit self action while a friendly spell/item is
+## selected. Left click still uses the aimed target, including another hero.
+func _self_target() -> Dictionary:
+	if not field().friendly_spell(): return {}
+	var info := game.pending_target(leader())
+	if info.is_empty() or info.caster.controller != game.session.my_index or GameSound.blocked(info.caster): return {}
+	if not game.session.command_allowed({"t":"use" if not String(info.item).is_empty() else "direct_cast"}): return {}
+	return info
+
+
+func cast_self() -> void:
+	if not usable() or pointer or _neutral or get_tree().paused or _self_target().is_empty(): return
+	field()._stop_moving()
+	if not game.cast_portrait(leader()): return
+	field().target = {}
+	field().reticle = null
+	game.pending_spell = ""
+	game.hud.set_targeting("")
+	_fire = false
+
+
+func keyboard_hint() -> String:
+	if game.has_spell_target():
+		return RemakeText.t("WASD: move   Mouse: look   Left click: cast   Right click: cancel   Tab: pointer")
+	return RemakeText.t("WASD: move   Mouse: look   Left click: attack   E: interact   Tab: pointer" \
+		if game.session.command_allowed({"t":"direct_attack"}) else \
+		"WASD: move   Mouse: look   E: interact   Tab: pointer")
+
+
+func interaction_hint() -> Dictionary:
+	if game.has_spell_target():
+		if not field().friendly_spell(): return {}
+		return {"text":"E: " + RemakeText.t("Cast on self"),"enabled":not _self_target().is_empty()}
+	var action := _interaction_target(true)
+	if action.is_empty(): return {}
+	var verb := "Use"
+	var title := ""
+	if action.has("unit"):
+		var target: GameUnit = action.unit
+		verb = "Revive" if game.revive_target(target) != null else "Loot" if target.dead else "Talk"
+		title = WorldLabels.unit_name(target)
+	elif action.has("lever"):
+		title = WorldLabels.lever_title(game.world,int(action.lever))
+	else:
+		verb = "Exit"
+	return {"text":"E: " + RemakeText.t(verb) + (" — " + title if not title.is_empty() else ""),"enabled":true}
+
+
+## Nearby small bodies/piles need no exact silhouette hit. This only chooses
+## an ordinary loot order; the host still owns reach, pathing and LMP purses.
+const LOOT_RADIUS := 3.0
+func _nearby_loot() -> GameUnit:
 	var u := leader()
+	if u == null or game.session.shop_available(): return null
+	var best := LOOT_RADIUS * LOOT_RADIUS
+	var found: GameUnit
+	var conn := PadField.conn_id(self,game.session.online)
+	for target: GameUnit in game.world.units_near(u.pos,LOOT_RADIUS):
+		if target.hidden or target.fogged or not target.visible or target.get_meta("looted",false) \
+			or not Session.lootable(target,game.session.my_index,conn): continue
+		var d := u.pos.distance_squared_to(target.pos)
+		if d > best or (is_equal_approx(d,best) and found and target.uid > found.uid): continue
+		# A body on another floor or behind a solid wall is not a nearby action.
+		var from := DirectCombat.origin(u)
+		var ground := game.world.ground_at(target.pos.x,target.pos.y)
+		var to := Vector3(target.pos.x,ground+0.3,-target.pos.y)
+		if absf(game.world.ground_at(u.pos.x,u.pos.y)-ground) > 1.5 \
+			or DirectCombat.scene_fraction(game.world,from,to) < 1.0: continue
+		best = d
+		found = target
+	return found
+
+
+func _interaction_target(nearby: bool) -> Dictionary:
+	var u := leader()
+	if u == null: return {}
 	var p := get_viewport().get_visible_rect().size*0.5
-	var target := game.pick_unit(p,leader())
-	if target and target != u:
-		# Talking, looting and reviving keep their ordinary approach orders.
-		if not target.dead and not game.session.shop_available():
-			if game.world.is_enemy(u,target): return
-		game.order_on(target,false)
-		return
+	var target := game.pick_unit(p,u)
+	if target:
+		if not nearby: # Keep the controller's existing exact-target interaction.
+			if not target.dead and not game.session.shop_available() and game.world.is_enemy(u,target): return {}
+			return {"unit":target}
+		if target.dead:
+			if game.revive_target(target) != null or Session.lootable(target,game.session.my_index,PadField.conn_id(self,game.session.online)):
+				return {"unit":target}
+		elif game.session.shop_available() or not game.world.is_enemy(u,target):
+			return {"unit":target}
 	var lever := game.pick_lever(p)
-	if lever >= 0:
-		game.order_on(null,false,null,lever)
-		return
+	if lever >= 0: return {"lever":lever}
+	if nearby:
+		target = _nearby_loot()
+		if target: return {"unit":target}
 	for id in game.world.zone.get("exits",{}):
 		var exit: Dictionary = game.world.zone.exits[id]
 		if not exit.has("remove") or String(exit.get("to","none")) == "none": continue
 		var area: Rect2 = exit.remove
-		if area.grow(2.0).has_point(u.pos):
-			var at := area.get_center()
-			game.issue({"t":"move","units":[u.uid],"x":at.x,"y":at.y,"exit":id})
-			return
+		if area.grow(2.0).has_point(u.pos): return {"exit":id,"at":area.get_center()}
+	return {}
+
+
+func interact() -> void:
+	if not usable() or pointer or _neutral or get_tree().paused: return
+	var action := _interaction_target(PadInput.active != "pad")
+	if action.has("unit"):
+		# Talking, looting and reviving keep their ordinary approach orders.
+		game.order_on(action.unit,false)
+	elif action.has("lever"):
+		game.order_on(null,false,null,int(action.lever))
+	elif action.has("exit"):
+		game.issue({"t":"move","units":[leader().uid],"x":action.at.x,"y":action.at.y,"exit":action.exit})
 
 
 func apply_camera() -> void:
