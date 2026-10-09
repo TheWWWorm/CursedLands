@@ -12,11 +12,14 @@ The source audit and priorities are in
 gameplay goal. Continue on `fix/catacomb-coop-deck` in
 `/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo`.
 The earlier river-current checkpoint is `eda826d`; new checkpoints below cover
-propagating water waves, authored waterfalls and reorganized graphics settings.
+propagating water waves, authored waterfalls, ambient life, clouds/shadows, verified
+rock projection, guarded camera blur and reorganized graphics settings.
 Gameplay U39–U44 and the separate U45 removed-actor death-predicate correction
 are committed; the reported U45 incomplete quest remains unreproduced.
-V3/V5/V6/V8 follow-ups are in progress; do not treat the
-historical pause statements in older evidence as a current stop instruction.
+V3, cloud/shadow V5, conservative V6 and camera-policy V8 adaptations are now
+committed. Local water mist and the final combined export are in progress. V7
+requires verified campaign placement data. Do not treat the historical pause
+statements in older evidence as a current stop instruction.
 
 The original worktree above is historical. Source version remains Experimental 6
 and protocol 13. This task uses private exports and isolated profiles. Installed
@@ -4043,7 +4046,7 @@ Implementation: `game/src/game/fx/clouds.gd`, `game/src/game/gfx.gd`,
 `game/src/game/sky.gd` and the terrain publication/lifecycle hooks. The option's
 EN/RU/DE metadata was validated and committed with `4a595dc`. Full volumetric
 clouds and physical-device costs remain separate work; localized weather mist
-is the next bounded atmosphere stage.
+is being validated as the next bounded atmosphere stage.
 
 [Cloud evidence](validation/clouds-2026-10-09.json) records **193 passing checks
 in five final private runs**, with 45 captures. Base and LiA headless policy/
@@ -4076,6 +4079,95 @@ records the baseline failure and **15 passing checks across three backends**:
 a uniform cloud shadow exactly matches reducing only the original sun, while
 ambient/local light and the zero-night-shadow control remain exact. The real
 combined terrain/contact captures are recorded with the subsequent V6 checkpoint.
+
+## V3: bounded ambient animals and regional particles — 9 October
+
+Accepted in `78fbd79`. Separate World/textures options for ambient wildlife and
+regional particles default off. `ambient_life.gd` owns at most two ground
+residents, three birds and 192 particle quads near the view. Original rat,
+spider, toad and bird models/animations supply decorative figures; they never
+enter GameUnit, collision, navigation, save, network or gameplay RNG state.
+Fixed hashed placement cells, bounded cooldowns and visible-unit threats limit
+population churn and suppress decoration during nearby combat. All animation,
+movement and emission use the pausable terrain clock and existing weather wind.
+
+`ambient_habitats.gd` reads actual jittered terrain/liquid triangles, scripted
+liquid offsets and relevant authored scenery. `ambient_ground.gd` places small
+animals on the visible loose-ground surface, including actual CPU footprint
+images and dense subdivision, and re-seats held poses when terrain options
+change. This corrected a real test failure where raised snow buried a mouse.
+`ambient_models.gd` and `ambient_particles.gd` retain bounded presentation state.
+Regional effects cover pollen, deciduous leaves, Dead City motes, cave dust,
+lava embers, desert dust, snow motes and Gipat night fireflies. Base zone9 and
+LiA zone9 retain their different habitats.
+
+[Ambient-life evidence](validation/ambient-life-2026-10-09.json) records **1,088
+passing checks over 15 isolated runs**, with inspected base/LiA regional images,
+three desktop backends, world/clock/option lifecycle, threat visibility and the
+snow/footprint regression. The receipt distinguishes earlier unaffected particle
+captures from the final visible-ground source snapshot. Small animals remain
+subtle; original model parts can add up to 61 mesh submissions, and the particle
+field adds one. These bounds do not establish a frame-time benefit. Long routes,
+physical devices, extra species, perching and carrion behavior remain follow-ups.
+The regional test views also retain existing map-edge fog rather than retuning
+unrelated terrain/lighting for attractive screenshots.
+
+## V6: optional verified rock projection — 9 October
+
+Accepted in `7c0f2d6`, with default-off metadata from `13d8de0`.
+`terrain_cliff.gd`, `terrain_cliff_shader.gd` and the generated original-atlas
+metadata project existing rock artwork from two side planes on verified plain
+natural-rock slopes. The effect fades in between 40 and 55 degrees and out
+between 80 and 140 metres. Adjacent-facet guards preserve flat ledges and blend
+eligible neighbours symmetrically. Original terrain, the live colour-cache
+material and rigid-scenery ground contact share the same helper and fields.
+
+Classification uses exact original atlas fingerprints and four matching authored
+Stone/Rock corners. Paths, transitions, unknown or modified atlases, unsupported
+packed flags, snow/ice/liquid types and invalid geometry retain their previous
+appearance. Original triangle geometry, navigation and collision stay unchanged;
+there are no additional draws. Existing tile-edge blending, painted relief,
+macro variation and wet banks remain authoritative. Broad material-transition
+reconstruction and geometry rounding are separate work.
+
+[Cliff evidence](validation/terrain-cliffs-2026-10-09.json) records **888 passing
+runtime checks**, **83 independent full-RGB image assertions** and 117 captures.
+A 62-map base/LiA census validates source admission. Three desktop backends
+cover default-off/unknown/disabled restoration, cached ground colour, and
+composed clouds, materials, surface weather, caustics, currents, waves and
+ground contact. That combined work found and corrected the independent contact
+sunlight path described above. The initial Mobile async-specialization residual
+is retained separately; settled comparisons pass. Functional Linux validation
+does not establish device or frame-time acceptance.
+
+## V8: guarded optional camera depth of field — 9 October
+
+Accepted in `a533078`. `CameraDepthOfField` applies the pinned R1 25-to-50-degree
+pitch fade and strength 0.2 to a far-only Godot lens. It follows the rig's actual
+orbit, dialogue or direct-control target with 0.3-second log-space smoothing.
+This transfers the camera policy without R1's median nine-depth-sample focus.
+Tactical views, movies, transparent previews and unsupported backends release
+the lens. Prior camera/world attributes restore, and an external attribute
+owner takes precedence. Canvas UI remains outside the 3D blur pass.
+
+The ordinary native low-quality kernel produced foreground colour halos.
+`engine_patches/godot-4.7/far-dof-sharp-guard.patch` therefore adds a narrow
+far-only guard: existing full-resolution targets, exact sharp-texel returns,
+integer taps, sharp-source rejection and corrected raster pixel centres.
+Clear sky remains sharp as a conservative boundary policy. Near-enabled
+legacy kernels are unchanged. `OS.has_feature("ei_far_dof_guard")` is a native
+capability; stock and earlier runtimes cannot accidentally activate the lens.
+The optional setting defaults off on every graphics tier.
+
+[Depth-of-field evidence](validation/camera-depth-of-field-2026-10-09.json)
+records **657 passing checks in 15 retained runs**, including strict foreground,
+focus, font/UI and sky-boundary controls on Forward+ and Mobile. All **26
+old/new near-only and near-plus-far image pairs are exact**. The original
+actor-visible Dead City dialogue pair was inspected qualitatively; failed
+freeze-fixture captures are excluded from acceptance. The ninth patched Linux
+runtime is private at `camera-dof-20261009/build-guarded/CPU.x86_64`, SHA-256
+`769dd027c0b444caca0d5fbbb6014eda80970e991e9f32fdb1f86ec385d20c3e`.
+This is not full R1 horizon/focus parity, a platform rollout or a performance claim.
 
 ## V7: neighbouring-map scenery requires verified placements
 
@@ -4165,4 +4257,16 @@ and actor/script-free teardown against the audit's V7 acceptance list.
    long routes and device acceptance remain separate work.
    Preserve the coastal mean-depth boundary limitation and the mound
    Mobile restoration limitation and construction-cost evidence. No visual effect
-   was silently enabled.
+   was silently enabled. V3 now has bounded local wildlife/particles with
+   visible-ground placement. V5 has shared clouds, sunlight-only shadows and
+   reflected cloud colour; localized water mist is undergoing validation.
+   V6 now projects verified original rock art on steep faces without changing
+   geometry. V8 now applies the optional camera policy with a capability-gated
+   native far-only guard. Their larger parity/device follow-ups are explicit in
+   their receipts. V7 remains dependent on verified campaign layout data.
+7. **Gameplay continuation:** U39–U44 and the separate U45 premature-completion
+   fix are committed. The all-dead incomplete queen report still needs a
+   reproducing save. The LiA Haburu source audit and a newly reproduced authored
+   camp approach issue are being validated. Follow the current gameplay handoff
+   for original routes, missing-data boundaries and platform-specific reports;
+   do not infer further quest fixes from unconfirmed player states.

@@ -1,0 +1,356 @@
+{
+  "date": "2026-10-09",
+  "status": "Core composed renderer and gameplay regressions accepted; final full-source export and live-owner/menu integration still pending.",
+  "scope": [
+    "Real actor contact deposits a persistent numerical wave history while terrain cliffs, material lighting, ground contact, clouds, weather surfaces, river currents, caustics, authored waterfalls and custom water reflections are enabled together.",
+    "Inherited water controls cover empty/held/restored, swamp/lava, pause/travel/movie/loading/flood and ownership cleanup. Per-feature receipts establish their individual classification and image quality.",
+    "Core committed revision predates application DOF and mist implementation; it deliberately uses the new guarded native runtime to exercise the combined existing pipeline. Late features require the separately recorded final export.",
+    "Private isolated Linux profiles and original archive reads only. Simulations/rendering are functional checks; occasional independent headless editor imports are captured by process inventories and are not performance evidence."
+  ],
+  "core_export": {
+    "manifest": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/core-integrated/export.json",
+    "manifest_sha256": "2cb049271ae6dcf722727422920fbe59d6d851b36dcb9672f691b2b28c4c59a4",
+    "revision": "7c0f2d611c697e644e8c687ecb8cf4dc73d0926b",
+    "sha256": {
+      "CursedLands.x86_64": "769dd027c0b444caca0d5fbbb6014eda80970e991e9f32fdb1f86ec385d20c3e",
+      "CursedLands.pck": "fdd1a67984861c308bb947cad4fef3f0b5f104ecac1417b36c56960304199356",
+      "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+    },
+    "working_changes_excluded": " M game/src/ei/game_data.gd\n M game/src/ei/remake_text.gd\n M game/src/game/fx/ambient_habitats.gd\n M game/src/game/game.gd\n M game/src/game/gfx_detect.gd\n M game/src/ui/camera_rig.gd\n?? game/src/game/fx/weather_mist.gd\n?? game/src/game/fx/weather_mist_sources.gd\n?? game/src/ui/camera_depth_of_field.gd\n"
+  },
+  "accepted": [
+    {
+      "label": "core-render-gl",
+      "checks": 28,
+      "failures": 0,
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/core-render-gl/run.json",
+      "manifest_sha256": "805233ec60ca5b02821e34258e5c83f20bbb45678749e98523a9900a2f778315",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/core-render-gl/run.log",
+      "log_sha256": "e8cf5f20036393c2a466aa8e7ebb7e16d09b5159ae09cc1a81ea26d70bf36d9e",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/core-integrated/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/core-render-gl/tool-source.gd"
+      ],
+      "return_code": 0,
+      "seconds": 22.531365045986604,
+      "timeout_seconds": 180,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "campaign": "base",
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/renderer_followup_integration.gd": "3e86268284106c6b84e3d1fedebd2f23171ed7a1af9585e29f65a6405065fb0a",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_wave_render.gd": "d7973cb18160092527529f72ba4f522f2def839273f7cbb064648d631648b359",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_wave_field.gd": "e6fdbe12a7c8534706b1b917d8c27f7bb29b39821e534e97969cd2a605fc808b",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "769dd027c0b444caca0d5fbbb6014eda80970e991e9f32fdb1f86ec385d20c3e",
+        "CursedLands.pck": "fdd1a67984861c308bb947cad4fef3f0b5f104ecac1417b36c56960304199356",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "other_processes_at_start": [],
+      "other_processes_at_end": [
+        {
+          "pid": 879440,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        },
+        {
+          "pid": 879865,
+          "executable": "/home/llm2x/Documents/EI/local/scratchpad/haburu-audit-20261009/candidate/CursedLands.x86_64",
+          "headless": true
+        }
+      ],
+      "captures": {
+        "water-interaction-wave-history-control.png": "1fc13588fe5984cf210e4a09f11edc448c8b0dda1eb9845028cdbf227338b1b4",
+        "water-interaction-wave-off.png": "918fc196cc01bbec2525d1a4081bc7c7c1bb500bb258dde840f0c2b9876e6f9a",
+        "water-interaction-wave-clock-held.png": "52f4ae5ba0c613c06e55328dc8068bcca85b49da484ae88a3a325289d8717957",
+        "water-interaction-wave-swamp-control.png": "55c8c5bf5d0ae5d88bedd557f9b6c4952771438b406a129904dce396abad1d35",
+        "water-interaction-wave-lava-control.png": "5d7560763dbeaa96e071dadfecbd80cae4782b55eb2bd47e974afe136e280b6f",
+        "water-interaction-wave-lingering.png": "52f4ae5ba0c613c06e55328dc8068bcca85b49da484ae88a3a325289d8717957",
+        "water-interaction-wave-empty.png": "918fc196cc01bbec2525d1a4081bc7c7c1bb500bb258dde840f0c2b9876e6f9a",
+        "water-interaction-wave-lava.png": "5d7560763dbeaa96e071dadfecbd80cae4782b55eb2bd47e974afe136e280b6f",
+        "water-interaction-wave-reenabled-empty.png": "227dfa3ec7878f06985e90a677535ad35cbf4b2a2598bd3def3813a7e33a718d",
+        "water-interaction-wave-disabled.png": "227dfa3ec7878f06985e90a677535ad35cbf4b2a2598bd3def3813a7e33a718d",
+        "water-interaction-wave-swamp.png": "55c8c5bf5d0ae5d88bedd557f9b6c4952771438b406a129904dce396abad1d35"
+      }
+    },
+    {
+      "label": "core-render-forward",
+      "checks": 28,
+      "failures": 0,
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/core-render-forward/run.json",
+      "manifest_sha256": "dd78c38e6f3d466f4a0dec4bb814ff031602a8aecff0f86b143c91478b93f1b2",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/core-render-forward/run.log",
+      "log_sha256": "8e252597f03c8ddabcf9636c1bdcdc986d6d40c1c870046457e3a8aa1300dcbd",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/core-integrated/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/core-render-forward/tool-source.gd"
+      ],
+      "return_code": 0,
+      "seconds": 19.28636685598758,
+      "timeout_seconds": 180,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [],
+      "campaign": "base",
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/renderer_followup_integration.gd": "3e86268284106c6b84e3d1fedebd2f23171ed7a1af9585e29f65a6405065fb0a",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_wave_render.gd": "d7973cb18160092527529f72ba4f522f2def839273f7cbb064648d631648b359",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_wave_field.gd": "e6fdbe12a7c8534706b1b917d8c27f7bb29b39821e534e97969cd2a605fc808b",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "769dd027c0b444caca0d5fbbb6014eda80970e991e9f32fdb1f86ec385d20c3e",
+        "CursedLands.pck": "fdd1a67984861c308bb947cad4fef3f0b5f104ecac1417b36c56960304199356",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 884378,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        },
+        {
+          "pid": 885385,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        },
+        {
+          "pid": 885834,
+          "executable": "/home/llm2x/Documents/EI/local/scratchpad/haburu-audit-20261009/candidate/CursedLands.x86_64",
+          "headless": true
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 885385,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "captures": {
+        "water-interaction-wave-history-control.png": "4810c4e2080facd4918c7d9ba7bc34474450987a65be55e9a60d6aa081fe5a2b",
+        "water-interaction-wave-off.png": "dac12e2ec0ad345bc9b5f55a8b0570d0d676b2959bd4fc1bb3c6243652087eed",
+        "water-interaction-wave-clock-held.png": "78b5fe7d9a7c0258e2e5737ee6db7c1c17d052b4ac817bbc9258ef0ba97b9ecb",
+        "water-interaction-wave-swamp-control.png": "75fca3661309a8e80052b237e5e019bbb47191285da9993fd3ccc14f1c6861b3",
+        "water-interaction-wave-lava-control.png": "b979d88224535e4e853b555dd1e7d42c210acb7b12a573ff63e1ba51a03cc71d",
+        "water-interaction-wave-lingering.png": "78b5fe7d9a7c0258e2e5737ee6db7c1c17d052b4ac817bbc9258ef0ba97b9ecb",
+        "water-interaction-wave-empty.png": "dac12e2ec0ad345bc9b5f55a8b0570d0d676b2959bd4fc1bb3c6243652087eed",
+        "water-interaction-wave-lava.png": "b979d88224535e4e853b555dd1e7d42c210acb7b12a573ff63e1ba51a03cc71d",
+        "water-interaction-wave-reenabled-empty.png": "d132bb9c319ee08a5c9a8f453c56882829b12523d9322018ab07cc10ee721dad",
+        "water-interaction-wave-disabled.png": "d132bb9c319ee08a5c9a8f453c56882829b12523d9322018ab07cc10ee721dad",
+        "water-interaction-wave-swamp.png": "75fca3661309a8e80052b237e5e019bbb47191285da9993fd3ccc14f1c6861b3"
+      }
+    },
+    {
+      "label": "core-render-mobile",
+      "checks": 28,
+      "failures": 0,
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/core-render-mobile/run.json",
+      "manifest_sha256": "500fbce4b86e790ad1bdac4b197bb8ea0f26bb11f17500663c6daa3b84d4d046",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/core-render-mobile/run.log",
+      "log_sha256": "fc480a5f214e258ca96013d55e22c9b974c86edd597f2ff5b07b625b4621518a",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/core-integrated/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "mobile",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/core-render-mobile/tool-source.gd"
+      ],
+      "return_code": 0,
+      "seconds": 17.27423752300092,
+      "timeout_seconds": 180,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [],
+      "campaign": "base",
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/renderer_followup_integration.gd": "3e86268284106c6b84e3d1fedebd2f23171ed7a1af9585e29f65a6405065fb0a",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_wave_render.gd": "d7973cb18160092527529f72ba4f522f2def839273f7cbb064648d631648b359",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_wave_field.gd": "e6fdbe12a7c8534706b1b917d8c27f7bb29b39821e534e97969cd2a605fc808b",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "769dd027c0b444caca0d5fbbb6014eda80970e991e9f32fdb1f86ec385d20c3e",
+        "CursedLands.pck": "fdd1a67984861c308bb947cad4fef3f0b5f104ecac1417b36c56960304199356",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 886570,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 886570,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        },
+        {
+          "pid": 887502,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        }
+      ],
+      "captures": {
+        "water-interaction-wave-history-control.png": "d063119ab4357a620e4688d9ea7186dd914d897bc65cc83ebd24b66a856829af",
+        "water-interaction-wave-off.png": "2c4b1c39dbe392b0357aa2c5c93b750d40f88e5ea21b4b5297cf9228ffb037a0",
+        "water-interaction-wave-clock-held.png": "ae5ed8ab12985ab9ee16490bde7b418c2b31cc5ca1c4eac0c32e21778674b9cf",
+        "water-interaction-wave-swamp-control.png": "14ba39d635ce221294b557d48846b4a81f85df5f9bdc0b6f69a08e808eddb32f",
+        "water-interaction-wave-lava-control.png": "e3114181daf186e0e2c92d85ab79b2028ec7cdd3dcdb3d00b168228ffffb9842",
+        "water-interaction-wave-lingering.png": "ae5ed8ab12985ab9ee16490bde7b418c2b31cc5ca1c4eac0c32e21778674b9cf",
+        "water-interaction-wave-empty.png": "2c4b1c39dbe392b0357aa2c5c93b750d40f88e5ea21b4b5297cf9228ffb037a0",
+        "water-interaction-wave-lava.png": "e3114181daf186e0e2c92d85ab79b2028ec7cdd3dcdb3d00b168228ffffb9842",
+        "water-interaction-wave-reenabled-empty.png": "7a649f84d4c635648306ce6b09335282111719ab97a12a2f5d92ad594fd3e773",
+        "water-interaction-wave-disabled.png": "7a649f84d4c635648306ce6b09335282111719ab97a12a2f5d92ad594fd3e773",
+        "water-interaction-wave-swamp.png": "14ba39d635ce221294b557d48846b4a81f85df5f9bdc0b6f69a08e808eddb32f"
+      }
+    },
+    {
+      "label": "core-camp",
+      "checks": 88,
+      "failures": 0,
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/core-camp/run.json",
+      "manifest_sha256": "7d52e698a088e2b20c29938104792c7c2b3141422149d60087531ca2f25ca8e8",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/core-camp/run.log",
+      "log_sha256": "e65a60d03e3f6b0bc8a905e5e613500aaf953d019ce8a7143a4a66962be864a7",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/core-integrated/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/core-camp/tool-source.gd"
+      ],
+      "return_code": 0,
+      "seconds": 8.75809011500678,
+      "timeout_seconds": 180,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "campaign": "base",
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camp_inventory_ui.gd": "fa8e414dc1bf497bd4c56d7f42562430b76cc5ce209e11f00856700b0f800344"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "769dd027c0b444caca0d5fbbb6014eda80970e991e9f32fdb1f86ec385d20c3e",
+        "CursedLands.pck": "fdd1a67984861c308bb947cad4fef3f0b5f104ecac1417b36c56960304199356",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "other_processes_at_start": [],
+      "other_processes_at_end": [],
+      "captures": {}
+    },
+    {
+      "label": "core-queen-corrected-teardown",
+      "checks": 38,
+      "failures": 0,
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/queen-teardown-20261009/final-01/run.json",
+      "manifest_sha256": "f06d4a69900d9aa02bed701c5c8ad9857f6732cb7d6702e50d9063871547de67",
+      "evidence": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/core-integrated/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/queen-teardown-20261009/final/cave_queen_route.gd",
+          "--source=3"
+        ],
+        "return_code": 0,
+        "seconds": 14.032601819984848,
+        "errors": [],
+        "source_sha256": {
+          "cave_queen_route.gd": "7f5a0e774350fc3720cb36d865a53cb4fb0b9f995ca4c04d97b4866205f36be7",
+          "story_coop_traps_net.gd": "467645c27cbfe2ce9130f22fe4ac7d68edfdf7e57a867685e212cff480fb35d4"
+        },
+        "log_sha256": "629e9344db54fc61bfcdcf0d6231eb7f81823bcd81272b54a9e954023e2907b5"
+      },
+      "build_manifest": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/core-integrated/export.json",
+      "teardown_receipt": "docs/validation/network-fixture-teardown-2026-10-09.json"
+    }
+  ],
+  "passing_checks": 210,
+  "captures": 33,
+  "visual_review": {
+    "image": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/core-render-review.png",
+    "sha256": "a8f1ccf0debe5e5f98468834435306aa23be568f188eb033c146f76fa533c64e",
+    "observations": "Inspected all three backend off/history/control triplets. The authored river and rock/ground shading are coherent, with subtle persistent trail changes and matching restoration controls. The isolated fixture uses a plain background; this does not establish full gameplay sky or atmospheric acceptance."
+  },
+  "excluded": [
+    {
+      "label": "core-queen",
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/renderer-followup-20261009/integration/core-queen/run.json",
+      "reason": "All38 quest checks passed, but late cleanup RPC through a closed peer is a runtime error. Forced test teardown reproduces it; fixture-only b742ddc correction and clean rerun above replace acceptance. No production network change."
+    }
+  ],
+  "limits": [
+    "No Windows, macOS, Android, web, physical-input or internet-session acceptance is implied.",
+    "No general FPS, native resource cost, full campaign, or long-session claim.",
+    "V7 neighbour scenery needs reliable campaign placements; reported U45 incomplete queen quest still needs a reproducing save."
+  ]
+}
