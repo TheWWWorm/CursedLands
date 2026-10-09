@@ -368,10 +368,18 @@ func records(key: Vector2i, boxes: Array, trees: Array) -> Array[Dictionary]:
 			if blocked: continue
 			var flowers := patch(p)
 			var density := weights(hit,tree_influence(p,trees),flowers)
+			# Species use independent rolls on one placement lattice. A solid
+			# stone reserves its root so a tuft/flower/bush cannot sprout inside
+			# it. Consume the same random stream and retain all other roots.
+			var stone := rolls[Kind.STONE] < density[Kind.STONE]*SPACING*SPACING and footprint(p,hit,Kind.STONE,RADII[Kind.STONE]*scale)
 			var anchor := Vector4(-2,0,0,0)
 			for kind in DRY_KINDS:
 				var fitted := scale/3.0 if biome=="dead_city" and kind==Kind.BUSH else scale
-				if rolls[kind] >= density[kind]*SPACING*SPACING or not footprint(p,hit,kind,RADII[kind]*fitted): continue
+				if kind == Kind.STONE:
+					if not stone: continue
+				else:
+					if stone and kind in [Kind.FLOWER,Kind.DRY,Kind.BUSH]: continue
+					if rolls[kind] >= density[kind]*SPACING*SPACING or not footprint(p,hit,kind,RADII[kind]*fitted): continue
 				if anchor.x == -2: anchor = surface_anchor(p)
 				if not anchor.is_finite(): break
 				result.append({"kind":kind,"p":p,"height":float(hit.height),"normal":hit.normal,"colour":hit.colour,

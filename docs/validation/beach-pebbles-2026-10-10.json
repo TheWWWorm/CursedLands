@@ -1,0 +1,379 @@
+{
+  "date": "2026-10-10",
+  "status": "Integrated for the next local test build, not yet packaged for the user.",
+  "changes": [
+    "Four rounded smooth-normal Blender models replace the pointed stone primitive.",
+    "One shared generated stone texture with mipmaps is used by the existing chunk surface/material; no per-stone nodes or draw calls.",
+    "Original root/seed/normal/soft-ground/water attachment retained. Stones reserve their shared placement root against flowers, dry grass tufts and bushes."
+  ],
+  "source_sha256": {
+    "game/src/game/fx/biome_cover.gd": "71854b4ed9dd84adf0071633c4312a5572c4ec142c0d820143208466d95a0154",
+    "game/src/game/fx/biome_cover_mesh.gd": "fae4ec5eea599902574565490236d5eda4b35f484996da4566c874a5b19310e9",
+    "game/art/cover/beach_pebbles.res": "4183c4fe057e9de296b9cd0450c441d1ac9669944cfda589851af3f65abf2b1f",
+    "game/art/cover/beach_stone_albedo.png": "a10fdb678493eecf6cb0501e91e22db73f5254b24dd7a597a51265649b57ad4b",
+    "game/art/cover/beach_stone_albedo.png.import": "c3cf85948f3539d95f280256a041f6f62d6aea60211acf4f868c56837d9a911f"
+  },
+  "runs": {
+    "beach-render02": {
+      "checks": 27,
+      "failures": 0,
+      "rows": [
+        {
+          "all_cover_far_triangles": 1482,
+          "all_cover_near_triangles": 3866,
+          "all_cover_vertices": 7344,
+          "chunks": 9,
+          "kind": "geometry_budget",
+          "stones": 6
+        },
+        {
+          "case": "context",
+          "chosen": {
+            "anchor": "(525.0, 90.0, 0.328827, 0.5476)",
+            "angle": 1.36831423335725,
+            "cold": false,
+            "colour": "(0.5804, 0.5255, 0.3529, 1.0)",
+            "flower": 0.0,
+            "height": 6.0235773367167,
+            "kind": 5,
+            "normal": "(0.080691, 0.996739, 0.0)",
+            "p": "(262.6712, 90.87643)",
+            "scale": 0.857402265071869,
+            "seed": 0.147304072976112,
+            "snow": false
+          },
+          "chunks": 9,
+          "difference": {
+            "changed": 1237,
+            "over_2": 1217,
+            "peak": 53
+          }
+        },
+        {
+          "case": "close",
+          "chosen": {
+            "anchor": "(525.0, 90.0, 0.328827, 0.5476)",
+            "angle": 1.36831423335725,
+            "cold": false,
+            "colour": "(0.5804, 0.5255, 0.3529, 1.0)",
+            "flower": 0.0,
+            "height": 6.0235773367167,
+            "kind": 5,
+            "normal": "(0.080691, 0.996739, 0.0)",
+            "p": "(262.6712, 90.87643)",
+            "scale": 0.857402265071869,
+            "seed": 0.147304072976112,
+            "snow": false
+          },
+          "chunks": 9,
+          "difference": {
+            "changed": 8536,
+            "over_2": 8372,
+            "peak": 48
+          }
+        }
+      ],
+      "run_receipt": "/home/llm2x/Documents/EI/local/scratchpad/beach-pebbles-20261010/beach-render02/run.json",
+      "run_sha256": "dc40e3b41c621350d080d64241404a04704deb40e7f017378ee8340bc5ad2c17",
+      "result_sha256": "b98ebbf1887e67bb273c43bf04163530e812ed801f8f7ce787b4c91a77ed501c",
+      "captures": {
+        "cover-stone-close-after.png": "0028b2da2a5110c44818c8edaafeffa99664141440e2f011ab428e6fbab7a8f9",
+        "cover-stone-context-held.png": "b676025102412a85b618c92485e7dcb3f4bfb0c756b594ddbf893c7d8e47195c",
+        "cover-stone-context-after.png": "b676025102412a85b618c92485e7dcb3f4bfb0c756b594ddbf893c7d8e47195c",
+        "cover-stone-context-restored.png": "318296396d6d008bc43b3390d0ff6ee99a5963d863d282b460517618914818da",
+        "cover-stone-close-before.png": "4fb14f98f34de1a1c73a4fb14d2aefc4867a7f8a702c2e76c289d1fc36104183",
+        "cover-stone-context-before.png": "318296396d6d008bc43b3390d0ff6ee99a5963d863d282b460517618914818da",
+        "cover-stone-close-held.png": "0028b2da2a5110c44818c8edaafeffa99664141440e2f011ab428e6fbab7a8f9",
+        "cover-stone-close-restored.png": "4fb14f98f34de1a1c73a4fb14d2aefc4867a7f8a702c2e76c289d1fc36104183"
+      },
+      "errors": [],
+      "warnings": [],
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "ec70c5b7409b04085cc847447d2a49fbd66580ce77446992392116b57fd4a2ab",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      }
+    },
+    "beach-mobile02": {
+      "checks": 27,
+      "failures": 0,
+      "rows": [
+        {
+          "all_cover_far_triangles": 1482,
+          "all_cover_near_triangles": 3866,
+          "all_cover_vertices": 7344,
+          "chunks": 9,
+          "kind": "geometry_budget",
+          "stones": 6
+        },
+        {
+          "case": "context",
+          "chosen": {
+            "anchor": "(525.0, 90.0, 0.328827, 0.5476)",
+            "angle": 1.36831423335725,
+            "cold": false,
+            "colour": "(0.5804, 0.5255, 0.3529, 1.0)",
+            "flower": 0.0,
+            "height": 6.0235773367167,
+            "kind": 5,
+            "normal": "(0.080691, 0.996739, 0.0)",
+            "p": "(262.6712, 90.87643)",
+            "scale": 0.857402265071869,
+            "seed": 0.147304072976112,
+            "snow": false
+          },
+          "chunks": 9,
+          "difference": {
+            "changed": 1234,
+            "over_2": 1216,
+            "peak": 53
+          }
+        },
+        {
+          "case": "close",
+          "chosen": {
+            "anchor": "(525.0, 90.0, 0.328827, 0.5476)",
+            "angle": 1.36831423335725,
+            "cold": false,
+            "colour": "(0.5804, 0.5255, 0.3529, 1.0)",
+            "flower": 0.0,
+            "height": 6.0235773367167,
+            "kind": 5,
+            "normal": "(0.080691, 0.996739, 0.0)",
+            "p": "(262.6712, 90.87643)",
+            "scale": 0.857402265071869,
+            "seed": 0.147304072976112,
+            "snow": false
+          },
+          "chunks": 9,
+          "difference": {
+            "changed": 8527,
+            "over_2": 8395,
+            "peak": 48
+          }
+        }
+      ],
+      "run_receipt": "/home/llm2x/Documents/EI/local/scratchpad/beach-pebbles-20261010/beach-mobile02/run.json",
+      "run_sha256": "3e51a24c2698136910bcc90294860e9f63c7f685f1f4383143c49a4181861a2f",
+      "result_sha256": "3a559def7ff4de3b258259106211425967723d44693c33d0f550295af92456a7",
+      "captures": {
+        "cover-stone-close-after.png": "d6ab7835f741347139f385433b71c7c17dcd5b4a03fff6d62c74f8cadef2a07b",
+        "cover-stone-context-held.png": "16376be9a3faa00b165aaa269bc2b884c044fe1073f4425ce1b1bba1ea88a0f7",
+        "cover-stone-context-after.png": "16376be9a3faa00b165aaa269bc2b884c044fe1073f4425ce1b1bba1ea88a0f7",
+        "cover-stone-context-restored.png": "3ea5fd4b997066c483a5ef7fdc79f37b318112fff16b324e647e6f7b86316168",
+        "cover-stone-close-before.png": "caec3937ad98661a4cb6ed25906af528d12866b4a3397cb45c87e0f5a4ead8ce",
+        "cover-stone-context-before.png": "3ea5fd4b997066c483a5ef7fdc79f37b318112fff16b324e647e6f7b86316168",
+        "cover-stone-close-held.png": "d6ab7835f741347139f385433b71c7c17dcd5b4a03fff6d62c74f8cadef2a07b",
+        "cover-stone-close-restored.png": "caec3937ad98661a4cb6ed25906af528d12866b4a3397cb45c87e0f5a4ead8ce"
+      },
+      "errors": [],
+      "warnings": [],
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "ec70c5b7409b04085cc847447d2a49fbd66580ce77446992392116b57fd4a2ab",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      }
+    },
+    "beach-compatibility02": {
+      "checks": 27,
+      "failures": 0,
+      "rows": [
+        {
+          "all_cover_far_triangles": 1482,
+          "all_cover_near_triangles": 3866,
+          "all_cover_vertices": 7344,
+          "chunks": 9,
+          "kind": "geometry_budget",
+          "stones": 6
+        },
+        {
+          "case": "context",
+          "chosen": {
+            "anchor": "(525.0, 90.0, 0.328827, 0.5476)",
+            "angle": 1.36831423335725,
+            "cold": false,
+            "colour": "(0.5804, 0.5255, 0.3529, 1.0)",
+            "flower": 0.0,
+            "height": 6.0235773367167,
+            "kind": 5,
+            "normal": "(0.080691, 0.996739, 0.0)",
+            "p": "(262.6712, 90.87643)",
+            "scale": 0.857402265071869,
+            "seed": 0.147304072976112,
+            "snow": false
+          },
+          "chunks": 9,
+          "difference": {
+            "changed": 1916,
+            "over_2": 1811,
+            "peak": 68
+          }
+        },
+        {
+          "case": "close",
+          "chosen": {
+            "anchor": "(525.0, 90.0, 0.328827, 0.5476)",
+            "angle": 1.36831423335725,
+            "cold": false,
+            "colour": "(0.5804, 0.5255, 0.3529, 1.0)",
+            "flower": 0.0,
+            "height": 6.0235773367167,
+            "kind": 5,
+            "normal": "(0.080691, 0.996739, 0.0)",
+            "p": "(262.6712, 90.87643)",
+            "scale": 0.857402265071869,
+            "seed": 0.147304072976112,
+            "snow": false
+          },
+          "chunks": 9,
+          "difference": {
+            "changed": 12325,
+            "over_2": 11852,
+            "peak": 75
+          }
+        }
+      ],
+      "run_receipt": "/home/llm2x/Documents/EI/local/scratchpad/beach-pebbles-20261010/beach-compatibility02/run.json",
+      "run_sha256": "1123607d8af8d446ee65b89572f82d6bc267737497d4e9939518acf6d38df6d9",
+      "result_sha256": "cf0b3c76a9e65d2d55b91993381811f489e28774f3648206fc14dfeade96c413",
+      "captures": {
+        "cover-stone-close-after.png": "8a2e11ccbff17df2af331845bf90eebb9fe931a2ed294d5ed96b795057e0cf60",
+        "cover-stone-context-held.png": "428a89f3a65ef0f8b636bf81b09059a8ec90f7d866484c03ac9a844ac7adbfc0",
+        "cover-stone-context-after.png": "428a89f3a65ef0f8b636bf81b09059a8ec90f7d866484c03ac9a844ac7adbfc0",
+        "cover-stone-context-restored.png": "09fe3d3c0a15e6e26591d06eb0778fba275fde1a5e03c374525f466067b5fd8e",
+        "cover-stone-close-before.png": "69cb9184a64e4fc43e454692c756baa103af32505c522710b5f1e902131bd0f7",
+        "cover-stone-context-before.png": "09fe3d3c0a15e6e26591d06eb0778fba275fde1a5e03c374525f466067b5fd8e",
+        "cover-stone-close-held.png": "8a2e11ccbff17df2af331845bf90eebb9fe931a2ed294d5ed96b795057e0cf60",
+        "cover-stone-close-restored.png": "69cb9184a64e4fc43e454692c756baa103af32505c522710b5f1e902131bd0f7"
+      },
+      "errors": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "ec70c5b7409b04085cc847447d2a49fbd66580ce77446992392116b57fd4a2ab",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      }
+    },
+    "beach-render03": {
+      "checks": 37,
+      "failures": 0,
+      "rows": [
+        {
+          "all_other_records_exact": true,
+          "kind": "stone_occupancy",
+          "removed_overlapping_plants": 1
+        },
+        {
+          "all_cover_far_triangles": 1472,
+          "all_cover_near_triangles": 3846,
+          "all_cover_vertices": 7284,
+          "chunks": 9,
+          "kind": "geometry_budget",
+          "stones": 6
+        },
+        {
+          "case": "context",
+          "chosen": {
+            "anchor": "(525.0, 90.0, 0.328827, 0.5476)",
+            "angle": 1.36831423335725,
+            "cold": false,
+            "colour": "(0.5804, 0.5255, 0.3529, 1.0)",
+            "flower": 0.0,
+            "height": 6.0235773367167,
+            "kind": 5,
+            "normal": "(0.080691, 0.996739, 0.0)",
+            "p": "(262.6712, 90.87643)",
+            "scale": 0.857402265071869,
+            "seed": 0.147304072976112,
+            "snow": false
+          },
+          "chunks": 9,
+          "difference": {
+            "changed": 1682,
+            "over_2": 1641,
+            "peak": 53
+          }
+        },
+        {
+          "case": "close",
+          "chosen": {
+            "anchor": "(525.0, 90.0, 0.328827, 0.5476)",
+            "angle": 1.36831423335725,
+            "cold": false,
+            "colour": "(0.5804, 0.5255, 0.3529, 1.0)",
+            "flower": 0.0,
+            "height": 6.0235773367167,
+            "kind": 5,
+            "normal": "(0.080691, 0.996739, 0.0)",
+            "p": "(262.6712, 90.87643)",
+            "scale": 0.857402265071869,
+            "seed": 0.147304072976112,
+            "snow": false
+          },
+          "chunks": 9,
+          "difference": {
+            "changed": 15144,
+            "over_2": 14811,
+            "peak": 55
+          }
+        }
+      ],
+      "run_receipt": "/home/llm2x/Documents/EI/local/scratchpad/beach-pebbles-20261010/beach-render03/run.json",
+      "run_sha256": "72478e9b0a63d6c5d1cde8b45cbebf14c1aca26fe6a73f6ee4485d6742faf844",
+      "result_sha256": "ab4b583b0351070a7abfa712608a9eb781bba2314bed60e49baf131cb099cb98",
+      "captures": {
+        "cover-stone-close-after.png": "edd3d47f0961e5186fd2cb843b69fea01aecb832f258986da1fe6d51e918cca4",
+        "cover-stone-context-held.png": "68cfa7e37a6b3acff91d2db839b320ee8bcc733c2994bf7f5687d8192a7567af",
+        "cover-stone-context-after.png": "68cfa7e37a6b3acff91d2db839b320ee8bcc733c2994bf7f5687d8192a7567af",
+        "cover-stone-context-restored.png": "318296396d6d008bc43b3390d0ff6ee99a5963d863d282b460517618914818da",
+        "cover-stone-close-before.png": "4fb14f98f34de1a1c73a4fb14d2aefc4867a7f8a702c2e76c289d1fc36104183",
+        "cover-stone-context-before.png": "318296396d6d008bc43b3390d0ff6ee99a5963d863d282b460517618914818da",
+        "cover-stone-close-held.png": "edd3d47f0961e5186fd2cb843b69fea01aecb832f258986da1fe6d51e918cca4",
+        "cover-stone-close-restored.png": "4fb14f98f34de1a1c73a4fb14d2aefc4867a7f8a702c2e76c289d1fc36104183"
+      },
+      "errors": [],
+      "warnings": [],
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "87382327ae61235a29d1d0e526bc8e9dabdddcf54f645fe693bc6ee70422ebfb",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      }
+    }
+  },
+  "validation_notes": [
+    "All 13 other original dry/shore/sea cover kinds retain byte-identical standalone geometry arrays.",
+    "Near and far stone data stays inside the existing admitted footprint and uses outward normals.",
+    "The production fixtures load the packaged texture, assert 512x512 with mipmaps, and assert the shader default texture is bound. They do not inject an ImageTexture. The earlier scratch fixture did; the read-only agent caveat referred to that superseded fixture.",
+    "Final occupancy witness removes exactly one overlapping rooted plant across nine authored beach chunks; all other complete placement dictionaries equal original data.",
+    "Final Forward+ A/B/held/restore: 37 checks/0 failures. Before occupancy fix, same mesh/texture/shader passes27/0 each on Forward+,Mobile,Compatibility. Occupancy is CPU-only; it does not change shaders/assets.",
+    "Final witness:6 stones;7,284 total cover vertices;3,846 near /1,472 far triangles across9 existing cover chunks. These counts are scene observations, not whole-game performance claims.",
+    "Blender JSON packing was regenerated with the committed packer and every model array matches the rendered resource exactly."
+  ],
+  "limits": [
+    "Windows D3D12 runtime is untested here.",
+    "Enhanced shaders, dynamic soft-ground movement and every optional cover combination are not visually qualified by this beach fixture. Existing attachments and branches were source-reviewed.",
+    "Foreign engines overlapped; no performance improvement is inferred from run duration."
+  ],
+  "rejected_or_failed_evidence": [
+    {
+      "label": "beach-render01",
+      "reason": "User rejected flat sixteen-triangle appearance despite passing geometry checks."
+    },
+    {
+      "label": "geometry-headless01",
+      "reason": "Invalid fixture expected a full array from an empty wrapper; corrected."
+    },
+    {
+      "label": "geometry-headless03",
+      "reason": "Generated static data was incorrectly emitted as const; script failed before scene. Final resource avoids generated code."
+    },
+    {
+      "label": "geometry-headless06",
+      "reason": "Runner tried decoding binary model as text; no game launched."
+    }
+  ],
+  "source_art": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/art_sources/beach_pebbles",
+  "generation_prompt": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/art_sources/beach_pebbles/provenance.json"
+}

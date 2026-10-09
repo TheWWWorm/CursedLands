@@ -6,12 +6,12 @@ extends RefCounted
 const Pressure = preload("res://src/game/fx/vegetation_interaction.gd")
 const WeatherWind = preload("res://src/game/fx/weather_wind.gd")
 const Regional = preload("res://src/game/fx/biome_cover_region_mesh.gd")
+const Pebbles = preload("res://art/cover/beach_pebbles.res")
 const FORMAT := (Mesh.ARRAY_CUSTOM_RGBA_FLOAT << Mesh.ARRAY_FORMAT_CUSTOM0_SHIFT) | (Mesh.ARRAY_CUSTOM_RGBA_FLOAT << Mesh.ARRAY_FORMAT_CUSTOM1_SHIFT) | (Mesh.ARRAY_CUSTOM_RGBA_FLOAT << Mesh.ARRAY_FORMAT_CUSTOM2_SHIFT)
 const REGIONAL_UNIFORMS := """
 uniform sampler2DArray atlases : source_color, filter_linear_mipmap_anisotropic, repeat_disable;
 uniform float atlas_padding = 0.0;
 uniform float tiles_per_axis = 8.0;
-varying vec4 cover_art;
 """
 const REGIONAL_FRAGMENT := """
 	float art_kind = floor(cover_art.w+0.001);
@@ -65,6 +65,8 @@ shader_type spatial;
 render_mode cull_disabled, ambient_light_disabled;
 uniform vec3 view_position;
 uniform float breeze = 0.0;
+uniform sampler2D cover_stone_texture : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
+varying vec4 cover_art;
 varying vec3 cover_colour;
 varying vec3 cover_normal;
 varying float cover_leaf;
@@ -89,13 +91,14 @@ void vertex() {
 	// SURFACE
 	cover_normal = normalize((VIEW_MATRIX*vec4(MODEL_NORMAL_MATRIX*NORMAL,0.0)).xyz);
 	NORMAL = normalize(mix(NORMAL,vec3(0.0,1.0,0.0),0.80*COLOR.a));
-	cover_colour = COLOR.rgb;
+	cover_colour = COLOR.rgb; cover_art = CUSTOM2;
 	cover_leaf = COLOR.a*0.25;
 	ei_e = vec3(0.0); ei_k = 0.0;
 }
 void fragment() {
 	FOG = ei_fog_of(VERTEX,(INV_VIEW_MATRIX*vec4(VERTEX,1.0)).xyz);
 	ALBEDO = OUTPUT_IS_SRGB ? cover_colour : ei_lin(cover_colour);
+	if (cover_art.w < -0.5) { ALBEDO *= texture(cover_stone_texture,cover_art.xy).rgb; }
 	NORMAL = normalize(cover_normal)*(FRONT_FACING ? 1.0 : -1.0);
 	ROUGHNESS = 1.0; SPECULAR = 0.0; ei_leaf = cover_leaf;
 }
@@ -109,6 +112,7 @@ const DEFORM := """
 	VERTEX.y = root.y+(VERTEX.y-root.y)*(1.0-pressure.b*area*tip*0.50);
 """
 static var _shaders := {}
+static var _stone_texture: Texture2D
 var vertices := PackedVector3Array()
 var normals := PackedVector3Array()
 var colours := PackedColorArray()
@@ -120,6 +124,7 @@ var regional_art := PackedFloat32Array() # CUSTOM2: original UV, layer, material
 var regional_field: RefCounted
 var art_cache := {}
 var regional_material := 0
+var has_stones := false
 var water: RefCounted
 var water_cache := {}
 var chunk_origin := Vector2.ZERO
@@ -148,9 +153,11 @@ static func shader(interactive: bool, wind: bool, soft := false, aquatic := fals
 		if aquatic: code = code.replace("ei_e = vec3(0.0); ei_k = 0.0;","ei_e = vec3(0.0); ei_k = 0.0;"+UNDERWATER)
 		if regional:
 			code = code.replace("void vertex() {",REGIONAL_UNIFORMS+"\nvoid vertex() {")
-			code = code.replace("ei_e = vec3(0.0); ei_k = 0.0;","ei_e = CUSTOM2.w >= 3.0 && CUSTOM2.w < 4.0 ? COLOR.rgb*vec3(0.08,0.24,0.17) : vec3(0.0); ei_k = 0.0; cover_art = CUSTOM2;")
+			code = code.replace("ei_e = vec3(0.0); ei_k = 0.0;","ei_e = CUSTOM2.w >= 3.0 && CUSTOM2.w < 4.0 ? COLOR.rgb*vec3(0.08,0.24,0.17) : vec3(0.0); ei_k = 0.0;")
 			code = code.replace("NORMAL = normalize(cover_normal)",REGIONAL_FRAGMENT+"\n\tNORMAL = normalize(cover_normal)")
+		if _stone_texture == null: _stone_texture = load("res://art/cover/beach_stone_albedo.png")
 		_shaders[key] = Gfx.make_shader(code,true,true)
+		_shaders[key].set_default_texture_parameter("cover_stone_texture",_stone_texture)
 	return _shaders[key]
 
 
@@ -165,7 +172,7 @@ func triangle(a: Vector3,b: Vector3,c: Vector3,colour: Color,blend := Vector3.ON
 		colours.append(Color(colour.r,colour.g,colour.b,mobile))
 		uvs.append(Vector2(root.y,seed)); roots.append(Vector2(root.x,root.z))
 		anchors.append_array([anchor.x,anchor.y,anchor.z,anchor.w])
-		if regional_field:
+		if regional_field or has_stones:
 			var art := Vector4(0,0,0,regional_material)
 			if regional_material in [1,4,5]:
 				var point := Vector2(position.x,-position.z)+chunk_origin
@@ -278,8 +285,40 @@ func sea_grass(colour: Color, tall: bool) -> void:
 		ribbon(a,b,0.025,colour*0.85); bent_ribbon(b,c,d,0.025,0.013,colour,colour*1.05)
 
 
+## Authored rounded stone models share this chunk's material and texture.
+## The lower mesh is used only once its curvature is subpixel on screen.
+func pebble(colour: Color) -> void:
+	var model: Dictionary = Pebbles.get_meta(&"models")[mini(int(seed*4.0),3)]
+	_pebble_mesh(model.near,colour,indices)
+	_pebble_mesh(model.far,colour,far_indices)
+	lod_error=maxf(lod_error,0.012*transform.basis.get_scale().length()/sqrt(3.0))
+
+
+func _pebble_mesh(mesh: Dictionary, colour: Color, destination: PackedInt32Array) -> void:
+	var at := vertices.size()
+	for i in mesh.vertices.size():
+		var position: Vector3 = transform*mesh.vertices[i]+root
+		vertices.append(position); normals.append(transform.basis*mesh.normals[i])
+		colours.append(Color(colour.r,colour.g,colour.b,0.0))
+		uvs.append(Vector2(root.y,seed)); roots.append(Vector2(root.x,root.z))
+		anchors.append_array([anchor.x,anchor.y,anchor.z,anchor.w])
+		var uv: Vector2 = mesh.uvs[i]+Vector2(seed*3.17,seed*1.73)
+		regional_art.append_array([uv.x,uv.y,0.0,-1.0])
+		if water:
+			var plane := Vector4.ZERO
+			if submerged:
+				var point := Vector2(position.x,-position.z)+chunk_origin
+				if not water_cache.has(point): water_cache[point] = water.sample(point)
+				plane = water_cache[point]
+				assert(plane.w>0.0)
+				plane.z += plane.x*chunk_origin.x-plane.y*chunk_origin.y
+			water_planes.append_array([plane.x,plane.y,plane.z,plane.w])
+	for index: int in mesh.indices: destination.append(at+index)
+
+
 func build(records: Array[Dictionary], key: Vector2i, sea: RefCounted = null, field: RefCounted = null) -> Array:
 	water = sea; chunk_origin = Vector2(key)*8.0; regional_field = field
+	has_stones = records.any(func(r: Dictionary): return int(r.kind)==5)
 	for record: Dictionary in records:
 		var p: Vector2 = record.p-Vector2(key)*8.0
 		root = Vector3(p.x,float(record.height)+0.008,-p.y); seed = record.seed
@@ -313,12 +352,7 @@ func build(records: Array[Dictionary], key: Vector2i, sea: RefCounted = null, fi
 				var bark := c.lerp(Color(0.26,0.21,0.15),0.7)
 				ribbon(Vector3(-0.28,0.025,0),Vector3(0.28,0.05,0.05),0.025,bark)
 				ribbon(Vector3(0,0.04,0.025),Vector3(0.16,0.06,-0.17),0.015,bark*0.9)
-			5:
-				var top := Vector3(0,0.08,0)
-				for i in 5:
-					var a := Vector3(sin(i*TAU/5.0)*0.09,0,cos(i*TAU/5.0)*0.07)
-					var b := Vector3(sin((i+1)*TAU/5.0)*0.09,0,cos((i+1)*TAU/5.0)*0.07)
-					triangle(a,top,b,c.lerp(Color(0.39,0.38,0.33),0.35))
+			5: pebble(Color(0.93,0.94,0.94).lerp(c,0.16)*(0.88+seed*0.22))
 			6:
 				var bark := c.lerp(Color(0.30,0.24,0.15),0.55)
 				for i in 4:
@@ -341,7 +375,7 @@ func build(records: Array[Dictionary], key: Vector2i, sea: RefCounted = null, fi
 	arrays[Mesh.ARRAY_TEX_UV2] = roots; arrays[Mesh.ARRAY_INDEX] = indices
 	arrays[Mesh.ARRAY_CUSTOM0] = anchors
 	if water: arrays[Mesh.ARRAY_CUSTOM1] = water_planes
-	if regional_field: arrays[Mesh.ARRAY_CUSTOM2] = regional_art
+	if regional_field or has_stones: arrays[Mesh.ARRAY_CUSTOM2] = regional_art
 	return arrays
 
 
