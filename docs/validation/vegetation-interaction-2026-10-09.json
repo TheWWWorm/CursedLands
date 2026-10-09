@@ -1,0 +1,1133 @@
+{
+  "date": "2026-10-09",
+  "base_commit": "e0595ba",
+  "canonical_checkout": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo",
+  "qa_root": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation",
+  "status": "Optional grass interaction, default off; existing streamed grass and game-clock wind. No installed build or release update.",
+  "reference": {
+    "revision": "0092dc6e1d7c4aab3f74644a79e9bfca11ecf293",
+    "sources": [
+      "Source/renderer_ground_cover.cpp:2166-2193",
+      "Source/ground_cover_interaction.h:24/37/66"
+    ],
+    "scope": "Behavioral reference; independently authored portable pressure field and shader adaptation."
+  },
+  "source_sha256": {
+    "game/src/game/fx/vegetation_interaction.gd": "90cfb683372ead0c46a4bf4b8ec37d809b25a73ea4e63638bb6157fc71c44c79",
+    "game/src/game/fx/vegetation_interaction.gd.uid": "1cbdaf655cb6ef7676d51b74918747e3d124399b3a0eee59adef691433f70021",
+    "game/src/game/fx/terrain_details.gd": "942e17bc7b0c27f3d495171d2a36a23edfe17a34478fc115d55a92526b772c2a",
+    "game/src/ei/game_data.gd": "712648a1b3788f8e4f67cb05739f2e4153f166d08d9c267db3b04339fdf5cd73",
+    "game/src/ei/remake_text.gd": "cd17d435f3daf25f68b535a4f9aacb434cbbc07d69937e57c7a59b7bad9ac327",
+    "game/src/game/gfx_detect.gd": "c8a37f31b2feba607811cb81c490a9309a6cf614b2615f809b3960a2d5fbdbf5",
+    "tools/tests/vegetation_interaction.gd": "84dad2e4765ef016299b2fa103b0e15f8d9c80382ab015902921114659142d30"
+  },
+  "export": {
+    "manifest_path": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/vegetation-accepted/export.json",
+    "manifest_sha256": "d8a73e3b6c8f8e14e245f6e9802dde833ddfb17293e9ca9c76fb37d430ff6dee",
+    "artifacts": {
+      "CursedLands.x86_64": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+      "CursedLands.pck": "b1d55d680a69500c33d028e637d2b9116fd554ed6d76434c375b62eff3e19c73",
+      "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+    },
+    "production_scripts_matched": 227,
+    "return_code": 0,
+    "errors": []
+  },
+  "summary": {
+    "focused_assertions": 238,
+    "grass_regression_assertions": 3655,
+    "field_payload_bytes": 65536,
+    "max_history_cells": 4096,
+    "max_pose_queries": 32,
+    "max_update_hz_game_time": 20,
+    "default": "gfx_vegetation_interaction=0",
+    "option_group_row": [
+      15,
+      9
+    ]
+  },
+  "accepted_runs": [
+    {
+      "label": "accepted-headless",
+      "run": {
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/vegetation_interaction.gd",
+        "tool_sha256_at_start": "84dad2e4765ef016299b2fa103b0e15f8d9c80382ab015902921114659142d30",
+        "helper_sha256_at_start": "90cfb683372ead0c46a4bf4b8ec37d809b25a73ea4e63638bb6157fc71c44c79",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "b1d55d680a69500c33d028e637d2b9116fd554ed6d76434c375b62eff3e19c73",
+        "termination_reason": null,
+        "timeout_sec": 100,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/vegetation-accepted/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/accepted-headless/tool-source.gd"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 3.306007650011452,
+        "other_render_processes_at_start": [],
+        "other_render_processes_at_end": [],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {}
+      },
+      "results": {
+        "checks": 35,
+        "failures": 0,
+        "rows": [
+          {
+            "case": "pressure-history",
+            "payload_bytes": 65536,
+            "updates": 62
+          },
+          {
+            "bounds": "[P: (132.092, 6.413195, -92.87636), S: (0.845428, 1.672584, 0.897385)]",
+            "case": "admission",
+            "contacts": 1,
+            "point": "(132.5, 6.405092, -92.5)"
+          }
+        ]
+      }
+    },
+    {
+      "label": "accepted-gl",
+      "run": {
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/vegetation_interaction.gd",
+        "tool_sha256_at_start": "84dad2e4765ef016299b2fa103b0e15f8d9c80382ab015902921114659142d30",
+        "helper_sha256_at_start": "90cfb683372ead0c46a4bf4b8ec37d809b25a73ea4e63638bb6157fc71c44c79",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "b1d55d680a69500c33d028e637d2b9116fd554ed6d76434c375b62eff3e19c73",
+        "termination_reason": null,
+        "timeout_sec": 100,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/vegetation-accepted/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/accepted-gl/tool-source.gd",
+          "--vegetation-timing"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 11.565654382982757,
+        "other_render_processes_at_start": [],
+        "other_render_processes_at_end": [],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {
+          "vegetation-restored.png": "db74eb399cd4e56cdecde24166e73622afad98587e243cd22e936f02e22aba89",
+          "vegetation-standing.png": "83c8d2b19e453ea590d32188d594c976cdfc8c5539c555eb0b0793115ba9f3be",
+          "vegetation-empty.png": "db74eb399cd4e56cdecde24166e73622afad98587e243cd22e936f02e22aba89",
+          "vegetation-off-stable.png": "db74eb399cd4e56cdecde24166e73622afad98587e243cd22e936f02e22aba89",
+          "vegetation-off-initial.png": "db74eb399cd4e56cdecde24166e73622afad98587e243cd22e936f02e22aba89",
+          "vegetation-off.png": "db74eb399cd4e56cdecde24166e73622afad98587e243cd22e936f02e22aba89",
+          "vegetation-wind-paused.png": "b120ab55569387440d1ee287a13a7ec997545b30127897fb019771b685686bd5",
+          "vegetation-wind-paused-later.png": "b120ab55569387440d1ee287a13a7ec997545b30127897fb019771b685686bd5",
+          "vegetation-shadow-refreshed.png": "83c8d2b19e453ea590d32188d594c976cdfc8c5539c555eb0b0793115ba9f3be",
+          "vegetation-empty-refreshed.png": "db74eb399cd4e56cdecde24166e73622afad98587e243cd22e936f02e22aba89",
+          "vegetation-crawl.png": "aad35d839fc659c5776105ea8aee74bc741d473ceec9a6792db7b18a3d3bb370"
+        }
+      },
+      "results": {
+        "checks": 77,
+        "failures": 0,
+        "rows": [
+          {
+            "case": "pressure-history",
+            "payload_bytes": 65536,
+            "updates": 62
+          },
+          {
+            "case": "baseline-settling",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "baseline-stable",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "empty",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "empty-refresh",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "bounds": "[P: (132.092, 6.413195, -92.87636), S: (0.845428, 1.672584, 0.897385)]",
+            "case": "admission",
+            "contacts": 1,
+            "point": "(132.5, 6.405092, -92.5)"
+          },
+          {
+            "case": "standing",
+            "difference": {
+              "changed_pixels": 2891,
+              "peak_delta": 118,
+              "pixels_over_2": 2139
+            }
+          },
+          {
+            "case": "shadow-refresh",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "paused-wind",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "restored",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "actors": 32,
+            "case": "timing",
+            "cells": {},
+            "contacts": {},
+            "draws": {
+              "median": 3928,
+              "p95": 3983,
+              "samples": 120
+            },
+            "enabled": false,
+            "frame_ms": {
+              "median": 4.354,
+              "p95": 5.02,
+              "samples": 120
+            },
+            "game_seconds": 2.66666666666667,
+            "sampled_update_ms": {},
+            "size": "(1280, 720)",
+            "update_per_frame_ms": {
+              "median": 0.003,
+              "p95": 0.004,
+              "samples": 120
+            },
+            "uploaded_bytes": 0,
+            "viewport_cpu_ms": {
+              "median": 3.66199994087219,
+              "p95": 4.15999984741211,
+              "samples": 120
+            },
+            "viewport_gpu_ms": {
+              "median": 2.01699995994568,
+              "p95": 2.74699997901917,
+              "samples": 120
+            }
+          },
+          {
+            "actors": 32,
+            "case": "timing",
+            "cells": {
+              "median": 123,
+              "p95": 123,
+              "samples": 120
+            },
+            "contacts": {
+              "median": 32,
+              "p95": 32,
+              "samples": 120
+            },
+            "draws": {
+              "median": 3930,
+              "p95": 3985,
+              "samples": 120
+            },
+            "enabled": true,
+            "frame_ms": {
+              "median": 4.366,
+              "p95": 5.569,
+              "samples": 120
+            },
+            "game_seconds": 2.66666666666667,
+            "sampled_update_ms": {
+              "median": 1.108,
+              "p95": 1.193,
+              "samples": 40
+            },
+            "size": "(1280, 720)",
+            "update_per_frame_ms": {
+              "median": 0.006,
+              "p95": 1.139,
+              "samples": 120
+            },
+            "uploaded_bytes": 3473408,
+            "viewport_cpu_ms": {
+              "median": 3.64499998092651,
+              "p95": 3.7720000743866,
+              "samples": 120
+            },
+            "viewport_gpu_ms": {
+              "median": 2.2039999961853,
+              "p95": 2.6949999332428,
+              "samples": 120
+            }
+          },
+          {
+            "actors": 32,
+            "case": "timing",
+            "cells": {
+              "median": 123,
+              "p95": 123,
+              "samples": 120
+            },
+            "contacts": {
+              "median": 32,
+              "p95": 32,
+              "samples": 120
+            },
+            "draws": {
+              "median": 3930,
+              "p95": 3985,
+              "samples": 120
+            },
+            "enabled": true,
+            "frame_ms": {
+              "median": 4.474,
+              "p95": 6.196,
+              "samples": 120
+            },
+            "game_seconds": 2.66666666666667,
+            "sampled_update_ms": {
+              "median": 1.121,
+              "p95": 1.777,
+              "samples": 40
+            },
+            "size": "(1280, 720)",
+            "update_per_frame_ms": {
+              "median": 0.007,
+              "p95": 1.259,
+              "samples": 120
+            },
+            "uploaded_bytes": 3473408,
+            "viewport_cpu_ms": {
+              "median": 3.65700006484985,
+              "p95": 4.26100015640259,
+              "samples": 120
+            },
+            "viewport_gpu_ms": {
+              "median": 2.24699997901917,
+              "p95": 2.70000004768372,
+              "samples": 120
+            }
+          },
+          {
+            "actors": 32,
+            "case": "timing",
+            "cells": {},
+            "contacts": {},
+            "draws": {
+              "median": 3928,
+              "p95": 3983,
+              "samples": 120
+            },
+            "enabled": false,
+            "frame_ms": {
+              "median": 4.348,
+              "p95": 4.821,
+              "samples": 120
+            },
+            "game_seconds": 2.66666666666667,
+            "sampled_update_ms": {},
+            "size": "(1280, 720)",
+            "update_per_frame_ms": {
+              "median": 0.003,
+              "p95": 0.004,
+              "samples": 120
+            },
+            "uploaded_bytes": 0,
+            "viewport_cpu_ms": {
+              "median": 3.65499997138977,
+              "p95": 3.98900008201599,
+              "samples": 120
+            },
+            "viewport_gpu_ms": {
+              "median": 1.99500000476837,
+              "p95": 2.4909999370575,
+              "samples": 120
+            }
+          }
+        ]
+      }
+    },
+    {
+      "label": "accepted-mobile",
+      "run": {
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/vegetation_interaction.gd",
+        "tool_sha256_at_start": "84dad2e4765ef016299b2fa103b0e15f8d9c80382ab015902921114659142d30",
+        "helper_sha256_at_start": "90cfb683372ead0c46a4bf4b8ec37d809b25a73ea4e63638bb6157fc71c44c79",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "b1d55d680a69500c33d028e637d2b9116fd554ed6d76434c375b62eff3e19c73",
+        "termination_reason": null,
+        "timeout_sec": 100,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/vegetation-accepted/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "mobile",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/accepted-mobile/tool-source.gd"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 7.062569588015322,
+        "other_render_processes_at_start": [],
+        "other_render_processes_at_end": [],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cache"
+        },
+        "warnings": [],
+        "errors": [],
+        "png_sha256": {
+          "vegetation-restored.png": "20c78f2c3e02d407f84c0bec603933464272db8d4d5f7b23efb3ed82ea21a656",
+          "vegetation-standing.png": "7b3fbbf36e28493abaa6774371740ecd754d412d7482cd4d0822b8e0a849e85e",
+          "vegetation-empty.png": "20c78f2c3e02d407f84c0bec603933464272db8d4d5f7b23efb3ed82ea21a656",
+          "vegetation-off-stable.png": "20c78f2c3e02d407f84c0bec603933464272db8d4d5f7b23efb3ed82ea21a656",
+          "vegetation-off-initial.png": "2594266a25eb6d25314b34c86d172ff5418b2a9c66bbb9fa1c8c96498f12205d",
+          "vegetation-off.png": "20c78f2c3e02d407f84c0bec603933464272db8d4d5f7b23efb3ed82ea21a656",
+          "vegetation-wind-paused.png": "806410fdf0e0bd378b069ee33a3dd597ab28f552ec89ce6024f2f3c3d547fa7a",
+          "vegetation-wind-paused-later.png": "806410fdf0e0bd378b069ee33a3dd597ab28f552ec89ce6024f2f3c3d547fa7a",
+          "vegetation-shadow-refreshed.png": "7b3fbbf36e28493abaa6774371740ecd754d412d7482cd4d0822b8e0a849e85e",
+          "vegetation-empty-refreshed.png": "20c78f2c3e02d407f84c0bec603933464272db8d4d5f7b23efb3ed82ea21a656",
+          "vegetation-crawl.png": "18d145b3c8e4657e51986032070ee1d7a575e5fd7fe3e5d122e35b545b5709d7"
+        }
+      },
+      "results": {
+        "checks": 42,
+        "failures": 0,
+        "rows": [
+          {
+            "case": "pressure-history",
+            "payload_bytes": 65536,
+            "updates": 62
+          },
+          {
+            "case": "baseline-settling",
+            "difference": {
+              "changed_pixels": 411,
+              "peak_delta": 7,
+              "pixels_over_2": 179
+            }
+          },
+          {
+            "case": "baseline-stable",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "empty",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "empty-refresh",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "bounds": "[P: (132.092, 6.413195, -92.87636), S: (0.845428, 1.672584, 0.897385)]",
+            "case": "admission",
+            "contacts": 1,
+            "point": "(132.5, 6.405092, -92.5)"
+          },
+          {
+            "case": "standing",
+            "difference": {
+              "changed_pixels": 2396,
+              "peak_delta": 71,
+              "pixels_over_2": 2129
+            }
+          },
+          {
+            "case": "shadow-refresh",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "paused-wind",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "restored",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "label": "accepted-forward",
+      "run": {
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/vegetation_interaction.gd",
+        "tool_sha256_at_start": "84dad2e4765ef016299b2fa103b0e15f8d9c80382ab015902921114659142d30",
+        "helper_sha256_at_start": "90cfb683372ead0c46a4bf4b8ec37d809b25a73ea4e63638bb6157fc71c44c79",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "b1d55d680a69500c33d028e637d2b9116fd554ed6d76434c375b62eff3e19c73",
+        "termination_reason": null,
+        "timeout_sec": 100,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/vegetation-accepted/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "forward_plus",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/accepted-forward/tool-source.gd"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 7.310394631000236,
+        "other_render_processes_at_start": [],
+        "other_render_processes_at_end": [],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cache"
+        },
+        "warnings": [],
+        "errors": [],
+        "png_sha256": {
+          "vegetation-restored.png": "2a38f1f98a38fb221bdafe788a01b1c9935ad8fd8fccd70f5e566296ec77186a",
+          "vegetation-standing.png": "87d84579e26aa907e7d24733325437f395c5066b7fc087cd1007f7410abc303f",
+          "vegetation-empty.png": "2a38f1f98a38fb221bdafe788a01b1c9935ad8fd8fccd70f5e566296ec77186a",
+          "vegetation-off-stable.png": "2a38f1f98a38fb221bdafe788a01b1c9935ad8fd8fccd70f5e566296ec77186a",
+          "vegetation-off-initial.png": "2a38f1f98a38fb221bdafe788a01b1c9935ad8fd8fccd70f5e566296ec77186a",
+          "vegetation-off.png": "2a38f1f98a38fb221bdafe788a01b1c9935ad8fd8fccd70f5e566296ec77186a",
+          "vegetation-wind-paused.png": "ea597fd64db5019287da4516053bceede3551e42a5504271d5faa35c8f4b0292",
+          "vegetation-wind-paused-later.png": "ea597fd64db5019287da4516053bceede3551e42a5504271d5faa35c8f4b0292",
+          "vegetation-shadow-refreshed.png": "87d84579e26aa907e7d24733325437f395c5066b7fc087cd1007f7410abc303f",
+          "vegetation-empty-refreshed.png": "2a38f1f98a38fb221bdafe788a01b1c9935ad8fd8fccd70f5e566296ec77186a",
+          "vegetation-crawl.png": "339fe288173981357dfd1ebadd5182e55eed6ba42a1f4214d24f9ddaa2aa3c51"
+        }
+      },
+      "results": {
+        "checks": 42,
+        "failures": 0,
+        "rows": [
+          {
+            "case": "pressure-history",
+            "payload_bytes": 65536,
+            "updates": 62
+          },
+          {
+            "case": "baseline-settling",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "baseline-stable",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "empty",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "empty-refresh",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "bounds": "[P: (132.092, 6.413195, -92.87636), S: (0.845428, 1.672584, 0.897385)]",
+            "case": "admission",
+            "contacts": 1,
+            "point": "(132.5, 6.405092, -92.5)"
+          },
+          {
+            "case": "standing",
+            "difference": {
+              "changed_pixels": 2783,
+              "peak_delta": 71,
+              "pixels_over_2": 1854
+            }
+          },
+          {
+            "case": "shadow-refresh",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "paused-wind",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "restored",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "label": "accepted-script-grass",
+      "run": {
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/vegetation_interaction.gd",
+        "tool_sha256_at_start": "84dad2e4765ef016299b2fa103b0e15f8d9c80382ab015902921114659142d30",
+        "helper_sha256_at_start": "90cfb683372ead0c46a4bf4b8ec37d809b25a73ea4e63638bb6157fc71c44c79",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "b1d55d680a69500c33d028e637d2b9116fd554ed6d76434c375b62eff3e19c73",
+        "termination_reason": null,
+        "timeout_sec": 100,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/vegetation-accepted/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/accepted-script-grass/tool-source.gd",
+          "--ei-script-grass"
+        ],
+        "return_code": 0,
+        "elapsed_sec": 7.811409204005031,
+        "other_render_processes_at_start": [],
+        "other_render_processes_at_end": [],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [],
+        "png_sha256": {
+          "vegetation-restored.png": "db74eb399cd4e56cdecde24166e73622afad98587e243cd22e936f02e22aba89",
+          "vegetation-standing.png": "83c8d2b19e453ea590d32188d594c976cdfc8c5539c555eb0b0793115ba9f3be",
+          "vegetation-empty.png": "db74eb399cd4e56cdecde24166e73622afad98587e243cd22e936f02e22aba89",
+          "vegetation-off-stable.png": "db74eb399cd4e56cdecde24166e73622afad98587e243cd22e936f02e22aba89",
+          "vegetation-off-initial.png": "db74eb399cd4e56cdecde24166e73622afad98587e243cd22e936f02e22aba89",
+          "vegetation-off.png": "db74eb399cd4e56cdecde24166e73622afad98587e243cd22e936f02e22aba89",
+          "vegetation-wind-paused.png": "b120ab55569387440d1ee287a13a7ec997545b30127897fb019771b685686bd5",
+          "vegetation-wind-paused-later.png": "b120ab55569387440d1ee287a13a7ec997545b30127897fb019771b685686bd5",
+          "vegetation-shadow-refreshed.png": "83c8d2b19e453ea590d32188d594c976cdfc8c5539c555eb0b0793115ba9f3be",
+          "vegetation-empty-refreshed.png": "db74eb399cd4e56cdecde24166e73622afad98587e243cd22e936f02e22aba89",
+          "vegetation-crawl.png": "aad35d839fc659c5776105ea8aee74bc741d473ceec9a6792db7b18a3d3bb370"
+        }
+      },
+      "results": {
+        "checks": 42,
+        "failures": 0,
+        "rows": [
+          {
+            "case": "pressure-history",
+            "payload_bytes": 65536,
+            "updates": 62
+          },
+          {
+            "case": "baseline-settling",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "baseline-stable",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "empty",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "empty-refresh",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "bounds": "[P: (132.092, 6.413195, -92.87636), S: (0.845428, 1.672584, 0.897385)]",
+            "case": "admission",
+            "contacts": 1,
+            "point": "(132.5, 6.405092, -92.5)"
+          },
+          {
+            "case": "standing",
+            "difference": {
+              "changed_pixels": 2891,
+              "peak_delta": 118,
+              "pixels_over_2": 2139
+            }
+          },
+          {
+            "case": "shadow-refresh",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "paused-wind",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "restored",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "grass_regression": {
+    "label": "accepted-grass-regression",
+    "run": {
+      "tool_frozen": true,
+      "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/grass_chunks.gd",
+      "tool_sha256_at_start": "f6b59ea17ac378c39245c58ccef2ad1c0606c8db6c1e677dbc383baa99a64f3b",
+      "helper_sha256_at_start": "90cfb683372ead0c46a4bf4b8ec37d809b25a73ea4e63638bb6157fc71c44c79",
+      "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+      "pack_sha256": "b1d55d680a69500c33d028e637d2b9116fd554ed6d76434c375b62eff3e19c73",
+      "termination_reason": null,
+      "timeout_sec": 100,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/vegetation-accepted/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "256x144",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/accepted-grass-regression/tool-source.gd"
+      ],
+      "return_code": 0,
+      "elapsed_sec": 2.306298946001334,
+      "other_render_processes_at_start": [],
+      "other_render_processes_at_end": [],
+      "xdg_directories": {
+        "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/data",
+        "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/config",
+        "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cache"
+      },
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "errors": [],
+      "png_sha256": {}
+    },
+    "summary": "GRASS_CHUNKS checks=3655 failures=0 tufts=21043 native_us=14748 script_us=440345"
+  },
+  "negative_controls": [
+    {
+      "label": "shadow-control-gl",
+      "run": {
+        "tool_sha256_at_start": "1730bd60f8890382ed51a55d29afad31bf229c604a350dacfb00c351b46feb5b",
+        "helper_sha256_at_start": "395be0bafec8c91ff91aaa66edcaeec48482e2fe8547925a01e5b2130abf1bd0",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "1a7d5d13787aabef9ce6c3e889876b1d902e839bd9a060857ce1fbe386c9eef5",
+        "termination_reason": null,
+        "timeout_sec": 100,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/vegetation-prototype/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/vegetation_interaction.gd"
+        ],
+        "return_code": 1,
+        "elapsed_sec": 6.8141858390008565,
+        "other_render_processes_at_start": [
+          {
+            "pid": 4168449,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "other_render_processes_at_end": [
+          {
+            "pid": 4168449,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+          }
+        ],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cache"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "errors": [
+          "FAIL pressure shadows match forced instance refresh"
+        ],
+        "png_sha256": {
+          "vegetation-restored.png": "48c78dcc3e6f0e4102ad96416fcd734a88f1091f9b2de6880e5143d9f804937e",
+          "vegetation-standing.png": "3fdc77fd2a38847a1787fc25a521438b092e05aac1ec7135821d6c2152a73d91",
+          "vegetation-empty.png": "48c78dcc3e6f0e4102ad96416fcd734a88f1091f9b2de6880e5143d9f804937e",
+          "vegetation-off.png": "48c78dcc3e6f0e4102ad96416fcd734a88f1091f9b2de6880e5143d9f804937e",
+          "vegetation-shadow-refreshed.png": "67d094a5b42b50de560464871449ab28936801b2fa794135ae44615bdce9dd0b",
+          "vegetation-empty-refreshed.png": "48c78dcc3e6f0e4102ad96416fcd734a88f1091f9b2de6880e5143d9f804937e",
+          "vegetation-crawl.png": "718654fdd797633d2661b2f993c6b77d462e0eaf00e1d39eb157dbc89819edcb"
+        }
+      },
+      "results": {
+        "checks": 38,
+        "failures": 1,
+        "rows": [
+          {
+            "case": "pressure-history",
+            "cells_10hz": 8,
+            "cells_20hz": 8,
+            "payload_bytes": 65536,
+            "updates": 62
+          },
+          {
+            "case": "empty",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "empty-refresh",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "bounds": "[P: (132.092, 6.413195, -92.87636), S: (0.845428, 1.672584, 0.897385)]",
+            "case": "admission",
+            "contacts": 1,
+            "point": "(132.5, 6.405092, -92.5)"
+          },
+          {
+            "case": "standing",
+            "difference": {
+              "changed_pixels": 2882,
+              "peak_delta": 118,
+              "pixels_over_2": 2138
+            }
+          },
+          {
+            "case": "shadow-refresh",
+            "difference": {
+              "changed_pixels": 19,
+              "peak_delta": 5,
+              "pixels_over_2": 2
+            }
+          },
+          {
+            "case": "restored",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "label": "final-mobile",
+      "run": {
+        "tool_frozen": true,
+        "tool_original_path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/vegetation_interaction.gd",
+        "tool_sha256_at_start": "f21e5d014d217bdaf1a90988cfdc30edf065e478d926c40852e10230e2f90a1f",
+        "helper_sha256_at_start": "90cfb683372ead0c46a4bf4b8ec37d809b25a73ea4e63638bb6157fc71c44c79",
+        "engine_sha256": "cad5ba6a09f8137d4567c36760bc8539d8aa63aa574e056e97ddd5bd1ab5463d",
+        "pack_sha256": "709333e826195c2a1576ba467554502e1e69291be06b5366f02828ad66e78df7",
+        "termination_reason": null,
+        "timeout_sec": 100,
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/vegetation-final/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "mobile",
+          "--windowed",
+          "--resolution",
+          "256x144",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/final-mobile/tool-source.gd"
+        ],
+        "return_code": 1,
+        "elapsed_sec": 9.563294348015916,
+        "other_render_processes_at_start": [],
+        "other_render_processes_at_end": [],
+        "xdg_directories": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/cache"
+        },
+        "warnings": [],
+        "errors": [
+          "FAIL empty pressure preserves the baseline grass image",
+          "FAIL pressure shadows match forced instance refresh",
+          "FAIL off-on-off restores authored grass"
+        ],
+        "png_sha256": {
+          "vegetation-restored.png": "20c78f2c3e02d407f84c0bec603933464272db8d4d5f7b23efb3ed82ea21a656",
+          "vegetation-standing.png": "c64b876bd5e4da9f6b97501b0ac77058d598283ee5424f81fcca0706db3bdaed",
+          "vegetation-empty.png": "79ee02c0e0dbcdc6e7ff3f9bdd3b23ea525c04e605ea7190026e71b1e78b87a4",
+          "vegetation-off.png": "2594266a25eb6d25314b34c86d172ff5418b2a9c66bbb9fa1c8c96498f12205d",
+          "vegetation-wind-paused.png": "806410fdf0e0bd378b069ee33a3dd597ab28f552ec89ce6024f2f3c3d547fa7a",
+          "vegetation-wind-paused-later.png": "806410fdf0e0bd378b069ee33a3dd597ab28f552ec89ce6024f2f3c3d547fa7a",
+          "vegetation-shadow-refreshed.png": "7b3fbbf36e28493abaa6774371740ecd754d412d7482cd4d0822b8e0a849e85e",
+          "vegetation-empty-refreshed.png": "79ee02c0e0dbcdc6e7ff3f9bdd3b23ea525c04e605ea7190026e71b1e78b87a4",
+          "vegetation-crawl.png": "18d145b3c8e4657e51986032070ee1d7a575e5fd7fe3e5d122e35b545b5709d7"
+        }
+      },
+      "results": {
+        "checks": 41,
+        "failures": 3,
+        "rows": [
+          {
+            "case": "pressure-history",
+            "payload_bytes": 65536,
+            "updates": 62
+          },
+          {
+            "case": "empty",
+            "difference": {
+              "changed_pixels": 9,
+              "peak_delta": 2,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "empty-refresh",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "bounds": "[P: (132.092, 6.413195, -92.87636), S: (0.845428, 1.672584, 0.897385)]",
+            "case": "admission",
+            "contacts": 1,
+            "point": "(132.5, 6.405092, -92.5)"
+          },
+          {
+            "case": "standing",
+            "difference": {
+              "changed_pixels": 2405,
+              "peak_delta": 71,
+              "pixels_over_2": 2130
+            }
+          },
+          {
+            "case": "shadow-refresh",
+            "difference": {
+              "changed_pixels": 399,
+              "peak_delta": 7,
+              "pixels_over_2": 177
+            }
+          },
+          {
+            "case": "paused-wind",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "restored",
+            "difference": {
+              "changed_pixels": 411,
+              "peak_delta": 7,
+              "pixels_over_2": 179
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "diagnostic_notes": [
+    "The initial shader without a TIME dependency leaves stale GL local shadows: 19 pixels change after refresh (peak 5/255). The final phase still uses terrain time; TIME*0.0 preserves Godot animated-caster classification.",
+    "Initial Mobile instability is also present with interaction off: 411 pixels, peak 7/255, change while the unchanged initial scene settles. Final fixture records that transition and waits before comparisons. All final empty/restored/refreshed-shadow/paused pairs are exact.",
+    "The temporary min(TIME,0) experiment was unnecessary; initial-scene settling, not that expression, explains the Mobile residual. Final code retains TIME*0.0.",
+    "prototype-headless did not pass cleanly: a fixture animation name omitted the ei/ library prefix. It was fixed before rendered acceptance.",
+    "shadow-dependency-gl was exploratory: the loose test file was edited during startup. Do not rely on its source hash. The V2 runner now executes its saved tool-source.gd snapshot; all accepted runs use that frozen path.",
+    "The new menu control uses Effects row 9 because World row 12 is reserved for Original look.",
+    "No other Godot process was observed at either boundary of accepted runs. This is a desktop fixture, not device/gameplay performance or a general FPS claim.",
+    "Desktop GL sampled 32 admitted contacts; no new geometry pass is introduced, but total draws increase by two in the sample, so do not claim zero added rendering work."
+  ],
+  "remaining": [
+    "Biome cover placement/meshes, far-density thinning and common weather-wind fronts",
+    "Physical Android/browser testing and broader creatures, lighting, route and reload acceptance",
+    "Idle shader/shadow work and visible-registry scan costs; only history/pose queries are capped",
+    "Full static/dynamic shadow caching, remaining renderer features, then gameplay U45 first"
+  ]
+}

@@ -112,6 +112,7 @@ const OPTIONS := [
 	["gfx_severed_limbs", 1, 2, 15, 6, 1],
 	["gfx_water_interaction", 1, 2, 15, 7, 0],
 	["gfx_water_caustics", 1, 2, 15, 8, 0],
+	["gfx_vegetation_interaction", 1, 2, 15, 9, 0],
 	# Camera (group 16; CameraRig, CameraFade): style (0 original, 1 modern),
 	# follow, see-through, the modern camera's pan / turn / zoom speeds
 	# (50 = ×1), the WASD layout (default on: user request); rows 8 / 9 are the
@@ -287,6 +288,7 @@ const REMAKE_OPTIONS := {
 	"gfx_volumetric": ["Volumetric fog / light shafts", "Light mist lit by the sun (shafts through the trees at dawn and dusk) and the torches."],
 	"gfx_terrain": ["Terrain detail", "Sharper original ground textures with fewer tile seams; relief follows painted rock and path patterns, with softer sand and snow, fine grass and damp banks."],
 	"gfx_grass": ["Grass blades", "Adds grass blades on green ground, with wind and shadows when shadow quality is enabled. Automatic settings enable this on capable desktops; off by default on Android."],
+	"gfx_vegetation_interaction": ["Grass interaction", "Visible creatures part grass, which gradually springs back. Requires Grass blades. Off by default."],
 	"gfx_soft_ground": ["Snow and sand deformation", "Movement compresses loose snow and sand into connected trails with raised banks and deeper footprints. Snow gives way more than sand or packed snow. Tracks gradually disappear; off by default on Android."],
 	"gfx_ground_contact": ["Ground contact blending", "Experimental: blends the surrounding ground onto the bases of rocks, buildings and tree trunks, following slopes, loose snow and footprints. First use may pause while preparing graphics. Off by default."],
 	"gfx_heat_haze": ["Heat haze", "Air shimmering above torches and camp fires."],
@@ -338,7 +340,7 @@ const OPTIONS_APPLIED := ["volume_sfx", "volume_stream", "volume_voice", "power_
 	"show_flying_hp", "show_tutorial", "autosave", "tooltip_time", "switch_filters",
 	"camera_reverse_x", "camera_reverse_y", "reverse_stereo", "difficulty",
 	"gfx_sky", "gfx_water", "gfx_wind", "gfx_volumetric", "gfx_terrain", "gfx_heat_haze",
-	"gfx_grass", "gfx_soft_ground", "gfx_ground_contact", "gfx_water_interaction", "gfx_water_caustics",
+	"gfx_grass", "gfx_soft_ground", "gfx_ground_contact", "gfx_water_interaction", "gfx_water_caustics", "gfx_vegetation_interaction",
 	"gfx_ssao", "gfx_bloom", "gfx_far_view", "gfx_severed_limbs",
 	"gfx_hd_textures", "gfx_soft_particles", "gfx_lit_particles", "gfx_contact_shadows", "gfx_torch_glow", "gfx_water_reflections",
 	"gfx_firelight", "gfx_materials", "gfx_foliage_light", "gfx_weather_surfaces", "gfx_lava_light", "gfx_detailed_heads",

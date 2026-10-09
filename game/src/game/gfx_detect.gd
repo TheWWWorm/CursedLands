@@ -90,7 +90,7 @@ static func tier_values(tier: int, base: Dictionary) -> Dictionary:
 		v.q_shadows = mini(v.q_shadows, 1)
 		v.q_aa = mini(v.q_aa, 1)   # MSAA / TAA / FSR 2 → SMAA
 	if tier >= 2:
-		for k in ["gfx_ssao", "gfx_water_reflections", "gfx_heat_haze", "gfx_soft_particles", "gfx_far_view", "gfx_grass", "gfx_ground_contact", "gfx_water_interaction", "gfx_water_caustics"]:
+		for k in ["gfx_ssao", "gfx_water_reflections", "gfx_heat_haze", "gfx_soft_particles", "gfx_far_view", "gfx_grass", "gfx_ground_contact", "gfx_water_interaction", "gfx_water_caustics", "gfx_vegetation_interaction"]:
 			v[k] = 0
 	if tier >= 3:
 		for k in ["gfx_firelight", "gfx_lava_light", "gfx_bloom", "gfx_hd_textures", "gfx_materials",

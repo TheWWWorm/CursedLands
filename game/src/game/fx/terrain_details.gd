@@ -17,6 +17,7 @@ const NEAR_RANGE := 18.0
 # Roots alone can be outside a wall while their curved tips pass through it.
 const SCENERY_RADIUS := 0.56
 const SCENERY_HEIGHT := 0.88
+const VegetationInteraction = preload("res://src/game/fx/vegetation_interaction.gd")
 const GRASS_SHADER := """
 shader_type spatial;
 #define EI_TERRAIN_LIGHT
@@ -24,6 +25,7 @@ shader_type spatial;
 render_mode cull_disabled, ambient_light_disabled;
 uniform vec3 view_position;
 uniform float breeze = 1.0;
+uniform float wind_phase = 0.0;
 varying vec3 blade_colour;
 varying vec3 blade_normal;
 varying vec3 ei_e;
@@ -44,7 +46,7 @@ void vertex() {
 	VERTEX.xz += lean * tip * tip * max(INSTANCE_CUSTOM.z, 0.04);
 	float present = step(blade + 0.5, clamp(INSTANCE_CUSTOM.y, 10.0, 14.0));
 	VERTEX *= fade * present;
-	VERTEX.xz += vec2(1.0, 0.35) * sin(TIME * 1.6 + origin.x * 0.8 + origin.z * 0.6 + seed * 4.0)
+	VERTEX.xz += vec2(1.0, 0.35) * sin(wind_phase + origin.x * 0.8 + origin.z * 0.6 + seed * 4.0)
 		* tip * tip * 0.035 * breeze * fade * present;
 	// A grass bed follows the ground's diffuse palette. Keep the actual
 	// curved normal for the two-sided leaf response and transmission.
@@ -87,6 +89,10 @@ var _grass_jobs: Array[Dictionary] = []
 var _building_chunks := {}
 var _wanted_chunks := {}
 var _grass_generation := 0
+var interaction: VegetationInteraction
+static var _base_shader: Shader
+static var _wind_shader: Shader
+static var _interaction_shader: Shader
 const MAX_GRASS_JOBS := 4
 
 
@@ -100,6 +106,7 @@ static func create(t: EITerrain) -> TerrainDetails:
 
 
 func _ready() -> void:
+	process_priority = 3 # unit presentation and fog visibility have settled
 	GameData.options_changed.connect(apply_options)
 
 
@@ -111,10 +118,14 @@ func _exit_tree() -> void:
 
 func apply_options() -> void:
 	_grass = Gfx.on("gfx_grass")
+	var interactive := _grass and Gfx.on("gfx_vegetation_interaction")
+	if interactive != (interaction != null):
+		_clear_grass() # scenery clearance and the bent culling envelope change
+		interaction = VegetationInteraction.new() if interactive else null
 	if not _grass:
 		_clear_grass()
-	elif _material:
-		_material.set_shader_parameter("breeze", float(Gfx.on("gfx_wind")))
+	if _material:
+		_apply_grass_material()
 	if Gfx.on("gfx_soft_ground"):
 		if not is_instance_valid(soft_ground):
 			soft_ground = SoftGroundDeform.new()
@@ -163,6 +174,7 @@ func _process(_dt: float) -> void:
 		_stream(focus)
 	if _material:
 		_material.set_shader_parameter("view_position", p)
+		_update_motion(p)
 	if _native_grass:
 		prepare_grass()
 		_finish_grass_jobs()
@@ -215,6 +227,32 @@ func _clear_grass() -> void:
 	_focus = Vector2i(-1000, -1000)
 	_scenery.clear()
 	_scenery_signature.clear()
+	if interaction: interaction.clear()
+
+
+func _apply_grass_material() -> void:
+	if _base_shader == null: _base_shader = Gfx.make_shader(GRASS_SHADER,true,true)
+	# Godot detects animated shadow casters from TIME usage. Uniform and
+	# texture updates alone do not mark cached local shadow maps dirty. Keep
+	# that animation dependency while the visible phase uses pausable time.
+	var animated := GRASS_SHADER.replace("sin(wind_phase +","sin(wind_phase + TIME*0.0 +")
+	if Gfx.on("gfx_wind") and _wind_shader == null: _wind_shader = Gfx.make_shader(animated,true,true)
+	if interaction and _interaction_shader == null:
+		_interaction_shader = Gfx.make_shader(VegetationInteraction.source(animated),true,true)
+	_material.shader = _interaction_shader if interaction else (_wind_shader if Gfx.on("gfx_wind") else _base_shader)
+	_material.set_shader_parameter("breeze",float(Gfx.on("gfx_wind")))
+	_material.set_shader_parameter("vegetation_pressure",interaction.texture if interaction else null)
+	if interaction: _material.set_shader_parameter("vegetation_focus",interaction.focus)
+	_material.set_shader_parameter("wind_phase",fposmod(terrain._waves.time_ticks()*EIWaterWaves.TICK*1.6,TAU))
+
+
+func _update_motion(centre: Vector3) -> void:
+	var seconds := terrain._waves.time_ticks()*EIWaterWaves.TICK
+	if Gfx.on("gfx_wind"):
+		_material.set_shader_parameter("wind_phase",fposmod(seconds*1.6,TAU))
+	if interaction:
+		interaction.update(self,terrain.game_world(),Vector2(centre.x,centre.z),seconds)
+		_material.set_shader_parameter("vegetation_focus",interaction.focus)
 
 
 ## Keep a small spatial index of the placed scenery's individual mesh boxes.
@@ -257,12 +295,13 @@ func _index_scenery_box(box: AABB, transform: Transform3D) -> void:
 	# Transform the horizontal circular clearance into each local box axis.
 	# Expanding an axis-aligned world box instead would over-clear diagonal walls.
 	var b := inverse.basis
+	var radius := SCENERY_RADIUS+(VegetationInteraction.PUSH if interaction else 0.0)
 	var padding := Vector3(Vector2(b.x.x, b.z.x).length(), Vector2(b.x.y, b.z.y).length(),
-		Vector2(b.x.z, b.z.z).length()) * SCENERY_RADIUS
+		Vector2(b.x.z, b.z.z).length()) * radius
 	var expanded := AABB(box.position - padding, box.size + padding * 2.0)
 	var bounds: AABB = transform * box
-	var lo := Vector2(bounds.position.x, -bounds.end.z) - Vector2.ONE * SCENERY_RADIUS
-	var hi := Vector2(bounds.end.x, -bounds.position.z) + Vector2.ONE * SCENERY_RADIUS
+	var lo := Vector2(bounds.position.x, -bounds.end.z) - Vector2.ONE * radius
+	var hi := Vector2(bounds.end.x, -bounds.position.z) + Vector2.ONE * radius
 	var first := Vector2i((lo / CHUNK).floor())
 	var last := Vector2i((hi / CHUNK).floor())
 	var record := {"inverse": inverse, "box": expanded}
@@ -411,8 +450,7 @@ func _ensure_grass_resources() -> void:
 		_mesh = blade_mesh()
 		_far_mesh = blade_mesh(false)
 		_material = ShaderMaterial.new()
-		_material.shader = Gfx.make_shader(GRASS_SHADER, true, true)
-		_material.set_shader_parameter("breeze", float(Gfx.on("gfx_wind")))
+		_apply_grass_material()
 		_material.set_shader_parameter("view_position", Vector3(_focus.x * CHUNK, 0.0, -_focus.y * CHUNK))
 
 
@@ -490,7 +528,7 @@ func _install_chunk(key: Vector2i, data: Dictionary) -> void:
 	node.multimesh = multi
 	node.material_override = _material
 	node.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_DOUBLE_SIDED
-	node.extra_cull_margin = 0.15
+	node.extra_cull_margin = 0.15+(VegetationInteraction.PUSH if interaction else 0.0)
 	# Layer1 participates in the existing sun caster mask; land's excluded
 	# receiver/decal layers would silently suppress the grass shadows.
 	node.layers = 1

@@ -2508,6 +2508,111 @@ policy change is involved. Full gameplay/device and broader deformation
 acceptance remain open; other renderer processes overlapped these runs, and
 no performance claim is made.
 
+## V2: optional grass interaction and pausable grass wind — 9 October
+
+This is the interaction stage of V2; **biome-specific cover remains next**.
+The new **Grass interaction** option (`gfx_vegetation_interaction`, Remake →
+Water and effects, group 15 row 9) defaults **off on every platform** and requires
+Grass blades. Row 12 in World and textures is reserved for Original look; do
+not put another option there. Visible living creatures part existing grass,
+which gradually springs back. Crawling uses a longer contact envelope centred
+on the presented body. No new simulation actors, save fields or packets are added.
+
+### Reference and source map
+
+At R1 `0092dc6e1d7c4aab3f74644a79e9bfca11ecf293`, read
+`Source/renderer_ground_cover.cpp:2166–2193` for shown/grounded unit admission
+and game-time recovery. `Source/ground_cover_interaction.h:24/37/66` covers
+wind fronts, placement cells and recovery ownership. This adaptation is
+independently authored; it does not port their D3D compute implementation.
+
+- `game/src/game/fx/vegetation_interaction.gd:5/25/113/140` owns one 128² RGBA8
+  pressure texture (64 KiB), half-metre world cells, a 64 m toroidal window,
+  and at most 4,096 sparse history cells. Updates are capped at 20 per game
+  second; empty recovered history performs no texture upload. Contacts ease
+  in over 0.2 s and recover exponentially with a 0.55 s time constant. Short
+  movement segments fill between samples; corrections over 2 m start a fresh
+  contact rather than drawing a connecting trail. Moving the camera retires
+  cells outside the window, preventing wrapped history from reappearing.
+- `vegetation_interaction.gd:48/53/62/93` reads the world's visible registry
+  after presentation and fog updates. Hidden, fogged, dead, invisible and
+  off-screen actors supply no new contacts. Authored grass/slope/water/deck
+  admission and actual presented part bounds reject airborne and elevated
+  figures. Up to 32 nearby candidates receive pose queries; the initial scan
+  still scales with the visible registry. Previously visible pressure may
+  recover after its actor leaves visibility; it never follows that hidden actor.
+  Scene/world pause, loading holds, movies and LMP holds stop history updates.
+- `vegetation_interaction.gd:164/179` adds one linearly filtered vertex lookup,
+  horizontal bending and tip compression to the existing grass shader. The
+  influence fades at 27–30 m from the field centre. Native placement, colours,
+  near/far meshes and native/script generation remain in their existing owners.
+- `game/src/game/fx/terrain_details.gd:118/233/249` owns the optional field and
+  material variants. Grass wind now uses the scaled terrain wave clock instead
+  of wall time. The animated variants retain a `TIME*0.0` dependency solely so
+  Godot refreshes cached local shadows; it contributes no visible motion.
+  Wind-off, interaction-off grass uses the static variant. Do not remove the
+  animation dependency merely because the visible phase comes from a uniform.
+- `terrain_details.gd:291/509` expands scenery clearance and culling margin by
+  the 0.35 m bend allowance. This keeps bent leaves out of nearby walls and
+  includes displacement in visibility. Flooding/scenery invalidation clears
+  history with the existing grass generation barrier. Disabling either the
+  option or grass releases the pressure owner/texture and restores the base
+  material. There is no second chunk manager.
+- `game_data.gd:115/291/343`, `remake_text.gd`, and `gfx_detect.gd` provide the
+  applied option, English/Russian/German text, original-look membership and
+  conservative automatic settings.
+
+### Validation, cost and remaining V2 scope
+
+The reproducible fixture is `tools/tests/vegetation_interaction.gd`; add
+`--vegetation-timing` for the bounded 32-character comparison and
+`--ei-script-grass` to exercise the existing non-native generator. It uses
+actual zone1 terrain and authored human standing/crawl poses under sun and
+local shadows. It is not a complete gameplay or navigation route.
+
+The accepted pack is in
+`/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/v2-vegetation/vegetation-accepted`.
+Its PCK SHA-256 is
+`b1d55d680a69500c33d028e637d2b9116fd554ed6d76434c375b62eff3e19c73`.
+[Vegetation evidence](validation/vegetation-interaction-2026-10-09.json) records
+source/runtime/native hashes, commands, results, images and the failed controls.
+It uses the existing patched runtime, with no new engine or native-library patch.
+
+**238 focused assertions pass** across headless, Compatibility, Forward+, desktop
+Mobile and Compatibility's forced script generator. The unchanged
+`tools/tests/grass_chunks.gd` adds **3,655 passing regression assertions** for
+native/script data parity, immutable worker inputs and lifetime. All 227
+production script hashes match the accepted export. These counts include
+repeated backend/actor checks. Empty and off-restored images, held game time, real tree pause while wall time
+advances, and local-shadow refresh controls are checked. The first shader lacked
+Godot's animation dependency and left stale Compatibility shadows: 19 changed
+pixels, maximum 5/255, after forcing an instance refresh. The corrected shader
+matches that control. A separate early Mobile mismatch was reproduced in the
+**unchanged initial scene** (411 pixels, maximum 7/255). Waiting for initial
+rendering to settle removes it. Preserve the initial-versus-settled control;
+do not relax pixel assertions to hide that startup difference.
+
+The 1280×720 Compatibility sample with 32 posed figures measures about
+**1.11–1.12 ms per active pressure update** on the desktop host. With the 20 Hz
+cap it uploads 53 × 64 KiB in 2.667 supplied game seconds (about 1.24 MiB per
+normal-speed game second). GPU viewport medians are about 2.00–2.02 ms off and
+2.20–2.25 ms on. Total sampled draws are 3,928 off and 3,930 on; the changed
+bounds/animation can add shadow/culling work despite using the existing grass
+pass. These are fixture results, not a gameplay FPS gain or Android/web result.
+
+Keep this off by default. The field has no per-unit vertex loop, but adds a
+vertex texture fetch and maintains animated-shadow work while enabled, even
+when the pressure history is empty. Further idle-path optimization, physical
+Android/browser cost, wider creature sizes, lighting/normal quality, long camera
+routes, reload acceptance, and motion smoothness at low frame rates remain open.
+The current map/grass coordinate conventions assume the existing axis-aligned
+map layout. Corpse pressure and persistent snow prints remain in their separate
+owners. **Meadow flowers, dry tufts, tree litter, stones/dead bushes, swamp reeds,
+shore/underwater cover, snow-region decoration, far-density thinning and shared
+weather wind fronts are not implemented by this checkpoint.** Extend existing
+TerrainDetails generation for those next; do not replace it with another grass
+streamer. U45 remains first when the later gameplay handoff begins.
+
 ## Next work in the established order
 
 1. **P1/P2 remaining texture work:** retained outfit pixels and shared native
@@ -2562,5 +2667,6 @@ no performance claim is made.
    Resolve cold preparation and finish its lighting/visual acceptance before
    enabling defaults. V4 now has optional contacts/wakes and terrain caustics;
    wave fields, currents and waterfalls remain separate work. Both options stay
-   off pending broader quality/device acceptance. Continue with V2 biome ground
-   cover in the initial visual sequence. No visual effect was silently enabled.
+   off pending broader quality/device acceptance. V2 now has the optional
+   grass-interaction stage above; continue with biome cover in the initial visual
+   sequence. No visual effect was silently enabled.
