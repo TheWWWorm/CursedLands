@@ -1,0 +1,300 @@
+{
+  "date": "2026-10-09",
+  "status": "Local U45 investigation and verified separate premature-completion fix; original reported all-creatures-dead softlock remains unconfirmed.",
+  "base_commit": "92d49410414ea8e93e899f992ada4372d7545e3c",
+  "branch": "fix/catacomb-coop-deck",
+  "summary": "IsDead now matches native builtin 0x64: missing, freed, and non-unit references return false. Removing the healthy cave queen during poisoning therefore cannot complete her death objective before the weakened replacement dies. Retained looted corpses still count as dead.",
+  "original_quest": {
+    "zone": "gz5g",
+    "id": "q22g",
+    "title": "Subterranean creatures / Подземные твари",
+    "alternatives": "The original quest asks for one of three underground rivers to be poisoned. The other two poison subobjectives intentionally fail after one source is chosen. F1/F2/F3 and SourceP enforce one use.",
+    "routes": [
+      {
+        "source": 1,
+        "lever": 4525,
+        "success_objective": ".4",
+        "poisoned_creatures": 6,
+        "survivors": 5
+      },
+      {
+        "source": 2,
+        "lever": 4524,
+        "success_objective": ".6",
+        "poisoned_creatures": 8,
+        "survivors": 3
+      },
+      {
+        "source": 3,
+        "lever": 4523,
+        "success_objective": ".8",
+        "poisoned_creatures": 11,
+        "survivors": 0
+      }
+    ],
+    "replacement": "VTriger#0#124 removes healthy queen UID14, consumes the dragonpoison quest item, sets AlreadySMP, and loads Zone5ScrabPoison.mob. Its UID1000027 queen has a separate original IsDead check.",
+    "completion": "Original queen objective .1 and Every(Scrabs, IsDead) objective .2 must both be complete; then b.SKD.Dr22 and z.gz5g unlock the return.",
+    "native_boundary": "Both base FUN_004b41e0 case100 and LiA FUN_0046cca0 case100 return 0 when the unit/body is missing. Base IsDead table opcode is 0x64 at 0x78c960 (game.exe SHA256 d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8)."
+  },
+  "reproduction": "The final actual-map fixture with unmodified 92d4941 VM reproduces two failures on source3: removing the healthy queen immediately completes .1 and the overall quest although UID1000027 remains alive, and this incorrect completion survives save/reload. With the fix both checks pass.",
+  "save_semantics": {
+    "retained_corpses": "CampaignState capture_zone persists world.looted IDs; apply_zone restores real dead actors before remove_looted. ScriptVM _ser/_deser retain their unit identity. The fix reads that dead state without the _unit filter that hides looted actors.",
+    "verified": "All routes save/reload before poison, after poison with poisoned corpses already looted, and after completion. Sources1/2 additionally reload after queen death with small survivors. An ENet guest receives every state and reconnects after completion.",
+    "existing_save_policy": "No schema changes, invented success flags, or rollback of previously saved quest completion. Previously completed saves remain complete.",
+    "user_save": "A read-only search of available save manifests found only a historical prepared campaign_leg_05 cave save, already complete, not the reported pre-failure save. It was not modified and is not evidence of the reported all-creatures-dead softlock."
+  },
+  "checks": {
+    "candidate_total": 290,
+    "candidate_failures": 0,
+    "actual_cave_enet_checks": 122,
+    "native_dead_boundary_checks": 12,
+    "existing_predicate_regression_checks": 101,
+    "existing_trap_regression_checks": 55,
+    "baseline_checks": 38,
+    "baseline_failures": 2
+  },
+  "limits": [
+    "The user-reported all-creatures-dead incomplete quest has not been reproduced; do not mark U45 fully closed based on this separate premature-completion fix.",
+    "Headless Linux actual original map/scripts with host and guest ENet branches; unrelated AI/pathfinding is held still. The fixture invokes the real shared-key lever operation and ordinary actor death/loot paths, but does not exercise pointer input, walking, combat damage, or a full campaign playthrough.",
+    "The quest is granted by the original Dr20 briefing reward. No quest success flags or fabricated script definitions are inserted.",
+    "All writes used disposable profiles under the isolated staging directory. No user save writes, shared export staging changes, install, release, platform compatibility, visual acceptance, or performance claim."
+  ],
+  "staging": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009",
+    "candidate": "build",
+    "baseline": "build-before",
+    "method": "Snapshot of canonical game at start of this task plus existing native extension; the only production source difference between the tested baseline and candidate is game/src/game/script/vm.gd. Exported with godot-4 then copied the existing patched fast-runtime executable.",
+    "export_logs": [
+      "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/export-after.log",
+      "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/export-before-final-fixture.log"
+    ],
+    "export_errors": []
+  },
+  "evidence": [
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/build-before/CPU.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--ei-inline-host",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/cave_queen_route.gd",
+        "--source=3"
+      ],
+      "exit_code": 1,
+      "seconds": 9.117775363993132,
+      "errors": [],
+      "log_sha256": "fe39ca4839b4c5e5a48bdcc87725619536f6d87420737aa5b4f5f1932dcb9cc9",
+      "fixture_sha256": "7f5a0e774350fc3720cb36d865a53cb4fb0b9f995ca4c04d97b4866205f36be7",
+      "build_sha256": {
+        "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+        "CPU.pck": "ae40663739ab74265f6ffc0d76eaff5b3045bd0e6e04d7dceed11b38b67d85d2",
+        "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+      },
+      "name": "cave-farthest-before-final-02",
+      "checks": 38,
+      "failures": 2,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/cave-farthest-before-final-02.log"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/build/CPU.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--ei-inline-host",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/cave_queen_route.gd",
+        "--source=1"
+      ],
+      "exit_code": 0,
+      "seconds": 10.218648821988609,
+      "errors": [],
+      "log_sha256": "55d1ab0ca5472b9817d0bc5cd5b6328e7e299d19636a102a30ff5e43d59b6d43",
+      "fixture_sha256": "7f5a0e774350fc3720cb36d865a53cb4fb0b9f995ca4c04d97b4866205f36be7",
+      "build_sha256": {
+        "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+        "CPU.pck": "f3136887fc7c36aa2bed8272267fd61d26936bc166e50bf3670f7e910ffe9e77",
+        "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+      },
+      "name": "cave-nearest-after-01",
+      "checks": 42,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/cave-nearest-after-01.log"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/build/CPU.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--ei-inline-host",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/cave_queen_route.gd",
+        "--source=2"
+      ],
+      "exit_code": 0,
+      "seconds": 10.0182752039982,
+      "errors": [],
+      "log_sha256": "2a02564aee71fea39905328b610f3c39e863b202afb3abe43fcb68c174040550",
+      "fixture_sha256": "7f5a0e774350fc3720cb36d865a53cb4fb0b9f995ca4c04d97b4866205f36be7",
+      "build_sha256": {
+        "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+        "CPU.pck": "f3136887fc7c36aa2bed8272267fd61d26936bc166e50bf3670f7e910ffe9e77",
+        "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+      },
+      "name": "cave-middle-after-01",
+      "checks": 42,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/cave-middle-after-01.log"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/build/CPU.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--ei-inline-host",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/cave_queen_route.gd",
+        "--source=3"
+      ],
+      "exit_code": 0,
+      "seconds": 9.114811345003545,
+      "errors": [],
+      "log_sha256": "d4901c5865d42911bbb8fac4099f1a70d71c7b7cbba2fa21f23bd53e7fbc6e52",
+      "fixture_sha256": "7f5a0e774350fc3720cb36d865a53cb4fb0b9f995ca4c04d97b4866205f36be7",
+      "build_sha256": {
+        "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+        "CPU.pck": "f3136887fc7c36aa2bed8272267fd61d26936bc166e50bf3670f7e910ffe9e77",
+        "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+      },
+      "name": "cave-farthest-after-01",
+      "checks": 38,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/cave-farthest-after-01.log"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/build/CPU.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--ei-inline-host",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/script_dead_predicates.gd"
+      ],
+      "exit_code": 0,
+      "seconds": 1.9037999520078301,
+      "errors": [],
+      "log_sha256": "a68deea04cf35fbbd75ca294a06087f767bea0bf432bd9bf4cc45fddb6fc7e98",
+      "fixture_sha256": "981e6cd80c2078af9959acf87b736b558a5663b323faf65eca12c1b51fe1ee58",
+      "build_sha256": {
+        "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+        "CPU.pck": "f3136887fc7c36aa2bed8272267fd61d26936bc166e50bf3670f7e910ffe9e77",
+        "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+      },
+      "name": "dead-predicate-after-01",
+      "checks": 12,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/dead-predicate-after-01.log"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/build/CPU.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--ei-inline-host",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_predicates.gd"
+      ],
+      "exit_code": 0,
+      "seconds": 3.606656991003547,
+      "errors": [],
+      "log_sha256": "ab3e3cb6fd37edbb7c8fff07b29c49443d1636e3c6ba37cf0e84989f38a8585d",
+      "fixture_sha256": "29668267f1e9cc53d6b9856016e5cb4f9f7151addd0e9ef76ad2f70dfc151562",
+      "build_sha256": {
+        "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+        "CPU.pck": "f3136887fc7c36aa2bed8272267fd61d26936bc166e50bf3670f7e910ffe9e77",
+        "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+      },
+      "name": "predicates-regression-after-01",
+      "checks": 101,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/predicates-regression-after-01.log"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/build/CPU.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--ei-inline-host",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/story_coop_traps.gd"
+      ],
+      "exit_code": 0,
+      "seconds": 2.603939744993113,
+      "errors": [],
+      "log_sha256": "6d8630a7720005c9abfd8a8efee7598256238ac1d04dcb577e3bb4aab6e4713d",
+      "fixture_sha256": "a119e860c91c23faba2449aac220607706fbe18ce272e053d48db90a21938094",
+      "build_sha256": {
+        "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+        "CPU.pck": "f3136887fc7c36aa2bed8272267fd61d26936bc166e50bf3670f7e910ffe9e77",
+        "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+      },
+      "name": "traps-regression-after-01",
+      "checks": 55,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/traps-regression-after-01.log"
+    }
+  ],
+  "source_sha256": {
+    "game/src/game/script/vm.gd": "c6de612db8ce346bd137ee955c6d05a22f9bcbf190a6507f0e77bd8f45b64523",
+    "tools/tests/cave_queen_route.gd": "7f5a0e774350fc3720cb36d865a53cb4fb0b9f995ca4c04d97b4866205f36be7",
+    "tools/tests/script_dead_predicates.gd": "981e6cd80c2078af9959acf87b736b558a5663b323faf65eca12c1b51fe1ee58"
+  },
+  "original_source_sha256": {
+    "/home/llm2x/Documents/EI/inspection/samples/scripts/zone5_1.txt": "60c9e675b9aa7bfe35ec524f8f72ffb48cddc6b15d1772062257812ea56fae4a",
+    "/home/llm2x/Documents/EI/inspection/samples/scripts/zone5scrabpoison.txt": "c05f68dfd5eeac8027a2244adc8d39411f949671e434746879fe96f99c3a0358",
+    "/home/llm2x/Documents/EI/inspection/ghidra/decompiled/functions/000b4/4b41e0_FUN_004b41e0.c": "564261c6e6fae9c94d8f0086e531bae153b55853050732bc3dcad0bf388f9508",
+    "/home/llm2x/Documents/EI/local/lost-in-astral/native/decompiled/functions/0006c/46cca0_FUN_0046cca0.c": "989793e67ebf90f745b87a06c747215392a582a823075ef67377aa7bda59521e"
+  },
+  "excluded_attempts": [
+    {
+      "name": "cave-farthest-01",
+      "reason": "Patched runtime rejects --path; failed before game code. Replaced with exported isolated PCK."
+    },
+    {
+      "name": "cave-farthest-02 / cave-farthest-03",
+      "reason": "Initial fixture compared integer and float arrays strictly and reported one irrelevant failure. Corrected fixture was rerun on the before and after builds; only final fixture runs count above."
+    },
+    {
+      "name": "cave-farthest-before-final",
+      "reason": "Mistyped nonexistent fixture argument tools-unused. Stopped the isolated child; no checks run. Superseded by cave-farthest-before-final-02."
+    }
+  ]
+}

@@ -628,8 +628,13 @@ func _call(name: String, a: Array, inst: Instance):
 			var p := _xy(v[0])
 			return 1.0 if v[0] != null and Rect2(Vector2(_num(v[1]), _num(v[2])), Vector2.ZERO).expand(Vector2(_num(v[3]), _num(v[4]))).has_point(p) else 0.0
 		"IsDead":
-			var u := _unit(v[0])
-			return 1.0 if u == null or u.dead else 0.0
+			# Native builtin 0x64 returns false without a unit/body. In the
+			# cave, RemoveUnitFromServer replaces the healthy queen before
+			# AddMob starts the weakened queen's separate death check.
+			# A freed reference must not finish the healthy queen's check.
+			# Retained looted corpses still carry their real death state.
+			var u = v[0]
+			return 1.0 if typeof(u) == TYPE_OBJECT and is_instance_valid(u) and u is GameUnit and u.dead else 0.0
 		"IsAlive":
 			var u := _unit(v[0])
 			return 1.0 if u and not u.dead else 0.0
