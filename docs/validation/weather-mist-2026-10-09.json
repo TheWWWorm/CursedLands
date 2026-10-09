@@ -1,0 +1,1739 @@
+{
+  "date": "2026-10-09",
+  "feature": "V5 bounded local morning and post-rain water mist",
+  "status": "Bounded feature validated locally with a faint LiA post-rain motion limitation: 304 assertions in 7 wholly passing runs, plus 52/53 in the separately scoped LiA regional view. Default off; not published or installed. Full-source release export is parent-owned.",
+  "reference": {
+    "repository": "/home/llm2x/Documents/evil-islands-owned-renderer",
+    "revision": "0092dc6e1d7c4aab3f74644a79e9bfca11ecf293",
+    "sha256": {
+      "Source/world_fog.h": "ba0385b0255173def08002c086eea69b616b2adfee34393fa723dc43b78898ae",
+      "Source/renderer_fog.cpp": "2606ffbc01eaa1fa6e47bbdffc966a5bbe06674b68bfe187931b8c86e70f4992"
+    },
+    "lines": {
+      "Source/world_fog.h": "141-179: deterministic morning, rain ramp, wetness tail; 191: swamp density; 198: open-water density and Ingos exclusion.",
+      "Source/renderer_fog.cpp": "122-130: desert morning modifier, 35% morning default, 4 h rain tail; 137: strength 1; 171: 2.5 m falloff."
+    },
+    "density_context": "Reference open-water coefficient 0.05/m and swamp 0.15/m are materially stronger than this adaptation peak 0.01429155/m. R1 has no global 26% opacity rule; the rejected 0.30 optical-depth cap was self-imposed, then replaced by the justified bounded 1.0 cap.",
+    "adaptation": "This is a local native FogVolume layer, not the full R1 atmosphere renderer. It reuses actual original terrain categories, Ingos exclusion, deterministic day hash, daily window, rain ramp and exponential tail. Local morning probability is 60% versus R1 default 35%; local rain tail 2h versus R1 default 4h; saturated native weights and 4 m tapered height accommodate native density cutoff. No global fog, desert haze, cloud raymarch or shafts redesign is claimed."
+  },
+  "implementation": {
+    "option": {
+      "name": "gfx_weather_mist",
+      "label": "Local water mist",
+      "default": 0,
+      "group": 15,
+      "row": 8,
+      "prerequisites": [
+        "gfx_volumetric",
+        "Forward+"
+      ]
+    },
+    "metadata_commit": "8fcbde9; EN/RU/DE, options applied, low-tier exclusion, Original look/default/group checks. Metadata-only UI 398/398 is recorded separately and excluded from the feature assertion total.",
+    "hooks": "Game creates WeatherMist after AmbientLife. Pausable priority 4 owner; helper checks actual world can_process, session loading/zone holds/remote loading/movie/LMP gates. Existing native volumetric surface lighting is reused; no Gfx changes.",
+    "sources": "Actual highest containing jittered ground triangle and actual drawn liquid geometry, including script water offsets. Admits only liquid above land+0.06m with atlas type 6 or 14; rejects unknown/caves/lava/Ingos open water and known authored solid floor above water+0.10m. Navigation water data is not source evidence.",
+    "sampling": "Each 2 m texel samples centre plus four corners and requires matching category/heights within 0.30 m. This is conservative sampled coverage, not proof that every sub-texel point is wet. Edge taper occurs inside admitted wet texels; narrow puddles/shore wisps may be omitted.",
+    "clock": "Existing terrain clock drives admission, reveal and wind; campaign hours drive morning/wetness. Held clock freezes all of these. Rewind,>0.5s terrain-time gap,>0.25 campaign-hour correction, world or same-world terrain replacement create a fresh local lifetime. Offset/surface signature invalidates masks and hides stale volumes immediately even at held time, before rebuilding on advancing time.",
+    "drift": "Game-clock integrated wind, each component modulo 100 TAU preserving both rational wisp frequencies. World-anchored 0.55+0.35sin+0.10cos modulation stays in [0.10,1]; no engine TIME.",
+    "environment": "Zero emission; non-emissive(.90,.93,.94) scattering albedo. Existing environment density/range, global fog and map-edge coverage remain unchanged. No gameplay actor, collision, navigation, RNG, save or network mutations."
+  },
+  "bounds": {
+    "native_volumes": 6,
+    "cached_cells": 16,
+    "cell_width_m": 12,
+    "source_grid": [
+      6,
+      6
+    ],
+    "texel_width_m": 2,
+    "layer_height_m": 4,
+    "max_box_height_m": 8,
+    "admission_radius_m": 24,
+    "admission": "Nearest admitted sources in one 3x3-cell square; nonoverlapping horizontal boxes; one-second reveal and 8 m outer fade.",
+    "continuous_field_path_bound_m": 69.9714227381436,
+    "derivation": "Disjoint active cells lie inside a 36x36 m square, so total horizontal ray projection is at most 36sqrt(2)m. Six boxes contribute at most 48 m total vertical projection. A straight ray therefore has total path <= sqrt((36sqrt(2))^2+48^2)=69.971m. Every multiplying density factor is <=1, source categories are exclusive, and peak density is 1/path.",
+    "max_density_per_m": 0.014291548761875737,
+    "max_added_continuous_optical_depth": 1.0,
+    "worst_continuous_field_opacity": 0.6321205588285577,
+    "readability_scope": "The 63.212% worst-ray opacity bound is an analytical continuous-field contract, not a universal 74% actor-contrast guarantee. Native froxel filtering/history may spread support. Actual normal and 14.742-degree through-mist figures and dry-ray controls separately establish sampled readability.",
+    "cpu_build_budget": "At most 12 texels per source slice with nominal 2000 us budget; one geometry query is non-preemptible and can exceed it. Six-by-six masks avoid world-size textures; optional scenery=false avoids a duplicate map-wide scene index. No FPS/frame-time/device-performance claim."
+  },
+  "build": {
+    "directory": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-camp-ui-20261009/mist-build06",
+    "sha256": {
+      "CPU.pck": "5dee849491f53c6b98b9d6bcdab6cf868fdea2e596a9e746fcc30a24a06e5e4e",
+      "CPU.x86_64": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+      "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+    },
+    "source_sha256": {
+      "game/src/game/fx/weather_mist.gd": "81e0a685997c2b6dddb01028ac0094e7aabf358c5655e6e218e31e2ef4f5570a",
+      "game/src/game/fx/weather_mist_sources.gd": "f5507b2f48f267779f489011fc370a3ba3995130eb6d281cd2daea85a3c396fe",
+      "game/src/game/fx/ambient_habitats.gd": "086dfae474e3224631c532579e1a2cc6d29cb6be2c1f19e3dd5397056118119b"
+    },
+    "canonical_game_hook_sha256": "393984b29257e81b6f832a41ef2af8ea8f50d55067b41c9917dd1eeb1d33e112",
+    "private_staging_game_sha256": "393984b29257e81b6f832a41ef2af8ea8f50d55067b41c9917dd1eeb1d33e112",
+    "snapshot_scope": "Isolated 92d4941-based camp/V3 snapshot plus this mist helper, the accepted public WaterSurface.begin_frame(false) API and metadata. It intentionally excludes concurrent parent wave/cloud/cliff/DOF changes. Parent/progression actual-Game integration uses the complete current source and a later guarded-DOF runtime; these artifacts are not claimed identical.",
+    "export_log": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-camp-ui-20261009/mist-export06.log",
+      "sha256": "23da9cedad929a17415ba7541db75b93836657060a2657be8c6e1e4378e599d5"
+    }
+  },
+  "test_fixture": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/weather_mist.gd",
+    "sha256": "c24ac4aafce27c3528162d3e84cd09bc44aae40df9ae04bd92c4acbcabb80ce6"
+  },
+  "fixture_revision_note": "Frozen per-run fixture hashes are preserved. Final fixture only makes the multi-endpoint comparison select the highest changed-channel count before peak; this preserves both recorded LiA endpoint outcomes and its failed post-rain criterion. Production source is identical across all final runs.",
+  "accepted_checks": 304,
+  "accepted_runs": [
+    {
+      "name": "mist-base-headless-09",
+      "checks": 65,
+      "failures": 0,
+      "exit_code": 0,
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/mist-base-headless-09.json",
+        "sha256": "203a56bae81046840ea703c22b216b9a849569d6b44fba61c9568d94ec4c9832"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-base-headless-09/godot/app_userdata/Cursed Lands/mist-receipt.json",
+        "sha256": "ca03d3a4f1254b4cf3314cdb74d9aaca8955139a517d99813e0b48015dcb934e"
+      },
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-camp-ui-20261009/mist_fixture09.gd",
+        "sha256": "6e3f274fd14d70f07b1b0a0ba5dc66bbc12fe308bed2d5c617c442fef00b8b57"
+      },
+      "warnings": [],
+      "rows": [
+        {
+          "case": "policy",
+          "max_density": 0.0142915487618757,
+          "max_optical_depth": 1.0,
+          "mornings": [
+            1.0,
+            1.0,
+            1.0,
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0
+          ],
+          "opacity_bound": 0.632120558828558
+        },
+        {
+          "biome": "gipat",
+          "case": "sources",
+          "kinds": {
+            "6": 110
+          },
+          "mask_texels": 32,
+          "navigation_wet_drawn_dry": 0,
+          "verified_samples": 110,
+          "zone": "gz4g"
+        },
+        {
+          "biome": "gipat",
+          "case": "sources",
+          "kinds": {
+            "6": 180,
+            "14": 57
+          },
+          "mask_texels": 36,
+          "navigation_wet_drawn_dry": 0,
+          "verified_samples": 237,
+          "zone": "gz1g"
+        },
+        {
+          "biome": "cave",
+          "case": "sources",
+          "kinds": {},
+          "mask_texels": 0,
+          "navigation_wet_drawn_dry": 0,
+          "verified_samples": 0,
+          "zone": "bz7g"
+        },
+        {
+          "biome": "ingos",
+          "case": "sources",
+          "kinds": {},
+          "mask_texels": 0,
+          "navigation_wet_drawn_dry": 0,
+          "verified_samples": 0,
+          "zone": "gz11k"
+        },
+        {
+          "biome": "suslanger",
+          "case": "sources",
+          "kinds": {
+            "6": 315
+          },
+          "mask_texels": 36,
+          "navigation_wet_drawn_dry": 0,
+          "verified_samples": 315,
+          "zone": "gz18h"
+        },
+        {
+          "case": "lifecycle",
+          "chosen": "{ \"point\": (257.5, 189.25), \"height\": 4.37094736099243, \"key\": (21, 15), \"source_type\": 0 }",
+          "cleared_clock": true,
+          "cost_note": "Descriptive CPU wall-time samples from this fixture only; no frame-time, hardware or performance acceptance.",
+          "source_slice_us": {
+            "count": 133,
+            "max": 2486,
+            "median": 2015,
+            "p95": 2388
+          },
+          "update_cost_us": {
+            "count": 675,
+            "max": 2501,
+            "median": 17,
+            "p95": 2080
+          },
+          "zone": "gz4g"
+        }
+      ],
+      "captures": []
+    },
+    {
+      "name": "mist-astral-headless-09",
+      "checks": 47,
+      "failures": 0,
+      "exit_code": 0,
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/mist-astral-headless-09.json",
+        "sha256": "aebb431e18003a25830da04c1370937029bdac25d948d58198c68800c99312eb"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-astral-headless-09/godot/app_userdata/Cursed Lands/mist-receipt.json",
+        "sha256": "984e5270be87425122b1514d83932178028dfd7d5ce55d988a88a91747394e1b"
+      },
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-camp-ui-20261009/mist_fixture09.gd",
+        "sha256": "6e3f274fd14d70f07b1b0a0ba5dc66bbc12fe308bed2d5c617c442fef00b8b57"
+      },
+      "warnings": [],
+      "rows": [
+        {
+          "case": "policy",
+          "max_density": 0.0142915487618757,
+          "max_optical_depth": 1.0,
+          "mornings": [
+            1.0,
+            1.0,
+            1.0,
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0
+          ],
+          "opacity_bound": 0.632120558828558
+        },
+        {
+          "biome": "gipat2",
+          "case": "sources",
+          "kinds": {
+            "6": 46
+          },
+          "mask_texels": 7,
+          "navigation_wet_drawn_dry": 0,
+          "verified_samples": 46,
+          "zone": "gz9g"
+        },
+        {
+          "biome": "cave",
+          "case": "sources",
+          "kinds": {},
+          "mask_texels": 0,
+          "navigation_wet_drawn_dry": 0,
+          "verified_samples": 0,
+          "zone": "gz7d1"
+        },
+        {
+          "case": "lifecycle",
+          "chosen": "{ \"point\": (113.3636, 248.1818), \"height\": 8.44277477264404, \"key\": (9, 20), \"source_type\": 0 }",
+          "cleared_clock": true,
+          "cost_note": "Descriptive CPU wall-time samples from this fixture only; no frame-time, hardware or performance acceptance.",
+          "source_slice_us": {
+            "count": 150,
+            "max": 2625,
+            "median": 2048,
+            "p95": 2337
+          },
+          "update_cost_us": {
+            "count": 692,
+            "max": 2646,
+            "median": 16,
+            "p95": 2114
+          },
+          "zone": "gz9g"
+        }
+      ],
+      "captures": []
+    },
+    {
+      "name": "mist-forward-09",
+      "checks": 53,
+      "failures": 0,
+      "exit_code": 0,
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/mist-forward-09.json",
+        "sha256": "3a5343cd51ff1d2f017a7612b624810119a94108c4ea6fdbfa22d627c29667cf"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-forward-09/godot/app_userdata/Cursed Lands/mist-receipt.json",
+        "sha256": "e3d777b5a503b29bec28b71b6e89bfb7d3a57a63e12aa1ba1a25187e0f3ca182"
+      },
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-camp-ui-20261009/mist_fixture09.gd",
+        "sha256": "6e3f274fd14d70f07b1b0a0ba5dc66bbc12fe308bed2d5c617c442fef00b8b57"
+      },
+      "warnings": [
+        "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+      ],
+      "rows": [
+        {
+          "case": "policy",
+          "max_density": 0.0142915487618757,
+          "max_optical_depth": 1.0,
+          "mornings": [
+            1.0,
+            1.0,
+            1.0,
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0
+          ],
+          "opacity_bound": 0.632120558828558
+        },
+        {
+          "advanced": {
+            "channels": 8379,
+            "exact": false,
+            "mean": 0.0566730324074074,
+            "peak": 4
+          },
+          "case": "render",
+          "drift": "(9.127336, 6.845312)",
+          "empty_source": {
+            "channels": 0,
+            "exact": false,
+            "mean": 0.00446527777777778,
+            "peak": 1
+          },
+          "held": {
+            "channels": 0,
+            "exact": false,
+            "mean": 0.00380034722222222,
+            "peak": 1
+          },
+          "hour": 6.76333333333345,
+          "on": {
+            "channels": 54172,
+            "exact": false,
+            "mean": 0.116400173611111,
+            "peak": 7
+          },
+          "party": {
+            "contrast_retained": 0.984586397617456,
+            "pixels": 734
+          },
+          "phase": "dawn",
+          "point": "(257.5, 189.25)",
+          "rain": 0.0,
+          "restored": {
+            "channels": 0,
+            "exact": false,
+            "mean": 0.00306481481481481,
+            "peak": 1
+          },
+          "shore": {
+            "changed_channels": 0,
+            "peak_channel_delta": 1,
+            "sampled_dry_rays": 32
+          },
+          "source_type": 0,
+          "volumes": 6,
+          "weights": "(1.0, 1.0)",
+          "wetness": 0.60336690042342,
+          "zone": "gz4g"
+        },
+        {
+          "advanced": {
+            "channels": 3930,
+            "exact": false,
+            "mean": 0.0442537615740741,
+            "peak": 4
+          },
+          "case": "render",
+          "drift": "(16.64376, 12.4831)",
+          "empty_source": {
+            "channels": 0,
+            "exact": false,
+            "mean": 0.00261689814814815,
+            "peak": 1
+          },
+          "held": {
+            "channels": 0,
+            "exact": false,
+            "mean": 0.00235069444444444,
+            "peak": 1
+          },
+          "hour": 12.0000000000002,
+          "on": {
+            "channels": 17810,
+            "exact": false,
+            "mean": 0.0692060185185185,
+            "peak": 5
+          },
+          "party": {
+            "contrast_retained": 0.992998237403513,
+            "pixels": 734
+          },
+          "phase": "after-rain",
+          "point": "(257.5, 189.25)",
+          "rain": 0.0,
+          "restored": {
+            "channels": 0,
+            "exact": false,
+            "mean": 0.00151533564814815,
+            "peak": 1
+          },
+          "shore": {
+            "changed_channels": 0,
+            "peak_channel_delta": 1,
+            "sampled_dry_rays": 32
+          },
+          "source_type": 0,
+          "volumes": 6,
+          "weights": "(0.772996, 0.920549)",
+          "wetness": 0.772996370891092,
+          "zone": "gz4g"
+        },
+        {
+          "case": "lifecycle",
+          "chosen": "{ \"point\": (257.5, 189.25), \"height\": 4.37094736099243, \"key\": (21, 15), \"source_type\": 0 }",
+          "cleared_clock": true,
+          "cost_note": "Descriptive CPU wall-time samples from this fixture only; no frame-time, hardware or performance acceptance.",
+          "source_slice_us": {
+            "count": 192,
+            "max": 4904,
+            "median": 2093,
+            "p95": 2467
+          },
+          "update_cost_us": {
+            "count": 1587,
+            "max": 7015,
+            "median": 17,
+            "p95": 2131
+          },
+          "zone": "gz4g"
+        }
+      ],
+      "captures": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-forward-09/godot/app_userdata/Cursed Lands/mist-after-rain-advanced.png",
+          "sha256": "dbd6880dce8b70e40a516149804bde6ecd563b06c3af5c4dc93606492b2e67e2"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-forward-09/godot/app_userdata/Cursed Lands/mist-after-rain-background-off.png",
+          "sha256": "9036959d6b6720821a94522263b15d8bc916ea0903267d4df3348266a7883d5d"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-forward-09/godot/app_userdata/Cursed Lands/mist-after-rain-background-on.png",
+          "sha256": "b6270d3f10933d0f6b21c3b3c6c1e0b17f7c400e4a5debfc09bfdc5e3a46aff6"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-forward-09/godot/app_userdata/Cursed Lands/mist-after-rain-empty-source.png",
+          "sha256": "151bc61b37e0531833c9f9943e261b256dbd370cc1e17ceaa80e24a3ee2a66c3"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-forward-09/godot/app_userdata/Cursed Lands/mist-after-rain-held.png",
+          "sha256": "3e0b43b3d6af75fa6e01b8f137cde0b263031abc4764c91637451624e01312d2"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-forward-09/godot/app_userdata/Cursed Lands/mist-after-rain-off.png",
+          "sha256": "b21e4ff6c9d7a2779720c2bbad35363a7f2a10c0f222c1afc607e075cea54670"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-forward-09/godot/app_userdata/Cursed Lands/mist-after-rain-on.png",
+          "sha256": "4484fa3fa7e5d22fc297d23ba5ebc725ff1eb971a881791dbff8cf64b2745f49"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-forward-09/godot/app_userdata/Cursed Lands/mist-after-rain-restored.png",
+          "sha256": "3238609dbbb81f95c08502e103e7a28daaa2a4a51db08dbfd2167557f4ed53c1"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-forward-09/godot/app_userdata/Cursed Lands/mist-dawn-advanced.png",
+          "sha256": "ac9c5562c19a4b8049612f310c350622119e97bd0bf3801f3af0e9c459106954"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-forward-09/godot/app_userdata/Cursed Lands/mist-dawn-background-off.png",
+          "sha256": "6e6fade9df810be55048cc414462d33c75fc37b8b23fd6a37c3885fdb532d754"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-forward-09/godot/app_userdata/Cursed Lands/mist-dawn-background-on.png",
+          "sha256": "5fa7035767180ba245caad47e3c5c8e158124f09302c98ea809637af74371a57"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-forward-09/godot/app_userdata/Cursed Lands/mist-dawn-empty-source.png",
+          "sha256": "592bd5ef3ed16157f2409bc0b79de0aa9452e57730f42f3d69b2adcc0abbe2ff"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-forward-09/godot/app_userdata/Cursed Lands/mist-dawn-held.png",
+          "sha256": "1eb1996755ba1c77fec8f9bf5b6305b284a89de9f6ee43c17ec366febef05f10"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-forward-09/godot/app_userdata/Cursed Lands/mist-dawn-off.png",
+          "sha256": "b86dc32b0319b96fe9fa7595aab48e58e5faa97b23eb92a1fbf9a5d605c0ae49"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-forward-09/godot/app_userdata/Cursed Lands/mist-dawn-on.png",
+          "sha256": "cf454c310e77bd9af193557865b4c03ea3fb050125089d9b750debf2183ad0a8"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-forward-09/godot/app_userdata/Cursed Lands/mist-dawn-restored.png",
+          "sha256": "7dd606ec3ab9a6bfa1d984567f12ea3da1030ca9500567b122863e143315e98c"
+        }
+      ]
+    },
+    {
+      "name": "mist-low-forward-11b",
+      "checks": 56,
+      "failures": 0,
+      "exit_code": 0,
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/mist-low-forward-11b.json",
+        "sha256": "ffb83d16fb751a1ced1eeb6c7645bfb7fdd5722332700df671d1433b381e2b9c"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-low-forward-11b/godot/app_userdata/Cursed Lands/mist-receipt.json",
+        "sha256": "7008b4df4100c898aefb8b9399cb57d18cc6e4be44580c83277c5db039d685a3"
+      },
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-camp-ui-20261009/mist_fixture11.gd",
+        "sha256": "a313d30a385e439d867084837bdea30dd86623e605feb650b8964347461fe7f0"
+      },
+      "warnings": [
+        "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+      ],
+      "rows": [
+        {
+          "case": "policy",
+          "max_density": 0.0142915487618757,
+          "max_optical_depth": 1.0,
+          "mornings": [
+            1.0,
+            1.0,
+            1.0,
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0
+          ],
+          "opacity_bound": 0.632120558828558
+        },
+        {
+          "camera": "(273.5, 12.32902, -167.25)",
+          "case": "view",
+          "low_angle": true,
+          "pitch_degrees": 14.7423869953418,
+          "target": "(257.5, 5.170948, -189.25)"
+        },
+        {
+          "advanced": {
+            "channels": 12671,
+            "exact": false,
+            "mean": 0.0502149884259259,
+            "peak": 5
+          },
+          "case": "render",
+          "drift": "(9.127336, 6.845312)",
+          "empty_source": {
+            "channels": 0,
+            "exact": false,
+            "mean": 0.00412847222222222,
+            "peak": 1
+          },
+          "held": {
+            "channels": 0,
+            "exact": false,
+            "mean": 0.00349421296296296,
+            "peak": 1
+          },
+          "hour": 6.7577777777779,
+          "on": {
+            "channels": 51422,
+            "exact": false,
+            "mean": 0.104304398148148,
+            "peak": 8
+          },
+          "party": {
+            "contrast_retained": 0.964304334225435,
+            "pixels": 983
+          },
+          "phase": "dawn",
+          "point": "(257.5, 189.25)",
+          "rain": 0.0,
+          "restored": {
+            "channels": 0,
+            "exact": false,
+            "mean": 0.00280324074074074,
+            "peak": 1
+          },
+          "shore": {
+            "changed_channels": 0,
+            "peak_channel_delta": 2,
+            "sampled_dry_rays": 22
+          },
+          "source_type": 0,
+          "through_actor": {
+            "contrast_retained": 0.969101123595506,
+            "pixels": 44
+          },
+          "through_source": {
+            "liquid_depth": 0.445864016284759,
+            "position": "(223.2328, 3.925083, -209.884)",
+            "sampled_optical_depth": 0.012956677377224
+          },
+          "volumes": 6,
+          "weights": "(1.0, 1.0)",
+          "wetness": 0.60336690042342,
+          "zone": "gz4g"
+        },
+        {
+          "advanced": {
+            "channels": 6573,
+            "exact": false,
+            "mean": 0.0391067708333333,
+            "peak": 4
+          },
+          "case": "render",
+          "drift": "(16.64376, 12.4831)",
+          "empty_source": {
+            "channels": 0,
+            "exact": false,
+            "mean": 0.00239322916666667,
+            "peak": 1
+          },
+          "held": {
+            "channels": 0,
+            "exact": false,
+            "mean": 0.00221527777777778,
+            "peak": 1
+          },
+          "hour": 12.0000000000002,
+          "on": {
+            "channels": 21743,
+            "exact": false,
+            "mean": 0.0616791087962963,
+            "peak": 5
+          },
+          "party": {
+            "contrast_retained": 0.984246289666678,
+            "pixels": 983
+          },
+          "phase": "after-rain",
+          "point": "(257.5, 189.25)",
+          "rain": 0.0,
+          "restored": {
+            "channels": 0,
+            "exact": false,
+            "mean": 0.00139988425925926,
+            "peak": 1
+          },
+          "shore": {
+            "changed_channels": 0,
+            "peak_channel_delta": 2,
+            "sampled_dry_rays": 22
+          },
+          "source_type": 0,
+          "through_actor": {
+            "contrast_retained": 0.976123595505618,
+            "pixels": 44
+          },
+          "through_source": {
+            "liquid_depth": 0.445864016284759,
+            "position": "(223.2328, 3.925083, -209.884)",
+            "sampled_optical_depth": 0.012956677377224
+          },
+          "volumes": 6,
+          "weights": "(0.772996, 0.920549)",
+          "wetness": 0.772996370891092,
+          "zone": "gz4g"
+        },
+        {
+          "case": "lifecycle",
+          "chosen": "{ \"point\": (257.5, 189.25), \"height\": 4.37094736099243, \"key\": (21, 15), \"source_type\": 0 }",
+          "cleared_clock": true,
+          "cost_note": "Descriptive CPU wall-time samples from this fixture only; no frame-time, hardware or performance acceptance.",
+          "source_slice_us": {
+            "count": 194,
+            "max": 5682,
+            "median": 2027,
+            "p95": 2488
+          },
+          "update_cost_us": {
+            "count": 1582,
+            "max": 5937,
+            "median": 18,
+            "p95": 2077
+          },
+          "zone": "gz4g"
+        }
+      ],
+      "captures": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-low-forward-11b/godot/app_userdata/Cursed Lands/mist-after-rain-advanced.png",
+          "sha256": "2ec9acc7e0b8e988148a27e87647239e143e4119312d8a4e8f9ecefdcc7bb5ec"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-low-forward-11b/godot/app_userdata/Cursed Lands/mist-after-rain-background-off.png",
+          "sha256": "02d65ece5fffd444ab12ec36d3a50142832141107525fe1f44c96e2de2476305"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-low-forward-11b/godot/app_userdata/Cursed Lands/mist-after-rain-background-on.png",
+          "sha256": "8038a9e9016e2994eaaf6c826231ab99a69a32c1171a816ab1610e36061cff43"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-low-forward-11b/godot/app_userdata/Cursed Lands/mist-after-rain-empty-source.png",
+          "sha256": "7ac7f761712a3bcb7e04f3b139636c8e54aef9d927fed6fa6afdb295ecfe0229"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-low-forward-11b/godot/app_userdata/Cursed Lands/mist-after-rain-held.png",
+          "sha256": "48cbf17042b5a1bbaabbdabe84c96eed36933761e590a341b7a696522c0410ac"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-low-forward-11b/godot/app_userdata/Cursed Lands/mist-after-rain-off.png",
+          "sha256": "01b52819173b2b334bba6e73bb2c2e08f9bd3b4eed9e34ff5d7d8fec95d1d3d4"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-low-forward-11b/godot/app_userdata/Cursed Lands/mist-after-rain-on.png",
+          "sha256": "a1b7d47c97dedb2693c4bb87b840b0ab9db688b2d3d0cd52ad9cfad1de8ded8e"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-low-forward-11b/godot/app_userdata/Cursed Lands/mist-after-rain-restored.png",
+          "sha256": "8015986681a1caea53ed186f3fcf9aafea475c3ec33ed76df1a25d7aa6bbc45b"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-low-forward-11b/godot/app_userdata/Cursed Lands/mist-after-rain-without-through-off.png",
+          "sha256": "06335bd8e1620d12bb8cc8d660ca82eec17bc0485f326943757a4639ac9b2042"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-low-forward-11b/godot/app_userdata/Cursed Lands/mist-after-rain-without-through-on.png",
+          "sha256": "c3ed2539ff4375186bb222d073537654633b3984f5661a1d2ab818134f4e1bb7"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-low-forward-11b/godot/app_userdata/Cursed Lands/mist-dawn-advanced.png",
+          "sha256": "6e2ddfded503b926ef4fd13d00ca4227c42387e8507caf04b6bc4683fb2feb5d"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-low-forward-11b/godot/app_userdata/Cursed Lands/mist-dawn-background-off.png",
+          "sha256": "02d65ece5fffd444ab12ec36d3a50142832141107525fe1f44c96e2de2476305"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-low-forward-11b/godot/app_userdata/Cursed Lands/mist-dawn-background-on.png",
+          "sha256": "cc9159deac6786a2ce9d80f91f1c09432826dee7346bb2707707fe7ffe80edfd"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-low-forward-11b/godot/app_userdata/Cursed Lands/mist-dawn-empty-source.png",
+          "sha256": "08ad9b04f59406a02bc19e331ac7fff2b970c37d4a45075e02191f964ad539a5"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-low-forward-11b/godot/app_userdata/Cursed Lands/mist-dawn-held.png",
+          "sha256": "a07c9e40b32690cb3f03043a5fc020a21333d7cdd69f875416e1f684e9248e34"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-low-forward-11b/godot/app_userdata/Cursed Lands/mist-dawn-off.png",
+          "sha256": "c0f3782d20d4e9e31ab53d9b4415e9bfffabbac83a31115a9e7329c3afb50b19"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-low-forward-11b/godot/app_userdata/Cursed Lands/mist-dawn-on.png",
+          "sha256": "a3d1c570c718375fce42a5b18043061631c79c3b560114c67d45568750d796c6"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-low-forward-11b/godot/app_userdata/Cursed Lands/mist-dawn-restored.png",
+          "sha256": "7df8bd2ac4fb654d047e5ad3032c1adae9ed2d6c5fbe93bef479a6a640fe2edc"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-low-forward-11b/godot/app_userdata/Cursed Lands/mist-dawn-without-through-off.png",
+          "sha256": "77bc3af98edeaa30d0e1b2047bbfeef60cc0030fd415069cc8b5c7f0338dbd36"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-low-forward-11b/godot/app_userdata/Cursed Lands/mist-dawn-without-through-on.png",
+          "sha256": "98f99ea3b53ce64a515cbe6b58db0159ca8949911dcb3c830941dd8d08e178c1"
+        }
+      ]
+    },
+    {
+      "name": "mist-swamp-forward-12",
+      "checks": 53,
+      "failures": 0,
+      "exit_code": 0,
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/mist-swamp-forward-12.json",
+        "sha256": "05e3af05f1c85897258a331ebc661dbdc6fa057140719606e0274d274ff4f824"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-swamp-forward-12/godot/app_userdata/Cursed Lands/mist-receipt.json",
+        "sha256": "1048b4dde57160e960b3b383845e334103db97e8532ac48f97b567467b0ca026"
+      },
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-camp-ui-20261009/mist_fixture12.gd",
+        "sha256": "3bb6d358cc7808dd92694572ca175217a9c36833c4d3e83f140de4cbd9e2d655"
+      },
+      "warnings": [
+        "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+      ],
+      "rows": [
+        {
+          "case": "policy",
+          "max_density": 0.0142915487618757,
+          "max_optical_depth": 1.0,
+          "mornings": [
+            1.0,
+            1.0,
+            1.0,
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0
+          ],
+          "opacity_bound": 0.632120558828558
+        },
+        {
+          "camera": "(181.4615, 18.51068, -55.0)",
+          "case": "view",
+          "low_angle": false,
+          "pitch_degrees": 23.803655191868,
+          "target": "(165.4615, 6.510685, -77.0)"
+        },
+        {
+          "advanced": {
+            "channels": 27614,
+            "exact": false,
+            "mean": 0.18409375,
+            "peak": 5
+          },
+          "case": "render",
+          "drift": "(9.127336, 6.845312)",
+          "empty_source": {
+            "channels": 0,
+            "exact": false,
+            "mean": 0.0205364583333333,
+            "peak": 1
+          },
+          "held": {
+            "channels": 0,
+            "exact": false,
+            "mean": 0.0172381365740741,
+            "peak": 1
+          },
+          "hour": 6.77222222222234,
+          "on": {
+            "channels": 311136,
+            "exact": false,
+            "mean": 0.542821759259259,
+            "peak": 8
+          },
+          "party": {
+            "contrast_retained": 1.0,
+            "pixels": 3039
+          },
+          "phase": "dawn",
+          "point": "(165.4615, 77.0)",
+          "rain": 0.0,
+          "restored": {
+            "channels": 0,
+            "exact": false,
+            "mean": 0.0177821180555556,
+            "peak": 1
+          },
+          "shore": {
+            "changed_channels": 0,
+            "peak_channel_delta": 1,
+            "sampled_dry_rays": 7
+          },
+          "source_type": 14,
+          "through_actor": {},
+          "through_source": {},
+          "volumes": 6,
+          "weights": "(1.0, 1.0)",
+          "wetness": 0.60336690042342,
+          "zone": "gz1g"
+        },
+        {
+          "advanced": {
+            "channels": 99047,
+            "exact": false,
+            "mean": 0.283146412037037,
+            "peak": 5
+          },
+          "case": "render",
+          "drift": "(16.64376, 12.4831)",
+          "empty_source": {
+            "channels": 0,
+            "exact": false,
+            "mean": 0.0173052662037037,
+            "peak": 1
+          },
+          "held": {
+            "channels": 0,
+            "exact": false,
+            "mean": 0.0154858217592593,
+            "peak": 1
+          },
+          "hour": 12.0000000000002,
+          "on": {
+            "channels": 253289,
+            "exact": false,
+            "mean": 0.482139178240741,
+            "peak": 8
+          },
+          "party": {
+            "contrast_retained": 1.0,
+            "pixels": 3039
+          },
+          "phase": "after-rain",
+          "point": "(165.4615, 77.0)",
+          "rain": 0.0,
+          "restored": {
+            "channels": 0,
+            "exact": false,
+            "mean": 0.00722511574074074,
+            "peak": 1
+          },
+          "shore": {
+            "changed_channels": 0,
+            "peak_channel_delta": 1,
+            "sampled_dry_rays": 7
+          },
+          "source_type": 14,
+          "through_actor": {},
+          "through_source": {},
+          "volumes": 6,
+          "weights": "(0.772996, 0.920549)",
+          "wetness": 0.772996370891092,
+          "zone": "gz1g"
+        },
+        {
+          "case": "lifecycle",
+          "chosen": "{ \"point\": (165.4615, 77.0), \"height\": 5.71068477630615, \"key\": (13, 6), \"source_type\": 14 }",
+          "cleared_clock": true,
+          "cost_note": "Descriptive CPU wall-time samples from this fixture only; no frame-time, hardware or performance acceptance.",
+          "source_slice_us": {
+            "count": 205,
+            "max": 3178,
+            "median": 2123,
+            "p95": 2348
+          },
+          "update_cost_us": {
+            "count": 1595,
+            "max": 6608,
+            "median": 18,
+            "p95": 2164
+          },
+          "zone": "gz1g"
+        }
+      ],
+      "captures": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-swamp-forward-12/godot/app_userdata/Cursed Lands/mist-after-rain-advanced.png",
+          "sha256": "453b1b979162b6a71c1f5e74b9a5d053e591cc2c566fab5da2a7bb454afe81a1"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-swamp-forward-12/godot/app_userdata/Cursed Lands/mist-after-rain-background-off.png",
+          "sha256": "7885ac90badade59f26a6f0f18258f864c04d4b86f59431518e8e95600446138"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-swamp-forward-12/godot/app_userdata/Cursed Lands/mist-after-rain-background-on.png",
+          "sha256": "0ff239e5378d35989f6523eba0d85b68a1dd3f047d5f3dbcd862d2ecc4ff67d6"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-swamp-forward-12/godot/app_userdata/Cursed Lands/mist-after-rain-empty-source.png",
+          "sha256": "c485980270dcd5a2b7149d87e3ec87b3df4586daccfed01d0f9adb8146f7740a"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-swamp-forward-12/godot/app_userdata/Cursed Lands/mist-after-rain-held.png",
+          "sha256": "bdba93d65d5bec5797ac1f36b07ad32b329a6626977e58ed0cf13b4eb8823d25"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-swamp-forward-12/godot/app_userdata/Cursed Lands/mist-after-rain-off.png",
+          "sha256": "a36cde7d495759df3db51bf425c25e6b80850f0ec3697c1a2868b91bc6941594"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-swamp-forward-12/godot/app_userdata/Cursed Lands/mist-after-rain-on.png",
+          "sha256": "de3c5df6c0978c184809b89ed64c3276032efc949461ff598df36db4639be07c"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-swamp-forward-12/godot/app_userdata/Cursed Lands/mist-after-rain-restored.png",
+          "sha256": "438847e02cdaee6d277ed50fe0ccb55550c404355aa727b44f9f9f3d586d2432"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-swamp-forward-12/godot/app_userdata/Cursed Lands/mist-dawn-advanced.png",
+          "sha256": "42b09a24a5be3284b245218ea57b9382589e39f62ffcc6fa0b9b2e82e30fe211"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-swamp-forward-12/godot/app_userdata/Cursed Lands/mist-dawn-background-off.png",
+          "sha256": "fa507a686501597b13d3966a33b0c04c397f97dff26dfd7a63279aa443746ff7"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-swamp-forward-12/godot/app_userdata/Cursed Lands/mist-dawn-background-on.png",
+          "sha256": "587e3dd23d7a51f7770b1b7972dbe7d7f96728b6efb9e83b5b7a28ae7378645c"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-swamp-forward-12/godot/app_userdata/Cursed Lands/mist-dawn-empty-source.png",
+          "sha256": "ade61043f23b8be4b6533de9f4b1d099648d6682684ec8f6a288df5984dfd881"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-swamp-forward-12/godot/app_userdata/Cursed Lands/mist-dawn-held.png",
+          "sha256": "758d0d4834cd103133e0231440dcab3476d22411b48a513fa67e6ca1a2a9ae8e"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-swamp-forward-12/godot/app_userdata/Cursed Lands/mist-dawn-off.png",
+          "sha256": "c4671effe4637f6aa48197fb03241a4d0a5028e33373c7f90119867d1edf84a1"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-swamp-forward-12/godot/app_userdata/Cursed Lands/mist-dawn-on.png",
+          "sha256": "726d4da389ec237321f8255cbf5436042c66de0f322335f0e1191696ecf3430b"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-swamp-forward-12/godot/app_userdata/Cursed Lands/mist-dawn-restored.png",
+          "sha256": "d668bf4200ad762c6ab925083bf411680e78931c462f05aff73215b72faa7674"
+        }
+      ]
+    },
+    {
+      "name": "mist-mobile-noop-12",
+      "checks": 15,
+      "failures": 0,
+      "exit_code": 0,
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/mist-mobile-noop-12.json",
+        "sha256": "f2fa8927d1e4be84b56fa90b52cbaaa2988f9f3a6f1a1998b4a5507ac3d58240"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-mobile-noop-12/godot/app_userdata/Cursed Lands/mist-receipt.json",
+        "sha256": "0e19e58db1ae2a418b00325a0529dd2dcc1f8637de7820f43ba2885de69bbfd8"
+      },
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-camp-ui-20261009/mist_fixture14.gd",
+        "sha256": "8c7bdc319dd90ebdc23d26cfccb5d500c3f9ac8d9285b2b10a1ee84a5dcf1bbd"
+      },
+      "warnings": [
+        "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+      ],
+      "rows": [
+        {
+          "case": "policy",
+          "max_density": 0.0142915487618757,
+          "max_optical_depth": 1.0,
+          "mornings": [
+            1.0,
+            1.0,
+            1.0,
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0
+          ],
+          "opacity_bound": 0.632120558828558
+        },
+        {
+          "case": "unsupported",
+          "comparison": {
+            "channels": 0,
+            "exact": true,
+            "mean": 0.0,
+            "peak": 0
+          },
+          "renderer": "mobile"
+        }
+      ],
+      "captures": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-mobile-noop-12/godot/app_userdata/Cursed Lands/mist-off.png",
+          "sha256": "ef9b37311e9ab86d8752481dcebf66bf91800c9653c38942eedd3513b2bc1e97"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-mobile-noop-12/godot/app_userdata/Cursed Lands/mist-on.png",
+          "sha256": "ef9b37311e9ab86d8752481dcebf66bf91800c9653c38942eedd3513b2bc1e97"
+        }
+      ]
+    },
+    {
+      "name": "mist-compatibility-noop-12",
+      "checks": 15,
+      "failures": 0,
+      "exit_code": 0,
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/mist-compatibility-noop-12.json",
+        "sha256": "c1ffde0198cda5d77a348acefd9cee98f4c3bc31fb31698e796b13f9b1c79775"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-compatibility-noop-12/godot/app_userdata/Cursed Lands/mist-receipt.json",
+        "sha256": "a109cf8a8ca257c6e039473e03b665317f09e4636f24a9972e12cba8fd44312f"
+      },
+      "fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-camp-ui-20261009/mist_fixture14.gd",
+        "sha256": "8c7bdc319dd90ebdc23d26cfccb5d500c3f9ac8d9285b2b10a1ee84a5dcf1bbd"
+      },
+      "warnings": [
+        "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet.",
+        "WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.",
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "rows": [
+        {
+          "case": "policy",
+          "max_density": 0.0142915487618757,
+          "max_optical_depth": 1.0,
+          "mornings": [
+            1.0,
+            1.0,
+            1.0,
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0
+          ],
+          "opacity_bound": 0.632120558828558
+        },
+        {
+          "case": "unsupported",
+          "comparison": {
+            "channels": 0,
+            "exact": true,
+            "mean": 0.0,
+            "peak": 0
+          },
+          "renderer": "gl_compatibility"
+        }
+      ],
+      "captures": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-compatibility-noop-12/godot/app_userdata/Cursed Lands/mist-off.png",
+          "sha256": "c00aba5670f755adb8ae0c2e89214a495f493fa9760dcda5b180e039f793d66e"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-compatibility-noop-12/godot/app_userdata/Cursed Lands/mist-on.png",
+          "sha256": "c00aba5670f755adb8ae0c2e89214a495f493fa9760dcda5b180e039f793d66e"
+        }
+      ]
+    }
+  ],
+  "partial_regional_validation": {
+    "name": "mist-astral-forward-14",
+    "checks": 53,
+    "failures": 1,
+    "exit_code": 1,
+    "manifest": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/mist-astral-forward-14.json",
+      "sha256": "6da93687986a4438260e0f8e5fa2f719f3a7bd7df423a23bf10a4b6e36a6fa82"
+    },
+    "result": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-astral-forward-14/godot/app_userdata/Cursed Lands/mist-receipt.json",
+      "sha256": "fdf394d18e9bd32de4101bd21eec03bdff2b42b1b7025255593ae1f819205fc2"
+    },
+    "fixture": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-camp-ui-20261009/mist_fixture14.gd",
+      "sha256": "8c7bdc319dd90ebdc23d26cfccb5d500c3f9ac8d9285b2b10a1ee84a5dcf1bbd"
+    },
+    "warnings": [
+      "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet."
+    ],
+    "rows": [
+      {
+        "case": "policy",
+        "max_density": 0.0142915487618757,
+        "max_optical_depth": 1.0,
+        "mornings": [
+          1.0,
+          1.0,
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "opacity_bound": 0.632120558828558
+      },
+      {
+        "camera": "(91.36364, 21.24277, -232.1818)",
+        "case": "view",
+        "low_angle": false,
+        "pitch_degrees": 23.803655191868,
+        "target": "(113.3636, 9.242775, -248.1818)"
+      },
+      {
+        "advanced": {
+          "channels": 3489,
+          "exact": false,
+          "mean": 0.0839409722222222,
+          "peak": 3
+        },
+        "case": "render",
+        "drift": "(18.24713, 13.68545)",
+        "empty_source": {
+          "channels": 0,
+          "exact": false,
+          "mean": 0.00557436342592593,
+          "peak": 1
+        },
+        "held": {
+          "channels": 0,
+          "exact": false,
+          "mean": 0.00502256944444444,
+          "peak": 1
+        },
+        "hour": 6.80111111111124,
+        "on": {
+          "channels": 44183,
+          "exact": false,
+          "mean": 0.1515,
+          "peak": 5
+        },
+        "party": {
+          "contrast_retained": 0.998355090470024,
+          "pixels": 1176
+        },
+        "phase": "dawn",
+        "point": "(113.3636, 248.1818)",
+        "rain": 0.0,
+        "restored": {
+          "channels": 0,
+          "exact": false,
+          "mean": 0.00307957175925926,
+          "peak": 1
+        },
+        "shore": {
+          "changed_channels": 0,
+          "peak_channel_delta": 0,
+          "sampled_dry_rays": 13
+        },
+        "source_type": 0,
+        "through_actor": {},
+        "through_source": {},
+        "volumes": 6,
+        "weights": "(1.0, 1.0)",
+        "wetness": 0.60336690042342,
+        "wind_observations": [
+          {
+            "comparison": {
+              "channels": 2,
+              "exact": false,
+              "mean": 0.0557233796296296,
+              "peak": 3
+            },
+            "terrain_seconds": 60
+          },
+          {
+            "comparison": {
+              "channels": 3489,
+              "exact": false,
+              "mean": 0.0839409722222222,
+              "peak": 3
+            },
+            "terrain_seconds": 120
+          }
+        ],
+        "zone": "gz9g"
+      },
+      {
+        "advanced": {
+          "channels": 19,
+          "exact": false,
+          "mean": 0.0758483796296296,
+          "peak": 3
+        },
+        "case": "render",
+        "drift": "(25.76355, 19.32323)",
+        "empty_source": {
+          "channels": 0,
+          "exact": false,
+          "mean": 0.00386574074074074,
+          "peak": 1
+        },
+        "held": {
+          "channels": 0,
+          "exact": false,
+          "mean": 0.00399045138888889,
+          "peak": 1
+        },
+        "hour": 12.0000000000002,
+        "on": {
+          "channels": 5801,
+          "exact": false,
+          "mean": 0.109696759259259,
+          "peak": 3
+        },
+        "party": {
+          "contrast_retained": 0.997777622230777,
+          "pixels": 1176
+        },
+        "phase": "after-rain",
+        "point": "(113.3636, 248.1818)",
+        "rain": 0.0,
+        "restored": {
+          "channels": 0,
+          "exact": false,
+          "mean": 0.00283275462962963,
+          "peak": 1
+        },
+        "shore": {
+          "changed_channels": 0,
+          "peak_channel_delta": 0,
+          "sampled_dry_rays": 13
+        },
+        "source_type": 0,
+        "through_actor": {},
+        "through_source": {},
+        "volumes": 6,
+        "weights": "(0.772996, 0.920549)",
+        "wetness": 0.772996370891092,
+        "wind_observations": [
+          {
+            "comparison": {
+              "channels": 0,
+              "exact": false,
+              "mean": 0.0613266782407407,
+              "peak": 2
+            },
+            "terrain_seconds": 60
+          },
+          {
+            "comparison": {
+              "channels": 19,
+              "exact": false,
+              "mean": 0.0758483796296296,
+              "peak": 3
+            },
+            "terrain_seconds": 120
+          }
+        ],
+        "zone": "gz9g"
+      },
+      {
+        "case": "lifecycle",
+        "chosen": "{ \"point\": (113.3636, 248.1818), \"height\": 8.44277477264404, \"key\": (9, 20), \"source_type\": 0 }",
+        "cleared_clock": true,
+        "cost_note": "Descriptive CPU wall-time samples from this fixture only; no frame-time, hardware or performance acceptance.",
+        "source_slice_us": {
+          "count": 240,
+          "max": 6632,
+          "median": 2233,
+          "p95": 2739
+        },
+        "update_cost_us": {
+          "count": 1621,
+          "max": 8984,
+          "median": 24,
+          "p95": 2390
+        },
+        "zone": "gz9g"
+      }
+    ],
+    "captures": [
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-astral-forward-14/godot/app_userdata/Cursed Lands/mist-after-rain-advanced-120.png",
+        "sha256": "f2dc76353417d011846113e3acbed577208603c1682b6780df644148f5b04044"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-astral-forward-14/godot/app_userdata/Cursed Lands/mist-after-rain-advanced-60.png",
+        "sha256": "45b7edb3b07c9080069e16607ca2d060d96bb31d2444f764f40966307fe47dc1"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-astral-forward-14/godot/app_userdata/Cursed Lands/mist-after-rain-background-off.png",
+        "sha256": "1c6b5ff3a868554c7180872bea69e8f67366b9c6556d2e368c763323d492e25d"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-astral-forward-14/godot/app_userdata/Cursed Lands/mist-after-rain-background-on.png",
+        "sha256": "19e6b12bdcf88bb4d1566b127043976b94a317d95618b46e53ae9f3fdaef869f"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-astral-forward-14/godot/app_userdata/Cursed Lands/mist-after-rain-empty-source.png",
+        "sha256": "79a6b9ff111f6af3399d27f47f17601ec1c38f2074019149480d90d7ad44c80d"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-astral-forward-14/godot/app_userdata/Cursed Lands/mist-after-rain-held.png",
+        "sha256": "db39eb02806b8fa39847fa7b10a5993ddaa01d00da04c8a8f7a4e71e486cc1e3"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-astral-forward-14/godot/app_userdata/Cursed Lands/mist-after-rain-off.png",
+        "sha256": "bebbd13602a3d6c098034da888befc1cd0aa8c10730d041d04dadd21be933eae"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-astral-forward-14/godot/app_userdata/Cursed Lands/mist-after-rain-on.png",
+        "sha256": "7b4a53dfe596d9fc52816c4808d29b8a86cd1d145b5838c1d61a63dd35abd902"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-astral-forward-14/godot/app_userdata/Cursed Lands/mist-after-rain-restored.png",
+        "sha256": "d4365a08dc601e7fba5a8cbfa87eef93e7e6a5d2e228d4dfb05734208f130101"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-astral-forward-14/godot/app_userdata/Cursed Lands/mist-dawn-advanced-120.png",
+        "sha256": "697fba095a3dc52870a1bc4c6dd5b2edc889fa430b9acddc528fe82af4f33326"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-astral-forward-14/godot/app_userdata/Cursed Lands/mist-dawn-advanced-60.png",
+        "sha256": "759820e1436ab73fd2cfc4cdc56e806c4b8a9e89991f0e6466a98d9b702852af"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-astral-forward-14/godot/app_userdata/Cursed Lands/mist-dawn-background-off.png",
+        "sha256": "1c6b5ff3a868554c7180872bea69e8f67366b9c6556d2e368c763323d492e25d"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-astral-forward-14/godot/app_userdata/Cursed Lands/mist-dawn-background-on.png",
+        "sha256": "c1678c0ef74249e8a9ff1c803532ca133d228b1ec9f700bd58133e2220286752"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-astral-forward-14/godot/app_userdata/Cursed Lands/mist-dawn-empty-source.png",
+        "sha256": "4737762fd0544003c3f7e9808048214af609fe1d34fdf677902f0bd09cfdc6ba"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-astral-forward-14/godot/app_userdata/Cursed Lands/mist-dawn-held.png",
+        "sha256": "fc6c5657d7d9b3676a933dece2035f71579db64c8426c7e88f6f61a2f9cbda7d"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-astral-forward-14/godot/app_userdata/Cursed Lands/mist-dawn-off.png",
+        "sha256": "9244776aed03bf299d56594d257fbc4ecc73020b9cde8c9698fdf36fdab36153"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-astral-forward-14/godot/app_userdata/Cursed Lands/mist-dawn-on.png",
+        "sha256": "bc9f57994023b2b63d03020203d9651ad3132ad11f246e5f7f10fd598f108ee6"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-astral-forward-14/godot/app_userdata/Cursed Lands/mist-dawn-restored.png",
+        "sha256": "c919d912a22ad2121e4bae593e6a368e7944d2db6b435c8a91c60dff4f78bf12"
+      }
+    ],
+    "accepted_scope": "52 passing assertions: actual source/lifecycle, dawn/post-rain presence, actor contrast, dry-shore, held/empty/restore and dawn 120 s wind. This is not a wholly passing run.",
+    "failed_scope": "Post-rain 120 s wind has 19 changed channels above 2/255 against the unchanged strict >20 threshold; peak 3/255. The 60 s endpoint has no channels above 2/255. Preserve this as faint scene-dependent motion, not accepted visual motion or a production fix."
+  },
+  "current_matrix_executed_checks": 357,
+  "current_matrix_passing_checks": 356,
+  "current_matrix_failed_checks": 1,
+  "separate_full_source_integration": {
+    "receipt": "docs/validation/renderer-followup-integration-2026-10-09.json",
+    "scope": "Parent-owned actual Game lifecycle: 57 headless and 68 rendered assertions with all live ambient/mist/cloud/lens owners. Included in that receipt 335 combined assertions, not counted again here. Uses authored lighting and the accepted frozen mist production sources."
+  },
+  "validation_method": {
+    "source_census": "Base gz4g,gz1g,bz7g,gz11k,gz18h and LiA gz9g,gz7d1. Verifies actual liquid categories/height offsets, caves, Ingos, bounded query cache and empty scenery indexes.",
+    "lifecycle": "Ownership, exact held CPU fields, live flood invalidation/rebuild, same-world same-clock terrain replacement, world replacement, rewind/gap reset, public wave-disabled source queries, bounded wind wrap and unchanged gameplay/environment state.",
+    "render": "Native 1280x900 off/on/held/empty-mask/restored controls; full authored map scenery. Every dawn/post-rain effect must exceed 100 changed channels above 2/255, held/empty/restored controls must have none above 2/255, and wind-only observation must exceed 20 channels above 2/255. Base and low-angle runs use60 terrain seconds; the LiA fixture records both 60 and 120-second endpoints for the slow broad-wisp cycle. Key off/on screenshots inspected at native size; all listed pairs are compared numerically.",
+    "weather": "Dawn remains in the reference morning window. Separate clear-noon post-rain lifetime genuinely ramps rain, then lets rain reach zero while retained wetness remains; it is not a renamed dawn case.",
+    "figures": "Original Human Hero presentation models on actual visible dry or shallow near-bank terrain. Low-angle case adds an unobstructed far-bank shallow-water actor whose sampled ray crosses installed mist. Separate with/without controls isolate that actor silhouette and require readable but affected contrast. Near-bank-only figures do not establish through-mist readability.",
+    "shore": "Sampled terrain-clear dry rays reject any known liquid support on the path and inspect 3x3 image neighborhoods. This detects large spill at sampled shores; it does not prove zero spread at every pixel or moving camera.",
+    "lighting_scope": "Isolated fixture uses fixed neutral light and a low global native fog density for component separation. Independent parent-owned actual Game lifecycle composition validates visibility and ownership in authored lighting with full current source.",
+    "costs": "Each run includes descriptive median/p95/max CPU step and source-slice microseconds and actual native volume count. These timings include fixture conditions and are not frame-time, hardware or performance acceptance."
+  },
+  "diagnostic_iterations": [
+    {
+      "run": "mist-astral-forward-13",
+      "reason": "Both visible dawn/post-rain, figure contrast, dry-shore and history controls passed. The single 60-second wind endpoint pair changed only 2 channels above 2/255 at dawn and none at noon, near a similar broad-wisp phase. Fixture14 observes both 60 and 120 seconds with the same strict threshold; no production density or speed change.",
+      "accepted": false,
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/mist-astral-forward-13.json",
+        "sha256": "0d5846f126fbc074486273d38cb075a09aa722b5c81f7bb637da1d9e1f340654"
+      },
+      "checks": 53,
+      "failures": 2,
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-astral-forward-13/godot/app_userdata/Cursed Lands/mist-receipt.json",
+        "sha256": "bb89efabafedb5b084d0fbfd31d7f1c4f05f192211af328178595c3e67f64381"
+      }
+    },
+    {
+      "run": "mist-astral-forward-12",
+      "reason": "The selected real liquid patch lay below a tall intervening ridge. Fixed normal camera pointed into the cliff; no source or actor was visible. Fixture13 tries alternate camera azimuths and clamps the terrain-clear focus ray; production unchanged.",
+      "accepted": false,
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/mist-astral-forward-12.json",
+        "sha256": "6671a629c003d7652a071de1dfc5aa8f6985adecd1c3b5a21f13e251129edf0a"
+      },
+      "checks": 53,
+      "failures": 6,
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-astral-forward-12/godot/app_userdata/Cursed Lands/mist-receipt.json",
+        "sha256": "0c7b1193a7375098d643ba47e55e191ed666d24bcc79e27b29705b7dbfb62bc0"
+      }
+    },
+    {
+      "run": "mist-swamp-forward-11",
+      "reason": "All actual mist, weather, wind, held/empty/restore and dry-shore controls passed, but generic near-bank figure selection put actors outside the camera view. Selection now requires a projected visible and terrain-clear point on real dry/shallow ground; no production change.",
+      "accepted": false,
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/mist-swamp-forward-11.json",
+        "sha256": "c5590274fcdf1e309445b16c9b9cdf986ca0d8e2735f06f51826c0d5af0afd13"
+      },
+      "checks": 53,
+      "failures": 2,
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-swamp-forward-11/godot/app_userdata/Cursed Lands/mist-receipt.json",
+        "sha256": "b887001aa8a63b1bc6858eaec0467d5e9ab9bd8183926b344604802b69f3e041"
+      }
+    },
+    {
+      "run": "mist-base-headless-01",
+      "reason": "Fixture false positive: TIME appeared in a shader comment. The check now removes comments; no production runtime issue.",
+      "accepted": false,
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/mist-base-headless-01.json",
+        "sha256": "e800c2142b605eec4080a9ea7021a72686691a5d8b33d9fa0378e52159cba567"
+      },
+      "checks": 57,
+      "failures": 1,
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-base-headless-01/godot/app_userdata/Cursed Lands/mist-receipt.json",
+        "sha256": "fd8b7595cc92132fd4810d00ebc4d977daa01519498bf9c9a9fd946f82700a73"
+      }
+    },
+    {
+      "run": "mist-base-headless-04",
+      "reason": "Fixture parser could not infer an untyped side loop value. Explicit float annotation fixed the fixture; this exact isolated run was terminated, with no native fix claimed.",
+      "accepted": false,
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/mist-base-headless-04.json",
+        "sha256": "5902819b352dd7571864eddcfa50280ea4e9d2d559d68ce4ecda890f4b8d2504"
+      }
+    },
+    {
+      "run": "mist-astral-headless-04",
+      "reason": "Same fixture parser issue as base04; exact isolated run terminated, no native fix claimed.",
+      "accepted": false,
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/mist-astral-headless-04.json",
+        "sha256": "54a1763597f301f5ec0a02ac9eb08b34e117dbf85b491ec843c4f11b0bacf62a"
+      }
+    },
+    {
+      "run": "mist-forward-smoke-03",
+      "reason": "Initial optical cap0.30 divided by six complete box diagonals limited peak density to0.001389/m. Native cutoff after vertical/weather/wisp factors made the visible effect ineffective; rejected.",
+      "accepted": false,
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/mist-forward-smoke-03.json",
+        "sha256": "bcafbb2feeb4b98fbc8ecdd19070dd88d3a218123a8dc9d91e7585a034bdead7"
+      },
+      "checks": 37,
+      "failures": 2,
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-forward-smoke-03/godot/app_userdata/Cursed Lands/mist-receipt.json",
+        "sha256": "a2297fc56f07f488137e6204668854b23b61d5aa8f276292b95b9c648a5b1db8"
+      }
+    },
+    {
+      "run": "mist-forward-05",
+      "reason": "Tighter3x3-cell horizontal bound with24m cells still gave only0.002405/m. Effect peak1/255 did not pass independent visibility; shore actors were also outside the fixture search limit. Rejected.",
+      "accepted": false,
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/mist-forward-05.json",
+        "sha256": "292459034911b53d1ffc79a217ed4f19853e37903e87bf1b5d60126cf72c3e3c"
+      },
+      "checks": 53,
+      "failures": 7,
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-forward-05/godot/app_userdata/Cursed Lands/mist-receipt.json",
+        "sha256": "f62c815d1a2b420e1db8da48c8e86370bb63cc06367e44aa338c69e22ef88f6b"
+      }
+    },
+    {
+      "run": "mist-density-diagnostic-06",
+      "reason": "Private fixture temporarily raised density to0.05/m to diagnose native fog binding and shape. Dawn peak18/255 and post-rain peak10/255 confirmed integration; intentional cap/history/actor failures mean this is diagnostic only. Production never used this density.",
+      "accepted": false,
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/mist-density-diagnostic-06.json",
+        "sha256": "2776c64c1e13df301356bdcda4f7c3f3a10a52f7f19171cad654c66d2c1f387c"
+      },
+      "checks": 53,
+      "failures": 8,
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-density-diagnostic-06/godot/app_userdata/Cursed Lands/mist-receipt.json",
+        "sha256": "f96cc63b338d9102ce4b6cde1410779f9eab186421b8c7d0e7c7560bb9f36d26"
+      }
+    },
+    {
+      "run": "mist-forward-07",
+      "reason": "12m cells/8m maximum height with cap0.30 gave0.00429/m but only dawn peak2/255 and post-rain peak1/255. Fixture also searched the wrong bank. Rejected as visually ineffective.",
+      "accepted": false,
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/mist-forward-07.json",
+        "sha256": "cb86ba7059dfde524d48d57637eedf5f115b2e9b9d0e473575e20224190e8494"
+      },
+      "checks": 53,
+      "failures": 7,
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-forward-07/godot/app_userdata/Cursed Lands/mist-receipt.json",
+        "sha256": "3598f22f7772211621917eeac982ff614e494038d52d69c4100ec29b3a5590a0"
+      }
+    },
+    {
+      "run": "mist-forward-08",
+      "reason": "Reference-based cap1.0 produced useful dawn/post-rain signal and readable near-bank figures, but the old0.72+0.18sin+0.10cos wisps changed at most2/255 over60 terrain seconds. Revised bounded wisp contrast preserves peak density and creates visible slow drift. Not final acceptance.",
+      "accepted": false,
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/mist-forward-08.json",
+        "sha256": "09ae29676e494db371a1948f97547219da76e79ae4b3b8d7fd38796fae33ed1a"
+      },
+      "checks": 53,
+      "failures": 2,
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-forward-08/godot/app_userdata/Cursed Lands/mist-receipt.json",
+        "sha256": "2b6787cb1de98969782d5c3c0e236400d3544ce284e79f231df0454bd4c754b0"
+      }
+    },
+    {
+      "run": "mist-low-forward-10",
+      "reason": "Fixed low camera was inside actual near-bank terrain; all actor/mist signals were occluded. Fixture now clamps camera elevation against actual rendered land and requires a terrain-clear far-bank actor ray. Production unchanged; corrected11b passes at14.742 degrees.",
+      "accepted": false,
+      "manifest": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/mist-low-forward-10.json",
+        "sha256": "c7e5c510e8889580c0240cf71507adb439f57116b4431f6d4d61bb7ad8bbc577"
+      },
+      "checks": 56,
+      "failures": 10,
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/mist-low-forward-10/godot/app_userdata/Cursed Lands/mist-receipt.json",
+        "sha256": "af092faef8876d073e6dc2da2ac290cc34a6498ac13935d664c0d2cc089b1258"
+      }
+    },
+    {
+      "run": "mist-export02",
+      "reason": "Isolated staging retained the old WaterSurface.begin_frame() signature. Copied the already-accepted public begin_frame(false) API into private staging; export03 and final06 are clean. No canonical production regression.",
+      "accepted": false,
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-camp-ui-20261009/mist-export02.log",
+        "sha256": "be1a5247445d457ffdbcf6c4a6d5d103f401a4f52581e284fb3b0711ce3062a8"
+      }
+    },
+    {
+      "run": "mist-low-forward-11",
+      "reason": "Harness invocation used a relative variant path; it could not locate the executable and started no engine. Retried with absolute paths under11b.",
+      "accepted": false
+    }
+  ],
+  "earlier_successes_not_counted": [
+    "mist-base-headless-02",
+    "mist-base-headless-03",
+    "mist-base-headless-05",
+    "mist-base-headless-07",
+    "mist-astral-headless-02",
+    "mist-astral-headless-05",
+    "mist-astral-headless-07"
+  ],
+  "limitations": [
+    "LiA gz9g post-rain wisp movement is faint:19 channels exceed2/255 over 120 terrain seconds, below the unchanged strict >20 visibility criterion. Dawn motion, both weather presence/readability/held/restoration controls pass; base lake and swamp establish the same shader moving-wisp behavior. This regional motion criterion remains unaccepted.",
+    "Forward+ only and requires existing Volumetric fog. Mobile and Compatibility are intentionally unchanged no-ops; Android/Web/mobile hardware and long camera routes remain unmeasured.",
+    "Native Godot FogVolume drops absolute density<=0.001 and truncates in1/1024 steps; weak twilight, wisp troughs and final wetness tails disappear first. This implementation does not alter the native cutoff.",
+    "Existing native froxel resolution and temporal reprojection soften thin shoreline masks. Conservative sampled coverage and inspected dry-ray/through-actor views bound observed artifacts; no universal geometry-perfect shoreline claim.",
+    "Local source coverage is camera-near and budgeted; cells reveal as incremental masks finish. Rapid camera travel and heavy geometry costs need broader route/device profiling.",
+    "Mist is subtle and lighting-dependent. The feature adds no emitter or exposure compensation; darkness reduces its visible signal.",
+    "Global regional haze, direct volumetric shafts, volumetric clouds and broader R1 atmosphere behavior remain separate work."
+  ],
+  "native_density_reference": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/owned-renderer-improvements-20261008-qa/p5-shadow-cache/engine-mobile-lock/servers/rendering/renderer_rd/shaders/environment/volumetric_fog.glsl",
+    "sha256": "fe5c629c4aafd2c6a8757bfd7415d4002d027eba0dd85d36b4ed2e3afec07970",
+    "lines": "13:DENSITY_SCALE1024;229-230:abs(density)>0.001 then int(density*1024)."
+  }
+}

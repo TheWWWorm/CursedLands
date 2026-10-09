@@ -16,10 +16,12 @@ var trees := {}
 var boxes := {}
 var _signature := []
 var _water: Water
+var _scenery := true
 
 
-func _init(t: EITerrain) -> void:
+func _init(t: EITerrain, scenery := true) -> void:
 	terrain = t; biome = Cover.region(t); seed_value = Wind.map_seed(t.map_name)
+	_scenery = scenery
 	region = region_of(biome)
 	_water = Water.new(t)
 	refresh()
@@ -55,10 +57,9 @@ func anchor(key: Vector2i) -> Vector2:
 
 
 func refresh() -> bool:
-	_water.begin_frame()
+	_water.begin_frame(false)
 	# Birth positions must not move with a water wave. Scripted offsets still
 	# apply, and each refresh invalidates the query's posed vertex cache.
-	_water._waves = false
 	var map := terrain.get_parent() as EIMapScene
 	var root := map.get_node_or_null("Objects") as Node3D if map else null
 	var world := terrain.game_world()
@@ -66,7 +67,7 @@ func refresh() -> bool:
 		world.nav.map_rev if world else 0,terrain.surface_rev,terrain.water_offsets.duplicate()]
 	if signature==_signature: return false
 	_signature = signature; trees.clear(); boxes.clear()
-	if root==null: return true
+	if root==null or not _scenery: return true
 	var inverse := terrain.global_transform.affine_inverse()
 	for object: Node3D in root.get_children():
 		var info: Dictionary = object.get_meta("ei",{})
