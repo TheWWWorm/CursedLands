@@ -13,6 +13,7 @@ extends RefCounted
 var world: GameWorld
 var _morph := {}   # nid -> {"nodes": [Node3D with p0 / p1], "meshes": [MeshInstance3D], "t": float}
 var _tweens := {}
+var _ordinary := {} # nid -> native from/target/duration and elapsed ticks at Tween creation
 # Fast mechanisms retain their last committed navigation pose until the
 # authoritative world completes the visible drop. Clients only draw it.
 const DEFAULT_SCIENCE := [1, 0, 0]
@@ -164,11 +165,8 @@ func apply(nid: int, animate: bool, time := -1.0) -> void:
 	if time < 0.0:
 		time = switch_time(nid)
 	if animate and time > 0.0 and not m.is_empty() and not is_equal_approx(float(m.t), target):
-		var tw := node.create_tween()
-		var start := float(m.t)
-		tw.tween_method(func(v: float): _set_t(nid, v), start - (target - start) / time,
-			target, (time + 1.0) * GameUnit.TICK)
-		_tweens[nid] = tw
+		_start_ordinary(nid, {"kind": "ordinary", "v": 1, "from": float(m.t),
+			"target": target, "ticks": time, "elapsed": 0.0})
 	else:
 		_set_t(nid, target)
 	if animate:
@@ -193,7 +191,59 @@ func _cancel(nid: int) -> void:
 		if tw.is_valid():
 			tw.kill()
 		_tweens.erase(nid)
+	_ordinary.erase(nid)
 	_motions.erase(nid)
+
+
+## Native52b7a0 keeps the collision figure at the target while52b490
+## draws from separate from/target/end/reciprocal fields.52b560/52b650
+## serialize those fields. A rendered intermediate pose alone cannot
+## restore either the physical target or the remaining animation.
+func _start_ordinary(nid: int, data: Dictionary) -> void:
+	var node: Node3D = world.objects.get(nid)
+	if not is_instance_valid(node):
+		return
+	var left := float(data.ticks) + 1.0 - float(data.elapsed)
+	var target := float(data.target)
+	var start := target - (target - float(data.from)) * left / float(data.ticks)
+	var tw := node.create_tween()
+	_ordinary[nid] = data.duplicate(true)
+	_tweens[nid] = tw
+	tw.tween_method(func(v: float): _set_t(nid, v), start, target, left * GameUnit.TICK)
+	tw.finished.connect(_finish_ordinary.bind(nid, tw))
+
+
+func _finish_ordinary(nid: int, tween: Tween) -> void:
+	if _tweens.get(nid) == tween:
+		_tweens.erase(nid)
+		_ordinary.erase(nid)
+
+
+func _ordinary_payload(nid: int) -> Dictionary:
+	if not _ordinary.has(nid) or not _tweens.has(nid):
+		return {}
+	var tw: Tween = _tweens[nid]
+	if not tw.is_valid():
+		return {}
+	var data: Dictionary = _ordinary[nid].duplicate(true)
+	data.elapsed = minf(float(data.ticks) + 1.0,
+		float(data.elapsed) + tw.get_total_elapsed_time() / GameUnit.TICK)
+	return data if float(data.elapsed) < float(data.ticks) + 1.0 else {}
+
+
+func _valid_ordinary(nid: int, data: Variant) -> bool:
+	if not data is Dictionary or data.get("kind") != "ordinary" or not _integer(data.get("v"), 1, 1) \
+		or not _number(data.get("from")) or not _endpoint(data.get("target")) \
+		or not _number(data.get("ticks")) or not _number(data.get("elapsed")):
+		return false
+	var duration := float(data.ticks)
+	var elapsed := float(data.elapsed)
+	if duration <= 0.0 or elapsed < 0.0 or elapsed >= duration + 1.0:
+		return false
+	var states := maxi(1, int(world.levers[nid].get("states", 2)))
+	var target := float(world.levers[nid].state) / float(states - 1) if states >= 2 else 0.0
+	# Optional metadata cannot change the authoritative logical state.
+	return float(data.target) == target
 
 
 func _sound(nid: int) -> void:
@@ -254,6 +304,8 @@ func motion_payload(nid: int) -> Dictionary:
 func export_row(nid: int) -> Array:
 	var row := [int(world.levers[nid].state), figure_t(nid), bool(world.levers[nid].get("enabled", true))]
 	var data := motion_payload(nid)
+	if data.is_empty():
+		data = _ordinary_payload(nid)
 	if not data.is_empty():
 		row.append(data)
 	return row
@@ -270,7 +322,13 @@ func restore_row(nid: int, row: Variant) -> void:
 	if row.size() > 2:
 		world.levers[nid].enabled = bool(row[2])
 	if row.size() > 3:
-		_import_motion(nid, row[3], float(row[1]), false)
+		if _valid_ordinary(nid, row[3]):
+			var target := float(row[3].target)
+			_physical[nid] = target
+			world.nav.set_object_t(nid, target)
+			_start_ordinary(nid, row[3])
+		else:
+			_import_motion(nid, row[3], float(row[1]), false)
 
 
 func receive(nid: int, state: int, data: Variant) -> bool:

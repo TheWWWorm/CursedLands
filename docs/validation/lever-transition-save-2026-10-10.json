@@ -1,0 +1,116 @@
+{
+  "date": "2026-10-10",
+  "status": "Qualified isolated implementation reviewed and copied byte-for-byte into canonical source; delivered .2 packages unchanged.",
+  "base_game_commit": "e002052",
+  "problem": "Ordinary gate saves retain logical state and drawn morph but omit the in-flight transition and authoritative collision target; reload cancels animation and installs intermediate draw geometry as physical navigation.",
+  "production_files": {
+    "game/src/game/levers.gd": {
+      "candidate_path": "/home/llm2x/Documents/EI/local/scratchpad/lever-transition-save-20261010/candidate01/stage/src/game/levers.gd",
+      "sha256": "e31b890a0a62b3e03b2c8de2ee478930ea9b978137f2e65267c020228153710d"
+    }
+  },
+  "fixture": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/lever-transition-save-20261010/lever_transition_save.gd",
+    "sha256": "eac7c529e61d2141ef9d66c6826eba6b1ee6f1744557ba349e4250061ee3b88a",
+    "standalone": true
+  },
+  "source_freeze": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/lever-transition-save-20261010/source-freeze.json",
+    "sha256": "a41831dcad11ff3b5d7bcc64b899276c7e29c9708d6e8a5445a1398d70f5bcd5",
+    "tracked_game_files": 613,
+    "changed": [
+      "src/game/levers.gd"
+    ]
+  },
+  "native_basis": {
+    "52b7a0": "SetState sets server collision/figure to logical target and separately records from/target/end=(current+duration+1)/reciprocal duration.",
+    "52b490": "Drawing uses target-(target-from)*(end-current)/duration until the final target.",
+    "52b560_52b650": "Write/read the transition fields; base50eaf0 saves the authoritative complexion separately.",
+    "qualification": "Source audit and independent float32 formula comparison through actual remake VM handler, not execution of the original Windows binary.",
+    "source_sha256": {
+      "/home/llm2x/Documents/EI/inspection/ghidra/decompiled/functions/0012b/52b7a0_FUN_0052b7a0.c": "6b02211b13c1256e64ca2a9e4f65f07602f0cd6004b9871b11d94f1f9ed21f3e",
+      "/home/llm2x/Documents/EI/inspection/ghidra/out_lever/52b490.c": "c46ffb9fe84d157c5b504b1283249844965df3681cae017ce7f21efa55a3fa91",
+      "/home/llm2x/Documents/EI/inspection/ghidra/out_lever/52b560.c": "64c61cf6492d530f1f7b58f8770999eecc4d1d81e1203322edebf19d96d55dd7",
+      "/home/llm2x/Documents/EI/inspection/ghidra/out_lever/52b650.c": "34f743a74b899570e616e0f118ef7ec478c466ed63139f317656bc7427a75332",
+      "/home/llm2x/Documents/EI/inspection/ghidra/decompiled/functions/0010e/50eaf0_FUN_0050eaf0.c": "24adb700e437c07b68ef78cb0bc2f0393e85da46c03b5fe6cd76e36988d91993"
+    }
+  },
+  "tests": {
+    "baseline": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/lever-transition-save-20261010/baseline03",
+      "checks": 59,
+      "failures": [
+        "open retains native target collision after reload",
+        "open preserves actual original gate passability",
+        "open resumes original curve and elapsed time",
+        "open second reload preserves cumulative elapsed time",
+        "open remains moving half a native tick before completion",
+        "open finishes at original deadline",
+        "open navigation stays at target throughout resumed animation",
+        "close retains native target collision after reload",
+        "close preserves actual original gate passability",
+        "close resumes original curve and elapsed time",
+        "close second reload preserves cumulative elapsed time",
+        "close remains moving half a native tick before completion",
+        "close finishes at original deadline",
+        "close navigation stays at target throughout resumed animation",
+        "save before first draw retains native first-tick extrapolation",
+        "client snapshot import retains the authoritative ordinary gate target",
+        "client snapshot resumes the same remaining authored duration",
+        "default transition ends at its original 23-tick deadline"
+      ],
+      "return_code": 1
+    },
+    "candidate": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/lever-transition-save-20261010/candidate-save02",
+      "checks": 59,
+      "failures": [],
+      "return_code": 0
+    },
+    "coverage": [
+      "Original zone15 YardGates04/stga6 with38 changed navigation cells.",
+      "Full Session saves/reloads mid-open and mid-close; retained logical state, figure, target collision, passability, native curve and original remaining deadline.",
+      "Repeated serialized reload, before-first-draw save, zero-duration transition and cancellation.",
+      "Original database22-tick duration and23-tick drawing deadline; fractional explicit duration.",
+      "Client zone-snapshot importer tested without ENet.",
+      "20 malformed/incomplete/unknown optional tails ignored; legacy rows retain settled interpretation.",
+      "Existing drawbridge transition payload and remaining-tick commit unchanged."
+    ],
+    "retained_prior_runs": {
+      "baseline01": "Invalid initial fixture used a numeric ID instead of GetObject as native object argument; retained, excluded from defect counts.",
+      "baseline02": "Earlier checkpoint-dependent fixture:52checks/15 real failures.",
+      "candidate-save01": "Earlier checkpoint-dependent fixture:52checks/0 failures."
+    }
+  },
+  "source_and_evidence_sha256": {
+    "/home/llm2x/Documents/EI/local/scratchpad/lever-transition-save-20261010/baseline03/run.json": "41c241bc0e2010ced9000a8119facc572a2641c9b345b22052673e2e6596db20",
+    "/home/llm2x/Documents/EI/local/scratchpad/lever-transition-save-20261010/baseline03/lever-transition-save.json": "b6e52db29e2f8aef0a38f7661e09fab8b69a187213ddaf3a8b882e880ae56601",
+    "/home/llm2x/Documents/EI/local/scratchpad/lever-transition-save-20261010/candidate-save02/run.json": "f7c9f35abe429aa4ee042e10b7a3e31c1c650679a57c8c4228f18422c4beda14",
+    "/home/llm2x/Documents/EI/local/scratchpad/lever-transition-save-20261010/candidate-save02/lever-transition-save.json": "9e9cb572258e94b7b4815d9f7389b2f53e828ce379c5fa0a71b999cf07de5ddd",
+    "/home/llm2x/Documents/EI/local/scratchpad/lever-transition-save-20261010/candidate01/export.json": "753a34b0ab39db2d5d8d9ad7427bc00739e63ef7a28e474722f139c50492a4da"
+  },
+  "candidate_build_sha256": {
+    "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+    "CursedLands.pck": "609b054295782f5ed14e5c514c7dd077e0133c02d7f1a50e5ceaac554eafaa68",
+    "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+  },
+  "baseline_build_sha256": {
+    "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+    "CursedLands.pck": "5bb49355b5770be7bc04ef62d922630c781c66dbd552e0ae97ac95357dbcb207",
+    "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+  },
+  "route_receipt": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/nalo-route-audit-20261009/informed-followup-receipt.json",
+    "sha256": "b236848a54bd1cf5f6daa22c7761f4a6bdf798b3fcdc86dfd78618044ebf3972"
+  },
+  "limits": [
+    "Old rows lack remaining timing; their semantics are deliberately unchanged. No repair of old/user saves.",
+    "Controlled headless Tween clock and geometry fixture; no rendered visual, ENet or Windows runtime qualification.",
+    "Other renderer processes overlapped; no performance claims.",
+    "No canonical files, handoffs, release packages or user-save files modified."
+  ],
+  "origin_qualification": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/lever-transition-save-20261010/qualification.json",
+    "sha256": "110c8a320a2eb83df461b5ad765ad44fc1ae1c5a80344ca1437f269c7234b67b"
+  }
+}
