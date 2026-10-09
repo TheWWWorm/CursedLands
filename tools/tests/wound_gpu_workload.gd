@@ -88,8 +88,9 @@ func _ready() -> void:
 	Engine.max_fps = 120
 	RenderingServer.set_render_loop_enabled(true)
 	Gfx.ensure_globals()
-	var source: Image = EIUnitModel._compose("unhuma",["skin_14"]).get_meta(UnitWounds.SOURCE_IMAGE)
-	source = source.duplicate()
+	# Fixture-owned archive pixels are prepared before timing. The explicit
+	# metadata on synthetic legacy specimens above is not production retention.
+	var source := EIUnitModel._load_layer("unhuma", "skin_14")
 	source.resize(256,256,Image.INTERPOLATE_BILINEAR)
 	source.generate_mipmaps()
 	for iteration in 3:

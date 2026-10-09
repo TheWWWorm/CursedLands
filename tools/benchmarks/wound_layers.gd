@@ -122,7 +122,7 @@ func specimen(mask: String, skin: String, lv: PackedByteArray) -> void:
 	var base := EIUnitModel._compose(mask,[skin])
 	check(base != null,"real base loads " + skin)
 	if base == null: return
-	var source := base.get_meta(UnitWounds.SOURCE_IMAGE) as Image
+	var source := EIUnitModel._load_layer(mask, skin)
 	var inputs := layers(mask,lv,true)
 	var before := Time.get_ticks_usec(); var wound := overlay(inputs)
 	var compose_us := Time.get_ticks_usec()-before

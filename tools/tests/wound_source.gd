@@ -1,6 +1,6 @@
 extends Node
-## The retained path must never ask the GPU for source pixels, and must
-## produce the same wound image as the legacy readback path.
+## Optional external retained sources must never ask the GPU for pixels and
+## must match cached custom-material readback. Shipped producers retain none.
 const SOURCE_IMAGE := &"ei_wound_source"
 var checks := 0
 var failures := 0
@@ -134,15 +134,10 @@ func test_real_producer() -> void:
 		var texture := EIUnitModel._compose("unhuma", [layer])
 		if texture == null:
 			continue
-		var image: Image = texture.get_meta(SOURCE_IMAGE) if texture.has_meta(SOURCE_IMAGE) else null
-		check(image != null, "real redress texture retains its source: " + file)
-		if image:
-			var expected := EIUnitModel._load_layer("unhuma", layer)
-			check(not image.has_mipmaps() and image.get_format() == Image.FORMAT_RGBA8, "source is mip-free RGBA8")
-			same_image(image, expected, "producer preserves original pixels")
-			UnitWounds.shutdown()
-			check(EIUnitModel._compose("unhuma", [layer]) == texture and texture.get_meta(SOURCE_IMAGE) == image,
-					"source lifetime follows cached texture, not wound cache")
+		check(not texture.has_meta(SOURCE_IMAGE), "real redress texture retains no CPU source: " + file)
+		UnitWounds.shutdown()
+		check(EIUnitModel._compose("unhuma", [layer]) == texture and not texture.has_meta(SOURCE_IMAGE),
+				"cached outfit lifetime is independent of wound source cache")
 		tested += 1
 		if tested == 3:
 			break

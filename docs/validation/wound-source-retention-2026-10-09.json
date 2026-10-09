@@ -1,0 +1,488 @@
+{
+  "date": "2026-10-09",
+  "scope": "P1 removal of eager per-outfit SOURCE_IMAGE CPU retention after shipped world/preview wound-only GPU composition.",
+  "status": "Accepted focused local validation; no native/runtime or shader-program changes.",
+  "source_parent": "cee8572cc04fd0f34daae3877bd3ad36b65ad605",
+  "production_baseline": "8efe213 (same game source as frozen 63c16788f1bba2be73d1a00d534b310a4bf0fc98 texture-coop-final-01 pack)",
+  "qa_root": "/home/llm2x/Documents/EI/local/scratchpad/wound-retention-20261009",
+  "source_sha256": {
+    "game/src/ei/unit_model.gd": "b16849a6677b37b4ad2649dde44a9d76fa44e26cfb57d388bb077d4416002422",
+    "game/src/game/unit_wounds.gd": "7ce19d06ae90948644357ac653d27d6b8ae271b084f0dcb5ed813ca196cb52be",
+    "tools/tests/wound_retention.gd": "3c714c8d52dbf92ff7c0fbf71e29d5c9e8af213adde39136fb891f55e08bfc65",
+    "tools/tests/wound_source.gd": "1eef4cb6fa5e4e0eb00bc8ce2ec07c69e54c761d92de9e31392ea0b40348b354",
+    "tools/tests/wound_gpu.gd": "73bcc325082c137e09de69546acb57becb1c0cd9098d0c2e0417e7ea7e99fe12",
+    "tools/tests/wound_gpu_contract.gd": "fc153dc243f7c22a0b31368bb7be56861466848737d72cf1d783094892588529",
+    "tools/tests/wound_gpu_workload.gd": "8c3e7a271af25079ae94a8f7d4f60f376fd93a4563d88dc1d9e8faa4b849af58",
+    "tools/benchmarks/wound_layers.gd": "ae74043346fdf1d5122a10a8db68ed4ac026a7eeee0b6ac644fc71c4e0965618",
+    "tools/benchmarks/wound_composition.gd": "b588588c53592c9200307aefaec80aacae58195346a30a2c208da50ed348b794",
+    "tools/tests/renderer_texture_integration.gd": "871d46eadc1d2ec4d16449cb8c832e5f3f846c78bf0617491753022f1930f918"
+  },
+  "runners": {
+    "snapshot.py": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-retention-20261009/snapshot.py",
+      "sha256": "53133d8cd43a30fb94aa537de413b8a61b13b1744a6c09584d45b806fea68253"
+    },
+    "run.py": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-retention-20261009/run.py",
+      "sha256": "58266b7d827eb50ed8497b89c32756f81934ec71e158551dac7805ec1b6af00d"
+    },
+    "integration_run.py": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-retention-20261009/integration_run.py",
+      "sha256": "1c0799f66ea6e3e187f9a23438322074304cf59d2b5d42411c536e823e5ec747"
+    },
+    "collect_receipt.py": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-retention-20261009/collect_receipt.py",
+      "sha256": "b8913a8e8dcf3d447a1e346bcd12da5d8027d8339829996740dc49a7548ad163"
+    },
+    "oracle_sources.gd": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-retention-20261009/oracle_sources.gd",
+      "sha256": "2ea369585cdb3e0de3f87b46b765e63622969e054292e3f25bf5b3ad8375e275"
+    }
+  },
+  "final_export": {
+    "manifest": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-retention-20261009/candidate01/export.json",
+      "sha256": "8227a326b2d63dd7edda2e4a159fdc4d066d1f826c40cd55859994b65691881b"
+    },
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-retention-20261009/candidate01",
+    "sha256": {
+      "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+      "CursedLands.pck": "baecb35e25dd99c684c66d3d9b726facf79d743080e65b768219197eba5989fd",
+      "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+    },
+    "steps": [
+      {
+        "command": [
+          "/home/llm2x/.local/bin/godot-4",
+          "--headless",
+          "--path",
+          "/home/llm2x/Documents/EI/local/scratchpad/wound-retention-20261009/candidate01/stage",
+          "--editor",
+          "--import"
+        ],
+        "return_code": 0,
+        "seconds": 8.929924574971665,
+        "errors": []
+      },
+      {
+        "command": [
+          "/home/llm2x/.local/bin/godot-4",
+          "--headless",
+          "--path",
+          "/home/llm2x/Documents/EI/local/scratchpad/wound-retention-20261009/candidate01/stage",
+          "--export-pack",
+          "Linux",
+          "/home/llm2x/Documents/EI/local/scratchpad/wound-retention-20261009/candidate01/CursedLands.pck"
+        ],
+        "return_code": 0,
+        "seconds": 5.373177352012135,
+        "errors": []
+      }
+    ]
+  },
+  "production_change": {
+    "unit_model": "_compose still decodes and blends authored layers, generates the same mip chain, uploads the same ImageTexture and caches it by the same recipe. It no longer duplicates the mip-free base or attaches that duplicate as SOURCE_IMAGE.",
+    "unit_wounds": "Only documentation changes. SOURCE_IMAGE stays supported for externally supplied immutable RGBA8 images. The existing custom StandardMaterial3D fallback obtains one source readback per cached base when metadata is absent; jobs own their Image reference independently of that cache.",
+    "unchanged": "Shipped wound-only sampling, materials, health/armor/limb/native composition, selection publication, redress, resource caches and runtime are unchanged. No new source recipe, cache, setting or readback was added.",
+    "changed_game_scripts_relative_to_baseline": [
+      "src/ei/unit_model.gd",
+      "src/game/unit_wounds.gd"
+    ],
+    "unit_model_prefix_before_compose_exact": true
+  },
+  "consumer_audit": [
+    {
+      "source": "game/src/ei/unit_model.gd:_compose",
+      "finding": "Only production SOURCE_IMAGE producer before removal. Its static texture cache holds shared body/secondary atlases even after their model instances are gone."
+    },
+    {
+      "source": "game/src/game/unit_wounds.gd:_wounded",
+      "finding": "Only production SOURCE_IMAGE consumer; dispatched only for unsupported custom StandardMaterial3D. Metadata remains optional; _bases caches a normalized readback otherwise."
+    },
+    {
+      "source": "game/src/game/unit_wounds.gd:_apply_overlay/_overlay/_build",
+      "finding": "Shipped world and preview requests compose native wound layers, with base/src null on overlay jobs. Neither source metadata nor base.get_image is used."
+    },
+    {
+      "source": "game/src/game/order_marks.gd; game/src/ui/paperdoll.gd; game/src/game/unit.gd",
+      "finding": "Selection copies share base/wound textures. Real equipment replacement creates new world/preview models which reuse the albedo cache; ordinary async wound publication does not require CPU albedo pixels."
+    },
+    {
+      "source": "game/src/ui/item_view.gd:136",
+      "finding": "Item preview calls the same _compose producer but does not request UnitWounds. It likewise no longer carries the eager source duplicate."
+    },
+    {
+      "source": "tools/tests/wound_source.gd; tools/tests/wound_gpu_contract.gd; tools/tests/wound_gpu_workload.gd; tools/benchmarks/wound_layers.gd; tools/benchmarks/wound_composition.gd",
+      "finding": "Producer expectations updated to no metadata. Independent archive decode replaces direct production get_meta for single-layer oracle inputs. Explicit synthetic/custom retained-source fixtures remain covered, with their source preparation outside timed workload."
+    }
+  ],
+  "memory_measurement": {
+    "contract": "Distinct explicit SOURCE_IMAGE Image owners/bytes, deduplicated by resource instance identity; controlled appearance sample, not whole-map, process RSS, peak-memory or driver allocation measurement.",
+    "authored_records": 24,
+    "human_records": 16,
+    "creature_masks": 8,
+    "baseline_samples": [
+      {
+        "base_level_rgba_bytes": 7208960,
+        "label": "after_model_disposal",
+        "retained_image_bytes": 7208960,
+        "retained_image_count": 38,
+        "texture_count": 38
+      },
+      {
+        "base_level_rgba_bytes": 7208960,
+        "label": "after_wound_shutdown",
+        "retained_image_bytes": 7208960,
+        "retained_image_count": 38,
+        "texture_count": 38
+      },
+      {
+        "base_level_rgba_bytes": 7471104,
+        "label": "after_recreate_and_redress",
+        "retained_image_bytes": 7471104,
+        "retained_image_count": 39,
+        "texture_count": 39
+      }
+    ],
+    "candidate_headless_samples": [
+      {
+        "base_level_rgba_bytes": 7208960,
+        "label": "after_model_disposal",
+        "retained_image_bytes": 0,
+        "retained_image_count": 0,
+        "texture_count": 38
+      },
+      {
+        "base_level_rgba_bytes": 7208960,
+        "label": "after_wound_shutdown",
+        "retained_image_bytes": 0,
+        "retained_image_count": 0,
+        "texture_count": 38
+      },
+      {
+        "base_level_rgba_bytes": 7471104,
+        "label": "after_recreate_and_redress",
+        "retained_image_bytes": 0,
+        "retained_image_count": 0,
+        "texture_count": 39
+      }
+    ],
+    "candidate_rendered_samples": [
+      {
+        "base_level_rgba_bytes": 7208960,
+        "label": "after_model_disposal",
+        "retained_image_bytes": 0,
+        "retained_image_count": 0,
+        "texture_count": 38
+      },
+      {
+        "base_level_rgba_bytes": 7208960,
+        "label": "after_wound_shutdown",
+        "retained_image_bytes": 0,
+        "retained_image_count": 0,
+        "texture_count": 38
+      },
+      {
+        "base_level_rgba_bytes": 7471104,
+        "label": "after_recreate_and_redress",
+        "retained_image_bytes": 0,
+        "retained_image_count": 0,
+        "texture_count": 39
+      }
+    ],
+    "removed_after_disposal_bytes": 7208960,
+    "removed_after_redress_bytes": 7471104,
+    "removed_mebibytes": [
+      6.875,
+      7.125
+    ],
+    "normal_request_readbacks": 0,
+    "remaining_owners": "GPU albedo/secondary textures remain cached, native wound CPU/GPU caches remain, and custom legacy sources remain cached only when requested. Headless dummy renderer separately retains uploaded pixels. Transient archive decode/upload Images and optional externally supplied metadata are outside this removal."
+  },
+  "exact_controls": {
+    "uploaded_texture_count": 39,
+    "uploaded_mip_bytes": 9961420,
+    "all_upload_hashes_equal_baseline_and_archive": true,
+    "desktop_gl_readback": "Qualified runtime is target=template_release. drivers/gles3/storage/texture_storage.cpp:1515-1563 uses desktop GL glGetTexImage for every ImageTexture mip; this is a 2D texture readback, not the reconstructed layered-array readback used in an earlier terrain diagnostic.",
+    "custom_source_dimensions": [
+      128,
+      256
+    ],
+    "custom_result_hashes": [
+      {
+        "key": "unhuma|hl_03..1|sw_02.st.0",
+        "levels": "030102000103",
+        "output_sha256": "444a6505c0ed120185eca62c5df95fe1f7e5947867293891f2ee1dd46727ca57",
+        "reads": 1,
+        "source_bytes": 65536,
+        "source_sha256": "2f6b51dc8bec10fbd09569b16b63d2d4daf284da941173a70cdd255b4b14b2fd"
+      },
+      {
+        "key": "unhuma|hl_03..1|sw_02.st.0",
+        "levels": "010000000000",
+        "output_sha256": "f28ac71afbb38bba8e2f7ab99b0b042367b87c990f4c3c2b62ba663f863ef9bf",
+        "reads": 1,
+        "source_bytes": 65536,
+        "source_sha256": "2f6b51dc8bec10fbd09569b16b63d2d4daf284da941173a70cdd255b4b14b2fd"
+      },
+      {
+        "key": "unhuma|skin_00|pt_12.cw.0|bt_12.cw.0",
+        "levels": "030102000103",
+        "output_sha256": "787a08818bb6caeffcc5fde48c36202617f86bcdc423667d07a858380cfe26c1",
+        "reads": 1,
+        "source_bytes": 262144,
+        "source_sha256": "b68ac41c8658f9680ae57566a1c86a96cb30152ce3a3cda7f8bec98fdfc75fdf"
+      },
+      {
+        "key": "unhuma|skin_00|pt_12.cw.0|bt_12.cw.0",
+        "levels": "010000000000",
+        "output_sha256": "b67757b77c5e245e9d671f2c4474d8dde4590dbbdb28a3d7a13e3d96ccbe5034",
+        "reads": 1,
+        "source_bytes": 262144,
+        "source_sha256": "b68ac41c8658f9680ae57566a1c86a96cb30152ce3a3cda7f8bec98fdfc75fdf"
+      }
+    ],
+    "custom_contract": "Actual cached secondary/body texture readback matches archive-composed source bytes and both tested wound output/mip byte streams. Two levels reuse one readback; explicit external SOURCE_IMAGE uses none. After shutdown a later custom request may read once again.",
+    "pending_contract": "Clearing _bases after a custom request does not invalidate its job-owned source/result. This does not force the worker to remain in flight at the instant of eviction. Shutdown assertions prove cache dictionaries clear, not destruction of Images still retained by fixture/job references.",
+    "historical_legacy_outputs_exact": 48,
+    "oracle_inputs": "skin_00/skin_14 archive inputs match uploaded base-level pixels; the three changed standalone contract/workload/layer scripts load successfully. Existing shader numerical/alpha contract is unchanged, not reaccepted by a weaker threshold."
+  },
+  "actual_world_paperdoll": {
+    "checks": 134,
+    "captures": 15,
+    "renderer": "forward_plus",
+    "cloud_quality": 3,
+    "terrain_quality": 2,
+    "ownership": {
+      "case": "actual-texture-owners",
+      "held": {
+        "channels_over_2": 0,
+        "peak": 1
+      },
+      "highlighted_parts": 17,
+      "paperdoll_delta": {
+        "channels_over_2": 20514,
+        "peak": 147
+      },
+      "raw_format": 17,
+      "scope": "Prepared real GameUnit, equipment replacement and Paperdoll; no combat or performance claim.",
+      "world_delta": {
+        "channels_over_2": 28150,
+        "peak": 100
+      }
+    },
+    "claim": "Existing integration fixture asserts installed non-null shared wounds, 17 actual selected mesh replacements, retained base identity, normal frame publication, healing, real authored equipment rebuild, old figure retirement and Paperdoll viewport reuse, followed by world-owner reload.",
+    "selection_boundary": "The corpus additionally checks a nonempty bright-copy map and binding equality, which by itself does not establish active mesh installation or non-null damage. The stronger active selection/presentation claim comes from the actual-world fixture.",
+    "reviewed_images": [
+      "texture-integration-world-wounded.png",
+      "texture-integration-paperdoll-redressed.png"
+    ]
+  },
+  "runs": [
+    {
+      "label": "baseline-headless04",
+      "baseline": true,
+      "checks": 743,
+      "failures": 0,
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-retention-20261009/baseline-headless04/run.json",
+        "sha256": "b653f67f2c83f4f1d03d0b89375d3e08476d32037190c4547ec1734273204b7b"
+      },
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-retention-20261009/baseline-headless04/run.log",
+        "sha256": "868489adef2d697b728fcf819e38b04bab40813e6d59a07e2134d208002e45d7"
+      },
+      "capture_count": 0,
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-retention-20261009/baseline-headless04/wound-retention.json",
+        "sha256": "9a9e8c2bafd04123862b1b53229ec96915ab8430743a5bcc98168d75901c836b"
+      }
+    },
+    {
+      "label": "baseline-composition-headless01",
+      "baseline": true,
+      "checks": 201,
+      "failures": 0,
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-retention-20261009/baseline-composition-headless01/run.json",
+        "sha256": "499e31cde81977ce372d7abd118199b805f1058d1da95ebae6994732457012f9"
+      },
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-retention-20261009/baseline-composition-headless01/run.log",
+        "sha256": "b6d6b289557370bda97dfd1e25e5ef05ce52c67e1f6110de4f579be7fbb525d9"
+      },
+      "capture_count": 0,
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-retention-20261009/baseline-composition-headless01/wound-composition.json",
+        "sha256": "da347280cc5643996f23711c35642567bdb65f4aaba364661d740f92f3baee4d"
+      }
+    },
+    {
+      "label": "candidate-headless02",
+      "baseline": false,
+      "checks": 628,
+      "failures": 0,
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-retention-20261009/candidate-headless02/run.json",
+        "sha256": "7317323c888a3b7999b175ea614726897e799db1704e6a66d4e337dea82323ad"
+      },
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-retention-20261009/candidate-headless02/run.log",
+        "sha256": "712710f82019fea9a48a0a5671c4bdaf43344ecbe279b6e4d9d505ecbb520c94"
+      },
+      "capture_count": 0,
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-retention-20261009/candidate-headless02/wound-retention.json",
+        "sha256": "f725eca1d4d7aa96409fe2db07ce5f33046d5abb88789eed08cd2f6ce06c2cf1"
+      }
+    },
+    {
+      "label": "candidate-retention-gl01",
+      "baseline": false,
+      "checks": 628,
+      "failures": 0,
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-retention-20261009/candidate-retention-gl01/run.json",
+        "sha256": "9931b05ac6d64013d093cba6a04cc5cd93312a0c85050eb6b8826ff438af2a72"
+      },
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-retention-20261009/candidate-retention-gl01/run.log",
+        "sha256": "988057a5eb1257e8b69c36251e94e1a9a73f24f5850465bf54def11fb10ca4ad"
+      },
+      "capture_count": 0,
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-retention-20261009/candidate-retention-gl01/wound-retention.json",
+        "sha256": "83617c46096a646807aeb37ca3a2c0aacb007f7ae637c1f04e69e37adc463a3f"
+      }
+    },
+    {
+      "label": "candidate-overlay-headless01",
+      "baseline": false,
+      "checks": 50,
+      "failures": 0,
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-retention-20261009/candidate-overlay-headless01/run.json",
+        "sha256": "dd0849c36f3f28f42c524e10ac744678b86d8782a18545cdffcd66e05f52e8f1"
+      },
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-retention-20261009/candidate-overlay-headless01/run.log",
+        "sha256": "1a1242e9693d5d9b2caccfd233a78a6f3c645867dfd3dfd31d75a4ed3d8d7177"
+      },
+      "capture_count": 0
+    },
+    {
+      "label": "candidate-source-headless01",
+      "baseline": false,
+      "checks": 33,
+      "failures": 0,
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-retention-20261009/candidate-source-headless01/run.json",
+        "sha256": "319c3409840cbbd97255420fec688bc527234dde70a2174b2148ef545d382d8b"
+      },
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-retention-20261009/candidate-source-headless01/run.log",
+        "sha256": "77211b09e8e7965c2cb64abf49744010aa40f2b19856f5a23f436ced3fa2d64e"
+      },
+      "capture_count": 0
+    },
+    {
+      "label": "candidate-composition-headless01",
+      "baseline": false,
+      "checks": 201,
+      "failures": 0,
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-retention-20261009/candidate-composition-headless01/run.json",
+        "sha256": "da7c62e991d7674987864b1a1eed06f820d70ce6886a1e066910310854b39518"
+      },
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-retention-20261009/candidate-composition-headless01/run.log",
+        "sha256": "1b1ba39fed15ce823b4cce50c98b579c284b271b02eae6ac2d6c1ad044128f39"
+      },
+      "capture_count": 0,
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-retention-20261009/candidate-composition-headless01/wound-composition.json",
+        "sha256": "e0a67a37804811eca5a3768d6121d816326f84156dec7ea001641ded4acd4658"
+      }
+    },
+    {
+      "label": "candidate-overlay-gl01",
+      "baseline": false,
+      "checks": 50,
+      "failures": 0,
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-retention-20261009/candidate-overlay-gl01/run.json",
+        "sha256": "5fcfe2affaa749a19b8f976566061a035905e75f7b4e6c4839d7ee2164a58f8e"
+      },
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-retention-20261009/candidate-overlay-gl01/run.log",
+        "sha256": "6c643b34805f2c4a7c9752b5d80597fbcb37e11b425ad3e92d4e423d5d4042a4"
+      },
+      "capture_count": 0
+    },
+    {
+      "label": "candidate-world-forward01",
+      "baseline": false,
+      "checks": 134,
+      "failures": 0,
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-retention-20261009/candidate-world-forward01/run.json",
+        "sha256": "ae34bed93817bbb2c82cacbee00d497913b052a94de7de499d1180ec453be875"
+      },
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-retention-20261009/candidate-world-forward01/run.log",
+        "sha256": "b653f979aacc166813b9f482f9b0a589d6ca18b9db9344b86acf7ed76787465b"
+      },
+      "capture_count": 15,
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-retention-20261009/candidate-world-forward01/renderer-world-lifecycle.json",
+        "sha256": "0b4707f35573a45e6523d42baeec2810742838b91f09006d20f863063a35b465"
+      }
+    },
+    {
+      "label": "candidate-oracle-sources01",
+      "baseline": false,
+      "checks": 5,
+      "failures": 0,
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-retention-20261009/candidate-oracle-sources01/run.json",
+        "sha256": "b3afd7cc44eff80e03d4427bda5e96e65c62ad65d3878336ad7891c3638914c4"
+      },
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-retention-20261009/candidate-oracle-sources01/run.log",
+        "sha256": "46fcd6debcfa39c03267271f5ff078308a1785b99e19dcfcce0a3ca8352db994"
+      },
+      "capture_count": 0
+    }
+  ],
+  "accepted_totals": {
+    "candidate_checks": 1729,
+    "baseline_checks": 944,
+    "candidate_captures": 15
+  },
+  "excluded_iterations": [
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-retention-20261009/baseline-headless01",
+      "reason": "New fixture used PackedByteArray as a const initializer, rejected by GDScript; corrected to mutable fixture values before measurement. No production issue."
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-retention-20261009/candidate-headless01",
+      "reason": "New census called get_meta with a null default; Godot logs missing-key errors despite returning null. Corrected to has_meta guard. Candidate production unchanged."
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-retention-20261009/baseline-headless02",
+      "reason": "Preliminary successful census omitted body-atlas legacy control and all-upload hashes; superseded by baseline-headless04."
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/wound-retention-20261009/baseline-headless03",
+      "reason": "Successful body+secondary control before final all-upload/non-vacuous selection assertions; superseded by baseline-headless04."
+    }
+  ],
+  "limits": [
+    "Eliminates only the eager duplicate CPU albedo ownership on shipped _compose textures. This does not eliminate all CPU image memory, GPU albedo caches, or the explicit custom-material bake.",
+    "Custom StandardMaterial3D first wound request on a shipped texture now uses the existing lazy readback fallback; this cost is deliberately outside the normal shipped shader path. Externally supplied SOURCE_IMAGE can still avoid it.",
+    "Cached custom sources can be read back again after legacy cache eviction or shutdown; no source reconstruction recipe/cache was introduced.",
+    "Controlled 24-record base-campaign appearance sample and one prepared GameUnit/Paperdoll scene, not exhaustive campaign appearance, combat, mobile-device, handheld or FPS evidence.",
+    "Focused Compatibility readback and Forward+ actual-scene controls are sufficient for the unchanged shaders; prior P1 numerical/alpha/backend evidence remains historical and was not rewritten.",
+    "No install, release publication, native/runtime modification or unrelated cleanup."
+  ]
+}

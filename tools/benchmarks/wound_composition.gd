@@ -17,8 +17,10 @@ func digest(data: PackedByteArray) -> String:
 	var h := HashingContext.new(); h.start(HashingContext.HASH_SHA256); h.update(data)
 	return h.finish().hex_encode()
 
-func source_copy(base: Texture2D, size: int) -> Texture2D:
-	var source := (base.get_meta(UnitWounds.SOURCE_IMAGE) as Image).duplicate() as Image
+func source_copy(authored: Image, size: int) -> Texture2D:
+	# This historical custom-material benchmark deliberately supplies retained
+	# sources. Decode them from the archive, outside the measured workload.
+	var source := authored.duplicate() as Image
 	if source.get_width() != size: source.resize(size,size,Image.INTERPOLATE_BILINEAR)
 	var pixels := source.duplicate() as Image; pixels.generate_mipmaps()
 	var texture := ImageTexture.create_from_image(pixels)
@@ -144,9 +146,9 @@ func _ready() -> void:
 	UnitWounds.shutdown()
 	var bases := []
 	for skin: String in ["skin_00","skin_14"]:
-		var base := EIUnitModel._compose("unhuma",[skin])
-		check(base != null,"real human outfit " + skin)
-		if base: bases.append([skin,base])
+		var source := EIUnitModel._load_layer("unhuma", skin)
+		check(source != null,"real human outfit " + skin)
+		if source: bases.append([skin,source])
 	var lv := PackedByteArray([3,1,2,0,1,3])
 	await wave("human-cold","unhuma",true,lv,human_specimens(bases))
 	await wave("human-warm-new-outfits","unhuma",true,lv,human_specimens(bases))

@@ -431,8 +431,10 @@ func _ready() -> void:
 	(quad.mesh as QuadMesh).size = Vector2(2,2)
 	view.add_child(quad)
 	await check_oracle(synthetic_image(16,false),synthetic_image(8,true),"synthetic-alpha")
-	var human_base := EIUnitModel._compose("unhuma",["skin_14"])
-	await check_oracle(human_base.get_meta(UnitWounds.SOURCE_IMAGE),compose("unhuma",PackedByteArray([3,1,2,0,1,3]),true),"human-mixed")
+	# Archive pixels keep this oracle independent of GPU readback and optional
+	# custom-material source metadata, which shipped producers no longer retain.
+	var human_source := EIUnitModel._load_layer("unhuma", "skin_14")
+	await check_oracle(human_source,compose("unhuma",PackedByteArray([3,1,2,0,1,3]),true),"human-mixed")
 	# All actual material and figure controls retain the shipped viewport format.
 	view.use_hdr_2d = false
 	if production: await material_alpha_controls()

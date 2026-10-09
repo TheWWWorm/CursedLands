@@ -33,9 +33,9 @@ extends RefCounted
 
 const HUMAN_CODES := ["hd", "bd", "lh", "rh", "ll", "rl"]
 const OTHER_CODES := ["hd", "bd", "h", "h", "l", "l"]
-## Immutable, mip-free RGBA8 image retained by the unit texture's producer.
-## Texture ownership also owns its CPU pixels; clearing a wound cache cannot
-## force another GPU readback of an otherwise unchanged outfit.
+## Optional immutable, mip-free RGBA8 source from an external texture producer.
+## Only the custom-material legacy bake consumes it. Shipped wound shaders
+## need no base pixels, so EIUnitModel does not retain this extra CPU copy.
 const SOURCE_IMAGE := &"ei_wound_source"
 ## Native-size, mip-free wound layers are shared by all outfits and previews.
 ## Limit both entries (including failed decodes) and retained CPU pixel memory.
@@ -53,8 +53,8 @@ static var _layer_textures := {} # same key -> shared GPU wound Texture2D (or nu
 static var _wound_layer_bytes := 0
 static var _layer_jobs := {}  # layer key -> first composite job producing that layer
 ## Base texture instance id -> its immutable RGBA8 image without mipmaps.
-## Unit textures retain their source before upload. Other texture producers
-## keep the cached readback path, so custom materials remain supported.
+## Populated only for custom-material legacy bakes, from optional SOURCE_IMAGE
+## metadata or one readback per cached base. Shipped shaders never enter here.
 static var _bases := {}
 ## Remake (CPU): a new composite (layer decode, blends, mipmaps: 5–8 ms) is
 ## built on WorkerThreadPool; the texture is made and put on the materials
