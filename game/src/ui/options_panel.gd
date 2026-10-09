@@ -42,10 +42,11 @@ extends Interface800
 ## the renderer row asks first when stepped to Forward+ (experimental on
 ## phones, ✗ puts it back) and ✓ with it changed offers a restart. Graphics
 ## rows 6..8: detect graphics automatically, "Detect best settings" (the
-## graphics test now), "Original look" (PRESET_ROW); rows 10..12 link to the
+## graphics test now), "Original look" (PRESET_ROW); rows 9..13 link to the
 ## remake's graphics sections. Remake: its sections as link rows (SECTIONS,
-## rows 0..7: World and textures, Lighting and shadows, Water and effects,
-## Camera, Interface and controls, Gamepad, Gameplay, Network and co-op), row
+## rows 0..9: World and textures, Terrain and vegetation, Lighting and shadows,
+## Water, Weather and effects, Camera, Interface and controls, Gamepad,
+## Gameplay, Network and co-op), row
 ## 11 "Game files…" (main menu only: the first-run setup screen again,
 ## DataSwitch), row 12 "Export log…" (CrashReportBox). A section page is
 ## titled "<button> › <section>" with that button lit and row 13 "« <button>"
@@ -87,19 +88,21 @@ const REMAKE_GROUP := 11   # GameData.OPTION_GROUPS index of the Remake tab (its
 const SCREEN_GROUP := 12   # the remake's Screen tab
 const WORLD_GROUP := 13    # Remake › World and textures (also Graphics › …)
 const LIGHT_GROUP := 14    # Remake › Lighting and shadows (also Graphics › …)
-const EFFECTS_GROUP := 15  # Remake › Water and effects (also Graphics › …)
+const EFFECTS_GROUP := 15  # Remake › Weather and effects (also Graphics › …)
 const CAMERA_GROUP := 16   # Remake › Camera
 const INTERFACE_GROUP := 17   # Remake › Interface and controls
 const GAMEPLAY_GROUP := 18 # Remake › Gameplay
 const COOP_GROUP := 19     # Remake › Network and co-op
 const PAD_GROUP := 20      # Remake › Gamepad
 const PAD_BUTTONS_GROUP := 21   # Remake › Gamepad › Buttons (PAD_GROUP row 12)
+const TERRAIN_GROUP := 22  # Remake › Terrain and vegetation (also Graphics › …)
+const WATER_GROUP := 23    # Remake › Water (also Graphics › …)
 ## The group buttons top to bottom: the original's 11 with the remake's Screen
 ## after Graphics, and Remake last.
 const TAB_ORDER := [0, SCREEN_GROUP, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, REMAKE_GROUP]
 const TABS := 13           # TAB_ORDER.size()
 ## The Remake page's link rows (row = index).
-const SECTIONS := [WORLD_GROUP, LIGHT_GROUP, EFFECTS_GROUP, CAMERA_GROUP,
+const SECTIONS := [WORLD_GROUP, TERRAIN_GROUP, LIGHT_GROUP, WATER_GROUP, EFFECTS_GROUP, CAMERA_GROUP,
 	INTERFACE_GROUP, PAD_GROUP, GAMEPLAY_GROUP, COOP_GROUP]
 ## The remake pages and the page their « row (and Esc / B) leads back to; the
 ## parent's button is lit while one is up. The graphics sections also hang
@@ -107,13 +110,14 @@ const SECTIONS := [WORLD_GROUP, LIGHT_GROUP, EFFECTS_GROUP, CAMERA_GROUP,
 const PARENT := {WORLD_GROUP: REMAKE_GROUP, LIGHT_GROUP: REMAKE_GROUP,
 	EFFECTS_GROUP: REMAKE_GROUP, CAMERA_GROUP: REMAKE_GROUP, INTERFACE_GROUP: REMAKE_GROUP,
 	GAMEPLAY_GROUP: REMAKE_GROUP, COOP_GROUP: REMAKE_GROUP, PAD_GROUP: REMAKE_GROUP,
-	PAD_BUTTONS_GROUP: PAD_GROUP}
-## The Graphics page's links to the remake's graphics sections, rows 10..12.
-const GRAPHICS_LINKS := [WORLD_GROUP, LIGHT_GROUP, EFFECTS_GROUP]
-const GRAPHICS_LINK_ROW := 10
+	PAD_BUTTONS_GROUP: PAD_GROUP, TERRAIN_GROUP: REMAKE_GROUP, WATER_GROUP: REMAKE_GROUP}
+## Five focused graphics sections fit under the original controls and presets.
+## These are direct links from both Graphics (rows 9..13) and Remake (0..4).
+const GRAPHICS_LINKS := [WORLD_GROUP, TERRAIN_GROUP, LIGHT_GROUP, WATER_GROUP, EFFECTS_GROUP]
+const GRAPHICS_LINK_ROW := 9
 ## The pages with the Original look toggle in row 12 (PRESET_ROW); on the
 ## Graphics page it is row 8 (GFX_LOOK_ROW).
-const LOOK_PAGES := [WORLD_GROUP, LIGHT_GROUP, EFFECTS_GROUP]
+const LOOK_PAGES := GRAPHICS_LINKS
 const GFX_LOOK_ROW := 8
 const BACK_ROW := 13       # a remake page's « row
 const BUTTONS_ROW := 12    # Gamepad › "Buttons…"; Buttons › "Default buttons"
@@ -268,7 +272,7 @@ func _section_label(g: int) -> String:
 
 
 ## The group button's label, or for a remake page its path as the title
-## ("Remake › Gamepad › Buttons", "Graphics › Water and effects").
+## ("Remake › Gamepad › Buttons", "Graphics › Water").
 func _group_label(g: int) -> String:
 	if _parent(g) >= 0:
 		return "%s › %s" % [_group_label(_parent(g)), _section_label(g)]
@@ -471,7 +475,7 @@ func _assign(act: String, sc: int) -> void:
 	_refresh_keys()
 
 
-## Row 12 of the three remake graphics pages (LOOK_PAGES) and Graphics row 8: the "Original look" toggle
+## Row 12 of the remake graphics pages (LOOK_PAGES) and Graphics row 8: the "Original look" toggle
 ## (GfxDetect.original_look_*). Checked while every gfx_* switch is off (the
 ## 2000 renderer's look; the always-on quality settings in project.godot keep
 ## their colours). A press while unchecked switches them all off; a press

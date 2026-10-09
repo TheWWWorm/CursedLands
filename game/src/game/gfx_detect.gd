@@ -90,7 +90,7 @@ static func tier_values(tier: int, base: Dictionary) -> Dictionary:
 		v.q_shadows = mini(v.q_shadows, 1)
 		v.q_aa = mini(v.q_aa, 1)   # MSAA / TAA / FSR 2 → SMAA
 	if tier >= 2:
-		for k in ["gfx_ssao", "gfx_water_reflections", "gfx_heat_haze", "gfx_soft_particles", "gfx_far_view", "gfx_grass", "gfx_ground_contact", "gfx_water_interaction", "gfx_water_caustics", "gfx_water_current", "gfx_vegetation_interaction", "gfx_biome_cover"]:
+		for k in ["gfx_ssao", "gfx_water_reflections", "gfx_heat_haze", "gfx_soft_particles", "gfx_far_view", "gfx_grass", "gfx_ground_contact", "gfx_water_interaction", "gfx_water_caustics", "gfx_water_current", "gfx_water_waves", "gfx_vegetation_interaction", "gfx_biome_cover"]:
 			v[k] = 0
 	if tier >= 3:
 		for k in ["gfx_firelight", "gfx_lava_light", "gfx_bloom", "gfx_hd_textures", "gfx_materials",
@@ -375,7 +375,7 @@ static func untouched(rec: Dictionary, current: Dictionary) -> bool:
 
 # ------------------------------------------------------------------ Original look
 
-## Options' "Original look" toggle (OptionsPanel, the PRESET_ROW of the three
+## Options' "Original look" toggle (OptionsPanel, the PRESET_ROW of the
 ## remake graphics pages): on while every gfx_* switch is off. It touches
 ## only the gfx_* switches (render quality, render scale and the frame-rate
 ## cap stay as they are).

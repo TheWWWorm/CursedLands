@@ -1,0 +1,358 @@
+{
+  "date": "2026-10-09",
+  "scope": "Graphics settings grouping, existing key/default preservation, localized section labels and wave option registration. This receipt does not validate the water-wave renderer.",
+  "baseline_and_overrides": {
+    "baseline": "92d49410414ea8e93e899f992ada4372d7545e3c",
+    "overrides": {
+      "game/src/ei/game_data.gd": "4090155f8bf6a0a6f1fc9290e89349c8d62d73ddcd5f5a3f0c43679693dac473",
+      "game/src/ei/remake_text.gd": "92d678ddcf10087359e00697ca3157b618d5dabd62664dd7db4e2a8b9aaacf17",
+      "game/src/game/gfx_detect.gd": "46aa0592456c10597604745ad553ac7799ae37e310b3e14864db08171e5ccaeb",
+      "game/src/ui/options_panel.gd": "b97d1b88210f108543578544322888dd795e2ae59a23b995fe3286555afb39e0"
+    },
+    "test_sha256": "7c824cb8ab52177dcdbabe6272c71541d08754c79047d13403c8cd7c482e6c65"
+  },
+  "qa_root": "/home/llm2x/Documents/EI/local/scratchpad/graphics-settings-20261009",
+  "export": {
+    "command": [
+      "/home/llm2x/.local/bin/godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/graphics-settings-20261009/source/game",
+      "--export-pack",
+      "Linux",
+      "/home/llm2x/Documents/EI/local/scratchpad/graphics-settings-20261009/candidate/CursedLands.pck"
+    ],
+    "return_code": 0,
+    "seconds": 5.322718426003121,
+    "errors": [],
+    "sha256": {
+      "CursedLands.x86_64": "090f2254527771465e745bb887386978dfca069ef1943b3b9bcadcad1a377a44",
+      "CursedLands.pck": "bfc0f91ecbb9a6bbc37a0c4f597d6509ecc6e9a0fa76ce310de7cb9e8cef6320",
+      "libterrain_search.so": "dfd05a2ac322886c759d1512d7ca830388a67cbac8e04c529312855ba1eb0b69"
+    }
+  },
+  "metadata_preservation": {
+    "baseline_options": 110,
+    "candidate_options": 111,
+    "removed_keys": [],
+    "added_keys": [
+      "gfx_water_waves"
+    ],
+    "changed_kinds_ranges_or_defaults": [],
+    "new_wave_metadata": [
+      1,
+      2,
+      23,
+      5,
+      0
+    ]
+  },
+  "section_layout": {
+    "Graphics": "Five section links in rows 9..13; original controls and presets keep their rows.",
+    "Remake": "Ten section links in rows 0..9; Game files row 11 and Export log row 12 remain.",
+    "graphics_pages": {
+      "r_effects": [
+        "gfx_weather_surfaces",
+        "gfx_heat_haze",
+        "gfx_soft_particles",
+        "gfx_lit_particles",
+        "gfx_severed_limbs"
+      ],
+      "r_lighting": [
+        "gfx_firelight",
+        "gfx_torch_glow",
+        "gfx_lava_light",
+        "gfx_foliage_light",
+        "gfx_volumetric",
+        "gfx_ssao",
+        "gfx_contact_shadows",
+        "gfx_bloom",
+        "q_shadows",
+        "q_shadow_fit"
+      ],
+      "r_terrain": [
+        "gfx_terrain",
+        "gfx_wind",
+        "gfx_grass",
+        "gfx_biome_cover",
+        "gfx_vegetation_interaction",
+        "gfx_soft_ground",
+        "gfx_ground_contact"
+      ],
+      "r_water": [
+        "gfx_water",
+        "gfx_water_reflections",
+        "gfx_water_interaction",
+        "gfx_water_caustics",
+        "gfx_water_current",
+        "gfx_water_waves"
+      ],
+      "r_world": [
+        "gfx_hd_textures",
+        "gfx_materials",
+        "gfx_sharp_units",
+        "gfx_detailed_heads",
+        "gfx_sky",
+        "gfx_far_view",
+        "q_aniso"
+      ]
+    },
+    "section_controls": "Original look remains row 12 and Back row 13 on all five graphics pages; fixed 13-tab navigation is unchanged."
+  },
+  "validation": {
+    "total_runtime_assertions": 578,
+    "failed_assertions": 0,
+    "runs": [
+      {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/graphics-settings-20261009/candidate/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/graphics-settings-20261009/headless-accepted/graphics_options.gd"
+        ],
+        "return_code": 0,
+        "termination": null,
+        "seconds": 2.252755214984063,
+        "errors": [],
+        "xdg": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/graphics-settings-20261009/headless-accepted/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/graphics-settings-20261009/headless-accepted/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/graphics-settings-20261009/headless-accepted/cache"
+        },
+        "test_sha256": "7c824cb8ab52177dcdbabe6272c71541d08754c79047d13403c8cd7c482e6c65",
+        "capture_sha256": {},
+        "checks": 284,
+        "label": "headless-accepted",
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/graphics-settings-20261009/headless-accepted/run.log"
+      },
+      {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/graphics-settings-20261009/candidate/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/graphics-settings-20261009/compatibility-accepted/graphics_options.gd"
+        ],
+        "return_code": 0,
+        "termination": null,
+        "seconds": 5.2576757239876315,
+        "errors": [],
+        "xdg": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/graphics-settings-20261009/compatibility-accepted/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/graphics-settings-20261009/compatibility-accepted/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/graphics-settings-20261009/compatibility-accepted/cache"
+        },
+        "test_sha256": "7c824cb8ab52177dcdbabe6272c71541d08754c79047d13403c8cd7c482e6c65",
+        "capture_sha256": {
+          "graphics-options-en-remake.png": "ac3f85b21e5f28a95882b07e79559ce4a301c8ee02cb85e0044254ccbd4d2fa1",
+          "graphics-options-ru-r_effects.png": "879d070c439c0a2f45a8a72ae5678aa8c080d7e9f8921964ac8d412fd361d1a1",
+          "graphics-options-ru-r_world.png": "e36e7f563593b87ea45bde3741ef35df23344f593cb07f862e12dfe0951492c4",
+          "graphics-options-en-r_water.png": "62bbfa5ec559dbf6ea382782b05cf3749d482ec80bfe701d152a0889af31cb62",
+          "graphics-options-ru-remake.png": "0557d63d0d0b61cc88db5165570749c85fcd399d8de7d6ada2006d5fce81f952",
+          "graphics-options-de-r_water.png": "d1da2c9527a8ff8d96b2965953f853b6d1eefa53761f629264a122dc17ede999",
+          "graphics-options-en-r_effects.png": "7c26312616f93bc7147ffbec9783cb29ef8e5097acc33c672c6524eff4d9789e",
+          "graphics-options-ru-r_lighting.png": "c8e4f0f0fe55db914ac80a47c2060ebfa6d0a76fb22581d25f41ffdad397e58e",
+          "graphics-options-ru-graphics.png": "e1ef1c6d3567af945fbfd492382bf1520025e6d586732c7b86af0a96cdcd0c55",
+          "graphics-options-de-r_terrain.png": "c018b23af57a0f42619d6e4c4c9d10374ed01317cbfdbbebe7bf038c54e14cd9",
+          "graphics-options-de-remake.png": "bfb19ac54797979cf9abc0fdee9c049722953fbc2569e5c6ad9dbcf760edd2f8",
+          "graphics-options-ru-r_water.png": "e65f6f48b1318a08c1af81912f7f898f4e7a8edac73debedb3d2a41480d6e84d",
+          "graphics-options-de-r_world.png": "74c422fa00519e43f0a0d07def98072c72de5796326b864d2fda0c327e4a86f9",
+          "graphics-options-de-graphics.png": "9c7335c450f29193e031ab8739e3ef866752452a9f328c2af6bbc893b4a8e4e9",
+          "graphics-options-en-r_world.png": "c00e77f36255db0410ceea16df2590d5bc2b627f00c4f89c5a926631c32bb539",
+          "graphics-options-en-r_lighting.png": "581a6f2db37e07a71a728d93edd5cdce9e17602210d76b1c00a3fa537f54eb01",
+          "graphics-options-ru-r_terrain.png": "de0114fd49959e4baf94d393386293a76039a67ae5ed18f056ca86afda6c790c",
+          "graphics-options-en-graphics.png": "64d02256bc76206fc8fb3570d1d265de37dd0180da26bc875cac203f717e35ba",
+          "graphics-options-de-r_effects.png": "381c88f7c1fdf3fc160d5f9a13e55a304023ef350f0c83bf1655cc270e558497",
+          "graphics-options-de-r_lighting.png": "87d511b1116fe946fd2a40ec8feab5f5d64de9bcd0497084f9537bbbebe48c8e",
+          "graphics-options-en-r_terrain.png": "e1c3d9ec511fb684828b20638eb2312ac4e89e5fb65ed651682c9d23685ef0b5"
+        },
+        "checks": 284,
+        "label": "compatibility-accepted",
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/graphics-settings-20261009/compatibility-accepted/run.log"
+      },
+      {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/graphics-settings-20261009/candidate/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/graphics-settings-20261009/camera-regression/graphics_options.gd"
+        ],
+        "return_code": 0,
+        "termination": null,
+        "seconds": 2.0023071950126905,
+        "errors": [],
+        "xdg": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/graphics-settings-20261009/camera-regression/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/graphics-settings-20261009/camera-regression/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/graphics-settings-20261009/camera-regression/cache"
+        },
+        "test_sha256": "7d0ff980f351525bfdd05afea32088da90a0b5336b45a387705c016c1de73aa9",
+        "capture_sha256": {},
+        "checks": 10,
+        "label": "camera-regression",
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/graphics-settings-20261009/camera-regression/run.log"
+      }
+    ],
+    "screenshot_dimensions": {
+      "graphics-options-en-remake.png": [
+        800,
+        600
+      ],
+      "graphics-options-ru-r_effects.png": [
+        800,
+        600
+      ],
+      "graphics-options-ru-r_world.png": [
+        800,
+        600
+      ],
+      "graphics-options-en-r_water.png": [
+        800,
+        600
+      ],
+      "graphics-options-ru-remake.png": [
+        800,
+        600
+      ],
+      "graphics-options-de-r_water.png": [
+        800,
+        600
+      ],
+      "graphics-options-en-r_effects.png": [
+        800,
+        600
+      ],
+      "graphics-options-ru-r_lighting.png": [
+        800,
+        600
+      ],
+      "graphics-options-ru-graphics.png": [
+        800,
+        600
+      ],
+      "graphics-options-de-r_terrain.png": [
+        800,
+        600
+      ],
+      "graphics-options-de-remake.png": [
+        800,
+        600
+      ],
+      "graphics-options-ru-r_water.png": [
+        800,
+        600
+      ],
+      "graphics-options-de-r_world.png": [
+        800,
+        600
+      ],
+      "graphics-options-de-graphics.png": [
+        800,
+        600
+      ],
+      "graphics-options-en-r_world.png": [
+        800,
+        600
+      ],
+      "graphics-options-en-r_lighting.png": [
+        800,
+        600
+      ],
+      "graphics-options-ru-r_terrain.png": [
+        800,
+        600
+      ],
+      "graphics-options-en-graphics.png": [
+        800,
+        600
+      ],
+      "graphics-options-de-r_effects.png": [
+        800,
+        600
+      ],
+      "graphics-options-de-r_lighting.png": [
+        800,
+        600
+      ],
+      "graphics-options-en-r_terrain.png": [
+        800,
+        600
+      ]
+    },
+    "visually_reviewed": [
+      "en-graphics",
+      "en-r_terrain",
+      "de-r_water",
+      "ru-remake",
+      "ru-r_terrain",
+      "de-r_terrain",
+      "en-r_effects"
+    ],
+    "localization": "Remake labels/help were checked in EN/RU/DE against the English base edition. Original-game labels remain supplied by that edition. Missing pre-existing Ground contact blending RU/DE label/help were added after screenshot review.",
+    "coverage": [
+      "Every graphics option remains reachable once from Graphics and Remake with no reserved-row overwrite.",
+      "Mouse links, touch link/back routing, controller A/B/up/down/LB/RB/Y/Menu, wrapping and parent selection.",
+      "Original look, all automatic tiers, pending values across sections, original persistence keys, Apply, reopen and discard.",
+      "Existing control-mode options regression after the Remake link rows moved."
+    ]
+  },
+  "earlier_runs": [
+    {
+      "label": "headless1",
+      "status": "Rejected fixture: created a second PadUI despite existing autoload, dispatching every gamepad action twice; removed the fixture-owned PadUI."
+    },
+    {
+      "label": "headless2",
+      "status": "273 assertions passed before explicit viewport-size assertion."
+    },
+    {
+      "label": "compatibility1",
+      "status": "273 assertions passed, but screenshots were native 5120x2880 because fresh-profile fullscreen won; not counted as minimum-size evidence."
+    },
+    {
+      "label": "headless-final and compatibility-final",
+      "status": "274 assertions each passed at 800x600 before the missing pre-existing translation was added; superseded by accepted final pack."
+    }
+  ],
+  "limits": [
+    "UI rendered on desktop Compatibility only; no device or performance claim.",
+    "Wave option metadata is present for integration with the parallel renderer implementation; this isolated pack deliberately contains baseline renderer code.",
+    "No waterfalls setting was added in this checkpoint.",
+    "Existing startup Screen-space AA availability warning is retained in the logs.",
+    "All application/export profiles are private XDG directories. Original assets, installed and published builds were not modified."
+  ]
+}

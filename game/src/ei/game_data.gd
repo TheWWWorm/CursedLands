@@ -83,18 +83,20 @@ const OPTIONS := [
 	# Graphics page (row 6; row 7 "Detect best settings", 8 "Original look").
 	# Not gfx_*: the Original look preset leaves it.
 	["auto_graphics", 1, 2, 0, 6, 1],
-	# World and textures (group 13). Native map-border fog is always active
-	# and is not a remake option; see Gfx.BORDER_FOG.
-	["gfx_hd_textures", 1, 2, 13, 0, 1], ["gfx_terrain", 1, 2, 13, 1, 1],
-	["gfx_materials", 1, 2, 13, 2, 1],
+	# World and textures (group 13). Terrain and vegetation have their own
+	# page (22). Native map-border fog is always active; see Gfx.BORDER_FOG.
+	["gfx_hd_textures", 1, 2, 13, 0, 1], ["gfx_materials", 1, 2, 13, 1, 1],
 	# Sharper unit texture filtering (EIUnitModel.SHARP_FETCH); characters
 	# wear their HUD face model (DetailedHead).
-	["gfx_sharp_units", 1, 2, 13, 3, 1], ["gfx_detailed_heads", 1, 2, 13, 4, 1],
-	["gfx_sky", 1, 2, 13, 5, 1], ["gfx_far_view", 1, 2, 13, 6, 1],
-	["gfx_wind", 1, 2, 13, 7, 1], ["q_aniso", 1, 5, 13, 8, 4],
-	["gfx_grass", 1, 2, 13, 9, 1], ["gfx_soft_ground", 1, 2, 13, 10, 1],
+	["gfx_sharp_units", 1, 2, 13, 2, 1], ["gfx_detailed_heads", 1, 2, 13, 3, 1],
+	["gfx_sky", 1, 2, 13, 4, 1], ["gfx_far_view", 1, 2, 13, 5, 1],
+	["q_aniso", 1, 5, 13, 6, 4],
+	# Terrain and vegetation (group 22): ground detail, cover and interaction.
+	["gfx_terrain", 1, 2, 22, 0, 1], ["gfx_wind", 1, 2, 22, 1, 1],
+	["gfx_grass", 1, 2, 22, 2, 1], ["gfx_biome_cover", 1, 2, 22, 3, 0],
+	["gfx_vegetation_interaction", 1, 2, 22, 4, 0], ["gfx_soft_ground", 1, 2, 22, 5, 1],
 	# Opt in until first-use compilation and wider device costs are resolved.
-	["gfx_ground_contact", 1, 2, 13, 11, 0],
+	["gfx_ground_contact", 1, 2, 22, 6, 0],
 	# Lighting and shadows (group 14). Each effect is independent and defaults
 	# on for new and existing settings files.
 	["gfx_firelight", 1, 2, 14, 0, 1], ["gfx_torch_glow", 1, 2, 14, 1, 1],
@@ -103,18 +105,16 @@ const OPTIONS := [
 	["gfx_contact_shadows", 1, 2, 14, 6, 1], ["gfx_bloom", 1, 2, 14, 7, 1],
 	# Shadow quality (not gfx_*; Gfx.apply_quality / fit_shadows).
 	["q_shadows", 1, 4, 14, 9, 2], ["q_shadow_fit", 1, 2, 14, 10, 1],
-	# Water and effects (group 15).
-	["gfx_water", 1, 2, 15, 0, 1], ["gfx_water_reflections", 1, 3, 15, 1, 2],
-	["gfx_weather_surfaces", 1, 2, 15, 2, 1], ["gfx_heat_haze", 1, 2, 15, 3, 1],
-	["gfx_soft_particles", 1, 2, 15, 4, 1], ["gfx_lit_particles", 1, 2, 15, 5, 1],
+	# Water (group 23): surface appearance and optional creature interaction.
+	["gfx_water", 1, 2, 23, 0, 1], ["gfx_water_reflections", 1, 3, 23, 1, 2],
+	["gfx_water_interaction", 1, 2, 23, 2, 0], ["gfx_water_caustics", 1, 2, 23, 3, 0],
+	["gfx_water_current", 1, 2, 23, 4, 0], ["gfx_water_waves", 1, 2, 23, 5, 0],
+	# Weather and effects (group 15).
+	["gfx_weather_surfaces", 1, 2, 15, 0, 1], ["gfx_heat_haze", 1, 2, 15, 1, 1],
+	["gfx_soft_particles", 1, 2, 15, 2, 1], ["gfx_lit_particles", 1, 2, 15, 3, 1],
 	# Severed limbs hidden and thrown off (SeveredLimb); off = the original,
 	# which keeps the part on the figure (GameUnit._show_severed).
-	["gfx_severed_limbs", 1, 2, 15, 6, 1],
-	["gfx_water_interaction", 1, 2, 15, 7, 0],
-	["gfx_water_caustics", 1, 2, 15, 8, 0],
-	["gfx_vegetation_interaction", 1, 2, 15, 9, 0],
-	["gfx_biome_cover", 1, 2, 15, 10, 0],
-	["gfx_water_current", 1, 2, 15, 11, 0],
+	["gfx_severed_limbs", 1, 2, 15, 4, 1],
 	# Camera (group 16; CameraRig, CameraFade): style (0 original, 1 modern),
 	# follow, see-through, the modern camera's pan / turn / zoom speeds
 	# (50 = ×1), the WASD layout (default on: user request); rows 8 / 9 are the
@@ -226,11 +226,12 @@ const COMMON_SIZES := [Vector2i(800, 600), Vector2i(1024, 768), Vector2i(1280, 7
 var resolution_size := "native"
 ## Option groups (the original table): 0..3 settings, 4..10 key bindings
 ## (EIKeymap.ACTIONS). From 11 the remake's own: "remake" (11) is its tab, a
-## list of the sections 13..20 (OptionsPanel.SECTIONS); "screen" (12) is a tab
+## list of the sections (OptionsPanel.SECTIONS); "screen" (12) is a tab
 ## of its own; "gamepad_buttons" (21) is a sub-page of "gamepad".
+## Terrain and vegetation (22) and Water (23) are direct graphics sections.
 const OPTION_GROUPS := ["video", "sound", "sens", "game", "select", "actions", "camera", "items",
 	"spells", "cshots", "windows", "remake", "screen", "r_world", "r_lighting", "r_effects",
-	"r_camera", "r_interface", "r_game", "r_coop", "gamepad", "gamepad_buttons"]
+	"r_camera", "r_interface", "r_game", "r_coop", "gamepad", "gamepad_buttons", "r_terrain", "r_water"]
 ## Labels and tips of the remake's own option rows (texts.res has none).
 const REMAKE_OPTIONS := {
 	"item_icon_fit": ["Fit items inside icons", "Keeps long inventory and shop items inside their icon cells while they turn. Off: the original fixed model scale."],
@@ -243,9 +244,11 @@ const REMAKE_OPTIONS := {
 	# The Remake tab and its sections (OptionsPanel.SECTIONS: the link rows).
 	"remake": ["Remake", "Graphics, camera, interface, gamepad, gameplay and co-op settings of the remake; the game files and the log."],
 	"screen": ["Screen", "Display mode, resolution, render scale, anti-aliasing, frame rate, VSync, smooth motion and the FPS counter (the remake's), with the original brightness, contrast and gamma."],
-	"r_world": ["World and textures", "HD textures, terrain detail, surface materials, character textures and portrait heads, sky, view distance, wind."],
+	"r_world": ["World and textures", "HD textures, surface materials, character textures and portrait heads, sky, view distance, texture filtering."],
+	"r_terrain": ["Terrain and vegetation", "Terrain detail, wind, grass, ground cover, grass interaction, snow and sand deformation, ground-contact blending."],
 	"r_lighting": ["Lighting and shadows", "Firelight, torch and lava glow, leaf backlighting, volumetric fog, ambient occlusion, contact shadows, bloom, shadow quality."],
-	"r_effects": ["Water and effects", "Water and lava, water reflections, rain on surfaces, heat haze, particles, severed limbs."],
+	"r_water": ["Water", "Water and lava, reflections, contact and wakes, underwater caustics, river currents, propagating waves."],
+	"r_effects": ["Weather and effects", "Rain on surfaces, heat haze, soft and lit particles, severed limbs."],
 	"r_camera": ["Camera", "The modern camera: follow, see-through objects, speeds, the WASD controls and the turn keys."],
 	"r_interface": ["Interface and controls", "Enemy health bars, smiling portraits, the move path through objects, aim keys, keeping the mouse in the window."],
 	"r_game": ["Gameplay", "Fog of war in single player, the starting area on the travel map, experience for companions, revival, the game-over notice."],
@@ -287,6 +290,7 @@ const REMAKE_OPTIONS := {
 	"gfx_water_interaction": ["Water contact and wakes", "Ripples and contact foam around visible creatures wading in water. Requires Water and lava effects. Off by default."],
 	"gfx_water_caustics": ["Underwater caustics", "Moving sunlight patterns on shallow water beds. Requires Water and lava effects. Off by default."],
 	"gfx_water_current": ["River currents", "Surface ripples follow sloping water downstream. Water contact and wakes adds foam behind wading creatures. Requires Water and lava effects. Off by default."],
+	"gfx_water_waves": ["Propagating water waves", "Persistent spreading ripples and disturbed-water trails from visible wading creatures. Requires Water and lava effects and Water contact and wakes. Off by default."],
 	"gfx_wind": ["Wind in foliage", "Trees and bushes sway in the wind."],
 	"gfx_volumetric": ["Volumetric fog / light shafts", "Light mist lit by the sun (shafts through the trees at dawn and dusk) and the torches."],
 	"gfx_terrain": ["Terrain detail", "Sharper original ground textures with fewer tile seams; relief follows painted rock and path patterns, with softer sand and snow, fine grass and damp banks."],
@@ -344,7 +348,7 @@ const OPTIONS_APPLIED := ["volume_sfx", "volume_stream", "volume_voice", "power_
 	"show_flying_hp", "show_tutorial", "autosave", "tooltip_time", "switch_filters",
 	"camera_reverse_x", "camera_reverse_y", "reverse_stereo", "difficulty",
 	"gfx_sky", "gfx_water", "gfx_wind", "gfx_volumetric", "gfx_terrain", "gfx_heat_haze",
-	"gfx_grass", "gfx_soft_ground", "gfx_ground_contact", "gfx_water_interaction", "gfx_water_caustics", "gfx_water_current", "gfx_vegetation_interaction", "gfx_biome_cover",
+	"gfx_grass", "gfx_soft_ground", "gfx_ground_contact", "gfx_water_interaction", "gfx_water_caustics", "gfx_water_current", "gfx_water_waves", "gfx_vegetation_interaction", "gfx_biome_cover",
 	"gfx_ssao", "gfx_bloom", "gfx_far_view", "gfx_severed_limbs",
 	"gfx_hd_textures", "gfx_soft_particles", "gfx_lit_particles", "gfx_contact_shadows", "gfx_torch_glow", "gfx_water_reflections",
 	"gfx_firelight", "gfx_materials", "gfx_foliage_light", "gfx_weather_surfaces", "gfx_lava_light", "gfx_detailed_heads",
