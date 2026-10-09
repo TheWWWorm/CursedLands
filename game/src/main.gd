@@ -193,5 +193,6 @@ func _on_kicked(banned: bool) -> void:
 func _exit_tree() -> void:
 	MoviePlayer.shutdown()
 	TexUpscale.shutdown()
+	Gfx.clear_clouds()
 	UnitWounds.shutdown()
 	EIAudio.shutdown()

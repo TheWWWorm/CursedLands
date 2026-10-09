@@ -112,7 +112,7 @@ const OPTIONS := [
 	["gfx_water_current", 1, 2, 23, 4, 0], ["gfx_water_waves", 1, 2, 23, 5, 0],
 	["gfx_waterfalls", 1, 2, 23, 6, 0],
 	["gfx_ambient_wildlife", 1, 2, 13, 7, 0], ["gfx_ambient_particles", 1, 2, 13, 8, 0],
-	["gfx_clouds", 1, 2, 15, 7, 0], ["gfx_weather_mist", 1, 2, 15, 8, 0],
+	["gfx_clouds", 1, 4, 15, 7, 0], ["gfx_weather_mist", 1, 2, 15, 8, 0],
 	# Weather and effects (group 15).
 	["gfx_weather_surfaces", 1, 2, 15, 0, 1], ["gfx_heat_haze", 1, 2, 15, 1, 1],
 	["gfx_soft_particles", 1, 2, 15, 2, 1], ["gfx_lit_particles", 1, 2, 15, 3, 1],
@@ -202,6 +202,7 @@ const FIXED_OPTIONS := {"shadow_units": 1, "shadow_buildings": 1, "shadow_flora"
 ## Labels of the remake's multiple-choice rows (value = index); "resolution"
 ## is built from the monitor (resolutions()).
 const DISPLAY_CHOICES := {
+	"gfx_clouds": ["Off", "Moving layer", "Volume: Low", "Volume: High"],
 	"mechanism_motion": ["Fast drop", "Original timing"],
 	"display_mode": ["Windowed", "Fullscreen", "Borderless fullscreen"],
 	"fps_limit": ["Off", "30", "60", "120", "144", "165", "240", "Display refresh"],
@@ -299,7 +300,7 @@ const REMAKE_OPTIONS := {
 	"gfx_waterfalls": ["Waterfalls", "Flowing foam, spray and mist at exposed river drops. Requires Water and lava effects. Off by default."],
 	"gfx_ambient_wildlife": ["Ambient wildlife", "Small local animals and bird flocks in suitable terrain. They flee nearby visible creatures and stop with game time."],
 	"gfx_ambient_particles": ["Regional particles", "Sparse pollen, leaves, dust, embers, snow motes and night fireflies from the current region and terrain. Pauses with the world."],
-	"gfx_clouds": ["Moving clouds and shadows", "Wind-driven clouds and soft sunlight shadows, synchronized with game time and weather. Off by default."],
+	"gfx_clouds": ["Moving clouds and shadows", "Wind-driven clouds, water reflections and soft sunlight shadows follow game time and weather. Moving layer keeps the lighter effect. Volume builds sunlit cloud banks on supported desktop runtimes; Compatibility, handhelds and older Mobile runtimes use the moving layer. High is sharper and costs more GPU time. Off by default."],
 	"gfx_wind": ["Wind in foliage", "Trees and bushes sway in the wind."],
 	"gfx_volumetric": ["Volumetric fog / light shafts", "Light mist lit by the sun (shafts through the trees at dawn and dusk) and the torches."],
 	"gfx_terrain": ["Terrain detail", "Detailed keeps the sharper original ground textures and painted relief. Natural transitions also blends verified snow, grass, sand and rock families with irregular edges. Paths, unknown artwork and geometry stay unchanged."],

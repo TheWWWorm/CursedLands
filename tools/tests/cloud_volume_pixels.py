@@ -53,7 +53,7 @@ for folder in args.volume:
     for name in ['cave-cleared','restored','storm-empty']:
         if (folder/f'volume-{name}.png').exists(): pair('off',name)
     pair('fair','moved',minimum=500)
-    pair('moved','rain',minimum=1000)
+    pair('moved','rain' if (folder/'volume-rain.png').exists() else 'snow',minimum=1000)
     if (folder/'volume-night.png').exists(): pair('night','night-held',limit=0)
     if (folder/'volume-reflection-on.png').exists(): pair('reflection-off','reflection-on',minimum=20)
 

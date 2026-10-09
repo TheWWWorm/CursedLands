@@ -3,6 +3,8 @@ extends RefCounted
 ## Integrate wind displacement, never multiply a changing wind by total time.
 ## Each seamless layer has its own double-precision reduced phase.
 const Wind = preload("res://src/game/fx/weather_wind.gd")
+const Volume = preload("res://src/game/fx/cloud_volume.gd")
+const VolumeNoise = preload("res://src/game/fx/cloud_volume_noise.gd")
 const HEIGHT := 160.0
 const COMMON := """
 global uniform sampler2D ei_cloud_noise : filter_linear_mipmap, repeat_enable;
@@ -42,6 +44,32 @@ var detail_z := 0.0
 var frame := {"state":Vector4.ZERO,"phases":Vector4.ZERO,"twinkle":Vector2.ZERO}
 var _identity := ""
 var _sheltered := false
+var volume := Volume.new()
+
+
+static func mode() -> int:
+	var value := clampi(GameData.option("gfx_clouds"),0,3)
+	return mini(value,1) if value>1 and not VolumeNoise.supported() else value
+
+
+static func common_source() -> String:
+	if mode()<2: return COMMON
+	return COMMON.replace("vec3 ei_cloud_sky(","vec3 ei_cloud_sheet(")+Volume.COMMON+"""
+vec3 ei_cloud_sky(vec3 base,vec3 origin,vec3 ray,vec3 cloud_ambient,vec3 sun) {
+	if(ei_cv_storm.z<.5){return ei_cloud_sheet(base,origin,ray,cloud_ambient,sun);}
+	vec4 cloud=cv_march(origin,ray,ei_sun_dir,cloud_ambient,sun,64,3,.5);
+	return cv_composite(base,cloud,ray,cloud_ambient,sun);
+}
+"""
+
+
+static func shadow_source() -> String:
+	if mode()<2: return SHADOW
+	return SHADOW.replace("ei_cloud_sun(","ei_cloud_sheet_sun(")+"""
+float ei_cloud_sun(vec3 p){
+	return ei_cv_storm.z<.5?ei_cloud_sheet_sun(p):cv_shadow(p,ei_sun_dir);
+}
+"""
 
 
 static func coverage(allod: String, rain: float, snow: float) -> float:
@@ -60,6 +88,7 @@ static func daylight(hour: float) -> float:
 func reset(identity: String) -> void:
 	_identity=identity; clock=-1.0
 	var seed_value := Wind.map_seed(identity)
+	volume.reset(seed_value)
 	phase_x=Wind.lattice(seed_value,0); phase_z=Wind.lattice(seed_value,1)
 	detail_x=Wind.lattice(seed_value,2); detail_z=Wind.lattice(seed_value,3)
 	frame={"state":Vector4.ZERO,"phases":Vector4(phase_x,phase_z,detail_x,detail_z),"twinkle":Vector2.ZERO}
@@ -84,16 +113,43 @@ func sample(seconds: float, identity: String, allod: String, wind: Vector4,
 	var amount := coverage(allod,rain,snow)
 	frame={"state":Vector4(0.8-amount*0.5,0.28*daylight(hour),HEIGHT,0.0 if sheltered else 1.0),
 		"phases":Vector4(phase_x,phase_z,detail_x,detail_z),
-		"twinkle":Vector2(fposmod(seconds*1.5,TAU),fposmod(seconds*4.5,TAU))}
+		"twinkle":Vector2(fposmod(seconds*1.5,TAU),fposmod(seconds*4.5,TAU)),
+		"volume":volume.sample(dt,wind,storm,coverage(allod,0,0),allod)}
 	return frame
 
 
 static func sky_source(original: String) -> String:
-	var source := original.replace("float hash13(vec3 p) {",COMMON+"\nfloat hash13(vec3 p) {")
+	var quality := mode()
+	var common := COMMON if quality<2 else "global uniform vec3 ei_sun_dir;\n"+common_source()
+	var source := original.replace("float hash13(vec3 p) {",common+"\nfloat hash13(vec3 p) {")
 	# The legacy fancy sky twinkles in shader TIME. In cloud mode use two
 	# independently wrapped game-clock phases, including during paused nights.
 	source=source.replace("sin(TIME * (1.5 + 3.0 * fract(h * 91.0)) + h * 60.0)",
 		"mix(sin(ei_cloud_twinkle.x+h*60.0),sin(ei_cloud_twinkle.y+h*60.0),fract(h*91.0))")
 	var marker := "\t// The opaque map perimeter fades to ei_fog_col."
 	assert(source.contains(marker),"cloud sky insertion point changed")
-	return source.replace(marker,SKY+"\n"+marker)
+	if quality<2: return source.replace(marker,SKY+"\n"+marker)
+	var half := quality==3
+	var pass_flag := "AT_HALF_RES_PASS" if half else "AT_QUARTER_RES_PASS"
+	var pass_colour := "HALF_RES_COLOR" if half else "QUARTER_RES_COLOR"
+	source=source.replace("render_mode use_debanding;","render_mode use_debanding, "+("use_half_res_pass" if half else "use_quarter_res_pass")+";")
+	var low_pass := """
+	if (%s) {
+		// Dense midpoint quadrature remains stable without temporal history
+		// or the structured grain of a sparsely jittered paused sky.
+		vec4 clouds=cv_march(POSITION,EYEDIR,ei_sun_dir,ambient,sun_col,%d,%d,.5);
+		COLOR=clouds.rgb;ALPHA=clouds.a;
+	} else {
+""" % [pass_flag,192 if half else 96,5 if half else 3]
+	# Godot's sky processor cannot return early. Keep the original dome and
+	# final composition in the other branch of the subpass selection.
+	source=source.insert(source.rfind("}"),"\t}\n")
+	source=source.replace("void sky() {","void sky() {\n"+low_pass)
+	return source.replace(marker,"""
+	if(ei_cv_storm.z>.5) {
+		vec4 clouds=%s;
+		col=cv_composite(col,clouds,EYEDIR,ambient,sun_col);
+	} else {
+		col=ei_cloud_sheet(col,POSITION,EYEDIR,ambient,sun_col);
+	}
+""" % pass_colour+"\n"+marker)

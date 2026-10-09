@@ -1,0 +1,3029 @@
+{
+  "date": "2026-10-09",
+  "scope": "Optional bounded volumetric extension of the existing cloud setting; preserves0/1 and default0.",
+  "reference": {
+    "repository": "/home/llm2x/Documents/evil-islands-owned-renderer",
+    "commit": "0092dc6e1d7c4aab3f74644a79e9bfca11ecf293",
+    "source": "Source/sky_clouds.h",
+    "source_sha256": "38a79559c28885365e27d009017e75f887ce62d6a8365f3d4a5d25ec1fe7c5d1",
+    "reference_test": "Tests/sky_clouds_smoke.cpp",
+    "test_sha256": "4836c78984bdaddc57f6c895ed489654cb2c8f98f03e7e150a2117ac4579e456"
+  },
+  "setting": {
+    "key": "gfx_clouds",
+    "page": "Weather and effects",
+    "values": [
+      "Off",
+      "Moving layer",
+      "Volume: Low",
+      "Volume: High"
+    ],
+    "default": 0,
+    "automatic_presets": 0,
+    "translation_languages": [
+      "en",
+      "ru",
+      "de"
+    ],
+    "existing_key_and_values_preserved": true,
+    "column_width_checked_px": 160
+  },
+  "algorithm": {
+    "resources": "GPU-generated periodic128^3 Perlin/Worley shape and32^3 erosion, R8 each;2,129,920 payload bytes plus native overhead, allocated once per active ownership lifetime.",
+    "sky": "Quarter-resolution Low with96 nominal view steps/128 ceiling and3 light samples; half-resolution High with192 nominal/256 ceiling and5 light samples. Fixed logarithmic midpoint quadrature, early transmittance exit. No duplicate integration.",
+    "water": "Same density, phase, storm horizon and scatter functions;64 nominal reflected-ray steps/85 ceiling and3 light samples. Enhanced-water reflection option required.",
+    "solar": "Eight density samples per receiving surface, sunlight-only attenuation capped at the established28%; existing exact ground-contact light expression participates.",
+    "time": "Six independently wrapped Float64 phases integrate existing weather wind and game time. Cadence, held time, large jumps, weather closure90s/opening120s and identity/rewind reset checks.",
+    "appearance": "Adapted2200\u20135800m layer for the game camera; fair cumulus uses expanded shape contrast and profile erosion to form separated rounded masses. Nimbus/stratus distinguish precipitation and clearing. Distance thinning and bounded storm haze preserve a soft horizon; authored final perimeter-fog composition stays after clouds.",
+    "fallback": "Compatibility, headless and constrained-platform policy use the existing sheet. Desktop Mobile requires the native ei_sky_subpass_alpha capability. Failed noise initialization also falls back to the sheet without repeated allocation attempts.",
+    "release": "Disable/sheet/cave/active-world clear detaches shared Texture3DRD views before freeing both backing RIDs; old/retained owners cannot erase the active field. Main exit clears cloud resources."
+  },
+  "native_dependency": {
+    "commit": "57434fc",
+    "receipt": "sky-subpass-alpha-2026-10-09.json",
+    "runtime": {
+      "source_pack": "volume14",
+      "runtime": "native-precision",
+      "sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "8de7632bc7ecdca2971196d92b0b633a2fc6927adfc6538c05f13b376fd512ee",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      }
+    },
+    "note": "Preserves all nine inherited engine patches; no runtime installation or release package changed."
+  },
+  "frozen_pack": {
+    "directory": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/volume14-native",
+    "export_directory": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/volume14",
+    "export_sha256": "654f0f3f63e954c774cec53f2e2969e88cc0c33eee0bcb429150a866746db5e5",
+    "source_match": [
+      {
+        "file": "game/src/game/fx/clouds.gd",
+        "sha256": "24d67394f3c98c269aab0a71a4ae0f1ee333acc59179b932498d80b240f1b816",
+        "matches_frozen_pack": true
+      },
+      {
+        "file": "game/src/game/fx/cloud_volume.gd",
+        "sha256": "1a3b9639dc723109c80b612bdf4c5b89be039fc92f9e913c15cbc69fac7bcc39",
+        "matches_frozen_pack": true
+      },
+      {
+        "file": "game/src/game/fx/cloud_volume_noise.gd",
+        "sha256": "a2d57c9a764e97256d93e478451d4c337980bfe396a08d756ebd175f79284a2c",
+        "matches_frozen_pack": true
+      },
+      {
+        "file": "game/src/game/gfx.gd",
+        "sha256": "b03611928060fc0449e59ebadc9454df5b5e08d751c63409cc7941c565ddca40",
+        "matches_frozen_pack": true
+      },
+      {
+        "file": "game/src/game/sky.gd",
+        "sha256": "9f5e6b7edfe3bdb9c125eed6060750108f3ef0899490df33cfeb102999231723",
+        "matches_frozen_pack": true
+      },
+      {
+        "file": "game/src/main.gd",
+        "sha256": "56edded0e792d096cb506518b4cabe0f42103ee9c3648519cd0132b8a5320fc6",
+        "matches_frozen_pack": true
+      },
+      {
+        "file": "game/src/ei/game_data.gd",
+        "sha256": "e54782804b524d42b3c923baf37dbe92531f1d23f4823afd44398a9f43590465",
+        "matches_frozen_pack": true
+      },
+      {
+        "file": "game/src/ei/remake_text.gd",
+        "sha256": "a4c666a47f0c23319034bceb083c3a37391c6a1dce24f0660e528baded5c7aa7",
+        "matches_frozen_pack": true
+      }
+    ]
+  },
+  "fixture_sha256": {
+    "tools/tests/cloud_volume.gd": "de6bbb5dbaee75b598b9608a6aca9003cf3307e9936fe1bdeacabb4123ab751d",
+    "tools/tests/cloud_volume_pixels.py": "f57237a86b02ab9bf440883237b255adca7c054eeb53c449a9dea73a14424cfd",
+    "tools/tests/clouds.gd": "39124f216492c59d0d8245a370ec98e96070dd9dc21f1156d5765f2639a105da",
+    "tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+  },
+  "runs": {
+    "final-mobile-01": {
+      "run": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/volume14-native/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "mobile",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-mobile-01/cloud_volume.gd",
+          "--volume-gameplay-views"
+        ],
+        "return_code": 0,
+        "termination": null,
+        "seconds": 33.279094981990056,
+        "errors": [],
+        "xdg": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-mobile-01/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-mobile-01/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-mobile-01/cache"
+        },
+        "test_sha256": {
+          "cloud_volume.gd": "b06e2f56b5bea0166a2f70399eeb77e9b0a4c9d9fb7db5c178c9a8808f0b94df",
+          "clouds.gd": "39124f216492c59d0d8245a370ec98e96070dd9dc21f1156d5765f2639a105da",
+          "water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+        },
+        "capture_sha256": {
+          "volume-quality3-held.png": "239ca83aa93f2cdcdc87e911b14ba18649ffa54da5165d7685f7da8cc01afdb2",
+          "volume-night.png": "81d10ef6734531fc25a202e13288f3434ccc03a1f8ec2b6e3ac9a698f4ce079a",
+          "volume-restored.png": "21c26a4c9e7e4547671d682cf5bb0cd7a99b57f7e74e8479aebac57b4a3916d0",
+          "volume-reflection-on.png": "0516e3395d59921465111c275a33d5bea8d173cdaa596ba02bdaf5a3ddbad1a4",
+          "volume-quality2-held.png": "6d7792e2a815dd613c7b30a94cafc605df80c93372d98fecb37f2484759111f5",
+          "volume-rain.png": "71c089343ac24af32950fcfc88c7d4aff93b8606b9b5f8df7a81c2ed8995643c",
+          "volume-quality1.png": "4fb76f074c96a0741e7541687b1e02e2684a35fbfbbd571d7e741eafe468cee5",
+          "volume-gameplay-pitch9.png": "3a8b7c29c6d142baae5425c90b64261dca298ba06b9745078a40c94027c3fa14",
+          "volume-cave-cleared.png": "21c26a4c9e7e4547671d682cf5bb0cd7a99b57f7e74e8479aebac57b4a3916d0",
+          "volume-quality2.png": "6d7792e2a815dd613c7b30a94cafc605df80c93372d98fecb37f2484759111f5",
+          "volume-fair.png": "239ca83aa93f2cdcdc87e911b14ba18649ffa54da5165d7685f7da8cc01afdb2",
+          "volume-off.png": "21c26a4c9e7e4547671d682cf5bb0cd7a99b57f7e74e8479aebac57b4a3916d0",
+          "volume-gameplay-pitch35.png": "e301180f23cc158f7a984d8e5959c0639df8c256f7f4c796d5bc0176eeead608",
+          "volume-quality3.png": "239ca83aa93f2cdcdc87e911b14ba18649ffa54da5165d7685f7da8cc01afdb2",
+          "volume-moved.png": "f44b18b9f1ca6869a089507b3bb993b45be95a488405064ce6a9fb2f66fdc3a8",
+          "volume-reflection-off.png": "243aab5bd0dedf36799af78d7d9b9670da7f48c46f075e2ac4179de81a4d886c",
+          "volume-storm-empty.png": "4bfaf595f4481554a7dbda725bcda3af468025cf1970c1d3e9628dcb27c26c98",
+          "volume-night-held.png": "81d10ef6734531fc25a202e13288f3434ccc03a1f8ec2b6e3ac9a698f4ce079a",
+          "volume-quality3-empty.png": "4bfaf595f4481554a7dbda725bcda3af468025cf1970c1d3e9628dcb27c26c98",
+          "volume-quality1-held.png": "4fb76f074c96a0741e7541687b1e02e2684a35fbfbbd571d7e741eafe468cee5",
+          "volume-quality2-empty.png": "2f2bc750932ef039e79e70a88a98d7e999212b5125dbca5c432a203bf54a9a48",
+          "volume-gameplay-pitch20.png": "f01099158d048654320657a6874474bb8e56a5dbde9a1b162aa149cd6f493b60"
+        }
+      },
+      "result": {
+        "checks": 99,
+        "failures": 0,
+        "rows": [
+          {
+            "cadence_phase_error": 6.66133814775094e-15,
+            "case": "volume-policy",
+            "late_phases": "[(0.973739, 0.107251, 0.894619), (0.026642, 0.338195, 0.261814), (0.690926, 0.660308, 0.910685), (0.170124, 0.190868, 0.561297), (0.181522, 0.92365, 0.493969), (0.166128, 0.258092, 0.248495)]"
+          },
+          {
+            "case": "analytic",
+            "phase_after_wrap": "(0.996468, 0.99999, 0.00008, 0.010655)",
+            "wind_change_phase_distance": 0.000202417373657227
+          },
+          {
+            "case": "cost",
+            "cpu_ms_p50": 0.0759999975562096,
+            "cpu_ms_p95": 0.128000006079674,
+            "gpu_ms_p50": 0.244000002741814,
+            "gpu_ms_p95": 0.28099998831749,
+            "mode": "off",
+            "samples": 60,
+            "viewport": "(800, 600)"
+          },
+          {
+            "case": "quality",
+            "difference": {
+              "changed_pixels": 270764,
+              "peak_delta": 126,
+              "pixels_over_2": 203490
+            },
+            "held": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "mode": 1,
+            "noise_setup_ms": 0,
+            "value": 1
+          },
+          {
+            "case": "cost",
+            "cpu_ms_p50": 0.0780000016093254,
+            "cpu_ms_p95": 0.137999996542931,
+            "gpu_ms_p50": 0.324999988079071,
+            "gpu_ms_p95": 0.382999986410141,
+            "mode": "1",
+            "samples": 60,
+            "viewport": "(800, 600)"
+          },
+          {
+            "case": "empty",
+            "difference": {
+              "changed_pixels": 109338,
+              "peak_delta": 2,
+              "pixels_over_2": 0
+            },
+            "quality": 2
+          },
+          {
+            "case": "quality",
+            "difference": {
+              "changed_pixels": 132112,
+              "peak_delta": 152,
+              "pixels_over_2": 40555
+            },
+            "held": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "mode": 2,
+            "noise_setup_ms": 190.437,
+            "value": 2
+          },
+          {
+            "case": "cost",
+            "cpu_ms_p50": 0.0879999995231628,
+            "cpu_ms_p95": 0.136000007390976,
+            "gpu_ms_p50": 1.46200001239777,
+            "gpu_ms_p95": 2.625,
+            "mode": "2",
+            "samples": 60,
+            "viewport": "(800, 600)"
+          },
+          {
+            "case": "empty",
+            "difference": {
+              "changed_pixels": 104661,
+              "peak_delta": 2,
+              "pixels_over_2": 0
+            },
+            "quality": 3
+          },
+          {
+            "case": "quality",
+            "difference": {
+              "changed_pixels": 126007,
+              "peak_delta": 153,
+              "pixels_over_2": 36215
+            },
+            "held": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "mode": 3,
+            "noise_setup_ms": 190.437,
+            "value": 3
+          },
+          {
+            "case": "cost",
+            "cpu_ms_p50": 0.096000000834465,
+            "cpu_ms_p95": 0.131999999284744,
+            "gpu_ms_p50": 2.24799990653992,
+            "gpu_ms_p95": 3.33999991416931,
+            "mode": "3",
+            "samples": 60,
+            "viewport": "(800, 600)"
+          },
+          {
+            "case": "isolated-reflection",
+            "difference": {
+              "changed_pixels": 337,
+              "peak_delta": 104,
+              "pixels_over_2": 291
+            },
+            "native_capability": true
+          }
+        ]
+      }
+    },
+    "final-old-mobile-01": {
+      "run": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/volume14/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "mobile",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-old-mobile-01/cloud_volume.gd"
+        ],
+        "return_code": 0,
+        "termination": null,
+        "seconds": 27.52660854300484,
+        "errors": [],
+        "xdg": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-old-mobile-01/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-old-mobile-01/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-old-mobile-01/cache"
+        },
+        "test_sha256": {
+          "cloud_volume.gd": "b06e2f56b5bea0166a2f70399eeb77e9b0a4c9d9fb7db5c178c9a8808f0b94df",
+          "clouds.gd": "39124f216492c59d0d8245a370ec98e96070dd9dc21f1156d5765f2639a105da",
+          "water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+        },
+        "capture_sha256": {
+          "volume-quality3-held.png": "4fb76f074c96a0741e7541687b1e02e2684a35fbfbbd571d7e741eafe468cee5",
+          "volume-night.png": "7b8c6faca4cb01c73e951a6ba1f36a8581349c7f8ceec7fdd643a31fc335ba5a",
+          "volume-restored.png": "21c26a4c9e7e4547671d682cf5bb0cd7a99b57f7e74e8479aebac57b4a3916d0",
+          "volume-reflection-on.png": "837c25ad0ef17413c573dc29771e7989a825a61538f759f1356ffb02ce0d7e2f",
+          "volume-quality2-held.png": "4fb76f074c96a0741e7541687b1e02e2684a35fbfbbd571d7e741eafe468cee5",
+          "volume-rain.png": "34bff8f388a4397b623c1e1b2a9dd277caba3aa81f70be5fd70a0d4cd35bf5a5",
+          "volume-quality1.png": "4fb76f074c96a0741e7541687b1e02e2684a35fbfbbd571d7e741eafe468cee5",
+          "volume-cave-cleared.png": "21c26a4c9e7e4547671d682cf5bb0cd7a99b57f7e74e8479aebac57b4a3916d0",
+          "volume-quality2.png": "4fb76f074c96a0741e7541687b1e02e2684a35fbfbbd571d7e741eafe468cee5",
+          "volume-fair.png": "4fb76f074c96a0741e7541687b1e02e2684a35fbfbbd571d7e741eafe468cee5",
+          "volume-off.png": "21c26a4c9e7e4547671d682cf5bb0cd7a99b57f7e74e8479aebac57b4a3916d0",
+          "volume-quality3.png": "4fb76f074c96a0741e7541687b1e02e2684a35fbfbbd571d7e741eafe468cee5",
+          "volume-moved.png": "353e80ea5b5cf4f50e2c10db6bf9cb050b2120ddd1d2a72e19c28f369406ea51",
+          "volume-reflection-off.png": "243aab5bd0dedf36799af78d7d9b9670da7f48c46f075e2ac4179de81a4d886c",
+          "volume-night-held.png": "7b8c6faca4cb01c73e951a6ba1f36a8581349c7f8ceec7fdd643a31fc335ba5a",
+          "volume-quality1-held.png": "4fb76f074c96a0741e7541687b1e02e2684a35fbfbbd571d7e741eafe468cee5"
+        }
+      },
+      "result": {
+        "checks": 73,
+        "failures": 0,
+        "rows": [
+          {
+            "cadence_phase_error": 6.66133814775094e-15,
+            "case": "volume-policy",
+            "late_phases": "[(0.973739, 0.107251, 0.894619), (0.026642, 0.338195, 0.261814), (0.690926, 0.660308, 0.910685), (0.170124, 0.190868, 0.561297), (0.181522, 0.92365, 0.493969), (0.166128, 0.258092, 0.248495)]"
+          },
+          {
+            "case": "analytic",
+            "phase_after_wrap": "(0.996468, 0.99999, 0.00008, 0.010655)",
+            "wind_change_phase_distance": 0.000202417373657227
+          },
+          {
+            "case": "cost",
+            "cpu_ms_p50": 0.0740000009536743,
+            "cpu_ms_p95": 0.115000002086163,
+            "gpu_ms_p50": 0.222000002861023,
+            "gpu_ms_p95": 0.245000004768372,
+            "mode": "off",
+            "samples": 60,
+            "viewport": "(800, 600)"
+          },
+          {
+            "case": "quality",
+            "difference": {
+              "changed_pixels": 270764,
+              "peak_delta": 126,
+              "pixels_over_2": 203490
+            },
+            "held": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "mode": 1,
+            "noise_setup_ms": 0,
+            "value": 1
+          },
+          {
+            "case": "cost",
+            "cpu_ms_p50": 0.0799999982118607,
+            "cpu_ms_p95": 0.128000006079674,
+            "gpu_ms_p50": 0.375999987125397,
+            "gpu_ms_p95": 0.384999990463257,
+            "mode": "1",
+            "samples": 60,
+            "viewport": "(800, 600)"
+          },
+          {
+            "case": "quality",
+            "difference": {
+              "changed_pixels": 270764,
+              "peak_delta": 126,
+              "pixels_over_2": 203490
+            },
+            "held": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "mode": 1,
+            "noise_setup_ms": 0,
+            "value": 2
+          },
+          {
+            "case": "cost",
+            "cpu_ms_p50": 0.0799999982118607,
+            "cpu_ms_p95": 0.162000000476837,
+            "gpu_ms_p50": 0.386999994516373,
+            "gpu_ms_p95": 0.400000005960464,
+            "mode": "2",
+            "samples": 60,
+            "viewport": "(800, 600)"
+          },
+          {
+            "case": "quality",
+            "difference": {
+              "changed_pixels": 270764,
+              "peak_delta": 126,
+              "pixels_over_2": 203490
+            },
+            "held": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "mode": 1,
+            "noise_setup_ms": 0,
+            "value": 3
+          },
+          {
+            "case": "cost",
+            "cpu_ms_p50": 0.0729999989271164,
+            "cpu_ms_p95": 0.172000005841255,
+            "gpu_ms_p50": 0.361999988555908,
+            "gpu_ms_p95": 0.374000012874603,
+            "mode": "3",
+            "samples": 60,
+            "viewport": "(800, 600)"
+          },
+          {
+            "case": "isolated-reflection",
+            "difference": {
+              "changed_pixels": 6437,
+              "peak_delta": 51,
+              "pixels_over_2": 5438
+            },
+            "native_capability": false
+          }
+        ]
+      }
+    },
+    "final-forward-01": {
+      "run": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/volume14-native/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "forward_plus",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-forward-01/cloud_volume.gd",
+          "--volume-gameplay-views"
+        ],
+        "return_code": 0,
+        "termination": null,
+        "seconds": 35.28458004599088,
+        "errors": [],
+        "xdg": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-forward-01/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-forward-01/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-forward-01/cache"
+        },
+        "test_sha256": {
+          "cloud_volume.gd": "019f03a62a4c2f8836c1df72b97cb2632dabf6649be8cbef0893cdcbbd9546f7",
+          "clouds.gd": "39124f216492c59d0d8245a370ec98e96070dd9dc21f1156d5765f2639a105da",
+          "water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+        },
+        "capture_sha256": {
+          "volume-quality3-held.png": "c180dace59e743ad9a19c4cdaadc9750e1a22cbe360ca98dfdd873925815bc7e",
+          "volume-night.png": "09a442994ca78b081c61bcfbd72c965c8af29f02d177a768467bae2ad4729846",
+          "volume-restored.png": "b944653b6e24b03f69a78dfc07c3006cd0f0e31244031eda0fc927488e7c5d2d",
+          "volume-reflection-on.png": "fceffdfe5c0420f462621307774d93d94aa807ed0f01f1ee4c7aa5b053d57008",
+          "volume-quality2-held.png": "8f295c19cd7bae734f41f5fe48801afac16a22090cf1f4bfa50cc348cebbbb63",
+          "volume-rain.png": "5f722e1350d2e12645869e78e26cbcda378f8bcd8e56ddf11377c93394365451",
+          "volume-quality1.png": "31790592ea8e99c9acd584e3b0020984e1d20f75c4b5eab0f123e97f4d129fd2",
+          "volume-gameplay-pitch9.png": "92d1d0828bff6c1d6ca537a86269f83a8e5887efbaa2dc712122bb5044e3d71a",
+          "volume-cave-cleared.png": "b944653b6e24b03f69a78dfc07c3006cd0f0e31244031eda0fc927488e7c5d2d",
+          "volume-quality2.png": "8f295c19cd7bae734f41f5fe48801afac16a22090cf1f4bfa50cc348cebbbb63",
+          "volume-fair.png": "c180dace59e743ad9a19c4cdaadc9750e1a22cbe360ca98dfdd873925815bc7e",
+          "volume-off.png": "b944653b6e24b03f69a78dfc07c3006cd0f0e31244031eda0fc927488e7c5d2d",
+          "volume-gameplay-pitch35.png": "02bd3faa4b57b2b35430adab2251b9336360cc4015ab73709222fede9e49def2",
+          "volume-quality3.png": "c180dace59e743ad9a19c4cdaadc9750e1a22cbe360ca98dfdd873925815bc7e",
+          "volume-moved.png": "a0652e31e2cb9aac08c0882e2034ff2642e5faca4f3b5e833a96e293059ba7a5",
+          "volume-reflection-off.png": "29ab09d4b0f706270bf94558118f33ea6308138cb382900711f8f67b5ac6704b",
+          "volume-storm-empty.png": "3d0bee7ce828a2729e16a4826d6e2fe0cc53dccb96cb37740d469befb3fbb8e5",
+          "volume-night-held.png": "09a442994ca78b081c61bcfbd72c965c8af29f02d177a768467bae2ad4729846",
+          "volume-quality3-empty.png": "3d0bee7ce828a2729e16a4826d6e2fe0cc53dccb96cb37740d469befb3fbb8e5",
+          "volume-quality1-held.png": "31790592ea8e99c9acd584e3b0020984e1d20f75c4b5eab0f123e97f4d129fd2",
+          "volume-quality2-empty.png": "cabf023a275265b3d4ca40c9e4d2cf461de1b3dbf2de0ccde8c41aed51264930",
+          "volume-gameplay-pitch20.png": "ea196c3245e0bcd274b6add124986ae54fad54a6810498004904811328a2bcb9"
+        }
+      },
+      "result": {
+        "checks": 99,
+        "failures": 0,
+        "rows": [
+          {
+            "cadence_phase_error": 6.66133814775094e-15,
+            "case": "volume-policy",
+            "late_phases": "[(0.973739, 0.107251, 0.894619), (0.026642, 0.338195, 0.261814), (0.690926, 0.660308, 0.910685), (0.170124, 0.190868, 0.561297), (0.181522, 0.92365, 0.493969), (0.166128, 0.258092, 0.248495)]"
+          },
+          {
+            "case": "analytic",
+            "phase_after_wrap": "(0.996468, 0.99999, 0.00008, 0.010655)",
+            "wind_change_phase_distance": 0.000202417373657227
+          },
+          {
+            "allod": "Gipat",
+            "camera": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.999445, -0.033315), Z: (0.0, 0.033315, 0.999445), O: (133.5, 12.75859, -80.5)]",
+            "case": "scene",
+            "map": "zone1",
+            "water_centre": "(133.5, 5.758586, -98.5)"
+          },
+          {
+            "case": "cost",
+            "cpu_ms_p50": 0.101000003516674,
+            "cpu_ms_p95": 0.275000005960464,
+            "gpu_ms_p50": 0.323000013828278,
+            "gpu_ms_p95": 0.342000007629395,
+            "mode": "off",
+            "samples": 60,
+            "viewport": "(800, 600)"
+          },
+          {
+            "case": "quality",
+            "difference": {
+              "changed_pixels": 282803,
+              "peak_delta": 125,
+              "pixels_over_2": 190788
+            },
+            "held": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "mode": 1,
+            "noise_setup_ms": 0,
+            "value": 1
+          },
+          {
+            "case": "cost",
+            "cpu_ms_p50": 0.0879999995231628,
+            "cpu_ms_p95": 0.18299999833107,
+            "gpu_ms_p50": 0.517000019550323,
+            "gpu_ms_p95": 0.52700001001358,
+            "mode": "1",
+            "samples": 60,
+            "viewport": "(800, 600)"
+          },
+          {
+            "case": "empty",
+            "difference": {
+              "changed_pixels": 111999,
+              "peak_delta": 1,
+              "pixels_over_2": 0
+            },
+            "quality": 2
+          },
+          {
+            "case": "quality",
+            "difference": {
+              "changed_pixels": 134355,
+              "peak_delta": 153,
+              "pixels_over_2": 40491
+            },
+            "held": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "mode": 2,
+            "noise_setup_ms": 191.464,
+            "value": 2
+          },
+          {
+            "case": "cost",
+            "cpu_ms_p50": 0.109999999403954,
+            "cpu_ms_p95": 0.181999996304512,
+            "gpu_ms_p50": 1.47200000286102,
+            "gpu_ms_p95": 2.08999991416931,
+            "mode": "2",
+            "samples": 60,
+            "viewport": "(800, 600)"
+          },
+          {
+            "case": "empty",
+            "difference": {
+              "changed_pixels": 107711,
+              "peak_delta": 1,
+              "pixels_over_2": 0
+            },
+            "quality": 3
+          },
+          {
+            "case": "quality",
+            "difference": {
+              "changed_pixels": 128480,
+              "peak_delta": 153,
+              "pixels_over_2": 36114
+            },
+            "held": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "mode": 3,
+            "noise_setup_ms": 191.464,
+            "value": 3
+          },
+          {
+            "case": "cost",
+            "cpu_ms_p50": 0.104999996721745,
+            "cpu_ms_p95": 0.155000001192093,
+            "gpu_ms_p50": 1.96700000762939,
+            "gpu_ms_p95": 2.68300008773804,
+            "mode": "3",
+            "samples": 60,
+            "viewport": "(800, 600)"
+          },
+          {
+            "case": "isolated-reflection",
+            "difference": {
+              "changed_pixels": 346,
+              "peak_delta": 103,
+              "pixels_over_2": 284
+            },
+            "native_capability": true
+          }
+        ]
+      }
+    },
+    "final-headless-01": {
+      "run": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/volume14-native/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "forward_plus",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-headless-01/cloud_volume.gd"
+        ],
+        "return_code": 0,
+        "termination": null,
+        "seconds": 2.00251921400195,
+        "errors": [],
+        "xdg": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-headless-01/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-headless-01/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-headless-01/cache"
+        },
+        "test_sha256": {
+          "cloud_volume.gd": "019f03a62a4c2f8836c1df72b97cb2632dabf6649be8cbef0893cdcbbd9546f7",
+          "clouds.gd": "39124f216492c59d0d8245a370ec98e96070dd9dc21f1156d5765f2639a105da",
+          "water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+        },
+        "capture_sha256": {}
+      },
+      "result": {
+        "checks": 53,
+        "failures": 0,
+        "rows": [
+          {
+            "cadence_phase_error": 6.66133814775094e-15,
+            "case": "volume-policy",
+            "late_phases": "[(0.973739, 0.107251, 0.894619), (0.026642, 0.338195, 0.261814), (0.690926, 0.660308, 0.910685), (0.170124, 0.190868, 0.561297), (0.181522, 0.92365, 0.493969), (0.166128, 0.258092, 0.248495)]"
+          },
+          {
+            "case": "analytic",
+            "phase_after_wrap": "(0.996468, 0.99999, 0.00008, 0.010655)",
+            "wind_change_phase_distance": 0.000202417373657227
+          }
+        ]
+      }
+    },
+    "final-compatibility-01": {
+      "run": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/volume14-native/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-compatibility-01/cloud_volume.gd"
+        ],
+        "return_code": 0,
+        "termination": null,
+        "seconds": 35.27970818200265,
+        "errors": [],
+        "xdg": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-compatibility-01/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-compatibility-01/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-compatibility-01/cache"
+        },
+        "test_sha256": {
+          "cloud_volume.gd": "019f03a62a4c2f8836c1df72b97cb2632dabf6649be8cbef0893cdcbbd9546f7",
+          "clouds.gd": "39124f216492c59d0d8245a370ec98e96070dd9dc21f1156d5765f2639a105da",
+          "water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+        },
+        "capture_sha256": {
+          "volume-quality3-held.png": "d8a70bf4a1434e0157714927bb2f71194e644a2c4e05861fd6f08922d03c211f",
+          "volume-night.png": "8d7423f3302ca0e802b7e9e5660234a78205aa9225c57072ad1409dad9bbc3ab",
+          "volume-restored.png": "48f9724657ea82854f704db71992acb5cac52f72bcfb03c7671e8b0e97c99cb9",
+          "volume-reflection-on.png": "e0dcd039ed751d5e747437ef06977772ccaf3823ef265053e68b5c9249a8fa3e",
+          "volume-quality2-held.png": "d8a70bf4a1434e0157714927bb2f71194e644a2c4e05861fd6f08922d03c211f",
+          "volume-rain.png": "fa34b4974cdc19330c2cd72ed5d9b141bf296c297b3f8ce2c8a55c929cd0b1d0",
+          "volume-quality1.png": "d8a70bf4a1434e0157714927bb2f71194e644a2c4e05861fd6f08922d03c211f",
+          "volume-cave-cleared.png": "48f9724657ea82854f704db71992acb5cac52f72bcfb03c7671e8b0e97c99cb9",
+          "volume-quality2.png": "d8a70bf4a1434e0157714927bb2f71194e644a2c4e05861fd6f08922d03c211f",
+          "volume-fair.png": "d8a70bf4a1434e0157714927bb2f71194e644a2c4e05861fd6f08922d03c211f",
+          "volume-off.png": "48f9724657ea82854f704db71992acb5cac52f72bcfb03c7671e8b0e97c99cb9",
+          "volume-quality3.png": "d8a70bf4a1434e0157714927bb2f71194e644a2c4e05861fd6f08922d03c211f",
+          "volume-moved.png": "5629a681f90496db289ecb16190ee39258082725ba0364fe2f3731687732a996",
+          "volume-reflection-off.png": "6a4ed5f548eaa35bff11cbe7a33039718e4c1093c10960f1466bf44b4a47ddae",
+          "volume-night-held.png": "8d7423f3302ca0e802b7e9e5660234a78205aa9225c57072ad1409dad9bbc3ab",
+          "volume-quality1-held.png": "d8a70bf4a1434e0157714927bb2f71194e644a2c4e05861fd6f08922d03c211f"
+        }
+      },
+      "result": {
+        "checks": 73,
+        "failures": 0,
+        "rows": [
+          {
+            "cadence_phase_error": 6.66133814775094e-15,
+            "case": "volume-policy",
+            "late_phases": "[(0.973739, 0.107251, 0.894619), (0.026642, 0.338195, 0.261814), (0.690926, 0.660308, 0.910685), (0.170124, 0.190868, 0.561297), (0.181522, 0.92365, 0.493969), (0.166128, 0.258092, 0.248495)]"
+          },
+          {
+            "case": "analytic",
+            "phase_after_wrap": "(0.996468, 0.99999, 0.00008, 0.010655)",
+            "wind_change_phase_distance": 0.000202417373657227
+          },
+          {
+            "allod": "Gipat",
+            "camera": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.999445, -0.033315), Z: (0.0, 0.033315, 0.999445), O: (133.5, 12.75859, -80.5)]",
+            "case": "scene",
+            "map": "zone1",
+            "water_centre": "(133.5, 5.758586, -98.5)"
+          },
+          {
+            "case": "cost",
+            "cpu_ms_p50": 0.175999999046326,
+            "cpu_ms_p95": 0.230000004172325,
+            "gpu_ms_p50": 0.351000010967255,
+            "gpu_ms_p95": 0.372999995946884,
+            "mode": "off",
+            "samples": 60,
+            "viewport": "(800, 600)"
+          },
+          {
+            "case": "quality",
+            "difference": {
+              "changed_pixels": 281241,
+              "peak_delta": 125,
+              "pixels_over_2": 187537
+            },
+            "held": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "mode": 1,
+            "noise_setup_ms": 0,
+            "value": 1
+          },
+          {
+            "case": "cost",
+            "cpu_ms_p50": 0.206000000238419,
+            "cpu_ms_p95": 0.303999990224838,
+            "gpu_ms_p50": 0.384999990463257,
+            "gpu_ms_p95": 0.402999997138977,
+            "mode": "1",
+            "samples": 60,
+            "viewport": "(800, 600)"
+          },
+          {
+            "case": "quality",
+            "difference": {
+              "changed_pixels": 281241,
+              "peak_delta": 125,
+              "pixels_over_2": 187537
+            },
+            "held": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "mode": 1,
+            "noise_setup_ms": 0,
+            "value": 2
+          },
+          {
+            "case": "cost",
+            "cpu_ms_p50": 0.23199999332428,
+            "cpu_ms_p95": 0.345999985933304,
+            "gpu_ms_p50": 0.349999994039536,
+            "gpu_ms_p95": 0.395000010728836,
+            "mode": "2",
+            "samples": 60,
+            "viewport": "(800, 600)"
+          },
+          {
+            "case": "quality",
+            "difference": {
+              "changed_pixels": 281241,
+              "peak_delta": 125,
+              "pixels_over_2": 187537
+            },
+            "held": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "mode": 1,
+            "noise_setup_ms": 0,
+            "value": 3
+          },
+          {
+            "case": "cost",
+            "cpu_ms_p50": 0.214000001549721,
+            "cpu_ms_p95": 0.296999990940094,
+            "gpu_ms_p50": 0.33899998664856,
+            "gpu_ms_p95": 0.351000010967255,
+            "mode": "3",
+            "samples": 60,
+            "viewport": "(800, 600)"
+          },
+          {
+            "case": "isolated-reflection",
+            "difference": {
+              "changed_pixels": 5245,
+              "peak_delta": 24,
+              "pixels_over_2": 2038
+            },
+            "native_capability": true
+          }
+        ]
+      }
+    },
+    "final-close-water-forward-01": {
+      "run": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/volume14-native/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "forward_plus",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-close-water-forward-01/cloud_volume.gd",
+          "--volume-map=zone11",
+          "--volume-allod=Ingos",
+          "--volume-close-water"
+        ],
+        "return_code": 0,
+        "termination": null,
+        "seconds": 33.5322963350045,
+        "errors": [],
+        "xdg": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-close-water-forward-01/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-close-water-forward-01/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-close-water-forward-01/cache"
+        },
+        "test_sha256": {
+          "cloud_volume.gd": "019f03a62a4c2f8836c1df72b97cb2632dabf6649be8cbef0893cdcbbd9546f7",
+          "clouds.gd": "39124f216492c59d0d8245a370ec98e96070dd9dc21f1156d5765f2639a105da",
+          "water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+        },
+        "capture_sha256": {
+          "volume-quality3-held.png": "78af589f84000f677e91c0994b8d422e85da1e89282c53b78458c757dc3b0df7",
+          "volume-night.png": "f5aafa10827b5809cb4d4e92005fbef27ee7c9c34ea99ad0a6c8e7b0fdf285a8",
+          "volume-restored.png": "f690be1c85b5576e10cdb68eb6880c22467f33eb4b37b5e7796897bb2e6fc5bf",
+          "volume-reflection-on.png": "61e434b50dc9ff9da68aa77e3755d469ed394e69e0538389acd540892640cedf",
+          "volume-quality2-held.png": "138bbac1393c3a40e0d4bd3d3662c0f7e943b92335fb953c9cf7a1daff69d6f4",
+          "volume-rain.png": "37fde617d8be232eef9a83c71830591998713ecfdf521322c6bbd3fe832dff71",
+          "volume-quality1.png": "79ada585ce18e3588154d5289ac0aba212b2734665fcf967af489cae70e20c58",
+          "volume-cave-cleared.png": "f690be1c85b5576e10cdb68eb6880c22467f33eb4b37b5e7796897bb2e6fc5bf",
+          "volume-quality2.png": "138bbac1393c3a40e0d4bd3d3662c0f7e943b92335fb953c9cf7a1daff69d6f4",
+          "volume-fair.png": "78af589f84000f677e91c0994b8d422e85da1e89282c53b78458c757dc3b0df7",
+          "volume-off.png": "f690be1c85b5576e10cdb68eb6880c22467f33eb4b37b5e7796897bb2e6fc5bf",
+          "volume-quality3.png": "78af589f84000f677e91c0994b8d422e85da1e89282c53b78458c757dc3b0df7",
+          "volume-moved.png": "1407485c38079e38c20cc5d8c993f41336a753f4b1a5185d2384f7c006fbb090",
+          "volume-reflection-off.png": "3574d5cfdc1d1e09520c5fb18ffc49ea08b42d2dcf0c440ddd6218639fc3f3c8",
+          "volume-storm-empty.png": "3022f15857d54dac5f1e610c14e079161f4affb94d6dea8b1b6c477e52b38143",
+          "volume-night-held.png": "f5aafa10827b5809cb4d4e92005fbef27ee7c9c34ea99ad0a6c8e7b0fdf285a8",
+          "volume-quality3-empty.png": "3022f15857d54dac5f1e610c14e079161f4affb94d6dea8b1b6c477e52b38143",
+          "volume-quality1-held.png": "79ada585ce18e3588154d5289ac0aba212b2734665fcf967af489cae70e20c58",
+          "volume-quality2-empty.png": "7ca3433da5d3faeaf6da8cc4ddff2d6786da89c15215a0c285d163b9831d5c83"
+        }
+      },
+      "result": {
+        "checks": 99,
+        "failures": 0,
+        "rows": [
+          {
+            "cadence_phase_error": 6.66133814775094e-15,
+            "case": "volume-policy",
+            "late_phases": "[(0.973739, 0.107251, 0.894619), (0.026642, 0.338195, 0.261814), (0.690926, 0.660308, 0.910685), (0.170124, 0.190868, 0.561297), (0.181522, 0.92365, 0.493969), (0.166128, 0.258092, 0.248495)]"
+          },
+          {
+            "case": "analytic",
+            "phase_after_wrap": "(0.996468, 0.99999, 0.00008, 0.010655)",
+            "wind_change_phase_distance": 0.000202417373657227
+          },
+          {
+            "allod": "Ingos",
+            "camera": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.999056, -0.043437), Z: (0.0, 0.043437, 0.999056), O: (239.5, 8.312176, -177.5)]",
+            "case": "scene",
+            "map": "zone11",
+            "water_centre": "(239.5, 6.312176, -180.5)"
+          },
+          {
+            "case": "cost",
+            "cpu_ms_p50": 0.101000003516674,
+            "cpu_ms_p95": 0.137999996542931,
+            "gpu_ms_p50": 0.386000007390976,
+            "gpu_ms_p95": 0.42399999499321,
+            "mode": "off",
+            "samples": 60,
+            "viewport": "(800, 600)"
+          },
+          {
+            "case": "quality",
+            "difference": {
+              "changed_pixels": 329826,
+              "peak_delta": 125,
+              "pixels_over_2": 285984
+            },
+            "held": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "mode": 1,
+            "noise_setup_ms": 0,
+            "value": 1
+          },
+          {
+            "case": "cost",
+            "cpu_ms_p50": 0.112000003457069,
+            "cpu_ms_p95": 0.203999996185303,
+            "gpu_ms_p50": 0.648999989032745,
+            "gpu_ms_p95": 0.666999995708466,
+            "mode": "1",
+            "samples": 60,
+            "viewport": "(800, 600)"
+          },
+          {
+            "case": "empty",
+            "difference": {
+              "changed_pixels": 97112,
+              "peak_delta": 1,
+              "pixels_over_2": 0
+            },
+            "quality": 2
+          },
+          {
+            "case": "quality",
+            "difference": {
+              "changed_pixels": 105992,
+              "peak_delta": 146,
+              "pixels_over_2": 14932
+            },
+            "held": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "mode": 2,
+            "noise_setup_ms": 183.333,
+            "value": 2
+          },
+          {
+            "case": "cost",
+            "cpu_ms_p50": 0.100000001490116,
+            "cpu_ms_p95": 0.172999992966652,
+            "gpu_ms_p50": 1.45799994468689,
+            "gpu_ms_p95": 2.03200006484985,
+            "mode": "2",
+            "samples": 60,
+            "viewport": "(800, 600)"
+          },
+          {
+            "case": "empty",
+            "difference": {
+              "changed_pixels": 93358,
+              "peak_delta": 1,
+              "pixels_over_2": 0
+            },
+            "quality": 3
+          },
+          {
+            "case": "quality",
+            "difference": {
+              "changed_pixels": 101114,
+              "peak_delta": 148,
+              "pixels_over_2": 12556
+            },
+            "held": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "mode": 3,
+            "noise_setup_ms": 183.333,
+            "value": 3
+          },
+          {
+            "case": "cost",
+            "cpu_ms_p50": 0.101999998092651,
+            "cpu_ms_p95": 0.152999997138977,
+            "gpu_ms_p50": 1.9210000038147,
+            "gpu_ms_p95": 2.41400003433228,
+            "mode": "3",
+            "samples": 60,
+            "viewport": "(800, 600)"
+          },
+          {
+            "case": "isolated-reflection",
+            "difference": {
+              "changed_pixels": 719,
+              "peak_delta": 120,
+              "pixels_over_2": 686
+            },
+            "native_capability": true
+          }
+        ]
+      }
+    },
+    "final-snow-water-forward-01": {
+      "run": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/volume14-native/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "forward_plus",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-snow-water-forward-01/cloud_volume.gd",
+          "--volume-map=zone11",
+          "--volume-allod=Ingos",
+          "--volume-close-water",
+          "--volume-snow"
+        ],
+        "return_code": 0,
+        "termination": null,
+        "seconds": 33.7827045119775,
+        "errors": [],
+        "xdg": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-snow-water-forward-01/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-snow-water-forward-01/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-snow-water-forward-01/cache"
+        },
+        "test_sha256": {
+          "cloud_volume.gd": "de6bbb5dbaee75b598b9608a6aca9003cf3307e9936fe1bdeacabb4123ab751d",
+          "clouds.gd": "39124f216492c59d0d8245a370ec98e96070dd9dc21f1156d5765f2639a105da",
+          "water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+        },
+        "capture_sha256": {
+          "volume-quality3-held.png": "78af589f84000f677e91c0994b8d422e85da1e89282c53b78458c757dc3b0df7",
+          "volume-night.png": "f5aafa10827b5809cb4d4e92005fbef27ee7c9c34ea99ad0a6c8e7b0fdf285a8",
+          "volume-restored.png": "f690be1c85b5576e10cdb68eb6880c22467f33eb4b37b5e7796897bb2e6fc5bf",
+          "volume-reflection-on.png": "61e434b50dc9ff9da68aa77e3755d469ed394e69e0538389acd540892640cedf",
+          "volume-quality2-held.png": "138bbac1393c3a40e0d4bd3d3662c0f7e943b92335fb953c9cf7a1daff69d6f4",
+          "volume-quality1.png": "79ada585ce18e3588154d5289ac0aba212b2734665fcf967af489cae70e20c58",
+          "volume-snow.png": "58a6b733a6619d54f155ad455a2ffa5e192335be9c51491f07719873a6eaa3bb",
+          "volume-cave-cleared.png": "f690be1c85b5576e10cdb68eb6880c22467f33eb4b37b5e7796897bb2e6fc5bf",
+          "volume-quality2.png": "138bbac1393c3a40e0d4bd3d3662c0f7e943b92335fb953c9cf7a1daff69d6f4",
+          "volume-fair.png": "78af589f84000f677e91c0994b8d422e85da1e89282c53b78458c757dc3b0df7",
+          "volume-off.png": "f690be1c85b5576e10cdb68eb6880c22467f33eb4b37b5e7796897bb2e6fc5bf",
+          "volume-quality3.png": "78af589f84000f677e91c0994b8d422e85da1e89282c53b78458c757dc3b0df7",
+          "volume-moved.png": "1407485c38079e38c20cc5d8c993f41336a753f4b1a5185d2384f7c006fbb090",
+          "volume-reflection-off.png": "3574d5cfdc1d1e09520c5fb18ffc49ea08b42d2dcf0c440ddd6218639fc3f3c8",
+          "volume-storm-empty.png": "3022f15857d54dac5f1e610c14e079161f4affb94d6dea8b1b6c477e52b38143",
+          "volume-night-held.png": "f5aafa10827b5809cb4d4e92005fbef27ee7c9c34ea99ad0a6c8e7b0fdf285a8",
+          "volume-quality3-empty.png": "3022f15857d54dac5f1e610c14e079161f4affb94d6dea8b1b6c477e52b38143",
+          "volume-quality1-held.png": "79ada585ce18e3588154d5289ac0aba212b2734665fcf967af489cae70e20c58",
+          "volume-quality2-empty.png": "7ca3433da5d3faeaf6da8cc4ddff2d6786da89c15215a0c285d163b9831d5c83"
+        }
+      },
+      "result": {
+        "checks": 99,
+        "failures": 0,
+        "rows": [
+          {
+            "cadence_phase_error": 6.66133814775094e-15,
+            "case": "volume-policy",
+            "late_phases": "[(0.973739, 0.107251, 0.894619), (0.026642, 0.338195, 0.261814), (0.690926, 0.660308, 0.910685), (0.170124, 0.190868, 0.561297), (0.181522, 0.92365, 0.493969), (0.166128, 0.258092, 0.248495)]"
+          },
+          {
+            "case": "analytic",
+            "phase_after_wrap": "(0.996468, 0.99999, 0.00008, 0.010655)",
+            "wind_change_phase_distance": 0.000202417373657227
+          },
+          {
+            "allod": "Ingos",
+            "camera": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.999056, -0.043437), Z: (0.0, 0.043437, 0.999056), O: (239.5, 8.312176, -177.5)]",
+            "case": "scene",
+            "map": "zone11",
+            "water_centre": "(239.5, 6.312176, -180.5)"
+          },
+          {
+            "case": "cost",
+            "cpu_ms_p50": 0.0930000022053719,
+            "cpu_ms_p95": 0.155000001192093,
+            "gpu_ms_p50": 0.469999998807907,
+            "gpu_ms_p95": 0.493999987840652,
+            "mode": "off",
+            "samples": 60,
+            "viewport": "(800, 600)"
+          },
+          {
+            "case": "quality",
+            "difference": {
+              "changed_pixels": 329826,
+              "peak_delta": 125,
+              "pixels_over_2": 285984
+            },
+            "held": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "mode": 1,
+            "noise_setup_ms": 0,
+            "value": 1
+          },
+          {
+            "case": "cost",
+            "cpu_ms_p50": 0.0979999974370003,
+            "cpu_ms_p95": 0.142000004649162,
+            "gpu_ms_p50": 0.598999977111816,
+            "gpu_ms_p95": 0.703000009059906,
+            "mode": "1",
+            "samples": 60,
+            "viewport": "(800, 600)"
+          },
+          {
+            "case": "empty",
+            "difference": {
+              "changed_pixels": 97112,
+              "peak_delta": 1,
+              "pixels_over_2": 0
+            },
+            "quality": 2
+          },
+          {
+            "case": "quality",
+            "difference": {
+              "changed_pixels": 105992,
+              "peak_delta": 146,
+              "pixels_over_2": 14932
+            },
+            "held": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "mode": 2,
+            "noise_setup_ms": 181.385,
+            "value": 2
+          },
+          {
+            "case": "cost",
+            "cpu_ms_p50": 0.0920000001788139,
+            "cpu_ms_p95": 0.170000001788139,
+            "gpu_ms_p50": 2.05900001525879,
+            "gpu_ms_p95": 2.95700001716614,
+            "mode": "2",
+            "samples": 60,
+            "viewport": "(800, 600)"
+          },
+          {
+            "case": "empty",
+            "difference": {
+              "changed_pixels": 93358,
+              "peak_delta": 1,
+              "pixels_over_2": 0
+            },
+            "quality": 3
+          },
+          {
+            "case": "quality",
+            "difference": {
+              "changed_pixels": 101114,
+              "peak_delta": 148,
+              "pixels_over_2": 12556
+            },
+            "held": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "mode": 3,
+            "noise_setup_ms": 181.385,
+            "value": 3
+          },
+          {
+            "case": "cost",
+            "cpu_ms_p50": 0.0979999974370003,
+            "cpu_ms_p95": 0.168999999761581,
+            "gpu_ms_p50": 2.70300006866455,
+            "gpu_ms_p95": 4.3289999961853,
+            "mode": "3",
+            "samples": 60,
+            "viewport": "(800, 600)"
+          },
+          {
+            "case": "precipitation",
+            "difference": {
+              "changed_pixels": 401076,
+              "peak_delta": 172,
+              "pixels_over_2": 397201
+            },
+            "kind": "snow",
+            "storm": "(0.8, 0.8, 1.0, 0.0)"
+          },
+          {
+            "case": "isolated-reflection",
+            "difference": {
+              "changed_pixels": 719,
+              "peak_delta": 120,
+              "pixels_over_2": 686
+            },
+            "native_capability": true
+          }
+        ]
+      }
+    },
+    "final-cost1080-forward-01": {
+      "run": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/volume14-native/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "forward_plus",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-cost1080-forward-01/cloud_volume.gd",
+          "--volume-size=1920x1080"
+        ],
+        "return_code": 0,
+        "termination": null,
+        "seconds": 45.29920673597371,
+        "errors": [],
+        "xdg": {
+          "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-cost1080-forward-01/data",
+          "XDG_CONFIG_HOME": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-cost1080-forward-01/config",
+          "XDG_CACHE_HOME": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-cost1080-forward-01/cache"
+        },
+        "test_sha256": {
+          "cloud_volume.gd": "019f03a62a4c2f8836c1df72b97cb2632dabf6649be8cbef0893cdcbbd9546f7",
+          "clouds.gd": "39124f216492c59d0d8245a370ec98e96070dd9dc21f1156d5765f2639a105da",
+          "water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+        },
+        "capture_sha256": {
+          "volume-quality3-held.png": "175acf63a0ee9df9eb450d91014cd6525eabea7dfbc5987df473562b2439075f",
+          "volume-night.png": "da276d8aaeb698f6908dbbcb68d4aaef340f6e8f2047a1ec1dbf77de2b4ebb4e",
+          "volume-restored.png": "d606eb903a8153732650cc93d0919699ae5056282ca1d757dd670974927019d8",
+          "volume-reflection-on.png": "8420291d0ff89f1155b465dd6ed0bd288a7a1740a7f9bc8dbae55df8dbb8dc97",
+          "volume-quality2-held.png": "94881c19d28bdd7a441e59c6c8e0177c3a87591fe08e2ba5c5158ac8b4011d20",
+          "volume-rain.png": "f991ff848e6d41483844250b0db564414ceb2b82fa548bae11e8187da33a5ec9",
+          "volume-quality1.png": "42d2468dc6f67215885923d6f8d1fe815096d4fe8f4c53330b1bf42f8e06f77f",
+          "volume-cave-cleared.png": "d606eb903a8153732650cc93d0919699ae5056282ca1d757dd670974927019d8",
+          "volume-quality2.png": "94881c19d28bdd7a441e59c6c8e0177c3a87591fe08e2ba5c5158ac8b4011d20",
+          "volume-fair.png": "175acf63a0ee9df9eb450d91014cd6525eabea7dfbc5987df473562b2439075f",
+          "volume-off.png": "d606eb903a8153732650cc93d0919699ae5056282ca1d757dd670974927019d8",
+          "volume-quality3.png": "175acf63a0ee9df9eb450d91014cd6525eabea7dfbc5987df473562b2439075f",
+          "volume-moved.png": "c4f59bcefa978557d50a3961daf2e3a5c7874c9aedd5eb4cf8f9113016b14e09",
+          "volume-reflection-off.png": "33b3d4025d4ac3d308cf7699390f2629f5b25bd475146037b76f37272d6674ce",
+          "volume-storm-empty.png": "5b3cefb92ae46af1917e5ad366f6c6021c3c5a7fb397b31d403595311d0abf89",
+          "volume-night-held.png": "da276d8aaeb698f6908dbbcb68d4aaef340f6e8f2047a1ec1dbf77de2b4ebb4e",
+          "volume-quality3-empty.png": "5b3cefb92ae46af1917e5ad366f6c6021c3c5a7fb397b31d403595311d0abf89",
+          "volume-quality1-held.png": "42d2468dc6f67215885923d6f8d1fe815096d4fe8f4c53330b1bf42f8e06f77f",
+          "volume-quality2-empty.png": "7e2c8da689c3596dc58dc6f7c6dac2ae671f10e01a47f26736d7bb9aa9354da0"
+        }
+      },
+      "result": {
+        "checks": 99,
+        "failures": 0,
+        "rows": [
+          {
+            "cadence_phase_error": 6.66133814775094e-15,
+            "case": "volume-policy",
+            "late_phases": "[(0.973739, 0.107251, 0.894619), (0.026642, 0.338195, 0.261814), (0.690926, 0.660308, 0.910685), (0.170124, 0.190868, 0.561297), (0.181522, 0.92365, 0.493969), (0.166128, 0.258092, 0.248495)]"
+          },
+          {
+            "case": "analytic",
+            "phase_after_wrap": "(0.996468, 0.99999, 0.00008, 0.010655)",
+            "wind_change_phase_distance": 0.000202417373657227
+          },
+          {
+            "allod": "Gipat",
+            "camera": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.999445, -0.033315), Z: (0.0, 0.033315, 0.999445), O: (133.5, 12.75859, -80.5)]",
+            "case": "scene",
+            "map": "zone1",
+            "water_centre": "(133.5, 5.758586, -98.5)"
+          },
+          {
+            "case": "cost",
+            "cpu_ms_p50": 0.0920000001788139,
+            "cpu_ms_p95": 0.146999999880791,
+            "gpu_ms_p50": 0.779999971389771,
+            "gpu_ms_p95": 0.814000010490417,
+            "mode": "off",
+            "samples": 60,
+            "viewport": "(1920, 1080)"
+          },
+          {
+            "case": "quality",
+            "difference": {
+              "changed_pixels": 1284626,
+              "peak_delta": 128,
+              "pixels_over_2": 890797
+            },
+            "held": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "mode": 1,
+            "noise_setup_ms": 0,
+            "value": 1
+          },
+          {
+            "case": "cost",
+            "cpu_ms_p50": 0.096000000834465,
+            "cpu_ms_p95": 0.184000000357628,
+            "gpu_ms_p50": 1.34899997711182,
+            "gpu_ms_p95": 3.04399991035461,
+            "mode": "1",
+            "samples": 60,
+            "viewport": "(1920, 1080)"
+          },
+          {
+            "case": "empty",
+            "difference": {
+              "changed_pixels": 478993,
+              "peak_delta": 1,
+              "pixels_over_2": 0
+            },
+            "quality": 2
+          },
+          {
+            "case": "quality",
+            "difference": {
+              "changed_pixels": 568762,
+              "peak_delta": 158,
+              "pixels_over_2": 162214
+            },
+            "held": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "mode": 2,
+            "noise_setup_ms": 179.051,
+            "value": 2
+          },
+          {
+            "case": "cost",
+            "cpu_ms_p50": 0.0939999967813492,
+            "cpu_ms_p95": 0.137999996542931,
+            "gpu_ms_p50": 2.33500003814697,
+            "gpu_ms_p95": 3.5550000667572,
+            "mode": "2",
+            "samples": 60,
+            "viewport": "(1920, 1080)"
+          },
+          {
+            "case": "empty",
+            "difference": {
+              "changed_pixels": 458793,
+              "peak_delta": 1,
+              "pixels_over_2": 0
+            },
+            "quality": 3
+          },
+          {
+            "case": "quality",
+            "difference": {
+              "changed_pixels": 545947,
+              "peak_delta": 157,
+              "pixels_over_2": 149585
+            },
+            "held": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "mode": 3,
+            "noise_setup_ms": 179.051,
+            "value": 3
+          },
+          {
+            "case": "cost",
+            "cpu_ms_p50": 0.103000000119209,
+            "cpu_ms_p95": 0.136999994516373,
+            "gpu_ms_p50": 4.94600009918213,
+            "gpu_ms_p95": 6.90399980545044,
+            "mode": "3",
+            "samples": 60,
+            "viewport": "(1920, 1080)"
+          },
+          {
+            "case": "isolated-reflection",
+            "difference": {
+              "changed_pixels": 3019,
+              "peak_delta": 87,
+              "pixels_over_2": 1838
+            },
+            "native_capability": true
+          }
+        ]
+      }
+    }
+  },
+  "independent_full_rgb": {
+    "checks": 109,
+    "failures": 0,
+    "rows": [
+      {
+        "case": "final-mobile-01: quality1/quality1-held",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-mobile-01/volume-quality1.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-mobile-01/volume-quality1-held.png",
+        "sha256": [
+          "4fb76f074c96a0741e7541687b1e02e2684a35fbfbbd571d7e741eafe468cee5",
+          "4fb76f074c96a0741e7541687b1e02e2684a35fbfbbd571d7e741eafe468cee5"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "final-mobile-01: off/quality1",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-mobile-01/volume-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-mobile-01/volume-quality1.png",
+        "sha256": [
+          "21c26a4c9e7e4547671d682cf5bb0cd7a99b57f7e74e8479aebac57b4a3916d0",
+          "4fb76f074c96a0741e7541687b1e02e2684a35fbfbbd571d7e741eafe468cee5"
+        ],
+        "changed_pixels": 270764,
+        "pixels_over_2": 203490,
+        "peak_delta": 126,
+        "passed": true
+      },
+      {
+        "case": "final-mobile-01: quality2/quality2-held",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-mobile-01/volume-quality2.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-mobile-01/volume-quality2-held.png",
+        "sha256": [
+          "6d7792e2a815dd613c7b30a94cafc605df80c93372d98fecb37f2484759111f5",
+          "6d7792e2a815dd613c7b30a94cafc605df80c93372d98fecb37f2484759111f5"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "final-mobile-01: off/quality2",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-mobile-01/volume-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-mobile-01/volume-quality2.png",
+        "sha256": [
+          "21c26a4c9e7e4547671d682cf5bb0cd7a99b57f7e74e8479aebac57b4a3916d0",
+          "6d7792e2a815dd613c7b30a94cafc605df80c93372d98fecb37f2484759111f5"
+        ],
+        "changed_pixels": 132112,
+        "pixels_over_2": 40555,
+        "peak_delta": 152,
+        "passed": true
+      },
+      {
+        "case": "final-mobile-01: off/quality2-empty",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-mobile-01/volume-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-mobile-01/volume-quality2-empty.png",
+        "sha256": [
+          "21c26a4c9e7e4547671d682cf5bb0cd7a99b57f7e74e8479aebac57b4a3916d0",
+          "2f2bc750932ef039e79e70a88a98d7e999212b5125dbca5c432a203bf54a9a48"
+        ],
+        "changed_pixels": 109338,
+        "pixels_over_2": 0,
+        "peak_delta": 2,
+        "passed": true
+      },
+      {
+        "case": "final-mobile-01: quality3/quality3-held",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-mobile-01/volume-quality3.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-mobile-01/volume-quality3-held.png",
+        "sha256": [
+          "239ca83aa93f2cdcdc87e911b14ba18649ffa54da5165d7685f7da8cc01afdb2",
+          "239ca83aa93f2cdcdc87e911b14ba18649ffa54da5165d7685f7da8cc01afdb2"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "final-mobile-01: off/quality3",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-mobile-01/volume-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-mobile-01/volume-quality3.png",
+        "sha256": [
+          "21c26a4c9e7e4547671d682cf5bb0cd7a99b57f7e74e8479aebac57b4a3916d0",
+          "239ca83aa93f2cdcdc87e911b14ba18649ffa54da5165d7685f7da8cc01afdb2"
+        ],
+        "changed_pixels": 126007,
+        "pixels_over_2": 36215,
+        "peak_delta": 153,
+        "passed": true
+      },
+      {
+        "case": "final-mobile-01: off/quality3-empty",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-mobile-01/volume-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-mobile-01/volume-quality3-empty.png",
+        "sha256": [
+          "21c26a4c9e7e4547671d682cf5bb0cd7a99b57f7e74e8479aebac57b4a3916d0",
+          "4bfaf595f4481554a7dbda725bcda3af468025cf1970c1d3e9628dcb27c26c98"
+        ],
+        "changed_pixels": 104661,
+        "pixels_over_2": 0,
+        "peak_delta": 2,
+        "passed": true
+      },
+      {
+        "case": "final-mobile-01: off/cave-cleared",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-mobile-01/volume-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-mobile-01/volume-cave-cleared.png",
+        "sha256": [
+          "21c26a4c9e7e4547671d682cf5bb0cd7a99b57f7e74e8479aebac57b4a3916d0",
+          "21c26a4c9e7e4547671d682cf5bb0cd7a99b57f7e74e8479aebac57b4a3916d0"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "final-mobile-01: off/restored",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-mobile-01/volume-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-mobile-01/volume-restored.png",
+        "sha256": [
+          "21c26a4c9e7e4547671d682cf5bb0cd7a99b57f7e74e8479aebac57b4a3916d0",
+          "21c26a4c9e7e4547671d682cf5bb0cd7a99b57f7e74e8479aebac57b4a3916d0"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "final-mobile-01: off/storm-empty",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-mobile-01/volume-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-mobile-01/volume-storm-empty.png",
+        "sha256": [
+          "21c26a4c9e7e4547671d682cf5bb0cd7a99b57f7e74e8479aebac57b4a3916d0",
+          "4bfaf595f4481554a7dbda725bcda3af468025cf1970c1d3e9628dcb27c26c98"
+        ],
+        "changed_pixels": 104661,
+        "pixels_over_2": 0,
+        "peak_delta": 2,
+        "passed": true
+      },
+      {
+        "case": "final-mobile-01: fair/moved",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-mobile-01/volume-fair.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-mobile-01/volume-moved.png",
+        "sha256": [
+          "239ca83aa93f2cdcdc87e911b14ba18649ffa54da5165d7685f7da8cc01afdb2",
+          "f44b18b9f1ca6869a089507b3bb993b45be95a488405064ce6a9fb2f66fdc3a8"
+        ],
+        "changed_pixels": 54662,
+        "pixels_over_2": 49561,
+        "peak_delta": 150,
+        "passed": true
+      },
+      {
+        "case": "final-mobile-01: moved/rain",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-mobile-01/volume-moved.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-mobile-01/volume-rain.png",
+        "sha256": [
+          "f44b18b9f1ca6869a089507b3bb993b45be95a488405064ce6a9fb2f66fdc3a8",
+          "71c089343ac24af32950fcfc88c7d4aff93b8606b9b5f8df7a81c2ed8995643c"
+        ],
+        "changed_pixels": 445650,
+        "pixels_over_2": 445369,
+        "peak_delta": 218,
+        "passed": true
+      },
+      {
+        "case": "final-mobile-01: night/night-held",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-mobile-01/volume-night.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-mobile-01/volume-night-held.png",
+        "sha256": [
+          "81d10ef6734531fc25a202e13288f3434ccc03a1f8ec2b6e3ac9a698f4ce079a",
+          "81d10ef6734531fc25a202e13288f3434ccc03a1f8ec2b6e3ac9a698f4ce079a"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "final-mobile-01: reflection-off/reflection-on",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-mobile-01/volume-reflection-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-mobile-01/volume-reflection-on.png",
+        "sha256": [
+          "243aab5bd0dedf36799af78d7d9b9670da7f48c46f075e2ac4179de81a4d886c",
+          "0516e3395d59921465111c275a33d5bea8d173cdaa596ba02bdaf5a3ddbad1a4"
+        ],
+        "changed_pixels": 337,
+        "pixels_over_2": 291,
+        "peak_delta": 104,
+        "passed": true
+      },
+      {
+        "case": "final-old-mobile-01: quality1/quality1-held",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-old-mobile-01/volume-quality1.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-old-mobile-01/volume-quality1-held.png",
+        "sha256": [
+          "4fb76f074c96a0741e7541687b1e02e2684a35fbfbbd571d7e741eafe468cee5",
+          "4fb76f074c96a0741e7541687b1e02e2684a35fbfbbd571d7e741eafe468cee5"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "final-old-mobile-01: off/quality1",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-old-mobile-01/volume-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-old-mobile-01/volume-quality1.png",
+        "sha256": [
+          "21c26a4c9e7e4547671d682cf5bb0cd7a99b57f7e74e8479aebac57b4a3916d0",
+          "4fb76f074c96a0741e7541687b1e02e2684a35fbfbbd571d7e741eafe468cee5"
+        ],
+        "changed_pixels": 270764,
+        "pixels_over_2": 203490,
+        "peak_delta": 126,
+        "passed": true
+      },
+      {
+        "case": "final-old-mobile-01: quality2/quality2-held",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-old-mobile-01/volume-quality2.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-old-mobile-01/volume-quality2-held.png",
+        "sha256": [
+          "4fb76f074c96a0741e7541687b1e02e2684a35fbfbbd571d7e741eafe468cee5",
+          "4fb76f074c96a0741e7541687b1e02e2684a35fbfbbd571d7e741eafe468cee5"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "final-old-mobile-01: off/quality2",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-old-mobile-01/volume-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-old-mobile-01/volume-quality2.png",
+        "sha256": [
+          "21c26a4c9e7e4547671d682cf5bb0cd7a99b57f7e74e8479aebac57b4a3916d0",
+          "4fb76f074c96a0741e7541687b1e02e2684a35fbfbbd571d7e741eafe468cee5"
+        ],
+        "changed_pixels": 270764,
+        "pixels_over_2": 203490,
+        "peak_delta": 126,
+        "passed": true
+      },
+      {
+        "case": "final-old-mobile-01: quality3/quality3-held",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-old-mobile-01/volume-quality3.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-old-mobile-01/volume-quality3-held.png",
+        "sha256": [
+          "4fb76f074c96a0741e7541687b1e02e2684a35fbfbbd571d7e741eafe468cee5",
+          "4fb76f074c96a0741e7541687b1e02e2684a35fbfbbd571d7e741eafe468cee5"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "final-old-mobile-01: off/quality3",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-old-mobile-01/volume-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-old-mobile-01/volume-quality3.png",
+        "sha256": [
+          "21c26a4c9e7e4547671d682cf5bb0cd7a99b57f7e74e8479aebac57b4a3916d0",
+          "4fb76f074c96a0741e7541687b1e02e2684a35fbfbbd571d7e741eafe468cee5"
+        ],
+        "changed_pixels": 270764,
+        "pixels_over_2": 203490,
+        "peak_delta": 126,
+        "passed": true
+      },
+      {
+        "case": "final-old-mobile-01: off/cave-cleared",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-old-mobile-01/volume-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-old-mobile-01/volume-cave-cleared.png",
+        "sha256": [
+          "21c26a4c9e7e4547671d682cf5bb0cd7a99b57f7e74e8479aebac57b4a3916d0",
+          "21c26a4c9e7e4547671d682cf5bb0cd7a99b57f7e74e8479aebac57b4a3916d0"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "final-old-mobile-01: off/restored",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-old-mobile-01/volume-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-old-mobile-01/volume-restored.png",
+        "sha256": [
+          "21c26a4c9e7e4547671d682cf5bb0cd7a99b57f7e74e8479aebac57b4a3916d0",
+          "21c26a4c9e7e4547671d682cf5bb0cd7a99b57f7e74e8479aebac57b4a3916d0"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "final-old-mobile-01: fair/moved",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-old-mobile-01/volume-fair.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-old-mobile-01/volume-moved.png",
+        "sha256": [
+          "4fb76f074c96a0741e7541687b1e02e2684a35fbfbbd571d7e741eafe468cee5",
+          "353e80ea5b5cf4f50e2c10db6bf9cb050b2120ddd1d2a72e19c28f369406ea51"
+        ],
+        "changed_pixels": 349094,
+        "pixels_over_2": 263452,
+        "peak_delta": 126,
+        "passed": true
+      },
+      {
+        "case": "final-old-mobile-01: moved/rain",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-old-mobile-01/volume-moved.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-old-mobile-01/volume-rain.png",
+        "sha256": [
+          "353e80ea5b5cf4f50e2c10db6bf9cb050b2120ddd1d2a72e19c28f369406ea51",
+          "34bff8f388a4397b623c1e1b2a9dd277caba3aa81f70be5fd70a0d4cd35bf5a5"
+        ],
+        "changed_pixels": 378304,
+        "pixels_over_2": 333875,
+        "peak_delta": 126,
+        "passed": true
+      },
+      {
+        "case": "final-old-mobile-01: night/night-held",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-old-mobile-01/volume-night.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-old-mobile-01/volume-night-held.png",
+        "sha256": [
+          "7b8c6faca4cb01c73e951a6ba1f36a8581349c7f8ceec7fdd643a31fc335ba5a",
+          "7b8c6faca4cb01c73e951a6ba1f36a8581349c7f8ceec7fdd643a31fc335ba5a"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "final-old-mobile-01: reflection-off/reflection-on",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-old-mobile-01/volume-reflection-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-old-mobile-01/volume-reflection-on.png",
+        "sha256": [
+          "243aab5bd0dedf36799af78d7d9b9670da7f48c46f075e2ac4179de81a4d886c",
+          "837c25ad0ef17413c573dc29771e7989a825a61538f759f1356ffb02ce0d7e2f"
+        ],
+        "changed_pixels": 6437,
+        "pixels_over_2": 5438,
+        "peak_delta": 51,
+        "passed": true
+      },
+      {
+        "case": "final-forward-01: quality1/quality1-held",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-forward-01/volume-quality1.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-forward-01/volume-quality1-held.png",
+        "sha256": [
+          "31790592ea8e99c9acd584e3b0020984e1d20f75c4b5eab0f123e97f4d129fd2",
+          "31790592ea8e99c9acd584e3b0020984e1d20f75c4b5eab0f123e97f4d129fd2"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "final-forward-01: off/quality1",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-forward-01/volume-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-forward-01/volume-quality1.png",
+        "sha256": [
+          "b944653b6e24b03f69a78dfc07c3006cd0f0e31244031eda0fc927488e7c5d2d",
+          "31790592ea8e99c9acd584e3b0020984e1d20f75c4b5eab0f123e97f4d129fd2"
+        ],
+        "changed_pixels": 282803,
+        "pixels_over_2": 190788,
+        "peak_delta": 125,
+        "passed": true
+      },
+      {
+        "case": "final-forward-01: quality2/quality2-held",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-forward-01/volume-quality2.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-forward-01/volume-quality2-held.png",
+        "sha256": [
+          "8f295c19cd7bae734f41f5fe48801afac16a22090cf1f4bfa50cc348cebbbb63",
+          "8f295c19cd7bae734f41f5fe48801afac16a22090cf1f4bfa50cc348cebbbb63"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "final-forward-01: off/quality2",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-forward-01/volume-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-forward-01/volume-quality2.png",
+        "sha256": [
+          "b944653b6e24b03f69a78dfc07c3006cd0f0e31244031eda0fc927488e7c5d2d",
+          "8f295c19cd7bae734f41f5fe48801afac16a22090cf1f4bfa50cc348cebbbb63"
+        ],
+        "changed_pixels": 134355,
+        "pixels_over_2": 40491,
+        "peak_delta": 153,
+        "passed": true
+      },
+      {
+        "case": "final-forward-01: off/quality2-empty",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-forward-01/volume-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-forward-01/volume-quality2-empty.png",
+        "sha256": [
+          "b944653b6e24b03f69a78dfc07c3006cd0f0e31244031eda0fc927488e7c5d2d",
+          "cabf023a275265b3d4ca40c9e4d2cf461de1b3dbf2de0ccde8c41aed51264930"
+        ],
+        "changed_pixels": 111999,
+        "pixels_over_2": 0,
+        "peak_delta": 1,
+        "passed": true
+      },
+      {
+        "case": "final-forward-01: quality3/quality3-held",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-forward-01/volume-quality3.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-forward-01/volume-quality3-held.png",
+        "sha256": [
+          "c180dace59e743ad9a19c4cdaadc9750e1a22cbe360ca98dfdd873925815bc7e",
+          "c180dace59e743ad9a19c4cdaadc9750e1a22cbe360ca98dfdd873925815bc7e"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "final-forward-01: off/quality3",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-forward-01/volume-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-forward-01/volume-quality3.png",
+        "sha256": [
+          "b944653b6e24b03f69a78dfc07c3006cd0f0e31244031eda0fc927488e7c5d2d",
+          "c180dace59e743ad9a19c4cdaadc9750e1a22cbe360ca98dfdd873925815bc7e"
+        ],
+        "changed_pixels": 128480,
+        "pixels_over_2": 36114,
+        "peak_delta": 153,
+        "passed": true
+      },
+      {
+        "case": "final-forward-01: off/quality3-empty",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-forward-01/volume-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-forward-01/volume-quality3-empty.png",
+        "sha256": [
+          "b944653b6e24b03f69a78dfc07c3006cd0f0e31244031eda0fc927488e7c5d2d",
+          "3d0bee7ce828a2729e16a4826d6e2fe0cc53dccb96cb37740d469befb3fbb8e5"
+        ],
+        "changed_pixels": 107711,
+        "pixels_over_2": 0,
+        "peak_delta": 1,
+        "passed": true
+      },
+      {
+        "case": "final-forward-01: off/cave-cleared",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-forward-01/volume-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-forward-01/volume-cave-cleared.png",
+        "sha256": [
+          "b944653b6e24b03f69a78dfc07c3006cd0f0e31244031eda0fc927488e7c5d2d",
+          "b944653b6e24b03f69a78dfc07c3006cd0f0e31244031eda0fc927488e7c5d2d"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "final-forward-01: off/restored",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-forward-01/volume-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-forward-01/volume-restored.png",
+        "sha256": [
+          "b944653b6e24b03f69a78dfc07c3006cd0f0e31244031eda0fc927488e7c5d2d",
+          "b944653b6e24b03f69a78dfc07c3006cd0f0e31244031eda0fc927488e7c5d2d"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "final-forward-01: off/storm-empty",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-forward-01/volume-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-forward-01/volume-storm-empty.png",
+        "sha256": [
+          "b944653b6e24b03f69a78dfc07c3006cd0f0e31244031eda0fc927488e7c5d2d",
+          "3d0bee7ce828a2729e16a4826d6e2fe0cc53dccb96cb37740d469befb3fbb8e5"
+        ],
+        "changed_pixels": 107711,
+        "pixels_over_2": 0,
+        "peak_delta": 1,
+        "passed": true
+      },
+      {
+        "case": "final-forward-01: fair/moved",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-forward-01/volume-fair.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-forward-01/volume-moved.png",
+        "sha256": [
+          "c180dace59e743ad9a19c4cdaadc9750e1a22cbe360ca98dfdd873925815bc7e",
+          "a0652e31e2cb9aac08c0882e2034ff2642e5faca4f3b5e833a96e293059ba7a5"
+        ],
+        "changed_pixels": 54742,
+        "pixels_over_2": 49466,
+        "peak_delta": 150,
+        "passed": true
+      },
+      {
+        "case": "final-forward-01: moved/rain",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-forward-01/volume-moved.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-forward-01/volume-rain.png",
+        "sha256": [
+          "a0652e31e2cb9aac08c0882e2034ff2642e5faca4f3b5e833a96e293059ba7a5",
+          "5f722e1350d2e12645869e78e26cbcda378f8bcd8e56ddf11377c93394365451"
+        ],
+        "changed_pixels": 446145,
+        "pixels_over_2": 444681,
+        "peak_delta": 217,
+        "passed": true
+      },
+      {
+        "case": "final-forward-01: night/night-held",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-forward-01/volume-night.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-forward-01/volume-night-held.png",
+        "sha256": [
+          "09a442994ca78b081c61bcfbd72c965c8af29f02d177a768467bae2ad4729846",
+          "09a442994ca78b081c61bcfbd72c965c8af29f02d177a768467bae2ad4729846"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "final-forward-01: reflection-off/reflection-on",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-forward-01/volume-reflection-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-forward-01/volume-reflection-on.png",
+        "sha256": [
+          "29ab09d4b0f706270bf94558118f33ea6308138cb382900711f8f67b5ac6704b",
+          "fceffdfe5c0420f462621307774d93d94aa807ed0f01f1ee4c7aa5b053d57008"
+        ],
+        "changed_pixels": 346,
+        "pixels_over_2": 284,
+        "peak_delta": 103,
+        "passed": true
+      },
+      {
+        "case": "final-compatibility-01: quality1/quality1-held",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-compatibility-01/volume-quality1.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-compatibility-01/volume-quality1-held.png",
+        "sha256": [
+          "d8a70bf4a1434e0157714927bb2f71194e644a2c4e05861fd6f08922d03c211f",
+          "d8a70bf4a1434e0157714927bb2f71194e644a2c4e05861fd6f08922d03c211f"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "final-compatibility-01: off/quality1",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-compatibility-01/volume-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-compatibility-01/volume-quality1.png",
+        "sha256": [
+          "48f9724657ea82854f704db71992acb5cac52f72bcfb03c7671e8b0e97c99cb9",
+          "d8a70bf4a1434e0157714927bb2f71194e644a2c4e05861fd6f08922d03c211f"
+        ],
+        "changed_pixels": 281241,
+        "pixels_over_2": 187537,
+        "peak_delta": 125,
+        "passed": true
+      },
+      {
+        "case": "final-compatibility-01: quality2/quality2-held",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-compatibility-01/volume-quality2.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-compatibility-01/volume-quality2-held.png",
+        "sha256": [
+          "d8a70bf4a1434e0157714927bb2f71194e644a2c4e05861fd6f08922d03c211f",
+          "d8a70bf4a1434e0157714927bb2f71194e644a2c4e05861fd6f08922d03c211f"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "final-compatibility-01: off/quality2",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-compatibility-01/volume-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-compatibility-01/volume-quality2.png",
+        "sha256": [
+          "48f9724657ea82854f704db71992acb5cac52f72bcfb03c7671e8b0e97c99cb9",
+          "d8a70bf4a1434e0157714927bb2f71194e644a2c4e05861fd6f08922d03c211f"
+        ],
+        "changed_pixels": 281241,
+        "pixels_over_2": 187537,
+        "peak_delta": 125,
+        "passed": true
+      },
+      {
+        "case": "final-compatibility-01: quality3/quality3-held",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-compatibility-01/volume-quality3.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-compatibility-01/volume-quality3-held.png",
+        "sha256": [
+          "d8a70bf4a1434e0157714927bb2f71194e644a2c4e05861fd6f08922d03c211f",
+          "d8a70bf4a1434e0157714927bb2f71194e644a2c4e05861fd6f08922d03c211f"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "final-compatibility-01: off/quality3",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-compatibility-01/volume-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-compatibility-01/volume-quality3.png",
+        "sha256": [
+          "48f9724657ea82854f704db71992acb5cac52f72bcfb03c7671e8b0e97c99cb9",
+          "d8a70bf4a1434e0157714927bb2f71194e644a2c4e05861fd6f08922d03c211f"
+        ],
+        "changed_pixels": 281241,
+        "pixels_over_2": 187537,
+        "peak_delta": 125,
+        "passed": true
+      },
+      {
+        "case": "final-compatibility-01: off/cave-cleared",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-compatibility-01/volume-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-compatibility-01/volume-cave-cleared.png",
+        "sha256": [
+          "48f9724657ea82854f704db71992acb5cac52f72bcfb03c7671e8b0e97c99cb9",
+          "48f9724657ea82854f704db71992acb5cac52f72bcfb03c7671e8b0e97c99cb9"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "final-compatibility-01: off/restored",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-compatibility-01/volume-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-compatibility-01/volume-restored.png",
+        "sha256": [
+          "48f9724657ea82854f704db71992acb5cac52f72bcfb03c7671e8b0e97c99cb9",
+          "48f9724657ea82854f704db71992acb5cac52f72bcfb03c7671e8b0e97c99cb9"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "final-compatibility-01: fair/moved",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-compatibility-01/volume-fair.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-compatibility-01/volume-moved.png",
+        "sha256": [
+          "d8a70bf4a1434e0157714927bb2f71194e644a2c4e05861fd6f08922d03c211f",
+          "5629a681f90496db289ecb16190ee39258082725ba0364fe2f3731687732a996"
+        ],
+        "changed_pixels": 363637,
+        "pixels_over_2": 244181,
+        "peak_delta": 124,
+        "passed": true
+      },
+      {
+        "case": "final-compatibility-01: moved/rain",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-compatibility-01/volume-moved.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-compatibility-01/volume-rain.png",
+        "sha256": [
+          "5629a681f90496db289ecb16190ee39258082725ba0364fe2f3731687732a996",
+          "fa34b4974cdc19330c2cd72ed5d9b141bf296c297b3f8ce2c8a55c929cd0b1d0"
+        ],
+        "changed_pixels": 384962,
+        "pixels_over_2": 325933,
+        "peak_delta": 125,
+        "passed": true
+      },
+      {
+        "case": "final-compatibility-01: night/night-held",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-compatibility-01/volume-night.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-compatibility-01/volume-night-held.png",
+        "sha256": [
+          "8d7423f3302ca0e802b7e9e5660234a78205aa9225c57072ad1409dad9bbc3ab",
+          "8d7423f3302ca0e802b7e9e5660234a78205aa9225c57072ad1409dad9bbc3ab"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "final-compatibility-01: reflection-off/reflection-on",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-compatibility-01/volume-reflection-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-compatibility-01/volume-reflection-on.png",
+        "sha256": [
+          "6a4ed5f548eaa35bff11cbe7a33039718e4c1093c10960f1466bf44b4a47ddae",
+          "e0dcd039ed751d5e747437ef06977772ccaf3823ef265053e68b5c9249a8fa3e"
+        ],
+        "changed_pixels": 5245,
+        "pixels_over_2": 2038,
+        "peak_delta": 24,
+        "passed": true
+      },
+      {
+        "case": "final-close-water-forward-01: quality1/quality1-held",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-close-water-forward-01/volume-quality1.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-close-water-forward-01/volume-quality1-held.png",
+        "sha256": [
+          "79ada585ce18e3588154d5289ac0aba212b2734665fcf967af489cae70e20c58",
+          "79ada585ce18e3588154d5289ac0aba212b2734665fcf967af489cae70e20c58"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "final-close-water-forward-01: off/quality1",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-close-water-forward-01/volume-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-close-water-forward-01/volume-quality1.png",
+        "sha256": [
+          "f690be1c85b5576e10cdb68eb6880c22467f33eb4b37b5e7796897bb2e6fc5bf",
+          "79ada585ce18e3588154d5289ac0aba212b2734665fcf967af489cae70e20c58"
+        ],
+        "changed_pixels": 329826,
+        "pixels_over_2": 285984,
+        "peak_delta": 125,
+        "passed": true
+      },
+      {
+        "case": "final-close-water-forward-01: quality2/quality2-held",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-close-water-forward-01/volume-quality2.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-close-water-forward-01/volume-quality2-held.png",
+        "sha256": [
+          "138bbac1393c3a40e0d4bd3d3662c0f7e943b92335fb953c9cf7a1daff69d6f4",
+          "138bbac1393c3a40e0d4bd3d3662c0f7e943b92335fb953c9cf7a1daff69d6f4"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "final-close-water-forward-01: off/quality2",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-close-water-forward-01/volume-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-close-water-forward-01/volume-quality2.png",
+        "sha256": [
+          "f690be1c85b5576e10cdb68eb6880c22467f33eb4b37b5e7796897bb2e6fc5bf",
+          "138bbac1393c3a40e0d4bd3d3662c0f7e943b92335fb953c9cf7a1daff69d6f4"
+        ],
+        "changed_pixels": 105992,
+        "pixels_over_2": 14932,
+        "peak_delta": 146,
+        "passed": true
+      },
+      {
+        "case": "final-close-water-forward-01: off/quality2-empty",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-close-water-forward-01/volume-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-close-water-forward-01/volume-quality2-empty.png",
+        "sha256": [
+          "f690be1c85b5576e10cdb68eb6880c22467f33eb4b37b5e7796897bb2e6fc5bf",
+          "7ca3433da5d3faeaf6da8cc4ddff2d6786da89c15215a0c285d163b9831d5c83"
+        ],
+        "changed_pixels": 97112,
+        "pixels_over_2": 0,
+        "peak_delta": 1,
+        "passed": true
+      },
+      {
+        "case": "final-close-water-forward-01: quality3/quality3-held",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-close-water-forward-01/volume-quality3.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-close-water-forward-01/volume-quality3-held.png",
+        "sha256": [
+          "78af589f84000f677e91c0994b8d422e85da1e89282c53b78458c757dc3b0df7",
+          "78af589f84000f677e91c0994b8d422e85da1e89282c53b78458c757dc3b0df7"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "final-close-water-forward-01: off/quality3",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-close-water-forward-01/volume-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-close-water-forward-01/volume-quality3.png",
+        "sha256": [
+          "f690be1c85b5576e10cdb68eb6880c22467f33eb4b37b5e7796897bb2e6fc5bf",
+          "78af589f84000f677e91c0994b8d422e85da1e89282c53b78458c757dc3b0df7"
+        ],
+        "changed_pixels": 101114,
+        "pixels_over_2": 12556,
+        "peak_delta": 148,
+        "passed": true
+      },
+      {
+        "case": "final-close-water-forward-01: off/quality3-empty",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-close-water-forward-01/volume-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-close-water-forward-01/volume-quality3-empty.png",
+        "sha256": [
+          "f690be1c85b5576e10cdb68eb6880c22467f33eb4b37b5e7796897bb2e6fc5bf",
+          "3022f15857d54dac5f1e610c14e079161f4affb94d6dea8b1b6c477e52b38143"
+        ],
+        "changed_pixels": 93358,
+        "pixels_over_2": 0,
+        "peak_delta": 1,
+        "passed": true
+      },
+      {
+        "case": "final-close-water-forward-01: off/cave-cleared",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-close-water-forward-01/volume-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-close-water-forward-01/volume-cave-cleared.png",
+        "sha256": [
+          "f690be1c85b5576e10cdb68eb6880c22467f33eb4b37b5e7796897bb2e6fc5bf",
+          "f690be1c85b5576e10cdb68eb6880c22467f33eb4b37b5e7796897bb2e6fc5bf"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "final-close-water-forward-01: off/restored",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-close-water-forward-01/volume-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-close-water-forward-01/volume-restored.png",
+        "sha256": [
+          "f690be1c85b5576e10cdb68eb6880c22467f33eb4b37b5e7796897bb2e6fc5bf",
+          "f690be1c85b5576e10cdb68eb6880c22467f33eb4b37b5e7796897bb2e6fc5bf"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "final-close-water-forward-01: off/storm-empty",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-close-water-forward-01/volume-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-close-water-forward-01/volume-storm-empty.png",
+        "sha256": [
+          "f690be1c85b5576e10cdb68eb6880c22467f33eb4b37b5e7796897bb2e6fc5bf",
+          "3022f15857d54dac5f1e610c14e079161f4affb94d6dea8b1b6c477e52b38143"
+        ],
+        "changed_pixels": 93358,
+        "pixels_over_2": 0,
+        "peak_delta": 1,
+        "passed": true
+      },
+      {
+        "case": "final-close-water-forward-01: fair/moved",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-close-water-forward-01/volume-fair.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-close-water-forward-01/volume-moved.png",
+        "sha256": [
+          "78af589f84000f677e91c0994b8d422e85da1e89282c53b78458c757dc3b0df7",
+          "1407485c38079e38c20cc5d8c993f41336a753f4b1a5185d2384f7c006fbb090"
+        ],
+        "changed_pixels": 18656,
+        "pixels_over_2": 16126,
+        "peak_delta": 148,
+        "passed": true
+      },
+      {
+        "case": "final-close-water-forward-01: moved/rain",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-close-water-forward-01/volume-moved.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-close-water-forward-01/volume-rain.png",
+        "sha256": [
+          "1407485c38079e38c20cc5d8c993f41336a753f4b1a5185d2384f7c006fbb090",
+          "37fde617d8be232eef9a83c71830591998713ecfdf521322c6bbd3fe832dff71"
+        ],
+        "changed_pixels": 401076,
+        "pixels_over_2": 397201,
+        "peak_delta": 181,
+        "passed": true
+      },
+      {
+        "case": "final-close-water-forward-01: night/night-held",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-close-water-forward-01/volume-night.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-close-water-forward-01/volume-night-held.png",
+        "sha256": [
+          "f5aafa10827b5809cb4d4e92005fbef27ee7c9c34ea99ad0a6c8e7b0fdf285a8",
+          "f5aafa10827b5809cb4d4e92005fbef27ee7c9c34ea99ad0a6c8e7b0fdf285a8"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "final-close-water-forward-01: reflection-off/reflection-on",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-close-water-forward-01/volume-reflection-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-close-water-forward-01/volume-reflection-on.png",
+        "sha256": [
+          "3574d5cfdc1d1e09520c5fb18ffc49ea08b42d2dcf0c440ddd6218639fc3f3c8",
+          "61e434b50dc9ff9da68aa77e3755d469ed394e69e0538389acd540892640cedf"
+        ],
+        "changed_pixels": 719,
+        "pixels_over_2": 686,
+        "peak_delta": 120,
+        "passed": true
+      },
+      {
+        "case": "final-snow-water-forward-01: quality1/quality1-held",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-snow-water-forward-01/volume-quality1.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-snow-water-forward-01/volume-quality1-held.png",
+        "sha256": [
+          "79ada585ce18e3588154d5289ac0aba212b2734665fcf967af489cae70e20c58",
+          "79ada585ce18e3588154d5289ac0aba212b2734665fcf967af489cae70e20c58"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "final-snow-water-forward-01: off/quality1",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-snow-water-forward-01/volume-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-snow-water-forward-01/volume-quality1.png",
+        "sha256": [
+          "f690be1c85b5576e10cdb68eb6880c22467f33eb4b37b5e7796897bb2e6fc5bf",
+          "79ada585ce18e3588154d5289ac0aba212b2734665fcf967af489cae70e20c58"
+        ],
+        "changed_pixels": 329826,
+        "pixels_over_2": 285984,
+        "peak_delta": 125,
+        "passed": true
+      },
+      {
+        "case": "final-snow-water-forward-01: quality2/quality2-held",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-snow-water-forward-01/volume-quality2.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-snow-water-forward-01/volume-quality2-held.png",
+        "sha256": [
+          "138bbac1393c3a40e0d4bd3d3662c0f7e943b92335fb953c9cf7a1daff69d6f4",
+          "138bbac1393c3a40e0d4bd3d3662c0f7e943b92335fb953c9cf7a1daff69d6f4"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "final-snow-water-forward-01: off/quality2",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-snow-water-forward-01/volume-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-snow-water-forward-01/volume-quality2.png",
+        "sha256": [
+          "f690be1c85b5576e10cdb68eb6880c22467f33eb4b37b5e7796897bb2e6fc5bf",
+          "138bbac1393c3a40e0d4bd3d3662c0f7e943b92335fb953c9cf7a1daff69d6f4"
+        ],
+        "changed_pixels": 105992,
+        "pixels_over_2": 14932,
+        "peak_delta": 146,
+        "passed": true
+      },
+      {
+        "case": "final-snow-water-forward-01: off/quality2-empty",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-snow-water-forward-01/volume-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-snow-water-forward-01/volume-quality2-empty.png",
+        "sha256": [
+          "f690be1c85b5576e10cdb68eb6880c22467f33eb4b37b5e7796897bb2e6fc5bf",
+          "7ca3433da5d3faeaf6da8cc4ddff2d6786da89c15215a0c285d163b9831d5c83"
+        ],
+        "changed_pixels": 97112,
+        "pixels_over_2": 0,
+        "peak_delta": 1,
+        "passed": true
+      },
+      {
+        "case": "final-snow-water-forward-01: quality3/quality3-held",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-snow-water-forward-01/volume-quality3.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-snow-water-forward-01/volume-quality3-held.png",
+        "sha256": [
+          "78af589f84000f677e91c0994b8d422e85da1e89282c53b78458c757dc3b0df7",
+          "78af589f84000f677e91c0994b8d422e85da1e89282c53b78458c757dc3b0df7"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "final-snow-water-forward-01: off/quality3",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-snow-water-forward-01/volume-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-snow-water-forward-01/volume-quality3.png",
+        "sha256": [
+          "f690be1c85b5576e10cdb68eb6880c22467f33eb4b37b5e7796897bb2e6fc5bf",
+          "78af589f84000f677e91c0994b8d422e85da1e89282c53b78458c757dc3b0df7"
+        ],
+        "changed_pixels": 101114,
+        "pixels_over_2": 12556,
+        "peak_delta": 148,
+        "passed": true
+      },
+      {
+        "case": "final-snow-water-forward-01: off/quality3-empty",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-snow-water-forward-01/volume-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-snow-water-forward-01/volume-quality3-empty.png",
+        "sha256": [
+          "f690be1c85b5576e10cdb68eb6880c22467f33eb4b37b5e7796897bb2e6fc5bf",
+          "3022f15857d54dac5f1e610c14e079161f4affb94d6dea8b1b6c477e52b38143"
+        ],
+        "changed_pixels": 93358,
+        "pixels_over_2": 0,
+        "peak_delta": 1,
+        "passed": true
+      },
+      {
+        "case": "final-snow-water-forward-01: off/cave-cleared",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-snow-water-forward-01/volume-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-snow-water-forward-01/volume-cave-cleared.png",
+        "sha256": [
+          "f690be1c85b5576e10cdb68eb6880c22467f33eb4b37b5e7796897bb2e6fc5bf",
+          "f690be1c85b5576e10cdb68eb6880c22467f33eb4b37b5e7796897bb2e6fc5bf"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "final-snow-water-forward-01: off/restored",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-snow-water-forward-01/volume-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-snow-water-forward-01/volume-restored.png",
+        "sha256": [
+          "f690be1c85b5576e10cdb68eb6880c22467f33eb4b37b5e7796897bb2e6fc5bf",
+          "f690be1c85b5576e10cdb68eb6880c22467f33eb4b37b5e7796897bb2e6fc5bf"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "final-snow-water-forward-01: off/storm-empty",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-snow-water-forward-01/volume-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-snow-water-forward-01/volume-storm-empty.png",
+        "sha256": [
+          "f690be1c85b5576e10cdb68eb6880c22467f33eb4b37b5e7796897bb2e6fc5bf",
+          "3022f15857d54dac5f1e610c14e079161f4affb94d6dea8b1b6c477e52b38143"
+        ],
+        "changed_pixels": 93358,
+        "pixels_over_2": 0,
+        "peak_delta": 1,
+        "passed": true
+      },
+      {
+        "case": "final-snow-water-forward-01: fair/moved",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-snow-water-forward-01/volume-fair.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-snow-water-forward-01/volume-moved.png",
+        "sha256": [
+          "78af589f84000f677e91c0994b8d422e85da1e89282c53b78458c757dc3b0df7",
+          "1407485c38079e38c20cc5d8c993f41336a753f4b1a5185d2384f7c006fbb090"
+        ],
+        "changed_pixels": 18656,
+        "pixels_over_2": 16126,
+        "peak_delta": 148,
+        "passed": true
+      },
+      {
+        "case": "final-snow-water-forward-01: moved/snow",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-snow-water-forward-01/volume-moved.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-snow-water-forward-01/volume-snow.png",
+        "sha256": [
+          "1407485c38079e38c20cc5d8c993f41336a753f4b1a5185d2384f7c006fbb090",
+          "58a6b733a6619d54f155ad455a2ffa5e192335be9c51491f07719873a6eaa3bb"
+        ],
+        "changed_pixels": 401076,
+        "pixels_over_2": 397201,
+        "peak_delta": 172,
+        "passed": true
+      },
+      {
+        "case": "final-snow-water-forward-01: night/night-held",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-snow-water-forward-01/volume-night.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-snow-water-forward-01/volume-night-held.png",
+        "sha256": [
+          "f5aafa10827b5809cb4d4e92005fbef27ee7c9c34ea99ad0a6c8e7b0fdf285a8",
+          "f5aafa10827b5809cb4d4e92005fbef27ee7c9c34ea99ad0a6c8e7b0fdf285a8"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "final-snow-water-forward-01: reflection-off/reflection-on",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-snow-water-forward-01/volume-reflection-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-snow-water-forward-01/volume-reflection-on.png",
+        "sha256": [
+          "3574d5cfdc1d1e09520c5fb18ffc49ea08b42d2dcf0c440ddd6218639fc3f3c8",
+          "61e434b50dc9ff9da68aa77e3755d469ed394e69e0538389acd540892640cedf"
+        ],
+        "changed_pixels": 719,
+        "pixels_over_2": 686,
+        "peak_delta": 120,
+        "passed": true
+      },
+      {
+        "case": "final-cost1080-forward-01: quality1/quality1-held",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-cost1080-forward-01/volume-quality1.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-cost1080-forward-01/volume-quality1-held.png",
+        "sha256": [
+          "42d2468dc6f67215885923d6f8d1fe815096d4fe8f4c53330b1bf42f8e06f77f",
+          "42d2468dc6f67215885923d6f8d1fe815096d4fe8f4c53330b1bf42f8e06f77f"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "final-cost1080-forward-01: off/quality1",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-cost1080-forward-01/volume-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-cost1080-forward-01/volume-quality1.png",
+        "sha256": [
+          "d606eb903a8153732650cc93d0919699ae5056282ca1d757dd670974927019d8",
+          "42d2468dc6f67215885923d6f8d1fe815096d4fe8f4c53330b1bf42f8e06f77f"
+        ],
+        "changed_pixels": 1284626,
+        "pixels_over_2": 890797,
+        "peak_delta": 128,
+        "passed": true
+      },
+      {
+        "case": "final-cost1080-forward-01: quality2/quality2-held",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-cost1080-forward-01/volume-quality2.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-cost1080-forward-01/volume-quality2-held.png",
+        "sha256": [
+          "94881c19d28bdd7a441e59c6c8e0177c3a87591fe08e2ba5c5158ac8b4011d20",
+          "94881c19d28bdd7a441e59c6c8e0177c3a87591fe08e2ba5c5158ac8b4011d20"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "final-cost1080-forward-01: off/quality2",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-cost1080-forward-01/volume-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-cost1080-forward-01/volume-quality2.png",
+        "sha256": [
+          "d606eb903a8153732650cc93d0919699ae5056282ca1d757dd670974927019d8",
+          "94881c19d28bdd7a441e59c6c8e0177c3a87591fe08e2ba5c5158ac8b4011d20"
+        ],
+        "changed_pixels": 568762,
+        "pixels_over_2": 162214,
+        "peak_delta": 158,
+        "passed": true
+      },
+      {
+        "case": "final-cost1080-forward-01: off/quality2-empty",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-cost1080-forward-01/volume-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-cost1080-forward-01/volume-quality2-empty.png",
+        "sha256": [
+          "d606eb903a8153732650cc93d0919699ae5056282ca1d757dd670974927019d8",
+          "7e2c8da689c3596dc58dc6f7c6dac2ae671f10e01a47f26736d7bb9aa9354da0"
+        ],
+        "changed_pixels": 478993,
+        "pixels_over_2": 0,
+        "peak_delta": 1,
+        "passed": true
+      },
+      {
+        "case": "final-cost1080-forward-01: quality3/quality3-held",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-cost1080-forward-01/volume-quality3.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-cost1080-forward-01/volume-quality3-held.png",
+        "sha256": [
+          "175acf63a0ee9df9eb450d91014cd6525eabea7dfbc5987df473562b2439075f",
+          "175acf63a0ee9df9eb450d91014cd6525eabea7dfbc5987df473562b2439075f"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "final-cost1080-forward-01: off/quality3",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-cost1080-forward-01/volume-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-cost1080-forward-01/volume-quality3.png",
+        "sha256": [
+          "d606eb903a8153732650cc93d0919699ae5056282ca1d757dd670974927019d8",
+          "175acf63a0ee9df9eb450d91014cd6525eabea7dfbc5987df473562b2439075f"
+        ],
+        "changed_pixels": 545947,
+        "pixels_over_2": 149585,
+        "peak_delta": 157,
+        "passed": true
+      },
+      {
+        "case": "final-cost1080-forward-01: off/quality3-empty",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-cost1080-forward-01/volume-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-cost1080-forward-01/volume-quality3-empty.png",
+        "sha256": [
+          "d606eb903a8153732650cc93d0919699ae5056282ca1d757dd670974927019d8",
+          "5b3cefb92ae46af1917e5ad366f6c6021c3c5a7fb397b31d403595311d0abf89"
+        ],
+        "changed_pixels": 458793,
+        "pixels_over_2": 0,
+        "peak_delta": 1,
+        "passed": true
+      },
+      {
+        "case": "final-cost1080-forward-01: off/cave-cleared",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-cost1080-forward-01/volume-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-cost1080-forward-01/volume-cave-cleared.png",
+        "sha256": [
+          "d606eb903a8153732650cc93d0919699ae5056282ca1d757dd670974927019d8",
+          "d606eb903a8153732650cc93d0919699ae5056282ca1d757dd670974927019d8"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "final-cost1080-forward-01: off/restored",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-cost1080-forward-01/volume-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-cost1080-forward-01/volume-restored.png",
+        "sha256": [
+          "d606eb903a8153732650cc93d0919699ae5056282ca1d757dd670974927019d8",
+          "d606eb903a8153732650cc93d0919699ae5056282ca1d757dd670974927019d8"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "final-cost1080-forward-01: off/storm-empty",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-cost1080-forward-01/volume-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-cost1080-forward-01/volume-storm-empty.png",
+        "sha256": [
+          "d606eb903a8153732650cc93d0919699ae5056282ca1d757dd670974927019d8",
+          "5b3cefb92ae46af1917e5ad366f6c6021c3c5a7fb397b31d403595311d0abf89"
+        ],
+        "changed_pixels": 458793,
+        "pixels_over_2": 0,
+        "peak_delta": 1,
+        "passed": true
+      },
+      {
+        "case": "final-cost1080-forward-01: fair/moved",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-cost1080-forward-01/volume-fair.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-cost1080-forward-01/volume-moved.png",
+        "sha256": [
+          "175acf63a0ee9df9eb450d91014cd6525eabea7dfbc5987df473562b2439075f",
+          "c4f59bcefa978557d50a3961daf2e3a5c7874c9aedd5eb4cf8f9113016b14e09"
+        ],
+        "changed_pixels": 249980,
+        "pixels_over_2": 228197,
+        "peak_delta": 156,
+        "passed": true
+      },
+      {
+        "case": "final-cost1080-forward-01: moved/rain",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-cost1080-forward-01/volume-moved.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-cost1080-forward-01/volume-rain.png",
+        "sha256": [
+          "c4f59bcefa978557d50a3961daf2e3a5c7874c9aedd5eb4cf8f9113016b14e09",
+          "f991ff848e6d41483844250b0db564414ceb2b82fa548bae11e8187da33a5ec9"
+        ],
+        "changed_pixels": 1936678,
+        "pixels_over_2": 1929675,
+        "peak_delta": 218,
+        "passed": true
+      },
+      {
+        "case": "final-cost1080-forward-01: night/night-held",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-cost1080-forward-01/volume-night.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-cost1080-forward-01/volume-night-held.png",
+        "sha256": [
+          "da276d8aaeb698f6908dbbcb68d4aaef340f6e8f2047a1ec1dbf77de2b4ebb4e",
+          "da276d8aaeb698f6908dbbcb68d4aaef340f6e8f2047a1ec1dbf77de2b4ebb4e"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "final-cost1080-forward-01: reflection-off/reflection-on",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-cost1080-forward-01/volume-reflection-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-cost1080-forward-01/volume-reflection-on.png",
+        "sha256": [
+          "33b3d4025d4ac3d308cf7699390f2629f5b25bd475146037b76f37272d6674ce",
+          "8420291d0ff89f1155b465dd6ed0bd288a7a1740a7f9bc8dbae55df8dbb8dc97"
+        ],
+        "changed_pixels": 3019,
+        "pixels_over_2": 1838,
+        "peak_delta": 87,
+        "passed": true
+      },
+      {
+        "case": "final-old-mobile-01/final-mobile-01: unchanged volume-off.png",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-old-mobile-01/volume-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-mobile-01/volume-off.png",
+        "sha256": [
+          "21c26a4c9e7e4547671d682cf5bb0cd7a99b57f7e74e8479aebac57b4a3916d0",
+          "21c26a4c9e7e4547671d682cf5bb0cd7a99b57f7e74e8479aebac57b4a3916d0"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "final-old-mobile-01/final-mobile-01: unchanged volume-quality1.png",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-old-mobile-01/volume-quality1.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-mobile-01/volume-quality1.png",
+        "sha256": [
+          "4fb76f074c96a0741e7541687b1e02e2684a35fbfbbd571d7e741eafe468cee5",
+          "4fb76f074c96a0741e7541687b1e02e2684a35fbfbbd571d7e741eafe468cee5"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "final-old-mobile-01/final-mobile-01: unchanged volume-quality1-held.png",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-old-mobile-01/volume-quality1-held.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-mobile-01/volume-quality1-held.png",
+        "sha256": [
+          "4fb76f074c96a0741e7541687b1e02e2684a35fbfbbd571d7e741eafe468cee5",
+          "4fb76f074c96a0741e7541687b1e02e2684a35fbfbbd571d7e741eafe468cee5"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "final-old-mobile-01/final-mobile-01: unchanged volume-restored.png",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-old-mobile-01/volume-restored.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-mobile-01/volume-restored.png",
+        "sha256": [
+          "21c26a4c9e7e4547671d682cf5bb0cd7a99b57f7e74e8479aebac57b4a3916d0",
+          "21c26a4c9e7e4547671d682cf5bb0cd7a99b57f7e74e8479aebac57b4a3916d0"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "final-old-mobile-01/final-mobile-01: unchanged volume-cave-cleared.png",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-old-mobile-01/volume-cave-cleared.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-mobile-01/volume-cave-cleared.png",
+        "sha256": [
+          "21c26a4c9e7e4547671d682cf5bb0cd7a99b57f7e74e8479aebac57b4a3916d0",
+          "21c26a4c9e7e4547671d682cf5bb0cd7a99b57f7e74e8479aebac57b4a3916d0"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "storm-softened-forward-01/final-forward-01: unchanged volume-off.png",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/storm-softened-forward-01/volume-off.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-forward-01/volume-off.png",
+        "sha256": [
+          "b944653b6e24b03f69a78dfc07c3006cd0f0e31244031eda0fc927488e7c5d2d",
+          "b944653b6e24b03f69a78dfc07c3006cd0f0e31244031eda0fc927488e7c5d2d"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "storm-softened-forward-01/final-forward-01: unchanged volume-quality1.png",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/storm-softened-forward-01/volume-quality1.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-forward-01/volume-quality1.png",
+        "sha256": [
+          "31790592ea8e99c9acd584e3b0020984e1d20f75c4b5eab0f123e97f4d129fd2",
+          "31790592ea8e99c9acd584e3b0020984e1d20f75c4b5eab0f123e97f4d129fd2"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "storm-softened-forward-01/final-forward-01: unchanged volume-quality1-held.png",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/storm-softened-forward-01/volume-quality1-held.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-forward-01/volume-quality1-held.png",
+        "sha256": [
+          "31790592ea8e99c9acd584e3b0020984e1d20f75c4b5eab0f123e97f4d129fd2",
+          "31790592ea8e99c9acd584e3b0020984e1d20f75c4b5eab0f123e97f4d129fd2"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "storm-softened-forward-01/final-forward-01: unchanged volume-restored.png",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/storm-softened-forward-01/volume-restored.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-forward-01/volume-restored.png",
+        "sha256": [
+          "b944653b6e24b03f69a78dfc07c3006cd0f0e31244031eda0fc927488e7c5d2d",
+          "b944653b6e24b03f69a78dfc07c3006cd0f0e31244031eda0fc927488e7c5d2d"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      },
+      {
+        "case": "storm-softened-forward-01/final-forward-01: unchanged volume-cave-cleared.png",
+        "a": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/storm-softened-forward-01/volume-cave-cleared.png",
+        "b": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-forward-01/volume-cave-cleared.png",
+        "sha256": [
+          "b944653b6e24b03f69a78dfc07c3006cd0f0e31244031eda0fc927488e7c5d2d",
+          "b944653b6e24b03f69a78dfc07c3006cd0f0e31244031eda0fc927488e7c5d2d"
+        ],
+        "changed_pixels": 0,
+        "pixels_over_2": 0,
+        "peak_delta": 0,
+        "passed": true
+      }
+    ]
+  },
+  "accepted": {
+    "runs": 8,
+    "checks": 694,
+    "failures": 0,
+    "captures": 133,
+    "independent_rgb_assertions": 109,
+    "scope": "Gipat original terrain/river and Ingos close-water original geometry; day, night, rain, snow,9/20/35degree camera views; held pixels, empty density, exact cave/disable restoration; native/fallback live quality changes; three repeated resource/owner cycles per volume run."
+  },
+  "cost": {
+    "renderer": "Forward+",
+    "gpu": "NVIDIA GeForce RTX3090",
+    "viewport": [
+      1920,
+      1080
+    ],
+    "samples_per_mode": 60,
+    "rows": [
+      {
+        "case": "cost",
+        "cpu_ms_p50": 0.0920000001788139,
+        "cpu_ms_p95": 0.146999999880791,
+        "gpu_ms_p50": 0.779999971389771,
+        "gpu_ms_p95": 0.814000010490417,
+        "mode": "off",
+        "samples": 60,
+        "viewport": "(1920, 1080)"
+      },
+      {
+        "case": "cost",
+        "cpu_ms_p50": 0.096000000834465,
+        "cpu_ms_p95": 0.184000000357628,
+        "gpu_ms_p50": 1.34899997711182,
+        "gpu_ms_p95": 3.04399991035461,
+        "mode": "1",
+        "samples": 60,
+        "viewport": "(1920, 1080)"
+      },
+      {
+        "case": "cost",
+        "cpu_ms_p50": 0.0939999967813492,
+        "cpu_ms_p95": 0.137999996542931,
+        "gpu_ms_p50": 2.33500003814697,
+        "gpu_ms_p95": 3.5550000667572,
+        "mode": "2",
+        "samples": 60,
+        "viewport": "(1920, 1080)"
+      },
+      {
+        "case": "cost",
+        "cpu_ms_p50": 0.103000000119209,
+        "cpu_ms_p95": 0.136999994516373,
+        "gpu_ms_p50": 4.94600009918213,
+        "gpu_ms_p95": 6.90399980545044,
+        "mode": "3",
+        "samples": 60,
+        "viewport": "(1920, 1080)"
+      }
+    ],
+    "increment_over_off_gpu_ms_p50": {
+      "off": 0.0,
+      "1": 0.569000005722049,
+      "2": 1.555000066757199,
+      "3": 4.166000127792358
+    },
+    "conditions": "One fixed original-zone1 view, active terrain cloud shadows and enhanced-water reflections, fresh private profile then settled shaders, no concurrent engine/import/build processes. GPU timestamps measure this SubViewport; CPU values measure render submission. Root window remains800x600 while the measured SubViewport is1920x1080. These are scene-specific costs, not FPS/device rollout acceptance. Earlier look-development timing is excluded."
+  },
+  "user_feedback": {
+    "source_image": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/user-feedback/cloud-height-shape-20261009.png",
+    "source_sha256": "d72952fd3a30824c057aeec8381e9c53011fccf499ebb8f7a0aee4b65ee96e5f",
+    "request": "Clouds were too low and some shapes strange.",
+    "before_same_camera": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/dense-before-forward-01/volume-quality3.png",
+    "after_same_camera": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-forward-01/volume-quality3.png",
+    "normal_low_camera": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-forward-01/volume-gameplay-pitch9.png",
+    "storm": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-forward-01/volume-rain.png",
+    "night": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/final-forward-01/volume-night.png",
+    "inspection": "Parent independently accepted contrast fair shape and softened storm horizon. Low quarter-resolution wisp softness remains visible; doubling Low ray steps did not materially improve it and was rejected on cost/quality grounds."
+  },
+  "retained_failed_controls": [
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/jitter-forward-01",
+      "reason": "Structured checker/comb patterns despite functional checks; not accepted quality."
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/dense-reference-forward-01",
+      "reason": "Dense integration removes sampling pattern; still pre-feedback low/boxy cloud shape, only a quadrature reference."
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/raised-rounded-forward-01",
+      "reason": "Height improved, long dark rolls and distant shelf still unacceptable."
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/rounded-cumulus-forward-01",
+      "reason": "Intermediate profile, not final preferred morphology."
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/irregular-fade-forward-02",
+      "reason": "Fair shape improved; further contrast pass preferred; storm black-plane edge not accepted."
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/low-reference-forward-01",
+      "reason": "Test-only double Low quadrature; no material visible improvement over quarter-resolution softness, not production."
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/volumetric-clouds-20261009/prototype-mobile-01",
+      "reason": "Native ALPHA scaling/precision failure, corrected separately and gated on old Mobile."
+    }
+  ],
+  "limits": [
+    "Bounded adaptation, not complete R1 parity: reuses existing2D weather noise instead of R1 dedicated weather map, has no temporal reprojection/history, cached solar shadow projection or spherical-atmosphere integration.",
+    "Fixed quadrature is deliberately denser to avoid paused-sky comb patterns; High costs about4.17ms more than Off in the recorded1080p RTX3090 view. Noise creation may add startup cost. No broad performance/device claim.",
+    "Only Linux desktop Vulkan/OpenGL rendered. Constrained-platform policy is code-gated; physical handheld/web/other-platform testing remains open.",
+    "Real Game loading/travel/save owner integration and full cloud3/terrain2 shader composition are parent-owned final-combined-pack checks, not counted here.",
+    "Diagnostic fixtures disable authored perimeter fog to expose sky and use synthetic noon light except actual regional night tables. Close-water Ingos retains the original map edge/art; isolated-reflection shots intentionally use a black background and no cloud sunlight shadow.",
+    "No geometry, weather gameplay, authoritative simulation, original texture assets or default graphics values changed."
+  ]
+}

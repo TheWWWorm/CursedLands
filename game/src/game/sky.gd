@@ -197,9 +197,9 @@ static func light_dir_ei(hour: float) -> Vector3:
 static func update(m: ShaderMaterial, lights: EILights, hour: float, cave: bool, fancy: bool) -> void:
 	if m == null:
 		return
-	var clouds := Gfx.on("gfx_clouds") and not cave
-	if bool(m.get_meta("clouds",false)) != clouds:
-		m.shader.code = Clouds.sky_source(SHADER) if clouds else SHADER
+	var clouds := Clouds.mode() if not cave else 0
+	if int(m.get_meta("clouds",0)) != clouds:
+		m.shader.code = Clouds.sky_source(SHADER) if clouds>0 else SHADER
 		m.set_meta("clouds",clouds)
 	var sky := lights.sample("sky", hour) if lights else Color(0.18, 0.71, 0.85)
 	var amb := lights.sample("ambient", hour) if lights else Color(0.5, 0.53, 0.49)

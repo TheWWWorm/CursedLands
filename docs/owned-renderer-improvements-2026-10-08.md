@@ -4037,9 +4037,9 @@ not a device/FPS acceptance or a default rollout.
 
 ## V5: shared moving clouds and soft sun shadows — 9 October
 
-`gfx_clouds` is optional, default off, on the Weather/effects page. This is a
-bounded two-dimensional cloud-sheet adaptation of R1's sky/atmosphere work,
-not the reference's volumetric raymarch. `clouds.gd` shares one seamless 256²
+`gfx_clouds` is optional, default off, on the Weather/effects page. The first
+checkpoint is retained as Moving layer (value 1), with the volume extension
+below using values 2/3. `clouds.gd` shares one seamless 256²
 mipmapped noise texture between two scales, the sky, sun-shadow projection and
 enhanced water's custom Fresnel reflection. The sheet sits at 160 m and fades
 at grazing angles to preserve authored perimeter fog. No scene draw is added.
@@ -4059,9 +4059,9 @@ and UI preview materials are preserved.
 
 Implementation: `game/src/game/fx/clouds.gd`, `game/src/game/gfx.gd`,
 `game/src/game/sky.gd` and the terrain publication/lifecycle hooks. The option's
-EN/RU/DE metadata was validated and committed with `4a595dc`. Full volumetric
-clouds and physical-device costs remain separate work; localized weather mist
-is implemented in the following V5 section.
+EN/RU/DE metadata was validated and committed with `4a595dc`. The optional
+volume extension follows below; physical-device costs remain separate work.
+Localized weather mist is implemented in the subsequent V5 section.
 
 [Cloud evidence](validation/clouds-2026-10-09.json) records **193 passing checks
 in five final private runs**, with 45 captures. Base and LiA headless policy/
@@ -4094,6 +4094,64 @@ records the baseline failure and **15 passing checks across three backends**:
 a uniform cloud shadow exactly matches reducing only the original sun, while
 ambient/local light and the zero-night-shadow control remain exact. The real
 combined terrain/contact captures are recorded with the subsequent V6 checkpoint.
+
+## V5: optional cloud volumes and camera-height correction — 9 October
+
+The existing **Moving clouds and shadows** row now offers Off, Moving layer,
+Volume: Low and Volume: High. Off remains value/default 0; Moving layer keeps
+value 1 and its prior pixels. Automatic presets do not enable the new modes.
+All four choices and the fallback tooltip are localized in EN/RU/DE and fit
+the existing settings page. No additional row was added.
+
+The new desktop Vulkan path generates periodic 128³ Perlin/Worley shape and
+32³ erosion textures once per active lifetime. Low uses a quarter-resolution
+sky pass, up to 128 view samples and three light samples; High uses a half-
+resolution pass, up to 256 view samples and five light samples. Stable midpoint
+integration replaced failed sparse jitter variants that showed comb/checker
+patterns while paused. Enhanced water uses the same density, phases, lighting
+and storm composite, with up to 85 reflected-ray samples. Solar attenuation
+uses eight density samples per receiver, retaining the 28% sunlight-only limit
+and existing contact-light parity.
+
+The user's low/strange-cloud feedback prompted a raised 2200–5800 m layer,
+separated rounded fair-weather cumulus, denser precipitation types, gradual
+distance thinning and a softer storm horizon. Matched camera/seed/time captures
+and 9°/20°/35° gameplay-pitch views retain the before/after evidence. The
+preferred fair and storm versions were independently inspected. Low retains
+visible quarter-resolution softness in small wisps; doubling its integration
+steps did not materially improve that tradeoff. Original perimeter-fog
+composition still runs after the clouds.
+
+Six wrapped double-precision phases follow existing game time and weather wind.
+Held frames preserve shape, stars and reflections. Disable, sheet selection,
+cave entry and active-owner teardown detach shared texture views and release
+the two backing RIDs; stale owners cannot clear their successor. Compatibility,
+headless and constrained-platform policy retain the sheet. Desktop Mobile also
+requires native capability `ei_sky_subpass_alpha`; older runtimes fall back.
+The separate native checkpoint `57434fc` preserves ALPHA data and conditionally
+uses higher precision only for sky subpasses that need it, retaining all nine
+prior engine patches and the original 0/1 allocations/images.
+
+[Volume evidence](validation/cloud-volumes-2026-10-09.json) records **694 passing
+checks in eight final runs, 109 independent full-RGB assertions and 133 captures**.
+It covers Gipat and close-water Ingos geometry, day/night, rain/snow, isolated
+water reflection, empty density, exact held/cave/off controls, live qualities,
+old Mobile/Compatibility/headless fallbacks and repeated resource ownership.
+The [native receipt](validation/sky-subpass-alpha-2026-10-09.json) separately
+records 168 engine checks and 59 RGB assertions, including ten reproduced
+old-runtime alpha failures and exact ordinary/RGB-only controls.
+
+With a 1920×1080 SubViewport, active shadows and water reflection, one clean
+RTX 3090 Forward+ view measured GPU medians of 0.780 ms off, 1.349 ms sheet,
+2.335 ms Low and 4.946 ms High over 60 settled samples each. These are costs
+for that fixed scene; no device/FPS rollout acceptance follows from them.
+The bounded adaptation reuses existing 2D weather noise and has no temporal
+history/reprojection, cached solar projection or spherical atmosphere. Full
+R1 parity, physical-device acceptance and broader weather/readability coverage
+remain open. Parent-owned final combined-pack composition and actual-Game
+lifecycle checks are separate from these counts. The frozen private bundle is
+`volumetric-clouds-20261009/volume14-native`; all eight production files match
+its export. Installed templates and release packages remain unchanged.
 
 ## V5: bounded local water mist — 9 October
 
@@ -4139,7 +4197,7 @@ camera/figure fixtures are excluded and retained separately.
 The actual-Game integration also verifies visible mist alongside clouds,
 ambient life and the optional camera lens. Full regional routes, froxel artefacts
 outside the sampled shore rays and device costs remain open. This adds local
-weather fog; the separate full volumetric-cloud renderer remains unimplemented.
+weather fog; the optional cloud-volume extension above is a separate bounded adaptation.
 
 ## V3: bounded ambient animals and regional particles — 9 October
 
@@ -4401,8 +4459,10 @@ investigation is recorded in the gameplay handoff.
    Preserve the coastal mean-depth boundary limitation and the mound
    Mobile restoration limitation and construction-cost evidence. No visual effect
    was silently enabled. V3 now has bounded local wildlife/particles with
-   visible-ground placement. V5 has shared clouds, sunlight-only shadows and
-   reflected cloud colour; localized water mist is implemented with the bounded
+   visible-ground placement. V5 now retains the shared sheet and adds optional
+   Low/High cloud volumes, sunlight-only shadows and reflected cloud colour;
+   temporal reconstruction, cached solar projection and device costs remain
+   explicit follow-ups. Localized water mist is implemented with the bounded
    Forward+ adaptation above. Its LiA post-rain motion threshold remains unmet
    in one retained view, without changing the effect to fit the test.
    V6 now projects verified original rock art on steep faces without changing

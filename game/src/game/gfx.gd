@@ -11,6 +11,8 @@ static var _noise_cache := {}
 const Clouds = preload("res://src/game/fx/clouds.gd")
 static var _cloud_owner := 0
 static var _cloud_frame := {"state":Vector4.ZERO,"phases":Vector4.ZERO,"twinkle":Vector2.ZERO}
+static var _cloud_volume_noise: Clouds.VolumeNoise
+static var _cloud_volume_tried := false
 
 
 ## ---------------------------------------------------------------- original lighting
@@ -223,7 +225,7 @@ static func compose(code: String, lit := true, wrap := false) -> String:
 	if lit:
 		extra += VERTEX_LIGHT.replace("WRAP_TERM", _wrap_term(wrap))
 		if on("gfx_clouds"):
-			extra = Clouds.COMMON+Clouds.SHADOW+extra
+			extra = Clouds.common_source()+Clouds.shadow_source()+extra
 			extra = extra.replace("vec3 sun = ei_sun *", "vec3 sun = ei_sun * ei_cloud_sun(p) *")
 		if LocalLightShader.enabled():
 			extra += LocalLightShader.COMMON
@@ -298,7 +300,7 @@ static var _made: Array = []   # [WeakRef(Shader), code, lit, wrap]
 static var _vol_fog := false
 static var _material_mode := -1
 static var _terrain_mode := -1
-static var _cloud_mode := false
+static var _cloud_mode := 0
 static var _specialize_materials := not OS.get_cmdline_user_args().has("--ei-dynamic-material-shader")
 static var _foliage_wind := true
 
@@ -333,7 +335,7 @@ static func _set_vol_fog(v: bool) -> void:
 	var mode := int(on("gfx_materials")) if _specialize_materials else -2
 	var terrain_mode := (int(on("gfx_terrain")) | (int(on("gfx_soft_ground")) << 1) \
 		| (int(on("gfx_weather_surfaces")) << 2)) if _specialize_materials else -2
-	var clouds := on("gfx_clouds")
+	var clouds := Clouds.mode()
 	if v == _vol_fog and mode == _material_mode and terrain_mode == _terrain_mode and clouds == _cloud_mode:
 		return
 	_vol_fog = v
@@ -649,6 +651,12 @@ static func ensure_globals() -> void:
 	RenderingServer.global_shader_parameter_add(&"ei_cloud_phases", RenderingServer.GLOBAL_VAR_TYPE_VEC4, Vector4.ZERO)
 	RenderingServer.global_shader_parameter_add(&"ei_cloud_twinkle", RenderingServer.GLOBAL_VAR_TYPE_VEC2, Vector2.ZERO)
 	RenderingServer.global_shader_parameter_add(&"ei_cloud_noise", RenderingServer.GLOBAL_VAR_TYPE_SAMPLER2D, null)
+	RenderingServer.global_shader_parameter_add(&"ei_cv_shape", RenderingServer.GLOBAL_VAR_TYPE_SAMPLER3D, null)
+	RenderingServer.global_shader_parameter_add(&"ei_cv_detail", RenderingServer.GLOBAL_VAR_TYPE_SAMPLER3D, null)
+	RenderingServer.global_shader_parameter_add(&"ei_cv_weather", RenderingServer.GLOBAL_VAR_TYPE_VEC4, Vector4.ZERO)
+	RenderingServer.global_shader_parameter_add(&"ei_cv_storm", RenderingServer.GLOBAL_VAR_TYPE_VEC4, Vector4.ZERO)
+	for layer in 6:
+		RenderingServer.global_shader_parameter_add(StringName("ei_cv_phase%d"%layer),RenderingServer.GLOBAL_VAR_TYPE_VEC3,Vector3.ZERO)
 	for i in PASS_LIGHTS:
 		RenderingServer.global_shader_parameter_add(StringName("ei_pl%d" % i), RenderingServer.GLOBAL_VAR_TYPE_VEC4, Vector4.ZERO)
 		RenderingServer.global_shader_parameter_add(StringName("ei_plc%d" % i), RenderingServer.GLOBAL_VAR_TYPE_VEC4, Vector4.ZERO)
@@ -668,6 +676,29 @@ static func set_cloud_frame(owner: int, frame: Dictionary) -> void:
 	RenderingServer.global_shader_parameter_set(&"ei_cloud_phases",frame.phases)
 	RenderingServer.global_shader_parameter_set(&"ei_cloud_twinkle",frame.twinkle)
 	RenderingServer.global_shader_parameter_set(&"ei_cloud_noise",noise("clouds",256,0.018,3))
+	if Clouds.mode()>1 and frame.has("volume") and frame.state.w>.5:
+		if not _cloud_volume_tried:
+			_cloud_volume_tried=true;_cloud_volume_noise=Clouds.VolumeNoise.new()
+			if not _cloud_volume_noise.prepare(): _cloud_volume_noise=null
+		if _cloud_volume_noise:
+			RenderingServer.global_shader_parameter_set(&"ei_cv_shape",_cloud_volume_noise.shape)
+			RenderingServer.global_shader_parameter_set(&"ei_cv_detail",_cloud_volume_noise.detail)
+			RenderingServer.global_shader_parameter_set(&"ei_cv_weather",frame.volume.weather)
+			RenderingServer.global_shader_parameter_set(&"ei_cv_storm",frame.volume.storm)
+			for layer in 6:
+				RenderingServer.global_shader_parameter_set(StringName("ei_cv_phase%d"%layer),frame.volume.phases[layer])
+	else:
+		_release_cloud_volume()
+
+
+static func _release_cloud_volume() -> void:
+	if _cloud_volume_noise==null and not _cloud_volume_tried: return
+	if _globals:
+		RenderingServer.global_shader_parameter_set(&"ei_cv_storm",Vector4.ZERO)
+		RenderingServer.global_shader_parameter_set(&"ei_cv_shape",null)
+		RenderingServer.global_shader_parameter_set(&"ei_cv_detail",null)
+	if _cloud_volume_noise: _cloud_volume_noise.release()
+	_cloud_volume_noise=null;_cloud_volume_tried=false
 
 
 static func clear_clouds(owner := 0) -> void:
@@ -675,6 +706,7 @@ static func clear_clouds(owner := 0) -> void:
 	_cloud_owner=0; _cloud_frame={"state":Vector4.ZERO,"phases":Vector4.ZERO,"twinkle":Vector2.ZERO}
 	if _globals:
 		RenderingServer.global_shader_parameter_set(&"ei_cloud_state",Vector4.ZERO)
+	_release_cloud_volume()
 
 
 static func apply_surface_options() -> void:
@@ -686,6 +718,7 @@ static func apply_surface_options() -> void:
 	if not on("gfx_weather_surfaces"):
 		set_surface_weather(0.0, 0.0)
 	if not on("gfx_clouds"): clear_clouds()
+	elif Clouds.mode()<2: _release_cloud_volume()
 
 
 ## Option gfx_sharp_units: the unit texture fetch (EIUnitModel.SHARP_FETCH),
