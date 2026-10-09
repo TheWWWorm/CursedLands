@@ -1,0 +1,795 @@
+{
+  "date": "2026-10-09",
+  "gap": "U26",
+  "status": "Actual menu/ENet rename, returned-progress reconnect and host reload validated; confirmed identity defect fixed.",
+  "baseline_source_commit": "cc78028436df548905873f89fa0d3a1206c91988",
+  "production_baseline_commit": "57e49cb9c57e1a66b4d4aa0f7fb2353597b9d962",
+  "problem": "Ann disconnects with the normally returned co-op progress save. Typing Alice in the original Join co-op panel and choosing that character previously allocated a new player slot and live actor. Reloading the pre-rename host save also retained duplicate name-keyed tallies.",
+  "change": [
+    "Session asks CoopProgress for a proven renamed slot before its normal name/free-slot selection.",
+    "Only one inactive local tally with the exact latest positive SID sequence, an unchanged named roster, and no competing slot owner can migrate to an unused lobby alias. Statistics and name similarity are not identity evidence.",
+    "Loading an older host save remaps its unique matching SID and player index to the currently active alias, retaining the saved stats/purse rollback without resurrecting the old alias."
+  ],
+  "production_files": {
+    "game/src/game/session.gd": "95b5e80ecb04ac5c76a27b40e1d708d50591ec1e49e4f61e0d44fc78a8a01f35",
+    "game/src/game/coop_progress.gd": "70d167771ba4f1791665cae7907c93a21ac4a7fae23fae7ec4a7c1dfefb85c72"
+  },
+  "test_files": {
+    "tools/tests/coop_rename_reconnect.gd": "9857498a4bb0aa284e1183ecbf5c64bf8300ab0f7eb670036465f1bb0a8f6d93",
+    "tools/tests/campaign_roster.gd": "49cce7a4e6aea418f2dd348ce22082fe719e34ca37174c186805b1aa3da4010d"
+  },
+  "private_candidate": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-rename-20261009/candidate01",
+  "export_receipt": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-rename-20261009/candidate01/export.json",
+  "candidate_sha256": {
+    "CPU.x86_64": "769dd027c0b444caca0d5fbbb6014eda80970e991e9f32fdb1f86ec385d20c3e",
+    "CPU.pck": "c22a446a866f9cec30a2a4fb5b636a1451edf026850a27d40b39d338cdf1d160",
+    "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+  },
+  "baseline_sha256": {
+    "CPU.x86_64": "769dd027c0b444caca0d5fbbb6014eda80970e991e9f32fdb1f86ec385d20c3e",
+    "CPU.pck": "ed5456d9423a8934d886a214d8b66234de4be0280ca38d36bc8b40c4b2a881de",
+    "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+  },
+  "route": [
+    "Original NetworkPanel keyboard edits name/address and selects brought character; Enter invokes MainMenu join and actual Session ENet hello/bring RPCs.",
+    "Original HUD Exit confirmation invokes Main.back_to_menu and the normal final returned-progress package.",
+    "Normal host save/load and subsequent zone/state synchronization; Ann -> Alice -> Ally -> Ally while retaining slot and actor.",
+    "KEY_B opens the actual inventory/CampView. Current display/hero names and backing label checked on host and guest before/after reload and repeated reconnect."
+  ],
+  "accepted_check_count": 393,
+  "accepted_failure_count": 0,
+  "accepted_runs": [
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/gameplay-rename-20261009/candidate01/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "gl_compatibility",
+        "--resolution",
+        "1600x900",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/gameplay-rename-20261009/rename_fixture08.gd",
+        "--label=rename-base-after-render-08"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 63.28251315499074,
+      "errors": [],
+      "warnings": [
+        "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet.",
+        "WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.",
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "log_sha256": "b2ec88d9a6231c16790f1da537c1a21440e8f0b2662ee7203333d04bd8158c7e",
+      "label": "rename-base-after-render-08",
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/rename-base-after-render-08.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/rename-base-after-render-08.log",
+      "checks": 145,
+      "failures": 0,
+      "fixture_receipt": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/rename-base-after-render-08/godot/app_userdata/Cursed Lands/rename-receipt.json",
+        "sha256": "3c0801c7073da5afed23af18749e8430b2b67f597209f33c8e17c79bb2b90113"
+      },
+      "captures": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/rename-base-after-render-08/godot/app_userdata/Cursed Lands/rename-alice-guest-overhead.png",
+          "sha256": "3f64fd0ab322bb17cdc4f47a63fc3c71846c42629b46e68d23550b6578d7fc1c"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/rename-base-after-render-08/godot/app_userdata/Cursed Lands/rename-alice-guest-preview.png",
+          "sha256": "6877fff05595ddfb22abadefb4c5e2fea72dde6371c62b842cded22cc09facc4"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/rename-base-after-render-08/godot/app_userdata/Cursed Lands/rename-alice-host-overhead.png",
+          "sha256": "1b1f6189f8b31cf5e0142884a60659582bc4c8857c857b87b8157a2d32f273d4"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/rename-base-after-render-08/godot/app_userdata/Cursed Lands/rename-alice-host-preview.png",
+          "sha256": "0f81e9184bfd744ab732670ed50698a8be9526f035c1dd405783659fa9a7534d"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/rename-base-after-render-08/godot/app_userdata/Cursed Lands/rename-ally-guest-overhead.png",
+          "sha256": "2e5aae737f3d62ac2acf28f2825e7acb8b4400223258aa90798f32d4aa08a91a"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/rename-base-after-render-08/godot/app_userdata/Cursed Lands/rename-ally-guest-preview.png",
+          "sha256": "07ffb4ad5d39114c050e3654cb423b4829d4094836f147ea8a0a7364771b3fc7"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/rename-base-after-render-08/godot/app_userdata/Cursed Lands/rename-ally-host-overhead.png",
+          "sha256": "f7b565ce25cd0ff60b4ca564c4032ddc8846e14ed9c9b091cdbd417a9dd25089"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/rename-base-after-render-08/godot/app_userdata/Cursed Lands/rename-ally-host-preview.png",
+          "sha256": "1555123789614d2efba8312ce3c00c358b6782563dbb691a131886992fe7913f"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/rename-base-after-render-08/godot/app_userdata/Cursed Lands/rename-ann-guest-overhead.png",
+          "sha256": "48807d092b80aac3e5fdc662890e38dc2d4a8228b236072db8de9712c0c59dc5"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/rename-base-after-render-08/godot/app_userdata/Cursed Lands/rename-ann-guest-preview.png",
+          "sha256": "e7a8c045505161c9aaf799ce9f37dc87583179fdc503534d738bd3c7fa7636bc"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/rename-base-after-render-08/godot/app_userdata/Cursed Lands/rename-ann-host-overhead.png",
+          "sha256": "5a840bd4e3864705a5a4e3dcac54348eb102a65f7b751b6bfb11c633fa1d20d1"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/rename-base-after-render-08/godot/app_userdata/Cursed Lands/rename-ann-host-preview.png",
+          "sha256": "25b23e3237c9f1ac5f5d0335c4d6629142dbd9365736526c17a95427d4d6cd76"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/rename-base-after-render-08/godot/app_userdata/Cursed Lands/rename-menu-alice.png",
+          "sha256": "534615e2fdfe9ebe0a006f42c4680abd6a866bec4050f79eacee426fbae6bdc2"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/rename-base-after-render-08/godot/app_userdata/Cursed Lands/rename-menu-ally.png",
+          "sha256": "61090f56b529818b93b340eea2ebf4fc249a1bf9ca67a65347f7002ecd6e3f24"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/rename-base-after-render-08/godot/app_userdata/Cursed Lands/rename-menu-ann.png",
+          "sha256": "3d081b43db2a0a059a7a97b865188b65fee3186a52bcf95ae8ba17caad6bf341"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/rename-base-after-render-08/godot/app_userdata/Cursed Lands/rename-menu-tactive.png",
+          "sha256": "937afb49886b92f440de0501057214b6242ce6a965015a59b487f68534485956"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/rename-base-after-render-08/godot/app_userdata/Cursed Lands/rename-menu-tambiguous.png",
+          "sha256": "3fa90b815bd3abb605d6886964178707482194fef374b9c8651bd31f8d67010d"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/rename-base-after-render-08/godot/app_userdata/Cursed Lands/rename-menu-tfuture.png",
+          "sha256": "c6657b55a7b8d35407dcc1ec9bcaa17734a237f2ebeea21d4848ee584a3b0099"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/rename-base-after-render-08/godot/app_userdata/Cursed Lands/rename-menu-tinvalid.png",
+          "sha256": "fcc1f38731c791da96312a4ce29523cf32b6b25249e94b97328b557e8b5874d5"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/rename-base-after-render-08/godot/app_userdata/Cursed Lands/rename-menu-tstale.png",
+          "sha256": "92744554b4e65c74ffb839ca85ce7d81ca90f5bc1f30ed3438fe025efa94e478"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/rename-base-after-render-08/godot/app_userdata/Cursed Lands/rename-menu-tunrelated.png",
+          "sha256": "2342956d91b3d7eefd7461a417587aac02136bd40f8ab98a3435b59304349055"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/rename-base-after-render-08/godot/app_userdata/Cursed Lands/rename-reload-guest-overhead.png",
+          "sha256": "358177e29b261fae694028a354375637b93e410a25ebc549328ec191db384b86"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/rename-base-after-render-08/godot/app_userdata/Cursed Lands/rename-reload-guest-preview.png",
+          "sha256": "9165ebca39ed75ba7c5f764e62a414d6d0604b08767d1e84f101a5baa40ec2c0"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/rename-base-after-render-08/godot/app_userdata/Cursed Lands/rename-reload-host-overhead.png",
+          "sha256": "8e764d740becbf7e0b6d68217fb3f99e60745dcddc4df30f88a17ebf6b2553e4"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/rename-base-after-render-08/godot/app_userdata/Cursed Lands/rename-reload-host-preview.png",
+          "sha256": "41a7115b799cf913af07ce6ed7f6952e79ddc1703aeb4e45009a331dd206d56a"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/rename-base-after-render-08/godot/app_userdata/Cursed Lands/rename-repeat-guest-overhead.png",
+          "sha256": "eeb4508c2d4a7c6423cef2f60bf93baf4e3fe17c33188de0e6717e16ab7d539f"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/rename-base-after-render-08/godot/app_userdata/Cursed Lands/rename-repeat-guest-preview.png",
+          "sha256": "8d60b4071968385d2bc06baf6c9fc404c4c7d42228e581aace62bb2b43e72315"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/rename-base-after-render-08/godot/app_userdata/Cursed Lands/rename-repeat-host-overhead.png",
+          "sha256": "c80cacb32a717e7b0c40f652880aea0c737c261f521ab279c3e6b653bb02359a"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/rename-base-after-render-08/godot/app_userdata/Cursed Lands/rename-repeat-host-preview.png",
+          "sha256": "c1aa1eb4ba60f967e25679fdc13998336cc1bee1eecd76096ac7f53013f7c28a"
+        }
+      ]
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/gameplay-rename-20261009/candidate01/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/gameplay-rename-20261009/rename_fixture08.gd",
+        "--label=rename-lia-after-08"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 30.288647261011647,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "d45d3d7a980928be44ffbb9b370b5f0aff1478bcfb7d08fb5ed6df25054e48f6",
+      "label": "rename-lia-after-08",
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/rename-lia-after-08.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/rename-lia-after-08.log",
+      "checks": 145,
+      "failures": 0,
+      "fixture_receipt": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/rename-lia-after-08/godot/app_userdata/Cursed Lands/rename-receipt.json",
+        "sha256": "f9a3491dd144fac81de00782e75971d634cd522055af74f513aedcbebcb1837b"
+      },
+      "captures": []
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/gameplay-rename-20261009/candidate01/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/campaign_roster.gd",
+        "--label=rename-roster-base-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 2.304590763989836,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "b26f4f92f61de111c5d12eae7e3c13ddbfadb8b4b8a8280cf541c484b946dbf3",
+      "label": "rename-roster-base-01",
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/rename-roster-base-01.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/rename-roster-base-01.log",
+      "checks": 39,
+      "failures": 0,
+      "captures": []
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/gameplay-rename-20261009/candidate01/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/campaign_roster.gd",
+        "--label=rename-roster-lia-01"
+      ],
+      "exit_code": 0,
+      "stopped": false,
+      "seconds": 2.3045090539962985,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "2695c72a852bdd12585ac64949932f165164e1b68bd076d9c9a8ba497cae0813",
+      "label": "rename-roster-lia-01",
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/rename-roster-lia-01.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/rename-roster-lia-01.log",
+      "checks": 64,
+      "failures": 0,
+      "captures": []
+    }
+  ],
+  "baseline_comparison": {
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/gameplay-rename-20261009/baseline/CPU.x86_64",
+      "--audio-driver",
+      "Dummy",
+      "--render-thread",
+      "safe",
+      "--display-driver",
+      "x11",
+      "--rendering-method",
+      "gl_compatibility",
+      "--resolution",
+      "1600x900",
+      "--windowed",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/gameplay-rename-20261009/rename_fixture08.gd",
+      "--label=rename-base-before-render-08"
+    ],
+    "exit_code": 1,
+    "stopped": false,
+    "seconds": 35.9815753439907,
+    "errors": [],
+    "warnings": [
+      "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet.",
+      "WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.",
+      "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+    ],
+    "log_sha256": "80bcb88060f0967010a88f73cb3b935ab8a363ea8d83d0821865458af3ebdb84",
+    "label": "rename-base-before-render-08",
+    "manifest": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/rename-base-before-render-08.json",
+    "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/rename-base-before-render-08.log",
+    "checks": 53,
+    "failures": 4,
+    "fixture_receipt": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/rename-base-before-render-08/godot/app_userdata/Cursed Lands/rename-receipt.json",
+      "sha256": "3b9fa8694c91d8d9fe14a9feb46f49da4a896edf3c821016723753cb62f91e7c"
+    },
+    "captures": [
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/rename-base-before-render-08/godot/app_userdata/Cursed Lands/rename-alice-guest-overhead.png",
+        "sha256": "9071ae1206fef9fc41059ba922b80e3b688cf1c60dbb13baea0fd0d8590a02db"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/rename-base-before-render-08/godot/app_userdata/Cursed Lands/rename-alice-guest-preview.png",
+        "sha256": "fd69c77ae3e92cd658de42298bc497400ee0dc0bfeb010d38cbda977a5665d3d"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/rename-base-before-render-08/godot/app_userdata/Cursed Lands/rename-alice-host-overhead.png",
+        "sha256": "fc06c80c4f13b4b4427b455d134455a84a50ca724092f46d03d1fe16119c7d55"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/rename-base-before-render-08/godot/app_userdata/Cursed Lands/rename-alice-host-preview.png",
+        "sha256": "d1b1c85eb493fd5f6eecd1d34354ef1a1916826ebc9f4e4578d7ac4a7f8dace6"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/rename-base-before-render-08/godot/app_userdata/Cursed Lands/rename-ann-guest-overhead.png",
+        "sha256": "7cd5b692227c5376bf20a2e27cc30ce32fab0ee1d8de51ea270e35885923f2b8"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/rename-base-before-render-08/godot/app_userdata/Cursed Lands/rename-ann-guest-preview.png",
+        "sha256": "6f21a096d9f03e198c507b54b7d53c1cd9268d0f10a876ecb45450d2941a389b"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/rename-base-before-render-08/godot/app_userdata/Cursed Lands/rename-ann-host-overhead.png",
+        "sha256": "05f8b7eb5d9eeffd29238019f57df12784fd4e90390068adb6bc2126270bdfe5"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/rename-base-before-render-08/godot/app_userdata/Cursed Lands/rename-ann-host-preview.png",
+        "sha256": "d4cee71a9c516e2cd18a9caaa091903d029e50147af3666afe4a18707e0c49c5"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/rename-base-before-render-08/godot/app_userdata/Cursed Lands/rename-menu-alice.png",
+        "sha256": "708df58ab5a033cbd707e5221468d25e0a5f6316f756c9c019c4b1e813a2988e"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/rename-base-before-render-08/godot/app_userdata/Cursed Lands/rename-menu-ann.png",
+        "sha256": "1229572acf612b60394ce1a0925460926144e29239af64fbf63298506ef781d8"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/rename-base-before-render-08/godot/app_userdata/Cursed Lands/rename-reload-guest-overhead.png",
+        "sha256": "ced1571049d1335edb6128a7bb853af30f1ef5c133cd044dd8b25fa88cbac584"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/rename-base-before-render-08/godot/app_userdata/Cursed Lands/rename-reload-guest-preview.png",
+        "sha256": "af972030f81ba143a201e6ef7b839a384aed208948a4714c6c286e82ae4d32ab"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/rename-base-before-render-08/godot/app_userdata/Cursed Lands/rename-reload-host-overhead.png",
+        "sha256": "f4a37248a603829f403ddbdc66bf87094a907793a0674e086bb512bb3d6808c8"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/rename-base-before-render-08/godot/app_userdata/Cursed Lands/rename-reload-host-preview.png",
+        "sha256": "6ed6a2e609da55912f8da03c4c11c23e73d45157391fb894557c196089fc69b9"
+      }
+    ]
+  },
+  "baseline_expected_failures": [
+    "renamed brought character reclaims its existing slot",
+    "renamed reconnect reclaims the same live hero",
+    "renamed reconnect adds no duplicate guest character",
+    "pre-rename host reload retains only the current tally alias"
+  ],
+  "identity_evidence": {
+    "case": "identity",
+    "expected_hero": {
+      "armors": [
+        "hadagan low shirt.wool",
+        "hadagan low pants.wool",
+        "hadagan low boots.wool",
+        "hadagan low gloves.wool"
+      ],
+      "dex": 43.0,
+      "exp": 0.0,
+      "exp_total": 271.0,
+      "int": 59.0,
+      "perks": [
+        "bs1"
+      ],
+      "prototype": "Human Hero",
+      "quick": [],
+      "skills": {
+        "astral": 9.0,
+        "melee": 10.0,
+        "science": 3.0,
+        "sense": 12.0
+      },
+      "spells": [
+        "healing",
+        "eagle_sight"
+      ],
+      "str": 33.0,
+      "weapons": [
+        "cheat dagger.bronze"
+      ]
+    },
+    "expected_purse": {
+      "items": [
+        "rune:e1",
+        "rune:e2"
+      ],
+      "money": 359
+    },
+    "hero_slots_after_controls": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "joiner_keys_after_controls": [
+      "ally",
+      "tactive",
+      "tunrelated",
+      "tambiguous",
+      "tstale",
+      "tfuture",
+      "tinvalid"
+    ],
+    "merged_slot": "coop_rename_host_20261009_150827",
+    "original_slot": 1,
+    "original_uid": 1500000002,
+    "rejoined_slot": 1
+  },
+  "negative_control_evidence": [
+    {
+      "active_original": true,
+      "case": "active",
+      "keys": [
+        "ally",
+        "tactive"
+      ],
+      "new_slot": 2,
+      "original_slot": 1,
+      "original_uid": 1500000002,
+      "sid": "fac4ab8c0121c793"
+    },
+    {
+      "active_original": false,
+      "case": "unrelated",
+      "keys": [
+        "ally",
+        "tactive",
+        "tunrelated"
+      ],
+      "new_slot": 3,
+      "original_slot": 1,
+      "original_uid": 1500000002,
+      "sid": "fac4ab8c0121c793"
+    },
+    {
+      "active_original": false,
+      "case": "ambiguous",
+      "keys": [
+        "ally",
+        "tactive",
+        "tunrelated",
+        "duplicate_fixture",
+        "tambiguous"
+      ],
+      "new_slot": 4,
+      "original_slot": 1,
+      "original_uid": 1500000002,
+      "sid": "fac4ab8c0121c793"
+    },
+    {
+      "active_original": false,
+      "case": "stale",
+      "keys": [
+        "ally",
+        "tactive",
+        "tunrelated",
+        "tambiguous",
+        "tstale"
+      ],
+      "new_slot": 5,
+      "original_slot": 1,
+      "original_uid": 1500000002,
+      "sid": "fac4ab8c0121c793"
+    },
+    {
+      "active_original": false,
+      "case": "future",
+      "keys": [
+        "ally",
+        "tactive",
+        "tunrelated",
+        "tambiguous",
+        "tstale",
+        "tfuture"
+      ],
+      "new_slot": 6,
+      "original_slot": 1,
+      "original_uid": 1500000002,
+      "sid": "fac4ab8c0121c793"
+    },
+    {
+      "active_original": false,
+      "case": "invalid",
+      "keys": [
+        "ally",
+        "tactive",
+        "tunrelated",
+        "tambiguous",
+        "tstale",
+        "tfuture",
+        "tinvalid"
+      ],
+      "new_slot": 7,
+      "original_slot": 1,
+      "original_uid": 1500000002,
+      "sid": "fac4ab8c0121c793"
+    }
+  ],
+  "visual_review": {
+    "captures": 43,
+    "observations": [
+      "Baseline and candidate both render the current Alice text: no new preview-text rendering defect was reproduced. This change fixes the distinct normal-route identity/tally defect.",
+      "Inspected candidate host and guest overhead views, host character preview, guest post-reload preview, and final Ally preview. Names are readable and the original equipment model remains present.",
+      "Guest preview visibly retains 359 money and both original/earned rune icons; private purse assertions pass independently. Host preview shows its own purse because guest selection is a held inspection, not a transfer of ownership."
+    ]
+  },
+  "limits": [
+    "Two independent SceneMultiplayer roots use real loopback ENet in one process, with a temporary third peer for the active-copy control. This is not separate executables, WAN, worker transport or a performance test.",
+    "World simulation, camera and presentation clock/selection are held; prepared earned stats/items are then sent by normal save/package RPC. Host preview inspection selects the guest model without changing its controller; guest preview follows its normal owned character.",
+    "Optional graphics effects are disabled for 1024x768 Compatibility UI captures; LiA validation here is headless.",
+    "A different name using an uncredited original save remains a separately imported character. The new migration deliberately requires the latest normally returned progress token. Existing same-name reconnect behavior is unchanged.",
+    "The unrelated, ambiguous, stale, future and invalid controls intentionally create distinct disposable guest slots; no general ghost-slot cleanup is implemented.",
+    "All profiles/exports are private. Original brought-save bytes and host protagonist are asserted unchanged. No public install, user-provided save or published release was edited.",
+    "U21 actual audio listening was not attempted in this checkpoint; no claim is made from source-event equality.",
+    "This checkpoint does not change package.move or LiA campaign progression eligibility; those user-reported issues are assigned to the parent."
+  ],
+  "retained_prototypes": [
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/gameplay-rename-20261009/baseline/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/gameplay-rename-20261009/rename_fixture01.gd",
+        "--label=rename-base-before-01"
+      ],
+      "exit_code": -15,
+      "stopped": false,
+      "seconds": 59.79955338200671,
+      "errors": [
+        "ERROR: Condition \"p_scene && p_scene->get_parent() != root\" is true.",
+        "ERROR: Node not found: \"/root/Main/@Node@8/RenameHost/Frontend\" (absolute path attempted from \"/root\").",
+        "ERROR: Parameter \"root_node\" is null."
+      ],
+      "warnings": [],
+      "log_sha256": "f1236661f66f3b3c34179f82863faae5af52763c9e876d9e8e3c06b900f77281",
+      "label": "rename-base-before-01",
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/rename-base-before-01.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/rename-base-before-01.log",
+      "captures": [],
+      "disposition": "Invalid initial fixture tried to assign current_scene to a nested Frontend; normal exit then removed the wrong outer owner. Terminated its exact disposable process; not product evidence."
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/gameplay-rename-20261009/baseline/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/gameplay-rename-20261009/rename_fixture02.gd",
+        "--label=rename-base-before-02"
+      ],
+      "exit_code": -11,
+      "stopped": false,
+      "seconds": 2.904561638017185,
+      "errors": [
+        "ERROR: Parent node is busy setting up children, `add_child()` failed. Consider using `add_child.call_deferred(child)` instead.",
+        "ERROR: Cannot get path of node as it is not in a scene tree.",
+        "ERROR: Cannot get path of node as it is not in a scene tree."
+      ],
+      "warnings": [],
+      "log_sha256": "588131ddd14a970e111d9eee5d0287b7b90cf0cf79aca7739fdf76be9a435f79",
+      "label": "rename-base-before-02",
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/rename-base-before-02.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/rename-base-before-02.log",
+      "captures": [],
+      "disposition": "Invalid fixture attached root viewports synchronously during tree setup, emitted errors and exited -11. Deferred initial setup by one frame. No native crash fix is claimed."
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/gameplay-rename-20261009/baseline/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/gameplay-rename-20261009/rename_fixture03.gd",
+        "--label=rename-base-before-03"
+      ],
+      "exit_code": 1,
+      "stopped": false,
+      "seconds": 19.141464982996695,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "081e6b7a71fa7e7e5512101c30c9f4ec8521c8800b922874414577d00010a4f1",
+      "label": "rename-base-before-03",
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/rename-base-before-03.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/rename-base-before-03.log",
+      "checks": 52,
+      "failures": 4,
+      "fixture_receipt": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/rename-base-before-03/godot/app_userdata/Cursed Lands/rename-receipt.json",
+        "sha256": "23b81347a5fe080ac5890728e830a12bea0aff51c93930a3a787ba5135e56057"
+      },
+      "captures": [],
+      "disposition": "Initial identity reproduction: three real identity failures plus a false backing-label failure from queued old labels. Later settled the UI before reading it."
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/gameplay-rename-20261009/baseline/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/gameplay-rename-20261009/rename_fixture04.gd",
+        "--label=rename-base-before-04"
+      ],
+      "exit_code": -15,
+      "stopped": true,
+      "seconds": 1.967297126975609,
+      "errors": [
+        "SCRIPT ERROR: Parse Error: Cannot infer the type of \"roster\" variable because the value doesn't have a set type.",
+        "ERROR: Failed to load script \"/home/llm2x/Documents/EI/local/scratchpad/gameplay-rename-20261009/rename_fixture04.gd\" with error \"Parse error\".",
+        "ERROR: Required object \"rp_child\" is null."
+      ],
+      "warnings": [],
+      "log_sha256": "5be685d40d11a1f63f95af9c06f884f3c936db0c21530dcea93681c88f5e1ac1",
+      "label": "rename-base-before-04",
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/rename-base-before-04.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/rename-base-before-04.log",
+      "captures": [],
+      "disposition": "Fixture parse failure from an untyped inferred roster Array; corrected the declaration. No product run."
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/gameplay-rename-20261009/baseline/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/gameplay-rename-20261009/rename_fixture05.gd",
+        "--label=rename-base-before-05"
+      ],
+      "exit_code": 1,
+      "stopped": false,
+      "seconds": 19.534028675989248,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "099b7eaf1c09ad08c52e104f5456a6c770cbac5cb490e48c06aae0b7f653a7ae",
+      "label": "rename-base-before-05",
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/rename-base-before-05.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/rename-base-before-05.log",
+      "checks": 53,
+      "failures": 4,
+      "fixture_receipt": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/rename-base-before-05/godot/app_userdata/Cursed Lands/rename-receipt.json",
+        "sha256": "26ce3339639cfd4090d730a2b92a0855f2401e457e405033705aa5ea4449068d"
+      },
+      "captures": [],
+      "disposition": "Clean headless baseline reproduction: four expected identity failures. Superseded for visual comparison by the final rendered baseline."
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/gameplay-rename-20261009/candidate01/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/gameplay-rename-20261009/rename_fixture06.gd",
+        "--label=rename-base-after-06"
+      ],
+      "exit_code": 1,
+      "stopped": false,
+      "seconds": 35.17796053100028,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "9220d93d1b788a228b3a9c0e7a50c841bbf8abed838cde18c227ec5b24b18212",
+      "label": "rename-base-after-06",
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/rename-base-after-06.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/rename-base-after-06.log",
+      "checks": 145,
+      "failures": 6,
+      "fixture_receipt": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/rename-base-after-06/godot/app_userdata/Cursed Lands/rename-receipt.json",
+        "sha256": "f467d324df2578b1c3bb1a6c530a2dcd47669a65f1971a1c0c2826eb1376d84e"
+      },
+      "captures": [],
+      "disposition": "All 139 behavior assertions passed; six fixture menu-label assertions failed because Control <case> exceeded the original ten-character name limit. Shortened the fixture names; production unchanged."
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/gameplay-rename-20261009/baseline/CPU.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "gl_compatibility",
+        "--resolution",
+        "1600x900",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/gameplay-rename-20261009/rename_fixture07.gd",
+        "--label=rename-base-before-render-07"
+      ],
+      "exit_code": -15,
+      "stopped": false,
+      "seconds": 115.5575203220069,
+      "errors": [],
+      "warnings": [
+        "WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet.",
+        "WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.",
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "log_sha256": "fe9de30c71ff12f595888920db11b07766fb60a5300b9fd635b4b9dcef9afe74",
+      "label": "rename-base-before-render-07",
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/rename-base-before-render-07.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/rename-base-before-render-07.log",
+      "captures": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/rename-base-before-render-07/godot/app_userdata/Cursed Lands/rename-ann-guest-overhead.png",
+          "sha256": "bda9282bea31b8d2f2a1309e14033bb8c3bbc3bceb8faca565a307572e648518"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/rename-base-before-render-07/godot/app_userdata/Cursed Lands/rename-ann-guest-preview.png",
+          "sha256": "e80c3766ddd0ef0d52174f37f2934ad4635efb3427b0ea352e1dfd213328002c"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/rename-base-before-render-07/godot/app_userdata/Cursed Lands/rename-ann-host-overhead.png",
+          "sha256": "6f787a9cd092f6dff2157e8a15f54606b0842ea13e87f4856f7ebc9f346164da"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/rename-base-before-render-07/godot/app_userdata/Cursed Lands/rename-ann-host-preview.png",
+          "sha256": "599156c3fc82dc7352a1b6c4394cec71ad094bdc6d1e5ba57038462a957bcdc9"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-redesign-20261006/users/rename-base-before-render-07/godot/app_userdata/Cursed Lands/rename-menu-ann.png",
+          "sha256": "890edb51a83ea1ca08c77cd070e6b6ff762dd539314f465e04db7faf9d67ccf8"
+        }
+      ],
+      "disposition": "Stopped the exact disposable process after two fixture host-preview failures: normal command selection correctly pruned a guest-owned actor during capture. Final fixture holds presentation selection and renders one viewport at a time; no product ownership rule changed."
+    }
+  ]
+}

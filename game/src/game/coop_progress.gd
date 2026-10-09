@@ -405,6 +405,42 @@ func _rpc_bring(data: Dictionary) -> void:
 	CampaignState.cap_belt(h, _pending[pid].purse.items)   # the belt's four; extras to its own bag
 
 
+## A changed lobby name may reclaim its own absent character when the
+## brought progress proves the latest package of exactly one host tally.
+## Names, prototype/stats equality and uncredited original saves are not
+## identity proof. An active, stale, ambiguous or replaced slot stays put.
+func renamed_slot(pid: int, player_name: String) -> int:
+	var key := player_name.strip_edges().to_lower()
+	if not session.is_host or key.is_empty() or joiners.has(key) or not _pending.has(pid):
+		return -1
+	var seq: Dictionary = _pending[pid].seq
+	var previous := ""
+	for candidate: String in joiners:
+		var sid := String(joiners[candidate].get("sid", ""))
+		if not sid.is_empty() and seq.has(sid):
+			if not previous.is_empty():
+				return -1
+			previous = candidate
+	if previous.is_empty():
+		return -1
+	var e: Dictionary = joiners[previous]
+	var idx := int(e.get("idx", -1))
+	var current := int(e.get("seq", 0))
+	var roster: Array = session.state.heroes.get(idx, [])
+	if idx <= 0 or current <= 0 or int(seq.get(String(e.sid), -1)) != current \
+			or bool(e.get("active", false)) or session.players_include(idx) or roster.is_empty() \
+			or String(roster[0].get("name", "")).strip_edges().to_lower() != previous:
+		return -1
+	for other: String in joiners:
+		if other != previous and int(joiners[other].get("idx", -1)) == idx:
+			return -1
+	joiners.erase(previous)
+	_sent_hash.erase(previous)
+	e.name = player_name
+	joiners[key] = e
+	return idx
+
+
 ## Host: a player said hello and got slot `idx` (before its hero is made).
 func on_hello(pid: int, idx: int, player_name: String) -> void:
 	if not session.is_host or idx == 0:
@@ -533,6 +569,27 @@ func before_load(_slot: String, next: CampaignState) -> void:
 		return
 	if not joiners.is_empty():
 		_settle()
+	# A save from before a proven rename still uses the old alias. Follow
+	# the unique tally id, so loading it rolls back the same character/bag
+	# without resurrecting a second entry with the former name.
+	for key: String in joiners:
+		var live: Dictionary = joiners[key]
+		if not bool(live.get("active", false)) or saved.has(key):
+			continue
+		var sid := String(live.get("sid", ""))
+		if sid.is_empty():
+			continue
+		var matches := saved.keys().filter(func(k): return saved[k] is Dictionary and String(saved[k].get("sid", "")) == sid)
+		var live_matches := joiners.values().filter(func(e): return String(e.get("sid", "")) == sid)
+		if matches.size() != 1 or live_matches.size() != 1:
+			continue
+		var old: Dictionary = saved[matches[0]]
+		if int(old.get("idx", -1)) != int(live.idx):
+			continue
+		old = old.duplicate(true)
+		old.name = live.name
+		saved.erase(matches[0])
+		saved[key] = old
 	for key in saved:
 		if not joiners.has(key) and saved[key] is Dictionary:
 			var e: Dictionary = (saved[key] as Dictionary).duplicate(true)

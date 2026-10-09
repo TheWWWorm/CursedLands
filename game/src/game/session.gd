@@ -4252,7 +4252,9 @@ func _rpc_hello(player_name: String, hero_class: String, protocol := 0, maps_md5
 	_drop_stale_peer(pid, player_name)
 	if net.refuse(pid, protocol, maps_md5, player_name, pw):
 		return
-	var idx := _player_slot(player_name)
+	var idx := coop.renamed_slot(pid, player_name) if lmp.is_empty() else -1
+	if idx < 0:
+		idx = _player_slot(player_name)
 	var in_game := world != null
 	players[pid] = {"index": idx, "name": player_name, "hero": hero_class, "colour": NetStatus.free_colour(players)}
 	_rpc_players.rpc(players)
