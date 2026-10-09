@@ -290,6 +290,13 @@ func act_with_start(action: String, variant := 1, blend := 0.15) -> float:
 
 
 func _act(action: String, variant: int, blend: float, with_start: bool) -> float:
+	# The village screen owns an idle actor's presentation until it closes.
+	# Ordinary movement, attacks, death and explicit script clips still play.
+	if action == "idle" and _dialogue_active:
+		if _current != _dialogue_clip or not player.is_playing():
+			begin_dialogue(false)
+		if _dialogue_active:
+			return player.get_animation("ei/" + _dialogue_clip).length
 	var clip := ""
 	var requested := code_for(action) if _ACTION_CODE.has(action) else -1
 	var cyc := requested >= 0 and requested & STAGE_CYCLE != 0
@@ -366,6 +373,44 @@ const STAGE_CYCLE := 0x80000000
 const WEAPON_BIT := {"sword": 1, "axe": 2, "dagger": 4, "spear": 8, "hammer": 16, "bow": 32, "crossbow": 64}
 const _ACTION_CODE := {"idle": AC_IDLE, "walk": AC_WALK, "run": AC_RUN, "crawl": AC_WALK,
 	"attack": AC_ATTACK, "cast": AC_CAST, "hit": AC_SUFFER, "death": AC_DEATH}
+
+## Native village607a20: unhuma picks one of four speaking/listening
+## specials; other templates use 1/2. 518fc0 matches only action/modifier,
+## taking the first record, without the combat-state/weapon idle fallback.
+const DIALOGUE_SPEAK := [1, 6, 7, 8]
+const DIALOGUE_LISTEN := [2, 10, 12, 13]
+var _dialogue_active := false
+var _dialogue_clip := ""
+
+
+func dialogue_clip(speaking: bool, special := 0) -> String:
+	if special < 1:
+		special = (DIALOGUE_SPEAK if speaking else DIALOGUE_LISTEN).pick_random() \
+			if template.to_lower() == "unhuma" else 1 if speaking else 2
+	for e: Dictionary in adb:
+		if int(e.code) & 0x3c0000 == AC_SPECIAL and int(e.code) & 0x3fc00000 == special * MOD_1 \
+				and has_anim(e.name):
+			return e.name
+	return ""
+
+
+func begin_dialogue(speaking: bool, special := 0) -> bool:
+	var clip := dialogue_clip(speaking, special)
+	if clip.is_empty() or player == null:
+		end_dialogue()
+		return false
+	_dialogue_active = true
+	_dialogue_clip = clip
+	play(clip, 0.1, true)
+	return true
+
+
+func end_dialogue() -> void:
+	var held := _dialogue_active and _current == _dialogue_clip
+	_dialogue_active = false
+	_dialogue_clip = ""
+	if held:
+		act("idle", 1, 0.1)
 
 static var _adbs := {}
 ## [{name, code, weight, speed}] for this template; empty = no database (old name rules).
@@ -530,6 +575,8 @@ var _resume_clip := ""  # cycle selected together with a movement start
 
 
 func cross(from_st: int, to_st: int, resume: String) -> float:
+	if _dialogue_active and resume == "idle":
+		return 0.0
 	if adb.is_empty() or not _CROSS_TO.has(to_st):
 		return 0.0
 	var clip := pick(weapon_bit() | from_st | AC_CROSS | _CROSS_TO[to_st] * MOD_1)
@@ -544,6 +591,12 @@ func cross(from_st: int, to_st: int, resume: String) -> float:
 
 
 func _process(_dt: float) -> void:
+	# Native callback6023f0 resumes a listening special after each special
+	# finishes. This keeps the Old Dragon in its authored grounded clips
+	# throughout the conversation instead of falling back to flying idle.
+	if _dialogue_active and _current == _dialogue_clip and player and not player.is_playing():
+		begin_dialogue(false)
+		return
 	if _resume != "" and player and not player.is_playing():
 		var r := _resume
 		var clip := _resume_clip

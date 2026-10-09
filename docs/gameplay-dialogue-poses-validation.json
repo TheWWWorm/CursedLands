@@ -1,0 +1,312 @@
+{
+  "date": "2026-10-09",
+  "status": "U44 locally fixed and rendered: original grounded dragon dialogue poses restored on both peers; normal flying idle after dialogue is preserved.",
+  "base_commit": "92d49410414ea8e93e899f992ada4372d7545e3c",
+  "branch": "fix/catacomb-coop-deck",
+  "summary": "DialogPanel now applies each original phrase animation to the speaker and native listening specials to the remaining actors. Unit models retain those specials through ordinary idle/snapshot updates and resume listening after a clip. Closing the dialog releases them.",
+  "original_evidence": {
+    "reference": "The supplied screenshot shows the Dead City Old Dragon during a conversation, standing on the ground.",
+    "actor": "Base bz3g SKD UID1000002518 uses DragonBlueM14 / unmodg at original map location. Its race locomotion2 and prototype altitude7 are flying. Authored cidle is airborne; ubriefing01 through ubriefing05 are grounded.",
+    "native_phrase": "604c50 applies #animation to the speaking actor, or invokes607a20(actor,1,0) for the default. Other actors receive607a20(actor,0,0); skipped dialogue leaves all actors listening.",
+    "native_default": "607a20 uses special1 speaking / special2 listening for nonhuman templates. unhuma random table entries are speaking[1,6,7,8], listening[2,10,12,13], read from base game.exe 0x7410fc/0x74110c. LiA53a750 uses matching tables0x630558/0x630568.",
+    "native_clip": "518fc0 selects the first ADB record matching action mask0x3c0000==0x40000 and modifier mask0x3fc00000==special<<22. It does not use combat-state or weapon idle fallback.",
+    "native_lifetime": "607a20 and explicit phrase animation install callback6023f0, which calls607a20(actor,0,0) on completion.608410 clears the callback and releases actions at the end. This supports grounded conversation, not globally disabling dragon flight."
+  },
+  "reproduction": "With the same original actor, Dr20 phrases and camera, the baseline keeps cidle during dialogue and the dragon is above the top of the authored shot. The candidate plays grounded ubriefing specials in the visible foreground; mesh-bottom checks independently confirm ground placement.",
+  "checks": {
+    "candidate_total": 131,
+    "candidate_failures": 0,
+    "headless_actual_dialogue": 53,
+    "rendered_actual_dialogue": 55,
+    "dialogue_approach_regression": 16,
+    "dialogue_camera_regression": 7,
+    "baseline_headless": 53,
+    "baseline_rendered": 55,
+    "baseline_failures_each": 41
+  },
+  "limits": [
+    "Grounding is scoped to the original dialogue presentation. Normal flying movement, altitude and airborne idle outside dialogue remain original; this does not claim permanent grounded behavior.",
+    "Actual original map, actor, briefings and ENet host/guest branches on Linux. Unrelated simulation is frozen, and fixture advances existing phrases directly. It does not validate pointer input, full quest progression or a complete campaign playthrough.",
+    "Final visual comparison used Forward+ on the local RTX3090. The frozen two-peer test can show a connection-status overlay; this is not network latency/performance evidence.",
+    "Presentation state is local to each peer. No new campaign flags, save schema, network protocol, prototype data or AI orders.",
+    "Disposable profiles and an isolated snapshot only; no user saves, shared export staging, install, publication or platform/performance claim."
+  ],
+  "staging": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009",
+    "baseline": "build (U45 VM fix already applied)",
+    "candidate": "build-dialogue (adds only U44 model/dialogue changes)",
+    "method": "Same isolated game snapshot and existing native extension/runtime; stock Godot export followed by the existing patched fast runtime.",
+    "export_log": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/export-dialogue.log",
+    "export_errors": []
+  },
+  "evidence": [
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/build/CPU.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--ei-inline-host",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/dialogue_poses.gd"
+      ],
+      "exit_code": 1,
+      "seconds": 8.239953288022662,
+      "errors": [],
+      "log_sha256": "72e7998957fbe2719dbcdb4586ec84ba589ba2089f0cfcfac5b495bcfd90c781",
+      "fixture_sha256": "e68289dda88299cbcc691945de363e2fbf16a22a1ddd1b00101566ea3fb0af10",
+      "build_sha256": {
+        "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+        "CPU.pck": "f3136887fc7c36aa2bed8272267fd61d26936bc166e50bf3670f7e910ffe9e77",
+        "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+      },
+      "name": "dialogue-before-final-01",
+      "checks": 53,
+      "failures": 41,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/dialogue-before-final-01.log"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/build-dialogue/CPU.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--ei-inline-host",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/dialogue_poses.gd"
+      ],
+      "exit_code": 0,
+      "seconds": 8.236928277008701,
+      "errors": [],
+      "log_sha256": "8eea0b0d9d3b962b52260c9612e503549bcdb9c51c66b06e05e17764e0549d8e",
+      "fixture_sha256": "e68289dda88299cbcc691945de363e2fbf16a22a1ddd1b00101566ea3fb0af10",
+      "build_sha256": {
+        "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+        "CPU.pck": "f4fb191a43059156fe0030492e2abac92ed55863dbb9d8c3114bc8a91c0e795d",
+        "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+      },
+      "name": "dialogue-after-final-01",
+      "checks": 53,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/dialogue-after-final-01.log"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/build/CPU.x86_64",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--ei-inline-host",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/dialogue_poses.gd"
+      ],
+      "exit_code": 1,
+      "seconds": 25.276505864982028,
+      "errors": [],
+      "log_sha256": "d5e29accf9d5a2679cf071b5127c6fe150704c262c5e080162fc8486307d86ed",
+      "fixture_sha256": "e68289dda88299cbcc691945de363e2fbf16a22a1ddd1b00101566ea3fb0af10",
+      "build_sha256": {
+        "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+        "CPU.pck": "f3136887fc7c36aa2bed8272267fd61d26936bc166e50bf3670f7e910ffe9e77",
+        "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+      },
+      "name": "dialogue-render-before-final-01",
+      "checks": 55,
+      "failures": 41,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/dialogue-render-before-final-01.log"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/build-dialogue/CPU.x86_64",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--ei-inline-host",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/dialogue_poses.gd"
+      ],
+      "exit_code": 0,
+      "seconds": 28.928419972013216,
+      "errors": [],
+      "log_sha256": "6d470261b6e4a39274c8ef66c02a3a8bc89ebd2785e938f93de0bd7027dc8248",
+      "fixture_sha256": "e68289dda88299cbcc691945de363e2fbf16a22a1ddd1b00101566ea3fb0af10",
+      "build_sha256": {
+        "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+        "CPU.pck": "f4fb191a43059156fe0030492e2abac92ed55863dbb9d8c3114bc8a91c0e795d",
+        "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+      },
+      "name": "dialogue-render-after-final-01",
+      "checks": 55,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/dialogue-render-after-final-01.log"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/build-dialogue/CPU.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--ei-inline-host",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/dialogue_approach.gd"
+      ],
+      "exit_code": 0,
+      "seconds": 2.9159872739983257,
+      "errors": [],
+      "log_sha256": "abfee47ab33041433d739a3e50284785551d20aa5776332d16357749eeef6052",
+      "fixture_sha256": "97bfb01d86ba39456118c42510261a364f26d3dedcf8fffbc7b1e12f9170b4c8",
+      "build_sha256": {
+        "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+        "CPU.pck": "f4fb191a43059156fe0030492e2abac92ed55863dbb9d8c3114bc8a91c0e795d",
+        "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+      },
+      "name": "dialogue-staging-regression-01",
+      "checks": 16,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/dialogue-staging-regression-01.log"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/build-healing/CPU.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--ei-inline-host",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/dialog_camera_obstacles.gd"
+      ],
+      "exit_code": 0,
+      "seconds": 1.903692060004687,
+      "errors": [],
+      "log_sha256": "14da43c1cafe52ac6cf5a1d01ff1c63a1e75f7ea5ce11a89b3fbeea483338dc5",
+      "fixture_sha256": "316a64b51899a776cfc2fd11412a8d12bbf5d6a9cfd0569b4886110d5bb6be25",
+      "build_sha256": {
+        "CPU.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+        "CPU.pck": "f2fa5449f0ea81a6dfbd202ac2396007ec45f8ffafce5dbbbd1f2dac4f9936d1",
+        "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+      },
+      "name": "dialog-camera-regression-01",
+      "checks": 7,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/dialog-camera-regression-01.log"
+    }
+  ],
+  "images": [
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/profiles/dialogue-render-before-final-01/godot/app_userdata/Cursed Lands/dragon-dialogue.png",
+      "sha256": "59f423217c538f6bbf9232680ebd70c40449d5859d56ba4c6a67d371c6c630f2",
+      "inspection": "Viewed before and after at native dialogue camera3; after has grounded dragon, before has airborne dragon clipped above the shot."
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/profiles/dialogue-render-after-final-01/godot/app_userdata/Cursed Lands/dragon-dialogue.png",
+      "sha256": "b44c13c32d616d63b8816d4ba1b644355bedbe652a5cdf8fed8c541e86b0199a",
+      "inspection": "Viewed before and after at native dialogue camera3; after has grounded dragon, before has airborne dragon clipped above the shot."
+    }
+  ],
+  "sources": [
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/game/src/ei/unit_model.gd",
+      "sha256": "747e37b28ae267f3a729d172ad95c94cac109f9f606a2764bd9252ad02f7e2f8"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/game/src/ui/dialog_panel.gd",
+      "sha256": "406f7b180d732df6083bc82901efa63e2366386658748cef938a8000f2da005c"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/dialogue_poses.gd",
+      "sha256": "e68289dda88299cbcc691945de363e2fbf16a22a1ddd1b00101566ea3fb0af10"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/inspection/ghidra/decompiled/functions/00204/604c50_FUN_00604c50.c",
+      "sha256": "f568b2e0c7cb1be73b2b9c247f63ba70faee4ca020dd260dd12e08e6160b83d2"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/inspection/ghidra/decompiled/functions/00207/607a20_FUN_00607a20.c",
+      "sha256": "0d4e71e4e2b9b2941503c04c22423a93e5548d5a031a6f5f536dbf82b1212b33"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/inspection/ghidra/decompiled/functions/00118/518fc0_FUN_00518fc0.c",
+      "sha256": "20fbc46dd0f15eca20507d2bf7ce3ca802e877d38fcf7fb27def0b183ef29b8e"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/inspection/ghidra/decompiled/functions/00208/608410_FUN_00608410.c",
+      "sha256": "0f27460d656d77ae35bac2ac4dce339f501878c4f9078a6b5a196c502a724f73"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/lost-in-astral/native/decompiled/functions/0013a/53a750_FUN_0053a750.c",
+      "sha256": "624e95349f1b1cfd888dd4bfc913741ee1b504eb9627cd260cf1756578839af4"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/inspection/extracted/app/game.exe",
+      "sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/inspection/lost-in-astral/game/game.exe",
+      "sha256": "f04a305b77c84ea29c18ad2996d23072ccef1c0c46876c9b93bae4ce9351d1ff"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/dialogue-native-base-tables.txt",
+      "sha256": "14f157df7f8d4f1208ae2fcf57a5dc9388ad7f5fb5c4498bbaedab7c02bc6b79"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/dialogue-native-base-callback.txt",
+      "sha256": "0eb072d0b27e17326ac4344344641871b054f170a3de8b799469f624143cbd48"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/dialogue-native-lia-tables.txt",
+      "sha256": "06bbf80b26f7887e85f4d048369459c792c06628f6101f7b864a19272adbc63c"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-u45-20261009/inspect-dragon-01.log",
+      "sha256": "74659b7a622c7195f88e719d77a3e88dc871b1c0f3f9e19eb25593b9ff10dfc6"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/bug-references/2026-10-09/dead-city-dragon-reference.png",
+      "sha256": "1c4eed4aed891afa65a138e1031514c886e13e68bb7e083a6bafe38ffe1e3e61"
+    }
+  ],
+  "excluded_attempts": [
+    {
+      "names": [
+        "dialogue-before-01",
+        "dialogue-after-01",
+        "dialogue-render-before-01",
+        "dialogue-render-after-01"
+      ],
+      "reason": "Early fixture supplied explicit dragon partner to play_named, which changed original cast order and staged the dragon closer to the hero. Pose checks were useful diagnosis, but resulting hero-focused screenshot is not visual acceptance. Final fixture passes null partner exactly as original Dr20 does."
+    },
+    {
+      "names": [
+        "dialogue-render-after-02",
+        "dialogue-capture-investigation-01"
+      ],
+      "reason": "Capture-selection investigation. The former produced no image because original camera target is offset from actor origin; the latter printed original camera/cast records. Neither counted as final acceptance."
+    }
+  ]
+}

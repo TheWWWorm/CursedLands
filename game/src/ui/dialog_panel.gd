@@ -74,6 +74,7 @@ var _id := ""
 var _brief := ""
 var _cast := {}
 var _hidden_units: Array = []
+var _animated_models: Array = []
 var _hidden_hud: Array = []
 var _timer := 0.0
 var _voiced := false
@@ -174,6 +175,7 @@ func _to800(p: Vector2) -> Vector2:
 # ------------------------------------------------------------------ conversations
 
 func show_briefing(e: Dictionary) -> void:
+	_end_actor_poses()
 	_topics = {}
 	if _topic_list:
 		_topic_list.visible = false
@@ -268,6 +270,7 @@ func _show(quick := false) -> void:
 	var p: Dictionary = _phrases[_i]
 	if not quick:
 		_aim_camera(p)
+		_pose_actors(p, _skipping)
 	_show_items(p.get("shows", []))
 	var who := String(p.get("speaker", ""))
 	var text := String(p.get("text", ""))
@@ -937,6 +940,39 @@ func _layout_shows() -> void:
 
 # ------------------------------------------------------------------ camera / HUD
 
+## Native604c50 applies #animation to the speaker and listening specials
+## to the other actors. Skipping to the end leaves every actor listening.
+## This is local presentation on each peer; it does not replace AI orders.
+func _pose_actors(phrase: Dictionary, listening := false) -> void:
+	var w := hud.game.world
+	if w == null:
+		return
+	var names: Dictionary = _cast.get("names", {})
+	var speaker := -1 if listening else int(names.get(String(phrase.get("actor", "")), -1))
+	var actors: Array = names.values()
+	for k in ["a", "b", "c"]:
+		if _cast.has(k) and not int(_cast[k]) in actors:
+			actors.append(int(_cast[k]))
+	var seen := {}
+	for uid in actors:
+		if seen.has(int(uid)):
+			continue
+		seen[int(uid)] = true
+		var u: GameUnit = w.units.get(int(uid))
+		if u == null or u.dead or u.model == null:
+			continue
+		u.anim_flush()
+		if u.model.begin_dialogue(u.uid == speaker, int(phrase.get("anim", 0)) if u.uid == speaker else 0):
+			if not u.model in _animated_models:
+				_animated_models.append(u.model)
+
+
+func _end_actor_poses() -> void:
+	for m in _animated_models:
+		if is_instance_valid(m):
+			m.end_dialogue()
+	_animated_models.clear()
+
 func _cast_signature() -> String:
 	var out := ""
 	for k in ["a", "b", "c"]:
@@ -992,6 +1028,7 @@ func _hide_hud(on: bool) -> void:
 
 
 func _end_view() -> void:
+	_end_actor_poses()
 	_aimed = {}
 	_show_units()
 	_hide_hud(false)
@@ -1001,6 +1038,7 @@ func _end_view() -> void:
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_PREDELETE:
+		_end_actor_poses()
 		# Before the first conversation this layer has no parent to own it.
 		# Once attached beside the dialog, its normal scene parent owns it.
 		if is_instance_valid(_shows_layer) and _shows_layer.get_parent() == null:
