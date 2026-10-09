@@ -1,0 +1,2312 @@
+{
+  "status": "Scratch shoreline prototype; no production or package adoption.",
+  "sources": {
+    "qualify.py": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/shoreline/qualify.py",
+      "sha256": "b09fa9b2bad320e67b18d62e2fa63b8e416ad97c6e6287a6b37423e08e1fea29"
+    },
+    "prepare.py": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/shoreline/prepare.py",
+      "sha256": "1ec4436561be7f0010915db681af1e1e956668a77dfe472e9c4e523a6d427bc4"
+    },
+    "ground_contact_shader.gd": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/shoreline/ground_contact_shader.gd",
+      "sha256": "f23e2c57bf575b673c64906c30b10e0d75637c832e3c775527dde4f37d19e7d6"
+    },
+    "ground_surface_data.gd": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/shoreline/ground_surface_data.gd",
+      "sha256": "88fe3e52cfe9c72f658c1c66fbe64b5589fe402b95a6903a1af80174004c7ab6"
+    },
+    "ground_contact_shader.diff": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/shoreline/ground_contact_shader.diff",
+      "sha256": "825d9bc2554179d7d1a864e2a384d5b773616e97716fd13b05af918f4c139f7f"
+    },
+    "ground_surface_data.diff": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/shoreline/ground_surface_data.diff",
+      "sha256": "fb6e2736e6b5a0480a89a421ba13787260b4cf822c659d3f3b48d6c1b780c2d0"
+    },
+    "inputs_probe.gd": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/shoreline/inputs_probe.gd",
+      "sha256": "c5fe5ce32d4359a00d9bcb82f3ddd4e492463604b04684e39796c368122a8d31"
+    },
+    "shoreline_probe.gd": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/shoreline/shoreline_probe.gd",
+      "sha256": "dd2d51e64b0ccec79c0c5514cdb3ed6833eee8ecdd388970f997a4670838b833"
+    },
+    "shoreline_scene_probe.gd": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/shoreline/shoreline_scene_probe.gd",
+      "sha256": "2ebcc20a9187536dc0f6d31b725e6a9937c981ee8d7dd50f55c205a8e06f8851"
+    },
+    "ground_contact_relief_scene.gd": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/shoreline/ground_contact_relief_scene.gd",
+      "sha256": "96cb608b6c5e00a00ac7f4a10e754abd4fae1e60930fdb5b2853b7d6cf1a6d06"
+    }
+  },
+  "builds": {
+    "candidate01": {
+      "export": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/shoreline/candidate01/export.json",
+        "sha256": "81506c92cba5ad2b27269254c2d75bce5ad3eb445e09ba7ae65386cfb99376df"
+      },
+      "verified_source_count": 712,
+      "changed_from_qualified_linux": [
+        "src/game/fx/ground_contact_shader.gd",
+        "src/game/fx/ground_surface_data.gd"
+      ],
+      "binary_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e",
+        "CursedLands.pck": "70124883e6281fb520a09d51923068acd3d6d28e395c026d7843ae7b4db3c1f4"
+      }
+    },
+    "candidate02": {
+      "export": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/shoreline/candidate02/export.json",
+        "sha256": "8f7c05b076b6e7ae7b3a94176d79a14db04dee997592a4095f3ed6f5b41006fa"
+      },
+      "verified_source_count": 712,
+      "changed_from_qualified_linux": [
+        "src/game/fx/ground_contact_shader.gd",
+        "src/game/fx/ground_surface_data.gd"
+      ],
+      "binary_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e",
+        "CursedLands.pck": "8560ac7ccb7d29cfe86b9ba84712fe68eff6d8ac390e625b33855bede337645f"
+      }
+    }
+  },
+  "runs": {
+    "full-surface-shoreline-inputs-headless01": {
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-shoreline-inputs-headless01/run.json",
+        "sha256": "99d8f6f33d5df67fb67740974a103de1b8eb5b3cdf93b5a2b6ca97791870faa8"
+      },
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-shoreline-inputs-headless01/run.log",
+        "sha256": "8afd1ff1dcb7ac2ff87a3c181e884ce9f472846846a96a618ceb295cd9803e72"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-shoreline-inputs-headless01/shoreline-inputs.json",
+        "sha256": "0cff64d7070e4b974bbeda205171cf729bb6775d5f00b955b4eadc9d71bfd00e"
+      },
+      "frozen_fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-shoreline-inputs-headless01/tool-source.gd",
+        "sha256": "c5fe5ce32d4359a00d9bcb82f3ddd4e492463604b04684e39796c368122a8d31"
+      },
+      "checks": 81,
+      "failures": 0,
+      "rows": [
+        {
+          "compared_vertices": 110592,
+          "different_adjacent_sector_edge_values": 0,
+          "examples": [],
+          "map": "zone1",
+          "mismatches": 0,
+          "nonzero_vertices": 31945,
+          "texture_bytes": 209088
+        },
+        {
+          "compared_vertices": 36864,
+          "different_adjacent_sector_edge_values": 0,
+          "examples": [],
+          "map": "bz13h",
+          "mismatches": 0,
+          "nonzero_vertices": 514,
+          "texture_bytes": 69696
+        }
+      ],
+      "fixture": null,
+      "errors": [],
+      "warnings": [],
+      "binary_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "70124883e6281fb520a09d51923068acd3d6d28e395c026d7843ae7b4db3c1f4",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "capture_count": 0,
+      "return_code": 0
+    },
+    "full-surface-shoreline-light-forward01": {
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-shoreline-light-forward01/run.json",
+        "sha256": "2d2eec9f468506971ed161a814180ae2c2394119869fdc44b79e18d4d64f40fd"
+      },
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-shoreline-light-forward01/run.log",
+        "sha256": "41da28e7ef299a03a2468f1d000c845252f88f5401c3674f9adfe219534f2ea5"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-shoreline-light-forward01/shoreline-light.json",
+        "sha256": "18e3e6cd8a06b6ff8707c333cd24cd333f34797f58fb304cfb53326f0d1648b0"
+      },
+      "frozen_fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-shoreline-light-forward01/tool-source.gd",
+        "sha256": "e89cb00594917975ef667e8caecb1e9977a019737d1a37ec46d11ff340ace7fd"
+      },
+      "checks": 65,
+      "failures": 20,
+      "rows": [
+        {
+          "0": {
+            "active_pixels": 0,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 64516,
+            "normal_failures": 0,
+            "raster_holes": 0
+          },
+          "5": {
+            "active_pixels": 0,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 64516,
+            "normal_failures": 0,
+            "raster_holes": 0
+          },
+          "7": {
+            "active_pixels": 0,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 64516,
+            "normal_failures": 0,
+            "raster_holes": 0
+          },
+          "label": "original-sun",
+          "materials": false,
+          "native_baked_input_response_pixels": 0,
+          "point": [
+            144.260238647461,
+            86.8762130737305
+          ]
+        },
+        {
+          "0": {
+            "active_pixels": 0,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 64516,
+            "normal_failures": 0,
+            "raster_holes": 0
+          },
+          "5": {
+            "active_pixels": 0,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 64516,
+            "normal_failures": 0,
+            "raster_holes": 0
+          },
+          "7": {
+            "active_pixels": 0,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 64516,
+            "normal_failures": 0,
+            "raster_holes": 0
+          },
+          "label": "enhanced-sun",
+          "materials": true,
+          "native_baked_input_response_pixels": 0,
+          "point": [
+            144.260238647461,
+            86.8762130737305
+          ]
+        },
+        {
+          "0": {
+            "active_pixels": 0,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 64516,
+            "normal_failures": 0,
+            "raster_holes": 0
+          },
+          "5": {
+            "active_pixels": 0,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 64516,
+            "normal_failures": 0,
+            "raster_holes": 0
+          },
+          "7": {
+            "active_pixels": 0,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 64516,
+            "normal_failures": 0,
+            "raster_holes": 0
+          },
+          "label": "original-points",
+          "materials": false,
+          "native_baked_input_response_pixels": 0,
+          "point": [
+            144.260238647461,
+            86.8762130737305
+          ]
+        },
+        {
+          "0": {
+            "active_pixels": 0,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 64516,
+            "normal_failures": 0,
+            "raster_holes": 0
+          },
+          "5": {
+            "active_pixels": 0,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 64516,
+            "normal_failures": 0,
+            "raster_holes": 0
+          },
+          "7": {
+            "active_pixels": 0,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 64516,
+            "normal_failures": 0,
+            "raster_holes": 0
+          },
+          "label": "enhanced-points",
+          "materials": true,
+          "native_baked_input_response_pixels": 0,
+          "point": [
+            144.260238647461,
+            86.8762130737305
+          ]
+        }
+      ],
+      "fixture": null,
+      "errors": [
+        "SHADER ERROR: Unknown identifier in expression: 'probe_dry_diffuse'.",
+        "ERROR: Shader compilation failed.",
+        "FAIL native/contact shoreline shader compiles",
+        "FAIL original-sun non-vacuous active shoreline 0",
+        "FAIL original-sun non-vacuous active shoreline 5",
+        "FAIL original-sun independent native E/k omission changes actual terrain light",
+        "FAIL original-sun non-vacuous active shoreline 7",
+        "SHADER ERROR: Unknown identifier in expression: 'probe_dry_diffuse'.",
+        "ERROR: Shader compilation failed.",
+        "FAIL native/contact shoreline shader compiles",
+        "FAIL enhanced-sun non-vacuous active shoreline 0",
+        "FAIL enhanced-sun non-vacuous active shoreline 5",
+        "FAIL enhanced-sun independent native E/k omission changes actual terrain light",
+        "FAIL enhanced-sun non-vacuous active shoreline 7",
+        "SHADER ERROR: Unknown identifier in expression: 'probe_dry_diffuse'.",
+        "ERROR: Shader compilation failed.",
+        "FAIL native/contact shoreline shader compiles",
+        "FAIL original-points non-vacuous active shoreline 0",
+        "FAIL original-points non-vacuous active shoreline 5",
+        "FAIL original-points independent native E/k omission changes actual terrain light",
+        "FAIL original-points non-vacuous active shoreline 7",
+        "SHADER ERROR: Unknown identifier in expression: 'probe_dry_diffuse'.",
+        "ERROR: Shader compilation failed.",
+        "FAIL native/contact shoreline shader compiles",
+        "FAIL enhanced-points non-vacuous active shoreline 0",
+        "FAIL enhanced-points non-vacuous active shoreline 5",
+        "FAIL enhanced-points independent native E/k omission changes actual terrain light",
+        "FAIL enhanced-points non-vacuous active shoreline 7"
+      ],
+      "warnings": [],
+      "binary_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "70124883e6281fb520a09d51923068acd3d6d28e395c026d7843ae7b4db3c1f4",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "capture_count": 32,
+      "return_code": 1
+    },
+    "full-surface-shoreline-light-forward02": {
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-shoreline-light-forward02/run.json",
+        "sha256": "ffcf41cade70223df78e1249509416b9db798e42fdbd368efa4f6020a0a62b9f"
+      },
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-shoreline-light-forward02/run.log",
+        "sha256": "2a81cc925f6925b0deff8ad76b9e058ff68e6142d3c466b9b1c61be4287b3687"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-shoreline-light-forward02/shoreline-light.json",
+        "sha256": "9d3809427f32c8369bc4ffa9b29b83b8f364ba76a02d02741a2bea7eb3742fe3"
+      },
+      "frozen_fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-shoreline-light-forward02/tool-source.gd",
+        "sha256": "d50379e4965e7385cf24128ec93a0291b592fa08b5a93a077e2d5ace0b865ee7"
+      },
+      "checks": 65,
+      "failures": 4,
+      "rows": [
+        {
+          "0": {
+            "active_pixels": 32308,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 32208,
+            "normal_failures": 0,
+            "raster_holes": 0
+          },
+          "5": {
+            "active_pixels": 32308,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 32208,
+            "normal_failures": 0,
+            "raster_holes": 0
+          },
+          "7": {
+            "active_pixels": 64516,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 0,
+            "normal_failures": 0,
+            "raster_holes": 0
+          },
+          "label": "original-sun",
+          "materials": false,
+          "native_baked_input_response_pixels": 31901,
+          "point": [
+            144.260238647461,
+            86.8762130737305
+          ]
+        },
+        {
+          "0": {
+            "active_pixels": 32308,
+            "component_tolerance": 0.002,
+            "failure_examples": [
+              [
+                127,
+                1
+              ],
+              [
+                149,
+                1
+              ],
+              [
+                139,
+                2
+              ],
+              [
+                102,
+                4
+              ],
+              [
+                145,
+                4
+              ],
+              [
+                154,
+                4
+              ],
+              [
+                140,
+                5
+              ],
+              [
+                76,
+                7
+              ]
+            ],
+            "inactive_pixels": 32208,
+            "normal_failures": 230,
+            "raster_holes": 0
+          },
+          "5": {
+            "active_pixels": 32308,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 32208,
+            "normal_failures": 0,
+            "raster_holes": 0
+          },
+          "7": {
+            "active_pixels": 64516,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 0,
+            "normal_failures": 0,
+            "raster_holes": 0
+          },
+          "label": "enhanced-sun",
+          "materials": true,
+          "native_baked_input_response_pixels": 29620,
+          "point": [
+            144.260238647461,
+            86.8762130737305
+          ]
+        },
+        {
+          "0": {
+            "active_pixels": 32308,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 32208,
+            "normal_failures": 0,
+            "raster_holes": 0
+          },
+          "5": {
+            "active_pixels": 32308,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 32208,
+            "normal_failures": 0,
+            "raster_holes": 0
+          },
+          "7": {
+            "active_pixels": 64516,
+            "component_tolerance": 0.002,
+            "failure_examples": [
+              [
+                23,
+                31
+              ],
+              [
+                143,
+                52
+              ]
+            ],
+            "inactive_pixels": 0,
+            "normal_failures": 2,
+            "raster_holes": 0
+          },
+          "label": "original-points",
+          "materials": false,
+          "native_baked_input_response_pixels": 36569,
+          "point": [
+            144.260238647461,
+            86.8762130737305
+          ]
+        },
+        {
+          "0": {
+            "active_pixels": 32308,
+            "component_tolerance": 0.002,
+            "failure_examples": [
+              [
+                77,
+                1
+              ],
+              [
+                87,
+                2
+              ],
+              [
+                105,
+                3
+              ],
+              [
+                129,
+                3
+              ],
+              [
+                95,
+                4
+              ],
+              [
+                80,
+                5
+              ],
+              [
+                113,
+                5
+              ],
+              [
+                147,
+                5
+              ]
+            ],
+            "inactive_pixels": 32208,
+            "normal_failures": 217,
+            "raster_holes": 0
+          },
+          "5": {
+            "active_pixels": 32308,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 32208,
+            "normal_failures": 0,
+            "raster_holes": 0
+          },
+          "7": {
+            "active_pixels": 64516,
+            "component_tolerance": 0.002,
+            "failure_examples": [
+              [
+                23,
+                31
+              ],
+              [
+                143,
+                52
+              ]
+            ],
+            "inactive_pixels": 0,
+            "normal_failures": 2,
+            "raster_holes": 0
+          },
+          "label": "enhanced-points",
+          "materials": true,
+          "native_baked_input_response_pixels": 36158,
+          "point": [
+            144.260238647461,
+            86.8762130737305
+          ]
+        }
+      ],
+      "fixture": null,
+      "errors": [
+        "FAIL enhanced-sun strict shoreline comparison 0 {\"active_pixels\":32308,\"component_tolerance\":0.002,\"failure_examples\":[[127,1],[149,1],[139,2],[102,4],[145,4],[154,4],[140,5],[76,7]],\"inactive_pixels\":32208,\"normal_failures\":230,\"raster_holes\":0}",
+        "FAIL original-points strict shoreline comparison 7 {\"active_pixels\":64516,\"component_tolerance\":0.002,\"failure_examples\":[[23,31],[143,52]],\"inactive_pixels\":0,\"normal_failures\":2,\"raster_holes\":0}",
+        "FAIL enhanced-points strict shoreline comparison 0 {\"active_pixels\":32308,\"component_tolerance\":0.002,\"failure_examples\":[[77,1],[87,2],[105,3],[129,3],[95,4],[80,5],[113,5],[147,5]],\"inactive_pixels\":32208,\"normal_failures\":217,\"raster_holes\":0}",
+        "FAIL enhanced-points strict shoreline comparison 7 {\"active_pixels\":64516,\"component_tolerance\":0.002,\"failure_examples\":[[23,31],[143,52]],\"inactive_pixels\":0,\"normal_failures\":2,\"raster_holes\":0}"
+      ],
+      "warnings": [],
+      "binary_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "70124883e6281fb520a09d51923068acd3d6d28e395c026d7843ae7b4db3c1f4",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "capture_count": 32,
+      "return_code": 1
+    },
+    "full-surface-shoreline-light-baseline01": {
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-shoreline-light-baseline01/run.json",
+        "sha256": "165c4acb4c06cc7d28691da06d52ebaf70c6a680b2ddfe1aa293c450ed8abd60"
+      },
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-shoreline-light-baseline01/run.log",
+        "sha256": "81d26a385b312277a11109ddeb3772e2370456311ef19c8f88ec6694232bd07a"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-shoreline-light-baseline01/shoreline-light.json",
+        "sha256": "6831a467df9fee1c3faf6afcd42fc8014fc2af5ef337165bad542cb003052538"
+      },
+      "frozen_fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-shoreline-light-baseline01/tool-source.gd",
+        "sha256": "dd2d51e64b0ccec79c0c5514cdb3ed6833eee8ecdd388970f997a4670838b833"
+      },
+      "checks": 65,
+      "failures": 12,
+      "rows": [
+        {
+          "0": {
+            "active_pixels": 32308,
+            "component_tolerance": 0.002,
+            "failure_examples": [
+              [
+                134,
+                1
+              ],
+              [
+                135,
+                1
+              ],
+              [
+                136,
+                1
+              ],
+              [
+                137,
+                1
+              ],
+              [
+                138,
+                1
+              ],
+              [
+                139,
+                1
+              ],
+              [
+                140,
+                1
+              ],
+              [
+                141,
+                1
+              ]
+            ],
+            "inactive_pixels": 32208,
+            "normal_failures": 5596,
+            "raster_holes": 0
+          },
+          "5": {
+            "active_pixels": 32308,
+            "component_tolerance": 1e-05,
+            "failure_examples": [
+              [
+                127,
+                1
+              ],
+              [
+                128,
+                1
+              ],
+              [
+                129,
+                1
+              ],
+              [
+                130,
+                1
+              ],
+              [
+                131,
+                1
+              ],
+              [
+                132,
+                1
+              ],
+              [
+                133,
+                1
+              ],
+              [
+                134,
+                1
+              ]
+            ],
+            "inactive_pixels": 32208,
+            "normal_failures": 6899,
+            "raster_holes": 0
+          },
+          "7": {
+            "active_pixels": 64516,
+            "component_tolerance": 1e-07,
+            "failure_examples": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                1
+              ],
+              [
+                3,
+                1
+              ],
+              [
+                4,
+                1
+              ],
+              [
+                5,
+                1
+              ],
+              [
+                6,
+                1
+              ],
+              [
+                7,
+                1
+              ],
+              [
+                8,
+                1
+              ]
+            ],
+            "inactive_pixels": 0,
+            "normal_failures": 64516,
+            "raster_holes": 0
+          },
+          "label": "original-sun",
+          "materials": false,
+          "native_baked_input_response_pixels": 31901,
+          "point": [
+            144.260238647461,
+            86.8762130737305
+          ]
+        },
+        {
+          "0": {
+            "active_pixels": 32308,
+            "component_tolerance": 0.002,
+            "failure_examples": [
+              [
+                127,
+                1
+              ],
+              [
+                134,
+                1
+              ],
+              [
+                137,
+                1
+              ],
+              [
+                138,
+                1
+              ],
+              [
+                139,
+                1
+              ],
+              [
+                140,
+                1
+              ],
+              [
+                141,
+                1
+              ],
+              [
+                144,
+                1
+              ]
+            ],
+            "inactive_pixels": 32208,
+            "normal_failures": 5698,
+            "raster_holes": 0
+          },
+          "5": {
+            "active_pixels": 32308,
+            "component_tolerance": 1e-05,
+            "failure_examples": [
+              [
+                127,
+                1
+              ],
+              [
+                128,
+                1
+              ],
+              [
+                129,
+                1
+              ],
+              [
+                130,
+                1
+              ],
+              [
+                131,
+                1
+              ],
+              [
+                132,
+                1
+              ],
+              [
+                133,
+                1
+              ],
+              [
+                134,
+                1
+              ]
+            ],
+            "inactive_pixels": 32208,
+            "normal_failures": 6899,
+            "raster_holes": 0
+          },
+          "7": {
+            "active_pixels": 64516,
+            "component_tolerance": 1e-07,
+            "failure_examples": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                1
+              ],
+              [
+                3,
+                1
+              ],
+              [
+                4,
+                1
+              ],
+              [
+                5,
+                1
+              ],
+              [
+                6,
+                1
+              ],
+              [
+                7,
+                1
+              ],
+              [
+                8,
+                1
+              ]
+            ],
+            "inactive_pixels": 0,
+            "normal_failures": 64516,
+            "raster_holes": 0
+          },
+          "label": "enhanced-sun",
+          "materials": true,
+          "native_baked_input_response_pixels": 29620,
+          "point": [
+            144.260238647461,
+            86.8762130737305
+          ]
+        },
+        {
+          "0": {
+            "active_pixels": 32308,
+            "component_tolerance": 0.002,
+            "failure_examples": [
+              [
+                132,
+                1
+              ],
+              [
+                133,
+                1
+              ],
+              [
+                134,
+                1
+              ],
+              [
+                135,
+                1
+              ],
+              [
+                136,
+                1
+              ],
+              [
+                137,
+                1
+              ],
+              [
+                138,
+                1
+              ],
+              [
+                139,
+                1
+              ]
+            ],
+            "inactive_pixels": 32208,
+            "normal_failures": 6375,
+            "raster_holes": 0
+          },
+          "5": {
+            "active_pixels": 32308,
+            "component_tolerance": 1e-05,
+            "failure_examples": [
+              [
+                127,
+                1
+              ],
+              [
+                128,
+                1
+              ],
+              [
+                129,
+                1
+              ],
+              [
+                130,
+                1
+              ],
+              [
+                131,
+                1
+              ],
+              [
+                132,
+                1
+              ],
+              [
+                133,
+                1
+              ],
+              [
+                134,
+                1
+              ]
+            ],
+            "inactive_pixels": 32208,
+            "normal_failures": 6899,
+            "raster_holes": 0
+          },
+          "7": {
+            "active_pixels": 64516,
+            "component_tolerance": 1e-07,
+            "failure_examples": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                1
+              ],
+              [
+                3,
+                1
+              ],
+              [
+                4,
+                1
+              ],
+              [
+                5,
+                1
+              ],
+              [
+                6,
+                1
+              ],
+              [
+                7,
+                1
+              ],
+              [
+                8,
+                1
+              ]
+            ],
+            "inactive_pixels": 0,
+            "normal_failures": 64516,
+            "raster_holes": 0
+          },
+          "label": "original-points",
+          "materials": false,
+          "native_baked_input_response_pixels": 36569,
+          "point": [
+            144.260238647461,
+            86.8762130737305
+          ]
+        },
+        {
+          "0": {
+            "active_pixels": 32308,
+            "component_tolerance": 0.002,
+            "failure_examples": [
+              [
+                77,
+                1
+              ],
+              [
+                131,
+                1
+              ],
+              [
+                132,
+                1
+              ],
+              [
+                133,
+                1
+              ],
+              [
+                135,
+                1
+              ],
+              [
+                136,
+                1
+              ],
+              [
+                137,
+                1
+              ],
+              [
+                138,
+                1
+              ]
+            ],
+            "inactive_pixels": 32208,
+            "normal_failures": 6595,
+            "raster_holes": 0
+          },
+          "5": {
+            "active_pixels": 32308,
+            "component_tolerance": 1e-05,
+            "failure_examples": [
+              [
+                127,
+                1
+              ],
+              [
+                128,
+                1
+              ],
+              [
+                129,
+                1
+              ],
+              [
+                130,
+                1
+              ],
+              [
+                131,
+                1
+              ],
+              [
+                132,
+                1
+              ],
+              [
+                133,
+                1
+              ],
+              [
+                134,
+                1
+              ]
+            ],
+            "inactive_pixels": 32208,
+            "normal_failures": 6899,
+            "raster_holes": 0
+          },
+          "7": {
+            "active_pixels": 64516,
+            "component_tolerance": 1e-07,
+            "failure_examples": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                1
+              ],
+              [
+                3,
+                1
+              ],
+              [
+                4,
+                1
+              ],
+              [
+                5,
+                1
+              ],
+              [
+                6,
+                1
+              ],
+              [
+                7,
+                1
+              ],
+              [
+                8,
+                1
+              ]
+            ],
+            "inactive_pixels": 0,
+            "normal_failures": 64516,
+            "raster_holes": 0
+          },
+          "label": "enhanced-points",
+          "materials": true,
+          "native_baked_input_response_pixels": 36158,
+          "point": [
+            144.260238647461,
+            86.8762130737305
+          ]
+        }
+      ],
+      "fixture": null,
+      "errors": [
+        "FAIL original-sun strict shoreline comparison 0 {\"active_pixels\":32308,\"component_tolerance\":0.002,\"failure_examples\":[[134,1],[135,1],[136,1],[137,1],[138,1],[139,1],[140,1],[141,1]],\"inactive_pixels\":32208,\"normal_failures\":5596,\"raster_holes\":0}",
+        "FAIL original-sun strict shoreline comparison 5 {\"active_pixels\":32308,\"component_tolerance\":0.00001,\"failure_examples\":[[127,1],[128,1],[129,1],[130,1],[131,1],[132,1],[133,1],[134,1]],\"inactive_pixels\":32208,\"normal_failures\":6899,\"raster_holes\":0}",
+        "FAIL original-sun strict shoreline comparison 7 {\"active_pixels\":64516,\"component_tolerance\":0.0000001,\"failure_examples\":[[1,1],[2,1],[3,1],[4,1],[5,1],[6,1],[7,1],[8,1]],\"inactive_pixels\":0,\"normal_failures\":64516,\"raster_holes\":0}",
+        "FAIL enhanced-sun strict shoreline comparison 0 {\"active_pixels\":32308,\"component_tolerance\":0.002,\"failure_examples\":[[127,1],[134,1],[137,1],[138,1],[139,1],[140,1],[141,1],[144,1]],\"inactive_pixels\":32208,\"normal_failures\":5698,\"raster_holes\":0}",
+        "FAIL enhanced-sun strict shoreline comparison 5 {\"active_pixels\":32308,\"component_tolerance\":0.00001,\"failure_examples\":[[127,1],[128,1],[129,1],[130,1],[131,1],[132,1],[133,1],[134,1]],\"inactive_pixels\":32208,\"normal_failures\":6899,\"raster_holes\":0}",
+        "FAIL enhanced-sun strict shoreline comparison 7 {\"active_pixels\":64516,\"component_tolerance\":0.0000001,\"failure_examples\":[[1,1],[2,1],[3,1],[4,1],[5,1],[6,1],[7,1],[8,1]],\"inactive_pixels\":0,\"normal_failures\":64516,\"raster_holes\":0}",
+        "FAIL original-points strict shoreline comparison 0 {\"active_pixels\":32308,\"component_tolerance\":0.002,\"failure_examples\":[[132,1],[133,1],[134,1],[135,1],[136,1],[137,1],[138,1],[139,1]],\"inactive_pixels\":32208,\"normal_failures\":6375,\"raster_holes\":0}",
+        "FAIL original-points strict shoreline comparison 5 {\"active_pixels\":32308,\"component_tolerance\":0.00001,\"failure_examples\":[[127,1],[128,1],[129,1],[130,1],[131,1],[132,1],[133,1],[134,1]],\"inactive_pixels\":32208,\"normal_failures\":6899,\"raster_holes\":0}",
+        "FAIL original-points strict shoreline comparison 7 {\"active_pixels\":64516,\"component_tolerance\":0.0000001,\"failure_examples\":[[1,1],[2,1],[3,1],[4,1],[5,1],[6,1],[7,1],[8,1]],\"inactive_pixels\":0,\"normal_failures\":64516,\"raster_holes\":0}",
+        "FAIL enhanced-points strict shoreline comparison 0 {\"active_pixels\":32308,\"component_tolerance\":0.002,\"failure_examples\":[[77,1],[131,1],[132,1],[133,1],[135,1],[136,1],[137,1],[138,1]],\"inactive_pixels\":32208,\"normal_failures\":6595,\"raster_holes\":0}",
+        "FAIL enhanced-points strict shoreline comparison 5 {\"active_pixels\":32308,\"component_tolerance\":0.00001,\"failure_examples\":[[127,1],[128,1],[129,1],[130,1],[131,1],[132,1],[133,1],[134,1]],\"inactive_pixels\":32208,\"normal_failures\":6899,\"raster_holes\":0}",
+        "FAIL enhanced-points strict shoreline comparison 7 {\"active_pixels\":64516,\"component_tolerance\":0.0000001,\"failure_examples\":[[1,1],[2,1],[3,1],[4,1],[5,1],[6,1],[7,1],[8,1]],\"inactive_pixels\":0,\"normal_failures\":64516,\"raster_holes\":0}"
+      ],
+      "warnings": [],
+      "binary_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "9e34d5a8af341ae7ead4489f1025c76fdca28a8b8cc3ad06d3afb0c20fb1f5a2",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "capture_count": 32,
+      "return_code": 1
+    },
+    "full-surface-shoreline-light-forward03": {
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-shoreline-light-forward03/run.json",
+        "sha256": "835cdead7d0553963f7cf694b2e348e30cba730d5db66ee45b063df448f36581"
+      },
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-shoreline-light-forward03/run.log",
+        "sha256": "43952d4e2f5c7b554948b826a00f0f921924d045120a37c9fd7adf34c411962f"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-shoreline-light-forward03/shoreline-light.json",
+        "sha256": "4b756673a4c9fa0a58a709a37f98670cbb258626065293fa52d61243122f2f87"
+      },
+      "frozen_fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-shoreline-light-forward03/tool-source.gd",
+        "sha256": "dd2d51e64b0ccec79c0c5514cdb3ed6833eee8ecdd388970f997a4670838b833"
+      },
+      "checks": 65,
+      "failures": 2,
+      "rows": [
+        {
+          "0": {
+            "active_pixels": 32308,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 32208,
+            "normal_failures": 0,
+            "raster_holes": 0
+          },
+          "5": {
+            "active_pixels": 32308,
+            "component_tolerance": 1e-05,
+            "failure_examples": [],
+            "inactive_pixels": 32208,
+            "normal_failures": 0,
+            "raster_holes": 0
+          },
+          "7": {
+            "active_pixels": 64516,
+            "component_tolerance": 1e-07,
+            "failure_examples": [],
+            "inactive_pixels": 0,
+            "normal_failures": 0,
+            "raster_holes": 0
+          },
+          "label": "original-sun",
+          "materials": false,
+          "native_baked_input_response_pixels": 31901,
+          "point": [
+            144.260238647461,
+            86.8762130737305
+          ]
+        },
+        {
+          "0": {
+            "active_pixels": 32308,
+            "component_tolerance": 0.002,
+            "failure_examples": [
+              [
+                127,
+                1
+              ],
+              [
+                149,
+                1
+              ],
+              [
+                139,
+                2
+              ],
+              [
+                102,
+                4
+              ],
+              [
+                145,
+                4
+              ],
+              [
+                154,
+                4
+              ],
+              [
+                140,
+                5
+              ],
+              [
+                76,
+                7
+              ]
+            ],
+            "inactive_pixels": 32208,
+            "normal_failures": 230,
+            "raster_holes": 0
+          },
+          "5": {
+            "active_pixels": 32308,
+            "component_tolerance": 1e-05,
+            "failure_examples": [],
+            "inactive_pixels": 32208,
+            "normal_failures": 0,
+            "raster_holes": 0
+          },
+          "7": {
+            "active_pixels": 64516,
+            "component_tolerance": 1e-07,
+            "failure_examples": [],
+            "inactive_pixels": 0,
+            "normal_failures": 0,
+            "raster_holes": 0
+          },
+          "label": "enhanced-sun",
+          "materials": true,
+          "native_baked_input_response_pixels": 29620,
+          "point": [
+            144.260238647461,
+            86.8762130737305
+          ]
+        },
+        {
+          "0": {
+            "active_pixels": 32308,
+            "component_tolerance": 0.002,
+            "failure_examples": [],
+            "inactive_pixels": 32208,
+            "normal_failures": 0,
+            "raster_holes": 0
+          },
+          "5": {
+            "active_pixels": 32308,
+            "component_tolerance": 1e-05,
+            "failure_examples": [],
+            "inactive_pixels": 32208,
+            "normal_failures": 0,
+            "raster_holes": 0
+          },
+          "7": {
+            "active_pixels": 64516,
+            "component_tolerance": 1e-07,
+            "failure_examples": [],
+            "inactive_pixels": 0,
+            "normal_failures": 0,
+            "raster_holes": 0
+          },
+          "label": "original-points",
+          "materials": false,
+          "native_baked_input_response_pixels": 36569,
+          "point": [
+            144.260238647461,
+            86.8762130737305
+          ]
+        },
+        {
+          "0": {
+            "active_pixels": 32308,
+            "component_tolerance": 0.002,
+            "failure_examples": [
+              [
+                77,
+                1
+              ],
+              [
+                87,
+                2
+              ],
+              [
+                105,
+                3
+              ],
+              [
+                129,
+                3
+              ],
+              [
+                95,
+                4
+              ],
+              [
+                80,
+                5
+              ],
+              [
+                113,
+                5
+              ],
+              [
+                147,
+                5
+              ]
+            ],
+            "inactive_pixels": 32208,
+            "normal_failures": 217,
+            "raster_holes": 0
+          },
+          "5": {
+            "active_pixels": 32308,
+            "component_tolerance": 1e-05,
+            "failure_examples": [],
+            "inactive_pixels": 32208,
+            "normal_failures": 0,
+            "raster_holes": 0
+          },
+          "7": {
+            "active_pixels": 64516,
+            "component_tolerance": 1e-07,
+            "failure_examples": [],
+            "inactive_pixels": 0,
+            "normal_failures": 0,
+            "raster_holes": 0
+          },
+          "label": "enhanced-points",
+          "materials": true,
+          "native_baked_input_response_pixels": 36158,
+          "point": [
+            144.260238647461,
+            86.8762130737305
+          ]
+        }
+      ],
+      "fixture": null,
+      "errors": [
+        "FAIL enhanced-sun strict shoreline comparison 0 {\"active_pixels\":32308,\"component_tolerance\":0.002,\"failure_examples\":[[127,1],[149,1],[139,2],[102,4],[145,4],[154,4],[140,5],[76,7]],\"inactive_pixels\":32208,\"normal_failures\":230,\"raster_holes\":0}",
+        "FAIL enhanced-points strict shoreline comparison 0 {\"active_pixels\":32308,\"component_tolerance\":0.002,\"failure_examples\":[[77,1],[87,2],[105,3],[129,3],[95,4],[80,5],[113,5],[147,5]],\"inactive_pixels\":32208,\"normal_failures\":217,\"raster_holes\":0}"
+      ],
+      "warnings": [],
+      "binary_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "8560ac7ccb7d29cfe86b9ba84712fe68eff6d8ac390e625b33855bede337645f",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "capture_count": 32,
+      "return_code": 1
+    },
+    "full-surface-shoreline-scene-forward01": {
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-shoreline-scene-forward01/run.json",
+        "sha256": "5540b7a1486518c2d2565d5b86a53bdde5db09730d9b6e67443eb50a8f153b8a"
+      },
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-shoreline-scene-forward01/run.log",
+        "sha256": "96c2b42d7772f7213741c6b1adde7d891b03ceae4dc295cd2adeb22f14bf2ea7"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-shoreline-scene-forward01/ground-contact-relief-scene.json",
+        "sha256": "bade99b16d96971f9fff70ea66ff68bba187a31bce596adc583238819f88b69b"
+      },
+      "frozen_fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-shoreline-scene-forward01/tool-source.gd",
+        "sha256": "3c29d91163e1f55804a465db31beabf43dbca834f9e25853df9b2e41c77b4c9e"
+      },
+      "checks": 72,
+      "failures": 1,
+      "rows": [
+        {
+          "band": {
+            "changed_pixels": 13257,
+            "mean_byte_delta": 9.28949226522883,
+            "over_two_bytes": 9363,
+            "peak_byte_delta": 32,
+            "pixels": 15579
+          },
+          "held": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 480000
+          },
+          "light": "sun",
+          "outside_band": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 464421
+          },
+          "restored": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 480000
+          },
+          "upper": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 93206
+          }
+        },
+        {
+          "band": {
+            "changed_pixels": 685,
+            "mean_byte_delta": 0.0906990179087233,
+            "over_two_bytes": 229,
+            "peak_byte_delta": 4,
+            "pixels": 15579
+          },
+          "light": "shore-inputs-sun",
+          "outside_band": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 464421
+          },
+          "scope": "Ablates only copied-ground packed vertex E/k; native object/terrain data and all shader code unchanged."
+        },
+        {
+          "band": {
+            "changed_pixels": 11671,
+            "mean_byte_delta": 7.15899608447269,
+            "over_two_bytes": 8356,
+            "peak_byte_delta": 22,
+            "pixels": 15579
+          },
+          "held": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 480000
+          },
+          "light": "packed-point",
+          "outside_band": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 464421
+          },
+          "restored": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 480000
+          },
+          "upper": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 93206
+          }
+        },
+        {
+          "band": {
+            "changed_pixels": 668,
+            "mean_byte_delta": 0.0693240901213172,
+            "over_two_bytes": 18,
+            "peak_byte_delta": 3,
+            "pixels": 15579
+          },
+          "light": "shore-inputs-packed-point",
+          "outside_band": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 464421
+          },
+          "scope": "Ablates only copied-ground packed vertex E/k; native object/terrain data and all shader code unchanged."
+        },
+        {
+          "band": {
+            "changed_pixels": 10417,
+            "mean_byte_delta": 2.22562423775595,
+            "over_two_bytes": 4770,
+            "peak_byte_delta": 12,
+            "pixels": 15579
+          },
+          "held": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 480000
+          },
+          "light": "local-light",
+          "light_contribution": {
+            "changed_pixels": 8819,
+            "mean_byte_delta": 3.86924706335452,
+            "over_two_bytes": 6658,
+            "peak_byte_delta": 18,
+            "pixels": 15579
+          },
+          "outside_band": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 464421
+          },
+          "restored": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 480000
+          },
+          "upper": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 93206
+          }
+        },
+        {
+          "band": {
+            "changed_pixels": 117,
+            "mean_byte_delta": 0.00751010976314269,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 1,
+            "pixels": 15579
+          },
+          "light": "shore-inputs-local-light",
+          "outside_band": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 464421
+          },
+          "scope": "Ablates only copied-ground packed vertex E/k; native object/terrain data and all shader code unchanged."
+        }
+      ],
+      "fixture": {
+        "anchor": "(144.2602, 5.9647, -86.87621)",
+        "anchor_witness": {
+          "E": [
+            0,
+            0,
+            0
+          ],
+          "alpha_bytes": [
+            49,
+            0,
+            7
+          ],
+          "liquid_plane_crossing": false,
+          "margin_over_cell_water": 0.206113815307617,
+          "native_interpolated_k": 0.110131070017815,
+          "native_triangle": 1473,
+          "original_materials": true,
+          "sector": [
+            4,
+            2
+          ]
+        },
+        "camera": "[X: (0.8, 0.0, -0.6), Y: (-0.172409, 0.957826, -0.229879), Z: (0.574695, 0.287348, 0.766261), O: (149.6602, 9.5647, -79.67622)]",
+        "composed": false,
+        "coverage": {
+          "band_pixels": 15579,
+          "object_pixels": 119972,
+          "silhouette_mismatches": 0,
+          "upper_pixels": 93206
+        },
+        "map": "zone1",
+        "nid": 1982,
+        "object": "OrcBridge00-5",
+        "parts": 1,
+        "placement": "[X: (0.951056, 0.0, -0.309017), Y: (0.0, 1.0, 0.0), Z: (0.309017, 0.0, 0.951056), O: (146.617, 5.891166, -89.2432)]",
+        "size": [
+          800,
+          600
+        ],
+        "span": 2.4,
+        "template": "stbr6",
+        "texture": "orcbridge00"
+      },
+      "errors": [
+        "FAIL selected original bridge edge is unchanged"
+      ],
+      "warnings": [],
+      "binary_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "8560ac7ccb7d29cfe86b9ba84712fe68eff6d8ac390e625b33855bede337645f",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "capture_count": 24,
+      "return_code": 1
+    },
+    "full-surface-shoreline-edge-forward01": {
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-shoreline-edge-forward01/run.json",
+        "sha256": "ca582d58b2b560499c294fdc8327f98c9c3f7325cba8bddcbf3f2c916c01557f"
+      },
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-shoreline-edge-forward01/run.log",
+        "sha256": "2ff50e79ec6b84c77c61a0b53bb626e8ea39bfdf200c5dea33afa868a2e69c3c"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-shoreline-edge-forward01/shoreline-edge.json",
+        "sha256": "4c15ad1cd790e9170ed8e19d4607c939721d56904f160a6a56405775f22ea4d9"
+      },
+      "frozen_fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-shoreline-edge-forward01/tool-source.gd",
+        "sha256": "1da606e3c0935d353612935273dff42a90f83e034aa66fbdf3e2d413e9cb4e45"
+      },
+      "checks": null,
+      "failures": null,
+      "rows": null,
+      "fixture": null,
+      "errors": [
+        "FAIL selected original bridge edge is unchanged"
+      ],
+      "warnings": [],
+      "binary_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "8560ac7ccb7d29cfe86b9ba84712fe68eff6d8ac390e625b33855bede337645f",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "capture_count": 0,
+      "return_code": 1
+    },
+    "full-surface-shoreline-scene-forward02": {
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-shoreline-scene-forward02/run.json",
+        "sha256": "7bb0b4fcb2a27c6da74709d1373800173e884ab3460001bdc425d6fc51e162c2"
+      },
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-shoreline-scene-forward02/run.log",
+        "sha256": "2805c5cfe191c16e938a3a179d4cb6d79693f6612f2e19c3cc9874831e074cf2"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-shoreline-scene-forward02/ground-contact-relief-scene.json",
+        "sha256": "9a16785fbdd5fb46bb60fccbee20ed321398fae92aba64b54f50562359426648"
+      },
+      "frozen_fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-shoreline-scene-forward02/tool-source.gd",
+        "sha256": "2ebcc20a9187536dc0f6d31b725e6a9937c981ee8d7dd50f55c205a8e06f8851"
+      },
+      "checks": 72,
+      "failures": 0,
+      "rows": [
+        {
+          "band": {
+            "changed_pixels": 13257,
+            "mean_byte_delta": 9.28949226522883,
+            "over_two_bytes": 9363,
+            "peak_byte_delta": 32,
+            "pixels": 15579
+          },
+          "held": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 480000
+          },
+          "light": "sun",
+          "outside_band": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 464421
+          },
+          "restored": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 480000
+          },
+          "upper": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 93206
+          }
+        },
+        {
+          "band": {
+            "changed_pixels": 685,
+            "mean_byte_delta": 0.0906990179087233,
+            "over_two_bytes": 229,
+            "peak_byte_delta": 4,
+            "pixels": 15579
+          },
+          "light": "shore-inputs-sun",
+          "outside_band": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 464421
+          },
+          "scope": "Ablates only copied-ground packed vertex E/k; native object/terrain data and all shader code unchanged."
+        },
+        {
+          "band": {
+            "changed_pixels": 11671,
+            "mean_byte_delta": 7.15899608447269,
+            "over_two_bytes": 8356,
+            "peak_byte_delta": 22,
+            "pixels": 15579
+          },
+          "held": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 480000
+          },
+          "light": "packed-point",
+          "outside_band": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 464421
+          },
+          "restored": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 480000
+          },
+          "upper": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 93206
+          }
+        },
+        {
+          "band": {
+            "changed_pixels": 668,
+            "mean_byte_delta": 0.0693240901213172,
+            "over_two_bytes": 18,
+            "peak_byte_delta": 3,
+            "pixels": 15579
+          },
+          "light": "shore-inputs-packed-point",
+          "outside_band": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 464421
+          },
+          "scope": "Ablates only copied-ground packed vertex E/k; native object/terrain data and all shader code unchanged."
+        },
+        {
+          "band": {
+            "changed_pixels": 10417,
+            "mean_byte_delta": 2.22562423775595,
+            "over_two_bytes": 4770,
+            "peak_byte_delta": 12,
+            "pixels": 15579
+          },
+          "held": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 480000
+          },
+          "light": "local-light",
+          "light_contribution": {
+            "changed_pixels": 8819,
+            "mean_byte_delta": 3.86924706335452,
+            "over_two_bytes": 6658,
+            "peak_byte_delta": 18,
+            "pixels": 15579
+          },
+          "outside_band": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 464421
+          },
+          "restored": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 480000
+          },
+          "upper": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 93206
+          }
+        },
+        {
+          "band": {
+            "changed_pixels": 117,
+            "mean_byte_delta": 0.00751010976314269,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 1,
+            "pixels": 15579
+          },
+          "light": "shore-inputs-local-light",
+          "outside_band": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 464421
+          },
+          "scope": "Ablates only copied-ground packed vertex E/k; native object/terrain data and all shader code unchanged."
+        }
+      ],
+      "fixture": {
+        "anchor": "(144.2602, 5.9647, -86.87621)",
+        "anchor_witness": {
+          "E": [
+            0,
+            0,
+            0
+          ],
+          "alpha_bytes": [
+            49,
+            0,
+            7
+          ],
+          "liquid_plane_crossing": false,
+          "margin_over_cell_water": 0.206113815307617,
+          "native_interpolated_k": 0.110131070017815,
+          "native_triangle": 1473,
+          "original_materials": true,
+          "sector": [
+            4,
+            2
+          ]
+        },
+        "camera": "[X: (0.8, 0.0, -0.6), Y: (-0.172409, 0.957826, -0.229879), Z: (0.574695, 0.287348, 0.766261), O: (149.6602, 9.5647, -79.67622)]",
+        "composed": false,
+        "coverage": {
+          "band_pixels": 15579,
+          "object_pixels": 119972,
+          "silhouette_mismatches": 0,
+          "upper_pixels": 93206
+        },
+        "map": "zone1",
+        "nid": 1982,
+        "object": "OrcBridge00-5",
+        "parts": 1,
+        "placement": "[X: (0.951056, 0.0, -0.309017), Y: (0.0, 1.0, 0.0), Z: (0.309017, 0.0, 0.951056), O: (146.617, 5.891166, -89.2432)]",
+        "size": [
+          800,
+          600
+        ],
+        "span": 2.4,
+        "template": "stbr6",
+        "texture": "orcbridge00"
+      },
+      "errors": [],
+      "warnings": [],
+      "binary_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "8560ac7ccb7d29cfe86b9ba84712fe68eff6d8ac390e625b33855bede337645f",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "capture_count": 24,
+      "return_code": 0
+    },
+    "full-surface-shoreline-scene-enhanced-forward01": {
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-shoreline-scene-enhanced-forward01/run.json",
+        "sha256": "f954fd8334ca74ef13957f8c73ef6f98258c155162f7c963adb2085b1a1d3b6c"
+      },
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-shoreline-scene-enhanced-forward01/run.log",
+        "sha256": "3fcb4c232128659857ca63e55b1f33629faf7d4242e2c702e8828eee4b8ed777"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-shoreline-scene-enhanced-forward01/ground-contact-relief-scene.json",
+        "sha256": "dcfd6e2fef85dcde3bf0920e615e10ec69efeaaeb3e98673552eb4a4f93c34db"
+      },
+      "frozen_fixture": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-shoreline-scene-enhanced-forward01/tool-source.gd",
+        "sha256": "2ebcc20a9187536dc0f6d31b725e6a9937c981ee8d7dd50f55c205a8e06f8851"
+      },
+      "checks": 72,
+      "failures": 1,
+      "rows": [
+        {
+          "band": {
+            "changed_pixels": 13362,
+            "mean_byte_delta": 9.71134219141152,
+            "over_two_bytes": 9385,
+            "peak_byte_delta": 35,
+            "pixels": 15579
+          },
+          "held": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 480000
+          },
+          "light": "sun",
+          "outside_band": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 464421
+          },
+          "restored": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 480000
+          },
+          "upper": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 93206
+          }
+        },
+        {
+          "band": {
+            "changed_pixels": 687,
+            "mean_byte_delta": 0.0889017266833558,
+            "over_two_bytes": 211,
+            "peak_byte_delta": 4,
+            "pixels": 15579
+          },
+          "light": "shore-inputs-sun",
+          "outside_band": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 464421
+          },
+          "scope": "Ablates only copied-ground packed vertex E/k; native object/terrain data and all shader code unchanged."
+        },
+        {
+          "band": {
+            "changed_pixels": 11660,
+            "mean_byte_delta": 7.44155594068939,
+            "over_two_bytes": 8457,
+            "peak_byte_delta": 22,
+            "pixels": 15579
+          },
+          "held": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 480000
+          },
+          "light": "packed-point",
+          "outside_band": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 464421
+          },
+          "restored": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 480000
+          },
+          "upper": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 93206
+          }
+        },
+        {
+          "band": {
+            "changed_pixels": 563,
+            "mean_byte_delta": 0.0385133834007318,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 2,
+            "pixels": 15579
+          },
+          "light": "shore-inputs-packed-point",
+          "outside_band": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 464421
+          },
+          "scope": "Ablates only copied-ground packed vertex E/k; native object/terrain data and all shader code unchanged."
+        },
+        {
+          "band": {
+            "changed_pixels": 10412,
+            "mean_byte_delta": 2.2227357340009,
+            "over_two_bytes": 4805,
+            "peak_byte_delta": 12,
+            "pixels": 15579
+          },
+          "held": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 480000
+          },
+          "light": "local-light",
+          "light_contribution": {
+            "changed_pixels": 8828,
+            "mean_byte_delta": 3.89017266833558,
+            "over_two_bytes": 6725,
+            "peak_byte_delta": 19,
+            "pixels": 15579
+          },
+          "outside_band": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 464421
+          },
+          "restored": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 480000
+          },
+          "upper": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 93206
+          }
+        },
+        {
+          "band": {
+            "changed_pixels": 110,
+            "mean_byte_delta": 0.00706078695680082,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 1,
+            "pixels": 15579
+          },
+          "light": "shore-inputs-local-light",
+          "outside_band": {
+            "changed_pixels": 0,
+            "mean_byte_delta": 0.0,
+            "over_two_bytes": 0,
+            "peak_byte_delta": 0,
+            "pixels": 464421
+          },
+          "scope": "Ablates only copied-ground packed vertex E/k; native object/terrain data and all shader code unchanged."
+        }
+      ],
+      "fixture": {
+        "anchor": "(144.2602, 5.9647, -86.87621)",
+        "anchor_witness": {
+          "E": [
+            0,
+            0,
+            0
+          ],
+          "alpha_bytes": [
+            49,
+            0,
+            7
+          ],
+          "liquid_plane_crossing": false,
+          "margin_over_cell_water": 0.206113815307617,
+          "native_interpolated_k": 0.110131070017815,
+          "native_triangle": 1473,
+          "original_materials": false,
+          "sector": [
+            4,
+            2
+          ]
+        },
+        "camera": "[X: (0.8, 0.0, -0.6), Y: (-0.172409, 0.957826, -0.229879), Z: (0.574695, 0.287348, 0.766261), O: (149.6602, 9.5647, -79.67622)]",
+        "composed": false,
+        "coverage": {
+          "band_pixels": 15579,
+          "object_pixels": 119972,
+          "silhouette_mismatches": 0,
+          "upper_pixels": 93206
+        },
+        "map": "zone1",
+        "nid": 1982,
+        "object": "OrcBridge00-5",
+        "parts": 1,
+        "placement": "[X: (0.951056, 0.0, -0.309017), Y: (0.0, 1.0, 0.0), Z: (0.309017, 0.0, 0.951056), O: (146.617, 5.891166, -89.2432)]",
+        "size": [
+          800,
+          600
+        ],
+        "span": 2.4,
+        "template": "stbr6",
+        "texture": "orcbridge00"
+      },
+      "errors": [
+        "FAIL packed-point native shoreline inputs visibly affect bridge band { \"pixels\": 15579, \"changed_pixels\": 563, \"over_two_bytes\": 0, \"peak_byte_delta\": 2, \"mean_byte_delta\": 0.03851338340073 }"
+      ],
+      "warnings": [],
+      "binary_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "8560ac7ccb7d29cfe86b9ba84712fe68eff6d8ac390e625b33855bede337645f",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "capture_count": 24,
+      "return_code": 1
+    }
+  },
+  "source_audit": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/shoreline-audit/audit.json",
+    "sha256": "5a9a365d8e62e8e9334b44dc6746791d591cdc8ac71fb51efcd10ca442211548"
+  },
+  "selected_point": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/shoreline-audit/selected-point.json",
+    "sha256": "b22be53b52c92116033eceabbbddab50c793256849641fa7ccce78ae11dfc47a"
+  },
+  "vertex_source_evidence": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/shoreline-audit/vertex-source-evidence.json",
+    "sha256": "7632ca681ae85bf86ad13c7893197ab35a954ff7ba8ad8315bf757e471034877"
+  },
+  "unchanged_native_captures": [
+    {
+      "name": "ground-contact-relief-shore-original-sun-1.png",
+      "sha256": "4a57a7a47de90773623ecc7de1bb98f1c6b4ebde0f6c1be90ee18e8674d3bd35",
+      "exact": true
+    },
+    {
+      "name": "ground-contact-relief-shore-original-sun-3.png",
+      "sha256": "0b8f36d2f643254395c989b21ef4a504aab2b75c4d51f1536b9dc9907846aa3b",
+      "exact": true
+    },
+    {
+      "name": "ground-contact-relief-shore-original-sun-6.png",
+      "sha256": "1f198a053d609eb4da27af36aba457163a6efd0ffb83857c1cb6010df00b7606",
+      "exact": true
+    },
+    {
+      "name": "ground-contact-relief-shore-enhanced-sun-1.png",
+      "sha256": "a4cdb3204fb7bdc0d5150f7887bfd078c37f6f3ce3b04b4524bac99756115228",
+      "exact": true
+    },
+    {
+      "name": "ground-contact-relief-shore-enhanced-sun-3.png",
+      "sha256": "0b8f36d2f643254395c989b21ef4a504aab2b75c4d51f1536b9dc9907846aa3b",
+      "exact": true
+    },
+    {
+      "name": "ground-contact-relief-shore-enhanced-sun-6.png",
+      "sha256": "b5c9761046359b6bdcd92a5ca0fd42779ac8713c6fecdeaf2403bb6a2337607f",
+      "exact": true
+    },
+    {
+      "name": "ground-contact-relief-shore-original-points-1.png",
+      "sha256": "a5fc93a7d5ebc979eeb1e414c867c3285ab1cbe406a0fedc064b937a280057eb",
+      "exact": true
+    },
+    {
+      "name": "ground-contact-relief-shore-original-points-3.png",
+      "sha256": "0b8f36d2f643254395c989b21ef4a504aab2b75c4d51f1536b9dc9907846aa3b",
+      "exact": true
+    },
+    {
+      "name": "ground-contact-relief-shore-original-points-6.png",
+      "sha256": "7fd8ba5cf58572c01f23b692531f8d6134cb672dfc045882763ff02d04ad2c39",
+      "exact": true
+    },
+    {
+      "name": "ground-contact-relief-shore-enhanced-points-1.png",
+      "sha256": "a7eed1f44129f26d6883f890fa64b5d1fc11733b990d1a29e8c1328dac5cf1d9",
+      "exact": true
+    },
+    {
+      "name": "ground-contact-relief-shore-enhanced-points-3.png",
+      "sha256": "0b8f36d2f643254395c989b21ef4a504aab2b75c4d51f1536b9dc9907846aa3b",
+      "exact": true
+    },
+    {
+      "name": "ground-contact-relief-shore-enhanced-points-6.png",
+      "sha256": "f837a1ebcd84297196ce0a7ac72f268b2b43b90fddb2f1156adf9b9fdca4eb55",
+      "exact": true
+    }
+  ],
+  "dense_color": {
+    "receipt": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/shoreline-audit/dense-color-receipt.json",
+      "sha256": "397e233bb739ca9a58a2b783d1640f83aec758ee00e191671ccdf32182224493"
+    },
+    "results": {
+      "checks": 113,
+      "failed_checks": 1,
+      "real_vertices": 765,
+      "real_mismatched_vertices": 0,
+      "synthetic_vertices": 1071,
+      "synthetic_mismatched_vertices": 169,
+      "mismatched_RGB_channels": 185,
+      "GPU_minus_native_counts": {
+        "+1": 182,
+        "-1": 3
+      },
+      "maximum_absolute_byte_difference": 1,
+      "alpha_mismatched_vertices": 0,
+      "transport_control_vertices": 1836,
+      "transport_control_mismatches": 0,
+      "framebuffer_orientation_control": {
+        "flipped_row_mismatches": 1836,
+        "locked_flip_y": false,
+        "normal_row_mismatches": 0
+      },
+      "render_seconds": 7.511648313025944,
+      "engine_errors": [],
+      "engine_warnings": [],
+      "renderer": "forward_plus",
+      "adapter": "NVIDIA GeForce RTX 3090"
+    },
+    "CPU_analysis": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/shoreline-audit/dense-color-pack-analysis.json",
+      "sha256": "8aa149d094e062bbdbf81c01db65e81357846b4268b83d50f1b24eda135d419b",
+      "bytes": 6874
+    },
+    "rejected_explanation": "Final float-vs-double multiply does not explain the observed169 failing vertices: both existing float pack and proposed corrected pack agree with the native oracle on all676 retained native prepack components. Every one of185 differing GPU channels requires a pre-pack value difference; actual GPU intermediate values were not captured, so the exact source of that difference remains open.",
+    "limits": [
+      "Only numeric dense-color arithmetic is qualified; no native query/subdivision primitive identity, authored physical track, route, complete contact shader context, lighting, shadow, visual-quality or performance claim.",
+      "The five actual shoreline alpha triples pass; synthetic E failures remain failures and do not establish an authored nonzero-E failure scene.",
+      "All native/GPU final bytes are retained; actual native prepack float values are retained for mismatching vertices only.",
+      "No production/canonical edits, shader correction, threshold change or extra engine run was performed. Root owns subsequent GPU scheduling."
+    ],
+    "verified_artifact_count": 13
+  },
+  "interpretation": [
+    "The native land shader uses baked per-vertex E/k COLOR. Sector-local first-liquid-material selection, byte packing and original interpolation are preserved by reading retained original sector arrays, not approximating with terrain_cells or current water depth.",
+    "A lazy contact-only RGBA8 atlas keeps 33x33 vertices per sector, including duplicate edges. Existing cover geometry/RID remains unchanged. Headless: 81/0, exact all 110592 zone1 and 36864 bz13h native packed COLOR entries; water offsets leave baked values unchanged. These two maps have no differing adjacent-edge values, so they do not alone exercise a mismatched sector seam.",
+    "Candidate01 adds E/k to native vertex or enhanced fragment lighting, and the existing remaining native-point fallback. Optional local-light addition retains native absence of E/k. Candidate02 reuses the native point-contribution helper structure; both strict controlled same-input point pixels clear. This does not identify the compiler arithmetic cause.",
+    "Final ordinary shoreline comparison: 65 checks, two retained failures. Original sun/point light mismatches fall 5596/6375 to zero; enhanced sun/point fall 5698/6595 to 230/217, not full parity. All four E/k input cases clear 6899 baseline mismatches at unchanged 1e-5 threshold. Controlled nonzero-emissive helper comparisons pass at 1e-7. Light comparison remains 0.002; no tolerance relaxation.",
+    "All twelve native D, E/k and native E/k-omitted captures are byte-identical between baseline and final candidate. Baseline 65/12 and first 65/4 candidate remain retained.",
+    "The initial light fixture declared diagnostic varyings after vertex use; its failed compilation/captures remain invalid evidence. The first scene fixture used get_faces(), which passes through a 0.0001m snapped TriangleMesh. Source proves this caused a 0.00005694m edge mismatch; the corrected fixture reads actual indexed vertices, with unchanged tolerances, mesh and placement. Failed edge runs remain retained.",
+    "The authored bridge witness has nonzero k but zero E and lies above the liquid plane. The scene isolates only copied-ground input texture values; it is not an underwater crossing, physical walking, native point/shadow equivalence or general quality claim.",
+    "Corrected authored bridge: Original mode passes all 72 checks. E/k-only ablation changes 229 sun and 18 packed-point band pixels by more than two bytes. Outside-band, upper-object, silhouette, held and restoration controls are exact. Enhanced mode retains one of 72 failures: packed-point ablation changes 563 pixels by at most two bytes, below the unchanged visibility threshold; its containment and restoration controls pass.",
+    "Dense numeric GPU packing: 113 checks with one retained failure. All 765 vertices from five actual shoreline alpha triples match. Seven synthetic emissive triples retain 169/1071 mismatching vertices, 185 RGB channels (182 +1, three -1), maximum one byte. All 1836 alpha values and all 1836 independent oracle-transport vertices match exactly.",
+    "A final-multiply precision correction was rejected as the explanation for the dense residual: both existing and proposed packers already match all 676 retained native prepack components. All 185 differing GPU channels need an earlier value difference, whose exact source remains unproved. No correction or relaxed threshold was adopted."
+  ],
+  "root_review": {
+    "verified": "Both 712-file scratch build manifests, binary hashes, all retained run captures and frozen fixture dependencies, twelve exact native image pairs, and every artifact referenced by the dense-color receipt.",
+    "visual_review": "Original-mode bridge sun on and zero-E/k-input captures inspected; the response is subtle and localized.",
+    "unchanged": "Original failed controls, strict tolerances, delivered packages, canonical production and user saves remain unchanged."
+  },
+  "remaining": [
+    "Synthetic emissive dense-color interpolation retains 169 failing vertices; real shoreline alpha samples passing does not establish physical footprint or full-scene parity.",
+    "Enhanced light precision and packed-point visibility residuals, composed features/backends, nearby point/ground-position shadow equivalence and device/cost acceptance remain open.",
+    "Delivered Linux/Windows .2 packages and canonical production are unchanged."
+  ]
+}

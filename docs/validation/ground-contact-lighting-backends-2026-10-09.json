@@ -1,0 +1,144 @@
+{
+  "status": "Scratch desktop backend qualification; no production/package adoption.",
+  "source_receipts": [
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/tracks/cross-backend-20261009/cross-backend-receipt.json",
+      "sha256": "23d52d146a999c79f6d99eadbcb2bd9901589775fbd7171b0e35b0cf58ae82f2"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/tracks/cross-backend-20261009/mobile-retained-diagnosis.json",
+      "sha256": "29683acf558032f179aba1ac959b469098f73f2010e7f125b6a7b3a5c93725b5"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/tracks/cross-backend-20261009/mobile-native-off-control-receipt.json",
+      "sha256": "e9a01110b56be9d036def0fd1f29b977dacb4597ca30e6464c1dc77c04ee42be"
+    }
+  ],
+  "candidate_build_sha256": {
+    "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+    "CursedLands.pck": "9e34d5a8af341ae7ead4489f1025c76fdca28a8b8cc3ad06d3afb0c20fb1f5a2",
+    "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+  },
+  "acceptance": [
+    {
+      "backend": "mobile",
+      "fixture": "ordinary_native_normal_rain",
+      "checks": 247,
+      "failures": 0,
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-tracks-original-mobile01",
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-tracks-original-mobile01/run.json",
+        "sha256": "f39bb86027cb87985366a38643ea182078517598835f874bebd7475747015f42"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-tracks-original-mobile01/ground-contact-relief.json",
+        "sha256": "b44851f843c182d81ed3e157114d888a2e604c5ea7e86c790879299fb6cfac90"
+      },
+      "engine_errors": [],
+      "warnings": []
+    },
+    {
+      "backend": "mobile",
+      "fixture": "authored_wet_house",
+      "checks": 63,
+      "failures": 5,
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-tracks-wet-scene-mobile01",
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-tracks-wet-scene-mobile01/run.json",
+        "sha256": "195931f9963a20bdb2491db5c52e87f6717a2365f0954145473a3b0bda08a6fe"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-tracks-wet-scene-mobile01/ground-contact-relief-scene.json",
+        "sha256": "fd881d47d2d0a9fcf8b54f7da1a38b1acc56200212d9aa312d106d95263e60f6"
+      },
+      "engine_errors": [],
+      "warnings": []
+    },
+    {
+      "backend": "mobile",
+      "fixture": "authored_native_footprint_barrack",
+      "checks": 112,
+      "failures": 7,
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-tracks-snow-scene-mobile01",
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-tracks-snow-scene-mobile01/run.json",
+        "sha256": "3ad0204f37c173274df6fb3748bcfa886e264f81a39f55179aa08d5693792958"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-tracks-snow-scene-mobile01/ground-contact-relief-scene.json",
+        "sha256": "edfe5a25e68d1f73cd0d28155d01f9876ff36975b33558a5440ed7ca4995ff62"
+      },
+      "engine_errors": [],
+      "warnings": []
+    },
+    {
+      "backend": "gl_compatibility",
+      "fixture": "ordinary_native_normal_rain",
+      "checks": 247,
+      "failures": 0,
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-tracks-original-gl01",
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-tracks-original-gl01/run.json",
+        "sha256": "41cdf0340cebf384f5f86114eb5277acd239f9434b92892851ca0b68edd0b242"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-tracks-original-gl01/ground-contact-relief.json",
+        "sha256": "b77d259c1580bd96e83695d3643695f8c4d1019308303647523b92b1d9996741"
+      },
+      "engine_errors": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ]
+    },
+    {
+      "backend": "gl_compatibility",
+      "fixture": "authored_wet_house",
+      "checks": 63,
+      "failures": 0,
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-tracks-wet-scene-gl01",
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-tracks-wet-scene-gl01/run.json",
+        "sha256": "43bac3d746b81594862a98d988a9135141b7c0b4ebb7474df55817ee43f2025a"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-tracks-wet-scene-gl01/ground-contact-relief-scene.json",
+        "sha256": "ed4af19a2480e4f7e40a68e35c1b51171eccc9df1ac7fefaa5ab84af907d67c2"
+      },
+      "engine_errors": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ]
+    },
+    {
+      "backend": "gl_compatibility",
+      "fixture": "authored_native_footprint_barrack",
+      "checks": 112,
+      "failures": 0,
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-tracks-snow-scene-gl01",
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-tracks-snow-scene-gl01/run.json",
+        "sha256": "a7d26f708a6776e0dc41270b5be8d3b38f63d85e1ef28ff769f4b4682a07e989"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface-tracks-snow-scene-gl01/ground-contact-relief-scene.json",
+        "sha256": "5b45f2cb3c712c98dbc8fe5deaa4d9ef684f39f2f3f1e77a275033829588a0d9"
+      },
+      "engine_errors": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ]
+    }
+  ],
+  "observations": [
+    "Compatibility passes all 422 checks: 247 ordinary normal/rain, 63 wet-house and 112 footprint-barrack. All paths compile; the sole warning is unsupported screen-space antialiasing.",
+    "Mobile passes all 247 ordinary normal/rain checks but retains five wet-house and seven footprint-barrack containment/held/restoration failures. No engine or shader errors. Original failures remain failed.",
+    "One unchanged native contact-OFF control runs 108 checks and retains five fixed-state failures. Its 212-pixel packed-light terrain drift reproduces exactly the prior held drift, including signed RGB differences; its late image equals the previous native-restored frame.",
+    "Native-Off sun settling reproduces all 3608 original object pixels outside the contact band with exactly inverse signed deltas. Late native-Off equals the previous Off/restored frame. These patterns can therefore occur without contact executing.",
+    "Byte-identical native Shader replacement/restoration was exact after settling. A temporary/specialized pipeline transition is a hypothesis only; fixed compilation submission counts are not completion barriers or proof of cause.",
+    "Authored scenes use controlled stamps, lights and roof masks. This is not physical walking, full lighting/shadow parity, feature composition, other-device or cost acceptance."
+  ],
+  "root_review": {
+    "verified": "All six frozen fixture/dependency sets and capture manifests. 236 distinct immutable artifacts across backend/CPU/source audits, six original configuration texts, then 47 native-Off control artifacts. Pre-execution settings hashes describe recorded initial text, not the settings file after engine shutdown rewrites it.",
+    "unchanged": "Strict comparisons and all original failed results are preserved. No production, settings, package or user-save edits."
+  }
+}

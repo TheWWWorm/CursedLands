@@ -2495,8 +2495,82 @@ claim is made. Settings and both delivered `.2` packages remain unchanged.
 
 [ground-contact-lighting-prototype-2026-10-09.json](validation/ground-contact-lighting-prototype-2026-10-09.json)
 records the frozen sources, builds, failed and passing runs, image checks and
-precision diagnoses. Continue from the `full-surface/tracks` scratch stage;
-do not mistake the older dirty canonical painted-only shader for that stage.
+precision diagnoses. The following shoreline stage continues from this
+`full-surface/tracks` prototype; the dirty canonical shader is still the older
+painted-only experiment.
+
+### V1 desktop backend controls — 9 October
+
+The unchanged tracks prototype passes **422 Compatibility checks**: 247 ordinary
+normal/rain, 63 authored wet-house and 112 snow-barrack checks. Mobile passes
+the same 247 ordinary checks but retains **12 scene failures**, five on the
+house and seven on the barrack. Every shader path compiles; Compatibility's
+unsupported screen-space-AA warning is the only engine warning in these runs.
+
+One subsequent native **contact-Off** Mobile control has 108 checks and five
+retained fixed-state failures. Its 212-pixel packed-light terrain drift exactly
+reproduces the earlier held-frame differences, including signed RGB deltas.
+Its sun settling also reproduces all 3,608 earlier object differences outside
+the blend band, with inverse signed changes. Those patterns therefore occur
+without contact executing. The original 12 failures remain failed; this does
+not establish every Mobile scene difference's cause. Identical-code native
+shader replacement/restoration becomes exact after settling. Compilation
+submission counters do not prove completion or which pipeline rendered a frame.
+
+[Backend evidence](validation/ground-contact-lighting-backends-2026-10-09.json)
+retains all six runs, the CPU image analysis and that single native control.
+No thresholds, settings, production files or packages changed. Feature
+composition, full light/shadow equivalence, devices and cost remain open.
+
+### V1 shoreline vertex-light prototype — 9 October
+
+The private `ground-contact-relief-20261009/full-surface/shoreline/candidate02`
+adds the native land vertices' baked emissive and underwater-lighting values
+(`COLOR` E/k). It copies the retained original sector arrays into a lazy RGBA8
+atlas with separate border vertices per sector. This preserves the original
+first-liquid-material choice and byte packing; a fragment's water-cell material
+can be different. Scripted water-height changes do not rebuild native baked
+COLOR, so the prototype preserves that behavior. Original mode evaluates and
+packs light at each selected vertex before interpolation; enhanced mode uses
+interpolated E/k. The remaining native-light fallback also receives these terms;
+the optional local-light addition keeps its original policy.
+
+The data test passes **81 checks**, comparing all **147,456** actual packed
+vertex colors on `zone1` and `bz13h`, plus lazy ownership and water-offset
+controls. Same-pixel shoreline lighting has **65 checks with two retained
+failures**. Original sun/point mismatches fall from 5,596/6,375 to zero;
+enhanced mismatches fall from 5,698/6,595 to 230/217. Input comparisons pass at
+the unchanged `1e-5` threshold. Restoring the native point-contribution helper's
+structure clears two additional strict controlled-emissive pixels; all four
+helper comparisons then pass at `1e-7`. No compiler-level cause is claimed.
+Twelve native-light/input/ablation images remain byte-identical across packs.
+
+The original `zone1` OrcBridge NID 1982 passes **72 scene checks** in Original
+material mode. Removing only the copied E/k input changes 229 sun and 18 packed
+point band pixels by more than two bytes. All outside/upper/silhouette, held
+and restoration controls are exact. Enhanced mode retains **one of 72 failed
+checks**: the packed-point effect changes 563 pixels by at most two bytes,
+below the unchanged visibility requirement. Its containment/restoration controls
+pass. The bridge root is dry with nonzero k and zero E; it is not a literal
+liquid-plane crossing. A fixture correction uses original indexed vertices:
+Godot's convenience `get_faces()` snaps its collision triangles to 0.0001 m.
+The earlier edge-check and shader-fixture failures remain in the receipt.
+
+Dense-color arithmetic remains a separate limit. The GPU expression matches
+all **765 vertices from five real shoreline alpha triples** and its independent
+readback control is exact. Seven synthetic emissive triples expose **169 of
+1,071 synthetic vertices** with one-byte RGB differences (185 channels); all 1,836 alpha
+channels match. This **113-check/one-failure** numeric fixture does not establish
+physical footprint or full-scene parity. A proposed final-multiply correction
+does not explain these cases: the native prepack values already pack correctly,
+so an earlier arithmetic difference remains necessary.
+
+[Shoreline evidence](validation/ground-contact-shoreline-prototype-2026-10-09.json)
+records the two changed scratch production files, frozen builds, native source
+audit and all passing/failed controls. The latest source is the shoreline
+scratch stage, not the older dirty canonical shader. Enhanced precision,
+synthetic emissive interpolation, composed/backend and device/cost acceptance
+remain open. Neither delivered `.2` package contains these prototypes.
 
 ## Integration
 
