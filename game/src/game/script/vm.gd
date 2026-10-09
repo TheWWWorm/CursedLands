@@ -470,6 +470,9 @@ func _call(name: String, a: Array, inst: Instance):
 		"RemakePartyCast":
 			preload("res://src/game/script/story_coop_effects.gd").cast(self, a, inst)
 			return null
+		"RemakeGipatArrivalParticles":
+			preload("res://src/game/script/story_coop_effects.gd").gipat_arrival_particles(self, a, inst)
+			return null
 		"RemakeMatchExtra":
 			return preload("res://src/game/script/story_coop_effects.gd").match_extra(self, a, inst)
 		"Any", "Every":

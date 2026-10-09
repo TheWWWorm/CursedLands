@@ -207,7 +207,13 @@ func unchanged_scripts() -> void:
 			for i in original.size():
 				if adapted[i].conds != original[i].conds or adapted[i].body.size() != original[i].body.size(): same = false
 		check(same, row[1]+": original condition/block/statement indexes preserved")
-		if row[0] in ["gz7g", "cz0k"]:
+		if row[0] == "gz7g":
+			var normalized := after.scripts.duplicate(true)
+			var second: Array = normalized["VCheck#0#1"].blocks[0].body[5]
+			check(second[1] == "RemakeGipatArrivalParticles", "zone7: only the audited second particle call is adapted")
+			if second[1] == "RemakeGipatArrivalParticles": second[1] = "CreateParticleSource"
+			check(before.scripts == normalized, "zone7: every original definition remains exact after particle normalization")
+		elif row[0] == "cz0k":
 			check(before.scripts == after.scripts, row[1]+": named relocation scripts untouched")
 		var twice := after.scripts.duplicate(true)
 		Compat.apply(after, s.state.campaign_id, row[0])

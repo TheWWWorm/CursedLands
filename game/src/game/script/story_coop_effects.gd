@@ -27,6 +27,7 @@ static func replace(value, from: Array, to: Array):
 
 
 static func apply(ast: ScriptParser, zone: String) -> void:
+	if zone == "gz7g": _gipat_arrival(ast)
 	for name: String in PARTY_CASTS.get(zone, []):
 		for block: Dictionary in ast.scripts.get(name, {}).get("blocks", []):
 			for statement: Array in block.body:
@@ -51,6 +52,48 @@ static func apply(ast: ScriptParser, zone: String) -> void:
 		if conditions == second.conds: continue
 		blocks.append({"conds": [[P.N_CALL, "RemakeMatchExtra", conditions]],
 			"body": replace(second.body, role(1), [P.N_VAR, TARGET])})
+
+
+## The first Gipat arrival places Kel separately, then shows Kir and Kel
+## arriving through the portal. Extend only that presentation to extra heroes.
+## Keep the named SetCP, both original effects and every saved statement index.
+static func _gipat_arrival(ast: ScriptParser) -> void:
+	var name := "VCheck#0#1"
+	if ast.world.count([P.S_CALL,name,[[P.N_VAR,"NULL"]]]) != 1 \
+			or ast.world.filter(func(st):return st[0] == P.S_CALL and st[1] == name).size() != 1: return
+	var expected := {"params":["this"],"blocks":[{"conds":[[P.N_CALL,"IsEqual",[
+		[P.N_CALL,"GSGetVar",[[P.N_NUM,0.0],[P.N_STR,"q.gz7g.q1g"]]],[P.N_NUM,1.0]]]],"body":[
+		[P.S_CALL,"KillScript",[]],
+		[P.S_CALL,"AddRoundToArea",[[P.N_NUM,1.0],[P.N_NUM,129.5],[P.N_NUM,270.0],[P.N_NUM,5.0]]],
+		[P.S_CALL,"AddRectToArea",[[P.N_NUM,2.0],[P.N_NUM,204.0],[P.N_NUM,304.0],[P.N_NUM,217.0],[P.N_NUM,318.0]]],
+		[P.S_CALL,"SetCP",[role(1),[P.N_NUM,14.4],[P.N_NUM,208.0],[P.N_NUM,0.0]]],
+		[P.S_CALL,"CreateParticleSource",[[P.N_NUM,1.0],[P.N_CALL,"GetX",[role(0)]],
+			[P.N_CALL,"GetY",[role(0)]],[P.N_NUM,8.0],[P.N_NUM,1.0],[P.N_STR,"teleport"]]],
+		[P.S_CALL,"CreateParticleSource",[[P.N_NUM,2.0],[P.N_CALL,"GetX",[role(1)]],
+			[P.N_CALL,"GetY",[role(1)]],[P.N_NUM,7.5],[P.N_NUM,1.0],[P.N_STR,"teleport"]]],
+		[P.S_CALL,"Sleep",[[P.N_NUM,20.0]]],
+		[P.S_CALL,"GSSetVarMax",[[P.N_NUM,0.0],[P.N_STR,"q.gz7g.q1g.1"],[P.N_NUM,1.0]]],
+		[P.S_CALL,"VCheck#0#2",[[P.N_VAR,"this"]]],
+	]}]}
+	if ast.scripts.get(name,{}) != expected: return
+	ast.scripts[name].blocks[0].body[5][1] = "RemakeGipatArrivalParticles"
+
+
+static func gipat_arrival_particles(vm: ScriptVM, arguments: Array, inst: ScriptVM.Instance) -> void:
+	vm._call("CreateParticleSource",arguments,inst)   # Kel's original effect, first
+	if not vm.session.lmp.is_empty() or vm.session.state.campaign_id != CampaignProfile.ASTRAL \
+			or vm.world.zone.get("id","") != "gz7g" or inst.sname != "VCheck#0#1": return
+	var story := vm._story_records()
+	for u: GameUnit in vm._party_records():
+		if u.controller <= 0 or story.has(u) or u.dead or u.hidden or not u.has_meta("hero") \
+				or u.get_meta("hero").has("merc"): continue
+		# Kir's authored entry effect has absolute z=8 and size=1. Only XY
+		# follows the additional arrival, just as it follows Kir in the source.
+		# Share the saved negative-ID allocator with automatic FX sources.
+		var id := vm._fx_auto
+		vm._fx_auto -= 1
+		vm._call("CreateParticleSource",[[P.N_NUM,float(id)],[P.N_NUM,u.pos.x],[P.N_NUM,u.pos.y],
+			[P.N_NUM,8.0],[P.N_NUM,1.0],[P.N_STR,"teleport"]],inst)
 
 
 static func additional(vm: ScriptVM) -> Array:

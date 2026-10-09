@@ -1,0 +1,866 @@
+{
+  "task": "LiA gz7g / zone7:981 original arrival audit and bounded extra-entry-particle candidate",
+  "status": "Qualified source adopted after root review; 281 passing candidate checks. Delivered .2 packages unchanged.",
+  "canonical_head_when_receipted": "9fbbd7822513fef75739eb561a6768f04b12f52d",
+  "frozen_game_commit": "8195e68",
+  "source_comparison": [
+    {
+      "stage": "/home/llm2x/Documents/EI/local/scratchpad/prison-damage-late-join-20261009/candidate02/stage",
+      "tracked_game_files": 613,
+      "differences": []
+    },
+    {
+      "stage": "/home/llm2x/Documents/EI/local/scratchpad/lia-zone7-movement-audit-20261009/candidate01/stage",
+      "tracked_game_files": 613,
+      "differences": [
+        {
+          "path": "game/src/game/script/story_coop_effects.gd",
+          "sha256": "7d432cb6007f390e7bf625f7537b2ba37fcc3d22b901fc301f5d57270ea77540"
+        },
+        {
+          "path": "game/src/game/script/vm.gd",
+          "sha256": "f0a9f2eea62800d666e4a8429effa83c1ff6c174f52bd1c8b827a165198c6360"
+        }
+      ]
+    }
+  ],
+  "finding": "No reproduced movement, staging or q1g progression defect: the indexed SetCP deliberately moves named Kel, while guests already deploy with Kir at the original arrival entrance. There is a reproduced cosmetic omission: only Kir and Kel receive authored portal particles.",
+  "original_source": {
+    "hashes": {
+      "bz7h_script_sha256": "d73d37ced2412b25e2aecb2d42df588e78293857609550fb28e23b8aebafac5c",
+      "zone7_mob_sha256": "c687c1f10e05eb4145e7ace36f36b912e823ef483c99c8b77c3b5d0a6ee46187",
+      "zone7_script_sha256": "f2a961fb14df7fc1eb1b9723376372257ec063b326c7bdbbd1423f8ab4785835"
+    },
+    "definition": "Script VCheck#0#1\n(\n  if\n  (\n    IsEqual( GSGetVar( 0, \"q.gz7g.q1g\" ) , 1 ) \n  )\n  then\n  (\n    KillScript(  )\n    AddRoundToArea( 1, 129.5, 270 , 5 )\n    AddRectToArea( 2, 204, 304 , 217, 318 )\n    SetCP( GetUnitOfPlayer( 0 , 1 ), 14.4 , 208 , 0 )\n    CreateParticleSource( 1, GetX( GetUnitOfPlayer( 0 , 0 ) ) , GetY( GetUnitOfPlayer( 0 , 0 ) ) , 8, 1, \"teleport\" )\n    CreateParticleSource( 2, GetX( GetUnitOfPlayer( 0 , 1 ) ) , GetY( GetUnitOfPlayer( 0 , 1 ) ) , 7.5, 1, \"teleport\" )\n    Sleep( 20 )\n    GSSetVarMax( 0, \"q.gz7g.q1g.1\", 1 ) \n    VCheck#0#2( this ) \n  )\n)\n\n",
+    "worldscript": "zone7 WorldScript line 1490: VCheck#0#1(NULL), exactly once; earlier Sleep(2).",
+    "previous_zone": "Both original bz7h #OnBriefingComplete Sergeant brief_88a outcomes create the Gipat roster (Hero3 and merc2g), copy Kir/Kel stats, set q.gz7g.q1g=1, play teleprt1.bik, then LeaveToZone(0,\"gz7g\",5). The remake uses exit 6, whose deploy rectangle is (73.6,203.5)-(77.3,208.9).",
+    "full_transition_and_quest_evidence": "arrival01/lia-zone7-arrival.json"
+  },
+  "candidate": {
+    "production_paths": [
+      "game/src/game/script/story_coop_effects.gd",
+      "game/src/game/script/vm.gd"
+    ],
+    "admission": "AST must be LiA gz7g, with exactly one original direct WorldScript VCheck#0#1(NULL) call and its entire original params/condition/nine-statement definition. Only second particle call name at body index 5 changes. Fifteen altered relevant-source cases and other campaign/map scopes are rejected.",
+    "dispatch": "Execute the original second CreateParticleSource call first. Then emit one Kir-shaped teleport (absolute z=8,size=1) at each living visible extra hero XY; exclude original story records (including guest-owned Kel), controller<=0, non-hero script controls and merc records. Use the VM saved negative effect allocator. LMP is excluded.",
+    "saved_behavior": "Original KillScript, SetCP, two original effects, Sleep(20), saved continuation index 7 and next objective are exact. Old native saves inside Sleep do not backfill effects. Later VM joins allocate no new entry effects. Session snapshot/zone replay uses the existing per-ID source records, preserving normal original replay semantics; this is not a change to effect aging/lifetime.",
+    "regression_fixture": "story_coop_effects.gd scratch copy replaces old blanket unchanged-zone7 assertion with required wrapper at the exact second call, normalization, then full-definition equality; other named relocation checks remain exact."
+  },
+  "final_checks": {
+    "focused": {
+      "candidate": 85,
+      "candidate_failures": 0,
+      "baseline_failures": 14
+    },
+    "actual_headless_arrival": {
+      "candidate": 29,
+      "candidate_failures": 0,
+      "baseline_failures": 6
+    },
+    "existing_effects_regression": {
+      "candidate": 167,
+      "candidate_failures": 0
+    },
+    "candidate_total": 281
+  },
+  "focused_pair_equality": [
+    {
+      "label": "solo",
+      "original_two_effects_equal": true,
+      "saved_wait_equal": true,
+      "baseline_effect_count": 2,
+      "candidate_effect_count": 2,
+      "candidate_ids": [
+        1.0,
+        2.0
+      ]
+    },
+    {
+      "label": "three guests",
+      "original_two_effects_equal": true,
+      "saved_wait_equal": true,
+      "baseline_effect_count": 2,
+      "candidate_effect_count": 5,
+      "candidate_ids": [
+        1.0,
+        2.0,
+        -41.0,
+        -42.0,
+        -43.0
+      ]
+    },
+    {
+      "label": "guest-owned Kel",
+      "original_two_effects_equal": true,
+      "saved_wait_equal": true,
+      "baseline_effect_count": 2,
+      "candidate_effect_count": 5,
+      "candidate_ids": [
+        1.0,
+        2.0,
+        -41.0,
+        -42.0,
+        -43.0
+      ]
+    },
+    {
+      "label": "dead/hidden exclusions",
+      "original_two_effects_equal": true,
+      "saved_wait_equal": true,
+      "baseline_effect_count": 2,
+      "candidate_effect_count": 3,
+      "candidate_ids": [
+        1.0,
+        2.0,
+        -41.0
+      ]
+    }
+  ],
+  "actual_map_equality": {
+    "first_two_effects_equal": true,
+    "positions_before_equal": true,
+    "positions_after_equal": true,
+    "navigation_equal": true,
+    "controlled_owner_roles_equal": true
+  },
+  "actual_map_baseline_positions": {
+    "after": [
+      {
+        "name": "Hero",
+        "owner": 0,
+        "pos": [
+          73.9499969482422,
+          206.199996948242
+        ],
+        "uid": 1500000001
+      },
+      {
+        "name": "merc2",
+        "owner": 0,
+        "pos": [
+          14.3999996185303,
+          208.0
+        ],
+        "uid": 1500000002
+      },
+      {
+        "name": "Guest 1",
+        "owner": 1,
+        "pos": [
+          76.9499969482422,
+          206.199996948242
+        ],
+        "uid": 1500000003
+      },
+      {
+        "name": "Guest 2",
+        "owner": 2,
+        "pos": [
+          73.9499969482422,
+          207.699996948242
+        ],
+        "uid": 1500000004
+      },
+      {
+        "name": "Guest 3",
+        "owner": 3,
+        "pos": [
+          75.4499969482422,
+          207.699996948242
+        ],
+        "uid": 1500000005
+      }
+    ],
+    "before": [
+      {
+        "name": "Hero",
+        "owner": 0,
+        "pos": [
+          73.9499969482422,
+          206.199996948242
+        ],
+        "uid": 1500000001
+      },
+      {
+        "name": "merc2",
+        "owner": 0,
+        "pos": [
+          75.4499969482422,
+          206.199996948242
+        ],
+        "uid": 1500000002
+      },
+      {
+        "name": "Guest 1",
+        "owner": 1,
+        "pos": [
+          76.9499969482422,
+          206.199996948242
+        ],
+        "uid": 1500000003
+      },
+      {
+        "name": "Guest 2",
+        "owner": 2,
+        "pos": [
+          73.9499969482422,
+          207.699996948242
+        ],
+        "uid": 1500000004
+      },
+      {
+        "name": "Guest 3",
+        "owner": 3,
+        "pos": [
+          75.4499969482422,
+          207.699996948242
+        ],
+        "uid": 1500000005
+      }
+    ],
+    "map_deploy": "[P: (73.6, 203.5), S: (3.700005, 5.399994)]",
+    "portal_fx": [
+      {
+        "a": [
+          1.0,
+          73.9499969482422,
+          206.199996948242,
+          8.0,
+          1.0,
+          "teleport"
+        ],
+        "f": "CreateParticleSource",
+        "t": "fxcmd"
+      },
+      {
+        "a": [
+          2.0,
+          14.3999996185303,
+          208.0,
+          7.5,
+          1.0,
+          "teleport"
+        ],
+        "f": "CreateParticleSource",
+        "t": "fxcmd"
+      }
+    ]
+  },
+  "actual_map_candidate_positions": {
+    "after": [
+      {
+        "name": "Hero",
+        "owner": 0,
+        "pos": [
+          73.9499969482422,
+          206.199996948242
+        ],
+        "uid": 1500000001
+      },
+      {
+        "name": "merc2",
+        "owner": 0,
+        "pos": [
+          14.3999996185303,
+          208.0
+        ],
+        "uid": 1500000002
+      },
+      {
+        "name": "Guest 1",
+        "owner": 1,
+        "pos": [
+          76.9499969482422,
+          206.199996948242
+        ],
+        "uid": 1500000003
+      },
+      {
+        "name": "Guest 2",
+        "owner": 2,
+        "pos": [
+          73.9499969482422,
+          207.699996948242
+        ],
+        "uid": 1500000004
+      },
+      {
+        "name": "Guest 3",
+        "owner": 3,
+        "pos": [
+          75.4499969482422,
+          207.699996948242
+        ],
+        "uid": 1500000005
+      }
+    ],
+    "before": [
+      {
+        "name": "Hero",
+        "owner": 0,
+        "pos": [
+          73.9499969482422,
+          206.199996948242
+        ],
+        "uid": 1500000001
+      },
+      {
+        "name": "merc2",
+        "owner": 0,
+        "pos": [
+          75.4499969482422,
+          206.199996948242
+        ],
+        "uid": 1500000002
+      },
+      {
+        "name": "Guest 1",
+        "owner": 1,
+        "pos": [
+          76.9499969482422,
+          206.199996948242
+        ],
+        "uid": 1500000003
+      },
+      {
+        "name": "Guest 2",
+        "owner": 2,
+        "pos": [
+          73.9499969482422,
+          207.699996948242
+        ],
+        "uid": 1500000004
+      },
+      {
+        "name": "Guest 3",
+        "owner": 3,
+        "pos": [
+          75.4499969482422,
+          207.699996948242
+        ],
+        "uid": 1500000005
+      }
+    ],
+    "map_deploy": "[P: (73.6, 203.5), S: (3.700005, 5.399994)]",
+    "portal_fx": [
+      {
+        "a": [
+          1.0,
+          73.9499969482422,
+          206.199996948242,
+          8.0,
+          1.0,
+          "teleport"
+        ],
+        "f": "CreateParticleSource",
+        "t": "fxcmd"
+      },
+      {
+        "a": [
+          2.0,
+          14.3999996185303,
+          208.0,
+          7.5,
+          1.0,
+          "teleport"
+        ],
+        "f": "CreateParticleSource",
+        "t": "fxcmd"
+      },
+      {
+        "a": [
+          -1.0,
+          76.9499969482422,
+          206.199996948242,
+          8.0,
+          1.0,
+          "teleport"
+        ],
+        "f": "CreateParticleSource",
+        "t": "fxcmd"
+      },
+      {
+        "a": [
+          -2.0,
+          73.9499969482422,
+          207.699996948242,
+          8.0,
+          1.0,
+          "teleport"
+        ],
+        "f": "CreateParticleSource",
+        "t": "fxcmd"
+      },
+      {
+        "a": [
+          -3.0,
+          75.4499969482422,
+          207.699996948242,
+          8.0,
+          1.0,
+          "teleport"
+        ],
+        "f": "CreateParticleSource",
+        "t": "fxcmd"
+      }
+    ]
+  },
+  "navigation": {
+    "entrance_to_first_area": [
+      {
+        "class": 3,
+        "end": [
+          129.5,
+          270.0
+        ],
+        "from": [
+          73.9499969482422,
+          206.199996948242
+        ],
+        "points": 132,
+        "to": [
+          129.5,
+          270.0
+        ],
+        "uid": 1500000001
+      },
+      {
+        "class": 3,
+        "end": [
+          129.5,
+          270.0
+        ],
+        "from": [
+          14.3999996185303,
+          208.0
+        ],
+        "points": 282,
+        "to": [
+          129.5,
+          270.0
+        ],
+        "uid": 1500000002
+      },
+      {
+        "class": 3,
+        "end": [
+          129.5,
+          270.0
+        ],
+        "from": [
+          76.9499969482422,
+          206.199996948242
+        ],
+        "points": 131,
+        "to": [
+          129.5,
+          270.0
+        ],
+        "uid": 1500000003
+      },
+      {
+        "class": 3,
+        "end": [
+          129.5,
+          270.0
+        ],
+        "from": [
+          73.9499969482422,
+          207.699996948242
+        ],
+        "points": 130,
+        "to": [
+          129.5,
+          270.0
+        ],
+        "uid": 1500000004
+      },
+      {
+        "class": 3,
+        "end": [
+          129.5,
+          270.0
+        ],
+        "from": [
+          75.4499969482422,
+          207.699996948242
+        ],
+        "points": 129,
+        "to": [
+          129.5,
+          270.0
+        ],
+        "uid": 1500000005
+      }
+    ],
+    "ignored_actors": 265,
+    "waypoint_to_finish": {
+      "end": [
+        210.5,
+        311.0
+      ],
+      "from": [
+        129.5,
+        270.0
+      ],
+      "points": 171,
+      "to": [
+        210.5,
+        311.0
+      ]
+    }
+  },
+  "runs": [
+    {
+      "label": "arrival01",
+      "checks": 22,
+      "failures": 0,
+      "return_code": 0,
+      "errors": [],
+      "engine_errors": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "run_sha256": "2c18d0740c5bc78bce397e70d3fcfaabb85533efd83345e42240274d56466520",
+      "log_sha256": "dc8004afccca9386103e3271e010a60df63c23ac7a01895715fa7b240615a69f",
+      "fixture_sha256": "471e7972aeaf8577342bff08f14aefe7065032a6df2a5e54c0bc8200171f5a66",
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "91e52617bf5fe35828ad7e3c1d9bf8825bb1b7daaf6b4ae7d6c0aa57aa3ddf75",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 1781847,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 1781847,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ]
+    },
+    {
+      "label": "baseline-arrival02",
+      "checks": 29,
+      "failures": 6,
+      "return_code": 1,
+      "errors": [
+        "FAIL original arrival source admits the bounded guest particle hook",
+        "FAIL actual startup emits one additional particle for each extra arrival hero",
+        "FAIL actual startup uses the default saved negative allocator without colliding with original IDs",
+        "FAIL actual guest 1 receives exactly one effect at its entrance point",
+        "FAIL actual guest 2 receives exactly one effect at its entrance point",
+        "FAIL actual guest 3 receives exactly one effect at its entrance point"
+      ],
+      "engine_errors": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "run_sha256": "2e8c89b32bc76b2acb005cd31839eda3dfba0966dd0af715a81983a72a010ac9",
+      "log_sha256": "c16d7501c335c5a830c2d571de50494f59e6373ba3d127c833600470a369f2f7",
+      "fixture_sha256": "0c2e1d5ff96c92883165a72cf44c0759aa0f75238ec8ac5c0fe8759bb4e25530",
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "91e52617bf5fe35828ad7e3c1d9bf8825bb1b7daaf6b4ae7d6c0aa57aa3ddf75",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 1798194,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 1798194,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ]
+    },
+    {
+      "label": "baseline-fx01",
+      "checks": 69,
+      "failures": 14,
+      "return_code": 1,
+      "errors": [
+        "FAIL audited original zone7 arrival admits only the particle wrapper",
+        "FAIL three guests: one entry particle per living original-arrival hero",
+        "FAIL three guests: no missing or duplicate effect for guest 1",
+        "FAIL three guests: no missing or duplicate effect for guest 2",
+        "FAIL three guests: no missing or duplicate effect for guest 3",
+        "FAIL three guests: unique negative effect IDs consume only the saved allocator",
+        "FAIL guest-owned Kel: one entry particle per living original-arrival hero",
+        "FAIL guest-owned Kel: no missing or duplicate effect for guest 1",
+        "FAIL guest-owned Kel: no missing or duplicate effect for guest 2",
+        "FAIL guest-owned Kel: no missing or duplicate effect for guest 3",
+        "FAIL guest-owned Kel: unique negative effect IDs consume only the saved allocator",
+        "FAIL dead/hidden exclusions: one entry particle per living original-arrival hero",
+        "FAIL dead/hidden exclusions: no missing or duplicate effect for guest 3",
+        "FAIL dead/hidden exclusions: unique negative effect IDs consume only the saved allocator"
+      ],
+      "engine_errors": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "run_sha256": "23fed06ca30bc0c2d51e4b88a9cee4190f4c26269e63bd6d1b1d969b04078422",
+      "log_sha256": "afb6c7dc0ee3338aa893b8033cc214d505fb1024dbd4f4f4d04095830a6abe6a",
+      "fixture_sha256": "9ed78ffccacc67fef2cb9b5e17c6296f7272cfdfc5b95e17b01120aaf090caeb",
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "91e52617bf5fe35828ad7e3c1d9bf8825bb1b7daaf6b4ae7d6c0aa57aa3ddf75",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 1788846,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 1788846,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ]
+    },
+    {
+      "label": "baseline-fx02",
+      "checks": 85,
+      "failures": 14,
+      "return_code": 1,
+      "errors": [
+        "FAIL audited original zone7 arrival admits only the particle wrapper",
+        "FAIL three guests: one entry particle per living original-arrival hero",
+        "FAIL three guests: no missing or duplicate effect for guest 1",
+        "FAIL three guests: no missing or duplicate effect for guest 2",
+        "FAIL three guests: no missing or duplicate effect for guest 3",
+        "FAIL three guests: unique negative effect IDs consume only the saved allocator",
+        "FAIL guest-owned Kel: one entry particle per living original-arrival hero",
+        "FAIL guest-owned Kel: no missing or duplicate effect for guest 1",
+        "FAIL guest-owned Kel: no missing or duplicate effect for guest 2",
+        "FAIL guest-owned Kel: no missing or duplicate effect for guest 3",
+        "FAIL guest-owned Kel: unique negative effect IDs consume only the saved allocator",
+        "FAIL dead/hidden exclusions: one entry particle per living original-arrival hero",
+        "FAIL dead/hidden exclusions: no missing or duplicate effect for guest 3",
+        "FAIL dead/hidden exclusions: unique negative effect IDs consume only the saved allocator"
+      ],
+      "engine_errors": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "run_sha256": "5b84bb45918ffabab409a281550ed20d8e3002babb70dd92b007191c7b5b4d67",
+      "log_sha256": "d3de64e7763c2833c95fdc7612ee960d6bfe9a6f275a28329ddfd6c975b02161",
+      "fixture_sha256": "850e3a89affd70ec3b0d2e1a1d7039ccbb72e798b7107fb2a968bffaf76cf055",
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "91e52617bf5fe35828ad7e3c1d9bf8825bb1b7daaf6b4ae7d6c0aa57aa3ddf75",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 1797062,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 1797062,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ]
+    },
+    {
+      "label": "candidate01-arrival02",
+      "checks": 29,
+      "failures": 0,
+      "return_code": 0,
+      "errors": [],
+      "engine_errors": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "run_sha256": "c94272e2346e2a290774700b5e4258ca199aff893af88f297da438009d1bf5ad",
+      "log_sha256": "1d8f34dcce33a5565f78f84895e6f2ec1c3145da41b20373fc80462e05808267",
+      "fixture_sha256": "0c2e1d5ff96c92883165a72cf44c0759aa0f75238ec8ac5c0fe8759bb4e25530",
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "5bb49355b5770be7bc04ef62d922630c781c66dbd552e0ae97ac95357dbcb207",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 1797062,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        },
+        {
+          "pid": 1797836,
+          "executable": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/tracks/candidate01/CursedLands.x86_64",
+          "headless": false
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 1797062,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ]
+    },
+    {
+      "label": "candidate01-effects01",
+      "checks": 167,
+      "failures": 0,
+      "return_code": 0,
+      "errors": [],
+      "engine_errors": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "run_sha256": "e74b1fb83d0d723c9648709a74bac31c33c9adb12340d678bac286c7a1e2d9b6",
+      "log_sha256": "43b9e46efd2a93b1ae94375cc7f03077263b3a522fc9d3976afd2c40c7ef1eef",
+      "fixture_sha256": "e3cba989cfd289d77ce8786f7ee0bae3ebd555d584c4ecf88148c82fd68b946d",
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "5bb49355b5770be7bc04ef62d922630c781c66dbd552e0ae97ac95357dbcb207",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 1797062,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        },
+        {
+          "pid": 1797836,
+          "executable": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/tracks/candidate01/CursedLands.x86_64",
+          "headless": false
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 1797062,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        },
+        {
+          "pid": 1797836,
+          "executable": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/tracks/candidate01/CursedLands.x86_64",
+          "headless": false
+        },
+        {
+          "pid": 1797857,
+          "executable": "/home/llm2x/Documents/EI/local/scratchpad/lia-zone7-movement-audit-20261009/candidate01/CursedLands.x86_64",
+          "headless": true
+        }
+      ]
+    },
+    {
+      "label": "candidate01-fx01",
+      "checks": 69,
+      "failures": 0,
+      "return_code": 0,
+      "errors": [],
+      "engine_errors": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "run_sha256": "4128e1ce4f517c01d1c453be3c43e457463bb5b8a46ea24c3c5e404db153e730",
+      "log_sha256": "8a887d9f6a7ceeaa553b0d3eae35f5f2665b6bf229fff63d6aa4d086a743337f",
+      "fixture_sha256": "9ed78ffccacc67fef2cb9b5e17c6296f7272cfdfc5b95e17b01120aaf090caeb",
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "5bb49355b5770be7bc04ef62d922630c781c66dbd552e0ae97ac95357dbcb207",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 1790992,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 1790992,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ]
+    },
+    {
+      "label": "candidate01-fx02",
+      "checks": 85,
+      "failures": 0,
+      "return_code": 0,
+      "errors": [],
+      "engine_errors": [],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "run_sha256": "aecdd63d7694d33699934c3709b12bb269e4878e55828cdbc6c15904bd35466f",
+      "log_sha256": "34a8f20c88a9813fa7c9ee4caaf5724476569f2987f7f6834de0d9b7d8a57989",
+      "fixture_sha256": "850e3a89affd70ec3b0d2e1a1d7039ccbb72e798b7107fb2a968bffaf76cf055",
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "5bb49355b5770be7bc04ef62d922630c781c66dbd552e0ae97ac95357dbcb207",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 1797062,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 1797062,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ]
+    }
+  ],
+  "final_sha256": {
+    "candidate01/stage/src/game/script/story_coop_effects.gd": "7d432cb6007f390e7bf625f7537b2ba37fcc3d22b901fc301f5d57270ea77540",
+    "candidate01/stage/src/game/script/vm.gd": "f0a9f2eea62800d666e4a8429effa83c1ff6c174f52bd1c8b827a165198c6360",
+    "zone7_entry_fx.gd": "850e3a89affd70ec3b0d2e1a1d7039ccbb72e798b7107fb2a968bffaf76cf055",
+    "zone7_arrival.gd": "0c2e1d5ff96c92883165a72cf44c0759aa0f75238ec8ac5c0fe8759bb4e25530",
+    "story_coop_effects.gd": "e3cba989cfd289d77ce8786f7ee0bae3ebd555d584c4ecf88148c82fd68b946d",
+    "source-comparison.json": "96dd8db8d542f8f31b21c5319b33659bbf2ad79163d03cca9a29b2ade54bddae",
+    "candidate01/export.json": "e53f7f454d5b3f5a41574cecc71a34f4d37f185fdfce7da737d8f270c2c99166",
+    "run.py": "602fed097746870c06714e1cfc4e2645d6c27a7934da453c2e6d4f7cf4d9d7e3",
+    "export.py": "c7d26c22558881f59326cc63ed6b8736e0fa218f2d66e10c86ada1bb2b28a9e7",
+    "make_receipt.py": "471f52d138bad47d9102b9b1850721dbbdea31d2271122ba325ba2eb1c9096ac"
+  },
+  "limits": [
+    "Headless only; particle command generation/persistence/replay verified, no GPU appearance or animation acceptance.",
+    "Controlled co-op roster ownership, not ENet peers.",
+    "Actual map AI and unrelated story threads paused. Navigation queries ignore 265 actor stamps. Quest gates use controlled positions, not a complete played route.",
+    "Other rendered processes are recorded in run metadata; no performance claim.",
+    "This is a cosmetic candidate, not a progress-sync, navigation or teleport repair."
+  ],
+  "root_review": {
+    "source_receipt_sha256": "12c073027cb0c710268c092f2693fc18f29ef57acbd60f557e10c9b630a5527a",
+    "verified_final_hashes": 10,
+    "verified_run_log_fixture_sets": 8,
+    "tracked_game_files_compared": 613,
+    "changed_game_files": [
+      "game/src/game/script/story_coop_effects.gd",
+      "game/src/game/script/vm.gd"
+    ],
+    "review": "Original AST/WorldScript gate and statement indexes preserved; wrapper calls original effect first. Additional active guest heroes use the saved effect allocator. Named-role movement and all quest logic unchanged. Final fixtures copied exactly; controlled source/VM/save/replay and actual headless-map scope retained."
+  }
+}
