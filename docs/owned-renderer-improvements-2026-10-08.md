@@ -5604,3 +5604,27 @@ limits remain open. This is a local test build, not stable 1.0.3.
    native table; no replacement behavior was invented. Follow the current gameplay handoff
    for original routes, missing-data boundaries and platform-specific reports;
    do not infer further quest fixes from unconfirmed player states.
+
+## Original captive dialogue and Nalo entry — 10 October
+
+`218eafa` fixes two additional original campaign progression blockers. Nalo's
+Kr60 entry conversation now uses the original staging when the prison layout
+prevents approaching him. The actual briefing starts q61h and switches to the
+original Nalo role. The earlier Kr61 rescue-return fix remains covered.
+
+In Gipat's bz4g captive scene, the commander and Hermit are outside Zak's pen.
+The pathfinder can return a short path ending at the pen wall, which still
+cannot reach conversation distance. The three specific offered conversations
+now admit original staging after the authored arrival dialogue, with exact
+party, actor, position, topic and static-route checks. Speaking to the commander
+first and going straight to the Hermit both reach the original escape script;
+ordinary reachable conversations retain their normal approach.
+
+[Validation](validation/original-captive-dialogue-2026-10-10.json) records
+**250/0** checks on one changed compiled production script: admission controls,
+actual-map dialogue/UI flow, fresh pending/completed saves, Nalo entry and return,
+and ordinary dialogue regression. Unchanged .5 reproduces both the Nalo entry
+and captive approach failures. The entry boundaries are explicitly prepared;
+subsequent dialogue, quests, party transfers and travel are original script
+behavior. This does not establish complete organic campaign, recruited-party,
+Windows, real ENet/WAN, physical-input or rendering acceptance.

@@ -1,0 +1,360 @@
+{
+  "implementation_commit": "218eafa057470a35c0b1ca35ee2fd3b0f6864c90",
+  "protocol": 13,
+  "published": false,
+  "problem": "The remake requires walking to village NPCs. Original prison scenery prevents approaching Nalo for the Kr60 rescue entry and prevents captive Zak reaching the Gipat commander or Hermit.",
+  "change": "Extend the existing original staging exception to the offered Nalo entry after completed q60h, and the original bz4g captive conversations after completed Ha29. Require exact campaign, party, cage layout, topic phase, original named display actor/position, live owned hero and a static path that cannot reach the NPC. The bz4g path may be nonempty but end at the pen wall. Reachable conversations retain cancellable normal approach. Topic selection revalidates the same context.",
+  "acceptance": {
+    "checks": 250,
+    "failures": 0,
+    "runs": {
+      "guards02": {
+        "checks": 88,
+        "failures": 0,
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/guards02",
+        "run_sha256": "547215f24304b481dc313ba245b98a95ea58162f9c05ffdfee2a9cc3deef81b1",
+        "log_sha256": "aeca333b67341bed9986ec1bfcb5f3b3fc3e3f7b72324fee454b0edf3b220d4c",
+        "result_sha256": "23efb830d0a759aa08d8fc4f5ce9fb90e500aaa954ce6dd66b46dc5795e7b8a6",
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/authored_village_talk.gd": "27dd441e81a0ea11c6abf55991f648e3e63a60d787403708f72f43fac13466d8"
+        },
+        "frozen_source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/guards02/tool-source.gd": "27dd441e81a0ea11c6abf55991f648e3e63a60d787403708f72f43fac13466d8"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "f3966da5f8f875b079f4fb27f7b1425b7a1ec57ce78bbc2325e76a31ef87dde6",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        }
+      },
+      "captive01": {
+        "checks": 27,
+        "failures": 0,
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/captive01",
+        "run_sha256": "7bc2a05e0dacb3d7696a4b022ed5bbfe49e692e8f548ca35a5e3e28e21ac1d7a",
+        "log_sha256": "4614c8b4b63e946334df86861d2d0ce969909d94dbb3afe21d39d59004f980e1",
+        "result_sha256": "9829ca25e56b0d15da9c4a2a140e97ed4916f62f73d9701d860a148536162cc4",
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/gipat_captive_dialogue.gd": "3e45d7f24146a0f9d50e41df695a29a4b42330f94ae0cd364b377e104b8ed23d",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e"
+        },
+        "frozen_source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/captive01/tool-source.gd": "3e45d7f24146a0f9d50e41df695a29a4b42330f94ae0cd364b377e104b8ed23d",
+          "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/captive01/nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "f3966da5f8f875b079f4fb27f7b1425b7a1ec57ce78bbc2325e76a31ef87dde6",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        }
+      },
+      "captive-hermit01": {
+        "checks": 22,
+        "failures": 0,
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/captive-hermit01",
+        "run_sha256": "31b206c8dfbd3f214cc3f2b5dede4b67d1e4546eef1ea5237d871da86dbae39d",
+        "log_sha256": "15cca952bb639d97fcd487745d0664978dd7e1a111aefe892f0f4f8862c66c82",
+        "result_sha256": "0e0cf55ab857fad9368939efad797aaa5b9ddfc4bb51297217f6627be3addc91",
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/gipat_captive_dialogue.gd": "a21c958dea91f24c3360c917641f8be8fcee00286e012dd226c2ab9f34380aa1",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e"
+        },
+        "frozen_source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/captive-hermit01/tool-source.gd": "a21c958dea91f24c3360c917641f8be8fcee00286e012dd226c2ab9f34380aa1",
+          "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/captive-hermit01/nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "f3966da5f8f875b079f4fb27f7b1425b7a1ec57ce78bbc2325e76a31ef87dde6",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        }
+      },
+      "captive-pending01": {
+        "checks": 16,
+        "failures": 0,
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/captive-pending01",
+        "run_sha256": "af6fa2f504d95e5c63eea79db5244038328cff4a943f17098e926a356dccee3a",
+        "log_sha256": "e9ebb586c89d654988bb4fc89cd7d6edf24bd1a2fdec5daf37d5eb97b4c938b3",
+        "result_sha256": "a13dcb48bee0ca6044662a62cb7ae93b72dc2a9f09b720b32276a06f945da7e8",
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/gipat_captive_dialogue.gd": "a21c958dea91f24c3360c917641f8be8fcee00286e012dd226c2ab9f34380aa1",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e"
+        },
+        "frozen_source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/captive-pending01/tool-source.gd": "a21c958dea91f24c3360c917641f8be8fcee00286e012dd226c2ab9f34380aa1",
+          "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/captive-pending01/nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "f3966da5f8f875b079f4fb27f7b1425b7a1ec57ce78bbc2325e76a31ef87dde6",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        }
+      },
+      "captive-completed01": {
+        "checks": 17,
+        "failures": 0,
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/captive-completed01",
+        "run_sha256": "7947b75dd50d9b414c1a62f48b019e4aad24f07616e28260af1b3444ab2e6690",
+        "log_sha256": "24b4e0493d296360ee113eebaec6d458a6d068ab9d901f6ef5191d39cc9e41e9",
+        "result_sha256": "cc866173a5bb1ce19ee2f6883355953525e93587ecac0f2d95f2f03e91ece158",
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/gipat_captive_dialogue.gd": "a21c958dea91f24c3360c917641f8be8fcee00286e012dd226c2ab9f34380aa1",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e"
+        },
+        "frozen_source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/captive-completed01/tool-source.gd": "a21c958dea91f24c3360c917641f8be8fcee00286e012dd226c2ab9f34380aa1",
+          "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/captive-completed01/nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "f3966da5f8f875b079f4fb27f7b1425b7a1ec57ce78bbc2325e76a31ef87dde6",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        }
+      },
+      "entry02": {
+        "checks": 15,
+        "failures": 0,
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/entry02",
+        "run_sha256": "eb7ba3f9a3cbe0ed9df9ca86277fa7e21e1f0bdb73f76e03633d19bd5eefaeff",
+        "log_sha256": "87c4dc329c35635781522288750f21f26ecb8179a7aaaa5dee838bb0e4798a18",
+        "result_sha256": "58bbcc793f349b75c9863d426d7ac80a9bc1ecad7d3f8bcf455fe03be3535638",
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/nalo_rescue_entry.gd": "bcdab43857c799876f251790b70225b514ab703d24c6707159d857eac694c038",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e"
+        },
+        "frozen_source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/entry02/tool-source.gd": "bcdab43857c799876f251790b70225b514ab703d24c6707159d857eac694c038",
+          "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/entry02/nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "f3966da5f8f875b079f4fb27f7b1425b7a1ec57ce78bbc2325e76a31ef87dde6",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        }
+      },
+      "completed02": {
+        "checks": 16,
+        "failures": 0,
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/completed02",
+        "run_sha256": "5729e42438be291874616addc803b725aa16342386e7cf54350cd7d892a07c5a",
+        "log_sha256": "96a87a54d239d3476d5a82f3592791586ac055f423038f5754396d27f0e311b8",
+        "result_sha256": "6bc3a61fab255c1f20a3c6c8e094ce072e397b2979195aa62c076144233dd7df",
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/nalo_rescue_entry.gd": "bcdab43857c799876f251790b70225b514ab703d24c6707159d857eac694c038",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e"
+        },
+        "frozen_source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/completed02/tool-source.gd": "bcdab43857c799876f251790b70225b514ab703d24c6707159d857eac694c038",
+          "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/completed02/nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "f3966da5f8f875b079f4fb27f7b1425b7a1ec57ce78bbc2325e76a31ef87dde6",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        }
+      },
+      "return02": {
+        "checks": 33,
+        "failures": 0,
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/return02",
+        "run_sha256": "64eb58fb34d2798a12aa54ebd3f1f7e024f346b32178b322e91df6392806314f",
+        "log_sha256": "b8c5cf666350844fda6064ceea67873f34b53d6bfc902282a28f3d77409b9e62",
+        "result_sha256": "6b8f74162a6961355e57f4eef0633e1c7f103df37717db5d51283fbe1bc95860",
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e"
+        },
+        "frozen_source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/return02/tool-source.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "f3966da5f8f875b079f4fb27f7b1425b7a1ec57ce78bbc2325e76a31ef87dde6",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        }
+      },
+      "approach02": {
+        "checks": 16,
+        "failures": 0,
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/approach02",
+        "run_sha256": "de69ccdb137b8798b153de874013960c4682cab693b29da643b17bdab584dd00",
+        "log_sha256": "c7cc9a00c594b74b4a799634c4d07a231fe2a20ba695c1016665d45912bf98eb",
+        "result_sha256": null,
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/dialogue_approach.gd": "97bfb01d86ba39456118c42510261a364f26d3dedcf8fffbc7b1e12f9170b4c8"
+        },
+        "frozen_source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/approach02/tool-source.gd": "97bfb01d86ba39456118c42510261a364f26d3dedcf8fffbc7b1e12f9170b4c8"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "f3966da5f8f875b079f4fb27f7b1425b7a1ec57ce78bbc2325e76a31ef87dde6",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        }
+      }
+    },
+    "scope": "Linux headless original-data world and normal interaction/topic/UI skip-next controls. Actual captive arrival -> optional commander -> Hermit proposal/escape -> original gz4g exit, plus Hermit-first choice, pending escape and completed fresh reload. Nalo entry naturally creates q61h and its original Pretty role; completed entry reload and prior Kr61/main-party return remain valid."
+  },
+  "retained_diagnostics": {
+    "baseline01": {
+      "note": "Unchanged .5 cannot open the offered Kr60 Nalo entry conversation from the prepared q60h boundary.",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/baseline01",
+      "checks": 7,
+      "failures": [
+        "ordinary approach opens first Nalo conversation"
+      ],
+      "run_sha256": "c820c7b09b49adbad44d0b54c7f8a4ac89581fb080f1d536023583d445a5f792",
+      "result_sha256": "c4eda0fb3fdcf7998f4cee5e22bbc85ec0c8ec4d7656f48db8504fdbbc685847"
+    },
+    "cage-flow02": {
+      "note": "Unchanged .5 cannot approach the ready commander after the actual original Ha29 arrival dialogue.",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/cage-flow02",
+      "checks": 7,
+      "failures": [
+        "ordinary approach opens b.HWLeader.Ha29_1"
+      ],
+      "run_sha256": "6075b508d7287bfd1929c91a2d8d576fba228ddbc5373454a793776d361ae752",
+      "result_sha256": "5a98d740066e542a452da3ce1c752eaa85e5a4bb63e82bfbf4fd2cb1f56979dc"
+    },
+    "captive-hermit-baseline01": {
+      "note": "Unchanged .5 freshly loads the same offered captive checkpoint but cannot approach the Hermit; commander conversation is deliberately skipped, not completed.",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/captive-hermit-baseline01",
+      "checks": 9,
+      "failures": [
+        "ordinary approach opens b.OLiz.Ha29_2"
+      ],
+      "run_sha256": "ffea36e3fd6a0c22b4a9e770ed9b585d9f536796eb92fbf992c1c64adb245b38",
+      "result_sha256": "be27f6c4344c77aa44e1f1e99c6073f0cf9f32a772c296bd045a0e5db95879f6"
+    },
+    "cage-diagnostic01": {
+      "note": "The ordinary click is accepted and the hero moves along a partial path inside the pen. Dialogue return movement is not cancelling the click.",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/cage-diagnostic01",
+      "checks": 7,
+      "failures": [
+        "ordinary approach opens b.HWLeader.Ha29_1"
+      ],
+      "run_sha256": "008a642238b8ced39d6d94fe3c8f28acce4d643dd98a66223b515205f277a7bf",
+      "result_sha256": "4a219fa0b2971e35153186c272bbf55b6eb9063570ddb67185b5e9e810f95e6a"
+    },
+    "cage-layout01": {
+      "note": "Original bz4g spawn and both targets are walkable but each static path ends inside the pen; native dialogue text confirms captivity.",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/cage-layout01",
+      "checks": 3,
+      "failures": [],
+      "run_sha256": "fba7da175db7ffdb3ad910e5d35921712c645ec9e483b66417eb971b91984495",
+      "result_sha256": "0c0597f4453389a5c596a49c81960b08d37b094c615d793da2bdbf0a2048bfb6"
+    }
+  },
+  "source_evidence": {
+    "census": "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/cage-source01/cage-sources.json",
+    "census_sha256": "c8ebf9072f708e9dd1bd18c3ff78cc56a01706e3d8f7e7b29660a394cf097193",
+    "original_cage_maps": [
+      "bz4g",
+      "bz13h"
+    ],
+    "original_bz4g_script_sha256": "9a263394a10f24794199d7ffffb43a82bf98d2f70e9ddbbcb598e2df6ac29c36"
+  },
+  "build": {
+    "base_commit": "cb08ff2a5117ade24ad764722eed65f9fb3cd404",
+    "production_changes": {
+      "src/game/script/authored_village_talk.gd": "11a0c4406b9663596ac395f6ee03a6d7918521b31b03c86f38031d91577da4ef"
+    },
+    "steps": [
+      {
+        "command": [
+          "/home/llm2x/.local/bin/godot-4",
+          "--headless",
+          "--path",
+          "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/candidate02/stage",
+          "--editor",
+          "--import",
+          "--quit"
+        ],
+        "return_code": 0,
+        "seconds": 5.9224303039954975,
+        "errors": []
+      },
+      {
+        "command": [
+          "/home/llm2x/.local/bin/godot-4",
+          "--headless",
+          "--path",
+          "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/candidate02/stage",
+          "--export-pack",
+          "Linux",
+          "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/candidate02/CursedLands.pck"
+        ],
+        "return_code": 0,
+        "seconds": 5.121575616998598,
+        "errors": []
+      }
+    ],
+    "private_candidate": true,
+    "pack_changes": [
+      "src/game/script/authored_village_talk.gdc"
+    ],
+    "preserved_unchanged_scene": ".godot/exported/133200997/export-3ad5c15c4f3250da0cc7c1af1770d85f-main.scn",
+    "resource_count": 682,
+    "files": {
+      "CursedLands.pck": "f3966da5f8f875b079f4fb27f7b1425b7a1ec57ce78bbc2325e76a31ef87dde6",
+      "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+      "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+    }
+  },
+  "checkpoint_saves": {
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/baseline01/isolated/data/godot/app_userdata/Cursed Lands/saves/nalo_entry_pending.info.sav": "7e2848312f5039a791ffd093e582191242ddbd0adef59e72f3b7b006ea49de8d",
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/baseline01/isolated/data/godot/app_userdata/Cursed Lands/saves/nalo_entry_pending.sav": "34f03d78b70a814074f3c27f2356758186c0893eba2ec3956da754d869981ab4",
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/captive01/isolated/data/godot/app_userdata/Cursed Lands/saves/captive_escape_offered.info.sav": "4cac0ba62f5c786000805efa6f6402d9040a3ecf9f55f50f728e42586755268b",
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/captive01/isolated/data/godot/app_userdata/Cursed Lands/saves/bz4g_cage_flow.info.sav": "15a2de672f44176b1f03b1abf4ee4baba36536fff089b484910b704a2de48e81",
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/captive01/isolated/data/godot/app_userdata/Cursed Lands/saves/captive_escape_offered.sav": "aff8c83ba0465e6c52bfa1553ae866ca034524f6e4536fd4a3365d3e300bf0d6",
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/captive01/isolated/data/godot/app_userdata/Cursed Lands/saves/captive_arrival.info.sav": "527f3609c70a2244cf3555dde48b9b740ddfc6c85bed6fbad88eb3052d6553ed",
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/captive01/isolated/data/godot/app_userdata/Cursed Lands/saves/bz4g_cage_flow.sav": "72bbbac91a37201c897000fab04bba91547ee44150b74df5bd94a2a20c9f9787",
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/captive01/isolated/data/godot/app_userdata/Cursed Lands/saves/captive_arrival.sav": "e6297be1d003823f8e677a68b000181c245f50bdfb04835173287afb60e4826a",
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/captive-hermit01/isolated/data/godot/app_userdata/Cursed Lands/saves/captive_escape_offered.info.sav": "5c3e0fdb313e3813c100342fc5cf356162fb94e5bde91568cbfd96756dd3add3",
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/captive-hermit01/isolated/data/godot/app_userdata/Cursed Lands/saves/bz4g_cage_flow.info.sav": "0abce09baa9c968d01f7d6614132a2fc833f22750982afbd44137f6b2a9ffcc9",
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/captive-hermit01/isolated/data/godot/app_userdata/Cursed Lands/saves/captive_input.sav": "e6297be1d003823f8e677a68b000181c245f50bdfb04835173287afb60e4826a",
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/captive-hermit01/isolated/data/godot/app_userdata/Cursed Lands/saves/captive_escape_offered.sav": "dd4894974e5a865a3bfa8b9120d0d57e922b48712b08e50d1be0c802bb73078c",
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/captive-hermit01/isolated/data/godot/app_userdata/Cursed Lands/saves/captive_arrival.info.sav": "5ddb7745fde74e46725ccd53fb8a93ace4e519c49ce5a41c73bb5dcdfb0ae672",
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/captive-hermit01/isolated/data/godot/app_userdata/Cursed Lands/saves/bz4g_cage_flow.sav": "6892ad35ca79decd41e6aeafc0b3a2a85c76964825925a165ed591140e617e8d",
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/captive-hermit01/isolated/data/godot/app_userdata/Cursed Lands/saves/captive_arrival.sav": "e6297be1d003823f8e677a68b000181c245f50bdfb04835173287afb60e4826a",
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/captive-pending01/isolated/data/godot/app_userdata/Cursed Lands/saves/captive_escape_offered.info.sav": "7b40a066ba1cb30097995d189a4909f649e5e59afbd1399eff13237ac11871e8",
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/captive-pending01/isolated/data/godot/app_userdata/Cursed Lands/saves/bz4g_cage_flow.info.sav": "1593c73f0549c58d38bc74272fc1655b627389c334c158a7778dabec17b3c123",
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/captive-pending01/isolated/data/godot/app_userdata/Cursed Lands/saves/captive_input.sav": "dd4894974e5a865a3bfa8b9120d0d57e922b48712b08e50d1be0c802bb73078c",
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/captive-pending01/isolated/data/godot/app_userdata/Cursed Lands/saves/captive_escape_offered.sav": "dd4894974e5a865a3bfa8b9120d0d57e922b48712b08e50d1be0c802bb73078c",
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/captive-pending01/isolated/data/godot/app_userdata/Cursed Lands/saves/captive_arrival.info.sav": "7b40a066ba1cb30097995d189a4909f649e5e59afbd1399eff13237ac11871e8",
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/captive-pending01/isolated/data/godot/app_userdata/Cursed Lands/saves/bz4g_cage_flow.sav": "ebad71331cc3a8d87a94867de0d96e059e87f6cdbd2720848f070c59842c1402",
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/captive-pending01/isolated/data/godot/app_userdata/Cursed Lands/saves/captive_arrival.sav": "dd4894974e5a865a3bfa8b9120d0d57e922b48712b08e50d1be0c802bb73078c",
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/entry02/isolated/data/godot/app_userdata/Cursed Lands/saves/nalo_entry_complete.sav": "a78cc41bfe34a90af1f0f72810b5720b446ace853b6cb7f28227e4ceec039056",
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/entry02/isolated/data/godot/app_userdata/Cursed Lands/saves/entry_input.sav": "34f03d78b70a814074f3c27f2356758186c0893eba2ec3956da754d869981ab4",
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/entry02/isolated/data/godot/app_userdata/Cursed Lands/saves/nalo_entry_complete.info.sav": "685674b6cff474719142b2b8c01700d7c0ceae53c211e99a6b04a1f23eccbdbb",
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/entry02/isolated/data/godot/app_userdata/Cursed Lands/saves/nalo_entry_pending.info.sav": "ab9999e9370318ade86b893b8a21fcba3672ed842c8ba621749d413185ec37c4",
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/entry02/isolated/data/godot/app_userdata/Cursed Lands/saves/nalo_entry_pending.sav": "62d58993dcffff3b72f7dc41816f6c5933c3cd0e3b832a4bfcf7751b8817325a",
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/return02/isolated/data/godot/app_userdata/Cursed Lands/saves/nalo_full_return.info.sav": "3af01a8a802fbda088d4c4c4a7295ad9a702a70b849c74b21195940bf2ab0414",
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/return02/isolated/data/godot/app_userdata/Cursed Lands/saves/reload_input.sav": "b397463f68ff9a3ec6c5edfa0f967bf5bec3175fecf81dfc5c2acaa214b3eafb",
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/return02/isolated/data/godot/app_userdata/Cursed Lands/saves/nalo_full_return.sav": "472d6d99aba805340974215490355dc35b703e5cb8eaa4b4949c5d2daadf5f29",
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-rescue-continuation-20261010/rescue01/isolated/data/godot/app_userdata/Cursed Lands/saves/nalo_resume_cell_opened.sav": "b397463f68ff9a3ec6c5edfa0f967bf5bec3175fecf81dfc5c2acaa214b3eafb"
+  },
+  "limits": [
+    "Entry boundaries are explicitly prepared: q60h-complete/HeroAlone/Kr60-offered for Nalo, and the Ha29 arrival offer for bz4g. Subsequent conversation, quest/party changes and zone travel use original scripts. These are not full organic campaign playthroughs.",
+    "The actual-map routes use the original main hero. Controlled guards cover host/player-scoped dialogue but add no real ENet, recruited-party, Windows, WAN or physical-input acceptance.",
+    "Headless tests provide no rendering or target-device performance evidence. Prior renderer/engine behavior is unchanged.",
+    "captive01 retains the frozen first fixture revision. The canonical revision adds Hermit-first/fresh-completed choices, exercised in subsequent runs; it does not alter production code.",
+    "The delivered .5 archives remain unchanged. A later package must explicitly include this commit."
+  ],
+  "artifacts": {
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/build.py": "01b78a3b582d4b860f574f27a6b28889df8106e28ab57d4ee7edca65ca75d737",
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/run.py": "e27e3e7f14ce9f4068341603634ae70b8aa83fe40ab0f18a8558990ae962ca5f",
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/record.py": "33c418f21ae57116ca7fe6f841c725e5bb535b8fafaf8c2986149f270fce72a0",
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/candidate02/build.json": "fd664662898be46622a2e7fd5e982f7f4304de821978e491e9e8a874852dabc1",
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/candidate02/source.patch": "08354f24e4806fba643fcc4e5f6ee131372785d6b5077a2139fed7068c172cd7",
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/cage_source.gd": "c0cc5edc38c708433969cba0c401ea3198ab28fa68a79dba206cf6b3aaca6b7a",
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/cage_flow.gd": "4d81e2e2e4d854836259e55be6fcf7058f38d659f55b61d1cd5cb2c21ee97590",
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/cage_diagnostic.gd": "3ef0d2e93929c9cd6e39b2eb838e02bd26f4ca272a54e80589a69374382b275c",
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/cage_layout.gd": "945c9d02b7edd868f00df17eb16dcf55559130a593d7cb2703ee942e3887bc44"
+  },
+  "canonical_fixtures": {
+    "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/authored_village_talk.gd": "27dd441e81a0ea11c6abf55991f648e3e63a60d787403708f72f43fac13466d8",
+    "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/nalo_rescue_entry.gd": "bcdab43857c799876f251790b70225b514ab703d24c6707159d857eac694c038",
+    "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/gipat_captive_dialogue.gd": "a21c958dea91f24c3360c917641f8be8fcee00286e012dd226c2ab9f34380aa1",
+    "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e"
+  }
+}
