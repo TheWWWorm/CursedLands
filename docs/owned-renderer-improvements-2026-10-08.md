@@ -8,7 +8,9 @@ Starting commit: `3172ede12a5f41b0182c34a70b5eeda787c95e52`
 
 The source audit and priorities are in
 [OWNED_RENDERER_IMPROVEMENT_HANDOFF.md](/home/llm2x/Documents/EI/OWNED_RENDERER_IMPROVEMENT_HANDOFF.md).
-**Active follow-up — 9 October 2026.** The user resumed the larger renderer and
+**Latest local test, 10 October:** `1.0.3-local.20261010.2`: [Windows ZIP](/home/llm2x/Downloads/CursedLands-1.0.3-local.20261010.2-windows-x86_64.zip) and [Linux archive](/home/llm2x/Downloads/CursedLands-1.0.3-local.20261010.2-linux-x86_64.tar.gz), source `451203a`, protocol 13. Both contain the same 680-resource / 264-script pack and all eleven desktop engine patches. Includes rounded/lit pebbles, exclusive grass/stone placement, distant grass, previous gameplay fixes, conditional cloud radiance savings and the worker shutdown repair. The actual Linux Forward+ package passes 141 checks with the separate rendering thread: cloud consumers/menu, New Game, original-MP travel/menu restoration and live graphics options. Zero exposed HUD frames; all four processes exit normally. Earlier .1 package coverage (315 checks) is inherited. Archives read back exactly. Windows execution, full physical routes and stable-release acceptance remain open; V1 scratch code is excluded. [Receipt](/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/local-feedback-build-2026-10-10-2.json).
+
+**9 October checkpoint (historical).** The user resumed the larger renderer and
 gameplay goal. Continue on `fix/catacomb-coop-deck` in
 `/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo`.
 The earlier river-current checkpoint is `eda826d`; new checkpoints below cover
@@ -18,17 +20,17 @@ Gameplay U39–U44 and the separate U45 removed-actor death-predicate correction
 are committed. The supplied U45 autosave contains two living required creatures;
 the original completion gates work when both die. `1b8b0f6` fixes a distinct
 script-added looted-actor reload defect with 137 passing candidate checks.
-The current qualified private export is `/home/llm2x/Documents/EI/local/scratchpad/menu-local-test-feedback-20261009/combined01`,
+At that checkpoint the qualified private export was `/home/llm2x/Documents/EI/local/scratchpad/menu-local-test-feedback-20261009/combined01`,
 matching production checkpoint `e2e7e0af17d0a7cd7f7de20eea2e910e33038204`.
 The latest original prison q71h/q72h route fix (`d13bac0`) passes
 [630 checks](validation/prison-progression-late-join-2026-10-09.json); the earlier
 discovery/alarm, renderer and native-binary evidence is inherited.
 
-**Latest gameplay source:** `0cc6cdc` adds the original Gipat arrival effect for extra LiA co-op heroes, with [281 focused checks](validation/lia-zone7-arrival-2026-10-09.json). Its private `lia-zone7-movement-audit-20261009/candidate01` export changes only two gameplay scripts from `8195e68`, which preserves all eleven original prison damage/Sleep cycles for late and returning guests ([918 checks](validation/prison-damage-late-join-2026-10-09.json)). Arrival positions, original NPC movement, saved waits and quest behavior remain unchanged. The delivered Linux/Windows `.2` packages below remain at `e2e7e0a`; renderer lighting work is still separate and uncommitted.
+**9 October gameplay checkpoint:** `0cc6cdc` adds the original Gipat arrival effect for extra LiA co-op heroes, with [281 focused checks](validation/lia-zone7-arrival-2026-10-09.json). Its private `lia-zone7-movement-audit-20261009/candidate01` export changes only two gameplay scripts from `8195e68`, which preserves all eleven original prison damage/Sleep cycles for late and returning guests ([918 checks](validation/prison-damage-late-join-2026-10-09.json)). Arrival positions, original NPC movement, saved waits and quest behavior remain unchanged. The delivered Linux/Windows `.2` packages below remain at `e2e7e0a`; renderer lighting work is still separate and uncommitted.
 
-**Updated Linux local test:** [`1.0.3-local.20261009.2`](/home/llm2x/Downloads/CursedLands-1.0.3-local.20261009.2-linux-x86_64.tar.gz), unpacked at `/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261009.2-linux-x86_64`, uses checkpoint `e2e7e0a` and protocol 13. It fixes disappearing stone-menu labels after live graphics changes and the empty HUD before New Game loading, and includes the newly qualified prison route progression fix. All 262 compiled scripts and 673 resources match the combined export except its displayed version setting; only three production scripts differ from the prior discovery export. The actual package passes **73 checks** across live menu settings, base New Game, Continue and LiA New Game using the separate rendering thread. All loading runs show zero exposed HUD frames. Archive contents and executable permissions are verified. Isolated profiles preserve user settings and saves. The unfinished terrain-contact lighting experiment is excluded. [Package evidence](validation/linux-local-test-feedback-2026-10-09.json). The preceding [local test](validation/linux-local-test-2026-10-09.json) remains historical; neither package is a published stable release.
+**Previous Linux local test:** [`1.0.3-local.20261009.2`](/home/llm2x/Downloads/CursedLands-1.0.3-local.20261009.2-linux-x86_64.tar.gz), unpacked at `/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261009.2-linux-x86_64`, uses checkpoint `e2e7e0a` and protocol 13. It fixes disappearing stone-menu labels after live graphics changes and the empty HUD before New Game loading, and includes the newly qualified prison route progression fix. All 262 compiled scripts and 673 resources match the combined export except its displayed version setting; only three production scripts differ from the prior discovery export. The actual package passes **73 checks** across live menu settings, base New Game, Continue and LiA New Game using the separate rendering thread. All loading runs show zero exposed HUD frames. Archive contents and executable permissions are verified. Isolated profiles preserve user settings and saves. The unfinished terrain-contact lighting experiment is excluded. [Package evidence](validation/linux-local-test-feedback-2026-10-09.json). The preceding [local test](validation/linux-local-test-2026-10-09.json) remains historical; neither package is a published stable release.
 
-**Windows local test:** [`1.0.3-local.20261009.2`](/home/llm2x/Downloads/CursedLands-1.0.3-local.20261009.2-windows-x86_64.zip) is the Windows x86_64 counterpart of the updated Linux package, using the same `e2e7e0a` checkpoint and protocol 13. Its entire game pack is byte-identical (673 resources, 262 compiled scripts). The runtime was cross-built from Godot `5b4e0cb0f` with all ten committed desktop patches, and the native helper was rebuilt from the matching source. PE architecture, imports, native entry point, source provenance and full ZIP readback pass. **Windows execution remains untested**; this is a local test build. The later prison damage/Sleep and guest-arrival fixes and the unfinished terrain-contact lighting experiment are excluded. [Package evidence](validation/windows-local-test-2026-10-09.json).
+**Previous Windows local test:** [`1.0.3-local.20261009.2`](/home/llm2x/Downloads/CursedLands-1.0.3-local.20261009.2-windows-x86_64.zip) is the Windows x86_64 counterpart of the updated Linux package, using the same `e2e7e0a` checkpoint and protocol 13. Its entire game pack is byte-identical (673 resources, 262 compiled scripts). The runtime was cross-built from Godot `5b4e0cb0f` with all ten committed desktop patches, and the native helper was rebuilt from the matching source. PE architecture, imports, native entry point, source provenance and full ZIP readback pass. **Windows execution remains untested**; this is a local test build. The later prison damage/Sleep and guest-arrival fixes and the unfinished terrain-contact lighting experiment are excluded. [Package evidence](validation/windows-local-test-2026-10-09.json).
 
 [Previous junction evidence](validation/terrain-junctions-2026-10-09.json)
 qualifies exact three/four-family Natural transitions across both campaigns,
@@ -5243,11 +5245,11 @@ and also occur in unchanged arms. Their cause is unproven. No failure or thresho
 was discarded. Runtime errors, texture ownership failures and crashes were not
 observed. This is investigative evidence, not an acceptance pass.
 
-The next cloud step is a bounded visual qualification of the spatial-resolution
-tradeoff in actual gameplay and varied fair/storm/horizon views before deciding
-whether it belongs in an existing quality choice. Do not repeat these six
-prototypes or claim the Windows 9 FPS report resolved. The Natural sector cache
-and V1 terrain-contact composition remain separate, unpromoted scratch work.
+At this checkpoint the next step was qualification of the spatial-resolution
+tradeoff in actual gameplay. That probe and the subsequently selected radiance
+optimization are recorded below. Do not repeat these six prototypes or claim
+the Windows 9 FPS report resolved. The Natural sector cache and V1 terrain-contact
+composition remain separate, unpromoted scratch work.
 
 ## Cloud radiance ownership and shutdown repair — 10 October
 
@@ -5290,6 +5292,24 @@ quarter-resolution High and weather-cache prototypes remain unpromoted.
 Existing V1 scratch changes are excluded. Updated local packages are recorded
 separately; neither this change nor a local package establishes stable release
 or target-device acceptance.
+
+## Refreshed local packages — 10 October, .2
+
+`1.0.3-local.20261010.2` packages source `451203a` and all eleven engine patches
+for Linux and Windows. Both packs are byte-identical: 680 resources, 264 compiled
+scripts. Only the displayed version differs from the qualified radiance pack.
+The native navigation helpers are unchanged; the runtime change is the worker
+shutdown repair. Prior pebble lighting/placement, grass and gameplay fixes remain.
+
+The actual Linux package passes 141 checks with the separate rendering thread:
+63 cloud/consumer/menu, 9 New Game, 23 original multiplayer flow and 46 live menu
+options checks. All processes terminate normally, with no exposed HUD frames in
+loading/travel. Previous .1 coverage is inherited, not counted as newly executed.
+Windows PE/import/source checks and both archive readbacks pass; Windows execution
+and target-device performance remain untested. These are local tests, not a
+published stable release. V1 scratch files remain excluded.
+
+[Package receipt](validation/local-feedback-build-2026-10-10-2.json).
 
 ## Next work in the established order
 

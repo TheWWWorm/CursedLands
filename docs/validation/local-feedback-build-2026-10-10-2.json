@@ -1,0 +1,538 @@
+{
+  "version": "1.0.3-local.20261010.2",
+  "source_commit": "451203a78498289ff8579213e9b26479430ce1b5",
+  "protocol": 13,
+  "published": false,
+  "build_receipt": "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-2/build.json",
+  "build_receipt_sha256": "43326d080a4a38adb0666e596744a0dc321faf598ce43e7f68813496a169b458",
+  "checks": 141,
+  "failures": 0,
+  "runs": {
+    "radiance01": {
+      "checks": 63,
+      "failures": 0,
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-2/radiance01",
+      "receipt_sha256": "d0b8ac5301cef900fc6e3259175b1e80d4f1a3887ed082736b85819d31ca0376",
+      "observations": {
+        "checks": 63,
+        "failures": 0,
+        "rows": [
+          {
+            "case": "background-2",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "background-2-restored",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "background-3",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "background-3-restored",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "reflection",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "reflection-unsafe-control",
+            "difference": {
+              "changed_pixels": 30951,
+              "peak_delta": 182,
+              "pixels_over_2": 24835
+            }
+          },
+          {
+            "case": "reflection-restored",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "ambient",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "ambient-unsafe-control",
+            "difference": {
+              "changed_pixels": 46705,
+              "peak_delta": 146,
+              "pixels_over_2": 42610
+            }
+          },
+          {
+            "case": "ambient-restored",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "aerial",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "aerial-unsafe-control",
+            "difference": {
+              "changed_pixels": 853096,
+              "peak_delta": 104,
+              "pixels_over_2": 853096
+            }
+          },
+          {
+            "case": "aerial-restored",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "volumetric",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "volumetric-unsafe-control",
+            "difference": {
+              "changed_pixels": 853096,
+              "peak_delta": 116,
+              "pixels_over_2": 853096
+            }
+          },
+          {
+            "case": "volumetric-restored",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "background-return",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "background-return-restored",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "menu",
+            "difference": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          }
+        ]
+      },
+      "captures": {
+        "cloud-radiance-background-2-complete.png": "8d1a66e428360e506fc9edb18210c70e643c45521d7562aa0b6f48958df56ff3",
+        "cloud-radiance-reflection-unsafe-control.png": "403eef3027ddcaac279190fc659418eb66597abd54280d8a8f0709f610101ec8",
+        "cloud-radiance-aerial-restored.png": "c9a9558f0dee6f499976105bf12b99111b108ce369a0ff4e877bacd9892c8893",
+        "cloud-radiance-volumetric-auto.png": "b129aabda0fbe03950aeb9e6ff9215e83e6b1bcd19cfe916592e8dec8dcfbc05",
+        "cloud-radiance-background-return-complete.png": "1363c3da08da2f0ece78762be18fde38b6edc824cc3352bb0c9f6c5f39f318c8",
+        "cloud-radiance-reflection-restored.png": "00322b1fd968c0305e8099146f2dbe8c91488a291368445642dc75113537945d",
+        "cloud-radiance-reflection-complete.png": "00322b1fd968c0305e8099146f2dbe8c91488a291368445642dc75113537945d",
+        "cloud-radiance-reflection-auto.png": "00322b1fd968c0305e8099146f2dbe8c91488a291368445642dc75113537945d",
+        "cloud-radiance-aerial-complete.png": "c9a9558f0dee6f499976105bf12b99111b108ce369a0ff4e877bacd9892c8893",
+        "cloud-radiance-background-2-restored.png": "8d1a66e428360e506fc9edb18210c70e643c45521d7562aa0b6f48958df56ff3",
+        "cloud-radiance-volumetric-unsafe-control.png": "8c60a78fa9a358edbd007e50e8c2f700e5d74ab2d44018f796bd855d48430605",
+        "cloud-radiance-volumetric-restored.png": "b129aabda0fbe03950aeb9e6ff9215e83e6b1bcd19cfe916592e8dec8dcfbc05",
+        "cloud-radiance-background-return-auto.png": "1363c3da08da2f0ece78762be18fde38b6edc824cc3352bb0c9f6c5f39f318c8",
+        "cloud-radiance-menu-complete.png": "3108d3d06d1cb10f0e4714b3089b573b7597f6ed6d61a69cee4e5a78fa541950",
+        "cloud-radiance-ambient-restored.png": "4e34492b034b0f99d3c5bc7e6aaf0215917f31ad12e1337dd15e4d2a0be2f6f6",
+        "cloud-radiance-ambient-complete.png": "4e34492b034b0f99d3c5bc7e6aaf0215917f31ad12e1337dd15e4d2a0be2f6f6",
+        "cloud-radiance-ambient-unsafe-control.png": "7b56e767e46b012181cd32be56ee49c54a4a57bab2b000a5b3352bb340e9333e",
+        "cloud-radiance-background-3-auto.png": "1c507bb09368c44d43b5018c5070161e8d66b849f0614b8c584580c145866611",
+        "cloud-radiance-aerial-auto.png": "c9a9558f0dee6f499976105bf12b99111b108ce369a0ff4e877bacd9892c8893",
+        "cloud-radiance-aerial-unsafe-control.png": "26f6e9798abe87d43744428f8f2983e7a2e49d9f435624eba6007bc555370ebe",
+        "cloud-radiance-ambient-auto.png": "4e34492b034b0f99d3c5bc7e6aaf0215917f31ad12e1337dd15e4d2a0be2f6f6",
+        "cloud-radiance-background-3-complete.png": "1c507bb09368c44d43b5018c5070161e8d66b849f0614b8c584580c145866611",
+        "cloud-radiance-volumetric-complete.png": "b129aabda0fbe03950aeb9e6ff9215e83e6b1bcd19cfe916592e8dec8dcfbc05",
+        "cloud-radiance-menu-auto.png": "3108d3d06d1cb10f0e4714b3089b573b7597f6ed6d61a69cee4e5a78fa541950",
+        "cloud-radiance-background-return-restored.png": "1363c3da08da2f0ece78762be18fde38b6edc824cc3352bb0c9f6c5f39f318c8",
+        "cloud-radiance-background-2-auto.png": "8d1a66e428360e506fc9edb18210c70e643c45521d7562aa0b6f48958df56ff3",
+        "cloud-radiance-background-3-restored.png": "1c507bb09368c44d43b5018c5070161e8d66b849f0614b8c584580c145866611"
+      },
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "76a77649a361fa06134d3d6bd29e2eceb66a189360c772b3be6bb9757239021b",
+        "CursedLands.pck": "63d93859420f2cc368135dc738b599ecf35e59c043eecf341f29a164253a11fc",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/cloud_radiance.gd": "e107182f3635c059f8996c32716333878090152a71bd5960694032cab0a2da17",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      }
+    },
+    "new-game01": {
+      "checks": 9,
+      "failures": 0,
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-2/new-game01",
+      "receipt_sha256": "a5a111d019fb2bf4eae7b0a8b0458ce3a7b2302dbc989fb149f7c3cca3ae495e",
+      "observations": {
+        "covered": 803,
+        "deferred": false,
+        "exposed": 0,
+        "new_game": true,
+        "worker": true,
+        "worker_pid": 2328949,
+        "zone": "gz1g"
+      },
+      "captures": {
+        "menu-covered.png": "26c7c05ac5802100a0e9b9bd9a049de35274a3bee236dad725876bf08d700b46"
+      },
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "76a77649a361fa06134d3d6bd29e2eceb66a189360c772b3be6bb9757239021b",
+        "CursedLands.pck": "63d93859420f2cc368135dc738b599ecf35e59c043eecf341f29a164253a11fc",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/menu_loading_screen.gd": "9f3742d29ad2137ef4c9e9a82a536d64d4a2417a2f66ebd10e84bf90a88ff8a7"
+      }
+    },
+    "original-mp01": {
+      "checks": 23,
+      "failures": 0,
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-2/original-mp01",
+      "receipt_sha256": "bfcf517b66f0022c8f357b9d6cf0d0a8ae45b598c73e1af6f076749777687e84",
+      "observations": {
+        "checks": 23,
+        "failures": 0,
+        "frames": {
+          "start": {
+            "covered": 600,
+            "exposed": 0,
+            "transition": 0
+          },
+          "travel": {
+            "covered": 669,
+            "exposed": 0,
+            "transition": 0
+          }
+        },
+        "menu_creatures": {
+          "after": {
+            "Boar-87": {
+              "layers": "[\"unanwibo\", [\"boar00\"]]",
+              "textures": [
+                "5e17d60a147f08e01a0da025e89941fd3f994a5ff1a747211fb4c551260946a0"
+              ]
+            },
+            "OgreGipatF7-187": {
+              "layers": "[\"unmoog1\", [\"ogre00\"]]",
+              "textures": [
+                "3ea19745f5e23dd60db0fb5851aee561bd4128ff8dc0124ab729961b5f40269b"
+              ]
+            },
+            "White Wolf-76": {
+              "layers": "[\"unanwiwo\", [\"wolf01\"]]",
+              "textures": [
+                "0178bed0093da941e84851ee5cf11648d85d7e39782e5bda5007bb82eddeb65d"
+              ]
+            }
+          },
+          "before": {
+            "Boar-87": {
+              "layers": "[\"unanwibo\", [\"boar00\"]]",
+              "textures": [
+                "5e17d60a147f08e01a0da025e89941fd3f994a5ff1a747211fb4c551260946a0"
+              ]
+            },
+            "OgreGipatF7-187": {
+              "layers": "[\"unmoog1\", [\"ogre00\"]]",
+              "textures": [
+                "3ea19745f5e23dd60db0fb5851aee561bd4128ff8dc0124ab729961b5f40269b"
+              ]
+            },
+            "White Wolf-76": {
+              "layers": "[\"unanwiwo\", [\"wolf01\"]]",
+              "textures": [
+                "0178bed0093da941e84851ee5cf11648d85d7e39782e5bda5007bb82eddeb65d"
+              ]
+            }
+          }
+        },
+        "menu_database": [
+          {
+            "label": "before",
+            "lmp_db": false
+          },
+          {
+            "label": "after",
+            "lmp_db": false
+          }
+        ],
+        "scope": "Real menu and separate native multiplayer authority; controlled public quest/travel commands; presented loading frames and exact menu creature texture/layer retention. Linux execution, not Windows performance or physical exit-route validation.",
+        "travel_exposed_frames_after_one_second": 0,
+        "travel_request_to_loading_ms": 271
+      },
+      "captures": {
+        "lmp-travel-covered.png": "81a7d39c018e915cc6e1f1097bdbfcfae04feca31cce929de0bd6e5c5b049c0b",
+        "lmp-menu-after.png": "1ea82ec4269ebebd101cb7f9c41555cc3d2f01b8798f68042d5c2d1a980238d9",
+        "lmp-start-covered.png": "e7fbf3adbac1cc909c33426ec3c963053d4958228a2476780f624701f01013f4",
+        "lmp-menu-before.png": "8f0463e7468d0c4750120b94d7204d02083571c9d31af91dc4c3d061d9baa214"
+      },
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "76a77649a361fa06134d3d6bd29e2eceb66a189360c772b3be6bb9757239021b",
+        "CursedLands.pck": "63d93859420f2cc368135dc738b599ecf35e59c043eecf341f29a164253a11fc",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/menu_lmp_flow.gd": "c01452e95c4db9104b388783b223f11802118e570edab51c1cf8df0a3ee60285"
+      }
+    },
+    "menu-material01": {
+      "checks": 46,
+      "failures": 0,
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-2/menu-material01",
+      "receipt_sha256": "45c70b11c5e8d5ec7d4c64242fa708acc196e44eb6ba3b2a46040488c365351f",
+      "observations": {
+        "checks": 46,
+        "failures": 0,
+        "renderer": "forward_plus",
+        "rows": [
+          {
+            "animation": "ei/cidle",
+            "changed": [],
+            "contact": 0,
+            "hover_references": 6,
+            "label": "startup-off-initial",
+            "labels": 6,
+            "wrong_labels": []
+          },
+          {
+            "animation": "ei/cidle",
+            "changed": [],
+            "contact": 1,
+            "hover_references": 6,
+            "label": "startup-off-live-options",
+            "labels": 6,
+            "wrong_labels": []
+          },
+          {
+            "animation": "ei/uspecial01",
+            "changed": [],
+            "contact": 1,
+            "hover_references": 6,
+            "label": "startup-off-hover",
+            "labels": 6,
+            "wrong_labels": []
+          },
+          {
+            "animation": "ei/uspecial01",
+            "changed": [],
+            "contact": 0,
+            "hover_references": 6,
+            "label": "startup-off-contact-off",
+            "labels": 6,
+            "wrong_labels": []
+          },
+          {
+            "animation": "ei/uspecial01",
+            "changed": [],
+            "contact": 1,
+            "hover_references": 6,
+            "label": "startup-off-contact-on-again",
+            "labels": 6,
+            "wrong_labels": []
+          },
+          {
+            "animation": "ei/cidle",
+            "changed": [],
+            "contact": 1,
+            "hover_references": 6,
+            "label": "startup-on-initial",
+            "labels": 6,
+            "wrong_labels": []
+          },
+          {
+            "animation": "ei/cidle",
+            "changed": [],
+            "contact": 1,
+            "hover_references": 6,
+            "label": "startup-on-live-options",
+            "labels": 6,
+            "wrong_labels": []
+          },
+          {
+            "animation": "ei/uspecial01",
+            "changed": [],
+            "contact": 1,
+            "hover_references": 6,
+            "label": "startup-on-hover",
+            "labels": 6,
+            "wrong_labels": []
+          },
+          {
+            "animation": "ei/uspecial01",
+            "changed": [],
+            "contact": 0,
+            "hover_references": 6,
+            "label": "startup-on-contact-off",
+            "labels": 6,
+            "wrong_labels": []
+          },
+          {
+            "animation": "ei/uspecial01",
+            "changed": [],
+            "contact": 1,
+            "hover_references": 6,
+            "label": "startup-on-contact-on-again",
+            "labels": 6,
+            "wrong_labels": []
+          }
+        ]
+      },
+      "captures": {
+        "menu-material-startup-on-hover.png": "9110536ced95842d9209f89402cae23046afd07788139ba40c86fb77b92f66a4",
+        "menu-material-startup-off-live-options.png": "b7710f2edc12aaefdcfdcc2bf6677bce433c04439c5b1a7407e999f47925527f",
+        "menu-material-startup-off-initial.png": "a6671945c217b9ac8b757b2337d736a6761054695b9e9a53e2c216fa54e4949a",
+        "menu-material-startup-off-contact-on-again.png": "77833e2d230d9179191a1f08b1a1ca73940071635951332bf593d0297a045a2f",
+        "menu-material-startup-on-initial.png": "bc2f0752bbb0b1b2369fa66d1dda8cbc13d1f084cc7a324c05a04174dfaaa32e",
+        "menu-material-startup-off-hover.png": "77833e2d230d9179191a1f08b1a1ca73940071635951332bf593d0297a045a2f",
+        "menu-material-startup-on-contact-on-again.png": "9110536ced95842d9209f89402cae23046afd07788139ba40c86fb77b92f66a4",
+        "menu-material-startup-off-contact-off.png": "d716b1662fa805de084b16be8402b299a04ed32e378d0427aeb1a6c7b4cc053e",
+        "menu-material-startup-on-live-options.png": "237763fee0d90e7f4139b76071b58400f6c9b4cff16c13c6ec43e6234a2070d9",
+        "menu-material-startup-on-contact-off.png": "9dd4b29082d9b2e683be0483cb376ebe5d8ca10e907a464d53f1705bd8dafe5d"
+      },
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "76a77649a361fa06134d3d6bd29e2eceb66a189360c772b3be6bb9757239021b",
+        "CursedLands.pck": "63d93859420f2cc368135dc738b599ecf35e59c043eecf341f29a164253a11fc",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/menu_material_refresh.gd": "4726a4cb53983aa7968a9ebd902aae7b64f1568d014b5d3c99f6bdcfa9a15ad7"
+      }
+    }
+  },
+  "packages": {
+    "linux-x86_64": {
+      "folder": "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261010.2-linux-x86_64",
+      "archive": "/home/llm2x/Downloads/CursedLands-1.0.3-local.20261010.2-linux-x86_64.tar.gz",
+      "archive_bytes": 36508419,
+      "archive_sha256": "9371fdb80c5445e33a45c16e3817cd417a1178eed19bf12e2353de5d6eb8d907",
+      "archive_readback_exact": true,
+      "files": {
+        "CursedLands.x86_64": "76a77649a361fa06134d3d6bd29e2eceb66a189360c772b3be6bb9757239021b",
+        "SHA256SUMS.txt": "22577b2a28bc95b91b0c0bb754369bd94b9d0837d0570c7d81bfc34969ff215a",
+        "BUILD-INFO.json": "190019af0f5a5a24f1983d37567f449912c55ff951297d262cae40ec888fcc6b",
+        "Play.sh": "75835f261e9acd2b45973152790cabf255b05b649f0f059997c1de9ba4e3ec2b",
+        "LICENSE.md": "4d3172fe316bf440607488dc89cb6ef53ce476a46491367afc3d008211ac3f1c",
+        "GODOT_LICENSES.txt": "d7f4419c30e0d321f36745007fc0390e5f4095035e1eed15db5d6cd504d8c5f7",
+        "FONT_LICENSE.txt": "f32df582a2aab128c07b2f7e36e7b928dc5f6bd82657b905c04f91459f9e5cf9",
+        "CursedLands.pck": "63d93859420f2cc368135dc738b599ecf35e59c043eecf341f29a164253a11fc",
+        "NATIVE_NAVIGATION_NOTICES.txt": "a220aaa05ae0d52c1366e166da6aa114049e4e0327d156fbd268325d22aff517",
+        "THIRD_PARTY_NOTICES.md": "155e90bf4d7dfe7eae2a6d0db6ad3e4716fe78e3edb8223dca05db825f8e92ba",
+        "icon.svg": "25c9306728089c8108e2210b9a3cd8e3b378da90f26959722f2f2423540662d2",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e",
+        "licenses/LGPL-2.1.txt": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551"
+      }
+    },
+    "windows-x86_64": {
+      "folder": "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261010.2-windows-x86_64",
+      "archive": "/home/llm2x/Downloads/CursedLands-1.0.3-local.20261010.2-windows-x86_64.zip",
+      "archive_bytes": 37716222,
+      "archive_sha256": "fbf333499229bf8c87bb4972921c387d94cda96f2613d89d27f7ae21f9af549a",
+      "archive_readback_exact": true,
+      "files": {
+        "SHA256SUMS.txt": "779dbb973d5d730a7e9518ad0b3f30f63f3c2aecd95f4a3365a07be896c93990",
+        "BUILD-INFO.json": "27b022165d2130a5a798ad006ee6918153217f42bda5ed6c1ed06fbd5bc493fc",
+        "LICENSE.md": "4d3172fe316bf440607488dc89cb6ef53ce476a46491367afc3d008211ac3f1c",
+        "libterrain_search.dll": "14906b040d4b6a5e1e217b9bfb21214f48700b6709163be584cc98e584f45106",
+        "GODOT_LICENSES.txt": "d7f4419c30e0d321f36745007fc0390e5f4095035e1eed15db5d6cd504d8c5f7",
+        "FONT_LICENSE.txt": "f32df582a2aab128c07b2f7e36e7b928dc5f6bd82657b905c04f91459f9e5cf9",
+        "CursedLands.pck": "63d93859420f2cc368135dc738b599ecf35e59c043eecf341f29a164253a11fc",
+        "CursedLands.exe": "d4536e65a3fd8d6082e424341a190d2b5c310dcf0d532ba229cf8db8844c5b86",
+        "NATIVE_NAVIGATION_NOTICES.txt": "a220aaa05ae0d52c1366e166da6aa114049e4e0327d156fbd268325d22aff517",
+        "THIRD_PARTY_NOTICES.md": "155e90bf4d7dfe7eae2a6d0db6ad3e4716fe78e3edb8223dca05db825f8e92ba",
+        "icon.svg": "25c9306728089c8108e2210b9a3cd8e3b378da90f26959722f2f2423540662d2",
+        "licenses/LGPL-2.1.txt": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551"
+      }
+    }
+  },
+  "limits": [
+    "Windows PE/source/archive checks only; no Windows execution or performance claim.",
+    "Linux Forward+ checks use separate rendering thread and isolated profiles; foreign processes may overlap.",
+    "The original-multiplayer fixture uses public quest/travel commands, not a walked exit route.",
+    "The unfinished V1 terrain-contact experiment is excluded; broader Natural/cloud performance and full routes remain open.",
+    "Cloud radiance is omitted only without consumers; screen cloud detail and the existing environment policy are preserved.",
+    "The worker shutdown fix is patch11. No Windows execution or target-device FPS claim.",
+    "Earlier package315/0 pebble/grass, Continue and LiA coverage is inherited, not rerun for these five source changes."
+  ],
+  "game_changes_from_local_20261010_1": [
+    "game/src/game/fx/clouds.gd",
+    "game/src/game/game.gd",
+    "game/src/game/gfx.gd",
+    "game/src/game/sky.gd",
+    "game/src/ui/menu_scene.gd"
+  ],
+  "inherited_package_evidence": "docs/validation/local-feedback-build-2026-10-10.json",
+  "engine_and_cloud_evidence": "docs/validation/cloud-radiance-2026-10-10.json",
+  "artifacts": {
+    "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-2/build.py": "82a06cd1a2b0186d90c03eb4dc776e7f6ee98a5ca9c58a901b95c808a4473b4c",
+    "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-2/build.json": "43326d080a4a38adb0666e596744a0dc321faf598ce43e7f68813496a169b458",
+    "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-2/suite.py": "da32a378a051d272453f48a5707c0a69fae6024eb8f6c62c246831c2499746a8",
+    "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-2/run.py": "e27e3e7f14ce9f4068341603634ae70b8aa83fe40ab0f18a8558990ae962ca5f",
+    "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-2/package.py": "873626d31252744a2756ec85f74661cb9e90ea1dae019b273f4502168e3f22a5",
+    "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-2/package.json": "a83dab8b08bdc2a993848f89348a853fef061e4a75c620b7cdc5ed56e40ed15f",
+    "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-2/packaging.log": "618e4ea8fa257da89eb1511c5b564f59be2ea073ef113504ad60a472f32f096a"
+  }
+}
