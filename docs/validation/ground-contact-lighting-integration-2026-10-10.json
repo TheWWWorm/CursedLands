@@ -1,0 +1,890 @@
+{
+  "status": "Exact six-file V1 composition integrated locally as an opt-in improvement; strict residuals retained, no claim of universal pixel parity or release/device acceptance.",
+  "source_commit": "1c961367174532478a660fe84e5ef30ee2314a90",
+  "base_commit": "88868d16f98f7bb674a0483bb2cf8be4e8d26ce7",
+  "scope": [
+    "Copy installed sector-local packed normals and baked E/k inputs for contact lighting. Preserve native Original vertex interpolation and Enhanced painted/procedural relief, rain highlights and footprint response.",
+    "Exact installed dense COLOR is shared lazily through a weak field owner; texture slots and asynchronous pending/installed tile reservations are bounded at 128. No GPU mesh readback or generated replacement assets.",
+    "The copied ground response receives the original object shadow lookup without the figure-facing directional guard. This follows the pinned R1 material/receiver scope; it is not a new independent ground shadow engine.",
+    "Existing ground-contact option and all defaults remain unchanged. Character materials, silhouettes, upper object textures and original no-contact programs are not intentionally modified."
+  ],
+  "production_sha256": {
+    "game/src/game/fx/ground_contact_shader.gd": "6e60836ab43c9336d202906376d9cfbb913675c7fe9a3a3429189e7b82e9e88f",
+    "game/src/game/fx/soft_ground_deform.gd": "860c690ced0636aea1c59988a6471aeb3987a96b651f9a2a448f13fe22e5151b",
+    "game/src/game/fx/ground_dense_colors.gd.uid": "09484ba4c54630297c5e2c333054ed998187fcaaf5f3ecd60a815a9a1b06a2b8",
+    "game/src/game/fx/soft_ground_field.gd": "ff04e60936782bb80976279a7af28bfd5bb8d15d6795476fd751c0d1dc3c05fa",
+    "game/src/game/fx/ground_surface_data.gd": "91863c204a4b23652ee1c9a6aa46713bd921ae519954d9068afec928f7a708ed",
+    "game/src/game/fx/ground_dense_colors.gd": "4d5ce25dbcbd70ba58950d1cac1fa6e356e082589fa5a1f20f6c0c29891f84c3"
+  },
+  "candidate_binaries": {
+    "CursedLands.pck": "1d247f18fdd6f40c490257396ff59384ce20d0f38847dabc2c3c10319b2dadf6",
+    "CursedLands.x86_64": "76a77649a361fa06134d3d6bd29e2eceb66a189360c772b3be6bb9757239021b",
+    "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+  },
+  "full_receipt": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/integration-receipt.json",
+    "sha256": "48d656923d1ffd726f6578f436562c12dd6d84d6fb192ce4e66abdd27b45fa94"
+  },
+  "qualification": {
+    "forward_final_cases": {
+      "checks": 640,
+      "failures": 0,
+      "runs": [
+        "field-forward01",
+        "snow-forward01",
+        "shoreline-original-forward01",
+        "shoreline-enhanced-overhead01",
+        "directional-forward01",
+        "natural-cliffs-forward01",
+        "owner-forward01",
+        "maps-candidate-forward01"
+      ]
+    },
+    "data_ownership_and_source": {
+      "checks": 286,
+      "failures": 0,
+      "runs": [
+        "terrain-cliffs-headless01",
+        "owner-headless01",
+        "dense-native-headless01",
+        "dense-script-headless02",
+        "capacity-headless01",
+        "integrated-fixtures-headless01"
+      ]
+    },
+    "compatibility": {
+      "checks": 544,
+      "failures": 1,
+      "runs": [
+        "field-compatibility01",
+        "snow-compatibility01",
+        "shoreline-original-compatibility01",
+        "shoreline-enhanced-overhead-compatibility01",
+        "directional-compatibility01",
+        "owner-compatibility01"
+      ]
+    },
+    "mobile_initial_short_wait": {
+      "checks": 501,
+      "failures": 23,
+      "runs": [
+        "field-mobile01",
+        "snow-mobile01",
+        "shoreline-original-mobile01",
+        "shoreline-enhanced-overhead-mobile01",
+        "directional-mobile01"
+      ]
+    },
+    "mobile_with_timed_preroll": {
+      "checks": 501,
+      "failures": 4,
+      "runs": [
+        "field-mobile01",
+        "snow-mobile-settled01",
+        "shoreline-original-mobile-settled01",
+        "shoreline-enhanced-mobile-settled01",
+        "directional-mobile-settled01"
+      ]
+    },
+    "baseline_controls": {
+      "checks": 134,
+      "failures": 0,
+      "runs": [
+        "shoreline-baseline-compatibility01",
+        "shoreline-baseline-mobile01",
+        "maps-baseline-forward01"
+      ]
+    }
+  },
+  "three_map_native_control": {
+    "maps": [
+      "bz2g",
+      "bz10k",
+      "bz13h"
+    ],
+    "near_and_far": true,
+    "exact_native_off_and_restored_images": 12,
+    "comparison": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/map-comparison.json",
+      "sha256": "6d0dd77f9e688ad6b63100b49a89b9b40aab92f61d46ecedeb26b6ca2ba568db"
+    },
+    "draw_counts_unchanged": true
+  },
+  "strict_residuals": [
+    "The first Enhanced shoreline point-light witness retained 1/72 failed positive-control assertions: native E/k changes peaked at 2/255. A separate overhead light at the same energy/range passed 72/0. The original result and thresholds are unchanged.",
+    "Short-wait Mobile scenes retain 23 failed assertions in 501 checks. Native fixed-state drift was independently demonstrated in earlier contact-Off controls; the current additional 3-second pre-roll substantially reduces it but does not prove a compiler cause or qualify initial transitions.",
+    "Settled Mobile snow passes 112/0. Directional and Original shoreline each retain one exact-containment failure (one pixel, respectively 1/255 on the upper object and 6/255 on native terrain). Enhanced shoreline retains two assertions concerning one native-terrain pixel at 2/255 during E/k ablation/restoration; all ordinary on/off/held/restored light cases there are exact.",
+    "Compatibility retains one upper-object pixel differing by 1/255 in the Enhanced shoreline sun case. The comparable old build has no such pixel. This is a new, bounded numerical residual, not a claimed baseline match.",
+    "Prior strict Enhanced ground-normal/light and dense-normal precision residuals remain. Exact complete terrain/figure RGB identity and an independent receiver shadow engine are outside the pinned R1 scope; no tolerance was changed to relabel failures.",
+    "The current shipped-build Mobile control passes 52/0. Its three native-Off light images and final local-light restored image match the candidate exactly. Its contact-On local image retains the green6 terrain pixel that the candidate changes to zero; this bounded candidate residual remains unresolved rather than attributed to the baseline."
+  ],
+  "decision": "Integrate the bounded material-lighting improvement behind its existing default-off option. Whole-map no-contact output, silhouettes, lifecycle, storage bounds and meaningful terrain-light responses are verified. Record the few remaining subpixel/byte differences explicitly; do not label all renderer checks passing or enable this by default.",
+  "not_claimed": [
+    "Windows runtime",
+    "physical walking/complete gameplay routes",
+    "Android/Retroid acceptance",
+    "clean cold-preparation or runtime performance",
+    "stable 1.0.3 readiness",
+    "new downloadable package"
+  ],
+  "performance": "Foreign rendered processes overlapped map/scene tests. Recorded times are diagnostic only; fresh driver-cache preparation and Windows/device FPS acceptance are not established.",
+  "draft_preservation": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/superseded-draft/manifest.json",
+    "sha256": "f5e272db45b65cd696f159f6d8247430aaf6058e8b3715182894e6ba166d825e"
+  },
+  "prior_evidence": [
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/ground-contact-r1-scope-2026-10-10.json",
+      "sha256": "b193482c758c7865d711c4fe617966e99b9e290146e0b12c8e3217321de696b6"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/ground-contact-native-normals-2026-10-10.json",
+      "sha256": "ae3ec6a074a10a8e0e0b3dfe9b79974820c5fb56b75e008fa11cf7d0f024d19c"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/ground-contact-dense-colors-2026-10-10.json",
+      "sha256": "4964ca94f1285e29bda57bb89e9c5bb6e1656c9f88e0eab084716202d2a44cee"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/ground-contact-shadow-transfer-2026-10-10.json",
+      "sha256": "5d31bcb615d339d7f23f834ea06fd34a7181dfbdb802408da580e49d211cb0c2"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/ground-contact-lighting-backends-2026-10-09.json",
+      "sha256": "d33a98369ec52471e9293c6d5c32a343df23c228fecfb30f65d51883fc06913c"
+    }
+  ],
+  "runs": [
+    {
+      "label": "capacity-headless01",
+      "checks": 24,
+      "failures": 0,
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [],
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/capacity-headless01/run.json",
+        "sha256": "719bf5d8dbf96b0373aeef8994ce262d5465666a792688f28bf9cf140bc3c961"
+      },
+      "results": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/capacity-headless01/dense-capacity-report.json",
+          "sha256": "82eaa90e75c961c1233651e7712952cc57c9040f564e508be77ab46e37d22dfc"
+        }
+      ]
+    },
+    {
+      "label": "dense-native-headless01",
+      "checks": 85,
+      "failures": 0,
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [],
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/dense-native-headless01/run.json",
+        "sha256": "6606da1f1589db70c193dbefe62fdf65a0024c154825ee7c62b7fec4ec270b02"
+      },
+      "results": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/dense-native-headless01/dense-dispatcher.json",
+          "sha256": "fbe394037d01a8f6db469791e335a3aea0fb1c19e7f21a7867cf6fb2e82063da"
+        }
+      ]
+    },
+    {
+      "label": "dense-script-headless01",
+      "checks": 85,
+      "failures": 0,
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [],
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/dense-script-headless01/run.json",
+        "sha256": "830ad65a2991b9e6bc73af41cdb689a732865a589586b0646053b9189c80d6f2"
+      },
+      "results": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/dense-script-headless01/dense-dispatcher.json",
+          "sha256": "fbe394037d01a8f6db469791e335a3aea0fb1c19e7f21a7867cf6fb2e82063da"
+        }
+      ],
+      "classification": "Redundant native run: --dense-script is not the selection flag. Not counted as script coverage. Corrected run dense-script-headless02 passes --ei-script-soft-ground and asserts that dispatcher."
+    },
+    {
+      "label": "dense-script-headless02",
+      "checks": 84,
+      "failures": 0,
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [],
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/dense-script-headless02/run.json",
+        "sha256": "cae17df7dd82a566330a957a47dc3285803dde5cbc48a4467f66182a0f9c6e1b"
+      },
+      "results": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/dense-script-headless02/dense-dispatcher.json",
+          "sha256": "8a357b890ebc0b8687f47337b148fa0f90a090c541724d775236c843b847c9f5"
+        }
+      ]
+    },
+    {
+      "label": "directional-compatibility01",
+      "checks": 93,
+      "failures": 0,
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature.",
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/directional-compatibility01/run.json",
+        "sha256": "0a243dd6e9646575c10421ec1b3ddd5d3eee3535eb9ba65a9ff104923bd05643"
+      },
+      "results": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/directional-compatibility01/directional-shadow-scene.json",
+          "sha256": "e106fe6f170a9ae463bf3fc7f9756641e0b0badfd655cb3c69b4c84b87ebc6fe"
+        }
+      ]
+    },
+    {
+      "label": "directional-forward01",
+      "checks": 93,
+      "failures": 0,
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/directional-forward01/run.json",
+        "sha256": "7bd02ed4bd5e6c6dd8e8bc34807fc63e532d6938a2086aa01b11f521023476e7"
+      },
+      "results": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/directional-forward01/directional-shadow-scene.json",
+          "sha256": "fdd9f2ff5d7462ff5e3b4e51fb078883ec1ebb06b93d77701cbbf67db6c89d2b"
+        }
+      ]
+    },
+    {
+      "label": "directional-mobile-settled01",
+      "checks": 93,
+      "failures": 1,
+      "return_code": 1,
+      "termination_reason": null,
+      "errors": [
+        "FAIL local-light contact leaves upper and outside pixels exact"
+      ],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/directional-mobile-settled01/run.json",
+        "sha256": "8cd33e3ff4e5f7177a107f39b063095666e8c52325f129271817dd6ccad11947"
+      },
+      "results": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/directional-mobile-settled01/directional-shadow-scene.json",
+          "sha256": "08f84665aab919c51a28de9db8059514c92fc839720c714b086a8383e9239be8"
+        }
+      ]
+    },
+    {
+      "label": "directional-mobile01",
+      "checks": 93,
+      "failures": 5,
+      "return_code": 1,
+      "termination_reason": null,
+      "errors": [
+        "FAIL sun contact leaves upper and outside pixels exact",
+        "FAIL sun native Off restores exactly",
+        "FAIL packed-point contact leaves upper and outside pixels exact",
+        "FAIL packed-point native Off restores exactly",
+        "FAIL local-light contact leaves upper and outside pixels exact"
+      ],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/directional-mobile01/run.json",
+        "sha256": "4af8c102a5e3c49dd45faee7696cfbec32efb99fe540b7345677b9d30f0bb3e9"
+      },
+      "results": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/directional-mobile01/directional-shadow-scene.json",
+          "sha256": "2fa7555862eb9d84ab9378b57d39a1e99c3d2a908bb7bbd3eaee9815554ead10"
+        }
+      ]
+    },
+    {
+      "label": "field-compatibility01",
+      "checks": 152,
+      "failures": 0,
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature.",
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/field-compatibility01/run.json",
+        "sha256": "ffb96803270ee270956af966decec8d1fe66cc3edbd0076f864e23a80dd17690"
+      },
+      "results": []
+    },
+    {
+      "label": "field-forward01",
+      "checks": 152,
+      "failures": 0,
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/field-forward01/run.json",
+        "sha256": "bc47662884a512377d21b5a3f6ae1253b1d7b36fe5a4a3c50a24eecf2dfdce2e"
+      },
+      "results": []
+    },
+    {
+      "label": "field-mobile01",
+      "checks": 152,
+      "failures": 0,
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/field-mobile01/run.json",
+        "sha256": "463019da31baba4174d1fa3ec80f4d412de912d3fe75c2dda6ca92218292cbf2"
+      },
+      "results": []
+    },
+    {
+      "label": "integrated-fixtures-headless01",
+      "checks": 3,
+      "failures": 0,
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [],
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/integrated-fixtures-headless01/run.json",
+        "sha256": "6e9f8ec6a9ca6f0269165ebc174598ed829a3773d504c0efad739932937349eb"
+      },
+      "results": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/integrated-fixtures-headless01/prepared-scenes-parse.json",
+          "sha256": "337ee1dd7117ba82b469d988866715d5d08b5d741bac5e3f6ff92d91e55be98f"
+        }
+      ]
+    },
+    {
+      "label": "maps-baseline-forward01",
+      "checks": 30,
+      "failures": 0,
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/maps-baseline-forward01/run.json",
+        "sha256": "d6aa8878384b8007a187ee00c4a9bac1a39dd7f8a4d501299fc8f286e3e7fe23"
+      },
+      "results": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/maps-baseline-forward01/ground-contact-map-forward_plus.json",
+          "sha256": "b1510273b0dd21e2db74cfca28fbafe6594a6c5fdc067903200c1632cba8f5a9"
+        }
+      ]
+    },
+    {
+      "label": "maps-candidate-forward01",
+      "checks": 30,
+      "failures": 0,
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/maps-candidate-forward01/run.json",
+        "sha256": "82e734d56c7614181a9262f07d4575fcb4fc1a14804c2a5c39cc662ebf80ef34"
+      },
+      "results": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/maps-candidate-forward01/ground-contact-map-forward_plus.json",
+          "sha256": "36524773496c46fa088c14a0dfb500235835cb32a40952a6dcaf6a311e60e9d5"
+        }
+      ]
+    },
+    {
+      "label": "natural-cliffs-forward01",
+      "checks": 66,
+      "failures": 0,
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/natural-cliffs-forward01/run.json",
+        "sha256": "a22d3aa63254d7abd6a3c345b9121fd4842cdebdd89e345ba108e71b6dfb98d7"
+      },
+      "results": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/natural-cliffs-forward01/ground-contact-relief-scene.json",
+          "sha256": "07dbe41fbcd9cf346a08206ddba983dfebc8b2319738c143a0db55757346b1f8"
+        }
+      ]
+    },
+    {
+      "label": "owner-compatibility01",
+      "checks": 43,
+      "failures": 0,
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature.",
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/owner-compatibility01/run.json",
+        "sha256": "d3cf1323a9ce964f1bf1bb7b6b9b3ade6c77cb473cc86492568e1dddaf6a028c"
+      },
+      "results": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/owner-compatibility01/ground-contact-gl_compatibility.json",
+          "sha256": "a25411038cafd542532b00691c09499411a7663abba817862b36124f504b3f39"
+        }
+      ]
+    },
+    {
+      "label": "owner-forward01",
+      "checks": 43,
+      "failures": 0,
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/owner-forward01/run.json",
+        "sha256": "d4edbf804e58caf5a31007c50f678cf48fc6b1cb752b15caa681ea17512faf0a"
+      },
+      "results": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/owner-forward01/ground-contact-forward_plus.json",
+          "sha256": "779967a1425a3859846e3f5bc53f16bd347f93ce7ae541bc8f049fd915b9b62a"
+        }
+      ]
+    },
+    {
+      "label": "owner-headless01",
+      "checks": 33,
+      "failures": 0,
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [],
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/owner-headless01/run.json",
+        "sha256": "be3468ae82eecca6766c33e674a8cb71684fa346b536ccc0f2b70861ddfe39eb"
+      },
+      "results": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/owner-headless01/ground-contact-forward_plus.json",
+          "sha256": "414e4d4ff751efbd2a4cf84c484cdf7211b6b68aa9f60a507c443d0de0827f43"
+        }
+      ]
+    },
+    {
+      "label": "shoreline-baseline-compatibility01",
+      "checks": 52,
+      "failures": 0,
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature.",
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/shoreline-baseline-compatibility01/run.json",
+        "sha256": "72de1ef4f07a1c3fda1cb3a1053ecb9b7f11269dc9b5ceb98296917e22d83067"
+      },
+      "results": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/shoreline-baseline-compatibility01/ground-contact-relief-scene.json",
+          "sha256": "84cb4ffe0883fd8f6c1dbffeab5ab278ee8b66b49e73cd9a05292f2e0701769f"
+        }
+      ]
+    },
+    {
+      "label": "shoreline-baseline-mobile01",
+      "checks": 52,
+      "failures": 0,
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/shoreline-baseline-mobile01/run.json",
+        "sha256": "79582ccccb8641481595e81de6e5e5db40d2c76adadd3dc79597292e772e0cd1"
+      },
+      "results": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/shoreline-baseline-mobile01/ground-contact-relief-scene.json",
+          "sha256": "a04dd51b68eeed1f1797fdaf888bf0d185e5ff922177e3309fd79ddbe86392b7"
+        }
+      ]
+    },
+    {
+      "label": "shoreline-enhanced-forward01",
+      "checks": 72,
+      "failures": 1,
+      "return_code": 1,
+      "termination_reason": null,
+      "errors": [
+        "FAIL packed-point native shoreline inputs visibly affect bridge band { \"pixels\": 15579, \"changed_pixels\": 563, \"over_two_bytes\": 0, \"peak_byte_delta\": 2, \"mean_byte_delta\": 0.03851338340073 }"
+      ],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/shoreline-enhanced-forward01/run.json",
+        "sha256": "b16493642eacbd3f87e9081c45ec15c0b6c042e910239d977a4bb1d46de3e153"
+      },
+      "results": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/shoreline-enhanced-forward01/ground-contact-relief-scene.json",
+          "sha256": "1114a6aed6ea3adfaefb79495f1450ae248ef428f64f279e3109c0eac0f1ade2"
+        }
+      ]
+    },
+    {
+      "label": "shoreline-enhanced-mobile-settled01",
+      "checks": 72,
+      "failures": 2,
+      "return_code": 1,
+      "termination_reason": null,
+      "errors": [
+        "FAIL packed-point shoreline inputs change only the contact band",
+        "FAIL packed-point shoreline input restoration exact"
+      ],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/shoreline-enhanced-mobile-settled01/run.json",
+        "sha256": "2100a290e71bdf406f9dfc03faf491756653700909f95cfc6ad775ee553839e7"
+      },
+      "results": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/shoreline-enhanced-mobile-settled01/ground-contact-relief-scene.json",
+          "sha256": "d2551dca085d4baacd796b8cc5806ffa9100be0404ca4a8c65d973ff90601610"
+        }
+      ]
+    },
+    {
+      "label": "shoreline-enhanced-overhead-compatibility01",
+      "checks": 72,
+      "failures": 1,
+      "return_code": 1,
+      "termination_reason": null,
+      "errors": [
+        "FAIL sun contact leaves upper and non-band pixels exact"
+      ],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature.",
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/shoreline-enhanced-overhead-compatibility01/run.json",
+        "sha256": "a2a77b4dabf62ce7d1058e6805680c75aba2a5f4593e8d6c3c5a30acecf863b7"
+      },
+      "results": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/shoreline-enhanced-overhead-compatibility01/ground-contact-relief-scene.json",
+          "sha256": "ae8232fc9dbd839e053cb7fe5ff353607ff6ae5abd3a89854439309d6920481f"
+        }
+      ]
+    },
+    {
+      "label": "shoreline-enhanced-overhead-mobile01",
+      "checks": 72,
+      "failures": 7,
+      "return_code": 1,
+      "termination_reason": null,
+      "errors": [
+        "FAIL sun contact leaves upper and non-band pixels exact",
+        "FAIL sun shoreline inputs change only the contact band",
+        "FAIL sun shoreline input restoration exact",
+        "FAIL packed-point contact leaves upper and non-band pixels exact",
+        "FAIL packed-point disabling contact restores the exact native image",
+        "FAIL local-light contact leaves upper and non-band pixels exact",
+        "FAIL local-light disabling contact restores the exact native image"
+      ],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/shoreline-enhanced-overhead-mobile01/run.json",
+        "sha256": "0378215e38c6277c9c217fcdf918831c599030d548a3295a600b605964f77bab"
+      },
+      "results": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/shoreline-enhanced-overhead-mobile01/ground-contact-relief-scene.json",
+          "sha256": "67ded241d6ebddb123716be2b0870b8ef54149c13efc9a02edb2954cc46d7aa9"
+        }
+      ]
+    },
+    {
+      "label": "shoreline-enhanced-overhead01",
+      "checks": 72,
+      "failures": 0,
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/shoreline-enhanced-overhead01/run.json",
+        "sha256": "3136fab8b459ce67c953ea9368491b917fa9b5781b50cf21b1896508f9e7b030"
+      },
+      "results": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/shoreline-enhanced-overhead01/ground-contact-relief-scene.json",
+          "sha256": "40e35969205ee9491ef6e50616fcb8174da43b5e9b593d1fe461e2b1a11e8d71"
+        }
+      ]
+    },
+    {
+      "label": "shoreline-original-compatibility01",
+      "checks": 72,
+      "failures": 0,
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature.",
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/shoreline-original-compatibility01/run.json",
+        "sha256": "db4cb258e821c8f389054ddc57a0f73d51e3bbf2f76e41884c6ee31f2e9f7d66"
+      },
+      "results": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/shoreline-original-compatibility01/ground-contact-relief-scene.json",
+          "sha256": "b050891386bfbe216f614d246ed0e58712d5079dc22dcdca4c45f8673ccda5bb"
+        }
+      ]
+    },
+    {
+      "label": "shoreline-original-forward01",
+      "checks": 72,
+      "failures": 0,
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/shoreline-original-forward01/run.json",
+        "sha256": "f47017ac4faaf8db32b9955cc305af773c41f64ef7c2dd02905a7256e7dce6f4"
+      },
+      "results": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/shoreline-original-forward01/ground-contact-relief-scene.json",
+          "sha256": "b38572f3771730de84ac38a401b9fc0984f0b2ab46724859049d4ccbbff6b200"
+        }
+      ]
+    },
+    {
+      "label": "shoreline-original-mobile-settled01",
+      "checks": 72,
+      "failures": 1,
+      "return_code": 1,
+      "termination_reason": null,
+      "errors": [
+        "FAIL local-light contact leaves upper and non-band pixels exact"
+      ],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/shoreline-original-mobile-settled01/run.json",
+        "sha256": "4b82a80236c748b2702d4be5368d6bf1a0d721d8e6c6875829c8ed6c882b4e74"
+      },
+      "results": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/shoreline-original-mobile-settled01/ground-contact-relief-scene.json",
+          "sha256": "075782983bd31b5b33233f6a13208be9e0cbb6dba1bfd92d71b76d87ab0a8252"
+        }
+      ]
+    },
+    {
+      "label": "shoreline-original-mobile01",
+      "checks": 72,
+      "failures": 5,
+      "return_code": 1,
+      "termination_reason": null,
+      "errors": [
+        "FAIL packed-point contact leaves upper and non-band pixels exact",
+        "FAIL packed-point disabling contact restores the exact native image",
+        "FAIL local-light contact leaves upper and non-band pixels exact",
+        "FAIL local-light held contact image is stable",
+        "FAIL local-light disabling contact restores the exact native image"
+      ],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/shoreline-original-mobile01/run.json",
+        "sha256": "e414c519d0c2e6c838dfd917a75f50e24db6e182d4b3b3b30f3462d6cb7fc43c"
+      },
+      "results": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/shoreline-original-mobile01/ground-contact-relief-scene.json",
+          "sha256": "74f9a82a9d69c76971b9157ae2254891033fdcec5eee8b7bb6499b4b51125f4f"
+        }
+      ]
+    },
+    {
+      "label": "snow-compatibility01",
+      "checks": 112,
+      "failures": 0,
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature.",
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/snow-compatibility01/run.json",
+        "sha256": "9777d4b107d4e44704b9c58ae9c027c837e12bf997fdf795b10ae6404f50b3d2"
+      },
+      "results": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/snow-compatibility01/ground-contact-relief-scene.json",
+          "sha256": "3cf2a4444fa1e3d4b15f2023a748df853003d3c9a2fc8c226148cbf39c3250d5"
+        }
+      ]
+    },
+    {
+      "label": "snow-forward01",
+      "checks": 112,
+      "failures": 0,
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/snow-forward01/run.json",
+        "sha256": "44681601b5c46df7a0e4291b870121ae576f8102f6a94d218f1349350528f07c"
+      },
+      "results": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/snow-forward01/ground-contact-relief-scene.json",
+          "sha256": "d5413f240e8aff776194cb28107d634988bbb7c3bd6c459ade8d97c80845ae60"
+        }
+      ]
+    },
+    {
+      "label": "snow-mobile-settled01",
+      "checks": 112,
+      "failures": 0,
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/snow-mobile-settled01/run.json",
+        "sha256": "38e113917dd131a3ad32bb77ac344ee90b83806263502237c32c38f8a8446f57"
+      },
+      "results": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/snow-mobile-settled01/ground-contact-relief-scene.json",
+          "sha256": "3640122493bf8e20e1ec10a4b9dd6bdf43a42b2a969349075acf350c058f1a57"
+        }
+      ]
+    },
+    {
+      "label": "snow-mobile01",
+      "checks": 112,
+      "failures": 6,
+      "return_code": 1,
+      "termination_reason": null,
+      "errors": [
+        "FAIL sun track-normal response stays in contact band",
+        "FAIL packed-point contact leaves upper and non-band pixels exact",
+        "FAIL packed-point disabling contact restores the exact native image",
+        "FAIL local-light contact leaves upper and non-band pixels exact",
+        "FAIL local-light disabling contact restores the exact native image",
+        "FAIL local-light track-normal response stays in contact band"
+      ],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/snow-mobile01/run.json",
+        "sha256": "178a2fed6a2e9b4a3f0bd68a4ae637fd81d8906f1fe02aa37f9d4e1ce980978e"
+      },
+      "results": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/snow-mobile01/ground-contact-relief-scene.json",
+          "sha256": "7e222491056add12c23e101d528a122da343cfae0030d1079c84fa8e194721ed"
+        }
+      ]
+    },
+    {
+      "label": "terrain-cliffs-headless01",
+      "checks": 57,
+      "failures": 0,
+      "return_code": 0,
+      "termination_reason": null,
+      "errors": [],
+      "warnings": [],
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/terrain-cliffs-headless01/run.json",
+        "sha256": "37240dcccf3be7133262a10d6d9197f77d0875ca626787e21cb6c6d537dde14b"
+      },
+      "results": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/terrain-cliffs-headless01/terrain-cliffs.json",
+          "sha256": "41cc2826c32f604def3d11cdfd90a085439bcfa62bb8f6eca08ca467c3646bcc"
+        }
+      ]
+    }
+  ]
+}
