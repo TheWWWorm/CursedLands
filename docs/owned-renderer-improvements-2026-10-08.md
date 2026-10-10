@@ -5203,12 +5203,51 @@ quality/performance tradeoffs; none is promoted. Exact held/restored images are
 controls, not evidence that cached colour or normals are exact. Failed shader,
 SNORM-format and initially capped benchmark runs are retained and excluded.
 
-Continue with a bounded cloud-weather lookup proof: six repeated horizontal
-noise samples feed density in the sky, reflections and sunlight. Keep vertical
-density, shape/erosion and scattering live. First compare images and motion,
-then qualify owner/clock/pause/fallback/lifetime and GPU update costs. Do not add
-map residency around the unresolved Natural colour-cache prototype yet.
+The next planned proof at this checkpoint was a bounded horizontal weather
+lookup, retaining live vertical density, shape, erosion and scattering. Its
+results now follow below. Do not add map residency around the unresolved
+Natural colour-cache prototype yet.
 [Full evidence and frozen fixtures](validation/terrain-cloud-cost-prototypes-2026-10-10.json).
+
+## Cloud sampling investigation — 10 October, continuation
+
+The bounded horizontal-weather proof is complete as a scratch investigation,
+not a production optimization. Four main-device GPU field variants, a direct
+phase-term hoist, and a High sky-resolution experiment were run against the
+unchanged local20261010.1 package at 2560×1440. Frozen source, images, timings,
+all strict residuals and 148 verified evidence-file hashes are retained in the
+[cloud sampling receipt](validation/cloud-sampling-prototypes-2026-10-10.json).
+No game source, settings, engine, gameplay protocol or delivered package changed.
+
+- The 8 MiB linear field has visible numeric edge differences (High peak 23);
+  the 32 MiB version reduces High mean maximum-channel error to 0.134/255,
+  peak 8, while its approximately 0.061 ms update precedes the viewport timing.
+  High paired viewport medians are 5.533/5.457 ms original versus 4.748/4.685 ms
+  cached. This is a narrow, contended Linux measurement, not a Windows gain.
+- A smaller field improves agreement but loses the savings. Quadratic mapping
+  with RGBA16_UNORM retains the broad domain and lowers High mean error to
+  0.052/255, peak 4, but adds lookup math and still costs 32 MiB. Low shows no
+  useful gain. Neither cache earns production ownership/residency work yet.
+- Moving the ray-invariant scattering terms outside the loop produces tiny
+  sky differences (22/6 pixels, peak 1 for Low/High) and exact water images,
+  but does not establish a worthwhile performance improvement. It is unpromoted.
+- Keeping High's 192/5 integration while changing its sky pass from half to
+  quarter resolution gives 5.444/5.452 ms original versus 2.735/2.891 ms in the
+  prototype. Low stays byte-identical. Full-resolution images were inspected:
+  small cloud features soften. High mean error is 0.774/255, peak 37; this is a
+  quality tradeoff, not equivalent output, and is not silently substituted.
+
+All six runs overlap other rendered processes. Of 552 harness checks, 19 strict
+image-stability controls fail; the later captured residuals are one colour level
+and also occur in unchanged arms. Their cause is unproven. No failure or threshold
+was discarded. Runtime errors, texture ownership failures and crashes were not
+observed. This is investigative evidence, not an acceptance pass.
+
+The next cloud step is a bounded visual qualification of the spatial-resolution
+tradeoff in actual gameplay and varied fair/storm/horizon views before deciding
+whether it belongs in an existing quality choice. Do not repeat these six
+prototypes or claim the Windows 9 FPS report resolved. The Natural sector cache
+and V1 terrain-contact composition remain separate, unpromoted scratch work.
 
 ## Next work in the established order
 

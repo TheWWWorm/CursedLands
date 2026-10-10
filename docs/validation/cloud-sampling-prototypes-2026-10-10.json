@@ -1,0 +1,2625 @@
+{
+  "date": "2026-10-10",
+  "status": "Scratch investigation; no new production source or local package promoted.",
+  "canonical_checkpoint": "8cf096ec28b0d763a29279fb899ffda587b227a4",
+  "packaged_game_source": "4a7632def87daec70858407c19f3ba6ba846447f",
+  "package_version": "1.0.3-local.20261010.1",
+  "protocol": 13,
+  "work_mode": "Main thread only. No subagents used or reactivated.",
+  "scope": [
+    "Actual exported Linux Forward+ 2560x1440 sky and enhanced-water fallback, identical game-clock interval for original/prototype/prototype/original arms.",
+    "Four weather-field variants replace only the six horizontal weather/type noise samples. Vertical profile, 3D shape/erosion, ray steps and scattering remain live. Exact original fallback beyond the bounded domain.",
+    "Shape weather varies every rendered frame. Held phase state avoids dispatch. GPU writes use the main RenderingDevice, no CPU texture readback in construction/update; images are read only for validation.",
+    "Phase-hoist experiment moves ray-invariant scattering terms out of the march without a new cache, pass or reduced quadrature.",
+    "Resolution probe keeps High 192 primary/5 light steps but changes its sky subpass from half to quarter resolution. This is a quality/performance tradeoff, not exact equivalence."
+  ],
+  "variants": {
+    "cloud-weather15": "1024 square, linear mapping over +/-65536 m, RGBA16F, 8 MiB, separate render thread; no compute GPU markers yet.",
+    "cloud-weather16": "2048 square, linear mapping over +/-65536 m, RGBA16F, 32 MiB; separate compute GPU timestamps, safe render thread.",
+    "cloud-weather17": "2048 square over +/-16384 m, RGBA16F, 32 MiB. Finer nearby field with exact original outside; most savings lost.",
+    "cloud-weather18": "2048 square, separable quadratic mapping over +/-65536 m, RGBA16_UNORM, 32 MiB. Signed square-root inverse lookup; greater precision at nearby coordinates. Both variants preheated 2.5 seconds before each quality ABBA.",
+    "cloud-phase19": "Explicitly hoist the three ray/light-angle phase terms; no cache. Original operations retained. Both source variants preheated.",
+    "cloud-resolution20": "High quarter-resolution probe; Low byte-identical source control. Both source variants preheated."
+  },
+  "limitations": [
+    "All six runs overlap foreign Godot render processes at recorded endpoints; descriptive paired results only, not clean-device or Windows speedups.",
+    "Windows RTX4090 Mobile/D3D12 execution was unavailable. These runs do not reproduce or resolve the reported Windows 9 FPS case.",
+    "Strict held-sky checks fail on some unchanged High arms as well as some candidates. Later fixtures preserve every control delta and failed capture. No threshold was relaxed or failure removed; the cause of one-level changes remains unproven.",
+    "Viewport GPU timestamps exclude the separate weather compute dispatch. Rows16-18 record that dispatch separately; Vulkan engine source confirms nanoseconds, converted to ms by /1e6.",
+    "Run15 separate-thread per-yield wall times are CPU waits, not complete frame cost. Runs16+ also record entire loop elapsed/drawn-frame count; selected later runs use safe thread mode.",
+    "Image deltas were measured, not asserted as a quality-acceptance pass. No Mobile/Compatibility, seasonal sweep, field-boundary or production owner/lifetime qualification exists for these prototypes.",
+    "No production cache/controller/resources/default/setting changed. Existing unrelated V1 scratch modifications remain untouched."
+  ],
+  "decision": "Do not ship the 8/32 MiB weather caches or phase hoist from these results. Preserve source and evidence; evaluate resolution quality separately before any implementation.",
+  "runs": [
+    {
+      "label": "cloud-weather15",
+      "run_receipt": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather15/run.json",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather15/cloud-weather-cache.json",
+      "checks": 105,
+      "failures": 2,
+      "return_code": 1,
+      "termination_reason": null,
+      "errors": [
+        "FAIL held clock exact sky-3-3",
+        "FAIL original restore exact sky"
+      ],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "foreign_processes_at_start": [
+        {
+          "pid": 2194318,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        },
+        {
+          "pid": 2194743,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        }
+      ],
+      "foreign_processes_at_end": [
+        {
+          "pid": 2195598,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        },
+        {
+          "pid": 2195808,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "1554c01385f9d3e70193c307ec59fa3394c58284cca61136fff712763eee22c6",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud_weather_scene.gd": "917d67ede67f11cfe508530403c4d282c878f7bf2f0a0578b5ce40c5e81f06c5",
+        "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud_path_cost.gd": "f9dcd41fa3796a7f53088a296aa955e50a54f2b334cdeb3735ed5aef21a8fe55",
+        "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/clouds.gd": "39124f216492c59d0d8245a370ec98e96070dd9dc21f1156d5765f2639a105da",
+        "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72",
+        "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud_weather_probe.gd": "65351636c27a0ec90aa377d69e07b86d7060618dc31c7caf18025c28e8d21af7"
+      },
+      "viewport": [
+        2560,
+        1440
+      ],
+      "renderer": "forward_plus",
+      "adapter": "NVIDIA GeForce RTX 3090",
+      "allocation": [
+        {
+          "bytes": 8388608,
+          "compute_source_sha256": "89685cc6e5a7462e2f4a4cd1741ceee0ff68a3474b401f3bb349cfc209558dd2",
+          "extent": 1024,
+          "region": "(-65536.0, -65536.0, 131072.0, 131072.0)",
+          "setup_cpu_us": 9169
+        }
+      ],
+      "groups": [
+        {
+          "path": "sky",
+          "quality": 2,
+          "arm_order": [
+            "original",
+            "prototype",
+            "prototype",
+            "original"
+          ],
+          "viewport_gpu_median_ms": [
+            1.58500003814697,
+            1.33299994468689,
+            1.31400001049042,
+            1.55299997329712
+          ],
+          "frame_wall_median_ms": [
+            0.297,
+            0.314,
+            0.32,
+            0.286
+          ],
+          "loop_wall_per_drawn_frame_ms": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "compute_gpu_median_ms": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "compute_timestamp_samples": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "draw_count_medians": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "colour_delta": {
+            "changed_pixels": 830185,
+            "mean_max_channel_delta": 0.331541069878472,
+            "peak_delta": 29,
+            "pixels_over_2": 84696,
+            "pixels_over_8": 4121
+          }
+        },
+        {
+          "path": "sky",
+          "quality": 3,
+          "arm_order": [
+            "original",
+            "prototype",
+            "prototype",
+            "original"
+          ],
+          "viewport_gpu_median_ms": [
+            5.58400011062622,
+            4.53200006484985,
+            4.46400022506714,
+            5.31899976730347
+          ],
+          "frame_wall_median_ms": [
+            0.348,
+            0.37,
+            0.427,
+            0.539
+          ],
+          "loop_wall_per_drawn_frame_ms": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "compute_gpu_median_ms": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "compute_timestamp_samples": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "draw_count_medians": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "colour_delta": {
+            "changed_pixels": 839387,
+            "mean_max_channel_delta": 0.328014865451389,
+            "peak_delta": 23,
+            "pixels_over_2": 80020,
+            "pixels_over_8": 4005
+          }
+        },
+        {
+          "path": "water",
+          "quality": 2,
+          "arm_order": [
+            "original",
+            "prototype",
+            "prototype",
+            "original"
+          ],
+          "viewport_gpu_median_ms": [
+            2.7960000038147,
+            2.50699996948242,
+            2.45900011062622,
+            2.75799989700317
+          ],
+          "frame_wall_median_ms": [
+            0.338,
+            0.328,
+            0.38,
+            0.351
+          ],
+          "loop_wall_per_drawn_frame_ms": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "compute_gpu_median_ms": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "compute_timestamp_samples": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "draw_count_medians": [
+            33,
+            33,
+            33,
+            33
+          ],
+          "colour_delta": {
+            "changed_pixels": 147440,
+            "mean_max_channel_delta": 0.0425119357638889,
+            "peak_delta": 9,
+            "pixels_over_2": 1350,
+            "pixels_over_8": 1
+          }
+        },
+        {
+          "path": "water",
+          "quality": 3,
+          "arm_order": [
+            "original",
+            "prototype",
+            "prototype",
+            "original"
+          ],
+          "viewport_gpu_median_ms": [
+            2.77699995040894,
+            2.50300002098083,
+            2.47900009155273,
+            2.72399997711182
+          ],
+          "frame_wall_median_ms": [
+            0.3,
+            0.322,
+            0.323,
+            0.383
+          ],
+          "loop_wall_per_drawn_frame_ms": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "compute_gpu_median_ms": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "compute_timestamp_samples": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "draw_count_medians": [
+            33,
+            33,
+            33,
+            33
+          ],
+          "colour_delta": {
+            "changed_pixels": 147440,
+            "mean_max_channel_delta": 0.0425119357638889,
+            "peak_delta": 9,
+            "pixels_over_2": 1350,
+            "pixels_over_8": 1
+          }
+        }
+      ],
+      "strict_controls": []
+    },
+    {
+      "label": "cloud-weather16",
+      "run_receipt": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather16/run.json",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather16/cloud-weather-cache.json",
+      "checks": 113,
+      "failures": 4,
+      "return_code": 1,
+      "termination_reason": null,
+      "errors": [
+        "FAIL held clock exact sky-3-0",
+        "FAIL held clock exact sky-3-2",
+        "FAIL held clock exact sky-3-3",
+        "FAIL original restore exact sky"
+      ],
+      "warnings": [],
+      "foreign_processes_at_start": [
+        {
+          "pid": 2197950,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        },
+        {
+          "pid": 2198165,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "foreign_processes_at_end": [
+        {
+          "pid": 2197950,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        },
+        {
+          "pid": 2199368,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "1554c01385f9d3e70193c307ec59fa3394c58284cca61136fff712763eee22c6",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud_weather_scene.gd": "3b43e00cfdea97edb3d2f574ca5fd3d85a301fb0874edf9439834866224b383c",
+        "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud_path_cost.gd": "f9dcd41fa3796a7f53088a296aa955e50a54f2b334cdeb3735ed5aef21a8fe55",
+        "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/clouds.gd": "39124f216492c59d0d8245a370ec98e96070dd9dc21f1156d5765f2639a105da",
+        "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72",
+        "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud_weather_probe.gd": "155fda26fbfc380cb42056cacb682642fe80e6f5aea9fbbe86a4339b37559e85"
+      },
+      "viewport": [
+        2560,
+        1440
+      ],
+      "renderer": "forward_plus",
+      "adapter": "NVIDIA GeForce RTX 3090",
+      "allocation": [
+        {
+          "bytes": 33554432,
+          "compute_source_sha256": "89685cc6e5a7462e2f4a4cd1741ceee0ff68a3474b401f3bb349cfc209558dd2",
+          "extent": 2048,
+          "region": "(-65536.0, -65536.0, 131072.0, 131072.0)",
+          "setup_cpu_us": 11356
+        }
+      ],
+      "groups": [
+        {
+          "path": "sky",
+          "quality": 2,
+          "arm_order": [
+            "original",
+            "prototype",
+            "prototype",
+            "original"
+          ],
+          "viewport_gpu_median_ms": [
+            1.49500000476837,
+            1.37999999523163,
+            1.38300001621246,
+            1.5110000371933
+          ],
+          "frame_wall_median_ms": [
+            1.579,
+            1.5,
+            1.497,
+            1.568
+          ],
+          "loop_wall_per_drawn_frame_ms": [
+            1.59715,
+            1.55936,
+            1.5719900000000002,
+            1.63293
+          ],
+          "compute_gpu_median_ms": [
+            null,
+            0.058304,
+            0.058112,
+            null
+          ],
+          "compute_timestamp_samples": [
+            0,
+            98,
+            98,
+            0
+          ],
+          "draw_count_medians": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "colour_delta": {
+            "changed_pixels": 473520,
+            "mean_max_channel_delta": 0.135603841145833,
+            "peak_delta": 10,
+            "pixels_over_2": 4375,
+            "pixels_over_8": 14
+          }
+        },
+        {
+          "path": "sky",
+          "quality": 3,
+          "arm_order": [
+            "original",
+            "prototype",
+            "prototype",
+            "original"
+          ],
+          "viewport_gpu_median_ms": [
+            5.53299999237061,
+            4.7480001449585,
+            4.68499994277954,
+            5.45699977874756
+          ],
+          "frame_wall_median_ms": [
+            5.576,
+            4.881,
+            4.866,
+            5.512
+          ],
+          "loop_wall_per_drawn_frame_ms": [
+            5.649249999999999,
+            4.95116,
+            4.9279399999999995,
+            5.64525
+          ],
+          "compute_gpu_median_ms": [
+            null,
+            0.061472,
+            0.061472,
+            null
+          ],
+          "compute_timestamp_samples": [
+            0,
+            98,
+            98,
+            0
+          ],
+          "draw_count_medians": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "colour_delta": {
+            "changed_pixels": 472789,
+            "mean_max_channel_delta": 0.133950466579861,
+            "peak_delta": 8,
+            "pixels_over_2": 3644,
+            "pixels_over_8": 0
+          }
+        },
+        {
+          "path": "water",
+          "quality": 2,
+          "arm_order": [
+            "original",
+            "prototype",
+            "prototype",
+            "original"
+          ],
+          "viewport_gpu_median_ms": [
+            2.77600002288818,
+            2.52800011634827,
+            2.52900004386902,
+            2.77800011634827
+          ],
+          "frame_wall_median_ms": [
+            2.852,
+            2.651,
+            2.653,
+            2.829
+          ],
+          "loop_wall_per_drawn_frame_ms": [
+            2.9619999999999997,
+            2.71928,
+            2.73071,
+            2.92939
+          ],
+          "compute_gpu_median_ms": [
+            null,
+            0.060384,
+            0.060256,
+            null
+          ],
+          "compute_timestamp_samples": [
+            0,
+            98,
+            98,
+            0
+          ],
+          "draw_count_medians": [
+            33,
+            33,
+            33,
+            33
+          ],
+          "colour_delta": {
+            "changed_pixels": 57311,
+            "mean_max_channel_delta": 0.0155680338541667,
+            "peak_delta": 2,
+            "pixels_over_2": 0,
+            "pixels_over_8": 0
+          }
+        },
+        {
+          "path": "water",
+          "quality": 3,
+          "arm_order": [
+            "original",
+            "prototype",
+            "prototype",
+            "original"
+          ],
+          "viewport_gpu_median_ms": [
+            2.77300000190735,
+            2.53900003433228,
+            2.52900004386902,
+            2.83800005912781
+          ],
+          "frame_wall_median_ms": [
+            2.83,
+            2.662,
+            2.655,
+            2.906
+          ],
+          "loop_wall_per_drawn_frame_ms": [
+            2.90868,
+            2.75318,
+            2.7304000000000004,
+            3.0079399999999996
+          ],
+          "compute_gpu_median_ms": [
+            null,
+            0.060448,
+            0.060448,
+            null
+          ],
+          "compute_timestamp_samples": [
+            0,
+            98,
+            98,
+            0
+          ],
+          "draw_count_medians": [
+            33,
+            33,
+            33,
+            33
+          ],
+          "colour_delta": {
+            "changed_pixels": 57311,
+            "mean_max_channel_delta": 0.0155680338541667,
+            "peak_delta": 2,
+            "pixels_over_2": 0,
+            "pixels_over_8": 0
+          }
+        }
+      ],
+      "strict_controls": []
+    },
+    {
+      "label": "cloud-weather17",
+      "run_receipt": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather17/run.json",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather17/cloud-weather-cache.json",
+      "checks": 113,
+      "failures": 3,
+      "return_code": 1,
+      "termination_reason": null,
+      "errors": [
+        "FAIL held clock exact sky-3-0",
+        "FAIL held clock exact sky-3-3",
+        "FAIL original restore exact sky"
+      ],
+      "warnings": [],
+      "foreign_processes_at_start": [
+        {
+          "pid": 2199368,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        },
+        {
+          "pid": 2200669,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        }
+      ],
+      "foreign_processes_at_end": [
+        {
+          "pid": 2202667,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        },
+        {
+          "pid": 2202816,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "1554c01385f9d3e70193c307ec59fa3394c58284cca61136fff712763eee22c6",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud_weather_scene.gd": "6bb0916b0f5ee7c3ccf96efd67cfc7a8540c7d07bf97db9f4c469a218157fc00",
+        "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud_path_cost.gd": "f9dcd41fa3796a7f53088a296aa955e50a54f2b334cdeb3735ed5aef21a8fe55",
+        "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/clouds.gd": "39124f216492c59d0d8245a370ec98e96070dd9dc21f1156d5765f2639a105da",
+        "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72",
+        "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud_weather_probe.gd": "67f2a886aeca65eb0451d6731126d1f3c0bc0c7dfd52f32e9fd5ccc31d04e7eb"
+      },
+      "viewport": [
+        2560,
+        1440
+      ],
+      "renderer": "forward_plus",
+      "adapter": "NVIDIA GeForce RTX 3090",
+      "allocation": [
+        {
+          "bytes": 33554432,
+          "compute_source_sha256": "89685cc6e5a7462e2f4a4cd1741ceee0ff68a3474b401f3bb349cfc209558dd2",
+          "extent": 2048,
+          "region": "(-16384.0, -16384.0, 32768.0, 32768.0)",
+          "setup_cpu_us": 15185
+        }
+      ],
+      "groups": [
+        {
+          "path": "sky",
+          "quality": 2,
+          "arm_order": [
+            "original",
+            "prototype",
+            "prototype",
+            "original"
+          ],
+          "viewport_gpu_median_ms": [
+            1.44700002670288,
+            1.62800002098083,
+            1.65199995040894,
+            1.48399996757507
+          ],
+          "frame_wall_median_ms": [
+            1.548,
+            1.737,
+            1.762,
+            1.554
+          ],
+          "loop_wall_per_drawn_frame_ms": [
+            1.7349100000000002,
+            1.7771299999999999,
+            1.77071,
+            1.61021
+          ],
+          "compute_gpu_median_ms": [
+            null,
+            0.059104,
+            0.058784,
+            null
+          ],
+          "compute_timestamp_samples": [
+            0,
+            98,
+            98,
+            0
+          ],
+          "draw_count_medians": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "colour_delta": {
+            "changed_pixels": 283772,
+            "mean_max_channel_delta": 0.0770166015625,
+            "peak_delta": 3,
+            "pixels_over_2": 1,
+            "pixels_over_8": 0
+          }
+        },
+        {
+          "path": "sky",
+          "quality": 3,
+          "arm_order": [
+            "original",
+            "prototype",
+            "prototype",
+            "original"
+          ],
+          "viewport_gpu_median_ms": [
+            5.49399995803833,
+            5.60200023651123,
+            5.58900022506714,
+            5.58500003814697
+          ],
+          "frame_wall_median_ms": [
+            5.555,
+            5.7,
+            5.7,
+            5.637
+          ],
+          "loop_wall_per_drawn_frame_ms": [
+            5.57457,
+            5.70564,
+            5.74029,
+            5.6558399999999995
+          ],
+          "compute_gpu_median_ms": [
+            null,
+            0.06224,
+            0.062752,
+            null
+          ],
+          "compute_timestamp_samples": [
+            0,
+            98,
+            98,
+            0
+          ],
+          "draw_count_medians": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "colour_delta": {
+            "changed_pixels": 302221,
+            "mean_max_channel_delta": 0.0820062934027778,
+            "peak_delta": 2,
+            "pixels_over_2": 0,
+            "pixels_over_8": 0
+          }
+        },
+        {
+          "path": "water",
+          "quality": 2,
+          "arm_order": [
+            "original",
+            "prototype",
+            "prototype",
+            "original"
+          ],
+          "viewport_gpu_median_ms": [
+            2.75699996948242,
+            2.72499990463257,
+            2.72300004959106,
+            2.83899998664856
+          ],
+          "frame_wall_median_ms": [
+            2.818,
+            2.843,
+            2.838,
+            2.918
+          ],
+          "loop_wall_per_drawn_frame_ms": [
+            2.9233499999999997,
+            2.92526,
+            2.92025,
+            3.00569
+          ],
+          "compute_gpu_median_ms": [
+            null,
+            0.061024,
+            0.06128,
+            null
+          ],
+          "compute_timestamp_samples": [
+            0,
+            98,
+            98,
+            0
+          ],
+          "draw_count_medians": [
+            33,
+            33,
+            33,
+            33
+          ],
+          "colour_delta": {
+            "changed_pixels": 23858,
+            "mean_max_channel_delta": 0.00647189670138889,
+            "peak_delta": 1,
+            "pixels_over_2": 0,
+            "pixels_over_8": 0
+          }
+        },
+        {
+          "path": "water",
+          "quality": 3,
+          "arm_order": [
+            "original",
+            "prototype",
+            "prototype",
+            "original"
+          ],
+          "viewport_gpu_median_ms": [
+            2.75399994850159,
+            2.70000004768372,
+            2.70799994468689,
+            2.74300003051758
+          ],
+          "frame_wall_median_ms": [
+            2.81,
+            2.843,
+            2.839,
+            2.827
+          ],
+          "loop_wall_per_drawn_frame_ms": [
+            2.90517,
+            2.90373,
+            2.90089,
+            3.0429000000000004
+          ],
+          "compute_gpu_median_ms": [
+            null,
+            0.061216,
+            0.061152,
+            null
+          ],
+          "compute_timestamp_samples": [
+            0,
+            98,
+            98,
+            0
+          ],
+          "draw_count_medians": [
+            33,
+            33,
+            33,
+            33
+          ],
+          "colour_delta": {
+            "changed_pixels": 23858,
+            "mean_max_channel_delta": 0.00647189670138889,
+            "peak_delta": 1,
+            "pixels_over_2": 0,
+            "pixels_over_8": 0
+          }
+        }
+      ],
+      "strict_controls": [
+        {
+          "arm": 0,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 2
+        },
+        {
+          "arm": 1,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 2
+        },
+        {
+          "arm": 2,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 2
+        },
+        {
+          "arm": 3,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 2
+        },
+        {
+          "case": "restore-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 2
+        },
+        {
+          "case": "cache-repeat-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 2
+        },
+        {
+          "arm": 0,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 2281,
+            "peak_delta": 1,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 1,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 2,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 3,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 2281,
+            "peak_delta": 1,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "case": "restore-control",
+          "delta": {
+            "changed_pixels": 2281,
+            "peak_delta": 1,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "case": "cache-repeat-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 0,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 2
+        },
+        {
+          "arm": 1,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 2
+        },
+        {
+          "arm": 2,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 2
+        },
+        {
+          "arm": 3,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 2
+        },
+        {
+          "case": "restore-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 2
+        },
+        {
+          "case": "cache-repeat-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 2
+        },
+        {
+          "arm": 0,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 3
+        },
+        {
+          "arm": 1,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 3
+        },
+        {
+          "arm": 2,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 3
+        },
+        {
+          "arm": 3,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 3
+        },
+        {
+          "case": "restore-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 3
+        },
+        {
+          "case": "cache-repeat-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 3
+        }
+      ]
+    },
+    {
+      "label": "cloud-weather18",
+      "run_receipt": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather18/run.json",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather18/cloud-weather-cache.json",
+      "checks": 113,
+      "failures": 3,
+      "return_code": 1,
+      "termination_reason": null,
+      "errors": [
+        "FAIL held clock exact sky-3-0",
+        "FAIL held clock exact sky-3-2",
+        "FAIL held clock exact sky-3-3"
+      ],
+      "warnings": [],
+      "foreign_processes_at_start": [
+        {
+          "pid": 2204319,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        },
+        {
+          "pid": 2206582,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "foreign_processes_at_end": [
+        {
+          "pid": 2207259,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "1554c01385f9d3e70193c307ec59fa3394c58284cca61136fff712763eee22c6",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud_weather_scene.gd": "b33eb2c522bfc8045b70356c4fa4cce6f3a77d8914a3c4cda30bed59a80294ab",
+        "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud_path_cost.gd": "f9dcd41fa3796a7f53088a296aa955e50a54f2b334cdeb3735ed5aef21a8fe55",
+        "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/clouds.gd": "39124f216492c59d0d8245a370ec98e96070dd9dc21f1156d5765f2639a105da",
+        "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72",
+        "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud_weather_probe.gd": "b4b3f13d1f1d98bd535a248c606773cbd5339fd27ad859526f9131686f4794ea"
+      },
+      "viewport": [
+        2560,
+        1440
+      ],
+      "renderer": "forward_plus",
+      "adapter": "NVIDIA GeForce RTX 3090",
+      "allocation": [
+        {
+          "bytes": 33554432,
+          "compute_source_sha256": "d99619bbe2c2eb1d283381a3ddf85f7df5a0e36227495ec042c8fddd33043f48",
+          "extent": 2048,
+          "format": "RGBA16_UNORM",
+          "mapping": "separable quadratic, inverse signed sqrt",
+          "region": "(-65536.0, -65536.0, 131072.0, 131072.0)",
+          "setup_cpu_us": 10561
+        }
+      ],
+      "groups": [
+        {
+          "path": "sky",
+          "quality": 2,
+          "arm_order": [
+            "original",
+            "prototype",
+            "prototype",
+            "original"
+          ],
+          "viewport_gpu_median_ms": [
+            1.49399995803833,
+            1.48500001430511,
+            1.61899995803833,
+            1.50600004196167
+          ],
+          "frame_wall_median_ms": [
+            1.566,
+            1.672,
+            1.742,
+            1.562
+          ],
+          "loop_wall_per_drawn_frame_ms": [
+            1.6140700000000001,
+            1.8698,
+            1.81327,
+            1.61556
+          ],
+          "compute_gpu_median_ms": [
+            null,
+            0.058368,
+            0.066304,
+            null
+          ],
+          "compute_timestamp_samples": [
+            0,
+            98,
+            98,
+            0
+          ],
+          "draw_count_medians": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "colour_delta": {
+            "changed_pixels": 206593,
+            "mean_max_channel_delta": 0.0563514539930556,
+            "peak_delta": 3,
+            "pixels_over_2": 25,
+            "pixels_over_8": 0
+          }
+        },
+        {
+          "path": "sky",
+          "quality": 3,
+          "arm_order": [
+            "original",
+            "prototype",
+            "prototype",
+            "original"
+          ],
+          "viewport_gpu_median_ms": [
+            5.50699996948242,
+            5.13199996948242,
+            5.23899984359741,
+            5.5149998664856
+          ],
+          "frame_wall_median_ms": [
+            5.559,
+            5.259,
+            5.375,
+            5.589
+          ],
+          "loop_wall_per_drawn_frame_ms": [
+            5.637490000000001,
+            5.34522,
+            5.39634,
+            5.6622699999999995
+          ],
+          "compute_gpu_median_ms": [
+            null,
+            0.062528,
+            0.062688,
+            null
+          ],
+          "compute_timestamp_samples": [
+            0,
+            98,
+            98,
+            0
+          ],
+          "draw_count_medians": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "colour_delta": {
+            "changed_pixels": 192551,
+            "mean_max_channel_delta": 0.0524310980902778,
+            "peak_delta": 4,
+            "pixels_over_2": 33,
+            "pixels_over_8": 0
+          }
+        },
+        {
+          "path": "water",
+          "quality": 2,
+          "arm_order": [
+            "original",
+            "prototype",
+            "prototype",
+            "original"
+          ],
+          "viewport_gpu_median_ms": [
+            2.81399989128113,
+            2.68600010871887,
+            2.59100008010864,
+            2.81500005722046
+          ],
+          "frame_wall_median_ms": [
+            2.879,
+            2.832,
+            2.785,
+            2.978
+          ],
+          "loop_wall_per_drawn_frame_ms": [
+            2.9481200000000003,
+            2.9156999999999997,
+            3.16873,
+            3.36611
+          ],
+          "compute_gpu_median_ms": [
+            null,
+            0.060736,
+            0.060928,
+            null
+          ],
+          "compute_timestamp_samples": [
+            0,
+            98,
+            98,
+            0
+          ],
+          "draw_count_medians": [
+            33,
+            33,
+            33,
+            33
+          ],
+          "colour_delta": {
+            "changed_pixels": 21440,
+            "mean_max_channel_delta": 0.00582329644097222,
+            "peak_delta": 3,
+            "pixels_over_2": 2,
+            "pixels_over_8": 0
+          }
+        },
+        {
+          "path": "water",
+          "quality": 3,
+          "arm_order": [
+            "original",
+            "prototype",
+            "prototype",
+            "original"
+          ],
+          "viewport_gpu_median_ms": [
+            3.01999998092651,
+            2.69799995422363,
+            2.64199995994568,
+            2.87800002098083
+          ],
+          "frame_wall_median_ms": [
+            3.065,
+            2.848,
+            2.767,
+            2.935
+          ],
+          "loop_wall_per_drawn_frame_ms": [
+            3.2218400000000003,
+            2.94064,
+            2.86634,
+            3.0308800000000002
+          ],
+          "compute_gpu_median_ms": [
+            null,
+            0.060992,
+            0.061376,
+            null
+          ],
+          "compute_timestamp_samples": [
+            0,
+            98,
+            98,
+            0
+          ],
+          "draw_count_medians": [
+            33,
+            33,
+            33,
+            33
+          ],
+          "colour_delta": {
+            "changed_pixels": 21440,
+            "mean_max_channel_delta": 0.00582329644097222,
+            "peak_delta": 3,
+            "pixels_over_2": 2,
+            "pixels_over_8": 0
+          }
+        }
+      ],
+      "strict_controls": [
+        {
+          "arm": 0,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 2
+        },
+        {
+          "arm": 1,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 2
+        },
+        {
+          "arm": 2,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 2
+        },
+        {
+          "arm": 3,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 2
+        },
+        {
+          "case": "restore-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 2
+        },
+        {
+          "case": "cache-repeat-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 2
+        },
+        {
+          "arm": 0,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 23,
+            "peak_delta": 1,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 1,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 2,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 1901,
+            "peak_delta": 1,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 3,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 23,
+            "peak_delta": 1,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "case": "restore-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "case": "cache-repeat-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 0,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 2
+        },
+        {
+          "arm": 1,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 2
+        },
+        {
+          "arm": 2,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 2
+        },
+        {
+          "arm": 3,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 2
+        },
+        {
+          "case": "restore-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 2
+        },
+        {
+          "case": "cache-repeat-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 2
+        },
+        {
+          "arm": 0,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 3
+        },
+        {
+          "arm": 1,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 3
+        },
+        {
+          "arm": 2,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 3
+        },
+        {
+          "arm": 3,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 3
+        },
+        {
+          "case": "restore-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 3
+        },
+        {
+          "case": "cache-repeat-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 3
+        }
+      ]
+    },
+    {
+      "label": "cloud-phase19",
+      "run_receipt": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-phase19/run.json",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-phase19/cloud-phase-hoist.json",
+      "checks": 72,
+      "failures": 4,
+      "return_code": 1,
+      "termination_reason": null,
+      "errors": [
+        "FAIL held clock exact sky-3-0",
+        "FAIL held clock exact sky-3-1",
+        "FAIL held clock exact sky-3-2",
+        "FAIL held clock exact sky-3-3"
+      ],
+      "warnings": [],
+      "foreign_processes_at_start": [
+        {
+          "pid": 2209733,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "foreign_processes_at_end": [
+        {
+          "pid": 2211262,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "1554c01385f9d3e70193c307ec59fa3394c58284cca61136fff712763eee22c6",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud_phase_scene.gd": "4361c3a6fee8106c5555a8170f1776a33d1132402e30570f6a4da5a22779db52",
+        "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud_path_cost.gd": "f9dcd41fa3796a7f53088a296aa955e50a54f2b334cdeb3735ed5aef21a8fe55",
+        "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/clouds.gd": "39124f216492c59d0d8245a370ec98e96070dd9dc21f1156d5765f2639a105da",
+        "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72",
+        "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud_phase_probe.gd": "4675145ed56febc9b72d73b0fabc5b3624fde6079a5eefd8e3df220228734cd6"
+      },
+      "viewport": [
+        2560,
+        1440
+      ],
+      "renderer": "forward_plus",
+      "adapter": "NVIDIA GeForce RTX 3090",
+      "allocation": [],
+      "groups": [
+        {
+          "path": "sky",
+          "quality": 2,
+          "arm_order": [
+            "original",
+            "prototype",
+            "prototype",
+            "original"
+          ],
+          "viewport_gpu_median_ms": [
+            1.5,
+            1.46599996089935,
+            1.46200001239777,
+            1.49199998378754
+          ],
+          "frame_wall_median_ms": [
+            1.578,
+            1.538,
+            1.527,
+            1.57
+          ],
+          "loop_wall_per_drawn_frame_ms": [
+            1.6274799999999998,
+            1.60068,
+            1.58958,
+            1.61596
+          ],
+          "compute_gpu_median_ms": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "compute_timestamp_samples": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "draw_count_medians": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "colour_delta": {
+            "changed_pixels": 22,
+            "mean_max_channel_delta": 5.96788194444444e-06,
+            "peak_delta": 1,
+            "pixels_over_2": 0,
+            "pixels_over_8": 0
+          }
+        },
+        {
+          "path": "sky",
+          "quality": 3,
+          "arm_order": [
+            "original",
+            "prototype",
+            "prototype",
+            "original"
+          ],
+          "viewport_gpu_median_ms": [
+            5.54300022125244,
+            5.40500020980835,
+            5.47900009155273,
+            5.53999996185303
+          ],
+          "frame_wall_median_ms": [
+            5.588,
+            5.467,
+            5.57,
+            5.615
+          ],
+          "loop_wall_per_drawn_frame_ms": [
+            5.632029999999999,
+            5.5885299999999996,
+            5.566369999999999,
+            5.61061
+          ],
+          "compute_gpu_median_ms": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "compute_timestamp_samples": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "draw_count_medians": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "colour_delta": {
+            "changed_pixels": 6,
+            "mean_max_channel_delta": 1.62760416666667e-06,
+            "peak_delta": 1,
+            "pixels_over_2": 0,
+            "pixels_over_8": 0
+          }
+        },
+        {
+          "path": "water",
+          "quality": 2,
+          "arm_order": [
+            "original",
+            "prototype",
+            "prototype",
+            "original"
+          ],
+          "viewport_gpu_median_ms": [
+            2.74600005149841,
+            2.79699993133545,
+            2.77600002288818,
+            2.8199999332428
+          ],
+          "frame_wall_median_ms": [
+            2.846,
+            2.873,
+            2.843,
+            2.889
+          ],
+          "loop_wall_per_drawn_frame_ms": [
+            3.1992899999999995,
+            2.9503199999999996,
+            2.9332,
+            2.9833100000000004
+          ],
+          "compute_gpu_median_ms": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "compute_timestamp_samples": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "draw_count_medians": [
+            33,
+            33,
+            33,
+            33
+          ],
+          "colour_delta": {
+            "changed_pixels": 0,
+            "mean_max_channel_delta": 0.0,
+            "peak_delta": 0,
+            "pixels_over_2": 0,
+            "pixels_over_8": 0
+          }
+        },
+        {
+          "path": "water",
+          "quality": 3,
+          "arm_order": [
+            "original",
+            "prototype",
+            "prototype",
+            "original"
+          ],
+          "viewport_gpu_median_ms": [
+            2.83400011062622,
+            2.8199999332428,
+            2.80299997329712,
+            2.74000000953674
+          ],
+          "frame_wall_median_ms": [
+            2.899,
+            2.877,
+            2.928,
+            2.9
+          ],
+          "loop_wall_per_drawn_frame_ms": [
+            3.09154,
+            2.94295,
+            3.0945,
+            3.16901
+          ],
+          "compute_gpu_median_ms": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "compute_timestamp_samples": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "draw_count_medians": [
+            33,
+            33,
+            33,
+            33
+          ],
+          "colour_delta": {
+            "changed_pixels": 0,
+            "mean_max_channel_delta": 0.0,
+            "peak_delta": 0,
+            "pixels_over_2": 0,
+            "pixels_over_8": 0
+          }
+        }
+      ],
+      "strict_controls": [
+        {
+          "arm": 0,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 2
+        },
+        {
+          "arm": 1,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 2
+        },
+        {
+          "arm": 2,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 2
+        },
+        {
+          "arm": 3,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 2
+        },
+        {
+          "case": "restore-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 2
+        },
+        {
+          "case": "cache-repeat-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 2
+        },
+        {
+          "arm": 0,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 23,
+            "peak_delta": 1,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 1,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 2283,
+            "peak_delta": 1,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 2,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 2283,
+            "peak_delta": 1,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 3,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 23,
+            "peak_delta": 1,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "case": "restore-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "case": "cache-repeat-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 0,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 2
+        },
+        {
+          "arm": 1,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 2
+        },
+        {
+          "arm": 2,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 2
+        },
+        {
+          "arm": 3,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 2
+        },
+        {
+          "case": "restore-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 2
+        },
+        {
+          "case": "cache-repeat-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 2
+        },
+        {
+          "arm": 0,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 3
+        },
+        {
+          "arm": 1,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 3
+        },
+        {
+          "arm": 2,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 3
+        },
+        {
+          "arm": 3,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 3
+        },
+        {
+          "case": "restore-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 3
+        },
+        {
+          "case": "cache-repeat-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 3
+        }
+      ]
+    },
+    {
+      "label": "cloud-resolution20",
+      "run_receipt": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-resolution20/run.json",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-resolution20/cloud-pass-resolution.json",
+      "checks": 36,
+      "failures": 3,
+      "return_code": 1,
+      "termination_reason": null,
+      "errors": [
+        "FAIL held clock exact sky-2-0",
+        "FAIL held clock exact sky-3-2",
+        "FAIL held clock exact sky-3-3"
+      ],
+      "warnings": [],
+      "foreign_processes_at_start": [
+        {
+          "pid": 2212114,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "foreign_processes_at_end": [],
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "1554c01385f9d3e70193c307ec59fa3394c58284cca61136fff712763eee22c6",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud_resolution_scene.gd": "3b2a44a34319d48153205e60ab271778a9114a4af01ec184de058c8bce460f95",
+        "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud_path_cost.gd": "f9dcd41fa3796a7f53088a296aa955e50a54f2b334cdeb3735ed5aef21a8fe55",
+        "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/clouds.gd": "39124f216492c59d0d8245a370ec98e96070dd9dc21f1156d5765f2639a105da",
+        "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72",
+        "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud_resolution_probe.gd": "5290cde42c3d87fcad67fdc19555bb60bd471e9c4951d4b84c1efd3816efa14a"
+      },
+      "viewport": [
+        2560,
+        1440
+      ],
+      "renderer": "forward_plus",
+      "adapter": "NVIDIA GeForce RTX 3090",
+      "allocation": [],
+      "groups": [
+        {
+          "path": "sky",
+          "quality": 2,
+          "arm_order": [
+            "original",
+            "prototype",
+            "prototype",
+            "original"
+          ],
+          "viewport_gpu_median_ms": [
+            1.51600003242493,
+            1.64600002765656,
+            1.48800003528595,
+            1.49000000953674
+          ],
+          "frame_wall_median_ms": [
+            1.572,
+            1.709,
+            1.624,
+            1.548
+          ],
+          "loop_wall_per_drawn_frame_ms": [
+            1.61319,
+            1.8151300000000001,
+            2.20778,
+            1.58864
+          ],
+          "compute_gpu_median_ms": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "compute_timestamp_samples": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "draw_count_medians": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "colour_delta": {
+            "changed_pixels": 0,
+            "mean_max_channel_delta": 0.0,
+            "peak_delta": 0,
+            "pixels_over_2": 0,
+            "pixels_over_8": 0
+          }
+        },
+        {
+          "path": "sky",
+          "quality": 3,
+          "arm_order": [
+            "original",
+            "prototype",
+            "prototype",
+            "original"
+          ],
+          "viewport_gpu_median_ms": [
+            5.44399976730347,
+            2.73499989509583,
+            2.89100003242493,
+            5.4520001411438
+          ],
+          "frame_wall_median_ms": [
+            5.564,
+            2.823,
+            2.943,
+            5.533
+          ],
+          "loop_wall_per_drawn_frame_ms": [
+            5.63222,
+            3.07844,
+            3.02967,
+            5.5798000000000005
+          ],
+          "compute_gpu_median_ms": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "compute_timestamp_samples": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "draw_count_medians": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "colour_delta": {
+            "changed_pixels": 2299150,
+            "mean_max_channel_delta": 0.773753526475694,
+            "peak_delta": 37,
+            "pixels_over_2": 112729,
+            "pixels_over_8": 7806
+          }
+        }
+      ],
+      "strict_controls": [
+        {
+          "arm": 0,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 2657,
+            "peak_delta": 1,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 2
+        },
+        {
+          "arm": 1,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 2
+        },
+        {
+          "arm": 2,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 2
+        },
+        {
+          "arm": 3,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 2
+        },
+        {
+          "case": "restore-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 2
+        },
+        {
+          "case": "cache-repeat-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 2
+        },
+        {
+          "arm": 0,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 1,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 2,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 2103,
+            "peak_delta": 1,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 3,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 2281,
+            "peak_delta": 1,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "case": "restore-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "case": "cache-repeat-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        }
+      ]
+    }
+  ],
+  "frozen_files_sha256": {
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather15/cloud-weather-cache.json": "3762041bcd630efafb8bb7b2b245a9f61382fc2fb98057f3c323e61d38d3a294",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather15/cloud_path_cost.gd": "f9dcd41fa3796a7f53088a296aa955e50a54f2b334cdeb3735ed5aef21a8fe55",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather15/cloud_weather_probe.gd": "65351636c27a0ec90aa377d69e07b86d7060618dc31c7caf18025c28e8d21af7",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather15/clouds.gd": "39124f216492c59d0d8245a370ec98e96070dd9dc21f1156d5765f2639a105da",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather15/run.json": "9b0f66dfe5af86b226169edb9df28767f5417325ecd73772e8b7b0a8a2f9d69e",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather15/run.log": "989623bf277bb0063a52a7ede9b05f03ff355567fb59bc367e9af77fa8d5bb57",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather15/tool-source.gd": "917d67ede67f11cfe508530403c4d282c878f7bf2f0a0578b5ce40c5e81f06c5",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather15/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather15/weather-sky-2-0.png": "73ab09babac5325e9068a06673e86b4a40bf73c5b01b3f09dfddbff2dc95d593",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather15/weather-sky-2-1.png": "56c52f19197d9e170fe8ea7a8c54910728bd8854d8d49c01412503b03e7b7774",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather15/weather-sky-2-2.png": "56c52f19197d9e170fe8ea7a8c54910728bd8854d8d49c01412503b03e7b7774",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather15/weather-sky-2-3.png": "73ab09babac5325e9068a06673e86b4a40bf73c5b01b3f09dfddbff2dc95d593",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather15/weather-sky-3-0.png": "521ccc351532c0809250caeb74cf63b7c380858cb9f1641186fd3ae17af4d25b",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather15/weather-sky-3-1.png": "ab0c87d3f522f8671b0d5dc116bea1550946204105df759c578806f3590ece4d",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather15/weather-sky-3-2.png": "ab0c87d3f522f8671b0d5dc116bea1550946204105df759c578806f3590ece4d",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather15/weather-sky-3-3.png": "2b786f1bc5e6756c99c55eaa14098c9c8b4792b35595fe249e22e226cd91cacc",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather15/weather-water-2-0.png": "3b4c625b925c09a78d9eccd743a6e6ac5cb20bcfd70a0b313c11a2a37b94cfda",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather15/weather-water-2-1.png": "7494a4cd6c5d36d53b27b150c9e534cbb0a339b92eaf1950af193f5f77c5c0e7",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather15/weather-water-2-2.png": "7494a4cd6c5d36d53b27b150c9e534cbb0a339b92eaf1950af193f5f77c5c0e7",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather15/weather-water-2-3.png": "3b4c625b925c09a78d9eccd743a6e6ac5cb20bcfd70a0b313c11a2a37b94cfda",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather15/weather-water-3-0.png": "3b4c625b925c09a78d9eccd743a6e6ac5cb20bcfd70a0b313c11a2a37b94cfda",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather15/weather-water-3-1.png": "7494a4cd6c5d36d53b27b150c9e534cbb0a339b92eaf1950af193f5f77c5c0e7",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather15/weather-water-3-2.png": "7494a4cd6c5d36d53b27b150c9e534cbb0a339b92eaf1950af193f5f77c5c0e7",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather15/weather-water-3-3.png": "3b4c625b925c09a78d9eccd743a6e6ac5cb20bcfd70a0b313c11a2a37b94cfda",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather16/cloud-weather-cache.json": "15e24dfdab0579e42763ac69adc68e95998d086dc4897e1e4e747d552c67c769",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather16/cloud_path_cost.gd": "f9dcd41fa3796a7f53088a296aa955e50a54f2b334cdeb3735ed5aef21a8fe55",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather16/cloud_weather_probe.gd": "155fda26fbfc380cb42056cacb682642fe80e6f5aea9fbbe86a4339b37559e85",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather16/clouds.gd": "39124f216492c59d0d8245a370ec98e96070dd9dc21f1156d5765f2639a105da",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather16/run.json": "eb87796dfb755bc28da51e5d7cd32a398cc121f9156153995556f395aa7ec5e7",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather16/run.log": "6c8afd056ac4d708d25e0d8ac5322fcb9f210635b5db17047c08879be26cff68",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather16/tool-source.gd": "3b43e00cfdea97edb3d2f574ca5fd3d85a301fb0874edf9439834866224b383c",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather16/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather16/weather-sky-2-0.png": "73ab09babac5325e9068a06673e86b4a40bf73c5b01b3f09dfddbff2dc95d593",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather16/weather-sky-2-1.png": "94f6487c94671a735bcd102f03ad53e0422f16ba94ce1c62c43ac8efa3cd74a6",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather16/weather-sky-2-2.png": "94f6487c94671a735bcd102f03ad53e0422f16ba94ce1c62c43ac8efa3cd74a6",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather16/weather-sky-2-3.png": "73ab09babac5325e9068a06673e86b4a40bf73c5b01b3f09dfddbff2dc95d593",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather16/weather-sky-3-0.png": "a41fd291691c43e3610046822cd5734513cd53e4d219ebbb47a4b5117d357124",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather16/weather-sky-3-1.png": "c58e59fc341c16387747875166d7a7091fe2d03b0ff167f5d40dc83e47cfdc2f",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather16/weather-sky-3-2.png": "c58e59fc341c16387747875166d7a7091fe2d03b0ff167f5d40dc83e47cfdc2f",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather16/weather-sky-3-3.png": "521ccc351532c0809250caeb74cf63b7c380858cb9f1641186fd3ae17af4d25b",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather16/weather-water-2-0.png": "3b4c625b925c09a78d9eccd743a6e6ac5cb20bcfd70a0b313c11a2a37b94cfda",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather16/weather-water-2-1.png": "8cedd91c85a80d4cf0e2a086bcc7a9bd95ba5f9968b2b12c6e11a95d73f62acc",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather16/weather-water-2-2.png": "8cedd91c85a80d4cf0e2a086bcc7a9bd95ba5f9968b2b12c6e11a95d73f62acc",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather16/weather-water-2-3.png": "3b4c625b925c09a78d9eccd743a6e6ac5cb20bcfd70a0b313c11a2a37b94cfda",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather16/weather-water-3-0.png": "3b4c625b925c09a78d9eccd743a6e6ac5cb20bcfd70a0b313c11a2a37b94cfda",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather16/weather-water-3-1.png": "8cedd91c85a80d4cf0e2a086bcc7a9bd95ba5f9968b2b12c6e11a95d73f62acc",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather16/weather-water-3-2.png": "8cedd91c85a80d4cf0e2a086bcc7a9bd95ba5f9968b2b12c6e11a95d73f62acc",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather16/weather-water-3-3.png": "3b4c625b925c09a78d9eccd743a6e6ac5cb20bcfd70a0b313c11a2a37b94cfda",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather17/cloud-weather-cache.json": "de2ff7711c2f277f8a14da332735f1909881f46df2d47208f5f79a283ad0354d",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather17/cloud_path_cost.gd": "f9dcd41fa3796a7f53088a296aa955e50a54f2b334cdeb3735ed5aef21a8fe55",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather17/cloud_weather_probe.gd": "67f2a886aeca65eb0451d6731126d1f3c0bc0c7dfd52f32e9fd5ccc31d04e7eb",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather17/clouds.gd": "39124f216492c59d0d8245a370ec98e96070dd9dc21f1156d5765f2639a105da",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather17/run.json": "e7f74ff7fc1ee9c5cec63cbf19fd0ddddb2d57b7e780ca3411f9867536517b28",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather17/run.log": "b205493f2b783cd44fdf76f72010173db9aaad96b1666c46228ddbb138a258c2",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather17/tool-source.gd": "6bb0916b0f5ee7c3ccf96efd67cfc7a8540c7d07bf97db9f4c469a218157fc00",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather17/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather17/weather-held-sky-3-0.png": "91c0e02c567d11fb45dfa2f6e826063b7627e967a095900ec15e3975198fd18a",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather17/weather-held-sky-3-3.png": "9b68c5ab67e81946f2fb6e89519fa95cf15e0a7c6a666408e7f2fc7c1876db55",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather17/weather-sky-2-0.png": "73ab09babac5325e9068a06673e86b4a40bf73c5b01b3f09dfddbff2dc95d593",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather17/weather-sky-2-1.png": "23641f8ec957bbd43732340f82390e2957f312d126e8d9cb4c15c79bf8eecc45",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather17/weather-sky-2-2.png": "23641f8ec957bbd43732340f82390e2957f312d126e8d9cb4c15c79bf8eecc45",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather17/weather-sky-2-3.png": "73ab09babac5325e9068a06673e86b4a40bf73c5b01b3f09dfddbff2dc95d593",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather17/weather-sky-3-0.png": "a41fd291691c43e3610046822cd5734513cd53e4d219ebbb47a4b5117d357124",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather17/weather-sky-3-1.png": "ead9a687491fa54335ff9019481c236098e93671417e2253f97dbd5b93bd578b",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather17/weather-sky-3-2.png": "ead9a687491fa54335ff9019481c236098e93671417e2253f97dbd5b93bd578b",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather17/weather-sky-3-3.png": "521ccc351532c0809250caeb74cf63b7c380858cb9f1641186fd3ae17af4d25b",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather17/weather-water-2-0.png": "3b4c625b925c09a78d9eccd743a6e6ac5cb20bcfd70a0b313c11a2a37b94cfda",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather17/weather-water-2-1.png": "ab3e5a904c0025cb09526e35fa5e52729deac10d8babece65afe7b14298f63a7",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather17/weather-water-2-2.png": "ab3e5a904c0025cb09526e35fa5e52729deac10d8babece65afe7b14298f63a7",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather17/weather-water-2-3.png": "3b4c625b925c09a78d9eccd743a6e6ac5cb20bcfd70a0b313c11a2a37b94cfda",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather17/weather-water-3-0.png": "3b4c625b925c09a78d9eccd743a6e6ac5cb20bcfd70a0b313c11a2a37b94cfda",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather17/weather-water-3-1.png": "ab3e5a904c0025cb09526e35fa5e52729deac10d8babece65afe7b14298f63a7",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather17/weather-water-3-2.png": "ab3e5a904c0025cb09526e35fa5e52729deac10d8babece65afe7b14298f63a7",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather17/weather-water-3-3.png": "3b4c625b925c09a78d9eccd743a6e6ac5cb20bcfd70a0b313c11a2a37b94cfda",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather18/cloud-weather-cache.json": "55a8769a8a7b54354a043f716581e2b4a66f63525609fda7ec1375543168207f",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather18/cloud_path_cost.gd": "f9dcd41fa3796a7f53088a296aa955e50a54f2b334cdeb3735ed5aef21a8fe55",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather18/cloud_weather_probe.gd": "b4b3f13d1f1d98bd535a248c606773cbd5339fd27ad859526f9131686f4794ea",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather18/clouds.gd": "39124f216492c59d0d8245a370ec98e96070dd9dc21f1156d5765f2639a105da",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather18/run.json": "505df22dd3f6eb1dbc83e71717a6bd4709ab88bab41900629f4af6fe4ed63ade",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather18/run.log": "b8f902b6fde03ac0d84ce14afc38b5c968ed9a5cc69c14bc253b8344d82c4bb1",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather18/tool-source.gd": "b33eb2c522bfc8045b70356c4fa4cce6f3a77d8914a3c4cda30bed59a80294ab",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather18/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather18/weather-held-sky-3-0.png": "feb56bf80868e18cf0617b337323b51a8d63b0a8ef43f4ee5dafbe7c0a74b7ce",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather18/weather-held-sky-3-2.png": "bfd81abc012b56004a8bfc0223b81f543a7f4b7bf81de29776ee8d2c5b627255",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather18/weather-held-sky-3-3.png": "feb56bf80868e18cf0617b337323b51a8d63b0a8ef43f4ee5dafbe7c0a74b7ce",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather18/weather-sky-2-0.png": "73ab09babac5325e9068a06673e86b4a40bf73c5b01b3f09dfddbff2dc95d593",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather18/weather-sky-2-1.png": "2a7029c16c20112c2ffdee2c8ccb3ccebb71e1f00b59ba0be9010f135f8d2bef",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather18/weather-sky-2-2.png": "2a7029c16c20112c2ffdee2c8ccb3ccebb71e1f00b59ba0be9010f135f8d2bef",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather18/weather-sky-2-3.png": "73ab09babac5325e9068a06673e86b4a40bf73c5b01b3f09dfddbff2dc95d593",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather18/weather-sky-3-0.png": "521ccc351532c0809250caeb74cf63b7c380858cb9f1641186fd3ae17af4d25b",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather18/weather-sky-3-1.png": "263e77af9080d2778418fa592b35a83648247f306c5cd798c5ddb11c974f30e7",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather18/weather-sky-3-2.png": "263e77af9080d2778418fa592b35a83648247f306c5cd798c5ddb11c974f30e7",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather18/weather-sky-3-3.png": "521ccc351532c0809250caeb74cf63b7c380858cb9f1641186fd3ae17af4d25b",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather18/weather-water-2-0.png": "3b4c625b925c09a78d9eccd743a6e6ac5cb20bcfd70a0b313c11a2a37b94cfda",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather18/weather-water-2-1.png": "2cf1249742221eb0f2e2fdc80e5d0686e982b88d32cca1c08af13d687cec312a",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather18/weather-water-2-2.png": "2cf1249742221eb0f2e2fdc80e5d0686e982b88d32cca1c08af13d687cec312a",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather18/weather-water-2-3.png": "3b4c625b925c09a78d9eccd743a6e6ac5cb20bcfd70a0b313c11a2a37b94cfda",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather18/weather-water-3-0.png": "3b4c625b925c09a78d9eccd743a6e6ac5cb20bcfd70a0b313c11a2a37b94cfda",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather18/weather-water-3-1.png": "2cf1249742221eb0f2e2fdc80e5d0686e982b88d32cca1c08af13d687cec312a",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather18/weather-water-3-2.png": "2cf1249742221eb0f2e2fdc80e5d0686e982b88d32cca1c08af13d687cec312a",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-weather18/weather-water-3-3.png": "3b4c625b925c09a78d9eccd743a6e6ac5cb20bcfd70a0b313c11a2a37b94cfda",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-phase19/cloud-phase-hoist.json": "bf0b1ad1532cd31b3346e29fa3414450c9b6e4c2ab8603e54d7b85a76ff9b696",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-phase19/cloud_path_cost.gd": "f9dcd41fa3796a7f53088a296aa955e50a54f2b334cdeb3735ed5aef21a8fe55",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-phase19/cloud_phase_probe.gd": "4675145ed56febc9b72d73b0fabc5b3624fde6079a5eefd8e3df220228734cd6",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-phase19/clouds.gd": "39124f216492c59d0d8245a370ec98e96070dd9dc21f1156d5765f2639a105da",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-phase19/phase-held-sky-3-0.png": "feb56bf80868e18cf0617b337323b51a8d63b0a8ef43f4ee5dafbe7c0a74b7ce",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-phase19/phase-held-sky-3-1.png": "79fd7a87fe2e7daeed6d8b244ca727abe3a705b53968cf4148ca9a4c05ca8359",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-phase19/phase-held-sky-3-2.png": "79fd7a87fe2e7daeed6d8b244ca727abe3a705b53968cf4148ca9a4c05ca8359",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-phase19/phase-held-sky-3-3.png": "feb56bf80868e18cf0617b337323b51a8d63b0a8ef43f4ee5dafbe7c0a74b7ce",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-phase19/phase-sky-2-0.png": "73ab09babac5325e9068a06673e86b4a40bf73c5b01b3f09dfddbff2dc95d593",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-phase19/phase-sky-2-1.png": "41d625dfe9aa592348e3bd260c4006ecf8b08f2242851158bef74de8f7296e32",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-phase19/phase-sky-2-2.png": "41d625dfe9aa592348e3bd260c4006ecf8b08f2242851158bef74de8f7296e32",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-phase19/phase-sky-2-3.png": "73ab09babac5325e9068a06673e86b4a40bf73c5b01b3f09dfddbff2dc95d593",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-phase19/phase-sky-3-0.png": "521ccc351532c0809250caeb74cf63b7c380858cb9f1641186fd3ae17af4d25b",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-phase19/phase-sky-3-1.png": "9c780a2b0407d162dba3b082ecbfc6d36f8efc795e9b5b7231e7ba84655b82db",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-phase19/phase-sky-3-2.png": "9c780a2b0407d162dba3b082ecbfc6d36f8efc795e9b5b7231e7ba84655b82db",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-phase19/phase-sky-3-3.png": "521ccc351532c0809250caeb74cf63b7c380858cb9f1641186fd3ae17af4d25b",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-phase19/phase-water-2-0.png": "3b4c625b925c09a78d9eccd743a6e6ac5cb20bcfd70a0b313c11a2a37b94cfda",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-phase19/phase-water-2-1.png": "3b4c625b925c09a78d9eccd743a6e6ac5cb20bcfd70a0b313c11a2a37b94cfda",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-phase19/phase-water-2-2.png": "3b4c625b925c09a78d9eccd743a6e6ac5cb20bcfd70a0b313c11a2a37b94cfda",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-phase19/phase-water-2-3.png": "3b4c625b925c09a78d9eccd743a6e6ac5cb20bcfd70a0b313c11a2a37b94cfda",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-phase19/phase-water-3-0.png": "3b4c625b925c09a78d9eccd743a6e6ac5cb20bcfd70a0b313c11a2a37b94cfda",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-phase19/phase-water-3-1.png": "3b4c625b925c09a78d9eccd743a6e6ac5cb20bcfd70a0b313c11a2a37b94cfda",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-phase19/phase-water-3-2.png": "3b4c625b925c09a78d9eccd743a6e6ac5cb20bcfd70a0b313c11a2a37b94cfda",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-phase19/phase-water-3-3.png": "3b4c625b925c09a78d9eccd743a6e6ac5cb20bcfd70a0b313c11a2a37b94cfda",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-phase19/run.json": "df544cbbd3aa9daf5b1b80f8f3ee96bae23023f93f2160223554ef6e9ed0ddc3",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-phase19/run.log": "178b69cac9ea8551c9055c4d4715dd47067564e86ff5d457d7a1543813623313",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-phase19/tool-source.gd": "4361c3a6fee8106c5555a8170f1776a33d1132402e30570f6a4da5a22779db52",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-phase19/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-resolution20/cloud-pass-resolution.json": "cd014681e6ce34c9f96e069db869fb2e30f986d80b1836cde084d33ef3c48a82",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-resolution20/cloud_path_cost.gd": "f9dcd41fa3796a7f53088a296aa955e50a54f2b334cdeb3735ed5aef21a8fe55",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-resolution20/cloud_resolution_probe.gd": "5290cde42c3d87fcad67fdc19555bb60bd471e9c4951d4b84c1efd3816efa14a",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-resolution20/clouds.gd": "39124f216492c59d0d8245a370ec98e96070dd9dc21f1156d5765f2639a105da",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-resolution20/resolution-held-sky-2-0.png": "d3ecfc750d7451e25ce6e6b54dea8de7bfcce610019fdb9eb6c225e708436809",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-resolution20/resolution-held-sky-3-2.png": "5b5de8cbc2407e4a4daecfa8d81d7caa84848341ca43f65266f0ee88c0bd8f71",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-resolution20/resolution-held-sky-3-3.png": "9b68c5ab67e81946f2fb6e89519fa95cf15e0a7c6a666408e7f2fc7c1876db55",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-resolution20/resolution-sky-2-0.png": "73ab09babac5325e9068a06673e86b4a40bf73c5b01b3f09dfddbff2dc95d593",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-resolution20/resolution-sky-2-1.png": "73ab09babac5325e9068a06673e86b4a40bf73c5b01b3f09dfddbff2dc95d593",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-resolution20/resolution-sky-2-2.png": "73ab09babac5325e9068a06673e86b4a40bf73c5b01b3f09dfddbff2dc95d593",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-resolution20/resolution-sky-2-3.png": "73ab09babac5325e9068a06673e86b4a40bf73c5b01b3f09dfddbff2dc95d593",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-resolution20/resolution-sky-3-0.png": "521ccc351532c0809250caeb74cf63b7c380858cb9f1641186fd3ae17af4d25b",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-resolution20/resolution-sky-3-1.png": "a18ea7e5969e30fc2437b5d1ea9951ccc2a59f762a5fd85b8bfd26e3eb9edd88",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-resolution20/resolution-sky-3-2.png": "a18ea7e5969e30fc2437b5d1ea9951ccc2a59f762a5fd85b8bfd26e3eb9edd88",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-resolution20/resolution-sky-3-3.png": "521ccc351532c0809250caeb74cf63b7c380858cb9f1641186fd3ae17af4d25b",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-resolution20/run.json": "810c8f6e1c8c1684f35576deb3e6781e13784ea3c6cea5165a28382869acc5f7",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-resolution20/run.log": "67b85da7ad69d4176db78e814f407a355ca1cd83e01d2dc968b2c763c12599bd",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-resolution20/tool-source.gd": "3b2a44a34319d48153205e60ab271778a9114a4af01ec184de058c8bce460f95",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-resolution20/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+  },
+  "preserved_v1_sha256": "8276d5376240e3ea905dc5a1a23a58d3a9d5c254b6882ed4ce69482ed4bfbbe4"
+}
