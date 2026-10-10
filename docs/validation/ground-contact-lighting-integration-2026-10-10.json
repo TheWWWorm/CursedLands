@@ -886,5 +886,10 @@
         }
       ]
     }
-  ]
+  ],
+  "preparation_attempt": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/preparation-declined.json",
+    "sha256": "9dd2c25aed13c4e0f93f941cbcfd1d3ed6e49680b6ae51ce1d6ba84fb2519dc0",
+    "status": "Preflight declined because another renderer was active; no benchmark launched."
+  }
 }
